@@ -18,7 +18,7 @@ describe('read() and readMarketData()', () => {
     expect(item.id).toBe('5c0126f40db834002a125382')
     expect(item.caption).toBe('Red Rebel ice pick')
     expect(item.categoryId).toBe('meleeWeapon')
-    expect(item.conflictingItemIds).toEqual([])
+    expect(item.conflictingItemIds).toStrictEqual([])
     expect(item.description).toBe('Perfectly balanced ice axe, the tip is made of a single piece of hardened metal.')
     expect(item.iconLink).toBe('https://assets.tarkov-tools.com/5c0126f40db834002a125382-icon.jpg')
     expect(item.imageLink).toBe('https://assets.tarkov-tools.com/5c0126f40db834002a125382-image.jpg')

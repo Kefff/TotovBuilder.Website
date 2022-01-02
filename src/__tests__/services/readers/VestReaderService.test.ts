@@ -12,7 +12,7 @@ describe('read() and readMarketData()', () => {
 
     // Assert
     expect(item.armorClass).toBe(4)
-    expect(item.armoredAreas).toEqual(['Chest', 'Stomach'])
+    expect(item.armoredAreas).toStrictEqual(['Chest', 'Stomach'])
     expect(item.capacity).toBe(12)
     expect(item.durability).toBe(40)
     expect(item.ergonomicsPercentageModifier).toBe(-15)
@@ -23,7 +23,7 @@ describe('read() and readMarketData()', () => {
     expect(item.id).toBe('5d5d646386f7742797261fd9')
     expect(item.caption).toBe('6B3TM-01M armored rig')
     expect(item.categoryId).toBe('vest')
-    expect(item.conflictingItemIds).toEqual([])
+    expect(item.conflictingItemIds).toStrictEqual([])
     expect(item.description).toBe('Modified general army body armor 6B3 under the index 6B3TM-01M. Actively used during the war in Afghanistan. It has a comprehensive titanium 4-class GOST protection and a set of several pouches for magazines and grenades.\r\n')
     expect(item.iconLink).toBe('https://assets.tarkov-tools.com/5d5d646386f7742797261fd9-icon.jpg')
     expect(item.imageLink).toBe('https://assets.tarkov-tools.com/5d5d646386f7742797261fd9-image.jpg')

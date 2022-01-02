@@ -11,7 +11,7 @@ describe('read() and readMarketData()', () => {
     await service.readMarketData(marketData, item)
 
     // Assert
-    expect(item.acceptedAmmunitionIds).toEqual([
+    expect(item.acceptedAmmunitionIds).toStrictEqual([
       '5c0d5e4486f77478390952fe',
       '56dfef82d2720bbd668b4567',
       '56dff026d2720bb8668b4567',
@@ -33,7 +33,7 @@ describe('read() and readMarketData()', () => {
     expect(item.id).toBe('5bed61680db834001d2c45ab')
     expect(item.caption).toBe('AK-12 5.45x39 30-round magazine')
     expect(item.categoryId).toBe('magazine')
-    expect(item.conflictingItemIds).toEqual([])
+    expect(item.conflictingItemIds).toStrictEqual([])
     expect(item.description).toBe('30-round windowed, polymer Izhmash magazine for 5.45x39 ammo, for АК-12 and compatible systems.')
     expect(item.iconLink).toBe('https://assets.tarkov-tools.com/5bed61680db834001d2c45ab-icon.jpg')
     expect(item.imageLink).toBe('https://assets.tarkov-tools.com/5bed61680db834001d2c45ab-image.jpg')

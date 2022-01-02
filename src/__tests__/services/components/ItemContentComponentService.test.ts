@@ -50,7 +50,7 @@ describe('getAcceptedItems()', () => {
     const items = await itemContentService.getAcceptedItems('5ca20d5986f774331e7c9602')
 
     // Assert
-    expect(items.length).toEqual(0)
+    expect(items.length).toBe(0)
   })
 
   it.each([
@@ -73,7 +73,7 @@ describe('getAcceptedItems()', () => {
     const items = await itemContentService.getAcceptedItems(item.id)
 
     // Assert
-    expect(items.length).toEqual(0)
+    expect(items.length).toBe(0)
   })
 })
 
@@ -87,6 +87,6 @@ describe('getCategoryIds()', () => {
     const categoryIds = itemContentService.getCategoryIds(itemCategoryId)
 
     // Assert
-    expect(categoryIds).toEqual(expected)
+    expect(categoryIds).toStrictEqual(expected)
   })
 })

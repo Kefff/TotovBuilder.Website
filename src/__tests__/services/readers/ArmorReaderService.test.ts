@@ -12,7 +12,7 @@ describe('read() and readMarketData()', () => {
 
     // Assert
     expect(item.armorClass).toBe(2)
-    expect(item.armoredAreas).toEqual(['Chest', 'Stomach'])
+    expect(item.armoredAreas).toStrictEqual(['Chest', 'Stomach'])
     expect(item.durability).toBe(50)
     expect(item.ergonomicsPercentageModifier).toBe(-2)
     expect(item.material).toBe('Aramid')
@@ -22,7 +22,7 @@ describe('read() and readMarketData()', () => {
     expect(item.id).toBe('5648a7494bdc2d9d488b4583')
     expect(item.caption).toBe('PACA soft armor')
     expect(item.categoryId).toBe('armor')
-    expect(item.conflictingItemIds).toEqual([])
+    expect(item.conflictingItemIds).toStrictEqual([])
     expect(item.description).toBe(`Light but durable and reliable body armor protecting only the vital areas, fitted with II class armor plates.
 `)
     expect(item.iconLink).toBe('https://assets.tarkov-tools.com/5648a7494bdc2d9d488b4583-icon.jpg')

@@ -65,7 +65,7 @@ describe('getAcceptedItems()', () => {
     const items = await modSlotService.getAcceptedItems(['5ca20d5986f774331e7c9602'])
 
     // Assert
-    expect(items.length).toEqual(0)
+    expect(items.length).toBe(0)
   })
 })
 
@@ -114,6 +114,6 @@ describe('getCategoryIds()', () => {
     const categoryIds = modSlotService.getCategoryIds(items)
 
     // Assert
-    expect(categoryIds).toEqual(['rangedWeaponMod', 'headphones'])
+    expect(categoryIds).toStrictEqual(['rangedWeaponMod', 'headphones'])
   })
 })

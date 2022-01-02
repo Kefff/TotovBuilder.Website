@@ -13,7 +13,7 @@ describe('read() and readMarketData()', () => {
     // Assert
     expect(item.accuracyPercentageModifier).toBe(-15)
     expect(item.armorDamagePercentage).toBe(26)
-    expect(item.armorPenetrations).toEqual([3, 3, 3, 3, 3, 3])
+    expect(item.armorPenetrations).toStrictEqual([3, 3, 3, 3, 3, 3])
     expect(item.blinding).toBe(false)
     expect(item.caliber).toBe('Caliber12g')
     expect(item.durabilityBurnPercentageModifier).toBe(35)
@@ -31,7 +31,7 @@ describe('read() and readMarketData()', () => {
     expect(item.id).toBe('5d6e6806a4b936088465b17e')
     expect(item.caption).toBe('12/70 8.5mm "Magnum" Buckshot')
     expect(item.categoryId).toBe('ammunition')
-    expect(item.conflictingItemIds).toEqual([])
+    expect(item.conflictingItemIds).toStrictEqual([])
     expect(item.description).toBe('12/70 shell loaded with 16 8.5mm buckshot for 12ga shotguns.')
     expect(item.iconLink).toBe('https://assets.tarkov-tools.com/5d6e6806a4b936088465b17e-icon.jpg')
     expect(item.imageLink).toBe('https://assets.tarkov-tools.com/5d6e6806a4b936088465b17e-image.jpg')
@@ -69,7 +69,7 @@ describe('read() and readMarketData()', () => {
     const item = await service.read({ '_id': 'invalid', '_props': {} }, 'ammunition')
 
     // Assert
-    expect(item.armorPenetrations).toEqual([])
+    expect(item.armorPenetrations).toStrictEqual([])
   })
 })
 

@@ -15,11 +15,11 @@ describe('read() and readMarketData()', () => {
 
     // Assert
     expect(item1.armorClass).toBe(2)
-    expect(item1.armoredAreas).toEqual(['Top'])
+    expect(item1.armoredAreas).toStrictEqual(['Top'])
     expect(item1.durability).toBe(25)
     expect(item1.ergonomicsPercentageModifier).toBe(-5)
     expect(item1.material).toBe('Aramid')
-    expect(item1.modSlots).toEqual([
+    expect(item1.modSlots).toStrictEqual([
       {
         compatibleItemIds: [
           '5ac4c50d5acfc40019262e87'
@@ -36,7 +36,7 @@ describe('read() and readMarketData()', () => {
     expect(item1.id).toBe('59e7711e86f7746cae05fbe1')
     expect(item1.caption).toBe('Kolpak-1S riot helmet')
     expect(item1.categoryId).toBe('headwear')
-    expect(item1.conflictingItemIds).toEqual([])
+    expect(item1.conflictingItemIds).toStrictEqual([])
     expect(item1.description).toBe('Kolpak-1S protects the head from the cold piercing-cutting weapons in a special class of protection GOST R50744-95, from fragmentation with an energy of impact up to 50 J, and also serves to reduce the dynamic loads arising from the above-mentioned means of destruction.\n\nProtective helmets Kolpak-1 are recommended by the Interdepartmental Commission for equipping units of the patrol service, traffic police, OMON and other special units of the Ministry of Internal Affairs of Russia.')
     expect(item1.iconLink).toBe('https://assets.tarkov-tools.com/59e7711e86f7746cae05fbe1-icon.jpg')
     expect(item1.imageLink).toBe('https://assets.tarkov-tools.com/59e7711e86f7746cae05fbe1-image.jpg')
@@ -66,11 +66,11 @@ describe('read() and readMarketData()', () => {
     expect(item1.wikiLink).toBe('https://escapefromtarkov.fandom.com/wiki/Kolpak-1S_riot_helmet')
 
     expect(item2.armorClass).toBe(0)
-    expect(item2.armoredAreas).toEqual([])
+    expect(item2.armoredAreas).toStrictEqual([])
     expect(item2.durability).toBe(0)
     expect(item2.ergonomicsPercentageModifier).toBe(0)
     expect(item2.material).toBe('UHMWPE')
-    expect(item2.modSlots).toEqual([])
+    expect(item2.modSlots).toStrictEqual([])
     expect(item2.movementSpeedPercentageModifier).toBe(0)
     expect(item2.ricochetChance).toBeUndefined()
     expect(item2.turningSpeedPercentageModifier).toBe(0)
@@ -78,7 +78,7 @@ describe('read() and readMarketData()', () => {
     expect(item2.id).toBe('5ab8f20c86f7745cdb629fb2')
     expect(item2.caption).toBe('Ski hat with holes for eyes')
     expect(item2.categoryId).toBe('headwear')
-    expect(item2.conflictingItemIds).toEqual([])
+    expect(item2.conflictingItemIds).toStrictEqual([])
     expect(item2.description).toBe('Wow, man! Here comes the style. As well as warm and comfort.')
     expect(item2.iconLink).toBe('https://assets.tarkov-tools.com/5ab8f20c86f7745cdb629fb2-icon.jpg')
     expect(item2.imageLink).toBe('https://assets.tarkov-tools.com/5ab8f20c86f7745cdb629fb2-image.jpg')

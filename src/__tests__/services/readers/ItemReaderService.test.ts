@@ -14,7 +14,7 @@ describe('read() and readMarketData()', () => {
     expect(item.id).toBe('544fb3364bdc2d34748b456a')
     expect(item.caption).toBe('Immobilizing splint')
     expect(item.categoryId).toBe('medical')
-    expect(item.conflictingItemIds).toEqual([])
+    expect(item.conflictingItemIds).toStrictEqual([])
     expect(item.description).toBe('Common splint for fixing the damaged bones in position as an emergency aid measure.')
     expect(item.iconLink).toBe('https://assets.tarkov-tools.com/544fb3364bdc2d34748b456a-icon.jpg')
     expect(item.imageLink).toBe('https://assets.tarkov-tools.com/544fb3364bdc2d34748b456a-image.jpg')

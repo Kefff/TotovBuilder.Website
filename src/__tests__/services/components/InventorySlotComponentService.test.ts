@@ -60,7 +60,7 @@ describe('getAcceptedItems()', () => {
     const items = await itemComponentService.getAcceptedItems(['securedContainer'])
 
     // Assert
-    expect(items.length).toEqual(0)
+    expect(items.length).toBe(0)
   })
 })
 

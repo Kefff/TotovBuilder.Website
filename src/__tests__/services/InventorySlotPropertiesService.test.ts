@@ -519,7 +519,7 @@ describe('getRecoil()', () => {
     // Assert
     if (expected !== undefined) {
       expect(recoil?.success).toBe(true)
-      expect(recoil?.value).toEqual(expected)
+      expect(recoil?.value).toStrictEqual(expected)
     } else {
       expect(recoil).toBeUndefined()
     }

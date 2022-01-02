@@ -16,7 +16,7 @@ describe('read() and readMarketData()', () => {
     expect(item.id).toBe('5ca20d5986f774331e7c9602')
     expect(item.caption).toBe('WARTECH Berkut BB-102 backpack')
     expect(item.categoryId).toBe('backpack')
-    expect(item.conflictingItemIds).toEqual([])
+    expect(item.conflictingItemIds).toStrictEqual([])
     expect(item.description).toBe('Tactical backpack with front loading. Suitable for use by military or security forces or for military tactical games.')
     expect(item.iconLink).toBe('https://assets.tarkov-tools.com/5ca20d5986f774331e7c9602-icon.jpg')
     expect(item.imageLink).toBe('https://assets.tarkov-tools.com/5ca20d5986f774331e7c9602-image.jpg')

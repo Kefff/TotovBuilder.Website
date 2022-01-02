@@ -16,7 +16,7 @@ describe('read() and readMarketData()', () => {
     expect(item.fireRate).toBe(650)
     expect(item.horizontalRecoil).toBe(455)
     expect(item.verticalRecoil).toBe(152)
-    expect(item.modSlots).toEqual([
+    expect(item.modSlots).toStrictEqual([
       {
         compatibleItemIds: [
           '5c0d5e4486f77478390952fe',
@@ -138,7 +138,7 @@ describe('read() and readMarketData()', () => {
     expect(item.id).toBe('57dc2fa62459775949412633')
     expect(item.caption).toBe('AKS-74U 5.45x39 assault rifle')
     expect(item.categoryId).toBe('mainWeapon')
-    expect(item.conflictingItemIds).toEqual([])
+    expect(item.conflictingItemIds).toStrictEqual([])
     expect(item.description).toBe('Reduced version of AKS-74 assault rifle, developed in the early 80s for combat vehicle crews and airborne troops, also became very popular with law enforcement and special forces for its compact size.')
     expect(item.iconLink).toBe('https://assets.tarkov-tools.com/57dc2fa62459775949412633-icon.jpg')
     expect(item.imageLink).toBe('https://assets.tarkov-tools.com/57dc2fa62459775949412633-image.jpg')

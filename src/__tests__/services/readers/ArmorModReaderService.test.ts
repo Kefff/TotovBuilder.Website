@@ -15,7 +15,7 @@ describe('read() and readMarketData()', () => {
     expect(item.durability).toBe(40)
     expect(item.ergonomicsPercentageModifier).toBe(-11)
     expect(item.material).toBe('Ceramic')
-    expect(item.modSlots).toEqual([
+    expect(item.modSlots).toStrictEqual([
       {
         compatibleItemIds: [
           '5c0558060db834001b735271',
@@ -32,7 +32,7 @@ describe('read() and readMarketData()', () => {
     expect(item.id).toBe('5ea18c84ecf1982c7712d9a2')
     expect(item.caption).toBe('Bastion helmet armor plate')
     expect(item.categoryId).toBe('armorMod')
-    expect(item.conflictingItemIds).toEqual([
+    expect(item.conflictingItemIds).toStrictEqual([
       '5a16ba61fcdbcb098008728a',
       '5a16b672fcdbcb001912fa83',
       '5a16b7e1fcdbcb00165aa6c9',

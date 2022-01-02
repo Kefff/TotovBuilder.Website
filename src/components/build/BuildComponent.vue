@@ -25,13 +25,10 @@
         <div class="toolbar-part">
           <Button
             v-if="!editing"
+            v-tooltip.right="$t('caption.backToBuilds')"
             @click="goToBuilds()"
           >
-            <font-awesome-icon
-              icon="arrow-left"
-              class="icon-before-text"
-            />
-            <span>{{ $t('caption.back') }}</span>
+            <font-awesome-icon icon="arrow-left" />
           </Button>
           <Button
             v-if="!editing"

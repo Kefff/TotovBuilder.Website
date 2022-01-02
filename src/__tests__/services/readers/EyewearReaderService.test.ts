@@ -16,7 +16,7 @@ describe('read() and readMarketData()', () => {
     expect(item.id).toBe('5aa2b923e5b5b000137b7589')
     expect(item.caption).toBe('Round frame sunglasses')
     expect(item.categoryId).toBe('eyewear')
-    expect(item.conflictingItemIds).toEqual([])
+    expect(item.conflictingItemIds).toStrictEqual([])
     expect(item.description).toBe('Sunglasses with round-shaped frame. Cool and stylish!')
     expect(item.iconLink).toBe('https://assets.tarkov-tools.com/5aa2b923e5b5b000137b7589-icon.jpg')
     expect(item.imageLink).toBe('https://assets.tarkov-tools.com/5aa2b923e5b5b000137b7589-image.jpg')

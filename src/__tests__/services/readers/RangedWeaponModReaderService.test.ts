@@ -13,13 +13,13 @@ describe('read() and readMarketData()', () => {
     // Assert
     expect(item.accuracyPercentageModifier).toBe(-1)
     expect(item.ergonomicsModifier).toBe(-20)
-    expect(item.modSlots).toEqual([])
+    expect(item.modSlots).toStrictEqual([])
     expect(item.recoilPercentageModifier).toBe(-12)
 
     expect(item.id).toBe('5a0d63621526d8dba31fe3bf')
     expect(item.caption).toBe('PBS-1 7.62x39 sound suppressor')
     expect(item.categoryId).toBe('rangedWeaponMod')
-    expect(item.conflictingItemIds).toEqual([])
+    expect(item.conflictingItemIds).toStrictEqual([])
     expect(item.description).toBe('PBS-1 is a device manufactured by TSNIITochmash for noiseless and flash-free fire with 7.62mm modernized Kalashnikov.')
     expect(item.iconLink).toBe('https://assets.tarkov-tools.com/5a0d63621526d8dba31fe3bf-icon.jpg')
     expect(item.imageLink).toBe('https://assets.tarkov-tools.com/5a0d63621526d8dba31fe3bf-image.jpg')

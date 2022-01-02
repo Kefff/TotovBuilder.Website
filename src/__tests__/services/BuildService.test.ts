@@ -598,7 +598,7 @@ describe('create()', () => {
     // Assert
     expect(build.id).toBe('')
     expect(build.name).toBe('')
-    expect(build.inventorySlots).toEqual([
+    expect(build.inventorySlots).toStrictEqual([
       {
         items: [undefined],
         typeId: 'onSling'

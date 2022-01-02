@@ -27,7 +27,7 @@ describe('getAcceptedAmmunitionCaptions()', () => {
     const captions = await Services.get(MagazineStatsComponentService).getAcceptedCartridgesCaptions(magazine)
 
     // Assert
-    expect(captions).toEqual([
+    expect(captions).toStrictEqual([
       '5.45x39mm PPBS gs "Igolnik"',
       '5.45x39mm BP gs',
       '5.45x39mm BS gs',

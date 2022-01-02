@@ -15,12 +15,12 @@ describe('read() and readMarketData()', () => {
 
     // Assert
     expect(item1.ergonomicsModifier).toBe(-2)
-    expect(item1.modSlots).toEqual([])
+    expect(item1.modSlots).toStrictEqual([])
 
     expect(item1.id).toBe('59d790f486f77403cb06aec6')
     expect(item1.caption).toBe('Armytek Predator Pro v3 XHP35 HI flashlight')
     expect(item1.categoryId).toBe('mod')
-    expect(item1.conflictingItemIds).toEqual([])
+    expect(item1.conflictingItemIds).toStrictEqual([])
     expect(item1.description).toBe('Powerful flashlight in a heavy-duty frame, produced by the Armytek company.')
     expect(item1.iconLink).toBe('https://assets.tarkov-tools.com/59d790f486f77403cb06aec6-icon.jpg')
     expect(item1.imageLink).toBe('https://assets.tarkov-tools.com/59d790f486f77403cb06aec6-image.jpg')
@@ -50,12 +50,12 @@ describe('read() and readMarketData()', () => {
     expect(item1.wikiLink).toBe('https://escapefromtarkov.fandom.com/wiki/Armytek_Predator_Pro_v3_XHP35_HI_Flashlight')
 
     expect(item2.ergonomicsModifier).toBe(0)
-    expect(item2.modSlots).toEqual([])
+    expect(item2.modSlots).toStrictEqual([])
 
     expect(item2.id).toBe('5ac4c50d5acfc40019262e87')
     expect(item2.caption).toBe('Kolpak-1S visor')
     expect(item2.categoryId).toBe('armorMod')
-    expect(item2.conflictingItemIds).toEqual([])
+    expect(item2.conflictingItemIds).toStrictEqual([])
     expect(item2.description).toBe('Weak protection from eye and face damage, used with helmet Cap.')
     expect(item2.iconLink).toBe('https://assets.tarkov-tools.com/5ac4c50d5acfc40019262e87-icon.jpg')
     expect(item2.imageLink).toBe('https://assets.tarkov-tools.com/5ac4c50d5acfc40019262e87-image.jpg')

@@ -55,9 +55,9 @@ describe('get()', () => {
     const result = await new ApiService().get(Configuration.VITE_MARKET_DATA_API as string)
 
     // Assert
-    expect(fetchMock.mock.calls.length).toEqual(1)
+    expect(fetchMock.mock.calls.length).toBe(1)
     expect(result.success).toBe(true)
-    expect(result.value).toEqual([
+    expect(result.value).toStrictEqual([
       {
         'id': '590c621186f774138d11ea29',
         'name': 'Secure Flash drive',
@@ -131,9 +131,9 @@ describe('get()', () => {
     const result = await new ApiService().get('item', { name: 'id', value: '57dc2fa62459775949412633' })
 
     // Assert
-    expect(fetchMock.mock.calls.length).toEqual(1)
+    expect(fetchMock.mock.calls.length).toBe(1)
     expect(result.success).toBe(true)
-    expect(result.value).toEqual([
+    expect(result.value).toStrictEqual([
       {
         'id': '57dc2fa62459775949412633',
         'name': 'AKS-74U 5.45x39 assault rifle',

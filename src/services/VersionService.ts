@@ -60,7 +60,7 @@ export class VersionService {
       this._currentVersion = lastVersion
     }
 
-    this.newVersions = Changelogs.filter(c => c.version > this._currentVersion).map(c => c.version)
+    this.newVersions = Changelogs.filter(c => this.compareVersions(c.version, this._currentVersion)).map(c => c.version)
 
     if (this.newVersions.length > 0) {
       this.hasNewVersion = true
@@ -68,5 +68,18 @@ export class VersionService {
     }
 
     localStorage.setItem(Configuration.VITE_VERSION_KEY, this._currentVersion)
+  }
+
+  /**
+   * Compares two versions.
+   * @param version1 - First version.
+   * @param version2 - Second version.
+   * @returns true if the first version is more recent that the second version; otherwise false.
+   */
+  private compareVersions(version1: string, version2: string): boolean {
+    const version1AsNumber = Number(version1.replace(/[.]/g, ''))
+    const version2AsNumber = Number(version2.replace(/[.]/g, ''))
+
+    return version1AsNumber > version2AsNumber
   }
 }

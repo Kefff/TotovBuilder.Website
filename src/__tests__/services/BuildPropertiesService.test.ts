@@ -1461,7 +1461,7 @@ describe('getRecoil()', () => {
         expect(recoil).toBeUndefined()
       } else {
         expect(recoil?.success).toBe(true)
-        expect(recoil?.value).toEqual(expected)
+        expect(recoil?.value).toStrictEqual(expected)
       }
     }
   )

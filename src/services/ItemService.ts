@@ -36,6 +36,16 @@ export class ItemService {
   private items: IItem[] = []
 
   /**
+   * Determines whether market data is being fetched or not.
+   */
+  private isFetchingMarketData = false
+
+  /**
+   * Determines whether data is being fetched or not.
+   */
+  private isFetchingStaticData = false
+
+  /**
    * Date of the last time data market data was fetched.
    */
   private lastMarketDataFetchDate: Date = new Date(1)
@@ -48,7 +58,7 @@ export class ItemService {
   /**
    * Current market data fetching task.
    */
-  private marketDataFetchingPromise: Promise<void> | undefined
+  private marketDataFetchingPromise: Promise<void> = Promise.resolve()
 
   /**
    * Fetched presets.
@@ -58,7 +68,7 @@ export class ItemService {
   /**
    * Current static data fetching task.
    */
-  private staticDataFetchingPromise: Promise<void> | undefined
+  private staticDataFetchingPromise: Promise<void> = Promise.resolve()
 
   /**
    * Initializes a new instance of the ItemService class.
@@ -213,22 +223,24 @@ export class ItemService {
      * If market data is already being fetched, waits for the operation to end before returnin.
      */
   private async fetchMarketData() {
-    if (this.marketDataFetchingPromise !== undefined) {
+    if (this.isFetchingMarketData) {
       await this.marketDataFetchingPromise
 
       return
     }
 
     this.marketDataFetchingPromise = new Promise((resolve) => {
+      this.isFetchingMarketData = true
       const itemFetcherService = Services.getByName<IItemFetcherService>('ItemFetcherService')
 
       itemFetcherService.fetchMarketData()
         .then(async (marketDataResult) => this.updateItemsMarketData(marketDataResult))
-        .finally(() => resolve())
+        .finally(() => {
+          this.isFetchingMarketData = false
+          resolve()
+        })
     })
     await this.marketDataFetchingPromise
-
-    this.marketDataFetchingPromise = undefined
   }
 
   /**
@@ -250,13 +262,14 @@ export class ItemService {
    * If static data is already being fetched, waits for the operation to end before returnin.
    */
   private async fetchStaticData(): Promise<void> {
-    if (this.staticDataFetchingPromise !== undefined) {
+    if (this.isFetchingStaticData) {
       await this.staticDataFetchingPromise
 
       return
     }
 
     this.staticDataFetchingPromise = new Promise<void>((resolve) => {
+      this.isFetchingStaticData = true
       const itemFetcherService = Services.getByName<IItemFetcherService>('ItemFetcherService')
 
       this.fetchItemCategories(itemFetcherService)
@@ -276,11 +289,12 @@ export class ItemService {
 
           this.hasStaticDataCached = false
         })
-        .finally(() => resolve())
+        .finally(() => {
+          this.isFetchingStaticData = false
+          resolve()
+        })
     })
     await this.staticDataFetchingPromise
-
-    this.staticDataFetchingPromise = undefined
   }
 
   /**
@@ -292,7 +306,7 @@ export class ItemService {
     const items: IItem[] = []
 
     for (const tarkovItem of tarkovItems) {
-      const categoryId = this.getItemCategoryIdFromTarkovItems(tarkovItem)
+      const categoryId = this.getItemCategoryIdFromTarkovItem(tarkovItem)
       const readerService = ItemCategoryUtils.getReaderServiceForCategory(categoryId)
 
       const item = await readerService.read(tarkovItem, categoryId)
@@ -305,9 +319,9 @@ export class ItemService {
   /**
    * Gets an item category ID from its Tarkov item.
    * @param tarkovItem - Tarkov item.
-   * @returns Item category.
+   * @returns Item category ID.
    */
-  private getItemCategoryIdFromTarkovItems(tarkovItem: Record<string, unknown>): string {
+  private getItemCategoryIdFromTarkovItem(tarkovItem: Record<string, unknown>): string {
     const type = tarkovItem['_parent'] as string
     const category = this.itemCategories.find(c => c.types.some(t => t.id === type)) as IItemCategory
 
