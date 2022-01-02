@@ -1,0 +1,46 @@
+@import '../../../assets/css/armor-penetration.css';
+@import '../../../assets/css/flesh-damage.css';
+@import '../../../assets/css/icon.css';
+@import '../../../assets/css/option.css';
+@import '../../../assets/css/stats.css';
+
+.armor-penetration-placeholder {
+  width: 10.25rem; /* 6 penetrated armor of 1rem + 5 margins of 0.25rem + 6 armor classes of 0.5rem */
+}
+
+.penetrated-armor {
+  align-items: center;
+  display: flex;
+  margin-right: 0.25rem;
+}
+
+.penetrated-armor:last-child {
+  margin-right: 0;
+}
+
+.penetrated-armor-class {
+  font-size: 0.75rem;
+  text-align: right;
+  width: 0.5rem;
+}
+
+.penetrated-armor-icon {
+  margin-right: 0;
+  width: 1rem;
+}
+
+.penetrated-armor-list {
+  align-items: center;
+  display: flex;
+}
+
+.oneshot {
+  width: 0.25rem;
+}
+
+.oneshot-icon {
+  font-size: 0.5rem;
+  position: relative;
+  right: 5px;
+  top: 3px;
+}

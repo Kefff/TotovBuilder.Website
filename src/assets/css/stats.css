@@ -1,0 +1,43 @@
+.stats-caption {
+  align-items: center;
+  display: flex;
+  margin-right: 1rem;
+}
+
+.stats-entry {
+  align-items: center;
+  display: flex;
+}
+
+.stats-line {
+  display: grid;
+  grid-column-gap: 5rem;
+  grid-row-gap: 1rem;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  margin-bottom: 1rem;
+}
+
+.stats-line:last-child {
+  margin-bottom: 0;
+}
+
+.stats-value {
+  margin-left: auto;
+  text-align: right;
+}
+
+.stats-value-positive {
+  color: var(--success-color);
+}
+
+.stats-value-negative {
+  color: var(--error-color);
+}
+
+.stats-encumberment-heavy {
+  color: rgb(197, 4, 4);
+}
+
+.stats-encumberment-light {
+  color: rgb(234, 182, 52);
+}

@@ -1,0 +1,16 @@
+.mod-slot {
+  margin-top: 1rem;
+  margin-left: 2rem;
+}
+
+.required-ok {
+  color: var(--success-color);
+}
+
+.required-nok {
+  color: var(--error-color);
+}
+
+.slot-name {
+  margin-bottom: 0.25rem;
+}

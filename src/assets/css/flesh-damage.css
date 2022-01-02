@@ -1,0 +1,17 @@
+.flesh-damage {
+  position: relative;
+}
+
+.flesh-damage-color {
+  color: var(--error-color);
+}
+
+.flesh-damage-oneshot {
+  position: absolute;
+  right: -3px;
+  bottom: -6px;
+}
+
+.flesh-damage-oneshot-icon {
+  width: 0.5rem;
+}

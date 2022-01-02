@@ -1,0 +1,29 @@
+@import '../../assets/css/icon.css';
+
+.language-selector {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.language-selector-caption {
+  margin-right: auto;
+}
+
+.language-selector-dropdown {
+  margin-left: 1rem;
+}
+
+.language-selector-item {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.language-selector-item-flag {
+  margin-right: 0.5rem;
+  width: 1.5rem;
+}

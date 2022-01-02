@@ -1,0 +1,36 @@
+@import '../../assets/css/icon.css';
+@import '../../assets/css/toolbar.css';
+
+.builds {
+  margin-bottom: 3rem;
+}
+
+.builds-advanced-panel {
+  max-height: 31.25rem;
+  overflow: auto;
+}
+
+.builds-advanced-panel-item {
+  align-items: center;
+  display: flex;
+  min-height: 3.25rem;
+  padding: 0.5rem;
+}
+
+.builds-advanced-panel-item:hover {
+  background: var(--util-color2);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.builds-loading {
+  margin-top: 3rem;
+}
+
+.builds-merchant-filter {
+  height: initial;
+}
+
+.builds-merchant-filter:hover {
+  cursor: initial;
+}

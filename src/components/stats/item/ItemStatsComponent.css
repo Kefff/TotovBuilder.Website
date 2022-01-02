@@ -1,0 +1,10 @@
+@import '../../../assets/css/icon.css';
+@import '../../../assets/css/stats.css';
+
+.link {
+  color: var(--primary-color);
+}
+
+.link:hover {
+  cursor: pointer;
+}

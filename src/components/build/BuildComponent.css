@@ -1,0 +1,113 @@
+@import '../../assets/css/icon.css';
+@import '../../assets/css/stats.css';
+@import '../../assets/css/toolbar.css';
+
+.build {
+  margin-bottom: 3rem;
+}
+
+.build-advanced-panel {
+  max-height: 31.25rem;
+  overflow: auto;
+}
+
+.build-advanced-panel-item {
+  align-items: center;
+  display: flex;
+  min-height: 3.25rem;
+  padding: 0.5rem;
+}
+
+.build-advanced-panel-item:hover {
+  background: var(--util-color2);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.build-caliber-icon {
+  width: 1.5rem !important;
+}
+
+.build-empty-message {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5rem;
+  margin-top: 3rem;
+}
+
+.build-empty-message-button {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.build-empty-message-line {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.build-empty-message-text {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.build-loading {
+  margin-top: 3rem;
+}
+
+.build-merchant-filter {
+  height: initial;
+}
+
+.build-merchant-filter:hover {
+  cursor: initial;
+}
+
+.build-title {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  font-size: 1.5rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.build-toolbar-not-exported {
+  color: var(--warning-color);
+  margin-right: 0.5rem;
+}
+
+.build-toolbar-ammunition-count {
+  display: flex;
+}
+
+.build-toolbar-ammunition-count-count {
+  text-align: right;
+  margin-right: 1rem;
+  width: 2.25rem;
+}
+
+.build-toolbar-right {
+  margin-left: auto;
+}
+
+.build-toolbar-summary {
+  align-items: center;
+  display: flex;
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.build-toolbar-summary-icon {
+  margin-left: 0.25rem;
+}
+
+.build-toolbar-summary-value {
+  margin-left: 2rem;
+  white-space: nowrap;
+}
+
+.build-warning-icon {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}

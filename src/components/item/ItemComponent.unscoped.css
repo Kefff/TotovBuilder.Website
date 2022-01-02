@@ -1,0 +1,19 @@
+.item-dropdown-override > .p-disabled {
+  opacity: 1;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.item-dropdown-override > .p-disabled > .p-dropdown-trigger {
+  opacity: 0.38;
+}
+
+.item-dropdown-override > .p-dropdown > .p-dropdown-clear-icon {
+  color: var(--error-color);
+}
+
+.item-dropdown-override > .p-dropdown > .p-dropdown-label {
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
+}

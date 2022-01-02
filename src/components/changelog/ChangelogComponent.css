@@ -1,0 +1,70 @@
+@import '../../assets/css/link.css';
+
+.changelog-notification {
+  display: flex;
+  margin-top: 1rem;
+}
+
+.changelog-notification > div {
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.changelog-notification-dismiss-icon {
+  color: var(--error-color);
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.changelog-notification-element {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.changelog-notification-icon {
+  color: var(--warning-color);
+}
+
+.changelog-notification-message {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.changelog {
+  max-height: 75vh;
+  max-width: 75vw;
+}
+
+.changelog ul {
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.changelog-change {
+  margin-top: 1rem;
+}
+
+.changelog-change:first-child {
+  margin-top: 0.5rem;
+}
+
+.changelog-element {
+  margin-top: 1rem;
+}
+
+.changelog-element:first-child {
+  margin-top: 0;
+}
+
+.changelog-new {
+  color: var(--primary-color);
+  margin-left: 1rem;
+}
+
+.changelog-title {
+  font-weight: bold;
+}

@@ -1,0 +1,13 @@
+@import '../../../assets/css/option.css';
+
+.fire-rate {
+  width: 6rem;
+}
+
+.option-value-long {
+  justify-content: flex-end;
+}
+
+.option-value-long > div {
+  width: unset;
+}

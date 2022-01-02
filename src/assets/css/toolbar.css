@@ -1,0 +1,55 @@
+.toolbar {
+  margin-top: 0.5rem;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.toolbar button {
+  height: 2.625rem;
+  margin-right: 0.5rem;
+}
+
+.toolbar button:last-child {
+  margin-right: 0;
+}
+
+.toolbar-button-discreet {
+  color: var(--text-color) !important;
+  font-size: 1rem;
+  margin-right: 0 !important;
+}
+
+.toolbar-button-discreet:hover {
+  color: var(--primary-color) !important;
+}
+
+.toolbar-center {
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.toolbar-gradient {
+  background-image: linear-gradient(
+    to bottom,
+    var(--surface-0),
+    rgba(0, 0, 0, 0)
+  );
+  height: 1rem;
+}
+
+.toolbar-line {
+  background-color: var(--surface-0);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  font-size: 2rem;
+  min-height: 3.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.toolbar-part {
+  align-items: center;
+  display: flex;
+}

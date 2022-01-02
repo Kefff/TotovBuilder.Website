@@ -1,0 +1,6 @@
+@import '../../../assets/css/icon.css';
+@import '../../../assets/css/stats.css';
+
+.durability {
+  color: var(--error-color);
+}

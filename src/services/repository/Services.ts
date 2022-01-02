@@ -1,0 +1,91 @@
+import i18n from '../../plugins/vueI18n'
+import { IRegisteredService } from './IRegisteredService'
+import Configuration from '../../../test-data/configuration.json'
+
+/**
+ * Represents a repository for all the application services.
+ */
+class ServicesRepository {
+  /**
+   * Collection of the configured services.
+   */
+  public services: IRegisteredService[] = []
+
+  /**
+   * Configures a new service, or replaces an registered service with the same type or name.
+   * @param name - Name identifying the service.
+   * @param initializeMethod - Method that will be called to create a new instance of the service when it will be requested.
+   * @param name - Custom identifier in case the type name cannot be used (for example when multiple services can be configured for the same role depending on a configuration).
+   * @param instance - Instance to return when the service is requested. Mostly used for mocks while unit testing.
+   */
+  public configure<T>(type: new () => T, name?: string, instance?: T) {
+    const serviceName = name ?? type.name
+    const index = this.services.findIndex((s) => s.name === serviceName)
+
+    if (index < 0) {
+      this.services.push({
+        instance,
+        name: name ?? type.name,
+        type
+      })
+    } else {
+      this.services[index] = {
+        instance,
+        name: name ?? type.name,
+        type
+      }
+
+      const warnWhenServiceReplaced = Configuration.VITE_WARN_WHEN_SERVICE_REPLACED === 'true'
+
+      if (warnWhenServiceReplaced) {
+        console.warn(i18n.t('message.serviceAlreadyConfigured', { name: serviceName }))
+      }
+    }
+  }
+
+  /**
+   * Gets a configured service.
+   * @param name - Name of the service.
+   * @returns Instance of the service.
+   */
+  public get<T>(type: new () => T): T {
+    const registeredService = this.services.find((s) => s.name === type.name)
+
+    if (registeredService !== undefined) {
+      return this.getInstance(registeredService)
+    } else {
+      throw i18n.t('message.serviceNotConfigured', { name: type.name })
+    }
+  }
+
+  /**
+   * Gets a configured service by its name.
+   * @param name - Name of the service.
+   * @returns Instance of the service.
+   */
+  public getByName<T>(name: string): T {
+    const registeredService = this.services.find((s) => s.name === name)
+
+    if (registeredService !== undefined) {
+      return this.getInstance(registeredService)
+    } else {
+      throw i18n.t('message.serviceNotConfigured', { name })
+    }
+  }
+
+  /**
+   * Gets the instance of a service based on a registration.
+   * @param registeredService - Service registration.
+   * @returns Service instance.
+   */
+  private getInstance<T>(registeredService: IRegisteredService) {
+    if (registeredService.instance === undefined) {
+      registeredService.instance = new registeredService.type()
+    }
+
+    return registeredService.instance as T
+  }
+}
+
+export default new ServicesRepository()
+

@@ -1,0 +1,42 @@
+@import '../../assets/css/icon.css';
+
+.merchant-filter {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  height: 3.5rem;
+}
+
+.merchant-filter:last-child {
+  margin-bottom: 0;
+}
+
+.merchant-filter-icon {
+  border-color: var(--util-color);
+  border-radius: 3px;
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 1px;
+  margin-left: auto;
+  width: 3rem;
+}
+
+.merchant-filter-icon-disabled {
+  filter: grayscale(100%);
+}
+
+.merchant-filter-merchant {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.merchant-filter-level {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  width: 5.125rem;
+}
+
+.merchant-filter-disabled-text {
+  color: var(--util-color5);
+}

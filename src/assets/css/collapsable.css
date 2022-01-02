@@ -1,0 +1,30 @@
+.collapsable-icon-collapsed {
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+  animation-name: collapsable-icon-collapse;
+}
+
+.collapsable-icon-deployed {
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+  animation-name: collapsable-icon-deploy;
+  transform: rotate(90deg);
+}
+
+@keyframes collapsable-icon-deploy {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(90deg);
+  }
+}
+
+@keyframes collapsable-icon-collapse {
+  0% {
+    transform: rotate(90deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}

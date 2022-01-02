@@ -1,0 +1,752 @@
+[
+  {
+    "id": "5d6e6772a4b936088465b17c",
+    "caption": "12/70 5.25mm Buckshot",
+    "armorPenetrations": [3, 3, 3, 3, 3, 3]
+  },
+  {
+    "id": "5d6e6806a4b936088465b17e",
+    "caption": "12/70 8.5mm \"Magnum\" Buckshot",
+    "armorPenetrations": [3, 3, 3, 3, 3, 3]
+  },
+  {
+    "id": "5d6e67fba4b9361bc73bc779",
+    "caption": "12/70 6.5mm Express buckshot",
+    "armorPenetrations": [3, 3, 3, 3, 3, 3]
+  },
+  {
+    "id": "560d5e524bdc2d25448b4571",
+    "caption": "12/70 7mm buckshot",
+    "armorPenetrations": [3, 3, 3, 3, 3, 3]
+  },
+  {
+    "id": "5d6e6911a4b9361bd5780d52",
+    "caption": "12/70 Flechette",
+    "armorPenetrations": [6, 6, 6, 5, 5, 5]
+  },
+  {
+    "id": "5c0d591486f7744c505b416f",
+    "caption": "12/70 RIP",
+    "armorPenetrations": [0, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5d6e68d1a4b93622fe60e845",
+    "caption": "12/70 SuperFormance HP Slug",
+    "armorPenetrations": [0, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5d6e6869a4b9361c140bcfde",
+    "caption": "12/70 Grizzly 40 Slug",
+    "armorPenetrations": [6, 2, 0, 0, 0, 0]
+  },
+  {
+    "id": "5d6e68b3a4b9361bca7e50b5",
+    "caption": "12/70 Copper Sabot Premier HP Slug",
+    "armorPenetrations": [6, 3, 1, 0, 0, 0]
+  },
+  {
+    "id": "58820d1224597753c90aeb13",
+    "caption": "12/70 Lead slug",
+    "armorPenetrations": [6, 4, 1, 0, 0, 0]
+  },
+  {
+    "id": "5d6e6891a4b9361bd473feea",
+    "caption": "12/70 \"Poleva-3\" Slug",
+    "armorPenetrations": [6, 5, 1, 0, 0, 0]
+  },
+  {
+    "id": "5d6e68dea4b9361bcc29e659",
+    "caption": "12/70 Dual Sabot Slug",
+    "armorPenetrations": [6, 5, 2, 0, 0, 0]
+  },
+  {
+    "id": "5d6e68e6a4b9361c140bcfe0",
+    "caption": "12/70 FTX Custom Lite Slug",
+    "armorPenetrations": [6, 6, 2, 0, 0, 0]
+  },
+  {
+    "id": "5d6e689ca4b9361bc8618956",
+    "caption": "12/70 \"Poleva-6u\" Slug",
+    "armorPenetrations": [6, 6, 2, 0, 0, 0]
+  },
+  {
+    "id": "5d6e68c4a4b9361b93413f79",
+    "caption": "12/70 shell with .50 BMG bullet",
+    "armorPenetrations": [6, 6, 5, 3, 1, 0]
+  },
+  {
+    "id": "5d6e68a8a4b9360b6c0d54e2",
+    "caption": "12/70 AP-20 Slug",
+    "armorPenetrations": [6, 6, 6, 5, 4, 3]
+  },
+  {
+    "id": "5d6e695fa4b936359b35d852",
+    "caption": "20/70 5.6mm Buckshot",
+    "armorPenetrations": [3, 3, 3, 3, 3, 3]
+  },
+  {
+    "id": "5d6e69b9a4b9361bc8618958",
+    "caption": "20/70 6.2mm Buckshot",
+    "armorPenetrations": [3, 3, 3, 3, 3, 3]
+  },
+  {
+    "id": "5a38ebd9c4a282000d722a5b",
+    "caption": "20/70 7.5mm Buckshot",
+    "armorPenetrations": [3, 3, 3, 3, 3, 3]
+  },
+  {
+    "id": "5d6e69c7a4b9360b6c0d54e4",
+    "caption": "20/70 7.3mm Buckshot",
+    "armorPenetrations": [3, 3, 3, 3, 3, 3]
+  },
+  {
+    "id": "5d6e6a5fa4b93614ec501745",
+    "caption": "20/70 Devastator Slug",
+    "armorPenetrations": [1, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5d6e6a53a4b9361bd473feec",
+    "caption": "20/70 \"Poleva-3\" slug",
+    "armorPenetrations": [6, 2, 0, 0, 0, 0]
+  },
+  {
+    "id": "5d6e6a05a4b93618084f58d0",
+    "caption": "20/70 Star Slug",
+    "armorPenetrations": [6, 5, 1, 0, 0, 0]
+  },
+  {
+    "id": "5d6e6a42a4b9364f07165f52",
+    "caption": "20/70 \"Poleva-6u\" slug",
+    "armorPenetrations": [6, 5, 1, 0, 0, 0]
+  },
+  {
+    "id": "5e85a9f4add9fe03027d9bf1",
+    "caption": "23x75mm \"Zvezda\" flashbang round",
+    "armorPenetrations": [0, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5f647f31b6238e5dd066e196",
+    "caption": "23x75mm Shrapnel-25 buckshot",
+    "armorPenetrations": [6, 4, 3, 3, 3, 3]
+  },
+  {
+    "id": "5e85a9a6eacf8c039e4e2ac1",
+    "caption": "23x75mm \"Shrapnel-10\" buckshot",
+    "armorPenetrations": [6, 4, 3, 3, 3, 3]
+  },
+  {
+    "id": "5e85aa1a988a8701445df1f5",
+    "caption": "23x75mm \"Barrikada\" slug",
+    "armorPenetrations": [6, 6, 6, 6, 4, 4]
+  },
+  {
+    "id": "5737218f245977612125ba51",
+    "caption": "9x18mm PM SP8 gzh",
+    "armorPenetrations": [0, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "57372140245977611f70ee91",
+    "caption": "9x18mm PM SP7 gzh",
+    "armorPenetrations": [0, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5737207f24597760ff7b25f2",
+    "caption": "9x18mm PM PSV",
+    "armorPenetrations": [0, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "573719762459775a626ccbc1",
+    "caption": "9x18mm PM P gzh",
+    "armorPenetrations": [2, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "57371f8d24597761006c6a81",
+    "caption": "9x18mm PM PSO gzh",
+    "armorPenetrations": [2, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "57371f2b24597761224311f1",
+    "caption": "9x18mm PM PS gs PPO",
+    "armorPenetrations": [3, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "57371eb62459776125652ac1",
+    "caption": "9x18mm PM PRS gs",
+    "armorPenetrations": [3, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "57371b192459775a9f58a5e0",
+    "caption": "9x18mm PM PPe gzh",
+    "armorPenetrations": [4, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "57371e4124597760ff7b25f1",
+    "caption": "9x18mm PM PPT gzh",
+    "armorPenetrations": [5, 1, 0, 0, 0, 0]
+  },
+  {
+    "id": "5737201124597760fc4431f1",
+    "caption": "9x18mm PM Pst gzh",
+    "armorPenetrations": [6, 1, 0, 0, 0, 0]
+  },
+  {
+    "id": "573720e02459776143012541",
+    "caption": "9x18mm PM RG028 gzh",
+    "armorPenetrations": [6, 2, 0, 0, 0, 0]
+  },
+  {
+    "id": "573718ba2459775a75491131",
+    "caption": "9x18mm PM BZhT gzh",
+    "armorPenetrations": [6, 5, 1, 0, 0, 0]
+  },
+  {
+    "id": "57371aab2459775a77142f22",
+    "caption": "9x18mm PMM PstM gzh",
+    "armorPenetrations": [6, 6, 4, 0, 0, 0]
+  },
+  {
+    "id": "573719df2459775a626ccbc2",
+    "caption": "9x18mm PM PBM gzh",
+    "armorPenetrations": [6, 6, 5, 1, 0, 0]
+  },
+  {
+    "id": "573602322459776445391df1",
+    "caption": "7.62x25mm TT LRNPC",
+    "armorPenetrations": [5, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "573601b42459776410737435",
+    "caption": "7.62x25mm TT LRN",
+    "armorPenetrations": [5, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5735ff5c245977640e39ba7e",
+    "caption": "7.62x25mm TT FMJ43",
+    "armorPenetrations": [6, 1, 0, 0, 0, 0]
+  },
+  {
+    "id": "5735fdcd2459776445391d61",
+    "caption": "7.62x25mm TT AKBS",
+    "armorPenetrations": [6, 2, 0, 0, 0, 0]
+  },
+  {
+    "id": "5736026a245977644601dc61",
+    "caption": "7.62x25mm TT P gl",
+    "armorPenetrations": [6, 3, 0, 0, 0, 0]
+  },
+  {
+    "id": "573603c924597764442bd9cb",
+    "caption": "7.62x25mm TT PT gzh",
+    "armorPenetrations": [6, 4, 0, 0, 0, 0]
+  },
+  {
+    "id": "573603562459776430731618",
+    "caption": "7.62x25mm TT Pst gzh",
+    "armorPenetrations": [6, 6, 4, 1, 0, 0]
+  },
+  {
+    "id": "5c0d56a986f774449d5de529",
+    "caption": "9x19mm RIP",
+    "armorPenetrations": [0, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5efb0e16aeb21837e749c7ff",
+    "caption": "9x19mm QuakeMaker",
+    "armorPenetrations": [6, 1, 0, 0, 0, 0]
+  },
+  {
+    "id": "58864a4f2459770fcc257101",
+    "caption": "9x19mm PSO gzh",
+    "armorPenetrations": [6, 2, 0, 0, 0, 0]
+  },
+  {
+    "id": "5a3c16fe86f77452b62de32a",
+    "caption": "9x19mm Luger CCI",
+    "armorPenetrations": [6, 2, 0, 0, 0, 0]
+  },
+  {
+    "id": "5c3df7d588a4501f290594e5",
+    "caption": "9x19mm T gzh",
+    "armorPenetrations": [6, 3, 1, 0, 0, 0]
+  },
+  {
+    "id": "56d59d3ad2720bdb418b4577",
+    "caption": "9x19mm Pst gzh",
+    "armorPenetrations": [6, 6, 2, 0, 0, 0]
+  },
+  {
+    "id": "5c925fa22e221601da359b7b",
+    "caption": "9x19mm AP 6.3",
+    "armorPenetrations": [6, 6, 6, 4, 2, 1]
+  },
+  {
+    "id": "5efb0da7a29a85116f6ea05f",
+    "caption": "9x19mm PBP gzh",
+    "armorPenetrations": [6, 6, 6, 5, 4, 3]
+  },
+  {
+    "id": "5ea2a8e200685063ec28c05a",
+    "caption": ".45 ACP RIP",
+    "armorPenetrations": [1, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5efb0fc6aeb21837e749c801",
+    "caption": ".45 ACP Hydra-Shok",
+    "armorPenetrations": [6, 3, 0, 0, 0, 0]
+  },
+  {
+    "id": "5efb0d4f4bc50b58e81710f3",
+    "caption": ".45 ACP Lasermatch FMJ",
+    "armorPenetrations": [6, 5, 1, 0, 0, 0]
+  },
+  {
+    "id": "5e81f423763d9f754677bf2e",
+    "caption": ".45 ACP Match FMJ",
+    "armorPenetrations": [6, 6, 3, 1, 0, 0]
+  },
+  {
+    "id": "5efb0cabfb3e451d70735af5",
+    "caption": ".45 ACP AP",
+    "armorPenetrations": [6, 6, 6, 5, 4, 2]
+  },
+  {
+    "id": "5a26ac06c4a282000c5a90a8",
+    "caption": "9x21mm PE gzh",
+    "armorPenetrations": [6, 2, 0, 0, 0, 0]
+  },
+  {
+    "id": "5a26abfac4a28232980eabff",
+    "caption": "9x21mm P gzh",
+    "armorPenetrations": [6, 3, 0, 0, 0, 0]
+  },
+  {
+    "id": "5a269f97c4a282000b151807",
+    "caption": "9x21mm PS gzh",
+    "armorPenetrations": [6, 6, 6, 4, 3, 2]
+  },
+  {
+    "id": "5a26ac0ec4a28200741e1e18",
+    "caption": "9x21mm BT gzh",
+    "armorPenetrations": [6, 6, 6, 5, 4, 3]
+  },
+  {
+    "id": "5cc86832d7f00c000d3a6e6c",
+    "caption": "5.7x28mm R37.F",
+    "armorPenetrations": [4, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5cc80f79e4a949033c7343b2",
+    "caption": "5.7x28mm SS198LF",
+    "armorPenetrations": [6, 1, 0, 0, 0, 0]
+  },
+  {
+    "id": "5cc86840d7f00c002412c56c",
+    "caption": "5.7x28mm R37.X",
+    "armorPenetrations": [6, 1, 0, 0, 0, 0]
+  },
+  {
+    "id": "5cc80f8fe4a949033b0224a2",
+    "caption": "5.7x28mm SS197SR",
+    "armorPenetrations": [6, 6, 2, 0, 0, 0]
+  },
+  {
+    "id": "5cc80f53e4a949000e1ea4f8",
+    "caption": "5.7x28mm L191",
+    "armorPenetrations": [6, 6, 6, 3, 2, 2]
+  },
+  {
+    "id": "5cc80f67e4a949035e43bbba",
+    "caption": "5.7x28mm SB193",
+    "armorPenetrations": [6, 6, 6, 4, 3, 2]
+  },
+  {
+    "id": "5cc80f38e4a949001152b560",
+    "caption": "5.7x28mm SS190",
+    "armorPenetrations": [6, 6, 6, 5, 4, 3]
+  },
+  {
+    "id": "5ba26812d4351e003201fef1",
+    "caption": "4.6x30mm Action SX",
+    "armorPenetrations": [6, 5, 2, 0, 0, 0]
+  },
+  {
+    "id": "5ba26844d4351e00334c9475",
+    "caption": "4.6x30mm Subsonic SX",
+    "armorPenetrations": [6, 6, 6, 5, 3, 2]
+  },
+  {
+    "id": "5ba2678ad4351e44f824b344",
+    "caption": "4.6x30mm FMJ SX",
+    "armorPenetrations": [6, 6, 6, 6, 4, 3]
+  },
+  {
+    "id": "5ba26835d4351e0035628ff5",
+    "caption": "4.6x30mm AP SX",
+    "armorPenetrations": [6, 6, 6, 6, 6, 5]
+  },
+  {
+    "id": "57a0dfb82459774d3078b56c",
+    "caption": "9x39 mm SP5 gs",
+    "armorPenetrations": [6, 6, 6, 5, 4, 3]
+  },
+  {
+    "id": "57a0e5022459774d1673f889",
+    "caption": "9x39 mm SP6 gs",
+    "armorPenetrations": [6, 6, 6, 6, 5, 4]
+  },
+  {
+    "id": "61962d879bb3d20b0946d385",
+    "caption": "9x39mm PAB-9 gs",
+    "armorPenetrations": [6, 6, 6, 6, 6, 5]
+  },
+  {
+    "id": "5c0d668f86f7747ccb7f13b2",
+    "caption": "9x39mm SPP gs",
+    "armorPenetrations": [6, 6, 6, 6, 5, 5]
+  },
+  {
+    "id": "5c0d688c86f77413ae3407b2",
+    "caption": "9x39mm BP gs",
+    "armorPenetrations": [6, 6, 6, 6, 5, 5]
+  },
+  {
+    "id": "59e6658b86f77411d949b250",
+    "caption": ".366 TKM Geksa",
+    "armorPenetrations": [6, 3, 0, 0, 0, 0]
+  },
+  {
+    "id": "59e6542b86f77411dc52a77a",
+    "caption": ".366 TKM FMJ",
+    "armorPenetrations": [6, 6, 4, 1, 0, 0]
+  },
+  {
+    "id": "59e655cb86f77411dc52a77b",
+    "caption": ".366 TKM Eko",
+    "armorPenetrations": [6, 6, 6, 3, 1, 0]
+  },
+  {
+    "id": "5f0596629e22f464da6bbdd9",
+    "caption": ".366 TKM AP-M",
+    "armorPenetrations": [6, 6, 6, 6, 5, 4]
+  },
+  {
+    "id": "56dff421d2720b5f5a8b4567",
+    "caption": "5.45x39mm SP",
+    "armorPenetrations": [6, 1, 0, 0, 0, 0]
+  },
+  {
+    "id": "56dff216d2720bbd668b4568",
+    "caption": "5.45x39mm HP",
+    "armorPenetrations": [6, 1, 0, 0, 0, 0]
+  },
+  {
+    "id": "56dff338d2720bbd668b4569",
+    "caption": "5.45x39mm PRS gs",
+    "armorPenetrations": [6, 2, 0, 0, 0, 0]
+  },
+  {
+    "id": "56dff4ecd2720b5f5a8b4568",
+    "caption": "5.45x39mm US gs",
+    "armorPenetrations": [6, 3, 0, 0, 0, 0]
+  },
+  {
+    "id": "56dff0bed2720bb0668b4567",
+    "caption": "5.45x39mm FMJ",
+    "armorPenetrations": [6, 6, 1, 0, 0, 0]
+  },
+  {
+    "id": "56dff4a2d2720bbd668b456a",
+    "caption": "5.45x39mm T gs",
+    "armorPenetrations": [6, 6, 1, 0, 0, 0]
+  },
+  {
+    "id": "56dff3afd2720bba668b4567",
+    "caption": "5.45x39mm PS gs",
+    "armorPenetrations": [6, 6, 5, 2, 0, 0]
+  },
+  {
+    "id": "56dff2ced2720bb4668b4567",
+    "caption": "5.45x39mm PP gs",
+    "armorPenetrations": [6, 6, 6, 4, 2, 0]
+  },
+  {
+    "id": "56dfef82d2720bbd668b4567",
+    "caption": "5.45x39mm BP gs",
+    "armorPenetrations": [6, 6, 6, 4, 3, 1]
+  },
+  {
+    "id": "56dff061d2720bb5668b4567",
+    "caption": "5.45x39mm BT gs",
+    "armorPenetrations": [6, 6, 6, 5, 4, 3]
+  },
+  {
+    "id": "61962b617c6c7b169525f168",
+    "caption": "5.45x39mm 7N40",
+    "armorPenetrations": [6, 6, 6, 6, 5, 4]
+  },
+  {
+    "id": "56dff026d2720bb8668b4567",
+    "caption": "5.45x39mm BS gs",
+    "armorPenetrations": [6, 6, 6, 6, 6, 5]
+  },
+  {
+    "id": "5c0d5e4486f77478390952fe",
+    "caption": "5.45x39mm PPBS gs \"Igolnik\"",
+    "armorPenetrations": [6, 6, 6, 6, 6, 6]
+  },
+  {
+    "id": "5c0d5ae286f7741e46554302",
+    "caption": "5.56x45mm Warmageddon",
+    "armorPenetrations": [1, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "59e6927d86f77411da468256",
+    "caption": "5.56x45mm HP",
+    "armorPenetrations": [5, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "59e6918f86f7746c9f75e849",
+    "caption": "5.56x45mm MK 255 Mod 0 (RRLP)",
+    "armorPenetrations": [6, 4, 1, 0, 0, 0]
+  },
+  {
+    "id": "60194943740c5d77f6705eea",
+    "caption": "Mk318 SOST",
+    "armorPenetrations": [6, 6, 2, 0, 0, 0]
+  },
+  {
+    "id": "59e68f6f86f7746c9f75e846",
+    "caption": "5.56x45mm M856",
+    "armorPenetrations": [6, 6, 3, 1, 0, 0]
+  },
+  {
+    "id": "59e6920f86f77411d82aa167",
+    "caption": "5.56x45mm FMJ",
+    "armorPenetrations": [6, 6, 4, 1, 0, 0]
+  },
+  {
+    "id": "54527a984bdc2d4e668b4567",
+    "caption": "5.56x45mm M855",
+    "armorPenetrations": [6, 6, 5, 3, 2, 0]
+  },
+  {
+    "id": "59e6906286f7746c9f75e847",
+    "caption": "5.56x45mm M856A1",
+    "armorPenetrations": [6, 6, 6, 5, 4, 3]
+  },
+  {
+    "id": "54527ac44bdc2d36668b4567",
+    "caption": "5.56x45mm M855A1",
+    "armorPenetrations": [6, 6, 6, 6, 5, 4]
+  },
+  {
+    "id": "59e690b686f7746c9f75e848",
+    "caption": "5.56x45mm M995",
+    "armorPenetrations": [6, 6, 6, 6, 6, 5]
+  },
+  {
+    "id": "601949593ae8f707c4608daa",
+    "caption": "5.56x45mm SSA AP",
+    "armorPenetrations": [6, 6, 6, 6, 6, 5]
+  },
+  {
+    "id": "6196365d58ef8c428c287da1",
+    "caption": ".300 Whisper",
+    "armorPenetrations": [6, 4, 2, 1, 0, 0]
+  },
+  {
+    "id": "6196364158ef8c428c287d9f",
+    "caption": ".300 AAC Blackout V-Max",
+    "armorPenetrations": [6, 6, 4, 3, 1, 0]
+  },
+  {
+    "id": "5fbe3ffdf8b6a877a729ea82",
+    "caption": ".300 AAC Blackout BCP FMJ",
+    "armorPenetrations": [6, 6, 5, 3, 2, 0]
+  },
+  {
+    "id": "619636be6db0f2477964e710",
+    "caption": ".300 AAC Blackout M62 Tracer",
+    "armorPenetrations": [6, 6, 6, 5, 4, 2]
+  },
+  {
+    "id": "5fd20ff893a8961fc660a954",
+    "caption": ".300 AAC Blackout AP",
+    "armorPenetrations": [6, 6, 6, 6, 5, 4]
+  },
+  {
+    "id": "59e4d3d286f774176a36250a",
+    "caption": "7.62x39mm HP",
+    "armorPenetrations": [6, 4, 1, 0, 0, 0]
+  },
+  {
+    "id": "59e4d24686f7741776641ac7",
+    "caption": "7.62x39mm US gzh",
+    "armorPenetrations": [6, 6, 5, 3, 1, 0]
+  },
+  {
+    "id": "59e4cf5286f7741778269d8a",
+    "caption": "7.62x39mm T-45M1 gzh",
+    "armorPenetrations": [6, 6, 6, 3, 1, 0]
+  },
+  {
+    "id": "5656d7c34bdc2d9d198b4587",
+    "caption": "7.62x39mm PS gzh",
+    "armorPenetrations": [6, 6, 6, 4, 3, 2]
+  },
+  {
+    "id": "59e0d99486f7744a32234762",
+    "caption": "7.62x39mm BP gzh",
+    "armorPenetrations": [6, 6, 6, 6, 5, 4]
+  },
+  {
+    "id": "601aa3d2b2bcb34913271e6d",
+    "caption": "7.62x39mm MAI AP",
+    "armorPenetrations": [6, 6, 6, 6, 6, 5]
+  },
+  {
+    "id": "5e023e88277cce2b522ff2b1",
+    "caption": "7.62x51mm Ultra Nosler",
+    "armorPenetrations": [6, 4, 0, 0, 0, 0]
+  },
+  {
+    "id": "5e023e53d4353e3302577c4c",
+    "caption": "7.62x51mm BCP FMJ",
+    "armorPenetrations": [6, 6, 6, 2, 0, 0]
+  },
+  {
+    "id": "5e023e6e34d52a55c3304f71",
+    "caption": "7.62x51mm TCW SP",
+    "armorPenetrations": [6, 6, 6, 5, 2, 0]
+  },
+  {
+    "id": "58dd3ad986f77403051cba8f",
+    "caption": "7.62x51mm M80",
+    "armorPenetrations": [6, 6, 6, 6, 5, 4]
+  },
+  {
+    "id": "5a608bf24f39f98ffc77720e",
+    "caption": "7.62x51mm M62",
+    "armorPenetrations": [6, 6, 6, 6, 5, 5]
+  },
+  {
+    "id": "5a6086ea4f39f99cd479502f",
+    "caption": "7.62x51mm M61",
+    "armorPenetrations": [6, 6, 6, 6, 6, 6]
+  },
+  {
+    "id": "5efb0c1bd79ff02a1f5e68d9",
+    "caption": "7.62x51mm M993",
+    "armorPenetrations": [6, 6, 6, 6, 6, 6]
+  },
+  {
+    "id": "5e023cf8186a883be655e54f",
+    "caption": "7.62x54R T-46M",
+    "armorPenetrations": [6, 6, 6, 6, 4, 3]
+  },
+  {
+    "id": "5887431f2459777e1612938f",
+    "caption": "7.62x54R LPS gzh",
+    "armorPenetrations": [6, 6, 6, 6, 4, 3]
+  },
+  {
+    "id": "59e77a2386f7742ee578960a",
+    "caption": "7.62x54R PS",
+    "armorPenetrations": [6, 6, 6, 6, 5, 5]
+  },
+  {
+    "id": "5e023d34e8a400319a28ed44",
+    "caption": "7.62x54R BT gzh",
+    "armorPenetrations": [6, 6, 6, 6, 6, 6]
+  },
+  {
+    "id": "560d61e84bdc2da74d8b4571",
+    "caption": "7.62x54R SNB",
+    "armorPenetrations": [6, 6, 6, 6, 6, 6]
+  },
+  {
+    "id": "5e023d48186a883be655e551",
+    "caption": "7.62x54R BS",
+    "armorPenetrations": [6, 6, 6, 6, 6, 6]
+  },
+  {
+    "id": "5fc382b6d6fa9c00c571bbc3",
+    "caption": ".338 Lapua Magnum TAC-X",
+    "armorPenetrations": [6, 5, 3, 1, 0, 0]
+  },
+  {
+    "id": "5fc382c1016cce60e8341b20",
+    "caption": ".338 Lapua Magnum UPZ",
+    "armorPenetrations": [6, 6, 6, 5, 4, 2]
+  },
+  {
+    "id": "5fc275cf85fd526b824a571a",
+    "caption": ".338 Lapua Magnum FMJ",
+    "armorPenetrations": [6, 6, 6, 6, 5, 5]
+  },
+  {
+    "id": "5fc382a9d724d907e2077dab",
+    "caption": ".338 Lapua Magnum AP",
+    "armorPenetrations": [6, 6, 6, 6, 6, 6]
+  },
+  {
+    "id": "5cadf6e5ae921500113bb973",
+    "caption": "12.7x55 mm PS12A",
+    "armorPenetrations": [6, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5cadf6ddae9215051e1c23b2",
+    "caption": "12.7x55 mm PS12",
+    "armorPenetrations": [6, 6, 5, 2, 1, 0]
+  },
+  {
+    "id": "5cadf6eeae921500134b2799",
+    "caption": "12.7x55 mm PS12B",
+    "armorPenetrations": [6, 6, 6, 6, 5, 4]
+  },
+  {
+    "id": "5d70e500a4b9364de70d38ce",
+    "caption": "30x29 mm VOG-30",
+    "armorPenetrations": [0, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5cde8864d7f00c0010373be1",
+    "caption": "12.7x108 mm B-32",
+    "armorPenetrations": [6, 6, 6, 6, 6, 6]
+  },
+  {
+    "id": "5d2f2ab648f03550091993ca",
+    "caption": "12.7x108 mm BZT-44M",
+    "armorPenetrations": [6, 6, 6, 6, 6, 6]
+  },
+  {
+    "id": "5ede474b0c226a66f5402622",
+    "caption": "40x46mm M381(HE) grenade",
+    "armorPenetrations": [0, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5ede475b549eed7c6d5c18fb",
+    "caption": "40x46mm M386 (HE) grenade",
+    "armorPenetrations": [0, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5ede4739e0350d05467f73e8",
+    "caption": "40x46mm M406 (HE) grenade",
+    "armorPenetrations": [0, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5f0c892565703e5c461894e9",
+    "caption": "40x46mm M433 (HEDP) grenade",
+    "armorPenetrations": [0, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5ede47405b097655935d7d16",
+    "caption": "40x46mm M441(HE) grenade",
+    "armorPenetrations": [0, 0, 0, 0, 0, 0]
+  },
+  {
+    "id": "5ede475339ee016e8c534742",
+    "caption": "40x46mm M576 (MP-APERS) grenade",
+    "armorPenetrations": [5, 3, 3, 3, 3, 3]
+  }
+]

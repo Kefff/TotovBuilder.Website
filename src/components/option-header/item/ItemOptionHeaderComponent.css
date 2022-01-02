@@ -1,0 +1,18 @@
+@import '../../../assets/css/option.css';
+
+.header {
+  border-bottom-color: var(--util-color);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  padding: 1rem;
+}
+
+.filter-input {
+  margin-right: 0.5rem;
+  width: 100%;
+}
+
+.option-caption {
+  display: flex;
+  justify-content: flex-end;
+}

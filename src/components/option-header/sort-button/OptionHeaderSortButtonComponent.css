@@ -1,0 +1,56 @@
+@import '../../../assets/css/icon.css';
+
+.sort-arrow {
+  font-size: 0.75rem;
+  margin-right: 0.1rem;
+  position: relative;
+  top: 5px;
+  visibility: hidden;
+}
+
+.sort-arrow-down {
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+  animation-name: sort-arrow-to-down;
+}
+
+.sort-arrow-up {
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+  animation-name: sort-arrow-to-up;
+  transform: rotate(180deg);
+}
+
+.sort-arrow-visible {
+  visibility: visible;
+}
+
+.sort-button {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+.sort-button:hover {
+  cursor: pointer;
+}
+
+@keyframes sort-arrow-to-up {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes sort-arrow-to-down {
+  0% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}

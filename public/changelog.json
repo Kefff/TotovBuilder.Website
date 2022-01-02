@@ -1,0 +1,38 @@
+[
+  {
+    "version": "1.1.0",
+    "date": "2022-01-02T00:00:00+01:00",
+    "changes": [
+      {
+        "language": "en",
+        "text": "Added a \"Share\" button in the build editing screen for sharing a build with a link. The link allows another person to get a copy of the build."
+      },
+      {
+        "language": "en",
+        "text": "Added a \"Changelog\" button at the bottom of the page to display the list of changes made in each new version of the website."
+      },
+      {
+        "language": "fr",
+        "text": "Ajout d'un bouton \"Partager\" dans l'écran de saisie d'équipement pour partager un équipement grâce à un lien. Le lien permet à une autre personne d'obtenir une copie de l'équipement."
+      },
+      {
+        "language": "fr",
+        "text": "Ajout d'un bouton \"Liste des changements\" en bas de page pour afficher la liste des changements effectués à chaque nouvelle version du site web."
+      }
+    ]
+  },
+  {
+    "version": "1.0.0",
+    "date": "2021-12-30T00:00:00+01:00",
+    "changes": [
+      {
+        "language": "en",
+        "text": "Launch of Totov Builder."
+      },
+      {
+        "language": "fr",
+        "text": "Lancement de Totov Builder."
+      }
+    ]
+  }
+]

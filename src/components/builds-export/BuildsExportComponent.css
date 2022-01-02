@@ -1,0 +1,10 @@
+@import '../../assets/css/icon.css';
+
+.builds-export-buttons {
+  display: flex;
+  width: 100%;
+}
+
+.builds-export-cancel-button {
+  margin-left: auto !important;
+}

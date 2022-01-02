@@ -1,0 +1,17 @@
+@import '../../assets/css/icon.css';
+
+.build-share {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  margin-top: 0.5rem;
+}
+
+.build-share-input {
+  width: 100%;
+}
+
+.build-share-button {
+  margin-left: 0.5rem;
+}

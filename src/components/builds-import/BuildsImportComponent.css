@@ -1,0 +1,18 @@
+@import '../../assets/css/icon.css';
+
+.builds-import-buttons {
+  display: flex;
+  width: 100%;
+}
+
+.builds-import-cancel-button {
+  margin-left: auto !important;
+}
+
+.builds-import-file-selection {
+  display: flex;
+}
+
+.builds-import-file-selection-button {
+  margin: auto;
+}

@@ -1,0 +1,67 @@
+@import '../../assets/css/collapsable.css';
+@import '../../assets/css/icon.css';
+@import '../../assets/css/option.css';
+@import '../../assets/css/stats.css';
+
+.inventory-slot {
+  margin-bottom: 1rem;
+}
+
+.inventory-slot:last-child {
+  margin-bottom: 0;
+}
+
+.inventory-slot-caption {
+  margin-left: 0.5rem;
+}
+
+.inventory-slot-custom-icon {
+  width: 1.75rem;
+  margin-left: 1rem;
+}
+
+.inventory-slot-header {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  font-size: 1.35rem;
+  width: 100%;
+}
+
+.inventory-slot-header:hover {
+  color: var(--primary-color);
+}
+
+.inventory-slot-header:hover .inventory-slot-icon {
+  color: var(--text-color);
+}
+
+.inventory-slot-icon {
+  font-size: 1.75rem;
+  margin-left: 1rem;
+  margin-right: 0.5rem;
+}
+
+.inventory-slot-item-caption {
+  font-size: 1rem;
+  margin-left: 2rem;
+  max-width: 25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inventory-slot-summary-price {
+  margin-left: auto;
+  padding-right: 2.5rem;
+}
+
+.inventory-slot-summary-value {
+  margin-left: 2rem;
+}
+
+.inventory-slot-title {
+  align-items: center;
+  display: flex;
+  white-space: nowrap;
+}

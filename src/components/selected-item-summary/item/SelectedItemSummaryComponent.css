@@ -1,0 +1,41 @@
+@import '../../../assets/css/icon.css';
+@import '../../../assets/css/option.css';
+
+.selected-item-summary {
+  flex-grow: 1;
+}
+
+.selected-item-summary-price-missing-price-icon {
+  align-items: center;
+  color: var(--error-color);
+  display: flex;
+  margin-left: 0.25rem;
+}
+
+.selected-item-summary-price-per-unit {
+  font-size: 0.85rem;
+  margin-right: 2.5rem;
+}
+
+.selected-item-summary-right {
+  align-items: end;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+}
+
+.selected-item-summary-right > div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.selected-item-summary-weight {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: end;
+  margin-left: 1rem;
+  width: 7rem;
+}

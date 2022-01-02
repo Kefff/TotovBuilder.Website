@@ -1,0 +1,11 @@
+.add-button {
+  color: var(--success-color);
+}
+
+.indent {
+  margin-left: 2rem;
+}
+
+.item {
+  margin-top: 1rem;
+}

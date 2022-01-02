@@ -1,0 +1,11 @@
+@import '../../assets/css/icon.css';
+@import '../../assets/css/stats.css';
+
+.build-list-column {
+  text-align: right;
+  width: 100%;
+}
+
+.build-list-not-exported {
+  color: var(--warning-color);
+}

@@ -1,0 +1,60 @@
+@import '../../assets/css/icon.css';
+@import '../../assets/css/link.css';
+@import '../../assets/css/toolbar.css';
+
+.notification-button-panel {
+  max-height: 31.25rem;
+  max-width: 31.25rem;
+  overflow: auto;
+}
+
+.notification-button-panel-item {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+}
+
+.notification-button-panel-item:hover {
+  background: var(--util-color2);
+  border-radius: 3px;
+}
+
+.notification-button-panel-item-delete-icon {
+  color: var(--error-color);
+  margin-left: auto;
+}
+
+.notification-button-panel-item-delete-icon:hover {
+  cursor: pointer;
+}
+
+.notification-button-panel-item-text {
+  margin-right: 0.5rem;
+}
+
+.notification-button-panel-item-type-icon {
+  text-align: center;
+  width: 1.5rem;
+}
+
+.notification-button-panel-item-type-icon-error {
+  color: var(--error-color);
+  margin-right: 0.5rem;
+}
+
+.notification-button-panel-item-type-icon-info {
+  margin-right: 0.5rem;
+}
+
+.notification-button-panel-item-type-icon-success {
+  color: var(--success-color);
+  margin-right: 0.5rem;
+}
+
+.notification-button-panel-item-type-icon-warn {
+  color: var(--warning-color);
+  margin-right: 0.5rem;
+}

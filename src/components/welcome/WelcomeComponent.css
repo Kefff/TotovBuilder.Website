@@ -1,0 +1,93 @@
+@import '../../assets/css/icon.css';
+
+.welcome {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+}
+
+.welcome > div {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.welcome-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.welcome-actions-list {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.welcome-action {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.welcome-action:last-child {
+  margin-bottom: 0;
+}
+
+.welcome-builder {
+  color: var(--error-color);
+}
+
+.welcome-button {
+  height: 7.5rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.welcome-button:last-child {
+  margin-bottom: 0;
+}
+
+.welcome-warning {
+  margin-top: 2.25rem;
+  font-size: 1rem;
+}
+
+.welcome-warning > p {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.welcome-warning-lost {
+  color: var(--error-color);
+}
+
+.welcome-warning-text {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.welcome-warning-text > span {
+  color: var(--primary-color);
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.welcome-warning-title {
+  align-items: center;
+  color: var(--warning-color);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.welcome-warning-icon {
+  margin-right: 0.5rem;
+}

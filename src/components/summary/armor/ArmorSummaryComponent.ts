@@ -1,0 +1,25 @@
+import { computed, defineComponent, PropType } from 'vue'
+import { IArmor } from '../../../models/item/IArmor'
+import StatsUtils from '../../../utils/StatsUtils'
+
+export default defineComponent({
+  props: {
+    item: {
+      type: Object as PropType<IArmor>,
+      required: true
+    },
+    showEmptyEntries: {
+      type: Boolean,
+      required: false,
+      default: true
+    }
+  },
+  setup: (props) => {
+    const hasErgonomicsPercentageModifier = computed(() => props.item.ergonomicsPercentageModifier !== 0)
+
+    return {
+      hasErgonomicsPercentageModifier,
+      StatsUtils
+    }
+  }
+})

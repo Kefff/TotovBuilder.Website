@@ -1,0 +1,31 @@
+import { IPrice } from './IPrice'
+
+/**
+ * Provides the functionalities of an inventory price.
+ */
+export interface IInventoryPrice {
+  /**
+   * Indicates whether the price or one of its components is missing due to the merchant filters.
+   */
+  missingPrice: boolean
+
+  /**
+   * Price.
+   */
+  price: IPrice
+
+  /**
+   * Price with content and mods.
+   */
+  pricesWithContent: IPrice[]
+
+  /**
+   * Price with content and mods in main currency.
+   */
+  priceWithContentInMainCurrency: IPrice
+
+  /**
+   * Unit price.
+   */
+  unitPrice: IPrice
+}

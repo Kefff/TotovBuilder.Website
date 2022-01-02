@@ -1,0 +1,62 @@
+[
+  {
+    "name": "prapor",
+    "minLevel": 1,
+    "maxLevel": 4,
+    "showInFilter": true
+  },
+  {
+    "name": "therapist",
+    "minLevel": 1,
+    "maxLevel": 4,
+    "showInFilter": true
+  },
+  {
+    "name": "skier",
+    "minLevel": 1,
+    "maxLevel": 4,
+    "showInFilter": true
+  },
+  {
+    "name": "fence",
+    "minLevel": 1,
+    "maxLevel": 1,
+    "showInFilter": false
+  },
+  {
+    "name": "peacekeeper",
+    "minLevel": 1,
+    "maxLevel": 4,
+    "showInFilter": true
+  },
+  {
+    "name": "mechanic",
+    "minLevel": 1,
+    "maxLevel": 4,
+    "showInFilter": true
+  },
+  {
+    "name": "ragman",
+    "minLevel": 1,
+    "maxLevel": 4,
+    "showInFilter": true
+  },
+  {
+    "name": "jaeger",
+    "minLevel": 1,
+    "maxLevel": 4,
+    "showInFilter": true
+  },
+  {
+    "name": "fleaMarket",
+    "minLevel": 0,
+    "maxLevel": 0,
+    "showInFilter": true
+  },
+  {
+    "name": "itemsWithoutMerchant",
+    "minLevel": 0,
+    "maxLevel": 0,
+    "showInFilter": true
+  }
+]

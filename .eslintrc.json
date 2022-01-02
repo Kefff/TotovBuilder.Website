@@ -1,0 +1,49 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest/globals": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:vue/vue3-recommended"
+  ],
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser",
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint", "eslint-plugin-tsdoc", "jest", "vue"],
+  "root": true,
+  "rules": {
+    "@typescript-eslint/indent": ["warn", 2],
+    "@typescript-eslint/no-unused-vars": "warn",
+    "comma-dangle": ["warn", "never"],
+    "indent": "off",
+    "no-trailing-spaces": 1,
+    "no-unused-vars": "off",
+    "quotes": ["warn", "single"],
+    "semi": ["warn", "never"],
+    "tsdoc/syntax": "warn",
+    "vue/html-indent": [
+      "warn",
+      2,
+      {
+        "attribute": 1,
+        "baseIndent": 1,
+        "closeBracket": 0,
+        "alignAttributesVertically": true,
+        "ignores": []
+      }
+    ],
+    "vue/attribute-hyphenation": [
+      "error",
+      "always",
+      {
+        "ignore": ["sortField"]
+      }
+    ]
+  }
+}

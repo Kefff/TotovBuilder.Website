@@ -1,0 +1,25 @@
+.item {
+  margin-bottom: 1rem;
+}
+
+.item:last-child {
+  margin-bottom: 0;
+}
+
+.item-dropdown {
+  width: 25rem;
+}
+
+.item-selection {
+  align-items: center;
+  display: flex;
+}
+
+.quantity {
+  margin-right: 1rem;
+  width: 11rem;
+}
+
+.tab-hidden {
+  display: none;
+}

@@ -1,0 +1,6 @@
+@import '../../../assets/css/icon.css';
+@import '../../../assets/css/option.css';
+
+.armor-placeholder {
+  width: 18rem; /* 3 values of 5rem + 3 margins of 1rem */
+}

@@ -1,0 +1,19 @@
+.field {
+  border-style: none; /* I don't know where this border came from, it kind of appear out of nowhere */
+}
+
+.required-message-bottom {
+  font-size: 0.85rem;
+  display: block;
+}
+
+.required-message-right {
+  align-items: center;
+  display: flex;
+  font-size: 0.85rem;
+}
+
+.required-message-right > span {
+  margin-left: 0.5rem;
+  width: 100%;
+}

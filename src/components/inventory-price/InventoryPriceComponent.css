@@ -1,0 +1,28 @@
+@import '../../assets/css/currency.css';
+
+.inventory-price {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: right;
+}
+
+.inventory-price-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: right;
+}
+
+.inventory-price-list-price {
+  margin-right: 1rem;
+}
+
+.inventory-price-list-price:last-child {
+  margin-right: 0;
+}
+
+.inventory-price-missing-price-icon {
+  margin-left: 0.5rem;
+  color: var(--error-color);
+}

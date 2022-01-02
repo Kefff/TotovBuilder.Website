@@ -1,0 +1,44 @@
+@import '../../assets/css/currency.css';
+
+.price {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: end;
+  white-space: nowrap;
+}
+
+.price-merchant {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.price-merchant-name {
+  margin-right: 0.25rem;
+}
+
+.price-merchant-icon {
+  margin-left: 0.5rem;
+  width: 2rem;
+}
+
+.price-merchant-icon > img {
+  border-color: var(--util-color);
+  border-radius: 3px;
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 1px;
+  width: 2rem;
+}
+
+.price-quest-required {
+  color: var(--warning-color);
+}
+
+.price-merchant-level {
+  margin-right: 0.25rem;
+}
