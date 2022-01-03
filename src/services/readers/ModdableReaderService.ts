@@ -20,14 +20,18 @@ export class ModdableReaderService extends BaseItemReaderService<IModdable> {
       const slotFilters = slotProps['filters'] as Record<string, unknown>[]
       const modSlotCompatibleItemsIds: string[] = []
 
+      let maxStackableAmount = 1
+
       for (const slotFilter of slotFilters) {
         modSlotCompatibleItemsIds.push(...slotFilter['Filter'] as string[])
+        maxStackableAmount = slotFilter['MaxStackCount'] as number
       }
 
       moddable.modSlots.push({
         compatibleItemIds: modSlotCompatibleItemsIds,
         id: slot['_id'] as string,
         name: slot['_name'] as string,
+        maxStackableAmount,
         required: slot['_required'] as boolean
       })
     }

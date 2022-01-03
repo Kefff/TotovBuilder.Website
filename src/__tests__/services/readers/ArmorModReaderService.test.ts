@@ -22,6 +22,7 @@ describe('read() and readMarketData()', () => {
           '5a16b8a9fcdbcb00165aa6ca'
         ],
         id: '5ea18c84ecf1982c7712d9a4',
+        maxStackableAmount: undefined,
         name: 'mod_nvg',
         required: false
       }

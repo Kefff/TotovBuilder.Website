@@ -1425,8 +1425,8 @@ describe('getNotExportedTooltip()', () => {
 
 describe('getRecoil()', () => {
   it.each([
-    [build1, { horizontalRecoil: 200, verticalRecoil: 71 }],
-    [build2, { horizontalRecoil: 249, verticalRecoil: 423 }],
+    [build1, { horizontalRecoil: 230, verticalRecoil: 82 }],
+    [build2, { horizontalRecoil: 286, verticalRecoil: 486 }],
     [
       {
         name: 'Empty build',
@@ -1514,7 +1514,7 @@ describe('getSummary()', () => {
         ergonomics: 27,
         ergonomicsPercentageModifier: -31,
         exported: false,
-        horizontalRecoil: 200,
+        horizontalRecoil: 230,
         id: 'build_1',
         name: 'Build 1',
         lastExported: undefined,
@@ -1556,7 +1556,7 @@ describe('getSummary()', () => {
             valueInMainCurrency: 0
           }
         },
-        verticalRecoil: 71,
+        verticalRecoil: 82,
         weight: 20.288
       } as IBuildSummary
     ],
@@ -1573,7 +1573,7 @@ describe('getSummary()', () => {
         ergonomics: 54,
         ergonomicsPercentageModifier: 0,
         exported: false,
-        horizontalRecoil: 249,
+        horizontalRecoil: 286,
         id: 'build_2',
         name: 'Build 2',
         lastExported: undefined,
@@ -1615,7 +1615,7 @@ describe('getSummary()', () => {
             valueInMainCurrency: 0
           }
         },
-        verticalRecoil: 423,
+        verticalRecoil: 486,
         weight: 3.728
       } as IBuildSummary
     ],

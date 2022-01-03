@@ -558,7 +558,7 @@ beforeEach(() => {
     )
   }
 
-  localStorage.setItem('lang', 'en')
+  localStorage.setItem(Configuration.VITE_LANGUAGE_KEY, 'en')
 })
 
 afterEach(() => {

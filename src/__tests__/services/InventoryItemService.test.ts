@@ -1320,9 +1320,9 @@ describe('getRecoil()', () => {
       },
       {
         horizontalRecoil: 445,
-        horizontalRecoilWithMods: 320,
+        horizontalRecoilWithMods: 292,
         verticalRecoil: 141,
-        verticalRecoilWithMods: 102
+        verticalRecoilWithMods: 92
       } as IRecoil
     ],
     [
@@ -1417,6 +1417,168 @@ describe('getRecoil()', () => {
         horizontalRecoilWithMods: 256,
         verticalRecoil: 77,
         verticalRecoilWithMods: 55
+      } as IRecoil
+    ],
+    [
+      {
+        'content': [],
+        'itemId': '60db29ce99594040e04c4a27', // MTs-255-12 12ga shotgun
+        'modSlots': [
+          {
+            'item': {
+              'content': [],
+              'itemId': '60dc519adf4c47305f6d410d', // MTs-255-12 cylinder
+              'modSlots': [
+                {
+                  'modSlotName': 'camora_000'
+                },
+                {
+                  'item': {
+                    'content': [],
+                    'itemId': '5d6e6806a4b936088465b17e', // 12/70 8.5mm Magnum buckshot
+                    'modSlots': [
+
+                    ],
+                    'quantity': 1
+                  },
+                  'modSlotName': 'camora_001'
+                },
+                {
+                  'modSlotName': 'camora_002'
+                },
+                {
+                  'modSlotName': 'camora_003'
+                },
+                {
+                  'modSlotName': 'camora_004'
+                }
+              ],
+              'quantity': 1
+            },
+            'modSlotName': 'mod_magazine'
+          },
+          {
+            'item': {
+              'content': [],
+              'itemId': '612368f58b401f4f51239b33', // МTs-255-12 12ga 755mm barrel with rib
+              'modSlots': [
+                {
+                  'item': {
+                    'content': [],
+                    'itemId': '619d36da53b4d42ee724fae4', // MTs-255-12 12ga choke
+                    'modSlots': [],
+                    'quantity': 1
+                  },
+                  'modSlotName': 'mod_muzzle'
+                }
+              ],
+              'quantity': 1
+            },
+            'modSlotName': 'mod_barrel'
+          },
+          {
+            'item': {
+              'content': [],
+              'itemId': '612781056f3d944a17348d60', // MTs-255-12 wooden stock
+              'modSlots': [],
+              'quantity': 1
+            },
+            'modSlotName': 'mod_stock'
+          },
+          {
+            'item': {
+              'content': [],
+              'itemId': '6123649463849f3d843da7c4', // MTs-255-12 beechwood forestock
+              'modSlots': [],
+              'quantity': 1
+            },
+            'modSlotName': 'mod_handguard'
+          }
+        ],
+        'quantity': 1
+      },
+      {
+        horizontalRecoil: 650,
+        horizontalRecoilWithMods: 742,
+        verticalRecoil: 520,
+        verticalRecoilWithMods: 593
+      } as IRecoil
+    ],
+    [
+      {
+        'content': [],
+        'itemId': '60db29ce99594040e04c4a27', // MTs-255-12 12ga shotgun
+        'modSlots': [
+          {
+            'item': {
+              'content': [],
+              'itemId': '60dc519adf4c47305f6d410d', // MTs-255-12 cylinder
+              'modSlots': [
+                {
+                  'modSlotName': 'camora_000'
+                },
+                {
+                  'modSlotName': 'camora_001'
+                },
+                {
+                  'modSlotName': 'camora_002'
+                },
+                {
+                  'modSlotName': 'camora_003'
+                },
+                {
+                  'modSlotName': 'camora_004'
+                }
+              ],
+              'quantity': 1
+            },
+            'modSlotName': 'mod_magazine'
+          },
+          {
+            'item': {
+              'content': [],
+              'itemId': '612368f58b401f4f51239b33', // МTs-255-12 12ga 755mm barrel with rib
+              'modSlots': [
+                {
+                  'item': {
+                    'content': [],
+                    'itemId': '619d36da53b4d42ee724fae4', // MTs-255-12 12ga choke
+                    'modSlots': [],
+                    'quantity': 1
+                  },
+                  'modSlotName': 'mod_muzzle'
+                }
+              ],
+              'quantity': 1
+            },
+            'modSlotName': 'mod_barrel'
+          },
+          {
+            'item': {
+              'content': [],
+              'itemId': '612781056f3d944a17348d60', // MTs-255-12 wooden stock
+              'modSlots': [],
+              'quantity': 1
+            },
+            'modSlotName': 'mod_stock'
+          },
+          {
+            'item': {
+              'content': [],
+              'itemId': '6123649463849f3d843da7c4', // MTs-255-12 beechwood forestock
+              'modSlots': [],
+              'quantity': 1
+            },
+            'modSlotName': 'mod_handguard'
+          }
+        ],
+        'quantity': 1
+      },
+      {
+        horizontalRecoil: 650,
+        horizontalRecoilWithMods: 345,
+        verticalRecoil: 520,
+        verticalRecoilWithMods: 276
       } as IRecoil
     ]
   ])('should get the recoil of an inventory item', async (inventoryItem: IInventoryItem, expected: IRecoil) => {

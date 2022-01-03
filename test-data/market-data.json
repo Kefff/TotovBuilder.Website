@@ -45758,5 +45758,60 @@
         "requirements": [{ "type": "playerLevel", "value": 20 }]
       }
     ]
+  },
+  {
+    "id": "60db29ce99594040e04c4a27",
+    "name": "MTs-255-12 12ga shotgun",
+    "shortName": "MTs-255-12",
+    "iconLink": "https://assets.tarkov-tools.com/60db29ce99594040e04c4a27-icon.jpg",
+    "wikiLink": "https://escapefromtarkov.fandom.com/wiki/MTs-255-12_12ga_shotgun",
+    "imageLink": "https://assets.tarkov-tools.com/60db29ce99594040e04c4a27-image.jpg",
+    "link": "https://tarkov-tools.com/item/mts-255-12-12ga-shotgun",
+    "buyFor": [
+      {
+        "source": "jaeger",
+        "price": 21316,
+        "currency": "RUB",
+        "requirements": [
+          {
+            "type": "loyaltyLevel",
+            "value": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "5580223e4bdc2d1c128b457f",
+    "name": "MP-43-1C 12ga double-barrel shotgun",
+    "shortName": "MP-43-1C",
+    "iconLink": "https://assets.tarkov-tools.com/5580223e4bdc2d1c128b457f-icon.jpg",
+    "wikiLink": "https://escapefromtarkov.fandom.com/wiki/MP-43-1C_12ga_double-barrel_shotgun",
+    "imageLink": "https://assets.tarkov-tools.com/5580223e4bdc2d1c128b457f-image.jpg",
+    "link": "https://tarkov-tools.com/item/mp-43-1c-12ga-double-barrel-shotgun",
+    "buyFor": [
+      {
+        "source": "jaeger",
+        "price": 8820,
+        "currency": "RUB",
+        "requirements": [
+          {
+            "type": "loyaltyLevel",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "source": "fleaMarket",
+        "price": 44677,
+        "currency": "RUB",
+        "requirements": [
+          {
+            "type": "playerLevel",
+            "value": 15
+          }
+        ]
+      }
+    ]
   }
 ]

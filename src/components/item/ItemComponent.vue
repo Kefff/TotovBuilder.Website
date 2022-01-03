@@ -86,7 +86,10 @@
         v-if="inventoryItem !== undefined && selectedItemIsContainer"
         :class="selectedTab === SelectableTab.content ? '' : 'tab-hidden'"
       >
-        <ItemContent v-model="inventoryItem" />
+        <ItemContent
+          v-model="inventoryItem"
+          :mod-slot-path="modSlotPathForChildren"
+        />
       </div>
     </div>
   </div>

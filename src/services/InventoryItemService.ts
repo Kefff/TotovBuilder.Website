@@ -358,6 +358,18 @@ export class InventoryItemService {
       verticalRecoilWithMods: verticalRecoil
     }
 
+    // Getting the chambered or in magazine ammunition recoil percentage modifier
+    const chamberedAmmunitionRecoilPercentageModifierResult = await this.getChamberedAmmunitionRecoilPercentageModifier(itemResult.value, inventoryItem.modSlots)
+
+    if (!chamberedAmmunitionRecoilPercentageModifierResult.success) {
+      return Result.failFrom(
+        chamberedAmmunitionRecoilPercentageModifierResult,
+        FailureType.error
+      )
+    }
+
+    const chamberedAmmunitionRecoilPercentageModifier = chamberedAmmunitionRecoilPercentageModifierResult.value
+
     // Getting the recoil percentage modifier for each mods
     let modsRecoilPercentageModifiers = 0
 
@@ -365,17 +377,6 @@ export class InventoryItemService {
       if (modSlot.item === undefined) {
         continue
       }
-
-      const chamberedAmmunitionRecoilPercentageModifierResult = await this.getChamberedAmmunitionRecoilPercentageModifier(itemResult.value, modSlot.modSlotName, modSlot.item)
-
-      if (!chamberedAmmunitionRecoilPercentageModifierResult.success) {
-        return Result.failFrom(
-          chamberedAmmunitionRecoilPercentageModifierResult,
-          FailureType.error
-        )
-      }
-
-      modsRecoilPercentageModifiers += chamberedAmmunitionRecoilPercentageModifierResult.value
 
       const modRecoilPercentageModifierResult = await this.getRecoilPercentageModifier(modSlot.item)
 
@@ -388,7 +389,9 @@ export class InventoryItemService {
 
     // Applying to the weapon recoil the recoil percentage modifiers of its mods
     recoil.horizontalRecoilWithMods = Math.round(recoil.horizontalRecoil + (recoil.horizontalRecoil * modsRecoilPercentageModifiers / 100))
+    recoil.horizontalRecoilWithMods += Math.round(recoil.horizontalRecoilWithMods * chamberedAmmunitionRecoilPercentageModifier / 100)
     recoil.verticalRecoilWithMods = Math.round(recoil.verticalRecoil + (recoil.verticalRecoil * modsRecoilPercentageModifiers / 100))
+    recoil.verticalRecoilWithMods += Math.round(recoil.verticalRecoilWithMods * chamberedAmmunitionRecoilPercentageModifier / 100)
 
     return Result.ok(recoil)
   }
@@ -524,26 +527,32 @@ export class InventoryItemService {
    * @param modSlotItem - Item contained in the mod slot being checked on the inventory item.
    * @returns Recoil percentage modifier.
    */
-  private async getChamberedAmmunitionRecoilPercentageModifier(item: IItem, modSlotName: string, modSlotItem: IInventoryItem): Promise<Result<number>> {
+  private async getChamberedAmmunitionRecoilPercentageModifier(item: IItem, modSlots: IInventoryModSlot[]): Promise<Result<number>> {
     const rangedWeapon = item as IRangedWeapon
     let ammunitionId: string | undefined
 
     const chamber = rangedWeapon.modSlots.find((ms) => ms.name.startsWith('chamber'))
 
-    if (chamber !== undefined) {
-      if (modSlotName !== chamber.name) {
-        return Result.ok(0)
+    for (const modSlot of modSlots) {
+      if (chamber !== undefined && modSlot.modSlotName === chamber.name && modSlot.item !== undefined) {
+        ammunitionId = modSlot.item.itemId
+
+        break
+      } else {
+        const magazine = rangedWeapon.modSlots.find((ms) => ms.name === 'mod_magazine')
+
+        if (modSlot.modSlotName !== /* istanbul ignore next */magazine?.name || modSlot.item === undefined) {
+          continue
+        }
+
+        if (modSlot.item.content.length === 0 && modSlot.item.modSlots.length > 0) {
+          // The magazine is composed of multiple slots that each receive a cartridge (revolver cylinder magazine)
+          ammunitionId = modSlot.item.modSlots.filter(ms => ms.item !== undefined)[0]?.item?.itemId
+        } else {
+          // Normal magazine
+          ammunitionId = modSlot.item.content[0]?.itemId
+        }
       }
-
-      ammunitionId = modSlotItem.itemId
-    } else {
-      const magazine = rangedWeapon.modSlots.find((ms) => ms.name === 'mod_magazine')
-
-      if (modSlotName !== /* istanbul ignore next */magazine?.name) {
-        return Result.ok(0)
-      }
-
-      ammunitionId = modSlotItem.content[0]?.itemId
     }
 
     if (ammunitionId === undefined) {

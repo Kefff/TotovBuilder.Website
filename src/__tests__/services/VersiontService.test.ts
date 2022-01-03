@@ -4,7 +4,7 @@ import { IChangelog } from '../../models/utils/IChangelog'
 import vueI18n from '../../plugins/vueI18n'
 
 beforeEach(() => {
-  localStorage.setItem('lang', 'en')
+  localStorage.setItem(Configuration.VITE_LANGUAGE_KEY, 'en')
 })
 
 afterEach(() => {

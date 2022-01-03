@@ -443,7 +443,7 @@ describe('fetchItems()', () => {
 
     // Assert
     expect(itemsResult.success).toBe(true)
-    expect(itemsResult.value.length).toBe(2064)
+    expect(itemsResult.value.length).toBe(2525)
   })
 
   it('should not query items when in production', async () => {
@@ -473,7 +473,7 @@ describe('fetchMarketData()', () => {
 
     // Assert
     expect(marketDataResult.success).toBe(true)
-    expect(marketDataResult.value.length).toBe(2288)
+    expect(marketDataResult.value.length).toBe(2290)
   })
 })
 

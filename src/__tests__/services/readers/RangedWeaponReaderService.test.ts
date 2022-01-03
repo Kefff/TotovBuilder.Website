@@ -59,6 +59,7 @@ describe('read() and readMarketData()', () => {
           '5998517986f7746017232f7e'
         ],
         id: '57dc31bc245977596d4ef3d2',
+        maxStackableAmount: undefined,
         name: 'mod_pistol_grip',
         required: true
       },
@@ -69,6 +70,7 @@ describe('read() and readMarketData()', () => {
           '57dc347d245977596754e7a1'
         ],
         id: '57dc31ce245977593d4e1453',
+        maxStackableAmount: undefined,
         name: 'mod_stock',
         required: false
       },
@@ -77,6 +79,7 @@ describe('read() and readMarketData()', () => {
           '5648ac824bdc2ded0b8b457d'
         ],
         id: '57dc31e1245977597164366e',
+        maxStackableAmount: undefined,
         name: 'mod_charge',
         required: false
       },
@@ -94,6 +97,7 @@ describe('read() and readMarketData()', () => {
           '5bed625c0db834001c062946'
         ],
         id: '57dc31f2245977596c274b4f',
+        maxStackableAmount: undefined,
         name: 'mod_magazine',
         required: false
       },
@@ -113,6 +117,7 @@ describe('read() and readMarketData()', () => {
           '57ffb0e42459777d047111c5'
         ],
         id: '57dc35ce2459775971643671',
+        maxStackableAmount: undefined,
         name: 'mod_muzzle',
         required: false
       },
@@ -122,6 +127,7 @@ describe('read() and readMarketData()', () => {
           '5839a7742459773cf9693481'
         ],
         id: '57dc35fb245977596d4ef3d7',
+        maxStackableAmount: undefined,
         name: 'mod_reciever',
         required: false
       },
@@ -130,6 +136,7 @@ describe('read() and readMarketData()', () => {
           '59d36a0086f7747e673f3946'
         ],
         id: '59d368ce86f7747e6a5beb03',
+        maxStackableAmount: undefined,
         name: 'mod_gas_block',
         required: true
       }

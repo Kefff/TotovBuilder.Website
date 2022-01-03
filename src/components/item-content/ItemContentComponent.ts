@@ -13,6 +13,11 @@ export default defineComponent({
     modelValue: {
       type: Object as PropType<IInventoryItem>,
       required: true
+    },
+    modSlotPath: {
+      type: String,
+      required: false,
+      default: undefined
     }
   },
   emits: ['update:modelValue'],

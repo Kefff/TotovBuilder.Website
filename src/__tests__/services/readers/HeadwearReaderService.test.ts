@@ -25,6 +25,7 @@ describe('read() and readMarketData()', () => {
           '5ac4c50d5acfc40019262e87'
         ],
         id: '5ac4c4ca5acfc43f6724894b',
+        maxStackableAmount: undefined,
         name: 'mod_equipment',
         required: false
       }

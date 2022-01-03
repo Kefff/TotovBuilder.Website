@@ -5,7 +5,7 @@
   >
     <div
       v-for="(containedItem, index) of modelValue.content"
-      :key="containedItem?.itemId ?? '' + '_' + index + '_' + modelValue.content.length"
+      :key="modSlotPath ?? '' + '_' + containedItem?.itemId ?? '' + '_' + index + '_' + modelValue.content.length"
       class="item"
     >
       <Item
