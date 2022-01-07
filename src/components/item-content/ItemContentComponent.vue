@@ -5,7 +5,7 @@
   >
     <div
       v-for="(containedItem, index) of modelValue.content"
-      :key="modSlotPath ?? '' + '_' + containedItem?.itemId ?? '' + '_' + index + '_' + modelValue.content.length"
+      :key="path + index + '_' + modelValue.content.length + '/' + itemPathPrefix + modelValue.content[index].itemId"
       class="item"
     >
       <Item
@@ -14,6 +14,7 @@
         :force-quantity-to-max-selectable-amount="isMagazine"
         :category-ids="categoryIds"
         :max-stackable-amount="maximumQuantity"
+        :path="path + index + '_' + modelValue.content.length + '/' + itemPathPrefix + modelValue.content[index].itemId"
         @update:modelValue="onItemChanged($event, index)"
       />
     </div>
@@ -24,6 +25,7 @@
       :accepted-items="acceptedItems"
       :category-ids="categoryIds"
       :max-stackable-amount="maximumQuantity"
+      :path="path + '/' + 'add-new'"
       @update:modelValue="onItemAdded($event)"
     />
   </div>

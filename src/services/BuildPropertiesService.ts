@@ -12,6 +12,7 @@ import { IInventorySlot } from '../models/build/IInventorySlot'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { InventoryItemService } from './InventoryItemService'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
+import { PathUtils } from '../utils/PathUtils'
 
 /**
  * Represents a service responsible for managing properties of a build.
@@ -63,14 +64,10 @@ export class BuildPropertiesService {
    * Checks if a mod can be added to an item by recursively checking if it appears in any of the conflicting items list of each of the children mods already added.
    * @param inventoryItem - Item in which the mod is set to be added.
    * @param modId - ID of the mod to be added.
-   * @param modSlot - "Path" to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
+   * @param path - Path to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
    * @returns Success if the mod can be added; otherwise Failure.
    */
-  public async checkCanAddMod(
-    inventoryItem: IInventoryItem,
-    modId: string,
-    modSlotPath: string
-  ): Promise<Result> {
+  public async checkCanAddMod(build: IBuild, modId: string, path: string): Promise<Result> {
     const itemService = Services.get(ItemService)
     const modResult = await itemService.getItem(modId)
 
@@ -78,8 +75,15 @@ export class BuildPropertiesService {
       return Result.failFrom(modResult, FailureType.error)
     }
 
-    const modSlotPathRoot = modSlotPath.slice(0, modSlotPath.indexOf(inventoryItem.itemId) + inventoryItem.itemId.length)
-    const conflictingItemsResult = await this.getConflictingItems(inventoryItem, modSlotPathRoot)
+    const firstItemPath = path.slice(0, path.indexOf('/' + PathUtils.modSlotPrefix))
+    const inventoryItemResult = PathUtils.getInventoryItemFromPath(build, firstItemPath)
+
+    if (!inventoryItemResult.success) {
+      return Result.failFrom(inventoryItemResult, FailureType.error)
+    }
+
+    const changedModSlotPath = path.slice(0, path.indexOf('/' + PathUtils.itemPrefix))
+    const conflictingItemsResult = await this.getConflictingItems(inventoryItemResult.value, changedModSlotPath)
 
     if (!conflictingItemsResult.success) {
       return Result.failFrom(conflictingItemsResult, FailureType.error)
@@ -87,7 +91,7 @@ export class BuildPropertiesService {
 
     for (const conflictingItem of conflictingItemsResult.value) {
       if (
-        conflictingItem.modSlotPath.startsWith(modSlotPath) || // Ignoring the mod (and its child mods) in the same slot that the mod being added because it is being replaced
+        conflictingItem.path.startsWith(path) || // Ignoring the mod (and its children mods) in the same slot that the mod being added because it is being replaced
         (conflictingItem.conflictingItemId !== modId && // Checking the conflicting items for all the other mods
           !modResult.value.conflictingItemIds.includes(conflictingItem.itemId)) // Checking the conflicting items of the mod being added
       ) {
@@ -540,14 +544,14 @@ export class BuildPropertiesService {
       for (const conflictingItemId of itemResult.value.conflictingItemIds) {
         conflictingItems.push({
           itemId: itemResult.value.id,
-          modSlotPath,
+          path: modSlotPath,
           conflictingItemId
         })
       }
     } else {
       conflictingItems.push({
         itemId: itemResult.value.id,
-        modSlotPath,
+        path: modSlotPath,
         conflictingItemId: undefined
       })
     }
@@ -556,7 +560,7 @@ export class BuildPropertiesService {
       if (modSlot.item !== undefined) {
         const modConflictingItemIdsResult = await this.getConflictingItems(
           modSlot.item,
-          modSlotPath + '/' + modSlot.modSlotName
+          modSlotPath + '/' + PathUtils.itemPrefix + inventoryItem.itemId + '/' + PathUtils.modSlotPrefix + modSlot.modSlotName
         )
 
         /* istanbul ignore if */

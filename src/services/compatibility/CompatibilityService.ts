@@ -18,11 +18,11 @@ export class CompatibilityService {
    * Checks an item compatibility.
    * @param requestType - Request type.
    * @param itemId - ID of the item for which the compatibility must be checked.
-   * @param modSlotPath - When checking the compatibility of a mod, "path" to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
+   * @param path - When checking the compatibility of a mod, path to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
    * @returns Result indicating whether the item can be added to the build or not.
    */
-  public checkCompatibility(compatibilityRequestType: CompatibilityRequestType, itemId: string, modSlotPath?: string): Promise<Result> {
-    const request = new CompatibilityRequest(compatibilityRequestType, itemId, modSlotPath)
+  public checkCompatibility(compatibilityRequestType: CompatibilityRequestType, itemId: string, path: string): Promise<Result> {
+    const request = new CompatibilityRequest(compatibilityRequestType, itemId, path)
     this.emitter.emit(compatibilityRequestType, request)
 
     return request.result

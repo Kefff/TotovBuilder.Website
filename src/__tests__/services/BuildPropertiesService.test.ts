@@ -601,14 +601,9 @@ describe('checkCanAddArmor()', () => {
 describe('checkCanAddMod()', () => {
   it.each([
     [
-      {
-        content: [],
-        itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
+      {} as IBuild,
       'invalid',
-      '050a1e5b-22f4-4104-236c-6cfa7e8be290/57dc2fa62459775949412633/mod_gas_block/mod_handguard',
+      'build:123456789/slot:onSling_0/item:57dc2fa62459775949412633/mod:mod_gas_block/item:59d36a0086f7747e673f3946/mod_handguard',
       {
         failureContext: 'ItemService.getItem()',
         failureMessage: 'Item "invalid" not found.',
@@ -618,81 +613,124 @@ describe('checkCanAddMod()', () => {
     ],
     [
       {
-        content: [],
-        itemId: 'invalid',
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      '5d15ce51d7ad1a1eff619092', // AKS-74U Alfa Arms Goliaf handguard
-      '050a1e5b-22f4-4104-236c-6cfa7e8be290/57dc2fa62459775949412633/mod_gas_block/mod_handguard',
+        id: '123456789',
+        inventorySlots: [],
+        lastExported: undefined,
+        lastUpdated: new Date(),
+        name: 'build1'
+      } as IBuild,
+      '57dc2fa62459775949412633',
+      'build:123456789/slot:onSling_0/item:57dc2fa62459775949412633/invalid',
       {
-        failureContext: 'ItemService.getItem()',
-        failureMessage: 'Item "invalid" not found.',
+        failureContext: 'PathUtils.getInventorySlotItem()',
+        failureMessage: 'Cannot find inventory slot "onSling".',
         success: false,
         value: undefined
       } as Result
     ],
     [
       {
-        content: [],
-        itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
-        modSlots: [
+        id: '123456789',
+        inventorySlots: [
           {
-            item: {
-              content: [],
-              itemId: '5ac72e945acfc43f3b691116', // AK-105 5.45x39 muzzle brake - compensator (6P44 0-20)
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_muzzle'
-          },
-          {
-            item: {
-              content: [],
-              itemId: '59d36a0086f7747e673f3946', // AKS-74U gas tube
-              modSlots: [
-                {
-                  item: {
-                    content: [],
-                    itemId: '57dc32dc245977596d4ef3d3', // AKS-74U wooden handguard (6P26 Sb.6
-                    modSlots: [
-                      {
-                        item: {
-                          content: [],
-                          itemId: '5c1bc4812e22164bef5cfde7', // Zenit RK-0 foregrip
-                          modSlots: [],
-                          quantity: 1
-                        },
-                        modSlotName: 'mod_test'
-                      }
-                    ],
-                    quantity: 1
-                  },
-                  modSlotName: 'mod_handguard'
-                }
-              ],
-              quantity: 1
-            },
-            modSlotName: 'mod_gas_block'
-          },
-          {
-            item: {
-              content: [],
-              itemId: '5d2c76ed48f03532f2136169', // AK AKademia Bastion dust cover
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_test'
-          },
-          {
-            item: undefined,
-            modSlotName: 'mod_test2'
+            items: [
+              {
+                content: [],
+                itemId: 'invalid',
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'onSling'
           }
         ],
-        quantity: 1
-      } as IInventoryItem,
+        lastExported: undefined,
+        lastUpdated: new Date(),
+        name: 'build1'
+      },
       '5d15ce51d7ad1a1eff619092', // AKS-74U Alfa Arms Goliaf handguard
-      '050a1e5b-22f4-4104-236c-6cfa7e8be290/57dc2fa62459775949412633/mod_gas_block/mod_handguard',
+      'build:123456789/slot:onSling_0/item:invalid/mod:mod_gas_block/item:59d36a0086f7747e673f3946/mod_handguard',
+      {
+        failureContext: 'ItemService.getItem()',
+        failureMessage: 'Item "invalid" not found.',
+        success: false,
+        value: undefined
+      } as Result
+    ],
+    [
+      {
+        id: '123456789',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+                modSlots: [
+                  {
+                    item: {
+                      content: [],
+                      itemId: '5ac72e945acfc43f3b691116', // AK-105 5.45x39 muzzle brake - compensator (6P44 0-20)
+                      modSlots: [],
+                      quantity: 1
+                    },
+                    modSlotName: 'mod_muzzle'
+                  },
+                  {
+                    item: {
+                      content: [],
+                      itemId: '59d36a0086f7747e673f3946', // AKS-74U gas tube
+                      modSlots: [
+                        {
+                          item: {
+                            content: [],
+                            itemId: '57dc32dc245977596d4ef3d3', // AKS-74U wooden handguard (6P26 Sb.6
+                            modSlots: [
+                              {
+                                item: {
+                                  content: [],
+                                  itemId: '5c1bc4812e22164bef5cfde7', // Zenit RK-0 foregrip
+                                  modSlots: [],
+                                  quantity: 1
+                                },
+                                modSlotName: 'mod_test'
+                              }
+                            ],
+                            quantity: 1
+                          },
+                          modSlotName: 'mod_handguard'
+                        }
+                      ],
+                      quantity: 1
+                    },
+                    modSlotName: 'mod_gas_block'
+                  },
+                  {
+                    item: {
+                      content: [],
+                      itemId: '5d2c76ed48f03532f2136169', // AK AKademia Bastion dust cover
+                      modSlots: [],
+                      quantity: 1
+                    },
+                    modSlotName: 'mod_test'
+                  },
+                  {
+                    item: undefined,
+                    modSlotName: 'mod_test2'
+                  }
+                ],
+                quantity: 1
+              }
+            ],
+            typeId: 'onSling'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: new Date(),
+        name: 'buil1'
+      } as IBuild,
+      '5d15ce51d7ad1a1eff619092', // AKS-74U Alfa Arms Goliaf handguard, conflicts with AK-105 5.45x39 muzzle brake & compensator (6P44 0-20)
+      'build:123456789/slot:onSling_0/item:57dc2fa62459775949412633/mod:mod_gas_block/item:59d36a0086f7747e673f3946/mod_handguard',
       {
         failureContext: 'BuildService.checkCanAddMod()',
         failureMessage:
@@ -702,61 +740,74 @@ describe('checkCanAddMod()', () => {
     ],
     [
       {
-        content: [],
-        itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
-        modSlots: [
+        id: '123456789',
+        inventorySlots: [
           {
-            item: {
-              content: [],
-              itemId: '59bffc1f86f77435b128b872', // SilencerCo Hybrid 46 Direct Thread Mount adapter
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_muzzle'
-          },
-          {
-            item: {
-              content: [],
-              itemId: '59d36a0086f7747e673f3946', // AKS-74U gas tube
-              modSlots: [
-                {
-                  item: {
-                    content: [],
-                    itemId: '57dc32dc245977596d4ef3d3', // AKS-74U wooden handguard (6P26 Sb.6)
-                    modSlots: [
-                      {
-                        item: {
-                          content: [],
-                          itemId: '5c1bc4812e22164bef5cfde7', // Zenit RK-0 foregrip
-                          modSlots: [],
-                          quantity: 1
-                        },
-                        modSlotName: 'mod_test'
-                      }
-                    ],
-                    quantity: 1
+            items: [
+              {
+                content: [],
+                itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+                modSlots: [
+                  {
+                    item: {
+                      content: [],
+                      itemId: '59bffc1f86f77435b128b872', // SilencerCo Hybrid 46 Direct Thread Mount adapter
+                      modSlots: [],
+                      quantity: 1
+                    },
+                    modSlotName: 'mod_muzzle'
                   },
-                  modSlotName: 'mod_handguard'
-                }
-              ],
-              quantity: 1
-            },
-            modSlotName: 'mod_gas_block'
-          },
-          {
-            item: {
-              content: [],
-              itemId: '5d2c76ed48f03532f2136169', // AK AKademia Bastion dust cover
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_test'
+                  {
+                    item: {
+                      content: [],
+                      itemId: '59d36a0086f7747e673f3946', // AKS-74U gas tube
+                      modSlots: [
+                        {
+                          item: {
+                            content: [],
+                            itemId: '57dc32dc245977596d4ef3d3', // AKS-74U wooden handguard (6P26 Sb.6)
+                            modSlots: [
+                              {
+                                item: {
+                                  content: [],
+                                  itemId: '5c1bc4812e22164bef5cfde7', // Zenit RK-0 foregrip
+                                  modSlots: [],
+                                  quantity: 1
+                                },
+                                modSlotName: 'mod_test'
+                              }
+                            ],
+                            quantity: 1
+                          },
+                          modSlotName: 'mod_handguard'
+                        }
+                      ],
+                      quantity: 1
+                    },
+                    modSlotName: 'mod_gas_block'
+                  },
+                  {
+                    item: {
+                      content: [],
+                      itemId: '5d2c76ed48f03532f2136169', // AK AKademia Bastion dust cover
+                      modSlots: [],
+                      quantity: 1
+                    },
+                    modSlotName: 'mod_test'
+                  }
+                ],
+                quantity: 1
+              }
+            ],
+            typeId: 'onSling'
           }
         ],
-        quantity: 1
-      } as IInventoryItem,
-      '5d15ce51d7ad1a1eff619092', // AKS-74U Alfa Arms Goliaf handguard
-      '050a1e5b-22f4-4104-236c-6cfa7e8be290/57dc2fa62459775949412633/mod_gas_block/mod_handguard',
+        lastExported: undefined,
+        lastUpdated: new Date(),
+        name: 'buil1'
+      } as IBuild,
+      '5d15ce51d7ad1a1eff619092', // AKS-74U Alfa Arms Goliaf handguard, no conflict
+      'build:123456789/slot:onSling_0/item:57dc2fa62459775949412633/mod:mod_gas_block/item:59d36a0086f7747e673f3946/mod_handguard',
       {
         failureContext: '',
         failureMessage: '',
@@ -765,66 +816,79 @@ describe('checkCanAddMod()', () => {
     ],
     [
       {
-        content: [],
-        itemId: '587e02ff24597743df3deaeb', // Simonov OP-SKS 7.62x39 semi-automatic carbine (Hunting Rifle Version)
-        modSlots: [
+        id: '123456789',
+        inventorySlots: [
           {
-            modSlotName: 'chamber0'
-          },
-          {
-            item: {
-              content: [],
-              itemId: '587e0531245977466077a0f7', // stock_sks_molot_op_sks_std
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_stock'
-          },
-          {
-            item: {
-              content: [],
-              itemId: '574db213245977459a2f3f5d', // SKS rear sight
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_sight_rear'
-          },
-          {
-            item: {
-              content: [],
-              itemId: '587df3a12459772c28142567', // SKS 7.62x39 10-round internal box magazine
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_magazine'
-          },
-          {
-            item: {
-              content: [],
-              itemId: '587e08ee245977446b4410cf', // mount_sks_molot_op_sks_std
-              modSlots: [
-                {
-                  item: {
-                    content: [],
-                    itemId: '5947db3f86f77447880cf76f', // Axion Kobra EKP-8-02 reflex sight (Dovetail)
-                    modSlots: [],
-                    quantity: 1
+            items: [
+              {
+                content: [],
+                itemId: '587e02ff24597743df3deaeb', // Simonov OP-SKS 7.62x39 semi-automatic carbine (Hunting Rifle Version)
+                modSlots: [
+                  {
+                    modSlotName: 'chamber0'
                   },
-                  modSlotName: 'mod_scope'
-                }
-              ],
-              quantity: 1
-            },
-            modSlotName: 'mod_mount'
-          },
-          {
-            modSlotName: 'mod_muzzle'
+                  {
+                    item: {
+                      content: [],
+                      itemId: '587e0531245977466077a0f7', // stock_sks_molot_op_sks_std
+                      modSlots: [],
+                      quantity: 1
+                    },
+                    modSlotName: 'mod_stock'
+                  },
+                  {
+                    item: {
+                      content: [],
+                      itemId: '574db213245977459a2f3f5d', // SKS rear sight
+                      modSlots: [],
+                      quantity: 1
+                    },
+                    modSlotName: 'mod_sight_rear'
+                  },
+                  {
+                    item: {
+                      content: [],
+                      itemId: '587df3a12459772c28142567', // SKS 7.62x39 10-round internal box magazine
+                      modSlots: [],
+                      quantity: 1
+                    },
+                    modSlotName: 'mod_magazine'
+                  },
+                  {
+                    item: {
+                      content: [],
+                      itemId: '587e08ee245977446b4410cf', // mount_sks_molot_op_sks_std
+                      modSlots: [
+                        {
+                          item: {
+                            content: [],
+                            itemId: '5947db3f86f77447880cf76f', // Axion Kobra EKP-8-02 reflex sight (Dovetail)
+                            modSlots: [],
+                            quantity: 1
+                          },
+                          modSlotName: 'mod_scope'
+                        }
+                      ],
+                      quantity: 1
+                    },
+                    modSlotName: 'mod_mount'
+                  },
+                  {
+                    modSlotName: 'mod_muzzle'
+                  }
+                ],
+                quantity: 1
+              }
+            ],
+            typeId: 'onSling'
           }
         ],
-        quantity: 1
-      },
-      '5c82342f2e221644f31c060e', // Zenit-BelOMO PSO-1 4x24 scope,
-      '050a1e5b-22f4-4104-236c-6cfa7e8be290/587e02ff24597743df3deaeb/mod_mount/mod_scope',
+        lastExported: undefined,
+        lastUpdated: new Date(),
+        name: 'buil1'
+      } as IBuild,
+      '5c82342f2e221644f31c060e', // Zenit-BelOMO PSO-1 4x24 scope, conflicts with Axion Kobra EKP-8-02 reflex sight (Dovetail) that is being replaced (so there should be non error)
+      'build:123456789/slot:onSling_0/item:587e02ff24597743df3deaeb/mod:mod_mount/item:587e08ee245977446b4410cf/mod:mod_scope',
       {
         failureContext: '',
         failureMessage: '',
@@ -833,12 +897,12 @@ describe('checkCanAddMod()', () => {
     ]
   ])(
     'should check if a mod can be added to an item',
-    async (inventoryItem: IInventoryItem, modId: string, modSlotPath: string, expected: Result) => {
+    async (build: IBuild, modId: string, modSlotPath: string, expected: Result) => {
       // Arrange
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.checkCanAddMod(inventoryItem, modId, modSlotPath)
+      const result = await service.checkCanAddMod(build, modId, modSlotPath)
 
       // Assert
       expect(result).toEqual(expected)

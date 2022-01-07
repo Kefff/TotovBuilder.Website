@@ -219,9 +219,10 @@
     <div v-else-if="!isLoading && build.inventorySlots.length > 0">
       <InventorySlot
         v-for="(inventorySlot, index) of build.inventorySlots"
-        :key="inventorySlot.typeId"
+        :key="path + '/' + inventorySlot.typeId"
         v-model:modelValue="build.inventorySlots[index]"
         v-model:collapsed="collapseStatuses[index]"
+        :path="path + '/' + inventorySlotPathPrefix + inventorySlot.typeId"
         @update:modelValue="onInventorySlotChanged()"
       />
     </div>

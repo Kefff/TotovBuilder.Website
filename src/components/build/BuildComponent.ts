@@ -20,6 +20,7 @@ import { MerchantFilterService } from '../../services/MerchantFilterService'
 import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
 import ShareBuild from '../build-share/BuildShareComponent.vue'
+import { PathUtils } from '../../utils/PathUtils'
 
 export default defineComponent({
   components: {
@@ -41,8 +42,6 @@ export default defineComponent({
     const merchantFilterService = Services.get(MerchantFilterService)
     const buildPropertiesService = Services.get(BuildPropertiesService)
 
-    merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
-
     const build = ref<IBuild>(buildComponentService.getBuild(route.params['id'] as string))
     watch(() => route.params, (newParams) => build.value = buildComponentService.getBuild(newParams['id'] as string))
     watch(() => route.params, async (newParams) => getSharedBuild(newParams['sharedBuild'] as string))
@@ -60,8 +59,6 @@ export default defineComponent({
     const collapseStatuses = ref<boolean[]>([])
 
     const compatibilityService = Services.get(CompatibilityService)
-    compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
-    compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
 
     const summary = ref<IBuildSummary>({
       ammunitionCounts: [],
@@ -104,10 +101,12 @@ export default defineComponent({
       verticalRecoil: undefined,
       weight: 0
     })
+
+    const path = computed(() => PathUtils.buildPrefix + (newBuild.value ? PathUtils.newBuild : build.value.id))
+    const inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
     const notExportedTooltip = computed(() => !summary.value.exported ? buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
 
     const ammunitionCountsPanel = ref()
-
     const advancedPanel = ref()
 
     onMounted(() => {
@@ -116,11 +115,17 @@ export default defineComponent({
         getCollapseStatuses()
         getSummary()
       })
+
+      compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
+      compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
+      compatibilityService.emitter.on(CompatibilityRequestType.mod, onModCompatibilityRequest)
+      merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
     })
 
     onUnmounted(() => {
       compatibilityService.emitter.off(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
       compatibilityService.emitter.off(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
+      compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
       merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
     })
 
@@ -323,6 +328,14 @@ export default defineComponent({
     }
 
     /**
+     * Checks if a mod can be added to the selected item.
+     * @param request - Compatibility request that must be resolved.
+     */
+    function onModCompatibilityRequest(request: CompatibilityRequest) {
+      request.setResult(buildPropertiesService.checkCanAddMod(build.value, request.itemId, request.path))
+    }
+
+    /**
      * Checks whether a tactical rig can be added to the build or not.
      * @param request - Compatibility request.
      */
@@ -393,11 +406,13 @@ export default defineComponent({
       exportBuild,
       goToBuilds,
       invalid,
+      inventorySlotPathPrefix,
       isEmpty,
       isLoading,
       newBuild,
       notExportedTooltip,
       onInventorySlotChanged,
+      path,
       remove,
       save,
       startDelete,

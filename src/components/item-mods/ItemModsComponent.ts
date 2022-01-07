@@ -7,6 +7,7 @@ import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ItemService } from '../../services/ItemService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import Services from '../../services/repository/Services'
+import { PathUtils } from '../../utils/PathUtils'
 import ModSlot from '../mod-slot/ModSlotComponent.vue'
 
 export default defineComponent({
@@ -14,14 +15,14 @@ export default defineComponent({
     ModSlot
   },
   props: {
-    modSlotPath: {
-      type: String,
-      required: true
-    },
     modelValue: {
       type: Object as PropType<IInventoryItem>,
       required: false,
       default: undefined
+    },
+    path: {
+      type: String,
+      required: true
     }
   },
   emits: ['update:modelValue'],
@@ -30,6 +31,8 @@ export default defineComponent({
 
     const inventoryModSlots = ref<IInventoryModSlot[]>([])
     const modSlots = ref<IModSlot[]>([])
+
+    const modSlotPathPrefix = PathUtils.modSlotPrefix
 
     watch(() => props.modelValue, () => getModSlots(), { deep: true })
 
@@ -90,6 +93,11 @@ export default defineComponent({
       emit('update:modelValue', newInventoryItem)
     }
 
-    return { inventoryModSlots, modSlots, onUpdateModSlot }
+    return {
+      inventoryModSlots,
+      modSlotPathPrefix,
+      modSlots,
+      onUpdateModSlot
+    }
   }
 })

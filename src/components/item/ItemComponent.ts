@@ -1,4 +1,4 @@
-import { computed, defineComponent, inject, onMounted, onUnmounted, PropType, Ref, ref, watch } from 'vue'
+import { computed, defineComponent, inject, onMounted, PropType, Ref, ref, watch } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IItem } from '../../models/item/IItem'
 import { ItemService } from '../../services/ItemService'
@@ -15,17 +15,15 @@ import { SortingService } from '../../services/sorting/SortingService'
 import ItemContent from '../item-content/ItemContentComponent.vue'
 import ItemMods from '../item-mods/ItemModsComponent.vue'
 import InputNumberField from '../input-number-field/InputNumberFieldComponent.vue'
-import { Guid } from 'guid-typescript'
 import { CompatibilityService } from '../../services/compatibility/CompatibilityService'
 import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
-import { CompatibilityRequest } from '../../services/compatibility/CompatibilityRequest'
 import Result from '../../utils/Result'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import SelectedItemSummarySelector from '../selected-item-summary/selector/SelectedItemSummarySelectorComponent.vue'
 import { SelectableTab } from '../../models/utils/SelectableTab'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
+import { PathUtils } from '../../utils/PathUtils'
 
 export default defineComponent({
   components: {
@@ -63,10 +61,9 @@ export default defineComponent({
       required: false,
       default: undefined
     },
-    modSlotPath: {
+    path: {
       type: String,
-      required: false,
-      default: undefined
+      required: true
     },
     modelValue: {
       type: Object as PropType<IInventoryItem | undefined>,
@@ -76,7 +73,6 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup: (props, { emit }) => {
-    const buildPropertiesService = Services.get(BuildPropertiesService)
     const compatibilityService = Services.get(CompatibilityService)
     const inventoryItemService = Services.get(InventoryItemService)
     const itemService = Services.get(ItemService)
@@ -107,9 +103,10 @@ export default defineComponent({
     const selectedItemIsContainer = ref(false)
     const selectedTab = ref(SelectableTab.hidden)
 
-    const modSlotPathForChildren = ref<string>()
+    const contentPathPrefix = PathUtils.contentPrefix
+    const modSlotPathPrefix = PathUtils.modSlotPrefix
+
     const preset = ref<IInventoryModSlot>()
-    let checkModCompatibilityHandled = false
 
     watch(() => props.acceptedItems, () => onFilterOptions(optionsFilter.value))
 
@@ -131,45 +128,6 @@ export default defineComponent({
       setOptions(optionsFilter.value, optionsSortingData.value)
       setSelectedItem()
     })
-
-    onUnmounted(() => {
-      if (checkModCompatibilityHandled) {
-        compatibilityService.emitter.off(CompatibilityRequestType.mod)
-      }
-    })
-
-    /**
-     * Checks if a mod can be added to the selected item.
-     * @param request - Compatibility request that must be resolved.
-     * @param modSlotPath - "Path" of the mod slot. Used to check if the compatibility request is linked to the selected item.
-     */
-    function checkCanAddMod(request: CompatibilityRequest, modSlotPath: string) {
-      if (props.modelValue !== undefined && request.modSlotPath !== undefined && request.modSlotPath.startsWith(modSlotPath)) {
-        request.setResult(buildPropertiesService.checkCanAddMod(props.modelValue, request.itemId, request.modSlotPath))
-      }
-    }
-
-    /**
-     * Gets the mod slot path to pass to child mods.
-     * @returns Mod slot path.
-     */
-    async function getModSlotPathForChildren() {
-      let modSlotPath = props.modSlotPath
-
-      if (selectedItemIsModdable.value && modSlotPath === undefined) {
-        modSlotPath = Guid.create().toString() + '/' + selectedItem.value?.id
-        compatibilityService.emitter.on(
-          CompatibilityRequestType.mod,
-          (r: CompatibilityRequest) => checkCanAddMod(r, modSlotPath ?? ''))
-        checkModCompatibilityHandled = true
-      }
-
-      if (selectedItem.value != undefined && modSlotPath !== undefined) {
-        preset.value = await inventoryItemService.getPresetModslotContainingItem(selectedItem.value.id, modSlotPath)
-      }
-
-      modSlotPathForChildren.value = modSlotPath
-    }
 
     /**
      * Sorts the options items.
@@ -210,12 +168,14 @@ export default defineComponent({
 
       itemChanging.value = true
 
-      if (props.modSlotPath !== undefined) {
-        await getModSlotPathForChildren()
-        compatibilityService.checkCompatibility(CompatibilityRequestType.mod, selectedItem.value.id, modSlotPathForChildren.value)
+      preset.value = await inventoryItemService.getPresetModslotContainingItem(selectedItem.value.id, props.path)
+
+      if (itemPropertiesService.isMod(selectedItem.value)) {
+        const path = props.path.slice(0, props.path.lastIndexOf('/' + PathUtils.itemPrefix))
+        compatibilityService.checkCompatibility(CompatibilityRequestType.mod, selectedItem.value.id, path)
           .then((v) => updateInventoryItem(selectedItem.value as IItem, v))
       } else {
-        updateInventoryItem(selectedItem.value, Result.ok())
+        updateInventoryItem(selectedItem.value as IItem, Result.ok())
       }
     }
 
@@ -270,6 +230,10 @@ export default defineComponent({
       if (props.modelValue == undefined) {
         selectedItem.value = undefined
         quantity.value = 0
+        selectedItemIsModdable.value = false
+        selectedItemIsContainer.value = false
+
+        return
       } else {
         const selectedItemResult = await itemService.getItem(props.modelValue.itemId)
 
@@ -290,21 +254,18 @@ export default defineComponent({
         }
       }
 
-      if (selectedItem.value !== undefined) {
-        selectedItemIsModdable.value = itemPropertiesService.isModdable(selectedItem.value)
-        selectedItemIsContainer.value = itemPropertiesService.isContainer(selectedItem.value)
+      selectedItemIsModdable.value = itemPropertiesService.isModdable(selectedItem.value)
+      selectedItemIsContainer.value = itemPropertiesService.isContainer(selectedItem.value)
 
-        if (selectedItemIsModdable.value) {
-          selectedTab.value = SelectableTab.mods
-        } else if (selectedItemIsContainer.value) {
-          selectedTab.value = SelectableTab.content
-        }
-      } else {
-        selectedItemIsModdable.value = false
-        selectedItemIsContainer.value = false
+      if (selectedItemIsModdable.value) {
+        selectedTab.value = SelectableTab.mods
+      } else if (selectedItemIsContainer.value) {
+        selectedTab.value = SelectableTab.content
       }
 
-      getModSlotPathForChildren()
+      if (selectedItem.value != undefined) {
+        preset.value = await inventoryItemService.getPresetModslotContainingItem(selectedItem.value.id, props.path)
+      }
     }
 
     /**
@@ -343,11 +304,12 @@ export default defineComponent({
     }
 
     return {
+      contentPathPrefix,
       editing,
       inventoryItem,
       itemChanging,
       maxSelectableQuantity,
-      modSlotPathForChildren,
+      modSlotPathPrefix,
       onFilterOptions,
       onQuantityChanged,
       onSelectedItemChanged,
