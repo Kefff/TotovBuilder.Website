@@ -56,7 +56,7 @@ export default defineComponent({
     const isExporting = ref(false)
     const isImporting = ref(false)
     const hasImported = ref(false)
-    const isLoading = ref(false)
+    const isLoading = ref(true)
 
     watch(() => hasImported.value, () => {
       // Updating the list of builds after import
@@ -108,6 +108,7 @@ export default defineComponent({
         const summaryResult = await buildPropertiesService.getSummary(build)
 
         if (!summaryResult.success) {
+          isLoading.value = false
           Services.get(NotificationService).notify(
             NotificationType.error,
             summaryResult.failureMessage

@@ -203,7 +203,6 @@
           <p class="build-empty-message-line">
             {{ $t('message.emptyBuild2') }}
             <Button
-              v-if="!editing"
               class="build-empty-message-button"
               @click="startEdit()"
             >

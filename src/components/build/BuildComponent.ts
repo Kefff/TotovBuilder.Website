@@ -149,6 +149,7 @@ export default defineComponent({
      * Cancels modifications and stops edit mode.
      */
     async function cancelEdit() {
+      isLoading.value = true
       editing.value = false
 
       if (newBuild.value) {
@@ -157,6 +158,8 @@ export default defineComponent({
         await nextTick() // Required otherwise some of the ItemComponents keep their actual value for some reason
         build.value = originalBuild
       }
+
+      isLoading.value = false
     }
 
     /**

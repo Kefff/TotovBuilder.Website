@@ -30,7 +30,7 @@
       />
     </div>
     <div
-      v-if="isLoading"
+      v-else-if="isLoading"
       class="builds-loading"
     >
       <Loading />
