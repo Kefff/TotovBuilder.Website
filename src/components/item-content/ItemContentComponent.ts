@@ -1,4 +1,4 @@
-import { computed, defineComponent, inject, onMounted, onUnmounted, PropType, Ref, ref, watch } from 'vue'
+import { computed, defineComponent, inject, nextTick, onMounted, onUnmounted, PropType, Ref, ref, watch } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IItem } from '../../models/item/IItem'
 import { IMagazine } from '../../models/item/IMagazine'
@@ -92,7 +92,12 @@ export default defineComponent({
       const newInventoryItem = props.modelValue
       newInventoryItem.content.push(newContainedInventoryItem)
 
-      emit('update:modelValue', newInventoryItem)
+      nextTick(() => {
+        // nextTick required here so the ItemComponent that holds the itemToAdd is nicely resetted.
+        // Also the emit needs to be executed after having resetted itemToAdd
+        itemToAdd.value = undefined
+        emit('update:modelValue', newInventoryItem)
+      })
     }
 
     /**
