@@ -93,10 +93,10 @@ export default defineComponent({
       newInventoryItem.content.push(newContainedInventoryItem)
 
       nextTick(() => {
-        // nextTick required here so the ItemComponent that holds the itemToAdd is nicely resetted.
-        // Also the emit needs to be executed after having resetted itemToAdd
-        itemToAdd.value = undefined
+        // nextTick required in order to the emitting and the resetting of itemToAdd to work properly.
+        // Also the resetting of itemToAdd must happen after the emit.
         emit('update:modelValue', newInventoryItem)
+        itemToAdd.value = undefined
       })
     }
 
