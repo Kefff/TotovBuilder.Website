@@ -5,19 +5,19 @@
     "changes": [
       {
         "language": "en",
-        "text": "Fixed imported builds that were being flagged as not exported."
+        "text": "Improved internal code for better display performances."
       },
       {
         "language": "en",
-        "text": "Improved internal code."
+        "text": "Fixed imported builds that were being flagged as not exported."
+      },
+      {
+        "language": "fr",
+        "text": "Amélioration du code interne pour de meilleures performances d'affichage."
       },
       {
         "language": "fr",
         "text": "Correction des équipements importés qui étaient marqués comme non exportés."
-      },
-      {
-        "language": "fr",
-        "text": "Amélioration du code interne."
       }
     ]
   },

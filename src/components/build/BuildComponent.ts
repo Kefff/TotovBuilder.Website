@@ -55,7 +55,7 @@ export default defineComponent({
     const deleting = ref(false)
     const invalid = computed(() => build.value.name === '')
     const isEmpty = computed(() => !build.value.inventorySlots.some(is => is.items.some(i => i != undefined)))
-    const isLoading = ref(false)
+    const isLoading = ref(true)
     const collapseStatuses = ref<boolean[]>([])
 
     const compatibilityService = Services.get(CompatibilityService)
@@ -120,6 +120,8 @@ export default defineComponent({
       compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.mod, onModCompatibilityRequest)
       merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+
+      isLoading.value = false
     })
 
     onUnmounted(() => {
@@ -274,6 +276,7 @@ export default defineComponent({
       const summaryResult = await service.getSummary(build.value)
 
       if (!summaryResult.success) {
+        isLoading.value = false
         Services.get(NotificationService).notify(NotificationType.error, summaryResult.failureMessage)
 
         return
