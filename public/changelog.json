@@ -1,5 +1,27 @@
 [
   {
+    "version": "1.2.0",
+    "date": "2022-01-07T00:00:00+01:00",
+    "changes": [
+      {
+        "language": "en",
+        "text": "Fixed imported builds that were being flagged as not exported."
+      },
+      {
+        "language": "en",
+        "text": "Improved internal code."
+      },
+      {
+        "language": "fr",
+        "text": "Correction des équipements importés qui étaient marqués comme non exportés."
+      },
+      {
+        "language": "fr",
+        "text": "Amélioration du code interne."
+      }
+    ]
+  },
+  {
     "version": "1.1.1",
     "date": "2022-01-02T00:00:00+01:00",
     "changes": [
