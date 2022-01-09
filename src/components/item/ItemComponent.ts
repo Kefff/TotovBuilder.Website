@@ -170,7 +170,8 @@ export default defineComponent({
 
       preset.value = await inventoryItemService.getPresetModslotContainingItem(selectedItem.value.id, props.path)
 
-      if (itemPropertiesService.isMod(selectedItem.value)) {
+      if (itemPropertiesService.isMod(selectedItem.value) && PathUtils.checkIsModSlotPath(props.path)) {
+        // Checking the compatibility if the selected item is a mod and we are in mod slot
         const path = props.path.slice(0, props.path.lastIndexOf('/' + PathUtils.itemPrefix))
         compatibilityService.checkCompatibility(CompatibilityRequestType.mod, selectedItem.value.id, path)
           .then((v) => updateInventoryItem(selectedItem.value as IItem, v))

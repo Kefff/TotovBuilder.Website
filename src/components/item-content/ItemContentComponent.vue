@@ -25,7 +25,7 @@
       :accepted-items="acceptedItems"
       :category-ids="categoryIds"
       :max-stackable-amount="maximumQuantity"
-      :path="path + '/' + 'add-new'"
+      :path="path + modelValue.content.length + '_' + modelValue.content.length + '/' + 'new'"
       @update:modelValue="onItemAdded($event)"
     />
   </div>

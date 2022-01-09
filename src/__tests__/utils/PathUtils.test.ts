@@ -2,6 +2,22 @@ import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { PathUtils } from '../../utils/PathUtils'
 
+describe('checkIsModSlotPath()', () => {
+  it.each([
+    ['build:12345/slot:onSling_0/item:57dc2fa62459775949412633/mod:mod_magazine/item:564ca9df4bdc2d35148b4569', true],
+    ['build:12345/slot:backpack_0/content:0_1/item:57dc2fa62459775949412633/mod:mod_magazine/item:564ca9df4bdc2d35148b4569', true],
+    ['build:12345/slot:onSling_0/item:57dc2fa62459775949412633/mod:mod_magazine/item:564ca9df4bdc2d35148b4569/content:0_1/item:5c0d5e4486f77478390952fe', false],
+    ['build:12345/slot:pockets_1/item:59fafd4b86f7745ca07e1232/content:1_10/item:5672c92d4bdc2d180f8b4567', false],
+    ['build:12345/slot:pockets_1/item:empty', false]
+  ])('should check whether a path is a mod slot path', (path: string, expected: boolean) => {
+    // Act
+    const isModSlotPath = PathUtils.checkIsModSlotPath(path)
+
+    // Assert
+    expect(isModSlotPath).toBe(expected)
+  })
+})
+
 describe('getInventoryItemFromPath()', () => {
   it.each([
     [

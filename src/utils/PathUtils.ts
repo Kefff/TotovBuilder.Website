@@ -15,6 +15,18 @@ export class PathUtils {
   public static newBuild = 'new-build'
 
   /**
+   * Checks if the path is a path to a mod slot.
+   * @param path - Path.
+   * @returns true when the path is a path to a mod slot; otherwise false.
+   */
+  public static checkIsModSlotPath(path: string): boolean {
+    const lastModSlotIndex = path.lastIndexOf(PathUtils.modSlotPrefix)
+    const lastContentSlotIndex = path.lastIndexOf(PathUtils.contentPrefix)
+
+    return lastModSlotIndex > 0 && lastModSlotIndex > lastContentSlotIndex
+  }
+
+  /**
    * Gets and inventory item of a build from a path.
    * @param build - Build.
    * @param path - Path.
