@@ -11,7 +11,7 @@ describe('checkCompatibility()', () => {
       request.setResult(Promise.resolve(Result.fail(
         FailureType.hidden,
         undefined,
-        'Error ' + request.requestType + ' ' + request.itemId + (request.modSlotPath !== undefined ? ' ' + request.modSlotPath : ''))))
+        'Error ' + request.requestType + ' ' + request.itemId + (request.path !== undefined ? ' ' + request.path : ''))))
     })
 
     // Act

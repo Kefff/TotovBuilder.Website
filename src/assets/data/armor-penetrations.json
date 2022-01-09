@@ -402,12 +402,12 @@
   {
     "id": "5c0d668f86f7747ccb7f13b2",
     "caption": "9x39mm SPP gs",
-    "armorPenetrations": [6, 6, 6, 6, 5, 5]
+    "armorPenetrations": [6, 6, 6, 6, 6, 5]
   },
   {
     "id": "5c0d688c86f77413ae3407b2",
     "caption": "9x39mm BP gs",
-    "armorPenetrations": [6, 6, 6, 6, 5, 5]
+    "armorPenetrations": [6, 6, 6, 6, 6, 5]
   },
   {
     "id": "59e6658b86f77411d949b250",

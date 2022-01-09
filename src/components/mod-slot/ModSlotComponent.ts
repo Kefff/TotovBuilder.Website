@@ -1,10 +1,11 @@
-import { computed, defineComponent, inject, onMounted, onUnmounted, PropType, Ref, ref, watch } from 'vue'
+import { defineComponent, inject, onMounted, onUnmounted, PropType, Ref, ref, watch } from 'vue'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import { IItem } from '../../models/item/IItem'
 import { IModSlot } from '../../models/item/IModSlot'
 import Services from '../../services/repository/Services'
 import { ModSlotComponentService } from '../../services/components/ModSlotComponentService'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { PathUtils } from '../../utils/PathUtils'
 
 export default defineComponent({
   props: {
@@ -12,12 +13,12 @@ export default defineComponent({
       type: Object as PropType<IInventoryModSlot>,
       required: true
     },
-    modSlotPath: {
-      type: String,
-      required: true
-    },
     modSlot: {
       type: Object as PropType<IModSlot>,
+      required: true
+    },
+    path: {
+      type: String,
       required: true
     }
   },
@@ -29,7 +30,8 @@ export default defineComponent({
 
     const acceptedItems = ref<IItem[]>([])
     const categoryIds = ref<string[]>([])
-    const childModSlotPath = computed(() => props.modSlotPath + '/' + props.modSlot.name)
+
+    const itemPathPrefix = PathUtils.itemPrefix
 
     watch(() => props.modSlot, () => getItemComponentParameters())
 
@@ -67,8 +69,8 @@ export default defineComponent({
     return {
       acceptedItems,
       categoryIds,
-      childModSlotPath,
       editing,
+      itemPathPrefix,
       onItemChanged
     }
   }

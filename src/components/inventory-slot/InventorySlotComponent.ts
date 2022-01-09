@@ -14,6 +14,7 @@ import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { PathUtils } from '../../utils/PathUtils'
 
 export default defineComponent({
   components: {
@@ -29,6 +30,10 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: true
+    },
+    path: {
+      type: String,
+      required: true
     }
   },
   emits: ['update:modelValue', 'update:collapsed'],
@@ -58,6 +63,8 @@ export default defineComponent({
     const type = ref<IInventorySlotType>()
     const icon = ref<string>()
     const customIcon = ref<string>()
+
+    const itemPathPrefix = PathUtils.itemPrefix
 
     const ergonomics = ref<number | undefined>()
     const ergonomicsPercentageModifier = ref<number | undefined>()
@@ -130,11 +137,11 @@ export default defineComponent({
     }
 
     /**
-     * Checks if the item can be selected and emits the new value to the parent component.
+     * Checks if the item can be selected. Emits the new value to the parent component if it can be selected; otherwise puts back the old item.
      * @param index - Index of the changed item.
      */
     async function onItemChanged(index: number) {
-      const canSelect = await Services.get(InventorySlotComponentService).checkCompatibility(props.modelValue.typeId, items.value[index])
+      const canSelect = await Services.get(InventorySlotComponentService).checkCompatibility(props.modelValue.typeId, items.value[index], props.path + '_' + index)
 
       if (canSelect) {
         const updatedInventorySlot: IInventorySlot = {
@@ -260,6 +267,7 @@ export default defineComponent({
       ergonomicsPercentageModifier,
       horizontalRecoil,
       icon,
+      itemPathPrefix,
       items,
       onItemChanged,
       price,

@@ -25,10 +25,6 @@
   margin-right: auto;
 }
 
-.changelog-notification-icon {
-  color: var(--warning-color);
-}
-
 .changelog-notification-message {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -67,4 +63,5 @@
 
 .changelog-title {
   font-weight: bold;
+  letter-spacing: 1px;
 }

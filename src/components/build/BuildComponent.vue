@@ -191,42 +191,44 @@
     </div>
 
     <!-- Inventory slots -->
-    <div
-      v-if="!isLoading && !editing && isEmpty"
-      class="build-empty-message"
-    >
-      <div class="build-empty-message-text">
-        <p class="build-empty-message-line">
-          {{ $t('message.emptyBuild1') }}
-        </p>
-        <p class="build-empty-message-line">
-          {{ $t('message.emptyBuild2') }}
-          <Button
-            v-if="!editing"
-            class="build-empty-message-button"
-            @click="startEdit()"
-          >
-            <font-awesome-icon
-              icon="edit"
-              class="icon-before-text"
-            />
-            <span>{{ $t('caption.edit') }}</span>
-          </Button>
-          {{ $t('message.emptyBuild3') }}
-        </p>
+    <div v-show="!isLoading">
+      <div
+        v-if="!editing && isEmpty"
+        class="build-empty-message"
+      >
+        <div class="build-empty-message-text">
+          <p class="build-empty-message-line">
+            {{ $t('message.emptyBuild1') }}
+          </p>
+          <p class="build-empty-message-line">
+            {{ $t('message.emptyBuild2') }}
+            <Button
+              class="build-empty-message-button"
+              @click="startEdit()"
+            >
+              <font-awesome-icon
+                icon="edit"
+                class="icon-before-text"
+              />
+              <span>{{ $t('caption.edit') }}</span>
+            </Button>
+            {{ $t('message.emptyBuild3') }}
+          </p>
+        </div>
+      </div>
+      <div v-else>
+        <InventorySlot
+          v-for="(inventorySlot, index) of build.inventorySlots"
+          :key="path + '/' + inventorySlot.typeId"
+          v-model:modelValue="build.inventorySlots[index]"
+          v-model:collapsed="collapseStatuses[index]"
+          :path="path + '/' + inventorySlotPathPrefix + inventorySlot.typeId"
+          @update:modelValue="onInventorySlotChanged()"
+        />
       </div>
     </div>
-    <div v-else-if="!isLoading && build.inventorySlots.length > 0">
-      <InventorySlot
-        v-for="(inventorySlot, index) of build.inventorySlots"
-        :key="inventorySlot.typeId"
-        v-model:modelValue="build.inventorySlots[index]"
-        v-model:collapsed="collapseStatuses[index]"
-        @update:modelValue="onInventorySlotChanged()"
-      />
-    </div>
     <div
-      v-if="isLoading"
+      v-show="isLoading"
       class="build-loading"
     >
       <Loading />

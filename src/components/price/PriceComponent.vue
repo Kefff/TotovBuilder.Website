@@ -36,11 +36,12 @@
             </span>
           </div>
         </div>
-        <div
-          v-if="price.requiresQuest"
-          class="price-quest-required"
-        >
-          {{ $t('caption.questRequired') }}
+        <div v-if="price.requiresQuest">
+          <font-awesome-icon
+            icon="lock"
+            class="icon-before-text price-quest-required"
+          />
+          <span>{{ $t('caption.questRequired') }}</span>
         </div>
         <div v-if="showPriceInMainCurrency">
           {{ $t('caption.equalsTo') }} {{ price.valueInMainCurrency.toLocaleString() }}

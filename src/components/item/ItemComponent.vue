@@ -74,12 +74,12 @@
         <StatsSelector :item-id="selectedItem?.id" />
       </div>
       <div
-        v-if="selectedItemIsModdable && modSlotPathForChildren !== undefined"
+        v-if="selectedItemIsModdable"
         :class="selectedTab === SelectableTab.mods ? '' : 'tab-hidden'"
       >
         <ItemMods
           v-model="inventoryItem"
-          :mod-slot-path="modSlotPathForChildren"
+          :path="path + '/' + modSlotPathPrefix"
         />
       </div>
       <div
@@ -88,7 +88,7 @@
       >
         <ItemContent
           v-model="inventoryItem"
-          :mod-slot-path="modSlotPathForChildren"
+          :path="path + '/' + contentPathPrefix"
         />
       </div>
     </div>

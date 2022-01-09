@@ -6,6 +6,7 @@ import { ItemService } from '../../../services/ItemService'
 import { MerchantFilterService } from '../../../services/MerchantFilterService'
 import { NotificationService } from '../../../services/NotificationService'
 import Services from '../../../services/repository/Services'
+import { PathUtils } from '../../../utils/PathUtils'
 import Result, { FailureType } from '../../../utils/Result'
 
 describe('getAcceptedItems()', () => {
@@ -74,14 +75,14 @@ describe('checkCompatibility', () => {
   ])('should check compatibility of items selected in the inventory slot', async (inventorySlotTypeId: string, item: IInventoryItem | undefined, expected: boolean) => {
     // Arrange
     const compatibilityServiceMock = mock<CompatibilityService>()
-    when(compatibilityServiceMock.checkCompatibility(anything(), anyString()))
+    when(compatibilityServiceMock.checkCompatibility(anything(), anything(), anyString()))
       .thenReturn(Promise.resolve(expected ? Result.ok() : Result.fail(FailureType.hidden, undefined, 'Error')))
     Services.configure(CompatibilityService, undefined, instance(compatibilityServiceMock))
 
     const inventorySlotComponentService = new InventorySlotComponentService()
 
     // Act
-    const result = await inventorySlotComponentService.checkCompatibility(inventorySlotTypeId, item)
+    const result = await inventorySlotComponentService.checkCompatibility(inventorySlotTypeId, item, PathUtils.buildPrefix + '123456789/' + PathUtils.inventorySlotPrefix + inventorySlotTypeId)
 
     // Assert
     expect(result).toBe(expected)

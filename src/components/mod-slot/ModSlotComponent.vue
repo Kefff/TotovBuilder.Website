@@ -15,7 +15,7 @@
       v-model="modelValue.item"
       :accepted-items="acceptedItems"
       :category-ids="categoryIds"
-      :mod-slot-path="childModSlotPath"
+      :path="path + '/' + itemPathPrefix + (modelValue.item?.itemId ?? 'empty')"
       :max-stackable-amount="modSlot.maxStackableAmount"
       @update:modelValue="onItemChanged()"
     />

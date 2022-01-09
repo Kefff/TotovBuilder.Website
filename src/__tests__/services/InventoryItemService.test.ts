@@ -1841,11 +1841,11 @@ describe('getPresetModslotContainingItem', () => {
     [
       {
         content: [],
-        itemId: '5a6f5d528dc32e00094b97d9',
+        itemId: '5a6f5d528dc32e00094b97d9', // Glock rear sight
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
-      '1234-4568-9011/5b1fa9b25acfc40018633c01/mod_reciever/mod_sight_rear',
+      'build:1234-4568-9011/slot:holster_0/item:5b1fa9b25acfc40018633c01/mod:mod_reciever/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
       {
         item: {
           content: [],
@@ -1863,7 +1863,7 @@ describe('getPresetModslotContainingItem', () => {
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
-      '1234-4568-9011/5b1fa9b25acfc40018633c01/invalid/mod_sight_rear',
+      'build:1234-4568-9011/slot:holster_0/item:5b1fa9b25acfc40018633c01/mod:invalid/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
       undefined
     ],
     [
@@ -1873,7 +1873,7 @@ describe('getPresetModslotContainingItem', () => {
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
-      '1234-4568-9011/invalid/mod_reciever/mod_sight_rear',
+      'build:1234-4568-9011/slot:holster/item:invalid/mod:mod_sight_rear/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
       undefined
     ],
     [
@@ -1883,15 +1883,15 @@ describe('getPresetModslotContainingItem', () => {
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
-      '1234-4568-9011/5a6f5d528dc32e00094b97d9',
+      'build:1234-4568-9011/slot:holster_0/item:5b1fa9b25acfc40018633c01',
       undefined
     ]
-  ])('should get the preset mod slot that contains an item', async (item: IInventoryItem, modSlotPath: string, expected: IInventoryModSlot | undefined) => {
+  ])('should get the preset mod slot that contains an item', async (item: IInventoryItem, path: string, expected: IInventoryModSlot | undefined) => {
     // Arrange
     const service = new InventoryItemService()
 
     // Act
-    const result = await service.getPresetModslotContainingItem(item.itemId, modSlotPath)
+    const result = await service.getPresetModslotContainingItem(item.itemId, path)
 
     // Assert
     expect(result).toStrictEqual(expected)

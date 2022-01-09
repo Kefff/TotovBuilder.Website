@@ -23,9 +23,13 @@
 }
 
 .icon-after-text {
+  min-height: 1rem;
   margin-left: 0.25rem;
+  min-width: 1rem;
 }
 
 .icon-before-text {
+  min-height: 1rem;
   margin-right: 0.25rem;
+  min-width: 1rem;
 }

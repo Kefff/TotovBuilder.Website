@@ -1,4 +1,4 @@
-import { computed, defineComponent, inject, onMounted, onUnmounted, PropType, Ref, ref, watch } from 'vue'
+import { computed, defineComponent, inject, nextTick, onMounted, onUnmounted, PropType, Ref, ref, watch } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IItem } from '../../models/item/IItem'
 import { IMagazine } from '../../models/item/IMagazine'
@@ -7,6 +7,7 @@ import { ItemService } from '../../services/ItemService'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import Services from '../../services/repository/Services'
+import { PathUtils } from '../../utils/PathUtils'
 
 export default defineComponent({
   props: {
@@ -14,10 +15,9 @@ export default defineComponent({
       type: Object as PropType<IInventoryItem>,
       required: true
     },
-    modSlotPath: {
+    path: {
       type: String,
-      required: false,
-      default: undefined
+      required: true
     }
   },
   emits: ['update:modelValue'],
@@ -38,6 +38,8 @@ export default defineComponent({
     const itemToAdd = ref<IInventoryItem>()
     const canAddItem = computed(() => containerItem.value != undefined && (!isMagazine.value || props.modelValue.content.length === 0)) // item.value != undefined is required to avoid displaying the ItemComponent for children before the IItem data is retrieved.
     const maximumQuantity = computed(() => isMagazine.value ? (containerItem.value as IMagazine).capacity : undefined)
+
+    const itemPathPrefix = PathUtils.itemPrefix
 
     onMounted(() => initialize())
 
@@ -90,7 +92,12 @@ export default defineComponent({
       const newInventoryItem = props.modelValue
       newInventoryItem.content.push(newContainedInventoryItem)
 
-      emit('update:modelValue', newInventoryItem)
+      nextTick(() => {
+        // nextTick required in order to the emitting and the resetting of itemToAdd to work properly.
+        // Also the resetting of itemToAdd must happen after the emit.
+        emit('update:modelValue', newInventoryItem)
+        itemToAdd.value = undefined
+      })
     }
 
     /**
@@ -122,6 +129,7 @@ export default defineComponent({
       containerItem,
       editing,
       isMagazine,
+      itemPathPrefix,
       itemToAdd,
       maximumQuantity,
       onItemAdded,

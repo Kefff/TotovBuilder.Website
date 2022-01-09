@@ -13,7 +13,7 @@ export interface IConflictingItem {
   itemId: string,
 
   /**
-   * "Path" to the mod slot in which the item is.
+   * Path to the mod slot in which the item is.
    */
-  modSlotPath: string
+  path: string
 }

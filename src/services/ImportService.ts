@@ -31,8 +31,10 @@ export class ImportService {
    */
   public import(builds: IBuild[]): void {
     const buildService = Services.get(BuildService)
+    const importDate = new Date()
 
     for (const build of builds) {
+      build.lastExported = importDate
       buildService.add(build)
     }
   }

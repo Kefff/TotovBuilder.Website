@@ -103,11 +103,12 @@
       </template>
       <Item
         v-for="(item, index) of items"
-        :key="modelValue.typeId + '_' + index"
+        :key="path + '_' + index"
         v-model="items[index]"
         :accepted-items="acceptedItems"
         :category-ids="categoryIds"
         :can-be-looted="canBeLooted"
+        :path="path + '_' + index + '/' + itemPathPrefix + (item?.itemId ?? 'empty')"
         @update:modelValue="onItemChanged(index)"
       />
     </Panel>
