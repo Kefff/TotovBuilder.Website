@@ -86,7 +86,6 @@
         v-if="inventoryItem !== undefined && selectedItemIsContainer"
         :class="selectedTab === SelectableTab.content ? '' : 'tab-hidden'"
       >
-        content
         <ItemContent
           v-model="inventoryItem"
           :path="path + '/' + contentPathPrefix"
