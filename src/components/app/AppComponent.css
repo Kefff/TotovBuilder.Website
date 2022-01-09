@@ -1,11 +1,11 @@
 @import '../../assets/css/link.css';
 
 #app {
-  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
   display: flex;
   flex-direction: column;
+  font-family: var(--font-main);
   min-height: 100%;
   padding: 1rem;
 }
@@ -13,6 +13,7 @@
 html {
   margin: 0;
   padding: 0;
+  letter-spacing: 0.25px;
 }
 
 body {

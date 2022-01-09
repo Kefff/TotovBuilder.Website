@@ -5,10 +5,6 @@
   >
     <div>
       <div class="changelog-notification-element">
-        <font-awesome-icon
-          icon="exclamation-triangle"
-          class="changelog-notification-icon"
-        />
         <span class="changelog-notification-message">{{ $t('message.newVersion', { newVersion: currentVersion }) }}</span>
       </div>
       <div class="changelog-notification-element">

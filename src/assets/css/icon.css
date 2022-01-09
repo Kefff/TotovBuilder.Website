@@ -8,6 +8,7 @@
 }
 
 .custom-icon-after-text > img {
+  height: 1rem;
   margin-left: 0.25rem;
   width: 1rem;
 }
@@ -18,14 +19,19 @@
 }
 
 .custom-icon-before-text > img {
+  height: 1rem;
   margin-right: 0.25rem;
   width: 1rem;
 }
 
 .icon-after-text {
+  height: 1rem;
   margin-left: 0.25rem;
+  width: 1rem;
 }
 
 .icon-before-text {
+  height: 1rem;
   margin-right: 0.25rem;
+  width: 1rem;
 }

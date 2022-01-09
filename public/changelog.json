@@ -5,19 +5,35 @@
     "changes": [
       {
         "language": "en",
-        "text": "Improved internal code for better display performances."
+        "text": "Improved internal code for better performances."
+      },
+      {
+        "language": "en",
+        "text": "Improved text readability."
       },
       {
         "language": "en",
         "text": "Fixed imported builds that were being flagged as not exported."
       },
       {
+        "language": "en",
+        "text": "Fixed text alignment in item stats."
+      },
+      {
         "language": "fr",
-        "text": "Amélioration du code interne pour de meilleures performances d'affichage."
+        "text": "Amélioration du code interne pour de meilleures performances."
+      },
+      {
+        "language": "fr",
+        "text": "Amélioration de la lisibilité des textes."
       },
       {
         "language": "fr",
         "text": "Correction des équipements importés qui étaient marqués comme non exportés."
+      },
+      {
+        "language": "fr",
+        "text": "Correction de l'alignement des textes dans les statistiques des objets."
       }
     ]
   },
