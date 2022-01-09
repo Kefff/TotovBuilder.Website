@@ -40,7 +40,7 @@
         "text": "Changement du calcul de recul total des armes. Le modificateur de recul de la munition dans la chambre de l'arme est maintenant appliqué après le calcul du recul de l'arme avec ses mods au lieu d'être appliqué pendant ce calcul. Par exemple, un MP-133 standard avec Magnum buckshot a maintenant un recul vertical de 705 au lieu de 926."
       },
       {
-        "language": "en",
+        "language": "fr",
         "text": "Correction des messages d'incompatibilité entre objets qui ne s'affichaient pas."
       },
       {
