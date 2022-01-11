@@ -1,14 +1,17 @@
 <template>
-  <Button
-    v-if="!editing"
-    @click="share()"
-  >
-    <font-awesome-icon
-      icon="share-alt"
-      class="icon-before-text"
-    />
-    <span>{{ $t('caption.share') }}</span>
-  </Button>
+  <div>
+    <Button
+      v-if="!editing"
+      class="toolbar-button"
+      @click="share()"
+    >
+      <font-awesome-icon
+        icon="share-alt"
+        class="icon-before-text"
+      />
+      <span>{{ $t('caption.share') }}</span>
+    </Button>
+  </div>
 
   <Dialog
     v-model:visible="isSharing"

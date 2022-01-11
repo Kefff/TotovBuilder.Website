@@ -23,6 +23,6 @@
 }
 
 .inventory-price-missing-price-icon {
-  margin-left: 0.5rem;
+  margin-right: 1rem;
   color: var(--error-color);
 }

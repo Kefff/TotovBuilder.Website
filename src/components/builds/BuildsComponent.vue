@@ -12,7 +12,7 @@
           </Button>
           <Button
             v-tooltip.top="$t('caption.moreFunctionalities')"
-            class="p-button-text p-button-sm toolbar-button-discreet"
+            class="p-button-text p-button-sm button-discreet"
             @click="toggleAdvancedPanel"
           >
             <font-awesome-icon icon="cog" />

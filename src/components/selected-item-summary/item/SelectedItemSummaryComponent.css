@@ -9,7 +9,7 @@
   align-items: center;
   color: var(--error-color);
   display: flex;
-  margin-left: 0.25rem;
+  margin-right: 0.5rem;
 }
 
 .selected-item-summary-price-per-unit {

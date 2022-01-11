@@ -34,6 +34,7 @@ export default defineComponent({
     async function initialize() {
       const priceResult = await Services.get(InventoryItemService).getPrice({
         content: [],
+        ignorePrice: false,
         itemId: props.item.id,
         modSlots: [],
         quantity: 1

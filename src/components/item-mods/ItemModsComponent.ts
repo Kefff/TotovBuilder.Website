@@ -85,6 +85,7 @@ export default defineComponent({
 
       const newInventoryItem: IInventoryItem = {
         content: props.modelValue.content,
+        ignorePrice: props.modelValue.ignorePrice,
         itemId: props.modelValue.itemId,
         modSlots: inventoryModSlots.value,
         quantity: props.modelValue.quantity

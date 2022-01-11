@@ -6,23 +6,13 @@
   z-index: 1;
 }
 
-.toolbar button {
+.toolbar-button {
   height: 2.625rem;
   margin-right: 0.5rem;
 }
 
-.toolbar button:last-child {
+.toolbar-button:last-child {
   margin-right: 0;
-}
-
-.toolbar-button-discreet {
-  color: var(--text-color) !important;
-  font-size: 1rem;
-  margin-right: 0 !important;
-}
-
-.toolbar-button-discreet:hover {
-  color: var(--primary-color) !important;
 }
 
 .toolbar-center {

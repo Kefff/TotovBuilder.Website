@@ -100,6 +100,7 @@ export class ItemSortingFunctions implements ISortingFunctions {
     const inventoryItemService = Services.get(InventoryItemService)
     const priceResult = await inventoryItemService.getPrice({
       content: [],
+      ignorePrice: false,
       itemId: item.id,
       modSlots: [],
       quantity: 1

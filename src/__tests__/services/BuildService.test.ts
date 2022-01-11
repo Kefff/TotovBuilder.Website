@@ -20,17 +20,20 @@ const builds: IBuild[] = [
             content: [
               {
                 content: [],
+                ignorePrice: true,
                 itemId: '590c5d4b86f774784e1b9c45', // Iskra ration pack
                 modSlots: [],
                 quantity: 1
               },
               {
                 content: [],
+                ignorePrice: false,
                 itemId: '5448fee04bdc2dbc018b4567', // 0.6 liter water bottle
                 modSlots: [],
                 quantity: 1
               }
             ],
+            ignorePrice: false,
             itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
             modSlots: [],
             quantity: 1
@@ -42,6 +45,7 @@ const builds: IBuild[] = [
         items: [
           {
             content: [],
+            ignorePrice: false,
             itemId: '5c0e541586f7747fa54205c9', // 6B13 M assault armor (Tan)
             modSlots: [],
             quantity: 1
@@ -57,6 +61,7 @@ const builds: IBuild[] = [
         items: [
           {
             content: [],
+            ignorePrice: false,
             itemId: '5d5fca1ea4b93635fd598c07', // Crossbow tactical glasses
             modSlots: [],
             quantity: 1
@@ -68,6 +73,7 @@ const builds: IBuild[] = [
         items: [
           {
             content: [],
+            ignorePrice: false,
             itemId: '5ab8f39486f7745cd93a1cca', // Cold Fear Infrared balaclava
             modSlots: [],
             quantity: 1
@@ -79,11 +85,13 @@ const builds: IBuild[] = [
         items: [
           {
             content: [],
+            ignorePrice: false,
             itemId: '5c0e874186f7745dc7616606', // Maska-1Shch bulletproof helmet (Killa)
             modSlots: [
               {
                 item: {
                   content: [],
+                  ignorePrice: false,
                   itemId: '5c0e842486f77443a74d2976', // Maska-1Shch face shield (Killa)
                   modSlots: [],
                   quantity: 1
@@ -104,6 +112,7 @@ const builds: IBuild[] = [
         items: [
           {
             content: [],
+            ignorePrice: false,
             itemId: '544fb3f34bdc2d03748b456a', // Morphine injector
             modSlots: [],
             quantity: 1
@@ -111,12 +120,14 @@ const builds: IBuild[] = [
           undefined,
           {
             content: [],
+            ignorePrice: false,
             itemId: '5755383e24597772cb798966', // Vaseline balm
             modSlots: [],
             quantity: 1
           },
           {
             content: [],
+            ignorePrice: false,
             itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
             modSlots: [],
             quantity: 1
@@ -138,16 +149,19 @@ const builds: IBuild[] = [
             content: [
               {
                 content: [],
+                ignorePrice: false,
                 itemId: '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs "Igolnik"
                 modSlots: [],
                 quantity: 1
               }
             ],
+            ignorePrice: false,
             itemId: '5beed0f50db834001c062b12', // RPK-16 5.45x39 light machine gun
             modSlots: [
               {
                 item: {
                   content: [],
+                  ignorePrice: false,
                   itemId: '5beec8ea0db834001a6f9dbf', // AK-12 pistol grip
                   modSlots: [],
                   quantity: 1
@@ -157,16 +171,19 @@ const builds: IBuild[] = [
               {
                 item: {
                   content: [],
+                  ignorePrice: false,
                   itemId: '5beec91a0db834001961942d', // RPK-16 dust cover
                   modSlots: [
                     {
                       item: {
                         content: [],
+                        ignorePrice: false,
                         itemId: '5beec9450db83400970084fd', // RPK-16 rear sight base
                         modSlots: [
                           {
                             item: {
                               content: [],
+                              ignorePrice: false,
                               itemId: '5bf3f59f0db834001a6fa060', // RPK-16 rear sight
                               modSlots: [],
                               quantity: 1
@@ -188,11 +205,13 @@ const builds: IBuild[] = [
                   content: [
                     {
                       content: [],
+                      ignorePrice: false,
                       itemId: '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs "Igolnik"
                       modSlots: [],
                       quantity: 95
                     }
                   ],
+                  ignorePrice: false,
                   itemId: '5bed625c0db834001c062946', // RPK-16 5.45x39 95-round drum magazine
                   modSlots: [],
                   quantity: 1
@@ -202,11 +221,13 @@ const builds: IBuild[] = [
               {
                 item: {
                   content: [],
+                  ignorePrice: false,
                   itemId: '5beec8b20db834001961942a', // RPK-16 buffer tube
                   modSlots: [
                     {
                       item: {
                         content: [],
+                        ignorePrice: false,
                         itemId: '5beec8c20db834001d2c465c', // AK-12 stock
                         modSlots: [],
                         quantity: 1
@@ -221,11 +242,13 @@ const builds: IBuild[] = [
               {
                 item: {
                   content: [],
+                  ignorePrice: false,
                   itemId: '5beec3e30db8340019619424', // RPK-16 handguard
                   modSlots: [
                     {
                       item: {
                         content: [],
+                        ignorePrice: false,
                         itemId: '5beecbb80db834001d2c465e', // RPK-16 handguard rail
                         modSlots: [],
                         quantity: 1
@@ -235,6 +258,7 @@ const builds: IBuild[] = [
                     {
                       item: {
                         content: [],
+                        ignorePrice: false,
                         itemId: '5beecbb80db834001d2c465e', // RPK-16 handguard rail
                         modSlots: [],
                         quantity: 1
@@ -249,11 +273,13 @@ const builds: IBuild[] = [
               {
                 item: {
                   content: [],
+                  ignorePrice: false,
                   itemId: '5beec1bd0db834001e6006f3', // RPK-16 5.45x39 15 inch barrel
                   modSlots: [
                     {
                       item: {
                         content: [],
+                        ignorePrice: false,
                         itemId: '5beec3420db834001b095429', // RPK-16 5.45x39 muzzle brake \u0026 compensator
                         modSlots: [],
                         quantity: 1
@@ -299,6 +325,7 @@ const builds: IBuild[] = [
         items: [
           {
             content: [],
+            ignorePrice: false,
             itemId: '5e4d34ca86f774264f758330', // Walker's Razor Digital headset"
             modSlots: [],
             quantity: 1
@@ -324,21 +351,25 @@ const builds: IBuild[] = [
             content: [
               {
                 content: [],
+                ignorePrice: false,
                 itemId: '5efb0da7a29a85116f6ea05f', // 9x19 mm 7N31"
                 modSlots: [],
                 quantity: 1
               }
             ],
+            ignorePrice: false,
             itemId: '5cadc190ae921500103bb3b6', // Beretta M9A3 9x19 pistol
             modSlots: [
               {
                 item: {
                   content: [],
+                  ignorePrice: false,
                   itemId: '5cadc1c6ae9215000f2775a4', // Threaded barrel for M9A3 9x19"
                   modSlots: [
                     {
                       item: {
                         content: [],
+                        ignorePrice: false,
                         itemId: '5c6165902e22160010261b28', // Sig SRD 9 9x19mm sound suppressor"
                         modSlots: [],
                         quantity: 1
@@ -353,6 +384,7 @@ const builds: IBuild[] = [
               {
                 item: {
                   content: [],
+                  ignorePrice: false,
                   itemId: '5cadc431ae921500113bb8d5', // Polymer pistol grip for M9A3
                   modSlots: [],
                   quantity: 1
@@ -362,11 +394,13 @@ const builds: IBuild[] = [
               {
                 item: {
                   content: [],
+                  ignorePrice: false,
                   itemId: '5cadc55cae921500103bb3be', // M9A3 Slide"
                   modSlots: [
                     {
                       item: {
                         content: [],
+                        ignorePrice: false,
                         itemId: '5cadd940ae9215051e1c2316', // Beretta M9A3 Standard Rearsight"
                         modSlots: [],
                         quantity: 1
@@ -376,6 +410,7 @@ const builds: IBuild[] = [
                     {
                       item: {
                         content: [],
+                        ignorePrice: false,
                         itemId: '5cadd919ae921500126a77f3', // M9A3 Standard Frontsight"
                         modSlots: [],
                         quantity: 1
@@ -392,11 +427,13 @@ const builds: IBuild[] = [
                   content: [
                     {
                       content: [],
+                      ignorePrice: false,
                       itemId: '5efb0da7a29a85116f6ea05f', // 9x19 mm 7N31"
                       modSlots: [],
                       quantity: 17
                     }
                   ],
+                  ignorePrice: false,
                   itemId: '5cadc2e0ae9215051e1c21e7', // M9A3 9x19 17-round magazine"
                   modSlots: [],
                   quantity: 1
@@ -406,6 +443,7 @@ const builds: IBuild[] = [
               {
                 item: {
                   content: [],
+                  ignorePrice: false,
                   itemId: '5cc9c20cd7f00c001336c65d', // NcSTAR Tactical blue laser LAM-Module"
                   modSlots: [],
                   quantity: 1
@@ -426,6 +464,7 @@ const builds: IBuild[] = [
         items: [
           {
             content: [],
+            ignorePrice: false,
             itemId: '544a11ac4bdc2d470e8b456a', // Alpha Container
             modSlots: [],
             quantity: 1
@@ -437,6 +476,7 @@ const builds: IBuild[] = [
         items: [
           {
             content: [],
+            ignorePrice: false,
             itemId: '5bffdc370db834001d23eca8', // 6h5 Bayonet"
             modSlots: [],
             quantity: 1
@@ -454,11 +494,13 @@ const builds: IBuild[] = [
             content: [
               {
                 content: [],
+                ignorePrice: false,
                 itemId: '544fb45d4bdc2dee738b4568', // Salewa FIRST AID KIT (400/400)"
                 modSlots: [],
                 quantity: 1
               }
             ],
+            ignorePrice: false,
             itemId: '572b7adb24597762ae139821', // Scav Vest"
             modSlots: [],
             quantity: 1
@@ -504,11 +546,13 @@ const newBuild: IBuild = {
       items: [
         {
           content: [],
+          ignorePrice: false,
           itemId: '59e7711e86f7746cae05fbe1', // Kolpak-1S riot helmet
           modSlots: [
             {
               item: {
                 content: [],
+                ignorePrice: false,
                 itemId: '5ac4c50d5acfc40019262e87', // K1S Visor
                 modSlots: [],
                 quantity: 1
@@ -639,6 +683,7 @@ describe('create()', () => {
         items: [
           {
             content: [],
+            ignorePrice: false,
             itemId: '544a11ac4bdc2d470e8b456a',
             modSlots: [],
             quantity: 1
@@ -650,6 +695,7 @@ describe('create()', () => {
         items: [
           {
             content: [],
+            ignorePrice: false,
             itemId: '54491bb74bdc2d09088b4567',
             modSlots: [],
             quantity: 1
@@ -673,6 +719,7 @@ describe('create()', () => {
         items: [
           {
             content: [],
+            ignorePrice: false,
             itemId: '5f4f9eb969cdc30ff33f09db',
             modSlots: [],
             quantity: 1
@@ -725,6 +772,7 @@ describe('fromSharableString()', () => {
                 {
                   'item': {
                     'content': [],
+                    'ignorePrice': false,
                     'itemId': '574dad8024597745964bf05c',
                     'modSlots': [],
                     'quantity': 1
@@ -734,6 +782,7 @@ describe('fromSharableString()', () => {
                 {
                   'item': {
                     'content': [],
+                    'ignorePrice': false,
                     'itemId': '574db213245977459a2f3f5d',
                     'modSlots': [],
                     'quantity': 1
@@ -806,11 +855,13 @@ describe('fromSharableString()', () => {
               'content': [
                 {
                   'content': [],
+                  'ignorePrice': false,
                   'itemId': '5448fee04bdc2dbc018b4567',
                   'modSlots': [],
                   'quantity': 1
                 }
               ],
+              'ignorePrice': false,
               'itemId': '5c0e805e86f774683f3dd637',
               'modSlots': [],
               'quantity': 1
@@ -822,6 +873,7 @@ describe('fromSharableString()', () => {
           'items': [
             {
               'content': [],
+              'ignorePrice': false,
               'itemId': '544a11ac4bdc2d470e8b456a',
               'modSlots': [],
               'quantity': 1
@@ -833,6 +885,7 @@ describe('fromSharableString()', () => {
           'items': [
             {
               'content': [],
+              'ignorePrice': false,
               'itemId': '54491bb74bdc2d09088b4567',
               'modSlots': [],
               'quantity': 1
@@ -862,6 +915,7 @@ describe('fromSharableString()', () => {
           'items': [
             {
               'content': [],
+              'ignorePrice': false,
               'itemId': '5f4f9eb969cdc30ff33f09db',
               'modSlots': [],
               'quantity': 1
@@ -1339,7 +1393,8 @@ describe('reduceBuildForSharing()', () => {
             {
               'c': [
                 {
-                  'i': '590c5d4b86f774784e1b9c45'
+                  'i': '590c5d4b86f774784e1b9c45',
+                  'p': ''
                 },
                 {
                   'i': '5448fee04bdc2dbc018b4567'
@@ -1546,7 +1601,7 @@ describe('toSharableURL()', () => {
 
     // Assert
     expect(sharableStringResult.success).toBe(true)
-    expect(sharableStringResult.value).toBe('localhost:3000/s/XQAAAAJWBAAAAAAAAABAqEppdBKy3f9hYmtZKBw8Joeli8FtL5waAEplna0rFgADy4_8ImRJxYWmyKvWKrcuqwBMuD6JgBRc_OQ7V68-e1w_a2jQYTHoQxTNQa0pXq4o6OrQgz-ptjW_JcXZj1ooUSZQxN41WKXr4VXBq3XiV2mnRXGNsld0AjZD-6T5thrMAohGxgkgPIZ8O_rqmk0RAbLm_U_DXzcQRL4KVrb0Wr1nRfrSdCymZUY4Rkn-uzoqICwPIUUWqArjFNHYVswpQP1JMDL87Rb95HVgIEEaFNh74N1YUyX5OyYG2AjYEFAD4ErBeUhY4ZDOugnMbozp5D5LGk1hlx0dihWMLO9hqJmF53BGX3ydwzJEoKSKNORMRcGMzL_QCmS6eKFXvbCe1cOGBfZyc9h7gZRBNhNqRWtoqSUjt4Z8lkKKtidw5QDAUxoUoGVSZnqxzsAOL2QnsWuViOlTQ0GfJZCf7FmDx69BPxoGbM3BCXD3iUzFU9UW-t5iVVATryxsJYRWsTuhDN-huBXSSvTLpP7SJUb3V-h8Imm52_V-qVDUCcp_P-dMLd-FO4ziGtTgtDzjes9HcPtXu2bzSDp4X-Esw857JDl-3X8t54aJS9zh8-jxS-FWzFamSXxK2-crGCCOfvfNwaQOJQa4bNH9CnV89XN9tA_gMRlyOw5mgQx-Mo3PTiPbsLMtqoG6kDyGgEtN41RFu7kWsPSuyXRQFwWXKZnD_-9ExU8')
+    expect(sharableStringResult.value).toBe('localhost:3000/s/XQAAAAJZBAAAAAAAAABAqEppdBKy3f9hYmtZKBw8Joeli8FtL5waAEplna0rFgADy4_8ImRJxYWmyKvWKrcuqwWhG0JWyr15sJhgVOju9ClVcH4BUJZykDiL7Ni2PtU2rYo_Vd2toxUi3kUgG_HtnD-Ai5EIhjmCuDYW1c7ORdEJQa4cyCTB4511JDdbtw8mUXOl8-l64qAEMTWf18rPzYOsAAAAa4KjUDMwABw3nqV_KnZmDvBow0FLrin0_ZPM2iMlLSsnwrYv-uAk6_vzxRVPLvHh3F1Xnb3PZh0ln43gwFZgOkb_w8a2_bg2u01chuGpHWDiiM9bhrZRMridaoKIOdwHCAxd8wYXAMcp1uFoILmfOS-XrEkukfnQd0o9BhQUobQJcvJLIhGV43B9pSvzRt0-Pu79pBetXcqwLJ0mRmjOcFUYcELHqWdUPz81JU0xJ7b6MssXB5vpSYoIeDjrFWRIM5_6juiBUyCW9-mAzhm_PmMZOKk47Vcts0Yp2AFsE48STp1wAEPq8jEOaXgJcnx65-7Z7Ddl5fDGZlkSzEm_3nDYA63QbjQWdAj4hfuJygzaiO6ePX_kfW4H9HaADHIaZv7LAePr1woyvnZ4hp1Fir_rRUp_o5NocBTqHjkSE60Yq3yuNqh_3voRtX4QeIVrAd_f8t08riNm58sKxe4_ocTLYnw19eh3OJYD_l0RAiSlimYmrjgmQsZowKRjiYyTnmPEcMAZ_fS28KX9sM_l')
   })
 
   it('should fail when an error occurs while reducing the build', async () => {

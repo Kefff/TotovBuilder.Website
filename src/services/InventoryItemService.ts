@@ -208,7 +208,7 @@ export class InventoryItemService {
       valueInMainCurrency: 0
     }
 
-    const unitPriceIgnored = !canBeLooted || (presetModSlotItem?.itemId === inventoryItem.itemId)
+    const unitPriceIgnored = !canBeLooted || inventoryItem.ignorePrice || (presetModSlotItem?.itemId === inventoryItem.itemId)
 
     if (!unitPriceIgnored) {
       for (const price of merchantFilterService.getMatchingPrices(itemResult.value)) {
