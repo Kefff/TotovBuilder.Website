@@ -59,7 +59,7 @@
           <ShareBuild :build="build" />
           <Button
             v-tooltip.top="$t('caption.moreFunctionalities')"
-            class="p-button-text p-button-sm button-discreet"
+            class="p-button-text p-button-sm button-discreet build-functionalities-button"
             @click="toggleAdvancedPanel"
           >
             <font-awesome-icon icon="cog" />

@@ -383,8 +383,16 @@ export class ItemService {
    */
   private async updateItemsMarketData(marketDataResult: Result<Record<string, unknown>[]>) {
     if (!marketDataResult.success) {
+      Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.cannotFetchPrices'), true)
+
       this.marketData = []
-      this.lastMarketDataFetchDate = new Date(1)
+
+      // When an error occurs, we set the last fetch date in order to make the cache expire in 20 seconds later.
+      // This is to avoid making a new API request for each of the 2000+ items.
+      const maxCacheDuration = Number(Configuration.VITE_CACHE_DURATION)
+      const fetchTimeout = Number(Configuration.VITE_FETCH_TIMEOUT)
+      this.lastMarketDataFetchDate = new Date()
+      this.lastMarketDataFetchDate = new Date(this.lastMarketDataFetchDate.getTime() + (maxCacheDuration - (2 * fetchTimeout)) * 1000)
 
       return
     }

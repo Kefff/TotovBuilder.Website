@@ -1,5 +1,5 @@
 {
-  "VITE_API_URL": "",
+  "VITE_API_URL": "http://localhost:7071/api/",
   "VITE_BUILD_KEY_PREFIX": "build_",
   "VITE_BUILD_SHARING_URL": "localhost:3000/s/",
   "VITE_BUILDS_SORT_FIELD_KEY": "builds_sort_field",

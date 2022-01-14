@@ -52,6 +52,10 @@
   margin-right: auto;
 }
 
+.build-functionalities-button {
+  margin-left: 0.25rem;
+}
+
 .build-loading {
   margin-top: 3rem;
 }

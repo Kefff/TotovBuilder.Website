@@ -4,6 +4,7 @@
 .selected-item-functionalities-button {
   display: flex;
   justify-content: center;
+  margin-left: 0.25rem;
   margin-right: 2rem;
 }
 

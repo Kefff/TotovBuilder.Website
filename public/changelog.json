@@ -1,5 +1,27 @@
 [
   {
+    "version": "1.3.0",
+    "date": "2022-01-15T00:00:00+01:00",
+    "changes": [
+      {
+        "language": "en",
+        "text": "Added the ability to manually ignore the price of items. To do so, edit a build, click on the \"Cog\" icon next to an item and check \"Ignore price\"."
+      },
+      {
+        "language": "en",
+        "text": "Added a message when an error occurs while fetching prices."
+      },
+      {
+        "language": "fr",
+        "text": "Ajout de la possibilité d'ignorer manuellement le prix des objets. Pour ce faire, modifier un équipement, cliquer sur l'icône \"Roue crantée\" à côté d'un objet et cocher \"Ignorer le prix\"."
+      },
+      {
+        "language": "en",
+        "text": "Ajout d'un message lorsque qu'une erreur se produit pendant la récupération des prix."
+      }
+    ]
+  },
+  {
     "version": "1.2.0",
     "date": "2022-01-07T00:00:00+01:00",
     "changes": [
