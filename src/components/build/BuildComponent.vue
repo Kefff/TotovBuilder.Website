@@ -134,7 +134,10 @@
               />
             </div>
             <div class="build-toolbar-summary-value">
-              <InventoryPrice :inventory-price="summary.price" />
+              <InventoryPrice
+                :inventory-price="summary.price"
+                :show-space-for-icon="false"
+              />
             </div>
             <div
               v-tooltip.top="$t('caption.weight')"

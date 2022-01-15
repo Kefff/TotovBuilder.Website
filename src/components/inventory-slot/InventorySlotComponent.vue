@@ -81,7 +81,10 @@
               />
             </div>
             <div class="option-entry inventory-slot-summary-price">
-              <InventoryPrice :inventory-price="price" />
+              <InventoryPrice
+                :inventory-price="price"
+                :show-space-for-icon="true"
+              />
             </div>
             <div
               v-tooltip.top="$t('caption.weight')"
