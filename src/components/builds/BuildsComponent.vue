@@ -63,11 +63,11 @@
         />
         <span>{{ $t('caption.import') }}</span>
       </div>
-      <div class="builds-advanced-panel-item">
+      <div class="builds-advanced-panel-item builds-advanced-panel-special-item">
         <LanguageSelector />
       </div>
       <div
-        class="builds-advanced-panel-item builds-merchant-filter"
+        class="builds-advanced-panel-item builds-advanced-panel-special-item"
       >
         <MerchantFilter />
       </div>

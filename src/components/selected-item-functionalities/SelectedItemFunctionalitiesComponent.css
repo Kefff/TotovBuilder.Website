@@ -40,3 +40,7 @@
 .selected-item-functionalities-panel-ignore-price {
   cursor: initial !important;
 }
+
+.selected-item-functionalities-panel-ignore-price-text {
+  cursor: pointer;
+}

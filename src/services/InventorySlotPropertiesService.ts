@@ -6,6 +6,7 @@ import InventorySlotTypes from '../assets/data/inventory-slot-types.json'
 import vueI18n from '../plugins/vueI18n'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { ItemService } from './ItemService'
+import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 
 /**
  * Represents a service responsible for managing properties of an inventory slot.
@@ -123,7 +124,8 @@ export class InventorySlotPropertiesService {
         requiresQuest: false,
         value: 0,
         valueInMainCurrency: 0
-      }
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
     }
 
     for (const inventoryItem of inventorySlot.items) {

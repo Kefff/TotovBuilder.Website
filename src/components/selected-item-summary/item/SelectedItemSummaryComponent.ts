@@ -1,6 +1,7 @@
 import { defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import { IInventoryItem } from '../../../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../../../models/build/IInventoryModSlot'
+import { IgnoredUnitPrice } from '../../../models/utils/IgnoredUnitPrice'
 import { IInventoryPrice } from '../../../models/utils/IInventoryPrice'
 import { IWeight } from '../../../models/utils/IWeight'
 import { InventoryItemService } from '../../../services/InventoryItemService'
@@ -63,7 +64,8 @@ export default defineComponent({
         requiresQuest: false,
         value: 0,
         valueInMainCurrency: 0
-      }
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
     })
     const weight = ref<IWeight>({
       weight: 0,
@@ -137,6 +139,7 @@ export default defineComponent({
     }
 
     return {
+      IgnoredUnitPrice,
       price,
       weight
     }

@@ -12,20 +12,6 @@
   margin-right: auto;
 }
 
-.welcome-actions {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin-top: 1rem;
-}
-
-.welcome-actions-list {
-  display: flex;
-  flex-direction: column;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .welcome-action {
   display: flex;
   flex-direction: column;
@@ -34,6 +20,20 @@
 
 .welcome-action:last-child {
   margin-bottom: 0;
+}
+
+.welcome-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 3rem;
+}
+
+.welcome-actions-list {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .welcome-builder {
@@ -54,7 +54,7 @@
 }
 
 .welcome-warning {
-  margin-top: 2.25rem;
+  margin-top: 3rem;
   font-size: 1rem;
 }
 

@@ -12,6 +12,7 @@ import { ICurrency } from '../../models/item/ICurrency'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import Services from '../../services/repository/Services'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 
 const inventoryItem: IInventoryItem = {
   content: [
@@ -510,7 +511,8 @@ describe('getPrice()', () => {
           requiresQuest: false,
           value: 22836,
           valueInMainCurrency: 22836
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
     ],
     [
@@ -557,7 +559,8 @@ describe('getPrice()', () => {
           requiresQuest: false,
           value: 68,
           valueInMainCurrency: 68
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
     ],
     [
@@ -631,7 +634,8 @@ describe('getPrice()', () => {
           requiresQuest: false,
           value: 0,
           valueInMainCurrency: 0
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notLootable
       } as IInventoryPrice
     ],
     [
@@ -697,7 +701,8 @@ describe('getPrice()', () => {
           requiresQuest: false,
           value: 43905,
           valueInMainCurrency: 43905
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
     ],
     [
@@ -760,7 +765,8 @@ describe('getPrice()', () => {
           requiresQuest: false,
           value: 0,
           valueInMainCurrency: 0
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.manuallyIgnored
       } as IInventoryPrice
     ]
   ])(
@@ -843,7 +849,8 @@ describe('getPrice()', () => {
           requiresQuest: false,
           value: 42938,
           valueInMainCurrency: 42938
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
     ],
     [
@@ -911,7 +918,8 @@ describe('getPrice()', () => {
           requiresQuest: false,
           value: 42938,
           valueInMainCurrency: 42938
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
     ],
     [
@@ -979,7 +987,8 @@ describe('getPrice()', () => {
           requiresQuest: false,
           value: 42938,
           valueInMainCurrency: 42938
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
     ],
     [
@@ -1055,7 +1064,8 @@ describe('getPrice()', () => {
           requiresQuest: false,
           value: 63456,
           valueInMainCurrency: 63456
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
     ]
   ])('should get the price of an inventory item and ignore items present in the item preset',
@@ -1139,7 +1149,8 @@ describe('getPrice()', () => {
         requiresQuest: false,
         value: 8917,
         valueInMainCurrency: 8917
-      }
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
     })
 
     // Clean
@@ -1181,7 +1192,8 @@ describe('getPrice()', () => {
           requiresQuest: false,
           value: 0,
           valueInMainCurrency: 0
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
     ],
     [
@@ -1235,7 +1247,8 @@ describe('getPrice()', () => {
           requiresQuest: false,
           value: 22836,
           valueInMainCurrency: 22836
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
     ],
     [
@@ -1292,7 +1305,8 @@ describe('getPrice()', () => {
           requiresQuest: false,
           value: 23869,
           valueInMainCurrency: 23869
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
     ]
   ])('should have a missing price when no merchants sell the item', async (inventoryItem: IInventoryItem, expected: IInventoryPrice) => {

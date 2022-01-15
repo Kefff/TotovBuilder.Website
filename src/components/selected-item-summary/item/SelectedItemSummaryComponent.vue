@@ -5,16 +5,23 @@
       <div class="selected-item-summary-right">
         <div>
           <div
+            v-if="price.unitPriceIgnoreStatus === IgnoredUnitPrice.manuallyIgnored"
+            v-tooltip.top="$t('caption.ignoredPrice_' + price.unitPriceIgnoreStatus)"
+            class="selected-item-summary-price-ignored-price-icon"
+          >
+            <font-awesome-icon icon="minus" />
+          </div>
+          <Price
+            v-if="preset === undefined && price.price.valueInMainCurrency > 0"
+            :price="price.price"
+          />
+          <div
             v-if="price.missingPrice"
             v-tooltip.top="$t('message.missingPrice')"
             class="selected-item-summary-price-missing-price-icon"
           >
             <font-awesome-icon icon="exclamation-triangle" />
           </div>
-          <Price
-            v-if="preset === undefined && price.price.valueInMainCurrency > 0"
-            :price="price.price"
-          />
           <div
             v-tooltip.top="$t('caption.weight')"
             class="selected-item-summary-weight"

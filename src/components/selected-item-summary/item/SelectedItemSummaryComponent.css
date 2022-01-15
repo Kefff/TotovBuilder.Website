@@ -5,11 +5,20 @@
   flex-grow: 1;
 }
 
+.selected-item-summary-price-ignored-price-icon {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 2rem;
+}
+
 .selected-item-summary-price-missing-price-icon {
   align-items: center;
   color: var(--error-color);
   display: flex;
-  margin-right: 0.5rem;
+  justify-content: center;
+  margin-left: 0.5rem;
+  width: 2rem;
 }
 
 .selected-item-summary-price-per-unit {

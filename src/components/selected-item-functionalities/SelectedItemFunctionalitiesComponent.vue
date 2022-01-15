@@ -19,7 +19,10 @@
         :binary="true"
         class="selected-item-functionalities-panel-item-icon"
       />
-      <span>{{ $t('caption.ignorePrice') }}</span>
+      <span
+        class="selected-item-functionalities-panel-ignore-price-text"
+        @click="ignorePriceValue = !ignorePriceValue"
+      >{{ $t('caption.ignorePrice') }}</span>
     </div>
     <div
       v-for="tabButton of tabButtons"

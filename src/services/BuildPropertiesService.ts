@@ -13,6 +13,7 @@ import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { InventoryItemService } from './InventoryItemService'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { PathUtils } from '../utils/PathUtils'
+import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 
 /**
  * Represents a service responsible for managing properties of a build.
@@ -308,7 +309,8 @@ export class BuildPropertiesService {
         requiresQuest: false,
         value: 0,
         valueInMainCurrency: 0
-      }
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
     }
 
     for (const inventorySlot of build.inventorySlots) {
@@ -424,7 +426,8 @@ export class BuildPropertiesService {
           requiresQuest: false,
           value: 0,
           valueInMainCurrency: 0
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       },
       verticalRecoil: undefined,
       weight: 0

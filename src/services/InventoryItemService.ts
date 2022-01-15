@@ -20,6 +20,7 @@ import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IPrice } from '../models/utils/IPrice'
 import { MerchantFilterService } from './MerchantFilterService'
 import { PathUtils } from '../utils/PathUtils'
+import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 
 /**
  * Represents a service responsible for managing inventory items.
@@ -208,9 +209,17 @@ export class InventoryItemService {
       valueInMainCurrency: 0
     }
 
-    const unitPriceIgnored = !canBeLooted || inventoryItem.ignorePrice || (presetModSlotItem?.itemId === inventoryItem.itemId)
+    let unitPriceIgnoreStatus = IgnoredUnitPrice.notIgnored
 
-    if (!unitPriceIgnored) {
+    if (!canBeLooted) {
+      unitPriceIgnoreStatus = IgnoredUnitPrice.notLootable
+    } else if (presetModSlotItem?.itemId === inventoryItem.itemId) {
+      unitPriceIgnoreStatus = IgnoredUnitPrice.inPreset
+    } else if (inventoryItem.ignorePrice) {
+      unitPriceIgnoreStatus = IgnoredUnitPrice.manuallyIgnored
+    }
+
+    if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
       for (const price of merchantFilterService.getMatchingPrices(itemResult.value)) {
         if (unitPrice.valueInMainCurrency === 0 || price.valueInMainCurrency < unitPrice.valueInMainCurrency) {
           unitPrice = price
@@ -234,7 +243,7 @@ export class InventoryItemService {
     }
 
     const inventoryPrice: IInventoryPrice = {
-      missingPrice: !unitPriceIgnored && !merchantFilterService.hasMatchingPrices(itemResult.value, false),
+      missingPrice: unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored && !merchantFilterService.hasMatchingPrices(itemResult.value, false),
       price,
       pricesWithContent: [],
       priceWithContentInMainCurrency: {
@@ -245,7 +254,8 @@ export class InventoryItemService {
         value: price.valueInMainCurrency,
         valueInMainCurrency: price.valueInMainCurrency
       },
-      unitPrice
+      unitPrice,
+      unitPriceIgnoreStatus
     }
 
     if (price.valueInMainCurrency > 0) {

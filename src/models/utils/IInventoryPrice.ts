@@ -1,9 +1,11 @@
+import { IgnoredUnitPrice } from './IgnoredUnitPrice'
 import { IPrice } from './IPrice'
 
 /**
  * Provides the functionalities of an inventory price.
  */
 export interface IInventoryPrice {
+
   /**
    * Indicates whether the price or one of its components is missing due to the merchant filters.
    */
@@ -28,4 +30,9 @@ export interface IInventoryPrice {
    * Unit price.
    */
   unitPrice: IPrice
+
+  /**
+   * Status indicating why the unit price is ignored.
+   */
+  unitPriceIgnoreStatus: IgnoredUnitPrice
 }
