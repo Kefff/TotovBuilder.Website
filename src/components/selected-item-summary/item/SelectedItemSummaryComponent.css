@@ -22,6 +22,10 @@
 }
 
 .selected-item-summary-price-per-unit {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   font-size: 0.85rem;
   margin-right: 2.5rem;
 }
@@ -33,7 +37,14 @@
   margin-left: auto;
 }
 
-.selected-item-summary-right > div {
+.selected-item-summary-right-price {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  height: 2rem;
+}
+
+.selected-item-summary-right-unit-price {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
