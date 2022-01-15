@@ -16,7 +16,7 @@
         "text": "Ajout de la possibilité d'ignorer manuellement le prix des objets. Pour ce faire, modifier un équipement, cliquer sur l'icône \"Roue crantée\" à côté d'un objet et cocher \"Ignorer le prix\"."
       },
       {
-        "language": "en",
+        "language": "fr",
         "text": "Ajout d'un message lorsque qu'une erreur se produit pendant la récupération des prix."
       }
     ]

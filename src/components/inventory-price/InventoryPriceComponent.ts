@@ -1,4 +1,4 @@
-import { defineComponent, onMounted, PropType, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { ICurrency } from '../../models/item/ICurrency'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { ItemService } from '../../services/ItemService'
@@ -14,6 +14,11 @@ export default defineComponent({
     inventoryPrice: {
       type: Object as PropType<IInventoryPrice>,
       required: true
+    },
+    showSpaceForIcon: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   setup: (props) => {
@@ -21,6 +26,14 @@ export default defineComponent({
     const mainCurrency = ref<ICurrency>()
     const priceInMainCurrency = ref(0)
     const priceInMainCurrencyPanel = ref()
+
+    const missingPriceIconClass = computed(() => {
+      if (!props.showSpaceForIcon) {
+        return 'inventory-price-missing-price-icon-no-width'
+      } else {
+        return 'inventory-price-missing-price-icon'
+      }
+    })
 
     watch(() => props.inventoryPrice, () => initialize())
 
@@ -60,6 +73,7 @@ export default defineComponent({
 
     return {
       mainCurrency,
+      missingPriceIconClass,
       priceInMainCurrency,
       priceInMainCurrencyPanel,
       togglePriceInMainCurrencyPanel

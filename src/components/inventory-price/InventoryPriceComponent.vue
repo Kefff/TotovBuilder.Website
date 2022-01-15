@@ -21,7 +21,7 @@
     </div>
     <div
       v-tooltip.top="$t('message.missingPrice')"
-      class="inventory-price-missing-price-icon"
+      :class="missingPriceIconClass"
     >
       <font-awesome-icon
         v-if="inventoryPrice.missingPrice"

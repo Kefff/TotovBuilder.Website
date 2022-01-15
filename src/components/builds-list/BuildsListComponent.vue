@@ -147,7 +147,10 @@
       </template>
       <template #body="{data}">
         <div class="build-list-column">
-          <InventoryPrice :inventory-price="data.price" />
+          <InventoryPrice
+            :inventory-price="data.price"
+            :show-space-for-icon="false"
+          />
         </div>
       </template>
     </Column>
