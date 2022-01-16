@@ -3,7 +3,14 @@
     <div class="option-line">
       <slot />
       <div class="selected-item-summary-right">
-        <div>
+        <div class="selected-item-summary-right-price">
+          <div
+            v-if="price.unitPriceIgnoreStatus === IgnoredUnitPrice.manuallyIgnored"
+            v-tooltip.top="$t('caption.ignoredPrice_' + price.unitPriceIgnoreStatus)"
+            class="selected-item-summary-price-ignored-price-icon"
+          >
+            <font-awesome-icon icon="minus" />
+          </div>
           <Price
             v-if="preset === undefined && price.price.valueInMainCurrency > 0"
             :price="price.price"
@@ -26,7 +33,7 @@
             />
           </div>
         </div>
-        <div>
+        <div class="selected-item-summary-right-unit-price">
           <Price
             v-if="preset === undefined && price.unitPrice.valueInMainCurrency !== price.price.valueInMainCurrency"
             :price="price.unitPrice"

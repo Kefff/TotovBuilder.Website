@@ -5,7 +5,7 @@ import { ItemService } from '../../services/ItemService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import Services from '../../services/repository/Services'
 import StatsSelector from '../stats/selector/StatsSelectorComponent.vue'
-import TabSelectorComponent from '../tab-selector/TabSelectorComponent.vue'
+import SelectedItemFunctionalities from '../selected-item-functionalities/SelectedItemFunctionalitiesComponent.vue'
 import SelectedItem from '../selected-item/SelectedItemComponent.vue'
 import OptionHeaderSelector from '../option-header/selector/OptionHeaderSelectorComponent.vue'
 import SummarySelector from '../summary/selector/SummarySelectorComponent.vue'
@@ -35,7 +35,7 @@ export default defineComponent({
     SelectedItem,
     SelectedItemSummarySelector,
     StatsSelector,
-    TabSelectorComponent
+    SelectedItemFunctionalities
   },
   props: {
     acceptedItems: {
@@ -96,6 +96,8 @@ export default defineComponent({
     const selectedItem = ref<IItem | undefined>()
     const itemChanging = ref(false)
 
+    const ignorePrice = ref(false)
+
     const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? selectedItem.value?.maxStackableAmount ?? 1)
     const quantity = ref(props.modelValue?.quantity ?? 1)
 
@@ -138,13 +140,35 @@ export default defineComponent({
     }
 
     /**
+     * Updates the inventory item based on the ignored price value.
+     */
+    async function onIgnorePriceChanged(newIgnorePrice: boolean) {
+      if (inventoryItem.value === undefined) {
+        return
+      }
+
+      inventoryItem.value = {
+        content: inventoryItem.value.content,
+        ignorePrice: newIgnorePrice,
+        itemId: inventoryItem.value.itemId,
+        modSlots: inventoryItem.value.modSlots,
+        quantity: inventoryItem.value.quantity
+      }
+    }
+
+    /**
      * Updates the inventory item based on the quantity.
      */
     async function onQuantityChanged(newQuantity: number) {
+      if (inventoryItem.value === undefined) {
+        return
+      }
+
       inventoryItem.value = {
-        content: [],
-        itemId: selectedItem.value?.id ?? '',
-        modSlots: [],
+        content: inventoryItem.value.content,
+        ignorePrice: inventoryItem.value.ignorePrice,
+        itemId: inventoryItem.value.itemId,
+        modSlots: inventoryItem.value.modSlots,
         quantity: newQuantity
       }
     }
@@ -161,6 +185,7 @@ export default defineComponent({
       if (selectedItem.value == undefined) {
         selectedItem.value = undefined
         inventoryItem.value = undefined
+        ignorePrice.value = false
         quantity.value = 0
 
         return
@@ -230,6 +255,7 @@ export default defineComponent({
     async function setSelectedItem() {
       if (props.modelValue == undefined) {
         selectedItem.value = undefined
+        ignorePrice.value = false
         quantity.value = 0
         selectedItemIsModdable.value = false
         selectedItemIsContainer.value = false
@@ -245,6 +271,7 @@ export default defineComponent({
         }
 
         selectedItem.value = selectedItemResult.value
+        ignorePrice.value = props.modelValue.ignorePrice
 
         if (props.modelValue.quantity === 0
           || props.forceQuantityToMaxSelectableAmount
@@ -283,10 +310,11 @@ export default defineComponent({
         } else {
           const updatedInventoryItem = {
             content: selectedItemIsContainer.value ? (inventoryItem.value?.content ?? []) : [], // Keeping the content of containers
+            ignorePrice: false,
             itemId: newSelectedItem.id,
             modSlots: [],
             quantity: quantity.value
-          }
+          } as IInventoryItem
 
           if (updatedInventoryItem.quantity === 0
             || props.forceQuantityToMaxSelectableAmount
@@ -307,11 +335,13 @@ export default defineComponent({
     return {
       contentPathPrefix,
       editing,
+      ignorePrice,
       inventoryItem,
       itemChanging,
       maxSelectableQuantity,
       modSlotPathPrefix,
       onFilterOptions,
+      onIgnorePriceChanged,
       onQuantityChanged,
       onSelectedItemChanged,
       onSortOptions,

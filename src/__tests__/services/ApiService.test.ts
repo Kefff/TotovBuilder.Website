@@ -163,7 +163,21 @@ describe('get()', () => {
     ])
   })
 
-  it('should fail if a an error reponse is received', async () => {
+  it('should return empty data when the response is empty', async () => {
+    // Arrange
+    const response = ''
+    fetchMock.mockOnceIf(Configuration.VITE_API_URL as string + Configuration.VITE_MARKET_DATA_API as string, response, { status: 200 })
+
+    // Act
+    const result = await new ApiService().get(Configuration.VITE_MARKET_DATA_API as string)
+
+    // Assert
+    expect(fetchMock.mock.calls.length).toBe(1)
+    expect(result.success).toBe(true)
+    expect(result.value).toBe('')
+  })
+
+  it('should fail if an error reponse is received', async () => {
     // Arrange
     const response = `{
   "error": "Access denied"
@@ -175,7 +189,7 @@ describe('get()', () => {
 
     // Assert
     expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe(`Error while requesting the API.
+    expect(result.failureMessage).toBe(`Error while requesting API "item".
 Response : "Access denied".`)
   })
 
@@ -194,7 +208,7 @@ Response : "Access denied".`)
 
     // Assert
     expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe(`Error while requesting the API.
+    expect(result.failureMessage).toBe(`Error while requesting API "item".
 Response : "The operation was aborted. ".`)
 
     // Clean

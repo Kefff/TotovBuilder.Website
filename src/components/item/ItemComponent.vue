@@ -37,15 +37,9 @@
           </template>
         </Dropdown>
       </div>
-      <TabSelectorComponent
-        v-if="selectedItem !== undefined"
-        v-model="selectedTab"
-        :can-have-content="selectedItemIsContainer"
-        :can-have-mods="selectedItemIsModdable"
-      />
       <div
         v-if="selectedItem !== undefined && maxSelectableQuantity > 1"
-        class="quantity"
+        class="item-quantity"
       >
         <InputNumberField
           v-model="quantity"
@@ -59,6 +53,14 @@
           @update:modelValue="onQuantityChanged($event)"
         />
       </div>
+      <SelectedItemFunctionalities
+        v-if="selectedItem !== undefined"
+        v-model:selectedTab="selectedTab"
+        v-model:ignorePrice="ignorePrice"
+        :can-have-content="selectedItemIsContainer"
+        :can-have-mods="selectedItemIsModdable"
+        @update:ignorePrice="onIgnorePriceChanged($event)"
+      />
       <SelectedItemSummarySelector
         v-if="modelValue != undefined"
         v-model="modelValue"

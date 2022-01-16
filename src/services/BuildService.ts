@@ -46,6 +46,7 @@ export class BuildService {
         for (let i = 0; i < inventorySlotType.defaultItemsIds.length; i++) {
           items[i] = {
             content: [],
+            ignorePrice: false,
             itemId: inventorySlotType.defaultItemsIds[i],
             modSlots: [],
             quantity: 1
@@ -282,6 +283,7 @@ export class BuildService {
       return Result.fail(FailureType.error, 'BuildService.parseReducedInventoryItem()', i18n.t('message.cannotParseInventoryItemWithoutItemId'))
     }
 
+    const ignorePrice = reducedInventoryItem['p'] !== undefined
     let quantity = reducedInventoryItem['q'] as number
 
     if (quantity === undefined) {
@@ -320,6 +322,7 @@ export class BuildService {
 
     return Result.ok({
       content: containedItems,
+      ignorePrice,
       itemId,
       modSlots,
       quantity
@@ -405,6 +408,10 @@ export class BuildService {
     const reducedModSlots: Record<string, unknown>[] = []
 
     reducedInventoryItem['i'] = inventoryItem.itemId
+
+    if (inventoryItem.ignorePrice) {
+      reducedInventoryItem['p'] = ''
+    }
 
     if (inventoryItem.quantity > 1) {
       reducedInventoryItem['q'] = inventoryItem.quantity

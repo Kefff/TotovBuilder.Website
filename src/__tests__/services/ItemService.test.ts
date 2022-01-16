@@ -261,11 +261,13 @@ describe('getPreset()', () => {
       '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
       {
         content: [],
+        ignorePrice: false,
         itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
         modSlots: [
           {
             item: {
               content: [],
+              ignorePrice: false,
               itemId: '57e3dba62459770f0c32322b', // AK-74 textolite pistol grip (6P4 Sb.9)
               modSlots: [],
               quantity: 1
@@ -275,6 +277,7 @@ describe('getPreset()', () => {
           {
             item: {
               content: [],
+              ignorePrice: false,
               itemId: '57dc347d245977596754e7a1', // AKS-74U metal skeleton stock (6P26 Sb.5)
               modSlots: [],
               quantity: 1
@@ -284,6 +287,7 @@ describe('getPreset()', () => {
           {
             item: {
               content: [],
+              ignorePrice: false,
               itemId: '564ca99c4bdc2d16268b4589', // AK-74 5.45x39 6L20 30-round magazine
               modSlots: [],
               quantity: 1
@@ -293,6 +297,7 @@ describe('getPreset()', () => {
           {
             item: {
               content: [],
+              ignorePrice: false,
               itemId: '57dc324a24597759501edc20', // AKS-74U 5.45x39 muzzle brake (6P26 0-20)
               modSlots: [],
               quantity: 1
@@ -302,6 +307,7 @@ describe('getPreset()', () => {
           {
             item: {
               content: [],
+              ignorePrice: false,
               itemId: '57dc334d245977597164366f', // AKS-74U dust cover (6P26 Sb.7)
               modSlots: [],
               quantity: 1
@@ -311,11 +317,13 @@ describe('getPreset()', () => {
           {
             item: {
               content: [],
+              ignorePrice: false,
               itemId: '59d36a0086f7747e673f3946', // AKS-74U gas tube"
               modSlots: [
                 {
                   item: {
                     content: [],
+                    ignorePrice: false,
                     itemId: '57dc32dc245977596d4ef3d3', // AKS-74U wooden handguard (6P26 Sb.6)
                     modSlots: [],
                     quantity: 1

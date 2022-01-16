@@ -23,15 +23,31 @@
     <div class="toolbar">
       <div class="toolbar-line">
         <div class="toolbar-part">
+          <div>
+            <Button
+              v-if="editing"
+              class="p-button-success toolbar-button"
+              :disabled="invalid"
+              @click="save()"
+            >
+              <font-awesome-icon
+                icon="save"
+                class="icon-before-text"
+              />
+              <span>{{ $t('caption.save') }}</span>
+            </Button>
+          </div>
           <Button
             v-if="!editing"
             v-tooltip.right="$t('caption.backToBuilds')"
+            class="toolbar-button"
             @click="goToBuilds()"
           >
             <font-awesome-icon icon="arrow-left" />
           </Button>
           <Button
             v-if="!editing"
+            class="toolbar-button"
             @click="startEdit()"
           >
             <font-awesome-icon
@@ -42,20 +58,8 @@
           </Button>
           <ShareBuild :build="build" />
           <Button
-            v-if="editing"
-            class="p-button-success"
-            :disabled="invalid"
-            @click="save()"
-          >
-            <font-awesome-icon
-              icon="save"
-              class="icon-before-text"
-            />
-            <span>{{ $t('caption.save') }}</span>
-          </Button>
-          <Button
             v-tooltip.top="$t('caption.moreFunctionalities')"
-            class="p-button-text p-button-sm toolbar-button-discreet"
+            class="p-button-text p-button-sm button-discreet build-functionalities-button"
             @click="toggleAdvancedPanel"
           >
             <font-awesome-icon icon="cog" />
@@ -63,21 +67,21 @@
           <NotificationButton />
           <Button
             v-tooltip.top="$t('caption.collapseAll')"
-            class="p-button-text p-button-sm toolbar-button-discreet"
+            class="p-button-text p-button-sm button-discreet"
             @click="collapseAll()"
           >
             <font-awesome-icon icon="minus-square" />
           </Button>
           <Button
             v-tooltip.top="$t('caption.expandWithItem')"
-            class="p-button-text p-button-sm toolbar-button-discreet"
+            class="p-button-text p-button-sm button-discreet"
             @click="expandWithItem()"
           >
             <font-awesome-icon icon="search-plus" />
           </Button>
           <Button
             v-tooltip.top="$t('caption.expandAll')"
-            class="p-button-text p-button-sm toolbar-button-discreet"
+            class="p-button-text p-button-sm button-discreet"
             @click="expandAll()"
           >
             <font-awesome-icon icon="plus-square" />
@@ -119,32 +123,21 @@
               />
             </div>
             <div
-              v-if="summary.ammunitionCounts.length > 0"
-              v-tooltip.top="$t('caption.ammunition')"
-              class="build-toolbar-summary-value"
-            >
-              <Button @click="toggleAmmunitionCounts">
-                <img
-                  src="/assets/caliber.webp"
-                  class="custom-icon build-caliber-icon"
-                >
-              </Button>
-            </div>
-            <div
               v-if="summary.ergonomicsPercentageModifier !== undefined && summary.ergonomicsPercentageModifier !== 0"
               v-tooltip.top="$t('caption.ergonomicsPercentageModifier')"
               class="build-toolbar-summary-value"
             >
-              <span :class="StatsUtils.getValueColorClass(summary.ergonomicsPercentageModifier)">
-                {{ StatsUtils.getValueCaption(summary.ergonomicsPercentageModifier) }}%
-              </span>
+              <span :class="StatsUtils.getValueColorClass(summary.ergonomicsPercentageModifier)">{{ StatsUtils.getValueCaption(summary.ergonomicsPercentageModifier) }}%</span>
               <font-awesome-icon
                 icon="hand-paper"
                 class="icon-after-text"
               />
             </div>
             <div class="build-toolbar-summary-value">
-              <InventoryPrice :inventory-price="summary.price" />
+              <InventoryPrice
+                :inventory-price="summary.price"
+                :show-space-for-icon="false"
+              />
             </div>
             <div
               v-tooltip.top="$t('caption.weight')"
@@ -158,13 +151,27 @@
                 />
               </div>
             </div>
+            <div
+              v-if="summary.ammunitionCounts.length > 0"
+              v-tooltip.top="$t('caption.ammunitionList')"
+            >
+              <Button
+                class="toolbar-button"
+                @click="toggleAmmunitionCounts"
+              >
+                <img
+                  src="/assets/caliber.webp"
+                  class="custom-icon build-caliber-icon"
+                >
+              </Button>
+            </div>
           </div>
         </div>
         <div class="toolbar-part">
           <div class="build-toolbar-right">
             <Button
               v-if="editing"
-              class="p-button-danger"
+              class="p-button-danger toolbar-button"
               @click="cancelEdit()"
             >
               <font-awesome-icon
@@ -175,7 +182,7 @@
             </Button>
             <Button
               v-if="!editing"
-              class="p-button-danger"
+              class="p-button-danger toolbar-button"
               @click="startDelete()"
             >
               <font-awesome-icon

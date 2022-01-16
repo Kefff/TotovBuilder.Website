@@ -12,7 +12,7 @@
           </Button>
           <Button
             v-tooltip.top="$t('caption.moreFunctionalities')"
-            class="p-button-text p-button-sm toolbar-button-discreet"
+            class="p-button-text p-button-sm button-discreet"
             @click="toggleAdvancedPanel"
           >
             <font-awesome-icon icon="cog" />
@@ -63,11 +63,11 @@
         />
         <span>{{ $t('caption.import') }}</span>
       </div>
-      <div class="builds-advanced-panel-item">
+      <div class="builds-advanced-panel-item builds-advanced-panel-special-item">
         <LanguageSelector />
       </div>
       <div
-        class="builds-advanced-panel-item builds-merchant-filter"
+        class="builds-advanced-panel-item builds-advanced-panel-special-item"
       >
         <MerchantFilter />
       </div>

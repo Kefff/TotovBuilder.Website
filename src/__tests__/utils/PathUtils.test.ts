@@ -28,6 +28,7 @@ describe('getInventoryItemFromPath()', () => {
             items: [
               {
                 content: [],
+                ignorePrice: false,
                 itemId: '5710c24ad2720bc3458b45a3', // F-1 hand grenade
                 modSlots: [],
                 quantity: 1
@@ -36,17 +37,20 @@ describe('getInventoryItemFromPath()', () => {
                 content: [
                   {
                     content: [],
+                    ignorePrice: false,
                     itemId: '5eff09cd30a7dc22fd1ddfed', // Health Resort east wing room 110 key with a blue tape
                     modSlots: [],
                     quantity: 1
                   },
                   {
                     content: [],
+                    ignorePrice: false,
                     itemId: '5672c92d4bdc2d180f8b4567', // Dorm room 118 key
                     modSlots: [],
                     quantity: 1
                   }
                 ],
+                ignorePrice: false,
                 itemId: '59fafd4b86f7745ca07e1232', // Key tool
                 modSlots: [],
                 quantity: 1
@@ -62,6 +66,7 @@ describe('getInventoryItemFromPath()', () => {
       'build:12345/slot:pockets_1/item:59fafd4b86f7745ca07e1232/content:1_10/item:5672c92d4bdc2d180f8b4567',
       {
         content: [],
+        ignorePrice: false,
         itemId: '5672c92d4bdc2d180f8b4567', // Dorm room 118 key
         modSlots: [],
         quantity: 1
@@ -75,12 +80,14 @@ describe('getInventoryItemFromPath()', () => {
             items: [
               {
                 content: [],
+                ignorePrice: false,
                 itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
                 modSlots: [
                   {
                     modSlotName: 'mod_magazine',
                     item: {
                       content: [],
+                      ignorePrice: false,
                       itemId: '564ca9df4bdc2d35148b4569', // AK-74 5.45x39 6L18 45-round magazine
                       modSlots: [],
                       quantity: 1
@@ -100,6 +107,7 @@ describe('getInventoryItemFromPath()', () => {
       'build:12345/slot:onSling_0/item:57dc2fa62459775949412633/mod:mod_magazine/item:564ca9df4bdc2d35148b4569',
       {
         content: [],
+        ignorePrice: false,
         itemId: '564ca9df4bdc2d35148b4569', // AK-74 5.45x39 6L18 45-round magazine
         modSlots: [],
         quantity: 1
@@ -155,6 +163,7 @@ describe('getInventoryItemFromPath()', () => {
             items: [
               {
                 content: [],
+                ignorePrice: false,
                 itemId: '57dc2fa62459775949412633',
                 modSlots: [],
                 quantity: 1
@@ -178,6 +187,7 @@ describe('getInventoryItemFromPath()', () => {
             items: [
               {
                 content: [],
+                ignorePrice: false,
                 itemId: '57dc2fa62459775949412633',
                 modSlots: [],
                 quantity: 1
@@ -201,6 +211,7 @@ describe('getInventoryItemFromPath()', () => {
             items: [
               {
                 content: [],
+                ignorePrice: false,
                 itemId: '5ca20d5986f774331e7c9602',
                 modSlots: [],
                 quantity: 1
@@ -224,6 +235,7 @@ describe('getInventoryItemFromPath()', () => {
             items: [
               {
                 content: [],
+                ignorePrice: false,
                 itemId: '5ca20d5986f774331e7c9602',
                 modSlots: [],
                 quantity: 1
@@ -247,6 +259,7 @@ describe('getInventoryItemFromPath()', () => {
             items: [
               {
                 content: [],
+                ignorePrice: false,
                 itemId: '5ca20d5986f774331e7c9602',
                 modSlots: [],
                 quantity: 1

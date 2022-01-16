@@ -27,6 +27,7 @@
 }
 
 .merchant-filter-merchant {
+  cursor: pointer;
   margin-left: 1rem;
   margin-right: 1rem;
 }

@@ -15,6 +15,7 @@ import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { PathUtils } from '../../utils/PathUtils'
+import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 
 export default defineComponent({
   components: {
@@ -95,7 +96,8 @@ export default defineComponent({
         requiresQuest: false,
         value: 0,
         valueInMainCurrency: 0
-      }
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
     })
     const verticalRecoil = ref<number | undefined>()
     const weight = ref(0)

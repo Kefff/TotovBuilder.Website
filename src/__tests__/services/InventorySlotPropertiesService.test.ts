@@ -3,16 +3,19 @@ import { InventorySlotPropertiesService } from '../../services/InventorySlotProp
 import Currencies from '../../assets/data/currencies.json'
 import { ICurrency } from '../../models/item/ICurrency'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
+import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 
 const inventorySlot1: IInventorySlot = {
   items: [
     {
       content: [],
+      ignorePrice: false,
       itemId: '5c0e874186f7745dc7616606', // Maska-1Shch bulletproof helmet (Killa)
       modSlots: [
         {
           item: {
             content: [],
+            ignorePrice: false,
             itemId: '5c0e842486f77443a74d2976', // Maska-1Shch face shield (Killa)
             modSlots: [],
             quantity: 1
@@ -32,16 +35,19 @@ const inventorySlot2: IInventorySlot = {
       content: [
         {
           content: [],
+          ignorePrice: false,
           itemId: '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs "Igolnik"
           modSlots: [],
           quantity: 1
         }
       ],
+      ignorePrice: false,
       itemId: '5beed0f50db834001c062b12', // RPK-16 5.45x39 light machine gun
       modSlots: [
         {
           item: {
             content: [],
+            ignorePrice: false,
             itemId: '5beec8ea0db834001a6f9dbf', // AK-12 pistol grip
             modSlots: [],
             quantity: 1
@@ -51,16 +57,19 @@ const inventorySlot2: IInventorySlot = {
         {
           item: {
             content: [],
+            ignorePrice: false,
             itemId: '5beec91a0db834001961942d', // RPK-16 dust cover
             modSlots: [
               {
                 item: {
                   content: [],
+                  ignorePrice: false,
                   itemId: '5beec9450db83400970084fd', // RPK-16 rear sight base
                   modSlots: [
                     {
                       item: {
                         content: [],
+                        ignorePrice: false,
                         itemId: '5bf3f59f0db834001a6fa060', // RPK-16 rear sight
                         modSlots: [],
                         quantity: 1
@@ -82,11 +91,13 @@ const inventorySlot2: IInventorySlot = {
             content: [
               {
                 content: [],
+                ignorePrice: false,
                 itemId: '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs "Igolnik"
                 modSlots: [],
                 quantity: 95
               }
             ],
+            ignorePrice: false,
             itemId: '5bed625c0db834001c062946', // RPK-16 5.45x39 95-round drum magazine
             modSlots: [],
             quantity: 1
@@ -96,11 +107,13 @@ const inventorySlot2: IInventorySlot = {
         {
           item: {
             content: [],
+            ignorePrice: false,
             itemId: '5beec8b20db834001961942a', // RPK-16 buffer tube
             modSlots: [
               {
                 item: {
                   content: [],
+                  ignorePrice: false,
                   itemId: '5beec8c20db834001d2c465c', // AK-12 stock
                   modSlots: [],
                   quantity: 1
@@ -115,11 +128,13 @@ const inventorySlot2: IInventorySlot = {
         {
           item: {
             content: [],
+            ignorePrice: false,
             itemId: '5beec3e30db8340019619424', // RPK-16 handguard
             modSlots: [
               {
                 item: {
                   content: [],
+                  ignorePrice: false,
                   itemId: '5beecbb80db834001d2c465e', // RPK-16 handguard rail
                   modSlots: [],
                   quantity: 1
@@ -129,6 +144,7 @@ const inventorySlot2: IInventorySlot = {
               {
                 item: {
                   content: [],
+                  ignorePrice: false,
                   itemId: '5beecbb80db834001d2c465e', // RPK-16 handguard rail
                   modSlots: [],
                   quantity: 1
@@ -143,11 +159,13 @@ const inventorySlot2: IInventorySlot = {
         {
           item: {
             content: [],
+            ignorePrice: false,
             itemId: '5beec1bd0db834001e6006f3', // RPK-16 5.45x39 15 inch barrel
             modSlots: [
               {
                 item: {
                   content: [],
+                  ignorePrice: false,
                   itemId: '5beec3420db834001b095429', // RPK-16 5.45x39 muzzle brake \u0026 compensator
                   modSlots: [],
                   quantity: 1
@@ -173,11 +191,13 @@ const inventorySlot3: IInventorySlot = {
       content: [
         {
           content: [],
+          ignorePrice: false,
           itemId: '5cc70102e4a949035e43ba74', // FN P90 upper receiver
           modSlots: [],
           quantity: 1
         }
       ],
+      ignorePrice: false,
       itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
       modSlots: [],
       quantity: 1
@@ -189,6 +209,7 @@ const invalidRangedWeaponInventorySlot: IInventorySlot = {
   items: [
     {
       content: [],
+      ignorePrice: false,
       itemId: 'invalid',
       modSlots: [],
       quantity: 1
@@ -201,6 +222,7 @@ const invalidArmorInventorySlot: IInventorySlot = {
   items: [
     {
       content: [],
+      ignorePrice: false,
       itemId: 'invalid',
       modSlots: [],
       quantity: 1
@@ -360,7 +382,8 @@ describe('getPrice()', () => {
           requiresQuest: false,
           value: 0,
           valueInMainCurrency: 0
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
     ],
     [
@@ -408,7 +431,8 @@ describe('getPrice()', () => {
           requiresQuest: false,
           value: 0,
           valueInMainCurrency: 0
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
     ]
   ])('should get the price of an inventory slot', async (inventorySlot: IInventorySlot, expected: IInventoryPrice) => {
@@ -429,6 +453,7 @@ describe('getPrice()', () => {
     const inventorySlot: IInventorySlot = {
       items: [{
         content: [],
+        ignorePrice: false,
         itemId: '56deee15d2720bee328b4567', // MP-153 12ga 4-shell forend cap
         modSlots: [],
         quantity: 1
@@ -467,8 +492,9 @@ describe('getPrice()', () => {
         requiresQuest: false,
         value: 0,
         valueInMainCurrency: 0
-      }
-    })
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+    } as IInventoryPrice)
   })
 
   it('should fail if the main currency cannot be found', async () => {

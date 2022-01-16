@@ -20,11 +20,13 @@
       </div>
     </div>
     <div
-      v-if="inventoryPrice.missingPrice"
       v-tooltip.top="$t('message.missingPrice')"
-      class="inventory-price-missing-price-icon"
+      :class="missingPriceIconClass"
     >
-      <font-awesome-icon icon="exclamation-triangle" />
+      <font-awesome-icon
+        v-if="inventoryPrice.missingPrice"
+        icon="exclamation-triangle"
+      />
     </div>
 
     <OverlayPanel

@@ -18,7 +18,10 @@
         :binary="true"
         @change="onFiltersChanged()"
       />
-      <div :class="'merchant-filter-merchant' + (!filter.enabled ? ' merchant-filter-disabled-text' : '')">
+      <div
+        :class="'merchant-filter-merchant' + (!filter.enabled ? ' merchant-filter-disabled-text' : '')"
+        @click="filter.enabled = !filter.enabled"
+      >
         {{ $t('caption.merchant_' + filter.merchant) }}
       </div>
       <img

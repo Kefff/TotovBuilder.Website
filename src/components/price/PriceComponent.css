@@ -23,6 +23,10 @@
 }
 
 .price-merchant-icon {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   margin-left: 0.5rem;
   width: 2rem;
 }

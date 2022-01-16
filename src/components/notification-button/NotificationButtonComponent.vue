@@ -2,7 +2,7 @@
   <Button
     v-tooltip.top="$t('caption.notifications')"
     :disabled="notifications.length === 0"
-    class="p-button-text p-button-sm toolbar-button-discreet"
+    class="p-button-text p-button-sm button-discreet"
     @click="toggleNotificationPanel"
   >
     <font-awesome-icon icon="bell" />

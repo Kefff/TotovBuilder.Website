@@ -23,6 +23,25 @@
 }
 
 .inventory-price-missing-price-icon {
-  margin-left: 0.5rem;
+  align-items: center;
   color: var(--error-color);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  margin-left: 0.5rem;
+  width: 2rem;
+}
+
+.inventory-price-missing-price-icon-no-width {
+  align-items: center;
+  color: var(--error-color);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.inventory-price-missing-price-icon-no-width > svg {
+  margin-left: 0.5rem;
 }

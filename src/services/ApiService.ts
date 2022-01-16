@@ -24,17 +24,31 @@ export class ApiService {
     const result = await fetch(url, { method: 'GET', signal: controller.signal })
       .then(async (response) => {
         if (response.ok) {
-          const data = await response.json().then((data) => data as TResult)
+          const data = await response.text()
 
-          return Result.ok(data)
+          if (data.length === 0) {
+            return Result.ok(data as unknown as TResult)
+          }
+
+          const result = JSON.parse(data) as TResult
+
+          return Result.ok(result)
         } else {
-          const data = await response.json().then((data) => data as Record<string, unknown>)
-          const apiErrorMessage = data['error'] as string
+          const data = await response.text()
 
-          return Result.fail<TResult>(FailureType.error, 'ApiItemFetcher.get()', i18n.t('message.apiError', { apiErrorMessage }))
+          /* istanbul ignore if */
+          if (data.length === 0) {
+            // For some reason, jest-fetch-mock cannot mock an error response with an empty body. The response has a 200 status even if we force it to 500 when configuring the mock.
+            return Result.fail<TResult>(FailureType.error, 'ApiItemFetcher.get()', i18n.t('message.apiError', { api: method, apiErrorMessage: i18n.t('message.emptyApiResponse') }))
+          }
+
+          const result = JSON.parse(data) as Record<string, unknown>
+          const apiErrorMessage = result['error'] as string
+
+          return Result.fail<TResult>(FailureType.error, 'ApiItemFetcher.get()', i18n.t('message.apiError', { api: method, apiErrorMessage }))
         }
       })
-      .catch((error: Error) => Result.fail<TResult>(FailureType.error, 'ApiItemFetcher.get()', i18n.t('message.apiError', { apiErrorMessage: error.message })))
+      .catch((error: Error) => Result.fail<TResult>(FailureType.error, 'ApiItemFetcher.get()', i18n.t('message.apiError', { api: method, apiErrorMessage: error.message })))
 
     return result
   }

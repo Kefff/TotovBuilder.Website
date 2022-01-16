@@ -1,16 +1,19 @@
 [
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5ab8e9fcd8ce870019439434",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59c6633186f7740cf0493bb9",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5648b0744bdc2d363b8b4578",
                 "modSlots": [],
                 "quantity": 1
@@ -25,6 +28,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649aa744bdc2ded0b8b457e",
           "modSlots": [],
           "quantity": 1
@@ -34,6 +38,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57e3dba62459770f0c32322b",
           "modSlots": [],
           "quantity": 1
@@ -43,6 +48,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649af094bdc2df8348b4586",
           "modSlots": [],
           "quantity": 1
@@ -52,6 +58,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649b0544bdc2d1b2b8b458a",
           "modSlots": [],
           "quantity": 1
@@ -61,6 +68,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ab626e4d8ce87272e4c6e43",
           "modSlots": [],
           "quantity": 1
@@ -70,6 +78,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "564ca99c4bdc2d16268b4589",
           "modSlots": [],
           "quantity": 1
@@ -81,16 +90,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5bf3e03b0db834001d2c4a9c",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59c6633186f7740cf0493bb9",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5648b0744bdc2d363b8b4578",
                 "modSlots": [],
                 "quantity": 1
@@ -105,6 +117,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649aa744bdc2ded0b8b457e",
           "modSlots": [],
           "quantity": 1
@@ -114,6 +127,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57e3dba62459770f0c32322b",
           "modSlots": [],
           "quantity": 1
@@ -123,6 +137,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649af094bdc2df8348b4586",
           "modSlots": [],
           "quantity": 1
@@ -132,6 +147,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649b0544bdc2d1b2b8b458a",
           "modSlots": [],
           "quantity": 1
@@ -141,6 +157,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649b1c04bdc2d16268b457c",
           "modSlots": [],
           "quantity": 1
@@ -150,6 +167,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "564ca99c4bdc2d16268b4589",
           "modSlots": [],
           "quantity": 1
@@ -161,16 +179,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5ac66d725acfc43b321d4b60",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59c6633186f7740cf0493bb9",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5648b1504bdc2d9d488b4584",
                 "modSlots": [],
                 "quantity": 1
@@ -185,6 +206,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac72e895acfc43b321d4bd5",
           "modSlots": [],
           "quantity": 1
@@ -194,6 +216,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649ade84bdc2d1b2b8b4587",
           "modSlots": [],
           "quantity": 1
@@ -203,6 +226,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac50da15acfc4001718d287",
           "modSlots": [],
           "quantity": 1
@@ -212,6 +236,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac733a45acfc400192630e2",
           "modSlots": [],
           "quantity": 1
@@ -221,6 +246,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac50c185acfc400163398d4",
           "modSlots": [],
           "quantity": 1
@@ -230,6 +256,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac66bea5acfc43b321d4aec",
           "modSlots": [],
           "quantity": 1
@@ -241,11 +268,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5c07c60e0db834002330051f",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c0e2ff6d174af02a1659d4a",
           "modSlots": [],
           "quantity": 1
@@ -255,6 +284,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5aaa5e60e5b5b000140293d6",
           "modSlots": [],
           "quantity": 1
@@ -264,16 +294,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c0e2f26d174af02a9625114",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5c0e2f94d174af029f650d56",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5c0fafb6d174af02a96260ba",
                       "modSlots": [],
                       "quantity": 1
@@ -283,6 +316,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5ae30e795acfc408fb139a0b",
                       "modSlots": [],
                       "quantity": 1
@@ -297,6 +331,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5c0e2f5cd174af02a012cfc9",
                 "modSlots": [],
                 "quantity": 1
@@ -311,6 +346,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c0faeddd174af02a962601f",
           "modSlots": [],
           "quantity": 1
@@ -320,6 +356,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c0faf68d174af02a96260b8",
           "modSlots": [],
           "quantity": 1
@@ -331,16 +368,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5ac66d015acfc400180ae6e4",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59c6633186f7740cf0493bb9",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5648b1504bdc2d9d488b4584",
                 "modSlots": [],
                 "quantity": 1
@@ -355,6 +395,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac72e725acfc400180ae701",
           "modSlots": [],
           "quantity": 1
@@ -364,6 +405,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649ade84bdc2d1b2b8b4587",
           "modSlots": [],
           "quantity": 1
@@ -373,6 +415,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac50da15acfc4001718d287",
           "modSlots": [],
           "quantity": 1
@@ -382,6 +425,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac733a45acfc400192630e2",
           "modSlots": [],
           "quantity": 1
@@ -391,6 +435,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac50c185acfc400163398d4",
           "modSlots": [],
           "quantity": 1
@@ -400,6 +445,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac66c5d5acfc4001718d314",
           "modSlots": [],
           "quantity": 1
@@ -411,11 +457,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "583990e32459771419544dd2",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649ad3f4bdc2df8348b4585",
           "modSlots": [],
           "quantity": 1
@@ -425,6 +473,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57dc347d245977596754e7a1",
           "modSlots": [],
           "quantity": 1
@@ -434,6 +483,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "564ca99c4bdc2d16268b4589",
           "modSlots": [],
           "quantity": 1
@@ -443,6 +493,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57dc324a24597759501edc20",
           "modSlots": [],
           "quantity": 1
@@ -452,6 +503,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57dc334d245977597164366f",
           "modSlots": [],
           "quantity": 1
@@ -461,11 +513,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d36a0086f7747e673f3946",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "57dc32dc245977596d4ef3d3",
                 "modSlots": [],
                 "quantity": 1
@@ -482,16 +536,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5a0ec13bfcdbcb00165aa685",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d64ec286f774171d1e0a42",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "59d64f2f86f77417193ef8b3",
                 "modSlots": [],
                 "quantity": 1
@@ -506,6 +563,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d64fc686f774171b243fe2",
           "modSlots": [],
           "quantity": 1
@@ -515,6 +573,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59e62cc886f77440d40b52a1",
           "modSlots": [],
           "quantity": 1
@@ -524,6 +583,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d6507c86f7741b846413a2",
           "modSlots": [],
           "quantity": 1
@@ -533,6 +593,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d650cf86f7741b846413a4",
           "modSlots": [],
           "quantity": 1
@@ -542,6 +603,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d6514b86f774171a068a08",
           "modSlots": [],
           "quantity": 1
@@ -551,6 +613,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a01c29586f77474660c694c",
           "modSlots": [],
           "quantity": 1
@@ -562,16 +625,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5644bd2b4bdc2d3b4c8b4572",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59c6633186f7740cf0493bb9",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5648b0744bdc2d363b8b4578",
                 "modSlots": [],
                 "quantity": 1
@@ -586,6 +652,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649aa744bdc2ded0b8b457e",
           "modSlots": [],
           "quantity": 1
@@ -595,6 +662,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649ad3f4bdc2df8348b4585",
           "modSlots": [],
           "quantity": 1
@@ -604,6 +672,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649af094bdc2df8348b4586",
           "modSlots": [],
           "quantity": 1
@@ -613,6 +682,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649b0544bdc2d1b2b8b458a",
           "modSlots": [],
           "quantity": 1
@@ -622,6 +692,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649b1c04bdc2d16268b457c",
           "modSlots": [],
           "quantity": 1
@@ -631,6 +702,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "564ca99c4bdc2d16268b4589",
           "modSlots": [],
           "quantity": 1
@@ -642,16 +714,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5ac66cb05acfc40198510a10",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59c6633186f7740cf0493bb9",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5648b1504bdc2d9d488b4584",
                 "modSlots": [],
                 "quantity": 1
@@ -666,6 +741,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac72e615acfc43f67248aa0",
           "modSlots": [],
           "quantity": 1
@@ -675,6 +751,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649ade84bdc2d1b2b8b4587",
           "modSlots": [],
           "quantity": 1
@@ -684,6 +761,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac50da15acfc4001718d287",
           "modSlots": [],
           "quantity": 1
@@ -693,6 +771,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac72e475acfc400180ae6fe",
           "modSlots": [],
           "quantity": 1
@@ -702,6 +781,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac50c185acfc400163398d4",
           "modSlots": [],
           "quantity": 1
@@ -711,6 +791,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac66c5d5acfc4001718d314",
           "modSlots": [],
           "quantity": 1
@@ -722,16 +803,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "59e6152586f77473dc057aa1",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59e649f986f77411d949b246",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "59e6284f86f77440d569536f",
                 "modSlots": [],
                 "quantity": 1
@@ -746,6 +830,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59e61eb386f77440d64f5daf",
           "modSlots": [],
           "quantity": 1
@@ -755,6 +840,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59e6318286f77444dd62c4cc",
           "modSlots": [],
           "quantity": 1
@@ -764,6 +850,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59e6449086f7746c9f75e822",
           "modSlots": [],
           "quantity": 1
@@ -773,6 +860,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d650cf86f7741b846413a4",
           "modSlots": [],
           "quantity": 1
@@ -782,6 +870,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59e6227d86f77440d64f5dc2",
           "modSlots": [],
           "quantity": 1
@@ -791,6 +880,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d625f086f774661516605d",
           "modSlots": [],
           "quantity": 1
@@ -802,16 +892,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5ac4cd105acfc40016339859",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59c6633186f7740cf0493bb9",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5648b1504bdc2d9d488b4584",
                 "modSlots": [],
                 "quantity": 1
@@ -826,6 +919,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac7655e5acfc40016339a19",
           "modSlots": [],
           "quantity": 1
@@ -835,6 +929,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649ade84bdc2d1b2b8b4587",
           "modSlots": [],
           "quantity": 1
@@ -844,6 +939,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac50da15acfc4001718d287",
           "modSlots": [],
           "quantity": 1
@@ -853,6 +949,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac72e475acfc400180ae6fe",
           "modSlots": [],
           "quantity": 1
@@ -862,6 +959,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac50c185acfc400163398d4",
           "modSlots": [],
           "quantity": 1
@@ -871,6 +969,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "55d480c04bdc2d1d4e8b456a",
           "modSlots": [],
           "quantity": 1
@@ -882,11 +981,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5839a40f24597726f856b511",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649ad3f4bdc2df8348b4585",
           "modSlots": [],
           "quantity": 1
@@ -896,6 +997,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57dc347d245977596754e7a1",
           "modSlots": [],
           "quantity": 1
@@ -905,6 +1007,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "564ca99c4bdc2d16268b4589",
           "modSlots": [],
           "quantity": 1
@@ -914,6 +1017,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57ffb0e42459777d047111c5",
           "modSlots": [],
           "quantity": 1
@@ -923,6 +1027,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5839a7742459773cf9693481",
           "modSlots": [],
           "quantity": 1
@@ -932,11 +1037,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d36a0086f7747e673f3946",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "57dc32dc245977596d4ef3d3",
                 "modSlots": [],
                 "quantity": 1
@@ -953,11 +1060,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5e81c3cbac2bb513793cdc75",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e81c519cb2b95385c177551",
           "modSlots": [],
           "quantity": 1
@@ -967,6 +1076,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e81c6bf763d9f754677beff",
           "modSlots": [],
           "quantity": 1
@@ -976,11 +1086,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e81edc13397a21db957f6a1",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5e81ee4dcb2b95385c177582",
                 "modSlots": [],
                 "quantity": 1
@@ -990,6 +1102,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5e81ee213397a21db957f6a6",
                 "modSlots": [],
                 "quantity": 1
@@ -1004,6 +1117,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e81c4ca763d9f754677befa",
           "modSlots": [],
           "quantity": 1
@@ -1013,6 +1127,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e81c6a2ac2bb513793cdc7f",
           "modSlots": [],
           "quantity": 1
@@ -1022,6 +1137,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e81c550763d9f754677befd",
           "modSlots": [],
           "quantity": 1
@@ -1031,6 +1147,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e81c539cb2b95385c177553",
           "modSlots": [],
           "quantity": 1
@@ -1042,16 +1159,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5ac66d2e5acfc43b321d4b53",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59c6633186f7740cf0493bb9",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5648b1504bdc2d9d488b4584",
                 "modSlots": [],
                 "quantity": 1
@@ -1066,6 +1186,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac72e7d5acfc40016339a02",
           "modSlots": [],
           "quantity": 1
@@ -1075,6 +1196,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649ade84bdc2d1b2b8b4587",
           "modSlots": [],
           "quantity": 1
@@ -1084,6 +1206,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac50da15acfc4001718d287",
           "modSlots": [],
           "quantity": 1
@@ -1093,6 +1216,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac72e475acfc400180ae6fe",
           "modSlots": [],
           "quantity": 1
@@ -1102,6 +1226,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac50c185acfc400163398d4",
           "modSlots": [],
           "quantity": 1
@@ -1111,6 +1236,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac66bea5acfc43b321d4aec",
           "modSlots": [],
           "quantity": 1
@@ -1122,16 +1248,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "59d6088586f774275f37482f",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d64ec286f774171d1e0a42",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "59d64f2f86f77417193ef8b3",
                 "modSlots": [],
                 "quantity": 1
@@ -1146,6 +1275,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d64fc686f774171b243fe2",
           "modSlots": [],
           "quantity": 1
@@ -1155,6 +1285,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59e62cc886f77440d40b52a1",
           "modSlots": [],
           "quantity": 1
@@ -1164,6 +1295,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d6507c86f7741b846413a2",
           "modSlots": [],
           "quantity": 1
@@ -1173,6 +1305,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d650cf86f7741b846413a4",
           "modSlots": [],
           "quantity": 1
@@ -1182,6 +1315,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d6514b86f774171a068a08",
           "modSlots": [],
           "quantity": 1
@@ -1191,6 +1325,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d625f086f774661516605d",
           "modSlots": [],
           "quantity": 1
@@ -1202,16 +1337,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "59ff346386f77477562ff5e2",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d64ec286f774171d1e0a42",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "59d64f2f86f77417193ef8b3",
                 "modSlots": [],
                 "quantity": 1
@@ -1226,6 +1364,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d64fc686f774171b243fe2",
           "modSlots": [],
           "quantity": 1
@@ -1235,6 +1374,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a0071d486f77404e23a12b2",
           "modSlots": [],
           "quantity": 1
@@ -1244,6 +1384,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d6507c86f7741b846413a2",
           "modSlots": [],
           "quantity": 1
@@ -1253,6 +1394,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d650cf86f7741b846413a4",
           "modSlots": [],
           "quantity": 1
@@ -1262,6 +1404,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59ff3b6a86f77477562ff5ed",
           "modSlots": [],
           "quantity": 1
@@ -1271,6 +1414,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a0060fc86f7745793204432",
           "modSlots": [],
           "quantity": 1
@@ -1282,16 +1426,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "59e6687d86f77411d949b251",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59e649f986f77411d949b246",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "59e898ee86f77427614bd225",
                 "modSlots": [],
                 "quantity": 1
@@ -1306,6 +1453,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59e8a00d86f7742ad93b569c",
           "modSlots": [],
           "quantity": 1
@@ -1315,6 +1463,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59e6318286f77444dd62c4cc",
           "modSlots": [],
           "quantity": 1
@@ -1324,6 +1473,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59e6449086f7746c9f75e822",
           "modSlots": [],
           "quantity": 1
@@ -1333,6 +1483,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59e8977386f77415a553c453",
           "modSlots": [],
           "quantity": 1
@@ -1342,6 +1493,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59e89d0986f77427600d226e",
           "modSlots": [],
           "quantity": 1
@@ -1351,6 +1503,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d625f086f774661516605d",
           "modSlots": [],
           "quantity": 1
@@ -1362,16 +1515,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5abcbc27d8ce8700182eceeb",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d64ec286f774171d1e0a42",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "59d64f2f86f77417193ef8b3",
                 "modSlots": [],
                 "quantity": 1
@@ -1386,6 +1542,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59e61eb386f77440d64f5daf",
           "modSlots": [],
           "quantity": 1
@@ -1395,6 +1552,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a0071d486f77404e23a12b2",
           "modSlots": [],
           "quantity": 1
@@ -1404,6 +1562,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d6507c86f7741b846413a2",
           "modSlots": [],
           "quantity": 1
@@ -1413,6 +1572,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d650cf86f7741b846413a4",
           "modSlots": [],
           "quantity": 1
@@ -1422,6 +1582,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5abcd472d8ce8700166032ae",
           "modSlots": [],
           "quantity": 1
@@ -1431,6 +1592,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a0060fc86f7745793204432",
           "modSlots": [],
           "quantity": 1
@@ -1442,16 +1604,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5ac66d9b5acfc4001633997a",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59c6633186f7740cf0493bb9",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5648b1504bdc2d9d488b4584",
                 "modSlots": [],
                 "quantity": 1
@@ -1466,6 +1631,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac72e945acfc43f3b691116",
           "modSlots": [],
           "quantity": 1
@@ -1475,6 +1641,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649ade84bdc2d1b2b8b4587",
           "modSlots": [],
           "quantity": 1
@@ -1484,6 +1651,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac50da15acfc4001718d287",
           "modSlots": [],
           "quantity": 1
@@ -1493,6 +1661,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac733a45acfc400192630e2",
           "modSlots": [],
           "quantity": 1
@@ -1502,6 +1671,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ac50c185acfc400163398d4",
           "modSlots": [],
           "quantity": 1
@@ -1511,6 +1681,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "55d480c04bdc2d1d4e8b456a",
           "modSlots": [],
           "quantity": 1
@@ -1522,16 +1693,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "57c44b372459772d2b39b8ce",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57c44dd02459772d2e0ae249",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "57c44e7b2459772d28133248",
                 "modSlots": [],
                 "quantity": 1
@@ -1546,6 +1720,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57c44f4f2459772d2c627113",
           "modSlots": [],
           "quantity": 1
@@ -1555,6 +1730,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57838f9f2459774a150289a0",
           "modSlots": [],
           "quantity": 1
@@ -1564,6 +1740,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57c44fa82459772d2d75e415",
           "modSlots": [],
           "quantity": 1
@@ -1573,6 +1750,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57c450252459772d28133253",
           "modSlots": [],
           "quantity": 1
@@ -1584,11 +1762,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5dcbd56fdbd3d91b3e5468d5",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5dcbd6dddbd3d91b3e5468de",
           "modSlots": [],
           "quantity": 1
@@ -1598,6 +1778,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a3501acc4a282000d72293a",
           "modSlots": [],
           "quantity": 1
@@ -1607,6 +1788,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5dcbd6b46ec07c0c4347a564",
           "modSlots": [],
           "quantity": 1
@@ -1616,11 +1798,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5dcbe9431e1f4616d354987e",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5dcbe965e4ed22586443a79d",
                 "modSlots": [],
                 "quantity": 1
@@ -1637,11 +1821,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5abccb7dd8ce87001773e277",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a17fb03fcdbcbcae668728f",
           "modSlots": [],
           "quantity": 1
@@ -1651,6 +1837,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a17fb9dfcdbcbcae6687291",
           "modSlots": [],
           "quantity": 1
@@ -1660,6 +1847,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a17fc70fcdbcb0176308b3d",
           "modSlots": [],
           "quantity": 1
@@ -1669,6 +1857,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5aba62f8d8ce87001943946b",
           "modSlots": [],
           "quantity": 1
@@ -1678,6 +1867,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5aba639ed8ce8700182ece67",
           "modSlots": [],
           "quantity": 1
@@ -1687,6 +1877,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5abcc328d8ce8700194394f3",
           "modSlots": [],
           "quantity": 1
@@ -1698,11 +1889,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5e81ebcd8e146c7080625e15",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "571659bb2459771fb2755a12",
           "modSlots": [],
           "quantity": 1
@@ -1714,11 +1907,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5a7ae0c351dfba0017554310",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a6b5f868dc32e000a311389",
           "modSlots": [],
           "quantity": 1
@@ -1728,11 +1923,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a6f5e048dc32e00094b97da",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5a6f5d528dc32e00094b97d9",
                 "modSlots": [],
                 "quantity": 1
@@ -1742,6 +1939,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5a6f58f68dc32e000a311390",
                 "modSlots": [],
                 "quantity": 1
@@ -1756,6 +1954,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a718b548dc32e000d46d262",
           "modSlots": [],
           "quantity": 1
@@ -1767,11 +1966,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5aafa857e5b5b00018480968",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5aaf8a0be5b5b00015693243",
           "modSlots": [],
           "quantity": 1
@@ -1781,11 +1982,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5aaf8e43e5b5b00015693246",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5ab24ef9e5b5b00fe93c9209",
                 "modSlots": [],
                 "quantity": 1
@@ -1800,16 +2003,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5aaf9d53e5b5b00015042a52",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5aafa1c2e5b5b00015042a56",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5aafa49ae5b5b00015042a58",
                       "modSlots": [],
                       "quantity": 1
@@ -1829,6 +2035,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5abcbb20d8ce87001773e258",
           "modSlots": [],
           "quantity": 1
@@ -1840,11 +2047,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5b0bbe4e5acfc40dc528a72d",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5b7d678a5acfc4001a5c4022",
           "modSlots": [],
           "quantity": 1
@@ -1854,6 +2063,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5b099ac65acfc400186331e1",
           "modSlots": [],
           "quantity": 1
@@ -1863,6 +2073,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5b7bed205acfc400161d08cc",
           "modSlots": [],
           "quantity": 1
@@ -1872,11 +2083,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5b7be1265acfc400161d0798",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5b7d68af5acfc400170e30c3",
                 "modSlots": [],
                 "quantity": 1
@@ -1891,6 +2104,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5b0bc22d5acfc47a8607f085",
           "modSlots": [],
           "quantity": 1
@@ -1900,6 +2114,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5b7d6c105acfc40015109a5f",
           "modSlots": [],
           "quantity": 1
@@ -1909,6 +2124,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5b7d645e5acfc400170e2f90",
           "modSlots": [],
           "quantity": 1
@@ -1920,11 +2136,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5cadfbf7ae92152ac412eeef",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5caf17c9ae92150b30006be1",
           "modSlots": [],
           "quantity": 1
@@ -1934,6 +2152,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5caf1041ae92157c28402e3f",
           "modSlots": [],
           "quantity": 1
@@ -1943,6 +2162,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5caf16a2ae92152ac412efbc",
           "modSlots": [],
           "quantity": 1
@@ -1952,11 +2172,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5cdaa99dd7f00c002412d0b2",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5cda9bcfd7f00c0c0b53e900",
                 "modSlots": [],
                 "quantity": 1
@@ -1971,6 +2193,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5caf1691ae92152ac412efb9",
           "modSlots": [],
           "quantity": 1
@@ -1982,11 +2205,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "57dc2fa62459775949412633",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57e3dba62459770f0c32322b",
           "modSlots": [],
           "quantity": 1
@@ -1996,6 +2221,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57dc347d245977596754e7a1",
           "modSlots": [],
           "quantity": 1
@@ -2005,6 +2231,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "564ca99c4bdc2d16268b4589",
           "modSlots": [],
           "quantity": 1
@@ -2014,6 +2241,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57dc324a24597759501edc20",
           "modSlots": [],
           "quantity": 1
@@ -2023,6 +2251,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57dc334d245977597164366f",
           "modSlots": [],
           "quantity": 1
@@ -2032,11 +2261,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d36a0086f7747e673f3946",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "57dc32dc245977596d4ef3d3",
                 "modSlots": [],
                 "quantity": 1
@@ -2053,11 +2284,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "588892092459774ac91d4b11",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5888988e24597752fe43a6fa",
           "modSlots": [],
           "quantity": 1
@@ -2067,11 +2300,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5888956924597752983e182d",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5888996c24597754281f9419",
                 "modSlots": [],
                 "quantity": 1
@@ -2081,6 +2316,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5888976c24597754281f93f5",
                 "modSlots": [],
                 "quantity": 1
@@ -2095,6 +2331,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57c55f172459772d27602381",
           "modSlots": [],
           "quantity": 1
@@ -2104,6 +2341,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "58889d0c2459775bc215d981",
           "modSlots": [],
           "quantity": 1
@@ -2115,11 +2353,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5a17f98cfcdbcb0980087290",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a17fb03fcdbcbcae668728f",
           "modSlots": [],
           "quantity": 1
@@ -2129,6 +2369,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a17fc70fcdbcb0176308b3d",
           "modSlots": [],
           "quantity": 1
@@ -2138,6 +2379,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5aba62f8d8ce87001943946b",
           "modSlots": [],
           "quantity": 1
@@ -2147,6 +2389,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5aba637ad8ce87001773e17f",
           "modSlots": [],
           "quantity": 1
@@ -2158,11 +2401,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5bb2475ed4351e00853264e3",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5bb20e0ed4351e3bac1212dc",
           "modSlots": [],
           "quantity": 1
@@ -2172,6 +2417,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c05413a0db834001c390617",
           "modSlots": [],
           "quantity": 1
@@ -2181,16 +2427,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5bb20d53d4351e4502010a69",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5bb20d9cd4351e00334c9d8a",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "544a38634bdc2d58388b4568",
                       "modSlots": [],
                       "quantity": 1
@@ -2200,6 +2449,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5bb20dcad4351e3bac1212da",
                       "modSlots": [],
                       "quantity": 1
@@ -2214,6 +2464,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5bb20de5d4351e0035629e59",
                 "modSlots": [],
                 "quantity": 1
@@ -2223,6 +2474,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5bb20e49d4351e3bac1212de",
                 "modSlots": [],
                 "quantity": 1
@@ -2237,11 +2489,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5bb20e58d4351e00320205d7",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5bb20e70d4351e0035629f8f",
                 "modSlots": [],
                 "quantity": 1
@@ -2256,6 +2510,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5bb20dbcd4351e44f824c04e",
           "modSlots": [],
           "quantity": 1
@@ -2267,11 +2522,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5b1fa9b25acfc40018633c01",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5b1fa9ea5acfc40018633c0a",
           "modSlots": [],
           "quantity": 1
@@ -2281,11 +2538,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5b1faa0f5acfc40dc528aeb5",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5a6f5d528dc32e00094b97d9",
                 "modSlots": [],
                 "quantity": 1
@@ -2295,6 +2554,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5a6f58f68dc32e000a311390",
                 "modSlots": [],
                 "quantity": 1
@@ -2309,6 +2569,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a718b548dc32e000d46d262",
           "modSlots": [],
           "quantity": 1
@@ -2320,16 +2581,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5bf3e0490db83400196199af",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59c6633186f7740cf0493bb9",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5648b0744bdc2d363b8b4578",
                 "modSlots": [],
                 "quantity": 1
@@ -2344,6 +2608,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649aa744bdc2ded0b8b457e",
           "modSlots": [],
           "quantity": 1
@@ -2353,6 +2618,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57e3dba62459770f0c32322b",
           "modSlots": [],
           "quantity": 1
@@ -2362,6 +2628,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649af094bdc2df8348b4586",
           "modSlots": [],
           "quantity": 1
@@ -2371,6 +2638,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649b0544bdc2d1b2b8b458a",
           "modSlots": [],
           "quantity": 1
@@ -2380,6 +2648,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ab626e4d8ce87272e4c6e43",
           "modSlots": [],
           "quantity": 1
@@ -2389,6 +2658,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "564ca99c4bdc2d16268b4589",
           "modSlots": [],
           "quantity": 1
@@ -2400,11 +2670,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5e848cc2988a8701445df1e8",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e848d2eea0a7c419c2f9bfd",
           "modSlots": [],
           "quantity": 1
@@ -2414,6 +2686,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e848d51e4dbc5266a4ec63b",
           "modSlots": [],
           "quantity": 1
@@ -2423,6 +2696,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5f647d9f8499b57dc40ddb93",
           "modSlots": [],
           "quantity": 1
@@ -2432,6 +2706,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e848db4681bea2ada00daa9",
           "modSlots": [],
           "quantity": 1
@@ -2443,11 +2718,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "576a581d2459771e7b1bc4f1",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "576a5ed62459771e9c2096cb",
           "modSlots": [],
           "quantity": 1
@@ -2457,6 +2734,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "576a63cd2459771e796e0e11",
           "modSlots": [],
           "quantity": 1
@@ -2468,11 +2746,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "58948c8e86f77409493f7266",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5894a51286f77426d13baf02",
           "modSlots": [],
           "quantity": 1
@@ -2482,6 +2762,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5894a05586f774094708ef75",
           "modSlots": [],
           "quantity": 1
@@ -2491,16 +2772,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5894a5b586f77426d2590767",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5894a2c386f77427140b8342",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "58949dea86f77409483e16a8",
                       "modSlots": [],
                       "quantity": 1
@@ -2515,11 +2799,13 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5894a42086f77426d2590762",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5894a73486f77426d259076c",
                       "modSlots": [],
                       "quantity": 1
@@ -2529,6 +2815,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "58a56f8d86f774651579314c",
                       "modSlots": [],
                       "quantity": 1
@@ -2538,6 +2825,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "58a5c12e86f7745d585a2b9e",
                       "modSlots": [],
                       "quantity": 1
@@ -2547,6 +2835,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "58a56f8d86f774651579314c",
                       "modSlots": [],
                       "quantity": 1
@@ -2561,6 +2850,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5894a81786f77427140b8347",
                 "modSlots": [],
                 "quantity": 1
@@ -2575,6 +2865,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5894a13e86f7742405482982",
           "modSlots": [],
           "quantity": 1
@@ -2584,6 +2875,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "58949edd86f77409483e16a9",
           "modSlots": [],
           "quantity": 1
@@ -2595,11 +2887,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5a7828548dc32e5a9c28b516",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a787f7ac5856700177af660",
           "modSlots": [],
           "quantity": 1
@@ -2609,6 +2903,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a788089c5856700142fdd9c",
           "modSlots": [],
           "quantity": 1
@@ -2618,6 +2913,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a7882dcc5856700177af662",
           "modSlots": [],
           "quantity": 1
@@ -2627,6 +2923,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a7880d0c5856700142fdd9d",
           "modSlots": [],
           "quantity": 1
@@ -2638,11 +2935,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "56e0598dd2720bb5668b45a6",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5448c12b4bdc2d02308b456f",
           "modSlots": [],
           "quantity": 1
@@ -2652,6 +2951,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "56e05b06d2720bb2668b4586",
           "modSlots": [],
           "quantity": 1
@@ -2661,6 +2961,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "56e05a6ed2720bd0748b4567",
           "modSlots": [],
           "quantity": 1
@@ -2672,11 +2973,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "57f3c6bd24597738e730fa2f",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57d152ec245977144076ccdf",
           "modSlots": [],
           "quantity": 1
@@ -2686,11 +2989,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57f3c7e024597738ea4ba286",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "57f3c8cc2459773ec4480328",
                 "modSlots": [],
                 "quantity": 1
@@ -2705,6 +3010,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57d1519e24597714373db79d",
           "modSlots": [],
           "quantity": 1
@@ -2716,11 +3022,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5ba26383d4351e00334c93d9",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ba264f6d4351e0034777d52",
           "modSlots": [],
           "quantity": 1
@@ -2730,6 +3038,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ba26acdd4351e003562908e",
           "modSlots": [],
           "quantity": 1
@@ -2739,6 +3048,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ba26b01d4351e0085325a51",
           "modSlots": [],
           "quantity": 1
@@ -2748,6 +3058,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ba26b17d4351e00367f9bdd",
           "modSlots": [],
           "quantity": 1
@@ -2757,6 +3068,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5bcf0213d4351e0085327c17",
           "modSlots": [],
           "quantity": 1
@@ -2768,11 +3080,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5bd70322209c4d00d7167b8f",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ba264f6d4351e0034777d52",
           "modSlots": [],
           "quantity": 1
@@ -2782,6 +3096,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ba26acdd4351e003562908e",
           "modSlots": [],
           "quantity": 1
@@ -2791,6 +3106,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ba26b01d4351e0085325a51",
           "modSlots": [],
           "quantity": 1
@@ -2800,6 +3116,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ba26b17d4351e00367f9bdd",
           "modSlots": [],
           "quantity": 1
@@ -2809,6 +3126,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5bd704e7209c4d00d7167c31",
           "modSlots": [],
           "quantity": 1
@@ -2820,11 +3138,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "579204f224597773d619e051",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5448c12b4bdc2d02308b456f",
           "modSlots": [],
           "quantity": 1
@@ -2836,11 +3156,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5a367e5dc4a282000e49738f",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a339805c4a2826c6e06d73d",
           "modSlots": [],
           "quantity": 1
@@ -2850,11 +3172,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a3501acc4a282000d72293a",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "58dd3ad986f77403051cba8f",
                 "modSlots": [],
                 "quantity": 1
@@ -2869,11 +3193,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a33ca0fc4a282000d72292f",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5a33cae9c4a28232980eb086",
                 "modSlots": [],
                 "quantity": 1
@@ -2888,6 +3214,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a329052c4a28200741e22d3",
           "modSlots": [],
           "quantity": 1
@@ -2897,11 +3224,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a34fae7c4a2826c6e06d760",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5a34fd2bc4a282329a73b4c5",
                 "modSlots": [],
                 "quantity": 1
@@ -2911,6 +3240,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5a34fbadc4a28200741e230a",
                 "modSlots": [],
                 "quantity": 1
@@ -2927,16 +3257,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5cadc190ae921500103bb3b6",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5cadc1c6ae9215000f2775a4",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5cadc390ae921500126a77f1",
                 "modSlots": [],
                 "quantity": 1
@@ -2951,6 +3284,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5cadc431ae921500113bb8d5",
           "modSlots": [],
           "quantity": 1
@@ -2960,11 +3294,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5cadc55cae921500103bb3be",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5cadd940ae9215051e1c2316",
                 "modSlots": [],
                 "quantity": 1
@@ -2974,6 +3310,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5cadd919ae921500126a77f3",
                 "modSlots": [],
                 "quantity": 1
@@ -2988,6 +3325,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5cadc2e0ae9215051e1c21e7",
           "modSlots": [],
           "quantity": 1
@@ -2999,11 +3337,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5926bb2186f7744b1c6c6e60",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5926c3b286f774640d189b6b",
           "modSlots": [],
           "quantity": 1
@@ -3013,11 +3353,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5926c0df86f77462f647f764",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5926c36d86f77467a92a8629",
                 "modSlots": [],
                 "quantity": 1
@@ -3027,6 +3369,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5926d2be86f774134d668e4e",
                 "modSlots": [],
                 "quantity": 1
@@ -3036,6 +3379,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5926d3c686f77410de68ebc8",
                 "modSlots": [],
                 "quantity": 1
@@ -3045,6 +3389,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5926e16e86f7742f5a0f7ecb",
                 "modSlots": [],
                 "quantity": 1
@@ -3059,6 +3404,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5926c32286f774616e42de99",
           "modSlots": [],
           "quantity": 1
@@ -3070,11 +3416,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "57d14d2524597714373db789",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57d152ec245977144076ccdf",
           "modSlots": [],
           "quantity": 1
@@ -3084,6 +3432,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57d1519e24597714373db79d",
           "modSlots": [],
           "quantity": 1
@@ -3095,11 +3444,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5e00903ae9dc277128008b87",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5de8eac42a78646d96665d91",
           "modSlots": [],
           "quantity": 1
@@ -3109,6 +3460,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5de910da8b6c4240ba2651b5",
           "modSlots": [],
           "quantity": 1
@@ -3118,11 +3470,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e0090f7e9dc277128008b93",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5de8fb539f98ac2bc659513a",
                 "modSlots": [],
                 "quantity": 1
@@ -3137,6 +3491,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5de922d4b11454561e39239f",
           "modSlots": [],
           "quantity": 1
@@ -3146,6 +3501,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5de8fbf2b74cd90030650c79",
           "modSlots": [],
           "quantity": 1
@@ -3157,11 +3513,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5447a9cd4bdc2dbd208b4567",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "55d4b9964bdc2d1d4e8b456e",
           "modSlots": [],
           "quantity": 1
@@ -3171,6 +3529,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "55d4887d4bdc2d962f8b4570",
           "modSlots": [],
           "quantity": 1
@@ -3180,16 +3539,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "55d355e64bdc2d962f8b4569",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "55d3632e4bdc2d972f8b4569",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "544a38634bdc2d58388b4568",
                       "modSlots": [],
                       "quantity": 1
@@ -3199,6 +3561,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5ae30e795acfc408fb139a0b",
                       "modSlots": [],
                       "quantity": 1
@@ -3213,6 +3576,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5ae30db85acfc408fb139a05",
                 "modSlots": [],
                 "quantity": 1
@@ -3222,6 +3586,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5ae30bad5acfc400185c2dc4",
                 "modSlots": [],
                 "quantity": 1
@@ -3236,11 +3601,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649be884bdc2d79388b4577",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "55d4ae6c4bdc2d8b2f8b456e",
                 "modSlots": [],
                 "quantity": 1
@@ -3255,6 +3622,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "55d44fd14bdc2d962f8b456e",
           "modSlots": [],
           "quantity": 1
@@ -3266,11 +3634,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "56d59856d2720bd8418b456a",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "56d5a1f7d2720bb3418b456a",
           "modSlots": [],
           "quantity": 1
@@ -3280,6 +3650,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "56d5a2bbd2720bb8418b456a",
           "modSlots": [],
           "quantity": 1
@@ -3289,11 +3660,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "56d5a407d2720bb3418b456b",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "56d5a77ed2720b90418b4568",
                 "modSlots": [],
                 "quantity": 1
@@ -3303,6 +3676,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "56d5a661d2720bd8418b456b",
                 "modSlots": [],
                 "quantity": 1
@@ -3317,6 +3691,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "56d59948d2720bb7418b4582",
           "modSlots": [],
           "quantity": 1
@@ -3328,11 +3703,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5f2a9575926fd9352339381f",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5b099ac65acfc400186331e1",
           "modSlots": [],
           "quantity": 1
@@ -3342,11 +3719,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5f2aa46b878ef416f538b567",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5f2aa4464b50c14bcf07acdb",
                 "modSlots": [],
                 "quantity": 1
@@ -3361,11 +3740,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5f2aa47a200e2c0ee46efa71",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5f2aa493cd375f14e15eea72",
                 "modSlots": [],
                 "quantity": 1
@@ -3380,6 +3761,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5f2aa49f9b44de6b1b4e68d4",
           "modSlots": [],
           "quantity": 1
@@ -3391,11 +3773,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5ea03f7400685063ec28bfa8",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ea03e9400685063ec28bfa4",
           "modSlots": [],
           "quantity": 1
@@ -3405,6 +3789,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ea034eb5aad6446a939737b",
           "modSlots": [],
           "quantity": 1
@@ -3414,6 +3799,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ea03e5009aa976f2e7a514b",
           "modSlots": [],
           "quantity": 1
@@ -3423,6 +3809,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ea02bb600685063ec28bfa1",
           "modSlots": [],
           "quantity": 1
@@ -3434,11 +3821,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "587e02ff24597743df3deaeb",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "587e0531245977466077a0f7",
           "modSlots": [],
           "quantity": 1
@@ -3448,6 +3837,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "574db213245977459a2f3f5d",
           "modSlots": [],
           "quantity": 1
@@ -3457,6 +3847,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "587df3a12459772c28142567",
           "modSlots": [],
           "quantity": 1
@@ -3466,6 +3857,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "587e08ee245977446b4410cf",
           "modSlots": [],
           "quantity": 1
@@ -3477,11 +3869,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5448bd6b4bdc2dfc2f8b4569",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5448c12b4bdc2d02308b456f",
           "modSlots": [],
           "quantity": 1
@@ -3493,11 +3887,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5beed0f50db834001c062b12",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5beec8ea0db834001a6f9dbf",
           "modSlots": [],
           "quantity": 1
@@ -3507,16 +3903,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5beec91a0db834001961942d",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5beec9450db83400970084fd",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5bf3f59f0db834001a6fa060",
                       "modSlots": [],
                       "quantity": 1
@@ -3536,11 +3935,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5beec8b20db834001961942a",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5beec8c20db834001d2c465c",
                 "modSlots": [],
                 "quantity": 1
@@ -3555,11 +3956,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5beec3e30db8340019619424",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5beecbb80db834001d2c465e",
                 "modSlots": [],
                 "quantity": 1
@@ -3569,6 +3972,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5beecbb80db834001d2c465e",
                 "modSlots": [],
                 "quantity": 1
@@ -3583,11 +3987,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5beec1bd0db834001e6006f3",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5beec3420db834001b095429",
                 "modSlots": [],
                 "quantity": 1
@@ -3604,11 +4010,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "57f4c844245977379d5c14d1",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57d152ec245977144076ccdf",
           "modSlots": [],
           "quantity": 1
@@ -3618,6 +4026,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57d1519e24597714373db79d",
           "modSlots": [],
           "quantity": 1
@@ -3629,11 +4038,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "56dee2bdd2720bc8328b4567",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "56deec93d2720bec348b4568",
           "modSlots": [],
           "quantity": 1
@@ -3643,6 +4054,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "56deed6ed2720b4c698b4583",
           "modSlots": [],
           "quantity": 1
@@ -3652,6 +4064,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "56deee15d2720bee328b4567",
           "modSlots": [],
           "quantity": 1
@@ -3661,6 +4074,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "56083be64bdc2d20478b456f",
           "modSlots": [],
           "quantity": 1
@@ -3672,11 +4086,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5de7bd7bfd6b4e6e2276dc25",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5de8eac42a78646d96665d91",
           "modSlots": [],
           "quantity": 1
@@ -3686,6 +4102,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5de910da8b6c4240ba2651b5",
           "modSlots": [],
           "quantity": 1
@@ -3695,6 +4112,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5de8fbad2fbe23140d3ee9c4",
           "modSlots": [],
           "quantity": 1
@@ -3704,11 +4122,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5de8e67c4a9f347bc92edbd7",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5de8fb539f98ac2bc659513a",
                 "modSlots": [],
                 "quantity": 1
@@ -3718,6 +4138,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5de8fc0b205ddc616a6bc51b",
                 "modSlots": [],
                 "quantity": 1
@@ -3732,6 +4153,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5de922d4b11454561e39239f",
           "modSlots": [],
           "quantity": 1
@@ -3743,11 +4165,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "55801eed4bdc2d89578b4588",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "559ba5b34bdc2d1f1a8b4582",
           "modSlots": [],
           "quantity": 1
@@ -3757,6 +4181,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "56083e1b4bdc2dc8488b4572",
           "modSlots": [],
           "quantity": 1
@@ -3766,6 +4191,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "56083eab4bdc2d26448b456a",
           "modSlots": [],
           "quantity": 1
@@ -3775,6 +4201,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "560e620e4bdc2d724b8b456b",
           "modSlots": [],
           "quantity": 1
@@ -3784,6 +4211,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "56ea8222d2720b69698b4567",
           "modSlots": [],
           "quantity": 1
@@ -3795,11 +4223,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5a38e6bac4a2826c6e06d79b",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a38ee51c4a282000c5a955c",
           "modSlots": [],
           "quantity": 1
@@ -3809,11 +4239,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a38ef1fc4a282000b1521f6",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5a38eecdc4a282329a73b512",
                 "modSlots": [],
                 "quantity": 1
@@ -3830,11 +4262,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5d2f0d8048f0356c925bc3b0",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5d2f213448f0355009199284",
           "modSlots": [],
           "quantity": 1
@@ -3844,11 +4278,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5d2f261548f03576f500e7b7",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5d2f259b48f0355a844acd74",
                 "modSlots": [],
                 "quantity": 1
@@ -3858,6 +4294,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5926d2be86f774134d668e4e",
                 "modSlots": [],
                 "quantity": 1
@@ -3867,6 +4304,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5d2f25bc48f03502573e5d85",
                 "modSlots": [],
                 "quantity": 1
@@ -3881,6 +4319,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5d2f2d5748f03572ec0c0139",
           "modSlots": [],
           "quantity": 1
@@ -3892,11 +4331,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "54491c4f4bdc2db1078b4568",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "55d4491a4bdc2d882f8b456e",
           "modSlots": [],
           "quantity": 1
@@ -3906,6 +4347,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "55d45d3f4bdc2d972f8b456c",
           "modSlots": [],
           "quantity": 1
@@ -3915,6 +4357,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "55d484b44bdc2d1d4e8b456d",
           "modSlots": [],
           "quantity": 1
@@ -3924,6 +4367,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "56083cba4bdc2de22e8b456f",
           "modSlots": [],
           "quantity": 1
@@ -3935,11 +4379,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "571a12c42459771f627b58a0",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "571a26d524597720680fbe8a",
           "modSlots": [],
           "quantity": 1
@@ -3949,6 +4395,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "571a282c2459771fb2755a69",
           "modSlots": [],
           "quantity": 1
@@ -3958,6 +4405,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "571a29dc2459771fb2755a6a",
           "modSlots": [],
           "quantity": 1
@@ -3969,11 +4417,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "59984ab886f7743e98271174",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5998517986f7746017232f7e",
           "modSlots": [],
           "quantity": 1
@@ -3983,6 +4433,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "599851db86f77467372f0a18",
           "modSlots": [],
           "quantity": 1
@@ -3992,6 +4443,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "599860ac86f77436b225ed1a",
           "modSlots": [],
           "quantity": 1
@@ -4001,6 +4453,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5998597786f77414ea6da093",
           "modSlots": [],
           "quantity": 1
@@ -4010,6 +4463,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59985a8086f77414ec448d1a",
           "modSlots": [],
           "quantity": 1
@@ -4019,6 +4473,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "599860e986f7743bb57573a6",
           "modSlots": [],
           "quantity": 1
@@ -4028,11 +4483,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59ccd11386f77428f24a488f",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5648b1504bdc2d9d488b4584",
                 "modSlots": [],
                 "quantity": 1
@@ -4049,11 +4506,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "59f9cabd86f7743a10721f46",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5998517986f7746017232f7e",
           "modSlots": [],
           "quantity": 1
@@ -4063,6 +4522,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "599851db86f77467372f0a18",
           "modSlots": [],
           "quantity": 1
@@ -4072,6 +4532,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5998529a86f774647f44f421",
           "modSlots": [],
           "quantity": 1
@@ -4081,6 +4542,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5998598e86f7740b3f498a86",
           "modSlots": [],
           "quantity": 1
@@ -4090,6 +4552,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59985a8086f77414ec448d1a",
           "modSlots": [],
           "quantity": 1
@@ -4099,6 +4562,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "599860e986f7743bb57573a6",
           "modSlots": [],
           "quantity": 1
@@ -4108,11 +4572,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59ccd11386f77428f24a488f",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5648b1504bdc2d9d488b4584",
                 "modSlots": [],
                 "quantity": 1
@@ -4129,11 +4595,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5df8ce05b11454561e39243b",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "55d4b9964bdc2d1d4e8b456e",
           "modSlots": [],
           "quantity": 1
@@ -4143,6 +4611,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5df8f541c41b2312ea3335e3",
           "modSlots": [],
           "quantity": 1
@@ -4152,11 +4621,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649be884bdc2d79388b4577",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5ae30c9a5acfc408fb139a03",
                 "modSlots": [],
                 "quantity": 1
@@ -4171,16 +4642,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5df8e4080b92095fd441e594",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5df917564a9f347bc92edca3",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5dfa3cd1b33c0951220c079b",
                       "modSlots": [],
                       "quantity": 1
@@ -4190,6 +4664,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5dfa3d45dfc58d14537c20b0",
                       "modSlots": [],
                       "quantity": 1
@@ -4204,11 +4679,13 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5df916dfbb49d91fb446d6b9",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5dfa3d950dee1b22f862eae0",
                       "modSlots": [],
                       "quantity": 1
@@ -4223,6 +4700,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5dfa3d7ac41b2312ea33362a",
                 "modSlots": [],
                 "quantity": 1
@@ -4237,6 +4715,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5df8e053bb49d91fb446d6a6",
           "modSlots": [],
           "quantity": 1
@@ -4248,11 +4727,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5df24cf80dee1b22f862e9bc",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5df25b6c0b92095fd441e4cf",
           "modSlots": [],
           "quantity": 1
@@ -4262,11 +4743,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5df256570dee1b22f862e9c4",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5df35e7f2a78646d96665dd4",
                 "modSlots": [],
                 "quantity": 1
@@ -4281,16 +4764,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5df35e59c41b2312ea3334d5",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5df25d3bfd6b4e6e2276dc9a",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5df35eb2b11454561e3923e2",
                       "modSlots": [],
                       "quantity": 1
@@ -4300,6 +4786,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5df35eb2b11454561e3923e2",
                       "modSlots": [],
                       "quantity": 1
@@ -4309,6 +4796,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5df35ea9c41b2312ea3334d8",
                       "modSlots": [],
                       "quantity": 1
@@ -4318,6 +4806,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5df35eb2b11454561e3923e2",
                       "modSlots": [],
                       "quantity": 1
@@ -4327,6 +4816,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5df36948bb49d91fb446d5ad",
                       "modSlots": [],
                       "quantity": 1
@@ -4341,6 +4831,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5df38a5fb74cd90030650cb6",
                 "modSlots": [],
                 "quantity": 1
@@ -4350,6 +4841,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5df35ddddfc58d14537c2036",
                 "modSlots": [],
                 "quantity": 1
@@ -4364,6 +4856,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5df35e970b92095fd441e4d2",
           "modSlots": [],
           "quantity": 1
@@ -4375,11 +4868,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5d3eb3b0a4b93615055e84d2",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5d3eb5b6a4b9361eab311902",
           "modSlots": [],
           "quantity": 1
@@ -4389,11 +4884,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5d3eb44aa4b93650d64e4979",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5d3eb4aba4b93650d64e497d",
                 "modSlots": [],
                 "quantity": 1
@@ -4403,6 +4900,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5d3eb536a4b9363b1f22f8e2",
                 "modSlots": [],
                 "quantity": 1
@@ -4417,6 +4915,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5d3eb5eca4b9363b1f22f8e4",
           "modSlots": [],
           "quantity": 1
@@ -4428,11 +4927,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5c46fbd72e2216398b5a8c9c",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c471be12e221602b66cd9ac",
           "modSlots": [],
           "quantity": 1
@@ -4442,6 +4943,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c471c442e221602b542a6f8",
           "modSlots": [],
           "quantity": 1
@@ -4451,6 +4953,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c471b5d2e221602b21d4e14",
           "modSlots": [],
           "quantity": 1
@@ -4460,16 +4963,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c471cb32e221602b177afaa",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5c471bfc2e221602b21d4e17",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5c471ba12e221602b3137d76",
                       "modSlots": [],
                       "quantity": 1
@@ -4484,6 +4990,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5c471c842e221615214259b5",
                 "modSlots": [],
                 "quantity": 1
@@ -4498,11 +5005,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c471c2d2e22164bef5d077f",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5c471c6c2e221602b66cd9ae",
                 "modSlots": [],
                 "quantity": 1
@@ -4512,6 +5021,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5c471b7e2e2216152006e46c",
                 "modSlots": [],
                 "quantity": 1
@@ -4526,6 +5036,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c471bd12e221602b4129c3a",
           "modSlots": [],
           "quantity": 1
@@ -4537,11 +5048,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "59f98b4986f7746f546d2cef",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59f99a7d86f7745b134aa97b",
           "modSlots": [],
           "quantity": 1
@@ -4553,11 +5066,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "574d967124597745970e7c94",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "574dad8024597745964bf05c",
           "modSlots": [],
           "quantity": 1
@@ -4567,6 +5082,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "574db213245977459a2f3f5d",
           "modSlots": [],
           "quantity": 1
@@ -4576,6 +5092,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "587df3a12459772c28142567",
           "modSlots": [],
           "quantity": 1
@@ -4587,11 +5104,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5de652c31b7e3716273428be",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5de653abf76fdc1ce94a5a2a",
           "modSlots": [],
           "quantity": 1
@@ -4601,6 +5120,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5de655be4a9f347bc92edb88",
           "modSlots": [],
           "quantity": 1
@@ -4610,11 +5130,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5de65547883dde217541644b",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5de6556a205ddc616a6bc4f7",
                 "modSlots": [],
                 "quantity": 1
@@ -4629,6 +5151,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5de6558e9f98ac2bc65950fc",
           "modSlots": [],
           "quantity": 1
@@ -4640,11 +5163,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "576165642459773c7a400233",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "576169e62459773c69055191",
           "modSlots": [],
           "quantity": 1
@@ -4654,6 +5179,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "576167ab2459773cad038c43",
           "modSlots": [],
           "quantity": 1
@@ -4663,6 +5189,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649ade84bdc2d1b2b8b4587",
           "modSlots": [],
           "quantity": 1
@@ -4672,6 +5199,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57616c112459773cce774d66",
           "modSlots": [],
           "quantity": 1
@@ -4681,6 +5209,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57a9b9ce2459770ee926038d",
           "modSlots": [],
           "quantity": 1
@@ -4690,6 +5219,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57616ca52459773c69055192",
           "modSlots": [],
           "quantity": 1
@@ -4699,6 +5229,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57616a9e2459773c7a400234",
           "modSlots": [],
           "quantity": 1
@@ -4710,11 +5241,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "57838ad32459774a17445cd2",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57838f0b2459774a256959b2",
           "modSlots": [],
           "quantity": 1
@@ -4724,11 +5257,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57838c962459774a1651ec63",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "57838e1b2459774a256959b1",
                 "modSlots": [],
                 "quantity": 1
@@ -4743,6 +5278,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "578395402459774a256959b5",
           "modSlots": [],
           "quantity": 1
@@ -4752,6 +5288,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "578395e82459774a0e553c7b",
           "modSlots": [],
           "quantity": 1
@@ -4763,11 +5300,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5c501a4d2e221602b412b540",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c5039be2e221602b177c9ff",
           "modSlots": [],
           "quantity": 1
@@ -4777,6 +5316,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c503d0a2e221602b542b7ef",
           "modSlots": [],
           "quantity": 1
@@ -4786,6 +5326,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c503b1c2e221602b21d6e9d",
           "modSlots": [],
           "quantity": 1
@@ -4795,6 +5336,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c503af12e221602b177ca02",
           "modSlots": [],
           "quantity": 1
@@ -4804,6 +5346,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c503ac82e221602b21d6e9a",
           "modSlots": [],
           "quantity": 1
@@ -4815,11 +5358,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5fbcc1d9016cce60e8341ab3",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fbcbd6c187fea44d52eda14",
           "modSlots": [],
           "quantity": 1
@@ -4829,6 +5374,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "55d4887d4bdc2d962f8b4570",
           "modSlots": [],
           "quantity": 1
@@ -4838,21 +5384,25 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fbcc3e4d6fa9c00c571bb58",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5fbbfacda56d053a3543f799",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5fbc22ccf24b94483f726483",
                       "modSlots": [
                         {
                           "item": {
                             "content": [],
+                            "ignorePrice": false,
                             "itemId": "5fbcbd10ab884124df0cd563",
                             "modSlots": [],
                             "quantity": 1
@@ -4867,6 +5417,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5fbc210bf24b94483f726481",
                       "modSlots": [],
                       "quantity": 1
@@ -4881,11 +5432,13 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5fbc226eca32ed67276c155d",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5fc0fa362770a0045c59c677",
                       "modSlots": [],
                       "quantity": 1
@@ -4900,6 +5453,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5fc0fa957283c4046c58147e",
                 "modSlots": [],
                 "quantity": 1
@@ -4914,6 +5468,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fbcc437d724d907e2077d5c",
           "modSlots": [],
           "quantity": 1
@@ -4923,6 +5478,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fbcc640016cce60e8341acc",
           "modSlots": [],
           "quantity": 1
@@ -4934,11 +5490,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5b3b713c5acfc4330140bd8d",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5b3baf8f5acfc40dc5296692",
           "modSlots": [],
           "quantity": 1
@@ -4948,6 +5506,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5b3cadf35acfc400194776a0",
           "modSlots": [],
           "quantity": 1
@@ -4957,6 +5516,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "571a29dc2459771fb2755a6a",
           "modSlots": [],
           "quantity": 1
@@ -4968,11 +5528,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5d67abc1a4b93614ec50137f",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5d3eb5b6a4b9361eab311902",
           "modSlots": [],
           "quantity": 1
@@ -4982,11 +5544,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5d3eb44aa4b93650d64e4979",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5d3eb4aba4b93650d64e497d",
                 "modSlots": [],
                 "quantity": 1
@@ -4996,6 +5560,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5d3eb536a4b9363b1f22f8e2",
                 "modSlots": [],
                 "quantity": 1
@@ -5010,6 +5575,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5d3eb5eca4b9363b1f22f8e4",
           "modSlots": [],
           "quantity": 1
@@ -5021,11 +5587,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5f36a0e5fbf956000b716b65",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5f3e7801153b8571434a924c",
           "modSlots": [],
           "quantity": 1
@@ -5035,6 +5603,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5f3e778efcd9b651187d7201",
           "modSlots": [],
           "quantity": 1
@@ -5044,11 +5613,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5f3e7823ddc4f03b010e2045",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5f3e7897ddc4f03b010e204a",
                 "modSlots": [],
                 "quantity": 1
@@ -5058,6 +5629,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5f3e78a7fbf956000b716b8e",
                 "modSlots": [],
                 "quantity": 1
@@ -5072,6 +5644,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5f3e77b26cda304dcc634057",
           "modSlots": [],
           "quantity": 1
@@ -5081,6 +5654,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5f3e772a670e2a7b01739a52",
           "modSlots": [],
           "quantity": 1
@@ -5090,6 +5664,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5f3e76d86cda304dcc634054",
           "modSlots": [],
           "quantity": 1
@@ -5099,6 +5674,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5f3e777688ca2d00ad199d25",
           "modSlots": [],
           "quantity": 1
@@ -5110,11 +5686,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5fc22d7c187fea44d52eda44",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "57c55efc2459772d2c6271e7",
           "modSlots": [],
           "quantity": 1
@@ -5124,6 +5702,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fc23426900b1d5091531e15",
           "modSlots": [],
           "quantity": 1
@@ -5133,11 +5712,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649be884bdc2d79388b4577",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5fc2369685fd526b824a5713",
                 "modSlots": [],
                 "quantity": 1
@@ -5152,16 +5733,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fc278107283c4046c581489",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5fc23678ab884124df0cd590",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5fc23636016cce60e8341b05",
                       "modSlots": [],
                       "quantity": 1
@@ -5171,6 +5755,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5fc2360f900b1d5091531e19",
                       "modSlots": [],
                       "quantity": 1
@@ -5185,6 +5770,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5fc235db2770a0045c59c683",
                 "modSlots": [],
                 "quantity": 1
@@ -5201,11 +5787,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5c488a752e221602b412af63",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c48a2c22e221602b313fb6c",
           "modSlots": [],
           "quantity": 1
@@ -5215,6 +5803,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "55802d5f4bdc2dac148b458e",
           "modSlots": [],
           "quantity": 1
@@ -5224,6 +5813,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c48a14f2e2216152006edd7",
           "modSlots": [],
           "quantity": 1
@@ -5233,11 +5823,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5c48a2852e221602b21d5923",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5c48a2a42e221602b66d1e07",
                 "modSlots": [],
                 "quantity": 1
@@ -5254,11 +5846,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5ae08f0a5acfc408fb1398a1",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ae0973a5acfc4001562206c",
           "modSlots": [],
           "quantity": 1
@@ -5268,6 +5862,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5bfd37c80db834001d23e842",
           "modSlots": [],
           "quantity": 1
@@ -5277,11 +5872,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5bfd4cbe0db834001b73449f",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5ae099875acfc4001714e593",
                 "modSlots": [],
                 "quantity": 1
@@ -5291,6 +5888,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5bfd4c980db834001b73449d",
                 "modSlots": [],
                 "quantity": 1
@@ -5305,16 +5903,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5b3f7bf05acfc433000ecf6b",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5b3f7c005acfc4704b4a1de8",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5b3f7c1c5acfc40dc5296b1d",
                       "modSlots": [],
                       "quantity": 1
@@ -5336,11 +5937,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5bfd297f0db834001a669119",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5ae0973a5acfc4001562206c",
           "modSlots": [],
           "quantity": 1
@@ -5350,6 +5953,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5bfd384c0db834001a6691d3",
           "modSlots": [],
           "quantity": 1
@@ -5359,11 +5963,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5bfd4cbe0db834001b73449f",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5ae099875acfc4001714e593",
                 "modSlots": [],
                 "quantity": 1
@@ -5373,6 +5979,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5bfd4c980db834001b73449d",
                 "modSlots": [],
                 "quantity": 1
@@ -5389,11 +5996,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5fc3f2d5900b1d5091531e57",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a718b548dc32e000d46d262",
           "modSlots": [],
           "quantity": 1
@@ -5403,6 +6012,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fb6567747ce63734e3fa1dc",
           "modSlots": [],
           "quantity": 1
@@ -5412,6 +6022,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fb6564947ce63734e3fa1da",
           "modSlots": [],
           "quantity": 1
@@ -5421,6 +6032,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fb6558ad6f0b2136f2d7eb7",
           "modSlots": [],
           "quantity": 1
@@ -5430,11 +6042,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fbbc366ca32ed67276c1557",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5fbbc34106bde7524f03cbe9",
                 "modSlots": [],
                 "quantity": 1
@@ -5449,6 +6063,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fbb976df9986c4cff3fe5f2",
           "modSlots": [],
           "quantity": 1
@@ -5458,6 +6073,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fce0f9b55375d18a253eff2",
           "modSlots": [],
           "quantity": 1
@@ -5467,6 +6083,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fce0f9b55375d18a253eff2",
           "modSlots": [],
           "quantity": 1
@@ -5478,11 +6095,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5d43021ca4b9362eab4b5e25",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "55802f5d4bdc2dac148b458f",
           "modSlots": [],
           "quantity": 1
@@ -5492,6 +6111,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5aaa5dfee5b5b000140293d3",
           "modSlots": [],
           "quantity": 1
@@ -5501,21 +6121,25 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5d4405aaa4b9361e6a4e6bd3",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5d440b93a4b9364276578d4b",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5d440625a4b9361eec4ae6c5",
                       "modSlots": [
                         {
                           "item": {
                             "content": [],
+                            "ignorePrice": false,
                             "itemId": "5d44064fa4b9361e4f6eb8b5",
                             "modSlots": [],
                             "quantity": 1
@@ -5530,6 +6154,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "56eabcd4d2720b66698b4574",
                       "modSlots": [],
                       "quantity": 1
@@ -5544,11 +6169,13 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5d4405f0a4b9361e6a4e6bd9",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5b7be47f5acfc400170e2dd2",
                       "modSlots": [],
                       "quantity": 1
@@ -5558,6 +6185,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5b7be4895acfc400170e2dd5",
                       "modSlots": [],
                       "quantity": 1
@@ -5577,11 +6205,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5649be884bdc2d79388b4577",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5d4406a8a4b9361e4f6eb8b7",
                 "modSlots": [],
                 "quantity": 1
@@ -5596,6 +6226,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5d44334ba4b9362b346d1948",
           "modSlots": [],
           "quantity": 1
@@ -5607,11 +6238,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5cc82d76e24e8d00134b4b83",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5cc70093e4a949033c734312",
           "modSlots": [],
           "quantity": 1
@@ -5621,11 +6254,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5cc700b9e4a949000f0f0f25",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5cc700cae4a949035e43ba72",
                 "modSlots": [],
                 "quantity": 1
@@ -5640,11 +6275,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5cc70102e4a949035e43ba74",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5cebec38d7f00c00110a652a",
                 "modSlots": [],
                 "quantity": 1
@@ -5654,6 +6291,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5cc70146e4a949000d73bf6b",
                 "modSlots": [],
                 "quantity": 1
@@ -5663,6 +6301,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5cc70146e4a949000d73bf6b",
                 "modSlots": [],
                 "quantity": 1
@@ -5677,11 +6316,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5cc701aae4a949000e1ea45c",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5cc82796e24e8d000f5859a8",
                 "modSlots": [],
                 "quantity": 1
@@ -5696,6 +6337,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5cc6ea78e4a949000e1ea3c1",
           "modSlots": [],
           "quantity": 1
@@ -5707,11 +6349,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "606587252535c57a13424cfd",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "55802f5d4bdc2dac148b458f",
           "modSlots": [],
           "quantity": 1
@@ -5721,6 +6365,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "59d6272486f77466146386ff",
           "modSlots": [],
           "quantity": 1
@@ -5730,16 +6375,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "606587a88900dc2d9a55b659",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "60658776f2cb2e02a42ace2b",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "6065c6e7132d4d12c81fd8e1",
                       "modSlots": [],
                       "quantity": 1
@@ -5749,6 +6397,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "6065dc8a132d4d12c81fd8e3",
                       "modSlots": [],
                       "quantity": 1
@@ -5763,11 +6412,13 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "6065880c132d4d12c81fd8da",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "5bc09a30d4351e00367fb7c8",
                       "modSlots": [],
                       "quantity": 1
@@ -5782,6 +6433,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5bc09a18d4351e003562b68e",
                 "modSlots": [],
                 "quantity": 1
@@ -5796,11 +6448,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "606587e18900dc2d9a55b65f",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "606587d11246154cad35d635",
                 "modSlots": [],
                 "quantity": 1
@@ -5815,6 +6469,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "606587bd6d0bd7580617bacc",
           "modSlots": [],
           "quantity": 1
@@ -5826,11 +6481,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "606dae0ab0e443224b421bb7",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "6076c1b9f2cb2e02a42acedc",
           "modSlots": [],
           "quantity": 1
@@ -5840,6 +6497,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "607d5aa50494a626335e12ed",
           "modSlots": [],
           "quantity": 1
@@ -5849,6 +6507,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "6076c87f232e5a31c233d50e",
           "modSlots": [],
           "quantity": 1
@@ -5858,6 +6517,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "607d5a891246154cad35d6aa",
           "modSlots": [],
           "quantity": 1
@@ -5869,11 +6529,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "60339954d62c9b14ed777c06",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "602e71bd53a60014f9705bfa",
           "modSlots": [],
           "quantity": 1
@@ -5883,6 +6545,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5a7ad2e851dfba0016153692",
           "modSlots": [],
           "quantity": 1
@@ -5892,16 +6555,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "602e63fb6335467b0c5ac94d",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "603372b4da11d6478d5a07ff",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "60337f5dce399e10262255d1",
                       "modSlots": [],
                       "quantity": 1
@@ -5916,6 +6582,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "6034e3cb0ddce744014cb870",
                 "modSlots": [],
                 "quantity": 1
@@ -5930,11 +6597,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "602e3f1254072b51b239f713",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "602e620f9b513876d4338d9a",
                 "modSlots": [],
                 "quantity": 1
@@ -5949,6 +6618,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "6033749e88382f4fab3fd2c5",
           "modSlots": [],
           "quantity": 1
@@ -5958,6 +6628,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "602f85fd9b513876d4338d9c",
           "modSlots": [],
           "quantity": 1
@@ -5969,11 +6640,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5fb64bc92b1b027b1f50bcf2",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fb651b52b1b027b1f50bcff",
           "modSlots": [],
           "quantity": 1
@@ -5983,6 +6656,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fb6567747ce63734e3fa1dc",
           "modSlots": [],
           "quantity": 1
@@ -5992,6 +6666,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fb6564947ce63734e3fa1da",
           "modSlots": [],
           "quantity": 1
@@ -6001,6 +6676,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fb6558ad6f0b2136f2d7eb7",
           "modSlots": [],
           "quantity": 1
@@ -6010,11 +6686,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fb65363d1409e5ca04b54f5",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5fb6548dd1409e5ca04b54f9",
                 "modSlots": [],
                 "quantity": 1
@@ -6029,6 +6707,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fbb976df9986c4cff3fe5f2",
           "modSlots": [],
           "quantity": 1
@@ -6038,6 +6717,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fce0f9b55375d18a253eff2",
           "modSlots": [],
           "quantity": 1
@@ -6047,6 +6727,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fce0f9b55375d18a253eff2",
           "modSlots": [],
           "quantity": 1
@@ -6058,11 +6739,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5bfea6e90db834001b7347f3",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5bfea7ad0db834001c38f1ee",
           "modSlots": [],
           "quantity": 1
@@ -6072,6 +6755,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5bfeb32b0db834001a6694d9",
           "modSlots": [],
           "quantity": 1
@@ -6081,6 +6765,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5bfebc320db8340019668d79",
           "modSlots": [],
           "quantity": 1
@@ -6092,16 +6777,19 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5e870397991fd70db46995c8",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e87071478f43e51ca2de5e1",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5e8708d4ae379e67d22e0102",
                 "modSlots": [],
                 "quantity": 1
@@ -6116,6 +6804,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e87076ce2db31558c75a11d",
           "modSlots": [],
           "quantity": 1
@@ -6125,6 +6814,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e87080c81c4ed43e83cefda",
           "modSlots": [],
           "quantity": 1
@@ -6134,6 +6824,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e87116b81c4ed43e83cefdd",
           "modSlots": [],
           "quantity": 1
@@ -6143,6 +6834,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5e87114fe2db31558c75a120",
           "modSlots": [],
           "quantity": 1
@@ -6154,11 +6846,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5fc3e272f8b6a877a729eac5",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fc3e466187fea44d52eda90",
           "modSlots": [],
           "quantity": 1
@@ -6168,6 +6862,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fc3e4ee7283c4046c5814af",
           "modSlots": [],
           "quantity": 1
@@ -6177,6 +6872,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fc3e4a27283c4046c5814ab",
           "modSlots": [],
           "quantity": 1
@@ -6186,6 +6882,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fc53954f8b6a877a729eaeb",
           "modSlots": [],
           "quantity": 1
@@ -6195,6 +6892,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fc5396e900b1d5091531e72",
           "modSlots": [],
           "quantity": 1
@@ -6204,6 +6902,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "5fc5396e900b1d5091531e72",
           "modSlots": [],
           "quantity": 1
@@ -6215,11 +6914,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "6176aca650224f204c1da3fb",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "6193dcd0f8ee7e52e4210a28",
           "modSlots": [],
           "quantity": 1
@@ -6229,6 +6930,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "617131a4568c120fdd29482d",
           "modSlots": [],
           "quantity": 1
@@ -6238,16 +6940,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "617153016c780c1e710c9a2f",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "617155ee50224f204c1da3cd",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "61715e7e67085e45ef140b33",
                       "modSlots": [],
                       "quantity": 1
@@ -6267,16 +6972,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "61713a8fd92c473c770214a4",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "61713cc4d8e3106d9806c109",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "61714eec290d254f5e6b2ffc",
                       "modSlots": [],
                       "quantity": 1
@@ -6286,11 +6994,13 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "61714b2467085e45ef140b2c",
                       "modSlots": [
                         {
                           "item": {
                             "content": [],
+                            "ignorePrice": false,
                             "itemId": "58d399e486f77442e0016fe7",
                             "modSlots": [],
                             "quantity": 1
@@ -6310,16 +7020,19 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "61702be9faa1272e431522c3",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "61713308d92c473c770214a0",
                       "modSlots": [
                         {
                           "item": {
                             "content": [],
+                            "ignorePrice": false,
                             "itemId": "6171367e1cb55961fa0fdb36",
                             "modSlots": [],
                             "quantity": 1
@@ -6334,6 +7047,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "61702f1b67085e45ef140b26",
                       "modSlots": [],
                       "quantity": 1
@@ -6348,11 +7062,13 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "61703001d92c473c77021497",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "619386379fb0c665d5490dbe",
                       "modSlots": [],
                       "quantity": 1
@@ -6367,6 +7083,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "5bb20e49d4351e3bac1212de",
                 "modSlots": [],
                 "quantity": 1
@@ -6381,6 +7098,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "61702d8a67085e45ef140b24",
           "modSlots": [],
           "quantity": 1
@@ -6392,11 +7110,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "5580223e4bdc2d1c128b457f",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "55d447bb4bdc2d892f8b456f",
           "modSlots": [],
           "quantity": 1
@@ -6406,6 +7126,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "611a31ce5b7ffe001b4649d1",
           "modSlots": [],
           "quantity": 1
@@ -6417,11 +7138,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "6165ac306ef05c2ce828ef74",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "571659bb2459771fb2755a12",
           "modSlots": [],
           "quantity": 1
@@ -6431,6 +7154,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "6183d53f1cb55961fa0fdcda",
           "modSlots": [],
           "quantity": 1
@@ -6440,16 +7164,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "6165aeedfaa1272e431521e3",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "6183b0711cb55961fa0fdcad",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "618178aa1cb55961fa0fdc80",
                       "modSlots": [],
                       "quantity": 1
@@ -6459,6 +7186,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "61816fcad92c473c770215cc",
                       "modSlots": [],
                       "quantity": 1
@@ -6473,6 +7201,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "61817865d3a39d50044c13a4",
                 "modSlots": [],
                 "quantity": 1
@@ -6482,6 +7211,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "61816df1d3a39d50044c139e",
                 "modSlots": [],
                 "quantity": 1
@@ -6491,6 +7221,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "61816dfa6ef05c2ce828f1ad",
                 "modSlots": [],
                 "quantity": 1
@@ -6505,16 +7236,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "61825d06d92c473c770215de",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "61825d136ef05c2ce828f1cc",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "618167616ef05c2ce828f1a8",
                       "modSlots": [],
                       "quantity": 1
@@ -6529,6 +7263,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "61825d24d3a39d50044c13af",
                 "modSlots": [],
                 "quantity": 1
@@ -6543,6 +7278,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "6181688c6c780c1e710c9b04",
           "modSlots": [],
           "quantity": 1
@@ -6554,11 +7290,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "6193a720f8ee7e52e42109ed",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "6194ef39de3cdf1d2614a768",
           "modSlots": [],
           "quantity": 1
@@ -6568,11 +7306,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "6193d382ed0429009f543e65",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "6194f2912d2c397d6600348d",
                 "modSlots": [],
                 "quantity": 1
@@ -6582,6 +7322,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "6194f35c18a3974e5e7421e6",
                 "modSlots": [],
                 "quantity": 1
@@ -6596,6 +7337,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "6193d338de3cdf1d2614a6fc",
           "modSlots": [],
           "quantity": 1
@@ -6605,6 +7347,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "6193d3cded0429009f543e6a",
           "modSlots": [],
           "quantity": 1
@@ -6614,6 +7357,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "6193d3be7c6c7b169525f0da",
           "modSlots": [],
           "quantity": 1
@@ -6623,6 +7367,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "6193d5d4f8ee7e52e4210a1b",
           "modSlots": [],
           "quantity": 1
@@ -6634,11 +7379,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "618428466ef05c2ce828f218",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "571659bb2459771fb2755a12",
           "modSlots": [],
           "quantity": 1
@@ -6648,6 +7395,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "61840d85568c120fdd2962a5",
           "modSlots": [],
           "quantity": 1
@@ -6657,16 +7405,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "618426d96c780c1e710c9b9f",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "6183fd911cb55961fa0fdce9",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "618407a850224f204c1da549",
                       "modSlots": [],
                       "quantity": 1
@@ -6676,6 +7427,7 @@
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "61816fcad92c473c770215cc",
                       "modSlots": [],
                       "quantity": 1
@@ -6690,6 +7442,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "61817865d3a39d50044c13a4",
                 "modSlots": [],
                 "quantity": 1
@@ -6699,6 +7452,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "61816df1d3a39d50044c139e",
                 "modSlots": [],
                 "quantity": 1
@@ -6708,6 +7462,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "61816dfa6ef05c2ce828f1ad",
                 "modSlots": [],
                 "quantity": 1
@@ -6722,16 +7477,19 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "61825d06d92c473c770215de",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "61825d136ef05c2ce828f1cc",
                 "modSlots": [
                   {
                     "item": {
                       "content": [],
+                      "ignorePrice": false,
                       "itemId": "618167616ef05c2ce828f1a8",
                       "modSlots": [],
                       "quantity": 1
@@ -6746,6 +7504,7 @@
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "61825d24d3a39d50044c13af",
                 "modSlots": [],
                 "quantity": 1
@@ -6760,6 +7519,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "6181688c6c780c1e710c9b04",
           "modSlots": [],
           "quantity": 1
@@ -6771,11 +7531,13 @@
   },
   {
     "content": [],
+    "ignorePrice": false,
     "itemId": "60db29ce99594040e04c4a27",
     "modSlots": [
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "60dc519adf4c47305f6d410d",
           "modSlots": [],
           "quantity": 1
@@ -6785,11 +7547,13 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "612368f58b401f4f51239b33",
           "modSlots": [
             {
               "item": {
                 "content": [],
+                "ignorePrice": false,
                 "itemId": "619d36da53b4d42ee724fae4",
                 "modSlots": [],
                 "quantity": 1
@@ -6804,6 +7568,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "612781056f3d944a17348d60",
           "modSlots": [],
           "quantity": 1
@@ -6813,6 +7578,7 @@
       {
         "item": {
           "content": [],
+          "ignorePrice": false,
           "itemId": "6123649463849f3d843da7c4",
           "modSlots": [],
           "quantity": 1
