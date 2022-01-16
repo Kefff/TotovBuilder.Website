@@ -387,7 +387,7 @@ export class ItemService {
 
       this.marketData = []
 
-      // When an error occurs, we set the last fetch date in order to make the cache expire in 20 seconds later.
+      // When an error occurs, we set the last fetch date in order to make the cache expire 20 seconds later.
       // This is to avoid making a new API request for each of the 2000+ items.
       const maxCacheDuration = Number(Configuration.VITE_CACHE_DURATION)
       const fetchTimeout = Number(Configuration.VITE_FETCH_TIMEOUT)
