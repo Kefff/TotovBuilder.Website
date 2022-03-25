@@ -79,12 +79,12 @@
         <span>
           {{ $t('message.tarkovMarketDisclaimer1') }}
           <a
-            href="https://tarkov-tools.com/"
+            href="https://tarkov.dev/"
             target="_blank"
             class="link"
           >{{ $t('message.tarkovMarketDisclaimer2') }}</a>.
         </span>
-        <span>
+        <!-- <span>
           {{ $t('message.tarkovMarketDisclaimer3') }}
           <a
             class="link"
@@ -100,7 +100,7 @@
               <span>Patreon</span>
             </span>
           </a>.
-        </span>
+        </span> -->
       </div>
     </div>
     <div class="app-footer-line">
