@@ -1,5 +1,27 @@
 [
   {
+    "version": "1.3.2",
+    "date": "2022-03-25T00:00:00+01:00",
+    "changes": [
+      {
+        "language": "en",
+        "text": "Changed the API used to get data to tarkov.dev since Tarkov-Tools has been shutdown."
+      },
+      {
+        "language": "en",
+        "text": "Changed light encumberment value from 28kg to 26kg."
+      },
+      {
+        "language": "fr",
+        "text": "Changement de l'API utilisée pour obtenir les données pour utiliser tarkov.dev suite à l'arrêt de Tarkov-Tools."
+      },
+      {
+        "language": "en",
+        "text": "Changement de la valeur d'emcombrement léger de 28kg à 26kg."
+      }
+    ]
+  },
+  {
     "version": "1.3.1",
     "date": "2022-01-20T00:00:00+01:00",
     "changes": [

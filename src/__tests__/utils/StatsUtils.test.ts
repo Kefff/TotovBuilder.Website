@@ -31,8 +31,8 @@ describe('StringUtils.getValueColorClass()', () => {
 
 describe('StringUtils.getWeightColorClass()', () => {
   it.each([
-    [28, ''],
-    [28.1, 'stats-encumberment-light'],
+    [26, ''],
+    [26.1, 'stats-encumberment-light'],
     [60, 'stats-encumberment-light'],
     [60.1, 'stats-encumberment-heavy']
   ])('should get the CSS class to apply to a stats value', (value: number, expected: string) => {
