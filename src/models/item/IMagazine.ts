@@ -19,4 +19,9 @@ export interface IMagazine extends IContainer, IMod {
    * Modifier added to the loading speed in percentage.
    */
   loadSpeedPercentageModifier: number
+
+  /**
+   * Malfunction chance in percentage.
+   */
+  malfunctionPercentage: number
 }

@@ -21,6 +21,7 @@ import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue
 import Loading from '../loading/LoadingComponent.vue'
 import ShareBuild from '../build-share/BuildShareComponent.vue'
 import { PathUtils } from '../../utils/PathUtils'
+import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 
 export default defineComponent({
   components: {
@@ -73,30 +74,34 @@ export default defineComponent({
       price: {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
           merchant: undefined,
           merchantLevel: undefined,
-          requiresQuest: false,
+          questId: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
           merchant: undefined,
           merchantLevel: undefined,
-          requiresQuest: false,
+          questId: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
         pricesWithContent: [],
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
           merchant: undefined,
           merchantLevel: undefined,
-          requiresQuest: false,
+          questId: undefined,
           value: 0,
           valueInMainCurrency: 0
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       },
       verticalRecoil: undefined,
       weight: 0

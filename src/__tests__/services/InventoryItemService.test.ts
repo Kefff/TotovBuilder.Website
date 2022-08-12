@@ -8,7 +8,7 @@ import { IRecoilPercentageModifier } from '../../models/utils/IRecoilPercentageM
 import { IWeight } from '../../models/utils/IWeight'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import Currencies from '../../assets/data/currencies.json'
-import { ICurrency } from '../../models/item/ICurrency'
+import { ICurrency } from '../../models/configuration/ICurrency'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import Services from '../../services/repository/Services'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
@@ -480,7 +480,7 @@ describe('getPrice()', () => {
         missingPrice: false,
         price: {
           currencyName: 'RUB',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: undefined,
           requiresQuest: false,
           value: 22836,
@@ -506,7 +506,7 @@ describe('getPrice()', () => {
         },
         unitPrice: {
           currencyName: 'RUB',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: undefined,
           requiresQuest: false,
           value: 22836,
@@ -662,7 +662,7 @@ describe('getPrice()', () => {
         missingPrice: false,
         price: {
           currencyName: 'RUB',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: undefined,
           requiresQuest: false,
           value: 43905,
@@ -696,7 +696,7 @@ describe('getPrice()', () => {
         ],
         unitPrice: {
           currencyName: 'RUB',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: undefined,
           requiresQuest: false,
           value: 43905,
@@ -1033,7 +1033,7 @@ describe('getPrice()', () => {
         missingPrice: false,
         price: {
           currencyName: 'RUB',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: undefined,
           requiresQuest: false,
           value: 63456,
@@ -1059,7 +1059,7 @@ describe('getPrice()', () => {
         ],
         unitPrice: {
           currencyName: 'RUB',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: undefined,
           requiresQuest: false,
           value: 63456,
@@ -1098,7 +1098,7 @@ describe('getPrice()', () => {
       },
       {
         enabled: false,
-        merchant: 'fleaMarket',
+        merchant: 'flea-market',
         merchantLevel: 0
       }
     ])
@@ -1216,7 +1216,7 @@ describe('getPrice()', () => {
         missingPrice: true,
         price: {
           currencyName: 'RUB',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: undefined,
           requiresQuest: false,
           value: 22836,
@@ -1242,7 +1242,7 @@ describe('getPrice()', () => {
         ],
         unitPrice: {
           currencyName: 'RUB',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: undefined,
           requiresQuest: false,
           value: 22836,
@@ -2008,7 +2008,7 @@ describe('getWeight()', () => {
   )
 })
 
-describe('getPresetModslotContainingItem', () => {
+describe('getPresetModSlotContainingItem', () => {
   it.each([
     [
       {
@@ -2068,7 +2068,7 @@ describe('getPresetModslotContainingItem', () => {
     const service = new InventoryItemService()
 
     // Act
-    const result = await service.getPresetModslotContainingItem(item.itemId, path)
+    const result = await service.getPresetModSlotContainingItem(item.itemId, path)
 
     // Assert
     expect(result).toStrictEqual(expected)

@@ -1,11 +1,22 @@
 import i18n from '../../plugins/vueI18n'
 import { IRegisteredService } from './IRegisteredService'
 import Configuration from '../../../test-data/configuration.json'
+import { TinyEmitter } from 'tiny-emitter'
 
 /**
  * Represents a repository for all the application services.
  */
 class ServicesRepository {
+  /**
+   * Emitter used to signal when the initialization is done.
+   */
+  public emitter = new TinyEmitter()
+
+  /**
+   * Determines whether the services are initializing or not.
+   */
+  public isInitializing = false
+
   /**
    * Collection of the configured services.
    */
@@ -13,8 +24,7 @@ class ServicesRepository {
 
   /**
    * Configures a new service, or replaces an registered service with the same type or name.
-   * @param name - Name identifying the service.
-   * @param initializeMethod - Method that will be called to create a new instance of the service when it will be requested.
+   * @param type - Type of the service.
    * @param name - Custom identifier in case the type name cannot be used (for example when multiple services can be configured for the same role depending on a configuration).
    * @param instance - Instance to return when the service is requested. Mostly used for mocks while unit testing.
    */
@@ -45,7 +55,7 @@ class ServicesRepository {
 
   /**
    * Gets a configured service.
-   * @param name - Name of the service.
+   * @param type - Type of the service.
    * @returns Instance of the service.
    */
   public get<T>(type: new () => T): T {

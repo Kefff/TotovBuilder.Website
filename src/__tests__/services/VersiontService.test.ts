@@ -1,6 +1,6 @@
 import { VersionService } from '../../services/VersionService'
 import Configuration from '../../../test-data/configuration.json'
-import { IChangelog } from '../../models/utils/IChangelog'
+import { IChangelogEntry } from '../../models/configuration/IChangelogEntry'
 import vueI18n from '../../plugins/vueI18n'
 
 beforeEach(() => {
@@ -283,7 +283,7 @@ describe('constructor', () => {
         }
       ]
     ]
-  ])('should get the current version and changelogs', (version: string | undefined, language: string, expectedVersion: string, expectedHasNewVersion: boolean, expectedChangelogs: IChangelog[]) => {
+  ])('should get the current version and changelogs', (version: string | undefined, language: string, expectedVersion: string, expectedHasNewVersion: boolean, expectedChangelogs: IChangelogEntry[]) => {
     // Arrange
     vueI18n.locale.value = language
 

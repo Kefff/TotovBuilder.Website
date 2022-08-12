@@ -73,27 +73,30 @@ export default defineComponent({
     const price = ref<IInventoryPrice>({
       missingPrice: false,
       price: {
+        barterItems: [], // TODO : Handling barters
         currencyName: 'RUB',
         merchant: undefined,
         merchantLevel: undefined,
-        requiresQuest: false,
+        questId: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
       priceWithContentInMainCurrency: {
+        barterItems: [], // TODO : Handling barters
         currencyName: 'RUB',
         merchant: undefined,
         merchantLevel: undefined,
-        requiresQuest: false,
+        questId: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
       pricesWithContent: [],
       unitPrice: {
+        barterItems: [], // TODO : Handling barters
         currencyName: 'RUB',
         merchant: undefined,
         merchantLevel: undefined,
-        requiresQuest: false,
+        questId: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -121,9 +124,9 @@ export default defineComponent({
 
       if (!canBeLootedResult.success) {
         notificationService.notify(NotificationType.error, canBeLootedResult.failureMessage)
+      } else {
+        canBeLooted.value = canBeLootedResult.value
       }
-
-      canBeLooted.value = canBeLootedResult.value
 
       const inventorySlotTypeResult = await Services.get(InventorySlotService).getType(props.modelValue.typeId)
 

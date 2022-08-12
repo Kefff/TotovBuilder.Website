@@ -4,7 +4,7 @@ import vueI18n from '../plugins/vueI18n'
 import Result, { FailureType } from '../utils/Result'
 import Services from './repository/Services'
 import { BuildService } from './BuildService'
-import Configuration from '../../test-data/configuration.json'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 
 /**
  * Represents a service responsible for exporting builds.
@@ -20,14 +20,16 @@ export class ExportService {
       return Result.fail(FailureType.error, 'ExportService.export()', vueI18n.t('message.noBuildsToExport'))
     }
 
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
     const json = JSON.stringify(builds)
     const blob = new Blob([json], { type: 'text/json;charset=utf-8' })
     const exportedBuildsName = builds.length === 1 ? builds[0].name : builds.length + ' ' + vueI18n.t('caption.builds')
     const fileName =
-      Configuration.VITE_EXPORT_FILE_NAME_PREFIX as string
+      websiteConfigurationService.configuration.exportFileNamePrefix
       + ' - ' + exportedBuildsName + ' - '
       + new Date().toLocaleString()
-      + Configuration.VITE_EXPORT_FILE_EXTENSION as string
+      + websiteConfigurationService.configuration.exportFileExtension
     FileSaver.saveAs(blob, fileName)
 
     const buildService = Services.get(BuildService)

@@ -2,7 +2,7 @@
   <div class="option-line">
     <div class="option-entry">
       <div class="option-caption">
-        {{ item.caption }}
+        {{ item.name }}
       </div>
     </div>
     <div class="option-entry">

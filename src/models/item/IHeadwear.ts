@@ -1,4 +1,12 @@
 import { IArmor } from './IArmor'
 import { IModdable } from './IModdable'
 
-export interface IHeadwear extends IArmor, IModdable {}
+/**
+ * Provides the functionalities of headwear.
+ */
+export interface IHeadwear extends IArmor, IModdable {
+  /**
+   * Severity of the hearing impairment caused by the helmet.
+   */
+  deafening: string
+}

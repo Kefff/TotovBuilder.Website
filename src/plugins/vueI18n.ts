@@ -7,7 +7,7 @@ const vueI18n = createI18n({
   fallbackLocale: 'en',
   globalInjection: true,
   legacy: false,
-  locale: localStorage.getItem(Configuration.VITE_LANGUAGE_KEY) ?? 'en',
+  locale: 'en',
   messages,
   mode: 'composition',
   silentFallbackWarn: true

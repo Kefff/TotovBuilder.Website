@@ -255,7 +255,7 @@
       <div class="build-toolbar-ammunition-count-count">
         {{ ammunitionCount.count.toLocaleString() }}
       </div>
-      <div>{{ ammunitionCount.caption }}</div>
+      <div>{{ ammunitionCount.name }}</div>
     </div>
   </OverlayPanel>
 

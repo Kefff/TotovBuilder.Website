@@ -1,4 +1,5 @@
-import * as TarkovValues from '../assets/data/tarkov-values.json'
+import Services from '../services/repository/Services'
+import { TarkovValuesService } from '../services/TarkovValuesService'
 
 /**
  * Represents an utility class for manipulating item stats values.
@@ -39,9 +40,9 @@ export default class StatsUtils {
    * @returns CSS color class.
    */
   public static getWeightColorClass(weight: number): string {
-    if (weight > TarkovValues.heavyEncumbermentWeight) {
+    if (weight > Services.get(TarkovValuesService).values.heavyEncumbermentWeight) {
       return 'stats-encumberment-heavy'
-    } else if (weight > TarkovValues.lighEncumbermentWeight) {
+    } else if (weight > Services.get(TarkovValuesService).values.lightEncumbermentWeight) {
       return 'stats-encumberment-light'
     }
 

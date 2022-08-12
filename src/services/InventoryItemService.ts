@@ -17,7 +17,7 @@ import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { ItemService } from './ItemService'
 import { IAmmunition } from '../models/item/IAmmunition'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
-import { IPrice } from '../models/utils/IPrice'
+import { IPrice } from '../models/item/IPrice'
 import { MerchantFilterService } from './MerchantFilterService'
 import { PathUtils } from '../utils/PathUtils'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
@@ -43,9 +43,9 @@ export class InventoryItemService {
     if (Services.get(ItemPropertiesService).isAmmunition(itemResult.value)) {
       const ammunition = itemResult.value as IAmmunition
       ammunitionCounts.push({
-        caption: ammunition.caption,
         id: ammunition.id,
-        count: inventoryItem.quantity
+        count: inventoryItem.quantity,
+        name: ammunition.name
       })
     }
 
@@ -201,10 +201,11 @@ export class InventoryItemService {
     }
 
     let unitPrice: IPrice = {
+      barterItems: [],
       currencyName: 'RUB',
       merchant: undefined,
       merchantLevel: undefined,
-      requiresQuest: false,
+      questId: undefined,
       value: 0,
       valueInMainCurrency: 0
     }
@@ -228,10 +229,11 @@ export class InventoryItemService {
     }
 
     const price: IPrice = {
+      barterItems: [], // TODO : Handling barters
       currencyName: unitPrice.currencyName,
       merchant: unitPrice.merchant,
       merchantLevel: unitPrice.merchantLevel,
-      requiresQuest: unitPrice.requiresQuest,
+      questId: unitPrice.questId,
       value: unitPrice.value * inventoryItem.quantity,
       valueInMainCurrency: unitPrice.valueInMainCurrency * inventoryItem.quantity
     }
@@ -247,10 +249,11 @@ export class InventoryItemService {
       price,
       pricesWithContent: [],
       priceWithContentInMainCurrency: {
+        barterItems: [],
         currencyName: mainCurrencyResult.value.name,
         merchant: undefined,
         merchantLevel: undefined,
-        requiresQuest: false,
+        questId: undefined,
         value: price.valueInMainCurrency,
         valueInMainCurrency: price.valueInMainCurrency
       },
@@ -260,10 +263,11 @@ export class InventoryItemService {
 
     if (price.valueInMainCurrency > 0) {
       inventoryPrice.pricesWithContent.push({
+        barterItems: [], // TODO : Handling barters
         currencyName: price.currencyName,
         merchant: undefined,
         merchantLevel: undefined,
-        requiresQuest: price.requiresQuest,
+        questId: price.questId,
         value: price.value,
         valueInMainCurrency: price.valueInMainCurrency
       })
@@ -513,7 +517,7 @@ export class InventoryItemService {
    * @param path - Mod slot path indicating the inventory object position within a parent item.
    * @returns Preset mod slot if the inventory item is in a preset; otherwise undefined.
    */
-  public async getPresetModslotContainingItem(itemId: string, path: string): Promise<IInventoryModSlot | undefined> {
+  public async getPresetModSlotContainingItem(itemId: string, path: string): Promise<IInventoryModSlot | undefined> {
     const pathArray = path.split('/')
 
     // Getting the last item of the path that appears before mods.

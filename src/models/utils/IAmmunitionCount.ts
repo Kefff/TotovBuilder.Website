@@ -5,15 +5,15 @@ export interface IAmmunitionCount {
   /**
    * ID.
    */
-  id: string,
-
-  /**
-   * Caption.
-   */
-  caption: string
+  id: string
 
   /**
    * Count.
    */
   count: number
+
+  /**
+   * Name.
+   */
+  name: string
 }

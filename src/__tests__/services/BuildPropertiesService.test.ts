@@ -6,7 +6,7 @@ import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import Result from '../../utils/Result'
 import Currencies from '../../assets/data/currencies.json'
-import { ICurrency } from '../../models/item/ICurrency'
+import { ICurrency } from '../../models/configuration/ICurrency'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 
 const build1: IBuild = {
@@ -1109,7 +1109,7 @@ describe('getAmmunitionCounts()', () => {
       build1,
       [
         {
-          caption: '5.45x39mm PPBS gs "Igolnik"',
+          name: '5.45x39mm PPBS gs "Igolnik"',
           id: '5c0d5e4486f77478390952fe',
           count: 156
         }
@@ -1650,7 +1650,7 @@ describe('getSummary()', () => {
       {
         ammunitionCounts: [
           {
-            caption: '5.45x39mm PPBS gs "Igolnik"',
+            name: '5.45x39mm PPBS gs "Igolnik"',
             count: 156,
             id: '5c0d5e4486f77478390952fe'
           }
@@ -1710,7 +1710,7 @@ describe('getSummary()', () => {
       {
         ammunitionCounts: [
           {
-            caption: '9x19mm PBP gzh',
+            name: '9x19mm PBP gzh',
             count: 18,
             id: '5efb0da7a29a85116f6ea05f'
           }

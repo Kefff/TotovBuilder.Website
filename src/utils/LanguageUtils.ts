@@ -1,5 +1,6 @@
 import vueI18n from '../plugins/vueI18n'
-import Configuration from '../../test-data/configuration.json'
+import Services from '../services/repository/Services'
+import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 
 /**
  * Represents an utility class for managing language changes.
@@ -17,7 +18,7 @@ export default class LanguageUtils {
     }
 
     vueI18n.locale.value = language
-    localStorage.setItem(Configuration.VITE_LANGUAGE_KEY, language)
+    localStorage.setItem(Services.get(WebsiteConfigurationService).configuration.languageStorageKey, language)
     this.setMeta()
   }
 

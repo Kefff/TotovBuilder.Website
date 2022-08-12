@@ -4,9 +4,9 @@ import Services from '../../services/repository/Services'
 import { ItemService } from '../../services/ItemService'
 import { IItemFetcherService } from '../../services/fetchers/IItemFetcherService'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { IPrice } from '../../models/utils/IPrice'
+import { IPrice } from '../../models/item/IPrice'
 import Currencies from '../../assets/data/currencies.json'
-import { ICurrency } from '../../models/item/ICurrency'
+import { ICurrency } from '../../models/configuration/ICurrency'
 import Result, { FailureType } from '../../utils/Result'
 import ItemCategories from '../../../test-data/item-categories.json'
 
@@ -63,7 +63,7 @@ describe('getItem()', () => {
       },
       {
         currencyName: 'RUB',
-        merchant: 'fleaMarket',
+        merchant: 'flea-market',
         merchantLevel: undefined,
         requiresQuest: false,
         value: 22761,
@@ -131,7 +131,7 @@ describe('getItem()', () => {
       },
       {
         currencyName: 'RUB',
-        merchant: 'fleaMarket',
+        merchant: 'flea-market',
         merchantLevel: undefined,
         requiresQuest: false,
         value: 22761,

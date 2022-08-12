@@ -7,7 +7,7 @@ export default class SortingData {
   /**
    * Property used to sort.
    */
-  public property = 'caption'
+  public property = 'name'
 
   /**
    * Sorting order.

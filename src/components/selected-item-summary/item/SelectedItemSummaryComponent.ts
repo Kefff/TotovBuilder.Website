@@ -41,27 +41,30 @@ export default defineComponent({
     const price = ref<IInventoryPrice>({
       missingPrice: false,
       price: {
+        barterItems: [], // TODO : Handling barters
         currencyName: 'RUB',
         merchant: undefined,
         merchantLevel: undefined,
-        requiresQuest: false,
+        questId: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
       pricesWithContent: [],
       priceWithContentInMainCurrency: {
+        barterItems: [], // TODO : Handling barters
         currencyName: 'RUB',
         merchant: undefined,
         merchantLevel: undefined,
-        requiresQuest: false,
+        questId: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
       unitPrice: {
+        barterItems: [], // TODO : Handling barters
         currencyName: 'RUB',
         merchant: undefined,
         merchantLevel: undefined,
-        requiresQuest: false,
+        questId: undefined,
         value: 0,
         valueInMainCurrency: 0
       },

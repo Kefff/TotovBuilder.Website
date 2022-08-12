@@ -5,7 +5,7 @@
   >
     <div class="item-selection">
       <div
-        v-tooltip.top="selectedItem?.caption"
+        v-tooltip.top="selectedItem?.name"
         class="item-dropdown-override"
       >
         <Dropdown

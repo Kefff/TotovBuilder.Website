@@ -1,7 +1,7 @@
 import { IItem } from './IItem'
 
 /**
- * Provides the functionalities of an eyewear item.
+ * Provides the functionalities of eyewear.
  */
 export interface IEyewear extends IItem {
   /**

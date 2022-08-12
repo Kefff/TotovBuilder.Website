@@ -34,7 +34,7 @@ export class InventorySlotComponentService {
       }
 
       const acceptedItemsResult = itemsResult.value.filter(i => merchantFilterService.hasMatchingPrices(i, true))
-      acceptedItemsResult.sort((item1: IItem, item2: IItem) => StringUtils.compare(item1.caption, item2.caption))
+      acceptedItemsResult.sort((item1: IItem, item2: IItem) => StringUtils.compare(item1.name, item2.name))
 
       acceptedItems.push(...acceptedItemsResult)
     }

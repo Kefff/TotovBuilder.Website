@@ -4,10 +4,11 @@ import Result, { FailureType } from '../utils/Result'
 import InventorySlotTypes from '../assets/data/inventory-slot-types.json'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import i18n from '../plugins/vueI18n'
-import Configuration from '../../test-data/configuration.json'
 import jsonUrl from 'json-url'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IInventorySlot } from '../models/build/IInventorySlot'
+import Services from './repository/Services'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 
 /**
  * Represents a service responsible for managing builds.
@@ -131,7 +132,7 @@ export class BuildService {
    */
   public getAll(): IBuild[] {
     const builds: IBuild[] = []
-    const buildKeyPrefix = Configuration.VITE_BUILD_KEY_PREFIX as string
+    const buildKeyPrefix = Services.get(WebsiteConfigurationService).configuration.buildStorageKeyPrefix
 
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i) // Key could potentially be null if a build is deleted while looping, but it is hardly testable
@@ -151,7 +152,7 @@ export class BuildService {
 
   /**
    * Parses a build that was reduced for sharing.
-   * @param serializedBuild - Serialized build.
+   * @param reducedBuild - Serialized build.
    * @returns Build.
    */
   public parseReducedBuild(reducedBuild: Record<string, unknown>): Result<IBuild> {
@@ -221,7 +222,7 @@ export class BuildService {
 
     // Compressing the build into a URL
     const codec = jsonUrl('lzma')
-    let sharableURL = Configuration.VITE_BUILD_SHARING_URL
+    let sharableURL = Services.get(WebsiteConfigurationService).configuration.buildSharingUrl
     sharableURL += await codec.compress(reducedBuildResult.value)
 
     if (sharableURL.length > 2048) {
@@ -266,7 +267,7 @@ export class BuildService {
    * @returns Storage key.
    */
   private getKey(id: string): string {
-    const key = Configuration.VITE_BUILD_KEY_PREFIX as string + id
+    const key = Services.get(WebsiteConfigurationService).configuration.buildStorageKeyPrefix + id
 
     return key
   }

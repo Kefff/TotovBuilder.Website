@@ -1,7 +1,7 @@
 import { IItem } from './IItem'
 
 /**
- * Provides the functionalities of an armor
+ * Provides the functionalities of an armor.
  */
 export interface IArmor extends IItem {
   /**

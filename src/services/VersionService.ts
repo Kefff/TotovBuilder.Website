@@ -1,7 +1,10 @@
-import Configuration from '../../test-data/configuration.json'
-import Changelogs from '../../public/changelog.json'
-import { IChangelog } from '../models/utils/IChangelog'
+import { IChangelogEntry } from '../models/configuration/IChangelogEntry'
 import vueI18n from '../plugins/vueI18n'
+import Result, { FailureType } from '../utils/Result'
+import { ApiService } from './ApiService'
+import Services from './repository/Services'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import i18n from '../plugins/vueI18n'
 
 export class VersionService {
   /**
@@ -18,6 +21,21 @@ export class VersionService {
   public hasNewVersion = false
 
   /**
+   * Changelog.
+   */
+  private changelog: IChangelogEntry[] = []
+
+  /**
+   * Initialization task.
+   */
+  private initializationPromise: Promise<void>
+
+  /**
+   * Determines whether the service is initializing or not.
+   */
+  private isInitializing = false
+
+  /**
    * New versions since the last visit.
    */
   private newVersions: string[] = []
@@ -26,19 +44,23 @@ export class VersionService {
    * Initializes a new instance of the VersionService class.
    */
   public constructor() {
+    this.initializationPromise = this.initialize()
     this.checkNewVersion()
-    this.getChangelogs()
   }
 
   /**
    * Gets the changelogs.
    * @returns Changelogs.
    */
-  public getChangelogs(): IChangelog[] {
-    const changelogs: IChangelog[] = []
-    const hasChangelogsInCurrentLanguage = Changelogs.some(cl => cl.changes.some(c => c.language === vueI18n.locale.value))
+  public async getChangelogs(): Promise<IChangelogEntry[]> {
+    if (this.isInitializing) {
+      await this.initializationPromise
+    }
 
-    for (const changelog of Changelogs) {
+    const changelogs: IChangelogEntry[] = []
+    const hasChangelogsInCurrentLanguage = this.changelog.some(cl => cl.changes.some(c => c.language === vueI18n.locale.value))
+
+    for (const changelog of this.changelog) {
       changelogs.push({
         changes: changelog.changes.filter(c => c.language === (hasChangelogsInCurrentLanguage ? vueI18n.locale.value : vueI18n.fallbackLocale.value)),
         date: new Date(changelog.date),
@@ -53,21 +75,23 @@ export class VersionService {
   /**
    * Checks if the website has changed of version since the last visit.
    */
-  private checkNewVersion(): void {
-    const lastVersion = localStorage.getItem(Configuration.VITE_VERSION_KEY)
+  private checkNewVersion() {
+    const websiteConfiguration = Services.get(WebsiteConfigurationService).configuration
+    const versionStorageKey = websiteConfiguration.versionStorageKey
+    const lastVersion = localStorage.getItem(versionStorageKey)
 
     if (lastVersion != undefined) {
       this._currentVersion = lastVersion
     }
 
-    this.newVersions = Changelogs.filter(c => this.compareVersions(c.version, this._currentVersion)).map(c => c.version)
+    this.newVersions = this.changelog.filter(c => this.compareVersions(c.version, this._currentVersion)).map(c => c.version)
 
     if (this.newVersions.length > 0) {
       this.hasNewVersion = true
       this._currentVersion = this.newVersions[0]
     }
 
-    localStorage.setItem(Configuration.VITE_VERSION_KEY, this._currentVersion)
+    localStorage.setItem(versionStorageKey, this._currentVersion)
   }
 
   /**
@@ -81,5 +105,37 @@ export class VersionService {
     const version2AsNumber = Number(version2.replace(/[.]/g, ''))
 
     return version1AsNumber > version2AsNumber
+  }
+
+  /**
+   * Fetchs items.
+   */
+  private async fetchChangelog(): Promise<Result<void>> {
+    const apiService = Services.get(ApiService)
+    const websiteConfiguration = Services.get(WebsiteConfigurationService).configuration
+    const changelogResult = await apiService.get<IChangelogEntry[]>(websiteConfiguration.changelogApi)
+
+    if (!changelogResult.success) {
+      return Result.failFrom(changelogResult)
+    }
+
+    if (changelogResult.value.length === 0) {
+      return Result.fail(FailureType.error, 'ApiItemFetcher.get()', i18n.t('message.itemsNotFetched'))
+    }
+
+    this.changelog = changelogResult.value
+
+    return Result.ok()
+  }
+
+  /**
+   * Initializes the data used by the service.
+   */
+  private async initialize(): Promise<void> {
+    const fetchResult = await this.fetchChangelog()
+
+    if (!fetchResult.success) {
+      throw new Error()
+    }
   }
 }

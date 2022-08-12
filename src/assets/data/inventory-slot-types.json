@@ -24,13 +24,13 @@
     "itemSlotsAmount": 1
   },
   {
-    "acceptedItemCategoryIds": ["compass"],
+    "acceptedItemCategoryIds": ["special"],
     "canBeLooted": false,
-    "defaultItemsIds": ["5f4f9eb969cdc30ff33f09db"],
+    "defaultItemsIds": [],
     "displayOrder": 15,
     "icon": "compass",
-    "id": "compass",
-    "itemSlotsAmount": 1
+    "id": "special",
+    "itemSlotsAmount": 3
   },
   {
     "acceptedItemCategoryIds": ["headphones"],
@@ -77,16 +77,14 @@
       "ammunition",
       "armband",
       "armorMod",
-      "compass",
       "container",
       "currency",
       "faceCover",
-      "food",
       "grenade",
       "magazine",
-      "medical",
       "mod",
-      "other"
+      "other",
+      "special"
     ],
     "canBeLooted": true,
     "displayOrder": 8,

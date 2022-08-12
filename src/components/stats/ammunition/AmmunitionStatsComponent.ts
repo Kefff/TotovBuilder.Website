@@ -3,7 +3,8 @@ import { IAmmunition } from '../../../models/item/IAmmunition'
 import StatsUtils from '../../../utils/StatsUtils'
 import StringUtils from '../../../utils/StringUtils'
 import { ArmorUtils } from '../../../utils/ArmorUtils'
-import * as TarkovValues from '../../../assets/data/tarkov-values.json'
+import Services from '../../../services/repository/Services'
+import { TarkovValuesService } from '../../../services/TarkovValuesService'
 
 export default defineComponent({
   props: {
@@ -18,7 +19,7 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const canOneshot = computed(() => props.item.fleshDamage >= TarkovValues.chestHp)
+    const canOneshot = computed(() => props.item.fleshDamage >= Services.get(TarkovValuesService).values.chestHp)
 
     /**
      * Gets the tooltip for an armor penetration.

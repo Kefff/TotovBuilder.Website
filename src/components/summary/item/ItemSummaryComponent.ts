@@ -1,6 +1,6 @@
 import { defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { IItem } from '../../../models/item/IItem'
-import { IPrice } from '../../../models/utils/IPrice'
+import { IPrice } from '../../../models/item/IPrice'
 import { InventoryItemService } from '../../../services/InventoryItemService'
 import { NotificationService, NotificationType } from '../../../services/NotificationService'
 import Services from '../../../services/repository/Services'
@@ -20,10 +20,11 @@ export default defineComponent({
   },
   setup: (props) => {
     const price = ref<IPrice>({
+      barterItems: [], // TODO : Handling barters
       currencyName: 'RUB',
       merchant: undefined,
       merchantLevel: undefined,
-      requiresQuest: false,
+      questId: undefined,
       value: 0,
       valueInMainCurrency: 0
     })

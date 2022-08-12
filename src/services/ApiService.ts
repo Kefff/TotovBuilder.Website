@@ -2,6 +2,8 @@ import { IApiMethodParameter } from '../models/utils/IApiMethodParameter'
 import i18n from '../plugins/vueI18n'
 import Result, { FailureType } from '../utils/Result'
 import Configuration from '../../test-data/configuration.json'
+import Services from './repository/Services'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 
 /**
  * Represents a service responsible for sending requests to an API and getting responses.
@@ -17,7 +19,7 @@ export class ApiService {
     const parametersString = this.getParametersString(parameters)
     const url = Configuration.VITE_API_URL as string + method + parametersString
 
-    const fetchTimeout = Number(Configuration.VITE_FETCH_TIMEOUT) * 1000 // In milliseconds
+    const fetchTimeout = Services.get(WebsiteConfigurationService).configuration.fetchTimeout * 1000 // In milliseconds
     const controller = new AbortController()
     setTimeout(() => controller.abort(), fetchTimeout)
 

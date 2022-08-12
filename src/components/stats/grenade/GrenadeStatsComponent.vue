@@ -44,11 +44,6 @@
       </div>
     </div>
   </div>
-  <AmmunitionStats
-    v-if="item.fragmentsAmount > 0 && fragmentAmmunition !== undefined"
-    :item="fragmentAmmunition"
-    :of-grenade="true"
-  />
 </template>
 
 <script lang="ts" src="./GrenadeStatsComponent.ts" />

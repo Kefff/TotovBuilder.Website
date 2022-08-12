@@ -1,6 +1,6 @@
 import { spy, when } from 'ts-mockito'
 import { IItem } from '../../../../models/item/IItem'
-import { IPrice } from '../../../../models/utils/IPrice'
+import { IPrice } from '../../../../models/item/IPrice'
 import SortingData, { SortingOrder } from '../../../../models/utils/SortingData'
 import { ItemService } from '../../../../services/ItemService'
 import Services from '../../../../services/repository/Services'

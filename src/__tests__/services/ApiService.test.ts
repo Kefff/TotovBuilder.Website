@@ -24,7 +24,7 @@ describe('get()', () => {
     "link": "https://tarkov-tools.com/item/secure-flash-drive",
     "buyFor": [
       {
-        "source": "fleaMarket",
+        "source": "flea-market",
         "price": 58486,
         "currency": "RUB",
         "requirements": [{ "type": "playerLevel", "value": 20 }]
@@ -41,7 +41,7 @@ describe('get()', () => {
     "link": "https://tarkov-tools.com/item/ssd-drive",
     "buyFor": [
       {
-        "source": "fleaMarket",
+        "source": "flea-market",
         "price": 60373,
         "currency": "RUB",
         "requirements": [{ "type": "playerLevel", "value": 20 }]
@@ -68,7 +68,7 @@ describe('get()', () => {
         'link': 'https://tarkov-tools.com/item/secure-flash-drive',
         'buyFor': [
           {
-            'source': 'fleaMarket',
+            'source': 'flea-market',
             'price': 58486,
             'currency': 'RUB',
             'requirements': [{ 'type': 'playerLevel', 'value': 20 }]
@@ -85,7 +85,7 @@ describe('get()', () => {
         'link': 'https://tarkov-tools.com/item/ssd-drive',
         'buyFor': [
           {
-            'source': 'fleaMarket',
+            'source': 'flea-market',
             'price': 60373,
             'currency': 'RUB',
             'requirements': [{ 'type': 'playerLevel', 'value': 20 }]
@@ -117,7 +117,7 @@ describe('get()', () => {
         ]
       },
       {
-        "source": "fleaMarket",
+        "source": "flea-market",
         "price": 22761,
         "currency": "RUB",
         "requirements": [{ "type": "playerLevel", "value": 20 }]
@@ -153,7 +153,7 @@ describe('get()', () => {
             ]
           },
           {
-            'source': 'fleaMarket',
+            'source': 'flea-market',
             'price': 22761,
             'currency': 'RUB',
             'requirements': [{ 'type': 'playerLevel', 'value': 20 }]

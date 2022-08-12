@@ -193,7 +193,7 @@ export default defineComponent({
 
       itemChanging.value = true
 
-      preset.value = await inventoryItemService.getPresetModslotContainingItem(selectedItem.value.id, props.path)
+      preset.value = await inventoryItemService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
 
       if (itemPropertiesService.isMod(selectedItem.value) && PathUtils.checkIsModSlotPath(props.path)) {
         // Checking the compatibility if the selected item is a mod and we are in mod slot
@@ -236,7 +236,7 @@ export default defineComponent({
       if (filter === '') {
         newOptions = [...props.acceptedItems]
       } else {
-        newOptions = [...props.acceptedItems.filter((o) => StringUtils.contains(o.caption, filter))]
+        newOptions = [...props.acceptedItems.filter((o) => StringUtils.contains(o.name, filter))]
       }
 
       if (newOptions.length > optionsMaxNumber) {
@@ -292,7 +292,7 @@ export default defineComponent({
       }
 
       if (selectedItem.value != undefined) {
-        preset.value = await inventoryItemService.getPresetModslotContainingItem(selectedItem.value.id, props.path)
+        preset.value = await inventoryItemService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
       }
     }
 

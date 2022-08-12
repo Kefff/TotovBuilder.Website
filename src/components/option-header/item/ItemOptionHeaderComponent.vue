@@ -12,9 +12,9 @@
         />
         <OptionHeaderSortButton
           v-model="updatableSortingData"
-          caption-resource="caption.caption"
+          caption-resource="caption.name"
           icon="font"
-          property="caption"
+          property="name"
           :sorting-service="sortingService"
         />
       </div>

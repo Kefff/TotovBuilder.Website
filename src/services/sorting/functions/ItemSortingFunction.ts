@@ -12,7 +12,7 @@ export class ItemSortingFunctions implements ISortingFunctions {
    * {@inheritDoc ISortingFunctions.comparisonFunctions}
    */
   public comparisonFunctions: { [property: string]: (item1: IItem, item1ValueToCompare: string | number, item2: IItem, item2ValueToCompare: string | number) => number } = {
-    caption: ItemSortingFunctions.compareByString,
+    name: ItemSortingFunctions.compareByString,
     categoryId: (item1, item1ValueToCompare, item2) => ItemSortingFunctions.compareByCategory(item1, item2),
     price: ItemSortingFunctions.compareByNumber
   }
@@ -21,14 +21,13 @@ export class ItemSortingFunctions implements ISortingFunctions {
    * {@inheritDoc ISortingFunctions.comparisonFunctions}
    */
   public getValueToCompareFunctions: { [property: string]: (item: IItem) => (string | number) | Promise<string | number> } = {
-    caption: (item: IItem) => item.caption,
+    name: (item: IItem) => item.name,
     categoryId: (item: IItem) => item.categoryId,
     price: (item: IItem) => ItemSortingFunctions.getPrice(item)
   }
 
   /**
-   * Compares items by category, a number and a caption.
-   * @param property - Name of the number property used for comparison.
+   * Compares items by a a property of type number.
    * @param item1 - First item.
    * @param item1ValueToCompare - Number value obtained from the first item used to compare.
    * @param item2 - Second item.
@@ -43,14 +42,14 @@ export class ItemSortingFunctions implements ISortingFunctions {
     }
 
     if (comparisonValue === 0) {
-      comparisonValue = ItemSortingFunctions.compareByCaption(item1, item2)
+      comparisonValue = ItemSortingFunctions.compareByName(item1, item2)
     }
 
     return comparisonValue
   }
 
   /**
-   * Compares items by category, a string and a caption.
+   * Compares items by a property of type string.
    * @param item1 - First item.
    * @param item1ValueToCompare - String value obtained from the first item used to compare.
    * @param item2 - Second item.
@@ -65,20 +64,20 @@ export class ItemSortingFunctions implements ISortingFunctions {
     }
 
     if (comparisonValue === 0) {
-      comparisonValue = ItemSortingFunctions.compareByCaption(item1, item2)
+      comparisonValue = ItemSortingFunctions.compareByName(item1, item2)
     }
 
     return comparisonValue
   }
 
   /**
-   * Compare items by category and caption.
+   * Compare items by category and name.
    * @param item1 - First item.
    * @param item2 - Second item.
    * @returns Comparison value.
    */
-  private static compareByCaption(item1: IItem, item2: IItem): number {
-    return StringUtils.compare(item1.caption, item2.caption)
+  private static compareByName(item1: IItem, item2: IItem): number {
+    return StringUtils.compare(item1.name, item2.name)
   }
 
   /**

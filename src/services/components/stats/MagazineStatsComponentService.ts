@@ -24,7 +24,7 @@ export class MagazineStatsComponentService {
         continue
       }
 
-      acceptedAmmunitionCaptions.push(itemResult.value.caption)
+      acceptedAmmunitionCaptions.push(itemResult.value.name)
     }
 
     return acceptedAmmunitionCaptions

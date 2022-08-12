@@ -1,14 +1,9 @@
-import { IPrice } from '../utils/IPrice'
+import { IPrice } from './IPrice'
 
 /**
  * Provides the functionalities of an item.
  */
 export interface IItem {
-  /**
-   * Caption.
-   */
-  caption: string
-
   /**
    * ID of the category of the item.
    */
@@ -17,17 +12,7 @@ export interface IItem {
   /**
    * IDs of conflicting items.
    */
-  conflictingItemIds: string[],
-
-  /**
-   * Description.
-   */
-  description: string,
-
-  /**
-   * Indicates whether the item has market data or not.
-   */
-  hasMarketData: boolean
+  conflictingItemIds: string[]
 
   /**
    * Link to the icon.
@@ -47,7 +32,7 @@ export interface IItem {
   /**
    * Maximum number of times the item can be stacked.
    */
-  maxStackableAmount: number;
+  maxStackableAmount: number
 
   /**
    * Link to the item market page.

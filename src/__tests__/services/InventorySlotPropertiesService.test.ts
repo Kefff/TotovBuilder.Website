@@ -1,7 +1,7 @@
 import { IInventorySlot } from '../../models/build/IInventorySlot'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
 import Currencies from '../../assets/data/currencies.json'
-import { ICurrency } from '../../models/item/ICurrency'
+import { ICurrency } from '../../models/configuration/ICurrency'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 

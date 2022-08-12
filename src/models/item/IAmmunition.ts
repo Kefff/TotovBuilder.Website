@@ -15,12 +15,12 @@ export interface IAmmunition extends IItem {
   armorDamagePercentage: number
 
   /**
-   * List of the penetration effectiveness by armor class.
+   * List of the penetration efficiencies by armor class.
    */
   armorPenetrations: number[]
 
   /**
-   * Blinding.
+   * Indicates whether the ammunitions can blind opponents.
    */
   blinding: boolean
 
@@ -71,12 +71,12 @@ export interface IAmmunition extends IItem {
   recoilPercentageModifier: number
 
   /**
-   * Determines whether the ammunition is subsonic or not.
+   * Indicates whether the ammunition is subsonic or not.
    */
   subsonic: boolean
 
   /**
-   * Determines whether the ammunition is will have a coloured trail while flying.
+   * Indicates whether the ammunition is will have a coloured trail while flying.
    */
   tracer: boolean
 

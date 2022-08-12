@@ -1,6 +1,6 @@
 import { IBuild } from '../models/build/IBuild'
 import { IInventoryItem } from '../models/build/IInventoryItem'
-import { IConflictingItem } from '../models/item/IConflictingItem'
+import { IConflictingItem } from '../models/configuration/IConflictingItem'
 import { IVest } from '../models/item/IVest'
 import { IAmmunitionCount } from '../models/utils/IAmmunitionCount'
 import vueI18n from '../plugins/vueI18n'
@@ -110,8 +110,8 @@ export class BuildPropertiesService {
         FailureType.hidden,
         'BuildService.checkCanAddMod()',
         vueI18n.t('message.cannotAddMod', {
-          modCaption: modResult.value.caption,
-          conflictingItemCaption: conflictingItemResult.value.caption
+          modName: modResult.value.name,
+          conflictingItemCaption: conflictingItemResult.value.name
         })
       )
     }
@@ -286,27 +286,30 @@ export class BuildPropertiesService {
     const inventoryPrice: IInventoryPrice = {
       missingPrice: false,
       price: {
+        barterItems: [],
         currencyName: mainCurrencyResult.value.name,
         merchant: undefined,
         merchantLevel: undefined,
-        requiresQuest: false,
+        questId: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
       priceWithContentInMainCurrency: {
+        barterItems: [],
         currencyName: mainCurrencyResult.value.name,
         merchant: undefined,
         merchantLevel: undefined,
-        requiresQuest: false,
+        questId: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
       pricesWithContent: [],
       unitPrice: {
+        barterItems: [],
         currencyName: mainCurrencyResult.value.name,
         merchant: undefined,
         merchantLevel: undefined,
-        requiresQuest: false,
+        questId: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -403,27 +406,30 @@ export class BuildPropertiesService {
       price: {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: mainCurrencyResult.value.name,
           merchant: undefined,
           merchantLevel: undefined,
-          requiresQuest: false,
+          questId: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: mainCurrencyResult.value.name,
           merchant: undefined,
           merchantLevel: undefined,
-          requiresQuest: false,
+          questId: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
         pricesWithContent: [],
         unitPrice: {
+          barterItems: [],
           currencyName: mainCurrencyResult.value.name,
           merchant: undefined,
           merchantLevel: undefined,
-          requiresQuest: false,
+          questId: undefined,
           value: 0,
           valueInMainCurrency: 0
         },

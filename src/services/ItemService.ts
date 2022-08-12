@@ -2,26 +2,20 @@ import { IItem } from '../models/item/IItem'
 import Result, { FailureType } from '../utils/Result'
 import i18n from '../plugins/vueI18n'
 import Services from './repository/Services'
-import { IItemFetcherService } from './fetchers/IItemFetcherService'
 import { IInventoryItem } from '../models/build/IInventoryItem'
-import { IItemCategory } from '../models/item/IItemCategory'
-import { ItemCategoryUtils } from '../utils/ItemCategoryUtils'
-import { ICurrency } from '../models/item/ICurrency'
-import Currencies from '../assets/data/currencies.json'
+import { IItemCategory } from '../models/configuration/IItemCategory'
+import { ICurrency } from '../models/configuration/ICurrency'
 import { NotificationService, NotificationType } from './NotificationService'
-import Configuration from '../../test-data/configuration.json'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import { TarkovValuesService } from './TarkovValuesService'
+import { ItemFetcherService } from './ItemFetcherService'
 
 /**
  * Represents a service responsible for managing items.
  */
 export class ItemService {
   /**
-   * Fetched currencies.
-   */
-  private currencies: ICurrency[] = []
-
-  /**
-   * Indicates whether data that never expire has been cached or not.
+   * Indicates whether data that is fetched only once and never expire has been cached or not.
    */
   private hasStaticDataCached = false
 
@@ -36,29 +30,24 @@ export class ItemService {
   private items: IItem[] = []
 
   /**
-   * Determines whether market data is being fetched or not.
+   * Determines whether prices are being fetched or not.
    */
-  private isFetchingMarketData = false
+  private isFetchingPrices = false
 
   /**
-   * Determines whether data is being fetched or not.
+   * Determines whether static data is being fetched or not.
    */
   private isFetchingStaticData = false
 
   /**
-   * Date of the last time data market data was fetched.
+   * Date of the last time prices were fetched.
    */
-  private lastMarketDataFetchDate: Date = new Date(1)
+  private lastPricesFetchDate: Date = new Date(1)
 
   /**
-   * Fetched market data.
+   * Current prices fetching task.
    */
-  private marketData: Record<string, unknown>[] = []
-
-  /**
-   * Current market data fetching task.
-   */
-  private marketDataFetchingPromise: Promise<void> = Promise.resolve()
+  private pricesFetchingPromise: Promise<void> = Promise.resolve()
 
   /**
    * Fetched presets.
@@ -71,20 +60,12 @@ export class ItemService {
   private staticDataFetchingPromise: Promise<void> = Promise.resolve()
 
   /**
-   * Initializes a new instance of the ItemService class.
-   */
-  public constructor() {
-    this.initialize()
-  }
-
-  /**
    * Gets currency.
    * @param name - Name of the currency.
    * @returns Currency.
    */
   public async getCurrency(name: string): Promise<Result<ICurrency>> {
-    await this.initialize()
-    const currency = this.currencies.find(c => c.name === name)
+    const currency = Services.get(TarkovValuesService).values.currencies.find(c => c.name === name)
 
     if (currency === undefined) {
       return Result.fail(FailureType.error, 'ItemService.getCurrency()', i18n.t('message.currencyNotFound', { currency: name }))
@@ -104,7 +85,7 @@ export class ItemService {
   }
 
   /**
-   * Gets an item. Updates the market data if its cache has expired.
+   * Gets an item. Updates the prices if the cache has expired.
    * @param id - Item ID.
    * @returns Item or undefined if the item was not found.
    */
@@ -146,8 +127,7 @@ export class ItemService {
    * @returns Main currency.
    */
   public async getMainCurrency(): Promise<Result<ICurrency>> {
-    await this.initialize()
-    const currency = this.currencies.find(c => c.mainCurrency)
+    const currency = Services.get(TarkovValuesService).values.currencies.find(c => c.mainCurrency)
 
     if (currency === undefined) {
       return Result.fail(FailureType.error, 'ItemService.getMainCurrency()', i18n.t('message.mainCurrencyNotFound'))
@@ -170,30 +150,23 @@ export class ItemService {
   }
 
   /**
-   * Fetchs currencies.
-   * @param itemFetcherService - Item fetcher service.
+   * Initializes the data used by the service.
    */
-  private async fetchCurrencies() {
-    const currencies: ICurrency[] = []
-
-    for (const currency of Currencies) {
-      currencies.push({
-        iconName: currency.iconName,
-        mainCurrency: currency.mainCurrency,
-        name: currency.name,
-        itemId: currency.itemId,
-        value: 0
-      })
+  public async initialize(): Promise<void> {
+    if (!this.hasStaticDataCached) {
+      await this.fetchStaticData()
     }
 
-    this.currencies = currencies
+    if (!this.hasValidCache()) {
+      await this.fetchPrices()
+    }
   }
 
   /**
    * Fetchs item categories.
    * @param itemFetcherService - Item fetcher service.
    */
-  private async fetchItemCategories(itemFetcherService: IItemFetcherService) {
+  private async fetchItemCategories(itemFetcherService: ItemFetcherService) {
     const itemCategoriesResult = await itemFetcherService.fetchItemCategories()
 
     if (!itemCategoriesResult.success) {
@@ -203,51 +176,50 @@ export class ItemService {
     this.itemCategories = itemCategoriesResult.value
   }
 
-
   /**
    * Fetchs items.
    * @param itemFetcherService - Item fetcher service.
    */
-  private async fetchItems(itemFetcherService: IItemFetcherService) {
+  private async fetchItems(itemFetcherService: ItemFetcherService) {
     const itemsResult = await itemFetcherService.fetchItems()
 
     if (!itemsResult.success) {
       throw new Error()
     }
 
-    this.items = await this.getItemsFromTarkovItems(itemsResult.value)
+    this.items = itemsResult.value
   }
 
   /**
-     * Fetches market data.
-     * If market data is already being fetched, waits for the operation to end before returnin.
+     * Fetches prices.
+     * If prices are already being fetched, waits for the operation to end before returning.
      */
-  private async fetchMarketData() {
-    if (this.isFetchingMarketData) {
-      await this.marketDataFetchingPromise
+  private async fetchPrices() {
+    if (this.isFetchingPrices) {
+      await this.pricesFetchingPromise
 
       return
     }
 
-    this.marketDataFetchingPromise = new Promise((resolve) => {
-      this.isFetchingMarketData = true
-      const itemFetcherService = Services.getByName<IItemFetcherService>('ItemFetcherService')
+    this.pricesFetchingPromise = new Promise((resolve) => {
+      this.isFetchingPrices = true
+      const itemFetcherService = Services.get(ItemFetcherService)
 
-      itemFetcherService.fetchMarketData()
-        .then(async (marketDataResult) => this.updateItemsMarketData(marketDataResult))
+      itemFetcherService.fetchPrices()
+        .then(async (pricesResult) => this.updateItemsPrices(pricesResult))
         .finally(() => {
-          this.isFetchingMarketData = false
+          this.isFetchingPrices = false
           resolve()
         })
     })
-    await this.marketDataFetchingPromise
+    await this.pricesFetchingPromise
   }
 
   /**
    * Fetchs presets.
    * @param itemFetcherService - Item fetcher service.
    */
-  private async fetchPresets(itemFetcherService: IItemFetcherService) {
+  private async fetchPresets(itemFetcherService: ItemFetcherService) {
     const presetsResult = await itemFetcherService.fetchPresets()
 
     if (!presetsResult.success) {
@@ -259,7 +231,7 @@ export class ItemService {
 
   /**
    * Fetches static data.
-   * If static data is already being fetched, waits for the operation to end before returnin.
+   * If static data is already being fetched, waits for the operation to end before returning.
    */
   private async fetchStaticData(): Promise<void> {
     if (this.isFetchingStaticData) {
@@ -270,19 +242,17 @@ export class ItemService {
 
     this.staticDataFetchingPromise = new Promise<void>((resolve) => {
       this.isFetchingStaticData = true
-      const itemFetcherService = Services.getByName<IItemFetcherService>('ItemFetcherService')
+      const itemFetcherService = Services.get(ItemFetcherService)
 
       this.fetchItemCategories(itemFetcherService)
         .then(async () => {
           await Promise.allSettled([
             this.fetchItems(itemFetcherService),
-            this.fetchPresets(itemFetcherService),
-            this.fetchCurrencies()
+            this.fetchPresets(itemFetcherService)
           ])
           this.hasStaticDataCached = true
         })
         .catch(() => {
-          this.currencies = []
           this.itemCategories = []
           this.items = []
           this.presets = []
@@ -298,129 +268,78 @@ export class ItemService {
   }
 
   /**
-   * Gets items from Tarkov items.
-   * @param tarkovItems - Tarkov items.
-   * @returns Items.
-   */
-  private async getItemsFromTarkovItems(tarkovItems: Record<string, unknown>[]): Promise<IItem[]> {
-    const items: IItem[] = []
-
-    for (const tarkovItem of tarkovItems) {
-      const categoryId = this.getItemCategoryIdFromTarkovItem(tarkovItem)
-      const readerService = ItemCategoryUtils.getReaderServiceForCategory(categoryId)
-
-      const item = await readerService.read(tarkovItem, categoryId)
-      items.push(item)
-    }
-
-    return items
-  }
-
-  /**
-   * Gets an item category ID from its Tarkov item.
-   * @param tarkovItem - Tarkov item.
-   * @returns Item category ID.
-   */
-  private getItemCategoryIdFromTarkovItem(tarkovItem: Record<string, unknown>): string {
-    const type = tarkovItem['_parent'] as string
-    const category = this.itemCategories.find(c => c.types.some(t => t.id === type)) as IItemCategory
-
-    /* istanbul ignore next */
-    if (category === undefined) {
-      Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.itemCategoryNotFoundForType', { type }))
-    }
-
-    /* istanbul ignore next */
-    return category?.id ?? ''
-  }
-
-  /**
    * Determines whether the cache of an item is still valid or not.
-   * @param item - Item.
    * @returns `true` if the cache of the item has not expired yet; otherwise `false`.
    */
   private hasValidCache(): boolean {
-    const duration = (new Date().getTime() - this.lastMarketDataFetchDate.getTime()) / 1000 // In seconds
-    const maxCacheDuration = Number(Configuration.VITE_CACHE_DURATION)
+    const duration = (new Date().getTime() - this.lastPricesFetchDate.getTime()) / 1000 // In seconds
 
-    return duration <= maxCacheDuration
-  }
-
-  /**
-   * Initializes the data used by the service
-   */
-  private async initialize() {
-    if (!this.hasStaticDataCached) {
-      await this.fetchStaticData()
-    }
-
-    if (!this.hasValidCache()) {
-      await this.fetchMarketData()
-    }
+    return duration <= Services.get(WebsiteConfigurationService).configuration.cacheDuration
   }
 
   /**
    * Updates the value of the currencies.
    */
-  private async updateCurrencyValues() {
-    for (const currency of this.currencies) {
-      if (currency.itemId === undefined) {
+  private updateCurrencyValues() {
+    const tarkovValuesService = Services.get(TarkovValuesService)
+
+    for (const currency of tarkovValuesService.values.currencies) {
+      if (currency.mainCurrency) {
         currency.value = 1
       } else {
         const currencyItem = this.items.find(i => i.id === currency.itemId)
 
         if (currencyItem !== undefined) {
           /* istanbul ignore next */
-          currency.value = currencyItem.prices[0].value ?? 0
+          currency.value = currencyItem.prices[0]?.value ?? 0
         }
       }
     }
   }
 
   /**
-   * Updates items market data.
-   * @param marketDataResult - Market data fetching result.
+   * Updates items prices.
+   * @param itemPricesResult - Prices fetching result.
    */
-  private async updateItemsMarketData(marketDataResult: Result<Record<string, unknown>[]>) {
-    if (!marketDataResult.success) {
+  private updateItemsPrices(itemPricesResult: Result<IItem[]>) {
+    if (!itemPricesResult.success) {
       Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.cannotFetchPrices'), true)
-
-      this.marketData = []
 
       // When an error occurs, we set the last fetch date in order to make the cache expire 20 seconds later.
       // This is to avoid making a new API request for each of the 2000+ items.
-      const maxCacheDuration = Number(Configuration.VITE_CACHE_DURATION)
-      const fetchTimeout = Number(Configuration.VITE_FETCH_TIMEOUT)
-      this.lastMarketDataFetchDate = new Date()
-      this.lastMarketDataFetchDate = new Date(this.lastMarketDataFetchDate.getTime() + (maxCacheDuration - (2 * fetchTimeout)) * 1000)
+      const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
+      this.lastPricesFetchDate = new Date()
+      this.lastPricesFetchDate = new Date(
+        this.lastPricesFetchDate.getTime()
+        + (websiteConfigurationService.configuration.cacheDuration - (2 * websiteConfigurationService.configuration.fetchTimeout)) * 1000)
 
       return
     }
 
-    this.marketData = marketDataResult.value
+    for (const itemPrice of itemPricesResult.value) {
+      const item = this.items.find(i => i.id === itemPrice.id)
 
-    for (const item of this.items) {
-      const itemMarketData = this.marketData.find(md => md['id'] === item.id)
-
-      if (itemMarketData !== undefined) {
-        const readerService = ItemCategoryUtils.getReaderServiceForCategory(item.categoryId)
-        await readerService.readMarketData(itemMarketData, item)
+      if (item !== undefined) {
+        item.prices = itemPrice.prices
       }
     }
 
-    await this.updateCurrencyValues()
-    await this.updatePricesInMainCurrency()
+    this.updateCurrencyValues()
+    this.updatePricesInMainCurrency()
 
-    this.lastMarketDataFetchDate = new Date()
+    this.lastPricesFetchDate = new Date()
   }
 
   /**
    * Updates item prices in main currency.
    */
-  private async updatePricesInMainCurrency() {
+  private updatePricesInMainCurrency() {
+    const tarkovValuesService = Services.get(TarkovValuesService)
+
     for (const item of this.items) {
       for (const price of item.prices) {
-        const currency = this.currencies.find(c => c.name === price.currencyName)
+        const currency = tarkovValuesService.values.currencies.find(c => c.name === price.currencyName)
 
         /* istanbul ignore else */
         if (currency !== undefined) {

@@ -1,19 +1,19 @@
 import Configuration from '../../../test-data/configuration.json'
 import { IItem } from '../../models/item/IItem'
 import { IMerchantFilter } from '../../models/utils/IMerchantFilter'
-import { IPrice } from '../../models/utils/IPrice'
+import { IPrice } from '../../models/item/IPrice'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
 
 const filters = [
   {
     'enabled': true,
     'merchantLevel': 0,
-    'merchant': 'fleaMarket'
+    'merchant': 'flea-market'
   },
   {
     'enabled': true,
     'merchantLevel': 0,
-    'merchant': 'itemsWithoutMerchant'
+    'merchant': 'items-without-merchant'
   },
   {
     'enabled': false,
@@ -91,7 +91,7 @@ describe('getMatchingPrices()', () => {
       [
         {
           currencyName: '',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: 0,
           requiresQuest: false,
           value: 0,
@@ -109,7 +109,7 @@ describe('getMatchingPrices()', () => {
       [
         {
           currencyName: '',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: 0,
           requiresQuest: false,
           value: 0,
@@ -161,7 +161,7 @@ describe('getMatchingPrices()', () => {
     service.save([
       {
         enabled: true,
-        merchant: 'fleaMarket',
+        merchant: 'flea-market',
         merchantLevel: 0
       },
       {
@@ -212,7 +212,7 @@ describe('getMerchantLevels()', () => {
     const service = new MerchantFilterService()
 
     // Act
-    const levels1 = service.getMerchantLevels('fleaMarket')
+    const levels1 = service.getMerchantLevels('flea-market')
     const levels2 = service.getMerchantLevels('prapor')
     const levels3 = service.getMerchantLevels('invalid')
 
@@ -229,7 +229,7 @@ describe('hasLevels()', () => {
     const service = new MerchantFilterService()
 
     // Act
-    const hasLevels1 = service.hasLevels('fleaMarket')
+    const hasLevels1 = service.hasLevels('flea-market')
     const hasLevels2 = service.hasLevels('prapor')
     const hasLevels3 = service.hasLevels('invalid')
 
@@ -246,7 +246,7 @@ describe('hasMatchingPrices()', () => {
       [
         {
           currencyName: '',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: 0,
           value: 0,
           valueInMainCurrency: 0
@@ -292,7 +292,7 @@ describe('hasMatchingPrices()', () => {
         },
         {
           currencyName: '',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: 0,
           value: 0,
           valueInMainCurrency: 0
@@ -331,18 +331,18 @@ describe('hasMatchingPrices()', () => {
       false,
       false
     ]
-  ])('should indicate whether an item has matching prices or not', async (prices: IPrice[], showItemsWithoutMerchant: boolean, expected: boolean) => {
+  ])('should indicate whether an item has matching prices or not', async (prices: IPrice[], showitems-without - merchant: boolean, expected: boolean) => {
     // Arrange
     const service = new MerchantFilterService()
     service.save([
       {
         enabled: true,
-        merchant: 'fleaMarket',
+        merchant: 'flea-market',
         merchantLevel: 0
       },
       {
         enabled: true,
-        merchant: 'itemsWithoutMerchant',
+        merchant: 'items-without-merchant',
         merchantLevel: 0
       },
       {
@@ -380,7 +380,7 @@ describe('hasMatchingPrices()', () => {
     } as IItem
 
     // Act
-    const result = service.hasMatchingPrices(item, showItemsWithoutMerchant)
+    const result = service.hasMatchingPrices(item, showitems - without - merchant)
 
     // Assert
     expect(result).toBe(expected)
@@ -438,12 +438,12 @@ describe('save()', () => {
       },
       {
         'enabled': false,
-        'merchant': 'fleaMarket',
+        'merchant': 'flea-market',
         'merchantLevel': 0
       },
       {
         'enabled': true,
-        'merchant': 'itemsWithoutMerchant',
+        'merchant': 'items-without-merchant',
         'merchantLevel': 0
       }
     ])
