@@ -203,9 +203,9 @@ export class InventoryItemService {
     let unitPrice: IPrice = {
       barterItems: [],
       currencyName: 'RUB',
-      merchant: undefined,
-      merchantLevel: undefined,
-      questId: undefined,
+      merchant: '',
+      merchantLevel: 0,
+      questId: '',
       value: 0,
       valueInMainCurrency: 0
     }
@@ -251,9 +251,9 @@ export class InventoryItemService {
       priceWithContentInMainCurrency: {
         barterItems: [],
         currencyName: mainCurrencyResult.value.name,
-        merchant: undefined,
-        merchantLevel: undefined,
-        questId: undefined,
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: price.valueInMainCurrency,
         valueInMainCurrency: price.valueInMainCurrency
       },
@@ -265,8 +265,8 @@ export class InventoryItemService {
       inventoryPrice.pricesWithContent.push({
         barterItems: [], // TODO : Handling barters
         currencyName: price.currencyName,
-        merchant: undefined,
-        merchantLevel: undefined,
+        merchant: '',
+        merchantLevel: 0,
         questId: price.questId,
         value: price.value,
         valueInMainCurrency: price.valueInMainCurrency

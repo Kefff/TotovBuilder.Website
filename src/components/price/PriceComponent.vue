@@ -26,17 +26,17 @@
     >
       <div>
         <div>
-          <div v-if="price.merchant != undefined">
+          <div v-if="price.merchant !== ''">
             <span class="price-merchant-name">{{ $t('caption.merchant_' + price.merchant) }}</span>
             <span
-              v-if="price.merchantLevel != undefined"
+              v-if="price.merchantLevel !== 0"
               class="price-merchant-level"
             >
               {{ $t('caption.level').toLocaleLowerCase() }} {{ price.merchantLevel }}
             </span>
           </div>
         </div>
-        <div v-if="price.questId != undefined">
+        <div v-if="price.questId !== ''">
           <font-awesome-icon
             icon="lock"
             class="icon-before-text price-quest-required"

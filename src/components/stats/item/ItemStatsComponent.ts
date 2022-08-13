@@ -21,7 +21,7 @@ export default defineComponent({
     })
 
     /**
-     * Opens a new tab displaying the item in Tarkov Tools.
+     * Opens a new tab displaying the item in Tarkov.dev.
      */
     function openMarket() {
       window.open(props.item.marketLink, '_blank')

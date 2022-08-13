@@ -34,7 +34,7 @@
       </div>
     </div>
     <div
-      v-if="item.ricochetChance !== undefined"
+      v-if="hasRicochetChance"
       class="stats-entry"
     >
       <div class="stats-caption custom-icon-before-text">

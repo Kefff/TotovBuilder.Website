@@ -22,9 +22,9 @@ export class HeadwearSortingFunctions implements ISortingFunctions {
   }
 
   /**
-   * Gets the ricochet chance of a grenade to compare.
+   * Gets the ricochet chance of a headwear to compare.
    * @param item - Item.
-   * @returns Ricochet chance .
+   * @returns Ricochet chance.
    */
   private getRicochetChange(item: IItem): number {
     const values: { [property: string]: number } = {

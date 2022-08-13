@@ -108,6 +108,7 @@ export class BuildService {
 
     if (serializedBuild !== null) {
       const build = JSON.parse(serializedBuild) as IBuild
+      this.updateObsoleteBuild(build)
 
       // Converting dates back to Date type
       build.lastUpdated = new Date(build.lastUpdated as unknown as string)
@@ -274,7 +275,7 @@ export class BuildService {
 
   /**
    * Parses an inventory item that was reduced for sharing.
-   * @param serializedInventoryItem - Reduced inventory item.
+   * @param reducedInventoryItem - Reduced inventory item.
    * @returns Inventory item.
    */
   private parseReducedInventoryItem(reducedInventoryItem: Record<string, unknown>): Result<IInventoryItem> {
@@ -332,7 +333,7 @@ export class BuildService {
 
   /**
    * Parses an inventory mod slot that was reduced for sharing.
-   * @param serializedInventoryModSlot - Reduced inventory mod slot.
+   * @param reducedInventoryModSlot - Reduced inventory mod slot.
    * @returns Mod slot.
    */
   private parseReducedInventoryModSlot(reducedInventoryModSlot: Record<string, unknown>): Result<IInventoryModSlot> {
@@ -483,5 +484,17 @@ export class BuildService {
     reducedInventorySlot['i'] = reducedInventoryItems
 
     return reducedInventorySlot
+  }
+
+  /**
+   * Updates an obsolete build.
+   * @param build - Build to update.
+   */
+  private updateObsoleteBuild(build: IBuild) {
+    const obsoleteInventorySlot = build.inventorySlots.find(is => is.typeId === 'compass')
+
+    if (obsoleteInventorySlot !== undefined) {
+      obsoleteInventorySlot.typeId = 'special'
+    }
   }
 }

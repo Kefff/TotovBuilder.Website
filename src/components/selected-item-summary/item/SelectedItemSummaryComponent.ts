@@ -43,9 +43,9 @@ export default defineComponent({
       price: {
         barterItems: [], // TODO : Handling barters
         currencyName: 'RUB',
-        merchant: undefined,
-        merchantLevel: undefined,
-        questId: undefined,
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
@@ -53,18 +53,18 @@ export default defineComponent({
       priceWithContentInMainCurrency: {
         barterItems: [], // TODO : Handling barters
         currencyName: 'RUB',
-        merchant: undefined,
-        merchantLevel: undefined,
-        questId: undefined,
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
       unitPrice: {
         barterItems: [], // TODO : Handling barters
         currencyName: 'RUB',
-        merchant: undefined,
-        merchantLevel: undefined,
-        questId: undefined,
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },

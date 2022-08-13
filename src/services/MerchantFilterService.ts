@@ -148,7 +148,7 @@ export class MerchantFilterService {
     const result = this.filters.some(f =>
       f.enabled
       && f.merchant === price.merchant
-      && f.merchantLevel >= (/* istanbul ignore next */price.merchantLevel ?? 0))
+      && f.merchantLevel >= price.merchantLevel)
 
     return result
   }

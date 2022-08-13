@@ -17,17 +17,17 @@ export interface IPrice {
   /**
    * Merchant.
    */
-  merchant: string | undefined
+  merchant: string
 
   /**
    * Merchant level.
    */
-  merchantLevel: number | undefined
+  merchantLevel: number
 
   /**
    * ID of the quest unlocking the trade.
    */
-  questId: string | undefined
+  questId: string
 
   /**
    * Value.

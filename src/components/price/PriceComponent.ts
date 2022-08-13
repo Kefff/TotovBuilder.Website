@@ -66,7 +66,7 @@ export default defineComponent({
      * @param event - Event.
      */
     function togglePriceInMainCurrencyPanel(event: unknown) {
-      if (showPriceInMainCurrency.value || props.price.merchant !== undefined) {
+      if (showPriceInMainCurrency.value || props.price.merchant !== '') {
         priceInMainCurrencyPanel.value?.toggle(event) // In some cames the priceInMainCurrencyPanel is still undefined when the event is triggered. I don't really know why.
       }
     }

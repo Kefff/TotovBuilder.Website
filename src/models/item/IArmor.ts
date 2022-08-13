@@ -37,7 +37,7 @@ export interface IArmor extends IItem {
   /**
    * Chance of ricochet.
    */
-  ricochetChance?: string
+  ricochetChance: string
 
   /**
    * Modifier added to the character turning speed in percentage.

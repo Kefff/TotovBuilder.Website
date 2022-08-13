@@ -288,18 +288,18 @@ export class BuildPropertiesService {
       price: {
         barterItems: [],
         currencyName: mainCurrencyResult.value.name,
-        merchant: undefined,
-        merchantLevel: undefined,
-        questId: undefined,
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
       priceWithContentInMainCurrency: {
         barterItems: [],
         currencyName: mainCurrencyResult.value.name,
-        merchant: undefined,
-        merchantLevel: undefined,
-        questId: undefined,
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
@@ -307,9 +307,9 @@ export class BuildPropertiesService {
       unitPrice: {
         barterItems: [],
         currencyName: mainCurrencyResult.value.name,
-        merchant: undefined,
-        merchantLevel: undefined,
-        questId: undefined,
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
@@ -408,18 +408,18 @@ export class BuildPropertiesService {
         price: {
           barterItems: [],
           currencyName: mainCurrencyResult.value.name,
-          merchant: undefined,
-          merchantLevel: undefined,
-          questId: undefined,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
         priceWithContentInMainCurrency: {
           barterItems: [],
           currencyName: mainCurrencyResult.value.name,
-          merchant: undefined,
-          merchantLevel: undefined,
-          questId: undefined,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
@@ -427,9 +427,9 @@ export class BuildPropertiesService {
         unitPrice: {
           barterItems: [],
           currencyName: mainCurrencyResult.value.name,
-          merchant: undefined,
-          merchantLevel: undefined,
-          questId: undefined,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },

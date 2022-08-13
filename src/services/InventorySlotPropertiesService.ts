@@ -103,18 +103,18 @@ export class InventorySlotPropertiesService {
       price: {
         barterItems: [], // TODO : Handling barters
         currencyName: mainCurrencyResult.value.name,
-        merchant: undefined,
-        merchantLevel: undefined,
-        questId: undefined,
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
       priceWithContentInMainCurrency: {
         barterItems: [], // TODO : Handling barters
         currencyName: mainCurrencyResult.value.name,
-        merchant: undefined,
-        merchantLevel: undefined,
-        questId: undefined,
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
@@ -122,9 +122,9 @@ export class InventorySlotPropertiesService {
       unitPrice: {
         barterItems: [],
         currencyName: mainCurrencyResult.value.name,
-        merchant: undefined,
-        merchantLevel: undefined,
-        questId: undefined,
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },

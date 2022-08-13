@@ -14,7 +14,7 @@
           icon="ruble-sign"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.merchant_' + price.merchant) + (price.merchantLevel ?? 0 > 0 ? ' ' + $t('caption.level').toLocaleLowerCase() + ' ' + price.merchantLevel : '') }} :</span>
+        <span>{{ $t('caption.merchant_' + price.merchant) + (price.merchantLevel > 0 ? ' ' + $t('caption.level').toLocaleLowerCase() + ' ' + price.merchantLevel : '') }} :</span>
       </div>
       <div class="stats-value">
         <Price
@@ -62,7 +62,7 @@
           class="link"
           @click="openMarket()"
         >
-          Tarkov Tools
+          Tarkov.dev
         </span>
       </div>
     </div>

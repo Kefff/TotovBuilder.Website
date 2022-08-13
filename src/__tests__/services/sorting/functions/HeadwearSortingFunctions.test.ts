@@ -34,8 +34,8 @@ describe('compareByRicochetChance()', () => {
       1
     ],
     [
-      { categoryId: 'cat1', ricochetChance: undefined, caption: 'a' } as IHeadwear,
-      { categoryId: 'cat1', ricochetChance: undefined, caption: 'a' } as IHeadwear,
+      { categoryId: 'cat1', ricochetChance: '', caption: 'a' } as IHeadwear,
+      { categoryId: 'cat1', ricochetChance: '', caption: 'a' } as IHeadwear,
       0
     ]
   ])('should compare by category, ricochet chance and caption', async (headwear1: IHeadwear, headwear2: IHeadwear, expected: number) => {

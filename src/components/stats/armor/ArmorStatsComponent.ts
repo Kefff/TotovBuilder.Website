@@ -1,4 +1,4 @@
-import { defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 import { IArmor } from '../../../models/item/IArmor'
 import StatsUtils from '../../../utils/StatsUtils'
 
@@ -9,7 +9,12 @@ export default defineComponent({
       required: true
     }
   },
-  setup: () => {
-    return { StatsUtils }
+  setup: (props) => {
+    const hasRicochetChance = computed(() => props.item.ricochetChance !== '')
+
+    return {
+      hasRicochetChance,
+      StatsUtils
+    }
   }
 })
