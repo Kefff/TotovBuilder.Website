@@ -276,7 +276,7 @@ export class InventoryItemService {
     for (const containedItem of inventoryItem.content) {
       /* istanbul ignore if */
       if (containedItem == undefined) {
-        // !!! WORKAROUNG !! In theory it should never happen, but it happened in production without being able to identify the source of the problem.
+        // !!! WORKAROUNG !!! In theory it should never happen, but it happened in production without being able to identify the source of the problem.
         continue
       }
 

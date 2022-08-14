@@ -30,7 +30,14 @@ export default defineComponent({
   },
   setup: (props) => {
     const tooltip = computed(() => props.showTooltip ? vueI18n.t('caption.price') + (props.tooltipSuffix ?? '') : '')
-    const showPriceInMainCurrency = computed(() => currency.value?.name !== mainCurrency.value?.name && props.showTooltip)
+    const showPriceInMainCurrency = computed(() => {
+      if (currency.value?.name === 'barter') {
+        // TODO : Handling barters - WORKAROUND WAITING FOR BARTERS TO BE HANDLED. REMOVE THIS WHEN IT IS DONE
+        return false
+      }
+
+      return currency.value?.name !== mainCurrency.value?.name && props.showTooltip
+    })
     const mainCurrency = ref<ICurrency>()
     const currency = ref<ICurrency>()
     const priceInMainCurrencyPanel = ref()
