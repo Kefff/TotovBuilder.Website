@@ -2,12 +2,15 @@ import StatsUtils from '../../utils/StatsUtils'
 
 describe('StringUtils.getValueClass()', () => {
   it.each([
-    [1, '+1'],
-    [-1, '-1'],
-    [0, '0']
-  ])('should get the caption corresponding to a stats value', (value: number, expected) => {
+    [1, false, false, '1'],
+    [-1, false, false, '-1'],
+    [0, false, false, '0'],
+    [0.01, true, true, '+1%'],
+    [-0.01, true, true, '-1%'],
+    [0, true, true, '0%']
+  ])('should get the caption corresponding to a stats value', (value: number, isBonusMalus: boolean, isPercentage: boolean, expected) => {
     // Assert
-    expect(StatsUtils.getValueCaption(value)).toBe(expected)
+    expect(StatsUtils.getDisplayValue(value, isBonusMalus, isPercentage)).toBe(expected)
   })
 })
 

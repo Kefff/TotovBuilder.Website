@@ -63,7 +63,7 @@ export class BuildPropertiesService {
 
   /**
    * Checks if a mod can be added to an item by recursively checking if it appears in any of the conflicting items list of each of the children mods already added.
-   * @param inventoryItem - Item in which the mod is set to be added.
+   * @param build - Build.
    * @param modId - ID of the mod to be added.
    * @param path - Path to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
    * @returns Success if the mod can be added; otherwise Failure.
@@ -458,7 +458,7 @@ export class BuildPropertiesService {
         return Result.failFrom(ergonomicsResult)
       }
 
-      result.ergonomics = Math.round(ergonomicsResult.value + (ergonomicsResult.value * result.ergonomicsPercentageModifier / 100))
+      result.ergonomics = Math.round(ergonomicsResult.value + (ergonomicsResult.value * result.ergonomicsPercentageModifier))
     }
 
     // Price

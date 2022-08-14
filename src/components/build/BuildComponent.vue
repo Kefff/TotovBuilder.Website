@@ -127,7 +127,7 @@
               v-tooltip.top="$t('caption.ergonomicsPercentageModifier')"
               class="build-toolbar-summary-value"
             >
-              <span :class="StatsUtils.getValueColorClass(summary.ergonomicsPercentageModifier)">{{ StatsUtils.getValueCaption(summary.ergonomicsPercentageModifier) }}%</span>
+              <span :class="StatsUtils.getValueColorClass(summary.ergonomicsPercentageModifier)">{{ StatsUtils.getDisplayValue(summary.ergonomicsPercentageModifier, true, true) }}</span>
               <font-awesome-icon
                 icon="hand-paper"
                 class="icon-after-text"

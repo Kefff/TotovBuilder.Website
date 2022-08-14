@@ -271,7 +271,7 @@ export default defineComponent({
     }
 
     /**
-     * Gets the values of the summary of the content of the inventory slot.
+     * Gets the values of the summary of the content of the build.
      */
     async function getSummary() {
       if (build.value === undefined) {

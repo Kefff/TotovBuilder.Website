@@ -6,16 +6,30 @@ import { TarkovValuesService } from '../services/TarkovValuesService'
  */
 export default class StatsUtils {
   /**
-   * Gets the caption corresponding to a stats value.
+   * Gets the text to display for a stats value.
    * @param value - Value.
+   * @param isBonusMalus - Indicates whether the value is a bonus or malus and thus requires that a '+' or '-' sign be displayed.
+   * @param isPercentage - Indicates whether the value is a percentage or not ans thus requires that the values must be multiplyed by 100 and that a '%' sign be displayed.
    * @returns Caption.
    */
-  public static getValueCaption(value: number): string {
-    if (value > 0) {
-      return '+' + value
-    } else {
-      return value.toString()
+  public static getDisplayValue(value: number, isBonusMalus: boolean, isPercentage: boolean): string {
+    let displayValue: string
+
+    if (isPercentage) {
+      value = Math.round(value * 100)
     }
+
+    if (isBonusMalus && value > 0) {
+      displayValue = '+' + value
+    } else {
+      displayValue = value.toString()
+    }
+
+    if (isPercentage) {
+      displayValue = displayValue + '%'
+    }
+
+    return displayValue
   }
 
   /**

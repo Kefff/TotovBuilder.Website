@@ -71,7 +71,7 @@
         v-if="hasFragmentationChance"
         v-tooltip.top="$t('caption.fragmentationChance')"
       >
-        <span>{{ item.fragmentationChancePercentage }}%</span>
+        <span>{{ StatsUtils.getDisplayValue(item.fragmentationChancePercentage, false, true) }}</span>
         <font-awesome-icon
           icon="viruses"
           class="icon-after-text"
@@ -89,7 +89,7 @@
         v-tooltip.top="$t('caption.recoil')"
       >
         <span :class="StatsUtils.getValueColorClass(item.recoilPercentageModifier, true)">
-          {{ StatsUtils.getValueCaption(item.recoilPercentageModifier) }}%
+          {{ StatsUtils.getDisplayValue(item.recoilPercentageModifier, true, true) }}
         </span>
         <font-awesome-icon
           icon="arrows-alt"
@@ -108,7 +108,7 @@
         v-tooltip.top="$t('caption.accuracy')"
       >
         <span :class="StatsUtils.getValueColorClass(item.accuracyPercentageModifier)">
-          {{ StatsUtils.getValueCaption(item.accuracyPercentageModifier) }}%
+          {{ StatsUtils.getDisplayValue(item.accuracyPercentageModifier, true, true) }}
         </span>
         <font-awesome-icon
           icon="bullseye"

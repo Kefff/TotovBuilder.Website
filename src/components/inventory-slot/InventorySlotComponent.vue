@@ -51,7 +51,7 @@
               class="inventory-slot-summary-value"
             >
               <span :class="StatsUtils.getValueColorClass(ergonomicsPercentageModifier)">
-                {{ StatsUtils.getValueCaption(ergonomicsPercentageModifier) }}%
+                {{ StatsUtils.getDisplayValue(ergonomicsPercentageModifier, true, true) }}
               </span>
               <font-awesome-icon
                 icon="hand-paper"
