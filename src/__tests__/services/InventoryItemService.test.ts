@@ -7,12 +7,14 @@ import { IRecoil } from '../../models/utils/IRecoil'
 import { IRecoilPercentageModifier } from '../../models/utils/IRecoilPercentageModifier'
 import { IWeight } from '../../models/utils/IWeight'
 import { InventoryItemService } from '../../services/InventoryItemService'
-import Currencies from '../../assets/data/currencies.json'
-import { ICurrency } from '../../models/configuration/ICurrency'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import Services from '../../services/repository/Services'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
+import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 
 const inventoryItem: IInventoryItem = {
   content: [
@@ -213,6 +215,8 @@ describe('getAmmunitionCounts()', () => {
     'should get the ammunition counts of an inventory item',
     async (inventoryItem: IInventoryItem, expected: IAmmunitionCount[]) => {
       // Arrange
+      useItemServiceMock()
+      Services.configure(ItemPropertiesService)
       const service = new InventoryItemService()
 
       // Act
@@ -235,6 +239,8 @@ describe('getAmmunitionCounts()', () => {
     'should fail if an item cannot be found',
     async (inventoryItem: IInventoryItem) => {
       // Arrange
+      useItemServiceMock()
+      Services.configure(ItemPropertiesService)
       const service = new InventoryItemService()
 
       // Act
@@ -309,6 +315,8 @@ describe('getErgonomics()', () => {
     'should get the ergonomics of an inventory item',
     async (inventoryItem: IInventoryItem, expected: IErgonomics) => {
       // Arrange
+      useItemServiceMock()
+      Services.configure(ItemPropertiesService)
       const service = new InventoryItemService()
 
       // Act
@@ -325,6 +333,8 @@ describe('getErgonomics()', () => {
     'should fail if an item cannot be found',
     async (inventoryItem: IInventoryItem) => {
       // Arrange
+      useItemServiceMock()
+      Services.configure(ItemPropertiesService)
       const service = new InventoryItemService()
 
       // Act
@@ -361,10 +371,10 @@ describe('getErgonomicsPercentageModifier()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomicsPercentageModifier: -5,
-        ergonomicsPercentageModifierWithContent: -5
+        ergonomicsPercentageModifier: -0.05,
+        ergonomicsPercentageModifierWithContent: -0.05
       } as IErgonomicsPercentageModifier
-    ],
+    ]/*,
     [
       {
         content: [],
@@ -374,10 +384,10 @@ describe('getErgonomicsPercentageModifier()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomicsPercentageModifier: -5,
-        ergonomicsPercentageModifierWithContent: -5
+        ergonomicsPercentageModifier: -0.05,
+        ergonomicsPercentageModifierWithContent: -0.05
       } as IErgonomicsPercentageModifier
-    ],
+    ]*/,
     [
       {
         content: [],
@@ -401,8 +411,8 @@ describe('getErgonomicsPercentageModifier()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomicsPercentageModifier: -7,
-        ergonomicsPercentageModifierWithContent: -26
+        ergonomicsPercentageModifier: -0.16,
+        ergonomicsPercentageModifierWithContent: -0.35
       } as IErgonomicsPercentageModifier
     ]
   ])(
@@ -412,6 +422,8 @@ describe('getErgonomicsPercentageModifier()', () => {
       expected: IErgonomicsPercentageModifier
     ) => {
       // Arrange
+      useItemServiceMock()
+      Services.configure(ItemPropertiesService)
       const service = new InventoryItemService()
 
       // Act
@@ -457,6 +469,8 @@ describe('getErgonomicsPercentageModifier()', () => {
     'should fail if an item cannot be found',
     async (inventoryItem: IInventoryItem) => {
       // Arrange
+      useItemServiceMock()
+      Services.configure(ItemPropertiesService)
       const service = new InventoryItemService()
 
       // Act
@@ -471,6 +485,74 @@ describe('getErgonomicsPercentageModifier()', () => {
   )
 })
 
+describe('getPresetModSlotContainingItem', () => {
+  it.each([
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: '5a6f5d528dc32e00094b97d9', // Glock rear sight
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      'build:1234-4568-9011/slot:holster_0/item:5b1fa9b25acfc40018633c01/mod:mod_reciever/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
+      {
+        item: {
+          content: [],
+          ignorePrice: false,
+          itemId: '5a6f5d528dc32e00094b97d9',
+          modSlots: [],
+          quantity: 1
+        },
+        modSlotName: 'mod_sight_rear'
+      } as IInventoryModSlot
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: '',
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      'build:1234-4568-9011/slot:holster_0/item:5b1fa9b25acfc40018633c01/mod:invalid/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
+      undefined
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: '5a6f5d528dc32e00094b97d9',
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      'build:1234-4568-9011/slot:holster/item:invalid/mod:mod_sight_rear/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
+      undefined
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: '5a6f5d528dc32e00094b97d9',
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      'build:1234-4568-9011/slot:holster_0/item:5b1fa9b25acfc40018633c01',
+      undefined
+    ]
+  ])('should get the preset mod slot that contains an item', async (item: IInventoryItem, path: string, expected: IInventoryModSlot | undefined) => {
+    // Arrange
+    useItemServiceMock()
+    const service = new InventoryItemService()
+
+    // Act
+    const result = await service.getPresetModSlotContainingItem(item.itemId, path)
+
+    // Assert
+    expect(result).toStrictEqual(expected)
+  })
+})
+
 describe('getPrice()', () => {
   it.each([
     [
@@ -479,38 +561,46 @@ describe('getPrice()', () => {
       {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: 'flea-market',
-          merchantLevel: 0,
+          itemId: '5ca20d5986f774331e7c9602',
+          merchant: 'ragman',
+          merchantLevel: 1,
           questId: '',
-          value: 22836,
-          valueInMainCurrency: 22836
+          value: 23444,
+          valueInMainCurrency: 23444
         },
         pricesWithContent: [
           {
+            barterItems: [],
             currencyName: 'RUB',
+            itemId: '',
             merchant: '',
             merchantLevel: 0,
             questId: '',
-            value: 58556,
-            valueInMainCurrency: 58556
+            value: 61108,
+            valueInMainCurrency: 61108
           }
         ],
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
-          value: 58556,
-          valueInMainCurrency: 58556
+          value: 61108,
+          valueInMainCurrency: 61108
         },
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: 'flea-market',
-          merchantLevel: 0,
+          itemId: '5ca20d5986f774331e7c9602',
+          merchant: 'ragman',
+          merchantLevel: 1,
           questId: '',
-          value: 22836,
-          valueInMainCurrency: 22836
+          value: 23444,
+          valueInMainCurrency: 23444
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
@@ -527,38 +617,46 @@ describe('getPrice()', () => {
       {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: 'prapor',
+          itemId: '56d59d3ad2720bdb418b4577',
+          merchant: 'mechanic',
           merchantLevel: 2,
           questId: '',
-          value: 3400,
-          valueInMainCurrency: 3400
+          value: 3500,
+          valueInMainCurrency: 3500
         },
         pricesWithContent: [
           {
+            barterItems: [],
             currencyName: 'RUB',
+            itemId: '',
             merchant: '',
             merchantLevel: 0,
             questId: '',
-            value: 3400,
-            valueInMainCurrency: 3400
+            value: 3500,
+            valueInMainCurrency: 3500
           }
         ],
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
-          value: 3400,
-          valueInMainCurrency: 3400
+          value: 3500,
+          valueInMainCurrency: 3500
         },
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: 'prapor',
+          itemId: '56d59d3ad2720bdb418b4577',
+          merchant: 'mechanic',
           merchantLevel: 2,
           questId: '',
-          value: 68,
-          valueInMainCurrency: 68
+          value: 70,
+          valueInMainCurrency: 70
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
@@ -577,7 +675,7 @@ describe('getPrice()', () => {
                     {
                       content: [],
                       ignorePrice: false,
-                      itemId: '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs "Igolnik",
+                      itemId: '56dff061d2720bb5668b4567', // 5.45x39mm BT gs
                       modSlots: [],
                       quantity: 45
                     }
@@ -602,7 +700,9 @@ describe('getPrice()', () => {
       {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
@@ -611,24 +711,30 @@ describe('getPrice()', () => {
         },
         pricesWithContent: [
           {
+            barterItems: [],
             currencyName: 'RUB',
+            itemId: '',
             merchant: '',
             merchantLevel: 0,
             questId: '',
-            value: 90404,
-            valueInMainCurrency: 90404
+            value: 67337,
+            valueInMainCurrency: 67337
           }
         ],
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
-          value: 90404,
-          valueInMainCurrency: 90404
+          value: 67337,
+          valueInMainCurrency: 67337
         },
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
@@ -661,46 +767,56 @@ describe('getPrice()', () => {
       {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '5c07c60e0db834002330051f',
           merchant: 'flea-market',
           merchantLevel: 0,
           questId: '',
-          value: 43905,
-          valueInMainCurrency: 43905
+          value: 41998,
+          valueInMainCurrency: 41998
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
-          value: 49530,
-          valueInMainCurrency: 49530
+          value: 47608,
+          valueInMainCurrency: 47608
         },
         pricesWithContent: [
           {
+            barterItems: [],
             currencyName: 'RUB',
+            itemId: '',
             merchant: '',
             merchantLevel: 0,
             questId: '',
-            value: 43905,
-            valueInMainCurrency: 43905
+            value: 41998,
+            valueInMainCurrency: 41998
           },
           {
+            barterItems: [],
             currencyName: 'USD',
+            itemId: '',
             merchant: '',
             merchantLevel: 0,
             questId: '',
-            value: 45,
-            valueInMainCurrency: 5625
+            value: 51,
+            valueInMainCurrency: 5610
           }
         ],
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '5c07c60e0db834002330051f',
           merchant: 'flea-market',
           merchantLevel: 0,
           questId: '',
-          value: 43905,
-          valueInMainCurrency: 43905
+          value: 41998,
+          valueInMainCurrency: 41998
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
@@ -733,7 +849,9 @@ describe('getPrice()', () => {
       {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
@@ -741,7 +859,9 @@ describe('getPrice()', () => {
           valueInMainCurrency: 0
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
@@ -750,7 +870,9 @@ describe('getPrice()', () => {
         },
         pricesWithContent: [
           {
+            barterItems: [],
             currencyName: 'RUB',
+            itemId: '',
             merchant: '',
             merchantLevel: 0,
             questId: '',
@@ -759,7 +881,9 @@ describe('getPrice()', () => {
           }
         ],
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
@@ -773,6 +897,10 @@ describe('getPrice()', () => {
     'should get the price of an inventory item',
     async (inventoryItem: IInventoryItem, canBeLooted: boolean, expected: IInventoryPrice) => {
       // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(MerchantFilterService)
       const service = new InventoryItemService()
 
       // Act
@@ -817,7 +945,9 @@ describe('getPrice()', () => {
       {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '5ac66cb05acfc40198510a10',
           merchant: 'mechanic',
           merchantLevel: 2,
           questId: '',
@@ -825,7 +955,9 @@ describe('getPrice()', () => {
           valueInMainCurrency: 42938
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
@@ -834,7 +966,9 @@ describe('getPrice()', () => {
         },
         pricesWithContent: [
           {
+            barterItems: [],
             currencyName: 'RUB',
+            itemId: '',
             merchant: '',
             merchantLevel: 0,
             questId: '',
@@ -843,7 +977,9 @@ describe('getPrice()', () => {
           }
         ],
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '5ac66cb05acfc40198510a10',
           merchant: 'mechanic',
           merchantLevel: 2,
           questId: '',
@@ -886,7 +1022,9 @@ describe('getPrice()', () => {
       {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '5ac66cb05acfc40198510a10',
           merchant: 'mechanic',
           merchantLevel: 2,
           questId: '',
@@ -895,7 +1033,9 @@ describe('getPrice()', () => {
         },
         pricesWithContent: [
           {
+            barterItems: [],
             currencyName: 'RUB',
+            itemId: '',
             merchant: '',
             merchantLevel: 0,
             questId: '',
@@ -904,7 +1044,9 @@ describe('getPrice()', () => {
           }
         ],
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
@@ -912,7 +1054,9 @@ describe('getPrice()', () => {
           valueInMainCurrency: 64015
         },
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '5ac66cb05acfc40198510a10',
           merchant: 'mechanic',
           merchantLevel: 2,
           questId: '',
@@ -955,7 +1099,9 @@ describe('getPrice()', () => {
       {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '5ac66cb05acfc40198510a10',
           merchant: 'mechanic',
           merchantLevel: 2,
           questId: '',
@@ -963,25 +1109,31 @@ describe('getPrice()', () => {
           valueInMainCurrency: 42938
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
-          value: 84096,
-          valueInMainCurrency: 84096
+          value: 77938,
+          valueInMainCurrency: 77938
         },
         pricesWithContent: [
           {
+            barterItems: [],
             currencyName: 'RUB',
+            itemId: '',
             merchant: '',
             merchantLevel: 0,
             questId: '',
-            value: 84096,
-            valueInMainCurrency: 84096
+            value: 77938,
+            valueInMainCurrency: 77938
           }
         ],
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '5ac66cb05acfc40198510a10',
           merchant: 'mechanic',
           merchantLevel: 2,
           questId: '',
@@ -1032,38 +1184,56 @@ describe('getPrice()', () => {
       {
         missingPrice: false,
         price: {
-          currencyName: 'RUB',
-          merchant: 'flea-market',
-          merchantLevel: 0,
+          barterItems: [],
+          currencyName: 'USD',
+          itemId: '5c0e805e86f774683f3dd637',
+          merchant: 'peacekeeper',
+          merchantLevel: 4,
           questId: '',
-          value: 63456,
-          valueInMainCurrency: 63456
+          value: 674,
+          valueInMainCurrency: 74140
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
-          value: 147552,
-          valueInMainCurrency: 147552
+          value: 152078,
+          valueInMainCurrency: 152078
         },
         pricesWithContent: [
           {
-            currencyName: 'RUB',
+            barterItems: [],
+            currencyName: 'USD',
+            itemId: '',
             merchant: '',
             merchantLevel: 0,
             questId: '',
-            value: 147552,
-            valueInMainCurrency: 147552
+            value: 674,
+            valueInMainCurrency: 74140
+          },
+          {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
+            value: 77938,
+            valueInMainCurrency: 77938
           }
         ],
         unitPrice: {
-          currencyName: 'RUB',
-          merchant: 'flea-market',
-          merchantLevel: 0,
+          barterItems: [],
+          currencyName: 'USD',
+          itemId: '5c0e805e86f774683f3dd637',
+          merchant: 'peacekeeper',
+          merchantLevel: 4,
           questId: '',
-          value: 63456,
-          valueInMainCurrency: 63456
+          value: 674,
+          valueInMainCurrency: 74140
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
@@ -1071,6 +1241,11 @@ describe('getPrice()', () => {
   ])('should get the price of an inventory item and ignore items present in the item preset',
     async (inventoryItem: IInventoryItem, expected: IInventoryPrice) => {
       // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(MerchantFilterService)
+
       const service = new InventoryItemService()
 
       // Act
@@ -1083,6 +1258,11 @@ describe('getPrice()', () => {
 
   it('should get the price of an inventory item ignoring the prices of deactivated merchants', async () => {
     // Arrange
+    useItemServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
     const inventoryItemService = new InventoryItemService()
     const merchantFilterService = Services.get(MerchantFilterService)
     merchantFilterService.save([
@@ -1117,7 +1297,9 @@ describe('getPrice()', () => {
     expect(priceResult.value).toStrictEqual({
       missingPrice: false,
       price: {
+        barterItems: [],
         currencyName: 'RUB',
+        itemId: '5a38e6bac4a2826c6e06d79b',
         merchant: 'skier',
         merchantLevel: 1,
         questId: '',
@@ -1125,7 +1307,9 @@ describe('getPrice()', () => {
         valueInMainCurrency: 8917
       },
       priceWithContentInMainCurrency: {
+        barterItems: [],
         currencyName: 'RUB',
+        itemId: '',
         merchant: '',
         merchantLevel: 0,
         questId: '',
@@ -1134,7 +1318,9 @@ describe('getPrice()', () => {
       },
       pricesWithContent: [
         {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
@@ -1143,7 +1329,9 @@ describe('getPrice()', () => {
         }
       ],
       unitPrice: {
+        barterItems: [],
         currencyName: 'RUB',
+        itemId: '5a38e6bac4a2826c6e06d79b',
         merchant: 'skier',
         merchantLevel: 1,
         questId: '',
@@ -1162,14 +1350,16 @@ describe('getPrice()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '56deee15d2720bee328b4567', // MP-153 12ga 4-shell forend cap
+        itemId: '5de8e67c4a9f347bc92edbd7', // MP9-N 9x19 upper receiver
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
       {
         missingPrice: true,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
@@ -1177,7 +1367,9 @@ describe('getPrice()', () => {
           valueInMainCurrency: 0
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
@@ -1186,7 +1378,9 @@ describe('getPrice()', () => {
         },
         pricesWithContent: [],
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
@@ -1202,7 +1396,7 @@ describe('getPrice()', () => {
           {
             content: [],
             ignorePrice: false,
-            itemId: '56deee15d2720bee328b4567', // MP-153 12ga 4-shell forend cap
+            itemId: '5de8e67c4a9f347bc92edbd7', // MP9-N 9x19 upper receiver
             modSlots: [],
             quantity: 1
           }
@@ -1215,38 +1409,46 @@ describe('getPrice()', () => {
       {
         missingPrice: true,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: 'flea-market',
-          merchantLevel: 0,
+          itemId: '5ca20d5986f774331e7c9602',
+          merchant: 'ragman',
+          merchantLevel: 1,
           questId: '',
-          value: 22836,
-          valueInMainCurrency: 22836
+          value: 23444,
+          valueInMainCurrency: 23444
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
-          value: 22836,
-          valueInMainCurrency: 22836
+          value: 23444,
+          valueInMainCurrency: 23444
         },
         pricesWithContent: [
           {
+            barterItems: [],
             currencyName: 'RUB',
+            itemId: '',
             merchant: '',
             merchantLevel: 0,
             questId: '',
-            value: 22836,
-            valueInMainCurrency: 22836
+            value: 23444,
+            valueInMainCurrency: 23444
           }
         ],
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: 'flea-market',
-          merchantLevel: 0,
+          itemId: '5ca20d5986f774331e7c9602',
+          merchant: 'ragman',
+          merchantLevel: 1,
           questId: '',
-          value: 22836,
-          valueInMainCurrency: 22836
+          value: 23444,
+          valueInMainCurrency: 23444
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
@@ -1255,14 +1457,14 @@ describe('getPrice()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '54491c4f4bdc2db1078b4568', // MP-133 12ga pump-action shotgun
+        itemId: '5e00903ae9dc277128008b87', // B&T MP9 9x19 submachine gun
         modSlots: [
           {
-            modSlotName: 'mod_magazine',
+            modSlotName: 'mod_reciever',
             item: {
               content: [],
               ignorePrice: false,
-              itemId: '56deee15d2720bee328b4567', // MP-153 12ga 4-shell forend cap
+              itemId: '5de8e67c4a9f347bc92edbd7', // MP9-N 9x19 upper receiver
               modSlots: [],
               quantity: 1
             }
@@ -1273,44 +1475,57 @@ describe('getPrice()', () => {
       {
         missingPrice: true,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: 'jaeger',
-          merchantLevel: 1,
+          itemId: '5e00903ae9dc277128008b87',
+          merchant: 'flea-market',
+          merchantLevel: 0,
           questId: '',
-          value: 23869,
-          valueInMainCurrency: 23869
+          value: 24624,
+          valueInMainCurrency: 24624
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
-          value: 23869,
-          valueInMainCurrency: 23869
+          value: 24624,
+          valueInMainCurrency: 24624
         },
         pricesWithContent: [
           {
+            barterItems: [],
             currencyName: 'RUB',
+            itemId: '',
             merchant: '',
             merchantLevel: 0,
             questId: '',
-            value: 23869,
-            valueInMainCurrency: 23869
+            value: 24624,
+            valueInMainCurrency: 24624
           }
         ],
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: 'jaeger',
-          merchantLevel: 1,
+          itemId: '5e00903ae9dc277128008b87',
+          merchant: 'flea-market',
+          merchantLevel: 0,
           questId: '',
-          value: 23869,
-          valueInMainCurrency: 23869
+          value: 24624,
+          valueInMainCurrency: 24624
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
     ]
   ])('should have a missing price when no merchants sell the item', async (inventoryItem: IInventoryItem, expected: IInventoryPrice) => {
     // Arrange
+    useItemServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
     const service = new InventoryItemService()
 
     // Act
@@ -1323,9 +1538,11 @@ describe('getPrice()', () => {
 
   it('should fail if the main currency cannot be found', async () => {
     // Arrange
+    useItemServiceMock(false)
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
     const service = new InventoryItemService()
-    const mainCurrency = Currencies.find(c => c.name === 'RUB') as ICurrency
-    mainCurrency.mainCurrency = false
 
     // Act
     const price = await service.getPrice(inventoryItem)
@@ -1333,9 +1550,6 @@ describe('getPrice()', () => {
     // Assert
     expect(price.success).toBe(false)
     expect(price.failureMessage).toBe('Main currency not found.')
-
-    // Clean
-    mainCurrency.mainCurrency = true
   })
 
   it.each([
@@ -1346,6 +1560,10 @@ describe('getPrice()', () => {
     'should fail if an item cannot be found',
     async (inventoryItem: IInventoryItem) => {
       // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(MerchantFilterService)
       const service = new InventoryItemService()
 
       // Act
@@ -1494,10 +1712,10 @@ describe('getRecoil()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        horizontalRecoil: 360,
-        horizontalRecoilWithMods: 306,
-        verticalRecoil: 77,
-        verticalRecoilWithMods: 65
+        horizontalRecoil: 324,
+        horizontalRecoilWithMods: 275,
+        verticalRecoil: 69,
+        verticalRecoilWithMods: 59
       } as IRecoil
     ],
     [
@@ -1524,10 +1742,10 @@ describe('getRecoil()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        horizontalRecoil: 360,
-        horizontalRecoilWithMods: 256,
-        verticalRecoil: 77,
-        verticalRecoilWithMods: 55
+        horizontalRecoil: 324,
+        horizontalRecoilWithMods: 230,
+        verticalRecoil: 69,
+        verticalRecoilWithMods: 49
       } as IRecoil
     ],
     [
@@ -1560,10 +1778,10 @@ describe('getRecoil()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        horizontalRecoil: 360,
-        horizontalRecoilWithMods: 256,
-        verticalRecoil: 77,
-        verticalRecoilWithMods: 55
+        horizontalRecoil: 324,
+        horizontalRecoilWithMods: 230,
+        verticalRecoil: 69,
+        verticalRecoilWithMods: 49
       } as IRecoil
     ],
     [
@@ -1653,9 +1871,9 @@ describe('getRecoil()', () => {
       } as IInventoryItem,
       {
         horizontalRecoil: 650,
-        horizontalRecoilWithMods: 742,
+        horizontalRecoilWithMods: 396,
         verticalRecoil: 520,
-        verticalRecoilWithMods: 593
+        verticalRecoilWithMods: 317
       } as IRecoil
     ],
     [
@@ -1743,6 +1961,8 @@ describe('getRecoil()', () => {
     ]
   ])('should get the recoil of an inventory item', async (inventoryItem: IInventoryItem, expected: IRecoil) => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(ItemPropertiesService)
     const service = new InventoryItemService()
 
     // Act
@@ -1800,6 +2020,8 @@ describe('getRecoil()', () => {
     ]
   ])('should fail if an item cannot be found', async (inventoryItem: IInventoryItem) => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(ItemPropertiesService)
     const service = new InventoryItemService()
 
     // Act
@@ -1835,8 +2057,8 @@ describe('getRecoilPercentageModifier()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        recoilPercentageModifier: -7,
-        recoilPercentageModifierWithMods: -7
+        recoilPercentageModifier: -0.07,
+        recoilPercentageModifierWithMods: -0.07
       } as IRecoilPercentageModifier
     ],
     [
@@ -1862,8 +2084,8 @@ describe('getRecoilPercentageModifier()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        recoilPercentageModifier: -7,
-        recoilPercentageModifierWithMods: -14
+        recoilPercentageModifier: -0.07,
+        recoilPercentageModifierWithMods: -0.14
       } as IRecoilPercentageModifier
     ],
     [
@@ -1891,11 +2113,13 @@ describe('getRecoilPercentageModifier()', () => {
       } as IInventoryItem,
       {
         recoilPercentageModifier: 0,
-        recoilPercentageModifierWithMods: -7
+        recoilPercentageModifierWithMods: -0.07
       } as IRecoilPercentageModifier
     ]
   ])('should get the recoil percentage modifier of an inventory item', async (inventoryItem: IInventoryItem, expected: IRecoilPercentageModifier) => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(ItemPropertiesService)
     const service = new InventoryItemService()
 
     // Act
@@ -1933,6 +2157,8 @@ describe('getRecoilPercentageModifier()', () => {
     'should fail if an item cannot be found',
     async (inventoryItem: IInventoryItem) => {
       // Arrange
+      useItemServiceMock()
+      Services.configure(ItemPropertiesService)
       const service = new InventoryItemService()
 
       // Act
@@ -1952,9 +2178,9 @@ describe('getWeight()', () => {
     [
       inventoryItem,
       {
-        weight: 0.8,
-        weightWithContent: 3.016,
-        unitWeight: 0.8
+        weight: 0.96,
+        weightWithContent: 3.176,
+        unitWeight: 0.96
       } as IWeight
     ],
     [
@@ -1975,6 +2201,7 @@ describe('getWeight()', () => {
     'should get the weight of an inventory item',
     async (inventoryItem: IInventoryItem, expected: IWeight) => {
       // Arrange
+      useItemServiceMock()
       const service = new InventoryItemService()
 
       // Act
@@ -1996,6 +2223,7 @@ describe('getWeight()', () => {
     'should fail if an item cannot be found',
     async (inventoryItem: IInventoryItem) => {
       // Arrange
+      useItemServiceMock()
       const service = new InventoryItemService()
 
       // Act
@@ -2006,71 +2234,4 @@ describe('getWeight()', () => {
       expect(weight.failureMessage).toBe('Item "invalid" not found.')
     }
   )
-})
-
-describe('getPresetModSlotContainingItem', () => {
-  it.each([
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5a6f5d528dc32e00094b97d9', // Glock rear sight
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster_0/item:5b1fa9b25acfc40018633c01/mod:mod_reciever/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
-      {
-        item: {
-          content: [],
-          ignorePrice: false,
-          itemId: '5a6f5d528dc32e00094b97d9',
-          modSlots: [],
-          quantity: 1
-        },
-        modSlotName: 'mod_sight_rear'
-      } as IInventoryModSlot
-    ],
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '',
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster_0/item:5b1fa9b25acfc40018633c01/mod:invalid/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
-      undefined
-    ],
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5a6f5d528dc32e00094b97d9',
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster/item:invalid/mod:mod_sight_rear/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
-      undefined
-    ],
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5a6f5d528dc32e00094b97d9',
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster_0/item:5b1fa9b25acfc40018633c01',
-      undefined
-    ]
-  ])('should get the preset mod slot that contains an item', async (item: IInventoryItem, path: string, expected: IInventoryModSlot | undefined) => {
-    // Arrange
-    const service = new InventoryItemService()
-
-    // Act
-    const result = await service.getPresetModSlotContainingItem(item.itemId, path)
-
-    // Assert
-    expect(result).toStrictEqual(expected)
-  })
 })

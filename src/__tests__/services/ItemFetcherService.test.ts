@@ -61,8 +61,8 @@ describe('fetchItems()', () => {
   })
 })
 
-describe('fetchMarketData()', () => {
-  it('should fetch market data', async () => {
+describe('fetchPrices()', () => {
+  it('should fetch prices', async () => {
     // Arrange
     mockApiService()
     const fetcher = new ItemFetcherService()

@@ -346,7 +346,7 @@ const build2: IBuild = {
         {
           content: [],
           ignorePrice: false,
-          itemId: '5e4d34ca86f774264f758330', // Walker's Razor Digital headset"
+          itemId: '5e4d34ca86f774264f758330', // Walker's Razor Digital headset
           modSlots: [],
           quantity: 1
         }
@@ -384,13 +384,13 @@ const build2: IBuild = {
               item: {
                 content: [],
                 ignorePrice: false,
-                itemId: '5cadc1c6ae9215000f2775a4', // Threaded barrel for M9A3 9x19"
+                itemId: '5cadc1c6ae9215000f2775a4', // Threaded barrel for M9A3 9x19
                 modSlots: [
                   {
                     item: {
                       content: [],
                       ignorePrice: false,
-                      itemId: '5c6165902e22160010261b28', // Sig SRD 9 9x19mm sound suppressor"
+                      itemId: '5c6165902e22160010261b28', // Sig SRD 9 9x19mm sound suppressor
                       modSlots: [],
                       quantity: 1
                     },
@@ -415,13 +415,13 @@ const build2: IBuild = {
               item: {
                 content: [],
                 ignorePrice: false,
-                itemId: '5cadc55cae921500103bb3be', // M9A3 Slide"
+                itemId: '5cadc55cae921500103bb3be', // M9A3 Slide
                 modSlots: [
                   {
                     item: {
                       content: [],
                       ignorePrice: false,
-                      itemId: '5cadd940ae9215051e1c2316', // Beretta M9A3 Standard Rearsight"
+                      itemId: '5cadd940ae9215051e1c2316', // Beretta M9A3 Standard Rearsight
                       modSlots: [],
                       quantity: 1
                     },
@@ -431,7 +431,7 @@ const build2: IBuild = {
                     item: {
                       content: [],
                       ignorePrice: false,
-                      itemId: '5cadd919ae921500126a77f3', // M9A3 Standard Frontsight"
+                      itemId: '5cadd919ae921500126a77f3', // M9A3 Standard Frontsight
                       modSlots: [],
                       quantity: 1
                     },
@@ -454,7 +454,7 @@ const build2: IBuild = {
                   }
                 ],
                 ignorePrice: false,
-                itemId: '5cadc2e0ae9215051e1c21e7', // M9A3 9x19 17-round magazine"
+                itemId: '5cadc2e0ae9215051e1c21e7', // M9A3 9x19 17-round magazine
                 modSlots: [],
                 quantity: 1
               },
@@ -464,7 +464,7 @@ const build2: IBuild = {
               item: {
                 content: [],
                 ignorePrice: false,
-                itemId: '5cc9c20cd7f00c001336c65d', // NcSTAR Tactical blue laser LAM-Module"
+                itemId: '56def37dd2720bec348b456a', // SureFire X400 Ultra tactical flashlight with laser
                 modSlots: [],
                 quantity: 1
               },
@@ -1373,8 +1373,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           questId: '',
-          value: 526053,
-          valueInMainCurrency: 526053
+          value: 446316,
+          valueInMainCurrency: 446316
         },
         pricesWithContent: [
           {
@@ -1384,8 +1384,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             questId: '',
-            value: 526053,
-            valueInMainCurrency: 526053
+            value: 446316,
+            valueInMainCurrency: 446316
           }
         ],
         unitPrice: {
@@ -1422,8 +1422,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           questId: '',
-          value: 192965,
-          valueInMainCurrency: 192965
+          value: 135939,
+          valueInMainCurrency: 135939
         },
         pricesWithContent: [
           {
@@ -1433,8 +1433,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             questId: '',
-            value: 190765,
-            valueInMainCurrency: 190765
+            value: 122409,
+            valueInMainCurrency: 122409
           },
           {
             barterItems: [],
@@ -1443,8 +1443,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             questId: '',
-            value: 20,
-            valueInMainCurrency: 2200
+            value: 123,
+            valueInMainCurrency: 13530
           }
         ],
         unitPrice: {
@@ -1787,8 +1787,8 @@ describe('getSummary()', () => {
             merchant: '',
             merchantLevel: 0,
             questId: '',
-            value: 526053,
-            valueInMainCurrency: 526053
+            value: 446316,
+            valueInMainCurrency: 446316
           },
           pricesWithContent: [
             {
@@ -1798,8 +1798,8 @@ describe('getSummary()', () => {
               merchant: '',
               merchantLevel: 0,
               questId: '',
-              value: 526053,
-              valueInMainCurrency: 526053
+              value: 446316,
+              valueInMainCurrency: 446316
             }
           ],
           unitPrice: {
@@ -1855,8 +1855,8 @@ describe('getSummary()', () => {
             merchant: '',
             merchantLevel: 0,
             questId: '',
-            value: 192965,
-            valueInMainCurrency: 192965
+            value: 135939,
+            valueInMainCurrency: 135939
           },
           pricesWithContent: [
             {
@@ -1866,8 +1866,8 @@ describe('getSummary()', () => {
               merchant: '',
               merchantLevel: 0,
               questId: '',
-              value: 190765,
-              valueInMainCurrency: 190765
+              value: 122409,
+              valueInMainCurrency: 122409
             },
             {
               barterItems: [],
@@ -1876,8 +1876,8 @@ describe('getSummary()', () => {
               merchant: '',
               merchantLevel: 0,
               questId: '',
-              value: 20,
-              valueInMainCurrency: 2200
+              value: 123,
+              valueInMainCurrency: 13530
             }
           ],
           unitPrice: {
@@ -1893,7 +1893,7 @@ describe('getSummary()', () => {
           unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
         },
         verticalRecoil: 397,
-        weight: 3.674
+        weight: 3.762
       } as IBuildSummary
     ],
     [
@@ -1993,7 +1993,7 @@ describe('getSummary()', () => {
 describe('getWeight()', () => {
   it.each([
     [build1, 24.042],
-    [build2, 3.674]
+    [build2, 3.762]
   ])(
     'should get the weight of a build',
     async (build: IBuild, expected: number) => {

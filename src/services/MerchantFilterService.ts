@@ -104,7 +104,7 @@ export class MerchantFilterService {
 
   /**
    * Indicates whether an item has prices that match the merchant filters.
-   * Also filters out items that have no market data.
+   * Also filters out items that have no prices.
    * @param item - Item.
    * @param includeItemsWithouMerchantFilter - Indicates whether "Show items without merchant" filter is taken into consideration.
    * @returns true when the item has prices that match the merchant filters; otherwise false.

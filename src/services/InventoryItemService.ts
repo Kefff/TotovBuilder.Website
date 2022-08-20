@@ -233,7 +233,7 @@ export class InventoryItemService {
     const price: IPrice = {
       barterItems: [], // TODO : Handling barters
       currencyName: unitPrice.currencyName,
-      itemId: '',
+      itemId: unitPrice.itemId,
       merchant: unitPrice.merchant,
       merchantLevel: unitPrice.merchantLevel,
       questId: unitPrice.questId,
@@ -272,7 +272,7 @@ export class InventoryItemService {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: price.questId,
+        questId: '',
         value: price.value,
         valueInMainCurrency: price.valueInMainCurrency
       })
@@ -409,9 +409,9 @@ export class InventoryItemService {
 
     // Applying to the weapon recoil the recoil percentage modifiers of its mods
     recoil.horizontalRecoilWithMods = recoil.horizontalRecoil + (recoil.horizontalRecoil * modsRecoilPercentageModifiers)
-    recoil.horizontalRecoilWithMods = round(recoil.horizontalRecoilWithMods + recoil.horizontalRecoilWithMods * chamberedAmmunitionRecoilPercentageModifier)
+    recoil.horizontalRecoilWithMods = round(recoil.horizontalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier))
     recoil.verticalRecoilWithMods = recoil.verticalRecoil + (recoil.verticalRecoil * modsRecoilPercentageModifiers)
-    recoil.verticalRecoilWithMods = round(recoil.verticalRecoilWithMods + recoil.verticalRecoilWithMods * chamberedAmmunitionRecoilPercentageModifier)
+    recoil.verticalRecoilWithMods = round(recoil.verticalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier))
 
     return Result.ok(recoil)
   }

@@ -107,7 +107,7 @@ export class ItemService {
   }
 
   /**
-   * Gets items of a specified category. Updates the market data if its cache has expired.
+   * Gets items of a specified category. Updates the prices if its cache has expired.
    * @param id - ID of the category of the items.
    * @returns Items
    */
@@ -145,7 +145,7 @@ export class ItemService {
   public async getPreset(id: string): Promise<IInventoryItem | undefined> {
     await this.initialize()
 
-    const preset = this.presets.find(p => p.itemId === id) as IInventoryItem
+    const preset = this.presets.find(p => p.itemId === id)
 
     return preset
   }
