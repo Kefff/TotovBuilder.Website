@@ -1,3 +1,4 @@
+import { round } from 'round-ts'
 import Services from '../services/repository/Services'
 import { TarkovValuesService } from '../services/TarkovValuesService'
 
@@ -16,7 +17,7 @@ export default class StatsUtils {
     let displayValue: string
 
     if (isPercentage) {
-      value = Math.round(value * 100)
+      value = round(value * 100)
     }
 
     if (isBonusMalus && value > 0) {

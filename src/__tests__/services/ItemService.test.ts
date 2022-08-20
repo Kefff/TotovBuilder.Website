@@ -64,8 +64,8 @@ describe('getItem()', () => {
       {
         currencyName: 'RUB',
         merchant: 'flea-market',
-        merchantLevel: undefined,
-        requiresQuest: false,
+        merchantLevel: 0,
+        questId: '',
         value: 22761,
         valueInMainCurrency: 22761
       }] as IPrice[])
@@ -132,8 +132,8 @@ describe('getItem()', () => {
       {
         currencyName: 'RUB',
         merchant: 'flea-market',
-        merchantLevel: undefined,
-        requiresQuest: false,
+        merchantLevel: 0,
+        questId: '',
         value: 22761,
         valueInMainCurrency: 22761
       }] as IPrice[])

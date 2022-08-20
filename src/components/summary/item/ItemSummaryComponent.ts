@@ -22,6 +22,7 @@ export default defineComponent({
     const price = ref<IPrice>({
       barterItems: [], // TODO : Handling barters
       currencyName: 'RUB',
+      itemId: '',
       merchant: '',
       merchantLevel: 0,
       questId: '',

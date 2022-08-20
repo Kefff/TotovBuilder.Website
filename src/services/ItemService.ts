@@ -9,6 +9,7 @@ import { NotificationService, NotificationType } from './NotificationService'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import { TarkovValuesService } from './TarkovValuesService'
 import { ItemFetcherService } from './ItemFetcherService'
+import { IPrice } from '../models/item/IPrice'
 
 /**
  * Represents a service responsible for managing items.
@@ -299,10 +300,10 @@ export class ItemService {
 
   /**
    * Updates items prices.
-   * @param itemPricesResult - Prices fetching result.
+   * @param pricesResult - Prices fetching result.
    */
-  private updateItemsPrices(itemPricesResult: Result<IItem[]>) {
-    if (!itemPricesResult.success) {
+  private updateItemsPrices(pricesResult: Result<IPrice[]>) {
+    if (!pricesResult.success) {
       Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.cannotFetchPrices'), true)
 
       // When an error occurs, we set the last fetch date in order to make the cache expire 20 seconds later.
@@ -317,11 +318,11 @@ export class ItemService {
       return
     }
 
-    for (const itemPrice of itemPricesResult.value) {
-      const item = this.items.find(i => i.id === itemPrice.id)
+    for (const price of pricesResult.value) {
+      const item = this.items.find(i => i.id === price.itemId)
 
       if (item !== undefined) {
-        item.prices = itemPrice.prices
+        item.prices.push(price)
       }
     }
 

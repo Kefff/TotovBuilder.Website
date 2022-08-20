@@ -481,34 +481,34 @@ describe('getPrice()', () => {
         price: {
           currencyName: 'RUB',
           merchant: 'flea-market',
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchantLevel: 0,
+          questId: '',
           value: 22836,
           valueInMainCurrency: 22836
         },
         pricesWithContent: [
           {
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 58556,
             valueInMainCurrency: 58556
           }
         ],
         priceWithContentInMainCurrency: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 58556,
           valueInMainCurrency: 58556
         },
         unitPrice: {
           currencyName: 'RUB',
           merchant: 'flea-market',
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchantLevel: 0,
+          questId: '',
           value: 22836,
           valueInMainCurrency: 22836
         },
@@ -530,25 +530,25 @@ describe('getPrice()', () => {
           currencyName: 'RUB',
           merchant: 'prapor',
           merchantLevel: 2,
-          requiresQuest: false,
+          questId: '',
           value: 3400,
           valueInMainCurrency: 3400
         },
         pricesWithContent: [
           {
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 3400,
             valueInMainCurrency: 3400
           }
         ],
         priceWithContentInMainCurrency: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 3400,
           valueInMainCurrency: 3400
         },
@@ -556,7 +556,7 @@ describe('getPrice()', () => {
           currencyName: 'RUB',
           merchant: 'prapor',
           merchantLevel: 2,
-          requiresQuest: false,
+          questId: '',
           value: 68,
           valueInMainCurrency: 68
         },
@@ -603,35 +603,35 @@ describe('getPrice()', () => {
         missingPrice: false,
         price: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
         pricesWithContent: [
           {
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 90404,
             valueInMainCurrency: 90404
           }
         ],
         priceWithContentInMainCurrency: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 90404,
           valueInMainCurrency: 90404
         },
         unitPrice: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
@@ -663,33 +663,33 @@ describe('getPrice()', () => {
         price: {
           currencyName: 'RUB',
           merchant: 'flea-market',
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchantLevel: 0,
+          questId: '',
           value: 43905,
           valueInMainCurrency: 43905
         },
         priceWithContentInMainCurrency: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 49530,
           valueInMainCurrency: 49530
         },
         pricesWithContent: [
           {
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 43905,
             valueInMainCurrency: 43905
           },
           {
             currencyName: 'USD',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 45,
             valueInMainCurrency: 5625
           }
@@ -697,8 +697,8 @@ describe('getPrice()', () => {
         unitPrice: {
           currencyName: 'RUB',
           merchant: 'flea-market',
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchantLevel: 0,
+          questId: '',
           value: 43905,
           valueInMainCurrency: 43905
         },
@@ -734,35 +734,35 @@ describe('getPrice()', () => {
         missingPrice: false,
         price: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
         priceWithContentInMainCurrency: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 10013,
           valueInMainCurrency: 10013
         },
         pricesWithContent: [
           {
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 10013,
             valueInMainCurrency: 10013
           }
         ],
         unitPrice: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
@@ -820,24 +820,24 @@ describe('getPrice()', () => {
           currencyName: 'RUB',
           merchant: 'mechanic',
           merchantLevel: 2,
-          requiresQuest: false,
+          questId: '',
           value: 42938,
           valueInMainCurrency: 42938
         },
         priceWithContentInMainCurrency: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 42938,
           valueInMainCurrency: 42938
         },
         pricesWithContent: [
           {
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 42938,
             valueInMainCurrency: 42938
           }
@@ -846,7 +846,7 @@ describe('getPrice()', () => {
           currencyName: 'RUB',
           merchant: 'mechanic',
           merchantLevel: 2,
-          requiresQuest: false,
+          questId: '',
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -889,25 +889,25 @@ describe('getPrice()', () => {
           currencyName: 'RUB',
           merchant: 'mechanic',
           merchantLevel: 2,
-          requiresQuest: false,
+          questId: '',
           value: 42938,
           valueInMainCurrency: 42938
         },
         pricesWithContent: [
           {
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 64015,
             valueInMainCurrency: 64015
           }
         ],
         priceWithContentInMainCurrency: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 64015,
           valueInMainCurrency: 64015
         },
@@ -915,7 +915,7 @@ describe('getPrice()', () => {
           currencyName: 'RUB',
           merchant: 'mechanic',
           merchantLevel: 2,
-          requiresQuest: false,
+          questId: '',
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -958,24 +958,24 @@ describe('getPrice()', () => {
           currencyName: 'RUB',
           merchant: 'mechanic',
           merchantLevel: 2,
-          requiresQuest: false,
+          questId: '',
           value: 42938,
           valueInMainCurrency: 42938
         },
         priceWithContentInMainCurrency: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 84096,
           valueInMainCurrency: 84096
         },
         pricesWithContent: [
           {
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 84096,
             valueInMainCurrency: 84096
           }
@@ -984,7 +984,7 @@ describe('getPrice()', () => {
           currencyName: 'RUB',
           merchant: 'mechanic',
           merchantLevel: 2,
-          requiresQuest: false,
+          questId: '',
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -1034,25 +1034,25 @@ describe('getPrice()', () => {
         price: {
           currencyName: 'RUB',
           merchant: 'flea-market',
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchantLevel: 0,
+          questId: '',
           value: 63456,
           valueInMainCurrency: 63456
         },
         priceWithContentInMainCurrency: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 147552,
           valueInMainCurrency: 147552
         },
         pricesWithContent: [
           {
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 147552,
             valueInMainCurrency: 147552
           }
@@ -1060,8 +1060,8 @@ describe('getPrice()', () => {
         unitPrice: {
           currencyName: 'RUB',
           merchant: 'flea-market',
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchantLevel: 0,
+          questId: '',
           value: 63456,
           valueInMainCurrency: 63456
         },
@@ -1120,24 +1120,24 @@ describe('getPrice()', () => {
         currencyName: 'RUB',
         merchant: 'skier',
         merchantLevel: 1,
-        requiresQuest: false,
+        questId: '',
         value: 8917,
         valueInMainCurrency: 8917
       },
       priceWithContentInMainCurrency: {
         currencyName: 'RUB',
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 8917,
         valueInMainCurrency: 8917
       },
       pricesWithContent: [
         {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 8917,
           valueInMainCurrency: 8917
         }
@@ -1146,7 +1146,7 @@ describe('getPrice()', () => {
         currencyName: 'RUB',
         merchant: 'skier',
         merchantLevel: 1,
-        requiresQuest: false,
+        questId: '',
         value: 8917,
         valueInMainCurrency: 8917
       },
@@ -1170,26 +1170,26 @@ describe('getPrice()', () => {
         missingPrice: true,
         price: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
         priceWithContentInMainCurrency: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
         pricesWithContent: [],
         unitPrice: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1217,25 +1217,25 @@ describe('getPrice()', () => {
         price: {
           currencyName: 'RUB',
           merchant: 'flea-market',
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchantLevel: 0,
+          questId: '',
           value: 22836,
           valueInMainCurrency: 22836
         },
         priceWithContentInMainCurrency: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 22836,
           valueInMainCurrency: 22836
         },
         pricesWithContent: [
           {
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 22836,
             valueInMainCurrency: 22836
           }
@@ -1243,8 +1243,8 @@ describe('getPrice()', () => {
         unitPrice: {
           currencyName: 'RUB',
           merchant: 'flea-market',
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchantLevel: 0,
+          questId: '',
           value: 22836,
           valueInMainCurrency: 22836
         },
@@ -1276,24 +1276,24 @@ describe('getPrice()', () => {
           currencyName: 'RUB',
           merchant: 'jaeger',
           merchantLevel: 1,
-          requiresQuest: false,
+          questId: '',
           value: 23869,
           valueInMainCurrency: 23869
         },
         priceWithContentInMainCurrency: {
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 23869,
           valueInMainCurrency: 23869
         },
         pricesWithContent: [
           {
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 23869,
             valueInMainCurrency: 23869
           }
@@ -1302,7 +1302,7 @@ describe('getPrice()', () => {
           currencyName: 'RUB',
           merchant: 'jaeger',
           merchantLevel: 1,
-          requiresQuest: false,
+          questId: '',
           value: 23869,
           valueInMainCurrency: 23869
         },

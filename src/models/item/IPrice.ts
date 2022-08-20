@@ -15,6 +15,11 @@ export interface IPrice {
   currencyName: string
 
   /**
+   * Item ID.
+   */
+  itemId: string,
+
+  /**
    * Merchant.
    */
   merchant: string

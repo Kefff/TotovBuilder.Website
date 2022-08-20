@@ -6,11 +6,6 @@
     "src/utils/**/*.ts"
   ],
   "moduleFileExtensions": ["vue", "js", "json", "jsx", "ts", "tsx", "node"],
-  "moduleNameMapper": {
-    "currencies.json": "<rootDir>/src/__mocks__/CurrenciesMock.ts",
-    "inventory-slot-types.json": "<rootDir>/src/__mocks__/InventorySlotTypesMock.ts",
-    "changelog.json": "<rootDir>/src/__mocks__/ChangelogMock.ts"
-  },
   "preset": "ts-jest",
   "setupFiles": ["jest-localstorage-mock"],
   "setupFilesAfterEnv": ["<rootDir>/src/__mocks__/servicesConfiguration.ts"],

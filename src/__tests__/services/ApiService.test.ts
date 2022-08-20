@@ -1,6 +1,9 @@
 import { ApiService } from '../../services/ApiService'
 import fetchMock from 'jest-fetch-mock'
 import Configuration from '../../../test-data/configuration.json'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import Services from '../../services/repository/Services'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 
 beforeAll(() => {
   fetchMock.enableMocks()
@@ -49,10 +52,12 @@ describe('get()', () => {
     ]
   }
 ]`
-    fetchMock.mockOnceIf(Configuration.VITE_API_URL as string + Configuration.VITE_MARKET_DATA_API as string, response, { status: 200 })
+    const apiName = 'prices'
+    useWebsiteConfigurationServiceMock()
+    fetchMock.mockOnceIf(Configuration.VITE_API_URL as string + apiName, response, { status: 200 })
 
     // Act
-    const result = await new ApiService().get(Configuration.VITE_MARKET_DATA_API as string)
+    const result = await new ApiService().get(apiName)
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
@@ -125,6 +130,7 @@ describe('get()', () => {
     ]
   }
 ]`
+    useWebsiteConfigurationServiceMock()
     fetchMock.mockOnceIf(Configuration.VITE_API_URL as string + 'item?id=57dc2fa62459775949412633', response, { status: 200 })
 
     // Act
@@ -166,10 +172,12 @@ describe('get()', () => {
   it('should return empty data when the response is empty', async () => {
     // Arrange
     const response = ''
-    fetchMock.mockOnceIf(Configuration.VITE_API_URL as string + Configuration.VITE_MARKET_DATA_API as string, response, { status: 200 })
+    const apiName = 'prices'
+    useWebsiteConfigurationServiceMock()
+    fetchMock.mockOnceIf(Configuration.VITE_API_URL as string + apiName, response, { status: 200 })
 
     // Act
-    const result = await new ApiService().get(Configuration.VITE_MARKET_DATA_API as string)
+    const result = await new ApiService().get(apiName)
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
@@ -182,6 +190,7 @@ describe('get()', () => {
     const response = `{
   "error": "Access denied"
 }`
+    useWebsiteConfigurationServiceMock()
     fetchMock.mockOnce(response, { status: 401 })
 
     // Act
@@ -195,7 +204,8 @@ Response : "Access denied".`)
 
   it('should fail if it times out', async () => {
     // Arrange
-    Configuration.VITE_FETCH_TIMEOUT = '0.01'
+    useWebsiteConfigurationServiceMock()
+    Services.get(WebsiteConfigurationService).configuration.fetchTimeout = 0.5
     fetchMock.mockOnce(async () => {
       await new Promise(resolve => setTimeout(resolve, 1000))
 
@@ -210,8 +220,5 @@ Response : "Access denied".`)
     expect(result.success).toBe(false)
     expect(result.failureMessage).toBe(`Error while requesting API "item".
 Response : "The operation was aborted. ".`)
-
-    // Clean
-    Configuration.VITE_FETCH_TIMEOUT = '10'
   })
 })

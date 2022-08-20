@@ -21,6 +21,7 @@ import { IPrice } from '../models/item/IPrice'
 import { MerchantFilterService } from './MerchantFilterService'
 import { PathUtils } from '../utils/PathUtils'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
+import { round } from 'round-ts'
 
 /**
  * Represents a service responsible for managing inventory items.
@@ -132,8 +133,8 @@ export class InventoryItemService {
     }
 
     return Result.ok({
-      ergonomics,
-      ergonomicsWithMods
+      ergonomics: round(ergonomics, 1),
+      ergonomicsWithMods: round(ergonomicsWithMods, 1)
     })
   }
 
@@ -179,8 +180,8 @@ export class InventoryItemService {
     }
 
     return Result.ok({
-      ergonomicsPercentageModifier,
-      ergonomicsPercentageModifierWithContent
+      ergonomicsPercentageModifier: round(ergonomicsPercentageModifier, 2),
+      ergonomicsPercentageModifierWithContent: round(ergonomicsPercentageModifierWithContent, 2)
     })
   }
 
@@ -203,6 +204,7 @@ export class InventoryItemService {
     let unitPrice: IPrice = {
       barterItems: [],
       currencyName: 'RUB',
+      itemId: '',
       merchant: '',
       merchantLevel: 0,
       questId: '',
@@ -222,7 +224,7 @@ export class InventoryItemService {
 
     if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
       for (const price of merchantFilterService.getMatchingPrices(itemResult.value)) {
-        if (unitPrice.valueInMainCurrency === 0 || price.valueInMainCurrency < unitPrice.valueInMainCurrency) {
+        if (unitPrice.valueInMainCurrency === 0 || (price.valueInMainCurrency > 0 && price.valueInMainCurrency < unitPrice.valueInMainCurrency)) { // TODO : Handling barters - REMOVE price.valueInMainCurrency > 0 && WHEN IT IS DONE
           unitPrice = price
         }
       }
@@ -231,6 +233,7 @@ export class InventoryItemService {
     const price: IPrice = {
       barterItems: [], // TODO : Handling barters
       currencyName: unitPrice.currencyName,
+      itemId: '',
       merchant: unitPrice.merchant,
       merchantLevel: unitPrice.merchantLevel,
       questId: unitPrice.questId,
@@ -251,6 +254,7 @@ export class InventoryItemService {
       priceWithContentInMainCurrency: {
         barterItems: [],
         currencyName: mainCurrencyResult.value.name,
+        itemId: '',
         merchant: '',
         merchantLevel: 0,
         questId: '',
@@ -265,6 +269,7 @@ export class InventoryItemService {
       inventoryPrice.pricesWithContent.push({
         barterItems: [], // TODO : Handling barters
         currencyName: price.currencyName,
+        itemId: '',
         merchant: '',
         merchantLevel: 0,
         questId: price.questId,
@@ -403,10 +408,10 @@ export class InventoryItemService {
     }
 
     // Applying to the weapon recoil the recoil percentage modifiers of its mods
-    recoil.horizontalRecoilWithMods = Math.round(recoil.horizontalRecoil + (recoil.horizontalRecoil * modsRecoilPercentageModifiers))
-    recoil.horizontalRecoilWithMods += Math.round(recoil.horizontalRecoilWithMods * chamberedAmmunitionRecoilPercentageModifier)
-    recoil.verticalRecoilWithMods = Math.round(recoil.verticalRecoil + (recoil.verticalRecoil * modsRecoilPercentageModifiers))
-    recoil.verticalRecoilWithMods += Math.round(recoil.verticalRecoilWithMods * chamberedAmmunitionRecoilPercentageModifier)
+    recoil.horizontalRecoilWithMods = recoil.horizontalRecoil + (recoil.horizontalRecoil * modsRecoilPercentageModifiers)
+    recoil.horizontalRecoilWithMods = round(recoil.horizontalRecoilWithMods + recoil.horizontalRecoilWithMods * chamberedAmmunitionRecoilPercentageModifier)
+    recoil.verticalRecoilWithMods = recoil.verticalRecoil + (recoil.verticalRecoil * modsRecoilPercentageModifiers)
+    recoil.verticalRecoilWithMods = round(recoil.verticalRecoilWithMods + recoil.verticalRecoilWithMods * chamberedAmmunitionRecoilPercentageModifier)
 
     return Result.ok(recoil)
   }
@@ -452,8 +457,7 @@ export class InventoryItemService {
         )
       }
 
-      recoilPercentageModifier.recoilPercentageModifierWithMods +=
-        modRecoilPercentageModifierResult.value.recoilPercentageModifierWithMods
+      recoilPercentageModifier.recoilPercentageModifierWithMods = round(recoilPercentageModifier.recoilPercentageModifierWithMods + modRecoilPercentageModifierResult.value.recoilPercentageModifierWithMods, 2)
     }
 
     return Result.ok(recoilPercentageModifier)
@@ -505,9 +509,9 @@ export class InventoryItemService {
     }
 
     return Result.ok({
-      weight: +weight.toFixed(3), // toFixed() used to avoir floating point imprecision, + used to transform it back to number
-      weightWithContent: +weightWithContent.toFixed(3), // toFixed() used to avoir floating point imprecision, + used to transform it back to number
-      unitWeight: +itemResult.value.weight.toFixed(3) // toFixed() used to avoir floating point imprecision, + used to transform it back to number
+      weight: round(weight, 3),
+      weightWithContent: round(weightWithContent, 3),
+      unitWeight: round(itemResult.value.weight, 3)
     })
   }
 

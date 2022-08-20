@@ -25,6 +25,7 @@
     "json-url": "^3.0.0",
     "primeicons": "^4.1.0",
     "primevue": "^3.7.2",
+    "round-ts": "^1.0.1",
     "tiny-emitter": "^2.1.0",
     "ts-mockito": "^2.6.1",
     "vue": "^3.0.5",

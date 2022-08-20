@@ -6,6 +6,7 @@ import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IItemCategory } from '../models/configuration/IItemCategory'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import { IItem } from '../models/item/IItem'
+import { IPrice } from '../models/item/IPrice'
 
 /**
  * Represents a service responsible for fetching items through a web API.
@@ -45,9 +46,9 @@ export class ItemFetcherService {
    * Fetches all prices.
    * @returns Prices.
    */
-  public async fetchPrices(): Promise<Result<IItem[]>> {
+  public async fetchPrices(): Promise<Result<IPrice[]>> {
     const apiService = Services.get(ApiService)
-    const pricesResult = await apiService.get<IItem[]>(Services.get(WebsiteConfigurationService).configuration.pricesApi)
+    const pricesResult = await apiService.get<IPrice[]>(Services.get(WebsiteConfigurationService).configuration.pricesApi)
 
     return pricesResult
   }

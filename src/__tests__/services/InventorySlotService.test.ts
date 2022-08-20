@@ -1,8 +1,11 @@
 import { InventorySlotService } from '../../services/InventorySlotService'
+import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import InventorySlotTypes from '../../assets/data/inventory-slot-types.json'
 
 describe('getType()', () => {
   it('should get an inventory slot type', async () => {
     // Arrange
+    useItemServiceMock()
     const service = new InventorySlotService()
 
     // Act
@@ -40,15 +43,6 @@ describe('getType()', () => {
           ]
         },
         {
-          id: 'compass',
-          types: [
-            {
-              id: '5f4fbaaca5573a5ac31db429',
-              name: 'Compass'
-            }
-          ]
-        },
-        {
           id: 'container',
           types: [
             {
@@ -76,19 +70,6 @@ describe('getType()', () => {
           ]
         },
         {
-          id: 'food',
-          types: [
-            {
-              id: '5448e8d64bdc2dce718b4568',
-              name: 'Drink'
-            },
-            {
-              id: '5448e8d04bdc2ddf718b4569',
-              name: 'Food'
-            }
-          ]
-        },
-        {
           id: 'grenade',
           types: [
             {
@@ -107,27 +88,6 @@ describe('getType()', () => {
             {
               id: '5448bc234bdc2d3c308b4569',
               name: 'Magazine'
-            }
-          ]
-        },
-        {
-          id: 'medical',
-          types: [
-            {
-              id: '5448f3a14bdc2d27728b4569',
-              name: 'Drugs'
-            },
-            {
-              id: '5448f3ac4bdc2dce718b4569',
-              name: 'Medical'
-            },
-            {
-              id: '5448f39d4bdc2d0a728b4568',
-              name: 'MedKit'
-            },
-            {
-              id: '5448f3a64bdc2d60728b456a',
-              name: 'Stimulator'
             }
           ]
         },
@@ -154,67 +114,13 @@ describe('getType()', () => {
         },
         {
           id: 'other',
+          types: []
+        },
+        {
+          id: 'special',
           types: [
-            {
-              id: '543be5cb4bdc2deb348b4568',
-              name: 'AmmoBox'
-            },
-            {
-              id: '57864ee62459775490116fc1',
-              name: 'Battery'
-            },
-            {
-              id: '57864ada245977548638de91',
-              name: 'BuildingMaterial'
-            },
-            {
-              id: '57864a66245977548f04a81f',
-              name: 'Electronics'
-            },
-            {
-              id: '5d650c3e815116009f6201d2',
-              name: 'Fuel'
-            },
-            {
-              id: '57864c322459775490116fbf',
-              name: 'HouseholdGoods'
-            },
-            {
-              id: '5448ecbe4bdc2d60728b4568',
-              name: 'Info'
-            },
-            {
-              id: '57864a3d24597754843f8721',
-              name: 'Jewelry'
-            },
-            {
-              id: '5c164d2286f774194c5e69fa',
-              name: 'Keycard'
-            },
-            {
-              id: '5c99f98d86f7745c314214b3',
-              name: 'KeyMechanical'
-            },
-            {
-              id: '57864e4c24597754843f8723',
-              name: 'Lubricant'
-            },
-            {
-              id: '57864c8c245977548867e7f1',
-              name: 'MedicalSupplies'
-            },
-            {
-              id: '590c745b86f7743cc433c5f2',
-              name: 'Other'
-            },
-            {
-              id: '61605ddea09d851a0a0c1bbc',
-              name: 'PortableRangeFinder'
-            },
-            {
-              id: '57864bb7245977548b3b66c2',
-              name: 'Tool'
-            }
+            { id: '5f4fbaaca5573a5ac31db429', name: 'Compass' },
+            { id: '5447e0e74bdc2d3c308b4567', name: 'Special item' }
           ]
         }
       ],
@@ -227,7 +133,7 @@ describe('getType()', () => {
     })
   })
 
-  it('should get fail if an inventory slot type is not found', async () => {
+  it('should fail if an inventory slot type is not found', async () => {
     // Arrange
     const service = new InventorySlotService()
 
@@ -241,6 +147,8 @@ describe('getType()', () => {
 
   it('should get fail if an item category is not found', async () => {
     // Arrange
+    useItemServiceMock()
+    InventorySlotTypes.find(ist => ist.id === 'armband')?.acceptedItemCategoryIds.push('invalid')
     const service = new InventorySlotService()
 
     // Act

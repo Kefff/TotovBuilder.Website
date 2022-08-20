@@ -76,6 +76,7 @@ export default defineComponent({
         price: {
           barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
@@ -85,6 +86,7 @@ export default defineComponent({
         priceWithContentInMainCurrency: {
           barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',
@@ -95,6 +97,7 @@ export default defineComponent({
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
+          itemId: '',
           merchant: '',
           merchantLevel: 0,
           questId: '',

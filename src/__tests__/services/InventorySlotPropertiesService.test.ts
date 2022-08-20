@@ -1,22 +1,27 @@
 import { IInventorySlot } from '../../models/build/IInventorySlot'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
-import Currencies from '../../assets/data/currencies.json'
-import { ICurrency } from '../../models/configuration/ICurrency'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
+import Services from '../../services/repository/Services'
+import { InventoryItemService } from '../../services/InventoryItemService'
+import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 
 const inventorySlot1: IInventorySlot = {
   items: [
     {
       content: [],
       ignorePrice: false,
-      itemId: '5c0e874186f7745dc7616606', // Maska-1Shch bulletproof helmet (Killa)
+      itemId: '5d6d3716a4b9361bc8618872', // BNTI LShZ-2DTM helmet
       modSlots: [
         {
           item: {
             content: [],
             ignorePrice: false,
-            itemId: '5c0e842486f77443a74d2976', // Maska-1Shch face shield (Killa)
+            itemId: '5d6d3829a4b9361bc8618943', // LShZ-2DTM face shield
             modSlots: [],
             quantity: 1
           },
@@ -275,7 +280,7 @@ describe('canBeLooted()', () => {
 
 describe('getErgonomics()', () => {
   it.each([
-    [inventorySlot2, 39],
+    [inventorySlot2, 37.5],
     [inventorySlot1, undefined],
     [{
       typeId: 'onSling',
@@ -283,6 +288,9 @@ describe('getErgonomics()', () => {
     } as IInventorySlot, undefined]
   ])('should get the ergonomics of a ranged weapon inventory slot', async (inventorySlot: IInventorySlot, expected: number | undefined) => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(InventoryItemService)
+    Services.configure(ItemPropertiesService)
     const service = new InventorySlotPropertiesService()
 
     // Act
@@ -299,6 +307,8 @@ describe('getErgonomics()', () => {
 
   it('should fail if an item cannot be found', async () => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(InventoryItemService)
     const service = new InventorySlotPropertiesService()
 
     // Act
@@ -312,10 +322,13 @@ describe('getErgonomics()', () => {
 
 describe('getErgonomicsPercentageModifier()', () => {
   it.each([
-    [inventorySlot1, -26],
+    [inventorySlot1, -0.20],
     [inventorySlot2, undefined]
   ])('should get the ergonomics percentage modifier of an inventory slot', async (inventorySlot: IInventorySlot, expected: number | undefined) => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(InventoryItemService)
+    Services.configure(ItemPropertiesService)
     const service = new InventorySlotPropertiesService()
 
     // Act
@@ -332,6 +345,8 @@ describe('getErgonomicsPercentageModifier()', () => {
 
   it('should fail if an item cannot be found', async () => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(InventoryItemService)
     const service = new InventorySlotPropertiesService()
 
     // Act
@@ -350,36 +365,44 @@ describe('getPrice()', () => {
       {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
-          value: 157181,
-          valueInMainCurrency: 157181
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
+          value: 116774,
+          valueInMainCurrency: 116774
         },
         pricesWithContent: [
           {
+            barterItems: [],
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
-            value: 157181,
-            valueInMainCurrency: 157181
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
+            value: 116774,
+            valueInMainCurrency: 116774
           }
         ],
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
@@ -391,44 +414,54 @@ describe('getPrice()', () => {
       {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
-          value: 25836,
-          valueInMainCurrency: 25836
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
+          value: 26414,
+          valueInMainCurrency: 26414
         },
         pricesWithContent: [
           {
+            barterItems: [],
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
-            value: 22836,
-            valueInMainCurrency: 22836
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
+            value: 23444,
+            valueInMainCurrency: 23444
           },
           {
+            barterItems: [],
             currencyName: 'USD',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
-            value: 24,
-            valueInMainCurrency: 3000
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
+            value: 27,
+            valueInMainCurrency: 2970
           }
         ],
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
@@ -437,6 +470,11 @@ describe('getPrice()', () => {
     ]
   ])('should get the price of an inventory slot', async (inventorySlot: IInventorySlot, expected: IInventoryPrice) => {
     // Arrange
+    useItemServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(InventoryItemService)
+    Services.configure(MerchantFilterService)
     const service = new InventorySlotPropertiesService()
 
     // Act
@@ -449,16 +487,22 @@ describe('getPrice()', () => {
 
   it('should have a missing price when no merchants sell the item', async () => {
     // Arrange
+    useItemServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(InventoryItemService)
+    Services.configure(MerchantFilterService)
     const service = new InventorySlotPropertiesService()
+
     const inventorySlot: IInventorySlot = {
       items: [{
         content: [],
         ignorePrice: false,
-        itemId: '56deee15d2720bee328b4567', // MP-153 12ga 4-shell forend cap
+        itemId: '5c0e874186f7745dc7616606', // Maska-1SCh bulletproof helmet (Killa)
         modSlots: [],
         quantity: 1
       }],
-      typeId: 'backpack'
+      typeId: 'headwear'
     }
 
     // Act
@@ -469,27 +513,33 @@ describe('getPrice()', () => {
     expect(price.value).toStrictEqual({
       missingPrice: true,
       price: {
+        barterItems: [],
         currencyName: 'RUB',
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
       priceWithContentInMainCurrency: {
+        barterItems: [],
         currencyName: 'RUB',
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
       pricesWithContent: [],
       unitPrice: {
+        barterItems: [],
         currencyName: 'RUB',
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
@@ -499,9 +549,12 @@ describe('getPrice()', () => {
 
   it('should fail if the main currency cannot be found', async () => {
     // Arrange
+    useItemServiceMock(false)
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(InventoryItemService)
+    Services.configure(MerchantFilterService)
     const service = new InventorySlotPropertiesService()
-    const mainCurrency = Currencies.find(c => c.name === 'RUB') as ICurrency
-    mainCurrency.mainCurrency = false
 
     // Act
     const price = await service.getPrice(inventorySlot1, true)
@@ -509,13 +562,15 @@ describe('getPrice()', () => {
     // Assert
     expect(price.success).toBe(false)
     expect(price.failureMessage).toBe('Main currency not found.')
-
-    // Clean
-    mainCurrency.mainCurrency = true
   })
 
   it('should fail if an item cannot be found', async () => {
     // Arrange
+    useItemServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(InventoryItemService)
+    Services.configure(MerchantFilterService)
     const service = new InventorySlotPropertiesService()
 
     // Act
@@ -537,6 +592,9 @@ describe('getRecoil()', () => {
     } as IInventorySlot, undefined]
   ])('should get the recoil of a ranged weapon inventory slot', async (inventorySlot: IInventorySlot, expected: { horizontalRecoil: number, verticalRecoil: number } | undefined) => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(InventoryItemService)
+    Services.configure(ItemPropertiesService)
     const service = new InventorySlotPropertiesService()
 
     // Act
@@ -553,6 +611,8 @@ describe('getRecoil()', () => {
 
   it('should fail if an item cannot be found', async () => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(InventoryItemService)
     const service = new InventorySlotPropertiesService()
 
     // Act
@@ -567,6 +627,8 @@ describe('getRecoil()', () => {
 describe('getWeight()', () => {
   it('should get the weight of an inventory slot', async () => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(InventoryItemService)
     const service = new InventorySlotPropertiesService()
 
     // Act
@@ -574,12 +636,14 @@ describe('getWeight()', () => {
 
     // Assert
     expect(weight.success).toBe(true)
-    expect(weight.value).toBe(3.7)
+    expect(weight.value).toBe(4.4)
   }
   )
 
   it('should fail if an item cannot be found', async () => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(InventoryItemService)
     const service = new InventorySlotPropertiesService()
 
     // Act
