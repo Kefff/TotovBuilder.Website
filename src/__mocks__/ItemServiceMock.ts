@@ -1,6 +1,6 @@
 import { anyString, instance, mock, when } from 'ts-mockito'
 import { ItemService } from '../services/ItemService'
-import ItemMocks from '../../test-data/items.json'
+import ItemsMock from '../../test-data/items.json'
 import PriceMocks from '../../test-data/prices.json'
 import Services from '../services/repository/Services'
 import Result, { FailureType } from '../utils/Result'
@@ -14,6 +14,7 @@ export function useItemServiceMock(hasMainCurrency = true): void {
   const itemServiceMock = mock<ItemService>()
   when(itemServiceMock.getItem(anyString())).thenCall((id: string) => getItem(id))
   when(itemServiceMock.getItemCategories()).thenReturn(Promise.resolve(ItemCategoriesMock))
+  when(itemServiceMock.getItemsOfCategory(anyString())).thenCall((id: string) => getItemsOfCategory(id))
   when(itemServiceMock.getMainCurrency()).thenCall(() => getMainCurrency(hasMainCurrency))
   when(itemServiceMock.getPreset(anyString())).thenCall((id: string) => getPreset(id))
 
@@ -21,19 +22,25 @@ export function useItemServiceMock(hasMainCurrency = true): void {
 }
 
 function getItem(id: string): Promise<Result<IItem>> {
-  const item = ItemMocks.find(i => i.id === id) as IItem
+  const item = ItemsMock.find(i => i.id === id) as IItem
 
   if (item !== undefined) {
-    const prices = PriceMocks.filter(p => p.itemId === id)
-
-    if (prices !== undefined) {
-      item.prices = prices
-    }
+    item.prices = PriceMocks.filter(p => p.itemId === id)
 
     return Promise.resolve(Result.ok(item))
   }
 
   return Promise.resolve(Result.fail(FailureType.error, 'ItemService.getItem()', `Item "${id}" not found.`))
+}
+
+async function getItemsOfCategory(id: string): Promise<Result<IItem[]>> {
+  const items = ItemsMock.filter(i => i.categoryId === id) as IItem[]
+
+  for (const item of items) {
+    item.prices = PriceMocks.filter(p => p.itemId === item.id)
+  }
+
+  return Promise.resolve(Result.ok<IItem[]>(items))
 }
 
 function getMainCurrency(hasMainCurrency: boolean): Promise<Result<ICurrency>> {

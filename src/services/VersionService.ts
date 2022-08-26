@@ -44,8 +44,7 @@ export class VersionService {
    * Initializes a new instance of the VersionService class.
    */
   public constructor() {
-    this.initializationPromise = this.initialize()
-    this.checkNewVersion()
+    this.initializationPromise = this.initialize().then(() => this.checkNewVersion())
   }
 
   /**
@@ -132,7 +131,9 @@ export class VersionService {
    * Initializes the data used by the service.
    */
   private async initialize(): Promise<void> {
+    this.isInitializing = true
     const fetchResult = await this.fetchChangelog()
+    this.isInitializing = false
 
     if (!fetchResult.success) {
       throw new Error()

@@ -12,7 +12,7 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const acceptedCartridgesCaptions = ref<string[]>([])
+    const acceptedCartridesCaptions = ref<string[]>([])
     watch(() => props.item, () => getAcceptedCartridgesCaptions())
 
     onMounted(() => getAcceptedCartridgesCaptions())
@@ -21,11 +21,11 @@ export default defineComponent({
      * Gets the captions of the accepted cartridges.
      */
     async function getAcceptedCartridgesCaptions() {
-      acceptedCartridgesCaptions.value = await Services.get(MagazineStatsComponentService).getAcceptedCartridgesCaptions(props.item)
+      acceptedCartridesCaptions.value = await Services.get(MagazineStatsComponentService).getAcceptedCartridgesNames(props.item)
     }
 
     return {
-      acceptedCartridgesCaptions,
+      acceptedCartridesCaptions,
       StatsUtils
     }
   }

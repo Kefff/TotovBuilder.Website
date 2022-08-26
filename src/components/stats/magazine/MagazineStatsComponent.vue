@@ -58,7 +58,7 @@
       </div>
     </div>
   </div>
-  <div v-if="acceptedCartridgesCaptions.length > 0">
+  <div v-if="acceptedCartridesCaptions.length > 0">
     <div class="stats-entry">
       <div class="stats-caption custom-icon-before-text">
         <img src="/assets/caliber.webp">
@@ -68,7 +68,7 @@
   </div>
   <div class="stats-line">
     <div
-      v-for="(acceptedCartridgesCaption, index) of acceptedCartridgesCaptions"
+      v-for="(acceptedCartridgesCaption, index) of acceptedCartridesCaptions"
       :key="index"
       class="stats-entry"
     >

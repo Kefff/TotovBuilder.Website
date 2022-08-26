@@ -38,7 +38,7 @@ export class ItemSortingFunctions implements ISortingFunctions {
     let comparisonValue = ItemSortingFunctions.compareByCategory(item1, item2)
 
     if (comparisonValue === 0) {
-      comparisonValue = (item1ValueToCompare as number) - (item2ValueToCompare as number)
+      comparisonValue = (item1ValueToCompare as number ?? 0) - (item2ValueToCompare as number ?? 0)
     }
 
     if (comparisonValue === 0) {

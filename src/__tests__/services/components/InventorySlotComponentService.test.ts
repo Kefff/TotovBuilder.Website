@@ -8,12 +8,20 @@ import { NotificationService } from '../../../services/NotificationService'
 import Services from '../../../services/repository/Services'
 import { PathUtils } from '../../../utils/PathUtils'
 import Result, { FailureType } from '../../../utils/Result'
+import { useItemServiceMock } from '../../../__mocks__/ItemServiceMock'
+import { useTarkovValuesServiceMock } from '../../../__mocks__/TarkovValuesServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('getAcceptedItems()', () => {
   it('should get the acceptem items', async () => {
     // Arrange
+    useItemServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
     const merchantFitlerService = Services.get(MerchantFilterService)
-    const itemComponentService = new InventorySlotComponentService()
+    const inventorySlotComponentServiceService = new InventorySlotComponentService()
 
     merchantFitlerService.save([
       {
@@ -29,7 +37,7 @@ describe('getAcceptedItems()', () => {
     ])
 
     // Act
-    const items = await itemComponentService.getAcceptedItems(['armband', 'headphones'])
+    const items = await inventorySlotComponentServiceService.getAcceptedItems(['armband', 'headphones'])
 
     // Assert
     expect(items.map((i) => i.id)).toStrictEqual([
@@ -41,6 +49,7 @@ describe('getAcceptedItems()', () => {
       '5b432b965acfc47a8774094e',
       '5aa2ba71e5b5b000137b758f',
       '5645bcc04bdc2d363b8b4572',
+      '628e4e576d783146b124c64d',
       '5c165d832e2216398b5a7e36'
     ])
 
@@ -50,7 +59,11 @@ describe('getAcceptedItems()', () => {
 
   it('should get an empty list if an error occurs', async () => {
     // Arrange
-    const itemComponentService = new InventorySlotComponentService()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
+    const inventorySlotComponentService = new InventorySlotComponentService()
     const notificationServiceMock = mock<NotificationService>()
     Services.configure(NotificationService, undefined, notificationServiceMock)
     const itemServiceMock = mock<ItemService>()
@@ -58,7 +71,7 @@ describe('getAcceptedItems()', () => {
     Services.configure(ItemService, undefined, instance(itemServiceMock))
 
     // Act
-    const items = await itemComponentService.getAcceptedItems(['securedContainer'])
+    const items = await inventorySlotComponentService.getAcceptedItems(['securedContainer'])
 
     // Assert
     expect(items.length).toBe(0)
@@ -74,6 +87,9 @@ describe('checkCompatibility', () => {
     ['backpack', undefined, true]
   ])('should check compatibility of items selected in the inventory slot', async (inventorySlotTypeId: string, item: IInventoryItem | undefined, expected: boolean) => {
     // Arrange
+    useWebsiteConfigurationServiceMock()
+    Services.configure(NotificationService)
+
     const compatibilityServiceMock = mock<CompatibilityService>()
     when(compatibilityServiceMock.checkCompatibility(anything(), anything(), anyString()))
       .thenReturn(Promise.resolve(expected ? Result.ok() : Result.fail(FailureType.hidden, undefined, 'Error')))

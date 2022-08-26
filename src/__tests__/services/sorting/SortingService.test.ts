@@ -5,18 +5,18 @@ import { ItemSortingFunctions } from '../../../services/sorting/functions/ItemSo
 
 describe('setSortingProperty()', () => {
   it.each([
-    ['caption', SortingOrder.desc, -1],
+    ['name', SortingOrder.desc, -1],
     ['price', SortingOrder.asc, 2]
   ])('should set the sorting property and get the comparison function', async (property: string, expectedSortingOrder: SortingOrder, expectedComparisonResult: number) => {
     // Arrange
     const sortService = new SortingService([
       {
         comparisonFunctions: {
-          caption: () => 1,
+          name: () => 1,
           price: () => 2
         },
         getValueToCompareFunctions: {
-          caption: (item: IItem) => item.caption,
+          name: (item: IItem) => item.name,
           price: (item: IItem) => item.prices[0].valueInMainCurrency
         }
       }
@@ -49,33 +49,33 @@ describe('sort()', () => {
   it('should sort an array or items', async () => {
     // Arrange
     const items = [
-      { categoryId: 'cat1', caption: '5' } as IItem,
-      { categoryId: 'cat1', caption: '6' } as IItem,
-      { categoryId: 'cat1', caption: '6' } as IItem,
-      { categoryId: 'cat1', caption: '2' } as IItem,
-      { categoryId: 'cat1', caption: '9' } as IItem
+      { categoryId: 'cat1', name: '5' } as IItem,
+      { categoryId: 'cat1', name: '6' } as IItem,
+      { categoryId: 'cat1', name: '6' } as IItem,
+      { categoryId: 'cat1', name: '2' } as IItem,
+      { categoryId: 'cat1', name: '9' } as IItem
     ]
     const sortingData = new SortingData()
     sortingData.comparisonFunction = ItemSortingFunctions.compareByString
-    sortingData.getValueToCompareFunction = (item: IItem) => item.caption
+    sortingData.getValueToCompareFunction = (item: IItem) => item.name
 
     // Act
     const result = await SortingService.sort(items, sortingData)
 
     // Assert
     expect(result).toStrictEqual([
-      { categoryId: 'cat1', caption: '2' } as IItem,
-      { categoryId: 'cat1', caption: '5' } as IItem,
-      { categoryId: 'cat1', caption: '6' } as IItem,
-      { categoryId: 'cat1', caption: '6' } as IItem,
-      { categoryId: 'cat1', caption: '9' } as IItem
+      { categoryId: 'cat1', name: '2' } as IItem,
+      { categoryId: 'cat1', name: '5' } as IItem,
+      { categoryId: 'cat1', name: '6' } as IItem,
+      { categoryId: 'cat1', name: '6' } as IItem,
+      { categoryId: 'cat1', name: '9' } as IItem
     ])
   })
 })
 
 const sortingData: SortingData = {
-  property: 'caption',
+  property: 'name',
   order: SortingOrder.asc,
   comparisonFunction: () => 0,
-  getValueToCompareFunction: (item: IItem) => item.caption
+  getValueToCompareFunction: (item: IItem) => item.name
 }

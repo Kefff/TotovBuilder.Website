@@ -382,16 +382,23 @@ export class BuildService {
       return Result.fail(FailureType.error, 'BuildService.parseReducedInventorySlot()', i18n.t('message.cannotParseInventorySlotWithoutTypeId'))
     }
 
-    const inventoryItems: IInventoryItem[] = []
+    const inventorySlotType = InventorySlotTypes.find(ist => ist.id === typeId)
 
-    for (const reducedItem of reducedItems) {
+    if (inventorySlotType === undefined) {
+      return Result.fail(FailureType.error, 'BuildService.parseReducedInventorySlot()', i18n.t('message.cannotFindInventorySlotType', { inventorySlotTypeId: typeId }))
+    }
+
+    const inventoryItems: IInventoryItem[] = Array(inventorySlotType.itemSlotsAmount)
+
+    for (let i = 0; i < reducedItems.length; i++) {
+      const reducedItem = reducedItems[i]
       const inventoryItemResult = this.parseReducedInventoryItem(reducedItem)
 
       if (!inventoryItemResult.success) {
         return Result.failFrom(inventoryItemResult)
       }
 
-      inventoryItems.push(inventoryItemResult.value)
+      inventoryItems[i] = inventoryItemResult.value
     }
 
     return Result.ok({

@@ -6,6 +6,7 @@ import { NotificationService, NotificationType } from '../../../services/Notific
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito'
 import Services from '../../../services/repository/Services'
 import { BuildComponentService } from '../../../services/components/BuildComponentService'
+import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('getBuild()', () => {
   it('should get a build', () => {
@@ -64,6 +65,9 @@ describe('getBuild()', () => {
 
   it('should return a new build when an error occurs', () => {
     // Arrange
+    useWebsiteConfigurationServiceMock()
+    Services.configure(NotificationService)
+
     const buildComponentService = new BuildComponentService()
     const buildServiceMock = mock<BuildService>()
     when(buildServiceMock.get('123')).thenReturn(Result.fail(FailureType.hidden, 'Context', 'Error'))
@@ -95,8 +99,10 @@ describe('getBuild()', () => {
 describe('getBuildFromSharableString()', () => {
   it('should get a build from a sharable string', async () => {
     // Arrange
+    Services.configure(BuildService)
+
     const service = new BuildComponentService()
-    const sharableString = 'XQAAAAIEAQAAAAAAAABAqEppJBKy3f2nWA1_4C5z8-v7-QmsFsh3-Xw5A4r6cKv_m0sfj0O9x9XIb5ScojjRsy4huWDxzBSG1zyaOOej9yI6eVsg6yXMNsehKkbkF4IxN4W52Wr0SPOgjzuUFCVV1O-07KKY5H2MxwF8NvWFSy9VOl89axpWIZlA4rMaW8zwrHUAdC7epHLneT1sKyazlWteJ--ZEOyd3csaogRVGPNtylBhm8wqX_KVr5aLtkpJU-9ba2mmXnpWUf_-OHdA'
+    const sharableString = 'XQAAAAKBAQAAAAAAAABAqEppVBKy3f2nWA1_4C5z8-v7-PB2PnO3yE24i4uplQNOe2AQti9qfQ3vHsOnTKDq2nEEFb79VsBzBnD-pb-5Nb0_87qgYNgUqN-kUzC-ixXoaUIxP5bVjrq-YghBtAFQa_O4inxq3hwebGM3jUCTpB0ou_BCcoJymajYEBQ2OvPuy_aF8Vtf4UR8KYA6nugVJv5Kd0v6DWN94D7Kgaza5GFSYqrRHItjPLx6krp0SGceYjtn1RNUBX-ea41hpKDXlBkYuxoBe-ZT10P4Ouq0e2Mmn82YwcUUBrZvQhh3uG6Dn_YU1No29Qi4js2uAwpm-nroMnPbxOd9jDkNeED-9xXjIA'
 
     // Act
     const buildResult = await service.getBuildFromSharableString(sharableString)
@@ -252,12 +258,15 @@ describe('getBuildFromSharableString()', () => {
           'items': [
             {
               'content': [],
+              'ignorePrice': false,
               'itemId': '5f4f9eb969cdc30ff33f09db',
               'modSlots': [],
               'quantity': 1
-            }
+            },
+            undefined,
+            undefined
           ],
-          'typeId': 'compass'
+          'typeId': 'special'
         }
       ],
       'lastExported': undefined,
@@ -267,6 +276,10 @@ describe('getBuildFromSharableString()', () => {
 
   it('should fail when build parsing fails', async () => {
     // Arrange
+    useWebsiteConfigurationServiceMock()
+    Services.configure(BuildService)
+    Services.configure(NotificationService)
+
     const service = new BuildComponentService()
     const sharableString = 'X'
 

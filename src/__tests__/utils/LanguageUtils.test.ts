@@ -1,6 +1,7 @@
 import { anything, spy, when } from 'ts-mockito'
 import vueI18n from '../../plugins/vueI18n'
 import LanguageUtils from '../../utils/LanguageUtils'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('setLanguage()', () => {
   it.each([
@@ -8,6 +9,8 @@ describe('setLanguage()', () => {
     ['invalid', 'en', 'Totov Builder : Loadout tool for Escape From Tarkov', 'Totov Builder helps you create your weapon builds, choose your PMC equipment and easily visualize the price, weight and stats of your entire loadout before going into a raid. Manage your budget efficiently by tracing every ruble that you spend.']
   ])('should change the language', (language: string, expectedLanguage: string, expectedTitle: string, expectedMetaDescription: string) => {
     // Arrange
+    useWebsiteConfigurationServiceMock()
+
     let metaDescription = ''
     const element = document.createElement('test')
     const elementSpy = spy(element)
@@ -26,6 +29,8 @@ describe('setLanguage()', () => {
 
   it('should not update the description metadata when it is not found', () => {
     // Arrange
+    useWebsiteConfigurationServiceMock()
+
     const element = null
     const documentHeadSpy = spy(document.head)
     when(documentHeadSpy.querySelector(anything())).thenReturn(element)

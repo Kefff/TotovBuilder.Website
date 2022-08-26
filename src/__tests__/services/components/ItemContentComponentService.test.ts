@@ -8,13 +8,21 @@ import Services from '../../../services/repository/Services'
 import Result, { FailureType } from '../../../utils/Result'
 import ItemCategories from '../../../../test-data/item-categories.json'
 import { MerchantFilterService } from '../../../services/MerchantFilterService'
+import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
+import { useTarkovValuesServiceMock } from '../../../__mocks__/TarkovValuesServiceMock'
+import { useItemServiceMock } from '../../../__mocks__/ItemServiceMock'
 
 describe('getAcceptedItems()', () => {
   it.each([
-    ['5ca20d5986f774331e7c9602', 78],
+    ['5ca20d5986f774331e7c9602', 82],
     ['5a7ad2e851dfba0016153692', 1]
   ])('should get the acceptem items', async (itemId: string, expected: number) => {
     // Arrange
+    useItemServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
     const merchantFitlerService = Services.get(MerchantFilterService)
     const itemContentService = new ItemContentComponentService()
 
@@ -58,6 +66,10 @@ describe('getAcceptedItems()', () => {
     [{ id: '5a7ad2e851dfba0016153692', categoryId: 'magazine', acceptedAmmunitionIds: ['5efb0e16aeb21837e749c7ff'] } as IMagazine]
   ])('should ignore accepted items that are not found', async (item: IItem) => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
     const itemContentService = new ItemContentComponentService()
     const notificationServiceMock = mock<NotificationService>()
     Services.configure(NotificationService, undefined, notificationServiceMock)

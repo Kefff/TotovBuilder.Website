@@ -1,8 +1,10 @@
-import Configuration from '../../../test-data/configuration.json'
 import { IItem } from '../../models/item/IItem'
 import { IMerchantFilter } from '../../models/utils/IMerchantFilter'
 import { IPrice } from '../../models/item/IPrice'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
+import WebsiteConfigurationMock from '../../../test-data/website-configuration.json'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 
 const filters = [
   {
@@ -53,7 +55,7 @@ const filters = [
 ] as IMerchantFilter[]
 
 beforeEach(() => {
-  localStorage.setItem(Configuration.VITE_MERCHANT_FILTER_KEY, JSON.stringify(filters))
+  localStorage.setItem(WebsiteConfigurationMock.merchantFilterStorageKey, JSON.stringify(filters))
 })
 
 afterEach(() => {
@@ -63,6 +65,9 @@ afterEach(() => {
 describe('get()', () => {
   it('should get the merchant filters', () => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
     const service = new MerchantFilterService()
 
     // Act
@@ -74,6 +79,9 @@ describe('get()', () => {
 
   it('should get the default merchant filters when merchant filters are not saved', () => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
     const service = new MerchantFilterService()
 
     // Act
@@ -157,6 +165,9 @@ describe('getMatchingPrices()', () => {
     ]
   ])('should indicate that an item has matching prices', async (prices: IPrice[], expected: IPrice[]) => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
     const service = new MerchantFilterService()
     service.save([
       {
@@ -180,12 +191,9 @@ describe('getMatchingPrices()', () => {
         merchantLevel: 2
       }
     ])
-    const item = {
-      caption: '',
+    const item: IItem = {
       categoryId: '',
       conflictingItemIds: [],
-      description: '',
-      hasMarketData: true,
       iconLink: '',
       id: '',
       imageLink: '',
@@ -196,7 +204,7 @@ describe('getMatchingPrices()', () => {
       shortName: '',
       weight: 0,
       wikiLink: ''
-    } as IItem
+    }
 
     // Act
     const result = service.getMatchingPrices(item)
@@ -209,6 +217,9 @@ describe('getMatchingPrices()', () => {
 describe('getMerchantLevels()', () => {
   it('should get the levels of a merchant', () => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
     const service = new MerchantFilterService()
 
     // Act
@@ -226,6 +237,9 @@ describe('getMerchantLevels()', () => {
 describe('hasLevels()', () => {
   it('should indicates whether a merchant has multiple levels or not', () => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
     const service = new MerchantFilterService()
 
     // Act
@@ -331,8 +345,11 @@ describe('hasMatchingPrices()', () => {
       false,
       false
     ]
-  ])('should indicate whether an item has matching prices or not', async (prices: IPrice[], showitems-without - merchant: boolean, expected: boolean) => {
+  ])('should indicate whether an item has matching prices or not', async (prices: IPrice[], showItemsWithoutMerchant: boolean, expected: boolean) => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
     const service = new MerchantFilterService()
     service.save([
       {
@@ -361,12 +378,9 @@ describe('hasMatchingPrices()', () => {
         merchantLevel: 2
       }
     ])
-    const item = {
-      caption: '',
+    const item: IItem = {
       categoryId: '',
       conflictingItemIds: [],
-      description: '',
-      hasMarketData: true,
       iconLink: '',
       id: '',
       imageLink: '',
@@ -377,10 +391,10 @@ describe('hasMatchingPrices()', () => {
       shortName: '',
       weight: 0,
       wikiLink: ''
-    } as IItem
+    }
 
     // Act
-    const result = service.hasMatchingPrices(item, showitems - without - merchant)
+    const result = service.hasMatchingPrices(item, showItemsWithoutMerchant)
 
     // Assert
     expect(result).toBe(expected)
@@ -390,6 +404,9 @@ describe('hasMatchingPrices()', () => {
 describe('save()', () => {
   it('should save the merchant filters and cache them', () => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
     const service = new MerchantFilterService()
     filters[0].enabled = false
     filters[2].merchantLevel = 1

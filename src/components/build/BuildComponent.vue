@@ -308,7 +308,7 @@
         icon="exclamation-triangle"
         class="build-warning-icon"
       />
-      <span>{{ $t('message.confirmDeleteBuild', { caption: build.name }) }}</span>
+      <span>{{ $t('message.confirmDeleteBuild', { name: build.name }) }}</span>
     </div>
     <template #footer>
       <Button

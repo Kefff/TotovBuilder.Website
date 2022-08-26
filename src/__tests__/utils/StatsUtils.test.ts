@@ -1,4 +1,5 @@
 import StatsUtils from '../../utils/StatsUtils'
+import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 
 describe('StringUtils.getValueClass()', () => {
   it.each([
@@ -39,6 +40,9 @@ describe('StringUtils.getWeightColorClass()', () => {
     [65, 'stats-encumberment-light'],
     [65.1, 'stats-encumberment-heavy']
   ])('should get the CSS class to apply to a stats value', (value: number, expected: string) => {
+    // Arrange
+    useTarkovValuesServiceMock()
+
     // Assert
     expect(StatsUtils.getWeightColorClass(value)).toBe(expected)
   })

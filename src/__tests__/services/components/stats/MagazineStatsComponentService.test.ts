@@ -1,10 +1,15 @@
 import { IMagazine } from '../../../../models/item/IMagazine'
 import { MagazineStatsComponentService } from '../../../../services/components/stats/MagazineStatsComponentService'
+import { NotificationService } from '../../../../services/NotificationService'
 import Services from '../../../../services/repository/Services'
+import { useItemServiceMock } from '../../../../__mocks__/ItemServiceMock'
 
-describe('getAcceptedAmmunitionCaptions()', () => {
-  it('should get the accepted ammunition captions of a magazine', async () => {
+describe('getAcceptedCartridgesNames()', () => {
+  it('should get the accepted ammunition names of a magazine', async () => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(NotificationService)
+
     const magazine = {
       acceptedAmmunitionIds: [
         '5c0d5e4486f77478390952fe',
@@ -22,12 +27,13 @@ describe('getAcceptedAmmunitionCaptions()', () => {
         'invalid'
       ]
     } as IMagazine
+    const magazineStatsComponentService = new MagazineStatsComponentService()
 
     // Act
-    const captions = await Services.get(MagazineStatsComponentService).getAcceptedCartridgesCaptions(magazine)
+    const names = await magazineStatsComponentService.getAcceptedCartridgesNames(magazine)
 
     // Assert
-    expect(captions).toStrictEqual([
+    expect(names).toStrictEqual([
       '5.45x39mm PPBS gs "Igolnik"',
       '5.45x39mm BP gs',
       '5.45x39mm BS gs',

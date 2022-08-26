@@ -1871,9 +1871,9 @@ describe('getRecoil()', () => {
       } as IInventoryItem,
       {
         horizontalRecoil: 650,
-        horizontalRecoilWithMods: 396,
+        horizontalRecoilWithMods: 741,
         verticalRecoil: 520,
-        verticalRecoilWithMods: 317
+        verticalRecoilWithMods: 593
       } as IRecoil
     ],
     [

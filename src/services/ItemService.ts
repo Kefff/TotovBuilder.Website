@@ -196,23 +196,20 @@ export class ItemService {
      * If prices are already being fetched, waits for the operation to end before returning.
      */
   private async fetchPrices() {
-    if (this.isFetchingPrices) {
-      await this.pricesFetchingPromise
+    if (!this.isFetchingPrices) {
+      this.pricesFetchingPromise = new Promise((resolve) => {
+        this.isFetchingPrices = true
+        const itemFetcherService = Services.get(ItemFetcherService)
 
-      return
+        itemFetcherService.fetchPrices()
+          .then(async (pricesResult) => this.updateItemsPrices(pricesResult))
+          .finally(() => {
+            this.isFetchingPrices = false
+            resolve()
+          })
+      })
     }
 
-    this.pricesFetchingPromise = new Promise((resolve) => {
-      this.isFetchingPrices = true
-      const itemFetcherService = Services.get(ItemFetcherService)
-
-      itemFetcherService.fetchPrices()
-        .then(async (pricesResult) => this.updateItemsPrices(pricesResult))
-        .finally(() => {
-          this.isFetchingPrices = false
-          resolve()
-        })
-    })
     await this.pricesFetchingPromise
   }
 
@@ -235,36 +232,33 @@ export class ItemService {
    * If static data is already being fetched, waits for the operation to end before returning.
    */
   private async fetchStaticData(): Promise<void> {
-    if (this.isFetchingStaticData) {
-      await this.staticDataFetchingPromise
+    if (!this.isFetchingStaticData) {
+      this.staticDataFetchingPromise = new Promise<void>((resolve) => {
+        this.isFetchingStaticData = true
+        const itemFetcherService = Services.get(ItemFetcherService)
 
-      return
+        this.fetchItemCategories(itemFetcherService)
+          .then(async () => {
+            await Promise.allSettled([
+              this.fetchItems(itemFetcherService),
+              this.fetchPresets(itemFetcherService)
+            ])
+            this.hasStaticDataCached = true
+          })
+          .catch(() => {
+            this.itemCategories = []
+            this.items = []
+            this.presets = []
+
+            this.hasStaticDataCached = false
+          })
+          .finally(() => {
+            this.isFetchingStaticData = false
+            resolve()
+          })
+      })
     }
 
-    this.staticDataFetchingPromise = new Promise<void>((resolve) => {
-      this.isFetchingStaticData = true
-      const itemFetcherService = Services.get(ItemFetcherService)
-
-      this.fetchItemCategories(itemFetcherService)
-        .then(async () => {
-          await Promise.allSettled([
-            this.fetchItems(itemFetcherService),
-            this.fetchPresets(itemFetcherService)
-          ])
-          this.hasStaticDataCached = true
-        })
-        .catch(() => {
-          this.itemCategories = []
-          this.items = []
-          this.presets = []
-
-          this.hasStaticDataCached = false
-        })
-        .finally(() => {
-          this.isFetchingStaticData = false
-          resolve()
-        })
-    })
     await this.staticDataFetchingPromise
   }
 
@@ -318,11 +312,11 @@ export class ItemService {
       return
     }
 
-    for (const price of pricesResult.value) {
-      const item = this.items.find(i => i.id === price.itemId)
+    for (const item of this.items) {
+      const prices = pricesResult.value.filter(p => p.itemId === item.id)
 
-      if (item !== undefined) {
-        item.prices.push(price)
+      if (prices.length > 0) {
+        item.prices = prices
       }
     }
 

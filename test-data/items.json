@@ -40170,7 +40170,7 @@
     "lightBleedingPercentageChance": 0.2,
     "penetrationPower": 2.0,
     "projectiles": 8.0,
-    "recoilPercentageModifier": 0.15,
+    "recoilPercentageModifier": 1.15,
     "subsonic": false,
     "tracer": false,
     "velocity": 385.0,

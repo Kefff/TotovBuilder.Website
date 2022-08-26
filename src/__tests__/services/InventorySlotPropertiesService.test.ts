@@ -584,7 +584,7 @@ describe('getPrice()', () => {
 
 describe('getRecoil()', () => {
   it.each([
-    [inventorySlot2, { horizontalRecoil: 230, verticalRecoil: 82 }],
+    [inventorySlot2, { horizontalRecoil: 230, verticalRecoil: 81 }],
     [inventorySlot1, undefined],
     [{
       typeId: 'onSling',

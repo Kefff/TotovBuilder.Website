@@ -8,11 +8,11 @@ import Services from '../../repository/Services'
  */
 export class MagazineStatsComponentService {
   /**
-   * Gets a the captions of the accepted cartridges of a IMagazine.
+   * Gets a the names of the accepted cartridges of a IMagazine.
    * @param magazine - Magazine.
    */
-  public async getAcceptedCartridgesCaptions(magazine: IMagazine): Promise<string[]> {
-    const acceptedAmmunitionCaptions: string[] = []
+  public async getAcceptedCartridgesNames(magazine: IMagazine): Promise<string[]> {
+    const acceptedAmmunitionNames: string[] = []
     const itemService = Services.get(ItemService)
 
     for (const acceptedAmmunitionId of magazine.acceptedAmmunitionIds) {
@@ -24,9 +24,9 @@ export class MagazineStatsComponentService {
         continue
       }
 
-      acceptedAmmunitionCaptions.push(itemResult.value.name)
+      acceptedAmmunitionNames.push(itemResult.value.name)
     }
 
-    return acceptedAmmunitionCaptions
+    return acceptedAmmunitionNames
   }
 }

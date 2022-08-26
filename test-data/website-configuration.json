@@ -1,5 +1,5 @@
 {
-  "buildSharingUrl": "https://localhost:3000/s/",
+  "buildSharingUrl": "localhost:3000/s/",
   "bugReportUrl": "https://discord.gg/bugreport",
   "buildsSortFieldStorageKey": "builds_sort_field",
   "buildsSortOrderStorageKey": "builds_sort_order",
@@ -24,5 +24,6 @@
   "presetsApi": "presets",
   "pricesApi": "prices",
   "questsApi": "quests",
+  "tarkovValuesApi": "tarkovvalues",
   "versionStorageKey": "version"
 }

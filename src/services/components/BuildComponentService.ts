@@ -89,6 +89,6 @@ export class BuildComponentService {
       }
     }
 
-    notificationService.notify(NotificationType.success, i18n.t('message.buildSaved', { caption: build.name }), true)
+    notificationService.notify(NotificationType.success, i18n.t('message.buildSaved', { name: build.name }), true)
   }
 }

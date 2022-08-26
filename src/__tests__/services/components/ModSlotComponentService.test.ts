@@ -6,10 +6,19 @@ import { NotificationService } from '../../../services/NotificationService'
 import Services from '../../../services/repository/Services'
 import Result, { FailureType } from '../../../utils/Result'
 import { MerchantFilterService } from '../../../services/MerchantFilterService'
+import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
+import { useTarkovValuesServiceMock } from '../../../__mocks__/TarkovValuesServiceMock'
+import { useItemServiceMock } from '../../../__mocks__/ItemServiceMock'
 
 describe('getAcceptedItems()', () => {
   it('should get the acceptem items', async () => {
     // Arrange
+    useItemServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+    Services.configure(NotificationService)
+
     const merchantFitlerService = Services.get(MerchantFilterService)
     const modSlotService = new ModSlotComponentService()
 
@@ -53,6 +62,10 @@ describe('getAcceptedItems()', () => {
 
   it('should ignore accepted items that are not found', async () => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
     const modSlotService = new ModSlotComponentService()
     const notificationServiceMock = mock<NotificationService>()
     Services.configure(NotificationService, undefined, notificationServiceMock)
@@ -75,11 +88,8 @@ describe('getCategoryIds()', () => {
     const modSlotService = new ModSlotComponentService()
     const items: IItem[] = [
       {
-        caption: '',
         categoryId: 'rangedWeaponMod',
         conflictingItemIds: [],
-        description: '',
-        hasMarketData: true,
         iconLink: '',
         id: '5f6341043ada5942720e2dc5', // AK Aeroknox Scorpius pistol grip
         imageLink: '',
@@ -92,11 +102,8 @@ describe('getCategoryIds()', () => {
         wikiLink: ''
       },
       {
-        caption: '',
         categoryId: 'headphones',
         conflictingItemIds: [],
-        description: '',
-        hasMarketData: true,
         iconLink: '',
         id: '5f60cd6cf2bcbb675b00dac6', // Walker's XCEL 500BT Digital headset
         imageLink: '',

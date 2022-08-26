@@ -30,14 +30,14 @@ export interface IItem {
   imageLink: string
 
   /**
-   * Maximum number of times the item can be stacked.
-   */
-  maxStackableAmount: number
-
-  /**
    * Link to the item market page.
    */
   marketLink: string
+
+  /**
+   * Maximum number of times the item can be stacked.
+   */
+  maxStackableAmount: number
 
   /**
    * Name.
