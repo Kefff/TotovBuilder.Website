@@ -5,6 +5,7 @@ import { ApiService } from './ApiService'
 import Services from './repository/Services'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import i18n from '../plugins/vueI18n'
+import { NotificationService, NotificationType } from './NotificationService'
 
 export class VersionService {
   /**
@@ -114,12 +115,10 @@ export class VersionService {
     const websiteConfiguration = Services.get(WebsiteConfigurationService).configuration
     const changelogResult = await apiService.get<IChangelogEntry[]>(websiteConfiguration.changelogApi)
 
-    if (!changelogResult.success) {
-      return Result.failFrom(changelogResult)
-    }
+    if (!changelogResult.success || changelogResult.value.length === 0) {
+      Services.get(NotificationService).notify(NotificationType.error, changelogResult.failureMessage, true)
 
-    if (changelogResult.value.length === 0) {
-      return Result.fail(FailureType.error, 'ApiItemFetcher.get()', i18n.t('message.itemsNotFetched'))
+      return Result.fail(FailureType.error, 'VersionService.fetchChangelog()', i18n.t('message.changelogNotFetched'))
     }
 
     this.changelog = changelogResult.value
@@ -132,11 +131,7 @@ export class VersionService {
    */
   private async initialize(): Promise<void> {
     this.isInitializing = true
-    const fetchResult = await this.fetchChangelog()
+    await this.fetchChangelog()
     this.isInitializing = false
-
-    if (!fetchResult.success) {
-      throw new Error()
-    }
   }
 }

@@ -20,6 +20,10 @@ export class ItemFetcherService {
     const apiService = Services.get(ApiService)
     const itemCategoriesResult = await apiService.get<IItemCategory[]>(Services.get(WebsiteConfigurationService).configuration.itemCategoriesApi)
 
+    if (!itemCategoriesResult.success || itemCategoriesResult.value.length === 0) {
+      return Result.fail(FailureType.error, 'ItemFetcherService.fetchItemCategories()', i18n.t('message.itemsCategoriesNotFetched'))
+    }
+
     return itemCategoriesResult
   }
 
@@ -31,12 +35,8 @@ export class ItemFetcherService {
     const apiService = Services.get(ApiService)
     const itemsResult = await apiService.get<IItem[]>(Services.get(WebsiteConfigurationService).configuration.itemsApi)
 
-    if (!itemsResult.success) {
-      return Result.failFrom(itemsResult)
-    }
-
-    if (itemsResult.value.length === 0) {
-      return Result.fail(FailureType.error, 'ApiItemFetcher.get()', i18n.t('message.itemsNotFetched'))
+    if (!itemsResult.success || itemsResult.value.length === 0) {
+      return Result.fail(FailureType.error, 'ItemFetcherService.fetchItems()', i18n.t('message.itemsNotFetched'))
     }
 
     return Result.ok(itemsResult.value)
@@ -50,6 +50,10 @@ export class ItemFetcherService {
     const apiService = Services.get(ApiService)
     const pricesResult = await apiService.get<IPrice[]>(Services.get(WebsiteConfigurationService).configuration.pricesApi)
 
+    if (!pricesResult.success || pricesResult.value.length === 0) {
+      return Result.fail(FailureType.error, 'ItemFetcherService.fetchPrices()', i18n.t('message.pricesNotFetched'))
+    }
+
     return pricesResult
   }
 
@@ -60,6 +64,10 @@ export class ItemFetcherService {
   public async fetchPresets(): Promise<Result<IInventoryItem[]>> {
     const apiService = Services.get(ApiService)
     const presetsResult = await apiService.get<IInventoryItem[]>(Services.get(WebsiteConfigurationService).configuration.presetsApi)
+
+    if (!presetsResult.success || presetsResult.value.length === 0) {
+      return Result.fail(FailureType.error, 'ItemFetcherService.fetchPresets()', i18n.t('message.presetsNotFetched'))
+    }
 
     return presetsResult
   }

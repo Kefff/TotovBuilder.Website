@@ -33,7 +33,7 @@ export class HeadwearSortingFunctions implements ISortingFunctions {
       Medium: 2,
       High: 3
     }
-    const value = values[(item as IHeadwear).ricochetChance ?? 'None']
+    const value = values[(item as IHeadwear).ricochetChance]
 
     return value
   }

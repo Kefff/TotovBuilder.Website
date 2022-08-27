@@ -73,7 +73,7 @@ describe('fetchItems()', () => {
 
     // Assert
     expect(itemResult.success).toBe(false)
-    expect(itemResult.failureMessage).toBe('Error')
+    expect(itemResult.failureMessage).toBe('No item could be fetched.')
   })
 })
 

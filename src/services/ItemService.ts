@@ -171,7 +171,9 @@ export class ItemService {
     const itemCategoriesResult = await itemFetcherService.fetchItemCategories()
 
     if (!itemCategoriesResult.success) {
-      throw new Error()
+      Services.get(NotificationService).notify(NotificationType.error, itemCategoriesResult.failureMessage, true)
+
+      return
     }
 
     this.itemCategories = itemCategoriesResult.value
@@ -185,7 +187,9 @@ export class ItemService {
     const itemsResult = await itemFetcherService.fetchItems()
 
     if (!itemsResult.success) {
-      throw new Error()
+      Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage, true)
+
+      return
     }
 
     this.items = itemsResult.value
@@ -221,7 +225,9 @@ export class ItemService {
     const presetsResult = await itemFetcherService.fetchPresets()
 
     if (!presetsResult.success) {
-      throw new Error()
+      Services.get(NotificationService).notify(NotificationType.error, presetsResult.failureMessage, true)
+
+      return
     }
 
     this.presets = presetsResult.value
@@ -298,7 +304,7 @@ export class ItemService {
    */
   private updateItemsPrices(pricesResult: Result<IPrice[]>) {
     if (!pricesResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.cannotFetchPrices'), true)
+      Services.get(NotificationService).notify(NotificationType.error, pricesResult.failureMessage, true)
 
       // When an error occurs, we set the last fetch date in order to make the cache expire 20 seconds later.
       // This is to avoid making a new API request for each of the 2000+ items.
