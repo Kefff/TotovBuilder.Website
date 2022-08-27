@@ -21,7 +21,7 @@ export class ItemFetcherService {
     const itemCategoriesResult = await apiService.get<IItemCategory[]>(Services.get(WebsiteConfigurationService).configuration.itemCategoriesApi)
 
     if (!itemCategoriesResult.success || itemCategoriesResult.value.length === 0) {
-      return Result.fail(FailureType.error, 'ItemFetcherService.fetchItemCategories()', i18n.t('message.itemsCategoriesNotFetched'))
+      return Result.fail(FailureType.error, 'ItemFetcherService.fetchItemCategories()', i18n.t('message.itemCategoriesNotFetched'))
     }
 
     return itemCategoriesResult

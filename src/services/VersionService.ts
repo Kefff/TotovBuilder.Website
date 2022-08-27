@@ -116,8 +116,6 @@ export class VersionService {
     const changelogResult = await apiService.get<IChangelogEntry[]>(websiteConfiguration.changelogApi)
 
     if (!changelogResult.success || changelogResult.value.length === 0) {
-      Services.get(NotificationService).notify(NotificationType.error, changelogResult.failureMessage, true)
-
       return Result.fail(FailureType.error, 'VersionService.fetchChangelog()', i18n.t('message.changelogNotFetched'))
     }
 
@@ -131,7 +129,15 @@ export class VersionService {
    */
   private async initialize(): Promise<void> {
     this.isInitializing = true
-    await this.fetchChangelog()
+
+    const changelogResult = await this.fetchChangelog()
+
+    if (!changelogResult.success) {
+      Services.get(NotificationService).notify(NotificationType.error, changelogResult.failureMessage, true)
+
+      return
+    }
+
     this.isInitializing = false
   }
 }

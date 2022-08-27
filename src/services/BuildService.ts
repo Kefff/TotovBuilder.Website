@@ -123,7 +123,7 @@ export class BuildService {
     }
 
     return Result.fail<IBuild>(
-      FailureType.warning,
+      FailureType.error,
       'BuildService.update()',
       i18n.t('message.buildNotFound', { id })
     )
@@ -175,11 +175,6 @@ export class BuildService {
       }
 
       const index = build.inventorySlots.findIndex(is => is.typeId === inventorySlotResult.value.typeId)
-
-      if (index < 0) {
-        return Result.fail(FailureType.error, 'BuildService.parseReducedBuild()', i18n.t('message.cannotFindInventorySlotType', { inventorySlotTypeId: inventorySlotResult.value.typeId }))
-      }
-
       build.inventorySlots[index] = inventorySlotResult.value
     }
 
@@ -187,12 +182,12 @@ export class BuildService {
   }
 
   /**
-   * Transforms a build in order to share it.
+   * Transforms a build to a reduced form in order to take less space.
    * Unnecessary data is scrapped and property names are shortened.
    * @param build - Build.
    * @returns Reduced build.
    */
-  public reduceBuildForSharing(build: IBuild): Result<Record<string, unknown>> {
+  public reduceBuild(build: IBuild): Result<Record<string, unknown>> {
     const reducedBuild: Record<string, unknown> = {}
     const reducedInventorySlots: Record<string, unknown>[] = []
 
@@ -217,7 +212,7 @@ export class BuildService {
    */
   public async toSharableURL(build: IBuild): Promise<Result<string>> {
     // Reducing the size of the build
-    const reducedBuildResult = this.reduceBuildForSharing(build)
+    const reducedBuildResult = this.reduceBuild(build)
 
     if (!reducedBuildResult.success) {
       return Result.failFrom(reducedBuildResult)
@@ -258,7 +253,7 @@ export class BuildService {
     }
 
     return Result.fail(
-      FailureType.warning,
+      FailureType.error,
       'BuildService.update()',
       i18n.t('message.buildNotFound', { id })
     )
@@ -472,7 +467,7 @@ export class BuildService {
   /**
    * Transforms an inventory slot in order to share it.
    * Unnecessary data is scrapped and property names are shortened.
-   * @param inventoryItem - Inventory slot.
+   * @param inventorySlot - Inventory slot.
    * @returns Reduced inventory slot.
    */
   private reduceInventorySlotForSharing(inventorySlot: IInventorySlot): Record<string, unknown> {
@@ -499,7 +494,7 @@ export class BuildService {
    * Updates an obsolete build.
    * @param build - Build to update.
    */
-  private updateObsoleteBuild(build: IBuild) {
+  private updateObsoleteBuild(build: IBuild): void {
     const obsoleteInventorySlot = build.inventorySlots.find(is => is.typeId === 'compass')
 
     if (obsoleteInventorySlot !== undefined) {

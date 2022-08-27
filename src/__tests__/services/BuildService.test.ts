@@ -979,6 +979,63 @@ describe('get()', () => {
       'Build "invalid" not found. It may have been deleted.'
     )
   })
+
+  it('should update an obsolete build', () => {
+    // Arrange
+    useWebsiteConfigurationServiceMock()
+
+    const service = new BuildService()
+    const date = new Date()
+    const build: IBuild = {
+      id: '',
+      inventorySlots: [
+        {
+          items: [
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
+              modSlots: [],
+              quantity: 1
+            }
+          ],
+          typeId: 'compass'
+        }
+      ],
+      lastExported: date,
+      lastUpdated: date,
+      name: 'Obsolete build'
+    }
+    const id = service.add(build)
+
+    // Act
+    const updatedBuildResult = service.get(id)
+
+    // Assert
+    expect(updatedBuildResult.success).toBe(true)
+    expect(updatedBuildResult.value).toStrictEqual({
+      id,
+      inventorySlots: [
+        {
+          items: [
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
+              modSlots: [],
+              quantity: 1
+            },
+            undefined,
+            undefined
+          ],
+          typeId: 'special'
+        }
+      ],
+      lastExported: date,
+      lastUpdated: date,
+      name: 'Obsolete build'
+    })
+  })
 })
 
 describe('getAll()', () => {
@@ -1366,13 +1423,13 @@ describe('parseReducedBuild()', () => {
   })
 })
 
-describe('reduceBuildForSharing()', () => {
+describe('reduceBuild()', () => {
   it('should reduce a build', () => {
     // Arrange
     const service = new BuildService()
 
     // Act
-    const reducedBuildResult = service.reduceBuildForSharing(builds[0])
+    const reducedBuildResult = service.reduceBuild(builds[0])
 
     // Assert
     expect(reducedBuildResult.success).toBe(true)
@@ -1574,7 +1631,7 @@ describe('reduceBuildForSharing()', () => {
     }
 
     // Act
-    const reducedBuildResult = service.reduceBuildForSharing(build)
+    const reducedBuildResult = service.reduceBuild(build)
 
     // Assert
     expect(reducedBuildResult.success).toBe(false)

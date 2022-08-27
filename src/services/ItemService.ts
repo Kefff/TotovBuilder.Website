@@ -251,13 +251,6 @@ export class ItemService {
             ])
             this.hasStaticDataCached = true
           })
-          .catch(() => {
-            this.itemCategories = []
-            this.items = []
-            this.presets = []
-
-            this.hasStaticDataCached = false
-          })
           .finally(() => {
             this.isFetchingStaticData = false
             resolve()
