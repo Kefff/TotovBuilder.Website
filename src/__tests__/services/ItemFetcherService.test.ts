@@ -26,6 +26,38 @@ describe('fetchItemCategories()', () => {
     expect(itemCategoriesResult.success).toBe(true)
     expect(itemCategoriesResult.value).toStrictEqual(ItemCategoriesMock)
   })
+
+  it('should fail when item categories are not found', async () => {
+    // Arrange
+    useApiServiceMock([])
+    useWebsiteConfigurationServiceMock()
+
+    const fetcher = new ItemFetcherService()
+
+    // Act
+    const itemCategoriesResult = await fetcher.fetchItemCategories()
+
+    // Assert
+    expect(itemCategoriesResult.success).toBe(false)
+    expect(itemCategoriesResult.failureMessage).toBe('No item category could be fetched.')
+  })
+
+  it('should fail when an error occurs requesting item categories', async () => {
+    // Arrange
+    const apiServiceMock = mock<ApiService>()
+    when(apiServiceMock.get(WebsiteConfigurationMock.itemCategoriesApi)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    Services.configure(ApiService, undefined, instance(apiServiceMock))
+    useWebsiteConfigurationServiceMock()
+
+    const fetcher = new ItemFetcherService()
+
+    // Act
+    const itemCategoriesResult = await fetcher.fetchItemCategories()
+
+    // Assert
+    expect(itemCategoriesResult.success).toBe(false)
+    expect(itemCategoriesResult.failureMessage).toBe('No item category could be fetched.')
+  })
 })
 
 describe('fetchItems()', () => {
@@ -92,6 +124,38 @@ describe('fetchPrices()', () => {
     expect(marketDataResult.success).toBe(true)
     expect(marketDataResult.value).toStrictEqual(PricesMock)
   })
+
+  it('should fail when prices are not found', async () => {
+    // Arrange
+    useApiServiceMock([])
+    useWebsiteConfigurationServiceMock()
+
+    const fetcher = new ItemFetcherService()
+
+    // Act
+    const pricesResult = await fetcher.fetchPrices()
+
+    // Assert
+    expect(pricesResult.success).toBe(false)
+    expect(pricesResult.failureMessage).toBe('No price could be fetched.')
+  })
+
+  it('should fail when an error occurs requesting prices', async () => {
+    // Arrange
+    const apiServiceMock = mock<ApiService>()
+    when(apiServiceMock.get(WebsiteConfigurationMock.pricesApi)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    Services.configure(ApiService, undefined, instance(apiServiceMock))
+    useWebsiteConfigurationServiceMock()
+
+    const fetcher = new ItemFetcherService()
+
+    // Act
+    const pricesResult = await fetcher.fetchPrices()
+
+    // Assert
+    expect(pricesResult.success).toBe(false)
+    expect(pricesResult.failureMessage).toBe('No price could be fetched.')
+  })
 })
 
 describe('fetchPresets()', () => {
@@ -108,5 +172,37 @@ describe('fetchPresets()', () => {
     // Assert
     expect(presetsResult.success).toBe(true)
     expect(presetsResult.value).toStrictEqual(PresetsMock)
+  })
+
+  it('should fail when presets are not found', async () => {
+    // Arrange
+    useApiServiceMock([])
+    useWebsiteConfigurationServiceMock()
+
+    const fetcher = new ItemFetcherService()
+
+    // Act
+    const presetsResult = await fetcher.fetchPresets()
+
+    // Assert
+    expect(presetsResult.success).toBe(false)
+    expect(presetsResult.failureMessage).toBe('No preset could be fetched.')
+  })
+
+  it('should fail when an error occurs requesting presets', async () => {
+    // Arrange
+    const apiServiceMock = mock<ApiService>()
+    when(apiServiceMock.get(WebsiteConfigurationMock.presetsApi)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    Services.configure(ApiService, undefined, instance(apiServiceMock))
+    useWebsiteConfigurationServiceMock()
+
+    const fetcher = new ItemFetcherService()
+
+    // Act
+    const presetsResult = await fetcher.fetchPresets()
+
+    // Assert
+    expect(presetsResult.success).toBe(false)
+    expect(presetsResult.failureMessage).toBe('No preset could be fetched.')
   })
 })
