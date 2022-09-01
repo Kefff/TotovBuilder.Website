@@ -282,44 +282,47 @@ describe('getChangelog()', () => {
 
     // Act
     const service = new VersionService()
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    const changelog = await service.getChangelogs()
+    new Promise((resolve) => setTimeout(resolve, 1000)).then(async () => {
+      const changelog = await service.getChangelogs()
 
-    // Assert
-    expect(changelog).toStrictEqual([
-      {
-        changes: [
-          {
-            language: 'en',
-            text: 'Removed the text of the "Back to builds" button in the build editing screen in order to improve readability.'
-          },
-          { language: 'en', text: 'Fixed build toolbar items alignment.' }
-        ],
-        date: new Date('2022-01-01T23:00:00.000Z'),
-        isNew: false,
-        version: '1.1.1'
-      },
-      {
-        changes: [
-          {
-            language: 'en',
-            text: 'Added a "Share" button in the build editing screen for sharing a build with a link. The link allows another person to get a copy of the build.'
-          },
-          {
-            language: 'en',
-            text: 'Added a "Changelog" button at the bottom of the page to display the list of changes made in each new version of the website.'
-          }
-        ],
-        date: new Date('2022-01-01T23:00:00.000Z'),
-        isNew: false,
-        version: '1.1.0'
-      },
-      {
-        changes: [{ language: 'en', text: 'Launch of Totov Builder.' }],
-        date: new Date('2021-12-29T23:00:00.000Z'),
-        isNew: false,
-        version: '1.0.0'
-      }
-    ])
+      // Assert
+      expect(changelog).toStrictEqual([
+        {
+          changes: [
+            {
+              language: 'en',
+              text: 'Removed the text of the "Back to builds" button in the build editing screen in order to improve readability.'
+            },
+            { language: 'en', text: 'Fixed build toolbar items alignment.' }
+          ],
+          date: new Date('2022-01-01T23:00:00.000Z'),
+          isNew: false,
+          version: '1.1.1'
+        },
+        {
+          changes: [
+            {
+              language: 'en',
+              text: 'Added a "Share" button in the build editing screen for sharing a build with a link. The link allows another person to get a copy of the build.'
+            },
+            {
+              language: 'en',
+              text: 'Added a "Changelog" button at the bottom of the page to display the list of changes made in each new version of the website.'
+            }
+          ],
+          date: new Date('2022-01-01T23:00:00.000Z'),
+          isNew: false,
+          version: '1.1.0'
+        },
+        {
+          changes: [{ language: 'en', text: 'Launch of Totov Builder.' }],
+          date: new Date('2021-12-29T23:00:00.000Z'),
+          isNew: false,
+          version: '1.0.0'
+        }
+      ])
+    })
+
+    jest.advanceTimersByTime(1000)
   })
 })

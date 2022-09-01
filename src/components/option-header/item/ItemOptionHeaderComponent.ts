@@ -37,7 +37,6 @@ export default defineComponent({
 
     /**
      * Emits to the parent component the filter to use to filter options.
-     * @param newFilter -
      */
     function onFilterChange() {
       filterLastEdit = new Date()

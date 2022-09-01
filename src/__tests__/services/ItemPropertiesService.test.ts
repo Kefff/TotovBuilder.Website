@@ -94,7 +94,7 @@ describe('isMod()', () => {
 describe('isModdable()', () => {
   it.each([
     [
-      { id: '12345', modSlots: [{ id: 'trigger' } as IModSlot] } as IModdable,
+      { id: '12345', modSlots: [{ id: 'trigger' } as unknown as IModSlot] } as IModdable,
       true
     ],
     [{ id: '12345', modSlots: [] as IModSlot[] } as IModdable, false],

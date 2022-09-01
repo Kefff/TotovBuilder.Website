@@ -207,13 +207,12 @@ Response : "Access denied".`)
     useWebsiteConfigurationServiceMock()
     Services.get(WebsiteConfigurationService).configuration.fetchTimeout = 0.5
     fetchMock.mockOnce(async () => {
-      await new Promise(resolve => setTimeout(resolve, 1000))
-
-      return ''
+      return new Promise(resolve => setTimeout(resolve, 1000)).then(() => '')
     })
 
     // Act
     const resultPromise = new ApiService().get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
+    jest.advanceTimersByTime(1000)
     const result = await resultPromise
 
     // Assert

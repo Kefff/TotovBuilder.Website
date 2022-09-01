@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { IBuild } from '../models/build/IBuild'
 import FileSaver from 'file-saver'
 import vueI18n from '../plugins/vueI18n'
@@ -14,7 +16,6 @@ export class ExportService {
    * Exports a list of builds.
    * @param builds - Builds.
    */
-  /* istanbul ignore next */
   public export(builds: IBuild[]): Result {
     if (builds.length === 0) {
       return Result.fail(FailureType.error, 'ExportService.export()', vueI18n.t('message.noBuildsToExport'))

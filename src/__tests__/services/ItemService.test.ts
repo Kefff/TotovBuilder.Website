@@ -322,21 +322,47 @@ describe('initialize', () => {
     useWebsiteConfigurationServiceMock()
     Services.get(WebsiteConfigurationService).configuration.cacheDuration = 0.01
 
-    const itemFetcherService = new ItemFetcherService()
-    const itemFetcherServiceSpy = spy(itemFetcherService)
-    Services.configure(ItemFetcherService, undefined, itemFetcherService)
+    const itemFetcherServiceSpy = spy(Services.get(ItemFetcherService))
     Services.configure(NotificationService)
 
     const itemService = new ItemService()
+
+    // Act
     await itemService.initialize()
 
-    new Promise((resolve) => setTimeout(resolve, 150)).then(() => {
-      // Act
-      itemService.initialize()
+    // For some reason, this test fails when we juste await for new Promise((resolve) => setTimeout(resolve, 150)).
+    // This is the only way of writting it that doesn't fail.
+    // This should be the standard way to write tests involving a setTimeout.
+    new Promise((resolve) => setTimeout(resolve, 150)).then(async () => {
+      await itemService.initialize()
 
       // Assert
       verify(itemFetcherServiceSpy.fetchItems()).once()
       verify(itemFetcherServiceSpy.fetchPrices()).twice()
     })
+
+    jest.advanceTimersByTime(1000)
+  })
+
+  it('should do nothing if the cached data is up to date', async () => {
+    // Arrange
+    useItemFetcherServiceMock()
+    useTarkovValuesServiceMock()
+
+    useWebsiteConfigurationServiceMock()
+    Services.get(WebsiteConfigurationService).configuration.cacheDuration = 0.01
+
+    const itemFetcherServiceSpy = spy(Services.get(ItemFetcherService))
+    Services.configure(NotificationService)
+
+    const itemService = new ItemService()
+
+    // Act
+    await itemService.initialize()
+    await itemService.initialize()
+
+    // Assert
+    verify(itemFetcherServiceSpy.fetchItems()).once()
+    verify(itemFetcherServiceSpy.fetchPrices()).once()
   })
 })
