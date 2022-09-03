@@ -196,10 +196,12 @@ export class ItemService {
   }
 
   /**
-     * Fetches prices.
-     * If prices are already being fetched, waits for the operation to end before returning.
-     */
+   * Fetches prices.
+   * If prices are already being fetched, waits for the operation to end before returning.
+   * This should in theory never happen since fetchPrices() is only called in initialize() which executes nothing when another initialization is already being performed.
+   */
   private async fetchPrices() {
+    /* istanbul ignore else */
     if (!this.isFetchingPrices) {
       this.pricesFetchingPromise = new Promise((resolve) => {
         this.isFetchingPrices = true
@@ -236,8 +238,10 @@ export class ItemService {
   /**
    * Fetches static data.
    * If static data is already being fetched, waits for the operation to end before returning.
+   * This should in theory never happen since fetchStaticData() is only called in initialize() which executes nothing when another initialization is already being performed.
    */
   private async fetchStaticData(): Promise<void> {
+    /* istanbul ignore else */
     if (!this.isFetchingStaticData) {
       this.staticDataFetchingPromise = new Promise<void>((resolve) => {
         this.isFetchingStaticData = true
@@ -285,8 +289,7 @@ export class ItemService {
         const currencyItem = this.items.find(i => i.id === currency.itemId)
 
         if (currencyItem !== undefined) {
-          /* istanbul ignore next */
-          currency.value = currencyItem.prices[0]?.value ?? 0
+          currency.value = currencyItem.prices[0].value
         }
       }
     }
