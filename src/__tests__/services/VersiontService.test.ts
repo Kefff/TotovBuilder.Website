@@ -233,7 +233,7 @@ describe('constructor', () => {
     // Arrange
     useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
     useWebsiteConfigurationServiceMock()
-    vueI18n.locale.value = language
+    vueI18n.locale.value = language as 'en' | 'fr'
 
     if (version !== undefined) {
       localStorage.setItem(WebsiteConfigurationMock.versionStorageKey, version)

@@ -17,7 +17,7 @@ export default class LanguageUtils {
       language = vueI18n.fallbackLocale.value as string
     }
 
-    vueI18n.locale.value = language
+    vueI18n.locale.value = language as 'en' | 'fr'
     localStorage.setItem(Services.get(WebsiteConfigurationService).configuration.languageStorageKey, language)
     this.setMeta()
   }
