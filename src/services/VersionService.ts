@@ -129,15 +129,11 @@ export class VersionService {
    */
   private async initialize(): Promise<void> {
     this.isInitializing = true
-
     const changelogResult = await this.fetchChangelog()
+    this.isInitializing = false
 
     if (!changelogResult.success) {
       Services.get(NotificationService).notify(NotificationType.error, changelogResult.failureMessage, true)
-
-      return
     }
-
-    this.isInitializing = false
   }
 }

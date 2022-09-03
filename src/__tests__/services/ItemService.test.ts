@@ -7,11 +7,12 @@ import Result, { FailureType } from '../../utils/Result'
 import ItemCategories from '../../../test-data/item-categories.json'
 import { ItemFetcherService } from '../../services/ItemFetcherService'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
-import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { TarkovValuesService } from '../../services/TarkovValuesService'
 import { useItemFetcherServiceMock } from '../../__mocks__/ItemFetcherServiceMock'
 import { NotificationService } from '../../services/NotificationService'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import MockDate from 'mockdate'
 
 describe('getCurrency()', () => {
   it.each([
@@ -318,9 +319,11 @@ describe('initialize', () => {
     // Arrange
     useItemFetcherServiceMock()
     useTarkovValuesServiceMock()
-
     useWebsiteConfigurationServiceMock()
-    Services.get(WebsiteConfigurationService).configuration.cacheDuration = 0.01
+
+    const date1 = new Date(2000, 1, 1).getTime()
+    const date2 = date1 + (Services.get(WebsiteConfigurationService).configuration.cacheDuration + 1) * 1000 // In ms
+    MockDate.set(date1) // Used to mock dates because the hasValidCache() method checks the time ellapsed since the las time prices where fetched. Cf https://stackoverflow.com/a/57599680
 
     const itemFetcherServiceSpy = spy(Services.get(ItemFetcherService))
     Services.configure(NotificationService)
@@ -329,28 +332,21 @@ describe('initialize', () => {
 
     // Act
     await itemService.initialize()
+    MockDate.set(date2)
+    await itemService.initialize()
 
-    // For some reason, this test fails when we juste await for new Promise((resolve) => setTimeout(resolve, 150)).
-    // This is the only way of writting it that doesn't fail.
-    // This should be the standard way to write tests involving a setTimeout.
-    new Promise((resolve) => setTimeout(resolve, 150)).then(async () => {
-      await itemService.initialize()
+    // Assert
+    verify(itemFetcherServiceSpy.fetchItems()).once()
+    verify(itemFetcherServiceSpy.fetchPrices()).twice()
 
-      // Assert
-      verify(itemFetcherServiceSpy.fetchItems()).once()
-      verify(itemFetcherServiceSpy.fetchPrices()).twice()
-    })
-
-    jest.advanceTimersByTime(1000)
+    MockDate.reset()
   })
 
   it('should do nothing if the cached data is up to date', async () => {
     // Arrange
     useItemFetcherServiceMock()
     useTarkovValuesServiceMock()
-
     useWebsiteConfigurationServiceMock()
-    Services.get(WebsiteConfigurationService).configuration.cacheDuration = 0.01
 
     const itemFetcherServiceSpy = spy(Services.get(ItemFetcherService))
     Services.configure(NotificationService)

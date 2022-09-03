@@ -1464,7 +1464,6 @@ describe('getPrice()', () => {
     'should get the price of a build',
     async (build: IBuild, expected: IInventoryPrice) => {
       // Arrange
-      useWebsiteConfigurationServiceMock()
       useTarkovValuesServiceMock()
       useItemServiceMock()
       Services.configure(InventoryItemService)

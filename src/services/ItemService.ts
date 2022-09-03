@@ -267,8 +267,9 @@ export class ItemService {
    */
   private hasValidCache(): boolean {
     const duration = (new Date().getTime() - this.lastPricesFetchDate.getTime()) / 1000 // In seconds
+    const cacheDuration = Services.get(WebsiteConfigurationService).configuration.cacheDuration
 
-    return duration <= Services.get(WebsiteConfigurationService).configuration.cacheDuration
+    return duration <= cacheDuration
   }
 
   /**

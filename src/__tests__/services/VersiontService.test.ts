@@ -6,7 +6,7 @@ import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfi
 import ChangelogMock from '../../../test-data/changelog.json'
 import { useApiServiceMock } from '../../__mocks__/ApiServiceMock'
 import { ApiService } from '../../services/ApiService'
-import { anyString, instance, mock, when } from 'ts-mockito'
+import { anyString, instance, mock, spy, verify, when } from 'ts-mockito'
 import Result, { FailureType } from '../../utils/Result'
 import Services from '../../services/repository/Services'
 import { NotificationService } from '../../services/NotificationService'
@@ -272,57 +272,62 @@ describe('constructor', () => {
 })
 
 describe('getChangelog()', () => {
-  it('should not the changelog API after being initialized', async () => {
+  it('should not fetch the changelog API after being initialized', async () => {
     // Arrange
-    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    jest.useRealTimers()
+
+    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry[])
     useWebsiteConfigurationServiceMock()
+
+    const apiSpy = spy(Services.get(ApiService))
 
     vueI18n.locale.value = 'en'
     localStorage.setItem(WebsiteConfigurationMock.versionStorageKey, '1.1.1')
 
     // Act
     const service = new VersionService()
-    new Promise((resolve) => setTimeout(resolve, 1000)).then(async () => {
-      const changelog = await service.getChangelogs()
 
-      // Assert
-      expect(changelog).toStrictEqual([
-        {
-          changes: [
-            {
-              language: 'en',
-              text: 'Removed the text of the "Back to builds" button in the build editing screen in order to improve readability.'
-            },
-            { language: 'en', text: 'Fixed build toolbar items alignment.' }
-          ],
-          date: new Date('2022-01-01T23:00:00.000Z'),
-          isNew: false,
-          version: '1.1.1'
-        },
-        {
-          changes: [
-            {
-              language: 'en',
-              text: 'Added a "Share" button in the build editing screen for sharing a build with a link. The link allows another person to get a copy of the build.'
-            },
-            {
-              language: 'en',
-              text: 'Added a "Changelog" button at the bottom of the page to display the list of changes made in each new version of the website.'
-            }
-          ],
-          date: new Date('2022-01-01T23:00:00.000Z'),
-          isNew: false,
-          version: '1.1.0'
-        },
-        {
-          changes: [{ language: 'en', text: 'Launch of Totov Builder.' }],
-          date: new Date('2021-12-29T23:00:00.000Z'),
-          isNew: false,
-          version: '1.0.0'
-        }
-      ])
-    })
+    const delayPromise = new Promise((resolve) => setTimeout(resolve, 1000))
+    await delayPromise
 
-    jest.advanceTimersByTime(1000)
+    const changelog = await service.getChangelogs()
+
+    // Assert
+    verify(apiSpy.get(anyString())).once()
+    expect(changelog).toStrictEqual([
+      {
+        changes: [
+          {
+            language: 'en',
+            text: 'Removed the text of the "Back to builds" button in the build editing screen in order to improve readability.'
+          },
+          { language: 'en', text: 'Fixed build toolbar items alignment.' }
+        ],
+        date: new Date('2022-01-01T23:00:00.000Z'),
+        isNew: false,
+        version: '1.1.1'
+      },
+      {
+        changes: [
+          {
+            language: 'en',
+            text: 'Added a "Share" button in the build editing screen for sharing a build with a link. The link allows another person to get a copy of the build.'
+          },
+          {
+            language: 'en',
+            text: 'Added a "Changelog" button at the bottom of the page to display the list of changes made in each new version of the website.'
+          }
+        ],
+        date: new Date('2022-01-01T23:00:00.000Z'),
+        isNew: false,
+        version: '1.1.0'
+      },
+      {
+        changes: [{ language: 'en', text: 'Launch of Totov Builder.' }],
+        date: new Date('2021-12-29T23:00:00.000Z'),
+        isNew: false,
+        version: '1.0.0'
+      }
+    ])
   })
 })
