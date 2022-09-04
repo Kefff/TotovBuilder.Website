@@ -169,7 +169,6 @@ export default defineComponent({
 
     /**
      * Updates the inventory item based on the selected item.
-     * @param event - Item selection event.
      */
     async function onSelectedItemChanged() {
       if (selectedItem.value?.id === props.modelValue?.itemId) {

@@ -5,7 +5,7 @@
   >
     <Item
       v-for="(containedItem, index) of modelValue.content"
-      :key="path + index + '_' + modelValue.content.length + '/' + itemPathPrefix + modelValue.content[index].itemId"
+      :key="path + index + '_' + modelValue.content.length"
       v-model="modelValue.content[index]"
       :accepted-items="acceptedItems"
       :force-quantity-to-max-selectable-amount="isMagazine"
@@ -15,7 +15,7 @@
       @update:modelValue="onItemChanged($event, index)"
     />
     <Item
-      v-if="editing && canAddItem"
+      v-show="editing && canAddItem"
       v-model="itemToAdd"
       :accepted-items="acceptedItems"
       :category-ids="categoryIds"

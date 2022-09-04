@@ -44,7 +44,7 @@
     >
       <div
         v-for="c of item.armorPenetrations.length"
-        :key="item.armorPenetrations[c - 1]"
+        :key="c"
         v-tooltip.top="getArmorPenetrationTooltip(c, item.armorPenetrations[c - 1])"
         class="penetrated-armor"
       >
