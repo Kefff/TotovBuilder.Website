@@ -14,7 +14,7 @@ export default defineComponent({
   },
   setup: (props) => {
     const prices = computed(() => {
-      // TODO : Handling barters - WORKAROUND WAITING FOR BARTERS TO BE HANDLED. REMOVE .filter((p) => p.currencyName !== 'barter') WGEN IT IS DONE -->
+      // TODO : Handling barters - WORKAROUND WAITING FOR BARTERS TO BE HANDLED. REMOVE .filter((p) => p.currencyName !== 'barter') WHEN IT IS DONE -->
       const result = [...props.item.prices.filter((p) => p.currencyName !== 'barter')]
       result.sort((i1, i2) => i1.valueInMainCurrency - i2.valueInMainCurrency)
 

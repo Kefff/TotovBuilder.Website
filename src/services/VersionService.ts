@@ -9,22 +9,19 @@ import { NotificationService, NotificationType } from './NotificationService'
 
 export class VersionService {
   /**
+   * Changelog.
+   */
+  private changelog: IChangelogEntry[] = []
+
+  /**
    * Current version.
    */
-  public get currentVersion(): string {
-    return this._currentVersion
-  }
-  private _currentVersion = '1.0.0'
+  private currentVersion = '1.0.0'
 
   /**
    * Indicates whether the website has changed of version since the last visit.
    */
-  public hasNewVersion = false
-
-  /**
-   * Changelog.
-   */
-  private changelog: IChangelogEntry[] = []
+  private hasNewVersion = false
 
   /**
    * Initialization task.
@@ -46,6 +43,24 @@ export class VersionService {
    */
   public constructor() {
     this.initializationPromise = this.initialize().then(() => this.checkNewVersion())
+  }
+
+  /**
+   * Indicates whether the website has changed of version since the last visit.
+   */
+  public async checkHasNewVersion(): Promise<boolean> {
+    if (this.isInitializing) {
+      await this.initializationPromise
+    }
+
+    return this.hasNewVersion
+  }
+
+  /**
+   * Indicates that the new version notification has been dismissed by the user indicating that he is aware that a new version exists and should not be displayed anymore.
+   */
+  public dismissNewVersion(): void {
+    this.hasNewVersion = false
   }
 
   /**
@@ -73,6 +88,17 @@ export class VersionService {
   }
 
   /**
+   * Gets the current version.
+   */
+  public async getCurrentVersion(): Promise<string> {
+    if (this.isInitializing) {
+      await this.initializationPromise
+    }
+
+    return this.currentVersion
+  }
+
+  /**
    * Checks if the website has changed of version since the last visit.
    */
   private checkNewVersion() {
@@ -81,17 +107,17 @@ export class VersionService {
     const lastVersion = localStorage.getItem(versionStorageKey)
 
     if (lastVersion != undefined) {
-      this._currentVersion = lastVersion
+      this.currentVersion = lastVersion
     }
 
-    this.newVersions = this.changelog.filter(c => this.compareVersions(c.version, this._currentVersion)).map(c => c.version)
+    this.newVersions = this.changelog.filter(c => this.compareVersions(c.version, this.currentVersion)).map(c => c.version)
 
     if (this.newVersions.length > 0) {
       this.hasNewVersion = true
-      this._currentVersion = this.newVersions[0]
+      this.currentVersion = this.newVersions[0]
     }
 
-    localStorage.setItem(versionStorageKey, this._currentVersion)
+    localStorage.setItem(versionStorageKey, this.currentVersion)
   }
 
   /**

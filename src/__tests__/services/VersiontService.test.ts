@@ -19,6 +19,21 @@ afterEach(() => {
   localStorage.clear()
 })
 
+describe('checkHasNewVersion()', () => {
+  it('should wait for the initialization to end', async () => {
+    // Arrange
+    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useWebsiteConfigurationServiceMock()
+
+    // Act
+    const service = new VersionService()
+    const hasNewVersion = await service.checkHasNewVersion()
+
+    // Assert
+    expect(hasNewVersion).toBe(true)
+  })
+})
+
 describe('constructor', () => {
   it.each([
     [
@@ -242,10 +257,12 @@ describe('constructor', () => {
     // Act
     const service = new VersionService()
     const changelog = await service.getChangelogs()
+    const currentVersion = await service.getCurrentVersion()
+    const hasNewVersion = await service.checkHasNewVersion()
 
     // Assert
-    expect(service.currentVersion).toBe(expectedVersion)
-    expect(service.hasNewVersion).toBe(expectedHasNewVersion)
+    expect(currentVersion).toBe(expectedVersion)
+    expect(hasNewVersion).toBe(expectedHasNewVersion)
     expect(changelog).toStrictEqual(expectedChangelogs)
   })
 
@@ -263,11 +280,31 @@ describe('constructor', () => {
     // Act
     const service = new VersionService()
     const changelog = await service.getChangelogs()
+    const currentVersion = await service.getCurrentVersion()
+    const hasNewVersion = await service.checkHasNewVersion()
 
     // Assert
-    expect(service.currentVersion).toBe('1.0.0')
-    expect(service.hasNewVersion).toBe(false)
+    expect(currentVersion).toBe('1.0.0')
+    expect(hasNewVersion).toBe(false)
     expect(changelog).toStrictEqual([])
+  })
+})
+
+describe('dismissNewVersion()', () => {
+  it('should set the hasNewVersion property to false', async () => {
+    // Arrange
+    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useWebsiteConfigurationServiceMock()
+
+    // Act / Assert
+    const service = new VersionService()
+
+    let hasNewVersion = await service.checkHasNewVersion()
+    expect(hasNewVersion).toBe(true)
+
+    service.dismissNewVersion()
+    hasNewVersion = await service.checkHasNewVersion()
+    expect(hasNewVersion).toBe(false)
   })
 })
 
@@ -329,5 +366,20 @@ describe('getChangelog()', () => {
         version: '1.0.0'
       }
     ])
+  })
+})
+
+describe('getCurrentVersion()', () => {
+  it('should wait for the initialization to end', async () => {
+    // Arrange
+    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useWebsiteConfigurationServiceMock()
+
+    // Act
+    const service = new VersionService()
+    const currentVersion = await service.getCurrentVersion()
+
+    // Assert
+    expect(currentVersion).toBe('1.1.1')
   })
 })

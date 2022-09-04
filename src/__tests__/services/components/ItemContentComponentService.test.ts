@@ -14,7 +14,7 @@ import { useItemServiceMock } from '../../../__mocks__/ItemServiceMock'
 
 describe('getAcceptedItems()', () => {
   it.each([
-    ['5ca20d5986f774331e7c9602', 82],
+    ['5ca20d5986f774331e7c9602', 68],
     ['5a7ad2e851dfba0016153692', 1]
   ])('should get the acceptem items', async (itemId: string, expected: number) => {
     // Arrange

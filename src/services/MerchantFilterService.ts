@@ -148,7 +148,8 @@ export class MerchantFilterService {
     const result = this.filters.some(f =>
       f.enabled
       && f.merchant === price.merchant
-      && f.merchantLevel >= price.merchantLevel)
+      && f.merchantLevel >= price.merchantLevel
+      && price.currencyName !== 'barter') // // TODO : Handling barters - WORKAROUND WAITING FOR BARTERS TO BE HANDLED. REMOVE && price.currencyName !== 'barter' WHEN IT IS DONE -->
 
     return result
   }
