@@ -44,7 +44,7 @@ export default defineComponent({
 
       navigator.clipboard.writeText(shareLinkInternal)
         .then(() => {
-          Services.get(NotificationService).notify(NotificationType.success, i18n.t('message.shareLinkCopied'), true)
+          Services.get(NotificationService).notify(NotificationType.information, i18n.t('message.shareLinkCopied'), true)
           closeSharingDialog()
         })
         .catch(() => Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.shareLinkCopyError'), true))

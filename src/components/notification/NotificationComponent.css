@@ -1,9 +1,9 @@
 .notification-toast {
   bottom: 0;
-  left: 0;
+  right: 0;
   margin-left: 1rem;
   margin-right: 1rem;
   position: fixed;
-  width: calc(100% - 2rem);
+  max-width: calc(50% - 2rem);
   z-index: 2;
 }

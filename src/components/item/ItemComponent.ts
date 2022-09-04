@@ -164,13 +164,7 @@ export default defineComponent({
         return
       }
 
-      inventoryItem.value = {
-        content: inventoryItem.value.content,
-        ignorePrice: inventoryItem.value.ignorePrice,
-        itemId: inventoryItem.value.itemId,
-        modSlots: inventoryItem.value.modSlots,
-        quantity: newQuantity
-      }
+      inventoryItem.value.quantity = newQuantity
     }
 
     /**
