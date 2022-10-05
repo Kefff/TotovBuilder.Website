@@ -1,17 +1,14 @@
 <template>
-  <div
-    v-if="containerItem !== undefined"
-    class="indent"
-  >
+  <div class="indent">
     <Item
-      v-for="(containedItem, index) of modelValue.content"
-      :key="path + index + '_' + modelValue.content.length"
-      v-model="modelValue.content[index]"
+      v-for="(containedItem, index) of content"
+      :key="path + '/' + index + '_' + content.length"
+      v-model="content[index]"
       :accepted-items="acceptedItems"
       :force-quantity-to-max-selectable-amount="isMagazine"
       :category-ids="categoryIds"
       :max-stackable-amount="maximumQuantity"
-      :path="path + index + '_' + modelValue.content.length + '/' + itemPathPrefix + modelValue.content[index].itemId"
+      :path="path + '/' + index + '_' + content.length + '/' + itemPathPrefix + containedItem.itemId"
       @update:modelValue="onItemChanged($event, index)"
     />
     <Item
@@ -20,7 +17,7 @@
       :accepted-items="acceptedItems"
       :category-ids="categoryIds"
       :max-stackable-amount="maximumQuantity"
-      :path="path + modelValue.content.length + '_' + modelValue.content.length + '/' + 'new'"
+      :path="path + '/new'"
       @update:modelValue="onItemAdded($event)"
     />
   </div>

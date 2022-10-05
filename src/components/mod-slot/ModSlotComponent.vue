@@ -17,7 +17,6 @@
       :category-ids="categoryIds"
       :path="path + '/' + itemPathPrefix + (modelValue.item?.itemId ?? 'empty')"
       :max-stackable-amount="modSlot.maxStackableAmount"
-      @update:modelValue="onItemChanged()"
     />
   </div>
 </template>

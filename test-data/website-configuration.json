@@ -11,7 +11,7 @@
   "exportFileExtension": ".ttb",
   "exportFileNamePrefix": "TotovBuilder",
   "exportWarningShowedStoregeKey": "export_warning",
-  "fetchTimeout": 10,
+  "fetchTimeout": 30,
   "githubUrl": "https://github.com/User/Reposiory",
   "itemCategoriesApi": "itemcategories",
   "itemsApi": "items",

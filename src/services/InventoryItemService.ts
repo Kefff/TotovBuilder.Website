@@ -551,8 +551,7 @@ export class InventoryItemService {
    * Gets the recoil percentage modifier of the chambered ammunition (or contained in the magazine when not having a chamber)
    * of a ranged weapon.
    * @param item - Item being checked.
-   * @param modSlotName - Name of the mod slot being checked on the inventory item.
-   * @param modSlotItem - Item contained in the mod slot being checked on the inventory item.
+   * @param modSlots - Mod slots.
    * @returns Recoil percentage modifier.
    */
   private async getChamberedAmmunitionRecoilPercentageModifier(item: IItem, modSlots: IInventoryModSlot[]): Promise<Result<number>> {

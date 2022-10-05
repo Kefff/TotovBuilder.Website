@@ -11,7 +11,8 @@ export default defineComponent({
     const currentLanguage = ref(i18n.locale.value)
 
     onMounted(() => {
-      setLanguage(localStorage.getItem(Services.get(WebsiteConfigurationService).configuration.languageStorageKey) ?? 'en')
+      currentLanguage.value = localStorage.getItem(Services.get(WebsiteConfigurationService).configuration.languageStorageKey) ?? 'en'
+      setLanguage()
     })
 
 
@@ -29,10 +30,9 @@ export default defineComponent({
 
     /**
      * Sets the language.
-     * @param language - Language
      */
-    function setLanguage(language: string) {
-      LanguageUtils.setLanguage(language)
+    function setLanguage() {
+      LanguageUtils.setLanguage(currentLanguage.value)
       getLanguages()
     }
 

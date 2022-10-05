@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="modelValue != undefined || editing"
+    v-if="selectedInventoryItem != undefined || editing"
     class="item"
   >
     <div class="item-selection">
@@ -54,43 +54,44 @@
         />
       </div>
       <SelectedItemFunctionalities
-        v-if="selectedItem !== undefined"
+        v-if="selectedInventoryItem != undefined"
         v-model:selectedTab="selectedTab"
-        v-model:ignorePrice="ignorePrice"
+        v-model:ignorePrice="selectedInventoryItem.ignorePrice"
         :can-have-content="selectedItemIsContainer"
         :can-have-mods="selectedItemIsModdable"
-        @update:ignorePrice="onIgnorePriceChanged($event)"
       />
       <SelectedItemSummarySelector
-        v-if="modelValue != undefined"
-        v-model="modelValue"
+        v-if="selectedInventoryItem != undefined"
+        v-model="selectedInventoryItem"
         :can-be-looted="canBeLooted"
         :preset="preset"
       />
     </div>
     <div
-      v-if="selectedItem !== undefined && !itemChanging"
+      v-if="selectedInventoryItem !== undefined && selectedItem !== undefined && !itemChanging"
       class="tabs"
     >
       <div :class="selectedTab === SelectableTab.stats ? '' : 'tab-hidden'">
-        <StatsSelector :item-id="selectedItem?.id" />
+        <StatsSelector :item-id="selectedItem.id" />
       </div>
       <div
         v-if="selectedItemIsModdable"
         :class="selectedTab === SelectableTab.mods ? '' : 'tab-hidden'"
       >
         <ItemMods
-          v-model="inventoryItem"
-          :path="path + '/' + modSlotPathPrefix"
+          v-model="selectedInventoryItem.modSlots"
+          :container-item="selectedItem"
+          :path="path"
         />
       </div>
       <div
-        v-if="inventoryItem !== undefined && selectedItemIsContainer"
+        v-if="selectedItemIsContainer"
         :class="selectedTab === SelectableTab.content ? '' : 'tab-hidden'"
       >
         <ItemContent
-          v-model="inventoryItem"
-          :path="path + '/' + contentPathPrefix"
+          v-model="selectedInventoryItem.content"
+          :container-item="selectedItem"
+          :path="path"
         />
       </div>
     </div>

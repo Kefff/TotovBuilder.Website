@@ -198,7 +198,7 @@
     </div>
 
     <!-- Inventory slots -->
-    <div v-show="!isLoading">
+    <div v-if="!isInitializing">
       <div
         v-if="!editing && isEmpty"
         class="build-empty-message"
@@ -235,7 +235,7 @@
       </div>
     </div>
     <div
-      v-show="isLoading"
+      v-if="isInitializing"
       class="build-loading"
     >
       <Loading />

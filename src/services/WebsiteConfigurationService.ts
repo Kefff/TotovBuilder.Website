@@ -26,7 +26,7 @@ export class WebsiteConfigurationService {
     exportFileExtension: '',
     exportFileNamePrefix: '',
     exportWarningShowedStoregeKey: '',
-    fetchTimeout: 10,
+    fetchTimeout: 30,
     githubUrl: '',
     itemCategoriesApi: '',
     itemsApi: '',

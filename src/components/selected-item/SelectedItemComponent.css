@@ -37,6 +37,7 @@
 }
 
 .selected-item-name {
+  margin-left: 0.25rem;
   overflow: hidden;
   text-overflow: ellipsis;
 }

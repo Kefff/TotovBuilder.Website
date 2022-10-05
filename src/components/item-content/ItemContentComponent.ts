@@ -1,18 +1,20 @@
 import { computed, defineComponent, inject, nextTick, onMounted, onUnmounted, PropType, Ref, ref, watch } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { IContainer } from '../../models/item/IContainer'
 import { IItem } from '../../models/item/IItem'
-import { IMagazine } from '../../models/item/IMagazine'
 import { ItemContentComponentService } from '../../services/components/ItemContentComponentService'
-import { ItemService } from '../../services/ItemService'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
 import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
 
 export default defineComponent({
   props: {
+    containerItem: {
+      type: Object as PropType<IContainer>,
+      required: true
+    },
     modelValue: {
-      type: Object as PropType<IInventoryItem>,
+      type: Array as PropType<IInventoryItem[]>,
       required: true
     },
     path: {
@@ -26,22 +28,26 @@ export default defineComponent({
 
     const editing = inject<Ref<boolean>>('editing')
 
-    merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+    const canAddItem = computed(() => !isMagazine.value || props.modelValue.length === 0)
+    const content = computed({
+      get: () => props.modelValue,
+      set: (value: IInventoryItem[]) => emit('update:modelValue', value)
+    })
+    const isMagazine = computed(() => props.containerItem.categoryId === 'magazine')
+    const maximumQuantity = computed(() => isMagazine.value ? props.containerItem.capacity : undefined)
 
-    const containerItem = ref<IItem>()
     const acceptedItems = ref<IItem[]>([])
     const categoryIds = ref<string[]>([])
-    const isMagazine = computed(() => containerItem.value?.categoryId === 'magazine')
-
-    watch(() => props.modelValue.itemId, () => initialize())
-
-    const itemToAdd = ref<IInventoryItem>()
-    const canAddItem = computed(() => containerItem.value != undefined && (!isMagazine.value || props.modelValue.content.length === 0)) // item.value != undefined is required to avoid displaying the ItemComponent for children before the IItem data is retrieved.
-    const maximumQuantity = computed(() => isMagazine.value ? (containerItem.value as IMagazine).capacity : undefined)
-
     const itemPathPrefix = PathUtils.itemPrefix
+    const itemToAdd = ref<IInventoryItem>()
 
-    onMounted(() => initialize())
+    watch(() => props.containerItem.id, () => initialize())
+
+    onMounted(() => {
+      merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+
+      initialize()
+    })
 
     onUnmounted(() => {
       merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
@@ -51,36 +57,20 @@ export default defineComponent({
      * Gets the accepted items for the item to add.
      */
     async function getAcceptedItems() {
-      acceptedItems.value = await Services.get(ItemContentComponentService).getAcceptedItems(props.modelValue.itemId)
-    }
-
-    /**
-     * Gets the item corresponding to the inventory item passed to the component.
-     */
-    async function getContainerItem() {
-      const itemResult = await Services.get(ItemService).getItem(props.modelValue.itemId)
-
-      if (!itemResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, itemResult.failureMessage)
-
-        return
-      }
-
-      containerItem.value = itemResult.value
+      acceptedItems.value = await Services.get(ItemContentComponentService).getAcceptedItems(props.containerItem.id)
     }
 
     /**
      * Gets the category IDs used for determining the available sort buttons in the item selection dropdown.
      */
     async function getCategoryIds() {
-      categoryIds.value = Services.get(ItemContentComponentService).getCategoryIds(containerItem.value?.categoryId ?? 'item')
+      categoryIds.value = Services.get(ItemContentComponentService).getCategoryIds(props.containerItem.categoryId)
     }
 
     /**
      * Initializes the component.
      */
     async function initialize() {
-      await getContainerItem()
       await getAcceptedItems()
       await getCategoryIds()
     }
@@ -88,31 +78,25 @@ export default defineComponent({
     /**
      * Adds an item to the content of the inventory item and emits the change to the parent component.
      */
-    async function onItemAdded(newContainedInventoryItem: IInventoryItem) {
-      const newInventoryItem = props.modelValue
-      newInventoryItem.content.push(newContainedInventoryItem)
+    async function onItemAdded(newInventoryItem: IInventoryItem) {
+      content.value.push(newInventoryItem)
 
       nextTick(() => {
         // nextTick required in order to the emitting and the resetting of itemToAdd to work properly.
         // Also the resetting of itemToAdd must happen after the emit.
-        emit('update:modelValue', newInventoryItem)
         itemToAdd.value = undefined
       })
     }
 
     /**
      * Emits to the parent component the updated inventory item.
-     * @param newContainedInventoryItem - New contained item.
+     * @param updatedContainedInventoryItem - Updated contained item.
      * @param index - Index of the changed contained item in the inventory item content list.
      */
-    async function onItemChanged(newContainedInventoryItem: IInventoryItem, index: number) {
-      const newInventoryItem = props.modelValue
-
-      if (newContainedInventoryItem === undefined) {
-        newInventoryItem.content.splice(index, 1)
+    async function onItemChanged(updatedContainedInventoryItem: IInventoryItem, index: number) {
+      if (updatedContainedInventoryItem === undefined) {
+        content.value.splice(index, 1)
       }
-
-      emit('update:modelValue', newInventoryItem)
     }
 
     /**
@@ -126,7 +110,7 @@ export default defineComponent({
       acceptedItems,
       canAddItem,
       categoryIds,
-      containerItem,
+      content,
       editing,
       isMagazine,
       itemPathPrefix,

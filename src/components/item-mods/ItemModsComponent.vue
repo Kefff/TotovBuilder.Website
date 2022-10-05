@@ -1,12 +1,11 @@
 <template>
-  <div v-if="modSlots !== undefined">
+  <div v-if="!isInitializing">
     <ModSlot
-      v-for="(modSlot, index) of modSlots"
+      v-for="(modSlot, index) of containerItem.modSlots"
       :key="path + '/' + modSlotPathPrefix + modSlot.name"
       v-model="inventoryModSlots[index]"
-      :path="path + modSlot.name"
+      :path="path + '/' + modSlotPathPrefix + modSlot.name"
       :mod-slot="modSlot"
-      @update:modelValue="onUpdateModSlot()"
     />
   </div>
 </template>

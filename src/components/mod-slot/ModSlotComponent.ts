@@ -23,8 +23,9 @@ export default defineComponent({
     }
   },
   emits: ['update:modelValue'],
-  setup: (props, { emit }) => {
+  setup: (props) => {
     const merchantFilterService = Services.get(MerchantFilterService)
+    const modSlotComponentService = Services.get(ModSlotComponentService)
 
     const editing = inject<Ref<boolean>>('editing')
 
@@ -46,17 +47,8 @@ export default defineComponent({
      * Gets the category IDs and the accepted items to pass to the ItemComponent.
      */
     async function getItemComponentParameters() {
-      const modSlotComponentService = Services.get(ModSlotComponentService)
-
       acceptedItems.value = await modSlotComponentService.getAcceptedItems(props.modSlot.compatibleItemIds)
       categoryIds.value = modSlotComponentService.getCategoryIds(acceptedItems.value)
-    }
-
-    /**
-     * Emits to the parent component the updated inventory item.
-     */
-    function onItemChanged() {
-      emit('update:modelValue', props.modelValue)
     }
 
     /**
@@ -70,8 +62,7 @@ export default defineComponent({
       acceptedItems,
       categoryIds,
       editing,
-      itemPathPrefix,
-      onItemChanged
+      itemPathPrefix
     }
   }
 })
