@@ -22,6 +22,7 @@ import Loading from '../loading/LoadingComponent.vue'
 import ShareBuild from '../build-share/BuildShareComponent.vue'
 import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
+import { InventoryItemService } from '../../services/InventoryItemService'
 
 export default defineComponent({
   components: {
@@ -42,6 +43,7 @@ export default defineComponent({
     const buildPropertiesService = Services.get(BuildPropertiesService)
     const compatibilityService = Services.get(CompatibilityService)
     const exportService = Services.get(ExportService)
+    const inventoryItemService = Services.get(InventoryItemService)
     const merchantFilterService = Services.get(MerchantFilterService)
     const notificationService = Services.get(NotificationService)
 
@@ -118,6 +120,7 @@ export default defineComponent({
       compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.mod, onModCompatibilityRequest)
+      inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
       merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
 
       document.onkeydown = (e) => onKeyDown(e)
@@ -128,6 +131,7 @@ export default defineComponent({
       compatibilityService.emitter.off(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
       compatibilityService.emitter.off(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
+      inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
       merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
     })
 
@@ -303,9 +307,17 @@ export default defineComponent({
     }
 
     /**
+     * Checks whether an armor can be added to the build or not.
+     * @param request - Compatibility request.
+     */
+    function onArmorCompatibilityRequest(request: CompatibilityRequest) {
+      request.setResult(buildPropertiesService.checkCanAddArmor(build.value))
+    }
+
+    /**
      * Updates the summary when an InventorySlot changes.
      */
-    function onInventorySlotChanged() {
+    function onInventoryItemChanged() {
       getSummary()
     }
 
@@ -321,14 +333,6 @@ export default defineComponent({
           save()
         }
       }
-    }
-
-    /**
-     * Checks whether an armor can be added to the build or not.
-     * @param request - Compatibility request.
-     */
-    function onArmorCompatibilityRequest(request: CompatibilityRequest) {
-      request.setResult(buildPropertiesService.checkCanAddArmor(build.value))
     }
 
     /**
@@ -367,7 +371,6 @@ export default defineComponent({
     function save() {
       editing.value = false
       buildComponentService.saveBuild(router, build.value)
-      getSummary()
     }
 
     /**
@@ -421,7 +424,6 @@ export default defineComponent({
       isEmpty,
       isInitializing,
       notExportedTooltip,
-      onInventorySlotChanged,
       path,
       remove,
       save,

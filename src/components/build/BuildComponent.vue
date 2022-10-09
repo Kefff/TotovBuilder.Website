@@ -230,7 +230,6 @@
           v-model:modelValue="build.inventorySlots[index]"
           v-model:collapsed="collapseStatuses[index]"
           :path="path + '/' + inventorySlotPathPrefix + inventorySlot.typeId"
-          @update:modelValue="onInventorySlotChanged()"
         />
       </div>
     </div>

@@ -81,12 +81,11 @@ export default defineComponent({
 
     let priceSettingPromise: Promise<Result<IInventoryPrice>> = Promise.resolve(Result.ok({} as IInventoryPrice))
 
-    watch(() => props.preset, () => {
+    watch(() => [props.modelValue.itemId, props.modelValue.quantity, props.preset?.item?.itemId], () => {
       setPrice()
     })
 
-    watch(() => props.modelValue, () => {
-      setPrice()
+    watch(() => [props.modelValue.itemId, props.modelValue.quantity], () => {
       setWeight()
     })
 

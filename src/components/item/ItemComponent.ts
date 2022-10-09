@@ -164,6 +164,9 @@ export default defineComponent({
       }
 
       selectedInventoryItem.value.quantity = newQuantity
+
+      // Emitting an event for the build and the inventory slot to updated their summary
+      inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path)
     }
 
     /**
@@ -179,6 +182,9 @@ export default defineComponent({
         selectedInventoryItem.value = undefined
         selectedItemIsContainer.value = false
         selectedItemIsModdable.value = false
+
+        // Emitting an event for the build and the inventory slot to updated their summary
+        inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path)
 
         return
       }
@@ -287,6 +293,9 @@ export default defineComponent({
             quantity: quantity.value
           }
         }
+
+        // Emitting an event for the build and the inventory slot to updated their summary
+        inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path)
 
         setSelectedTab()
       } else {

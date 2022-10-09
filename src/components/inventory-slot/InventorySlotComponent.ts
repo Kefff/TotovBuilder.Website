@@ -16,6 +16,7 @@ import { MerchantFilterService } from '../../services/MerchantFilterService'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
+import { InventoryItemService } from '../../services/InventoryItemService'
 
 export default defineComponent({
   components: {
@@ -39,6 +40,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'update:collapsed'],
   setup: (props, { emit }) => {
+    const inventoryItemService = Services.get(InventoryItemService)
     const inventorySlotComponentService = Services.get(InventorySlotComponentService)
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
     const inventorySlotService = Services.get(InventorySlotService)
@@ -102,12 +104,16 @@ export default defineComponent({
     watch(() => props.modelValue.items, () => initialize())
 
     onMounted(() => {
+      inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
       merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
 
       initialize()
     })
 
-    onUnmounted(() => merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged))
+    onUnmounted(() => {
+      inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
+      merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+    })
 
     /**
      * Gets the values of the summary of the content of the inventory slot.
@@ -232,6 +238,16 @@ export default defineComponent({
       } else {
         // Putting back the old item
         items.value[index] = props.modelValue.items[index]
+      }
+    }
+
+    /**
+     * Updates the summary when an InventorySlot changes.
+     */
+    function onInventoryItemChanged(path: string) {
+
+      if (path.startsWith(props.path)) {
+        getSummary()
       }
     }
 

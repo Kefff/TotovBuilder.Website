@@ -22,11 +22,22 @@ import { MerchantFilterService } from './MerchantFilterService'
 import { PathUtils } from '../utils/PathUtils'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import { round } from 'round-ts'
+import { TinyEmitter } from 'tiny-emitter'
 
 /**
  * Represents a service responsible for managing inventory items.
  */
 export class InventoryItemService {
+  /**
+   * Item change event.
+   */
+  public static inventoryItemChangeEvent = 'inventoryItemChanged'
+
+  /**
+   * Event emitter used to signal compatibility check requests.
+   */
+  public emitter = new TinyEmitter()
+
   /**
    * Gets the ammunition counts of an item including its content and mods.
    * @param inventoryItem - Inventory item.
