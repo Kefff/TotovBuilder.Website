@@ -277,7 +277,9 @@ export default defineComponent({
         const preset = await itemService.getPreset(newSelectedItem.id)
 
         if (preset !== undefined) {
-          selectedInventoryItem.value = preset
+          selectedInventoryItem.value = {
+            ...preset // Creating a new object, otherwise the preset itself in the application presets list is modified when we change the selected item mods and content in the build
+          }
         } else {
           if (quantity.value === 0
             || props.forceQuantityToMaxSelectableAmount

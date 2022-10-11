@@ -245,7 +245,6 @@ export default defineComponent({
      * Updates the summary when an InventorySlot changes.
      */
     function onInventoryItemChanged(path: string) {
-
       if (path.startsWith(props.path)) {
         getSummary()
       }

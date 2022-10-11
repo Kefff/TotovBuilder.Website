@@ -1,4 +1,4 @@
-import { computed, defineComponent, provide, ref, watch, nextTick, onUnmounted, onMounted } from 'vue'
+import { computed, defineComponent, provide, ref, watch, onUnmounted, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import InputTextField from '../input-text-field/InputTextFieldComponent.vue'
 import InventorySlot from '../inventory-slot/InventorySlotComponent.vue'
@@ -158,8 +158,8 @@ export default defineComponent({
       if (isNewBuild.value) {
         goToBuilds()
       } else {
-        await nextTick() // Required otherwise some of the ItemComponents keep their current value for some reason
         build.value = originalBuild
+        getSummary()
       }
     }
 
