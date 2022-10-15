@@ -1726,3 +1726,60 @@ describe('update()', () => {
     expect(getResult.failureMessage).toBe('Build "invalid" not found. It may have been deleted.')
   })
 })
+
+describe('updateObsoleteBuild', () => {
+  it('should update an obsolete build', () => {
+    // Arrange
+    useWebsiteConfigurationServiceMock()
+
+    const obsoleteBuild: IBuild = {
+      id: 'obsolete_build',
+      name: 'Obsolete build',
+      inventorySlots: [
+        {
+          items: [
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
+              modSlots: [],
+              quantity: 1
+            }
+          ],
+          typeId: 'compass'
+        }
+      ],
+      lastExported: undefined,
+      lastUpdated: new Date(1)
+    }
+
+    const buildServer = new BuildService()
+
+    // Act
+    buildServer.updateObsoleteBuild(obsoleteBuild)
+
+    // Assert
+    expect(obsoleteBuild).toStrictEqual({
+      id: 'obsolete_build',
+      name: 'Obsolete build',
+      inventorySlots: [
+        {
+          items: [
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
+              modSlots: [],
+              quantity: 1
+            },
+            undefined,
+            undefined
+          ],
+          typeId: 'special'
+        }
+      ],
+      lastExported: undefined,
+      lastUpdated: new Date(1)
+    })
+  })
+})

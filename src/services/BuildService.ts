@@ -118,6 +118,7 @@ export class BuildService {
 
       // Updating and saving obsolete builds
       this.updateObsoleteBuild(build)
+      this.update(build.id, build)
 
       return Result.ok(build)
     }
@@ -257,6 +258,24 @@ export class BuildService {
       'BuildService.update()',
       i18n.t('message.buildNotFound', { id })
     )
+  }
+
+  /**
+   * Updates an obsolete build.
+   * @param build - Build to update.
+   */
+  public updateObsoleteBuild(build: IBuild): void {
+    const obsoleteInventorySlot = build.inventorySlots.find(is => is.typeId === 'compass')
+
+    if (obsoleteInventorySlot !== undefined) {
+      obsoleteInventorySlot.typeId = 'special'
+
+      obsoleteInventorySlot.items = [
+        obsoleteInventorySlot.items[0],
+        undefined,
+        undefined
+      ]
+    }
   }
 
   /**
@@ -488,25 +507,5 @@ export class BuildService {
     reducedInventorySlot['i'] = reducedInventoryItems
 
     return reducedInventorySlot
-  }
-
-  /**
-   * Updates an obsolete build.
-   * @param build - Build to update.
-   */
-  private updateObsoleteBuild(build: IBuild): void {
-    const obsoleteInventorySlot = build.inventorySlots.find(is => is.typeId === 'compass')
-
-    if (obsoleteInventorySlot !== undefined) {
-      obsoleteInventorySlot.typeId = 'special'
-
-      obsoleteInventorySlot.items = [
-        obsoleteInventorySlot.items[0],
-        undefined,
-        undefined
-      ]
-
-      this.update(build.id, build)
-    }
   }
 }
