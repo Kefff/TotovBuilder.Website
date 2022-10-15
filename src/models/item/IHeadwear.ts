@@ -6,6 +6,11 @@ import { IModdable } from './IModdable'
  */
 export interface IHeadwear extends IArmor, IModdable {
   /**
+   * Indicates whether headphones are block by the helmet.
+   */
+  blocksHeadphones: boolean
+
+  /**
    * Severity of the hearing impairment caused by the helmet.
    */
   deafening: string
