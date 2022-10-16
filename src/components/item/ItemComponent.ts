@@ -289,12 +289,11 @@ export default defineComponent({
      */
     async function updateInventoryItem(newSelectedItem: IItem, isCompatible: Result) {
       if (isCompatible.success) {
-        const preset = await itemService.getPreset(newSelectedItem.id)
+        const itemPreset = await itemService.getPreset(newSelectedItem.id)
 
-        if (preset !== undefined) {
-          selectedInventoryItem.value = {
-            ...preset // Creating a new object, otherwise the preset itself in the application presets list is modified when we change the selected item mods and content in the build
-          }
+        if (itemPreset !== undefined) {
+          // Creating a new object, otherwise the preset itself in the application presets list is modified when we change the selected item mods and content in the build
+          selectedInventoryItem.value = JSON.parse(JSON.stringify(itemPreset))
         } else {
           if (quantity.value === 0
             || props.forceQuantityToMaxSelectableAmount
