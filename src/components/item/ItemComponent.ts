@@ -1,4 +1,4 @@
-import { computed, defineComponent, inject, onMounted, PropType, Ref, ref, watch } from 'vue'
+import { computed, defineComponent, inject, nextTick, onMounted, PropType, Ref, ref, watch } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IItem } from '../../models/item/IItem'
 import { ItemService } from '../../services/ItemService'
@@ -87,7 +87,7 @@ export default defineComponent({
 
     const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? selectedItem.value?.maxStackableAmount ?? 1)
     const optionsCategory = computed(() => props.categoryIds.length === 1 ? props.categoryIds[0] : 'item') // When items from multiple categories can be selected, components use the base type IItem for compatibility
-    const selectedInventoryItem = computed({
+    const selectedInventoryItem = computed<IInventoryItem | undefined>({
       get: () => props.modelValue,
       set: (value: IInventoryItem | undefined) => emit('update:modelValue', value)
     })
@@ -111,6 +111,13 @@ export default defineComponent({
       setOptions(optionsFilter.value, optionsSortingData.value)
       initializeSelectedItem()
     })
+
+    /**
+     * Emits an event for the build and the inventory slot to updated their summary.
+     */
+    function emitItemChangedEvent() {
+      nextTick(() => inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path))
+    }
 
     /**
      * Initializes the selected item based on the inventory item passed to the component.
@@ -156,9 +163,17 @@ export default defineComponent({
     }
 
     /**
+     * Updates the inventory item based on the fact that the price is ignored or not.
+     */
+    function onIgnorePriceChanged() {
+      // Emitting an event for the build and the inventory slot to updated their summary
+      emitItemChangedEvent()
+    }
+
+    /**
      * Updates the inventory item based on the quantity.
      */
-    async function onQuantityChanged(newQuantity: number) {
+    function onQuantityChanged(newQuantity: number) {
       if (selectedInventoryItem.value === undefined) {
         return
       }
@@ -166,7 +181,7 @@ export default defineComponent({
       selectedInventoryItem.value.quantity = newQuantity
 
       // Emitting an event for the build and the inventory slot to updated their summary
-      inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path)
+      emitItemChangedEvent()
     }
 
     /**
@@ -184,7 +199,7 @@ export default defineComponent({
         selectedItemIsModdable.value = false
 
         // Emitting an event for the build and the inventory slot to updated their summary
-        inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path)
+        emitItemChangedEvent()
 
         return
       }
@@ -274,12 +289,11 @@ export default defineComponent({
      */
     async function updateInventoryItem(newSelectedItem: IItem, isCompatible: Result) {
       if (isCompatible.success) {
-        const preset = await itemService.getPreset(newSelectedItem.id)
+        const itemPreset = await itemService.getPreset(newSelectedItem.id)
 
-        if (preset !== undefined) {
-          selectedInventoryItem.value = {
-            ...preset // Creating a new object, otherwise the preset itself in the application presets list is modified when we change the selected item mods and content in the build
-          }
+        if (itemPreset !== undefined) {
+          // Creating a new object, otherwise the preset itself in the application presets list is modified when we change the selected item mods and content in the build
+          selectedInventoryItem.value = JSON.parse(JSON.stringify(itemPreset))
         } else {
           if (quantity.value === 0
             || props.forceQuantityToMaxSelectableAmount
@@ -296,9 +310,7 @@ export default defineComponent({
           }
         }
 
-        // Emitting an event for the build and the inventory slot to updated their summary
-        inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path)
-
+        emitItemChangedEvent()
         setSelectedTab()
       } else {
         notificationService.notify(NotificationType.warning, isCompatible.failureMessage, true)
@@ -315,6 +327,7 @@ export default defineComponent({
       maxSelectableQuantity,
       modSlotPathPrefix,
       onFilterOptions,
+      onIgnorePriceChanged,
       onQuantityChanged,
       onSelectedItemChanged,
       onSortOptions,

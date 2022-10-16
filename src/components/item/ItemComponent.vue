@@ -59,6 +59,7 @@
         v-model:ignorePrice="selectedInventoryItem.ignorePrice"
         :can-have-content="selectedItemIsContainer"
         :can-have-mods="selectedItemIsModdable"
+        @update:ignorePrice="onIgnorePriceChanged()"
       />
       <SelectedItemSummarySelector
         v-if="selectedInventoryItem != undefined"
