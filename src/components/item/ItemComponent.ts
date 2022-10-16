@@ -113,6 +113,13 @@ export default defineComponent({
     })
 
     /**
+     * Emits an event for the build and the inventory slot to updated their summary.
+     */
+    function emitItemChangedEvent() {
+      inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path)
+    }
+
+    /**
      * Initializes the selected item based on the inventory item passed to the component.
      */
     async function initializeSelectedItem() {
@@ -156,9 +163,17 @@ export default defineComponent({
     }
 
     /**
+     * Updates the inventory item based on the fact that the price is ignored or not.
+     */
+    function onIgnorePriceChanged() {
+      // Emitting an event for the build and the inventory slot to updated their summary
+      emitItemChangedEvent()
+    }
+
+    /**
      * Updates the inventory item based on the quantity.
      */
-    async function onQuantityChanged(newQuantity: number) {
+    function onQuantityChanged(newQuantity: number) {
       if (selectedInventoryItem.value === undefined) {
         return
       }
@@ -166,7 +181,7 @@ export default defineComponent({
       selectedInventoryItem.value.quantity = newQuantity
 
       // Emitting an event for the build and the inventory slot to updated their summary
-      inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path)
+      emitItemChangedEvent()
     }
 
     /**
@@ -184,7 +199,7 @@ export default defineComponent({
         selectedItemIsModdable.value = false
 
         // Emitting an event for the build and the inventory slot to updated their summary
-        inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path)
+        emitItemChangedEvent()
 
         return
       }
@@ -296,9 +311,7 @@ export default defineComponent({
           }
         }
 
-        // Emitting an event for the build and the inventory slot to updated their summary
-        inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path)
-
+        emitItemChangedEvent()
         setSelectedTab()
       } else {
         notificationService.notify(NotificationType.warning, isCompatible.failureMessage, true)
@@ -315,6 +328,7 @@ export default defineComponent({
       maxSelectableQuantity,
       modSlotPathPrefix,
       onFilterOptions,
+      onIgnorePriceChanged,
       onQuantityChanged,
       onSelectedItemChanged,
       onSortOptions,
