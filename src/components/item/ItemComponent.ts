@@ -1,4 +1,4 @@
-import { computed, defineComponent, inject, onMounted, PropType, Ref, ref, watch } from 'vue'
+import { computed, defineComponent, inject, nextTick, onMounted, PropType, Ref, ref, watch } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IItem } from '../../models/item/IItem'
 import { ItemService } from '../../services/ItemService'
@@ -87,7 +87,7 @@ export default defineComponent({
 
     const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? selectedItem.value?.maxStackableAmount ?? 1)
     const optionsCategory = computed(() => props.categoryIds.length === 1 ? props.categoryIds[0] : 'item') // When items from multiple categories can be selected, components use the base type IItem for compatibility
-    const selectedInventoryItem = computed({
+    const selectedInventoryItem = computed<IInventoryItem | undefined>({
       get: () => props.modelValue,
       set: (value: IInventoryItem | undefined) => emit('update:modelValue', value)
     })
@@ -116,7 +116,7 @@ export default defineComponent({
      * Emits an event for the build and the inventory slot to updated their summary.
      */
     function emitItemChangedEvent() {
-      inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path)
+      nextTick(() => inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path))
     }
 
     /**
