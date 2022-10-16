@@ -101,27 +101,33 @@ export class InventorySlotPropertiesService {
     const inventoryPrice: IInventoryPrice = {
       missingPrice: false,
       price: {
+        barterItems: [], // TODO : Handling barters
         currencyName: mainCurrencyResult.value.name,
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
       priceWithContentInMainCurrency: {
+        barterItems: [], // TODO : Handling barters
         currencyName: mainCurrencyResult.value.name,
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
       pricesWithContent: [],
       unitPrice: {
+        barterItems: [],
         currencyName: mainCurrencyResult.value.name,
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },

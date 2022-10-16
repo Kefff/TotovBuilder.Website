@@ -1,18 +1,26 @@
 import { computed, defineComponent, ref } from 'vue'
 import Notification from '../notification/NotificationComponent.vue'
-import Configuration from '../../../test-data/configuration.json'
 import Changelog from '../changelog/ChangelogComponent.vue'
+import Services from '../../services/repository/Services'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import Loading from '../loading/LoadingComponent.vue'
 
 export default defineComponent({
   components: {
+    Loading,
     Notification,
     Changelog
   },
   setup() {
-    const contactAddress = Configuration.VITE_CONTACT_ADDRESS as string
-    const discordLink = Configuration.VITE_DISCORD_LINK as string
-    const githubAddress = Configuration.VITE_GITHUB_ADDRESS as string
-    const reportBugAddress = Configuration.VITE_REPORT_BUG_ADDRESS as string
+    const isLoading = ref(true)
+    Services.emitter.once('initialized', () => isLoading.value = false)
+
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
+    const contactAddress = computed(() => websiteConfigurationService.configuration.contactAddress)
+    const discordLink = computed(() => websiteConfigurationService.configuration.discordUrl)
+    const githubAddress = computed(() => websiteConfigurationService.configuration.githubUrl)
+    const reportBugAddress = computed(() => websiteConfigurationService.configuration.bugReportUrl)
 
     const isSanta = computed(() => {
       const date = new Date()
@@ -46,6 +54,7 @@ export default defineComponent({
       displayChangelog,
       githubAddress,
       hasChangelogDisplayed,
+      isLoading,
       isSanta,
       reportBugAddress
     }

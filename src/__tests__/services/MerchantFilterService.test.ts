@@ -1,19 +1,21 @@
-import Configuration from '../../../test-data/configuration.json'
 import { IItem } from '../../models/item/IItem'
 import { IMerchantFilter } from '../../models/utils/IMerchantFilter'
-import { IPrice } from '../../models/utils/IPrice'
+import { IPrice } from '../../models/item/IPrice'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
+import WebsiteConfigurationMock from '../../../test-data/website-configuration.json'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 
 const filters = [
   {
     'enabled': true,
     'merchantLevel': 0,
-    'merchant': 'fleaMarket'
+    'merchant': 'flea-market'
   },
   {
     'enabled': true,
     'merchantLevel': 0,
-    'merchant': 'itemsWithoutMerchant'
+    'merchant': 'items-without-merchant'
   },
   {
     'enabled': false,
@@ -53,7 +55,7 @@ const filters = [
 ] as IMerchantFilter[]
 
 beforeEach(() => {
-  localStorage.setItem(Configuration.VITE_MERCHANT_FILTER_KEY, JSON.stringify(filters))
+  localStorage.setItem(WebsiteConfigurationMock.merchantFilterStorageKey, JSON.stringify(filters))
 })
 
 afterEach(() => {
@@ -63,6 +65,9 @@ afterEach(() => {
 describe('get()', () => {
   it('should get the merchant filters', () => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
     const service = new MerchantFilterService()
 
     // Act
@@ -74,6 +79,9 @@ describe('get()', () => {
 
   it('should get the default merchant filters when merchant filters are not saved', () => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
     const service = new MerchantFilterService()
 
     // Act
@@ -91,9 +99,9 @@ describe('getMatchingPrices()', () => {
       [
         {
           currencyName: '',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: 0,
-          requiresQuest: false,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
@@ -101,7 +109,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'prapor',
           merchantLevel: 4,
-          requiresQuest: false,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         }
@@ -109,9 +117,9 @@ describe('getMatchingPrices()', () => {
       [
         {
           currencyName: '',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: 0,
-          requiresQuest: false,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
@@ -119,7 +127,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'prapor',
           merchantLevel: 4,
-          requiresQuest: false,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         }
@@ -131,7 +139,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'prapor',
           merchantLevel: 4,
-          requiresQuest: false,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
@@ -139,7 +147,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'therapist',
           merchantLevel: 4,
-          requiresQuest: false,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         }
@@ -149,7 +157,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'prapor',
           merchantLevel: 4,
-          requiresQuest: false,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         }
@@ -157,11 +165,14 @@ describe('getMatchingPrices()', () => {
     ]
   ])('should indicate that an item has matching prices', async (prices: IPrice[], expected: IPrice[]) => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
     const service = new MerchantFilterService()
     service.save([
       {
         enabled: true,
-        merchant: 'fleaMarket',
+        merchant: 'flea-market',
         merchantLevel: 0
       },
       {
@@ -180,12 +191,9 @@ describe('getMatchingPrices()', () => {
         merchantLevel: 2
       }
     ])
-    const item = {
-      caption: '',
+    const item: IItem = {
       categoryId: '',
       conflictingItemIds: [],
-      description: '',
-      hasMarketData: true,
       iconLink: '',
       id: '',
       imageLink: '',
@@ -196,7 +204,7 @@ describe('getMatchingPrices()', () => {
       shortName: '',
       weight: 0,
       wikiLink: ''
-    } as IItem
+    }
 
     // Act
     const result = service.getMatchingPrices(item)
@@ -209,10 +217,13 @@ describe('getMatchingPrices()', () => {
 describe('getMerchantLevels()', () => {
   it('should get the levels of a merchant', () => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
     const service = new MerchantFilterService()
 
     // Act
-    const levels1 = service.getMerchantLevels('fleaMarket')
+    const levels1 = service.getMerchantLevels('flea-market')
     const levels2 = service.getMerchantLevels('prapor')
     const levels3 = service.getMerchantLevels('invalid')
 
@@ -226,10 +237,13 @@ describe('getMerchantLevels()', () => {
 describe('hasLevels()', () => {
   it('should indicates whether a merchant has multiple levels or not', () => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
     const service = new MerchantFilterService()
 
     // Act
-    const hasLevels1 = service.hasLevels('fleaMarket')
+    const hasLevels1 = service.hasLevels('flea-market')
     const hasLevels2 = service.hasLevels('prapor')
     const hasLevels3 = service.hasLevels('invalid')
 
@@ -246,7 +260,7 @@ describe('hasMatchingPrices()', () => {
       [
         {
           currencyName: '',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: 0,
           value: 0,
           valueInMainCurrency: 0
@@ -292,7 +306,7 @@ describe('hasMatchingPrices()', () => {
         },
         {
           currencyName: '',
-          merchant: 'fleaMarket',
+          merchant: 'flea-market',
           merchantLevel: 0,
           value: 0,
           valueInMainCurrency: 0
@@ -333,16 +347,19 @@ describe('hasMatchingPrices()', () => {
     ]
   ])('should indicate whether an item has matching prices or not', async (prices: IPrice[], showItemsWithoutMerchant: boolean, expected: boolean) => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
     const service = new MerchantFilterService()
     service.save([
       {
         enabled: true,
-        merchant: 'fleaMarket',
+        merchant: 'flea-market',
         merchantLevel: 0
       },
       {
         enabled: true,
-        merchant: 'itemsWithoutMerchant',
+        merchant: 'items-without-merchant',
         merchantLevel: 0
       },
       {
@@ -361,12 +378,9 @@ describe('hasMatchingPrices()', () => {
         merchantLevel: 2
       }
     ])
-    const item = {
-      caption: '',
+    const item: IItem = {
       categoryId: '',
       conflictingItemIds: [],
-      description: '',
-      hasMarketData: true,
       iconLink: '',
       id: '',
       imageLink: '',
@@ -377,7 +391,7 @@ describe('hasMatchingPrices()', () => {
       shortName: '',
       weight: 0,
       wikiLink: ''
-    } as IItem
+    }
 
     // Act
     const result = service.hasMatchingPrices(item, showItemsWithoutMerchant)
@@ -390,6 +404,9 @@ describe('hasMatchingPrices()', () => {
 describe('save()', () => {
   it('should save the merchant filters and cache them', () => {
     // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
     const service = new MerchantFilterService()
     filters[0].enabled = false
     filters[2].merchantLevel = 1
@@ -438,12 +455,12 @@ describe('save()', () => {
       },
       {
         'enabled': false,
-        'merchant': 'fleaMarket',
+        'merchant': 'flea-market',
         'merchantLevel': 0
       },
       {
         'enabled': true,
-        'merchant': 'itemsWithoutMerchant',
+        'merchant': 'items-without-merchant',
         'merchantLevel': 0
       }
     ])

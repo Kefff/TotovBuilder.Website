@@ -16,6 +16,7 @@ import { MerchantFilterService } from '../../services/MerchantFilterService'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
+import { InventoryItemService } from '../../services/InventoryItemService'
 
 export default defineComponent({
   components: {
@@ -39,142 +40,80 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'update:collapsed'],
   setup: (props, { emit }) => {
+    const inventoryItemService = Services.get(InventoryItemService)
+    const inventorySlotComponentService = Services.get(InventorySlotComponentService)
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
-    const notificationService = Services.get(NotificationService)
+    const inventorySlotService = Services.get(InventorySlotService)
     const merchantFilterService = Services.get(MerchantFilterService)
+    const notificationService = Services.get(NotificationService)
 
     const editing = inject<Ref<boolean>>('editing')
 
-    merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
-
-    const items = ref<(IInventoryItem | undefined)[]>([]) // Used to be able to put back the previously selected item when changing it to an incompatible item
-    watch(() => props.modelValue.items, () => {
-      items.value = [...props.modelValue.items]
-
-      setItemComponentParameters()
-      getSummary()
-    }, { deep: true })
+    const itemPathPrefix = PathUtils.itemPrefix
 
     const displayed = computed(() => editing?.value || props.modelValue.items.some((i) => i != undefined)) // Displayed only when in edit mode or when it contains at least one item
 
     const acceptedItems = ref<IItem[]>([])
-    const categoryIds = ref<string[]>([])
-
     const canBeLooted = ref(true)
-    const type = ref<IInventorySlotType>()
-    const icon = ref<string>()
+    const categoryIds = ref<string[]>([])
     const customIcon = ref<string>()
-
-    const itemPathPrefix = PathUtils.itemPrefix
-
     const ergonomics = ref<number | undefined>()
     const ergonomicsPercentageModifier = ref<number | undefined>()
     const horizontalRecoil = ref<number | undefined>()
+    const icon = ref<string>()
+    const items = ref<(IInventoryItem | undefined)[]>([]) // Used to be able to put back the previously selected item when changing it to an incompatible item
     const price = ref<IInventoryPrice>({
       missingPrice: false,
       price: {
+        barterItems: [], // TODO : Handling barters
         currencyName: 'RUB',
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
       priceWithContentInMainCurrency: {
+        barterItems: [], // TODO : Handling barters
         currencyName: 'RUB',
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
       pricesWithContent: [],
       unitPrice: {
+        barterItems: [], // TODO : Handling barters
         currencyName: 'RUB',
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
       unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
     })
+    const type = ref<IInventorySlotType>()
     const verticalRecoil = ref<number | undefined>()
     const weight = ref(0)
 
+    watch(() => props.modelValue.items, () => initialize())
+
     onMounted(() => {
-      initialize().then(() => {
-        setItemComponentParameters()
-        getSummary()
-      })
+      inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
+      merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+
+      initialize()
     })
 
-    onUnmounted(() => merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged))
-
-    /**
-     * Initializes the inventory slot.
-     */
-    async function initialize() {
-      items.value = [...props.modelValue.items]
-
-      const canBeLootedResult = inventorySlotPropertiesService.canBeLooted(props.modelValue)
-
-      if (!canBeLootedResult.success) {
-        notificationService.notify(NotificationType.error, canBeLootedResult.failureMessage)
-      }
-
-      canBeLooted.value = canBeLootedResult.value
-
-      const inventorySlotTypeResult = await Services.get(InventorySlotService).getType(props.modelValue.typeId)
-
-      if (!inventorySlotTypeResult.success) {
-        notificationService.notify(NotificationType.error, inventorySlotTypeResult.failureMessage)
-
-        return
-      }
-
-      type.value = inventorySlotTypeResult.value
-      icon.value = type.value.icon
-      customIcon.value = type.value.customIcon
-    }
-
-    /**
-     * Checks if the item can be selected. Emits the new value to the parent component if it can be selected; otherwise puts back the old item.
-     * @param index - Index of the changed item.
-     */
-    async function onItemChanged(index: number) {
-      const canSelect = await Services.get(InventorySlotComponentService).checkCompatibility(props.modelValue.typeId, items.value[index], props.path + '_' + index)
-
-      if (canSelect) {
-        const updatedInventorySlot: IInventorySlot = {
-          items: items.value,
-          typeId: props.modelValue.typeId
-        }
-
-        emit('update:modelValue', updatedInventorySlot)
-      } else {
-        // Putting back the old item
-        items.value[index] = props.modelValue.items[index]
-      }
-    }
-
-    /**
-     * Updates the inventory slot summary to reflect price changes due to the change in merchant filters.
-     */
-    function onMerchantFilterChanged() {
-      setItemComponentParameters()
-      getSummary()
-    }
-
-    /**
-     * Sets the category IDs and the accepted items to pass to the ItemComponent.
-     */
-    async function setItemComponentParameters() {
-      if (type.value !== undefined) {
-        categoryIds.value = type.value.acceptedItemCategories.map((aic) => aic.id)
-        acceptedItems.value = await Services.get(InventorySlotComponentService).getAcceptedItems(categoryIds.value)
-      }
-    }
+    onUnmounted(() => {
+      inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
+      merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+    })
 
     /**
      * Gets the values of the summary of the content of the inventory slot.
@@ -250,6 +189,83 @@ export default defineComponent({
       }
 
       weight.value = weightResult.value
+    }
+
+    /**
+     * Initializes the inventory slot.
+     */
+    async function initialize() {
+      items.value = [...props.modelValue.items]
+
+      const canBeLootedResult = inventorySlotPropertiesService.canBeLooted(props.modelValue)
+
+      if (!canBeLootedResult.success) {
+        notificationService.notify(NotificationType.error, canBeLootedResult.failureMessage)
+      } else {
+        canBeLooted.value = canBeLootedResult.value
+      }
+
+      const inventorySlotTypeResult = await inventorySlotService.getType(props.modelValue.typeId)
+
+      if (!inventorySlotTypeResult.success) {
+        notificationService.notify(NotificationType.error, inventorySlotTypeResult.failureMessage)
+
+        return
+      }
+
+      type.value = inventorySlotTypeResult.value
+      customIcon.value = type.value.customIcon
+      icon.value = type.value.icon
+
+      setItemComponentParameters()
+      getSummary()
+    }
+
+    /**
+     * Checks if the item can be selected. Emits the new value to the parent component if it can be selected; otherwise puts back the old item.
+     * @param index - Index of the changed item.
+     */
+    async function onItemChanged(index: number) {
+      const canSelect = await inventorySlotComponentService.checkCompatibility(props.modelValue.typeId, items.value[index], props.path + '_' + index)
+
+      if (canSelect) {
+        const updatedInventorySlot: IInventorySlot = {
+          items: items.value,
+          typeId: props.modelValue.typeId
+        }
+
+        emit('update:modelValue', updatedInventorySlot)
+      } else {
+        // Putting back the old item
+        items.value[index] = props.modelValue.items[index]
+      }
+    }
+
+    /**
+     * Updates the summary when an InventorySlot changes.
+     */
+    function onInventoryItemChanged(path: string) {
+      if (path.startsWith(props.path)) {
+        getSummary()
+      }
+    }
+
+    /**
+     * Updates the inventory slot summary to reflect price changes due to the change in merchant filters.
+     */
+    function onMerchantFilterChanged() {
+      setItemComponentParameters()
+      getSummary()
+    }
+
+    /**
+     * Sets the category IDs and the accepted items to pass to the ItemComponent.
+     */
+    async function setItemComponentParameters() {
+      if (type.value !== undefined) {
+        categoryIds.value = type.value.acceptedItemCategories.map((aic) => aic.id)
+        acceptedItems.value = await inventorySlotComponentService.getAcceptedItems(categoryIds.value)
+      }
     }
 
     /**

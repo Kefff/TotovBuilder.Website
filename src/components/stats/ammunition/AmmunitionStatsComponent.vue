@@ -45,7 +45,7 @@
         <span>{{ $t('caption.durabilityBurn') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.durabilityBurnPercentageModifier, true)">
-        {{ StatsUtils.getValueCaption(item.durabilityBurnPercentageModifier) }}%
+        {{ StatsUtils.getDisplayValue(item.durabilityBurnPercentageModifier, true, true) }}
       </div>
     </div>
   </div>
@@ -94,7 +94,7 @@
         <span>{{ $t('caption.armorDamage') }} :</span>
       </div>
       <div class="stats-value">
-        <span>{{ item.armorDamagePercentage }}%</span>
+        <span>{{ StatsUtils.getDisplayValue(item.armorDamagePercentage, false, true) }}</span>
       </div>
     </div>
     <div class="stats-entry">
@@ -106,7 +106,7 @@
         <span>{{ $t('caption.fragmentationChance') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.fragmentationChancePercentage }}%
+        {{ StatsUtils.getDisplayValue(item.fragmentationChancePercentage, false, true) }}
       </div>
     </div>
   </div>
@@ -151,7 +151,7 @@
       </div>
       <div class="stats-value">
         <span :class="StatsUtils.getValueColorClass(item.recoilPercentageModifier, true)">
-          {{ StatsUtils.getValueCaption(item.recoilPercentageModifier) }}%
+          {{ StatsUtils.getDisplayValue(item.recoilPercentageModifier, true, true) }}
         </span>
       </div>
     </div>
@@ -168,7 +168,7 @@
       </div>
       <div class="stats-value">
         <span :class="StatsUtils.getValueColorClass(item.accuracyPercentageModifier)">
-          {{ StatsUtils.getValueCaption(item.accuracyPercentageModifier) }}%
+          {{ StatsUtils.getDisplayValue(item.accuracyPercentageModifier, true, true) }}
         </span>
       </div>
     </div>
@@ -181,7 +181,7 @@
         <span>{{ $t('caption.heavyBleeding') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.heavyBleedingPercentageChance)">
-        {{ StatsUtils.getValueCaption(item.heavyBleedingPercentageChance) }}%
+        {{ StatsUtils.getDisplayValue(item.heavyBleedingPercentageChance, true, true) }}
       </div>
     </div>
     <div
@@ -193,7 +193,7 @@
         <span>{{ $t('caption.lightBleeding') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.lightBleedingPercentageChance)">
-        {{ StatsUtils.getValueCaption(item.lightBleedingPercentageChance) }}%
+        {{ StatsUtils.getDisplayValue(item.lightBleedingPercentageChance, true, true) }}
       </div>
     </div>
   </div>

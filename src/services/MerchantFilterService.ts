@@ -1,9 +1,10 @@
 import { IMerchantFilter } from '../models/utils/IMerchantFilter'
-import Merchants from '../assets/data/merchants.json'
 import { IItem } from '../models/item/IItem'
-import { IPrice } from '../models/utils/IPrice'
+import { IPrice } from '../models/item/IPrice'
 import { TinyEmitter } from 'tiny-emitter'
-import Configuration from '../../test-data/configuration.json'
+import Services from './repository/Services'
+import { TarkovValuesService } from './TarkovValuesService'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 
 /**
  * Represents a service that manages merchant filters.
@@ -45,7 +46,7 @@ export class MerchantFilterService {
       savedFilters = JSON.parse(serializedFilters) as IMerchantFilter[]
     }
 
-    for (const merchant of Merchants.filter(m => m.showInFilter)) {
+    for (const merchant of Services.get(TarkovValuesService).values.merchants.filter(m => m.showInFilter)) {
       const savedFilter = savedFilters.find(sf => sf.merchant === merchant.name)
 
       filters.push({
@@ -67,7 +68,7 @@ export class MerchantFilterService {
    */
   public getMerchantLevels(merchantName: string): number[] {
     const levels: number[] = []
-    const merchant = Merchants.find(m => m.name === merchantName)
+    const merchant = Services.get(TarkovValuesService).values.merchants.find(m => m.name === merchantName)
 
     if (merchant !== undefined) {
       for (let i = merchant.minLevel; i <= merchant.maxLevel; i++) {
@@ -95,7 +96,7 @@ export class MerchantFilterService {
    * @returns true if the merchant has levels ; otherwise false.
    */
   public hasLevels(merchantName: string): boolean {
-    const merchant = Merchants.find(m => m.name === merchantName)
+    const merchant = Services.get(TarkovValuesService).values.merchants.find(m => m.name === merchantName)
     const result = merchant !== undefined ? merchant.maxLevel > merchant.minLevel : false
 
     return result
@@ -103,18 +104,14 @@ export class MerchantFilterService {
 
   /**
    * Indicates whether an item has prices that match the merchant filters.
-   * Also filters out items that have no market data.
+   * Also filters out items that have no prices.
    * @param item - Item.
    * @param includeItemsWithouMerchantFilter - Indicates whether "Show items without merchant" filter is taken into consideration.
    * @returns true when the item has prices that match the merchant filters; otherwise false.
    */
   public hasMatchingPrices(item: IItem, includeItemsWithouMerchantFilter: boolean): boolean {
-    if (!item.hasMarketData) {
-      return false
-    }
-
     const result =
-      (includeItemsWithouMerchantFilter && item.prices.length === 0 && this.filters.some(f => f.merchant === 'itemsWithoutMerchant' && f.enabled))
+      (includeItemsWithouMerchantFilter && item.prices.length === 0 && this.filters.some(f => f.merchant === 'items-without-merchant' && f.enabled))
       || item.prices.some(p => this.isMatchingFilters(p))
 
     return result
@@ -137,7 +134,7 @@ export class MerchantFilterService {
    * @returns Storage key.
    */
   private getKey(): string {
-    const key = Configuration.VITE_MERCHANT_FILTER_KEY as string
+    const key = Services.get(WebsiteConfigurationService).configuration.merchantFilterStorageKey
 
     return key
   }
@@ -151,7 +148,8 @@ export class MerchantFilterService {
     const result = this.filters.some(f =>
       f.enabled
       && f.merchant === price.merchant
-      && f.merchantLevel >= (/* istanbul ignore next */price.merchantLevel ?? 0))
+      && f.merchantLevel >= price.merchantLevel
+      && price.currencyName !== 'barter') // // TODO : Handling barters - WORKAROUND WAITING FOR BARTERS TO BE HANDLED. REMOVE && price.currencyName !== 'barter' WHEN IT IS DONE -->
 
     return result
   }

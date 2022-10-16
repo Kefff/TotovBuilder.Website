@@ -125,7 +125,7 @@
           class="build-list-column"
         >
           <span :class="StatsUtils.getValueColorClass(data.ergonomicsPercentageModifier)">
-            {{ StatsUtils.getValueCaption(data.ergonomicsPercentageModifier) }}%
+            {{ StatsUtils.getDisplayValue(data.ergonomicsPercentageModifier, true, true) }}
           </span>
           <font-awesome-icon
             icon="hand-paper"

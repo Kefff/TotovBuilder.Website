@@ -10,7 +10,7 @@ import Result, { FailureType } from '../utils/Result'
 export class ImportService {
   /**
    * Gets the builds from a file.
-   * @param buildFile - File.
+   * @param file - File.
    * @returns Builds contained in the file.
    */
   /* istanbul ignore next */

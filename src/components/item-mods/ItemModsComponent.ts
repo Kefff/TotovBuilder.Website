@@ -1,12 +1,6 @@
-import { defineComponent, onMounted, PropType, ref, watch } from 'vue'
-import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import { IModdable } from '../../models/item/IModdable'
-import { IModSlot } from '../../models/item/IModSlot'
-import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { ItemService } from '../../services/ItemService'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
-import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
 import ModSlot from '../mod-slot/ModSlotComponent.vue'
 
@@ -15,10 +9,13 @@ export default defineComponent({
     ModSlot
   },
   props: {
+    containerItem: {
+      type: Object as PropType<IModdable>,
+      required: true
+    },
     modelValue: {
-      type: Object as PropType<IInventoryItem>,
-      required: false,
-      default: undefined
+      type: Object as PropType<IInventoryModSlot[]>,
+      required: true
     },
     path: {
       type: String,
@@ -27,78 +24,43 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup: (props, { emit }) => {
-    const itemPropertiesService = Services.get(ItemPropertiesService)
-
-    const inventoryModSlots = ref<IInventoryModSlot[]>([])
-    const modSlots = ref<IModSlot[]>([])
-
     const modSlotPathPrefix = PathUtils.modSlotPrefix
 
-    watch(() => props.modelValue, () => getModSlots(), { deep: true })
+    const inventoryModSlots = computed({
+      get: () => props.modelValue,
+      set: (value: IInventoryModSlot[]) => emit('update:modelValue', value)
+    })
 
-    onMounted(() => getModSlots())
+    const isInitializing = ref(true)
+
+    watch(() => props.containerItem.id, () => initialize())
+
+    onMounted(() => initialize())
 
     /**
-     * Gets the mod slots of the parent item.
+     * Gets the mod slots of the parent item and adds them to the list of inventory mod slots received.
      */
-    async function getModSlots() {
-      if (props.modelValue === undefined) {
-        return
-      }
-
-      const itemResult = await Services.get(ItemService).getItem(props.modelValue.itemId)
-
-      if (!itemResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, itemResult.failureMessage)
-
-        return
-      }
-
-      if (!itemPropertiesService.isModdable(itemResult.value)) {
-        // For some reason, when the parent item was set to moddable item, and we cancel de build modifications,
-        // this component is still displayed for a shot moment even if the "selectedItemIsModdable" on the Item component
-        // is false. So we need to return here. After that, the Item component will remove this component
-
-        return
-      }
+    async function initialize() {
+      isInitializing.value = true
 
       const newInventoryModSlots: IInventoryModSlot[] = []
-      modSlots.value = (itemResult.value as IModdable).modSlots
 
-      for (const modSlot of modSlots.value) {
+      for (const modSlot of props.containerItem.modSlots) {
         newInventoryModSlots.push({
-          item: props.modelValue.modSlots.find((ms) => ms.modSlotName === modSlot.name)?.item,
+          item: props.modelValue.find((ms) => ms.modSlotName === modSlot.name)?.item,
           modSlotName: modSlot.name
         })
       }
 
       inventoryModSlots.value = newInventoryModSlots
-    }
 
-    /**
-     * Emits to the parent component the updated inventory item.
-     */
-    function onUpdateModSlot() {
-      if (props.modelValue === undefined) {
-        return
-      }
-
-      const newInventoryItem: IInventoryItem = {
-        content: props.modelValue.content,
-        ignorePrice: props.modelValue.ignorePrice,
-        itemId: props.modelValue.itemId,
-        modSlots: inventoryModSlots.value,
-        quantity: props.modelValue.quantity
-      }
-
-      emit('update:modelValue', newInventoryItem)
+      isInitializing.value = false
     }
 
     return {
       inventoryModSlots,
-      modSlotPathPrefix,
-      modSlots,
-      onUpdateModSlot
+      isInitializing,
+      modSlotPathPrefix
     }
   }
 })

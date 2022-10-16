@@ -14,14 +14,15 @@ export default defineComponent({
   },
   setup: (props) => {
     const prices = computed(() => {
-      const result = [...props.item.prices]
+      // TODO : Handling barters - WORKAROUND WAITING FOR BARTERS TO BE HANDLED. REMOVE .filter((p) => p.currencyName !== 'barter') WHEN IT IS DONE -->
+      const result = [...props.item.prices.filter((p) => p.currencyName !== 'barter')]
       result.sort((i1, i2) => i1.valueInMainCurrency - i2.valueInMainCurrency)
 
       return result
     })
 
     /**
-     * Opens a new tab displaying the item in Tarkov Tools.
+     * Opens a new tab displaying the item in Tarkov.dev.
      */
     function openMarket() {
       window.open(props.item.marketLink, '_blank')

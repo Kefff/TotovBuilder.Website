@@ -1,5 +1,5 @@
-import { computed, defineComponent, ref, watch } from 'vue'
-import { IChangelog } from '../../models/utils/IChangelog'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
+import { IChangelogEntry } from '../../models/configuration/IChangelogEntry'
 import Services from '../../services/repository/Services'
 import { VersionService } from '../../services/VersionService'
 
@@ -14,9 +14,9 @@ export default defineComponent({
   setup(props, { emit }) {
     const versionService = Services.get(VersionService)
 
-    const currentVersion = versionService.currentVersion
-    const hasNewVersion = ref(versionService.hasNewVersion)
-    const changelogs = ref<IChangelog[]>([])
+    const changelogs = ref<IChangelogEntry[]>([])
+    const currentVersion = ref('1.0.0')
+    const hasNewVersion = ref(false)
 
     const hasChangelogDisplayed = computed({
       get: () => props.modelValue,
@@ -27,6 +27,11 @@ export default defineComponent({
       if (props.modelValue) {
         showChangelog()
       }
+    })
+
+    onMounted(() => {
+      versionService.getCurrentVersion().then((v) => currentVersion.value = v)
+      versionService.checkHasNewVersion().then((hnv) => hasNewVersion.value = hnv)
     })
 
     /**
@@ -41,15 +46,15 @@ export default defineComponent({
      */
     function dismissNotification() {
       hasNewVersion.value = false
-      versionService.hasNewVersion = false
+      versionService.dismissNewVersion()
     }
 
     /**
      * Shows the changelog.
      */
-    function showChangelog() {
+    async function showChangelog() {
       hasChangelogDisplayed.value = true
-      changelogs.value = versionService.getChangelogs()
+      changelogs.value = await versionService.getChangelogs()
     }
 
     return {

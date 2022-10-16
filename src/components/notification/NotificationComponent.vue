@@ -5,7 +5,7 @@
       :key="toastNotification.id"
       :closable="true"
       :life="toastNotification.toastDuration"
-      :severity="toastNotification.type.toString()"
+      :severity="toastNotification.type"
       :sticky="false"
     >
       {{ toastNotification.message }}

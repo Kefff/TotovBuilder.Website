@@ -6,6 +6,11 @@ import { IModSlot } from './IModSlot'
  */
 export interface IModdable extends IItem {
   /**
+   * Default preset ID.
+   */
+  defaultPresetId: string
+
+  /**
    * Mod slots.
    */
   modSlots: IModSlot[]

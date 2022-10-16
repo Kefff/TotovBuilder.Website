@@ -75,7 +75,7 @@ export class ItemContentComponentService {
       }
 
       const acceptedItemsResult = itemsResult.value.filter(i => merchantFilterService.hasMatchingPrices(i, true))
-      acceptedItemsResult.sort((item1: IItem, item2: IItem) => StringUtils.compare(item1.caption, item2.caption))
+      acceptedItemsResult.sort((item1: IItem, item2: IItem) => StringUtils.compare(item1.name, item2.name))
 
       acceptedItems.push(...acceptedItemsResult)
     }
@@ -88,12 +88,12 @@ export class ItemContentComponentService {
    * @param magazine - Magazine.
    * @returns Accepted items.
    */
-  private async getMagazineAcceptedItems(item: IItem): Promise<IItem[]> {
+  private async getMagazineAcceptedItems(magazine: IItem): Promise<IItem[]> {
     const merchantFilterService = Services.get(MerchantFilterService)
     const acceptedItems: IItem[] = []
     const itemService = Services.get(ItemService)
 
-    for (const acceptedAmmunitionId of (item as IMagazine).acceptedAmmunitionIds) {
+    for (const acceptedAmmunitionId of (magazine as IMagazine).acceptedAmmunitionIds) {
       const itemResult = await itemService.getItem(acceptedAmmunitionId)
 
       if (!itemResult.success) {

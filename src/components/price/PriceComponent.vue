@@ -6,12 +6,15 @@
       @mouseover="togglePriceInMainCurrencyPanel($event)"
       @mouseout="togglePriceInMainCurrencyPanel($event)"
     >
-      <span>{{ price.value.toLocaleString() }}</span>
-      <font-awesome-icon
-        v-if="currency !== undefined"
-        :icon="currency?.iconName"
-        :class="'currency-' + currency?.name"
-      />
+      <div v-if="price.currencyName !== 'barter'">
+        <!-- TODO : Handling barters - WORKAROUND WAITING FOR BARTERS TO BE HANDLED. REMOVE <div v-if="price.currencyName !== 'barter'"> WHEN IT IS DONE -->
+        <span>{{ price.value.toLocaleString() }}</span>
+        <font-awesome-icon
+          v-if="currency !== undefined"
+          :icon="currency?.iconName"
+          :class="'currency-' + currency?.name"
+        />
+      </div>
       <div
         v-if="showMerchantIcon"
         class="price-merchant-icon"
@@ -26,17 +29,17 @@
     >
       <div>
         <div>
-          <div v-if="price.merchant !== undefined">
+          <div v-if="price.merchant !== ''">
             <span class="price-merchant-name">{{ $t('caption.merchant_' + price.merchant) }}</span>
             <span
-              v-if="price.merchantLevel !== undefined"
+              v-if="price.merchantLevel !== 0"
               class="price-merchant-level"
             >
               {{ $t('caption.level').toLocaleLowerCase() }} {{ price.merchantLevel }}
             </span>
           </div>
         </div>
-        <div v-if="price.requiresQuest">
+        <div v-if="price.questId !== ''">
           <font-awesome-icon
             icon="lock"
             class="icon-before-text price-quest-required"

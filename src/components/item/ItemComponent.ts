@@ -75,61 +75,77 @@ export default defineComponent({
   setup: (props, { emit }) => {
     const compatibilityService = Services.get(CompatibilityService)
     const inventoryItemService = Services.get(InventoryItemService)
-    const itemService = Services.get(ItemService)
     const itemPropertiesService = Services.get(ItemPropertiesService)
+    const itemService = Services.get(ItemService)
     const notificationService = Services.get(NotificationService)
+
+    const contentPathPrefix = PathUtils.contentPrefix
+    const modSlotPathPrefix = PathUtils.modSlotPrefix
+    const optionsMaxNumber = 200
 
     const editing = inject<Ref<boolean>>('editing')
 
-    const inventoryItem = computed({
+    const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? selectedItem.value?.maxStackableAmount ?? 1)
+    const optionsCategory = computed(() => props.categoryIds.length === 1 ? props.categoryIds[0] : 'item') // When items from multiple categories can be selected, components use the base type IItem for compatibility
+    const selectedInventoryItem = computed({
       get: () => props.modelValue,
       set: (value: IInventoryItem | undefined) => emit('update:modelValue', value)
     })
 
-    const optionsCategory = computed(() => props.categoryIds.length === 1 ? props.categoryIds[0] : 'item') // When items from multiple categories can be selected, components use the base type IItem for compatibility
-    const optionsFilter = ref('')
-    const optionsMaxNumber = 200
-    const optionsEmptyMessage = ref<string>('message.itemsNotFound')
-    const optionsSortingData = ref<SortingData>(new SortingData())
-    const options = ref<IItem[]>([])
-
-    const selectedItem = ref<IItem | undefined>()
     const itemChanging = ref(false)
-
-    const ignorePrice = ref(false)
-
-    const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? selectedItem.value?.maxStackableAmount ?? 1)
+    const options = ref<IItem[]>([])
+    const optionsEmptyMessage = ref<string>('message.itemsNotFound')
+    const optionsFilter = ref('')
+    const optionsSortingData = ref<SortingData>(new SortingData())
     const quantity = ref(props.modelValue?.quantity ?? 1)
-
-    const selectedItemIsModdable = ref(false)
+    const preset = ref<IInventoryModSlot>()
+    const selectedItem = ref<IItem | undefined>()
     const selectedItemIsContainer = ref(false)
+    const selectedItemIsModdable = ref(false)
     const selectedTab = ref(SelectableTab.hidden)
 
-    const contentPathPrefix = PathUtils.contentPrefix
-    const modSlotPathPrefix = PathUtils.modSlotPrefix
-
-    const preset = ref<IInventoryModSlot>()
-
     watch(() => props.acceptedItems, () => onFilterOptions(optionsFilter.value))
-
-    watch(() => props.modelValue, () => setSelectedItem())
-
-    watch(() => props.forceQuantityToMaxSelectableAmount, () => {
-      if (props.forceQuantityToMaxSelectableAmount && quantity.value !== maxSelectableQuantity.value) {
-        quantity.value = maxSelectableQuantity.value
-      }
-    })
-
-    watch(() => maxSelectableQuantity.value, () => {
-      if (props.forceQuantityToMaxSelectableAmount || quantity.value > maxSelectableQuantity.value) {
-        quantity.value = maxSelectableQuantity.value
-      }
-    })
+    watch(() => props.modelValue?.itemId, () => initializeSelectedItem())
 
     onMounted(() => {
       setOptions(optionsFilter.value, optionsSortingData.value)
-      setSelectedItem()
+      initializeSelectedItem()
     })
+
+    /**
+     * Initializes the selected item based on the inventory item passed to the component.
+     */
+    async function initializeSelectedItem() {
+      if (props.modelValue == undefined) {
+        quantity.value = 0
+        selectedItem.value = undefined
+        selectedItemIsContainer.value = false
+        selectedItemIsModdable.value = false
+
+        return
+      }
+
+      if (selectedItem.value?.id === selectedInventoryItem.value?.itemId) {
+        return
+      }
+
+      quantity.value = props.modelValue.quantity
+
+      const selectedItemResult = await itemService.getItem(props.modelValue.itemId)
+
+      if (!selectedItemResult.success) {
+        notificationService.notify(NotificationType.error, selectedItemResult.failureMessage)
+
+        return
+      }
+
+      selectedItem.value = selectedItemResult.value
+      setSelectedTab()
+
+      if (selectedItem.value != undefined) {
+        preset.value = await inventoryItemService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
+      }
+    }
 
     /**
      * Sorts the options items.
@@ -140,68 +156,50 @@ export default defineComponent({
     }
 
     /**
-     * Updates the inventory item based on the ignored price value.
-     */
-    async function onIgnorePriceChanged(newIgnorePrice: boolean) {
-      if (inventoryItem.value === undefined) {
-        return
-      }
-
-      inventoryItem.value = {
-        content: inventoryItem.value.content,
-        ignorePrice: newIgnorePrice,
-        itemId: inventoryItem.value.itemId,
-        modSlots: inventoryItem.value.modSlots,
-        quantity: inventoryItem.value.quantity
-      }
-    }
-
-    /**
      * Updates the inventory item based on the quantity.
      */
     async function onQuantityChanged(newQuantity: number) {
-      if (inventoryItem.value === undefined) {
+      if (selectedInventoryItem.value === undefined) {
         return
       }
 
-      inventoryItem.value = {
-        content: inventoryItem.value.content,
-        ignorePrice: inventoryItem.value.ignorePrice,
-        itemId: inventoryItem.value.itemId,
-        modSlots: inventoryItem.value.modSlots,
-        quantity: newQuantity
-      }
+      selectedInventoryItem.value.quantity = newQuantity
+
+      // Emitting an event for the build and the inventory slot to updated their summary
+      inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path)
     }
 
     /**
      * Updates the inventory item based on the selected item.
-     * @param event - Item selection event.
      */
     async function onSelectedItemChanged() {
-      if (selectedItem.value?.id === props.modelValue?.itemId) {
+      if (selectedItem.value?.id === selectedInventoryItem.value?.itemId) {
         return
       }
 
       if (selectedItem.value == undefined) {
-        selectedItem.value = undefined
-        inventoryItem.value = undefined
-        ignorePrice.value = false
         quantity.value = 0
+        selectedInventoryItem.value = undefined
+        selectedItemIsContainer.value = false
+        selectedItemIsModdable.value = false
+
+        // Emitting an event for the build and the inventory slot to updated their summary
+        inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path)
 
         return
       }
 
       itemChanging.value = true
-
-      preset.value = await inventoryItemService.getPresetModslotContainingItem(selectedItem.value.id, props.path)
+      preset.value = await inventoryItemService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
 
       if (itemPropertiesService.isMod(selectedItem.value) && PathUtils.checkIsModSlotPath(props.path)) {
         // Checking the compatibility if the selected item is a mod and we are in mod slot
         const path = props.path.slice(0, props.path.lastIndexOf('/' + PathUtils.itemPrefix))
-        compatibilityService.checkCompatibility(CompatibilityRequestType.mod, selectedItem.value.id, path)
-          .then((v) => updateInventoryItem(selectedItem.value as IItem, v))
+        const compatibilityResult = await compatibilityService.checkCompatibility(CompatibilityRequestType.mod, selectedItem.value.id, path)
+
+        await updateInventoryItem(selectedItem.value, compatibilityResult)
       } else {
-        updateInventoryItem(selectedItem.value as IItem, Result.ok())
+        await updateInventoryItem(selectedItem.value, Result.ok())
       }
     }
 
@@ -236,7 +234,7 @@ export default defineComponent({
       if (filter === '') {
         newOptions = [...props.acceptedItems]
       } else {
-        newOptions = [...props.acceptedItems.filter((o) => StringUtils.contains(o.caption, filter))]
+        newOptions = [...props.acceptedItems.filter((o) => StringUtils.contains(o.name, filter))]
       }
 
       if (newOptions.length > optionsMaxNumber) {
@@ -250,36 +248,13 @@ export default defineComponent({
     }
 
     /**
-     * Sets the selected item based on the inventory item passed to the component.
+     * Sets the selected tab based on the selected item.
      */
-    async function setSelectedItem() {
-      if (props.modelValue == undefined) {
-        selectedItem.value = undefined
-        ignorePrice.value = false
-        quantity.value = 0
-        selectedItemIsModdable.value = false
-        selectedItemIsContainer.value = false
+    function setSelectedTab() {
+      if (selectedItem.value === undefined) {
+        selectedTab.value = SelectableTab.hidden
 
         return
-      } else {
-        const selectedItemResult = await itemService.getItem(props.modelValue.itemId)
-
-        if (!selectedItemResult.success) {
-          notificationService.notify(NotificationType.error, selectedItemResult.failureMessage)
-
-          return
-        }
-
-        selectedItem.value = selectedItemResult.value
-        ignorePrice.value = props.modelValue.ignorePrice
-
-        if (props.modelValue.quantity === 0
-          || props.forceQuantityToMaxSelectableAmount
-          || quantity.value > maxSelectableQuantity.value) {
-          quantity.value = maxSelectableQuantity.value
-        } else {
-          quantity.value = props.modelValue.quantity
-        }
       }
 
       selectedItemIsModdable.value = itemPropertiesService.isModdable(selectedItem.value)
@@ -289,10 +264,6 @@ export default defineComponent({
         selectedTab.value = SelectableTab.mods
       } else if (selectedItemIsContainer.value) {
         selectedTab.value = SelectableTab.content
-      }
-
-      if (selectedItem.value != undefined) {
-        preset.value = await inventoryItemService.getPresetModslotContainingItem(selectedItem.value.id, props.path)
       }
     }
 
@@ -306,27 +277,32 @@ export default defineComponent({
         const preset = await itemService.getPreset(newSelectedItem.id)
 
         if (preset !== undefined) {
-          inventoryItem.value = preset
+          selectedInventoryItem.value = {
+            ...preset // Creating a new object, otherwise the preset itself in the application presets list is modified when we change the selected item mods and content in the build
+          }
         } else {
-          const updatedInventoryItem = {
-            content: selectedItemIsContainer.value ? (inventoryItem.value?.content ?? []) : [], // Keeping the content of containers
+          if (quantity.value === 0
+            || props.forceQuantityToMaxSelectableAmount
+            || quantity.value > maxSelectableQuantity.value) {
+            quantity.value = maxSelectableQuantity.value
+          }
+
+          selectedInventoryItem.value = {
+            content: [],
             ignorePrice: false,
             itemId: newSelectedItem.id,
             modSlots: [],
             quantity: quantity.value
-          } as IInventoryItem
-
-          if (updatedInventoryItem.quantity === 0
-            || props.forceQuantityToMaxSelectableAmount
-            || updatedInventoryItem.quantity > maxSelectableQuantity.value) {
-            updatedInventoryItem.quantity = maxSelectableQuantity.value
           }
-
-          inventoryItem.value = updatedInventoryItem
         }
+
+        // Emitting an event for the build and the inventory slot to updated their summary
+        inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path)
+
+        setSelectedTab()
       } else {
         notificationService.notify(NotificationType.warning, isCompatible.failureMessage, true)
-        setSelectedItem() // Putting back the previous selected item
+        initializeSelectedItem() // Putting back the previous selected item
       }
 
       itemChanging.value = false
@@ -335,13 +311,10 @@ export default defineComponent({
     return {
       contentPathPrefix,
       editing,
-      ignorePrice,
-      inventoryItem,
       itemChanging,
       maxSelectableQuantity,
       modSlotPathPrefix,
       onFilterOptions,
-      onIgnorePriceChanged,
       onQuantityChanged,
       onSelectedItemChanged,
       onSortOptions,
@@ -353,6 +326,7 @@ export default defineComponent({
       preset,
       quantity,
       SelectableTab,
+      selectedInventoryItem,
       selectedItem,
       selectedItemIsContainer,
       selectedItemIsModdable,

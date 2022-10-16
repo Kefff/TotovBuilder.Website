@@ -20,7 +20,7 @@
         v-tooltip.top="$t('caption.ergonomics')"
       >
         <span :class="StatsUtils.getValueColorClass(item.ergonomicsPercentageModifier)">
-          {{ StatsUtils.getValueCaption(item.ergonomicsPercentageModifier) }}%
+          {{ StatsUtils.getDisplayValue(item.ergonomicsPercentageModifier, true, true) }}
         </span>
         <font-awesome-icon
           icon="hand-paper"

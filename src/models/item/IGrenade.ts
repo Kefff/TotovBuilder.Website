@@ -10,11 +10,6 @@ export interface IGrenade extends IItem {
   explosionDelay: number
 
   /**
-   * Type of ammunition of the fragments.
-   */
-  fragmentAmmunitionId: string
-
-  /**
    * Number of fragments.
    */
   fragmentsAmount: number
@@ -28,4 +23,9 @@ export interface IGrenade extends IItem {
    * Minimum explosion range in meters.
    */
   minimumExplosionRange: number
+
+  /**
+   * Type of grenade.
+   */
+  type: string
 }

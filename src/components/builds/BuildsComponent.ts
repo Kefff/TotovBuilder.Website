@@ -17,9 +17,9 @@ import NotificationButton from '../notification-button/NotificationButtonCompone
 import MerchantFilter from '../merchant-filter/MerchantFilterComponent.vue'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
 import vueI18n from '../../plugins/vueI18n'
-import Configuration from '../../../test-data/configuration.json'
 import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 
 export default defineComponent({
   components: {
@@ -86,11 +86,12 @@ export default defineComponent({
      * Checks hether builds have not been exported. Displays a warning if that is the case.
      */
     function checkBuildsNotExported() {
-      const exportWarningShowed = sessionStorage.getItem(Configuration.VITE_EXPORT_WARNING_SHOWED_KEY as string)
+      const exportWarningShowedKey = Services.get(WebsiteConfigurationService).configuration.exportWarningShowedStoregeKey
+      const exportWarningShowed = sessionStorage.getItem(exportWarningShowedKey)
 
       if (hasBuildsNotExported.value && exportWarningShowed == undefined) {
         Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.buildsNotExported'), true, 0)
-        sessionStorage.setItem(Configuration.VITE_EXPORT_WARNING_SHOWED_KEY as string, '')
+        sessionStorage.setItem(exportWarningShowedKey, '')
       }
     }
 

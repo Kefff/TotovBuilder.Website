@@ -7,7 +7,8 @@ import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { IBuild } from '../../models/build/IBuild'
 import { useI18n } from 'vue-i18n'
-import Configuration from '../../../test-data/configuration.json'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import { BuildService } from '../../services/BuildService'
 
 export default defineComponent({
   components: {
@@ -36,7 +37,7 @@ export default defineComponent({
     const showingList = computed(() => readenBuildSummaries.value.length > 0)
     const allSelected = computed(() => buildsToImportIds.value.length === readenBuildSummaries.value.length)
 
-    const exportFileExtension = Configuration.VITE_EXPORT_FILE_EXTENSION as string
+    const exportFileExtension = Services.get(WebsiteConfigurationService).configuration.exportFileExtension
 
     onMounted(() => document.onkeydown = (e) => onKeyDown(e))
 
@@ -90,7 +91,10 @@ export default defineComponent({
 
       readenBuilds.value = buildsResult.value
 
+      const buildService = Services.get(BuildService)
+
       for (const build of readenBuilds.value) {
+        buildService.updateObsoleteBuild(build)
         const summaryResult = await buildPropertiesService.getSummary(build)
 
         if (!summaryResult.success) {

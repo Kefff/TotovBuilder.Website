@@ -10,7 +10,7 @@
         v-model="currentLanguage"
         :options="languages"
         :placeholder="$t('caption.language')"
-        @change="setLanguage($event.value)"
+        @change="setLanguage()"
       >
         <template #option="slotProps">
           <div class="language-selector-item">

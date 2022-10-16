@@ -1,31 +1,23 @@
 <template>
-  <div
-    v-if="containerItem !== undefined"
-    class="indent"
-  >
-    <div
-      v-for="(containedItem, index) of modelValue.content"
-      :key="path + index + '_' + modelValue.content.length + '/' + itemPathPrefix + modelValue.content[index].itemId"
-      class="item"
-    >
-      <Item
-        v-model="modelValue.content[index]"
-        :accepted-items="acceptedItems"
-        :force-quantity-to-max-selectable-amount="isMagazine"
-        :category-ids="categoryIds"
-        :max-stackable-amount="maximumQuantity"
-        :path="path + index + '_' + modelValue.content.length + '/' + itemPathPrefix + modelValue.content[index].itemId"
-        @update:modelValue="onItemChanged($event, index)"
-      />
-    </div>
+  <div class="indent">
     <Item
-      v-if="editing && canAddItem"
+      v-for="(containedItem, index) of content"
+      :key="path + '/' + index + '_' + content.length"
+      v-model="content[index]"
+      :accepted-items="acceptedItems"
+      :force-quantity-to-max-selectable-amount="isMagazine"
+      :category-ids="categoryIds"
+      :max-stackable-amount="maximumQuantity"
+      :path="path + '/' + index + '_' + content.length + '/' + itemPathPrefix + containedItem.itemId"
+      @update:modelValue="onItemChanged($event, index)"
+    />
+    <Item
+      v-show="editing && canAddItem"
       v-model="itemToAdd"
-      class="item"
       :accepted-items="acceptedItems"
       :category-ids="categoryIds"
       :max-stackable-amount="maximumQuantity"
-      :path="path + modelValue.content.length + '_' + modelValue.content.length + '/' + 'new'"
+      :path="path + '/new'"
       @update:modelValue="onItemAdded($event)"
     />
   </div>

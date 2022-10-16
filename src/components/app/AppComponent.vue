@@ -14,8 +14,16 @@
       </div>
     </h1>
   </div>
-  <Changelog v-model="hasChangelogDisplayed" />
-  <router-view />
+  <div v-if="!isLoading">
+    <Changelog v-model="hasChangelogDisplayed" />
+    <router-view />
+  </div>
+  <div
+    v-else
+    class="app-loading"
+  >
+    <Loading />
+  </div>
   <div class="app-footer">
     <div class="app-footer-line">
       <div class="app-footer-element">
@@ -85,22 +93,22 @@
           >{{ $t('message.tarkovMarketDisclaimer2') }}</a>.
         </span>
         <!-- <span>
-          {{ $t('message.tarkovMarketDisclaimer3') }}
-          <a
-            class="link"
-            href="https://www.patreon.com/kokarn"
-            target="_blank"
-          >
-            <span class="app-tarkov-market-disclaimer-patreon-link">
-              <img
-                src="/assets/patreon.webp"
-                :title="$t('caption.patreon')"
-                class="app-tarkov-market-disclaimer-patreon-icon"
-              >
-              <span>Patreon</span>
-            </span>
-          </a>.
-        </span> -->
+            {{ $t('message.tarkovMarketDisclaimer3') }}
+            <a
+              class="link"
+              href="https://www.patreon.com/kokarn"
+              target="_blank"
+            >
+              <span class="app-tarkov-market-disclaimer-patreon-link">
+                <img
+                  src="/assets/patreon.webp"
+                  :title="$t('caption.patreon')"
+                  class="app-tarkov-market-disclaimer-patreon-icon"
+                >
+                <span>Patreon</span>
+              </span>
+            </a>.
+          </span> -->
       </div>
     </div>
     <div class="app-footer-line">
@@ -114,9 +122,9 @@
         © {{ copyrightYear }} Kefff
       </div>
     </div>
-  </div>
 
-  <Notification />
+    <Notification />
+  </div>
 </template>
 
 <script lang="ts" src="./AppComponent.ts" />

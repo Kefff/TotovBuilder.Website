@@ -1,20 +1,36 @@
-import * as TarkovValues from '../assets/data/tarkov-values.json'
+import { round } from 'round-ts'
+import Services from '../services/repository/Services'
+import { TarkovValuesService } from '../services/TarkovValuesService'
 
 /**
  * Represents an utility class for manipulating item stats values.
  */
 export default class StatsUtils {
   /**
-   * Gets the caption corresponding to a stats value.
+   * Gets the text to display for a stats value.
    * @param value - Value.
+   * @param isBonusMalus - Indicates whether the value is a bonus or malus and thus requires that a '+' or '-' sign be displayed.
+   * @param isPercentage - Indicates whether the value is a percentage or not ans thus requires that the values must be multiplyed by 100 and that a '%' sign be displayed.
    * @returns Caption.
    */
-  public static getValueCaption(value: number): string {
-    if (value > 0) {
-      return '+' + value
-    } else {
-      return value.toString()
+  public static getDisplayValue(value: number, isBonusMalus: boolean, isPercentage: boolean): string {
+    let displayValue: string
+
+    if (isPercentage) {
+      value = round(value * 100)
     }
+
+    if (isBonusMalus && value > 0) {
+      displayValue = '+' + value
+    } else {
+      displayValue = value.toString()
+    }
+
+    if (isPercentage) {
+      displayValue = displayValue + '%'
+    }
+
+    return displayValue
   }
 
   /**
@@ -39,9 +55,9 @@ export default class StatsUtils {
    * @returns CSS color class.
    */
   public static getWeightColorClass(weight: number): string {
-    if (weight > TarkovValues.heavyEncumbermentWeight) {
+    if (weight > Services.get(TarkovValuesService).values.heavyEncumbermentWeight) {
       return 'stats-encumberment-heavy'
-    } else if (weight > TarkovValues.lighEncumbermentWeight) {
+    } else if (weight > Services.get(TarkovValuesService).values.lightEncumbermentWeight) {
       return 'stats-encumberment-light'
     }
 

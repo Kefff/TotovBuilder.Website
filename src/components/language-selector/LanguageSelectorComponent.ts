@@ -1,5 +1,7 @@
-import { defineComponent, onMounted, ref, watch } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import Services from '../../services/repository/Services'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import LanguageUtils from '../../utils/LanguageUtils'
 
 export default defineComponent({
@@ -8,9 +10,10 @@ export default defineComponent({
     const languages = ref<string[]>([])
     const currentLanguage = ref(i18n.locale.value)
 
-    watch(() => i18n.locale.value, () => getLanguages())
-
-    onMounted(() => getLanguages())
+    onMounted(() => {
+      currentLanguage.value = localStorage.getItem(Services.get(WebsiteConfigurationService).configuration.languageStorageKey) ?? 'en'
+      setLanguage()
+    })
 
 
     /**
@@ -27,10 +30,9 @@ export default defineComponent({
 
     /**
      * Sets the language.
-     * @param language - Language
      */
-    function setLanguage(language: string) {
-      LanguageUtils.setLanguage(language)
+    function setLanguage() {
+      LanguageUtils.setLanguage(currentLanguage.value)
       getLanguages()
     }
 

@@ -4,7 +4,7 @@ import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import Services from '../../services/repository/Services'
 import StatsUtils from '../../utils/StatsUtils'
 import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
-import Configuration from '../../../test-data/configuration.json'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 
 export default defineComponent({
   components: {
@@ -64,8 +64,10 @@ export default defineComponent({
      * Gets the sorting data.
      */
     function getSortingData() {
-      sortField.value = localStorage.getItem(Configuration.VITE_BUILDS_SORT_FIELD_KEY) ?? 'name'
-      sortOrder.value = Number(localStorage.getItem(Configuration.VITE_BUILDS_SORT_ORDER_KEY)) ?? 1
+      const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
+      sortField.value = localStorage.getItem(websiteConfigurationService.configuration.buildsSortFieldStorageKey) ?? 'name'
+      sortOrder.value = Number(localStorage.getItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey)) ?? 1
     }
 
     /**
@@ -73,11 +75,12 @@ export default defineComponent({
      * @param event - Sorting event.
      */
     function onSort(event: Record<string, unknown>) {
+      const websiteConfigurationService = Services.get(WebsiteConfigurationService)
       const sortField = event['sortField'] as string
       const sortOrder = event['sortOrder'] as number
 
-      localStorage.setItem(Configuration.VITE_BUILDS_SORT_FIELD_KEY, sortField)
-      localStorage.setItem(Configuration.VITE_BUILDS_SORT_ORDER_KEY, sortOrder.toLocaleString())
+      localStorage.setItem(websiteConfigurationService.configuration.buildsSortFieldStorageKey, sortField)
+      localStorage.setItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey, sortOrder.toLocaleString())
     }
 
     /**

@@ -1,4 +1,5 @@
 import { ArmorUtils } from '../../utils/ArmorUtils'
+import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 
 describe('getArmorPenetrationTooltip()', () => {
   it.each([
@@ -17,6 +18,9 @@ Penetrated after 1 - 3 bullets`],
     [6, 6, `Armor class 6 penetration : 6
 Penetrated after < 1 bullets`]
   ])('should get the tooltip for an armor penetration', (armorClass: number, penetration: number, expected: string) => {
+    // Arrange
+    useTarkovValuesServiceMock()
+
     // Act
     const tooltip = ArmorUtils.getArmorPenetrationTooltip(armorClass, penetration)
 

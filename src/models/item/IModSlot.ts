@@ -8,15 +8,10 @@ export interface IModSlot {
   compatibleItemIds: string[]
 
   /**
-    * ID.
-    */
-  id: string
-
-  /**
    * Maximum number of times the item can be stacked in this mod slot.
    * Mainly used to force the ammunition quantity to 1 in the special chamber mod slot.
    */
-  maxStackableAmount?: number
+  maxStackableAmount: number
 
   /**
     * Name.

@@ -1,6 +1,6 @@
 import { IBuild } from '../models/build/IBuild'
 import { IInventoryItem } from '../models/build/IInventoryItem'
-import { IConflictingItem } from '../models/item/IConflictingItem'
+import { IConflictingItem } from '../models/configuration/IConflictingItem'
 import { IVest } from '../models/item/IVest'
 import { IAmmunitionCount } from '../models/utils/IAmmunitionCount'
 import vueI18n from '../plugins/vueI18n'
@@ -14,6 +14,7 @@ import { InventoryItemService } from './InventoryItemService'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { PathUtils } from '../utils/PathUtils'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
+import { round } from 'round-ts'
 
 /**
  * Represents a service responsible for managing properties of a build.
@@ -63,7 +64,7 @@ export class BuildPropertiesService {
 
   /**
    * Checks if a mod can be added to an item by recursively checking if it appears in any of the conflicting items list of each of the children mods already added.
-   * @param inventoryItem - Item in which the mod is set to be added.
+   * @param build - Build.
    * @param modId - ID of the mod to be added.
    * @param path - Path to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
    * @returns Success if the mod can be added; otherwise Failure.
@@ -110,8 +111,8 @@ export class BuildPropertiesService {
         FailureType.hidden,
         'BuildService.checkCanAddMod()',
         vueI18n.t('message.cannotAddMod', {
-          modCaption: modResult.value.caption,
-          conflictingItemCaption: conflictingItemResult.value.caption
+          modName: modResult.value.name,
+          conflictingItemName: conflictingItemResult.value.name
         })
       )
     }
@@ -247,7 +248,7 @@ export class BuildPropertiesService {
       ergonomicsPercentageModifier += inventorySlotErgonomicsPercentageModifierResult.value
     }
 
-    return Result.ok(ergonomicsPercentageModifier)
+    return Result.ok(round(ergonomicsPercentageModifier, 2))
   }
 
   /**
@@ -286,27 +287,33 @@ export class BuildPropertiesService {
     const inventoryPrice: IInventoryPrice = {
       missingPrice: false,
       price: {
+        barterItems: [],
         currencyName: mainCurrencyResult.value.name,
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
       priceWithContentInMainCurrency: {
+        barterItems: [],
         currencyName: mainCurrencyResult.value.name,
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
       pricesWithContent: [],
       unitPrice: {
+        barterItems: [],
         currencyName: mainCurrencyResult.value.name,
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
@@ -403,27 +410,33 @@ export class BuildPropertiesService {
       price: {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: mainCurrencyResult.value.name,
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: mainCurrencyResult.value.name,
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
         pricesWithContent: [],
         unitPrice: {
+          barterItems: [],
           currencyName: mainCurrencyResult.value.name,
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
@@ -452,7 +465,7 @@ export class BuildPropertiesService {
         return Result.failFrom(ergonomicsResult)
       }
 
-      result.ergonomics = Math.round(ergonomicsResult.value + (ergonomicsResult.value * result.ergonomicsPercentageModifier / 100))
+      result.ergonomics = round(ergonomicsResult.value + (ergonomicsResult.value * result.ergonomicsPercentageModifier), 1)
     }
 
     // Price
@@ -520,7 +533,7 @@ export class BuildPropertiesService {
       weight += inventorySlotWeightResult.value
     }
 
-    return Result.ok(+weight.toFixed(3)) // toFixed() used to avoir floating point imprecision, + used to transform it back to number
+    return Result.ok(round(weight, 3))
   }
 
   /**

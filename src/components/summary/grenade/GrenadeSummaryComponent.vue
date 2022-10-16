@@ -3,38 +3,6 @@
     v-if="hasFragmentsAmount || showEmptyEntries"
     class="option-entry"
   >
-    <div class="option-value">
-      <span
-        v-if="hasFragmentsAmount"
-        v-tooltip.top="$t('caption.fleshDamage')"
-      >{{ fragmentAmmunition?.fleshDamage }}</span>
-      <div
-        v-if="hasFragmentsAmount"
-        class="flesh-damage"
-      >
-        <div v-tooltip.top="$t('caption.fleshDamage')">
-          <font-awesome-icon
-            icon="heart-broken"
-            class="icon-after-text flesh-damage-color"
-          />
-        </div>
-        <div
-          v-if="canOneshot"
-          v-tooltip.top="$t('caption.canOneshot')"
-          class="flesh-damage-oneshot"
-        >
-          <font-awesome-icon
-            icon="skull"
-            class="flesh-damage-oneshot-icon"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
-    v-if="hasFragmentsAmount || showEmptyEntries"
-    class="option-entry"
-  >
     <div
       v-tooltip.top="$t('caption.fragmentsAmount')"
       class="option-value"

@@ -4,10 +4,11 @@ import Result, { FailureType } from '../utils/Result'
 import InventorySlotTypes from '../assets/data/inventory-slot-types.json'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import i18n from '../plugins/vueI18n'
-import Configuration from '../../test-data/configuration.json'
 import jsonUrl from 'json-url'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IInventorySlot } from '../models/build/IInventorySlot'
+import Services from './repository/Services'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 
 /**
  * Represents a service responsible for managing builds.
@@ -115,11 +116,15 @@ export class BuildService {
         build.lastExported = new Date(build.lastExported as unknown as string)
       }
 
+      // Updating and saving obsolete builds
+      this.updateObsoleteBuild(build)
+      this.update(build.id, build)
+
       return Result.ok(build)
     }
 
     return Result.fail<IBuild>(
-      FailureType.warning,
+      FailureType.error,
       'BuildService.update()',
       i18n.t('message.buildNotFound', { id })
     )
@@ -131,7 +136,7 @@ export class BuildService {
    */
   public getAll(): IBuild[] {
     const builds: IBuild[] = []
-    const buildKeyPrefix = Configuration.VITE_BUILD_KEY_PREFIX as string
+    const buildKeyPrefix = Services.get(WebsiteConfigurationService).configuration.buildStorageKeyPrefix
 
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i) // Key could potentially be null if a build is deleted while looping, but it is hardly testable
@@ -151,7 +156,7 @@ export class BuildService {
 
   /**
    * Parses a build that was reduced for sharing.
-   * @param serializedBuild - Serialized build.
+   * @param reducedBuild - Serialized build.
    * @returns Build.
    */
   public parseReducedBuild(reducedBuild: Record<string, unknown>): Result<IBuild> {
@@ -171,11 +176,6 @@ export class BuildService {
       }
 
       const index = build.inventorySlots.findIndex(is => is.typeId === inventorySlotResult.value.typeId)
-
-      if (index < 0) {
-        return Result.fail(FailureType.error, 'BuildService.parseReducedBuild()', i18n.t('message.cannotFindInventorySlotType', { inventorySlotTypeId: inventorySlotResult.value.typeId }))
-      }
-
       build.inventorySlots[index] = inventorySlotResult.value
     }
 
@@ -183,12 +183,12 @@ export class BuildService {
   }
 
   /**
-   * Transforms a build in order to share it.
+   * Transforms a build to a reduced form in order to take less space.
    * Unnecessary data is scrapped and property names are shortened.
    * @param build - Build.
    * @returns Reduced build.
    */
-  public reduceBuildForSharing(build: IBuild): Result<Record<string, unknown>> {
+  public reduceBuild(build: IBuild): Result<Record<string, unknown>> {
     const reducedBuild: Record<string, unknown> = {}
     const reducedInventorySlots: Record<string, unknown>[] = []
 
@@ -213,7 +213,7 @@ export class BuildService {
    */
   public async toSharableURL(build: IBuild): Promise<Result<string>> {
     // Reducing the size of the build
-    const reducedBuildResult = this.reduceBuildForSharing(build)
+    const reducedBuildResult = this.reduceBuild(build)
 
     if (!reducedBuildResult.success) {
       return Result.failFrom(reducedBuildResult)
@@ -221,7 +221,7 @@ export class BuildService {
 
     // Compressing the build into a URL
     const codec = jsonUrl('lzma')
-    let sharableURL = Configuration.VITE_BUILD_SHARING_URL
+    let sharableURL = Services.get(WebsiteConfigurationService).configuration.buildSharingUrl
     sharableURL += await codec.compress(reducedBuildResult.value)
 
     if (sharableURL.length > 2048) {
@@ -254,10 +254,28 @@ export class BuildService {
     }
 
     return Result.fail(
-      FailureType.warning,
+      FailureType.error,
       'BuildService.update()',
       i18n.t('message.buildNotFound', { id })
     )
+  }
+
+  /**
+   * Updates an obsolete build.
+   * @param build - Build to update.
+   */
+  public updateObsoleteBuild(build: IBuild): void {
+    const obsoleteInventorySlot = build.inventorySlots.find(is => is.typeId === 'compass')
+
+    if (obsoleteInventorySlot !== undefined) {
+      obsoleteInventorySlot.typeId = 'special'
+
+      obsoleteInventorySlot.items = [
+        obsoleteInventorySlot.items[0],
+        undefined,
+        undefined
+      ]
+    }
   }
 
   /**
@@ -266,14 +284,14 @@ export class BuildService {
    * @returns Storage key.
    */
   private getKey(id: string): string {
-    const key = Configuration.VITE_BUILD_KEY_PREFIX as string + id
+    const key = Services.get(WebsiteConfigurationService).configuration.buildStorageKeyPrefix + id
 
     return key
   }
 
   /**
    * Parses an inventory item that was reduced for sharing.
-   * @param serializedInventoryItem - Reduced inventory item.
+   * @param reducedInventoryItem - Reduced inventory item.
    * @returns Inventory item.
    */
   private parseReducedInventoryItem(reducedInventoryItem: Record<string, unknown>): Result<IInventoryItem> {
@@ -331,7 +349,7 @@ export class BuildService {
 
   /**
    * Parses an inventory mod slot that was reduced for sharing.
-   * @param serializedInventoryModSlot - Reduced inventory mod slot.
+   * @param reducedInventoryModSlot - Reduced inventory mod slot.
    * @returns Mod slot.
    */
   private parseReducedInventoryModSlot(reducedInventoryModSlot: Record<string, unknown>): Result<IInventoryModSlot> {
@@ -378,16 +396,23 @@ export class BuildService {
       return Result.fail(FailureType.error, 'BuildService.parseReducedInventorySlot()', i18n.t('message.cannotParseInventorySlotWithoutTypeId'))
     }
 
-    const inventoryItems: IInventoryItem[] = []
+    const inventorySlotType = InventorySlotTypes.find(ist => ist.id === typeId)
 
-    for (const reducedItem of reducedItems) {
+    if (inventorySlotType === undefined) {
+      return Result.fail(FailureType.error, 'BuildService.parseReducedInventorySlot()', i18n.t('message.cannotFindInventorySlotType', { inventorySlotTypeId: typeId }))
+    }
+
+    const inventoryItems: IInventoryItem[] = Array(inventorySlotType.itemSlotsAmount)
+
+    for (let i = 0; i < reducedItems.length; i++) {
+      const reducedItem = reducedItems[i]
       const inventoryItemResult = this.parseReducedInventoryItem(reducedItem)
 
       if (!inventoryItemResult.success) {
         return Result.failFrom(inventoryItemResult)
       }
 
-      inventoryItems.push(inventoryItemResult.value)
+      inventoryItems[i] = inventoryItemResult.value
     }
 
     return Result.ok({
@@ -441,7 +466,7 @@ export class BuildService {
   /**
    * Transforms an inventory mod slot in order to share it.
    * Unnecessary data is scrapped and property names are shortened.
-   * @param inventoryItem - Inventory mod slot.
+   * @param inventoryModSlot - Inventory mod slot.
    * @returns Reduced inventory mod slot.
    */
   private reduceInventoryModSlotForSharing(inventoryModSlot: IInventoryModSlot): Record<string, unknown> {
@@ -461,7 +486,7 @@ export class BuildService {
   /**
    * Transforms an inventory slot in order to share it.
    * Unnecessary data is scrapped and property names are shortened.
-   * @param inventoryItem - Inventory slot.
+   * @param inventorySlot - Inventory slot.
    * @returns Reduced inventory slot.
    */
   private reduceInventorySlotForSharing(inventorySlot: IInventorySlot): Record<string, unknown> {

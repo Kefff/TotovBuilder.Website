@@ -1,4 +1,4 @@
-import { computed, defineComponent, provide, ref, watch, nextTick, onUnmounted, onMounted } from 'vue'
+import { computed, defineComponent, provide, ref, watch, onUnmounted, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import InputTextField from '../input-text-field/InputTextFieldComponent.vue'
 import InventorySlot from '../inventory-slot/InventorySlotComponent.vue'
@@ -21,6 +21,8 @@ import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue
 import Loading from '../loading/LoadingComponent.vue'
 import ShareBuild from '../build-share/BuildShareComponent.vue'
 import { PathUtils } from '../../utils/PathUtils'
+import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
+import { InventoryItemService } from '../../services/InventoryItemService'
 
 export default defineComponent({
   components: {
@@ -36,30 +38,31 @@ export default defineComponent({
   setup: () => {
     const route = useRoute()
     const router = useRouter()
+
     const buildComponentService = Services.get(BuildComponentService)
-    const exportService = Services.get(ExportService)
-    const notificationService = Services.get(NotificationService)
-    const merchantFilterService = Services.get(MerchantFilterService)
     const buildPropertiesService = Services.get(BuildPropertiesService)
+    const compatibilityService = Services.get(CompatibilityService)
+    const exportService = Services.get(ExportService)
+    const inventoryItemService = Services.get(InventoryItemService)
+    const merchantFilterService = Services.get(MerchantFilterService)
+    const notificationService = Services.get(NotificationService)
 
-    const build = ref<IBuild>(buildComponentService.getBuild(route.params['id'] as string))
-    watch(() => route.params, (newParams) => build.value = buildComponentService.getBuild(newParams['id'] as string))
-    watch(() => route.params, async (newParams) => getSharedBuild(newParams['sharedBuild'] as string))
-
-    const newBuild = computed(() => build.value.id === '')
+    const inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
     let originalBuild: IBuild
 
-    const editing = newBuild.value ? ref(true) : ref(false)
-    provide('editing', editing)
-
-    const deleting = ref(false)
     const invalid = computed(() => build.value.name === '')
     const isEmpty = computed(() => !build.value.inventorySlots.some(is => is.items.some(i => i != undefined)))
-    const isLoading = ref(true)
+    const isNewBuild = computed(() => build.value.id === '')
+    const notExportedTooltip = computed(() => !summary.value.exported ? buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
+    const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
+
+    const advancedPanel = ref()
+    const ammunitionCountsPanel = ref()
+    const build = ref<IBuild>(buildComponentService.getBuild(route.params['id'] as string))
     const collapseStatuses = ref<boolean[]>([])
-
-    const compatibilityService = Services.get(CompatibilityService)
-
+    const deleting = ref(false)
+    const editing = isNewBuild.value ? ref(true) : ref(false)
+    const isInitializing = ref(true)
     const summary = ref<IBuildSummary>({
       ammunitionCounts: [],
       ergonomics: undefined,
@@ -73,61 +76,62 @@ export default defineComponent({
       price: {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
         pricesWithContent: [],
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
-        }
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       },
       verticalRecoil: undefined,
       weight: 0
     })
 
-    const path = computed(() => PathUtils.buildPrefix + (newBuild.value ? PathUtils.newBuild : build.value.id))
-    const inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
-    const notExportedTooltip = computed(() => !summary.value.exported ? buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
+    provide('editing', editing)
 
-    const ammunitionCountsPanel = ref()
-    const advancedPanel = ref()
+    watch(() => route.params, () => initialize())
 
     onMounted(() => {
-      document.onkeydown = (e) => onKeyDown(e)
-      getSharedBuild(route.params['sharedBuild'] as string).then(() => {
-        getCollapseStatuses()
-        getSummary()
-      })
-
       compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.mod, onModCompatibilityRequest)
+      inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
       merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
 
-      isLoading.value = false
+      document.onkeydown = (e) => onKeyDown(e)
+      initialize()
     })
 
     onUnmounted(() => {
       compatibilityService.emitter.off(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
       compatibilityService.emitter.off(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
+      inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
       merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
     })
 
@@ -149,17 +153,14 @@ export default defineComponent({
      * Cancels modifications and stops edit mode.
      */
     async function cancelEdit() {
-      isLoading.value = true
       editing.value = false
 
-      if (newBuild.value) {
+      if (isNewBuild.value) {
         goToBuilds()
       } else {
-        await nextTick() // Required otherwise some of the ItemComponents keep their actual value for some reason
         build.value = originalBuild
+        getSummary()
       }
-
-      isLoading.value = false
     }
 
     /**
@@ -223,7 +224,7 @@ export default defineComponent({
 
       toggleAdvancedPanel(undefined)
 
-      if (newBuild.value) {
+      if (isNewBuild.value) {
         return
       }
 
@@ -232,8 +233,6 @@ export default defineComponent({
       if (!exportResult.success) {
         notificationService.notify(NotificationType.error, exportResult.failureMessage)
       }
-
-      getSummary()
     }
 
     /**
@@ -266,28 +265,22 @@ export default defineComponent({
     }
 
     /**
-     * Gets the values of the summary of the content of the inventory slot.
+     * Gets the values of the summary of the content of the build.
      */
     async function getSummary() {
       if (build.value === undefined) {
         return
       }
 
-      isLoading.value = true
-
-      const service = Services.get(BuildPropertiesService)
-      const summaryResult = await service.getSummary(build.value)
+      const summaryResult = await buildPropertiesService.getSummary(build.value)
 
       if (!summaryResult.success) {
-        isLoading.value = false
-        Services.get(NotificationService).notify(NotificationType.error, summaryResult.failureMessage)
+        notificationService.notify(NotificationType.error, summaryResult.failureMessage)
 
         return
       }
 
       summary.value = summaryResult.value
-
-      isLoading.value = false
     }
 
     /**
@@ -298,9 +291,33 @@ export default defineComponent({
     }
 
     /**
+     * Initializes the build.
+     */
+    function initialize() {
+      isInitializing.value = true
+
+      build.value = buildComponentService.getBuild(route.params['id'] as string)
+      getSharedBuild(route.params['sharedBuild'] as string)
+        .then(async () => {
+          getCollapseStatuses()
+          await getSummary()
+        })
+        .finally(() => isInitializing.value = false)
+
+    }
+
+    /**
+     * Checks whether an armor can be added to the build or not.
+     * @param request - Compatibility request.
+     */
+    function onArmorCompatibilityRequest(request: CompatibilityRequest) {
+      request.setResult(buildPropertiesService.checkCanAddArmor(build.value))
+    }
+
+    /**
      * Updates the summary when an InventorySlot changes.
      */
-    function onInventorySlotChanged() {
+    function onInventoryItemChanged() {
       getSummary()
     }
 
@@ -316,14 +333,6 @@ export default defineComponent({
           save()
         }
       }
-    }
-
-    /**
-     * Checks whether an armor can be added to the build or not.
-     * @param request - Compatibility request.
-     */
-    function onArmorCompatibilityRequest(request: CompatibilityRequest) {
-      request.setResult(Services.get(BuildPropertiesService).checkCanAddArmor(build.value))
     }
 
     /**
@@ -346,7 +355,7 @@ export default defineComponent({
      * @param request - Compatibility request.
      */
     function onTacticalRigCompatibilityRequest(request: CompatibilityRequest) {
-      request.setResult(Services.get(BuildPropertiesService).checkCanAddVest(build.value, request.itemId))
+      request.setResult(buildPropertiesService.checkCanAddVest(build.value, request.itemId))
     }
 
     /**
@@ -362,7 +371,6 @@ export default defineComponent({
     function save() {
       editing.value = false
       buildComponentService.saveBuild(router, build.value)
-      getSummary()
     }
 
     /**
@@ -414,10 +422,8 @@ export default defineComponent({
       invalid,
       inventorySlotPathPrefix,
       isEmpty,
-      isLoading,
-      newBuild,
+      isInitializing,
       notExportedTooltip,
-      onInventorySlotChanged,
       path,
       remove,
       save,
@@ -425,8 +431,8 @@ export default defineComponent({
       startEdit,
       StatsUtils,
       summary,
-      toggleAmmunitionCounts,
-      toggleAdvancedPanel
+      toggleAdvancedPanel,
+      toggleAmmunitionCounts
     }
   }
 })

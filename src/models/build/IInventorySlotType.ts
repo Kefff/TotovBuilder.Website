@@ -1,4 +1,4 @@
-import { IItemCategory } from '../item/IItemCategory'
+import { IItemCategory } from '../configuration/IItemCategory'
 
 /**
  * Provides the functionalities of an inventory slot type.

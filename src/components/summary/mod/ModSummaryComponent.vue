@@ -9,7 +9,7 @@
     >
       <div v-if="hasErgonomicsModifier">
         <span :class="StatsUtils.getValueColorClass(item.ergonomicsModifier)">
-          {{ StatsUtils.getValueCaption(item.ergonomicsModifier) }}
+          {{ StatsUtils.getDisplayValue(item.ergonomicsModifier, true, false) }}
         </span>
         <font-awesome-icon
           icon="hand-paper"

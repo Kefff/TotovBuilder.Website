@@ -58,6 +58,10 @@ body {
   margin-right: 0.5rem;
 }
 
+.app-loading {
+  margin-top: 3rem;
+}
+
 .app-tarkov-market-disclaimer {
   align-items: center;
   display: flex;
@@ -111,14 +115,18 @@ body {
 }
 
 .app-title-part1 {
+  padding-left: 4rem;
   margin-left: auto;
   margin-right: auto;
+  text-align: right;
+  width: 18.75rem;
 }
 
 .app-title-part2 {
   color: var(--error-color);
   margin-left: auto;
   margin-right: auto;
+  width: 18.75rem;
 }
 
 .app-title-prapor {

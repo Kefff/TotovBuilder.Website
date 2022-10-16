@@ -127,7 +127,7 @@
               v-tooltip.top="$t('caption.ergonomicsPercentageModifier')"
               class="build-toolbar-summary-value"
             >
-              <span :class="StatsUtils.getValueColorClass(summary.ergonomicsPercentageModifier)">{{ StatsUtils.getValueCaption(summary.ergonomicsPercentageModifier) }}%</span>
+              <span :class="StatsUtils.getValueColorClass(summary.ergonomicsPercentageModifier)">{{ StatsUtils.getDisplayValue(summary.ergonomicsPercentageModifier, true, true) }}</span>
               <font-awesome-icon
                 icon="hand-paper"
                 class="icon-after-text"
@@ -198,7 +198,7 @@
     </div>
 
     <!-- Inventory slots -->
-    <div v-show="!isLoading">
+    <div v-if="!isInitializing">
       <div
         v-if="!editing && isEmpty"
         class="build-empty-message"
@@ -230,12 +230,11 @@
           v-model:modelValue="build.inventorySlots[index]"
           v-model:collapsed="collapseStatuses[index]"
           :path="path + '/' + inventorySlotPathPrefix + inventorySlot.typeId"
-          @update:modelValue="onInventorySlotChanged()"
         />
       </div>
     </div>
     <div
-      v-show="isLoading"
+      v-if="isInitializing"
       class="build-loading"
     >
       <Loading />
@@ -255,7 +254,7 @@
       <div class="build-toolbar-ammunition-count-count">
         {{ ammunitionCount.count.toLocaleString() }}
       </div>
-      <div>{{ ammunitionCount.caption }}</div>
+      <div>{{ ammunitionCount.name }}</div>
     </div>
   </OverlayPanel>
 
@@ -308,7 +307,7 @@
         icon="exclamation-triangle"
         class="build-warning-icon"
       />
-      <span>{{ $t('message.confirmDeleteBuild', { caption: build.name }) }}</span>
+      <span>{{ $t('message.confirmDeleteBuild', { name: build.name }) }}</span>
     </div>
     <template #footer>
       <Button

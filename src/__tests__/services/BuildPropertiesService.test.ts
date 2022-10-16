@@ -5,9 +5,19 @@ import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import Result from '../../utils/Result'
-import Currencies from '../../assets/data/currencies.json'
-import { ICurrency } from '../../models/item/ICurrency'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
+import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import Services from '../../services/repository/Services'
+import { InventoryItemService } from '../../services/InventoryItemService'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { InventorySlotService } from '../../services/InventorySlotService'
+import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
+import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import { instance, mock } from 'ts-mockito'
+import { IWebsiteConfiguration } from '../../models/configuration/IWebsiteConfiguration'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 
 const build1: IBuild = {
   id: 'build_1',
@@ -49,7 +59,7 @@ const build1: IBuild = {
         {
           content: [],
           ignorePrice: false,
-          itemId: '5c0e541586f7747fa54205c9', // 6B13 M assault armor (Tan)
+          itemId: '5c0e51be86f774598e797894', // 6B13 assault armor (Flora)
           modSlots: [],
           quantity: 1
         }
@@ -89,13 +99,13 @@ const build1: IBuild = {
         {
           content: [],
           ignorePrice: false,
-          itemId: '5c0e874186f7745dc7616606', // Maska-1Shch bulletproof helmet (Killa)
+          itemId: '5d6d3716a4b9361bc8618872', // BNTI LShZ-2DTM helmet
           modSlots: [
             {
               item: {
                 content: [],
                 ignorePrice: false,
-                itemId: '5c0e842486f77443a74d2976', // Maska-1Shch face shield (Killa)
+                itemId: '5d6d3829a4b9361bc8618943', // LShZ-2DTM face shield
                 modSlots: [],
                 quantity: 1
               },
@@ -137,7 +147,7 @@ const build1: IBuild = {
         {
           content: [],
           ignorePrice: false,
-          itemId: '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs "Igolnik"
+          itemId: '56dfef82d2720bbd668b4567', // 5.45x39mm BP gs
           modSlots: [],
           quantity: 60
         }
@@ -159,7 +169,7 @@ const build1: IBuild = {
             {
               content: [],
               ignorePrice: false,
-              itemId: '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs "Igolnik"
+              itemId: '56dfef82d2720bbd668b4567', // 5.45x39mm BP gs
               modSlots: [],
               quantity: 1
             }
@@ -215,7 +225,7 @@ const build1: IBuild = {
                   {
                     content: [],
                     ignorePrice: false,
-                    itemId: '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs "Igolnik"
+                    itemId: '56dfef82d2720bbd668b4567', // 5.45x39mm BP gs
                     modSlots: [],
                     quantity: 95
                   }
@@ -336,7 +346,7 @@ const build2: IBuild = {
         {
           content: [],
           ignorePrice: false,
-          itemId: '5e4d34ca86f774264f758330', // Walker's Razor Digital headset"
+          itemId: '5e4d34ca86f774264f758330', // Walker's Razor Digital headset
           modSlots: [],
           quantity: 1
         }
@@ -362,7 +372,7 @@ const build2: IBuild = {
             {
               content: [],
               ignorePrice: false,
-              itemId: '5efb0da7a29a85116f6ea05f', // 9x19 mm 7N31"
+              itemId: '5c3df7d588a4501f290594e5', // 9x19mm Green Tracer
               modSlots: [],
               quantity: 1
             }
@@ -374,13 +384,13 @@ const build2: IBuild = {
               item: {
                 content: [],
                 ignorePrice: false,
-                itemId: '5cadc1c6ae9215000f2775a4', // Threaded barrel for M9A3 9x19"
+                itemId: '5cadc1c6ae9215000f2775a4', // Threaded barrel for M9A3 9x19
                 modSlots: [
                   {
                     item: {
                       content: [],
                       ignorePrice: false,
-                      itemId: '5c6165902e22160010261b28', // Sig SRD 9 9x19mm sound suppressor"
+                      itemId: '5c6165902e22160010261b28', // Sig SRD 9 9x19mm sound suppressor
                       modSlots: [],
                       quantity: 1
                     },
@@ -405,13 +415,13 @@ const build2: IBuild = {
               item: {
                 content: [],
                 ignorePrice: false,
-                itemId: '5cadc55cae921500103bb3be', // M9A3 Slide"
+                itemId: '5cadc55cae921500103bb3be', // M9A3 Slide
                 modSlots: [
                   {
                     item: {
                       content: [],
                       ignorePrice: false,
-                      itemId: '5cadd940ae9215051e1c2316', // Beretta M9A3 Standard Rearsight"
+                      itemId: '5cadd940ae9215051e1c2316', // Beretta M9A3 Standard Rearsight
                       modSlots: [],
                       quantity: 1
                     },
@@ -421,7 +431,7 @@ const build2: IBuild = {
                     item: {
                       content: [],
                       ignorePrice: false,
-                      itemId: '5cadd919ae921500126a77f3', // M9A3 Standard Frontsight"
+                      itemId: '5cadd919ae921500126a77f3', // M9A3 Standard Frontsight
                       modSlots: [],
                       quantity: 1
                     },
@@ -438,13 +448,13 @@ const build2: IBuild = {
                   {
                     content: [],
                     ignorePrice: false,
-                    itemId: '5efb0da7a29a85116f6ea05f', // 9x19 mm 7N31"
+                    itemId: '5c3df7d588a4501f290594e5', // 9x19mm Green Tracer
                     modSlots: [],
                     quantity: 17
                   }
                 ],
                 ignorePrice: false,
-                itemId: '5cadc2e0ae9215051e1c21e7', // M9A3 9x19 17-round magazine"
+                itemId: '5cadc2e0ae9215051e1c21e7', // M9A3 9x19 17-round magazine
                 modSlots: [],
                 quantity: 1
               },
@@ -454,7 +464,7 @@ const build2: IBuild = {
               item: {
                 content: [],
                 ignorePrice: false,
-                itemId: '5cc9c20cd7f00c001336c65d', // NcSTAR Tactical blue laser LAM-Module"
+                itemId: '56def37dd2720bec348b456a', // SureFire X400 Ultra tactical flashlight with laser
                 modSlots: [],
                 quantity: 1
               },
@@ -634,6 +644,7 @@ describe('checkCanAddArmor()', () => {
     'should check if an armor can be added to the build',
     async (build: IBuild, expected: Result) => {
       // Arrange
+      useItemServiceMock()
       const service = new BuildPropertiesService()
 
       // Act
@@ -788,7 +799,7 @@ describe('checkCanAddMod()', () => {
       {
         failureContext: 'BuildService.checkCanAddMod()',
         failureMessage:
-          'Cannot add mod "AKS-74U Alfa Arms Goliaf handguard" because it conflicts with item "AK-105 5.45x39 muzzle brake & compensator (6P44 0-20)".',
+          'Cannot add mod "AKS-74U Alfa Arms Goliaf handguard" because it conflicts with item "AK-105 5.45x39 muzzle brake-compensator (6P44 0-20)".',
         success: false
       } as Result
     ],
@@ -953,7 +964,7 @@ describe('checkCanAddMod()', () => {
         lastUpdated: new Date(),
         name: 'buil1'
       } as IBuild,
-      '5c82342f2e221644f31c060e', // Zenit-BelOMO PSO-1 4x24 scope, conflicts with Axion Kobra EKP-8-02 reflex sight (Dovetail) that is being replaced (so there should be non error)
+      '5c82342f2e221644f31c060e', // Zenit-BelOMO PSO-1 4x24 scope, conflicts with Axion Kobra EKP-8-02 reflex sight (Dovetail) that is being replaced (so there should be no error)
       'build:123456789/slot:onSling_0/item:587e02ff24597743df3deaeb/mod:mod_mount/item:587e08ee245977446b4410cf/mod:mod_scope',
       {
         failureContext: '',
@@ -965,6 +976,7 @@ describe('checkCanAddMod()', () => {
     'should check if a mod can be added to an item',
     async (build: IBuild, modId: string, modSlotPath: string, expected: Result) => {
       // Arrange
+      useItemServiceMock()
       const service = new BuildPropertiesService()
 
       // Act
@@ -1092,6 +1104,7 @@ describe('checkCanAddVest()', () => {
     'should check if a vest can be added to the build',
     async (build: IBuild, vestId: string, expected: Result) => {
       // Arrange
+      useItemServiceMock()
       const service = new BuildPropertiesService()
 
       // Act
@@ -1109,8 +1122,8 @@ describe('getAmmunitionCounts()', () => {
       build1,
       [
         {
-          caption: '5.45x39mm PPBS gs "Igolnik"',
-          id: '5c0d5e4486f77478390952fe',
+          name: '5.45x39mm BP gs',
+          id: '56dfef82d2720bbd668b4567',
           count: 156
         }
       ] as IAmmunitionCount[]
@@ -1118,6 +1131,9 @@ describe('getAmmunitionCounts()', () => {
   ])(
     'should get the ammunition counts of a build', async (build: IBuild, expected: IAmmunitionCount[]) => {
       // Arrange
+      useItemServiceMock()
+      Services.configure(InventoryItemService)
+      Services.configure(ItemPropertiesService)
       const service = new BuildPropertiesService()
 
       // Act
@@ -1132,6 +1148,9 @@ describe('getAmmunitionCounts()', () => {
 
   it('should fail if an item cannot be found', async () => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(InventoryItemService)
+    Services.configure(ItemPropertiesService)
     const service = new BuildPropertiesService()
 
     // Act
@@ -1164,7 +1183,7 @@ describe('getAmmunitionCounts()', () => {
 
 describe('getErgonomics()', () => {
   it.each([
-    [build1, 39],
+    [build1, 37.5],
     [build2, 54],
     [{
       name: 'Build 3',
@@ -1210,6 +1229,11 @@ describe('getErgonomics()', () => {
     'should get the ergonomics of the main ranged weapon of a build',
     async (build: IBuild, expected: number | undefined) => {
       // Arrange
+      useItemServiceMock()
+      Services.configure(InventoryItemService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(InventorySlotService)
+      Services.configure(InventorySlotPropertiesService)
       const service = new BuildPropertiesService()
 
       // Act
@@ -1227,6 +1251,11 @@ describe('getErgonomics()', () => {
 
   it('should fail if an item cannot be found', async () => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(InventoryItemService)
+    Services.configure(ItemPropertiesService)
+    Services.configure(InventorySlotService)
+    Services.configure(InventorySlotPropertiesService)
     const service = new BuildPropertiesService()
 
     // Act
@@ -1261,12 +1290,16 @@ describe('getErgonomics()', () => {
 
 describe('getErgonomicsPercentageModifier()', () => {
   it.each([
-    [build1, -31],
+    [build1, -0.25],
     [build2, 0]
   ])(
     'should get the ergonomics percentage modifier of a build',
     async (build: IBuild, expected: number) => {
       // Arrange
+      useItemServiceMock()
+      Services.configure(InventoryItemService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(InventorySlotPropertiesService)
       const service = new BuildPropertiesService()
 
       // Act
@@ -1282,6 +1315,9 @@ describe('getErgonomicsPercentageModifier()', () => {
 
   it('should fail if an item cannot be found', async () => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(InventoryItemService)
+    Services.configure(InventorySlotPropertiesService)
     const service = new BuildPropertiesService()
 
     // Act
@@ -1321,36 +1357,44 @@ describe('getPrice()', () => {
       {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
-          value: 844270,
-          valueInMainCurrency: 844270
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
+          value: 446316,
+          valueInMainCurrency: 446316
         },
         pricesWithContent: [
           {
+            barterItems: [],
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
-            value: 844270,
-            valueInMainCurrency: 844270
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
+            value: 446316,
+            valueInMainCurrency: 446316
           }
         ],
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1362,45 +1406,75 @@ describe('getPrice()', () => {
       {
         missingPrice: false,
         price: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
         priceWithContentInMainCurrency: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
-          value: 166750,
-          valueInMainCurrency: 166750
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
+          value: 135939,
+          valueInMainCurrency: 135939
         },
         pricesWithContent: [
           {
+            barterItems: [],
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
-            value: 166750,
-            valueInMainCurrency: 166750
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
+            value: 122409,
+            valueInMainCurrency: 122409
+          },
+          {
+            barterItems: [],
+            currencyName: 'USD',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
+            value: 123,
+            valueInMainCurrency: 13530
           }
         ],
         unitPrice: {
+          barterItems: [],
           currencyName: 'RUB',
-          merchant: undefined,
-          merchantLevel: undefined,
-          requiresQuest: false,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          questId: '',
           value: 0,
           valueInMainCurrency: 0
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice]
+      } as IInventoryPrice
+    ]
   ])(
     'should get the price of a build',
     async (build: IBuild, expected: IInventoryPrice) => {
       // Arrange
+      useTarkovValuesServiceMock()
+      useItemServiceMock()
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(MerchantFilterService)
+
+      const websiteConfigurationService = new WebsiteConfigurationService()
+      websiteConfigurationService.configuration = instance(mock<IWebsiteConfiguration>())
+      websiteConfigurationService.configuration.merchantFilterStorageKey = 'merchant_filter'
+      Services.configure(WebsiteConfigurationService, undefined, websiteConfigurationService)
+
       const service = new BuildPropertiesService()
 
       // Act
@@ -1414,7 +1488,14 @@ describe('getPrice()', () => {
 
   it('should have a missing price when no merchants sell the item', async () => {
     // Arrange
+    useItemServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(InventorySlotPropertiesService)
+    Services.configure(InventoryItemService)
+    Services.configure(MerchantFilterService)
     const service = new BuildPropertiesService()
+
     const build: IBuild = {
       id: '',
       inventorySlots: [
@@ -1422,11 +1503,11 @@ describe('getPrice()', () => {
           items: [{
             content: [],
             ignorePrice: false,
-            itemId: '56deee15d2720bee328b4567', // MP-153 12ga 4-shell forend cap
+            itemId: '5c0e874186f7745dc7616606', // Maska-1SCh bulletproof helmet (Killa)
             modSlots: [],
             quantity: 1
           }],
-          typeId: 'backpack'
+          typeId: 'headwear'
         }
       ],
       lastExported: undefined,
@@ -1442,27 +1523,33 @@ describe('getPrice()', () => {
     expect(price.value).toStrictEqual({
       missingPrice: true,
       price: {
+        barterItems: [],
         currencyName: 'RUB',
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
-        value: 0,
-        valueInMainCurrency: 0
-      },
-      priceWithContentInMainCurrency: {
-        currencyName: 'RUB',
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
       pricesWithContent: [],
-      unitPrice: {
+      priceWithContentInMainCurrency: {
+        barterItems: [],
         currencyName: 'RUB',
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      unitPrice: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: 0,
         valueInMainCurrency: 0
       },
@@ -1472,9 +1559,10 @@ describe('getPrice()', () => {
 
   it('should fail if the main currency cannot be found', async () => {
     // Arrange
+    useItemServiceMock(false)
+    Services.configure(InventorySlotPropertiesService)
+
     const service = new BuildPropertiesService()
-    const mainCurrency = Currencies.find(c => c.name === 'RUB') as ICurrency
-    mainCurrency.mainCurrency = false
 
     // Act
     const price = await service.getPrice(build1)
@@ -1482,13 +1570,17 @@ describe('getPrice()', () => {
     // Assert
     expect(price.success).toBe(false)
     expect(price.failureMessage).toBe('Main currency not found.')
-
-    // Clean
-    mainCurrency.mainCurrency = true
   })
 
   it('should fail if an item cannot be found', async () => {
     // Arrange
+    useItemServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(InventorySlotPropertiesService)
+    Services.configure(InventoryItemService)
+    Services.configure(MerchantFilterService)
+
     const service = new BuildPropertiesService()
 
     // Act
@@ -1520,6 +1612,9 @@ describe('getPrice()', () => {
 
   it('should fail if an inventory slot is invalid', async () => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(InventorySlotPropertiesService)
+
     const service = new BuildPropertiesService()
 
     // Act
@@ -1568,8 +1663,8 @@ describe('getNotExportedTooltip()', () => {
 
 describe('getRecoil()', () => {
   it.each([
-    [build1, { horizontalRecoil: 230, verticalRecoil: 82 }],
-    [build2, { horizontalRecoil: 286, verticalRecoil: 486 }],
+    [build1, { horizontalRecoil: 200, verticalRecoil: 71 }],
+    [build2, { horizontalRecoil: 234, verticalRecoil: 397 }],
     [
       {
         name: 'Empty build',
@@ -1594,6 +1689,11 @@ describe('getRecoil()', () => {
     'should get the recoil of the main ranged weapon of a build',
     async (build: IBuild, expected: { horizontalRecoil: number; verticalRecoil: number; } | undefined) => {
       // Arrange
+      useItemServiceMock()
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventoryItemService)
+      Services.configure(ItemPropertiesService)
+
       const service = new BuildPropertiesService()
 
       // Act
@@ -1611,6 +1711,10 @@ describe('getRecoil()', () => {
 
   it('should fail if an item cannot be found', async () => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(InventorySlotPropertiesService)
+    Services.configure(InventoryItemService)
+
     const service = new BuildPropertiesService()
 
     // Act
@@ -1650,15 +1754,15 @@ describe('getSummary()', () => {
       {
         ammunitionCounts: [
           {
-            caption: '5.45x39mm PPBS gs "Igolnik"',
+            name: '5.45x39mm BP gs',
             count: 156,
-            id: '5c0d5e4486f77478390952fe'
+            id: '56dfef82d2720bbd668b4567'
           }
         ],
-        ergonomics: 27,
-        ergonomicsPercentageModifier: -31,
+        ergonomics: 28.1,
+        ergonomicsPercentageModifier: -0.25,
         exported: false,
-        horizontalRecoil: 230,
+        horizontalRecoil: 200,
         id: 'build_1',
         name: 'Build 1',
         lastExported: undefined,
@@ -1666,43 +1770,51 @@ describe('getSummary()', () => {
         price: {
           missingPrice: false,
           price: {
+            barterItems: [],
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 0,
             valueInMainCurrency: 0
           },
           priceWithContentInMainCurrency: {
+            barterItems: [],
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
-            value: 844270,
-            valueInMainCurrency: 844270
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
+            value: 446316,
+            valueInMainCurrency: 446316
           },
           pricesWithContent: [
             {
+              barterItems: [],
               currencyName: 'RUB',
-              merchant: undefined,
-              merchantLevel: undefined,
-              requiresQuest: false,
-              value: 844270,
-              valueInMainCurrency: 844270
+              itemId: '',
+              merchant: '',
+              merchantLevel: 0,
+              questId: '',
+              value: 446316,
+              valueInMainCurrency: 446316
             }
           ],
           unitPrice: {
+            barterItems: [],
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 0,
             valueInMainCurrency: 0
           },
           unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
         },
-        verticalRecoil: 82,
-        weight: 20.288
+        verticalRecoil: 71,
+        weight: 24.042
       } as IBuildSummary
     ],
     [
@@ -1710,15 +1822,15 @@ describe('getSummary()', () => {
       {
         ammunitionCounts: [
           {
-            caption: '9x19mm PBP gzh',
+            name: '9x19mm Green Tracer',
             count: 18,
-            id: '5efb0da7a29a85116f6ea05f'
+            id: '5c3df7d588a4501f290594e5'
           }
         ],
         ergonomics: 54,
         ergonomicsPercentageModifier: 0,
         exported: false,
-        horizontalRecoil: 286,
+        horizontalRecoil: 234,
         id: 'build_2',
         name: 'Build 2',
         lastExported: undefined,
@@ -1726,43 +1838,61 @@ describe('getSummary()', () => {
         price: {
           missingPrice: false,
           price: {
+            barterItems: [],
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 0,
             valueInMainCurrency: 0
           },
           priceWithContentInMainCurrency: {
+            barterItems: [],
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
-            value: 166750,
-            valueInMainCurrency: 166750
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
+            value: 135939,
+            valueInMainCurrency: 135939
           },
           pricesWithContent: [
             {
+              barterItems: [],
               currencyName: 'RUB',
-              merchant: undefined,
-              merchantLevel: undefined,
-              requiresQuest: false,
-              value: 166750,
-              valueInMainCurrency: 166750
+              itemId: '',
+              merchant: '',
+              merchantLevel: 0,
+              questId: '',
+              value: 122409,
+              valueInMainCurrency: 122409
+            },
+            {
+              barterItems: [],
+              currencyName: 'USD',
+              itemId: '',
+              merchant: '',
+              merchantLevel: 0,
+              questId: '',
+              value: 123,
+              valueInMainCurrency: 13530
             }
           ],
           unitPrice: {
+            barterItems: [],
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 0,
             valueInMainCurrency: 0
           },
           unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
         },
-        verticalRecoil: 486,
-        weight: 3.728
+        verticalRecoil: 397,
+        weight: 3.762
       } as IBuildSummary
     ],
     [
@@ -1786,27 +1916,33 @@ describe('getSummary()', () => {
         price: {
           missingPrice: false,
           price: {
+            barterItems: [],
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 0,
             valueInMainCurrency: 0
           },
           priceWithContentInMainCurrency: {
+            barterItems: [],
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 0,
             valueInMainCurrency: 0
           },
           pricesWithContent: [],
           unitPrice: {
+            barterItems: [],
             currencyName: 'RUB',
-            merchant: undefined,
-            merchantLevel: undefined,
-            requiresQuest: false,
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            questId: '',
             value: 0,
             valueInMainCurrency: 0
           },
@@ -1820,6 +1956,14 @@ describe('getSummary()', () => {
     'should get the summary of a build',
     async (build: IBuild, expected: IBuildSummary) => {
       // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventoryItemService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(MerchantFilterService)
+
       const service = new BuildPropertiesService()
 
       // Act
@@ -1833,9 +1977,8 @@ describe('getSummary()', () => {
 
   it('should fail if the main currency cannot be found', async () => {
     // Arrange
+    useItemServiceMock(false)
     const service = new BuildPropertiesService()
-    const mainCurrency = Currencies.find(c => c.name === 'RUB') as ICurrency
-    mainCurrency.mainCurrency = false
 
     // Act
     const summary = await service.getSummary(build1)
@@ -1843,20 +1986,21 @@ describe('getSummary()', () => {
     // Assert
     expect(summary.success).toBe(false)
     expect(summary.failureMessage).toBe('Main currency not found.')
-
-    // Clean
-    mainCurrency.mainCurrency = true
   })
 })
 
 describe('getWeight()', () => {
   it.each([
-    [build1, 20.288],
-    [build2, 3.728]
+    [build1, 24.042],
+    [build2, 3.762]
   ])(
     'should get the weight of a build',
     async (build: IBuild, expected: number) => {
       // Arrange
+      useItemServiceMock()
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventoryItemService)
+
       const service = new BuildPropertiesService()
 
       // Act
@@ -1870,6 +2014,10 @@ describe('getWeight()', () => {
 
   it('should fail if an item cannot be found', async () => {
     // Arrange
+    useItemServiceMock()
+    Services.configure(InventorySlotPropertiesService)
+    Services.configure(InventoryItemService)
+
     const service = new BuildPropertiesService()
 
     // Act

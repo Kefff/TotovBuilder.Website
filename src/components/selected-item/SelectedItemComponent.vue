@@ -5,8 +5,8 @@
       class="selected-item"
     >
       <ItemIcon :item="modelValue" />
-      <div class="selected-item-caption">
-        {{ modelValue.caption }}
+      <div class="selected-item-name">
+        {{ modelValue.name }}
       </div>
     </div>
     <div

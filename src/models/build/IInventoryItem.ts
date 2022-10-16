@@ -1,7 +1,7 @@
 import { IInventoryModSlot } from './IInventoryModSlot'
 
 /**
- * Provides the functionalities of a an item in the inventory.
+ * Provides the functionalities of an item in the inventory.
  */
 export interface IInventoryItem {
   /**

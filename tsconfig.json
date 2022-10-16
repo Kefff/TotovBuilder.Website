@@ -16,7 +16,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2019",
-    "types": ["jest", "vite/client"]
+    "types": ["jest", "vite/client", "node"]
   },
   "include": [
     "declarations.d.ts",

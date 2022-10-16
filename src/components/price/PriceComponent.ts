@@ -1,6 +1,6 @@
 import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
-import { ICurrency } from '../../models/item/ICurrency'
-import { IPrice } from '../../models/utils/IPrice'
+import { ICurrency } from '../../models/configuration/ICurrency'
+import { IPrice } from '../../models/item/IPrice'
 import vueI18n from '../../plugins/vueI18n'
 import { ItemService } from '../../services/ItemService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
@@ -30,7 +30,14 @@ export default defineComponent({
   },
   setup: (props) => {
     const tooltip = computed(() => props.showTooltip ? vueI18n.t('caption.price') + (props.tooltipSuffix ?? '') : '')
-    const showPriceInMainCurrency = computed(() => currency.value?.name !== mainCurrency.value?.name && props.showTooltip)
+    const showPriceInMainCurrency = computed(() => {
+      if (currency.value?.name === 'barter') {
+        // TODO : Handling barters - WORKAROUND WAITING FOR BARTERS TO BE HANDLED. REMOVE THIS WHEN IT IS DONE
+        return false
+      }
+
+      return currency.value?.name !== mainCurrency.value?.name && props.showTooltip
+    })
     const mainCurrency = ref<ICurrency>()
     const currency = ref<ICurrency>()
     const priceInMainCurrencyPanel = ref()
@@ -66,7 +73,7 @@ export default defineComponent({
      * @param event - Event.
      */
     function togglePriceInMainCurrencyPanel(event: unknown) {
-      if (showPriceInMainCurrency.value || props.price.merchant !== undefined) {
+      if (showPriceInMainCurrency.value || props.price.merchant !== '') {
         priceInMainCurrencyPanel.value?.toggle(event) // In some cames the priceInMainCurrencyPanel is still undefined when the event is triggered. I don't really know why.
       }
     }

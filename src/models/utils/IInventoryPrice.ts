@@ -1,5 +1,5 @@
 import { IgnoredUnitPrice } from './IgnoredUnitPrice'
-import { IPrice } from './IPrice'
+import { IPrice } from '../item/IPrice'
 
 /**
  * Provides the functionalities of an inventory price.

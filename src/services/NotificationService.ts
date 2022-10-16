@@ -1,7 +1,8 @@
 import { Guid } from 'guid-typescript'
 import { INotification } from '../models/utils/INotification'
 import { TinyEmitter } from 'tiny-emitter'
-import Configuration from '../../test-data/configuration.json'
+import Services from './repository/Services'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 
 /**
  * Represents a service responsible for managing notification messages.
@@ -67,21 +68,23 @@ export class NotificationService {
   public notify(type: NotificationType, message: string, toast = false, toastDuration: number | undefined = undefined): void {
     if (toast) {
       if (toastDuration === undefined) {
+        const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
         switch (type) {
           case NotificationType.error: {
-            toastDuration = Number(Configuration.VITE_NOTIFICATION_ERROR_DURATION)
+            toastDuration = Number(websiteConfigurationService.configuration.notificationErrorDuration) * 1000 // In milliseconds
             break
           }
           case NotificationType.information: {
-            toastDuration = Number(Configuration.VITE_NOTIFICATION_INFORMATION_DURATION)
+            toastDuration = Number(websiteConfigurationService.configuration.notificationInformationDuration) * 1000 // In milliseconds
             break
           }
           case NotificationType.success: {
-            toastDuration = Number(Configuration.VITE_NOTIFICATION_SUCCESS_DURATION)
+            toastDuration = Number(websiteConfigurationService.configuration.notificationSuccessDuration) * 1000 // In milliseconds
             break
           }
           case NotificationType.warning: {
-            toastDuration = Number(Configuration.VITE_NOTIFICATION_WARNING_DURATION)
+            toastDuration = Number(websiteConfigurationService.configuration.notificationWarningDuration) * 1000 // In milliseconds
             break
           }
         }

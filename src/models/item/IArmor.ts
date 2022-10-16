@@ -1,7 +1,7 @@
 import { IItem } from './IItem'
 
 /**
- * Provides the functionalities of an armor
+ * Provides the functionalities of an armor.
  */
 export interface IArmor extends IItem {
   /**
@@ -37,7 +37,7 @@ export interface IArmor extends IItem {
   /**
    * Chance of ricochet.
    */
-  ricochetChance?: string
+  ricochetChance: string
 
   /**
    * Modifier added to the character turning speed in percentage.

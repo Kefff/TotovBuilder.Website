@@ -40,7 +40,7 @@ export class SortingService {
   /**
    * Updates sorting data by setting the sorting property, the new sorting order and the associated comparison function.
    * @param sortingData - Sorting data to update.
-   * @param newProperty - New sorting property.
+   * @param newSortingProperty - New sorting property.
    * @returns Updated sorting data.
    */
   public setSortingProperty(sortingData: SortingData, newSortingProperty: string): Result<SortingData> {

@@ -1,13 +1,17 @@
 import StatsUtils from '../../utils/StatsUtils'
+import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 
 describe('StringUtils.getValueClass()', () => {
   it.each([
-    [1, '+1'],
-    [-1, '-1'],
-    [0, '0']
-  ])('should get the caption corresponding to a stats value', (value: number, expected) => {
+    [1, false, false, '1'],
+    [-1, false, false, '-1'],
+    [0, false, false, '0'],
+    [0.01, true, true, '+1%'],
+    [-0.01, true, true, '-1%'],
+    [0, true, true, '0%']
+  ])('should get the caption corresponding to a stats value', (value: number, isBonusMalus: boolean, isPercentage: boolean, expected) => {
     // Assert
-    expect(StatsUtils.getValueCaption(value)).toBe(expected)
+    expect(StatsUtils.getDisplayValue(value, isBonusMalus, isPercentage)).toBe(expected)
   })
 })
 
@@ -31,11 +35,14 @@ describe('StringUtils.getValueColorClass()', () => {
 
 describe('StringUtils.getWeightColorClass()', () => {
   it.each([
-    [26, ''],
-    [26.1, 'stats-encumberment-light'],
-    [60, 'stats-encumberment-light'],
-    [60.1, 'stats-encumberment-heavy']
+    [24, ''],
+    [24.1, 'stats-encumberment-light'],
+    [65, 'stats-encumberment-light'],
+    [65.1, 'stats-encumberment-heavy']
   ])('should get the CSS class to apply to a stats value', (value: number, expected: string) => {
+    // Arrange
+    useTarkovValuesServiceMock()
+
     // Assert
     expect(StatsUtils.getWeightColorClass(value)).toBe(expected)
   })

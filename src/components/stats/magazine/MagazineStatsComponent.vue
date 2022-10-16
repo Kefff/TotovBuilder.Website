@@ -24,7 +24,7 @@
         <span>{{ $t('caption.loadSpeed') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.loadSpeedPercentageModifier, true)">
-        {{ StatsUtils.getValueCaption(item.loadSpeedPercentageModifier) }}%
+        {{ StatsUtils.getDisplayValue(item.loadSpeedPercentageModifier, true, true) }}
       </div>
     </div>
     <div
@@ -39,7 +39,7 @@
         <span>{{ $t('caption.checkSpeed') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.checkSpeedPercentageModifier, true)">
-        {{ StatsUtils.getValueCaption(item.checkSpeedPercentageModifier) }}%
+        {{ StatsUtils.getDisplayValue(item.checkSpeedPercentageModifier, true, true) }}
       </div>
     </div>
     <div
@@ -54,11 +54,11 @@
         <span>{{ $t('caption.ergonomics') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.ergonomicsModifier)">
-        {{ StatsUtils.getValueCaption(item.ergonomicsModifier) }}
+        {{ StatsUtils.getDisplayValue(item.ergonomicsModifier, true, false) }}
       </div>
     </div>
   </div>
-  <div v-if="acceptedCartridgesCaptions.length > 0">
+  <div v-if="acceptedCartridesCaptions.length > 0">
     <div class="stats-entry">
       <div class="stats-caption custom-icon-before-text">
         <img src="/assets/caliber.webp">
@@ -68,7 +68,7 @@
   </div>
   <div class="stats-line">
     <div
-      v-for="(acceptedCartridgesCaption, index) of acceptedCartridgesCaptions"
+      v-for="(acceptedCartridgesCaption, index) of acceptedCartridesCaptions"
       :key="index"
       class="stats-entry"
     >

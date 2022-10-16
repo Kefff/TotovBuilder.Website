@@ -17,15 +17,27 @@ import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { ItemService } from './ItemService'
 import { IAmmunition } from '../models/item/IAmmunition'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
-import { IPrice } from '../models/utils/IPrice'
+import { IPrice } from '../models/item/IPrice'
 import { MerchantFilterService } from './MerchantFilterService'
 import { PathUtils } from '../utils/PathUtils'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
+import { round } from 'round-ts'
+import { TinyEmitter } from 'tiny-emitter'
 
 /**
  * Represents a service responsible for managing inventory items.
  */
 export class InventoryItemService {
+  /**
+   * Item change event.
+   */
+  public static inventoryItemChangeEvent = 'inventoryItemChanged'
+
+  /**
+   * Event emitter used to signal compatibility check requests.
+   */
+  public emitter = new TinyEmitter()
+
   /**
    * Gets the ammunition counts of an item including its content and mods.
    * @param inventoryItem - Inventory item.
@@ -43,9 +55,9 @@ export class InventoryItemService {
     if (Services.get(ItemPropertiesService).isAmmunition(itemResult.value)) {
       const ammunition = itemResult.value as IAmmunition
       ammunitionCounts.push({
-        caption: ammunition.caption,
         id: ammunition.id,
-        count: inventoryItem.quantity
+        count: inventoryItem.quantity,
+        name: ammunition.name
       })
     }
 
@@ -132,8 +144,8 @@ export class InventoryItemService {
     }
 
     return Result.ok({
-      ergonomics,
-      ergonomicsWithMods
+      ergonomics: round(ergonomics, 1),
+      ergonomicsWithMods: round(ergonomicsWithMods, 1)
     })
   }
 
@@ -179,8 +191,8 @@ export class InventoryItemService {
     }
 
     return Result.ok({
-      ergonomicsPercentageModifier,
-      ergonomicsPercentageModifierWithContent
+      ergonomicsPercentageModifier: round(ergonomicsPercentageModifier, 2),
+      ergonomicsPercentageModifierWithContent: round(ergonomicsPercentageModifierWithContent, 2)
     })
   }
 
@@ -201,10 +213,12 @@ export class InventoryItemService {
     }
 
     let unitPrice: IPrice = {
+      barterItems: [],
       currencyName: 'RUB',
-      merchant: undefined,
-      merchantLevel: undefined,
-      requiresQuest: false,
+      itemId: '',
+      merchant: '',
+      merchantLevel: 0,
+      questId: '',
       value: 0,
       valueInMainCurrency: 0
     }
@@ -221,17 +235,19 @@ export class InventoryItemService {
 
     if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
       for (const price of merchantFilterService.getMatchingPrices(itemResult.value)) {
-        if (unitPrice.valueInMainCurrency === 0 || price.valueInMainCurrency < unitPrice.valueInMainCurrency) {
+        if (unitPrice.valueInMainCurrency === 0 || (price.valueInMainCurrency > 0 && price.valueInMainCurrency < unitPrice.valueInMainCurrency)) { // TODO : Handling barters - REMOVE price.valueInMainCurrency > 0 && WHEN IT IS DONE
           unitPrice = price
         }
       }
     }
 
     const price: IPrice = {
+      barterItems: [], // TODO : Handling barters
       currencyName: unitPrice.currencyName,
+      itemId: unitPrice.itemId,
       merchant: unitPrice.merchant,
       merchantLevel: unitPrice.merchantLevel,
-      requiresQuest: unitPrice.requiresQuest,
+      questId: unitPrice.questId,
       value: unitPrice.value * inventoryItem.quantity,
       valueInMainCurrency: unitPrice.valueInMainCurrency * inventoryItem.quantity
     }
@@ -247,10 +263,12 @@ export class InventoryItemService {
       price,
       pricesWithContent: [],
       priceWithContentInMainCurrency: {
+        barterItems: [],
         currencyName: mainCurrencyResult.value.name,
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: false,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: price.valueInMainCurrency,
         valueInMainCurrency: price.valueInMainCurrency
       },
@@ -260,10 +278,12 @@ export class InventoryItemService {
 
     if (price.valueInMainCurrency > 0) {
       inventoryPrice.pricesWithContent.push({
+        barterItems: [], // TODO : Handling barters
         currencyName: price.currencyName,
-        merchant: undefined,
-        merchantLevel: undefined,
-        requiresQuest: price.requiresQuest,
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        questId: '',
         value: price.value,
         valueInMainCurrency: price.valueInMainCurrency
       })
@@ -272,7 +292,7 @@ export class InventoryItemService {
     for (const containedItem of inventoryItem.content) {
       /* istanbul ignore if */
       if (containedItem == undefined) {
-        // !!! WORKAROUNG !! In theory it should never happen, but it happened in production without being able to identify the source of the problem.
+        // !!! WORKAROUNG !!! In theory it should never happen, but it happened in production without being able to identify the source of the problem.
         continue
       }
 
@@ -399,10 +419,10 @@ export class InventoryItemService {
     }
 
     // Applying to the weapon recoil the recoil percentage modifiers of its mods
-    recoil.horizontalRecoilWithMods = Math.round(recoil.horizontalRecoil + (recoil.horizontalRecoil * modsRecoilPercentageModifiers / 100))
-    recoil.horizontalRecoilWithMods += Math.round(recoil.horizontalRecoilWithMods * chamberedAmmunitionRecoilPercentageModifier / 100)
-    recoil.verticalRecoilWithMods = Math.round(recoil.verticalRecoil + (recoil.verticalRecoil * modsRecoilPercentageModifiers / 100))
-    recoil.verticalRecoilWithMods += Math.round(recoil.verticalRecoilWithMods * chamberedAmmunitionRecoilPercentageModifier / 100)
+    recoil.horizontalRecoilWithMods = recoil.horizontalRecoil + (recoil.horizontalRecoil * modsRecoilPercentageModifiers)
+    recoil.horizontalRecoilWithMods = round(recoil.horizontalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier))
+    recoil.verticalRecoilWithMods = recoil.verticalRecoil + (recoil.verticalRecoil * modsRecoilPercentageModifiers)
+    recoil.verticalRecoilWithMods = round(recoil.verticalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier))
 
     return Result.ok(recoil)
   }
@@ -448,8 +468,7 @@ export class InventoryItemService {
         )
       }
 
-      recoilPercentageModifier.recoilPercentageModifierWithMods +=
-        modRecoilPercentageModifierResult.value.recoilPercentageModifierWithMods
+      recoilPercentageModifier.recoilPercentageModifierWithMods = round(recoilPercentageModifier.recoilPercentageModifierWithMods + modRecoilPercentageModifierResult.value.recoilPercentageModifierWithMods, 2)
     }
 
     return Result.ok(recoilPercentageModifier)
@@ -501,9 +520,9 @@ export class InventoryItemService {
     }
 
     return Result.ok({
-      weight: +weight.toFixed(3), // toFixed() used to avoir floating point imprecision, + used to transform it back to number
-      weightWithContent: +weightWithContent.toFixed(3), // toFixed() used to avoir floating point imprecision, + used to transform it back to number
-      unitWeight: +itemResult.value.weight.toFixed(3) // toFixed() used to avoir floating point imprecision, + used to transform it back to number
+      weight: round(weight, 3),
+      weightWithContent: round(weightWithContent, 3),
+      unitWeight: round(itemResult.value.weight, 3)
     })
   }
 
@@ -513,7 +532,7 @@ export class InventoryItemService {
    * @param path - Mod slot path indicating the inventory object position within a parent item.
    * @returns Preset mod slot if the inventory item is in a preset; otherwise undefined.
    */
-  public async getPresetModslotContainingItem(itemId: string, path: string): Promise<IInventoryModSlot | undefined> {
+  public async getPresetModSlotContainingItem(itemId: string, path: string): Promise<IInventoryModSlot | undefined> {
     const pathArray = path.split('/')
 
     // Getting the last item of the path that appears before mods.
@@ -543,8 +562,7 @@ export class InventoryItemService {
    * Gets the recoil percentage modifier of the chambered ammunition (or contained in the magazine when not having a chamber)
    * of a ranged weapon.
    * @param item - Item being checked.
-   * @param modSlotName - Name of the mod slot being checked on the inventory item.
-   * @param modSlotItem - Item contained in the mod slot being checked on the inventory item.
+   * @param modSlots - Mod slots.
    * @returns Recoil percentage modifier.
    */
   private async getChamberedAmmunitionRecoilPercentageModifier(item: IItem, modSlots: IInventoryModSlot[]): Promise<Result<number>> {

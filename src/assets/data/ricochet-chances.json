@@ -1,5 +1,0 @@
-[
-  { "name": "High", "resourceXMinValue": 0.9, "resourceXMaxValue": 1 },
-  { "name": "Medium", "resourceXMinValue": 0.7, "resourceXMaxValue": 0.8 },
-  { "name": "Low", "resourceXMinValue": 0.1, "resourceXMaxValue": 0.6 }
-]

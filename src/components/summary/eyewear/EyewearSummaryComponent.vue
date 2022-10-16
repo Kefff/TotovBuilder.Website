@@ -9,7 +9,7 @@
     >
       <div v-if="hasBlindnessProtectionPercentage">
         <span :class="StatsUtils.getValueColorClass(item.blindnessProtectionPercentage)">
-          {{ StatsUtils.getValueCaption(item.blindnessProtectionPercentage) }}%
+          {{ StatsUtils.getDisplayValue(item.blindnessProtectionPercentage, true, true) }}
         </span>
         <font-awesome-icon
           icon="low-vision"

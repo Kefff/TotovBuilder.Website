@@ -1,11 +1,11 @@
 import { IInventorySlotType } from '../models/build/IInventorySlotType'
-import { IItemCategory } from '../models/item/IItemCategory'
-import { IItemType } from '../models/item/IItemType'
+import { IItemCategory } from '../models/configuration/IItemCategory'
 import i18n from '../plugins/vueI18n'
 import InventorySlotTypes from '../assets/data/inventory-slot-types.json'
 import Result, { FailureType } from '../utils/Result'
 import { ItemService } from './ItemService'
 import Services from './repository/Services'
+import { IItemType } from '../models/configuration/IItemType'
 
 /**
  * Represents a services responsible for managing inventory slots.

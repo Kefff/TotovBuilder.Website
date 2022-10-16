@@ -1,5 +1,5 @@
 import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
-import { ICurrency } from '../../models/item/ICurrency'
+import { ICurrency } from '../../models/configuration/ICurrency'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { ItemService } from '../../services/ItemService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'

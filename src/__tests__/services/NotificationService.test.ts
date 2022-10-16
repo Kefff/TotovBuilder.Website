@@ -1,4 +1,5 @@
 import { NotificationService, NotificationType } from '../../services/NotificationService'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('clearNotification()', () => {
   it('should clear a notification from the notifications collection', () => {
@@ -44,6 +45,8 @@ describe('clearNotifications()', () => {
 describe('notify()', () => {
   it('should add a notification', async () => {
     // Arrange
+    useWebsiteConfigurationServiceMock()
+
     const service = new NotificationService()
     let hasBeenCalled = false
     service.emitter.on(service.addedEventName, () => hasBeenCalled = true)
@@ -113,6 +116,8 @@ describe('notify()', () => {
 describe('resetNewNotificationCount()', () => {
   it('should reset the new notification count', async () => {
     // Arrange
+    useWebsiteConfigurationServiceMock()
+
     const service = new NotificationService()
 
     service.notify(NotificationType.error, 'Error')
