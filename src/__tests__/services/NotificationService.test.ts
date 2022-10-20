@@ -109,7 +109,7 @@ describe('notify()', () => {
         }
       ])
     expect(hasBeenCalled).toBe(true)
-    expect(service.newNotificationCount).toBe(6)
+    expect(service.newNotificationCount).toBe(4)
   })
 })
 

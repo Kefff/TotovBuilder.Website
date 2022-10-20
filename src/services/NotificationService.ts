@@ -16,10 +16,7 @@ export class NotificationService {
   /**
    * Amount of new notifications.
    */
-  public get newNotificationCount(): number {
-    return this._newNotificationCount
-  }
-  private _newNotificationCount = 0
+  public newNotificationCount = 0
 
   /**
    * Name of the event signaling that a new notification has been added to the collection.
@@ -93,6 +90,14 @@ export class NotificationService {
       }
     }
 
+    switch (type) {
+      case NotificationType.error:
+      case NotificationType.warning: {
+        this.newNotificationCount++
+        break
+      }
+    }
+
     const notification: INotification = {
       date: new Date(),
       id: Guid.create().toString(),
@@ -104,14 +109,13 @@ export class NotificationService {
 
     this.notifications.push(notification)
     this.emitter.emit(this.addedEventName, notification)
-    this._newNotificationCount += 1
   }
 
   /**
    * Resets the amount of new notifications.
    */
   public resetNewNotificationCount(): void {
-    this._newNotificationCount = 0
+    this.newNotificationCount = 0
   }
 }
 
