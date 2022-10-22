@@ -2,27 +2,45 @@
 
 .inventory-price {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: right;
+  flex-direction: column;
+  padding: 0.25rem
 }
 
-.inventory-price-list {
+.inventory-price-details {
+  font-size: 0.85rem;
+  padding-right: 0.25rem;
+  text-align: right;
+}
+
+.inventory-price-with-details:hover {
+  background-color: var(--background-color5);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.inventory-price-value {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: right;
 }
 
-.inventory-price-list-price {
+.inventory-price-value-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: right;
+}
+
+.inventory-price-value-list-price {
   margin-right: 1rem;
 }
 
-.inventory-price-list-price:last-child {
+.inventory-price-value-list-price:last-child {
   margin-right: 0;
 }
 
-.inventory-price-missing-price-icon {
+.inventory-price-value-missing-price-icon {
   align-items: center;
   color: var(--error-color);
   display: flex;
@@ -33,7 +51,7 @@
   width: 2rem;
 }
 
-.inventory-price-missing-price-icon-no-width {
+.inventory-price-value-missing-price-icon-no-width {
   align-items: center;
   color: var(--error-color);
   display: flex;
@@ -42,6 +60,6 @@
   justify-content: center;
 }
 
-.inventory-price-missing-price-icon-no-width > svg {
+.inventory-price-value-missing-price-icon-no-width > svg {
   margin-left: 0.5rem;
 }

@@ -106,7 +106,7 @@ export class VersionService {
     const versionStorageKey = websiteConfiguration.versionStorageKey
     const lastVersion = localStorage.getItem(versionStorageKey)
 
-    if (lastVersion != undefined) {
+    if (lastVersion != null) {
       this.currentVersion = lastVersion
     }
 

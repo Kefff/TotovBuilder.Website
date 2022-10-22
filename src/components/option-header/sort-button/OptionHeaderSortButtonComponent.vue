@@ -8,11 +8,11 @@
       <font-awesome-icon icon="angle-down" />
     </div>
     <font-awesome-icon
-      v-if="icon !== undefined"
+      v-if="icon != null"
       :icon="icon"
     />
     <img
-      v-else-if="customIcon !== undefined"
+      v-else-if="customIcon != null"
       :src="'/assets/' + customIcon + '.webp'"
       class="custom-icon"
     >

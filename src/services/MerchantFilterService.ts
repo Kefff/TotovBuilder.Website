@@ -42,7 +42,7 @@ export class MerchantFilterService {
     const storageKey = this.getKey()
     const serializedFilters = localStorage.getItem(storageKey)
 
-    if (serializedFilters != undefined) {
+    if (serializedFilters != null) {
       savedFilters = JSON.parse(serializedFilters) as IMerchantFilter[]
     }
 
@@ -70,7 +70,7 @@ export class MerchantFilterService {
     const levels: number[] = []
     const merchant = Services.get(TarkovValuesService).values.merchants.find(m => m.name === merchantName)
 
-    if (merchant !== undefined) {
+    if (merchant != null) {
       for (let i = merchant.minLevel; i <= merchant.maxLevel; i++) {
         levels.push(i)
       }
@@ -97,7 +97,7 @@ export class MerchantFilterService {
    */
   public hasLevels(merchantName: string): boolean {
     const merchant = Services.get(TarkovValuesService).values.merchants.find(m => m.name === merchantName)
-    const result = merchant !== undefined ? merchant.maxLevel > merchant.minLevel : false
+    const result = merchant != null ? merchant.maxLevel > merchant.minLevel : false
 
     return result
   }

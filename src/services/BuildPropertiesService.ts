@@ -152,7 +152,7 @@ export class BuildPropertiesService {
     }
 
     for (const item of armorSlot.items) {
-      if (item != undefined) {
+      if (item != null) {
         return Result.fail(
           FailureType.hidden,
           'BuildService.checkCanAddVest()',
@@ -260,7 +260,7 @@ export class BuildPropertiesService {
   public getNotExportedTooltip(lastUpdated: Date, lastExported: Date | undefined): string {
     let tooltip: string
 
-    if (lastUpdated !== undefined && lastExported !== undefined) {
+    if (lastUpdated != null && lastExported != null) {
       tooltip = vueI18n.t('caption.buildLastChangesNotExported', { lastUpdated: lastUpdated.toLocaleString(), lastExported: lastExported.toLocaleString() })
     } else {
       tooltip = vueI18n.t('caption.buildNotExported')
@@ -292,7 +292,7 @@ export class BuildPropertiesService {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: '',
+        quest: null,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -302,7 +302,7 @@ export class BuildPropertiesService {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: '',
+        quest: null,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -313,7 +313,7 @@ export class BuildPropertiesService {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: '',
+        quest: null,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -401,7 +401,7 @@ export class BuildPropertiesService {
       ammunitionCounts: [],
       ergonomics: undefined,
       ergonomicsPercentageModifier: 0,
-      exported: build.lastExported !== undefined && build.lastExported >= build.lastUpdated,
+      exported: build.lastExported != null && build.lastExported >= build.lastUpdated,
       horizontalRecoil: undefined,
       id: build.id,
       name: build.name,
@@ -415,7 +415,7 @@ export class BuildPropertiesService {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -425,7 +425,7 @@ export class BuildPropertiesService {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -436,7 +436,7 @@ export class BuildPropertiesService {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -459,7 +459,7 @@ export class BuildPropertiesService {
     // Ergonomics
     const ergonomicsResult = await this.getErgonomics(build)
 
-    if (ergonomicsResult !== undefined) {
+    if (ergonomicsResult != null) {
       /* istanbul ignore if */
       if (!ergonomicsResult.success) {
         return Result.failFrom(ergonomicsResult)
@@ -481,7 +481,7 @@ export class BuildPropertiesService {
     // Recoil
     const recoilResult = await this.getRecoil(build)
 
-    if (recoilResult !== undefined) {
+    if (recoilResult != null) {
       /* istanbul ignore if */
       if (!recoilResult.success) {
         return Result.failFrom(recoilResult)
@@ -573,7 +573,7 @@ export class BuildPropertiesService {
     }
 
     for (const modSlot of inventoryItem.modSlots) {
-      if (modSlot.item !== undefined) {
+      if (modSlot.item != null) {
         const modConflictingItemIdsResult = await this.getConflictingItems(
           modSlot.item,
           modSlotPath + '/' + PathUtils.itemPrefix + inventoryItem.itemId + '/' + PathUtils.modSlotPrefix + modSlot.modSlotName
@@ -599,19 +599,19 @@ export class BuildPropertiesService {
   private getMainRangedWeaponInventorySlot(build: IBuild): IInventorySlot | undefined {
     const onSling = build.inventorySlots.find((is) => is.typeId === 'onSling')
 
-    if (onSling !== undefined && onSling.items[0] != undefined) {
+    if (onSling != null && onSling.items[0] != null) {
       return onSling
     }
 
     const onBack = build.inventorySlots.find((is) => is.typeId === 'onBack')
 
-    if (onBack !== undefined && onBack.items[0] != undefined) {
+    if (onBack != null && onBack.items[0] != null) {
       return onBack
     }
 
     const holster = build.inventorySlots.find((is) => is.typeId === 'holster')
 
-    if (holster !== undefined && holster.items[0] != undefined) {
+    if (holster != null && holster.items[0] != null) {
       return holster
     }
   }

@@ -51,7 +51,7 @@ export default defineComponent({
     let originalBuild: IBuild
 
     const invalid = computed(() => build.value.name === '')
-    const isEmpty = computed(() => !build.value.inventorySlots.some(is => is.items.some(i => i != undefined)))
+    const isEmpty = computed(() => !build.value.inventorySlots.some(is => is.items.some(i => i != null)))
     const isNewBuild = computed(() => build.value.id === '')
     const notExportedTooltip = computed(() => !summary.value.exported ? buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
     const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
@@ -81,7 +81,7 @@ export default defineComponent({
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -91,7 +91,7 @@ export default defineComponent({
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -102,7 +102,7 @@ export default defineComponent({
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -208,7 +208,7 @@ export default defineComponent({
      */
     function expandWithItem() {
       for (let i = 0; i < collapseStatuses.value.length; i++) {
-        if (build.value.inventorySlots[i].items.filter(i => i != undefined).length > 0) {
+        if (build.value.inventorySlots[i].items.filter(i => i != null).length > 0) {
           collapseStatuses.value[i] = false
         }
       }
@@ -240,7 +240,7 @@ export default defineComponent({
      */
     function getCollapseStatuses() {
       for (const inventorySlot of build.value.inventorySlots) {
-        collapseStatuses.value.push(inventorySlot.items.filter(i => i != undefined).length === 0)
+        collapseStatuses.value.push(inventorySlot.items.filter(i => i != null).length === 0)
       }
     }
 

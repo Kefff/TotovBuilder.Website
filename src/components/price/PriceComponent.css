@@ -2,6 +2,12 @@
 @import '../../assets/css/icon.css';
 
 .price {
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem
+}
+
+.price-value {
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -10,16 +16,32 @@
   white-space: nowrap;
 }
 
-.price-merchant {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  white-space: nowrap;
+.price-details {
+  font-size: 0.85rem;
 }
 
-.price-merchant-name {
-  margin-right: 0.25rem;
+.price-details > div {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.price-details-main-currency-value {
+  margin-left: 0.25rem;
+}
+
+.price-details-merchant-level {
+  margin-left: 0.25rem;
+}
+
+.price-details-quest-icon {
+  color: var(--warning-color);
+}
+
+.price-details-quest-link {
+  margin-left: 0.25rem;
 }
 
 .price-merchant-icon {
@@ -40,10 +62,8 @@
   width: 2rem;
 }
 
-.price-quest-required {
-  color: var(--warning-color);
-}
-
-.price-merchant-level {
-  margin-right: 0.25rem;
+.price-with-details:hover {
+  background-color: var(--background-color5);
+  border-radius: 3px;
+  cursor: pointer;
 }

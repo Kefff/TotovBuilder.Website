@@ -1,3 +1,4 @@
+import { IQuest } from '../configuration/IQuest'
 import { IBarterItem } from './IBarterItem'
 
 /**
@@ -32,7 +33,7 @@ export interface IPrice {
   /**
    * ID of the quest unlocking the trade.
    */
-  questId: string
+  quest: IQuest | null,
 
   /**
    * Value.

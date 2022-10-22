@@ -218,7 +218,7 @@ export class InventoryItemService {
       itemId: '',
       merchant: '',
       merchantLevel: 0,
-      questId: '',
+      quest: null,
       value: 0,
       valueInMainCurrency: 0
     }
@@ -247,7 +247,7 @@ export class InventoryItemService {
       itemId: unitPrice.itemId,
       merchant: unitPrice.merchant,
       merchantLevel: unitPrice.merchantLevel,
-      questId: unitPrice.questId,
+      quest: unitPrice.quest,
       value: unitPrice.value * inventoryItem.quantity,
       valueInMainCurrency: unitPrice.valueInMainCurrency * inventoryItem.quantity
     }
@@ -268,7 +268,7 @@ export class InventoryItemService {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: '',
+        quest: null,
         value: price.valueInMainCurrency,
         valueInMainCurrency: price.valueInMainCurrency
       },
@@ -283,7 +283,7 @@ export class InventoryItemService {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: '',
+        quest: null,
         value: price.value,
         valueInMainCurrency: price.valueInMainCurrency
       })
@@ -572,7 +572,7 @@ export class InventoryItemService {
     const chamber = rangedWeapon.modSlots.find((ms) => ms.name.startsWith('chamber'))
 
     for (const modSlot of modSlots) {
-      if (chamber !== undefined && modSlot.modSlotName === chamber.name && modSlot.item !== undefined) {
+      if (chamber != null && modSlot.modSlotName === chamber.name && modSlot.item != null) {
         ammunitionId = modSlot.item.itemId
 
         break
@@ -585,7 +585,7 @@ export class InventoryItemService {
 
         if (modSlot.item.content.length === 0 && modSlot.item.modSlots.length > 0) {
           // The magazine is composed of multiple slots that each receive a cartridge (revolver cylinder magazine)
-          ammunitionId = modSlot.item.modSlots.filter(ms => ms.item !== undefined)[0]?.item?.itemId
+          ammunitionId = modSlot.item.modSlots.filter(ms => ms.item != null)[0]?.item?.itemId
         } else {
           // Normal magazine
           ammunitionId = modSlot.item.content[0]?.itemId
@@ -621,7 +621,7 @@ export class InventoryItemService {
 
     if (pathModSlotNames.length > 1) {
       /* istanbul ignore else */
-      if (presetModSlot.item !== undefined) {
+      if (presetModSlot.item != null) {
         pathModSlotNames.splice(0, 1)
 
         return this.getPresetModSlot(presetModSlot.item, pathModSlotNames)

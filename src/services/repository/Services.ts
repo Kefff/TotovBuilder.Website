@@ -61,7 +61,7 @@ class ServicesRepository {
   public get<T>(type: new () => T): T {
     const registeredService = this.services.find((s) => s.name === type.name)
 
-    if (registeredService !== undefined) {
+    if (registeredService != null) {
       return this.getInstance(registeredService)
     } else {
       throw i18n.t('message.serviceNotConfigured', { name: type.name })
@@ -76,7 +76,7 @@ class ServicesRepository {
   public getByName<T>(name: string): T {
     const registeredService = this.services.find((s) => s.name === name)
 
-    if (registeredService !== undefined) {
+    if (registeredService != null) {
       return this.getInstance(registeredService)
     } else {
       throw i18n.t('message.serviceNotConfigured', { name })

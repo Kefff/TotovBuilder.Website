@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="item !== undefined"
+    v-if="item != null"
     class="stats"
   >
     <ItemStat :item="item">

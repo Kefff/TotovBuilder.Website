@@ -101,7 +101,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'flea-market',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -109,7 +109,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'prapor',
           merchantLevel: 4,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         }
@@ -119,7 +119,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'flea-market',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -127,7 +127,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'prapor',
           merchantLevel: 4,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         }
@@ -139,7 +139,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'prapor',
           merchantLevel: 4,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -147,7 +147,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'therapist',
           merchantLevel: 4,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         }
@@ -157,7 +157,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'prapor',
           merchantLevel: 4,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         }

@@ -1,6 +1,6 @@
 <template>
   <ItemSummary
-    v-if="item !== undefined"
+    v-if="item != null"
     :item="item"
   >
     <AmmunitionSummary

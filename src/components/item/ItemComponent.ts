@@ -149,7 +149,7 @@ export default defineComponent({
       selectedItem.value = selectedItemResult.value
       setSelectedTab()
 
-      if (selectedItem.value != undefined) {
+      if (selectedItem.value != null) {
         preset.value = await inventoryItemService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
       }
     }
@@ -291,7 +291,7 @@ export default defineComponent({
       if (isCompatible.success) {
         const itemPreset = await itemService.getPreset(newSelectedItem.id)
 
-        if (itemPreset !== undefined) {
+        if (itemPreset != null) {
           // Creating a new object, otherwise the preset itself in the application presets list is modified when we change the selected item mods and content in the build
           selectedInventoryItem.value = JSON.parse(JSON.stringify(itemPreset))
         } else {

@@ -51,7 +51,7 @@ export default defineComponent({
 
     const itemPathPrefix = PathUtils.itemPrefix
 
-    const displayed = computed(() => editing?.value || props.modelValue.items.some((i) => i != undefined)) // Displayed only when in edit mode or when it contains at least one item
+    const displayed = computed(() => editing?.value || props.modelValue.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
 
     const acceptedItems = ref<IItem[]>([])
     const canBeLooted = ref(true)
@@ -70,7 +70,7 @@ export default defineComponent({
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: '',
+        quest: null,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -80,7 +80,7 @@ export default defineComponent({
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: '',
+        quest: null,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -91,7 +91,7 @@ export default defineComponent({
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: '',
+        quest: null,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -124,7 +124,7 @@ export default defineComponent({
       // Ergonomics
       const ergonomicsResult = await service.getErgonomics(props.modelValue)
 
-      if (ergonomicsResult !== undefined) {
+      if (ergonomicsResult != null) {
         if (!ergonomicsResult.success) {
           notificationService.notify(NotificationType.error, ergonomicsResult.failureMessage)
 
@@ -139,7 +139,7 @@ export default defineComponent({
       // Ergonomics percentage modifier
       const ergonomicsPercentageModifierResult = await service.getErgonomicsPercentageModifier(props.modelValue)
 
-      if (ergonomicsPercentageModifierResult !== undefined) {
+      if (ergonomicsPercentageModifierResult != null) {
         if (!ergonomicsPercentageModifierResult.success) {
           notificationService.notify(NotificationType.error, ergonomicsPercentageModifierResult.failureMessage)
 
@@ -165,7 +165,7 @@ export default defineComponent({
       // Recoil
       const recoilResult = await service.getRecoil(props.modelValue)
 
-      if (recoilResult !== undefined) {
+      if (recoilResult != null) {
         if (!recoilResult.success) {
           notificationService.notify(NotificationType.error, recoilResult.failureMessage)
 
@@ -262,7 +262,7 @@ export default defineComponent({
      * Sets the category IDs and the accepted items to pass to the ItemComponent.
      */
     async function setItemComponentParameters() {
-      if (type.value !== undefined) {
+      if (type.value != null) {
         categoryIds.value = type.value.acceptedItemCategories.map((aic) => aic.id)
         acceptedItems.value = await inventorySlotComponentService.getAcceptedItems(categoryIds.value)
       }

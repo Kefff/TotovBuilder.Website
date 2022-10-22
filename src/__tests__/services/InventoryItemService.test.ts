@@ -566,7 +566,7 @@ describe('getPrice()', () => {
           itemId: '5ca20d5986f774331e7c9602',
           merchant: 'ragman',
           merchantLevel: 1,
-          questId: '',
+          quest: null,
           value: 23444,
           valueInMainCurrency: 23444
         },
@@ -577,7 +577,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
+            quest: null,
             value: 61108,
             valueInMainCurrency: 61108
           }
@@ -588,7 +588,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 61108,
           valueInMainCurrency: 61108
         },
@@ -598,7 +598,7 @@ describe('getPrice()', () => {
           itemId: '5ca20d5986f774331e7c9602',
           merchant: 'ragman',
           merchantLevel: 1,
-          questId: '',
+          quest: null,
           value: 23444,
           valueInMainCurrency: 23444
         },
@@ -622,7 +622,7 @@ describe('getPrice()', () => {
           itemId: '56d59d3ad2720bdb418b4577',
           merchant: 'mechanic',
           merchantLevel: 2,
-          questId: '',
+          quest: null,
           value: 3500,
           valueInMainCurrency: 3500
         },
@@ -633,7 +633,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
+            quest: null,
             value: 3500,
             valueInMainCurrency: 3500
           }
@@ -644,7 +644,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 3500,
           valueInMainCurrency: 3500
         },
@@ -654,7 +654,7 @@ describe('getPrice()', () => {
           itemId: '56d59d3ad2720bdb418b4577',
           merchant: 'mechanic',
           merchantLevel: 2,
-          questId: '',
+          quest: null,
           value: 70,
           valueInMainCurrency: 70
         },
@@ -705,7 +705,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -716,9 +716,9 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
-            value: 67337,
-            valueInMainCurrency: 67337
+            quest: null,
+            value: 72478,
+            valueInMainCurrency: 72478
           }
         ],
         priceWithContentInMainCurrency: {
@@ -727,9 +727,9 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
-          value: 67337,
-          valueInMainCurrency: 67337
+          quest: null,
+          value: 72478,
+          valueInMainCurrency: 72478
         },
         unitPrice: {
           barterItems: [],
@@ -737,7 +737,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -772,9 +772,9 @@ describe('getPrice()', () => {
           itemId: '5c07c60e0db834002330051f',
           merchant: 'flea-market',
           merchantLevel: 0,
-          questId: '',
-          value: 41998,
-          valueInMainCurrency: 41998
+          quest: null,
+          value: 40281,
+          valueInMainCurrency: 40281
         },
         priceWithContentInMainCurrency: {
           barterItems: [],
@@ -782,9 +782,9 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
-          value: 47608,
-          valueInMainCurrency: 47608
+          quest: null,
+          value: 45881,
+          valueInMainCurrency: 45881
         },
         pricesWithContent: [
           {
@@ -793,9 +793,9 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
-            value: 41998,
-            valueInMainCurrency: 41998
+            quest: null,
+            value: 40281,
+            valueInMainCurrency: 40281
           },
           {
             barterItems: [],
@@ -803,9 +803,9 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
-            value: 51,
-            valueInMainCurrency: 5610
+            quest: null,
+            value: 50,
+            valueInMainCurrency: 5600
           }
         ],
         unitPrice: {
@@ -814,9 +814,9 @@ describe('getPrice()', () => {
           itemId: '5c07c60e0db834002330051f',
           merchant: 'flea-market',
           merchantLevel: 0,
-          questId: '',
-          value: 41998,
-          valueInMainCurrency: 41998
+          quest: null,
+          value: 40281,
+          valueInMainCurrency: 40281
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
@@ -854,7 +854,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -864,7 +864,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 10013,
           valueInMainCurrency: 10013
         },
@@ -875,7 +875,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
+            quest: null,
             value: 10013,
             valueInMainCurrency: 10013
           }
@@ -886,7 +886,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -950,7 +950,7 @@ describe('getPrice()', () => {
           itemId: '5ac66cb05acfc40198510a10',
           merchant: 'mechanic',
           merchantLevel: 2,
-          questId: '',
+          quest: null,
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -960,7 +960,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -971,7 +971,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
+            quest: null,
             value: 42938,
             valueInMainCurrency: 42938
           }
@@ -982,7 +982,7 @@ describe('getPrice()', () => {
           itemId: '5ac66cb05acfc40198510a10',
           merchant: 'mechanic',
           merchantLevel: 2,
-          questId: '',
+          quest: null,
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -1027,7 +1027,7 @@ describe('getPrice()', () => {
           itemId: '5ac66cb05acfc40198510a10',
           merchant: 'mechanic',
           merchantLevel: 2,
-          questId: '',
+          quest: null,
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -1038,7 +1038,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
+            quest: null,
             value: 64015,
             valueInMainCurrency: 64015
           }
@@ -1049,7 +1049,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 64015,
           valueInMainCurrency: 64015
         },
@@ -1059,7 +1059,7 @@ describe('getPrice()', () => {
           itemId: '5ac66cb05acfc40198510a10',
           merchant: 'mechanic',
           merchantLevel: 2,
-          questId: '',
+          quest: null,
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -1104,7 +1104,7 @@ describe('getPrice()', () => {
           itemId: '5ac66cb05acfc40198510a10',
           merchant: 'mechanic',
           merchantLevel: 2,
-          questId: '',
+          quest: null,
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -1114,9 +1114,9 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
-          value: 77938,
-          valueInMainCurrency: 77938
+          quest: null,
+          value: 211926,
+          valueInMainCurrency: 211926
         },
         pricesWithContent: [
           {
@@ -1125,9 +1125,9 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
-            value: 77938,
-            valueInMainCurrency: 77938
+            quest: null,
+            value: 211926,
+            valueInMainCurrency: 211926
           }
         ],
         unitPrice: {
@@ -1136,7 +1136,7 @@ describe('getPrice()', () => {
           itemId: '5ac66cb05acfc40198510a10',
           merchant: 'mechanic',
           merchantLevel: 2,
-          questId: '',
+          quest: null,
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -1189,9 +1189,9 @@ describe('getPrice()', () => {
           itemId: '5c0e805e86f774683f3dd637',
           merchant: 'peacekeeper',
           merchantLevel: 4,
-          questId: '',
-          value: 674,
-          valueInMainCurrency: 74140
+          quest: null,
+          value: 666,
+          valueInMainCurrency: 74592
         },
         priceWithContentInMainCurrency: {
           barterItems: [],
@@ -1199,9 +1199,9 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
-          value: 152078,
-          valueInMainCurrency: 152078
+          quest: null,
+          value: 286518,
+          valueInMainCurrency: 286518
         },
         pricesWithContent: [
           {
@@ -1210,9 +1210,9 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
-            value: 674,
-            valueInMainCurrency: 74140
+            quest: null,
+            value: 666,
+            valueInMainCurrency: 74592
           },
           {
             barterItems: [],
@@ -1220,9 +1220,9 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
-            value: 77938,
-            valueInMainCurrency: 77938
+            quest: null,
+            value: 211926,
+            valueInMainCurrency: 211926
           }
         ],
         unitPrice: {
@@ -1231,9 +1231,9 @@ describe('getPrice()', () => {
           itemId: '5c0e805e86f774683f3dd637',
           merchant: 'peacekeeper',
           merchantLevel: 4,
-          questId: '',
-          value: 674,
-          valueInMainCurrency: 74140
+          quest: null,
+          value: 666,
+          valueInMainCurrency: 74592
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
@@ -1302,7 +1302,7 @@ describe('getPrice()', () => {
         itemId: '5a38e6bac4a2826c6e06d79b',
         merchant: 'skier',
         merchantLevel: 1,
-        questId: '',
+        quest: null,
         value: 8917,
         valueInMainCurrency: 8917
       },
@@ -1312,7 +1312,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: '',
+        quest: null,
         value: 8917,
         valueInMainCurrency: 8917
       },
@@ -1323,7 +1323,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 8917,
           valueInMainCurrency: 8917
         }
@@ -1334,7 +1334,7 @@ describe('getPrice()', () => {
         itemId: '5a38e6bac4a2826c6e06d79b',
         merchant: 'skier',
         merchantLevel: 1,
-        questId: '',
+        quest: null,
         value: 8917,
         valueInMainCurrency: 8917
       },
@@ -1362,7 +1362,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1372,7 +1372,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1383,7 +1383,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1414,7 +1414,7 @@ describe('getPrice()', () => {
           itemId: '5ca20d5986f774331e7c9602',
           merchant: 'ragman',
           merchantLevel: 1,
-          questId: '',
+          quest: null,
           value: 23444,
           valueInMainCurrency: 23444
         },
@@ -1424,7 +1424,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 23444,
           valueInMainCurrency: 23444
         },
@@ -1435,7 +1435,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
+            quest: null,
             value: 23444,
             valueInMainCurrency: 23444
           }
@@ -1446,7 +1446,7 @@ describe('getPrice()', () => {
           itemId: '5ca20d5986f774331e7c9602',
           merchant: 'ragman',
           merchantLevel: 1,
-          questId: '',
+          quest: null,
           value: 23444,
           valueInMainCurrency: 23444
         },
@@ -1480,9 +1480,9 @@ describe('getPrice()', () => {
           itemId: '5e00903ae9dc277128008b87',
           merchant: 'flea-market',
           merchantLevel: 0,
-          questId: '',
-          value: 24624,
-          valueInMainCurrency: 24624
+          quest: null,
+          value: 26282,
+          valueInMainCurrency: 26282
         },
         priceWithContentInMainCurrency: {
           barterItems: [],
@@ -1490,9 +1490,9 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
-          value: 24624,
-          valueInMainCurrency: 24624
+          quest: null,
+          value: 26282,
+          valueInMainCurrency: 26282
         },
         pricesWithContent: [
           {
@@ -1501,9 +1501,9 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
-            value: 24624,
-            valueInMainCurrency: 24624
+            quest: null,
+            value: 26282,
+            valueInMainCurrency: 26282
           }
         ],
         unitPrice: {
@@ -1512,9 +1512,9 @@ describe('getPrice()', () => {
           itemId: '5e00903ae9dc277128008b87',
           merchant: 'flea-market',
           merchantLevel: 0,
-          questId: '',
-          value: 24624,
-          valueInMainCurrency: 24624
+          quest: null,
+          value: 26282,
+          valueInMainCurrency: 26282
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
