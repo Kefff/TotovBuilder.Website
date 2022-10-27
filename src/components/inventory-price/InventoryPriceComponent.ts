@@ -30,9 +30,9 @@ export default defineComponent({
 
     const missingPriceIconClass = computed(() => {
       if (!props.showSpaceForIcon) {
-        return 'inventory-price-missing-price-icon-no-width'
+        return 'inventory-price-value-missing-price-icon-no-width'
       } else {
-        return 'inventory-price-missing-price-icon'
+        return 'inventory-price-value-missing-price-icon'
       }
     })
 
