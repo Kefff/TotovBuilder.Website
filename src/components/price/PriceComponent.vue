@@ -1,16 +1,15 @@
 <template>
-  <div>
-    <div
-      v-tooltip.top="tooltip"
-      class="price"
-      @mouseover="togglePriceInMainCurrencyPanel($event)"
-      @mouseout="togglePriceInMainCurrencyPanel($event)"
-    >
+  <div
+    v-tooltip.top="tooltip"
+    :class="'price' + (canShowDetails ? ' price-with-details' : '')"
+    @click="(e) => togglePriceDetails(e)"
+  >
+    <div class="price-value">
       <div v-if="price.currencyName !== 'barter'">
         <!-- TODO : Handling barters - WORKAROUND WAITING FOR BARTERS TO BE HANDLED. REMOVE <div v-if="price.currencyName !== 'barter'"> WHEN IT IS DONE -->
         <span>{{ price.value.toLocaleString() }}</span>
         <font-awesome-icon
-          v-if="currency !== undefined"
+          v-if="currency != null"
           :icon="currency?.iconName"
           :class="'currency-' + currency?.name"
         />
@@ -22,39 +21,50 @@
         <img :src="'/assets/' + price.merchant + '.webp'">
       </div>
     </div>
-
-    <OverlayPanel
-      ref="priceInMainCurrencyPanel"
-      :dismissable="true"
+    <div
+      v-show="showDetails"
+      class="price-details"
     >
-      <div>
-        <div>
-          <div v-if="price.merchant !== ''">
-            <span class="price-merchant-name">{{ $t('caption.merchant_' + price.merchant) }}</span>
-            <span
-              v-if="price.merchantLevel !== 0"
-              class="price-merchant-level"
-            >
-              {{ $t('caption.level').toLocaleLowerCase() }} {{ price.merchantLevel }}
-            </span>
-          </div>
-        </div>
-        <div v-if="price.questId !== ''">
-          <font-awesome-icon
-            icon="lock"
-            class="icon-before-text price-quest-required"
-          />
-          <span>{{ $t('caption.questRequired') }}</span>
-        </div>
-        <div v-if="showPriceInMainCurrency">
-          {{ $t('caption.equalsTo') }} {{ price.valueInMainCurrency.toLocaleString() }}
+      <div
+        v-if="showPriceInMainCurrency"
+        class="price-details-main-currency"
+      >
+        <div>{{ $t('caption.equalsTo') }}</div>
+        <div class="price-details-main-currency-value">
+          <span>{{ price.valueInMainCurrency.toLocaleString() }}</span>
           <font-awesome-icon
             :icon="mainCurrency?.iconName"
             :class="'currency-' + mainCurrency?.name"
           />
         </div>
       </div>
-    </OverlayPanel>
+      <div v-if="price.merchant !== ''">
+        <div>
+          {{ $t('caption.merchant_' + price.merchant) }}
+        </div>
+        <div
+          v-if="price.merchantLevel !== 0"
+          class="price-details-merchant-level"
+        >
+          {{ $t('caption.level').toLocaleLowerCase() }} {{ price.merchantLevel }}
+        </div>
+      </div>
+      <div v-if="price.quest != null">
+        <font-awesome-icon
+          icon="lock"
+          class="icon-before-text price-details-quest-icon"
+        />
+        <span>{{ $t('caption.quest') }} : </span>
+        <a
+          :href="price.quest.wikiLink"
+          target="_blank"
+          class="link price-details-quest-link"
+          @click="(e) => e.stopPropagation()"
+        >
+          {{ price.quest.name }}
+        </a>
+      </div>
+    </div>
   </div>
 </template>
 

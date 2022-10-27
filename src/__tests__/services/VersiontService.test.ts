@@ -250,7 +250,7 @@ describe('constructor', () => {
     useWebsiteConfigurationServiceMock()
     vueI18n.locale.value = language as 'en' | 'fr'
 
-    if (version !== undefined) {
+    if (version != null) {
       localStorage.setItem(WebsiteConfigurationMock.versionStorageKey, version)
     }
 

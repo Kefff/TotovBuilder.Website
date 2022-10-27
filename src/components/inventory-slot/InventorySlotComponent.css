@@ -64,3 +64,8 @@
   display: flex;
   white-space: nowrap;
 }
+
+.inventory-slot-weight {
+  text-align: right;
+  width: 7rem;
+}

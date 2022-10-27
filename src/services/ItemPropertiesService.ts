@@ -13,7 +13,7 @@ export class ItemPropertiesService {
   public isAmmunition(item: IItem): boolean {
     const ammunition = ((item as unknown) as Record<string, unknown>)['fleshDamage'] as number
 
-    return ammunition !== undefined
+    return ammunition != null
   }
 
   /**
@@ -24,7 +24,7 @@ export class ItemPropertiesService {
   public isArmor(item: IItem): boolean {
     const armorClass = ((item as unknown) as Record<string, unknown>)['armorClass'] as number
 
-    return armorClass !== undefined
+    return armorClass != null
   }
 
   /**
@@ -46,7 +46,7 @@ export class ItemPropertiesService {
   public isMod(item: IItem): boolean {
     const ergonomicsModifier = ((item as unknown) as Record<string, unknown>)['ergonomicsModifier'] as number
 
-    return ergonomicsModifier !== undefined
+    return ergonomicsModifier != null
   }
 
   /**
@@ -68,7 +68,7 @@ export class ItemPropertiesService {
   public isRangedWeapon(item: IItem): boolean {
     const fireRate = ((item as unknown) as Record<string, unknown>)['fireRate'] as number
 
-    return fireRate !== undefined
+    return fireRate != null
   }
 
   /**
@@ -79,6 +79,6 @@ export class ItemPropertiesService {
   public isRangedWeaponMod(item: IItem): boolean {
     const recoilPercentageModifier = ((item as unknown) as Record<string, unknown>)['recoilPercentageModifier'] as number
 
-    return recoilPercentageModifier !== undefined
+    return recoilPercentageModifier != null
   }
 }

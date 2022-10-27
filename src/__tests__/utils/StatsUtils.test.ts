@@ -25,7 +25,7 @@ describe('StringUtils.getValueColorClass()', () => {
     [0, true, '']
   ])('should get the CSS class to apply to a stats value', (value: number, invert: boolean | undefined, expected: string) => {
     // Assert
-    if (invert !== undefined) {
+    if (invert != null) {
       expect(StatsUtils.getValueColorClass(value, invert)).toBe(expected)
     } else {
       expect(StatsUtils.getValueColorClass(value)).toBe(expected)

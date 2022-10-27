@@ -1362,7 +1362,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1372,9 +1372,9 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
-          value: 446316,
-          valueInMainCurrency: 446316
+          quest: null,
+          value: 479443,
+          valueInMainCurrency: 479443
         },
         pricesWithContent: [
           {
@@ -1383,9 +1383,9 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
-            value: 446316,
-            valueInMainCurrency: 446316
+            quest: null,
+            value: 479443,
+            valueInMainCurrency: 479443
           }
         ],
         unitPrice: {
@@ -1394,7 +1394,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1411,7 +1411,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1421,9 +1421,9 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
-          value: 135939,
-          valueInMainCurrency: 135939
+          quest: null,
+          value: 148950,
+          valueInMainCurrency: 148950
         },
         pricesWithContent: [
           {
@@ -1432,9 +1432,9 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
-            value: 122409,
-            valueInMainCurrency: 122409
+            quest: null,
+            value: 121398,
+            valueInMainCurrency: 121398
           },
           {
             barterItems: [],
@@ -1442,9 +1442,9 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
-            value: 123,
-            valueInMainCurrency: 13530
+            quest: null,
+            value: 246,
+            valueInMainCurrency: 27552
           }
         ],
         unitPrice: {
@@ -1453,7 +1453,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1528,7 +1528,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: '',
+        quest: null,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -1539,7 +1539,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: '',
+        quest: null,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -1549,7 +1549,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: '',
+        quest: null,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -1775,7 +1775,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
+            quest: null,
             value: 0,
             valueInMainCurrency: 0
           },
@@ -1785,9 +1785,9 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
-            value: 446316,
-            valueInMainCurrency: 446316
+            quest: null,
+            value: 479443,
+            valueInMainCurrency: 479443
           },
           pricesWithContent: [
             {
@@ -1796,9 +1796,9 @@ describe('getSummary()', () => {
               itemId: '',
               merchant: '',
               merchantLevel: 0,
-              questId: '',
-              value: 446316,
-              valueInMainCurrency: 446316
+              quest: null,
+              value: 479443,
+              valueInMainCurrency: 479443
             }
           ],
           unitPrice: {
@@ -1807,7 +1807,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
+            quest: null,
             value: 0,
             valueInMainCurrency: 0
           },
@@ -1843,7 +1843,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
+            quest: null,
             value: 0,
             valueInMainCurrency: 0
           },
@@ -1853,9 +1853,9 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
-            value: 135939,
-            valueInMainCurrency: 135939
+            quest: null,
+            value: 148950,
+            valueInMainCurrency: 148950
           },
           pricesWithContent: [
             {
@@ -1864,9 +1864,9 @@ describe('getSummary()', () => {
               itemId: '',
               merchant: '',
               merchantLevel: 0,
-              questId: '',
-              value: 122409,
-              valueInMainCurrency: 122409
+              quest: null,
+              value: 121398,
+              valueInMainCurrency: 121398
             },
             {
               barterItems: [],
@@ -1874,9 +1874,9 @@ describe('getSummary()', () => {
               itemId: '',
               merchant: '',
               merchantLevel: 0,
-              questId: '',
-              value: 123,
-              valueInMainCurrency: 13530
+              quest: null,
+              value: 246,
+              valueInMainCurrency: 27552
             }
           ],
           unitPrice: {
@@ -1885,7 +1885,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
+            quest: null,
             value: 0,
             valueInMainCurrency: 0
           },
@@ -1921,7 +1921,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
+            quest: null,
             value: 0,
             valueInMainCurrency: 0
           },
@@ -1931,7 +1931,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
+            quest: null,
             value: 0,
             valueInMainCurrency: 0
           },
@@ -1942,7 +1942,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
+            quest: null,
             value: 0,
             valueInMainCurrency: 0
           },

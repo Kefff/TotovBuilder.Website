@@ -22,12 +22,12 @@
               class="collapsable-icon-deployed"
             />
             <font-awesome-icon
-              v-if="icon !== undefined"
+              v-if="icon != null"
               :icon="icon"
               class="inventory-slot-icon"
             />
             <img
-              v-else-if="customIcon !== undefined"
+              v-else-if="customIcon != null"
               :src="'/assets/' + customIcon + '.webp'"
               class="inventory-slot-custom-icon"
             >
@@ -35,7 +35,7 @@
           </div>
           <div class="option-line">
             <div
-              v-if="ergonomics !== undefined"
+              v-if="ergonomics != null"
               v-tooltip.top="$t('caption.ergonomics')"
               class="inventory-slot-summary-value"
             >
@@ -46,7 +46,7 @@
               />
             </div>
             <div
-              v-if="ergonomicsPercentageModifier !== undefined && ergonomicsPercentageModifier !== 0"
+              v-if="ergonomicsPercentageModifier != null && ergonomicsPercentageModifier !== 0"
               v-tooltip.top="$t('caption.ergonomics')"
               class="inventory-slot-summary-value"
             >
@@ -59,7 +59,7 @@
               />
             </div>
             <div
-              v-if="verticalRecoil !== undefined"
+              v-if="verticalRecoil != null"
               v-tooltip.top="$t('caption.verticalRecoil')"
               class="inventory-slot-summary-value"
             >
@@ -70,7 +70,7 @@
               />
             </div>
             <div
-              v-if="horizontalRecoil !== undefined"
+              v-if="horizontalRecoil != null"
               v-tooltip.top="$t('caption.horizontalRecoil')"
               class="inventory-slot-summary-value"
             >
@@ -86,13 +86,10 @@
                 :show-space-for-icon="true"
               />
             </div>
-            <div
-              v-tooltip.top="$t('caption.weight')"
-              class="option-entry"
-            >
+            <div v-tooltip.top="$t('caption.weight')">
               <div
                 v-if="weight !== 0"
-                class="option-value-long"
+                class="inventory-slot-weight"
               >
                 <span>{{ weight.toFixed(3) }}</span>
                 <font-awesome-icon

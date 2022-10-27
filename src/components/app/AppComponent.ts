@@ -13,14 +13,14 @@ export default defineComponent({
   },
   setup() {
     const isLoading = ref(true)
-    Services.emitter.once('initialized', () => isLoading.value = false)
+    Services.emitter.once('initialized', onInitialized)
 
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
-    const contactAddress = computed(() => websiteConfigurationService.configuration.contactAddress)
-    const discordLink = computed(() => websiteConfigurationService.configuration.discordUrl)
-    const githubAddress = computed(() => websiteConfigurationService.configuration.githubUrl)
-    const reportBugAddress = computed(() => websiteConfigurationService.configuration.bugReportUrl)
+    const contactAddress = ref<string>()
+    const discordLink = ref<string>()
+    const githubAddress = ref<string>()
+    const reportBugAddress = ref<string>()
 
     const isSanta = computed(() => {
       const date = new Date()
@@ -45,6 +45,15 @@ export default defineComponent({
 
     function displayChangelog() {
       hasChangelogDisplayed.value = true
+    }
+
+    function onInitialized() {
+      contactAddress.value = websiteConfigurationService.configuration.contactAddress
+      discordLink.value = websiteConfigurationService.configuration.discordUrl
+      githubAddress.value = websiteConfigurationService.configuration.githubUrl
+      reportBugAddress.value = websiteConfigurationService.configuration.bugReportUrl
+
+      isLoading.value = false
     }
 
     return {

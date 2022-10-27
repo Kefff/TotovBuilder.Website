@@ -40,7 +40,10 @@ export default defineComponent({
     })
     const mainCurrency = ref<ICurrency>()
     const currency = ref<ICurrency>()
-    const priceInMainCurrencyPanel = ref()
+    const showDetails = ref(false)
+    const canShowDetails = computed(() => {
+      return props.price.currencyName !== mainCurrency.value?.name || props.price.merchant !== ''
+    })
 
     watch(() => props.price, () => initialize())
 
@@ -69,21 +72,24 @@ export default defineComponent({
     }
 
     /**
-     * Toggles the advanced menu.
-     * @param event - Event.
+     * Toggles the details of the price.
      */
-    function togglePriceInMainCurrencyPanel(event: unknown) {
-      if (showPriceInMainCurrency.value || props.price.merchant !== '') {
-        priceInMainCurrencyPanel.value?.toggle(event) // In some cames the priceInMainCurrencyPanel is still undefined when the event is triggered. I don't really know why.
+    function togglePriceDetails(event: Event) {
+      if (!canShowDetails.value) {
+        return
       }
+
+      showDetails.value = !showDetails.value
+      event.stopPropagation()
     }
 
     return {
+      canShowDetails,
       currency,
       mainCurrency,
-      priceInMainCurrencyPanel,
+      showDetails,
       showPriceInMainCurrency,
-      togglePriceInMainCurrencyPanel,
+      togglePriceDetails,
       tooltip
     }
   }

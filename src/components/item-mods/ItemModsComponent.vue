@@ -5,7 +5,7 @@
       :key="path + '/' + modSlotPathPrefix + modSlot.modSlotName"
     >
       <ModSlot
-        v-if="containerItem.modSlots[index] != undefined"
+        v-if="containerItem.modSlots[index] != null"
         v-model="inventoryModSlots[index]"
         :path="path + '/' + modSlotPathPrefix + modSlot.modSlotName"
         :mod-slot="containerItem.modSlots[index]"

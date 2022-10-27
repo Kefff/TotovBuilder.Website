@@ -288,7 +288,7 @@ export class ItemService {
       } else {
         const currencyItem = this.items.find(i => i.id === currency.itemId)
 
-        if (currencyItem !== undefined) {
+        if (currencyItem != null) {
           currency.value = currencyItem.prices[0].value
         }
       }
@@ -340,7 +340,7 @@ export class ItemService {
         const currency = tarkovValuesService.values.currencies.find(c => c.name === price.currencyName)
 
         /* istanbul ignore else */
-        if (currency !== undefined) {
+        if (currency != null) {
           price.valueInMainCurrency = price.value * currency.value
         } else {
           Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.currencyNotFound', { currency: price.currencyName }))

@@ -43,7 +43,7 @@ export class BuildService {
     for (const inventorySlotType of InventorySlotTypes.sort((inventorySlotType1, inventorySlotType2) => inventorySlotType1.displayOrder - inventorySlotType2.displayOrder)) {
       const items = new Array<IInventoryItem>(inventorySlotType.itemSlotsAmount)
 
-      if (inventorySlotType.defaultItemsIds != undefined) {
+      if (inventorySlotType.defaultItemsIds != null) {
         for (let i = 0; i < inventorySlotType.defaultItemsIds.length; i++) {
           items[i] = {
             content: [],
@@ -112,7 +112,7 @@ export class BuildService {
       // Converting dates back to Date type
       build.lastUpdated = new Date(build.lastUpdated as unknown as string)
 
-      if (build.lastExported !== undefined) {
+      if (build.lastExported != null) {
         build.lastExported = new Date(build.lastExported as unknown as string)
       }
 
@@ -192,7 +192,7 @@ export class BuildService {
     const reducedBuild: Record<string, unknown> = {}
     const reducedInventorySlots: Record<string, unknown>[] = []
 
-    for (const inventorySlot of build.inventorySlots.filter(is => is.items.some(i => i != undefined))) {
+    for (const inventorySlot of build.inventorySlots.filter(is => is.items.some(i => i != null))) {
       const reducedInventorySlot = this.reduceInventorySlotForSharing(inventorySlot)
       reducedInventorySlots.push(reducedInventorySlot)
     }
@@ -267,7 +267,7 @@ export class BuildService {
   public updateObsoleteBuild(build: IBuild): void {
     const obsoleteInventorySlot = build.inventorySlots.find(is => is.typeId === 'compass')
 
-    if (obsoleteInventorySlot !== undefined) {
+    if (obsoleteInventorySlot != null) {
       obsoleteInventorySlot.typeId = 'special'
 
       obsoleteInventorySlot.items = [
@@ -301,7 +301,7 @@ export class BuildService {
       return Result.fail(FailureType.error, 'BuildService.parseReducedInventoryItem()', i18n.t('message.cannotParseInventoryItemWithoutItemId'))
     }
 
-    const ignorePrice = reducedInventoryItem['p'] !== undefined
+    const ignorePrice = reducedInventoryItem['p'] != null
     let quantity = reducedInventoryItem['q'] as number
 
     if (quantity === undefined) {
@@ -311,7 +311,7 @@ export class BuildService {
     const reducedContainedItems = reducedInventoryItem['c'] as Record<string, unknown>[]
     const containedItems: IInventoryItem[] = []
 
-    if (reducedContainedItems !== undefined) {
+    if (reducedContainedItems != null) {
       for (const reducedContainedItem of reducedContainedItems) {
         const itemResult = this.parseReducedInventoryItem(reducedContainedItem)
 
@@ -326,7 +326,7 @@ export class BuildService {
     const reducedModSlots = reducedInventoryItem['m'] as Record<string, unknown>[]
     const modSlots: IInventoryModSlot[] = []
 
-    if (reducedModSlots !== undefined) {
+    if (reducedModSlots != null) {
       for (const reducedModSlot of reducedModSlots) {
         const modSlotResult = this.parseReducedInventoryModSlot(reducedModSlot)
 
@@ -362,7 +362,7 @@ export class BuildService {
     let inventoryItem: IInventoryItem | undefined = undefined
     const reducedItem = reducedInventoryModSlot['i'] as Record<string, unknown> | undefined
 
-    if (reducedItem !== undefined) {
+    if (reducedItem != null) {
       const inventoryItemResult = this.parseReducedInventoryItem(reducedItem)
 
       if (!inventoryItemResult.success) {
@@ -447,7 +447,7 @@ export class BuildService {
       reducedContentainedItems.push(reducedContainedItem)
     }
 
-    for (const modSlot of inventoryItem.modSlots.filter(ms => ms.item != undefined)) {
+    for (const modSlot of inventoryItem.modSlots.filter(ms => ms.item != null)) {
       const reducedModSlot = this.reduceInventoryModSlotForSharing(modSlot)
       reducedModSlots.push(reducedModSlot)
     }
@@ -475,7 +475,7 @@ export class BuildService {
     reducedInventoryModSlot['n'] = inventoryModSlot.modSlotName
 
     /* istanbul ignore else */
-    if (inventoryModSlot.item != undefined) {
+    if (inventoryModSlot.item != null) {
       // Should alway occur because we only call this method for mod slots containing an item
       reducedInventoryModSlot['i'] = this.reduceInventoryItemForSharing(inventoryModSlot.item)
     }

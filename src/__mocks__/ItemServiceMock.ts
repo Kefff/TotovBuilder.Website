@@ -24,7 +24,7 @@ export function useItemServiceMock(hasMainCurrency = true): void {
 function getItem(id: string): Promise<Result<IItem>> {
   const item = ItemsMock.find(i => i.id === id) as IItem
 
-  if (item !== undefined) {
+  if (item != null) {
     item.prices = PriceMocks.filter(p => p.itemId === id)
 
     return Promise.resolve(Result.ok(item))

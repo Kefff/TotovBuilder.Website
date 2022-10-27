@@ -90,7 +90,7 @@
         <div class="toolbar-part toolbar-center">
           <div class="build-toolbar-summary">
             <div
-              v-if="summary.ergonomics !== undefined"
+              v-if="summary.ergonomics != null"
               v-tooltip.top="$t('caption.ergonomics')"
               class="build-toolbar-summary-value"
             >
@@ -101,7 +101,7 @@
               />
             </div>
             <div
-              v-if="summary.verticalRecoil !== undefined"
+              v-if="summary.verticalRecoil != null"
               v-tooltip.top="$t('caption.verticalRecoil')"
               class="build-toolbar-summary-value"
             >
@@ -112,7 +112,7 @@
               />
             </div>
             <div
-              v-if="summary.horizontalRecoil !== undefined"
+              v-if="summary.horizontalRecoil != null"
               v-tooltip.top="$t('caption.horizontalRecoil')"
               class="build-toolbar-summary-value"
             >
@@ -123,7 +123,7 @@
               />
             </div>
             <div
-              v-if="summary.ergonomicsPercentageModifier !== undefined && summary.ergonomicsPercentageModifier !== 0"
+              v-if="summary.ergonomicsPercentageModifier != null && summary.ergonomicsPercentageModifier !== 0"
               v-tooltip.top="$t('caption.ergonomicsPercentageModifier')"
               class="build-toolbar-summary-value"
             >

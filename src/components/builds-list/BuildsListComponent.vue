@@ -56,7 +56,7 @@
       </template>
       <template #body="{data}">
         <div class="build-list-column">
-          <div v-if="data.ergonomics !== undefined">
+          <div v-if="data.ergonomics != null">
             <span>{{ data.ergonomics }}</span>
             <font-awesome-icon
               icon="hand-paper"
@@ -77,7 +77,7 @@
       </template>
       <template #body="{data}">
         <div
-          v-if="data.verticalRecoil !== undefined"
+          v-if="data.verticalRecoil != null"
           class="build-list-column"
         >
           <span>{{ data.verticalRecoil }}</span>
@@ -99,7 +99,7 @@
       </template>
       <template #body="{data}">
         <div
-          v-if="data.horizontalRecoil !== undefined"
+          v-if="data.horizontalRecoil != null"
           class="build-list-column"
         >
           <span>{{ data.horizontalRecoil }}</span>
@@ -121,7 +121,7 @@
       </template>
       <template #body="{data}">
         <div
-          v-if="data.ergonomicsPercentageModifier !== undefined && data.ergonomicsPercentageModifier !== 0"
+          v-if="data.ergonomicsPercentageModifier != null && data.ergonomicsPercentageModifier !== 0"
           class="build-list-column"
         >
           <span :class="StatsUtils.getValueColorClass(data.ergonomicsPercentageModifier)">

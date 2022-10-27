@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="editing || modelValue.item !== undefined "
+    v-if="editing || modelValue.item != null "
     class="mod-slot"
   >
     <div class="slot-name">
@@ -8,7 +8,7 @@
       <span
         v-if="modSlot.required"
         v-tooltip.top="$t('caption.requiredMod')"
-        :class="modelValue.item !== undefined ? 'required-ok' : 'required-nok'"
+        :class="modelValue.item != null ? 'required-ok' : 'required-nok'"
       > *</span>
     </div>
     <Item

@@ -51,7 +51,7 @@ export class SortingService {
       const getValueToCompareFunction = sortingFunction.getValueToCompareFunctions[newSortingProperty]
       const comparisonFunction = sortingFunction.comparisonFunctions[newSortingProperty]
 
-      if (comparisonFunction !== undefined && getValueToCompareFunction !== undefined) {
+      if (comparisonFunction != null && getValueToCompareFunction != null) {
         if (sortingData.property === newSortingProperty) {
           newSortingData.order = -sortingData.order
         }

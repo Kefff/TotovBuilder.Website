@@ -25,7 +25,7 @@ export default defineComponent({
       itemId: '',
       merchant: '',
       merchantLevel: 0,
-      questId: '',
+      quest: null,
       value: 0,
       valueInMainCurrency: 0
     })

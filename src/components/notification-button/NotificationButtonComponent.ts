@@ -10,11 +10,11 @@ export default defineComponent({
     const notificationPanel = ref()
     const notificationPanelToggled = ref(false)
     const notifications = ref<INotification[]>([])
-    const newNotificationCount = ref(0)
+    const newNotificationCount = ref(service.newNotificationCount)
 
     service.emitter.on(service.addedEventName, () => {
       notifications.value = service.getNotifications()
-      newNotificationCount.value += 1
+      newNotificationCount.value = service.newNotificationCount
     })
 
     onMounted(() => {
@@ -79,7 +79,7 @@ export default defineComponent({
 
       if (notificationPanelToggled.value) {
         service.resetNewNotificationCount()
-        newNotificationCount.value = 0
+        newNotificationCount.value = service.newNotificationCount
       }
     }
 

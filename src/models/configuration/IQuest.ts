@@ -8,11 +8,6 @@ export interface IQuest {
   id: string
 
   /**
-   * Merchant.
-   */
-  merchant: string
-
-  /**
    * Name
    */
   name: string

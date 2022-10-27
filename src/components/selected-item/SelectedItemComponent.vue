@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-if="modelValue != undefined"
+      v-if="modelValue != null"
       class="selected-item"
     >
       <ItemIcon :item="modelValue" />

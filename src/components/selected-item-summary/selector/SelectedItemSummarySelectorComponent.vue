@@ -1,6 +1,6 @@
 <template>
   <SelectedItemSummary
-    v-if="modelValue != undefined && item !== undefined"
+    v-if="modelValue != null && item != null"
     v-model="modelValue"
     :can-be-looted="canBeLooted"
     :preset="preset"

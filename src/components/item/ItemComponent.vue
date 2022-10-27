@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="selectedInventoryItem != undefined || editing"
+    v-if="selectedInventoryItem != null || editing"
     class="item"
   >
     <div class="item-selection">
@@ -38,7 +38,7 @@
         </Dropdown>
       </div>
       <div
-        v-if="selectedItem !== undefined && maxSelectableQuantity > 1"
+        v-if="selectedItem != null && maxSelectableQuantity > 1"
         class="item-quantity"
       >
         <InputNumberField
@@ -54,7 +54,7 @@
         />
       </div>
       <SelectedItemFunctionalities
-        v-if="selectedInventoryItem != undefined"
+        v-if="selectedInventoryItem != null"
         v-model:selectedTab="selectedTab"
         v-model:ignorePrice="selectedInventoryItem.ignorePrice"
         :can-have-content="selectedItemIsContainer"
@@ -62,14 +62,14 @@
         @update:ignorePrice="onIgnorePriceChanged()"
       />
       <SelectedItemSummarySelector
-        v-if="selectedInventoryItem != undefined"
+        v-if="selectedInventoryItem != null"
         v-model="selectedInventoryItem"
         :can-be-looted="canBeLooted"
         :preset="preset"
       />
     </div>
     <div
-      v-if="selectedInventoryItem !== undefined && selectedItem !== undefined && !itemChanging"
+      v-if="selectedInventoryItem != null && selectedItem != null && !itemChanging"
       class="tabs"
     >
       <div :class="selectedTab === SelectableTab.stats ? '' : 'tab-hidden'">

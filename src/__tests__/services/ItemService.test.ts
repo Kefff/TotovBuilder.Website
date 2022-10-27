@@ -153,7 +153,11 @@ describe('getItem()', () => {
         itemId: '57dc2fa62459775949412633',
         merchant: 'prapor',
         merchantLevel: 1,
-        questId: '5936d90786f7742b1420ba5b',
+        quest: {
+          id: '5936d90786f7742b1420ba5b',
+          name: 'Debut',
+          wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Debut'
+        },
         value: 24605,
         valueInMainCurrency: 24605
       },
@@ -163,9 +167,9 @@ describe('getItem()', () => {
         itemId: '57dc2fa62459775949412633',
         merchant: 'flea-market',
         merchantLevel: 0,
-        questId: '',
-        value: 29258,
-        valueInMainCurrency: 29258
+        quest: null,
+        value: 28999,
+        valueInMainCurrency: 28999
       }] as IPrice[])
   })
 

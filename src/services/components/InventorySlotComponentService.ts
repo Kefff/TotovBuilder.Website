@@ -62,7 +62,7 @@ export class InventorySlotComponentService {
       compatibilityResult = await Services.get(CompatibilityService).checkCompatibility(CompatibilityRequestType.tacticalRig, item.itemId, path)
     }
 
-    if (compatibilityResult !== undefined && !compatibilityResult.success) {
+    if (compatibilityResult != null && !compatibilityResult.success) {
       Services.get(NotificationService).notify(NotificationType.warning, compatibilityResult.failureMessage, true)
 
       return false

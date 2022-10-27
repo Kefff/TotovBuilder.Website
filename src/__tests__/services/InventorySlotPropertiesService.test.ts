@@ -297,7 +297,7 @@ describe('getErgonomics()', () => {
     const ergonomics = await service.getErgonomics(inventorySlot)
 
     // Assert
-    if (expected !== undefined) {
+    if (expected != null) {
       expect(ergonomics?.success).toBe(true)
       expect(ergonomics?.value).toBe(expected)
     } else {
@@ -335,7 +335,7 @@ describe('getErgonomicsPercentageModifier()', () => {
     const ergonomicsPercentageModifier = await service.getErgonomicsPercentageModifier(inventorySlot)
 
     // Assert
-    if (expected !== undefined) {
+    if (expected != null) {
       expect(ergonomicsPercentageModifier?.success).toBe(true)
       expect(ergonomicsPercentageModifier?.value).toBe(expected)
     } else {
@@ -370,7 +370,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -380,9 +380,9 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
-          value: 116774,
-          valueInMainCurrency: 116774
+          quest: null,
+          value: 116824,
+          valueInMainCurrency: 116824
         },
         pricesWithContent: [
           {
@@ -391,9 +391,9 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
-            value: 116774,
-            valueInMainCurrency: 116774
+            quest: null,
+            value: 116824,
+            valueInMainCurrency: 116824
           }
         ],
         unitPrice: {
@@ -402,7 +402,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -419,7 +419,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -429,9 +429,9 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
-          value: 26414,
-          valueInMainCurrency: 26414
+          quest: null,
+          value: 26356,
+          valueInMainCurrency: 26356
         },
         pricesWithContent: [
           {
@@ -440,7 +440,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
+            quest: null,
             value: 23444,
             valueInMainCurrency: 23444
           },
@@ -450,9 +450,9 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            questId: '',
-            value: 27,
-            valueInMainCurrency: 2970
+            quest: null,
+            value: 26,
+            valueInMainCurrency: 2912
           }
         ],
         unitPrice: {
@@ -461,7 +461,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          questId: '',
+          quest: null,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -518,7 +518,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: '',
+        quest: null,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -528,7 +528,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: '',
+        quest: null,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -539,7 +539,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        questId: '',
+        quest: null,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -601,7 +601,7 @@ describe('getRecoil()', () => {
     const recoil = await service.getRecoil(inventorySlot)
 
     // Assert
-    if (expected !== undefined) {
+    if (expected != null) {
       expect(recoil?.success).toBe(true)
       expect(recoil?.value).toStrictEqual(expected)
     } else {

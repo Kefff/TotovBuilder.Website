@@ -1,7 +1,7 @@
 <template>
   <div class="item-icon">
     <img
-      v-if="iconUrl != undefined"
+      v-if="iconUrl != null"
       :src="iconUrl"
     >
   </div>
