@@ -14,9 +14,13 @@ import { useItemServiceMock } from '../../../__mocks__/ItemServiceMock'
 
 describe('getAcceptedItems()', () => {
   it.each([
-    ['5ca20d5986f774331e7c9602', 68],
-    ['5a7ad2e851dfba0016153692', 1]
-  ])('should get the acceptem items', async (itemId: string, expected: number) => {
+    ['5ca20d5986f774331e7c9602', 82, 68, 15, 1],
+    ['5a7ad2e851dfba0016153692', 1, 1, 0, 0]
+  ])('should get the acceptem items', async (
+    itemId: string,
+    expectedItemsAmount: number,
+    expectedNonBarterItemsAmount: number,
+    expectedBarterItemsAmount: number, expectedNonBarterAndBarterItemsAmount) => {
     // Arrange
     useItemServiceMock()
     useTarkovValuesServiceMock()
@@ -38,7 +42,14 @@ describe('getAcceptedItems()', () => {
     const items = await itemContentService.getAcceptedItems(itemId)
 
     // Assert
-    expect(items.length).toBe(expected)
+    const nonBarters = items.filter(i => i.prices.some(p => p.merchant === 'prapor' && p.merchantLevel === 1 && p.currencyName !== 'barter'))
+    const barters = items.filter(i => i.prices.some(p => p.merchant === 'prapor' && p.merchantLevel === 1 && p.currencyName === 'barter'))
+    const common = barters.filter(b => nonBarters.includes(b))
+
+    expect(items.length).toBe(expectedItemsAmount)
+    expect(nonBarters.length).toBe(expectedNonBarterItemsAmount)
+    expect(barters.length).toBe(expectedBarterItemsAmount)
+    expect(common.length).toBe(expectedNonBarterAndBarterItemsAmount)
 
     // Clean
     localStorage.clear()

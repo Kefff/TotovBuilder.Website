@@ -64,6 +64,7 @@ const inventoryItem: IInventoryItem = {
   quantity: 1
 }
 
+
 const invalidInventoryItem1: IInventoryItem = {
   content: [],
   ignorePrice: false,
@@ -1536,6 +1537,185 @@ describe('getPrice()', () => {
     expect(price.value).toStrictEqual(expected)
   })
 
+  it('should get the price of an item that has barters', async () => {
+    // Arrange
+    useItemServiceMock(
+      true,
+      undefined,
+      [
+        {
+          barterItems: [
+            {
+              itemId: '590a3b0486f7743954552bdb', // Printed circuit board
+              quantity: 2.0
+            },
+            {
+              itemId: '5672cb724bdc2dc2088b456b', // Geiger-Muller counter
+              quantity: 1.0
+            },
+            {
+              itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+              quantity: 3.0
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          merchant: 'peacekeeper',
+          merchantLevel: 3.0,
+          quest: null,
+          value: 0.0,
+          valueInMainCurrency: 0.0
+        },
+        {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '590a3b0486f7743954552bdb', // Printed circuit board
+          merchant: 'flea-market',
+          merchantLevel: 0.0,
+          quest: null,
+          value: 15000.0,
+          valueInMainCurrency: 15000.0
+        },
+        {
+          barterItems: [],
+          currencyName: 'USD',
+          itemId: '5672cb724bdc2dc2088b456b', // Geiger-Muller counter
+          merchant: 'flea-market',
+          merchantLevel: 0.0,
+          quest: null,
+          value: 250.0,
+          valueInMainCurrency: 25000.0
+        },
+        {
+          barterItems: [
+            {
+              itemId: '590a3cd386f77436f20848cb', // Energy-saving lamp
+              quantity: 1
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+          merchant: 'prapor',
+          merchantLevel: 0.0,
+          quest: null,
+          value: 0.0,
+          valueInMainCurrency: 0.0
+        },
+        {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '590a3cd386f77436f20848cb', // Energy-saving lamp
+          merchant: 'mechanic',
+          merchantLevel: 1.0,
+          quest: null,
+          value: 200.0,
+          valueInMainCurrency: 200.0
+        }
+      ])
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
+    const service = new InventoryItemService()
+    Services.get(MerchantFilterService)
+
+    const inventoryItem: IInventoryItem = {
+      content: [],
+      ignorePrice: false,
+      itemId: '544a37c44bdc2d25388b4567',
+      modSlots: [],
+      quantity: 2
+    }
+
+    // Act
+    const price = await service.getPrice(inventoryItem)
+
+    // Assert
+    expect(price.success).toBe(true)
+    expect(price.value).toStrictEqual({
+      missingPrice: false,
+      price: {
+        barterItems: [
+          {
+            itemId: '590a3b0486f7743954552bdb', // Printed circuit board
+            quantity: 4.0
+          },
+          {
+            itemId: '5672cb724bdc2dc2088b456b', // Geiger-Muller counter
+            quantity: 2.0
+          },
+          {
+            itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+            quantity: 6.0
+          }
+        ],
+        currencyName: 'barter',
+        itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+        merchant: 'peacekeeper',
+        merchantLevel: 3,
+        quest: null,
+        value: 0,
+        valueInMainCurrency: 111200
+      },
+      pricesWithContent: [
+        {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: null,
+          value: 61200,
+          valueInMainCurrency: 61200
+        },
+        {
+          barterItems: [],
+          currencyName: 'USD',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: null,
+          value: 500,
+          valueInMainCurrency: 50000
+        }
+      ],
+      priceWithContentInMainCurrency: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: null,
+        value: 111200,
+        valueInMainCurrency: 111200
+      },
+      unitPrice: {
+        barterItems: [
+          {
+            itemId: '590a3b0486f7743954552bdb', // Printed circuit board
+            quantity: 2.0
+          },
+          {
+            itemId: '5672cb724bdc2dc2088b456b', // Geiger-Muller counter
+            quantity: 1.0
+          },
+          {
+            itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+            quantity: 3.0
+          }
+        ],
+        currencyName: 'barter',
+        itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+        merchant: 'peacekeeper',
+        merchantLevel: 3,
+        quest: null,
+        value: 0,
+        valueInMainCurrency: 55600
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+    } as IInventoryPrice)
+  })
+
   it('should fail if the main currency cannot be found', async () => {
     // Arrange
     useItemServiceMock(false)
@@ -1574,6 +1754,51 @@ describe('getPrice()', () => {
       expect(price.failureMessage).toBe('Item "invalid" not found.')
     }
   )
+
+  it('should fail if a barter item cannot be found', async () => {
+    // Arrange
+    useItemServiceMock(
+      true,
+      undefined,
+      [
+        {
+          barterItems: [
+            {
+              itemId: 'invalid',
+              quantity: 1.0
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          merchant: 'peacekeeper',
+          merchantLevel: 3.0,
+          quest: null,
+          value: 0.0,
+          valueInMainCurrency: 0.0
+        }
+      ])
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
+    const service = new InventoryItemService()
+    Services.get(MerchantFilterService)
+
+    const inventoryItem: IInventoryItem = {
+      content: [],
+      ignorePrice: false,
+      itemId: '544a37c44bdc2d25388b4567',
+      modSlots: [],
+      quantity: 2
+    }
+
+    // Act
+    const price = await service.getPrice(inventoryItem)
+
+    // Assert
+    expect(price.success).toBe(false)
+    expect(price.failureMessage).toBe('Item "invalid" not found.')
+  })
 })
 
 describe('getRecoil()', () => {

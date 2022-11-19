@@ -13,9 +13,6 @@ import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { InventorySlotService } from '../../services/InventorySlotService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
-import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import { instance, mock } from 'ts-mockito'
-import { IWebsiteConfiguration } from '../../models/configuration/IWebsiteConfiguration'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 
@@ -1373,8 +1370,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: null,
-          value: 479443,
-          valueInMainCurrency: 479443
+          value: 479365,
+          valueInMainCurrency: 479365
         },
         pricesWithContent: [
           {
@@ -1384,8 +1381,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: null,
-            value: 479443,
-            valueInMainCurrency: 479443
+            value: 479365,
+            valueInMainCurrency: 479365
           }
         ],
         unitPrice: {
@@ -1422,8 +1419,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: null,
-          value: 148950,
-          valueInMainCurrency: 148950
+          value: 138648,
+          valueInMainCurrency: 138648
         },
         pricesWithContent: [
           {
@@ -1433,8 +1430,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: null,
-            value: 121398,
-            valueInMainCurrency: 121398
+            value: 111096,
+            valueInMainCurrency: 111096
           },
           {
             barterItems: [],
@@ -1466,14 +1463,10 @@ describe('getPrice()', () => {
       // Arrange
       useTarkovValuesServiceMock()
       useItemServiceMock()
+      useWebsiteConfigurationServiceMock()
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
       Services.configure(MerchantFilterService)
-
-      const websiteConfigurationService = new WebsiteConfigurationService()
-      websiteConfigurationService.configuration = instance(mock<IWebsiteConfiguration>())
-      websiteConfigurationService.configuration.merchantFilterStorageKey = 'merchant_filter'
-      Services.configure(WebsiteConfigurationService, undefined, websiteConfigurationService)
 
       const service = new BuildPropertiesService()
 

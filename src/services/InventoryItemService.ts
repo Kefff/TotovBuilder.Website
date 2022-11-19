@@ -234,15 +234,35 @@ export class InventoryItemService {
     }
 
     if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
-      for (const price of merchantFilterService.getMatchingPrices(itemResult.value)) {
-        if (unitPrice.valueInMainCurrency === 0 || (price.valueInMainCurrency > 0 && price.valueInMainCurrency < unitPrice.valueInMainCurrency)) { // TODO : Handling barters - REMOVE price.valueInMainCurrency > 0 && WHEN IT IS DONE
+      const matchingPrices = merchantFilterService.getMatchingPrices(itemResult.value)
+
+      for (const price of matchingPrices) {
+        if (price.currencyName === 'barter') {
+          for (const barterItem of price.barterItems) {
+            const barterItemPriceResult = await this.getPrice({
+              content: [],
+              ignorePrice: false,
+              itemId: barterItem.itemId,
+              modSlots: [],
+              quantity: 1
+            })
+
+            if (!barterItemPriceResult.success) {
+              return Result.failFrom(barterItemPriceResult)
+            }
+
+            price.valueInMainCurrency += barterItemPriceResult.value.priceWithContentInMainCurrency.valueInMainCurrency * barterItem.quantity
+          }
+        }
+
+        if (unitPrice.valueInMainCurrency === 0 || price.valueInMainCurrency < unitPrice.valueInMainCurrency) {
           unitPrice = price
         }
       }
     }
 
     const price: IPrice = {
-      barterItems: [], // TODO : Handling barters
+      barterItems: [],
       currencyName: unitPrice.currencyName,
       itemId: unitPrice.itemId,
       merchant: unitPrice.merchant,
@@ -250,6 +270,13 @@ export class InventoryItemService {
       quest: unitPrice.quest,
       value: unitPrice.value * inventoryItem.quantity,
       valueInMainCurrency: unitPrice.valueInMainCurrency * inventoryItem.quantity
+    }
+
+    for (const barterItem of unitPrice.barterItems) {
+      price.barterItems.push({
+        itemId: barterItem.itemId,
+        quantity: barterItem.quantity * inventoryItem.quantity
+      })
     }
 
     const mainCurrencyResult = await itemService.getMainCurrency()
@@ -277,18 +304,58 @@ export class InventoryItemService {
     }
 
     if (price.valueInMainCurrency > 0) {
-      inventoryPrice.pricesWithContent.push({
-        barterItems: [], // TODO : Handling barters
-        currencyName: price.currencyName,
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: null,
-        value: price.value,
-        valueInMainCurrency: price.valueInMainCurrency
-      })
+      if (price.currencyName !== 'barter') {
+        inventoryPrice.pricesWithContent.push({
+          barterItems: [],
+          currencyName: price.currencyName,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: null,
+          value: price.value,
+          valueInMainCurrency: price.valueInMainCurrency
+        })
+      } else {
+        // Adding barter item prices
+        for (const barterItem of price.barterItems) {
+          const barterItemPriceResult = await this.getPrice({
+            content: [],
+            ignorePrice: false,
+            itemId: barterItem.itemId,
+            modSlots: [],
+            quantity: 1
+          })
+
+          /* istanbul ignore if */
+          if (!barterItemPriceResult.success) {
+            // Should never occur
+            return Result.failFrom(barterItemPriceResult)
+          }
+
+          for (const barterItemPriceWithContent of barterItemPriceResult.value.pricesWithContent) {
+            const currencyIndex = inventoryPrice.pricesWithContent.findIndex(p => p.currencyName === barterItemPriceWithContent.currencyName)
+
+            if (currencyIndex < 0) {
+              inventoryPrice.pricesWithContent.push({
+                barterItems: [],
+                currencyName: barterItemPriceWithContent.currencyName,
+                itemId: '',
+                merchant: '',
+                merchantLevel: 0,
+                quest: null,
+                value: barterItemPriceWithContent.value * barterItem.quantity,
+                valueInMainCurrency: barterItemPriceWithContent.valueInMainCurrency * barterItem.quantity
+              })
+            } else {
+              inventoryPrice.pricesWithContent[currencyIndex].value += barterItemPriceWithContent.value * barterItem.quantity
+              inventoryPrice.pricesWithContent[currencyIndex].valueInMainCurrency += barterItemPriceWithContent.valueInMainCurrency * barterItem.quantity
+            }
+          }
+        }
+      }
     }
 
+    // Adding content prices
     for (const containedItem of inventoryItem.content) {
       /* istanbul ignore if */
       if (containedItem == undefined) {
@@ -321,6 +388,7 @@ export class InventoryItemService {
       }
     }
 
+    // Adding mod prices
     if (presetModSlotItem === undefined) {
       presetModSlotItem = await itemService.getPreset(inventoryItem.itemId)
     }
