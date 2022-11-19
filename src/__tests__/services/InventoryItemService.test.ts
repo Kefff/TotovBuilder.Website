@@ -1716,6 +1716,85 @@ describe('getPrice()', () => {
     } as IInventoryPrice)
   })
 
+  it('should ignore barters with missing barter item price', async () => {
+    // Arrange
+    useItemServiceMock(
+      true,
+      undefined,
+      [
+        {
+          barterItems: [
+            {
+              itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+              quantity: 1.0
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          merchant: 'peacekeeper',
+          merchantLevel: 3.0,
+          quest: null,
+          value: 0.0,
+          valueInMainCurrency: 0.0
+        }
+      ])
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
+    const service = new InventoryItemService()
+    Services.get(MerchantFilterService)
+
+    const inventoryItem: IInventoryItem = {
+      content: [],
+      ignorePrice: false,
+      itemId: '544a37c44bdc2d25388b4567',
+      modSlots: [],
+      quantity: 2
+    }
+
+    // Act
+    const price = await service.getPrice(inventoryItem)
+
+    // Assert
+    expect(price.success).toBe(true)
+    expect(price.value).toStrictEqual({
+      missingPrice: true,
+      price: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: null,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      pricesWithContent: [],
+      priceWithContentInMainCurrency: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: null,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      unitPrice: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: null,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+    } as IInventoryPrice)
+  })
+
   it('should fail if the main currency cannot be found', async () => {
     // Arrange
     useItemServiceMock(false)

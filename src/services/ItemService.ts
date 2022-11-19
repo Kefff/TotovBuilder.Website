@@ -336,7 +336,7 @@ export class ItemService {
     const tarkovValuesService = Services.get(TarkovValuesService)
 
     for (const item of this.items) {
-      for (const price of item.prices) {
+      for (const price of item.prices.filter(p => p.currencyName !== 'barter')) {
         const currency = tarkovValuesService.values.currencies.find(c => c.name === price.currencyName)
 
         /* istanbul ignore else */

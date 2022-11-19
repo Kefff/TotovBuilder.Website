@@ -233,12 +233,16 @@ export class InventoryItemService {
       unitPriceIgnoreStatus = IgnoredUnitPrice.manuallyIgnored
     }
 
+    let hasUnitPrice = false
+
     if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
       const matchingPrices = merchantFilterService.getMatchingPrices(itemResult.value)
 
-      for (const price of matchingPrices) {
-        if (price.currencyName === 'barter') {
-          for (const barterItem of price.barterItems) {
+      for (const matchingPrice of matchingPrices) {
+        let missingBarterItemPrice = false
+
+        if (matchingPrice.currencyName === 'barter') {
+          for (const barterItem of matchingPrice.barterItems) {
             const barterItemPriceResult = await this.getPrice({
               content: [],
               ignorePrice: false,
@@ -251,12 +255,20 @@ export class InventoryItemService {
               return Result.failFrom(barterItemPriceResult)
             }
 
-            price.valueInMainCurrency += barterItemPriceResult.value.priceWithContentInMainCurrency.valueInMainCurrency * barterItem.quantity
+            if (barterItemPriceResult.value.missingPrice) {
+              missingBarterItemPrice = true
+              continue
+            }
+
+            matchingPrice.valueInMainCurrency += barterItemPriceResult.value.priceWithContentInMainCurrency.valueInMainCurrency * barterItem.quantity
           }
         }
 
-        if (unitPrice.valueInMainCurrency === 0 || price.valueInMainCurrency < unitPrice.valueInMainCurrency) {
-          unitPrice = price
+        if (!missingBarterItemPrice
+          && (unitPrice.valueInMainCurrency === 0
+            || matchingPrice.valueInMainCurrency < unitPrice.valueInMainCurrency)) {
+          unitPrice = matchingPrice
+          hasUnitPrice = true
         }
       }
     }
@@ -286,7 +298,7 @@ export class InventoryItemService {
     }
 
     const inventoryPrice: IInventoryPrice = {
-      missingPrice: unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored && !merchantFilterService.hasMatchingPrices(itemResult.value, false),
+      missingPrice: unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored && !hasUnitPrice,
       price,
       pricesWithContent: [],
       priceWithContentInMainCurrency: {

@@ -5,15 +5,12 @@
     @click="(e) => togglePriceDetails(e)"
   >
     <div class="price-value">
-      <div v-if="price.currencyName !== 'barter'">
-        <!-- TODO : Handling barters - WORKAROUND WAITING FOR BARTERS TO BE HANDLED. REMOVE <div v-if="price.currencyName !== 'barter'"> WHEN IT IS DONE -->
-        <span>{{ price.value.toLocaleString() }}</span>
-        <font-awesome-icon
-          v-if="currency != null"
-          :icon="currency?.iconName"
-          :class="'currency-' + currency?.name"
-        />
-      </div>
+      <span>{{ price.value.toLocaleString() }}</span>
+      <font-awesome-icon
+        v-if="currency != null"
+        :icon="currency?.iconName"
+        :class="'currency-' + currency?.name"
+      />
       <div
         v-if="showMerchantIcon"
         class="price-merchant-icon"
