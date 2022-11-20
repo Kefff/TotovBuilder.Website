@@ -5,7 +5,7 @@
     @click="(e) => togglePriceDetails(e)"
   >
     <div class="price-value">
-      <span>{{ price.value.toLocaleString() }}</span>
+      <span>{{ displayedPrice }}</span>
       <font-awesome-icon
         v-if="currency != null"
         :icon="currency?.iconName"

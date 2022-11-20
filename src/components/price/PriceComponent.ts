@@ -44,6 +44,7 @@ export default defineComponent({
     const canShowDetails = computed(() => {
       return props.price.currencyName !== mainCurrency.value?.name || props.price.merchant !== ''
     })
+    const displayedPrice = ref('')
 
     watch(() => props.price, () => initialize())
 
@@ -69,6 +70,13 @@ export default defineComponent({
 
       mainCurrency.value = mainCurrencyResult.value
       currency.value = currencyResult.value
+
+      if (props.price.currencyName === 'barter') {
+        currency.value = mainCurrency.value
+        displayedPrice.value = props.price.valueInMainCurrency.toLocaleString()
+      } else {
+        displayedPrice.value = props.price.value.toLocaleString()
+      }
     }
 
     /**
@@ -86,6 +94,7 @@ export default defineComponent({
     return {
       canShowDetails,
       currency,
+      displayedPrice,
       mainCurrency,
       showDetails,
       showPriceInMainCurrency,

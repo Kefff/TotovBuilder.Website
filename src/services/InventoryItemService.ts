@@ -240,6 +240,7 @@ export class InventoryItemService {
 
       for (const matchingPrice of matchingPrices) {
         let missingBarterItemPrice = false
+        let matchingPriceInMainCurrency = matchingPrice.valueInMainCurrency
 
         if (matchingPrice.currencyName === 'barter') {
           for (const barterItem of matchingPrice.barterItems) {
@@ -260,14 +261,20 @@ export class InventoryItemService {
               continue
             }
 
-            matchingPrice.valueInMainCurrency += barterItemPriceResult.value.priceWithContentInMainCurrency.valueInMainCurrency * barterItem.quantity
+            matchingPriceInMainCurrency += barterItemPriceResult.value.priceWithContentInMainCurrency.valueInMainCurrency * barterItem.quantity
           }
         }
 
         if (!missingBarterItemPrice
           && (unitPrice.valueInMainCurrency === 0
-            || matchingPrice.valueInMainCurrency < unitPrice.valueInMainCurrency)) {
-          unitPrice = matchingPrice
+            || matchingPriceInMainCurrency < unitPrice.valueInMainCurrency)) {
+          unitPrice = {
+            // Creating a new instance because we need to set the valueInMainCurrency.
+            // If we directly use a reference to matchinPrice.valueInMainCurrency, then we modify this price for the whole application each time we pass here
+            ...matchingPrice,
+            valueInMainCurrency: matchingPriceInMainCurrency
+          }
+
           hasUnitPrice = true
         }
       }
