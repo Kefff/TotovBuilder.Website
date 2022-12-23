@@ -11,9 +11,9 @@
 }
 
 html {
+  letter-spacing: 0.25px;
   margin: 0;
   padding: 0;
-  letter-spacing: 0.25px;
 }
 
 body {

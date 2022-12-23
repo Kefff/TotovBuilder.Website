@@ -2,9 +2,13 @@
 @import '../../assets/css/icon.css';
 
 .price {
+  align-items: center;
   display: flex;
-  flex-direction: column;
-  padding: 0.25rem
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: end;
+  padding: 0.25rem;
+  white-space: nowrap;
 }
 
 .price-value {
@@ -20,28 +24,48 @@
   font-size: 0.85rem;
 }
 
-.price-details > div {
+.price-details-barter {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.price-details-barter-item {
   align-items: center;
   display: flex;
-  justify-content: flex-end;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  margin-top: 0.25rem;
+}
+
+.price-details-barter-item-caption {
+  margin-left: 0.25rem;
+  width: 100%;
+}
+
+.price-details-main-currency {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
 
 .price-details-main-currency-value {
   margin-left: 0.25rem;
 }
 
-.price-details-merchant-level {
-  margin-left: 0.25rem;
+.price-details-quest {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .price-details-quest-icon {
   color: var(--warning-color);
 }
 
-.price-details-quest-link {
-  margin-left: 0.25rem;
+.price-details-quest {
+  margin-right: 0.25rem;
 }
 
 .price-merchant-icon {
@@ -62,8 +86,39 @@
   width: 2rem;
 }
 
-.price-with-details:hover {
-  background-color: var(--background-color5);
-  border-radius: 3px;
+.price-merchant-barter-icon {
+  
+  border-radius: 1rem;
+  color: var(--text-color);
+  font-size: 0.85rem;
+  position: relative;
+  right: 3.5rem;
+  top: 0.9rem;
+  text-align: center;
+}
+
+.price-merchant-barter-icon>div {
+  height: 1rem;
+  width: 1rem;
+}
+
+.price-merchant-level {
+  background-color: var(--primary-color);
+  border-radius: 1rem;
+  color: var(--text-color);
+  font-size: 0.85rem;
+  position: relative;
+  right: 0.5rem;
+  top: 0.9rem;
+  text-align: center;
+}
+
+.price-merchant-level > div {
+  height: 1rem;
+  width: 1rem;
+}
+
+.price-value-with-details:hover {
+  color: var(--primary-color);
   cursor: pointer;
 }

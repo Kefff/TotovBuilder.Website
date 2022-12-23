@@ -6,6 +6,7 @@ import { useRouter } from './plugins/vueRouter'
 import { useFontAwesome } from './plugins/fontAwesome'
 import { configureServices } from './servicesConfiguration'
 import Item from './components/item/ItemComponent.vue'
+import Price from './components/price/PriceComponent.vue'
 
 // Services
 configureServices()
@@ -21,6 +22,7 @@ useRouter(app)
 
 // Global components
 app.component('Item', Item) // Need to be registered globally otherwise locally registering Item inside ItemContent which is registered inside Item doesn't work
+app.component('Price', Price)
 
 // Start
 app.mount('#app')
