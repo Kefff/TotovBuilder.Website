@@ -201,9 +201,10 @@ export class InventoryItemService {
    * @param inventoryItem - Inventory item.
    * @param presetModSlotItem - Preset mod slot item used to ignore the price of mods that are installed by default on an item.
    * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
+   * @param useMerchantFilter - Indicates whether the merchant filter is used. If false, all prices are taken into consideration. Used mainly to ignore merchant filter to be able to display all the prices and barters of an item in its stats.
    * @returns Price.
    */
-  public async getPrice(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true): Promise<Result<IInventoryPrice>> {
+  public async getPrice(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true, useMerchantFilter = true): Promise<Result<IInventoryPrice>> {
     const merchantFilterService = Services.get(MerchantFilterService)
     const itemService = Services.get(ItemService)
     const itemResult = await itemService.getItem(inventoryItem.itemId)
@@ -236,7 +237,7 @@ export class InventoryItemService {
     let hasUnitPrice = false
 
     if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
-      const matchingPrices = merchantFilterService.getMatchingPrices(itemResult.value)
+      const matchingPrices = useMerchantFilter ? merchantFilterService.getMatchingPrices(itemResult.value) : itemResult.value.prices
 
       for (const matchingPrice of matchingPrices) {
         let missingBarterItemPrice = false
@@ -250,7 +251,7 @@ export class InventoryItemService {
               itemId: barterItem.itemId,
               modSlots: [],
               quantity: 1
-            })
+            }, undefined, true, useMerchantFilter)
 
             if (!barterItemPriceResult.success) {
               return Result.failFrom(barterItemPriceResult)

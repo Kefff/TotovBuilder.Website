@@ -34,6 +34,11 @@ export default defineComponent({
       type: String,
       required: false,
       default: undefined
+    },
+    useMerchantFilter: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
   setup: (props) => {
@@ -62,7 +67,7 @@ export default defineComponent({
       : '')
     const priceDetailPanelWidth = computed(() => isBarter.value ? 28 : 16)
     const priceValueTooltip = computed(() => props.showTooltip ? vueI18n.t('caption.price') + (props.tooltipSuffix ?? '') : '')
-    const showPriceInMainCurrency = computed(() => props.showTooltip && (isBarter.value || currency.value?.name !== mainCurrency.value?.name))
+    const showPriceInMainCurrency = computed(() => props.showTooltip && (!isBarter.value && currency.value?.name !== mainCurrency.value?.name))
 
     watch(() => props.price, () => initialize())
 
@@ -112,7 +117,7 @@ export default defineComponent({
           itemId: barterItem.itemId,
           modSlots: [],
           quantity: 1
-        })
+        }, undefined, true, props.useMerchantFilter)
 
         if (!priceResult.success) {
           Services.get(NotificationService).notify(NotificationType.error, priceResult.failureMessage)
@@ -177,6 +182,7 @@ export default defineComponent({
       }
 
       priceDetailPanel.value.toggle(event)
+      event.stopPropagation()
     }
 
     return {

@@ -18,7 +18,8 @@
     <div
       v-if="showMerchantIcon"
       v-tooltip.top="merchantTooltip"
-      class="price-merchant-icon"
+      :class="'price-merchant-icon' + (canShowDetails ? ' price-value-with-details' : '')"
+      @click="(e) => togglePriceDetails(e)"
     >
       <img :src="'/assets/' + price.merchant + '.webp'">
       <div
@@ -82,7 +83,13 @@
         v-if="isBarter"
         class="price-details-barter"
       >
-        <div>{{ $t('caption.barter') }} :</div>
+        <div class="price-details-barter-title">
+          <font-awesome-icon
+            :icon="currency?.iconName"
+            class="icon-before-text"
+          />
+          <span>{{ $t('caption.barter') }} :</span>
+        </div>
         <div
           v-for="(barterItem, index) of price.barterItems"
           :key="barterItem.itemId"
