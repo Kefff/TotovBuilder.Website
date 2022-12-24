@@ -1,12 +1,14 @@
 <template>
   <div
     v-if="inventoryPrice.priceWithContentInMainCurrency.valueInMainCurrency > 0"
-    v-tooltip.top="$t('caption.price')"
-    :class="'inventory-price' + (canShowDetails ? ' inventory-price-with-details' : '')"
-    @click="(e) => togglePriceDetails(e)"
+    class="inventory-price"
   >
     <div class="inventory-price-value">
-      <div class="inventory-price-value-list">
+      <div
+        v-tooltip.top="$t('caption.price')"
+        :class="'inventory-price-value-list' + (canShowDetails ? ' inventory-price-with-details' : '')"
+        @click="(e) => togglePriceDetails(e)"
+      >
         <div
           v-for="(price, index) of inventoryPrice.pricesWithContent"
           :key="index"
@@ -29,10 +31,15 @@
         />
       </div>
     </div>
-    <div
-      v-show="showDetails"
-      class="inventory-price-details"
-    >
+  </div>
+
+  <!-- Price details -->
+  <OverlayPanel
+    ref="priceDetailPanel"
+    :dismissable="true"
+    :style="'max-width: 16rem'"
+  >
+    <div class="inventory-price-details">
       <div>
         <span>{{ $t('caption.equalsTo') }} {{ priceInMainCurrency.toLocaleString() }}</span>
         <font-awesome-icon
@@ -41,7 +48,7 @@
         />
       </div>
     </div>
-  </div>
+  </OverlayPanel>
 </template>
 
 <script lang="ts" src="./InventoryPriceComponent.ts" />

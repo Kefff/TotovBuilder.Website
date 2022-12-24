@@ -9,11 +9,10 @@
 .inventory-price-details {
   font-size: 0.85rem;
   padding-right: 0.25rem;
-  text-align: right;
 }
 
 .inventory-price-with-details:hover {
-  background-color: var(--background-color5);
+  color: var(--primary-color);
   border-radius: 3px;
   cursor: pointer;
 }

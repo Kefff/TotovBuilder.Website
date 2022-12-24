@@ -1878,6 +1878,53 @@ describe('getPrice()', () => {
     expect(price.success).toBe(false)
     expect(price.failureMessage).toBe('Item "invalid" not found.')
   })
+
+  it('should ignore the merchant filter when searching for available prices', async () => {
+    // Arrange
+    useItemServiceMock(
+      true,
+      undefined,
+      [
+        {
+          'barterItems': [],
+          'currencyName': 'RUB',
+          'itemId': '558022b54bdc2dac148b458d', // EOTech EXPS3 holographic sight (Tan)
+          'merchant': 'mechanic',
+          'merchantLevel': 4.0,
+          'quest': null,
+          'value': 29400.0,
+          'valueInMainCurrency': 29400.0
+        }
+      ])
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
+    const inventoryItemService = new InventoryItemService()
+    const merchantFilterService = Services.get(MerchantFilterService)
+    merchantFilterService.save([
+      {
+        enabled: true,
+        merchant: 'mechanic',
+        merchantLevel: 1
+      }
+    ])
+
+    const inventoryItem: IInventoryItem = {
+      content: [],
+      ignorePrice: false,
+      itemId: '558022b54bdc2dac148b458d',
+      modSlots: [],
+      quantity: 1
+    }
+
+    // Act
+    const priceResult = await inventoryItemService.getPrice(inventoryItem, undefined, true, false)
+
+    // Assert
+    expect(priceResult.success).toBe(true)
+    expect(priceResult.value.unitPrice.valueInMainCurrency).toBe(29400)
+  })
 })
 
 describe('getRecoil()', () => {

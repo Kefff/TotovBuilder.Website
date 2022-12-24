@@ -45,7 +45,7 @@
   <OverlayPanel
     ref="priceDetailPanel"
     :dismissable="true"
-    :style="'width: ' + priceDetailPanelWidth + 'rem'"
+    :style="'max-width: ' + priceDetailPanelWidth + 'rem'"
   >
     <div class="price-details">
       <div

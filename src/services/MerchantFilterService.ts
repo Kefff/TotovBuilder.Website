@@ -34,7 +34,7 @@ export class MerchantFilterService {
 
   /**
    * Gets merchant filters.
-   * @returns load
+   * @returns Merchant filters.
    */
   public get(): IMerchantFilter[] {
     const filters: IMerchantFilter[] = []
