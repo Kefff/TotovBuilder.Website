@@ -50,7 +50,7 @@ export class InventorySlotComponentService {
    * @returns True if the item is compatible with the build; otherwise False.
    */
   public async checkCompatibility(inventorySlotTypeId: string, item: IInventoryItem | undefined, path: string): Promise<boolean> {
-    if (item === undefined) {
+    if (item == null) {
       return true
     }
 

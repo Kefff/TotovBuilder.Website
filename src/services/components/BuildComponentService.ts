@@ -49,7 +49,7 @@ export class BuildComponentService {
   public getBuild(id: string | undefined): IBuild {
     const buildService = Services.get(BuildService)
 
-    if (id === undefined) {
+    if (id == null) {
       return buildService.create()
     }
 

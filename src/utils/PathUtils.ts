@@ -62,7 +62,7 @@ export class PathUtils {
       currentPathArrayIndex++
       const expectedItemId = pathArray[currentPathArrayIndex]?.replace(PathUtils.itemPrefix, '')
 
-      if (modSlot?.item === undefined || modSlot.item.itemId !== expectedItemId) {
+      if (modSlot?.item == null || modSlot.item.itemId !== expectedItemId) {
         return Result.fail(FailureType.error, 'PathUtils.getInventorySlot()', vueI18n.t('message.cannotFindModSlotItemInPath', { path, itemId: expectedItemId }))
       }
 
@@ -99,21 +99,21 @@ export class PathUtils {
     const pathArray = path.split('/')
     const inventorySlotInfo = pathArray.find(p => p.startsWith(this.inventorySlotPrefix))
 
-    if (inventorySlotInfo === undefined) {
+    if (inventorySlotInfo == null) {
       return Result.fail(FailureType.error, 'PathUtils.getInventorySlotItem()', vueI18n.t('message.cannotFindInventorySlotInPath', { path }))
     }
 
     const inventorySlotAndIndex = inventorySlotInfo.replace(this.inventorySlotPrefix, '').split('_')
     const inventorySlot = build.inventorySlots.find(is => is.typeId === inventorySlotAndIndex[0])
 
-    if (inventorySlot === undefined) {
+    if (inventorySlot == null) {
       return Result.fail(FailureType.error, 'PathUtils.getInventorySlotItem()', vueI18n.t('message.cannotFindInventorySlot', { inventorySlotTypeId: inventorySlotAndIndex[0] }))
     }
 
     const inventoryItemIndex = Number(inventorySlotAndIndex[1])
     const inventoryItem = inventorySlot.items[inventoryItemIndex]
 
-    if (inventoryItem === undefined) {
+    if (inventoryItem == null) {
       return Result.fail(FailureType.error, 'PathUtils.getInventorySlotItem()', vueI18n.t('message.cannotFindInventoryItemInInventorySlot', { inventorySlotTypeId: inventorySlotAndIndex[0], index: inventoryItemIndex }))
     }
 

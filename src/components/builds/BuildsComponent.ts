@@ -42,7 +42,7 @@ export default defineComponent({
     const advancedPanel = ref()
 
     const canExport = computed(() => builds.length !== 0)
-    const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported === undefined || b.lastExported < b.lastUpdated))
+    const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < b.lastUpdated))
 
     const selectedBuildSummary = computed({
       get: () => [],
@@ -89,7 +89,7 @@ export default defineComponent({
       const exportWarningShowedKey = Services.get(WebsiteConfigurationService).configuration.exportWarningShowedStoregeKey
       const exportWarningShowed = sessionStorage.getItem(exportWarningShowedKey)
 
-      if (hasBuildsNotExported.value && exportWarningShowed == undefined) {
+      if (hasBuildsNotExported.value && exportWarningShowed == null) {
         Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.buildsNotExported'), true, 0)
         sessionStorage.setItem(exportWarningShowedKey, '')
       }

@@ -404,7 +404,7 @@ describe('getPreset()', () => {
     const preset = await service.getPreset(id)
 
     // Assert
-    if (expected === undefined) {
+    if (expected == null) {
       expect(preset).toBeUndefined()
     } else {
       expect(preset).toStrictEqual(expected)

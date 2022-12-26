@@ -1,6 +1,5 @@
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { IAmmunitionCount } from '../../models/utils/IAmmunitionCount'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
@@ -1113,71 +1112,6 @@ describe('checkCanAddVest()', () => {
   )
 })
 
-describe('getAmmunitionCounts()', () => {
-  it.each([
-    [
-      build1,
-      [
-        {
-          name: '5.45x39mm BP gs',
-          id: '56dfef82d2720bbd668b4567',
-          count: 156
-        }
-      ] as IAmmunitionCount[]
-    ]
-  ])(
-    'should get the ammunition counts of a build', async (build: IBuild, expected: IAmmunitionCount[]) => {
-      // Arrange
-      useItemServiceMock()
-      Services.configure(InventoryItemService)
-      Services.configure(ItemPropertiesService)
-      const service = new BuildPropertiesService()
-
-      // Act
-      const ammunitionCounts = await service.getAmmunitionCounts(build)
-
-      // Assert
-      expect(ammunitionCounts.success).toBe(true)
-      expect(ammunitionCounts.value[0].id).toBe(expected[0].id)
-      expect(ammunitionCounts.value[0].count).toBe(expected[0].count)
-    }
-  )
-
-  it('should fail if an item cannot be found', async () => {
-    // Arrange
-    useItemServiceMock()
-    Services.configure(InventoryItemService)
-    Services.configure(ItemPropertiesService)
-    const service = new BuildPropertiesService()
-
-    // Act
-    const ammunitionCounts = await service.getAmmunitionCounts({
-      name: 'Build 1',
-      id: 'build1',
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: 'invalid',
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'onBack'
-        }
-      ],
-      lastExported: undefined,
-      lastUpdated: new Date(1)
-    })
-
-    // Assert
-    expect(ammunitionCounts.success).toBe(false)
-    expect(ammunitionCounts.failureMessage).toBe('Item "invalid" not found.')
-  })
-})
-
 describe('getErgonomics()', () => {
   it.each([
     [build1, 37.5],
@@ -1237,7 +1171,7 @@ describe('getErgonomics()', () => {
       const ergonomics = await service.getErgonomics(build)
 
       // Assert
-      if (expected === undefined) {
+      if (expected == null) {
         expect(ergonomics).toBeUndefined()
       } else {
         expect(ergonomics?.success).toBe(true)
@@ -1693,7 +1627,7 @@ describe('getRecoil()', () => {
       const recoil = await service.getRecoil(build)
 
       // Assert
-      if (expected === undefined) {
+      if (expected == null) {
         expect(recoil).toBeUndefined()
       } else {
         expect(recoil?.success).toBe(true)
@@ -1745,13 +1679,6 @@ describe('getSummary()', () => {
     [
       build1,
       {
-        ammunitionCounts: [
-          {
-            name: '5.45x39mm BP gs',
-            count: 156,
-            id: '56dfef82d2720bbd668b4567'
-          }
-        ],
         ergonomics: 28.1,
         ergonomicsPercentageModifier: -0.25,
         exported: false,
@@ -1806,6 +1733,248 @@ describe('getSummary()', () => {
           },
           unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
         },
+        shoppingList: [
+          {
+            iconLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-icon.jpg',
+            id: '5ca20d5986f774331e7c9602',
+            name: 'WARTECH Berkut BB-102 backpack',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5ca20d5986f774331e7c9602',
+              merchant: 'ragman',
+              merchantLevel: 1,
+              quest: null,
+              value: 23444,
+              valueInMainCurrency: 23444
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/590c5d4b86f774784e1b9c45-icon.jpg',
+            id: '590c5d4b86f774784e1b9c45',
+            name: 'Iskra ration pack',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'barter',
+              itemId: '590c5d4b86f774784e1b9c45',
+              merchant: 'therapist',
+              merchantLevel: 1,
+              quest: null,
+              value: 0,
+              valueInMainCurrency: 0
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/5d1b3f2d86f774253763b735-icon.jpg',
+            id: '5d1b3f2d86f774253763b735',
+            name: 'Disposable syringe',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5d1b3f2d86f774253763b735',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 21792,
+              valueInMainCurrency: 21792
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/5448fee04bdc2dbc018b4567-icon.jpg',
+            id: '5448fee04bdc2dbc018b4567',
+            name: 'Bottle of water (0.6L)',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5448fee04bdc2dbc018b4567',
+              merchant: 'therapist',
+              merchantLevel: 1,
+              quest: null,
+              value: 12401,
+              valueInMainCurrency: 12401
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/5c0e51be86f774598e797894-icon.jpg',
+            id: '5c0e51be86f774598e797894',
+            name: '6B13 assault armor (Flora)',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5c0e51be86f774598e797894',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 67745,
+              valueInMainCurrency: 67745
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/5d5fca1ea4b93635fd598c07-icon.jpg',
+            id: '5d5fca1ea4b93635fd598c07',
+            name: 'Crossbow tactical glasses',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5d5fca1ea4b93635fd598c07',
+              merchant: 'ragman',
+              merchantLevel: 2,
+              quest: null,
+              value: 3885,
+              valueInMainCurrency: 3885
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/5ab8f39486f7745cd93a1cca-icon.jpg',
+            id: '5ab8f39486f7745cd93a1cca',
+            name: 'Cold Fear infrared balaclava',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5ab8f39486f7745cd93a1cca',
+              merchant: 'ragman',
+              merchantLevel: 2,
+              quest: null,
+              value: 4793,
+              valueInMainCurrency: 4793
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/5d6d3716a4b9361bc8618872-icon.jpg',
+            id: '5d6d3716a4b9361bc8618872',
+            name: 'BNTI LShZ-2DTM helmet',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5d6d3716a4b9361bc8618872',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 79805,
+              valueInMainCurrency: 79805
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/5d6d3829a4b9361bc8618943-icon.jpg',
+            id: '5d6d3829a4b9361bc8618943',
+            name: 'LShZ-2DTM face shield',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5d6d3829a4b9361bc8618943',
+              merchant: 'ragman',
+              merchantLevel: 4,
+              quest: null,
+              value: 37019,
+              valueInMainCurrency: 37019
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/544fb3f34bdc2d03748b456a-icon.jpg',
+            id: '544fb3f34bdc2d03748b456a',
+            name: 'Morphine injector',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '544fb3f34bdc2d03748b456a',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 18810,
+              valueInMainCurrency: 18810
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/5755383e24597772cb798966-icon.jpg',
+            id: '5755383e24597772cb798966',
+            name: 'Vaseline balm',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5755383e24597772cb798966',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 37155,
+              valueInMainCurrency: 37155
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/5448be9a4bdc2dfd2f8b456a-icon.jpg',
+            id: '5448be9a4bdc2dfd2f8b456a',
+            name: 'RGD-5 hand grenade',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5448be9a4bdc2dfd2f8b456a',
+              merchant: 'prapor',
+              merchantLevel: 3,
+              quest: null,
+              value: 11822,
+              valueInMainCurrency: 11822
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/56dfef82d2720bbd668b4567-icon.jpg',
+            id: '56dfef82d2720bbd668b4567',
+            name: '5.45x39mm BP gs',
+            quantity: 156,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '56dfef82d2720bbd668b4567',
+              merchant: 'prapor',
+              merchantLevel: 3,
+              quest: null,
+              value: 443,
+              valueInMainCurrency: 443
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/5beed0f50db834001c062b12-icon.jpg',
+            id: '5beed0f50db834001c062b12',
+            name: 'RPK-16 5.45x39 light machine gun',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5beed0f50db834001c062b12',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 60572,
+              valueInMainCurrency: 60572
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/5bed625c0db834001c062946-icon.jpg',
+            id: '5bed625c0db834001c062946',
+            name: 'RPK-16 5.45x39 95-round drum magazine',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5bed625c0db834001c062946',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 31014,
+              valueInMainCurrency: 31014
+            }
+          }
+        ],
         verticalRecoil: 71,
         weight: 24.042
       } as IBuildSummary
@@ -1813,13 +1982,6 @@ describe('getSummary()', () => {
     [
       build2,
       {
-        ammunitionCounts: [
-          {
-            name: '9x19mm Green Tracer',
-            count: 18,
-            id: '5c3df7d588a4501f290594e5'
-          }
-        ],
         ergonomics: 54,
         ergonomicsPercentageModifier: 0,
         exported: false,
@@ -1884,6 +2046,152 @@ describe('getSummary()', () => {
           },
           unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
         },
+        shoppingList: [
+          {
+            iconLink: 'https://assets.tarkov.dev/5e4d34ca86f774264f758330-icon.jpg',
+            id: '5e4d34ca86f774264f758330',
+            name: 'Walker\'s Razor Digital headset',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5e4d34ca86f774264f758330',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 36195,
+              valueInMainCurrency: 36195
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/5cadc190ae921500103bb3b6-icon.jpg',
+            id: '5cadc190ae921500103bb3b6',
+            name: 'Beretta M9A3 9x19 pistol',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'USD',
+              itemId: '5cadc190ae921500103bb3b6',
+              merchant: 'peacekeeper',
+              merchantLevel: 1,
+              quest: null,
+              value: 124,
+              valueInMainCurrency: 13888
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/5c6165902e22160010261b28-icon.jpg',
+            id: '5c6165902e22160010261b28',
+            name: 'SIG Sauer SRD9 9x19 sound suppressor',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5c6165902e22160010261b28',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 29957,
+              valueInMainCurrency: 29957
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/5c3df7d588a4501f290594e5-icon.jpg',
+            id: '5c3df7d588a4501f290594e5',
+            name: '9x19mm Green Tracer',
+            quantity: 18,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5c3df7d588a4501f290594e5',
+              merchant: 'mechanic',
+              merchantLevel: 1,
+              quest: null,
+              value: 73,
+              valueInMainCurrency: 73
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/56def37dd2720bec348b456a-icon.jpg',
+            id: '56def37dd2720bec348b456a',
+            name: 'SureFire X400 Ultra tactical flashlight with laser',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'USD',
+              itemId: '56def37dd2720bec348b456a',
+              merchant: 'peacekeeper',
+              merchantLevel: 2,
+              quest: null,
+              value: 122,
+              valueInMainCurrency: 13664
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/572b7adb24597762ae139821-icon.jpg',
+            id: '572b7adb24597762ae139821',
+            name: 'Scav Vest',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'barter',
+              itemId: '572b7adb24597762ae139821',
+              merchant: 'jaeger',
+              merchantLevel: 1,
+              quest: null,
+              value: 0,
+              valueInMainCurrency: 0
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/544fb6cc4bdc2d34748b456e-icon.jpg',
+            id: '544fb6cc4bdc2d34748b456e',
+            name: 'Slickers chocolate bar',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '544fb6cc4bdc2d34748b456e',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 10893,
+              valueInMainCurrency: 10893
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/544fb45d4bdc2dee738b4568-icon.jpg',
+            id: '544fb45d4bdc2dee738b4568',
+            name: 'Salewa first aid kit',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'barter',
+              itemId: '544fb45d4bdc2dee738b4568',
+              merchant: 'therapist',
+              merchantLevel: 1,
+              quest: null,
+              value: 0,
+              valueInMainCurrency: 0
+            }
+          },
+          {
+            iconLink: 'https://assets.tarkov.dev/59e3596386f774176c10a2a2-icon.jpg',
+            id: '59e3596386f774176c10a2a2',
+            name: 'PAID AntiRoach spray',
+            quantity: 1,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '59e3596386f774176c10a2a2',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 32737,
+              valueInMainCurrency: 32737
+            }
+          }
+        ],
         verticalRecoil: 397,
         weight: 3.762
       } as IBuildSummary
@@ -1897,7 +2205,6 @@ describe('getSummary()', () => {
         name: 'Empty build'
       } as IBuild,
       {
-        ammunitionCounts: [],
         ergonomics: undefined,
         ergonomicsPercentageModifier: 0,
         exported: true,
@@ -1941,6 +2248,7 @@ describe('getSummary()', () => {
           },
           unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
         },
+        shoppingList: [],
         verticalRecoil: undefined,
         weight: 0
       } as IBuildSummary
@@ -1979,6 +2287,270 @@ describe('getSummary()', () => {
     // Assert
     expect(summary.success).toBe(false)
     expect(summary.failureMessage).toBe('Main currency not found.')
+  })
+
+  it('should get a shopping list containing barter items to buy', async () => {
+    // Arrange
+    useItemServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(InventorySlotPropertiesService)
+    Services.configure(InventoryItemService)
+    Services.configure(ItemPropertiesService)
+    Services.configure(MerchantFilterService)
+
+    const service = new BuildPropertiesService()
+    const merchantFilterService = Services.get(MerchantFilterService)
+    merchantFilterService.save([
+      {
+        enabled: true,
+        merchant: 'flea-market',
+        merchantLevel: 0
+      },
+      {
+        enabled: true,
+        merchant: 'prapor',
+        merchantLevel: 4
+      }
+    ])
+
+    const build: IBuild = {
+      id: '1',
+      inventorySlots: [
+        {
+          items: [
+            {
+              content: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+                  modSlots: [
+                    {
+                      item: {
+                        content: [],
+                        ignorePrice: false,
+                        itemId: '5f6341043ada5942720e2dc5', // AK Aeroknox Scorpius pistol grip
+                        modSlots: [],
+                        quantity: 1
+                      },
+                      modSlotName: 'mod_pistol_grip'
+                    },
+                    {
+                      item: {
+                        content: [
+                          {
+                            content: [],
+                            ignorePrice: false,
+                            itemId: '56dff3afd2720bba668b4567', // 5.45x39mm PS gs
+                            modSlots: [],
+                            quantity: 30
+                          }
+                        ],
+                        ignorePrice: false,
+                        itemId: '564ca99c4bdc2d16268b4589', // AK-74 5.45x39 6L20 30-round magazine
+                        modSlots: [],
+                        quantity: 1.0
+                      },
+                      modSlotName: 'mod_magazine'
+                    }
+                  ],
+                  quantity: 1
+                },
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: '56dff3afd2720bba668b4567', // 5.45x39mm PS gs
+                  modSlots: [],
+                  quantity: 60
+                },
+                {
+                  content: [],
+                  ignorePrice: true,
+                  itemId: '5734795124597738002c6176', // Insulating tape
+                  modSlots: [],
+                  quantity: 1
+                }
+              ],
+              ignorePrice: false,
+              itemId: '5df8a4d786f77412672a1e3b', // 6Sh118 raid backpack
+              modSlots: [],
+              quantity: 1
+            }
+          ],
+          typeId: 'backpack'
+        },
+        {
+          items: [
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: '5b3f16c486f7747c327f55f7', // Armband (White)
+              modSlots: [],
+              quantity: 1
+            }
+          ],
+          typeId: 'armband'
+        }
+      ],
+      lastExported: undefined,
+      lastUpdated: new Date(1),
+      name: 'build'
+    }
+
+    // Act
+    const summaryResult = await service.getSummary(build)
+
+    // Assert
+    expect(summaryResult.success).toBe(true)
+    expect(summaryResult.value).toStrictEqual({
+      ergonomics: undefined,
+      ergonomicsPercentageModifier: 0,
+      exported: false,
+      horizontalRecoil: undefined,
+      id: '1',
+      lastExported: undefined,
+      lastUpdated: new Date(1),
+      name: 'build',
+      price: {
+        missingPrice: false,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: null,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        priceWithContentInMainCurrency: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: null,
+          value: 186445,
+          valueInMainCurrency: 186445
+        },
+        pricesWithContent: [
+          {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: null,
+            value: 186445,
+            valueInMainCurrency: 186445
+          }
+        ],
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: null,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        unitPriceIgnoreStatus: 'notIgnored'
+      },
+      shoppingList: [
+        {
+          iconLink: 'https://assets.tarkov.dev/5df8a4d786f77412672a1e3b-icon.jpg',
+          id: '5df8a4d786f77412672a1e3b',
+          name: '6Sh118 raid backpack',
+          unitPrice: {
+            barterItems: [],
+            currencyName: 'barter',
+            itemId: '5df8a4d786f77412672a1e3b',
+            merchant: 'prapor',
+            merchantLevel: 4,
+            quest: null,
+            value: 0,
+            valueInMainCurrency: 0
+          },
+          quantity: 1
+        },
+        {
+          iconLink: 'https://assets.tarkov.dev/5d0375ff86f774186372f685-icon.jpg',
+          id: '5d0375ff86f774186372f685',
+          name: 'Military cable',
+          unitPrice: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '5d0375ff86f774186372f685',
+            merchant: 'flea-market',
+            merchantLevel: 0,
+            quest: null,
+            value: 53432,
+            valueInMainCurrency: 53432
+          },
+          quantity: 2
+        },
+        {
+          iconLink: 'https://assets.tarkov.dev/57dc2fa62459775949412633-icon.jpg',
+          id: '57dc2fa62459775949412633',
+          name: 'Kalashnikov AKS-74U 5.45x39 assault rifle',
+          unitPrice: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '57dc2fa62459775949412633',
+            merchant: 'prapor',
+            merchantLevel: 1.0,
+            quest: {
+              id: '5936d90786f7742b1420ba5b',
+              name: 'Debut',
+              wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Debut'
+            },
+            value: 24605.0,
+            valueInMainCurrency: 24605.0
+          },
+          quantity: 1
+        },
+        {
+          iconLink: 'https://assets.tarkov.dev/5f6341043ada5942720e2dc5-icon.jpg',
+          id: '5f6341043ada5942720e2dc5',
+          name: 'AK Aeroknox Scorpius pistol grip',
+          unitPrice: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '5f6341043ada5942720e2dc5',
+            merchant: 'flea-market',
+            merchantLevel: 0.0,
+            quest: null,
+            value: 45166.0,
+            valueInMainCurrency: 45166.0
+          },
+          quantity: 1
+        },
+        {
+          iconLink: 'https://assets.tarkov.dev/56dff3afd2720bba668b4567-icon.jpg',
+          id: '56dff3afd2720bba668b4567',
+          name: '5.45x39mm PS gs',
+          unitPrice: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '56dff3afd2720bba668b4567',
+            merchant: 'prapor',
+            merchantLevel: 1.0,
+            quest: {
+              id: '59674eb386f774539f14813a',
+              name: 'Delivery from the Past',
+              wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Delivery_from_the_Past'
+            },
+            value: 109,
+            valueInMainCurrency: 109
+          },
+          quantity: 90
+        }
+      ],
+      verticalRecoil: undefined,
+      weight: 9.524
+    } as IBuildSummary)
   })
 })
 

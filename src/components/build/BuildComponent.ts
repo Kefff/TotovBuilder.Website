@@ -249,7 +249,7 @@ export default defineComponent({
      * @param sharableString - Encoded string that can be shared in a URL.
      */
     async function getSharedBuild(sharableString?: string) {
-      if (sharableString === undefined) {
+      if (sharableString == null) {
         return
       }
 
@@ -268,7 +268,7 @@ export default defineComponent({
      * Gets the values of the summary of the content of the build.
      */
     async function getSummary() {
-      if (build.value === undefined) {
+      if (build.value == null) {
         return
       }
 

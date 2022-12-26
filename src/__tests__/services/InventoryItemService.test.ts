@@ -1,5 +1,4 @@
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { IAmmunitionCount } from '../../models/utils/IAmmunitionCount'
 import { IErgonomics } from '../../models/utils/IErgonomics'
 import { IErgonomicsPercentageModifier } from '../../models/utils/IErgonomicsPercentageModifier'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
@@ -15,6 +14,7 @@ import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 
 const inventoryItem: IInventoryItem = {
   content: [
@@ -64,7 +64,6 @@ const inventoryItem: IInventoryItem = {
   quantity: 1
 }
 
-
 const invalidInventoryItem1: IInventoryItem = {
   content: [],
   ignorePrice: false,
@@ -107,152 +106,6 @@ const invalidInventoryItem3: IInventoryItem = {
   modSlots: [],
   quantity: 1
 }
-
-describe('getAmmunitionCounts()', () => {
-  it.each([
-    [
-      {
-        content: [
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs "Igolnik"
-            modSlots: [],
-            quantity: 50
-          },
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs "Igolnik"
-            modSlots: [],
-            quantity: 10
-          },
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5cadc190ae921500103bb3b6', // Beretta M9A3 9x19 pistol
-            modSlots: [
-              {
-                item: {
-                  content: [
-                    {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '5737201124597760fc4431f1', // 9x18 mm PM Pst gzh
-                      modSlots: [],
-                      quantity: 17
-                    }
-                  ],
-                  ignorePrice: false,
-                  itemId: '5cadc2e0ae9215051e1c21e7', // M9A3 9x19 17-round magazine
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_magazine'
-              }
-            ],
-            quantity: 1
-          },
-          {
-            content: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '56dff026d2720bb8668b4567', // 5.45x39 mm BS. Testing the hypothetic case of an object having the same ammunition in its content and its modslots.
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            ignorePrice: false,
-            itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
-            modSlots: [
-              {
-                item: {
-                  content: [
-                    {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '56dff026d2720bb8668b4567', // 5.45x39 mm BS
-                      modSlots: [],
-                      quantity: 45
-                    }
-                  ],
-                  ignorePrice: false,
-                  itemId: '564ca9df4bdc2d35148b4569', // AK-74 5.45x39 6L18 45-round magazine
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_magazine'
-              },
-              {
-                item: undefined,
-                modSlotName: 'mod_charge'
-              }
-            ],
-            quantity: 1
-          }
-        ],
-        ignorePrice: false,
-        itemId: '5ca20d5986f774331e7c9602',
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      [
-        {
-          id: '5c0d5e4486f77478390952fe', // 5.45x39 mm 7N39 \"Igolnik\"
-          count: 60
-        },
-        {
-          id: '5737201124597760fc4431f1', // 9x18 mm PM Pst gzh
-          count: 17
-        },
-        {
-          id: '56dff026d2720bb8668b4567', // 5.45x39 mm BS
-          count: 46
-        }
-      ] as IAmmunitionCount[]
-    ]
-  ])(
-    'should get the ammunition counts of an inventory item',
-    async (inventoryItem: IInventoryItem, expected: IAmmunitionCount[]) => {
-      // Arrange
-      useItemServiceMock()
-      Services.configure(ItemPropertiesService)
-      const service = new InventoryItemService()
-
-      // Act
-      const ammunitionCounts = await service.getAmmunitionCounts(inventoryItem)
-
-      // Assert
-      expect(ammunitionCounts.success).toBe(true)
-      expect(ammunitionCounts.value[0].id).toBe(expected[0].id)
-      expect(ammunitionCounts.value[0].count).toBe(expected[0].count)
-      expect(ammunitionCounts.value[1].id).toBe(expected[1].id)
-      expect(ammunitionCounts.value[1].count).toBe(expected[1].count)
-    }
-  )
-
-  it.each([
-    [invalidInventoryItem1],
-    [invalidInventoryItem2],
-    [invalidInventoryItem3]
-  ])(
-    'should fail if an item cannot be found',
-    async (inventoryItem: IInventoryItem) => {
-      // Arrange
-      useItemServiceMock()
-      Services.configure(ItemPropertiesService)
-      const service = new InventoryItemService()
-
-      // Act
-      const price = await service.getAmmunitionCounts(inventoryItem)
-
-      // Assert
-      expect(price.success).toBe(false)
-      expect(price.failureMessage).toBe('Item "invalid" not found.')
-    }
-  )
-})
 
 describe('getErgonomics()', () => {
   it.each([
@@ -2523,6 +2376,232 @@ describe('getRecoilPercentageModifier()', () => {
     }
   )
 })
+
+describe('getShoppingList', () => {
+  it('should get a shopping list for an item and all its content, mod (except from default preset) and barter items that must be bought', async () => {
+    // Arrange
+    useItemServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
+    const inventoryItemService = new InventoryItemService()
+    const merchantFilterService = Services.get(MerchantFilterService)
+    merchantFilterService.save([
+      {
+        enabled: true,
+        merchant: 'flea-market',
+        merchantLevel: 0
+      },
+      {
+        enabled: true,
+        merchant: 'prapor',
+        merchantLevel: 4
+      }
+    ])
+
+    const inventoryItem: IInventoryItem = {
+      content: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+          modSlots: [
+            {
+              item: {
+                content: [],
+                ignorePrice: false,
+                itemId: '5f6341043ada5942720e2dc5', // AK Aeroknox Scorpius pistol grip
+                modSlots: [],
+                quantity: 1
+              },
+              modSlotName: 'mod_pistol_grip'
+            },
+            {
+              item: {
+                content: [
+                  {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: '56dff3afd2720bba668b4567', // 5.45x39mm PS gs
+                    modSlots: [],
+                    quantity: 30
+                  }
+                ],
+                ignorePrice: false,
+                itemId: '564ca99c4bdc2d16268b4589', // AK-74 5.45x39 6L20 30-round magazine
+                modSlots: [],
+                quantity: 1.0
+              },
+              modSlotName: 'mod_magazine'
+            }
+          ],
+          quantity: 1
+        },
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: '56dff3afd2720bba668b4567', // 5.45x39mm PS gs
+          modSlots: [],
+          quantity: 60
+        },
+        {
+          content: [],
+          ignorePrice: true,
+          itemId: '5734795124597738002c6176', // Insulating tape"
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      ignorePrice: false,
+      itemId: '5df8a4d786f77412672a1e3b', // 6Sh118 raid backpack
+      modSlots: [],
+      quantity: 1
+    }
+
+    // Act
+    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
+
+    // Assert
+    expect(shoppingListResult.success).toBe(true)
+    expect(shoppingListResult.value).toStrictEqual([
+      {
+        iconLink: 'https://assets.tarkov.dev/5df8a4d786f77412672a1e3b-icon.jpg',
+        id: '5df8a4d786f77412672a1e3b',
+        name: '6Sh118 raid backpack',
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'barter',
+          itemId: '5df8a4d786f77412672a1e3b',
+          merchant: 'prapor',
+          merchantLevel: 4,
+          quest: null,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        quantity: 1
+      },
+      {
+        iconLink: 'https://assets.tarkov.dev/5d0375ff86f774186372f685-icon.jpg',
+        id: '5d0375ff86f774186372f685',
+        name: 'Military cable',
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '5d0375ff86f774186372f685',
+          merchant: 'flea-market',
+          merchantLevel: 0,
+          quest: null,
+          value: 53432,
+          valueInMainCurrency: 53432
+        },
+        quantity: 2
+      },
+      {
+        iconLink: 'https://assets.tarkov.dev/57dc2fa62459775949412633-icon.jpg',
+        id: '57dc2fa62459775949412633',
+        name: 'Kalashnikov AKS-74U 5.45x39 assault rifle',
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '57dc2fa62459775949412633',
+          merchant: 'prapor',
+          merchantLevel: 1.0,
+          quest: {
+            id: '5936d90786f7742b1420ba5b',
+            name: 'Debut',
+            wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Debut'
+          },
+          value: 24605.0,
+          valueInMainCurrency: 24605.0
+        },
+        quantity: 1
+      },
+      {
+        iconLink: 'https://assets.tarkov.dev/5f6341043ada5942720e2dc5-icon.jpg',
+        id: '5f6341043ada5942720e2dc5',
+        name: 'AK Aeroknox Scorpius pistol grip',
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '5f6341043ada5942720e2dc5',
+          merchant: 'flea-market',
+          merchantLevel: 0.0,
+          quest: null,
+          value: 45166.0,
+          valueInMainCurrency: 45166.0
+        },
+        quantity: 1
+      },
+      {
+        iconLink: 'https://assets.tarkov.dev/56dff3afd2720bba668b4567-icon.jpg',
+        id: '56dff3afd2720bba668b4567',
+        name: '5.45x39mm PS gs',
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '56dff3afd2720bba668b4567',
+          merchant: 'prapor',
+          merchantLevel: 1.0,
+          quest: {
+            id: '59674eb386f774539f14813a',
+            name: 'Delivery from the Past',
+            wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Delivery_from_the_Past'
+          },
+          value: 109,
+          valueInMainCurrency: 109
+        },
+        quantity: 90
+      }
+    ] as IShoppingListItem[])
+  })
+
+  it('should fail when an item search fails', () => {
+    // Arrange
+
+    // Act
+
+    // Assert
+    expect(true).toBe(false)
+  })
+
+  it('should fail when an item price search fails', () => {
+    // Arrange
+
+    // Act
+
+    // Assert
+    expect(true).toBe(false)
+  })
+
+  it('should fail when a barter item shopping list search fails', () => {
+    // Arrange
+
+    // Act
+
+    // Assert
+    expect(true).toBe(false)
+  })
+
+  it('should fail when a mod shopping list search fails', () => {
+    // Arrange
+
+    // Act
+
+    // Assert
+    expect(true).toBe(false)
+  })
+
+  it('should fail when a content item shopping list search fails', () => {
+    // Arrange
+
+    // Act
+
+    // Assert
+    expect(true).toBe(false)
+  })
+})
+
 
 describe('getWeight()', () => {
   it.each([

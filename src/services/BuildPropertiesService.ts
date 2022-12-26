@@ -2,7 +2,6 @@ import { IBuild } from '../models/build/IBuild'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IConflictingItem } from '../models/configuration/IConflictingItem'
 import { IVest } from '../models/item/IVest'
-import { IAmmunitionCount } from '../models/utils/IAmmunitionCount'
 import vueI18n from '../plugins/vueI18n'
 import Result, { FailureType } from '../utils/Result'
 import { ItemService } from './ItemService'
@@ -15,6 +14,7 @@ import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { PathUtils } from '../utils/PathUtils'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import { round } from 'round-ts'
+import { IShoppingListItem } from '../models/build/IShoppingListItem'
 
 /**
  * Represents a service responsible for managing properties of a build.
@@ -28,7 +28,7 @@ export class BuildPropertiesService {
   public async checkCanAddArmor(build: IBuild): Promise<Result> {
     const vestSlot = build.inventorySlots.find((is) => is.typeId === 'tacticalRig')
 
-    if (vestSlot === undefined) {
+    if (vestSlot == null) {
       // Should never occur
       return Result.fail(
         FailureType.error,
@@ -40,14 +40,14 @@ export class BuildPropertiesService {
     const itemService = Services.get(ItemService)
 
     for (const vest of vestSlot.items) {
-      if (vest == undefined) {
+      if (vest == null) {
         continue
       }
 
       const vestResult = await itemService.getItem(vest.itemId)
 
       if (!vestResult.success) {
-        return Result.failFrom(vestResult, FailureType.error)
+        return Result.failFrom(vestResult)
       }
 
       if ((vestResult.value as IVest).armorClass > 0) {
@@ -74,21 +74,21 @@ export class BuildPropertiesService {
     const modResult = await itemService.getItem(modId)
 
     if (!modResult.success) {
-      return Result.failFrom(modResult, FailureType.error)
+      return Result.failFrom(modResult)
     }
 
     const firstItemPath = path.slice(0, path.indexOf('/' + PathUtils.modSlotPrefix))
     const inventoryItemResult = PathUtils.getInventoryItemFromPath(build, firstItemPath)
 
     if (!inventoryItemResult.success) {
-      return Result.failFrom(inventoryItemResult, FailureType.error)
+      return Result.failFrom(inventoryItemResult)
     }
 
     const changedModSlotPath = path.slice(0, path.indexOf('/' + PathUtils.itemPrefix))
     const conflictingItemsResult = await this.getConflictingItems(inventoryItemResult.value, changedModSlotPath)
 
     if (!conflictingItemsResult.success) {
-      return Result.failFrom(conflictingItemsResult, FailureType.error)
+      return Result.failFrom(conflictingItemsResult)
     }
 
     for (const conflictingItem of conflictingItemsResult.value) {
@@ -104,7 +104,7 @@ export class BuildPropertiesService {
 
       /* istanbul ignore if */
       if (!conflictingItemResult.success) {
-        return Result.failFrom(conflictingItemResult, FailureType.error)
+        return Result.failFrom(conflictingItemResult)
       }
 
       return Result.fail(
@@ -131,7 +131,7 @@ export class BuildPropertiesService {
     const vestResult = await itemService.getItem(vestId)
 
     if (!vestResult.success) {
-      return Result.failFrom(vestResult, FailureType.error)
+      return Result.failFrom(vestResult)
     }
 
     if ((vestResult.value as IVest).armorClass === 0) {
@@ -142,7 +142,7 @@ export class BuildPropertiesService {
       (is) => is.typeId === 'bodyArmor'
     )
 
-    if (armorSlot === undefined) {
+    if (armorSlot == null) {
       // Should never occur
       return Result.fail(
         FailureType.error,
@@ -165,42 +165,6 @@ export class BuildPropertiesService {
   }
 
   /**
-   * Gets a list of all ammunition counts of a build.
-   * @param build - Build.
-   * @returns Ammunition counts.
-   */
-  public async getAmmunitionCounts(build: IBuild): Promise<Result<IAmmunitionCount[]>> {
-    const inventoryItemService = Services.get(InventoryItemService)
-    const ammunitionCounts: IAmmunitionCount[] = []
-
-    for (const inventorySlot of build.inventorySlots) {
-      for (const inventoryItem of inventorySlot.items) {
-        if (inventoryItem == undefined) {
-          continue
-        }
-
-        const inventoryItemAmmunitionCountsResult = await inventoryItemService.getAmmunitionCounts(inventoryItem)
-
-        if (!inventoryItemAmmunitionCountsResult.success) {
-          return Result.failFrom(inventoryItemAmmunitionCountsResult, FailureType.error)
-        }
-
-        for (const inventoryItemAmmunitionCount of inventoryItemAmmunitionCountsResult.value) {
-          const index = ammunitionCounts.findIndex((ac) => ac.id === inventoryItemAmmunitionCount.id)
-
-          if (index >= 0) {
-            ammunitionCounts[index].count += inventoryItemAmmunitionCount.count
-          } else {
-            ammunitionCounts.push(inventoryItemAmmunitionCount)
-          }
-        }
-      }
-    }
-
-    return Result.ok(ammunitionCounts)
-  }
-
-  /**
    * Gets the ergonomics of the main ranged weapon of a build (ergonomics percentage modifier not included).
    * @param build - Build.
    * @returns Ergonomics.
@@ -208,7 +172,7 @@ export class BuildPropertiesService {
   public async getErgonomics(build: IBuild): Promise<Result<number> | undefined> {
     const mainRangedWeaponInventorySlot = this.getMainRangedWeaponInventorySlot(build)
 
-    if (mainRangedWeaponInventorySlot === undefined) {
+    if (mainRangedWeaponInventorySlot == null) {
       return undefined
     }
 
@@ -216,10 +180,10 @@ export class BuildPropertiesService {
     const ergonomicsResult = await inventorySlotPropertiesService.getErgonomics(mainRangedWeaponInventorySlot)
 
     /* istanbul ignore if */
-    if (ergonomicsResult === undefined) {
+    if (ergonomicsResult == null) {
       return undefined
     } else if (!ergonomicsResult.success) {
-      return Result.failFrom(ergonomicsResult, FailureType.error)
+      return Result.failFrom(ergonomicsResult)
     } else {
       return ergonomicsResult
     }
@@ -237,12 +201,12 @@ export class BuildPropertiesService {
     for (const inventorySlot of build.inventorySlots) {
       const inventorySlotErgonomicsPercentageModifierResult = await inventorySlotPropertiesService.getErgonomicsPercentageModifier(inventorySlot)
 
-      if (inventorySlotErgonomicsPercentageModifierResult === undefined) {
+      if (inventorySlotErgonomicsPercentageModifierResult == null) {
         continue
       }
 
       if (!inventorySlotErgonomicsPercentageModifierResult.success) {
-        return Result.failFrom(inventorySlotErgonomicsPercentageModifierResult, FailureType.error)
+        return Result.failFrom(inventorySlotErgonomicsPercentageModifierResult)
       }
 
       ergonomicsPercentageModifier += inventorySlotErgonomicsPercentageModifierResult.value
@@ -324,13 +288,13 @@ export class BuildPropertiesService {
       const canBeLootedResult = inventorySlotPropertiesService.canBeLooted(inventorySlot)
 
       if (!canBeLootedResult.success) {
-        return Result.failFrom(canBeLootedResult, FailureType.error)
+        return Result.failFrom(canBeLootedResult)
       }
 
       const inventorySlotPriceResult = await inventorySlotPropertiesService.getPrice(inventorySlot, canBeLootedResult.value)
 
       if (!inventorySlotPriceResult.success) {
-        return Result.failFrom(inventorySlotPriceResult, FailureType.error)
+        return Result.failFrom(inventorySlotPriceResult)
       }
 
       for (const inventorySlotPriceWithContent of inventorySlotPriceResult.value.pricesWithContent) {
@@ -366,7 +330,7 @@ export class BuildPropertiesService {
   }> | undefined> {
     const mainRangedWeaponInventorySlot = this.getMainRangedWeaponInventorySlot(build)
 
-    if (mainRangedWeaponInventorySlot === undefined) {
+    if (mainRangedWeaponInventorySlot == null) {
       return undefined
     }
 
@@ -374,10 +338,10 @@ export class BuildPropertiesService {
     const recoilResult = await inventorySlotPropertiesService.getRecoil(mainRangedWeaponInventorySlot)
 
     /* istanbul ignore if */
-    if (recoilResult === undefined) {
+    if (recoilResult == null) {
       return undefined
     } else if (!recoilResult.success) {
-      return Result.failFrom(recoilResult, FailureType.error)
+      return Result.failFrom(recoilResult)
     } else {
       return recoilResult
     }
@@ -398,7 +362,6 @@ export class BuildPropertiesService {
     }
 
     const result: IBuildSummary = {
-      ammunitionCounts: [],
       ergonomics: undefined,
       ergonomicsPercentageModifier: 0,
       exported: build.lastExported != null && build.lastExported >= build.lastUpdated,
@@ -442,6 +405,7 @@ export class BuildPropertiesService {
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       },
+      shoppingList: [],
       verticalRecoil: undefined,
       weight: 0
     }
@@ -501,15 +465,15 @@ export class BuildPropertiesService {
 
     result.weight = weightResult.value
 
-    // Ammunition
-    const ammunitionCountsResult = await this.getAmmunitionCounts(build)
+    // Shopping list
+    const shoppingListResult = await this.getShoppingList(build)
 
     /* istanbul ignore if */
-    if (!ammunitionCountsResult.success) {
-      return Result.failFrom(ammunitionCountsResult)
+    if (!shoppingListResult.success) {
+      return Result.failFrom(shoppingListResult)
     }
 
-    result.ammunitionCounts = ammunitionCountsResult.value
+    result.shoppingList = shoppingListResult.value
 
     return Result.ok(result)
   }
@@ -527,7 +491,7 @@ export class BuildPropertiesService {
       const inventorySlotWeightResult = await inventorySlotPropertiesService.getWeight(inventorySlot)
 
       if (!inventorySlotWeightResult.success) {
-        return Result.failFrom(inventorySlotWeightResult, FailureType.error)
+        return Result.failFrom(inventorySlotWeightResult)
       }
 
       weight += inventorySlotWeightResult.value
@@ -551,7 +515,7 @@ export class BuildPropertiesService {
     const itemResult = await itemService.getItem(inventoryItem.itemId)
 
     if (!itemResult.success) {
-      return Result.failFrom(itemResult, FailureType.error)
+      return Result.failFrom(itemResult)
     }
 
     const conflictingItems: IConflictingItem[] = []
@@ -614,5 +578,51 @@ export class BuildPropertiesService {
     if (holster != null && holster.items[0] != null) {
       return holster
     }
+  }
+
+  /**
+   * Gets a shopping list for this item and all its content, mod and barter items that must be bought.
+   * @param build - Build.
+   * @returns Shopping list items.
+   */
+  private async getShoppingList(build: IBuild): Promise<Result<IShoppingListItem[]>> {
+    const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
+    const inventoryItemService = Services.get(InventoryItemService)
+
+    const shoppingList: IShoppingListItem[] = []
+
+    for (const inventorySlot of build.inventorySlots) {
+      const canBeLootedResult = inventorySlotPropertiesService.canBeLooted(inventorySlot)
+
+      /* istanbul ignore if */
+      if (!canBeLootedResult.success) {
+        return Result.failFrom(canBeLootedResult)
+      }
+
+      for (const item of inventorySlot.items) {
+        if (item == null) {
+          continue
+        }
+
+        const shoppingListResult = await inventoryItemService.getShoppingList(item, undefined, canBeLootedResult.value)
+
+        /* istanbul ignore if */
+        if (!shoppingListResult.success) {
+          return Result.failFrom(shoppingListResult)
+        }
+
+        for (const shoppingListItemToAdd of shoppingListResult.value) {
+          const shoppingListItemIndex = shoppingList.findIndex(sli => sli.id === shoppingListItemToAdd.id)
+
+          if (shoppingListItemIndex < 0) {
+            shoppingList.push(shoppingListItemToAdd)
+          } else {
+            shoppingList[shoppingListItemIndex].quantity += shoppingListItemToAdd.quantity
+          }
+        }
+      }
+    }
+
+    return Result.ok(shoppingList)
   }
 }

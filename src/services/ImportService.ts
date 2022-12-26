@@ -52,7 +52,7 @@ export class ImportService {
 
     const builds = JSON.parse(fileReader.result as string) as IBuild[]
 
-    if (builds == undefined) {
+    if (builds == null) {
       return Result.fail(FailureType.error, vueI18n.t('message.importReadFileError'))
     }
 

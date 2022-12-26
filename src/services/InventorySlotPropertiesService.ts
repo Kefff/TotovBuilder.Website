@@ -20,7 +20,7 @@ export class InventorySlotPropertiesService {
   public canBeLooted(inventorySlot: IInventorySlot): Result<boolean> {
     const inventorySlotType = InventorySlotTypes.find((ist) => ist.id === inventorySlot.typeId)
 
-    if (inventorySlotType === undefined) {
+    if (inventorySlotType == null) {
       return Result.fail(FailureType.error, 'InventorySlotPropertiesService.canBeLooted()', vueI18n.t('message.inventorySlotTypeNotFound', { id: inventorySlot.typeId }))
     }
 
@@ -33,7 +33,7 @@ export class InventorySlotPropertiesService {
    * @returns Ergonomics or undefined if the slot doesn't contain a ranged weapon.
    */
   public async getErgonomics(inventorySlot: IInventorySlot): Promise<Result<number> | undefined> {
-    if (inventorySlot.items[0] == undefined) {
+    if (inventorySlot.items[0] == null) {
       return undefined
     }
 
@@ -44,7 +44,7 @@ export class InventorySlotPropertiesService {
     const ergonomicsResult = await Services.get(InventoryItemService).getErgonomics(inventorySlot.items[0])
 
     if (!ergonomicsResult.success) {
-      return Result.failFrom(ergonomicsResult, FailureType.error)
+      return Result.failFrom(ergonomicsResult)
     }
 
     return Result.ok(ergonomicsResult.value.ergonomicsWithMods)
@@ -64,7 +64,7 @@ export class InventorySlotPropertiesService {
     let ergonomicsPercentageModifier = 0
 
     for (const inventoryItem of inventorySlot.items) {
-      if (inventoryItem == undefined) {
+      if (inventoryItem == null) {
         continue
       }
 
@@ -73,7 +73,7 @@ export class InventorySlotPropertiesService {
       )
 
       if (!ergonomicsPercentageModifierResult.success) {
-        return Result.failFrom(ergonomicsPercentageModifierResult, FailureType.error)
+        return Result.failFrom(ergonomicsPercentageModifierResult)
       }
 
       ergonomicsPercentageModifier += ergonomicsPercentageModifierResult.value.ergonomicsPercentageModifierWithContent
@@ -101,7 +101,7 @@ export class InventorySlotPropertiesService {
     const inventoryPrice: IInventoryPrice = {
       missingPrice: false,
       price: {
-        barterItems: [], // TODO : Handling barters
+        barterItems: [],
         currencyName: mainCurrencyResult.value.name,
         itemId: '',
         merchant: '',
@@ -111,7 +111,7 @@ export class InventorySlotPropertiesService {
         valueInMainCurrency: 0
       },
       priceWithContentInMainCurrency: {
-        barterItems: [], // TODO : Handling barters
+        barterItems: [],
         currencyName: mainCurrencyResult.value.name,
         itemId: '',
         merchant: '',
@@ -135,14 +135,14 @@ export class InventorySlotPropertiesService {
     }
 
     for (const inventoryItem of inventorySlot.items) {
-      if (inventoryItem == undefined) {
+      if (inventoryItem == null) {
         continue
       }
 
       const priceResult = await inventoryItemService.getPrice(inventoryItem, undefined, canBeLooted)
 
       if (!priceResult.success) {
-        return Result.failFrom(priceResult, FailureType.error)
+        return Result.failFrom(priceResult)
       }
 
       for (const inventoryItemPriceWithContent of priceResult.value.pricesWithContent) {
@@ -173,7 +173,7 @@ export class InventorySlotPropertiesService {
    * @returns Recoil or undefined if the slot doesn't contain a ranged weapon.
    */
   public async getRecoil(inventorySlot: IInventorySlot): Promise<Result<{ horizontalRecoil: number, verticalRecoil: number }> | undefined> {
-    if (inventorySlot.items[0] == undefined) {
+    if (inventorySlot.items[0] == null) {
       return undefined
     }
 
@@ -184,7 +184,7 @@ export class InventorySlotPropertiesService {
     const recoilResult = await Services.get(InventoryItemService).getRecoil(inventorySlot.items[0])
 
     if (!recoilResult.success) {
-      return Result.failFrom(recoilResult, FailureType.error)
+      return Result.failFrom(recoilResult)
     }
 
     return Result.ok({
@@ -203,14 +203,14 @@ export class InventorySlotPropertiesService {
     let weight = 0
 
     for (const inventoryItem of inventorySlot.items) {
-      if (inventoryItem == undefined) {
+      if (inventoryItem == null) {
         continue
       }
 
       const weightResult = await inventoryItemService.getWeight(inventoryItem)
 
       if (!weightResult.success) {
-        return Result.failFrom(weightResult, FailureType.error)
+        return Result.failFrom(weightResult)
       }
 
       weight += weightResult.value.weightWithContent

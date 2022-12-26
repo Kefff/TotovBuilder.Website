@@ -94,7 +94,7 @@ export default defineComponent({
      * @param index - Index of the changed contained item in the inventory item content list.
      */
     async function onItemChanged(updatedContainedInventoryItem: IInventoryItem, index: number) {
-      if (updatedContainedInventoryItem === undefined) {
+      if (updatedContainedInventoryItem == null) {
         content.value.splice(index, 1)
       }
     }

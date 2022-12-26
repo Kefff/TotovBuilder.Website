@@ -30,7 +30,7 @@ export default class Result<T = void> {
       throw i18n.t('message.resultCannotReadValueError')
     }
 
-    if (this._value === undefined) {
+    if (this._value == null) {
       throw i18n.t('message.resultUndefinedValue')
     }
 
@@ -65,17 +65,12 @@ export default class Result<T = void> {
   /**
    * Creates a failure result from another result.
    * @param originalResult - Original result.
-   * @param type - Failure type determining how the failure is logged. Used only when the original result was successful.
    * @returns Failure result.
    */
-  public static failFrom<T = void>(originalResult: Result<unknown>, type: FailureType = FailureType.hidden): Result<T> {
+  public static failFrom<T = void>(originalResult: Result<unknown>): Result<T> {
     const result = new Result<T>(false)
     result.failureContext = originalResult.failureContext
     result.failureMessage = originalResult.failureMessage
-
-    if (originalResult.success) {
-      result.logFailure(type)
-    }
 
     return result
   }
@@ -102,17 +97,21 @@ export default class Result<T = void> {
 
     switch (type) {
       case FailureType.error: {
-        service.logError('message.failureDebug', { message: this.failureMessage, context: this.failureContext })
+        if (Configuration.VITE_DEBUG === 'true') {
+          service.logError('message.failureDebug', { message: this.failureMessage, context: this.failureContext })
+        } else {
+          service.logError(this.failureMessage)
+        }
+
         break
       }
       case FailureType.warning: {
-        const debug = Configuration.VITE_DEBUG === 'true'
-
-        if (debug) {
+        if (Configuration.VITE_DEBUG === 'true') {
           service.logWarning('message.failureDebug', { message: this.failureMessage, context: this.failureContext })
         } else {
           service.logWarning(this.failureMessage)
         }
+
         break
       }
     }

@@ -123,7 +123,7 @@ export default defineComponent({
      * Initializes the selected item based on the inventory item passed to the component.
      */
     async function initializeSelectedItem() {
-      if (props.modelValue == undefined) {
+      if (props.modelValue == null) {
         quantity.value = 0
         selectedItem.value = undefined
         selectedItemIsContainer.value = false
@@ -174,7 +174,7 @@ export default defineComponent({
      * Updates the inventory item based on the quantity.
      */
     function onQuantityChanged(newQuantity: number) {
-      if (selectedInventoryItem.value === undefined) {
+      if (selectedInventoryItem.value == null) {
         return
       }
 
@@ -192,7 +192,7 @@ export default defineComponent({
         return
       }
 
-      if (selectedItem.value == undefined) {
+      if (selectedItem.value == null) {
         quantity.value = 0
         selectedInventoryItem.value = undefined
         selectedItemIsContainer.value = false
@@ -266,7 +266,7 @@ export default defineComponent({
      * Sets the selected tab based on the selected item.
      */
     function setSelectedTab() {
-      if (selectedItem.value === undefined) {
+      if (selectedItem.value == null) {
         selectedTab.value = SelectableTab.hidden
 
         return
