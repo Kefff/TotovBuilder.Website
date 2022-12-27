@@ -554,7 +554,9 @@ export class InventoryItemService {
             quantity: barterItem.quantity
           })
 
+          /* istanbul ignore if */
           if (!barterItemShoppingListResult.success) {
+            // Should never happen since barter item prices are already searched in the getPrice() method
             return Result.failFrom(barterItemShoppingListResult)
           }
 
@@ -591,6 +593,7 @@ export class InventoryItemService {
     }
 
     for (const modSlot of inventoryItem.modSlots) {
+      /* istanbul ignore if */
       if (modSlot.item == null) {
         continue
       }
@@ -598,7 +601,9 @@ export class InventoryItemService {
       const presetModSlot = presetModSlotItem?.modSlots.find(pms => pms.modSlotName === modSlot.modSlotName)
       const shoppingListResult = await this.getShoppingList(modSlot.item, presetModSlot?.item)
 
+      /* istanbul ignore if */
       if (!shoppingListResult.success) {
+        // Should never happen since mod prices are already searched in the getPrice() method
         return Result.failFrom(shoppingListResult)
       }
 
@@ -609,7 +614,9 @@ export class InventoryItemService {
     for (const content of inventoryItem.content) {
       const shoppingListResult = await this.getShoppingList(content)
 
+      /* istanbul ignore if */
       if (!shoppingListResult.success) {
+        // Should never happen since content item prices are already searched in the getPrice() method
         return Result.failFrom(shoppingListResult)
       }
 

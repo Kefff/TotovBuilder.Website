@@ -2556,49 +2556,52 @@ describe('getShoppingList', () => {
     ] as IShoppingListItem[])
   })
 
-  it('should fail when an item search fails', () => {
+  it('should fail when an item search fails', async () => {
     // Arrange
+    useItemServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
+    const inventoryItemService = new InventoryItemService()
+
+    const inventoryItem: IInventoryItem = {
+      content: [],
+      ignorePrice: false,
+      itemId: 'invalid',
+      modSlots: [],
+      quantity: 1
+    }
 
     // Act
+    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
 
     // Assert
-    expect(true).toBe(false)
+    expect(shoppingListResult.success).toBe(false)
   })
 
-  it('should fail when an item price search fails', () => {
+  it('should fail when an item price search fails', async () => {
     // Arrange
+    useItemServiceMock(false)
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
+    const inventoryItemService = new InventoryItemService()
+
+    const inventoryItem: IInventoryItem = {
+      content: [],
+      ignorePrice: false,
+      itemId: '5b3f16c486f7747c327f55f7', // Armband (White)
+      modSlots: [],
+      quantity: 1
+    }
 
     // Act
+    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
 
     // Assert
-    expect(true).toBe(false)
-  })
-
-  it('should fail when a barter item shopping list search fails', () => {
-    // Arrange
-
-    // Act
-
-    // Assert
-    expect(true).toBe(false)
-  })
-
-  it('should fail when a mod shopping list search fails', () => {
-    // Arrange
-
-    // Act
-
-    // Assert
-    expect(true).toBe(false)
-  })
-
-  it('should fail when a content item shopping list search fails', () => {
-    // Arrange
-
-    // Act
-
-    // Assert
-    expect(true).toBe(false)
+    expect(shoppingListResult.success).toBe(false)
   })
 })
 
