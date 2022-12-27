@@ -618,6 +618,8 @@ export class BuildPropertiesService {
             shoppingList.push(shoppingListItemToAdd)
           } else {
             shoppingList[shoppingListItemIndex].quantity += shoppingListItemToAdd.quantity
+            shoppingList[shoppingListItemIndex].price.value += shoppingListItemToAdd.unitPrice.value * shoppingListItemToAdd.quantity
+            shoppingList[shoppingListItemIndex].price.valueInMainCurrency += shoppingListItemToAdd.unitPrice.valueInMainCurrency * shoppingListItemToAdd.quantity
           }
         }
       }

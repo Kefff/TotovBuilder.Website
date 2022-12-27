@@ -541,7 +541,7 @@ export class InventoryItemService {
         return Result.failFrom(priceResult)
       }
 
-      let price: IPrice
+      let unitPrice: IPrice
 
       // Barters
       const shoppingListBartersToAdd: IShoppingListItem[] = []
@@ -566,7 +566,7 @@ export class InventoryItemService {
         }
 
         // Setting the price of items that have barter items to 0 since barter items and they price are added to the shopping list
-        price = {
+        unitPrice = {
           barterItems: [],
           currencyName: 'barter',
           itemId: inventoryItem.itemId,
@@ -577,13 +577,23 @@ export class InventoryItemService {
           valueInMainCurrency: 0
         }
       } else {
-        price = priceResult.value.unitPrice
+        unitPrice = priceResult.value.unitPrice
       }
 
       shoppingListItemsToAdd.push({
         item: itemResult.value,
         quantity: inventoryItem.quantity,
-        unitPrice: price
+        price: {
+          barterItems: unitPrice.barterItems,
+          currencyName: unitPrice.currencyName,
+          itemId: unitPrice.itemId,
+          merchant: unitPrice.merchant,
+          merchantLevel: unitPrice.merchantLevel,
+          quest: unitPrice.quest,
+          value: unitPrice.value * inventoryItem.quantity,
+          valueInMainCurrency: unitPrice.valueInMainCurrency * inventoryItem.quantity
+        },
+        unitPrice
       }, ...shoppingListBartersToAdd)
     }
 
@@ -631,6 +641,8 @@ export class InventoryItemService {
         shoppingList.push(shoppingListItemToAdd)
       } else {
         shoppingList[shoppingListItemIndex].quantity += shoppingListItemToAdd.quantity
+        shoppingList[shoppingListItemIndex].price.value += shoppingListItemToAdd.unitPrice.value * shoppingListItemToAdd.quantity
+        shoppingList[shoppingListItemIndex].price.valueInMainCurrency += shoppingListItemToAdd.unitPrice.valueInMainCurrency * shoppingListItemToAdd.quantity
       }
     }
 

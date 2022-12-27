@@ -146,7 +146,8 @@ describe('getShoppingList', () => {
           weight: 6.36,
           wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6Sh118_raid_backpack'
         },
-        unitPrice: {
+        quantity: 1,
+        price: {
           barterItems: [],
           currencyName: 'barter',
           itemId: '5df8a4d786f77412672a1e3b',
@@ -156,7 +157,16 @@ describe('getShoppingList', () => {
           value: 0,
           valueInMainCurrency: 0
         },
-        quantity: 1
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'barter',
+          itemId: '5df8a4d786f77412672a1e3b',
+          merchant: 'prapor',
+          merchantLevel: 4,
+          quest: null,
+          value: 0,
+          valueInMainCurrency: 0
+        }
       },
       {
         item: {
@@ -184,6 +194,17 @@ describe('getShoppingList', () => {
           weight: 0.65,
           wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Military_cable'
         },
+        quantity: 2,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '5d0375ff86f774186372f685',
+          merchant: 'flea-market',
+          merchantLevel: 0,
+          quest: null,
+          value: 106864,
+          valueInMainCurrency: 106864
+        },
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
@@ -193,8 +214,7 @@ describe('getShoppingList', () => {
           quest: null,
           value: 53432,
           valueInMainCurrency: 53432
-        },
-        quantity: 2
+        }
       },
       {
         item: {
@@ -374,7 +394,8 @@ describe('getShoppingList', () => {
           weight: 1.809,
           wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Kalashnikov_AKS-74U_5.45x39_assault_rifle'
         },
-        unitPrice: {
+        quantity: 1,
+        price: {
           barterItems: [],
           currencyName: 'RUB',
           itemId: '57dc2fa62459775949412633',
@@ -388,7 +409,20 @@ describe('getShoppingList', () => {
           value: 24605.0,
           valueInMainCurrency: 24605.0
         },
-        quantity: 1
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '57dc2fa62459775949412633',
+          merchant: 'prapor',
+          merchantLevel: 1.0,
+          quest: {
+            id: '5936d90786f7742b1420ba5b',
+            name: 'Debut',
+            wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Debut'
+          },
+          value: 24605.0,
+          valueInMainCurrency: 24605.0
+        }
       },
       {
         item: {
@@ -430,7 +464,8 @@ describe('getShoppingList', () => {
           weight: 0.14,
           wikiLink: 'https://escapefromtarkov.fandom.com/wiki/AK_Aeroknox_Scorpius_pistol_grip'
         },
-        unitPrice: {
+        quantity: 1,
+        price: {
           barterItems: [],
           currencyName: 'RUB',
           itemId: '5f6341043ada5942720e2dc5',
@@ -440,7 +475,16 @@ describe('getShoppingList', () => {
           value: 45166.0,
           valueInMainCurrency: 45166.0
         },
-        quantity: 1
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '5f6341043ada5942720e2dc5',
+          merchant: 'flea-market',
+          merchantLevel: 0.0,
+          quest: null,
+          value: 45166.0,
+          valueInMainCurrency: 45166.0
+        }
       },
       {
         item: {
@@ -505,6 +549,21 @@ describe('getShoppingList', () => {
           weight: 0.01,
           wikiLink: 'https://escapefromtarkov.fandom.com/wiki/5.45x39mm_PS_gs'
         },
+        quantity: 90,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '56dff3afd2720bba668b4567',
+          merchant: 'prapor',
+          merchantLevel: 1.0,
+          quest: {
+            id: '59674eb386f774539f14813a',
+            name: 'Delivery from the Past',
+            wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Delivery_from_the_Past'
+          },
+          value: 9810,
+          valueInMainCurrency: 9810
+        },
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
@@ -518,8 +577,7 @@ describe('getShoppingList', () => {
           },
           value: 109,
           valueInMainCurrency: 109
-        },
-        quantity: 90
+        }
       }
     ] as IShoppingListItem[])
   })

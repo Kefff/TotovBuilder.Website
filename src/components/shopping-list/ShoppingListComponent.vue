@@ -24,7 +24,7 @@
         class="shopping-list-item"
       >
         <div class="shopping-list-item-quantity">
-          {{ shoppingListItem.quantity }} x
+          <span v-if="shoppingListItem.quantity > 1">{{ shoppingListItem.quantity }} x</span>
         </div>
         <div class="shopping-list-item-icon">
           <div>
@@ -37,7 +37,7 @@
         <div class="shopping-list-item-price">
           <div>
             <Price
-              :price="prices[index]"
+              :price="shoppingListItem.price"
               :show-barters="false"
             />
           </div>

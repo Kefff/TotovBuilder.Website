@@ -125,6 +125,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/WARTECH_Berkut_BB-102_backpack'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5ca20d5986f774331e7c9602',
+              merchant: 'ragman',
+              merchantLevel: 1,
+              quest: null,
+              value: 23444,
+              valueInMainCurrency: 23444
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -192,6 +202,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Iskra_ration_pack'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'barter',
+              itemId: '590c5d4b86f774784e1b9c45',
+              merchant: 'therapist',
+              merchantLevel: 1,
+              quest: null,
+              value: 0,
+              valueInMainCurrency: 0
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'barter',
@@ -230,6 +250,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Disposable_syringe'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5d1b3f2d86f774253763b735',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 21792,
+              valueInMainCurrency: 21792
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -293,6 +323,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Bottle_of_water_(0.6L)'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5448fee04bdc2dbc018b4567',
+              merchant: 'therapist',
+              merchantLevel: 1,
+              quest: null,
+              value: 12401,
+              valueInMainCurrency: 12401
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -352,6 +392,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6B13_assault_armor'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5c0e51be86f774598e797894',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 67745,
+              valueInMainCurrency: 67745
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -401,6 +451,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Crossbow_tactical_glasses'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5d5fca1ea4b93635fd598c07',
+              merchant: 'ragman',
+              merchantLevel: 2,
+              quest: null,
+              value: 3885,
+              valueInMainCurrency: 3885
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -449,6 +509,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Cold_Fear_infrared_balaclava'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5ab8f39486f7745cd93a1cca',
+              merchant: 'ragman',
+              merchantLevel: 2,
+              quest: null,
+              value: 4793,
+              valueInMainCurrency: 4793
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -556,6 +626,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/BNTI_LShZ-2DTM_helmet'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5d6d3716a4b9361bc8618872',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 79805,
+              valueInMainCurrency: 79805
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -638,6 +718,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/LShZ-2DTM_face_shield'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5d6d3829a4b9361bc8618943',
+              merchant: 'ragman',
+              merchantLevel: 4,
+              quest: null,
+              value: 37019,
+              valueInMainCurrency: 37019
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -690,6 +780,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Morphine_injector'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '544fb3f34bdc2d03748b456a',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 18810,
+              valueInMainCurrency: 18810
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -728,6 +828,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Vaseline_balm'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5755383e24597772cb798966',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 37155,
+              valueInMainCurrency: 37155
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -796,6 +906,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RGD-5_hand_grenade'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5448be9a4bdc2dfd2f8b456a',
+              merchant: 'prapor',
+              merchantLevel: 3,
+              quest: null,
+              value: 11822,
+              valueInMainCurrency: 11822
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -867,6 +987,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/5.45x39mm_BP_gs'
             },
             quantity: 156,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '56dfef82d2720bbd668b4567',
+              merchant: 'prapor',
+              merchantLevel: 3,
+              quest: null,
+              value: 69108,
+              valueInMainCurrency: 69108
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1055,6 +1185,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_light_machine_gun'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5beed0f50db834001c062b12',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 60572,
+              valueInMainCurrency: 60572
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1129,6 +1269,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_95-round_drum_magazine'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5bed625c0db834001c062946',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 31014,
+              valueInMainCurrency: 31014
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1242,6 +1392,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Walker%27s_Razor_Digital_headset'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5e4d34ca86f774264f758330',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 36195,
+              valueInMainCurrency: 36195
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1370,6 +1530,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Beretta_M9A3_9x19_pistol'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'USD',
+              itemId: '5cadc190ae921500103bb3b6',
+              merchant: 'peacekeeper',
+              merchantLevel: 1,
+              quest: null,
+              value: 124,
+              valueInMainCurrency: 13888
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'USD',
@@ -1422,6 +1592,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/SIG_Sauer_SRD9_9x19_sound_suppressor'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5c6165902e22160010261b28',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 29957,
+              valueInMainCurrency: 29957
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1493,6 +1673,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/9x19mm_Green_Tracer'
             },
             quantity: 18,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5c3df7d588a4501f290594e5',
+              merchant: 'mechanic',
+              merchantLevel: 1,
+              quest: null,
+              value: 1314,
+              valueInMainCurrency: 1314
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1545,6 +1735,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/SureFire_X400_Ultra_tactical_flashlight_with_laser'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'USD',
+              itemId: '56def37dd2720bec348b456a',
+              merchant: 'peacekeeper',
+              merchantLevel: 2,
+              quest: null,
+              value: 122,
+              valueInMainCurrency: 13664
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'USD',
@@ -1607,6 +1807,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Scav_Vest'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'barter',
+              itemId: '572b7adb24597762ae139821',
+              merchant: 'jaeger',
+              merchantLevel: 1,
+              quest: null,
+              value: 0,
+              valueInMainCurrency: 0
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'barter',
@@ -1660,6 +1870,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Slickers_chocolate_bar'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '544fb6cc4bdc2d34748b456e',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 10893,
+              valueInMainCurrency: 10893
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1727,6 +1947,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Salewa_first_aid_kit'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'barter',
+              itemId: '544fb45d4bdc2dee738b4568',
+              merchant: 'therapist',
+              merchantLevel: 1,
+              quest: null,
+              value: 0,
+              valueInMainCurrency: 0
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'barter',
@@ -1765,6 +1995,16 @@ describe('getSummary()', () => {
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/PAID_AntiRoach_spray'
             },
             quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '59e3596386f774176c10a2a2',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 32737,
+              valueInMainCurrency: 32737
+            },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -2095,7 +2335,8 @@ describe('getSummary()', () => {
             weight: 6.36,
             wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6Sh118_raid_backpack'
           },
-          unitPrice: {
+          quantity: 1,
+          price: {
             barterItems: [],
             currencyName: 'barter',
             itemId: '5df8a4d786f77412672a1e3b',
@@ -2105,7 +2346,16 @@ describe('getSummary()', () => {
             value: 0,
             valueInMainCurrency: 0
           },
-          quantity: 1
+          unitPrice: {
+            barterItems: [],
+            currencyName: 'barter',
+            itemId: '5df8a4d786f77412672a1e3b',
+            merchant: 'prapor',
+            merchantLevel: 4,
+            quest: null,
+            value: 0,
+            valueInMainCurrency: 0
+          }
         },
         {
           item: {
@@ -2133,6 +2383,17 @@ describe('getSummary()', () => {
             weight: 0.65,
             wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Military_cable'
           },
+          quantity: 2,
+          price: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '5d0375ff86f774186372f685',
+            merchant: 'flea-market',
+            merchantLevel: 0,
+            quest: null,
+            value: 106864,
+            valueInMainCurrency: 106864
+          },
           unitPrice: {
             barterItems: [],
             currencyName: 'RUB',
@@ -2142,8 +2403,7 @@ describe('getSummary()', () => {
             quest: null,
             value: 53432,
             valueInMainCurrency: 53432
-          },
-          quantity: 2
+          }
         },
         {
           item: {
@@ -2323,7 +2583,8 @@ describe('getSummary()', () => {
             weight: 1.809,
             wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Kalashnikov_AKS-74U_5.45x39_assault_rifle'
           },
-          unitPrice: {
+          quantity: 1,
+          price: {
             barterItems: [],
             currencyName: 'RUB',
             itemId: '57dc2fa62459775949412633',
@@ -2337,7 +2598,20 @@ describe('getSummary()', () => {
             value: 24605.0,
             valueInMainCurrency: 24605.0
           },
-          quantity: 1
+          unitPrice: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '57dc2fa62459775949412633',
+            merchant: 'prapor',
+            merchantLevel: 1.0,
+            quest: {
+              id: '5936d90786f7742b1420ba5b',
+              name: 'Debut',
+              wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Debut'
+            },
+            value: 24605.0,
+            valueInMainCurrency: 24605.0
+          }
         },
         {
           item: {
@@ -2379,7 +2653,8 @@ describe('getSummary()', () => {
             weight: 0.14,
             wikiLink: 'https://escapefromtarkov.fandom.com/wiki/AK_Aeroknox_Scorpius_pistol_grip'
           },
-          unitPrice: {
+          quantity: 1,
+          price: {
             barterItems: [],
             currencyName: 'RUB',
             itemId: '5f6341043ada5942720e2dc5',
@@ -2389,7 +2664,16 @@ describe('getSummary()', () => {
             value: 45166.0,
             valueInMainCurrency: 45166.0
           },
-          quantity: 1
+          unitPrice: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '5f6341043ada5942720e2dc5',
+            merchant: 'flea-market',
+            merchantLevel: 0.0,
+            quest: null,
+            value: 45166.0,
+            valueInMainCurrency: 45166.0
+          }
         },
         {
           item: {
@@ -2454,6 +2738,21 @@ describe('getSummary()', () => {
             weight: 0.01,
             wikiLink: 'https://escapefromtarkov.fandom.com/wiki/5.45x39mm_PS_gs'
           },
+          quantity: 90,
+          price: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '56dff3afd2720bba668b4567',
+            merchant: 'prapor',
+            merchantLevel: 1.0,
+            quest: {
+              id: '59674eb386f774539f14813a',
+              name: 'Delivery from the Past',
+              wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Delivery_from_the_Past'
+            },
+            value: 9810,
+            valueInMainCurrency: 9810
+          },
           unitPrice: {
             barterItems: [],
             currencyName: 'RUB',
@@ -2467,8 +2766,7 @@ describe('getSummary()', () => {
             },
             value: 109,
             valueInMainCurrency: 109
-          },
-          quantity: 90
+          }
         }
       ],
       verticalRecoil: undefined,

@@ -12,6 +12,11 @@ export interface IShoppingListItem {
   item: IItem
 
   /**
+   * Price.
+   */
+  price: IPrice
+
+  /**
    * Unit price.
    */
   unitPrice: IPrice
