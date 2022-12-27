@@ -53,6 +53,7 @@
             />
             <span>{{ $t('caption.edit') }}</span>
           </Button>
+          <ShoppingList :shopping-list="summary.shoppingList" />
           <Button
             v-tooltip.top="$t('caption.copy')"
             :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
@@ -290,6 +291,7 @@
     :closable="false"
     :header="$t('caption.confirmation')"
     :modal="true"
+    :base-z-index="2"
   >
     <div>
       <font-awesome-icon
@@ -311,7 +313,7 @@
         <span>{{ $t('caption.delete') }}</span>
       </Button>
       <Button
-        class="p-button-text"
+        class="p-button-text button-discreet"
         @click="cancelDelete()"
       >
         <font-awesome-icon

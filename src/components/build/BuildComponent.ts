@@ -20,6 +20,7 @@ import { MerchantFilterService } from '../../services/MerchantFilterService'
 import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
 import ShareBuild from '../build-share/BuildShareComponent.vue'
+import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
 import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { InventoryItemService } from '../../services/InventoryItemService'
@@ -33,7 +34,8 @@ export default defineComponent({
     Loading,
     MerchantFilter,
     NotificationButton,
-    ShareBuild
+    ShareBuild,
+    ShoppingList
   },
   setup: () => {
     const route = useRoute()
@@ -189,8 +191,6 @@ export default defineComponent({
         return
       }
 
-      toggleOptionsPanel(undefined)
-
       build.value.id = ''
       build.value.name = ''
       startEdit()
@@ -227,8 +227,6 @@ export default defineComponent({
       if (editing.value) {
         return
       }
-
-      toggleOptionsPanel(undefined)
 
       if (isNewBuild.value) {
         return

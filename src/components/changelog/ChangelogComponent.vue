@@ -29,6 +29,7 @@
     :closable="true"
     :header="$t('caption.changelog')"
     :modal="true"
+    :base-z-index="2"
     @hide="closeChangelog()"
   >
     <div class="changelog">

@@ -612,7 +612,7 @@ export class BuildPropertiesService {
         }
 
         for (const shoppingListItemToAdd of shoppingListResult.value) {
-          const shoppingListItemIndex = shoppingList.findIndex(sli => sli.id === shoppingListItemToAdd.id)
+          const shoppingListItemIndex = shoppingList.findIndex(sli => sli.item.id === shoppingListItemToAdd.item.id)
 
           if (shoppingListItemIndex < 0) {
             shoppingList.push(shoppingListItemToAdd)

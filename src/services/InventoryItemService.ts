@@ -581,11 +581,9 @@ export class InventoryItemService {
       }
 
       shoppingListItemsToAdd.push({
-        iconLink: itemResult.value.iconLink,
-        id: inventoryItem.itemId,
-        name: itemResult.value.name,
-        unitPrice: price,
-        quantity: inventoryItem.quantity
+        item: itemResult.value,
+        quantity: inventoryItem.quantity,
+        unitPrice: price
       }, ...shoppingListBartersToAdd)
     }
 
@@ -627,7 +625,7 @@ export class InventoryItemService {
 
     // Regrouping similar items
     for (const shoppingListItemToAdd of shoppingListItemsToAdd) {
-      const shoppingListItemIndex = shoppingList.findIndex(sli => sli.id === shoppingListItemToAdd.id)
+      const shoppingListItemIndex = shoppingList.findIndex(sli => sli.item.id === shoppingListItemToAdd.item.id)
 
       if (shoppingListItemIndex < 0) {
         shoppingList.push(shoppingListItemToAdd)

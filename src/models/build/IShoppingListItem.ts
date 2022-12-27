@@ -1,3 +1,4 @@
+import { IItem } from '../item/IItem'
 import { IPrice } from '../item/IPrice'
 
 
@@ -6,19 +7,9 @@ import { IPrice } from '../item/IPrice'
  */
 export interface IShoppingListItem {
   /**
-   * Link to the icon.
+   * Item.
    */
-  iconLink: string
-
-  /**
-   * ID.
-   */
-  id: string
-
-  /**
-   * Name.
-   */
-  name: string
+  item: IItem
 
   /**
    * Unit price.
