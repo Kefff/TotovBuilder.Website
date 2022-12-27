@@ -233,6 +233,7 @@
   <OverlayPanel
     ref="optionsPanel"
     :dismissable="true"
+    :base-z-index="3"
   >
     <div class="build-options-panel">
       <div class="build-options-panel-item">
@@ -250,6 +251,7 @@
   <OverlayPanel
     ref="displayOptionsPanel"
     :dismissable="true"
+    :base-z-index="3"
   >
     <div class="build-options-panel">
       <div

@@ -11,6 +11,7 @@
   <OverlayPanel
     ref="functionalitiesPanel"
     :dismissable="true"
+    :base-z-index="3"
   >
     <div :class="'selected-item-functionalities-panel-item selected-item-functionalities-panel-ignore-price' + (!editing ? ' p-disabled' : '')">
       <Checkbox

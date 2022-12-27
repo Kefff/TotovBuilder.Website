@@ -47,7 +47,7 @@
     ref="priceDetailPanel"
     :dismissable="true"
     :style="'max-width: ' + priceDetailPanelWidth + 'rem'"
-    :base-z-index="2"
+    :base-z-index="3"
   >
     <div class="price-details">
       <div
@@ -110,3 +110,4 @@
 
 <script lang="ts" src="./PriceComponent.ts" />
 <style scoped lang="css" src="./PriceComponent.css" />
+<style lang="css" src="./PriceComponent.unscoped.css" />
