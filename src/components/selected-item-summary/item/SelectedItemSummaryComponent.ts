@@ -39,7 +39,7 @@ export default defineComponent({
     const price = ref<IInventoryPrice>({
       missingPrice: false,
       price: {
-        barterItems: [], // TODO : Handling barters
+        barterItems: [],
         currencyName: 'RUB',
         itemId: '',
         merchant: '',
@@ -50,7 +50,7 @@ export default defineComponent({
       },
       pricesWithContent: [],
       priceWithContentInMainCurrency: {
-        barterItems: [], // TODO : Handling barters
+        barterItems: [],
         currencyName: 'RUB',
         itemId: '',
         merchant: '',
@@ -60,7 +60,7 @@ export default defineComponent({
         valueInMainCurrency: 0
       },
       unitPrice: {
-        barterItems: [], // TODO : Handling barters
+        barterItems: [],
         currencyName: 'RUB',
         itemId: '',
         merchant: '',

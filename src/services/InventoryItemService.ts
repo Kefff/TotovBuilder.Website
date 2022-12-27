@@ -184,7 +184,7 @@ export class InventoryItemService {
       value: 0,
       valueInMainCurrency: 0
     }
-    const barterItemPrices: IInventoryPrice[] = []
+    let barterItemPrices: IInventoryPrice[] = []
     let unitPriceIgnoreStatus = IgnoredUnitPrice.notIgnored
 
     if (!canBeLooted) {
@@ -203,6 +203,7 @@ export class InventoryItemService {
       for (const matchingPrice of matchingPrices) {
         let missingBarterItemPrice = false
         let matchingPriceInMainCurrency = matchingPrice.valueInMainCurrency
+        const matchingPriceBarterItemPrices: IInventoryPrice[] = []
 
         if (matchingPrice.currencyName === 'barter') {
           for (const barterItem of matchingPrice.barterItems) {
@@ -223,7 +224,7 @@ export class InventoryItemService {
               continue
             }
 
-            barterItemPrices.push(barterItemPriceResult.value)
+            matchingPriceBarterItemPrices.push(barterItemPriceResult.value)
             matchingPriceInMainCurrency += barterItemPriceResult.value.price.valueInMainCurrency
           }
         }
@@ -237,6 +238,7 @@ export class InventoryItemService {
             ...matchingPrice,
             valueInMainCurrency: matchingPriceInMainCurrency
           }
+          barterItemPrices = matchingPriceBarterItemPrices
 
           hasUnitPrice = true
         }

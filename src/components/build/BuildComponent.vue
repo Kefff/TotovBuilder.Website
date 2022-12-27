@@ -151,20 +151,6 @@
                 />
               </div>
             </div>
-            <div
-              v-if="summary.ammunitionCounts.length > 0"
-              v-tooltip.top="$t('caption.ammunitionList')"
-            >
-              <Button
-                class="toolbar-button"
-                @click="toggleAmmunitionCounts"
-              >
-                <img
-                  src="/assets/caliber.webp"
-                  class="custom-icon build-caliber-icon"
-                >
-              </Button>
-            </div>
           </div>
         </div>
         <div class="toolbar-part">
@@ -240,23 +226,6 @@
       <Loading />
     </div>
   </div>
-
-  <!-- Ammunition counts -->
-  <OverlayPanel
-    ref="ammunitionCountsPanel"
-    :dismissable="true"
-  >
-    <div
-      v-for="ammunitionCount of summary.ammunitionCounts"
-      :key="ammunitionCount.id"
-      class="build-toolbar-ammunition-count"
-    >
-      <div class="build-toolbar-ammunition-count-count">
-        {{ ammunitionCount.count.toLocaleString() }}
-      </div>
-      <div>{{ ammunitionCount.name }}</div>
-    </div>
-  </OverlayPanel>
 
   <!-- Advanced panel -->
   <OverlayPanel

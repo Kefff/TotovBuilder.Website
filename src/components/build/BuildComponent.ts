@@ -57,14 +57,12 @@ export default defineComponent({
     const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
 
     const advancedPanel = ref()
-    const ammunitionCountsPanel = ref()
     const build = ref<IBuild>(buildComponentService.getBuild(route.params['id'] as string))
     const collapseStatuses = ref<boolean[]>([])
     const deleting = ref(false)
     const editing = isNewBuild.value ? ref(true) : ref(false)
     const isInitializing = ref(true)
     const summary = ref<IBuildSummary>({
-      ammunitionCounts: [],
       ergonomics: undefined,
       ergonomicsPercentageModifier: 0,
       exported: false,
@@ -108,6 +106,7 @@ export default defineComponent({
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       },
+      shoppingList: [],
       verticalRecoil: undefined,
       weight: 0
     })
@@ -389,13 +388,6 @@ export default defineComponent({
     }
 
     /**
-     * Toggles the ammunition counts panel.
-     */
-    function toggleAmmunitionCounts(event: unknown) {
-      ammunitionCountsPanel.value.toggle(event)
-    }
-
-    /**
      * Toggles the advanced panel.
      * @param event - Event.
      */
@@ -405,7 +397,6 @@ export default defineComponent({
 
     return {
       advancedPanel,
-      ammunitionCountsPanel,
       build,
       cancelDelete,
       cancelEdit,
@@ -431,8 +422,7 @@ export default defineComponent({
       startEdit,
       StatsUtils,
       summary,
-      toggleAdvancedPanel,
-      toggleAmmunitionCounts
+      toggleAdvancedPanel
     }
   }
 })

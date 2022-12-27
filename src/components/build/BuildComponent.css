@@ -83,16 +83,6 @@
   margin-right: 0.5rem;
 }
 
-.build-toolbar-ammunition-count {
-  display: flex;
-}
-
-.build-toolbar-ammunition-count-count {
-  text-align: right;
-  margin-right: 1rem;
-  width: 2.25rem;
-}
-
 .build-toolbar-right {
   margin-left: auto;
 }

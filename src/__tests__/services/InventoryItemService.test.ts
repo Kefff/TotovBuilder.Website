@@ -1400,6 +1400,21 @@ describe('getPrice()', () => {
           barterItems: [
             {
               itemId: '590a3b0486f7743954552bdb', // Printed circuit board
+              quantity: 5000.0
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          merchant: 'peacekeeper',
+          merchantLevel: 3.0,
+          quest: null,
+          value: 0.0,
+          valueInMainCurrency: 0.0
+        },
+        {
+          barterItems: [
+            {
+              itemId: '590a3b0486f7743954552bdb', // Printed circuit board
               quantity: 2.0
             },
             {

@@ -20,7 +20,7 @@ export default defineComponent({
   },
   setup: (props) => {
     const price = ref<IPrice>({
-      barterItems: [], // TODO : Handling barters
+      barterItems: [],
       currencyName: 'RUB',
       itemId: '',
       merchant: '',

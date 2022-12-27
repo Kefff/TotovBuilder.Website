@@ -3,7 +3,6 @@
     "caption": {
       "acceptedCartridges": "Accepted cartridges",
       "accuracy": "Accuracy",
-      "ammunitionList": "Ammunition list",
       "approvedByPrapor": "Approved by Prapor!",
       "armorClass": "Class",
       "armorClassPenetration": "Armor class {class} penetration",
@@ -351,7 +350,6 @@
     "caption": {
       "acceptedCartridges": "Munitions acceptées",
       "accuracy": "Précision",
-      "ammunitionList": "Liste des munitions",
       "approvedByPrapor": "Approuvé par Prapor!",
       "armorClass": "Classe",
       "armorClassPenetration": "Pénetration d'armure de classe {class}",
