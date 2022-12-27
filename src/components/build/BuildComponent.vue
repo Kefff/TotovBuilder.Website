@@ -23,27 +23,24 @@
     <div class="toolbar">
       <div class="toolbar-line">
         <div class="toolbar-part">
-          <div>
-            <Button
-              v-if="editing"
-              class="p-button-success toolbar-button"
-              :disabled="invalid"
-              @click="save()"
-            >
-              <font-awesome-icon
-                icon="save"
-                class="icon-before-text"
-              />
-              <span>{{ $t('caption.save') }}</span>
-            </Button>
-          </div>
           <Button
-            v-if="!editing"
             v-tooltip.right="$t('caption.backToBuilds')"
-            class="toolbar-button"
+            :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
             @click="goToBuilds()"
           >
             <font-awesome-icon icon="arrow-left" />
+          </Button>
+          <Button
+            v-if="editing"
+            class="p-button-success toolbar-button"
+            :disabled="invalid"
+            @click="save()"
+          >
+            <font-awesome-icon
+              icon="save"
+              class="icon-before-text"
+            />
+            <span>{{ $t('caption.save') }}</span>
           </Button>
           <Button
             v-if="!editing"
@@ -56,35 +53,22 @@
             />
             <span>{{ $t('caption.edit') }}</span>
           </Button>
+          <Button
+            v-tooltip.top="$t('caption.copy')"
+            :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
+            @click="copy()"
+          >
+            <font-awesome-icon
+              icon="copy"
+            />
+          </Button>
           <ShareBuild :build="build" />
           <Button
-            v-tooltip.top="$t('caption.moreFunctionalities')"
-            class="p-button-text p-button-sm button-discreet build-functionalities-button"
-            @click="toggleAdvancedPanel"
+            v-tooltip.top="$t('caption.export')"
+            :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
+            @click="exportBuild()"
           >
-            <font-awesome-icon icon="cog" />
-          </Button>
-          <NotificationButton />
-          <Button
-            v-tooltip.top="$t('caption.collapseAll')"
-            class="p-button-text p-button-sm button-discreet"
-            @click="collapseAll()"
-          >
-            <font-awesome-icon icon="minus-square" />
-          </Button>
-          <Button
-            v-tooltip.top="$t('caption.expandWithItem')"
-            class="p-button-text p-button-sm button-discreet"
-            @click="expandWithItem()"
-          >
-            <font-awesome-icon icon="search-plus" />
-          </Button>
-          <Button
-            v-tooltip.top="$t('caption.expandAll')"
-            class="p-button-text p-button-sm button-discreet"
-            @click="expandAll()"
-          >
-            <font-awesome-icon icon="plus-square" />
+            <font-awesome-icon icon="file-export" />
           </Button>
         </div>
         <div class="toolbar-part toolbar-center">
@@ -155,6 +139,23 @@
         </div>
         <div class="toolbar-part">
           <div class="build-toolbar-right">
+            <Button
+              v-tooltip.top="$t('caption.options')"
+              class="p-button-text p-button-sm button-discreet"
+              @click="toggleOptionsPanel"
+            >
+              <font-awesome-icon icon="cog" />
+            </Button>
+            <Button
+              v-tooltip.top="$t('caption.displayOptions')"
+              class="p-button-text p-button-sm button-discreet"
+              @click="toggleDisplayOptionsPanel"
+            >
+              <font-awesome-icon
+                icon="tv"
+              />
+            </Button>
+            <NotificationButton />
             <Button
               v-if="editing"
               class="p-button-danger toolbar-button"
@@ -227,39 +228,58 @@
     </div>
   </div>
 
-  <!-- Advanced panel -->
+  <!-- Options panel -->
   <OverlayPanel
-    ref="advancedPanel"
+    ref="optionsPanel"
     :dismissable="true"
   >
-    <div class="build-advanced-panel">
-      <div
-        :class="'build-advanced-panel-item' + (editing ? ' p-disabled' : '')"
-        @click="copy()"
-      >
-        <font-awesome-icon
-          icon="copy"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.copy') }}</span>
-      </div>
-      <div
-        :class="'build-advanced-panel-item' + (editing ? ' p-disabled' : '')"
-        @click="exportBuild()"
-      >
-        <font-awesome-icon
-          icon="file-export"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.export') }}</span>
-      </div>
-      <div class="build-advanced-panel-item">
+    <div class="build-options-panel">
+      <div class="build-options-panel-item">
         <LanguageSelector />
       </div>
       <div
-        class="build-advanced-panel-item build-merchant-filter"
+        class="build-options-panel-item build-merchant-filter"
       >
         <MerchantFilter />
+      </div>
+    </div>
+  </OverlayPanel>
+
+  <!-- View display options panel -->
+  <OverlayPanel
+    ref="displayOptionsPanel"
+    :dismissable="true"
+  >
+    <div class="build-options-panel">
+      <div
+        class="build-options-panel-item build-options-panel-item-with-hover"
+        @click="collapseAll()"
+      >
+        <font-awesome-icon
+          icon="minus-square"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.collapseAll') }}</span>
+      </div>
+      <div
+        class="build-options-panel-item build-options-panel-item-with-hover"
+        @click="expandWithItem()"
+      >
+        <font-awesome-icon
+          icon="search-plus"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.expandWithItem') }}</span>
+      </div>
+      <div
+        class="build-options-panel-item build-options-panel-item-with-hover"
+        @click="expandAll()"
+      >
+        <font-awesome-icon
+          icon="plus-square"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.expandAll') }}</span>
       </div>
     </div>
   </OverlayPanel>

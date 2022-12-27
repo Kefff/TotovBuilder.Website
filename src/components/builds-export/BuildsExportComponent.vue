@@ -24,7 +24,7 @@
         </Button>
         <Button
           v-if="buildsSummaries.length > 1"
-          class="p-button-text"
+          class="p-button-text button-discreet"
           @click="toggleSelection()"
         >
           <font-awesome-icon
@@ -35,7 +35,7 @@
           <span v-else>{{ $t('caption.selectAll') }}</span>
         </Button>
         <Button
-          class="p-button-text builds-export-cancel-button"
+          class="p-button-text builds-export-cancel-button button-discreet"
           @click="cancelExport()"
         >
           <font-awesome-icon

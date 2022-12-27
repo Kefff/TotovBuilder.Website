@@ -1,14 +1,14 @@
 <template>
   <div class="app-title">
     <h1>
-      <div class="app-title-part1">
-        TOTOV
-      </div>
       <img
         v-tooltip.bottom="$t('caption.approvedByPrapor')"
         :src="isSanta ? '/assets/santa_prapor_smiling.webp' : '/assets/prapor_smiling.webp'"
         class="app-title-prapor"
       >
+      <div class="app-title-part1">
+        TOTOV
+      </div>
       <div class="app-title-part2">
         BUILDER
       </div>

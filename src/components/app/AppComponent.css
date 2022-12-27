@@ -115,26 +115,17 @@ body {
 }
 
 .app-title-part1 {
-  padding-left: 4rem;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 1rem;
   text-align: right;
-  width: 18.75rem;
 }
 
 .app-title-part2 {
   color: var(--error-color);
-  margin-left: auto;
-  margin-right: auto;
-  width: 18.75rem;
+  margin-left: 1rem;
 }
 
 .app-title-prapor {
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  width: 7rem;
+  width: 5rem;
 }
 
 h1 {

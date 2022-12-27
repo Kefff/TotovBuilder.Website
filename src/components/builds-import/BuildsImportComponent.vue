@@ -42,7 +42,7 @@
         </Button>
         <Button
           v-if="readenBuildSummaries.length > 1"
-          class="p-button-text"
+          class="p-button-text button-discreet"
           @click="toggleSelection()"
         >
           <font-awesome-icon
@@ -53,7 +53,7 @@
           <span v-else>{{ $t('caption.selectAll') }}</span>
         </Button>
         <Button
-          class="p-button-text builds-import-cancel-button"
+          class="p-button-text builds-import-cancel-button button-discreet"
           @click="cancelImport()"
         >
           <font-awesome-icon

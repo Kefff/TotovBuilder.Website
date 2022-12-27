@@ -39,9 +39,9 @@ export default defineComponent({
     const buildsSummaries = ref<IBuildSummary[]>([])
     let builds: IBuild[] = []
 
-    const advancedPanel = ref()
+    const optionsPanel = ref()
 
-    const canExport = computed(() => builds.length !== 0)
+    const canExport = computed(() => buildsSummaries.value.length > 0)
     const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < b.lastUpdated))
 
     const selectedBuildSummary = computed({
@@ -151,7 +151,6 @@ export default defineComponent({
      */
     function showBuildsExportPopup() {
       if (canExport.value) {
-        toggleAdvancedPanel(undefined)
         isExporting.value = true
       }
     }
@@ -160,7 +159,6 @@ export default defineComponent({
      * Shows the build import popup.
      */
     function showBuildsImportPopup() {
-      toggleAdvancedPanel(undefined)
       isImporting.value = true
     }
 
@@ -168,12 +166,11 @@ export default defineComponent({
      * Toggles the advanced menu.
      * @param event - Event.
      */
-    function toggleAdvancedPanel(event: unknown) {
-      advancedPanel.value.toggle(event)
+    function toggleOptionsPanel(event: unknown) {
+      optionsPanel.value.toggle(event)
     }
 
     return {
-      advancedPanel,
       buildsSummaries,
       canExport,
       hasImported,
@@ -182,11 +179,12 @@ export default defineComponent({
       isLoading,
       openBuild,
       openNewBuild,
+      optionsPanel,
       selectedBuildSummary,
       showBuildsExportPopup,
       showBuildsImportPopup,
       StatsUtils,
-      toggleAdvancedPanel
+      toggleOptionsPanel
     }
   }
 })

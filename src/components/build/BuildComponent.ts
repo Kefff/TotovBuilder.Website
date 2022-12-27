@@ -56,7 +56,8 @@ export default defineComponent({
     const notExportedTooltip = computed(() => !summary.value.exported ? buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
     const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
 
-    const advancedPanel = ref()
+    const displayOptionsPanel = ref()
+    const optionsPanel = ref()
     const build = ref<IBuild>(buildComponentService.getBuild(route.params['id'] as string))
     const collapseStatuses = ref<boolean[]>([])
     const deleting = ref(false)
@@ -173,6 +174,8 @@ export default defineComponent({
      * Collapses all the inventory slots.
      */
     function collapseAll() {
+      toggleDisplayOptionsPanel(undefined)
+
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = true
       }
@@ -186,7 +189,7 @@ export default defineComponent({
         return
       }
 
-      toggleAdvancedPanel(undefined)
+      toggleOptionsPanel(undefined)
 
       build.value.id = ''
       build.value.name = ''
@@ -197,6 +200,8 @@ export default defineComponent({
      * Expands all the inventory slots.
      */
     function expandAll() {
+      toggleDisplayOptionsPanel(undefined)
+
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = false
       }
@@ -206,6 +211,8 @@ export default defineComponent({
      * Expands the inventory slots containing an item.
      */
     function expandWithItem() {
+      toggleDisplayOptionsPanel(undefined)
+
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         if (build.value.inventorySlots[i].items.filter(i => i != null).length > 0) {
           collapseStatuses.value[i] = false
@@ -221,7 +228,7 @@ export default defineComponent({
         return
       }
 
-      toggleAdvancedPanel(undefined)
+      toggleOptionsPanel(undefined)
 
       if (isNewBuild.value) {
         return
@@ -388,15 +395,22 @@ export default defineComponent({
     }
 
     /**
-     * Toggles the advanced panel.
+     * Toggles the options panel.
      * @param event - Event.
      */
-    function toggleAdvancedPanel(event: unknown) {
-      advancedPanel.value.toggle(event)
+    function toggleOptionsPanel(event: unknown) {
+      optionsPanel.value.toggle(event)
+    }
+
+    /**
+     * Toggles the display options panel.
+     * @param event - Event.
+     */
+    function toggleDisplayOptionsPanel(event: unknown) {
+      displayOptionsPanel.value.toggle(event)
     }
 
     return {
-      advancedPanel,
       build,
       cancelDelete,
       cancelEdit,
@@ -405,6 +419,7 @@ export default defineComponent({
       confirmDelete,
       copy,
       deleting,
+      displayOptionsPanel,
       editing,
       expandAll,
       expandWithItem,
@@ -415,6 +430,7 @@ export default defineComponent({
       isEmpty,
       isInitializing,
       notExportedTooltip,
+      optionsPanel,
       path,
       remove,
       save,
@@ -422,7 +438,8 @@ export default defineComponent({
       startEdit,
       StatsUtils,
       summary,
-      toggleAdvancedPanel
+      toggleDisplayOptionsPanel,
+      toggleOptionsPanel
     }
   }
 })
