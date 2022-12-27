@@ -17,6 +17,7 @@
           <Price
             :price="price"
             :show-merchant-icon="false"
+            :show-barters="false"
             :show-tooltip="false"
           />
         </div>

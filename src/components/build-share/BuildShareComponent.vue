@@ -15,6 +15,7 @@
     :header="$t('message.shareBuild', { name: build.name })"
     :modal="true"
     :base-z-index="2"
+    :draggable="false"
     @hide="closeSharingDialog()"
   >
     <div>

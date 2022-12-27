@@ -20,6 +20,11 @@ export default defineComponent({
       type: Object as PropType<IPrice>,
       required: true
     },
+    showBarters: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
     showMerchantIcon: {
       type: Boolean,
       required: false,
@@ -55,7 +60,9 @@ export default defineComponent({
     const priceDetailPanel = ref()
 
     const canShowDetails = computed(() => {
-      return props.price.currencyName !== mainCurrency.value?.name && props.price.merchant !== ''
+      return showPriceInMainCurrency.value
+        || props.price.quest != null
+        || (isBarter.value && props.showBarters)
     })
     const isBarter = computed(() => props.price.currencyName === 'barter')
     const merchantTooltip = computed(() => props.price.merchant !== ''

@@ -292,6 +292,7 @@
     :header="$t('caption.confirmation')"
     :modal="true"
     :base-z-index="2"
+    :draggable="false"
   >
     <div>
       <font-awesome-icon

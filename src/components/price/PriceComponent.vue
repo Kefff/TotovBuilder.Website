@@ -4,6 +4,7 @@
     class="price"
   >
     <div
+      v-if="price.valueInMainCurrency > 0"
       v-tooltip.top="priceValueTooltip"
       :class="'price-value' + (canShowDetails ? ' price-value-with-details' : '')"
       @click="(e) => togglePriceDetails(e)"
@@ -46,6 +47,7 @@
     ref="priceDetailPanel"
     :dismissable="true"
     :style="'max-width: ' + priceDetailPanelWidth + 'rem'"
+    :base-z-index="2"
   >
     <div class="price-details">
       <div
@@ -80,7 +82,7 @@
         </a>
       </div>
       <div
-        v-if="isBarter"
+        v-if="isBarter && showBarters"
         class="price-details-barter"
       >
         <div class="price-details-barter-title">

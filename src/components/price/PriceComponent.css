@@ -7,7 +7,6 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: end;
-  padding: 0.25rem;
   white-space: nowrap;
 }
 
