@@ -106,6 +106,7 @@ export default defineComponent({
 
     watch(() => props.acceptedItems, () => onFilterOptions(optionsFilter.value))
     watch(() => props.modelValue?.itemId, () => initializeSelectedItem())
+    watch(() => props.modelValue?.quantity, () => quantity.value = props.modelValue?.quantity ?? 0)
 
     onMounted(() => {
       setOptions(optionsFilter.value, optionsSortingData.value)
