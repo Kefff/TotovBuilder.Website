@@ -4,6 +4,7 @@ import Changelog from '../changelog/ChangelogComponent.vue'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import Loading from '../loading/LoadingComponent.vue'
+import LanguageUtils from '../../utils/LanguageUtils'
 
 export default defineComponent({
   components: {
@@ -53,7 +54,14 @@ export default defineComponent({
       githubAddress.value = websiteConfigurationService.configuration.githubUrl
       reportBugAddress.value = websiteConfigurationService.configuration.bugReportUrl
 
+      setLanguage()
+
       isLoading.value = false
+    }
+
+    function setLanguage() {
+      const language = localStorage.getItem(Services.get(WebsiteConfigurationService).configuration.languageStorageKey) ?? 'en'
+      LanguageUtils.setLanguage(language)
     }
 
     return {
