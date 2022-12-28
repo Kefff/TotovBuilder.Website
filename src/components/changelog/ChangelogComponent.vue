@@ -22,6 +22,9 @@
         />
       </div>
     </div>
+    <div class="changelog-notification-element">
+      <span class="changelog-notification-refresh-message">{{ $t('message.newVersionRefresh') }}</span>
+    </div>
   </div>
 
   <Dialog
@@ -29,6 +32,7 @@
     :closable="true"
     :header="$t('caption.changelog')"
     :modal="true"
+    :draggable="false"
     @hide="closeChangelog()"
   >
     <div class="changelog">

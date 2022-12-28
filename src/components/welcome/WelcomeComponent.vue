@@ -17,13 +17,13 @@
           {{ $t('message.welcomeWarning1') }}
         </h3>
         <p class="welcome-warning-text">
-          {{ $t('message.welcomeWarning2') }} <span><font-awesome-icon icon="cog" /> {{ $t('caption.export') }}</span> {{ $t('message.welcomeWarning3') }}
+          {{ $t('message.welcomeWarning2') }} <span><font-awesome-icon icon="file-export" /> {{ $t('caption.export') }}</span> {{ $t('message.welcomeWarning3') }}
         </p>
         <p class="welcome-warning-lost">
           {{ $t('message.welcomeWarning4') }}
         </p>
         <p class="welcome-warning-text">
-          {{ $t('message.welcomeWarning5') }} <span><font-awesome-icon icon="cog" /> {{ $t('caption.import') }}</span>  {{ $t('message.welcomeWarning6') }}
+          {{ $t('message.welcomeWarning5') }} <span><font-awesome-icon icon="file-import" /> {{ $t('caption.import') }}</span>  {{ $t('message.welcomeWarning6') }}
         </p>
       </div>
       <div class="welcome-actions">

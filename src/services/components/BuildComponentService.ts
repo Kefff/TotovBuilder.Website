@@ -13,7 +13,7 @@ export class BuildComponentService {
   /**
    * Deletes build
    * @param router - Router used to redirect to the list of builds after the build is deleted.
-   * @param id - ID of the build to delete.
+   * @param build - Build to delete.
    */
   public deleteBuild(router: Router, build: IBuild): void {
     const buildService = Services.get(BuildService)
@@ -49,7 +49,7 @@ export class BuildComponentService {
   public getBuild(id: string | undefined): IBuild {
     const buildService = Services.get(BuildService)
 
-    if (id === undefined) {
+    if (id == null) {
       return buildService.create()
     }
 

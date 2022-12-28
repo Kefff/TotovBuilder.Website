@@ -1,16 +1,12 @@
 <template>
   <div>
     <Button
-      v-if="!editing"
-      class="toolbar-button"
+      v-tooltip.top="$t('caption.share')"
+      :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
       @click="share()"
     >
-      <font-awesome-icon
-        icon="share-alt"
-        class="icon-before-text"
-      />
-      <span>{{ $t('caption.share') }}</span>
-    </Button>
+      <font-awesome-icon icon="share-alt" />
+    </button>
   </div>
 
   <Dialog
@@ -18,6 +14,7 @@
     :closable="true"
     :header="$t('message.shareBuild', { name: build.name })"
     :modal="true"
+    :draggable="false"
     @hide="closeSharingDialog()"
   >
     <div>

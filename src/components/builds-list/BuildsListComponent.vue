@@ -46,27 +46,6 @@
       </template>
     </Column>
     <Column
-      field="ergonomics"
-      :sortable="true"
-    >
-      <template #header>
-        <div class="build-list-column">
-          {{ $t('caption.ergonomics') }}
-        </div>
-      </template>
-      <template #body="{data}">
-        <div class="build-list-column">
-          <div v-if="data.ergonomics != null">
-            <span>{{ data.ergonomics }}</span>
-            <font-awesome-icon
-              icon="hand-paper"
-              class="icon-after-text"
-            />
-          </div>
-        </div>
-      </template>
-    </Column>
-    <Column
       field="verticalRecoil"
       :sortable="true"
     >
@@ -107,6 +86,27 @@
             icon="arrows-alt-h"
             class="icon-after-text"
           />
+        </div>
+      </template>
+    </Column>
+    <Column
+      field="ergonomics"
+      :sortable="true"
+    >
+      <template #header>
+        <div class="build-list-column">
+          {{ $t('caption.ergonomics') }}
+        </div>
+      </template>
+      <template #body="{data}">
+        <div class="build-list-column">
+          <div v-if="data.ergonomics != null">
+            <span>{{ data.ergonomics }}</span>
+            <font-awesome-icon
+              icon="hand-paper"
+              class="icon-after-text"
+            />
+          </div>
         </div>
       </template>
     </Column>

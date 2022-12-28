@@ -19,7 +19,7 @@
       <div class="stats-value">
         <Price
           :price="price"
-          :show-tooltip="true"
+          :use-merchant-filter="false"
         />
       </div>
     </div>
@@ -39,7 +39,7 @@
       <div class="stats-value">
         <Price
           :price="prices[0]"
-          :show-tooltip="true"
+          :use-merchant-filter="false"
         />
       </div>
     </div>

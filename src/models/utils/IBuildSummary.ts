@@ -1,14 +1,10 @@
-import { IAmmunitionCount } from './IAmmunitionCount'
+import { IShoppingListItem } from '../build/IShoppingListItem'
 import { IInventoryPrice } from './IInventoryPrice'
 
 /**
  * Represents a summary of a build.
  */
 export interface IBuildSummary {
-  /**
-   * Ammunition counts.
-   */
-  ammunitionCounts: IAmmunitionCount[]
   /**
    * Ergonomics.
    */
@@ -53,6 +49,11 @@ export interface IBuildSummary {
    * Price.
    */
   price: IInventoryPrice
+
+  /**
+   * List of all the items, their content and barter items to buy to make the build.
+   */
+  shoppingList: IShoppingListItem[]
 
   /**
    * Vertical recoil.

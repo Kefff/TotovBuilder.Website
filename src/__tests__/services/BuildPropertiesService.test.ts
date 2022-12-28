@@ -1,7 +1,5 @@
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { IAmmunitionCount } from '../../models/utils/IAmmunitionCount'
-import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import Result from '../../utils/Result'
@@ -13,13 +11,10 @@ import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { InventorySlotService } from '../../services/InventorySlotService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
-import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import { instance, mock } from 'ts-mockito'
-import { IWebsiteConfiguration } from '../../models/configuration/IWebsiteConfiguration'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 
-const build1: IBuild = {
+export const build1: IBuild = {
   id: 'build_1',
   name: 'Build 1',
   inventorySlots: [
@@ -325,7 +320,7 @@ const build1: IBuild = {
   lastUpdated: new Date(1)
 }
 
-const build2: IBuild = {
+export const build2: IBuild = {
   id: 'build_2',
   name: 'Build 2',
   inventorySlots: [
@@ -1116,71 +1111,6 @@ describe('checkCanAddVest()', () => {
   )
 })
 
-describe('getAmmunitionCounts()', () => {
-  it.each([
-    [
-      build1,
-      [
-        {
-          name: '5.45x39mm BP gs',
-          id: '56dfef82d2720bbd668b4567',
-          count: 156
-        }
-      ] as IAmmunitionCount[]
-    ]
-  ])(
-    'should get the ammunition counts of a build', async (build: IBuild, expected: IAmmunitionCount[]) => {
-      // Arrange
-      useItemServiceMock()
-      Services.configure(InventoryItemService)
-      Services.configure(ItemPropertiesService)
-      const service = new BuildPropertiesService()
-
-      // Act
-      const ammunitionCounts = await service.getAmmunitionCounts(build)
-
-      // Assert
-      expect(ammunitionCounts.success).toBe(true)
-      expect(ammunitionCounts.value[0].id).toBe(expected[0].id)
-      expect(ammunitionCounts.value[0].count).toBe(expected[0].count)
-    }
-  )
-
-  it('should fail if an item cannot be found', async () => {
-    // Arrange
-    useItemServiceMock()
-    Services.configure(InventoryItemService)
-    Services.configure(ItemPropertiesService)
-    const service = new BuildPropertiesService()
-
-    // Act
-    const ammunitionCounts = await service.getAmmunitionCounts({
-      name: 'Build 1',
-      id: 'build1',
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: 'invalid',
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'onBack'
-        }
-      ],
-      lastExported: undefined,
-      lastUpdated: new Date(1)
-    })
-
-    // Assert
-    expect(ammunitionCounts.success).toBe(false)
-    expect(ammunitionCounts.failureMessage).toBe('Item "invalid" not found.')
-  })
-})
-
 describe('getErgonomics()', () => {
   it.each([
     [build1, 37.5],
@@ -1240,7 +1170,7 @@ describe('getErgonomics()', () => {
       const ergonomics = await service.getErgonomics(build)
 
       // Assert
-      if (expected === undefined) {
+      if (expected == null) {
         expect(ergonomics).toBeUndefined()
       } else {
         expect(ergonomics?.success).toBe(true)
@@ -1373,8 +1303,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: null,
-          value: 479443,
-          valueInMainCurrency: 479443
+          value: 479365,
+          valueInMainCurrency: 479365
         },
         pricesWithContent: [
           {
@@ -1384,8 +1314,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: null,
-            value: 479443,
-            valueInMainCurrency: 479443
+            value: 479365,
+            valueInMainCurrency: 479365
           }
         ],
         unitPrice: {
@@ -1422,8 +1352,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: null,
-          value: 148950,
-          valueInMainCurrency: 148950
+          value: 138648,
+          valueInMainCurrency: 138648
         },
         pricesWithContent: [
           {
@@ -1433,8 +1363,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: null,
-            value: 121398,
-            valueInMainCurrency: 121398
+            value: 111096,
+            valueInMainCurrency: 111096
           },
           {
             barterItems: [],
@@ -1466,14 +1396,10 @@ describe('getPrice()', () => {
       // Arrange
       useTarkovValuesServiceMock()
       useItemServiceMock()
+      useWebsiteConfigurationServiceMock()
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
       Services.configure(MerchantFilterService)
-
-      const websiteConfigurationService = new WebsiteConfigurationService()
-      websiteConfigurationService.configuration = instance(mock<IWebsiteConfiguration>())
-      websiteConfigurationService.configuration.merchantFilterStorageKey = 'merchant_filter'
-      Services.configure(WebsiteConfigurationService, undefined, websiteConfigurationService)
 
       const service = new BuildPropertiesService()
 
@@ -1700,7 +1626,7 @@ describe('getRecoil()', () => {
       const recoil = await service.getRecoil(build)
 
       // Assert
-      if (expected === undefined) {
+      if (expected == null) {
         expect(recoil).toBeUndefined()
       } else {
         expect(recoil?.success).toBe(true)
@@ -1744,248 +1670,6 @@ describe('getRecoil()', () => {
     // Assert
     expect(recoil?.success).toBe(false)
     expect(recoil?.failureMessage).toBe('Item "invalid" not found.')
-  })
-})
-
-describe('getSummary()', () => {
-  it.each([
-    [
-      build1,
-      {
-        ammunitionCounts: [
-          {
-            name: '5.45x39mm BP gs',
-            count: 156,
-            id: '56dfef82d2720bbd668b4567'
-          }
-        ],
-        ergonomics: 28.1,
-        ergonomicsPercentageModifier: -0.25,
-        exported: false,
-        horizontalRecoil: 200,
-        id: 'build_1',
-        name: 'Build 1',
-        lastExported: undefined,
-        lastUpdated: new Date(1),
-        price: {
-          missingPrice: false,
-          price: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: null,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          priceWithContentInMainCurrency: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: null,
-            value: 479443,
-            valueInMainCurrency: 479443
-          },
-          pricesWithContent: [
-            {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '',
-              merchant: '',
-              merchantLevel: 0,
-              quest: null,
-              value: 479443,
-              valueInMainCurrency: 479443
-            }
-          ],
-          unitPrice: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: null,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-        },
-        verticalRecoil: 71,
-        weight: 24.042
-      } as IBuildSummary
-    ],
-    [
-      build2,
-      {
-        ammunitionCounts: [
-          {
-            name: '9x19mm Green Tracer',
-            count: 18,
-            id: '5c3df7d588a4501f290594e5'
-          }
-        ],
-        ergonomics: 54,
-        ergonomicsPercentageModifier: 0,
-        exported: false,
-        horizontalRecoil: 234,
-        id: 'build_2',
-        name: 'Build 2',
-        lastExported: undefined,
-        lastUpdated: new Date(1),
-        price: {
-          missingPrice: false,
-          price: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: null,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          priceWithContentInMainCurrency: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: null,
-            value: 148950,
-            valueInMainCurrency: 148950
-          },
-          pricesWithContent: [
-            {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '',
-              merchant: '',
-              merchantLevel: 0,
-              quest: null,
-              value: 121398,
-              valueInMainCurrency: 121398
-            },
-            {
-              barterItems: [],
-              currencyName: 'USD',
-              itemId: '',
-              merchant: '',
-              merchantLevel: 0,
-              quest: null,
-              value: 246,
-              valueInMainCurrency: 27552
-            }
-          ],
-          unitPrice: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: null,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-        },
-        verticalRecoil: 397,
-        weight: 3.762
-      } as IBuildSummary
-    ],
-    [
-      {
-        id: 'emptyBuild',
-        inventorySlots: [],
-        lastExported: new Date(2),
-        lastUpdated: new Date(1),
-        name: 'Empty build'
-      } as IBuild,
-      {
-        ammunitionCounts: [],
-        ergonomics: undefined,
-        ergonomicsPercentageModifier: 0,
-        exported: true,
-        horizontalRecoil: undefined,
-        id: 'emptyBuild',
-        name: 'Empty build',
-        lastExported: new Date(2),
-        lastUpdated: new Date(1),
-        price: {
-          missingPrice: false,
-          price: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: null,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          priceWithContentInMainCurrency: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: null,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          pricesWithContent: [],
-          unitPrice: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: null,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-        },
-        verticalRecoil: undefined,
-        weight: 0
-      } as IBuildSummary
-    ]
-  ])(
-    'should get the summary of a build',
-    async (build: IBuild, expected: IBuildSummary) => {
-      // Arrange
-      useItemServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventoryItemService)
-      Services.configure(ItemPropertiesService)
-      Services.configure(MerchantFilterService)
-
-      const service = new BuildPropertiesService()
-
-      // Act
-      const summary = await service.getSummary(build)
-
-      // Assert
-      expect(summary?.success).toBe(true)
-      expect(summary?.value).toStrictEqual(expected)
-    }
-  )
-
-  it('should fail if the main currency cannot be found', async () => {
-    // Arrange
-    useItemServiceMock(false)
-    const service = new BuildPropertiesService()
-
-    // Act
-    const summary = await service.getSummary(build1)
-
-    // Assert
-    expect(summary.success).toBe(false)
-    expect(summary.failureMessage).toBe('Main currency not found.')
   })
 })
 

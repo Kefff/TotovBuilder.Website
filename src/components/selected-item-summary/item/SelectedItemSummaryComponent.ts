@@ -9,12 +9,10 @@ import { MerchantFilterService } from '../../../services/MerchantFilterService'
 import { NotificationService, NotificationType } from '../../../services/NotificationService'
 import Services from '../../../services/repository/Services'
 import Result from '../../../utils/Result'
-import ItemIcon from '../../item-icon/ItemIconComponent.vue'
 import Price from '../../price/PriceComponent.vue'
 
 export default defineComponent({
   components: {
-    ItemIcon,
     Price
   },
   props: {
@@ -41,7 +39,7 @@ export default defineComponent({
     const price = ref<IInventoryPrice>({
       missingPrice: false,
       price: {
-        barterItems: [], // TODO : Handling barters
+        barterItems: [],
         currencyName: 'RUB',
         itemId: '',
         merchant: '',
@@ -52,7 +50,7 @@ export default defineComponent({
       },
       pricesWithContent: [],
       priceWithContentInMainCurrency: {
-        barterItems: [], // TODO : Handling barters
+        barterItems: [],
         currencyName: 'RUB',
         itemId: '',
         merchant: '',
@@ -62,7 +60,7 @@ export default defineComponent({
         valueInMainCurrency: 0
       },
       unitPrice: {
-        barterItems: [], // TODO : Handling barters
+        barterItems: [],
         currencyName: 'RUB',
         itemId: '',
         merchant: '',

@@ -1,0 +1,41 @@
+@import '../../assets/css/button.css';
+
+.shopping-list-item {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  margin-bottom: 0.25rem;
+}
+
+.shopping-list-item :last-child {
+  margin-bottom: 0;
+}
+
+.shopping-list-item-icon {
+  display: flex;
+  justify-content: center;
+  margin-left: 0.25rem;
+  width: 4.5rem;
+}
+
+.shopping-list-item-name {
+  margin-left: 0.25rem;
+  margin-right: auto;
+  max-width: 16.5rem;
+}
+
+.shopping-list-item-price {
+  justify-content: flex-end;
+  width: 10rem;
+}
+
+.shopping-list-item-price-per-unit {
+  font-size: 0.75rem;
+  margin-right: 2.7rem;
+}
+
+.shopping-list-item-quantity {
+  text-align: right;
+  width: 4rem;
+}

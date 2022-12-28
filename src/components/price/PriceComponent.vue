@@ -1,30 +1,53 @@
 <template>
   <div
-    v-tooltip.top="tooltip"
-    :class="'price' + (canShowDetails ? ' price-with-details' : '')"
-    @click="(e) => togglePriceDetails(e)"
+    v-if="initialized"
+    class="price"
   >
-    <div class="price-value">
-      <div v-if="price.currencyName !== 'barter'">
-        <!-- TODO : Handling barters - WORKAROUND WAITING FOR BARTERS TO BE HANDLED. REMOVE <div v-if="price.currencyName !== 'barter'"> WHEN IT IS DONE -->
-        <span>{{ price.value.toLocaleString() }}</span>
-        <font-awesome-icon
-          v-if="currency != null"
-          :icon="currency?.iconName"
-          :class="'currency-' + currency?.name"
-        />
-      </div>
-      <div
-        v-if="showMerchantIcon"
-        class="price-merchant-icon"
-      >
-        <img :src="'/assets/' + price.merchant + '.webp'">
-      </div>
+    <div
+      v-if="price.valueInMainCurrency > 0"
+      v-tooltip.top="priceValueTooltip"
+      :class="'price-value' + (canShowDetails ? ' price-value-with-details' : '')"
+      @click="(e) => togglePriceDetails(e)"
+    >
+      <span>{{ displayedPrice }}</span>
+      <font-awesome-icon
+        v-if="displayedCurrency != null"
+        :icon="displayedCurrency.iconName"
+        :class="'currency-' + displayedCurrency.name"
+      />
     </div>
     <div
-      v-show="showDetails"
-      class="price-details"
+      v-if="canShowMerchantIcon"
+      v-tooltip.top="merchantTooltip"
+      :class="'price-merchant-icon' + (canShowDetails ? ' price-value-with-details' : '')"
+      @click="(e) => togglePriceDetails(e)"
     >
+      <img :src="'/assets/' + price.merchant + '.webp'">
+      <div
+        v-if="price.merchantLevel !== 0"
+        class="price-merchant-level"
+      >
+        <div>
+          {{ price.merchantLevel }}
+        </div>
+      </div>
+      <div
+        v-if="isBarter"
+        class="price-merchant-barter-icon"
+      >
+        <div>
+          <font-awesome-icon :icon="currency?.iconName" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Price details -->
+  <OverlayPanel
+    ref="priceDetailPanel"
+    :dismissable="true"
+  >
+    <div class="price-details">
       <div
         v-if="showPriceInMainCurrency"
         class="price-details-main-currency"
@@ -38,34 +61,74 @@
           />
         </div>
       </div>
-      <div v-if="price.merchant !== ''">
-        <div>
-          {{ $t('caption.merchant_' + price.merchant) }}
-        </div>
-        <div
-          v-if="price.merchantLevel !== 0"
-          class="price-details-merchant-level"
-        >
-          {{ $t('caption.level').toLocaleLowerCase() }} {{ price.merchantLevel }}
-        </div>
-      </div>
-      <div v-if="price.quest != null">
+      <div
+        v-if="price.quest != null"
+        class="price-details-quest"
+      >
         <font-awesome-icon
           icon="lock"
           class="icon-before-text price-details-quest-icon"
         />
-        <span>{{ $t('caption.quest') }} : </span>
+        <span class="price-details-quest">{{ $t('caption.quest') }} : </span>
         <a
           :href="price.quest.wikiLink"
           target="_blank"
-          class="link price-details-quest-link"
+          class="link"
           @click="(e) => e.stopPropagation()"
         >
           {{ price.quest.name }}
         </a>
       </div>
+      <div
+        v-if="isBarter"
+        class="price-details-barter"
+      >
+        <div class="price-details-barter-title">
+          <font-awesome-icon
+            :icon="currency?.iconName"
+            class="icon-before-text"
+          />
+          <span>{{ $t('caption.barter') }} :</span>
+        </div>
+        <div
+          v-for="(barterItem, index) of price.barterItems"
+          :key="barterItem.itemId"
+          class="price-details-barter-item"
+        >
+          <div class="price-details-barter-item-quantity">
+            <span v-if="barterItem.quantity > 1">{{ barterItem.quantity }} x</span>
+          </div>
+          <div class="price-details-barter-item-icon">
+            <div>
+              <ItemIcon :item="barterItems[index]" />
+            </div>
+          </div>
+          <div class="price-details-barter-item-name">
+            {{ barterItems[index].name }}
+          </div>
+          <div class="price-details-barter-item-price">
+            <div>
+              <Price :price="barterItemPrices[index].price" />
+              <div>
+                <div
+                  v-if="barterItem.quantity > 1"
+                  class="price-details-barter-item-price-per-unit"
+                >
+                  <Price
+                    :price="barterItemPrices[index].unitPrice"
+                    :show-merchant-icon="false"
+                    :show-details="false"
+                    :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
+                  />
+                  <div />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </OverlayPanel>
 </template>
 
 <script lang="ts" src="./PriceComponent.ts" />

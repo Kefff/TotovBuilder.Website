@@ -11,7 +11,6 @@ export interface IInventoryItem {
 
   /**
    * Indicates whether the price of the item is used or not.
-   * When undefined, the price is taken in consideration.
    */
   ignorePrice: boolean
 

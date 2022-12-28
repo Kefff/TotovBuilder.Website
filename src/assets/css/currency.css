@@ -1,10 +1,10 @@
-.currency-USD {
-  color: rgb(131, 205, 124);
+.currency-EUR {
+  color: rgb(123, 131, 198);
   margin-left: 0.25rem;
 }
 
-.currency-EUR {
-  color: rgb(123, 131, 198);
+.currency-USD {
+  color: rgb(131, 205, 124);
   margin-left: 0.25rem;
 }
 

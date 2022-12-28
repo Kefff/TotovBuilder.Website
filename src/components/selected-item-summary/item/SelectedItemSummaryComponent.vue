@@ -12,7 +12,7 @@
             <font-awesome-icon icon="minus" />
           </div>
           <Price
-            v-if="preset === undefined && price.price.valueInMainCurrency > 0"
+            v-if="preset == null && price.price.valueInMainCurrency > 0"
             :price="price.price"
           />
           <div
@@ -34,13 +34,14 @@
           </div>
         </div>
         <div class="selected-item-summary-right-unit-price">
-          <Price
-            v-if="preset === undefined && price.unitPrice.valueInMainCurrency !== price.price.valueInMainCurrency"
-            :price="price.unitPrice"
-            :show-merchant-icon="false"
-            :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
-            class="selected-item-summary-price-per-unit"
-          />
+          <div class="selected-item-summary-price-per-unit">
+            <Price
+              v-if="preset == null && price.unitPrice.valueInMainCurrency !== price.price.valueInMainCurrency"
+              :price="price.unitPrice"
+              :show-merchant-icon="false"
+              :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
+            />
+          </div>
           <div
             v-if="weight.unitWeight !== weight.weight"
             v-tooltip.top="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'"

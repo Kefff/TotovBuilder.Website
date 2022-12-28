@@ -68,7 +68,7 @@ export class ItemService {
   public async getCurrency(name: string): Promise<Result<ICurrency>> {
     const currency = Services.get(TarkovValuesService).values.currencies.find(c => c.name === name)
 
-    if (currency === undefined) {
+    if (currency == null) {
       return Result.fail(FailureType.error, 'ItemService.getCurrency()', i18n.t('message.currencyNotFound', { currency: name }))
     }
 
@@ -95,7 +95,7 @@ export class ItemService {
 
     const item = this.items.find(i => i.id === id)
 
-    if (item === undefined) {
+    if (item == null) {
       return Result.fail(
         FailureType.error,
         'ItemService.getItem()',
@@ -130,7 +130,7 @@ export class ItemService {
   public async getMainCurrency(): Promise<Result<ICurrency>> {
     const currency = Services.get(TarkovValuesService).values.currencies.find(c => c.mainCurrency)
 
-    if (currency === undefined) {
+    if (currency == null) {
       return Result.fail(FailureType.error, 'ItemService.getMainCurrency()', i18n.t('message.mainCurrencyNotFound'))
     }
 
@@ -289,7 +289,7 @@ export class ItemService {
         const currencyItem = this.items.find(i => i.id === currency.itemId)
 
         if (currencyItem != null) {
-          currency.value = currencyItem.prices[0].value
+          currency.value = currencyItem.prices[0]?.value ?? 0
         }
       }
     }
@@ -336,7 +336,7 @@ export class ItemService {
     const tarkovValuesService = Services.get(TarkovValuesService)
 
     for (const item of this.items) {
-      for (const price of item.prices) {
+      for (const price of item.prices.filter(p => p.currencyName !== 'barter')) {
         const currency = tarkovValuesService.values.currencies.find(c => c.name === price.currencyName)
 
         /* istanbul ignore else */

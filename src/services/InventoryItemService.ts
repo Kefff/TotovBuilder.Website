@@ -11,8 +11,7 @@ import { IArmor } from '../models/item/IArmor'
 import { IRecoilPercentageModifier } from '../models/utils/IRecoilPercentageModifier'
 import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
 import { IRecoil } from '../models/utils/IRecoil'
-import { IAmmunitionCount } from '../models/utils/IAmmunitionCount'
-import Result, { FailureType } from '../utils/Result'
+import Result from '../utils/Result'
 import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { ItemService } from './ItemService'
 import { IAmmunition } from '../models/item/IAmmunition'
@@ -23,6 +22,7 @@ import { PathUtils } from '../utils/PathUtils'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import { round } from 'round-ts'
 import { TinyEmitter } from 'tiny-emitter'
+import { IShoppingListItem } from '../models/build/IShoppingListItem'
 
 /**
  * Represents a service responsible for managing inventory items.
@@ -39,74 +39,6 @@ export class InventoryItemService {
   public emitter = new TinyEmitter()
 
   /**
-   * Gets the ammunition counts of an item including its content and mods.
-   * @param inventoryItem - Inventory item.
-   * @returns Ammunition counts.
-   */
-  public async getAmmunitionCounts(inventoryItem: IInventoryItem): Promise<Result<IAmmunitionCount[]>> {
-    const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
-
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult, FailureType.error)
-    }
-
-    const ammunitionCounts: IAmmunitionCount[] = []
-
-    if (Services.get(ItemPropertiesService).isAmmunition(itemResult.value)) {
-      const ammunition = itemResult.value as IAmmunition
-      ammunitionCounts.push({
-        id: ammunition.id,
-        count: inventoryItem.quantity,
-        name: ammunition.name
-      })
-    }
-
-    // Getting ammunitions counts for the content of the item
-    for (const contentItem of inventoryItem.content) {
-      const contentItemAmmunitionCountsResult = await this.getAmmunitionCounts(contentItem)
-
-      if (!contentItemAmmunitionCountsResult.success) {
-        return Result.failFrom(contentItemAmmunitionCountsResult, FailureType.error)
-      }
-
-      for (const contentItemAmmunitionCount of contentItemAmmunitionCountsResult.value) {
-        const index = ammunitionCounts.findIndex((ac) => ac.id === contentItemAmmunitionCount.id)
-
-        if (index >= 0) {
-          ammunitionCounts[index].count += contentItemAmmunitionCount.count
-        } else {
-          ammunitionCounts.push(contentItemAmmunitionCount)
-        }
-      }
-    }
-
-    // Getting ammunitions counts for the mods of the item
-    for (const modSlot of inventoryItem.modSlots) {
-      if (modSlot.item === undefined) {
-        continue
-      }
-
-      const modAmmunitionCountsResult = await this.getAmmunitionCounts(modSlot.item)
-
-      if (!modAmmunitionCountsResult.success) {
-        return Result.failFrom(modAmmunitionCountsResult, FailureType.error)
-      }
-
-      for (const modAmmunitionCount of modAmmunitionCountsResult.value) {
-        const index = ammunitionCounts.findIndex((ac) => ac.id === modAmmunitionCount.id)
-
-        if (index >= 0) {
-          ammunitionCounts[index].count += modAmmunitionCount.count
-        } else {
-          ammunitionCounts.push(modAmmunitionCount)
-        }
-      }
-    }
-
-    return Result.ok(ammunitionCounts)
-  }
-
-  /**
    * Gets the ergonomics of an item including or not its mods.
    * @param inventoryItem - Inventory item.
    * @returns Ergonomics.
@@ -115,7 +47,7 @@ export class InventoryItemService {
     const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
     if (!itemResult.success) {
-      return Result.failFrom(itemResult, FailureType.error)
+      return Result.failFrom(itemResult)
     }
 
     const itemPropertiesService = Services.get(ItemPropertiesService)
@@ -130,14 +62,14 @@ export class InventoryItemService {
     let ergonomicsWithMods = ergonomics
 
     for (const modSlot of inventoryItem.modSlots) {
-      if (modSlot.item === undefined) {
+      if (modSlot.item == null) {
         continue
       }
 
       const modErgonomicsResult = await this.getErgonomics(modSlot.item)
 
       if (!modErgonomicsResult.success) {
-        return Result.failFrom(modErgonomicsResult, FailureType.error)
+        return Result.failFrom(modErgonomicsResult)
       }
 
       ergonomicsWithMods += modErgonomicsResult.value.ergonomicsWithMods
@@ -158,7 +90,7 @@ export class InventoryItemService {
     const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
     if (!itemResult.success) {
-      return Result.failFrom(itemResult, FailureType.error)
+      return Result.failFrom(itemResult)
     }
 
     if (!Services.get(ItemPropertiesService).isArmor(itemResult.value)) {
@@ -172,7 +104,7 @@ export class InventoryItemService {
     let ergonomicsPercentageModifierWithContent = ergonomicsPercentageModifier
 
     for (const modSlot of inventoryItem.modSlots) {
-      if (modSlot.item === undefined) {
+      if (modSlot.item == null) {
         continue
       }
 
@@ -181,10 +113,7 @@ export class InventoryItemService {
       )
 
       if (!modErgonomicsPercentageModifierResult.success) {
-        return Result.failFrom(
-          modErgonomicsPercentageModifierResult,
-          FailureType.error
-        )
+        return Result.failFrom(modErgonomicsPercentageModifierResult)
       }
 
       ergonomicsPercentageModifierWithContent += modErgonomicsPercentageModifierResult.value.ergonomicsPercentageModifierWithContent
@@ -197,19 +126,52 @@ export class InventoryItemService {
   }
 
   /**
+   * Gets the preset mod slot the inventory item is a part of.
+   * @param itemId - Item ID.
+   * @param path - Mod slot path indicating the inventory object position within a parent item.
+   * @returns Preset mod slot if the inventory item is in a preset; otherwise undefined.
+   */
+  public async getPresetModSlotContainingItem(itemId: string, path: string): Promise<IInventoryModSlot | undefined> {
+    const pathArray = path.split('/')
+
+    // Getting the last item of the path that appears before mods.
+    // We should never have the case of a mod that have items in its content that have mods.
+    const firstModIndex = pathArray.findIndex(p => p.startsWith(PathUtils.modSlotPrefix))
+
+    if (firstModIndex < 0) {
+      return undefined
+    }
+
+    const presetId = pathArray[firstModIndex - 1].replace(PathUtils.itemPrefix, '')
+    const preset = await Services.get(ItemService).getPreset(presetId)
+
+    if (preset == null) {
+      return undefined
+    }
+
+    const pathModSlotNames = pathArray.filter(p => p.startsWith(PathUtils.modSlotPrefix)).map(p => p.replace(PathUtils.modSlotPrefix, ''))
+    const presetModSlot = this.getPresetModSlot(preset, pathModSlotNames)
+
+    if (presetModSlot?.item?.itemId === itemId) {
+      return presetModSlot
+    }
+  }
+
+  /**
    * Gets the price of an inventory item including or not its content and mods.
    * @param inventoryItem - Inventory item.
    * @param presetModSlotItem - Preset mod slot item used to ignore the price of mods that are installed by default on an item.
    * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
+   * @param useMerchantFilter - Indicates whether the merchant filter is used. If false, all prices are taken into consideration. Used mainly to ignore merchant filter to be able to display all the prices and barters of an item in its stats.
    * @returns Price.
    */
-  public async getPrice(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true): Promise<Result<IInventoryPrice>> {
+  public async getPrice(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true, useMerchantFilter = true): Promise<Result<IInventoryPrice>> {
     const merchantFilterService = Services.get(MerchantFilterService)
     const itemService = Services.get(ItemService)
     const itemResult = await itemService.getItem(inventoryItem.itemId)
 
     if (!itemResult.success) {
-      return Result.failFrom(itemResult, FailureType.error)
+      return Result.failFrom(itemResult)
     }
 
     let unitPrice: IPrice = {
@@ -222,7 +184,7 @@ export class InventoryItemService {
       value: 0,
       valueInMainCurrency: 0
     }
-
+    let barterItemPrices: IInventoryPrice[] = []
     let unitPriceIgnoreStatus = IgnoredUnitPrice.notIgnored
 
     if (!canBeLooted) {
@@ -233,16 +195,58 @@ export class InventoryItemService {
       unitPriceIgnoreStatus = IgnoredUnitPrice.manuallyIgnored
     }
 
+    let hasUnitPrice = false
+
     if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
-      for (const price of merchantFilterService.getMatchingPrices(itemResult.value)) {
-        if (unitPrice.valueInMainCurrency === 0 || (price.valueInMainCurrency > 0 && price.valueInMainCurrency < unitPrice.valueInMainCurrency)) { // TODO : Handling barters - REMOVE price.valueInMainCurrency > 0 && WHEN IT IS DONE
-          unitPrice = price
+      const matchingPrices = useMerchantFilter ? merchantFilterService.getMatchingPrices(itemResult.value) : itemResult.value.prices
+
+      for (const matchingPrice of matchingPrices) {
+        let missingBarterItemPrice = false
+        let matchingPriceInMainCurrency = matchingPrice.valueInMainCurrency
+        const matchingPriceBarterItemPrices: IInventoryPrice[] = []
+
+        if (matchingPrice.currencyName === 'barter') {
+          for (const barterItem of matchingPrice.barterItems) {
+            const barterItemPriceResult = await this.getPrice({
+              content: [],
+              ignorePrice: false,
+              itemId: barterItem.itemId,
+              modSlots: [],
+              quantity: barterItem.quantity
+            }, undefined, true, useMerchantFilter)
+
+            if (!barterItemPriceResult.success) {
+              return Result.failFrom(barterItemPriceResult)
+            }
+
+            if (barterItemPriceResult.value.missingPrice) {
+              missingBarterItemPrice = true
+              continue
+            }
+
+            matchingPriceBarterItemPrices.push(barterItemPriceResult.value)
+            matchingPriceInMainCurrency += barterItemPriceResult.value.price.valueInMainCurrency
+          }
+        }
+
+        if (!missingBarterItemPrice
+          && (unitPrice.valueInMainCurrency === 0
+            || matchingPriceInMainCurrency < unitPrice.valueInMainCurrency)) {
+          unitPrice = {
+            // Creating a new instance because we need to set the valueInMainCurrency.
+            // If we directly use a reference to matchinPrice.valueInMainCurrency, then we modify this price for the whole application each time we pass here
+            ...matchingPrice,
+            valueInMainCurrency: matchingPriceInMainCurrency
+          }
+          barterItemPrices = matchingPriceBarterItemPrices
+
+          hasUnitPrice = true
         }
       }
     }
 
     const price: IPrice = {
-      barterItems: [], // TODO : Handling barters
+      barterItems: [],
       currencyName: unitPrice.currencyName,
       itemId: unitPrice.itemId,
       merchant: unitPrice.merchant,
@@ -252,6 +256,13 @@ export class InventoryItemService {
       valueInMainCurrency: unitPrice.valueInMainCurrency * inventoryItem.quantity
     }
 
+    for (const barterItem of unitPrice.barterItems) {
+      price.barterItems.push({
+        itemId: barterItem.itemId,
+        quantity: barterItem.quantity * inventoryItem.quantity
+      })
+    }
+
     const mainCurrencyResult = await itemService.getMainCurrency()
 
     if (!mainCurrencyResult.success) {
@@ -259,7 +270,7 @@ export class InventoryItemService {
     }
 
     const inventoryPrice: IInventoryPrice = {
-      missingPrice: unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored && !merchantFilterService.hasMatchingPrices(itemResult.value, false),
+      missingPrice: unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored && !hasUnitPrice,
       price,
       pricesWithContent: [],
       priceWithContentInMainCurrency: {
@@ -277,21 +288,47 @@ export class InventoryItemService {
     }
 
     if (price.valueInMainCurrency > 0) {
-      inventoryPrice.pricesWithContent.push({
-        barterItems: [], // TODO : Handling barters
-        currencyName: price.currencyName,
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: null,
-        value: price.value,
-        valueInMainCurrency: price.valueInMainCurrency
-      })
+      if (price.currencyName !== 'barter') {
+        inventoryPrice.pricesWithContent.push({
+          barterItems: [],
+          currencyName: price.currencyName,
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: null,
+          value: price.value,
+          valueInMainCurrency: price.valueInMainCurrency
+        })
+      } else {
+        // Adding barter item prices
+        for (const barterItemPrice of barterItemPrices) {
+          for (const barterItemPriceWithContent of barterItemPrice.pricesWithContent) {
+            const currencyIndex = inventoryPrice.pricesWithContent.findIndex(p => p.currencyName === barterItemPriceWithContent.currencyName)
+
+            if (currencyIndex < 0) {
+              inventoryPrice.pricesWithContent.push({
+                barterItems: [],
+                currencyName: barterItemPriceWithContent.currencyName,
+                itemId: '',
+                merchant: '',
+                merchantLevel: 0,
+                quest: null,
+                value: barterItemPriceWithContent.value * inventoryItem.quantity,
+                valueInMainCurrency: barterItemPriceWithContent.valueInMainCurrency * inventoryItem.quantity
+              })
+            } else {
+              inventoryPrice.pricesWithContent[currencyIndex].value += barterItemPriceWithContent.value * inventoryItem.quantity
+              inventoryPrice.pricesWithContent[currencyIndex].valueInMainCurrency += barterItemPriceWithContent.valueInMainCurrency * inventoryItem.quantity
+            }
+          }
+        }
+      }
     }
 
+    // Adding content prices
     for (const containedItem of inventoryItem.content) {
       /* istanbul ignore if */
-      if (containedItem == undefined) {
+      if (containedItem == null) {
         // !!! WORKAROUNG !!! In theory it should never happen, but it happened in production without being able to identify the source of the problem.
         continue
       }
@@ -299,7 +336,7 @@ export class InventoryItemService {
       const containedItemPriceResult = await this.getPrice(containedItem)
 
       if (!containedItemPriceResult.success) {
-        return Result.failFrom(containedItemPriceResult, FailureType.error)
+        return Result.failFrom(containedItemPriceResult)
       }
 
       for (const containedItemPriceWithContent of containedItemPriceResult.value.pricesWithContent) {
@@ -321,12 +358,13 @@ export class InventoryItemService {
       }
     }
 
-    if (presetModSlotItem === undefined) {
+    // Adding mod prices
+    if (presetModSlotItem == null) {
       presetModSlotItem = await itemService.getPreset(inventoryItem.itemId)
     }
 
     for (const modSlot of inventoryItem.modSlots) {
-      if (modSlot.item === undefined) {
+      if (modSlot.item == null) {
         continue
       }
 
@@ -334,7 +372,7 @@ export class InventoryItemService {
       const modPriceResult = await this.getPrice(modSlot.item, presetModSlot?.item)
 
       if (!modPriceResult.success) {
-        return Result.failFrom(modPriceResult, FailureType.error)
+        return Result.failFrom(modPriceResult)
       }
 
       for (const modPriceWithContent of modPriceResult.value.pricesWithContent) {
@@ -368,7 +406,7 @@ export class InventoryItemService {
     const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
     if (!itemResult.success) {
-      return Result.failFrom(itemResult, FailureType.error)
+      return Result.failFrom(itemResult)
     }
 
     if (!Services.get(ItemPropertiesService).isRangedWeapon(itemResult.value)) {
@@ -393,10 +431,7 @@ export class InventoryItemService {
     const chamberedAmmunitionRecoilPercentageModifierResult = await this.getChamberedAmmunitionRecoilPercentageModifier(itemResult.value, inventoryItem.modSlots)
 
     if (!chamberedAmmunitionRecoilPercentageModifierResult.success) {
-      return Result.failFrom(
-        chamberedAmmunitionRecoilPercentageModifierResult,
-        FailureType.error
-      )
+      return Result.failFrom(chamberedAmmunitionRecoilPercentageModifierResult)
     }
 
     const chamberedAmmunitionRecoilPercentageModifier = chamberedAmmunitionRecoilPercentageModifierResult.value
@@ -405,14 +440,14 @@ export class InventoryItemService {
     let modsRecoilPercentageModifiers = 0
 
     for (const modSlot of inventoryItem.modSlots) {
-      if (modSlot.item === undefined) {
+      if (modSlot.item == null) {
         continue
       }
 
       const modRecoilPercentageModifierResult = await this.getRecoilPercentageModifier(modSlot.item)
 
       if (!modRecoilPercentageModifierResult.success) {
-        return Result.failFrom(modRecoilPercentageModifierResult, FailureType.error)
+        return Result.failFrom(modRecoilPercentageModifierResult)
       }
 
       modsRecoilPercentageModifiers += modRecoilPercentageModifierResult.value.recoilPercentageModifierWithMods
@@ -436,7 +471,7 @@ export class InventoryItemService {
     const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
     if (!itemResult.success) {
-      return Result.failFrom(itemResult, FailureType.error)
+      return Result.failFrom(itemResult)
     }
 
     const itemPropertiesService = Services.get(ItemPropertiesService)
@@ -455,23 +490,163 @@ export class InventoryItemService {
     }
 
     for (const modSlot of inventoryItem.modSlots) {
-      if (modSlot.item === undefined) {
+      if (modSlot.item == null) {
         continue
       }
 
       const modRecoilPercentageModifierResult = await this.getRecoilPercentageModifier(modSlot.item)
 
       if (!modRecoilPercentageModifierResult.success) {
-        return Result.failFrom(
-          modRecoilPercentageModifierResult,
-          FailureType.error
-        )
+        return Result.failFrom(modRecoilPercentageModifierResult)
       }
 
       recoilPercentageModifier.recoilPercentageModifierWithMods = round(recoilPercentageModifier.recoilPercentageModifierWithMods + modRecoilPercentageModifierResult.value.recoilPercentageModifierWithMods, 2)
     }
 
     return Result.ok(recoilPercentageModifier)
+  }
+
+  /**
+   * Gets a shopping list for this item and all its content, mod and barter items that must be bought.
+   * @param inventoryItem - Inventory item.
+   * @param presetModSlotItem - Preset mod slot item used to ignore the price of mods that are installed by default on an item.
+   * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
+   * @returns Shopping list items.
+   */
+  public async getShoppingList(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true): Promise<Result<IShoppingListItem[]>> {
+    const itemService = Services.get(ItemService)
+    const shoppingList: IShoppingListItem[] = []
+    const shoppingListItemsToAdd: IShoppingListItem[] = []
+
+    const itemResult = await itemService.getItem(inventoryItem.itemId)
+
+    if (!itemResult.success) {
+      return Result.failFrom(itemResult)
+    }
+
+    let unitPriceIgnoreStatus = IgnoredUnitPrice.notIgnored
+
+    if (!canBeLooted) {
+      unitPriceIgnoreStatus = IgnoredUnitPrice.notLootable
+    } else if (presetModSlotItem?.itemId === inventoryItem.itemId) {
+      unitPriceIgnoreStatus = IgnoredUnitPrice.inPreset
+    } else if (inventoryItem.ignorePrice) {
+      unitPriceIgnoreStatus = IgnoredUnitPrice.manuallyIgnored
+    }
+
+    if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
+      const priceResult = await this.getPrice(inventoryItem)
+
+      if (!priceResult.success) {
+        return Result.failFrom(priceResult)
+      }
+
+      let unitPrice: IPrice
+
+      // Barters
+      const shoppingListBartersToAdd: IShoppingListItem[] = []
+
+      if (priceResult.value.unitPrice.currencyName === 'barter') {
+        for (const barterItem of priceResult.value.unitPrice.barterItems) {
+          const barterItemShoppingListResult = await this.getShoppingList({
+            content: [],
+            ignorePrice: false,
+            itemId: barterItem.itemId,
+            modSlots: [],
+            quantity: barterItem.quantity
+          })
+
+          /* istanbul ignore if */
+          if (!barterItemShoppingListResult.success) {
+            // Should never happen since barter item prices are already searched in the getPrice() method
+            return Result.failFrom(barterItemShoppingListResult)
+          }
+
+          shoppingListBartersToAdd.push(...barterItemShoppingListResult.value)
+        }
+
+        // Setting the price of items that have barter items to 0 since barter items and they price are added to the shopping list
+        unitPrice = {
+          barterItems: [],
+          currencyName: 'barter',
+          itemId: inventoryItem.itemId,
+          merchant: priceResult.value.unitPrice.merchant,
+          merchantLevel: priceResult.value.unitPrice.merchantLevel,
+          quest: priceResult.value.unitPrice.quest,
+          value: 0,
+          valueInMainCurrency: 0
+        }
+      } else {
+        unitPrice = priceResult.value.unitPrice
+      }
+
+      shoppingListItemsToAdd.push({
+        item: itemResult.value,
+        quantity: inventoryItem.quantity,
+        price: {
+          barterItems: unitPrice.barterItems,
+          currencyName: unitPrice.currencyName,
+          itemId: unitPrice.itemId,
+          merchant: unitPrice.merchant,
+          merchantLevel: unitPrice.merchantLevel,
+          quest: unitPrice.quest,
+          value: unitPrice.value * inventoryItem.quantity,
+          valueInMainCurrency: unitPrice.valueInMainCurrency * inventoryItem.quantity
+        },
+        unitPrice
+      }, ...shoppingListBartersToAdd)
+    }
+
+    // Mods
+    if (presetModSlotItem == null) {
+      presetModSlotItem = await itemService.getPreset(inventoryItem.itemId)
+    }
+
+    for (const modSlot of inventoryItem.modSlots) {
+      /* istanbul ignore if */
+      if (modSlot.item == null) {
+        continue
+      }
+
+      const presetModSlot = presetModSlotItem?.modSlots.find(pms => pms.modSlotName === modSlot.modSlotName)
+      const shoppingListResult = await this.getShoppingList(modSlot.item, presetModSlot?.item)
+
+      /* istanbul ignore if */
+      if (!shoppingListResult.success) {
+        // Should never happen since mod prices are already searched in the getPrice() method
+        return Result.failFrom(shoppingListResult)
+      }
+
+      shoppingListItemsToAdd.push(...shoppingListResult.value)
+    }
+
+    // Content
+    for (const content of inventoryItem.content) {
+      const shoppingListResult = await this.getShoppingList(content)
+
+      /* istanbul ignore if */
+      if (!shoppingListResult.success) {
+        // Should never happen since content item prices are already searched in the getPrice() method
+        return Result.failFrom(shoppingListResult)
+      }
+
+      shoppingListItemsToAdd.push(...shoppingListResult.value)
+    }
+
+    // Regrouping similar items
+    for (const shoppingListItemToAdd of shoppingListItemsToAdd) {
+      const shoppingListItemIndex = shoppingList.findIndex(sli => sli.item.id === shoppingListItemToAdd.item.id)
+
+      if (shoppingListItemIndex < 0) {
+        shoppingList.push(shoppingListItemToAdd)
+      } else {
+        shoppingList[shoppingListItemIndex].quantity += shoppingListItemToAdd.quantity
+        shoppingList[shoppingListItemIndex].price.value += shoppingListItemToAdd.unitPrice.value * shoppingListItemToAdd.quantity
+        shoppingList[shoppingListItemIndex].price.valueInMainCurrency += shoppingListItemToAdd.unitPrice.valueInMainCurrency * shoppingListItemToAdd.quantity
+      }
+    }
+
+    return Result.ok(shoppingList)
   }
 
   /**
@@ -483,7 +658,7 @@ export class InventoryItemService {
     const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
     if (!itemResult.success) {
-      return Result.failFrom(itemResult, FailureType.error)
+      return Result.failFrom(itemResult)
     }
 
     const weight = itemResult.value.weight * inventoryItem.quantity
@@ -491,29 +666,29 @@ export class InventoryItemService {
 
     for (const containedItem of inventoryItem.content) {
       /* istanbul ignore if */
-      if (containedItem == undefined) {
-        // !!! WORKAROUNG !! In theory it should never happen, but it happened in production without being able to identify the source of the problem.
+      if (containedItem == null) {
+        // !!! WORKAROUNG !!! In theory it should never happen, but it happened in production without being able to identify the source of the problem.
         continue
       }
 
       const containedItemWeightResult = await this.getWeight(containedItem)
 
       if (!containedItemWeightResult.success) {
-        return Result.failFrom(containedItemWeightResult, FailureType.error)
+        return Result.failFrom(containedItemWeightResult)
       }
 
       weightWithContent += containedItemWeightResult.value.weightWithContent
     }
 
     for (const modSlot of inventoryItem.modSlots) {
-      if (modSlot.item === undefined) {
+      if (modSlot.item == null) {
         continue
       }
 
       const modWeightResult = await this.getWeight(modSlot.item)
 
       if (!modWeightResult.success) {
-        return Result.failFrom(modWeightResult, FailureType.error)
+        return Result.failFrom(modWeightResult)
       }
 
       weightWithContent += modWeightResult.value.weightWithContent
@@ -524,38 +699,6 @@ export class InventoryItemService {
       weightWithContent: round(weightWithContent, 3),
       unitWeight: round(itemResult.value.weight, 3)
     })
-  }
-
-  /**
-   * Gets the preset mod slot the inventory item is a part of.
-   * @param itemId - Item ID.
-   * @param path - Mod slot path indicating the inventory object position within a parent item.
-   * @returns Preset mod slot if the inventory item is in a preset; otherwise undefined.
-   */
-  public async getPresetModSlotContainingItem(itemId: string, path: string): Promise<IInventoryModSlot | undefined> {
-    const pathArray = path.split('/')
-
-    // Getting the last item of the path that appears before mods.
-    // We should never have the case of a mod that have items in its content that have mods.
-    const firstModIndex = pathArray.findIndex(p => p.startsWith(PathUtils.modSlotPrefix))
-
-    if (firstModIndex < 0) {
-      return undefined
-    }
-
-    const presetId = pathArray[firstModIndex - 1].replace(PathUtils.itemPrefix, '')
-    const preset = await Services.get(ItemService).getPreset(presetId)
-
-    if (preset === undefined) {
-      return undefined
-    }
-
-    const pathModSlotNames = pathArray.filter(p => p.startsWith(PathUtils.modSlotPrefix)).map(p => p.replace(PathUtils.modSlotPrefix, ''))
-    const presetModSlot = this.getPresetModSlot(preset, pathModSlotNames)
-
-    if (presetModSlot?.item?.itemId === itemId) {
-      return presetModSlot
-    }
   }
 
   /**
@@ -579,7 +722,7 @@ export class InventoryItemService {
       } else {
         const magazine = rangedWeapon.modSlots.find((ms) => ms.name === 'mod_magazine')
 
-        if (modSlot.modSlotName !== /* istanbul ignore next */magazine?.name || modSlot.item === undefined) {
+        if (modSlot.modSlotName !== /* istanbul ignore next */magazine?.name || modSlot.item == null) {
           continue
         }
 
@@ -593,21 +736,21 @@ export class InventoryItemService {
       }
     }
 
-    if (ammunitionId === undefined) {
+    if (ammunitionId == null) {
       return Result.ok(0)
     }
 
     const ammunitionResult = await Services.get(ItemService).getItem(ammunitionId)
 
     if (!ammunitionResult.success) {
-      return Result.failFrom(ammunitionResult, FailureType.error)
+      return Result.failFrom(ammunitionResult)
     }
 
     return Result.ok((ammunitionResult.value as IAmmunition).recoilPercentageModifier)
   }
 
   /**
-   * Gets the mod slot of a preset corresponding to a mod slot path.
+   * Gets the mod slot in a preset corresponding to a mod slot path.
    * @param presetInventoryItem - Preset.
    * @param pathModSlotNames - Names of the mod slots present in a path leading to a mod.
    * @returns Mod slot path corresponding to the mod slot path.
@@ -615,7 +758,7 @@ export class InventoryItemService {
   private getPresetModSlot(presetInventoryItem: IInventoryItem, pathModSlotNames: string[]): IInventoryModSlot | undefined {
     const presetModSlot = presetInventoryItem.modSlots.find(ms => ms.modSlotName === pathModSlotNames[0])
 
-    if (presetModSlot === undefined) {
+    if (presetModSlot == null) {
       return undefined
     }
 

@@ -64,7 +64,7 @@ export class NotificationService {
    */
   public notify(type: NotificationType, message: string, toast = false, toastDuration: number | undefined = undefined): void {
     if (toast) {
-      if (toastDuration === undefined) {
+      if (toastDuration == null) {
         const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
         switch (type) {

@@ -4,6 +4,7 @@ import Changelog from '../changelog/ChangelogComponent.vue'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import Loading from '../loading/LoadingComponent.vue'
+import LanguageUtils from '../../utils/LanguageUtils'
 
 export default defineComponent({
   components: {
@@ -20,6 +21,7 @@ export default defineComponent({
     const contactAddress = ref<string>()
     const discordLink = ref<string>()
     const githubAddress = ref<string>()
+    const hasChangelogDisplayed = ref(false)
     const reportBugAddress = ref<string>()
 
     const isSanta = computed(() => {
@@ -41,8 +43,6 @@ export default defineComponent({
       return text
     })
 
-    const hasChangelogDisplayed = ref(false)
-
     function displayChangelog() {
       hasChangelogDisplayed.value = true
     }
@@ -53,7 +53,14 @@ export default defineComponent({
       githubAddress.value = websiteConfigurationService.configuration.githubUrl
       reportBugAddress.value = websiteConfigurationService.configuration.bugReportUrl
 
+      setLanguage()
+
       isLoading.value = false
+    }
+
+    function setLanguage() {
+      const language = localStorage.getItem(Services.get(WebsiteConfigurationService).configuration.languageStorageKey) ?? 'en'
+      LanguageUtils.setLanguage(language)
     }
 
     return {

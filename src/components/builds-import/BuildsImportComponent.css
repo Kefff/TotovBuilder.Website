@@ -1,3 +1,4 @@
+@import '../../assets/css/button.css';
 @import '../../assets/css/icon.css';
 
 .builds-import-buttons {
@@ -7,6 +8,7 @@
 
 .builds-import-cancel-button {
   margin-left: auto !important;
+  margin-right: 0 !important;
 }
 
 .builds-import-file-selection {

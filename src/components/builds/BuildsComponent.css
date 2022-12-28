@@ -6,32 +6,39 @@
   margin-bottom: 3rem;
 }
 
-.builds-advanced-panel {
+.builds-title {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  font-size: 1.5rem;
+  height: 3.5rem;
+  justify-content: center;
+}
+
+.builds-options-panel {
   max-height: 31.25rem;
   overflow: auto;
 }
 
-.builds-advanced-panel-item {
+.builds-options-panel-item {
   align-items: center;
   display: flex;
   min-height: 3.25rem;
   padding: 0.5rem;
 }
 
-.builds-advanced-panel-item:hover {
-  background: var(--util-color2);
-  border-radius: 3px;
-  cursor: pointer;
-}
-
 .builds-loading {
   margin-top: 3rem;
 }
 
-.builds-advanced-panel-special-item {
+.builds-options-panel-special-item {
   height: initial;
 }
 
-.builds-advanced-panel-special-item:hover {
+.builds-options-panel-special-item:hover {
   cursor: initial;
+}
+
+.build-toolbar-right {
+  margin-left: auto;
 }

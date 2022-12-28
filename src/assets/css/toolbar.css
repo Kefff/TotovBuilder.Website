@@ -1,14 +1,17 @@
 .toolbar {
   margin-top: 0.5rem;
-  position: sticky;
+  position: unset;
   top: 0;
   width: 100%;
+}
+
+.toolbar-sticky {
+  position: sticky;
   z-index: 1;
 }
 
 .toolbar-button {
   height: 2.625rem;
-  margin-right: 0.5rem;
 }
 
 .toolbar-button:last-child {

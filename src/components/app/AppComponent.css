@@ -11,9 +11,9 @@
 }
 
 html {
+  letter-spacing: 0.25px;
   margin: 0;
   padding: 0;
-  letter-spacing: 0.25px;
 }
 
 body {
@@ -105,36 +105,27 @@ body {
   display: flex;
   font-family: var(--font-title);
   justify-content: center;
+  margin-bottom: 1rem;
 }
 
-.app-title > h1 {
-  align-items: center;
+.app-title > div {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
 
 .app-title-part1 {
-  padding-left: 4rem;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: right;
-  width: 18.75rem;
+  margin-left: 1rem;
+  text-align: center;
 }
 
 .app-title-part2 {
   color: var(--error-color);
-  margin-left: auto;
-  margin-right: auto;
-  width: 18.75rem;
+  margin-left: 1rem;
 }
 
 .app-title-prapor {
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  width: 7rem;
+  width: 5rem;
 }
 
 h1 {

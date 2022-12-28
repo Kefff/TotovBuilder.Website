@@ -22,17 +22,17 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const showPriceInMainCurrency = ref(false)
     const mainCurrency = ref<ICurrency>()
+    const priceDetailPanel = ref()
     const priceInMainCurrency = ref(0)
-    const showDetails = ref(false)
-    const canShowDetails = computed(() => props.inventoryPrice.pricesWithContent.some(ip => ip.currencyName !== mainCurrency.value?.name))
+    const showPriceInMainCurrency = ref(false)
 
+    const canShowDetails = computed(() => props.inventoryPrice.pricesWithContent.some(ip => ip.currencyName !== mainCurrency.value?.name))
     const missingPriceIconClass = computed(() => {
       if (!props.showSpaceForIcon) {
-        return 'inventory-price-missing-price-icon-no-width'
+        return 'inventory-price-value-missing-price-icon-no-width'
       } else {
-        return 'inventory-price-missing-price-icon'
+        return 'inventory-price-value-missing-price-icon'
       }
     })
 
@@ -70,15 +70,15 @@ export default defineComponent({
         return
       }
 
-      showDetails.value = !showDetails.value
+      priceDetailPanel.value.toggle(event)
       event.stopPropagation()
     }
 
     return {
       canShowDetails,
-      showDetails,
       mainCurrency,
       missingPriceIconClass,
+      priceDetailPanel,
       priceInMainCurrency,
       togglePriceDetails
     }

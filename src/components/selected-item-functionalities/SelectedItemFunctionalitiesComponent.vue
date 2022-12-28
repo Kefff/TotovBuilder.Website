@@ -1,7 +1,7 @@
 <template>
   <Button
     :key="selectedTab"
-    v-tooltip.top="$t('caption.moreFunctionalities')"
+    v-tooltip.top="$t('caption.options')"
     class="selected-item-functionalities-button p-button-text p-button-sm button-discreet"
     @click="toggleFunctionalitiesPanel($event)"
   >

@@ -38,7 +38,7 @@ export default defineComponent({
      * Copies the share link to the clipboard.
      */
     function copyLink() {
-      if (shareLinkInternal === undefined) {
+      if (shareLinkInternal == null) {
         return
       }
 

@@ -20,6 +20,7 @@ import { MerchantFilterService } from '../../services/MerchantFilterService'
 import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
 import ShareBuild from '../build-share/BuildShareComponent.vue'
+import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
 import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { InventoryItemService } from '../../services/InventoryItemService'
@@ -33,7 +34,8 @@ export default defineComponent({
     Loading,
     MerchantFilter,
     NotificationButton,
-    ShareBuild
+    ShareBuild,
+    ShoppingList
   },
   setup: () => {
     const route = useRoute()
@@ -56,15 +58,14 @@ export default defineComponent({
     const notExportedTooltip = computed(() => !summary.value.exported ? buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
     const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
 
-    const advancedPanel = ref()
-    const ammunitionCountsPanel = ref()
     const build = ref<IBuild>(buildComponentService.getBuild(route.params['id'] as string))
     const collapseStatuses = ref<boolean[]>([])
     const deleting = ref(false)
+    const displayOptionsPanel = ref()
     const editing = isNewBuild.value ? ref(true) : ref(false)
     const isInitializing = ref(true)
+    const optionsPanel = ref()
     const summary = ref<IBuildSummary>({
-      ammunitionCounts: [],
       ergonomics: undefined,
       ergonomicsPercentageModifier: 0,
       exported: false,
@@ -108,9 +109,11 @@ export default defineComponent({
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       },
+      shoppingList: [],
       verticalRecoil: undefined,
       weight: 0
     })
+    const toolbarCssClass = ref('toolbar')
 
     provide('editing', editing)
 
@@ -124,6 +127,8 @@ export default defineComponent({
       merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
 
       document.onkeydown = (e) => onKeyDown(e)
+      window.addEventListener('scroll', setToolbarCssClass)
+
       initialize()
     })
 
@@ -133,6 +138,9 @@ export default defineComponent({
       compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
       inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
       merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+
+      document.onkeydown = null
+      window.removeEventListener('scroll', setToolbarCssClass)
     })
 
     window.onbeforeunload = function () {
@@ -174,6 +182,8 @@ export default defineComponent({
      * Collapses all the inventory slots.
      */
     function collapseAll() {
+      toggleDisplayOptionsPanel(undefined)
+
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = true
       }
@@ -187,8 +197,6 @@ export default defineComponent({
         return
       }
 
-      toggleAdvancedPanel(undefined)
-
       build.value.id = ''
       build.value.name = ''
       startEdit()
@@ -198,6 +206,8 @@ export default defineComponent({
      * Expands all the inventory slots.
      */
     function expandAll() {
+      toggleDisplayOptionsPanel(undefined)
+
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = false
       }
@@ -207,6 +217,8 @@ export default defineComponent({
      * Expands the inventory slots containing an item.
      */
     function expandWithItem() {
+      toggleDisplayOptionsPanel(undefined)
+
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         if (build.value.inventorySlots[i].items.filter(i => i != null).length > 0) {
           collapseStatuses.value[i] = false
@@ -221,8 +233,6 @@ export default defineComponent({
       if (editing.value) {
         return
       }
-
-      toggleAdvancedPanel(undefined)
 
       if (isNewBuild.value) {
         return
@@ -249,7 +259,7 @@ export default defineComponent({
      * @param sharableString - Encoded string that can be shared in a URL.
      */
     async function getSharedBuild(sharableString?: string) {
-      if (sharableString === undefined) {
+      if (sharableString == null) {
         return
       }
 
@@ -268,7 +278,7 @@ export default defineComponent({
      * Gets the values of the summary of the content of the build.
      */
     async function getSummary() {
-      if (build.value === undefined) {
+      if (build.value == null) {
         return
       }
 
@@ -374,6 +384,18 @@ export default defineComponent({
     }
 
     /**
+     * Sets the toolbar CSS class.
+     * Used to set its sticky status and work around Z index problems with PrimeVue components that appear behind the toolbar.
+     */
+    function setToolbarCssClass() {
+      const buildContentElement = document.querySelector('#build-content')
+      const rectangle = buildContentElement?.getBoundingClientRect()
+      const y = rectangle?.top ?? 0
+
+      toolbarCssClass.value = window.scrollY <= y ? 'toolbar' : 'toolbar toolbar-sticky'
+    }
+
+    /**
      * Displays the deletion confirmation dialog.
      */
     function startDelete() {
@@ -389,23 +411,22 @@ export default defineComponent({
     }
 
     /**
-     * Toggles the ammunition counts panel.
+     * Toggles the options panel.
+     * @param event - Event.
      */
-    function toggleAmmunitionCounts(event: unknown) {
-      ammunitionCountsPanel.value.toggle(event)
+    function toggleOptionsPanel(event: unknown) {
+      optionsPanel.value.toggle(event)
     }
 
     /**
-     * Toggles the advanced panel.
+     * Toggles the display options panel.
      * @param event - Event.
      */
-    function toggleAdvancedPanel(event: unknown) {
-      advancedPanel.value.toggle(event)
+    function toggleDisplayOptionsPanel(event: unknown) {
+      displayOptionsPanel.value.toggle(event)
     }
 
     return {
-      advancedPanel,
-      ammunitionCountsPanel,
       build,
       cancelDelete,
       cancelEdit,
@@ -414,6 +435,7 @@ export default defineComponent({
       confirmDelete,
       copy,
       deleting,
+      displayOptionsPanel,
       editing,
       expandAll,
       expandWithItem,
@@ -424,6 +446,7 @@ export default defineComponent({
       isEmpty,
       isInitializing,
       notExportedTooltip,
+      optionsPanel,
       path,
       remove,
       save,
@@ -431,8 +454,9 @@ export default defineComponent({
       startEdit,
       StatsUtils,
       summary,
-      toggleAdvancedPanel,
-      toggleAmmunitionCounts
+      toggleDisplayOptionsPanel,
+      toggleOptionsPanel,
+      toolbarCssClass
     }
   }
 })

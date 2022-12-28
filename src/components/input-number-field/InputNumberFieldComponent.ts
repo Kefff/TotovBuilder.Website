@@ -52,7 +52,7 @@ export default defineComponent({
       set: (value: number | undefined) => emit('update:modelValue', value ?? undefined)
     })
     const captionAsPlaceholder = computed(() => props.captionMode === 'placeholder')
-    const invalid = computed(() => props.required && value.value === undefined)
+    const invalid = computed(() => props.required && value.value == null)
 
     return { captionAsPlaceholder, invalid, value }
   }

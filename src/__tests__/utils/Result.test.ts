@@ -35,7 +35,8 @@ describe('fail()', () => {
     const result3 = Result.fail(FailureType.error, failureLocation, failureMessage)
 
     Configuration.VITE_DEBUG = 'false'
-    const result4 = Result.fail(FailureType.error, failureLocation, failureMessage)
+    const result4 = Result.fail(FailureType.warning, failureLocation, failureMessage)
+    const result5 = Result.fail(FailureType.warning, failureLocation, failureMessage)
 
     // Assert
     expect(result1.success).toBe(false)
@@ -53,24 +54,27 @@ describe('fail()', () => {
     expect(result4.success).toBe(false)
     expect(result4.failureContext).toBe(failureLocation)
     expect(result4.failureMessage).toBe(failureMessage)
+
+    expect(result5.success).toBe(false)
+    expect(result5.failureContext).toBe(failureLocation)
+    expect(result5.failureMessage).toBe(failureMessage)
   })
 })
 
 describe('failFrom()', () => {
   it('should create a failure result from another result', () => {
     // Arrange
-    const originalResult1 = Result.ok(30)
-    const originalResult2 = Result.fail(FailureType.hidden, failureLocation, failureMessage)
+    const originalResult1 = Result.fail(FailureType.hidden)
+    const originalResult2 = Result.fail(FailureType.error, failureLocation, failureMessage)
 
     // Act
-    const result1 = Result.failFrom(originalResult1, FailureType.warning)
+    const result1 = Result.failFrom(originalResult1)
     const result2 = Result.failFrom(originalResult2)
 
     // Assert
     expect(result1.success).toBe(false)
     expect(result1.failureContext).toBe('')
     expect(result1.failureMessage).toBe('')
-
     expect(result2.success).toBe(false)
     expect(result2.failureContext).toBe(failureLocation)
     expect(result2.failureMessage).toBe(failureMessage)

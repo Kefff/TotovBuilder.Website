@@ -89,7 +89,7 @@ class ServicesRepository {
    * @returns Service instance.
    */
   private getInstance<T>(registeredService: IRegisteredService) {
-    if (registeredService.instance === undefined) {
+    if (registeredService.instance == null) {
       registeredService.instance = new registeredService.type()
     }
 

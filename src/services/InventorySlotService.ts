@@ -19,7 +19,7 @@ export class InventorySlotService {
   public async getType(id: string): Promise<Result<IInventorySlotType>> {
     const jsonSlotType = InventorySlotTypes.find((ist) => ist.id === id)
 
-    if (jsonSlotType === undefined) {
+    if (jsonSlotType == null) {
       return Result.fail(FailureType.error, 'InventorySlotTypeService.get()', i18n.t('message.inventorySlotTypeNotFound', { id: id }))
     }
 
@@ -38,7 +38,7 @@ export class InventorySlotService {
     for (const categoryId of jsonSlotType.acceptedItemCategoryIds) {
       const jsonItemCategory = itemCategories.find((ic) => ic.id === categoryId)
 
-      if (jsonItemCategory === undefined) {
+      if (jsonItemCategory == null) {
         return Result.fail(FailureType.error, 'InventorySlotTypeService.get()', i18n.t('message.itemCategoryNotFound', { id: categoryId }))
       }
 

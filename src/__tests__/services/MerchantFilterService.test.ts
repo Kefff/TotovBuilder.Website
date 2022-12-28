@@ -187,7 +187,7 @@ describe('getMatchingPrices()', () => {
       },
       {
         enabled: false,
-        merchant: 'mecanic',
+        merchant: 'mechanic',
         merchantLevel: 2
       }
     ])
@@ -299,7 +299,7 @@ describe('hasMatchingPrices()', () => {
       [
         {
           currencyName: '',
-          merchant: 'mecanic',
+          merchant: 'mechanic',
           merchantLevel: 1,
           value: 0,
           valueInMainCurrency: 0
@@ -319,7 +319,7 @@ describe('hasMatchingPrices()', () => {
       [
         {
           currencyName: '',
-          merchant: 'mecanic',
+          merchant: 'mechanic',
           merchantLevel: 1,
           value: 0,
           valueInMainCurrency: 0
@@ -374,7 +374,7 @@ describe('hasMatchingPrices()', () => {
       },
       {
         enabled: false,
-        merchant: 'mecanic',
+        merchant: 'mechanic',
         merchantLevel: 2
       }
     ])

@@ -162,7 +162,7 @@ export class BuildService {
   public parseReducedBuild(reducedBuild: Record<string, unknown>): Result<IBuild> {
     const reducedInventorySlots = reducedBuild['s'] as Record<string, unknown>[]
 
-    if (reducedInventorySlots === undefined || reducedInventorySlots.length === 0) {
+    if (reducedInventorySlots == null || reducedInventorySlots.length === 0) {
       return Result.fail(FailureType.error, 'BuildService.parseReducedBuild()', i18n.t('message.cannotParseBuildWithoutInventorySlots'))
     }
 
@@ -297,14 +297,14 @@ export class BuildService {
   private parseReducedInventoryItem(reducedInventoryItem: Record<string, unknown>): Result<IInventoryItem> {
     const itemId = reducedInventoryItem['i'] as string
 
-    if (itemId === undefined) {
+    if (itemId == null) {
       return Result.fail(FailureType.error, 'BuildService.parseReducedInventoryItem()', i18n.t('message.cannotParseInventoryItemWithoutItemId'))
     }
 
     const ignorePrice = reducedInventoryItem['p'] != null
     let quantity = reducedInventoryItem['q'] as number
 
-    if (quantity === undefined) {
+    if (quantity == null) {
       quantity = 1
     }
 
@@ -355,7 +355,7 @@ export class BuildService {
   private parseReducedInventoryModSlot(reducedInventoryModSlot: Record<string, unknown>): Result<IInventoryModSlot> {
     const modSlotName = reducedInventoryModSlot['n'] as string
 
-    if (modSlotName === undefined) {
+    if (modSlotName == null) {
       return Result.fail(FailureType.error, 'BuildService.parseReducedInventoryModSlot()', i18n.t('message.cannotParseInventoryModSlotWithoutModSlotName'))
     }
 
@@ -386,19 +386,19 @@ export class BuildService {
   private parseReducedInventorySlot(reducedInventorySlot: Record<string, unknown>): Result<IInventorySlot> {
     const reducedItems = reducedInventorySlot['i'] as Record<string, unknown>[]
 
-    if (reducedItems === undefined || reducedItems.length === 0) {
+    if (reducedItems == null || reducedItems.length === 0) {
       return Result.fail(FailureType.error, 'BuildService.parseReducedInventorySlot()', i18n.t('message.cannotParseInventorySlotWithoutItems'))
     }
 
     const typeId = reducedInventorySlot['t'] as string
 
-    if (typeId === undefined) {
+    if (typeId == null) {
       return Result.fail(FailureType.error, 'BuildService.parseReducedInventorySlot()', i18n.t('message.cannotParseInventorySlotWithoutTypeId'))
     }
 
     const inventorySlotType = InventorySlotTypes.find(ist => ist.id === typeId)
 
-    if (inventorySlotType === undefined) {
+    if (inventorySlotType == null) {
       return Result.fail(FailureType.error, 'BuildService.parseReducedInventorySlot()', i18n.t('message.cannotFindInventorySlotType', { inventorySlotTypeId: typeId }))
     }
 
@@ -476,7 +476,7 @@ export class BuildService {
 
     /* istanbul ignore else */
     if (inventoryModSlot.item != null) {
-      // Should alway occur because we only call this method for mod slots containing an item
+      // Should always occur because we only call this method for mod slots containing an item
       reducedInventoryModSlot['i'] = this.reduceInventoryItemForSharing(inventoryModSlot.item)
     }
 
@@ -496,7 +496,7 @@ export class BuildService {
     reducedInventorySlot['t'] = inventorySlot.typeId
 
     for (const inventoryItem of inventorySlot.items) {
-      if (inventoryItem == undefined) {
+      if (inventoryItem == null) {
         continue
       }
 

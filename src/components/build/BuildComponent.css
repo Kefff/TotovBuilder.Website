@@ -7,24 +7,6 @@
   margin-bottom: 3rem;
 }
 
-.build-advanced-panel {
-  max-height: 31.25rem;
-  overflow: auto;
-}
-
-.build-advanced-panel-item {
-  align-items: center;
-  display: flex;
-  min-height: 3.25rem;
-  padding: 0.5rem;
-}
-
-.build-advanced-panel-item:hover {
-  background: var(--util-color2);
-  border-radius: 3px;
-  cursor: pointer;
-}
-
 .build-caliber-icon {
   width: 1.5rem !important;
 }
@@ -52,10 +34,6 @@
   margin-right: auto;
 }
 
-.build-functionalities-button {
-  margin-left: 0.25rem;
-}
-
 .build-loading {
   margin-top: 3rem;
 }
@@ -68,6 +46,24 @@
   cursor: initial;
 }
 
+.build-options-panel {
+  max-height: 31.25rem;
+  overflow: auto;
+}
+
+.build-options-panel-item {
+  align-items: center;
+  display: flex;
+  min-height: 3.25rem;
+  padding: 0.5rem;
+}
+
+.build-options-panel-item-with-hover:hover {
+  background: var(--util-color2);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
 .build-title {
   align-items: center;
   display: flex;
@@ -75,22 +71,11 @@
   font-size: 1.5rem;
   height: 3.5rem;
   justify-content: center;
-  margin-top: 0.5rem;
 }
 
 .build-toolbar-not-exported {
   color: var(--warning-color);
   margin-right: 0.5rem;
-}
-
-.build-toolbar-ammunition-count {
-  display: flex;
-}
-
-.build-toolbar-ammunition-count-count {
-  text-align: right;
-  margin-right: 1rem;
-  width: 2.25rem;
 }
 
 .build-toolbar-right {

@@ -9,11 +9,10 @@
 .inventory-price-details {
   font-size: 0.85rem;
   padding-right: 0.25rem;
-  text-align: right;
 }
 
 .inventory-price-with-details:hover {
-  background-color: var(--background-color5);
+  color: var(--primary-color);
   border-radius: 3px;
   cursor: pointer;
 }
@@ -30,6 +29,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: right;
+  margin-right: -0.25rem;
 }
 
 .inventory-price-value-list-price {
@@ -60,6 +60,6 @@
   justify-content: center;
 }
 
-.inventory-price-value-missing-price-icon-no-width > svg {
+.inventory-price-value-missing-price-icon-no-width > div > svg {
   margin-left: 0.5rem;
 }

@@ -1,5 +1,4 @@
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { IAmmunitionCount } from '../../models/utils/IAmmunitionCount'
 import { IErgonomics } from '../../models/utils/IErgonomics'
 import { IErgonomicsPercentageModifier } from '../../models/utils/IErgonomicsPercentageModifier'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
@@ -106,152 +105,6 @@ const invalidInventoryItem3: IInventoryItem = {
   modSlots: [],
   quantity: 1
 }
-
-describe('getAmmunitionCounts()', () => {
-  it.each([
-    [
-      {
-        content: [
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs "Igolnik"
-            modSlots: [],
-            quantity: 50
-          },
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs "Igolnik"
-            modSlots: [],
-            quantity: 10
-          },
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5cadc190ae921500103bb3b6', // Beretta M9A3 9x19 pistol
-            modSlots: [
-              {
-                item: {
-                  content: [
-                    {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '5737201124597760fc4431f1', // 9x18 mm PM Pst gzh
-                      modSlots: [],
-                      quantity: 17
-                    }
-                  ],
-                  ignorePrice: false,
-                  itemId: '5cadc2e0ae9215051e1c21e7', // M9A3 9x19 17-round magazine
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_magazine'
-              }
-            ],
-            quantity: 1
-          },
-          {
-            content: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '56dff026d2720bb8668b4567', // 5.45x39 mm BS. Testing the hypothetic case of an object having the same ammunition in its content and its modslots.
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            ignorePrice: false,
-            itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
-            modSlots: [
-              {
-                item: {
-                  content: [
-                    {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '56dff026d2720bb8668b4567', // 5.45x39 mm BS
-                      modSlots: [],
-                      quantity: 45
-                    }
-                  ],
-                  ignorePrice: false,
-                  itemId: '564ca9df4bdc2d35148b4569', // AK-74 5.45x39 6L18 45-round magazine
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_magazine'
-              },
-              {
-                item: undefined,
-                modSlotName: 'mod_charge'
-              }
-            ],
-            quantity: 1
-          }
-        ],
-        ignorePrice: false,
-        itemId: '5ca20d5986f774331e7c9602',
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      [
-        {
-          id: '5c0d5e4486f77478390952fe', // 5.45x39 mm 7N39 \"Igolnik\"
-          count: 60
-        },
-        {
-          id: '5737201124597760fc4431f1', // 9x18 mm PM Pst gzh
-          count: 17
-        },
-        {
-          id: '56dff026d2720bb8668b4567', // 5.45x39 mm BS
-          count: 46
-        }
-      ] as IAmmunitionCount[]
-    ]
-  ])(
-    'should get the ammunition counts of an inventory item',
-    async (inventoryItem: IInventoryItem, expected: IAmmunitionCount[]) => {
-      // Arrange
-      useItemServiceMock()
-      Services.configure(ItemPropertiesService)
-      const service = new InventoryItemService()
-
-      // Act
-      const ammunitionCounts = await service.getAmmunitionCounts(inventoryItem)
-
-      // Assert
-      expect(ammunitionCounts.success).toBe(true)
-      expect(ammunitionCounts.value[0].id).toBe(expected[0].id)
-      expect(ammunitionCounts.value[0].count).toBe(expected[0].count)
-      expect(ammunitionCounts.value[1].id).toBe(expected[1].id)
-      expect(ammunitionCounts.value[1].count).toBe(expected[1].count)
-    }
-  )
-
-  it.each([
-    [invalidInventoryItem1],
-    [invalidInventoryItem2],
-    [invalidInventoryItem3]
-  ])(
-    'should fail if an item cannot be found',
-    async (inventoryItem: IInventoryItem) => {
-      // Arrange
-      useItemServiceMock()
-      Services.configure(ItemPropertiesService)
-      const service = new InventoryItemService()
-
-      // Act
-      const price = await service.getAmmunitionCounts(inventoryItem)
-
-      // Assert
-      expect(price.success).toBe(false)
-      expect(price.failureMessage).toBe('Item "invalid" not found.')
-    }
-  )
-})
 
 describe('getErgonomics()', () => {
   it.each([
@@ -1536,6 +1389,279 @@ describe('getPrice()', () => {
     expect(price.value).toStrictEqual(expected)
   })
 
+  it('should get the price of an item that has barters', async () => {
+    // Arrange
+    useItemServiceMock(
+      true,
+      undefined,
+      [
+        {
+          barterItems: [
+            {
+              itemId: '590a3b0486f7743954552bdb', // Printed circuit board
+              quantity: 5000.0
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          merchant: 'peacekeeper',
+          merchantLevel: 3.0,
+          quest: null,
+          value: 0.0,
+          valueInMainCurrency: 0.0
+        },
+        {
+          barterItems: [
+            {
+              itemId: '590a3b0486f7743954552bdb', // Printed circuit board
+              quantity: 2.0
+            },
+            {
+              itemId: '5672cb724bdc2dc2088b456b', // Geiger-Muller counter
+              quantity: 1.0
+            },
+            {
+              itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+              quantity: 3.0
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          merchant: 'peacekeeper',
+          merchantLevel: 3.0,
+          quest: null,
+          value: 0.0,
+          valueInMainCurrency: 0.0
+        },
+        {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '590a3b0486f7743954552bdb', // Printed circuit board
+          merchant: 'flea-market',
+          merchantLevel: 0.0,
+          quest: null,
+          value: 15000.0,
+          valueInMainCurrency: 15000.0
+        },
+        {
+          barterItems: [],
+          currencyName: 'USD',
+          itemId: '5672cb724bdc2dc2088b456b', // Geiger-Muller counter
+          merchant: 'flea-market',
+          merchantLevel: 0.0,
+          quest: null,
+          value: 250.0,
+          valueInMainCurrency: 25000.0
+        },
+        {
+          barterItems: [
+            {
+              itemId: '590a3cd386f77436f20848cb', // Energy-saving lamp
+              quantity: 1
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+          merchant: 'prapor',
+          merchantLevel: 0.0,
+          quest: null,
+          value: 0.0,
+          valueInMainCurrency: 0.0
+        },
+        {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '590a3cd386f77436f20848cb', // Energy-saving lamp
+          merchant: 'mechanic',
+          merchantLevel: 1.0,
+          quest: null,
+          value: 200.0,
+          valueInMainCurrency: 200.0
+        }
+      ])
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
+    const service = new InventoryItemService()
+    Services.get(MerchantFilterService)
+
+    const inventoryItem: IInventoryItem = {
+      content: [],
+      ignorePrice: false,
+      itemId: '544a37c44bdc2d25388b4567',
+      modSlots: [],
+      quantity: 2
+    }
+
+    // Act
+    const price = await service.getPrice(inventoryItem)
+
+    // Assert
+    expect(price.success).toBe(true)
+    expect(price.value).toStrictEqual({
+      missingPrice: false,
+      price: {
+        barterItems: [
+          {
+            itemId: '590a3b0486f7743954552bdb', // Printed circuit board
+            quantity: 4.0
+          },
+          {
+            itemId: '5672cb724bdc2dc2088b456b', // Geiger-Muller counter
+            quantity: 2.0
+          },
+          {
+            itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+            quantity: 6.0
+          }
+        ],
+        currencyName: 'barter',
+        itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+        merchant: 'peacekeeper',
+        merchantLevel: 3,
+        quest: null,
+        value: 0,
+        valueInMainCurrency: 111200
+      },
+      pricesWithContent: [
+        {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: null,
+          value: 61200,
+          valueInMainCurrency: 61200
+        },
+        {
+          barterItems: [],
+          currencyName: 'USD',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: null,
+          value: 500,
+          valueInMainCurrency: 50000
+        }
+      ],
+      priceWithContentInMainCurrency: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: null,
+        value: 111200,
+        valueInMainCurrency: 111200
+      },
+      unitPrice: {
+        barterItems: [
+          {
+            itemId: '590a3b0486f7743954552bdb', // Printed circuit board
+            quantity: 2.0
+          },
+          {
+            itemId: '5672cb724bdc2dc2088b456b', // Geiger-Muller counter
+            quantity: 1.0
+          },
+          {
+            itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+            quantity: 3.0
+          }
+        ],
+        currencyName: 'barter',
+        itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+        merchant: 'peacekeeper',
+        merchantLevel: 3,
+        quest: null,
+        value: 0,
+        valueInMainCurrency: 55600
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+    } as IInventoryPrice)
+  })
+
+  it('should ignore barters with missing barter item price', async () => {
+    // Arrange
+    useItemServiceMock(
+      true,
+      undefined,
+      [
+        {
+          barterItems: [
+            {
+              itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+              quantity: 1.0
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          merchant: 'peacekeeper',
+          merchantLevel: 3.0,
+          quest: null,
+          value: 0.0,
+          valueInMainCurrency: 0.0
+        }
+      ])
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
+    const service = new InventoryItemService()
+    Services.get(MerchantFilterService)
+
+    const inventoryItem: IInventoryItem = {
+      content: [],
+      ignorePrice: false,
+      itemId: '544a37c44bdc2d25388b4567',
+      modSlots: [],
+      quantity: 2
+    }
+
+    // Act
+    const price = await service.getPrice(inventoryItem)
+
+    // Assert
+    expect(price.success).toBe(true)
+    expect(price.value).toStrictEqual({
+      missingPrice: true,
+      price: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: null,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      pricesWithContent: [],
+      priceWithContentInMainCurrency: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: null,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      unitPrice: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: null,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+    } as IInventoryPrice)
+  })
+
   it('should fail if the main currency cannot be found', async () => {
     // Arrange
     useItemServiceMock(false)
@@ -1574,6 +1700,98 @@ describe('getPrice()', () => {
       expect(price.failureMessage).toBe('Item "invalid" not found.')
     }
   )
+
+  it('should fail if a barter item cannot be found', async () => {
+    // Arrange
+    useItemServiceMock(
+      true,
+      undefined,
+      [
+        {
+          barterItems: [
+            {
+              itemId: 'invalid',
+              quantity: 1.0
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          merchant: 'peacekeeper',
+          merchantLevel: 3.0,
+          quest: null,
+          value: 0.0,
+          valueInMainCurrency: 0.0
+        }
+      ])
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
+    const service = new InventoryItemService()
+    Services.get(MerchantFilterService)
+
+    const inventoryItem: IInventoryItem = {
+      content: [],
+      ignorePrice: false,
+      itemId: '544a37c44bdc2d25388b4567',
+      modSlots: [],
+      quantity: 2
+    }
+
+    // Act
+    const price = await service.getPrice(inventoryItem)
+
+    // Assert
+    expect(price.success).toBe(false)
+    expect(price.failureMessage).toBe('Item "invalid" not found.')
+  })
+
+  it('should ignore the merchant filter when searching for available prices', async () => {
+    // Arrange
+    useItemServiceMock(
+      true,
+      undefined,
+      [
+        {
+          'barterItems': [],
+          'currencyName': 'RUB',
+          'itemId': '558022b54bdc2dac148b458d', // EOTech EXPS3 holographic sight (Tan)
+          'merchant': 'mechanic',
+          'merchantLevel': 4.0,
+          'quest': null,
+          'value': 29400.0,
+          'valueInMainCurrency': 29400.0
+        }
+      ])
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
+    const inventoryItemService = new InventoryItemService()
+    const merchantFilterService = Services.get(MerchantFilterService)
+    merchantFilterService.save([
+      {
+        enabled: true,
+        merchant: 'mechanic',
+        merchantLevel: 1
+      }
+    ])
+
+    const inventoryItem: IInventoryItem = {
+      content: [],
+      ignorePrice: false,
+      itemId: '558022b54bdc2dac148b458d',
+      modSlots: [],
+      quantity: 1
+    }
+
+    // Act
+    const priceResult = await inventoryItemService.getPrice(inventoryItem, undefined, true, false)
+
+    // Assert
+    expect(priceResult.success).toBe(true)
+    expect(priceResult.value.unitPrice.valueInMainCurrency).toBe(29400)
+  })
 })
 
 describe('getRecoil()', () => {

@@ -33,17 +33,13 @@ export default defineComponent({
   },
   setup: () => {
     const merchantFilterService = Services.get(MerchantFilterService)
-    merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
 
     const router = useRouter()
     const buildsSummaries = ref<IBuildSummary[]>([])
     let builds: IBuild[] = []
 
-    const advancedPanel = ref()
-
-    const canExport = computed(() => builds.length !== 0)
-    const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported === undefined || b.lastExported < b.lastUpdated))
-
+    const canExport = computed(() => buildsSummaries.value.length > 0)
+    const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < b.lastUpdated))
     const selectedBuildSummary = computed({
       get: () => [],
       set: (value: string[]) => {
@@ -53,10 +49,13 @@ export default defineComponent({
       }
     })
 
+
+    const hasImported = ref(false)
     const isExporting = ref(false)
     const isImporting = ref(false)
-    const hasImported = ref(false)
     const isLoading = ref(true)
+    const optionsPanel = ref()
+    const toolbarCssClass = ref('toolbar')
 
     watch(() => hasImported.value, () => {
       // Updating the list of builds after import
@@ -67,6 +66,10 @@ export default defineComponent({
     })
 
     onMounted(() => {
+      merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+
+      window.addEventListener('scroll', setToolbarCssClass)
+
       getBuilds()
 
       if (builds.length === 0) {
@@ -80,6 +83,8 @@ export default defineComponent({
 
     onUnmounted(() => {
       merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+
+      window.removeEventListener('scroll', setToolbarCssClass)
     })
 
     /**
@@ -89,7 +94,7 @@ export default defineComponent({
       const exportWarningShowedKey = Services.get(WebsiteConfigurationService).configuration.exportWarningShowedStoregeKey
       const exportWarningShowed = sessionStorage.getItem(exportWarningShowedKey)
 
-      if (hasBuildsNotExported.value && exportWarningShowed == undefined) {
+      if (hasBuildsNotExported.value && exportWarningShowed == null) {
         Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.buildsNotExported'), true, 0)
         sessionStorage.setItem(exportWarningShowedKey, '')
       }
@@ -147,11 +152,22 @@ export default defineComponent({
     }
 
     /**
+     * Sets the toolbar CSS class.
+     * Used to set its sticky status and work around Z index problems with PrimeVue components that appear behind the toolbar.
+     */
+    function setToolbarCssClass() {
+      const buildContentElement = document.querySelector('#builds-content')
+      const rectangle = buildContentElement?.getBoundingClientRect()
+      const y = rectangle?.top ?? 0
+
+      toolbarCssClass.value = window.scrollY <= y ? 'toolbar' : 'toolbar toolbar-sticky'
+    }
+
+    /**
      * Shows the build export popup.
      */
     function showBuildsExportPopup() {
       if (canExport.value) {
-        toggleAdvancedPanel(undefined)
         isExporting.value = true
       }
     }
@@ -160,7 +176,6 @@ export default defineComponent({
      * Shows the build import popup.
      */
     function showBuildsImportPopup() {
-      toggleAdvancedPanel(undefined)
       isImporting.value = true
     }
 
@@ -168,12 +183,11 @@ export default defineComponent({
      * Toggles the advanced menu.
      * @param event - Event.
      */
-    function toggleAdvancedPanel(event: unknown) {
-      advancedPanel.value.toggle(event)
+    function toggleOptionsPanel(event: unknown) {
+      optionsPanel.value.toggle(event)
     }
 
     return {
-      advancedPanel,
       buildsSummaries,
       canExport,
       hasImported,
@@ -182,11 +196,13 @@ export default defineComponent({
       isLoading,
       openBuild,
       openNewBuild,
+      optionsPanel,
       selectedBuildSummary,
       showBuildsExportPopup,
       showBuildsImportPopup,
       StatsUtils,
-      toggleAdvancedPanel
+      toggleOptionsPanel,
+      toolbarCssClass
     }
   }
 })
