@@ -21,6 +21,7 @@
 
 .price-details {
   font-size: 0.85rem;
+  width: 500px;
 }
 
 .price-details > div {
@@ -45,10 +46,32 @@
   margin-top: 0.25rem;
 }
 
-.price-details-barter-item-caption {
+.price-details-barter-item-icon {
+  display: flex;
+  justify-content: center;
   margin-left: 0.25rem;
-  margin-right: 1rem;
-  width: 100%;
+  width: 4.5rem;
+}
+
+.price-details-barter-item-name {
+  margin-left: 0.25rem;
+  margin-right: auto;
+  max-width: 16.5rem;
+}
+
+.price-details-barter-item-quantity {
+  text-align: right;
+  width: 4rem;
+}
+
+.price-details-barter-item-price {
+  justify-content: flex-end;
+  width: 10rem;
+}
+
+.price-details-barter-item-price-per-unit {
+  font-size: 0.75rem;
+  margin-right: 2.6rem;
 }
 
 .price-details-barter-title {

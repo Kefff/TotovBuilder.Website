@@ -76,7 +76,6 @@ export default defineComponent({
           + (isBarter.value ? '\n' + vueI18n.t('caption.barter') : ''))
         : '')
       : '')
-    const priceDetailPanelWidth = computed(() => isBarter.value ? 28 : 16)
     const priceValueTooltip = computed(() => props.showTooltip ? vueI18n.t('caption.price') + (props.tooltipSuffix ?? '') : '')
     const showPriceInMainCurrency = computed(() => !isBarter.value && currency.value?.name !== mainCurrency.value?.name)
 
@@ -127,7 +126,7 @@ export default defineComponent({
           ignorePrice: false,
           itemId: barterItem.itemId,
           modSlots: [],
-          quantity: 1
+          quantity: barterItem.quantity
         }, undefined, true, props.useMerchantFilter)
 
         if (!priceResult.success) {
@@ -209,7 +208,6 @@ export default defineComponent({
       mainCurrency,
       merchantTooltip,
       priceDetailPanel,
-      priceDetailPanelWidth,
       priceValueTooltip,
       showPriceInMainCurrency,
       togglePriceDetails

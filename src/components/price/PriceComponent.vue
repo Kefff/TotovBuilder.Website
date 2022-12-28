@@ -46,7 +46,6 @@
   <OverlayPanel
     ref="priceDetailPanel"
     :dismissable="true"
-    :style="'max-width: ' + priceDetailPanelWidth + 'rem'"
   >
     <div class="price-details">
       <div
@@ -96,11 +95,36 @@
           :key="barterItem.itemId"
           class="price-details-barter-item"
         >
-          <ItemIcon :item="barterItems[index]" />
-          <div class="price-details-barter-item-caption">
-            x {{ barterItem.quantity }} {{ barterItems[index].name }}
+          <div class="price-details-barter-item-quantity">
+            <span v-if="barterItem.quantity > 1">{{ barterItem.quantity }} x</span>
           </div>
-          <Price :price="barterItemPrices[index].price" />
+          <div class="price-details-barter-item-icon">
+            <div>
+              <ItemIcon :item="barterItems[index]" />
+            </div>
+          </div>
+          <div class="price-details-barter-item-name">
+            {{ barterItems[index].name }}
+          </div>
+          <div class="price-details-barter-item-price">
+            <div>
+              <Price :price="barterItemPrices[index].price" />
+              <div>
+                <div
+                  v-if="barterItem.quantity > 1"
+                  class="price-details-barter-item-price-per-unit"
+                >
+                  <Price
+                    :price="barterItemPrices[index].unitPrice"
+                    :show-merchant-icon="false"
+                    :show-details="false"
+                    :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
+                  />
+                  <div />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
