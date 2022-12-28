@@ -1,5 +1,8 @@
 <template>
   <div class="builds">
+    <div class="builds-title">
+      {{ $t('caption.buildsList') }}
+    </div>
     <div class="toolbar">
       <div class="toolbar-line">
         <div class="toolbar-part">

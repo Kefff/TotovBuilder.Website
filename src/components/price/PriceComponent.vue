@@ -17,7 +17,7 @@
       />
     </div>
     <div
-      v-if="showMerchantIcon"
+      v-if="canShowMerchantIcon"
       v-tooltip.top="merchantTooltip"
       :class="'price-merchant-icon' + (canShowDetails ? ' price-value-with-details' : '')"
       @click="(e) => togglePriceDetails(e)"

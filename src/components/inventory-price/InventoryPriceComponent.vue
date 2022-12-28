@@ -16,19 +16,19 @@
         >
           <Price
             :price="price"
+            :show-details="false"
             :show-merchant-icon="false"
             :show-tooltip="false"
           />
         </div>
       </div>
-      <div
-        v-tooltip.top="$t('message.missingPrice')"
-        :class="missingPriceIconClass"
-      >
-        <font-awesome-icon
+      <div :class="missingPriceIconClass">
+        <div
           v-if="inventoryPrice.missingPrice"
-          icon="exclamation-triangle"
-        />
+          v-tooltip.top="$t('message.missingPrice')"
+        >
+          <font-awesome-icon icon="exclamation-triangle" />
+        </div>
       </div>
     </div>
   </div>

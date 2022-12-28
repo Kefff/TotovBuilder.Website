@@ -105,10 +105,10 @@ body {
   display: flex;
   font-family: var(--font-title);
   justify-content: center;
+  margin-bottom: 1rem;
 }
 
-.app-title > h1 {
-  align-items: center;
+.app-title > div {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

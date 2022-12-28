@@ -20,6 +20,11 @@ export default defineComponent({
       type: Object as PropType<IPrice>,
       required: true
     },
+    showDetails: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
     showMerchantIcon: {
       type: Boolean,
       required: false,
@@ -55,18 +60,21 @@ export default defineComponent({
     const priceDetailPanel = ref()
 
     const canShowDetails = computed(() => {
-      return props.showTooltip
+      return props.showDetails
         && (showPriceInMainCurrency.value
           || props.price.quest != null
           || isBarter.value)
     })
+    const canShowMerchantIcon = computed(() => props.showMerchantIcon && props.price.merchant !== '')
     const isBarter = computed(() => props.price.currencyName === 'barter')
-    const merchantTooltip = computed(() => props.price.merchant !== ''
-      ? (vueI18n.t('caption.merchant_' + props.price.merchant)
-        + (props.price.merchantLevel !== 0
-          ? (' ' + vueI18n.t('caption.level').toLowerCase() + ' ' + props.price.merchantLevel)
-          : '')
-        + (isBarter.value ? '\n' + vueI18n.t('caption.barter') : ''))
+    const merchantTooltip = computed(() => props.showTooltip
+      ? (props.price.merchant !== ''
+        ? (vueI18n.t('caption.merchant_' + props.price.merchant)
+          + (props.price.merchantLevel !== 0
+            ? (' ' + vueI18n.t('caption.level').toLowerCase() + ' ' + props.price.merchantLevel)
+            : '')
+          + (isBarter.value ? '\n' + vueI18n.t('caption.barter') : ''))
+        : '')
       : '')
     const priceDetailPanelWidth = computed(() => isBarter.value ? 28 : 16)
     const priceValueTooltip = computed(() => props.showTooltip ? vueI18n.t('caption.price') + (props.tooltipSuffix ?? '') : '')
@@ -192,6 +200,7 @@ export default defineComponent({
       barterItemPrices,
       barterItems,
       canShowDetails,
+      canShowMerchantIcon,
       currency,
       displayedCurrency,
       displayedPrice,

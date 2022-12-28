@@ -6,6 +6,15 @@
   margin-bottom: 3rem;
 }
 
+.builds-title {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  font-size: 1.5rem;
+  height: 3.5rem;
+  justify-content: center;
+}
+
 .builds-options-panel {
   max-height: 31.25rem;
   overflow: auto;

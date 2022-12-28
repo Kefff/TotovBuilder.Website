@@ -38,7 +38,7 @@
           <div>
             <Price
               :price="shoppingListItem.price"
-              :show-tooltip="false"
+              :show-details="false"
             />
           </div>
           <div
@@ -48,7 +48,7 @@
             <Price
               :price="shoppingListItem.unitPrice"
               :show-merchant-icon="false"
-              :show-tooltip="false"
+              :show-details="false"
               :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
             />
           </div>
