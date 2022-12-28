@@ -1,8 +1,12 @@
 .toolbar {
   margin-top: 0.5rem;
-  position: sticky;
+  position: unset;
   top: 0;
   width: 100%;
+}
+
+.toolbar-sticky {
+  position: sticky;
   z-index: 1;
 }
 

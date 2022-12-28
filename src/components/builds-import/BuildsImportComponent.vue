@@ -6,7 +6,6 @@
     :header="$t('message.selectBuildsToImport')"
     :modal="true"
     :draggable="false"
-    append-to="self"
   >
     <BuildsList
       v-if="showingList"

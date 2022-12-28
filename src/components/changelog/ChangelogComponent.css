@@ -2,6 +2,7 @@
 
 .changelog-notification {
   display: flex;
+  flex-direction: column;
   margin-top: 1rem;
 }
 
@@ -28,6 +29,10 @@
 .changelog-notification-message {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
+}
+
+.changelog-notification-refresh-message {
+  font-size: 0.85rem;
 }
 
 .changelog {

@@ -21,6 +21,7 @@ export default defineComponent({
     const contactAddress = ref<string>()
     const discordLink = ref<string>()
     const githubAddress = ref<string>()
+    const hasChangelogDisplayed = ref(false)
     const reportBugAddress = ref<string>()
 
     const isSanta = computed(() => {
@@ -41,8 +42,6 @@ export default defineComponent({
 
       return text
     })
-
-    const hasChangelogDisplayed = ref(false)
 
     function displayChangelog() {
       hasChangelogDisplayed.value = true

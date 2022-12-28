@@ -15,7 +15,6 @@
     :header="$t('caption.shoppingList')"
     :modal="true"
     :draggable="false"
-    append-to="self"
   >
     <div>
       <div

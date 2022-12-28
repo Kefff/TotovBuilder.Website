@@ -20,7 +20,7 @@
         required-message-position="right"
       />
     </div>
-    <div class="toolbar">
+    <div :class="toolbarCssClass">
       <div class="toolbar-line">
         <div class="toolbar-part">
           <Button
@@ -186,7 +186,10 @@
     </div>
 
     <!-- Inventory slots -->
-    <div v-if="!isInitializing">
+    <div
+      v-if="!isInitializing"
+      id="build-content"
+    >
       <div
         v-if="!editing && isEmpty"
         class="build-empty-message"

@@ -3,7 +3,7 @@
     <div class="builds-title">
       {{ $t('caption.buildsList') }}
     </div>
-    <div class="toolbar">
+    <div :class="toolbarCssClass">
       <div class="toolbar-line">
         <div class="toolbar-part">
           <Button @click="openNewBuild()">
@@ -44,7 +44,10 @@
       </div>
       <div class="toolbar-gradient" />
     </div>
-    <div v-if="!isLoading && buildsSummaries.length > 0">
+    <div
+      v-if="!isLoading && buildsSummaries.length > 0"
+      id="builds-content"
+    >
       <BuildsList
         v-model="selectedBuildSummary"
         :builds-summaries="buildsSummaries"

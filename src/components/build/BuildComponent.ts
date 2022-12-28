@@ -58,13 +58,13 @@ export default defineComponent({
     const notExportedTooltip = computed(() => !summary.value.exported ? buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
     const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
 
-    const displayOptionsPanel = ref()
-    const optionsPanel = ref()
     const build = ref<IBuild>(buildComponentService.getBuild(route.params['id'] as string))
     const collapseStatuses = ref<boolean[]>([])
     const deleting = ref(false)
+    const displayOptionsPanel = ref()
     const editing = isNewBuild.value ? ref(true) : ref(false)
     const isInitializing = ref(true)
+    const optionsPanel = ref()
     const summary = ref<IBuildSummary>({
       ergonomics: undefined,
       ergonomicsPercentageModifier: 0,
@@ -113,6 +113,7 @@ export default defineComponent({
       verticalRecoil: undefined,
       weight: 0
     })
+    const toolbarCssClass = ref('toolbar')
 
     provide('editing', editing)
 
@@ -126,6 +127,8 @@ export default defineComponent({
       merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
 
       document.onkeydown = (e) => onKeyDown(e)
+      window.addEventListener('scroll', setToolbarCssClass)
+
       initialize()
     })
 
@@ -135,6 +138,9 @@ export default defineComponent({
       compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
       inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
       merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+
+      document.onkeydown = null
+      window.removeEventListener('scroll', setToolbarCssClass)
     })
 
     window.onbeforeunload = function () {
@@ -378,6 +384,18 @@ export default defineComponent({
     }
 
     /**
+     * Sets the toolbar CSS class.
+     * Used to set its sticky status and work around Z index problems with PrimeVue components that appear behind the toolbar.
+     */
+    function setToolbarCssClass() {
+      const buildContentElement = document.querySelector('#build-content')
+      const rectangle = buildContentElement?.getBoundingClientRect()
+      const y = rectangle?.top ?? 0
+
+      toolbarCssClass.value = window.scrollY <= y ? 'toolbar' : 'toolbar toolbar-sticky'
+    }
+
+    /**
      * Displays the deletion confirmation dialog.
      */
     function startDelete() {
@@ -437,7 +455,8 @@ export default defineComponent({
       StatsUtils,
       summary,
       toggleDisplayOptionsPanel,
-      toggleOptionsPanel
+      toggleOptionsPanel,
+      toolbarCssClass
     }
   }
 })

@@ -33,17 +33,13 @@ export default defineComponent({
   },
   setup: () => {
     const merchantFilterService = Services.get(MerchantFilterService)
-    merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
 
     const router = useRouter()
     const buildsSummaries = ref<IBuildSummary[]>([])
     let builds: IBuild[] = []
 
-    const optionsPanel = ref()
-
     const canExport = computed(() => buildsSummaries.value.length > 0)
     const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < b.lastUpdated))
-
     const selectedBuildSummary = computed({
       get: () => [],
       set: (value: string[]) => {
@@ -53,10 +49,13 @@ export default defineComponent({
       }
     })
 
+
+    const hasImported = ref(false)
     const isExporting = ref(false)
     const isImporting = ref(false)
-    const hasImported = ref(false)
     const isLoading = ref(true)
+    const optionsPanel = ref()
+    const toolbarCssClass = ref('toolbar')
 
     watch(() => hasImported.value, () => {
       // Updating the list of builds after import
@@ -67,6 +66,10 @@ export default defineComponent({
     })
 
     onMounted(() => {
+      merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+
+      window.addEventListener('scroll', setToolbarCssClass)
+
       getBuilds()
 
       if (builds.length === 0) {
@@ -80,6 +83,8 @@ export default defineComponent({
 
     onUnmounted(() => {
       merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+
+      window.removeEventListener('scroll', setToolbarCssClass)
     })
 
     /**
@@ -147,6 +152,18 @@ export default defineComponent({
     }
 
     /**
+     * Sets the toolbar CSS class.
+     * Used to set its sticky status and work around Z index problems with PrimeVue components that appear behind the toolbar.
+     */
+    function setToolbarCssClass() {
+      const buildContentElement = document.querySelector('#builds-content')
+      const rectangle = buildContentElement?.getBoundingClientRect()
+      const y = rectangle?.top ?? 0
+
+      toolbarCssClass.value = window.scrollY <= y ? 'toolbar' : 'toolbar toolbar-sticky'
+    }
+
+    /**
      * Shows the build export popup.
      */
     function showBuildsExportPopup() {
@@ -184,7 +201,8 @@ export default defineComponent({
       showBuildsExportPopup,
       showBuildsImportPopup,
       StatsUtils,
-      toggleOptionsPanel
+      toggleOptionsPanel,
+      toolbarCssClass
     }
   }
 })

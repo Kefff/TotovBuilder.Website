@@ -5,7 +5,6 @@
     :header="$t('message.selectBuildsToExport')"
     :modal="true"
     :draggable="false"
-    append-to="self"
   >
     <BuildsList
       v-model="buildsToExportIds"
