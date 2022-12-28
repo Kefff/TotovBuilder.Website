@@ -141,13 +141,6 @@
         <div class="toolbar-part">
           <div class="build-toolbar-right">
             <Button
-              v-tooltip.top="$t('caption.options')"
-              class="p-button-text p-button-sm button-discreet"
-              @click="toggleOptionsPanel"
-            >
-              <font-awesome-icon icon="cog" />
-            </Button>
-            <Button
               v-tooltip.top="$t('caption.displayOptions')"
               class="p-button-text p-button-sm button-discreet"
               @click="toggleDisplayOptionsPanel"
@@ -155,6 +148,13 @@
               <font-awesome-icon
                 icon="tv"
               />
+            </Button>
+            <Button
+              v-tooltip.top="$t('caption.options')"
+              class="p-button-text p-button-sm button-discreet"
+              @click="toggleOptionsPanel"
+            >
+              <font-awesome-icon icon="cog" />
             </Button>
             <NotificationButton />
             <Button

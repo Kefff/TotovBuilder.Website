@@ -60,6 +60,6 @@
   justify-content: center;
 }
 
-.inventory-price-value-missing-price-icon-no-width > svg {
+.inventory-price-value-missing-price-icon-no-width > div > svg {
   margin-left: 0.5rem;
 }

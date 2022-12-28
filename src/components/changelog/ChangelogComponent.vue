@@ -30,6 +30,7 @@
     :header="$t('caption.changelog')"
     :modal="true"
     :draggable="false"
+    append-to="self"
     @hide="closeChangelog()"
   >
     <div class="changelog">
