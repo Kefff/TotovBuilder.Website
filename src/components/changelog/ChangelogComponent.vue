@@ -29,7 +29,6 @@
     :closable="true"
     :header="$t('caption.changelog')"
     :modal="true"
-    :base-z-index="2"
     :draggable="false"
     @hide="closeChangelog()"
   >

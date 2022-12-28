@@ -39,7 +39,6 @@
               v-if="preset == null && price.unitPrice.valueInMainCurrency !== price.price.valueInMainCurrency"
               :price="price.unitPrice"
               :show-merchant-icon="false"
-              :show-barters="false"
               :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
             />
           </div>

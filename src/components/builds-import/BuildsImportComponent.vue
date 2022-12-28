@@ -5,7 +5,6 @@
     :closable="false"
     :header="$t('message.selectBuildsToImport')"
     :modal="true"
-    :base-z-index="2"
     :draggable="false"
   >
     <BuildsList

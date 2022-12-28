@@ -60,7 +60,6 @@
   <OverlayPanel
     ref="optionsPanel"
     :dismissable="true"
-    :base-z-index="3"
   >
     <div class="builds-options-panel">
       <div class="builds-options-panel-item builds-options-panel-special-item">

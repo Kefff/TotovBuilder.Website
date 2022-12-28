@@ -16,7 +16,6 @@
   <OverlayPanel
     ref="notificationPanel"
     :dismissable="true"
-    :base-z-index="3"
   >
     <div class="notification-button-panel">
       <div v-if="notifications.length > 0">

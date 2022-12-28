@@ -47,7 +47,6 @@
     ref="priceDetailPanel"
     :dismissable="true"
     :style="'max-width: ' + priceDetailPanelWidth + 'rem'"
-    :base-z-index="3"
   >
     <div class="price-details">
       <div
@@ -82,7 +81,7 @@
         </a>
       </div>
       <div
-        v-if="isBarter && showBarters"
+        v-if="isBarter"
         class="price-details-barter"
       >
         <div class="price-details-barter-title">
@@ -110,4 +109,3 @@
 
 <script lang="ts" src="./PriceComponent.ts" />
 <style scoped lang="css" src="./PriceComponent.css" />
-<style lang="css" src="./PriceComponent.unscoped.css" />

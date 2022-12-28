@@ -14,8 +14,8 @@
     :closable="true"
     :header="$t('caption.shoppingList')"
     :modal="true"
-    :base-z-index="2"
     :draggable="false"
+    append-to="self"
   >
     <div>
       <div
@@ -38,7 +38,7 @@
           <div>
             <Price
               :price="shoppingListItem.price"
-              :show-barters="false"
+              :show-tooltip="false"
             />
           </div>
           <div
@@ -48,7 +48,7 @@
             <Price
               :price="shoppingListItem.unitPrice"
               :show-merchant-icon="false"
-              :show-barters="false"
+              :show-tooltip="false"
               :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
             />
           </div>
@@ -60,4 +60,3 @@
 
 <script lang="ts" src="./ShoppingListComponent.ts" />
 <style scoped lang="css" src="./ShoppingListComponent.css" />
-<style lang="css" src="./ShoppingListComponent.unscoped.css" />

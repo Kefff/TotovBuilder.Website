@@ -17,7 +17,6 @@
           <Price
             :price="price"
             :show-merchant-icon="false"
-            :show-barters="false"
             :show-tooltip="false"
           />
         </div>
@@ -39,7 +38,6 @@
     ref="priceDetailPanel"
     :dismissable="true"
     :style="'max-width: 16rem'"
-    :base-z-index="3"
   >
     <div class="inventory-price-details">
       <div>

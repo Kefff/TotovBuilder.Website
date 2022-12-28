@@ -1,7 +1,5 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import Services from '../../services/repository/Services'
-import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import LanguageUtils from '../../utils/LanguageUtils'
 
 export default defineComponent({
