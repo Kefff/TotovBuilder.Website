@@ -289,7 +289,7 @@ export class ItemService {
         const currencyItem = this.items.find(i => i.id === currency.itemId)
 
         if (currencyItem != null) {
-          currency.value = currencyItem.prices[0].value
+          currency.value = currencyItem.prices[0]?.value ?? 0
         }
       }
     }
