@@ -7,10 +7,7 @@
     </div>
     <div class="option-entry">
       <div class="option-value-long">
-        <Price
-          v-if="price.valueInMainCurrency > 0"
-          :price="price"
-        />
+        <Price :price="price" />
       </div>
     </div>
     <slot />

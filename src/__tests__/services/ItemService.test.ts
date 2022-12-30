@@ -418,13 +418,13 @@ describe('initialize', () => {
     useItemFetcherServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
+    Services.configure(NotificationService)
 
     const date1 = new Date(2000, 1, 1).getTime()
     const date2 = date1 + (Services.get(WebsiteConfigurationService).configuration.cacheDuration + 1) * 1000 // In ms
     MockDate.set(date1) // Used to mock dates because the hasValidCache() method checks the time ellapsed since the las time prices where fetched. Cf https://stackoverflow.com/a/57599680
 
     const itemFetcherServiceSpy = spy(Services.get(ItemFetcherService))
-    Services.configure(NotificationService)
 
     const itemService = new ItemService()
 
@@ -445,9 +445,9 @@ describe('initialize', () => {
     useItemFetcherServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
+    Services.configure(NotificationService)
 
     const itemFetcherServiceSpy = spy(Services.get(ItemFetcherService))
-    Services.configure(NotificationService)
 
     const itemService = new ItemService()
 
