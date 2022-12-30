@@ -109,6 +109,7 @@ body {
 }
 
 .app-title > div {
+  align-items: center;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -125,6 +126,7 @@ body {
 }
 
 .app-title-prapor {
+  height: 5rem;
   width: 5rem;
 }
 

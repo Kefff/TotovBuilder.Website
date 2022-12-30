@@ -288,8 +288,12 @@ export class ItemService {
       } else {
         const currencyItem = this.items.find(i => i.id === currency.itemId)
 
-        if (currencyItem != null) {
-          currency.value = currencyItem.prices[0]?.value ?? 0
+        /* istanbul ignore else */
+        if (currencyItem != null && currencyItem.prices.length > 0) {
+          currency.value = currencyItem.prices[0].value
+        } else {
+          // When the price of a currency is not found, we set its price to 0. It can happen when merchants stop selling the currencies.
+          currency.value = 0
         }
       }
     }

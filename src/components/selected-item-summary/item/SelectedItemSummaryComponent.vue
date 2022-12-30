@@ -12,7 +12,7 @@
             <font-awesome-icon icon="minus" />
           </div>
           <Price
-            v-if="preset == null && price.price.valueInMainCurrency > 0"
+            v-if="preset == null"
             :price="price.price"
           />
           <div

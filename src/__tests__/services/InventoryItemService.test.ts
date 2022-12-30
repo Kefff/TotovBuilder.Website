@@ -1603,6 +1603,121 @@ describe('getPrice()', () => {
           quest: null,
           value: 0.0,
           valueInMainCurrency: 0.0
+        },
+        {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          merchant: 'prapor',
+          merchantLevel: 3.0,
+          quest: null,
+          value: 25000000.0,
+          valueInMainCurrency: 25000000.0
+        }
+      ])
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(MerchantFilterService)
+
+    const service = new InventoryItemService()
+    Services.get(MerchantFilterService)
+
+    const inventoryItem: IInventoryItem = {
+      content: [],
+      ignorePrice: false,
+      itemId: '544a37c44bdc2d25388b4567',
+      modSlots: [],
+      quantity: 2
+    }
+
+    // Act
+    const price = await service.getPrice(inventoryItem)
+
+    // Assert
+    expect(price.success).toBe(true)
+    expect(price.value).toStrictEqual({
+      missingPrice: false,
+      price: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '544a37c44bdc2d25388b4567',
+        merchant: 'prapor',
+        merchantLevel: 3,
+        quest: null,
+        value: 50000000,
+        valueInMainCurrency: 50000000
+      },
+      pricesWithContent: [
+        {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: null,
+          value: 50000000,
+          valueInMainCurrency: 50000000
+        }
+      ],
+      priceWithContentInMainCurrency: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: null,
+        value: 50000000,
+        valueInMainCurrency: 50000000
+      },
+      unitPrice: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '544a37c44bdc2d25388b4567',
+        merchant: 'prapor',
+        merchantLevel: 3,
+        quest: null,
+        value: 25000000,
+        valueInMainCurrency: 25000000
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+    } as IInventoryPrice)
+  })
+
+  it('should arbitrarily select the first barter as the unit price when no the item has no prices available but has barter with missing barter item prices', async () => {
+    // Arrange
+    useItemServiceMock(
+      true,
+      undefined,
+      [
+        {
+          barterItems: [
+            {
+              itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+              quantity: 1.0
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          merchant: 'peacekeeper',
+          merchantLevel: 3.0,
+          quest: null,
+          value: 0.0,
+          valueInMainCurrency: 0.0
+        },
+        {
+          barterItems: [
+            {
+              itemId: '59faff1d86f7746c51718c9c', // Physical bitcoin
+              quantity: 1.0
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          merchant: 'peacekeeper',
+          merchantLevel: 2.0,
+          quest: null,
+          value: 0.0,
+          valueInMainCurrency: 0.0
         }
       ])
     useTarkovValuesServiceMock()
@@ -1628,11 +1743,16 @@ describe('getPrice()', () => {
     expect(price.value).toStrictEqual({
       missingPrice: true,
       price: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
+        barterItems: [
+          {
+            itemId: '5448be9a4bdc2dfd2f8b456a',
+            quantity: 2
+          }
+        ],
+        currencyName: 'barter',
+        itemId: '544a37c44bdc2d25388b4567',
+        merchant: 'peacekeeper',
+        merchantLevel: 3,
         quest: null,
         value: 0,
         valueInMainCurrency: 0
@@ -1649,11 +1769,16 @@ describe('getPrice()', () => {
         valueInMainCurrency: 0
       },
       unitPrice: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
+        barterItems: [
+          {
+            itemId: '5448be9a4bdc2dfd2f8b456a',
+            quantity: 1
+          }
+        ],
+        currencyName: 'barter',
+        itemId: '544a37c44bdc2d25388b4567',
+        merchant: 'peacekeeper',
+        merchantLevel: 3,
         quest: null,
         value: 0,
         valueInMainCurrency: 0

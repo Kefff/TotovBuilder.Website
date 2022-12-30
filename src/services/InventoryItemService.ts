@@ -232,6 +232,7 @@ export class InventoryItemService {
         if (!missingBarterItemPrice
           && (unitPrice.valueInMainCurrency === 0
             || matchingPriceInMainCurrency < unitPrice.valueInMainCurrency)) {
+          hasUnitPrice = true
           unitPrice = {
             // Creating a new instance because we need to set the valueInMainCurrency.
             // If we directly use a reference to matchinPrice.valueInMainCurrency, then we modify this price for the whole application each time we pass here
@@ -239,8 +240,16 @@ export class InventoryItemService {
             valueInMainCurrency: matchingPriceInMainCurrency
           }
           barterItemPrices = matchingPriceBarterItemPrices
+        }
+      }
 
-          hasUnitPrice = true
+      // If no unit price is found but it exists barters with missing barter item prices, we arbitrarily select the first one as the unit price
+      // in order for the user to be able to see the merchant and the barter items where the price will be displayed
+      const barterMatchingPrices = matchingPrices.filter(mp => mp.currencyName === 'barter')
+
+      if (unitPrice.merchant === '' && barterMatchingPrices.length > 0) {
+        unitPrice = {
+          ...barterMatchingPrices[0]
         }
       }
     }

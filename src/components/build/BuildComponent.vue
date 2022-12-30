@@ -2,7 +2,7 @@
   <div class="build">
     <div class="build-title">
       <span
-        v-if="!summary.exported"
+        v-if="!summary.exported && !isNewBuild"
         v-tooltip.top="notExportedTooltip"
         class="build-toolbar-not-exported"
       >

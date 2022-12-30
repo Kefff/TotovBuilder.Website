@@ -444,6 +444,7 @@ export default defineComponent({
       invalid,
       inventorySlotPathPrefix,
       isEmpty,
+      isNewBuild,
       isInitializing,
       notExportedTooltip,
       optionsPanel,
