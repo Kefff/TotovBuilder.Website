@@ -4,10 +4,7 @@
     class="item"
   >
     <div class="item-selection">
-      <div
-        v-tooltip.top="selectedItem?.name"
-        class="item-dropdown-override"
-      >
+      <div class="item-dropdown-override">
         <Dropdown
           v-model="selectedItem"
           data-key="id"
@@ -15,7 +12,7 @@
           :empty-message="$t(optionsEmptyMessage)"
           :options="options"
           option-label="caption"
-          scroll-height="26.5rem"
+          scroll-height="27rem"
           :show-clear="editing"
           class="item-dropdown"
           @change="onSelectedItemChanged()"
@@ -30,10 +27,14 @@
             />
           </template>
           <template #option="slotProps">
-            <SummarySelector :item="slotProps.option" />
+            <div class="item-dropdown-option">
+              <SummarySelector :item="slotProps.option" />
+            </div>
           </template>
           <template #value="slotProps">
-            <SelectedItem v-model="slotProps.value" />
+            <div v-tooltip.top="selectedItem?.name">
+              <SelectedItem v-model="slotProps.value" />
+            </div>
           </template>
         </Dropdown>
       </div>
@@ -72,12 +73,12 @@
       v-if="selectedInventoryItem != null && selectedItem != null && !itemChanging"
       class="tabs"
     >
-      <div :class="selectedTab === SelectableTab.stats ? '' : 'tab-hidden'">
+      <div :class="selectedTab === SelectableTab.stats ? '' : 'item-tab-hidden'">
         <StatsSelector :item-id="selectedItem.id" />
       </div>
       <div
         v-if="selectedItemIsModdable"
-        :class="selectedTab === SelectableTab.mods ? '' : 'tab-hidden'"
+        :class="selectedTab === SelectableTab.mods ? '' : 'item-tab-hidden'"
       >
         <ItemMods
           v-model="selectedInventoryItem.modSlots"
@@ -87,7 +88,7 @@
       </div>
       <div
         v-if="selectedItemIsContainer"
-        :class="selectedTab === SelectableTab.content ? '' : 'tab-hidden'"
+        :class="selectedTab === SelectableTab.content ? '' : 'item-tab-hidden'"
       >
         <ItemContent
           v-model="selectedInventoryItem.content"

@@ -1,15 +1,18 @@
 <template>
   <div
     v-tooltip.top="$t('caption.sortBy', { property: StringUtils.toLowerFirst($t(captionResource)) })"
-    class="sort-button"
+    class="options-header-sort-button"
     @click="sortBy(property)"
   >
-    <div :class="'sort-arrow ' + sortingDirectionClass + ' ' + (modelValue.property === property ? 'sort-arrow-visible' : '')">
-      <font-awesome-icon icon="angle-down" />
+    <div :class="'options-header-sort-button-sort-arrow ' + sortingDirectionClass + ' ' + (modelValue.property === property ? 'options-header-sort-button-sort-arrow-visible' : '')">
+      <font-awesome-icon
+        icon="angle-down"
+      />
     </div>
     <font-awesome-icon
       v-if="icon != null"
       :icon="icon"
+      class="options-header-sort-button-icon"
     />
     <img
       v-else-if="customIcon != null"

@@ -436,16 +436,6 @@ describe('getPrice()', () => {
         pricesWithContent: [
           {
             barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: null,
-            value: 23444,
-            valueInMainCurrency: 23444
-          },
-          {
-            barterItems: [],
             currencyName: 'USD',
             itemId: '',
             merchant: '',
@@ -453,6 +443,16 @@ describe('getPrice()', () => {
             quest: null,
             value: 26,
             valueInMainCurrency: 2912
+          },
+          {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: null,
+            value: 23444,
+            valueInMainCurrency: 23444
           }
         ],
         unitPrice: {

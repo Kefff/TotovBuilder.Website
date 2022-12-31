@@ -14,25 +14,29 @@
       "iconName": "balance-scale",
       "itemId": null,
       "mainCurrency": false,
-      "name": "barter"
-    },
-    {
-      "iconName": "dollar-sign",
-      "itemId": "5696686a4bdc2da3298b456a",
-      "mainCurrency": false,
-      "name": "USD"
+      "name": "barter",
+      "sortOrder": 0
     },
     {
       "iconName": "euro-sign",
       "itemId": "569668774bdc2da2298b4568",
       "mainCurrency": false,
-      "name": "EUR"
+      "name": "EUR",
+      "sortOrder": 1
+    },
+    {
+      "iconName": "dollar-sign",
+      "itemId": "5696686a4bdc2da3298b456a",
+      "mainCurrency": false,
+      "name": "USD",
+      "sortOrder": 2
     },
     {
       "iconName": "ruble-sign",
       "itemId": "5449016a4bdc2d6f028b456f",
       "mainCurrency": true,
-      "name": "RUB"
+      "name": "RUB",
+      "sortOrder": 3
     }
   ],
   "heavyEncumbermentWeight": 65,

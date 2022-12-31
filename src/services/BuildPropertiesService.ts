@@ -15,6 +15,7 @@ import { PathUtils } from '../utils/PathUtils'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import { round } from 'round-ts'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
+import { PriceUtils } from '../utils/PriceUtils'
 
 /**
  * Represents a service responsible for managing properties of a build.
@@ -314,6 +315,10 @@ export class BuildPropertiesService {
       if (inventorySlotPriceResult.value.missingPrice) {
         inventoryPrice.missingPrice = true
       }
+    }
+
+    if (inventoryPrice.pricesWithContent.length > 1) {
+      inventoryPrice.pricesWithContent = PriceUtils.sortByCurrency(inventoryPrice.pricesWithContent)
     }
 
     return Result.ok(inventoryPrice)
