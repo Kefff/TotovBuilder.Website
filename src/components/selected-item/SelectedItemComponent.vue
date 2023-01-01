@@ -24,3 +24,4 @@
 
 <script lang="ts" src="./SelectedItemComponent.ts" />
 <style scoped lang="css" src="./SelectedItemComponent.css" />
+<style lang="css" src="./SelectedItemComponent.unscoped.css" />

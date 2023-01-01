@@ -2,6 +2,8 @@
 @import '../../../assets/css/option.css';
 
 .selected-item-summary {
+  align-items: center;
+  display: flex;
   flex-grow: 1;
 }
 

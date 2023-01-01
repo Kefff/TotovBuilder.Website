@@ -15,11 +15,7 @@
 .selected-item {
   align-items: center;
   display: flex;
-  height: 3.625rem;
-  padding-bottom: 0.25rem;
-  padding-left: 0.25rem;
   padding-right: 1rem;
-  padding-top: 0.25rem;
 }
 
 .selected-item-icon {

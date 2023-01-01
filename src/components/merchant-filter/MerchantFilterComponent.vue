@@ -41,7 +41,13 @@
           class="merchant-filter-level"
           :placeholder="$t('caption.level')"
           @change="onFiltersChanged()"
-        />
+        >
+          <template #option="slotProps">
+            <div class="merchant-filter-level-option">
+              {{ slotProps.option }}
+            </div>
+          </template>
+        </Dropdown>
       </div>
     </div>
   </div>

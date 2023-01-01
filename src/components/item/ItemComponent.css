@@ -1,5 +1,5 @@
 .item {
-  margin-bottom: 1rem;
+  margin-bottom: 0.25rem;
 }
 
 .item:last-child {
@@ -10,15 +10,22 @@
   width: 25rem;
 }
 
+.item-dropdown-option {
+  padding-bottom: 0.125rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.125rem;
+}
+
 .item-selection {
-  align-items: center;
   display: flex;
+  flex-direction: row;
 }
 
 .item-quantity {
   width: 11rem;
 }
 
-.tab-hidden {
+.item-tab-hidden {
   display: none;
 }

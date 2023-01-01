@@ -23,6 +23,11 @@ export interface ICurrency {
   name: string
 
   /**
+   * Value determining the position of the currency when a price containing multiple currencies is displayed.
+   */
+  sortOrder: number
+
+  /**
    * Value in main currency.
    */
   value: number

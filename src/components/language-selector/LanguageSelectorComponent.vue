@@ -13,7 +13,7 @@
         @change="setLanguage()"
       >
         <template #option="slotProps">
-          <div class="language-selector-item">
+          <div class="language-selector-item language-selector-option">
             <img
               class="language-selector-item-flag"
               :src="'/assets/language_' + slotProps.option + '.webp'"

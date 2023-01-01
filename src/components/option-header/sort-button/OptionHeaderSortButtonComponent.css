@@ -1,31 +1,6 @@
 @import '../../../assets/css/icon.css';
 
-.sort-arrow {
-  font-size: 0.75rem;
-  margin-right: 0.1rem;
-  position: relative;
-  top: 5px;
-  visibility: hidden;
-}
-
-.sort-arrow-down {
-  animation-duration: 0.5s;
-  animation-iteration-count: 1;
-  animation-name: sort-arrow-to-down;
-}
-
-.sort-arrow-up {
-  animation-duration: 0.5s;
-  animation-iteration-count: 1;
-  animation-name: sort-arrow-to-up;
-  transform: rotate(180deg);
-}
-
-.sort-arrow-visible {
-  visibility: visible;
-}
-
-.sort-button {
+.options-header-sort-button {
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -33,8 +8,37 @@
   justify-content: flex-end;
 }
 
-.sort-button:hover {
+.options-header-sort-button:hover {
   cursor: pointer;
+}
+
+.options-header-sort-button-icon {
+  width: 1rem;
+}
+
+.options-header-sort-button-sort-arrow {
+  font-size: 0.75rem;
+  margin-right: 0.1rem;
+  position: relative;
+  top: 5px;
+  visibility: hidden;
+}
+
+.options-header-sort-button-sort-arrow-down {
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+  animation-name: sort-arrow-to-down;
+}
+
+.options-header-sort-button-sort-arrow-up {
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+  animation-name: sort-arrow-to-up;
+  transform: rotate(180deg);
+}
+
+.options-header-sort-button-sort-arrow-visible {
+  visibility: visible;
 }
 
 @keyframes sort-arrow-to-up {

@@ -12,6 +12,10 @@
   margin-bottom: 0;
 }
 
+.merchant-filter-disabled-text {
+  color: var(--util-color5);
+}
+
 .merchant-filter-icon {
   border-color: var(--util-color);
   border-radius: 3px;
@@ -38,6 +42,6 @@
   width: 5.125rem;
 }
 
-.merchant-filter-disabled-text {
-  color: var(--util-color5);
+.merchant-filter-level-option {
+  padding: 1rem
 }

@@ -1,0 +1,5 @@
+.selected-item > .item-icon > img {
+  border-bottom-style: none;
+  border-left-style: none;
+  border-top-style: none;
+}

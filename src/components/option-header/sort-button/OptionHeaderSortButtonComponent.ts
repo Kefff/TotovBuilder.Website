@@ -36,7 +36,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup: (props, { emit }) => {
-    const sortingDirectionClass = computed(() => props.modelValue.order === SortingOrder.asc ? 'sort-arrow-down' : 'sort-arrow-up')
+    const sortingDirectionClass = computed(() => props.modelValue.order === SortingOrder.asc ? 'options-header-sort-button-sort-arrow-down' : 'options-header-sort-button-sort-arrow-up')
 
     /**
      * Emits to the parent component the updated sorting data.
