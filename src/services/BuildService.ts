@@ -9,6 +9,9 @@ import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import Services from './repository/Services'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import { ItemService } from './ItemService'
+import { IRangedWeapon } from '../models/item/IRangedWeapon'
+import { VersionService } from './VersionService'
 
 /**
  * Represents a service responsible for managing builds.
@@ -19,8 +22,11 @@ export class BuildService {
    * @param build - Build to add.
    * @returns Build ID.
    */
-  public add(build: IBuild): string {
+  public async add(build: IBuild): Promise<string> {
     build.id = Guid.create().toString()
+    build.lastUpdated = new Date()
+    build.lastWebsiteVersion = await Services.get(VersionService).getCurrentVersion()
+
     const storageKey = this.getKey(build.id)
     localStorage.setItem(storageKey, JSON.stringify(build))
 
@@ -37,7 +43,8 @@ export class BuildService {
       name: '',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date()
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined
     }
 
     for (const inventorySlotType of InventorySlotTypes.sort((inventorySlotType1, inventorySlotType2) => inventorySlotType1.displayOrder - inventorySlotType2.displayOrder)) {
@@ -264,18 +271,80 @@ export class BuildService {
    * Updates an obsolete build.
    * @param build - Build to update.
    */
-  public updateObsoleteBuild(build: IBuild): void {
+  public async updateObsoleteBuild(build: IBuild): Promise<void> {
+    // Replacing the compass inventory slot by the special inventory slots
     const obsoleteInventorySlot = build.inventorySlots.find(is => is.typeId === 'compass')
 
     if (obsoleteInventorySlot != null) {
       obsoleteInventorySlot.typeId = 'special'
-
       obsoleteInventorySlot.items = [
         obsoleteInventorySlot.items[0],
         undefined,
         undefined
       ]
     }
+
+    if (this.compareVersions(build.lastWebsiteVersion, '1.6.0') < 0) {
+      // Updating builds to use the default preset item instead of the base item for their weapons
+      const itemService = Services.get(ItemService)
+
+      for (const inventorySlot of build.inventorySlots) {
+        if (inventorySlot.typeId === 'onSling' || inventorySlot.typeId === 'onBack' || inventorySlot.typeId === 'holster') {
+          for (const inventoryItem of inventorySlot.items) {
+            if (inventoryItem != null) {
+              const itemResult = await itemService.getItem(inventoryItem.itemId)
+
+              if (!itemResult.success) {
+                continue
+              }
+
+              const rangedWeapon = itemResult.value as IRangedWeapon
+
+              if (rangedWeapon.defaultPresetId != null) {
+                inventoryItem.itemId = rangedWeapon.defaultPresetId
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Compares two version numbers.
+   * @param websiteVersion1 - First version number.
+   * @param websiteVersion2 - Second version number.
+   * @returns -1 if the first version number is anterior to the second, 1 if it is posterior, 0 if they are identical.
+   */
+  private compareVersions(websiteVersion1: string | undefined, websiteVersion2: string | undefined): number {
+    const websiteVersion1Numbers = [0, 0, 0]
+    const websiteVersion2Numbers = [0, 0, 0]
+
+    if (websiteVersion1 != null) {
+      const websiteVersion1Strings = websiteVersion1.split('.')
+
+      for (let i = 0; i < websiteVersion1Strings.length; i++) {
+        websiteVersion1Numbers[i] = Number.parseInt(websiteVersion1Strings[i])
+      }
+    }
+
+    if (websiteVersion2 != null) {
+      const websiteVersion2Strings = websiteVersion2.split('.')
+
+      for (let i = 0; i < websiteVersion2Strings.length; i++) {
+        websiteVersion2Numbers[i] = Number.parseInt(websiteVersion2Strings[i])
+      }
+    }
+
+    for (let i = 0; i < websiteVersion1Numbers.length; i++) {
+      if (websiteVersion1Numbers[i] < websiteVersion2Numbers[i]) {
+        return -1
+      } else if (websiteVersion1Numbers[i] > websiteVersion2Numbers[i]) {
+        return 1
+      }
+    }
+
+    return 0
   }
 
   /**

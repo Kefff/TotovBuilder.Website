@@ -378,9 +378,9 @@ export default defineComponent({
     /**
      * Saves the build.
      */
-    function save() {
+    async function save() {
       editing.value = false
-      buildComponentService.saveBuild(router, build.value)
+      await buildComponentService.saveBuild(router, build.value)
     }
 
     /**

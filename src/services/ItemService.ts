@@ -43,7 +43,7 @@ export class ItemService {
   /**
    * Date of the last time prices were fetched.
    */
-  private lastPricesFetchDate: Date = new Date(1)
+  private lastPricesFetchDate: Date | undefined
 
   /**
    * Current prices fetching task.
@@ -270,7 +270,8 @@ export class ItemService {
    * @returns `true` if the cache of the item has not expired yet; otherwise `false`.
    */
   private hasValidCache(): boolean {
-    const duration = (new Date().getTime() - this.lastPricesFetchDate.getTime()) / 1000 // In seconds
+    const lastPricesFetchDate = this.lastPricesFetchDate ?? new Date(1)
+    const duration = (new Date().getTime() - lastPricesFetchDate.getTime()) / 1000 // In seconds
     const cacheDuration = Services.get(WebsiteConfigurationService).configuration.cacheDuration
 
     return duration <= cacheDuration

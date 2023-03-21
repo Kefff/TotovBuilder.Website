@@ -23,10 +23,10 @@ export function useItemServiceMock(hasMainCurrency = true, customItemList?: IIte
 }
 
 function getItem(id: string, customItemList?: IItem[], customPricesList?: IPrice[]): Promise<Result<IItem>> {
-  const item = (customItemList ?? ItemsMock).find(i => i.id === id) as IItem
+  const item = (customItemList ?? ItemsMock as IItem[]).find(i => i.id === id) as IItem
 
   if (item != null) {
-    item.prices = (customPricesList ?? PriceMocks).filter(p => p.itemId === id)
+    item.prices = (customPricesList ?? PriceMocks as IPrice[]).filter(p => p.itemId === id)
 
     return Promise.resolve(Result.ok(item))
   }
@@ -35,10 +35,10 @@ function getItem(id: string, customItemList?: IItem[], customPricesList?: IPrice
 }
 
 async function getItemsOfCategory(id: string, customItemList?: IItem[], customPricesList?: IPrice[]): Promise<Result<IItem[]>> {
-  const items = (customItemList ?? ItemsMock).filter(i => i.categoryId === id) as IItem[]
+  const items = (customItemList ?? ItemsMock as IItem[]).filter(i => i.categoryId === id) as IItem[]
 
   for (const item of items) {
-    item.prices = (customPricesList ?? PriceMocks).filter(p => p.itemId === item.id)
+    item.prices = (customPricesList ?? PriceMocks as IPrice[]).filter(p => p.itemId === item.id)
   }
 
   return Promise.resolve(Result.ok<IItem[]>(items))
@@ -51,6 +51,7 @@ function getMainCurrency(hasMainCurrency: boolean): Promise<Result<ICurrency>> {
       itemId: '5449016a4bdc2d6f028b456f',
       mainCurrency: true,
       name: 'RUB',
+      sortOrder: 3,
       value: 1
     }))
   } else {

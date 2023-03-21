@@ -57,7 +57,7 @@ export default defineComponent({
      */
     async function confirmImport() {
       const buildsToImport = readenBuilds.value.filter((rb) => buildsToImportIds.value.some((btii) => btii === rb.id))
-      importService.import(buildsToImport)
+      await importService.import(buildsToImport)
 
       readenBuilds.value = []
       readenBuildSummaries.value = []

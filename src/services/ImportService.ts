@@ -29,13 +29,13 @@ export class ImportService {
    * Imports builds.
    * @param builds - Builds to import.
    */
-  public import(builds: IBuild[]): void {
+  public async import(builds: IBuild[]): Promise<void> {
     const buildService = Services.get(BuildService)
     const importDate = new Date()
 
     for (const build of builds) {
       build.lastExported = importDate
-      buildService.add(build)
+      await buildService.add(build)
     }
   }
 

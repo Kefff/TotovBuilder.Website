@@ -22,20 +22,22 @@ describe('import()', () => {
         id: '1',
         inventorySlots: [],
         lastExported: undefined,
-        lastUpdated: new Date(1),
+        lastUpdated: undefined,
+        lastWebsiteVersion: '1.0.0',
         name: '1'
       },
       {
         id: '2',
         inventorySlots: [],
         lastExported: undefined,
-        lastUpdated: new Date(1),
+        lastUpdated: undefined,
+        lastWebsiteVersion: '1.0.0',
         name: '2'
       }
     ]
 
     // Act
-    importService.import(builds)
+    await importService.import(builds)
 
     // Assert
     expect(importedBuilds).toStrictEqual(builds)

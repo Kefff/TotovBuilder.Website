@@ -27,5 +27,10 @@ export interface IBuild {
   /**
    * Last update date.
    */
-  lastUpdated: Date
+  lastUpdated: Date | undefined,
+
+  /**
+   * Last version of the website that updated the build.
+   */
+  lastWebsiteVersion: string | undefined
 }

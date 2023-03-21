@@ -170,7 +170,7 @@ export const build1: IBuild = {
             }
           ],
           ignorePrice: false,
-          itemId: '5beed0f50db834001c062b12', // RPK-16 5.45x39 light machine gun
+          itemId: '5c0d1ec986f77439512a1a72', // RPK-16 5.45x39 light machine gun Default
           modSlots: [
             {
               item: {
@@ -317,7 +317,8 @@ export const build1: IBuild = {
     }
   ],
   lastExported: undefined,
-  lastUpdated: new Date(1)
+  lastUpdated: undefined,
+  lastWebsiteVersion: undefined
 }
 
 export const build2: IBuild = {
@@ -373,7 +374,7 @@ export const build2: IBuild = {
             }
           ],
           ignorePrice: false,
-          itemId: '5cadc190ae921500103bb3b6', // Beretta M9A3 9x19 pistol
+          itemId: '5d3f0bc986f7743cb332abdc', // Beretta M9A3 9x19 pistol Default
           modSlots: [
             {
               item: {
@@ -525,7 +526,8 @@ export const build2: IBuild = {
     }
   ],
   lastExported: undefined,
-  lastUpdated: new Date(1)
+  lastUpdated: undefined,
+  lastWebsiteVersion: undefined
 }
 
 describe('checkCanAddArmor()', () => {
@@ -669,7 +671,8 @@ describe('checkCanAddMod()', () => {
         id: '123456789',
         inventorySlots: [],
         lastExported: undefined,
-        lastUpdated: new Date(),
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
         name: 'build1'
       } as IBuild,
       '57dc2fa62459775949412633',
@@ -699,7 +702,8 @@ describe('checkCanAddMod()', () => {
           }
         ],
         lastExported: undefined,
-        lastUpdated: new Date(),
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
         name: 'build1'
       } as IBuild,
       '5d15ce51d7ad1a1eff619092', // AKS-74U Alfa Arms Goliaf handguard
@@ -786,7 +790,8 @@ describe('checkCanAddMod()', () => {
           }
         ],
         lastExported: undefined,
-        lastUpdated: new Date(),
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
         name: 'buil1'
       } as IBuild,
       '5d15ce51d7ad1a1eff619092', // AKS-74U Alfa Arms Goliaf handguard, conflicts with AK-105 5.45x39 muzzle brake & compensator (6P44 0-20)
@@ -869,7 +874,8 @@ describe('checkCanAddMod()', () => {
           }
         ],
         lastExported: undefined,
-        lastUpdated: new Date(),
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
         name: 'buil1'
       } as IBuild,
       '5d15ce51d7ad1a1eff619092', // AKS-74U Alfa Arms Goliaf handguard, no conflict
@@ -956,7 +962,8 @@ describe('checkCanAddMod()', () => {
           }
         ],
         lastExported: undefined,
-        lastUpdated: new Date(),
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
         name: 'buil1'
       } as IBuild,
       '5c82342f2e221644f31c060e', // Zenit-BelOMO PSO-1 4x24 scope, conflicts with Axion Kobra EKP-8-02 reflex sight (Dovetail) that is being replaced (so there should be no error)
@@ -1115,26 +1122,30 @@ describe('getErgonomics()', () => {
   it.each([
     [build1, 37.5],
     [build2, 54],
-    [{
-      name: 'Build 3',
-      id: 'build3',
-      inventorySlots: [
-        {
-          typeId: 'onBack',
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
-              modSlots: [],
-              quantity: 1
-            }
-          ]
-        }
-      ],
-      lastExported: undefined,
-      lastUpdated: new Date(1)
-    } as IBuild, 44],
+    [
+      {
+        id: 'build3',
+        inventorySlots: [
+          {
+            typeId: 'onBack',
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+                modSlots: [],
+                quantity: 1
+              }
+            ]
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build 3'
+      } as IBuild,
+      44
+    ],
     [
       {
         name: 'Empty build',
@@ -1153,7 +1164,8 @@ describe('getErgonomics()', () => {
             items: [null]
           }
         ]
-      } as IBuild, undefined
+      } as IBuild,
+      undefined
     ]
   ])(
     'should get the ergonomics of the main ranged weapon of a build',
@@ -1191,7 +1203,6 @@ describe('getErgonomics()', () => {
     // Act
     const ergonomics = await service.getErgonomics(
       {
-        name: 'Build 1',
         id: 'build1',
         inventorySlots: [
           {
@@ -1208,7 +1219,9 @@ describe('getErgonomics()', () => {
           }
         ],
         lastExported: undefined,
-        lastUpdated: new Date(1)
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build 1'
       }
     )
 
@@ -1220,7 +1233,7 @@ describe('getErgonomics()', () => {
 
 describe('getErgonomicsPercentageModifier()', () => {
   it.each([
-    [build1, -0.25],
+    [build1, -0.07],
     [build2, 0]
   ])(
     'should get the ergonomics percentage modifier of a build',
@@ -1253,7 +1266,6 @@ describe('getErgonomicsPercentageModifier()', () => {
     // Act
     const ergonomicsPercentageModifier = await service.getErgonomicsPercentageModifier(
       {
-        name: 'Build 1',
         id: 'build1',
         inventorySlots: [
           {
@@ -1270,7 +1282,9 @@ describe('getErgonomicsPercentageModifier()', () => {
           }
         ],
         lastExported: undefined,
-        lastUpdated: new Date(1)
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build 1'
       }
     )
 
@@ -1437,7 +1451,8 @@ describe('getPrice()', () => {
         }
       ],
       lastExported: undefined,
-      lastUpdated: new Date(1),
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
       name: ''
     }
 
@@ -1511,7 +1526,6 @@ describe('getPrice()', () => {
 
     // Act
     const price = await service.getPrice({
-      name: 'Build 1',
       id: 'build1',
       inventorySlots: [
         {
@@ -1528,7 +1542,9 @@ describe('getPrice()', () => {
         }
       ],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: 'Build 1'
     })
 
     // Assert
@@ -1545,7 +1561,6 @@ describe('getPrice()', () => {
 
     // Act
     const price = await service.getPrice({
-      name: 'Build 1',
       id: 'build1',
       inventorySlots: [
         {
@@ -1562,7 +1577,9 @@ describe('getPrice()', () => {
         }
       ],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: 'Build 1'
     })
 
     // Assert
@@ -1573,9 +1590,10 @@ describe('getPrice()', () => {
 
 describe('getNotExportedTooltip()', () => {
   it.each([
+    [undefined, undefined, 'Build not exported. It will be lost if your browser history is cleared.'],
     [new Date(1), undefined, 'Build not exported. It will be lost if your browser history is cleared.'],
     [new Date(2), new Date(1), 'Changes made on the 01/01/1970 à 01:00:00 have not been exported. They will be lost if your browser history is cleared. Last export on 01/01/1970 à 01:00:00.']
-  ])('should get the tooltip for not exported builds', (lastUpdated: Date, lastExported: Date | undefined, expected: string) => {
+  ])('should get the tooltip for not exported builds', (lastUpdated: Date | undefined, lastExported: Date | undefined, expected: string) => {
     // Arrange
     const service = new BuildPropertiesService()
 
@@ -1646,7 +1664,6 @@ describe('getRecoil()', () => {
     // Act
     const recoil = await service.getRecoil(
       {
-        name: 'Build 1',
         id: 'build1',
         inventorySlots: [
           {
@@ -1663,7 +1680,9 @@ describe('getRecoil()', () => {
           }
         ],
         lastExported: undefined,
-        lastUpdated: new Date(1)
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build 1'
       }
     )
 
@@ -1675,8 +1694,8 @@ describe('getRecoil()', () => {
 
 describe('getWeight()', () => {
   it.each([
-    [build1, 24.042],
-    [build2, 3.762]
+    [build1, 24.148],
+    [build2, 3.562]
   ])(
     'should get the weight of a build',
     async (build: IBuild, expected: number) => {
@@ -1706,7 +1725,6 @@ describe('getWeight()', () => {
 
     // Act
     const weight = await service.getWeight({
-      name: 'Build 1',
       id: 'build1',
       inventorySlots: [
         {
@@ -1723,7 +1741,9 @@ describe('getWeight()', () => {
         }
       ],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: 'Build 1'
     })
 
     // Assert

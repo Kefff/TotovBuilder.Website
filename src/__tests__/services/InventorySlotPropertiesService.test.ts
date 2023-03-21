@@ -322,7 +322,7 @@ describe('getErgonomics()', () => {
 
 describe('getErgonomicsPercentageModifier()', () => {
   it.each([
-    [inventorySlot1, -0.20],
+    [inventorySlot1, -0.05],
     [inventorySlot2, undefined]
   ])('should get the ergonomics percentage modifier of an inventory slot', async (inventorySlot: IInventorySlot, expected: number | undefined) => {
     // Arrange

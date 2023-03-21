@@ -16,10 +16,11 @@ describe('getBuild()', () => {
     when(buildServiceMock.get('123')).thenReturn(
       Result.ok({
         id: '123',
-        name: 'Test',
         inventorySlots: [],
         lastExported: undefined,
-        lastUpdated: new Date(1)
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Test'
       } as IBuild))
     Services.configure(BuildService, undefined, instance(buildServiceMock))
 
@@ -29,10 +30,11 @@ describe('getBuild()', () => {
     // Assert
     expect(build).toStrictEqual({
       id: '123',
-      name: 'Test',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: 'Test'
     })
     verify(buildServiceMock.get('123')).once()
   })
@@ -43,10 +45,11 @@ describe('getBuild()', () => {
     const buildServiceMock = mock<BuildService>()
     when(buildServiceMock.create()).thenReturn({
       id: '',
-      name: '',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: ''
     })
     Services.configure(BuildService, undefined, instance(buildServiceMock))
 
@@ -56,11 +59,12 @@ describe('getBuild()', () => {
     // Assert
     expect(build).toStrictEqual({
       id: '',
-      name: '',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
-    })
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: ''
+    } as IBuild)
   })
 
   it('should return a new build when an error occurs', () => {
@@ -73,10 +77,11 @@ describe('getBuild()', () => {
     when(buildServiceMock.get('123')).thenReturn(Result.fail(FailureType.hidden, 'Context', 'Error'))
     when(buildServiceMock.create()).thenReturn({
       id: '',
-      name: '',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: ''
     })
     Services.configure(BuildService, undefined, instance(buildServiceMock))
 
@@ -86,11 +91,12 @@ describe('getBuild()', () => {
     // Assert
     expect(build).toStrictEqual({
       id: '',
-      name: '',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
-    })
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: ''
+    } as IBuild)
     verify(buildServiceMock.get('123')).once()
     verify(buildServiceMock.create()).once()
   })
@@ -293,7 +299,7 @@ describe('getBuildFromSharableString()', () => {
 })
 
 describe('saveBuild()', () => {
-  it('should add a new build', () => {
+  it('should add a new build', async () => {
     // Arrange
     const buildComponentService = new BuildComponentService()
     const buildServiceMock = mock<BuildService>()
@@ -304,14 +310,15 @@ describe('saveBuild()', () => {
 
     const build: IBuild = {
       id: '',
-      name: 'Test',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: 'Test'
     }
 
     // Act
-    buildComponentService.saveBuild(instance(routerMock), build)
+    await buildComponentService.saveBuild(instance(routerMock), build)
 
     // Assert
     verify(buildServiceMock.add(build)).once()
@@ -331,10 +338,11 @@ describe('saveBuild()', () => {
 
     const build: IBuild = {
       id: '123',
-      name: 'Test',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: 'Test'
     }
 
     // Act
@@ -358,10 +366,11 @@ describe('saveBuild()', () => {
 
     const build: IBuild = {
       id: '123',
-      name: 'Test',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: 'Test'
     }
 
     // Act
@@ -385,11 +394,12 @@ describe('deleteBuild()', () => {
     const routerMock = mock<Router>()
 
     const build: IBuild = {
-      name: '',
       id: '123',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: ''
     }
 
     // Act

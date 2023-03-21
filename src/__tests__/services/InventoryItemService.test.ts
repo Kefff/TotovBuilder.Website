@@ -20,7 +20,7 @@ const inventoryItem: IInventoryItem = {
     {
       content: [],
       ignorePrice: false,
-      itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+      itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
       modSlots: [
         {
           item: {
@@ -74,7 +74,7 @@ const invalidInventoryItem1: IInventoryItem = {
 const invalidInventoryItem2: IInventoryItem = {
   content: [],
   ignorePrice: false,
-  itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+  itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
   modSlots: [
     {
       item: {
@@ -112,7 +112,7 @@ describe('getErgonomics()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
         modSlots: [
           {
             item: {
@@ -224,23 +224,10 @@ describe('getErgonomicsPercentageModifier()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomicsPercentageModifier: -0.05,
-        ergonomicsPercentageModifierWithContent: -0.05
+        ergonomicsPercentageModifier: -0.02,
+        ergonomicsPercentageModifierWithContent: -0.02
       } as IErgonomicsPercentageModifier
-    ]/*,
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5c0e6a1586f77404597b4965', // Belt-A + Belt-B gear rig
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      {
-        ergonomicsPercentageModifier: -0.05,
-        ergonomicsPercentageModifierWithContent: -0.05
-      } as IErgonomicsPercentageModifier
-    ]*/,
+    ],
     [
       {
         content: [],
@@ -264,8 +251,8 @@ describe('getErgonomicsPercentageModifier()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomicsPercentageModifier: -0.16,
-        ergonomicsPercentageModifierWithContent: -0.35
+        ergonomicsPercentageModifier: -0.04,
+        ergonomicsPercentageModifierWithContent: -0.13
       } as IErgonomicsPercentageModifier
     ]
   ])(
@@ -348,7 +335,7 @@ describe('getPresetModSlotContainingItem', () => {
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster_0/item:5b1fa9b25acfc40018633c01/mod:mod_reciever/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
+      'build:1234-4568-9011/slot:holster_0/item:5b439b1f86f7744fd8059cbe/mod:mod_reciever/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
       {
         item: {
           content: [],
@@ -520,7 +507,7 @@ describe('getPrice()', () => {
           {
             content: [],
             ignorePrice: false,
-            itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+            itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
             modSlots: [
               {
                 item: {
@@ -769,7 +756,7 @@ describe('getPrice()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '5ac66cb05acfc40198510a10', // AK-101 5.56x45 assault rifle
+        itemId: '5acf7dd986f774486e1281bf', // AK-101 5.56x45 assault rifle Default
         modSlots: [
           {
             item: {
@@ -800,9 +787,9 @@ describe('getPrice()', () => {
         price: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ac66cb05acfc40198510a10',
+          itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
-          merchantLevel: 2,
+          merchantLevel: 3,
           quest: null,
           value: 42938,
           valueInMainCurrency: 42938
@@ -832,9 +819,9 @@ describe('getPrice()', () => {
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ac66cb05acfc40198510a10',
+          itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
-          merchantLevel: 2,
+          merchantLevel: 3,
           quest: null,
           value: 42938,
           valueInMainCurrency: 42938
@@ -846,7 +833,7 @@ describe('getPrice()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '5ac66cb05acfc40198510a10', // AK-101 5.56x45 assault rifle
+        itemId: '5acf7dd986f774486e1281bf', // AK-101 5.56x45 assault rifle Default
         modSlots: [
           {
             item: {
@@ -877,9 +864,9 @@ describe('getPrice()', () => {
         price: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ac66cb05acfc40198510a10',
+          itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
-          merchantLevel: 2,
+          merchantLevel: 3,
           quest: null,
           value: 42938,
           valueInMainCurrency: 42938
@@ -909,9 +896,9 @@ describe('getPrice()', () => {
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ac66cb05acfc40198510a10',
+          itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
-          merchantLevel: 2,
+          merchantLevel: 3,
           quest: null,
           value: 42938,
           valueInMainCurrency: 42938
@@ -923,7 +910,7 @@ describe('getPrice()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '5ac66cb05acfc40198510a10', // AK-101 5.56x45 assault rifle
+        itemId: '5acf7dd986f774486e1281bf', // AK-101 5.56x45 assault rifle Default
         modSlots: [
           {
             item: {
@@ -954,9 +941,9 @@ describe('getPrice()', () => {
         price: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ac66cb05acfc40198510a10',
+          itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
-          merchantLevel: 2,
+          merchantLevel: 3,
           quest: null,
           value: 42938,
           valueInMainCurrency: 42938
@@ -986,9 +973,9 @@ describe('getPrice()', () => {
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ac66cb05acfc40198510a10',
+          itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
-          merchantLevel: 2,
+          merchantLevel: 3,
           quest: null,
           value: 42938,
           valueInMainCurrency: 42938
@@ -1002,7 +989,7 @@ describe('getPrice()', () => {
           {
             content: [],
             ignorePrice: false,
-            itemId: '5ac66cb05acfc40198510a10', // AK-101 5.56x45 assault rifle
+            itemId: '5acf7dd986f774486e1281bf', // AK-101 5.56x45 assault rifle Default
             modSlots: [
               {
                 item: {
@@ -1940,22 +1927,22 @@ describe('getRecoil()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
       {
-        horizontalRecoil: 445,
-        horizontalRecoilWithMods: 445,
-        verticalRecoil: 141,
-        verticalRecoilWithMods: 141
+        horizontalRecoil: 415,
+        horizontalRecoilWithMods: 415,
+        verticalRecoil: 121,
+        verticalRecoilWithMods: 121
       } as IRecoil
     ],
     [
       {
         content: [],
         ignorePrice: false,
-        itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
         modSlots: [
           {
             item: {
@@ -2019,10 +2006,10 @@ describe('getRecoil()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        horizontalRecoil: 445,
-        horizontalRecoilWithMods: 292,
-        verticalRecoil: 141,
-        verticalRecoilWithMods: 92
+        horizontalRecoil: 415,
+        horizontalRecoilWithMods: 272,
+        verticalRecoil: 121,
+        verticalRecoilWithMods: 79
       } as IRecoil
     ],
     [
@@ -2214,9 +2201,9 @@ describe('getRecoil()', () => {
       } as IInventoryItem,
       {
         horizontalRecoil: 650,
-        horizontalRecoilWithMods: 741,
+        horizontalRecoilWithMods: 396,
         verticalRecoil: 520,
-        verticalRecoilWithMods: 593
+        verticalRecoilWithMods: 317
       } as IRecoil
     ],
     [
@@ -2325,7 +2312,7 @@ describe('getRecoil()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
         modSlots: [
           {
             item: {
@@ -2345,7 +2332,7 @@ describe('getRecoil()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
         modSlots: [
           {
             item: {

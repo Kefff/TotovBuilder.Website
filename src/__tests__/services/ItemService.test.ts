@@ -17,6 +17,7 @@ import ItemCategoriesMock from '../../../test-data/item-categories.json'
 import ItemsMock from '../../../test-data/items.json'
 import PresetsMock from '../../../test-data/presets.json'
 import PricesMock from '../../../test-data/prices.json'
+import { IItem } from '../../models/item/IItem'
 
 
 describe('fetchItemCategories()', () => {
@@ -30,9 +31,9 @@ describe('fetchItemCategories()', () => {
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
     when(itemFetcherServiceMock.fetchItemCategories()).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'API error')))
-    when(itemFetcherServiceMock.fetchItems()).thenReturn(Promise.resolve(Result.ok(ItemsMock)))
+    when(itemFetcherServiceMock.fetchItems()).thenReturn(Promise.resolve(Result.ok(ItemsMock as IItem[])))
     when(itemFetcherServiceMock.fetchPresets()).thenReturn(Promise.resolve(Result.ok(PresetsMock)))
-    when(itemFetcherServiceMock.fetchPrices()).thenReturn(Promise.resolve(Result.ok(PricesMock)))
+    when(itemFetcherServiceMock.fetchPrices()).thenReturn(Promise.resolve(Result.ok(PricesMock as IPrice[])))
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     // Act
@@ -58,7 +59,7 @@ describe('fetchItems()', () => {
     when(itemFetcherServiceMock.fetchItemCategories()).thenReturn(Promise.resolve(Result.ok(ItemCategoriesMock)))
     when(itemFetcherServiceMock.fetchItems()).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'API error')))
     when(itemFetcherServiceMock.fetchPresets()).thenReturn(Promise.resolve(Result.ok(PresetsMock)))
-    when(itemFetcherServiceMock.fetchPrices()).thenReturn(Promise.resolve(Result.ok(PricesMock)))
+    when(itemFetcherServiceMock.fetchPrices()).thenReturn(Promise.resolve(Result.ok(PricesMock as IPrice[])))
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     // Act
@@ -83,9 +84,9 @@ describe('fetchPresets()', () => {
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
     when(itemFetcherServiceMock.fetchItemCategories()).thenReturn(Promise.resolve(Result.ok(ItemCategoriesMock)))
-    when(itemFetcherServiceMock.fetchItems()).thenReturn(Promise.resolve(Result.ok(ItemsMock)))
+    when(itemFetcherServiceMock.fetchItems()).thenReturn(Promise.resolve(Result.ok(ItemsMock as IItem[])))
     when(itemFetcherServiceMock.fetchPresets()).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'API error')))
-    when(itemFetcherServiceMock.fetchPrices()).thenReturn(Promise.resolve(Result.ok(PricesMock)))
+    when(itemFetcherServiceMock.fetchPrices()).thenReturn(Promise.resolve(Result.ok(PricesMock as IPrice[])))
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     // Act
@@ -140,17 +141,17 @@ describe('getItem()', () => {
     const itemService = new ItemService()
 
     // Act
-    const itemResult = await itemService.getItem('57dc2fa62459775949412633')
+    const itemResult = await itemService.getItem('584147732459775a2b6d9f12')
 
     // Assert
     expect(itemResult.success).toBe(true)
-    expect(itemResult.value.id).toBe('57dc2fa62459775949412633')
-    expect(itemResult.value.name).toBe('Kalashnikov AKS-74U 5.45x39 assault rifle')
+    expect(itemResult.value.id).toBe('584147732459775a2b6d9f12')
+    expect(itemResult.value.name).toBe('Kalashnikov AKS-74U 5.45x39 assault rifle Default')
     expect(itemResult.value.prices).toStrictEqual([
       {
         barterItems: [],
         currencyName: 'RUB',
-        itemId: '57dc2fa62459775949412633',
+        itemId: '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
         merchant: 'prapor',
         merchantLevel: 1,
         quest: {
@@ -164,7 +165,7 @@ describe('getItem()', () => {
       {
         barterItems: [],
         currencyName: 'RUB',
-        itemId: '57dc2fa62459775949412633',
+        itemId: '584147732459775a2b6d9f12',
         merchant: 'flea-market',
         merchantLevel: 0,
         quest: null,
@@ -305,11 +306,11 @@ describe('getMainCurrency()', () => {
 describe('getPreset()', () => {
   it.each([
     [
-      '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+      '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle
       {
         content: [],
         ignorePrice: false,
-        itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
         modSlots: [
           {
             item: {

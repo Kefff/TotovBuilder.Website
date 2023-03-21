@@ -7,6 +7,7 @@ import WebsiteConfigurationMock from '../../../test-data/website-configuration.j
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
 
 const builds: IBuild[] = [
   {
@@ -296,7 +297,8 @@ const builds: IBuild[] = [
       { items: [undefined, undefined, undefined], typeId: 'special' }
     ],
     lastExported: new Date(1),
-    lastUpdated: new Date(1)
+    lastUpdated: new Date(1),
+    lastWebsiteVersion: '1.0.0'
   },
   {
     id: 'build_2',
@@ -502,8 +504,9 @@ const builds: IBuild[] = [
         typeId: 'tacticalRig'
       }
     ],
-    lastExported: undefined,
-    lastUpdated: new Date(1)
+    lastExported: new Date(1),
+    lastUpdated: new Date(1),
+    lastWebsiteVersion: '1.0.0'
   }
 ]
 
@@ -584,7 +587,8 @@ const newBuild: IBuild = {
     }
   ],
   lastExported: undefined,
-  lastUpdated: new Date(1)
+  lastUpdated: undefined,
+  lastWebsiteVersion: undefined
 }
 
 beforeEach(() => {
@@ -603,14 +607,15 @@ afterEach(() => {
 })
 
 describe('add()', () => {
-  it('should add a build', () => {
+  it('should add a build', async () => {
     // Arrange
+    useVersionServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
 
     // Act
-    const id = service.add(newBuild)
+    const id = await service.add(newBuild)
     const result = service.get(id)
 
     // Assert
@@ -750,174 +755,175 @@ describe('fromSharableString()', () => {
     // Assert
     expect(buildResult.success).toBe(true)
     expect(buildResult.value).toMatchObject({
-      'id': '',
-      'inventorySlots': [
+      id: '',
+      inventorySlots: [
         {
-          'items': [
+          items: [
             {
-              'content': [],
-              'itemId': '574d967124597745970e7c94', // Simonov SKS 7.62x39 carbine
-              'modSlots': [
+              content: [],
+              itemId: '574d967124597745970e7c94', // Simonov SKS 7.62x39 carbine
+              modSlots: [
                 {
-                  'item': {
-                    'content': [],
-                    'ignorePrice': false,
-                    'itemId': '574dad8024597745964bf05c', // SKS TOZ wooden stock (56-A-231 Sb.5)
-                    'modSlots': [],
-                    'quantity': 1
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: '574dad8024597745964bf05c', // SKS TOZ wooden stock (56-A-231 Sb.5)
+                    modSlots: [],
+                    quantity: 1
                   },
-                  'modSlotName': 'mod_stock'
+                  modSlotName: 'mod_stock'
                 },
                 {
-                  'item': {
-                    'content': [],
-                    'ignorePrice': false,
-                    'itemId': '574db213245977459a2f3f5d', // SKS rear sight
-                    'modSlots': [],
-                    'quantity': 1
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: '574db213245977459a2f3f5d', // SKS rear sight
+                    modSlots: [],
+                    quantity: 1
                   },
-                  'modSlotName': 'mod_sight_rear'
+                  modSlotName: 'mod_sight_rear'
                 },
                 {
-                  'item': {
-                    'content': [],
-                    'itemId': '587df3a12459772c28142567', // SKS 7.62x39 10-round internal box magazine
-                    'modSlots': [],
-                    'quantity': 1
+                  item: {
+                    content: [],
+                    itemId: '587df3a12459772c28142567', // SKS 7.62x39 10-round internal box magazine
+                    modSlots: [],
+                    quantity: 1
                   },
-                  'modSlotName': 'mod_magazine'
+                  modSlotName: 'mod_magazine'
                 }
               ],
-              'quantity': 1
+              quantity: 1
             }
           ],
-          'typeId': 'onSling'
+          typeId: 'onSling'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'onBack'
+          typeId: 'onBack'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'holster'
+          typeId: 'holster'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'bodyArmor'
+          typeId: 'bodyArmor'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'tacticalRig'
+          typeId: 'tacticalRig'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'headwear'
+          typeId: 'headwear'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'earpiece'
+          typeId: 'earpiece'
         },
         {
-          'items': [
+          items: [
             undefined,
             undefined,
             undefined,
             undefined
           ],
-          'typeId': 'pockets'
+          typeId: 'pockets'
         },
         {
-          'items': [
+          items: [
             {
-              'content': [
+              content: [
                 {
-                  'content': [],
-                  'ignorePrice': false,
-                  'itemId': '5448fee04bdc2dbc018b4567', // Bottle of water (0.6L)
-                  'modSlots': [],
-                  'quantity': 1
+                  content: [],
+                  ignorePrice: false,
+                  itemId: '5448fee04bdc2dbc018b4567', // Bottle of water (0.6L)
+                  modSlots: [],
+                  quantity: 1
                 }
               ],
-              'ignorePrice': false,
-              'itemId': '5c0e805e86f774683f3dd637', // 3V Gear Paratus 3-Day Operator's Tactical backpack
-              'modSlots': [],
-              'quantity': 1
+              ignorePrice: false,
+              itemId: '5c0e805e86f774683f3dd637', // 3V Gear Paratus 3-Day Operator's Tactical backpack
+              modSlots: [],
+              quantity: 1
             }
           ],
-          'typeId': 'backpack'
+          typeId: 'backpack'
         },
         {
-          'items': [
+          items: [
             {
-              'content': [],
-              'ignorePrice': false,
-              'itemId': '544a11ac4bdc2d470e8b456a', // Secure container Alpha
-              'modSlots': [],
-              'quantity': 1
+              content: [],
+              ignorePrice: false,
+              itemId: '544a11ac4bdc2d470e8b456a', // Secure container Alpha
+              modSlots: [],
+              quantity: 1
             }
           ],
-          'typeId': 'pouch'
+          typeId: 'pouch'
         },
         {
-          'items': [
+          items: [
             {
-              'content': [],
-              'ignorePrice': false,
-              'itemId': '54491bb74bdc2d09088b4567', // ER FULCRUM BAYONET
-              'modSlots': [],
-              'quantity': 1
+              content: [],
+              ignorePrice: false,
+              itemId: '54491bb74bdc2d09088b4567', // ER FULCRUM BAYONET
+              modSlots: [],
+              quantity: 1
             }
           ],
-          'typeId': 'scabbard'
+          typeId: 'scabbard'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'faceCover'
+          typeId: 'faceCover'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'eyewear'
+          typeId: 'eyewear'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'armband'
+          typeId: 'armband'
         },
         {
-          'items': [
+          items: [
             {
-              'content': [],
-              'ignorePrice': false,
-              'itemId': '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
-              'modSlots': [],
-              'quantity': 1
+              content: [],
+              ignorePrice: false,
+              itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
+              modSlots: [],
+              quantity: 1
             },
             undefined,
             undefined
           ],
-          'typeId': 'special'
+          typeId: 'special'
         }
       ],
-      'lastExported': undefined,
-      'name': ''
-    })
+      lastExported: undefined,
+      lastWebsiteVersion: undefined,
+      name: ''
+    } as IBuild)
   })
 
   it('should fail when the sharable string is corrupted', async () => {
@@ -978,63 +984,6 @@ describe('get()', () => {
     expect(result.failureMessage).toBe(
       'Build "invalid" not found. It may have been deleted.'
     )
-  })
-
-  it('should update an obsolete build', () => {
-    // Arrange
-    useWebsiteConfigurationServiceMock()
-
-    const service = new BuildService()
-    const date = new Date()
-    const build: IBuild = {
-      id: '',
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'compass'
-        }
-      ],
-      lastExported: date,
-      lastUpdated: date,
-      name: 'Obsolete build'
-    }
-    const id = service.add(build)
-
-    // Act
-    const updatedBuildResult = service.get(id)
-
-    // Assert
-    expect(updatedBuildResult.success).toBe(true)
-    expect(updatedBuildResult.value).toStrictEqual({
-      id,
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
-              modSlots: [],
-              quantity: 1
-            },
-            undefined,
-            undefined
-          ],
-          typeId: 'special'
-        }
-      ],
-      lastExported: date,
-      lastUpdated: date,
-      name: 'Obsolete build'
-    })
   })
 })
 
@@ -1627,6 +1576,7 @@ describe('reduceBuild()', () => {
       ],
       lastExported: undefined,
       lastUpdated: new Date(),
+      lastWebsiteVersion: undefined,
       name: 'test'
     }
 
@@ -1662,6 +1612,7 @@ describe('toSharableURL()', () => {
       inventorySlots: [],
       lastExported: undefined,
       lastUpdated: new Date(),
+      lastWebsiteVersion: undefined,
       name: 'test'
     }
 
@@ -1728,30 +1679,172 @@ describe('update()', () => {
 })
 
 describe('updateObsoleteBuild', () => {
-  it('should update an obsolete build', () => {
+  it.each([
+    [
+      {
+        id: '',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'compass'
+          }
+        ],
+        lastExported: new Date(1),
+        lastUpdated: new Date(1),
+        lastWebsiteVersion: '1.0.0',
+        name: 'Obsolete build'
+      } as IBuild,
+      {
+        id: '',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
+                modSlots: [],
+                quantity: 1
+              },
+              undefined,
+              undefined
+            ],
+            typeId: 'special'
+          }
+        ],
+        lastExported: new Date(1),
+        lastUpdated: new Date(1),
+        lastWebsiteVersion: '1.0.0', // Keeping the same version until the build is saved
+        name: 'Obsolete build'
+      } as IBuild
+    ],
+    [
+      {
+        id: '',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: '57dc2fa62459775949412633', // Kalashnikov AKS-74U 5.45x39 assault rifle
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'onSling'
+          },
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: '57dc2fa62459775949412633', // Kalashnikov AKS-74U 5.45x39 assault rifle
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'onBack'
+          },
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: '5e81c3cbac2bb513793cdc75', // Colt M1911A1 .45 ACP pistol
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'holster'
+          },
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'backpack'
+          }
+        ],
+        lastExported: new Date(1),
+        lastUpdated: new Date(1),
+        lastWebsiteVersion: '1.5.3',
+        name: 'Obsolete build'
+      } as IBuild,
+      {
+        id: '',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'onSling'
+          },
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'onBack'
+          },
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: '5eb2968186f7746d1f1a4fd5', // Colt M1911A1 .45 ACP pistol Default
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'holster'
+          },
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'backpack'
+          }
+        ],
+        lastExported: new Date(1),
+        lastUpdated: new Date(1),
+        lastWebsiteVersion: '1.5.3', // Keeping the same version until the build is saved
+        name: 'Obsolete build'
+      } as IBuild
+    ]
+  ])('should update an obsolete build', (obsoleteBuild: IBuild, updatedBuild: IBuild) => {
     // Arrange
     useWebsiteConfigurationServiceMock()
-
-    const obsoleteBuild: IBuild = {
-      id: 'obsolete_build',
-      name: 'Obsolete build',
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'compass'
-        }
-      ],
-      lastExported: undefined,
-      lastUpdated: new Date(1)
-    }
 
     const buildServer = new BuildService()
 
@@ -1759,27 +1852,6 @@ describe('updateObsoleteBuild', () => {
     buildServer.updateObsoleteBuild(obsoleteBuild)
 
     // Assert
-    expect(obsoleteBuild).toStrictEqual({
-      id: 'obsolete_build',
-      name: 'Obsolete build',
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
-              modSlots: [],
-              quantity: 1
-            },
-            undefined,
-            undefined
-          ],
-          typeId: 'special'
-        }
-      ],
-      lastExported: undefined,
-      lastUpdated: new Date(1)
-    })
+    expect(obsoleteBuild).toStrictEqual(updatedBuild)
   })
 })
