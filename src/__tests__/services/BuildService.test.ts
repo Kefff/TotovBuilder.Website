@@ -8,6 +8,8 @@ import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
+import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 
 const builds: IBuild[] = [
   {
@@ -609,6 +611,7 @@ afterEach(() => {
 describe('add()', () => {
   it('should add a build', async () => {
     // Arrange
+    useItemServiceMock()
     useVersionServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -726,6 +729,7 @@ describe('create()', () => {
 describe('delete()', () => {
   it('should delete a build', () => {
     // Arrange
+    useItemServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
@@ -958,6 +962,7 @@ describe('fromSharableString()', () => {
 describe('get()', () => {
   it('should get a build', () => {
     // Arrange
+    useItemServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
@@ -990,6 +995,7 @@ describe('get()', () => {
 describe('getAll()', () => {
   it('should get all builds', () => {
     // Arrange
+    useItemServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
@@ -1679,9 +1685,13 @@ describe('update()', () => {
 })
 
 describe('updateObsoleteBuild', () => {
-  it.each([
-    [
-      {
+  describe('version special inventory slots', () => {
+    it('should update an obsolete build', async () => {
+      // Arrange
+      useItemServiceMock()
+      useWebsiteConfigurationServiceMock()
+
+      const obsoleteBuild = {
         id: '',
         inventorySlots: [
           {
@@ -1699,10 +1709,17 @@ describe('updateObsoleteBuild', () => {
         ],
         lastExported: new Date(1),
         lastUpdated: new Date(1),
-        lastWebsiteVersion: '1.0.0',
+        lastWebsiteVersion: undefined,
         name: 'Obsolete build'
-      } as IBuild,
-      {
+      } as IBuild
+
+      const buildServer = new BuildService()
+
+      // Act
+      await buildServer.updateObsoleteBuild(obsoleteBuild)
+
+      // Assert
+      expect(obsoleteBuild).toStrictEqual({
         id: '',
         inventorySlots: [
           {
@@ -1722,12 +1739,55 @@ describe('updateObsoleteBuild', () => {
         ],
         lastExported: new Date(1),
         lastUpdated: new Date(1),
-        lastWebsiteVersion: '1.0.0', // Keeping the same version until the build is saved
+        lastWebsiteVersion: undefined, // Keeping the same version until the build is saved
+        name: 'Obsolete build'
+      } as IBuild)
+    })
+
+    it('should do nothing to builds without compass inventory slot', async () => {
+      // Arrange
+      useItemServiceMock()
+      useWebsiteConfigurationServiceMock()
+
+      const obsoleteBuild = {
+        id: '',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: '57dc2fa62459775949412633', // Kalashnikov AKS-74U 5.45x39 assault rifle
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'onSling'
+          }
+        ],
+        lastExported: new Date(1),
+        lastUpdated: new Date(1),
+        lastWebsiteVersion: undefined,
         name: 'Obsolete build'
       } as IBuild
-    ],
-    [
-      {
+
+      const buildServer = new BuildService()
+
+      // Act
+      await buildServer.updateObsoleteBuild(obsoleteBuild)
+
+      // Assert
+      expect(obsoleteBuild).toStrictEqual(obsoleteBuild)
+    })
+  })
+
+  describe('version 1.6.0', () => {
+    it('should update an obsolete build', async () => {
+      // Arrange
+      useItemServiceMock()
+      useWebsiteConfigurationServiceMock()
+
+      const obsoleteBuild = {
         id: '',
         inventorySlots: [
           {
@@ -1783,8 +1843,15 @@ describe('updateObsoleteBuild', () => {
         lastUpdated: new Date(1),
         lastWebsiteVersion: '1.5.3',
         name: 'Obsolete build'
-      } as IBuild,
-      {
+      } as IBuild
+
+      const buildServer = new BuildService()
+
+      // Act
+      await buildServer.updateObsoleteBuild(obsoleteBuild)
+
+      // Assert
+      expect(obsoleteBuild).toStrictEqual({
         id: '',
         inventorySlots: [
           {
@@ -1840,18 +1907,115 @@ describe('updateObsoleteBuild', () => {
         lastUpdated: new Date(1),
         lastWebsiteVersion: '1.5.3', // Keeping the same version until the build is saved
         name: 'Obsolete build'
+      } as IBuild)
+    })
+
+    it('should to nothing to invalid items and items without default preset id', async () => {
+      // Arrange
+      useItemServiceMock(
+        true,
+        [{
+          baseItemId: null,
+          caliber: '',
+          categoryId: 'mainWeapon',
+          conflictingItemIds: [],
+          defaultPresetId: null,
+          ergonomics: 0,
+          fireMods: [],
+          fireRate: 0,
+          horizontalRecoil: 0,
+          iconLink: '',
+          id: 'itemWithoutDefaultPresetId',
+          imageLink: '',
+          marketLink: '',
+          maxStackableAmount: 1,
+          modSlots: [],
+          name: 'Item without default preset id',
+          prices: [],
+          shortName: 'IWDPI',
+          verticalRecoil: 0,
+          weight: 0,
+          wikiLink: ''
+        } as IRangedWeapon])
+      useWebsiteConfigurationServiceMock()
+
+      const obsoleteBuild = {
+        id: '',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: 'invalid',
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'onSling'
+          },
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: 'itemWithoutDefaultPresetId',
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'onBack'
+          }
+        ],
+        lastExported: new Date(1),
+        lastUpdated: new Date(1),
+        lastWebsiteVersion: '1.5.3',
+        name: 'Obsolete build'
       } as IBuild
-    ]
-  ])('should update an obsolete build', (obsoleteBuild: IBuild, updatedBuild: IBuild) => {
+
+      const buildServer = new BuildService()
+
+      // Act
+      await buildServer.updateObsoleteBuild(obsoleteBuild)
+
+      // Assert
+      expect(obsoleteBuild).toStrictEqual(obsoleteBuild)
+    })
+  })
+
+  it('should do nothing to an up to date build', async () => {
     // Arrange
+    useItemServiceMock()
     useWebsiteConfigurationServiceMock()
+
+    const upToDateBuild = {
+      id: '',
+      inventorySlots: [
+        {
+          items: [
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: '57dc2fa62459775949412633', // Kalashnikov AKS-74U 5.45x39 assault rifle
+              modSlots: [],
+              quantity: 1
+            }
+          ],
+          typeId: 'onSling'
+        }
+      ],
+      lastExported: new Date(1),
+      lastUpdated: new Date(1),
+      lastWebsiteVersion: '999.999.999',
+      name: 'Up to date build'
+    } as IBuild
 
     const buildServer = new BuildService()
 
     // Act
-    buildServer.updateObsoleteBuild(obsoleteBuild)
+    await buildServer.updateObsoleteBuild(upToDateBuild)
 
     // Assert
-    expect(obsoleteBuild).toStrictEqual(updatedBuild)
+    expect(upToDateBuild).toStrictEqual(upToDateBuild)
   })
 })
