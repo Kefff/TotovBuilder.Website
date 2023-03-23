@@ -272,16 +272,18 @@ export class BuildService {
    * @param build - Build to update.
    */
   public async updateObsoleteBuild(build: IBuild): Promise<void> {
-    // Replacing the compass inventory slot by the special inventory slots
-    const obsoleteInventorySlot = build.inventorySlots.find(is => is.typeId === 'compass')
+    if (this.compareVersions(build.lastWebsiteVersion, undefined) <= 0) {
+      // Replacing the compass inventory slot by the special inventory slots
+      const obsoleteInventorySlot = build.inventorySlots.find(is => is.typeId === 'compass')
 
-    if (obsoleteInventorySlot != null) {
-      obsoleteInventorySlot.typeId = 'special'
-      obsoleteInventorySlot.items = [
-        obsoleteInventorySlot.items[0],
-        undefined,
-        undefined
-      ]
+      if (obsoleteInventorySlot != null) {
+        obsoleteInventorySlot.typeId = 'special'
+        obsoleteInventorySlot.items = [
+          obsoleteInventorySlot.items[0],
+          undefined,
+          undefined
+        ]
+      }
     }
 
     if (this.compareVersions(build.lastWebsiteVersion, '1.6.0') < 0) {

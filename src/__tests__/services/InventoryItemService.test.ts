@@ -391,6 +391,27 @@ describe('getPresetModSlotContainingItem', () => {
     // Assert
     expect(result).toStrictEqual(expected)
   })
+
+  it('should return undefined when the preset does not contain the mod slot containing the item', async () => {
+    // Arrange
+    useItemServiceMock()
+    const service = new InventoryItemService()
+
+    const item = {
+      content: [],
+      ignorePrice: false,
+      itemId: '5a6f5d528dc32e00094b97d9', // Glock rear sight
+      modSlots: [],
+      quantity: 1
+    } as IInventoryItem
+    const path = 'build:1234-4568-9011/slot:holster_0/item:5b439b1f86f7744fd8059cbe/mod:mod_reciever/item:5b1faa0f5acfc40dc528aeb5/mod:mod_pistol_grip'
+
+    // Act
+    const result = await service.getPresetModSlotContainingItem(item.itemId, path)
+
+    // Assert
+    expect(result).toBeUndefined()
+  })
 })
 
 describe('getPrice()', () => {
