@@ -79,8 +79,7 @@ export class BuildComponentService {
       router.push({ name: 'Build', params: { id: newBuildId } })
     } else {
       // Update
-      build.lastUpdated = new Date()
-      const result = buildService.update(build.id, build)
+      const result = await buildService.update(build.id, build)
 
       if (!result.success) {
         notificationService.notify(NotificationType.error, result.failureMessage)

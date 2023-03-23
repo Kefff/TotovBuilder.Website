@@ -10,6 +10,7 @@ import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfi
 import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { IRangedWeapon } from '../../models/item/IRangedWeapon'
+import { VersionService } from '../../services/VersionService'
 
 const builds: IBuild[] = [
   {
@@ -300,7 +301,7 @@ const builds: IBuild[] = [
     ],
     lastExported: new Date(1),
     lastUpdated: new Date(1),
-    lastWebsiteVersion: '1.0.0'
+    lastWebsiteVersion: '999.999.999'
   },
   {
     id: 'build_2',
@@ -508,7 +509,7 @@ const builds: IBuild[] = [
     ],
     lastExported: new Date(1),
     lastUpdated: new Date(1),
-    lastWebsiteVersion: '1.0.0'
+    lastWebsiteVersion: '999.999.999'
   }
 ]
 
@@ -750,6 +751,8 @@ describe('delete()', () => {
 describe('fromSharableString()', () => {
   it('should get a build from a sharable string', async () => {
     // Arrange
+    useVersionServiceMock()
+
     const service = new BuildService()
     const sharableString = 'XQAAAAKBAQAAAAAAAABAqEppVBKy3f2nWA1_4C5z8-v7-PB2PnO3yE24i4uplQNOe2AQti9qfQ3vHsOnTKDq2nEEFb79VsBzBnD-pb-5Nb0_87qgYNgUqN-kUzC-ixXoaUIxP5bVjrq-YghBtAFQa_O4inxq3hwebGM3jUCTpB0ou_BCcoJymajYEBQ2OvPuy_aF8Vtf4UR8KYA6nugVJv5Kd0v6DWN94D7Kgaza5GFSYqrRHItjPLx6krp0SGceYjtn1RNUBX-ea41hpKDXlBkYuxoBe-ZT10P4Ouq0e2Mmn82YwcUUBrZvQhh3uG6Dn_YU1No29Qi4js2uAwpm-nroMnPbxOd9jDkNeED-9xXjIA'
 
@@ -1598,6 +1601,7 @@ describe('reduceBuild()', () => {
 describe('toSharableURL()', () => {
   it('should reduce a build and transform it into a URL', async () => {
     // Arrange
+    useVersionServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
@@ -1647,8 +1651,9 @@ describe('toSharableURL()', () => {
 })
 
 describe('update()', () => {
-  it('should update a build', () => {
+  it('should update a build', async () => {
     // Arrange
+    useVersionServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
@@ -1656,7 +1661,7 @@ describe('update()', () => {
     build.name = 'New name'
 
     // Act / Assert
-    const updateResult = service.update(builds[0].id, build)
+    const updateResult = await service.update(builds[0].id, build)
     expect(updateResult.success).toBe(true)
 
     const getUpdatedBuildResult = service.get(builds[0].id)
@@ -1664,8 +1669,9 @@ describe('update()', () => {
     expect(getUpdatedBuildResult.value.name).toBe('New name')
   })
 
-  it('should fail if the build does not exist', () => {
+  it('should fail if the build does not exist', async () => {
     // Arrange
+    useVersionServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
@@ -1674,7 +1680,7 @@ describe('update()', () => {
     build.name = 'New name'
 
     // Act / Assert
-    const updateResult = service.update(build.id, build)
+    const updateResult = await service.update(build.id, build)
     expect(updateResult.success).toBe(false)
     expect(updateResult.failureMessage).toBe('Build "invalid" not found. It may have been deleted.')
 
@@ -1689,8 +1695,11 @@ describe('updateObsoleteBuild', () => {
     it('should update an obsolete build', async () => {
       // Arrange
       useItemServiceMock()
+      useVersionServiceMock()
       useWebsiteConfigurationServiceMock()
 
+      const newVersion = await Services.get(VersionService).getCurrentVersion()
+      const originalUpdatedDate = new Date(1)
       const obsoleteBuild = {
         id: '',
         inventorySlots: [
@@ -1708,7 +1717,7 @@ describe('updateObsoleteBuild', () => {
           }
         ],
         lastExported: new Date(1),
-        lastUpdated: new Date(1),
+        lastUpdated: originalUpdatedDate,
         lastWebsiteVersion: undefined,
         name: 'Obsolete build'
       } as IBuild
@@ -1719,6 +1728,7 @@ describe('updateObsoleteBuild', () => {
       await buildServer.updateObsoleteBuild(obsoleteBuild)
 
       // Assert
+      expect(obsoleteBuild.lastUpdated).not.toBe(originalUpdatedDate)
       expect(obsoleteBuild).toStrictEqual({
         id: '',
         inventorySlots: [
@@ -1738,8 +1748,8 @@ describe('updateObsoleteBuild', () => {
           }
         ],
         lastExported: new Date(1),
-        lastUpdated: new Date(1),
-        lastWebsiteVersion: undefined, // Keeping the same version until the build is saved
+        lastUpdated: obsoleteBuild.lastUpdated, // Needed as the date changes at each execution
+        lastWebsiteVersion: newVersion,
         name: 'Obsolete build'
       } as IBuild)
     })
@@ -1785,8 +1795,11 @@ describe('updateObsoleteBuild', () => {
     it('should update an obsolete build', async () => {
       // Arrange
       useItemServiceMock()
+      useVersionServiceMock()
       useWebsiteConfigurationServiceMock()
 
+      const newVersion = await Services.get(VersionService).getCurrentVersion()
+      const originalUpdatedDate = new Date(1)
       const obsoleteBuild = {
         id: '',
         inventorySlots: [
@@ -1840,7 +1853,7 @@ describe('updateObsoleteBuild', () => {
           }
         ],
         lastExported: new Date(1),
-        lastUpdated: new Date(1),
+        lastUpdated: originalUpdatedDate,
         lastWebsiteVersion: '1.5.3',
         name: 'Obsolete build'
       } as IBuild
@@ -1851,6 +1864,7 @@ describe('updateObsoleteBuild', () => {
       await buildServer.updateObsoleteBuild(obsoleteBuild)
 
       // Assert
+      expect(obsoleteBuild.lastUpdated).not.toBe(originalUpdatedDate)
       expect(obsoleteBuild).toStrictEqual({
         id: '',
         inventorySlots: [
@@ -1904,8 +1918,8 @@ describe('updateObsoleteBuild', () => {
           }
         ],
         lastExported: new Date(1),
-        lastUpdated: new Date(1),
-        lastWebsiteVersion: '1.5.3', // Keeping the same version until the build is saved
+        lastUpdated: obsoleteBuild.lastUpdated, // Needed as the date changes at each execution
+        lastWebsiteVersion: newVersion,
         name: 'Obsolete build'
       } as IBuild)
     })

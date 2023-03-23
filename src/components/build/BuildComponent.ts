@@ -229,7 +229,7 @@ export default defineComponent({
     /**
      * Exports the build.
      */
-    function exportBuild() {
+    async function exportBuild() {
       if (editing.value) {
         return
       }
@@ -238,7 +238,7 @@ export default defineComponent({
         return
       }
 
-      const exportResult = exportService.export([build.value])
+      const exportResult = await exportService.export([build.value])
 
       if (!exportResult.success) {
         notificationService.notify(NotificationType.error, exportResult.failureMessage)

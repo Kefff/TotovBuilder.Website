@@ -326,11 +326,11 @@ describe('saveBuild()', () => {
     verify(routerMock.push(anything())).once()
   })
 
-  it('should update an existing build', () => {
+  it('should update an existing build', async () => {
     // Arrange
     const buildComponentService = new BuildComponentService()
     const buildServiceMock = mock<BuildService>()
-    when(buildServiceMock.update('123', anything())).thenReturn(Result.ok())
+    when(buildServiceMock.update('123', anything())).thenReturn(Promise.resolve(Result.ok()))
     Services.configure(BuildService, undefined, instance(buildServiceMock))
     const notificationServiceMock = mock<NotificationService>()
     Services.configure(NotificationService, undefined, instance(notificationServiceMock))
@@ -346,7 +346,7 @@ describe('saveBuild()', () => {
     }
 
     // Act
-    buildComponentService.saveBuild(instance(routerMock), build)
+    await buildComponentService.saveBuild(instance(routerMock), build)
 
     // Assert
     verify(buildServiceMock.update('123', build)).once()
@@ -354,11 +354,11 @@ describe('saveBuild()', () => {
     verify(routerMock.push(anything())).never()
   })
 
-  it('should fail if an error occurs', () => {
+  it('should fail if an error occurs', async () => {
     // Arrange
     const buildComponentService = new BuildComponentService()
     const buildServiceMock = mock<BuildService>()
-    when(buildServiceMock.update('123', anything())).thenReturn(Result.fail())
+    when(buildServiceMock.update('123', anything())).thenReturn(Promise.resolve(Result.fail()))
     Services.configure(BuildService, undefined, instance(buildServiceMock))
     const notificationServiceMock = mock<NotificationService>()
     Services.configure(NotificationService, undefined, instance(notificationServiceMock))
@@ -374,7 +374,7 @@ describe('saveBuild()', () => {
     }
 
     // Act
-    buildComponentService.saveBuild(instance(routerMock), build)
+    await buildComponentService.saveBuild(instance(routerMock), build)
 
     // Assert
     verify(buildServiceMock.update('123', build)).once()

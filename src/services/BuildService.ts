@@ -125,7 +125,6 @@ export class BuildService {
 
       // Updating and saving obsolete builds
       this.updateObsoleteBuild(build)
-      this.update(build.id, build)
 
       return Result.ok(build)
     }
@@ -246,8 +245,11 @@ export class BuildService {
    * @param id - ID of the build to update.
    * @param build - Updated version of the build.
    */
-  public update(id: string, build: IBuild): Result {
+  public async update(id: string, build: IBuild): Promise<Result> {
     build.id = id
+    build.lastUpdated = new Date()
+    build.lastWebsiteVersion = await Services.get(VersionService).getCurrentVersion()
+
     const storageKey = this.getKey(id)
 
     for (let i = 0; i < localStorage.length; i++) {
@@ -272,6 +274,8 @@ export class BuildService {
    * @param build - Build to update.
    */
   public async updateObsoleteBuild(build: IBuild): Promise<void> {
+    let needSave = false
+
     if (this.compareVersions(build.lastWebsiteVersion, undefined) <= 0) {
       // Replacing the compass inventory slot by the special inventory slots
       const obsoleteInventorySlot = build.inventorySlots.find(is => is.typeId === 'compass')
@@ -283,6 +287,8 @@ export class BuildService {
           undefined,
           undefined
         ]
+
+        needSave = true
       }
     }
 
@@ -309,6 +315,12 @@ export class BuildService {
           }
         }
       }
+
+      needSave = true
+    }
+
+    if (needSave) {
+      this.update(build.id, build)
     }
   }
 
