@@ -3,7 +3,6 @@ import i18n from '../plugins/vueI18n'
 import { ApiService } from './ApiService'
 import Services from './repository/Services'
 import { IInventoryItem } from '../models/build/IInventoryItem'
-import { IItemCategory } from '../models/configuration/IItemCategory'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import { IItem } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
@@ -16,9 +15,9 @@ export class ItemFetcherService {
    * Fetches all item categories.
    * @returns Item categories.
    */
-  public async fetchItemCategories(): Promise<Result<IItemCategory[]>> {
+  public async fetchItemCategories(): Promise<Result<string[]>> {
     const apiService = Services.get(ApiService)
-    const itemCategoriesResult = await apiService.get<IItemCategory[]>(Services.get(WebsiteConfigurationService).configuration.itemCategoriesApi)
+    const itemCategoriesResult = await apiService.get<string[]>(Services.get(WebsiteConfigurationService).configuration.itemCategoriesApi)
 
     if (!itemCategoriesResult.success || itemCategoriesResult.value.length === 0) {
       return Result.fail(FailureType.error, 'ItemFetcherService.fetchItemCategories()', i18n.t('message.itemCategoriesNotFetched'))

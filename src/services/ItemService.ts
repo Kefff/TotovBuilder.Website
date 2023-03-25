@@ -3,7 +3,6 @@ import Result, { FailureType } from '../utils/Result'
 import i18n from '../plugins/vueI18n'
 import Services from './repository/Services'
 import { IInventoryItem } from '../models/build/IInventoryItem'
-import { IItemCategory } from '../models/configuration/IItemCategory'
 import { ICurrency } from '../models/configuration/ICurrency'
 import { NotificationService, NotificationType } from './NotificationService'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
@@ -23,7 +22,7 @@ export class ItemService {
   /**
    * Fetched item categories.
    */
-  private itemCategories: IItemCategory[] = []
+  private itemCategories: string[] = []
 
   /**
    * Fetched items.
@@ -79,7 +78,7 @@ export class ItemService {
    * Gets item categories.
    * @returns Item categories.
    */
-  public async getItemCategories(): Promise<IItemCategory[]> {
+  public async getItemCategories(): Promise<string[]> {
     await this.initialize()
 
     return this.itemCategories
@@ -108,16 +107,15 @@ export class ItemService {
 
   /**
    * Gets items of a specified category. Updates the prices if its cache has expired.
-   * @param id - ID of the category of the items.
-   * @returns Items
+   * @param ids - Category IDs.
    */
-  public async getItemsOfCategory(id: string): Promise<Result<IItem[]>> {
+  public async getItemsOfCategories(ids: string[]): Promise<Result<IItem[]>> {
     await this.initialize()
 
-    const items = this.items.filter(i => i.categoryId === id)
+    const items = this.items.filter(i => ids.some(id => id == i.categoryId))
 
     if (items.length === 0) {
-      return Result.fail(FailureType.error, 'ItemService.getByCategory', i18n.t('message.itemsOfCategoryNotFound', { id }))
+      return Result.fail(FailureType.error, 'ItemService.getItemsOfCategories', i18n.t('message.itemsOfCategoriesNotFound', { ids: ids.join(', ') }))
     }
 
     return Result.ok(items)

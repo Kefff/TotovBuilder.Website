@@ -231,8 +231,8 @@ describe('getItemCategories()', () => {
   })
 })
 
-describe('getItemsOfCategory()', () => {
-  it('should get the items belonging to a category', async () => {
+describe('getItemsOfCategories()', () => {
+  it('should get the items belonging to categories', async () => {
     // Arrange
     useItemFetcherServiceMock()
     useTarkovValuesServiceMock()
@@ -241,7 +241,7 @@ describe('getItemsOfCategory()', () => {
     const itemService = new ItemService()
 
     // Act
-    const itemResult = await itemService.getItemsOfCategory('securedContainer')
+    const itemResult = await itemService.getItemsOfCategories(['armband', 'securedContainer'])
 
     // Assert
     expect(itemResult.success).toBe(true)
@@ -251,7 +251,24 @@ describe('getItemsOfCategory()', () => {
       '5857a8b324597729ab0a0e7d',
       '5857a8bc2459772bad15db29',
       '59db794186f77448bc595262',
-      '5c093ca986f7740a1867ab12'
+      '5b3f16c486f7747c327f55f7',
+      '5b3f3ade86f7746b6b790d8e',
+      '5b3f3af486f774679e752c1f',
+      '5b3f3b0186f774021a2afef7',
+      '5b3f3b0e86f7746752107cda',
+      '5c093ca986f7740a1867ab12',
+      '5f9949d869e2777a0e779ba5',
+      '60b0f988c4449e4cb624c1da',
+      '619bc61e86e01e16f839a999',
+      '619bdd8886e01e16f839a99c',
+      '619bddc6c9546643a67df6ee',
+      '619bddffc9546643a67df6f0',
+      '619bde3dc9546643a67df6f2',
+      '619bde7fc9546643a67df6f4',
+      '619bdeb986e01e16f839a99e',
+      '619bdef8c9546643a67df6f6',
+      '619bdf9cc9546643a67df6f8',
+      '619bdfd4c9546643a67df6fa'
     ])
   })
 
@@ -264,7 +281,7 @@ describe('getItemsOfCategory()', () => {
     const itemService = new ItemService()
 
     // Act
-    const itemResult = await itemService.getItemsOfCategory('invalid')
+    const itemResult = await itemService.getItemsOfCategories(['invalid, invalid2'])
 
     // Assert
     expect(itemResult.success).toBe(false)

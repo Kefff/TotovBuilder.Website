@@ -67,7 +67,7 @@ describe('getAcceptedItems()', () => {
     const notificationServiceMock = mock<NotificationService>()
     Services.configure(NotificationService, undefined, notificationServiceMock)
     const itemServiceMock = mock<ItemService>()
-    when(itemServiceMock.getItemsOfCategory(anyString())).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    when(itemServiceMock.getItemsOfCategories(anything())).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
     Services.configure(ItemService, undefined, instance(itemServiceMock))
 
     // Act

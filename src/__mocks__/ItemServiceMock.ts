@@ -1,4 +1,4 @@
-import { anyString, instance, mock, when } from 'ts-mockito'
+import { anyString, anything, instance, mock, when } from 'ts-mockito'
 import { ItemService } from '../services/ItemService'
 import ItemsMock from '../../test-data/items.json'
 import PriceMocks from '../../test-data/prices.json'
@@ -15,7 +15,7 @@ export function useItemServiceMock(hasMainCurrency = true, customItemList?: IIte
   const itemServiceMock = mock<ItemService>()
   when(itemServiceMock.getItem(anyString())).thenCall((id: string) => getItem(id, customItemList, customPricesList))
   when(itemServiceMock.getItemCategories()).thenReturn(Promise.resolve(ItemCategoriesMock))
-  when(itemServiceMock.getItemsOfCategory(anyString())).thenCall((id: string) => getItemsOfCategory(id, customItemList))
+  when(itemServiceMock.getItemsOfCategories(anything())).thenCall((ids: string[]) => getItemsOfCategories(ids, customItemList))
   when(itemServiceMock.getMainCurrency()).thenCall(() => getMainCurrency(hasMainCurrency))
   when(itemServiceMock.getPreset(anyString())).thenCall((id: string) => getPreset(id, customPresetsList))
 
@@ -34,8 +34,8 @@ function getItem(id: string, customItemList?: IItem[], customPricesList?: IPrice
   return Promise.resolve(Result.fail(FailureType.error, 'ItemService.getItem()', `Item "${id}" not found.`))
 }
 
-async function getItemsOfCategory(id: string, customItemList?: IItem[], customPricesList?: IPrice[]): Promise<Result<IItem[]>> {
-  const items = (customItemList ?? ItemsMock as IItem[]).filter(i => i.categoryId === id) as IItem[]
+async function getItemsOfCategories(ids: string[], customItemList?: IItem[], customPricesList?: IPrice[]): Promise<Result<IItem[]>> {
+  const items = (customItemList ?? ItemsMock as IItem[]).filter(i => ids.some(id => i.categoryId === id)) as IItem[]
 
   for (const item of items) {
     item.prices = (customPricesList ?? PriceMocks as IPrice[]).filter(p => p.itemId === item.id)

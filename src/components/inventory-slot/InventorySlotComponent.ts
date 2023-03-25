@@ -263,7 +263,7 @@ export default defineComponent({
      */
     async function setItemComponentParameters() {
       if (type.value != null) {
-        categoryIds.value = type.value.acceptedItemCategories.map((aic) => aic.id)
+        categoryIds.value = type.value.acceptedItemCategories
         acceptedItems.value = await inventorySlotComponentService.getAcceptedItems(categoryIds.value)
       }
     }

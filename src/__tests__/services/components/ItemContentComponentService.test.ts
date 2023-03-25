@@ -1,4 +1,4 @@
-import { anyString, instance, mock, when } from 'ts-mockito'
+import { anyString, anything, instance, mock, when } from 'ts-mockito'
 import { IItem } from '../../../models/item/IItem'
 import { IMagazine } from '../../../models/item/IMagazine'
 import { ItemContentComponentService } from '../../../services/components/ItemContentComponentService'
@@ -88,7 +88,7 @@ describe('getAcceptedItems()', () => {
     const itemServiceMock = mock<ItemService>()
     when(itemServiceMock.getItem(item.id)).thenReturn(Promise.resolve(Result.ok(item)))
     when(itemServiceMock.getItem('5efb0e16aeb21837e749c7ff')).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
-    when(itemServiceMock.getItemsOfCategory(anyString())).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    when(itemServiceMock.getItemsOfCategories(anything())).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
     when(itemServiceMock.getItemCategories()).thenReturn(Promise.resolve(ItemCategories))
     Services.configure(ItemService, undefined, instance(itemServiceMock))
 

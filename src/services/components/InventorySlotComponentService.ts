@@ -20,24 +20,18 @@ export class InventorySlotComponentService {
    * @returns Accepted items.
    */
   public async getAcceptedItems(categoryIds: string[]): Promise<IItem[]> {
-    const acceptedItems: IItem[] = []
     const merchantFilterService = Services.get(MerchantFilterService)
     const itemService = Services.get(ItemService)
 
-    for (const categoryId of categoryIds) {
-      const itemsResult = await itemService.getItemsOfCategory(categoryId)
+    const itemsResult = await itemService.getItemsOfCategories(categoryIds)
 
-      if (!itemsResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage)
-
-        continue
-      }
-
-      const acceptedItemsResult = itemsResult.value.filter(i => merchantFilterService.hasMatchingPrices(i, true))
-      acceptedItemsResult.sort((item1: IItem, item2: IItem) => StringUtils.compare(item1.name, item2.name))
-
-      acceptedItems.push(...acceptedItemsResult)
+    if (!itemsResult.success) {
+      Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage)
+      return []
     }
+
+    const acceptedItems = itemsResult.value.filter(i => merchantFilterService.hasMatchingPrices(i, true))
+    acceptedItems.sort((item1: IItem, item2: IItem) => StringUtils.compare(item1.name, item2.name))
 
     return acceptedItems
   }

@@ -60,25 +60,20 @@ export class ItemContentComponentService {
    * @returns Accepted items.
    */
   private async getItemAcceptedItems(): Promise<IItem[]> {
-    const acceptedItems: IItem[] = []
     const merchantFilterService = Services.get(MerchantFilterService)
     const itemService = Services.get(ItemService)
     const itemCategories = await itemService.getItemCategories()
 
-    for (const category of itemCategories) {
-      const itemsResult = await itemService.getItemsOfCategory(category.id)
+    const itemsResult = await itemService.getItemsOfCategories(itemCategories)
 
-      if (!itemsResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage)
+    if (!itemsResult.success) {
+      Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage)
 
-        continue
-      }
-
-      const acceptedItemsResult = itemsResult.value.filter(i => merchantFilterService.hasMatchingPrices(i, true))
-      acceptedItemsResult.sort((item1: IItem, item2: IItem) => StringUtils.compare(item1.name, item2.name))
-
-      acceptedItems.push(...acceptedItemsResult)
+      return []
     }
+
+    const acceptedItems = itemsResult.value.filter(i => merchantFilterService.hasMatchingPrices(i, true))
+    acceptedItems.sort((item1: IItem, item2: IItem) => StringUtils.compare(item1.name, item2.name))
 
     return acceptedItems
   }

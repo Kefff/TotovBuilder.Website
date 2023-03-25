@@ -230,7 +230,7 @@ export default defineComponent({
       const itemCategories = await itemService.getItemCategories()
 
       for (const itemCategory of itemCategories) {
-        let optionsOfCategory = currentOptions.filter((o) => o.categoryId === itemCategory.id)
+        let optionsOfCategory = currentOptions.filter((o) => o.categoryId === itemCategory)
         optionsOfCategory = await SortingService.sort(optionsOfCategory, newValue)
         sortedOptions.push(...optionsOfCategory)
       }
