@@ -9,6 +9,7 @@ import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import { TarkovValuesService } from './TarkovValuesService'
 import { ItemFetcherService } from './ItemFetcherService'
 import { IPrice } from '../models/item/IPrice'
+import { MerchantFilterService } from './MerchantFilterService'
 
 /**
  * Represents a service responsible for managing items.
@@ -75,6 +76,25 @@ export class ItemService {
   }
 
   /**
+   * Gets an item. Updates the prices if the cache has expired.
+   * @param id - Item ID.
+   * @returns Item.
+   */
+  public async getItem(id: string): Promise<Result<IItem>> {
+    const itemsResult = await this.getItems([id])
+
+    if (!itemsResult.success || itemsResult.value.length === 0) {
+      return Result.fail(
+        FailureType.error,
+        'ItemService.getItem()',
+        i18n.t('message.itemNotFound', { id })
+      )
+    }
+
+    return Result.ok(itemsResult.value[0])
+  }
+
+  /**
    * Gets item categories.
    * @returns Item categories.
    */
@@ -85,37 +105,57 @@ export class ItemService {
   }
 
   /**
-   * Gets an item. Updates the prices if the cache has expired.
-   * @param id - Item ID.
-   * @returns Item or undefined if the item was not found.
+   * Gets items. Updates the prices if the cache has expired.
+   * @param ids - Item IDs.
+   * @param useMerchantFilter - Indicates whether the merchant filter must be applied. False by default.
+   * @returns Items.
    */
-  public async getItem(id: string): Promise<Result<IItem>> {
+  public async getItems(ids: string[], useMerchantFilter = false): Promise<Result<IItem[]>> {
     await this.initialize()
 
-    const item = this.items.find(i => i.id === id)
+    let items: IItem[]
 
-    if (item == null) {
+    if (useMerchantFilter) {
+      items = this.items.filter(i => ids.some(id => id === i.id)
+        && Services.get(MerchantFilterService).hasMatchingPrices(i, true))
+    } else {
+      items = this.items.filter(i => ids.some(id => id === i.id))
+    }
+
+    if (items.length < ids.length && !useMerchantFilter) {
+      const notFoundItemIds = ids.filter(id => !items.some(i => i.id === id))
       return Result.fail(
         FailureType.error,
-        'ItemService.getItem()',
-        i18n.t('message.itemNotFound', { id })
+        'ItemService.getItems()',
+        i18n.t('message.itemsNotFound', { ids: `${notFoundItemIds.join('", "')}` })
       )
     }
 
-    return Result.ok(item)
+    return Result.ok(items)
   }
 
   /**
    * Gets items of a specified category. Updates the prices if its cache has expired.
-   * @param ids - Category IDs.
+   * @param categoryIds - Category IDs.
+   * @param useMerchantFilter - Indicates whether the merchant filter must be applied. False by default.
    */
-  public async getItemsOfCategories(ids: string[]): Promise<Result<IItem[]>> {
+  public async getItemsOfCategories(categoryIds: string[], useMerchantFilter = false): Promise<Result<IItem[]>> {
     await this.initialize()
 
-    const items = this.items.filter(i => ids.some(id => id == i.categoryId))
+    let items: IItem[]
 
-    if (items.length === 0) {
-      return Result.fail(FailureType.error, 'ItemService.getItemsOfCategories', i18n.t('message.itemsOfCategoriesNotFound', { ids: ids.join(', ') }))
+    if (useMerchantFilter) {
+      items = this.items.filter(i => categoryIds.some(id => id === i.categoryId)
+        && Services.get(MerchantFilterService).hasMatchingPrices(i, true))
+    } else {
+      items = this.items.filter(i => categoryIds.some(id => id === i.categoryId))
+    }
+
+    if (items.length === 0 && !useMerchantFilter) {
+      return Result.fail(
+        FailureType.error,
+        'ItemService.getItemsOfCategories',
+        i18n.t('message.itemsOfCategoriesNotFound', { ids: `${categoryIds.join('", "')}` }))
     }
 
     return Result.ok(items)

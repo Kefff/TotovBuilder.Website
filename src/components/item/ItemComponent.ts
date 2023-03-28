@@ -94,7 +94,7 @@ export default defineComponent({
 
     const itemChanging = ref(false)
     const options = ref<IItem[]>([])
-    const optionsEmptyMessage = ref<string>('message.itemsNotFound')
+    const optionsEmptyMessage = ref<string>('message.noItemsFound')
     const optionsFilter = ref('')
     const optionsSortingData = ref<SortingData>(new SortingData())
     const quantity = ref(props.modelValue?.quantity ?? 1)
@@ -258,7 +258,7 @@ export default defineComponent({
         options.value = []
       } else {
         options.value = newOptions
-        optionsEmptyMessage.value = 'message.itemsNotFound'
+        optionsEmptyMessage.value = 'message.noItemsFound'
         onSortOptions(sortingData)
       }
     }

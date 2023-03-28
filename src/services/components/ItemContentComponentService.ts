@@ -1,10 +1,8 @@
 import { IItem } from '../../models/item/IItem'
 import { ItemService } from '../ItemService'
 import Services from '../repository/Services'
-import StringUtils from '../../utils/StringUtils'
 import { NotificationService, NotificationType } from '../NotificationService'
 import { IMagazine } from '../../models/item/IMagazine'
-import { MerchantFilterService } from '../MerchantFilterService'
 
 /**
  * Represents a service responsible for managing an ItemContentComponent.
@@ -60,22 +58,16 @@ export class ItemContentComponentService {
    * @returns Accepted items.
    */
   private async getItemAcceptedItems(): Promise<IItem[]> {
-    const merchantFilterService = Services.get(MerchantFilterService)
     const itemService = Services.get(ItemService)
     const itemCategories = await itemService.getItemCategories()
-
-    const itemsResult = await itemService.getItemsOfCategories(itemCategories)
+    const itemsResult = await itemService.getItemsOfCategories(itemCategories, true)
 
     if (!itemsResult.success) {
       Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage)
-
       return []
     }
 
-    const acceptedItems = itemsResult.value.filter(i => merchantFilterService.hasMatchingPrices(i, true))
-    acceptedItems.sort((item1: IItem, item2: IItem) => StringUtils.compare(item1.name, item2.name))
-
-    return acceptedItems
+    return itemsResult.value
   }
 
   /**
@@ -84,24 +76,14 @@ export class ItemContentComponentService {
    * @returns Accepted items.
    */
   private async getMagazineAcceptedItems(magazine: IItem): Promise<IItem[]> {
-    const merchantFilterService = Services.get(MerchantFilterService)
-    const acceptedItems: IItem[] = []
     const itemService = Services.get(ItemService)
+    const itemsResult = await itemService.getItems((magazine as IMagazine).acceptedAmmunitionIds, true)
 
-    for (const acceptedAmmunitionId of (magazine as IMagazine).acceptedAmmunitionIds) {
-      const itemResult = await itemService.getItem(acceptedAmmunitionId)
-
-      if (!itemResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, itemResult.failureMessage)
-
-        continue
-      }
-
-      if (merchantFilterService.hasMatchingPrices(itemResult.value, true)) {
-        acceptedItems.push(itemResult.value)
-      }
+    if (!itemsResult.success) {
+      Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage)
+      return []
     }
 
-    return acceptedItems
+    return itemsResult.value
   }
 }

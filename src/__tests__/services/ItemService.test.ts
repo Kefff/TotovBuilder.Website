@@ -18,6 +18,7 @@ import ItemsMock from '../../../test-data/items.json'
 import PresetsMock from '../../../test-data/presets.json'
 import PricesMock from '../../../test-data/prices.json'
 import { IItem } from '../../models/item/IItem'
+import { MerchantFilterService } from '../../services/MerchantFilterService'
 
 
 describe('fetchItemCategories()', () => {
@@ -214,6 +215,174 @@ describe('getItem()', () => {
   })
 })
 
+describe('getItems()', () => {
+  it('should get items from the cache', async () => {
+    // Arrange
+    useItemFetcherServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
+    const itemService = new ItemService()
+
+    // Act
+    const itemsResult = await itemService.getItems(['584147732459775a2b6d9f12', '5c1d0f4986f7744bb01837fa'])
+
+    // Assert
+    expect(itemsResult.success).toBe(true)
+    expect(itemsResult.value).toHaveLength(2)
+    expect(itemsResult.value[0].id).toBe('5c1d0f4986f7744bb01837fa')
+    expect(itemsResult.value[0].name).toBe('TerraGroup Labs keycard (Black)')
+    expect(itemsResult.value[0].prices).toStrictEqual([
+      {
+        barterItems: [
+          {
+            itemId: '5d03794386f77420415576f5',
+            quantity: 5
+          },
+          {
+            itemId: '5e2aee0a86f774755a234b62',
+            quantity: 8
+          },
+          {
+            itemId: '5c052fb986f7746b2101e909',
+            quantity: 2
+          },
+          {
+            itemId: '61bf7c024770ee6f9c6b8b53',
+            quantity: 1
+          }
+        ],
+        currencyName: 'barter',
+        itemId: '5c1d0f4986f7744bb01837fa',
+        merchant: 'mechanic',
+        merchantLevel: 4,
+        quest: null,
+        value: 0,
+        valueInMainCurrency: 0
+      }
+    ])
+    expect(itemsResult.value[1].id).toBe('584147732459775a2b6d9f12')
+    expect(itemsResult.value[1].name).toBe('Kalashnikov AKS-74U 5.45x39 assault rifle Default')
+    expect(itemsResult.value[1].prices).toStrictEqual([
+      {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
+        merchant: 'prapor',
+        merchantLevel: 1,
+        quest: {
+          id: '5936d90786f7742b1420ba5b',
+          name: 'Debut',
+          wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Debut'
+        },
+        value: 24605,
+        valueInMainCurrency: 24605
+      },
+      {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '584147732459775a2b6d9f12',
+        merchant: 'flea-market',
+        merchantLevel: 0,
+        quest: null,
+        value: 28999,
+        valueInMainCurrency: 28999
+      }] as IPrice[])
+  })
+
+  it('should filter items according to the merchant filter', async () => {
+    // Arrange
+    useItemFetcherServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
+    Services.configure(MerchantFilterService)
+    const merchantFitlerService = Services.get(MerchantFilterService)
+    merchantFitlerService.save([
+      {
+        enabled: true,
+        merchant: 'prapor',
+        merchantLevel: 1
+      }
+    ])
+
+    const itemService = new ItemService()
+
+    // Act
+    const itemsResult = await itemService.getItems(['584147732459775a2b6d9f12', '5c1d0f4986f7744bb01837fa', '5dd7f8c524e5d7504a4e3077'], true)
+
+    // Assert
+    expect(itemsResult.success).toBe(true)
+    expect(itemsResult.value).toHaveLength(1)
+    expect(itemsResult.value[0].id).toBe('584147732459775a2b6d9f12')
+    expect(itemsResult.value[0].name).toBe('Kalashnikov AKS-74U 5.45x39 assault rifle Default')
+    expect(itemsResult.value[0].prices).toStrictEqual([
+      {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
+        merchant: 'prapor',
+        merchantLevel: 1,
+        quest: {
+          id: '5936d90786f7742b1420ba5b',
+          name: 'Debut',
+          wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Debut'
+        },
+        value: 24605,
+        valueInMainCurrency: 24605
+      },
+      {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '584147732459775a2b6d9f12',
+        merchant: 'flea-market',
+        merchantLevel: 0,
+        quest: null,
+        value: 28999,
+        valueInMainCurrency: 28999
+      }] as IPrice[])
+  })
+
+  it('should fail when and item is not found an the merchant filter is not used', async () => {
+    // Arrange
+    useItemFetcherServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
+    const itemService = new ItemService()
+
+    // Act
+    const itemsResult = await itemService.getItems(['invalid1', '5c1d0f4986f7744bb01837fa', 'invalid2'], false)
+
+    // Assert
+    expect(itemsResult.success).toBe(false)
+    expect(itemsResult.failureMessage).toBe('Items "invalid1", "invalid2" not found.')
+  })
+
+  it('should fail when fetching fails', async () => {
+    // Arrange
+    useWebsiteConfigurationServiceMock()
+
+    Services.configure(NotificationService)
+
+    const itemFetcherServiceMock = mock<ItemFetcherService>()
+    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(Result.fail(FailureType.error))
+    when(itemFetcherServiceMock.fetchItems()).thenResolve(Result.fail(FailureType.error))
+    when(itemFetcherServiceMock.fetchPrices()).thenResolve(Result.fail(FailureType.error))
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.fail(FailureType.error))
+    Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
+
+    const itemService = new ItemService()
+
+    // Act
+    const itemsResult = await itemService.getItems(['57dc2fa62459775949412633', '5c1d0f4986f7744bb01837fa'])
+
+    // Assert
+    expect(itemsResult.success).toBe(false)
+    expect(itemsResult.failureMessage).toBe('Items "57dc2fa62459775949412633", "5c1d0f4986f7744bb01837fa" not found.')
+  })
+})
+
 describe('getItemCategories()', () => {
   it('should get item categories', async () => {
     // Arrange
@@ -232,7 +401,7 @@ describe('getItemCategories()', () => {
 })
 
 describe('getItemsOfCategories()', () => {
-  it('should get the items belonging to categories', async () => {
+  it('should get the items belonging to the categories', async () => {
     // Arrange
     useItemFetcherServiceMock()
     useTarkovValuesServiceMock()
@@ -272,7 +441,36 @@ describe('getItemsOfCategories()', () => {
     ])
   })
 
-  it('should fail when no items belong to the category', async () => {
+  it('should filter items according to the merchant filter', async () => {
+    // Arrange
+    useItemFetcherServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
+    Services.configure(MerchantFilterService)
+    const merchantFitlerService = Services.get(MerchantFilterService)
+    merchantFitlerService.save([
+      {
+        enabled: true,
+        merchant: 'peacekeeper',
+        merchantLevel: 2
+      }
+    ])
+
+    const itemService = new ItemService()
+
+    // Act
+    const itemResult = await itemService.getItemsOfCategories(['armband', 'securedContainer'], true)
+
+    // Assert
+    expect(itemResult.success).toBe(true)
+    expect(itemResult.value.map((i) => i.id).sort()).toStrictEqual([
+      '544a11ac4bdc2d470e8b456a',
+      '5857a8b324597729ab0a0e7d'
+    ])
+  })
+
+  it('should fail when no items belong to the categories', async () => {
     // Arrange
     useItemFetcherServiceMock()
     useTarkovValuesServiceMock()
@@ -286,6 +484,22 @@ describe('getItemsOfCategories()', () => {
     // Assert
     expect(itemResult.success).toBe(false)
     expect(itemResult.failureMessage).not.toBe('')
+  })
+
+  it('should fail when no items are found an the merchant filter is not used', async () => {
+    // Arrange
+    useItemFetcherServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
+    const itemService = new ItemService()
+
+    // Act
+    const itemsResult = await itemService.getItemsOfCategories(['invalid1', 'invalid2'], false)
+
+    // Assert
+    expect(itemsResult.success).toBe(false)
+    expect(itemsResult.failureMessage).toBe('No items found for the "invalid1", "invalid2" item categories.')
   })
 })
 

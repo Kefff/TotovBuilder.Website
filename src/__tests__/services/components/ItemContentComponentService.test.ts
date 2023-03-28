@@ -10,7 +10,7 @@ import ItemCategories from '../../../../test-data/item-categories.json'
 import { MerchantFilterService } from '../../../services/MerchantFilterService'
 import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../../__mocks__/TarkovValuesServiceMock'
-import { useItemServiceMock } from '../../../__mocks__/ItemServiceMock'
+import { useItemFetcherServiceMock } from '../../../__mocks__/ItemFetcherServiceMock'
 
 describe('getAcceptedItems()', () => {
   it.each([
@@ -22,9 +22,10 @@ describe('getAcceptedItems()', () => {
     expectedNonBarterItemsAmount: number,
     expectedBarterItemsAmount: number, expectedNonBarterAndBarterItemsAmount) => {
     // Arrange
-    useItemServiceMock()
+    useItemFetcherServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
+    Services.configure(ItemService)
     Services.configure(MerchantFilterService)
 
     const merchantFitlerService = Services.get(MerchantFilterService)
@@ -87,9 +88,9 @@ describe('getAcceptedItems()', () => {
 
     const itemServiceMock = mock<ItemService>()
     when(itemServiceMock.getItem(item.id)).thenReturn(Promise.resolve(Result.ok(item)))
-    when(itemServiceMock.getItem('5efb0e16aeb21837e749c7ff')).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
-    when(itemServiceMock.getItemsOfCategories(anything())).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    when(itemServiceMock.getItems(anything(), true)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
     when(itemServiceMock.getItemCategories()).thenReturn(Promise.resolve(ItemCategories))
+    when(itemServiceMock.getItemsOfCategories(anything(), anything())).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
     Services.configure(ItemService, undefined, instance(itemServiceMock))
 
     // Act

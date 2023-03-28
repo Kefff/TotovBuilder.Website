@@ -1,3 +1,4 @@
+import { ItemSortingFunctions } from '../../services/sorting/functions/ItemSortingFunction'
 import { IItem } from '../item/IItem'
 
 /**
@@ -17,12 +18,12 @@ export default class SortingData {
   /**
    * Comparison function to used for sorting.
    */
-  public comparisonFunction: (item1: IItem, item1ValueToCompare: string | number, item2: IItem, item2ValueToCompare: string | number) => number = () => 0
+  public comparisonFunction: (item1: IItem, item1ValueToCompare: string | number, item2: IItem, item2ValueToCompare: string | number) => number = ItemSortingFunctions.compareByString
 
   /**
    * Function for getting the data that will be used to sort. Uses the `property` to retreive the data.
    */
-  public getValueToCompareFunction: (item: IItem) => (string | number) | Promise<string | number> = () => 0
+  public getValueToCompareFunction: (item: IItem) => (string | number) | Promise<string | number> = (item: IItem) => item.name
 }
 
 /**

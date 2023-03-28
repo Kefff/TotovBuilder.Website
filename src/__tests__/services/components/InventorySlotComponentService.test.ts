@@ -41,16 +41,32 @@ describe('getAcceptedItems()', () => {
 
     // Assert
     expect(items.map((i) => i.id)).toStrictEqual([
+      '619bdeb986e01e16f839a99e',
+      '619bdf9cc9546643a67df6f8',
       '5b3f3af486f774679e752c1f',
-      '5b3f3b0186f774021a2afef7',
-      '5b3f3ade86f7746b6b790d8e',
-      '5b3f16c486f7747c327f55f7',
-      '5b3f3b0e86f7746752107cda',
-      '5b432b965acfc47a8774094e',
-      '5aa2ba71e5b5b000137b758f',
-      '5645bcc04bdc2d363b8b4572',
       '628e4e576d783146b124c64d',
-      '5c165d832e2216398b5a7e36'
+      '619bdfd4c9546643a67df6fa',
+      '5b3f16c486f7747c327f55f7',
+      '5aa2ba71e5b5b000137b758f',
+      '5a16b9fffcdbcb0176308b34',
+      '60b0f988c4449e4cb624c1da',
+      '5b3f3ade86f7746b6b790d8e',
+      '6033fa48ffd42c541047f728',
+      '619bddc6c9546643a67df6ee',
+      '619bdd8886e01e16f839a99c',
+      '619bddffc9546643a67df6f0',
+      '619bc61e86e01e16f839a999',
+      '5f9949d869e2777a0e779ba5',
+      '5645bcc04bdc2d363b8b4572',
+      '619bde7fc9546643a67df6f4',
+      '619bdef8c9546643a67df6f6',
+      '5b432b965acfc47a8774094e',
+      '5b3f3b0186f774021a2afef7',
+      '619bde3dc9546643a67df6f2',
+      '5f60cd6cf2bcbb675b00dac6',
+      '5e4d34ca86f774264f758330',
+      '5c165d832e2216398b5a7e36',
+      '5b3f3b0e86f7746752107cda'
     ])
 
     // Clean
@@ -67,7 +83,7 @@ describe('getAcceptedItems()', () => {
     const notificationServiceMock = mock<NotificationService>()
     Services.configure(NotificationService, undefined, notificationServiceMock)
     const itemServiceMock = mock<ItemService>()
-    when(itemServiceMock.getItemsOfCategories(anything())).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    when(itemServiceMock.getItemsOfCategories(anything(), anything())).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
     Services.configure(ItemService, undefined, instance(itemServiceMock))
 
     // Act

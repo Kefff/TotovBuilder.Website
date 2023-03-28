@@ -15,7 +15,8 @@ export function useItemServiceMock(hasMainCurrency = true, customItemList?: IIte
   const itemServiceMock = mock<ItemService>()
   when(itemServiceMock.getItem(anyString())).thenCall((id: string) => getItem(id, customItemList, customPricesList))
   when(itemServiceMock.getItemCategories()).thenReturn(Promise.resolve(ItemCategoriesMock))
-  when(itemServiceMock.getItemsOfCategories(anything())).thenCall((ids: string[]) => getItemsOfCategories(ids, customItemList))
+  when(itemServiceMock.getItems(anything(), anything())).thenCall((ids: string[]) => getItems(ids, customItemList))
+  when(itemServiceMock.getItemsOfCategories(anything(), anything())).thenCall((ids: string[]) => getItemsOfCategories(ids, customItemList))
   when(itemServiceMock.getMainCurrency()).thenCall(() => getMainCurrency(hasMainCurrency))
   when(itemServiceMock.getPreset(anyString())).thenCall((id: string) => getPreset(id, customPresetsList))
 
@@ -34,8 +35,18 @@ function getItem(id: string, customItemList?: IItem[], customPricesList?: IPrice
   return Promise.resolve(Result.fail(FailureType.error, 'ItemService.getItem()', `Item "${id}" not found.`))
 }
 
-async function getItemsOfCategories(ids: string[], customItemList?: IItem[], customPricesList?: IPrice[]): Promise<Result<IItem[]>> {
-  const items = (customItemList ?? ItemsMock as IItem[]).filter(i => ids.some(id => i.categoryId === id)) as IItem[]
+async function getItems(ids: string[], customItemsList?: IItem[], customPricesList?: IPrice[]): Promise<Result<IItem[]>> {
+  const items = (customItemsList ?? ItemsMock as IItem[]).filter(i => ids.some(id => i.id === id)) as IItem[]
+
+  for (const item of items) {
+    item.prices = (customPricesList ?? PriceMocks as IPrice[]).filter(p => p.itemId === item.id)
+  }
+
+  return Promise.resolve(Result.ok<IItem[]>(items))
+}
+
+async function getItemsOfCategories(ids: string[], customItemsList?: IItem[], customPricesList?: IPrice[]): Promise<Result<IItem[]>> {
+  const items = (customItemsList ?? ItemsMock as IItem[]).filter(i => ids.some(id => i.categoryId === id)) as IItem[]
 
   for (const item of items) {
     item.prices = (customPricesList ?? PriceMocks as IPrice[]).filter(p => p.itemId === item.id)
