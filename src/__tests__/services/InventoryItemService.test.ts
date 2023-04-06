@@ -212,7 +212,7 @@ describe('getErgonomicsPercentageModifier()', () => {
       } as IInventoryItem,
       {
         ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithContent: 0
+        ergonomicsPercentageModifierWithMods: 0
       } as IErgonomicsPercentageModifier
     ],
     [
@@ -225,7 +225,7 @@ describe('getErgonomicsPercentageModifier()', () => {
       } as IInventoryItem,
       {
         ergonomicsPercentageModifier: -0.02,
-        ergonomicsPercentageModifierWithContent: -0.02
+        ergonomicsPercentageModifierWithMods: -0.02
       } as IErgonomicsPercentageModifier
     ],
     [
@@ -252,7 +252,7 @@ describe('getErgonomicsPercentageModifier()', () => {
       } as IInventoryItem,
       {
         ergonomicsPercentageModifier: -0.04,
-        ergonomicsPercentageModifierWithContent: -0.13
+        ergonomicsPercentageModifierWithMods: -0.13
       } as IErgonomicsPercentageModifier
     ]
   ])(
@@ -278,8 +278,8 @@ describe('getErgonomicsPercentageModifier()', () => {
       ).toBe(expected.ergonomicsPercentageModifier)
       expect(
         ergonomicsPercentageModifier.value
-          .ergonomicsPercentageModifierWithContent
-      ).toBe(expected.ergonomicsPercentageModifierWithContent)
+          .ergonomicsPercentageModifierWithMods
+      ).toBe(expected.ergonomicsPercentageModifierWithMods)
     }
   )
 

@@ -273,8 +273,8 @@ export default defineComponent({
         return
       }
 
-      selectedItemIsModdable.value = itemPropertiesService.isModdable(selectedItem.value)
-      selectedItemIsContainer.value = itemPropertiesService.isContainer(selectedItem.value)
+      selectedItemIsModdable.value = itemPropertiesService.canBeModded(selectedItem.value)
+      selectedItemIsContainer.value = itemPropertiesService.canContain(selectedItem.value)
 
       if (selectedItemIsModdable.value) {
         selectedTab.value = SelectableTab.mods

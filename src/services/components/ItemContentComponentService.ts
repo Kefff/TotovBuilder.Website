@@ -10,7 +10,6 @@ import { IMagazine } from '../../models/item/IMagazine'
 export class ItemContentComponentService {
   /**
    * Gets the items accepted as the content of another item.
-   * Sorted by default by item category and caption.
    * @param itemId - Item ID.
    * @returns Accepted items.
    */

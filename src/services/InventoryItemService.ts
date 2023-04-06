@@ -94,15 +94,15 @@ export class InventoryItemService {
       return Result.failFrom(itemResult)
     }
 
-    if (!Services.get(ItemPropertiesService).isArmor(itemResult.value)) {
+    if (!Services.get(ItemPropertiesService).canHaveArmor(itemResult.value)) {
       return Result.ok({
         ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithContent: 0
+        ergonomicsPercentageModifierWithMods: 0
       })
     }
 
     const ergonomicsPercentageModifier = (itemResult.value as IArmor).ergonomicsPercentageModifier
-    let ergonomicsPercentageModifierWithContent = ergonomicsPercentageModifier
+    let ergonomicsPercentageModifierWithMods = ergonomicsPercentageModifier
 
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.item == null) {
@@ -117,12 +117,12 @@ export class InventoryItemService {
         return Result.failFrom(modErgonomicsPercentageModifierResult)
       }
 
-      ergonomicsPercentageModifierWithContent += modErgonomicsPercentageModifierResult.value.ergonomicsPercentageModifierWithContent
+      ergonomicsPercentageModifierWithMods += modErgonomicsPercentageModifierResult.value.ergonomicsPercentageModifierWithMods
     }
 
     return Result.ok({
       ergonomicsPercentageModifier: round(ergonomicsPercentageModifier, 2),
-      ergonomicsPercentageModifierWithContent: round(ergonomicsPercentageModifierWithContent, 2)
+      ergonomicsPercentageModifierWithMods: round(ergonomicsPercentageModifierWithMods, 2)
     })
   }
 

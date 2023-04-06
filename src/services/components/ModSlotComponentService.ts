@@ -9,7 +9,6 @@ import Services from '../repository/Services'
 export class ModSlotComponentService {
   /**
    * Gets the items accepted as items for a mod slot.
-   * Sorted by default by item category and caption.
    * @param compatibleItemIds - IDs of the items that are compatible with the mod slot.
    * @returns Accepted items.
    */

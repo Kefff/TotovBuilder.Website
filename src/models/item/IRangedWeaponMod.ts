@@ -10,6 +10,12 @@ export interface IRangedWeaponMod extends IMod {
   accuracyPercentageModifier: number
 
   /**
+   * Modifier of the whole preset added to the weapon ergonomics in percentage.
+   * Undefined if the item is not a preset.
+   */
+  presetRecoilPercentageModifier: number | undefined
+
+  /**
    * Modifier added to the weapon recoil in percentage.
    */
   recoilPercentageModifier: number

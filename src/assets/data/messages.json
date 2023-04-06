@@ -305,6 +305,7 @@
       "noBuildsToExport": "No builds to export",
       "noItemsFound": "No item could be found for your search with your current merchants configuration.",
       "presetsNotFetched": "No preset could be fetched.",
+      "presetNotFound": "Preset \"{id}\" not found.",
       "pricesNotFetched": "No price could be fetched.",
       "requiredField": "{caption} is required.",
       "resultCannotReadValueError": "Cannot read \"value\" property of an error result.",

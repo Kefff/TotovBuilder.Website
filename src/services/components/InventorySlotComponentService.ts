@@ -42,7 +42,6 @@ export class InventorySlotComponentService {
 
   /**
    * Gets the items accepted in an inventory slot.
-   * Sorted by default by item category and caption.
    * @param categoryIds - IDs of the categories from which the items are accepted.
    * @returns Accepted items.
    */

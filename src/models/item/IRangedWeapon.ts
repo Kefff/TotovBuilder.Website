@@ -32,6 +32,24 @@ export interface IRangedWeapon extends IModdable {
   horizontalRecoil: number
 
   /**
+   * Ergonomics of the whole preset.
+   * Undefined if the item is not a preset.
+   */
+  presetErgonomics: number | undefined
+
+  /**
+   * Horizontal recoil of the whole preset.
+   * Undefined if the item is not a preset.
+   */
+  presetHorizontalRecoil: number | undefined
+
+  /**
+   * Vertical recoil of the whole preset.
+   * Undefined if the item is not a preset.
+   */
+  presetVerticalRecoil: number | undefined
+
+  /**
    * Vertical recoil.
    */
   verticalRecoil: number
