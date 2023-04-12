@@ -10,8 +10,7 @@
     "build-prebuild": "node build/prebuild.js",
     "build-postbuild": "node build/postbuild.js",
     "serve": "vite preview",
-    "test": "jest --coverage --runInBand && npm run coverage",
-    "test-leak": "jest --detectOpenHandles"
+    "test": "jest --coverage --runInBand --detectOpenHandles && npm run coverage"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.9",

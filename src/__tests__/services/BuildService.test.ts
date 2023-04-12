@@ -1653,6 +1653,7 @@ describe('toSharableURL()', () => {
 describe('update()', () => {
   it('should update a build', async () => {
     // Arrange
+    useItemServiceMock()
     useVersionServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -1757,6 +1758,7 @@ describe('updateObsoleteBuild', () => {
     it('should do nothing to builds without compass inventory slot', async () => {
       // Arrange
       useItemServiceMock()
+      useVersionServiceMock()
       useWebsiteConfigurationServiceMock()
 
       const obsoleteBuild = {
@@ -1926,31 +1928,36 @@ describe('updateObsoleteBuild', () => {
 
     it('should to nothing to invalid items and items without default preset id', async () => {
       // Arrange
+      useVersionServiceMock()
       useItemServiceMock(
         true,
-        [{
-          baseItemId: null,
-          caliber: '',
-          categoryId: 'mainWeapon',
-          conflictingItemIds: [],
-          defaultPresetId: null,
-          ergonomics: 0,
-          fireMods: [],
-          fireRate: 0,
-          horizontalRecoil: 0,
-          iconLink: '',
-          id: 'itemWithoutDefaultPresetId',
-          imageLink: '',
-          marketLink: '',
-          maxStackableAmount: 1,
-          modSlots: [],
-          name: 'Item without default preset id',
-          prices: [],
-          shortName: 'IWDPI',
-          verticalRecoil: 0,
-          weight: 0,
-          wikiLink: ''
-        } as IRangedWeapon])
+        [
+          {
+            baseItemId: null,
+            caliber: '',
+            categoryId: 'mainWeapon',
+            conflictingItemIds: [],
+            defaultPresetId: null,
+            ergonomics: 0,
+            fireMods: [],
+            fireRate: 0,
+            horizontalRecoil: 0,
+            iconLink: '',
+            id: 'itemWithoutDefaultPresetId',
+            imageLink: '',
+            marketLink: '',
+            maxStackableAmount: 1,
+            modSlots: [],
+            name: 'Item without default preset id',
+            presetErgonomics: 0,
+            presetHorizontalRecoil: 0,
+            presetVerticalRecoil: 0,
+            prices: [],
+            shortName: 'IWDPI',
+            verticalRecoil: 0,
+            weight: 0,
+            wikiLink: ''
+          } as IRangedWeapon])
       useWebsiteConfigurationServiceMock()
 
       const obsoleteBuild = {
