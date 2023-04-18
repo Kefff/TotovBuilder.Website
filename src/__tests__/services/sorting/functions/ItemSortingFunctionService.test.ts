@@ -12,6 +12,7 @@ import Result from '../../../../utils/Result'
 import { useItemServiceMock } from '../../../../__mocks__/ItemServiceMock'
 import { useTarkovValuesServiceMock } from '../../../../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../../../__mocks__/WebsiteConfigurationServiceMock'
+import { usePresetServiceMock } from '../../../../__mocks__/PresetPropertiesServiceMock'
 
 describe('compareByCategory()', () => {
   it.each([
@@ -127,6 +128,7 @@ describe('compareByPrice()', () => {
   ])('should compare by category, price and name', async (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
     // Arrange
     useItemServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventoryItemService)

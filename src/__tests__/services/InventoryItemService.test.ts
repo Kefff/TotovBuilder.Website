@@ -6,7 +6,6 @@ import { IRecoil } from '../../models/utils/IRecoil'
 import { IRecoilPercentageModifier } from '../../models/utils/IRecoilPercentageModifier'
 import { IWeight } from '../../models/utils/IWeight'
 import { InventoryItemService } from '../../services/InventoryItemService'
-import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import Services from '../../services/repository/Services'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
@@ -14,6 +13,7 @@ import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
 
 const inventoryItem: IInventoryItem = {
   content: [
@@ -323,95 +323,6 @@ describe('getErgonomicsPercentageModifier()', () => {
       expect(ergonomicsPercentageModifier.failureMessage).toBe('Item "invalid" not found.')
     }
   )
-})
-
-describe('getPresetModSlotContainingItem', () => {
-  it.each([
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5a6f5d528dc32e00094b97d9', // Glock rear sight
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster_0/item:5b439b1f86f7744fd8059cbe/mod:mod_reciever/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
-      {
-        item: {
-          content: [],
-          ignorePrice: false,
-          itemId: '5a6f5d528dc32e00094b97d9',
-          modSlots: [],
-          quantity: 1
-        },
-        modSlotName: 'mod_sight_rear'
-      } as IInventoryModSlot
-    ],
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '',
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster_0/item:5b1fa9b25acfc40018633c01/mod:invalid/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
-      undefined
-    ],
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5a6f5d528dc32e00094b97d9',
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster/item:invalid/mod:mod_sight_rear/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
-      undefined
-    ],
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5a6f5d528dc32e00094b97d9',
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster_0/item:5b1fa9b25acfc40018633c01',
-      undefined
-    ]
-  ])('should get the preset mod slot that contains an item', async (item: IInventoryItem, path: string, expected: IInventoryModSlot | undefined) => {
-    // Arrange
-    useItemServiceMock()
-    const service = new InventoryItemService()
-
-    // Act
-    const result = await service.getPresetModSlotContainingItem(item.itemId, path)
-
-    // Assert
-    expect(result).toStrictEqual(expected)
-  })
-
-  it('should return undefined when the preset does not contain the mod slot containing the item', async () => {
-    // Arrange
-    useItemServiceMock()
-    const service = new InventoryItemService()
-
-    const item = {
-      content: [],
-      ignorePrice: false,
-      itemId: '5a6f5d528dc32e00094b97d9', // Glock rear sight
-      modSlots: [],
-      quantity: 1
-    } as IInventoryItem
-    const path = 'build:1234-4568-9011/slot:holster_0/item:5b439b1f86f7744fd8059cbe/mod:mod_reciever/item:5b1faa0f5acfc40dc528aeb5/mod:mod_pistol_grip'
-
-    // Act
-    const result = await service.getPresetModSlotContainingItem(item.itemId, path)
-
-    // Assert
-    expect(result).toBeUndefined()
-  })
 })
 
 describe('getPrice()', () => {
@@ -759,6 +670,7 @@ describe('getPrice()', () => {
     async (inventoryItem: IInventoryItem, canBeLooted: boolean, expected: IInventoryPrice) => {
       // Arrange
       useItemServiceMock()
+      usePresetServiceMock()
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()
       Services.configure(MerchantFilterService)
@@ -1103,6 +1015,7 @@ describe('getPrice()', () => {
     async (inventoryItem: IInventoryItem, expected: IInventoryPrice) => {
       // Arrange
       useItemServiceMock()
+      usePresetServiceMock()
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()
       Services.configure(MerchantFilterService)
@@ -1120,6 +1033,7 @@ describe('getPrice()', () => {
   it('should get the price of an inventory item ignoring the prices of deactivated merchants', async () => {
     // Arrange
     useItemServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(MerchantFilterService)
@@ -1383,6 +1297,7 @@ describe('getPrice()', () => {
   ])('should have a missing price when no merchants sell the item', async (inventoryItem: IInventoryItem, expected: IInventoryPrice) => {
     // Arrange
     useItemServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(MerchantFilterService)
@@ -1487,6 +1402,7 @@ describe('getPrice()', () => {
           valueInMainCurrency: 200.0
         }
       ])
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(MerchantFilterService)
@@ -1623,6 +1539,7 @@ describe('getPrice()', () => {
           valueInMainCurrency: 25000000.0
         }
       ])
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(MerchantFilterService)
@@ -1728,6 +1645,7 @@ describe('getPrice()', () => {
           valueInMainCurrency: 0.0
         }
       ])
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(MerchantFilterService)
@@ -1820,6 +1738,7 @@ describe('getPrice()', () => {
     async (inventoryItem: IInventoryItem) => {
       // Arrange
       useItemServiceMock()
+      usePresetServiceMock()
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()
       Services.configure(MerchantFilterService)
@@ -1896,6 +1815,7 @@ describe('getPrice()', () => {
           'valueInMainCurrency': 29400.0
         }
       ])
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(MerchantFilterService)

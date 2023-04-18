@@ -22,6 +22,7 @@ import { ModSlotComponentService } from './services/components/ModSlotComponentS
 import { VersionService } from './services/VersionService'
 import { WebsiteConfigurationService } from './services/WebsiteConfigurationService'
 import { TarkovValuesService } from './services/TarkovValuesService'
+import { PresetService } from './services/PresetService'
 
 /**
  * Configures all the services used in the application.
@@ -42,6 +43,7 @@ export async function configureServices(): Promise<void> {
   Services.configure(LogService)
   Services.configure(MerchantFilterService)
   Services.configure(NotificationService)
+  Services.configure(PresetService)
   Services.configure(VersionService)
   Services.configure(TarkovValuesService)
   Services.configure(WebsiteConfigurationService)

@@ -18,12 +18,12 @@ import { IAmmunition } from '../models/item/IAmmunition'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IPrice } from '../models/item/IPrice'
 import { MerchantFilterService } from './MerchantFilterService'
-import { PathUtils } from '../utils/PathUtils'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import { round } from 'round-ts'
 import { TinyEmitter } from 'tiny-emitter'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { PriceUtils } from '../utils/PriceUtils'
+import { PresetService } from './PresetService'
 
 /**
  * Represents a service responsible for managing inventory items.
@@ -56,7 +56,7 @@ export class InventoryItemService {
 
     if (itemPropertiesService.isRangedWeapon(itemResult.value)) {
       ergonomics = (itemResult.value as IRangedWeapon).ergonomics
-    } else if (itemPropertiesService.isMod(itemResult.value)) {
+    } else if (itemPropertiesService.isModdable(itemResult.value)) {
       ergonomics = (itemResult.value as IMod).ergonomicsModifier
     }
 
@@ -124,38 +124,6 @@ export class InventoryItemService {
       ergonomicsPercentageModifier: round(ergonomicsPercentageModifier, 2),
       ergonomicsPercentageModifierWithMods: round(ergonomicsPercentageModifierWithMods, 2)
     })
-  }
-
-  /**
-   * Gets the preset mod slot the inventory item is a part of.
-   * @param itemId - Item ID.
-   * @param path - Mod slot path indicating the inventory object position within a parent item.
-   * @returns Preset mod slot if the inventory item is in a preset; otherwise undefined.
-   */
-  public async getPresetModSlotContainingItem(itemId: string, path: string): Promise<IInventoryModSlot | undefined> {
-    const pathArray = path.split('/')
-
-    // Getting the last item of the path that appears before mods.
-    // We should never have the case of a mod that have items in its content that have mods.
-    const firstModIndex = pathArray.findIndex(p => p.startsWith(PathUtils.modSlotPrefix))
-
-    if (firstModIndex < 0) {
-      return undefined
-    }
-
-    const presetId = pathArray[firstModIndex - 1].replace(PathUtils.itemPrefix, '')
-    const preset = await Services.get(ItemService).getPreset(presetId)
-
-    if (preset == null) {
-      return undefined
-    }
-
-    const pathModSlotNames = pathArray.filter(p => p.startsWith(PathUtils.modSlotPrefix)).map(p => p.replace(PathUtils.modSlotPrefix, ''))
-    const presetModSlot = this.getPresetModSlot(preset, pathModSlotNames)
-
-    if (presetModSlot?.item?.itemId === itemId) {
-      return presetModSlot
-    }
   }
 
   /**
@@ -370,7 +338,7 @@ export class InventoryItemService {
 
     // Adding mod prices
     if (presetModSlotItem == null) {
-      presetModSlotItem = await itemService.getPreset(inventoryItem.itemId)
+      presetModSlotItem = Services.get(PresetService).getPreset(inventoryItem.itemId)
     }
 
     for (const modSlot of inventoryItem.modSlots) {
@@ -494,7 +462,7 @@ export class InventoryItemService {
       recoilPercentageModifierWithMods: 0
     }
 
-    if (!itemPropertiesService.isMod(itemResult.value)) {
+    if (!itemPropertiesService.isModdable(itemResult.value)) {
       return Result.ok(recoilPercentageModifier)
     }
 
@@ -613,7 +581,7 @@ export class InventoryItemService {
 
     // Mods
     if (presetModSlotItem == null) {
-      presetModSlotItem = await itemService.getPreset(inventoryItem.itemId)
+      presetModSlotItem = Services.get(PresetService).getPreset(inventoryItem.itemId)
     }
 
     for (const modSlot of inventoryItem.modSlots) {
@@ -761,33 +729,5 @@ export class InventoryItemService {
     }
 
     return Result.ok((ammunitionResult.value as IAmmunition).recoilPercentageModifier)
-  }
-
-  /**
-   * Gets the mod slot in a preset corresponding to a mod slot path.
-   * @param presetInventoryItem - Preset.
-   * @param pathModSlotNames - Names of the mod slots present in a path leading to a mod.
-   * @returns Mod slot path corresponding to the mod slot path.
-   */
-  private getPresetModSlot(presetInventoryItem: IInventoryItem, pathModSlotNames: string[]): IInventoryModSlot | undefined {
-    const presetModSlot = presetInventoryItem.modSlots.find(ms => ms.modSlotName === pathModSlotNames[0])
-
-    if (presetModSlot == null) {
-      return undefined
-    }
-
-    if (pathModSlotNames.length > 1) {
-      /* istanbul ignore else */
-      if (presetModSlot.item != null) {
-        pathModSlotNames.splice(0, 1)
-
-        return this.getPresetModSlot(presetModSlot.item, pathModSlotNames)
-      } else {
-        // We should never have a preset that has an empty mod slot
-        return undefined
-      }
-    }
-
-    return presetModSlot
   }
 }

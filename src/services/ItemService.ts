@@ -2,7 +2,6 @@ import { IItem } from '../models/item/IItem'
 import Result, { FailureType } from '../utils/Result'
 import i18n from '../plugins/vueI18n'
 import Services from './repository/Services'
-import { IInventoryItem } from '../models/build/IInventoryItem'
 import { ICurrency } from '../models/configuration/ICurrency'
 import { NotificationService, NotificationType } from './NotificationService'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
@@ -10,6 +9,7 @@ import { TarkovValuesService } from './TarkovValuesService'
 import { ItemFetcherService } from './ItemFetcherService'
 import { IPrice } from '../models/item/IPrice'
 import { MerchantFilterService } from './MerchantFilterService'
+import { PresetService } from './PresetService'
 
 /**
  * Represents a service responsible for managing items.
@@ -49,11 +49,6 @@ export class ItemService {
    * Current prices fetching task.
    */
   private pricesFetchingPromise: Promise<void> = Promise.resolve()
-
-  /**
-   * Fetched presets.
-   */
-  private presets: IInventoryItem[] = []
 
   /**
    * Current static data fetching task.
@@ -176,19 +171,6 @@ export class ItemService {
   }
 
   /**
-   * Gets the preset of an item.
-   * @param id - ID of the item for which the preset must be found.
-   * @returns Preset.
-   */
-  public async getPreset(id: string): Promise<IInventoryItem | undefined> {
-    await this.initialize()
-
-    const preset = this.presets.find(p => p.itemId === id)
-
-    return preset
-  }
-
-  /**
    * Initializes the data used by the service.
    */
   public async initialize(): Promise<void> {
@@ -202,11 +184,10 @@ export class ItemService {
   }
 
   /**
-   * Fetchs item categories.
-   * @param itemFetcherService - Item fetcher service.
+   * Fetches item categories.
    */
-  private async fetchItemCategories(itemFetcherService: ItemFetcherService) {
-    const itemCategoriesResult = await itemFetcherService.fetchItemCategories()
+  private async fetchItemCategories() {
+    const itemCategoriesResult = await Services.get(ItemFetcherService).fetchItemCategories()
 
     if (!itemCategoriesResult.success) {
       Services.get(NotificationService).notify(NotificationType.error, itemCategoriesResult.failureMessage, true)
@@ -218,11 +199,11 @@ export class ItemService {
   }
 
   /**
-   * Fetchs items.
+   * Fetches items.
    * @param itemFetcherService - Item fetcher service.
    */
-  private async fetchItems(itemFetcherService: ItemFetcherService) {
-    const itemsResult = await itemFetcherService.fetchItems()
+  private async fetchItems() {
+    const itemsResult = await Services.get(ItemFetcherService).fetchItems()
 
     if (!itemsResult.success) {
       Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage, true)
@@ -241,36 +222,10 @@ export class ItemService {
   private async fetchPrices() {
     /* istanbul ignore else */
     if (!this.isFetchingPrices) {
-      this.pricesFetchingPromise = new Promise((resolve) => {
-        this.isFetchingPrices = true
-        const itemFetcherService = Services.get(ItemFetcherService)
-
-        itemFetcherService.fetchPrices()
-          .then(async (pricesResult) => this.updateItemsPrices(pricesResult))
-          .finally(() => {
-            this.isFetchingPrices = false
-            resolve()
-          })
-      })
+      this.pricesFetchingPromise = this.startPricesFetching()
     }
 
     await this.pricesFetchingPromise
-  }
-
-  /**
-   * Fetchs presets.
-   * @param itemFetcherService - Item fetcher service.
-   */
-  private async fetchPresets(itemFetcherService: ItemFetcherService) {
-    const presetsResult = await itemFetcherService.fetchPresets()
-
-    if (!presetsResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, presetsResult.failureMessage, true)
-
-      return
-    }
-
-    this.presets = presetsResult.value
   }
 
   /**
@@ -281,23 +236,7 @@ export class ItemService {
   private async fetchStaticData(): Promise<void> {
     /* istanbul ignore else */
     if (!this.isFetchingStaticData) {
-      this.staticDataFetchingPromise = new Promise<void>((resolve) => {
-        this.isFetchingStaticData = true
-        const itemFetcherService = Services.get(ItemFetcherService)
-
-        this.fetchItemCategories(itemFetcherService)
-          .then(async () => {
-            await Promise.allSettled([
-              this.fetchItems(itemFetcherService),
-              this.fetchPresets(itemFetcherService)
-            ])
-            this.hasStaticDataCached = true
-          })
-          .finally(() => {
-            this.isFetchingStaticData = false
-            resolve()
-          })
-      })
+      this.staticDataFetchingPromise = this.startStaticDataFetching()
     }
 
     await this.staticDataFetchingPromise
@@ -313,6 +252,40 @@ export class ItemService {
     const cacheDuration = Services.get(WebsiteConfigurationService).configuration.cacheDuration
 
     return duration <= cacheDuration
+  }
+
+  /**
+   * Starts prices fetching.
+   */
+  private async startPricesFetching(): Promise<void> {
+    this.isFetchingPrices = true
+    const itemFetcherService = Services.get(ItemFetcherService)
+
+    const pricesResult = await itemFetcherService.fetchPrices()
+    this.updateItemsPrices(pricesResult)
+
+    this.isFetchingPrices = false
+  }
+
+  /**
+   * Starts static data fetching.
+   */
+  private async startStaticDataFetching(): Promise<void> {
+    const presetsService = Services.get(PresetService)
+
+    this.isFetchingStaticData = true
+
+    await this.fetchItemCategories()
+    await Promise.allSettled([
+      this.fetchItems(),
+      presetsService.fetchPresets()
+    ])
+
+    this.hasStaticDataCached = true
+
+    await presetsService.updatePresetProperties(this.items)
+
+    this.isFetchingStaticData = false
   }
 
   /**

@@ -11,6 +11,7 @@ import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { build1, build2 } from './BuildPropertiesService.test'
+import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
 
 describe('getSummary()', () => {
   it.each([
@@ -2090,6 +2091,7 @@ describe('getSummary()', () => {
     async (build: IBuild, expected: IBuildSummary) => {
       // Arrange
       useItemServiceMock()
+      usePresetServiceMock()
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()
       Services.configure(InventorySlotPropertiesService)
@@ -2124,6 +2126,7 @@ describe('getSummary()', () => {
   it('should get a shopping list containing barter items to buy', async () => {
     // Arrange
     useItemServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventorySlotPropertiesService)

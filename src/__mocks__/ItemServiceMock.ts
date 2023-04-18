@@ -7,18 +7,15 @@ import Result, { FailureType } from '../utils/Result'
 import { ICurrency } from '../models/configuration/ICurrency'
 import { IItem } from '../models/item/IItem'
 import ItemCategoriesMock from '../../test-data/item-categories.json'
-import PresetsMock from '../../test-data/presets.json'
-import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IPrice } from '../models/item/IPrice'
 
-export function useItemServiceMock(hasMainCurrency = true, customItemList?: IItem[], customPricesList?: IPrice[], customPresetsList?: IInventoryItem[]): void {
+export function useItemServiceMock(hasMainCurrency = true, customItemList?: IItem[], customPricesList?: IPrice[]): void {
   const itemServiceMock = mock<ItemService>()
   when(itemServiceMock.getItem(anyString())).thenCall((id: string) => getItem(id, customItemList, customPricesList))
   when(itemServiceMock.getItemCategories()).thenReturn(Promise.resolve(ItemCategoriesMock))
   when(itemServiceMock.getItems(anything(), anything())).thenCall((ids: string[]) => getItems(ids, customItemList))
   when(itemServiceMock.getItemsOfCategories(anything(), anything())).thenCall((ids: string[]) => getItemsOfCategories(ids, customItemList))
   when(itemServiceMock.getMainCurrency()).thenCall(() => getMainCurrency(hasMainCurrency))
-  when(itemServiceMock.getPreset(anyString())).thenCall((id: string) => getPreset(id, customPresetsList))
 
   Services.configure(ItemService, undefined, instance(itemServiceMock))
 }
@@ -68,10 +65,4 @@ function getMainCurrency(hasMainCurrency: boolean): Promise<Result<ICurrency>> {
   } else {
     return Promise.resolve(Result.fail(FailureType.error, 'ItemService.getMainCurrency()', 'Main currency not found.'))
   }
-}
-
-function getPreset(id: string, customPresetsList?: IInventoryItem[]): Promise<IInventoryItem | undefined> {
-  const preset = (customPresetsList ?? PresetsMock).find(p => p.itemId === id)
-
-  return Promise.resolve(preset)
 }

@@ -9,11 +9,13 @@ import { MerchantFilterService } from '../../../services/MerchantFilterService'
 import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../../__mocks__/TarkovValuesServiceMock'
 import { useItemFetcherServiceMock } from '../../../__mocks__/ItemFetcherServiceMock'
+import { usePresetServiceMock } from '../../../__mocks__/PresetPropertiesServiceMock'
 
 describe('getAcceptedItems()', () => {
   it('should get the acceptem items', async () => {
     // Arrange
     useItemFetcherServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(ItemService)

@@ -19,7 +19,7 @@ export interface IRangedWeapon extends IModdable {
   /**
    * Fire modes.
    */
-  fireMods: string[]
+  fireModes: string[]
 
   /**
    * Fire rate in bullets per second.

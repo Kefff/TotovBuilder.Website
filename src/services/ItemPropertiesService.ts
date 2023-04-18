@@ -1,149 +1,176 @@
+import { IArmor } from '../models/item/IArmor'
+import { IContainer } from '../models/item/IContainer'
 import { IItem } from '../models/item/IItem'
-import { IModSlot } from '../models/item/IModSlot'
+import { IModdable } from '../models/item/IModdable'
 
 /**
  * Represents a service responsible for managing properties of an item.
  */
 export class ItemPropertiesService {
   /**
-   * Indicates whether an item can be modded or not.
+   * Indicates whether an item can be modded.
    * @param item - Item.
    * @returns true if the item can be modded; otherwise false.
    */
   public canBeModded(item: IItem): boolean {
-    return this.isModdable(item) && (((item as unknown) as Record<string, unknown>)['modSlots'] as IModSlot[]).length > 0
+    return this.isModdable(item) && (item as IModdable).modSlots.length > 0
   }
 
   /**
-   * Indicates whether an item can contain items or not.
+   * Indicates whether an item can contain items.
    * @param item - Item.
    * @returns true if the item can contain items; otherwise false.
    */
   public canContain(item: IItem): boolean {
-    return this.isContainer(item) && ((item as unknown) as Record<string, unknown>)['capacity'] as number > 0
+    return this.isContainer(item) && (item as IContainer).capacity > 0
   }
 
   /**
-   * Indicates whether an item can have an armor value (armor, armor mod, headwear, vest) or not.
+   * Indicates whether an item can have an armor value (armor, armor mod, headwear, vest).
    * @param item - Item.
    * @returns true if the item can have an armor value; otherwise false.
    */
   public canHaveArmor(item: IItem): boolean {
-    const armorClass = ((item as unknown) as Record<string, unknown>)['armorClass'] as number
-
-    return armorClass != null
+    return this.isArmor(item) || this.isArmorMod(item) || this.isHeadwear(item) || this.isVest(item)
   }
 
   /**
-   * Indicates whether an item has an armor value (armor, armor mod, headwear, vest) or not.
+   * Indicates whether an item has an armor value (armor, armor mod, headwear, vest).
    * @param item - Item.
    * @returns true if the item has have an armor value; otherwise false.
    */
   public hasArmor(item: IItem): boolean {
-    return this.canHaveArmor(item) && (((item as unknown) as Record<string, unknown>)['armorClass'] as number) > 0
+    return this.canHaveArmor(item) && (item as IArmor).armorClass > 0
   }
 
   /**
-   * Indicates whether an item is an ammunition or not.
+   * Indicates whether an item is ammunition.
    * @param item - Item.
-   * @returns true if the item is an ammunition; otherwise false.
+   * @returns true if the item is ammunition; otherwise false.
    */
   public isAmmunition(item: IItem): boolean {
-    const ammunition = ((item as unknown) as Record<string, unknown>)['fleshDamage'] as number
-
-    return ammunition != null
+    return item.categoryId === 'ammunition'
   }
 
   /**
-   * Indicates whether an item can have an armor value (armor, vest, helmet) or not.
+   * Indicates whether an item is an armor.
    * @param item - Item.
-   * @returns true if the item can have an armor value; otherwise false.
+   * @returns true if the item is an armor; otherwise false.
    */
   public isArmor(item: IItem): boolean {
-    return this.canHaveArmor(item) && !this.isArmorMod(item) && !this.isHeadwear(item) && !this.isVest(item)
+    return item.categoryId === 'armor'
   }
 
   /**
-   * Indicates whether an item can have an armor value (armor, vest, helmet) and is moddable or not.
+   * Indicates whether an item is an armor mod.
    * @param item - Item.
-   * @returns true if the item can have an armor value and is moddable; otherwise false.
+   * @returns true if the item is an armor mod; otherwise false.
    */
   public isArmorMod(item: IItem): boolean {
-    return this.canHaveArmor(item) && this.isModdable(item) && !this.isHeadwear(item)
+    return item.categoryId === 'armorMod'
   }
 
   /**
-   * Indicates whether an item is a container or not.
+   * Indicates whether an item is a container.
    * @param item - Item.
    * @returns true if the item is a container; otherwise false.
    */
   public isContainer(item: IItem): boolean {
-    const capacity = ((item as unknown) as Record<string, unknown>)['capacity'] as number
-
-    return capacity != null
+    return item.categoryId === 'backpack' || item.categoryId === 'securedContainer' || item.categoryId === 'container'
   }
 
   /**
-   * Indicates whether an item is a headwear or not.
+   * Indicates whether an item is eyewear.
    * @param item - Item.
-   * @returns true if the item a headwear; otherwise false.
+   * @returns true if the item is eyewear; otherwise false.
+   */
+  public isEyewear(item: IItem): boolean {
+    return item.categoryId === 'eyewear'
+  }
+
+  /**
+   * Indicates whether an item is a grenade.
+   * @param item - Item.
+   * @returns true if the item is a grenade; otherwise false.
+   */
+  public isGrenade(item: IItem): boolean {
+    return item.categoryId === 'grenade'
+  }
+
+  /**
+   * Indicates whether an item is headwear.
+   * @param item - Item.
+   * @returns true if the item is headwear; otherwise false.
    */
   public isHeadwear(item: IItem): boolean {
-    const blocksHeadphones = ((item as unknown) as Record<string, unknown>)['blocksHeadphones'] as boolean
-
-    return blocksHeadphones != null
+    return item.categoryId === 'headwear'
   }
 
   /**
-   * Indicates whether an item is a mod or not.
+   * Indicates whether an item is a magazine.
+   * @param item - Item.
+   * @returns true if the item is a magazine; otherwise false.
+   */
+  public isMagazine(item: IItem): boolean {
+    return item.categoryId === 'magazine'
+  }
+
+  /**
+   * Indicates whether an item is a melee weapon.
+   * @param item - Item.
+   * @returns true if the item is a melee weapon; otherwise false.
+   */
+  public isMeleeWeapon(item: IItem): boolean {
+    return item.categoryId === 'meleeWeapon'
+  }
+
+  /**
+   * Indicates whether an item is a mod.
    * @param item - Item.
    * @returns true if the item is a mod; otherwise false.
    */
   public isMod(item: IItem): boolean {
-    const ergonomicsModifier = ((item as unknown) as Record<string, unknown>)['ergonomicsModifier'] as number
-
-    return ergonomicsModifier != null
+    return item.categoryId === 'mod'
   }
 
   /**
-   * Indicates whether an item is moddable or not.
+   * Indicates whether an item is moddable.
    * @param item - Item.
    * @returns true if the item is moddable; otherwise false.
    */
   public isModdable(item: IItem): boolean {
-    const modSlots = ((item as unknown) as Record<string, unknown>)['modSlots'] as IModSlot[]
-
-    return modSlots != null
+    return this.isArmorMod(item)
+      || this.isHeadwear(item)
+      || this.isMagazine(item)
+      || this.isMod(item)
+      || this.isRangedWeapon(item)
+      || this.isRangedWeaponMod(item)
   }
 
   /**
-   * Indicates whether an item is a ranged weapon or not.
+   * Indicates whether an item is a ranged weapon.
    * @param item - Item
    * @returns true if the item is a ranged weapon; otherwise false.
    */
   public isRangedWeapon(item: IItem): boolean {
-    const fireRate = ((item as unknown) as Record<string, unknown>)['fireRate'] as number
-
-    return fireRate != null
+    return item.categoryId === 'mainWeapon' || item.categoryId === 'secondaryWeapon'
   }
 
   /**
-   * Indicates whether an item is a ranged weapon mod or not.
+   * Indicates whether an item is a ranged weapon mod.
    * @param item - Item
    * @returns true if the item is a ranged weapon mod; otherwise false.
    */
   public isRangedWeaponMod(item: IItem): boolean {
-    const recoilPercentageModifier = ((item as unknown) as Record<string, unknown>)['recoilPercentageModifier'] as number
-
-    return recoilPercentageModifier != null
+    return item.categoryId === 'rangedWeaponMod'
   }
 
   /**
-   * Indicates whether an item is a vest or not.
+   * Indicates whether an item is a vest.
    * @param item - Item
    * @returns true if the item is a vest; otherwise false.
    */
   public isVest(item: IItem): boolean {
-    return this.canHaveArmor(item) && this.isContainer(item)
+    return item.categoryId === 'vest'
   }
 }

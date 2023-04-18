@@ -9,6 +9,7 @@ import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
+import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
 
 const inventorySlot1: IInventorySlot = {
   items: [
@@ -471,6 +472,7 @@ describe('getPrice()', () => {
   ])('should get the price of an inventory slot', async (inventorySlot: IInventorySlot, expected: IInventoryPrice) => {
     // Arrange
     useItemServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventoryItemService)
@@ -488,6 +490,7 @@ describe('getPrice()', () => {
   it('should have a missing price when no merchants sell the item', async () => {
     // Arrange
     useItemServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventoryItemService)

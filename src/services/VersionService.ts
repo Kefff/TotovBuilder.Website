@@ -134,7 +134,7 @@ export class VersionService {
   }
 
   /**
-   * Fetchs items.
+   * Fetches changelogs.
    */
   private async fetchChangelog(): Promise<Result<void>> {
     const apiService = Services.get(ApiService)

@@ -1,7 +1,6 @@
-import { instance, mock, spy, verify, when } from 'ts-mockito'
+import { anything, instance, mock, spy, verify, when } from 'ts-mockito'
 import Services from '../../services/repository/Services'
 import { ItemService } from '../../services/ItemService'
-import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IPrice } from '../../models/item/IPrice'
 import Result, { FailureType } from '../../utils/Result'
 import ItemCategories from '../../../test-data/item-categories.json'
@@ -18,12 +17,14 @@ import ItemsMock from '../../../test-data/items.json'
 import PresetsMock from '../../../test-data/presets.json'
 import PricesMock from '../../../test-data/prices.json'
 import { IItem } from '../../models/item/IItem'
+import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
-
+import { PresetService } from '../../services/PresetService'
 
 describe('fetchItemCategories()', () => {
   it('should not update item categories when fetching fails', async () => {
     // Arrange
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -50,6 +51,7 @@ describe('fetchItemCategories()', () => {
 describe('fetchItems()', () => {
   it('should not update items when fetching fails', async () => {
     // Arrange
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -71,32 +73,6 @@ describe('fetchItems()', () => {
     verify(notificationServiceMock.notify(NotificationType.error, 'API error', true)).once()
     expect(itemResult.success).toBe(false)
     expect(itemResult.failureMessage).toBe('Item "624c0b3340357b5f566e8766" not found.')
-  })
-})
-
-describe('fetchPresets()', () => {
-  it('should not update presets when fetching fails', async () => {
-    // Arrange
-    useTarkovValuesServiceMock()
-    useWebsiteConfigurationServiceMock()
-
-    const notificationServiceMock = mock<NotificationService>()
-    Services.configure(NotificationService, undefined, instance(notificationServiceMock))
-
-    const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItemCategories()).thenReturn(Promise.resolve(Result.ok(ItemCategoriesMock)))
-    when(itemFetcherServiceMock.fetchItems()).thenReturn(Promise.resolve(Result.ok(ItemsMock as IItem[])))
-    when(itemFetcherServiceMock.fetchPresets()).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'API error')))
-    when(itemFetcherServiceMock.fetchPrices()).thenReturn(Promise.resolve(Result.ok(PricesMock as IPrice[])))
-    Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
-
-    // Act
-    const itemService = new ItemService()
-    const preset = await itemService.getPreset('5ab8e9fcd8ce870019439434')
-
-    // Assert
-    verify(notificationServiceMock.notify(NotificationType.error, 'API error', true)).once()
-    expect(preset).toBeUndefined()
   })
 })
 
@@ -136,6 +112,7 @@ describe('getItem()', () => {
   it('should get an item from the cache', async () => {
     // Arrange
     useItemFetcherServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -178,6 +155,7 @@ describe('getItem()', () => {
   it('should fail when getting an item that does not exist', async () => {
     // Arrange
     useItemFetcherServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -193,6 +171,7 @@ describe('getItem()', () => {
 
   it('should fail when fetching fails', async () => {
     // Arrange
+    usePresetServiceMock()
     useWebsiteConfigurationServiceMock()
 
     Services.configure(NotificationService)
@@ -219,6 +198,7 @@ describe('getItems()', () => {
   it('should get items from the cache', async () => {
     // Arrange
     useItemFetcherServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -293,6 +273,7 @@ describe('getItems()', () => {
   it('should filter items according to the merchant filter', async () => {
     // Arrange
     useItemFetcherServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -346,6 +327,7 @@ describe('getItems()', () => {
   it('should fail when and item is not found an the merchant filter is not used', async () => {
     // Arrange
     useItemFetcherServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -361,6 +343,7 @@ describe('getItems()', () => {
 
   it('should fail when fetching fails', async () => {
     // Arrange
+    usePresetServiceMock()
     useWebsiteConfigurationServiceMock()
 
     Services.configure(NotificationService)
@@ -387,6 +370,7 @@ describe('getItemCategories()', () => {
   it('should get item categories', async () => {
     // Arrange
     useItemFetcherServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -404,6 +388,7 @@ describe('getItemsOfCategories()', () => {
   it('should get the items belonging to the categories', async () => {
     // Arrange
     useItemFetcherServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -444,6 +429,7 @@ describe('getItemsOfCategories()', () => {
   it('should filter items according to the merchant filter', async () => {
     // Arrange
     useItemFetcherServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -473,6 +459,7 @@ describe('getItemsOfCategories()', () => {
   it('should fail when no items belong to the categories', async () => {
     // Arrange
     useItemFetcherServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -489,6 +476,7 @@ describe('getItemsOfCategories()', () => {
   it('should fail when no items are found an the merchant filter is not used', async () => {
     // Arrange
     useItemFetcherServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -521,7 +509,10 @@ describe('getMainCurrency()', () => {
   it('should fail if the main currency cannot be found', async () => {
     // Arrange
     useTarkovValuesServiceMock()
-    Services.get(TarkovValuesService).values.currencies = Services.get(TarkovValuesService).values.currencies.filter(i => !i.mainCurrency)
+
+    const tarkovValuesServiceMock = Services.get(TarkovValuesService)
+    const originalCurrencies = tarkovValuesServiceMock.values.currencies
+    tarkovValuesServiceMock.values.currencies = tarkovValuesServiceMock.values.currencies.filter(i => !i.mainCurrency)
 
     const itemService = new ItemService()
 
@@ -531,123 +522,36 @@ describe('getMainCurrency()', () => {
     // Assert
     expect(currencyResult.success).toBe(false)
     expect(currencyResult.failureMessage).toBe('Main currency not found.')
-  })
-})
 
-describe('getPreset()', () => {
-  it.each([
-    [
-      '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
-        modSlots: [
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: '57e3dba62459770f0c32322b', // AK-74 textolite pistol grip (6P4 Sb.9)
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_pistol_grip'
-          },
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: '57dc347d245977596754e7a1', // AKS-74U metal skeleton stock (6P26 Sb.5)
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_stock'
-          },
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: '564ca99c4bdc2d16268b4589', // AK-74 5.45x39 6L20 30-round magazine
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_magazine'
-          },
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: '57dc324a24597759501edc20', // AKS-74U 5.45x39 muzzle brake (6P26 0-20)
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_muzzle'
-          },
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: '57dc334d245977597164366f', // AKS-74U dust cover (6P26 Sb.7)
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_reciever'
-          },
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: '59d36a0086f7747e673f3946', // AKS-74U gas tube"
-              modSlots: [
-                {
-                  item: {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: '57dc32dc245977596d4ef3d3', // AKS-74U wooden handguard (6P26 Sb.6)
-                    modSlots: [],
-                    quantity: 1
-                  },
-                  modSlotName: 'mod_handguard'
-                }
-              ],
-              quantity: 1
-            },
-            modSlotName: 'mod_gas_block'
-          }
-        ],
-        quantity: 1
-      } as IInventoryItem
-    ],
-    [
-      '590c678286f77426c9660122', // IFAK individual first aid kit
-      undefined
-    ]
-  ])('should get a preset', async (id: string, expected: IInventoryItem | undefined) => {
-    // Arrange
-    useItemFetcherServiceMock()
-    useTarkovValuesServiceMock()
-    useWebsiteConfigurationServiceMock()
-
-    Services.configure(NotificationService)
-
-    const service = new ItemService()
-
-    // Act
-    const preset = await service.getPreset(id)
-
-    // Assert
-    if (expected == null) {
-      expect(preset).toBeUndefined()
-    } else {
-      expect(preset).toStrictEqual(expected)
-    }
+    // Clean
+    tarkovValuesServiceMock.values.currencies = originalCurrencies
   })
 })
 
 describe('initialize', () => {
+  it('should fetch presets and update preset items properties', async () => {
+    // Arrange
+    useItemFetcherServiceMock()
+    usePresetServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
+    const presetServiceSpy = spy(Services.get(PresetService))
+
+    const itemService = new ItemService()
+
+    // Act
+    await itemService.initialize()
+
+    // Assert
+    verify(presetServiceSpy.fetchPresets()).once()
+    verify(presetServiceSpy.updatePresetProperties(anything())).once()
+  })
+
   it('should update the prices of all the items if the cache has expired', async () => {
     // Arrange
     useItemFetcherServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(NotificationService)
@@ -675,6 +579,7 @@ describe('initialize', () => {
   it('should do nothing if the cached data is up to date', async () => {
     // Arrange
     useItemFetcherServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(NotificationService)
