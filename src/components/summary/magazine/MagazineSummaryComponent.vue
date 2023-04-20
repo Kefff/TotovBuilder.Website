@@ -3,12 +3,12 @@
     :item="item"
   />
   <div
-    v-if="hasLoadSpeedPercentageModifier || showEmptyEntries"
+    v-if="item.loadSpeedPercentageModifier !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div class="option-value">
       <div
-        v-if="hasLoadSpeedPercentageModifier"
+        v-if="item.loadSpeedPercentageModifier !== 0"
         v-tooltip.top="$t('caption.loadSpeed')"
       >
         <span :class="StatsUtils.getValueColorClass(item.loadSpeedPercentageModifier, true)">
@@ -22,12 +22,12 @@
     </div>
   </div>
   <div
-    v-if="hasCheckSpeedPercentageModifier || showEmptyEntries"
+    v-if="item.checkSpeedPercentageModifier !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div class="option-value">
       <div
-        v-if="hasCheckSpeedPercentageModifier"
+        v-if="item.checkSpeedPercentageModifier !== 0"
         v-tooltip.top="$t('caption.checkSpeed')"
       >
         <span :class="StatsUtils.getValueColorClass(item.checkSpeedPercentageModifier, true)">
@@ -41,16 +41,16 @@
     </div>
   </div>
   <div
-    v-if="hasErgonomicsModifier || showEmptyEntries"
+    v-if="ergonomicsModifier !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div class="option-value">
       <div
-        v-if="hasErgonomicsModifier"
+        v-if="ergonomicsModifier !== 0"
         v-tooltip.top="$t('caption.ergonomics')"
       >
-        <span :class="StatsUtils.getValueColorClass(item.ergonomicsModifier)">
-          {{ StatsUtils.getDisplayValue(item.ergonomicsModifier, true, false) }}
+        <span :class="StatsUtils.getValueColorClass(ergonomicsModifier)">
+          {{ StatsUtils.getDisplayValue(ergonomicsModifier, true, false) }}
         </span>
         <font-awesome-icon
           icon="hand-paper"

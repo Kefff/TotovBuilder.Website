@@ -1,4 +1,4 @@
-import { computed, defineComponent, PropType } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { IHeadwear } from '../../../models/item/IHeadwear'
 import ItemIcon from '../../item-icon/ItemIconComponent.vue'
 import ContainerSummary from '../container/ContainerSummaryComponent.vue'
@@ -24,13 +24,8 @@ export default defineComponent({
       default: true
     }
   },
-  setup: (props) => {
-    const hasArmor = computed(() => props.item.armorClass > 0)
-    const hasErgonomicsPercentageModifier = computed(() => props.item.ergonomicsPercentageModifier !== 0)
-
+  setup: () => {
     return {
-      hasArmor,
-      hasErgonomicsPercentageModifier,
       StatsUtils
     }
   }

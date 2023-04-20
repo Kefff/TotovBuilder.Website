@@ -6,6 +6,7 @@ import { ItemContentComponentService } from '../../services/components/ItemConte
 import { MerchantFilterService } from '../../services/MerchantFilterService'
 import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 
 export default defineComponent({
   props: {
@@ -24,6 +25,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup: (props, { emit }) => {
+    const itemPropertiesService = Services.get(ItemPropertiesService)
     const merchantFilterService = Services.get(MerchantFilterService)
 
     const editing = inject<Ref<boolean>>('editing')
@@ -33,7 +35,7 @@ export default defineComponent({
       get: () => props.modelValue,
       set: (value: IInventoryItem[]) => emit('update:modelValue', value)
     })
-    const isMagazine = computed(() => props.containerItem.categoryId === 'magazine')
+    const isMagazine = computed(() => itemPropertiesService.isMagazine(props.containerItem))
     const maximumQuantity = computed(() => isMagazine.value ? props.containerItem.capacity : undefined)
 
     const acceptedItems = ref<IItem[]>([])

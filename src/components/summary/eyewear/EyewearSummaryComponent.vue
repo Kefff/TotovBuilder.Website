@@ -1,13 +1,13 @@
 <template>
   <div
-    v-if="hasBlindnessProtectionPercentage || showEmptyEntries"
+    v-if="item.blindnessProtectionPercentage !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div
       v-tooltip.top="$t('caption.blindnessProtection')"
       class="option-value"
     >
-      <div v-if="hasBlindnessProtectionPercentage">
+      <div v-if="item.blindnessProtectionPercentage !== 0">
         <span :class="StatsUtils.getValueColorClass(item.blindnessProtectionPercentage)">
           {{ StatsUtils.getDisplayValue(item.blindnessProtectionPercentage, true, true) }}
         </span>

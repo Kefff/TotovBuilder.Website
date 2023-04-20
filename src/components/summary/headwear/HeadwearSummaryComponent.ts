@@ -22,11 +22,9 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const hasArmor = computed(() => props.item.armorClass > 0)
     const hasRicochetChance = computed(() => props.item.ricochetChance !== '')
 
     return {
-      hasArmor,
       hasRicochetChance
     }
   }

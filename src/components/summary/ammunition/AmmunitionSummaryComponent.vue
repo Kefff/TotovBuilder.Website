@@ -35,11 +35,11 @@
     </div>
   </div>
   <div
-    v-if="hasArmorPenetration || showEmptyEntries"
+    v-if="item.armorPenetrations.length > 0 || showEmptyEntries"
     class="option-entry"
   >
     <div
-      v-if="hasArmorPenetration"
+      v-if="item.armorPenetrations.length > 0"
       class="penetrated-armor-list"
     >
       <div
@@ -63,12 +63,12 @@
     />
   </div>
   <div
-    v-if="hasFragmentationChance || showEmptyEntries"
+    v-if="item.fragmentationChancePercentage !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div class="option-value">
       <div
-        v-if="hasFragmentationChance"
+        v-if="item.fragmentationChancePercentage !== 0"
         v-tooltip.top="$t('caption.fragmentationChance')"
       >
         <span>{{ StatsUtils.getDisplayValue(item.fragmentationChancePercentage, false, true) }}</span>
@@ -80,12 +80,12 @@
     </div>
   </div>
   <div
-    v-if="hasRecoilPercentageModifier || showEmptyEntries"
+    v-if="item.recoilPercentageModifier !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div class="option-value">
       <div
-        v-if="hasRecoilPercentageModifier"
+        v-if="item.recoilPercentageModifier !== 0"
         v-tooltip.top="$t('caption.recoil')"
       >
         <span :class="StatsUtils.getValueColorClass(item.recoilPercentageModifier, true)">
@@ -99,12 +99,12 @@
     </div>
   </div>
   <div
-    v-if="hasAccuracyPercentageModifier || showEmptyEntries"
+    v-if="item.accuracyPercentageModifier !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div class="option-value">
       <div
-        v-if="hasAccuracyPercentageModifier"
+        v-if="item.accuracyPercentageModifier !== 0"
         v-tooltip.top="$t('caption.accuracy')"
       >
         <span :class="StatsUtils.getValueColorClass(item.accuracyPercentageModifier)">

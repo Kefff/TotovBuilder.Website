@@ -24,6 +24,7 @@ import { SelectableTab } from '../../models/utils/SelectableTab'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import { PathUtils } from '../../utils/PathUtils'
+import { PresetService } from '../../services/PresetService'
 
 export default defineComponent({
   components: {
@@ -77,6 +78,7 @@ export default defineComponent({
     const inventoryItemService = Services.get(InventoryItemService)
     const itemPropertiesService = Services.get(ItemPropertiesService)
     const itemService = Services.get(ItemService)
+    const presetService = Services.get(PresetService)
     const notificationService = Services.get(NotificationService)
 
     const contentPathPrefix = PathUtils.contentPrefix
@@ -151,7 +153,7 @@ export default defineComponent({
       setSelectedTab()
 
       if (selectedItem.value != null) {
-        preset.value = await inventoryItemService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
+        preset.value = await presetService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
       }
     }
 
@@ -206,9 +208,9 @@ export default defineComponent({
       }
 
       itemChanging.value = true
-      preset.value = await inventoryItemService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
+      preset.value = await presetService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
 
-      if (itemPropertiesService.isMod(selectedItem.value) && PathUtils.checkIsModSlotPath(props.path)) {
+      if (itemPropertiesService.isModdable(selectedItem.value) && PathUtils.checkIsModSlotPath(props.path)) {
         // Checking the compatibility if the selected item is a mod and we are in mod slot
         const path = props.path.slice(0, props.path.lastIndexOf('/' + PathUtils.itemPrefix))
         const compatibilityResult = await compatibilityService.checkCompatibility(CompatibilityRequestType.mod, selectedItem.value.id, path)
@@ -290,11 +292,11 @@ export default defineComponent({
      */
     async function updateInventoryItem(newSelectedItem: IItem, isCompatible: Result) {
       if (isCompatible.success) {
-        const itemPreset = await itemService.getPreset(newSelectedItem.id)
+        const preset = presetService.getPreset(newSelectedItem.id)
 
-        if (itemPreset != null) {
+        if (preset != null) {
           // Creating a new object, otherwise the preset itself in the application presets list is modified when we change the selected item mods and content in the build
-          selectedInventoryItem.value = JSON.parse(JSON.stringify(itemPreset))
+          selectedInventoryItem.value = JSON.parse(JSON.stringify(preset))
         } else {
           if (quantity.value === 0
             || props.forceQuantityToMaxSelectableAmount

@@ -19,10 +19,6 @@ export default defineComponent({
   },
   setup: (props) => {
     const canOneshot = computed(() => props.item.fleshDamage >= Services.get(TarkovValuesService).values.chestHp)
-    const hasAccuracyPercentageModifier = computed(() => props.item.accuracyPercentageModifier !== 0)
-    const hasArmorPenetration = computed(() => props.item.armorPenetrations.length > 0)
-    const hasFragmentationChance = computed(() => props.item.fragmentationChancePercentage !== 0)
-    const hasRecoilPercentageModifier = computed(() => props.item.recoilPercentageModifier !== 0)
 
     /**
      * Gets the tooltip for an armor penetration.
@@ -37,10 +33,6 @@ export default defineComponent({
     return {
       canOneshot,
       getArmorPenetrationTooltip,
-      hasAccuracyPercentageModifier,
-      hasArmorPenetration,
-      hasFragmentationChance,
-      hasRecoilPercentageModifier,
       StatsUtils
     }
   }

@@ -2,6 +2,7 @@
   <ArmorStats
     v-if="item.armorClass > 0"
     :item="item"
+    :forced-ergonomics-percentage-modifier="item.presetErgonomicsPercentageModifier"
   />
 </template>
 

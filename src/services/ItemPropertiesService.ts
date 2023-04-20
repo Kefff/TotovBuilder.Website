@@ -22,7 +22,8 @@ export class ItemPropertiesService {
    * @returns true if the item can contain items; otherwise false.
    */
   public canContain(item: IItem): boolean {
-    return this.isContainer(item) && (item as IContainer).capacity > 0
+    return (this.isContainer(item) || this.isMagazine(item) || this.isVest(item))
+      && (item as IContainer).capacity > 0
   }
 
   /**

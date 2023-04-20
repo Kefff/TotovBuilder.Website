@@ -16,6 +16,8 @@ export default defineComponent({
     }
   },
   setup: () => {
-    return { StatsUtils }
+    return {
+      StatsUtils
+    }
   }
 })

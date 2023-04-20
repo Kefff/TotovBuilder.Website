@@ -3,6 +3,7 @@ import { IArmorMod } from '../../models/item/IArmorMod'
 import { IContainer } from '../../models/item/IContainer'
 import { IHeadwear } from '../../models/item/IHeadwear'
 import { IItem } from '../../models/item/IItem'
+import { IMagazine } from '../../models/item/IMagazine'
 import { IModdable } from '../../models/item/IModdable'
 import { IModSlot } from '../../models/item/IModSlot'
 import { IVest } from '../../models/item/IVest'
@@ -34,7 +35,11 @@ describe('canBeModded()', () => {
 describe('canContain()', () => {
   it.each([
     [{ id: '12345', categoryId: 'container', capacity: 60 } as IContainer, true],
-    [{ id: '12345', categoryId: 'backpack', capacity: 0 } as IContainer, false],
+    [{ id: '12345', categoryId: 'magazine', capacity: 30 } as IMagazine, true],
+    [{ id: '12345', categoryId: 'vest', capacity: 12 } as IVest, true],
+    [{ id: '12345', categoryId: 'container', capacity: 0 } as IContainer, false],
+    [{ id: '12345', categoryId: 'magazine', capacity: 0 } as IMagazine, false],
+    [{ id: '12345', categoryId: 'vest', capacity: 0 } as IVest, false],
     [{ id: '12345', categoryId: 'other' } as IItem, false]
   ])(
     'should determine if an item is a container',

@@ -1,4 +1,4 @@
-import { computed, defineComponent, PropType } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { IArmorMod } from '../../../models/item/IArmorMod'
 import ItemIcon from '../../item-icon/ItemIconComponent.vue'
 import ArmorSummary from '../armor/ArmorSummaryComponent.vue'
@@ -20,10 +20,5 @@ export default defineComponent({
       required: false,
       default: true
     }
-  },
-  setup: (props) => {
-    const hasArmor = computed(() => props.item.armorClass > 0)
-
-    return { hasArmor }
   }
 })

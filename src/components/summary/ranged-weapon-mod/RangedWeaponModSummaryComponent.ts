@@ -15,14 +15,10 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const hasAccuracyPercentageModifier = computed(() => props.item.accuracyPercentageModifier !== 0)
-    const hasErgonomicsModifier = computed(() => props.item.ergonomicsModifier !== 0)
-    const hasRecoilPercentageModifier = computed(() => props.item.recoilPercentageModifier !== 0)
+    const ergonomicsModifier = computed(() => props.item.presetErgonomicsModifier ?? props.item.ergonomicsModifier)
 
     return {
-      hasAccuracyPercentageModifier,
-      hasErgonomicsModifier,
-      hasRecoilPercentageModifier,
+      ergonomicsModifier,
       StatsUtils
     }
   }

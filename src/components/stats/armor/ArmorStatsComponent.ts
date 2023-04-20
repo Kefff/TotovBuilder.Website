@@ -7,12 +7,19 @@ export default defineComponent({
     item: {
       type: Object as PropType<IArmor>,
       required: true
+    },
+    forcedErgonomicsPercentageModifier: {
+      type: Number,
+      required: false,
+      default: undefined
     }
   },
   setup: (props) => {
+    const ergonomicsPercentageModifier = computed(() => props.forcedErgonomicsPercentageModifier ?? props.item.ergonomicsPercentageModifier)
     const hasRicochetChance = computed(() => props.item.ricochetChance !== '')
 
     return {
+      ergonomicsPercentageModifier,
       hasRicochetChance,
       StatsUtils
     }
