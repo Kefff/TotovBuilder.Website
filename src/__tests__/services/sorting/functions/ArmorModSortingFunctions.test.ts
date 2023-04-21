@@ -3,23 +3,28 @@ import { ArmorModSortingFunctions } from '../../../../services/sorting/functions
 
 describe('setSortingProperty()', () => {
   it.each([
-    ['armorClass'],
-    ['durability'],
-    ['ergonomicsPercentageModifier']
-  ])('should sort by a property', async (property: string) => {
+    ['armorClass', false],
+    ['armorClass', true],
+    ['durability', false],
+    ['durability', true],
+    ['ergonomicsPercentageModifier', false],
+    ['ergonomicsPercentageModifier', true]
+  ])('should sort by a property', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
-      categoryId: 'cat',
       armorClass: 1,
+      categoryId: 'cat',
       durability: 1,
-      ergonomicsPercentageModifier: 1
+      ergonomicsPercentageModifier: 1,
+      presetErgonomicsPercentageModifier: isPreset ? 1 : undefined
     } as IArmorMod
 
     const item2 = {
-      categoryId: 'cat',
       armorClass: 2,
+      categoryId: 'cat',
       durability: 2,
-      ergonomicsPercentageModifier: 2
+      ergonomicsPercentageModifier: 2,
+      presetErgonomicsPercentageModifier: isPreset ? 2 : undefined
     } as IArmorMod
 
     const sortingFunctions = new ArmorModSortingFunctions()

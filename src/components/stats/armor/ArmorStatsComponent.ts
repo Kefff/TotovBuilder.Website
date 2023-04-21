@@ -8,14 +8,14 @@ export default defineComponent({
       type: Object as PropType<IArmor>,
       required: true
     },
-    forcedErgonomicsPercentageModifier: {
+    customErgonomicsPercentageModifier: {
       type: Number,
       required: false,
       default: undefined
     }
   },
   setup: (props) => {
-    const ergonomicsPercentageModifier = computed(() => props.forcedErgonomicsPercentageModifier ?? props.item.ergonomicsPercentageModifier)
+    const ergonomicsPercentageModifier = computed(() => props.customErgonomicsPercentageModifier ?? props.item.ergonomicsPercentageModifier)
     const hasRicochetChance = computed(() => props.item.ricochetChance !== '')
 
     return {

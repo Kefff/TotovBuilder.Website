@@ -21,7 +21,7 @@ describe('compareByCategory()', () => {
     [{ categoryId: 'cat1' } as IItem, { categoryId: 'cat1' } as IItem, 0]
   ])('it should compare by category', async (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
     // Arrange
-    const sortingService = new SortingService([new ItemSortingFunctions()])
+    const sortingService = new SortingService(new ItemSortingFunctions())
     const sortingData = new SortingData()
 
     // Act
@@ -47,7 +47,7 @@ describe('compareByName()', () => {
     [{ name: 'a', categoryId: 'cat1' } as IItem, { name: 'a', categoryId: 'cat1' } as IItem, 0]
   ])('it should compare by category and name', async (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
     // Arrange
-    const sortingService = new SortingService([new ItemSortingFunctions()])
+    const sortingService = new SortingService(new ItemSortingFunctions())
     const sortingData = new SortingData()
     sortingData.property = 'invalid'
 
@@ -138,7 +138,7 @@ describe('compareByPrice()', () => {
     when(itemServiceSpy.getItem(item1.id)).thenReturn(Promise.resolve(Result.ok(item1)))
     when(itemServiceSpy.getItem(item2.id)).thenReturn(Promise.resolve(Result.ok(item2)))
 
-    const sortingService = new SortingService([new ItemSortingFunctions()])
+    const sortingService = new SortingService(new ItemSortingFunctions())
     const sortingData = new SortingData()
 
     // Act
@@ -169,7 +169,7 @@ describe('compareByPrice()', () => {
     when(itemServiceSpy.getItem(item1.id)).thenReturn(Promise.resolve(Result.fail()))
     when(itemServiceSpy.getItem(item2.id)).thenReturn(Promise.resolve(Result.fail()))
 
-    const sortingService = new SortingService([new ItemSortingFunctions()])
+    const sortingService = new SortingService(new ItemSortingFunctions())
     const sortingData = new SortingData()
 
     // Act

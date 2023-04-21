@@ -3,7 +3,7 @@
     v-if="item.armorClass > 0"
     :item="item"
     :show-empty-entries="showEmptyEntries"
-    :forced-ergonomics-percentage-modifier="item.presetErgonomicsPercentageModifier"
+    :custom-ergonomics-percentage-modifier="item.presetErgonomicsPercentageModifier"
   />
   <div
     v-else

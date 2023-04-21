@@ -10,9 +10,9 @@ import { ISortingFunctions } from './functions/ISortingFunctions'
 export class SortingService {
   /**
    * Initializes a new instance of the SortingService class.
-   * @param sortingFunctions - List of services providing the sorting functions to use.
+   * @param sortingFunctions - Sorting functions to use.
    */
-  constructor(private sortingFunctions: ISortingFunctions[]) { }
+  constructor(private sortingFunctions: ISortingFunctions) { }
 
   /**
    * Sorts a collection of items according to sorting data.
@@ -47,20 +47,18 @@ export class SortingService {
     const newSortingData = new SortingData()
     newSortingData.property = newSortingProperty
 
-    for (const sortingFunction of this.sortingFunctions) {
-      const getValueToCompareFunction = sortingFunction.getValueToCompareFunctions[newSortingProperty]
-      const comparisonFunction = sortingFunction.comparisonFunctions[newSortingProperty]
+    const getValueToCompareFunction = this.sortingFunctions.getValueToCompareFunctions[newSortingProperty]
+    const comparisonFunction = this.sortingFunctions.comparisonFunctions[newSortingProperty]
 
-      if (comparisonFunction != null && getValueToCompareFunction != null) {
-        if (sortingData.property === newSortingProperty) {
-          newSortingData.order = -sortingData.order
-        }
-
-        newSortingData.comparisonFunction = (item1: IItem, item1ValueToCompare: string | number, item2: IItem, item2ValueToCompare: string | number) => comparisonFunction(item1, item1ValueToCompare, item2, item2ValueToCompare) * newSortingData.order
-        newSortingData.getValueToCompareFunction = getValueToCompareFunction
-
-        return Result.ok(newSortingData)
+    if (comparisonFunction != null && getValueToCompareFunction != null) {
+      if (sortingData.property === newSortingProperty) {
+        newSortingData.order = -sortingData.order
       }
+
+      newSortingData.comparisonFunction = (item1: IItem, item1ValueToCompare: string | number, item2: IItem, item2ValueToCompare: string | number) => comparisonFunction(item1, item1ValueToCompare, item2, item2ValueToCompare) * newSortingData.order
+      newSortingData.getValueToCompareFunction = getValueToCompareFunction
+
+      return Result.ok(newSortingData)
     }
 
     return Result.fail(

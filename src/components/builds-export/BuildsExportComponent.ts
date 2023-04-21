@@ -12,7 +12,7 @@ export default defineComponent({
   },
   props: {
     buildsSummaries: {
-      type: Array as PropType<Array<IBuildSummary>>,
+      type: Array as PropType<IBuildSummary[]>,
       required: true
     },
     modelValue: {

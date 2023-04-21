@@ -53,18 +53,35 @@ describe('compareByRicochetChance()', () => {
 })
 
 describe('setSortingProperty()', () => {
-  it.each([['ricochetChance']])('should sort by a property', async (property: string) => {
+  it.each([
+    ['armorClass', false, -1],
+    ['armorClass', true, -1],
+    ['durability', false, -1],
+    ['durability', true, -1],
+    ['ergonomicsPercentageModifier', false, -1],
+    ['ergonomicsPercentageModifier', true, -1],
+    ['ricochetChance', false, -2],
+    ['ricochetChance', true, -2]
+  ])('should sort by a property', async (property: string, isPreset: boolean, expected: number) => {
     // Arrange
     const item1 = {
+      armorClass: 1,
       categoryId: 'cat',
+      durability: 1,
+      ergonomicsPercentageModifier: 1,
       name: 'cat',
-      ricochetChance: 'High'
+      presetErgonomicsPercentageModifier: isPreset ? 1 : undefined,
+      ricochetChance: 'Low'
     } as IHeadwear
 
     const item2 = {
+      armorClass: 2,
       categoryId: 'cat',
+      durability: 2,
+      ergonomicsPercentageModifier: 2,
       name: 'cat',
-      ricochetChance: 'Low'
+      presetErgonomicsPercentageModifier: isPreset ? 2 : undefined,
+      ricochetChance: 'High'
     } as IHeadwear
 
     const sortingFunctions = new HeadwearSortingFunctions()
@@ -75,6 +92,6 @@ describe('setSortingProperty()', () => {
     const sortingValue = sortingFunctions.comparisonFunctions[property](item1, propertyValue1, item2, propertyValue2)
 
     // Assert
-    expect(sortingValue).toBe(2)
+    expect(sortingValue).toBe(expected)
   })
 })

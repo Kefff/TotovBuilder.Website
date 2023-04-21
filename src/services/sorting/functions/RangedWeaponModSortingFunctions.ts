@@ -20,7 +20,7 @@ export class RangedWeaponModSortingFunctions implements ISortingFunctions {
    * {@inheritDoc ISortingFunctions.valueToCompareGettingFunctions}
    */
   public getValueToCompareFunctions: { [property: string]: (item: IItem) => (string | number) | Promise<string | number> } = {
-    ergonomicsModifier: (item: IItem) => (item as IRangedWeaponMod).ergonomicsModifier,
+    ergonomicsModifier: (item: IItem) => (item as IRangedWeaponMod).presetErgonomicsModifier ?? (item as IRangedWeaponMod).ergonomicsModifier,
     recoilPercentageModifier: (item: IItem) => (item as IRangedWeaponMod).recoilPercentageModifier,
     accuracyPercentageModifier: (item: IItem) => (item as IRangedWeaponMod).accuracyPercentageModifier
   }

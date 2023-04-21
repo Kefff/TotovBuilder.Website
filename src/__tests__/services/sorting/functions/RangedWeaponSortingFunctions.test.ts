@@ -3,29 +3,40 @@ import { RangedWeaponSortingFunctions } from '../../../../services/sorting/funct
 
 describe('setSortingProperty()', () => {
   it.each([
-    ['caliber'],
-    ['fireRate'],
-    ['ergonomics'],
-    ['verticalRecoil'],
-    ['horizontalRecoil']
-  ])('should sort by a property', async (property: string) => {
+    ['caliber', false],
+    ['caliber', true],
+    ['ergonomics', false],
+    ['ergonomics', true],
+    ['fireRate', false],
+    ['fireRate', true],
+    ['horizontalRecoil', false],
+    ['horizontalRecoil', true],
+    ['verticalRecoil', false],
+    ['verticalRecoil', true]
+  ])('should sort by a property', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
-      categoryId: 'cat',
       caliber: 'a',
-      fireRate: 1,
+      categoryId: 'cat',
       ergonomics: 1,
-      verticalRecoil: 1,
-      horizontalRecoil: 1
+      fireRate: 1,
+      horizontalRecoil: 1,
+      presetErgonomics: isPreset ? 1 : undefined,
+      presetHorizontalRecoil: isPreset ? 1 : undefined,
+      presetVerticalRecoil: isPreset ? 1 : undefined,
+      verticalRecoil: 1
     } as IRangedWeapon
 
     const item2 = {
-      categoryId: 'cat',
       caliber: 'b',
-      fireRate: 2,
+      categoryId: 'cat',
       ergonomics: 2,
-      verticalRecoil: 2,
-      horizontalRecoil: 2
+      fireRate: 2,
+      horizontalRecoil: 2,
+      presetErgonomics: isPreset ? 2 : undefined,
+      presetHorizontalRecoil: isPreset ? 2 : undefined,
+      presetVerticalRecoil: isPreset ? 2 : undefined,
+      verticalRecoil: 2
     } as IRangedWeapon
 
     const sortingFunctions = new RangedWeaponSortingFunctions()
