@@ -47,7 +47,6 @@
 }
 
 .build-options-panel {
-  max-height: 31.25rem;
   overflow: auto;
 }
 
@@ -62,6 +61,11 @@
   background: var(--util-color2);
   border-radius: 3px;
   cursor: pointer;
+}
+
+.build-options-title {
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .build-title {
@@ -99,9 +103,4 @@
 
 .build-toolbar-summary-value:last-child {
   margin-right: 0;
-}
-
-.build-warning-icon {
-  font-size: 1.5rem;
-  margin-right: 1rem;
 }

@@ -1,4 +1,5 @@
 @import '../../assets/css/button.css';
+@import '../../assets/css/icon.css';
 
 .shopping-list-item {
   align-items: center;
@@ -22,11 +23,12 @@
 .shopping-list-item-name {
   margin-left: 0.25rem;
   margin-right: auto;
-  max-width: 16.5rem;
+  width: 16.5rem;
 }
 
 .shopping-list-item-price {
   justify-content: flex-end;
+  margin-right: 1rem;
   width: 10rem;
 }
 
@@ -38,4 +40,10 @@
 .shopping-list-item-quantity {
   text-align: right;
   width: 4rem;
+}
+
+.shopping-list-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }

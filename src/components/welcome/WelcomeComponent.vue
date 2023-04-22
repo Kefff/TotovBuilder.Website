@@ -8,30 +8,8 @@
         <p>{{ $t('message.welcome5') }}</p>
         <p>{{ $t('message.welcome6') }}</p>
       </div>
-      <div class="welcome-warning">
-        <h3 class="welcome-warning-title">
-          <font-awesome-icon
-            icon="exclamation-triangle"
-            class="welcome-warning-icon"
-          />
-          {{ $t('message.welcomeWarning1') }}
-        </h3>
-        <p class="welcome-warning-text">
-          {{ $t('message.welcomeWarning2') }} <span><font-awesome-icon icon="file-export" /> {{ $t('caption.export') }}</span> {{ $t('message.welcomeWarning3') }}
-        </p>
-        <p class="welcome-warning-lost">
-          {{ $t('message.welcomeWarning4') }}
-        </p>
-        <p class="welcome-warning-text">
-          {{ $t('message.welcomeWarning5') }} <span><font-awesome-icon icon="file-import" /> {{ $t('caption.import') }}</span>  {{ $t('message.welcomeWarning6') }}
-        </p>
-      </div>
       <div class="welcome-actions">
         <div class="welcome-actions-list">
-          <div class="welcome-action">
-            <h2>{{ $t('message.welcomeChooseLanguage') }}</h2>
-            <LanguageSelector />
-          </div>
           <div
             v-if="hasBuilds"
             class="welcome-action"
@@ -74,13 +52,43 @@
               <span>{{ $t('caption.importBuilds') }}</span>
             </Button>
           </div>
+          <div class="welcome-action">
+            <h2>{{ $t('message.welcomeChooseLanguage') }}</h2>
+            <LanguageSelector />
+          </div>
         </div>
         <div class="welcome-actions-list">
           <div class="welcome-action">
-            <h2>{{ $t('message.welcomeConfigureMerchants') }}</h2>
-            <MerchantFilter :show-title="false" />
+            <div class="build-options-title">
+              <h2>
+                <font-awesome-icon
+                  icon="user-tag"
+                  class="icon-before-text"
+                />
+                <span>{{ $t('message.welcomeConfigureMerchants') }}</span>
+              </h2>
+            </div>
+            <MerchantFilter />
           </div>
         </div>
+      </div>
+      <div class="welcome-warning">
+        <h3 class="welcome-warning-title">
+          <font-awesome-icon
+            icon="exclamation-triangle"
+            class="welcome-warning-icon"
+          />
+          {{ $t('message.welcomeWarning1') }}
+        </h3>
+        <p class="welcome-warning-text">
+          {{ $t('message.welcomeWarning2') }} <span><font-awesome-icon icon="file-export" /> {{ $t('caption.export') }}</span> {{ $t('message.welcomeWarning3') }}
+        </p>
+        <p class="welcome-warning-lost">
+          {{ $t('message.welcomeWarning4') }}
+        </p>
+        <p class="welcome-warning-text">
+          {{ $t('message.welcomeWarning5') }} <span><font-awesome-icon icon="file-import" /> {{ $t('caption.import') }}</span>  {{ $t('message.welcomeWarning6') }}
+        </p>
       </div>
     </div>
 

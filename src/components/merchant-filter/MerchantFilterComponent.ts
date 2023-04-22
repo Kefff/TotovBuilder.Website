@@ -5,13 +5,6 @@ import { MerchantFilterService } from '../../services/MerchantFilterService'
 import Services from '../../services/repository/Services'
 
 export default defineComponent({
-  props: {
-    showTitle: {
-      type: Boolean,
-      required: false,
-      default: true
-    }
-  },
   setup: () => {
     const merchantFilterService = Services.get(MerchantFilterService)
     const filters = ref<IMerchantFilter[]>([])

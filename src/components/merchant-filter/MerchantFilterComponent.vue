@@ -1,12 +1,5 @@
 <template>
   <div>
-    <div v-if="showTitle">
-      <font-awesome-icon
-        icon="filter"
-        class="icon-before-text"
-      />
-      <span>{{ $t('caption.merchants') }}</span>
-    </div>
     <div
       v-for="filter of filters"
       :key="filter.merchant"

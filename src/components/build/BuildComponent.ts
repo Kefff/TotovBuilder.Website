@@ -61,10 +61,10 @@ export default defineComponent({
     const build = ref<IBuild>(buildComponentService.getBuild(route.params['id'] as string))
     const collapseStatuses = ref<boolean[]>([])
     const deleting = ref(false)
-    const displayOptionsPanel = ref()
+    const displayOptionsSidebarVisible = ref(false)
     const editing = isNewBuild.value ? ref(true) : ref(false)
     const isInitializing = ref(true)
-    const optionsPanel = ref()
+    const merchantsOptionsSidebarVisible = ref(false)
     const summary = ref<IBuildSummary>({
       ergonomics: undefined,
       ergonomicsPercentageModifier: 0,
@@ -182,7 +182,7 @@ export default defineComponent({
      * Collapses all the inventory slots.
      */
     function collapseAll() {
-      toggleDisplayOptionsPanel(undefined)
+      displayOptionsSidebarVisible.value = false
 
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = true
@@ -206,7 +206,7 @@ export default defineComponent({
      * Expands all the inventory slots.
      */
     function expandAll() {
-      toggleDisplayOptionsPanel(undefined)
+      displayOptionsSidebarVisible.value = false
 
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = false
@@ -217,7 +217,7 @@ export default defineComponent({
      * Expands the inventory slots containing an item.
      */
     function expandWithItem() {
-      toggleDisplayOptionsPanel(undefined)
+      displayOptionsSidebarVisible.value = false
 
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         if (build.value.inventorySlots[i].items.filter(i => i != null).length > 0) {
@@ -410,22 +410,6 @@ export default defineComponent({
       originalBuild = JSON.parse(JSON.stringify(build.value)) // Creating a copy without reference of the build in its original state
     }
 
-    /**
-     * Toggles the options panel.
-     * @param event - Event.
-     */
-    function toggleOptionsPanel(event: unknown) {
-      optionsPanel.value.toggle(event)
-    }
-
-    /**
-     * Toggles the display options panel.
-     * @param event - Event.
-     */
-    function toggleDisplayOptionsPanel(event: unknown) {
-      displayOptionsPanel.value.toggle(event)
-    }
-
     return {
       build,
       cancelDelete,
@@ -435,7 +419,7 @@ export default defineComponent({
       confirmDelete,
       copy,
       deleting,
-      displayOptionsPanel,
+      displayOptionsSidebarVisible,
       editing,
       expandAll,
       expandWithItem,
@@ -444,10 +428,10 @@ export default defineComponent({
       invalid,
       inventorySlotPathPrefix,
       isEmpty,
-      isNewBuild,
       isInitializing,
+      isNewBuild,
+      merchantsOptionsSidebarVisible,
       notExportedTooltip,
-      optionsPanel,
       path,
       remove,
       save,
@@ -455,8 +439,6 @@ export default defineComponent({
       startEdit,
       StatsUtils,
       summary,
-      toggleDisplayOptionsPanel,
-      toggleOptionsPanel,
       toolbarCssClass
     }
   }

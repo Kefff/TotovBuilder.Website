@@ -11,7 +11,7 @@
               icon="plus"
               class="icon-before-text"
             />
-            <span>{{ $t('caption.new') }}</span>
+            <span>{{ $t('caption.newBuild') }}</span>
           </Button>
           <Button
             v-tooltip.top="$t('caption.export')"
@@ -32,11 +32,22 @@
         <div class="toolbar-part">
           <div class="build-toolbar-right">
             <Button
-              v-tooltip.top="$t('caption.options')"
+              v-tooltip.top="$t('caption.merchantsOptions')"
               class="p-button-text p-button-sm button-discreet"
-              @click="toggleOptionsPanel"
+              @click="merchantsOptionsSidebarVisible = true"
             >
-              <font-awesome-icon icon="cog" />
+              <font-awesome-icon
+                icon="user-tag"
+              />
+            </Button>
+            <Button
+              v-tooltip.top="$t('caption.displayOptions')"
+              class="p-button-text p-button-sm button-discreet"
+              @click="displayOptionsSidebarVisible = true"
+            >
+              <font-awesome-icon
+                icon="tv"
+              />
             </Button>
             <NotificationButton />
           </div>
@@ -62,22 +73,47 @@
     </div>
   </div>
 
-  <!-- Options panel -->
-  <OverlayPanel
-    ref="optionsPanel"
-    :dismissable="true"
+  <!-- Display options sidebar -->
+  <Sidebar
+    v-model:visible="displayOptionsSidebarVisible"
+    position="right"
+    style="width: auto"
   >
+    <div class="builds-options-title">
+      <font-awesome-icon
+        icon="tv"
+        class="icon-before-text"
+      />
+      <span>{{ $t('caption.displayOptions') }}</span>
+    </div>
     <div class="builds-options-panel">
-      <div class="builds-options-panel-item builds-options-panel-special-item">
+      <div class="builds-options-panel-item">
         <LanguageSelector />
       </div>
+    </div>
+  </Sidebar>
+
+  <!-- Merchants options sidebar -->
+  <Sidebar
+    v-model:visible="merchantsOptionsSidebarVisible"
+    position="right"
+    style="width: auto"
+  >
+    <div class="builds-options-title">
+      <font-awesome-icon
+        icon="user-tag"
+        class="icon-before-text"
+      />
+      <span>{{ $t('caption.merchants') }}</span>
+    </div>
+    <div class="builds-options-panel">
       <div
-        class="builds-options-panel-item builds-options-panel-special-item"
+        class="builds-options-panel-item build-merchant-filter"
       >
         <MerchantFilter />
       </div>
     </div>
-  </OverlayPanel>
+  </Sidebar>
 
   <!-- Export -->
   <BuildsExport

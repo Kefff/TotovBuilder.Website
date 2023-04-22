@@ -9,14 +9,20 @@
     </button>
   </div>
 
-  <Dialog
+  <Sidebar
     v-model:visible="open"
+    position="left"
     :closable="true"
-    :header="$t('caption.shoppingList')"
-    :modal="true"
-    :draggable="false"
+    style="width: auto"
   >
     <div>
+      <div class="shopping-list-title">
+        <font-awesome-icon
+          icon="shopping-cart"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.shoppingList') }}</span>
+      </div>
       <div
         v-for="(shoppingListItem, index) of shoppingList"
         :key="index"
@@ -54,7 +60,7 @@
         </div>
       </div>
     </div>
-  </Dialog>
+  </Sidebar>
 </template>
 
 <script lang="ts" src="./ShoppingListComponent.ts" />

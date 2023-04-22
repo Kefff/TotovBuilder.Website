@@ -39,7 +39,7 @@ export default defineComponent({
     let builds: IBuild[] = []
 
     const canExport = computed(() => buildsSummaries.value.length > 0)
-    const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < b.lastUpdated))
+    const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
     const selectedBuildSummary = computed({
       get: () => [],
       set: (value: string[]) => {
@@ -50,11 +50,12 @@ export default defineComponent({
     })
 
 
+    const displayOptionsSidebarVisible = ref(false)
     const hasImported = ref(false)
     const isExporting = ref(false)
     const isImporting = ref(false)
     const isLoading = ref(true)
-    const optionsPanel = ref()
+    const merchantsOptionsSidebarVisible = ref(false)
     const toolbarCssClass = ref('toolbar')
 
     watch(() => hasImported.value, () => {
@@ -179,29 +180,21 @@ export default defineComponent({
       isImporting.value = true
     }
 
-    /**
-     * Toggles the advanced menu.
-     * @param event - Event.
-     */
-    function toggleOptionsPanel(event: unknown) {
-      optionsPanel.value.toggle(event)
-    }
-
     return {
       buildsSummaries,
       canExport,
+      displayOptionsSidebarVisible,
       hasImported,
       isExporting,
       isImporting,
       isLoading,
+      merchantsOptionsSidebarVisible,
       openBuild,
       openNewBuild,
-      optionsPanel,
       selectedBuildSummary,
       showBuildsExportPopup,
       showBuildsImportPopup,
       StatsUtils,
-      toggleOptionsPanel,
       toolbarCssClass
     }
   }
