@@ -299,9 +299,9 @@
     </div>
     <div class="build-options-panel">
       <div
-        class="build-options-panel-item build-merchant-filter"
+        class="build-options-panel-item"
       >
-        <MerchantFilter />
+        <MerchantFilter @has-saved="merchantsOptionsSidebarVisible = false" />
       </div>
     </div>
   </Sidebar>

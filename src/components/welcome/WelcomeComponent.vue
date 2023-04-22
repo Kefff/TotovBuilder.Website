@@ -68,7 +68,7 @@
                 <span>{{ $t('message.welcomeConfigureMerchants') }}</span>
               </h2>
             </div>
-            <MerchantFilter />
+            <MerchantFilter :show-save-button="false" />
           </div>
         </div>
       </div>

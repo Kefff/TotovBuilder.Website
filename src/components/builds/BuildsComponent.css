@@ -16,7 +16,6 @@
 }
 
 .builds-options-panel {
-  max-height: 31.25rem;
   overflow: auto;
 }
 
@@ -29,14 +28,6 @@
 
 .builds-loading {
   margin-top: 3rem;
-}
-
-.builds-options-panel-special-item {
-  height: initial;
-}
-
-.builds-options-panel-special-item:hover {
-  cursor: initial;
 }
 
 .build-toolbar-right {

@@ -5,10 +5,21 @@ import { MerchantFilterService } from '../../services/MerchantFilterService'
 import Services from '../../services/repository/Services'
 
 export default defineComponent({
-  setup: () => {
+  props: {
+    showSaveButton: {
+      type: Boolean,
+      required: false,
+      default: true
+    }
+  },
+  emits: ['hasSaved'],
+  setup: (props, { emit }) => {
     const merchantFilterService = Services.get(MerchantFilterService)
+
     const filters = ref<IMerchantFilter[]>([])
     const merchantLevelOptions = [1, 2, 3, 4]
+
+    const hasChanged = ref(false)
 
     onMounted(() => initialize())
 
@@ -54,16 +65,42 @@ export default defineComponent({
      * Saves the filters.
      */
     function onFiltersChanged() {
+      hasChanged.value = true
+
+      if (!props.showSaveButton) {
+        save()
+      }
+    }
+
+    /**
+     * Toggles a filter.
+     * @param filter - Filter.
+     */
+    function toggleFilter(filter: IMerchantFilter) {
+      filter.enabled = !filter.enabled
+      onFiltersChanged()
+    }
+
+    /**
+     * Saves the filters.
+     */
+    function save() {
+      hasChanged.value = false
       merchantFilterService.save(filters.value)
+
+      emit('hasSaved', true)
     }
 
     return {
       filters,
       getCheckboxTooltip,
       getMerchantLevels,
+      hasChanged,
       hasLevels,
       merchantLevelOptions,
-      onFiltersChanged
+      onFiltersChanged,
+      save,
+      toggleFilter
     }
   }
 })

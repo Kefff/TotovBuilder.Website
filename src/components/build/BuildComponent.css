@@ -38,14 +38,6 @@
   margin-top: 3rem;
 }
 
-.build-merchant-filter {
-  height: initial;
-}
-
-.build-merchant-filter:hover {
-  cursor: initial;
-}
-
 .build-options-panel {
   overflow: auto;
 }
