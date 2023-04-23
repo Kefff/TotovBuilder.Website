@@ -15,24 +15,24 @@ import { ExportService } from '../../services/ExportService'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
 import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
-import MerchantFilter from '../merchant-filter/MerchantFilterComponent.vue'
+import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
-import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
 import ShareBuild from '../build-share/BuildShareComponent.vue'
 import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
 import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { InventoryItemService } from '../../services/InventoryItemService'
+import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 
 export default defineComponent({
   components: {
-    InventorySlot,
+    DisplayOptions,
     InputTextField,
     InventoryPrice,
-    LanguageSelector,
+    InventorySlot,
     Loading,
-    MerchantFilter,
+    MerchantItemsOptions,
     NotificationButton,
     ShareBuild,
     ShoppingList
@@ -64,7 +64,6 @@ export default defineComponent({
     const displayOptionsSidebarVisible = ref(false)
     const editing = isNewBuild.value ? ref(true) : ref(false)
     const isInitializing = ref(true)
-    const merchantsOptionsSidebarVisible = ref(false)
     const summary = ref<IBuildSummary>({
       ergonomics: undefined,
       ergonomicsPercentageModifier: 0,
@@ -430,7 +429,6 @@ export default defineComponent({
       isEmpty,
       isInitializing,
       isNewBuild,
-      merchantsOptionsSidebarVisible,
       notExportedTooltip,
       path,
       remove,

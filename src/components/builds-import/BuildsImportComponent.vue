@@ -39,7 +39,7 @@
             icon="file-import"
             class="icon-before-text"
           />
-          <span>{{ $t('caption.import') }}</span>
+          <span>{{ $t('caption.importBuilds') }}</span>
         </Button>
         <Button
           v-if="readenBuildSummaries.length > 1"

@@ -14,21 +14,23 @@ import BuildsList from '../builds-list/BuildsListComponent.vue'
 import BuildsExport from '../builds-export/BuildsExportComponent.vue'
 import BuildsImport from '../builds-import/BuildsImportComponent.vue'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
-import MerchantFilter from '../merchant-filter/MerchantFilterComponent.vue'
 import { MerchantFilterService } from '../../services/MerchantFilterService'
 import vueI18n from '../../plugins/vueI18n'
 import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
+import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 
 export default defineComponent({
   components: {
     BuildsExport,
     BuildsImport,
     BuildsList,
+    DisplayOptions,
     LanguageSelector,
     Loading,
-    MerchantFilter,
+    MerchantItemsOptions,
     NotificationButton
   },
   setup: () => {
@@ -49,13 +51,10 @@ export default defineComponent({
       }
     })
 
-
-    const displayOptionsSidebarVisible = ref(false)
     const hasImported = ref(false)
     const isExporting = ref(false)
     const isImporting = ref(false)
     const isLoading = ref(true)
-    const merchantsOptionsSidebarVisible = ref(false)
     const toolbarCssClass = ref('toolbar')
 
     watch(() => hasImported.value, () => {
@@ -183,12 +182,10 @@ export default defineComponent({
     return {
       buildsSummaries,
       canExport,
-      displayOptionsSidebarVisible,
       hasImported,
       isExporting,
       isImporting,
       isLoading,
-      merchantsOptionsSidebarVisible,
       openBuild,
       openNewBuild,
       selectedBuildSummary,

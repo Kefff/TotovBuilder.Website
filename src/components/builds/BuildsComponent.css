@@ -15,17 +15,6 @@
   justify-content: center;
 }
 
-.builds-options-panel {
-  overflow: auto;
-}
-
-.builds-options-panel-item {
-  align-items: center;
-  display: flex;
-  min-height: 3.25rem;
-  padding: 0.5rem;
-}
-
 .builds-loading {
   margin-top: 3rem;
 }

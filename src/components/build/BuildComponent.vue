@@ -140,24 +140,41 @@
         </div>
         <div class="toolbar-part">
           <div class="build-toolbar-right">
-            <Button
-              v-tooltip.top="$t('caption.merchantsOptions')"
-              class="p-button-text p-button-sm button-discreet"
-              @click="merchantsOptionsSidebarVisible = true"
-            >
-              <font-awesome-icon
-                icon="user-tag"
-              />
-            </Button>
-            <Button
-              v-tooltip.top="$t('caption.displayOptions')"
-              class="p-button-text p-button-sm button-discreet"
-              @click="displayOptionsSidebarVisible = true"
-            >
-              <font-awesome-icon
-                icon="tv"
-              />
-            </Button>
+            <MerchantItemsOptions />
+            <DisplayOptions v-model:sidebar-visible="displayOptionsSidebarVisible">
+              <template #additional-options>
+                <div
+                  class="sidebar-option-with-hover"
+                  @click="collapseAll()"
+                >
+                  <font-awesome-icon
+                    icon="minus-square"
+                    class="icon-before-text"
+                  />
+                  <span>{{ $t('caption.collapseAll') }}</span>
+                </div>
+                <div
+                  class="sidebar-option-with-hover"
+                  @click="expandWithItem()"
+                >
+                  <font-awesome-icon
+                    icon="search-plus"
+                    class="icon-before-text"
+                  />
+                  <span>{{ $t('caption.expandWithItem') }}</span>
+                </div>
+                <div
+                  class="sidebar-option-with-hover"
+                  @click="expandAll()"
+                >
+                  <font-awesome-icon
+                    icon="plus-square"
+                    class="icon-before-text"
+                  />
+                  <span>{{ $t('caption.expandAll') }}</span>
+                </div>
+              </template>
+            </DisplayOptions>
             <NotificationButton />
             <Button
               v-if="editing"
@@ -233,78 +250,6 @@
       <Loading />
     </div>
   </div>
-
-  <!-- Display options sidebar -->
-  <Sidebar
-    v-model:visible="displayOptionsSidebarVisible"
-    position="right"
-    style="width: auto"
-  >
-    <div class="build-options-title">
-      <font-awesome-icon
-        icon="tv"
-        class="icon-before-text"
-      />
-      <span>{{ $t('caption.displayOptions') }}</span>
-    </div>
-    <div class="build-options-panel">
-      <div class="build-options-panel-item">
-        <LanguageSelector />
-      </div>
-      <div
-        class="build-options-panel-item build-options-panel-item-with-hover"
-        @click="collapseAll()"
-      >
-        <font-awesome-icon
-          icon="minus-square"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.collapseAll') }}</span>
-      </div>
-      <div
-        class="build-options-panel-item build-options-panel-item-with-hover"
-        @click="expandWithItem()"
-      >
-        <font-awesome-icon
-          icon="search-plus"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.expandWithItem') }}</span>
-      </div>
-      <div
-        class="build-options-panel-item build-options-panel-item-with-hover"
-        @click="expandAll()"
-      >
-        <font-awesome-icon
-          icon="plus-square"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.expandAll') }}</span>
-      </div>
-    </div>
-  </Sidebar>
-
-  <!-- Merchants options sidebar -->
-  <Sidebar
-    v-model:visible="merchantsOptionsSidebarVisible"
-    position="right"
-    style="width: auto"
-  >
-    <div class="build-options-title">
-      <font-awesome-icon
-        icon="user-tag"
-        class="icon-before-text"
-      />
-      <span>{{ $t('caption.merchants') }}</span>
-    </div>
-    <div class="build-options-panel">
-      <div
-        class="build-options-panel-item"
-      >
-        <MerchantFilter @has-saved="merchantsOptionsSidebarVisible = false" />
-      </div>
-    </div>
-  </Sidebar>
 
   <!-- Deletion confirmation dialog -->
   <Dialog
