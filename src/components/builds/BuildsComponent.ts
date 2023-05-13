@@ -14,7 +14,7 @@ import BuildsList from '../builds-list/BuildsListComponent.vue'
 import BuildsExport from '../builds-export/BuildsExportComponent.vue'
 import BuildsImport from '../builds-import/BuildsImportComponent.vue'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import vueI18n from '../../plugins/vueI18n'
 import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
@@ -34,7 +34,7 @@ export default defineComponent({
     NotificationButton
   },
   setup: () => {
-    const merchantFilterService = Services.get(MerchantFilterService)
+    const globalFilterService = Services.get(GlobalFilterService)
 
     const router = useRouter()
     const buildsSummaries = ref<IBuildSummary[]>([])
@@ -66,7 +66,7 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       window.addEventListener('scroll', setToolbarCssClass)
 
@@ -82,7 +82,7 @@ export default defineComponent({
     })
 
     onUnmounted(() => {
-      merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       window.removeEventListener('scroll', setToolbarCssClass)
     })

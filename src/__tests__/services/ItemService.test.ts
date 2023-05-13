@@ -18,7 +18,7 @@ import PresetsMock from '../../../test-data/presets.json'
 import PricesMock from '../../../test-data/prices.json'
 import { IItem } from '../../models/item/IItem'
 import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { PresetService } from '../../services/PresetService'
 
 describe('fetchItemCategories()', () => {
@@ -270,16 +270,23 @@ describe('getItems()', () => {
       }] as IPrice[])
   })
 
-  it('should filter items according to the merchant filter', async () => {
+  it('should filter items according to the global filter', async () => {
     // Arrange
     useItemFetcherServiceMock()
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
-    Services.configure(MerchantFilterService)
-    const merchantFitlerService = Services.get(MerchantFilterService)
-    merchantFitlerService.save([
+    Services.configure(GlobalFilterService)
+    const globalFitlerService = Services.get(GlobalFilterService)
+    globalFitlerService.setItemFilters([
+      {
+        enabled: true,
+        exclude: (item: IItem) => item.id === '5448c12b4bdc2d02308b456f',
+        name: 'Exclude PM 9x18PM 90-93 8-round magazine'
+      }
+    ])
+    globalFitlerService.setMerchantFilters([
       {
         enabled: true,
         merchant: 'prapor',
@@ -290,7 +297,12 @@ describe('getItems()', () => {
     const itemService = new ItemService()
 
     // Act
-    const itemsResult = await itemService.getItems(['584147732459775a2b6d9f12', '5c1d0f4986f7744bb01837fa', '5dd7f8c524e5d7504a4e3077'], true)
+    const itemsResult = await itemService.getItems([
+      '584147732459775a2b6d9f12', // AKS-74U Default (Prapor 1)
+      '5c1d0f4986f7744bb01837fa', // TerraGroup Labs keycard (Black) (Mechanic 4)
+      '5dd7f8c524e5d7504a4e3077', // Kalashnikov AK-74 5.45x39 assault rifle Plum (Prapor 2),
+      '5448c12b4bdc2d02308b456f' // PM 9x18PM 90-93 8-round magazine (Prapor 1)
+    ], true)
 
     // Assert
     expect(itemsResult.success).toBe(true)
@@ -433,9 +445,21 @@ describe('getItemsOfCategories()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
-    Services.configure(MerchantFilterService)
-    const merchantFitlerService = Services.get(MerchantFilterService)
-    merchantFitlerService.save([
+    Services.configure(GlobalFilterService)
+    const globalFitlerService = Services.get(GlobalFilterService)
+    globalFitlerService.setItemFilters([
+      {
+        enabled: true,
+        exclude: (item: IItem) => item.prices.length === 0,
+        name: 'Exclude items without merchant'
+      },
+      {
+        enabled: true,
+        exclude: (item: IItem) => item.id == '5857a8b324597729ab0a0e7d',
+        name: 'Exclude Secure container Beta'
+      }
+    ])
+    globalFitlerService.setMerchantFilters([
       {
         enabled: true,
         merchant: 'peacekeeper',
@@ -451,8 +475,7 @@ describe('getItemsOfCategories()', () => {
     // Assert
     expect(itemResult.success).toBe(true)
     expect(itemResult.value.map((i) => i.id).sort()).toStrictEqual([
-      '544a11ac4bdc2d470e8b456a',
-      '5857a8b324597729ab0a0e7d'
+      '544a11ac4bdc2d470e8b456a' // Secure container Alpha (Peacekeeper 2)
     ])
   })
 

@@ -10,7 +10,7 @@ import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { InventorySlotService } from '../../services/InventorySlotService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
@@ -1415,7 +1415,7 @@ describe('getPrice()', () => {
       useWebsiteConfigurationServiceMock()
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(MerchantFilterService)
+      Services.configure(GlobalFilterService)
 
       const service = new BuildPropertiesService()
 
@@ -1436,7 +1436,7 @@ describe('getPrice()', () => {
     useWebsiteConfigurationServiceMock()
     Services.configure(InventorySlotPropertiesService)
     Services.configure(InventoryItemService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
     const service = new BuildPropertiesService()
 
     const build: IBuild = {
@@ -1523,7 +1523,7 @@ describe('getPrice()', () => {
     useWebsiteConfigurationServiceMock()
     Services.configure(InventorySlotPropertiesService)
     Services.configure(InventoryItemService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const service = new BuildPropertiesService()
 

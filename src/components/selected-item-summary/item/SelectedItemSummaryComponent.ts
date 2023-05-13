@@ -5,7 +5,7 @@ import { IgnoredUnitPrice } from '../../../models/utils/IgnoredUnitPrice'
 import { IInventoryPrice } from '../../../models/utils/IInventoryPrice'
 import { IWeight } from '../../../models/utils/IWeight'
 import { InventoryItemService } from '../../../services/InventoryItemService'
-import { MerchantFilterService } from '../../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../../services/GlobalFilterService'
 import { NotificationService, NotificationType } from '../../../services/NotificationService'
 import Services from '../../../services/repository/Services'
 import Result from '../../../utils/Result'
@@ -32,8 +32,8 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const merchantFilterService = Services.get(MerchantFilterService)
-    merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+    const globalFilterService = Services.get(GlobalFilterService)
+    globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
     const inventoryItemService = Services.get(InventoryItemService)
     const price = ref<IInventoryPrice>({
@@ -98,7 +98,7 @@ export default defineComponent({
     })
 
     onUnmounted(() => {
-      merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
     })
 
     /**

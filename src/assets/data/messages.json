@@ -262,7 +262,7 @@
       "buildNotFound": "Build \"{id}\" not found. It may have been deleted.",
       "buildSaved": "Build \"{name}\" saved.",
       "buildsImported": "Builds imported",
-      "buildsNotExported": "Some builds have not been exported. They will be lost if you clear your browser history or if you are browsing in private / incognito mode and you close the browser.",
+      "buildsNotExported": "Some builds have not been exported.\nThey will be lost if you clear your browser history or if you are browsing in private / incognito mode and you close the browser.",
       "cannotAddBodyArmor": "Cannot select a body armor because an armored tactical rig has already been added.",
       "cannotAddMod": "Cannot add mod \"{modName}\" because it conflicts with item \"{conflictingItemName}\".",
       "cannotAddTacticalRig": "Cannot select an armored tactical rig because a body armor has already been added.",

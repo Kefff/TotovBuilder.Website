@@ -1,5 +1,6 @@
 @import '../../assets/css/button.css';
 @import '../../assets/css/icon.css';
+@import '../../assets/css/sidebar.css';
 
 .shopping-list-item {
   align-items: center;
@@ -40,10 +41,4 @@
 .shopping-list-item-quantity {
   text-align: right;
   width: 4rem;
-}
-
-.shopping-list-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
 }

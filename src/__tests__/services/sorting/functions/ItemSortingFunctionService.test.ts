@@ -4,7 +4,7 @@ import { IPrice } from '../../../../models/item/IPrice'
 import SortingData, { SortingOrder } from '../../../../models/utils/SortingData'
 import { InventoryItemService } from '../../../../services/InventoryItemService'
 import { ItemService } from '../../../../services/ItemService'
-import { MerchantFilterService } from '../../../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../../../services/GlobalFilterService'
 import Services from '../../../../services/repository/Services'
 import { ItemSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunction'
 import { SortingService } from '../../../../services/sorting/SortingService'
@@ -132,7 +132,7 @@ describe('compareByPrice()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventoryItemService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const itemServiceSpy = spy(Services.get(ItemService))
     when(itemServiceSpy.getItem(item1.id)).thenReturn(Promise.resolve(Result.ok(item1)))
@@ -160,7 +160,7 @@ describe('compareByPrice()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventoryItemService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const item1 = { id: 'i1', name: 'a', categoryId: 'cat1', prices: [{ currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as IItem
     const item2 = { id: 'i2', name: 'a', categoryId: 'cat1', prices: [{ currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 2, valueInMainCurrency: 2 }] } as IItem

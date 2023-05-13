@@ -8,7 +8,7 @@ import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import { TarkovValuesService } from './TarkovValuesService'
 import { ItemFetcherService } from './ItemFetcherService'
 import { IPrice } from '../models/item/IPrice'
-import { MerchantFilterService } from './MerchantFilterService'
+import { GlobalFilterService } from './GlobalFilterService'
 import { PresetService } from './PresetService'
 
 /**
@@ -73,10 +73,11 @@ export class ItemService {
   /**
    * Gets an item. Updates the prices if the cache has expired.
    * @param id - Item ID.
+   * @param useGlobalFilter - Indicates whether the global filter must be applied. False by default.
    * @returns Item.
    */
-  public async getItem(id: string): Promise<Result<IItem>> {
-    const itemsResult = await this.getItems([id])
+  public async getItem(id: string, useGlobalFilter = false): Promise<Result<IItem>> {
+    const itemsResult = await this.getItems([id], useGlobalFilter)
 
     if (!itemsResult.success || itemsResult.value.length === 0) {
       return Result.fail(
@@ -102,22 +103,22 @@ export class ItemService {
   /**
    * Gets items. Updates the prices if the cache has expired.
    * @param ids - Item IDs.
-   * @param useMerchantFilter - Indicates whether the merchant filter must be applied. False by default.
+   * @param useGlobalFilter - Indicates whether the global filter must be applied. False by default.
    * @returns Items.
    */
-  public async getItems(ids: string[], useMerchantFilter = false): Promise<Result<IItem[]>> {
+  public async getItems(ids: string[], useGlobalFilter = false): Promise<Result<IItem[]>> {
     await this.initialize()
 
-    let items: IItem[]
+    let items: IItem[] = []
 
-    if (useMerchantFilter) {
+    if (useGlobalFilter) {
       items = this.items.filter(i => ids.some(id => id === i.id)
-        && Services.get(MerchantFilterService).hasMatchingPrices(i, true))
+        && Services.get(GlobalFilterService).isMatchingFilter(i, true))
     } else {
       items = this.items.filter(i => ids.some(id => id === i.id))
     }
 
-    if (items.length < ids.length && !useMerchantFilter) {
+    if (items.length < ids.length && !useGlobalFilter) {
       const notFoundItemIds = ids.filter(id => !items.some(i => i.id === id))
       return Result.fail(
         FailureType.error,
@@ -132,21 +133,21 @@ export class ItemService {
   /**
    * Gets items of a specified category. Updates the prices if its cache has expired.
    * @param categoryIds - Category IDs.
-   * @param useMerchantFilter - Indicates whether the merchant filter must be applied. False by default.
+   * @param useGlobalFilter - Indicates whether the global filter must be applied. False by default.
    */
-  public async getItemsOfCategories(categoryIds: string[], useMerchantFilter = false): Promise<Result<IItem[]>> {
+  public async getItemsOfCategories(categoryIds: string[], useGlobalFilter = false): Promise<Result<IItem[]>> {
     await this.initialize()
 
     let items: IItem[]
 
-    if (useMerchantFilter) {
+    if (useGlobalFilter) {
       items = this.items.filter(i => categoryIds.some(id => id === i.categoryId)
-        && Services.get(MerchantFilterService).hasMatchingPrices(i, true))
+        && Services.get(GlobalFilterService).isMatchingFilter(i, true))
     } else {
       items = this.items.filter(i => categoryIds.some(id => id === i.categoryId))
     }
 
-    if (items.length === 0 && !useMerchantFilter) {
+    if (items.length === 0 && !useGlobalFilter) {
       return Result.fail(
         FailureType.error,
         'ItemService.getItemsOfCategories',

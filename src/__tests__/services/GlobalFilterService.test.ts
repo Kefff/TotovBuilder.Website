@@ -1,21 +1,42 @@
 import { IItem } from '../../models/item/IItem'
 import { IMerchantFilter } from '../../models/utils/IMerchantFilter'
 import { IPrice } from '../../models/item/IPrice'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import WebsiteConfigurationMock from '../../../test-data/website-configuration.json'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
+import { IItemExclusionFilter } from '../../models/utils/IItemExclusionFilter'
+import Services from '../../services/repository/Services'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { IModdable } from '../../models/item/IModdable'
+import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 
-const filters = [
+const itemExclusionFilters = [
+  {
+    enabled: true,
+    exclude: (item: IItem) => {
+      return item.prices.length === 0
+    },
+    name: GlobalFilterService.excludeItemsWithoutMerchantFilterName
+  },
+  {
+    enabled: true,
+    exclude: (item: IItem) => {
+      const canBeModded = Services.get(ItemPropertiesService).canBeModded(item)
+      const hasBaseItemId = (item as IModdable).baseItemId == null
+      const hasDefaultPresetId = (item as IModdable).defaultPresetId != null
+
+      return canBeModded && hasBaseItemId && hasDefaultPresetId
+    },
+    name: GlobalFilterService.excludePresetBaseItemsFilterName
+  }
+] as IItemExclusionFilter[]
+
+const merchantFilters = [
   {
     'enabled': true,
     'merchantLevel': 0,
     'merchant': 'flea-market'
-  },
-  {
-    'enabled': true,
-    'merchantLevel': 0,
-    'merchant': 'items-without-merchant'
   },
   {
     'enabled': false,
@@ -55,7 +76,10 @@ const filters = [
 ] as IMerchantFilter[]
 
 beforeEach(() => {
-  localStorage.setItem(WebsiteConfigurationMock.merchantFilterStorageKey, JSON.stringify(filters))
+  localStorage.setItem(WebsiteConfigurationMock.globalFilterStorageKey, JSON.stringify({
+    itemExclusionFilters,
+    merchantFilters
+  } as IGlobalFilter))
 })
 
 afterEach(() => {
@@ -68,7 +92,7 @@ describe('get()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
-    const service = new MerchantFilterService()
+    const service = new GlobalFilterService()
 
     // Act
     const filters = service.get()
@@ -82,7 +106,7 @@ describe('get()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
-    const service = new MerchantFilterService()
+    const service = new GlobalFilterService()
 
     // Act
     localStorage.clear()
@@ -168,8 +192,8 @@ describe('getMatchingPrices()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
-    const service = new MerchantFilterService()
-    service.save([
+    const service = new GlobalFilterService()
+    service.setMerchantFilters([
       {
         enabled: true,
         merchant: 'flea-market',
@@ -220,7 +244,7 @@ describe('getMerchantLevels()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
-    const service = new MerchantFilterService()
+    const service = new GlobalFilterService()
 
     // Act
     const levels1 = service.getMerchantLevels('flea-market')
@@ -240,7 +264,7 @@ describe('hasLevels()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
-    const service = new MerchantFilterService()
+    const service = new GlobalFilterService()
 
     // Act
     const hasLevels1 = service.hasLevels('flea-market')
@@ -254,7 +278,7 @@ describe('hasLevels()', () => {
   })
 })
 
-describe('hasMatchingPrices()', () => {
+describe('isMatchingFilter()', () => {
   it.each([
     [
       [
@@ -345,21 +369,17 @@ describe('hasMatchingPrices()', () => {
       false,
       false
     ]
-  ])('should indicate whether an item has matching prices or not', async (prices: IPrice[], showItemsWithoutMerchant: boolean, expected: boolean) => {
+  ])('should indicate whether an item matches the item filter and has prices matching the merchant filters', async (prices: IPrice[], includeItemsWithoutMerchant: boolean, expected: boolean) => {
     // Arrange
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
+    Services.configure(ItemPropertiesService)
 
-    const service = new MerchantFilterService()
-    service.save([
+    const service = new GlobalFilterService()
+    service.setMerchantFilters([
       {
         enabled: true,
         merchant: 'flea-market',
-        merchantLevel: 0
-      },
-      {
-        enabled: true,
-        merchant: 'items-without-merchant',
         merchantLevel: 0
       },
       {
@@ -394,30 +414,50 @@ describe('hasMatchingPrices()', () => {
     }
 
     // Act
-    const result = service.hasMatchingPrices(item, showItemsWithoutMerchant)
+    const result = service.isMatchingFilter(item, includeItemsWithoutMerchant)
 
     // Assert
     expect(result).toBe(expected)
   })
 })
 
-describe('save()', () => {
-  it('should save the merchant filters and cache them', () => {
+describe('setMerchantFilters()', () => {
+  it('should save the merchant filters and save them', () => {
     // Arrange
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
-    const service = new MerchantFilterService()
-    filters[0].enabled = false
-    filters[2].merchantLevel = 1
+    const service = new GlobalFilterService()
+    merchantFilters[0].enabled = false
+    merchantFilters[2].merchantLevel = 1
 
     // Act
-    service.save(filters)
+    service.setMerchantFilters(merchantFilters)
     const readenFilters = service.get()
 
     // Assert
     expect(localStorage.setItem).toHaveBeenCalled()
-    expect(readenFilters).toStrictEqual([
+    expect(readenFilters.merchantFilters).toStrictEqual([
+      {
+        'enabled': false,
+        'merchant': 'flea-market',
+        'merchantLevel': 0
+      },
+      {
+        'enabled': false,
+        'merchant': 'jaeger',
+        'merchantLevel': 4
+      },
+      {
+        'enabled': true,
+        'merchant': 'mechanic',
+        'merchantLevel': 1
+      },
+      {
+        'enabled': true,
+        'merchant': 'peacekeeper',
+        'merchantLevel': 4
+      },
       {
         'enabled': true,
         'merchant': 'prapor',
@@ -425,7 +465,7 @@ describe('save()', () => {
       },
       {
         'enabled': true,
-        'merchant': 'therapist',
+        'merchant': 'ragman',
         'merchantLevel': 4
       },
       {
@@ -435,33 +475,8 @@ describe('save()', () => {
       },
       {
         'enabled': true,
-        'merchant': 'peacekeeper',
+        'merchant': 'therapist',
         'merchantLevel': 4
-      },
-      {
-        'enabled': true,
-        'merchant': 'mechanic',
-        'merchantLevel': 4
-      },
-      {
-        'enabled': true,
-        'merchant': 'ragman',
-        'merchantLevel': 4
-      },
-      {
-        'enabled': false,
-        'merchant': 'jaeger',
-        'merchantLevel': 1
-      },
-      {
-        'enabled': false,
-        'merchant': 'flea-market',
-        'merchantLevel': 0
-      },
-      {
-        'enabled': true,
-        'merchant': 'items-without-merchant',
-        'merchantLevel': 0
       }
     ])
   })

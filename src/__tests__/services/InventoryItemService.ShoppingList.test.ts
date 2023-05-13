@@ -1,7 +1,7 @@
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { InventoryItemService } from '../../services/InventoryItemService'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
@@ -15,11 +15,11 @@ describe('getShoppingList', () => {
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const inventoryItemService = new InventoryItemService()
-    const merchantFilterService = Services.get(MerchantFilterService)
-    merchantFilterService.save([
+    const globalFilterService = Services.get(GlobalFilterService)
+    globalFilterService.setMerchantFilters([
       {
         enabled: true,
         merchant: 'flea-market',
@@ -589,7 +589,7 @@ describe('getShoppingList', () => {
     useItemServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const inventoryItemService = new InventoryItemService()
 
@@ -613,7 +613,7 @@ describe('getShoppingList', () => {
     useItemServiceMock(false)
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const inventoryItemService = new InventoryItemService()
 

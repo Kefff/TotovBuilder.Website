@@ -12,6 +12,8 @@ import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import { ItemService } from './ItemService'
 import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { VersionService } from './VersionService'
+import { GlobalFilterService } from './GlobalFilterService'
+import { IMerchantFilter } from '../models/utils/IMerchantFilter'
 
 /**
  * Represents a service responsible for managing builds.
@@ -314,6 +316,19 @@ export class BuildService {
             }
           }
         }
+      }
+
+      // Getting the saved obsolete merchants filter and replacing it by a global filter
+      const merchantsFilterStorageKey = 'merchant_filter'
+      const serializedMerchantFilters = localStorage.getItem(merchantsFilterStorageKey)
+
+      if (serializedMerchantFilters != null) {
+        const merchantFilters = JSON.parse(serializedMerchantFilters) as IMerchantFilter[]
+
+        const globalFilterService = Services.get(GlobalFilterService)
+        globalFilterService.setMerchantFilters(merchantFilters)
+
+        localStorage.removeItem(merchantsFilterStorageKey)
       }
 
       needSave = true

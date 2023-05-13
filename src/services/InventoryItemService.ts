@@ -17,7 +17,7 @@ import { ItemService } from './ItemService'
 import { IAmmunition } from '../models/item/IAmmunition'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IPrice } from '../models/item/IPrice'
-import { MerchantFilterService } from './MerchantFilterService'
+import { GlobalFilterService } from './GlobalFilterService'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import { round } from 'round-ts'
 import { TinyEmitter } from 'tiny-emitter'
@@ -135,7 +135,7 @@ export class InventoryItemService {
    * @returns Price.
    */
   public async getPrice(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true, useMerchantFilter = true): Promise<Result<IInventoryPrice>> {
-    const merchantFilterService = Services.get(MerchantFilterService)
+    const globalFilterService = Services.get(GlobalFilterService)
     const itemService = Services.get(ItemService)
     const itemResult = await itemService.getItem(inventoryItem.itemId)
 
@@ -167,7 +167,7 @@ export class InventoryItemService {
     let hasUnitPrice = false
 
     if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
-      const matchingPrices = useMerchantFilter ? merchantFilterService.getMatchingPrices(itemResult.value) : itemResult.value.prices
+      const matchingPrices = useMerchantFilter ? globalFilterService.getMatchingPrices(itemResult.value) : itemResult.value.prices
 
       for (const matchingPrice of matchingPrices) {
         let missingBarterItemPrice = false

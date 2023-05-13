@@ -8,7 +8,9 @@
       :severity="toastNotification.type"
       :sticky="false"
     >
-      {{ toastNotification.message }}
+      <p :style="{ whiteSpace: 'pre-wrap' }">
+        {{ toastNotification.message }}
+      </p>
     </Message>
   </div>
 </template>

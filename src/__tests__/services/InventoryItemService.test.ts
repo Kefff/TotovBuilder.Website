@@ -7,7 +7,7 @@ import { IRecoilPercentageModifier } from '../../models/utils/IRecoilPercentageM
 import { IWeight } from '../../models/utils/IWeight'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import Services from '../../services/repository/Services'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
@@ -673,7 +673,7 @@ describe('getPrice()', () => {
       usePresetServiceMock()
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()
-      Services.configure(MerchantFilterService)
+      Services.configure(GlobalFilterService)
       const service = new InventoryItemService()
 
       // Act
@@ -1018,7 +1018,7 @@ describe('getPrice()', () => {
       usePresetServiceMock()
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()
-      Services.configure(MerchantFilterService)
+      Services.configure(GlobalFilterService)
 
       const service = new InventoryItemService()
 
@@ -1036,11 +1036,12 @@ describe('getPrice()', () => {
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const inventoryItemService = new InventoryItemService()
-    const merchantFilterService = Services.get(MerchantFilterService)
-    merchantFilterService.save([
+
+    const globalFilterService = Services.get(GlobalFilterService)
+    globalFilterService.setMerchantFilters([
       {
         enabled: false,
         merchant: 'jaeger',
@@ -1300,7 +1301,7 @@ describe('getPrice()', () => {
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const service = new InventoryItemService()
 
@@ -1405,10 +1406,10 @@ describe('getPrice()', () => {
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const service = new InventoryItemService()
-    Services.get(MerchantFilterService)
+    Services.get(GlobalFilterService)
 
     const inventoryItem: IInventoryItem = {
       content: [],
@@ -1542,10 +1543,10 @@ describe('getPrice()', () => {
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const service = new InventoryItemService()
-    Services.get(MerchantFilterService)
+    Services.get(GlobalFilterService)
 
     const inventoryItem: IInventoryItem = {
       content: [],
@@ -1648,10 +1649,10 @@ describe('getPrice()', () => {
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const service = new InventoryItemService()
-    Services.get(MerchantFilterService)
+    Services.get(GlobalFilterService)
 
     const inventoryItem: IInventoryItem = {
       content: [],
@@ -1718,7 +1719,7 @@ describe('getPrice()', () => {
     useItemServiceMock(false)
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
     const service = new InventoryItemService()
 
     // Act
@@ -1741,7 +1742,7 @@ describe('getPrice()', () => {
       usePresetServiceMock()
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()
-      Services.configure(MerchantFilterService)
+      Services.configure(GlobalFilterService)
       const service = new InventoryItemService()
 
       // Act
@@ -1777,10 +1778,10 @@ describe('getPrice()', () => {
       ])
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const service = new InventoryItemService()
-    Services.get(MerchantFilterService)
+    Services.get(GlobalFilterService)
 
     const inventoryItem: IInventoryItem = {
       content: [],
@@ -1818,11 +1819,11 @@ describe('getPrice()', () => {
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const inventoryItemService = new InventoryItemService()
-    const merchantFilterService = Services.get(MerchantFilterService)
-    merchantFilterService.save([
+    const globalFilterService = Services.get(GlobalFilterService)
+    globalFilterService.setMerchantFilters([
       {
         enabled: true,
         merchant: 'mechanic',

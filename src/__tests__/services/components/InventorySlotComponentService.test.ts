@@ -3,7 +3,7 @@ import { IInventoryItem } from '../../../models/build/IInventoryItem'
 import { CompatibilityService } from '../../../services/compatibility/CompatibilityService'
 import { InventorySlotComponentService } from '../../../services/components/InventorySlotComponentService'
 import { ItemService } from '../../../services/ItemService'
-import { MerchantFilterService } from '../../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../../services/GlobalFilterService'
 import { NotificationService } from '../../../services/NotificationService'
 import Services from '../../../services/repository/Services'
 import { PathUtils } from '../../../utils/PathUtils'
@@ -18,12 +18,12 @@ describe('getAcceptedItems()', () => {
     useItemServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
-    const merchantFitlerService = Services.get(MerchantFilterService)
+    const globalFitlerService = Services.get(GlobalFilterService)
     const inventorySlotComponentServiceService = new InventorySlotComponentService()
 
-    merchantFitlerService.save([
+    globalFitlerService.setMerchantFilters([
       {
         enabled: true,
         merchant: 'prapor',
@@ -77,7 +77,7 @@ describe('getAcceptedItems()', () => {
     // Arrange
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const inventorySlotComponentService = new InventorySlotComponentService()
     const notificationServiceMock = mock<NotificationService>()

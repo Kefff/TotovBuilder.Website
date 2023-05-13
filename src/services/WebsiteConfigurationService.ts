@@ -31,7 +31,7 @@ export class WebsiteConfigurationService {
     itemCategoriesApi: '',
     itemsApi: '',
     languageStorageKey: 'language',
-    merchantFilterStorageKey: 'merchant_filter',
+    globalFilterStorageKey: 'global_filter',
     notificationErrorDuration: 10,
     notificationInformationDuration: 5,
     notificationSuccessDuration: 5,

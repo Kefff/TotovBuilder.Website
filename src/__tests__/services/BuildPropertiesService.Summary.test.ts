@@ -5,7 +5,7 @@ import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
@@ -2097,7 +2097,7 @@ describe('getSummary()', () => {
       Services.configure(InventorySlotPropertiesService)
       Services.configure(InventoryItemService)
       Services.configure(ItemPropertiesService)
-      Services.configure(MerchantFilterService)
+      Services.configure(GlobalFilterService)
 
       const service = new BuildPropertiesService()
 
@@ -2132,11 +2132,11 @@ describe('getSummary()', () => {
     Services.configure(InventorySlotPropertiesService)
     Services.configure(InventoryItemService)
     Services.configure(ItemPropertiesService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const service = new BuildPropertiesService()
-    const merchantFilterService = Services.get(MerchantFilterService)
-    merchantFilterService.save([
+    const globalFilterService = Services.get(GlobalFilterService)
+    globalFilterService.setMerchantFilters([
       {
         enabled: true,
         merchant: 'flea-market',

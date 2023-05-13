@@ -5,11 +5,12 @@ import { ItemService } from '../../../services/ItemService'
 import { NotificationService } from '../../../services/NotificationService'
 import Services from '../../../services/repository/Services'
 import Result, { FailureType } from '../../../utils/Result'
-import { MerchantFilterService } from '../../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../../services/GlobalFilterService'
 import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../../__mocks__/TarkovValuesServiceMock'
 import { useItemFetcherServiceMock } from '../../../__mocks__/ItemFetcherServiceMock'
 import { usePresetServiceMock } from '../../../__mocks__/PresetPropertiesServiceMock'
+import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
 
 describe('getAcceptedItems()', () => {
   it('should get the acceptem items', async () => {
@@ -19,13 +20,14 @@ describe('getAcceptedItems()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(ItemService)
-    Services.configure(MerchantFilterService)
+    Services.configure(ItemPropertiesService)
+    Services.configure(GlobalFilterService)
     Services.configure(NotificationService)
 
-    const merchantFitlerService = Services.get(MerchantFilterService)
     const modSlotService = new ModSlotComponentService()
 
-    merchantFitlerService.save([
+    const globalFitlerService = Services.get(GlobalFilterService)
+    globalFitlerService.setMerchantFilters([
       {
         enabled: true,
         merchant: 'prapor',
@@ -67,7 +69,7 @@ describe('getAcceptedItems()', () => {
     // Arrange
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const modSlotService = new ModSlotComponentService()
     const notificationServiceMock = mock<NotificationService>()

@@ -16,7 +16,7 @@
     style="width: auto"
   >
     <div>
-      <div class="shopping-list-title">
+      <div class="sidebar-title">
         <font-awesome-icon
           icon="shopping-cart"
           class="icon-before-text"

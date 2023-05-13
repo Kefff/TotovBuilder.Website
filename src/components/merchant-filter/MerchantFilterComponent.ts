@@ -1,7 +1,7 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import { IMerchantFilter } from '../../models/utils/IMerchantFilter'
 import vueI18n from '../../plugins/vueI18n'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
 
 export default defineComponent({
@@ -14,7 +14,7 @@ export default defineComponent({
   },
   emits: ['hasSaved'],
   setup: (props, { emit }) => {
-    const merchantFilterService = Services.get(MerchantFilterService)
+    const globalFilterService = Services.get(GlobalFilterService)
 
     const filters = ref<IMerchantFilter[]>([])
     const merchantLevelOptions = [1, 2, 3, 4]
@@ -27,7 +27,7 @@ export default defineComponent({
      * Initializes the merchants filter.
      */
     function initialize() {
-      filters.value = merchantFilterService.get()
+      filters.value = globalFilterService.get()
     }
 
     /**
@@ -45,7 +45,7 @@ export default defineComponent({
      * @returns Level options.
      */
     function getMerchantLevels(merchantName: string): number[] {
-      const levels = merchantFilterService.getMerchantLevels(merchantName)
+      const levels = globalFilterService.getMerchantLevels(merchantName)
 
       return levels
     }
@@ -56,7 +56,7 @@ export default defineComponent({
      * @returns true when the merchant has levels; otherwise false.
      */
     function hasLevels(merchantName: string): boolean {
-      const result = merchantFilterService.hasLevels(merchantName)
+      const result = globalFilterService.hasLevels(merchantName)
 
       return result
     }
@@ -86,7 +86,7 @@ export default defineComponent({
      */
     function save() {
       hasChanged.value = false
-      merchantFilterService.save(filters.value)
+      globalFilterService.save(filters.value)
 
       emit('hasSaved', true)
     }

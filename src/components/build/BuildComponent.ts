@@ -16,7 +16,7 @@ import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
 import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
 import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Loading from '../loading/LoadingComponent.vue'
 import ShareBuild from '../build-share/BuildShareComponent.vue'
 import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
@@ -46,7 +46,7 @@ export default defineComponent({
     const compatibilityService = Services.get(CompatibilityService)
     const exportService = Services.get(ExportService)
     const inventoryItemService = Services.get(InventoryItemService)
-    const merchantFilterService = Services.get(MerchantFilterService)
+    const globalFilterService = Services.get(GlobalFilterService)
     const notificationService = Services.get(NotificationService)
 
     const inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
@@ -123,7 +123,7 @@ export default defineComponent({
       compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.mod, onModCompatibilityRequest)
       inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
-      merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       document.onkeydown = (e) => onKeyDown(e)
       window.addEventListener('scroll', setToolbarCssClass)
@@ -136,7 +136,7 @@ export default defineComponent({
       compatibilityService.emitter.off(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
       inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
-      merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       document.onkeydown = null
       window.removeEventListener('scroll', setToolbarCssClass)

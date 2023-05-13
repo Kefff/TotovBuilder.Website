@@ -6,7 +6,7 @@ import Services from '../../services/repository/Services'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
@@ -476,7 +476,7 @@ describe('getPrice()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventoryItemService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
     const service = new InventorySlotPropertiesService()
 
     // Act
@@ -494,7 +494,7 @@ describe('getPrice()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventoryItemService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
     const service = new InventorySlotPropertiesService()
 
     const inventorySlot: IInventorySlot = {
@@ -556,7 +556,7 @@ describe('getPrice()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventoryItemService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
     const service = new InventorySlotPropertiesService()
 
     // Act
@@ -573,7 +573,7 @@ describe('getPrice()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventoryItemService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
     const service = new InventorySlotPropertiesService()
 
     // Act

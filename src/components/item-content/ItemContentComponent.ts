@@ -3,7 +3,7 @@ import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IContainer } from '../../models/item/IContainer'
 import { IItem } from '../../models/item/IItem'
 import { ItemContentComponentService } from '../../services/components/ItemContentComponentService'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
@@ -26,7 +26,7 @@ export default defineComponent({
   emits: ['update:modelValue'],
   setup: (props, { emit }) => {
     const itemPropertiesService = Services.get(ItemPropertiesService)
-    const merchantFilterService = Services.get(MerchantFilterService)
+    const globalFilterService = Services.get(GlobalFilterService)
 
     const editing = inject<Ref<boolean>>('editing')
 
@@ -46,13 +46,13 @@ export default defineComponent({
     watch(() => props.containerItem.id, () => initialize())
 
     onMounted(() => {
-      merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       initialize()
     })
 
     onUnmounted(() => {
-      merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
     })
 
     /**
