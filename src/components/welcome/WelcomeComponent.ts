@@ -5,18 +5,22 @@ import Services from '../../services/repository/Services'
 import BuildsImport from '../builds-import/BuildsImportComponent.vue'
 import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
 import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
+import Loading from '../loading/LoadingComponent.vue'
 
 export default defineComponent({
   components: {
     BuildsImport,
     DisplayOptions,
+    Loading,
     MerchantItemsOptions
   },
   setup: () => {
-    const hasBuilds = Services.get(BuildService).getAll().length > 0
+    Services.emitter.once('initialized', onInitialized)
 
     const displayOptionsSidebarVisible = ref(false)
+    const hasBuilds = ref(false)
     const isImporting = ref(false)
+    const isLoading = ref(true)
     const hasImported = ref(false)
     const merchantItemsOptionsSidebarVisible = ref(false)
 
@@ -31,6 +35,11 @@ export default defineComponent({
      */
     function displayBuilds() {
       router.push({ name: 'Builds' })
+    }
+
+    function onInitialized() {
+      hasBuilds.value = Services.get(BuildService).getAll().length > 0
+      isLoading.value = false
     }
 
     /**
@@ -52,6 +61,7 @@ export default defineComponent({
       displayOptionsSidebarVisible,
       hasBuilds,
       hasImported,
+      isLoading,
       isImporting,
       merchantItemsOptionsSidebarVisible,
       openNewBuild,

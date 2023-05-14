@@ -66,6 +66,11 @@
   margin-bottom: 0;
 }
 
+.welcome-loading {
+  margin-bottom: 3rem;
+  margin-top: 3rem;
+}
+
 .welcome-text {
   margin-top: 3rem;
 }

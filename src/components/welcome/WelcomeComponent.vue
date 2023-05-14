@@ -17,7 +17,16 @@
       >
         <h2>{{ $t('message.welcomeBack1') }} <span class="welcome-builder">{{ $t('message.welcomeBack2') }}</span>{{ $t('message.welcomeBack3') }}</h2>
       </div>
-      <div class="welcome-actions">
+      <div
+        v-if="isLoading"
+        class="welcome-loading"
+      >
+        <Loading />
+      </div>
+      <div
+        v-else
+        class="welcome-actions"
+      >
         <div
           v-if="hasBuilds"
           class="welcome-action"
