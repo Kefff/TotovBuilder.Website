@@ -1,6 +1,7 @@
 .sidebar-option {
-  align-items: center;
+  align-items: start;
   display: flex;
+  flex-direction: column;
   min-height: 3.25rem;
   padding: 0.5rem;
 }
@@ -21,5 +22,4 @@
 .sidebar-title {
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 2rem;
 }

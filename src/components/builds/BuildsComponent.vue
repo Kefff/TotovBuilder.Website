@@ -31,8 +31,32 @@
         <div class="toolbar-part toolbar-center" />
         <div class="toolbar-part">
           <div class="build-toolbar-right">
-            <MerchantItemsOptions />
-            <DisplayOptions />
+            <MerchantItemsOptions v-model:visible="merchantItemsOptionsSidebarVisible">
+              <template #button>
+                <Button
+                  v-tooltip.top="$t('caption.merchantItemsOptions')"
+                  class="p-button-text p-button-sm button-discreet"
+                  @click="merchantItemsOptionsSidebarVisible = true"
+                >
+                  <font-awesome-icon
+                    icon="user-tag"
+                  />
+                </Button>
+              </template>
+            </MerchantItemsOptions>
+            <DisplayOptions v-model:visible="displayOptionsSidebarVisible">
+              <template #button>
+                <Button
+                  v-tooltip.top="$t('caption.displayOptions')"
+                  class="p-button-text p-button-sm button-discreet"
+                  @click="displayOptionsSidebarVisible = true"
+                >
+                  <font-awesome-icon
+                    icon="tv"
+                  />
+                </Button>
+              </template>
+            </DisplayOptions>
             <NotificationButton />
           </div>
         </div>

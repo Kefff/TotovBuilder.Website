@@ -1,75 +1,99 @@
 <template>
   <div class="welcome">
     <div>
-      <div>
+      <div
+        v-if="!hasBuilds"
+        class="welcome-text"
+      >
         <h2>{{ $t('message.welcome1') }}Totov <span class="welcome-builder">Builder</span>{{ $t('message.welcome2') }}</h2>
         <p>Totov <span class="welcome-builder">Builder</span>{{ $t('message.welcome3') }}</p>
         <p>{{ $t('message.welcome4') }}</p>
         <p>{{ $t('message.welcome5') }}</p>
         <p>{{ $t('message.welcome6') }}</p>
       </div>
+      <div
+        v-else
+        class="welcome-text"
+      >
+        <h2>{{ $t('message.welcomeBack1') }} <span class="welcome-builder">{{ $t('message.welcomeBack2') }}</span>{{ $t('message.welcomeBack3') }}</h2>
+      </div>
       <div class="welcome-actions">
-        <div class="welcome-actions-list">
-          <div
-            v-if="hasBuilds"
-            class="welcome-action"
+        <div
+          v-if="hasBuilds"
+          class="welcome-action"
+        >
+          <Button
+            class="welcome-button"
+            @click="displayBuilds()"
           >
-            <h2>{{ $t('message.welcomeContinue') }}</h2>
-            <Button
-              class="welcome-button"
-              @click="displayBuilds()"
-            >
-              <font-awesome-icon
-                icon="list"
-                class="icon-before-text"
-              />
-              <span>{{ $t('caption.showBuilds') }}</span>
-            </Button>
-          </div>
-          <div
-            v-else
-            class="welcome-action"
-          >
-            <h2>{{ $t('message.welcomeGetStarted') }}</h2>
-            <Button
-              class="welcome-button"
-              @click="openNewBuild()"
-            >
-              <font-awesome-icon
-                icon="plus"
-                class="icon-before-text"
-              />
-              <span>{{ $t('caption.createNewBuild') }}</span>
-            </Button>
-            <Button
-              class="welcome-button"
-              @click="showBuildsImportPopup()"
-            >
-              <font-awesome-icon
-                icon="file-import"
-                class="icon-before-text"
-              />
-              <span>{{ $t('caption.importBuilds') }}</span>
-            </Button>
-          </div>
-          <div class="welcome-action">
-            <h2>{{ $t('message.welcomeChooseLanguage') }}</h2>
-            <LanguageSelector />
-          </div>
+            <font-awesome-icon
+              icon="list"
+              class="icon-before-text"
+            />
+            <span>{{ $t('message.welcomeShowBuilds') }}</span>
+          </Button>
         </div>
-        <div class="welcome-actions-list">
-          <div class="welcome-action">
-            <div class="build-options-title">
-              <h2>
+        <div
+          v-if="!hasBuilds"
+          class="welcome-action"
+        >
+          <Button
+            class="welcome-button"
+            @click="openNewBuild()"
+          >
+            <font-awesome-icon
+              icon="plus"
+              class="icon-before-text"
+            />
+            <span>{{ $t('caption.createNewBuild') }}</span>
+          </Button>
+        </div>
+        <div
+          v-if="!hasBuilds"
+          class="welcome-action"
+        >
+          <Button
+            class="welcome-button"
+            @click="showBuildsImportPopup()"
+          >
+            <font-awesome-icon
+              icon="file-import"
+              class="icon-before-text"
+            />
+            <span>{{ $t('caption.importBuilds') }}</span>
+          </Button>
+        </div>
+        <div class="welcome-action">
+          <MerchantItemsOptions v-model:visible="merchantItemsOptionsSidebarVisible">
+            <template #button>
+              <Button
+                class="welcome-button"
+                @click="merchantItemsOptionsSidebarVisible = true"
+              >
                 <font-awesome-icon
                   icon="user-tag"
                   class="icon-before-text"
                 />
                 <span>{{ $t('message.welcomeConfigureMerchants') }}</span>
-              </h2>
-            </div>
-            <MerchantFilter :show-save-button="false" />
-          </div>
+              </Button>
+            </template>
+          </MerchantItemsOptions>
+        </div>
+        <div class="welcome-action">
+          <DisplayOptions v-model:visible="displayOptionsSidebarVisible">
+            <template #button>
+              <Button
+                class="welcome-button"
+                @click="displayOptionsSidebarVisible = true"
+              >
+                <font-awesome-icon
+                  icon="language"
+                  class="icon-before-text"
+                />
+                <span>{{ $t('message.welcomeChooseLanguage') }}</span>
+              </Button>
+            </template>
+          </DisplayOptions>
         </div>
       </div>
       <div class="welcome-warning">

@@ -1,34 +1,23 @@
-import { defineComponent, onMounted, ref } from 'vue'
+import { PropType, defineComponent, reactive } from 'vue'
 import { IMerchantFilter } from '../../models/utils/IMerchantFilter'
 import vueI18n from '../../plugins/vueI18n'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
+import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 
 export default defineComponent({
   props: {
-    showSaveButton: {
-      type: Boolean,
-      required: false,
-      default: true
+    modelValue: {
+      type: Object as PropType<IGlobalFilter>,
+      required: true
     }
   },
-  emits: ['hasSaved'],
+  emits: ['update:modelValue'],
   setup: (props, { emit }) => {
     const globalFilterService = Services.get(GlobalFilterService)
-
-    const filters = ref<IMerchantFilter[]>([])
     const merchantLevelOptions = [1, 2, 3, 4]
 
-    const hasChanged = ref(false)
-
-    onMounted(() => initialize())
-
-    /**
-     * Initializes the merchants filter.
-     */
-    function initialize() {
-      filters.value = globalFilterService.get()
-    }
+    const merchantFilters = reactive(props.modelValue.merchantFilters)
 
     /**
      * Gets the tooltip for the checkbox of a merchant.
@@ -62,14 +51,13 @@ export default defineComponent({
     }
 
     /**
-     * Saves the filters.
+     * Emits changes to the parent component.
      */
     function onFiltersChanged() {
-      hasChanged.value = true
-
-      if (!props.showSaveButton) {
-        save()
-      }
+      emit('update:modelValue', {
+        itemExclusionFilters: props.modelValue.itemExclusionFilters,
+        merchantFilters
+      } as IGlobalFilter)
     }
 
     /**
@@ -81,25 +69,13 @@ export default defineComponent({
       onFiltersChanged()
     }
 
-    /**
-     * Saves the filters.
-     */
-    function save() {
-      hasChanged.value = false
-      globalFilterService.save(filters.value)
-
-      emit('hasSaved', true)
-    }
-
     return {
-      filters,
       getCheckboxTooltip,
       getMerchantLevels,
-      hasChanged,
       hasLevels,
+      merchantFilters,
       merchantLevelOptions,
       onFiltersChanged,
-      save,
       toggleFilter
     }
   }

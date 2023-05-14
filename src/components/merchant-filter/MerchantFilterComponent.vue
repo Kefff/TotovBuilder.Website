@@ -1,37 +1,37 @@
 <template>
   <div>
     <div
-      v-for="filter of filters"
-      :key="filter.merchant"
+      v-for="merchanFilter of merchantFilters"
+      :key="merchanFilter.merchant"
       class="merchant-filter"
     >
       <Checkbox
-        v-model="filter.enabled"
-        v-tooltip.top="getCheckboxTooltip(filter.enabled)"
+        v-model="merchanFilter.enabled"
+        v-tooltip.top="getCheckboxTooltip(merchanFilter.enabled)"
         :binary="true"
         @change="onFiltersChanged()"
       />
       <div
-        :class="'merchant-filter-merchant' + (!filter.enabled ? ' merchant-filter-disabled-text' : '')"
-        @click="toggleFilter(filter)"
+        :class="'merchant-filter-merchant' + (!merchanFilter.enabled ? ' merchant-filter-disabled-text' : '')"
+        @click="toggleFilter(merchanFilter)"
       >
-        {{ $t('caption.merchant_' + filter.merchant) }}
+        {{ $t('caption.merchant_' + merchanFilter.merchant) }}
       </div>
       <img
-        v-if="hasLevels(filter.merchant)"
-        :src="'/assets/' + filter.merchant + '.webp'"
-        :class="'merchant-filter-icon' + (!filter.enabled ? ' merchant-filter-icon-disabled' : '')"
-        @click="toggleFilter(filter)"
+        v-if="hasLevels(merchanFilter.merchant)"
+        :src="'/assets/' + merchanFilter.merchant + '.webp'"
+        :class="'merchant-filter-icon' + (!merchanFilter.enabled ? ' merchant-filter-icon-disabled' : '')"
+        @click="toggleFilter(merchanFilter)"
       >
       <div
         v-tooltip.top="$t('caption.level')"
         class="merchant-filter-level"
       >
         <Dropdown
-          v-if="hasLevels(filter.merchant)"
-          v-model="filter.merchantLevel"
-          :options="getMerchantLevels(filter.merchant)"
-          :disabled="!filter.enabled"
+          v-if="hasLevels(merchanFilter.merchant)"
+          v-model="merchanFilter.merchantLevel"
+          :options="getMerchantLevels(merchanFilter.merchant)"
+          :disabled="!merchanFilter.enabled"
           class="merchant-filter-level"
           :placeholder="$t('caption.level')"
           @change="onFiltersChanged()"
@@ -43,20 +43,6 @@
           </template>
         </Dropdown>
       </div>
-    </div>
-    <div class="merchant-filter-save-button">
-      <Button
-        v-if="showSaveButton"
-        class="p-button-success"
-        :disabled="!hasChanged"
-        @click="save()"
-      >
-        <font-awesome-icon
-          icon="save"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.save') }}</span>
-      </Button>
     </div>
   </div>
 </template>

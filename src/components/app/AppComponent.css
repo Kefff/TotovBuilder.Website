@@ -105,14 +105,17 @@ body {
   display: flex;
   font-family: var(--font-title);
   justify-content: center;
-  margin-bottom: 1rem;
 }
 
 .app-title > div {
   align-items: center;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+}
+
+.app-title > div > h1 {
+  font-size: 2.475rem;
 }
 
 .app-title-part1 {

@@ -3,7 +3,6 @@
 .welcome {
   display: flex;
   flex-direction: column;
-  margin-top: 2rem;
 }
 
 .welcome > div {
@@ -32,21 +31,22 @@
 }
 
 .welcome-action {
-  display: flex;
-  flex-direction: column;margin-bottom: 3rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  width: 17.5rem;
 }
 
 .welcome-actions {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;margin-top: 3rem;
-}
-
-.welcome-actions-list {
-  display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 2rem;
 }
 
 .welcome-builder {
@@ -64,6 +64,10 @@
 
 .welcome-button:last-child {
   margin-bottom: 0;
+}
+
+.welcome-text {
+  margin-top: 3rem;
 }
 
 .welcome-warning {

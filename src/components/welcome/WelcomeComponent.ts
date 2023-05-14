@@ -3,20 +3,22 @@ import router from '../../plugins/vueRouter'
 import { BuildService } from '../../services/BuildService'
 import Services from '../../services/repository/Services'
 import BuildsImport from '../builds-import/BuildsImportComponent.vue'
-import MerchantFilter from '../merchant-filter/MerchantFilterComponent.vue'
-import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue'
+import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
+import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 
 export default defineComponent({
   components: {
     BuildsImport,
-    LanguageSelector,
-    MerchantFilter
+    DisplayOptions,
+    MerchantItemsOptions
   },
   setup: () => {
     const hasBuilds = Services.get(BuildService).getAll().length > 0
 
+    const displayOptionsSidebarVisible = ref(false)
     const isImporting = ref(false)
     const hasImported = ref(false)
+    const merchantItemsOptionsSidebarVisible = ref(false)
 
     watch(() => hasImported.value, () => {
       if (hasImported.value) {
@@ -47,9 +49,11 @@ export default defineComponent({
 
     return {
       displayBuilds,
+      displayOptionsSidebarVisible,
       hasBuilds,
       hasImported,
       isImporting,
+      merchantItemsOptionsSidebarVisible,
       openNewBuild,
       showBuildsImportPopup
     }

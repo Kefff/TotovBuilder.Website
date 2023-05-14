@@ -10,6 +10,8 @@ import Services from '../../services/repository/Services'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { IModdable } from '../../models/item/IModdable'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
+import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import { ItemService } from '../../services/ItemService'
 
 const itemExclusionFilters = [
   {
@@ -398,6 +400,7 @@ describe('isMatchingFilter()', () => {
         merchantLevel: 2
       }
     ])
+
     const item: IItem = {
       categoryId: '',
       conflictingItemIds: [],
@@ -415,6 +418,28 @@ describe('isMatchingFilter()', () => {
 
     // Act
     const result = service.isMatchingFilter(item, includeItemsWithoutMerchant)
+
+    // Assert
+    expect(result).toBe(expected)
+  })
+
+  it.each([
+    ['5ca20d5986f774331e7c9602', true], // WARTECH Berkut BB-102 backpack
+    ['57dc2fa62459775949412633', false], // Kalashnikov AKS-74U 5.45x39 assault rifle
+    ['5c1d0efb86f7744baf2e7b7b', false] // TerraGroup Labs keycard (Red)
+  ])('should indicate that items included in the item exclusion filters do not match the filter', async (itemId: string, expected: boolean) => {
+    // Arrange
+    useItemServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(ItemPropertiesService)
+
+    const service = new GlobalFilterService()
+
+    const item = (await Services.get(ItemService).getItem(itemId)).value
+
+    // Act
+    const result = service.isMatchingFilter(item, false)
 
     // Assert
     expect(result).toBe(expected)

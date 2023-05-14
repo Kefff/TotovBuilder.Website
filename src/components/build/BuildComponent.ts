@@ -64,6 +64,7 @@ export default defineComponent({
     const displayOptionsSidebarVisible = ref(false)
     const editing = isNewBuild.value ? ref(true) : ref(false)
     const isInitializing = ref(true)
+    const merchantItemsOptionsSidebarVisible = ref(false)
     const summary = ref<IBuildSummary>({
       ergonomics: undefined,
       ergonomicsPercentageModifier: 0,
@@ -429,6 +430,7 @@ export default defineComponent({
       isEmpty,
       isInitializing,
       isNewBuild,
+      merchantItemsOptionsSidebarVisible,
       notExportedTooltip,
       path,
       remove,

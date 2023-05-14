@@ -279,7 +279,7 @@ describe('getItems()', () => {
 
     Services.configure(GlobalFilterService)
     const globalFitlerService = Services.get(GlobalFilterService)
-    globalFitlerService.setItemFilters([
+    globalFitlerService.setItemExclusionFilters([
       {
         enabled: true,
         exclude: (item: IItem) => item.id === '5448c12b4bdc2d02308b456f',
@@ -447,7 +447,7 @@ describe('getItemsOfCategories()', () => {
 
     Services.configure(GlobalFilterService)
     const globalFitlerService = Services.get(GlobalFilterService)
-    globalFitlerService.setItemFilters([
+    globalFitlerService.setItemExclusionFilters([
       {
         enabled: true,
         exclude: (item: IItem) => item.prices.length === 0,

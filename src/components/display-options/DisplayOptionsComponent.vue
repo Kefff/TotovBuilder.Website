@@ -1,16 +1,8 @@
 <template>
-  <Button
-    v-tooltip.top="$t('caption.displayOptions')"
-    class="p-button-text p-button-sm button-discreet"
-    @click="sidebarVisibleInternal = true"
-  >
-    <font-awesome-icon
-      icon="tv"
-    />
-  </Button>
+  <slot name="button" />
 
   <Sidebar
-    v-model:visible="sidebarVisibleInternal"
+    v-model:visible="sidebarVisible"
     position="right"
     style="width: auto"
   >
@@ -22,7 +14,7 @@
       <span>{{ $t('caption.displayOptions') }}</span>
     </div>
     <div class="sidebar-option">
-      <LanguageSelector />
+      <LanguageSelector @changed="sidebarVisible = false" />
     </div>
     <slot name="additional-options" />
   </Sidebar>

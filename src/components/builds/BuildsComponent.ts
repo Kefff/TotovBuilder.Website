@@ -51,10 +51,12 @@ export default defineComponent({
       }
     })
 
+    const displayOptionsSidebarVisible = ref(false)
     const hasImported = ref(false)
     const isExporting = ref(false)
     const isImporting = ref(false)
     const isLoading = ref(true)
+    const merchantItemsOptionsSidebarVisible = ref(false)
     const toolbarCssClass = ref('toolbar')
 
     watch(() => hasImported.value, () => {
@@ -182,10 +184,12 @@ export default defineComponent({
     return {
       buildsSummaries,
       canExport,
+      displayOptionsSidebarVisible,
       hasImported,
       isExporting,
       isImporting,
       isLoading,
+      merchantItemsOptionsSidebarVisible,
       openBuild,
       openNewBuild,
       selectedBuildSummary,
