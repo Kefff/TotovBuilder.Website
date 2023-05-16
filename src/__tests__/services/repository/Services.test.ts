@@ -1,4 +1,4 @@
-import { instance, mock } from 'ts-mockito'
+import { instance, mock, spy, verify } from 'ts-mockito'
 import Services from '../../../services/repository/Services'
 import Configuration from '../../../../test-data/configuration.json'
 
@@ -106,5 +106,19 @@ describe('getServiceRepository', () => {
 
     // Assert
     expect(services).toBeDefined()
+  })
+})
+
+describe('setInitializationFinished', () => {
+  it('should indicate that initialization has ended and emit the initialized event', () => {
+    // Arrange
+    const emitterSpy = spy(Services.emitter)
+
+    // Act
+    Services.setInitializationFinished()
+
+    // Assert
+    expect(Services.isInitializing).toBe(false)
+    verify(emitterSpy.emit('initialized')).once()
   })
 })

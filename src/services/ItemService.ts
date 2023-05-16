@@ -113,7 +113,7 @@ export class ItemService {
 
     if (useGlobalFilter) {
       items = this.items.filter(i => ids.some(id => id === i.id)
-        && Services.get(GlobalFilterService).isMatchingFilter(i, true))
+        && Services.get(GlobalFilterService).isMatchingFilter(i, false))
     } else {
       items = this.items.filter(i => ids.some(id => id === i.id))
     }
@@ -142,7 +142,7 @@ export class ItemService {
 
     if (useGlobalFilter) {
       items = this.items.filter(i => categoryIds.some(id => id === i.categoryId)
-        && Services.get(GlobalFilterService).isMatchingFilter(i, true))
+        && Services.get(GlobalFilterService).isMatchingFilter(i, false))
     } else {
       items = this.items.filter(i => categoryIds.some(id => id === i.categoryId))
     }

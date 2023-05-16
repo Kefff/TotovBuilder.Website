@@ -1,4 +1,4 @@
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, onMounted, ref, watch } from 'vue'
 import router from '../../plugins/vueRouter'
 import { BuildService } from '../../services/BuildService'
 import Services from '../../services/repository/Services'
@@ -15,7 +15,7 @@ export default defineComponent({
     MerchantItemsOptions
   },
   setup: () => {
-    Services.emitter.once('initialized', onInitialized)
+    Services.emitter.once('initialized', onConfigurationLoaded)
 
     const displayOptionsSidebarVisible = ref(false)
     const hasBuilds = ref(false)
@@ -30,6 +30,14 @@ export default defineComponent({
       }
     })
 
+    onMounted(() => {
+      isLoading.value = Services.isInitializing
+
+      if (!isLoading.value) {
+        onConfigurationLoaded()
+      }
+    })
+
     /**
      * Displays the list of builds.
      */
@@ -37,7 +45,10 @@ export default defineComponent({
       router.push({ name: 'Builds' })
     }
 
-    function onInitialized() {
+    /**
+     * Gets builds and ends loading.
+     */
+    function onConfigurationLoaded() {
       hasBuilds.value = Services.get(BuildService).getAll().length > 0
       isLoading.value = false
     }

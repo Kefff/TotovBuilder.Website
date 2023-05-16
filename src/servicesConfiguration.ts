@@ -59,7 +59,7 @@ export async function configureServices(): Promise<void> {
   await Services.get(WebsiteConfigurationService).initialize()
   await Services.get(TarkovValuesService).initialize()
 
-  Services.emitter.emit('initialized')
+  Services.setInitializationFinished()
 
   // Initialization of values that are not immediatly required and take time to load
   Services.get(ItemService).initialize()

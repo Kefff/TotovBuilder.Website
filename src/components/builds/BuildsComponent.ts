@@ -34,6 +34,8 @@ export default defineComponent({
     NotificationButton
   },
   setup: () => {
+    Services.emitter.once('initialized', onConfigurationLoaded)
+
     const globalFilterService = Services.get(GlobalFilterService)
 
     const router = useRouter()
@@ -72,15 +74,11 @@ export default defineComponent({
 
       window.addEventListener('scroll', setToolbarCssClass)
 
-      getBuilds()
+      isLoading.value = Services.isInitializing
 
-      if (builds.length === 0) {
-        router.push({ name: 'Welcome' })
-
-        return
+      if (!isLoading.value) {
+        onConfigurationLoaded()
       }
-
-      checkBuildsNotExported()
     })
 
     onUnmounted(() => {
@@ -129,6 +127,21 @@ export default defineComponent({
       }
 
       isLoading.value = false
+    }
+
+    /**
+     * Gets builds and ends loading.
+     */
+    function onConfigurationLoaded() {
+      getBuilds()
+
+      if (builds.length === 0) {
+        router.push({ name: 'Welcome' })
+
+        return
+      }
+
+      checkBuildsNotExported()
     }
 
     /**

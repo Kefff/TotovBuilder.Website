@@ -73,7 +73,10 @@
           </Button>
         </div>
         <div class="toolbar-part toolbar-center">
-          <div class="build-toolbar-summary">
+          <div
+            v-if="!isLoading"
+            class="build-toolbar-summary"
+          >
             <div
               v-if="summary.ergonomics != null"
               v-tooltip.top="$t('caption.ergonomics')"
@@ -229,7 +232,7 @@
 
     <!-- Inventory slots -->
     <div
-      v-if="!isInitializing"
+      v-if="!isLoading"
       id="build-content"
     >
       <div
@@ -267,7 +270,7 @@
       </div>
     </div>
     <div
-      v-if="isInitializing"
+      v-if="isLoading"
       class="build-loading"
     >
       <Loading />

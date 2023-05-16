@@ -38,6 +38,8 @@ export default defineComponent({
     ShoppingList
   },
   setup: () => {
+    Services.emitter.once('initialized', onConfigurationLoaded)
+
     const route = useRoute()
     const router = useRouter()
 
@@ -58,12 +60,19 @@ export default defineComponent({
     const notExportedTooltip = computed(() => !summary.value.exported ? buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
     const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
 
-    const build = ref<IBuild>(buildComponentService.getBuild(route.params['id'] as string))
+    const build = ref<IBuild>({
+      id: route.params['id'] as string ?? '',
+      inventorySlots: [],
+      lastExported: undefined,
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: ''
+    })
     const collapseStatuses = ref<boolean[]>([])
     const deleting = ref(false)
     const displayOptionsSidebarVisible = ref(false)
     const editing = isNewBuild.value ? ref(true) : ref(false)
-    const isInitializing = ref(true)
+    const isLoading = ref(true)
     const merchantItemsOptionsSidebarVisible = ref(false)
     const summary = ref<IBuildSummary>({
       ergonomics: undefined,
@@ -129,7 +138,11 @@ export default defineComponent({
       document.onkeydown = (e) => onKeyDown(e)
       window.addEventListener('scroll', setToolbarCssClass)
 
-      initialize()
+      isLoading.value = Services.isInitializing
+
+      if (!isLoading.value) {
+        onConfigurationLoaded()
+      }
     })
 
     onUnmounted(() => {
@@ -169,6 +182,13 @@ export default defineComponent({
         build.value = originalBuild
         getSummary()
       }
+    }
+
+    /**
+     * Gets builds and ends loading.
+     */
+    function onConfigurationLoaded() {
+      initialize()
     }
 
     /**
@@ -304,7 +324,7 @@ export default defineComponent({
      * Initializes the build.
      */
     function initialize() {
-      isInitializing.value = true
+      isLoading.value = true
 
       build.value = buildComponentService.getBuild(route.params['id'] as string)
       getSharedBuild(route.params['sharedBuild'] as string)
@@ -312,8 +332,7 @@ export default defineComponent({
           getCollapseStatuses()
           await getSummary()
         })
-        .finally(() => isInitializing.value = false)
-
+        .finally(() => isLoading.value = false)
     }
 
     /**
@@ -428,7 +447,7 @@ export default defineComponent({
       invalid,
       inventorySlotPathPrefix,
       isEmpty,
-      isInitializing,
+      isLoading,
       isNewBuild,
       merchantItemsOptionsSidebarVisible,
       notExportedTooltip,

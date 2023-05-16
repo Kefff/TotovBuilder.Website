@@ -326,7 +326,7 @@ export class BuildService {
         const merchantFilters = JSON.parse(serializedMerchantFilters) as IMerchantFilter[]
 
         const globalFilterService = Services.get(GlobalFilterService)
-        globalFilterService.setMerchantFilters(merchantFilters)
+        globalFilterService.saveMerchantFilters(merchantFilters)
 
         localStorage.removeItem(merchantsFilterStorageKey)
       }

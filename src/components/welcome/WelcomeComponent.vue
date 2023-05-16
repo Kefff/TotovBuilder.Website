@@ -15,7 +15,7 @@
         v-else
         class="welcome-text"
       >
-        <h2>{{ $t('message.welcomeBack1') }} <span class="welcome-builder">{{ $t('message.welcomeBack2') }}</span>{{ $t('message.welcomeBack3') }}</h2>
+        <h2>{{ $t('message.welcomeBack') }}</h2>
       </div>
       <div
         v-if="isLoading"
