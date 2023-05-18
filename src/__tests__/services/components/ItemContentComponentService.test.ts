@@ -16,14 +16,14 @@ import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
 
 describe('getAcceptedItems()', () => {
   it.each([
-    ['5ca20d5986f774331e7c9602', /*83*/470, 71, /*68*/62, /*16*/9],
-    ['5a7ad2e851dfba0016153692', 2, 1, 1, 0]
+    ['5ca20d5986f774331e7c9602', 83, 68, 16, 1],
+    ['5a7ad2e851dfba0016153692', 1, 1, 0, 0]
   ])('should get the acceptem items', async (
     itemId: string,
     expectedItemsAmount: number,
-    expectedItemsWithMerchantAmount: number,
     expectedNonBarterItemsAmount: number,
-    expectedBarterItemsAmount: number) => {
+    expectedBarterItemsAmount: number,
+    expectedNonBarterAndBarterItemsAmount: number) => {
     // Arrange
     useItemFetcherServiceMock()
     usePresetServiceMock()
@@ -36,26 +36,42 @@ describe('getAcceptedItems()', () => {
     const itemContentService = new ItemContentComponentService()
 
     const globalFitlerService = Services.get(GlobalFilterService)
-    globalFitlerService.setMerchantFilters([
-      {
-        enabled: true,
-        merchant: 'prapor',
-        merchantLevel: 1
+    const globalFilter = globalFitlerService.get()
+
+    globalFilter.merchantFilters.forEach(mf => {
+      if (mf.merchant === 'prapor') {
+        // Setting Prapor level to 1
+        mf.merchantLevel = 1
+      } else {
+        // Disabling all other merchants
+        mf.enabled = false
       }
-    ])
+    })
+
+    const excludePresetBaseItemsFilter = globalFilter.itemExclusionFilters.find(gf => gf.name === GlobalFilterService.excludePresetBaseItemsFilterName)
+
+    if (excludePresetBaseItemsFilter != null) {
+      // Disabling the filter that excludes preset base items
+      excludePresetBaseItemsFilter.enabled = false
+    }
+
+    globalFitlerService.save(globalFilter)
 
     // Act
     const items = await itemContentService.getAcceptedItems(itemId)
 
     // Assert
-    const itemsWithoutMerchant = items.filter(i => i.prices.length > 0)
     const nonBarters = items.filter(i => i.prices.some(p => p.merchant === 'prapor' && p.merchantLevel === 1 && p.currencyName !== 'barter'))
     const barters = items.filter(i => i.prices.some(p => p.merchant === 'prapor' && p.merchantLevel === 1 && p.currencyName === 'barter'))
+    const nonBarterAndBarterItems = barters.filter(b => nonBarters.includes(b))
+
+    const t = items.map(i => i.id + ' ' + i.name)
+    console.log(t)
 
     expect(items.length).toBe(expectedItemsAmount)
-    expect(itemsWithoutMerchant.length).toBe(expectedItemsWithMerchantAmount)
     expect(nonBarters.length).toBe(expectedNonBarterItemsAmount)
     expect(barters.length).toBe(expectedBarterItemsAmount)
+    expect(nonBarterAndBarterItems.length).toBe(expectedNonBarterAndBarterItemsAmount)
   })
 
   it('should get an empty list if the parent item is not found', async () => {

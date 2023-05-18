@@ -195,7 +195,7 @@ describe('getMatchingPrices()', () => {
     useWebsiteConfigurationServiceMock()
 
     const service = new GlobalFilterService()
-    service.setMerchantFilters([
+    service.saveMerchantFilters([
       {
         enabled: true,
         merchant: 'flea-market',
@@ -378,7 +378,7 @@ describe('isMatchingFilter()', () => {
     Services.configure(ItemPropertiesService)
 
     const service = new GlobalFilterService()
-    service.setMerchantFilters([
+    service.saveMerchantFilters([
       {
         enabled: true,
         merchant: 'flea-market',
@@ -446,63 +446,199 @@ describe('isMatchingFilter()', () => {
   })
 })
 
-describe('setMerchantFilters()', () => {
-  it('should save the merchant filters and save them', () => {
+describe('save', () => {
+  it('should save the global filter', () => {
     // Arrange
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const service = new GlobalFilterService()
-    merchantFilters[0].enabled = false
-    merchantFilters[2].merchantLevel = 1
+    const globalFilter = service.get()
+
+    const presetBaseItemsExclusionFilter = globalFilter.itemExclusionFilters[1]
+
+    if (presetBaseItemsExclusionFilter != null) {
+      presetBaseItemsExclusionFilter.enabled = false
+    }
+
+    const fleaMarket = globalFilter.merchantFilters.find(mf => mf.merchant == 'flea-market')
+
+    if (fleaMarket != null) {
+      fleaMarket.enabled = false
+    }
+
+    const prapor = globalFilter.merchantFilters.find(mf => mf.merchant == 'prapor')
+
+    if (prapor != null) {
+      prapor.merchantLevel = 1
+    }
 
     // Act
-    service.setMerchantFilters(merchantFilters)
-    const readenFilters = service.get()
+    service.save(globalFilter)
+    const updatedGlobalFilter = service.get()
 
     // Assert
     expect(localStorage.setItem).toHaveBeenCalled()
-    expect(readenFilters.merchantFilters).toStrictEqual([
+    expect(updatedGlobalFilter).toMatchObject({
+      itemExclusionFilters: [
+        {
+          enabled: true,
+          name: 'itemsWithoutMerchant'
+        },
+        {
+          enabled: false,
+          name: 'presetBaseItems'
+        }
+      ],
+      merchantFilters: [
+        {
+          enabled: true,
+          merchant: 'prapor',
+          merchantLevel: 1
+        },
+        {
+          enabled: true,
+          merchant: 'therapist',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'skier',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'peacekeeper',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'mechanic',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'ragman',
+          merchantLevel: 4
+        },
+        {
+          enabled: false,
+          merchant: 'jaeger',
+          merchantLevel: 4
+        },
+        {
+          enabled: false,
+          merchant: 'flea-market',
+          merchantLevel: 0
+        }
+      ]
+    } as IGlobalFilter)
+  })
+})
+
+describe('saveItemExclusionFilters', () => {
+  it('should save the items exclusion filter', () => {
+    // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
+    const service = new GlobalFilterService()
+    const globalFilter = service.get()
+
+    const presetBaseItemsExclusionFilter = globalFilter.itemExclusionFilters[1]
+
+    if (presetBaseItemsExclusionFilter != null) {
+      presetBaseItemsExclusionFilter.enabled = false
+    }
+
+    // Act
+    service.save(globalFilter)
+    const updatedGlobalFilter = service.get()
+
+    // Assert
+    expect(localStorage.setItem).toHaveBeenCalled()
+    expect(updatedGlobalFilter.itemExclusionFilters).toMatchObject([
       {
-        'enabled': false,
-        'merchant': 'flea-market',
-        'merchantLevel': 0
+        enabled: true,
+        name: 'itemsWithoutMerchant'
       },
       {
-        'enabled': false,
-        'merchant': 'jaeger',
-        'merchantLevel': 4
-      },
-      {
-        'enabled': true,
-        'merchant': 'mechanic',
-        'merchantLevel': 1
-      },
-      {
-        'enabled': true,
-        'merchant': 'peacekeeper',
-        'merchantLevel': 4
-      },
-      {
-        'enabled': true,
-        'merchant': 'prapor',
-        'merchantLevel': 4
-      },
-      {
-        'enabled': true,
-        'merchant': 'ragman',
-        'merchantLevel': 4
-      },
-      {
-        'enabled': true,
-        'merchant': 'skier',
-        'merchantLevel': 4
-      },
-      {
-        'enabled': true,
-        'merchant': 'therapist',
-        'merchantLevel': 4
+        enabled: false,
+        name: 'presetBaseItems'
       }
-    ])
+    ] as IItemExclusionFilter[])
+  })
+})
+
+
+describe('saveMerchantFilters()', () => {
+  it('should save the merchant filters', () => {
+    // Arrange
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
+    const service = new GlobalFilterService()
+    const globalFilter = service.get()
+
+    const fleaMarket = globalFilter.merchantFilters.find(mf => mf.merchant == 'flea-market')
+
+    if (fleaMarket != null) {
+      fleaMarket.enabled = false
+    }
+
+    const prapor = globalFilter.merchantFilters.find(mf => mf.merchant == 'prapor')
+
+    if (prapor != null) {
+      prapor.merchantLevel = 1
+    }
+
+    // Act
+    service.saveMerchantFilters(globalFilter.merchantFilters)
+    const updatedGlobalFilter = service.get()
+
+    // Assert
+    expect(localStorage.setItem).toHaveBeenCalled()
+    expect(updatedGlobalFilter.merchantFilters).toMatchObject([
+      {
+        enabled: true,
+        merchant: 'prapor',
+        merchantLevel: 1
+      },
+      {
+        enabled: true,
+        merchant: 'therapist',
+        merchantLevel: 4
+      },
+      {
+        enabled: true,
+        merchant: 'skier',
+        merchantLevel: 4
+      },
+      {
+        enabled: true,
+        merchant: 'peacekeeper',
+        merchantLevel: 4
+      },
+      {
+        enabled: true,
+        merchant: 'mechanic',
+        merchantLevel: 4
+      },
+      {
+        enabled: true,
+        merchant: 'ragman',
+        merchantLevel: 4
+      },
+      {
+        enabled: false,
+        merchant: 'jaeger',
+        merchantLevel: 4
+      },
+      {
+        enabled: false,
+        merchant: 'flea-market',
+        merchantLevel: 0
+      }
+    ] as IMerchantFilter[])
   })
 })

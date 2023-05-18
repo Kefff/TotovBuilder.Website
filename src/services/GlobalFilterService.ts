@@ -30,62 +30,44 @@ export class GlobalFilterService {
   public static excludePresetBaseItemsFilterName = 'presetBaseItems'
 
   /**
-   * Event emitter used to signal compatibility check requests.
+   * Event emitter used to signal filter changes.
    */
   public emitter = new TinyEmitter()
+
+  /**
+   * Current filter.
+   */
+  private filter: IGlobalFilter = {
+    itemExclusionFilters: [],
+    merchantFilters: []
+  }
+
+  /**
+   * Initializes a new instance of the GlobalFilterService class.
+   */
+  constructor() {
+    this.initialize()
+  }
 
   /**
    * Gets merchant filters.
    * @returns Merchant filters.
    */
   public get(): IGlobalFilter {
-    const filter: IGlobalFilter = {
-      itemExclusionFilters: [],
-      merchantFilters: []
-    }
-    let savedFilter: IGlobalFilter = {
-      itemExclusionFilters: [],
-      merchantFilters: []
-    }
-    const storageKey = this.getStorageKey()
-    const serializedFilters = localStorage.getItem(storageKey)
-
-    if (serializedFilters == null) {
-      return {
-        itemExclusionFilters: [],
-        merchantFilters: []
-      }
-    }
-
-    savedFilter = JSON.parse(serializedFilters) as IGlobalFilter
-
-    // Merchant filters
-    for (const merchant of Services.get(TarkovValuesService).values.merchants.filter(m => m.showInFilter)) {
-      const savedMerchantFilter = savedFilter.merchantFilters.find(sf => sf.merchant === merchant.name)
-
-      filter.merchantFilters.push({
-        enabled: savedMerchantFilter?.enabled ?? true,
-        merchantLevel: savedMerchantFilter?.merchantLevel ?? merchant.maxLevel,
-        merchant: savedMerchantFilter?.merchant ?? merchant.name
-      })
-    }
-
-    // Item filters
-    const excludeItemsWithoutMerchantFilter = savedFilter.itemExclusionFilters.find(f => f.name === GlobalFilterService.excludeItemsWithoutMerchantFilterName)
-    filter.itemExclusionFilters.push({
-      enabled: excludeItemsWithoutMerchantFilter?.enabled ?? true,
-      exclude: this.excludeItemWithoutMerchant,
-      name: GlobalFilterService.excludeItemsWithoutMerchantFilterName
-    })
-
-    const excludePresetBaseItemsFilter = savedFilter.itemExclusionFilters.find(f => f.name === GlobalFilterService.excludePresetBaseItemsFilterName)
-    filter.itemExclusionFilters.push({
-      enabled: excludePresetBaseItemsFilter?.enabled ?? true,
-      exclude: this.excludePresetBaseItem,
-      name: GlobalFilterService.excludePresetBaseItemsFilterName
-    })
+    const filter = JSON.parse(JSON.stringify(this.filter)) // Creating a copy without reference so the filter can be changed in the UI without changing here until the user saveds it
 
     return filter
+  }
+
+  /**
+   * Gets the the prices of an item that corresponds to the merchant filters.
+   * @param item - Item.
+   * @returns Price.
+   */
+  public getMatchingPrices(item: IItem): IPrice[] {
+    const result = item.prices.filter(p => this.isPriceMatchingFilter(this.filter.merchantFilters, p))
+
+    return result
   }
 
   /**
@@ -104,18 +86,6 @@ export class GlobalFilterService {
     }
 
     return levels
-  }
-
-  /**
-   * Gets the the prices of an item that corresponds to the merchant filters.
-   * @param item - Item.
-   * @returns Price.
-   */
-  public getMatchingPrices(item: IItem): IPrice[] {
-    const filter = this.get()
-    const result = item.prices.filter(p => this.isPriceMatchingFilter(filter.merchantFilters, p))
-
-    return result
   }
 
   /**
@@ -138,10 +108,10 @@ export class GlobalFilterService {
    * @returns true when the item has prices that match the merchant filters; otherwise false.
    */
   public isMatchingFilter(item: IItem, forceItemsWithoutMerchantInclusion: boolean): boolean {
-    const filter: IGlobalFilter = this.get()
+    const filter: IGlobalFilter = this.filter
 
     if (forceItemsWithoutMerchantInclusion) {
-      const excludeItemsWithoutMerchantFilter = filter.itemExclusionFilters.find(f => f.name == GlobalFilterService.excludeItemsWithoutMerchantFilterName)
+      const excludeItemsWithoutMerchantFilter = filter.itemExclusionFilters.find(ief => ief.name == GlobalFilterService.excludeItemsWithoutMerchantFilterName)
 
       /* istanbul ignore else */
       if (excludeItemsWithoutMerchantFilter != null) {
@@ -150,20 +120,25 @@ export class GlobalFilterService {
       }
     }
 
-    const isExcluded = filter.itemExclusionFilters.some(f => f.enabled && f.exclude(item))
+    const isExcluded = filter.itemExclusionFilters.some(ief => ief.enabled && this.exclude(ief.name, item))
+
+    if (isExcluded) {
+      return false
+    }
+
     const hasMatchingPrice = item.prices.some(p => this.isPriceMatchingFilter(filter.merchantFilters, p))
 
-    return !isExcluded
-      && (hasMatchingPrice
-        || item.prices.length == 0) // Items that have no price are marked as excluded when needed, so if they are not excluded we ignore the fact that they have no price matching
+    return hasMatchingPrice
   }
 
   /**
    * Saves the global filter.
    */
-  public save(gobalFilter: IGlobalFilter): void {
+  public save(globalFilter: IGlobalFilter): void {
+    this.filter = globalFilter
+
     const storageKey = this.getStorageKey()
-    localStorage.setItem(storageKey, JSON.stringify(gobalFilter))
+    localStorage.setItem(storageKey, JSON.stringify(this.filter))
 
     this.emitter.emit(GlobalFilterService.changeEvent)
   }
@@ -172,20 +147,18 @@ export class GlobalFilterService {
    * Updates the item exclusion filters and saves the global filter.
    */
   public saveItemExclusionFilters(itemExclusionFilters: IItemExclusionFilter[]): void {
-    const globalFilter = this.get()
-    globalFilter.itemExclusionFilters = itemExclusionFilters
+    this.filter.itemExclusionFilters = itemExclusionFilters
 
-    this.save(globalFilter)
+    this.save(this.filter)
   }
 
   /**
    * Updates the merchant filters and saves the global filter.
    */
   public saveMerchantFilters(merchantFilters: IMerchantFilter[]): void {
-    const globalFilter = this.get()
-    globalFilter.merchantFilters = merchantFilters
+    this.filter.merchantFilters = merchantFilters
 
-    this.save(globalFilter)
+    this.save(this.filter)
   }
 
   /**
@@ -196,6 +169,23 @@ export class GlobalFilterService {
     const key = Services.get(WebsiteConfigurationService).configuration.globalFilterStorageKey
 
     return key
+  }
+
+  /**
+   * Executes an item exlusion filter.
+   * @param itemExclusionFilterName - Item exclusion filter name.
+   * @param item - Item for which the exclusion filter is executed.
+   * @returns true when the item is excluded; otherwise false.
+   */
+  private exclude(itemExclusionFilterName: string, item: IItem): boolean {
+    switch (itemExclusionFilterName) {
+      case GlobalFilterService.excludeItemsWithoutMerchantFilterName:
+        return this.excludeItemWithoutMerchant(item)
+      case GlobalFilterService.excludePresetBaseItemsFilterName:
+        return this.excludePresetBaseItem(item)
+      default:
+        return false
+    }
   }
 
   /**
@@ -223,16 +213,56 @@ export class GlobalFilterService {
   }
 
   /**
+   * Reads the saved global filter and initializes the current filter with it.
+   */
+  private initialize(): void {
+    let savedFilter: IGlobalFilter = {
+      itemExclusionFilters: [],
+      merchantFilters: []
+    }
+    const storageKey = this.getStorageKey()
+    const serializedFilters = localStorage.getItem(storageKey)
+
+    if (serializedFilters != null) {
+      savedFilter = JSON.parse(serializedFilters) as IGlobalFilter
+    }
+
+    // Merchant filters
+    for (const merchant of Services.get(TarkovValuesService).values.merchants.filter(m => m.showInFilter)) {
+      const savedMerchantFilter = savedFilter.merchantFilters.find(sf => sf.merchant === merchant.name)
+
+      this.filter.merchantFilters.push({
+        enabled: savedMerchantFilter?.enabled ?? true,
+        merchantLevel: savedMerchantFilter?.merchantLevel ?? merchant.maxLevel,
+        merchant: savedMerchantFilter?.merchant ?? merchant.name
+      })
+    }
+
+    // Item filters
+    const excludeItemsWithoutMerchantFilter = savedFilter.itemExclusionFilters.find(f => f.name === GlobalFilterService.excludeItemsWithoutMerchantFilterName)
+    this.filter.itemExclusionFilters.push({
+      enabled: excludeItemsWithoutMerchantFilter?.enabled ?? true,
+      name: GlobalFilterService.excludeItemsWithoutMerchantFilterName
+    })
+
+    const excludePresetBaseItemsFilter = savedFilter.itemExclusionFilters.find(f => f.name === GlobalFilterService.excludePresetBaseItemsFilterName)
+    this.filter.itemExclusionFilters.push({
+      enabled: excludePresetBaseItemsFilter?.enabled ?? true,
+      name: GlobalFilterService.excludePresetBaseItemsFilterName
+    })
+  }
+
+  /**
    * Indicates whether a price matches the merchant filters.
    * @param merchantFilters - Merchant filters.
    * @param price - Price.
    * @returns true when price matches the filters; otherwise false.
    */
   private isPriceMatchingFilter(merchantFilters: IMerchantFilter[], price: IPrice): boolean {
-    const result = merchantFilters.some(f =>
-      f.enabled
-      && f.merchant === price.merchant
-      && f.merchantLevel >= price.merchantLevel)
+    const result = merchantFilters.some(mf =>
+      mf.enabled
+      && mf.merchant === price.merchant
+      && mf.merchantLevel >= price.merchantLevel)
 
     return result
   }
