@@ -127,9 +127,15 @@ export class GlobalFilterService {
       return false
     }
 
+    if (item.prices.length === 0) {
+      // If items without prices should not be included, they would have been excluded in the precedent if.
+      // Therefore, we can automatically include them here without checking the merchant filter
+      return true
+    }
+
     const hasMatchingPrice = item.prices.some(p => this.isPriceMatchingFilter(filter.merchantFilters, p))
 
-    return hasMatchingPrice || forceItemsWithoutMerchantInclusion
+    return hasMatchingPrice
   }
 
   /**
