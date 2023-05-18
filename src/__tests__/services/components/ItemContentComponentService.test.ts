@@ -38,15 +38,13 @@ describe('getAcceptedItems()', () => {
     const globalFitlerService = Services.get(GlobalFilterService)
     const globalFilter = globalFitlerService.get()
 
-    globalFilter.merchantFilters.forEach(mf => {
-      if (mf.merchant === 'prapor') {
-        // Setting Prapor level to 1
-        mf.merchantLevel = 1
-      } else {
-        // Disabling all other merchants
-        mf.enabled = false
+    globalFilter.merchantFilters = [
+      {
+        enabled: true,
+        merchant: 'prapor',
+        merchantLevel: 1
       }
-    })
+    ]
 
     const excludePresetBaseItemsFilter = globalFilter.itemExclusionFilters.find(gf => gf.name === GlobalFilterService.excludePresetBaseItemsFilterName)
 
@@ -64,9 +62,6 @@ describe('getAcceptedItems()', () => {
     const nonBarters = items.filter(i => i.prices.some(p => p.merchant === 'prapor' && p.merchantLevel === 1 && p.currencyName !== 'barter'))
     const barters = items.filter(i => i.prices.some(p => p.merchant === 'prapor' && p.merchantLevel === 1 && p.currencyName === 'barter'))
     const nonBarterAndBarterItems = barters.filter(b => nonBarters.includes(b))
-
-    const t = items.map(i => i.id + ' ' + i.name)
-    console.log(t)
 
     expect(items.length).toBe(expectedItemsAmount)
     expect(nonBarters.length).toBe(expectedNonBarterItemsAmount)

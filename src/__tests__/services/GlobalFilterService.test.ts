@@ -8,7 +8,6 @@ import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceM
 import { IItemExclusionFilter } from '../../models/utils/IItemExclusionFilter'
 import Services from '../../services/repository/Services'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { IModdable } from '../../models/item/IModdable'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { ItemService } from '../../services/ItemService'
@@ -16,20 +15,10 @@ import { ItemService } from '../../services/ItemService'
 const itemExclusionFilters = [
   {
     enabled: true,
-    exclude: (item: IItem) => {
-      return item.prices.length === 0
-    },
     name: GlobalFilterService.excludeItemsWithoutMerchantFilterName
   },
   {
     enabled: true,
-    exclude: (item: IItem) => {
-      const canBeModded = Services.get(ItemPropertiesService).canBeModded(item)
-      const hasBaseItemId = (item as IModdable).baseItemId == null
-      const hasDefaultPresetId = (item as IModdable).defaultPresetId != null
-
-      return canBeModded && hasBaseItemId && hasDefaultPresetId
-    },
     name: GlobalFilterService.excludePresetBaseItemsFilterName
   }
 ] as IItemExclusionFilter[]
@@ -42,37 +31,37 @@ const merchantFilters = [
   },
   {
     'enabled': false,
-    'merchantLevel': 4,
+    'merchantLevel': 3,
     'merchant': 'jaeger'
   },
   {
     'enabled': true,
-    'merchantLevel': 4,
+    'merchantLevel': 3,
     'merchant': 'mechanic'
   },
   {
     'enabled': true,
-    'merchantLevel': 4,
+    'merchantLevel': 3,
     'merchant': 'peacekeeper'
   },
   {
     'enabled': true,
-    'merchantLevel': 4,
+    'merchantLevel': 3,
     'merchant': 'prapor'
   },
   {
     'enabled': true,
-    'merchantLevel': 4,
+    'merchantLevel': 3,
     'merchant': 'ragman'
   },
   {
     'enabled': true,
-    'merchantLevel': 4,
+    'merchantLevel': 3,
     'merchant': 'skier'
   },
   {
     'enabled': true,
-    'merchantLevel': 4,
+    'merchantLevel': 3,
     'merchant': 'therapist'
   }
 ] as IMerchantFilter[]
@@ -97,10 +86,63 @@ describe('get()', () => {
     const service = new GlobalFilterService()
 
     // Act
-    const filters = service.get()
+    const globalFilter = service.get()
 
     // Assert
-    expect(filters).toStrictEqual(filters)
+    expect(globalFilter).toStrictEqual({
+      itemExclusionFilters: [
+        {
+          enabled: true,
+          name: 'itemsWithoutMerchant'
+        },
+        {
+          enabled: true,
+          name: 'presetBaseItems'
+        }
+      ],
+      merchantFilters: [
+        {
+          enabled: true,
+          merchant: 'prapor',
+          merchantLevel: 3
+        },
+        {
+          enabled: true,
+          merchant: 'therapist',
+          merchantLevel: 3
+        },
+        {
+          enabled: true,
+          merchant: 'skier',
+          merchantLevel: 3
+        },
+        {
+          enabled: true,
+          merchant: 'peacekeeper',
+          merchantLevel: 3
+        },
+        {
+          enabled: true,
+          merchant: 'mechanic',
+          merchantLevel: 3
+        },
+        {
+          enabled: true,
+          merchant: 'ragman',
+          merchantLevel: 3
+        },
+        {
+          enabled: false,
+          merchant: 'jaeger',
+          merchantLevel: 3
+        },
+        {
+          enabled: true,
+          merchant: 'flea-market',
+          merchantLevel: 0
+        }
+      ]
+    } as IGlobalFilter)
   })
 
   it('should get the default merchant filters when merchant filters are not saved', () => {
@@ -108,14 +150,67 @@ describe('get()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
+    localStorage.clear()
     const service = new GlobalFilterService()
 
     // Act
-    localStorage.clear()
-    const filters = service.get()
+    const globalFilter = service.get()
 
     // Assert
-    expect(filters).toStrictEqual(filters)
+    expect(globalFilter).toStrictEqual({
+      itemExclusionFilters: [
+        {
+          enabled: true,
+          name: 'itemsWithoutMerchant'
+        },
+        {
+          enabled: true,
+          name: 'presetBaseItems'
+        }
+      ],
+      merchantFilters: [
+        {
+          enabled: true,
+          merchant: 'prapor',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'therapist',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'skier',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'peacekeeper',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'mechanic',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'ragman',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'jaeger',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'flea-market',
+          merchantLevel: 0
+        }
+      ]
+    } as IGlobalFilter)
   })
 })
 
@@ -195,6 +290,7 @@ describe('getMatchingPrices()', () => {
     useWebsiteConfigurationServiceMock()
 
     const service = new GlobalFilterService()
+
     service.saveMerchantFilters([
       {
         enabled: true,
@@ -378,6 +474,7 @@ describe('isMatchingFilter()', () => {
     Services.configure(ItemPropertiesService)
 
     const service = new GlobalFilterService()
+
     service.saveMerchantFilters([
       {
         enabled: true,
@@ -453,6 +550,7 @@ describe('save', () => {
     useWebsiteConfigurationServiceMock()
 
     const service = new GlobalFilterService()
+
     const globalFilter = service.get()
 
     const presetBaseItemsExclusionFilter = globalFilter.itemExclusionFilters[1]
@@ -499,32 +597,32 @@ describe('save', () => {
         {
           enabled: true,
           merchant: 'therapist',
-          merchantLevel: 4
+          merchantLevel: 3
         },
         {
           enabled: true,
           merchant: 'skier',
-          merchantLevel: 4
+          merchantLevel: 3
         },
         {
           enabled: true,
           merchant: 'peacekeeper',
-          merchantLevel: 4
+          merchantLevel: 3
         },
         {
           enabled: true,
           merchant: 'mechanic',
-          merchantLevel: 4
+          merchantLevel: 3
         },
         {
           enabled: true,
           merchant: 'ragman',
-          merchantLevel: 4
+          merchantLevel: 3
         },
         {
           enabled: false,
           merchant: 'jaeger',
-          merchantLevel: 4
+          merchantLevel: 3
         },
         {
           enabled: false,
@@ -543,16 +641,17 @@ describe('saveItemExclusionFilters', () => {
     useWebsiteConfigurationServiceMock()
 
     const service = new GlobalFilterService()
+
     const globalFilter = service.get()
 
-    const presetBaseItemsExclusionFilter = globalFilter.itemExclusionFilters[1]
+    const presetBaseItemsExclusionFilter = globalFilter.itemExclusionFilters.find(ief => ief.name === GlobalFilterService.excludePresetBaseItemsFilterName)
 
     if (presetBaseItemsExclusionFilter != null) {
       presetBaseItemsExclusionFilter.enabled = false
     }
 
     // Act
-    service.save(globalFilter)
+    service.saveItemExclusionFilters(globalFilter.itemExclusionFilters)
     const updatedGlobalFilter = service.get()
 
     // Assert
@@ -578,6 +677,7 @@ describe('saveMerchantFilters()', () => {
     useWebsiteConfigurationServiceMock()
 
     const service = new GlobalFilterService()
+
     const globalFilter = service.get()
 
     const fleaMarket = globalFilter.merchantFilters.find(mf => mf.merchant == 'flea-market')
@@ -607,32 +707,32 @@ describe('saveMerchantFilters()', () => {
       {
         enabled: true,
         merchant: 'therapist',
-        merchantLevel: 4
+        merchantLevel: 3
       },
       {
         enabled: true,
         merchant: 'skier',
-        merchantLevel: 4
+        merchantLevel: 3
       },
       {
         enabled: true,
         merchant: 'peacekeeper',
-        merchantLevel: 4
+        merchantLevel: 3
       },
       {
         enabled: true,
         merchant: 'mechanic',
-        merchantLevel: 4
+        merchantLevel: 3
       },
       {
         enabled: true,
         merchant: 'ragman',
-        merchantLevel: 4
+        merchantLevel: 3
       },
       {
         enabled: false,
         merchant: 'jaeger',
-        merchantLevel: 4
+        merchantLevel: 3
       },
       {
         enabled: false,

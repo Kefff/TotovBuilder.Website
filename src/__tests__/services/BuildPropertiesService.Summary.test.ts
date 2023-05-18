@@ -2136,7 +2136,7 @@ describe('getSummary()', () => {
 
     const service = new BuildPropertiesService()
     const globalFilterService = Services.get(GlobalFilterService)
-    globalFilterService.setMerchantFilters([
+    globalFilterService.saveMerchantFilters([
       {
         enabled: true,
         merchant: 'flea-market',

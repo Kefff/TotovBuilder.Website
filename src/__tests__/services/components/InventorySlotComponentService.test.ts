@@ -23,7 +23,7 @@ describe('getAcceptedItems()', () => {
     const globalFitlerService = Services.get(GlobalFilterService)
     const inventorySlotComponentServiceService = new InventorySlotComponentService()
 
-    globalFitlerService.setMerchantFilters([
+    globalFitlerService.saveMerchantFilters([
       {
         enabled: true,
         merchant: 'prapor',

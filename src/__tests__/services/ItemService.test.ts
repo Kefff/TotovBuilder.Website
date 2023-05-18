@@ -20,6 +20,7 @@ import { IItem } from '../../models/item/IItem'
 import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { PresetService } from '../../services/PresetService'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 
 describe('fetchItemCategories()', () => {
   it('should not update item categories when fetching fails', async () => {
@@ -277,16 +278,11 @@ describe('getItems()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
+    Services.configure(ItemPropertiesService)
     Services.configure(GlobalFilterService)
+
     const globalFitlerService = Services.get(GlobalFilterService)
-    globalFitlerService.setItemExclusionFilters([
-      {
-        enabled: true,
-        exclude: (item: IItem) => item.id === '5448c12b4bdc2d02308b456f',
-        name: 'Exclude PM 9x18PM 90-93 8-round magazine'
-      }
-    ])
-    globalFitlerService.setMerchantFilters([
+    globalFitlerService.saveMerchantFilters([
       {
         enabled: true,
         merchant: 'prapor',
@@ -301,7 +297,7 @@ describe('getItems()', () => {
       '584147732459775a2b6d9f12', // AKS-74U Default (Prapor 1)
       '5c1d0f4986f7744bb01837fa', // TerraGroup Labs keycard (Black) (Mechanic 4)
       '5dd7f8c524e5d7504a4e3077', // Kalashnikov AK-74 5.45x39 assault rifle Plum (Prapor 2),
-      '5448c12b4bdc2d02308b456f' // PM 9x18PM 90-93 8-round magazine (Prapor 1)
+      '57dc2fa62459775949412633' // Kalashnikov AKS-74U 5.45x39 assault rifle (Prapor 1), excluded because is preset base item
     ], true)
 
     // Assert
@@ -445,37 +441,28 @@ describe('getItemsOfCategories()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
+    Services.configure(ItemPropertiesService)
     Services.configure(GlobalFilterService)
+
     const globalFitlerService = Services.get(GlobalFilterService)
-    globalFitlerService.setItemExclusionFilters([
+    globalFitlerService.saveMerchantFilters([
       {
         enabled: true,
-        exclude: (item: IItem) => item.prices.length === 0,
-        name: 'Exclude items without merchant'
-      },
-      {
-        enabled: true,
-        exclude: (item: IItem) => item.id == '5857a8b324597729ab0a0e7d',
-        name: 'Exclude Secure container Beta'
-      }
-    ])
-    globalFitlerService.setMerchantFilters([
-      {
-        enabled: true,
-        merchant: 'peacekeeper',
-        merchantLevel: 2
+        merchant: 'prapor',
+        merchantLevel: 1
       }
     ])
 
     const itemService = new ItemService()
 
     // Act
-    const itemResult = await itemService.getItemsOfCategories(['armband', 'securedContainer'], true)
+    const itemResult = await itemService.getItemsOfCategories(['mainWeapon', 'secondaryWeapon'], true)
 
     // Assert
     expect(itemResult.success).toBe(true)
     expect(itemResult.value.map((i) => i.id).sort()).toStrictEqual([
-      '544a11ac4bdc2d470e8b456a' // Secure container Alpha (Peacekeeper 2)
+      '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
+      'mosinscopedbarter0000001' // Mosin 7.62x54R bolt-action rifle (Sniper) PU 3.5x
     ])
   })
 

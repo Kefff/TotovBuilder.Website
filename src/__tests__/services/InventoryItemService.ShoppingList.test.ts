@@ -19,7 +19,7 @@ describe('getShoppingList', () => {
 
     const inventoryItemService = new InventoryItemService()
     const globalFilterService = Services.get(GlobalFilterService)
-    globalFilterService.setMerchantFilters([
+    globalFilterService.saveMerchantFilters([
       {
         enabled: true,
         merchant: 'flea-market',

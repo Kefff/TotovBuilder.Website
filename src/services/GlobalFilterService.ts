@@ -35,6 +35,11 @@ export class GlobalFilterService {
   public emitter = new TinyEmitter()
 
   /**
+   * Indicates whether the global filter has been initialized.
+   */
+  private isInitialized = false
+
+  /**
    * Current filter.
    */
   private filter: IGlobalFilter = {
@@ -43,17 +48,11 @@ export class GlobalFilterService {
   }
 
   /**
-   * Initializes a new instance of the GlobalFilterService class.
-   */
-  constructor() {
-    this.initialize()
-  }
-
-  /**
    * Gets merchant filters.
    * @returns Merchant filters.
    */
   public get(): IGlobalFilter {
+    this.ensureIsInitialized()
     const filter = JSON.parse(JSON.stringify(this.filter)) // Creating a copy without reference so the filter can be changed in the UI without changing here until the user saveds it
 
     return filter
@@ -65,6 +64,7 @@ export class GlobalFilterService {
    * @returns Price.
    */
   public getMatchingPrices(item: IItem): IPrice[] {
+    this.ensureIsInitialized()
     const result = item.prices.filter(p => this.isPriceMatchingFilter(this.filter.merchantFilters, p))
 
     return result
@@ -108,6 +108,7 @@ export class GlobalFilterService {
    * @returns true when the item has prices that match the merchant filters; otherwise false.
    */
   public isMatchingFilter(item: IItem, forceItemsWithoutMerchantInclusion: boolean): boolean {
+    this.ensureIsInitialized()
     const filter: IGlobalFilter = this.filter
 
     if (forceItemsWithoutMerchantInclusion) {
@@ -128,13 +129,14 @@ export class GlobalFilterService {
 
     const hasMatchingPrice = item.prices.some(p => this.isPriceMatchingFilter(filter.merchantFilters, p))
 
-    return hasMatchingPrice
+    return hasMatchingPrice || forceItemsWithoutMerchantInclusion
   }
 
   /**
    * Saves the global filter.
    */
   public save(globalFilter: IGlobalFilter): void {
+    this.ensureIsInitialized()
     this.filter = globalFilter
 
     const storageKey = this.getStorageKey()
@@ -147,6 +149,7 @@ export class GlobalFilterService {
    * Updates the item exclusion filters and saves the global filter.
    */
   public saveItemExclusionFilters(itemExclusionFilters: IItemExclusionFilter[]): void {
+    this.ensureIsInitialized()
     this.filter.itemExclusionFilters = itemExclusionFilters
 
     this.save(this.filter)
@@ -156,19 +159,10 @@ export class GlobalFilterService {
    * Updates the merchant filters and saves the global filter.
    */
   public saveMerchantFilters(merchantFilters: IMerchantFilter[]): void {
+    this.ensureIsInitialized()
     this.filter.merchantFilters = merchantFilters
 
     this.save(this.filter)
-  }
-
-  /**
-   * Gets a storage key.
-   * @returns Storage key.
-   */
-  private getStorageKey(): string {
-    const key = Services.get(WebsiteConfigurationService).configuration.globalFilterStorageKey
-
-    return key
   }
 
   /**
@@ -178,13 +172,22 @@ export class GlobalFilterService {
    * @returns true when the item is excluded; otherwise false.
    */
   private exclude(itemExclusionFilterName: string, item: IItem): boolean {
-    switch (itemExclusionFilterName) {
-      case GlobalFilterService.excludeItemsWithoutMerchantFilterName:
-        return this.excludeItemWithoutMerchant(item)
-      case GlobalFilterService.excludePresetBaseItemsFilterName:
-        return this.excludePresetBaseItem(item)
-      default:
-        return false
+    /* istanbul ignore else */
+    if (itemExclusionFilterName === GlobalFilterService.excludeItemsWithoutMerchantFilterName) {
+      return this.excludeItemWithoutMerchant(item)
+    } else if (itemExclusionFilterName === GlobalFilterService.excludePresetBaseItemsFilterName) {
+      return this.excludePresetBaseItem(item)
+    } else {
+      return false
+    }
+  }
+
+  /**
+   * Ensures that the global filter is initialized.
+   */
+  private ensureIsInitialized() {
+    if (!this.isInitialized) {
+      this.initialize()
     }
   }
 
@@ -213,6 +216,16 @@ export class GlobalFilterService {
   }
 
   /**
+   * Gets a storage key.
+   * @returns Storage key.
+   */
+  private getStorageKey(): string {
+    const key = Services.get(WebsiteConfigurationService).configuration.globalFilterStorageKey
+
+    return key
+  }
+
+  /**
    * Reads the saved global filter and initializes the current filter with it.
    */
   private initialize(): void {
@@ -220,6 +233,7 @@ export class GlobalFilterService {
       itemExclusionFilters: [],
       merchantFilters: []
     }
+
     const storageKey = this.getStorageKey()
     const serializedFilters = localStorage.getItem(storageKey)
 
@@ -250,6 +264,8 @@ export class GlobalFilterService {
       enabled: excludePresetBaseItemsFilter?.enabled ?? true,
       name: GlobalFilterService.excludePresetBaseItemsFilterName
     })
+
+    this.isInitialized = true
   }
 
   /**
