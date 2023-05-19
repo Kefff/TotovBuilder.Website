@@ -23,13 +23,11 @@
 
 .shopping-list-item-name {
   margin-left: 0.25rem;
-  margin-right: auto;
   width: 16.5rem;
 }
 
 .shopping-list-item-price {
-  justify-content: flex-end;
-  margin-right: 1rem;
+  margin-left: 0.25rem;
   width: 10rem;
 }
 

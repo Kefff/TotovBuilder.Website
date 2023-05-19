@@ -1,9 +1,9 @@
 .sidebar-option {
-  align-items: start;
   display: flex;
   flex-direction: column;
   min-height: 3.25rem;
   padding: 0.5rem;
+  overflow-x: hidden; /* Needed for Firefox to avoid having an horizontal scrolling in certain situations for some reason */
 }
 
 .sidebar-option-with-hover {

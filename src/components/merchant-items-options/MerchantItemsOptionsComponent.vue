@@ -6,39 +6,35 @@
     position="right"
     style="width: auto"
   >
-    <div class="merchant-items-option">
-      <div class="sidebar-title">
-        <font-awesome-icon
-          icon="user-tag"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.merchants') }}</span>
-      </div>
-      <div
-        class="sidebar-option"
-      >
-        <MerchantFilter
-          v-model="globalFilter"
-          @update:modelValue="() => hasChanged = true"
-        />
-      </div>
+    <div class="sidebar-title">
+      <font-awesome-icon
+        icon="user-tag"
+        class="icon-before-text"
+      />
+      <span>{{ $t('caption.merchants') }}</span>
     </div>
-    <div class="merchant-items-option">
-      <div class="sidebar-title">
-        <font-awesome-icon
-          icon="shopping-basket"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.items') }}</span>
-      </div>
-      <div
-        class="sidebar-option"
-      >
-        <ItemFilterComponent
-          v-model="globalFilter"
-          @update:modelValue="() => hasChanged = true"
-        />
-      </div>
+    <div
+      class="sidebar-option"
+    >
+      <MerchantFilter
+        v-model="globalFilter"
+        @update:modelValue="() => hasChanged = true"
+      />
+    </div>
+    <div class="sidebar-title merchant-items-title">
+      <font-awesome-icon
+        icon="shopping-basket"
+        class="icon-before-text"
+      />
+      <span>{{ $t('caption.items') }}</span>
+    </div>
+    <div
+      class="sidebar-option"
+    >
+      <ItemFilterComponent
+        v-model="globalFilter"
+        @update:modelValue="() => hasChanged = true"
+      />
     </div>
     <div class="merchant-items-options-save-button">
       <Button
@@ -53,6 +49,7 @@
         <span>{{ $t('caption.save') }}</span>
       </Button>
     </div>
+    <!-- </div> -->
   </Sidebar>
 </template>
 
