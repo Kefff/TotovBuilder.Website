@@ -23,6 +23,7 @@ import { ItemFetcherService } from '../../services/ItemFetcherService'
 import PresetsMock from '../../../test-data/presets.json'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
+import { useGlobalFilterServiceMock } from '../../__mocks__/GlobalFilterServiceMock'
 
 describe('fetchPresets()', () => {
   it('should fetch presets', async () => {
@@ -362,6 +363,7 @@ describe('isPreset()', () => {
     'should determine if an item is a preset',
     async (itemId: string, expected: boolean) => {
       // Arrange
+      useGlobalFilterServiceMock()
       useItemFetcherServiceMock()
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()

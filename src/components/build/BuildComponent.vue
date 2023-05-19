@@ -8,11 +8,11 @@
       >
         <font-awesome-icon icon="exclamation-triangle" />
       </span>
-      <span v-if="!editing">
+      <span v-show="!editing">
         {{ build.name }}
       </span>
       <InputTextField
-        v-else
+        v-show="editing"
         v-model="build.name"
         :caption="$t('caption.name')"
         caption-mode="placeholder"
@@ -31,7 +31,7 @@
             <font-awesome-icon icon="arrow-left" />
           </Button>
           <Button
-            v-if="editing"
+            v-show="editing"
             class="p-button-success toolbar-button"
             :disabled="invalid"
             @click="save()"
@@ -43,7 +43,7 @@
             <span>{{ $t('caption.save') }}</span>
           </Button>
           <Button
-            v-if="!editing"
+            v-show="!editing"
             class="toolbar-button"
             @click="startEdit()"
           >
@@ -74,7 +74,7 @@
         </div>
         <div class="toolbar-part toolbar-center">
           <div
-            v-if="!isLoading"
+            v-show="!isLoading"
             class="build-toolbar-summary"
           >
             <div
@@ -123,6 +123,7 @@
             </div>
             <div class="build-toolbar-summary-value">
               <InventoryPrice
+                v-if="!isLoading"
                 :inventory-price="summary.price"
                 :show-space-for-icon="false"
               />
@@ -203,7 +204,7 @@
             </DisplayOptions>
             <NotificationButton />
             <Button
-              v-if="editing"
+              v-show="editing"
               class="p-button-danger toolbar-button"
               @click="cancelEdit()"
             >
@@ -214,7 +215,7 @@
               <span>{{ $t('caption.cancel') }}</span>
             </Button>
             <Button
-              v-if="!editing"
+              v-show="!editing"
               class="p-button-danger toolbar-button"
               @click="startDelete()"
             >
@@ -232,7 +233,7 @@
 
     <!-- Inventory slots -->
     <div
-      v-if="!isLoading"
+      v-show="!isLoading"
       id="build-content"
     >
       <div
@@ -270,7 +271,7 @@
       </div>
     </div>
     <div
-      v-if="isLoading"
+      v-show="isLoading"
       class="build-loading"
     >
       <Loading />

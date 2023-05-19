@@ -388,7 +388,6 @@ describe('isMatchingFilter()', () => {
           valueInMainCurrency: 0
         }
       ] as IPrice[],
-      false,
       true
     ],
     [
@@ -401,7 +400,6 @@ describe('isMatchingFilter()', () => {
           valueInMainCurrency: 0
         }
       ] as IPrice[],
-      false,
       true
     ],
     [
@@ -414,7 +412,6 @@ describe('isMatchingFilter()', () => {
           valueInMainCurrency: 0
         }
       ] as IPrice[],
-      false,
       false
     ],
     [
@@ -434,7 +431,6 @@ describe('isMatchingFilter()', () => {
           valueInMainCurrency: 0
         }
       ] as IPrice[],
-      false,
       true
     ],
     [
@@ -454,20 +450,13 @@ describe('isMatchingFilter()', () => {
           valueInMainCurrency: 0
         }
       ] as IPrice[],
-      false,
       false
     ],
     [
       [] as IPrice[],
-      true,
-      true
-    ],
-    [
-      [] as IPrice[],
-      false,
       false
     ]
-  ])('should indicate whether an item matches the item filter and has prices matching the merchant filters', async (prices: IPrice[], includeItemsWithoutMerchant: boolean, expected: boolean) => {
+  ])('should indicate whether an item matches the item filter and has prices matching the merchant filters', async (prices: IPrice[], expected: boolean) => {
     // Arrange
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
@@ -514,17 +503,18 @@ describe('isMatchingFilter()', () => {
     }
 
     // Act
-    const result = service.isMatchingFilter(item, includeItemsWithoutMerchant)
+    const result = service.isMatchingFilter(item)
 
     // Assert
     expect(result).toBe(expected)
   })
 
   it.each([
-    ['5ca20d5986f774331e7c9602', true], // WARTECH Berkut BB-102 backpack
-    ['57dc2fa62459775949412633', false], // Kalashnikov AKS-74U 5.45x39 assault rifle
-    ['5c1d0efb86f7744baf2e7b7b', false] // TerraGroup Labs keycard (Red)
-  ])('should indicate that items included in the item exclusion filters do not match the filter', async (itemId: string, expected: boolean) => {
+    ['5ca20d5986f774331e7c9602', false, true], // WARTECH Berkut BB-102 backpack
+    ['5c1d0efb86f7744baf2e7b7b', true, true], // TerraGroup Labs keycard (Red)
+    ['5c1d0efb86f7744baf2e7b7b', false, false], // TerraGroup Labs keycard (Red)
+    ['57dc2fa62459775949412633', false, false] // Kalashnikov AKS-74U 5.45x39 assault rifle
+  ])('should indicate that items included in the item exclusion filters do not match the filter', async (itemId: string, includeItemsWithoutMerchant: boolean, expected: boolean) => {
     // Arrange
     useItemServiceMock()
     useTarkovValuesServiceMock()
@@ -533,10 +523,19 @@ describe('isMatchingFilter()', () => {
 
     const service = new GlobalFilterService()
 
+    const globalFilter = service.get()
+    const excludeItemsWithoutMerchantFilter = globalFilter.itemExclusionFilters.find(i => i.name === GlobalFilterService.excludeItemsWithoutMerchantFilterName)
+
+    if (excludeItemsWithoutMerchantFilter != null) {
+      excludeItemsWithoutMerchantFilter.enabled = !includeItemsWithoutMerchant
+    }
+
+    service.save(globalFilter)
+
     const item = (await Services.get(ItemService).getItem(itemId)).value
 
     // Act
-    const result = service.isMatchingFilter(item, false)
+    const result = service.isMatchingFilter(item)
 
     // Assert
     expect(result).toBe(expected)

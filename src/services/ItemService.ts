@@ -31,6 +31,11 @@ export class ItemService {
   private items: IItem[] = []
 
   /**
+   * List of items filtered using the current global filter.
+   */
+  private filteredItems: IItem[] = []
+
+  /**
    * Determines whether prices are being fetched or not.
    */
   private isFetchingPrices = false
@@ -54,6 +59,13 @@ export class ItemService {
    * Current static data fetching task.
    */
   private staticDataFetchingPromise: Promise<void> = Promise.resolve()
+
+  /**
+   * Initializes a new instance of the ItemService class.
+   */
+  constructor() {
+    Services.get(GlobalFilterService).emitter.on(GlobalFilterService.changeEvent, () => this.updateFilteredItems())
+  }
 
   /**
    * Gets currency.
@@ -112,10 +124,9 @@ export class ItemService {
     let items: IItem[] = []
 
     if (useGlobalFilter) {
-      items = this.items.filter(i => ids.some(id => id === i.id)
-        && Services.get(GlobalFilterService).isMatchingFilter(i, false))
+      items = this.findItems(ids, this.filteredItems)
     } else {
-      items = this.items.filter(i => ids.some(id => id === i.id))
+      items = this.findItems(ids, this.items)
     }
 
     if (items.length < ids.length && !useGlobalFilter) {
@@ -141,8 +152,7 @@ export class ItemService {
     let items: IItem[]
 
     if (useGlobalFilter) {
-      items = this.items.filter(i => categoryIds.some(id => id === i.categoryId)
-        && Services.get(GlobalFilterService).isMatchingFilter(i, false))
+      items = this.filteredItems.filter(i => categoryIds.some(id => id === i.categoryId))
     } else {
       items = this.items.filter(i => categoryIds.some(id => id === i.categoryId))
     }
@@ -244,6 +254,27 @@ export class ItemService {
   }
 
   /**
+   * Finds items in a list of items.
+   * @param ids - Ids of the items to find.
+   * @param items - List of items in which the items must be found.
+   * @returns Found items.
+   */
+  private findItems(ids: string[], items: IItem[]) {
+    const foundItems: IItem[] = []
+
+    for (const id of ids) {
+      for (const item of items) {
+        if (item.id === id) {
+          foundItems.push(item)
+          continue
+        }
+      }
+    }
+
+    return foundItems
+  }
+
+  /**
    * Determines whether the cache of an item is still valid or not.
    * @returns `true` if the cache of the item has not expired yet; otherwise `false`.
    */
@@ -264,6 +295,7 @@ export class ItemService {
 
     const pricesResult = await itemFetcherService.fetchPrices()
     this.updateItemsPrices(pricesResult)
+    this.updateFilteredItems() // Items and prices needed to filter
 
     this.isFetchingPrices = false
   }
@@ -310,6 +342,13 @@ export class ItemService {
         }
       }
     }
+  }
+
+  /**
+   * Updates the filtered items by applying the global filter to the items.
+   */
+  private updateFilteredItems() {
+    this.filteredItems = this.items.filter(i => Services.get(GlobalFilterService).isMatchingFilter(i))
   }
 
   /**

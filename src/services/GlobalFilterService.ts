@@ -52,7 +52,7 @@ export class GlobalFilterService {
    * @returns Merchant filters.
    */
   public get(): IGlobalFilter {
-    this.ensureIsInitialized()
+    this.initialize()
     const filter = JSON.parse(JSON.stringify(this.filter)) // Creating a copy without reference so the filter can be changed in the UI without changing here until the user saveds it
 
     return filter
@@ -64,7 +64,7 @@ export class GlobalFilterService {
    * @returns Price.
    */
   public getMatchingPrices(item: IItem): IPrice[] {
-    this.ensureIsInitialized()
+    this.initialize()
     const result = item.prices.filter(p => this.isPriceMatchingFilter(this.filter.merchantFilters, p))
 
     return result
@@ -104,24 +104,11 @@ export class GlobalFilterService {
    * Indicates whether an item is not excluded and has prices that match the merchant filters.
    * Also filters out items that have no prices.
    * @param item - Item.
-   * @param forceItemsWithoutMerchantInclusion - Indicates item without merchant are included or the exclusion filter is used.
    * @returns true when the item has prices that match the merchant filters; otherwise false.
    */
-  public isMatchingFilter(item: IItem, forceItemsWithoutMerchantInclusion: boolean): boolean {
-    this.ensureIsInitialized()
-    const filter: IGlobalFilter = this.filter
-
-    if (forceItemsWithoutMerchantInclusion) {
-      const excludeItemsWithoutMerchantFilter = filter.itemExclusionFilters.find(ief => ief.name == GlobalFilterService.excludeItemsWithoutMerchantFilterName)
-
-      /* istanbul ignore else */
-      if (excludeItemsWithoutMerchantFilter != null) {
-        // Should always be found
-        excludeItemsWithoutMerchantFilter.enabled = false
-      }
-    }
-
-    const isExcluded = filter.itemExclusionFilters.some(ief => ief.enabled && this.exclude(ief.name, item))
+  public isMatchingFilter(item: IItem): boolean {
+    this.initialize()
+    const isExcluded = this.filter.itemExclusionFilters.some(ief => ief.enabled && this.exclude(ief.name, item))
 
     if (isExcluded) {
       return false
@@ -133,7 +120,7 @@ export class GlobalFilterService {
       return true
     }
 
-    const hasMatchingPrice = item.prices.some(p => this.isPriceMatchingFilter(filter.merchantFilters, p))
+    const hasMatchingPrice = item.prices.some(p => this.isPriceMatchingFilter(this.filter.merchantFilters, p))
 
     return hasMatchingPrice
   }
@@ -142,33 +129,27 @@ export class GlobalFilterService {
    * Saves the global filter.
    */
   public save(globalFilter: IGlobalFilter): void {
-    this.ensureIsInitialized()
+    this.initialize()
     this.filter = globalFilter
-
-    const storageKey = this.getStorageKey()
-    localStorage.setItem(storageKey, JSON.stringify(this.filter))
-
-    this.emitter.emit(GlobalFilterService.changeEvent)
+    this.saveGlobalFilter()
   }
 
   /**
    * Updates the item exclusion filters and saves the global filter.
    */
   public saveItemExclusionFilters(itemExclusionFilters: IItemExclusionFilter[]): void {
-    this.ensureIsInitialized()
+    this.initialize()
     this.filter.itemExclusionFilters = itemExclusionFilters
-
-    this.save(this.filter)
+    this.saveGlobalFilter()
   }
 
   /**
    * Updates the merchant filters and saves the global filter.
    */
   public saveMerchantFilters(merchantFilters: IMerchantFilter[]): void {
-    this.ensureIsInitialized()
+    this.initialize()
     this.filter.merchantFilters = merchantFilters
-
-    this.save(this.filter)
+    this.saveGlobalFilter()
   }
 
   /**
@@ -185,15 +166,6 @@ export class GlobalFilterService {
       return this.excludePresetBaseItem(item)
     } else {
       return false
-    }
-  }
-
-  /**
-   * Ensures that the global filter is initialized.
-   */
-  private ensureIsInitialized() {
-    if (!this.isInitialized) {
-      this.initialize()
     }
   }
 
@@ -235,6 +207,10 @@ export class GlobalFilterService {
    * Reads the saved global filter and initializes the current filter with it.
    */
   private initialize(): void {
+    if (this.isInitialized) {
+      return
+    }
+
     let savedFilter: IGlobalFilter = {
       itemExclusionFilters: [],
       merchantFilters: []
@@ -287,5 +263,15 @@ export class GlobalFilterService {
       && mf.merchantLevel >= price.merchantLevel)
 
     return result
+  }
+
+  /**
+   * Saves the current global filter.
+   */
+  private saveGlobalFilter(): void {
+    const storageKey = this.getStorageKey()
+    localStorage.setItem(storageKey, JSON.stringify(this.filter))
+
+    this.emitter.emit(GlobalFilterService.changeEvent)
   }
 }

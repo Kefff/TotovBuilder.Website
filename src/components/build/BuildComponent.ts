@@ -38,7 +38,7 @@ export default defineComponent({
     ShoppingList
   },
   setup: () => {
-    Services.emitter.once('initialized', onConfigurationLoaded)
+    Services.emitter.once('initialized', initialize)
 
     const route = useRoute()
     const router = useRouter()
@@ -138,10 +138,10 @@ export default defineComponent({
       document.onkeydown = (e) => onKeyDown(e)
       window.addEventListener('scroll', setToolbarCssClass)
 
-      isLoading.value = Services.isInitializing
-
-      if (!isLoading.value) {
-        onConfigurationLoaded()
+      if (!Services.isInitializing) {
+        // If the services are already initialized, we can initialize the component instead of waiting for the "initialized" event
+        // thant won't be triggered because the services initialization is already done
+        initialize()
       }
     })
 
@@ -182,13 +182,6 @@ export default defineComponent({
         build.value = originalBuild
         getSummary()
       }
-    }
-
-    /**
-     * Gets builds and ends loading.
-     */
-    function onConfigurationLoaded() {
-      initialize()
     }
 
     /**

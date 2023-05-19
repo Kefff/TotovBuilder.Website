@@ -64,7 +64,7 @@
       <div class="toolbar-gradient" />
     </div>
     <div
-      v-if="!isLoading && buildsSummaries.length > 0"
+      v-show="!isLoading && buildsSummaries.length > 0"
       id="builds-content"
     >
       <BuildsList
@@ -74,7 +74,7 @@
       />
     </div>
     <div
-      v-else-if="isLoading"
+      v-show="isLoading"
       class="builds-loading"
     >
       <Loading />

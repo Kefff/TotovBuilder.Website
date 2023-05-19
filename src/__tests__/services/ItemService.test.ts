@@ -21,10 +21,46 @@ import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMoc
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { PresetService } from '../../services/PresetService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { useGlobalFilterServiceMock } from '../../__mocks__/GlobalFilterServiceMock'
+
+describe('constructor', () => {
+  it('should subscribe to the GlobalFilterService "globalFilterChanged" event and update the filtered items list when triggered', async () => {
+    // Arrange
+    useItemFetcherServiceMock()
+    usePresetServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(GlobalFilterService)
+    Services.configure(ItemPropertiesService)
+
+    const globalFilterService = Services.get(GlobalFilterService)
+    globalFilterService.saveMerchantFilters([{
+      enabled: true,
+      merchant: 'prapor',
+      merchantLevel: 4
+    }])
+
+    const service = new ItemService()
+
+    // Act / Assert
+    let itemResult = await service.getItem('5c0d668f86f7747ccb7f13b2', true) // 9x39mm SPP gs
+    expect(itemResult.success).toBe(true)
+
+    globalFilterService.saveMerchantFilters([{
+      enabled: false,
+      merchant: 'prapor',
+      merchantLevel: 4
+    }])
+
+    itemResult = await service.getItem('5c0d668f86f7747ccb7f13b2', true) // 9x39mm SPP gs
+    expect(itemResult.success).toBe(false)
+  })
+})
 
 describe('fetchItemCategories()', () => {
   it('should not update item categories when fetching fails', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
@@ -52,6 +88,7 @@ describe('fetchItemCategories()', () => {
 describe('fetchItems()', () => {
   it('should not update items when fetching fails', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
@@ -84,6 +121,7 @@ describe('getCurrency()', () => {
     ['EUR']
   ])('should get a currency', async (currencyName: string) => {
     // Arrange
+    useGlobalFilterServiceMock()
     useTarkovValuesServiceMock()
     const itemService = new ItemService()
 
@@ -97,6 +135,7 @@ describe('getCurrency()', () => {
 
   it('should fail when the currency is not found', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     useTarkovValuesServiceMock()
     const itemService = new ItemService()
 
@@ -112,6 +151,7 @@ describe('getCurrency()', () => {
 describe('getItem()', () => {
   it('should get an item from the cache', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
     usePresetServiceMock()
     useTarkovValuesServiceMock()
@@ -155,6 +195,7 @@ describe('getItem()', () => {
 
   it('should fail when getting an item that does not exist', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
     usePresetServiceMock()
     useTarkovValuesServiceMock()
@@ -172,6 +213,7 @@ describe('getItem()', () => {
 
   it('should fail when fetching fails', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     usePresetServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -198,6 +240,7 @@ describe('getItem()', () => {
 describe('getItems()', () => {
   it('should get items from the cache', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
     usePresetServiceMock()
     useTarkovValuesServiceMock()
@@ -211,9 +254,36 @@ describe('getItems()', () => {
     // Assert
     expect(itemsResult.success).toBe(true)
     expect(itemsResult.value).toHaveLength(2)
-    expect(itemsResult.value[0].id).toBe('5c1d0f4986f7744bb01837fa')
-    expect(itemsResult.value[0].name).toBe('TerraGroup Labs keycard (Black)')
+    expect(itemsResult.value[0].id).toBe('584147732459775a2b6d9f12')
+    expect(itemsResult.value[0].name).toBe('Kalashnikov AKS-74U 5.45x39 assault rifle Default')
     expect(itemsResult.value[0].prices).toStrictEqual([
+      {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
+        merchant: 'prapor',
+        merchantLevel: 1,
+        quest: {
+          id: '5936d90786f7742b1420ba5b',
+          name: 'Debut',
+          wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Debut'
+        },
+        value: 24605,
+        valueInMainCurrency: 24605
+      },
+      {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '584147732459775a2b6d9f12',
+        merchant: 'flea-market',
+        merchantLevel: 0,
+        quest: null,
+        value: 28999,
+        valueInMainCurrency: 28999
+      }] as IPrice[])
+    expect(itemsResult.value[1].id).toBe('5c1d0f4986f7744bb01837fa')
+    expect(itemsResult.value[1].name).toBe('TerraGroup Labs keycard (Black)')
+    expect(itemsResult.value[1].prices).toStrictEqual([
       {
         barterItems: [
           {
@@ -242,33 +312,6 @@ describe('getItems()', () => {
         valueInMainCurrency: 0
       }
     ])
-    expect(itemsResult.value[1].id).toBe('584147732459775a2b6d9f12')
-    expect(itemsResult.value[1].name).toBe('Kalashnikov AKS-74U 5.45x39 assault rifle Default')
-    expect(itemsResult.value[1].prices).toStrictEqual([
-      {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
-        merchant: 'prapor',
-        merchantLevel: 1,
-        quest: {
-          id: '5936d90786f7742b1420ba5b',
-          name: 'Debut',
-          wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Debut'
-        },
-        value: 24605,
-        valueInMainCurrency: 24605
-      },
-      {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '584147732459775a2b6d9f12',
-        merchant: 'flea-market',
-        merchantLevel: 0,
-        quest: null,
-        value: 28999,
-        valueInMainCurrency: 28999
-      }] as IPrice[])
   })
 
   it('should filter items according to the global filter', async () => {
@@ -332,8 +375,9 @@ describe('getItems()', () => {
       }] as IPrice[])
   })
 
-  it('should fail when and item is not found an the merchant filter is not used', async () => {
+  it('should fail when and item is not found and the global filter is not used', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
     usePresetServiceMock()
     useTarkovValuesServiceMock()
@@ -351,6 +395,7 @@ describe('getItems()', () => {
 
   it('should fail when fetching fails', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     usePresetServiceMock()
     useWebsiteConfigurationServiceMock()
 
@@ -377,6 +422,7 @@ describe('getItems()', () => {
 describe('getItemCategories()', () => {
   it('should get item categories', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
     usePresetServiceMock()
     useTarkovValuesServiceMock()
@@ -395,6 +441,7 @@ describe('getItemCategories()', () => {
 describe('getItemsOfCategories()', () => {
   it('should get the items belonging to the categories', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
     usePresetServiceMock()
     useTarkovValuesServiceMock()
@@ -468,6 +515,7 @@ describe('getItemsOfCategories()', () => {
 
   it('should fail when no items belong to the categories', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
     usePresetServiceMock()
     useTarkovValuesServiceMock()
@@ -485,6 +533,7 @@ describe('getItemsOfCategories()', () => {
 
   it('should fail when no items are found an the merchant filter is not used', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
     usePresetServiceMock()
     useTarkovValuesServiceMock()
@@ -504,6 +553,7 @@ describe('getItemsOfCategories()', () => {
 describe('getMainCurrency()', () => {
   it('should get the main currency', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     useTarkovValuesServiceMock()
 
     const itemService = new ItemService()
@@ -518,6 +568,7 @@ describe('getMainCurrency()', () => {
 
   it('should fail if the main currency cannot be found', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     useTarkovValuesServiceMock()
 
     const tarkovValuesServiceMock = Services.get(TarkovValuesService)
@@ -541,6 +592,7 @@ describe('getMainCurrency()', () => {
 describe('initialize', () => {
   it('should fetch presets and update preset items properties', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
     usePresetServiceMock()
     useTarkovValuesServiceMock()
@@ -560,6 +612,7 @@ describe('initialize', () => {
 
   it('should update the prices of all the items if the cache has expired', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
     usePresetServiceMock()
     useTarkovValuesServiceMock()
@@ -588,6 +641,7 @@ describe('initialize', () => {
 
   it('should do nothing if the cached data is up to date', async () => {
     // Arrange
+    useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
     usePresetServiceMock()
     useTarkovValuesServiceMock()
