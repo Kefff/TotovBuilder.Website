@@ -1704,7 +1704,7 @@ describe('toSharableURL()', () => {
 
     // Assert
     expect(sharableStringResult.success).toBe(false)
-    expect(sharableStringResult.failureMessage).toBe('Cannot share build "Build 1" by link because it is too large. You can still share it by using the "Export" button to export it as a file that can be imported by another person.')
+    expect(sharableStringResult.failureMessage).toBe('Cannot share build "Build 1" by link because it is too large. You can still share it by using the "Export builds to a file" button to export it as a file that can be imported by another person.')
   })
 })
 

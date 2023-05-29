@@ -1,4 +1,4 @@
-import { anything, instance, mock, verify, when } from 'ts-mockito'
+import { anything, instance, mock, when } from 'ts-mockito'
 import { IBuild } from '../../models/build/IBuild'
 import { BuildService } from '../../services/BuildService'
 import { ImportService } from '../../services/ImportService'
@@ -47,6 +47,5 @@ describe('import()', () => {
 
     // Assert
     expect(importedBuilds).toStrictEqual(builds)
-    verify(versionServiceMock.executeBuildMigrations(anything())).twice()
   })
 })

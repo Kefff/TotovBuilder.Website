@@ -8,7 +8,7 @@ import { NotificationService, NotificationType } from '../../services/Notificati
 import { IBuild } from '../../models/build/IBuild'
 import { useI18n } from 'vue-i18n'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import { BuildService } from '../../services/BuildService'
+import { VersionService } from '../../services/VersionService'
 
 export default defineComponent({
   components: {
@@ -89,12 +89,13 @@ export default defineComponent({
         return
       }
 
+      for (const build of buildsResult.value) {
+        Services.get(VersionService).executeBuildMigrations(build) // Executing migrations on the build in case it is obsolete
+      }
+
       readenBuilds.value = buildsResult.value
 
-      const buildService = Services.get(BuildService)
-
       for (const build of readenBuilds.value) {
-        buildService.updateObsoleteBuild(build)
         const summaryResult = await buildPropertiesService.getSummary(build)
 
         if (!summaryResult.success) {

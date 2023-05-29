@@ -2,17 +2,13 @@ import { useItemServiceMock } from '../../../__mocks__/ItemServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
 import { IBuild } from '../../../models/build/IBuild'
 import { IRangedWeapon } from '../../../models/item/IRangedWeapon'
-import { VersionService } from '../../../services/VersionService'
-import Services from '../../../services/repository/Services'
 import { Migration160 } from '../../../utils/migrations/Migration1.6.0'
 
-describe('execute()', () => {
+describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
   it('should update obsolete builds to use the default preset item instead of the base item for their weapons', async () => {
     // Arrange
     useItemServiceMock()
     useWebsiteConfigurationServiceMock()
-
-    Services.configure(VersionService)
 
     const obsoleteBuild = {
       id: '',
@@ -172,7 +168,6 @@ describe('execute()', () => {
           wikiLink: ''
         } as IRangedWeapon])
     useWebsiteConfigurationServiceMock()
-    Services.configure(VersionService)
 
     const obsoleteBuild = {
       id: '',
@@ -224,7 +219,6 @@ describe('execute()', () => {
     // Arrange
     useItemServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(VersionService)
 
     const upToDataBuild = {
       id: '',

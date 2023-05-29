@@ -2,7 +2,6 @@ import { IBuild } from '../../models/build/IBuild'
 import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import { IMigration } from '../../models/utils/IMigration'
 import { ItemService } from '../../services/ItemService'
-import { VersionService } from '../../services/VersionService'
 import Services from '../../services/repository/Services'
 import Result, { FailureType } from '../Result'
 
@@ -15,14 +14,9 @@ export class Migration160 implements IMigration {
   public version = '1.6.0'
 
   private async executeBuildMigration(build: IBuild): Promise<Result> {
-    const versionService = Services.get(VersionService)
     const itemService = Services.get(ItemService)
 
     let hasFailed = false
-
-    if (versionService.compareVersions(build.lastWebsiteVersion, this.version) >= 0) {
-      return Result.ok()
-    }
 
     for (const inventorySlot of build.inventorySlots) {
       if (inventorySlot.typeId !== 'onSling' && inventorySlot.typeId !== 'onBack' && inventorySlot.typeId !== 'holster') {

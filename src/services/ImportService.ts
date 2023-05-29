@@ -3,7 +3,6 @@ import { BuildService } from './BuildService'
 import Services from './repository/Services'
 import vueI18n from '../plugins/vueI18n'
 import Result, { FailureType } from '../utils/Result'
-import { VersionService } from './VersionService'
 
 /**
  * Represents a service responsible for importing builds.
@@ -35,7 +34,6 @@ export class ImportService {
     const importDate = new Date()
 
     for (const build of builds) {
-      Services.get(VersionService).executeBuildMigrations(build) // Executing migrations on the build in case it is obsolete
       build.lastExported = importDate
       await buildService.add(build)
     }

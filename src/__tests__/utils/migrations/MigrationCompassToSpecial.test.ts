@@ -1,14 +1,11 @@
 import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
 import { IBuild } from '../../../models/build/IBuild'
-import { VersionService } from '../../../services/VersionService'
-import Services from '../../../services/repository/Services'
 import { MigrationCompassToSpecial } from '../../../utils/migrations/MigrationCompassToSpecial'
 
-describe('execute()', () => {
+describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
   it('should replaces the compass inventory slot by the special inventory slots in obsolete builds.', async () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
-    Services.configure(VersionService)
 
     const originalUpdatedDate = new Date(1)
     const obsoleteBuild = {
