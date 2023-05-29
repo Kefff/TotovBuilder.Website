@@ -132,6 +132,11 @@ export interface IWebsiteConfiguration {
    */
   tarkovValuesApi: string,
 
+  /**
+   * Version of the website.
+   */
+  version: string,
+
   /*
    * Storage key for the current version.
    */

@@ -56,8 +56,11 @@ export async function configureServices(): Promise<void> {
   Services.configure(ModSlotComponentService)
 
   // Initialization of immediatly required values
+  const versionService = Services.get(VersionService)
+
   await Services.get(WebsiteConfigurationService).initialize()
   await Services.get(TarkovValuesService).initialize()
+  await versionService.initialize()
 
   Services.setInitializationFinished()
 

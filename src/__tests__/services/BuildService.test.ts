@@ -1,7 +1,7 @@
 import { IBuild } from '../../models/build/IBuild'
 import { BuildService } from '../../services/BuildService'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { anything, spy, when } from 'ts-mockito'
+import { anything, spy, verify, when } from 'ts-mockito'
 import Result, { FailureType } from '../../utils/Result'
 import WebsiteConfigurationMock from '../../../test-data/website-configuration.json'
 import Services from '../../services/repository/Services'
@@ -9,8 +9,9 @@ import { WebsiteConfigurationService } from '../../services/WebsiteConfiguration
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
-import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import { VersionService } from '../../services/VersionService'
+import Migrations from '../../utils/migrations/Migrations'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
 
 const builds: IBuild[] = [
   {
@@ -609,6 +610,7 @@ afterEach(() => {
   localStorage.clear()
 })
 
+
 describe('add()', () => {
   it('should add a build', async () => {
     // Arrange
@@ -749,9 +751,32 @@ describe('delete()', () => {
 })
 
 describe('fromSharableString()', () => {
-  it('should get a build from a sharable string', async () => {
+  it('should get a build from a sharable string and execute migrations on it', async () => {
     // Arrange
-    useVersionServiceMock()
+    Services.configure(VersionService)
+
+    Migrations.splice(0)
+    Migrations.push(
+      {
+        migrateBuild: (build: IBuild) => {
+          build.name = build.name + '1.5.0'
+          return Promise.resolve(Result.ok())
+        },
+        migrateBuildUnrelatedData: () => {
+          return Promise.resolve(Result.ok())
+        },
+        version: '1.5.0'
+      },
+      {
+        migrateBuild: (build: IBuild) => {
+          build.name = build.name + '|' + '1.6.0'
+          return Promise.resolve(Result.ok())
+        },
+        migrateBuildUnrelatedData: () => {
+          return Promise.resolve(Result.ok())
+        },
+        version: '1.6.0'
+      })
 
     const service = new BuildService()
     const sharableString = 'XQAAAAKBAQAAAAAAAABAqEppVBKy3f2nWA1_4C5z8-v7-PB2PnO3yE24i4uplQNOe2AQti9qfQ3vHsOnTKDq2nEEFb79VsBzBnD-pb-5Nb0_87qgYNgUqN-kUzC-ixXoaUIxP5bVjrq-YghBtAFQa_O4inxq3hwebGM3jUCTpB0ou_BCcoJymajYEBQ2OvPuy_aF8Vtf4UR8KYA6nugVJv5Kd0v6DWN94D7Kgaza5GFSYqrRHItjPLx6krp0SGceYjtn1RNUBX-ea41hpKDXlBkYuxoBe-ZT10P4Ouq0e2Mmn82YwcUUBrZvQhh3uG6Dn_YU1No29Qi4js2uAwpm-nroMnPbxOd9jDkNeED-9xXjIA'
@@ -929,7 +954,7 @@ describe('fromSharableString()', () => {
       ],
       lastExported: undefined,
       lastWebsiteVersion: undefined,
-      name: ''
+      name: '1.5.0|1.6.0'
     } as IBuild)
   })
 
@@ -959,6 +984,37 @@ describe('fromSharableString()', () => {
     // Assert
     expect(buildResult.success).toBe(false)
     expect(buildResult.failureMessage).toBe('Cannot read the shared link. It seems to be corrupted.')
+  })
+
+  it('should notify when a migration fails', async () => {
+    // Arrange
+    useWebsiteConfigurationServiceMock()
+    Services.configure(NotificationService)
+    Services.configure(VersionService)
+
+    const notificationServiceSpy = spy(Services.get(NotificationService))
+
+    Migrations.splice(0)
+    Migrations.push(
+      {
+        migrateBuild: () => {
+          return Promise.resolve(Result.fail(FailureType.error, undefined, 'Error'))
+        },
+        migrateBuildUnrelatedData: () => {
+          return Promise.resolve(Result.ok())
+        },
+        version: '1.6.0'
+      })
+
+    const service = new BuildService()
+    const sharableString = 'XQAAAAKBAQAAAAAAAABAqEppVBKy3f2nWA1_4C5z8-v7-PB2PnO3yE24i4uplQNOe2AQti9qfQ3vHsOnTKDq2nEEFb79VsBzBnD-pb-5Nb0_87qgYNgUqN-kUzC-ixXoaUIxP5bVjrq-YghBtAFQa_O4inxq3hwebGM3jUCTpB0ou_BCcoJymajYEBQ2OvPuy_aF8Vtf4UR8KYA6nugVJv5Kd0v6DWN94D7Kgaza5GFSYqrRHItjPLx6krp0SGceYjtn1RNUBX-ea41hpKDXlBkYuxoBe-ZT10P4Ouq0e2Mmn82YwcUUBrZvQhh3uG6Dn_YU1No29Qi4js2uAwpm-nroMnPbxOd9jDkNeED-9xXjIA'
+
+    // Act
+    const buildResult = await service.fromSharableString(sharableString)
+
+    // Assert
+    expect(buildResult.success).toBe(true)
+    verify(notificationServiceSpy.notify(NotificationType.error, 'Error during the migration of build "" to "1.6.0".', true)).once()
   })
 })
 
@@ -1370,6 +1426,8 @@ describe('parseReducedBuild()', () => {
     ]
   ])('should fail when the parsing of an inventory slot fails', (reducedBuild: Record<string, unknown>, expected: string) => {
     // Arrange
+    useWebsiteConfigurationServiceMock()
+
     const service = new BuildService()
 
     // Act
@@ -1646,7 +1704,7 @@ describe('toSharableURL()', () => {
 
     // Assert
     expect(sharableStringResult.success).toBe(false)
-    expect(sharableStringResult.failureMessage).toBe('Cannot share build "Build 1" by link because it is too large. You can still share it by using the "Cog" menu to export it as a file that can be imported by another person.')
+    expect(sharableStringResult.failureMessage).toBe('Cannot share build "Build 1" by link because it is too large. You can still share it by using the "Export" button to export it as a file that can be imported by another person.')
   })
 })
 
@@ -1688,355 +1746,5 @@ describe('update()', () => {
     const getResult = service.get(build.id)
     expect(getResult.success).toBe(false)
     expect(getResult.failureMessage).toBe('Build "invalid" not found. It may have been deleted.')
-  })
-})
-
-describe('updateObsoleteBuild', () => {
-  describe('version special inventory slots', () => {
-    it('should update an obsolete build', async () => {
-      // Arrange
-      useItemServiceMock()
-      useVersionServiceMock()
-      useWebsiteConfigurationServiceMock()
-
-      const newVersion = await Services.get(VersionService).getCurrentVersion()
-      const originalUpdatedDate = new Date(1)
-      const obsoleteBuild = {
-        id: '',
-        inventorySlots: [
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'compass'
-          }
-        ],
-        lastExported: new Date(1),
-        lastUpdated: originalUpdatedDate,
-        lastWebsiteVersion: undefined,
-        name: 'Obsolete build'
-      } as IBuild
-
-      const buildServer = new BuildService()
-
-      // Act
-      await buildServer.updateObsoleteBuild(obsoleteBuild)
-
-      // Assert
-      expect(obsoleteBuild.lastUpdated).not.toBe(originalUpdatedDate)
-      expect(obsoleteBuild).toStrictEqual({
-        id: '',
-        inventorySlots: [
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
-                modSlots: [],
-                quantity: 1
-              },
-              undefined,
-              undefined
-            ],
-            typeId: 'special'
-          }
-        ],
-        lastExported: new Date(1),
-        lastUpdated: obsoleteBuild.lastUpdated, // Needed as the date changes at each execution
-        lastWebsiteVersion: newVersion,
-        name: 'Obsolete build'
-      } as IBuild)
-    })
-
-    it('should do nothing to builds without compass inventory slot', async () => {
-      // Arrange
-      useItemServiceMock()
-      useVersionServiceMock()
-      useWebsiteConfigurationServiceMock()
-
-      const obsoleteBuild = {
-        id: '',
-        inventorySlots: [
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '57dc2fa62459775949412633', // Kalashnikov AKS-74U 5.45x39 assault rifle
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'onSling'
-          }
-        ],
-        lastExported: new Date(1),
-        lastUpdated: new Date(1),
-        lastWebsiteVersion: undefined,
-        name: 'Obsolete build'
-      } as IBuild
-
-      const buildServer = new BuildService()
-
-      // Act
-      await buildServer.updateObsoleteBuild(obsoleteBuild)
-
-      // Assert
-      expect(obsoleteBuild).toStrictEqual(obsoleteBuild)
-    })
-  })
-
-  describe('version 1.6.0', () => {
-    it('should update an obsolete build', async () => {
-      // Arrange
-      useItemServiceMock()
-      useVersionServiceMock()
-      useWebsiteConfigurationServiceMock()
-
-      const newVersion = await Services.get(VersionService).getCurrentVersion()
-      const originalUpdatedDate = new Date(1)
-      const obsoleteBuild = {
-        id: '',
-        inventorySlots: [
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '57dc2fa62459775949412633', // Kalashnikov AKS-74U 5.45x39 assault rifle
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'onSling'
-          },
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '57dc2fa62459775949412633', // Kalashnikov AKS-74U 5.45x39 assault rifle
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'onBack'
-          },
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '5e81c3cbac2bb513793cdc75', // Colt M1911A1 .45 ACP pistol
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'holster'
-          },
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'backpack'
-          }
-        ],
-        lastExported: new Date(1),
-        lastUpdated: originalUpdatedDate,
-        lastWebsiteVersion: '1.5.3',
-        name: 'Obsolete build'
-      } as IBuild
-
-      const buildServer = new BuildService()
-
-      // Act
-      await buildServer.updateObsoleteBuild(obsoleteBuild)
-
-      // Assert
-      expect(obsoleteBuild.lastUpdated).not.toBe(originalUpdatedDate)
-      expect(obsoleteBuild).toStrictEqual({
-        id: '',
-        inventorySlots: [
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'onSling'
-          },
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'onBack'
-          },
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '5eb2968186f7746d1f1a4fd5', // Colt M1911A1 .45 ACP pistol Default
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'holster'
-          },
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'backpack'
-          }
-        ],
-        lastExported: new Date(1),
-        lastUpdated: obsoleteBuild.lastUpdated, // Needed as the date changes at each execution
-        lastWebsiteVersion: newVersion,
-        name: 'Obsolete build'
-      } as IBuild)
-    })
-
-    it('should to nothing to invalid items and items without default preset id', async () => {
-      // Arrange
-      useVersionServiceMock()
-      useItemServiceMock(
-        true,
-        [
-          {
-            baseItemId: null,
-            caliber: '',
-            categoryId: 'mainWeapon',
-            conflictingItemIds: [],
-            defaultPresetId: null,
-            ergonomics: 0,
-            fireModes: [],
-            fireRate: 0,
-            horizontalRecoil: 0,
-            iconLink: '',
-            id: 'itemWithoutDefaultPresetId',
-            imageLink: '',
-            marketLink: '',
-            maxStackableAmount: 1,
-            modSlots: [],
-            name: 'Item without default preset id',
-            presetErgonomics: undefined,
-            presetHorizontalRecoil: undefined,
-            presetVerticalRecoil: undefined,
-            prices: [],
-            shortName: 'IWDPI',
-            verticalRecoil: 0,
-            weight: 0,
-            wikiLink: ''
-          } as IRangedWeapon])
-      useWebsiteConfigurationServiceMock()
-
-      const obsoleteBuild = {
-        id: '',
-        inventorySlots: [
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: 'invalid',
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'onSling'
-          },
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: 'itemWithoutDefaultPresetId',
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'onBack'
-          }
-        ],
-        lastExported: new Date(1),
-        lastUpdated: new Date(1),
-        lastWebsiteVersion: '1.5.3',
-        name: 'Obsolete build'
-      } as IBuild
-
-      const buildServer = new BuildService()
-
-      // Act
-      await buildServer.updateObsoleteBuild(obsoleteBuild)
-
-      // Assert
-      expect(obsoleteBuild).toStrictEqual(obsoleteBuild)
-    })
-  })
-
-  it('should do nothing to an up to date build', async () => {
-    // Arrange
-    useItemServiceMock()
-    useWebsiteConfigurationServiceMock()
-
-    const upToDateBuild = {
-      id: '',
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '57dc2fa62459775949412633', // Kalashnikov AKS-74U 5.45x39 assault rifle
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'onSling'
-        }
-      ],
-      lastExported: new Date(1),
-      lastUpdated: new Date(1),
-      lastWebsiteVersion: '999.999.999',
-      name: 'Up to date build'
-    } as IBuild
-
-    const buildServer = new BuildService()
-
-    // Act
-    await buildServer.updateObsoleteBuild(upToDateBuild)
-
-    // Assert
-    expect(upToDateBuild).toStrictEqual(upToDateBuild)
   })
 })

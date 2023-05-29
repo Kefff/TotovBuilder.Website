@@ -1,18 +1,24 @@
-import { anything, instance, mock, when } from 'ts-mockito'
+import { anything, instance, mock, verify, when } from 'ts-mockito'
 import { IBuild } from '../../models/build/IBuild'
 import { BuildService } from '../../services/BuildService'
 import { ImportService } from '../../services/ImportService'
 import Services from '../../services/repository/Services'
+import { VersionService } from '../../services/VersionService'
 
 describe('import()', () => {
-  it('should import builds', async () => {
+  it('should import builds and execute migrations on them', async () => {
     // Arrange
     const buildServiceMock = mock<BuildService>()
     when(buildServiceMock.add(anything())).thenCall((build: IBuild) => {
       importedBuilds.push(build)
       return ''
     })
+
+    const versionServiceMock = mock<VersionService>()
+    when(versionServiceMock.executeBuildMigrations(anything())).thenReturn(Promise.resolve(true))
+
     Services.configure(BuildService, undefined, instance(buildServiceMock))
+    Services.configure(VersionService, undefined, instance(versionServiceMock))
 
     const importedBuilds: IBuild[] = []
 
@@ -41,5 +47,6 @@ describe('import()', () => {
 
     // Assert
     expect(importedBuilds).toStrictEqual(builds)
+    verify(versionServiceMock.executeBuildMigrations(anything())).twice()
   })
 })

@@ -9,11 +9,7 @@ import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import Services from './repository/Services'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
-import { ItemService } from './ItemService'
-import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { VersionService } from './VersionService'
-import { GlobalFilterService } from './GlobalFilterService'
-import { IMerchantFilter } from '../models/utils/IMerchantFilter'
 
 /**
  * Represents a service responsible for managing builds.
@@ -27,7 +23,7 @@ export class BuildService {
   public async add(build: IBuild): Promise<string> {
     build.id = Guid.create().toString()
     build.lastUpdated = new Date()
-    build.lastWebsiteVersion = await Services.get(VersionService).getCurrentVersion()
+    build.lastWebsiteVersion = await Services.get(VersionService).getVersion()
 
     const storageKey = this.getKey(build.id)
     localStorage.setItem(storageKey, JSON.stringify(build))
@@ -103,6 +99,8 @@ export class BuildService {
       return Result.fail(FailureType.error, 'BuildService.fromSharableString()', i18n.t('message.invalidSharableString'))
     }
 
+    Services.get(VersionService).executeBuildMigrations(buildResult.value) // Executing migrations on the build in case it is obsolete
+
     return Result.ok(buildResult.value)
   }
 
@@ -115,27 +113,24 @@ export class BuildService {
     const storageKey = this.getKey(id)
     const serializedBuild = localStorage.getItem(storageKey)
 
-    if (serializedBuild !== null) {
-      const build = JSON.parse(serializedBuild) as IBuild
-
-      // Converting dates back to Date type
-      build.lastUpdated = new Date(build.lastUpdated as unknown as string)
-
-      if (build.lastExported != null) {
-        build.lastExported = new Date(build.lastExported as unknown as string)
-      }
-
-      // Updating and saving obsolete builds
-      this.updateObsoleteBuild(build)
-
-      return Result.ok(build)
+    if (serializedBuild === null) {
+      return Result.fail<IBuild>(
+        FailureType.error,
+        'BuildService.update()',
+        i18n.t('message.buildNotFound', { id })
+      )
     }
 
-    return Result.fail<IBuild>(
-      FailureType.error,
-      'BuildService.update()',
-      i18n.t('message.buildNotFound', { id })
-    )
+    const build = JSON.parse(serializedBuild) as IBuild
+
+    // Converting dates back to Date type
+    build.lastUpdated = new Date(build.lastUpdated as unknown as string)
+
+    if (build.lastExported != null) {
+      build.lastExported = new Date(build.lastExported as unknown as string)
+    }
+
+    return Result.ok(build)
   }
 
   /**
@@ -250,7 +245,7 @@ export class BuildService {
   public async update(id: string, build: IBuild): Promise<Result> {
     build.id = id
     build.lastUpdated = new Date()
-    build.lastWebsiteVersion = await Services.get(VersionService).getCurrentVersion()
+    build.lastWebsiteVersion = await Services.get(VersionService).getVersion()
 
     const storageKey = this.getKey(id)
 
@@ -269,111 +264,6 @@ export class BuildService {
       'BuildService.update()',
       i18n.t('message.buildNotFound', { id })
     )
-  }
-
-  /**
-   * Updates an obsolete build.
-   * @param build - Build to update.
-   */
-  public async updateObsoleteBuild(build: IBuild): Promise<void> {
-    let needSave = false
-
-    if (this.compareVersions(build.lastWebsiteVersion, undefined) <= 0) {
-      // Replacing the compass inventory slot by the special inventory slots
-      const obsoleteInventorySlot = build.inventorySlots.find(is => is.typeId === 'compass')
-
-      if (obsoleteInventorySlot != null) {
-        obsoleteInventorySlot.typeId = 'special'
-        obsoleteInventorySlot.items = [
-          obsoleteInventorySlot.items[0],
-          undefined,
-          undefined
-        ]
-
-        needSave = true
-      }
-    }
-
-    if (this.compareVersions(build.lastWebsiteVersion, '1.6.0') < 0) {
-      // Updating builds to use the default preset item instead of the base item for their weapons
-      const itemService = Services.get(ItemService)
-
-      for (const inventorySlot of build.inventorySlots) {
-        if (inventorySlot.typeId === 'onSling' || inventorySlot.typeId === 'onBack' || inventorySlot.typeId === 'holster') {
-          for (const inventoryItem of inventorySlot.items) {
-            if (inventoryItem != null) {
-              const itemResult = await itemService.getItem(inventoryItem.itemId)
-
-              if (!itemResult.success) {
-                continue
-              }
-
-              const rangedWeapon = itemResult.value as IRangedWeapon
-
-              if (rangedWeapon.defaultPresetId != null) {
-                inventoryItem.itemId = rangedWeapon.defaultPresetId
-              }
-            }
-          }
-        }
-      }
-
-      // Getting the saved obsolete merchants filter and replacing it by a global filter
-      const merchantsFilterStorageKey = 'merchant_filter'
-      const serializedMerchantFilters = localStorage.getItem(merchantsFilterStorageKey)
-
-      if (serializedMerchantFilters != null) {
-        const merchantFilters = JSON.parse(serializedMerchantFilters) as IMerchantFilter[]
-
-        const globalFilterService = Services.get(GlobalFilterService)
-        globalFilterService.saveMerchantFilters(merchantFilters)
-
-        localStorage.removeItem(merchantsFilterStorageKey)
-      }
-
-      needSave = true
-    }
-
-    if (needSave) {
-      this.update(build.id, build)
-    }
-  }
-
-  /**
-   * Compares two version numbers.
-   * @param websiteVersion1 - First version number.
-   * @param websiteVersion2 - Second version number.
-   * @returns -1 if the first version number is anterior to the second, 1 if it is posterior, 0 if they are identical.
-   */
-  private compareVersions(websiteVersion1: string | undefined, websiteVersion2: string | undefined): number {
-    const websiteVersion1Numbers = [0, 0, 0]
-    const websiteVersion2Numbers = [0, 0, 0]
-
-    if (websiteVersion1 != null) {
-      const websiteVersion1Strings = websiteVersion1.split('.')
-
-      for (let i = 0; i < websiteVersion1Strings.length; i++) {
-        websiteVersion1Numbers[i] = Number.parseInt(websiteVersion1Strings[i])
-      }
-    }
-
-    if (websiteVersion2 != null) {
-      const websiteVersion2Strings = websiteVersion2.split('.')
-
-      for (let i = 0; i < websiteVersion2Strings.length; i++) {
-        websiteVersion2Numbers[i] = Number.parseInt(websiteVersion2Strings[i])
-      }
-    }
-
-    for (let i = 0; i < websiteVersion1Numbers.length; i++) {
-      if (websiteVersion1Numbers[i] < websiteVersion2Numbers[i]) {
-        return -1
-      } else if (websiteVersion1Numbers[i] > websiteVersion2Numbers[i]) {
-        return 1
-      }
-    }
-
-    return 0
   }
 
   /**

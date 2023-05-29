@@ -40,6 +40,7 @@ export class WebsiteConfigurationService {
     pricesApi: '',
     questsApi: '',
     tarkovValuesApi: '',
+    version: '',
     versionStorageKey: ''
   }
 

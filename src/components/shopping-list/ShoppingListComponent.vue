@@ -12,7 +12,6 @@
   <Sidebar
     v-model:visible="open"
     position="left"
-    :closable="true"
     style="width: auto"
   >
     <div class="sidebar-title">

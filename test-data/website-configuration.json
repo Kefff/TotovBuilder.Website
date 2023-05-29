@@ -25,5 +25,6 @@
   "pricesApi": "prices",
   "questsApi": "quests",
   "tarkovValuesApi": "tarkovvalues",
+  "version": "1.6.0",
   "versionStorageKey": "version"
 }
