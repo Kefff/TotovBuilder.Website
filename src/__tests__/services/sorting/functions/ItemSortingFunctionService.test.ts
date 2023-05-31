@@ -4,7 +4,7 @@ import { IPrice } from '../../../../models/item/IPrice'
 import SortingData, { SortingOrder } from '../../../../models/utils/SortingData'
 import { InventoryItemService } from '../../../../services/InventoryItemService'
 import { ItemService } from '../../../../services/ItemService'
-import { MerchantFilterService } from '../../../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../../../services/GlobalFilterService'
 import Services from '../../../../services/repository/Services'
 import { ItemSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunction'
 import { SortingService } from '../../../../services/sorting/SortingService'
@@ -12,6 +12,7 @@ import Result from '../../../../utils/Result'
 import { useItemServiceMock } from '../../../../__mocks__/ItemServiceMock'
 import { useTarkovValuesServiceMock } from '../../../../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../../../__mocks__/WebsiteConfigurationServiceMock'
+import { usePresetServiceMock } from '../../../../__mocks__/PresetPropertiesServiceMock'
 
 describe('compareByCategory()', () => {
   it.each([
@@ -20,7 +21,7 @@ describe('compareByCategory()', () => {
     [{ categoryId: 'cat1' } as IItem, { categoryId: 'cat1' } as IItem, 0]
   ])('it should compare by category', async (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
     // Arrange
-    const sortingService = new SortingService([new ItemSortingFunctions()])
+    const sortingService = new SortingService(new ItemSortingFunctions())
     const sortingData = new SortingData()
 
     // Act
@@ -46,7 +47,7 @@ describe('compareByName()', () => {
     [{ name: 'a', categoryId: 'cat1' } as IItem, { name: 'a', categoryId: 'cat1' } as IItem, 0]
   ])('it should compare by category and name', async (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
     // Arrange
-    const sortingService = new SortingService([new ItemSortingFunctions()])
+    const sortingService = new SortingService(new ItemSortingFunctions())
     const sortingData = new SortingData()
     sortingData.property = 'invalid'
 
@@ -127,16 +128,17 @@ describe('compareByPrice()', () => {
   ])('should compare by category, price and name', async (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
     // Arrange
     useItemServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventoryItemService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const itemServiceSpy = spy(Services.get(ItemService))
     when(itemServiceSpy.getItem(item1.id)).thenReturn(Promise.resolve(Result.ok(item1)))
     when(itemServiceSpy.getItem(item2.id)).thenReturn(Promise.resolve(Result.ok(item2)))
 
-    const sortingService = new SortingService([new ItemSortingFunctions()])
+    const sortingService = new SortingService(new ItemSortingFunctions())
     const sortingData = new SortingData()
 
     // Act
@@ -158,7 +160,7 @@ describe('compareByPrice()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventoryItemService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const item1 = { id: 'i1', name: 'a', categoryId: 'cat1', prices: [{ currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as IItem
     const item2 = { id: 'i2', name: 'a', categoryId: 'cat1', prices: [{ currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 2, valueInMainCurrency: 2 }] } as IItem
@@ -167,7 +169,7 @@ describe('compareByPrice()', () => {
     when(itemServiceSpy.getItem(item1.id)).thenReturn(Promise.resolve(Result.fail()))
     when(itemServiceSpy.getItem(item2.id)).thenReturn(Promise.resolve(Result.fail()))
 
-    const sortingService = new SortingService([new ItemSortingFunctions()])
+    const sortingService = new SortingService(new ItemSortingFunctions())
     const sortingData = new SortingData()
 
     // Act

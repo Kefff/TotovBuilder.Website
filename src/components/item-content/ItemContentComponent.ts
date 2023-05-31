@@ -3,9 +3,10 @@ import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IContainer } from '../../models/item/IContainer'
 import { IItem } from '../../models/item/IItem'
 import { ItemContentComponentService } from '../../services/components/ItemContentComponentService'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 
 export default defineComponent({
   props: {
@@ -24,7 +25,8 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup: (props, { emit }) => {
-    const merchantFilterService = Services.get(MerchantFilterService)
+    const itemPropertiesService = Services.get(ItemPropertiesService)
+    const globalFilterService = Services.get(GlobalFilterService)
 
     const editing = inject<Ref<boolean>>('editing')
 
@@ -33,7 +35,7 @@ export default defineComponent({
       get: () => props.modelValue,
       set: (value: IInventoryItem[]) => emit('update:modelValue', value)
     })
-    const isMagazine = computed(() => props.containerItem.categoryId === 'magazine')
+    const isMagazine = computed(() => itemPropertiesService.isMagazine(props.containerItem))
     const maximumQuantity = computed(() => isMagazine.value ? props.containerItem.capacity : undefined)
 
     const acceptedItems = ref<IItem[]>([])
@@ -41,16 +43,18 @@ export default defineComponent({
     const itemPathPrefix = PathUtils.itemPrefix
     const itemToAdd = ref<IInventoryItem>()
 
+    const contentPathPrefix = PathUtils.contentPrefix
+
     watch(() => props.containerItem.id, () => initialize())
 
     onMounted(() => {
-      merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       initialize()
     })
 
     onUnmounted(() => {
-      merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
     })
 
     /**
@@ -111,6 +115,7 @@ export default defineComponent({
       canAddItem,
       categoryIds,
       content,
+      contentPathPrefix,
       editing,
       isMagazine,
       itemPathPrefix,

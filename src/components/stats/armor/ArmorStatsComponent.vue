@@ -47,11 +47,11 @@
     </div>
   </div>
   <div
-    v-if="item.ergonomicsPercentageModifier !== 0 || item.movementSpeedPercentageModifier !== 0 || item.turningSpeedPercentageModifier !== 0"
+    v-if="ergonomicsPercentageModifier !== 0 || item.movementSpeedPercentageModifier !== 0 || item.turningSpeedPercentageModifier !== 0"
     class="stats-line"
   >
     <div
-      v-if="item.ergonomicsPercentageModifier !== 0"
+      v-if="ergonomicsPercentageModifier !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -61,8 +61,8 @@
         />
         <span>{{ $t('caption.ergonomics') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.ergonomicsPercentageModifier)">
-        {{ StatsUtils.getDisplayValue(item.ergonomicsPercentageModifier, true, true) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsPercentageModifier)">
+        {{ StatsUtils.getDisplayValue(ergonomicsPercentageModifier, true, true) }}
       </div>
     </div>
     <div

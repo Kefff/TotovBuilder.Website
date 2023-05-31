@@ -3,10 +3,7 @@
     v-if="item.blindnessProtectionPercentage !== 0"
     class="stats-line"
   >
-    <div
-      v-if="item.blindnessProtectionPercentage !== 0"
-      class="stats-entry"
-    >
+    <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
           icon="low-vision"

@@ -6528,15 +6528,10 @@
     "barterItems": [],
     "currencyName": "RUB",
     "itemId": "57dc2fa62459775949412633",
-    "merchant": "prapor",
+    "merchant": "mechanic",
     "merchantLevel": 1.0,
-    "quest": {
-      "id": "5936d90786f7742b1420ba5b",
-      "name": "Debut",
-      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Debut"
-    },
-    "value": 24605.0,
-    "valueInMainCurrency": 24605.0
+    "value": 15281.0,
+    "valueInMainCurrency": 15281.0
   },
   {
     "barterItems": [],
@@ -6545,8 +6540,8 @@
     "merchant": "flea-market",
     "merchantLevel": 0.0,
     "quest": null,
-    "value": 28999.0,
-    "valueInMainCurrency": 28999.0
+    "value": 26762.0,
+    "valueInMainCurrency": 26762.0
   },
   {
     "barterItems": [],
@@ -17085,10 +17080,10 @@
     "currencyName": "RUB",
     "itemId": "5ac66cb05acfc40198510a10",
     "merchant": "flea-market",
-    "merchantLevel": 0.0,
+    "merchantLevel": 0,
     "quest": null,
-    "value": 47320.0,
-    "valueInMainCurrency": 47320.0
+    "value": 72842,
+    "valueInMainCurrency": 72842
   },
   {
     "barterItems": [],
@@ -22086,37 +22081,17 @@
     "valueInMainCurrency": 5083.0
   },
   {
-    "barterItems": [],
-    "currencyName": "RUB",
-    "itemId": "5beed0f50db834001c062b12",
-    "merchant": "prapor",
-    "merchantLevel": 4.0,
-    "quest": null,
-    "value": 68452.0,
-    "valueInMainCurrency": 68452.0
-  },
-  {
-    "barterItems": [],
-    "currencyName": "RUB",
-    "itemId": "5beed0f50db834001c062b12",
-    "merchant": "flea-market",
-    "merchantLevel": 0.0,
-    "quest": null,
-    "value": 60572.0,
-    "valueInMainCurrency": 60572.0
-  },
-  {
-    "barterItems": [
-      { "itemId": "5c06782b86f77426df5407d2", "quantity": 8.0 },
-      { "itemId": "5d1c819a86f774771b0acd6c", "quantity": 2.0 }
-    ],
-    "currencyName": "barter",
-    "itemId": "5beed0f50db834001c062b12",
-    "merchant": "mechanic",
-    "merchantLevel": 3.0,
-    "quest": null,
-    "value": 0.0,
-    "valueInMainCurrency": 0.0
+    "id": "5beed0f50db834001c062b12",
+    "buyFor": [
+      {
+        "currency": "RUB",
+        "price": 42440,
+        "priceRUB": 42440,
+        "vendor": {
+          "normalizedName": "flea-market"
+        }
+      }
+    ]
   },
   {
     "barterItems": [],
@@ -27219,23 +27194,13 @@
   },
   {
     "barterItems": [],
-    "currencyName": "USD",
-    "itemId": "5cadc190ae921500103bb3b6",
-    "merchant": "peacekeeper",
-    "merchantLevel": 1.0,
-    "quest": null,
-    "value": 124.0,
-    "valueInMainCurrency": 13888.0
-  },
-  {
-    "barterItems": [],
     "currencyName": "RUB",
     "itemId": "5cadc190ae921500103bb3b6",
     "merchant": "flea-market",
-    "merchantLevel": 0.0,
+    "merchantLevel": 0,
     "quest": null,
-    "value": 14253.0,
-    "valueInMainCurrency": 14253.0
+    "value": 14253,
+    "valueInMainCurrency": 14253
   },
   {
     "barterItems": [],
@@ -44860,5 +44825,102 @@
     "quest": null,
     "value": 0.0,
     "valueInMainCurrency": 0.0
+  },
+  {
+    "barterItems": [],
+    "currencyName": "RUB",
+    "itemId": "5acf7dd986f774486e1281bf",
+    "merchant": "mechanic",
+    "merchantLevel": 3,
+    "quest": null,
+    "value": 42938,
+    "valueInMainCurrency": 42938
+  },
+  {
+    "barterItems": [],
+    "currencyName": "RUB",
+    "itemId": "5acf7dd986f774486e1281bf",
+    "merchant": "flea-market",
+    "merchantLevel": 0,
+    "quest": null,
+    "value": 72842,
+    "valueInMainCurrency": 72842
+  },
+  {
+    "barterItems": [],
+    "currencyName": "USD",
+    "itemId": "5d3f0bc986f7743cb332abdc",
+    "merchant": "peacekeeper",
+    "merchantLevel": 1,
+    "quest": null,
+    "value": 124,
+    "valueInMainCurrency": 13888
+  },
+  {
+    "barterItems": [],
+    "currencyName": "RUB",
+    "itemId": "5d3f0bc986f7743cb332abdc",
+    "merchant": "flea-market",
+    "merchantLevel": 0,
+    "quest": null,
+    "value": 14253,
+    "valueInMainCurrency": 14253
+  },
+  {
+    "barterItems": [],
+    "currencyName": "RUB",
+    "itemId": "5c0d1ec986f77439512a1a72",
+    "merchant": "prapor",
+    "merchantLevel": 4.0,
+    "quest": null,
+    "value": 68452.0,
+    "valueInMainCurrency": 68452.0
+  },
+  {
+    "barterItems": [],
+    "currencyName": "RUB",
+    "itemId": "5c0d1ec986f77439512a1a72",
+    "merchant": "flea-market",
+    "merchantLevel": 0.0,
+    "quest": null,
+    "value": 60572.0,
+    "valueInMainCurrency": 60572.0
+  },
+  {
+    "barterItems": [
+      { "itemId": "5c06782b86f77426df5407d2", "quantity": 8.0 },
+      { "itemId": "5d1c819a86f774771b0acd6c", "quantity": 2.0 }
+    ],
+    "currencyName": "barter",
+    "itemId": "5c0d1ec986f77439512a1a72",
+    "merchant": "mechanic",
+    "merchantLevel": 3.0,
+    "quest": null,
+    "value": 0.0,
+    "valueInMainCurrency": 0.0
+  },
+  {
+    "barterItems": [],
+    "currencyName": "RUB",
+    "itemId": "584147732459775a2b6d9f12",
+    "merchant": "prapor",
+    "merchantLevel": 1.0,
+    "quest": {
+      "id": "5936d90786f7742b1420ba5b",
+      "name": "Debut",
+      "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Debut"
+    },
+    "value": 24605.0,
+    "valueInMainCurrency": 24605.0
+  },
+  {
+    "barterItems": [],
+    "currencyName": "RUB",
+    "itemId": "584147732459775a2b6d9f12",
+    "merchant": "flea-market",
+    "merchantLevel": 0.0,
+    "quest": null,
+    "value": 28999.0,
+    "valueInMainCurrency": 28999.0
   }
 ]

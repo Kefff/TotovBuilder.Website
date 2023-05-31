@@ -12,7 +12,7 @@ import StatsUtils from '../../utils/StatsUtils'
 import { IInventorySlotType } from '../../models/build/IInventorySlotType'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
@@ -44,7 +44,7 @@ export default defineComponent({
     const inventorySlotComponentService = Services.get(InventorySlotComponentService)
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
     const inventorySlotService = Services.get(InventorySlotService)
-    const merchantFilterService = Services.get(MerchantFilterService)
+    const globalFilterService = Services.get(GlobalFilterService)
     const notificationService = Services.get(NotificationService)
 
     const editing = inject<Ref<boolean>>('editing')
@@ -105,14 +105,14 @@ export default defineComponent({
 
     onMounted(() => {
       inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
-      merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       initialize()
     })
 
     onUnmounted(() => {
       inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
-      merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
     })
 
     /**
@@ -263,7 +263,7 @@ export default defineComponent({
      */
     async function setItemComponentParameters() {
       if (type.value != null) {
-        categoryIds.value = type.value.acceptedItemCategories.map((aic) => aic.id)
+        categoryIds.value = type.value.acceptedItemCategories
         acceptedItems.value = await inventorySlotComponentService.getAcceptedItems(categoryIds.value)
       }
     }

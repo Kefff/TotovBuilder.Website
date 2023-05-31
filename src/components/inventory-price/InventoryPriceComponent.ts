@@ -41,7 +41,7 @@ export default defineComponent({
     onMounted(() => initialize())
 
     /**
-     * Sets the tooltip.
+     * Initializes the component.
      */
     async function initialize() {
       const notificationService = Services.get(NotificationService)

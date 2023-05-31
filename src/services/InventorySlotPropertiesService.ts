@@ -77,7 +77,7 @@ export class InventorySlotPropertiesService {
         return Result.failFrom(ergonomicsPercentageModifierResult)
       }
 
-      ergonomicsPercentageModifier += ergonomicsPercentageModifierResult.value.ergonomicsPercentageModifierWithContent
+      ergonomicsPercentageModifier += ergonomicsPercentageModifierResult.value.ergonomicsPercentageModifierWithMods
     }
 
     return Result.ok(ergonomicsPercentageModifier)

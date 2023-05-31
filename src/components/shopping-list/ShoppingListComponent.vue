@@ -9,14 +9,19 @@
     </button>
   </div>
 
-  <Dialog
+  <Sidebar
     v-model:visible="open"
-    :closable="true"
-    :header="$t('caption.shoppingList')"
-    :modal="true"
-    :draggable="false"
+    position="left"
+    style="width: auto"
   >
-    <div>
+    <div class="sidebar-title">
+      <font-awesome-icon
+        icon="shopping-cart"
+        class="icon-before-text"
+      />
+      <span>{{ $t('caption.shoppingList') }}</span>
+    </div>
+    <div class="sidebar-option">
       <div
         v-for="(shoppingListItem, index) of shoppingList"
         :key="index"
@@ -31,15 +36,15 @@
           </div>
         </div>
         <div class="shopping-list-item-name">
-          {{ shoppingListItem.item.name }}
+          <div>
+            {{ shoppingListItem.item.name }}
+          </div>
         </div>
         <div class="shopping-list-item-price">
-          <div>
-            <Price
-              :price="shoppingListItem.price"
-              :show-details="false"
-            />
-          </div>
+          <Price
+            :price="shoppingListItem.price"
+            :show-details="false"
+          />
           <div
             v-if="shoppingListItem.quantity > 1"
             class="shopping-list-item-price-per-unit"
@@ -54,7 +59,7 @@
         </div>
       </div>
     </div>
-  </Dialog>
+  </Sidebar>
 </template>
 
 <script lang="ts" src="./ShoppingListComponent.ts" />

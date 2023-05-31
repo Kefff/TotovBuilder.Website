@@ -14,6 +14,8 @@ import ModSummary from '../mod/ModSummaryComponent.vue'
 import RangedWeaponModSummary from '../ranged-weapon-mod/RangedWeaponModSummaryComponent.vue'
 import RangedWeaponSummary from '../ranged-weapon/RangedWeaponSummaryComponent.vue'
 import VestSummary from '../vest/VestSummaryComponent.vue'
+import Services from '../../../services/repository/Services'
+import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
 
 export default defineComponent({
   components: {
@@ -36,6 +38,13 @@ export default defineComponent({
     item: {
       type: Object as PropType<IItem>,
       required: true
+    }
+  },
+  setup() {
+    const itemPropertiesService = Services.get(ItemPropertiesService)
+
+    return {
+      itemPropertiesService
     }
   }
 })

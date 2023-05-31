@@ -6,9 +6,10 @@ import Services from '../../services/repository/Services'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
+import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
 
 const inventorySlot1: IInventorySlot = {
   items: [
@@ -322,7 +323,7 @@ describe('getErgonomics()', () => {
 
 describe('getErgonomicsPercentageModifier()', () => {
   it.each([
-    [inventorySlot1, -0.20],
+    [inventorySlot1, -0.05],
     [inventorySlot2, undefined]
   ])('should get the ergonomics percentage modifier of an inventory slot', async (inventorySlot: IInventorySlot, expected: number | undefined) => {
     // Arrange
@@ -471,10 +472,11 @@ describe('getPrice()', () => {
   ])('should get the price of an inventory slot', async (inventorySlot: IInventorySlot, expected: IInventoryPrice) => {
     // Arrange
     useItemServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventoryItemService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
     const service = new InventorySlotPropertiesService()
 
     // Act
@@ -488,10 +490,11 @@ describe('getPrice()', () => {
   it('should have a missing price when no merchants sell the item', async () => {
     // Arrange
     useItemServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventoryItemService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
     const service = new InventorySlotPropertiesService()
 
     const inventorySlot: IInventorySlot = {
@@ -553,7 +556,7 @@ describe('getPrice()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventoryItemService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
     const service = new InventorySlotPropertiesService()
 
     // Act
@@ -570,7 +573,7 @@ describe('getPrice()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventoryItemService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
     const service = new InventorySlotPropertiesService()
 
     // Act

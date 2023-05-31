@@ -5,55 +5,55 @@
   >
     <ItemStat :item="item">
       <AmmunitionStat
-        v-if="item.categoryId === 'ammunition'"
+        v-if="itemPropertiesService.isAmmunition(item)"
         :item="item"
       />
       <ArmorStat
-        v-else-if="item.categoryId === 'armor'"
+        v-else-if="itemPropertiesService.isArmor(item)"
         :item="item"
       />
       <ArmorModStat
-        v-else-if="item.categoryId === 'armorMod'"
+        v-else-if="itemPropertiesService.isArmorMod(item)"
         :item="item"
       />
       <ContainerStat
-        v-else-if="item.categoryId === 'backpack' || item.categoryId === 'securedContainer' || item.categoryId === 'container'"
+        v-else-if="itemPropertiesService.isContainer(item)"
         :item="item"
       />
       <EyewearStat
-        v-else-if="item.categoryId === 'eyewear'"
+        v-else-if="itemPropertiesService.isEyewear(item)"
         :item="item"
       />
       <GrenadeStat
-        v-else-if="item.categoryId === 'grenade'"
+        v-else-if="itemPropertiesService.isGrenade(item)"
         :item="item"
       />
       <HeadwearStat
-        v-else-if="item.categoryId === 'headwear'"
+        v-else-if="itemPropertiesService.isHeadwear(item)"
         :item="item"
       />
       <MagazineStat
-        v-else-if="item.categoryId === 'magazine'"
+        v-else-if="itemPropertiesService.isMagazine(item)"
         :item="item"
       />
       <MeleeWeaponStat
-        v-else-if="item.categoryId === 'meleeWeapon'"
+        v-else-if="itemPropertiesService.isMeleeWeapon(item)"
         :item="item"
       />
       <ModStat
-        v-else-if="item.categoryId === 'mod'"
-        :item="item"
-      />
-      <RangedWeaponModStat
-        v-else-if="item.categoryId === 'rangedWeaponMod'"
+        v-else-if="itemPropertiesService.isMod(item)"
         :item="item"
       />
       <RangedWeaponStat
-        v-else-if="item.categoryId === 'mainWeapon' || item.categoryId === 'secondaryWeapon'"
+        v-else-if="itemPropertiesService.isRangedWeapon(item)"
+        :item="item"
+      />
+      <RangedWeaponModStat
+        v-else-if="itemPropertiesService.isRangedWeaponMod(item)"
         :item="item"
       />
       <VestStat
-        v-else-if="item.categoryId === 'vest'"
+        v-else-if="itemPropertiesService.isVest(item)"
         :item="item"
       />
     </ItemStat>

@@ -28,7 +28,7 @@ export default defineComponent({
       get: () => props.sortingData,
       set: (value: SortingData) => emit('update:sortingData', value)
     })
-    const sortingService = new SortingService([new ItemSortingFunctions()])
+    const sortingService = new SortingService(new ItemSortingFunctions())
 
     const filterInput = ref()
     const filterDelay = 500 // Milliseconds passed without typing before emitting the filter update

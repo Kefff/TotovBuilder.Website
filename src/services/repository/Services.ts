@@ -15,7 +15,7 @@ class ServicesRepository {
   /**
    * Determines whether the services are initializing or not.
    */
-  public isInitializing = false
+  public isInitializing = true
 
   /**
    * Collection of the configured services.
@@ -81,6 +81,14 @@ class ServicesRepository {
     } else {
       throw i18n.t('message.serviceNotConfigured', { name })
     }
+  }
+
+  /**
+   * Indicates that the initialization has finished and that the emitter should signal it.
+   */
+  public setInitializationFinished() {
+    this.emitter.emit('initialized')
+    this.isInitializing = false
   }
 
   /**

@@ -3,23 +3,28 @@ import { RangedWeaponModSortingFunctions } from '../../../../services/sorting/fu
 
 describe('setSortingProperty()', () => {
   it.each([
-    ['ergonomicsModifier'],
-    ['recoilPercentageModifier'],
-    ['accuracyPercentageModifier']
-  ])('should sort by a property', async (property: string) => {
+    ['accuracyPercentageModifier', false],
+    ['accuracyPercentageModifier', true],
+    ['ergonomicsModifier', false],
+    ['ergonomicsModifier', true],
+    ['recoilPercentageModifier', false],
+    ['recoilPercentageModifier', true]
+  ])('should sort by a property', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
+      accuracyPercentageModifier: 1,
       categoryId: 'cat',
       ergonomicsModifier: 1,
-      recoilPercentageModifier: 1,
-      accuracyPercentageModifier: 1
+      presetErgonomicsModifier: isPreset ? 1 : undefined,
+      recoilPercentageModifier: 1
     } as IRangedWeaponMod
 
     const item2 = {
+      accuracyPercentageModifier: 2,
       categoryId: 'cat',
       ergonomicsModifier: 2,
-      recoilPercentageModifier: 2,
-      accuracyPercentageModifier: 2
+      presetErgonomicsModifier: isPreset ? 2 : undefined,
+      recoilPercentageModifier: 2
     } as IRangedWeaponMod
 
     const sortingFunctions = new RangedWeaponModSortingFunctions()

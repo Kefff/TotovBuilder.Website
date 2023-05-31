@@ -9,6 +9,7 @@ import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import Services from './repository/Services'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import { VersionService } from './VersionService'
 
 /**
  * Represents a service responsible for managing builds.
@@ -19,8 +20,11 @@ export class BuildService {
    * @param build - Build to add.
    * @returns Build ID.
    */
-  public add(build: IBuild): string {
+  public async add(build: IBuild): Promise<string> {
     build.id = Guid.create().toString()
+    build.lastUpdated = new Date()
+    build.lastWebsiteVersion = await Services.get(VersionService).getVersion()
+
     const storageKey = this.getKey(build.id)
     localStorage.setItem(storageKey, JSON.stringify(build))
 
@@ -37,7 +41,8 @@ export class BuildService {
       name: '',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date()
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined
     }
 
     for (const inventorySlotType of InventorySlotTypes.sort((inventorySlotType1, inventorySlotType2) => inventorySlotType1.displayOrder - inventorySlotType2.displayOrder)) {
@@ -94,6 +99,8 @@ export class BuildService {
       return Result.fail(FailureType.error, 'BuildService.fromSharableString()', i18n.t('message.invalidSharableString'))
     }
 
+    Services.get(VersionService).executeBuildMigrations(buildResult.value) // Executing migrations on the build in case it is obsolete
+
     return Result.ok(buildResult.value)
   }
 
@@ -106,28 +113,24 @@ export class BuildService {
     const storageKey = this.getKey(id)
     const serializedBuild = localStorage.getItem(storageKey)
 
-    if (serializedBuild !== null) {
-      const build = JSON.parse(serializedBuild) as IBuild
-
-      // Converting dates back to Date type
-      build.lastUpdated = new Date(build.lastUpdated as unknown as string)
-
-      if (build.lastExported != null) {
-        build.lastExported = new Date(build.lastExported as unknown as string)
-      }
-
-      // Updating and saving obsolete builds
-      this.updateObsoleteBuild(build)
-      this.update(build.id, build)
-
-      return Result.ok(build)
+    if (serializedBuild === null) {
+      return Result.fail<IBuild>(
+        FailureType.error,
+        'BuildService.update()',
+        i18n.t('message.buildNotFound', { id })
+      )
     }
 
-    return Result.fail<IBuild>(
-      FailureType.error,
-      'BuildService.update()',
-      i18n.t('message.buildNotFound', { id })
-    )
+    const build = JSON.parse(serializedBuild) as IBuild
+
+    // Converting dates back to Date type
+    build.lastUpdated = new Date(build.lastUpdated as unknown as string)
+
+    if (build.lastExported != null) {
+      build.lastExported = new Date(build.lastExported as unknown as string)
+    }
+
+    return Result.ok(build)
   }
 
   /**
@@ -239,8 +242,11 @@ export class BuildService {
    * @param id - ID of the build to update.
    * @param build - Updated version of the build.
    */
-  public update(id: string, build: IBuild): Result {
+  public async update(id: string, build: IBuild): Promise<Result> {
     build.id = id
+    build.lastUpdated = new Date()
+    build.lastWebsiteVersion = await Services.get(VersionService).getVersion()
+
     const storageKey = this.getKey(id)
 
     for (let i = 0; i < localStorage.length; i++) {
@@ -258,24 +264,6 @@ export class BuildService {
       'BuildService.update()',
       i18n.t('message.buildNotFound', { id })
     )
-  }
-
-  /**
-   * Updates an obsolete build.
-   * @param build - Build to update.
-   */
-  public updateObsoleteBuild(build: IBuild): void {
-    const obsoleteInventorySlot = build.inventorySlots.find(is => is.typeId === 'compass')
-
-    if (obsoleteInventorySlot != null) {
-      obsoleteInventorySlot.typeId = 'special'
-
-      obsoleteInventorySlot.items = [
-        obsoleteInventorySlot.items[0],
-        undefined,
-        undefined
-      ]
-    }
   }
 
   /**

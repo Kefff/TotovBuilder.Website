@@ -61,6 +61,7 @@ describe('getInventoryItemFromPath()', () => {
         ],
         lastExported: undefined,
         lastUpdated: new Date(),
+        lastWebsiteVersion: '1.0.0',
         name: 'build'
       } as IBuild,
       'build:12345/slot:pockets_1/item:59fafd4b86f7745ca07e1232/content:1_10/item:5672c92d4bdc2d180f8b4567',
@@ -102,6 +103,7 @@ describe('getInventoryItemFromPath()', () => {
         ],
         lastExported: undefined,
         lastUpdated: new Date(),
+        lastWebsiteVersion: '1.0.0',
         name: 'build'
       } as IBuild,
       'build:12345/slot:onSling_0/item:57dc2fa62459775949412633/mod:mod_magazine/item:564ca9df4bdc2d35148b4569',
@@ -134,6 +136,7 @@ describe('getInventoryItemFromPath()', () => {
         inventorySlots: [],
         lastExported: undefined,
         lastUpdated: new Date(),
+        lastWebsiteVersion: '1.0.0',
         name: 'build1'
       } as IBuild,
       'build:123456789/slot:invalid/item:57dc2fa62459775949412633',
@@ -150,6 +153,7 @@ describe('getInventoryItemFromPath()', () => {
         ],
         lastExported: undefined,
         lastUpdated: new Date(),
+        lastWebsiteVersion: '1.0.0',
         name: 'build1'
       } as IBuild,
       'build:123456789/slot:pockets_0',
@@ -174,6 +178,7 @@ describe('getInventoryItemFromPath()', () => {
         ],
         lastExported: undefined,
         lastUpdated: new Date(),
+        lastWebsiteVersion: '1.0.0',
         name: 'build1'
       } as IBuild,
       'build:123456789/slot:onSling_0/item:57dc2fa62459775949412633/mod:invalid',
@@ -198,6 +203,7 @@ describe('getInventoryItemFromPath()', () => {
         ],
         lastExported: undefined,
         lastUpdated: new Date(),
+        lastWebsiteVersion: '1.0.0',
         name: 'build1'
       } as IBuild,
       'build:123456789/slot:onSling_0/item:57dc2fa62459775949412633/mod:invalid/item:564ca9df4bdc2d35148b4569',
@@ -222,6 +228,7 @@ describe('getInventoryItemFromPath()', () => {
         ],
         lastExported: undefined,
         lastUpdated: new Date(),
+        lastWebsiteVersion: '1.0.0',
         name: 'build1'
       } as IBuild,
       'build:123456789/slot:backpack_0/item:5ca20d5986f774331e7c9602/content:invalid',
@@ -246,6 +253,7 @@ describe('getInventoryItemFromPath()', () => {
         ],
         lastExported: undefined,
         lastUpdated: new Date(),
+        lastWebsiteVersion: '1.0.0',
         name: 'build1'
       } as IBuild,
       'build:123456789/slot:backpack_0/item:5ca20d5986f774331e7c9602/content:invalid/item:564ca9df4bdc2d35148b4569',
@@ -270,6 +278,7 @@ describe('getInventoryItemFromPath()', () => {
         ],
         lastExported: undefined,
         lastUpdated: new Date(),
+        lastWebsiteVersion: '1.0.0',
         name: 'build1'
       } as IBuild,
       'build:123456789/slot:backpack_0/item:5ca20d5986f774331e7c9602/invalid',

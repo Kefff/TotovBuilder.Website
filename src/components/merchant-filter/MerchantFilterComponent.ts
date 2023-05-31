@@ -1,30 +1,23 @@
-import { defineComponent, onMounted, ref } from 'vue'
+import { PropType, defineComponent, reactive } from 'vue'
 import { IMerchantFilter } from '../../models/utils/IMerchantFilter'
 import vueI18n from '../../plugins/vueI18n'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
+import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 
 export default defineComponent({
   props: {
-    showTitle: {
-      type: Boolean,
-      required: false,
-      default: true
+    modelValue: {
+      type: Object as PropType<IGlobalFilter>,
+      required: true
     }
   },
-  setup: () => {
-    const merchantFilterService = Services.get(MerchantFilterService)
-    const filters = ref<IMerchantFilter[]>([])
+  emits: ['update:modelValue'],
+  setup: (props, { emit }) => {
+    const globalFilterService = Services.get(GlobalFilterService)
     const merchantLevelOptions = [1, 2, 3, 4]
 
-    onMounted(() => initialize())
-
-    /**
-     * Initializes the merchants filter.
-     */
-    function initialize() {
-      filters.value = merchantFilterService.get()
-    }
+    const merchantFilters = reactive(props.modelValue.merchantFilters)
 
     /**
      * Gets the tooltip for the checkbox of a merchant.
@@ -41,7 +34,7 @@ export default defineComponent({
      * @returns Level options.
      */
     function getMerchantLevels(merchantName: string): number[] {
-      const levels = merchantFilterService.getMerchantLevels(merchantName)
+      const levels = globalFilterService.getMerchantLevels(merchantName)
 
       return levels
     }
@@ -52,25 +45,38 @@ export default defineComponent({
      * @returns true when the merchant has levels; otherwise false.
      */
     function hasLevels(merchantName: string): boolean {
-      const result = merchantFilterService.hasLevels(merchantName)
+      const result = globalFilterService.hasLevels(merchantName)
 
       return result
     }
 
     /**
-     * Saves the filters.
+     * Emits changes to the parent component.
      */
     function onFiltersChanged() {
-      merchantFilterService.save(filters.value)
+      emit('update:modelValue', {
+        itemExclusionFilters: props.modelValue.itemExclusionFilters,
+        merchantFilters
+      } as IGlobalFilter)
+    }
+
+    /**
+     * Toggles a filter.
+     * @param filter - Filter.
+     */
+    function toggleFilter(filter: IMerchantFilter) {
+      filter.enabled = !filter.enabled
+      onFiltersChanged()
     }
 
     return {
-      filters,
       getCheckboxTooltip,
       getMerchantLevels,
       hasLevels,
+      merchantFilters,
       merchantLevelOptions,
-      onFiltersChanged
+      onFiltersChanged,
+      toggleFilter
     }
   }
 })

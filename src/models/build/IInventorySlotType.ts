@@ -1,5 +1,3 @@
-import { IItemCategory } from '../configuration/IItemCategory'
-
 /**
  * Provides the functionalities of an inventory slot type.
  */
@@ -7,7 +5,7 @@ export interface IInventorySlotType {
   /**
    * Categories of item can be used in the slot.
    */
-  acceptedItemCategories: IItemCategory[]
+  acceptedItemCategories: string[]
 
   /**
    * Indicated wether the items contained in the inventory slot can be looted or not.

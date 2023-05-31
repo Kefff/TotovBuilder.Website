@@ -1,4 +1,4 @@
-import { computed, defineComponent, PropType } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { IGrenade } from '../../../models/item/IGrenade'
 
 export default defineComponent({
@@ -11,15 +11,6 @@ export default defineComponent({
       type: Boolean,
       required: false,
       default: true
-    }
-  },
-  setup: (props) => {
-    const hasFragmentsAmount = computed(() => props.item.fragmentsAmount > 0)
-    const hasMaximumExplosionRange = computed(() => props.item.maximumExplosionRange > 0)
-
-    return {
-      hasFragmentsAmount,
-      hasMaximumExplosionRange
     }
   }
 })

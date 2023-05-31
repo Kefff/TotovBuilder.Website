@@ -2,6 +2,7 @@
 @import '../../assets/css/icon.css';
 @import '../../assets/css/stats.css';
 @import '../../assets/css/toolbar.css';
+@import '../../assets/css/sidebar.css';
 
 .build {
   margin-bottom: 3rem;
@@ -36,32 +37,6 @@
 
 .build-loading {
   margin-top: 3rem;
-}
-
-.build-merchant-filter {
-  height: initial;
-}
-
-.build-merchant-filter:hover {
-  cursor: initial;
-}
-
-.build-options-panel {
-  max-height: 31.25rem;
-  overflow: auto;
-}
-
-.build-options-panel-item {
-  align-items: center;
-  display: flex;
-  min-height: 3.25rem;
-  padding: 0.5rem;
-}
-
-.build-options-panel-item-with-hover:hover {
-  background: var(--util-color2);
-  border-radius: 3px;
-  cursor: pointer;
 }
 
 .build-title {
@@ -99,9 +74,4 @@
 
 .build-toolbar-summary-value:last-child {
   margin-right: 0;
-}
-
-.build-warning-icon {
-  font-size: 1.5rem;
-  margin-right: 1rem;
 }

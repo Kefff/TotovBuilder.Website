@@ -29,7 +29,7 @@
         <span>{{ $t('caption.ergonomics') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.ergonomics }}
+        {{ item.presetErgonomics ?? item.ergonomics }}
       </div>
     </div>
     <div class="stats-entry">
@@ -41,7 +41,7 @@
         <span>{{ $t('caption.verticalRecoil') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.verticalRecoil }}
+        {{ item.presetVerticalRecoil ?? item.verticalRecoil }}
       </div>
     </div>
     <div class="stats-entry">
@@ -53,7 +53,7 @@
         <span>{{ $t('caption.horizontalRecoil') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.horizontalRecoil }}
+        {{ item.presetHorizontalRecoil ?? item.horizontalRecoil }}
       </div>
     </div>
   </div>

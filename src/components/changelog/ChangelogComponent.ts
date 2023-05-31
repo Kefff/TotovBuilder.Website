@@ -30,7 +30,7 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      versionService.getCurrentVersion().then((v) => currentVersion.value = v)
+      versionService.getVersion().then((v) => currentVersion.value = v)
       versionService.checkHasNewVersion().then((hnv) => hasNewVersion.value = hnv)
     })
 
@@ -54,7 +54,7 @@ export default defineComponent({
      */
     async function showChangelog() {
       hasChangelogDisplayed.value = true
-      changelogs.value = await versionService.getChangelogs()
+      changelogs.value = await versionService.getChangelog()
     }
 
     return {

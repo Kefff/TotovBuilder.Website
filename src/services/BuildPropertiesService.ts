@@ -222,7 +222,7 @@ export class BuildPropertiesService {
    * @param lastExported - Date of the last export.
    * @returns Tooltip.
    */
-  public getNotExportedTooltip(lastUpdated: Date, lastExported: Date | undefined): string {
+  public getNotExportedTooltip(lastUpdated: Date | undefined, lastExported: Date | undefined): string {
     let tooltip: string
 
     if (lastUpdated != null && lastExported != null) {
@@ -369,7 +369,7 @@ export class BuildPropertiesService {
     const result: IBuildSummary = {
       ergonomics: undefined,
       ergonomicsPercentageModifier: 0,
-      exported: build.lastExported != null && build.lastExported >= build.lastUpdated,
+      exported: build.lastExported != null && build.lastUpdated != null && build.lastExported >= build.lastUpdated,
       horizontalRecoil: undefined,
       id: build.id,
       name: build.name,

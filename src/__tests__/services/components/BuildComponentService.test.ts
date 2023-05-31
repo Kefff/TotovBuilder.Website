@@ -7,6 +7,8 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito'
 import Services from '../../../services/repository/Services'
 import { BuildComponentService } from '../../../services/components/BuildComponentService'
 import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
+import { VersionService } from '../../../services/VersionService'
+import { useVersionServiceMock } from '../../../__mocks__/VersionServiceMock'
 
 describe('getBuild()', () => {
   it('should get a build', () => {
@@ -16,10 +18,11 @@ describe('getBuild()', () => {
     when(buildServiceMock.get('123')).thenReturn(
       Result.ok({
         id: '123',
-        name: 'Test',
         inventorySlots: [],
         lastExported: undefined,
-        lastUpdated: new Date(1)
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Test'
       } as IBuild))
     Services.configure(BuildService, undefined, instance(buildServiceMock))
 
@@ -29,10 +32,11 @@ describe('getBuild()', () => {
     // Assert
     expect(build).toStrictEqual({
       id: '123',
-      name: 'Test',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: 'Test'
     })
     verify(buildServiceMock.get('123')).once()
   })
@@ -43,10 +47,11 @@ describe('getBuild()', () => {
     const buildServiceMock = mock<BuildService>()
     when(buildServiceMock.create()).thenReturn({
       id: '',
-      name: '',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: ''
     })
     Services.configure(BuildService, undefined, instance(buildServiceMock))
 
@@ -56,11 +61,12 @@ describe('getBuild()', () => {
     // Assert
     expect(build).toStrictEqual({
       id: '',
-      name: '',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
-    })
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: ''
+    } as IBuild)
   })
 
   it('should return a new build when an error occurs', () => {
@@ -73,10 +79,11 @@ describe('getBuild()', () => {
     when(buildServiceMock.get('123')).thenReturn(Result.fail(FailureType.hidden, 'Context', 'Error'))
     when(buildServiceMock.create()).thenReturn({
       id: '',
-      name: '',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: ''
     })
     Services.configure(BuildService, undefined, instance(buildServiceMock))
 
@@ -86,11 +93,12 @@ describe('getBuild()', () => {
     // Assert
     expect(build).toStrictEqual({
       id: '',
-      name: '',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
-    })
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: ''
+    } as IBuild)
     verify(buildServiceMock.get('123')).once()
     verify(buildServiceMock.create()).once()
   })
@@ -99,7 +107,9 @@ describe('getBuild()', () => {
 describe('getBuildFromSharableString()', () => {
   it('should get a build from a sharable string', async () => {
     // Arrange
+    useVersionServiceMock()
     Services.configure(BuildService)
+    Services.configure(VersionService)
 
     const service = new BuildComponentService()
     const sharableString = 'XQAAAAKBAQAAAAAAAABAqEppVBKy3f2nWA1_4C5z8-v7-PB2PnO3yE24i4uplQNOe2AQti9qfQ3vHsOnTKDq2nEEFb79VsBzBnD-pb-5Nb0_87qgYNgUqN-kUzC-ixXoaUIxP5bVjrq-YghBtAFQa_O4inxq3hwebGM3jUCTpB0ou_BCcoJymajYEBQ2OvPuy_aF8Vtf4UR8KYA6nugVJv5Kd0v6DWN94D7Kgaza5GFSYqrRHItjPLx6krp0SGceYjtn1RNUBX-ea41hpKDXlBkYuxoBe-ZT10P4Ouq0e2Mmn82YwcUUBrZvQhh3uG6Dn_YU1No29Qi4js2uAwpm-nroMnPbxOd9jDkNeED-9xXjIA'
@@ -293,7 +303,7 @@ describe('getBuildFromSharableString()', () => {
 })
 
 describe('saveBuild()', () => {
-  it('should add a new build', () => {
+  it('should add a new build', async () => {
     // Arrange
     const buildComponentService = new BuildComponentService()
     const buildServiceMock = mock<BuildService>()
@@ -304,14 +314,15 @@ describe('saveBuild()', () => {
 
     const build: IBuild = {
       id: '',
-      name: 'Test',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: 'Test'
     }
 
     // Act
-    buildComponentService.saveBuild(instance(routerMock), build)
+    await buildComponentService.saveBuild(instance(routerMock), build)
 
     // Assert
     verify(buildServiceMock.add(build)).once()
@@ -319,11 +330,11 @@ describe('saveBuild()', () => {
     verify(routerMock.push(anything())).once()
   })
 
-  it('should update an existing build', () => {
+  it('should update an existing build', async () => {
     // Arrange
     const buildComponentService = new BuildComponentService()
     const buildServiceMock = mock<BuildService>()
-    when(buildServiceMock.update('123', anything())).thenReturn(Result.ok())
+    when(buildServiceMock.update('123', anything())).thenReturn(Promise.resolve(Result.ok()))
     Services.configure(BuildService, undefined, instance(buildServiceMock))
     const notificationServiceMock = mock<NotificationService>()
     Services.configure(NotificationService, undefined, instance(notificationServiceMock))
@@ -331,14 +342,15 @@ describe('saveBuild()', () => {
 
     const build: IBuild = {
       id: '123',
-      name: 'Test',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: 'Test'
     }
 
     // Act
-    buildComponentService.saveBuild(instance(routerMock), build)
+    await buildComponentService.saveBuild(instance(routerMock), build)
 
     // Assert
     verify(buildServiceMock.update('123', build)).once()
@@ -346,11 +358,11 @@ describe('saveBuild()', () => {
     verify(routerMock.push(anything())).never()
   })
 
-  it('should fail if an error occurs', () => {
+  it('should fail if an error occurs', async () => {
     // Arrange
     const buildComponentService = new BuildComponentService()
     const buildServiceMock = mock<BuildService>()
-    when(buildServiceMock.update('123', anything())).thenReturn(Result.fail())
+    when(buildServiceMock.update('123', anything())).thenReturn(Promise.resolve(Result.fail()))
     Services.configure(BuildService, undefined, instance(buildServiceMock))
     const notificationServiceMock = mock<NotificationService>()
     Services.configure(NotificationService, undefined, instance(notificationServiceMock))
@@ -358,14 +370,15 @@ describe('saveBuild()', () => {
 
     const build: IBuild = {
       id: '123',
-      name: 'Test',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: 'Test'
     }
 
     // Act
-    buildComponentService.saveBuild(instance(routerMock), build)
+    await buildComponentService.saveBuild(instance(routerMock), build)
 
     // Assert
     verify(buildServiceMock.update('123', build)).once()
@@ -385,11 +398,12 @@ describe('deleteBuild()', () => {
     const routerMock = mock<Router>()
 
     const build: IBuild = {
-      name: '',
       id: '123',
       inventorySlots: [],
       lastExported: undefined,
-      lastUpdated: new Date(1)
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: ''
     }
 
     // Act

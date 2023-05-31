@@ -11,17 +11,17 @@
               icon="plus"
               class="icon-before-text"
             />
-            <span>{{ $t('caption.new') }}</span>
+            <span>{{ $t('caption.newBuild') }}</span>
           </Button>
           <Button
-            v-tooltip.top="$t('caption.export')"
+            v-tooltip.top="$t('caption.exportBuilds')"
             :class="'p-button-text p-button-sm button-discreet' + (!canExport ? ' p-disabled' : '')"
             @click="showBuildsExportPopup()"
           >
             <font-awesome-icon icon="file-export" />
           </Button>
           <Button
-            v-tooltip.top="$t('caption.import')"
+            v-tooltip.top="$t('caption.importBuilds')"
             :class="'p-button-text p-button-sm button-discreet' + (!canExport ? ' p-disabled' : '')"
             @click="showBuildsImportPopup()"
           >
@@ -31,13 +31,32 @@
         <div class="toolbar-part toolbar-center" />
         <div class="toolbar-part">
           <div class="build-toolbar-right">
-            <Button
-              v-tooltip.top="$t('caption.options')"
-              class="p-button-text p-button-sm button-discreet"
-              @click="toggleOptionsPanel"
-            >
-              <font-awesome-icon icon="cog" />
-            </Button>
+            <MerchantItemsOptions v-model:visible="merchantItemsOptionsSidebarVisible">
+              <template #button>
+                <Button
+                  v-tooltip.top="$t('caption.merchantItemsOptions')"
+                  class="p-button-text p-button-sm button-discreet"
+                  @click="merchantItemsOptionsSidebarVisible = true"
+                >
+                  <font-awesome-icon
+                    icon="user-tag"
+                  />
+                </Button>
+              </template>
+            </MerchantItemsOptions>
+            <DisplayOptions v-model:visible="displayOptionsSidebarVisible">
+              <template #button>
+                <Button
+                  v-tooltip.top="$t('caption.displayOptions')"
+                  class="p-button-text p-button-sm button-discreet"
+                  @click="displayOptionsSidebarVisible = true"
+                >
+                  <font-awesome-icon
+                    icon="tv"
+                  />
+                </Button>
+              </template>
+            </DisplayOptions>
             <NotificationButton />
           </div>
         </div>
@@ -45,7 +64,7 @@
       <div class="toolbar-gradient" />
     </div>
     <div
-      v-if="!isLoading && buildsSummaries.length > 0"
+      v-show="!isLoading && buildsSummaries.length > 0"
       id="builds-content"
     >
       <BuildsList
@@ -55,29 +74,12 @@
       />
     </div>
     <div
-      v-else-if="isLoading"
+      v-show="isLoading"
       class="builds-loading"
     >
       <Loading />
     </div>
   </div>
-
-  <!-- Options panel -->
-  <OverlayPanel
-    ref="optionsPanel"
-    :dismissable="true"
-  >
-    <div class="builds-options-panel">
-      <div class="builds-options-panel-item builds-options-panel-special-item">
-        <LanguageSelector />
-      </div>
-      <div
-        class="builds-options-panel-item builds-options-panel-special-item"
-      >
-        <MerchantFilter />
-      </div>
-    </div>
-  </OverlayPanel>
 
   <!-- Export -->
   <BuildsExport

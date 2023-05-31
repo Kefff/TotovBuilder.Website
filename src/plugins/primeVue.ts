@@ -14,6 +14,7 @@ import InputText from 'primevue/inputtext'
 import Message from 'primevue/message'
 import OverlayPanel from 'primevue/overlaypanel'
 import Panel from 'primevue/panel'
+import Sidebar from 'primevue/sidebar'
 import TabPanel from 'primevue/tabpanel'
 import TabView from 'primevue/tabview'
 
@@ -39,6 +40,7 @@ export function usePrimeVue(app: App<Element>): void {
   app.component('Message', Message)
   app.component('OverlayPanel', OverlayPanel)
   app.component('Panel', Panel)
+  app.component('Sidebar', Sidebar)
   app.component('TabPanel', TabPanel)
   app.component('TabView', TabView)
 

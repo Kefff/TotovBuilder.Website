@@ -6,7 +6,7 @@ import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import vueI18n from '../../plugins/vueI18n'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemService } from '../../services/ItemService'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import Services from '../../services/repository/Services'
 import ItemIcon from '../item-icon/ItemIconComponent.vue'
@@ -47,8 +47,8 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const merchantFilterService = Services.get(MerchantFilterService)
-    merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+    const globalFilterService = Services.get(GlobalFilterService)
+    globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
     const barterItemPrices = ref<IInventoryPrice[]>([])
     const barterItems = ref<IItem[]>([])
@@ -84,7 +84,7 @@ export default defineComponent({
     onMounted(() => initialize())
 
     onUnmounted(() => {
-      merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
     })
 
     /**

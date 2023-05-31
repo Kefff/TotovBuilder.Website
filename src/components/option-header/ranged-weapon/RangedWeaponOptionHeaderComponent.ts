@@ -20,8 +20,7 @@ export default defineComponent({
       get: () => props.modelValue,
       set: (value: SortingData) => emit('update:modelValue', value)
     })
-    const sortingService = new SortingService([new RangedWeaponSortingFunctions()])
-
+    const sortingService = new SortingService(new RangedWeaponSortingFunctions())
     return { sortingData, sortingService }
   }
 })

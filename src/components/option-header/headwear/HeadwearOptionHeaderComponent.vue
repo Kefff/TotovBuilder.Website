@@ -1,5 +1,8 @@
 <template>
-  <ArmorOptionHeader v-model="sortingData" />
+  <ArmorOptionHeader
+    v-model="sortingData"
+    :custom-sorting-service="sortingService"
+  />
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton

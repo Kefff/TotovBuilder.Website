@@ -12,10 +12,10 @@ export class RangedWeaponSortingFunctions implements ISortingFunctions {
    */
   public comparisonFunctions: { [property: string]: (item1: IItem, item2ValueToCompare: string | number, item2: IItem, item1ValueToCompare: string | number) => number } = {
     caliber: ItemSortingFunctions.compareByString,
-    fireRate: ItemSortingFunctions.compareByNumber,
     ergonomics: ItemSortingFunctions.compareByNumber,
-    verticalRecoil: ItemSortingFunctions.compareByNumber,
-    horizontalRecoil: ItemSortingFunctions.compareByNumber
+    fireRate: ItemSortingFunctions.compareByNumber,
+    horizontalRecoil: ItemSortingFunctions.compareByNumber,
+    verticalRecoil: ItemSortingFunctions.compareByNumber
   }
 
   /**
@@ -23,9 +23,9 @@ export class RangedWeaponSortingFunctions implements ISortingFunctions {
    */
   public getValueToCompareFunctions: { [property: string]: (item: IItem) => (string | number) | Promise<string | number> } = {
     caliber: (item: IItem) => (item as IRangedWeapon).caliber,
+    ergonomics: (item: IItem) => (item as IRangedWeapon).presetErgonomics ?? (item as IRangedWeapon).ergonomics,
     fireRate: (item: IItem) => (item as IRangedWeapon).fireRate,
-    ergonomics: (item: IItem) => (item as IRangedWeapon).ergonomics,
-    verticalRecoil: (item: IItem) => (item as IRangedWeapon).verticalRecoil,
-    horizontalRecoil: (item: IItem) => (item as IRangedWeapon).horizontalRecoil
+    horizontalRecoil: (item: IItem) => (item as IRangedWeapon).presetHorizontalRecoil ?? (item as IRangedWeapon).horizontalRecoil,
+    verticalRecoil: (item: IItem) => (item as IRangedWeapon).presetVerticalRecoil ?? (item as IRangedWeapon).verticalRecoil
   }
 }

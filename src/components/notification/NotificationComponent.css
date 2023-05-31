@@ -4,6 +4,5 @@
   margin-left: 1rem;
   margin-right: 1rem;
   position: fixed;
-  max-width: calc(50% - 2rem);
   z-index: 2;
 }

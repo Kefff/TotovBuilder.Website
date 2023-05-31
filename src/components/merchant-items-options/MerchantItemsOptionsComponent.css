@@ -1,0 +1,13 @@
+@import '../../assets/css/button.css';
+@import '../../assets/css/icon.css';
+@import '../../assets/css/sidebar.css';
+
+.merchant-items-title {
+  margin-top: 3rem;
+}
+
+.merchant-items-options-save-button {
+  display: flex;
+  justify-content: right;
+  margin-top: 3rem;
+}

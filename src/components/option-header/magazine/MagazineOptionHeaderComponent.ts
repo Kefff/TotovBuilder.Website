@@ -22,7 +22,7 @@ export default defineComponent({
       get: () => props.modelValue,
       set: (value: SortingData) => emit('update:modelValue', value)
     })
-    const sortingService = new SortingService([new MagazineSortingFunctions()])
+    const sortingService = new SortingService(new MagazineSortingFunctions())
 
     return { sortingData, sortingService }
   }

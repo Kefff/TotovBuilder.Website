@@ -3,17 +3,14 @@ import Notification from '../notification/NotificationComponent.vue'
 import Changelog from '../changelog/ChangelogComponent.vue'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import Loading from '../loading/LoadingComponent.vue'
 import LanguageUtils from '../../utils/LanguageUtils'
 
 export default defineComponent({
   components: {
-    Loading,
     Notification,
     Changelog
   },
   setup() {
-    const isLoading = ref(true)
     Services.emitter.once('initialized', onInitialized)
 
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
@@ -22,6 +19,7 @@ export default defineComponent({
     const discordLink = ref<string>()
     const githubAddress = ref<string>()
     const hasChangelogDisplayed = ref(false)
+    const isLoading = ref(true)
     const reportBugAddress = ref<string>()
 
     const isSanta = computed(() => {

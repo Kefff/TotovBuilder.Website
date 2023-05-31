@@ -3,16 +3,22 @@ import { IBuild } from '../../models/build/IBuild'
 import { BuildService } from '../../services/BuildService'
 import { ImportService } from '../../services/ImportService'
 import Services from '../../services/repository/Services'
+import { VersionService } from '../../services/VersionService'
 
 describe('import()', () => {
-  it('should import builds', async () => {
+  it('should import builds and execute migrations on them', async () => {
     // Arrange
     const buildServiceMock = mock<BuildService>()
     when(buildServiceMock.add(anything())).thenCall((build: IBuild) => {
       importedBuilds.push(build)
       return ''
     })
+
+    const versionServiceMock = mock<VersionService>()
+    when(versionServiceMock.executeBuildMigrations(anything())).thenReturn(Promise.resolve(true))
+
     Services.configure(BuildService, undefined, instance(buildServiceMock))
+    Services.configure(VersionService, undefined, instance(versionServiceMock))
 
     const importedBuilds: IBuild[] = []
 
@@ -22,20 +28,22 @@ describe('import()', () => {
         id: '1',
         inventorySlots: [],
         lastExported: undefined,
-        lastUpdated: new Date(1),
+        lastUpdated: undefined,
+        lastWebsiteVersion: '1.0.0',
         name: '1'
       },
       {
         id: '2',
         inventorySlots: [],
         lastExported: undefined,
-        lastUpdated: new Date(1),
+        lastUpdated: undefined,
+        lastWebsiteVersion: '1.0.0',
         name: '2'
       }
     ]
 
     // Act
-    importService.import(builds)
+    await importService.import(builds)
 
     // Assert
     expect(importedBuilds).toStrictEqual(builds)

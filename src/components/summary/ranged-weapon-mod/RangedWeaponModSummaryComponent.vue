@@ -1,15 +1,15 @@
 <template>
   <div
-    v-if="hasErgonomicsModifier || showEmptyEntries"
+    v-if="ergonomicsModifier !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div
       v-tooltip.top="$t('caption.ergonomics')"
       class="option-value"
     >
-      <div v-if="hasErgonomicsModifier">
-        <span :class="StatsUtils.getValueColorClass(item.ergonomicsModifier)">
-          {{ StatsUtils.getDisplayValue(item.ergonomicsModifier, true, false) }}
+      <div v-if="ergonomicsModifier !== 0">
+        <span :class="StatsUtils.getValueColorClass(ergonomicsModifier)">
+          {{ StatsUtils.getDisplayValue(ergonomicsModifier, true, false) }}
         </span>
         <font-awesome-icon
           icon="hand-paper"
@@ -19,14 +19,14 @@
     </div>
   </div>
   <div
-    v-if="hasRecoilPercentageModifier || showEmptyEntries"
+    v-if="item.recoilPercentageModifier !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div
       v-tooltip.top="$t('caption.recoil')"
       class="option-value"
     >
-      <div v-if="hasRecoilPercentageModifier">
+      <div v-if="item.recoilPercentageModifier !== 0">
         <span :class="StatsUtils.getValueColorClass(item.recoilPercentageModifier, true)">
           {{ StatsUtils.getDisplayValue(item.recoilPercentageModifier, true, true) }}
         </span>
@@ -38,14 +38,14 @@
     </div>
   </div>
   <div
-    v-if="hasAccuracyPercentageModifier || showEmptyEntries"
+    v-if="item.accuracyPercentageModifier !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div
       v-tooltip.top="$t('caption.accuracy')"
       class="option-value"
     >
-      <div v-if="hasAccuracyPercentageModifier">
+      <div v-if="item.accuracyPercentageModifier !== 0">
         <span :class="StatsUtils.getValueColorClass(item.accuracyPercentageModifier)">
           {{ StatsUtils.getDisplayValue(item.accuracyPercentageModifier, true, true) }}
         </span>

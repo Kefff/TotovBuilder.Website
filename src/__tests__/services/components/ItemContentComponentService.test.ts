@@ -1,4 +1,4 @@
-import { anyString, instance, mock, when } from 'ts-mockito'
+import { anyString, anything, instance, mock, when } from 'ts-mockito'
 import { IItem } from '../../../models/item/IItem'
 import { IMagazine } from '../../../models/item/IMagazine'
 import { ItemContentComponentService } from '../../../services/components/ItemContentComponentService'
@@ -7,36 +7,53 @@ import { NotificationService } from '../../../services/NotificationService'
 import Services from '../../../services/repository/Services'
 import Result, { FailureType } from '../../../utils/Result'
 import ItemCategories from '../../../../test-data/item-categories.json'
-import { MerchantFilterService } from '../../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../../services/GlobalFilterService'
 import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../../__mocks__/TarkovValuesServiceMock'
-import { useItemServiceMock } from '../../../__mocks__/ItemServiceMock'
+import { useItemFetcherServiceMock } from '../../../__mocks__/ItemFetcherServiceMock'
+import { usePresetServiceMock } from '../../../__mocks__/PresetPropertiesServiceMock'
+import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
 
 describe('getAcceptedItems()', () => {
   it.each([
-    ['5ca20d5986f774331e7c9602', 82, 68, 15, 1],
+    ['5ca20d5986f774331e7c9602', 83, 68, 16, 1],
     ['5a7ad2e851dfba0016153692', 1, 1, 0, 0]
   ])('should get the acceptem items', async (
     itemId: string,
     expectedItemsAmount: number,
     expectedNonBarterItemsAmount: number,
-    expectedBarterItemsAmount: number, expectedNonBarterAndBarterItemsAmount) => {
+    expectedBarterItemsAmount: number,
+    expectedNonBarterAndBarterItemsAmount: number) => {
     // Arrange
-    useItemServiceMock()
+    useItemFetcherServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(ItemService)
+    Services.configure(ItemPropertiesService)
+    Services.configure(GlobalFilterService)
 
-    const merchantFitlerService = Services.get(MerchantFilterService)
     const itemContentService = new ItemContentComponentService()
 
-    merchantFitlerService.save([
+    const globalFitlerService = Services.get(GlobalFilterService)
+    const globalFilter = globalFitlerService.get()
+
+    globalFilter.merchantFilters = [
       {
         enabled: true,
         merchant: 'prapor',
         merchantLevel: 1
       }
-    ])
+    ]
+
+    const excludePresetBaseItemsFilter = globalFilter.itemExclusionFilters.find(gf => gf.name === GlobalFilterService.excludePresetBaseItemsFilterName)
+
+    if (excludePresetBaseItemsFilter != null) {
+      // Disabling the filter that excludes preset base items
+      excludePresetBaseItemsFilter.enabled = false
+    }
+
+    globalFitlerService.save(globalFilter)
 
     // Act
     const items = await itemContentService.getAcceptedItems(itemId)
@@ -44,15 +61,12 @@ describe('getAcceptedItems()', () => {
     // Assert
     const nonBarters = items.filter(i => i.prices.some(p => p.merchant === 'prapor' && p.merchantLevel === 1 && p.currencyName !== 'barter'))
     const barters = items.filter(i => i.prices.some(p => p.merchant === 'prapor' && p.merchantLevel === 1 && p.currencyName === 'barter'))
-    const common = barters.filter(b => nonBarters.includes(b))
+    const nonBarterAndBarterItems = barters.filter(b => nonBarters.includes(b))
 
     expect(items.length).toBe(expectedItemsAmount)
     expect(nonBarters.length).toBe(expectedNonBarterItemsAmount)
     expect(barters.length).toBe(expectedBarterItemsAmount)
-    expect(common.length).toBe(expectedNonBarterAndBarterItemsAmount)
-
-    // Clean
-    localStorage.clear()
+    expect(nonBarterAndBarterItems.length).toBe(expectedNonBarterAndBarterItemsAmount)
   })
 
   it('should get an empty list if the parent item is not found', async () => {
@@ -79,7 +93,7 @@ describe('getAcceptedItems()', () => {
     // Arrange
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const itemContentService = new ItemContentComponentService()
     const notificationServiceMock = mock<NotificationService>()
@@ -87,9 +101,9 @@ describe('getAcceptedItems()', () => {
 
     const itemServiceMock = mock<ItemService>()
     when(itemServiceMock.getItem(item.id)).thenReturn(Promise.resolve(Result.ok(item)))
-    when(itemServiceMock.getItem('5efb0e16aeb21837e749c7ff')).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
-    when(itemServiceMock.getItemsOfCategory(anyString())).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    when(itemServiceMock.getItems(anything(), true)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
     when(itemServiceMock.getItemCategories()).thenReturn(Promise.resolve(ItemCategories))
+    when(itemServiceMock.getItemsOfCategories(anything(), anything())).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
     Services.configure(ItemService, undefined, instance(itemServiceMock))
 
     // Act

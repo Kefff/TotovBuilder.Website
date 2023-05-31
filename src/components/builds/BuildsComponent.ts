@@ -14,32 +14,36 @@ import BuildsList from '../builds-list/BuildsListComponent.vue'
 import BuildsExport from '../builds-export/BuildsExportComponent.vue'
 import BuildsImport from '../builds-import/BuildsImportComponent.vue'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
-import MerchantFilter from '../merchant-filter/MerchantFilterComponent.vue'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import vueI18n from '../../plugins/vueI18n'
 import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
+import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 
 export default defineComponent({
   components: {
     BuildsExport,
     BuildsImport,
     BuildsList,
+    DisplayOptions,
     LanguageSelector,
     Loading,
-    MerchantFilter,
+    MerchantItemsOptions,
     NotificationButton
   },
   setup: () => {
-    const merchantFilterService = Services.get(MerchantFilterService)
+    Services.emitter.once('initialized', onConfigurationLoaded)
+
+    const globalFilterService = Services.get(GlobalFilterService)
 
     const router = useRouter()
     const buildsSummaries = ref<IBuildSummary[]>([])
     let builds: IBuild[] = []
 
     const canExport = computed(() => buildsSummaries.value.length > 0)
-    const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < b.lastUpdated))
+    const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
     const selectedBuildSummary = computed({
       get: () => [],
       set: (value: string[]) => {
@@ -49,12 +53,12 @@ export default defineComponent({
       }
     })
 
-
+    const displayOptionsSidebarVisible = ref(false)
     const hasImported = ref(false)
     const isExporting = ref(false)
     const isImporting = ref(false)
     const isLoading = ref(true)
-    const optionsPanel = ref()
+    const merchantItemsOptionsSidebarVisible = ref(false)
     const toolbarCssClass = ref('toolbar')
 
     watch(() => hasImported.value, () => {
@@ -66,23 +70,19 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       window.addEventListener('scroll', setToolbarCssClass)
 
-      getBuilds()
+      isLoading.value = Services.isInitializing
 
-      if (builds.length === 0) {
-        router.push({ name: 'Welcome' })
-
-        return
+      if (!isLoading.value) {
+        onConfigurationLoaded()
       }
-
-      checkBuildsNotExported()
     })
 
     onUnmounted(() => {
-      merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       window.removeEventListener('scroll', setToolbarCssClass)
     })
@@ -127,6 +127,21 @@ export default defineComponent({
       }
 
       isLoading.value = false
+    }
+
+    /**
+     * Gets builds and ends loading.
+     */
+    function onConfigurationLoaded() {
+      getBuilds()
+
+      if (builds.length === 0) {
+        router.push({ name: 'Welcome' })
+
+        return
+      }
+
+      checkBuildsNotExported()
     }
 
     /**
@@ -179,29 +194,21 @@ export default defineComponent({
       isImporting.value = true
     }
 
-    /**
-     * Toggles the advanced menu.
-     * @param event - Event.
-     */
-    function toggleOptionsPanel(event: unknown) {
-      optionsPanel.value.toggle(event)
-    }
-
     return {
       buildsSummaries,
       canExport,
+      displayOptionsSidebarVisible,
       hasImported,
       isExporting,
       isImporting,
       isLoading,
+      merchantItemsOptionsSidebarVisible,
       openBuild,
       openNewBuild,
-      optionsPanel,
       selectedBuildSummary,
       showBuildsExportPopup,
       showBuildsImportPopup,
       StatsUtils,
-      toggleOptionsPanel,
       toolbarCssClass
     }
   }

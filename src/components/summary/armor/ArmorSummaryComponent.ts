@@ -8,6 +8,11 @@ export default defineComponent({
       type: Object as PropType<IArmor>,
       required: true
     },
+    customErgonomicsPercentageModifier: {
+      type: Number,
+      required: false,
+      default: undefined
+    },
     showEmptyEntries: {
       type: Boolean,
       required: false,
@@ -15,10 +20,10 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const hasErgonomicsPercentageModifier = computed(() => props.item.ergonomicsPercentageModifier !== 0)
+    const ergonomicsPercentageModifier = computed(() => props.customErgonomicsPercentageModifier ?? props.item.ergonomicsPercentageModifier)
 
     return {
-      hasErgonomicsPercentageModifier,
+      ergonomicsPercentageModifier,
       StatsUtils
     }
   }

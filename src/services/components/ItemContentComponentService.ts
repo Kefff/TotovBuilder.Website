@@ -1,10 +1,8 @@
 import { IItem } from '../../models/item/IItem'
 import { ItemService } from '../ItemService'
 import Services from '../repository/Services'
-import StringUtils from '../../utils/StringUtils'
 import { NotificationService, NotificationType } from '../NotificationService'
 import { IMagazine } from '../../models/item/IMagazine'
-import { MerchantFilterService } from '../MerchantFilterService'
 
 /**
  * Represents a service responsible for managing an ItemContentComponent.
@@ -12,7 +10,6 @@ import { MerchantFilterService } from '../MerchantFilterService'
 export class ItemContentComponentService {
   /**
    * Gets the items accepted as the content of another item.
-   * Sorted by default by item category and caption.
    * @param itemId - Item ID.
    * @returns Accepted items.
    */
@@ -60,27 +57,16 @@ export class ItemContentComponentService {
    * @returns Accepted items.
    */
   private async getItemAcceptedItems(): Promise<IItem[]> {
-    const acceptedItems: IItem[] = []
-    const merchantFilterService = Services.get(MerchantFilterService)
     const itemService = Services.get(ItemService)
     const itemCategories = await itemService.getItemCategories()
+    const itemsResult = await itemService.getItemsOfCategories(itemCategories, true)
 
-    for (const category of itemCategories) {
-      const itemsResult = await itemService.getItemsOfCategory(category.id)
-
-      if (!itemsResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage)
-
-        continue
-      }
-
-      const acceptedItemsResult = itemsResult.value.filter(i => merchantFilterService.hasMatchingPrices(i, true))
-      acceptedItemsResult.sort((item1: IItem, item2: IItem) => StringUtils.compare(item1.name, item2.name))
-
-      acceptedItems.push(...acceptedItemsResult)
+    if (!itemsResult.success) {
+      Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage)
+      return []
     }
 
-    return acceptedItems
+    return itemsResult.value
   }
 
   /**
@@ -89,24 +75,14 @@ export class ItemContentComponentService {
    * @returns Accepted items.
    */
   private async getMagazineAcceptedItems(magazine: IItem): Promise<IItem[]> {
-    const merchantFilterService = Services.get(MerchantFilterService)
-    const acceptedItems: IItem[] = []
     const itemService = Services.get(ItemService)
+    const itemsResult = await itemService.getItems((magazine as IMagazine).acceptedAmmunitionIds, true)
 
-    for (const acceptedAmmunitionId of (magazine as IMagazine).acceptedAmmunitionIds) {
-      const itemResult = await itemService.getItem(acceptedAmmunitionId)
-
-      if (!itemResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, itemResult.failureMessage)
-
-        continue
-      }
-
-      if (merchantFilterService.hasMatchingPrices(itemResult.value, true)) {
-        acceptedItems.push(itemResult.value)
-      }
+    if (!itemsResult.success) {
+      Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage)
+      return []
     }
 
-    return acceptedItems
+    return itemsResult.value
   }
 }

@@ -16,7 +16,7 @@ export class ExportService {
    * Exports a list of builds.
    * @param builds - Builds.
    */
-  public export(builds: IBuild[]): Result {
+  public async export(builds: IBuild[]): Promise<Result> {
     if (builds.length === 0) {
       return Result.fail(FailureType.error, 'ExportService.export()', vueI18n.t('message.noBuildsToExport'))
     }
@@ -37,7 +37,7 @@ export class ExportService {
 
     for (const build of builds) {
       build.lastExported = new Date()
-      const updateResult = buildService.update(build.id, build)
+      const updateResult = await buildService.update(build.id, build)
 
       if (!updateResult.success) {
         return updateResult

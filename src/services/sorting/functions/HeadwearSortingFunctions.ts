@@ -11,6 +11,9 @@ export class HeadwearSortingFunctions implements ISortingFunctions {
    * {@inheritDoc ISortingFunctions.comparisonFunctions}
    */
   public comparisonFunctions: { [property: string]: (item1: IItem, item2ValueToCompare: string | number, item2: IItem, item1ValueToCompare: string | number) => number } = {
+    armorClass: ItemSortingFunctions.compareByNumber,
+    durability: ItemSortingFunctions.compareByNumber,
+    ergonomicsPercentageModifier: ItemSortingFunctions.compareByNumber,
     ricochetChance: ItemSortingFunctions.compareByNumber
   }
 
@@ -18,6 +21,9 @@ export class HeadwearSortingFunctions implements ISortingFunctions {
    * {@inheritDoc ISortingFunctions.valueToCompareGettingFunctions}
    */
   public getValueToCompareFunctions: { [property: string]: (item: IItem) => (string | number) | Promise<string | number> } = {
+    armorClass: (item: IItem) => (item as IHeadwear).armorClass,
+    durability: (item: IItem) => (item as IHeadwear).durability,
+    ergonomicsPercentageModifier: (item: IItem) => (item as IHeadwear).presetErgonomicsPercentageModifier ?? (item as IHeadwear).ergonomicsPercentageModifier,
     ricochetChance: (item: IItem) => this.getRicochetChange(item)
   }
 

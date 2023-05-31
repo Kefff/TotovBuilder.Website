@@ -38,7 +38,7 @@ export interface IBuildSummary {
   /**
    * Last update date.
    */
-  lastUpdated: Date
+  lastUpdated: Date | undefined
 
   /**
    * Name.

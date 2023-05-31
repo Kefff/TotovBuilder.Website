@@ -19,6 +19,7 @@ import Services from '../../../services/repository/Services'
 import { ItemService } from '../../../services/ItemService'
 import { NotificationService, NotificationType } from '../../../services/NotificationService'
 import { IInventoryModSlot } from '../../../models/build/IInventoryModSlot'
+import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
 
 export default defineComponent({
   components: {
@@ -54,6 +55,8 @@ export default defineComponent({
     }
   },
   setup: (props) => {
+    const itemPropertiesService = Services.get(ItemPropertiesService)
+
     const item = ref<IItem>()
     watch(() => props.modelValue, () => setItem())
 
@@ -74,6 +77,9 @@ export default defineComponent({
       item.value = itemResult.value
     }
 
-    return { item }
+    return {
+      item,
+      itemPropertiesService
+    }
   }
 })

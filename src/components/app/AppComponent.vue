@@ -16,16 +16,11 @@
       </h1>
     </div>
   </div>
-  <div v-if="!isLoading">
-    <Changelog v-model="hasChangelogDisplayed" />
-    <router-view />
-  </div>
-  <div
-    v-else
-    class="app-loading"
-  >
-    <Loading />
-  </div>
+  <Changelog
+    v-if="!isLoading"
+    v-model="hasChangelogDisplayed"
+  />
+  <router-view />
   <div class="app-footer">
     <div class="app-footer-line">
       <div class="app-footer-element">

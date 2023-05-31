@@ -1,6 +1,6 @@
 {
-  "buildSharingUrl": "localhost:3000/s/",
   "bugReportUrl": "https://discord.gg/bugreport",
+  "buildSharingUrl": "localhost:3000/s/",
   "buildsSortFieldStorageKey": "builds_sort_field",
   "buildsSortOrderStorageKey": "builds_sort_order",
   "buildStorageKeyPrefix": "build_",
@@ -13,10 +13,10 @@
   "exportWarningShowedStoregeKey": "export_warning",
   "fetchTimeout": 30,
   "githubUrl": "https://github.com/User/Reposiory",
+  "globalFilterStorageKey": "global_filter",
   "itemCategoriesApi": "itemcategories",
   "itemsApi": "items",
   "languageStorageKey": "language",
-  "merchantFilterStorageKey": "merchant_filter",
   "notificationErrorDuration": 10,
   "notificationInformationDuration": 5,
   "notificationSuccessDuration": 5,
@@ -25,5 +25,6 @@
   "pricesApi": "prices",
   "questsApi": "quests",
   "tarkovValuesApi": "tarkovvalues",
+  "version": "1.6.0",
   "versionStorageKey": "version"
 }
