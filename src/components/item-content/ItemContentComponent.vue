@@ -8,7 +8,7 @@
       :force-quantity-to-max-selectable-amount="isMagazine"
       :category-ids="categoryIds"
       :max-stackable-amount="maximumQuantity"
-      :path="path + '/' + index + '_' + content.length + '/' + itemPathPrefix + containedItem.itemId"
+      :path="path + '/' + contentPathPrefix + index + '_' + content.length + '/' + itemPathPrefix + containedItem.itemId"
       @update:modelValue="onItemChanged($event, index)"
     />
     <Item

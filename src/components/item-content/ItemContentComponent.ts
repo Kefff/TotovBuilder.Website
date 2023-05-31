@@ -43,6 +43,8 @@ export default defineComponent({
     const itemPathPrefix = PathUtils.itemPrefix
     const itemToAdd = ref<IInventoryItem>()
 
+    const contentPathPrefix = PathUtils.contentPrefix
+
     watch(() => props.containerItem.id, () => initialize())
 
     onMounted(() => {
@@ -113,6 +115,7 @@ export default defineComponent({
       canAddItem,
       categoryIds,
       content,
+      contentPathPrefix,
       editing,
       isMagazine,
       itemPathPrefix,

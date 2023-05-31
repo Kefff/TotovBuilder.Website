@@ -23,7 +23,7 @@ export class PathUtils {
     const lastModSlotIndex = path.lastIndexOf(PathUtils.modSlotPrefix)
     const lastContentSlotIndex = path.lastIndexOf(PathUtils.contentPrefix)
 
-    return lastModSlotIndex > 0 && lastModSlotIndex > lastContentSlotIndex
+    return lastModSlotIndex >= 0 && lastModSlotIndex > lastContentSlotIndex
   }
 
   /**

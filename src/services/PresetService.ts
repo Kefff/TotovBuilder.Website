@@ -59,9 +59,6 @@ export class PresetService {
    */
   public async getPresetModSlotContainingItem(itemId: string, path: string): Promise<IInventoryModSlot | undefined> {
     const pathArray = path.split('/')
-
-    // Getting the last item of the path that appears before mods.
-    // We should never have the case of a mod that have items in its content that have mods.
     const firstModIndex = pathArray.findIndex(p => p.startsWith(PathUtils.modSlotPrefix))
 
     if (firstModIndex < 0) {
@@ -78,9 +75,34 @@ export class PresetService {
     const pathModSlotNames = pathArray.filter(p => p.startsWith(PathUtils.modSlotPrefix)).map(p => p.replace(PathUtils.modSlotPrefix, ''))
     const presetModSlot = this.getPresetModSlot(preset, pathModSlotNames)
 
-    if (presetModSlot?.item?.itemId === itemId) {
+    if (presetModSlot == null) {
+      return undefined
+    }
+
+    const isModSlot = PathUtils.checkIsModSlotPath(path)
+
+    if (isModSlot) {
       return presetModSlot
     }
+
+    let pathContentElement = ''
+
+    for (let i = pathArray.length - 1; i >= 0; i--) {
+      if (pathArray[i].startsWith(PathUtils.contentPrefix)) {
+        pathContentElement = pathArray[i]
+        break
+      }
+    }
+
+    pathContentElement = pathContentElement.replace(PathUtils.contentPrefix, '')
+    const contentIndexString = pathContentElement.slice(0, pathContentElement.indexOf('_'))
+    const contentIndex = Number(contentIndexString)
+
+    if (presetModSlot.item?.content[contentIndex]?.itemId !== itemId) {
+      return presetModSlot
+    }
+
+    return undefined
   }
 
   /**

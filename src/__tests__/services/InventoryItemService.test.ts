@@ -1010,6 +1010,108 @@ describe('getPrice()', () => {
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: '5ddbbeac582ed30a6134e577', // Saiga 12ga ver.10 12/76 semi-automatic shotgun NERFGUN
+        modSlots: [
+          {
+            item: {
+              content: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: '5d6e6891a4b9361bd473feea', // 12/70 \"Poleva-3\" slug
+                  modSlots: [],
+                  quantity: 20
+                }
+              ],
+              ignorePrice: false,
+              itemId: '5cf8f3b0d7f00c00217872ef', // SOK-12 12/76 MaxRounds Powermag 20-round magazine
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'mod_magazine'
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        missingPrice: false,
+        price: {
+          barterItems: [
+            {
+              itemId: '5bc9c29cd4351e003562b8a3',
+              quantity: 10
+            },
+            {
+              itemId: '5c0fa877d174af02a012e1cf',
+              quantity: 10
+            },
+            {
+              itemId: '57347d8724597744596b4e76',
+              quantity: 10
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '5ddbbeac582ed30a6134e577',
+          merchant: 'jaeger',
+          merchantLevel: 3,
+          quest: null,
+          value: 0,
+          valueInMainCurrency: 738760
+        },
+        priceWithContentInMainCurrency: {
+          barterItems: [
+          ],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: null,
+          value: 738760,
+          valueInMainCurrency: 738760
+        },
+        pricesWithContent: [
+          {
+            barterItems: [
+            ],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: null,
+            value: 738760,
+            valueInMainCurrency: 738760
+          }
+        ],
+        unitPrice: {
+          barterItems: [
+            {
+              itemId: '5bc9c29cd4351e003562b8a3',
+              quantity: 10
+            },
+            {
+              itemId: '5c0fa877d174af02a012e1cf',
+              quantity: 10
+            },
+            {
+              itemId: '57347d8724597744596b4e76',
+              quantity: 10
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '5ddbbeac582ed30a6134e577',
+          merchant: 'jaeger',
+          merchantLevel: 3,
+          quest: null,
+          value: 0,
+          valueInMainCurrency: 738760
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+      } as IInventoryPrice
     ]
   ])('should get the price of an inventory item and ignore items present in the item preset',
     async (inventoryItem: IInventoryItem, expected: IInventoryPrice) => {

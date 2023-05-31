@@ -81,8 +81,6 @@ export default defineComponent({
     const presetService = Services.get(PresetService)
     const notificationService = Services.get(NotificationService)
 
-    const contentPathPrefix = PathUtils.contentPrefix
-    const modSlotPathPrefix = PathUtils.modSlotPrefix
     const optionsMaxNumber = 200
 
     const editing = inject<Ref<boolean>>('editing')
@@ -324,11 +322,9 @@ export default defineComponent({
     }
 
     return {
-      contentPathPrefix,
       editing,
       itemChanging,
       maxSelectableQuantity,
-      modSlotPathPrefix,
       onFilterOptions,
       onIgnorePriceChanged,
       onQuantityChanged,

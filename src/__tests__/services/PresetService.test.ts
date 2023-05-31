@@ -20,10 +20,15 @@ import { IErgonomicsPercentageModifier } from '../../models/utils/IErgonomicsPer
 import { IRecoil } from '../../models/utils/IRecoil'
 import { IRecoilPercentageModifier } from '../../models/utils/IRecoilPercentageModifier'
 import { ItemFetcherService } from '../../services/ItemFetcherService'
-import PresetsMock from '../../../test-data/presets.json'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import { useGlobalFilterServiceMock } from '../../__mocks__/GlobalFilterServiceMock'
+import { IPrice } from '../../models/item/IPrice'
+import { IItem } from '../../models/item/IItem'
+import ItemCategoriesMock from '../../../test-data/item-categories.json'
+import ItemsMock from '../../../test-data/items.json'
+import PresetsMock from '../../../test-data/presets.json'
+import PricesMock from '../../../test-data/prices.json'
 
 describe('fetchPresets()', () => {
   it('should fetch presets', async () => {
@@ -272,7 +277,7 @@ describe('getPresetModSlotContainingItem', () => {
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster_0/item:5b439b1f86f7744fd8059cbe/mod:mod_reciever/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
+      'build:1234-4568-9011/slot:holster_0/item:5b439b1f86f7744fd8059cbe/mod:mod_reciever/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear/item:5a6f5d528dc32e00094b97d9',
       {
         item: {
           content: [],
@@ -288,11 +293,39 @@ describe('getPresetModSlotContainingItem', () => {
       {
         content: [],
         ignorePrice: false,
+        itemId: '5d6e6891a4b9361bd473feea', // 12/70 \"Poleva-3\" slug
+        modSlots: [],
+        quantity: 20
+      },
+      'build:0754d5a9-f29d-d68e-ed23-81a61a2b7af1/slot:onSling_0/item:5ddbbeac582ed30a6134e577/mod:mod_magazine/item:5cf8f3b0d7f00c00217872ef/content:0_1/item:5d6e6891a4b9361bd473feea',
+      {
+        item: {
+          content: [
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: '5d6e6891a4b9361bd473feea', // 12/70 \"Poleva-3\" slug
+              modSlots: [],
+              quantity: 20
+            }
+          ],
+          ignorePrice: false,
+          itemId: '5cf8f3b0d7f00c00217872ef',
+          modSlots: [],
+          quantity: 1
+        },
+        modSlotName: 'mod_magazine'
+      } as IInventoryModSlot
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
         itemId: '',
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster_0/item:5b439b1f86f7744fd8059cbe/mod:invalid/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
+      'build:1234-4568-9011/slot:holster_0/item:5b439b1f86f7744fd8059cbe/mod:invalid/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear/item:',
       undefined
     ],
     [
@@ -303,7 +336,7 @@ describe('getPresetModSlotContainingItem', () => {
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster/item:invalid/mod:mod_sight_rear/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
+      'build:1234-4568-9011/slot:holster/item:invalid/mod:mod_sight_rear/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear/item:5a6f5d528dc32e00094b97d9',
       undefined
     ],
     [
@@ -335,7 +368,10 @@ describe('getPresetModSlotContainingItem', () => {
   it('should return undefined when the preset does not contain the mod slot containing the item', async () => {
     // Arrange
     useItemServiceMock()
+    useItemFetcherServiceMock()
+
     const service = new PresetService()
+    await service.fetchPresets()
 
     const item = {
       content: [],
@@ -345,6 +381,74 @@ describe('getPresetModSlotContainingItem', () => {
       quantity: 1
     } as IInventoryItem
     const path = 'build:1234-4568-9011/slot:holster_0/item:5b439b1f86f7744fd8059cbe/mod:mod_reciever/item:5b1faa0f5acfc40dc528aeb5/mod:mod_pistol_grip'
+
+    // Act
+    const result = await service.getPresetModSlotContainingItem(item.itemId, path)
+
+    // Assert
+    expect(result).toBeUndefined()
+  })
+
+  it('should return undefined when the preset mod slot does not contain an item', async () => {
+    // Arrange
+    useItemServiceMock()
+
+    const itemFetcherServiceMock = mock<ItemFetcherService>()
+    when(itemFetcherServiceMock.fetchItemCategories()).thenReturn(Promise.resolve(Result.ok(ItemCategoriesMock)))
+    when(itemFetcherServiceMock.fetchItems()).thenReturn(Promise.resolve(Result.ok(ItemsMock as IItem[])))
+    when(itemFetcherServiceMock.fetchPresets()).thenReturn(Promise.resolve(Result.ok([
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: '5ddbbeac582ed30a6134e577', // Saiga-12ga v.10 NERFGUN
+        modSlots: [
+          {
+            item: undefined,
+            modSlotName: 'mod_magazine'
+          }
+        ],
+        quantity: 1
+      }
+    ])))
+    when(itemFetcherServiceMock.fetchPrices()).thenReturn(Promise.resolve(Result.ok(PricesMock as IPrice[])))
+
+    Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
+
+    const service = new PresetService()
+    await service.fetchPresets()
+
+    const item = {
+      content: [],
+      ignorePrice: false,
+      itemId: '5d6e6891a4b9361bd473feea', // 12/70 \"Poleva-3\" slug
+      modSlots: [],
+      quantity: 20
+    } as IInventoryItem
+    const path = 'build:0754d5a9-f29d-d68e-ed23-81a61a2b7af1/slot:onSling_0/item:5ddbbeac582ed30a6134e577/mod:mod_magazine/item:5cf8f3b0d7f00c00217872ef/content:0_1/item:5d6e67fba4b9361bc73bc779'
+
+    // Act
+    const result = await service.getPresetModSlotContainingItem(item.itemId, path)
+
+    // Assert
+    expect(result).toBeUndefined()
+  })
+
+  it('should return undefined when the item is different from the content of the item in the preset modslot', async () => {
+    // Arrange
+    useItemServiceMock()
+    useItemFetcherServiceMock()
+
+    const service = new PresetService()
+    await service.fetchPresets()
+
+    const item = {
+      content: [],
+      ignorePrice: false,
+      itemId: '5d6e67fba4b9361bc73bc779', // 12/70 6.5mm Express buckshot
+      modSlots: [],
+      quantity: 20
+    } as IInventoryItem
+    const path = 'build:0754d5a9-f29d-d68e-ed23-81a61a2b7af1/slot:onSling_0/item:5ddbbeac582ed30a6134e577/mod:mod_magazine/item:5cf8f3b0d7f00c00217872ef/content:0_1/item:5d6e67fba4b9361bc73bc779'
 
     // Act
     const result = await service.getPresetModSlotContainingItem(item.itemId, path)

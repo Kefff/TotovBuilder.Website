@@ -160,6 +160,8 @@ export class InventoryItemService {
       unitPriceIgnoreStatus = IgnoredUnitPrice.notLootable
     } else if (presetModSlotItem?.itemId === inventoryItem.itemId) {
       unitPriceIgnoreStatus = IgnoredUnitPrice.inPreset
+    } else if (presetModSlotItem?.content.some(c => c.itemId === inventoryItem.itemId && c.quantity === inventoryItem.quantity)) {
+      unitPriceIgnoreStatus = IgnoredUnitPrice.inPreset
     } else if (inventoryItem.ignorePrice) {
       unitPriceIgnoreStatus = IgnoredUnitPrice.manuallyIgnored
     }
@@ -311,7 +313,7 @@ export class InventoryItemService {
         continue
       }
 
-      const containedItemPriceResult = await this.getPrice(containedItem)
+      const containedItemPriceResult = await this.getPrice(containedItem, presetModSlotItem)
 
       if (!containedItemPriceResult.success) {
         return Result.failFrom(containedItemPriceResult)
