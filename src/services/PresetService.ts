@@ -98,7 +98,7 @@ export class PresetService {
     const contentIndexString = pathContentElement.slice(0, pathContentElement.indexOf('_'))
     const contentIndex = Number(contentIndexString)
 
-    if (presetModSlot.item?.content[contentIndex]?.itemId !== itemId) {
+    if (presetModSlot.item?.content[contentIndex]?.itemId === itemId) {
       return presetModSlot
     }
 
