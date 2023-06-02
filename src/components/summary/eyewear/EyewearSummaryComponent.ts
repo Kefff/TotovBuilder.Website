@@ -1,4 +1,4 @@
-import { computed, defineComponent, PropType } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { IEyewear } from '../../../models/item/IEyewear'
 import StatsUtils from '../../../utils/StatsUtils'
 
@@ -14,11 +14,9 @@ export default defineComponent({
       default: true
     }
   },
-  setup: (props) => {
-    const hasBlindnessProtectionPercentage = computed(() => props.item.blindnessProtectionPercentage !== 0)
+  setup: () => {
 
     return {
-      hasBlindnessProtectionPercentage,
       StatsUtils
     }
   }

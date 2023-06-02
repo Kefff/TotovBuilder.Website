@@ -17,6 +17,7 @@ import ModStat from '../mod/ModStatsComponent.vue'
 import RangedWeaponModStat from '../ranged-weapon-mod/RangedWeaponModStatsComponent.vue'
 import RangedWeaponStat from '../ranged-weapon/RangedWeaponStatsComponent.vue'
 import VestStat from '../vest/VestStatsComponent.vue'
+import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
 
 export default defineComponent({
   components: {
@@ -42,6 +43,8 @@ export default defineComponent({
     }
   },
   setup: (props) => {
+    const itemPropertiesService = Services.get(ItemPropertiesService)
+
     const item = ref<IItem>()
     watch(() => props.itemId, () => setItem())
 
@@ -63,6 +66,9 @@ export default defineComponent({
       item.value = itemResult.value
     }
 
-    return { item }
+    return {
+      item,
+      itemPropertiesService
+    }
   }
 })

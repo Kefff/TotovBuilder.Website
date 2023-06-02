@@ -1,4 +1,4 @@
-import { defineComponent, onMounted, PropType, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { IMagazine } from '../../../models/item/IMagazine'
 import { MagazineStatsComponentService } from '../../../services/components/stats/MagazineStatsComponentService'
 import Services from '../../../services/repository/Services'
@@ -13,6 +13,8 @@ export default defineComponent({
   },
   setup: (props) => {
     const acceptedCartridesCaptions = ref<string[]>([])
+    const ergonomicsModifier = computed(() => props.item.presetErgonomicsModifier ?? props.item.ergonomicsModifier)
+
     watch(() => props.item, () => getAcceptedCartridgesCaptions())
 
     onMounted(() => getAcceptedCartridgesCaptions())
@@ -26,6 +28,7 @@ export default defineComponent({
 
     return {
       acceptedCartridesCaptions,
+      ergonomicsModifier,
       StatsUtils
     }
   }

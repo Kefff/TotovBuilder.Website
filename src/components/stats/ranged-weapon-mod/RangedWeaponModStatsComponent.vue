@@ -1,10 +1,10 @@
 <template>
   <div
-    v-if="item.ergonomicsModifier !== 0 || item.recoilPercentageModifier !== 0 || item.accuracyPercentageModifier !== 0"
+    v-if="item.accuracyPercentageModifier !== 0 || ergonomicsModifier !== 0 || item.recoilPercentageModifier !== 0"
     class="stats-line"
   >
     <div
-      v-if="item.ergonomicsModifier !== 0"
+      v-if="ergonomicsModifier !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -14,8 +14,8 @@
         />
         <span>{{ $t('caption.ergonomics') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.ergonomicsModifier)">
-        {{ StatsUtils.getDisplayValue(item.ergonomicsModifier, true, false) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsModifier)">
+        {{ StatsUtils.getDisplayValue(ergonomicsModifier, true, false) }}
       </div>
     </div>
     <div

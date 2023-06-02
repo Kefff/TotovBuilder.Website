@@ -1,12 +1,17 @@
 import { IBuild } from '../../models/build/IBuild'
 import { BuildService } from '../../services/BuildService'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { anything, spy, when } from 'ts-mockito'
+import { anything, spy, verify, when } from 'ts-mockito'
 import Result, { FailureType } from '../../utils/Result'
 import WebsiteConfigurationMock from '../../../test-data/website-configuration.json'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
+import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import { VersionService } from '../../services/VersionService'
+import Migrations from '../../utils/migrations/Migrations'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
 
 const builds: IBuild[] = [
   {
@@ -296,7 +301,8 @@ const builds: IBuild[] = [
       { items: [undefined, undefined, undefined], typeId: 'special' }
     ],
     lastExported: new Date(1),
-    lastUpdated: new Date(1)
+    lastUpdated: new Date(1),
+    lastWebsiteVersion: '999.999.999'
   },
   {
     id: 'build_2',
@@ -502,8 +508,9 @@ const builds: IBuild[] = [
         typeId: 'tacticalRig'
       }
     ],
-    lastExported: undefined,
-    lastUpdated: new Date(1)
+    lastExported: new Date(1),
+    lastUpdated: new Date(1),
+    lastWebsiteVersion: '999.999.999'
   }
 ]
 
@@ -584,7 +591,8 @@ const newBuild: IBuild = {
     }
   ],
   lastExported: undefined,
-  lastUpdated: new Date(1)
+  lastUpdated: undefined,
+  lastWebsiteVersion: undefined
 }
 
 beforeEach(() => {
@@ -602,15 +610,18 @@ afterEach(() => {
   localStorage.clear()
 })
 
+
 describe('add()', () => {
-  it('should add a build', () => {
+  it('should add a build', async () => {
     // Arrange
+    useItemServiceMock()
+    useVersionServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
 
     // Act
-    const id = service.add(newBuild)
+    const id = await service.add(newBuild)
     const result = service.get(id)
 
     // Assert
@@ -721,6 +732,7 @@ describe('create()', () => {
 describe('delete()', () => {
   it('should delete a build', () => {
     // Arrange
+    useItemServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
@@ -739,8 +751,33 @@ describe('delete()', () => {
 })
 
 describe('fromSharableString()', () => {
-  it('should get a build from a sharable string', async () => {
+  it('should get a build from a sharable string and execute migrations on it', async () => {
     // Arrange
+    Services.configure(VersionService)
+
+    Migrations.splice(0)
+    Migrations.push(
+      {
+        migrateBuild: (build: IBuild) => {
+          build.name = build.name + '1.5.0'
+          return Promise.resolve(Result.ok())
+        },
+        migrateBuildUnrelatedData: () => {
+          return Promise.resolve(Result.ok())
+        },
+        version: '1.5.0'
+      },
+      {
+        migrateBuild: (build: IBuild) => {
+          build.name = build.name + '|' + '1.6.0'
+          return Promise.resolve(Result.ok())
+        },
+        migrateBuildUnrelatedData: () => {
+          return Promise.resolve(Result.ok())
+        },
+        version: '1.6.0'
+      })
+
     const service = new BuildService()
     const sharableString = 'XQAAAAKBAQAAAAAAAABAqEppVBKy3f2nWA1_4C5z8-v7-PB2PnO3yE24i4uplQNOe2AQti9qfQ3vHsOnTKDq2nEEFb79VsBzBnD-pb-5Nb0_87qgYNgUqN-kUzC-ixXoaUIxP5bVjrq-YghBtAFQa_O4inxq3hwebGM3jUCTpB0ou_BCcoJymajYEBQ2OvPuy_aF8Vtf4UR8KYA6nugVJv5Kd0v6DWN94D7Kgaza5GFSYqrRHItjPLx6krp0SGceYjtn1RNUBX-ea41hpKDXlBkYuxoBe-ZT10P4Ouq0e2Mmn82YwcUUBrZvQhh3uG6Dn_YU1No29Qi4js2uAwpm-nroMnPbxOd9jDkNeED-9xXjIA'
 
@@ -750,174 +787,175 @@ describe('fromSharableString()', () => {
     // Assert
     expect(buildResult.success).toBe(true)
     expect(buildResult.value).toMatchObject({
-      'id': '',
-      'inventorySlots': [
+      id: '',
+      inventorySlots: [
         {
-          'items': [
+          items: [
             {
-              'content': [],
-              'itemId': '574d967124597745970e7c94', // Simonov SKS 7.62x39 carbine
-              'modSlots': [
+              content: [],
+              itemId: '574d967124597745970e7c94', // Simonov SKS 7.62x39 carbine
+              modSlots: [
                 {
-                  'item': {
-                    'content': [],
-                    'ignorePrice': false,
-                    'itemId': '574dad8024597745964bf05c', // SKS TOZ wooden stock (56-A-231 Sb.5)
-                    'modSlots': [],
-                    'quantity': 1
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: '574dad8024597745964bf05c', // SKS TOZ wooden stock (56-A-231 Sb.5)
+                    modSlots: [],
+                    quantity: 1
                   },
-                  'modSlotName': 'mod_stock'
+                  modSlotName: 'mod_stock'
                 },
                 {
-                  'item': {
-                    'content': [],
-                    'ignorePrice': false,
-                    'itemId': '574db213245977459a2f3f5d', // SKS rear sight
-                    'modSlots': [],
-                    'quantity': 1
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: '574db213245977459a2f3f5d', // SKS rear sight
+                    modSlots: [],
+                    quantity: 1
                   },
-                  'modSlotName': 'mod_sight_rear'
+                  modSlotName: 'mod_sight_rear'
                 },
                 {
-                  'item': {
-                    'content': [],
-                    'itemId': '587df3a12459772c28142567', // SKS 7.62x39 10-round internal box magazine
-                    'modSlots': [],
-                    'quantity': 1
+                  item: {
+                    content: [],
+                    itemId: '587df3a12459772c28142567', // SKS 7.62x39 10-round internal box magazine
+                    modSlots: [],
+                    quantity: 1
                   },
-                  'modSlotName': 'mod_magazine'
+                  modSlotName: 'mod_magazine'
                 }
               ],
-              'quantity': 1
+              quantity: 1
             }
           ],
-          'typeId': 'onSling'
+          typeId: 'onSling'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'onBack'
+          typeId: 'onBack'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'holster'
+          typeId: 'holster'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'bodyArmor'
+          typeId: 'bodyArmor'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'tacticalRig'
+          typeId: 'tacticalRig'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'headwear'
+          typeId: 'headwear'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'earpiece'
+          typeId: 'earpiece'
         },
         {
-          'items': [
+          items: [
             undefined,
             undefined,
             undefined,
             undefined
           ],
-          'typeId': 'pockets'
+          typeId: 'pockets'
         },
         {
-          'items': [
+          items: [
             {
-              'content': [
+              content: [
                 {
-                  'content': [],
-                  'ignorePrice': false,
-                  'itemId': '5448fee04bdc2dbc018b4567', // Bottle of water (0.6L)
-                  'modSlots': [],
-                  'quantity': 1
+                  content: [],
+                  ignorePrice: false,
+                  itemId: '5448fee04bdc2dbc018b4567', // Bottle of water (0.6L)
+                  modSlots: [],
+                  quantity: 1
                 }
               ],
-              'ignorePrice': false,
-              'itemId': '5c0e805e86f774683f3dd637', // 3V Gear Paratus 3-Day Operator's Tactical backpack
-              'modSlots': [],
-              'quantity': 1
+              ignorePrice: false,
+              itemId: '5c0e805e86f774683f3dd637', // 3V Gear Paratus 3-Day Operator's Tactical backpack
+              modSlots: [],
+              quantity: 1
             }
           ],
-          'typeId': 'backpack'
+          typeId: 'backpack'
         },
         {
-          'items': [
+          items: [
             {
-              'content': [],
-              'ignorePrice': false,
-              'itemId': '544a11ac4bdc2d470e8b456a', // Secure container Alpha
-              'modSlots': [],
-              'quantity': 1
+              content: [],
+              ignorePrice: false,
+              itemId: '544a11ac4bdc2d470e8b456a', // Secure container Alpha
+              modSlots: [],
+              quantity: 1
             }
           ],
-          'typeId': 'pouch'
+          typeId: 'pouch'
         },
         {
-          'items': [
+          items: [
             {
-              'content': [],
-              'ignorePrice': false,
-              'itemId': '54491bb74bdc2d09088b4567', // ER FULCRUM BAYONET
-              'modSlots': [],
-              'quantity': 1
+              content: [],
+              ignorePrice: false,
+              itemId: '54491bb74bdc2d09088b4567', // ER FULCRUM BAYONET
+              modSlots: [],
+              quantity: 1
             }
           ],
-          'typeId': 'scabbard'
+          typeId: 'scabbard'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'faceCover'
+          typeId: 'faceCover'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'eyewear'
+          typeId: 'eyewear'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'armband'
+          typeId: 'armband'
         },
         {
-          'items': [
+          items: [
             {
-              'content': [],
-              'ignorePrice': false,
-              'itemId': '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
-              'modSlots': [],
-              'quantity': 1
+              content: [],
+              ignorePrice: false,
+              itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
+              modSlots: [],
+              quantity: 1
             },
             undefined,
             undefined
           ],
-          'typeId': 'special'
+          typeId: 'special'
         }
       ],
-      'lastExported': undefined,
-      'name': ''
-    })
+      lastExported: undefined,
+      lastWebsiteVersion: undefined,
+      name: '1.5.0|1.6.0'
+    } as IBuild)
   })
 
   it('should fail when the sharable string is corrupted', async () => {
@@ -947,11 +985,43 @@ describe('fromSharableString()', () => {
     expect(buildResult.success).toBe(false)
     expect(buildResult.failureMessage).toBe('Cannot read the shared link. It seems to be corrupted.')
   })
+
+  it('should notify when a migration fails', async () => {
+    // Arrange
+    useWebsiteConfigurationServiceMock()
+    Services.configure(NotificationService)
+    Services.configure(VersionService)
+
+    const notificationServiceSpy = spy(Services.get(NotificationService))
+
+    Migrations.splice(0)
+    Migrations.push(
+      {
+        migrateBuild: () => {
+          return Promise.resolve(Result.fail(FailureType.error, undefined, 'Error'))
+        },
+        migrateBuildUnrelatedData: () => {
+          return Promise.resolve(Result.ok())
+        },
+        version: '1.6.0'
+      })
+
+    const service = new BuildService()
+    const sharableString = 'XQAAAAKBAQAAAAAAAABAqEppVBKy3f2nWA1_4C5z8-v7-PB2PnO3yE24i4uplQNOe2AQti9qfQ3vHsOnTKDq2nEEFb79VsBzBnD-pb-5Nb0_87qgYNgUqN-kUzC-ixXoaUIxP5bVjrq-YghBtAFQa_O4inxq3hwebGM3jUCTpB0ou_BCcoJymajYEBQ2OvPuy_aF8Vtf4UR8KYA6nugVJv5Kd0v6DWN94D7Kgaza5GFSYqrRHItjPLx6krp0SGceYjtn1RNUBX-ea41hpKDXlBkYuxoBe-ZT10P4Ouq0e2Mmn82YwcUUBrZvQhh3uG6Dn_YU1No29Qi4js2uAwpm-nroMnPbxOd9jDkNeED-9xXjIA'
+
+    // Act
+    const buildResult = await service.fromSharableString(sharableString)
+
+    // Assert
+    expect(buildResult.success).toBe(true)
+    verify(notificationServiceSpy.notify(NotificationType.error, 'Error during the migration of build "" to "1.6.0".', true)).once()
+  })
 })
 
 describe('get()', () => {
   it('should get a build', () => {
     // Arrange
+    useItemServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
@@ -979,68 +1049,12 @@ describe('get()', () => {
       'Build "invalid" not found. It may have been deleted.'
     )
   })
-
-  it('should update an obsolete build', () => {
-    // Arrange
-    useWebsiteConfigurationServiceMock()
-
-    const service = new BuildService()
-    const date = new Date()
-    const build: IBuild = {
-      id: '',
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'compass'
-        }
-      ],
-      lastExported: date,
-      lastUpdated: date,
-      name: 'Obsolete build'
-    }
-    const id = service.add(build)
-
-    // Act
-    const updatedBuildResult = service.get(id)
-
-    // Assert
-    expect(updatedBuildResult.success).toBe(true)
-    expect(updatedBuildResult.value).toStrictEqual({
-      id,
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
-              modSlots: [],
-              quantity: 1
-            },
-            undefined,
-            undefined
-          ],
-          typeId: 'special'
-        }
-      ],
-      lastExported: date,
-      lastUpdated: date,
-      name: 'Obsolete build'
-    })
-  })
 })
 
 describe('getAll()', () => {
   it('should get all builds', () => {
     // Arrange
+    useItemServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
@@ -1412,6 +1426,8 @@ describe('parseReducedBuild()', () => {
     ]
   ])('should fail when the parsing of an inventory slot fails', (reducedBuild: Record<string, unknown>, expected: string) => {
     // Arrange
+    useWebsiteConfigurationServiceMock()
+
     const service = new BuildService()
 
     // Act
@@ -1627,6 +1643,7 @@ describe('reduceBuild()', () => {
       ],
       lastExported: undefined,
       lastUpdated: new Date(),
+      lastWebsiteVersion: undefined,
       name: 'test'
     }
 
@@ -1642,6 +1659,7 @@ describe('reduceBuild()', () => {
 describe('toSharableURL()', () => {
   it('should reduce a build and transform it into a URL', async () => {
     // Arrange
+    useVersionServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
@@ -1662,6 +1680,7 @@ describe('toSharableURL()', () => {
       inventorySlots: [],
       lastExported: undefined,
       lastUpdated: new Date(),
+      lastWebsiteVersion: undefined,
       name: 'test'
     }
 
@@ -1685,13 +1704,15 @@ describe('toSharableURL()', () => {
 
     // Assert
     expect(sharableStringResult.success).toBe(false)
-    expect(sharableStringResult.failureMessage).toBe('Cannot share build "Build 1" by link because it is too large. You can still share it by using the "Cog" menu to export it as a file that can be imported by another person.')
+    expect(sharableStringResult.failureMessage).toBe('Cannot share build "Build 1" by link because it is too large. You can still share it by using the "Export builds to a file" button to export it as a file that can be imported by another person.')
   })
 })
 
 describe('update()', () => {
-  it('should update a build', () => {
+  it('should update a build', async () => {
     // Arrange
+    useItemServiceMock()
+    useVersionServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
@@ -1699,7 +1720,7 @@ describe('update()', () => {
     build.name = 'New name'
 
     // Act / Assert
-    const updateResult = service.update(builds[0].id, build)
+    const updateResult = await service.update(builds[0].id, build)
     expect(updateResult.success).toBe(true)
 
     const getUpdatedBuildResult = service.get(builds[0].id)
@@ -1707,8 +1728,9 @@ describe('update()', () => {
     expect(getUpdatedBuildResult.value.name).toBe('New name')
   })
 
-  it('should fail if the build does not exist', () => {
+  it('should fail if the build does not exist', async () => {
     // Arrange
+    useVersionServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
@@ -1717,69 +1739,12 @@ describe('update()', () => {
     build.name = 'New name'
 
     // Act / Assert
-    const updateResult = service.update(build.id, build)
+    const updateResult = await service.update(build.id, build)
     expect(updateResult.success).toBe(false)
     expect(updateResult.failureMessage).toBe('Build "invalid" not found. It may have been deleted.')
 
     const getResult = service.get(build.id)
     expect(getResult.success).toBe(false)
     expect(getResult.failureMessage).toBe('Build "invalid" not found. It may have been deleted.')
-  })
-})
-
-describe('updateObsoleteBuild', () => {
-  it('should update an obsolete build', () => {
-    // Arrange
-    useWebsiteConfigurationServiceMock()
-
-    const obsoleteBuild: IBuild = {
-      id: 'obsolete_build',
-      name: 'Obsolete build',
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'compass'
-        }
-      ],
-      lastExported: undefined,
-      lastUpdated: new Date(1)
-    }
-
-    const buildServer = new BuildService()
-
-    // Act
-    buildServer.updateObsoleteBuild(obsoleteBuild)
-
-    // Assert
-    expect(obsoleteBuild).toStrictEqual({
-      id: 'obsolete_build',
-      name: 'Obsolete build',
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
-              modSlots: [],
-              quantity: 1
-            },
-            undefined,
-            undefined
-          ],
-          typeId: 'special'
-        }
-      ],
-      lastExported: undefined,
-      lastUpdated: new Date(1)
-    })
   })
 })

@@ -18,6 +18,6 @@ export class ModSortingFunctions implements ISortingFunctions {
    * {@inheritDoc ISortingFunctions.valueToCompareGettingFunctions}
    */
   public getValueToCompareFunctions: { [property: string]: (item: IItem) => (string | number) | Promise<string | number> } = {
-    ergonomicsModifier: (item: IItem) => (item as IMod).ergonomicsModifier
+    ergonomicsModifier: (item: IItem) => (item as IMod).presetErgonomicsModifier ?? (item as IMod).ergonomicsModifier
   }
 }

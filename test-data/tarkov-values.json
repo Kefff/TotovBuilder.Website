@@ -60,12 +60,6 @@
       "minLevel": 0,
       "name": "flea-market",
       "showInFilter": true
-    },
-    {
-      "maxLevel": 0,
-      "minLevel": 0,
-      "name": "items-without-merchant",
-      "showInFilter": true
     }
   ],
   "ricochetChances": [

@@ -14,4 +14,10 @@ export interface IHeadwear extends IArmor, IModdable {
    * Severity of the hearing impairment caused by the helmet.
    */
   deafening: string
+
+  /**
+   * Modifier of the whole preset added to the weapon ergonomics in percentage.
+   * Undefined if the item is not a preset.
+   */
+  presetErgonomicsPercentageModifier: number | undefined
 }

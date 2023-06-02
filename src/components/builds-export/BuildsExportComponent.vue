@@ -21,7 +21,7 @@
             icon="file-export"
             class="icon-before-text"
           />
-          <span>{{ $t('caption.export') }}</span>
+          <span>{{ $t('caption.exportBuilds') }}</span>
         </Button>
         <Button
           v-if="buildsSummaries.length > 1"

@@ -1,23 +1,25 @@
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { InventoryItemService } from '../../services/InventoryItemService'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
 
 describe('getShoppingList', () => {
   it('should get a shopping list for an item and all its content, mod (except from default preset) and barter items that must be bought', async () => {
     // Arrange
     useItemServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const inventoryItemService = new InventoryItemService()
-    const merchantFilterService = Services.get(MerchantFilterService)
-    merchantFilterService.save([
+    const globalFilterService = Services.get(GlobalFilterService)
+    globalFilterService.saveMerchantFilters([
       {
         enabled: true,
         merchant: 'flea-market',
@@ -35,7 +37,7 @@ describe('getShoppingList', () => {
         {
           content: [],
           ignorePrice: false,
-          itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+          itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
           modSlots: [
             {
               item: {
@@ -100,9 +102,9 @@ describe('getShoppingList', () => {
           capacity: 48,
           categoryId: 'backpack',
           conflictingItemIds: [],
-          iconLink: 'https://assets.tarkov.dev/5df8a4d786f77412672a1e3b-icon.jpg',
+          iconLink: 'https://assets.tarkov.dev/5df8a4d786f77412672a1e3b-icon.webp',
           id: '5df8a4d786f77412672a1e3b',
-          imageLink: 'https://assets.tarkov.dev/5df8a4d786f77412672a1e3b-image.jpg',
+          imageLink: 'https://assets.tarkov.dev/5df8a4d786f77412672a1e3b-image.webp',
           marketLink: 'https://tarkov.dev/item/6sh118-raid-backpack',
           maxStackableAmount: 1,
           name: '6Sh118 raid backpack',
@@ -172,9 +174,9 @@ describe('getShoppingList', () => {
         item: {
           categoryId: 'other',
           conflictingItemIds: [],
-          iconLink: 'https://assets.tarkov.dev/5d0375ff86f774186372f685-icon.jpg',
+          iconLink: 'https://assets.tarkov.dev/5d0375ff86f774186372f685-icon.webp',
           id: '5d0375ff86f774186372f685',
-          imageLink: 'https://assets.tarkov.dev/5d0375ff86f774186372f685-image.jpg',
+          imageLink: 'https://assets.tarkov.dev/5d0375ff86f774186372f685-image.webp',
           marketLink: 'https://tarkov.dev/item/military-cable',
           maxStackableAmount: 1,
           name: 'Military cable',
@@ -218,21 +220,24 @@ describe('getShoppingList', () => {
       },
       {
         item: {
+          baseItemId: '57dc2fa62459775949412633',
           caliber: 'Caliber545x39',
           categoryId: 'mainWeapon',
           conflictingItemIds: [],
+          defaultPresetId: null,
           ergonomics: 44,
           fireModes: [
             'SingleFire',
             'FullAuto'
           ],
           fireRate: 650,
-          horizontalRecoil: 445,
-          iconLink: 'https://assets.tarkov.dev/57dc2fa62459775949412633-icon.jpg',
-          id: '57dc2fa62459775949412633',
-          imageLink: 'https://assets.tarkov.dev/57dc2fa62459775949412633-image.jpg',
-          marketLink: 'https://tarkov.dev/item/kalashnikov-aks-74u-545x39-assault-rifle',
+          horizontalRecoil: 415,
+          iconLink: 'https://assets.tarkov.dev/584147732459775a2b6d9f12-icon.webp',
+          id: '584147732459775a2b6d9f12',
+          imageLink: 'https://assets.tarkov.dev/584147732459775a2b6d9f12-image.webp',
+          marketLink: 'https://tarkov.dev/item/kalashnikov-aks-74u-545x39-assault-rifle-default',
           maxStackableAmount: 1,
+          minuteOfAngle: 3.44,
           modSlots: [
             {
               compatibleItemIds: [
@@ -250,7 +255,6 @@ describe('getShoppingList', () => {
                 '56dff4a2d2720bbd668b456a',
                 '56dff4ecd2720b5f5a8b4568'
               ],
-              id: '57dc318524597759805c1581',
               maxStackableAmount: 1,
               name: 'chamber0',
               required: false
@@ -275,12 +279,14 @@ describe('getShoppingList', () => {
                 '5947fa2486f77425b47c1a9b',
                 '5c6bf4aa2e2216001219b0ae',
                 '5649ae4a4bdc2d1b2b8b4588',
-                '5998517986f7746017232f7e'
+                '5998517986f7746017232f7e',
+                '623c3be0484b5003161840dc',
+                '628c9ab845c59e5b80768a81',
+                '628a664bccaab13006640e47'
               ],
-              id: '57dc31bc245977596d4ef3d2',
               maxStackableAmount: 1,
               name: 'mod_pistol_grip',
-              required: true
+              required: false
             },
             {
               compatibleItemIds: [
@@ -288,7 +294,6 @@ describe('getShoppingList', () => {
                 '5ab626e4d8ce87272e4c6e43',
                 '57dc347d245977596754e7a1'
               ],
-              id: '57dc31ce245977593d4e1453',
               maxStackableAmount: 1,
               name: 'mod_stock',
               required: false
@@ -298,7 +303,6 @@ describe('getShoppingList', () => {
                 '6130ca3fd92c473c77020dbd',
                 '5648ac824bdc2ded0b8b457d'
               ],
-              id: '57dc31e1245977597164366e',
               maxStackableAmount: 1,
               name: 'mod_charge',
               required: false
@@ -316,7 +320,6 @@ describe('getShoppingList', () => {
                 '5bed61680db834001d2c45ab',
                 '5bed625c0db834001c062946'
               ],
-              id: '57dc31f2245977596c274b4f',
               maxStackableAmount: 1,
               name: 'mod_magazine',
               required: false
@@ -337,7 +340,6 @@ describe('getShoppingList', () => {
                 '564caa3d4bdc2d17108b458e',
                 '57ffb0e42459777d047111c5'
               ],
-              id: '57dc35ce2459775971643671',
               maxStackableAmount: 1,
               name: 'mod_muzzle',
               required: false
@@ -347,7 +349,6 @@ describe('getShoppingList', () => {
                 '57dc334d245977597164366f',
                 '5839a7742459773cf9693481'
               ],
-              id: '57dc35fb245977596d4ef3d7',
               maxStackableAmount: 1,
               name: 'mod_reciever',
               required: false
@@ -356,18 +357,17 @@ describe('getShoppingList', () => {
               compatibleItemIds: [
                 '59d36a0086f7747e673f3946'
               ],
-              id: '59d368ce86f7747e6a5beb03',
               maxStackableAmount: 1,
               name: 'mod_gas_block',
-              required: true
+              required: false
             }
           ],
-          name: 'Kalashnikov AKS-74U 5.45x39 assault rifle',
+          name: 'Kalashnikov AKS-74U 5.45x39 assault rifle Default',
           prices: [
             {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '57dc2fa62459775949412633',
+              itemId: '584147732459775a2b6d9f12',
               merchant: 'prapor',
               merchantLevel: 1,
               quest: {
@@ -381,7 +381,7 @@ describe('getShoppingList', () => {
             {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '57dc2fa62459775949412633',
+              itemId: '584147732459775a2b6d9f12',
               merchant: 'flea-market',
               merchantLevel: 0,
               quest: null,
@@ -389,8 +389,8 @@ describe('getShoppingList', () => {
               valueInMainCurrency: 28999
             }
           ],
-          shortName: 'AKS-74U',
-          verticalRecoil: 141,
+          shortName: 'AKS-74U Default',
+          verticalRecoil: 121,
           weight: 1.809,
           wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Kalashnikov_AKS-74U_5.45x39_assault_rifle'
         },
@@ -398,7 +398,7 @@ describe('getShoppingList', () => {
         price: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '57dc2fa62459775949412633',
+          itemId: '584147732459775a2b6d9f12',
           merchant: 'prapor',
           merchantLevel: 1.0,
           quest: {
@@ -412,7 +412,7 @@ describe('getShoppingList', () => {
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '57dc2fa62459775949412633',
+          itemId: '584147732459775a2b6d9f12',
           merchant: 'prapor',
           merchantLevel: 1.0,
           quest: {
@@ -427,12 +427,14 @@ describe('getShoppingList', () => {
       {
         item: {
           accuracyPercentageModifier: 0,
+          baseItemId: null,
           categoryId: 'rangedWeaponMod',
           conflictingItemIds: [],
+          defaultPresetId: null,
           ergonomicsModifier: 12,
-          iconLink: 'https://assets.tarkov.dev/5f6341043ada5942720e2dc5-icon.jpg',
+          iconLink: 'https://assets.tarkov.dev/5f6341043ada5942720e2dc5-icon.webp',
           id: '5f6341043ada5942720e2dc5',
-          imageLink: 'https://assets.tarkov.dev/5f6341043ada5942720e2dc5-image.jpg',
+          imageLink: 'https://assets.tarkov.dev/5f6341043ada5942720e2dc5-image.webp',
           marketLink: 'https://tarkov.dev/item/ak-aeroknox-scorpius-pistol-grip',
           maxStackableAmount: 1,
           modSlots: [],
@@ -502,18 +504,18 @@ describe('getShoppingList', () => {
           caliber: 'Caliber545x39',
           categoryId: 'ammunition',
           conflictingItemIds: [],
-          durabilityBurnPercentageModifier: 0.10000000000000009,
+          durabilityBurnPercentageModifier: 0.1,
           fleshDamage: 48,
           fragmentationChancePercentage: 0.4,
           heavyBleedingPercentageChance: 0,
-          iconLink: 'https://assets.tarkov.dev/56dff3afd2720bba668b4567-icon.jpg',
+          iconLink: 'https://assets.tarkov.dev/56dff3afd2720bba668b4567-icon.webp',
           id: '56dff3afd2720bba668b4567',
-          imageLink: 'https://assets.tarkov.dev/56dff3afd2720bba668b4567-image.jpg',
+          imageLink: 'https://assets.tarkov.dev/56dff3afd2720bba668b4567-image.webp',
           lightBleedingPercentageChance: 0,
           marketLink: 'https://tarkov.dev/item/545x39mm-ps-gs',
           maxStackableAmount: 60,
           name: '5.45x39mm PS gs',
-          penetrationPower: 27,
+          penetrationPower: 31,
           prices: [
             {
               barterItems: [],
@@ -587,7 +589,7 @@ describe('getShoppingList', () => {
     useItemServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const inventoryItemService = new InventoryItemService()
 
@@ -611,7 +613,7 @@ describe('getShoppingList', () => {
     useItemServiceMock(false)
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const inventoryItemService = new InventoryItemService()
 

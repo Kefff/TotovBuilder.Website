@@ -88,9 +88,9 @@ export interface IWebsiteConfiguration {
   languageStorageKey: string
 
   /*
-   * Storage key for the current merchant filter.
+   * Storage key for the current global filter.
    */
-  merchantFilterStorageKey: string
+  globalFilterStorageKey: string
 
   /*
    * Error notifications duration (in seconds).
@@ -131,6 +131,11 @@ export interface IWebsiteConfiguration {
    * Tarkov values API name.
    */
   tarkovValuesApi: string,
+
+  /**
+   * Version of the website.
+   */
+  version: string,
 
   /*
    * Storage key for the current version.

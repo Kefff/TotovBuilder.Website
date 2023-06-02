@@ -10,5 +10,5 @@ export interface IErgonomicsPercentageModifier {
   /**
    * Ergonomics percentage modifier with mods.
    */
-  ergonomicsPercentageModifierWithContent: number
+  ergonomicsPercentageModifierWithMods: number
 }

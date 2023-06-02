@@ -5,26 +5,27 @@ import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { build1, build2 } from './BuildPropertiesService.test'
+import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
 
 describe('getSummary()', () => {
   it.each([
     [
       build1,
       {
-        ergonomics: 28.1,
-        ergonomicsPercentageModifier: -0.25,
+        ergonomics: 34.9,
+        ergonomicsPercentageModifier: -0.07,
         exported: false,
         horizontalRecoil: 200,
         id: 'build_1',
         name: 'Build 1',
         lastExported: undefined,
-        lastUpdated: new Date(1),
+        lastUpdated: undefined,
         price: {
           missingPrice: false,
           price: {
@@ -77,9 +78,9 @@ describe('getSummary()', () => {
               capacity: 20,
               categoryId: 'backpack',
               conflictingItemIds: [],
-              iconLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-icon.webp',
               id: '5ca20d5986f774331e7c9602',
-              imageLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-image.webp',
               marketLink: 'https://tarkov.dev/item/wartech-berkut-bb-102-backpack',
               maxStackableAmount: 1,
               name: 'WARTECH Berkut BB-102 backpack',
@@ -150,9 +151,9 @@ describe('getSummary()', () => {
             item: {
               categoryId: 'other',
               conflictingItemIds: [],
-              iconLink: 'https://assets.tarkov.dev/590c5d4b86f774784e1b9c45-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/590c5d4b86f774784e1b9c45-icon.webp',
               id: '590c5d4b86f774784e1b9c45',
-              imageLink: 'https://assets.tarkov.dev/590c5d4b86f774784e1b9c45-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/590c5d4b86f774784e1b9c45-image.webp',
               marketLink: 'https://tarkov.dev/item/iskra-ration-pack',
               maxStackableAmount: 1,
               name: 'Iskra ration pack',
@@ -198,7 +199,7 @@ describe('getSummary()', () => {
                 }
               ],
               shortName: 'Iskra',
-              weight: 1.6,
+              weight: 1.75,
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Iskra_ration_pack'
             },
             quantity: 1,
@@ -227,9 +228,9 @@ describe('getSummary()', () => {
             item: {
               categoryId: 'other',
               conflictingItemIds: [],
-              iconLink: 'https://assets.tarkov.dev/5d1b3f2d86f774253763b735-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/5d1b3f2d86f774253763b735-icon.webp',
               id: '5d1b3f2d86f774253763b735',
-              imageLink: 'https://assets.tarkov.dev/5d1b3f2d86f774253763b735-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/5d1b3f2d86f774253763b735-image.webp',
               marketLink: 'https://tarkov.dev/item/disposable-syringe',
               maxStackableAmount: 1,
               name: 'Disposable syringe',
@@ -275,9 +276,9 @@ describe('getSummary()', () => {
             item: {
               categoryId: 'other',
               conflictingItemIds: [],
-              iconLink: 'https://assets.tarkov.dev/5448fee04bdc2dbc018b4567-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/5448fee04bdc2dbc018b4567-icon.webp',
               id: '5448fee04bdc2dbc018b4567',
-              imageLink: 'https://assets.tarkov.dev/5448fee04bdc2dbc018b4567-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/5448fee04bdc2dbc018b4567-image.webp',
               marketLink: 'https://tarkov.dev/item/bottle-of-water-06l',
               maxStackableAmount: 1,
               name: 'Bottle of water (0.6L)',
@@ -354,14 +355,14 @@ describe('getSummary()', () => {
               categoryId: 'armor',
               conflictingItemIds: [],
               durability: 47,
-              ergonomicsPercentageModifier: -0.05,
-              iconLink: 'https://assets.tarkov.dev/5c0e51be86f774598e797894-icon.jpg',
+              ergonomicsPercentageModifier: -0.02,
+              iconLink: 'https://assets.tarkov.dev/5c0e51be86f774598e797894-icon.webp',
               id: '5c0e51be86f774598e797894',
-              imageLink: 'https://assets.tarkov.dev/5c0e51be86f774598e797894-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/5c0e51be86f774598e797894-image.webp',
               marketLink: 'https://tarkov.dev/item/6b13-assault-armor-flora',
               material: 'Ceramic',
               maxStackableAmount: 1,
-              movementSpeedPercentageModifier: -0.12,
+              movementSpeedPercentageModifier: -0.06,
               name: '6B13 assault armor (Flora)',
               prices: [
                 {
@@ -387,7 +388,7 @@ describe('getSummary()', () => {
               ],
               ricochetChance: '',
               shortName: '6B13 FL',
-              turningSpeedPercentageModifier: -0.03,
+              turningSpeedPercentageModifier: -0.01,
               weight: 10.5,
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6B13_assault_armor'
             },
@@ -418,9 +419,9 @@ describe('getSummary()', () => {
               blindnessProtectionPercentage: 0.3,
               categoryId: 'eyewear',
               conflictingItemIds: [],
-              iconLink: 'https://assets.tarkov.dev/5d5fca1ea4b93635fd598c07-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/5d5fca1ea4b93635fd598c07-icon.webp',
               id: '5d5fca1ea4b93635fd598c07',
-              imageLink: 'https://assets.tarkov.dev/5d5fca1ea4b93635fd598c07-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/5d5fca1ea4b93635fd598c07-image.webp',
               marketLink: 'https://tarkov.dev/item/crossbow-tactical-glasses',
               maxStackableAmount: 1,
               name: 'Crossbow tactical glasses',
@@ -476,9 +477,9 @@ describe('getSummary()', () => {
             item: {
               categoryId: 'faceCover',
               conflictingItemIds: [],
-              iconLink: 'https://assets.tarkov.dev/5ab8f39486f7745cd93a1cca-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/5ab8f39486f7745cd93a1cca-icon.webp',
               id: '5ab8f39486f7745cd93a1cca',
-              imageLink: 'https://assets.tarkov.dev/5ab8f39486f7745cd93a1cca-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/5ab8f39486f7745cd93a1cca-image.webp',
               marketLink: 'https://tarkov.dev/item/cold-fear-infrared-balaclava',
               maxStackableAmount: 1,
               name: 'Cold Fear infrared balaclava',
@@ -534,18 +535,21 @@ describe('getSummary()', () => {
             item: {
               armorClass: 4,
               armoredAreas: [
-                'Top',
+                'TopOfTheHead',
                 'Nape',
                 'Ears'
               ],
+              baseItemId: null,
+              blocksHeadphones: true,
               categoryId: 'headwear',
               conflictingItemIds: [],
               deafening: 'High',
+              defaultPresetId: null,
               durability: 55,
-              ergonomicsPercentageModifier: -0.15,
-              iconLink: 'https://assets.tarkov.dev/5d6d3716a4b9361bc8618872-icon.jpg',
+              ergonomicsPercentageModifier: -0.03,
+              iconLink: 'https://assets.tarkov.dev/5d6d3716a4b9361bc8618872-icon.webp',
               id: '5d6d3716a4b9361bc8618872',
-              imageLink: 'https://assets.tarkov.dev/5d6d3716a4b9361bc8618872-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/5d6d3716a4b9361bc8618872-image.webp',
               marketLink: 'https://tarkov.dev/item/bnti-lshz-2dtm-helmet',
               material: 'CombinedMaterials',
               maxStackableAmount: 1,
@@ -554,7 +558,6 @@ describe('getSummary()', () => {
                   compatibleItemIds: [
                     '5d6d3829a4b9361bc8618943'
                   ],
-                  id: '5d6d3716a4b9361bc8618874',
                   maxStackableAmount: 1,
                   name: 'mod_equipment_000',
                   required: false
@@ -564,14 +567,12 @@ describe('getSummary()', () => {
                     '5c0558060db834001b735271',
                     '5a16b8a9fcdbcb00165aa6ca'
                   ],
-                  id: '5d6d3716a4b9361bc8618875',
                   maxStackableAmount: 1,
                   name: 'mod_nvg',
                   required: false
                 },
                 {
                   compatibleItemIds: [],
-                  id: '5d6d3716a4b9361bc8618876',
                   maxStackableAmount: 1,
                   name: 'mod_mount',
                   required: false
@@ -580,7 +581,6 @@ describe('getSummary()', () => {
                   compatibleItemIds: [
                     '5d6d3be5a4b9361bc73bc763'
                   ],
-                  id: '5d6d3716a4b9361bc8618877',
                   maxStackableAmount: 1,
                   name: 'mod_equipment_001',
                   required: false
@@ -589,13 +589,12 @@ describe('getSummary()', () => {
                   compatibleItemIds: [
                     '5d6d3943a4b9360dbc46d0cc'
                   ],
-                  id: '5d6d3716a4b9361bc8618878',
                   maxStackableAmount: 1,
                   name: 'mod_equipment_002',
                   required: false
                 }
               ],
-              movementSpeedPercentageModifier: -0.03,
+              movementSpeedPercentageModifier: 0,
               name: 'BNTI LShZ-2DTM helmet',
               prices: [
                 {
@@ -621,7 +620,7 @@ describe('getSummary()', () => {
               ],
               ricochetChance: 'High',
               shortName: 'LShZ-2DTM',
-              turningSpeedPercentageModifier: -0.15,
+              turningSpeedPercentageModifier: -0.03,
               weight: 3.4,
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/BNTI_LShZ-2DTM_helmet'
             },
@@ -654,6 +653,7 @@ describe('getSummary()', () => {
                 'Eyes',
                 'Jaws'
               ],
+              baseItemId: null,
               blindnessProtectionPercentage: 0.1,
               categoryId: 'armorMod',
               conflictingItemIds: [
@@ -663,11 +663,12 @@ describe('getSummary()', () => {
                 '57235b6f24597759bf5a30f1',
                 '5c110624d174af029e69734c'
               ],
+              defaultPresetId: null,
               durability: 50,
-              ergonomicsPercentageModifier: -0.05,
-              iconLink: 'https://assets.tarkov.dev/5d6d3829a4b9361bc8618943-icon.jpg',
+              ergonomicsPercentageModifier: -0.02,
+              iconLink: 'https://assets.tarkov.dev/5d6d3829a4b9361bc8618943-icon.webp',
               id: '5d6d3829a4b9361bc8618943',
-              imageLink: 'https://assets.tarkov.dev/5d6d3829a4b9361bc8618943-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/5d6d3829a4b9361bc8618943-image.webp',
               marketLink: 'https://tarkov.dev/item/lshz-2dtm-face-shield',
               material: 'Glass',
               maxStackableAmount: 1,
@@ -743,9 +744,9 @@ describe('getSummary()', () => {
             item: {
               categoryId: 'other',
               conflictingItemIds: [],
-              iconLink: 'https://assets.tarkov.dev/544fb3f34bdc2d03748b456a-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/544fb3f34bdc2d03748b456a-icon.webp',
               id: '544fb3f34bdc2d03748b456a',
-              imageLink: 'https://assets.tarkov.dev/544fb3f34bdc2d03748b456a-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/544fb3f34bdc2d03748b456a-image.webp',
               marketLink: 'https://tarkov.dev/item/morphine-injector',
               maxStackableAmount: 1,
               name: 'Morphine injector',
@@ -776,7 +777,7 @@ describe('getSummary()', () => {
                 }
               ],
               shortName: 'Morphine',
-              weight: 0.1,
+              weight: 0.05,
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Morphine_injector'
             },
             quantity: 1,
@@ -805,9 +806,9 @@ describe('getSummary()', () => {
             item: {
               categoryId: 'other',
               conflictingItemIds: [],
-              iconLink: 'https://assets.tarkov.dev/5755383e24597772cb798966-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/5755383e24597772cb798966-icon.webp',
               id: '5755383e24597772cb798966',
-              imageLink: 'https://assets.tarkov.dev/5755383e24597772cb798966-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/5755383e24597772cb798966-image.webp',
               marketLink: 'https://tarkov.dev/item/vaseline-balm',
               maxStackableAmount: 1,
               name: 'Vaseline balm',
@@ -824,7 +825,7 @@ describe('getSummary()', () => {
                 }
               ],
               shortName: 'Vaseline',
-              weight: 0.01,
+              weight: 0.016,
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Vaseline_balm'
             },
             quantity: 1,
@@ -855,9 +856,9 @@ describe('getSummary()', () => {
               conflictingItemIds: [],
               explosionDelay: 3.5,
               fragmentsAmount: 70,
-              iconLink: 'https://assets.tarkov.dev/5448be9a4bdc2dfd2f8b456a-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/5448be9a4bdc2dfd2f8b456a-icon.webp',
               id: '5448be9a4bdc2dfd2f8b456a',
-              imageLink: 'https://assets.tarkov.dev/5448be9a4bdc2dfd2f8b456a-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/5448be9a4bdc2dfd2f8b456a-image.webp',
               marketLink: 'https://tarkov.dev/item/rgd-5-hand-grenade',
               maxStackableAmount: 1,
               maximumExplosionRange: 7,
@@ -943,13 +944,13 @@ describe('getSummary()', () => {
               caliber: 'Caliber545x39',
               categoryId: 'ammunition',
               conflictingItemIds: [],
-              durabilityBurnPercentageModifier: 0.3500000000000001,
+              durabilityBurnPercentageModifier: 0.35,
               fleshDamage: 45,
               fragmentationChancePercentage: 0.16,
               heavyBleedingPercentageChance: 0,
-              iconLink: 'https://assets.tarkov.dev/56dfef82d2720bbd668b4567-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/56dfef82d2720bbd668b4567-icon.webp',
               id: '56dfef82d2720bbd668b4567',
-              imageLink: 'https://assets.tarkov.dev/56dfef82d2720bbd668b4567-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/56dfef82d2720bbd668b4567-image.webp',
               lightBleedingPercentageChance: 0,
               marketLink: 'https://tarkov.dev/item/545x39mm-bp-gs',
               maxStackableAmount: 60,
@@ -1010,9 +1011,11 @@ describe('getSummary()', () => {
           },
           {
             item: {
+              baseItemId: '5beed0f50db834001c062b12',
               caliber: 'Caliber545x39',
               categoryId: 'mainWeapon',
               conflictingItemIds: [],
+              defaultPresetId: null,
               ergonomics: 45,
               fireModes: [
                 'SingleFire',
@@ -1020,11 +1023,12 @@ describe('getSummary()', () => {
               ],
               fireRate: 650,
               horizontalRecoil: 370,
-              iconLink: 'https://assets.tarkov.dev/5beed0f50db834001c062b12-icon.jpg',
-              id: '5beed0f50db834001c062b12',
-              imageLink: 'https://assets.tarkov.dev/5beed0f50db834001c062b12-image.jpg',
-              marketLink: 'https://tarkov.dev/item/rpk-16-545x39-light-machine-gun',
+              iconLink: 'https://assets.tarkov.dev/5c0d1ec986f77439512a1a72-icon.webp',
+              id: '5c0d1ec986f77439512a1a72',
+              imageLink: 'https://assets.tarkov.dev/5c0d1ec986f77439512a1a72-image.webp',
+              marketLink: 'https://tarkov.dev/item/rpk-16-545x39-light-machine-gun-default',
               maxStackableAmount: 1,
+              minuteOfAngle: 3.03,
               modSlots: [
                 {
                   compatibleItemIds: [
@@ -1042,7 +1046,6 @@ describe('getSummary()', () => {
                     '56dff4a2d2720bbd668b456a',
                     '56dff4ecd2720b5f5a8b4568'
                   ],
-                  id: '5beed0f50db834001c062b14',
                   maxStackableAmount: 1,
                   name: 'chamber0',
                   required: false
@@ -1064,18 +1067,22 @@ describe('getSummary()', () => {
                     '5947fa2486f77425b47c1a9b',
                     '5c6bf4aa2e2216001219b0ae',
                     '5649ae4a4bdc2d1b2b8b4588',
-                    '5998517986f7746017232f7e'
+                    '5998517986f7746017232f7e',
+                    '623c3be0484b5003161840dc',
+                    '628a664bccaab13006640e47',
+                    '628c9ab845c59e5b80768a81',
+                    '5e2192a498a36665e8337386',
+                    '6087e663132d4d12c81fd96b',
+                    '5f6341043ada5942720e2dc5'
                   ],
-                  id: '5beed0f50db834001c062b18',
                   maxStackableAmount: 1,
                   name: 'mod_pistol_grip',
-                  required: true
+                  required: false
                 },
                 {
                   compatibleItemIds: [
                     '5beec91a0db834001961942d'
                   ],
-                  id: '5beed0f50db834001c062b19',
                   maxStackableAmount: 1,
                   name: 'mod_reciever',
                   required: false
@@ -1093,7 +1100,6 @@ describe('getSummary()', () => {
                     '5bed61680db834001d2c45ab',
                     '5bed625c0db834001c062946'
                   ],
-                  id: '5beed0f50db834001c062b1c',
                   maxStackableAmount: 1,
                   name: 'mod_magazine',
                   required: false
@@ -1103,7 +1109,6 @@ describe('getSummary()', () => {
                     '6130ca3fd92c473c77020dbd',
                     '5648ac824bdc2ded0b8b457d'
                   ],
-                  id: '5beed0f50db834001c062b1e',
                   maxStackableAmount: 1,
                   name: 'mod_charge',
                   required: false
@@ -1112,7 +1117,6 @@ describe('getSummary()', () => {
                   compatibleItemIds: [
                     '5beec8b20db834001961942a'
                   ],
-                  id: '5bf2956d0db834001a6f9ff9',
                   maxStackableAmount: 1,
                   name: 'mod_stock_001',
                   required: false
@@ -1121,28 +1125,26 @@ describe('getSummary()', () => {
                   compatibleItemIds: [
                     '5beec3e30db8340019619424'
                   ],
-                  id: '5bf29d9d0db834001b095753',
                   maxStackableAmount: 1,
                   name: 'mod_handguard',
-                  required: true
+                  required: false
                 },
                 {
                   compatibleItemIds: [
                     '5beec1bd0db834001e6006f3',
                     '5beec2820db834001b095426'
                   ],
-                  id: '5bf29da70db834001a6f9ffc',
                   maxStackableAmount: 1,
                   name: 'mod_barrel',
-                  required: true
+                  required: false
                 }
               ],
-              name: 'RPK-16 5.45x39 light machine gun',
+              name: 'RPK-16 5.45x39 light machine gun Default',
               prices: [
                 {
                   barterItems: [],
                   currencyName: 'RUB',
-                  itemId: '5beed0f50db834001c062b12',
+                  itemId: '5c0d1ec986f77439512a1a72',
                   merchant: 'prapor',
                   merchantLevel: 4,
                   quest: null,
@@ -1152,7 +1154,7 @@ describe('getSummary()', () => {
                 {
                   barterItems: [],
                   currencyName: 'RUB',
-                  itemId: '5beed0f50db834001c062b12',
+                  itemId: '5c0d1ec986f77439512a1a72',
                   merchant: 'flea-market',
                   merchantLevel: 0,
                   quest: null,
@@ -1171,7 +1173,7 @@ describe('getSummary()', () => {
                     }
                   ],
                   currencyName: 'barter',
-                  itemId: '5beed0f50db834001c062b12',
+                  itemId: '5c0d1ec986f77439512a1a72',
                   merchant: 'mechanic',
                   merchantLevel: 3,
                   quest: null,
@@ -1179,7 +1181,7 @@ describe('getSummary()', () => {
                   valueInMainCurrency: 0
                 }
               ],
-              shortName: 'RPK-16',
+              shortName: 'RPK-16 Default',
               verticalRecoil: 131,
               weight: 1.5,
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_light_machine_gun'
@@ -1188,7 +1190,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '5beed0f50db834001c062b12',
+              itemId: '5c0d1ec986f77439512a1a72',
               merchant: 'flea-market',
               merchantLevel: 0,
               quest: null,
@@ -1198,7 +1200,7 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '5beed0f50db834001c062b12',
+              itemId: '5c0d1ec986f77439512a1a72',
               merchant: 'flea-market',
               merchantLevel: 0,
               quest: null,
@@ -1223,14 +1225,16 @@ describe('getSummary()', () => {
                 '56dff4a2d2720bbd668b456a',
                 '56dff4ecd2720b5f5a8b4568'
               ],
+              baseItemId: null,
               capacity: 95,
               categoryId: 'magazine',
               checkSpeedPercentageModifier: 0.25,
               conflictingItemIds: [],
+              defaultPresetId: null,
               ergonomicsModifier: -24,
-              iconLink: 'https://assets.tarkov.dev/5bed625c0db834001c062946-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/5bed625c0db834001c062946-icon.webp',
               id: '5bed625c0db834001c062946',
-              imageLink: 'https://assets.tarkov.dev/5bed625c0db834001c062946-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/5bed625c0db834001c062946-image.webp',
               loadSpeedPercentageModifier: 0.9,
               malfunctionPercentage: 0.394,
               marketLink: 'https://tarkov.dev/item/rpk-16-545x39-95-round-drum-magazine',
@@ -1292,7 +1296,7 @@ describe('getSummary()', () => {
           }
         ],
         verticalRecoil: 71,
-        weight: 24.042
+        weight: 24.148
       } as IBuildSummary
     ],
     [
@@ -1305,7 +1309,7 @@ describe('getSummary()', () => {
         id: 'build_2',
         name: 'Build 2',
         lastExported: undefined,
-        lastUpdated: new Date(1),
+        lastUpdated: undefined,
         price: {
           missingPrice: false,
           price: {
@@ -1369,9 +1373,9 @@ describe('getSummary()', () => {
               conflictingItemIds: [
                 '5a16b9fffcdbcb0176308b34'
               ],
-              iconLink: 'https://assets.tarkov.dev/5e4d34ca86f774264f758330-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/5e4d34ca86f774264f758330-icon.webp',
               id: '5e4d34ca86f774264f758330',
-              imageLink: 'https://assets.tarkov.dev/5e4d34ca86f774264f758330-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/5e4d34ca86f774264f758330-image.webp',
               marketLink: 'https://tarkov.dev/item/walkers-razor-digital-headset',
               maxStackableAmount: 1,
               name: 'Walker\'s Razor Digital headset',
@@ -1415,20 +1419,23 @@ describe('getSummary()', () => {
           },
           {
             item: {
+              baseItemId: '5cadc190ae921500103bb3b6',
               caliber: 'Caliber9x19PARA',
               categoryId: 'secondaryWeapon',
               conflictingItemIds: [],
+              defaultPresetId: null,
               ergonomics: 70,
               fireModes: [
                 'SingleFire'
               ],
               fireRate: 30,
               horizontalRecoil: 280,
-              iconLink: 'https://assets.tarkov.dev/5cadc190ae921500103bb3b6-icon.jpg',
-              id: '5cadc190ae921500103bb3b6',
-              imageLink: 'https://assets.tarkov.dev/5cadc190ae921500103bb3b6-image.jpg',
-              marketLink: 'https://tarkov.dev/item/beretta-m9a3-9x19-pistol',
+              iconLink: 'https://assets.tarkov.dev/5d3f0bc986f7743cb332abdc-icon.webp',
+              id: '5d3f0bc986f7743cb332abdc',
+              imageLink: 'https://assets.tarkov.dev/5d3f0bc986f7743cb332abdc-image.webp',
+              marketLink: 'https://tarkov.dev/item/beretta-m9a3-9x19-pistol-default',
               maxStackableAmount: 1,
+              minuteOfAngle: 9.97,
               modSlots: [
                 {
                   compatibleItemIds: [
@@ -1441,7 +1448,6 @@ describe('getSummary()', () => {
                     '5efb0e16aeb21837e749c7ff',
                     '5c0d56a986f774449d5de529'
                   ],
-                  id: '5cadc190ae921500103bb3bd',
                   maxStackableAmount: 1,
                   name: 'chamber0',
                   required: false
@@ -1450,34 +1456,30 @@ describe('getSummary()', () => {
                   compatibleItemIds: [
                     '5cadc1c6ae9215000f2775a4'
                   ],
-                  id: '5cadc190ae921500103bb3b8',
                   maxStackableAmount: 1,
                   name: 'mod_barrel',
-                  required: true
+                  required: false
                 },
                 {
                   compatibleItemIds: [
                     '5cadc431ae921500113bb8d5'
                   ],
-                  id: '5cadc190ae921500103bb3b9',
                   maxStackableAmount: 1,
                   name: 'mod_pistol_grip',
-                  required: true
+                  required: false
                 },
                 {
                   compatibleItemIds: [
                     '5cadc55cae921500103bb3be'
                   ],
-                  id: '5cadc190ae921500103bb3ba',
                   maxStackableAmount: 1,
                   name: 'mod_reciever',
-                  required: true
+                  required: false
                 },
                 {
                   compatibleItemIds: [
                     '5cadc2e0ae9215051e1c21e7'
                   ],
-                  id: '5cadc190ae921500103bb3bb',
                   maxStackableAmount: 1,
                   name: 'mod_magazine',
                   required: false
@@ -1493,20 +1495,21 @@ describe('getSummary()', () => {
                     '5a5f1ce64f39f90b401987bc',
                     '560d657b4bdc2da74d8b4572',
                     '5a7b4900e899ef197b331a2a',
-                    '5b3a08b25acfc4001754880c'
+                    '5b3a08b25acfc4001754880c',
+                    '6272370ee4013c5d7e31f418',
+                    '6272379924e29f06af4d5ecb'
                   ],
-                  id: '5cadc190ae921500103bb3bc',
                   maxStackableAmount: 1,
                   name: 'mod_tactical',
                   required: false
                 }
               ],
-              name: 'Beretta M9A3 9x19 pistol',
+              name: 'Beretta M9A3 9x19 pistol Default',
               prices: [
                 {
                   barterItems: [],
                   currencyName: 'USD',
-                  itemId: '5cadc190ae921500103bb3b6',
+                  itemId: '5d3f0bc986f7743cb332abdc',
                   merchant: 'peacekeeper',
                   merchantLevel: 1,
                   quest: null,
@@ -1516,7 +1519,7 @@ describe('getSummary()', () => {
                 {
                   barterItems: [],
                   currencyName: 'RUB',
-                  itemId: '5cadc190ae921500103bb3b6',
+                  itemId: '5d3f0bc986f7743cb332abdc',
                   merchant: 'flea-market',
                   merchantLevel: 0,
                   quest: null,
@@ -1524,7 +1527,7 @@ describe('getSummary()', () => {
                   valueInMainCurrency: 14253
                 }
               ],
-              shortName: 'M9A3',
+              shortName: 'M9A3 Default',
               verticalRecoil: 475,
               weight: 0.231,
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Beretta_M9A3_9x19_pistol'
@@ -1533,7 +1536,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'USD',
-              itemId: '5cadc190ae921500103bb3b6',
+              itemId: '5d3f0bc986f7743cb332abdc',
               merchant: 'peacekeeper',
               merchantLevel: 1,
               quest: null,
@@ -1543,7 +1546,7 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'USD',
-              itemId: '5cadc190ae921500103bb3b6',
+              itemId: '5d3f0bc986f7743cb332abdc',
               merchant: 'peacekeeper',
               merchantLevel: 1,
               quest: null,
@@ -1554,12 +1557,14 @@ describe('getSummary()', () => {
           {
             item: {
               accuracyPercentageModifier: 0.01,
+              baseItemId: null,
               categoryId: 'rangedWeaponMod',
               conflictingItemIds: [],
+              defaultPresetId: null,
               ergonomicsModifier: -15,
-              iconLink: 'https://assets.tarkov.dev/5c6165902e22160010261b28-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/5c6165902e22160010261b28-icon.webp',
               id: '5c6165902e22160010261b28',
-              imageLink: 'https://assets.tarkov.dev/5c6165902e22160010261b28-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/5c6165902e22160010261b28-image.webp',
               marketLink: 'https://tarkov.dev/item/sig-sauer-srd9-9x19-sound-suppressor',
               maxStackableAmount: 1,
               modSlots: [],
@@ -1629,13 +1634,13 @@ describe('getSummary()', () => {
               caliber: 'Caliber9x19PARA',
               categoryId: 'ammunition',
               conflictingItemIds: [],
-              durabilityBurnPercentageModifier: 0.1499999999999999,
+              durabilityBurnPercentageModifier: 0.15,
               fleshDamage: 58,
               fragmentationChancePercentage: 0.15,
               heavyBleedingPercentageChance: 0,
-              iconLink: 'https://assets.tarkov.dev/5c3df7d588a4501f290594e5-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/5c3df7d588a4501f290594e5-icon.webp',
               id: '5c3df7d588a4501f290594e5',
-              imageLink: 'https://assets.tarkov.dev/5c3df7d588a4501f290594e5-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/5c3df7d588a4501f290594e5-image.webp',
               lightBleedingPercentageChance: 0,
               marketLink: 'https://tarkov.dev/item/9x19mm-green-tracer',
               maxStackableAmount: 50,
@@ -1697,12 +1702,14 @@ describe('getSummary()', () => {
           {
             item: {
               accuracyPercentageModifier: 0,
+              baseItemId: null,
               categoryId: 'rangedWeaponMod',
               conflictingItemIds: [],
+              defaultPresetId: null,
               ergonomicsModifier: -1,
-              iconLink: 'https://assets.tarkov.dev/56def37dd2720bec348b456a-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/56def37dd2720bec348b456a-icon.webp',
               id: '56def37dd2720bec348b456a',
-              imageLink: 'https://assets.tarkov.dev/56def37dd2720bec348b456a-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/56def37dd2720bec348b456a-image.webp',
               marketLink: 'https://tarkov.dev/item/surefire-x400-ultra-tactical-flashlight-with-laser',
               maxStackableAmount: 1,
               modSlots: [],
@@ -1765,9 +1772,9 @@ describe('getSummary()', () => {
               conflictingItemIds: [],
               durability: 0,
               ergonomicsPercentageModifier: 0,
-              iconLink: 'https://assets.tarkov.dev/572b7adb24597762ae139821-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/572b7adb24597762ae139821-icon.webp',
               id: '572b7adb24597762ae139821',
-              imageLink: 'https://assets.tarkov.dev/572b7adb24597762ae139821-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/572b7adb24597762ae139821-image.webp',
               marketLink: 'https://tarkov.dev/item/scav-vest',
               material: '',
               maxStackableAmount: 1,
@@ -1832,9 +1839,9 @@ describe('getSummary()', () => {
             item: {
               categoryId: 'other',
               conflictingItemIds: [],
-              iconLink: 'https://assets.tarkov.dev/544fb6cc4bdc2d34748b456e-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/544fb6cc4bdc2d34748b456e-icon.webp',
               id: '544fb6cc4bdc2d34748b456e',
-              imageLink: 'https://assets.tarkov.dev/544fb6cc4bdc2d34748b456e-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/544fb6cc4bdc2d34748b456e-image.webp',
               marketLink: 'https://tarkov.dev/item/slickers-chocolate-bar',
               maxStackableAmount: 1,
               name: 'Slickers chocolate bar',
@@ -1866,7 +1873,7 @@ describe('getSummary()', () => {
                 }
               ],
               shortName: 'Slickers',
-              weight: 0.3,
+              weight: 0.048,
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Slickers_chocolate_bar'
             },
             quantity: 1,
@@ -1895,9 +1902,9 @@ describe('getSummary()', () => {
             item: {
               categoryId: 'other',
               conflictingItemIds: [],
-              iconLink: 'https://assets.tarkov.dev/544fb45d4bdc2dee738b4568-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/544fb45d4bdc2dee738b4568-icon.webp',
               id: '544fb45d4bdc2dee738b4568',
-              imageLink: 'https://assets.tarkov.dev/544fb45d4bdc2dee738b4568-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/544fb45d4bdc2dee738b4568-image.webp',
               marketLink: 'https://tarkov.dev/item/salewa-first-aid-kit',
               maxStackableAmount: 1,
               name: 'Salewa first aid kit',
@@ -1972,9 +1979,9 @@ describe('getSummary()', () => {
             item: {
               categoryId: 'other',
               conflictingItemIds: [],
-              iconLink: 'https://assets.tarkov.dev/59e3596386f774176c10a2a2-icon.jpg',
+              iconLink: 'https://assets.tarkov.dev/59e3596386f774176c10a2a2-icon.webp',
               id: '59e3596386f774176c10a2a2',
-              imageLink: 'https://assets.tarkov.dev/59e3596386f774176c10a2a2-image.jpg',
+              imageLink: 'https://assets.tarkov.dev/59e3596386f774176c10a2a2-image.webp',
               marketLink: 'https://tarkov.dev/item/paid-antiroach-spray',
               maxStackableAmount: 1,
               name: 'PAID AntiRoach spray',
@@ -2018,7 +2025,7 @@ describe('getSummary()', () => {
           }
         ],
         verticalRecoil: 397,
-        weight: 3.762
+        weight: 3.562
       } as IBuildSummary
     ],
     [
@@ -2027,6 +2034,7 @@ describe('getSummary()', () => {
         inventorySlots: [],
         lastExported: new Date(2),
         lastUpdated: new Date(1),
+        lastWebsiteVersion: undefined,
         name: 'Empty build'
       } as IBuild,
       {
@@ -2083,12 +2091,13 @@ describe('getSummary()', () => {
     async (build: IBuild, expected: IBuildSummary) => {
       // Arrange
       useItemServiceMock()
+      usePresetServiceMock()
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()
       Services.configure(InventorySlotPropertiesService)
       Services.configure(InventoryItemService)
       Services.configure(ItemPropertiesService)
-      Services.configure(MerchantFilterService)
+      Services.configure(GlobalFilterService)
 
       const service = new BuildPropertiesService()
 
@@ -2117,16 +2126,17 @@ describe('getSummary()', () => {
   it('should get a shopping list containing barter items to buy', async () => {
     // Arrange
     useItemServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(InventorySlotPropertiesService)
     Services.configure(InventoryItemService)
     Services.configure(ItemPropertiesService)
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const service = new BuildPropertiesService()
-    const merchantFilterService = Services.get(MerchantFilterService)
-    merchantFilterService.save([
+    const globalFilterService = Services.get(GlobalFilterService)
+    globalFilterService.saveMerchantFilters([
       {
         enabled: true,
         merchant: 'flea-market',
@@ -2149,7 +2159,7 @@ describe('getSummary()', () => {
                 {
                   content: [],
                   ignorePrice: false,
-                  itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+                  itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
                   modSlots: [
                     {
                       item: {
@@ -2219,7 +2229,8 @@ describe('getSummary()', () => {
         }
       ],
       lastExported: undefined,
-      lastUpdated: new Date(1),
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
       name: 'build'
     }
 
@@ -2235,7 +2246,7 @@ describe('getSummary()', () => {
       horizontalRecoil: undefined,
       id: '1',
       lastExported: undefined,
-      lastUpdated: new Date(1),
+      lastUpdated: undefined,
       name: 'build',
       price: {
         missingPrice: false,
@@ -2289,9 +2300,9 @@ describe('getSummary()', () => {
             capacity: 48,
             categoryId: 'backpack',
             conflictingItemIds: [],
-            iconLink: 'https://assets.tarkov.dev/5df8a4d786f77412672a1e3b-icon.jpg',
+            iconLink: 'https://assets.tarkov.dev/5df8a4d786f77412672a1e3b-icon.webp',
             id: '5df8a4d786f77412672a1e3b',
-            imageLink: 'https://assets.tarkov.dev/5df8a4d786f77412672a1e3b-image.jpg',
+            imageLink: 'https://assets.tarkov.dev/5df8a4d786f77412672a1e3b-image.webp',
             marketLink: 'https://tarkov.dev/item/6sh118-raid-backpack',
             maxStackableAmount: 1,
             name: '6Sh118 raid backpack',
@@ -2361,9 +2372,9 @@ describe('getSummary()', () => {
           item: {
             categoryId: 'other',
             conflictingItemIds: [],
-            iconLink: 'https://assets.tarkov.dev/5d0375ff86f774186372f685-icon.jpg',
+            iconLink: 'https://assets.tarkov.dev/5d0375ff86f774186372f685-icon.webp',
             id: '5d0375ff86f774186372f685',
-            imageLink: 'https://assets.tarkov.dev/5d0375ff86f774186372f685-image.jpg',
+            imageLink: 'https://assets.tarkov.dev/5d0375ff86f774186372f685-image.webp',
             marketLink: 'https://tarkov.dev/item/military-cable',
             maxStackableAmount: 1,
             name: 'Military cable',
@@ -2407,21 +2418,24 @@ describe('getSummary()', () => {
         },
         {
           item: {
+            baseItemId: '57dc2fa62459775949412633',
             caliber: 'Caliber545x39',
             categoryId: 'mainWeapon',
             conflictingItemIds: [],
+            defaultPresetId: null,
             ergonomics: 44,
             fireModes: [
               'SingleFire',
               'FullAuto'
             ],
             fireRate: 650,
-            horizontalRecoil: 445,
-            iconLink: 'https://assets.tarkov.dev/57dc2fa62459775949412633-icon.jpg',
-            id: '57dc2fa62459775949412633',
-            imageLink: 'https://assets.tarkov.dev/57dc2fa62459775949412633-image.jpg',
-            marketLink: 'https://tarkov.dev/item/kalashnikov-aks-74u-545x39-assault-rifle',
+            horizontalRecoil: 415,
+            iconLink: 'https://assets.tarkov.dev/584147732459775a2b6d9f12-icon.webp',
+            id: '584147732459775a2b6d9f12',
+            imageLink: 'https://assets.tarkov.dev/584147732459775a2b6d9f12-image.webp',
+            marketLink: 'https://tarkov.dev/item/kalashnikov-aks-74u-545x39-assault-rifle-default',
             maxStackableAmount: 1,
+            minuteOfAngle: 3.44,
             modSlots: [
               {
                 compatibleItemIds: [
@@ -2439,7 +2453,6 @@ describe('getSummary()', () => {
                   '56dff4a2d2720bbd668b456a',
                   '56dff4ecd2720b5f5a8b4568'
                 ],
-                id: '57dc318524597759805c1581',
                 maxStackableAmount: 1,
                 name: 'chamber0',
                 required: false
@@ -2464,12 +2477,14 @@ describe('getSummary()', () => {
                   '5947fa2486f77425b47c1a9b',
                   '5c6bf4aa2e2216001219b0ae',
                   '5649ae4a4bdc2d1b2b8b4588',
-                  '5998517986f7746017232f7e'
+                  '5998517986f7746017232f7e',
+                  '623c3be0484b5003161840dc',
+                  '628c9ab845c59e5b80768a81',
+                  '628a664bccaab13006640e47'
                 ],
-                id: '57dc31bc245977596d4ef3d2',
                 maxStackableAmount: 1,
                 name: 'mod_pistol_grip',
-                required: true
+                required: false
               },
               {
                 compatibleItemIds: [
@@ -2477,7 +2492,6 @@ describe('getSummary()', () => {
                   '5ab626e4d8ce87272e4c6e43',
                   '57dc347d245977596754e7a1'
                 ],
-                id: '57dc31ce245977593d4e1453',
                 maxStackableAmount: 1,
                 name: 'mod_stock',
                 required: false
@@ -2487,7 +2501,6 @@ describe('getSummary()', () => {
                   '6130ca3fd92c473c77020dbd',
                   '5648ac824bdc2ded0b8b457d'
                 ],
-                id: '57dc31e1245977597164366e',
                 maxStackableAmount: 1,
                 name: 'mod_charge',
                 required: false
@@ -2505,7 +2518,6 @@ describe('getSummary()', () => {
                   '5bed61680db834001d2c45ab',
                   '5bed625c0db834001c062946'
                 ],
-                id: '57dc31f2245977596c274b4f',
                 maxStackableAmount: 1,
                 name: 'mod_magazine',
                 required: false
@@ -2526,7 +2538,6 @@ describe('getSummary()', () => {
                   '564caa3d4bdc2d17108b458e',
                   '57ffb0e42459777d047111c5'
                 ],
-                id: '57dc35ce2459775971643671',
                 maxStackableAmount: 1,
                 name: 'mod_muzzle',
                 required: false
@@ -2536,7 +2547,6 @@ describe('getSummary()', () => {
                   '57dc334d245977597164366f',
                   '5839a7742459773cf9693481'
                 ],
-                id: '57dc35fb245977596d4ef3d7',
                 maxStackableAmount: 1,
                 name: 'mod_reciever',
                 required: false
@@ -2545,18 +2555,17 @@ describe('getSummary()', () => {
                 compatibleItemIds: [
                   '59d36a0086f7747e673f3946'
                 ],
-                id: '59d368ce86f7747e6a5beb03',
                 maxStackableAmount: 1,
                 name: 'mod_gas_block',
-                required: true
+                required: false
               }
             ],
-            name: 'Kalashnikov AKS-74U 5.45x39 assault rifle',
+            name: 'Kalashnikov AKS-74U 5.45x39 assault rifle Default',
             prices: [
               {
                 barterItems: [],
                 currencyName: 'RUB',
-                itemId: '57dc2fa62459775949412633',
+                itemId: '584147732459775a2b6d9f12',
                 merchant: 'prapor',
                 merchantLevel: 1,
                 quest: {
@@ -2570,7 +2579,7 @@ describe('getSummary()', () => {
               {
                 barterItems: [],
                 currencyName: 'RUB',
-                itemId: '57dc2fa62459775949412633',
+                itemId: '584147732459775a2b6d9f12',
                 merchant: 'flea-market',
                 merchantLevel: 0,
                 quest: null,
@@ -2578,8 +2587,8 @@ describe('getSummary()', () => {
                 valueInMainCurrency: 28999
               }
             ],
-            shortName: 'AKS-74U',
-            verticalRecoil: 141,
+            shortName: 'AKS-74U Default',
+            verticalRecoil: 121,
             weight: 1.809,
             wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Kalashnikov_AKS-74U_5.45x39_assault_rifle'
           },
@@ -2587,7 +2596,7 @@ describe('getSummary()', () => {
           price: {
             barterItems: [],
             currencyName: 'RUB',
-            itemId: '57dc2fa62459775949412633',
+            itemId: '584147732459775a2b6d9f12',
             merchant: 'prapor',
             merchantLevel: 1.0,
             quest: {
@@ -2601,7 +2610,7 @@ describe('getSummary()', () => {
           unitPrice: {
             barterItems: [],
             currencyName: 'RUB',
-            itemId: '57dc2fa62459775949412633',
+            itemId: '584147732459775a2b6d9f12',
             merchant: 'prapor',
             merchantLevel: 1.0,
             quest: {
@@ -2616,12 +2625,14 @@ describe('getSummary()', () => {
         {
           item: {
             accuracyPercentageModifier: 0,
+            baseItemId: null,
             categoryId: 'rangedWeaponMod',
             conflictingItemIds: [],
             ergonomicsModifier: 12,
-            iconLink: 'https://assets.tarkov.dev/5f6341043ada5942720e2dc5-icon.jpg',
+            defaultPresetId: null,
+            iconLink: 'https://assets.tarkov.dev/5f6341043ada5942720e2dc5-icon.webp',
             id: '5f6341043ada5942720e2dc5',
-            imageLink: 'https://assets.tarkov.dev/5f6341043ada5942720e2dc5-image.jpg',
+            imageLink: 'https://assets.tarkov.dev/5f6341043ada5942720e2dc5-image.webp',
             marketLink: 'https://tarkov.dev/item/ak-aeroknox-scorpius-pistol-grip',
             maxStackableAmount: 1,
             modSlots: [],
@@ -2691,18 +2702,18 @@ describe('getSummary()', () => {
             caliber: 'Caliber545x39',
             categoryId: 'ammunition',
             conflictingItemIds: [],
-            durabilityBurnPercentageModifier: 0.10000000000000009,
+            durabilityBurnPercentageModifier: 0.1,
             fleshDamage: 48,
             fragmentationChancePercentage: 0.4,
             heavyBleedingPercentageChance: 0,
-            iconLink: 'https://assets.tarkov.dev/56dff3afd2720bba668b4567-icon.jpg',
+            iconLink: 'https://assets.tarkov.dev/56dff3afd2720bba668b4567-icon.webp',
             id: '56dff3afd2720bba668b4567',
-            imageLink: 'https://assets.tarkov.dev/56dff3afd2720bba668b4567-image.jpg',
+            imageLink: 'https://assets.tarkov.dev/56dff3afd2720bba668b4567-image.webp',
             lightBleedingPercentageChance: 0,
             marketLink: 'https://tarkov.dev/item/545x39mm-ps-gs',
             maxStackableAmount: 60,
             name: '5.45x39mm PS gs',
-            penetrationPower: 27,
+            penetrationPower: 31,
             prices: [
               {
                 barterItems: [],

@@ -4,7 +4,7 @@ import { usePrimeVue } from './plugins/primeVue'
 import { useI18n } from './plugins/vueI18n'
 import { useRouter } from './plugins/vueRouter'
 import { useFontAwesome } from './plugins/fontAwesome'
-import { configureServices } from './servicesConfiguration'
+import { configureServices } from './ServicesConfiguration'
 import Item from './components/item/ItemComponent.vue'
 import Price from './components/price/PriceComponent.vue'
 

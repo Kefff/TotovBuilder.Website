@@ -2,23 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 	<url>
 		<loc>https://www.totovbuilder.com</loc>
-		<xhtml:link rel="alternate" hreflang="en" href="https://www.totovbuilder.com" />
 		<xhtml:link rel="alternate" hreflang="en" href="https://www.totovbuilder.com/en" />
 		<xhtml:link rel="alternate" hreflang="fr" href="https://www.totovbuilder.com/fr" />
-    <lastmod>2021-12-29T15:57:34+00:00</lastmod>
-	</url>
-	<url>
-		<loc>https://www.totovbuilder.com/en</loc>
-		<xhtml:link rel="alternate" hreflang="en" href="https://www.totovbuilder.com" />
-		<xhtml:link rel="alternate" hreflang="en" href="https://www.totovbuilder.com/en" />
-		<xhtml:link rel="alternate" hreflang="fr" href="https://www.totovbuilder.com/fr" />
-    <lastmod>2021-12-29T15:57:34+00:00</lastmod>
-	</url>
-	<url>
-		<loc>https://www.totovbuilder.com/fr</loc>
-		<xhtml:link rel="alternate" hreflang="en" href="https://www.totovbuilder.com" />
-		<xhtml:link rel="alternate" hreflang="en" href="https://www.totovbuilder.com/en" />
-		<xhtml:link rel="alternate" hreflang="fr" href="https://www.totovbuilder.com/fr" />
-    <lastmod>2021-12-29T15:57:34+00:00</lastmod>
+    <lastmod>2023-05-18T16:06:00+00:00</lastmod>
 	</url>
 </urlset>

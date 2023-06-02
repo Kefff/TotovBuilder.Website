@@ -1,6 +1,5 @@
 import { IItem } from '../../models/item/IItem'
 import { ItemService } from '../ItemService'
-import { MerchantFilterService } from '../MerchantFilterService'
 import { NotificationService, NotificationType } from '../NotificationService'
 import Services from '../repository/Services'
 
@@ -10,30 +9,18 @@ import Services from '../repository/Services'
 export class ModSlotComponentService {
   /**
    * Gets the items accepted as items for a mod slot.
-   * Sorted by default by item category and caption.
    * @param compatibleItemIds - IDs of the items that are compatible with the mod slot.
    * @returns Accepted items.
    */
   public async getAcceptedItems(compatibleItemIds: string[]): Promise<IItem[]> {
-    const acceptedItems: IItem[] = []
-    const notificationService = Services.get(NotificationService)
-    const merchantFilterService = Services.get(MerchantFilterService)
+    const itemsResult = await Services.get(ItemService).getItems(compatibleItemIds, true)
 
-    for (const compatibleItemId of compatibleItemIds) {
-      const itemResult = await Services.get(ItemService).getItem(compatibleItemId)
-
-      if (!itemResult.success) {
-        notificationService.notify(NotificationType.error, itemResult.failureMessage)
-
-        continue
-      }
-
-      if (merchantFilterService.hasMatchingPrices(itemResult.value, true)) {
-        acceptedItems.push(itemResult.value)
-      }
+    if (!itemsResult.success) {
+      Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage)
+      return []
     }
 
-    return acceptedItems
+    return itemsResult.value
   }
 
   /**

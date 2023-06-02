@@ -22,6 +22,6 @@ export class MagazineSortingFunctions implements ISortingFunctions {
   public getValueToCompareFunctions: { [property: string]: (item: IItem) => (string | number) | Promise<string | number> } = {
     loadSpeedPercentageModifier: (item: IItem) => (item as IMagazine).loadSpeedPercentageModifier,
     checkSpeedPercentageModifier: (item: IItem) => (item as IMagazine).checkSpeedPercentageModifier,
-    ergonomicsModifier: (item: IItem) => (item as IMagazine).ergonomicsModifier
+    ergonomicsModifier: (item: IItem) => (item as IMagazine).presetErgonomicsModifier ?? (item as IMagazine).ergonomicsModifier
   }
 }

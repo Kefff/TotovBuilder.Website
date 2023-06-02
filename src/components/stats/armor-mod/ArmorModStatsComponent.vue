@@ -2,15 +2,13 @@
   <ArmorStats
     v-if="item.armorClass > 0"
     :item="item"
+    :custom-ergonomics-percentage-modifier="item.presetErgonomicsPercentageModifier"
   />
   <div
     v-if="item.blindnessProtectionPercentage !== 0"
     class="stats-line"
   >
-    <div
-      v-if="item.blindnessProtectionPercentage !== 0"
-      class="stats-entry"
-    >
+    <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
           icon="low-vision"

@@ -22,7 +22,7 @@
       v-tooltip.top="$t('caption.ergonomics')"
       class="option-value"
     >
-      <span>{{ item.ergonomics }}</span>
+      <span>{{ item.presetErgonomics ?? item.ergonomics }}</span>
       <font-awesome-icon
         icon="hand-paper"
         class="icon-after-text"
@@ -34,7 +34,7 @@
       v-tooltip.top="$t('caption.verticalRecoil')"
       class="option-value"
     >
-      <span>{{ item.verticalRecoil }}</span>
+      <span>{{ item.presetVerticalRecoil ?? item.verticalRecoil }}</span>
       <font-awesome-icon
         icon="arrows-alt-v"
         class="icon-after-text"
@@ -46,7 +46,7 @@
       v-tooltip.top="$t('caption.horizontalRecoil')"
       class="option-value"
     >
-      <span>{{ item.horizontalRecoil }}</span>
+      <span>{{ item.presetHorizontalRecoil ?? item.horizontalRecoil }}</span>
       <font-awesome-icon
         icon="arrows-alt-h"
         class="icon-after-text"

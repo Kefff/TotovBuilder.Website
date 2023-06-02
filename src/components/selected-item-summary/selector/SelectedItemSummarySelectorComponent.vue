@@ -6,64 +6,64 @@
     :preset="preset"
   >
     <AmmunitionSummary
-      v-if="item.categoryId === 'ammunition'"
+      v-if="itemPropertiesService.isAmmunition(item)"
       :item="item"
       :show-empty-entries="false"
     />
     <ArmorSummary
-      v-else-if="item.categoryId === 'armor'"
+      v-else-if="itemPropertiesService.isArmor(item)"
       :item="item"
       :show-empty-entries="false"
     />
     <ArmorModSummary
-      v-else-if="item.categoryId === 'armorMod'"
+      v-else-if="itemPropertiesService.isArmorMod(item)"
       :item="item"
       :show-empty-entries="false"
     />
     <ContainerSummary
-      v-else-if="item.categoryId === 'backpack' || item.categoryId === 'securedContainer' || item.categoryId === 'container'"
+      v-else-if="itemPropertiesService.isContainer(item)"
       :item="item"
     />
     <EyewearSummary
-      v-else-if="item.categoryId === 'eyewear'"
+      v-else-if="itemPropertiesService.isEyewear(item)"
       :item="item"
       :show-empty-entries="false"
     />
     <GrenadeSummary
-      v-else-if="item.categoryId === 'grenade'"
+      v-else-if="itemPropertiesService.isGrenade(item)"
       :item="item"
       :show-empty-entries="false"
     />
     <HeadwearSummary
-      v-else-if="item.categoryId === 'headwear'"
+      v-else-if="itemPropertiesService.isHeadwear(item)"
       :item="item"
       :show-empty-entries="false"
     />
     <MagazineSummary
-      v-else-if="item.categoryId === 'magazine'"
+      v-else-if="itemPropertiesService.isMagazine(item)"
       :item="item"
       :show-empty-entries="false"
     />
     <MeleeWeaponSummary
-      v-else-if="item.categoryId === 'meleeWeapon'"
+      v-else-if="itemPropertiesService.isMeleeWeapon(item)"
       :item="item"
     />
     <ModSummary
-      v-else-if="item.categoryId === 'mod'"
-      :item="item"
-      :show-empty-entries="false"
-    />
-    <RangedWeaponModSummary
-      v-else-if="item.categoryId === 'rangedWeaponMod'"
+      v-else-if="itemPropertiesService.isMod(item)"
       :item="item"
       :show-empty-entries="false"
     />
     <RangedWeaponSummary
-      v-else-if="item.categoryId === 'mainWeapon' || item.categoryId === 'secondaryWeapon'"
+      v-else-if="itemPropertiesService.isRangedWeapon(item)"
       :item="item"
     />
+    <RangedWeaponModSummary
+      v-else-if="itemPropertiesService.isRangedWeaponMod(item)"
+      :item="item"
+      :show-empty-entries="false"
+    />
     <VestSummary
-      v-else-if="item.categoryId === 'vest'"
+      v-else-if="itemPropertiesService.isVest(item)"
       :item="item"
       :show-empty-entries="false"
     />

@@ -15,29 +15,31 @@ import { ExportService } from '../../services/ExportService'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
 import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
-import MerchantFilter from '../merchant-filter/MerchantFilterComponent.vue'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
-import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue'
+import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Loading from '../loading/LoadingComponent.vue'
 import ShareBuild from '../build-share/BuildShareComponent.vue'
 import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
 import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { InventoryItemService } from '../../services/InventoryItemService'
+import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 
 export default defineComponent({
   components: {
-    InventorySlot,
+    DisplayOptions,
     InputTextField,
     InventoryPrice,
-    LanguageSelector,
+    InventorySlot,
     Loading,
-    MerchantFilter,
+    MerchantItemsOptions,
     NotificationButton,
     ShareBuild,
     ShoppingList
   },
   setup: () => {
+    Services.emitter.once('initialized', initialize)
+
     const route = useRoute()
     const router = useRouter()
 
@@ -46,7 +48,7 @@ export default defineComponent({
     const compatibilityService = Services.get(CompatibilityService)
     const exportService = Services.get(ExportService)
     const inventoryItemService = Services.get(InventoryItemService)
-    const merchantFilterService = Services.get(MerchantFilterService)
+    const globalFilterService = Services.get(GlobalFilterService)
     const notificationService = Services.get(NotificationService)
 
     const inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
@@ -58,13 +60,20 @@ export default defineComponent({
     const notExportedTooltip = computed(() => !summary.value.exported ? buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
     const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
 
-    const build = ref<IBuild>(buildComponentService.getBuild(route.params['id'] as string))
+    const build = ref<IBuild>({
+      id: route.params['id'] as string ?? '',
+      inventorySlots: [],
+      lastExported: undefined,
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: ''
+    })
     const collapseStatuses = ref<boolean[]>([])
     const deleting = ref(false)
-    const displayOptionsPanel = ref()
+    const displayOptionsSidebarVisible = ref(false)
     const editing = isNewBuild.value ? ref(true) : ref(false)
-    const isInitializing = ref(true)
-    const optionsPanel = ref()
+    const isLoading = ref(true)
+    const merchantItemsOptionsSidebarVisible = ref(false)
     const summary = ref<IBuildSummary>({
       ergonomics: undefined,
       ergonomicsPercentageModifier: 0,
@@ -124,12 +133,16 @@ export default defineComponent({
       compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.mod, onModCompatibilityRequest)
       inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
-      merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       document.onkeydown = (e) => onKeyDown(e)
       window.addEventListener('scroll', setToolbarCssClass)
 
-      initialize()
+      if (!Services.isInitializing) {
+        // If the services are already initialized, we can initialize the component instead of waiting for the "initialized" event
+        // thant won't be triggered because the services initialization is already done
+        initialize()
+      }
     })
 
     onUnmounted(() => {
@@ -137,7 +150,7 @@ export default defineComponent({
       compatibilityService.emitter.off(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
       inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
-      merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       document.onkeydown = null
       window.removeEventListener('scroll', setToolbarCssClass)
@@ -182,7 +195,7 @@ export default defineComponent({
      * Collapses all the inventory slots.
      */
     function collapseAll() {
-      toggleDisplayOptionsPanel(undefined)
+      displayOptionsSidebarVisible.value = false
 
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = true
@@ -206,7 +219,7 @@ export default defineComponent({
      * Expands all the inventory slots.
      */
     function expandAll() {
-      toggleDisplayOptionsPanel(undefined)
+      displayOptionsSidebarVisible.value = false
 
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = false
@@ -217,7 +230,7 @@ export default defineComponent({
      * Expands the inventory slots containing an item.
      */
     function expandWithItem() {
-      toggleDisplayOptionsPanel(undefined)
+      displayOptionsSidebarVisible.value = false
 
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         if (build.value.inventorySlots[i].items.filter(i => i != null).length > 0) {
@@ -229,7 +242,7 @@ export default defineComponent({
     /**
      * Exports the build.
      */
-    function exportBuild() {
+    async function exportBuild() {
       if (editing.value) {
         return
       }
@@ -238,7 +251,7 @@ export default defineComponent({
         return
       }
 
-      const exportResult = exportService.export([build.value])
+      const exportResult = await exportService.export([build.value])
 
       if (!exportResult.success) {
         notificationService.notify(NotificationType.error, exportResult.failureMessage)
@@ -304,7 +317,7 @@ export default defineComponent({
      * Initializes the build.
      */
     function initialize() {
-      isInitializing.value = true
+      isLoading.value = true
 
       build.value = buildComponentService.getBuild(route.params['id'] as string)
       getSharedBuild(route.params['sharedBuild'] as string)
@@ -312,8 +325,7 @@ export default defineComponent({
           getCollapseStatuses()
           await getSummary()
         })
-        .finally(() => isInitializing.value = false)
-
+        .finally(() => isLoading.value = false)
     }
 
     /**
@@ -378,9 +390,9 @@ export default defineComponent({
     /**
      * Saves the build.
      */
-    function save() {
+    async function save() {
       editing.value = false
-      buildComponentService.saveBuild(router, build.value)
+      await buildComponentService.saveBuild(router, build.value)
     }
 
     /**
@@ -410,22 +422,6 @@ export default defineComponent({
       originalBuild = JSON.parse(JSON.stringify(build.value)) // Creating a copy without reference of the build in its original state
     }
 
-    /**
-     * Toggles the options panel.
-     * @param event - Event.
-     */
-    function toggleOptionsPanel(event: unknown) {
-      optionsPanel.value.toggle(event)
-    }
-
-    /**
-     * Toggles the display options panel.
-     * @param event - Event.
-     */
-    function toggleDisplayOptionsPanel(event: unknown) {
-      displayOptionsPanel.value.toggle(event)
-    }
-
     return {
       build,
       cancelDelete,
@@ -435,7 +431,7 @@ export default defineComponent({
       confirmDelete,
       copy,
       deleting,
-      displayOptionsPanel,
+      displayOptionsSidebarVisible,
       editing,
       expandAll,
       expandWithItem,
@@ -444,10 +440,10 @@ export default defineComponent({
       invalid,
       inventorySlotPathPrefix,
       isEmpty,
+      isLoading,
       isNewBuild,
-      isInitializing,
+      merchantItemsOptionsSidebarVisible,
       notExportedTooltip,
-      optionsPanel,
       path,
       remove,
       save,
@@ -455,8 +451,6 @@ export default defineComponent({
       startEdit,
       StatsUtils,
       summary,
-      toggleDisplayOptionsPanel,
-      toggleOptionsPanel,
       toolbarCssClass
     }
   }

@@ -1,4 +1,4 @@
-import { anyString, instance, mock, when } from 'ts-mockito'
+import { anyString, anything, instance, mock, when } from 'ts-mockito'
 import { ItemService } from '../services/ItemService'
 import ItemsMock from '../../test-data/items.json'
 import PriceMocks from '../../test-data/prices.json'
@@ -7,26 +7,24 @@ import Result, { FailureType } from '../utils/Result'
 import { ICurrency } from '../models/configuration/ICurrency'
 import { IItem } from '../models/item/IItem'
 import ItemCategoriesMock from '../../test-data/item-categories.json'
-import PresetsMock from '../../test-data/presets.json'
-import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IPrice } from '../models/item/IPrice'
 
-export function useItemServiceMock(hasMainCurrency = true, customItemList?: IItem[], customPricesList?: IPrice[], customPresetsList?: IInventoryItem[]): void {
+export function useItemServiceMock(hasMainCurrency = true, customItemList?: IItem[], customPricesList?: IPrice[]): void {
   const itemServiceMock = mock<ItemService>()
   when(itemServiceMock.getItem(anyString())).thenCall((id: string) => getItem(id, customItemList, customPricesList))
   when(itemServiceMock.getItemCategories()).thenReturn(Promise.resolve(ItemCategoriesMock))
-  when(itemServiceMock.getItemsOfCategory(anyString())).thenCall((id: string) => getItemsOfCategory(id, customItemList))
+  when(itemServiceMock.getItems(anything(), anything())).thenCall((ids: string[]) => getItems(ids, customItemList))
+  when(itemServiceMock.getItemsOfCategories(anything(), anything())).thenCall((ids: string[]) => getItemsOfCategories(ids, customItemList))
   when(itemServiceMock.getMainCurrency()).thenCall(() => getMainCurrency(hasMainCurrency))
-  when(itemServiceMock.getPreset(anyString())).thenCall((id: string) => getPreset(id, customPresetsList))
 
   Services.configure(ItemService, undefined, instance(itemServiceMock))
 }
 
 function getItem(id: string, customItemList?: IItem[], customPricesList?: IPrice[]): Promise<Result<IItem>> {
-  const item = (customItemList ?? ItemsMock).find(i => i.id === id) as IItem
+  const item = (customItemList ?? ItemsMock as IItem[]).find(i => i.id === id) as IItem
 
   if (item != null) {
-    item.prices = (customPricesList ?? PriceMocks).filter(p => p.itemId === id)
+    item.prices = (customPricesList ?? PriceMocks as IPrice[]).filter(p => p.itemId === id)
 
     return Promise.resolve(Result.ok(item))
   }
@@ -34,11 +32,21 @@ function getItem(id: string, customItemList?: IItem[], customPricesList?: IPrice
   return Promise.resolve(Result.fail(FailureType.error, 'ItemService.getItem()', `Item "${id}" not found.`))
 }
 
-async function getItemsOfCategory(id: string, customItemList?: IItem[], customPricesList?: IPrice[]): Promise<Result<IItem[]>> {
-  const items = (customItemList ?? ItemsMock).filter(i => i.categoryId === id) as IItem[]
+async function getItems(ids: string[], customItemsList?: IItem[], customPricesList?: IPrice[]): Promise<Result<IItem[]>> {
+  const items = (customItemsList ?? ItemsMock as IItem[]).filter(i => ids.some(id => i.id === id)) as IItem[]
 
   for (const item of items) {
-    item.prices = (customPricesList ?? PriceMocks).filter(p => p.itemId === item.id)
+    item.prices = (customPricesList ?? PriceMocks as IPrice[]).filter(p => p.itemId === item.id)
+  }
+
+  return Promise.resolve(Result.ok<IItem[]>(items))
+}
+
+async function getItemsOfCategories(ids: string[], customItemsList?: IItem[], customPricesList?: IPrice[]): Promise<Result<IItem[]>> {
+  const items = (customItemsList ?? ItemsMock as IItem[]).filter(i => ids.some(id => i.categoryId === id)) as IItem[]
+
+  for (const item of items) {
+    item.prices = (customPricesList ?? PriceMocks as IPrice[]).filter(p => p.itemId === item.id)
   }
 
   return Promise.resolve(Result.ok<IItem[]>(items))
@@ -51,15 +59,10 @@ function getMainCurrency(hasMainCurrency: boolean): Promise<Result<ICurrency>> {
       itemId: '5449016a4bdc2d6f028b456f',
       mainCurrency: true,
       name: 'RUB',
+      sortOrder: 3,
       value: 1
     }))
   } else {
     return Promise.resolve(Result.fail(FailureType.error, 'ItemService.getMainCurrency()', 'Main currency not found.'))
   }
-}
-
-function getPreset(id: string, customPresetsList?: IInventoryItem[]): Promise<IInventoryItem | undefined> {
-  const preset = (customPresetsList ?? PresetsMock).find(p => p.itemId === id)
-
-  return Promise.resolve(preset)
 }

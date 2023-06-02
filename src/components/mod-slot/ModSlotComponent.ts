@@ -4,7 +4,7 @@ import { IItem } from '../../models/item/IItem'
 import { IModSlot } from '../../models/item/IModSlot'
 import Services from '../../services/repository/Services'
 import { ModSlotComponentService } from '../../services/components/ModSlotComponentService'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { PathUtils } from '../../utils/PathUtils'
 
 export default defineComponent({
@@ -24,7 +24,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup: (props) => {
-    const merchantFilterService = Services.get(MerchantFilterService)
+    const globalFilterService = Services.get(GlobalFilterService)
     const modSlotComponentService = Services.get(ModSlotComponentService)
 
     const editing = inject<Ref<boolean>>('editing')
@@ -37,11 +37,11 @@ export default defineComponent({
     watch(() => props.modSlot, () => getItemComponentParameters())
 
     onMounted(() => {
-      merchantFilterService.emitter.on(MerchantFilterService.changeEvent, onMerchantFilterChanged)
+      globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
       getItemComponentParameters()
     })
 
-    onUnmounted(() => merchantFilterService.emitter.off(MerchantFilterService.changeEvent, onMerchantFilterChanged))
+    onUnmounted(() => globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged))
 
     /**
      * Gets the category IDs and the accepted items to pass to the ItemComponent.

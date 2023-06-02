@@ -1,15 +1,15 @@
 <template>
   <div
-    v-if="hasErgonomicsModifier || showEmptyEntries"
+    v-if="ergonomicsModifier !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div
       v-tooltip.top="$t('caption.ergonomics')"
       class="option-value"
     >
-      <div v-if="hasErgonomicsModifier">
-        <span :class="StatsUtils.getValueColorClass(item.ergonomicsModifier)">
-          {{ StatsUtils.getDisplayValue(item.ergonomicsModifier, true, false) }}
+      <div v-if="ergonomicsModifier !== 0">
+        <span :class="StatsUtils.getValueColorClass(ergonomicsModifier)">
+          {{ StatsUtils.getDisplayValue(ergonomicsModifier, true, false) }}
         </span>
         <font-awesome-icon
           icon="hand-paper"

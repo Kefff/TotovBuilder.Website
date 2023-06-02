@@ -1,4 +1,4 @@
-import { defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 import { IRangedWeaponMod } from '../../../models/item/IRangedWeaponMod'
 import StatsUtils from '../../../utils/StatsUtils'
 
@@ -9,7 +9,12 @@ export default defineComponent({
       required: true
     }
   },
-  setup: () => {
-    return { StatsUtils }
+  setup: (props) => {
+    const ergonomicsModifier = computed(() => props.item.presetErgonomicsModifier ?? props.item.ergonomicsModifier)
+
+    return {
+      ergonomicsModifier,
+      StatsUtils
+    }
   }
 })

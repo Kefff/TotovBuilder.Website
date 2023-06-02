@@ -15,10 +15,10 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const hasErgonomicsModifier = computed(() => props.item.ergonomicsModifier !== 0)
+    const ergonomicsModifier = computed(() => props.item.presetErgonomicsModifier ?? props.item.ergonomicsModifier)
 
     return {
-      hasErgonomicsModifier,
+      ergonomicsModifier,
       StatsUtils
     }
   }

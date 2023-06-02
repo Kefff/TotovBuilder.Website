@@ -12,6 +12,11 @@ export default defineComponent({
     modelValue: {
       type: Object as PropType<SortingData>,
       required: true
+    },
+    customSortingService: {
+      type: Object as PropType<SortingService>,
+      required: false,
+      default: undefined
     }
   },
   emits: ['update:modelValue'],
@@ -20,7 +25,7 @@ export default defineComponent({
       get: () => props.modelValue,
       set: (value: SortingData) => emit('update:modelValue', value)
     })
-    const sortingService = new SortingService([new ArmorSortingFunctions()])
+    const sortingService = props.customSortingService ?? new SortingService(new ArmorSortingFunctions())
 
     return { sortingData, sortingService }
   }

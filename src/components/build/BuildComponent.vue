@@ -8,11 +8,11 @@
       >
         <font-awesome-icon icon="exclamation-triangle" />
       </span>
-      <span v-if="!editing">
+      <span v-show="!editing">
         {{ build.name }}
       </span>
       <InputTextField
-        v-else
+        v-show="editing"
         v-model="build.name"
         :caption="$t('caption.name')"
         caption-mode="placeholder"
@@ -31,7 +31,7 @@
             <font-awesome-icon icon="arrow-left" />
           </Button>
           <Button
-            v-if="editing"
+            v-show="editing"
             class="p-button-success toolbar-button"
             :disabled="invalid"
             @click="save()"
@@ -43,7 +43,7 @@
             <span>{{ $t('caption.save') }}</span>
           </Button>
           <Button
-            v-if="!editing"
+            v-show="!editing"
             class="toolbar-button"
             @click="startEdit()"
           >
@@ -65,7 +65,7 @@
           </Button>
           <ShareBuild :build="build" />
           <Button
-            v-tooltip.top="$t('caption.export')"
+            v-tooltip.top="$t('caption.exportBuild')"
             :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
             @click="exportBuild()"
           >
@@ -73,7 +73,10 @@
           </Button>
         </div>
         <div class="toolbar-part toolbar-center">
-          <div class="build-toolbar-summary">
+          <div
+            v-show="!isLoading"
+            class="build-toolbar-summary"
+          >
             <div
               v-if="summary.ergonomics != null"
               v-tooltip.top="$t('caption.ergonomics')"
@@ -120,6 +123,7 @@
             </div>
             <div class="build-toolbar-summary-value">
               <InventoryPrice
+                v-if="!isLoading"
                 :inventory-price="summary.price"
                 :show-space-for-icon="false"
               />
@@ -140,25 +144,67 @@
         </div>
         <div class="toolbar-part">
           <div class="build-toolbar-right">
-            <Button
-              v-tooltip.top="$t('caption.displayOptions')"
-              class="p-button-text p-button-sm button-discreet"
-              @click="toggleDisplayOptionsPanel"
-            >
-              <font-awesome-icon
-                icon="tv"
-              />
-            </Button>
-            <Button
-              v-tooltip.top="$t('caption.options')"
-              class="p-button-text p-button-sm button-discreet"
-              @click="toggleOptionsPanel"
-            >
-              <font-awesome-icon icon="cog" />
-            </Button>
+            <MerchantItemsOptions v-model:visible="merchantItemsOptionsSidebarVisible">
+              <template #button>
+                <Button
+                  v-tooltip.top="$t('caption.merchantItemsOptions')"
+                  class="p-button-text p-button-sm button-discreet"
+                  @click="merchantItemsOptionsSidebarVisible = true"
+                >
+                  <font-awesome-icon
+                    icon="user-tag"
+                  />
+                </Button>
+              </template>
+            </MerchantItemsOptions>
+            <DisplayOptions v-model:visible="displayOptionsSidebarVisible">
+              <template #button>
+                <Button
+                  v-tooltip.top="$t('caption.merchantItemsOptions')"
+                  class="p-button-text p-button-sm button-discreet"
+                  @click="displayOptionsSidebarVisible = true"
+                >
+                  <font-awesome-icon
+                    icon="tv"
+                  />
+                </Button>
+              </template>
+              <template #additional-options>
+                <div
+                  class="sidebar-option-with-hover"
+                  @click="collapseAll()"
+                >
+                  <font-awesome-icon
+                    icon="minus-square"
+                    class="icon-before-text"
+                  />
+                  <span>{{ $t('caption.collapseAll') }}</span>
+                </div>
+                <div
+                  class="sidebar-option-with-hover"
+                  @click="expandWithItem()"
+                >
+                  <font-awesome-icon
+                    icon="search-plus"
+                    class="icon-before-text"
+                  />
+                  <span>{{ $t('caption.expandWithItem') }}</span>
+                </div>
+                <div
+                  class="sidebar-option-with-hover"
+                  @click="expandAll()"
+                >
+                  <font-awesome-icon
+                    icon="plus-square"
+                    class="icon-before-text"
+                  />
+                  <span>{{ $t('caption.expandAll') }}</span>
+                </div>
+              </template>
+            </DisplayOptions>
             <NotificationButton />
             <Button
-              v-if="editing"
+              v-show="editing"
               class="p-button-danger toolbar-button"
               @click="cancelEdit()"
             >
@@ -169,7 +215,7 @@
               <span>{{ $t('caption.cancel') }}</span>
             </Button>
             <Button
-              v-if="!editing"
+              v-show="!editing"
               class="p-button-danger toolbar-button"
               @click="startDelete()"
             >
@@ -187,7 +233,7 @@
 
     <!-- Inventory slots -->
     <div
-      v-if="!isInitializing"
+      v-show="!isLoading"
       id="build-content"
     >
       <div
@@ -225,82 +271,21 @@
       </div>
     </div>
     <div
-      v-if="isInitializing"
+      v-show="isLoading"
       class="build-loading"
     >
       <Loading />
     </div>
   </div>
 
-  <!-- Options panel -->
-  <OverlayPanel
-    ref="optionsPanel"
-    :dismissable="true"
-  >
-    <div class="build-options-panel">
-      <div class="build-options-panel-item">
-        <LanguageSelector />
-      </div>
-      <div
-        class="build-options-panel-item build-merchant-filter"
-      >
-        <MerchantFilter />
-      </div>
-    </div>
-  </OverlayPanel>
-
-  <!-- View display options panel -->
-  <OverlayPanel
-    ref="displayOptionsPanel"
-    :dismissable="true"
-  >
-    <div class="build-options-panel">
-      <div
-        class="build-options-panel-item build-options-panel-item-with-hover"
-        @click="collapseAll()"
-      >
-        <font-awesome-icon
-          icon="minus-square"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.collapseAll') }}</span>
-      </div>
-      <div
-        class="build-options-panel-item build-options-panel-item-with-hover"
-        @click="expandWithItem()"
-      >
-        <font-awesome-icon
-          icon="search-plus"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.expandWithItem') }}</span>
-      </div>
-      <div
-        class="build-options-panel-item build-options-panel-item-with-hover"
-        @click="expandAll()"
-      >
-        <font-awesome-icon
-          icon="plus-square"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.expandAll') }}</span>
-      </div>
-    </div>
-  </OverlayPanel>
-
   <!-- Deletion confirmation dialog -->
   <Dialog
     v-model:visible="deleting"
     :closable="false"
-    :header="$t('caption.confirmation')"
     :modal="true"
     :draggable="false"
   >
     <div>
-      <font-awesome-icon
-        icon="exclamation-triangle"
-        class="build-warning-icon"
-      />
       <span>{{ $t('message.confirmDeleteBuild', { name: build.name }) }}</span>
     </div>
     <template #footer>

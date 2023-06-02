@@ -3,7 +3,6 @@
 .welcome {
   display: flex;
   flex-direction: column;
-  margin-top: 2rem;
 }
 
 .welcome > div {
@@ -32,28 +31,22 @@
 }
 
 .welcome-action {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 3rem;
-}
-
-.welcome-action:last-child {
-  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  width: 17.5rem;
 }
 
 .welcome-actions {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-top: 3rem;
-}
-
-.welcome-actions-list {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 3rem;
+  margin-bottom: 6rem;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 6rem;
 }
 
 .welcome-builder {
@@ -73,13 +66,22 @@
   margin-bottom: 0;
 }
 
+.welcome-loading {
+  margin-bottom: 6rem;
+  margin-top: 6rem;
+}
+
+.welcome-text {
+  margin-top: 6rem;
+}
+
 .welcome-warning {
   border-style: solid;
   border-color: var(--warning-color);
   border-radius: 1rem;
   font-size: 1rem;
   padding: 0.5rem;
-  margin-top: 3rem;
+  margin-bottom: 6rem;
 }
 
 .welcome-warning > p {

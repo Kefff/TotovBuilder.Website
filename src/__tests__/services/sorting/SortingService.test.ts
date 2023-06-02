@@ -9,18 +9,16 @@ describe('setSortingProperty()', () => {
     ['price', SortingOrder.asc, 2]
   ])('should set the sorting property and get the comparison function', async (property: string, expectedSortingOrder: SortingOrder, expectedComparisonResult: number) => {
     // Arrange
-    const sortService = new SortingService([
-      {
-        comparisonFunctions: {
-          name: () => 1,
-          price: () => 2
-        },
-        getValueToCompareFunctions: {
-          name: (item: IItem) => item.name,
-          price: (item: IItem) => item.prices[0].valueInMainCurrency
-        }
+    const sortService = new SortingService({
+      comparisonFunctions: {
+        name: () => 1,
+        price: () => 2
+      },
+      getValueToCompareFunctions: {
+        name: (item: IItem) => item.name,
+        price: (item: IItem) => item.prices[0].valueInMainCurrency
       }
-    ])
+    })
 
     // Act
     const sortingDataResult = sortService.setSortingProperty(sortingData, property)
@@ -34,7 +32,7 @@ describe('setSortingProperty()', () => {
 
   it('should fail when no comparison function is configured for the property', () => {
     // Arrange
-    const sortService = new SortingService([{ comparisonFunctions: {}, getValueToCompareFunctions: {} }])
+    const sortService = new SortingService({ comparisonFunctions: {}, getValueToCompareFunctions: {} })
 
     // Act
     const sortingDataResult = sortService.setSortingProperty(sortingData, 'invalid')

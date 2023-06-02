@@ -6,21 +6,21 @@ import { IRecoil } from '../../models/utils/IRecoil'
 import { IRecoilPercentageModifier } from '../../models/utils/IRecoilPercentageModifier'
 import { IWeight } from '../../models/utils/IWeight'
 import { InventoryItemService } from '../../services/InventoryItemService'
-import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import Services from '../../services/repository/Services'
-import { MerchantFilterService } from '../../services/MerchantFilterService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
 
 const inventoryItem: IInventoryItem = {
   content: [
     {
       content: [],
       ignorePrice: false,
-      itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+      itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
       modSlots: [
         {
           item: {
@@ -74,7 +74,7 @@ const invalidInventoryItem1: IInventoryItem = {
 const invalidInventoryItem2: IInventoryItem = {
   content: [],
   ignorePrice: false,
-  itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+  itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
   modSlots: [
     {
       item: {
@@ -112,7 +112,7 @@ describe('getErgonomics()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
         modSlots: [
           {
             item: {
@@ -212,7 +212,7 @@ describe('getErgonomicsPercentageModifier()', () => {
       } as IInventoryItem,
       {
         ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithContent: 0
+        ergonomicsPercentageModifierWithMods: 0
       } as IErgonomicsPercentageModifier
     ],
     [
@@ -224,23 +224,10 @@ describe('getErgonomicsPercentageModifier()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomicsPercentageModifier: -0.05,
-        ergonomicsPercentageModifierWithContent: -0.05
+        ergonomicsPercentageModifier: -0.02,
+        ergonomicsPercentageModifierWithMods: -0.02
       } as IErgonomicsPercentageModifier
-    ]/*,
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5c0e6a1586f77404597b4965', // Belt-A + Belt-B gear rig
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      {
-        ergonomicsPercentageModifier: -0.05,
-        ergonomicsPercentageModifierWithContent: -0.05
-      } as IErgonomicsPercentageModifier
-    ]*/,
+    ],
     [
       {
         content: [],
@@ -264,8 +251,8 @@ describe('getErgonomicsPercentageModifier()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomicsPercentageModifier: -0.16,
-        ergonomicsPercentageModifierWithContent: -0.35
+        ergonomicsPercentageModifier: -0.04,
+        ergonomicsPercentageModifierWithMods: -0.13
       } as IErgonomicsPercentageModifier
     ]
   ])(
@@ -291,8 +278,8 @@ describe('getErgonomicsPercentageModifier()', () => {
       ).toBe(expected.ergonomicsPercentageModifier)
       expect(
         ergonomicsPercentageModifier.value
-          .ergonomicsPercentageModifierWithContent
-      ).toBe(expected.ergonomicsPercentageModifierWithContent)
+          .ergonomicsPercentageModifierWithMods
+      ).toBe(expected.ergonomicsPercentageModifierWithMods)
     }
   )
 
@@ -336,74 +323,6 @@ describe('getErgonomicsPercentageModifier()', () => {
       expect(ergonomicsPercentageModifier.failureMessage).toBe('Item "invalid" not found.')
     }
   )
-})
-
-describe('getPresetModSlotContainingItem', () => {
-  it.each([
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5a6f5d528dc32e00094b97d9', // Glock rear sight
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster_0/item:5b1fa9b25acfc40018633c01/mod:mod_reciever/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
-      {
-        item: {
-          content: [],
-          ignorePrice: false,
-          itemId: '5a6f5d528dc32e00094b97d9',
-          modSlots: [],
-          quantity: 1
-        },
-        modSlotName: 'mod_sight_rear'
-      } as IInventoryModSlot
-    ],
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '',
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster_0/item:5b1fa9b25acfc40018633c01/mod:invalid/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
-      undefined
-    ],
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5a6f5d528dc32e00094b97d9',
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster/item:invalid/mod:mod_sight_rear/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear',
-      undefined
-    ],
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5a6f5d528dc32e00094b97d9',
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      'build:1234-4568-9011/slot:holster_0/item:5b1fa9b25acfc40018633c01',
-      undefined
-    ]
-  ])('should get the preset mod slot that contains an item', async (item: IInventoryItem, path: string, expected: IInventoryModSlot | undefined) => {
-    // Arrange
-    useItemServiceMock()
-    const service = new InventoryItemService()
-
-    // Act
-    const result = await service.getPresetModSlotContainingItem(item.itemId, path)
-
-    // Assert
-    expect(result).toStrictEqual(expected)
-  })
 })
 
 describe('getPrice()', () => {
@@ -520,7 +439,7 @@ describe('getPrice()', () => {
           {
             content: [],
             ignorePrice: false,
-            itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+            itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
             modSlots: [
               {
                 item: {
@@ -751,9 +670,10 @@ describe('getPrice()', () => {
     async (inventoryItem: IInventoryItem, canBeLooted: boolean, expected: IInventoryPrice) => {
       // Arrange
       useItemServiceMock()
+      usePresetServiceMock()
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()
-      Services.configure(MerchantFilterService)
+      Services.configure(GlobalFilterService)
       const service = new InventoryItemService()
 
       // Act
@@ -769,7 +689,7 @@ describe('getPrice()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '5ac66cb05acfc40198510a10', // AK-101 5.56x45 assault rifle
+        itemId: '5acf7dd986f774486e1281bf', // AK-101 5.56x45 assault rifle Default
         modSlots: [
           {
             item: {
@@ -800,9 +720,9 @@ describe('getPrice()', () => {
         price: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ac66cb05acfc40198510a10',
+          itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
-          merchantLevel: 2,
+          merchantLevel: 3,
           quest: null,
           value: 42938,
           valueInMainCurrency: 42938
@@ -832,9 +752,9 @@ describe('getPrice()', () => {
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ac66cb05acfc40198510a10',
+          itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
-          merchantLevel: 2,
+          merchantLevel: 3,
           quest: null,
           value: 42938,
           valueInMainCurrency: 42938
@@ -846,7 +766,7 @@ describe('getPrice()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '5ac66cb05acfc40198510a10', // AK-101 5.56x45 assault rifle
+        itemId: '5acf7dd986f774486e1281bf', // AK-101 5.56x45 assault rifle Default
         modSlots: [
           {
             item: {
@@ -877,9 +797,9 @@ describe('getPrice()', () => {
         price: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ac66cb05acfc40198510a10',
+          itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
-          merchantLevel: 2,
+          merchantLevel: 3,
           quest: null,
           value: 42938,
           valueInMainCurrency: 42938
@@ -909,9 +829,9 @@ describe('getPrice()', () => {
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ac66cb05acfc40198510a10',
+          itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
-          merchantLevel: 2,
+          merchantLevel: 3,
           quest: null,
           value: 42938,
           valueInMainCurrency: 42938
@@ -923,7 +843,7 @@ describe('getPrice()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '5ac66cb05acfc40198510a10', // AK-101 5.56x45 assault rifle
+        itemId: '5acf7dd986f774486e1281bf', // AK-101 5.56x45 assault rifle Default
         modSlots: [
           {
             item: {
@@ -954,9 +874,9 @@ describe('getPrice()', () => {
         price: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ac66cb05acfc40198510a10',
+          itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
-          merchantLevel: 2,
+          merchantLevel: 3,
           quest: null,
           value: 42938,
           valueInMainCurrency: 42938
@@ -986,9 +906,9 @@ describe('getPrice()', () => {
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ac66cb05acfc40198510a10',
+          itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
-          merchantLevel: 2,
+          merchantLevel: 3,
           quest: null,
           value: 42938,
           valueInMainCurrency: 42938
@@ -1002,7 +922,7 @@ describe('getPrice()', () => {
           {
             content: [],
             ignorePrice: false,
-            itemId: '5ac66cb05acfc40198510a10', // AK-101 5.56x45 assault rifle
+            itemId: '5acf7dd986f774486e1281bf', // AK-101 5.56x45 assault rifle Default
             modSlots: [
               {
                 item: {
@@ -1090,14 +1010,117 @@ describe('getPrice()', () => {
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: '5ddbbeac582ed30a6134e577', // Saiga 12ga ver.10 12/76 semi-automatic shotgun NERFGUN
+        modSlots: [
+          {
+            item: {
+              content: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: '5d6e6891a4b9361bd473feea', // 12/70 \"Poleva-3\" slug
+                  modSlots: [],
+                  quantity: 20
+                }
+              ],
+              ignorePrice: false,
+              itemId: '5cf8f3b0d7f00c00217872ef', // SOK-12 12/76 MaxRounds Powermag 20-round magazine
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'mod_magazine'
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        missingPrice: false,
+        price: {
+          barterItems: [
+            {
+              itemId: '5bc9c29cd4351e003562b8a3',
+              quantity: 10
+            },
+            {
+              itemId: '5c0fa877d174af02a012e1cf',
+              quantity: 10
+            },
+            {
+              itemId: '57347d8724597744596b4e76',
+              quantity: 10
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '5ddbbeac582ed30a6134e577',
+          merchant: 'jaeger',
+          merchantLevel: 3,
+          quest: null,
+          value: 0,
+          valueInMainCurrency: 738760
+        },
+        priceWithContentInMainCurrency: {
+          barterItems: [
+          ],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: null,
+          value: 738760,
+          valueInMainCurrency: 738760
+        },
+        pricesWithContent: [
+          {
+            barterItems: [
+            ],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: null,
+            value: 738760,
+            valueInMainCurrency: 738760
+          }
+        ],
+        unitPrice: {
+          barterItems: [
+            {
+              itemId: '5bc9c29cd4351e003562b8a3',
+              quantity: 10
+            },
+            {
+              itemId: '5c0fa877d174af02a012e1cf',
+              quantity: 10
+            },
+            {
+              itemId: '57347d8724597744596b4e76',
+              quantity: 10
+            }
+          ],
+          currencyName: 'barter',
+          itemId: '5ddbbeac582ed30a6134e577',
+          merchant: 'jaeger',
+          merchantLevel: 3,
+          quest: null,
+          value: 0,
+          valueInMainCurrency: 738760
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+      } as IInventoryPrice
     ]
   ])('should get the price of an inventory item and ignore items present in the item preset',
     async (inventoryItem: IInventoryItem, expected: IInventoryPrice) => {
       // Arrange
       useItemServiceMock()
+      usePresetServiceMock()
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()
-      Services.configure(MerchantFilterService)
+      Services.configure(GlobalFilterService)
 
       const service = new InventoryItemService()
 
@@ -1112,13 +1135,15 @@ describe('getPrice()', () => {
   it('should get the price of an inventory item ignoring the prices of deactivated merchants', async () => {
     // Arrange
     useItemServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const inventoryItemService = new InventoryItemService()
-    const merchantFilterService = Services.get(MerchantFilterService)
-    merchantFilterService.save([
+
+    const globalFilterService = Services.get(GlobalFilterService)
+    globalFilterService.saveMerchantFilters([
       {
         enabled: false,
         merchant: 'jaeger',
@@ -1375,9 +1400,10 @@ describe('getPrice()', () => {
   ])('should have a missing price when no merchants sell the item', async (inventoryItem: IInventoryItem, expected: IInventoryPrice) => {
     // Arrange
     useItemServiceMock()
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const service = new InventoryItemService()
 
@@ -1479,12 +1505,13 @@ describe('getPrice()', () => {
           valueInMainCurrency: 200.0
         }
       ])
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const service = new InventoryItemService()
-    Services.get(MerchantFilterService)
+    Services.get(GlobalFilterService)
 
     const inventoryItem: IInventoryItem = {
       content: [],
@@ -1615,12 +1642,13 @@ describe('getPrice()', () => {
           valueInMainCurrency: 25000000.0
         }
       ])
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const service = new InventoryItemService()
-    Services.get(MerchantFilterService)
+    Services.get(GlobalFilterService)
 
     const inventoryItem: IInventoryItem = {
       content: [],
@@ -1720,12 +1748,13 @@ describe('getPrice()', () => {
           valueInMainCurrency: 0.0
         }
       ])
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const service = new InventoryItemService()
-    Services.get(MerchantFilterService)
+    Services.get(GlobalFilterService)
 
     const inventoryItem: IInventoryItem = {
       content: [],
@@ -1792,7 +1821,7 @@ describe('getPrice()', () => {
     useItemServiceMock(false)
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
     const service = new InventoryItemService()
 
     // Act
@@ -1812,9 +1841,10 @@ describe('getPrice()', () => {
     async (inventoryItem: IInventoryItem) => {
       // Arrange
       useItemServiceMock()
+      usePresetServiceMock()
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()
-      Services.configure(MerchantFilterService)
+      Services.configure(GlobalFilterService)
       const service = new InventoryItemService()
 
       // Act
@@ -1850,10 +1880,10 @@ describe('getPrice()', () => {
       ])
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const service = new InventoryItemService()
-    Services.get(MerchantFilterService)
+    Services.get(GlobalFilterService)
 
     const inventoryItem: IInventoryItem = {
       content: [],
@@ -1888,13 +1918,14 @@ describe('getPrice()', () => {
           'valueInMainCurrency': 29400.0
         }
       ])
+    usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(MerchantFilterService)
+    Services.configure(GlobalFilterService)
 
     const inventoryItemService = new InventoryItemService()
-    const merchantFilterService = Services.get(MerchantFilterService)
-    merchantFilterService.save([
+    const globalFilterService = Services.get(GlobalFilterService)
+    globalFilterService.saveMerchantFilters([
       {
         enabled: true,
         merchant: 'mechanic',
@@ -1940,22 +1971,22 @@ describe('getRecoil()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
       {
-        horizontalRecoil: 445,
-        horizontalRecoilWithMods: 445,
-        verticalRecoil: 141,
-        verticalRecoilWithMods: 141
+        horizontalRecoil: 415,
+        horizontalRecoilWithMods: 415,
+        verticalRecoil: 121,
+        verticalRecoilWithMods: 121
       } as IRecoil
     ],
     [
       {
         content: [],
         ignorePrice: false,
-        itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
         modSlots: [
           {
             item: {
@@ -2019,10 +2050,10 @@ describe('getRecoil()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        horizontalRecoil: 445,
-        horizontalRecoilWithMods: 292,
-        verticalRecoil: 141,
-        verticalRecoilWithMods: 92
+        horizontalRecoil: 415,
+        horizontalRecoilWithMods: 272,
+        verticalRecoil: 121,
+        verticalRecoilWithMods: 79
       } as IRecoil
     ],
     [
@@ -2214,9 +2245,9 @@ describe('getRecoil()', () => {
       } as IInventoryItem,
       {
         horizontalRecoil: 650,
-        horizontalRecoilWithMods: 741,
+        horizontalRecoilWithMods: 396,
         verticalRecoil: 520,
-        verticalRecoilWithMods: 593
+        verticalRecoilWithMods: 317
       } as IRecoil
     ],
     [
@@ -2325,7 +2356,7 @@ describe('getRecoil()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
         modSlots: [
           {
             item: {
@@ -2345,7 +2376,7 @@ describe('getRecoil()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
         modSlots: [
           {
             item: {

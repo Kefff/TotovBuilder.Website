@@ -12,11 +12,11 @@ export default defineComponent({
   },
   props: {
     buildsSummaries: {
-      type: Array as PropType<Array<IBuildSummary>>,
+      type: Array as PropType<IBuildSummary[]>,
       required: true
     },
     modelValue: {
-      type: Array as PropType<Array<string>>,
+      type: Array as PropType<string[]>,
       required: true
     },
     multiple: {
@@ -33,10 +33,12 @@ export default defineComponent({
   emits: ['update:modelValue'],
   setup: (props, { emit }) => {
     const buildPropertiesService = Services.get(BuildPropertiesService)
-    const selectedBuildSummaries = ref<IBuildSummary | IBuildSummary[]>()
-    const selectionMode = computed(() => props.multiple ? 'multiple' : 'single')
+
     const sortField = ref('name')
     const sortOrder = ref(1)
+    const selectedBuildSummaries = ref<IBuildSummary | IBuildSummary[]>()
+
+    const selectionMode = computed(() => props.multiple ? 'multiple' : 'single')
 
     onMounted(() => {
       getSortingData()
@@ -110,11 +112,11 @@ export default defineComponent({
     return {
       getNotExportedTooltip,
       onSort,
-      StatsUtils,
       selectedBuildSummaries,
       selectionMode,
       sortField,
       sortOrder,
+      StatsUtils,
       updateSelectedBuildSummaries
     }
   }

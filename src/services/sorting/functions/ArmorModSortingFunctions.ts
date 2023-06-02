@@ -22,6 +22,6 @@ export class ArmorModSortingFunctions implements ISortingFunctions {
   public getValueToCompareFunctions: { [property: string]: (item: IItem) => (string | number) | Promise<string | number> } = {
     armorClass: (item: IItem) => (item as IArmorMod).armorClass,
     durability: (item: IItem) => (item as IArmorMod).durability,
-    ergonomicsPercentageModifier: (item: IItem) => (item as IArmorMod).ergonomicsPercentageModifier
+    ergonomicsPercentageModifier: (item: IItem) => (item as IArmorMod).presetErgonomicsPercentageModifier ?? (item as IArmorMod).ergonomicsPercentageModifier
   }
 }

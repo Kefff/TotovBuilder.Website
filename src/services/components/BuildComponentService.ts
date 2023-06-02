@@ -69,18 +69,17 @@ export class BuildComponentService {
    * @param router - Router used to redirect to the creation of a new build when the build corresponding to the ID is not found.
    * @param build - Build to save.
    */
-  public saveBuild(router: Router, build: IBuild): void {
+  public async saveBuild(router: Router, build: IBuild): Promise<void> {
     const buildService = Services.get(BuildService)
     const notificationService = Services.get(NotificationService)
 
     if (build.id === '') {
       // New build
-      const newBuildId = buildService.add(build)
+      const newBuildId = await buildService.add(build)
       router.push({ name: 'Build', params: { id: newBuildId } })
     } else {
       // Update
-      build.lastUpdated = new Date()
-      const result = buildService.update(build.id, build)
+      const result = await buildService.update(build.id, build)
 
       if (!result.success) {
         notificationService.notify(NotificationType.error, result.failureMessage)

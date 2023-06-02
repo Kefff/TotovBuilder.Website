@@ -23,14 +23,10 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const hasLoadSpeedPercentageModifier = computed(() => props.item.loadSpeedPercentageModifier !== 0)
-    const hasCheckSpeedPercentageModifier = computed(() => props.item.checkSpeedPercentageModifier !== 0)
-    const hasErgonomicsModifier = computed(() => props.item.ergonomicsModifier !== 0)
+    const ergonomicsModifier = computed(() => props.item.presetErgonomicsModifier ?? props.item.ergonomicsModifier)
 
     return {
-      hasCheckSpeedPercentageModifier,
-      hasErgonomicsModifier,
-      hasLoadSpeedPercentageModifier,
+      ergonomicsModifier,
       StatsUtils
     }
   }

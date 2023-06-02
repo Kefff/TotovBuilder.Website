@@ -33,7 +33,7 @@ export interface IPrice {
   /**
    * ID of the quest unlocking the trade.
    */
-  quest: IQuest | null,
+  quest: IQuest | null | undefined,
 
   /**
    * Value.

@@ -3,7 +3,7 @@
     :item="item"
   />
   <ArmorSummary
-    v-if="hasArmor"
+    v-if="item.armorClass > 0"
     :item="item"
     :show-empty-entries="showEmptyEntries"
   />
@@ -11,12 +11,12 @@
     <div class="armor-placeholder" />
   </div>
   <div
-    v-if="!hasArmor && (hasErgonomicsPercentageModifier || showEmptyEntries)"
+    v-if="item.armorClass === 0 && (item.ergonomicsPercentageModifier !== 0 || showEmptyEntries)"
     class="option-entry"
   >
     <div class="option-value">
       <div
-        v-if="hasErgonomicsPercentageModifier"
+        v-if="item.ergonomicsPercentageModifier !== 0"
         v-tooltip.top="$t('caption.ergonomics')"
       >
         <span :class="StatsUtils.getValueColorClass(item.ergonomicsPercentageModifier)">

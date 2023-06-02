@@ -1,13 +1,13 @@
 <template>
   <div
-    v-if="hasFragmentsAmount || showEmptyEntries"
+    v-if="item.fragmentsAmount > 0 || showEmptyEntries"
     class="option-entry"
   >
     <div
       v-tooltip.top="$t('caption.fragmentsAmount')"
       class="option-value"
     >
-      <div v-if="hasFragmentsAmount">
+      <div v-if="item.fragmentsAmount > 0">
         <span>{{ item.fragmentsAmount }}</span>
         <font-awesome-icon
           icon="viruses"
@@ -17,14 +17,14 @@
     </div>
   </div>
   <div
-    v-if="hasMaximumExplosionRange || showEmptyEntries"
+    v-if="item.maximumExplosionRange > 0 || showEmptyEntries"
     class="option-entry"
   >
     <div
       v-tooltip.top="$t('caption.explosionRadius')"
       class="option-value"
     >
-      <div v-if="hasMaximumExplosionRange">
+      <div v-if="item.maximumExplosionRange > 0">
         <span v-if="item.minimumExplosionRange !== item.maximumExplosionRange">{{ $t('caption.explosionRadiusValue', { min: item.minimumExplosionRange, max: item.maximumExplosionRange }) }}</span>
         <span v-else>{{ $t('caption.explosionRadiusSingleValue', { radius: item.maximumExplosionRange }) }}</span>
         <font-awesome-icon

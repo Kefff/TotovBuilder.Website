@@ -43,7 +43,7 @@
       </div>
     </div>
     <div
-      v-if="item.ergonomicsModifier !== 0"
+      v-if="ergonomicsModifier !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -53,8 +53,8 @@
         />
         <span>{{ $t('caption.ergonomics') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.ergonomicsModifier)">
-        {{ StatsUtils.getDisplayValue(item.ergonomicsModifier, true, false) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsModifier)">
+        {{ StatsUtils.getDisplayValue(ergonomicsModifier, true, false) }}
       </div>
     </div>
   </div>
@@ -66,7 +66,10 @@
       </div>
     </div>
   </div>
-  <div class="stats-line">
+  <div
+    v-if="acceptedCartridesCaptions.length > 0"
+    class="stats-line"
+  >
     <div
       v-for="(acceptedCartridgesCaption, index) of acceptedCartridesCaptions"
       :key="index"

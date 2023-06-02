@@ -2,14 +2,14 @@ import { IItem } from '../models/item/IItem'
 import Result, { FailureType } from '../utils/Result'
 import i18n from '../plugins/vueI18n'
 import Services from './repository/Services'
-import { IInventoryItem } from '../models/build/IInventoryItem'
-import { IItemCategory } from '../models/configuration/IItemCategory'
 import { ICurrency } from '../models/configuration/ICurrency'
 import { NotificationService, NotificationType } from './NotificationService'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import { TarkovValuesService } from './TarkovValuesService'
 import { ItemFetcherService } from './ItemFetcherService'
 import { IPrice } from '../models/item/IPrice'
+import { GlobalFilterService } from './GlobalFilterService'
+import { PresetService } from './PresetService'
 
 /**
  * Represents a service responsible for managing items.
@@ -23,12 +23,17 @@ export class ItemService {
   /**
    * Fetched item categories.
    */
-  private itemCategories: IItemCategory[] = []
+  private itemCategories: string[] = []
 
   /**
    * Fetched items.
    */
   private items: IItem[] = []
+
+  /**
+   * List of items filtered using the current global filter.
+   */
+  private filteredItems: IItem[] = []
 
   /**
    * Determines whether prices are being fetched or not.
@@ -43,7 +48,7 @@ export class ItemService {
   /**
    * Date of the last time prices were fetched.
    */
-  private lastPricesFetchDate: Date = new Date(1)
+  private lastPricesFetchDate: Date | undefined
 
   /**
    * Current prices fetching task.
@@ -51,14 +56,16 @@ export class ItemService {
   private pricesFetchingPromise: Promise<void> = Promise.resolve()
 
   /**
-   * Fetched presets.
-   */
-  private presets: IInventoryItem[] = []
-
-  /**
    * Current static data fetching task.
    */
   private staticDataFetchingPromise: Promise<void> = Promise.resolve()
+
+  /**
+   * Initializes a new instance of the ItemService class.
+   */
+  constructor() {
+    Services.get(GlobalFilterService).emitter.on(GlobalFilterService.changeEvent, () => this.updateFilteredItems())
+  }
 
   /**
    * Gets currency.
@@ -76,26 +83,15 @@ export class ItemService {
   }
 
   /**
-   * Gets item categories.
-   * @returns Item categories.
-   */
-  public async getItemCategories(): Promise<IItemCategory[]> {
-    await this.initialize()
-
-    return this.itemCategories
-  }
-
-  /**
    * Gets an item. Updates the prices if the cache has expired.
    * @param id - Item ID.
-   * @returns Item or undefined if the item was not found.
+   * @param useGlobalFilter - Indicates whether the global filter must be applied. False by default.
+   * @returns Item.
    */
-  public async getItem(id: string): Promise<Result<IItem>> {
-    await this.initialize()
+  public async getItem(id: string, useGlobalFilter = false): Promise<Result<IItem>> {
+    const itemsResult = await this.getItems([id], useGlobalFilter)
 
-    const item = this.items.find(i => i.id === id)
-
-    if (item == null) {
+    if (!itemsResult.success || itemsResult.value.length === 0) {
       return Result.fail(
         FailureType.error,
         'ItemService.getItem()',
@@ -103,21 +99,69 @@ export class ItemService {
       )
     }
 
-    return Result.ok(item)
+    return Result.ok(itemsResult.value[0])
+  }
+
+  /**
+   * Gets item categories.
+   * @returns Item categories.
+   */
+  public async getItemCategories(): Promise<string[]> {
+    await this.initialize()
+
+    return this.itemCategories
+  }
+
+  /**
+   * Gets items. Updates the prices if the cache has expired.
+   * @param ids - Item IDs.
+   * @param useGlobalFilter - Indicates whether the global filter must be applied. False by default.
+   * @returns Items.
+   */
+  public async getItems(ids: string[], useGlobalFilter = false): Promise<Result<IItem[]>> {
+    await this.initialize()
+
+    let items: IItem[] = []
+
+    if (useGlobalFilter) {
+      items = this.findItems(ids, this.filteredItems)
+    } else {
+      items = this.findItems(ids, this.items)
+    }
+
+    if (items.length < ids.length && !useGlobalFilter) {
+      const notFoundItemIds = ids.filter(id => !items.some(i => i.id === id))
+      return Result.fail(
+        FailureType.error,
+        'ItemService.getItems()',
+        i18n.t('message.itemsNotFound', { ids: `${notFoundItemIds.join('", "')}` })
+      )
+    }
+
+    return Result.ok(items)
   }
 
   /**
    * Gets items of a specified category. Updates the prices if its cache has expired.
-   * @param id - ID of the category of the items.
-   * @returns Items
+   * @param categoryIds - Category IDs.
+   * @param useGlobalFilter - Indicates whether the global filter must be applied. False by default.
    */
-  public async getItemsOfCategory(id: string): Promise<Result<IItem[]>> {
+  public async getItemsOfCategories(categoryIds: string[], useGlobalFilter = false): Promise<Result<IItem[]>> {
     await this.initialize()
 
-    const items = this.items.filter(i => i.categoryId === id)
+    let items: IItem[]
 
-    if (items.length === 0) {
-      return Result.fail(FailureType.error, 'ItemService.getByCategory', i18n.t('message.itemsOfCategoryNotFound', { id }))
+    if (useGlobalFilter) {
+      items = this.filteredItems.filter(i => categoryIds.some(id => id === i.categoryId))
+    } else {
+      items = this.items.filter(i => categoryIds.some(id => id === i.categoryId))
+    }
+
+    if (items.length === 0 && !useGlobalFilter) {
+      return Result.fail(
+        FailureType.error,
+        'ItemService.getItemsOfCategories',
+        i18n.t('message.itemsOfCategoriesNotFound', { ids: `${categoryIds.join('", "')}` }))
     }
 
     return Result.ok(items)
@@ -138,19 +182,6 @@ export class ItemService {
   }
 
   /**
-   * Gets the preset of an item.
-   * @param id - ID of the item for which the preset must be found.
-   * @returns Preset.
-   */
-  public async getPreset(id: string): Promise<IInventoryItem | undefined> {
-    await this.initialize()
-
-    const preset = this.presets.find(p => p.itemId === id)
-
-    return preset
-  }
-
-  /**
    * Initializes the data used by the service.
    */
   public async initialize(): Promise<void> {
@@ -164,11 +195,10 @@ export class ItemService {
   }
 
   /**
-   * Fetchs item categories.
-   * @param itemFetcherService - Item fetcher service.
+   * Fetches item categories.
    */
-  private async fetchItemCategories(itemFetcherService: ItemFetcherService) {
-    const itemCategoriesResult = await itemFetcherService.fetchItemCategories()
+  private async fetchItemCategories() {
+    const itemCategoriesResult = await Services.get(ItemFetcherService).fetchItemCategories()
 
     if (!itemCategoriesResult.success) {
       Services.get(NotificationService).notify(NotificationType.error, itemCategoriesResult.failureMessage, true)
@@ -180,11 +210,11 @@ export class ItemService {
   }
 
   /**
-   * Fetchs items.
+   * Fetches items.
    * @param itemFetcherService - Item fetcher service.
    */
-  private async fetchItems(itemFetcherService: ItemFetcherService) {
-    const itemsResult = await itemFetcherService.fetchItems()
+  private async fetchItems() {
+    const itemsResult = await Services.get(ItemFetcherService).fetchItems()
 
     if (!itemsResult.success) {
       Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage, true)
@@ -203,36 +233,10 @@ export class ItemService {
   private async fetchPrices() {
     /* istanbul ignore else */
     if (!this.isFetchingPrices) {
-      this.pricesFetchingPromise = new Promise((resolve) => {
-        this.isFetchingPrices = true
-        const itemFetcherService = Services.get(ItemFetcherService)
-
-        itemFetcherService.fetchPrices()
-          .then(async (pricesResult) => this.updateItemsPrices(pricesResult))
-          .finally(() => {
-            this.isFetchingPrices = false
-            resolve()
-          })
-      })
+      this.pricesFetchingPromise = this.startPricesFetching()
     }
 
     await this.pricesFetchingPromise
-  }
-
-  /**
-   * Fetchs presets.
-   * @param itemFetcherService - Item fetcher service.
-   */
-  private async fetchPresets(itemFetcherService: ItemFetcherService) {
-    const presetsResult = await itemFetcherService.fetchPresets()
-
-    if (!presetsResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, presetsResult.failureMessage, true)
-
-      return
-    }
-
-    this.presets = presetsResult.value
   }
 
   /**
@@ -243,26 +247,31 @@ export class ItemService {
   private async fetchStaticData(): Promise<void> {
     /* istanbul ignore else */
     if (!this.isFetchingStaticData) {
-      this.staticDataFetchingPromise = new Promise<void>((resolve) => {
-        this.isFetchingStaticData = true
-        const itemFetcherService = Services.get(ItemFetcherService)
-
-        this.fetchItemCategories(itemFetcherService)
-          .then(async () => {
-            await Promise.allSettled([
-              this.fetchItems(itemFetcherService),
-              this.fetchPresets(itemFetcherService)
-            ])
-            this.hasStaticDataCached = true
-          })
-          .finally(() => {
-            this.isFetchingStaticData = false
-            resolve()
-          })
-      })
+      this.staticDataFetchingPromise = this.startStaticDataFetching()
     }
 
     await this.staticDataFetchingPromise
+  }
+
+  /**
+   * Finds items in a list of items.
+   * @param ids - Ids of the items to find.
+   * @param items - List of items in which the items must be found.
+   * @returns Found items.
+   */
+  private findItems(ids: string[], items: IItem[]) {
+    const foundItems: IItem[] = []
+
+    for (const id of ids) {
+      for (const item of items) {
+        if (item.id === id) {
+          foundItems.push(item)
+          continue
+        }
+      }
+    }
+
+    return foundItems
   }
 
   /**
@@ -270,10 +279,46 @@ export class ItemService {
    * @returns `true` if the cache of the item has not expired yet; otherwise `false`.
    */
   private hasValidCache(): boolean {
-    const duration = (new Date().getTime() - this.lastPricesFetchDate.getTime()) / 1000 // In seconds
+    const lastPricesFetchDate = this.lastPricesFetchDate ?? new Date(1)
+    const duration = (new Date().getTime() - lastPricesFetchDate.getTime()) / 1000 // In seconds
     const cacheDuration = Services.get(WebsiteConfigurationService).configuration.cacheDuration
 
     return duration <= cacheDuration
+  }
+
+  /**
+   * Starts prices fetching.
+   */
+  private async startPricesFetching(): Promise<void> {
+    this.isFetchingPrices = true
+    const itemFetcherService = Services.get(ItemFetcherService)
+
+    const pricesResult = await itemFetcherService.fetchPrices()
+    this.updateItemsPrices(pricesResult)
+    this.updateFilteredItems() // Items and prices needed to filter
+
+    this.isFetchingPrices = false
+  }
+
+  /**
+   * Starts static data fetching.
+   */
+  private async startStaticDataFetching(): Promise<void> {
+    const presetsService = Services.get(PresetService)
+
+    this.isFetchingStaticData = true
+
+    await this.fetchItemCategories()
+    await Promise.allSettled([
+      this.fetchItems(),
+      presetsService.fetchPresets()
+    ])
+
+    this.hasStaticDataCached = true
+
+    await presetsService.updatePresetProperties(this.items)
+
+    this.isFetchingStaticData = false
   }
 
   /**
@@ -297,6 +342,13 @@ export class ItemService {
         }
       }
     }
+  }
+
+  /**
+   * Updates the filtered items by applying the global filter to the items.
+   */
+  private updateFilteredItems() {
+    this.filteredItems = this.items.filter(i => Services.get(GlobalFilterService).isMatchingFilter(i))
   }
 
   /**
