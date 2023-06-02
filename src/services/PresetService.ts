@@ -82,7 +82,11 @@ export class PresetService {
     const isModSlot = PathUtils.checkIsModSlotPath(path)
 
     if (isModSlot) {
-      return presetModSlot
+      if (presetModSlot.item?.itemId == itemId) {
+        return presetModSlot
+      }
+
+      return undefined
     }
 
     let pathContentElement = ''

@@ -365,6 +365,30 @@ describe('getPresetModSlotContainingItem', () => {
     expect(result).toStrictEqual(expected)
   })
 
+  it('should return undefined when the item is different from the preset modslot item', async () => {
+    // Arrange
+    useItemServiceMock()
+    useItemFetcherServiceMock()
+
+    const service = new PresetService()
+    await service.fetchPresets()
+
+    const item = {
+      content: [],
+      ignorePrice: false,
+      itemId: '5a7d9122159bd4001438dbf4', // Glock Dead Ringer Snake Eye rear sight
+      modSlots: [],
+      quantity: 1
+    } as IInventoryItem
+    const path = 'build:1234-4568-9011/slot:holster_0/item:5b439b1f86f7744fd8059cbe/mod:mod_reciever/item:5b1faa0f5acfc40dc528aeb5/mod:mod_sight_rear/item:5a7d9122159bd4001438dbf4'
+
+    // Act
+    const result = await service.getPresetModSlotContainingItem(item.itemId, path)
+
+    // Assert
+    expect(result).toBeUndefined()
+  })
+
   it('should return undefined when the preset does not contain the mod slot containing the item', async () => {
     // Arrange
     useItemServiceMock()
@@ -389,7 +413,10 @@ describe('getPresetModSlotContainingItem', () => {
     expect(result).toBeUndefined()
   })
 
-  it('should return undefined when the preset mod slot does not contain an item', async () => {
+  it.each([
+    ['build:0754d5a9-f29d-d68e-ed23-81a61a2b7af1/slot:onSling_0/item:5ddbbeac582ed30a6134e577/mod:mod_magazine/item:5cf8f3b0d7f00c00217872ef'],
+    ['build:0754d5a9-f29d-d68e-ed23-81a61a2b7af1/slot:onSling_0/item:5ddbbeac582ed30a6134e577/mod:mod_magazine/item:5cf8f3b0d7f00c00217872ef/content:0_1/item:5d6e67fba4b9361bc73bc779']
+  ])('should return undefined when the preset mod slot does not contain any item', async (path: string) => {
     // Arrange
     useItemServiceMock()
 
@@ -424,7 +451,7 @@ describe('getPresetModSlotContainingItem', () => {
       modSlots: [],
       quantity: 20
     } as IInventoryItem
-    const path = 'build:0754d5a9-f29d-d68e-ed23-81a61a2b7af1/slot:onSling_0/item:5ddbbeac582ed30a6134e577/mod:mod_magazine/item:5cf8f3b0d7f00c00217872ef/content:0_1/item:5d6e67fba4b9361bc73bc779'
+    //const path = 'build:0754d5a9-f29d-d68e-ed23-81a61a2b7af1/slot:onSling_0/item:5ddbbeac582ed30a6134e577/mod:mod_magazine/item:5cf8f3b0d7f00c00217872ef/content:0_1/item:5d6e67fba4b9361bc73bc779'
 
     // Act
     const result = await service.getPresetModSlotContainingItem(item.itemId, path)
