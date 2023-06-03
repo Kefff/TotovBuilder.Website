@@ -129,6 +129,10 @@ export default defineComponent({
     watch(() => route.params, () => initialize())
 
     onMounted(() => {
+      // Scrolling to the top in case we were at the bottom of the page in the previous screen.
+      // This avoids having the screen look like it shakes when the inventory slots are being expanded after loading
+      window.scrollTo(0, 0)
+
       compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.mod, onModCompatibilityRequest)
@@ -263,7 +267,7 @@ export default defineComponent({
      */
     function getCollapseStatuses() {
       for (const inventorySlot of build.value.inventorySlots) {
-        collapseStatuses.value.push(inventorySlot.items.filter(i => i != null).length === 0)
+        collapseStatuses.value.push(!inventorySlot.items.some(i => i != null))
       }
     }
 
