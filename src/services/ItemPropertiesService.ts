@@ -22,7 +22,7 @@ export class ItemPropertiesService {
    * @returns true if the item can contain items; otherwise false.
    */
   public canContain(item: IItem): boolean {
-    return (this.isContainer(item) || this.isMagazine(item) || this.isVest(item))
+    return (this.isBackpack(item) || this.isContainer(item) || this.isMagazine(item) || this.isVest(item))
       && (item as IContainer).capacity > 0
   }
 
@@ -72,12 +72,21 @@ export class ItemPropertiesService {
   }
 
   /**
+   * Indicates whether an item is a backpack.
+   * @param item - Item.
+   * @returns true if the item is a backpack; otherwise false.
+   */
+  public isBackpack(item: IItem): boolean {
+    return item.categoryId === 'backpack'
+  }
+
+  /**
    * Indicates whether an item is a container.
    * @param item - Item.
    * @returns true if the item is a container; otherwise false.
    */
   public isContainer(item: IItem): boolean {
-    return item.categoryId === 'backpack' || item.categoryId === 'securedContainer' || item.categoryId === 'container'
+    return item.categoryId === 'securedContainer' || item.categoryId === 'container'
   }
 
   /**
@@ -150,7 +159,7 @@ export class ItemPropertiesService {
 
   /**
    * Indicates whether an item is a ranged weapon.
-   * @param item - Item
+   * @param item - Item.
    * @returns true if the item is a ranged weapon; otherwise false.
    */
   public isRangedWeapon(item: IItem): boolean {
@@ -159,7 +168,7 @@ export class ItemPropertiesService {
 
   /**
    * Indicates whether an item is a ranged weapon mod.
-   * @param item - Item
+   * @param item - Item.
    * @returns true if the item is a ranged weapon mod; otherwise false.
    */
   public isRangedWeaponMod(item: IItem): boolean {
@@ -173,5 +182,14 @@ export class ItemPropertiesService {
    */
   public isVest(item: IItem): boolean {
     return item.categoryId === 'vest'
+  }
+
+  /**
+   * Indicates whether an item is wearable.
+   * @param item - Item.
+   * @returns true if the item is wearable; otherwise false.
+   */
+  public isWearable(item: IItem): boolean {
+    return this.canHaveArmor(item) || this.isBackpack(item)
   }
 }

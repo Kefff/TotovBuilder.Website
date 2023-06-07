@@ -1,9 +1,10 @@
 import { IItem } from './IItem'
+import { IWearable } from './IWearable'
 
 /**
  * Provides the functionalities of an armor.
  */
-export interface IArmor extends IItem {
+export interface IArmor extends IItem, IWearable {
   /**
    * Armor class.
    */
@@ -20,27 +21,12 @@ export interface IArmor extends IItem {
   durability: number
 
   /**
-   * Modifier added to the weapon ergonomics in percentage.
-   */
-  ergonomicsPercentageModifier: number
-
-  /**
    * Material which composes the armor.
    */
   material: string
 
   /**
-   * Modifier added to the character movement speed in percentage.
-   */
-  movementSpeedPercentageModifier: number
-
-  /**
    * Chance of ricochet.
    */
   ricochetChance: string
-
-  /**
-   * Modifier added to the character turning speed in percentage.
-   */
-  turningSpeedPercentageModifier: number
 }

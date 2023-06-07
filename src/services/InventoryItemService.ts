@@ -94,7 +94,7 @@ export class InventoryItemService {
       return Result.failFrom(itemResult)
     }
 
-    if (!Services.get(ItemPropertiesService).canHaveArmor(itemResult.value)) {
+    if (!Services.get(ItemPropertiesService).isWearable(itemResult.value)) {
       return Result.ok({
         ergonomicsPercentageModifier: 0,
         ergonomicsPercentageModifierWithMods: 0

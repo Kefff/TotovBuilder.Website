@@ -254,6 +254,19 @@ describe('getErgonomicsPercentageModifier()', () => {
         ergonomicsPercentageModifier: -0.04,
         ergonomicsPercentageModifierWithMods: -0.13
       } as IErgonomicsPercentageModifier
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: '5ab8ebf186f7742d8b372e80', // SSO Attack 2 raid backpack
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        ergonomicsPercentageModifier: -0.07,
+        ergonomicsPercentageModifierWithMods: -0.07
+      } as IErgonomicsPercentageModifier
     ]
   ])(
     'should get the ergonomics percentage modifier of an inventory item',

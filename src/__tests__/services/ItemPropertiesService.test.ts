@@ -1,5 +1,6 @@
 import { IArmor } from '../../models/item/IArmor'
 import { IArmorMod } from '../../models/item/IArmorMod'
+import { IBackpack } from '../../models/item/IBackpack'
 import { IContainer } from '../../models/item/IContainer'
 import { IHeadwear } from '../../models/item/IHeadwear'
 import { IItem } from '../../models/item/IItem'
@@ -34,9 +35,11 @@ describe('canBeModded()', () => {
 
 describe('canContain()', () => {
   it.each([
+    [{ id: '12345', categoryId: 'backpack', capacity: 18 } as IBackpack, true],
     [{ id: '12345', categoryId: 'container', capacity: 60 } as IContainer, true],
     [{ id: '12345', categoryId: 'magazine', capacity: 30 } as IMagazine, true],
     [{ id: '12345', categoryId: 'vest', capacity: 12 } as IVest, true],
+    [{ id: '12345', categoryId: 'backpack', capacity: 0 } as IBackpack, false],
     [{ id: '12345', categoryId: 'container', capacity: 0 } as IContainer, false],
     [{ id: '12345', categoryId: 'magazine', capacity: 0 } as IMagazine, false],
     [{ id: '12345', categoryId: 'vest', capacity: 0 } as IVest, false],
@@ -231,7 +234,7 @@ describe('isContainer()', () => {
     ['armband', false],
     ['armor', false],
     ['armorMod', false],
-    ['backpack', true],
+    ['backpack', false],
     ['container', true],
     ['currency', false],
     ['eyewear', false],
