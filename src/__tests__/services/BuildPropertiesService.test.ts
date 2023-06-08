@@ -1234,7 +1234,7 @@ describe('getErgonomics()', () => {
 
 describe('getErgonomicsPercentageModifier()', () => {
   it.each([
-    [build1, -0.07],
+    [build1, -0.09],
     [build2, 0]
   ])(
     'should get the ergonomics percentage modifier of a build',
@@ -1697,7 +1697,7 @@ describe('getRecoil()', () => {
 
 describe('getWeight()', () => {
   it.each([
-    [build1, 24.148],
+    [build1, 24.188],
     [build2, 3.562]
   ])(
     'should get the weight of a build',

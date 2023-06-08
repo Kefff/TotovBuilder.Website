@@ -57,7 +57,10 @@ export class InventorySlotPropertiesService {
    * @returns Ergonomics percentage modifier.
    */
   public async getErgonomicsPercentageModifier(inventorySlot: IInventorySlot): Promise<Result<number> | undefined> {
-    if (inventorySlot.typeId !== 'bodyArmor' && inventorySlot.typeId !== 'headwear' && inventorySlot.typeId !== 'tacticalRig') {
+    if (inventorySlot.typeId !== 'backpack'
+      && inventorySlot.typeId !== 'bodyArmor'
+      && inventorySlot.typeId !== 'headwear'
+      && inventorySlot.typeId !== 'tacticalRig') {
       return undefined
     }
 
@@ -69,9 +72,7 @@ export class InventorySlotPropertiesService {
         continue
       }
 
-      const ergonomicsPercentageModifierResult = await inventoryItemService.getErgonomicsPercentageModifier(
-        inventoryItem
-      )
+      const ergonomicsPercentageModifierResult = await inventoryItemService.getErgonomicsPercentageModifier(inventoryItem)
 
       if (!ergonomicsPercentageModifierResult.success) {
         return Result.failFrom(ergonomicsPercentageModifierResult)

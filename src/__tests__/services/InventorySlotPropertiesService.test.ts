@@ -191,20 +191,20 @@ const inventorySlot2: IInventorySlot = {
 }
 
 const inventorySlot3: IInventorySlot = {
-  typeId: 'backpack',
+  typeId: 'securedContainer',
   items: [
     {
       content: [
         {
           content: [],
           ignorePrice: false,
-          itemId: '5cc70102e4a949035e43ba74', // FN P90 upper receiver
+          itemId: '5a6b59a08dc32e000b452fb7', // Glock SAI 9x19 thread protector
           modSlots: [],
           quantity: 1
         }
       ],
       ignorePrice: false,
-      itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
+      itemId: '544a11ac4bdc2d470e8b456a', // Secure container Alpha
       modSlots: [],
       quantity: 1
     }
@@ -431,10 +431,20 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: null,
-          value: 26356,
-          valueInMainCurrency: 26356
+          value: 1026292,
+          valueInMainCurrency: 1026292
         },
         pricesWithContent: [
+          {
+            barterItems: [],
+            currencyName: 'EUR',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: null,
+            value: 12,
+            valueInMainCurrency: 1380
+          },
           {
             barterItems: [],
             currencyName: 'USD',
@@ -442,18 +452,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: null,
-            value: 26,
-            valueInMainCurrency: 2912
-          },
-          {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: null,
-            value: 23444,
-            valueInMainCurrency: 23444
+            value: 9151,
+            valueInMainCurrency: 1024912
           }
         ],
         unitPrice: {

@@ -2565,9 +2565,9 @@ describe('getWeight()', () => {
     [
       inventoryItem,
       {
-        weight: 0.96,
-        weightWithContent: 3.176,
-        unitWeight: 0.96
+        weight: 1,
+        weightWithContent: 3.216,
+        unitWeight: 1
       } as IWeight
     ],
     [
