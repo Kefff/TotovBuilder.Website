@@ -1,6 +1,7 @@
 User-Agent: *
 Allow: /
 Disallow: /s/
+Disallow: /build
 Disallow: /build/
 Disallow: /builds
 

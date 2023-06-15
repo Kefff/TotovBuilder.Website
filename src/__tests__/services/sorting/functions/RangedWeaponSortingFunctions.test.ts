@@ -1,7 +1,8 @@
 import { IRangedWeapon } from '../../../../models/item/IRangedWeapon'
+import { SortingService } from '../../../../services/sorting/SortingService'
 import { RangedWeaponSortingFunctions } from '../../../../services/sorting/functions/RangedWeaponSortingFunctions'
 
-describe('setSortingProperty()', () => {
+describe('comparisonFunction()', () => {
   it.each([
     ['caliber', false],
     ['caliber', true],
@@ -13,21 +14,9 @@ describe('setSortingProperty()', () => {
     ['horizontalRecoil', true],
     ['verticalRecoil', false],
     ['verticalRecoil', true]
-  ])('should sort by a property', async (property: string, isPreset: boolean) => {
+  ])('should compare by a property', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
-      caliber: 'a',
-      categoryId: 'cat',
-      ergonomics: 1,
-      fireRate: 1,
-      horizontalRecoil: 1,
-      presetErgonomics: isPreset ? 1 : undefined,
-      presetHorizontalRecoil: isPreset ? 1 : undefined,
-      presetVerticalRecoil: isPreset ? 1 : undefined,
-      verticalRecoil: 1
-    } as IRangedWeapon
-
-    const item2 = {
       caliber: 'b',
       categoryId: 'cat',
       ergonomics: 2,
@@ -39,14 +28,25 @@ describe('setSortingProperty()', () => {
       verticalRecoil: 2
     } as IRangedWeapon
 
-    const sortingFunctions = new RangedWeaponSortingFunctions()
+    const item2 = {
+      caliber: 'a',
+      categoryId: 'cat',
+      ergonomics: 1,
+      fireRate: 1,
+      horizontalRecoil: 1,
+      presetErgonomics: isPreset ? 1 : undefined,
+      presetHorizontalRecoil: isPreset ? 1 : undefined,
+      presetVerticalRecoil: isPreset ? 1 : undefined,
+      verticalRecoil: 1
+    } as IRangedWeapon
+
+    const sortingService = new SortingService(RangedWeaponSortingFunctions)
+    const updatedSortingDataResult = sortingService.setSortingProperty(property)
 
     // Act
-    const propertyValue1 = await sortingFunctions.getValueToCompareFunctions[property](item1)
-    const propertyValue2 = await sortingFunctions.getValueToCompareFunctions[property](item2)
-    const sortingValue = sortingFunctions.comparisonFunctions[property](item1, propertyValue1, item2, propertyValue2)
+    const sortedItems = await SortingService.sort([item1, item2], updatedSortingDataResult.value)
 
     // Assert
-    expect(sortingValue).toBe(-1)
+    expect(sortedItems).toStrictEqual([item2, item1])
   })
 })

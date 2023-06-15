@@ -1,10 +1,10 @@
 import { computed, defineComponent, PropType } from 'vue'
 import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
 import SortingData from '../../../models/utils/SortingData'
-import { VestSortingFunctions } from '../../../services/sorting/functions/VestSortingFunctions'
-import { SortingService } from '../../../services/sorting/SortingService'
 import ArmorOptionHeader from '../armor/ArmorOptionHeaderComponent.vue'
 import ContainerOptionHeader from '../container/ContainerOptionHeaderComponent.vue'
+import { IVest } from '../../../models/item/IVest'
+import { VestSortingFunctions } from '../../../services/sorting/functions/VestSortingFunctions'
 
 export default defineComponent({
   components: {
@@ -14,7 +14,7 @@ export default defineComponent({
   },
   props: {
     modelValue: {
-      type: Object as PropType<SortingData>,
+      type: Object as PropType<SortingData<IVest>>,
       required: true
     }
   },
@@ -22,10 +22,12 @@ export default defineComponent({
   setup: (props, { emit }) => {
     const sortingData = computed({
       get: () => props.modelValue,
-      set: (value: SortingData) => emit('update:modelValue', value)
+      set: (value: SortingData<IVest>) => emit('update:modelValue', value)
     })
-    const sortingService = new SortingService(new VestSortingFunctions())
 
-    return { sortingData, sortingService }
+    return {
+      sortingData,
+      sortingFunctions: VestSortingFunctions
+    }
   }
 })

@@ -6,7 +6,7 @@
         caption-resource="caption.fleshDamage"
         icon="heart-broken"
         property="fleshDamage"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -17,7 +17,7 @@
         caption-resource="caption.penetrationPower"
         icon="bolt"
         property="penetrationPower"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -31,7 +31,7 @@
         caption-resource="caption.fragmentationChance"
         icon="viruses"
         property="fragmentationChancePercentage"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -42,7 +42,7 @@
         caption-resource="caption.recoil"
         icon="arrows-alt"
         property="recoilPercentageModifier"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -53,7 +53,7 @@
         caption-resource="caption.accuracy"
         icon="bullseye"
         property="accuracyPercentageModifier"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>

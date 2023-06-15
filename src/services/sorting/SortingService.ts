@@ -1,18 +1,25 @@
 import { IItem } from '../../models/item/IItem'
 import vueI18n from '../../plugins/vueI18n'
 import Result, { FailureType } from '../../utils/Result'
-import SortingData from '../../models/utils/SortingData'
-import { ISortingFunctions } from './functions/ISortingFunctions'
+import SortingData, { SortingOrder } from '../../models/utils/SortingData'
+import { ISortingFunctionList } from './functions/ISortingFunctionList'
+import StringUtils from '../../utils/StringUtils'
 
 /**
  * Represents a service responsible for sorting items.
  */
-export class SortingService {
+export class SortingService<TItem extends IItem> {
+  /**
+   * Sorting data.
+   * By default, sorts by name.
+   */
+  private sortingData = new SortingData<TItem>()
+
   /**
    * Initializes a new instance of the SortingService class.
    * @param sortingFunctions - Sorting functions to use.
    */
-  constructor(private sortingFunctions: ISortingFunctions) { }
+  constructor(private sortingFunctions: ISortingFunctionList<TItem>) { }
 
   /**
    * Sorts a collection of items according to sorting data.
@@ -20,50 +27,114 @@ export class SortingService {
    * @param items - Collection of items.
    * @param sortingData - Sorting data.
    */
-  public static async sort(items: IItem[], sortingData: SortingData): Promise<IItem[]> {
-    const itemsWithValueToSort = new Array<{ item: IItem, valueToCompare: string | number }>(items.length)
-
-    for (let i = 0; i < items.length; i++) {
-      const valueToCompare = await sortingData.getValueToCompareFunction(items[i])
-      itemsWithValueToSort[i] = {
-        item: items[i],
-        valueToCompare
-      }
-    }
-
-    itemsWithValueToSort.sort((iwvts1, iwvts2) => sortingData.comparisonFunction(iwvts1.item, iwvts1.valueToCompare, iwvts2.item, iwvts2.valueToCompare))
-    const result = itemsWithValueToSort.map(iwvts => iwvts.item)
+  public static async sort<TItem extends IItem>(items: TItem[], sortingData: SortingData<TItem>): Promise<TItem[]> {
+    const itemsWithSortingValue = await Promise.all(items.map(i => SortingService.getItemAndSortingValue(i, sortingData)))
+    itemsWithSortingValue.sort((iwsv1, iwsv2) => sortingData.sortingFunction.comparisonFunction(iwsv1.item, iwsv1.value, iwsv2.item, iwsv2.value))
+    const result = itemsWithSortingValue.map(iwsv1 => iwsv1.item)
 
     return result
   }
 
   /**
+   * Gets an item and its sorting value.
+   * @param item - Item.
+   * @returns Item and its sorting value.
+   */
+  private static async getItemAndSortingValue<TItem extends IItem>(item: TItem, sortingData: SortingData<TItem>): Promise<{ item: TItem, value: number | string }> {
+    const value = await sortingData.sortingFunction.comparisonValueObtentionFunction(item)
+
+    return { item, value }
+  }
+
+  /**
    * Updates sorting data by setting the sorting property, the new sorting order and the associated comparison function.
-   * @param sortingData - Sorting data to update.
-   * @param newSortingProperty - New sorting property.
+   * @param property - Property that will be used to sort.
    * @returns Updated sorting data.
    */
-  public setSortingProperty(sortingData: SortingData, newSortingProperty: string): Result<SortingData> {
-    const newSortingData = new SortingData()
-    newSortingData.property = newSortingProperty
+  public setSortingProperty(property: string): Result<SortingData<TItem>> {
+    const sortingFunction = this.sortingFunctions[property]
 
-    const getValueToCompareFunction = this.sortingFunctions.getValueToCompareFunctions[newSortingProperty]
-    const comparisonFunction = this.sortingFunctions.comparisonFunctions[newSortingProperty]
-
-    if (comparisonFunction != null && getValueToCompareFunction != null) {
-      if (sortingData.property === newSortingProperty) {
-        newSortingData.order = -sortingData.order
-      }
-
-      newSortingData.comparisonFunction = (item1: IItem, item1ValueToCompare: string | number, item2: IItem, item2ValueToCompare: string | number) => comparisonFunction(item1, item1ValueToCompare, item2, item2ValueToCompare) * newSortingData.order
-      newSortingData.getValueToCompareFunction = getValueToCompareFunction
-
-      return Result.ok(newSortingData)
+    if (sortingFunction == null) {
+      return Result.fail(
+        FailureType.error,
+        'OptionSortingService.getSortingFunction()',
+        vueI18n.t('message.sortingFunctionNotFound', { property: property }))
     }
 
-    return Result.fail(
-      FailureType.error,
-      'OptionSortingService.getSortingFunction()',
-      vueI18n.t('message.sortingFunctionNotFound', { property: newSortingProperty }))
+    const order = this.sortingData.property === property ? -this.sortingData.order : SortingOrder.asc
+
+    this.sortingData = new SortingData<TItem>()
+    this.sortingData.property = property
+    this.sortingData.order = order
+    this.sortingData.sortingFunction.comparisonFunction = (item1: TItem, item1ValueToCompare: string | number, item2: TItem, item2ValueToCompare: string | number) => {
+      return sortingFunction.comparisonFunction(item1, item1ValueToCompare, item2, item2ValueToCompare) * this.sortingData.order
+    }
+    this.sortingData.sortingFunction.comparisonValueObtentionFunction = sortingFunction.comparisonValueObtentionFunction
+
+    return Result.ok(this.sortingData)
   }
+}
+
+/**
+ * Compare items by category.
+ * @param item1 - First item.
+ * @param item2 - Second item.
+ * @returns Comparison value.
+ */
+export function compareByCategory(item1: IItem, item2: IItem): number {
+  return StringUtils.compare(item1.categoryId, item2.categoryId)
+}
+
+/**
+ * Compare items by category and name.
+ * @param item1 - First item.
+ * @param item2 - Second item.
+ * @returns Comparison value.
+ */
+export function compareByName(item1: IItem, item2: IItem): number {
+  return StringUtils.compare(item1.name, item2.name)
+}
+
+/**
+* Compares items by a a property of type number.
+* @param item1 - First item.
+* @param item1ValueToCompare - Number value obtained from the first item used to compare.
+* @param item2 - Second item.
+* @param item2ValueToCompare - Number value obtained from the first item used to compare.
+* @returns Comparison value.
+*/
+export function compareByNumber(item1: IItem, item1ValueToCompare: string | number, item2: IItem, item2ValueToCompare: string | number): number {
+  let comparisonValue = compareByCategory(item1, item2)
+
+  if (comparisonValue === 0) {
+    comparisonValue = (item1ValueToCompare as number ?? 0) - (item2ValueToCompare as number ?? 0)
+  }
+
+  if (comparisonValue === 0) {
+    comparisonValue = compareByName(item1, item2)
+  }
+
+  return comparisonValue
+}
+
+/**
+ * Compares items by a property of type string.
+ * @param item1 - First item.
+ * @param item1ValueToCompare - String value obtained from the first item used to compare.
+ * @param item2 - Second item.
+ * @param item2ValueToCompare - String value obtained from the second item used to compare.
+ * @returns Comparison value.
+ */
+export function compareByString(item1: IItem, item1ValueToCompare: string | number, item2: IItem, item2ValueToCompare: string | number): number {
+  let comparisonValue = compareByCategory(item1, item2)
+
+  if (comparisonValue === 0) {
+    comparisonValue = StringUtils.compare(item1ValueToCompare as string, item2ValueToCompare as string)
+  }
+
+  if (comparisonValue === 0) {
+    comparisonValue = compareByName(item1, item2)
+  }
+
+  return comparisonValue
 }

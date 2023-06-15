@@ -6,7 +6,7 @@
         caption-resource="caption.blindnessProtection"
         icon="low-vision"
         property="blindnessProtectionPercentage"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>

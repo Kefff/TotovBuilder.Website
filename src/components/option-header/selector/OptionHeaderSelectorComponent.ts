@@ -14,6 +14,7 @@ import ModOptionHeader from '../mod/ModOptionHeaderComponent.vue'
 import RangedWeaponModOptionHeader from '../ranged-weapon-mod/RangedWeaponModOptionHeaderComponent.vue'
 import RangedWeaponOptionHeader from '../ranged-weapon/RangedWeaponOptionHeaderComponent.vue'
 import VestOptionHeader from '../vest/VestOptionHeaderComponent.vue'
+import { IItem } from '../../../models/item/IItem'
 
 export default defineComponent({
   components: {
@@ -42,7 +43,7 @@ export default defineComponent({
       required: true
     },
     sortingData: {
-      type: Object as PropType<SortingData>,
+      type: Object as PropType<SortingData<IItem>>,
       required: true
     }
   },
@@ -57,7 +58,7 @@ export default defineComponent({
     })
     const updatableSortingData = computed({
       get: () => props.sortingData,
-      set: (value: SortingData) => emit('update:sortingData', value)
+      set: (value: SortingData<IItem>) => emit('update:sortingData', value)
     })
 
     return { updatableFilter, updatableSortingData }

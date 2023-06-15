@@ -5,12 +5,12 @@
         v-model="sortingData"
         caption-resource="caption.ergonomics"
         icon="hand-paper"
-        property="ergonomicsModifier"
+        property="ergonomicsPercentageModifier"
         :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
 </template>
 
-<script lang="ts" src="./ModOptionHeaderComponent.ts" />
-<style scoped lang="css" src="./ModOptionHeaderComponent.css" />
+<script lang="ts" src="./WearableOptionHeaderComponent.ts" />
+<style scoped lang="css" src="./WearableOptionHeaderComponent.css" />

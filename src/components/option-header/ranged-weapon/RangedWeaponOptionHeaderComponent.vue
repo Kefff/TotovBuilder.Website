@@ -6,7 +6,7 @@
         caption-resource="caption.caliber"
         custom-icon="caliber"
         property="caliber"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -17,7 +17,7 @@
         caption-resource="caption.fireRate"
         custom-icon="fire-rate"
         property="fireRate"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -28,7 +28,7 @@
         caption-resource="caption.ergonomics"
         icon="hand-paper"
         property="ergonomics"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -39,7 +39,7 @@
         caption-resource="caption.verticalRecoil"
         icon="arrows-alt-v"
         property="verticalRecoil"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -50,7 +50,7 @@
         caption-resource="caption.horizontalRecoil"
         icon="arrows-alt-h"
         property="horizontalRecoil"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>

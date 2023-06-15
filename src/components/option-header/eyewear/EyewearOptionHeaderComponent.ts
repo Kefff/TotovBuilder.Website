@@ -2,7 +2,7 @@ import { computed, defineComponent, PropType } from 'vue'
 import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
 import SortingData from '../../../models/utils/SortingData'
 import { EyewearSortingFunctions } from '../../../services/sorting/functions/EyewearSortingFunctions'
-import { SortingService } from '../../../services/sorting/SortingService'
+import { IEyewear } from '../../../models/item/IEyewear'
 
 export default defineComponent({
   components: {
@@ -10,7 +10,7 @@ export default defineComponent({
   },
   props: {
     modelValue: {
-      type: Object as PropType<SortingData>,
+      type: Object as PropType<SortingData<IEyewear>>,
       required: true
     }
   },
@@ -18,10 +18,12 @@ export default defineComponent({
   setup: (props, { emit }) => {
     const sortingData = computed({
       get: () => props.modelValue,
-      set: (value: SortingData) => emit('update:modelValue', value)
+      set: (value: SortingData<IEyewear>) => emit('update:modelValue', value)
     })
-    const sortingService = new SortingService(new EyewearSortingFunctions())
 
-    return { sortingData, sortingService }
+    return {
+      sortingData,
+      sortingFunctions: EyewearSortingFunctions
+    }
   }
 })

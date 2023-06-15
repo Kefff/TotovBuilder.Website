@@ -15,7 +15,7 @@
           caption-resource="caption.name"
           icon="font"
           property="name"
-          :sorting-service="sortingService"
+          :sorting-functions="sortingFunctions"
         />
       </div>
     </div>
@@ -26,7 +26,7 @@
           caption-resource="caption.price"
           icon="coins"
           property="price"
-          :sorting-service="sortingService"
+          :sorting-functions="sortingFunctions"
         />
       </div>
     </div>

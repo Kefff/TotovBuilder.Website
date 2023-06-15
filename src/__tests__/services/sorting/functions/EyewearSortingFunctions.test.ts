@@ -1,27 +1,27 @@
 import { IEyewear } from '../../../../models/item/IEyewear'
+import { SortingService } from '../../../../services/sorting/SortingService'
 import { EyewearSortingFunctions } from '../../../../services/sorting/functions/EyewearSortingFunctions'
 
-describe('setSortingProperty()', () => {
-  it.each([['blindnessProtectionPercentage']])('should sort by a property', async (property: string) => {
+describe('comparisonFunction()', () => {
+  it.each([['blindnessProtectionPercentage']])('should compare by a property', async (property: string) => {
     // Arrange
     const item1 = {
-      categoryId: 'cat',
-      blindnessProtectionPercentage: 1
-    } as IEyewear
-
-    const item2 = {
       categoryId: 'cat',
       blindnessProtectionPercentage: 2
     } as IEyewear
 
-    const sortingFunctions = new EyewearSortingFunctions()
+    const item2 = {
+      categoryId: 'cat',
+      blindnessProtectionPercentage: 1
+    } as IEyewear
+
+    const sortingService = new SortingService(EyewearSortingFunctions)
+    const updatedSortingDataResult = sortingService.setSortingProperty(property)
 
     // Act
-    const propertyValue1 = await sortingFunctions.getValueToCompareFunctions[property](item1)
-    const propertyValue2 = await sortingFunctions.getValueToCompareFunctions[property](item2)
-    const sortingValue = sortingFunctions.comparisonFunctions[property](item1, propertyValue1, item2, propertyValue2)
+    const sortedItems = await SortingService.sort([item1, item2], updatedSortingDataResult.value)
 
     // Assert
-    expect(sortingValue).toBe(-1)
+    expect(sortedItems).toStrictEqual([item2, item1])
   })
 })

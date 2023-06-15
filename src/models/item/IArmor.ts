@@ -1,10 +1,9 @@
-import { IItem } from './IItem'
 import { IWearable } from './IWearable'
 
 /**
  * Provides the functionalities of an armor.
  */
-export interface IArmor extends IItem, IWearable {
+export interface IArmor extends IWearable {
   /**
    * Armor class.
    */

@@ -6,7 +6,7 @@
         caption-resource="caption.chopDamage"
         custom-icon="chop"
         property="chopDamage"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -17,7 +17,7 @@
         caption-resource="caption.stabDamage"
         custom-icon="stab"
         property="stabDamage"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -28,7 +28,7 @@
         caption-resource="caption.hitRadius"
         icon="dot-circle"
         property="hitRadius"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
