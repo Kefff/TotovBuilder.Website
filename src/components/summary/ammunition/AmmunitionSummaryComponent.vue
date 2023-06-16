@@ -34,14 +34,8 @@
       />
     </div>
   </div>
-  <div
-    v-if="item.armorPenetrations.length > 0 || showEmptyEntries"
-    class="option-entry"
-  >
-    <div
-      v-if="item.armorPenetrations.length > 0"
-      class="penetrated-armor-list"
-    >
+  <div class="option-entry">
+    <div class="penetrated-armor-list">
       <div
         v-for="c of item.armorPenetrations.length"
         :key="c"
@@ -57,10 +51,6 @@
         />
       </div>
     </div>
-    <div
-      v-else
-      class="armor-penetration-placeholder"
-    />
   </div>
   <div
     v-if="item.fragmentationChancePercentage !== 0 || showEmptyEntries"
