@@ -1,6 +1,5 @@
 <template>
   <ArmorStats
-    v-if="item.armorClass > 0"
     :item="item"
     :custom-ergonomics-percentage-modifier="item.presetErgonomicsPercentageModifier"
   />

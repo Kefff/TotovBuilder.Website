@@ -1,18 +1,18 @@
 import { computed, defineComponent, PropType } from 'vue'
 import SortingData from '../../../models/utils/SortingData'
-import ArmorOptionHeader from '../armor/ArmorOptionHeaderComponent.vue'
+import WearableOptionHeader from '../wearable/WearableOptionHeaderComponent.vue'
 import ContainerOptionHeader from '../container/ContainerOptionHeaderComponent.vue'
-import { IVest } from '../../../models/item/IVest'
-import { VestSortingFunctions } from '../../../services/sorting/functions/VestSortingFunctions'
+import { IBackpack } from '../../../models/item/IBackpack'
+import { BackpackSortingFunctions } from '../../../services/sorting/functions/BackpackSortingFunctions'
 
 export default defineComponent({
   components: {
-    ArmorOptionHeader,
-    ContainerOptionHeader
+    ContainerOptionHeader,
+    WearableOptionHeader
   },
   props: {
     modelValue: {
-      type: Object as PropType<SortingData<IVest>>,
+      type: Object as PropType<SortingData<IBackpack>>,
       required: true
     }
   },
@@ -20,12 +20,12 @@ export default defineComponent({
   setup: (props, { emit }) => {
     const sortingData = computed({
       get: () => props.modelValue,
-      set: (value: SortingData<IVest>) => emit('update:modelValue', value)
+      set: (value: SortingData<IBackpack>) => emit('update:modelValue', value)
     })
 
     return {
       sortingData,
-      sortingFunctions: VestSortingFunctions
+      sortingFunctions: BackpackSortingFunctions
     }
   }
 })

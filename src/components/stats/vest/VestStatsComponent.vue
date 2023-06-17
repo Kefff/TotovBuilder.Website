@@ -1,8 +1,5 @@
 <template>
-  <ArmorStats
-    v-if="item.armorClass > 0"
-    :item="item"
-  />
+  <ArmorStats :item="item" />
   <ContainerStats :item="item" />
 </template>
 

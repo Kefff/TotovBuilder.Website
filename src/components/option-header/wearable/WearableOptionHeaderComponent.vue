@@ -10,6 +10,28 @@
       />
     </div>
   </div>
+  <div class="option-entry">
+    <div class="option-value">
+      <OptionHeaderSortButton
+        v-model="sortingData"
+        caption-resource="caption.movementSpeed"
+        icon="walking"
+        property="movementSpeedPercentageModifier"
+        :sorting-functions="sortingFunctions"
+      />
+    </div>
+  </div>
+  <div class="option-entry">
+    <div class="option-value">
+      <OptionHeaderSortButton
+        v-model="sortingData"
+        caption-resource="caption.turningSpeed"
+        icon="undo"
+        property="turningSpeedPercentageModifier"
+        :sorting-functions="sortingFunctions"
+      />
+    </div>
+  </div>
 </template>
 
 <script lang="ts" src="./WearableOptionHeaderComponent.ts" />

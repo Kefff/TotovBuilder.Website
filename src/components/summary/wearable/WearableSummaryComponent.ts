@@ -1,14 +1,11 @@
 import { computed, defineComponent, PropType } from 'vue'
-import { IArmor } from '../../../models/item/IArmor'
 import StatsUtils from '../../../utils/StatsUtils'
-import WearableSummary from '../wearable/WearableSummaryComponent.vue'
+import { IWearable } from '../../../models/item/IWearable'
 
 export default defineComponent({
-  components: {
-    WearableSummary
-  }, props: {
+  props: {
     item: {
-      type: Object as PropType<IArmor>,
+      type: Object as PropType<IWearable>,
       required: true
     },
     customErgonomicsPercentageModifier: {

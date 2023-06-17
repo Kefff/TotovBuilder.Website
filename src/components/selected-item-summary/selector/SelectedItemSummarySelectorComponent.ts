@@ -3,6 +3,7 @@ import { IItem } from '../../../models/item/IItem'
 import AmmunitionSummary from '../../summary/ammunition/AmmunitionSummaryComponent.vue'
 import ArmorModSummary from '../../summary/armor-mod/ArmorModSummaryComponent.vue'
 import ArmorSummary from '../../summary/armor/ArmorSummaryComponent.vue'
+import BackpackSummary from '../../summary/backpack/BackpackSummaryComponent.vue'
 import ContainerSummary from '../../summary/container/ContainerSummaryComponent.vue'
 import EyewearSummary from '../../summary/eyewear/EyewearSummaryComponent.vue'
 import GrenadeSummary from '../../summary/grenade/GrenadeSummaryComponent.vue'
@@ -26,6 +27,7 @@ export default defineComponent({
     AmmunitionSummary,
     ArmorModSummary,
     ArmorSummary,
+    BackpackSummary,
     ContainerSummary,
     EyewearSummary,
     GrenadeSummary,

@@ -1,16 +1,16 @@
 import { defineComponent, PropType } from 'vue'
-import { IVest } from '../../../models/item/IVest'
-import ArmorStats from '../armor/ArmorStatsComponent.vue'
 import ContainerStats from '../container/ContainerStatsComponent.vue'
+import WearableStats from '../wearable/WearableStatsComponent.vue'
+import { IBackpack } from '../../../models/item/IBackpack'
 
 export default defineComponent({
   components: {
-    ArmorStats,
-    ContainerStats
+    ContainerStats,
+    WearableStats
   },
   props: {
     item: {
-      type: Object as PropType<IVest>,
+      type: Object as PropType<IBackpack>,
       required: true
     }
   }

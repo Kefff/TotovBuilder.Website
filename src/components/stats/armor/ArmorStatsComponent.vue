@@ -1,5 +1,8 @@
 <template>
-  <div class="stats-line">
+  <div
+    v-if="item.armorClass > 0"
+    class="stats-line"
+  >
     <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
@@ -46,51 +49,7 @@
       </div>
     </div>
   </div>
-  <div
-    v-if="ergonomicsPercentageModifier !== 0 || item.movementSpeedPercentageModifier !== 0 || item.turningSpeedPercentageModifier !== 0"
-    class="stats-line"
-  >
-    <div
-      v-if="ergonomicsPercentageModifier !== 0"
-      class="stats-entry"
-    >
-      <div class="stats-caption">
-        <font-awesome-icon
-          icon="hand-paper"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.ergonomics') }} :</span>
-      </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsPercentageModifier)">
-        {{ StatsUtils.getDisplayValue(ergonomicsPercentageModifier, true, true) }}
-      </div>
-    </div>
-    <div
-      v-if="item.movementSpeedPercentageModifier !== 0"
-      class="stats-entry"
-    >
-      <div class="stats-caption">
-        <div class="icon-before-text" />
-        <span>{{ $t('caption.movementSpeed') }} :</span>
-      </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.movementSpeedPercentageModifier)">
-        {{ StatsUtils.getDisplayValue(item.movementSpeedPercentageModifier, true, true) }}
-      </div>
-    </div>
-    <div
-      v-if="item.turningSpeedPercentageModifier !== 0"
-      class="stats-entry"
-    >
-      <div class="stats-caption">
-        <div class="icon-before-text" />
-        <span>{{ $t('caption.turningSpeed') }} :</span>
-      </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.turningSpeedPercentageModifier)">
-        {{ StatsUtils.getDisplayValue(item.turningSpeedPercentageModifier, true, true) }}
-      </div>
-    </div>
-  </div>
-  <div>
+  <div v-if="item.armorClass > 0">
     <div stats-entry>
       <div class="stats-caption">
         <font-awesome-icon
@@ -101,7 +60,10 @@
       </div>
     </div>
   </div>
-  <div class="stats-line">
+  <div
+    v-if="item.armorClass > 0"
+    class="stats-line"
+  >
     <div
       v-for="armoredArea of item.armoredAreas"
       :key="armoredArea"
@@ -113,6 +75,10 @@
       </div>
     </div>
   </div>
+  <WearableStats
+    :item="item"
+    :custom-ergonomics-percentage-modifier="ergonomicsPercentageModifier"
+  />
 </template>
 
 <script lang="ts" src="./ArmorStatsComponent.ts" />

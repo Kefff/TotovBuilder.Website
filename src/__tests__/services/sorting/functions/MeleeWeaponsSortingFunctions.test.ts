@@ -4,9 +4,9 @@ import { MeleeWeaponSortingFunctions } from '../../../../services/sorting/functi
 
 describe('comparisonFunction()', () => {
   it.each([
-    ['stabDamage'],
     ['chopDamage'],
-    ['hitRadius']
+    ['hitRadius'],
+    ['stabDamage']
   ])('should compare by a property', async (property: string) => {
     // Arrange
     const item1 = {

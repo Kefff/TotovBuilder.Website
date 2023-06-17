@@ -1,8 +1,12 @@
 import { computed, defineComponent, PropType } from 'vue'
 import { IArmor } from '../../../models/item/IArmor'
 import StatsUtils from '../../../utils/StatsUtils'
+import WearableStats from '../wearable/WearableStatsComponent.vue'
 
 export default defineComponent({
+  components: {
+    WearableStats
+  },
   props: {
     item: {
       type: Object as PropType<IArmor>,

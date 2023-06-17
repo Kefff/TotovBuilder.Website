@@ -33,25 +33,10 @@
       </div>
     </div>
   </div>
-  <div
-    v-if="ergonomicsPercentageModifier !== 0 || showEmptyEntries"
-    class="option-entry"
-  >
-    <div class="option-value">
-      <div
-        v-if="ergonomicsPercentageModifier !== 0"
-        v-tooltip.top="$t('caption.ergonomics')"
-      >
-        <span :class="StatsUtils.getValueColorClass(ergonomicsPercentageModifier)">
-          {{ StatsUtils.getDisplayValue(ergonomicsPercentageModifier, true, true) }}
-        </span>
-        <font-awesome-icon
-          icon="hand-paper"
-          class="icon-after-text"
-        />
-      </div>
-    </div>
-  </div>
+  <WearableSummary
+    :item="item"
+    :show-empty-entries="showEmptyEntries"
+  />
 </template>
 
 <script lang="ts" src="./ArmorSummaryComponent.ts" />

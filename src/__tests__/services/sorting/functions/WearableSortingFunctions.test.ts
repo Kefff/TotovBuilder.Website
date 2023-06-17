@@ -13,16 +13,14 @@ describe('comparisonFunction()', () => {
       categoryId: 'cat',
       ergonomicsPercentageModifier: 2,
       movementSpeedPercentageModifier: 2,
-      turningSpeedPercentageModifier: 2,
-      capacity: 2
+      turningSpeedPercentageModifier: 2
     } as IBackpack
 
     const item2 = {
       categoryId: 'cat',
       ergonomicsPercentageModifier: 1,
       movementSpeedPercentageModifier: 1,
-      turningSpeedPercentageModifier: 1,
-      capacity: 1
+      turningSpeedPercentageModifier: 1
     } as IBackpack
 
     const sortingService = new SortingService(WearableSortingFunctions)

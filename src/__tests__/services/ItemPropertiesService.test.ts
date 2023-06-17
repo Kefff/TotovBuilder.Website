@@ -142,10 +142,12 @@ describe('isAmmunition()', () => {
       const itemPropertiesService = new ItemPropertiesService()
 
       // Act
-      const result = itemPropertiesService.isAmmunition({ categoryId, id: '12345' } as IItem)
+      const result1 = itemPropertiesService.isAmmunition(categoryId)
+      const result2 = itemPropertiesService.isAmmunition({ categoryId, id: '12345' } as IItem)
 
       // Assert
-      expect(result).toBe(expected)
+      expect(result1).toBe(expected)
+      expect(result2).toBe(expected)
     }
   )
 })
@@ -181,10 +183,12 @@ describe('isArmor()', () => {
       const itemPropertiesService = new ItemPropertiesService()
 
       // Act
-      const result = itemPropertiesService.isArmor({ categoryId, id: '12345' } as IItem)
+      const result1 = itemPropertiesService.isArmor(categoryId)
+      const result2 = itemPropertiesService.isArmor({ categoryId, id: '12345' } as IItem)
 
       // Assert
-      expect(result).toBe(expected)
+      expect(result1).toBe(expected)
+      expect(result2).toBe(expected)
     }
   )
 })
@@ -220,10 +224,12 @@ describe('isArmorMod()', () => {
       const itemPropertiesService = new ItemPropertiesService()
 
       // Act
-      const result = itemPropertiesService.isArmorMod({ categoryId, id: '12345' } as IItem)
+      const result1 = itemPropertiesService.isArmorMod(categoryId)
+      const result2 = itemPropertiesService.isArmorMod({ categoryId, id: '12345' } as IItem)
 
       // Assert
-      expect(result).toBe(expected)
+      expect(result1).toBe(expected)
+      expect(result2).toBe(expected)
     }
   )
 })
@@ -259,10 +265,12 @@ describe('isContainer()', () => {
       const itemPropertiesService = new ItemPropertiesService()
 
       // Act
-      const result = itemPropertiesService.isContainer({ categoryId, id: '12345' } as IItem)
+      const result1 = itemPropertiesService.isContainer(categoryId)
+      const result2 = itemPropertiesService.isContainer({ categoryId, id: '12345' } as IItem)
 
       // Assert
-      expect(result).toBe(expected)
+      expect(result1).toBe(expected)
+      expect(result2).toBe(expected)
     }
   )
 })
@@ -298,10 +306,12 @@ describe('isEyewear()', () => {
       const itemPropertiesService = new ItemPropertiesService()
 
       // Act
-      const result = itemPropertiesService.isEyewear({ categoryId, id: '12345' } as IItem)
+      const result1 = itemPropertiesService.isEyewear(categoryId)
+      const result2 = itemPropertiesService.isEyewear({ categoryId, id: '12345' } as IItem)
 
       // Assert
-      expect(result).toBe(expected)
+      expect(result1).toBe(expected)
+      expect(result2).toBe(expected)
     }
   )
 })
@@ -337,10 +347,12 @@ describe('isGrenade()', () => {
       const itemPropertiesService = new ItemPropertiesService()
 
       // Act
-      const result = itemPropertiesService.isGrenade({ categoryId, id: '12345' } as IItem)
+      const result1 = itemPropertiesService.isGrenade(categoryId)
+      const result2 = itemPropertiesService.isGrenade({ categoryId, id: '12345' } as IItem)
 
       // Assert
-      expect(result).toBe(expected)
+      expect(result1).toBe(expected)
+      expect(result2).toBe(expected)
     }
   )
 })
@@ -376,10 +388,12 @@ describe('isHeadwear()', () => {
       const itemPropertiesService = new ItemPropertiesService()
 
       // Act
-      const result = itemPropertiesService.isHeadwear({ categoryId, id: '12345' } as IItem)
+      const result1 = itemPropertiesService.isHeadwear(categoryId)
+      const result2 = itemPropertiesService.isHeadwear({ categoryId, id: '12345' } as IItem)
 
       // Assert
-      expect(result).toBe(expected)
+      expect(result1).toBe(expected)
+      expect(result2).toBe(expected)
     }
   )
 })
@@ -415,10 +429,12 @@ describe('isMagazine()', () => {
       const itemPropertiesService = new ItemPropertiesService()
 
       // Act
-      const result = itemPropertiesService.isMagazine({ categoryId, id: '12345' } as IItem)
+      const result1 = itemPropertiesService.isMagazine(categoryId)
+      const result2 = itemPropertiesService.isMagazine({ categoryId, id: '12345' } as IItem)
 
       // Assert
-      expect(result).toBe(expected)
+      expect(result1).toBe(expected)
+      expect(result2).toBe(expected)
     }
   )
 })
@@ -454,10 +470,12 @@ describe('isMeleeWeapon()', () => {
       const itemPropertiesService = new ItemPropertiesService()
 
       // Act
-      const result = itemPropertiesService.isMeleeWeapon({ categoryId, id: '12345' } as IItem)
+      const result1 = itemPropertiesService.isMeleeWeapon(categoryId)
+      const result2 = itemPropertiesService.isMeleeWeapon({ categoryId, id: '12345' } as IItem)
 
       // Assert
-      expect(result).toBe(expected)
+      expect(result1).toBe(expected)
+      expect(result2).toBe(expected)
     }
   )
 })
@@ -493,10 +511,12 @@ describe('isMod()', () => {
       const itemPropertiesService = new ItemPropertiesService()
 
       // Act
-      const result = itemPropertiesService.isMod({ categoryId, id: '12345' } as IItem)
+      const result1 = itemPropertiesService.isMod(categoryId)
+      const result2 = itemPropertiesService.isMod({ categoryId, id: '12345' } as IItem)
 
       // Assert
-      expect(result).toBe(expected)
+      expect(result1).toBe(expected)
+      expect(result2).toBe(expected)
     }
   )
 })
@@ -532,10 +552,12 @@ describe('isModdable()', () => {
       const itemPropertiesService = new ItemPropertiesService()
 
       // Act
-      const result = itemPropertiesService.isModdable({ categoryId, id: '12345' } as IItem)
+      const result1 = itemPropertiesService.isModdable(categoryId)
+      const result2 = itemPropertiesService.isModdable({ categoryId, id: '12345' } as IItem)
 
       // Assert
-      expect(result).toBe(expected)
+      expect(result1).toBe(expected)
+      expect(result2).toBe(expected)
     }
   )
 })
@@ -571,10 +593,12 @@ describe('isRangedWeapon()', () => {
       const itemPropertiesService = new ItemPropertiesService()
 
       // Act
-      const result = itemPropertiesService.isRangedWeapon({ categoryId, id: '12345' } as IItem)
+      const result1 = itemPropertiesService.isRangedWeapon(categoryId)
+      const result2 = itemPropertiesService.isRangedWeapon({ categoryId, id: '12345' } as IItem)
 
       // Assert
-      expect(result).toBe(expected)
+      expect(result1).toBe(expected)
+      expect(result2).toBe(expected)
     }
   )
 })
@@ -610,10 +634,12 @@ describe('isRangedWeaponMod()', () => {
       const itemPropertiesService = new ItemPropertiesService()
 
       // Act
-      const result = itemPropertiesService.isRangedWeaponMod({ categoryId, id: '12345' } as IItem)
+      const result1 = itemPropertiesService.isRangedWeaponMod(categoryId)
+      const result2 = itemPropertiesService.isRangedWeaponMod({ categoryId, id: '12345' } as IItem)
 
       // Assert
-      expect(result).toBe(expected)
+      expect(result1).toBe(expected)
+      expect(result2).toBe(expected)
     }
   )
 })
@@ -649,10 +675,12 @@ describe('isVest()', () => {
       const itemPropertiesService = new ItemPropertiesService()
 
       // Act
-      const result = itemPropertiesService.isVest({ categoryId, id: '12345' } as IItem)
+      const result1 = itemPropertiesService.isVest(categoryId)
+      const result2 = itemPropertiesService.isVest({ categoryId, id: '12345' } as IItem)
 
       // Assert
-      expect(result).toBe(expected)
+      expect(result1).toBe(expected)
+      expect(result2).toBe(expected)
     }
   )
 })

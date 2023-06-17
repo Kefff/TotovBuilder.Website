@@ -1,10 +1,13 @@
-import { computed, defineComponent, PropType } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { IHeadwear } from '../../../models/item/IHeadwear'
-import ArmorSummary from '../armor/ArmorSummaryComponent.vue'
+import ContainerSummary from '../container/ContainerSummaryComponent.vue'
+import StatsUtils from '../../../utils/StatsUtils'
+import WearableSummary from '../wearable/WearableSummaryComponent.vue'
 
 export default defineComponent({
   components: {
-    ArmorSummary
+    WearableSummary,
+    ContainerSummary
   },
   props: {
     item: {
@@ -17,11 +20,9 @@ export default defineComponent({
       default: true
     }
   },
-  setup: (props) => {
-    const hasRicochetChance = computed(() => props.item.ricochetChance !== '')
-
+  setup: () => {
     return {
-      hasRicochetChance
+      StatsUtils
     }
   }
 })

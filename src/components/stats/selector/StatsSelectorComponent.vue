@@ -16,6 +16,10 @@
         v-else-if="itemPropertiesService.isArmorMod(item)"
         :item="item"
       />
+      <BackpackStat
+        v-else-if="itemPropertiesService.isBackpack(item)"
+        :item="item"
+      />
       <ContainerStat
         v-else-if="itemPropertiesService.isContainer(item)"
         :item="item"

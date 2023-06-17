@@ -1,32 +1,33 @@
-import { IVest } from '../../../../models/item/IVest'
+import { IBackpack } from '../../../../models/item/IBackpack'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { VestSortingFunctions } from '../../../../services/sorting/functions/VestSortingFunctions'
+import { BackpackSortingFunctions } from '../../../../services/sorting/functions/BackpackSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([
-    ['armorClass'],
     ['capacity'],
-    ['durability'],
-    ['ergonomicsPercentageModifier']
+    ['ergonomicsPercentageModifier'],
+    ['movementSpeedPercentageModifier'],
+    ['turningSpeedPercentageModifier']
   ])('should compare by a property', async (property: string) => {
     // Arrange
+    // Arrange
     const item1 = {
+      capacity: 2,
       categoryId: 'cat',
-      armorClass: 2,
-      durability: 2,
       ergonomicsPercentageModifier: 2,
-      capacity: 2
-    } as IVest
+      movementSpeedPercentageModifier: 2,
+      turningSpeedPercentageModifier: 2
+    } as IBackpack
 
     const item2 = {
+      capacity: 1,
       categoryId: 'cat',
-      armorClass: 1,
-      durability: 1,
       ergonomicsPercentageModifier: 1,
-      capacity: 1
-    } as IVest
+      movementSpeedPercentageModifier: 1,
+      turningSpeedPercentageModifier: 1
+    } as IBackpack
 
-    const sortingService = new SortingService(VestSortingFunctions)
+    const sortingService = new SortingService(BackpackSortingFunctions)
     const updatedSortingDataResult = sortingService.setSortingProperty(property)
 
     // Act
