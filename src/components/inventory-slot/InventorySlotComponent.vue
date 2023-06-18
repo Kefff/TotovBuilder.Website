@@ -73,7 +73,7 @@
             </div>
             <div
               v-if="wearableModifiers != null && wearableModifiers.turningSpeedPercentageModifierWithMods !== 0"
-              v-tooltip.top="$t('caption.movementSpeed')"
+              v-tooltip.top="$t('caption.turningSpeed')"
               class="inventory-slot-summary-value"
             >
               <span :class="StatsUtils.getValueColorClass(wearableModifiers.turningSpeedPercentageModifierWithMods)">

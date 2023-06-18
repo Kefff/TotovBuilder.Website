@@ -22,8 +22,8 @@ export default defineComponent({
   },
   setup: (props) => {
     const ergonomicsPercentageModifier = computed(() => props.wearableModifiersOverride?.ergonomicsPercentageModifierWithMods ?? props.item.ergonomicsPercentageModifier)
-    const movementSpeedPercentageModifier = computed(() => props.wearableModifiersOverride?.ergonomicsPercentageModifierWithMods ?? props.item.ergonomicsPercentageModifier)
-    const turningSpeedPercentageModifier = computed(() => props.wearableModifiersOverride?.ergonomicsPercentageModifierWithMods ?? props.item.ergonomicsPercentageModifier)
+    const movementSpeedPercentageModifier = computed(() => props.wearableModifiersOverride?.movementSpeedPercentageModifierWithMods ?? props.item.movementSpeedPercentageModifier)
+    const turningSpeedPercentageModifier = computed(() => props.wearableModifiersOverride?.turningSpeedPercentageModifierWithMods ?? props.item.turningSpeedPercentageModifier)
 
     return {
       ergonomicsPercentageModifier,
