@@ -1,7 +1,7 @@
 <template>
   <ArmorStats
     :item="item"
-    :custom-ergonomics-percentage-modifier="item.presetErgonomicsPercentageModifier"
+    :wearable-modifiers-override="item.presetWearableModifiers"
   />
 </template>
 

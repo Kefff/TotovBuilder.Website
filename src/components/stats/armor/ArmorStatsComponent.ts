@@ -2,6 +2,7 @@ import { computed, defineComponent, PropType } from 'vue'
 import { IArmor } from '../../../models/item/IArmor'
 import StatsUtils from '../../../utils/StatsUtils'
 import WearableStats from '../wearable/WearableStatsComponent.vue'
+import { IWearableModifiers } from '../../../models/utils/IWearableModifiers'
 
 export default defineComponent({
   components: {
@@ -12,18 +13,16 @@ export default defineComponent({
       type: Object as PropType<IArmor>,
       required: true
     },
-    customErgonomicsPercentageModifier: {
-      type: Number,
+    wearableModifiersOverride: {
+      type: Object as PropType<IWearableModifiers>,
       required: false,
       default: undefined
     }
   },
   setup: (props) => {
-    const ergonomicsPercentageModifier = computed(() => props.customErgonomicsPercentageModifier ?? props.item.ergonomicsPercentageModifier)
     const hasRicochetChance = computed(() => props.item.ricochetChance !== '')
 
     return {
-      ergonomicsPercentageModifier,
       hasRicochetChance,
       StatsUtils
     }

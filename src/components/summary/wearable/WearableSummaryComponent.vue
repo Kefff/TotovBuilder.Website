@@ -19,16 +19,16 @@
     </div>
   </div>
   <div
-    v-if="item.movementSpeedPercentageModifier !== 0 || showEmptyEntries"
+    v-if="movementSpeedPercentageModifier !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div class="option-value">
       <div
-        v-if="item.movementSpeedPercentageModifier !== 0"
+        v-if="movementSpeedPercentageModifier !== 0"
         v-tooltip.top="$t('caption.movementSpeed')"
       >
-        <span :class="StatsUtils.getValueColorClass(item.movementSpeedPercentageModifier)">
-          {{ StatsUtils.getDisplayValue(item.movementSpeedPercentageModifier, true, true) }}
+        <span :class="StatsUtils.getValueColorClass(movementSpeedPercentageModifier)">
+          {{ StatsUtils.getDisplayValue(movementSpeedPercentageModifier, true, true) }}
         </span>
         <font-awesome-icon
           icon="walking"
@@ -38,16 +38,16 @@
     </div>
   </div>
   <div
-    v-if="item.turningSpeedPercentageModifier !== 0 || showEmptyEntries"
+    v-if="turningSpeedPercentageModifier !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div class="option-value">
       <div
-        v-if="item.turningSpeedPercentageModifier !== 0"
+        v-if="turningSpeedPercentageModifier !== 0"
         v-tooltip.top="$t('caption.turningSpeed')"
       >
-        <span :class="StatsUtils.getValueColorClass(item.turningSpeedPercentageModifier)">
-          {{ StatsUtils.getDisplayValue(item.turningSpeedPercentageModifier, true, true) }}
+        <span :class="StatsUtils.getValueColorClass(turningSpeedPercentageModifier)">
+          {{ StatsUtils.getDisplayValue(turningSpeedPercentageModifier, true, true) }}
         </span>
         <font-awesome-icon
           icon="undo"

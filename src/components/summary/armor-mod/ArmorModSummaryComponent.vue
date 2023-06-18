@@ -2,7 +2,7 @@
   <ArmorSummary
     :item="item"
     :show-empty-entries="showEmptyEntries"
-    :custom-ergonomics-percentage-modifier="item.presetErgonomicsPercentageModifier"
+    :wearable-modifiers-override="item.presetWearableModifiers"
   />
 </template>
 

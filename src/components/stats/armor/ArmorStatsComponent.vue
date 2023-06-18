@@ -77,7 +77,7 @@
   </div>
   <WearableStats
     :item="item"
-    :custom-ergonomics-percentage-modifier="ergonomicsPercentageModifier"
+    :wearable-modifiers-override="wearableModifiersOverride"
   />
 </template>
 

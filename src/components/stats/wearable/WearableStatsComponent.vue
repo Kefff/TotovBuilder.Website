@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="ergonomicsPercentageModifier !== 0 || item.movementSpeedPercentageModifier !== 0 || item.turningSpeedPercentageModifier !== 0"
+    v-if="ergonomicsPercentageModifier !== 0 || movementSpeedPercentageModifier !== 0 || turningSpeedPercentageModifier !== 0"
     class="stats-line"
   >
     <div
@@ -19,7 +19,7 @@
       </div>
     </div>
     <div
-      v-if="item.movementSpeedPercentageModifier !== 0"
+      v-if="movementSpeedPercentageModifier !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -29,12 +29,12 @@
         />
         <span>{{ $t('caption.movementSpeed') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.movementSpeedPercentageModifier)">
-        {{ StatsUtils.getDisplayValue(item.movementSpeedPercentageModifier, true, true) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(movementSpeedPercentageModifier)">
+        {{ StatsUtils.getDisplayValue(movementSpeedPercentageModifier, true, true) }}
       </div>
     </div>
     <div
-      v-if="item.turningSpeedPercentageModifier !== 0"
+      v-if="turningSpeedPercentageModifier !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -44,8 +44,8 @@
         />
         <span>{{ $t('caption.turningSpeed') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.turningSpeedPercentageModifier)">
-        {{ StatsUtils.getDisplayValue(item.turningSpeedPercentageModifier, true, true) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(turningSpeedPercentageModifier)">
+        {{ StatsUtils.getDisplayValue(turningSpeedPercentageModifier, true, true) }}
       </div>
     </div>
   </div>

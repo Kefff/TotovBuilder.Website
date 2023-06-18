@@ -36,6 +36,7 @@
   <WearableSummary
     :item="item"
     :show-empty-entries="showEmptyEntries"
+    :wearable-modifiers-override="wearableModifiersOverride"
   />
 </template>
 
