@@ -1,23 +1,16 @@
 import { IVest } from '../../../../models/item/IVest'
+import { SortingService } from '../../../../services/sorting/SortingService'
 import { VestSortingFunctions } from '../../../../services/sorting/functions/VestSortingFunctions'
 
-describe('setSortingProperty()', () => {
+describe('comparisonFunction()', () => {
   it.each([
     ['armorClass'],
+    ['capacity'],
     ['durability'],
-    ['ergonomicsPercentageModifier'],
-    ['capacity']
-  ])('should sort by a property', async (property: string) => {
+    ['ergonomicsPercentageModifier']
+  ])('should compare by a property', async (property: string) => {
     // Arrange
     const item1 = {
-      categoryId: 'cat',
-      armorClass: 1,
-      durability: 1,
-      ergonomicsPercentageModifier: 1,
-      capacity: 1
-    } as IVest
-
-    const item2 = {
       categoryId: 'cat',
       armorClass: 2,
       durability: 2,
@@ -25,14 +18,21 @@ describe('setSortingProperty()', () => {
       capacity: 2
     } as IVest
 
-    const sortingFunctions = new VestSortingFunctions()
+    const item2 = {
+      categoryId: 'cat',
+      armorClass: 1,
+      durability: 1,
+      ergonomicsPercentageModifier: 1,
+      capacity: 1
+    } as IVest
+
+    const sortingService = new SortingService(VestSortingFunctions)
+    const updatedSortingDataResult = sortingService.setSortingProperty(property)
 
     // Act
-    const propertyValue1 = await sortingFunctions.getValueToCompareFunctions[property](item1)
-    const propertyValue2 = await sortingFunctions.getValueToCompareFunctions[property](item2)
-    const sortingValue = sortingFunctions.comparisonFunctions[property](item1, propertyValue1, item2, propertyValue2)
+    const sortedItems = await SortingService.sort([item1, item2], updatedSortingDataResult.value)
 
     // Assert
-    expect(sortingValue).toBe(-1)
+    expect(sortedItems).toStrictEqual([item2, item1])
   })
 })

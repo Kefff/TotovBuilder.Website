@@ -73,6 +73,7 @@ import {
   faUserTag,
   faVest,
   faViruses,
+  faWalking,
   faWallet,
   faWeightHanging
 } from '@fortawesome/free-solid-svg-icons'
@@ -157,6 +158,7 @@ export function useFontAwesome(app: App<Element>): void {
     faUserTag,
     faVest,
     faViruses,
+    faWalking,
     faWallet,
     faWeightHanging
   )

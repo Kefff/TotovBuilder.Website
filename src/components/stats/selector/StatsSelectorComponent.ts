@@ -6,6 +6,7 @@ import Services from '../../../services/repository/Services'
 import AmmunitionStat from '../ammunition/AmmunitionStatsComponent.vue'
 import ArmorModStat from '../armor-mod/ArmorModStatsComponent.vue'
 import ArmorStat from '../armor/ArmorStatsComponent.vue'
+import BackpackStat from '../backpack/BackpackStatsComponent.vue'
 import ContainerStat from '../container/ContainerStatsComponent.vue'
 import EyewearStat from '../eyewear/EyewearStatsComponent.vue'
 import GrenadeStat from '../grenade/GrenadeStatsComponent.vue'
@@ -24,6 +25,7 @@ export default defineComponent({
     AmmunitionStat,
     ArmorModStat,
     ArmorStat,
+    BackpackStat,
     ContainerStat,
     EyewearStat,
     GrenadeStat,

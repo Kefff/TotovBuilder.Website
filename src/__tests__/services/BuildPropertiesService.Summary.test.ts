@@ -18,8 +18,7 @@ describe('getSummary()', () => {
     [
       build1,
       {
-        ergonomics: 34.9,
-        ergonomicsPercentageModifier: -0.07,
+        ergonomics: 34.1,
         exported: false,
         horizontalRecoil: 200,
         id: 'build_1',
@@ -78,11 +77,13 @@ describe('getSummary()', () => {
               capacity: 20,
               categoryId: 'backpack',
               conflictingItemIds: [],
+              ergonomicsPercentageModifier: -0.02,
               iconLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-icon.webp',
               id: '5ca20d5986f774331e7c9602',
               imageLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-image.webp',
               marketLink: 'https://tarkov.dev/item/wartech-berkut-bb-102-backpack',
               maxStackableAmount: 1,
+              movementSpeedPercentageModifier: 0,
               name: 'WARTECH Berkut BB-102 backpack',
               prices: [
                 {
@@ -122,7 +123,8 @@ describe('getSummary()', () => {
                 }
               ],
               shortName: 'Berkut',
-              weight: 0.96,
+              turningSpeedPercentageModifier: 0,
+              weight: 1,
               wikiLink: 'https://escapefromtarkov.fandom.com/wiki/WARTECH_Berkut_BB-102_backpack'
             },
             quantity: 1,
@@ -1296,14 +1298,21 @@ describe('getSummary()', () => {
           }
         ],
         verticalRecoil: 71,
-        weight: 24.148
+        wearableModifiers: {
+          ergonomicsPercentageModifier: 0,
+          ergonomicsPercentageModifierWithMods: -0.09,
+          movementSpeedPercentageModifier: 0,
+          movementSpeedPercentageModifierWithMods: -0.06,
+          turningSpeedPercentageModifier: 0,
+          turningSpeedPercentageModifierWithMods: -0.09
+        },
+        weight: 24.188
       } as IBuildSummary
     ],
     [
       build2,
       {
         ergonomics: 54,
-        ergonomicsPercentageModifier: 0,
         exported: false,
         horizontalRecoil: 234,
         id: 'build_2',
@@ -2025,6 +2034,14 @@ describe('getSummary()', () => {
           }
         ],
         verticalRecoil: 397,
+        wearableModifiers: {
+          ergonomicsPercentageModifier: 0,
+          ergonomicsPercentageModifierWithMods: 0,
+          movementSpeedPercentageModifier: 0,
+          movementSpeedPercentageModifierWithMods: 0,
+          turningSpeedPercentageModifier: 0,
+          turningSpeedPercentageModifierWithMods: 0
+        },
         weight: 3.562
       } as IBuildSummary
     ],
@@ -2039,7 +2056,6 @@ describe('getSummary()', () => {
       } as IBuild,
       {
         ergonomics: undefined,
-        ergonomicsPercentageModifier: 0,
         exported: true,
         horizontalRecoil: undefined,
         id: 'emptyBuild',
@@ -2083,6 +2099,14 @@ describe('getSummary()', () => {
         },
         shoppingList: [],
         verticalRecoil: undefined,
+        wearableModifiers: {
+          ergonomicsPercentageModifier: 0,
+          ergonomicsPercentageModifierWithMods: 0,
+          movementSpeedPercentageModifier: 0,
+          movementSpeedPercentageModifierWithMods: 0,
+          turningSpeedPercentageModifier: 0,
+          turningSpeedPercentageModifierWithMods: 0
+        },
         weight: 0
       } as IBuildSummary
     ]
@@ -2241,7 +2265,6 @@ describe('getSummary()', () => {
     expect(summaryResult.success).toBe(true)
     expect(summaryResult.value).toStrictEqual({
       ergonomics: undefined,
-      ergonomicsPercentageModifier: 0,
       exported: false,
       horizontalRecoil: undefined,
       id: '1',
@@ -2300,11 +2323,13 @@ describe('getSummary()', () => {
             capacity: 48,
             categoryId: 'backpack',
             conflictingItemIds: [],
+            ergonomicsPercentageModifier: -0.07,
             iconLink: 'https://assets.tarkov.dev/5df8a4d786f77412672a1e3b-icon.webp',
             id: '5df8a4d786f77412672a1e3b',
             imageLink: 'https://assets.tarkov.dev/5df8a4d786f77412672a1e3b-image.webp',
             marketLink: 'https://tarkov.dev/item/6sh118-raid-backpack',
             maxStackableAmount: 1,
+            movementSpeedPercentageModifier: -0.05,
             name: '6Sh118 raid backpack',
             prices: [
               {
@@ -2342,8 +2367,9 @@ describe('getSummary()', () => {
                 valueInMainCurrency: 0
               }
             ],
+            turningSpeedPercentageModifier: -0.03,
             shortName: '6Sh118',
-            weight: 6.36,
+            weight: 3.5,
             wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6Sh118_raid_backpack'
           },
           quantity: 1,
@@ -2781,7 +2807,15 @@ describe('getSummary()', () => {
         }
       ],
       verticalRecoil: undefined,
-      weight: 9.524
+      wearableModifiers: {
+        ergonomicsPercentageModifier: 0,
+        ergonomicsPercentageModifierWithMods: -0.07,
+        movementSpeedPercentageModifier: 0,
+        movementSpeedPercentageModifierWithMods: -0.05,
+        turningSpeedPercentageModifier: 0,
+        turningSpeedPercentageModifierWithMods: -0.03
+      },
+      weight: 6.664
     } as IBuildSummary)
   })
 })

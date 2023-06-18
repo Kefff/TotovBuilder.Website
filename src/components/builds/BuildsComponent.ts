@@ -70,6 +70,9 @@ export default defineComponent({
     })
 
     onMounted(() => {
+      // Scrolling to the top in case we were at the bottom of the page in the previous screen
+      window.scrollTo(0, 0)
+
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       window.addEventListener('scroll', setToolbarCssClass)

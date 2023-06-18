@@ -3,7 +3,7 @@ import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonCompone
 import SortingData from '../../../models/utils/SortingData'
 import ArmorOptionHeader from '../armor/ArmorOptionHeaderComponent.vue'
 import { ArmorModSortingFunctions } from '../../../services/sorting/functions/ArmorModSortingFunctions'
-import { SortingService } from '../../../services/sorting/SortingService'
+import { IArmorMod } from '../../../models/item/IArmorMod'
 
 export default defineComponent({
   components: {
@@ -12,7 +12,7 @@ export default defineComponent({
   },
   props: {
     modelValue: {
-      type: Object as PropType<SortingData>,
+      type: Object as PropType<SortingData<IArmorMod>>,
       required: true
     }
   },
@@ -20,13 +20,12 @@ export default defineComponent({
   setup: (props, { emit }) => {
     const sortingData = computed({
       get: () => props.modelValue,
-      set: (value: SortingData) => emit('update:modelValue', value)
+      set: (value: SortingData<IArmorMod>) => emit('update:modelValue', value)
     })
-    const sortingService = new SortingService(new ArmorModSortingFunctions())
 
     return {
       sortingData,
-      sortingService
+      sortingFunctions: ArmorModSortingFunctions
     }
   }
 })

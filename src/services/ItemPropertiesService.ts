@@ -22,7 +22,7 @@ export class ItemPropertiesService {
    * @returns true if the item can contain items; otherwise false.
    */
   public canContain(item: IItem): boolean {
-    return (this.isContainer(item) || this.isMagazine(item) || this.isVest(item))
+    return (this.isBackpack(item) || this.isContainer(item) || this.isMagazine(item) || this.isVest(item))
       && (item as IContainer).capacity > 0
   }
 
@@ -46,132 +46,191 @@ export class ItemPropertiesService {
 
   /**
    * Indicates whether an item is ammunition.
-   * @param item - Item.
+   * @param value - Item or category ID.
    * @returns true if the item is ammunition; otherwise false.
    */
-  public isAmmunition(item: IItem): boolean {
-    return item.categoryId === 'ammunition'
+  public isAmmunition(value: IItem | string): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === 'ammunition'
   }
 
   /**
    * Indicates whether an item is an armor.
-   * @param item - Item.
+   * @param value - Item or category ID.
    * @returns true if the item is an armor; otherwise false.
    */
-  public isArmor(item: IItem): boolean {
-    return item.categoryId === 'armor'
+  public isArmor(value: IItem | string): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === 'armor'
   }
 
   /**
    * Indicates whether an item is an armor mod.
-   * @param item - Item.
+   * @param value - Item or category ID.
    * @returns true if the item is an armor mod; otherwise false.
    */
-  public isArmorMod(item: IItem): boolean {
-    return item.categoryId === 'armorMod'
+  public isArmorMod(value: IItem | string): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === 'armorMod'
+  }
+
+  /**
+   * Indicates whether an item is a backpack.
+   * @param value - Item or category ID.
+   * @returns true if the item is a backpack; otherwise false.
+   */
+  public isBackpack(value: IItem | string): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === 'backpack'
   }
 
   /**
    * Indicates whether an item is a container.
-   * @param item - Item.
+   * @param value - Item or category ID.
    * @returns true if the item is a container; otherwise false.
    */
-  public isContainer(item: IItem): boolean {
-    return item.categoryId === 'backpack' || item.categoryId === 'securedContainer' || item.categoryId === 'container'
+  public isContainer(value: IItem | string): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === 'securedContainer' || categoryId === 'container'
   }
 
   /**
    * Indicates whether an item is eyewear.
-   * @param item - Item.
+   * @param value - Item or category ID.
    * @returns true if the item is eyewear; otherwise false.
    */
-  public isEyewear(item: IItem): boolean {
-    return item.categoryId === 'eyewear'
+  public isEyewear(value: IItem | string): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === 'eyewear'
   }
 
   /**
    * Indicates whether an item is a grenade.
-   * @param item - Item.
+   * @param value - Item or category ID.
    * @returns true if the item is a grenade; otherwise false.
    */
-  public isGrenade(item: IItem): boolean {
-    return item.categoryId === 'grenade'
+  public isGrenade(value: IItem | string): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === 'grenade'
   }
 
   /**
    * Indicates whether an item is headwear.
-   * @param item - Item.
+   * @param value - Item or category ID.
    * @returns true if the item is headwear; otherwise false.
    */
-  public isHeadwear(item: IItem): boolean {
-    return item.categoryId === 'headwear'
+  public isHeadwear(value: IItem | string): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === 'headwear'
   }
 
   /**
    * Indicates whether an item is a magazine.
-   * @param item - Item.
+   * @param value - Item or category ID.
    * @returns true if the item is a magazine; otherwise false.
    */
-  public isMagazine(item: IItem): boolean {
-    return item.categoryId === 'magazine'
+  public isMagazine(value: IItem | string): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === 'magazine'
   }
 
   /**
    * Indicates whether an item is a melee weapon.
-   * @param item - Item.
+   * @param value - Item or category ID.
    * @returns true if the item is a melee weapon; otherwise false.
    */
-  public isMeleeWeapon(item: IItem): boolean {
-    return item.categoryId === 'meleeWeapon'
+  public isMeleeWeapon(value: IItem | string): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === 'meleeWeapon'
   }
 
   /**
    * Indicates whether an item is a mod.
-   * @param item - Item.
+   * @param value - Item or category ID.
    * @returns true if the item is a mod; otherwise false.
    */
-  public isMod(item: IItem): boolean {
-    return item.categoryId === 'mod'
+  public isMod(value: IItem | string): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === 'mod'
   }
 
   /**
    * Indicates whether an item is moddable.
-   * @param item - Item.
+   * @param value - Item or category ID.
    * @returns true if the item is moddable; otherwise false.
    */
-  public isModdable(item: IItem): boolean {
-    return this.isArmorMod(item)
-      || this.isHeadwear(item)
-      || this.isMagazine(item)
-      || this.isMod(item)
-      || this.isRangedWeapon(item)
-      || this.isRangedWeaponMod(item)
+  public isModdable(value: IItem | string): boolean {
+    return this.isArmorMod(value)
+      || this.isHeadwear(value)
+      || this.isMagazine(value)
+      || this.isMod(value)
+      || this.isRangedWeapon(value)
+      || this.isRangedWeaponMod(value)
   }
 
   /**
    * Indicates whether an item is a ranged weapon.
-   * @param item - Item
+   * @param value - Item or category ID.
    * @returns true if the item is a ranged weapon; otherwise false.
    */
-  public isRangedWeapon(item: IItem): boolean {
-    return item.categoryId === 'mainWeapon' || item.categoryId === 'secondaryWeapon'
+  public isRangedWeapon(value: IItem | string): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === 'mainWeapon' || categoryId === 'secondaryWeapon'
   }
 
   /**
    * Indicates whether an item is a ranged weapon mod.
-   * @param item - Item
+   * @param value - Item or category ID.
    * @returns true if the item is a ranged weapon mod; otherwise false.
    */
-  public isRangedWeaponMod(item: IItem): boolean {
-    return item.categoryId === 'rangedWeaponMod'
+  public isRangedWeaponMod(value: IItem | string): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === 'rangedWeaponMod'
   }
 
   /**
    * Indicates whether an item is a vest.
-   * @param item - Item
+   * @param value - Item or category ID.
    * @returns true if the item is a vest; otherwise false.
    */
-  public isVest(item: IItem): boolean {
-    return item.categoryId === 'vest'
+  public isVest(value: IItem | string): boolean {
+    const categoryId = this.getCategoryId(value)
+
+    return categoryId === 'vest'
+  }
+
+  /**
+   * Indicates whether an item is wearable.
+   * @param value - Item or category ID.
+   * @returns true if the item is wearable; otherwise false.
+   */
+  public isWearable(value: IItem | string): boolean {
+    return this.isArmor(value) || this.isArmorMod(value) || this.isBackpack(value) || this.isHeadwear(value) || this.isVest(value)
+  }
+
+  /**
+   * Gets a category ID from an item or a string.
+   * @param value - Item or category ID.
+   * @returns Category ID.
+   */
+  private getCategoryId(value: IItem | string): string {
+    if (typeof value === 'string') {
+      return value
+    } else {
+      return value.categoryId
+    }
   }
 }

@@ -14,12 +14,17 @@ import ModOptionHeader from '../mod/ModOptionHeaderComponent.vue'
 import RangedWeaponModOptionHeader from '../ranged-weapon-mod/RangedWeaponModOptionHeaderComponent.vue'
 import RangedWeaponOptionHeader from '../ranged-weapon/RangedWeaponOptionHeaderComponent.vue'
 import VestOptionHeader from '../vest/VestOptionHeaderComponent.vue'
+import { IItem } from '../../../models/item/IItem'
+import BackpackOptionHeader from '../backpack/BackpackOptionHeaderComponent.vue'
+import Services from '../../../services/repository/Services'
+import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
 
 export default defineComponent({
   components: {
     AmmunitionOptionHeader,
     ArmorModOptionHeader,
     ArmorOptionHeader,
+    BackpackOptionHeader,
     ContainerOptionHeader,
     EyewearOptionHeader,
     GrenadeOptionHeader,
@@ -42,7 +47,7 @@ export default defineComponent({
       required: true
     },
     sortingData: {
-      type: Object as PropType<SortingData>,
+      type: Object as PropType<SortingData<IItem>>,
       required: true
     }
   },
@@ -51,15 +56,21 @@ export default defineComponent({
     'update:sortingData'
   ],
   setup: (props, { emit }) => {
+    const itemPropertiesService = Services.get(ItemPropertiesService)
+
     const updatableFilter = computed({
       get: () => props.filter,
       set: (value: string) => emit('update:filter', value)
     })
     const updatableSortingData = computed({
       get: () => props.sortingData,
-      set: (value: SortingData) => emit('update:sortingData', value)
+      set: (value: SortingData<IItem>) => emit('update:sortingData', value)
     })
 
-    return { updatableFilter, updatableSortingData }
+    return {
+      itemPropertiesService,
+      updatableFilter,
+      updatableSortingData
+    }
   }
 })

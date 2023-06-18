@@ -1,6 +1,6 @@
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IErgonomics } from '../../models/utils/IErgonomics'
-import { IErgonomicsPercentageModifier } from '../../models/utils/IErgonomicsPercentageModifier'
+import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { IRecoil } from '../../models/utils/IRecoil'
 import { IRecoilPercentageModifier } from '../../models/utils/IRecoilPercentageModifier'
@@ -182,7 +182,10 @@ describe('getErgonomics()', () => {
     }
   )
 
-  it.each([[invalidInventoryItem1], [invalidInventoryItem2]])(
+  it.each([
+    [invalidInventoryItem1],
+    [invalidInventoryItem2]
+  ])(
     'should fail if an item cannot be found',
     async (inventoryItem: IInventoryItem) => {
       // Arrange
@@ -200,7 +203,7 @@ describe('getErgonomics()', () => {
   )
 })
 
-describe('getErgonomicsPercentageModifier()', () => {
+describe('getWearableModifiers()', () => {
   it.each([
     [
       {
@@ -212,32 +215,40 @@ describe('getErgonomicsPercentageModifier()', () => {
       } as IInventoryItem,
       {
         ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithMods: 0
-      } as IErgonomicsPercentageModifier
+        ergonomicsPercentageModifierWithMods: 0,
+        movementSpeedPercentageModifier: 0,
+        movementSpeedPercentageModifierWithMods: 0,
+        turningSpeedPercentageModifier: 0,
+        turningSpeedPercentageModifierWithMods: 0
+      } as IWearableModifiers
     ],
     [
       {
         content: [],
         ignorePrice: false,
-        itemId: '5c0e541586f7747fa54205c9', // 6B13 M assault armor (tan)
+        itemId: '5c0e541586f7747fa54205c9', // 6B13 M modified assault armor (Tan)
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
       {
         ergonomicsPercentageModifier: -0.02,
-        ergonomicsPercentageModifierWithMods: -0.02
-      } as IErgonomicsPercentageModifier
+        ergonomicsPercentageModifierWithMods: -0.02,
+        movementSpeedPercentageModifier: -0.04,
+        movementSpeedPercentageModifierWithMods: -0.04,
+        turningSpeedPercentageModifier: -0.01,
+        turningSpeedPercentageModifierWithMods: -0.01
+      } as IWearableModifiers
     ],
     [
       {
         content: [],
         ignorePrice: false,
-        itemId: '5c0e874186f7745dc7616606', // Maska-1Shch bulletproof helmet (Killa)
+        itemId: '5aa7e276e5b5b000171d0647', // Altyn bulletproof helmet
         modSlots: [
           {
             item: {
               content: [],
-              itemId: '5c0e842486f77443a74d2976', // Maska 1Sch face shield (Killa)
+              itemId: '5aa7e373e5b5b000137b76f0', // Altyn face shield
               modSlots: [],
               quantity: 1
             },
@@ -251,15 +262,36 @@ describe('getErgonomicsPercentageModifier()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomicsPercentageModifier: -0.04,
-        ergonomicsPercentageModifierWithMods: -0.13
-      } as IErgonomicsPercentageModifier
+        ergonomicsPercentageModifier: -0.03,
+        ergonomicsPercentageModifierWithMods: -0.06,
+        movementSpeedPercentageModifier: -0.01,
+        movementSpeedPercentageModifierWithMods: -0.01,
+        turningSpeedPercentageModifier: -0.04,
+        turningSpeedPercentageModifierWithMods: -0.12
+      } as IWearableModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: '5ab8ebf186f7742d8b372e80', // SSO Attack 2 raid backpack
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        ergonomicsPercentageModifier: -0.07,
+        ergonomicsPercentageModifierWithMods: -0.07,
+        movementSpeedPercentageModifier: -0.05,
+        movementSpeedPercentageModifierWithMods: -0.05,
+        turningSpeedPercentageModifier: -0.03,
+        turningSpeedPercentageModifierWithMods: -0.03
+      } as IWearableModifiers
     ]
   ])(
-    'should get the ergonomics percentage modifier of an inventory item',
+    'should get the wearable modifiers of an inventory item',
     async (
       inventoryItem: IInventoryItem,
-      expected: IErgonomicsPercentageModifier
+      expected: IWearableModifiers
     ) => {
       // Arrange
       useItemServiceMock()
@@ -267,19 +299,18 @@ describe('getErgonomicsPercentageModifier()', () => {
       const service = new InventoryItemService()
 
       // Act
-      const ergonomicsPercentageModifier = await service.getErgonomicsPercentageModifier(
+      const wearableModifiers = await service.getWearableModifiers(
         inventoryItem
       )
 
       // Assert
-      expect(ergonomicsPercentageModifier.success).toBe(true)
-      expect(
-        ergonomicsPercentageModifier.value.ergonomicsPercentageModifier
-      ).toBe(expected.ergonomicsPercentageModifier)
-      expect(
-        ergonomicsPercentageModifier.value
-          .ergonomicsPercentageModifierWithMods
-      ).toBe(expected.ergonomicsPercentageModifierWithMods)
+      expect(wearableModifiers.success).toBe(true)
+      expect(wearableModifiers.value.ergonomicsPercentageModifier).toBe(expected.ergonomicsPercentageModifier)
+      expect(wearableModifiers.value.ergonomicsPercentageModifierWithMods).toBe(expected.ergonomicsPercentageModifierWithMods)
+      expect(wearableModifiers.value.movementSpeedPercentageModifier).toBe(expected.movementSpeedPercentageModifier)
+      expect(wearableModifiers.value.movementSpeedPercentageModifierWithMods).toBe(expected.movementSpeedPercentageModifierWithMods)
+      expect(wearableModifiers.value.turningSpeedPercentageModifier).toBe(expected.turningSpeedPercentageModifier)
+      expect(wearableModifiers.value.turningSpeedPercentageModifierWithMods).toBe(expected.turningSpeedPercentageModifierWithMods)
     }
   )
 
@@ -314,9 +345,7 @@ describe('getErgonomicsPercentageModifier()', () => {
       const service = new InventoryItemService()
 
       // Act
-      const ergonomicsPercentageModifier = await service.getErgonomicsPercentageModifier(
-        inventoryItem
-      )
+      const ergonomicsPercentageModifier = await service.getWearableModifiers(inventoryItem)
 
       // Assert
       expect(ergonomicsPercentageModifier.success).toBe(false)
@@ -2552,9 +2581,9 @@ describe('getWeight()', () => {
     [
       inventoryItem,
       {
-        weight: 0.96,
-        weightWithContent: 3.176,
-        unitWeight: 0.96
+        weight: 1,
+        weightWithContent: 3.216,
+        unitWeight: 1
       } as IWeight
     ],
     [

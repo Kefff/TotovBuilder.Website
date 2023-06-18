@@ -11,11 +11,6 @@ export default defineComponent({
     item: {
       type: Object as PropType<IAmmunition>,
       required: true
-    },
-    ofGrenade: {
-      type: Boolean,
-      required: false,
-      default: false
     }
   },
   setup: (props) => {

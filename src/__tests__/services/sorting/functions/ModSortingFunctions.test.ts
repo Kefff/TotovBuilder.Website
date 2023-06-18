@@ -1,32 +1,32 @@
 import { IMod } from '../../../../models/item/IMod'
+import { SortingService } from '../../../../services/sorting/SortingService'
 import { ModSortingFunctions } from '../../../../services/sorting/functions/ModSortingFunctions'
 
-describe('setSortingProperty()', () => {
+describe('comparisonFunction()', () => {
   it.each([
     ['ergonomicsModifier', false],
     ['ergonomicsModifier', true]
-  ])('should sort by a property', async (property: string, isPreset: boolean) => {
+  ])('should compare by a property', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
-      categoryId: 'cat',
-      ergonomicsModifier: 1,
-      presetErgonomicsModifier: isPreset ? 1 : undefined
-    } as IMod
-
-    const item2 = {
       categoryId: 'cat',
       ergonomicsModifier: 2,
       presetErgonomicsModifier: isPreset ? 2 : undefined
     } as IMod
 
-    const sortingFunctions = new ModSortingFunctions()
+    const item2 = {
+      categoryId: 'cat',
+      ergonomicsModifier: 1,
+      presetErgonomicsModifier: isPreset ? 1 : undefined
+    } as IMod
+
+    const sortingService = new SortingService(ModSortingFunctions)
+    const updatedSortingDataResult = sortingService.setSortingProperty(property)
 
     // Act
-    const propertyValue1 = await sortingFunctions.getValueToCompareFunctions[property](item1)
-    const propertyValue2 = await sortingFunctions.getValueToCompareFunctions[property](item2)
-    const sortingValue = sortingFunctions.comparisonFunctions[property](item1, propertyValue1, item2, propertyValue2)
+    const sortedItems = await SortingService.sort([item1, item2], updatedSortingDataResult.value)
 
     // Assert
-    expect(sortingValue).toBe(-1)
+    expect(sortedItems).toStrictEqual([item2, item1])
   })
 })

@@ -102,11 +102,13 @@ describe('getShoppingList', () => {
           capacity: 48,
           categoryId: 'backpack',
           conflictingItemIds: [],
+          ergonomicsPercentageModifier: -0.07,
           iconLink: 'https://assets.tarkov.dev/5df8a4d786f77412672a1e3b-icon.webp',
           id: '5df8a4d786f77412672a1e3b',
           imageLink: 'https://assets.tarkov.dev/5df8a4d786f77412672a1e3b-image.webp',
           marketLink: 'https://tarkov.dev/item/6sh118-raid-backpack',
           maxStackableAmount: 1,
+          movementSpeedPercentageModifier: -0.05,
           name: '6Sh118 raid backpack',
           prices: [
             {
@@ -145,7 +147,8 @@ describe('getShoppingList', () => {
             }
           ],
           shortName: '6Sh118',
-          weight: 6.36,
+          turningSpeedPercentageModifier: -0.03,
+          weight: 3.5,
           wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6Sh118_raid_backpack'
         },
         quantity: 1,

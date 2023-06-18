@@ -1,29 +1,28 @@
-import { ItemSortingFunctions } from '../../services/sorting/functions/ItemSortingFunction'
+import { compareByString } from '../../services/sorting/SortingService'
+import { ISortingFunction } from '../../services/sorting/functions/ISortingFunction'
 import { IItem } from '../item/IItem'
 
 /**
  * Prodides the functionalities of data used for sorting.
  */
-export default class SortingData {
-  /**
-   * Property used to sort.
-   */
-  public property = 'name'
-
+export default class SortingData<TItem extends IItem> {
   /**
    * Sorting order.
    */
   public order = SortingOrder.asc
 
   /**
-   * Comparison function to used for sorting.
+   * Property used to sort.
    */
-  public comparisonFunction: (item1: IItem, item1ValueToCompare: string | number, item2: IItem, item2ValueToCompare: string | number) => number = ItemSortingFunctions.compareByString
+  public property = 'name'
 
   /**
-   * Function for getting the data that will be used to sort. Uses the `property` to retreive the data.
+   * Comparison function to used for sorting.
    */
-  public getValueToCompareFunction: (item: IItem) => (string | number) | Promise<string | number> = (item: IItem) => item.name
+  public sortingFunction: ISortingFunction<TItem> = {
+    comparisonFunction: compareByString,
+    comparisonValueObtentionFunction: async (item: IItem) => item.name
+  }
 }
 
 /**

@@ -6,7 +6,7 @@
         caption-resource="caption.capacity"
         icon="box-open"
         property="capacity"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>

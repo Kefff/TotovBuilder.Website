@@ -1,15 +1,19 @@
-import { computed, defineComponent, PropType } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { IArmor } from '../../../models/item/IArmor'
 import StatsUtils from '../../../utils/StatsUtils'
+import WearableSummary from '../wearable/WearableSummaryComponent.vue'
+import { IWearableModifiers } from '../../../models/utils/IWearableModifiers'
 
 export default defineComponent({
-  props: {
+  components: {
+    WearableSummary
+  }, props: {
     item: {
       type: Object as PropType<IArmor>,
       required: true
     },
-    customErgonomicsPercentageModifier: {
-      type: Number,
+    wearableModifiersOverride: {
+      type: Object as PropType<IWearableModifiers>,
       required: false,
       default: undefined
     },
@@ -19,11 +23,8 @@ export default defineComponent({
       default: true
     }
   },
-  setup: (props) => {
-    const ergonomicsPercentageModifier = computed(() => props.customErgonomicsPercentageModifier ?? props.item.ergonomicsPercentageModifier)
-
+  setup: () => {
     return {
-      ergonomicsPercentageModifier,
       StatsUtils
     }
   }

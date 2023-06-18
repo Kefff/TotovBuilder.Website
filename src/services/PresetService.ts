@@ -194,13 +194,13 @@ export class PresetService {
    * @param presetInventoryItem - Preset inventory item.
    */
   private async updatePresetWithArmorProperties(presetItem: IArmorMod | IHeadwear, presetInventoryItem: IInventoryItem): Promise<Result> {
-    const ergonomicsPercentageModifierResult = await Services.get(InventoryItemService).getErgonomicsPercentageModifier(presetInventoryItem)
+    const wearableModifiersResult = await Services.get(InventoryItemService).getWearableModifiers(presetInventoryItem)
 
-    if (!ergonomicsPercentageModifierResult.success) {
-      return Result.failFrom(ergonomicsPercentageModifierResult)
+    if (!wearableModifiersResult.success) {
+      return Result.failFrom(wearableModifiersResult)
     }
 
-    presetItem.presetErgonomicsPercentageModifier = ergonomicsPercentageModifierResult.value.ergonomicsPercentageModifierWithMods
+    presetItem.presetWearableModifiers = wearableModifiersResult.value
 
     return Result.ok()
   }

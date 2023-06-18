@@ -1,20 +1,23 @@
 import { computed, defineComponent, PropType } from 'vue'
 import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
 import SortingData from '../../../models/utils/SortingData'
+import WearableOptionHeader from '../wearable/WearableOptionHeaderComponent.vue'
+import { IArmor } from '../../../models/item/IArmor'
+import { ISortingFunctionList } from '../../../services/sorting/functions/ISortingFunctionList'
 import { ArmorSortingFunctions } from '../../../services/sorting/functions/ArmorSortingFunctions'
-import { SortingService } from '../../../services/sorting/SortingService'
 
 export default defineComponent({
   components: {
-    OptionHeaderSortButton
+    OptionHeaderSortButton,
+    WearableOptionHeader
   },
   props: {
     modelValue: {
-      type: Object as PropType<SortingData>,
+      type: Object as PropType<SortingData<IArmor>>,
       required: true
     },
-    customSortingService: {
-      type: Object as PropType<SortingService>,
+    sortingFunctionsOverride: {
+      type: Object as PropType<ISortingFunctionList<IArmor>>,
       required: false,
       default: undefined
     }
@@ -23,10 +26,12 @@ export default defineComponent({
   setup: (props, { emit }) => {
     const sortingData = computed({
       get: () => props.modelValue,
-      set: (value: SortingData) => emit('update:modelValue', value)
+      set: (value: SortingData<IArmor>) => emit('update:modelValue', value)
     })
-    const sortingService = props.customSortingService ?? new SortingService(new ArmorSortingFunctions())
 
-    return { sortingData, sortingService }
+    return {
+      sortingData,
+      sortingFunctions: props.sortingFunctionsOverride ?? ArmorSortingFunctions
+    }
   }
 })

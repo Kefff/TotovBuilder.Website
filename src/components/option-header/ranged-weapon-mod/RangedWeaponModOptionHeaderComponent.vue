@@ -6,7 +6,7 @@
         caption-resource="caption.ergonomics"
         icon="hand-paper"
         property="ergonomicsModifier"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -17,7 +17,7 @@
         caption-resource="caption.recoil"
         icon="arrows-alt"
         property="recoilPercentageModifier"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -28,7 +28,7 @@
         caption-resource="caption.accuracy"
         icon="bullseye"
         property="accuracyPercentageModifier"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>

@@ -1,7 +1,8 @@
 import { IMagazine } from '../../../../models/item/IMagazine'
+import { SortingService } from '../../../../services/sorting/SortingService'
 import { MagazineSortingFunctions } from '../../../../services/sorting/functions/MagazineSortingFunctions'
 
-describe('setSortingProperty()', () => {
+describe('comparisonFunction()', () => {
   it.each([
     ['checkSpeedPercentageModifier', false],
     ['checkSpeedPercentageModifier', true],
@@ -9,17 +10,9 @@ describe('setSortingProperty()', () => {
     ['ergonomicsModifier', true],
     ['loadSpeedPercentageModifier', false],
     ['loadSpeedPercentageModifier', true]
-  ])('should sort by a property', async (property: string, isPreset: boolean) => {
+  ])('should compare by a property', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
-      categoryId: 'cat',
-      checkSpeedPercentageModifier: 1,
-      ergonomicsModifier: 1,
-      presetErgonomicsModifier: isPreset ? 1 : undefined,
-      loadSpeedPercentageModifier: 1
-    } as IMagazine
-
-    const item2 = {
       categoryId: 'cat',
       checkSpeedPercentageModifier: 2,
       ergonomicsModifier: 2,
@@ -27,14 +20,21 @@ describe('setSortingProperty()', () => {
       loadSpeedPercentageModifier: 2
     } as IMagazine
 
-    const sortingFunctions = new MagazineSortingFunctions()
+    const item2 = {
+      categoryId: 'cat',
+      checkSpeedPercentageModifier: 1,
+      ergonomicsModifier: 1,
+      presetErgonomicsModifier: isPreset ? 1 : undefined,
+      loadSpeedPercentageModifier: 1
+    } as IMagazine
+
+    const sortingService = new SortingService(MagazineSortingFunctions)
+    const updatedSortingDataResult = sortingService.setSortingProperty(property)
 
     // Act
-    const propertyValue1 = await sortingFunctions.getValueToCompareFunctions[property](item1)
-    const propertyValue2 = await sortingFunctions.getValueToCompareFunctions[property](item2)
-    const sortingValue = sortingFunctions.comparisonFunctions[property](item1, propertyValue1, item2, propertyValue2)
+    const sortedItems = await SortingService.sort([item1, item2], updatedSortingDataResult.value)
 
     // Assert
-    expect(sortingValue).toBe(-1)
+    expect(sortedItems).toStrictEqual([item2, item1])
   })
 })

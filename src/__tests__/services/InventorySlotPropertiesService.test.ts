@@ -10,6 +10,7 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
+import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 
 const inventorySlot1: IInventorySlot = {
   items: [
@@ -191,20 +192,20 @@ const inventorySlot2: IInventorySlot = {
 }
 
 const inventorySlot3: IInventorySlot = {
-  typeId: 'backpack',
+  typeId: 'securedContainer',
   items: [
     {
       content: [
         {
           content: [],
           ignorePrice: false,
-          itemId: '5cc70102e4a949035e43ba74', // FN P90 upper receiver
+          itemId: '5a6b59a08dc32e000b452fb7', // Glock SAI 9x19 thread protector
           modSlots: [],
           quantity: 1
         }
       ],
       ignorePrice: false,
-      itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
+      itemId: '544a11ac4bdc2d470e8b456a', // Secure container Alpha
       modSlots: [],
       quantity: 1
     }
@@ -321,11 +322,24 @@ describe('getErgonomics()', () => {
   })
 })
 
-describe('getErgonomicsPercentageModifier()', () => {
+describe('getWearableModifiers()', () => {
   it.each([
-    [inventorySlot1, -0.05],
-    [inventorySlot2, undefined]
-  ])('should get the ergonomics percentage modifier of an inventory slot', async (inventorySlot: IInventorySlot, expected: number | undefined) => {
+    [
+      inventorySlot1,
+      {
+        ergonomicsPercentageModifier: 0,
+        ergonomicsPercentageModifierWithMods: -0.05,
+        movementSpeedPercentageModifier: 0,
+        movementSpeedPercentageModifierWithMods: 0,
+        turningSpeedPercentageModifier: 0,
+        turningSpeedPercentageModifierWithMods: -0.08
+      } as IWearableModifiers
+    ],
+    [
+      inventorySlot2,
+      undefined
+    ]
+  ])('should get the wearable modifiers of an inventory slot', async (inventorySlot: IInventorySlot, expected: IWearableModifiers | undefined) => {
     // Arrange
     useItemServiceMock()
     Services.configure(InventoryItemService)
@@ -333,14 +347,14 @@ describe('getErgonomicsPercentageModifier()', () => {
     const service = new InventorySlotPropertiesService()
 
     // Act
-    const ergonomicsPercentageModifier = await service.getErgonomicsPercentageModifier(inventorySlot)
+    const wearableModifiersResult = await service.getWearableModifiers(inventorySlot)
 
     // Assert
     if (expected != null) {
-      expect(ergonomicsPercentageModifier?.success).toBe(true)
-      expect(ergonomicsPercentageModifier?.value).toBe(expected)
+      expect(wearableModifiersResult?.success).toBe(true)
+      expect(wearableModifiersResult?.value).toStrictEqual(expected)
     } else {
-      expect(ergonomicsPercentageModifier).toBeUndefined()
+      expect(wearableModifiersResult).toBeUndefined()
     }
   })
 
@@ -351,11 +365,11 @@ describe('getErgonomicsPercentageModifier()', () => {
     const service = new InventorySlotPropertiesService()
 
     // Act
-    const ergonomicsPercentageModifier = await service.getErgonomicsPercentageModifier(invalidArmorInventorySlot)
+    const wearableModifiersResult = await service.getWearableModifiers(invalidArmorInventorySlot)
 
     // Assert
-    expect(ergonomicsPercentageModifier?.success).toBe(false)
-    expect(ergonomicsPercentageModifier?.failureMessage).toBe('Item "invalid" not found.')
+    expect(wearableModifiersResult?.success).toBe(false)
+    expect(wearableModifiersResult?.failureMessage).toBe('Item "invalid" not found.')
   })
 })
 
@@ -431,10 +445,20 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: null,
-          value: 26356,
-          valueInMainCurrency: 26356
+          value: 1026292,
+          valueInMainCurrency: 1026292
         },
         pricesWithContent: [
+          {
+            barterItems: [],
+            currencyName: 'EUR',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: null,
+            value: 12,
+            valueInMainCurrency: 1380
+          },
           {
             barterItems: [],
             currencyName: 'USD',
@@ -442,18 +466,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: null,
-            value: 26,
-            valueInMainCurrency: 2912
-          },
-          {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: null,
-            value: 23444,
-            valueInMainCurrency: 23444
+            value: 9151,
+            valueInMainCurrency: 1024912
           }
         ],
         unitPrice: {

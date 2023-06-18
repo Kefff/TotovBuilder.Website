@@ -1,27 +1,27 @@
 import { IContainer } from '../../../../models/item/IContainer'
+import { SortingService } from '../../../../services/sorting/SortingService'
 import { ContainerSortingFunctions } from '../../../../services/sorting/functions/ContainerSortingFunctions'
 
-describe('setSortingProperty()', () => {
-  it.each([['capacity']])('should sort by a property', async (property: string) => {
+describe('comparisonFunction()', () => {
+  it.each([['capacity']])('should compare by a property', async (property: string) => {
     // Arrange
     const item1 = {
-      categoryId: 'cat',
-      capacity: 1
-    } as IContainer
-
-    const item2 = {
       categoryId: 'cat',
       capacity: 2
     } as IContainer
 
-    const sortingFunctions = new ContainerSortingFunctions()
+    const item2 = {
+      categoryId: 'cat',
+      capacity: 1
+    } as IContainer
+
+    const sortingService = new SortingService(ContainerSortingFunctions)
+    const updatedSortingDataResult = sortingService.setSortingProperty(property)
 
     // Act
-    const propertyValue1 = await sortingFunctions.getValueToCompareFunctions[property](item1)
-    const propertyValue2 = await sortingFunctions.getValueToCompareFunctions[property](item2)
-    const sortingValue = sortingFunctions.comparisonFunctions[property](item1, propertyValue1, item2, propertyValue2)
+    const sortedItems = await SortingService.sort([item1, item2], updatedSortingDataResult.value)
 
     // Assert
-    expect(sortingValue).toBe(-1)
+    expect(sortedItems).toStrictEqual([item2, item1])
   })
 })

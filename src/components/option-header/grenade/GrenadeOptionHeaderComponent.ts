@@ -2,7 +2,7 @@ import { computed, defineComponent, PropType } from 'vue'
 import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
 import SortingData from '../../../models/utils/SortingData'
 import { GrenadeSortingFunctions } from '../../../services/sorting/functions/GrenadeSortingFunctions'
-import { SortingService } from '../../../services/sorting/SortingService'
+import { IGrenade } from '../../../models/item/IGrenade'
 
 export default defineComponent({
   components: {
@@ -10,7 +10,7 @@ export default defineComponent({
   },
   props: {
     modelValue: {
-      type: Object as PropType<SortingData>,
+      type: Object as PropType<SortingData<IGrenade>>,
       required: true
     }
   },
@@ -18,10 +18,12 @@ export default defineComponent({
   setup: (props, { emit }) => {
     const sortingData = computed({
       get: () => props.modelValue,
-      set: (value: SortingData) => emit('update:modelValue', value)
+      set: (value: SortingData<IGrenade>) => emit('update:modelValue', value)
     })
-    const sortingService = new SortingService(new GrenadeSortingFunctions())
 
-    return { sortingData, sortingService }
+    return {
+      sortingData,
+      sortingFunctions: GrenadeSortingFunctions
+    }
   }
 })

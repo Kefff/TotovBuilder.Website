@@ -6,7 +6,7 @@
         caption-resource="caption.ergonomics"
         icon="hand-paper"
         property="ergonomicsModifier"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>

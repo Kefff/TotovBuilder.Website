@@ -1,13 +1,8 @@
 <template>
   <ArmorSummary
-    v-if="item.armorClass > 0"
     :item="item"
     :show-empty-entries="showEmptyEntries"
-    :custom-ergonomics-percentage-modifier="item.presetErgonomicsPercentageModifier"
-  />
-  <div
-    v-else
-    class="armor-placeholder"
+    :wearable-modifiers-override="item.presetWearableModifiers"
   />
   <div
     v-if="hasRicochetChance || showEmptyEntries"

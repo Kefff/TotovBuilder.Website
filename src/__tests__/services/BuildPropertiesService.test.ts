@@ -14,6 +14,7 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
+import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 
 export const build1: IBuild = {
   id: 'build_1',
@@ -1232,13 +1233,33 @@ describe('getErgonomics()', () => {
   })
 })
 
-describe('getErgonomicsPercentageModifier()', () => {
+describe('getWearableModifiers()', () => {
   it.each([
-    [build1, -0.07],
-    [build2, 0]
+    [
+      build1,
+      {
+        ergonomicsPercentageModifier: 0,
+        ergonomicsPercentageModifierWithMods: -0.09,
+        movementSpeedPercentageModifier: 0,
+        movementSpeedPercentageModifierWithMods: -0.06,
+        turningSpeedPercentageModifier: 0,
+        turningSpeedPercentageModifierWithMods: -0.09
+      } as IWearableModifiers
+    ],
+    [
+      build2,
+      {
+        ergonomicsPercentageModifier: 0,
+        ergonomicsPercentageModifierWithMods: 0,
+        movementSpeedPercentageModifier: 0,
+        movementSpeedPercentageModifierWithMods: 0,
+        turningSpeedPercentageModifier: 0,
+        turningSpeedPercentageModifierWithMods: 0
+      } as IWearableModifiers
+    ]
   ])(
-    'should get the ergonomics percentage modifier of a build',
-    async (build: IBuild, expected: number) => {
+    'should get the wearable modifiers of a build',
+    async (build: IBuild, expected: IWearableModifiers) => {
       // Arrange
       useItemServiceMock()
       Services.configure(InventoryItemService)
@@ -1247,13 +1268,11 @@ describe('getErgonomicsPercentageModifier()', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const ergonomicsPercentageModifier = await service.getErgonomicsPercentageModifier(
-        build
-      )
+      const wearableModifiersResult = await service.getWearableModifiers(build)
 
       // Assert
-      expect(ergonomicsPercentageModifier.success).toBe(true)
-      expect(ergonomicsPercentageModifier.value).toBe(expected)
+      expect(wearableModifiersResult.success).toBe(true)
+      expect(wearableModifiersResult.value).toStrictEqual(expected)
     }
   )
 
@@ -1265,7 +1284,7 @@ describe('getErgonomicsPercentageModifier()', () => {
     const service = new BuildPropertiesService()
 
     // Act
-    const ergonomicsPercentageModifier = await service.getErgonomicsPercentageModifier(
+    const wearableModifiersResult = await service.getWearableModifiers(
       {
         id: 'build1',
         inventorySlots: [
@@ -1290,8 +1309,8 @@ describe('getErgonomicsPercentageModifier()', () => {
     )
 
     // Assert
-    expect(ergonomicsPercentageModifier.success).toBe(false)
-    expect(ergonomicsPercentageModifier.failureMessage).toBe('Item "invalid" not found.')
+    expect(wearableModifiersResult.success).toBe(false)
+    expect(wearableModifiersResult.failureMessage).toBe('Item "invalid" not found.')
   })
 })
 
@@ -1697,7 +1716,7 @@ describe('getRecoil()', () => {
 
 describe('getWeight()', () => {
   it.each([
-    [build1, 24.148],
+    [build1, 24.188],
     [build2, 3.562]
   ])(
     'should get the weight of a build',

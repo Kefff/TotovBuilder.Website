@@ -6,7 +6,7 @@
         caption-resource="caption.fleshDamage"
         icon="heart-broken"
         property="fleshDamage"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -17,7 +17,7 @@
         caption-resource="caption.fragmentsAmount"
         icon="viruses"
         property="fragmentsAmount"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -28,7 +28,7 @@
         caption-resource="caption.explosionRadius"
         icon="dot-circle"
         property="maximumExplosionRange"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -39,7 +39,7 @@
         caption-resource="caption.explosionDelay"
         icon="stopwatch"
         property="explosionDelay"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>

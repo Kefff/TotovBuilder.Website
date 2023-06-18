@@ -16,6 +16,7 @@ import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import { round } from 'round-ts'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { PriceUtils } from '../utils/PriceUtils'
+import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 
 /**
  * Represents a service responsible for managing properties of a build.
@@ -191,32 +192,6 @@ export class BuildPropertiesService {
   }
 
   /**
-   * Gets the ergonomics percentage modifier of a build.
-   * @param build - Build.
-   * @returns Ergonomics percentage modifier.
-   */
-  public async getErgonomicsPercentageModifier(build: IBuild): Promise<Result<number>> {
-    const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
-    let ergonomicsPercentageModifier = 0
-
-    for (const inventorySlot of build.inventorySlots) {
-      const inventorySlotErgonomicsPercentageModifierResult = await inventorySlotPropertiesService.getErgonomicsPercentageModifier(inventorySlot)
-
-      if (inventorySlotErgonomicsPercentageModifierResult == null) {
-        continue
-      }
-
-      if (!inventorySlotErgonomicsPercentageModifierResult.success) {
-        return Result.failFrom(inventorySlotErgonomicsPercentageModifierResult)
-      }
-
-      ergonomicsPercentageModifier += inventorySlotErgonomicsPercentageModifierResult.value
-    }
-
-    return Result.ok(round(ergonomicsPercentageModifier, 2))
-  }
-
-  /**
    * Gets the tooltip for not exported builds.
    * @param lastUpdated - Date of the last update.
    * @param lastExported - Date of the last export.
@@ -368,7 +343,6 @@ export class BuildPropertiesService {
 
     const result: IBuildSummary = {
       ergonomics: undefined,
-      ergonomicsPercentageModifier: 0,
       exported: build.lastExported != null && build.lastUpdated != null && build.lastExported >= build.lastUpdated,
       horizontalRecoil: undefined,
       id: build.id,
@@ -412,18 +386,26 @@ export class BuildPropertiesService {
       },
       shoppingList: [],
       verticalRecoil: undefined,
+      wearableModifiers: {
+        ergonomicsPercentageModifier: 0,
+        ergonomicsPercentageModifierWithMods: 0,
+        movementSpeedPercentageModifier: 0,
+        movementSpeedPercentageModifierWithMods: 0,
+        turningSpeedPercentageModifier: 0,
+        turningSpeedPercentageModifierWithMods: 0
+      },
       weight: 0
     }
 
-    // Ergonomics percentage modifier
-    const ergonomicsPercentageModifierResult = await this.getErgonomicsPercentageModifier(build)
+    // Wearable modifiers
+    const wearableModifiersResult = await this.getWearableModifiers(build)
 
     /* istanbul ignore if */
-    if (!ergonomicsPercentageModifierResult.success) {
-      return Result.failFrom(ergonomicsPercentageModifierResult)
+    if (!wearableModifiersResult.success) {
+      return Result.failFrom(wearableModifiersResult)
     }
 
-    result.ergonomicsPercentageModifier = ergonomicsPercentageModifierResult.value
+    result.wearableModifiers = wearableModifiersResult.value
 
     // Ergonomics
     const ergonomicsResult = await this.getErgonomics(build)
@@ -434,7 +416,7 @@ export class BuildPropertiesService {
         return Result.failFrom(ergonomicsResult)
       }
 
-      result.ergonomics = round(ergonomicsResult.value + (ergonomicsResult.value * result.ergonomicsPercentageModifier), 1)
+      result.ergonomics = round(ergonomicsResult.value + (ergonomicsResult.value * result.wearableModifiers.ergonomicsPercentageModifierWithMods), 1)
     }
 
     // Price
@@ -481,6 +463,44 @@ export class BuildPropertiesService {
     result.shoppingList = shoppingListResult.value
 
     return Result.ok(result)
+  }
+
+  /**
+   * Gets the ergonomics percentage modifier of a build.
+   * @param build - Build.
+   * @returns Ergonomics percentage modifier.
+   */
+  public async getWearableModifiers(build: IBuild): Promise<Result<IWearableModifiers>> {
+    const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
+    const wearableModifiers: IWearableModifiers = {
+      ergonomicsPercentageModifier: 0,
+      ergonomicsPercentageModifierWithMods: 0,
+      movementSpeedPercentageModifier: 0,
+      movementSpeedPercentageModifierWithMods: 0,
+      turningSpeedPercentageModifier: 0,
+      turningSpeedPercentageModifierWithMods: 0
+    }
+
+    for (const inventorySlot of build.inventorySlots) {
+      const inventorySlotWearableModifiersResult = await inventorySlotPropertiesService.getWearableModifiers(inventorySlot)
+
+      if (inventorySlotWearableModifiersResult == null) {
+        continue
+      }
+
+      if (!inventorySlotWearableModifiersResult.success) {
+        return Result.failFrom(inventorySlotWearableModifiersResult)
+      }
+
+      wearableModifiers.ergonomicsPercentageModifier += round(inventorySlotWearableModifiersResult.value.ergonomicsPercentageModifier, 2)
+      wearableModifiers.ergonomicsPercentageModifierWithMods += round(inventorySlotWearableModifiersResult.value.ergonomicsPercentageModifierWithMods, 2)
+      wearableModifiers.movementSpeedPercentageModifier += round(inventorySlotWearableModifiersResult.value.movementSpeedPercentageModifier, 2)
+      wearableModifiers.movementSpeedPercentageModifierWithMods += round(inventorySlotWearableModifiersResult.value.movementSpeedPercentageModifierWithMods, 2)
+      wearableModifiers.turningSpeedPercentageModifier += round(inventorySlotWearableModifiersResult.value.turningSpeedPercentageModifier, 2)
+      wearableModifiers.turningSpeedPercentageModifierWithMods += round(inventorySlotWearableModifiersResult.value.turningSpeedPercentageModifierWithMods, 2)
+    }
+
+    return Result.ok(wearableModifiers)
   }
 
   /**

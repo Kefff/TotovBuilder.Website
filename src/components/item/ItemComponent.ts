@@ -96,7 +96,7 @@ export default defineComponent({
     const options = ref<IItem[]>([])
     const optionsEmptyMessage = ref<string>('message.noItemsFound')
     const optionsFilter = ref('')
-    const optionsSortingData = ref<SortingData>(new SortingData())
+    const optionsSortingData = ref(new SortingData<IItem>())
     const quantity = ref(props.modelValue?.quantity ?? 1)
     const preset = ref<IInventoryModSlot>()
     const selectedItem = ref<IItem | undefined>()
@@ -222,20 +222,10 @@ export default defineComponent({
     /**
      * Sorts the options items.
      */
-    async function onSortOptions(newValue: SortingData) {
+    async function onSortOptions(newSortingData: SortingData<IItem>) {
       const currentOptions = [...options.value] // Creating a new array because options.value can be updated while this function is being executed
-      optionsSortingData.value = newValue
-      const sortedOptions: IItem[] = []
-
-      const itemCategories = await itemService.getItemCategories()
-
-      for (const itemCategory of itemCategories) {
-        let optionsOfCategory = currentOptions.filter((o) => o.categoryId === itemCategory)
-        optionsOfCategory = await SortingService.sort(optionsOfCategory, newValue)
-        sortedOptions.push(...optionsOfCategory)
-      }
-
-      options.value = sortedOptions
+      optionsSortingData.value = newSortingData
+      options.value = await SortingService.sort(currentOptions, optionsSortingData.value)
     }
 
     /**
@@ -244,7 +234,7 @@ export default defineComponent({
      * @param filter - Filter.
      * @param sortingData - Sorting data.
      */
-    function setOptions(filter: string, sortingData: SortingData) {
+    function setOptions(filter: string, sortingData: SortingData<IItem>) {
       let newOptions: IItem[]
 
       if (filter === '') {

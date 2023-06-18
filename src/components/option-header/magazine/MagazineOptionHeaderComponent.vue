@@ -1,5 +1,8 @@
 <template>
-  <ContainerOptionHeader v-model="sortingData" />
+  <ContainerOptionHeader
+    v-model="sortingData"
+    :sorting-functions-override="sortingFunctions"
+  />
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
@@ -7,7 +10,7 @@
         caption-resource="caption.loadSpeed"
         icon="sync-alt"
         property="loadSpeedPercentageModifier"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -18,7 +21,7 @@
         caption-resource="caption.checkSpeed"
         icon="eye"
         property="checkSpeedPercentageModifier"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
@@ -29,7 +32,7 @@
         caption-resource="caption.ergonomics"
         icon="hand-paper"
         property="ergonomicsModifier"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>

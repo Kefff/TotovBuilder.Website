@@ -1,15 +1,11 @@
 import { computed, defineComponent, PropType } from 'vue'
 import { IMagazine } from '../../../models/item/IMagazine'
-import ItemIcon from '../../item-icon/ItemIconComponent.vue'
 import ContainerSummary from '../container/ContainerSummaryComponent.vue'
 import StatsUtils from '../../../utils/StatsUtils'
-import Price from '../../price/PriceComponent.vue'
 
 export default defineComponent({
   components: {
-    ContainerSummary,
-    ItemIcon,
-    Price
+    ContainerSummary
   },
   props: {
     item: {

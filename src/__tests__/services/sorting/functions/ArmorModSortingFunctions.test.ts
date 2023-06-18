@@ -1,4 +1,5 @@
 import { IArmorMod } from '../../../../models/item/IArmorMod'
+import { SortingService } from '../../../../services/sorting/SortingService'
 import { ArmorModSortingFunctions } from '../../../../services/sorting/functions/ArmorModSortingFunctions'
 
 describe('setSortingProperty()', () => {
@@ -12,14 +13,6 @@ describe('setSortingProperty()', () => {
   ])('should sort by a property', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
-      armorClass: 1,
-      categoryId: 'cat',
-      durability: 1,
-      ergonomicsPercentageModifier: 1,
-      presetErgonomicsPercentageModifier: isPreset ? 1 : undefined
-    } as IArmorMod
-
-    const item2 = {
       armorClass: 2,
       categoryId: 'cat',
       durability: 2,
@@ -27,14 +20,21 @@ describe('setSortingProperty()', () => {
       presetErgonomicsPercentageModifier: isPreset ? 2 : undefined
     } as IArmorMod
 
-    const sortingFunctions = new ArmorModSortingFunctions()
+    const item2 = {
+      armorClass: 1,
+      categoryId: 'cat',
+      durability: 1,
+      ergonomicsPercentageModifier: 1,
+      presetErgonomicsPercentageModifier: isPreset ? 1 : undefined
+    } as IArmorMod
+
+    const sortingService = new SortingService<IArmorMod>(ArmorModSortingFunctions)
+    const updatedSortingDataResult = sortingService.setSortingProperty(property)
 
     // Act
-    const propertyValue1 = await sortingFunctions.getValueToCompareFunctions[property](item1)
-    const propertyValue2 = await sortingFunctions.getValueToCompareFunctions[property](item2)
-    const sortingValue = sortingFunctions.comparisonFunctions[property](item1, propertyValue1, item2, propertyValue2)
+    const sortedItems = await SortingService.sort([item1, item2], updatedSortingDataResult.value)
 
     // Assert
-    expect(sortingValue).toBe(-1)
+    expect(sortedItems).toStrictEqual([item2, item1])
   })
 })

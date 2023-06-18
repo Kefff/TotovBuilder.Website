@@ -1,9 +1,9 @@
 import { computed, defineComponent, nextTick, onMounted, PropType, ref } from 'vue'
 import SortingData from '../../../models/utils/SortingData'
 import { ItemSortingFunctions } from '../../../services/sorting/functions/ItemSortingFunction'
-import { SortingService } from '../../../services/sorting/SortingService'
 import StringUtils from '../../../utils/StringUtils'
 import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
+import { IItem } from '../../../models/item/IItem'
 
 export default defineComponent({
   components: {
@@ -15,7 +15,7 @@ export default defineComponent({
       required: true
     },
     sortingData: {
-      type: Object as PropType<SortingData>,
+      type: Object as PropType<SortingData<IItem>>,
       required: true
     }
   },
@@ -26,10 +26,8 @@ export default defineComponent({
   setup: (props, { emit }) => {
     const updatableSortingData = computed({
       get: () => props.sortingData,
-      set: (value: SortingData) => emit('update:sortingData', value)
+      set: (value: SortingData<IItem>) => emit('update:sortingData', value)
     })
-    const sortingService = new SortingService(new ItemSortingFunctions())
-
     const filterInput = ref()
     const filterDelay = 500 // Milliseconds passed without typing before emitting the filter update
     let filterLastEdit = new Date()
@@ -63,6 +61,13 @@ export default defineComponent({
       nextTick(() => filterInput.value.$el.select())
     })
 
-    return { filterInput, onFilterChange, sortingService, StringUtils, updatableFilter, updatableSortingData }
+    return {
+      filterInput,
+      onFilterChange,
+      sortingFunctions: ItemSortingFunctions,
+      StringUtils,
+      updatableFilter,
+      updatableSortingData
+    }
   }
 })

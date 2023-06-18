@@ -2,7 +2,7 @@ import { computed, defineComponent, PropType } from 'vue'
 import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
 import SortingData from '../../../models/utils/SortingData'
 import { RangedWeaponSortingFunctions } from '../../../services/sorting/functions/RangedWeaponSortingFunctions'
-import { SortingService } from '../../../services/sorting/SortingService'
+import { IRangedWeapon } from '../../../models/item/IRangedWeapon'
 
 export default defineComponent({
   components: {
@@ -10,7 +10,7 @@ export default defineComponent({
   },
   props: {
     modelValue: {
-      type: Object as PropType<SortingData>,
+      type: Object as PropType<SortingData<IRangedWeapon>>,
       required: true
     }
   },
@@ -18,9 +18,12 @@ export default defineComponent({
   setup: (props, { emit }) => {
     const sortingData = computed({
       get: () => props.modelValue,
-      set: (value: SortingData) => emit('update:modelValue', value)
+      set: (value: SortingData<IRangedWeapon>) => emit('update:modelValue', value)
     })
-    const sortingService = new SortingService(new RangedWeaponSortingFunctions())
-    return { sortingData, sortingService }
+
+    return {
+      sortingData,
+      sortingFunctions: RangedWeaponSortingFunctions
+    }
   }
 })

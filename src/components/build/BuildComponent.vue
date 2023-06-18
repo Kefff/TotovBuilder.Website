@@ -111,13 +111,41 @@
               />
             </div>
             <div
-              v-if="summary.ergonomicsPercentageModifier != null && summary.ergonomicsPercentageModifier !== 0"
+              v-if="summary.wearableModifiers != null && summary.wearableModifiers.ergonomicsPercentageModifierWithMods !== 0"
               v-tooltip.top="$t('caption.ergonomicsPercentageModifier')"
               class="build-toolbar-summary-value"
             >
-              <span :class="StatsUtils.getValueColorClass(summary.ergonomicsPercentageModifier)">{{ StatsUtils.getDisplayValue(summary.ergonomicsPercentageModifier, true, true) }}</span>
+              <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsPercentageModifierWithMods)">
+                {{ StatsUtils.getDisplayValue(summary.wearableModifiers.ergonomicsPercentageModifierWithMods, true, true) }}
+              </span>
               <font-awesome-icon
                 icon="hand-paper"
+                class="icon-after-text"
+              />
+            </div>
+            <div
+              v-if="summary.wearableModifiers != null && summary.wearableModifiers.movementSpeedPercentageModifierWithMods !== 0"
+              v-tooltip.top="$t('caption.movementSpeedPercentageModifier')"
+              class="build-toolbar-summary-value"
+            >
+              <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedPercentageModifierWithMods)">
+                {{ StatsUtils.getDisplayValue(summary.wearableModifiers.movementSpeedPercentageModifierWithMods, true, true) }}
+              </span>
+              <font-awesome-icon
+                icon="walking"
+                class="icon-after-text"
+              />
+            </div>
+            <div
+              v-if="summary.wearableModifiers != null && summary.wearableModifiers.turningSpeedPercentageModifierWithMods !== 0"
+              v-tooltip.top="$t('caption.turningSpeedPercentageModifier')"
+              class="build-toolbar-summary-value"
+            >
+              <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedPercentageModifierWithMods)">
+                {{ StatsUtils.getDisplayValue(summary.wearableModifiers.turningSpeedPercentageModifierWithMods, true, true) }}
+              </span>
+              <font-awesome-icon
+                icon="undo"
                 class="icon-after-text"
               />
             </div>

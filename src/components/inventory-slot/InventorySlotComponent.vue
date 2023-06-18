@@ -46,15 +46,41 @@
               />
             </div>
             <div
-              v-if="ergonomicsPercentageModifier != null && ergonomicsPercentageModifier !== 0"
+              v-if="wearableModifiers != null && wearableModifiers.ergonomicsPercentageModifierWithMods !== 0"
               v-tooltip.top="$t('caption.ergonomics')"
               class="inventory-slot-summary-value"
             >
-              <span :class="StatsUtils.getValueColorClass(ergonomicsPercentageModifier)">
-                {{ StatsUtils.getDisplayValue(ergonomicsPercentageModifier, true, true) }}
+              <span :class="StatsUtils.getValueColorClass(wearableModifiers.ergonomicsPercentageModifierWithMods)">
+                {{ StatsUtils.getDisplayValue(wearableModifiers.ergonomicsPercentageModifierWithMods, true, true) }}
               </span>
               <font-awesome-icon
                 icon="hand-paper"
+                class="icon-after-text"
+              />
+            </div>
+            <div
+              v-if="wearableModifiers != null && wearableModifiers.movementSpeedPercentageModifierWithMods !== 0"
+              v-tooltip.top="$t('caption.movementSpeed')"
+              class="inventory-slot-summary-value"
+            >
+              <span :class="StatsUtils.getValueColorClass(wearableModifiers.movementSpeedPercentageModifierWithMods)">
+                {{ StatsUtils.getDisplayValue(wearableModifiers.movementSpeedPercentageModifierWithMods, true, true) }}
+              </span>
+              <font-awesome-icon
+                icon="walking"
+                class="icon-after-text"
+              />
+            </div>
+            <div
+              v-if="wearableModifiers != null && wearableModifiers.turningSpeedPercentageModifierWithMods !== 0"
+              v-tooltip.top="$t('caption.turningSpeed')"
+              class="inventory-slot-summary-value"
+            >
+              <span :class="StatsUtils.getValueColorClass(wearableModifiers.turningSpeedPercentageModifierWithMods)">
+                {{ StatsUtils.getDisplayValue(wearableModifiers.turningSpeedPercentageModifierWithMods, true, true) }}
+              </span>
+              <font-awesome-icon
+                icon="undo"
                 class="icon-after-text"
               />
             </div>

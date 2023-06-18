@@ -1,7 +1,7 @@
 <template>
   <ArmorOptionHeader
     v-model="sortingData"
-    :custom-sorting-service="sortingService"
+    :sorting-functions-override="sortingFunctions"
   />
   <div class="option-entry">
     <div class="option-value">
@@ -10,7 +10,7 @@
         caption-resource="caption.ricochetChance"
         custom-icon="ricochet"
         property="ricochetChance"
-        :sorting-service="sortingService"
+        :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
