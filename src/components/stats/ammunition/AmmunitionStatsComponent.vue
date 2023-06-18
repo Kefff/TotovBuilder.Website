@@ -1,9 +1,6 @@
 <template>
   <div class="stats-line">
-    <div
-      v-if="!ofGrenade"
-      class="stats-entry"
-    >
+    <div class="stats-entry">
       <div class="stats-caption custom-icon-before-text">
         <img src="/assets/caliber.webp">
         <span>{{ $t('caption.caliber') }} :</span>
@@ -12,10 +9,7 @@
         {{ $t('caption.' + StringUtils.toLowerFirst(item.caliber)) }}
       </div>
     </div>
-    <div
-      v-if="!ofGrenade"
-      class="stats-entry"
-    >
+    <div class="stats-entry">
       <div class="stats-caption">
         <div class="icon-before-text" />
         <span>{{ $t('caption.projectiles') }} :</span>
@@ -37,7 +31,7 @@
       </div>
     </div>
     <div
-      v-if="!ofGrenade && item.durabilityBurnPercentageModifier !== 0"
+      v-if="item.durabilityBurnPercentageModifier !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">

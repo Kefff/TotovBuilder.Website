@@ -76,7 +76,6 @@ export default defineComponent({
     const merchantItemsOptionsSidebarVisible = ref(false)
     const summary = ref<IBuildSummary>({
       ergonomics: undefined,
-      ergonomicsPercentageModifier: 0,
       exported: false,
       horizontalRecoil: undefined,
       id: build.value.id,
@@ -120,6 +119,14 @@ export default defineComponent({
       },
       shoppingList: [],
       verticalRecoil: undefined,
+      wearableModifiers: {
+        ergonomicsPercentageModifier: 0,
+        ergonomicsPercentageModifierWithMods: 0,
+        movementSpeedPercentageModifier: 0,
+        movementSpeedPercentageModifierWithMods: 0,
+        turningSpeedPercentageModifier: 0,
+        turningSpeedPercentageModifierWithMods: 0
+      },
       weight: 0
     })
     const toolbarCssClass = ref('toolbar')
