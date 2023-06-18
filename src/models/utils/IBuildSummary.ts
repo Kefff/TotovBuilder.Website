@@ -1,5 +1,6 @@
 import { IShoppingListItem } from '../build/IShoppingListItem'
 import { IInventoryPrice } from './IInventoryPrice'
+import { IWearableModifiers } from './IWearableModifiers'
 
 /**
  * Represents a summary of a build.
@@ -9,11 +10,6 @@ export interface IBuildSummary {
    * Ergonomics.
    */
   ergonomics: number | undefined
-
-  /**
-   * Ergonomics percentage modifier.
-   */
-  ergonomicsPercentageModifier: number
 
   /**
    * Indicates whether the build has been exported since it was last updated or not.
@@ -59,6 +55,11 @@ export interface IBuildSummary {
    * Vertical recoil.
    */
   verticalRecoil: number | undefined
+
+  /**
+   * Wearable modifiers.
+   */
+  wearableModifiers: IWearableModifiers
 
   /**
    * Weight.

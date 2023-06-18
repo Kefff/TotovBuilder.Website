@@ -19,7 +19,6 @@ describe('getSummary()', () => {
       build1,
       {
         ergonomics: 34.1,
-        ergonomicsPercentageModifier: -0.09,
         exported: false,
         horizontalRecoil: 200,
         id: 'build_1',
@@ -1299,6 +1298,14 @@ describe('getSummary()', () => {
           }
         ],
         verticalRecoil: 71,
+        wearableModifiers: {
+          ergonomicsPercentageModifier: 0,
+          ergonomicsPercentageModifierWithMods: -0.09,
+          movementSpeedPercentageModifier: 0,
+          movementSpeedPercentageModifierWithMods: -0.06,
+          turningSpeedPercentageModifier: 0,
+          turningSpeedPercentageModifierWithMods: -0.09
+        },
         weight: 24.188
       } as IBuildSummary
     ],
@@ -1306,7 +1313,6 @@ describe('getSummary()', () => {
       build2,
       {
         ergonomics: 54,
-        ergonomicsPercentageModifier: 0,
         exported: false,
         horizontalRecoil: 234,
         id: 'build_2',
@@ -2028,6 +2034,14 @@ describe('getSummary()', () => {
           }
         ],
         verticalRecoil: 397,
+        wearableModifiers: {
+          ergonomicsPercentageModifier: 0,
+          ergonomicsPercentageModifierWithMods: 0,
+          movementSpeedPercentageModifier: 0,
+          movementSpeedPercentageModifierWithMods: 0,
+          turningSpeedPercentageModifier: 0,
+          turningSpeedPercentageModifierWithMods: 0
+        },
         weight: 3.562
       } as IBuildSummary
     ],
@@ -2042,7 +2056,6 @@ describe('getSummary()', () => {
       } as IBuild,
       {
         ergonomics: undefined,
-        ergonomicsPercentageModifier: 0,
         exported: true,
         horizontalRecoil: undefined,
         id: 'emptyBuild',
@@ -2086,6 +2099,14 @@ describe('getSummary()', () => {
         },
         shoppingList: [],
         verticalRecoil: undefined,
+        wearableModifiers: {
+          ergonomicsPercentageModifier: 0,
+          ergonomicsPercentageModifierWithMods: 0,
+          movementSpeedPercentageModifier: 0,
+          movementSpeedPercentageModifierWithMods: 0,
+          turningSpeedPercentageModifier: 0,
+          turningSpeedPercentageModifierWithMods: 0
+        },
         weight: 0
       } as IBuildSummary
     ]
@@ -2244,7 +2265,6 @@ describe('getSummary()', () => {
     expect(summaryResult.success).toBe(true)
     expect(summaryResult.value).toStrictEqual({
       ergonomics: undefined,
-      ergonomicsPercentageModifier: -0.07,
       exported: false,
       horizontalRecoil: undefined,
       id: '1',
@@ -2787,6 +2807,14 @@ describe('getSummary()', () => {
         }
       ],
       verticalRecoil: undefined,
+      wearableModifiers: {
+        ergonomicsPercentageModifier: 0,
+        ergonomicsPercentageModifierWithMods: -0.07,
+        movementSpeedPercentageModifier: 0,
+        movementSpeedPercentageModifierWithMods: -0.05,
+        turningSpeedPercentageModifier: 0,
+        turningSpeedPercentageModifierWithMods: -0.03
+      },
       weight: 6.664
     } as IBuildSummary)
   })

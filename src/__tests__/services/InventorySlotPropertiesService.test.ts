@@ -10,6 +10,7 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
+import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 
 const inventorySlot1: IInventorySlot = {
   items: [
@@ -321,11 +322,24 @@ describe('getErgonomics()', () => {
   })
 })
 
-describe('getErgonomicsPercentageModifier()', () => {
+describe('getWearableModifiers()', () => {
   it.each([
-    [inventorySlot1, -0.05],
-    [inventorySlot2, undefined]
-  ])('should get the ergonomics percentage modifier of an inventory slot', async (inventorySlot: IInventorySlot, expected: number | undefined) => {
+    [
+      inventorySlot1,
+      {
+        ergonomicsPercentageModifier: 0,
+        ergonomicsPercentageModifierWithMods: -0.05,
+        movementSpeedPercentageModifier: 0,
+        movementSpeedPercentageModifierWithMods: 0,
+        turningSpeedPercentageModifier: 0,
+        turningSpeedPercentageModifierWithMods: -0.08
+      } as IWearableModifiers
+    ],
+    [
+      inventorySlot2,
+      undefined
+    ]
+  ])('should get the wearable modifiers of an inventory slot', async (inventorySlot: IInventorySlot, expected: IWearableModifiers | undefined) => {
     // Arrange
     useItemServiceMock()
     Services.configure(InventoryItemService)
@@ -333,14 +347,14 @@ describe('getErgonomicsPercentageModifier()', () => {
     const service = new InventorySlotPropertiesService()
 
     // Act
-    const ergonomicsPercentageModifier = await service.getErgonomicsPercentageModifier(inventorySlot)
+    const wearableModifiersResult = await service.getWearableModifiers(inventorySlot)
 
     // Assert
     if (expected != null) {
-      expect(ergonomicsPercentageModifier?.success).toBe(true)
-      expect(ergonomicsPercentageModifier?.value).toBe(expected)
+      expect(wearableModifiersResult?.success).toBe(true)
+      expect(wearableModifiersResult?.value).toStrictEqual(expected)
     } else {
-      expect(ergonomicsPercentageModifier).toBeUndefined()
+      expect(wearableModifiersResult).toBeUndefined()
     }
   })
 
@@ -351,11 +365,11 @@ describe('getErgonomicsPercentageModifier()', () => {
     const service = new InventorySlotPropertiesService()
 
     // Act
-    const ergonomicsPercentageModifier = await service.getErgonomicsPercentageModifier(invalidArmorInventorySlot)
+    const wearableModifiersResult = await service.getWearableModifiers(invalidArmorInventorySlot)
 
     // Assert
-    expect(ergonomicsPercentageModifier?.success).toBe(false)
-    expect(ergonomicsPercentageModifier?.failureMessage).toBe('Item "invalid" not found.')
+    expect(wearableModifiersResult?.success).toBe(false)
+    expect(wearableModifiersResult?.failureMessage).toBe('Item "invalid" not found.')
   })
 })
 

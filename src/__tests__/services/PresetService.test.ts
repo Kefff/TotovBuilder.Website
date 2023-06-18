@@ -16,7 +16,7 @@ import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import Result, { FailureType } from '../../utils/Result'
 import { IErgonomics } from '../../models/utils/IErgonomics'
-import { IErgonomicsPercentageModifier } from '../../models/utils/IErgonomicsPercentageModifier'
+import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { IRecoil } from '../../models/utils/IRecoil'
 import { IRecoilPercentageModifier } from '../../models/utils/IRecoilPercentageModifier'
 import { ItemFetcherService } from '../../services/ItemFetcherService'
@@ -548,7 +548,7 @@ describe('updatePresetProperties', () => {
           }],
           movementSpeedPercentageModifier: 0.04,
           name: 'Base armor mod',
-          presetErgonomicsPercentageModifier: undefined,
+          presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
           shortName: 'bam',
@@ -580,7 +580,7 @@ describe('updatePresetProperties', () => {
           }],
           movementSpeedPercentageModifier: 0.04,
           name: 'Preset armor mod',
-          presetErgonomicsPercentageModifier: undefined,
+          presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
           shortName: 'pam',
@@ -607,7 +607,7 @@ describe('updatePresetProperties', () => {
           modSlots: [],
           movementSpeedPercentageModifier: 0.20,
           name: 'Child armor mod',
-          presetErgonomicsPercentageModifier: undefined,
+          presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
           shortName: 'cam',
@@ -656,7 +656,14 @@ describe('updatePresetProperties', () => {
 
     // Assert
     expect(armorMod.ergonomicsPercentageModifier).toBe(0.05)
-    expect(armorMod.presetErgonomicsPercentageModifier).toBe(0.15)
+    expect(armorMod.presetWearableModifiers).toStrictEqual({
+      ergonomicsPercentageModifier: 0.05,
+      ergonomicsPercentageModifierWithMods: 0.15,
+      movementSpeedPercentageModifier: 0.04,
+      movementSpeedPercentageModifierWithMods: 0.24,
+      turningSpeedPercentageModifier: 0.03,
+      turningSpeedPercentageModifierWithMods: 0.33
+    } as IWearableModifiers)
   })
 
   it('should update the properties of a headwear', async () => {
@@ -691,7 +698,7 @@ describe('updatePresetProperties', () => {
           }],
           movementSpeedPercentageModifier: 0.04,
           name: 'Base headwear',
-          presetErgonomicsPercentageModifier: undefined,
+          presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
           shortName: 'bh',
@@ -724,7 +731,7 @@ describe('updatePresetProperties', () => {
           }],
           movementSpeedPercentageModifier: 0.04,
           name: 'Preset headwear',
-          presetErgonomicsPercentageModifier: undefined,
+          presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
           shortName: 'ph',
@@ -751,7 +758,7 @@ describe('updatePresetProperties', () => {
           modSlots: [],
           movementSpeedPercentageModifier: 0.20,
           name: 'Child armor mod',
-          presetErgonomicsPercentageModifier: undefined,
+          presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
           shortName: 'cam',
@@ -800,7 +807,14 @@ describe('updatePresetProperties', () => {
 
     // Assert
     expect(headwear.ergonomicsPercentageModifier).toBe(0.05)
-    expect(headwear.presetErgonomicsPercentageModifier).toBe(0.15)
+    expect(headwear.presetWearableModifiers).toStrictEqual({
+      ergonomicsPercentageModifier: 0.05,
+      ergonomicsPercentageModifierWithMods: 0.15,
+      movementSpeedPercentageModifier: 0.04,
+      movementSpeedPercentageModifierWithMods: 0.24,
+      turningSpeedPercentageModifier: 0.03,
+      turningSpeedPercentageModifierWithMods: 0.33
+    } as IWearableModifiers)
   })
 
   it('should update the properties of a mod', async () => {
@@ -1261,7 +1275,7 @@ describe('updatePresetProperties', () => {
   ])('should notify presets it cannot update', async (
     presetId: string,
     ergonomicsFailure: boolean,
-    ergonomicsPercentageModifierFailure: boolean,
+    wearableModifiersFailure: boolean,
     recoilFailure: boolean,
     recoilPercentageModifierFailure: boolean) => {
     // Arrange
@@ -1289,7 +1303,7 @@ describe('updatePresetProperties', () => {
           modSlots: [],
           movementSpeedPercentageModifier: 0.04,
           name: 'Preset armor mod',
-          presetErgonomicsPercentageModifier: undefined,
+          presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
           shortName: 'pam',
@@ -1377,14 +1391,18 @@ describe('updatePresetProperties', () => {
             ergonomics: 0,
             ergonomicsWithMods: 0
           } as IErgonomics)))
-    when(inventoryItemServiceMock.getErgonomicsPercentageModifier(anything()))
+    when(inventoryItemServiceMock.getWearableModifiers(anything()))
       .thenReturn(Promise.resolve(
-        ergonomicsPercentageModifierFailure
+        wearableModifiersFailure
           ? Result.fail(FailureType.error)
           : Result.ok({
             ergonomicsPercentageModifier: 0,
-            ergonomicsPercentageModifierWithMods: 0
-          } as IErgonomicsPercentageModifier)))
+            ergonomicsPercentageModifierWithMods: 0,
+            movementSpeedPercentageModifier: 0,
+            movementSpeedPercentageModifierWithMods: 0,
+            turningSpeedPercentageModifier: 0,
+            turningSpeedPercentageModifierWithMods: 0
+          } as IWearableModifiers)))
     when(inventoryItemServiceMock.getRecoil(anything()))
       .thenReturn(Promise.resolve(
         recoilFailure

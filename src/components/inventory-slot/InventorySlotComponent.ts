@@ -17,6 +17,7 @@ import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { InventoryItemService } from '../../services/InventoryItemService'
+import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 
 export default defineComponent({
   components: {
@@ -58,7 +59,6 @@ export default defineComponent({
     const categoryIds = ref<string[]>([])
     const customIcon = ref<string>()
     const ergonomics = ref<number | undefined>()
-    const ergonomicsPercentageModifier = ref<number | undefined>()
     const horizontalRecoil = ref<number | undefined>()
     const icon = ref<string>()
     const items = ref<(IInventoryItem | undefined)[]>([]) // Used to be able to put back the previously selected item when changing it to an incompatible item
@@ -99,6 +99,7 @@ export default defineComponent({
     })
     const type = ref<IInventorySlotType>()
     const verticalRecoil = ref<number | undefined>()
+    const wearableModifiers = ref<IWearableModifiers | undefined>()
     const weight = ref(0)
 
     watch(() => props.modelValue.items, () => initialize())
@@ -137,18 +138,18 @@ export default defineComponent({
       }
 
       // Ergonomics percentage modifier
-      const ergonomicsPercentageModifierResult = await service.getErgonomicsPercentageModifier(props.modelValue)
+      const wearableModifiersResult = await service.getWearableModifiers(props.modelValue)
 
-      if (ergonomicsPercentageModifierResult != null) {
-        if (!ergonomicsPercentageModifierResult.success) {
-          notificationService.notify(NotificationType.error, ergonomicsPercentageModifierResult.failureMessage)
+      if (wearableModifiersResult != null) {
+        if (!wearableModifiersResult.success) {
+          notificationService.notify(NotificationType.error, wearableModifiersResult.failureMessage)
 
           return
         }
 
-        ergonomicsPercentageModifier.value = ergonomicsPercentageModifierResult.value
+        wearableModifiers.value = wearableModifiersResult.value
       } else {
-        ergonomicsPercentageModifier.value = undefined
+        wearableModifiers.value = undefined
       }
 
       // Price
@@ -282,7 +283,6 @@ export default defineComponent({
       customIcon,
       displayed,
       ergonomics,
-      ergonomicsPercentageModifier,
       horizontalRecoil,
       icon,
       itemPathPrefix,
@@ -293,6 +293,7 @@ export default defineComponent({
       StringUtils,
       toggle,
       verticalRecoil,
+      wearableModifiers,
       weight
     }
   }

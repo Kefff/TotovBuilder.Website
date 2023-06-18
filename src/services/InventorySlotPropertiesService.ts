@@ -8,6 +8,7 @@ import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { ItemService } from './ItemService'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import { PriceUtils } from '../utils/PriceUtils'
+import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 
 /**
  * Represents a service responsible for managing properties of an inventory slot.
@@ -49,39 +50,6 @@ export class InventorySlotPropertiesService {
     }
 
     return Result.ok(ergonomicsResult.value.ergonomicsWithMods)
-  }
-
-  /**
-   * Gets the ergonomics percentage modifier of a body armor or tactical rig inventory slot.
-   * @param inventorySlot - Inventory slot.
-   * @returns Ergonomics percentage modifier.
-   */
-  public async getErgonomicsPercentageModifier(inventorySlot: IInventorySlot): Promise<Result<number> | undefined> {
-    if (inventorySlot.typeId !== 'backpack'
-      && inventorySlot.typeId !== 'bodyArmor'
-      && inventorySlot.typeId !== 'headwear'
-      && inventorySlot.typeId !== 'tacticalRig') {
-      return undefined
-    }
-
-    const inventoryItemService = Services.get(InventoryItemService)
-    let ergonomicsPercentageModifier = 0
-
-    for (const inventoryItem of inventorySlot.items) {
-      if (inventoryItem == null) {
-        continue
-      }
-
-      const ergonomicsPercentageModifierResult = await inventoryItemService.getErgonomicsPercentageModifier(inventoryItem)
-
-      if (!ergonomicsPercentageModifierResult.success) {
-        return Result.failFrom(ergonomicsPercentageModifierResult)
-      }
-
-      ergonomicsPercentageModifier += ergonomicsPercentageModifierResult.value.ergonomicsPercentageModifierWithMods
-    }
-
-    return Result.ok(ergonomicsPercentageModifier)
   }
 
   /**
@@ -197,6 +165,48 @@ export class InventorySlotPropertiesService {
       horizontalRecoil: recoilResult.value.horizontalRecoilWithMods,
       verticalRecoil: recoilResult.value.verticalRecoilWithMods
     })
+  }
+
+  /**
+   * Gets the the modifiers from wearable inventory slots.
+   * @param inventorySlot - Inventory slot.
+   * @returns Wearable modifiers.
+   */
+  public async getWearableModifiers(inventorySlot: IInventorySlot): Promise<Result<IWearableModifiers> | undefined> {
+    if (inventorySlot.typeId !== 'backpack'
+      && inventorySlot.typeId !== 'bodyArmor'
+      && inventorySlot.typeId !== 'headwear'
+      && inventorySlot.typeId !== 'tacticalRig') {
+      return undefined
+    }
+
+    const inventoryItemService = Services.get(InventoryItemService)
+    const wearableModifiers: IWearableModifiers = {
+      ergonomicsPercentageModifier: 0,
+      ergonomicsPercentageModifierWithMods: 0,
+      movementSpeedPercentageModifier: 0,
+      movementSpeedPercentageModifierWithMods: 0,
+      turningSpeedPercentageModifier: 0,
+      turningSpeedPercentageModifierWithMods: 0
+    }
+
+    for (const inventoryItem of inventorySlot.items) {
+      if (inventoryItem == null) {
+        continue
+      }
+
+      const wearableeModifiersResult = await inventoryItemService.getWearableModifiers(inventoryItem)
+
+      if (!wearableeModifiersResult.success) {
+        return Result.failFrom(wearableeModifiersResult)
+      }
+
+      wearableModifiers.ergonomicsPercentageModifierWithMods += wearableeModifiersResult.value.ergonomicsPercentageModifierWithMods
+      wearableModifiers.movementSpeedPercentageModifierWithMods += wearableeModifiersResult.value.movementSpeedPercentageModifierWithMods
+      wearableModifiers.turningSpeedPercentageModifierWithMods += wearableeModifiersResult.value.turningSpeedPercentageModifierWithMods
+    }
+
+    return Result.ok(wearableModifiers)
   }
 
   /**
