@@ -11,10 +11,6 @@
           >
             <font-awesome-icon icon="minus" />
           </div>
-          <Price
-            v-if="preset == null"
-            :price="price.price"
-          />
           <div
             v-if="price.missingPrice"
             v-tooltip.top="$t('message.missingPrice')"
@@ -22,6 +18,10 @@
           >
             <font-awesome-icon icon="exclamation-triangle" />
           </div>
+          <Price
+            v-if="preset == null"
+            :price="price.price"
+          />
           <div
             v-tooltip.top="$t('caption.weight')"
             class="selected-item-summary-weight"

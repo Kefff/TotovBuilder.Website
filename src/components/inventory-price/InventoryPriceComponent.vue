@@ -4,6 +4,14 @@
     class="inventory-price"
   >
     <div class="inventory-price-value">
+      <div class="inventory-price-value-missing-price-icon">
+        <div
+          v-if="inventoryPrice.missingPrice"
+          v-tooltip.top="$t('message.missingPrice')"
+        >
+          <font-awesome-icon icon="exclamation-triangle" />
+        </div>
+      </div>
       <div
         v-tooltip.top="$t('caption.price')"
         :class="'inventory-price-value-list' + (canShowDetails ? ' inventory-price-with-details' : '')"
@@ -20,14 +28,6 @@
             :show-merchant-icon="false"
             :show-tooltip="false"
           />
-        </div>
-      </div>
-      <div :class="missingPriceIconClass">
-        <div
-          v-if="inventoryPrice.missingPrice"
-          v-tooltip.top="$t('message.missingPrice')"
-        >
-          <font-awesome-icon icon="exclamation-triangle" />
         </div>
       </div>
     </div>

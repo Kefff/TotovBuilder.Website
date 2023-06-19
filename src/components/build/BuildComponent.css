@@ -63,6 +63,17 @@
   font-size: 1.5rem;
 }
 
+.build-toolbar-summary-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: no-wrap;
+  margin-right: 2rem;
+}
+
+.build-toolbar-summary-group:last-child {
+  margin-right: 0;
+}
+
 .build-toolbar-summary-icon {
   margin-left: 0.25rem;
 }

@@ -77,95 +77,102 @@
             v-show="!isLoading"
             class="build-toolbar-summary"
           >
-            <div
-              v-if="summary.ergonomics != null"
-              v-tooltip.top="$t('caption.ergonomics')"
-              class="build-toolbar-summary-value"
-            >
-              <span>{{ summary.ergonomics }}</span>
-              <font-awesome-icon
-                icon="hand-paper"
-                class="icon-after-text"
-              />
-            </div>
-            <div
-              v-if="summary.verticalRecoil != null"
-              v-tooltip.top="$t('caption.verticalRecoil')"
-              class="build-toolbar-summary-value"
-            >
-              <span>{{ summary.verticalRecoil }}</span>
-              <font-awesome-icon
-                icon="arrows-alt-v"
-                class="icon-after-text"
-              />
-            </div>
-            <div
-              v-if="summary.horizontalRecoil != null"
-              v-tooltip.top="$t('caption.horizontalRecoil')"
-              class="build-toolbar-summary-value"
-            >
-              <span>{{ summary.horizontalRecoil }}</span>
-              <font-awesome-icon
-                icon="arrows-alt-h"
-                class="icon-after-text"
-              />
-            </div>
-            <div
-              v-if="summary.wearableModifiers != null && summary.wearableModifiers.ergonomicsPercentageModifierWithMods !== 0"
-              v-tooltip.top="$t('caption.ergonomicsPercentageModifier')"
-              class="build-toolbar-summary-value"
-            >
-              <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsPercentageModifierWithMods)">
-                {{ StatsUtils.getDisplayValue(summary.wearableModifiers.ergonomicsPercentageModifierWithMods, true, true) }}
-              </span>
-              <font-awesome-icon
-                icon="hand-paper"
-                class="icon-after-text"
-              />
-            </div>
-            <div
-              v-if="summary.wearableModifiers != null && summary.wearableModifiers.movementSpeedPercentageModifierWithMods !== 0"
-              v-tooltip.top="$t('caption.movementSpeedPercentageModifier')"
-              class="build-toolbar-summary-value"
-            >
-              <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedPercentageModifierWithMods)">
-                {{ StatsUtils.getDisplayValue(summary.wearableModifiers.movementSpeedPercentageModifierWithMods, true, true) }}
-              </span>
-              <font-awesome-icon
-                icon="walking"
-                class="icon-after-text"
-              />
-            </div>
-            <div
-              v-if="summary.wearableModifiers != null && summary.wearableModifiers.turningSpeedPercentageModifierWithMods !== 0"
-              v-tooltip.top="$t('caption.turningSpeedPercentageModifier')"
-              class="build-toolbar-summary-value"
-            >
-              <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedPercentageModifierWithMods)">
-                {{ StatsUtils.getDisplayValue(summary.wearableModifiers.turningSpeedPercentageModifierWithMods, true, true) }}
-              </span>
-              <font-awesome-icon
-                icon="undo"
-                class="icon-after-text"
-              />
-            </div>
-            <div class="build-toolbar-summary-value">
-              <InventoryPrice
-                v-if="!isLoading"
-                :inventory-price="summary.price"
-                :show-space-for-icon="false"
-              />
-            </div>
-            <div
-              v-tooltip.top="$t('caption.weight')"
-              class="build-toolbar-summary-value"
-            >
-              <div v-if="summary.weight !== 0">
-                <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ summary.weight.toFixed(3) }}</span>
+            <div class="build-toolbar-summary-group">
+              <div
+                v-if="summary.ergonomics != null"
+                v-tooltip.top="$t('caption.ergonomics')"
+                class="build-toolbar-summary-value"
+              >
+                <span>{{ summary.ergonomics }}</span>
                 <font-awesome-icon
-                  icon="weight-hanging"
+                  icon="hand-paper"
                   class="icon-after-text"
                 />
+              </div>
+              <div
+                v-if="summary.verticalRecoil != null"
+                v-tooltip.top="$t('caption.verticalRecoil')"
+                class="build-toolbar-summary-value"
+              >
+                <span>{{ summary.verticalRecoil }}</span>
+                <font-awesome-icon
+                  icon="arrows-alt-v"
+                  class="icon-after-text"
+                />
+              </div>
+              <div
+                v-if="summary.horizontalRecoil != null"
+                v-tooltip.top="$t('caption.horizontalRecoil')"
+                class="build-toolbar-summary-value"
+              >
+                <span>{{ summary.horizontalRecoil }}</span>
+                <font-awesome-icon
+                  icon="arrows-alt-h"
+                  class="icon-after-text"
+                />
+              </div>
+            </div>
+            <div class="build-toolbar-summary-group">
+              <div
+                v-if="summary.wearableModifiers != null && summary.wearableModifiers.ergonomicsPercentageModifierWithMods !== 0"
+                v-tooltip.top="$t('caption.ergonomicsPercentageModifier')"
+                class="build-toolbar-summary-value"
+              >
+                <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsPercentageModifierWithMods)">
+                  {{ StatsUtils.getDisplayValue(summary.wearableModifiers.ergonomicsPercentageModifierWithMods, true, true) }}
+                </span>
+                <font-awesome-icon
+                  icon="hand-paper"
+                  class="icon-after-text"
+                />
+              </div>
+              <div
+                v-if="summary.wearableModifiers != null && summary.wearableModifiers.movementSpeedPercentageModifierWithMods !== 0"
+                v-tooltip.top="$t('caption.movementSpeedPercentageModifier')"
+                class="build-toolbar-summary-value"
+              >
+                <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedPercentageModifierWithMods)">
+                  {{ StatsUtils.getDisplayValue(summary.wearableModifiers.movementSpeedPercentageModifierWithMods, true, true) }}
+                </span>
+                <font-awesome-icon
+                  icon="walking"
+                  class="icon-after-text"
+                />
+              </div>
+              <div
+                v-if="summary.wearableModifiers != null && summary.wearableModifiers.turningSpeedPercentageModifierWithMods !== 0"
+                v-tooltip.top="$t('caption.turningSpeedPercentageModifier')"
+                class="build-toolbar-summary-value"
+              >
+                <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedPercentageModifierWithMods)">
+                  {{ StatsUtils.getDisplayValue(summary.wearableModifiers.turningSpeedPercentageModifierWithMods, true, true) }}
+                </span>
+                <font-awesome-icon
+                  icon="undo"
+                  class="icon-after-text"
+                />
+              </div>
+            </div>
+            <div class="build-toolbar-summary-group">
+              <div class="build-toolbar-summary-value">
+                <InventoryPrice
+                  v-if="!isLoading"
+                  :inventory-price="summary.price"
+                />
+              </div>
+            </div>
+            <div class="build-toolbar-summary-group">
+              <div
+                v-tooltip.top="$t('caption.weight')"
+                class="build-toolbar-summary-value"
+              >
+                <div v-if="summary.weight !== 0">
+                  <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ summary.weight.toFixed(3) }}</span>
+                  <font-awesome-icon
+                    icon="weight-hanging"
+                    class="icon-after-text"
+                  />
+                </div>
               </div>
             </div>
           </div>

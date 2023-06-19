@@ -2,6 +2,10 @@
 @import '../../assets/css/stats.css';
 
 .build-list-column {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: end;
   text-align: right;
   width: 100%;
 }

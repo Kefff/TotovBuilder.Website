@@ -14,11 +14,6 @@ export default defineComponent({
     inventoryPrice: {
       type: Object as PropType<IInventoryPrice>,
       required: true
-    },
-    showSpaceForIcon: {
-      type: Boolean,
-      required: false,
-      default: true
     }
   },
   setup: (props) => {
@@ -28,13 +23,6 @@ export default defineComponent({
     const showPriceInMainCurrency = ref(false)
 
     const canShowDetails = computed(() => props.inventoryPrice.pricesWithContent.some(ip => ip.currencyName !== mainCurrency.value?.name))
-    const missingPriceIconClass = computed(() => {
-      if (!props.showSpaceForIcon) {
-        return 'inventory-price-value-missing-price-icon-no-width'
-      } else {
-        return 'inventory-price-value-missing-price-icon'
-      }
-    })
 
     watch(() => props.inventoryPrice, () => initialize())
 
@@ -77,7 +65,6 @@ export default defineComponent({
     return {
       canShowDetails,
       mainCurrency,
-      missingPriceIconClass,
       priceDetailPanel,
       priceInMainCurrency,
       togglePriceDetails
