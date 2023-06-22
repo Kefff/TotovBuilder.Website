@@ -145,6 +145,9 @@ export default defineComponent({
     async function initialize() {
       initialized.value = false
 
+      barterItems.value = []
+      barterItemPrices.value = []
+
       const notificationService = Services.get(NotificationService)
       const mainCurrencyResult = await Services.get(ItemService).getMainCurrency()
       const currencyResult = await Services.get(ItemService).getCurrency(props.price.currencyName)
