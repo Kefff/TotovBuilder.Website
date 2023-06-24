@@ -1,16 +1,12 @@
 <template>
-  <div
-    v-if="inventoryPrice.priceWithContentInMainCurrency.valueInMainCurrency > 0"
-    class="inventory-price"
-  >
+  <div class="inventory-price">
     <div class="inventory-price-value">
-      <div class="inventory-price-value-missing-price-icon">
-        <div
-          v-if="inventoryPrice.missingPrice"
-          v-tooltip.top="$t('message.missingPrice')"
-        >
-          <font-awesome-icon icon="exclamation-triangle" />
-        </div>
+      <div
+        v-if="inventoryPrice.missingPrice"
+        v-tooltip.top="$t('message.missingPrice')"
+        class="inventory-price-value-missing-price-icon"
+      >
+        <font-awesome-icon icon="exclamation-triangle" />
       </div>
       <div
         v-tooltip.top="$t('caption.price')"
