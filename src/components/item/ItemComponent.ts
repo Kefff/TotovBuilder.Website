@@ -25,6 +25,7 @@ import { InventoryItemService } from '../../services/InventoryItemService'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import { PathUtils } from '../../utils/PathUtils'
 import { PresetService } from '../../services/PresetService'
+import { IMagazine } from '../../models/item/IMagazine'
 
 export default defineComponent({
   components: {
@@ -292,8 +293,33 @@ export default defineComponent({
             quantity.value = maxSelectableQuantity.value
           }
 
+          // Keeping the old item content if the new item is a container
+          const newContent: IInventoryItem[] = []
+          const newSelectedItemIsContainer = itemPropertiesService.canContain(newSelectedItem)
+
+          if (newSelectedItemIsContainer
+            && selectedInventoryItem.value != null
+            && selectedInventoryItem.value.content.length > 0) {
+            const newSelectedItemIsMagazine = itemPropertiesService.isMagazine(newSelectedItem)
+
+            if (newSelectedItemIsMagazine) {
+              const magazine = (newSelectedItem as IMagazine)
+
+              for (const ammunitionInventoryItem of selectedInventoryItem.value.content) {
+                const isCompatible = magazine.acceptedAmmunitionIds.some(aci => aci === ammunitionInventoryItem.itemId)
+
+                if (isCompatible) {
+                  ammunitionInventoryItem.quantity = magazine.capacity
+                  newContent.push(ammunitionInventoryItem)
+                }
+              }
+            } else {
+              newContent.push(...selectedInventoryItem.value.content)
+            }
+          }
+
           selectedInventoryItem.value = {
-            content: [],
+            content: newContent,
             ignorePrice: false,
             itemId: newSelectedItem.id,
             modSlots: [],
