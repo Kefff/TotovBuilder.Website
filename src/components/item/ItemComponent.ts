@@ -230,18 +230,47 @@ export default defineComponent({
     }
 
     /**
+     * Sets an item as an option if it matches the filter.
+     * @param acceptedItem - Item that must set as an options.
+     * @param filterWords - Filter words.
+     * @param options - Option list in which the item mus be added.
+     */
+    async function setOption(acceptedItem: IItem, filterWords: string[], options: IItem[]) {
+      let contains = await StringUtils.containsAll(acceptedItem.shortName, filterWords)
+
+      if (contains) {
+        options.push(acceptedItem)
+
+        return
+      }
+
+      contains = await StringUtils.containsAll(acceptedItem.name, filterWords)
+
+      if (contains) {
+        options.push(acceptedItem)
+      }
+    }
+
+    /**
      * Sets the options selectable in the drop down input.
      * When more than x items are found, displays a message asking the user to filter.
      * @param filter - Filter.
      * @param sortingData - Sorting data.
      */
-    function setOptions(filter: string, sortingData: SortingData<IItem>) {
-      let newOptions: IItem[]
+    async function setOptions(filter: string, sortingData: SortingData<IItem>) {
+      let newOptions: IItem[] = []
 
       if (filter === '') {
         newOptions = [...props.acceptedItems]
       } else {
-        newOptions = [...props.acceptedItems.filter((o) => StringUtils.contains(o.name, filter))]
+        const filterWords = filter.split(' ')
+        const promises: Promise<void>[] = []
+
+        for (const acceptedItem of props.acceptedItems) {
+          promises.push(setOption(acceptedItem, filterWords, newOptions))
+        }
+
+        await Promise.allSettled(promises)
       }
 
       if (newOptions.length > optionsMaxNumber) {
