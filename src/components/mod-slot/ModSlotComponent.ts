@@ -30,7 +30,7 @@ export default defineComponent({
     const editing = inject<Ref<boolean>>('editing')
 
     const acceptedItems = ref<IItem[]>([])
-    const categoryIds = ref<string[]>([])
+    const acceptedItemsCategoryId = ref<string | undefined>(undefined)
 
     const itemPathPrefix = PathUtils.itemPrefix
 
@@ -48,7 +48,7 @@ export default defineComponent({
      */
     async function getItemComponentParameters() {
       acceptedItems.value = await modSlotComponentService.getAcceptedItems(props.modSlot.compatibleItemIds)
-      categoryIds.value = modSlotComponentService.getCategoryIds(acceptedItems.value)
+      acceptedItemsCategoryId.value = modSlotComponentService.getAcceptedItemsCategoryId(acceptedItems.value)
     }
 
     /**
@@ -60,7 +60,7 @@ export default defineComponent({
 
     return {
       acceptedItems,
-      categoryIds,
+      acceptedItemsCategoryId,
       editing,
       itemPathPrefix
     }

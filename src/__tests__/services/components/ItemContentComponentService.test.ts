@@ -114,14 +114,14 @@ describe('getAcceptedItems()', () => {
   })
 })
 
-describe('getCategoryIds()', () => {
+describe('getAcceptedItemsCategoryId()', () => {
   it.each([
-    ['backpack', ['item']],
-    ['magazine', ['ammunition']]
-  ])('should get category IDs', (itemCategoryId: string, expected: string[]) => {
+    ['backpack', undefined],
+    ['magazine', 'ammunition']
+  ])('should get accepted items category ID', (itemCategoryId: string, expected: string | undefined) => {
     // Act
     const itemContentService = new ItemContentComponentService()
-    const categoryIds = itemContentService.getCategoryIds(itemCategoryId)
+    const categoryIds = itemContentService.getAcceptedItemsCategoryId(itemCategoryId)
 
     // Assert
     expect(categoryIds).toStrictEqual(expected)

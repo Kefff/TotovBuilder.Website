@@ -24,11 +24,11 @@ export class ModSlotComponentService {
   }
 
   /**
-   * Gets the accepted items category IDs used to detemine the available sort buttons in the item selection dropdown.
+   * Gets the accepted items category ID used to detemine the available sort buttons in the item selection dropdown.
    * @param items - Items.
-   * @returns Category IDs.
+   * @returns Accepted items category ID or undefined when multiple item types are accepted.
    */
-  public getCategoryIds(items: IItem[]): string[] {
+  public getAcceptedItemsCategoryId(items: IItem[]): string | undefined {
     const categoryIds: string[] = []
 
     for (const acceptedItemCategory of items.map((ai) => ai.categoryId)) {
@@ -38,6 +38,6 @@ export class ModSlotComponentService {
       }
     }
 
-    return categoryIds
+    return categoryIds.length === 1 ? categoryIds[0] : undefined
   }
 }

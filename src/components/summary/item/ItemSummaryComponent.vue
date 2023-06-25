@@ -11,7 +11,7 @@
       </div>
     </div>
     <slot />
-    <div class="option-entry">
+    <div class="option-entry item-summary-icon">
       <ItemIcon :item="item" />
     </div>
   </div>

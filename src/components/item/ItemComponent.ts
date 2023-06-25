@@ -44,14 +44,15 @@ export default defineComponent({
       type: Array as PropType<IItem[]>,
       required: true
     },
+    acceptedItemsCategoryId: {
+      type: String,
+      required: false,
+      default: undefined
+    },
     canBeLooted: {
       type: Boolean,
       required: false,
       default: true
-    },
-    categoryIds: {
-      type: Array as PropType<string[]>,
-      required: true
     },
     forceQuantityToMaxSelectableAmount: {
       type: Boolean,
@@ -82,12 +83,10 @@ export default defineComponent({
     const presetService = Services.get(PresetService)
     const notificationService = Services.get(NotificationService)
 
-    const optionsMaxNumber = 200
-
     const editing = inject<Ref<boolean>>('editing')
 
+    const dropdownPanelHeight = computed(() => Math.min(options.value.length, 5) * 4 + 'rem') // Shows 5 items or less
     const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? selectedItem.value?.maxStackableAmount ?? 1)
-    const optionsCategory = computed(() => props.categoryIds.length === 1 ? props.categoryIds[0] : 'item') // When items from multiple categories can be selected, components use the base type IItem for compatibility
     const selectedInventoryItem = computed<IInventoryItem | undefined>({
       get: () => props.modelValue,
       set: (value: IInventoryItem | undefined) => emit('update:modelValue', value)
@@ -273,14 +272,9 @@ export default defineComponent({
         await Promise.allSettled(promises)
       }
 
-      if (newOptions.length > optionsMaxNumber) {
-        optionsEmptyMessage.value = 'message.searchForItem'
-        options.value = []
-      } else {
-        options.value = newOptions
-        optionsEmptyMessage.value = 'message.noItemsFound'
-        onSortOptions(sortingData)
-      }
+      options.value = newOptions
+      optionsEmptyMessage.value = 'message.noItemsFound'
+      onSortOptions(sortingData)
     }
 
     /**
@@ -367,6 +361,7 @@ export default defineComponent({
     }
 
     return {
+      dropdownPanelHeight,
       editing,
       itemChanging,
       maxSelectableQuantity,
@@ -376,7 +371,6 @@ export default defineComponent({
       onSelectedItemChanged,
       onSortOptions,
       options,
-      optionsCategory,
       optionsEmptyMessage,
       optionsFilter,
       optionsSortingData,

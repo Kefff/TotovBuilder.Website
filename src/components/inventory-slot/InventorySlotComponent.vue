@@ -129,7 +129,7 @@
         :key="path + '_' + index"
         v-model="items[index]"
         :accepted-items="acceptedItems"
-        :category-ids="categoryIds"
+        :accepted-items-category-id="acceptedItemsCategoryId"
         :can-be-looted="canBeLooted"
         :path="path + '_' + index + '/' + itemPathPrefix + (item?.itemId ?? 'empty')"
         @update:modelValue="onItemChanged(index)"

@@ -39,15 +39,15 @@ export class ItemContentComponentService {
   /**
    * Gets the accepted items category IDs used to detemine the available sort buttons in the item selection dropdown.
    * @param itemCategoryId - Parent item category ID.
-   * @returns Accepted items category IDs.
+   * @returns Accepted items category ID or undefined when all items are accepted.
    */
-  public getCategoryIds(itemCategoryId: string): string[] {
+  public getAcceptedItemsCategoryId(itemCategoryId: string): string | undefined {
     switch (itemCategoryId) {
       case 'magazine': {
-        return ['ammunition']
+        return 'ammunition'
       }
       default: {
-        return ['item']
+        return undefined
       }
     }
   }
