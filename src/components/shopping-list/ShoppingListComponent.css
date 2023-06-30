@@ -8,6 +8,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   margin-bottom: 0.25rem;
+  margin-right: 0.5rem;
 }
 
 .shopping-list-item :last-child {

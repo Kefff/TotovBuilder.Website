@@ -97,10 +97,6 @@
   flex-wrap: wrap;
 }
 
-.price-details-quest-icon {
-  color: var(--warning-color);
-}
-
 .price-details-quest {
   margin-right: 0.25rem;
 }
@@ -124,7 +120,6 @@
 }
 
 .price-merchant-barter-icon {
-  border-radius: 1rem;
   color: var(--text-color);
   font-size: 0.85rem;
   position: relative;
@@ -153,6 +148,23 @@
   text-align: center;
   top: -0.075rem;
   width: 1rem;
+}
+
+.price-merchant-quest-icon {
+  color: var(--text-color);
+  font-size: 0.85rem;
+  position: relative;
+  right: 4.5rem;
+  top: -0.85rem;
+}
+
+.price-merchant-quest-icon > div {
+  height: 1rem;
+  width: 1rem;
+}
+
+.price-quest-icon {
+  color: var(--warning-color);
 }
 
 .price-value-with-details:hover {

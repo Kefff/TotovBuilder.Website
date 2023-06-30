@@ -39,6 +39,17 @@
           <font-awesome-icon :icon="currency?.iconName" />
         </div>
       </div>
+      <div
+        v-if="price.quest != null"
+        class="price-merchant-quest-icon"
+      >
+        <div>
+          <font-awesome-icon
+            icon="lock"
+            class="price-quest-icon"
+          />
+        </div>
+      </div>
     </div>
   </div>
 
@@ -67,7 +78,7 @@
       >
         <font-awesome-icon
           icon="lock"
-          class="icon-before-text price-details-quest-icon"
+          class="icon-before-text price-quest-icon"
         />
         <span class="price-details-quest">{{ $t('caption.quest') }} : </span>
         <a
