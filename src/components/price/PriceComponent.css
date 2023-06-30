@@ -124,6 +124,7 @@
   font-size: 0.85rem;
   position: relative;
   right: 3.5rem;
+  text-align: center;
   top: 0.85rem;
 }
 
@@ -139,6 +140,7 @@
   font-size: 0.85rem;
   position: relative;
   right: 0.5rem;
+  text-align: center;
   top: 0.9rem;
 }
 
@@ -154,8 +156,9 @@
   color: var(--text-color);
   font-size: 0.85rem;
   position: relative;
-  right: 4.5rem;
-  top: -0.85rem;
+  right: 2.50rem;
+  text-align: center;
+  top: -0.9rem;
 }
 
 .price-merchant-quest-icon > div {

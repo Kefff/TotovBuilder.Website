@@ -73,7 +73,8 @@ export default defineComponent({
           + (props.price.merchantLevel !== 0
             ? (' ' + vueI18n.t('caption.level').toLowerCase() + ' ' + props.price.merchantLevel)
             : '')
-          + (isBarter.value ? '\n' + vueI18n.t('caption.barter') : ''))
+          + (isBarter.value ? '\n' + vueI18n.t('caption.barter') : '')
+          + (props.price.quest != null ? '\n' + vueI18n.t('caption.questRequired') : ''))
         : '')
       : '')
     const priceValueTooltip = computed(() => props.showTooltip ? vueI18n.t('caption.price') + (props.tooltipSuffix ?? '') : '')
