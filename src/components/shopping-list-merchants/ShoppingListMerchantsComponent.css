@@ -1,0 +1,15 @@
+.merchants-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  margin-left: auto;
+  margin-right: 0.5rem;
+}
+
+.merchants-list-merchant {
+  margin-right: 0.5rem;
+}
+
+.merchants-list-merchant :last-child {
+  margin-right: 0;
+}

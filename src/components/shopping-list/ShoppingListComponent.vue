@@ -22,20 +22,7 @@
         />
         <span>{{ $t('caption.shoppingList') }}</span>
       </div>
-      <div class="shopping-list-required-merchants">
-        <div
-          v-for="merchant of requiredMerchants"
-          :key="merchant.name"
-        >
-          <div class="shopping-list-required-merchant">
-            <MerchantIcon
-              :merchant="merchant.name"
-              :merchant-level="merchant.level"
-              :show-tooltip="true"
-            />
-          </div>
-        </div>
-      </div>
+      <ShoppingListMerchants :shopping-list="shoppingList" />
     </div>
     <div class="sidebar-option">
       <div
