@@ -127,6 +127,7 @@
 
     <!-- Import -->
     <BuildsImport
+      v-if="!isLoading"
       v-model="isImporting"
       v-model:has-imported="hasImported"
     />

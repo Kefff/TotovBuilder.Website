@@ -4,12 +4,14 @@ import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import Services from '../../services/repository/Services'
 import StatsUtils from '../../utils/StatsUtils'
 import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
+import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
 import ShoppingListMerchants from '../shopping-list-merchants/ShoppingListMerchantsComponent.vue'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 
 export default defineComponent({
   components: {
     InventoryPrice,
+    ShoppingList,
     ShoppingListMerchants
   },
   props: {

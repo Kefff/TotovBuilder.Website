@@ -12,25 +12,6 @@
     @sort="onSort"
   >
     <Column
-      v-if="showNotExported"
-      field="exported"
-      :sortable="false"
-    >
-      <template #body="{data}">
-        <div class="build-list-column">
-          <span
-            v-if="!data.exported"
-            v-tooltip.right="getNotExportedTooltip(data)"
-            class="build-list-not-exported"
-          >
-            <font-awesome-icon
-              icon="exclamation-triangle"
-            />
-          </span>
-        </div>
-      </template>
-    </Column>
-    <Column
       field="name"
       :sortable="true"
     >
@@ -41,7 +22,19 @@
       </template>
       <template #body="{data}">
         <div class="build-list-column build-list-column-name">
-          {{ data.name }}
+          <div class="build-list-column-name-buttons">
+            <span
+              v-if="showNotExported && !data.exported"
+              v-tooltip.right="getNotExportedTooltip(data)"
+              class="build-list-not-exported"
+            >
+              <font-awesome-icon
+                icon="exclamation-triangle"
+              />
+            </span>
+            <ShoppingList :shopping-list="data.shoppingList" />
+          </div>
+          <span>{{ data.name }}</span>
         </div>
       </template>
     </Column>
