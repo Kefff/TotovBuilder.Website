@@ -3,6 +3,24 @@
 @import '../../assets/css/link.css';
 @import '../../assets/css/toolbar.css';
 
+.notification-button-count {
+  background-color: var(--danger-color);
+  border-radius: 1rem;
+  color: var(--text-color);
+  font-size: 0.85rem;
+  height: 1rem;
+  position: absolute;
+  text-align: center;
+  transform: translate(0.5rem, 0.5rem);
+  width: 1rem;
+}
+
+.notification-button-count > div {
+  position: absolute;
+  transform: translate(0, -0.050rem);
+  width: 100%;
+}
+
 .notification-button-panel {
   max-height: 31.25rem;
   max-width: 31.25rem;

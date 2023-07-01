@@ -122,14 +122,10 @@
 .price-merchant-barter-icon {
   color: var(--text-color);
   font-size: 0.85rem;
-  position: relative;
-  right: 3.5rem;
-  text-align: center;
-  top: 0.85rem;
-}
-
-.price-merchant-barter-icon > div {
   height: 1rem;
+  position: absolute;
+  text-align: center;  
+  transform: translate(-0.5rem, 0.75rem);
   width: 1rem;
 }
 
@@ -138,31 +134,26 @@
   border-radius: 1rem;
   color: var(--text-color);
   font-size: 0.85rem;
-  position: relative;
-  right: 0.5rem;
+  height: 1rem;
+  position: absolute;
   text-align: center;
-  top: 0.9rem;
+  transform: translate(1.5rem, 0.80rem);
+  width: 1rem;
 }
 
 .price-merchant-level > div {
-  height: 1rem;
-  position: relative;
-  text-align: center;
-  top: -0.075rem;
-  width: 1rem;
+  position: absolute;
+  transform: translate(0, -0.050rem);
+  width: 100%;
 }
 
 .price-merchant-quest-icon {
   color: var(--text-color);
   font-size: 0.85rem;
-  position: relative;
-  right: 2.50rem;
-  text-align: center;
-  top: -0.9rem;
-}
-
-.price-merchant-quest-icon > div {
   height: 1rem;
+  position: absolute;
+  text-align: center;
+  transform: translate(1.5rem, -1rem);
   width: 1rem;
 }
 

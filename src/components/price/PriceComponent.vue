@@ -27,28 +27,22 @@
         v-if="price.merchantLevel !== 0"
         class="price-merchant-level"
       >
-        <div>
-          {{ price.merchantLevel }}
-        </div>
+        <div>{{ price.merchantLevel }}</div>
       </div>
       <div
         v-if="isBarter"
         class="price-merchant-barter-icon"
       >
-        <div>
-          <font-awesome-icon :icon="currency?.iconName" />
-        </div>
+        <font-awesome-icon :icon="currency?.iconName" />
       </div>
       <div
         v-if="price.quest != null"
         class="price-merchant-quest-icon"
       >
-        <div>
-          <font-awesome-icon
-            icon="lock"
-            class="price-quest-icon"
-          />
-        </div>
+        <font-awesome-icon
+          icon="lock"
+          class="price-quest-icon"
+        />
       </div>
     </div>
   </div>

@@ -2,7 +2,6 @@ import { App } from 'vue'
 
 import PrimeVue from 'primevue/config'
 
-import Badge from 'primevue/badge'
 import Button from 'primevue/button'
 import Checkbox from 'primevue/checkbox'
 import Column from 'primevue/column'
@@ -28,7 +27,6 @@ import 'primeicons/primeicons.css'
 export function usePrimeVue(app: App<Element>): void {
   app.use(PrimeVue)
 
-  app.component('Badge', Badge)
   app.component('Button', Button)
   app.component('Checkbox', Checkbox)
   app.component('Column', Column)

@@ -6,11 +6,12 @@
     @click="toggleNotificationPanel"
   >
     <font-awesome-icon icon="bell" />
-    <Badge
+    <div
       v-if="newNotificationCount > 0"
-      :value="newNotificationCount"
-      severity="danger"
-    />
+      class="notification-button-count"
+    >
+      <div>{{ newNotificationCount }}</div>
+    </div>
   </Button>
 
   <OverlayPanel

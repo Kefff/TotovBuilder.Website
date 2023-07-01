@@ -69,7 +69,7 @@ export default defineComponent({
      * Toggles the notification panel.
      * @param event - Event.
      */
-    function toggleNotificationPanel(event: unknown) {
+    function toggleNotificationPanel(event?: MouseEvent) {
       if (notifications.value.length === 0 && !notificationPanelToggled.value) {
         return
       }
@@ -81,6 +81,10 @@ export default defineComponent({
         service.resetNewNotificationCount()
         newNotificationCount.value = service.newNotificationCount
       }
+
+      // Stopping the event propagation, otherwise, when we click on the badge showing the number of notifications,
+      // the method is called one time for the badge and another time for the button
+      event?.stopPropagation()
     }
 
     return {
