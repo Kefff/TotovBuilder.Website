@@ -2,9 +2,9 @@
 
 .inventory-price {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: nowrap;
   padding: 0.25rem;
-  width: 100%;
 }
 
 .inventory-price-details {
@@ -18,30 +18,22 @@
   cursor: pointer;
 }
 
-.inventory-price-value {
+.inventory-price-list {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: right;
+  justify-content: end;
 }
 
-.inventory-price-value-list {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: right;
-  margin-right: -0.25rem;
-}
-
-.inventory-price-value-list-price {
+.inventory-price-list-price {
   margin-right: 0.5rem;
 }
 
-.inventory-price-value-list-price:last-child {
+.inventory-price-list-price:last-child {
   margin-right: 0;
 }
 
-.inventory-price-value-missing-price-icon {
+.inventory-price-missing-price-icon {
   align-items: center;
   color: var(--error-color);
   display: flex;

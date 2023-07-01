@@ -35,13 +35,44 @@
       :sortable="true"
     >
       <template #header>
-        <div class="build-list-column">
+        <div class="build-list-column build-list-column-name">
           {{ $t('caption.name') }}
         </div>
       </template>
       <template #body="{data}">
-        <div class="build-list-column">
+        <div class="build-list-column build-list-column-name">
           {{ data.name }}
+        </div>
+      </template>
+    </Column>
+    <Column
+      field="price"
+      :sortable="true"
+      sortField="price.priceWithContentInMainCurrency.valueInMainCurrency"
+    >
+      <!-- For some reason, using "sort-field" doesn't work while using "sortField" works -->
+      <template #header>
+        <div class="build-list-column">
+          {{ $t('caption.price') }}
+        </div>
+      </template>
+      <template #body="{data}">
+        <div class="build-list-column">
+          <InventoryPrice :inventory-price="data.price" />
+        </div>
+      </template>
+    </Column>
+    <Column
+      :sortable="false"
+    >
+      <template #header>
+        <div class="build-list-column build-list-column-merchants">
+          {{ $t('caption.merchants') }}
+        </div>
+      </template>
+      <template #body="{data}">
+        <div class="build-list-column build-list-column-merchants">
+          <ShoppingListMerchants :shopping-list="data.shoppingList" />
         </div>
       </template>
     </Column>
@@ -179,23 +210,6 @@
             icon="undo"
             class="icon-after-text"
           />
-        </div>
-      </template>
-    </Column>
-    <Column
-      field="price"
-      :sortable="true"
-      sortField="price.priceWithContentInMainCurrency.valueInMainCurrency"
-    >
-      <!-- For some reason, using "sort-field" doesn't work while using "sortField" works -->
-      <template #header>
-        <div class="build-list-column">
-          {{ $t('caption.price') }}
-        </div>
-      </template>
-      <template #body="{data}">
-        <div class="build-list-column">
-          <InventoryPrice :inventory-price="data.price" />
         </div>
       </template>
     </Column>

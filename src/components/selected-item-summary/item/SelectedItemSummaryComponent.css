@@ -20,12 +20,13 @@
   display: flex;
   justify-content: center;
   margin-left: 0.5rem;
+  margin-right: 0.075rem;
   width: 2rem;
 }
 
 .selected-item-summary-price-per-unit {
   font-size: 0.75rem;
-  margin-right: 2.6rem; /* Alignment with the item total price */
+  margin-right: 2.3rem; /* Alignment with the item total price */
 }
 
 .selected-item-summary-right {
@@ -53,7 +54,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: end;
-  margin-left: 1.10rem; /* Alignment with the inventory slot price */
+  margin-left: 1.5rem; /* Alignment with the inventory slot price */
   margin-right: 0.2rem; /* Alignment with the inventory slot weight */
   width: 7rem;
 }

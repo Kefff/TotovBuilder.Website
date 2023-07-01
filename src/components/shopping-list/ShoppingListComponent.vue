@@ -22,7 +22,9 @@
         />
         <span>{{ $t('caption.shoppingList') }}</span>
       </div>
-      <ShoppingListMerchants :shopping-list="shoppingList" />
+      <div class="shopping-list-title-merchants">
+        <ShoppingListMerchants :shopping-list="shoppingList" />
+      </div>
     </div>
     <div class="sidebar-option">
       <div

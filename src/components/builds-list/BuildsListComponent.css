@@ -2,12 +2,16 @@
 @import '../../assets/css/stats.css';
 
 .build-list-column {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: end;
   text-align: right;
   width: 100%;
+}
+
+.build-list-column-merchants {
+  min-width: 8rem;
+}
+
+.build-list-column-name {
+  min-width: 15rem;
 }
 
 .build-list-not-exported {

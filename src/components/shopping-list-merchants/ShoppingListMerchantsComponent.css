@@ -1,15 +1,7 @@
 .merchants-list {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  margin-left: auto;
-  margin-right: 0.5rem;
-}
-
-.merchants-list-merchant {
-  margin-right: 0.5rem;
-}
-
-.merchants-list-merchant :last-child {
-  margin-right: 0;
+  display: grid;
+  gap: 0.5rem 1rem;
+  grid-template-columns: repeat(auto-fit, 2rem);
+  justify-content: end;
+  width: 100%;
 }

@@ -4,6 +4,7 @@ import vueI18n from '../../plugins/vueI18n'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
+import StringUtils from '../../utils/StringUtils'
 
 export default defineComponent({
   props: {
@@ -17,7 +18,7 @@ export default defineComponent({
     const globalFilterService = Services.get(GlobalFilterService)
     const merchantLevelOptions = [1, 2, 3, 4]
 
-    const merchantFilters = reactive(props.modelValue.merchantFilters)
+    const merchantFilters = reactive(props.modelValue.merchantFilters).sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant))
 
     /**
      * Gets the tooltip for the checkbox of a merchant.

@@ -4,13 +4,11 @@
       v-for="merchant of requiredMerchants"
       :key="merchant.name"
     >
-      <div class="merchants-list-merchant">
-        <MerchantIcon
-          :merchant="merchant.name"
-          :merchant-level="merchant.level"
-          :show-tooltip="true"
-        />
-      </div>
+      <MerchantIcon
+        :merchant="merchant.name"
+        :merchant-level="merchant.level"
+        :show-tooltip="true"
+      />
     </div>
   </div>
 </template>

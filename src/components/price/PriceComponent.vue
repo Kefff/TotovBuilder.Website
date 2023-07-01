@@ -20,14 +20,18 @@
       :class="canShowDetails ? 'price-value-with-details' : ''"
       @click="(e: MouseEvent) => togglePriceDetails(e)"
     >
-      <MerchantIcon
+      <div
         v-if="canShowMerchantIcon"
-        :is-barter="isBarter"
-        :merchant="price.merchant"
-        :merchant-level="price.merchantLevel"
-        :requires-quest="price.quest != null"
-        :show-tooltip="showTooltip"
-      />
+        class="price-merchant-icon"
+      >
+        <MerchantIcon
+          :is-barter="isBarter"
+          :merchant="price.merchant"
+          :merchant-level="price.merchantLevel"
+          :requires-quest="price.quest != null"
+          :show-tooltip="showTooltip"
+        />
+      </div>
     </div>
   </div>
 
@@ -58,7 +62,7 @@
           icon="lock"
           class="icon-before-text price-quest-icon"
         />
-        <span class="price-details-quest">{{ $t('caption.quest') }} : </span>
+        <span class="price-details-quest-name">{{ $t('caption.quest') }} : </span>
         <a
           :href="price.quest.wikiLink"
           target="_blank"
