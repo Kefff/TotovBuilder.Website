@@ -10,15 +10,6 @@
   white-space: nowrap;
 }
 
-.price-value {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: end;
-  white-space: nowrap;
-}
-
 .price-details {
   font-size: 0.85rem;
 }
@@ -159,6 +150,15 @@
 
 .price-quest-icon {
   color: var(--warning-color);
+}
+
+.price-value {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: end;
+  white-space: nowrap;
 }
 
 .price-value-with-details:hover {

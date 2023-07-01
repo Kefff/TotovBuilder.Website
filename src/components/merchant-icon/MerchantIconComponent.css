@@ -1,0 +1,60 @@
+.merchant-icon {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  margin-left: 0.5rem;
+  position: relative; /* Needed for the absolute positions of the badges stick to the merchant icon when scrolling in an overlay */
+  width: 2rem;
+}
+
+.merchant-icon > img {
+  border-color: var(--util-color);
+  border-radius: 3px;
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 1px;
+  width: 2rem;
+}
+
+.merchant-icon-barter-icon {
+  color: var(--text-color);
+  font-size: 0.85rem;
+  height: 1rem;
+  position: absolute;
+  text-align: center;
+  transform: translate(-0.5rem, 0.75rem);
+  width: 1rem;
+}
+
+.merchant-icon-level {
+  background-color: var(--primary-color);
+  border-radius: 1rem;
+  color: var(--text-color);
+  font-size: 0.85rem;
+  height: 1rem;
+  position: absolute;
+  text-align: center;
+  transform: translate(1.5rem, 0.80rem);
+  width: 1rem;
+}
+
+.merchant-icon-level > div {
+  position: absolute;
+  transform: translate(0, -0.050rem);
+  width: 100%;
+}
+
+.merchant-icon-quest-icon {
+  color: var(--text-color);
+  font-size: 0.85rem;
+  height: 1rem;
+  position: absolute;
+  text-align: center;
+  transform: translate(1.5rem, -1rem);
+  width: 1rem;
+}
+
+.merchant-icon-quest-icon {
+  color: var(--warning-color);
+}

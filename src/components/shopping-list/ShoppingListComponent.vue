@@ -14,12 +14,28 @@
     position="left"
     style="width: auto"
   >
-    <div class="sidebar-title">
-      <font-awesome-icon
-        icon="shopping-cart"
-        class="icon-before-text"
-      />
-      <span>{{ $t('caption.shoppingList') }}</span>
+    <div class="shopping-list-title">
+      <div class="sidebar-title">
+        <font-awesome-icon
+          icon="shopping-cart"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.shoppingList') }}</span>
+      </div>
+      <div class="shopping-list-required-merchants">
+        <div
+          v-for="merchant of requiredMerchants"
+          :key="merchant.name"
+        >
+          <div class="shopping-list-required-merchant">
+            <MerchantIcon
+              :merchant="merchant.name"
+              :merchant-level="merchant.level"
+              :show-tooltip="true"
+            />
+          </div>
+        </div>
+      </div>
     </div>
     <div class="sidebar-option">
       <div

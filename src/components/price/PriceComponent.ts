@@ -10,10 +10,12 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import Services from '../../services/repository/Services'
 import ItemIcon from '../item-icon/ItemIconComponent.vue'
+import MerchantIcon from '../merchant-icon/MerchantIconComponent.vue'
 
 export default defineComponent({
   components: {
-    ItemIcon
+    ItemIcon,
+    MerchantIcon
   },
   props: {
     price: {

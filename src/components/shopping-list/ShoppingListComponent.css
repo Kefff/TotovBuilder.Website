@@ -41,3 +41,25 @@
   text-align: right;
   width: 4rem;
 }
+
+.shopping-list-required-merchant {
+  margin-right: 0.5rem;
+}
+
+.shopping-list-required-merchant :last-child {
+  margin-right: 0;
+}
+
+.shopping-list-required-merchants {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  margin-left: auto;
+  margin-right: 0.5rem;
+}
+
+.shopping-list-title {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
