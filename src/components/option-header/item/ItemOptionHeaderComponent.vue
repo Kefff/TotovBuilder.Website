@@ -31,7 +31,11 @@
       </div>
     </div>
     <slot />
-    <div class="option-entry" />
+    <div
+      v-if="useLongestHeaderWidth"
+      class="item-option-longest-header-width-placeholder"
+    />
+    <div class="item-option-icon-placeholder" />
   </div>
 </template>
 

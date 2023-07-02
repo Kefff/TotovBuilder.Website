@@ -1,3 +1,11 @@
+.item-dropdown-override > .p-dropdown {
+  height: 3.25rem;
+}
+
+.item-dropdown-override .placeholder {
+  padding: 1rem;
+}
+
 .item-dropdown-override > .p-disabled {
   opacity: 1;
   border-color: rgba(255, 255, 255, 0.1);

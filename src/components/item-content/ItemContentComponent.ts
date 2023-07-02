@@ -39,7 +39,7 @@ export default defineComponent({
     const maximumQuantity = computed(() => isMagazine.value ? props.containerItem.capacity : undefined)
 
     const acceptedItems = ref<IItem[]>([])
-    const categoryIds = ref<string[]>([])
+    const categoryId = ref<string | undefined>(undefined)
     const itemPathPrefix = PathUtils.itemPrefix
     const itemToAdd = ref<IInventoryItem>()
 
@@ -68,7 +68,7 @@ export default defineComponent({
      * Gets the category IDs used for determining the available sort buttons in the item selection dropdown.
      */
     async function getCategoryIds() {
-      categoryIds.value = Services.get(ItemContentComponentService).getCategoryIds(props.containerItem.categoryId)
+      categoryId.value = Services.get(ItemContentComponentService).getAcceptedItemsCategoryId(props.containerItem.categoryId)
     }
 
     /**
@@ -113,7 +113,7 @@ export default defineComponent({
     return {
       acceptedItems,
       canAddItem,
-      categoryIds,
+      categoryId,
       content,
       contentPathPrefix,
       editing,

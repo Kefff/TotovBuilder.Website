@@ -42,7 +42,8 @@ export default defineComponent({
     const buildsSummaries = ref<IBuildSummary[]>([])
     let builds: IBuild[] = []
 
-    const canExport = computed(() => buildsSummaries.value.length > 0)
+    const canExport = computed(() => !isLoading.value && buildsSummaries.value.length > 0 && !isExporting.value && !isImporting.value)
+    const canImport = computed(() => !isLoading.value && !isExporting.value && !isImporting.value)
     const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
     const selectedBuildSummary = computed({
       get: () => [],
@@ -200,6 +201,7 @@ export default defineComponent({
     return {
       buildsSummaries,
       canExport,
+      canImport,
       displayOptionsSidebarVisible,
       hasImported,
       isExporting,

@@ -11,15 +11,17 @@
 }
 
 .item-dropdown-option {
-  padding-bottom: 0.125rem;
+  align-items: center;
+  display: flex;
+  height: 4rem; /* Matches the 60px set in the virtual scroller options */
   padding-left: 1rem;
   padding-right: 1rem;
-  padding-top: 0.125rem;
 }
 
 .item-selection {
   display: flex;
   flex-direction: row;
+  height: 3.25rem;
 }
 
 .item-quantity {

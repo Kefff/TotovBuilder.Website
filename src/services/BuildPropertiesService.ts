@@ -341,9 +341,12 @@ export class BuildPropertiesService {
       return Result.failFrom(mainCurrencyResult)
     }
 
+    const lastExported = build.lastExported ?? new Date(1900, 1, 1)
+    const lastUpdated = build.lastUpdated ?? new Date(1900, 1, 1)
+
     const result: IBuildSummary = {
       ergonomics: undefined,
-      exported: build.lastExported != null && build.lastUpdated != null && build.lastExported >= build.lastUpdated,
+      exported: build.lastExported != null && lastExported.getTime() >= lastUpdated.getTime(),
       horizontalRecoil: undefined,
       id: build.id,
       name: build.name,

@@ -31,30 +31,35 @@
     </div>
     <template #footer>
       <div class="builds-import-buttons">
-        <Button
-          :disabled="buildsToImportIds.length === 0"
-          @click="confirmImport()"
+        <div
+          v-if="showingList"
+          class="builds-import-buttons-left-buttons"
         >
-          <font-awesome-icon
-            icon="file-import"
-            class="icon-before-text"
-          />
-          <span>{{ $t('caption.importBuilds') }}</span>
-        </Button>
+          <Button
+            class="builds-import-buttons-import-button"
+            @click="confirmImport()"
+          >
+            <font-awesome-icon
+              icon="file-import"
+              class="icon-before-text"
+            />
+            <span>{{ $t('caption.importBuilds') }}</span>
+          </Button>
+          <Button
+            v-if="readenBuildSummaries.length > 1"
+            class="p-button-text button-discreet"
+            @click="toggleSelection()"
+          >
+            <font-awesome-icon
+              icon="list"
+              class="icon-before-text"
+            />
+            <span v-if="allSelected">{{ $t('caption.deselectAll') }}</span>
+            <span v-else>{{ $t('caption.selectAll') }}</span>
+          </Button>
+        </div>
         <Button
-          v-if="readenBuildSummaries.length > 1"
-          class="p-button-text button-discreet"
-          @click="toggleSelection()"
-        >
-          <font-awesome-icon
-            icon="list"
-            class="icon-before-text"
-          />
-          <span v-if="allSelected">{{ $t('caption.deselectAll') }}</span>
-          <span v-else>{{ $t('caption.selectAll') }}</span>
-        </Button>
-        <Button
-          class="p-button-text builds-import-cancel-button button-discreet"
+          class="p-button-text button-discreet builds-import-buttons-cancel-button"
           @click="cancelImport()"
         >
           <font-awesome-icon

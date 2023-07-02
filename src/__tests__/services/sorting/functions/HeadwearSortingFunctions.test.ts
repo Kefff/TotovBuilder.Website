@@ -58,8 +58,12 @@ describe('comparisonFunction()', () => {
     ['durability', true],
     ['ergonomicsPercentageModifier', false],
     ['ergonomicsPercentageModifier', true],
+    ['movementSpeedPercentageModifier', false],
+    ['movementSpeedPercentageModifier', true],
     ['ricochetChance', false],
-    ['ricochetChance', true]
+    ['ricochetChance', true],
+    ['turningSpeedPercentageModifier', false],
+    ['turningSpeedPercentageModifier', true]
   ])('should compare by a property', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
@@ -67,9 +71,17 @@ describe('comparisonFunction()', () => {
       categoryId: 'cat',
       durability: 2,
       ergonomicsPercentageModifier: 2,
+      movementSpeedPercentageModifier: 2,
       name: 'cat',
-      presetErgonomicsPercentageModifier: isPreset ? 10 : undefined,
-      ricochetChance: 'High'
+      presetWearableModifiers: isPreset
+        ? {
+          ergonomicsPercentageModifierWithMods: 20,
+          movementSpeedPercentageModifierWithMods: 20,
+          turningSpeedPercentageModifierWithMods: 20
+        }
+        : undefined,
+      ricochetChance: 'High',
+      turningSpeedPercentageModifier: 2
     } as IHeadwear
 
     const item2 = {
@@ -77,9 +89,17 @@ describe('comparisonFunction()', () => {
       categoryId: 'cat',
       durability: 1,
       ergonomicsPercentageModifier: 1,
+      movementSpeedPercentageModifier: 1,
       name: 'cat',
-      presetErgonomicsPercentageModifier: isPreset ? 20 : undefined,
-      ricochetChance: 'Low'
+      presetWearableModifiers: isPreset
+        ? {
+          ergonomicsPercentageModifierWithMods: 10,
+          movementSpeedPercentageModifierWithMods: 10,
+          turningSpeedPercentageModifierWithMods: 10
+        }
+        : undefined,
+      ricochetChance: 'Low',
+      turningSpeedPercentageModifier: 1
     } as IHeadwear
 
     const sortingService = new SortingService(HeadwearSortingFunctions)

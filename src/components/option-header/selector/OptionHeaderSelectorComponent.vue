@@ -2,61 +2,62 @@
   <ItemOptionHeader
     v-model:sortingData="updatableSortingData"
     v-model:filter="updatableFilter"
+    :use-longest-header-width="useLongestHeaderWidth"
   >
     <AmmunitionOptionHeader
-      v-if="itemPropertiesService.isAmmunition(categoryId)"
+      v-if="itemPropertiesService.isAmmunition(itemsCategoryId)"
       v-model="updatableSortingData"
     />
     <ArmorModOptionHeader
-      v-else-if="itemPropertiesService.isArmorMod(categoryId)"
+      v-else-if="itemPropertiesService.isArmorMod(itemsCategoryId)"
       v-model="updatableSortingData"
     />
     <ArmorOptionHeader
-      v-else-if="itemPropertiesService.isArmor(categoryId)"
+      v-else-if="itemPropertiesService.isArmor(itemsCategoryId)"
       v-model="updatableSortingData"
     />
     <BackpackOptionHeader
-      v-else-if="itemPropertiesService.isBackpack(categoryId)"
+      v-else-if="itemPropertiesService.isBackpack(itemsCategoryId)"
       v-model="updatableSortingData"
     />
     <ContainerOptionHeader
-      v-else-if="itemPropertiesService.isContainer(categoryId)"
+      v-else-if="itemPropertiesService.isContainer(itemsCategoryId)"
       v-model="updatableSortingData"
     />
     <EyewearOptionHeader
-      v-else-if="itemPropertiesService.isEyewear(categoryId)"
+      v-else-if="itemPropertiesService.isEyewear(itemsCategoryId)"
       v-model="updatableSortingData"
     />
     <GrenadeOptionHeader
-      v-else-if="itemPropertiesService.isGrenade(categoryId)"
+      v-else-if="itemPropertiesService.isGrenade(itemsCategoryId)"
       v-model="updatableSortingData"
     />
     <HeadwearOptionHeader
-      v-else-if="itemPropertiesService.isHeadwear(categoryId)"
+      v-else-if="itemPropertiesService.isHeadwear(itemsCategoryId)"
       v-model="updatableSortingData"
     />
     <MagazineOptionHeader
-      v-else-if="itemPropertiesService.isMagazine(categoryId)"
+      v-else-if="itemPropertiesService.isMagazine(itemsCategoryId)"
       v-model="updatableSortingData"
     />
     <MeleeWeaponOptionHeader
-      v-else-if="itemPropertiesService.isMeleeWeapon(categoryId)"
+      v-else-if="itemPropertiesService.isMeleeWeapon(itemsCategoryId)"
       v-model="updatableSortingData"
     />
     <ModOptionHeader
-      v-else-if="itemPropertiesService.isMod(categoryId)"
+      v-else-if="itemPropertiesService.isMod(itemsCategoryId)"
       v-model="updatableSortingData"
     />
     <RangedWeaponModOptionHeader
-      v-else-if="itemPropertiesService.isRangedWeaponMod(categoryId)"
+      v-else-if="itemPropertiesService.isRangedWeaponMod(itemsCategoryId)"
       v-model="updatableSortingData"
     />
     <RangedWeaponOptionHeader
-      v-else-if="itemPropertiesService.isRangedWeapon(categoryId)"
+      v-else-if="itemPropertiesService.isRangedWeapon(itemsCategoryId)"
       v-model="updatableSortingData"
     />
     <VestOptionHeader
-      v-else-if="itemPropertiesService.isVest(categoryId)"
+      v-else-if="itemPropertiesService.isVest(itemsCategoryId)"
       v-model="updatableSortingData"
     />
   </ItemOptionHeader>

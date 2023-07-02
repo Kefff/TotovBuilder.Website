@@ -9,8 +9,25 @@ describe('contains()', () => {
     ['aBc', 'bC', true],
     ['aBc', 'd', false]
   ])('should indicates if the first string contains the second string', (string1: string, string2: string, expected: boolean) => {
-    // Assert
+    // Act / Assert
     expect(StringUtils.contains(string1, string2)).toBe(expected)
+  })
+})
+
+describe('containsAll()', () => {
+  it.each([
+    ['ABC', ['A', 'BC'], true],
+    ['ABC', ['A', 'D'], false],
+    ['abc', ['a', 'bc'], true],
+    ['abc', ['a', 'd'], false],
+    ['aBc', ['A', 'bC'], true],
+    ['aBc', ['A', 'd'], false]
+  ])('should indicates if the first string contains the second string', async (string1: string, strings: string[], expected: boolean) => {
+    // Act
+    const result = await StringUtils.containsAll(string1, strings)
+
+    // Assert
+    expect(result).toBe(expected)
   })
 })
 

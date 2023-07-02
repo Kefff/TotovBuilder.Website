@@ -9,7 +9,11 @@ describe('setSortingProperty()', () => {
     ['durability', false],
     ['durability', true],
     ['ergonomicsPercentageModifier', false],
-    ['ergonomicsPercentageModifier', true]
+    ['ergonomicsPercentageModifier', true],
+    ['movementSpeedPercentageModifier', false],
+    ['movementSpeedPercentageModifier', true],
+    ['turningSpeedPercentageModifier', false],
+    ['turningSpeedPercentageModifier', true]
   ])('should sort by a property', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
@@ -17,7 +21,15 @@ describe('setSortingProperty()', () => {
       categoryId: 'cat',
       durability: 2,
       ergonomicsPercentageModifier: 2,
-      presetErgonomicsPercentageModifier: isPreset ? 2 : undefined
+      movementSpeedPercentageModifier: 2,
+      presetWearableModifiers: isPreset
+        ? {
+          ergonomicsPercentageModifierWithMods: 20,
+          movementSpeedPercentageModifierWithMods: 20,
+          turningSpeedPercentageModifierWithMods: 20
+        }
+        : undefined,
+      turningSpeedPercentageModifier: 2
     } as IArmorMod
 
     const item2 = {
@@ -25,7 +37,15 @@ describe('setSortingProperty()', () => {
       categoryId: 'cat',
       durability: 1,
       ergonomicsPercentageModifier: 1,
-      presetErgonomicsPercentageModifier: isPreset ? 1 : undefined
+      movementSpeedPercentageModifier: 1,
+      presetWearableModifiers: isPreset
+        ? {
+          ergonomicsPercentageModifierWithMods: 10,
+          movementSpeedPercentageModifierWithMods: 10,
+          turningSpeedPercentageModifierWithMods: 10
+        }
+        : undefined,
+      turningSpeedPercentageModifier: 1
     } as IArmorMod
 
     const sortingService = new SortingService<IArmorMod>(ArmorModSortingFunctions)

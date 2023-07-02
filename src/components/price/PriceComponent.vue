@@ -17,27 +17,20 @@
       />
     </div>
     <div
-      v-if="canShowMerchantIcon"
-      v-tooltip.top="merchantTooltip"
-      :class="'price-merchant-icon' + (canShowDetails ? ' price-value-with-details' : '')"
-      @click="(e) => togglePriceDetails(e)"
+      :class="canShowDetails ? 'price-value-with-details' : ''"
+      @click="(e: MouseEvent) => togglePriceDetails(e)"
     >
-      <img :src="'/assets/' + price.merchant + '.webp'">
       <div
-        v-if="price.merchantLevel !== 0"
-        class="price-merchant-level"
+        v-if="canShowMerchantIcon"
+        class="price-merchant-icon"
       >
-        <div>
-          {{ price.merchantLevel }}
-        </div>
-      </div>
-      <div
-        v-if="isBarter"
-        class="price-merchant-barter-icon"
-      >
-        <div>
-          <font-awesome-icon :icon="currency?.iconName" />
-        </div>
+        <MerchantIcon
+          :is-barter="isBarter"
+          :merchant="price.merchant"
+          :merchant-level="price.merchantLevel"
+          :requires-quest="price.quest != null"
+          :show-tooltip="showTooltip"
+        />
       </div>
     </div>
   </div>
@@ -67,9 +60,9 @@
       >
         <font-awesome-icon
           icon="lock"
-          class="icon-before-text price-details-quest-icon"
+          class="icon-before-text price-quest-icon"
         />
-        <span class="price-details-quest">{{ $t('caption.quest') }} : </span>
+        <span class="price-details-quest-name">{{ $t('caption.quest') }} : </span>
         <a
           :href="price.quest.wikiLink"
           target="_blank"

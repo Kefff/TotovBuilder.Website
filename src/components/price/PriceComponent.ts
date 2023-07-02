@@ -10,10 +10,12 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import Services from '../../services/repository/Services'
 import ItemIcon from '../item-icon/ItemIconComponent.vue'
+import MerchantIcon from '../merchant-icon/MerchantIconComponent.vue'
 
 export default defineComponent({
   components: {
-    ItemIcon
+    ItemIcon,
+    MerchantIcon
   },
   props: {
     price: {
@@ -73,7 +75,8 @@ export default defineComponent({
           + (props.price.merchantLevel !== 0
             ? (' ' + vueI18n.t('caption.level').toLowerCase() + ' ' + props.price.merchantLevel)
             : '')
-          + (isBarter.value ? '\n' + vueI18n.t('caption.barter') : ''))
+          + (isBarter.value ? '\n' + vueI18n.t('caption.barter') : '')
+          + (props.price.quest != null ? '\n' + vueI18n.t('caption.questRequired') : ''))
         : '')
       : '')
     const priceValueTooltip = computed(() => props.showTooltip ? vueI18n.t('caption.price') + (props.tooltipSuffix ?? '') : '')
@@ -144,6 +147,9 @@ export default defineComponent({
      */
     async function initialize() {
       initialized.value = false
+
+      barterItems.value = []
+      barterItemPrices.value = []
 
       const notificationService = Services.get(NotificationService)
       const mainCurrencyResult = await Services.get(ItemService).getMainCurrency()

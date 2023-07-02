@@ -22,7 +22,6 @@ export class BuildService {
    */
   public async add(build: IBuild): Promise<string> {
     build.id = Guid.create().toString()
-    build.lastUpdated = new Date()
     build.lastWebsiteVersion = await Services.get(VersionService).getVersion()
 
     const storageKey = this.getKey(build.id)

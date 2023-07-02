@@ -5,6 +5,13 @@
       <div class="selected-item-summary-right">
         <div class="selected-item-summary-right-price">
           <div
+            v-if="price.missingPrice"
+            v-tooltip.top="$t('message.missingPrice')"
+            class="selected-item-summary-price-missing-price-icon"
+          >
+            <font-awesome-icon icon="exclamation-triangle" />
+          </div>
+          <div
             v-if="price.unitPriceIgnoreStatus === IgnoredUnitPrice.manuallyIgnored"
             v-tooltip.top="$t('caption.ignoredPrice_' + price.unitPriceIgnoreStatus)"
             class="selected-item-summary-price-ignored-price-icon"
@@ -16,21 +23,16 @@
             :price="price.price"
           />
           <div
-            v-if="price.missingPrice"
-            v-tooltip.top="$t('message.missingPrice')"
-            class="selected-item-summary-price-missing-price-icon"
-          >
-            <font-awesome-icon icon="exclamation-triangle" />
-          </div>
-          <div
             v-tooltip.top="$t('caption.weight')"
             class="selected-item-summary-weight"
           >
-            <span>{{ weight.weight.toFixed(3) }}</span>
-            <font-awesome-icon
-              icon="weight-hanging"
-              class="icon-after-text"
-            />
+            <div v-if="weight.weight > 0">
+              <span>{{ weight.weight.toFixed(3) }}</span>
+              <font-awesome-icon
+                icon="weight-hanging"
+                class="icon-after-text"
+              />
+            </div>
           </div>
         </div>
         <div class="selected-item-summary-right-unit-price">
@@ -43,15 +45,16 @@
             />
           </div>
           <div
-            v-if="weight.unitWeight !== weight.weight"
             v-tooltip.top="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'"
-            class="selected-item-summary-weight"
+            class="selected-item-summary-weight selected-item-summary-weight-per-unit"
           >
-            <span>{{ weight.unitWeight.toFixed(3) }}</span>
-            <font-awesome-icon
-              icon="weight-hanging"
-              class="icon-after-text"
-            />
+            <div v-if="weight.unitWeight !== weight.weight">
+              <span>{{ weight.unitWeight.toFixed(3) }}</span>
+              <font-awesome-icon
+                icon="weight-hanging"
+                class="icon-after-text"
+              />
+            </div>
           </div>
         </div>
       </div>

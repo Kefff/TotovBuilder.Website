@@ -53,6 +53,7 @@
 
 .inventory-slot-summary-price {
   margin-left: auto;
+  margin-right: 2.5rem; /* Space to align the price with the children prices that have the merchant icon */
 }
 
 .inventory-slot-summary-value {
@@ -66,6 +67,7 @@
 }
 
 .inventory-slot-weight {
+  margin-left: 1rem;
   text-align: right;
   width: 7rem;
 }

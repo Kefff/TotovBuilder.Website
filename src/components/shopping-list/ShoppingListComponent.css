@@ -8,6 +8,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   margin-bottom: 0.25rem;
+  margin-right: 0.5rem;
 }
 
 .shopping-list-item :last-child {
@@ -23,7 +24,7 @@
 
 .shopping-list-item-name {
   margin-left: 0.25rem;
-  width: 16.5rem;
+  width: 20rem;
 }
 
 .shopping-list-item-price {
@@ -33,10 +34,21 @@
 
 .shopping-list-item-price-per-unit {
   font-size: 0.75rem;
-  margin-right: 2.7rem;
+  margin-right: 2.35rem;
 }
 
 .shopping-list-item-quantity {
   text-align: right;
   width: 4rem;
+}
+
+.shopping-list-title {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.shopping-list-title-merchants {
+  margin-right: 1rem;
+  width: 100%;
 }

@@ -505,7 +505,7 @@ export class InventoryItemService {
           shoppingListBartersToAdd.push(...barterItemShoppingListResult.value)
         }
 
-        // Setting the price of items that have barter items to 0 since barter items and they price are added to the shopping list
+        // Setting the unit price of items that have barter items to 0 since barter items and their price are added to the shopping list
         unitPrice = {
           barterItems: [],
           currencyName: 'barter',

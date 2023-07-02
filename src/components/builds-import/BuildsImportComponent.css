@@ -2,13 +2,20 @@
 @import '../../assets/css/icon.css';
 
 .builds-import-buttons {
+  align-items: center;
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
   width: 100%;
 }
 
-.builds-import-cancel-button {
-  margin-left: auto !important;
+.builds-import-buttons-cancel-button {
   margin-right: 0 !important;
+}
+
+.builds-import-buttons-left-buttons {
+  margin-right: auto
 }
 
 .builds-import-file-selection {

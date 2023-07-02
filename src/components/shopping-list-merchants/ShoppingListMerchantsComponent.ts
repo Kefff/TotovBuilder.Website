@@ -1,17 +1,12 @@
-import { computed, defineComponent, PropType, ref } from 'vue'
-import { IShoppingListItem } from '../../models/build/IShoppingListItem'
-import ItemIcon from '../item-icon/ItemIconComponent.vue'
-import MerchantIcon from '../merchant-icon/MerchantIconComponent.vue'
-import ShoppingListMerchants from '../shopping-list-merchants/ShoppingListMerchantsComponent.vue'
-import Price from '../price/PriceComponent.vue'
+import { PropType, computed, defineComponent } from 'vue'
 import { IBuildSummaryShoppingMerchant } from '../../models/utils/IBuildSummaryMerchant'
+import MerchantIcon from '../merchant-icon/MerchantIconComponent.vue'
+import { IShoppingListItem } from '../../models/build/IShoppingListItem'
+import StringUtils from '../../utils/StringUtils'
 
 export default defineComponent({
   components: {
-    ItemIcon,
-    MerchantIcon,
-    ShoppingListMerchants,
-    Price
+    MerchantIcon
   },
   props: {
     shoppingList: {
@@ -22,15 +17,6 @@ export default defineComponent({
   setup: (props) => {
     const requiredMerchants = computed(() => getRequiredMerchants())
 
-    const open = ref(false)
-
-    /**
-     * Closes shopping list.
-     */
-    function close() {
-      open.value = false
-    }
-
     /**
      * Gets the required merchants.
      */
@@ -38,6 +24,11 @@ export default defineComponent({
       const merchants: IBuildSummaryShoppingMerchant[] = []
 
       for (const item of props.shoppingList) {
+        if (item.price.merchant === '') {
+          // When no merchant is found, a price without merchant and a 0 value is returned
+          continue
+        }
+
         const merchant = merchants.find(m => m.name === item.price.merchant)
 
         if (merchant == null) {
@@ -52,21 +43,13 @@ export default defineComponent({
         }
       }
 
+      merchants.sort((m1, m2) => StringUtils.compare(m1.name, m2.name))
+
       return merchants
     }
 
-    /**
-     * Displays the shopping list.
-     */
-    function show() {
-      open.value = true
-    }
-
     return {
-      close,
-      open,
-      requiredMerchants,
-      show
+      requiredMerchants
     }
   }
 })

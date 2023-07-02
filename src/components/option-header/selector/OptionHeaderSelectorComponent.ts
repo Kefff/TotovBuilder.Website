@@ -40,7 +40,8 @@ export default defineComponent({
   props: {
     categoryId: {
       type: String,
-      required: true
+      required: false,
+      default: undefined
     },
     filter: {
       type: String,
@@ -58,6 +59,8 @@ export default defineComponent({
   setup: (props, { emit }) => {
     const itemPropertiesService = Services.get(ItemPropertiesService)
 
+    const itemsCategoryId = computed(() => props.categoryId != null ? props.categoryId : 'other')
+    const useLongestHeaderWidth = computed(() => props.categoryId == null)
     const updatableFilter = computed({
       get: () => props.filter,
       set: (value: string) => emit('update:filter', value)
@@ -69,8 +72,10 @@ export default defineComponent({
 
     return {
       itemPropertiesService,
+      itemsCategoryId,
       updatableFilter,
-      updatableSortingData
+      updatableSortingData,
+      useLongestHeaderWidth
     }
   }
 })

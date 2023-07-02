@@ -12,25 +12,6 @@
     @sort="onSort"
   >
     <Column
-      v-if="showNotExported"
-      field="exported"
-      :sortable="false"
-    >
-      <template #body="{data}">
-        <div class="build-list-column">
-          <span
-            v-if="!data.exported"
-            v-tooltip.right="getNotExportedTooltip(data)"
-            class="build-list-not-exported"
-          >
-            <font-awesome-icon
-              icon="exclamation-triangle"
-            />
-          </span>
-        </div>
-      </template>
-    </Column>
-    <Column
       field="name"
       :sortable="true"
     >
@@ -41,7 +22,52 @@
       </template>
       <template #body="{data}">
         <div class="build-list-column">
-          {{ data.name }}
+          <div class="build-list-column-name-buttons">
+            <span
+              v-if="showNotExported && !data.exported"
+              v-tooltip.right="getNotExportedTooltip(data)"
+              class="build-list-not-exported"
+            >
+              <font-awesome-icon
+                icon="exclamation-triangle"
+              />
+            </span>
+            <ShoppingList :shopping-list="data.shoppingList" />
+          </div>
+          <div class="build-list-column-name">
+            {{ data.name }}
+          </div>
+        </div>
+      </template>
+    </Column>
+    <Column
+      field="price"
+      :sortable="true"
+      sortField="price.priceWithContentInMainCurrency.valueInMainCurrency"
+    >
+      <!-- For some reason, using "sort-field" doesn't work while using "sortField" works -->
+      <template #header>
+        <div class="build-list-column">
+          {{ $t('caption.price') }}
+        </div>
+      </template>
+      <template #body="{data}">
+        <div class="build-list-column">
+          <InventoryPrice :inventory-price="data.price" />
+        </div>
+      </template>
+    </Column>
+    <Column
+      :sortable="false"
+    >
+      <template #header>
+        <div class="build-list-column build-list-column-merchants">
+          {{ $t('caption.merchants') }}
+        </div>
+      </template>
+      <template #body="{data}">
+        <div class="build-list-column build-list-column-merchants">
+          <ShoppingListMerchants :shopping-list="data.shoppingList" />
         </div>
       </template>
     </Column>
@@ -178,26 +204,6 @@
           <font-awesome-icon
             icon="undo"
             class="icon-after-text"
-          />
-        </div>
-      </template>
-    </Column>
-    <Column
-      field="price"
-      :sortable="true"
-      sortField="price.priceWithContentInMainCurrency.valueInMainCurrency"
-    >
-      <!-- For some reason, using "sort-field" doesn't work while using "sortField" works -->
-      <template #header>
-        <div class="build-list-column">
-          {{ $t('caption.price') }}
-        </div>
-      </template>
-      <template #body="{data}">
-        <div class="build-list-column">
-          <InventoryPrice
-            :inventory-price="data.price"
-            :show-space-for-icon="false"
           />
         </div>
       </template>

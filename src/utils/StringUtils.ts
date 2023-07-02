@@ -5,11 +5,33 @@ export default class StringUtils {
   /**
    * Indicates whether a string contains another string without casing.
    * @param container - String that should contain the other string.
-   * @param contained - String that should be contained in the other string.
+   * @param searchedString - String that should be contained in the string.
    * @returns True if the string is contained in the other string; otherwise false.
    */
-  public static contains(container: string, contained: string): boolean {
-    return container.toUpperCase().includes(contained.toUpperCase())
+  public static contains(container: string, searchedString: string): boolean {
+    return container.toUpperCase().includes(searchedString.toUpperCase())
+  }
+
+  /**
+   * Indicates whether a string contains other strings without casing.
+   * @param container - String that should contain the other string.
+   * @param searchedStrings - Strings that should be contained in the string.
+   * @returns True if all the strings are contained in the string; otherwise false.
+   */
+  public static async containsAll(container: string, searchedStrings: string[]): Promise<boolean> {
+    const promises: Promise<void>[] = []
+    const results: boolean[] = []
+
+    for (const searchedString of searchedStrings) {
+      promises.push(new Promise((resolve) => {
+        results.push(this.contains(container, searchedString))
+        resolve()
+      }))
+    }
+
+    await Promise.allSettled(promises)
+
+    return results.every(r => r === true)
   }
 
   /**

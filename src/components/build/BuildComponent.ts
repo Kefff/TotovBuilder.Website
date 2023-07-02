@@ -54,6 +54,21 @@ export default defineComponent({
     const inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
     let originalBuild: IBuild
 
+    const hasSummaryErgonomics = computed(() => summary.value.ergonomics != null && summary.value.ergonomics !== 0)
+    const hasSummaryErgonomicsPercentageModifier = computed(() => summary.value.wearableModifiers.ergonomicsPercentageModifierWithMods !== 0)
+    const hasSummaryHorizontalRecoil = computed(() => summary.value.horizontalRecoil != null && summary.value.horizontalRecoil !== 0)
+    const hasSummaryModifiers = computed(() =>
+      summary.value.wearableModifiers != null
+      && (hasSummaryErgonomicsPercentageModifier.value
+        || hasSummaryMovementSpeedPercentageModifierWithMods.value
+        || hasSummaryTurningSpeedPercentageModifierWithMods.value)
+    )
+    const hasSummaryMovementSpeedPercentageModifierWithMods = computed(() => summary.value.wearableModifiers.movementSpeedPercentageModifierWithMods !== 0)
+    const hasSummaryPrice = computed(() => summary.value.price.priceWithContentInMainCurrency.valueInMainCurrency > 0)
+    const hasSummaryStats = computed(() => hasSummaryErgonomics.value || hasSummaryHorizontalRecoil.value || hasSummaryVerticalRecoil.value)
+    const hasSummaryTurningSpeedPercentageModifierWithMods = computed(() => summary.value.wearableModifiers.turningSpeedPercentageModifierWithMods !== 0)
+    const hasSummaryVerticalRecoil = computed(() => summary.value.verticalRecoil != null && summary.value.verticalRecoil !== 0)
+    const hasSummaryWeight = computed(() => summary.value.weight !== 0)
     const invalid = computed(() => build.value.name === '')
     const isEmpty = computed(() => !build.value.inventorySlots.some(is => is.items.some(i => i != null)))
     const isNewBuild = computed(() => build.value.id === '')
@@ -448,6 +463,16 @@ export default defineComponent({
       expandWithItem,
       exportBuild,
       goToBuilds,
+      hasSummaryErgonomics,
+      hasSummaryErgonomicsPercentageModifier,
+      hasSummaryHorizontalRecoil,
+      hasSummaryModifiers,
+      hasSummaryMovementSpeedPercentageModifierWithMods,
+      hasSummaryPrice,
+      hasSummaryStats,
+      hasSummaryTurningSpeedPercentageModifierWithMods,
+      hasSummaryVerticalRecoil,
+      hasSummaryWeight,
       invalid,
       inventorySlotPathPrefix,
       isEmpty,

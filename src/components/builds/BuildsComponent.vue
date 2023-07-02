@@ -6,7 +6,10 @@
     <div :class="toolbarCssClass">
       <div class="toolbar-line">
         <div class="toolbar-part">
-          <Button @click="openNewBuild()">
+          <Button
+            :class="isLoading ? ' p-disabled' : ''"
+            @click="openNewBuild()"
+          >
             <font-awesome-icon
               icon="plus"
               class="icon-before-text"
@@ -22,7 +25,7 @@
           </Button>
           <Button
             v-tooltip.top="$t('caption.importBuilds')"
-            :class="'p-button-text p-button-sm button-discreet' + (!canExport ? ' p-disabled' : '')"
+            :class="'p-button-text p-button-sm button-discreet' + (!canImport ? ' p-disabled' : '')"
             @click="showBuildsImportPopup()"
           >
             <font-awesome-icon icon="file-import" />
@@ -83,12 +86,14 @@
 
   <!-- Export -->
   <BuildsExport
+    v-if="!isLoading"
     v-model="isExporting"
     :builds-summaries="buildsSummaries"
   />
 
   <!-- Import -->
   <BuildsImport
+    v-if="!isLoading"
     v-model="isImporting"
     v-model:has-imported="hasImported"
   />

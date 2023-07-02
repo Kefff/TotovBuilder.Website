@@ -55,8 +55,8 @@ export default defineComponent({
     const displayed = computed(() => editing?.value || props.modelValue.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
 
     const acceptedItems = ref<IItem[]>([])
+    const acceptedItemsCategoryId = ref<string | undefined>(undefined)
     const canBeLooted = ref(true)
-    const categoryIds = ref<string[]>([])
     const customIcon = ref<string>()
     const ergonomics = ref<number | undefined>()
     const horizontalRecoil = ref<number | undefined>()
@@ -264,8 +264,8 @@ export default defineComponent({
      */
     async function setItemComponentParameters() {
       if (type.value != null) {
-        categoryIds.value = type.value.acceptedItemCategories
-        acceptedItems.value = await inventorySlotComponentService.getAcceptedItems(categoryIds.value)
+        acceptedItemsCategoryId.value = type.value.acceptedItemCategories.length === 1 ? type.value.acceptedItemCategories[0] : undefined
+        acceptedItems.value = await inventorySlotComponentService.getAcceptedItems(type.value.acceptedItemCategories)
       }
     }
 
@@ -278,8 +278,8 @@ export default defineComponent({
 
     return {
       acceptedItems,
+      acceptedItemsCategoryId,
       canBeLooted,
-      categoryIds,
       customIcon,
       displayed,
       ergonomics,

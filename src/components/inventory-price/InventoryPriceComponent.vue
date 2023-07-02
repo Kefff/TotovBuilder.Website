@@ -1,34 +1,28 @@
 <template>
-  <div
-    v-if="inventoryPrice.priceWithContentInMainCurrency.valueInMainCurrency > 0"
-    class="inventory-price"
-  >
-    <div class="inventory-price-value">
+  <div class="inventory-price">
+    <div
+      v-if="inventoryPrice.missingPrice"
+      v-tooltip.top="$t('message.missingPrice')"
+      class="inventory-price-missing-price-icon"
+    >
+      <font-awesome-icon icon="exclamation-triangle" />
+    </div>
+    <div
+      v-tooltip.top="$t('caption.price')"
+      :class="'inventory-price-list' + (canShowDetails ? ' inventory-price-with-details' : '')"
+      @click="(e) => togglePriceDetails(e)"
+    >
       <div
-        v-tooltip.top="$t('caption.price')"
-        :class="'inventory-price-value-list' + (canShowDetails ? ' inventory-price-with-details' : '')"
-        @click="(e) => togglePriceDetails(e)"
+        v-for="(price, index) of inventoryPrice.pricesWithContent"
+        :key="index"
+        class="inventory-price-list-price"
       >
-        <div
-          v-for="(price, index) of inventoryPrice.pricesWithContent"
-          :key="index"
-          class="inventory-price-value-list-price"
-        >
-          <Price
-            :price="price"
-            :show-details="false"
-            :show-merchant-icon="false"
-            :show-tooltip="false"
-          />
-        </div>
-      </div>
-      <div :class="missingPriceIconClass">
-        <div
-          v-if="inventoryPrice.missingPrice"
-          v-tooltip.top="$t('message.missingPrice')"
-        >
-          <font-awesome-icon icon="exclamation-triangle" />
-        </div>
+        <Price
+          :price="price"
+          :show-details="false"
+          :show-merchant-icon="false"
+          :show-tooltip="false"
+        />
       </div>
     </div>
   </div>

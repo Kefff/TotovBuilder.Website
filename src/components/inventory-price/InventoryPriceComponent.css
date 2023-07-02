@@ -2,8 +2,9 @@
 
 .inventory-price {
   display: flex;
-  flex-direction: column;
-  padding: 0.25rem
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding: 0.25rem;
 }
 
 .inventory-price-details {
@@ -17,49 +18,28 @@
   cursor: pointer;
 }
 
-.inventory-price-value {
+.inventory-price-list {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: right;
+  justify-content: end;
 }
 
-.inventory-price-value-list {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: right;
-  margin-right: -0.25rem;
+.inventory-price-list-price {
+  margin-right: 0.5rem;
 }
 
-.inventory-price-value-list-price {
-  margin-right: 1rem;
-}
-
-.inventory-price-value-list-price:last-child {
+.inventory-price-list-price:last-child {
   margin-right: 0;
 }
 
-.inventory-price-value-missing-price-icon {
+.inventory-price-missing-price-icon {
   align-items: center;
   color: var(--error-color);
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  margin-left: 0.5rem;
-  width: 2rem;
-}
-
-.inventory-price-value-missing-price-icon-no-width {
-  align-items: center;
-  color: var(--error-color);
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-}
-
-.inventory-price-value-missing-price-icon-no-width > div > svg {
-  margin-left: 0.5rem;
+  margin-right: auto;
+  padding-right: 0.5rem;
 }

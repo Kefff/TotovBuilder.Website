@@ -17,6 +17,11 @@ export default defineComponent({
     sortingData: {
       type: Object as PropType<SortingData<IItem>>,
       required: true
+    },
+    useLongestHeaderWidth: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   emits: [

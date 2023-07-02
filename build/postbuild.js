@@ -12,7 +12,7 @@ const options = {
   ]
 }
 
-console.log('Start : Reverting "Configuration." by "import.meta.env."')
+console.log('Start : Reverting replacement of "Configuration." by "import.meta.env."')
 
 const results = replace.sync(options)
 
@@ -20,4 +20,4 @@ for (const result of results.filter(r => r.hasChanged)) {
   console.log(result.file)
 }
 
-console.log('End : Reverting "Configuration." by "import.meta.env."')
+console.log('End : Reverting replacement of  "Configuration." by "import.meta.env."')

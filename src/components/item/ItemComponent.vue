@@ -9,19 +9,20 @@
           v-model="selectedItem"
           data-key="id"
           :disabled="!editing"
-          :empty-message="$t(optionsEmptyMessage)"
+          :empty-message="$t('message.noItemsFound')"
           :options="options"
           option-label="caption"
-          scroll-height="27rem"
           :show-clear="editing"
           class="item-dropdown"
+          :scroll-height="dropdownPanelHeight"
+          :virtual-scroller-options="{ orientation: 'vertical', itemSize: 64 }"
           @change="onSelectedItemChanged()"
         >
           <template #header>
             <OptionHeaderSelector
               v-model:filter="optionsFilter"
               v-model:sortingData="optionsSortingData"
-              :category-id="optionsCategory"
+              :category-id="acceptedItemsCategoryId"
               @update:filter="onFilterOptions($event)"
               @update:sortingData="onSortOptions($event)"
             />

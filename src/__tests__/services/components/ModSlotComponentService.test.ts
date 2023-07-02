@@ -87,45 +87,68 @@ describe('getAcceptedItems()', () => {
   })
 })
 
-describe('getCategoryIds()', () => {
-  it('should get category IDs', () => {
+describe('getAcceptedItemsCategoryId()', () => {
+  it.each([
+    [
+      [
+        {
+          categoryId: 'rangedWeaponMod',
+          conflictingItemIds: [],
+          iconLink: '',
+          id: '5f6341043ada5942720e2dc5', // AK Aeroknox Scorpius pistol grip
+          imageLink: '',
+          marketLink: '',
+          maxStackableAmount: 1,
+          name: '',
+          prices: [],
+          shortName: '',
+          weight: 0,
+          wikiLink: ''
+        },
+        {
+          categoryId: 'headphones',
+          conflictingItemIds: [],
+          iconLink: '',
+          id: '5f60cd6cf2bcbb675b00dac6', // Walker's XCEL 500BT Digital headset
+          imageLink: '',
+          marketLink: '',
+          maxStackableAmount: 1,
+          name: '',
+          prices: [],
+          shortName: '',
+          weight: 0,
+          wikiLink: ''
+        }
+      ],
+      undefined
+    ],
+    [
+      [
+        {
+          categoryId: 'headphones',
+          conflictingItemIds: [],
+          iconLink: '',
+          id: '5f60cd6cf2bcbb675b00dac6', // Walker's XCEL 500BT Digital headset
+          imageLink: '',
+          marketLink: '',
+          maxStackableAmount: 1,
+          name: '',
+          prices: [],
+          shortName: '',
+          weight: 0,
+          wikiLink: ''
+        }
+      ],
+      'headphones'
+    ]
+  ])('should get the accepted items category ID', (items: IItem[], expected: string | undefined) => {
     // Arrange
     const modSlotService = new ModSlotComponentService()
-    const items: IItem[] = [
-      {
-        categoryId: 'rangedWeaponMod',
-        conflictingItemIds: [],
-        iconLink: '',
-        id: '5f6341043ada5942720e2dc5', // AK Aeroknox Scorpius pistol grip
-        imageLink: '',
-        marketLink: '',
-        maxStackableAmount: 1,
-        name: '',
-        prices: [],
-        shortName: '',
-        weight: 0,
-        wikiLink: ''
-      },
-      {
-        categoryId: 'headphones',
-        conflictingItemIds: [],
-        iconLink: '',
-        id: '5f60cd6cf2bcbb675b00dac6', // Walker's XCEL 500BT Digital headset
-        imageLink: '',
-        marketLink: '',
-        maxStackableAmount: 1,
-        name: '',
-        prices: [],
-        shortName: '',
-        weight: 0,
-        wikiLink: ''
-      }
-    ]
 
     // Act
-    const categoryIds = modSlotService.getCategoryIds(items)
+    const categoryIds = modSlotService.getAcceptedItemsCategoryId(items)
 
     // Assert
-    expect(categoryIds).toStrictEqual(['rangedWeaponMod', 'headphones'])
+    expect(categoryIds).toBe(expected)
   })
 })

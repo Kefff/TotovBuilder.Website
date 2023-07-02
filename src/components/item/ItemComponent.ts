@@ -25,6 +25,7 @@ import { InventoryItemService } from '../../services/InventoryItemService'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import { PathUtils } from '../../utils/PathUtils'
 import { PresetService } from '../../services/PresetService'
+import { IMagazine } from '../../models/item/IMagazine'
 
 export default defineComponent({
   components: {
@@ -43,14 +44,15 @@ export default defineComponent({
       type: Array as PropType<IItem[]>,
       required: true
     },
+    acceptedItemsCategoryId: {
+      type: String,
+      required: false,
+      default: undefined
+    },
     canBeLooted: {
       type: Boolean,
       required: false,
       default: true
-    },
-    categoryIds: {
-      type: Array as PropType<string[]>,
-      required: true
     },
     forceQuantityToMaxSelectableAmount: {
       type: Boolean,
@@ -81,12 +83,10 @@ export default defineComponent({
     const presetService = Services.get(PresetService)
     const notificationService = Services.get(NotificationService)
 
-    const optionsMaxNumber = 200
-
     const editing = inject<Ref<boolean>>('editing')
 
+    const dropdownPanelHeight = computed(() => Math.min(options.value.length === 0 ? 1 : options.value.length, 5) * 4 + 'rem') // Shows 5 items or less
     const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? selectedItem.value?.maxStackableAmount ?? 1)
-    const optionsCategory = computed(() => props.categoryIds.length === 1 ? props.categoryIds[0] : 'item') // When items from multiple categories can be selected, components use the base type IItem for compatibility
     const selectedInventoryItem = computed<IInventoryItem | undefined>({
       get: () => props.modelValue,
       set: (value: IInventoryItem | undefined) => emit('update:modelValue', value)
@@ -94,7 +94,6 @@ export default defineComponent({
 
     const itemChanging = ref(false)
     const options = ref<IItem[]>([])
-    const optionsEmptyMessage = ref<string>('message.noItemsFound')
     const optionsFilter = ref('')
     const optionsSortingData = ref(new SortingData<IItem>())
     const quantity = ref(props.modelValue?.quantity ?? 1)
@@ -229,28 +228,51 @@ export default defineComponent({
     }
 
     /**
+     * Sets an item as an option if it matches the filter.
+     * @param acceptedItem - Item that must set as an options.
+     * @param filterWords - Filter words.
+     * @param options - Option list in which the item mus be added.
+     */
+    async function setOption(acceptedItem: IItem, filterWords: string[], options: IItem[]) {
+      let contains = await StringUtils.containsAll(acceptedItem.shortName, filterWords)
+
+      if (contains) {
+        options.push(acceptedItem)
+
+        return
+      }
+
+      contains = await StringUtils.containsAll(acceptedItem.name, filterWords)
+
+      if (contains) {
+        options.push(acceptedItem)
+      }
+    }
+
+    /**
      * Sets the options selectable in the drop down input.
      * When more than x items are found, displays a message asking the user to filter.
      * @param filter - Filter.
      * @param sortingData - Sorting data.
      */
-    function setOptions(filter: string, sortingData: SortingData<IItem>) {
-      let newOptions: IItem[]
+    async function setOptions(filter: string, sortingData: SortingData<IItem>) {
+      let newOptions: IItem[] = []
 
       if (filter === '') {
         newOptions = [...props.acceptedItems]
       } else {
-        newOptions = [...props.acceptedItems.filter((o) => StringUtils.contains(o.name, filter))]
+        const filterWords = filter.split(' ')
+        const promises: Promise<void>[] = []
+
+        for (const acceptedItem of props.acceptedItems) {
+          promises.push(setOption(acceptedItem, filterWords, newOptions))
+        }
+
+        await Promise.allSettled(promises)
       }
 
-      if (newOptions.length > optionsMaxNumber) {
-        optionsEmptyMessage.value = 'message.searchForItem'
-        options.value = []
-      } else {
-        options.value = newOptions
-        optionsEmptyMessage.value = 'message.noItemsFound'
-        onSortOptions(sortingData)
-      }
+      options.value = newOptions
+      onSortOptions(sortingData)
     }
 
     /**
@@ -292,8 +314,33 @@ export default defineComponent({
             quantity.value = maxSelectableQuantity.value
           }
 
+          // Keeping the old item content if the new item is a container
+          const newContent: IInventoryItem[] = []
+          const newSelectedItemIsContainer = itemPropertiesService.canContain(newSelectedItem)
+
+          if (newSelectedItemIsContainer
+            && selectedInventoryItem.value != null
+            && selectedInventoryItem.value.content.length > 0) {
+            const newSelectedItemIsMagazine = itemPropertiesService.isMagazine(newSelectedItem)
+
+            if (newSelectedItemIsMagazine) {
+              const magazine = (newSelectedItem as IMagazine)
+
+              for (const ammunitionInventoryItem of selectedInventoryItem.value.content) {
+                const isCompatible = magazine.acceptedAmmunitionIds.some(aci => aci === ammunitionInventoryItem.itemId)
+
+                if (isCompatible) {
+                  ammunitionInventoryItem.quantity = magazine.capacity
+                  newContent.push(ammunitionInventoryItem)
+                }
+              }
+            } else {
+              newContent.push(...selectedInventoryItem.value.content)
+            }
+          }
+
           selectedInventoryItem.value = {
-            content: [],
+            content: newContent,
             ignorePrice: false,
             itemId: newSelectedItem.id,
             modSlots: [],
@@ -312,6 +359,7 @@ export default defineComponent({
     }
 
     return {
+      dropdownPanelHeight,
       editing,
       itemChanging,
       maxSelectableQuantity,
@@ -321,8 +369,6 @@ export default defineComponent({
       onSelectedItemChanged,
       onSortOptions,
       options,
-      optionsCategory,
-      optionsEmptyMessage,
       optionsFilter,
       optionsSortingData,
       preset,

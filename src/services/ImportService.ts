@@ -31,10 +31,8 @@ export class ImportService {
    */
   public async import(builds: IBuild[]): Promise<void> {
     const buildService = Services.get(BuildService)
-    const importDate = new Date()
 
     for (const build of builds) {
-      build.lastExported = importDate
       await buildService.add(build)
     }
   }
@@ -54,6 +52,13 @@ export class ImportService {
 
     if (builds == null) {
       return Result.fail(FailureType.error, vueI18n.t('message.importReadFileError'))
+    }
+
+    const importDate = new Date()
+
+    for (const build of builds) {
+      build.lastExported = importDate // Setting the same date for lastExported and lastUpdated so we don't have export warnings
+      build.lastUpdated = importDate
     }
 
     return Result.ok(builds)
