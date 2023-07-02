@@ -9,7 +9,7 @@
           v-model="selectedItem"
           data-key="id"
           :disabled="!editing"
-          :empty-message="$t(optionsEmptyMessage)"
+          :empty-message="$t('message.noItemsFound')"
           :options="options"
           option-label="caption"
           :show-clear="editing"

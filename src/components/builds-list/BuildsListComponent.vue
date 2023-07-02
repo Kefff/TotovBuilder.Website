@@ -16,12 +16,12 @@
       :sortable="true"
     >
       <template #header>
-        <div class="build-list-column build-list-column-name">
+        <div class="build-list-column">
           {{ $t('caption.name') }}
         </div>
       </template>
       <template #body="{data}">
-        <div class="build-list-column build-list-column-name">
+        <div class="build-list-column">
           <div class="build-list-column-name-buttons">
             <span
               v-if="showNotExported && !data.exported"
@@ -34,7 +34,9 @@
             </span>
             <ShoppingList :shopping-list="data.shoppingList" />
           </div>
-          <span>{{ data.name }}</span>
+          <div class="build-list-column-name">
+            {{ data.name }}
+          </div>
         </div>
       </template>
     </Column>

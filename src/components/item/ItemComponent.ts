@@ -85,7 +85,7 @@ export default defineComponent({
 
     const editing = inject<Ref<boolean>>('editing')
 
-    const dropdownPanelHeight = computed(() => Math.min(options.value.length, 5) * 4 + 'rem') // Shows 5 items or less
+    const dropdownPanelHeight = computed(() => Math.min(options.value.length === 0 ? 1 : options.value.length, 5) * 4 + 'rem') // Shows 5 items or less
     const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? selectedItem.value?.maxStackableAmount ?? 1)
     const selectedInventoryItem = computed<IInventoryItem | undefined>({
       get: () => props.modelValue,
@@ -94,7 +94,6 @@ export default defineComponent({
 
     const itemChanging = ref(false)
     const options = ref<IItem[]>([])
-    const optionsEmptyMessage = ref<string>('message.noItemsFound')
     const optionsFilter = ref('')
     const optionsSortingData = ref(new SortingData<IItem>())
     const quantity = ref(props.modelValue?.quantity ?? 1)
@@ -273,7 +272,6 @@ export default defineComponent({
       }
 
       options.value = newOptions
-      optionsEmptyMessage.value = 'message.noItemsFound'
       onSortOptions(sortingData)
     }
 
@@ -371,7 +369,6 @@ export default defineComponent({
       onSelectedItemChanged,
       onSortOptions,
       options,
-      optionsEmptyMessage,
       optionsFilter,
       optionsSortingData,
       preset,
