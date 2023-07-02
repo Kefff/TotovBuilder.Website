@@ -14,7 +14,7 @@ export const RangedWeaponSortingFunctions: ISortingFunctionList<IRangedWeapon> =
   },
   ergonomics: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.ergonomics
+    comparisonValueObtentionFunction: async (i) => i.presetErgonomics ?? i.ergonomics
   },
   fireRate: {
     comparisonFunction: compareByNumber,
@@ -22,10 +22,10 @@ export const RangedWeaponSortingFunctions: ISortingFunctionList<IRangedWeapon> =
   },
   horizontalRecoil: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.horizontalRecoil
+    comparisonValueObtentionFunction: async (i) => i.presetHorizontalRecoil ?? i.horizontalRecoil
   },
   verticalRecoil: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.verticalRecoil
+    comparisonValueObtentionFunction: async (i) => i.presetVerticalRecoil ?? i.verticalRecoil
   }
 }
