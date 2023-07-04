@@ -8362,24 +8362,14 @@
     "valueInMainCurrency": 10825.0
   },
   {
-    "barterItems": [],
-    "currencyName": "RUB",
-    "itemId": "590a3efd86f77437d351a25b",
-    "merchant": "flea-market",
-    "merchantLevel": 0.0,
-    "quest": null,
-    "value": 19556.0,
-    "valueInMainCurrency": 19556.0
-  },
-  {
-    "barterItems": [{ "itemId": "5734779624597737e04bf329", "quantity": 1.0 }],
+    "barterItems": [{ "itemId": "5734779624597737e04bf329", "quantity": 1 }],
     "currencyName": "barter",
     "itemId": "590a3efd86f77437d351a25b",
     "merchant": "mechanic",
-    "merchantLevel": 1.0,
+    "merchantLevel": 1,
     "quest": null,
-    "value": 0.0,
-    "valueInMainCurrency": 0.0
+    "value": 0,
+    "valueInMainCurrency": 0
   },
   {
     "barterItems": [],
@@ -44922,5 +44912,15 @@
     "quest": null,
     "value": 28999.0,
     "valueInMainCurrency": 28999.0
+  },
+  {
+    "barterItems": [{ "itemId": "590a3efd86f77437d351a25b", "quantity": 2 }],
+    "currencyName": "barter",
+    "itemId": "5f676b779ab5ec19f028eaf3",
+    "merchant": "skier",
+    "merchantLevel": 2,
+    "quest": null,
+    "value": 0,
+    "valueInMainCurrency": 0
   }
 ]

@@ -493,7 +493,7 @@ export class InventoryItemService {
             ignorePrice: false,
             itemId: barterItem.itemId,
             modSlots: [],
-            quantity: barterItem.quantity
+            quantity: barterItem.quantity * inventoryItem.quantity
           })
 
           /* istanbul ignore if */

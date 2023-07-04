@@ -29,6 +29,11 @@ describe('getShoppingList', () => {
         enabled: true,
         merchant: 'prapor',
         merchantLevel: 4
+      },
+      {
+        enabled: true,
+        merchant: 'skier',
+        merchantLevel: 2
       }
     ])
 
@@ -80,7 +85,7 @@ describe('getShoppingList', () => {
         {
           content: [],
           ignorePrice: true,
-          itemId: '5734795124597738002c6176', // Insulating tape"
+          itemId: '5734795124597738002c6176', // Insulating tape
           modSlots: [],
           quantity: 1
         }
@@ -582,6 +587,330 @@ describe('getShoppingList', () => {
           },
           value: 109,
           valueInMainCurrency: 109
+        }
+      }
+    ] as IShoppingListItem[])
+  })
+
+  it('should get a shopping list for items having a barter itself having a barter with multiple times the same item', async () => {
+    useItemServiceMock()
+    usePresetServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(GlobalFilterService)
+
+    const inventoryItemService = new InventoryItemService()
+    const globalFilterService = Services.get(GlobalFilterService)
+    globalFilterService.saveMerchantFilters([
+      {
+        enabled: true,
+        merchant: 'flea-market',
+        merchantLevel: 0
+      },
+      {
+        enabled: true,
+        merchant: 'mechanic',
+        merchantLevel: 2
+      },
+      {
+        enabled: true,
+        merchant: 'skier',
+        merchantLevel: 2
+      }
+    ])
+
+    const inventoryItem: IInventoryItem = {
+      content: [],
+      ignorePrice: false,
+      itemId: '5f676b779ab5ec19f028eaf3', // Kel-Tec RFB 7.62x51 rifle Default
+      modSlots: [
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: '5b099ac65acfc400186331e1',
+            modSlots: [],
+            quantity: 1
+          },
+          modSlotName: 'mod_magazine'
+        },
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: '5f2aa46b878ef416f538b567',
+            modSlots: [
+              {
+                item: {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: '5f2aa4464b50c14bcf07acdb',
+                  modSlots: [],
+                  quantity: 1
+                },
+                modSlotName: 'mod_muzzle'
+              }
+            ],
+            quantity: 1
+          },
+          modSlotName: 'mod_barrel'
+        },
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: '5f2aa47a200e2c0ee46efa71',
+            modSlots: [
+              {
+                item: {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: '5f2aa493cd375f14e15eea72',
+                  modSlots: [],
+                  quantity: 1
+                },
+                modSlotName: 'mod_mount_000'
+              }
+            ],
+            quantity: 1
+          },
+          modSlotName: 'mod_handguard'
+        },
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: '5f2aa49f9b44de6b1b4e68d4',
+            modSlots: [],
+            quantity: 1
+          },
+          modSlotName: 'mod_mount'
+        }
+      ],
+      quantity: 1
+    }
+
+    // Act
+    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
+
+    // Assert
+    expect(shoppingListResult.success).toBe(true)
+    expect(shoppingListResult.value).toStrictEqual([
+      {
+        item: {
+          baseItemId: '5f2a9575926fd9352339381f',
+          caliber: 'Caliber762x51',
+          categoryId: 'mainWeapon',
+          conflictingItemIds: [],
+          defaultPresetId: null,
+          ergonomics: 48,
+          fireModes: [
+            'SingleFire'
+          ],
+          fireRate: 700,
+          horizontalRecoil: 307,
+          iconLink: 'https://assets.tarkov.dev/5f676b779ab5ec19f028eaf3-icon.webp',
+          id: '5f676b779ab5ec19f028eaf3',
+          imageLink: 'https://assets.tarkov.dev/5f676b779ab5ec19f028eaf3-image.webp',
+          marketLink: 'https://tarkov.dev/item/kel-tec-rfb-762x51-rifle-default',
+          maxStackableAmount: 1,
+          minuteOfAngle: 1.48,
+          modSlots: [
+            {
+              compatibleItemIds: [
+                '5a6086ea4f39f99cd479502f',
+                '5a608bf24f39f98ffc77720e',
+                '58dd3ad986f77403051cba8f',
+                '5e023e53d4353e3302577c4c',
+                '5efb0c1bd79ff02a1f5e68d9',
+                '5e023e6e34d52a55c3304f71',
+                '5e023e88277cce2b522ff2b1'
+              ],
+              maxStackableAmount: 1,
+              name: 'chamber0',
+              required: false
+            },
+            {
+              compatibleItemIds: [
+                '5b7bef1e5acfc43d82528402',
+                '5b099ac65acfc400186331e1',
+                '5b7bef5d5acfc43bca7067a3',
+                '5b7c2d1d5acfc43d1028532a',
+                '5b7d37845acfc400170e2f87'
+              ],
+              maxStackableAmount: 1,
+              name: 'mod_magazine',
+              required: false
+            },
+            {
+              compatibleItemIds: [
+                '5f2aa46b878ef416f538b567'
+              ],
+              maxStackableAmount: 1,
+              name: 'mod_barrel',
+              required: false
+            },
+            {
+              compatibleItemIds: [
+                '5f2aa47a200e2c0ee46efa71'
+              ],
+              maxStackableAmount: 1,
+              name: 'mod_handguard',
+              required: false
+            },
+            {
+              compatibleItemIds: [
+                '5f2aa49f9b44de6b1b4e68d4'
+              ],
+              maxStackableAmount: 1,
+              name: 'mod_mount',
+              required: false
+            }
+          ],
+          name: 'Kel-Tec RFB 7.62x51 rifle Default',
+          prices: [
+            {
+              barterItems: [
+                {
+                  'itemId': '590a3efd86f77437d351a25b',
+                  'quantity': 2
+                }
+              ],
+              currencyName: 'barter',
+              itemId: '5f676b779ab5ec19f028eaf3',
+              merchant: 'skier',
+              merchantLevel: 2,
+              quest: null,
+              value: 0,
+              valueInMainCurrency: 0
+            }
+          ],
+          shortName: 'RFB Default',
+          verticalRecoil: 173,
+          weight: 1.95,
+          wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Kel-Tec_RFB_7.62x51_rifle'
+        },
+        price: {
+          barterItems: [],
+          currencyName: 'barter',
+          itemId: '5f676b779ab5ec19f028eaf3',
+          merchant: 'skier',
+          merchantLevel: 2,
+          quest: null,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        quantity: 1,
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'barter',
+          itemId: '5f676b779ab5ec19f028eaf3',
+          merchant: 'skier',
+          merchantLevel: 2,
+          quest: null,
+          value: 0,
+          valueInMainCurrency: 0
+        }
+      },
+      {
+        item: {
+          categoryId: 'other',
+          conflictingItemIds: [],
+          iconLink: 'https://assets.tarkov.dev/590a3efd86f77437d351a25b-icon.webp',
+          id: '590a3efd86f77437d351a25b',
+          imageLink: 'https://assets.tarkov.dev/590a3efd86f77437d351a25b-image.webp',
+          marketLink: 'https://tarkov.dev/item/gas-analyzer',
+          maxStackableAmount: 1,
+          name: 'Gas analyzer',
+          prices: [
+            {
+              barterItems: [
+                {
+                  itemId: '5734779624597737e04bf329',
+                  quantity: 1
+                }
+              ],
+              currencyName: 'barter',
+              itemId: '590a3efd86f77437d351a25b',
+              merchant: 'mechanic',
+              merchantLevel: 1,
+              quest: null,
+              value: 0,
+              valueInMainCurrency: 0
+            }
+          ],
+          shortName: 'GasAn',
+          weight: 0.4,
+          wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Gas_analyzer'
+        },
+        price: {
+          barterItems: [],
+          currencyName: 'barter',
+          itemId: '590a3efd86f77437d351a25b',
+          merchant: 'mechanic',
+          merchantLevel: 1,
+          quest: null,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        quantity: 2,
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'barter',
+          itemId: '590a3efd86f77437d351a25b',
+          merchant: 'mechanic',
+          merchantLevel: 1,
+          quest: null,
+          value: 0,
+          valueInMainCurrency: 0
+        }
+      },
+      {
+        item: {
+          categoryId: 'other',
+          conflictingItemIds: [],
+          iconLink: 'https://assets.tarkov.dev/5734779624597737e04bf329-icon.webp',
+          id: '5734779624597737e04bf329',
+          imageLink: 'https://assets.tarkov.dev/5734779624597737e04bf329-image.webp',
+          marketLink: 'https://tarkov.dev/item/cpu-fan',
+          maxStackableAmount: 1,
+          name: 'CPU fan',
+          prices: [
+            {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '5734779624597737e04bf329',
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: null,
+              value: 17036,
+              valueInMainCurrency: 17036
+            }
+          ],
+          shortName: 'CPU fan',
+          weight: 0.1,
+          wikiLink: 'https://escapefromtarkov.fandom.com/wiki/CPU_fan'
+        },
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '5734779624597737e04bf329',
+          merchant: 'flea-market',
+          merchantLevel: 0,
+          quest: null,
+          value: 34072,
+          valueInMainCurrency: 34072
+        },
+        quantity: 2,
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '5734779624597737e04bf329',
+          merchant: 'flea-market',
+          merchantLevel: 0,
+          quest: null,
+          value: 17036,
+          valueInMainCurrency: 17036
         }
       }
     ] as IShoppingListItem[])
