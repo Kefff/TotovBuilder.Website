@@ -16,6 +16,25 @@ export class ApiService {
    * @returns Response data in JSON format.
    */
   public async get<TResult>(method: string, ...parameters: IApiMethodParameter[]): Promise<Result<TResult>> {
+    const maxTries = Services.get(WebsiteConfigurationService).configuration.fetchMaxTries
+    let tries = 1
+    let lastResult: Result<TResult> = Result.fail(FailureType.hidden)
+
+    while (tries <= maxTries) {
+      lastResult = await this.executeGet<TResult>(method, parameters)
+
+      if (lastResult.success) {
+        break
+      }
+
+      await this.waitBeforeRetry()
+      tries++
+    }
+
+    return lastResult
+  }
+
+  private async executeGet<TResult>(method: string, parameters: IApiMethodParameter[]): Promise<Result<TResult>> {
     const parametersString = this.getParametersString(parameters)
     const url = Configuration.VITE_API_URL as string + method + parametersString
 
@@ -68,5 +87,14 @@ export class ApiService {
     }
 
     return parametersString
+  }
+
+  /**
+   * Waits the configured time before retrying to fetch.
+   */
+  private waitBeforeRetry(): Promise<void> {
+    const waitTime = Services.get(WebsiteConfigurationService).configuration.fetchWaitTimeBetweenRetries
+
+    return new Promise(resolve => setTimeout(resolve, waitTime * 1000)) // In milliseconds
   }
 }

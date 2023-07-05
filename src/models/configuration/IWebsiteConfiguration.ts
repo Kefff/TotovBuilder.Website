@@ -62,10 +62,20 @@ export interface IWebsiteConfiguration {
    */
   exportWarningShowedStoregeKey: string
 
+  /**
+   * Maximum number of tries when an error occurs when fetching data.
+   */
+  fetchMaxTries: number
+
   /*
    * Fetch timeout (in seconds).
    */
   fetchTimeout: number
+
+  /**
+   * Time to wait between retries when an error occurs whent fetching data (in seconds).
+   */
+  fetchWaitTimeBetweenRetries: number
 
   /*
    * Github project URL.
