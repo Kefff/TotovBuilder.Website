@@ -93,17 +93,6 @@
               class="build-toolbar-summary-group"
             >
               <div
-                v-if="hasSummaryErgonomics"
-                v-tooltip.top="$t('caption.ergonomics')"
-                class="build-toolbar-summary-value"
-              >
-                <span>{{ summary.ergonomics }}</span>
-                <font-awesome-icon
-                  icon="hand-paper"
-                  class="icon-after-text"
-                />
-              </div>
-              <div
                 v-if="hasSummaryVerticalRecoil"
                 v-tooltip.top="$t('caption.verticalRecoil')"
                 class="build-toolbar-summary-value"
@@ -122,6 +111,17 @@
                 <span>{{ summary.horizontalRecoil }}</span>
                 <font-awesome-icon
                   icon="arrows-alt-h"
+                  class="icon-after-text"
+                />
+              </div>
+              <div
+                v-if="hasSummaryErgonomics"
+                v-tooltip.top="$t('caption.ergonomics')"
+                class="build-toolbar-summary-value"
+              >
+                <span>{{ summary.ergonomics }}</span>
+                <font-awesome-icon
+                  icon="hand-paper"
                   class="icon-after-text"
                 />
               </div>

@@ -419,7 +419,7 @@ export class BuildPropertiesService {
         return Result.failFrom(ergonomicsResult)
       }
 
-      result.ergonomics = round(ergonomicsResult.value + (ergonomicsResult.value * result.wearableModifiers.ergonomicsPercentageModifierWithMods), 1)
+      result.ergonomics = round(ergonomicsResult.value + (ergonomicsResult.value * result.wearableModifiers.ergonomicsPercentageModifierWithMods))
     }
 
     // Price

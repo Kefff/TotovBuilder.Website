@@ -77,8 +77,8 @@ export class InventoryItemService {
     }
 
     return Result.ok({
-      ergonomics: round(ergonomics, 1),
-      ergonomicsWithMods: round(ergonomicsWithMods, 1)
+      ergonomics: round(ergonomics),
+      ergonomicsWithMods: round(ergonomicsWithMods)
     })
   }
 

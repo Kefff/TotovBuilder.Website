@@ -20,4 +20,4 @@ for (const result of results.filter(r => r.hasChanged)) {
   console.log(result.file)
 }
 
-console.log('End : Reverting replacement of  "Configuration." by "import.meta.env."')
+console.log('End : Reverting replacement of "Configuration." by "import.meta.env."')

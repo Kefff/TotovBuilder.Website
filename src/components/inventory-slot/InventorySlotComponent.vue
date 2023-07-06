@@ -35,6 +35,28 @@
           </div>
           <div class="option-line">
             <div
+              v-if="verticalRecoil != null"
+              v-tooltip.top="$t('caption.verticalRecoil')"
+              class="inventory-slot-summary-value"
+            >
+              <span>{{ verticalRecoil }}</span>
+              <font-awesome-icon
+                icon="arrows-alt-v"
+                class="icon-after-text"
+              />
+            </div>
+            <div
+              v-if="horizontalRecoil != null"
+              v-tooltip.top="$t('caption.horizontalRecoil')"
+              class="inventory-slot-summary-value"
+            >
+              <span>{{ horizontalRecoil }}</span>
+              <font-awesome-icon
+                icon="arrows-alt-h"
+                class="icon-after-text"
+              />
+            </div>
+            <div
               v-if="ergonomics != null"
               v-tooltip.top="$t('caption.ergonomics')"
               class="inventory-slot-summary-value"
@@ -81,28 +103,6 @@
               </span>
               <font-awesome-icon
                 icon="undo"
-                class="icon-after-text"
-              />
-            </div>
-            <div
-              v-if="verticalRecoil != null"
-              v-tooltip.top="$t('caption.verticalRecoil')"
-              class="inventory-slot-summary-value"
-            >
-              <span>{{ verticalRecoil }}</span>
-              <font-awesome-icon
-                icon="arrows-alt-v"
-                class="icon-after-text"
-              />
-            </div>
-            <div
-              v-if="horizontalRecoil != null"
-              v-tooltip.top="$t('caption.horizontalRecoil')"
-              class="inventory-slot-summary-value"
-            >
-              <span>{{ horizontalRecoil }}</span>
-              <font-awesome-icon
-                icon="arrows-alt-h"
                 class="icon-after-text"
               />
             </div>
