@@ -169,6 +169,28 @@ describe('get()', () => {
     ])
   })
 
+  it('should resend a request until it receives a success response', async () => {
+    // Arrange
+    const errorResponse = `{
+  "error": "Access denied"
+}`
+    const successResponse = `{
+  "success": "Access granted"
+}`
+    useWebsiteConfigurationServiceMock()
+
+    fetchMock
+      .mockResponse(errorResponse, { status: 401 })
+      .mockResponse(successResponse, { status: 200 })
+
+    // Act
+    const result = await new ApiService().get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
+
+    // Assert
+    expect(result.success).toBe(true)
+    expect(result.value).toMatchObject({ success: 'Access granted' })
+  })
+
   it('should return empty data when the response is empty', async () => {
     // Arrange
     const response = ''
@@ -185,13 +207,21 @@ describe('get()', () => {
     expect(result.value).toBe('')
   })
 
-  it('should fail if an error reponse is received', async () => {
+  it('should fail if a success response is not received until the maximum number of tries is reached', async () => {
     // Arrange
     const response = `{
   "error": "Access denied"
 }`
+    jest.useRealTimers()
+
     useWebsiteConfigurationServiceMock()
-    fetchMock.mockOnce(response, { status: 401 })
+
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+    websiteConfigurationService.configuration.fetchTimeout = 0.1
+    websiteConfigurationService.configuration.fetchMaxTries = 2
+    websiteConfigurationService.configuration.fetchWaitTimeBetweenRetries = 0.1
+
+    fetchMock.doMock(response, { status: 401 })
 
     // Act
     const result = await new ApiService().get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
@@ -200,24 +230,35 @@ describe('get()', () => {
     expect(result.success).toBe(false)
     expect(result.failureMessage).toBe(`Error while requesting API "item".
 Response : "Access denied".`)
+
+    // Clean
+    jest.useFakeTimers()
   })
 
   it('should fail if it times out', async () => {
     // Arrange
+    jest.useRealTimers()
+
     useWebsiteConfigurationServiceMock()
-    Services.get(WebsiteConfigurationService).configuration.fetchTimeout = 0.5
-    fetchMock.mockOnce(async () => {
+
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+    websiteConfigurationService.configuration.fetchTimeout = 0.5
+    websiteConfigurationService.configuration.fetchMaxTries = 1
+
+    fetchMock.doMock(async () => {
       return new Promise(resolve => setTimeout(resolve, 1000)).then(() => '')
     })
 
     // Act
     const resultPromise = new ApiService().get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
-    jest.advanceTimersByTime(1000)
     const result = await resultPromise
 
     // Assert
     expect(result.success).toBe(false)
     expect(result.failureMessage).toBe(`Error while requesting API "item".
 Response : "The operation was aborted. ".`)
+
+    // Clean
+    jest.useFakeTimers()
   })
 })

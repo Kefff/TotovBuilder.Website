@@ -1614,7 +1614,7 @@ describe('getNotExportedTooltip()', () => {
   it.each([
     [undefined, undefined, 'Build not exported. It will be lost if your browser history is cleared.'],
     [new Date(1), undefined, 'Build not exported. It will be lost if your browser history is cleared.'],
-    [new Date(2), new Date(1), 'Changes made on the 01/01/1970 à 01:00:00 have not been exported. They will be lost if your browser history is cleared. Last export on 01/01/1970 à 01:00:00.']
+    [new Date(2), new Date(1), 'Changes from the 01/01/1970 à 01:00:00 have not been exported. They will be lost if your browser data is cleared. Last export on 01/01/1970 à 01:00:00.']
   ])('should get the tooltip for not exported builds', (lastUpdated: Date | undefined, lastExported: Date | undefined, expected: string) => {
     // Arrange
     const service = new BuildPropertiesService()

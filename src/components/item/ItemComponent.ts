@@ -308,11 +308,7 @@ export default defineComponent({
           // Creating a new object, otherwise the preset itself in the application presets list is modified when we change the selected item mods and content in the build
           selectedInventoryItem.value = JSON.parse(JSON.stringify(preset))
         } else {
-          if (quantity.value === 0
-            || props.forceQuantityToMaxSelectableAmount
-            || quantity.value > maxSelectableQuantity.value) {
-            quantity.value = maxSelectableQuantity.value
-          }
+          quantity.value = maxSelectableQuantity.value
 
           // Keeping the old item content if the new item is a container
           const newContent: IInventoryItem[] = []
