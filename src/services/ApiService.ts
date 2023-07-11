@@ -1,7 +1,6 @@
 import { IApiMethodParameter } from '../models/utils/IApiMethodParameter'
 import i18n from '../plugins/vueI18n'
 import Result, { FailureType } from '../utils/Result'
-import Configuration from '../../test-data/configuration.json'
 import Services from './repository/Services'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 
@@ -36,7 +35,7 @@ export class ApiService {
 
   private async executeGet<TResult>(method: string, parameters: IApiMethodParameter[]): Promise<Result<TResult>> {
     const parametersString = this.getParametersString(parameters)
-    const url = Configuration.VITE_API_URL as string + method + parametersString
+    const url = import.meta.env.VITE_API_URL as string + method + parametersString
 
     const fetchTimeout = Services.get(WebsiteConfigurationService).configuration.fetchTimeout * 1000 // In milliseconds
     const controller = new AbortController()

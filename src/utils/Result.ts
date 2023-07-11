@@ -1,7 +1,6 @@
 import i18n from '../plugins/vueI18n'
 import { LogService } from '../services/LogService'
 import Services from '../services/repository/Services'
-import Configuration from '../../test-data/configuration.json'
 
 /**
  * Represents the result of an operation.
@@ -97,7 +96,7 @@ export default class Result<T = void> {
 
     switch (type) {
       case FailureType.error: {
-        if (Configuration.VITE_DEBUG === 'true') {
+        if (import.meta.env.VITE_DEBUG === 'true') {
           service.logError('message.failureDebug', { message: this.failureMessage, context: this.failureContext })
         } else {
           service.logError(this.failureMessage)
@@ -106,7 +105,7 @@ export default class Result<T = void> {
         break
       }
       case FailureType.warning: {
-        if (Configuration.VITE_DEBUG === 'true') {
+        if (import.meta.env.VITE_DEBUG === 'true') {
           service.logWarning('message.failureDebug', { message: this.failureMessage, context: this.failureContext })
         } else {
           service.logWarning(this.failureMessage)

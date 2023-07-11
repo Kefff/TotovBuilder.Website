@@ -1,5 +1,4 @@
 import Result, { FailureType } from '../../utils/Result'
-import Configuration from '../../../test-data/configuration.json'
 
 describe('get value()', () => {
   it('should get the value', () => {
@@ -34,7 +33,7 @@ describe('fail()', () => {
     const result2 = Result.fail(FailureType.warning, failureLocation, failureMessage)
     const result3 = Result.fail(FailureType.error, failureLocation, failureMessage)
 
-    Configuration.VITE_DEBUG = 'false'
+    import.meta.env.VITE_DEBUG = 'false'
     const result4 = Result.fail(FailureType.warning, failureLocation, failureMessage)
     const result5 = Result.fail(FailureType.warning, failureLocation, failureMessage)
 

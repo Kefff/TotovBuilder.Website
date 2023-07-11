@@ -1,5 +1,4 @@
 import i18n from '../plugins/vueI18n'
-import Configuration from '../../test-data/configuration.json'
 
 /**
  * Represents a service responsible for logging messages.
@@ -13,7 +12,7 @@ export class LogService {
    */
   public logError(key: string, parameters?: Record<string, unknown>, plural?: number): void {
     let message
-    const debug = Configuration.VITE_DEBUG === 'true'
+    const debug = import.meta.env.VITE_DEBUG === 'true'
 
     if (debug) {
       message = this.getMessage(key, parameters, plural)

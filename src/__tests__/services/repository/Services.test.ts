@@ -1,6 +1,5 @@
 import { instance, mock, spy, verify } from 'ts-mockito'
 import Services from '../../../services/repository/Services'
-import Configuration from '../../../../test-data/configuration.json'
 
 beforeEach(() => Services.services = [])
 
@@ -40,9 +39,9 @@ describe('configure', () => {
     const mockedInstance = instance(mock<TestService2>())
 
     // Act
-    Configuration.VITE_WARN_WHEN_SERVICE_REPLACED = 'true'
+    import.meta.env.VITE_WARN_WHEN_SERVICE_REPLACED = 'true'
     Services.configure(TestService3, 'TestService1')
-    Configuration.VITE_WARN_WHEN_SERVICE_REPLACED = 'false'
+    import.meta.env.VITE_WARN_WHEN_SERVICE_REPLACED = 'false'
     Services.configure(TestService2, undefined, mockedInstance)
 
     // Assert

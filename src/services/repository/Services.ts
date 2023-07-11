@@ -1,6 +1,5 @@
 import i18n from '../../plugins/vueI18n'
 import { IRegisteredService } from './IRegisteredService'
-import Configuration from '../../../test-data/configuration.json'
 import { TinyEmitter } from 'tiny-emitter'
 
 /**
@@ -45,7 +44,7 @@ class ServicesRepository {
         type
       }
 
-      const warnWhenServiceReplaced = Configuration.VITE_WARN_WHEN_SERVICE_REPLACED === 'true'
+      const warnWhenServiceReplaced = import.meta.env.VITE_WARN_WHEN_SERVICE_REPLACED === 'true'
 
       if (warnWhenServiceReplaced) {
         console.warn(i18n.t('message.serviceAlreadyConfigured', { name: serviceName }))
