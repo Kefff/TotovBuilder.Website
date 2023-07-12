@@ -15,6 +15,7 @@ import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfi
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
+import { describe, expect, it } from 'vitest'
 
 export const build1: IBuild = {
   id: 'build_1',

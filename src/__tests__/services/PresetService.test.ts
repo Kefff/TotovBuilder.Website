@@ -29,6 +29,7 @@ import ItemCategoriesMock from '../../../test-data/item-categories.json'
 import ItemsMock from '../../../test-data/items.json'
 import PresetsMock from '../../../test-data/presets.json'
 import PricesMock from '../../../test-data/prices.json'
+import { describe, expect, it } from 'vitest'
 
 describe('fetchPresets()', () => {
   it('should fetch presets', async () => {

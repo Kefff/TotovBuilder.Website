@@ -7,6 +7,7 @@ import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
+import { describe, expect, it } from 'vitest'
 
 describe('getShoppingList', () => {
   it('should get a shopping list for an item and all its content, mod (except from default preset) and barter items that must be bought', async () => {

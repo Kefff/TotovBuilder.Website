@@ -16,6 +16,11 @@ export default defineConfig({
       }
     }
   },
-  envDir: 'configuration',
-  plugins: [vue()]
+  envDir: 'environment',
+  plugins: [vue()],
+  test: {
+    globals: true,
+    setupFiles: ['vitest-localstorage-mock'], // https://github.com/Mitscherlich/vitest-localstorage-mock#setup-file
+    mockReset: true
+  }
 })

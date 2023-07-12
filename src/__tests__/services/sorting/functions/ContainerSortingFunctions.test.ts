@@ -1,6 +1,7 @@
 import { IContainer } from '../../../../models/item/IContainer'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ContainerSortingFunctions } from '../../../../services/sorting/functions/ContainerSortingFunctions'
+import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([['capacity']])('should compare by a property', async (property: string) => {

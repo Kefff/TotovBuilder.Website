@@ -14,6 +14,7 @@ import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfi
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
+import { describe, expect, it } from 'vitest'
 
 const inventoryItem: IInventoryItem = {
   content: [

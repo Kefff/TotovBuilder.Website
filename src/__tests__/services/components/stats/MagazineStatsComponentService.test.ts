@@ -3,6 +3,7 @@ import { MagazineStatsComponentService } from '../../../../services/components/s
 import { NotificationService } from '../../../../services/NotificationService'
 import Services from '../../../../services/repository/Services'
 import { useItemServiceMock } from '../../../../__mocks__/ItemServiceMock'
+import { describe, expect, it } from 'vitest'
 
 describe('getAcceptedCartridgesNames()', () => {
   it('should get the accepted ammunition names of a magazine', async () => {

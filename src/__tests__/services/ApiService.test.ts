@@ -1,8 +1,15 @@
 import { ApiService } from '../../services/ApiService'
-import fetchMock from 'jest-fetch-mock'
+import createFetchMock from 'vitest-fetch-mock';
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+
+const fetchMock = createFetchMock(vi);
+
+afterAll(() => {
+  fetchMock.disableMocks()
+})
 
 beforeAll(() => {
   fetchMock.enableMocks()
@@ -211,7 +218,7 @@ describe('get()', () => {
     const response = `{
   "error": "Access denied"
 }`
-    jest.useRealTimers()
+    vi.useRealTimers()
 
     useWebsiteConfigurationServiceMock()
 
@@ -231,12 +238,12 @@ describe('get()', () => {
 Response : "Access denied".`)
 
     // Clean
-    jest.useFakeTimers()
+    vi.useFakeTimers()
   })
 
   it('should fail if it times out', async () => {
     // Arrange
-    jest.useRealTimers()
+    vi.useRealTimers()
 
     useWebsiteConfigurationServiceMock()
 
@@ -258,6 +265,6 @@ Response : "Access denied".`)
 Response : "The operation was aborted. ".`)
 
     // Clean
-    jest.useFakeTimers()
+    vi.useFakeTimers()
   })
 })

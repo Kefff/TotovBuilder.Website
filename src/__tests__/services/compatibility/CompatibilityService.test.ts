@@ -2,6 +2,7 @@ import { CompatibilityRequest } from '../../../services/compatibility/Compatibil
 import { CompatibilityRequestType } from '../../../services/compatibility/CompatibilityRequestType'
 import { CompatibilityService } from '../../../services/compatibility/CompatibilityService'
 import Result, { FailureType } from '../../../utils/Result'
+import { describe, expect, it } from 'vitest'
 
 describe('checkCompatibility()', () => {
   it('should send an event for checking an item compatibility and return a promise that will be resolved by the event recipient', async () => {
