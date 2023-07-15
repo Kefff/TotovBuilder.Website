@@ -69,9 +69,6 @@ describe('getAcceptedItems()', () => {
       '5c165d832e2216398b5a7e36',
       '5b3f3b0e86f7746752107cda'
     ])
-
-    // Clean
-    localStorage.clear()
   })
 
   it('should get an empty list if an error occurs', async () => {

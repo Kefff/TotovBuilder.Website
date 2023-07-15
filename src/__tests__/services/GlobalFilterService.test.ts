@@ -74,10 +74,6 @@ beforeEach(() => {
   } as IGlobalFilter))
 })
 
-afterEach(() => {
-  localStorage.clear()
-})
-
 describe('get()', () => {
   it('should get the merchant filters', () => {
     // Arrange

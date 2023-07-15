@@ -218,8 +218,6 @@ describe('get()', () => {
     const response = `{
   "error": "Access denied"
 }`
-    vi.useRealTimers()
-
     useWebsiteConfigurationServiceMock()
 
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
@@ -236,15 +234,10 @@ describe('get()', () => {
     expect(result.success).toBe(false)
     expect(result.failureMessage).toBe(`Error while requesting API "item".
 Response : "Access denied".`)
-
-    // Clean
-    vi.useFakeTimers()
   })
 
   it('should fail if it times out', async () => {
     // Arrange
-    vi.useRealTimers()
-
     useWebsiteConfigurationServiceMock()
 
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
@@ -263,8 +256,5 @@ Response : "Access denied".`)
     expect(result.success).toBe(false)
     expect(result.failureMessage).toBe(`Error while requesting API "item".
 Response : "The operation was aborted. ".`)
-
-    // Clean
-    vi.useFakeTimers()
   })
 })

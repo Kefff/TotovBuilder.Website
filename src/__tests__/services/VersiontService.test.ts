@@ -21,10 +21,6 @@ beforeEach(() => {
   Migrations.splice(0)
 })
 
-afterEach(() => {
-  localStorage.clear()
-})
-
 describe('checkHasNewVersion()', () => {
   it('should indicate whether the version is newer than the last visit version', async () => {
     // Arrange
@@ -716,7 +712,7 @@ describe('initialize()', () => {
     // Act
     await service.initialize()
     const version = await service.getVersion()
-    const savedVersion = localStorage.getItem('version')
+    const savedVersion = localStorage.getItem(WebsiteConfigurationMock.versionStorageKey)
 
     // Assert
     expect(version).toBe('1.6.0')

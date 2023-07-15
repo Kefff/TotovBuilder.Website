@@ -159,14 +159,13 @@ export class GlobalFilterService {
    * @returns true when the item is excluded; otherwise false.
    */
   private exclude(itemExclusionFilterName: string, item: IItem): boolean {
-    /* istanbul ignore else */
     if (itemExclusionFilterName === GlobalFilterService.excludeItemsWithoutMerchantFilterName) {
       return this.excludeItemWithoutMerchant(item)
     } else if (itemExclusionFilterName === GlobalFilterService.excludePresetBaseItemsFilterName) {
       return this.excludePresetBaseItem(item)
-    } else {
+    } /* c8 ignore start */ else {
       return false
-    }
+    } /* c8 ignore stop */
   }
 
   /**

@@ -19,8 +19,19 @@ export default defineConfig({
   envDir: 'environment',
   plugins: [vue()],
   test: {
+    coverage: {
+      exclude: [
+        '**/src/__mocks__/**',
+        '**/src/plugins/**',
+        'ExportService.ts', // Requires access to the file system
+      ]
+    },
+    environment: 'happy-dom', // Required for browser components like "document" to be accessible during tests
     globals: true,
-    setupFiles: ['vitest-localstorage-mock'], // https://github.com/Mitscherlich/vitest-localstorage-mock#setup-file
-    mockReset: true
+    mockReset: false, // Required for local storage mock to work
+    setupFiles: [
+      'src/__mocks__/setup.ts', // Global configuration for all mocks
+      'vitest-localstorage-mock' // https://github.com/Mitscherlich/vitest-localstorage-mock#setup-file
+    ],
   }
 })

@@ -56,11 +56,12 @@ export class ApiService {
         } else {
           const data = await response.text()
 
-          /* istanbul ignore if */
+          /* c8 ignore start */
           if (data.length === 0) {
             // For some reason, jest-fetch-mock cannot mock an error response with an empty body. The response has a 200 status even if we force it to 500 when configuring the mock.
             return Result.fail<TResult>(FailureType.error, 'ApiItemFetcher.get()', i18n.t('message.apiError', { api: method, apiErrorMessage: i18n.t('message.emptyApiResponse') }))
           }
+          /* c8 ignore stop */
 
           const result = JSON.parse(data) as Record<string, unknown>
           const apiErrorMessage = result['error'] as string

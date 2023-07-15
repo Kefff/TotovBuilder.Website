@@ -2,14 +2,14 @@
   "name": "totov-builder",
   "version": "0.0.0",
   "scripts": {
-    "coverage": "cd \"coverage/lcov-report\" && index.html",
+    "coverage": "cd \"coverage\" && index.html",
     "dev": "vite",
-    "dev-https": "vite --https",
     "build-prod": "vite build --mode production",
     "build-test": "vite build --mode development",
     "lint": "eslint ./src/**",
     "serve": "vite preview",
-    "test": "vitest run --coverage && npm run coverage"
+    "test": "vitest run",
+    "test-all": "vitest run --coverage && npm run coverage"
   },
   "dependencies": {
     "@babel/runtime": "^7.22.6",
@@ -44,6 +44,7 @@
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-tsdoc": "^0.2.17",
     "eslint-plugin-vue": "^9.15.1",
+    "happy-dom": "^10.3.2",
     "mockdate": "^3.0.5",
     "prettier": "^2.8.8",
     "ts-mockito": "^2.6.1",

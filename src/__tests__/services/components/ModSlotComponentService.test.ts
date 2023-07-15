@@ -61,9 +61,6 @@ describe('getAcceptedItems()', () => {
 
     // Assert
     expect(items.length).toBe(3)
-
-    // Clean
-    localStorage.clear()
   })
 
   it('should ignore accepted items that are not found', async () => {

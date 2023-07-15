@@ -1,5 +1,3 @@
-/* istanbul ignore file */
-
 import { IBuild } from '../models/build/IBuild'
 import FileSaver from 'file-saver'
 import vueI18n from '../plugins/vueI18n'

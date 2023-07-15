@@ -607,10 +607,6 @@ beforeEach(() => {
   localStorage.setItem(WebsiteConfigurationMock.languageStorageKey, 'en')
 })
 
-afterEach(() => {
-  localStorage.clear()
-})
-
 
 describe('add()', () => {
   it('should add a build', async () => {
@@ -649,7 +645,7 @@ describe('create()', () => {
     // Assert
     expect(build.id).toBe('')
     expect(build.name).toBe('')
-    expect(build.inventorySlots).toStrictEqual([
+    expect(build.inventorySlots).to.deep.equal([
       {
         items: [undefined],
         typeId: 'onSling'

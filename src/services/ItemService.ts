@@ -231,7 +231,6 @@ export class ItemService {
    * This should in theory never happen since fetchPrices() is only called in initialize() which executes nothing when another initialization is already being performed.
    */
   private async fetchPrices() {
-    /* istanbul ignore else */
     if (!this.isFetchingPrices) {
       this.pricesFetchingPromise = this.startPricesFetching()
     }
@@ -245,7 +244,6 @@ export class ItemService {
    * This should in theory never happen since fetchStaticData() is only called in initialize() which executes nothing when another initialization is already being performed.
    */
   private async fetchStaticData(): Promise<void> {
-    /* istanbul ignore else */
     if (!this.isFetchingStaticData) {
       this.staticDataFetchingPromise = this.startStaticDataFetching()
     }
@@ -333,11 +331,10 @@ export class ItemService {
       } else {
         const currencyItem = this.items.find(i => i.id === currency.itemId)
 
-        /* istanbul ignore else */
         if (currencyItem != null && currencyItem.prices.length > 0) {
           currency.value = currencyItem.prices[0].value
         } else {
-          // When the price of a currency is not found, we set its price to 0. It can happen when merchants stop selling the currencies.
+          // When the price of a currency is not found, we set its price to 0. It can happen when merchants stops selling the currencies.
           currency.value = 0
         }
       }
@@ -395,12 +392,11 @@ export class ItemService {
       for (const price of item.prices.filter(p => p.currencyName !== 'barter')) {
         const currency = tarkovValuesService.values.currencies.find(c => c.name === price.currencyName)
 
-        /* istanbul ignore else */
         if (currency != null) {
           price.valueInMainCurrency = price.value * currency.value
-        } else {
+        } /* c8 ignore start */ else {
           Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.currencyNotFound', { currency: price.currencyName }))
-        }
+        } /* c8 ignore stop */
       }
     }
   }

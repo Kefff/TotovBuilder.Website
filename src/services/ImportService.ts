@@ -13,7 +13,7 @@ export class ImportService {
    * @param file - File.
    * @returns Builds contained in the file.
    */
-  /* istanbul ignore next */
+  /* c8 ignore start */
   public async getBuildsFromFile(file: File): Promise<Result<IBuild[]>> {
     return new Promise<Result<IBuild[]>>((resolve) => {
       const fileReader = new FileReader()
@@ -24,6 +24,7 @@ export class ImportService {
       fileReader.readAsText(file)
     })
   }
+  /* c8 ignore stop */
 
   /**
    * Imports builds.
@@ -42,7 +43,7 @@ export class ImportService {
    * @param fileReader - File reader.
    * @returns file - Builds.
    */
-  /* istanbul ignore next */
+  /* c8 ignore start */
   private readFile(fileReader: FileReader): Result<IBuild[]> {
     if (fileReader.error != null) {
       return Result.fail(FailureType.error, vueI18n.t('message.importReadFileError'))
@@ -63,4 +64,5 @@ export class ImportService {
 
     return Result.ok(builds)
   }
+  /* c8 ignore stop */
 }

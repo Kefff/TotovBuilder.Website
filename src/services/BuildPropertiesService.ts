@@ -104,10 +104,11 @@ export class BuildPropertiesService {
 
       const conflictingItemResult = await itemService.getItem(conflictingItem.itemId)
 
-      /* istanbul ignore if */
+      /* c8 ignore start */
       if (!conflictingItemResult.success) {
         return Result.failFrom(conflictingItemResult)
       }
+      /* c8 ignore start */
 
       return Result.fail(
         FailureType.hidden,
@@ -181,10 +182,12 @@ export class BuildPropertiesService {
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
     const ergonomicsResult = await inventorySlotPropertiesService.getErgonomics(mainRangedWeaponInventorySlot)
 
-    /* istanbul ignore if */
+    /* c8 ignore start */
     if (ergonomicsResult == null) {
       return undefined
-    } else if (!ergonomicsResult.success) {
+    }
+    /* c8 ignore stop */
+    else if (!ergonomicsResult.success) {
       return Result.failFrom(ergonomicsResult)
     } else {
       return ergonomicsResult
@@ -317,10 +320,12 @@ export class BuildPropertiesService {
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
     const recoilResult = await inventorySlotPropertiesService.getRecoil(mainRangedWeaponInventorySlot)
 
-    /* istanbul ignore if */
+    /* c8 ignore start */
     if (recoilResult == null) {
       return undefined
-    } else if (!recoilResult.success) {
+    }
+    /* c8 ignore stop */
+    else if (!recoilResult.success) {
       return Result.failFrom(recoilResult)
     } else {
       return recoilResult
@@ -403,10 +408,11 @@ export class BuildPropertiesService {
     // Wearable modifiers
     const wearableModifiersResult = await this.getWearableModifiers(build)
 
-    /* istanbul ignore if */
+    /* c8 ignore start */
     if (!wearableModifiersResult.success) {
       return Result.failFrom(wearableModifiersResult)
     }
+    /* c8 ignore stop */
 
     result.wearableModifiers = wearableModifiersResult.value
 
@@ -414,21 +420,23 @@ export class BuildPropertiesService {
     const ergonomicsResult = await this.getErgonomics(build)
 
     if (ergonomicsResult != null) {
-      /* istanbul ignore if */
+      /* c8 ignore start */
       if (!ergonomicsResult.success) {
         return Result.failFrom(ergonomicsResult)
       }
+      /* c8 ignore stop */
 
-      result.ergonomics = round(ergonomicsResult.value + (ergonomicsResult.value * result.wearableModifiers.ergonomicsPercentageModifierWithMods))
+      result.ergonomics = round(ergonomicsResult.value + (ergonomicsResult.value * result.wearableModifiers.ergonomicsPercentageModifierWithMods), 1)
     }
 
     // Price
     const priceResult = await this.getPrice(build)
 
-    /* istanbul ignore if */
+    /* c8 ignore start */
     if (!priceResult.success) {
       return Result.failFrom(priceResult)
     }
+    /* c8 ignore stop */
 
     result.price = priceResult.value
 
@@ -436,10 +444,11 @@ export class BuildPropertiesService {
     const recoilResult = await this.getRecoil(build)
 
     if (recoilResult != null) {
-      /* istanbul ignore if */
+      /* c8 ignore start */
       if (!recoilResult.success) {
         return Result.failFrom(recoilResult)
       }
+      /* c8 ignore stop */
 
       result.horizontalRecoil = recoilResult.value.horizontalRecoil
       result.verticalRecoil = recoilResult.value.verticalRecoil
@@ -448,20 +457,22 @@ export class BuildPropertiesService {
     // Weight
     const weightResult = await this.getWeight(build)
 
-    /* istanbul ignore if */
+    /* c8 ignore start */
     if (!weightResult.success) {
       return Result.failFrom(weightResult)
     }
+    /* c8 ignore stop */
 
     result.weight = weightResult.value
 
     // Shopping list
     const shoppingListResult = await this.getShoppingList(build)
 
-    /* istanbul ignore if */
+    /* c8 ignore start */
     if (!shoppingListResult.success) {
       return Result.failFrom(shoppingListResult)
     }
+    /* c8 ignore stop */
 
     result.shoppingList = shoppingListResult.value
 
@@ -571,10 +582,11 @@ export class BuildPropertiesService {
           modSlotPath + '/' + PathUtils.itemPrefix + inventoryItem.itemId + '/' + PathUtils.modSlotPrefix + modSlot.modSlotName
         )
 
-        /* istanbul ignore if */
+        /* c8 ignore start */
         if (!modConflictingItemIdsResult.success) {
           return modConflictingItemIdsResult
         }
+        /* c8 ignore stop */
 
         conflictingItems.push(...modConflictingItemIdsResult.value)
       }
@@ -622,10 +634,11 @@ export class BuildPropertiesService {
     for (const inventorySlot of build.inventorySlots) {
       const canBeLootedResult = inventorySlotPropertiesService.canBeLooted(inventorySlot)
 
-      /* istanbul ignore if */
+      /* c8 ignore start */
       if (!canBeLootedResult.success) {
         return Result.failFrom(canBeLootedResult)
       }
+      /* c8 ignore stop */
 
       for (const item of inventorySlot.items) {
         if (item == null) {
@@ -634,10 +647,11 @@ export class BuildPropertiesService {
 
         const shoppingListResult = await inventoryItemService.getShoppingList(item, undefined, canBeLootedResult.value)
 
-        /* istanbul ignore if */
+        /* c8 ignore start */
         if (!shoppingListResult.success) {
           return Result.failFrom(shoppingListResult)
         }
+        /* c8 ignore stop */
 
         for (const shoppingListItemToAdd of shoppingListResult.value) {
           const shoppingListItemIndex = shoppingList.findIndex(sli => sli.item.id === shoppingListItemToAdd.item.id)

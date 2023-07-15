@@ -174,15 +174,14 @@ export class PresetService {
     }
 
     if (pathModSlotNames.length > 1) {
-      /* istanbul ignore else */
       if (presetModSlot.item != null) {
         pathModSlotNames.splice(0, 1)
 
         return this.getPresetModSlot(presetModSlot.item, pathModSlotNames)
-      } else {
+      } /* c8 ignore start */ else {
         // We should never have a preset that has an empty mod slot
         return undefined
-      }
+      } /* c8 ignore stop */
     }
 
     return presetModSlot

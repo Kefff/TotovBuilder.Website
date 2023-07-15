@@ -1248,9 +1248,6 @@ describe('getPrice()', () => {
       },
       unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
     })
-
-    // Clean
-    localStorage.clear()
   })
 
   it.each([
