@@ -17,7 +17,8 @@ export default defineComponent({
     },
     ignorePrice: {
       type: Boolean,
-      required: true
+      required: false,
+      default: false
     }
   },
   emits: [

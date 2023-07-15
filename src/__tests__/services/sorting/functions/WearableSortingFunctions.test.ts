@@ -1,6 +1,7 @@
 import { IBackpack } from '../../../../models/item/IBackpack'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { WearableSortingFunctions } from '../../../../services/sorting/functions/WearableSortingFunctions'
+import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([

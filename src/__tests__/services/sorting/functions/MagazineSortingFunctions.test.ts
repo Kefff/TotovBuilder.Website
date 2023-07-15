@@ -1,6 +1,7 @@
 import { IMagazine } from '../../../../models/item/IMagazine'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { MagazineSortingFunctions } from '../../../../services/sorting/functions/MagazineSortingFunctions'
+import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([

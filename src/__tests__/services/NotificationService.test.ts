@@ -1,5 +1,6 @@
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { describe, expect, it } from 'vitest'
 
 describe('clearNotification()', () => {
   it('should clear a notification from the notifications collection', () => {

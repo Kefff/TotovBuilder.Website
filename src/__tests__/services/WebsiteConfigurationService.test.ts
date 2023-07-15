@@ -8,6 +8,7 @@ import Result, { FailureType } from '../../utils/Result'
 import Services from '../../services/repository/Services'
 import { NotificationService } from '../../services/NotificationService'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { describe, expect, it } from 'vitest'
 
 describe('initialize', () => {
   it('should fetch the website configuration from the API', async () => {

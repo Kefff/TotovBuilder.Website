@@ -1,6 +1,7 @@
 import { IVest } from '../../../../models/item/IVest'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { VestSortingFunctions } from '../../../../services/sorting/functions/VestSortingFunctions'
+import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([

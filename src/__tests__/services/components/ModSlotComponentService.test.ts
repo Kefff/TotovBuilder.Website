@@ -11,6 +11,7 @@ import { useTarkovValuesServiceMock } from '../../../__mocks__/TarkovValuesServi
 import { useItemFetcherServiceMock } from '../../../__mocks__/ItemFetcherServiceMock'
 import { usePresetServiceMock } from '../../../__mocks__/PresetPropertiesServiceMock'
 import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
+import { describe, expect, it } from 'vitest'
 
 describe('getAcceptedItems()', () => {
   it('should get the acceptem items', async () => {
@@ -60,9 +61,6 @@ describe('getAcceptedItems()', () => {
 
     // Assert
     expect(items.length).toBe(3)
-
-    // Clean
-    localStorage.clear()
   })
 
   it('should ignore accepted items that are not found', async () => {

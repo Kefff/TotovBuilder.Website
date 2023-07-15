@@ -1,9 +1,15 @@
 import { ApiService } from '../../services/ApiService'
-import fetchMock from 'jest-fetch-mock'
-import Configuration from '../../../test-data/configuration.json'
+import createFetchMock from 'vitest-fetch-mock';
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+
+const fetchMock = createFetchMock(vi);
+
+afterAll(() => {
+  fetchMock.disableMocks()
+})
 
 beforeAll(() => {
   fetchMock.enableMocks()
@@ -54,7 +60,7 @@ describe('get()', () => {
 ]`
     const apiName = 'prices'
     useWebsiteConfigurationServiceMock()
-    fetchMock.mockOnceIf(Configuration.VITE_API_URL as string + apiName, response, { status: 200 })
+    fetchMock.mockOnceIf(import.meta.env.VITE_API_URL as string + apiName, response, { status: 200 })
 
     // Act
     const result = await new ApiService().get(apiName)
@@ -131,7 +137,7 @@ describe('get()', () => {
   }
 ]`
     useWebsiteConfigurationServiceMock()
-    fetchMock.mockOnceIf(Configuration.VITE_API_URL as string + 'item?id=57dc2fa62459775949412633', response, { status: 200 })
+    fetchMock.mockOnceIf(import.meta.env.VITE_API_URL as string + 'item?id=57dc2fa62459775949412633', response, { status: 200 })
 
     // Act
     const result = await new ApiService().get('item', { name: 'id', value: '57dc2fa62459775949412633' })
@@ -196,7 +202,7 @@ describe('get()', () => {
     const response = ''
     const apiName = 'prices'
     useWebsiteConfigurationServiceMock()
-    fetchMock.mockOnceIf(Configuration.VITE_API_URL as string + apiName, response, { status: 200 })
+    fetchMock.mockOnceIf(import.meta.env.VITE_API_URL as string + apiName, response, { status: 200 })
 
     // Act
     const result = await new ApiService().get(apiName)
@@ -212,8 +218,6 @@ describe('get()', () => {
     const response = `{
   "error": "Access denied"
 }`
-    jest.useRealTimers()
-
     useWebsiteConfigurationServiceMock()
 
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
@@ -230,15 +234,10 @@ describe('get()', () => {
     expect(result.success).toBe(false)
     expect(result.failureMessage).toBe(`Error while requesting API "item".
 Response : "Access denied".`)
-
-    // Clean
-    jest.useFakeTimers()
   })
 
   it('should fail if it times out', async () => {
     // Arrange
-    jest.useRealTimers()
-
     useWebsiteConfigurationServiceMock()
 
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
@@ -257,8 +256,5 @@ Response : "Access denied".`)
     expect(result.success).toBe(false)
     expect(result.failureMessage).toBe(`Error while requesting API "item".
 Response : "The operation was aborted. ".`)
-
-    // Clean
-    jest.useFakeTimers()
   })
 })

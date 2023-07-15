@@ -1,16 +1,16 @@
 import { instance, mock } from 'ts-mockito'
 import { LogService } from '../services/LogService'
 import Services from '../services/repository/Services'
+import { afterEach, beforeEach, vi } from 'vitest'
 
 beforeEach(() => {
-  jest.useFakeTimers()
-
   Services.services = []
   Services.configure(LogService, undefined, instance(mock<LogService>()))
 })
 
 afterEach(() => {
-  jest.useRealTimers()
+  localStorage.clear() // Cleaning test that set values in the local storage mock
+  vi.useRealTimers() // Cleaning tests that use fake times
 })
 
 // This code allows to find unhandled rejected promises (lines containing "UnhandledPromiseRejectionWarning" appearing in the test logs even when all tests pass).

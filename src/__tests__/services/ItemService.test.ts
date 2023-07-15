@@ -22,6 +22,7 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { PresetService } from '../../services/PresetService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { useGlobalFilterServiceMock } from '../../__mocks__/GlobalFilterServiceMock'
+import { describe, expect, it } from 'vitest'
 
 describe('constructor', () => {
   it('should subscribe to the GlobalFilterService "globalFilterChanged" event and update the filtered items list when triggered', async () => {

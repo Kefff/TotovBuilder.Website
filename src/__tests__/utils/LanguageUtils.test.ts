@@ -2,6 +2,7 @@ import { anything, spy, when } from 'ts-mockito'
 import vueI18n from '../../plugins/vueI18n'
 import LanguageUtils from '../../utils/LanguageUtils'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { describe, expect, it } from 'vitest'
 
 describe('setLanguage()', () => {
   it.each([

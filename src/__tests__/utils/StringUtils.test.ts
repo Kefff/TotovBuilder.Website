@@ -1,4 +1,5 @@
 import StringUtils from '../../utils/StringUtils'
+import { describe, expect, it } from 'vitest'
 
 describe('contains()', () => {
   it.each([

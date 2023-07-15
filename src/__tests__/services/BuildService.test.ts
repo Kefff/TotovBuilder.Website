@@ -12,6 +12,7 @@ import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { VersionService } from '../../services/VersionService'
 import Migrations from '../../utils/migrations/Migrations'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 const builds: IBuild[] = [
   {
@@ -606,10 +607,6 @@ beforeEach(() => {
   localStorage.setItem(WebsiteConfigurationMock.languageStorageKey, 'en')
 })
 
-afterEach(() => {
-  localStorage.clear()
-})
-
 
 describe('add()', () => {
   it('should add a build', async () => {
@@ -648,7 +645,7 @@ describe('create()', () => {
     // Assert
     expect(build.id).toBe('')
     expect(build.name).toBe('')
-    expect(build.inventorySlots).toStrictEqual([
+    expect(build.inventorySlots).to.deep.equal([
       {
         items: [undefined],
         typeId: 'onSling'

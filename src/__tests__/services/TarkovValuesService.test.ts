@@ -8,6 +8,7 @@ import { NotificationService } from '../../services/NotificationService'
 import { anyString, instance, mock, when } from 'ts-mockito'
 import Result, { FailureType } from '../../utils/Result'
 import { ApiService } from '../../services/ApiService'
+import { describe, expect, it } from 'vitest'
 
 describe('initialize', () => {
   it('should fetch the values related to Tarkov gameplay from the API', async () => {

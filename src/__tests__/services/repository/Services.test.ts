@@ -1,8 +1,10 @@
 import { instance, mock, spy, verify } from 'ts-mockito'
 import Services from '../../../services/repository/Services'
-import Configuration from '../../../../test-data/configuration.json'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-beforeEach(() => Services.services = [])
+beforeEach(() => {
+  Services.services = []
+})
 
 class TestService1 { }
 class TestService2 { }
@@ -33,16 +35,16 @@ describe('configure', () => {
 
   it('should replace an already configured service', () => {
     // Arrange
-    const consoleSpy = jest.spyOn(console, 'warn') // Services cannot use the LogService so it writes warnings directly to the console. Seems like mockito doesn't work anymore here (https://github.com/nrwl/nx/issues/3129)
+    const consoleSpy = vi.spyOn(console, 'warn') // Services cannot use the LogService so it writes warnings directly to the console. Seems like mockito doesn't work anymore here (https://github.com/nrwl/nx/issues/3129)
 
     Services.configure(TestService1)
     Services.configure(TestService2)
     const mockedInstance = instance(mock<TestService2>())
 
     // Act
-    Configuration.VITE_WARN_WHEN_SERVICE_REPLACED = 'true'
+    import.meta.env.VITE_WARN_WHEN_SERVICE_REPLACED = 'true'
     Services.configure(TestService3, 'TestService1')
-    Configuration.VITE_WARN_WHEN_SERVICE_REPLACED = 'false'
+    import.meta.env.VITE_WARN_WHEN_SERVICE_REPLACED = 'false'
     Services.configure(TestService2, undefined, mockedInstance)
 
     // Assert

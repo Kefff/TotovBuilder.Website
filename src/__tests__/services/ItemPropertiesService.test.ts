@@ -9,6 +9,7 @@ import { IModdable } from '../../models/item/IModdable'
 import { IModSlot } from '../../models/item/IModSlot'
 import { IVest } from '../../models/item/IVest'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { describe, expect, it } from 'vitest'
 
 describe('canBeModded()', () => {
   it.each([

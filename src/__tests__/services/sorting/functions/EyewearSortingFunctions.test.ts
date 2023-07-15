@@ -1,6 +1,7 @@
 import { IEyewear } from '../../../../models/item/IEyewear'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { EyewearSortingFunctions } from '../../../../services/sorting/functions/EyewearSortingFunctions'
+import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([['blindnessProtectionPercentage']])('should compare by a property', async (property: string) => {

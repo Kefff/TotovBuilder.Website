@@ -10,6 +10,7 @@ import ItemsMock from '../../../test-data/items.json'
 import PricesMock from '../../../test-data/prices.json'
 import PresetsMock from '../../../test-data/presets.json'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { describe, expect, it } from 'vitest'
 
 describe('fetchItemCategories()', () => {
   it('should fetch item categories', async () => {

@@ -1,6 +1,7 @@
 import { IMeleeWeapon } from '../../../../models/item/IMeleeWeapon'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { MeleeWeaponSortingFunctions } from '../../../../services/sorting/functions/MeleeWeaponSortingFunctions'
+import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([

@@ -14,14 +14,11 @@ import { WebsiteConfigurationService } from '../../services/WebsiteConfiguration
 import { IBuild } from '../../models/build/IBuild'
 import { BuildService } from '../../services/BuildService'
 import Migrations from '../../utils/migrations/Migrations'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 beforeEach(() => {
   localStorage.setItem(WebsiteConfigurationMock.languageStorageKey, 'en')
   Migrations.splice(0)
-})
-
-afterEach(() => {
-  localStorage.clear()
 })
 
 describe('checkHasNewVersion()', () => {
@@ -715,7 +712,7 @@ describe('initialize()', () => {
     // Act
     await service.initialize()
     const version = await service.getVersion()
-    const savedVersion = localStorage.getItem('version')
+    const savedVersion = localStorage.getItem(WebsiteConfigurationMock.versionStorageKey)
 
     // Assert
     expect(version).toBe('1.6.0')

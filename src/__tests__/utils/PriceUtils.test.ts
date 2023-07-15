@@ -1,6 +1,7 @@
 import { IPrice } from '../../models/item/IPrice'
 import { PriceUtils } from '../../utils/PriceUtils'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
+import { describe, expect, it } from 'vitest'
 
 describe('sortByCurrency()', () => {
   it.each([

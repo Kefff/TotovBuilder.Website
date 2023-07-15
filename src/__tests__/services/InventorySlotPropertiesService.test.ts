@@ -11,6 +11,7 @@ import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfi
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
+import { describe, expect, it } from 'vitest'
 
 const inventorySlot1: IInventorySlot = {
   items: [
@@ -173,7 +174,7 @@ const inventorySlot2: IInventorySlot = {
                 item: {
                   content: [],
                   ignorePrice: false,
-                  itemId: '5beec3420db834001b095429', // RPK-16 5.45x39 muzzle brake \u0026 compensator
+                  itemId: '5beec3420db834001b095429', // RPK-16 5.45x39 muzzle brake-compensator
                   modSlots: [],
                   quantity: 1
                 },

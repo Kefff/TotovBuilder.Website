@@ -1,6 +1,7 @@
 import { IHeadwear } from '../../../../models/item/IHeadwear'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { HeadwearSortingFunctions } from '../../../../services/sorting/functions/HeadwearSortingFunctions'
+import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([

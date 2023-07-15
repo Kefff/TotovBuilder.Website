@@ -32,7 +32,6 @@ export class ModSlotComponentService {
     const categoryIds: string[] = []
 
     for (const acceptedItemCategory of items.map((ai) => ai.categoryId)) {
-      /* istanbul ignore else */
       if (categoryIds.findIndex((ci) => ci === acceptedItemCategory) < 0) {
         categoryIds.push(acceptedItemCategory)
       }

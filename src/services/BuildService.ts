@@ -143,7 +143,6 @@ export class BuildService {
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i) // Key could potentially be null if a build is deleted while looping, but it is hardly testable
 
-      /* istanbul ignore else */
       if (key !== null) {
         if (key.startsWith(buildKeyPrefix)) {
           const id = key.slice(buildKeyPrefix.length)
@@ -461,7 +460,6 @@ export class BuildService {
 
     reducedInventoryModSlot['n'] = inventoryModSlot.modSlotName
 
-    /* istanbul ignore else */
     if (inventoryModSlot.item != null) {
       // Should always occur because we only call this method for mod slots containing an item
       reducedInventoryModSlot['i'] = this.reduceInventoryItemForSharing(inventoryModSlot.item)

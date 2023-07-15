@@ -11,6 +11,7 @@ import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { ItemService } from '../../services/ItemService'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 const itemExclusionFilters = [
   {
@@ -71,10 +72,6 @@ beforeEach(() => {
     itemExclusionFilters,
     merchantFilters
   } as IGlobalFilter))
-})
-
-afterEach(() => {
-  localStorage.clear()
 })
 
 describe('get()', () => {
