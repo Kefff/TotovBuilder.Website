@@ -1,16 +1,44 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll": true
-  },
-  "editor.formatOnPaste": true,
+  "css.format.enable": true,
   "editor.formatOnSave": true,
-  "editor.formatOnType": false,
-  "editor.tabSize": 2,
+  "editor.wordWrap": "off",
   "eslint.validate": [
+    "html",
     "javascript",
-    "javascriptreact",
     "typescript",
-    "typescriptreact",
     "vue"
-  ]
+  ],
+  "html.format.enable": true,
+  "html.format.wrapAttributes": "force-expand-multiline",
+  "html.format.wrapLineLength": 0,
+  "json.format.enable": true,
+  "json.schemaDownload.enable": true,
+  "json.validate.enable": true,
+  "typescript.format.enable": true,
+  "typescript.format.semicolons": "remove",
+  "typescript.preferences.quoteStyle": "single",
+  "vue.autoInsert.dotValue": true,
+  "vue.inlayHints.inlineHandlerLeading": true,
+  "vue.inlayHints.missingProps": true,
+  "vue.inlayHints.optionsWrapper": true,
+  "[css]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "vscode.css-language-features",
+  },
+  "[html]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "[json][jsonc]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "vscode.json-language-features",
+  },
+  "[typescript]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+  },
+  "[vue]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "Vue.volar"
+  },
 }

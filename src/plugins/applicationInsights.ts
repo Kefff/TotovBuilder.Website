@@ -1,8 +1,17 @@
-// import { ApplicationInsights } from '@microsoft/applicationinsights-web'
+import { ApplicationInsights } from '@microsoft/applicationinsights-web'
 
-// const applicationInsights = new ApplicationInsights({
-//   config: {
-//     connectionString: import.meta.env.VITE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY
-//   }
-// })
-// applicationInsights.loadAppInsights()
+const applicationInsights = new ApplicationInsights({
+  config: {
+    instrumentationKey: import.meta.env.VITE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY,
+    enableAutoRouteTracking: true,
+    enableCorsCorrelation: true,
+    enableUnhandledPromiseRejectionTracking: true
+  }
+})
+
+export function useApplicationInsights(): void {
+  applicationInsights.loadAppInsights()
+  applicationInsights.trackPageView()
+}
+
+export default applicationInsights

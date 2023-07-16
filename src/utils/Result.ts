@@ -19,7 +19,7 @@ export default class Result<T = void> {
   /**
    * Indicates wheter the operation was successful or not.
    */
-  public success: boolean;
+  public success: boolean
 
   /**
    * Value returned by the successful operation.

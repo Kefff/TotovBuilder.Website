@@ -2,7 +2,6 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "jest/globals": true,
     "node": true
   },
   "extends": [
@@ -15,17 +14,34 @@
     "parser": "@typescript-eslint/parser",
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "eslint-plugin-tsdoc", "jest", "vue"],
+  "plugins": [
+    "@typescript-eslint",
+    "eslint-plugin-tsdoc",
+    "jest",
+    "vue"
+  ],
   "root": true,
   "rules": {
-    "@typescript-eslint/indent": ["warn", 2],
+    "@typescript-eslint/indent": [
+      "warn",
+      2
+    ],
     "@typescript-eslint/no-unused-vars": "warn",
-    "comma-dangle": ["warn", "never"],
+    "comma-dangle": [
+      "warn",
+      "never"
+    ],
     "indent": "off",
     "no-trailing-spaces": 1,
     "no-unused-vars": "off",
-    "quotes": ["warn", "single"],
-    "semi": ["warn", "never"],
+    "quotes": [
+      "warn",
+      "single"
+    ],
+    "semi": [
+      "warn",
+      "never"
+    ],
     "tsdoc/syntax": "warn",
     "vue/html-indent": [
       "warn",
@@ -42,7 +58,9 @@
       "error",
       "always",
       {
-        "ignore": ["sortField"]
+        "ignore": [
+          "sortField"
+        ]
       }
     ],
     "vue/script-setup-uses-vars": 1
