@@ -82,7 +82,7 @@ describe('fetchItemCategories()', () => {
 
     // Assert
     verify(notificationServiceMock.notify(NotificationType.error, 'API error', true)).once()
-    expect(itemCategories).toStrictEqual([])
+    expect(itemCategories).to.deep.equal([])
   })
 })
 
@@ -167,7 +167,7 @@ describe('getItem()', () => {
     expect(itemResult.success).toBe(true)
     expect(itemResult.value.id).toBe('584147732459775a2b6d9f12')
     expect(itemResult.value.name).toBe('Kalashnikov AKS-74U 5.45x39 assault rifle Default')
-    expect(itemResult.value.prices).toStrictEqual([
+    expect(itemResult.value.prices).to.deep.equal([
       {
         barterItems: [],
         currencyName: 'RUB',
@@ -257,7 +257,7 @@ describe('getItems()', () => {
     expect(itemsResult.value).toHaveLength(2)
     expect(itemsResult.value[0].id).toBe('584147732459775a2b6d9f12')
     expect(itemsResult.value[0].name).toBe('Kalashnikov AKS-74U 5.45x39 assault rifle Default')
-    expect(itemsResult.value[0].prices).toStrictEqual([
+    expect(itemsResult.value[0].prices).to.deep.equal([
       {
         barterItems: [],
         currencyName: 'RUB',
@@ -284,7 +284,7 @@ describe('getItems()', () => {
       }] as IPrice[])
     expect(itemsResult.value[1].id).toBe('5c1d0f4986f7744bb01837fa')
     expect(itemsResult.value[1].name).toBe('TerraGroup Labs keycard (Black)')
-    expect(itemsResult.value[1].prices).toStrictEqual([
+    expect(itemsResult.value[1].prices).to.deep.equal([
       {
         barterItems: [
           {
@@ -349,7 +349,7 @@ describe('getItems()', () => {
     expect(itemsResult.value).toHaveLength(1)
     expect(itemsResult.value[0].id).toBe('584147732459775a2b6d9f12')
     expect(itemsResult.value[0].name).toBe('Kalashnikov AKS-74U 5.45x39 assault rifle Default')
-    expect(itemsResult.value[0].prices).toStrictEqual([
+    expect(itemsResult.value[0].prices).to.deep.equal([
       {
         barterItems: [],
         currencyName: 'RUB',
@@ -435,7 +435,7 @@ describe('getItemCategories()', () => {
     const itemCategories = await itemService.getItemCategories()
 
     // Assert
-    expect(itemCategories).toStrictEqual(ItemCategories)
+    expect(itemCategories).to.deep.equal(ItemCategories)
   })
 })
 
@@ -455,7 +455,7 @@ describe('getItemsOfCategories()', () => {
 
     // Assert
     expect(itemResult.success).toBe(true)
-    expect(itemResult.value.map((i) => i.id).sort()).toStrictEqual([
+    expect(itemResult.value.map((i) => i.id).sort()).to.deep.equal([
       '544a11ac4bdc2d470e8b456a',
       '5732ee6a24597719ae0c0281',
       '5857a8b324597729ab0a0e7d',
@@ -508,7 +508,7 @@ describe('getItemsOfCategories()', () => {
 
     // Assert
     expect(itemResult.success).toBe(true)
-    expect(itemResult.value.map((i) => i.id).sort()).toStrictEqual([
+    expect(itemResult.value.map((i) => i.id).sort()).to.deep.equal([
       '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
       'mosinscopedbarter0000001' // Mosin 7.62x54R bolt-action rifle (Sniper) PU 3.5x
     ])

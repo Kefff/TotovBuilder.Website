@@ -52,7 +52,7 @@ describe('fetchPresets()', () => {
     const preset = presetService.getPreset('584147732459775a2b6d9f12')
 
     // Assert
-    expect(preset).toStrictEqual({
+    expect(preset).to.deep.equal({
       content: [],
       ignorePrice: false,
       itemId: '584147732459775a2b6d9f12',
@@ -263,7 +263,7 @@ describe('getPreset()', () => {
     if (expected == null) {
       expect(preset).toBeUndefined()
     } else {
-      expect(preset).toStrictEqual(expected)
+      expect(preset).to.deep.equal(expected)
     }
   })
 })
@@ -363,7 +363,7 @@ describe('getPresetModSlotContainingItem', () => {
     const result = await service.getPresetModSlotContainingItem(item.itemId, path)
 
     // Assert
-    expect(result).toStrictEqual(expected)
+    expect(result).to.deep.equal(expected)
   })
 
   it('should return undefined when the item is different from the preset modslot item', async () => {
@@ -657,7 +657,7 @@ describe('updatePresetProperties', () => {
 
     // Assert
     expect(armorMod.ergonomicsPercentageModifier).toBe(0.05)
-    expect(armorMod.presetWearableModifiers).toStrictEqual({
+    expect(armorMod.presetWearableModifiers).to.deep.equal({
       ergonomicsPercentageModifier: 0.05,
       ergonomicsPercentageModifierWithMods: 0.15,
       movementSpeedPercentageModifier: 0.04,
@@ -808,7 +808,7 @@ describe('updatePresetProperties', () => {
 
     // Assert
     expect(headwear.ergonomicsPercentageModifier).toBe(0.05)
-    expect(headwear.presetWearableModifiers).toStrictEqual({
+    expect(headwear.presetWearableModifiers).to.deep.equal({
       ergonomicsPercentageModifier: 0.05,
       ergonomicsPercentageModifierWithMods: 0.15,
       movementSpeedPercentageModifier: 0.04,
@@ -1579,6 +1579,6 @@ describe('updatePresetProperties', () => {
 
     // Assert
     verify(notificationServiceSpy.notify(NotificationType.error, anyString(), true)).once()
-    expect(itemResult.value).toStrictEqual(originalItem)
+    expect(itemResult.value).to.deep.equal(originalItem)
   })
 })

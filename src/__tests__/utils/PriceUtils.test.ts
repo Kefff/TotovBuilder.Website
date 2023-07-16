@@ -155,6 +155,6 @@ describe('sortByCurrency()', () => {
     prices = PriceUtils.sortByCurrency(prices)
 
     // Assert
-    expect(prices).toStrictEqual(expected)
+    expect(prices).to.deep.equal(expected)
   })
 })

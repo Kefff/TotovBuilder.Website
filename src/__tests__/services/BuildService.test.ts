@@ -1446,7 +1446,7 @@ describe('reduceBuild()', () => {
 
     // Assert
     expect(reducedBuildResult.success).toBe(true)
-    expect(reducedBuildResult.value).toStrictEqual({
+    expect(reducedBuildResult.value).to.deep.equal({
       's': [
         {
           'i': [

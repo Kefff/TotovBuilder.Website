@@ -86,7 +86,7 @@ describe('get()', () => {
     const globalFilter = service.get()
 
     // Assert
-    expect(globalFilter).toStrictEqual({
+    expect(globalFilter).to.deep.equal({
       itemExclusionFilters: [
         {
           enabled: true,
@@ -154,7 +154,7 @@ describe('get()', () => {
     const globalFilter = service.get()
 
     // Assert
-    expect(globalFilter).toStrictEqual({
+    expect(globalFilter).to.deep.equal({
       itemExclusionFilters: [
         {
           enabled: true,
@@ -329,7 +329,7 @@ describe('getMatchingPrices()', () => {
     const result = service.getMatchingPrices(item)
 
     // Assert
-    expect(result).toStrictEqual(expected)
+    expect(result).to.deep.equal(expected)
   })
 })
 
@@ -347,9 +347,9 @@ describe('getMerchantLevels()', () => {
     const levels3 = service.getMerchantLevels('invalid')
 
     // Assert
-    expect(levels1).toStrictEqual([0])
-    expect(levels2).toStrictEqual([1, 2, 3, 4])
-    expect(levels3).toStrictEqual([])
+    expect(levels1).to.deep.equal([0])
+    expect(levels2).to.deep.equal([1, 2, 3, 4])
+    expect(levels3).to.deep.equal([])
   })
 })
 
@@ -367,9 +367,9 @@ describe('hasLevels()', () => {
     const hasLevels3 = service.hasLevels('invalid')
 
     // Assert
-    expect(hasLevels1).toStrictEqual(false)
-    expect(hasLevels2).toStrictEqual(true)
-    expect(hasLevels3).toStrictEqual(false)
+    expect(hasLevels1).to.deep.equal(false)
+    expect(hasLevels2).to.deep.equal(true)
+    expect(hasLevels3).to.deep.equal(false)
   })
 })
 

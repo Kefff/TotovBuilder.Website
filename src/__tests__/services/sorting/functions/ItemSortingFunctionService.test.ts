@@ -141,7 +141,7 @@ describe('comparisonFunction()', () => {
     const sortedItems = await SortingService.sort([item1, item2, item3], updatedSortingDataResult.value)
 
     // Assert
-    expect(sortedItems).toStrictEqual([item2, item3, item1])
+    expect(sortedItems).to.deep.equal([item2, item3, item1])
   })
 
   it('should compare by category and a name', async () => {
@@ -170,7 +170,7 @@ describe('comparisonFunction()', () => {
     const sortedItems = await SortingService.sort([item1, item2, item3], updatedSortingDataResult.value)
 
     // Assert
-    expect(sortedItems).toStrictEqual([item1, item3, item2]) // By default it is already sorted by name, so here we expected items to be sorted in a descending way
+    expect(sortedItems).to.deep.equal([item1, item3, item2]) // By default it is already sorted by name, so here we expected items to be sorted in a descending way
   })
 })
 
@@ -195,6 +195,6 @@ describe('defaultSortingFunction', () => {
     const result = sortingData.sortingFunction.comparisonFunction(item1, comparisonValue1, item2, comparisonValue2)
 
     // Assert
-    expect(result).toStrictEqual(1)
+    expect(result).to.deep.equal(1)
   })
 })

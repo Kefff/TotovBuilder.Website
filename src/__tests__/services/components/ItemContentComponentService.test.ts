@@ -125,6 +125,6 @@ describe('getAcceptedItemsCategoryId()', () => {
     const categoryIds = itemContentService.getAcceptedItemsCategoryId(itemCategoryId)
 
     // Assert
-    expect(categoryIds).toStrictEqual(expected)
+    expect(categoryIds).to.deep.equal(expected)
   })
 })

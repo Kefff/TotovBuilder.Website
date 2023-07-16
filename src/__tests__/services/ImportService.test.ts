@@ -47,6 +47,6 @@ describe('import()', () => {
     await importService.import(builds)
 
     // Assert
-    expect(importedBuilds).toStrictEqual(builds)
+    expect(importedBuilds).to.deep.equal(builds)
   })
 })

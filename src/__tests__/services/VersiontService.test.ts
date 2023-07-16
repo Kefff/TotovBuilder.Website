@@ -181,7 +181,7 @@ describe('executeBuildMigrations()', () => {
     }
 
     // Assert
-    expect(builds).toStrictEqual([
+    expect(builds).to.deep.equal([
       {
         id: 'build1',
         name: 'build1|1.5.0|1.6.0',
@@ -198,7 +198,7 @@ describe('executeBuildMigrations()', () => {
         lastWebsiteVersion: '1.6.0'
       } as IBuild
     ])
-    expect(migrationResults).toStrictEqual(['b1.5.0', 'b1.6.0', 'b1.6.0'])
+    expect(migrationResults).to.deep.equal(['b1.5.0', 'b1.6.0', 'b1.6.0'])
   })
 
   it('should fail when a migration fails', async () => {
@@ -454,7 +454,7 @@ describe('getChangelog()', () => {
     const changelog = await service.getChangelog()
 
     // Assert
-    expect(changelog).toStrictEqual(expectedChangelogs)
+    expect(changelog).to.deep.equal(expectedChangelogs)
   })
 
   it.each([
@@ -649,7 +649,7 @@ describe('initialize()', () => {
     const savedVersion = localStorage.getItem(websiteConfiguration.versionStorageKey)
 
     // Assert
-    expect(migrationResults).toStrictEqual(['bud1.5.0', 'bud1.6.0', 'b1.5.0', 'b1.6.0', 'b1.4.0', 'b1.5.0', 'b1.6.0'])
+    expect(migrationResults).to.deep.equal(['bud1.5.0', 'bud1.6.0', 'b1.5.0', 'b1.6.0', 'b1.4.0', 'b1.5.0', 'b1.6.0'])
     expect(savedVersion).toBe('1.6.0')
   })
 

@@ -31,7 +31,7 @@ describe('getBuild()', () => {
     const build = buildComponentService.getBuild('123')
 
     // Assert
-    expect(build).toStrictEqual({
+    expect(build).to.deep.equal({
       id: '123',
       inventorySlots: [],
       lastExported: undefined,
@@ -60,7 +60,7 @@ describe('getBuild()', () => {
     const build = buildComponentService.getBuild(undefined)
 
     // Assert
-    expect(build).toStrictEqual({
+    expect(build).to.deep.equal({
       id: '',
       inventorySlots: [],
       lastExported: undefined,
@@ -92,7 +92,7 @@ describe('getBuild()', () => {
     const build = buildComponentService.getBuild('123')
 
     // Assert
-    expect(build).toStrictEqual({
+    expect(build).to.deep.equal({
       id: '',
       inventorySlots: [],
       lastExported: undefined,

@@ -122,7 +122,7 @@ describe('getInventoryItemFromPath()', () => {
 
     // Assert
     expect(inventorySlotResult.success).toBe(true)
-    expect(inventorySlotResult.value).toStrictEqual(expected)
+    expect(inventorySlotResult.value).to.deep.equal(expected)
   })
 
   it.each([

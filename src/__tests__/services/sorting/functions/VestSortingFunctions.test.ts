@@ -34,6 +34,6 @@ describe('comparisonFunction()', () => {
     const sortedItems = await SortingService.sort([item1, item2], updatedSortingDataResult.value)
 
     // Assert
-    expect(sortedItems).toStrictEqual([item2, item1])
+    expect(sortedItems).to.deep.equal([item2, item1])
   })
 })

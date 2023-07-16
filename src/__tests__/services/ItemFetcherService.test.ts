@@ -25,7 +25,7 @@ describe('fetchItemCategories()', () => {
 
     // Assert
     expect(itemCategoriesResult.success).toBe(true)
-    expect(itemCategoriesResult.value).toStrictEqual(ItemCategoriesMock)
+    expect(itemCategoriesResult.value).to.deep.equal(ItemCategoriesMock)
   })
 
   it('should fail when item categories are not found', async () => {
@@ -74,7 +74,7 @@ describe('fetchItems()', () => {
 
     // Assert
     expect(itemsResult.success).toBe(true)
-    expect(itemsResult.value).toStrictEqual(ItemsMock)
+    expect(itemsResult.value).to.deep.equal(ItemsMock)
   })
 
   it('should fail when items are not found', async () => {
@@ -123,7 +123,7 @@ describe('fetchPrices()', () => {
 
     // Assert
     expect(marketDataResult.success).toBe(true)
-    expect(marketDataResult.value).toStrictEqual(PricesMock)
+    expect(marketDataResult.value).to.deep.equal(PricesMock)
   })
 
   it('should fail when prices are not found', async () => {
@@ -172,7 +172,7 @@ describe('fetchPresets()', () => {
 
     // Assert
     expect(presetsResult.success).toBe(true)
-    expect(presetsResult.value).toStrictEqual(PresetsMock)
+    expect(presetsResult.value).to.deep.equal(PresetsMock)
   })
 
   it('should fail when presets are not found', async () => {

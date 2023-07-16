@@ -1273,7 +1273,7 @@ describe('getWearableModifiers()', () => {
 
       // Assert
       expect(wearableModifiersResult.success).toBe(true)
-      expect(wearableModifiersResult.value).toStrictEqual(expected)
+      expect(wearableModifiersResult.value).to.deep.equal(expected)
     }
   )
 
@@ -1444,7 +1444,7 @@ describe('getPrice()', () => {
 
       // Assert
       expect(price.success).toBe(true)
-      expect(price.value).toStrictEqual(expected)
+      expect(price.value).to.deep.equal(expected)
     }
   )
 
@@ -1484,7 +1484,7 @@ describe('getPrice()', () => {
 
     // Assert
     expect(price.success).toBe(true)
-    expect(price.value).toStrictEqual({
+    expect(price.value).to.deep.equal({
       missingPrice: true,
       price: {
         barterItems: [],
@@ -1671,7 +1671,7 @@ describe('getRecoil()', () => {
         expect(recoil).toBeUndefined()
       } else {
         expect(recoil?.success).toBe(true)
-        expect(recoil?.value).toStrictEqual(expected)
+        expect(recoil?.value).to.deep.equal(expected)
       }
     }
   )

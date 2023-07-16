@@ -68,7 +68,7 @@ describe('get()', () => {
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
     expect(result.success).toBe(true)
-    expect(result.value).toStrictEqual([
+    expect(result.value).to.deep.equal([
       {
         'id': '590c621186f774138d11ea29',
         'name': 'Secure Flash drive',
@@ -145,7 +145,7 @@ describe('get()', () => {
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
     expect(result.success).toBe(true)
-    expect(result.value).toStrictEqual([
+    expect(result.value).to.deep.equal([
       {
         'id': '57dc2fa62459775949412633',
         'name': 'AKS-74U 5.45x39 assault rifle',
