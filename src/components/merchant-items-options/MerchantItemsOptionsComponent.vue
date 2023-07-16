@@ -13,9 +13,7 @@
       />
       <span>{{ $t('caption.merchants') }}</span>
     </div>
-    <div
-      class="sidebar-option"
-    >
+    <div class="sidebar-option">
       <MerchantFilter
         v-model="globalFilter"
         @update:modelValue="() => hasChanged = true"
@@ -28,9 +26,7 @@
       />
       <span>{{ $t('caption.items') }}</span>
     </div>
-    <div
-      class="sidebar-option"
-    >
+    <div class="sidebar-option">
       <ItemFilterComponent
         v-model="globalFilter"
         @update:modelValue="() => hasChanged = true"

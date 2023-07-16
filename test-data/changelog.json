@@ -5,7 +5,10 @@
         "language": "en",
         "text": "Removed the text of the \"Back to builds\" button in the build editing screen in order to improve readability."
       },
-      { "language": "en", "text": "Fixed build toolbar items alignment." },
+      {
+        "language": "en",
+        "text": "Fixed build toolbar items alignment."
+      },
       {
         "language": "fr",
         "text": "Suppression du texte du bouton \"Retour aux équipements\" dans l'écran de saisie d'équipement afin d'améliorer la lisibilité."
@@ -42,8 +45,14 @@
   },
   {
     "changes": [
-      { "language": "en", "text": "Launch of Totov Builder." },
-      { "language": "fr", "text": "Lancement de Totov Builder." }
+      {
+        "language": "en",
+        "text": "Launch of Totov Builder."
+      },
+      {
+        "language": "fr",
+        "text": "Lancement de Totov Builder."
+      }
     ],
     "date": "2021-12-30T00:00:00+01:00",
     "version": "1.0.0"

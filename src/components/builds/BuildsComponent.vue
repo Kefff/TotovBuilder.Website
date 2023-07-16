@@ -41,9 +41,7 @@
                   class="p-button-text p-button-sm button-discreet"
                   @click="merchantItemsOptionsSidebarVisible = true"
                 >
-                  <font-awesome-icon
-                    icon="user-tag"
-                  />
+                  <font-awesome-icon icon="user-tag" />
                 </Button>
               </template>
             </MerchantItemsOptions>
@@ -54,9 +52,7 @@
                   class="p-button-text p-button-sm button-discreet"
                   @click="displayOptionsSidebarVisible = true"
                 >
-                  <font-awesome-icon
-                    icon="tv"
-                  />
+                  <font-awesome-icon icon="tv" />
                 </Button>
               </template>
             </DisplayOptions>

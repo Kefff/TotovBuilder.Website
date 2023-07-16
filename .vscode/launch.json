@@ -7,7 +7,9 @@
     {
       "name": "Launch Edge against localhost",
       "request": "launch",
-      "skipFiles": ["${workspaceFolder}/node_modules/**/*.js"],
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js"
+      ],
       "type": "msedge",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}"

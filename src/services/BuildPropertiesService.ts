@@ -308,8 +308,8 @@ export class BuildPropertiesService {
    * @returns Recoil.
    */
   public async getRecoil(build: IBuild): Promise<Result<{
-    horizontalRecoil: number;
-    verticalRecoil: number;
+    horizontalRecoil: number
+    verticalRecoil: number
   }> | undefined> {
     const mainRangedWeaponInventorySlot = this.getMainRangedWeaponInventorySlot(build)
 

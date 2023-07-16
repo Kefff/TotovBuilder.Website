@@ -1,13 +1,17 @@
 .currency-EUR {
   color: rgb(123, 131, 198);
-  margin-left: 0.25rem; /* To make the euro symbol the same width as the ruble symnbol to be able to align them */
-  margin-right: 0.125rem; /* To make the euro symbol the same width as the ruble symnbol to be able to align them */
+  margin-left: 0.25rem;
+  /* To make the euro symbol the same width as the ruble symnbol to be able to align them */
+  margin-right: 0.125rem;
+  /* To make the euro symbol the same width as the ruble symnbol to be able to align them */
 }
 
 .currency-USD {
   color: rgb(131, 205, 124);
-  margin-left: 0.25rem; /* To make the dollar symbol the same width as the ruble symnbol to be able to align them */
-  margin-right: 0.125rem; /* To make the dollar symbol the same width as the ruble symnbol to be able to align them */
+  margin-left: 0.25rem;
+  /* To make the dollar symbol the same width as the ruble symnbol to be able to align them */
+  margin-right: 0.125rem;
+  /* To make the dollar symbol the same width as the ruble symnbol to be able to align them */
 }
 
 .currency-RUB {

@@ -4,4 +4,4 @@ import { IContainer } from './IContainer'
 /**
  * Provides the functionalities of a vest.
  */
-export interface IVest extends IArmor, IContainer {}
+export interface IVest extends IArmor, IContainer { }

@@ -35,8 +35,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "573477e124597737dd42e191", "quantity": 3.0 },
-      { "itemId": "5734779624597737e04bf329", "quantity": 3.0 }
+      {
+        "itemId": "573477e124597737dd42e191",
+        "quantity": 3.0
+      },
+      {
+        "itemId": "5734779624597737e04bf329",
+        "quantity": 3.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5447a9cd4bdc2dbd208b4567",
@@ -48,8 +54,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d403f9186f7743cac3f229b", "quantity": 3.0 },
-      { "itemId": "5d40407c86f774318526545a", "quantity": 1.0 }
+      {
+        "itemId": "5d403f9186f7743cac3f229b",
+        "quantity": 3.0
+      },
+      {
+        "itemId": "5d40407c86f774318526545a",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5447a9cd4bdc2dbd208b4567",
@@ -81,9 +93,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5448ba0b4bdc2d02308b456c", "quantity": 1.0 },
-      { "itemId": "590c5d4b86f774784e1b9c45", "quantity": 4.0 },
-      { "itemId": "590c5f0d86f77413997acfab", "quantity": 1.0 }
+      {
+        "itemId": "5448ba0b4bdc2d02308b456c",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "590c5d4b86f774784e1b9c45",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "590c5f0d86f77413997acfab",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5448ba0b4bdc2d02308b456c",
@@ -115,8 +136,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "57347c5b245977448d35f6e1", "quantity": 1.0 },
-      { "itemId": "57347c77245977448d35f6e2", "quantity": 1.0 }
+      {
+        "itemId": "57347c5b245977448d35f6e1",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "57347c77245977448d35f6e2",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5448bd6b4bdc2dfc2f8b4569",
@@ -147,7 +174,12 @@
     "valueInMainCurrency": 15928.0
   },
   {
-    "barterItems": [{ "itemId": "590a3cd386f77436f20848cb", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "590a3cd386f77436f20848cb",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5448be9a4bdc2dfd2f8b456a",
     "merchant": "prapor",
@@ -217,7 +249,12 @@
     "valueInMainCurrency": 18179.0
   },
   {
-    "barterItems": [{ "itemId": "59e361e886f774176c10a2a5", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e361e886f774176c10a2a5",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5448fee04bdc2dbc018b4567",
     "merchant": "therapist",
@@ -338,8 +375,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "590a3b0486f7743954552bdb", "quantity": 2.0 },
-      { "itemId": "5672cb724bdc2dc2088b456b", "quantity": 1.0 }
+      {
+        "itemId": "590a3b0486f7743954552bdb",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5672cb724bdc2dc2088b456b",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "544a37c44bdc2d25388b4567",
@@ -401,8 +444,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5734758f24597738025ee253", "quantity": 2.0 },
-      { "itemId": "5b3b713c5acfc4330140bd8d", "quantity": 2.0 }
+      {
+        "itemId": "5734758f24597738025ee253",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5b3b713c5acfc4330140bd8d",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "544a5caa4bdc2d1a388b4568",
@@ -414,8 +463,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d40412b86f7743cb332ac3a", "quantity": 7.0 },
-      { "itemId": "5d4041f086f7743cac3f22a7", "quantity": 5.0 }
+      {
+        "itemId": "5d40412b86f7743cb332ac3a",
+        "quantity": 7.0
+      },
+      {
+        "itemId": "5d4041f086f7743cac3f22a7",
+        "quantity": 5.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "544a5caa4bdc2d1a388b4568",
@@ -446,7 +501,12 @@
     "valueInMainCurrency": 13577.0
   },
   {
-    "barterItems": [{ "itemId": "590a386e86f77429692b27ab", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590a386e86f77429692b27ab",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "544a5cde4bdc2d39388b456b",
     "merchant": "peacekeeper",
@@ -516,7 +576,12 @@
     "valueInMainCurrency": 7151.0
   },
   {
-    "barterItems": [{ "itemId": "57347b8b24597737dd42e192", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "57347b8b24597737dd42e192",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "544fb37f4bdc2dee738b4567",
     "merchant": "therapist",
@@ -574,7 +639,12 @@
     "valueInMainCurrency": 33428.0
   },
   {
-    "barterItems": [{ "itemId": "59e3596386f774176c10a2a2", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e3596386f774176c10a2a2",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "544fb45d4bdc2dee738b4568",
     "merchant": "therapist",
@@ -624,7 +694,12 @@
     "valueInMainCurrency": 10893.0
   },
   {
-    "barterItems": [{ "itemId": "57513fcc24597720a31c09a6", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "57513fcc24597720a31c09a6",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "544fb6cc4bdc2d34748b456e",
     "merchant": "therapist",
@@ -698,7 +773,12 @@
     "valueInMainCurrency": 74632.0
   },
   {
-    "barterItems": [{ "itemId": "590a3cd386f77436f20848cb", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "590a3cd386f77436f20848cb",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "545cdae64bdc2d39198b4568",
     "merchant": "ragman",
@@ -709,8 +789,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "60391a8b3364dc22b04d0ce5", "quantity": 4.0 },
-      { "itemId": "60391b0fb847c71012789415", "quantity": 4.0 }
+      {
+        "itemId": "60391a8b3364dc22b04d0ce5",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "60391b0fb847c71012789415",
+        "quantity": 4.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "545cdb794bdc2d3a198b456a",
@@ -722,8 +808,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d03775b86f774203e7e0c4b", "quantity": 2.0 },
-      { "itemId": "5d1b313086f77425227d1678", "quantity": 5.0 }
+      {
+        "itemId": "5d03775b86f774203e7e0c4b",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5d1b313086f77425227d1678",
+        "quantity": 5.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "545cdb794bdc2d3a198b456a",
@@ -735,8 +827,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1b376e86f774252519444e", "quantity": 2.0 },
-      { "itemId": "5d40407c86f774318526545a", "quantity": 5.0 }
+      {
+        "itemId": "5d1b376e86f774252519444e",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5d40407c86f774318526545a",
+        "quantity": 5.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "545cdb794bdc2d3a198b456a",
@@ -747,7 +845,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "545cdb794bdc2d3a198b456a", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "545cdb794bdc2d3a198b456a",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "545cdb794bdc2d3a198b456a",
     "merchant": "ragman",
@@ -832,8 +935,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "573475fb24597737fb1379e1", "quantity": 5.0 },
-      { "itemId": "573476d324597737da2adc13", "quantity": 3.0 }
+      {
+        "itemId": "573475fb24597737fb1379e1",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "573476d324597737da2adc13",
+        "quantity": 3.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "55801eed4bdc2d89578b4588",
@@ -1004,7 +1113,12 @@
     "valueInMainCurrency": 42670.0
   },
   {
-    "barterItems": [{ "itemId": "5d1b309586f77425227d1676", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1b309586f77425227d1676",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "55d35ee94bdc2d61338b4568",
     "merchant": "peacekeeper",
@@ -1015,8 +1129,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "573476d324597737da2adc13", "quantity": 3.0 },
-      { "itemId": "573475fb24597737fb1379e1", "quantity": 2.0 }
+      {
+        "itemId": "573476d324597737da2adc13",
+        "quantity": 3.0
+      },
+      {
+        "itemId": "573475fb24597737fb1379e1",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "55d35ee94bdc2d61338b4568",
@@ -1177,7 +1297,12 @@
     "valueInMainCurrency": 62833.0
   },
   {
-    "barterItems": [{ "itemId": "590a386e86f77429692b27ab", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590a386e86f77429692b27ab",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "55d45f484bdc2d972f8b456d",
     "merchant": "mechanic",
@@ -1247,7 +1372,12 @@
     "valueInMainCurrency": 30584.0
   },
   {
-    "barterItems": [{ "itemId": "5d1b32c186f774252167a530", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1b32c186f774252167a530",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "55d482194bdc2d1d4e8b456b",
     "merchant": "prapor",
@@ -1321,7 +1451,12 @@
     "valueInMainCurrency": 57989.0
   },
   {
-    "barterItems": [{ "itemId": "573474f924597738002c6174", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "573474f924597738002c6174",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "55d485be4bdc2d962f8b456f",
     "merchant": "mechanic",
@@ -1372,8 +1507,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "57347b8b24597737dd42e192", "quantity": 1.0 },
-      { "itemId": "573475fb24597737fb1379e1", "quantity": 1.0 }
+      {
+        "itemId": "57347b8b24597737dd42e192",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "573475fb24597737fb1379e1",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "55d48a634bdc2d8b2f8b456a",
@@ -1524,7 +1665,12 @@
     "valueInMainCurrency": 42418.0
   },
   {
-    "barterItems": [{ "itemId": "62a09e974f842e1bd12da3f0", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "62a09e974f842e1bd12da3f0",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "55d6190f4bdc2d87028b4567",
     "merchant": "skier",
@@ -1844,7 +1990,12 @@
     "valueInMainCurrency": 68388.0
   },
   {
-    "barterItems": [{ "itemId": "573475fb24597737fb1379e1", "quantity": 5.0 }],
+    "barterItems": [
+      {
+        "itemId": "573475fb24597737fb1379e1",
+        "quantity": 5.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5644bd2b4bdc2d3b4c8b4572",
     "merchant": "prapor",
@@ -1854,7 +2005,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5bf3e03b0db834001d2c4a9c", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5bf3e03b0db834001d2c4a9c",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5644bd2b4bdc2d3b4c8b4572",
     "merchant": "mechanic",
@@ -1884,7 +2040,12 @@
     "valueInMainCurrency": 27637.0
   },
   {
-    "barterItems": [{ "itemId": "573474f924597738002c6174", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "573474f924597738002c6174",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5645bc214bdc2d363b8b4571",
     "merchant": "ragman",
@@ -1914,7 +2075,12 @@
     "valueInMainCurrency": 41268.0
   },
   {
-    "barterItems": [{ "itemId": "57347b8b24597737dd42e192", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "57347b8b24597737dd42e192",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5645bcc04bdc2d363b8b4572",
     "merchant": "ragman",
@@ -1964,7 +2130,12 @@
     "valueInMainCurrency": 31153.0
   },
   {
-    "barterItems": [{ "itemId": "572b7fa524597762b747ce82", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "572b7fa524597762b747ce82",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5648a7494bdc2d9d488b4583",
     "merchant": "ragman",
@@ -2408,7 +2579,12 @@
     "valueInMainCurrency": 16643.0
   },
   {
-    "barterItems": [{ "itemId": "590c346786f77423e50ed342", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590c346786f77423e50ed342",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "564ca9df4bdc2d35148b4569",
     "merchant": "prapor",
@@ -2438,7 +2614,12 @@
     "valueInMainCurrency": 40738.0
   },
   {
-    "barterItems": [{ "itemId": "59f32bb586f774757e1e8442", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "59f32bb586f774757e1e8442",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "564caa3d4bdc2d17108b458e",
     "merchant": "skier",
@@ -2489,8 +2670,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1b3a5d86f774252167ba22", "quantity": 6.0 },
-      { "itemId": "5d1b3f2d86f774253763b735", "quantity": 4.0 }
+      {
+        "itemId": "5d1b3a5d86f774252167ba22",
+        "quantity": 6.0
+      },
+      {
+        "itemId": "5d1b3f2d86f774253763b735",
+        "quantity": 4.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "567143bf4bdc2d1a0f8b4567",
@@ -2552,8 +2739,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "57347b8b24597737dd42e192", "quantity": 1.0 },
-      { "itemId": "56742c284bdc2d98058b456d", "quantity": 1.0 }
+      {
+        "itemId": "57347b8b24597737dd42e192",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "56742c284bdc2d98058b456d",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5673de654bdc2d180f8b456d",
@@ -2634,7 +2827,12 @@
     "valueInMainCurrency": 15760.0
   },
   {
-    "barterItems": [{ "itemId": "57e26ea924597715ca604a09", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "57e26ea924597715ca604a09",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "56d59856d2720bd8418b456a",
     "merchant": "peacekeeper",
@@ -2795,9 +2993,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "591ae8f986f77406f854be45", "quantity": 1.0 },
-      { "itemId": "59136f6f86f774447a1ed173", "quantity": 1.0 },
-      { "itemId": "5913651986f774432f15d132", "quantity": 1.0 }
+      {
+        "itemId": "591ae8f986f77406f854be45",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "59136f6f86f774447a1ed173",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5913651986f774432f15d132",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "56dee2bdd2720bc8328b4567",
@@ -2809,8 +3016,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "590c311186f77424d1667482", "quantity": 2.0 },
-      { "itemId": "590c2d8786f774245b1f03f3", "quantity": 2.0 }
+      {
+        "itemId": "590c311186f77424d1667482",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "590c2d8786f774245b1f03f3",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "56dee2bdd2720bc8328b4567",
@@ -3209,7 +3422,12 @@
     "valueInMainCurrency": 37388.0
   },
   {
-    "barterItems": [{ "itemId": "59f32c3b86f77472a31742f0", "quantity": 5.0 }],
+    "barterItems": [
+      {
+        "itemId": "59f32c3b86f77472a31742f0",
+        "quantity": 5.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "56ea70acd2720b844b8b4594",
     "merchant": "skier",
@@ -3239,7 +3457,12 @@
     "valueInMainCurrency": 15705.0
   },
   {
-    "barterItems": [{ "itemId": "573476f124597737e04bf328", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "573476f124597737e04bf328",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "56ea7165d2720b6e518b4583",
     "merchant": "mechanic",
@@ -3280,8 +3503,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5909e99886f7740c983b9984", "quantity": 2.0 },
-      { "itemId": "590c2c9c86f774245b1f03f2", "quantity": 1.0 }
+      {
+        "itemId": "5909e99886f7740c983b9984",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "590c2c9c86f774245b1f03f2",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "56ea8180d2720bf2698b456a",
@@ -3466,7 +3695,12 @@
     "valueInMainCurrency": 15036.0
   },
   {
-    "barterItems": [{ "itemId": "590a3cd386f77436f20848cb", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590a3cd386f77436f20848cb",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5710c24ad2720bc3458b45a3",
     "merchant": "prapor",
@@ -3637,8 +3871,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "56742c324bdc2d150f8b456d", "quantity": 2.0 },
-      { "itemId": "5d1b309586f77425227d1676", "quantity": 3.0 }
+      {
+        "itemId": "56742c324bdc2d150f8b456d",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5d1b309586f77425227d1676",
+        "quantity": 3.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "57235b6f24597759bf5a30f1",
@@ -3659,7 +3899,12 @@
     "valueInMainCurrency": 20504.0
   },
   {
-    "barterItems": [{ "itemId": "544fb6cc4bdc2d34748b456e", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "544fb6cc4bdc2d34748b456e",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "572b7adb24597762ae139821",
     "merchant": "jaeger",
@@ -3919,7 +4164,12 @@
     "valueInMainCurrency": 19559.0
   },
   {
-    "barterItems": [{ "itemId": "5d4041f086f7743cac3f22a7", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d4041f086f7743cac3f22a7",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "57347c93245977448d35f6e3",
     "merchant": "therapist",
@@ -3959,7 +4209,12 @@
     "valueInMainCurrency": 46814.0
   },
   {
-    "barterItems": [{ "itemId": "5751487e245977207e26a315", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5751487e245977207e26a315",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "57347d3d245977448f7b7f61",
     "merchant": "therapist",
@@ -3979,7 +4234,12 @@
     "valueInMainCurrency": 16876.0
   },
   {
-    "barterItems": [{ "itemId": "57347c93245977448d35f6e3", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "57347c93245977448d35f6e3",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "57347d5f245977448b40fa81",
     "merchant": "therapist",
@@ -4539,7 +4799,12 @@
     "valueInMainCurrency": 18444.0
   },
   {
-    "barterItems": [{ "itemId": "59e358a886f7741776641ac3", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e358a886f7741776641ac3",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "57372ac324597767001bc261",
     "merchant": "prapor",
@@ -4550,8 +4815,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5751496424597720a27126da", "quantity": 2.0 },
-      { "itemId": "573476d324597737da2adc13", "quantity": 2.0 }
+      {
+        "itemId": "5751496424597720a27126da",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "573476d324597737da2adc13",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "57372bd3245977670b7cd243",
@@ -4562,7 +4833,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "57347da92459774491567cf5", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "57347da92459774491567cf5",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "57372c89245977685d4159b1",
     "merchant": "prapor",
@@ -4572,7 +4848,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "590a373286f774287540368b", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590a373286f774287540368b",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "57372c89245977685d4159b1",
     "merchant": "prapor",
@@ -5096,7 +5377,12 @@
     "valueInMainCurrency": 12733.0
   },
   {
-    "barterItems": [{ "itemId": "573477e124597737dd42e191", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "573477e124597737dd42e191",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "576a581d2459771e7b1bc4f1",
     "merchant": "prapor",
@@ -5190,7 +5476,12 @@
     "valueInMainCurrency": 20063.0
   },
   {
-    "barterItems": [{ "itemId": "590a3c0a86f774385a33c450", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "590a3c0a86f774385a33c450",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "576fd4ec2459777f0b518431",
     "merchant": "prapor",
@@ -5301,9 +5592,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d80c62a86f7744036212b3f", "quantity": 1.0 },
-      { "itemId": "5ede7a8229445733cb4c18e2", "quantity": 1.0 },
-      { "itemId": "5d80c60f86f77440373c4ece", "quantity": 1.0 }
+      {
+        "itemId": "5d80c62a86f7744036212b3f",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5ede7a8229445733cb4c18e2",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5d80c60f86f77440373c4ece",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5780cf7f2459777de4559322",
@@ -5355,9 +5655,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "575062b524597720a31c09a1", "quantity": 2.0 },
-      { "itemId": "5448ff904bdc2d6f028b456e", "quantity": 4.0 },
-      { "itemId": "57347d8724597744596b4e76", "quantity": 2.0 }
+      {
+        "itemId": "575062b524597720a31c09a1",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5448ff904bdc2d6f028b456e",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "57347d8724597744596b4e76",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5780d0532459777a5108b9a2",
@@ -5368,7 +5677,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5734758f24597738025ee253", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "5734758f24597738025ee253",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5780d0532459777a5108b9a2",
     "merchant": "therapist",
@@ -5409,8 +5723,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "60391afc25aff57af81f7085", "quantity": 1.0 },
-      { "itemId": "5e2aee0a86f774755a234b62", "quantity": 1.0 }
+      {
+        "itemId": "60391afc25aff57af81f7085",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5e2aee0a86f774755a234b62",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "57838ad32459774a17445cd2",
@@ -5422,9 +5742,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d4042a986f7743185265463", "quantity": 1.0 },
-      { "itemId": "5c052f6886f7746b1e3db148", "quantity": 1.0 },
-      { "itemId": "5733279d245977289b77ec24", "quantity": 1.0 }
+      {
+        "itemId": "5d4042a986f7743185265463",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5c052f6886f7746b1e3db148",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5733279d245977289b77ec24",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "57838ad32459774a17445cd2",
@@ -5515,7 +5844,12 @@
     "valueInMainCurrency": 22894.0
   },
   {
-    "barterItems": [{ "itemId": "590c639286f774151567fa95", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590c639286f774151567fa95",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "57838f9f2459774a150289a0",
     "merchant": "prapor",
@@ -5715,7 +6049,12 @@
     "valueInMainCurrency": 40803.0
   },
   {
-    "barterItems": [{ "itemId": "590c392f86f77444754deb29", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "590c392f86f77444754deb29",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "57aca93d2459771f2c7e26db",
     "merchant": "mechanic",
@@ -5786,8 +6125,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d403f9186f7743cac3f229b", "quantity": 1.0 },
-      { "itemId": "590c37d286f77443be3d7827", "quantity": 1.0 }
+      {
+        "itemId": "5d403f9186f7743cac3f229b",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "590c37d286f77443be3d7827",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "57adff4f24597737f373b6e6",
@@ -6079,8 +6424,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c13cef886f774072e618e82", "quantity": 1.0 },
-      { "itemId": "59148f8286f7741b951ea113", "quantity": 1.0 }
+      {
+        "itemId": "5c13cef886f774072e618e82",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "59148f8286f7741b951ea113",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "57c69dd424597774c03b7bbc",
@@ -6401,7 +6752,12 @@
     "valueInMainCurrency": 14588.0
   },
   {
-    "barterItems": [{ "itemId": "5d1b31ce86f7742523398394", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1b31ce86f7742523398394",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "57d1519e24597714373db79d",
     "merchant": "prapor",
@@ -6754,7 +7110,12 @@
     "valueInMainCurrency": 18299.0
   },
   {
-    "barterItems": [{ "itemId": "54491c4f4bdc2db1078b4568", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "54491c4f4bdc2db1078b4568",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "57f4c844245977379d5c14d1",
     "merchant": "prapor",
@@ -6805,8 +7166,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5e2aedd986f7746d404f3aa4", "quantity": 1.0 },
-      { "itemId": "5672cb304bdc2dc2088b456a", "quantity": 2.0 }
+      {
+        "itemId": "5e2aedd986f7746d404f3aa4",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5672cb304bdc2dc2088b456a",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "57ffa9f4245977728561e844",
@@ -6972,8 +7339,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "573478bc24597738002c6175", "quantity": 2.0 },
-      { "itemId": "5e2af00086f7746d3f3c33f7", "quantity": 1.0 }
+      {
+        "itemId": "573478bc24597738002c6175",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5e2af00086f7746d3f3c33f7",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "583990e32459771419544dd2",
@@ -7005,9 +7378,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "59e3658a86f7741776641ac4", "quantity": 1.0 },
-      { "itemId": "5909e99886f7740c983b9984", "quantity": 2.0 },
-      { "itemId": "573476d324597737da2adc13", "quantity": 1.0 }
+      {
+        "itemId": "59e3658a86f7741776641ac4",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5909e99886f7740c983b9984",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "573476d324597737da2adc13",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5839a40f24597726f856b511",
@@ -7093,10 +7475,22 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d03794386f77420415576f5", "quantity": 1.0 },
-      { "itemId": "5d0377ce86f774186372f689", "quantity": 3.0 },
-      { "itemId": "5c05308086f7746b2101e90b", "quantity": 3.0 },
-      { "itemId": "5d0375ff86f774186372f685", "quantity": 5.0 }
+      {
+        "itemId": "5d03794386f77420415576f5",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5d0377ce86f774186372f689",
+        "quantity": 3.0
+      },
+      {
+        "itemId": "5c05308086f7746b2101e90b",
+        "quantity": 3.0
+      },
+      {
+        "itemId": "5d0375ff86f774186372f685",
+        "quantity": 5.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5857a8b324597729ab0a0e7d",
@@ -7506,8 +7900,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "573478bc24597738002c6175", "quantity": 5.0 },
-      { "itemId": "590de71386f774347051a052", "quantity": 1.0 }
+      {
+        "itemId": "573478bc24597738002c6175",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "590de71386f774347051a052",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "588892092459774ac91d4b11",
@@ -7658,7 +8058,12 @@
     "valueInMainCurrency": 18694.0
   },
   {
-    "barterItems": [{ "itemId": "60098b1705871270cd5352a1", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "60098b1705871270cd5352a1",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "588b56d02459771481110ae2",
     "merchant": "peacekeeper",
@@ -7698,7 +8103,12 @@
     "valueInMainCurrency": 47956.0
   },
   {
-    "barterItems": [{ "itemId": "customdogtags12345678910", "quantity": 7.0 }],
+    "barterItems": [
+      {
+        "itemId": "customdogtags12345678910",
+        "quantity": 7.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "58948c8e86f77409493f7266",
     "merchant": "peacekeeper",
@@ -8232,7 +8642,12 @@
     "valueInMainCurrency": 17044.0
   },
   {
-    "barterItems": [{ "itemId": "56742c2e4bdc2d95058b456d", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "56742c2e4bdc2d95058b456d",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "58d3db5386f77426186285a0",
     "merchant": "peacekeeper",
@@ -8362,7 +8777,12 @@
     "valueInMainCurrency": 10825.0
   },
   {
-    "barterItems": [{ "itemId": "5734779624597737e04bf329", "quantity": 1 }],
+    "barterItems": [
+      {
+        "itemId": "5734779624597737e04bf329",
+        "quantity": 1
+      }
+    ],
     "currencyName": "barter",
     "itemId": "590a3efd86f77437d351a25b",
     "merchant": "mechanic",
@@ -8413,11 +8833,26 @@
   },
   {
     "barterItems": [
-      { "itemId": "590c2b4386f77425357b6123", "quantity": 1.0 },
-      { "itemId": "590c2d8786f774245b1f03f3", "quantity": 1.0 },
-      { "itemId": "590c311186f77424d1667482", "quantity": 1.0 },
-      { "itemId": "5734795124597738002c6176", "quantity": 1.0 },
-      { "itemId": "590c2c9c86f774245b1f03f2", "quantity": 1.0 }
+      {
+        "itemId": "590c2b4386f77425357b6123",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "590c2d8786f774245b1f03f3",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "590c311186f77424d1667482",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5734795124597738002c6176",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "590c2c9c86f774245b1f03f2",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "590c2e1186f77425357b6124",
@@ -8552,7 +8987,12 @@
     "valueInMainCurrency": 21870.0
   },
   {
-    "barterItems": [{ "itemId": "5d1b3f2d86f774253763b735", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1b3f2d86f774253763b735",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "590c5d4b86f774784e1b9c45",
     "merchant": "therapist",
@@ -8583,9 +9023,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "59e3658a86f7741776641ac4", "quantity": 1.0 },
-      { "itemId": "59e3639286f7741777737013", "quantity": 1.0 },
-      { "itemId": "573478bc24597738002c6175", "quantity": 4.0 }
+      {
+        "itemId": "59e3658a86f7741776641ac4",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "59e3639286f7741777737013",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "573478bc24597738002c6175",
+        "quantity": 4.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "590c60fc86f77412b13fddcf",
@@ -8657,8 +9106,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "590a3efd86f77437d351a25b", "quantity": 1.0 },
-      { "itemId": "590a3d9c86f774385926e510", "quantity": 1.0 }
+      {
+        "itemId": "590a3efd86f77437d351a25b",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "590a3d9c86f774385926e510",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "590c657e86f77412b013051d",
@@ -8673,7 +9128,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "59e3647686f774176a362507", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e3647686f774176a362507",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "590c657e86f77412b013051d",
     "merchant": "jaeger",
@@ -8707,7 +9167,12 @@
     "valueInMainCurrency": 15366.0
   },
   {
-    "barterItems": [{ "itemId": "57347d5f245977448b40fa81", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "57347d5f245977448b40fa81",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "590c661e86f7741e566b646a",
     "merchant": "therapist",
@@ -8741,7 +9206,12 @@
     "valueInMainCurrency": 22014.0
   },
   {
-    "barterItems": [{ "itemId": "59e35abd86f7741778269d82", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e35abd86f7741778269d82",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "590c678286f77426c9660122",
     "merchant": "therapist",
@@ -8902,9 +9372,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "590c639286f774151567fa95", "quantity": 2.0 },
-      { "itemId": "5d40407c86f774318526545a", "quantity": 4.0 },
-      { "itemId": "57347d7224597744596b4e72", "quantity": 2.0 }
+      {
+        "itemId": "590c639286f774151567fa95",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5d40407c86f774318526545a",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "57347d7224597744596b4e72",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5913915886f774123603c392",
@@ -9139,7 +9618,12 @@
     "valueInMainCurrency": 34549.0
   },
   {
-    "barterItems": [{ "itemId": "57e26fc7245977162a14b800", "quantity": 8.0 }],
+    "barterItems": [
+      {
+        "itemId": "57e26fc7245977162a14b800",
+        "quantity": 8.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5926bb2186f7744b1c6c6e60",
     "merchant": "peacekeeper",
@@ -9410,8 +9894,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "575146b724597720a27126d5", "quantity": 1.0 },
-      { "itemId": "57347d90245977448f7b7f65", "quantity": 1.0 }
+      {
+        "itemId": "575146b724597720a27126d5",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "57347d90245977448f7b7f65",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5929a2a086f7744f4b234d43",
@@ -9443,8 +9933,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "57347c1124597737fb1379e3", "quantity": 5.0 },
-      { "itemId": "59faf98186f774067b6be103", "quantity": 1.0 }
+      {
+        "itemId": "57347c1124597737fb1379e3",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "59faf98186f774067b6be103",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "592c2d1a86f7746dbe2af32a",
@@ -9505,7 +10001,12 @@
     "valueInMainCurrency": 11441.0
   },
   {
-    "barterItems": [{ "itemId": "5d1b3a5d86f774252167ba22", "quantity": 7.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1b3a5d86f774252167ba22",
+        "quantity": 7.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5938603e86f77435642354f4",
     "merchant": "therapist",
@@ -9556,8 +10057,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "57347cd0245977445a2d6ff1", "quantity": 7.0 },
-      { "itemId": "5734795124597738002c6176", "quantity": 3.0 }
+      {
+        "itemId": "57347cd0245977445a2d6ff1",
+        "quantity": 7.0
+      },
+      {
+        "itemId": "5734795124597738002c6176",
+        "quantity": 3.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "593aa4be86f77457f56379f8",
@@ -9653,9 +10160,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5e2aee0a86f774755a234b62", "quantity": 1.0 },
-      { "itemId": "590a391c86f774385a33c404", "quantity": 1.0 },
-      { "itemId": "5d1b2ffd86f77425243e8d17", "quantity": 1.0 }
+      {
+        "itemId": "5e2aee0a86f774755a234b62",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "590a391c86f774385a33c404",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5d1b2ffd86f77425243e8d17",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "59411abb86f77478f702b5d2",
@@ -9666,7 +10182,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5d235b4d86f7742e017bc88a", "quantity": 6.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 6.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "59430b9b86f77403c27945fd",
     "merchant": "peacekeeper",
@@ -9926,7 +10447,12 @@
     "valueInMainCurrency": 37864.0
   },
   {
-    "barterItems": [{ "itemId": "57347cd0245977445a2d6ff1", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "57347cd0245977445a2d6ff1",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "59984ab886f7743e98271174",
     "merchant": "prapor",
@@ -10146,7 +10672,12 @@
     "valueInMainCurrency": 89038.0
   },
   {
-    "barterItems": [{ "itemId": "57347baf24597738002c6178", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "57347baf24597738002c6178",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "59bffbb386f77435b379b9c2",
     "merchant": "mechanic",
@@ -10210,7 +10741,12 @@
     "valueInMainCurrency": 34088.0
   },
   {
-    "barterItems": [{ "itemId": "59e3647686f774176a362507", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e3647686f774176a362507",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "59c0ec5b86f77435b128bfca",
     "merchant": "skier",
@@ -10221,8 +10757,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "590c595c86f7747884343ad7", "quantity": 1.0 },
-      { "itemId": "5e2aedd986f7746d404f3aa4", "quantity": 2.0 }
+      {
+        "itemId": "590c595c86f7747884343ad7",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5e2aedd986f7746d404f3aa4",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "59c1383d86f774290a37e0ca",
@@ -10258,8 +10800,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "590c639286f774151567fa95", "quantity": 1.0 },
-      { "itemId": "5672cb124bdc2d1a0f8b4568", "quantity": 1.0 }
+      {
+        "itemId": "590c639286f774151567fa95",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5672cb124bdc2d1a0f8b4568",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "59c63b4486f7747afb151c1c",
@@ -10360,7 +10908,12 @@
     "valueInMainCurrency": 51122.0
   },
   {
-    "barterItems": [{ "itemId": "57347d7224597744596b4e72", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "57347d7224597744596b4e72",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "59d6088586f774275f37482f",
     "merchant": "prapor",
@@ -10734,7 +11287,12 @@
     "valueInMainCurrency": 59853.0
   },
   {
-    "barterItems": [{ "itemId": "5d1b3a5d86f774252167ba22", "quantity": 6.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1b3a5d86f774252167ba22",
+        "quantity": 6.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "59e3577886f774176a362503",
     "merchant": "therapist",
@@ -10744,7 +11302,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5751487e245977207e26a315", "quantity": 5.0 }],
+    "barterItems": [
+      {
+        "itemId": "5751487e245977207e26a315",
+        "quantity": 5.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "59e3577886f774176a362503",
     "merchant": "jaeger",
@@ -11004,7 +11567,12 @@
     "valueInMainCurrency": 22500.0
   },
   {
-    "barterItems": [{ "itemId": "573478bc24597738002c6175", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "573478bc24597738002c6175",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "59e6152586f77473dc057aa1",
     "merchant": "skier",
@@ -11228,7 +11796,12 @@
     "valueInMainCurrency": 35000.0
   },
   {
-    "barterItems": [{ "itemId": "59e6687d86f77411d949b251", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e6687d86f77411d949b251",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "59e6687d86f77411d949b251",
     "merchant": "mechanic",
@@ -11513,8 +12086,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "61bf7b6302b3924be92fa8c3", "quantity": 4.0 },
-      { "itemId": "60391a8b3364dc22b04d0ce5", "quantity": 2.0 }
+      {
+        "itemId": "61bf7b6302b3924be92fa8c3",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "60391a8b3364dc22b04d0ce5",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "59e8d2b386f77445830dd299",
@@ -11625,7 +12204,12 @@
     "valueInMainCurrency": 26206.0
   },
   {
-    "barterItems": [{ "itemId": "590c5a7286f7747884343aea", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590c5a7286f7747884343aea",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "59f98b4986f7746f546d2cef",
     "merchant": "prapor",
@@ -11780,9 +12364,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "59e361e886f774176c10a2a5", "quantity": 10.0 },
-      { "itemId": "59e3606886f77417674759a5", "quantity": 10.0 },
-      { "itemId": "5e2af02c86f7746d420957d4", "quantity": 10.0 }
+      {
+        "itemId": "59e361e886f774176c10a2a5",
+        "quantity": 10.0
+      },
+      {
+        "itemId": "59e3606886f77417674759a5",
+        "quantity": 10.0
+      },
+      {
+        "itemId": "5e2af02c86f7746d420957d4",
+        "quantity": 10.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "59fafd4b86f7745ca07e1232",
@@ -11794,8 +12387,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c12620d86f7743f8b198b72", "quantity": 2.0 },
-      { "itemId": "5e2aedd986f7746d404f3aa4", "quantity": 2.0 }
+      {
+        "itemId": "5c12620d86f7743f8b198b72",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5e2aedd986f7746d404f3aa4",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "59faff1d86f7746c51718c9c",
@@ -11807,9 +12406,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5734758f24597738025ee253", "quantity": 5.0 },
-      { "itemId": "59faf7ca86f7740dbe19f6c2", "quantity": 2.0 },
-      { "itemId": "5d235a5986f77443f6329bc6", "quantity": 2.0 }
+      {
+        "itemId": "5734758f24597738025ee253",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "59faf7ca86f7740dbe19f6c2",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5d235a5986f77443f6329bc6",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "59fb016586f7746d0d4b423a",
@@ -11831,9 +12439,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1b376e86f774252519444e", "quantity": 10.0 },
-      { "itemId": "5d40407c86f774318526545a", "quantity": 10.0 },
-      { "itemId": "544fb6cc4bdc2d34748b456e", "quantity": 5.0 }
+      {
+        "itemId": "5d1b376e86f774252519444e",
+        "quantity": 10.0
+      },
+      {
+        "itemId": "5d40407c86f774318526545a",
+        "quantity": 10.0
+      },
+      {
+        "itemId": "544fb6cc4bdc2d34748b456e",
+        "quantity": 5.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "59fb023c86f7746d0d4b423c",
@@ -11844,7 +12461,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "59faff1d86f7746c51718c9c", "quantity": 10.0 }],
+    "barterItems": [
+      {
+        "itemId": "59faff1d86f7746c51718c9c",
+        "quantity": 10.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "59fb023c86f7746d0d4b423c",
     "merchant": "mechanic",
@@ -11855,10 +12477,22 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1b2fa286f77425227d1674", "quantity": 8.0 },
-      { "itemId": "5c06779c86f77426e00dd782", "quantity": 15.0 },
-      { "itemId": "5d1b309586f77425227d1676", "quantity": 4.0 },
-      { "itemId": "5d03775b86f774203e7e0c4b", "quantity": 1.0 }
+      {
+        "itemId": "5d1b2fa286f77425227d1674",
+        "quantity": 8.0
+      },
+      {
+        "itemId": "5c06779c86f77426e00dd782",
+        "quantity": 15.0
+      },
+      {
+        "itemId": "5d1b309586f77425227d1676",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "5d03775b86f774203e7e0c4b",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "59fb023c86f7746d0d4b423c",
@@ -11870,8 +12504,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "567143bf4bdc2d1a0f8b4567", "quantity": 5.0 },
-      { "itemId": "5d1b371186f774253763a656", "quantity": 5.0 }
+      {
+        "itemId": "567143bf4bdc2d1a0f8b4567",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "5d1b371186f774253763a656",
+        "quantity": 5.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "59fb023c86f7746d0d4b423c",
@@ -11893,8 +12533,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5af0534a86f7743b6f354284", "quantity": 20.0 },
-      { "itemId": "5d1b3a5d86f774252167ba22", "quantity": 15.0 }
+      {
+        "itemId": "5af0534a86f7743b6f354284",
+        "quantity": 20.0
+      },
+      {
+        "itemId": "5d1b3a5d86f774252167ba22",
+        "quantity": 15.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "59fb042886f7746c5005a7b2",
@@ -11906,7 +12552,10 @@
   },
   {
     "barterItems": [
-      { "itemId": "customdogtags12345678910", "quantity": 150.0 }
+      {
+        "itemId": "customdogtags12345678910",
+        "quantity": 150.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "59fb042886f7746c5005a7b2",
@@ -12087,7 +12736,12 @@
     "valueInMainCurrency": 10000.0
   },
   {
-    "barterItems": [{ "itemId": "590c2b4386f77425357b6123", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590c2b4386f77425357b6123",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a01c29586f77474660c694c",
     "merchant": "prapor",
@@ -12357,7 +13011,12 @@
     "valueInMainCurrency": 58378.0
   },
   {
-    "barterItems": [{ "itemId": "5e2af02c86f7746d420957d4", "quantity": 8.0 }],
+    "barterItems": [
+      {
+        "itemId": "5e2af02c86f7746d420957d4",
+        "quantity": 8.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a0ee37f86f774023657a86f",
     "merchant": "therapist",
@@ -12912,8 +13571,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "59e35ef086f7741777737012", "quantity": 1.0 },
-      { "itemId": "57347c5b245977448d35f6e1", "quantity": 1.0 }
+      {
+        "itemId": "59e35ef086f7741777737012",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "57347c5b245977448d35f6e1",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5a17f98cfcdbcb0980087290",
@@ -12975,9 +13640,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "59e3647686f774176a362507", "quantity": 5.0 },
-      { "itemId": "59faf7ca86f7740dbe19f6c2", "quantity": 6.0 },
-      { "itemId": "5d235a5986f77443f6329bc6", "quantity": 6.0 }
+      {
+        "itemId": "59e3647686f774176a362507",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "59faf7ca86f7740dbe19f6c2",
+        "quantity": 6.0
+      },
+      {
+        "itemId": "5d235a5986f77443f6329bc6",
+        "quantity": 6.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5a1eaa87fcdbcb001865f75e",
@@ -12989,9 +13663,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d0377ce86f774186372f689", "quantity": 4.0 },
-      { "itemId": "5d0376a486f7747d8050965c", "quantity": 4.0 },
-      { "itemId": "5d0378d486f77420421a5ff4", "quantity": 4.0 }
+      {
+        "itemId": "5d0377ce86f774186372f689",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "5d0376a486f7747d8050965c",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "5d0378d486f77420421a5ff4",
+        "quantity": 4.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5a1eaa87fcdbcb001865f75e",
@@ -13036,7 +13719,12 @@
     "valueInMainCurrency": 90307.0
   },
   {
-    "barterItems": [{ "itemId": "5672cb304bdc2dc2088b456a", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "5672cb304bdc2dc2088b456a",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a1ead28fcdbcb001912fa9f",
     "merchant": "jaeger",
@@ -13276,7 +13964,12 @@
     "valueInMainCurrency": 35167.0
   },
   {
-    "barterItems": [{ "itemId": "59e35de086f7741778269d84", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e35de086f7741778269d84",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a32a064c4a28200741e22de",
     "merchant": "mechanic",
@@ -13366,7 +14059,12 @@
     "valueInMainCurrency": 21315.0
   },
   {
-    "barterItems": [{ "itemId": "62a09ee4cf4a99369e262453", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "62a09ee4cf4a99369e262453",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a33a8ebc4a282000c5a950d",
     "merchant": "mechanic",
@@ -13630,7 +14328,12 @@
     "valueInMainCurrency": 26004.0
   },
   {
-    "barterItems": [{ "itemId": "5b43575a86f77424f443fe62", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5b43575a86f77424f443fe62",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a351711c4a282000b1521a4",
     "merchant": "peacekeeper",
@@ -13640,7 +14343,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5b43575a86f77424f443fe62", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5b43575a86f77424f443fe62",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a351711c4a282000b1521a4",
     "merchant": "mechanic",
@@ -13650,7 +14358,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5c06779c86f77426e00dd782", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "5c06779c86f77426e00dd782",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a351711c4a282000b1521a4",
     "merchant": "mechanic",
@@ -13675,8 +14388,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "59f32bb586f774757e1e8442", "quantity": 8.0 },
-      { "itemId": "59f32c3b86f77472a31742f0", "quantity": 8.0 }
+      {
+        "itemId": "59f32bb586f774757e1e8442",
+        "quantity": 8.0
+      },
+      {
+        "itemId": "59f32c3b86f77472a31742f0",
+        "quantity": 8.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5a367e5dc4a282000e49738f",
@@ -13867,7 +14586,12 @@
     "valueInMainCurrency": 81936.0
   },
   {
-    "barterItems": [{ "itemId": "5d235b4d86f7742e017bc88a", "quantity": 5.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 5.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a3b898486f77467720a2f29",
     "merchant": "mechanic",
@@ -13955,7 +14679,12 @@
     "valueInMainCurrency": 79906.0
   },
   {
-    "barterItems": [{ "itemId": "575146b724597720a27126d5", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "575146b724597720a27126d5",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a69a2ed8dc32e000d46d1f1",
     "merchant": "mechanic",
@@ -14325,7 +15054,12 @@
     "valueInMainCurrency": 26112.0
   },
   {
-    "barterItems": [{ "itemId": "5e2af22086f7746d3f3c33fa", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5e2af22086f7746d3f3c33fa",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a718f958dc32e00094b97e7",
     "merchant": "mechanic",
@@ -14555,7 +15289,12 @@
     "valueInMainCurrency": 45913.0
   },
   {
-    "barterItems": [{ "itemId": "590a358486f77429692b2790", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590a358486f77429692b2790",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a788068c5856700137e4c8f",
     "merchant": "mechanic",
@@ -14616,8 +15355,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5672cb124bdc2d1a0f8b4568", "quantity": 2.0 },
-      { "itemId": "5672cb304bdc2dc2088b456a", "quantity": 2.0 }
+      {
+        "itemId": "5672cb124bdc2d1a0f8b4568",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5672cb304bdc2dc2088b456a",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5a78813bc5856700186c4abe",
@@ -15038,7 +15783,12 @@
     "valueInMainCurrency": 34599.0
   },
   {
-    "barterItems": [{ "itemId": "59e3556c86f7741776641ac2", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e3556c86f7741776641ac2",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a7c4850e899ef00150be885",
     "merchant": "ragman",
@@ -15228,7 +15978,12 @@
     "valueInMainCurrency": 16712.0
   },
   {
-    "barterItems": [{ "itemId": "5aa2b9ede5b5b000137b758b", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "5aa2b9ede5b5b000137b758b",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a88ad7b86f77479aa7226af",
     "merchant": "mechanic",
@@ -15239,8 +15994,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1b392c86f77425243e98fe", "quantity": 3.0 },
-      { "itemId": "5672cb304bdc2dc2088b456a", "quantity": 2.0 }
+      {
+        "itemId": "5d1b392c86f77425243e98fe",
+        "quantity": 3.0
+      },
+      {
+        "itemId": "5672cb304bdc2dc2088b456a",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5a88ad7b86f77479aa7226af",
@@ -15251,7 +16012,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5d1b392c86f77425243e98fe", "quantity": 5.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1b392c86f77425243e98fe",
+        "quantity": 5.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a88ae4a86f77457fd2c0dae",
     "merchant": "mechanic",
@@ -15261,7 +16027,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5d235b4d86f7742e017bc88a", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a88aed086f77476cd391963",
     "merchant": "mechanic",
@@ -15272,8 +16043,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "56742c324bdc2d150f8b456d", "quantity": 2.0 },
-      { "itemId": "590a3b0486f7743954552bdb", "quantity": 1.0 }
+      {
+        "itemId": "56742c324bdc2d150f8b456d",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "590a3b0486f7743954552bdb",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5a88af5086f77411a871682c",
@@ -15284,7 +16061,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "590a386e86f77429692b27ab", "quantity": 5.0 }],
+    "barterItems": [
+      {
+        "itemId": "590a386e86f77429692b27ab",
+        "quantity": 5.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a88b0f686f77416370eca3e",
     "merchant": "mechanic",
@@ -15294,7 +16076,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "590a391c86f774385a33c404", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "590a391c86f774385a33c404",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a88b1f686f774159949926e",
     "merchant": "mechanic",
@@ -15305,9 +16092,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5734781f24597737e04bf32a", "quantity": 5.0 },
-      { "itemId": "590a3d9c86f774385926e510", "quantity": 5.0 },
-      { "itemId": "5d1c819a86f774771b0acd6c", "quantity": 2.0 }
+      {
+        "itemId": "5734781f24597737e04bf32a",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "590a3d9c86f774385926e510",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "5d1c819a86f774771b0acd6c",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5a8ae43686f774377b73cfb3",
@@ -15319,8 +16115,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5af04b6486f774195a3ebb49", "quantity": 2.0 },
-      { "itemId": "590c2d8786f774245b1f03f3", "quantity": 1.0 }
+      {
+        "itemId": "5af04b6486f774195a3ebb49",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "590c2d8786f774245b1f03f3",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5a8ae54786f7743b5e013ba0",
@@ -15332,8 +16134,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "59faf7ca86f7740dbe19f6c2", "quantity": 1.0 },
-      { "itemId": "5d235b4d86f7742e017bc88a", "quantity": 1.0 }
+      {
+        "itemId": "59faf7ca86f7740dbe19f6c2",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5a8ae65f86f774377a23ed55",
@@ -15344,7 +16152,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5c1267ee86f77416ec610f72", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5c1267ee86f77416ec610f72",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a8ae73886f7747b2e6e1416",
     "merchant": "mechanic",
@@ -15568,7 +16381,12 @@
     "valueInMainCurrency": 49019.0
   },
   {
-    "barterItems": [{ "itemId": "590c2b4386f77425357b6123", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "590c2b4386f77425357b6123",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a9e81fba2750c00164f6b11",
     "merchant": "prapor",
@@ -15618,7 +16436,12 @@
     "valueInMainCurrency": 37894.0
   },
   {
-    "barterItems": [{ "itemId": "590c5c9f86f77477c91c36e7", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590c5c9f86f77477c91c36e7",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a9eb32da2750c00171b3f9c",
     "merchant": "mechanic",
@@ -15638,7 +16461,12 @@
     "valueInMainCurrency": 19512.0
   },
   {
-    "barterItems": [{ "itemId": "5af0484c86f7740f02001f7f", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5af0484c86f7740f02001f7f",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a9fb739a2750c003215717f",
     "merchant": "skier",
@@ -15658,7 +16486,12 @@
     "valueInMainCurrency": 28418.0
   },
   {
-    "barterItems": [{ "itemId": "590a391c86f774385a33c404", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "590a391c86f774385a33c404",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5a9fbacda2750c00141e080f",
     "merchant": "mechanic",
@@ -15838,7 +16671,12 @@
     "valueInMainCurrency": 19522.0
   },
   {
-    "barterItems": [{ "itemId": "5e2af29386f7746d4159f077", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5e2af29386f7746d4159f077",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5aa2b9ede5b5b000137b758b",
     "merchant": "ragman",
@@ -15868,7 +16706,12 @@
     "valueInMainCurrency": 4844.0
   },
   {
-    "barterItems": [{ "itemId": "590c2c9c86f774245b1f03f2", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590c2c9c86f774245b1f03f2",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5aa2ba19e5b5b00014028f4e",
     "merchant": "ragman",
@@ -15918,7 +16761,12 @@
     "valueInMainCurrency": 41883.0
   },
   {
-    "barterItems": [{ "itemId": "5f745ee30acaeb0d490d8c5b", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5f745ee30acaeb0d490d8c5b",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5aa2ba71e5b5b000137b758f",
     "merchant": "ragman",
@@ -15948,7 +16796,12 @@
     "valueInMainCurrency": 36423.0
   },
   {
-    "barterItems": [{ "itemId": "59fafb5d86f774067a6f2084", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "59fafb5d86f774067a6f2084",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5aa66a9be5b5b0214e506e89",
     "merchant": "jaeger",
@@ -15979,9 +16832,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5af0561e86f7745f5f3ad6ac", "quantity": 1.0 },
-      { "itemId": "590a391c86f774385a33c404", "quantity": 2.0 },
-      { "itemId": "590a3d9c86f774385926e510", "quantity": 1.0 }
+      {
+        "itemId": "5af0561e86f7745f5f3ad6ac",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "590a391c86f774385a33c404",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "590a3d9c86f774385926e510",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5aa66be6e5b5b0214e506e97",
@@ -16022,7 +16884,12 @@
     "valueInMainCurrency": 33827.0
   },
   {
-    "barterItems": [{ "itemId": "customdogtags12345678910", "quantity": 7.0 }],
+    "barterItems": [
+      {
+        "itemId": "customdogtags12345678910",
+        "quantity": 7.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5aa7cfc0e5b5b00015693143",
     "merchant": "ragman",
@@ -16056,7 +16923,12 @@
     "valueInMainCurrency": 32305.0
   },
   {
-    "barterItems": [{ "itemId": "59e770b986f7742cbd762754", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e770b986f7742cbd762754",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5aa7d03ae5b5b00016327db5",
     "merchant": "ragman",
@@ -16087,8 +16959,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "57347d9c245977448b40fa85", "quantity": 2.0 },
-      { "itemId": "590c5d4b86f774784e1b9c45", "quantity": 1.0 }
+      {
+        "itemId": "57347d9c245977448b40fa85",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "590c5d4b86f774784e1b9c45",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5aa7d193e5b5b000171d063f",
@@ -16100,9 +16978,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1b31ce86f7742523398394", "quantity": 6.0 },
-      { "itemId": "590c2c9c86f774245b1f03f2", "quantity": 5.0 },
-      { "itemId": "590c2b4386f77425357b6123", "quantity": 5.0 }
+      {
+        "itemId": "5d1b31ce86f7742523398394",
+        "quantity": 6.0
+      },
+      {
+        "itemId": "590c2c9c86f774245b1f03f2",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "590c2b4386f77425357b6123",
+        "quantity": 5.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5aa7e276e5b5b000171d0647",
@@ -16123,7 +17010,12 @@
     "valueInMainCurrency": 35147.0
   },
   {
-    "barterItems": [{ "itemId": "5aa7e373e5b5b000137b76f0", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "5aa7e373e5b5b000137b76f0",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5aa7e373e5b5b000137b76f0",
     "merchant": "ragman",
@@ -16133,7 +17025,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "customdogtags12345678910", "quantity": 6.0 }],
+    "barterItems": [
+      {
+        "itemId": "customdogtags12345678910",
+        "quantity": 6.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5aa7e373e5b5b000137b76f0",
     "merchant": "ragman",
@@ -16143,7 +17040,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "59e366c186f7741778269d85", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e366c186f7741778269d85",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5aa7e373e5b5b000137b76f0",
     "merchant": "ragman",
@@ -16173,7 +17075,12 @@
     "valueInMainCurrency": 36791.0
   },
   {
-    "barterItems": [{ "itemId": "59e366c186f7741778269d85", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e366c186f7741778269d85",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5aa7e3abe5b5b000171d064d",
     "merchant": "ragman",
@@ -16387,7 +17294,12 @@
     "valueInMainCurrency": 118832.0
   },
   {
-    "barterItems": [{ "itemId": "5909e99886f7740c983b9984", "quantity": 10.0 }],
+    "barterItems": [
+      {
+        "itemId": "5909e99886f7740c983b9984",
+        "quantity": 10.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5aafa857e5b5b00018480968",
     "merchant": "peacekeeper",
@@ -16401,7 +17313,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "573476f124597737e04bf328", "quantity": 18.0 }],
+    "barterItems": [
+      {
+        "itemId": "573476f124597737e04bf328",
+        "quantity": 18.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5aafa857e5b5b00018480968",
     "merchant": "mechanic",
@@ -16432,10 +17349,22 @@
   },
   {
     "barterItems": [
-      { "itemId": "5b4335ba86f7744d2837a264", "quantity": 7.0 },
-      { "itemId": "5d1b3f2d86f774253763b735", "quantity": 7.0 },
-      { "itemId": "5755383e24597772cb798966", "quantity": 2.0 },
-      { "itemId": "619cc01e0a7c3a1a2731940c", "quantity": 4.0 }
+      {
+        "itemId": "5b4335ba86f7744d2837a264",
+        "quantity": 7.0
+      },
+      {
+        "itemId": "5d1b3f2d86f774253763b735",
+        "quantity": 7.0
+      },
+      {
+        "itemId": "5755383e24597772cb798966",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "619cc01e0a7c3a1a2731940c",
+        "quantity": 4.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5aafbcd986f7745e590fff23",
@@ -16467,8 +17396,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "60391a8b3364dc22b04d0ce5", "quantity": 2.0 },
-      { "itemId": "5d6fc78386f77449d825f9dc", "quantity": 2.0 }
+      {
+        "itemId": "60391a8b3364dc22b04d0ce5",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5d6fc78386f77449d825f9dc",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5aafbde786f774389d0cbc0f",
@@ -16580,8 +17515,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5aa2b923e5b5b000137b7589", "quantity": 3.0 },
-      { "itemId": "5ac4c50d5acfc40019262e87", "quantity": 3.0 }
+      {
+        "itemId": "5aa2b923e5b5b000137b7589",
+        "quantity": 3.0
+      },
+      {
+        "itemId": "5ac4c50d5acfc40019262e87",
+        "quantity": 3.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5ab8dced86f774646209ec87",
@@ -16592,7 +17533,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "customdogtags12345678910", "quantity": 10.0 }],
+    "barterItems": [
+      {
+        "itemId": "customdogtags12345678910",
+        "quantity": 10.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5ab8dced86f774646209ec87",
     "merchant": "ragman",
@@ -16622,7 +17568,12 @@
     "valueInMainCurrency": 49542.0
   },
   {
-    "barterItems": [{ "itemId": "5751435d24597720a27126d1", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "5751435d24597720a27126d1",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5ab8e4ed86f7742d8e50c7fa",
     "merchant": "ragman",
@@ -16647,8 +17598,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5734758f24597738025ee253", "quantity": 2.0 },
-      { "itemId": "5af0484c86f7740f02001f7f", "quantity": 3.0 }
+      {
+        "itemId": "5734758f24597738025ee253",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5af0484c86f7740f02001f7f",
+        "quantity": 3.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5ab8e79e86f7742d8b372e78",
@@ -16680,9 +17637,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "59e3577886f774176a362503", "quantity": 1.0 },
-      { "itemId": "5673de654bdc2d180f8b456d", "quantity": 3.0 },
-      { "itemId": "544fb6cc4bdc2d34748b456e", "quantity": 5.0 }
+      {
+        "itemId": "59e3577886f774176a362503",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5673de654bdc2d180f8b456d",
+        "quantity": 3.0
+      },
+      {
+        "itemId": "544fb6cc4bdc2d34748b456e",
+        "quantity": 5.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5ab8ebf186f7742d8b372e80",
@@ -16694,8 +17660,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c1267ee86f77416ec610f72", "quantity": 1.0 },
-      { "itemId": "5734758f24597738025ee253", "quantity": 1.0 }
+      {
+        "itemId": "5c1267ee86f77416ec610f72",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5734758f24597738025ee253",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5ab8ebf186f7742d8b372e80",
@@ -16716,7 +17688,12 @@
     "valueInMainCurrency": 17367.0
   },
   {
-    "barterItems": [{ "itemId": "5672cb124bdc2d1a0f8b4568", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5672cb124bdc2d1a0f8b4568",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5ab8ee7786f7742d8f33f0b9",
     "merchant": "prapor",
@@ -16726,7 +17703,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5c13cd2486f774072c757944", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5c13cd2486f774072c757944",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5ab8ee7786f7742d8f33f0b9",
     "merchant": "jaeger",
@@ -16946,7 +17928,12 @@
     "valueInMainCurrency": 21996.0
   },
   {
-    "barterItems": [{ "itemId": "573474f924597738002c6174", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "573474f924597738002c6174",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5ac4c50d5acfc40019262e87",
     "merchant": "ragman",
@@ -17331,9 +18318,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5e2af2bc86f7746d3f3c33fc", "quantity": 4.0 },
-      { "itemId": "5e2af37686f774755a234b65", "quantity": 2.0 },
-      { "itemId": "590a373286f774287540368b", "quantity": 1.0 }
+      {
+        "itemId": "5e2af2bc86f7746d3f3c33fc",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "5e2af37686f774755a234b65",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "590a373286f774287540368b",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5ad5cfbd86f7742c825d6104",
@@ -17385,8 +18381,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5734773724597737fd047c14", "quantity": 60.0 },
-      { "itemId": "57347d90245977448f7b7f65", "quantity": 10.0 }
+      {
+        "itemId": "5734773724597737fd047c14",
+        "quantity": 60.0
+      },
+      {
+        "itemId": "57347d90245977448f7b7f65",
+        "quantity": 10.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5ad5d7d286f77450166e0a89",
@@ -17438,10 +18440,22 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c13cef886f774072e618e82", "quantity": 6.0 },
-      { "itemId": "5e2aef7986f7746d3f3c33f5", "quantity": 5.0 },
-      { "itemId": "5e2af37686f774755a234b65", "quantity": 2.0 },
-      { "itemId": "5e2af02c86f7746d420957d4", "quantity": 2.0 }
+      {
+        "itemId": "5c13cef886f774072e618e82",
+        "quantity": 6.0
+      },
+      {
+        "itemId": "5e2aef7986f7746d3f3c33f5",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "5e2af37686f774755a234b65",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5e2af02c86f7746d420957d4",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5ad7247386f7747487619dc3",
@@ -17612,7 +18626,12 @@
     "valueInMainCurrency": 80641.0
   },
   {
-    "barterItems": [{ "itemId": "590a3b0486f7743954552bdb", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "590a3b0486f7743954552bdb",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5addbfbb5acfc400194dbcf7",
     "merchant": "mechanic",
@@ -17683,8 +18702,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1c819a86f774771b0acd6c", "quantity": 1.0 },
-      { "itemId": "590c5bbd86f774785762df04", "quantity": 1.0 }
+      {
+        "itemId": "5d1c819a86f774771b0acd6c",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "590c5bbd86f774785762df04",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5addbfef5acfc400185c2857",
@@ -17696,8 +18721,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1b31ce86f7742523398394", "quantity": 1.0 },
-      { "itemId": "5d40425986f7743185265461", "quantity": 1.0 }
+      {
+        "itemId": "5d1b31ce86f7742523398394",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5d40425986f7743185265461",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5addbfef5acfc400185c2857",
@@ -17838,7 +18869,12 @@
     "valueInMainCurrency": 38298.0
   },
   {
-    "barterItems": [{ "itemId": "5672cb724bdc2dc2088b456b", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5672cb724bdc2dc2088b456b",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5addccf45acfc400185c2989",
     "merchant": "mechanic",
@@ -18082,7 +19118,12 @@
     "valueInMainCurrency": 20804.0
   },
   {
-    "barterItems": [{ "itemId": "5d1b3f2d86f774253763b735", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1b3f2d86f774253763b735",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5af0454c86f7746bf20992e8",
     "merchant": "therapist",
@@ -18113,9 +19154,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "590c2b4386f77425357b6123", "quantity": 1.0 },
-      { "itemId": "5d40425986f7743185265461", "quantity": 1.0 },
-      { "itemId": "5d1b31ce86f7742523398394", "quantity": 1.0 }
+      {
+        "itemId": "590c2b4386f77425357b6123",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5d40425986f7743185265461",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5d1b31ce86f7742523398394",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5af04b6486f774195a3ebb49",
@@ -18147,8 +19197,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5b4335ba86f7744d2837a264", "quantity": 1.0 },
-      { "itemId": "5d1b3a5d86f774252167ba22", "quantity": 3.0 }
+      {
+        "itemId": "5b4335ba86f7744d2837a264",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5d1b3a5d86f774252167ba22",
+        "quantity": 3.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5af0548586f7743a532b7e99",
@@ -18169,7 +19225,12 @@
     "valueInMainCurrency": 29479.0
   },
   {
-    "barterItems": [{ "itemId": "5734795124597738002c6176", "quantity": 20.0 }],
+    "barterItems": [
+      {
+        "itemId": "5734795124597738002c6176",
+        "quantity": 20.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5af08bfd86f774223d4528e2",
     "merchant": "mechanic",
@@ -18180,8 +19241,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5af0561e86f7745f5f3ad6ac", "quantity": 1.0 },
-      { "itemId": "5d1c819a86f774771b0acd6c", "quantity": 1.0 }
+      {
+        "itemId": "5af0561e86f7745f5f3ad6ac",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5d1c819a86f774771b0acd6c",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5af08d1c86f774223a7aa1b4",
@@ -18317,8 +19384,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "573474f924597738002c6174", "quantity": 3.0 },
-      { "itemId": "590de7e986f7741b096e5f32", "quantity": 1.0 }
+      {
+        "itemId": "573474f924597738002c6174",
+        "quantity": 3.0
+      },
+      {
+        "itemId": "590de7e986f7741b096e5f32",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5b07db875acfc40dc528a5f6",
@@ -18523,7 +19596,12 @@
     "valueInMainCurrency": 110563.0
   },
   {
-    "barterItems": [{ "itemId": "5d1c819a86f774771b0acd6c", "quantity": 8.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1c819a86f774771b0acd6c",
+        "quantity": 8.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5b0bbe4e5acfc40dc528a72d",
     "merchant": "mechanic",
@@ -18757,7 +19835,12 @@
     "valueInMainCurrency": 43697.0
   },
   {
-    "barterItems": [{ "itemId": "5d40407c86f774318526545a", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d40407c86f774318526545a",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5b2388675acfc4771e1be0be",
     "merchant": "jaeger",
@@ -19061,7 +20144,12 @@
     "valueInMainCurrency": 34868.0
   },
   {
-    "barterItems": [{ "itemId": "60391b0fb847c71012789415", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "60391b0fb847c71012789415",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5b3a16655acfc40016387a2a",
     "merchant": "mechanic",
@@ -19132,8 +20220,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "59e35de086f7741778269d84", "quantity": 1.0 },
-      { "itemId": "56742c324bdc2d150f8b456d", "quantity": 1.0 }
+      {
+        "itemId": "59e35de086f7741778269d84",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "56742c324bdc2d150f8b456d",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5b3b6e495acfc4330140bd88",
@@ -19198,7 +20292,12 @@
     "valueInMainCurrency": 97396.0
   },
   {
-    "barterItems": [{ "itemId": "5c1265fc86f7743f896a21c2", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5c1265fc86f7743f896a21c2",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5b3b99475acfc432ff4dcbee",
     "merchant": "skier",
@@ -19587,9 +20686,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "590c2d8786f774245b1f03f3", "quantity": 4.0 },
-      { "itemId": "590c311186f77424d1667482", "quantity": 4.0 },
-      { "itemId": "5d40419286f774318526545f", "quantity": 1.0 }
+      {
+        "itemId": "590c2d8786f774245b1f03f3",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "590c311186f77424d1667482",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "5d40419286f774318526545f",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5b4329f05acfc47a86086aa1",
@@ -19660,7 +20768,12 @@
     "valueInMainCurrency": 17717.0
   },
   {
-    "barterItems": [{ "itemId": "577e1c9d2459773cd707c525", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "577e1c9d2459773cd707c525",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5b432b965acfc47a8774094e",
     "merchant": "ragman",
@@ -19794,7 +20907,12 @@
     "valueInMainCurrency": 89914.0
   },
   {
-    "barterItems": [{ "itemId": "5d1b392c86f77425243e98fe", "quantity": 6.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1b392c86f77425243e98fe",
+        "quantity": 6.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5b44c6ae86f7742d1627baea",
     "merchant": "ragman",
@@ -19825,8 +20943,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5b432c305acfc40019478128", "quantity": 5.0 },
-      { "itemId": "5b4326435acfc433000ed01d", "quantity": 6.0 }
+      {
+        "itemId": "5b432c305acfc40019478128",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "5b4326435acfc433000ed01d",
+        "quantity": 6.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5b44cad286f77402a54ae7e5",
@@ -19837,7 +20961,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "59e3639286f7741777737013", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e3639286f7741777737013",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5b44cd8b86f774503d30cba2",
     "merchant": "ragman",
@@ -19851,7 +20980,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5d235b4d86f7742e017bc88a", "quantity": 7.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 7.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5b44d0de86f774503d30cba8",
     "merchant": "ragman",
@@ -19882,9 +21016,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5af0484c86f7740f02001f7f", "quantity": 1.0 },
-      { "itemId": "57514643245977207f2c2d09", "quantity": 1.0 },
-      { "itemId": "575146b724597720a27126d5", "quantity": 1.0 }
+      {
+        "itemId": "5af0484c86f7740f02001f7f",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "57514643245977207f2c2d09",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "575146b724597720a27126d5",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5b44d22286f774172b0c9de8",
@@ -19956,8 +21099,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "59faff1d86f7746c51718c9c", "quantity": 20.0 },
-      { "itemId": "5d235b4d86f7742e017bc88a", "quantity": 20.0 }
+      {
+        "itemId": "59faff1d86f7746c51718c9c",
+        "quantity": 20.0
+      },
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 20.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5b6d9ce188a4501afc1b2b25",
@@ -19973,9 +21122,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "59fb023c86f7746d0d4b423c", "quantity": 2.0 },
-      { "itemId": "5aafbde786f774389d0cbc0f", "quantity": 4.0 },
-      { "itemId": "61bf7b6302b3924be92fa8c3", "quantity": 10.0 }
+      {
+        "itemId": "59fb023c86f7746d0d4b423c",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5aafbde786f774389d0cbc0f",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "61bf7b6302b3924be92fa8c3",
+        "quantity": 10.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5b6d9ce188a4501afc1b2b25",
@@ -20146,7 +21304,12 @@
     "valueInMainCurrency": 23235.0
   },
   {
-    "barterItems": [{ "itemId": "590c2c9c86f774245b1f03f2", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590c2c9c86f774245b1f03f2",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5b7be47f5acfc400170e2dd2",
     "merchant": "mechanic",
@@ -20176,7 +21339,12 @@
     "valueInMainCurrency": 38888.0
   },
   {
-    "barterItems": [{ "itemId": "5909e99886f7740c983b9984", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5909e99886f7740c983b9984",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5b7be4895acfc400170e2dd5",
     "merchant": "mechanic",
@@ -20306,7 +21474,12 @@
     "valueInMainCurrency": 24439.0
   },
   {
-    "barterItems": [{ "itemId": "56742c324bdc2d150f8b456d", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "56742c324bdc2d150f8b456d",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5b7bef9c5acfc43d102852ec",
     "merchant": "mechanic",
@@ -20347,7 +21520,10 @@
   },
   {
     "barterItems": [
-      { "itemId": "customdogtags12345678910", "quantity": 100.0 }
+      {
+        "itemId": "customdogtags12345678910",
+        "quantity": 100.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5b7c710788a4506dec015957",
@@ -20669,8 +21845,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "590a386e86f77429692b27ab", "quantity": 3.0 },
-      { "itemId": "57347baf24597738002c6178", "quantity": 2.0 }
+      {
+        "itemId": "590a386e86f77429692b27ab",
+        "quantity": 3.0
+      },
+      {
+        "itemId": "57347baf24597738002c6178",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5b83f22086f77464e15a1d5f",
@@ -20686,8 +21868,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1b2ffd86f77425243e8d17", "quantity": 2.0 },
-      { "itemId": "60b0f561c4449e4cb624c1d7", "quantity": 1.0 }
+      {
+        "itemId": "5d1b2ffd86f77425243e8d17",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "60b0f561c4449e4cb624c1d7",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5b83f29886f7746d956305a1",
@@ -20728,7 +21916,12 @@
     "valueInMainCurrency": 42936.0
   },
   {
-    "barterItems": [{ "itemId": "590c5d4b86f774784e1b9c45", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "590c5d4b86f774784e1b9c45",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5b86a0e586f7745b600ccb23",
     "merchant": "jaeger",
@@ -21471,8 +22664,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "573476d324597737da2adc13", "quantity": 6.0 },
-      { "itemId": "5d0375ff86f774186372f685", "quantity": 1.0 }
+      {
+        "itemId": "573476d324597737da2adc13",
+        "quantity": 6.0
+      },
+      {
+        "itemId": "5d0375ff86f774186372f685",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5bbf1c1c88a45017144d28c5",
@@ -21483,7 +22682,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5d235b4d86f7742e017bc88a", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5bbf1c5a88a45017bb03d7aa",
     "merchant": "mechanic",
@@ -21675,7 +22879,12 @@
     "valueInMainCurrency": 22957.0
   },
   {
-    "barterItems": [{ "itemId": "575062b524597720a31c09a1", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "575062b524597720a31c09a1",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5bc9be8fd4351e00334cae6e",
     "merchant": "therapist",
@@ -21736,8 +22945,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1b304286f774253763a528", "quantity": 5.0 },
-      { "itemId": "5d1b2ffd86f77425243e8d17", "quantity": 1.0 }
+      {
+        "itemId": "5d1b304286f774253763a528",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "5d1b2ffd86f77425243e8d17",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5bd05f1186f774572f181678",
@@ -21809,8 +23024,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c1265fc86f7743f896a21c2", "quantity": 1.0 },
-      { "itemId": "5af0561e86f7745f5f3ad6ac", "quantity": 1.0 }
+      {
+        "itemId": "5c1265fc86f7743f896a21c2",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5af0561e86f7745f5f3ad6ac",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5bd70322209c4d00d7167b8f",
@@ -21851,7 +23072,12 @@
     "valueInMainCurrency": 17256.0
   },
   {
-    "barterItems": [{ "itemId": "5b4329075acfc400153b78ff", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5b4329075acfc400153b78ff",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5bead2e00db834001c062938",
     "merchant": "prapor",
@@ -21891,7 +23117,12 @@
     "valueInMainCurrency": 31014.0
   },
   {
-    "barterItems": [{ "itemId": "59faf98186f774067b6be103", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "59faf98186f774067b6be103",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5bed625c0db834001c062946",
     "merchant": "prapor",
@@ -22438,7 +23669,12 @@
     "valueInMainCurrency": 66913.0
   },
   {
-    "barterItems": [{ "itemId": "5bc9b9ecd4351e3bac122519", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5bc9b9ecd4351e3bac122519",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5bfea6e90db834001b7347f3",
     "merchant": "jaeger",
@@ -22629,8 +23865,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c0fa877d174af02a012e1cf", "quantity": 2.0 },
-      { "itemId": "590c595c86f7747884343ad7", "quantity": 1.0 }
+      {
+        "itemId": "5c0fa877d174af02a012e1cf",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "590c595c86f7747884343ad7",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5bffdc370db834001d23eca8",
@@ -22642,10 +23884,22 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c052f6886f7746b1e3db148", "quantity": 2.0 },
-      { "itemId": "5913915886f774123603c392", "quantity": 1.0 },
-      { "itemId": "5c1267ee86f77416ec610f72", "quantity": 2.0 },
-      { "itemId": "5d03775b86f774203e7e0c4b", "quantity": 2.0 }
+      {
+        "itemId": "5c052f6886f7746b1e3db148",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5913915886f774123603c392",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5c1267ee86f77416ec610f72",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5d03775b86f774203e7e0c4b",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5bffdd7e0db834001b734a1a",
@@ -22661,9 +23915,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5780cf7f2459777de4559322", "quantity": 1.0 },
-      { "itemId": "5a0dc95c86f77452440fc675", "quantity": 1.0 },
-      { "itemId": "5c12688486f77426843c7d32", "quantity": 5.0 }
+      {
+        "itemId": "5780cf7f2459777de4559322",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5a0dc95c86f77452440fc675",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5c12688486f77426843c7d32",
+        "quantity": 5.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5bffe7930db834001b734a39",
@@ -22919,9 +24182,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "59fafb5d86f774067a6f2084", "quantity": 15.0 },
-      { "itemId": "5b43575a86f77424f443fe62", "quantity": 10.0 },
-      { "itemId": "590a373286f774287540368b", "quantity": 15.0 }
+      {
+        "itemId": "59fafb5d86f774067a6f2084",
+        "quantity": 15.0
+      },
+      {
+        "itemId": "5b43575a86f77424f443fe62",
+        "quantity": 10.0
+      },
+      {
+        "itemId": "590a373286f774287540368b",
+        "quantity": 15.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0126f40db834002a125382",
@@ -22943,9 +24215,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "57347c93245977448d35f6e3", "quantity": 5.0 },
-      { "itemId": "5c13cef886f774072e618e82", "quantity": 5.0 },
-      { "itemId": "59e361e886f774176c10a2a5", "quantity": 2.0 }
+      {
+        "itemId": "57347c93245977448d35f6e3",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "5c13cef886f774072e618e82",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "59e361e886f774176c10a2a5",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c012ffc0db834001d23f03f",
@@ -22997,8 +24278,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d40407c86f774318526545a", "quantity": 2.0 },
-      { "itemId": "590c5f0d86f77413997acfab", "quantity": 1.0 }
+      {
+        "itemId": "5d40407c86f774318526545a",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "590c5f0d86f77413997acfab",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0517910db83400232ffee5",
@@ -23120,8 +24407,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "customdogtags12345678910", "quantity": 20.0 },
-      { "itemId": "59f32c3b86f77472a31742f0", "quantity": 140.0 }
+      {
+        "itemId": "customdogtags12345678910",
+        "quantity": 20.0
+      },
+      {
+        "itemId": "59f32c3b86f77472a31742f0",
+        "quantity": 140.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0530ee86f774697952d952",
@@ -23186,7 +24479,12 @@
     "valueInMainCurrency": 202048.0
   },
   {
-    "barterItems": [{ "itemId": "5d1b376e86f774252519444e", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1b376e86f774252519444e",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c0558060db834001b735271",
     "merchant": "peacekeeper",
@@ -23196,7 +24494,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "59f32bb586f774757e1e8442", "quantity": 9.0 }],
+    "barterItems": [
+      {
+        "itemId": "59f32bb586f774757e1e8442",
+        "quantity": 9.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c0558060db834001b735271",
     "merchant": "peacekeeper",
@@ -23606,7 +24909,12 @@
     "valueInMainCurrency": 15570.0
   },
   {
-    "barterItems": [{ "itemId": "5d235b4d86f7742e017bc88a", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c0919b50db834001b7ce3b9",
     "merchant": "ragman",
@@ -23616,7 +24924,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5d235b4d86f7742e017bc88a", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c091a4e0db834001d5addc8",
     "merchant": "ragman",
@@ -23627,10 +24940,22 @@
   },
   {
     "barterItems": [
-      { "itemId": "5751496424597720a27126da", "quantity": 10.0 },
-      { "itemId": "57514643245977207f2c2d09", "quantity": 5.0 },
-      { "itemId": "57347d9c245977448b40fa85", "quantity": 5.0 },
-      { "itemId": "57347d8724597744596b4e76", "quantity": 5.0 }
+      {
+        "itemId": "5751496424597720a27126da",
+        "quantity": 10.0
+      },
+      {
+        "itemId": "57514643245977207f2c2d09",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "57347d9c245977448b40fa85",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "57347d8724597744596b4e76",
+        "quantity": 5.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c093db286f7740a1b2617e3",
@@ -23661,7 +24986,12 @@
     "valueInMainCurrency": 344765.0
   },
   {
-    "barterItems": [{ "itemId": "590c621186f774138d11ea29", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "590c621186f774138d11ea29",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c093e3486f77430cb02e593",
     "merchant": "jaeger",
@@ -23696,10 +25026,22 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c052e6986f7746b207bc3c9", "quantity": 15.0 },
-      { "itemId": "5c0530ee86f774697952d952", "quantity": 15.0 },
-      { "itemId": "5af0548586f7743a532b7e99", "quantity": 15.0 },
-      { "itemId": "57347c93245977448d35f6e3", "quantity": 15.0 }
+      {
+        "itemId": "5c052e6986f7746b207bc3c9",
+        "quantity": 15.0
+      },
+      {
+        "itemId": "5c0530ee86f774697952d952",
+        "quantity": 15.0
+      },
+      {
+        "itemId": "5af0548586f7743a532b7e99",
+        "quantity": 15.0
+      },
+      {
+        "itemId": "57347c93245977448d35f6e3",
+        "quantity": 15.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0a840b86f7742ffa4f2482",
@@ -23711,9 +25053,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1b376e86f774252519444e", "quantity": 50.0 },
-      { "itemId": "5d40407c86f774318526545a", "quantity": 50.0 },
-      { "itemId": "5d403f9186f7743cac3f229b", "quantity": 30.0 }
+      {
+        "itemId": "5d1b376e86f774252519444e",
+        "quantity": 50.0
+      },
+      {
+        "itemId": "5d40407c86f774318526545a",
+        "quantity": 50.0
+      },
+      {
+        "itemId": "5d403f9186f7743cac3f229b",
+        "quantity": 30.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0a840b86f7742ffa4f2482",
@@ -23725,8 +25076,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d0375ff86f774186372f685", "quantity": 2.0 },
-      { "itemId": "590a3cd386f77436f20848cb", "quantity": 5.0 }
+      {
+        "itemId": "5d0375ff86f774186372f685",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "590a3cd386f77436f20848cb",
+        "quantity": 5.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0c1dba86f7743e667da897",
@@ -23738,9 +25095,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5bfd37c80db834001d23e842", "quantity": 1.0 },
-      { "itemId": "5ae09bff5acfc4001562219d", "quantity": 1.0 },
-      { "itemId": "573476f124597737e04bf328", "quantity": 1.0 }
+      {
+        "itemId": "5bfd37c80db834001d23e842",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5ae09bff5acfc4001562219d",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "573476f124597737e04bf328",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0c208886f7743e5335d279",
@@ -23905,7 +25271,12 @@
     "valueInMainCurrency": 61326.0
   },
   {
-    "barterItems": [{ "itemId": "5c0e446786f7742013381639", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "5c0e446786f7742013381639",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c0e446786f7742013381639",
     "merchant": "ragman",
@@ -23916,8 +25287,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c13cd2486f774072c757944", "quantity": 3.0 },
-      { "itemId": "5c13cef886f774072e618e82", "quantity": 4.0 }
+      {
+        "itemId": "5c13cd2486f774072c757944",
+        "quantity": 3.0
+      },
+      {
+        "itemId": "5c13cef886f774072e618e82",
+        "quantity": 4.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0e446786f7742013381639",
@@ -23968,7 +25345,12 @@
     "valueInMainCurrency": 27027.0
   },
   {
-    "barterItems": [{ "itemId": "62a0a043cf4a99369e2624a5", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "62a0a043cf4a99369e2624a5",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c0e530286f7747fa1419862",
     "merchant": "therapist",
@@ -23989,9 +25371,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1b3f2d86f774253763b735", "quantity": 1.0 },
-      { "itemId": "59e361e886f774176c10a2a5", "quantity": 1.0 },
-      { "itemId": "59e35abd86f7741778269d82", "quantity": 1.0 }
+      {
+        "itemId": "5d1b3f2d86f774253763b735",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "59e361e886f774176c10a2a5",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "59e35abd86f7741778269d82",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0e531286f7747fa54205c2",
@@ -24013,8 +25404,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "59e3606886f77417674759a5", "quantity": 2.0 },
-      { "itemId": "59e361e886f774176c10a2a5", "quantity": 1.0 }
+      {
+        "itemId": "59e3606886f77417674759a5",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "59e361e886f774176c10a2a5",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0e531d86f7747fa23f4d42",
@@ -24055,7 +25452,12 @@
     "valueInMainCurrency": 109840.0
   },
   {
-    "barterItems": [{ "itemId": "5d40412b86f7743cb332ac3a", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d40412b86f7743cb332ac3a",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c0e534186f7747fa1419867",
     "merchant": "therapist",
@@ -24125,7 +25527,12 @@
     "valueInMainCurrency": 46009.0
   },
   {
-    "barterItems": [{ "itemId": "59fafb5d86f774067a6f2084", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "59fafb5d86f774067a6f2084",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c0e5bab86f77461f55ed1f3",
     "merchant": "prapor",
@@ -24146,8 +25553,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "59e3658a86f7741776641ac4", "quantity": 1.0 },
-      { "itemId": "5b4329075acfc400153b78ff", "quantity": 1.0 }
+      {
+        "itemId": "59e3658a86f7741776641ac4",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5b4329075acfc400153b78ff",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0e5edb86f77461f55ed1f7",
@@ -24202,7 +25615,12 @@
     "valueInMainCurrency": 36584.0
   },
   {
-    "barterItems": [{ "itemId": "590de71386f774347051a052", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590de71386f774347051a052",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c0e6a1586f77404597b4965",
     "merchant": "ragman",
@@ -24223,8 +25641,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c0fa877d174af02a012e1cf", "quantity": 4.0 },
-      { "itemId": "5e8f3423fd7471236e6e3b64", "quantity": 1.0 }
+      {
+        "itemId": "5c0fa877d174af02a012e1cf",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "5e8f3423fd7471236e6e3b64",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0e722886f7740458316a57",
@@ -24246,8 +25670,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "59e3556c86f7741776641ac2", "quantity": 4.0 },
-      { "itemId": "5d40412b86f7743cb332ac3a", "quantity": 2.0 }
+      {
+        "itemId": "59e3556c86f7741776641ac2",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "5d40412b86f7743cb332ac3a",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0e746986f7741453628fe5",
@@ -24259,8 +25689,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "59e3556c86f7741776641ac2", "quantity": 8.0 },
-      { "itemId": "5e2af41e86f774755a234b67", "quantity": 4.0 }
+      {
+        "itemId": "59e3556c86f7741776641ac2",
+        "quantity": 8.0
+      },
+      {
+        "itemId": "5e2af41e86f774755a234b67",
+        "quantity": 4.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0e774286f77468413cc5b2",
@@ -24292,8 +25728,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c06779c86f77426e00dd782", "quantity": 1.0 },
-      { "itemId": "5c06782b86f77426df5407d2", "quantity": 2.0 }
+      {
+        "itemId": "5c06779c86f77426e00dd782",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5c06782b86f77426df5407d2",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0e93cb86f77432297fdfc8",
@@ -24389,8 +25831,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1b3f2d86f774253763b735", "quantity": 1.0 },
-      { "itemId": "590a3d9c86f774385926e510", "quantity": 1.0 }
+      {
+        "itemId": "5d1b3f2d86f774253763b735",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "590a3d9c86f774385926e510",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c10c8fd86f7743d7d706df3",
@@ -24441,7 +25889,12 @@
     "valueInMainCurrency": 1994.0
   },
   {
-    "barterItems": [{ "itemId": "5672cb304bdc2dc2088b456a", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "5672cb304bdc2dc2088b456a",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c11279ad174af029d64592b",
     "merchant": "peacekeeper",
@@ -24451,7 +25904,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "57347d5f245977448b40fa81", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "57347d5f245977448b40fa81",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c11279ad174af029d64592b",
     "merchant": "jaeger",
@@ -24472,8 +25930,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5734770f24597738025ee254", "quantity": 1.0 },
-      { "itemId": "573476f124597737e04bf328", "quantity": 1.0 }
+      {
+        "itemId": "5734770f24597738025ee254",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "573476f124597737e04bf328",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c1127bdd174af44217ab8b9",
@@ -24488,7 +25952,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "575062b524597720a31c09a1", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "575062b524597720a31c09a1",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c1127bdd174af44217ab8b9",
     "merchant": "jaeger",
@@ -24518,7 +25987,12 @@
     "valueInMainCurrency": 17364.0
   },
   {
-    "barterItems": [{ "itemId": "57347cd0245977445a2d6ff1", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "57347cd0245977445a2d6ff1",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c1127d0d174af29be75cf68",
     "merchant": "skier",
@@ -24532,7 +26006,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5734770f24597738025ee254", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5734770f24597738025ee254",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c1260dc86f7746b106e8748",
     "merchant": "prapor",
@@ -24557,9 +26036,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "590c645c86f77412b01304d9", "quantity": 4.0 },
-      { "itemId": "590c651286f7741e566b6461", "quantity": 4.0 },
-      { "itemId": "62a0a124de7ac81993580542", "quantity": 1.0 }
+      {
+        "itemId": "590c645c86f77412b01304d9",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "590c651286f7741e566b6461",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "62a0a124de7ac81993580542",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c12613b86f7743bbe2c3f76",
@@ -24570,7 +26058,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5734795124597738002c6176", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5734795124597738002c6176",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c12619186f7743f871c8a32",
     "merchant": "prapor",
@@ -24654,7 +26147,12 @@
     "valueInMainCurrency": 12003.0
   },
   {
-    "barterItems": [{ "itemId": "62a0a098de7ac8199358053b", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "62a0a098de7ac8199358053b",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c13cd2486f774072c757944",
     "merchant": "ragman",
@@ -24765,8 +26263,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5bc9b720d4351e450201234b", "quantity": 1.0 },
-      { "itemId": "573477e124597737dd42e191", "quantity": 1.0 }
+      {
+        "itemId": "5bc9b720d4351e450201234b",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "573477e124597737dd42e191",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c178a942e22164bef5ceca3",
@@ -25052,10 +26556,22 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d03794386f77420415576f5", "quantity": 5.0 },
-      { "itemId": "5e2aee0a86f774755a234b62", "quantity": 8.0 },
-      { "itemId": "5c052fb986f7746b2101e909", "quantity": 2.0 },
-      { "itemId": "61bf7c024770ee6f9c6b8b53", "quantity": 1.0 }
+      {
+        "itemId": "5d03794386f77420415576f5",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "5e2aee0a86f774755a234b62",
+        "quantity": 8.0
+      },
+      {
+        "itemId": "5c052fb986f7746b2101e909",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "61bf7c024770ee6f9c6b8b53",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c1d0f4986f7744bb01837fa",
@@ -25476,7 +26992,12 @@
     "valueInMainCurrency": 44617.0
   },
   {
-    "barterItems": [{ "itemId": "5c501a4d2e221602b412b540", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5c501a4d2e221602b412b540",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c501a4d2e221602b412b540",
     "merchant": "jaeger",
@@ -25956,7 +27477,12 @@
     "valueInMainCurrency": 50400.0
   },
   {
-    "barterItems": [{ "itemId": "57347cd0245977445a2d6ff1", "quantity": 6.0 }],
+    "barterItems": [
+      {
+        "itemId": "57347cd0245977445a2d6ff1",
+        "quantity": 6.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c6175362e221600133e3b94",
     "merchant": "mechanic",
@@ -26746,7 +28272,12 @@
     "valueInMainCurrency": 35819.0
   },
   {
-    "barterItems": [{ "itemId": "5734781f24597737e04bf32a", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5734781f24597737e04bf32a",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c86592b2e2216000e69e77c",
     "merchant": "mechanic",
@@ -26917,8 +28448,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5e2af22086f7746d3f3c33fa", "quantity": 10.0 },
-      { "itemId": "5e2af29386f7746d4159f077", "quantity": 6.0 }
+      {
+        "itemId": "5e2af22086f7746d3f3c33fa",
+        "quantity": 10.0
+      },
+      {
+        "itemId": "5e2af29386f7746d4159f077",
+        "quantity": 6.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c94bbff86f7747ee735c08f",
@@ -26929,7 +28466,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5d235b4d86f7742e017bc88a", "quantity": 10.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 10.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c94bbff86f7747ee735c08f",
     "merchant": "mechanic",
@@ -27059,7 +28601,12 @@
     "valueInMainCurrency": 24828.0
   },
   {
-    "barterItems": [{ "itemId": "5734779624597737e04bf329", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5734779624597737e04bf329",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5c9a26332e2216001219ea70",
     "merchant": "mechanic",
@@ -27109,7 +28656,12 @@
     "valueInMainCurrency": 24046.0
   },
   {
-    "barterItems": [{ "itemId": "5c0d2727d174af02a012cf58", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5c0d2727d174af02a012cf58",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5ca20d5986f774331e7c9602",
     "merchant": "ragman",
@@ -27120,8 +28672,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "57347ca924597744596b4e71", "quantity": 1.0 },
-      { "itemId": "57347baf24597738002c6178", "quantity": 4.0 }
+      {
+        "itemId": "57347ca924597744596b4e71",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "57347baf24597738002c6178",
+        "quantity": 4.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5ca20ee186f774799474abc2",
@@ -27132,7 +28690,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "59e366c186f7741778269d85", "quantity": 7.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e366c186f7741778269d85",
+        "quantity": 7.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5ca2113f86f7740b2547e1d2",
     "merchant": "ragman",
@@ -27153,9 +28716,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5bc9c049d4351e44f824d360", "quantity": 2.0 },
-      { "itemId": "590c639286f774151567fa95", "quantity": 4.0 },
-      { "itemId": "62a09e73af34e73a266d932a", "quantity": 2.0 }
+      {
+        "itemId": "5bc9c049d4351e44f824d360",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "590c639286f774151567fa95",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "62a09e73af34e73a266d932a",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5ca2151486f774244a3b8d30",
@@ -27167,8 +28739,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "590c595c86f7747884343ad7", "quantity": 6.0 },
-      { "itemId": "5c12688486f77426843c7d32", "quantity": 2.0 }
+      {
+        "itemId": "590c595c86f7747884343ad7",
+        "quantity": 6.0
+      },
+      {
+        "itemId": "5c12688486f77426843c7d32",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5ca21c6986f77479963115a7",
@@ -27357,7 +28935,12 @@
     "valueInMainCurrency": 80750.0
   },
   {
-    "barterItems": [{ "itemId": "5d40407c86f774318526545a", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d40407c86f774318526545a",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5cadfbf7ae92152ac412eeef",
     "merchant": "prapor",
@@ -28819,7 +30402,12 @@
     "valueInMainCurrency": 58236.0
   },
   {
-    "barterItems": [{ "itemId": "5d1b31ce86f7742523398394", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1b31ce86f7742523398394",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5cf8f3b0d7f00c00217872ef",
     "merchant": "mechanic",
@@ -29159,7 +30747,12 @@
     "valueInMainCurrency": 31117.0
   },
   {
-    "barterItems": [{ "itemId": "5e2aef7986f7746d3f3c33f5", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5e2aef7986f7746d3f3c33f5",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5d02778e86f774203e7dedbe",
     "merchant": "therapist",
@@ -29169,7 +30762,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5d40425986f7743185265461", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d40425986f7743185265461",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5d02778e86f774203e7dedbe",
     "merchant": "jaeger",
@@ -29203,7 +30801,12 @@
     "valueInMainCurrency": 49976.0
   },
   {
-    "barterItems": [{ "itemId": "590de7e986f7741b096e5f32", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590de7e986f7741b096e5f32",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5d02797c86f774203f38e30a",
     "merchant": "jaeger",
@@ -29833,7 +31436,12 @@
     "valueInMainCurrency": 36707.0
   },
   {
-    "barterItems": [{ "itemId": "5d1b309586f77425227d1676", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1b309586f77425227d1676",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5d1b304286f774253763a528",
     "merchant": "mechanic",
@@ -29934,8 +31542,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "59fafb5d86f774067a6f2084", "quantity": 2.0 },
-      { "itemId": "5b43575a86f77424f443fe62", "quantity": 2.0 }
+      {
+        "itemId": "59fafb5d86f774067a6f2084",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5b43575a86f77424f443fe62",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5d1b36a186f7742523398433",
@@ -29946,7 +31560,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "62a09f32621468534a797acb", "quantity": 6.0 }],
+    "barterItems": [
+      {
+        "itemId": "62a09f32621468534a797acb",
+        "quantity": 6.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5d1b36a186f7742523398433",
     "merchant": "skier",
@@ -29957,8 +31576,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "57347b8b24597737dd42e192", "quantity": 12.0 },
-      { "itemId": "5e2af2bc86f7746d3f3c33fc", "quantity": 5.0 }
+      {
+        "itemId": "57347b8b24597737dd42e192",
+        "quantity": 12.0
+      },
+      {
+        "itemId": "5e2af2bc86f7746d3f3c33fc",
+        "quantity": 5.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5d1b36a186f7742523398433",
@@ -29980,8 +31605,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1b33a686f7742523398398", "quantity": 1.0 },
-      { "itemId": "544fb62a4bdc2dfb738b4568", "quantity": 4.0 }
+      {
+        "itemId": "5d1b33a686f7742523398398",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "544fb62a4bdc2dfb738b4568",
+        "quantity": 4.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5d1b371186f774253763a656",
@@ -30043,8 +31674,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "56742c284bdc2d98058b456d", "quantity": 3.0 },
-      { "itemId": "57347b8b24597737dd42e192", "quantity": 2.0 }
+      {
+        "itemId": "56742c284bdc2d98058b456d",
+        "quantity": 3.0
+      },
+      {
+        "itemId": "57347b8b24597737dd42e192",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5d1b3a5d86f774252167ba22",
@@ -30076,9 +31713,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d0377ce86f774186372f689", "quantity": 2.0 },
-      { "itemId": "5d03784a86f774203e7e0c4d", "quantity": 2.0 },
-      { "itemId": "5d0376a486f7747d8050965c", "quantity": 3.0 }
+      {
+        "itemId": "5d0377ce86f774186372f689",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5d03784a86f774203e7e0c4d",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5d0376a486f7747d8050965c",
+        "quantity": 3.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5d1b5e94d7ad1a2b865a96b0",
@@ -30090,8 +31736,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "59e3577886f774176a362503", "quantity": 10.0 },
-      { "itemId": "5c0fa877d174af02a012e1cf", "quantity": 6.0 }
+      {
+        "itemId": "59e3577886f774176a362503",
+        "quantity": 10.0
+      },
+      {
+        "itemId": "5c0fa877d174af02a012e1cf",
+        "quantity": 6.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5d1b5e94d7ad1a2b865a96b0",
@@ -30162,7 +31814,12 @@
     "valueInMainCurrency": 29935.0
   },
   {
-    "barterItems": [{ "itemId": "5d0375ff86f774186372f685", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d0375ff86f774186372f685",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5d23404b86f7740d62079098",
     "merchant": "peacekeeper",
@@ -30172,7 +31829,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5d235b4d86f7742e017bc88a", "quantity": 6.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 6.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5d2340e986f77461496241bc",
     "merchant": "mechanic",
@@ -30203,10 +31865,22 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c12688486f77426843c7d32", "quantity": 12.0 },
-      { "itemId": "57347c1124597737fb1379e3", "quantity": 15.0 },
-      { "itemId": "5734795124597738002c6176", "quantity": 15.0 },
-      { "itemId": "590c31c586f774245e3141b2", "quantity": 15.0 }
+      {
+        "itemId": "5c12688486f77426843c7d32",
+        "quantity": 12.0
+      },
+      {
+        "itemId": "57347c1124597737fb1379e3",
+        "quantity": 15.0
+      },
+      {
+        "itemId": "5734795124597738002c6176",
+        "quantity": 15.0
+      },
+      {
+        "itemId": "590c31c586f774245e3141b2",
+        "quantity": 15.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5d235bb686f77443f4331278",
@@ -30617,7 +32291,12 @@
     "valueInMainCurrency": 32041.0
   },
   {
-    "barterItems": [{ "itemId": "5e54f79686f7744022011103", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5e54f79686f7744022011103",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5d3eb3b0a4b93615055e84d2",
     "merchant": "peacekeeper",
@@ -30858,8 +32537,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "60a7acf20c5cb24b01346648", "quantity": 1.0 },
-      { "itemId": "61c18db6dfd64163ea78fbb4", "quantity": 2.0 }
+      {
+        "itemId": "60a7acf20c5cb24b01346648",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "61c18db6dfd64163ea78fbb4",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5d44064fa4b9361e4f6eb8b5",
@@ -31020,7 +32705,12 @@
     "valueInMainCurrency": 68555.0
   },
   {
-    "barterItems": [{ "itemId": "5d5d646386f7742797261fd9", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d5d646386f7742797261fd9",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5d5d646386f7742797261fd9",
     "merchant": "ragman",
@@ -31050,7 +32740,12 @@
     "valueInMainCurrency": 30533.0
   },
   {
-    "barterItems": [{ "itemId": "5d403f9186f7743cac3f229b", "quantity": 5.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d403f9186f7743cac3f229b",
+        "quantity": 5.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5d5d87f786f77427997cfaef",
     "merchant": "ragman",
@@ -31061,8 +32756,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d235a5986f77443f6329bc6", "quantity": 1.0 },
-      { "itemId": "5734758f24597738025ee253", "quantity": 3.0 }
+      {
+        "itemId": "5d235a5986f77443f6329bc6",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5734758f24597738025ee253",
+        "quantity": 3.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5d5d87f786f77427997cfaef",
@@ -31295,7 +32996,12 @@
     "valueInMainCurrency": 68225.0
   },
   {
-    "barterItems": [{ "itemId": "59e366c186f7741778269d85", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e366c186f7741778269d85",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5d6d3829a4b9361bc8618943",
     "merchant": "ragman",
@@ -31828,8 +33534,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1b33a686f7742523398398", "quantity": 4.0 },
-      { "itemId": "5d1b385e86f774252167b98a", "quantity": 4.0 }
+      {
+        "itemId": "5d1b33a686f7742523398398",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "5d1b385e86f774252167b98a",
+        "quantity": 4.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5d80c78786f774403a401e3e",
@@ -31931,9 +33643,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "60b0f93284c20f0feb453da7", "quantity": 4.0 },
-      { "itemId": "5b4329075acfc400153b78ff", "quantity": 8.0 },
-      { "itemId": "59e7708286f7742cbd762753", "quantity": 4.0 }
+      {
+        "itemId": "60b0f93284c20f0feb453da7",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "5b4329075acfc400153b78ff",
+        "quantity": 8.0
+      },
+      {
+        "itemId": "59e7708286f7742cbd762753",
+        "quantity": 4.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5d80cb8786f774405611c7d9",
@@ -32065,9 +33786,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5e2aee0a86f774755a234b62", "quantity": 7.0 },
-      { "itemId": "5e2aedd986f7746d404f3aa4", "quantity": 10.0 },
-      { "itemId": "5d4042a986f7743185265463", "quantity": 5.0 }
+      {
+        "itemId": "5e2aee0a86f774755a234b62",
+        "quantity": 7.0
+      },
+      {
+        "itemId": "5e2aedd986f7746d404f3aa4",
+        "quantity": 10.0
+      },
+      {
+        "itemId": "5d4042a986f7743185265463",
+        "quantity": 5.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5d95d6fa86f77424484aa5e9",
@@ -32203,8 +33933,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c13cef886f774072e618e82", "quantity": 2.0 },
-      { "itemId": "57347c93245977448d35f6e3", "quantity": 2.0 }
+      {
+        "itemId": "5c13cef886f774072e618e82",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "57347c93245977448d35f6e3",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5dd7f8c524e5d7504a4e3077",
@@ -32216,8 +33952,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c052fb986f7746b2101e909", "quantity": 4.0 },
-      { "itemId": "5c05308086f7746b2101e90b", "quantity": 2.0 }
+      {
+        "itemId": "5c052fb986f7746b2101e909",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "5c05308086f7746b2101e90b",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5dd800bde492226366631317",
@@ -32232,7 +33974,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5d235b4d86f7742e017bc88a", "quantity": 7.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 7.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5dd800eae49222636663133b",
     "merchant": "mechanic",
@@ -32243,8 +33990,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d235b4d86f7742e017bc88a", "quantity": 2.0 },
-      { "itemId": "5d1b327086f7742525194449", "quantity": 2.0 }
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5d1b327086f7742525194449",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5dd8013ff4c3af18c507b10a",
@@ -32256,9 +34009,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5bc9c29cd4351e003562b8a3", "quantity": 10.0 },
-      { "itemId": "5c0fa877d174af02a012e1cf", "quantity": 10.0 },
-      { "itemId": "57347d8724597744596b4e76", "quantity": 10.0 }
+      {
+        "itemId": "5bc9c29cd4351e003562b8a3",
+        "quantity": 10.0
+      },
+      {
+        "itemId": "5c0fa877d174af02a012e1cf",
+        "quantity": 10.0
+      },
+      {
+        "itemId": "57347d8724597744596b4e76",
+        "quantity": 10.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5ddbbeac582ed30a6134e577",
@@ -32449,7 +34211,12 @@
     "valueInMainCurrency": 36201.0
   },
   {
-    "barterItems": [{ "itemId": "590a3efd86f77437d351a25b", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590a3efd86f77437d351a25b",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5de8eac42a78646d96665d91",
     "merchant": "peacekeeper",
@@ -32763,7 +34530,12 @@
     "valueInMainCurrency": 44363.0
   },
   {
-    "barterItems": [{ "itemId": "5734773724597737fd047c14", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "5734773724597737fd047c14",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5df8a42886f77412640e2e75",
     "merchant": "ragman",
@@ -32773,7 +34545,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "59f32c3b86f77472a31742f0", "quantity": 9.0 }],
+    "barterItems": [
+      {
+        "itemId": "59f32c3b86f77472a31742f0",
+        "quantity": 9.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5df8a4d786f77412672a1e3b",
     "merchant": "prapor",
@@ -32787,7 +34564,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5d0375ff86f774186372f685", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d0375ff86f774186372f685",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5df8a4d786f77412672a1e3b",
     "merchant": "prapor",
@@ -33221,7 +35003,12 @@
     "valueInMainCurrency": 166992.0
   },
   {
-    "barterItems": [{ "itemId": "59f32bb586f774757e1e8442", "quantity": 10.0 }],
+    "barterItems": [
+      {
+        "itemId": "59f32bb586f774757e1e8442",
+        "quantity": 10.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5e00c1ad86f774747333222c",
     "merchant": "peacekeeper",
@@ -33670,9 +35457,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5e2af37686f774755a234b65", "quantity": 5.0 },
-      { "itemId": "5e2af2bc86f7746d3f3c33fc", "quantity": 15.0 },
-      { "itemId": "5e2aef7986f7746d3f3c33f5", "quantity": 8.0 }
+      {
+        "itemId": "5e2af37686f774755a234b65",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "5e2af2bc86f7746d3f3c33fc",
+        "quantity": 15.0
+      },
+      {
+        "itemId": "5e2aef7986f7746d3f3c33f5",
+        "quantity": 8.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5e2af55f86f7746d4159f07c",
@@ -33693,7 +35489,12 @@
     "valueInMainCurrency": 28553.0
   },
   {
-    "barterItems": [{ "itemId": "5e2af51086f7746d3f3c3402", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5e2af51086f7746d3f3c3402",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5e32f56fcb6d5863cc5e5ee4",
     "merchant": "mechanic",
@@ -33744,9 +35545,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c0e655586f774045612eeb2", "quantity": 3.0 },
-      { "itemId": "5e2af41e86f774755a234b67", "quantity": 6.0 },
-      { "itemId": "5e2af4d286f7746d4159f07a", "quantity": 6.0 }
+      {
+        "itemId": "5c0e655586f774045612eeb2",
+        "quantity": 3.0
+      },
+      {
+        "itemId": "5e2af41e86f774755a234b67",
+        "quantity": 6.0
+      },
+      {
+        "itemId": "5e2af4d286f7746d4159f07a",
+        "quantity": 6.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5e4abb5086f77406975c9342",
@@ -33788,10 +35598,22 @@
   },
   {
     "barterItems": [
-      { "itemId": "590c695186f7741e566b64a2", "quantity": 2.0 },
-      { "itemId": "5755383e24597772cb798966", "quantity": 2.0 },
-      { "itemId": "5d02797c86f774203f38e30a", "quantity": 2.0 },
-      { "itemId": "5d1b3a5d86f774252167ba22", "quantity": 3.0 }
+      {
+        "itemId": "590c695186f7741e566b64a2",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5755383e24597772cb798966",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5d02797c86f774203f38e30a",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5d1b3a5d86f774252167ba22",
+        "quantity": 3.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5e4abc6786f77406812bd572",
@@ -33812,7 +35634,12 @@
     "valueInMainCurrency": 19583.0
   },
   {
-    "barterItems": [{ "itemId": "5e2af2bc86f7746d3f3c33fc", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5e2af2bc86f7746d3f3c33fc",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5e4abfed86f77406a2713cf7",
     "merchant": "jaeger",
@@ -33823,9 +35650,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5e2af41e86f774755a234b67", "quantity": 4.0 },
-      { "itemId": "5d403f9186f7743cac3f229b", "quantity": 1.0 },
-      { "itemId": "5e2af4a786f7746d3f3c3400", "quantity": 4.0 }
+      {
+        "itemId": "5e2af41e86f774755a234b67",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "5d403f9186f7743cac3f229b",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5e2af4a786f7746d3f3c3400",
+        "quantity": 4.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5e4ac41886f77406a511c9a8",
@@ -34111,9 +35947,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c05300686f7746dce784e5d", "quantity": 1.0 },
-      { "itemId": "5d0376a486f7747d8050965c", "quantity": 5.0 },
-      { "itemId": "5d0375ff86f774186372f685", "quantity": 5.0 }
+      {
+        "itemId": "5c05300686f7746dce784e5d",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5d0376a486f7747d8050965c",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "5d0375ff86f774186372f685",
+        "quantity": 5.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5e81ebcd8e146c7080625e15",
@@ -34218,7 +36063,12 @@
     "valueInMainCurrency": 19946.0
   },
   {
-    "barterItems": [{ "itemId": "59e35ef086f7741777737012", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e35ef086f7741777737012",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5e8488fa988a8701445df1e4",
     "merchant": "therapist",
@@ -34228,7 +36078,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "59e35cbb86f7741778269d83", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e35cbb86f7741778269d83",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5e848cc2988a8701445df1e8",
     "merchant": "prapor",
@@ -34467,9 +36322,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5f5f41476bdad616ad46d631", "quantity": 2.0 },
-      { "itemId": "5e2af4d286f7746d4159f07a", "quantity": 4.0 },
-      { "itemId": "5e2af4a786f7746d3f3c3400", "quantity": 4.0 }
+      {
+        "itemId": "5f5f41476bdad616ad46d631",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5e2af4d286f7746d4159f07a",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "5e2af4a786f7746d3f3c3400",
+        "quantity": 4.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5e9dacf986f774054d6b89f4",
@@ -34491,8 +36355,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "62a091170b9d3c46de5b6cf2", "quantity": 1.0 },
-      { "itemId": "62a09ee4cf4a99369e262453", "quantity": 2.0 }
+      {
+        "itemId": "62a091170b9d3c46de5b6cf2",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "62a09ee4cf4a99369e262453",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5e9db13186f7742f845ee9d3",
@@ -34524,8 +36394,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "590a386e86f77429692b27ab", "quantity": 1.0 },
-      { "itemId": "5734781f24597737e04bf32a", "quantity": 1.0 }
+      {
+        "itemId": "590a386e86f77429692b27ab",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5734781f24597737e04bf32a",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5e9dcf5986f7746c417435b3",
@@ -34576,7 +36452,12 @@
     "valueInMainCurrency": 44542.0
   },
   {
-    "barterItems": [{ "itemId": "5d1c819a86f774771b0acd6c", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1c819a86f774771b0acd6c",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5ea034f65aad6446a939737e",
     "merchant": "prapor",
@@ -35600,7 +37481,12 @@
     "valueInMainCurrency": 112619.0
   },
   {
-    "barterItems": [{ "itemId": "590c645c86f77412b01304d9", "quantity": 4.0 }],
+    "barterItems": [
+      {
+        "itemId": "590c645c86f77412b01304d9",
+        "quantity": 4.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5f5f41476bdad616ad46d631",
     "merchant": "prapor",
@@ -35681,9 +37567,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5e2af4d286f7746d4159f07a", "quantity": 5.0 },
-      { "itemId": "59e366c186f7741778269d85", "quantity": 6.0 },
-      { "itemId": "5e2af41e86f774755a234b67", "quantity": 1.0 }
+      {
+        "itemId": "5e2af4d286f7746d4159f07a",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "59e366c186f7741778269d85",
+        "quantity": 6.0
+      },
+      {
+        "itemId": "5e2af41e86f774755a234b67",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5f60c74e3b85f6263c145586",
@@ -35695,8 +37590,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "59e366c186f7741778269d85", "quantity": 4.0 },
-      { "itemId": "57347c5b245977448d35f6e1", "quantity": 1.0 }
+      {
+        "itemId": "59e366c186f7741778269d85",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "57347c5b245977448d35f6e1",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5f60c85b58eff926626a60f7",
@@ -35928,8 +37829,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d1b2ffd86f77425243e8d17", "quantity": 1.0 },
-      { "itemId": "5672cb124bdc2d1a0f8b4568", "quantity": 1.0 }
+      {
+        "itemId": "5d1b2ffd86f77425243e8d17",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5672cb124bdc2d1a0f8b4568",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5f63407e1b231926f2329f15",
@@ -36051,9 +37958,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "590c2c9c86f774245b1f03f2", "quantity": 5.0 },
-      { "itemId": "57347cd0245977445a2d6ff1", "quantity": 5.0 },
-      { "itemId": "5909e99886f7740c983b9984", "quantity": 5.0 }
+      {
+        "itemId": "590c2c9c86f774245b1f03f2",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "57347cd0245977445a2d6ff1",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "5909e99886f7740c983b9984",
+        "quantity": 5.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5f6770f839a13e712a1dff54",
@@ -36139,8 +38055,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5734770f24597738025ee254", "quantity": 1.0 },
-      { "itemId": "5d1c819a86f774771b0acd6c", "quantity": 1.0 }
+      {
+        "itemId": "5734770f24597738025ee254",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5d1c819a86f774771b0acd6c",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5fb651dc85f90547f674b6f4",
@@ -36672,8 +38594,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c1265fc86f7743f896a21c2", "quantity": 1.0 },
-      { "itemId": "5bc9b720d4351e450201234b", "quantity": 1.0 }
+      {
+        "itemId": "5c1265fc86f7743f896a21c2",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5bc9b720d4351e450201234b",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5fbcc1d9016cce60e8341ab3",
@@ -36784,7 +38712,12 @@
     "valueInMainCurrency": 43876.0
   },
   {
-    "barterItems": [{ "itemId": "5e54f62086f774219b0f1937", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5e54f62086f774219b0f1937",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5fbe760793164a5b6278efc8",
     "merchant": "skier",
@@ -37052,7 +38985,12 @@
     "valueInMainCurrency": 41499.0
   },
   {
-    "barterItems": [{ "itemId": "57e26ea924597715ca604a09", "quantity": 7.0 }],
+    "barterItems": [
+      {
+        "itemId": "57e26ea924597715ca604a09",
+        "quantity": 7.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5fc3e272f8b6a877a729eac5",
     "merchant": "peacekeeper",
@@ -37063,9 +39001,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5734781f24597737e04bf32a", "quantity": 1.0 },
-      { "itemId": "590a386e86f77429692b27ab", "quantity": 1.0 },
-      { "itemId": "5c06782b86f77426df5407d2", "quantity": 2.0 }
+      {
+        "itemId": "5734781f24597737e04bf32a",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "590a386e86f77429692b27ab",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5c06782b86f77426df5407d2",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5fc3e272f8b6a877a729eac5",
@@ -37604,7 +39551,12 @@
     "valueInMainCurrency": 19542.0
   },
   {
-    "barterItems": [{ "itemId": "62a0a16d0b9d3c46de5b6e97", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "62a0a16d0b9d3c46de5b6e97",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "602a9740da11d6478d5a06dc",
     "merchant": "prapor",
@@ -37894,7 +39846,12 @@
     "valueInMainCurrency": 26132.0
   },
   {
-    "barterItems": [{ "itemId": "590c651286f7741e566b6461", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "590c651286f7741e566b6461",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "603409c80ca681766b6a0fb2",
     "merchant": "prapor",
@@ -38552,7 +40509,12 @@
     "valueInMainCurrency": 32754.0
   },
   {
-    "barterItems": [{ "itemId": "5d1b2ffd86f77425243e8d17", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1b2ffd86f77425243e8d17",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "606f2696f2cb2e02a42aceb1",
     "merchant": "jaeger",
@@ -38956,7 +40918,12 @@
     "valueInMainCurrency": 70522.0
   },
   {
-    "barterItems": [{ "itemId": "5d1b376e86f774252519444e", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1b376e86f774252519444e",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "609bab8b455afd752b2e6138",
     "merchant": "jaeger",
@@ -40415,8 +42382,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "590c31c586f774245e3141b2", "quantity": 2.0 },
-      { "itemId": "5672cb304bdc2dc2088b456a", "quantity": 2.0 }
+      {
+        "itemId": "590c31c586f774245e3141b2",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5672cb304bdc2dc2088b456a",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "617fd91e5539a84ec44ce155",
@@ -40678,8 +42651,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "61bf7c024770ee6f9c6b8b53", "quantity": 2.0 },
-      { "itemId": "5d4042a986f7743185265463", "quantity": 1.0 }
+      {
+        "itemId": "61bf7c024770ee6f9c6b8b53",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5d4042a986f7743185265463",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "6183afd850224f204c1da514",
@@ -40950,7 +42929,12 @@
     "valueInMainCurrency": 68808.0
   },
   {
-    "barterItems": [{ "itemId": "59e3596386f774176c10a2a2", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "59e3596386f774176c10a2a2",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "618a431df1eb8e24b8741deb",
     "merchant": "prapor",
@@ -41040,7 +43024,12 @@
     "valueInMainCurrency": 14971.0
   },
   {
-    "barterItems": [{ "itemId": "5d235b4d86f7742e017bc88a", "quantity": 5.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 5.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "618ab04934aa2e47480fba2b",
     "merchant": "mechanic",
@@ -41414,7 +43403,12 @@
     "valueInMainCurrency": 18627.0
   },
   {
-    "barterItems": [{ "itemId": "5efde6b4f5448336730dbd61", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "5efde6b4f5448336730dbd61",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "6193e5f3aa34a3034236bdb3",
     "merchant": "peacekeeper",
@@ -41885,9 +43879,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "619cc01e0a7c3a1a2731940c", "quantity": 20.0 },
-      { "itemId": "5d1b3f2d86f774253763b735", "quantity": 15.0 },
-      { "itemId": "59e361e886f774176c10a2a5", "quantity": 12.0 }
+      {
+        "itemId": "619cc01e0a7c3a1a2731940c",
+        "quantity": 20.0
+      },
+      {
+        "itemId": "5d1b3f2d86f774253763b735",
+        "quantity": 15.0
+      },
+      {
+        "itemId": "59e361e886f774176c10a2a5",
+        "quantity": 12.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "619cbf7d23893217ec30b689",
@@ -41978,7 +43981,12 @@
     "valueInMainCurrency": 8000.0
   },
   {
-    "barterItems": [{ "itemId": "5d235b4d86f7742e017bc88a", "quantity": 5.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 5.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "619e61e70459e93c12392ba7",
     "merchant": "mechanic",
@@ -42133,9 +44141,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "61bf83814088ec1a363d7097", "quantity": 1.0 },
-      { "itemId": "5e2af4a786f7746d3f3c3400", "quantity": 1.0 },
-      { "itemId": "5d403f9186f7743cac3f229b", "quantity": 1.0 }
+      {
+        "itemId": "61bf83814088ec1a363d7097",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5e2af4a786f7746d3f3c3400",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5d403f9186f7743cac3f229b",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "61bc85697113f767765c7fe7",
@@ -42157,9 +44174,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "61bf83814088ec1a363d7097", "quantity": 1.0 },
-      { "itemId": "5e2af41e86f774755a234b67", "quantity": 2.0 },
-      { "itemId": "5d40407c86f774318526545a", "quantity": 1.0 }
+      {
+        "itemId": "61bf83814088ec1a363d7097",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5e2af41e86f774755a234b67",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5d40407c86f774318526545a",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "61bcc89aef0f505f0c6cd0fc",
@@ -42381,10 +44407,22 @@
   },
   {
     "barterItems": [
-      { "itemId": "62178be9d0050232da3485d9", "quantity": 5.0 },
-      { "itemId": "624c0b3340357b5f566e8766", "quantity": 1.0 },
-      { "itemId": "6217726288ed9f0845317459", "quantity": 1.0 },
-      { "itemId": "62178c4d4ecf221597654e3d", "quantity": 2.0 }
+      {
+        "itemId": "62178be9d0050232da3485d9",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "624c0b3340357b5f566e8766",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "6217726288ed9f0845317459",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "62178c4d4ecf221597654e3d",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "620109578d82e67e7911abf2",
@@ -44300,8 +46338,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "62a08f4c4f842e1bd12d9d62", "quantity": 1.0 },
-      { "itemId": "60b0f7057897d47c5b04ab94", "quantity": 1.0 }
+      {
+        "itemId": "62a08f4c4f842e1bd12d9d62",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "60b0f7057897d47c5b04ab94",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "628cd624459354321c4b7fa2",
@@ -44313,9 +46357,18 @@
   },
   {
     "barterItems": [
-      { "itemId": "5e2af41e86f774755a234b67", "quantity": 4.0 },
-      { "itemId": "62a0a098de7ac8199358053b", "quantity": 2.0 },
-      { "itemId": "5e2af47786f7746d404f3aaa", "quantity": 4.0 }
+      {
+        "itemId": "5e2af41e86f774755a234b67",
+        "quantity": 4.0
+      },
+      {
+        "itemId": "62a0a098de7ac8199358053b",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5e2af47786f7746d404f3aaa",
+        "quantity": 4.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "628d0618d1ba6e4fa07ce5a4",
@@ -44326,7 +46379,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "62a0a16d0b9d3c46de5b6e97", "quantity": 1.0 }],
+    "barterItems": [
+      {
+        "itemId": "62a0a16d0b9d3c46de5b6e97",
+        "quantity": 1.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "628dc750b910320f4c27a732",
     "merchant": "ragman",
@@ -44587,10 +46645,22 @@
   },
   {
     "barterItems": [
-      { "itemId": "573476d324597737da2adc13", "quantity": 1.0 },
-      { "itemId": "5734770f24597738025ee254", "quantity": 1.0 },
-      { "itemId": "573476f124597737e04bf328", "quantity": 1.0 },
-      { "itemId": "573475fb24597737fb1379e1", "quantity": 1.0 }
+      {
+        "itemId": "573476d324597737da2adc13",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5734770f24597738025ee254",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "573476f124597737e04bf328",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "573475fb24597737fb1379e1",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "62a0a043cf4a99369e2624a5",
@@ -44605,7 +46675,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "57513fcc24597720a31c09a6", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "57513fcc24597720a31c09a6",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "62a0a043cf4a99369e2624a5",
     "merchant": "jaeger",
@@ -44736,8 +46811,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d0376a486f7747d8050965c", "quantity": 1.0 },
-      { "itemId": "5c06779c86f77426e00dd782", "quantity": 1.0 }
+      {
+        "itemId": "5d0376a486f7747d8050965c",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "5c06779c86f77426e00dd782",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "ash12silenced00000000001",
@@ -44748,7 +46829,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "590c5c9f86f77477c91c36e7", "quantity": 2.0 }],
+    "barterItems": [
+      {
+        "itemId": "590c5c9f86f77477c91c36e7",
+        "quantity": 2.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "glock17ps900000000000001",
     "merchant": "mechanic",
@@ -44759,8 +46845,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5672cb304bdc2dc2088b456a", "quantity": 5.0 },
-      { "itemId": "5672cb124bdc2d1a0f8b4568", "quantity": 8.0 }
+      {
+        "itemId": "5672cb304bdc2dc2088b456a",
+        "quantity": 5.0
+      },
+      {
+        "itemId": "5672cb124bdc2d1a0f8b4568",
+        "quantity": 8.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "mosinscopedbarter0000001",
@@ -44771,7 +46863,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5d1c819a86f774771b0acd6c", "quantity": 3.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1c819a86f774771b0acd6c",
+        "quantity": 3.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "opsksuas0000000000000001",
     "merchant": "mechanic",
@@ -44782,8 +46879,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "590c5a7286f7747884343aea", "quantity": 2.0 },
-      { "itemId": "5d1c819a86f774771b0acd6c", "quantity": 3.0 }
+      {
+        "itemId": "590c5a7286f7747884343aea",
+        "quantity": 2.0
+      },
+      {
+        "itemId": "5d1c819a86f774771b0acd6c",
+        "quantity": 3.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "rpk16drum000000000000001",
@@ -44794,7 +46897,12 @@
     "valueInMainCurrency": 0.0
   },
   {
-    "barterItems": [{ "itemId": "5d1c819a86f774771b0acd6c", "quantity": 12.0 }],
+    "barterItems": [
+      {
+        "itemId": "5d1c819a86f774771b0acd6c",
+        "quantity": 12.0
+      }
+    ],
     "currencyName": "barter",
     "itemId": "sa58spr00000000000000001",
     "merchant": "mechanic",
@@ -44805,8 +46913,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5d235b4d86f7742e017bc88a", "quantity": 1.0 },
-      { "itemId": "590c2d8786f774245b1f03f3", "quantity": 1.0 }
+      {
+        "itemId": "5d235b4d86f7742e017bc88a",
+        "quantity": 1.0
+      },
+      {
+        "itemId": "590c2d8786f774245b1f03f3",
+        "quantity": 1.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "sksintrafuse000000000001",
@@ -44878,8 +46992,14 @@
   },
   {
     "barterItems": [
-      { "itemId": "5c06782b86f77426df5407d2", "quantity": 8.0 },
-      { "itemId": "5d1c819a86f774771b0acd6c", "quantity": 2.0 }
+      {
+        "itemId": "5c06782b86f77426df5407d2",
+        "quantity": 8.0
+      },
+      {
+        "itemId": "5d1c819a86f774771b0acd6c",
+        "quantity": 2.0
+      }
     ],
     "currencyName": "barter",
     "itemId": "5c0d1ec986f77439512a1a72",
@@ -44914,7 +47034,12 @@
     "valueInMainCurrency": 28999.0
   },
   {
-    "barterItems": [{ "itemId": "590a3efd86f77437d351a25b", "quantity": 2 }],
+    "barterItems": [
+      {
+        "itemId": "590a3efd86f77437d351a25b",
+        "quantity": 2
+      }
+    ],
     "currencyName": "barter",
     "itemId": "5f676b779ab5ec19f028eaf3",
     "merchant": "skier",

@@ -1,11 +1,11 @@
 import { ApiService } from '../../services/ApiService'
-import createFetchMock from 'vitest-fetch-mock';
+import createFetchMock from 'vitest-fetch-mock'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
-const fetchMock = createFetchMock(vi);
+const fetchMock = createFetchMock(vi)
 
 afterAll(() => {
   fetchMock.disableMocks()

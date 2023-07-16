@@ -33,9 +33,7 @@
         class="build-share-button"
         @click="copyLink()"
       >
-        <font-awesome-icon
-          icon="copy"
-        />
+        <font-awesome-icon icon="copy" />
       </Button>
     </div>
   </Dialog>

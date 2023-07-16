@@ -26,7 +26,8 @@
 
 .selected-item-summary-price-per-unit {
   font-size: 0.75rem;
-  margin-right: 2.3rem; /* Alignment with the item total price */
+  margin-right: 2.3rem;
+  /* Alignment with the item total price */
 }
 
 .selected-item-summary-right {
@@ -54,22 +55,27 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: end;
-  margin-left: 1.5rem; /* Alignment with the inventory slot price */
-  margin-right: 0.2rem; /* Alignment with the inventory slot weight */
+  margin-left: 1.5rem;
+  /* Alignment with the inventory slot price */
+  margin-right: 0.2rem;
+  /* Alignment with the inventory slot weight */
   width: 7rem;
 }
 
 .selected-item-summary-weight .icon-after-text {
-  margin-left: 0.4rem; /* Alignment with the inventory slot weight */
+  margin-left: 0.4rem;
+  /* Alignment with the inventory slot weight */
 }
 
 .selected-item-summary-weight-per-unit {
   font-size: 0.75rem;
-  margin-right: 0.3rem; /* Alignment with the item total weight */
+  margin-right: 0.3rem;
+  /* Alignment with the item total weight */
 }
 
 .selected-item-summary-weight-per-unit .icon-after-text {
-  margin-left: 0.5rem; /* Alignment with the item total weight */
+  margin-left: 0.5rem;
+  /* Alignment with the item total weight */
   min-height: auto;
   min-width: auto;
 }

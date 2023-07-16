@@ -59,9 +59,7 @@
             :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
             @click="copy()"
           >
-            <font-awesome-icon
-              icon="copy"
-            />
+            <font-awesome-icon icon="copy" />
           </Button>
           <ShareBuild :build="build" />
           <Button
@@ -192,13 +190,11 @@
             <MerchantItemsOptions v-model:visible="merchantItemsOptionsSidebarVisible">
               <template #button>
                 <Button
-                  v-tooltip.top="$t('caption.merchantItemsOptions')"
+                  v-tooltip.top="$t('caption.displayOptions')"
                   class="p-button-text p-button-sm button-discreet"
                   @click="merchantItemsOptionsSidebarVisible = true"
                 >
-                  <font-awesome-icon
-                    icon="user-tag"
-                  />
+                  <font-awesome-icon icon="user-tag" />
                 </Button>
               </template>
             </MerchantItemsOptions>
@@ -209,9 +205,7 @@
                   class="p-button-text p-button-sm button-discreet"
                   @click="displayOptionsSidebarVisible = true"
                 >
-                  <font-awesome-icon
-                    icon="tv"
-                  />
+                  <font-awesome-icon icon="tv" />
                 </Button>
               </template>
               <template #additional-options>

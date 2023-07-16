@@ -1654,7 +1654,7 @@ describe('getRecoil()', () => {
     ]
   ])(
     'should get the recoil of the main ranged weapon of a build',
-    async (build: IBuild, expected: { horizontalRecoil: number; verticalRecoil: number; } | undefined) => {
+    async (build: IBuild, expected: { horizontalRecoil: number; verticalRecoil: number } | undefined) => {
       // Arrange
       useItemServiceMock()
       Services.configure(InventorySlotPropertiesService)

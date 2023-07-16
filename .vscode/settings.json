@@ -1,5 +1,6 @@
 {
   "css.format.enable": true,
+  "css.format.spaceAroundSelectorSeparator": true,
   "editor.formatOnSave": true,
   "editor.wordWrap": "off",
   "eslint.validate": [

@@ -120,7 +120,7 @@
           {{ $t('message.welcomeWarning4') }}
         </p>
         <p class="welcome-warning-text">
-          {{ $t('message.welcomeWarning5') }} <span><font-awesome-icon icon="file-import" /> {{ $t('caption.importBuilds') }}</span>  {{ $t('message.welcomeWarning6') }}
+          {{ $t('message.welcomeWarning5') }} <span><font-awesome-icon icon="file-import" /> {{ $t('caption.importBuilds') }}</span> {{ $t('message.welcomeWarning6') }}
         </p>
       </div>
     </div>

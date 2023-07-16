@@ -20,7 +20,7 @@
           {{ $t('caption.name') }}
         </div>
       </template>
-      <template #body="{data}">
+      <template #body="{ data }">
         <div class="build-list-column">
           <div class="build-list-column-name-buttons">
             <span
@@ -28,9 +28,7 @@
               v-tooltip.right="getNotExportedTooltip(data)"
               class="build-list-not-exported"
             >
-              <font-awesome-icon
-                icon="exclamation-triangle"
-              />
+              <font-awesome-icon icon="exclamation-triangle" />
             </span>
             <ShoppingList :shopping-list="data.shoppingList" />
           </div>
@@ -51,21 +49,19 @@
           {{ $t('caption.price') }}
         </div>
       </template>
-      <template #body="{data}">
+      <template #body="{ data }">
         <div class="build-list-column">
           <InventoryPrice :inventory-price="data.price" />
         </div>
       </template>
     </Column>
-    <Column
-      :sortable="false"
-    >
+    <Column :sortable="false">
       <template #header>
         <div class="build-list-column build-list-column-merchants">
           {{ $t('caption.merchants') }}
         </div>
       </template>
-      <template #body="{data}">
+      <template #body="{ data }">
         <div class="build-list-column build-list-column-merchants">
           <ShoppingListMerchants :shopping-list="data.shoppingList" />
         </div>
@@ -80,7 +76,7 @@
           {{ $t('caption.verticalRecoil') }}
         </div>
       </template>
-      <template #body="{data}">
+      <template #body="{ data }">
         <div
           v-if="data.verticalRecoil != null"
           class="build-list-column"
@@ -102,7 +98,7 @@
           {{ $t('caption.horizontalRecoil') }}
         </div>
       </template>
-      <template #body="{data}">
+      <template #body="{ data }">
         <div
           v-if="data.horizontalRecoil != null"
           class="build-list-column"
@@ -124,7 +120,7 @@
           {{ $t('caption.ergonomics') }}
         </div>
       </template>
-      <template #body="{data}">
+      <template #body="{ data }">
         <div class="build-list-column">
           <div v-if="data.ergonomics != null">
             <span>{{ data.ergonomics }}</span>
@@ -145,7 +141,7 @@
           {{ $t('caption.ergonomicsPercentageModifier') }}
         </div>
       </template>
-      <template #body="{data}">
+      <template #body="{ data }">
         <div
           v-if="data.wearableModifiers != null && data.wearableModifiers.ergonomicsPercentageModifierWithMods !== 0"
           class="build-list-column"
@@ -169,7 +165,7 @@
           {{ $t('caption.movementSpeedPercentageModifier') }}
         </div>
       </template>
-      <template #body="{data}">
+      <template #body="{ data }">
         <div
           v-if="data.wearableModifiers != null && data.wearableModifiers.movementSpeedPercentageModifierWithMods !== 0"
           class="build-list-column"
@@ -193,7 +189,7 @@
           {{ $t('caption.turningSpeedPercentageModifier') }}
         </div>
       </template>
-      <template #body="{data}">
+      <template #body="{ data }">
         <div
           v-if="data.wearableModifiers != null && data.wearableModifiers.turningSpeedPercentageModifierWithMods !== 0"
           class="build-list-column"
@@ -217,7 +213,7 @@
           {{ $t('caption.weight') }}
         </div>
       </template>
-      <template #body="{data}">
+      <template #body="{ data }">
         <div
           v-if="data.weight > 0"
           class="build-list-column"

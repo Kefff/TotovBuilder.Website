@@ -131,8 +131,10 @@ body {
 h1 {
   font-size: 3rem;
   margin: 0;
-  letter-spacing: 2px; /* Required for Chrome, otherwise letters are overlapping */
-  line-height: 3rem; /* Required for Chrome and Firefox to have the same behaviour */
+  letter-spacing: 2px;
+  /* Required for Chrome, otherwise letters are overlapping */
+  line-height: 3rem;
+  /* Required for Chrome and Firefox to have the same behaviour */
 }
 
 .p-button {
