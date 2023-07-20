@@ -1,4 +1,4 @@
-import { computed, defineComponent } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue'
 
 export default defineComponent({
@@ -8,17 +8,28 @@ export default defineComponent({
   props: {
     visible: {
       type: Boolean,
-      required: true
+      required: false,
+      default: false
     }
   },
   emits: ['update:visible'],
   setup: (props, { emit }) => {
-    const sidebarVisible = computed<boolean>({
-      get: () => props.visible,
-      set: (value: boolean) => emit('update:visible', value)
+    const sidebarVisible = ref(false)
+
+    watch(() => props.visible, (newValue) => {
+      sidebarVisible.value = newValue
     })
 
+    /**
+     * Displays the side bar.
+     */
+    function display() {
+      sidebarVisible.value = true
+      emit('update:visible', sidebarVisible.value)
+    }
+
     return {
+      display,
       sidebarVisible
     }
   }

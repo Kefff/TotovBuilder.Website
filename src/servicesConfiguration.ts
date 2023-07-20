@@ -23,6 +23,7 @@ import { TarkovValuesService } from './services/TarkovValuesService'
 import { VersionService } from './services/VersionService'
 import { WebsiteConfigurationService } from './services/WebsiteConfigurationService'
 import Services from './services/repository/Services'
+import { BuildsImportComponentService } from './services/components/BuildsImportComponentService'
 
 /**
  * Configures all the services used in the application.
@@ -50,6 +51,7 @@ export async function configureServices(): Promise<void> {
 
   // Components
   Services.configure(BuildComponentService)
+  Services.configure(BuildsImportComponentService)
   Services.configure(InventorySlotComponentService)
   Services.configure(ItemContentComponentService)
   Services.configure(MagazineStatsComponentService)

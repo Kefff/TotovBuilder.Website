@@ -11,7 +11,6 @@
         >
           <div class="inventory-slot-title">
             <font-awesome-icon
-
               v-if="collapsed"
               icon="angle-right"
               class="collapsable-icon-collapsed"
@@ -132,7 +131,7 @@
         :accepted-items-category-id="acceptedItemsCategoryId"
         :can-be-looted="canBeLooted"
         :path="path + '_' + index + '/' + itemPathPrefix + (item?.itemId ?? 'empty')"
-        @update:modelValue="onItemChanged(index)"
+        @update:model-value="onItemChanged(index)"
       />
     </Panel>
   </div>

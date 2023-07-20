@@ -8,8 +8,9 @@
     "build-test": "vite build --mode development",
     "lint": "eslint ./src/**",
     "serve": "vite preview",
-    "test": "vitest run",
-    "test-all": "vitest run --coverage && npm run coverage"
+    "vitest": "vitest",
+    "vitest-coverage": "vitest run --coverage && npm run coverage",
+    "vitest-run": "vitest run"
   },
   "dependencies": {
     "@babel/runtime": "^7.22.6",
@@ -49,6 +50,7 @@
     "vite": "^4.4.3",
     "vitest": "^0.33.0",
     "vitest-fetch-mock": "^0.2.2",
-    "vitest-localstorage-mock": "^0.0.1"
+    "vitest-localstorage-mock": "^0.0.1",
+    "vue-eslint-parser": "^9.3.1"
   }
 }

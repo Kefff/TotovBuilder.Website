@@ -12,7 +12,7 @@ import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { VersionService } from '../../services/VersionService'
 import Migrations from '../../utils/migrations/Migrations'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 
 const builds: IBuild[] = [
   {

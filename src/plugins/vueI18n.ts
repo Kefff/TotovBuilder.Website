@@ -1,7 +1,7 @@
 import { App } from 'vue'
 import { createI18n } from 'vue-i18n'
-import en from '../assets/data/messages.en.json'
-import fr from '../assets/data/messages.fr.json'
+import en from '../assets/locales/messages.en.json'
+import fr from '../assets/locales/messages.fr.json'
 
 const vueI18n = createI18n({
   fallbackLocale: 'en',

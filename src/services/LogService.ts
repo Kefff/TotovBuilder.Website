@@ -13,8 +13,8 @@ export class LogService {
    * @param plural - Quantity used to determine the plurialized version of the message to use.
    */
   public logError(key: string, parameters?: Record<string, unknown>, plural?: number): void {
-    let errorMessage = this.getMessage(key, parameters, plural)
-    let displayedMessage = import.meta.env.VITE_DEBUG === 'true' ? errorMessage : this.getMessage('message.internalErrorLog')
+    const errorMessage = this.getMessage(key, parameters, plural)
+    const displayedMessage = import.meta.env.VITE_DEBUG === 'true' ? errorMessage : this.getMessage('message.internalErrorLog')
     const message = i18n.t('message.errorLog', { message: displayedMessage })
 
     console.error(message)

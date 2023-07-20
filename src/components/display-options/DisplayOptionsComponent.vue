@@ -1,5 +1,17 @@
 <template>
-  <slot name="button" />
+  <div
+    class="display-options-button"
+    @click="display()"
+  >
+    <slot name="button">
+      <Button
+        v-tooltip.top="$t('caption.displayOptions')"
+        class="p-button-text p-button-sm button-discreet"
+      >
+        <font-awesome-icon icon="tv" />
+      </Button>
+    </slot>
+  </div>
 
   <Sidebar
     v-model:visible="sidebarVisible"

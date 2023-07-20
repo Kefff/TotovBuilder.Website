@@ -13,16 +13,6 @@
       "type": "msedge",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}"
-    },
-    {
-      "type": "node",
-      "name": "vscode-jest-tests",
-      "request": "launch",
-      "args": [],
-      "cwd": "${workspaceFolder}",
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "program": "${workspaceFolder}/node_modules/jest/bin/jest"
     }
   ]
 }

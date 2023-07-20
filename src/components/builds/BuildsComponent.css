@@ -19,6 +19,10 @@
   margin-top: 3rem;
 }
 
-.build-toolbar-right {
+.builds-toolbar-right {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   margin-left: auto;
 }

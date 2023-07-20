@@ -1,4 +1,4 @@
-import { computed, defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref } from 'vue'
 import ItemFilterComponent from '../item-filter/ItemFilterComponent.vue'
 import MerchantFilter from '../merchant-filter/MerchantFilterComponent.vue'
 import Services from '../../services/repository/Services'
@@ -10,41 +10,23 @@ export default defineComponent({
     ItemFilterComponent,
     MerchantFilter
   },
-  props: {
-    visible: {
-      type: Boolean,
-      required: true
-    }
-  },
   emits: ['update:visible'],
-  setup: (props, { emit }) => {
+  setup: () => {
     const globalFilterService = Services.get(GlobalFilterService)
-
-    const sidebarVisible = computed<boolean>({
-      get: () => props.visible,
-      set: (value: boolean) => emit('update:visible', value)
-    })
 
     const globalFilter = ref<IGlobalFilter>({
       itemExclusionFilters: [],
       merchantFilters: []
     })
     const hasChanged = ref(false)
-
-    watch(
-      () => props.visible,
-      (newValue: boolean) => {
-        if (newValue) {
-          initialize()
-        }
-      })
+    const sidebarVisible = ref(false)
 
     /**
-     * Initializes the component.
+     * Displays the side bar.
      */
-    function initialize() {
-      hasChanged.value = false
-      globalFilter.value = globalFilterService.get()
+    function display() {
+      globalFilter.value = globalFilterService.get() // Getting back the really applied filter when he user did not hit the save button
+      sidebarVisible.value = true
     }
 
     /**
@@ -53,10 +35,12 @@ export default defineComponent({
     function save() {
       sidebarVisible.value = false
       hasChanged.value = false
+
       globalFilterService.save(globalFilter.value)
     }
 
     return {
+      display,
       globalFilter,
       hasChanged,
       save,

@@ -9,7 +9,7 @@
       :force-quantity-to-max-selectable-amount="isMagazine"
       :max-stackable-amount="maximumQuantity"
       :path="path + '/' + contentPathPrefix + index + '_' + content.length + '/' + itemPathPrefix + containedItem.itemId"
-      @update:modelValue="onItemChanged($event, index)"
+      @update:model-value="onItemChanged($event, index)"
     />
     <Item
       v-show="editing && canAddItem"
@@ -18,7 +18,7 @@
       :accepted-items-category-id="categoryId"
       :max-stackable-amount="maximumQuantity"
       :path="path + '/new'"
-      @update:modelValue="onItemAdded($event)"
+      @update:model-value="onItemAdded($event)"
     />
   </div>
 </template>

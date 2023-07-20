@@ -73,12 +73,9 @@
           </Button>
         </div>
         <div class="welcome-action">
-          <MerchantItemsOptions v-model:visible="merchantItemsOptionsSidebarVisible">
+          <MerchantItemsOptions>
             <template #button>
-              <Button
-                class="welcome-button"
-                @click="merchantItemsOptionsSidebarVisible = true"
-              >
+              <Button class="welcome-button">
                 <font-awesome-icon
                   icon="user-tag"
                   class="icon-before-text"

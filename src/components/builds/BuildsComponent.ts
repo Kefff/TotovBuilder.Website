@@ -71,12 +71,10 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      // Scrolling to the top in case we were at the bottom of the page in the previous screen
-      window.scrollTo(0, 0)
+      window.addEventListener('scroll', setToolbarCssClass)
+      window.scrollTo(0, 0)// Scrolling to the top in case we were at the bottom of the page in the previous screen
 
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-
-      window.addEventListener('scroll', setToolbarCssClass)
 
       isLoading.value = Services.isInitializing
 
@@ -119,10 +117,7 @@ export default defineComponent({
 
         if (!summaryResult.success) {
           isLoading.value = false
-          Services.get(NotificationService).notify(
-            NotificationType.error,
-            summaryResult.failureMessage
-          )
+          Services.get(NotificationService).notify(NotificationType.error, summaryResult.failureMessage)
 
           return
         }

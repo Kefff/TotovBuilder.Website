@@ -14,7 +14,7 @@ import { WebsiteConfigurationService } from '../../services/WebsiteConfiguration
 import { IBuild } from '../../models/build/IBuild'
 import { BuildService } from '../../services/BuildService'
 import Migrations from '../../utils/migrations/Migrations'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 
 beforeEach(() => {
   localStorage.setItem(WebsiteConfigurationMock.languageStorageKey, 'en')

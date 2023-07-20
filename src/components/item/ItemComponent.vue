@@ -24,7 +24,7 @@
               v-model:sortingData="optionsSortingData"
               :category-id="acceptedItemsCategoryId"
               @update:filter="onFilterOptions($event)"
-              @update:sortingData="onSortOptions($event)"
+              @update:sorting-data="onSortOptions($event)"
             />
           </template>
           <template #option="slotProps">
@@ -52,7 +52,7 @@
           :read-only="!editing || forceQuantityToMaxSelectableAmount"
           :required="true"
           required-message-position="right"
-          @update:modelValue="onQuantityChanged($event)"
+          @update:model-value="onQuantityChanged($event)"
         />
       </div>
       <SelectedItemFunctionalities
@@ -61,7 +61,7 @@
         v-model:ignorePrice="selectedInventoryItem.ignorePrice"
         :can-have-content="selectedItemIsContainer"
         :can-have-mods="selectedItemIsModdable"
-        @update:ignorePrice="onIgnorePriceChanged()"
+        @update:ignore-price="onIgnorePriceChanged()"
       />
       <SelectedItemSummarySelector
         v-if="selectedInventoryItem != null"

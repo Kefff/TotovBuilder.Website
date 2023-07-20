@@ -1,8 +1,10 @@
 {
   "css.format.enable": true,
   "css.format.spaceAroundSelectorSeparator": true,
+  "editor.detectIndentation": false,
   "editor.formatOnSave": true,
   "editor.wordWrap": "off",
+  "eslint.enable": true,
   "eslint.validate": [
     "html",
     "javascript",
@@ -24,7 +26,11 @@
   "vue.inlayHints.optionsWrapper": true,
   "[css]": {
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "vscode.css-language-features",
+    "editor.defaultFormatter": "vscode.css-language-features"
+  },
+  "[javascript]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "[html]": {
     "editor.tabSize": 2,
@@ -32,14 +38,14 @@
   },
   "[json][jsonc]": {
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[typescript]": {
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "[vue]": {
     "editor.tabSize": 2,
     "editor.defaultFormatter": "Vue.volar"
-  },
+  }
 }
