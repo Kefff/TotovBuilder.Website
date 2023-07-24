@@ -21,6 +21,7 @@ import Loading from '../loading/LoadingComponent.vue'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
 import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
+import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
 
 export default defineComponent({
   components: {
@@ -28,6 +29,7 @@ export default defineComponent({
     BuildsImport,
     BuildsList,
     DisplayOptions,
+    GeneralOptions,
     LanguageSelector,
     Loading,
     MerchantItemsOptions,

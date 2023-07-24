@@ -24,10 +24,12 @@ import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
+import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
 
 export default defineComponent({
   components: {
     DisplayOptions,
+    GeneralOptions,
     InputTextField,
     InventoryPrice,
     InventorySlot,
@@ -88,7 +90,6 @@ export default defineComponent({
     const displayOptionsSidebarVisible = ref(false)
     const editing = isNewBuild.value ? ref(true) : ref(false)
     const isLoading = ref(true)
-    const merchantItemsOptionsSidebarVisible = ref(false)
     const summary = ref<IBuildSummary>({
       ergonomics: undefined,
       exported: false,
@@ -285,15 +286,6 @@ export default defineComponent({
     }
 
     /**
-     * Gets the collapse status of all the inventory slots.
-     */
-    function getCollapseStatuses() {
-      for (const inventorySlot of build.value.inventorySlots) {
-        collapseStatuses.value.push(!inventorySlot.items.some(i => i != null))
-      }
-    }
-
-    /**
      * Gets a shared build from an encoded string that can be shared in a URL.
      * @param sharableString - Encoded string that can be shared in a URL.
      */
@@ -348,8 +340,11 @@ export default defineComponent({
       build.value = buildComponentService.getBuild(route.params['id'] as string)
       getSharedBuild(route.params['sharedBuild'] as string)
         .then(async () => {
-          getCollapseStatuses()
-          await getSummary()
+          getSummary()
+
+          build.value.inventorySlots.forEach(() => {
+            collapseStatuses.value.push(false) // All inventory slots expanded by default
+          })
         })
         .finally(() => isLoading.value = false)
     }
@@ -478,7 +473,6 @@ export default defineComponent({
       isEmpty,
       isLoading,
       isNewBuild,
-      merchantItemsOptionsSidebarVisible,
       notExportedTooltip,
       path,
       remove,

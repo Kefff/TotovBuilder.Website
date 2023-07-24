@@ -2,6 +2,7 @@
   "caption": {
     "acceptedCartridges": "Munitions acceptées",
     "accuracy": "Précision",
+    "allowCookies": "Autoriser les cookies",
     "approvedByPrapor": "Approuvé par Prapor!",
     "armorClass": "Classe",
     "armorClassPenetration": "Pénetration d'armure de classe {class}",

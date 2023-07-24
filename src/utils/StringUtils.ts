@@ -1,3 +1,5 @@
+import vueI18n from '../plugins/vueI18n'
+
 /**
  * Represents an utility class for manipulating strings.
  */
@@ -54,6 +56,15 @@ export default class StringUtils {
   }
 
   /**
+     * Gets a tooltip indicating the activation state of a checkbox.
+     * @param enabled - Indicates whether the checkbox is enabled or not.
+     * @returns Tooltip.
+     */
+  public static getCheckboxStateTooltip(enabled: boolean): string {
+    return vueI18n.t('caption.' + (enabled ? 'enabled' : 'disabled'))
+  }
+
+  /**
    * Transforms the first letter of a string to uppercase.
    * @param s - String.
    */
@@ -78,7 +89,7 @@ export default class StringUtils {
     }
 
     const part1 = s[0].toLowerCase()
-    const part2 = s.substr(1)
+    const part2 = s.substring(1)
 
     return part1 + part2
   }

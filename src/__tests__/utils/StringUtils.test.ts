@@ -43,6 +43,19 @@ describe('compare', () => {
   })
 })
 
+describe('getCheckboxStateTooltip', () => {
+  it.each([
+    [true, 'Enabled'],
+    [false, 'Disabled']
+  ])('should get a checkbox activation state tooltip', (enabled: boolean, expected: string) => {
+    // Act
+    const result = StringUtils.getCheckboxStateTooltip(enabled)
+
+    // Assert
+    expect(result).toBe(expected)
+  })
+})
+
 describe('toUpperFirst()', () => {
   it('should set the first letter of a string to uppercase', () => {
     // Assert

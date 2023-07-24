@@ -13,6 +13,7 @@ export class WebsiteConfigurationService {
    * Website configuration.
    */
   public configuration: IWebsiteConfiguration = {
+    allowCookiesStorageKey: 'allow_cookies',
     bugReportUrl: '',
     buildSharingUrl: '',
     buildsSortFieldStorageKey: 'builds_sort_field',
@@ -29,10 +30,10 @@ export class WebsiteConfigurationService {
     fetchTimeout: 30,
     fetchWaitTimeBetweenRetries: 2,
     githubUrl: '',
+    globalFilterStorageKey: 'global_filter',
     itemCategoriesApi: '',
     itemsApi: '',
     languageStorageKey: 'language',
-    globalFilterStorageKey: 'global_filter',
     notificationErrorDuration: 10,
     notificationInformationDuration: 5,
     notificationSuccessDuration: 5,

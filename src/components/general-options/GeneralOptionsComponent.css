@@ -1,0 +1,21 @@
+@import '../../assets/css/button.css';
+@import '../../assets/css/icon.css';
+@import '../../assets/css/sidebar.css';
+
+.general-options-option {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  height: 3.5rem;
+}
+
+.general-options-disabled-text {
+  color: var(--util-color5);
+}
+
+.general-options-name {
+  cursor: pointer;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
