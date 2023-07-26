@@ -41,7 +41,7 @@ describe('getAcceptedItems()', () => {
     const items = await inventorySlotComponentServiceService.getAcceptedItems(['armband', 'headphones'])
 
     // Assert
-    expect(items.map((i) => i.id)).to.deep.equal([
+    expect(items.map((i) => i.id)).toStrictEqual([
       '619bdeb986e01e16f839a99e',
       '619bdf9cc9546643a67df6f8',
       '5b3f3af486f774679e752c1f',

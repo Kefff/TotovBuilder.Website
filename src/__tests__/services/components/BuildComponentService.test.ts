@@ -31,7 +31,7 @@ describe('getBuild()', () => {
     const build = buildComponentService.getBuild('123')
 
     // Assert
-    expect(build).to.deep.equal({
+    expect(build).toStrictEqual({
       id: '123',
       inventorySlots: [],
       lastExported: undefined,
@@ -60,7 +60,7 @@ describe('getBuild()', () => {
     const build = buildComponentService.getBuild(undefined)
 
     // Assert
-    expect(build).to.deep.equal({
+    expect(build).toStrictEqual({
       id: '',
       inventorySlots: [],
       lastExported: undefined,
@@ -92,7 +92,7 @@ describe('getBuild()', () => {
     const build = buildComponentService.getBuild('123')
 
     // Assert
-    expect(build).to.deep.equal({
+    expect(build).toStrictEqual({
       id: '',
       inventorySlots: [],
       lastExported: undefined,
@@ -120,169 +120,179 @@ describe('getBuildFromSharableString()', () => {
 
     // Assert
     expect(buildResult.success).toBe(true)
-    expect(buildResult.value).toMatchObject({
-      'id': '',
-      'inventorySlots': [
+    expect(buildResult.value).toEqual({
+      id: '',
+      inventorySlots: [
         {
-          'items': [
+          items: [
             {
-              'content': [],
-              'itemId': '574d967124597745970e7c94',
-              'modSlots': [
+              content: [],
+              ignorePrice: false,
+              itemId: '574d967124597745970e7c94',
+              modSlots: [
                 {
-                  'item': {
-                    'content': [],
-                    'itemId': '574dad8024597745964bf05c',
-                    'modSlots': [],
-                    'quantity': 1
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: '574dad8024597745964bf05c',
+                    modSlots: [],
+                    quantity: 1
                   },
-                  'modSlotName': 'mod_stock'
+                  modSlotName: 'mod_stock'
                 },
                 {
-                  'item': {
-                    'content': [],
-                    'itemId': '574db213245977459a2f3f5d',
-                    'modSlots': [],
-                    'quantity': 1
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: '574db213245977459a2f3f5d',
+                    modSlots: [],
+                    quantity: 1
                   },
-                  'modSlotName': 'mod_sight_rear'
+                  modSlotName: 'mod_sight_rear'
                 },
                 {
-                  'item': {
-                    'content': [],
-                    'itemId': '587df3a12459772c28142567',
-                    'modSlots': [],
-                    'quantity': 1
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: '587df3a12459772c28142567',
+                    modSlots: [],
+                    quantity: 1
                   },
-                  'modSlotName': 'mod_magazine'
+                  modSlotName: 'mod_magazine'
                 }
               ],
-              'quantity': 1
+              quantity: 1
             }
           ],
-          'typeId': 'onSling'
+          typeId: 'onSling'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
           'typeId': 'onBack'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'holster'
+          typeId: 'holster'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'bodyArmor'
+          typeId: 'bodyArmor'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'tacticalRig'
+          typeId: 'tacticalRig'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'headwear'
+          typeId: 'headwear'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'earpiece'
+          typeId: 'earpiece'
         },
         {
-          'items': [
+          items: [
             undefined,
             undefined,
             undefined,
             undefined
           ],
-          'typeId': 'pockets'
+          typeId: 'pockets'
         },
         {
-          'items': [
+          items: [
             {
-              'content': [
+              content: [
                 {
-                  'content': [],
-                  'itemId': '5448fee04bdc2dbc018b4567',
-                  'modSlots': [],
-                  'quantity': 1
+                  content: [],
+                  ignorePrice: false,
+                  itemId: '5448fee04bdc2dbc018b4567',
+                  modSlots: [],
+                  quantity: 1
                 }
               ],
-              'itemId': '5c0e805e86f774683f3dd637',
-              'modSlots': [],
-              'quantity': 1
+              ignorePrice: false,
+              itemId: '5c0e805e86f774683f3dd637',
+              modSlots: [],
+              quantity: 1
             }
           ],
-          'typeId': 'backpack'
+          typeId: 'backpack'
         },
         {
-          'items': [
+          items: [
             {
-              'content': [],
-              'itemId': '544a11ac4bdc2d470e8b456a',
-              'modSlots': [],
-              'quantity': 1
+              content: [],
+              ignorePrice: false,
+              itemId: '544a11ac4bdc2d470e8b456a',
+              modSlots: [],
+              quantity: 1
             }
           ],
-          'typeId': 'pouch'
+          typeId: 'pouch'
         },
         {
-          'items': [
+          items: [
             {
-              'content': [],
-              'itemId': '54491bb74bdc2d09088b4567',
-              'modSlots': [],
-              'quantity': 1
+              content: [],
+              ignorePrice: false,
+              itemId: '54491bb74bdc2d09088b4567',
+              modSlots: [],
+              quantity: 1
             }
           ],
-          'typeId': 'scabbard'
+          typeId: 'scabbard'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'faceCover'
+          typeId: 'faceCover'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'eyewear'
+          typeId: 'eyewear'
         },
         {
-          'items': [
+          items: [
             undefined
           ],
-          'typeId': 'armband'
+          typeId: 'armband'
         },
         {
-          'items': [
+          items: [
             {
-              'content': [],
-              'ignorePrice': false,
-              'itemId': '5f4f9eb969cdc30ff33f09db',
-              'modSlots': [],
-              'quantity': 1
+              content: [],
+              ignorePrice: false,
+              itemId: '5f4f9eb969cdc30ff33f09db',
+              modSlots: [],
+              quantity: 1
             },
             undefined,
             undefined
           ],
-          'typeId': 'special'
+          typeId: 'special'
         }
       ],
-      'lastExported': undefined,
-      'name': ''
-    })
+      lastExported: undefined,
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: ''
+    } as IBuild)
   })
 
   it('should fail when build parsing fails', async () => {

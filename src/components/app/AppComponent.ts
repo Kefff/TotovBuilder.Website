@@ -4,6 +4,7 @@ import Changelog from '../changelog/ChangelogComponent.vue'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import LanguageUtils from '../../utils/LanguageUtils'
+import { GeneralOptionsService } from '../../services/GeneralOptionsService'
 
 export default defineComponent({
   components: {
@@ -52,13 +53,24 @@ export default defineComponent({
       reportBugAddress.value = websiteConfigurationService.configuration.bugReportUrl
 
       setLanguage()
+      displayAllowCookiesNotification()
 
       isLoading.value = false
     }
 
+    /**
+     * Sets the language.
+     */
     function setLanguage() {
       const language = localStorage.getItem(Services.get(WebsiteConfigurationService).configuration.languageStorageKey) ?? 'en'
       LanguageUtils.setLanguage(language)
+    }
+
+    /**
+     * Displays the allow cookies notification if needed.
+     */
+    function displayAllowCookiesNotification() {
+      Services.get(GeneralOptionsService).getAllowCookiesIndicator()
     }
 
     return {

@@ -1,4 +1,6 @@
 import applicationInsights from '../plugins/applicationInsights'
+import vueI18n from '../plugins/vueI18n'
+import { NotificationService, NotificationType } from './NotificationService'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import Services from './repository/Services'
 
@@ -6,14 +8,47 @@ import Services from './repository/Services'
  * Represents a service for managing general options.
  */
 export class GeneralOptionsService {
+  private hasDisplayedAllowCookiesNotification = false
+
   /**
    * Gets the allow cookies indicator.
    * @returns true if no cookie
    */
   public getAllowCookiesIndicator(): boolean {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-    const storedValue = localStorage.getItem(websiteConfigurationService.configuration.allowCookiesStorageKey) ?? 'true'
-    const allowCookies = JSON.parse(storedValue)
+
+    let allowCookies = true
+    const storedValue = localStorage.getItem(websiteConfigurationService.configuration.allowCookiesStorageKey)
+
+    if (storedValue != null) {
+      allowCookies = JSON.parse(storedValue)
+      this.setCookieUsage(allowCookies)
+    } else if (!this.hasDisplayedAllowCookiesNotification) {
+      // Displaying a notification asking whether the user allows to use cookies
+      this.hasDisplayedAllowCookiesNotification = true
+
+      Services.get(NotificationService).notify(
+        NotificationType.information,
+        vueI18n.t('caption.cookiesExplanation'),
+        true,
+        0,
+        [
+          {
+            action: () => this.setAllowCookiesIndicator(true),
+            caption: vueI18n.t('caption.allowCookies'),
+            icon: undefined,
+            name: 'allow',
+            type: NotificationType.success
+          },
+          {
+            action: () => this.setAllowCookiesIndicator(false),
+            caption: vueI18n.t('caption.rejectCookies'),
+            icon: undefined,
+            name: 'deny',
+            type: NotificationType.error
+          }
+        ])
+    }
 
     return allowCookies
   }
@@ -24,7 +59,13 @@ export class GeneralOptionsService {
   public setAllowCookiesIndicator(allowCookies: boolean): void {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     localStorage.setItem(websiteConfigurationService.configuration.allowCookiesStorageKey, allowCookies.toString())
+    this.setCookieUsage(allowCookies)
+  }
 
+  /**
+   * Sets cookie usage.
+   */
+  private setCookieUsage(allowCookies: boolean) {
     if (!allowCookies) {
       applicationInsights.getCookieMgr().del('ai_session')
       applicationInsights.getCookieMgr().del('ai_user')

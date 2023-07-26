@@ -6,11 +6,18 @@ import StringUtils from '../../utils/StringUtils'
 export default defineComponent({
   emits: ['update:visible'],
   setup: () => {
+    Services.emitter.once('initialized', getAllowCookies)
+
     const allowCookies = ref(true)
+    const isLoading = ref(true)
     const sidebarVisible = ref(false)
 
     onMounted(() => {
-      getAllowCookies()
+      isLoading.value = Services.isInitializing
+
+      if (!isLoading.value) {
+        getAllowCookies()
+      }
     })
 
     /**

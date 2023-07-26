@@ -353,7 +353,7 @@ describe('getWearableModifiers()', () => {
     // Assert
     if (expected != null) {
       expect(wearableModifiersResult?.success).toBe(true)
-      expect(wearableModifiersResult?.value).to.deep.equal(expected)
+      expect(wearableModifiersResult?.value).toStrictEqual(expected)
     } else {
       expect(wearableModifiersResult).toBeUndefined()
     }
@@ -499,7 +499,7 @@ describe('getPrice()', () => {
 
     // Assert
     expect(price.success).toBe(true)
-    expect(price.value).to.deep.equal(expected)
+    expect(price.value).toStrictEqual(expected)
   })
 
   it('should have a missing price when no merchants sell the item', async () => {
@@ -528,7 +528,7 @@ describe('getPrice()', () => {
 
     // Assert
     expect(price.success).toBe(true)
-    expect(price.value).to.deep.equal({
+    expect(price.value).toStrictEqual({
       missingPrice: true,
       price: {
         barterItems: [],
@@ -621,7 +621,7 @@ describe('getRecoil()', () => {
     // Assert
     if (expected != null) {
       expect(recoil?.success).toBe(true)
-      expect(recoil?.value).to.deep.equal(expected)
+      expect(recoil?.value).toStrictEqual(expected)
     } else {
       expect(recoil).toBeUndefined()
     }

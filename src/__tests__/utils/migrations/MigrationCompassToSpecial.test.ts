@@ -40,7 +40,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
     // Assert
     expect(result1.success).toBe(true)
     expect(result2.success).toBe(true)
-    expect(obsoleteBuild).to.deep.equal({
+    expect(obsoleteBuild).toStrictEqual({
       id: '',
       inventorySlots: [
         {
@@ -98,6 +98,6 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
 
     // Assert
     expect(result.success).toBe(true)
-    expect(obsoleteBuild).to.deep.equal(obsoleteBuild)
+    expect(obsoleteBuild).toStrictEqual(obsoleteBuild)
   })
 })

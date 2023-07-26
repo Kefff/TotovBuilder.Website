@@ -65,7 +65,7 @@ describe('readBuilds()', () => {
 
     // Assert
     expect(result.success).toBe(true)
-    expect(result.value).deep.equal({
+    expect(result.value).toStrictEqual({
       buildSummaries: [
         {
           ergonomics: undefined,

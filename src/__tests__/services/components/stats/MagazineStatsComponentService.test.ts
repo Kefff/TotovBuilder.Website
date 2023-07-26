@@ -34,7 +34,7 @@ describe('getAcceptedCartridgesNames()', () => {
     const names = await magazineStatsComponentService.getAcceptedCartridgesNames(magazine)
 
     // Assert
-    expect(names).to.deep.equal([
+    expect(names).toStrictEqual([
       '5.45x39mm PPBS gs "Igolnik"',
       '5.45x39mm BP gs',
       '5.45x39mm BS gs',

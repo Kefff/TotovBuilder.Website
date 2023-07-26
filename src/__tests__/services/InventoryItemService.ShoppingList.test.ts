@@ -102,7 +102,7 @@ describe('getShoppingList', () => {
 
     // Assert
     expect(shoppingListResult.success).toBe(true)
-    expect(shoppingListResult.value).to.deep.equal([
+    expect(shoppingListResult.value).toStrictEqual([
       {
         item: {
           capacity: 48,
@@ -696,7 +696,7 @@ describe('getShoppingList', () => {
 
     // Assert
     expect(shoppingListResult.success).toBe(true)
-    expect(shoppingListResult.value).to.deep.equal([
+    expect(shoppingListResult.value).toStrictEqual([
       {
         item: {
           baseItemId: '5f2a9575926fd9352339381f',

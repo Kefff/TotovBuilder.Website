@@ -134,7 +134,7 @@ describe('sort()', () => {
     const result = await SortingService.sort(items, updatedSortingDataResult.value)
 
     // Assert
-    expect(result).to.deep.equal([
+    expect(result).toStrictEqual([
       { categoryId: 'cat1', shortName: 'b' } as IItem,
       { categoryId: 'cat1', shortName: 'e' } as IItem,
       { categoryId: 'cat1', shortName: 'f' } as IItem,

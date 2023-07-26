@@ -68,7 +68,7 @@ describe('get()', () => {
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
     expect(result.success).toBe(true)
-    expect(result.value).to.deep.equal([
+    expect(result.value).toStrictEqual([
       {
         'id': '590c621186f774138d11ea29',
         'name': 'Secure Flash drive',
@@ -145,7 +145,7 @@ describe('get()', () => {
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
     expect(result.success).toBe(true)
-    expect(result.value).to.deep.equal([
+    expect(result.value).toStrictEqual([
       {
         'id': '57dc2fa62459775949412633',
         'name': 'AKS-74U 5.45x39 assault rifle',
@@ -194,7 +194,7 @@ describe('get()', () => {
 
     // Assert
     expect(result.success).toBe(true)
-    expect(result.value).toMatchObject({ success: 'Access granted' })
+    expect(result.value).toStrictEqual({ success: 'Access granted' })
   })
 
   it('should return empty data when the response is empty', async () => {

@@ -711,7 +711,7 @@ describe('getPrice()', () => {
 
       // Assert
       expect(price.success).toBe(true)
-      expect(price.value).to.deep.equal(expected)
+      expect(price.value).toStrictEqual(expected)
     })
 
   it.each([
@@ -1159,7 +1159,7 @@ describe('getPrice()', () => {
 
       // Assert
       expect(price.success).toBe(true)
-      expect(price.value).to.deep.equal(expected)
+      expect(price.value).toStrictEqual(expected)
     })
 
   it('should get the price of an inventory item ignoring the prices of deactivated merchants', async () => {
@@ -1202,7 +1202,7 @@ describe('getPrice()', () => {
 
     // Assert
     expect(priceResult.success).toBe(true)
-    expect(priceResult.value).to.deep.equal({
+    expect(priceResult.value).toStrictEqual({
       missingPrice: false,
       price: {
         barterItems: [],
@@ -1439,7 +1439,7 @@ describe('getPrice()', () => {
 
     // Assert
     expect(price.success).toBe(true)
-    expect(price.value).to.deep.equal(expected)
+    expect(price.value).toStrictEqual(expected)
   })
 
   it('should get the price of an item that has barters', async () => {
@@ -1553,7 +1553,7 @@ describe('getPrice()', () => {
 
     // Assert
     expect(price.success).toBe(true)
-    expect(price.value).to.deep.equal({
+    expect(price.value).toStrictEqual({
       missingPrice: false,
       price: {
         barterItems: [
@@ -1690,7 +1690,7 @@ describe('getPrice()', () => {
 
     // Assert
     expect(price.success).toBe(true)
-    expect(price.value).to.deep.equal({
+    expect(price.value).toStrictEqual({
       missingPrice: false,
       price: {
         barterItems: [],
@@ -1796,7 +1796,7 @@ describe('getPrice()', () => {
 
     // Assert
     expect(price.success).toBe(true)
-    expect(price.value).to.deep.equal({
+    expect(price.value).toStrictEqual({
       missingPrice: true,
       price: {
         barterItems: [

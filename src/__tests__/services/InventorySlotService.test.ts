@@ -13,7 +13,7 @@ describe('getType()', () => {
 
     // Assert
     expect(slotTypeResult.success).toBe(true)
-    expect(slotTypeResult.value).to.deep.equal({
+    expect(slotTypeResult.value).toStrictEqual({
       acceptedItemCategories: [
         'ammunition',
         'armband',

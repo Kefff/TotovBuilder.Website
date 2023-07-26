@@ -86,7 +86,7 @@ describe('get()', () => {
     const globalFilter = service.get()
 
     // Assert
-    expect(globalFilter).to.deep.equal({
+    expect(globalFilter).toStrictEqual({
       itemExclusionFilters: [
         {
           enabled: true,
@@ -154,7 +154,7 @@ describe('get()', () => {
     const globalFilter = service.get()
 
     // Assert
-    expect(globalFilter).to.deep.equal({
+    expect(globalFilter).toStrictEqual({
       itemExclusionFilters: [
         {
           enabled: true,
@@ -329,7 +329,7 @@ describe('getMatchingPrices()', () => {
     const result = service.getMatchingPrices(item)
 
     // Assert
-    expect(result).to.deep.equal(expected)
+    expect(result).toStrictEqual(expected)
   })
 })
 
@@ -347,9 +347,9 @@ describe('getMerchantLevels()', () => {
     const levels3 = service.getMerchantLevels('invalid')
 
     // Assert
-    expect(levels1).to.deep.equal([0])
-    expect(levels2).to.deep.equal([1, 2, 3, 4])
-    expect(levels3).to.deep.equal([])
+    expect(levels1).toStrictEqual([0])
+    expect(levels2).toStrictEqual([1, 2, 3, 4])
+    expect(levels3).toStrictEqual([])
   })
 })
 
@@ -367,9 +367,9 @@ describe('hasLevels()', () => {
     const hasLevels3 = service.hasLevels('invalid')
 
     // Assert
-    expect(hasLevels1).to.deep.equal(false)
-    expect(hasLevels2).to.deep.equal(true)
-    expect(hasLevels3).to.deep.equal(false)
+    expect(hasLevels1).toStrictEqual(false)
+    expect(hasLevels2).toStrictEqual(true)
+    expect(hasLevels3).toStrictEqual(false)
   })
 })
 
@@ -573,7 +573,7 @@ describe('save', () => {
 
     // Assert
     expect(localStorage.setItem).toHaveBeenCalled()
-    expect(updatedGlobalFilter).toMatchObject({
+    expect(updatedGlobalFilter).toStrictEqual({
       itemExclusionFilters: [
         {
           enabled: true,
@@ -652,7 +652,7 @@ describe('saveItemExclusionFilters', () => {
 
     // Assert
     expect(localStorage.setItem).toHaveBeenCalled()
-    expect(updatedGlobalFilter.itemExclusionFilters).toMatchObject([
+    expect(updatedGlobalFilter.itemExclusionFilters).toStrictEqual([
       {
         enabled: true,
         name: 'itemsWithoutMerchant'
@@ -694,7 +694,7 @@ describe('saveMerchantFilters()', () => {
 
     // Assert
     expect(localStorage.setItem).toHaveBeenCalled()
-    expect(updatedGlobalFilter.merchantFilters).toMatchObject([
+    expect(updatedGlobalFilter.merchantFilters).toStrictEqual([
       {
         enabled: true,
         merchant: 'prapor',

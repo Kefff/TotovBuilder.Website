@@ -7,6 +7,21 @@ import { WebsiteConfigurationService } from '../services/WebsiteConfigurationSer
  */
 export default class LanguageUtils {
   /**
+   * Gets the language stored for the user or the browser language if not found.
+   * @returns language - Stored language or browser language.
+   */
+  public static getLanguage(): string {
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+    let language = localStorage.getItem(websiteConfigurationService.configuration.languageStorageKey)
+
+    if (language == null) {
+      language = navigator.language.substring(0, navigator.language.indexOf('-'))
+    }
+
+    return language
+  }
+
+  /**
    * Sets the current language.
    * @param language - Language.
    */
@@ -20,13 +35,8 @@ export default class LanguageUtils {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     vueI18n.locale.value = language as 'en' | 'fr'
     localStorage.setItem(websiteConfigurationService.configuration.languageStorageKey, language)
-    this.setMeta()
-  }
 
-  /**
-   * Sets meta tags according to the current language.
-   */
-  public static setMeta(): void {
+    // Setting metadata
     document.title = vueI18n.t('caption.metaTitle')
     document.head.querySelector('meta[name=description]')?.setAttribute('content', vueI18n.t('caption.metaDescription'))
   }

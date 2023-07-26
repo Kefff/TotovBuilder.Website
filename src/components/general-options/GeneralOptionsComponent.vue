@@ -28,6 +28,7 @@
           @change="onAllowCookiesChanged()"
         />
         <div
+          v-tooltip.top="$t('caption.cookiesExplanation')"
           :class="'general-options-name' + (!allowCookies ? ' general-options-disabled-text' : '')"
           @click="toggleAllowCookies()"
         >

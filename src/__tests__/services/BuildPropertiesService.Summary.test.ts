@@ -2131,7 +2131,7 @@ describe('getSummary()', () => {
 
       // Assert
       expect(summary?.success).toBe(true)
-      expect(summary?.value).to.deep.equal(expected)
+      expect(summary?.value).toStrictEqual(expected)
     }
   )
 
@@ -2264,7 +2264,7 @@ describe('getSummary()', () => {
 
     // Assert
     expect(summaryResult.success).toBe(true)
-    expect(summaryResult.value).to.deep.equal({
+    expect(summaryResult.value).toStrictEqual({
       ergonomics: undefined,
       exported: false,
       horizontalRecoil: undefined,
