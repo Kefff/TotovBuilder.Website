@@ -3,6 +3,35 @@ import vueI18n from '../../plugins/vueI18n'
 import LanguageUtils from '../../utils/LanguageUtils'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { describe, expect, it } from 'vitest'
+import Services from '../../services/repository/Services'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+
+describe('getLanguage()', () => {
+  it('should get the stored language', () => {
+    // Arrange
+    useWebsiteConfigurationServiceMock()
+
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+    localStorage.setItem(websiteConfigurationService.configuration.languageStorageKey, 'fr')
+
+    // Act
+    const language = LanguageUtils.getLanguage()
+
+    // Assert
+    expect(language).toBe('fr')
+  })
+
+  it('should get the browser language when no language is stored', () => {
+    // Arrange
+    useWebsiteConfigurationServiceMock()
+
+    // Act
+    const language = LanguageUtils.getLanguage()
+
+    // Assert
+    expect(language).toBe('en')
+  })
+})
 
 describe('setLanguage()', () => {
   it.each([

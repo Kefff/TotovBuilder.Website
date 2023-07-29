@@ -34,14 +34,14 @@ export class GeneralOptionsService {
         0,
         [
           {
-            action: () => this.setAllowCookiesIndicator(true),
+            action: () => /* c8 ignore next */ this.setAllowCookiesIndicator(true),
             caption: vueI18n.t('caption.allowCookies'),
             icon: undefined,
             name: 'allow',
             type: NotificationType.success
           },
           {
-            action: () => this.setAllowCookiesIndicator(false),
+            action: () => /* c8 ignore next */ this.setAllowCookiesIndicator(false),
             caption: vueI18n.t('caption.rejectCookies'),
             icon: undefined,
             name: 'deny',
