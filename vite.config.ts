@@ -7,7 +7,6 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'url'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   build: {
     minify: true,
@@ -23,7 +22,7 @@ export default defineConfig({
   plugins: [
     vue(),
     VueI18nPlugin({
-      include: resolve(dirname(fileURLToPath(import.meta.url)), './src/assets/locales/**'), // https://vue-i18n.intlify.dev/guide/advanced/optimization.html#how-to-configure
+      include: resolve(dirname(fileURLToPath(import.meta.url)), './src/assets/locales/**') // https://vue-i18n.intlify.dev/guide/advanced/optimization.html#how-to-configure
     })
   ],
   test: {
@@ -31,7 +30,7 @@ export default defineConfig({
       exclude: [
         '**/src/__mocks__/**',
         '**/src/plugins/**',
-        'ExportService.ts', // Because it requires access to the file system
+        'ExportService.ts' // Because it requires access to the file system
       ]
     },
     environment: 'happy-dom', // Required for browser components like "document" to be accessible during tests
@@ -40,6 +39,6 @@ export default defineConfig({
     setupFiles: [
       'src/__mocks__/setup.ts', // Global configuration for all mocks
       'vitest-localstorage-mock' // https://github.com/Mitscherlich/vitest-localstorage-mock#setup-file
-    ],
+    ]
   }
 })

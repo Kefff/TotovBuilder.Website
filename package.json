@@ -5,7 +5,7 @@
     "coverage": "cd \"coverage\" && index.html",
     "dev": "vite",
     "build-prod": "vite build --mode production",
-    "build-test": "vite build --mode development",
+    "build-staging": "vite build --mode staging",
     "lint": "eslint ./src/**",
     "serve": "vite preview",
     "vitest": "vitest",
