@@ -55,7 +55,7 @@
           </Button>
           <ShoppingList :shopping-list="summary.shoppingList" />
           <Button
-            v-tooltip.top="$t('caption.copy')"
+            v-tooltip.top="$t('caption.copyBuild')"
             :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
             @click="copy()"
           >

@@ -25,6 +25,7 @@ import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
+import vueI18n from '../../plugins/vueI18n'
 
 export default defineComponent({
   components: {
@@ -238,7 +239,7 @@ export default defineComponent({
       }
 
       build.value.id = ''
-      build.value.name = ''
+      build.value.name = build.value.name + ' - ' + vueI18n.t('caption.copy')
       startEdit()
     }
 
