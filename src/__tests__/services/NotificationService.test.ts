@@ -60,15 +60,35 @@ describe('notify()', () => {
     service.notify(NotificationType.warning, 'Warning')
     service.notify(NotificationType.warning, 'Warning', true, 0)
     service.notify(NotificationType.warning, 'Warning', true, 1000)
-    service.notify(NotificationType.warning, 'Warning', true, 1000, [
-      {
-        action: undefined,
-        caption: 'Close',
-        icon: 'fa-times',
-        name: 'close',
-        type: undefined
-      }
-    ])
+    service.notify(
+      NotificationType.warning,
+      'Warning',
+      true,
+      1000,
+      [
+        {
+          action: undefined,
+          caption: 'Close',
+          icon: 'fa-times',
+          name: 'close',
+          type: undefined
+        }
+      ])
+    service.notify(
+      NotificationType.warning,
+      'Warning',
+      true,
+      1000,
+      [
+        {
+          action: undefined,
+          caption: 'Close',
+          icon: 'fa-times',
+          name: 'close',
+          type: undefined
+        }
+      ],
+      true)
     const notifications = service.getNotifications()
 
     // Assert
@@ -137,10 +157,26 @@ describe('notify()', () => {
           toast: true,
           toastDuration: 1000,
           type: 'warn'
+        },
+        {
+          closable: true,
+          buttons: [
+            {
+              action: undefined,
+              caption: 'Close',
+              icon: 'fa-times',
+              name: 'close',
+              type: undefined
+            }
+          ],
+          message: 'Warning',
+          toast: true,
+          toastDuration: 1000,
+          type: 'warn'
         }
       ] as INotification[])
     expect(hasBeenCalled).toBe(true)
-    expect(service.newNotificationCount).toBe(5)
+    expect(service.newNotificationCount).toBe(6)
   })
 })
 

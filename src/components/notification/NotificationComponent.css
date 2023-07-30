@@ -22,9 +22,14 @@
 }
 
 .notification-toast-buttons {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.notification-toast-buttons-grid {
   display: grid;
   grid-gap: 1rem;
-  grid-template-columns: 1fr 1fr;
 }
 
 .notification-toast-buttons-text {

@@ -58,7 +58,7 @@ body {
   margin-right: 0.5rem;
 }
 
-.app-tarkov-market-disclaimer {
+.app-api-disclaimer {
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -71,7 +71,7 @@ body {
   text-align: center;
 }
 
-.app-tarkov-market-disclaimer > span {
+.app-api-disclaimer > span {
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -80,21 +80,8 @@ body {
   margin-right: 0.1rem;
 }
 
-.app-tarkov-market-disclaimer > span > a {
+.app-api-disclaimer > span > a {
   margin-left: 0.25rem;
-}
-
-.app-tarkov-market-disclaimer-patreon-icon {
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
-  width: 1.5rem;
-}
-
-.app-tarkov-market-disclaimer-patreon-link {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
 }
 
 .app-title {

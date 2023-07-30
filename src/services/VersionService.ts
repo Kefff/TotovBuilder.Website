@@ -54,7 +54,7 @@ export class VersionService {
   /**
    * Version during the last visit.
    */
-  private lastVisitVersion = '1.0.0'
+  private lastVisitVersion: string | undefined = undefined
 
   /**
    * Current version.
@@ -103,13 +103,6 @@ export class VersionService {
   }
 
   /**
-   * Indicates that the new version notification has been dismissed by the user indicating that he is aware that a new version exists and should not be displayed anymore.
-   */
-  public dismissNewVersion(): void {
-    this.hasNewVersion = false
-  }
-
-  /**
    * Executes migrations required to update a build since the last connection to the website.
    * @param build - Build to update.
    * @returns true when all the required migrations have successfuly been executed; otherwise false.
@@ -144,7 +137,7 @@ export class VersionService {
       changelogs.push({
         changes: changelog.changes.filter(c => c.language === (hasChangelogsInCurrentLanguage ? vueI18n.locale.value : vueI18n.fallbackLocale.value)),
         date: new Date(changelog.date),
-        isNew: this.compareVersions(changelog.version, this.lastVisitVersion) > 0,
+        isNew: this.isNew(changelog.version),
         version: changelog.version
       })
     }
@@ -200,7 +193,14 @@ export class VersionService {
    * Executes the migrations.
    */
   private async executeMigrations(): Promise<void> {
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
     if (!this.hasNewVersion) {
+      if (this.lastVisitVersion == null) {
+        // Storing the version during the first visit
+        localStorage.setItem(websiteConfigurationService.configuration.versionStorageKey, this.version)
+      }
+
       return
     }
 
@@ -222,8 +222,7 @@ export class VersionService {
 
     if (buildUnrelatedMigrationsResult && buildsMigrationsResult) {
       // Only storing the new version as the effective last visit version when the migration is successful to be able to replay migrations that could fail
-      const websiteConfiguration = Services.get(WebsiteConfigurationService).configuration
-      localStorage.setItem(websiteConfiguration.versionStorageKey, this.version)
+      localStorage.setItem(websiteConfigurationService.configuration.versionStorageKey, this.version)
     }
   }
 
@@ -259,6 +258,19 @@ export class VersionService {
   }
 
   /**
+   * Indicates whether a version is newer than the last visit version.
+   * @param version - Version.
+   * @returns true when the version is newer than the last visit version; otherwise false.
+   */
+  private isNew(version: string) {
+    const isNew =
+      this.lastVisitVersion != null
+      && this.compareVersions(version, this.lastVisitVersion) > 0
+
+    return isNew
+  }
+
+  /**
    * Starts the fetching of the changelog.
    */
   private async startFetchingChangelog(): Promise<void> {
@@ -287,8 +299,8 @@ export class VersionService {
     const websiteConfiguration = Services.get(WebsiteConfigurationService).configuration
 
     this.version = websiteConfiguration.version
-    this.lastVisitVersion = localStorage.getItem(websiteConfiguration.versionStorageKey) ?? '1.0.0'
-    this.hasNewVersion = this.compareVersions(this.version, this.lastVisitVersion) > 0
+    this.lastVisitVersion = localStorage.getItem(websiteConfiguration.versionStorageKey) ?? undefined
+    this.hasNewVersion = this.isNew(this.version)
 
     await this.executeMigrations()
 

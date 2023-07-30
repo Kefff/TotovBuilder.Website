@@ -73,7 +73,8 @@ export class NotificationService {
     message: string,
     toast = false,
     toastDuration: number | undefined = undefined,
-    buttons: INotificationButton[] | undefined = undefined): void {
+    buttons: INotificationButton[] | undefined = undefined,
+    closable: boolean | undefined = undefined): void {
     if (toast) {
       if (toastDuration == null) {
         const websiteConfigurationService = Services.get(WebsiteConfigurationService)
@@ -111,7 +112,7 @@ export class NotificationService {
 
     const notification: INotification = {
       buttons: buttons ?? [],
-      closable: (buttons?.length ?? 0) == 0,
+      closable: closable ?? (buttons?.length ?? 0) == 0,
       date: new Date(),
       id: Guid.create().toString(),
       message,

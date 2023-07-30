@@ -1,32 +1,4 @@
 <template>
-  <div
-    v-if="hasNewVersion"
-    class="changelog-notification"
-  >
-    <div>
-      <div class="changelog-notification-element">
-        <span class="changelog-notification-message">{{ $t('message.newVersion', { newVersion: currentVersion }) }}</span>
-      </div>
-      <div class="changelog-notification-element">
-        <a
-          class="link"
-          :disabled="hasChangelogDisplayed"
-          @click="showChangelog()"
-        >
-          {{ $t('caption.seeChanges') }}
-        </a>
-        <font-awesome-icon
-          class="changelog-notification-dismiss-icon"
-          icon="times"
-          @click="dismissNotification()"
-        />
-      </div>
-    </div>
-    <div class="changelog-notification-element">
-      <span class="changelog-notification-refresh-message">{{ $t('message.newVersionRefresh') }}</span>
-    </div>
-  </div>
-
   <Dialog
     v-model:visible="hasChangelogDisplayed"
     :closable="true"

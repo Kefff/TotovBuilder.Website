@@ -8,6 +8,9 @@ import Services from './repository/Services'
  * Represents a service for managing general options.
  */
 export class GeneralOptionsService {
+  /**
+   * Indicates whether the allow cookies notifications has been displayed.
+   */
   private hasDisplayedAllowCookiesNotification = false
 
   /**

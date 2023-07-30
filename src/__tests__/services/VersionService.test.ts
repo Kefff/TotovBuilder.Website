@@ -22,11 +22,19 @@ beforeEach(() => {
 })
 
 describe('checkHasNewVersion()', () => {
-  it('should indicate whether the version is newer than the last visit version', async () => {
+  it.each([
+    [false, false],
+    [true, true]
+  ])('should indicate whether the version is newer than the last visit version', async (hasVersionStored: boolean, expected: boolean) => {
     // Arrange
     useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
+
+    if (hasVersionStored) {
+      const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+      localStorage.setItem(websiteConfigurationService.configuration.versionStorageKey, '1.0.0')
+    }
 
     const service = new VersionService()
 
@@ -34,7 +42,7 @@ describe('checkHasNewVersion()', () => {
     const hasNewVersion = await service.checkHasNewVersion()
 
     // Assert
-    expect(hasNewVersion).toBe(true)
+    expect(hasNewVersion).toBe(expected)
   })
 })
 
@@ -84,25 +92,6 @@ describe('compareVersions()', () => {
 
     // Assert
     expect(result).toBe(expected)
-  })
-})
-
-describe('dismissNewVersion()', () => {
-  it('should set the hasNewVersion property to false', async () => {
-    // Arrange
-    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
-    useWebsiteConfigurationServiceMock()
-    Services.configure(BuildService)
-
-    // Act / Assert
-    const service = new VersionService()
-
-    let hasNewVersion = await service.checkHasNewVersion()
-    expect(hasNewVersion).toBe(true)
-
-    service.dismissNewVersion()
-    hasNewVersion = await service.checkHasNewVersion()
-    expect(hasNewVersion).toBe(false)
   })
 })
 
@@ -371,7 +360,7 @@ describe('getChangelog()', () => {
             { language: 'en', text: 'Fixed build toolbar items alignment.' }
           ],
           date: new Date('2022-01-01T23:00:00.000Z'),
-          isNew: true,
+          isNew: false,
           version: '1.1.1'
         },
         {
@@ -386,7 +375,7 @@ describe('getChangelog()', () => {
             }
           ],
           date: new Date('2022-01-01T23:00:00.000Z'),
-          isNew: true,
+          isNew: false,
           version: '1.1.0'
         },
         {
@@ -551,7 +540,7 @@ describe('initialize()', () => {
     [
       undefined,
       '1.6.0',
-      true
+      false
     ],
     [
       '1.6.0',

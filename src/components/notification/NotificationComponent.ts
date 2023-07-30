@@ -20,6 +20,7 @@ export default defineComponent({
     notificationService.emitter.on(notificationService.addedEventName, (notification: INotification) => {
       if (notification.toast) {
         toastNotifications.value.push(notification)
+
       }
     })
 
@@ -35,6 +36,18 @@ export default defineComponent({
 
       const notificationIndex = toastNotifications.value.indexOf(notification)
       toastNotifications.value.splice(notificationIndex, 1)
+    }
+
+    /**
+     * Gets buttons grid templace CSS for a toast notification.
+     * @param toastNotification - Toast notification.
+     * @returns Buttons grid templace CSS.
+     */
+    function getButtonsGridTemplaceCss(toastNotification: INotification): string {
+      let buttonsGridTemplaceCss = 'grid-template-columns:'
+      toastNotification.buttons.forEach(() => buttonsGridTemplaceCss += ' 1fr')
+
+      return buttonsGridTemplaceCss
     }
 
     /**
@@ -55,6 +68,7 @@ export default defineComponent({
     return {
       errorDuration,
       executeButtonAction,
+      getButtonsGridTemplaceCss,
       getSeverity,
       informationDuration,
       successDuration,

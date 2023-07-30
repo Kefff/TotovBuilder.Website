@@ -80,42 +80,25 @@
       </div>
     </div>
     <div class="app-footer-line">
-      <div class="app-tarkov-market-disclaimer">
+      <div class="app-api-disclaimer">
         <span>
-          {{ $t('message.tarkovMarketDisclaimer1') }}
+          {{ $t('message.apiDisclaimer1') }}
           <a
             href="https://tarkov.dev/"
             target="_blank"
             class="link"
-          >{{ $t('message.tarkovMarketDisclaimer2') }}</a>.
+          >{{ $t('message.apiDisclaimer2') }}</a>.
         </span>
-        <!-- <span>
-            {{ $t('message.tarkovMarketDisclaimer3') }}
-            <a
-              class="link"
-              href="https://www.patreon.com/kokarn"
-              target="_blank"
-            >
-              <span class="app-tarkov-market-disclaimer-patreon-link">
-                <img
-                  src="/assets/patreon.webp"
-                  :title="$t('caption.patreon')"
-                  class="app-tarkov-market-disclaimer-patreon-icon"
-                >
-                <span>Patreon</span>
-              </span>
-            </a>.
-          </span> -->
       </div>
     </div>
     <div class="app-footer-line">
-      <div class="app-tarkov-market-disclaimer">
+      <div class="app-api-disclaimer">
         <span>{{ $t('message.battleStateDisclaimer1') }}</span>
         <span>{{ $t('message.battleStateDisclaimer2') }}</span>
       </div>
     </div>
     <div class="app-footer-line">
-      <div class="app-tarkov-market-disclaimer">
+      <div class="app-api-disclaimer">
         © {{ copyrightYear }} Kefff
       </div>
     </div>

@@ -263,6 +263,8 @@
     "weight": "Weight"
   },
   "message": {
+    "apiDisclaimer1": "Data provided for free by ",
+    "apiDisclaimer2": "Tarkov.dev",
     "apiError": "Error while requesting API \"{api}\".\nResponse : \"{apiErrorMessage}\".",
     "armorPenetrationsNotFound": "Armor penetrations for item \"{id}\" not found.",
     "battleStateDisclaimer1": "Game content and materials are trademarks and copyrights of Battlestate Games and its licensors.",
@@ -312,8 +314,7 @@
     "migrationError": "Error during migration to \"{version}\".",
     "missingPrice": "This item or one of its children is not sold by any of the configured merchants, therefore its price is not taken into account.",
     "modSlotNotFound": "Cannot find mod slot \"{modSlot}\".",
-    "newVersion": "Version {newVersion} has been released.",
-    "newVersionRefresh": "Hit CTRL + F5 to make sure you get it.",
+    "newVersion": "Version {newVersion} has been released.\nHit CTRL + F5 to make sure you get it.",
     "noBuildsToExport": "No builds to export",
     "noItemsFound": "No item could be found for your search with the current merchants and items configuration.",
     "presetNotFound": "Preset \"{id}\" not found.",
@@ -331,9 +332,6 @@
     "shareLinkCopied": "Share link copied to clipboard.",
     "shareLinkCopyError": "Error while copying the share link to clipboard",
     "sortingFunctionNotFound": "Sorting function for property \"{property}\" not found.",
-    "tarkovMarketDisclaimer1": "Data provided for free by ",
-    "tarkovMarketDisclaimer2": "Tarkov.dev",
-    "tarkovMarketDisclaimer3": "Support its creator on ",
     "tarkovValuesNotFetched": "No Tarkov value could be fetched.",
     "warningLog": "Warning : {message}",
     "websiteConfigurationNotFetched": "No website configuration could be fetched.",

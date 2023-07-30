@@ -13,19 +13,24 @@
         {{ toastNotification.message }}
       </p>
       <div class="notification-toast-buttons">
-        <Button
-          v-for="button of toastNotification.buttons"
-          :key="button.name"
-          :severity="getSeverity(button)"
-          :class="button.type == null ? 'p-button-text button-discreet' : ''"
-          @click="executeButtonAction(toastNotification, button)"
+        <div
+          class="notification-toast-buttons-grid"
+          :style="getButtonsGridTemplaceCss(toastNotification)"
         >
-          <font-awesome-icon
-            v-if="button.icon != null"
-            :icon="button.icon"
-          />
-          <span class="notification-toast-buttons-text">{{ button.caption }}</span>
-        </Button>
+          <Button
+            v-for="button of toastNotification.buttons"
+            :key="button.name"
+            :severity="getSeverity(button)"
+            :class="button.type == null ? 'p-button-text button-discreet' : ''"
+            @click="executeButtonAction(toastNotification, button)"
+          >
+            <font-awesome-icon
+              v-if="button.icon != null"
+              :icon="button.icon"
+            />
+            <span class="notification-toast-buttons-text">{{ button.caption }}</span>
+          </Button>
+        </div>
       </div>
     </Message>
   </div>
