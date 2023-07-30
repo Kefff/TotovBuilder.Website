@@ -1,5 +1,6 @@
 .field {
-  border-style: none; /* I don't know where this border came from, it kind of appear out of nowhere */
+  border-style: none;
+  /* I don't know where this border came from, it kind of appear out of nowhere */
 }
 
 .required-message-bottom {

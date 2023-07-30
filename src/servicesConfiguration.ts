@@ -2,8 +2,10 @@ import { ApiService } from './services/ApiService'
 import { BuildComponentService } from './services/components/BuildComponentService'
 import { BuildPropertiesService } from './services/BuildPropertiesService'
 import { BuildService } from './services/BuildService'
+import { BuildsImportComponentService } from './services/components/BuildsImportComponentService'
 import { CompatibilityService } from './services/compatibility/CompatibilityService'
 import { ExportService } from './services/ExportService'
+import { GeneralOptionsService } from './services/GeneralOptionsService'
 import { GlobalFilterService } from './services/GlobalFilterService'
 import { ImportService } from './services/ImportService'
 import { InventoryItemService } from './services/InventoryItemService'
@@ -33,6 +35,7 @@ export async function configureServices(): Promise<void> {
   Services.configure(BuildService)
   Services.configure(CompatibilityService)
   Services.configure(ExportService)
+  Services.configure(GeneralOptionsService)
   Services.configure(GlobalFilterService)
   Services.configure(ImportService)
   Services.configure(InventoryItemService)
@@ -50,6 +53,7 @@ export async function configureServices(): Promise<void> {
 
   // Components
   Services.configure(BuildComponentService)
+  Services.configure(BuildsImportComponentService)
   Services.configure(InventorySlotComponentService)
   Services.configure(ItemContentComponentService)
   Services.configure(MagazineStatsComponentService)

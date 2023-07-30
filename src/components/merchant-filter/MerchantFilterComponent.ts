@@ -1,6 +1,5 @@
 import { PropType, defineComponent, reactive } from 'vue'
 import { IMerchantFilter } from '../../models/utils/IMerchantFilter'
-import vueI18n from '../../plugins/vueI18n'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
@@ -19,15 +18,6 @@ export default defineComponent({
     const merchantLevelOptions = [1, 2, 3, 4]
 
     const merchantFilters = reactive(props.modelValue.merchantFilters).sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant))
-
-    /**
-     * Gets the tooltip for the checkbox of a merchant.
-     * @param enabled - Indicates whether the merchant is enabled or not.
-     * @returns checkbox Tooltip
-     */
-    function getCheckboxTooltip(enabled: boolean): string {
-      return vueI18n.t('caption.' + (enabled ? 'enabled' : 'disabled'))
-    }
 
     /**
      * Gets the level options for a merchant.
@@ -71,12 +61,12 @@ export default defineComponent({
     }
 
     return {
-      getCheckboxTooltip,
       getMerchantLevels,
       hasLevels,
       merchantFilters,
       merchantLevelOptions,
       onFiltersChanged,
+      StringUtils,
       toggleFilter
     }
   }

@@ -2,7 +2,6 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "jest/globals": true,
     "node": true
   },
   "extends": [
@@ -15,18 +14,41 @@
     "parser": "@typescript-eslint/parser",
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "eslint-plugin-tsdoc", "jest", "vue"],
+  "plugins": [
+    "@typescript-eslint",
+    "eslint-plugin-tsdoc",
+    "vue"
+  ],
   "root": true,
   "rules": {
-    "@typescript-eslint/indent": ["warn", 2],
+    "@typescript-eslint/indent": [
+      "warn",
+      2
+    ],
     "@typescript-eslint/no-unused-vars": "warn",
-    "comma-dangle": ["warn", "never"],
-    "indent": "off",
+    "comma-dangle": [
+      "warn",
+      "never"
+    ],
     "no-trailing-spaces": 1,
-    "no-unused-vars": "off",
-    "quotes": ["warn", "single"],
-    "semi": ["warn", "never"],
+    "quotes": [
+      "warn",
+      "single"
+    ],
+    "semi": [
+      "warn",
+      "never"
+    ],
     "tsdoc/syntax": "warn",
+    "vue/attribute-hyphenation": [
+      "error",
+      "always",
+      {
+        "ignore": [
+          "sortField"
+        ]
+      }
+    ],
     "vue/html-indent": [
       "warn",
       2,
@@ -38,13 +60,8 @@
         "ignores": []
       }
     ],
-    "vue/attribute-hyphenation": [
-      "error",
-      "always",
-      {
-        "ignore": ["sortField"]
-      }
-    ],
+    "vue/multi-word-component-names": "off",
+    "vue/no-reserved-component-names": "off",
     "vue/script-setup-uses-vars": 1
   }
 }

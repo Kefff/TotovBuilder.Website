@@ -15,6 +15,7 @@ import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfi
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
+import { describe, expect, it } from 'vitest'
 
 export const build1: IBuild = {
   id: 'build_1',
@@ -296,7 +297,7 @@ export const build1: IBuild = {
                     item: {
                       content: [],
                       ignorePrice: false,
-                      itemId: '5beec3420db834001b095429', // RPK-16 5.45x39 muzzle brake \u0026 compensator
+                      itemId: '5beec3420db834001b095429', // RPK-16 5.45x39 muzzle brake-compensator
                       modSlots: [],
                       quantity: 1
                     },
@@ -1614,7 +1615,7 @@ describe('getNotExportedTooltip()', () => {
   it.each([
     [undefined, undefined, 'Build not exported. It will be lost if your browser history is cleared.'],
     [new Date(1), undefined, 'Build not exported. It will be lost if your browser history is cleared.'],
-    [new Date(2), new Date(1), 'Changes from the 01/01/1970 à 01:00:00 have not been exported. They will be lost if your browser data is cleared. Last export on 01/01/1970 à 01:00:00.']
+    [new Date(2), new Date(1), 'Changes from the 01/01/1970 01:00:00 have not been exported. They will be lost if your browser data is cleared. Last export on 01/01/1970 01:00:00.']
   ])('should get the tooltip for not exported builds', (lastUpdated: Date | undefined, lastExported: Date | undefined, expected: string) => {
     // Arrange
     const service = new BuildPropertiesService()
@@ -1653,7 +1654,7 @@ describe('getRecoil()', () => {
     ]
   ])(
     'should get the recoil of the main ranged weapon of a build',
-    async (build: IBuild, expected: { horizontalRecoil: number; verticalRecoil: number; } | undefined) => {
+    async (build: IBuild, expected: { horizontalRecoil: number; verticalRecoil: number } | undefined) => {
       // Arrange
       useItemServiceMock()
       Services.configure(InventorySlotPropertiesService)

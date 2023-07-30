@@ -1,7 +1,5 @@
 <template>
-  <ContainerSummary
-    :item="item"
-  />
+  <ContainerSummary :item="item" />
   <ArmorSummary
     :item="item"
     :show-empty-entries="showEmptyEntries"

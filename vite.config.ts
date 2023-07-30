@@ -1,9 +1,12 @@
-import { defineConfig } from 'vite'
-import path from 'path'
-import vue from '@vitejs/plugin-vue'
-import vueI18n from '@intlify/vite-plugin-vue-i18n'
+// https://vitest.dev/config/
+/// <reference types="vitest" />
 
-// https://vitejs.dev/config/
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
+import { resolve, dirname } from 'node:path'
+import { fileURLToPath } from 'url'
+
 export default defineConfig({
   build: {
     minify: true,
@@ -15,12 +18,27 @@ export default defineConfig({
       }
     }
   },
-  envDir: 'configuration',
+  envDir: 'environment',
   plugins: [
     vue(),
-    vueI18n({
-      include: path.resolve('src/assets/messages.json'),
-      runtimeOnly: false // https://github.com/intlify/vite-plugin-vue-i18n/issues/91
+    VueI18nPlugin({
+      include: resolve(dirname(fileURLToPath(import.meta.url)), './src/assets/locales/**') // https://vue-i18n.intlify.dev/guide/advanced/optimization.html#how-to-configure
     })
-  ]
+  ],
+  test: {
+    coverage: {
+      exclude: [
+        '**/src/__mocks__/**',
+        '**/src/plugins/**',
+        'ExportService.ts' // Because it requires access to the file system
+      ]
+    },
+    environment: 'happy-dom', // Required for browser components like "document" to be accessible during tests
+    globals: true,
+    mockReset: false, // Required for local storage mock to work
+    setupFiles: [
+      'src/__mocks__/setup.ts', // Global configuration for all mocks
+      'vitest-localstorage-mock' // https://github.com/Mitscherlich/vitest-localstorage-mock#setup-file
+    ]
+  }
 })

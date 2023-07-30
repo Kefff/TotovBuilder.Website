@@ -26,16 +26,14 @@
         :caption="$t('caption.link')"
         caption-mode="placeholder"
         class="build-share-input"
-        @update:modelValue="onUpdateShareLink()"
+        @update:model-value="onUpdateShareLink()"
       />
       <Button
         v-tooltip.top="$t('caption.copyLink')"
         class="build-share-button"
         @click="copyLink()"
       >
-        <font-awesome-icon
-          icon="copy"
-        />
+        <font-awesome-icon icon="copy" />
       </Button>
     </div>
   </Dialog>

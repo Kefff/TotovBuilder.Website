@@ -1,7 +1,5 @@
 <template>
-  <ContainerSummary
-    :item="item"
-  />
+  <ContainerSummary :item="item" />
   <WearableSummary
     :item="item"
     :show-empty-entries="showEmptyEntries"

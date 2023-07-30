@@ -11,6 +11,7 @@ import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { ItemService } from '../../services/ItemService'
+import { beforeEach, describe, expect, it } from 'vitest'
 
 const itemExclusionFilters = [
   {
@@ -71,10 +72,6 @@ beforeEach(() => {
     itemExclusionFilters,
     merchantFilters
   } as IGlobalFilter))
-})
-
-afterEach(() => {
-  localStorage.clear()
 })
 
 describe('get()', () => {
@@ -576,7 +573,7 @@ describe('save', () => {
 
     // Assert
     expect(localStorage.setItem).toHaveBeenCalled()
-    expect(updatedGlobalFilter).toMatchObject({
+    expect(updatedGlobalFilter).toStrictEqual({
       itemExclusionFilters: [
         {
           enabled: true,
@@ -655,7 +652,7 @@ describe('saveItemExclusionFilters', () => {
 
     // Assert
     expect(localStorage.setItem).toHaveBeenCalled()
-    expect(updatedGlobalFilter.itemExclusionFilters).toMatchObject([
+    expect(updatedGlobalFilter.itemExclusionFilters).toStrictEqual([
       {
         enabled: true,
         name: 'itemsWithoutMerchant'
@@ -697,7 +694,7 @@ describe('saveMerchantFilters()', () => {
 
     // Assert
     expect(localStorage.setItem).toHaveBeenCalled()
-    expect(updatedGlobalFilter.merchantFilters).toMatchObject([
+    expect(updatedGlobalFilter.merchantFilters).toStrictEqual([
       {
         enabled: true,
         merchant: 'prapor',

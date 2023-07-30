@@ -2,6 +2,8 @@ import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import { IChangelogEntry } from '../../models/configuration/IChangelogEntry'
 import Services from '../../services/repository/Services'
 import { VersionService } from '../../services/VersionService'
+import vueI18n from '../../plugins/vueI18n'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
 
 export default defineComponent({
   props: {
@@ -15,8 +17,8 @@ export default defineComponent({
     const versionService = Services.get(VersionService)
 
     const changelogs = ref<IChangelogEntry[]>([])
-    const currentVersion = ref('1.0.0')
     const hasNewVersion = ref(false)
+    const version = ref('1.0.0')
 
     const hasChangelogDisplayed = computed({
       get: () => props.modelValue,
@@ -30,8 +32,11 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      versionService.getVersion().then((v) => currentVersion.value = v)
-      versionService.checkHasNewVersion().then((hnv) => hasNewVersion.value = hnv)
+      versionService.getVersion().then(v => version.value = v)
+      versionService.checkHasNewVersion().then(hnv => {
+        hasNewVersion.value = hnv
+        displayNewVersionNotification()
+      })
     })
 
     /**
@@ -42,11 +47,24 @@ export default defineComponent({
     }
 
     /**
-     * Dismisses the new version notification.
+     * Displays the new version notification if needed.
      */
-    function dismissNotification() {
-      hasNewVersion.value = false
-      versionService.dismissNewVersion()
+    function displayNewVersionNotification() {
+      if (hasNewVersion.value) {
+        Services.get(NotificationService).notify(
+          NotificationType.information,
+          vueI18n.t('message.newVersion', { newVersion: version.value }),
+          true,
+          0,
+          [{
+            action: () => showChangelog(),
+            caption: vueI18n.t('caption.seeChanges'),
+            icon: undefined,
+            name: 'seeChanges',
+            type: NotificationType.success
+          }],
+          true)
+      }
     }
 
     /**
@@ -60,10 +78,7 @@ export default defineComponent({
     return {
       changelogs,
       closeChangelog,
-      currentVersion,
-      dismissNotification,
       hasChangelogDisplayed,
-      hasNewVersion,
       showChangelog
     }
   }

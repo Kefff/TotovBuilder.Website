@@ -1,6 +1,7 @@
 import { IArmor } from '../../../../models/item/IArmor'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ArmorSortingFunctions } from '../../../../services/sorting/functions/ArmorSortingFunctions'
+import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([

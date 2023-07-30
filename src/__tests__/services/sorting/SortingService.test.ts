@@ -1,6 +1,7 @@
 import { IItem } from '../../../models/item/IItem'
 import { SortingService, compareByCategory, compareByName, compareByNumber, compareByString } from '../../../services/sorting/SortingService'
 import { SortingOrder } from '../../../models/utils/SortingData'
+import { describe, expect, it } from 'vitest'
 
 describe('compareByCategory()', () => {
   it.each([

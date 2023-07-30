@@ -4,9 +4,12 @@ import { usePrimeVue } from './plugins/primeVue'
 import { useI18n } from './plugins/vueI18n'
 import { useRouter } from './plugins/vueRouter'
 import { useFontAwesome } from './plugins/fontAwesome'
-import { configureServices } from './ServicesConfiguration'
 import Item from './components/item/ItemComponent.vue'
 import Price from './components/price/PriceComponent.vue'
+import { configureServices } from './servicesConfiguration'
+import { useApplicationInsights } from './plugins/applicationInsights'
+
+useApplicationInsights()
 
 // Services
 configureServices()
@@ -15,7 +18,7 @@ configureServices()
 const app = createApp(App)
 
 // Plugins
-useFontAwesome(app) // !!! PERFORMANCE ISSUE, MULTIPLIES BY 6 LOADING TIMES
+useFontAwesome(app)
 useI18n(app)
 usePrimeVue(app)
 useRouter(app)

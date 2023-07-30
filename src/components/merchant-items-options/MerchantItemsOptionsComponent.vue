@@ -1,5 +1,17 @@
 <template>
-  <slot name="button" />
+  <div
+    class="merchant-items-options-button"
+    @click="display()"
+  >
+    <slot name="button">
+      <Button
+        v-tooltip.top="$t('caption.merchantItemsOptions')"
+        class="p-button-text p-button-sm button-discreet"
+      >
+        <font-awesome-icon icon="user-tag" />
+      </Button>
+    </slot>
+  </div>
 
   <Sidebar
     v-model:visible="sidebarVisible"
@@ -13,12 +25,10 @@
       />
       <span>{{ $t('caption.merchants') }}</span>
     </div>
-    <div
-      class="sidebar-option"
-    >
+    <div class="sidebar-option">
       <MerchantFilter
         v-model="globalFilter"
-        @update:modelValue="() => hasChanged = true"
+        @update:model-value="() => hasChanged = true"
       />
     </div>
     <div class="sidebar-title merchant-items-title">
@@ -28,12 +38,10 @@
       />
       <span>{{ $t('caption.items') }}</span>
     </div>
-    <div
-      class="sidebar-option"
-    >
+    <div class="sidebar-option">
       <ItemFilterComponent
         v-model="globalFilter"
-        @update:modelValue="() => hasChanged = true"
+        @update:model-value="() => hasChanged = true"
       />
     </div>
     <div class="merchant-items-options-save-button">
@@ -49,7 +57,6 @@
         <span>{{ $t('caption.save') }}</span>
       </Button>
     </div>
-    <!-- </div> -->
   </Sidebar>
 </template>
 

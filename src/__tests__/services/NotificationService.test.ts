@@ -1,5 +1,7 @@
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { describe, expect, it } from 'vitest'
+import { INotification } from '../../models/utils/INotification'
 
 describe('clearNotification()', () => {
   it('should clear a notification from the notifications collection', () => {
@@ -58,58 +60,123 @@ describe('notify()', () => {
     service.notify(NotificationType.warning, 'Warning')
     service.notify(NotificationType.warning, 'Warning', true, 0)
     service.notify(NotificationType.warning, 'Warning', true, 1000)
+    service.notify(
+      NotificationType.warning,
+      'Warning',
+      true,
+      1000,
+      [
+        {
+          action: undefined,
+          caption: 'Close',
+          icon: 'fa-times',
+          name: 'close',
+          type: undefined
+        }
+      ])
+    service.notify(
+      NotificationType.warning,
+      'Warning',
+      true,
+      1000,
+      [
+        {
+          action: undefined,
+          caption: 'Close',
+          icon: 'fa-times',
+          name: 'close',
+          type: undefined
+        }
+      ],
+      true)
     const notifications = service.getNotifications()
 
     // Assert
-    expect(notifications.sort((n1, n2) => {
-      if (n1.type < n2.type) {
-        return -1
-      } else if (n1.type > n2.type) {
-        return 1
-      } else {
-        return (n1.toastDuration ?? -1) - (n2.toastDuration ?? -1)
-      }
-    })).toMatchObject(
+    expect(notifications).toMatchObject( // toMatchObject used to avoid comparing date and id properties that are different each test
       [
         {
+          buttons: [],
+          closable: true,
           message: 'Error',
           toast: true,
           toastDuration: 10000,
           type: 'error'
         },
         {
+          buttons: [],
+          closable: true,
           message: 'Information',
           toast: false,
           toastDuration: undefined,
           type: 'info'
         },
         {
+          buttons: [],
+          closable: true,
           message: 'Success',
           toast: true,
           toastDuration: 5000,
           type: 'success'
         },
         {
+          buttons: [],
+          closable: true,
           message: 'Warning',
           toast: false,
           toastDuration: undefined,
           type: 'warn'
         },
         {
+          buttons: [],
+          closable: true,
+          message: 'Warning',
+          toast: true,
+          toastDuration: 3600000,
+          type: 'warn'
+        },
+        {
+          buttons: [],
+          closable: true,
           message: 'Warning',
           toast: true,
           toastDuration: 1000,
           type: 'warn'
         },
         {
+          closable: false,
+          buttons: [
+            {
+              action: undefined,
+              caption: 'Close',
+              icon: 'fa-times',
+              name: 'close',
+              type: undefined
+            }
+          ],
           message: 'Warning',
           toast: true,
-          toastDuration: 3600000,
+          toastDuration: 1000,
+          type: 'warn'
+        },
+        {
+          closable: true,
+          buttons: [
+            {
+              action: undefined,
+              caption: 'Close',
+              icon: 'fa-times',
+              name: 'close',
+              type: undefined
+            }
+          ],
+          message: 'Warning',
+          toast: true,
+          toastDuration: 1000,
           type: 'warn'
         }
-      ])
+      ] as INotification[])
     expect(hasBeenCalled).toBe(true)
-    expect(service.newNotificationCount).toBe(4)
+    expect(service.newNotificationCount).toBe(6)
   })
 })
 

@@ -6,6 +6,13 @@
   margin-top: 3rem;
 }
 
+.merchant-items-options-button {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
 .merchant-items-options-save-button {
   display: flex;
   justify-content: right;

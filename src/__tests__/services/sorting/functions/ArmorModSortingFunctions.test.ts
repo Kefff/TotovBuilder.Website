@@ -1,6 +1,7 @@
 import { IArmorMod } from '../../../../models/item/IArmorMod'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ArmorModSortingFunctions } from '../../../../services/sorting/functions/ArmorModSortingFunctions'
+import { describe, expect, it } from 'vitest'
 
 describe('setSortingProperty()', () => {
   it.each([

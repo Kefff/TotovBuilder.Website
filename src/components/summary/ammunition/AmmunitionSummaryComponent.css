@@ -28,7 +28,8 @@
 .penetrated-armor-list {
   align-items: center;
   display: flex;
-  width: 10.25rem; /* 6 penetrated armor of 1rem + 5 margins of 0.25rem + 6 armor classes of 0.5rem */
+  width: 10.25rem;
+  /* 6 penetrated armor of 1rem + 5 margins of 0.25rem + 6 armor classes of 0.5rem */
 }
 
 .oneshot {

@@ -1,7 +1,18 @@
 <template>
   <div class="loading">
     <div class="loading-icon">
-      <div /><div /><div /><div /><div /><div /><div /><div /><div /><div /><div /><div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
     </div>
   </div>
 </template>

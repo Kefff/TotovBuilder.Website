@@ -55,13 +55,11 @@
           </Button>
           <ShoppingList :shopping-list="summary.shoppingList" />
           <Button
-            v-tooltip.top="$t('caption.copy')"
+            v-tooltip.top="$t('caption.copyBuild')"
             :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
             @click="copy()"
           >
-            <font-awesome-icon
-              icon="copy"
-            />
+            <font-awesome-icon icon="copy" />
           </Button>
           <ShareBuild :build="build" />
           <Button
@@ -93,17 +91,6 @@
               class="build-toolbar-summary-group"
             >
               <div
-                v-if="hasSummaryErgonomics"
-                v-tooltip.top="$t('caption.ergonomics')"
-                class="build-toolbar-summary-value"
-              >
-                <span>{{ summary.ergonomics }}</span>
-                <font-awesome-icon
-                  icon="hand-paper"
-                  class="icon-after-text"
-                />
-              </div>
-              <div
                 v-if="hasSummaryVerticalRecoil"
                 v-tooltip.top="$t('caption.verticalRecoil')"
                 class="build-toolbar-summary-value"
@@ -122,6 +109,17 @@
                 <span>{{ summary.horizontalRecoil }}</span>
                 <font-awesome-icon
                   icon="arrows-alt-h"
+                  class="icon-after-text"
+                />
+              </div>
+              <div
+                v-if="hasSummaryErgonomics"
+                v-tooltip.top="$t('caption.ergonomics')"
+                class="build-toolbar-summary-value"
+              >
+                <span>{{ summary.ergonomics }}</span>
+                <font-awesome-icon
+                  icon="hand-paper"
                   class="icon-after-text"
                 />
               </div>
@@ -189,31 +187,8 @@
         </div>
         <div class="toolbar-part">
           <div class="build-toolbar-right">
-            <MerchantItemsOptions v-model:visible="merchantItemsOptionsSidebarVisible">
-              <template #button>
-                <Button
-                  v-tooltip.top="$t('caption.merchantItemsOptions')"
-                  class="p-button-text p-button-sm button-discreet"
-                  @click="merchantItemsOptionsSidebarVisible = true"
-                >
-                  <font-awesome-icon
-                    icon="user-tag"
-                  />
-                </Button>
-              </template>
-            </MerchantItemsOptions>
+            <MerchantItemsOptions />
             <DisplayOptions v-model:visible="displayOptionsSidebarVisible">
-              <template #button>
-                <Button
-                  v-tooltip.top="$t('caption.merchantItemsOptions')"
-                  class="p-button-text p-button-sm button-discreet"
-                  @click="displayOptionsSidebarVisible = true"
-                >
-                  <font-awesome-icon
-                    icon="tv"
-                  />
-                </Button>
-              </template>
               <template #additional-options>
                 <div
                   class="sidebar-option-with-hover"
@@ -236,6 +211,7 @@
                   <span>{{ $t('caption.expandWithItem') }}</span>
                 </div>
                 <div
+                  v-if="editing"
                   class="sidebar-option-with-hover"
                   @click="expandAll()"
                 >
@@ -247,6 +223,7 @@
                 </div>
               </template>
             </DisplayOptions>
+            <GeneralOptions />
             <NotificationButton />
             <Button
               v-show="editing"

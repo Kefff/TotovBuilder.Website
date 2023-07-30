@@ -109,5 +109,5 @@
   </div>
 </template>
 
-<script lang="ts" src="./AmmunitionSummaryComponent.ts"/>
-<style scoped lang="css" src="./AmmunitionSummaryComponent.css"/>
+<script lang="ts" src="./AmmunitionSummaryComponent.ts" />
+<style scoped lang="css" src="./AmmunitionSummaryComponent.css" />

@@ -2,6 +2,11 @@
  * Provides the functionalities of the Totov Builder website configuration.
  */
 export interface IWebsiteConfiguration {
+  /**
+   * Storage key for the allow cookies indicator.
+   */
+  allowCookiesStorageKey: string
+
   /*
    * Bug report URL.
    */
@@ -83,6 +88,11 @@ export interface IWebsiteConfiguration {
   githubUrl: string
 
   /*
+   * Storage key for the current global filter.
+   */
+  globalFilterStorageKey: string
+
+  /*
    * Item categories API name.
    */
   itemCategoriesApi: string
@@ -96,11 +106,6 @@ export interface IWebsiteConfiguration {
    * Storage key for the current language.
    */
   languageStorageKey: string
-
-  /*
-   * Storage key for the current global filter.
-   */
-  globalFilterStorageKey: string
 
   /*
    * Error notifications duration (in seconds).

@@ -11,7 +11,8 @@ const routes: RouteRecordRaw[] = [
     name: 'Welcome',
     path: '/',
     beforeEnter: () => {
-      LanguageUtils.setMeta()
+      const language = LanguageUtils.getLanguage()
+      LanguageUtils.setLanguage(language)
     }
   },
   {

@@ -7,21 +7,12 @@
     {
       "name": "Launch Edge against localhost",
       "request": "launch",
-      "skipFiles": ["${workspaceFolder}/node_modules/**/*.js"],
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js"
+      ],
       "type": "msedge",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}"
-    },
-    {
-      "type": "node",
-      "name": "vscode-jest-tests",
-      "request": "launch",
-      "args": [],
-      "cwd": "${workspaceFolder}",
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "disableOptimisticBPs": true,
-      "program": "${workspaceFolder}/node_modules/jest/bin/jest"
     }
   ]
 }

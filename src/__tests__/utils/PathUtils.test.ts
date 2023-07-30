@@ -1,6 +1,7 @@
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { PathUtils } from '../../utils/PathUtils'
+import { describe, expect, it } from 'vitest'
 
 describe('checkIsModSlotPath()', () => {
   it.each([

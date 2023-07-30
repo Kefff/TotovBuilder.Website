@@ -1,4 +1,5 @@
 import StringUtils from '../../utils/StringUtils'
+import { describe, expect, it } from 'vitest'
 
 describe('contains()', () => {
   it.each([
@@ -39,6 +40,19 @@ describe('compare', () => {
   ])('should compare two strings', (string1: string, string2: string, expected: number) => {
     // Assert
     expect(StringUtils.compare(string1, string2)).toBe(expected)
+  })
+})
+
+describe('getCheckboxStateTooltip', () => {
+  it.each([
+    [true, 'Enabled'],
+    [false, 'Disabled']
+  ])('should get a checkbox activation state tooltip', (enabled: boolean, expected: string) => {
+    // Act
+    const result = StringUtils.getCheckboxStateTooltip(enabled)
+
+    // Assert
+    expect(result).toBe(expected)
   })
 })
 

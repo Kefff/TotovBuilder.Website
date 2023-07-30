@@ -3,6 +3,7 @@ import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteCo
 import { IBuild } from '../../../models/build/IBuild'
 import { IRangedWeapon } from '../../../models/item/IRangedWeapon'
 import { Migration160 } from '../../../utils/migrations/Migration1.6.0'
+import { describe, expect, it } from 'vitest'
 
 describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
   it('should update obsolete builds to use the default preset item instead of the base item for their weapons', async () => {

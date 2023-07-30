@@ -1,7 +1,5 @@
 <template>
-  <ContainerSummary
-    :item="item"
-  />
+  <ContainerSummary :item="item" />
   <div
     v-if="item.loadSpeedPercentageModifier !== 0 || showEmptyEntries"
     class="option-entry"

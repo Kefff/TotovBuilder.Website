@@ -1,6 +1,7 @@
 import { IMod } from '../../../../models/item/IMod'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ModSortingFunctions } from '../../../../services/sorting/functions/ModSortingFunctions'
+import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([

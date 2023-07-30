@@ -4,6 +4,7 @@ import { BuildService } from '../../services/BuildService'
 import { ImportService } from '../../services/ImportService'
 import Services from '../../services/repository/Services'
 import { VersionService } from '../../services/VersionService'
+import { describe, expect, it } from 'vitest'
 
 describe('import()', () => {
   it('should import builds and execute migrations on them', async () => {

@@ -1,7 +1,7 @@
 import { PropType, defineComponent, reactive } from 'vue'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
-import vueI18n from '../../plugins/vueI18n'
 import { IItemExclusionFilter } from '../../models/utils/IItemExclusionFilter'
+import StringUtils from '../../utils/StringUtils'
 
 export default defineComponent({
   props: {
@@ -13,15 +13,6 @@ export default defineComponent({
   emits: ['update:modelValue'],
   setup: (props, { emit }) => {
     const itemExclusionFilters = reactive(props.modelValue.itemExclusionFilters)
-
-    /**
-     * Gets the tooltip for the checkbox of a merchant.
-     * @param enabled - Indicates whether the merchant is enabled or not.
-     * @returns checkbox Tooltip
-     */
-    function getCheckboxTooltip(enabled: boolean): string {
-      return vueI18n.t('caption.' + (enabled ? 'enabled' : 'disabled'))
-    }
 
     /**
      * Emits changes to the parent component.
@@ -43,9 +34,9 @@ export default defineComponent({
     }
 
     return {
-      getCheckboxTooltip,
       itemExclusionFilters,
       onFiltersChanged,
+      StringUtils,
       toggleFilter
     }
   }

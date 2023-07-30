@@ -1,5 +1,6 @@
+import applicationInsights from '../plugins/applicationInsights'
 import i18n from '../plugins/vueI18n'
-import Configuration from '../../test-data/configuration.json'
+import { SeverityLevel } from '@microsoft/applicationinsights-web'
 
 /**
  * Represents a service responsible for logging messages.
@@ -12,17 +13,15 @@ export class LogService {
    * @param plural - Quantity used to determine the plurialized version of the message to use.
    */
   public logError(key: string, parameters?: Record<string, unknown>, plural?: number): void {
-    let message
-    const debug = Configuration.VITE_DEBUG === 'true'
+    const errorMessage = this.getMessage(key, parameters, plural)
+    const displayedMessage = import.meta.env.VITE_DEBUG === 'true' ? errorMessage : this.getMessage('message.internalErrorLog')
+    const message = i18n.t('message.errorLog', { message: displayedMessage })
 
-    if (debug) {
-      message = this.getMessage(key, parameters, plural)
-    } else {
-      message = this.getMessage('message.internalErrorLog')
-    }
-
-    const errorMessage = i18n.t('message.errorLog', { message })
-    console.error(errorMessage)
+    console.error(message)
+    applicationInsights.trackTrace({
+      message: errorMessage,
+      severityLevel: SeverityLevel.Error
+    })
   }
 
   /**
@@ -34,7 +33,12 @@ export class LogService {
   public logWarning(key: string, parameters?: Record<string, unknown>, plural?: number): void {
     const message = this.getMessage(key, parameters, plural)
     const warningMessage = i18n.t('message.warningLog', { message })
+
     console.warn(warningMessage)
+    applicationInsights.trackTrace({
+      message,
+      severityLevel: SeverityLevel.Warning
+    })
   }
 
   /**

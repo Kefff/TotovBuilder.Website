@@ -6,7 +6,7 @@
   >
     <Checkbox
       v-model="itemExclusionFilter.enabled"
-      v-tooltip.top="getCheckboxTooltip(itemExclusionFilter.enabled)"
+      v-tooltip.top="StringUtils.getCheckboxStateTooltip(!itemExclusionFilter.enabled)"
       :binary="true"
       :true-value="false"
       :false-value="true"

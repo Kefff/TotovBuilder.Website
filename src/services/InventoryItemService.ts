@@ -263,11 +263,12 @@ export class InventoryItemService {
 
     // Adding content prices
     for (const containedItem of inventoryItem.content) {
-      /* istanbul ignore if */
+      /* c8 ignore start */
       if (containedItem == null) {
         // !!! WORKAROUNG !!! In theory it should never happen, but it happened in production without being able to identify the source of the problem.
         continue
       }
+      /* c8 ignore stop */
 
       const containedItemPriceResult = await this.getPrice(containedItem, presetModSlotItem)
 
@@ -496,11 +497,12 @@ export class InventoryItemService {
             quantity: barterItem.quantity * inventoryItem.quantity
           })
 
-          /* istanbul ignore if */
+          /* c8 ignore start */
           if (!barterItemShoppingListResult.success) {
             // Should never happen since barter item prices are already searched in the getPrice() method
             return Result.failFrom(barterItemShoppingListResult)
           }
+          /* c8 ignore stop */
 
           shoppingListBartersToAdd.push(...barterItemShoppingListResult.value)
         }
@@ -543,19 +545,21 @@ export class InventoryItemService {
     }
 
     for (const modSlot of inventoryItem.modSlots) {
-      /* istanbul ignore if */
+      /* c8 ignore start */
       if (modSlot.item == null) {
         continue
       }
+      /* c8 ignore stop */
 
       const presetModSlot = presetModSlotItem?.modSlots.find(pms => pms.modSlotName === modSlot.modSlotName)
       const shoppingListResult = await this.getShoppingList(modSlot.item, presetModSlot?.item)
 
-      /* istanbul ignore if */
+      /* c8 ignore start */
       if (!shoppingListResult.success) {
         // Should never happen since mod prices are already searched in the getPrice() method
         return Result.failFrom(shoppingListResult)
       }
+      /* c8 ignore stop */
 
       shoppingListItemsToAdd.push(...shoppingListResult.value)
     }
@@ -564,11 +568,12 @@ export class InventoryItemService {
     for (const content of inventoryItem.content) {
       const shoppingListResult = await this.getShoppingList(content)
 
-      /* istanbul ignore if */
+      /* c8 ignore start */
       if (!shoppingListResult.success) {
         // Should never happen since content item prices are already searched in the getPrice() method
         return Result.failFrom(shoppingListResult)
       }
+      /* c8 ignore stop */
 
       shoppingListItemsToAdd.push(...shoppingListResult.value)
     }
@@ -664,11 +669,12 @@ export class InventoryItemService {
     let weightWithContent = weight
 
     for (const containedItem of inventoryItem.content) {
-      /* istanbul ignore if */
+      /* c8 ignore start */
       if (containedItem == null) {
         // !!! WORKAROUNG !!! In theory it should never happen, but it happened in production without being able to identify the source of the problem.
         continue
       }
+      /* c8 ignore stop */
 
       const containedItemWeightResult = await this.getWeight(containedItem)
 

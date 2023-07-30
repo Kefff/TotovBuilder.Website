@@ -1,8 +1,37 @@
 .notification-toast {
+  align-items: flex-end;
   bottom: 0;
-  right: 0;
+  display: flex;
+  flex-direction: column;
+  max-width: 33%;
   margin-left: 1rem;
   margin-right: 1rem;
   position: fixed;
+  right: 0;
   z-index: 2;
+}
+
+.notification-toast > .p-message {
+  margin-bottom: 1rem;
+  margin-top: 0;
+  width: fit-content;
+}
+
+.notification-toast > .p-message:first-child {
+  margin-top: 1rem;
+}
+
+.notification-toast-buttons {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.notification-toast-buttons-grid {
+  display: grid;
+  grid-gap: 1rem;
+}
+
+.notification-toast-buttons-text {
+  width: 100%;
 }

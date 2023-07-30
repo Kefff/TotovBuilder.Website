@@ -11,6 +11,7 @@ import Result, { FailureType } from '../../../utils/Result'
 import { useItemServiceMock } from '../../../__mocks__/ItemServiceMock'
 import { useTarkovValuesServiceMock } from '../../../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
+import { describe, expect, it } from 'vitest'
 
 describe('getAcceptedItems()', () => {
   it('should get the acceptem items', async () => {
@@ -68,9 +69,6 @@ describe('getAcceptedItems()', () => {
       '5c165d832e2216398b5a7e36',
       '5b3f3b0e86f7746752107cda'
     ])
-
-    // Clean
-    localStorage.clear()
   })
 
   it('should get an empty list if an error occurs', async () => {

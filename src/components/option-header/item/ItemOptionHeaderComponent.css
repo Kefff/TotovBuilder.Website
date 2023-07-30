@@ -18,9 +18,11 @@
 }
 
 .item-option-icon-placeholder {
-  width: 5.525rem; /* Width of the longest weapons displayed in summaries */
+  width: 5.525rem;
+  /* Width of the longest weapons displayed in summaries */
 }
 
 .item-option-longest-header-width-placeholder {
-  width: 41.25rem; /* Ammunition options header width : 5 * 6rem of value + 11.25rem of penetrations  */
+  width: 41.25rem;
+  /* Ammunition options header width : 5 * 6rem of value + 11.25rem of penetrations  */
 }

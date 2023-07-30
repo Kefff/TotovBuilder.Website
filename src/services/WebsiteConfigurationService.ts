@@ -1,5 +1,4 @@
 import { IWebsiteConfiguration } from '../models/configuration/IWebsiteConfiguration'
-import Configuration from '../../test-data/configuration.json'
 import Services from './repository/Services'
 import { ApiService } from './ApiService'
 import Result, { FailureType } from '../utils/Result'
@@ -14,6 +13,7 @@ export class WebsiteConfigurationService {
    * Website configuration.
    */
   public configuration: IWebsiteConfiguration = {
+    allowCookiesStorageKey: 'allow_cookies',
     bugReportUrl: '',
     buildSharingUrl: '',
     buildsSortFieldStorageKey: 'builds_sort_field',
@@ -30,10 +30,10 @@ export class WebsiteConfigurationService {
     fetchTimeout: 30,
     fetchWaitTimeBetweenRetries: 2,
     githubUrl: '',
+    globalFilterStorageKey: 'global_filter',
     itemCategoriesApi: '',
     itemsApi: '',
     languageStorageKey: 'language',
-    globalFilterStorageKey: 'global_filter',
     notificationErrorDuration: 10,
     notificationInformationDuration: 5,
     notificationSuccessDuration: 5,
@@ -67,7 +67,7 @@ export class WebsiteConfigurationService {
    */
   private async fetchWebsiteConfiguration(): Promise<Result<IWebsiteConfiguration>> {
     const apiService = Services.get(ApiService)
-    const websiteConfigurationResult = await apiService.get<IWebsiteConfiguration>(Configuration.VITE_WEBSITE_CONFIGURATION_API as string)
+    const websiteConfigurationResult = await apiService.get<IWebsiteConfiguration>(import.meta.env.VITE_WEBSITE_CONFIGURATION_API as string)
 
     if (!websiteConfigurationResult.success) {
       return Result.fail(FailureType.error, 'WebsiteConfigurationService.fetchWebsiteConfiguration()', i18n.t('message.websiteConfigurationNotFetched'))

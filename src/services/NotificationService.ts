@@ -3,6 +3,7 @@ import { INotification } from '../models/utils/INotification'
 import { TinyEmitter } from 'tiny-emitter'
 import Services from './repository/Services'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import { INotificationButton } from '../models/utils/INotificationButton'
 
 /**
  * Represents a service responsible for managing notification messages.
@@ -60,9 +61,20 @@ export class NotificationService {
    * @param type - Type of notification.
    * @param message - Message.
    * @param toast - Indicates whether a notification will be displayed as a toast or not.
-   * @param toastDuration - Duration of the toast. Zero means the toast will be displayed until manually closed by the user.
+   * @param toastDuration - Duration of the toast.
+   * Zero means the toast will be displayed until manually closed by the user.
+   * undefined means the toast will be displayed until the default duration for the notification type is reached.
+   * @param buttons - Buttons to display.
+   * When at least button exists, the default close button is hidden.
+   * Clicking a button closes the notification.
    */
-  public notify(type: NotificationType, message: string, toast = false, toastDuration: number | undefined = undefined): void {
+  public notify(
+    type: NotificationType,
+    message: string,
+    toast = false,
+    toastDuration: number | undefined = undefined,
+    buttons: INotificationButton[] | undefined = undefined,
+    closable: boolean | undefined = undefined): void {
     if (toast) {
       if (toastDuration == null) {
         const websiteConfigurationService = Services.get(WebsiteConfigurationService)
@@ -99,6 +111,8 @@ export class NotificationService {
     }
 
     const notification: INotification = {
+      buttons: buttons ?? [],
+      closable: closable ?? (buttons?.length ?? 0) == 0,
       date: new Date(),
       id: Guid.create().toString(),
       message,

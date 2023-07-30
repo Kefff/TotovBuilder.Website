@@ -11,7 +11,6 @@
         >
           <div class="inventory-slot-title">
             <font-awesome-icon
-
               v-if="collapsed"
               icon="angle-right"
               class="collapsable-icon-collapsed"
@@ -34,6 +33,28 @@
             <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelValue.typeId)) }}</span>
           </div>
           <div class="option-line">
+            <div
+              v-if="verticalRecoil != null"
+              v-tooltip.top="$t('caption.verticalRecoil')"
+              class="inventory-slot-summary-value"
+            >
+              <span>{{ verticalRecoil }}</span>
+              <font-awesome-icon
+                icon="arrows-alt-v"
+                class="icon-after-text"
+              />
+            </div>
+            <div
+              v-if="horizontalRecoil != null"
+              v-tooltip.top="$t('caption.horizontalRecoil')"
+              class="inventory-slot-summary-value"
+            >
+              <span>{{ horizontalRecoil }}</span>
+              <font-awesome-icon
+                icon="arrows-alt-h"
+                class="icon-after-text"
+              />
+            </div>
             <div
               v-if="ergonomics != null"
               v-tooltip.top="$t('caption.ergonomics')"
@@ -84,28 +105,6 @@
                 class="icon-after-text"
               />
             </div>
-            <div
-              v-if="verticalRecoil != null"
-              v-tooltip.top="$t('caption.verticalRecoil')"
-              class="inventory-slot-summary-value"
-            >
-              <span>{{ verticalRecoil }}</span>
-              <font-awesome-icon
-                icon="arrows-alt-v"
-                class="icon-after-text"
-              />
-            </div>
-            <div
-              v-if="horizontalRecoil != null"
-              v-tooltip.top="$t('caption.horizontalRecoil')"
-              class="inventory-slot-summary-value"
-            >
-              <span>{{ horizontalRecoil }}</span>
-              <font-awesome-icon
-                icon="arrows-alt-h"
-                class="icon-after-text"
-              />
-            </div>
             <div class="option-entry inventory-slot-summary-price">
               <InventoryPrice :inventory-price="price" />
             </div>
@@ -132,7 +131,7 @@
         :accepted-items-category-id="acceptedItemsCategoryId"
         :can-be-looted="canBeLooted"
         :path="path + '_' + index + '/' + itemPathPrefix + (item?.itemId ?? 'empty')"
-        @update:modelValue="onItemChanged(index)"
+        @update:model-value="onItemChanged(index)"
       />
     </Panel>
   </div>

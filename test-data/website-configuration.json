@@ -1,4 +1,5 @@
 {
+  "allowCookiesStorageKey": "allow_cookies",
   "bugReportUrl": "https://discord.gg/bugreport",
   "buildSharingUrl": "localhost:3000/s/",
   "buildsSortFieldStorageKey": "builds_sort_field",

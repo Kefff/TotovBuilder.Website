@@ -7,7 +7,7 @@
     >
       <Checkbox
         v-model="merchanFilter.enabled"
-        v-tooltip.top="getCheckboxTooltip(merchanFilter.enabled)"
+        v-tooltip.top="StringUtils.getCheckboxStateTooltip(merchanFilter.enabled)"
         :binary="true"
         @change="onFiltersChanged()"
       />

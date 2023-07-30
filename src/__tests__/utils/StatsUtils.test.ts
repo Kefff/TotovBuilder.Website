@@ -1,5 +1,6 @@
 import StatsUtils from '../../utils/StatsUtils'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
+import { describe, expect, it } from 'vitest'
 
 describe('StringUtils.getValueClass()', () => {
   it.each([

@@ -24,10 +24,13 @@ import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
+import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
+import vueI18n from '../../plugins/vueI18n'
 
 export default defineComponent({
   components: {
     DisplayOptions,
+    GeneralOptions,
     InputTextField,
     InventoryPrice,
     InventorySlot,
@@ -88,7 +91,6 @@ export default defineComponent({
     const displayOptionsSidebarVisible = ref(false)
     const editing = isNewBuild.value ? ref(true) : ref(false)
     const isLoading = ref(true)
-    const merchantItemsOptionsSidebarVisible = ref(false)
     const summary = ref<IBuildSummary>({
       ergonomics: undefined,
       exported: false,
@@ -237,7 +239,7 @@ export default defineComponent({
       }
 
       build.value.id = ''
-      build.value.name = ''
+      build.value.name = build.value.name + ' - ' + vueI18n.t('caption.copy')
       startEdit()
     }
 
@@ -281,15 +283,6 @@ export default defineComponent({
 
       if (!exportResult.success) {
         notificationService.notify(NotificationType.error, exportResult.failureMessage)
-      }
-    }
-
-    /**
-     * Gets the collapse status of all the inventory slots.
-     */
-    function getCollapseStatuses() {
-      for (const inventorySlot of build.value.inventorySlots) {
-        collapseStatuses.value.push(!inventorySlot.items.some(i => i != null))
       }
     }
 
@@ -348,8 +341,11 @@ export default defineComponent({
       build.value = buildComponentService.getBuild(route.params['id'] as string)
       getSharedBuild(route.params['sharedBuild'] as string)
         .then(async () => {
-          getCollapseStatuses()
-          await getSummary()
+          getSummary()
+
+          build.value.inventorySlots.forEach(() => {
+            collapseStatuses.value.push(false) // All inventory slots expanded by default
+          })
         })
         .finally(() => isLoading.value = false)
     }
@@ -478,7 +474,6 @@ export default defineComponent({
       isEmpty,
       isLoading,
       isNewBuild,
-      merchantItemsOptionsSidebarVisible,
       notExportedTooltip,
       path,
       remove,

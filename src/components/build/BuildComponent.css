@@ -54,6 +54,10 @@
 }
 
 .build-toolbar-right {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   margin-left: auto;
 }
 

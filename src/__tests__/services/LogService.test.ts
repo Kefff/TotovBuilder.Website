@@ -1,7 +1,7 @@
 import { LogService } from '../../services/LogService'
 import i18n from '../../plugins/vueI18n'
-import Configuration from '../../../test-data/configuration.json'
 import { anything, spy, when } from 'ts-mockito'
+import { describe, expect, it } from 'vitest'
 
 describe('getMessage()', () => {
   it('should get a message', () => {
@@ -66,7 +66,7 @@ describe('logError()', () => {
   ])('should log an error messages when in debug mode, otherwise a generic error message', (debug: boolean, expected: string) => {
     // Arrange
     const loggerService = new LogService()
-    Configuration.VITE_DEBUG = debug.toString().toLocaleLowerCase()
+    import.meta.env.VITE_DEBUG = debug.toString().toLocaleLowerCase()
     const key = 'test.logger1'
     let log: string | undefined = undefined
 

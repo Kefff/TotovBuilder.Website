@@ -1,14 +1,13 @@
-import { computed, defineComponent, onMounted, ref } from '@vue/runtime-dom'
+import { computed, defineComponent, onMounted, ref } from 'vue'
 import BuildsList from '../builds-list/BuildsListComponent.vue'
 import Services from '../../services/repository/Services'
 import { ImportService } from '../../services/ImportService'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
-import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { IBuild } from '../../models/build/IBuild'
 import { useI18n } from 'vue-i18n'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import { VersionService } from '../../services/VersionService'
+import { BuildsImportComponentService } from '../../services/components/BuildsImportComponentService'
 
 export default defineComponent({
   components: {
@@ -26,6 +25,8 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'update:hasImported'],
   setup: (props, { emit }) => {
+    const buildsImportComponentService = Services.get(BuildsImportComponentService)
+
     const i18n = useI18n()
     const importService = Services.get(ImportService)
     const notificationService = Services.get(NotificationService)
@@ -72,40 +73,25 @@ export default defineComponent({
      * Read builds from the imported file.
      */
     async function readBuilds() {
+      readenBuilds.value = []
       readenBuildSummaries.value = []
 
       if (importInput.value.files.length === 0) {
         return
       }
 
-      const buildPropertiesService = Services.get(BuildPropertiesService)
       const buildFile = importInput.value.files[0]
 
-      const buildsResult = await Services.get(ImportService).getBuildsFromFile(buildFile)
+      const buildsImportResult = await buildsImportComponentService.readBuilds(buildFile)
 
-      if (!buildsResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, buildsResult.failureMessage)
+      if (!buildsImportResult.success) {
+        Services.get(NotificationService).notify(NotificationType.error, buildsImportResult.failureMessage)
 
         return
       }
 
-      for (const build of buildsResult.value) {
-        Services.get(VersionService).executeBuildMigrations(build) // Executing migrations on the build in case it is obsolete
-      }
-
-      readenBuilds.value = buildsResult.value
-
-      for (const build of readenBuilds.value) {
-        const summaryResult = await buildPropertiesService.getSummary(build)
-
-        if (!summaryResult.success) {
-          Services.get(NotificationService).notify(NotificationType.error, summaryResult.failureMessage)
-
-          return
-        }
-
-        readenBuildSummaries.value.push(summaryResult.value)
-      }
+      readenBuilds.value = buildsImportResult.value.builds
+      readenBuildSummaries.value = buildsImportResult.value.buildSummaries
     }
 
     /**

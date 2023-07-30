@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="editing || modelValue.item != null "
+    v-if="editing || modelValue.item != null"
     class="mod-slot"
   >
     <div class="slot-name">
