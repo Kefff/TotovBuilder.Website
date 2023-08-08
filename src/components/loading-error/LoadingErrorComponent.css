@@ -1,0 +1,10 @@
+.loading-error {
+  align-items: center;
+  color: var(--error-color);
+  display: flex;
+  font-weight: bold;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  white-space: pre-line;
+}

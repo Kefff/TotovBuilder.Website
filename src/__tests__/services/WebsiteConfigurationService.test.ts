@@ -18,9 +18,10 @@ describe('initialize', () => {
     const service = new WebsiteConfigurationService()
 
     // Act
-    await service.initialize()
+    const result = await service.initialize()
 
     // Assert
+    expect(result).toBe(true)
     expect(service.configuration.buildSharingUrl).toBe('localhost:3000/s/')
   })
 
@@ -30,15 +31,16 @@ describe('initialize', () => {
     Services.configure(NotificationService)
 
     const apiServiceMock = mock<ApiService>()
-    when(apiServiceMock.get(anyString())).thenReturn(Promise.resolve(Result.fail<void>(FailureType.error, 'ApiItemFetcher.get()', 'API error')))
+    when(apiServiceMock.get(anyString())).thenReturn(Promise.resolve(Result.fail<void>(FailureType.error, 'ApiService.get()', 'API error')))
     Services.configure(ApiService, undefined, instance(apiServiceMock))
 
     const service = new WebsiteConfigurationService()
 
     // Act
-    await service.initialize()
+    const result = await service.initialize()
 
     // Assert
+    expect(result).toBe(false)
     expect(service.configuration.buildSharingUrl).toBe('')
   })
 })

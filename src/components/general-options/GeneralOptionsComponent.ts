@@ -1,5 +1,5 @@
 import { defineComponent, onMounted, ref } from 'vue'
-import Services from '../../services/repository/Services'
+import Services, { InitializationState } from '../../services/repository/Services'
 import { GeneralOptionsService } from '../../services/GeneralOptionsService'
 import StringUtils from '../../utils/StringUtils'
 
@@ -13,7 +13,7 @@ export default defineComponent({
     const sidebarVisible = ref(false)
 
     onMounted(() => {
-      isLoading.value = Services.isInitializing
+      isLoading.value = Services.initializationState === InitializationState.initializing
 
       if (!isLoading.value) {
         getAllowCookies()

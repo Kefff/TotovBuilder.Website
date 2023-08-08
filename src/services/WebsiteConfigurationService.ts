@@ -14,15 +14,15 @@ export class WebsiteConfigurationService {
    */
   public configuration: IWebsiteConfiguration = {
     allowCookiesStorageKey: 'allow_cookies',
-    bugReportUrl: '',
+    bugReportUrl: 'https://discord.gg/qAtpHHbGUu',
     buildSharingUrl: '',
     buildsSortFieldStorageKey: 'builds_sort_field',
     buildsSortOrderStorageKey: 'builds_sort_order',
     buildStorageKeyPrefix: 'build_',
     cacheDuration: 3600,
     changelogApi: '',
-    contactAddress: '',
-    discordUrl: '',
+    contactAddress: 'totovbuilder@gmail.com',
+    discordUrl: 'https://discord.gg/J4yp44nvEk',
     exportFileExtension: '',
     exportFileNamePrefix: '',
     exportWarningShowedStoregeKey: '',
@@ -49,16 +49,18 @@ export class WebsiteConfigurationService {
   /**
    * Initializes the data used by the service.
    */
-  public async initialize(): Promise<void> {
+  public async initialize(): Promise<boolean> {
     const websiteConfigurationResult = await this.fetchWebsiteConfiguration()
 
     if (!websiteConfigurationResult.success) {
       Services.get(NotificationService).notify(NotificationType.error, websiteConfigurationResult.failureMessage, true)
 
-      return
+      return false
     }
 
     this.configuration = websiteConfigurationResult.value
+
+    return true
   }
 
   /**
@@ -70,7 +72,7 @@ export class WebsiteConfigurationService {
     const websiteConfigurationResult = await apiService.get<IWebsiteConfiguration>(import.meta.env.VITE_WEBSITE_CONFIGURATION_API as string)
 
     if (!websiteConfigurationResult.success) {
-      return Result.fail(FailureType.error, 'WebsiteConfigurationService.fetchWebsiteConfiguration()', i18n.t('message.websiteConfigurationNotFetched'))
+      return Result.fail(FailureType.error, 'WebsiteConfigurationService.fetchWebsiteConfiguration()', i18n.t('message.websiteLoadingError'))
     }
 
     return websiteConfigurationResult

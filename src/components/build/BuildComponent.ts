@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import InputTextField from '../input-text-field/InputTextFieldComponent.vue'
 import InventorySlot from '../inventory-slot/InventorySlotComponent.vue'
 import { IBuild } from '../../models/build/IBuild'
-import Services from '../../services/repository/Services'
+import Services, { InitializationState } from '../../services/repository/Services'
 import { BuildComponentService } from '../../services/components/BuildComponentService'
 import { CompatibilityService } from '../../services/compatibility/CompatibilityService'
 import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
@@ -26,6 +26,7 @@ import { InventoryItemService } from '../../services/InventoryItemService'
 import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
 import vueI18n from '../../plugins/vueI18n'
+import LoadingError from '../loading-error/LoadingErrorComponent.vue'
 
 export default defineComponent({
   components: {
@@ -35,6 +36,7 @@ export default defineComponent({
     InventoryPrice,
     InventorySlot,
     Loading,
+    LoadingError,
     MerchantItemsOptions,
     NotificationButton,
     ShareBuild,
@@ -90,6 +92,7 @@ export default defineComponent({
     const deleting = ref(false)
     const displayOptionsSidebarVisible = ref(false)
     const editing = isNewBuild.value ? ref(true) : ref(false)
+    const hasLoadingError = ref(false)
     const isLoading = ref(true)
     const summary = ref<IBuildSummary>({
       ergonomics: undefined,
@@ -166,7 +169,7 @@ export default defineComponent({
       document.onkeydown = (e) => onKeyDown(e)
       window.addEventListener('scroll', setToolbarCssClass)
 
-      if (!Services.isInitializing) {
+      if (Services.initializationState !== InitializationState.initializing) {
         // If the services are already initialized, we can initialize the component instead of waiting for the "initialized" event
         // thant won't be triggered because the services initialization is already done
         initialize()
@@ -314,15 +317,7 @@ export default defineComponent({
         return
       }
 
-      const summaryResult = await buildPropertiesService.getSummary(build.value)
-
-      if (!summaryResult.success) {
-        notificationService.notify(NotificationType.error, summaryResult.failureMessage)
-
-        return
-      }
-
-      summary.value = summaryResult.value
+      summary.value = await buildPropertiesService.getSummary(build.value)
     }
 
     /**
@@ -347,7 +342,10 @@ export default defineComponent({
             collapseStatuses.value.push(false) // All inventory slots expanded by default
           })
         })
-        .finally(() => isLoading.value = false)
+        .finally(() => {
+          isLoading.value = false
+          hasLoadingError.value = Services.initializationState === InitializationState.error
+        })
     }
 
     /**
@@ -459,6 +457,7 @@ export default defineComponent({
       expandWithItem,
       exportBuild,
       goToBuilds,
+      hasLoadingError,
       hasSummaryErgonomics,
       hasSummaryErgonomicsPercentageModifier,
       hasSummaryHorizontalRecoil,

@@ -35,3 +35,9 @@
 .notification-toast-buttons-text {
   width: 100%;
 }
+
+@media screen and (max-width: 1024px) {
+  .notification-toast {
+    max-width: unset;
+  }
+}

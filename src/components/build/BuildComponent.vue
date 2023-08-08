@@ -43,7 +43,7 @@
             <span>{{ $t('caption.save') }}</span>
           </Button>
           <Button
-            v-show="!editing"
+            v-show="!editing && !hasLoadingError"
             class="toolbar-button"
             @click="startEdit()"
           >
@@ -53,16 +53,24 @@
             />
             <span>{{ $t('caption.edit') }}</span>
           </Button>
-          <ShoppingList :shopping-list="summary.shoppingList" />
+          <ShoppingList
+            v-if="!hasLoadingError"
+            :shopping-list="summary.shoppingList"
+          />
           <Button
+            v-if="!hasLoadingError"
             v-tooltip.top="$t('caption.copyBuild')"
             :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
             @click="copy()"
           >
             <font-awesome-icon icon="copy" />
           </Button>
-          <ShareBuild :build="build" />
+          <ShareBuild
+            v-if="!hasLoadingError"
+            :build="build"
+          />
           <Button
+            v-if="!hasLoadingError"
             v-tooltip.top="$t('caption.exportBuild')"
             :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
             @click="exportBuild()"
@@ -237,7 +245,7 @@
               <span>{{ $t('caption.cancel') }}</span>
             </Button>
             <Button
-              v-show="!editing"
+              v-show="!editing && !hasLoadingError"
               class="p-button-danger toolbar-button"
               @click="startDelete()"
             >
@@ -255,7 +263,19 @@
 
     <!-- Inventory slots -->
     <div
-      v-show="!isLoading"
+      v-show="isLoading"
+      class="build-loading"
+    >
+      <Loading />
+    </div>
+    <div
+      v-if="hasLoadingError"
+      class="build-loading-error"
+    >
+      <LoadingError />
+    </div>
+    <div
+      v-show="!isLoading && !hasLoadingError"
       id="build-content"
     >
       <div
@@ -291,12 +311,6 @@
           :path="path + '/' + inventorySlotPathPrefix + inventorySlot.typeId"
         />
       </div>
-    </div>
-    <div
-      v-show="isLoading"
-      class="build-loading"
-    >
-      <Loading />
     </div>
   </div>
 

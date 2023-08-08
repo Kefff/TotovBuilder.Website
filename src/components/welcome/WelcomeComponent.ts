@@ -1,17 +1,19 @@
 import { defineComponent, onMounted, ref, watch } from 'vue'
 import router from '../../plugins/vueRouter'
 import { BuildService } from '../../services/BuildService'
-import Services from '../../services/repository/Services'
+import Services, { InitializationState } from '../../services/repository/Services'
 import BuildsImport from '../builds-import/BuildsImportComponent.vue'
 import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
 import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
+import LoadingError from '../loading-error/LoadingErrorComponent.vue'
 
 export default defineComponent({
   components: {
     BuildsImport,
     DisplayOptions,
     Loading,
+    LoadingError,
     MerchantItemsOptions
   },
   setup: () => {
@@ -19,9 +21,10 @@ export default defineComponent({
 
     const displayOptionsSidebarVisible = ref(false)
     const hasBuilds = ref(false)
+    const hasImported = ref(false)
+    const hasLoadingError = ref(false)
     const isImporting = ref(false)
     const isLoading = ref(true)
-    const hasImported = ref(false)
     const merchantItemsOptionsSidebarVisible = ref(false)
 
     watch(() => hasImported.value, () => {
@@ -31,9 +34,7 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      isLoading.value = Services.isInitializing
-
-      if (!isLoading.value) {
+      if (Services.initializationState === InitializationState.initialized) {
         onConfigurationLoaded()
       }
     })
@@ -49,7 +50,14 @@ export default defineComponent({
      * Gets builds and ends loading.
      */
     function onConfigurationLoaded() {
-      hasBuilds.value = Services.get(BuildService).getAll().length > 0
+      hasLoadingError.value = Services.initializationState === InitializationState.error
+
+      if (hasLoadingError.value) {
+        hasBuilds.value = false
+      } else {
+        hasBuilds.value = Services.get(BuildService).getAll().length > 0
+      }
+
       isLoading.value = false
     }
 
@@ -72,8 +80,9 @@ export default defineComponent({
       displayOptionsSidebarVisible,
       hasBuilds,
       hasImported,
-      isLoading,
+      hasLoadingError,
       isImporting,
+      isLoading,
       merchantItemsOptionsSidebarVisible,
       openNewBuild,
       showBuildsImportPopup

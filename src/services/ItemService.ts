@@ -1,7 +1,7 @@
 import { IItem } from '../models/item/IItem'
 import Result, { FailureType } from '../utils/Result'
 import i18n from '../plugins/vueI18n'
-import Services from './repository/Services'
+import Services, { InitializationState } from './repository/Services'
 import { ICurrency } from '../models/configuration/ICurrency'
 import { NotificationService, NotificationType } from './NotificationService'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
@@ -185,6 +185,10 @@ export class ItemService {
    * Initializes the data used by the service.
    */
   public async initialize(): Promise<void> {
+    if (Services.initializationState === InitializationState.error) {
+      return
+    }
+
     if (!this.hasStaticDataCached) {
       await this.fetchStaticData()
     }

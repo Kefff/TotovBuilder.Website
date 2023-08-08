@@ -270,7 +270,7 @@
     "shareLinkCopied": "Lien de partage copié dans le presse-papier.",
     "shareLinkCopyError": "Erreur lors de la copie du lien de partage dans le presse-papier",
     "tarkovValuesNotFetched": "Aucune valeur de Tarkov n'a pu être récupérée.",
-    "websiteConfigurationNotFetched": "Aucune configuration du site web n'a pu être récupérée.",
+    "websiteLoadingError": "Une erreur s'est produite lors du chargement.\nEssayez d'attendre un peu et de recharger la page en utilisant CTRL + F5.",
     "welcome1": "Qu'est-ce que ",
     "welcome2": " ?",
     "welcome3": " est un outil vous permettant de créer et gérer les équipements de vos PMCs.",

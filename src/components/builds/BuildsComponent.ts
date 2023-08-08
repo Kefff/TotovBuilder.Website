@@ -6,7 +6,7 @@ import {
   NotificationService,
   NotificationType
 } from '../../services/NotificationService'
-import Services from '../../services/repository/Services'
+import Services, { InitializationState } from '../../services/repository/Services'
 import StatsUtils from '../../utils/StatsUtils'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
@@ -22,6 +22,7 @@ import { WebsiteConfigurationService } from '../../services/WebsiteConfiguration
 import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
 import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
+import LoadingError from '../loading-error/LoadingErrorComponent.vue'
 
 export default defineComponent({
   components: {
@@ -32,6 +33,7 @@ export default defineComponent({
     GeneralOptions,
     LanguageSelector,
     Loading,
+    LoadingError,
     MerchantItemsOptions,
     NotificationButton
   },
@@ -58,6 +60,7 @@ export default defineComponent({
 
     const displayOptionsSidebarVisible = ref(false)
     const hasImported = ref(false)
+    const hasLoadingError = ref(false)
     const isExporting = ref(false)
     const isImporting = ref(false)
     const isLoading = ref(true)
@@ -78,9 +81,7 @@ export default defineComponent({
 
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-      isLoading.value = Services.isInitializing
-
-      if (!isLoading.value) {
+      if (Services.initializationState !== InitializationState.initializing) {
         onConfigurationLoaded()
       }
     })
@@ -115,16 +116,8 @@ export default defineComponent({
       const buildPropertiesService = Services.get(BuildPropertiesService)
 
       for (const build of builds) {
-        const summaryResult = await buildPropertiesService.getSummary(build)
-
-        if (!summaryResult.success) {
-          isLoading.value = false
-          Services.get(NotificationService).notify(NotificationType.error, summaryResult.failureMessage)
-
-          return
-        }
-
-        buildsSummaries.value.push(summaryResult.value)
+        const summary = await buildPropertiesService.getSummary(build)
+        buildsSummaries.value.push(summary)
       }
 
       isLoading.value = false
@@ -142,6 +135,8 @@ export default defineComponent({
         return
       }
 
+      isLoading.value = false
+      hasLoadingError.value = Services.initializationState === InitializationState.error
       checkBuildsNotExported()
     }
 
@@ -201,11 +196,11 @@ export default defineComponent({
       canImport,
       displayOptionsSidebarVisible,
       hasImported,
+      hasLoadingError,
       isExporting,
       isImporting,
       isLoading,
       merchantItemsOptionsSidebarVisible,
-      openBuild,
       openNewBuild,
       selectedBuildSummary,
       showBuildsExportPopup,

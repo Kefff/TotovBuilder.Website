@@ -18,13 +18,19 @@
         <h2>{{ $t('message.welcomeBack') }}</h2>
       </div>
       <div
-        v-if="isLoading"
+        v-show="isLoading"
         class="welcome-loading"
       >
         <Loading />
       </div>
       <div
-        v-else
+        v-if="hasLoadingError"
+        class="welcome-loading-error"
+      >
+        <LoadingError />
+      </div>
+      <div
+        v-show="!isLoading && !isImporting"
         class="welcome-actions"
       >
         <div

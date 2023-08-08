@@ -12,9 +12,9 @@ class ServicesRepository {
   public emitter = new TinyEmitter()
 
   /**
-   * Determines whether the services are initializing or not.
+   * Services initialization state.
    */
-  public isInitializing = true
+  public initializationState = InitializationState.initializing
 
   /**
    * Collection of the configured services.
@@ -83,11 +83,14 @@ class ServicesRepository {
   }
 
   /**
-   * Indicates that the initialization has finished and that the emitter should signal it.
+   * Indicates that the minimum initialization for displaying the website has finished,
+   * either successfully or with error.
+   * Emits the state change to the subscribed services.
+   * @param state - Initialization state.
    */
-  public setInitializationFinished() {
+  public setMinimumInitializationFinished(state: InitializationState) {
+    this.initializationState = state
     this.emitter.emit('initialized')
-    this.isInitializing = false
   }
 
   /**
@@ -105,4 +108,24 @@ class ServicesRepository {
 }
 
 export default new ServicesRepository()
+
+/**
+ * Initialization state.
+ */
+export enum InitializationState {
+  /**
+   * An error occured during the initialization.
+   */
+  error,
+
+  /**
+   * Services are initialized.
+   */
+  initialized,
+
+  /**
+   * Services are initializing.
+   */
+  initializing
+}
 

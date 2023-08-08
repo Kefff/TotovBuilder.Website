@@ -26,16 +26,18 @@ export class TarkovValuesService {
   /**
    * Initializes the data used by the service.
    */
-  public async initialize(): Promise<void> {
+  public async initialize(): Promise<boolean> {
     const tarkovValuesResult = await this.fetchTarkovValues()
 
     if (!tarkovValuesResult.success) {
       Services.get(NotificationService).notify(NotificationType.error, tarkovValuesResult.failureMessage, true)
 
-      return
+      return false
     }
 
     this.values = tarkovValuesResult.value
+
+    return true
   }
 
   /**
@@ -47,7 +49,7 @@ export class TarkovValuesService {
     const tarkovValuesResult = await apiService.get<ITarkovValues>(Services.get(WebsiteConfigurationService).configuration.tarkovValuesApi)
 
     if (!tarkovValuesResult.success) {
-      return Result.fail(FailureType.error, 'TarkovValuesService.fetchTarkovValues()', i18n.t('message.tarkovValuesNotFetched'))
+      return Result.fail(FailureType.error, 'TarkovValuesService.fetchTarkovValues()', i18n.t('message.websiteLoadingError'))
     }
 
     return tarkovValuesResult

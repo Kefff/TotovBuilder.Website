@@ -104,6 +104,15 @@ export default class Result<T = void> {
 
         break
       }
+      case FailureType.exception: {
+        if (import.meta.env.VITE_DEBUG === 'true') {
+          service.logException('message.failureDebug', { message: this.failureMessage, context: this.failureContext })
+        } else {
+          service.logException(this.failureMessage)
+        }
+
+        break
+      }
       case FailureType.warning: {
         if (import.meta.env.VITE_DEBUG === 'true') {
           service.logWarning('message.failureDebug', { message: this.failureMessage, context: this.failureContext })
@@ -122,18 +131,23 @@ export default class Result<T = void> {
  */
 export enum FailureType {
   /**
-   * Failure will be logged as an error.
+   * Failure logged as an error.
    */
   error,
 
   /**
-   * Failure will not be logged.
+   * Failure logged as an exception.
+   */
+  exception,
+
+  /**
+   * Failure not logged.
    * Usually used when a failure is normal and expected.
    */
   hidden,
 
   /**
-   * Failure will be logged as a warning.
+   * Failure logged as a warning.
    */
   warning
 }

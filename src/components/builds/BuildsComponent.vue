@@ -7,7 +7,7 @@
       <div class="toolbar-line">
         <div class="toolbar-part">
           <Button
-            :class="isLoading ? ' p-disabled' : ''"
+            v-if="!isLoading && !hasLoadingError"
             @click="openNewBuild()"
           >
             <font-awesome-icon
@@ -17,6 +17,7 @@
             <span>{{ $t('caption.newBuild') }}</span>
           </Button>
           <Button
+            v-if="!isLoading && !hasLoadingError"
             v-tooltip.top="$t('caption.exportBuilds')"
             :class="'p-button-text p-button-sm button-discreet' + (!canExport ? ' p-disabled' : '')"
             @click="showBuildsExportPopup()"
@@ -24,6 +25,7 @@
             <font-awesome-icon icon="file-export" />
           </Button>
           <Button
+            v-if="!isLoading && !hasLoadingError"
             v-tooltip.top="$t('caption.importBuilds')"
             :class="'p-button-text p-button-sm button-discreet' + (!canImport ? ' p-disabled' : '')"
             @click="showBuildsImportPopup()"
@@ -44,6 +46,18 @@
       <div class="toolbar-gradient" />
     </div>
     <div
+      v-show="isLoading"
+      class="builds-loading"
+    >
+      <Loading />
+    </div>
+    <div
+      v-if="hasLoadingError"
+      class="builds-loading-error"
+    >
+      <LoadingError />
+    </div>
+    <div
       v-show="!isLoading && buildsSummaries.length > 0"
       id="builds-content"
     >
@@ -53,24 +67,18 @@
         :multiple="false"
       />
     </div>
-    <div
-      v-show="isLoading"
-      class="builds-loading"
-    >
-      <Loading />
-    </div>
   </div>
 
   <!-- Export -->
   <BuildsExport
-    v-if="!isLoading"
+    v-if="!isLoading && !hasLoadingError"
     v-model="isExporting"
     :builds-summaries="buildsSummaries"
   />
 
   <!-- Import -->
   <BuildsImport
-    v-if="!isLoading"
+    v-if="!isLoading && !hasLoadingError"
     v-model="isImporting"
     v-model:has-imported="hasImported"
   />
