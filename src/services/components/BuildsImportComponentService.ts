@@ -26,13 +26,9 @@ export class BuildsImportComponentService {
 
     for (const build of buildsResult.value) {
       await Services.get(VersionService).executeBuildMigrations(build) // Executing migrations on the build in case it is obsolete
-      const summaryResult = await buildPropertiesService.getSummary(build)
+      const summary = await buildPropertiesService.getSummary(build)
 
-      if (!summaryResult.success) {
-        return Result.failFrom(buildsResult)
-      }
-
-      readenBuildSummaries.push(summaryResult.value)
+      readenBuildSummaries.push(summary)
     }
 
     return Result.ok({

@@ -31,10 +31,11 @@ export class LogService {
    */
   public logException(key: string, parameters?: Record<string, unknown>, plural?: number): void {
     const message = this.getMessage(key, parameters, plural)
-    const displayedMessage = import.meta.env.VITE_DEBUG === 'true' ? message : this.getMessage('message.internalErrorLog')
-    const exceptionMessage = i18n.t('message.errorLog', { message: displayedMessage })
+    const displayedMessage = import.meta.env.VITE_DEBUG === 'true'
+      ? i18n.t('message.errorLog', { message })
+      : this.getMessage('message.internalErrorLog')
 
-    console.error(exceptionMessage)
+    console.error(displayedMessage)
     applicationInsights.trackException({
       exception: new Error(message),
       severityLevel: SeverityLevel.Error

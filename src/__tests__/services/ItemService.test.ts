@@ -1,5 +1,5 @@
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito'
-import Services from '../../services/repository/Services'
+import Services, { InitializationState } from '../../services/repository/Services'
 import { ItemService } from '../../services/ItemService'
 import { IPrice } from '../../models/item/IPrice'
 import Result, { FailureType } from '../../utils/Result'
@@ -647,7 +647,6 @@ describe('initialize', () => {
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(NotificationService)
 
     const itemFetcherServiceSpy = spy(Services.get(ItemFetcherService))
 
@@ -660,5 +659,28 @@ describe('initialize', () => {
     // Assert
     verify(itemFetcherServiceSpy.fetchItems()).once()
     verify(itemFetcherServiceSpy.fetchPrices()).once()
+  })
+
+  it('should do nothing when services failed to initialize', async () => {
+    // Arrange
+    useGlobalFilterServiceMock()
+    useItemFetcherServiceMock()
+    usePresetServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
+    const itemFetcherServiceSpy = spy(Services.get(ItemFetcherService))
+
+    Services.initializationState = InitializationState.error
+
+    const itemService = new ItemService()
+
+    // Act
+    await itemService.initialize()
+
+    // Assert
+    verify(itemFetcherServiceSpy.fetchItems()).never()
+    verify(itemFetcherServiceSpy.fetchPrices()).never()
+    verify(itemFetcherServiceSpy.fetchPresets()).never()
   })
 })

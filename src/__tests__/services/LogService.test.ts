@@ -64,7 +64,7 @@ describe('logError()', () => {
     // Arrange
     const loggerService = new LogService()
     const key = 'test.logger1'
-    const expected = i18n.t('message.warningLog', { message: i18n.t(key) })
+    const expected = i18n.t(key)
     let log: string | undefined = undefined
 
     const consoleSpy = spy(console)
@@ -80,8 +80,8 @@ describe('logError()', () => {
 
 describe('logException()', () => {
   it.each([
-    [true, 'Exception : This is a message.'],
-    [false, 'Exception : An internal error occured.']
+    [true, 'Error : This is a message.'],
+    [false, 'An internal error occured.']
   ])('should log an exception message when in debug mode, otherwise a generic exception message', (debug: boolean, expected: string) => {
     // Arrange
     const loggerService = new LogService()

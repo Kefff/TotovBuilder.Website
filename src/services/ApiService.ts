@@ -55,7 +55,7 @@ export class ApiService {
             // Sometimes Azures responds an empty response with a 0 status code when the instance is shutting down when the request happens.
             // It's unclear whether this response is seen a OK on client-side, so in case where a GET gets an empty response
             // we consider it to be an error
-            return Result.fail<TResult>(FailureType.exception, 'ApiService.get()', i18n.t('message.apiError', { api: method, apiErrorMessage: i18n.t('message.emptyApiResponse') }))
+            return Result.fail<TResult>(FailureType.error, 'ApiService.get()', i18n.t('message.apiError', { api: method, apiErrorMessage: i18n.t('message.emptyApiResponse') }))
           }
           /* c8 ignore stop */
 
@@ -68,7 +68,7 @@ export class ApiService {
           /* c8 ignore start */
           if (this.isEmptyResponseData(responseData)) {
             // For some reason, jest-fetch-mock cannot mock an error response with an empty body. The response has a 200 status even if we force it to 500 when configuring the mock.
-            return Result.fail<TResult>(FailureType.exception, 'ApiService.get()', i18n.t('message.apiError', { api: method, apiErrorMessage: i18n.t('message.emptyApiResponse') }))
+            return Result.fail<TResult>(FailureType.error, 'ApiService.get()', i18n.t('message.apiError', { api: method, apiErrorMessage: i18n.t('message.emptyApiResponse') }))
           }
           /* c8 ignore stop */
 
@@ -78,7 +78,7 @@ export class ApiService {
           return Result.fail<TResult>(FailureType.error, 'ApiService.get()', i18n.t('message.apiError', { api: method, apiErrorMessage }))
         }
       })
-      .catch((error: Error) => Result.fail<TResult>(FailureType.exception, 'ApiService.get()', i18n.t('message.apiError', { api: method, apiErrorMessage: error.message })))
+      .catch((error: Error) => Result.fail<TResult>(FailureType.error, 'ApiService.get()', i18n.t('message.apiError', { api: method, apiErrorMessage: error.message })))
 
     return result
   }

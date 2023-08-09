@@ -199,18 +199,22 @@ describe('get()', () => {
 
   it('should return empty data when the response is empty', async () => {
     // Arrange
-    const response = ''
-    const apiName = 'prices'
     useWebsiteConfigurationServiceMock()
-    fetchMock.mockOnceIf(import.meta.env.VITE_API_URL as string + apiName, response, { status: 200 })
+
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+    websiteConfigurationService.configuration.fetchMaxTries = 1
+
+    const apiName = 'prices'
+
+    fetchMock.mockOnceIf(import.meta.env.VITE_API_URL as string + apiName, '', { status: 200 })
 
     // Act
     const result = await new ApiService().get(apiName)
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
-    expect(result.success).toBe(true)
-    expect(result.value).toBe('')
+    expect(result.success).toBe(false)
+    expect(result.failureMessage).toBe('Failed to successfully request API "prices" after 1 tries.')
   })
 
   it('should fail if a success response is not received until the maximum number of tries is reached', async () => {
@@ -232,8 +236,7 @@ describe('get()', () => {
 
     // Assert
     expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe(`Error while requesting API "item".
-Response : "Access denied".`)
+    expect(result.failureMessage).toBe('Failed to successfully request API "item" after 2 tries.')
   })
 
   it('should fail if it times out', async () => {
@@ -248,13 +251,13 @@ Response : "Access denied".`)
       return new Promise(resolve => setTimeout(resolve, 1000)).then(() => '')
     })
 
+    const service = new ApiService()
+
     // Act
-    const resultPromise = new ApiService().get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
-    const result = await resultPromise
+    const result = await service.get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
 
     // Assert
     expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe(`Error while requesting API "item".
-Response : "The operation was aborted. ".`)
+    expect(result.failureMessage).toBe('Failed to successfully request API "item" after 1 tries.')
   })
 })
