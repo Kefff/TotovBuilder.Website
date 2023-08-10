@@ -14,7 +14,7 @@ export class WebsiteConfigurationService {
    */
   public configuration: IWebsiteConfiguration = {
     allowCookiesStorageKey: 'allow_cookies',
-    bugReportUrl: 'https://discord.gg/qAtpHHbGUu',
+    bugReportUrl: import.meta.env.VITE_DISCORD_URL,
     buildSharingUrl: '',
     buildsSortFieldStorageKey: 'builds_sort_field',
     buildsSortOrderStorageKey: 'builds_sort_order',
@@ -22,7 +22,7 @@ export class WebsiteConfigurationService {
     cacheDuration: 3600,
     changelogApi: '',
     contactAddress: 'totovbuilder@gmail.com',
-    discordUrl: 'https://discord.gg/J4yp44nvEk',
+    discordUrl: import.meta.env.VITE_BUG_REPORT_URL,
     exportFileExtension: '',
     exportFileNamePrefix: '',
     exportWarningShowedStoregeKey: '',

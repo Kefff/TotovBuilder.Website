@@ -56,13 +56,15 @@ export default defineComponent({
           vueI18n.t('message.newVersion', { newVersion: version.value }),
           true,
           0,
-          [{
-            action: () => showChangelog(),
-            caption: vueI18n.t('caption.seeChanges'),
-            icon: undefined,
-            name: 'seeChanges',
-            type: NotificationType.success
-          }],
+          [
+            {
+              action: () => showChangelog(),
+              caption: vueI18n.t('caption.seeChanges'),
+              icon: undefined,
+              name: 'seeChanges',
+              type: NotificationType.success
+            }
+          ],
           true)
       }
     }

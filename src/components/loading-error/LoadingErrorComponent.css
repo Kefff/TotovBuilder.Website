@@ -1,4 +1,20 @@
-.loading-error {
+@import '../../assets/css/icon.css';
+
+.loading-error-button {
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.loading-error-buttons {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 1rem;
+}
+
+.loading-error-message {
   align-items: center;
   color: var(--error-color);
   display: flex;
