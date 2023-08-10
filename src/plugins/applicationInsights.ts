@@ -11,7 +11,6 @@ const applicationInsights = new ApplicationInsights({
 
 export function useApplicationInsights(): void {
   applicationInsights.loadAppInsights()
-  applicationInsights.trackPageView()
 }
 
 export default applicationInsights

@@ -212,7 +212,7 @@ describe('executeBuildMigrations()', () => {
 
     const build = {
       id: 'build1',
-      name: 'build1',
+      name: 'Build 1',
       lastWebsiteVersion: '1.4.0'
     } as IBuild
 
@@ -221,7 +221,7 @@ describe('executeBuildMigrations()', () => {
 
     // Assert
     expect(result).toBe(false)
-    verify(notificationServiceSpy.notify(NotificationType.error, 'Error during the migration of build "build1" to "1.6.0".', true)).once()
+    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build "Build 1" (build1) from version "1.4.0" to "1.6.0".', true)).once()
   })
 })
 
@@ -680,7 +680,9 @@ describe('initialize()', () => {
     const buildServiceMock = mock<BuildService>()
     when(buildServiceMock.getAll()).thenReturn([
       {
-        id: 'build1'
+        id: 'build1',
+        lastWebsiteVersion: '1.5.0',
+        name: 'Build 1'
       } as IBuild
     ])
     Services.configure(BuildService, undefined, instance(buildServiceMock))
@@ -706,7 +708,7 @@ describe('initialize()', () => {
     // Assert
     expect(version).toBe('1.6.0')
     expect(savedVersion).toBe('1.5.0')
-    verify(notificationServiceSpy.notify(NotificationType.error, 'Error during the migration of build "build1" to "1.6.0".', true)).once()
+    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build "Build 1" (build1) from version "1.5.0" to "1.6.0".', true)).once()
   })
 
   it('should not initialize if it is already initialized', async () => {

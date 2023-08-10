@@ -2,7 +2,7 @@
   <div class="build">
     <div class="build-title">
       <span
-        v-if="!summary.exported && !isNewBuild"
+        v-if="!isLoading && !summary.exported && !isNewBuild"
         v-tooltip.top="notExportedTooltip"
         class="build-toolbar-not-exported"
       >
@@ -43,7 +43,7 @@
             <span>{{ $t('caption.save') }}</span>
           </Button>
           <Button
-            v-show="!editing && !hasLoadingError"
+            v-show="!editing && !isLoading && !hasLoadingError"
             class="toolbar-button"
             @click="startEdit()"
           >
@@ -54,11 +54,11 @@
             <span>{{ $t('caption.edit') }}</span>
           </Button>
           <ShoppingList
-            v-if="!hasLoadingError"
+            v-if="!isLoading && !hasLoadingError"
             :shopping-list="summary.shoppingList"
           />
           <Button
-            v-if="!hasLoadingError"
+            v-if="!isLoading && !hasLoadingError"
             v-tooltip.top="$t('caption.copyBuild')"
             :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
             @click="copy()"
@@ -66,11 +66,11 @@
             <font-awesome-icon icon="copy" />
           </Button>
           <ShareBuild
-            v-if="!hasLoadingError"
+            v-if="!isLoading && !hasLoadingError"
             :build="build"
           />
           <Button
-            v-if="!hasLoadingError"
+            v-if="!isLoading && !hasLoadingError"
             v-tooltip.top="$t('caption.exportBuild')"
             :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
             @click="exportBuild()"
@@ -245,7 +245,7 @@
               <span>{{ $t('caption.cancel') }}</span>
             </Button>
             <Button
-              v-show="!editing && !hasLoadingError"
+              v-show="!editing && !isLoading && !hasLoadingError"
               class="p-button-danger toolbar-button"
               @click="startDelete()"
             >
@@ -275,7 +275,7 @@
       <LoadingError />
     </div>
     <div
-      v-show="!isLoading && !hasLoadingError"
+      v-show="!isLoading"
       id="build-content"
     >
       <div

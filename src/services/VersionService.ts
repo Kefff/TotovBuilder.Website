@@ -9,6 +9,7 @@ import Migrations from '../utils/migrations/Migrations'
 import { BuildService } from './BuildService'
 import { IMigration } from '../models/utils/IMigration'
 import { IBuild } from '../models/build/IBuild'
+import { LogService } from './LogService'
 
 export class VersionService {
   /**
@@ -114,7 +115,13 @@ export class VersionService {
       const migrationResult = await migration.migrateBuild(build)
 
       if (!migrationResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.buildMigrationError', { buildId: build.id, version: migration.version }), true)
+        const notificationMessage = build.id !== ''
+          ? vueI18n.t('message.buildMigrationErrorNotification', { buildName: build.name, buildId: build.id, oldVersion: build.lastWebsiteVersion, newVersion: migration.version })
+          : vueI18n.t('message.sharedBuildMigrationErrorNotification', { newVersion: migration.version })
+        const errorMessage = vueI18n.t('message.buildMigrationError', { message: notificationMessage, errors: migrationResult.failureMessage })
+
+        Services.get(LogService).logError(errorMessage)
+        Services.get(NotificationService).notify(NotificationType.error, notificationMessage, true)
 
         return false
       }

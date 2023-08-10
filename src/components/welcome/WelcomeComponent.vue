@@ -30,7 +30,7 @@
         <LoadingError />
       </div>
       <div
-        v-show="!isLoading && !isImporting"
+        v-show="!isLoading && !hasLoadingError && !isImporting"
         class="welcome-actions"
       >
         <div
