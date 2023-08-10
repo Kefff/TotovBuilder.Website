@@ -24,3 +24,8 @@
   flex-wrap: nowrap;
   white-space: pre-line;
 }
+
+.loading-error-message-image {
+  height: 6rem;
+  width: 6rem;
+}

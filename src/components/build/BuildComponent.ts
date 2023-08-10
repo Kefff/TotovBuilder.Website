@@ -18,7 +18,7 @@ import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
 import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Loading from '../loading/LoadingComponent.vue'
-import ShareBuild from '../build-share/BuildShareComponent.vue'
+import BuildShare from '../build-share/BuildShareComponent.vue'
 import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
 import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
@@ -30,6 +30,7 @@ import LoadingError from '../loading-error/LoadingErrorComponent.vue'
 
 export default defineComponent({
   components: {
+    BuildShare,
     DisplayOptions,
     GeneralOptions,
     InputTextField,
@@ -39,7 +40,6 @@ export default defineComponent({
     LoadingError,
     MerchantItemsOptions,
     NotificationButton,
-    ShareBuild,
     ShoppingList
   },
   setup: () => {
@@ -51,7 +51,6 @@ export default defineComponent({
     const buildComponentService = Services.get(BuildComponentService)
     const buildPropertiesService = Services.get(BuildPropertiesService)
     const compatibilityService = Services.get(CompatibilityService)
-    const exportService = Services.get(ExportService)
     const inventoryItemService = Services.get(InventoryItemService)
     const globalFilterService = Services.get(GlobalFilterService)
     const notificationService = Services.get(NotificationService)
@@ -282,10 +281,12 @@ export default defineComponent({
         return
       }
 
-      const exportResult = await exportService.export([build.value])
+      const exportResult = await Services.get(ExportService).export([build.value])
 
-      if (!exportResult.success) {
-        notificationService.notify(NotificationType.error, exportResult.failureMessage)
+      if (exportResult.success) {
+        notificationService.notify(NotificationType.success, vueI18n.t('message.buildsExported'), true)
+      } else {
+        notificationService.notify(NotificationType.error, exportResult.failureMessage, true)
       }
     }
 

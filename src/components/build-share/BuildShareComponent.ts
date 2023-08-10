@@ -5,6 +5,7 @@ import { BuildService } from '../../services/BuildService'
 import InputTextField from '../input-text-field/InputTextFieldComponent.vue'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { useI18n } from 'vue-i18n'
+import { LogService } from '../../services/LogService'
 
 export default defineComponent({
   components: {
@@ -13,6 +14,10 @@ export default defineComponent({
   props: {
     build: {
       type: Object as PropType<IBuild>,
+      required: true
+    },
+    hasLoadingError: {
+      type: Boolean,
       required: true
     }
   },
@@ -47,7 +52,10 @@ export default defineComponent({
           Services.get(NotificationService).notify(NotificationType.information, i18n.t('message.shareLinkCopied'), true)
           closeSharingDialog()
         })
-        .catch(() => Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.shareLinkCopyError'), true))
+        .catch(() => {
+          Services.get(LogService).logError('message.shareLinkCopyError')
+          Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.shareLinkCopyError'), true)
+        })
     }
 
     /**

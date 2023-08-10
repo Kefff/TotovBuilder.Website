@@ -6,7 +6,10 @@
     :draggable="false"
   >
     <div class="loading-error-message">
-      <img src="/assets/prapor_angry.webp">
+      <img
+        src="/assets/prapor_angry.webp"
+        class="loading-error-message-image"
+      >
       <p>{{ $t('message.websiteLoadingError') }}</p>
     </div>
     <div class="loading-error-buttons">

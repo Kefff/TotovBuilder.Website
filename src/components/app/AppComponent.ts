@@ -1,4 +1,4 @@
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref } from 'vue'
 import Notification from '../notification/NotificationComponent.vue'
 import Changelog from '../changelog/ChangelogComponent.vue'
 import Services from '../../services/repository/Services'
@@ -42,6 +42,8 @@ export default defineComponent({
       return text
     })
 
+    onMounted(() => setLanguage())
+
     function displayChangelog() {
       hasChangelogDisplayed.value = true
     }
@@ -52,7 +54,6 @@ export default defineComponent({
       githubAddress.value = websiteConfigurationService.configuration.githubUrl
       reportBugAddress.value = websiteConfigurationService.configuration.bugReportUrl
 
-      setLanguage()
       displayAllowCookiesNotification()
 
       isLoading.value = false

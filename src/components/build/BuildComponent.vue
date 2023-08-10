@@ -25,10 +25,23 @@
         <div class="toolbar-part">
           <Button
             v-tooltip.right="$t('caption.backToBuilds')"
-            :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
+            class="p-button-text p-button-sm button-discreet"
+            :disabled="editing"
             @click="goToBuilds()"
           >
             <font-awesome-icon icon="arrow-left" />
+          </Button>
+          <Button
+            v-show="!editing"
+            class="toolbar-button"
+            :disabled="isLoading || hasLoadingError"
+            @click="startEdit()"
+          >
+            <font-awesome-icon
+              icon="edit"
+              class="icon-before-text"
+            />
+            <span>{{ $t('caption.edit') }}</span>
           </Button>
           <Button
             v-show="editing"
@@ -42,37 +55,23 @@
             />
             <span>{{ $t('caption.save') }}</span>
           </Button>
+          <ShoppingList :shopping-list="summary.shoppingList" />
           <Button
-            v-show="!editing && !isLoading && !hasLoadingError"
-            class="toolbar-button"
-            @click="startEdit()"
-          >
-            <font-awesome-icon
-              icon="edit"
-              class="icon-before-text"
-            />
-            <span>{{ $t('caption.edit') }}</span>
-          </Button>
-          <ShoppingList
-            v-if="!isLoading && !hasLoadingError"
-            :shopping-list="summary.shoppingList"
-          />
-          <Button
-            v-if="!isLoading && !hasLoadingError"
             v-tooltip.top="$t('caption.copyBuild')"
-            :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
+            :disabled="isLoading || hasLoadingError"
+            class="p-button-text p-button-sm button-discreet"
             @click="copy()"
           >
             <font-awesome-icon icon="copy" />
           </Button>
-          <ShareBuild
-            v-if="!isLoading && !hasLoadingError"
+          <BuildShare
             :build="build"
+            :has-loading-error="hasLoadingError"
           />
           <Button
-            v-if="!isLoading && !hasLoadingError"
             v-tooltip.top="$t('caption.exportBuild')"
-            :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
+            class="p-button-text p-button-sm button-discreet"
+            :disabled="isLoading || hasLoadingError || editing"
             @click="exportBuild()"
           >
             <font-awesome-icon icon="file-export" />
@@ -245,8 +244,9 @@
               <span>{{ $t('caption.cancel') }}</span>
             </Button>
             <Button
-              v-show="!editing && !isLoading && !hasLoadingError"
+              v-show="!editing"
               class="p-button-danger toolbar-button"
+              :disabled="isLoading || hasLoadingError"
               @click="startDelete()"
             >
               <font-awesome-icon

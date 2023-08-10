@@ -163,7 +163,7 @@ export class BuildService {
   public parseReducedBuild(reducedBuild: Record<string, unknown>): Result<IBuild> {
     const reducedInventorySlots = reducedBuild['s'] as Record<string, unknown>[]
 
-    if (reducedInventorySlots == null || reducedInventorySlots.length === 0) {
+    if (reducedInventorySlots == null) {
       return Result.fail(FailureType.error, 'BuildService.parseReducedBuild()', i18n.t('message.cannotParseBuildWithoutInventorySlots'))
     }
 
@@ -196,10 +196,6 @@ export class BuildService {
     for (const inventorySlot of build.inventorySlots.filter(is => is.items.some(i => i != null))) {
       const reducedInventorySlot = this.reduceInventorySlotForSharing(inventorySlot)
       reducedInventorySlots.push(reducedInventorySlot)
-    }
-
-    if (reducedInventorySlots.length === 0) {
-      return Result.fail(FailureType.error, 'BuildService.parseBuildForSharing()', i18n.t('message.cannotShareEmptyBuild', { name: build.name }))
     }
 
     reducedBuild['s'] = reducedInventorySlots

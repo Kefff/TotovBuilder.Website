@@ -7,7 +7,7 @@
       <div class="toolbar-line">
         <div class="toolbar-part">
           <Button
-            v-if="!isLoading && !hasLoadingError"
+            :disabled="isLoading || hasLoadingError"
             @click="openNewBuild()"
           >
             <font-awesome-icon
@@ -17,17 +17,17 @@
             <span>{{ $t('caption.newBuild') }}</span>
           </Button>
           <Button
-            v-if="!isLoading && !hasLoadingError"
             v-tooltip.top="$t('caption.exportBuilds')"
-            :class="'p-button-text p-button-sm button-discreet' + (!canExport ? ' p-disabled' : '')"
+            class="p-button-text p-button-sm button-discreet"
+            :disabled="isLoading || hasLoadingError || !canExport"
             @click="showBuildsExportPopup()"
           >
             <font-awesome-icon icon="file-export" />
           </Button>
           <Button
-            v-if="!isLoading && !hasLoadingError"
             v-tooltip.top="$t('caption.importBuilds')"
-            :class="'p-button-text p-button-sm button-discreet' + (!canImport ? ' p-disabled' : '')"
+            class="p-button-text p-button-sm button-discreet"
+            :disabled="isLoading || hasLoadingError || !canImport"
             @click="showBuildsImportPopup()"
           >
             <font-awesome-icon icon="file-import" />

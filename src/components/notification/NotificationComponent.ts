@@ -20,7 +20,6 @@ export default defineComponent({
     notificationService.emitter.on(notificationService.addedEventName, (notification: INotification) => {
       if (notification.toast) {
         toastNotifications.value.push(notification)
-
       }
     })
 
