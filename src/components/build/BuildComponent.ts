@@ -3,7 +3,7 @@ import { useRoute, useRouter } from 'vue-router'
 import InputTextField from '../input-text-field/InputTextFieldComponent.vue'
 import InventorySlot from '../inventory-slot/InventorySlotComponent.vue'
 import { IBuild } from '../../models/build/IBuild'
-import Services, { InitializationState } from '../../services/repository/Services'
+import Services from '../../services/repository/Services'
 import { BuildComponentService } from '../../services/components/BuildComponentService'
 import { CompatibilityService } from '../../services/compatibility/CompatibilityService'
 import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
@@ -27,6 +27,8 @@ import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
 import vueI18n from '../../plugins/vueI18n'
 import LoadingError from '../loading-error/LoadingErrorComponent.vue'
+import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
+import { ItemService } from '../../services/ItemService'
 
 export default defineComponent({
   components: {
@@ -43,7 +45,8 @@ export default defineComponent({
     ShoppingList
   },
   setup: () => {
-    Services.emitter.once('initialized', initialize)
+    const itemService = Services.get(ItemService)
+    itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
 
     const route = useRoute()
     const router = useRouter()
@@ -58,6 +61,7 @@ export default defineComponent({
     const inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
     let originalBuild: IBuild
 
+    const hasLoadingError = computed(() => hasItemsLoadingError.value || hasWebsiteConfigurationLoadingError.value)
     const hasSummaryErgonomics = computed(() => summary.value.ergonomics != null && summary.value.ergonomics !== 0)
     const hasSummaryErgonomicsPercentageModifier = computed(() => summary.value.wearableModifiers.ergonomicsPercentageModifierWithMods !== 0)
     const hasSummaryHorizontalRecoil = computed(() => summary.value.horizontalRecoil != null && summary.value.horizontalRecoil !== 0)
@@ -91,7 +95,8 @@ export default defineComponent({
     const deleting = ref(false)
     const displayOptionsSidebarVisible = ref(false)
     const editing = isNewBuild.value ? ref(true) : ref(false)
-    const hasLoadingError = ref(false)
+    const hasItemsLoadingError = ref(false)
+    const hasWebsiteConfigurationLoadingError = ref(false)
     const isLoading = ref(true)
     const summary = ref<IBuildSummary>({
       ergonomics: undefined,
@@ -152,12 +157,12 @@ export default defineComponent({
 
     provide('editing', editing)
 
-    watch(() => route.params, () => initialize())
+    watch(() => route.params, onServicesInitialized)
 
     onMounted(() => {
-      // Scrolling to the top in case we were at the bottom of the page in the previous screen.
-      // This avoids having the screen look like it shakes when the inventory slots are being expanded after loading
-      window.scrollTo(0, 0)
+      window.addEventListener('scroll', setToolbarCssClass)
+      window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
+      document.onkeydown = (e) => onKeyDown(e)
 
       compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
@@ -165,13 +170,9 @@ export default defineComponent({
       inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-      document.onkeydown = (e) => onKeyDown(e)
-      window.addEventListener('scroll', setToolbarCssClass)
 
-      if (Services.initializationState !== InitializationState.initializing) {
-        // If the services are already initialized, we can initialize the component instead of waiting for the "initialized" event
-        // thant won't be triggered because the services initialization is already done
-        initialize()
+      if (itemService.initializationState !== ServiceInitializationState.initializing) {
+        onServicesInitialized()
       }
     })
 
@@ -329,27 +330,6 @@ export default defineComponent({
     }
 
     /**
-     * Initializes the build.
-     */
-    function initialize() {
-      isLoading.value = true
-
-      build.value = buildComponentService.getBuild(route.params['id'] as string)
-      getSharedBuild(route.params['sharedBuild'] as string)
-        .then(async () => {
-          getSummary()
-
-          build.value.inventorySlots.forEach(() => {
-            collapseStatuses.value.push(false) // All inventory slots expanded by default
-          })
-        })
-        .finally(() => {
-          isLoading.value = false
-          hasLoadingError.value = Services.initializationState === InitializationState.error
-        })
-    }
-
-    /**
      * Checks whether an armor can be added to the build or not.
      * @param request - Compatibility request.
      */
@@ -391,6 +371,24 @@ export default defineComponent({
      */
     function onModCompatibilityRequest(request: CompatibilityRequest) {
       request.setResult(buildPropertiesService.checkCanAddMod(build.value, request.itemId, request.path))
+    }
+
+    /**
+     * Initializes the build.
+     */
+    function onServicesInitialized() {
+      isLoading.value = true
+
+      build.value = buildComponentService.getBuild(route.params['id'] as string)
+      getSharedBuild(route.params['sharedBuild'] as string)
+        .then(async () => {
+          getSummary()
+
+          build.value.inventorySlots.forEach(() => {
+            collapseStatuses.value.push(false) // All inventory slots expanded by default
+          })
+        })
+        .finally(() => isLoading.value = false)
     }
 
     /**
@@ -458,6 +456,7 @@ export default defineComponent({
       expandWithItem,
       exportBuild,
       goToBuilds,
+      hasItemsLoadingError,
       hasLoadingError,
       hasSummaryErgonomics,
       hasSummaryErgonomicsPercentageModifier,
@@ -469,6 +468,7 @@ export default defineComponent({
       hasSummaryTurningSpeedPercentageModifierWithMods,
       hasSummaryVerticalRecoil,
       hasSummaryWeight,
+      hasWebsiteConfigurationLoadingError,
       invalid,
       inventorySlotPathPrefix,
       isEmpty,

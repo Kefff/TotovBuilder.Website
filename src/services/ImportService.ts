@@ -46,13 +46,13 @@ export class ImportService {
   /* c8 ignore start */
   private readFile(fileReader: FileReader): Result<IBuild[]> {
     if (fileReader.error != null) {
-      return Result.fail(FailureType.error, vueI18n.t('message.importReadFileError'))
+      return Result.fail(FailureType.error, vueI18n.t('message.importError'))
     }
 
     const builds = JSON.parse(fileReader.result as string) as IBuild[]
 
     if (builds == null) {
-      return Result.fail(FailureType.error, vueI18n.t('message.importReadFileError'))
+      return Result.fail(FailureType.error, vueI18n.t('message.importError'))
     }
 
     const importDate = new Date()

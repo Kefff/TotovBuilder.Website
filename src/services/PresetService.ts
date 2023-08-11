@@ -28,16 +28,16 @@ export class PresetService {
   /**
    * Fetches presets.
    */
-  public async fetchPresets(): Promise<void> {
+  public async fetchPresets(): Promise<Result<void>> {
     const presetsResult = await Services.get(ItemFetcherService).fetchPresets()
 
     if (!presetsResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, presetsResult.failureMessage, true)
-
-      return
+      return Result.failFrom(presetsResult)
     }
 
     this.presets = presetsResult.value
+
+    return Result.ok()
   }
 
   /**

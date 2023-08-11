@@ -1,21 +1,10 @@
 import i18n from '../../plugins/vueI18n'
 import { IRegisteredService } from './IRegisteredService'
-import { TinyEmitter } from 'tiny-emitter'
 
 /**
  * Represents a repository for all the application services.
  */
 class ServicesRepository {
-  /**
-   * Emitter used to signal when the initialization is done.
-   */
-  public emitter = new TinyEmitter()
-
-  /**
-   * Services initialization state.
-   */
-  public initializationState = InitializationState.initializing
-
   /**
    * Collection of the configured services.
    */
@@ -83,17 +72,6 @@ class ServicesRepository {
   }
 
   /**
-   * Indicates that the minimum initialization for displaying the website has finished,
-   * either successfully or with error.
-   * Emits the state change to the subscribed services.
-   * @param state - Initialization state.
-   */
-  public setMinimumInitializationFinished(state: InitializationState) {
-    this.initializationState = state
-    this.emitter.emit('initialized')
-  }
-
-  /**
    * Gets the instance of a service based on a registration.
    * @param registeredService - Service registration.
    * @returns Service instance.
@@ -108,24 +86,4 @@ class ServicesRepository {
 }
 
 export default new ServicesRepository()
-
-/**
- * Initialization state.
- */
-export enum InitializationState {
-  /**
-   * An error occured during the initialization.
-   */
-  error,
-
-  /**
-   * Services are initialized.
-   */
-  initialized,
-
-  /**
-   * Services are initializing.
-   */
-  initializing
-}
 

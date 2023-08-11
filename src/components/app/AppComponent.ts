@@ -12,16 +12,16 @@ export default defineComponent({
     Changelog
   },
   setup() {
-    Services.emitter.once('initialized', onInitialized)
-
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
+    websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
+
+    const bugReportUrl = ref<string>()
     const contactAddress = ref<string>()
-    const discordLink = ref<string>()
-    const githubAddress = ref<string>()
+    const discordUrl = ref<string>()
+    const githubUrl = ref<string>()
     const hasChangelogDisplayed = ref(false)
     const isLoading = ref(true)
-    const reportBugAddress = ref<string>()
 
     const isSanta = computed(() => {
       const date = new Date()
@@ -48,11 +48,11 @@ export default defineComponent({
       hasChangelogDisplayed.value = true
     }
 
-    function onInitialized() {
+    function onWebsiteConfigurationServiceInitialized() {
+      bugReportUrl.value = websiteConfigurationService.configuration.bugReportUrl
       contactAddress.value = websiteConfigurationService.configuration.contactAddress
-      discordLink.value = websiteConfigurationService.configuration.discordUrl
-      githubAddress.value = websiteConfigurationService.configuration.githubUrl
-      reportBugAddress.value = websiteConfigurationService.configuration.bugReportUrl
+      discordUrl.value = websiteConfigurationService.configuration.discordUrl
+      githubUrl.value = websiteConfigurationService.configuration.githubUrl
 
       displayAllowCookiesNotification()
 
@@ -75,15 +75,15 @@ export default defineComponent({
     }
 
     return {
+      bugReportUrl,
       contactAddress,
       copyrightYear,
-      discordLink,
+      discordUrl,
       displayChangelog,
-      githubAddress,
+      githubUrl,
       hasChangelogDisplayed,
       isLoading,
-      isSanta,
-      reportBugAddress
+      isSanta
     }
   }
 })

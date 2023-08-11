@@ -1,31 +1,27 @@
 import { defineComponent, onMounted, ref } from 'vue'
-import Services, { InitializationState } from '../../services/repository/Services'
+import Services from '../../services/repository/Services'
 import { GeneralOptionsService } from '../../services/GeneralOptionsService'
 import StringUtils from '../../utils/StringUtils'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 
 export default defineComponent({
-  emits: ['update:visible'],
   setup: () => {
-    Services.emitter.once('initialized', getAllowCookies)
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
+    websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
 
     const allowCookies = ref(true)
     const isLoading = ref(true)
     const sidebarVisible = ref(false)
 
     onMounted(() => {
-      isLoading.value = Services.initializationState === InitializationState.initializing
+      isLoading.value = websiteConfigurationService.initializationState === ServiceInitializationState.initializing
 
       if (!isLoading.value) {
-        getAllowCookies()
+        onWebsiteConfigurationServiceInitialized()
       }
     })
-
-    /**
-     * Gets the allow cookie indicator.
-     */
-    function getAllowCookies() {
-      allowCookies.value = Services.get(GeneralOptionsService).getAllowCookiesIndicator()
-    }
 
     /**
      * Sets the allow cookie indicator.
@@ -33,6 +29,14 @@ export default defineComponent({
     function onAllowCookiesChanged() {
       Services.get(GeneralOptionsService).setAllowCookiesIndicator(allowCookies.value)
       sidebarVisible.value = false
+    }
+
+    /**
+     * Gets the allow cookie indicator.
+     */
+    function onWebsiteConfigurationServiceInitialized() {
+      isLoading.value = false
+      allowCookies.value = Services.get(GeneralOptionsService).getAllowCookiesIndicator()
     }
 
     /**

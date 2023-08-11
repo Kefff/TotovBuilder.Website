@@ -39,7 +39,7 @@
           class="app-footer-element-icon"
         />
         <a
-          :href="discordLink"
+          :href="discordUrl"
           target="_blank"
           class="link"
         >{{ $t('caption.discord') }}</a>
@@ -50,7 +50,7 @@
           class="app-footer-element-icon"
         />
         <a
-          :href="reportBugAddress"
+          :href="bugReportUrl"
           target="_blank"
           class="link"
         >{{ $t('caption.reportBug') }}</a>
@@ -73,7 +73,7 @@
           class="app-footer-element-icon"
         />
         <a
-          :href="githubAddress"
+          :href="githubUrl"
           target="_blank"
           class="link"
         >{{ $t('caption.github') }}</a>

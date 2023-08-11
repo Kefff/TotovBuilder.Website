@@ -52,12 +52,6 @@
       <Loading />
     </div>
     <div
-      v-if="hasLoadingError"
-      class="builds-loading-error"
-    >
-      <LoadingError />
-    </div>
-    <div
       v-show="!isLoading && buildsSummaries.length > 0"
       id="builds-content"
     >
@@ -81,6 +75,12 @@
     v-if="!isLoading && !hasLoadingError"
     v-model="isImporting"
     v-model:has-imported="hasImported"
+  />
+
+  <!-- Loading error -->
+  <LoadingError
+    v-model:hasItemsLoadingError="hasItemsLoadingError"
+    v-model:hasWebsiteConfigurationLoadingError="hasWebsiteConfigurationLoadingError"
   />
 </template>
 

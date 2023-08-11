@@ -2,7 +2,7 @@
   <div class="welcome">
     <div>
       <div
-        v-if="!hasBuilds"
+        v-if="!hasBuilds || hasWebsiteConfigurationLoadingError"
         class="welcome-text"
       >
         <h2>{{ $t('message.welcome1') }}Totov <span class="welcome-builder">Builder</span>{{ $t('message.welcome2') }}</h2>
@@ -24,13 +24,7 @@
         <Loading />
       </div>
       <div
-        v-if="hasLoadingError"
-        class="welcome-loading-error"
-      >
-        <LoadingError />
-      </div>
-      <div
-        v-show="!isLoading && !hasLoadingError && !isImporting"
+        v-show="!isLoading && !hasWebsiteConfigurationLoadingError && !isImporting"
         class="welcome-actions"
       >
         <div
@@ -134,6 +128,9 @@
       v-model="isImporting"
       v-model:has-imported="hasImported"
     />
+
+    <!-- Loading error -->
+    <LoadingError v-model:has-website-configuration-loading-error="hasWebsiteConfigurationLoadingError" />
   </div>
 </template>
 

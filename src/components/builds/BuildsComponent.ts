@@ -6,7 +6,7 @@ import {
   NotificationService,
   NotificationType
 } from '../../services/NotificationService'
-import Services, { InitializationState } from '../../services/repository/Services'
+import Services from '../../services/repository/Services'
 import StatsUtils from '../../utils/StatsUtils'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
@@ -23,6 +23,8 @@ import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptions
 import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
 import LoadingError from '../loading-error/LoadingErrorComponent.vue'
+import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
+import { ItemService } from '../../services/ItemService'
 
 export default defineComponent({
   components: {
@@ -38,7 +40,8 @@ export default defineComponent({
     NotificationButton
   },
   setup: () => {
-    Services.emitter.once('initialized', onConfigurationLoaded)
+    const itemService = Services.get(ItemService)
+    itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
 
     const globalFilterService = Services.get(GlobalFilterService)
 
@@ -49,6 +52,7 @@ export default defineComponent({
     const canExport = computed(() => !isLoading.value && buildsSummaries.value.length > 0 && !isExporting.value && !isImporting.value)
     const canImport = computed(() => !isLoading.value && !isExporting.value && !isImporting.value)
     const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
+    const hasLoadingError = computed(() => hasItemsLoadingError.value || hasWebsiteConfigurationLoadingError.value)
     const selectedBuildSummary = computed({
       get: () => [],
       set: (value: string[]) => {
@@ -60,7 +64,8 @@ export default defineComponent({
 
     const displayOptionsSidebarVisible = ref(false)
     const hasImported = ref(false)
-    const hasLoadingError = ref(false)
+    const hasItemsLoadingError = ref(false)
+    const hasWebsiteConfigurationLoadingError = ref(false)
     const isExporting = ref(false)
     const isImporting = ref(false)
     const isLoading = ref(true)
@@ -77,12 +82,12 @@ export default defineComponent({
 
     onMounted(() => {
       window.addEventListener('scroll', setToolbarCssClass)
-      window.scrollTo(0, 0)// Scrolling to the top in case we were at the bottom of the page in the previous screen
+      window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
 
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-      if (Services.initializationState !== InitializationState.initializing) {
-        onConfigurationLoaded()
+      if (itemService.initializationState !== ServiceInitializationState.initializing) {
+        onServicesInitialized()
       }
     })
 
@@ -126,7 +131,13 @@ export default defineComponent({
     /**
      * Gets builds and ends loading.
      */
-    function onConfigurationLoaded() {
+    function onServicesInitialized() {
+      if (hasLoadingError.value) {
+        isLoading.value = false
+
+        return
+      }
+
       getBuilds()
 
       if (builds.length === 0) {
@@ -135,8 +146,6 @@ export default defineComponent({
         return
       }
 
-      isLoading.value = false
-      hasLoadingError.value = Services.initializationState === InitializationState.error
       checkBuildsNotExported()
     }
 
@@ -196,7 +205,9 @@ export default defineComponent({
       canImport,
       displayOptionsSidebarVisible,
       hasImported,
+      hasItemsLoadingError,
       hasLoadingError,
+      hasWebsiteConfigurationLoadingError,
       isExporting,
       isImporting,
       isLoading,

@@ -269,12 +269,6 @@
       <Loading />
     </div>
     <div
-      v-if="hasLoadingError"
-      class="build-loading-error"
-    >
-      <LoadingError />
-    </div>
-    <div
       v-show="!isLoading"
       id="build-content"
     >
@@ -348,6 +342,12 @@
       </Button>
     </template>
   </Dialog>
+
+  <!-- Loading error -->
+  <LoadingError
+    v-model:hasItemsLoadingError="hasItemsLoadingError"
+    v-model:hasWebsiteConfigurationLoadingError="hasWebsiteConfigurationLoadingError"
+  />
 </template>
 
 <script lang="ts" src="./BuildComponent.ts" />

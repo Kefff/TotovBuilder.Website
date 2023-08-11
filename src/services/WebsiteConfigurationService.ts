@@ -4,11 +4,18 @@ import { ApiService } from './ApiService'
 import Result, { FailureType } from '../utils/Result'
 import i18n from '../plugins/vueI18n'
 import { NotificationService, NotificationType } from './NotificationService'
+import { TinyEmitter } from 'tiny-emitter'
+import { ServiceInitializationState } from './repository/ServiceInitializationState'
 
 /**
  * Represents a service responsible for getting the website configuration.
  */
 export class WebsiteConfigurationService {
+  /**
+   * Name of the event fired when the website configuration has finised loading.
+   */
+  public static initializationFinishedEvent = 'websiteConfigurationServiceInitialized'
+
   /**
    * Website configuration.
    */
@@ -47,6 +54,23 @@ export class WebsiteConfigurationService {
   }
 
   /**
+   * Event emitter used to initialization state change.
+   */
+  public emitter = new TinyEmitter()
+
+  /**
+   * Initialization state of the service.
+   */
+  public get initializationState(): ServiceInitializationState {
+    return this._initializationState
+  }
+  public set initializationState(state: ServiceInitializationState.error | ServiceInitializationState.initialized) {
+    this._initializationState = state
+    this.emitter.emit(WebsiteConfigurationService.initializationFinishedEvent)
+  }
+  private _initializationState = ServiceInitializationState.initializing
+
+  /**
    * Initializes the data used by the service.
    */
   public async initialize(): Promise<boolean> {
@@ -72,7 +96,7 @@ export class WebsiteConfigurationService {
     const websiteConfigurationResult = await apiService.get<IWebsiteConfiguration>(import.meta.env.VITE_WEBSITE_CONFIGURATION_API as string)
 
     if (!websiteConfigurationResult.success) {
-      return Result.fail(FailureType.error, 'WebsiteConfigurationService.fetchWebsiteConfiguration()', i18n.t('message.websiteLoadingError'))
+      return Result.fail(FailureType.error, 'WebsiteConfigurationService.fetchWebsiteConfiguration()', i18n.t('message.websiteConfigurationNotFetched'))
     }
 
     return websiteConfigurationResult

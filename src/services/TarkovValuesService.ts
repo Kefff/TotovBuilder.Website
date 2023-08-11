@@ -49,7 +49,7 @@ export class TarkovValuesService {
     const tarkovValuesResult = await apiService.get<ITarkovValues>(Services.get(WebsiteConfigurationService).configuration.tarkovValuesApi)
 
     if (!tarkovValuesResult.success) {
-      return Result.fail(FailureType.error, 'TarkovValuesService.fetchTarkovValues()', i18n.t('message.websiteLoadingError'))
+      return Result.fail(FailureType.error, 'TarkovValuesService.fetchTarkovValues()', i18n.t('message.tarkovValuesNotFetched'))
     }
 
     return tarkovValuesResult

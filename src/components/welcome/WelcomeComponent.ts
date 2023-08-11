@@ -1,12 +1,14 @@
 import { defineComponent, onMounted, ref, watch } from 'vue'
 import router from '../../plugins/vueRouter'
 import { BuildService } from '../../services/BuildService'
-import Services, { InitializationState } from '../../services/repository/Services'
+import Services from '../../services/repository/Services'
 import BuildsImport from '../builds-import/BuildsImportComponent.vue'
 import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
 import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
 import LoadingError from '../loading-error/LoadingErrorComponent.vue'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 
 export default defineComponent({
   components: {
@@ -17,12 +19,13 @@ export default defineComponent({
     MerchantItemsOptions
   },
   setup: () => {
-    Services.emitter.once('initialized', onConfigurationLoaded)
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+    websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
 
     const displayOptionsSidebarVisible = ref(false)
     const hasBuilds = ref(false)
     const hasImported = ref(false)
-    const hasLoadingError = ref(false)
+    const hasWebsiteConfigurationLoadingError = ref(false)
     const isImporting = ref(false)
     const isLoading = ref(true)
     const merchantItemsOptionsSidebarVisible = ref(false)
@@ -34,8 +37,8 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      if (Services.initializationState === InitializationState.initialized) {
-        onConfigurationLoaded()
+      if (websiteConfigurationService.initializationState === ServiceInitializationState.initialized) {
+        onWebsiteConfigurationServiceInitialized()
       }
     })
 
@@ -49,15 +52,8 @@ export default defineComponent({
     /**
      * Gets builds and ends loading.
      */
-    function onConfigurationLoaded() {
-      hasLoadingError.value = Services.initializationState === InitializationState.error
-
-      if (hasLoadingError.value) {
-        hasBuilds.value = false
-      } else {
-        hasBuilds.value = Services.get(BuildService).getAll().length > 0
-      }
-
+    function onWebsiteConfigurationServiceInitialized() {
+      hasBuilds.value = Services.get(BuildService).getAll().length > 0
       isLoading.value = false
     }
 
@@ -80,7 +76,7 @@ export default defineComponent({
       displayOptionsSidebarVisible,
       hasBuilds,
       hasImported,
-      hasLoadingError,
+      hasWebsiteConfigurationLoadingError,
       isImporting,
       isLoading,
       merchantItemsOptionsSidebarVisible,

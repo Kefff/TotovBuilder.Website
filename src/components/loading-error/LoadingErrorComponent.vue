@@ -4,6 +4,7 @@
     :closable="false"
     :modal="true"
     :draggable="false"
+    :header="$t('caption.error')"
   >
     <div class="loading-error-message">
       <img
