@@ -187,8 +187,6 @@ export class VersionService {
       const migrationResult = await migration.migrateBuildUnrelatedData()
 
       if (!migrationResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.migrationError', { version: migration.version }), true)
-
         return false
       }
     }

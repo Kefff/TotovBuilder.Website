@@ -28,6 +28,11 @@ export class ItemService {
   public emitter = new TinyEmitter()
 
   /**
+   * Indicates whether prices have successfully been fetched once.
+   */
+  public hasPrices = false
+
+  /**
    * Initialization state of the service.
    */
   public get initializationState(): ServiceInitializationState {
@@ -406,7 +411,7 @@ export class ItemService {
    */
   private updateItemsPrices(pricesResult: Result<IPrice[]>) {
     if (!pricesResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, pricesResult.failureMessage, true)
+      Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.pricesLoadingError'), true)
 
       // When an error occurs, we set the last fetch date in order to make the cache expire 20 seconds later.
       // This is to avoid making a new API request for each of the 2000+ items.
@@ -432,6 +437,7 @@ export class ItemService {
     this.updatePricesInMainCurrency()
 
     this.lastPricesFetchDate = new Date()
+    this.hasPrices = true
   }
 
   /**
@@ -446,9 +452,9 @@ export class ItemService {
 
         if (currency != null) {
           price.valueInMainCurrency = price.value * currency.value
-        } /* c8 ignore start */ else {
-          Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.currencyNotFound', { currency: price.currencyName }))
-        } /* c8 ignore stop */
+        } else {
+          price.valueInMainCurrency = 0
+        }
       }
     }
   }

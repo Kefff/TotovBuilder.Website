@@ -6,7 +6,6 @@ import { IInventoryPrice } from '../../../models/utils/IInventoryPrice'
 import { IWeight } from '../../../models/utils/IWeight'
 import { InventoryItemService } from '../../../services/InventoryItemService'
 import { GlobalFilterService } from '../../../services/GlobalFilterService'
-import { NotificationService, NotificationType } from '../../../services/NotificationService'
 import Services from '../../../services/repository/Services'
 import Result from '../../../utils/Result'
 import Price from '../../price/PriceComponent.vue'
@@ -122,13 +121,45 @@ export default defineComponent({
       priceSettingPromise = inventoryItemService.getPrice(props.modelValue, props.preset?.item, props.canBeLooted)
       const priceResult = await priceSettingPromise
 
-      if (!priceResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, priceResult.failureMessage)
-
-        return
+      if (priceResult.success) {
+        price.value = priceResult.value
+      } else {
+        price.value = {
+          missingPrice: false,
+          price: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: null,
+            value: 0,
+            valueInMainCurrency: 0
+          },
+          pricesWithContent: [],
+          priceWithContentInMainCurrency: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: null,
+            value: 0,
+            valueInMainCurrency: 0
+          },
+          unitPrice: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: null,
+            value: 0,
+            valueInMainCurrency: 0
+          },
+          unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+        }
       }
-
-      price.value = priceResult.value
     }
 
     /**
@@ -137,13 +168,15 @@ export default defineComponent({
     async function setWeight() {
       const weightResult = await inventoryItemService.getWeight(props.modelValue)
 
-      if (!weightResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, weightResult.failureMessage)
-
-        return
+      if (weightResult.success) {
+        weight.value = weightResult.value
+      } else {
+        weight.value = {
+          unitWeight: 0,
+          weight: 0,
+          weightWithContent: 0
+        }
       }
-
-      weight.value = weightResult.value
     }
 
     return {

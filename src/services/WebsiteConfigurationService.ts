@@ -3,7 +3,6 @@ import Services from './repository/Services'
 import { ApiService } from './ApiService'
 import Result, { FailureType } from '../utils/Result'
 import i18n from '../plugins/vueI18n'
-import { NotificationService, NotificationType } from './NotificationService'
 import { TinyEmitter } from 'tiny-emitter'
 import { ServiceInitializationState } from './repository/ServiceInitializationState'
 
@@ -77,8 +76,6 @@ export class WebsiteConfigurationService {
     const websiteConfigurationResult = await this.fetchWebsiteConfiguration()
 
     if (!websiteConfigurationResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, websiteConfigurationResult.failureMessage, true)
-
       return false
     }
 

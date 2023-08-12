@@ -2,7 +2,6 @@ import { defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { IItem } from '../../../models/item/IItem'
 import { IPrice } from '../../../models/item/IPrice'
 import { InventoryItemService } from '../../../services/InventoryItemService'
-import { NotificationService, NotificationType } from '../../../services/NotificationService'
 import Services from '../../../services/repository/Services'
 import ItemIcon from '../../item-icon/ItemIconComponent.vue'
 import Price from '../../price/PriceComponent.vue'
@@ -42,13 +41,20 @@ export default defineComponent({
         quantity: 1
       })
 
-      if (!priceResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, priceResult.failureMessage)
-
-        return
+      if (priceResult.success) {
+        price.value = priceResult.value.unitPrice
+      } else {
+        price.value = {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: null,
+          value: 0,
+          valueInMainCurrency: 0
+        }
       }
-
-      price.value = priceResult.value.unitPrice
     }
 
     return { price }

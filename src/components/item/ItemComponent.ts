@@ -140,17 +140,18 @@ export default defineComponent({
 
       const selectedItemResult = await itemService.getItem(props.modelValue.itemId)
 
-      if (!selectedItemResult.success) {
-        notificationService.notify(NotificationType.error, selectedItemResult.failureMessage)
-
-        return
+      if (selectedItemResult.success) {
+        selectedItem.value = selectedItemResult.value
+      } else {
+        selectedItem.value = undefined
       }
 
-      selectedItem.value = selectedItemResult.value
       setSelectedTab()
 
       if (selectedItem.value != null) {
         preset.value = await presetService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
+      } else {
+        preset.value = undefined
       }
     }
 

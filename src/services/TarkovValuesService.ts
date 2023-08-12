@@ -2,7 +2,6 @@ import Services from './repository/Services'
 import { ApiService } from './ApiService'
 import { ITarkovValues } from '../models/configuration/ITarkovValues'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
-import { NotificationService, NotificationType } from './NotificationService'
 import Result, { FailureType } from '../utils/Result'
 import i18n from '../plugins/vueI18n'
 
@@ -29,15 +28,13 @@ export class TarkovValuesService {
   public async initialize(): Promise<boolean> {
     const tarkovValuesResult = await this.fetchTarkovValues()
 
-    if (!tarkovValuesResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, tarkovValuesResult.failureMessage, true)
+    if (tarkovValuesResult.success) {
+      this.values = tarkovValuesResult.value
 
+      return true
+    } else {
       return false
     }
-
-    this.values = tarkovValuesResult.value
-
-    return true
   }
 
   /**

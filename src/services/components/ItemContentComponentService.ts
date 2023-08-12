@@ -1,7 +1,6 @@
 import { IItem } from '../../models/item/IItem'
 import { ItemService } from '../ItemService'
 import Services from '../repository/Services'
-import { NotificationService, NotificationType } from '../NotificationService'
 import { IMagazine } from '../../models/item/IMagazine'
 
 /**
@@ -18,8 +17,6 @@ export class ItemContentComponentService {
     const itemResult = await Services.get(ItemService).getItem(itemId)
 
     if (!itemResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, itemResult.failureMessage)
-
       return []
     }
 
@@ -61,12 +58,11 @@ export class ItemContentComponentService {
     const itemCategories = await itemService.getItemCategories()
     const itemsResult = await itemService.getItemsOfCategories(itemCategories, true)
 
-    if (!itemsResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage)
+    if (itemsResult.success) {
+      return itemsResult.value
+    } else {
       return []
     }
-
-    return itemsResult.value
   }
 
   /**
@@ -78,11 +74,11 @@ export class ItemContentComponentService {
     const itemService = Services.get(ItemService)
     const itemsResult = await itemService.getItems((magazine as IMagazine).acceptedAmmunitionIds, true)
 
-    if (!itemsResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage)
+    if (itemsResult.success) {
+      return itemsResult.value
+    } else {
       return []
     }
 
-    return itemsResult.value
   }
 }

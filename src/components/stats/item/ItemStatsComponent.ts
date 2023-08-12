@@ -2,7 +2,6 @@ import { defineComponent, onMounted, PropType, ref } from 'vue'
 import { IItem } from '../../../models/item/IItem'
 import { IPrice } from '../../../models/item/IPrice'
 import { InventoryItemService } from '../../../services/InventoryItemService'
-import { NotificationService, NotificationType } from '../../../services/NotificationService'
 import Services from '../../../services/repository/Services'
 import Price from '../../price/PriceComponent.vue'
 
@@ -18,7 +17,6 @@ export default defineComponent({
   },
   setup: (props) => {
     const inventoryItemService = Services.get(InventoryItemService)
-    const notificationService = Services.get(NotificationService)
 
     const prices = ref<IPrice[]>([])
 
@@ -65,13 +63,9 @@ export default defineComponent({
               quantity: barterItem.quantity
             }, undefined, true, false)
 
-            if (!barterItemPriceResult.success) {
-              notificationService.notify(NotificationType.error, barterItemPriceResult.failureMessage)
-
-              continue
+            if (barterItemPriceResult.success) {
+              barterPrice += barterItemPriceResult.value.priceWithContentInMainCurrency.valueInMainCurrency
             }
-
-            barterPrice += barterItemPriceResult.value.priceWithContentInMainCurrency.valueInMainCurrency
           }
 
           priceToAdd.valueInMainCurrency = barterPrice

@@ -2,7 +2,6 @@ import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { ICurrency } from '../../models/configuration/ICurrency'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { ItemService } from '../../services/ItemService'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
 import Services from '../../services/repository/Services'
 import Price from '../price/PriceComponent.vue'
 
@@ -32,13 +31,10 @@ export default defineComponent({
      * Initializes the component.
      */
     async function initialize() {
-      const notificationService = Services.get(NotificationService)
       const mainCurrencyResult = await Services.get(ItemService).getMainCurrency()
       priceInMainCurrency.value = 0
 
       if (!mainCurrencyResult.success) {
-        notificationService.notify(NotificationType.error, mainCurrencyResult.failureMessage)
-
         return
       }
 

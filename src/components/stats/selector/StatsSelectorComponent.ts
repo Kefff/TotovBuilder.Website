@@ -1,7 +1,6 @@
 import { defineComponent, onMounted, ref, watch } from 'vue'
 import { IItem } from '../../../models/item/IItem'
 import { ItemService } from '../../../services/ItemService'
-import { NotificationService, NotificationType } from '../../../services/NotificationService'
 import Services from '../../../services/repository/Services'
 import AmmunitionStat from '../ammunition/AmmunitionStatsComponent.vue'
 import ArmorModStat from '../armor-mod/ArmorModStatsComponent.vue'
@@ -59,13 +58,11 @@ export default defineComponent({
       const service = Services.get(ItemService)
       const itemResult = await service.getItem(props.itemId)
 
-      if (!itemResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, itemResult.failureMessage)
-
-        return
+      if (itemResult.success) {
+        item.value = itemResult.value
+      } else {
+        item.value = undefined
       }
-
-      item.value = itemResult.value
     }
 
     return {

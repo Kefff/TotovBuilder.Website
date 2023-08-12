@@ -48,11 +48,10 @@ export class InventorySlotComponentService {
   public async getAcceptedItems(categoryIds: string[]): Promise<IItem[]> {
     const itemsResult = await Services.get(ItemService).getItemsOfCategories(categoryIds, true)
 
-    if (!itemsResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage)
+    if (itemsResult.success) {
+      return itemsResult.value
+    } else {
       return []
     }
-
-    return itemsResult.value
   }
 }

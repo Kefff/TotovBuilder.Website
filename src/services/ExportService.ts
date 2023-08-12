@@ -15,11 +15,6 @@ export class ExportService {
    * @param builds - Builds.
    */
   public async export(builds: IBuild[]): Promise<Result> {
-    if (builds.length === 0) {
-      // Should never occur
-      return Result.fail(FailureType.error, 'ExportService.export()', vueI18n.t('message.noBuildsToExport'))
-    }
-
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
     try {

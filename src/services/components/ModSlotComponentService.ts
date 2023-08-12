@@ -1,6 +1,5 @@
 import { IItem } from '../../models/item/IItem'
 import { ItemService } from '../ItemService'
-import { NotificationService, NotificationType } from '../NotificationService'
 import Services from '../repository/Services'
 
 /**
@@ -15,12 +14,11 @@ export class ModSlotComponentService {
   public async getAcceptedItems(compatibleItemIds: string[]): Promise<IItem[]> {
     const itemsResult = await Services.get(ItemService).getItems(compatibleItemIds, true)
 
-    if (!itemsResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage)
+    if (itemsResult.success) {
+      return itemsResult.value
+    } else {
       return []
     }
-
-    return itemsResult.value
   }
 
   /**

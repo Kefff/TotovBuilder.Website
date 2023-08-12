@@ -3,8 +3,6 @@ import { WebsiteConfigurationService } from '../../services/WebsiteConfiguration
 import Services from '../../services/repository/Services'
 import { ItemService } from '../../services/ItemService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
-import vueI18n from '../../plugins/vueI18n'
 
 export default defineComponent({
   props: {
@@ -30,15 +28,7 @@ export default defineComponent({
     itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitialized)
     websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
 
-    const hasLoadingError = computed(() => {
-      if (props.hasItemsLoadingError || props.hasWebsiteConfigurationLoadingError) {
-        Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.websiteLoadingError'), true)
-
-        return true
-      }
-
-      return false
-    })
+    const hasLoadingError = computed(() => props.hasItemsLoadingError || props.hasWebsiteConfigurationLoadingError)
 
     onMounted(() => {
       onWebsiteConfigurationServiceInitialized()

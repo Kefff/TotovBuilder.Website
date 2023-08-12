@@ -1,6 +1,4 @@
 import { computed, defineComponent, PropType } from 'vue'
-import { NotificationService, NotificationType } from '../../../services/NotificationService'
-import Services from '../../../services/repository/Services'
 import { SortingService } from '../../../services/sorting/SortingService'
 import SortingData, { SortingOrder } from '../../../models/utils/SortingData'
 import StringUtils from '../../../utils/StringUtils'
@@ -46,17 +44,11 @@ export default defineComponent({
      * @param property - Property.
      */
     function sortBy(property: string) {
-      // False positive
-      // eslint-disable-next-line vue/no-mutating-props
       const sortingDataResult = sortingService.setSortingProperty(property)
 
-      if (!sortingDataResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, sortingDataResult.failureMessage)
-
-        return
+      if (sortingDataResult.success) {
+        emit('update:modelValue', sortingDataResult.value)
       }
-
-      emit('update:modelValue', sortingDataResult.value)
     }
 
     return {
