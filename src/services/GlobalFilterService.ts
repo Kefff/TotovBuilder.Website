@@ -9,6 +9,7 @@ import { IGlobalFilter } from '../models/utils/IGlobalFilter'
 import { ItemPropertiesService } from './ItemPropertiesService'
 import { IModdable } from '../models/item/IModdable'
 import { IItemExclusionFilter } from '../models/utils/IItemExclusionFilter'
+import { ItemService } from './ItemService'
 
 /**
  * Represents a service that manages merchant filters.
@@ -174,7 +175,7 @@ export class GlobalFilterService {
    * @returns true when the item is excluded; otherwise false.
    */
   private excludeItemWithoutMerchant(item: IItem) {
-    const isExcluded = item.prices.length === 0
+    const isExcluded = item.prices.length === 0 && Services.get(ItemService).hasPrices
 
     return isExcluded
   }

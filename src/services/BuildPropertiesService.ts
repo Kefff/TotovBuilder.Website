@@ -343,7 +343,7 @@ export class BuildPropertiesService {
 
     const result: IBuildSummary = {
       ergonomics: undefined,
-      exported: build.lastExported != null && lastExported.getTime() >= lastUpdated.getTime(),
+      exported: lastExported.getTime() >= lastUpdated.getTime(),
       horizontalRecoil: undefined,
       id: build.id,
       name: build.name,

@@ -279,6 +279,7 @@
     "buildMigrationError": "{message}\nErrors :\n{errors}",
     "buildMigrationErrorNotification": "Error while updating build \"{buildName}\" ({buildId}) from version \"{oldVersion}\" to \"{newVersion}\".",
     "buildNotFound": "Build \"{id}\" not found. It may have been deleted.",
+    "buildParsingError": "Cannot parse build \"{id}\".",
     "buildSaved": "Build \"{name}\" saved.",
     "buildsExportError": "Error while exporting builds.",
     "buildsImported": "Builds imported",

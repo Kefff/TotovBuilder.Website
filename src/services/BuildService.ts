@@ -120,16 +120,13 @@ export class BuildService {
       )
     }
 
-    const build = JSON.parse(serializedBuild) as IBuild
+    const buildResult = this.parse(id, serializedBuild)
 
-    // Converting dates back to Date type
-    build.lastUpdated = new Date(build.lastUpdated as unknown as string)
-
-    if (build.lastExported != null) {
-      build.lastExported = new Date(build.lastExported as unknown as string)
+    if (buildResult.success) {
+      return Result.ok(buildResult.value)
+    } else {
+      return Result.failFrom(buildResult)
     }
-
-    return Result.ok(build)
   }
 
   /**
@@ -153,6 +150,31 @@ export class BuildService {
     }
 
     return builds
+  }
+
+  /**
+   * Parses a serialized build.
+   * @param id - ID of the build.
+   * @param serializedBuild - Serialized build.
+   * @returns Parsed build.
+   */
+  public parse(id: string, serializedBuild: string): Result<IBuild> {
+    let build: IBuild
+
+    try {
+      build = JSON.parse(serializedBuild) as IBuild
+    } catch {
+      return Result.fail(FailureType.error, 'BuildService.parse()', i18n.t('message.buildParsingError', { id }))
+    }
+
+    // Converting dates back to Date type
+    build.lastUpdated = new Date(build.lastUpdated as unknown as string)
+
+    if (build.lastExported != null) {
+      build.lastExported = new Date(build.lastExported as unknown as string)
+    }
+
+    return Result.ok(build)
   }
 
   /**

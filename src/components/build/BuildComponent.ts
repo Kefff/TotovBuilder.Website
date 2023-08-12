@@ -29,6 +29,7 @@ import vueI18n from '../../plugins/vueI18n'
 import LoadingError from '../loading-error/LoadingErrorComponent.vue'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import { ItemService } from '../../services/ItemService'
+import { BuildService } from '../../services/BuildService'
 
 export default defineComponent({
   components: {
@@ -438,7 +439,13 @@ export default defineComponent({
      */
     function startEdit() {
       editing.value = true
-      originalBuild = JSON.parse(JSON.stringify(build.value)) // Creating a copy without reference of the build in its original state
+
+      // Creating a copy without reference of the build in its original state
+      const originalBuildResult = Services.get(BuildService).parse(build.value.id, JSON.stringify(build.value))
+
+      if (originalBuildResult.success) {
+        originalBuild = originalBuildResult.value
+      }
     }
 
     return {
