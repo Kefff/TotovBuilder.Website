@@ -24,5 +24,10 @@
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
+  margin-top: 3rem;
   white-space: nowrap;
+}
+
+.sidebar-title:first-child {
+  margin-top: 0rem;
 }

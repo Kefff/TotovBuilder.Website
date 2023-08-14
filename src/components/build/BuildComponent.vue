@@ -195,8 +195,8 @@
         <div class="toolbar-part">
           <div class="build-toolbar-right">
             <MerchantItemsOptions />
-            <DisplayOptions v-model:visible="displayOptionsSidebarVisible">
-              <template #additional-options>
+            <GeneralOptions v-model:visible="generalOptionsSidebarVisible">
+              <template #additional-display-options>
                 <div
                   class="sidebar-option-with-hover"
                   @click="collapseAll()"
@@ -229,8 +229,7 @@
                   <span>{{ $t('caption.expandAll') }}</span>
                 </div>
               </template>
-            </DisplayOptions>
-            <GeneralOptions />
+            </GeneralOptions>
             <NotificationButton />
             <Button
               v-show="editing"

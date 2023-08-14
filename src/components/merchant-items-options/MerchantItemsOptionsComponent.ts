@@ -18,7 +18,6 @@ export default defineComponent({
       itemExclusionFilters: [],
       merchantFilters: []
     })
-    const hasChanged = ref(false)
     const sidebarVisible = ref(false)
 
     /**
@@ -33,16 +32,12 @@ export default defineComponent({
      * Saves the global filter and closes the side bar.
      */
     function save() {
-      sidebarVisible.value = false
-      hasChanged.value = false
-
       globalFilterService.save(globalFilter.value)
     }
 
     return {
       display,
       globalFilter,
-      hasChanged,
       save,
       sidebarVisible
     }

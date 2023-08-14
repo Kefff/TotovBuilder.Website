@@ -86,11 +86,11 @@
           </MerchantItemsOptions>
         </div>
         <div class="welcome-action">
-          <DisplayOptions v-model:visible="displayOptionsSidebarVisible">
+          <GeneralOptions v-model:visible="generalOptionsSidebarVisible">
             <template #button>
               <Button
                 class="welcome-button"
-                @click="displayOptionsSidebarVisible = true"
+                @click="generalOptionsSidebarVisible = true"
               >
                 <font-awesome-icon
                   icon="language"
@@ -99,7 +99,7 @@
                 <span>{{ $t('message.welcomeChooseLanguage') }}</span>
               </Button>
             </template>
-          </DisplayOptions>
+          </GeneralOptions>
         </div>
       </div>
       <div class="welcome-warning">

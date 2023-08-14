@@ -4,16 +4,16 @@ import { BuildService } from '../../services/BuildService'
 import Services from '../../services/repository/Services'
 import BuildsImport from '../builds-import/BuildsImportComponent.vue'
 import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
-import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
 import LoadingError from '../loading-error/LoadingErrorComponent.vue'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
+import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
 
 export default defineComponent({
   components: {
     BuildsImport,
-    DisplayOptions,
+    GeneralOptions,
     Loading,
     LoadingError,
     MerchantItemsOptions
@@ -22,7 +22,7 @@ export default defineComponent({
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
 
-    const displayOptionsSidebarVisible = ref(false)
+    const generalOptionsSidebarVisible = ref(false)
     const hasBuilds = ref(false)
     const hasImported = ref(false)
     const hasWebsiteConfigurationLoadingError = ref(false)
@@ -73,7 +73,7 @@ export default defineComponent({
 
     return {
       displayBuilds,
-      displayOptionsSidebarVisible,
+      generalOptionsSidebarVisible,
       hasBuilds,
       hasImported,
       hasWebsiteConfigurationLoadingError,

@@ -17,8 +17,9 @@
     v-model:visible="sidebarVisible"
     position="right"
     style="width: auto"
+    @hide="save()"
   >
-    <div class="sidebar-title">
+    <div class="sidebar-title merchant-items-options-title">
       <font-awesome-icon
         icon="user-tag"
         class="icon-before-text"
@@ -26,12 +27,9 @@
       <span>{{ $t('caption.merchants') }}</span>
     </div>
     <div class="sidebar-option">
-      <MerchantFilter
-        v-model="globalFilter"
-        @update:model-value="() => hasChanged = true"
-      />
+      <MerchantFilter v-model="globalFilter" />
     </div>
-    <div class="sidebar-title merchant-items-title">
+    <div class="sidebar-title merchant-items-options-title">
       <font-awesome-icon
         icon="shopping-basket"
         class="icon-before-text"
@@ -39,23 +37,7 @@
       <span>{{ $t('caption.items') }}</span>
     </div>
     <div class="sidebar-option">
-      <ItemFilterComponent
-        v-model="globalFilter"
-        @update:model-value="() => hasChanged = true"
-      />
-    </div>
-    <div class="merchant-items-options-save-button">
-      <Button
-        class="p-button-success"
-        :disabled="!hasChanged"
-        @click="save()"
-      >
-        <font-awesome-icon
-          icon="save"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.save') }}</span>
-      </Button>
+      <ItemFilterComponent v-model="globalFilter" />
     </div>
   </Sidebar>
 </template>

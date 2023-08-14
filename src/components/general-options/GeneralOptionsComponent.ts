@@ -1,19 +1,35 @@
-import { defineComponent, onMounted, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import Services from '../../services/repository/Services'
 import { GeneralOptionsService } from '../../services/GeneralOptionsService'
 import StringUtils from '../../utils/StringUtils'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
+import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue'
 
 export default defineComponent({
-  setup: () => {
+  components: {
+    LanguageSelector
+  },
+  props: {
+    visible: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  emits: ['update:visible'],
+  setup: (props, { emit }) => {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
     websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
 
+    const sidebarVisible = ref(false)
     const allowCookies = ref(true)
     const isLoading = ref(true)
-    const sidebarVisible = ref(false)
+
+    watch(() => props.visible, newValue => sidebarVisible.value = newValue)
+
+    watch(() => sidebarVisible.value, newValue => emit('update:visible', newValue))
 
     onMounted(() => {
       isLoading.value = websiteConfigurationService.initializationState === ServiceInitializationState.initializing
@@ -24,11 +40,18 @@ export default defineComponent({
     })
 
     /**
+     * Displays the side bar.
+     */
+    function display() {
+      sidebarVisible.value = true
+      emit('update:visible', sidebarVisible.value)
+    }
+
+    /**
      * Sets the allow cookie indicator.
      */
     function onAllowCookiesChanged() {
       Services.get(GeneralOptionsService).setAllowCookiesIndicator(allowCookies.value)
-      sidebarVisible.value = false
     }
 
     /**
@@ -50,6 +73,7 @@ export default defineComponent({
 
     return {
       allowCookies,
+      display,
       onAllowCookiesChanged,
       sidebarVisible,
       StringUtils,

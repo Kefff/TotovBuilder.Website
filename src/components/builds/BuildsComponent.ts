@@ -16,11 +16,9 @@ import BuildsImport from '../builds-import/BuildsImportComponent.vue'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import vueI18n from '../../plugins/vueI18n'
-import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
-import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
 import LoadingError from '../loading-error/LoadingErrorComponent.vue'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
@@ -31,9 +29,7 @@ export default defineComponent({
     BuildsExport,
     BuildsImport,
     BuildsList,
-    DisplayOptions,
     GeneralOptions,
-    LanguageSelector,
     Loading,
     LoadingError,
     MerchantItemsOptions,
@@ -62,7 +58,6 @@ export default defineComponent({
       }
     })
 
-    const displayOptionsSidebarVisible = ref(false)
     const hasImported = ref(false)
     const hasItemsLoadingError = ref(false)
     const hasWebsiteConfigurationLoadingError = ref(false)
@@ -203,7 +198,6 @@ export default defineComponent({
       buildsSummaries,
       canExport,
       canImport,
-      displayOptionsSidebarVisible,
       hasImported,
       hasItemsLoadingError,
       hasLoadingError,

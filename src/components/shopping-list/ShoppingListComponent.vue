@@ -11,7 +11,7 @@
   </div>
 
   <Sidebar
-    v-model:visible="open"
+    v-model:visible="visible"
     position="left"
     style="width: auto"
   >

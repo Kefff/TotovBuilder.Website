@@ -37,7 +37,6 @@
         <div class="toolbar-part">
           <div class="builds-toolbar-right">
             <MerchantItemsOptions />
-            <DisplayOptions v-model:visible="displayOptionsSidebarVisible" />
             <GeneralOptions />
             <NotificationButton />
           </div>

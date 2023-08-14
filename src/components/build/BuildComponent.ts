@@ -23,7 +23,6 @@ import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
 import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { InventoryItemService } from '../../services/InventoryItemService'
-import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
 import vueI18n from '../../plugins/vueI18n'
 import LoadingError from '../loading-error/LoadingErrorComponent.vue'
@@ -34,7 +33,6 @@ import { BuildService } from '../../services/BuildService'
 export default defineComponent({
   components: {
     BuildShare,
-    DisplayOptions,
     GeneralOptions,
     InputTextField,
     InventoryPrice,
@@ -94,8 +92,8 @@ export default defineComponent({
     })
     const collapseStatuses = ref<boolean[]>([])
     const deleting = ref(false)
-    const displayOptionsSidebarVisible = ref(false)
     const editing = isNewBuild.value ? ref(true) : ref(false)
+    const generalOptionsSidebarVisible = ref(false)
     const hasItemsLoadingError = ref(false)
     const hasWebsiteConfigurationLoadingError = ref(false)
     const isLoading = ref(true)
@@ -227,7 +225,7 @@ export default defineComponent({
      * Collapses all the inventory slots.
      */
     function collapseAll() {
-      displayOptionsSidebarVisible.value = false
+      generalOptionsSidebarVisible.value = false
 
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = true
@@ -251,7 +249,7 @@ export default defineComponent({
      * Expands all the inventory slots.
      */
     function expandAll() {
-      displayOptionsSidebarVisible.value = false
+      generalOptionsSidebarVisible.value = false
 
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = false
@@ -262,7 +260,7 @@ export default defineComponent({
      * Expands the inventory slots containing an item.
      */
     function expandWithItem() {
-      displayOptionsSidebarVisible.value = false
+      generalOptionsSidebarVisible.value = false
 
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         if (build.value.inventorySlots[i].items.filter(i => i != null).length > 0) {
@@ -457,11 +455,11 @@ export default defineComponent({
       confirmDelete,
       copy,
       deleting,
-      displayOptionsSidebarVisible,
       editing,
       expandAll,
       expandWithItem,
       exportBuild,
+      generalOptionsSidebarVisible,
       goToBuilds,
       hasItemsLoadingError,
       hasLoadingError,
