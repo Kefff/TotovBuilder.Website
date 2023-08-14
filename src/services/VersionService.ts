@@ -78,11 +78,11 @@ export class VersionService {
    * @returns -1 if the version is older that the second one; 0 if they are identical; 1 if the first version is newer thant the second one.
    */
   public compareVersions(version1: string | undefined, version2: string | undefined): number {
-    if (version1 == undefined) {
+    if (version1 == null) {
       version1 = '1.0.0'
     }
 
-    if (version2 == undefined) {
+    if (version2 == null) {
       version2 = '1.0.0'
     }
 
@@ -135,7 +135,17 @@ export class VersionService {
    * @returns Changelog.
    */
   public async getChangelog(): Promise<IChangelogEntry[]> {
-    await this.fetchChangelog()
+    await this.initialize()
+
+    if (!this.changelogFetched) {
+      await this.fetchChangelog()
+    }
+
+    if (this.changelog.length === 0) {
+      return []
+    }
+
+    this.changelogFetched = true
 
     const changelogs: IChangelogEntry[] = []
     const hasChangelogsInCurrentLanguage = this.changelog.some(cl => cl.changes.some(c => c.language === vueI18n.locale.value))
@@ -235,15 +245,11 @@ export class VersionService {
    * Fetches the changelog.
    */
   private async fetchChangelog(): Promise<void> {
-    await this.initialize()
-
-    if (!this.changelogFetched) {
-      if (!this.isFetchingChangelogs) {
-        this.changelogFetchingPromise = this.startFetchingChangelog()
-      }
-
-      await this.changelogFetchingPromise
+    if (!this.isFetchingChangelogs) {
+      this.changelogFetchingPromise = this.startChangelogFetching()
     }
+
+    await this.changelogFetchingPromise
   }
 
   /**
@@ -277,19 +283,20 @@ export class VersionService {
 
   /**
    * Starts the fetching of the changelog.
+   * @returns true when the changelog has been fetched; otherwise false.
    */
-  private async startFetchingChangelog(): Promise<void> {
+  private async startChangelogFetching(): Promise<void> {
     this.isFetchingChangelogs = true
 
     const apiService = Services.get(ApiService)
     const websiteConfiguration = Services.get(WebsiteConfigurationService).configuration
     const changelogResult = await apiService.get<IChangelogEntry[]>(websiteConfiguration.changelogApi)
 
-    if (changelogResult.success && changelogResult.value.length > 0) {
+    if (changelogResult.success) {
       this.changelog = changelogResult.value
-      this.changelogFetched = true
     } else {
-      Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.changelogNotFetched'), true)
+      Services.get(LogService).logError('message.changelogNotFetched')
+      Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.changelogLoadingError'), true)
     }
 
     this.isFetchingChangelogs = false

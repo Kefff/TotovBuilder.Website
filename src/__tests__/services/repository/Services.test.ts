@@ -1,5 +1,5 @@
-import { instance, mock, spy, verify } from 'ts-mockito'
-import Services, { InitializationState } from '../../../services/repository/Services'
+import { instance, mock } from 'ts-mockito'
+import Services from '../../../services/repository/Services'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 beforeEach(() => {
@@ -108,22 +108,5 @@ describe('getServiceRepository', () => {
 
     // Assert
     expect(services).toBeDefined()
-  })
-})
-
-describe('setInitializationFinished', () => {
-  it.each([
-    [InitializationState.error],
-    [InitializationState.initialized]
-  ])('should indicate that initialization has ended and emit the initialized event', (initializationState: InitializationState) => {
-    // Arrange
-    const emitterSpy = spy(Services.emitter)
-
-    // Act
-    Services.setMinimumInitializationFinished(initializationState)
-
-    // Assert
-    expect(Services.initializationState).toBe(initializationState)
-    verify(emitterSpy.emit('initialized')).once()
   })
 })

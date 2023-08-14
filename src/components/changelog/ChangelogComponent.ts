@@ -4,8 +4,12 @@ import Services from '../../services/repository/Services'
 import { VersionService } from '../../services/VersionService'
 import vueI18n from '../../plugins/vueI18n'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
+import Loading from '../loading/LoadingComponent.vue'
 
 export default defineComponent({
+  components: {
+    Loading
+  },
   props: {
     modelValue: {
       type: Boolean,
@@ -18,6 +22,7 @@ export default defineComponent({
 
     const changelogs = ref<IChangelogEntry[]>([])
     const hasNewVersion = ref(false)
+    const isLoading = ref(true)
     const version = ref('1.0.0')
 
     const hasChangelogDisplayed = computed({
@@ -74,13 +79,22 @@ export default defineComponent({
      */
     async function showChangelog() {
       hasChangelogDisplayed.value = true
+      isLoading.value = true
+
       changelogs.value = await versionService.getChangelog()
+
+      isLoading.value = false
+
+      if (changelogs.value.length === 0) {
+        hasChangelogDisplayed.value = false // Closing the popup when an error occurs
+      }
     }
 
     return {
       changelogs,
       closeChangelog,
       hasChangelogDisplayed,
+      isLoading,
       showChangelog
     }
   }

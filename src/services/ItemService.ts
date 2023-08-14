@@ -280,7 +280,7 @@ export class ItemService {
   }
 
   /**
-   *  Fetches static data.
+   * Fetches static data.
    * If static data is already being fetched, waits for the operation to end before returning.
    * This should in theory never happen since fetchStaticData() is only called in initialize() which executes nothing when another initialization is already being performed.
    * @returns true when all static data has been fetched; otherwise false.
@@ -333,9 +333,10 @@ export class ItemService {
    */
   private async startPricesFetching(): Promise<void> {
     this.isFetchingPrices = true
-    const itemFetcherService = Services.get(ItemFetcherService)
 
+    const itemFetcherService = Services.get(ItemFetcherService)
     const pricesResult = await itemFetcherService.fetchPrices()
+
     this.updateItemsPrices(pricesResult)
     this.updateFilteredItems() // Items and prices needed to filter
 
@@ -416,10 +417,8 @@ export class ItemService {
       // When an error occurs, we set the last fetch date in order to make the cache expire 20 seconds later.
       // This is to avoid making a new API request for each of the 2000+ items.
       const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-
-      this.lastPricesFetchDate = new Date()
       this.lastPricesFetchDate = new Date(
-        this.lastPricesFetchDate.getTime()
+        new Date().getTime()
         + (websiteConfigurationService.configuration.cacheDuration - (2 * websiteConfigurationService.configuration.fetchTimeout)) * 1000)
 
       return
@@ -452,9 +451,9 @@ export class ItemService {
 
         if (currency != null) {
           price.valueInMainCurrency = price.value * currency.value
-        } else {
+        } /* c8 ignore start */ else {
           price.valueInMainCurrency = 0
-        }
+        } /* c8 ignore stop */
       }
     }
   }

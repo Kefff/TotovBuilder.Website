@@ -455,6 +455,7 @@ describe('isMatchingFilter()', () => {
     ]
   ])('should indicate whether an item matches the item filter and has prices matching the merchant filters', async (prices: IPrice[], expected: boolean) => {
     // Arrange
+    useItemServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(ItemPropertiesService)
@@ -555,13 +556,13 @@ describe('save', () => {
       presetBaseItemsExclusionFilter.enabled = false
     }
 
-    const fleaMarket = globalFilter.merchantFilters.find(mf => mf.merchant == 'flea-market')
+    const fleaMarket = globalFilter.merchantFilters.find(mf => mf.merchant === 'flea-market')
 
     if (fleaMarket != null) {
       fleaMarket.enabled = false
     }
 
-    const prapor = globalFilter.merchantFilters.find(mf => mf.merchant == 'prapor')
+    const prapor = globalFilter.merchantFilters.find(mf => mf.merchant === 'prapor')
 
     if (prapor != null) {
       prapor.merchantLevel = 1
@@ -676,13 +677,13 @@ describe('saveMerchantFilters()', () => {
 
     const globalFilter = service.get()
 
-    const fleaMarket = globalFilter.merchantFilters.find(mf => mf.merchant == 'flea-market')
+    const fleaMarket = globalFilter.merchantFilters.find(mf => mf.merchant === 'flea-market')
 
     if (fleaMarket != null) {
       fleaMarket.enabled = false
     }
 
-    const prapor = globalFilter.merchantFilters.find(mf => mf.merchant == 'prapor')
+    const prapor = globalFilter.merchantFilters.find(mf => mf.merchant === 'prapor')
 
     if (prapor != null) {
       prapor.merchantLevel = 1

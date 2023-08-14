@@ -1,8 +1,8 @@
-User-Agent: *
-Allow: /
-Disallow: /s/
-Disallow: /build
-Disallow: /build/
-Disallow: /builds
+User-agent: *
+Disallow: /
+
+Allow: /$
+Allow: /en$
+Allow: /fr$
 
 Sitemap: https://www.totovbuilder.com/sitemap.xml

@@ -133,7 +133,7 @@ describe('fetchPresets()', () => {
     })
   })
 
-  it('should notify when fetching fails', async () => {
+  it('should fail when fetching fails', async () => {
     // Arrange
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
@@ -145,15 +145,14 @@ describe('fetchPresets()', () => {
     when(itemFetcherServiceMock.fetchPresets()).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'API error')))
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
-    const presetService = new PresetService()
-    await presetService.fetchPresets()
 
     // Act
-    const preset = presetService.getPreset('5ab8e9fcd8ce870019439434')
+    const presetService = new PresetService()
+    const result = await presetService.fetchPresets()
 
     // Assert
-    verify(notificationServiceMock.notify(NotificationType.error, 'API error', true)).once()
-    expect(preset).toBeUndefined()
+    expect(result.success).toBe(false)
+    expect(result.failureMessage).toBe('API error')
   })
 })
 

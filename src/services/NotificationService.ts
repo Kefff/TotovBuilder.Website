@@ -112,7 +112,7 @@ export class NotificationService {
 
     const notification: INotification = {
       buttons: buttons ?? [],
-      closable: closable ?? (buttons?.length ?? 0) == 0,
+      closable: closable ?? (buttons?.length ?? 0) === 0,
       date: new Date(),
       id: Guid.create().toString(),
       message,

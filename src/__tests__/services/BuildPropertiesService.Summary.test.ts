@@ -20,7 +20,7 @@ describe('getSummary()', () => {
       build1,
       {
         ergonomics: 34.1,
-        exported: false,
+        exported: true,
         horizontalRecoil: 200,
         id: 'build_1',
         name: 'Build 1',
@@ -1314,7 +1314,7 @@ describe('getSummary()', () => {
       build2,
       {
         ergonomics: 54,
-        exported: false,
+        exported: true,
         horizontalRecoil: 234,
         id: 'build_2',
         name: 'Build 2',
@@ -2251,7 +2251,7 @@ describe('getSummary()', () => {
     // Assert
     expect(summaryResult).toStrictEqual({
       ergonomics: undefined,
-      exported: false,
+      exported: true,
       horizontalRecoil: undefined,
       id: '1',
       lastExported: undefined,

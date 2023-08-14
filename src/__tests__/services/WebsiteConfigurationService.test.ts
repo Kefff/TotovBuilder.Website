@@ -9,6 +9,7 @@ import Services from '../../services/repository/Services'
 import { NotificationService } from '../../services/NotificationService'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { describe, expect, it } from 'vitest'
+import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 
 describe('initialize', () => {
   it('should fetch the website configuration from the API', async () => {
@@ -42,5 +43,25 @@ describe('initialize', () => {
     // Assert
     expect(result).toBe(false)
     expect(service.configuration.buildSharingUrl).toBe('')
+  })
+})
+
+describe('initializationState setter', () => {
+  it.each([
+    [ServiceInitializationState.error],
+    [ServiceInitializationState.initialized]
+  ])('should set the initialization state and emit the initialization finished event', (state: ServiceInitializationState) => {
+    // Arrange
+    const service = new WebsiteConfigurationService()
+
+    let hasEmitted = false
+    service.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, () => hasEmitted = true)
+
+    // Act
+    service.initializationState = state as ServiceInitializationState.error | ServiceInitializationState.initialized
+
+    // Assert
+    expect(service.initializationState).toBe(state)
+    expect(hasEmitted).toBe(true)
   })
 })
