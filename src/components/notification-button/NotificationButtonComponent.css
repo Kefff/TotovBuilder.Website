@@ -56,24 +56,27 @@
 
 .notification-button-panel-item-type-icon {
   text-align: center;
-  width: 1.5rem;
 }
 
 .notification-button-panel-item-type-icon-error {
   color: var(--error-color);
+  width: 1.5rem;
   margin-right: 0.5rem;
 }
 
 .notification-button-panel-item-type-icon-info {
+  width: 1.5rem;
   margin-right: 0.5rem;
 }
 
 .notification-button-panel-item-type-icon-success {
   color: var(--success-color);
+  width: 1.5rem;
   margin-right: 0.5rem;
 }
 
 .notification-button-panel-item-type-icon-warn {
   color: var(--warning-color);
+  width: 1.5rem;
   margin-right: 0.5rem;
 }

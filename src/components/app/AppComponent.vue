@@ -87,7 +87,17 @@
             href="https://tarkov.dev/"
             target="_blank"
             class="link"
-          >{{ $t('message.apiDisclaimer2') }}</a>.
+          >
+            {{ $t('message.apiDisclaimer2') }}
+          </a>.
+          {{ $t('message.apiDisclaimer3') }}
+          <a
+            href="https://opencollective.com/tarkov-dev"
+            target="_blank"
+            class="link"
+          >
+            {{ $t('message.apiDisclaimer4') }}
+          </a>.
         </span>
       </div>
     </div>

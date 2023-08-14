@@ -27,7 +27,10 @@
       <span>{{ $t('caption.merchants') }}</span>
     </div>
     <div class="sidebar-option">
-      <MerchantFilter v-model="globalFilter" />
+      <MerchantFilter
+        v-model="globalFilter"
+        @update:model-value="() => hasChanged = true"
+      />
     </div>
     <div class="sidebar-title merchant-items-options-title">
       <font-awesome-icon
@@ -37,7 +40,10 @@
       <span>{{ $t('caption.items') }}</span>
     </div>
     <div class="sidebar-option">
-      <ItemFilterComponent v-model="globalFilter" />
+      <ItemFilterComponent
+        v-model="globalFilter"
+        @update:model-value="() => hasChanged = true"
+      />
     </div>
   </Sidebar>
 </template>

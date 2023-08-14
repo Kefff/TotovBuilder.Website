@@ -237,6 +237,8 @@
   },
   "message": {
     "apiDisclaimer1": "Données fournies gratuitement par ",
+    "apiDisclaimer3": "Soutenez ses développeurs avec un ",
+    "apiDisclaimer4": "don",
     "battleStateDisclaimer1": "Le contenu et le matériel du jeu sont des marques déposées et droits d'auteur de Battlestate Games et de ses concédants de licence.",
     "battleStateDisclaimer2": "Tous droits réservés.",
     "buildDeleted": "Equipement \"{name}\" supprimé.",
@@ -262,6 +264,7 @@
     "missingPrice": "Cet objet ou un de ses enfant n'est vendu par aucun des marchands paramétrés, son prix n'est donc pas pris en compte.",
     "newVersion": "La version {newVersion} est sortie.",
     "noItemsFound": "Aucun objet n'a été trouvé pour votre recherche avec la configuration de marchands et d'objets actuelle.",
+    "postUpdatePeriod": "Comme nous sommes dans une période d'après mise à jour de Tarkov, les objets et prix peuvent ne pas être à jour.\nIls sont en train d'être progressivement mis à jour par l'équipe de Tarkov.dev.",
     "pricesLoadingError": "Quelque chose s'est mal passé lors de la mise à jour des prix.\nEssayez d'attendre un peu et de recharger la page.",
     "requiredField": "{caption} est obligatoire.",
     "selectBuildsToExport": "Sélectionner les équipements à exporter",

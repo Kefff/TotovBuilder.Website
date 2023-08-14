@@ -270,6 +270,8 @@
   "message": {
     "apiDisclaimer1": "Data provided for free by ",
     "apiDisclaimer2": "Tarkov.dev",
+    "apiDisclaimer3": "Support its developers by ",
+    "apiDisclaimer4": "donating",
     "apiError": "Error while requesting API \"{api}\".\nResponse : \"{apiErrorMessage}\".",
     "apiMaxTriesError": "Failed to successfully request API \"{api}\" after {maxTries} tries.",
     "armorPenetrationsNotFound": "Armor penetrations for item \"{id}\" not found.",
@@ -326,6 +328,7 @@
     "modSlotNotFound": "Cannot find mod slot \"{modSlot}\".",
     "newVersion": "Version {newVersion} has been released.",
     "noItemsFound": "No item could be found for your search with the current merchants and items configuration.",
+    "postUpdatePeriod": "As we are in a post Tarkov update period, items and prices may not be up to date yet.\nThey are progressively being updated by the Tarkov.dev team.",
     "presetNotFound": "Preset \"{id}\" not found.",
     "presetsNotFetched": "No preset could be fetched.",
     "pricesLoadingError": "Something wen wrong while updating prices.\nTry waiting a bit and reloading the page.",

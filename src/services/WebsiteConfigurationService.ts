@@ -5,6 +5,7 @@ import Result, { FailureType } from '../utils/Result'
 import i18n from '../plugins/vueI18n'
 import { TinyEmitter } from 'tiny-emitter'
 import { ServiceInitializationState } from './repository/ServiceInitializationState'
+import { NotificationService, NotificationType } from './NotificationService'
 
 /**
  * Represents a service responsible for getting the website configuration.
@@ -44,6 +45,7 @@ export class WebsiteConfigurationService {
     notificationInformationDuration: 5,
     notificationSuccessDuration: 5,
     notificationWarningDuration: 10,
+    postUpdatePeriod: false,
     presetsApi: '',
     pricesApi: '',
     questsApi: '',
@@ -80,6 +82,10 @@ export class WebsiteConfigurationService {
     }
 
     this.configuration = websiteConfigurationResult.value
+
+    if (this.configuration.postUpdatePeriod) {
+      Services.get(NotificationService).notify(NotificationType.information, i18n.t('message.postUpdatePeriod'), true, 0)
+    }
 
     return true
   }
