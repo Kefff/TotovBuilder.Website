@@ -16,27 +16,28 @@ import BuildsImport from '../builds-import/BuildsImportComponent.vue'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import vueI18n from '../../plugins/vueI18n'
-import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
-import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
+import LoadingError from '../loading-error/LoadingErrorComponent.vue'
+import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
+import { ItemService } from '../../services/ItemService'
 
 export default defineComponent({
   components: {
     BuildsExport,
     BuildsImport,
     BuildsList,
-    DisplayOptions,
     GeneralOptions,
-    LanguageSelector,
     Loading,
+    LoadingError,
     MerchantItemsOptions,
     NotificationButton
   },
   setup: () => {
-    Services.emitter.once('initialized', onConfigurationLoaded)
+    const itemService = Services.get(ItemService)
+    itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
 
     const globalFilterService = Services.get(GlobalFilterService)
 
@@ -47,6 +48,7 @@ export default defineComponent({
     const canExport = computed(() => !isLoading.value && buildsSummaries.value.length > 0 && !isExporting.value && !isImporting.value)
     const canImport = computed(() => !isLoading.value && !isExporting.value && !isImporting.value)
     const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
+    const hasLoadingError = computed(() => hasItemsLoadingError.value || hasWebsiteConfigurationLoadingError.value)
     const selectedBuildSummary = computed({
       get: () => [],
       set: (value: string[]) => {
@@ -56,8 +58,9 @@ export default defineComponent({
       }
     })
 
-    const displayOptionsSidebarVisible = ref(false)
     const hasImported = ref(false)
+    const hasItemsLoadingError = ref(false)
+    const hasWebsiteConfigurationLoadingError = ref(false)
     const isExporting = ref(false)
     const isImporting = ref(false)
     const isLoading = ref(true)
@@ -74,14 +77,12 @@ export default defineComponent({
 
     onMounted(() => {
       window.addEventListener('scroll', setToolbarCssClass)
-      window.scrollTo(0, 0)// Scrolling to the top in case we were at the bottom of the page in the previous screen
+      window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
 
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-      isLoading.value = Services.isInitializing
-
-      if (!isLoading.value) {
-        onConfigurationLoaded()
+      if (itemService.initializationState !== ServiceInitializationState.initializing) {
+        onServicesInitialized()
       }
     })
 
@@ -115,16 +116,8 @@ export default defineComponent({
       const buildPropertiesService = Services.get(BuildPropertiesService)
 
       for (const build of builds) {
-        const summaryResult = await buildPropertiesService.getSummary(build)
-
-        if (!summaryResult.success) {
-          isLoading.value = false
-          Services.get(NotificationService).notify(NotificationType.error, summaryResult.failureMessage)
-
-          return
-        }
-
-        buildsSummaries.value.push(summaryResult.value)
+        const summary = await buildPropertiesService.getSummary(build)
+        buildsSummaries.value.push(summary)
       }
 
       isLoading.value = false
@@ -133,7 +126,13 @@ export default defineComponent({
     /**
      * Gets builds and ends loading.
      */
-    function onConfigurationLoaded() {
+    function onServicesInitialized() {
+      if (hasLoadingError.value) {
+        isLoading.value = false
+
+        return
+      }
+
       getBuilds()
 
       if (builds.length === 0) {
@@ -199,13 +198,14 @@ export default defineComponent({
       buildsSummaries,
       canExport,
       canImport,
-      displayOptionsSidebarVisible,
       hasImported,
+      hasItemsLoadingError,
+      hasLoadingError,
+      hasWebsiteConfigurationLoadingError,
       isExporting,
       isImporting,
       isLoading,
       merchantItemsOptionsSidebarVisible,
-      openBuild,
       openNewBuild,
       selectedBuildSummary,
       showBuildsExportPopup,

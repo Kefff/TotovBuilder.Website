@@ -9,14 +9,7 @@ import { fileURLToPath } from 'url'
 
 export default defineConfig({
   build: {
-    minify: true,
-    rollupOptions: {
-      output: {
-        assetFileNames: 'assets/[name][extname]',
-        chunkFileNames: 'assets/[name].js',
-        entryFileNames: 'assets/[name].js'
-      }
-    }
+    minify: true
   },
   envDir: 'environment',
   plugins: [

@@ -212,7 +212,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
 
     // Assert
     expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe('')
+    expect(result.failureMessage).toBe('Item "invalid" not found.')
     expect(obsoleteBuild).toStrictEqual(obsoleteBuild)
   })
 

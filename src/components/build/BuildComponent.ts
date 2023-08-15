@@ -18,30 +18,34 @@ import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
 import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Loading from '../loading/LoadingComponent.vue'
-import ShareBuild from '../build-share/BuildShareComponent.vue'
+import BuildShare from '../build-share/BuildShareComponent.vue'
 import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
 import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { InventoryItemService } from '../../services/InventoryItemService'
-import DisplayOptions from '../display-options/DisplayOptionsComponent.vue'
 import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
 import vueI18n from '../../plugins/vueI18n'
+import LoadingError from '../loading-error/LoadingErrorComponent.vue'
+import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
+import { ItemService } from '../../services/ItemService'
+import { BuildService } from '../../services/BuildService'
 
 export default defineComponent({
   components: {
-    DisplayOptions,
+    BuildShare,
     GeneralOptions,
     InputTextField,
     InventoryPrice,
     InventorySlot,
     Loading,
+    LoadingError,
     MerchantItemsOptions,
     NotificationButton,
-    ShareBuild,
     ShoppingList
   },
   setup: () => {
-    Services.emitter.once('initialized', initialize)
+    const itemService = Services.get(ItemService)
+    itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
 
     const route = useRoute()
     const router = useRouter()
@@ -49,7 +53,6 @@ export default defineComponent({
     const buildComponentService = Services.get(BuildComponentService)
     const buildPropertiesService = Services.get(BuildPropertiesService)
     const compatibilityService = Services.get(CompatibilityService)
-    const exportService = Services.get(ExportService)
     const inventoryItemService = Services.get(InventoryItemService)
     const globalFilterService = Services.get(GlobalFilterService)
     const notificationService = Services.get(NotificationService)
@@ -57,6 +60,7 @@ export default defineComponent({
     const inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
     let originalBuild: IBuild
 
+    const hasLoadingError = computed(() => hasItemsLoadingError.value || hasWebsiteConfigurationLoadingError.value)
     const hasSummaryErgonomics = computed(() => summary.value.ergonomics != null && summary.value.ergonomics !== 0)
     const hasSummaryErgonomicsPercentageModifier = computed(() => summary.value.wearableModifiers.ergonomicsPercentageModifierWithMods !== 0)
     const hasSummaryHorizontalRecoil = computed(() => summary.value.horizontalRecoil != null && summary.value.horizontalRecoil !== 0)
@@ -88,8 +92,10 @@ export default defineComponent({
     })
     const collapseStatuses = ref<boolean[]>([])
     const deleting = ref(false)
-    const displayOptionsSidebarVisible = ref(false)
     const editing = isNewBuild.value ? ref(true) : ref(false)
+    const generalOptionsSidebarVisible = ref(false)
+    const hasItemsLoadingError = ref(false)
+    const hasWebsiteConfigurationLoadingError = ref(false)
     const isLoading = ref(true)
     const summary = ref<IBuildSummary>({
       ergonomics: undefined,
@@ -150,12 +156,12 @@ export default defineComponent({
 
     provide('editing', editing)
 
-    watch(() => route.params, () => initialize())
+    watch(() => route.params, onServicesInitialized)
 
     onMounted(() => {
-      // Scrolling to the top in case we were at the bottom of the page in the previous screen.
-      // This avoids having the screen look like it shakes when the inventory slots are being expanded after loading
-      window.scrollTo(0, 0)
+      window.addEventListener('scroll', setToolbarCssClass)
+      window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
+      document.onkeydown = (e) => onKeyDown(e)
 
       compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
@@ -163,13 +169,9 @@ export default defineComponent({
       inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-      document.onkeydown = (e) => onKeyDown(e)
-      window.addEventListener('scroll', setToolbarCssClass)
 
-      if (!Services.isInitializing) {
-        // If the services are already initialized, we can initialize the component instead of waiting for the "initialized" event
-        // thant won't be triggered because the services initialization is already done
-        initialize()
+      if (itemService.initializationState !== ServiceInitializationState.initializing) {
+        onServicesInitialized()
       }
     })
 
@@ -223,7 +225,7 @@ export default defineComponent({
      * Collapses all the inventory slots.
      */
     function collapseAll() {
-      displayOptionsSidebarVisible.value = false
+      generalOptionsSidebarVisible.value = false
 
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = true
@@ -247,7 +249,7 @@ export default defineComponent({
      * Expands all the inventory slots.
      */
     function expandAll() {
-      displayOptionsSidebarVisible.value = false
+      generalOptionsSidebarVisible.value = false
 
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = false
@@ -258,7 +260,7 @@ export default defineComponent({
      * Expands the inventory slots containing an item.
      */
     function expandWithItem() {
-      displayOptionsSidebarVisible.value = false
+      generalOptionsSidebarVisible.value = false
 
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         if (build.value.inventorySlots[i].items.filter(i => i != null).length > 0) {
@@ -279,10 +281,12 @@ export default defineComponent({
         return
       }
 
-      const exportResult = await exportService.export([build.value])
+      const exportResult = await Services.get(ExportService).export([build.value])
 
-      if (!exportResult.success) {
-        notificationService.notify(NotificationType.error, exportResult.failureMessage)
+      if (exportResult.success) {
+        notificationService.notify(NotificationType.success, vueI18n.t('message.buildsExported'), true)
+      } else {
+        notificationService.notify(NotificationType.error, exportResult.failureMessage, true)
       }
     }
 
@@ -314,15 +318,7 @@ export default defineComponent({
         return
       }
 
-      const summaryResult = await buildPropertiesService.getSummary(build.value)
-
-      if (!summaryResult.success) {
-        notificationService.notify(NotificationType.error, summaryResult.failureMessage)
-
-        return
-      }
-
-      summary.value = summaryResult.value
+      summary.value = await buildPropertiesService.getSummary(build.value)
     }
 
     /**
@@ -330,24 +326,6 @@ export default defineComponent({
      */
     function goToBuilds() {
       router.push({ name: 'Builds' })
-    }
-
-    /**
-     * Initializes the build.
-     */
-    function initialize() {
-      isLoading.value = true
-
-      build.value = buildComponentService.getBuild(route.params['id'] as string)
-      getSharedBuild(route.params['sharedBuild'] as string)
-        .then(async () => {
-          getSummary()
-
-          build.value.inventorySlots.forEach(() => {
-            collapseStatuses.value.push(false) // All inventory slots expanded by default
-          })
-        })
-        .finally(() => isLoading.value = false)
     }
 
     /**
@@ -392,6 +370,24 @@ export default defineComponent({
      */
     function onModCompatibilityRequest(request: CompatibilityRequest) {
       request.setResult(buildPropertiesService.checkCanAddMod(build.value, request.itemId, request.path))
+    }
+
+    /**
+     * Initializes the build.
+     */
+    function onServicesInitialized() {
+      isLoading.value = true
+
+      build.value = buildComponentService.getBuild(route.params['id'] as string)
+      getSharedBuild(route.params['sharedBuild'] as string)
+        .then(async () => {
+          getSummary()
+
+          build.value.inventorySlots.forEach(() => {
+            collapseStatuses.value.push(false) // All inventory slots expanded by default
+          })
+        })
+        .finally(() => isLoading.value = false)
     }
 
     /**
@@ -441,7 +437,13 @@ export default defineComponent({
      */
     function startEdit() {
       editing.value = true
-      originalBuild = JSON.parse(JSON.stringify(build.value)) // Creating a copy without reference of the build in its original state
+
+      // Creating a copy without reference of the build in its original state
+      const originalBuildResult = Services.get(BuildService).parse(build.value.id, JSON.stringify(build.value))
+
+      if (originalBuildResult.success) {
+        originalBuild = originalBuildResult.value
+      }
     }
 
     return {
@@ -453,12 +455,14 @@ export default defineComponent({
       confirmDelete,
       copy,
       deleting,
-      displayOptionsSidebarVisible,
       editing,
       expandAll,
       expandWithItem,
       exportBuild,
+      generalOptionsSidebarVisible,
       goToBuilds,
+      hasItemsLoadingError,
+      hasLoadingError,
       hasSummaryErgonomics,
       hasSummaryErgonomicsPercentageModifier,
       hasSummaryHorizontalRecoil,
@@ -469,6 +473,7 @@ export default defineComponent({
       hasSummaryTurningSpeedPercentageModifierWithMods,
       hasSummaryVerticalRecoil,
       hasSummaryWeight,
+      hasWebsiteConfigurationLoadingError,
       invalid,
       inventorySlotPathPrefix,
       isEmpty,

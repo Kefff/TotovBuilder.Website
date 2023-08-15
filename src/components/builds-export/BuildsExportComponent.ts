@@ -5,6 +5,8 @@ import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import Services from '../../services/repository/Services'
 import { ExportService } from '../../services/ExportService'
 import { BuildService } from '../../services/BuildService'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
+import vueI18n from '../../plugins/vueI18n'
 
 export default defineComponent({
   components: {
@@ -37,10 +39,16 @@ export default defineComponent({
     /**
      * Exports the selected builds.
      */
-    function confirmExport() {
+    async function confirmExport() {
       const buildService = Services.get(BuildService)
       const buildsToExport = buildsToExportIds.value.map((bti) => buildService.get(bti).value)
-      Services.get(ExportService).export(buildsToExport)
+      const exportResult = await Services.get(ExportService).export(buildsToExport)
+
+      if (exportResult.success) {
+        Services.get(NotificationService).notify(NotificationType.success, vueI18n.t('message.buildsExported'), true)
+      } else {
+        Services.get(NotificationService).notify(NotificationType.error, exportResult.failureMessage, true)
+      }
 
       emit('update:modelValue', false)
     }

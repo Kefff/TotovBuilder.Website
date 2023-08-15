@@ -28,16 +28,16 @@ export class PresetService {
   /**
    * Fetches presets.
    */
-  public async fetchPresets(): Promise<void> {
+  public async fetchPresets(): Promise<Result<void>> {
     const presetsResult = await Services.get(ItemFetcherService).fetchPresets()
 
     if (!presetsResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, presetsResult.failureMessage, true)
-
-      return
+      return Result.failFrom(presetsResult)
     }
 
     this.presets = presetsResult.value
+
+    return Result.ok()
   }
 
   /**
@@ -82,7 +82,7 @@ export class PresetService {
     const isModSlot = PathUtils.checkIsModSlotPath(path)
 
     if (isModSlot) {
-      if (presetModSlot.item?.itemId == itemId) {
+      if (presetModSlot.item?.itemId === itemId) {
         return presetModSlot
       }
 

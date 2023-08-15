@@ -1,3 +1,6 @@
+import { anything, instance, mock, verify } from 'ts-mockito'
+import { LogService } from '../../services/LogService'
+import Services from '../../services/repository/Services'
 import Result, { FailureType } from '../../utils/Result'
 import { describe, expect, it } from 'vitest'
 
@@ -29,14 +32,21 @@ describe('get value()', () => {
 
 describe('fail()', () => {
   it('should create a failure result', () => {
+    // Arrange
+    const logServiceMock = mock<LogService>()
+
+    Services.configure(LogService, undefined, instance(logServiceMock))
+
     // Act
     const result1 = Result.fail()
     const result2 = Result.fail(FailureType.warning, failureLocation, failureMessage)
     const result3 = Result.fail(FailureType.error, failureLocation, failureMessage)
+    const result4 = Result.fail(FailureType.exception, failureLocation, failureMessage)
 
     import.meta.env.VITE_DEBUG = 'false'
-    const result4 = Result.fail(FailureType.warning, failureLocation, failureMessage)
     const result5 = Result.fail(FailureType.warning, failureLocation, failureMessage)
+    const result6 = Result.fail(FailureType.error, failureLocation, failureMessage)
+    const result7 = Result.fail(FailureType.exception, failureLocation, failureMessage)
 
     // Assert
     expect(result1.success).toBe(false)
@@ -58,6 +68,21 @@ describe('fail()', () => {
     expect(result5.success).toBe(false)
     expect(result5.failureContext).toBe(failureLocation)
     expect(result5.failureMessage).toBe(failureMessage)
+
+    expect(result6.success).toBe(false)
+    expect(result6.failureContext).toBe(failureLocation)
+    expect(result6.failureMessage).toBe(failureMessage)
+
+    expect(result7.success).toBe(false)
+    expect(result7.failureContext).toBe(failureLocation)
+    expect(result7.failureMessage).toBe(failureMessage)
+
+    verify(logServiceMock.logError(failureMessage)).times(1)
+    verify(logServiceMock.logError('message.failureDebug', anything())).times(1)
+    verify(logServiceMock.logException(failureMessage)).times(1)
+    verify(logServiceMock.logException('message.failureDebug', anything())).times(1)
+    verify(logServiceMock.logWarning(failureMessage)).times(1)
+    verify(logServiceMock.logWarning('message.failureDebug', anything())).times(1)
   })
 })
 

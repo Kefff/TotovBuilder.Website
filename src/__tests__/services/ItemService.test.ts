@@ -9,7 +9,7 @@ import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfi
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
 import { TarkovValuesService } from '../../services/TarkovValuesService'
 import { useItemFetcherServiceMock } from '../../__mocks__/ItemFetcherServiceMock'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
+import { NotificationService } from '../../services/NotificationService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import MockDate from 'mockdate'
 import ItemCategoriesMock from '../../../test-data/item-categories.json'
@@ -23,6 +23,7 @@ import { PresetService } from '../../services/PresetService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { useGlobalFilterServiceMock } from '../../__mocks__/GlobalFilterServiceMock'
 import { describe, expect, it } from 'vitest'
+import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 
 describe('constructor', () => {
   it('should subscribe to the GlobalFilterService "globalFilterChanged" event and update the filtered items list when triggered', async () => {
@@ -34,6 +35,9 @@ describe('constructor', () => {
     Services.configure(GlobalFilterService)
     Services.configure(ItemPropertiesService)
 
+    const itemService = new ItemService()
+    Services.configure(ItemService, undefined, itemService) // Registering the tested service because the GlobalFilterService uses it
+
     const globalFilterService = Services.get(GlobalFilterService)
     globalFilterService.saveMerchantFilters([{
       enabled: true,
@@ -41,10 +45,8 @@ describe('constructor', () => {
       merchantLevel: 4
     }])
 
-    const service = new ItemService()
-
     // Act / Assert
-    let itemResult = await service.getItem('5c0d668f86f7747ccb7f13b2', true) // 9x39mm SPP gs
+    let itemResult = await itemService.getItem('5c0d668f86f7747ccb7f13b2', true) // 9x39mm SPP gs
     expect(itemResult.success).toBe(true)
 
     globalFilterService.saveMerchantFilters([{
@@ -53,7 +55,7 @@ describe('constructor', () => {
       merchantLevel: 4
     }])
 
-    itemResult = await service.getItem('5c0d668f86f7747ccb7f13b2', true) // 9x39mm SPP gs
+    itemResult = await itemService.getItem('5c0d668f86f7747ccb7f13b2', true) // 9x39mm SPP gs
     expect(itemResult.success).toBe(false)
   })
 })
@@ -65,9 +67,6 @@ describe('fetchItemCategories()', () => {
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-
-    const notificationServiceMock = mock<NotificationService>()
-    Services.configure(NotificationService, undefined, instance(notificationServiceMock))
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
     when(itemFetcherServiceMock.fetchItemCategories()).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'API error')))
@@ -81,7 +80,6 @@ describe('fetchItemCategories()', () => {
     const itemCategories = await itemService.getItemCategories()
 
     // Assert
-    verify(notificationServiceMock.notify(NotificationType.error, 'API error', true)).once()
     expect(itemCategories).toStrictEqual([])
   })
 })
@@ -93,9 +91,6 @@ describe('fetchItems()', () => {
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-
-    const notificationServiceMock = mock<NotificationService>()
-    Services.configure(NotificationService, undefined, instance(notificationServiceMock))
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
     when(itemFetcherServiceMock.fetchItemCategories()).thenReturn(Promise.resolve(Result.ok(ItemCategoriesMock)))
@@ -109,7 +104,6 @@ describe('fetchItems()', () => {
     const itemResult = await itemService.getItem('624c0b3340357b5f566e8766')
 
     // Assert
-    verify(notificationServiceMock.notify(NotificationType.error, 'API error', true)).once()
     expect(itemResult.success).toBe(false)
     expect(itemResult.failureMessage).toBe('Item "624c0b3340357b5f566e8766" not found.')
   })
@@ -321,9 +315,11 @@ describe('getItems()', () => {
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-
     Services.configure(ItemPropertiesService)
     Services.configure(GlobalFilterService)
+
+    const itemService = new ItemService()
+    Services.configure(ItemService, undefined, itemService) // Registering the tested service because the GlobalFilterService uses it
 
     const globalFitlerService = Services.get(GlobalFilterService)
     globalFitlerService.saveMerchantFilters([
@@ -333,8 +329,6 @@ describe('getItems()', () => {
         merchantLevel: 1
       }
     ])
-
-    const itemService = new ItemService()
 
     // Act
     const itemsResult = await itemService.getItems([
@@ -482,15 +476,17 @@ describe('getItemsOfCategories()', () => {
     ])
   })
 
-  it('should filter items according to the merchant filter', async () => {
+  it('should filter items according to the global filter', async () => {
     // Arrange
     useItemFetcherServiceMock()
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-
     Services.configure(ItemPropertiesService)
     Services.configure(GlobalFilterService)
+
+    const itemService = new ItemService()
+    Services.configure(ItemService, undefined, itemService) // Registering the tested service because the GlobalFilterService uses it
 
     const globalFitlerService = Services.get(GlobalFilterService)
     globalFitlerService.saveMerchantFilters([
@@ -500,8 +496,6 @@ describe('getItemsOfCategories()', () => {
         merchantLevel: 1
       }
     ])
-
-    const itemService = new ItemService()
 
     // Act
     const itemResult = await itemService.getItemsOfCategories(['mainWeapon', 'secondaryWeapon'], true)
@@ -591,7 +585,7 @@ describe('getMainCurrency()', () => {
 })
 
 describe('initialize', () => {
-  it('should fetch presets and update preset items properties', async () => {
+  it('should fetch presets, update preset items properties, set its initialization state as initialized and emit an initialization finished event', async () => {
     // Arrange
     useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
@@ -647,7 +641,6 @@ describe('initialize', () => {
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-    Services.configure(NotificationService)
 
     const itemFetcherServiceSpy = spy(Services.get(ItemFetcherService))
 
@@ -660,5 +653,28 @@ describe('initialize', () => {
     // Assert
     verify(itemFetcherServiceSpy.fetchItems()).once()
     verify(itemFetcherServiceSpy.fetchPrices()).once()
+  })
+
+  it('should do nothing when services failed to initialize', async () => {
+    // Arrange
+    useGlobalFilterServiceMock()
+    useItemFetcherServiceMock()
+    usePresetServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
+    const itemFetcherServiceSpy = spy(Services.get(ItemFetcherService))
+    Services.get(WebsiteConfigurationService).initializationState = ServiceInitializationState.error
+
+    const itemService = new ItemService()
+
+    // Act
+    await itemService.initialize()
+
+    // Assert
+    verify(itemFetcherServiceSpy.fetchItems()).never()
+    verify(itemFetcherServiceSpy.fetchPrices()).never()
+    verify(itemFetcherServiceSpy.fetchPresets()).never()
+    expect(itemService.initializationState).toBe(ServiceInitializationState.error)
   })
 })

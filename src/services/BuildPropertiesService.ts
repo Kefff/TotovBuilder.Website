@@ -337,21 +337,13 @@ export class BuildPropertiesService {
    * @param build - Build.
    * @returns Build summary.
    */
-  public async getSummary(build: IBuild): Promise<Result<IBuildSummary>> {
-    const itemService = Services.get(ItemService)
-
-    const mainCurrencyResult = await itemService.getMainCurrency()
-
-    if (!mainCurrencyResult.success) {
-      return Result.failFrom(mainCurrencyResult)
-    }
-
+  public async getSummary(build: IBuild): Promise<IBuildSummary> {
     const lastExported = build.lastExported ?? new Date(1900, 1, 1)
     const lastUpdated = build.lastUpdated ?? new Date(1900, 1, 1)
 
     const result: IBuildSummary = {
       ergonomics: undefined,
-      exported: build.lastExported != null && lastExported.getTime() >= lastUpdated.getTime(),
+      exported: lastExported.getTime() >= lastUpdated.getTime(),
       horizontalRecoil: undefined,
       id: build.id,
       name: build.name,
@@ -361,7 +353,7 @@ export class BuildPropertiesService {
         missingPrice: false,
         price: {
           barterItems: [],
-          currencyName: mainCurrencyResult.value.name,
+          currencyName: '',
           itemId: '',
           merchant: '',
           merchantLevel: 0,
@@ -371,7 +363,7 @@ export class BuildPropertiesService {
         },
         priceWithContentInMainCurrency: {
           barterItems: [],
-          currencyName: mainCurrencyResult.value.name,
+          currencyName: '',
           itemId: '',
           merchant: '',
           merchantLevel: 0,
@@ -382,7 +374,7 @@ export class BuildPropertiesService {
         pricesWithContent: [],
         unitPrice: {
           barterItems: [],
-          currencyName: mainCurrencyResult.value.name,
+          currencyName: '',
           itemId: '',
           merchant: '',
           merchantLevel: 0,
@@ -408,75 +400,51 @@ export class BuildPropertiesService {
     // Wearable modifiers
     const wearableModifiersResult = await this.getWearableModifiers(build)
 
-    /* c8 ignore start */
-    if (!wearableModifiersResult.success) {
-      return Result.failFrom(wearableModifiersResult)
+    if (wearableModifiersResult.success) {
+      result.wearableModifiers = wearableModifiersResult.value
     }
-    /* c8 ignore stop */
-
-    result.wearableModifiers = wearableModifiersResult.value
 
     // Ergonomics
     const ergonomicsResult = await this.getErgonomics(build)
 
     if (ergonomicsResult != null) {
-      /* c8 ignore start */
-      if (!ergonomicsResult.success) {
-        return Result.failFrom(ergonomicsResult)
+      if (ergonomicsResult.success) {
+        result.ergonomics = round(ergonomicsResult.value + (ergonomicsResult.value * result.wearableModifiers.ergonomicsPercentageModifierWithMods), 1)
       }
-      /* c8 ignore stop */
-
-      result.ergonomics = round(ergonomicsResult.value + (ergonomicsResult.value * result.wearableModifiers.ergonomicsPercentageModifierWithMods), 1)
     }
 
     // Price
     const priceResult = await this.getPrice(build)
 
-    /* c8 ignore start */
-    if (!priceResult.success) {
-      return Result.failFrom(priceResult)
+    if (priceResult.success) {
+      result.price = priceResult.value
     }
-    /* c8 ignore stop */
-
-    result.price = priceResult.value
 
     // Recoil
     const recoilResult = await this.getRecoil(build)
 
     if (recoilResult != null) {
-      /* c8 ignore start */
-      if (!recoilResult.success) {
-        return Result.failFrom(recoilResult)
+      if (recoilResult.success) {
+        result.horizontalRecoil = recoilResult.value.horizontalRecoil
+        result.verticalRecoil = recoilResult.value.verticalRecoil
       }
-      /* c8 ignore stop */
-
-      result.horizontalRecoil = recoilResult.value.horizontalRecoil
-      result.verticalRecoil = recoilResult.value.verticalRecoil
     }
 
     // Weight
     const weightResult = await this.getWeight(build)
 
-    /* c8 ignore start */
-    if (!weightResult.success) {
-      return Result.failFrom(weightResult)
+    if (weightResult.success) {
+      result.weight = weightResult.value
     }
-    /* c8 ignore stop */
-
-    result.weight = weightResult.value
 
     // Shopping list
     const shoppingListResult = await this.getShoppingList(build)
 
-    /* c8 ignore start */
-    if (!shoppingListResult.success) {
-      return Result.failFrom(shoppingListResult)
+    if (shoppingListResult.success) {
+      result.shoppingList = shoppingListResult.value
     }
-    /* c8 ignore stop */
 
-    result.shoppingList = shoppingListResult.value
-
-    return Result.ok(result)
+    return result
   }
 
   /**

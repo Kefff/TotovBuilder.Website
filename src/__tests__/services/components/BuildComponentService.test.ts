@@ -309,7 +309,7 @@ describe('getBuildFromSharableString()', () => {
 
     // Assert
     expect(buildResult.success).toBe(false)
-    expect(buildResult.failureMessage).toBe('Cannot read the shared link. It seems to be corrupted.')
+    expect(buildResult.failureMessage).toBe('Error while reading the shared link.\nIt seems to be corrupted.')
   })
 })
 

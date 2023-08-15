@@ -25,14 +25,35 @@
     <div class="app-footer-line">
       <div class="app-footer-element">
         <font-awesome-icon
+          icon="envelope"
+          class="app-footer-element-icon"
+        />
+        <a
+          :href="'mailto:' + contactAddress"
+          class="link"
+        >{{ $t('caption.contact') }}</a>
+      </div>
+      <div class="app-footer-element">
+        <font-awesome-icon
           :icon="['fab', 'discord']"
           class="app-footer-element-icon"
         />
         <a
-          :href="discordLink"
+          :href="discordUrl"
           target="_blank"
           class="link"
         >{{ $t('caption.discord') }}</a>
+      </div>
+      <div class="app-footer-element">
+        <font-awesome-icon
+          icon="bug"
+          class="app-footer-element-icon"
+        />
+        <a
+          :href="bugReportUrl"
+          target="_blank"
+          class="link"
+        >{{ $t('caption.reportBug') }}</a>
       </div>
       <div class="app-footer-element">
         <font-awesome-icon
@@ -48,35 +69,14 @@
       </div>
       <div class="app-footer-element">
         <font-awesome-icon
-          icon="bug"
-          class="app-footer-element-icon"
-        />
-        <a
-          :href="reportBugAddress"
-          target="_blank"
-          class="link"
-        >{{ $t('caption.reportBug') }}</a>
-      </div>
-      <div class="app-footer-element">
-        <font-awesome-icon
           :icon="['fab', 'github']"
           class="app-footer-element-icon"
         />
         <a
-          :href="githubAddress"
+          :href="githubUrl"
           target="_blank"
           class="link"
         >{{ $t('caption.github') }}</a>
-      </div>
-      <div class="app-footer-element">
-        <font-awesome-icon
-          icon="envelope"
-          class="app-footer-element-icon"
-        />
-        <a
-          :href="'mailto:' + contactAddress"
-          class="link"
-        >{{ $t('caption.contact') }}</a>
       </div>
     </div>
     <div class="app-footer-line">
@@ -87,7 +87,17 @@
             href="https://tarkov.dev/"
             target="_blank"
             class="link"
-          >{{ $t('message.apiDisclaimer2') }}</a>.
+          >
+            {{ $t('message.apiDisclaimer2') }}
+          </a>.
+          {{ $t('message.apiDisclaimer3') }}
+          <a
+            href="https://opencollective.com/tarkov-dev"
+            target="_blank"
+            class="link"
+          >
+            {{ $t('message.apiDisclaimer4') }}
+          </a>.
         </span>
       </div>
     </div>

@@ -20,7 +20,7 @@ describe('getSummary()', () => {
       build1,
       {
         ergonomics: 34.1,
-        exported: false,
+        exported: true,
         horizontalRecoil: 200,
         id: 'build_1',
         name: 'Build 1',
@@ -1314,7 +1314,7 @@ describe('getSummary()', () => {
       build2,
       {
         ergonomics: 54,
-        exported: false,
+        exported: true,
         horizontalRecoil: 234,
         id: 'build_2',
         name: 'Build 2',
@@ -2130,23 +2130,9 @@ describe('getSummary()', () => {
       const summary = await service.getSummary(build)
 
       // Assert
-      expect(summary?.success).toBe(true)
-      expect(summary?.value).toStrictEqual(expected)
+      expect(summary).toStrictEqual(expected)
     }
   )
-
-  it('should fail if the main currency cannot be found', async () => {
-    // Arrange
-    useItemServiceMock(false)
-    const service = new BuildPropertiesService()
-
-    // Act
-    const summary = await service.getSummary(build1)
-
-    // Assert
-    expect(summary.success).toBe(false)
-    expect(summary.failureMessage).toBe('Main currency not found.')
-  })
 
   it('should get a shopping list containing barter items to buy', async () => {
     // Arrange
@@ -2263,10 +2249,9 @@ describe('getSummary()', () => {
     const summaryResult = await service.getSummary(build)
 
     // Assert
-    expect(summaryResult.success).toBe(true)
-    expect(summaryResult.value).toStrictEqual({
+    expect(summaryResult).toStrictEqual({
       ergonomics: undefined,
-      exported: false,
+      exported: true,
       horizontalRecoil: undefined,
       id: '1',
       lastExported: undefined,

@@ -7,7 +7,6 @@ import vueI18n from '../../plugins/vueI18n'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemService } from '../../services/ItemService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
 import Services from '../../services/repository/Services'
 import ItemIcon from '../item-icon/ItemIconComponent.vue'
 import MerchantIcon from '../merchant-icon/MerchantIconComponent.vue'
@@ -94,6 +93,8 @@ export default defineComponent({
      * Gets barter items.
      */
     async function getBarterItems() {
+      barterItems.value = []
+
       if (!isBarter.value) {
         return
       }
@@ -103,13 +104,9 @@ export default defineComponent({
       for (const barterItem of props.price.barterItems) {
         const itemResult = await itemService.getItem(barterItem.itemId)
 
-        if (!itemResult.success) {
-          Services.get(NotificationService).notify(NotificationType.error, itemResult.failureMessage)
-
-          return
+        if (itemResult.success) {
+          barterItems.value?.push(itemResult.value)
         }
-
-        barterItems.value?.push(itemResult.value)
       }
     }
 
@@ -117,6 +114,8 @@ export default defineComponent({
      * Gets barter item prices.
      */
     async function getBarterItemPrices() {
+      barterItemPrices.value = []
+
       if (!isBarter.value) {
         return
       }
@@ -132,13 +131,9 @@ export default defineComponent({
           quantity: barterItem.quantity
         }, undefined, true, props.useMerchantFilter)
 
-        if (!priceResult.success) {
-          Services.get(NotificationService).notify(NotificationType.error, priceResult.failureMessage)
-
-          return
+        if (priceResult.success) {
+          barterItemPrices.value.push(priceResult.value)
         }
-
-        barterItemPrices.value.push(priceResult.value)
       }
     }
 
@@ -151,22 +146,21 @@ export default defineComponent({
       barterItems.value = []
       barterItemPrices.value = []
 
-      const notificationService = Services.get(NotificationService)
       const mainCurrencyResult = await Services.get(ItemService).getMainCurrency()
-      const currencyResult = await Services.get(ItemService).getCurrency(props.price.currencyName)
 
-      if (!mainCurrencyResult.success) {
-        notificationService.notify(NotificationType.error, mainCurrencyResult.failureMessage)
-
-        return
-      } else if (!currencyResult.success) {
-        notificationService.notify(NotificationType.error, currencyResult.failureMessage)
-
-        return
+      if (mainCurrencyResult.success) {
+        mainCurrency.value = mainCurrencyResult.value
+      } else {
+        mainCurrency.value = undefined
       }
 
-      mainCurrency.value = mainCurrencyResult.value
-      currency.value = currencyResult.value
+      const currencyResult = await Services.get(ItemService).getCurrency(props.price.currencyName)
+
+      if (currencyResult.success) {
+        currency.value = currencyResult.value
+      } else {
+        currency.value = undefined
+      }
 
       if (isBarter.value) {
         displayedCurrency.value = mainCurrency.value

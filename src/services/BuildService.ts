@@ -120,16 +120,13 @@ export class BuildService {
       )
     }
 
-    const build = JSON.parse(serializedBuild) as IBuild
+    const buildResult = this.parse(id, serializedBuild)
 
-    // Converting dates back to Date type
-    build.lastUpdated = new Date(build.lastUpdated as unknown as string)
-
-    if (build.lastExported != null) {
-      build.lastExported = new Date(build.lastExported as unknown as string)
+    if (buildResult.success) {
+      return Result.ok(buildResult.value)
+    } else {
+      return Result.failFrom(buildResult)
     }
-
-    return Result.ok(build)
   }
 
   /**
@@ -156,6 +153,31 @@ export class BuildService {
   }
 
   /**
+   * Parses a serialized build.
+   * @param id - ID of the build.
+   * @param serializedBuild - Serialized build.
+   * @returns Parsed build.
+   */
+  public parse(id: string, serializedBuild: string): Result<IBuild> {
+    let build: IBuild
+
+    try {
+      build = JSON.parse(serializedBuild) as IBuild
+
+      // Converting dates back to Date type
+      build.lastUpdated = new Date(build.lastUpdated as unknown as string)
+
+      if (build.lastExported != null) {
+        build.lastExported = new Date(build.lastExported as unknown as string)
+      }
+    } catch {
+      return Result.fail(FailureType.error, 'BuildService.parse()', i18n.t('message.buildParsingError', { id }))
+    }
+
+    return Result.ok(build)
+  }
+
+  /**
    * Parses a build that was reduced for sharing.
    * @param reducedBuild - Serialized build.
    * @returns Build.
@@ -163,7 +185,7 @@ export class BuildService {
   public parseReducedBuild(reducedBuild: Record<string, unknown>): Result<IBuild> {
     const reducedInventorySlots = reducedBuild['s'] as Record<string, unknown>[]
 
-    if (reducedInventorySlots == null || reducedInventorySlots.length === 0) {
+    if (reducedInventorySlots == null) {
       return Result.fail(FailureType.error, 'BuildService.parseReducedBuild()', i18n.t('message.cannotParseBuildWithoutInventorySlots'))
     }
 
@@ -189,22 +211,18 @@ export class BuildService {
    * @param build - Build.
    * @returns Reduced build.
    */
-  public reduceBuild(build: IBuild): Result<Record<string, unknown>> {
+  public reduceBuild(build: IBuild): Record<string, unknown> {
     const reducedBuild: Record<string, unknown> = {}
     const reducedInventorySlots: Record<string, unknown>[] = []
 
     for (const inventorySlot of build.inventorySlots.filter(is => is.items.some(i => i != null))) {
-      const reducedInventorySlot = this.reduceInventorySlotForSharing(inventorySlot)
+      const reducedInventorySlot = this.reduceInventorySlot(inventorySlot)
       reducedInventorySlots.push(reducedInventorySlot)
-    }
-
-    if (reducedInventorySlots.length === 0) {
-      return Result.fail(FailureType.error, 'BuildService.parseBuildForSharing()', i18n.t('message.cannotShareEmptyBuild', { name: build.name }))
     }
 
     reducedBuild['s'] = reducedInventorySlots
 
-    return Result.ok(reducedBuild)
+    return reducedBuild
   }
 
   /**
@@ -214,16 +232,12 @@ export class BuildService {
    */
   public async toSharableURL(build: IBuild): Promise<Result<string>> {
     // Reducing the size of the build
-    const reducedBuildResult = this.reduceBuild(build)
-
-    if (!reducedBuildResult.success) {
-      return Result.failFrom(reducedBuildResult)
-    }
+    const reducedBuild = this.reduceBuild(build)
 
     // Compressing the build into a URL
     const codec = jsonUrl('lzma')
     let sharableURL = Services.get(WebsiteConfigurationService).configuration.buildSharingUrl
-    sharableURL += await codec.compress(reducedBuildResult.value)
+    sharableURL += await codec.compress(reducedBuild)
 
     if (sharableURL.length > 2048) {
       // 2048 is a hard limit for URL length on Azure Consumption tiers which is what is used to host the website
@@ -408,12 +422,12 @@ export class BuildService {
   }
 
   /**
-   * Transforms an inventory item in order to share it.
+   * Transforms an inventory item so it takes less place.
    * Unnecessary data is scrapped and property names are shortened.
    * @param inventoryItem - Inventory item.
    * @returns Reduced inventory item.
    */
-  private reduceInventoryItemForSharing(inventoryItem: IInventoryItem): Record<string, unknown> {
+  private reduceInventoryItem(inventoryItem: IInventoryItem): Record<string, unknown> {
     const reducedInventoryItem: Record<string, unknown> = {}
     const reducedContentainedItems: Record<string, unknown>[] = []
     const reducedModSlots: Record<string, unknown>[] = []
@@ -429,12 +443,12 @@ export class BuildService {
     }
 
     for (const containedItem of inventoryItem.content) {
-      const reducedContainedItem = this.reduceInventoryItemForSharing(containedItem)
+      const reducedContainedItem = this.reduceInventoryItem(containedItem)
       reducedContentainedItems.push(reducedContainedItem)
     }
 
     for (const modSlot of inventoryItem.modSlots.filter(ms => ms.item != null)) {
-      const reducedModSlot = this.reduceInventoryModSlotForSharing(modSlot)
+      const reducedModSlot = this.reduceInventoryModSlot(modSlot)
       reducedModSlots.push(reducedModSlot)
     }
 
@@ -450,31 +464,31 @@ export class BuildService {
   }
 
   /**
-   * Transforms an inventory mod slot in order to share it.
+   * Transforms an inventory mod slot so it takes less space.
    * Unnecessary data is scrapped and property names are shortened.
    * @param inventoryModSlot - Inventory mod slot.
    * @returns Reduced inventory mod slot.
    */
-  private reduceInventoryModSlotForSharing(inventoryModSlot: IInventoryModSlot): Record<string, unknown> {
+  private reduceInventoryModSlot(inventoryModSlot: IInventoryModSlot): Record<string, unknown> {
     const reducedInventoryModSlot: Record<string, unknown> = {}
 
     reducedInventoryModSlot['n'] = inventoryModSlot.modSlotName
 
     if (inventoryModSlot.item != null) {
       // Should always occur because we only call this method for mod slots containing an item
-      reducedInventoryModSlot['i'] = this.reduceInventoryItemForSharing(inventoryModSlot.item)
+      reducedInventoryModSlot['i'] = this.reduceInventoryItem(inventoryModSlot.item)
     }
 
     return reducedInventoryModSlot
   }
 
   /**
-   * Transforms an inventory slot in order to share it.
+   * Transforms an inventory slot so it takes less place.
    * Unnecessary data is scrapped and property names are shortened.
    * @param inventorySlot - Inventory slot.
    * @returns Reduced inventory slot.
    */
-  private reduceInventorySlotForSharing(inventorySlot: IInventorySlot): Record<string, unknown> {
+  private reduceInventorySlot(inventorySlot: IInventorySlot): Record<string, unknown> {
     const reducedInventorySlot: Record<string, unknown> = {}
     const reducedInventoryItems: Record<string, unknown>[] = []
 
@@ -485,7 +499,7 @@ export class BuildService {
         continue
       }
 
-      const reducedInventoryItem = this.reduceInventoryItemForSharing(inventoryItem)
+      const reducedInventoryItem = this.reduceInventoryItem(inventoryItem)
       reducedInventoryItems.push(reducedInventoryItem)
     }
 

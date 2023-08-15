@@ -17,6 +17,7 @@ export class Migration160 implements IMigration {
     const itemService = Services.get(ItemService)
 
     let hasFailed = false
+    const errorMessages: string[] = []
 
     for (const inventorySlot of build.inventorySlots) {
       if (inventorySlot.typeId !== 'onSling' && inventorySlot.typeId !== 'onBack' && inventorySlot.typeId !== 'holster') {
@@ -31,7 +32,9 @@ export class Migration160 implements IMigration {
         const itemResult = await itemService.getItem(inventoryItem.itemId)
 
         if (!itemResult.success) {
+          errorMessages.push(itemResult.failureMessage)
           hasFailed = true
+
           continue
         }
 
@@ -44,7 +47,7 @@ export class Migration160 implements IMigration {
     }
 
     return hasFailed
-      ? Result.fail(FailureType.error)
+      ? Result.fail(FailureType.error, 'Migration160.executeBuildMigration()', errorMessages.join('\n'))
       : Result.ok()
   }
 }

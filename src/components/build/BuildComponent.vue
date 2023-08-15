@@ -2,7 +2,7 @@
   <div class="build">
     <div class="build-title">
       <span
-        v-if="!summary.exported && !isNewBuild"
+        v-if="!isLoading && !summary.exported && !isNewBuild"
         v-tooltip.top="notExportedTooltip"
         class="build-toolbar-not-exported"
       >
@@ -25,10 +25,23 @@
         <div class="toolbar-part">
           <Button
             v-tooltip.right="$t('caption.backToBuilds')"
-            :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
+            class="p-button-text p-button-sm button-discreet"
+            :disabled="editing"
             @click="goToBuilds()"
           >
             <font-awesome-icon icon="arrow-left" />
+          </Button>
+          <Button
+            v-show="!editing"
+            class="toolbar-button"
+            :disabled="isLoading || hasLoadingError"
+            @click="startEdit()"
+          >
+            <font-awesome-icon
+              icon="edit"
+              class="icon-before-text"
+            />
+            <span>{{ $t('caption.edit') }}</span>
           </Button>
           <Button
             v-show="editing"
@@ -42,29 +55,23 @@
             />
             <span>{{ $t('caption.save') }}</span>
           </Button>
-          <Button
-            v-show="!editing"
-            class="toolbar-button"
-            @click="startEdit()"
-          >
-            <font-awesome-icon
-              icon="edit"
-              class="icon-before-text"
-            />
-            <span>{{ $t('caption.edit') }}</span>
-          </Button>
           <ShoppingList :shopping-list="summary.shoppingList" />
           <Button
             v-tooltip.top="$t('caption.copyBuild')"
-            :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
+            :disabled="isLoading || hasLoadingError"
+            class="p-button-text p-button-sm button-discreet"
             @click="copy()"
           >
             <font-awesome-icon icon="copy" />
           </Button>
-          <ShareBuild :build="build" />
+          <BuildShare
+            :build="build"
+            :has-loading-error="hasLoadingError"
+          />
           <Button
             v-tooltip.top="$t('caption.exportBuild')"
-            :class="'p-button-text p-button-sm button-discreet' + (editing ? ' p-disabled' : '')"
+            class="p-button-text p-button-sm button-discreet"
+            :disabled="isLoading || hasLoadingError || editing"
             @click="exportBuild()"
           >
             <font-awesome-icon icon="file-export" />
@@ -188,8 +195,8 @@
         <div class="toolbar-part">
           <div class="build-toolbar-right">
             <MerchantItemsOptions />
-            <DisplayOptions v-model:visible="displayOptionsSidebarVisible">
-              <template #additional-options>
+            <GeneralOptions v-model:visible="generalOptionsSidebarVisible">
+              <template #additional-display-options>
                 <div
                   class="sidebar-option-with-hover"
                   @click="collapseAll()"
@@ -222,8 +229,7 @@
                   <span>{{ $t('caption.expandAll') }}</span>
                 </div>
               </template>
-            </DisplayOptions>
-            <GeneralOptions />
+            </GeneralOptions>
             <NotificationButton />
             <Button
               v-show="editing"
@@ -239,6 +245,7 @@
             <Button
               v-show="!editing"
               class="p-button-danger toolbar-button"
+              :disabled="isLoading || hasLoadingError"
               @click="startDelete()"
             >
               <font-awesome-icon
@@ -254,6 +261,12 @@
     </div>
 
     <!-- Inventory slots -->
+    <div
+      v-show="isLoading"
+      class="build-loading"
+    >
+      <Loading />
+    </div>
     <div
       v-show="!isLoading"
       id="build-content"
@@ -292,12 +305,6 @@
         />
       </div>
     </div>
-    <div
-      v-show="isLoading"
-      class="build-loading"
-    >
-      <Loading />
-    </div>
   </div>
 
   <!-- Deletion confirmation dialog -->
@@ -334,6 +341,12 @@
       </Button>
     </template>
   </Dialog>
+
+  <!-- Loading error -->
+  <LoadingError
+    v-model:hasItemsLoadingError="hasItemsLoadingError"
+    v-model:hasWebsiteConfigurationLoadingError="hasWebsiteConfigurationLoadingError"
+  />
 </template>
 
 <script lang="ts" src="./BuildComponent.ts" />

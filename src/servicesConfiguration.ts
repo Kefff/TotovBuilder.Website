@@ -25,6 +25,7 @@ import { TarkovValuesService } from './services/TarkovValuesService'
 import { VersionService } from './services/VersionService'
 import { WebsiteConfigurationService } from './services/WebsiteConfigurationService'
 import Services from './services/repository/Services'
+import { ServiceInitializationState } from './services/repository/ServiceInitializationState'
 
 /**
  * Configures all the services used in the application.
@@ -59,14 +60,29 @@ export async function configureServices(): Promise<void> {
   Services.configure(MagazineStatsComponentService)
   Services.configure(ModSlotComponentService)
 
+  initialize()
+}
+
+async function initialize() {
   // Initialization of immediatly required values
-  const versionService = Services.get(VersionService)
+  const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+  const websiteConfigurationServiceInitialized = await websiteConfigurationService.initialize()
 
-  await Services.get(WebsiteConfigurationService).initialize()
-  await Services.get(TarkovValuesService).initialize()
-  await versionService.initialize()
+  if (!websiteConfigurationServiceInitialized) {
+    websiteConfigurationService.initializationState = ServiceInitializationState.error
 
-  Services.setInitializationFinished()
+    return
+  }
+
+  const tarkovValuesServiceInitialized = await Services.get(TarkovValuesService).initialize()
+
+  if (!tarkovValuesServiceInitialized) {
+    websiteConfigurationService.initializationState = ServiceInitializationState.error
+
+    return
+  }
+
+  websiteConfigurationService.initializationState = ServiceInitializationState.initialized
 
   // Initialization of values that are not immediatly required and take time to load
   Services.get(ItemService).initialize()

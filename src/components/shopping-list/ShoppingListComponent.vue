@@ -2,7 +2,8 @@
   <div>
     <Button
       v-tooltip.top="$t('caption.shoppingList')"
-      :class="'p-button-text p-button-sm button-discreet' + (shoppingList.length === 0 ? ' p-disabled' : '')"
+      class="p-button-text p-button-sm button-discreet"
+      :disabled="shoppingList.length === 0"
       @click="show()"
     >
       <font-awesome-icon icon="shopping-cart" />
@@ -10,7 +11,7 @@
   </div>
 
   <Sidebar
-    v-model:visible="open"
+    v-model:visible="visible"
     position="left"
     style="width: auto"
   >

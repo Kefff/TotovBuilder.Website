@@ -7,7 +7,7 @@
       <div class="toolbar-line">
         <div class="toolbar-part">
           <Button
-            :class="isLoading ? ' p-disabled' : ''"
+            :disabled="isLoading || hasLoadingError"
             @click="openNewBuild()"
           >
             <font-awesome-icon
@@ -18,14 +18,16 @@
           </Button>
           <Button
             v-tooltip.top="$t('caption.exportBuilds')"
-            :class="'p-button-text p-button-sm button-discreet' + (!canExport ? ' p-disabled' : '')"
+            class="p-button-text p-button-sm button-discreet"
+            :disabled="isLoading || hasLoadingError || !canExport"
             @click="showBuildsExportPopup()"
           >
             <font-awesome-icon icon="file-export" />
           </Button>
           <Button
             v-tooltip.top="$t('caption.importBuilds')"
-            :class="'p-button-text p-button-sm button-discreet' + (!canImport ? ' p-disabled' : '')"
+            class="p-button-text p-button-sm button-discreet"
+            :disabled="isLoading || hasLoadingError || !canImport"
             @click="showBuildsImportPopup()"
           >
             <font-awesome-icon icon="file-import" />
@@ -35,13 +37,18 @@
         <div class="toolbar-part">
           <div class="builds-toolbar-right">
             <MerchantItemsOptions />
-            <DisplayOptions v-model:visible="displayOptionsSidebarVisible" />
             <GeneralOptions />
             <NotificationButton />
           </div>
         </div>
       </div>
       <div class="toolbar-gradient" />
+    </div>
+    <div
+      v-show="isLoading"
+      class="builds-loading"
+    >
+      <Loading />
     </div>
     <div
       v-show="!isLoading && buildsSummaries.length > 0"
@@ -53,26 +60,26 @@
         :multiple="false"
       />
     </div>
-    <div
-      v-show="isLoading"
-      class="builds-loading"
-    >
-      <Loading />
-    </div>
   </div>
 
   <!-- Export -->
   <BuildsExport
-    v-if="!isLoading"
+    v-if="!isLoading && !hasLoadingError"
     v-model="isExporting"
     :builds-summaries="buildsSummaries"
   />
 
   <!-- Import -->
   <BuildsImport
-    v-if="!isLoading"
+    v-if="!isLoading && !hasLoadingError"
     v-model="isImporting"
     v-model:has-imported="hasImported"
+  />
+
+  <!-- Loading error -->
+  <LoadingError
+    v-model:hasItemsLoadingError="hasItemsLoadingError"
+    v-model:hasWebsiteConfigurationLoadingError="hasWebsiteConfigurationLoadingError"
   />
 </template>
 

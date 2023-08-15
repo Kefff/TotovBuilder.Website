@@ -267,35 +267,4 @@ describe('readBuilds()', () => {
     // Assert
     expect(result.success).toBe(false)
   })
-
-  it('should fail when a build summary cannot be obtained', async () => {
-    // Arrange
-    useVersionServiceMock()
-
-    const importServiceMock = mock<ImportService>()
-    when(importServiceMock.getBuildsFromFile(anything())).thenReturn(Promise.resolve(Result.ok<IBuild[]>([
-      {
-        id: 'build1',
-        inventorySlots: [],
-        lastExported: undefined,
-        lastUpdated: undefined,
-        lastWebsiteVersion: '1.6.0',
-        name: 'Build 1'
-      }
-    ])))
-    Services.configure(ImportService, undefined, instance(importServiceMock))
-
-    const buildPropertiesServiceMock = mock<BuildPropertiesService>()
-    when(buildPropertiesServiceMock.getSummary(anything())).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'Error')))
-    Services.configure(BuildPropertiesService, undefined, instance(buildPropertiesServiceMock))
-
-    const service = new BuildsImportComponentService()
-    const fileMock = mock<File>()
-
-    // Act
-    const result = await service.readBuilds(instance(fileMock))
-
-    // Assert
-    expect(result.success).toBe(false)
-  })
 })

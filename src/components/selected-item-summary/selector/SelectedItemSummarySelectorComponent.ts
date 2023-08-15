@@ -18,7 +18,6 @@ import VestSummary from '../../summary/vest/VestSummaryComponent.vue'
 import { IInventoryItem } from '../../../models/build/IInventoryItem'
 import Services from '../../../services/repository/Services'
 import { ItemService } from '../../../services/ItemService'
-import { NotificationService, NotificationType } from '../../../services/NotificationService'
 import { IInventoryModSlot } from '../../../models/build/IInventoryModSlot'
 import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
 
@@ -70,13 +69,11 @@ export default defineComponent({
     async function setItem() {
       const itemResult = await Services.get(ItemService).getItem(props.modelValue.itemId)
 
-      if (!itemResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, itemResult.failureMessage)
-
-        return
+      if (itemResult.success) {
+        item.value = itemResult.value
+      } else {
+        item.value = undefined
       }
-
-      item.value = itemResult.value
     }
 
     return {

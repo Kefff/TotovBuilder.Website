@@ -22,13 +22,13 @@ export default defineComponent({
   setup: (props) => {
     const requiredMerchants = computed(() => getRequiredMerchants())
 
-    const open = ref(false)
+    const visible = ref(false)
 
     /**
      * Closes shopping list.
      */
     function close() {
-      open.value = false
+      visible.value = false
     }
 
     /**
@@ -59,14 +59,14 @@ export default defineComponent({
      * Displays the shopping list.
      */
     function show() {
-      open.value = true
+      visible.value = true
     }
 
     return {
       close,
-      open,
       requiredMerchants,
-      show
+      show,
+      visible
     }
   }
 })

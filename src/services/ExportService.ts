@@ -15,21 +15,22 @@ export class ExportService {
    * @param builds - Builds.
    */
   public async export(builds: IBuild[]): Promise<Result> {
-    if (builds.length === 0) {
-      return Result.fail(FailureType.error, 'ExportService.export()', vueI18n.t('message.noBuildsToExport'))
-    }
-
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
-    const json = JSON.stringify(builds)
-    const blob = new Blob([json], { type: 'text/json;charset=utf-8' })
-    const exportedBuildsName = builds.length === 1 ? builds[0].name : builds.length + ' ' + vueI18n.t('caption.builds')
-    const fileName =
-      websiteConfigurationService.configuration.exportFileNamePrefix
-      + ' - ' + exportedBuildsName + ' - '
-      + new Date().toLocaleString()
-      + websiteConfigurationService.configuration.exportFileExtension
-    FileSaver.saveAs(blob, fileName)
+    try {
+      const json = JSON.stringify(builds)
+      const blob = new Blob([json], { type: 'text/json;charset=utf-8' })
+      const exportedBuildsName = builds.length === 1 ? builds[0].name : builds.length + ' ' + vueI18n.t('caption.builds')
+      const fileName =
+        websiteConfigurationService.configuration.exportFileNamePrefix
+        + ' - ' + exportedBuildsName + ' - '
+        + new Date().toLocaleString()
+        + websiteConfigurationService.configuration.exportFileExtension
+      FileSaver.saveAs(blob, fileName)
+    }
+    catch {
+      return Result.fail(FailureType.error, 'ExportService.export()', vueI18n.t('message.buildsExportError'))
+    }
 
     const buildService = Services.get(BuildService)
 

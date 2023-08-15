@@ -1,21 +1,10 @@
 import i18n from '../../plugins/vueI18n'
 import { IRegisteredService } from './IRegisteredService'
-import { TinyEmitter } from 'tiny-emitter'
 
 /**
  * Represents a repository for all the application services.
  */
 class ServicesRepository {
-  /**
-   * Emitter used to signal when the initialization is done.
-   */
-  public emitter = new TinyEmitter()
-
-  /**
-   * Determines whether the services are initializing or not.
-   */
-  public isInitializing = true
-
   /**
    * Collection of the configured services.
    */
@@ -80,14 +69,6 @@ class ServicesRepository {
     } else {
       throw i18n.t('message.serviceNotConfigured', { name })
     }
-  }
-
-  /**
-   * Indicates that the initialization has finished and that the emitter should signal it.
-   */
-  public setInitializationFinished() {
-    this.emitter.emit('initialized')
-    this.isInitializing = false
   }
 
   /**

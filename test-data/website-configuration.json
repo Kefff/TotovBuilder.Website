@@ -24,6 +24,7 @@
   "notificationInformationDuration": 5,
   "notificationSuccessDuration": 5,
   "notificationWarningDuration": 10,
+  "postUpdatePeriod": false,
   "presetsApi": "presets",
   "pricesApi": "prices",
   "questsApi": "quests",

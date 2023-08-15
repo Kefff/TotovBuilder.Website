@@ -16,10 +16,10 @@ export class ApiService {
    */
   public async get<TResult>(method: string, ...parameters: IApiMethodParameter[]): Promise<Result<TResult>> {
     const maxTries = Services.get(WebsiteConfigurationService).configuration.fetchMaxTries
-    let tries = 1
-    let lastResult: Result<TResult> = Result.fail(FailureType.hidden)
+    let tries = 0
+    let lastResult: Result<TResult>
 
-    while (tries <= maxTries) {
+    do {
       lastResult = await this.executeGet<TResult>(method, parameters)
 
       if (lastResult.success) {
@@ -28,6 +28,10 @@ export class ApiService {
 
       await this.waitBeforeRetry()
       tries++
+    } while (tries < maxTries)
+
+    if (!lastResult.success) {
+      return Result.fail(FailureType.exception, 'ApiService.get()', i18n.t('message.apiMaxTriesError', { api: method, maxTries }))
     }
 
     return lastResult
@@ -44,32 +48,37 @@ export class ApiService {
     const result = await fetch(url, { method: 'GET', signal: controller.signal })
       .then(async (response) => {
         if (response.ok) {
-          const data = await response.text()
-
-          if (data.length === 0) {
-            return Result.ok(data as unknown as TResult)
-          }
-
-          const result = JSON.parse(data) as TResult
-
-          return Result.ok(result)
-        } else {
-          const data = await response.text()
+          const responseData = await response.text()
 
           /* c8 ignore start */
-          if (data.length === 0) {
-            // For some reason, jest-fetch-mock cannot mock an error response with an empty body. The response has a 200 status even if we force it to 500 when configuring the mock.
-            return Result.fail<TResult>(FailureType.error, 'ApiItemFetcher.get()', i18n.t('message.apiError', { api: method, apiErrorMessage: i18n.t('message.emptyApiResponse') }))
+          if (this.isEmptyResponseData(responseData)) {
+            // Sometimes Azures responds an empty response with a 0 status code when the instance is shutting down when the request happens.
+            // It's unclear whether this response is seen a OK on client-side, so in case where a GET gets an empty response
+            // we consider it to be an error
+            return Result.fail<TResult>(FailureType.error, 'ApiService.get()', i18n.t('message.apiError', { api: method, apiErrorMessage: i18n.t('message.emptyApiResponse') }))
           }
           /* c8 ignore stop */
 
-          const result = JSON.parse(data) as Record<string, unknown>
+          const result = JSON.parse(responseData) as TResult
+
+          return Result.ok(result)
+        } else {
+          const responseData = await response.text()
+
+          /* c8 ignore start */
+          if (this.isEmptyResponseData(responseData)) {
+            // For some reason, jest-fetch-mock cannot mock an error response with an empty body. The response has a 200 status even if we force it to 500 when configuring the mock.
+            return Result.fail<TResult>(FailureType.error, 'ApiService.get()', i18n.t('message.apiError', { api: method, apiErrorMessage: i18n.t('message.emptyApiResponse') }))
+          }
+          /* c8 ignore stop */
+
+          const result = JSON.parse(responseData) as Record<string, unknown>
           const apiErrorMessage = result['error'] as string
 
-          return Result.fail<TResult>(FailureType.error, 'ApiItemFetcher.get()', i18n.t('message.apiError', { api: method, apiErrorMessage }))
+          return Result.fail<TResult>(FailureType.error, 'ApiService.get()', i18n.t('message.apiError', { api: method, apiErrorMessage }))
         }
       })
-      .catch((error: Error) => Result.fail<TResult>(FailureType.error, 'ApiItemFetcher.get()', i18n.t('message.apiError', { api: method, apiErrorMessage: error.message })))
+      .catch((error: Error) => Result.fail<TResult>(FailureType.error, 'ApiService.get()', i18n.t('message.apiError', { api: method, apiErrorMessage: error.message })))
 
     return result
   }
@@ -87,6 +96,15 @@ export class ApiService {
     }
 
     return parametersString
+  }
+
+  /**
+   * Indicates whether a response data is considered empty.
+   * @param responseData - Response data.
+   * @returns true when the response data is considered empty; otherwise false.
+   */
+  private isEmptyResponseData(responseData: string) {
+    return responseData.length === 0 || responseData === '""' || responseData === '{}' || responseData === '[]'
   }
 
   /**

@@ -20,6 +20,8 @@
   "typescript.format.enable": true,
   "typescript.format.semicolons": "remove",
   "typescript.preferences.quoteStyle": "single",
+  "vitest.enable": true,
+  "vitest.commandLine": "npm run vitest",
   "vue.autoInsert.dotValue": true,
   "vue.inlayHints.inlineHandlerLeading": true,
   "vue.inlayHints.missingProps": true,

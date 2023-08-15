@@ -212,7 +212,7 @@ describe('executeBuildMigrations()', () => {
 
     const build = {
       id: 'build1',
-      name: 'build1',
+      name: 'Build 1',
       lastWebsiteVersion: '1.4.0'
     } as IBuild
 
@@ -221,7 +221,7 @@ describe('executeBuildMigrations()', () => {
 
     // Assert
     expect(result).toBe(false)
-    verify(notificationServiceSpy.notify(NotificationType.error, 'Error during the migration of build "build1" to "1.6.0".', true)).once()
+    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build "Build 1" (build1) from version "1.4.0" to "1.6.0".', true)).once()
   })
 })
 
@@ -446,23 +446,15 @@ describe('getChangelog()', () => {
     expect(changelog).toStrictEqual(expectedChangelogs)
   })
 
-  it.each([
-    [true],
-    [false]
-  ])('should fail when fetching fails', async (apiError) => {
+  it('should fail when fetching fails', async () => {
     // Arrange
-    const apiServiceMock = mock<ApiService>()
-
-    if (apiError) {
-      when(apiServiceMock.get(anything())).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'Error')))
-    } else {
-      when(apiServiceMock.get(anything())).thenReturn(Promise.resolve(Result.ok([])))
-    }
-
     useWebsiteConfigurationServiceMock()
-    Services.configure(ApiService, undefined, instance(apiServiceMock))
     Services.configure(BuildService)
     Services.configure(NotificationService)
+
+    const apiServiceMock = mock<ApiService>()
+    when(apiServiceMock.get(anything())).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'Error')))
+    Services.configure(ApiService, undefined, instance(apiServiceMock))
 
     const notificationServiceSpy = spy(Services.get(NotificationService))
 
@@ -473,7 +465,7 @@ describe('getChangelog()', () => {
 
     // Assert
     expect(changelog.length).toBe(0)
-    verify(notificationServiceSpy.notify(NotificationType.error, 'No changelog could be fetched.', true)).once()
+    verify(notificationServiceSpy.notify(NotificationType.error, 'Something went wrong while loading the changelog.\nWait a bit and before trying to open it again.', true)).once()
   })
 
   it('should not fetch the changelog if already fetched', async () => {
@@ -646,9 +638,6 @@ describe('initialize()', () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
-    Services.configure(NotificationService)
-
-    const notificationServiceSpy = spy(Services.get(NotificationService))
 
     localStorage.setItem(WebsiteConfigurationMock.versionStorageKey, '1.5.0')
     Migrations.push(
@@ -669,7 +658,6 @@ describe('initialize()', () => {
     // Assert
     expect(version).toBe('1.6.0')
     expect(savedVersion).toBe('1.5.0')
-    verify(notificationServiceSpy.notify(NotificationType.error, 'Error during migration to "1.6.0".', true)).once()
   })
 
   it('should not save the new version when a build migration fails', async () => {
@@ -680,7 +668,9 @@ describe('initialize()', () => {
     const buildServiceMock = mock<BuildService>()
     when(buildServiceMock.getAll()).thenReturn([
       {
-        id: 'build1'
+        id: 'build1',
+        lastWebsiteVersion: '1.5.0',
+        name: 'Build 1'
       } as IBuild
     ])
     Services.configure(BuildService, undefined, instance(buildServiceMock))
@@ -706,7 +696,7 @@ describe('initialize()', () => {
     // Assert
     expect(version).toBe('1.6.0')
     expect(savedVersion).toBe('1.5.0')
-    verify(notificationServiceSpy.notify(NotificationType.error, 'Error during the migration of build "build1" to "1.6.0".', true)).once()
+    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build "Build 1" (build1) from version "1.5.0" to "1.6.0".', true)).once()
   })
 
   it('should not initialize if it is already initialized', async () => {

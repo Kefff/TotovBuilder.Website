@@ -43,7 +43,6 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-bottom: 6rem;
   margin-left: auto;
   margin-right: auto;
   margin-top: 6rem;
@@ -77,14 +76,18 @@
 
 .welcome-warning {
   font-size: 1rem;
-  padding: 0.5rem;
   margin-bottom: 6rem;
+  margin-top: 6rem;
 }
 
 .welcome-warning > p {
   align-items: center;
   display: flex;
   flex-direction: row;
+}
+
+.welcome-warning-icon {
+  margin-right: 0.5rem;
 }
 
 .welcome-warning-lost {
@@ -109,8 +112,4 @@
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-}
-
-.welcome-warning-icon {
-  margin-right: 0.5rem;
 }

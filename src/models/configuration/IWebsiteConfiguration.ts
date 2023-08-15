@@ -127,6 +127,11 @@ export interface IWebsiteConfiguration {
    */
   notificationWarningDuration: number
 
+  /**
+   * Indicates whether we are in a post-update period and items and prices are being updated.
+   */
+  postUpdatePeriod: boolean
+
   /*
    * Presets API name.
    */

@@ -10,11 +10,36 @@ import { ItemFetcherService } from './ItemFetcherService'
 import { IPrice } from '../models/item/IPrice'
 import { GlobalFilterService } from './GlobalFilterService'
 import { PresetService } from './PresetService'
+import { ServiceInitializationState } from './repository/ServiceInitializationState'
+import { TinyEmitter } from 'tiny-emitter'
 
 /**
  * Represents a service responsible for managing items.
  */
 export class ItemService {
+  /**
+   * Name of the event fired when items have finised loading.
+   */
+  public static initializationFinishedEvent = 'itemServiceInitialized'
+
+  /**
+   * Event emitter used to initialization state change.
+   */
+  public emitter = new TinyEmitter()
+
+  /**
+   * Indicates whether prices have successfully been fetched once.
+   */
+  public hasPrices = false
+
+  /**
+   * Initialization state of the service.
+   */
+  public get initializationState(): ServiceInitializationState {
+    return this._initializationState
+  }
+  private _initializationState = ServiceInitializationState.initializing
+
   /**
    * Indicates whether data that is fetched only once and never expire has been cached or not.
    */
@@ -58,7 +83,7 @@ export class ItemService {
   /**
    * Current static data fetching task.
    */
-  private staticDataFetchingPromise: Promise<void> = Promise.resolve()
+  private staticDataFetchingPromise: Promise<boolean> = Promise.resolve(false)
 
   /**
    * Initializes a new instance of the ItemService class.
@@ -185,8 +210,24 @@ export class ItemService {
    * Initializes the data used by the service.
    */
   public async initialize(): Promise<void> {
+    if (Services.get(WebsiteConfigurationService).initializationState === ServiceInitializationState.error) {
+      this._initializationState = ServiceInitializationState.error
+
+      return
+    }
+
     if (!this.hasStaticDataCached) {
-      await this.fetchStaticData()
+      if (!this.hasStaticDataCached) {
+        const staticDataFetched = await this.fetchStaticData()
+
+        if (staticDataFetched) {
+          this._initializationState = ServiceInitializationState.initialized
+        } else {
+          this._initializationState = ServiceInitializationState.error
+        }
+
+        this.emitter.emit(ItemService.initializationFinishedEvent, this._initializationState)
+      }
     }
 
     if (!this.hasValidCache()) {
@@ -201,28 +242,28 @@ export class ItemService {
     const itemCategoriesResult = await Services.get(ItemFetcherService).fetchItemCategories()
 
     if (!itemCategoriesResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, itemCategoriesResult.failureMessage, true)
-
-      return
+      return Result.failFrom(itemCategoriesResult)
     }
 
     this.itemCategories = itemCategoriesResult.value
+
+    return Result.ok()
   }
 
   /**
    * Fetches items.
    * @param itemFetcherService - Item fetcher service.
    */
-  private async fetchItems() {
+  private async fetchItems(): Promise<Result<void>> {
     const itemsResult = await Services.get(ItemFetcherService).fetchItems()
 
     if (!itemsResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, itemsResult.failureMessage, true)
-
-      return
+      return Result.failFrom(itemsResult)
     }
 
     this.items = itemsResult.value
+
+    return Result.ok()
   }
 
   /**
@@ -242,13 +283,16 @@ export class ItemService {
    * Fetches static data.
    * If static data is already being fetched, waits for the operation to end before returning.
    * This should in theory never happen since fetchStaticData() is only called in initialize() which executes nothing when another initialization is already being performed.
+   * @returns true when all static data has been fetched; otherwise false.
    */
-  private async fetchStaticData(): Promise<void> {
+  private async fetchStaticData(): Promise<boolean> {
     if (!this.isFetchingStaticData) {
       this.staticDataFetchingPromise = this.startStaticDataFetching()
     }
 
-    await this.staticDataFetchingPromise
+    const staticDataFetched = await this.staticDataFetchingPromise
+
+    return staticDataFetched
   }
 
   /**
@@ -289,9 +333,10 @@ export class ItemService {
    */
   private async startPricesFetching(): Promise<void> {
     this.isFetchingPrices = true
-    const itemFetcherService = Services.get(ItemFetcherService)
 
+    const itemFetcherService = Services.get(ItemFetcherService)
     const pricesResult = await itemFetcherService.fetchPrices()
+
     this.updateItemsPrices(pricesResult)
     this.updateFilteredItems() // Items and prices needed to filter
 
@@ -300,23 +345,36 @@ export class ItemService {
 
   /**
    * Starts static data fetching.
+   * @returns true when fetching has succeeded, otherwise false.
    */
-  private async startStaticDataFetching(): Promise<void> {
+  private async startStaticDataFetching(): Promise<boolean> {
     const presetsService = Services.get(PresetService)
 
     this.isFetchingStaticData = true
 
-    await this.fetchItemCategories()
+    const itemCategoriesFetchResult = await this.fetchItemCategories()
+
+    if (!itemCategoriesFetchResult.success) {
+      return false
+    }
+
+    const results: Result<void>[] = []
     await Promise.allSettled([
-      this.fetchItems(),
-      presetsService.fetchPresets()
+      this.fetchItems().then(r => results.push(r)),
+      presetsService.fetchPresets().then(r => results.push(r))
     ])
 
     this.hasStaticDataCached = true
 
-    await presetsService.updatePresetProperties(this.items)
+    const allFetched = results.every(r => r.success)
+
+    if (allFetched) {
+      await presetsService.updatePresetProperties(this.items)
+    }
 
     this.isFetchingStaticData = false
+
+    return allFetched
   }
 
   /**
@@ -354,15 +412,13 @@ export class ItemService {
    */
   private updateItemsPrices(pricesResult: Result<IPrice[]>) {
     if (!pricesResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, pricesResult.failureMessage, true)
+      Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.pricesLoadingError'), true)
 
       // When an error occurs, we set the last fetch date in order to make the cache expire 20 seconds later.
       // This is to avoid making a new API request for each of the 2000+ items.
       const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-
-      this.lastPricesFetchDate = new Date()
       this.lastPricesFetchDate = new Date(
-        this.lastPricesFetchDate.getTime()
+        new Date().getTime()
         + (websiteConfigurationService.configuration.cacheDuration - (2 * websiteConfigurationService.configuration.fetchTimeout)) * 1000)
 
       return
@@ -380,6 +436,7 @@ export class ItemService {
     this.updatePricesInMainCurrency()
 
     this.lastPricesFetchDate = new Date()
+    this.hasPrices = true
   }
 
   /**
@@ -395,7 +452,7 @@ export class ItemService {
         if (currency != null) {
           price.valueInMainCurrency = price.value * currency.value
         } /* c8 ignore start */ else {
-          Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.currencyNotFound', { currency: price.currencyName }))
+          price.valueInMainCurrency = 0
         } /* c8 ignore stop */
       }
     }

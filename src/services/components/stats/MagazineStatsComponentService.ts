@@ -1,6 +1,5 @@
 import { IMagazine } from '../../../models/item/IMagazine'
 import { ItemService } from '../../ItemService'
-import { NotificationService, NotificationType } from '../../NotificationService'
 import Services from '../../repository/Services'
 
 /**
@@ -18,13 +17,11 @@ export class MagazineStatsComponentService {
     for (const acceptedAmmunitionId of magazine.acceptedAmmunitionIds) {
       const itemResult = await itemService.getItem(acceptedAmmunitionId)
 
-      if (!itemResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, itemResult.failureMessage)
-
+      if (itemResult.success) {
+        acceptedAmmunitionNames.push(itemResult.value.name)
+      } else {
         continue
       }
-
-      acceptedAmmunitionNames.push(itemResult.value.name)
     }
 
     return acceptedAmmunitionNames

@@ -3,7 +3,6 @@ import StringUtils from '../../utils/StringUtils'
 import { IInventorySlot } from '../../models/build/IInventorySlot'
 import Services from '../../services/repository/Services'
 import { InventorySlotService } from '../../services/InventorySlotService'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { IItem } from '../../models/item/IItem'
 import { InventorySlotComponentService } from '../../services/components/InventorySlotComponentService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
@@ -46,7 +45,6 @@ export default defineComponent({
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
     const inventorySlotService = Services.get(InventorySlotService)
     const globalFilterService = Services.get(GlobalFilterService)
-    const notificationService = Services.get(NotificationService)
 
     const editing = inject<Ref<boolean>>('editing')
 
@@ -125,13 +123,7 @@ export default defineComponent({
       // Ergonomics
       const ergonomicsResult = await service.getErgonomics(props.modelValue)
 
-      if (ergonomicsResult != null) {
-        if (!ergonomicsResult.success) {
-          notificationService.notify(NotificationType.error, ergonomicsResult.failureMessage)
-
-          return
-        }
-
+      if (ergonomicsResult != null && ergonomicsResult.success) {
         ergonomics.value = ergonomicsResult.value
       } else {
         ergonomics.value = undefined
@@ -140,13 +132,7 @@ export default defineComponent({
       // Ergonomics percentage modifier
       const wearableModifiersResult = await service.getWearableModifiers(props.modelValue)
 
-      if (wearableModifiersResult != null) {
-        if (!wearableModifiersResult.success) {
-          notificationService.notify(NotificationType.error, wearableModifiersResult.failureMessage)
-
-          return
-        }
-
+      if (wearableModifiersResult != null && wearableModifiersResult.success) {
         wearableModifiers.value = wearableModifiersResult.value
       } else {
         wearableModifiers.value = undefined
@@ -155,24 +141,50 @@ export default defineComponent({
       // Price
       const priceResult = await service.getPrice(props.modelValue, canBeLooted.value)
 
-      if (!priceResult.success) {
-        notificationService.notify(NotificationType.error, priceResult.failureMessage)
-
-        return
+      if (priceResult.success) {
+        price.value = priceResult.value
+      } else {
+        price.value = {
+          missingPrice: true,
+          price: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: null,
+            value: 0,
+            valueInMainCurrency: 0
+          },
+          priceWithContentInMainCurrency: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: null,
+            value: 0,
+            valueInMainCurrency: 0
+          },
+          pricesWithContent: [],
+          unitPrice: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: null,
+            value: 0,
+            valueInMainCurrency: 0
+          },
+          unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+        }
       }
-
-      price.value = priceResult.value
 
       // Recoil
       const recoilResult = await service.getRecoil(props.modelValue)
 
-      if (recoilResult != null) {
-        if (!recoilResult.success) {
-          notificationService.notify(NotificationType.error, recoilResult.failureMessage)
-
-          return
-        }
-
+      if (recoilResult != null && recoilResult.success) {
         horizontalRecoil.value = recoilResult.value.horizontalRecoil
         verticalRecoil.value = recoilResult.value.verticalRecoil
       } else {
@@ -183,13 +195,11 @@ export default defineComponent({
       // Weight
       const weightResult = await service.getWeight(props.modelValue)
 
-      if (!weightResult.success) {
-        notificationService.notify(NotificationType.error, weightResult.failureMessage)
-
-        return
+      if (weightResult.success) {
+        weight.value = weightResult.value
+      } else {
+        weight.value = 0
       }
-
-      weight.value = weightResult.value
     }
 
     /**
@@ -200,23 +210,23 @@ export default defineComponent({
 
       const canBeLootedResult = inventorySlotPropertiesService.canBeLooted(props.modelValue)
 
-      if (!canBeLootedResult.success) {
-        notificationService.notify(NotificationType.error, canBeLootedResult.failureMessage)
-      } else {
+      if (canBeLootedResult.success) {
         canBeLooted.value = canBeLootedResult.value
+      } else {
+        canBeLooted.value = true
       }
 
       const inventorySlotTypeResult = await inventorySlotService.getType(props.modelValue.typeId)
 
-      if (!inventorySlotTypeResult.success) {
-        notificationService.notify(NotificationType.error, inventorySlotTypeResult.failureMessage)
-
-        return
+      if (inventorySlotTypeResult.success) {
+        type.value = inventorySlotTypeResult.value
+        customIcon.value = type.value.customIcon
+        icon.value = type.value.icon
+      } else {
+        type.value = undefined
+        customIcon.value = undefined
+        icon.value = undefined
       }
-
-      type.value = inventorySlotTypeResult.value
-      customIcon.value = type.value.customIcon
-      icon.value = type.value.icon
 
       setItemComponentParameters()
       getSummary()

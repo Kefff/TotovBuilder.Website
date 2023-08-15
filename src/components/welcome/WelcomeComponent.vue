@@ -2,7 +2,7 @@
   <div class="welcome">
     <div>
       <div
-        v-if="!hasBuilds"
+        v-if="!hasBuilds || hasWebsiteConfigurationLoadingError"
         class="welcome-text"
       >
         <h2>{{ $t('message.welcome1') }}Totov <span class="welcome-builder">Builder</span>{{ $t('message.welcome2') }}</h2>
@@ -18,13 +18,13 @@
         <h2>{{ $t('message.welcomeBack') }}</h2>
       </div>
       <div
-        v-if="isLoading"
+        v-show="isLoading"
         class="welcome-loading"
       >
         <Loading />
       </div>
       <div
-        v-else
+        v-show="!isLoading && !hasWebsiteConfigurationLoadingError && !isImporting"
         class="welcome-actions"
       >
         <div
@@ -86,11 +86,11 @@
           </MerchantItemsOptions>
         </div>
         <div class="welcome-action">
-          <DisplayOptions v-model:visible="displayOptionsSidebarVisible">
+          <GeneralOptions v-model:visible="generalOptionsSidebarVisible">
             <template #button>
               <Button
                 class="welcome-button"
-                @click="displayOptionsSidebarVisible = true"
+                @click="generalOptionsSidebarVisible = true"
               >
                 <font-awesome-icon
                   icon="language"
@@ -99,7 +99,7 @@
                 <span>{{ $t('message.welcomeChooseLanguage') }}</span>
               </Button>
             </template>
-          </DisplayOptions>
+          </GeneralOptions>
         </div>
       </div>
       <div class="welcome-warning">
@@ -128,6 +128,9 @@
       v-model="isImporting"
       v-model:has-imported="hasImported"
     />
+
+    <!-- Loading error -->
+    <LoadingError v-model:has-website-configuration-loading-error="hasWebsiteConfigurationLoadingError" />
   </div>
 </template>
 

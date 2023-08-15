@@ -33,10 +33,10 @@ export default defineComponent({
      * Saves the global filter and closes the side bar.
      */
     function save() {
-      sidebarVisible.value = false
-      hasChanged.value = false
-
-      globalFilterService.save(globalFilter.value)
+      if (hasChanged.value) {
+        hasChanged.value = false
+        globalFilterService.save(globalFilter.value)
+      }
     }
 
     return {

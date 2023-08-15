@@ -968,7 +968,7 @@ describe('fromSharableString()', () => {
 
     // Assert
     expect(buildResult.success).toBe(false)
-    expect(buildResult.failureMessage).toBe('Cannot read the shared link. It seems to be corrupted.')
+    expect(buildResult.failureMessage).toBe('Error while reading the shared link.\nIt seems to be corrupted.')
   })
 
   it('should fail when the parsing of the reduced build fails', async () => {
@@ -983,7 +983,7 @@ describe('fromSharableString()', () => {
 
     // Assert
     expect(buildResult.success).toBe(false)
-    expect(buildResult.failureMessage).toBe('Cannot read the shared link. It seems to be corrupted.')
+    expect(buildResult.failureMessage).toBe('Error while reading the shared link.\nIt seems to be corrupted.')
   })
 
   it('should notify when a migration fails', async () => {
@@ -1014,7 +1014,7 @@ describe('fromSharableString()', () => {
 
     // Assert
     expect(buildResult.success).toBe(true)
-    verify(notificationServiceSpy.notify(NotificationType.error, 'Error during the migration of build "" to "1.6.0".', true)).once()
+    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build to version "1.6.0".', true)).once()
   })
 })
 
@@ -1047,6 +1047,27 @@ describe('get()', () => {
     expect(result.success).toBe(false)
     expect(result.failureMessage).toBe(
       'Build "invalid" not found. It may have been deleted.'
+    )
+  })
+
+  it('should fail if the build cannot be parsed', () => {
+    // Arrange
+    useWebsiteConfigurationServiceMock()
+
+    localStorage.setItem(
+      WebsiteConfigurationMock.buildStorageKeyPrefix + 'not_parsable',
+      JSON.stringify('[')
+    )
+
+    const service = new BuildService()
+
+    // Act
+    const result = service.get('not_parsable')
+
+    // Assert
+    expect(result.success).toBe(false)
+    expect(result.failureMessage).toBe(
+      'Cannot parse build "not_parsable".'
     )
   })
 })
@@ -1311,7 +1332,7 @@ describe('parseReducedBuild()', () => {
   it.each([
     [
       {
-        's': []
+        's': null
       },
       'Cannot parse reduced build because it has no inventory slots.'
     ],
@@ -1459,8 +1480,7 @@ describe('reduceBuild()', () => {
     const reducedBuildResult = service.reduceBuild(builds[0])
 
     // Assert
-    expect(reducedBuildResult.success).toBe(true)
-    expect(reducedBuildResult.value).toStrictEqual({
+    expect(reducedBuildResult).toStrictEqual({
       's': [
         {
           'i': [
@@ -1640,31 +1660,6 @@ describe('reduceBuild()', () => {
       ]
     })
   })
-
-  it('should fail when the build is empty', () => {
-    // Arrange
-    const service = new BuildService()
-    const build: IBuild = {
-      id: '123',
-      inventorySlots: [
-        {
-          items: [],
-          typeId: 'backpack'
-        }
-      ],
-      lastExported: undefined,
-      lastUpdated: new Date(),
-      lastWebsiteVersion: undefined,
-      name: 'test'
-    }
-
-    // Act
-    const reducedBuildResult = service.reduceBuild(build)
-
-    // Assert
-    expect(reducedBuildResult.success).toBe(false)
-    expect(reducedBuildResult.failureMessage).toBe('Cannot share build "test" because it is empty.')
-  })
 })
 
 describe('toSharableURL()', () => {
@@ -1681,26 +1676,6 @@ describe('toSharableURL()', () => {
     // Assert
     expect(sharableStringResult.success).toBe(true)
     expect(sharableStringResult.value).toBe('localhost:3000/s/XQAAAAJmBAAAAAAAAABAqEppdBKy3f2nWA1_4C5z8-v7-PB2PnO4TJBDN_RrefeMTA1oIOQNSLQmTZKQMA3nTnTUbHr2mi1gpHZ1QN0VIdkLEh60ZqLDitEtmoaW0W0HNH_zGoKaZEYJaP-iZbZ58SWF1EzZsZPqQKFC_vbt94cj3bvtzDD7pDiJOzAUPS4f-zBgDNFZaE2HYlN3Rz5M49-4gT5jlmRMoea0PcfnKGWOu8u8tLcMaC60pI27hakRDzyTuI4L8cYmi0QwjxRlItBak0OtOuG-v429VWpY_8LQtmewFcw-MWPYRuIj7UvZmreC9JUBrXokMOkD2EMRJmxeWr5xHf4Vs8zN5KN1dcMu7IWmt8WqBVNv-JM58Llo5jQE5TKnNPfD-joOOLpz48N6zW0E0DmgbkCCVNFhu-yHjiRyAyf04PMJIaKUvdNBdsm0NHnE7LdClTap-mQfC-nqV-k6mVFHnFL2kq7Ql_bAZyq4Ik6N4D7cvOhv2cJc9D3TNgdfAFJLbe9HMlDEQMAdEKPZ3RB0Z2tCpgwNkadeJMLdxab88Hy6Q3E8RCk78TwWmQCBRDcNNiyozBLO9hLg_5YfogDLAkPR3w59d3cPMRzqK28ZuDvblEyEucXvXnFRHD3OBlV59umKbt95m9rYcW7hlw_xWVQY_WZI9neXWYIlgpDYuacwp8IvIzbNCrVke9sIMVsMJ77sqDXtoZ00fot9AhpDkRciED16Kpm3v1UK6Qafo3-5TZQq_HdHHPgwVS0PfP_srPgE')
-  })
-
-  it('should fail when an error occurs while reducing the build', async () => {
-    // Arrange
-    const service = new BuildService()
-    const build: IBuild = {
-      id: '123',
-      inventorySlots: [],
-      lastExported: undefined,
-      lastUpdated: new Date(),
-      lastWebsiteVersion: undefined,
-      name: 'test'
-    }
-
-    // Act
-    const sharableStringResult = await service.toSharableURL(build)
-
-    // Assert
-    expect(sharableStringResult.success).toBe(false)
-    expect(sharableStringResult.failureMessage).toBe('Cannot share build "test" because it is empty.')
   })
 
   it('should fail when the URL is longer thant 2048 characters', async () => {
