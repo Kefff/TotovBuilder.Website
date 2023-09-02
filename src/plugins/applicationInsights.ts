@@ -3,7 +3,7 @@ import { ApplicationInsights } from '@microsoft/applicationinsights-web'
 const applicationInsights = new ApplicationInsights({
   config: {
     instrumentationKey: import.meta.env.VITE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY,
-    enableAutoRouteTracking: true,
+    enableAutoRouteTracking: false,
     enableCorsCorrelation: true,
     enableUnhandledPromiseRejectionTracking: true
   }
