@@ -294,6 +294,7 @@ export class VersionService {
 
     if (changelogResult.success) {
       this.changelog = changelogResult.value
+      Services.get(LogService).logInformation('message.changelogFetched')
     } else {
       Services.get(LogService).logError('message.changelogNotFetched')
       Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.changelogLoadingError'), true)

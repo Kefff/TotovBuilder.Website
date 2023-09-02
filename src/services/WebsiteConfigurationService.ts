@@ -6,6 +6,7 @@ import i18n from '../plugins/vueI18n'
 import { TinyEmitter } from 'tiny-emitter'
 import { ServiceInitializationState } from './repository/ServiceInitializationState'
 import { NotificationService, NotificationType } from './NotificationService'
+import { LogService } from './LogService'
 
 /**
  * Represents a service responsible for getting the website configuration.
@@ -101,6 +102,8 @@ export class WebsiteConfigurationService {
     if (!websiteConfigurationResult.success) {
       return Result.fail(FailureType.error, 'WebsiteConfigurationService.fetchWebsiteConfiguration()', i18n.t('message.websiteConfigurationNotFetched'))
     }
+
+    Services.get(LogService).logInformation('message.websiteConfigurationFetched')
 
     return websiteConfigurationResult
   }

@@ -6,6 +6,7 @@ import { IInventoryItem } from '../models/build/IInventoryItem'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import { IItem } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
+import { LogService } from './LogService'
 
 /**
  * Represents a service responsible for fetching items through a web API.
@@ -23,6 +24,8 @@ export class ItemFetcherService {
       return Result.fail(FailureType.error, 'ItemFetcherService.fetchItemCategories()', i18n.t('message.itemCategoriesNotFetched'))
     }
 
+    Services.get(LogService).logInformation('message.itemCategoriesFetched')
+
     return itemCategoriesResult
   }
 
@@ -37,6 +40,8 @@ export class ItemFetcherService {
     if (!itemsResult.success || itemsResult.value.length === 0) {
       return Result.fail(FailureType.error, 'ItemFetcherService.fetchItems()', i18n.t('message.itemsNotFetched'))
     }
+
+    Services.get(LogService).logInformation('message.itemsFetched')
 
     return Result.ok(itemsResult.value)
   }
@@ -53,6 +58,8 @@ export class ItemFetcherService {
       return Result.fail(FailureType.error, 'ItemFetcherService.fetchPrices()', i18n.t('message.pricesNotFetched'))
     }
 
+    Services.get(LogService).logInformation('message.pricesFetched')
+
     return pricesResult
   }
 
@@ -67,6 +74,8 @@ export class ItemFetcherService {
     if (!presetsResult.success || presetsResult.value.length === 0) {
       return Result.fail(FailureType.error, 'ItemFetcherService.fetchPresets()', i18n.t('message.presetsNotFetched'))
     }
+
+    Services.get(LogService).logInformation('message.presetsFetched')
 
     return presetsResult
   }

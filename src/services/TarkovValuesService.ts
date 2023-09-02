@@ -4,6 +4,7 @@ import { ITarkovValues } from '../models/configuration/ITarkovValues'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import Result, { FailureType } from '../utils/Result'
 import i18n from '../plugins/vueI18n'
+import { LogService } from './LogService'
 
 /**
  * Represents a service responsible for getting values related to Tarkov gameplay.
@@ -48,6 +49,8 @@ export class TarkovValuesService {
     if (!tarkovValuesResult.success) {
       return Result.fail(FailureType.error, 'TarkovValuesService.fetchTarkovValues()', i18n.t('message.tarkovValuesNotFetched'))
     }
+
+    Services.get(LogService).logInformation('message.tarkovValuesFetched')
 
     return tarkovValuesResult
   }
