@@ -1,7 +1,7 @@
 import { anyString, instance, mock, when } from 'ts-mockito'
-import { ApiService } from '../services/ApiService'
-import Services from '../services/repository/Services'
-import Result from '../utils/Result'
+import { ApiService } from '../../services/ApiService'
+import Services from '../../services/repository/Services'
+import Result from '../../utils/Result'
 
 export function useApiServiceMock<T>(data: T): void {
   const apiServiceMock = mock<ApiService>()

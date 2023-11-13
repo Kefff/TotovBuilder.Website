@@ -1,6 +1,6 @@
 import { instance, mock } from 'ts-mockito'
-import { LogService } from '../services/LogService'
-import Services from '../services/repository/Services'
+import { LogService } from '../../services/LogService'
+import Services from '../../services/repository/Services'
 import { afterEach, beforeEach, vi } from 'vitest'
 
 beforeEach(() => {

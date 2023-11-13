@@ -7,11 +7,11 @@ import { InventorySlotPropertiesService } from '../../services/InventorySlotProp
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
-import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
-import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
-import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
+import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 import { build1, build2 } from './BuildPropertiesService.test'
-import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
+import { usePresetServiceMock } from '../__mocks__/PresetPropertiesServiceMock'
 import { describe, expect, it } from 'vitest'
 
 describe('getSummary()', () => {

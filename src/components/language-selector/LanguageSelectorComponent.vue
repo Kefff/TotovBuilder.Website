@@ -16,7 +16,7 @@
           <div class="language-selector-item language-selector-option">
             <img
               class="language-selector-item-flag"
-              :src="'/assets/language_' + slotProps.option + '.webp'"
+              :src="'/images/language_' + slotProps.option + '.webp'"
             >
             <span>{{ $t('caption.language_' + slotProps.option) }}</span>
           </div>
@@ -25,7 +25,7 @@
           <div class="language-selector-item">
             <img
               class="language-selector-item-flag"
-              :src="'/assets/language_' + slotProps.value + '.webp'"
+              :src="'/images/language_' + slotProps.value + '.webp'"
             >
             <span>{{ $t('caption.language_' + slotProps.value) }}</span>
           </div>

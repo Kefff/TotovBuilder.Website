@@ -6,9 +6,9 @@ import { NotificationService, NotificationType } from '../../../services/Notific
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito'
 import Services from '../../../services/repository/Services'
 import { BuildComponentService } from '../../../services/components/BuildComponentService'
-import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { VersionService } from '../../../services/VersionService'
-import { useVersionServiceMock } from '../../../__mocks__/VersionServiceMock'
+import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
 import { describe, expect, it } from 'vitest'
 
 describe('getBuild()', () => {

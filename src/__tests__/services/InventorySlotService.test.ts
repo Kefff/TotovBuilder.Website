@@ -1,5 +1,5 @@
 import { InventorySlotService } from '../../services/InventorySlotService'
-import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { describe, expect, it } from 'vitest'
 
 describe('getType()', () => {

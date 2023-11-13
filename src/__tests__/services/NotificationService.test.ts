@@ -1,5 +1,5 @@
 import { NotificationService, NotificationType } from '../../services/NotificationService'
-import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 import { describe, expect, it } from 'vitest'
 import { INotification } from '../../models/utils/INotification'
 

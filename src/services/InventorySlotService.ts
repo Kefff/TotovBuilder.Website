@@ -1,6 +1,6 @@
 import { IInventorySlotType } from '../models/build/IInventorySlotType'
 import i18n from '../plugins/vueI18n'
-import InventorySlotTypes from '../assets/data/inventory-slot-types.json'
+import InventorySlotTypes from '../data/inventory-slot-types.json'
 import Result, { FailureType } from '../utils/Result'
 
 /**

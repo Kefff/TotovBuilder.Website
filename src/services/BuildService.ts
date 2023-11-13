@@ -1,7 +1,7 @@
 import { Guid } from 'guid-typescript'
 import { IBuild } from '../models/build/IBuild'
 import Result, { FailureType } from '../utils/Result'
-import InventorySlotTypes from '../assets/data/inventory-slot-types.json'
+import InventorySlotTypes from '../data/inventory-slot-types.json'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import i18n from '../plugins/vueI18n'
 import jsonUrl from 'json-url'

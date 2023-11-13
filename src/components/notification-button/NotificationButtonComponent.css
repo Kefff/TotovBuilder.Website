@@ -1,7 +1,7 @@
-@import '../../assets/css/button.css';
-@import '../../assets/css/icon.css';
-@import '../../assets/css/link.css';
-@import '../../assets/css/toolbar.css';
+@import '../../css/button.css';
+@import '../../css/icon.css';
+@import '../../css/link.css';
+@import '../../css/toolbar.css';
 
 .notification-button-count {
   background-color: var(--danger-color);

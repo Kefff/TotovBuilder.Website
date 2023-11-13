@@ -1,0 +1,7 @@
+{
+  "API_URL": "http://localhost:7071/api/",
+  "APPLICATION_INSIGHTS_CONNECTION_STRING": "InstrumentationKey=111a11a1-1111-1aa1-1111-11aa11111a11;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/",
+  "DEBUG": "true",
+  "WARN_WHEN_SERVICE_REPLACED": "true",
+  "WEBSITE_CONFIGURATION_API": "websiteconfiguration"
+}

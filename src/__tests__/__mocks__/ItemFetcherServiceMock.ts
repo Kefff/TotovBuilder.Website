@@ -1,13 +1,13 @@
 import { instance, mock, when } from 'ts-mockito'
-import { ItemFetcherService } from '../services/ItemFetcherService'
-import Services from '../services/repository/Services'
-import Result from '../utils/Result'
-import ItemCategoriesMock from '../../test-data/item-categories.json'
-import ItemsMock from '../../test-data/items.json'
-import PresetsMock from '../../test-data/presets.json'
-import PricesMock from '../../test-data/prices.json'
-import { IItem } from '../models/item/IItem'
-import { IPrice } from '../models/item/IPrice'
+import { ItemFetcherService } from '../../services/ItemFetcherService'
+import Services from '../../services/repository/Services'
+import Result from '../../utils/Result'
+import ItemCategoriesMock from '../__data__/item-categories.json'
+import ItemsMock from '../__data__/items.json'
+import PresetsMock from '../__data__/presets.json'
+import PricesMock from '../__data__/prices.json'
+import { IItem } from '../../models/item/IItem'
+import { IPrice } from '../../models/item/IPrice'
 
 export function useItemFetcherServiceMock(): void {
   const itemFetcherServiceMock = mock<ItemFetcherService>()

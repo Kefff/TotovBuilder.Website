@@ -41,7 +41,7 @@
       class="stats-entry"
     >
       <div class="stats-caption custom-icon-before-text">
-        <img src="/assets/ricochet.webp">
+        <img src="/images/ricochet.webp">
         <span>{{ $t('caption.ricochetChance') }} :</span>
       </div>
       <div class="stats-value">

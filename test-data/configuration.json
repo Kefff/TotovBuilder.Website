@@ -1,7 +1,0 @@
-{
-  "VITE_API_URL": "http://localhost:7071/api/",
-  "VITE_APPLICATION_INSIGHTS_INSTRUMENTATION_KEY": "810f18e7-6059-4fa0-8025-02ec01983c57",
-  "VITE_DEBUG": "true",
-  "VITE_WARN_WHEN_SERVICE_REPLACED": "true",
-  "VITE_WEBSITE_CONFIGURATION_API": "websiteconfiguration"
-}

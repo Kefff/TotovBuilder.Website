@@ -5,6 +5,6 @@ dist
 # don't lint nyc coverage output
 coverage
 
-assets
 *.css
+*.json
 *.todo

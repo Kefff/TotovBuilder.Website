@@ -1,6 +1,6 @@
-@import '../../assets/css/button.css';
-@import '../../assets/css/icon.css';
-@import '../../assets/css/sidebar.css';
+@import '../../css/button.css';
+@import '../../css/icon.css';
+@import '../../css/sidebar.css';
 
 .merchant-items-options-button {
   align-items: center;

@@ -1,13 +1,13 @@
 import { anyString, anything, instance, mock, when } from 'ts-mockito'
-import { ItemService } from '../services/ItemService'
-import ItemsMock from '../../test-data/items.json'
-import PriceMocks from '../../test-data/prices.json'
-import Services from '../services/repository/Services'
-import Result, { FailureType } from '../utils/Result'
-import { ICurrency } from '../models/configuration/ICurrency'
-import { IItem } from '../models/item/IItem'
-import ItemCategoriesMock from '../../test-data/item-categories.json'
-import { IPrice } from '../models/item/IPrice'
+import { ItemService } from '../../services/ItemService'
+import ItemsMock from '../__data__/items.json'
+import PriceMocks from '../__data__/prices.json'
+import Services from '../../services/repository/Services'
+import Result, { FailureType } from '../../utils/Result'
+import { ICurrency } from '../../models/configuration/ICurrency'
+import { IItem } from '../../models/item/IItem'
+import ItemCategoriesMock from '../__data__/item-categories.json'
+import { IPrice } from '../../models/item/IPrice'
 
 export function useItemServiceMock(hasMainCurrency = true, customItemList?: IItem[], customPricesList?: IPrice[]): void {
   const itemServiceMock = mock<ItemService>()
