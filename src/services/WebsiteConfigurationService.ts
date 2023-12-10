@@ -1,6 +1,6 @@
 import { IWebsiteConfiguration } from '../models/configuration/IWebsiteConfiguration'
 import Services from './repository/Services'
-import { ApiService } from './ApiService'
+import { FetchService } from './FetchService'
 import Result, { FailureType } from '../utils/Result'
 import i18n from '../plugins/vueI18n'
 import { TinyEmitter } from 'tiny-emitter'
@@ -28,29 +28,28 @@ export class WebsiteConfigurationService {
     buildsSortOrderStorageKey: 'builds_sort_order',
     buildStorageKeyPrefix: 'build_',
     cacheDuration: 3600,
-    changelogApi: '',
     contactAddress: 'totovbuilder@gmail.com',
     discordUrl: import.meta.env.VITE_BUG_REPORT_URL,
+    endpointChangelog: '',
+    endpointItemCategories: '',
+    endpointItems: '',
+    endpointPresets: '',
+    endpointPrices: '',
+    endpointTarkovValues: '',
     exportFileExtension: '',
     exportFileNamePrefix: '',
-    exportWarningShowedStoregeKey: '',
+    exportWarningShowedStorageKey: '',
     fetchMaxTries: 5,
     fetchTimeout: 30,
     fetchWaitTimeBetweenRetries: 2,
     githubUrl: '',
     globalFilterStorageKey: 'global_filter',
-    itemCategoriesApi: '',
-    itemsApi: '',
     languageStorageKey: 'language',
     notificationErrorDuration: 10,
     notificationInformationDuration: 5,
     notificationSuccessDuration: 5,
     notificationWarningDuration: 10,
     postUpdatePeriod: false,
-    presetsApi: '',
-    pricesApi: '',
-    questsApi: '',
-    tarkovValuesApi: '',
     version: '',
     versionStorageKey: ''
   }
@@ -96,8 +95,8 @@ export class WebsiteConfigurationService {
    * @returns Website configuration.
    */
   private async fetchWebsiteConfiguration(): Promise<Result<IWebsiteConfiguration>> {
-    const apiService = Services.get(ApiService)
-    const websiteConfigurationResult = await apiService.get<IWebsiteConfiguration>(import.meta.env.VITE_WEBSITE_CONFIGURATION_API as string)
+    const fetchService = Services.get(FetchService)
+    const websiteConfigurationResult = await fetchService.get<IWebsiteConfiguration>('/' + import.meta.env.VITE_WEBSITE_CONFIGURATION_ENDPOINT as string)
 
     if (!websiteConfigurationResult.success) {
       return Result.fail(FailureType.error, 'WebsiteConfigurationService.fetchWebsiteConfiguration()', i18n.t('message.websiteConfigurationNotFetched'))

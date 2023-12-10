@@ -1,6 +1,6 @@
 import Result, { FailureType } from '../utils/Result'
 import i18n from '../plugins/vueI18n'
-import { ApiService } from './ApiService'
+import { FetchService } from './FetchService'
 import Services from './repository/Services'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
@@ -9,7 +9,7 @@ import { IPrice } from '../models/item/IPrice'
 import { LogService } from './LogService'
 
 /**
- * Represents a service responsible for fetching items through a web API.
+ * Represents a service responsible for fetching items.
  */
 export class ItemFetcherService {
   /**
@@ -17,8 +17,9 @@ export class ItemFetcherService {
    * @returns Item categories.
    */
   public async fetchItemCategories(): Promise<Result<string[]>> {
-    const apiService = Services.get(ApiService)
-    const itemCategoriesResult = await apiService.get<string[]>(Services.get(WebsiteConfigurationService).configuration.itemCategoriesApi)
+    const fetchService = Services.get(FetchService)
+    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointItemCategories
+    const itemCategoriesResult = await fetchService.get<string[]>(endpoint)
 
     if (!itemCategoriesResult.success || itemCategoriesResult.value.length === 0) {
       return Result.fail(FailureType.error, 'ItemFetcherService.fetchItemCategories()', i18n.t('message.itemCategoriesNotFetched'))
@@ -34,8 +35,9 @@ export class ItemFetcherService {
    * @returns Items.
    */
   public async fetchItems(): Promise<Result<IItem[]>> {
-    const apiService = Services.get(ApiService)
-    const itemsResult = await apiService.get<IItem[]>(Services.get(WebsiteConfigurationService).configuration.itemsApi)
+    const fetchService = Services.get(FetchService)
+    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointItems
+    const itemsResult = await fetchService.get<IItem[]>(endpoint)
 
     if (!itemsResult.success || itemsResult.value.length === 0) {
       return Result.fail(FailureType.error, 'ItemFetcherService.fetchItems()', i18n.t('message.itemsNotFetched'))
@@ -51,8 +53,9 @@ export class ItemFetcherService {
    * @returns Prices.
    */
   public async fetchPrices(): Promise<Result<IPrice[]>> {
-    const apiService = Services.get(ApiService)
-    const pricesResult = await apiService.get<IPrice[]>(Services.get(WebsiteConfigurationService).configuration.pricesApi)
+    const fetchService = Services.get(FetchService)
+    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointPrices
+    const pricesResult = await fetchService.get<IPrice[]>(endpoint)
 
     if (!pricesResult.success || pricesResult.value.length === 0) {
       return Result.fail(FailureType.error, 'ItemFetcherService.fetchPrices()', i18n.t('message.pricesNotFetched'))
@@ -68,8 +71,9 @@ export class ItemFetcherService {
    * @returns Presets.
    */
   public async fetchPresets(): Promise<Result<IInventoryItem[]>> {
-    const apiService = Services.get(ApiService)
-    const presetsResult = await apiService.get<IInventoryItem[]>(Services.get(WebsiteConfigurationService).configuration.presetsApi)
+    const fetchService = Services.get(FetchService)
+    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointPresets
+    const presetsResult = await fetchService.get<IInventoryItem[]>(endpoint)
 
     if (!presetsResult.success || presetsResult.value.length === 0) {
       return Result.fail(FailureType.error, 'ItemFetcherService.fetchPresets()', i18n.t('message.presetsNotFetched'))

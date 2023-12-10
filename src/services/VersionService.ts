@@ -1,6 +1,6 @@
 import { IChangelogEntry } from '../models/configuration/IChangelogEntry'
 import vueI18n from '../plugins/vueI18n'
-import { ApiService } from './ApiService'
+import { FetchService } from './FetchService'
 import Services from './repository/Services'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import i18n from '../plugins/vueI18n'
@@ -288,9 +288,9 @@ export class VersionService {
   private async startChangelogFetching(): Promise<void> {
     this.isFetchingChangelogs = true
 
-    const apiService = Services.get(ApiService)
-    const websiteConfiguration = Services.get(WebsiteConfigurationService).configuration
-    const changelogResult = await apiService.get<IChangelogEntry[]>(websiteConfiguration.changelogApi)
+    const fetchService = Services.get(FetchService)
+    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointChangelog
+    const changelogResult = await fetchService.get<IChangelogEntry[]>(endpoint)
 
     if (changelogResult.success) {
       this.changelog = changelogResult.value

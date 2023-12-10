@@ -1,4 +1,4 @@
-import { ApiService } from './services/ApiService'
+import { FetchService } from './services/FetchService'
 import { BuildComponentService } from './services/components/BuildComponentService'
 import { BuildPropertiesService } from './services/BuildPropertiesService'
 import { BuildService } from './services/BuildService'
@@ -31,7 +31,7 @@ import { ServiceInitializationState } from './services/repository/ServiceInitial
  * Configures all the services used in the application.
  */
 export async function configureServices(): Promise<void> {
-  Services.configure(ApiService)
+  Services.configure(FetchService)
   Services.configure(BuildPropertiesService)
   Services.configure(BuildService)
   Services.configure(CompatibilityService)

@@ -1,10 +1,10 @@
 import { ItemFetcherService } from '../../services/ItemFetcherService'
 import Result, { FailureType } from '../../utils/Result'
 import { instance, mock, when } from 'ts-mockito'
-import { ApiService } from '../../services/ApiService'
+import { FetchService } from '../../services/FetchService'
 import Services from '../../services/repository/Services'
 import WebsiteConfigurationMock from '../__data__/website-configuration.json'
-import { useApiServiceMock } from '../__mocks__/ApiServiceMock'
+import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
 import ItemCategoriesMock from '../__data__/item-categories.json'
 import ItemsMock from '../__data__/items.json'
 import PricesMock from '../__data__/prices.json'
@@ -15,7 +15,7 @@ import { describe, expect, it } from 'vitest'
 describe('fetchItemCategories()', () => {
   it('should fetch item categories', async () => {
     // Arrange
-    useApiServiceMock(ItemCategoriesMock)
+    useFetchServiceMock(ItemCategoriesMock)
     useWebsiteConfigurationServiceMock()
 
     const fetcher = new ItemFetcherService()
@@ -30,7 +30,7 @@ describe('fetchItemCategories()', () => {
 
   it('should fail when item categories are not found', async () => {
     // Arrange
-    useApiServiceMock([])
+    useFetchServiceMock([])
     useWebsiteConfigurationServiceMock()
 
     const fetcher = new ItemFetcherService()
@@ -45,9 +45,9 @@ describe('fetchItemCategories()', () => {
 
   it('should fail when an error occurs requesting item categories', async () => {
     // Arrange
-    const apiServiceMock = mock<ApiService>()
-    when(apiServiceMock.get(WebsiteConfigurationMock.itemCategoriesApi)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
-    Services.configure(ApiService, undefined, instance(apiServiceMock))
+    const fetchServiceMock = mock<FetchService>()
+    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointItemCategories)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    Services.configure(FetchService, undefined, instance(fetchServiceMock))
     useWebsiteConfigurationServiceMock()
 
     const fetcher = new ItemFetcherService()
@@ -64,7 +64,7 @@ describe('fetchItemCategories()', () => {
 describe('fetchItems()', () => {
   it('should fetch all items', async () => {
     // Arrange
-    useApiServiceMock(ItemsMock)
+    useFetchServiceMock(ItemsMock)
     useWebsiteConfigurationServiceMock()
 
     const fetcher = new ItemFetcherService()
@@ -79,7 +79,7 @@ describe('fetchItems()', () => {
 
   it('should fail when items are not found', async () => {
     // Arrange
-    useApiServiceMock([])
+    useFetchServiceMock([])
     useWebsiteConfigurationServiceMock()
 
     const fetcher = new ItemFetcherService()
@@ -94,9 +94,9 @@ describe('fetchItems()', () => {
 
   it('should fail when an error occurs requesting items', async () => {
     // Arrange
-    const apiServiceMock = mock<ApiService>()
-    when(apiServiceMock.get(WebsiteConfigurationMock.itemsApi)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
-    Services.configure(ApiService, undefined, instance(apiServiceMock))
+    const fetchServiceMock = mock<FetchService>()
+    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointItems)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    Services.configure(FetchService, undefined, instance(fetchServiceMock))
     useWebsiteConfigurationServiceMock()
 
     const fetcher = new ItemFetcherService()
@@ -113,7 +113,7 @@ describe('fetchItems()', () => {
 describe('fetchPrices()', () => {
   it('should fetch prices', async () => {
     // Arrange
-    useApiServiceMock(PricesMock)
+    useFetchServiceMock(PricesMock)
     useWebsiteConfigurationServiceMock()
 
     const fetcher = new ItemFetcherService()
@@ -128,7 +128,7 @@ describe('fetchPrices()', () => {
 
   it('should fail when prices are not found', async () => {
     // Arrange
-    useApiServiceMock([])
+    useFetchServiceMock([])
     useWebsiteConfigurationServiceMock()
 
     const fetcher = new ItemFetcherService()
@@ -143,9 +143,9 @@ describe('fetchPrices()', () => {
 
   it('should fail when an error occurs requesting prices', async () => {
     // Arrange
-    const apiServiceMock = mock<ApiService>()
-    when(apiServiceMock.get(WebsiteConfigurationMock.pricesApi)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
-    Services.configure(ApiService, undefined, instance(apiServiceMock))
+    const fetchServiceMock = mock<FetchService>()
+    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointPrices)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    Services.configure(FetchService, undefined, instance(fetchServiceMock))
     useWebsiteConfigurationServiceMock()
 
     const fetcher = new ItemFetcherService()
@@ -162,7 +162,7 @@ describe('fetchPrices()', () => {
 describe('fetchPresets()', () => {
   it('should fetch presets', async () => {
     // Arrange
-    useApiServiceMock(PresetsMock)
+    useFetchServiceMock(PresetsMock)
     useWebsiteConfigurationServiceMock()
 
     const fetcher = new ItemFetcherService()
@@ -177,7 +177,7 @@ describe('fetchPresets()', () => {
 
   it('should fail when presets are not found', async () => {
     // Arrange
-    useApiServiceMock([])
+    useFetchServiceMock([])
     useWebsiteConfigurationServiceMock()
 
     const fetcher = new ItemFetcherService()
@@ -192,9 +192,9 @@ describe('fetchPresets()', () => {
 
   it('should fail when an error occurs requesting presets', async () => {
     // Arrange
-    const apiServiceMock = mock<ApiService>()
-    when(apiServiceMock.get(WebsiteConfigurationMock.presetsApi)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
-    Services.configure(ApiService, undefined, instance(apiServiceMock))
+    const fetchServiceMock = mock<FetchService>()
+    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointPresets)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    Services.configure(FetchService, undefined, instance(fetchServiceMock))
     useWebsiteConfigurationServiceMock()
 
     const fetcher = new ItemFetcherService()

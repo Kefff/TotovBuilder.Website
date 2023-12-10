@@ -12,7 +12,7 @@ import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { VersionService } from '../../services/VersionService'
 import Migrations from '../../utils/migrations/Migrations'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const builds: IBuild[] = [
   {
@@ -1668,6 +1668,14 @@ describe('toSharableURL()', () => {
     useVersionServiceMock()
     useWebsiteConfigurationServiceMock()
 
+    vi.stubGlobal(
+      'window',
+      {
+        location: {
+          origin: 'localhost:3000'
+        }
+      })
+
     const service = new BuildService()
 
     // Act
@@ -1676,6 +1684,9 @@ describe('toSharableURL()', () => {
     // Assert
     expect(sharableStringResult.success).toBe(true)
     expect(sharableStringResult.value).toBe('localhost:3000/s/XQAAAAJmBAAAAAAAAABAqEppdBKy3f2nWA1_4C5z8-v7-PB2PnO4TJBDN_RrefeMTA1oIOQNSLQmTZKQMA3nTnTUbHr2mi1gpHZ1QN0VIdkLEh60ZqLDitEtmoaW0W0HNH_zGoKaZEYJaP-iZbZ58SWF1EzZsZPqQKFC_vbt94cj3bvtzDD7pDiJOzAUPS4f-zBgDNFZaE2HYlN3Rz5M49-4gT5jlmRMoea0PcfnKGWOu8u8tLcMaC60pI27hakRDzyTuI4L8cYmi0QwjxRlItBak0OtOuG-v429VWpY_8LQtmewFcw-MWPYRuIj7UvZmreC9JUBrXokMOkD2EMRJmxeWr5xHf4Vs8zN5KN1dcMu7IWmt8WqBVNv-JM58Llo5jQE5TKnNPfD-joOOLpz48N6zW0E0DmgbkCCVNFhu-yHjiRyAyf04PMJIaKUvdNBdsm0NHnE7LdClTap-mQfC-nqV-k6mVFHnFL2kq7Ql_bAZyq4Ik6N4D7cvOhv2cJc9D3TNgdfAFJLbe9HMlDEQMAdEKPZ3RB0Z2tCpgwNkadeJMLdxab88Hy6Q3E8RCk78TwWmQCBRDcNNiyozBLO9hLg_5YfogDLAkPR3w59d3cPMRzqK28ZuDvblEyEucXvXnFRHD3OBlV59umKbt95m9rYcW7hlw_xWVQY_WZI9neXWYIlgpDYuacwp8IvIzbNCrVke9sIMVsMJ77sqDXtoZ00fot9AhpDkRciED16Kpm3v1UK6Qafo3-5TZQq_HdHHPgwVS0PfP_srPgE')
+
+    // Clean
+    vi.unstubAllGlobals()
   })
 
   it('should fail when the URL is longer thant 2048 characters', async () => {

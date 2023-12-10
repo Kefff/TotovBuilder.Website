@@ -21,7 +21,7 @@
   "typescript.format.semicolons": "remove",
   "typescript.preferences.quoteStyle": "single",
   "vitest.enable": true,
-  "vitest.commandLine": "npm run vitest",
+  "vitest.commandLine": "npx vitest",
   "vue.autoInsert.dotValue": true,
   "vue.inlayHints.inlineHandlerLeading": true,
   "vue.inlayHints.missingProps": true,
@@ -49,5 +49,8 @@
   "[vue]": {
     "editor.tabSize": 2,
     "editor.defaultFormatter": "Vue.volar"
+  },
+  "search.exclude": {
+    "public/data/*": true
   }
 }

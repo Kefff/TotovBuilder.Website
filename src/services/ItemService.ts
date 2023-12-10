@@ -415,7 +415,7 @@ export class ItemService {
       Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.pricesLoadingError'), true)
 
       // When an error occurs, we set the last fetch date in order to make the cache expire 20 seconds later.
-      // This is to avoid making a new API request for each of the 2000+ items.
+      // This is to avoid making a new request for each of the 3000+ items.
       const websiteConfigurationService = Services.get(WebsiteConfigurationService)
       this.lastPricesFetchDate = new Date(
         new Date().getTime()

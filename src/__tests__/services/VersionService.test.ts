@@ -4,8 +4,8 @@ import vueI18n from '../../plugins/vueI18n'
 import WebsiteConfigurationMock from '../__data__/website-configuration.json'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 import ChangelogMock from '../__data__/changelog.json'
-import { useApiServiceMock } from '../__mocks__/ApiServiceMock'
-import { ApiService } from '../../services/ApiService'
+import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
+import { FetchService } from '../../services/FetchService'
 import { anyString, anything, instance, mock, spy, verify, when } from 'ts-mockito'
 import Result, { FailureType } from '../../utils/Result'
 import Services from '../../services/repository/Services'
@@ -27,7 +27,7 @@ describe('checkHasNewVersion()', () => {
     [true, true]
   ])('should indicate whether the version is newer than the last visit version', async (hasVersionStored: boolean, expected: boolean) => {
     // Arrange
-    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
 
@@ -82,7 +82,7 @@ describe('compareVersions()', () => {
     ['10.1.1', '1.1.10', 1]
   ])('should compare two versions (%s, %s)', (version1: string | undefined, version2: string | undefined, expected: number) => {
     // Arrange
-    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
     useWebsiteConfigurationServiceMock()
 
     const service = new VersionService()
@@ -98,7 +98,7 @@ describe('compareVersions()', () => {
 describe('executeBuildMigrations()', () => {
   it('should execute build migrations in the correct order', async () => {
     // Arrange
-    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
     useWebsiteConfigurationServiceMock()
 
     Services.configure(BuildService)
@@ -192,7 +192,7 @@ describe('executeBuildMigrations()', () => {
 
   it('should fail when a migration fails', async () => {
     // Arrange
-    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
     useWebsiteConfigurationServiceMock()
 
     Services.configure(BuildService)
@@ -427,7 +427,7 @@ describe('getChangelog()', () => {
     ]
   ])('should get the changelog', async (version: string | undefined, language: string, expectedChangelogs: IChangelogEntry[]) => {
     // Arrange
-    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
 
@@ -452,9 +452,9 @@ describe('getChangelog()', () => {
     Services.configure(BuildService)
     Services.configure(NotificationService)
 
-    const apiServiceMock = mock<ApiService>()
-    when(apiServiceMock.get(anything())).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'Error')))
-    Services.configure(ApiService, undefined, instance(apiServiceMock))
+    const fetchServiceMock = mock<FetchService>()
+    when(fetchServiceMock.get(anything())).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'Error')))
+    Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const notificationServiceSpy = spy(Services.get(NotificationService))
 
@@ -470,11 +470,11 @@ describe('getChangelog()', () => {
 
   it('should not fetch the changelog if already fetched', async () => {
     // Arrange
-    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry[])
+    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry[])
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
 
-    const apiSpy = spy(Services.get(ApiService))
+    const fetchSpy = spy(Services.get(FetchService))
 
     const service = new VersionService()
 
@@ -483,16 +483,16 @@ describe('getChangelog()', () => {
     await service.getChangelog()
 
     // Assert
-    verify(apiSpy.get(anyString())).once()
+    verify(fetchSpy.get(anyString())).once()
   })
 
   it('should not fetch the changelog while it is already being fetched', async () => {
     // Arrange
-    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry[])
+    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry[])
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
 
-    const apiSpy = spy(Services.get(ApiService))
+    const fetchSpy = spy(Services.get(FetchService))
 
     const service = new VersionService()
 
@@ -502,14 +502,14 @@ describe('getChangelog()', () => {
     await promise
 
     // Assert
-    verify(apiSpy.get(anyString())).once()
+    verify(fetchSpy.get(anyString())).once()
   })
 })
 
 describe('getVersion()', () => {
   it('should wait for the initialization to end', async () => {
     // Arrange
-    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
 
@@ -541,7 +541,7 @@ describe('initialize()', () => {
     ]
   ])('should fetch version data', async (lastVisitVersion: string | undefined, expectedVersion: string, expectedHasNewVersion: boolean) => {
     // Arrange
-    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
     useWebsiteConfigurationServiceMock()
 
     Services.configure(BuildService)
@@ -701,7 +701,7 @@ describe('initialize()', () => {
 
   it('should not initialize if it is already initialized', async () => {
     // Arrange
-    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
 
@@ -716,7 +716,7 @@ describe('initialize()', () => {
 
   it('should wait for the previous initialization to finish before returning', async () => {
     // Arrange
-    useApiServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
 

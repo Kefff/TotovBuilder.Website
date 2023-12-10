@@ -1,4 +1,4 @@
-import { ApiService } from '../../services/ApiService'
+import { FetchService } from '../../services/FetchService'
 import createFetchMock from 'vitest-fetch-mock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 import Services from '../../services/repository/Services'
@@ -58,12 +58,12 @@ describe('get()', () => {
     ]
   }
 ]`
-    const apiName = 'prices'
+    const endpoint = 'data/prices.json'
     useWebsiteConfigurationServiceMock()
-    fetchMock.mockOnceIf(import.meta.env.VITE_API_URL as string + apiName, response, { status: 200 })
+    fetchMock.mockOnceIf(endpoint, response, { status: 200 })
 
     // Act
-    const result = await new ApiService().get(apiName)
+    const result = await new FetchService().get(endpoint)
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
@@ -137,10 +137,10 @@ describe('get()', () => {
   }
 ]`
     useWebsiteConfigurationServiceMock()
-    fetchMock.mockOnceIf(import.meta.env.VITE_API_URL as string + 'item?id=57dc2fa62459775949412633', response, { status: 200 })
+    fetchMock.mockOnceIf('localhost:3000/method?id=57dc2fa62459775949412633', response, { status: 200 })
 
     // Act
-    const result = await new ApiService().get('item', { name: 'id', value: '57dc2fa62459775949412633' })
+    const result = await new FetchService().get('localhost:3000/method', { name: 'id', value: '57dc2fa62459775949412633' })
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
@@ -190,7 +190,7 @@ describe('get()', () => {
       .mockResponse(successResponse, { status: 200 })
 
     // Act
-    const result = await new ApiService().get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
+    const result = await new FetchService().get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
 
     // Assert
     expect(result.success).toBe(true)
@@ -204,17 +204,16 @@ describe('get()', () => {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     websiteConfigurationService.configuration.fetchMaxTries = 1
 
-    const apiName = 'prices'
-
-    fetchMock.mockOnceIf(import.meta.env.VITE_API_URL as string + apiName, '', { status: 200 })
+    const endpoint = 'data/prices.json'
+    fetchMock.mockOnceIf('localhost:3000/' + endpoint, '', { status: 200 })
 
     // Act
-    const result = await new ApiService().get(apiName)
+    const result = await new FetchService().get(endpoint)
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
     expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe('Failed to successfully request API "prices" after 1 tries.')
+    expect(result.failureMessage).toBe('Failed to successfully request endpoint "data/prices.json" after 1 tries.')
   })
 
   it('should fail if a success response is not received until the maximum number of tries is reached', async () => {
@@ -232,11 +231,11 @@ describe('get()', () => {
     fetchMock.doMock(response, { status: 401 })
 
     // Act
-    const result = await new ApiService().get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
+    const result = await new FetchService().get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
 
     // Assert
     expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe('Failed to successfully request API "item" after 2 tries.')
+    expect(result.failureMessage).toBe('Failed to successfully request endpoint "item" after 2 tries.')
   })
 
   it('should fail if it times out', async () => {
@@ -251,13 +250,13 @@ describe('get()', () => {
       return new Promise(resolve => setTimeout(resolve, 1000)).then(() => '')
     })
 
-    const service = new ApiService()
+    const service = new FetchService()
 
     // Act
     const result = await service.get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
 
     // Assert
     expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe('Failed to successfully request API "item" after 1 tries.')
+    expect(result.failureMessage).toBe('Failed to successfully request endpoint "item" after 1 tries.')
   })
 })

@@ -1,8 +1,8 @@
 import { IWebsiteConfiguration } from '../../models/configuration/IWebsiteConfiguration'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import WebsiteConfigurationMock from '../__data__/website-configuration.json'
-import { useApiServiceMock } from '../__mocks__/ApiServiceMock'
-import { ApiService } from '../../services/ApiService'
+import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
+import { FetchService } from '../../services/FetchService'
 import { anyString, instance, mock, spy, verify, when } from 'ts-mockito'
 import Result, { FailureType } from '../../utils/Result'
 import Services from '../../services/repository/Services'
@@ -12,9 +12,9 @@ import { describe, expect, it } from 'vitest'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 
 describe('initialize', () => {
-  it('should fetch the website configuration from the API', async () => {
+  it('should fetch the website configuration', async () => {
     // Arrange
-    useApiServiceMock(WebsiteConfigurationMock as IWebsiteConfiguration)
+    useFetchServiceMock(WebsiteConfigurationMock as IWebsiteConfiguration)
 
     const service = new WebsiteConfigurationService()
 
@@ -23,42 +23,41 @@ describe('initialize', () => {
 
     // Assert
     expect(result).toBe(true)
-    expect(service.configuration.buildSharingUrl).toBe('localhost:3000/s/')
+    expect(service.configuration.buildSharingUrl).toBe('s/')
   })
 
   it('should notify when the post update period flag is set', async () => {
     // Arrange
-    useApiServiceMock({
+    useFetchServiceMock({
       allowCookiesStorageKey: 'allow_cookies',
       bugReportUrl: 'https://discord.gg/bugreport',
-      buildSharingUrl: 'localhost:3000/s/',
+      buildSharingUrl: 's/',
       buildsSortFieldStorageKey: 'builds_sort_field',
       buildsSortOrderStorageKey: 'builds_sort_order',
       buildStorageKeyPrefix: 'build_',
       cacheDuration: 3600,
-      changelogApi: 'changelog',
       contactAddress: 'contact@address.com',
       discordUrl: 'https://discord.gg/server',
+      endpointChangelog: 'data/changelog.json',
+      endpointItemCategories: 'data/item-categories.json',
+      endpointItems: 'data/items.json',
+      endpointPresets: 'data/presets.json',
+      endpointPrices: 'data/prices.json',
+      endpointTarkovValues: 'data/tarkov-values.json',
       exportFileExtension: '.ttb',
       exportFileNamePrefix: 'TotovBuilder',
-      exportWarningShowedStoregeKey: 'export_warning',
+      exportWarningShowedStorageKey: 'export_warning',
       fetchMaxTries: 3,
       fetchTimeout: 30,
       fetchWaitTimeBetweenRetries: 2,
       githubUrl: 'https://github.com/User/Reposiory',
       globalFilterStorageKey: 'global_filter',
-      itemCategoriesApi: 'itemcategories',
-      itemsApi: 'items',
       languageStorageKey: 'language',
       notificationErrorDuration: 10,
       notificationInformationDuration: 5,
       notificationSuccessDuration: 5,
       notificationWarningDuration: 10,
       postUpdatePeriod: true,
-      presetsApi: 'presets',
-      pricesApi: 'prices',
-      questsApi: 'quests',
-      tarkovValuesApi: 'tarkovvalues',
       version: '1.6.0',
       versionStorageKey: 'version'
     } as IWebsiteConfiguration)
@@ -80,14 +79,14 @@ describe('initialize', () => {
       0)).once()
   })
 
-  it('should do nothing when the API returns an error', async () => {
+  it('should do nothing when fetching fails', async () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
     Services.configure(NotificationService)
 
-    const apiServiceMock = mock<ApiService>()
-    when(apiServiceMock.get(anyString())).thenReturn(Promise.resolve(Result.fail<void>(FailureType.error, 'ApiService.get()', 'API error')))
-    Services.configure(ApiService, undefined, instance(apiServiceMock))
+    const fetchServiceMock = mock<FetchService>()
+    when(fetchServiceMock.get(anyString())).thenReturn(Promise.resolve(Result.fail<void>(FailureType.error, 'FetchService.get()', 'Fetch error')))
+    Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const service = new WebsiteConfigurationService()
 

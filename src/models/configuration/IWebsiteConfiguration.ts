@@ -33,11 +33,6 @@ export interface IWebsiteConfiguration {
   buildStorageKeyPrefix: string
 
   /*
-   * Changelog API name.
-   */
-  changelogApi: string
-
-  /*
    * Cache dureation (in seconds).
    */
   cacheDuration: number
@@ -53,6 +48,36 @@ export interface IWebsiteConfiguration {
   discordUrl: string
 
   /*
+   * Changelog endpoint.
+   */
+  endpointChangelog: string
+
+  /*
+   * Item categories endpoint.
+   */
+  endpointItemCategories: string
+
+  /*
+   * Items endpoint.
+   */
+  endpointItems: string
+
+  /*
+   * Presets endpoint.
+   */
+  endpointPresets: string
+
+  /*
+   * Prices endpoint.
+   */
+  endpointPrices: string
+
+  /**
+   * Tarkov values endpoint.
+   */
+  endpointTarkovValues: string
+
+  /*
    * Export file extension.
    */
   exportFileExtension: string
@@ -65,7 +90,7 @@ export interface IWebsiteConfiguration {
   /*
    * Storage key for the value indicating whether the warning about builds not exported has been displayed.
    */
-  exportWarningShowedStoregeKey: string
+  exportWarningShowedStorageKey: string
 
   /**
    * Maximum number of tries when an error occurs when fetching data.
@@ -91,16 +116,6 @@ export interface IWebsiteConfiguration {
    * Storage key for the current global filter.
    */
   globalFilterStorageKey: string
-
-  /*
-   * Item categories API name.
-   */
-  itemCategoriesApi: string
-
-  /*
-   * Items API name.
-   */
-  itemsApi: string
 
   /*
    * Storage key for the current language.
@@ -131,26 +146,6 @@ export interface IWebsiteConfiguration {
    * Indicates whether we are in a post-update period and items and prices are being updated.
    */
   postUpdatePeriod: boolean
-
-  /*
-   * Presets API name.
-   */
-  presetsApi: string
-
-  /*
-   * Prices API name.
-   */
-  pricesApi: string
-
-  /*
-   * Quests API name.
-   */
-  questsApi: string
-
-  /**
-   * Tarkov values API name.
-   */
-  tarkovValuesApi: string,
 
   /**
    * Version of the website.

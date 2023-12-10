@@ -236,7 +236,7 @@ export class BuildService {
 
     // Compressing the build into a URL
     const codec = jsonUrl('lzma')
-    let sharableURL = Services.get(WebsiteConfigurationService).configuration.buildSharingUrl
+    let sharableURL = window.location.origin + '/' + Services.get(WebsiteConfigurationService).configuration.buildSharingUrl
     sharableURL += await codec.compress(reducedBuild)
 
     if (sharableURL.length > 2048) {

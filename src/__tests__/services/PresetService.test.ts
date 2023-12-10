@@ -142,7 +142,7 @@ describe('fetchPresets()', () => {
     Services.configure(NotificationService, undefined, instance(notificationServiceMock))
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'API error')))
+    when(itemFetcherServiceMock.fetchPresets()).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'Fetch error')))
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
 
@@ -152,7 +152,7 @@ describe('fetchPresets()', () => {
 
     // Assert
     expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe('API error')
+    expect(result.failureMessage).toBe('Fetch error')
   })
 })
 
