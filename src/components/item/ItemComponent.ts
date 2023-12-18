@@ -252,7 +252,6 @@ export default defineComponent({
 
     /**
      * Sets the options selectable in the drop down input.
-     * When more than x items are found, displays a message asking the user to filter.
      * @param filter - Filter.
      * @param sortingData - Sorting data.
      */

@@ -90,6 +90,10 @@
           >
             {{ $t('message.apiDisclaimer2') }}
           </a>.
+        </span>
+      </div>
+      <div class="app-api-disclaimer">
+        <span>
           {{ $t('message.apiDisclaimer3') }}
           <a
             href="https://opencollective.com/tarkov-dev"

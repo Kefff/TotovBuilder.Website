@@ -18,9 +18,6 @@ export default defineConfig({
       include: resolve(dirname(fileURLToPath(import.meta.url)), './src/locales/**') // https://vue-i18n.intlify.dev/guide/advanced/optimization.html#how-to-configure
     })
   ],
-  server: {
-    open: true
-  },
   test: {
     coverage: {
       exclude: [
