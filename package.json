@@ -8,9 +8,9 @@
     "build-staging": "vite build --mode staging && node scripts/postbuild.js",
     "lint": "eslint ./src/**",
     "serve": "vite preview",
-    "test": "vitest run --coverage && npm run coverage",
-    "test-nc": "npm run test-no-coverage",
-    "test-no-coverage": "vitest run",
+    "test": "vitest run",
+    "test-c": "npm run test-coverage",
+    "test-coverage": "vitest run --coverage && npm run coverage",
     "test-w": "npm run test-watch",
     "test-watch": "vitest watch"
   },

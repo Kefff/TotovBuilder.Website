@@ -333,7 +333,7 @@ export default defineComponent({
      * @param request - Compatibility request.
      */
     function onArmorCompatibilityRequest(request: CompatibilityRequest) {
-      request.setResult(buildPropertiesService.checkCanAddArmor(build.value))
+      request.setResult(buildPropertiesService.canAddArmor(build.value))
     }
 
     /**
@@ -369,7 +369,7 @@ export default defineComponent({
      * @param request - Compatibility request that must be resolved.
      */
     function onModCompatibilityRequest(request: CompatibilityRequest) {
-      request.setResult(buildPropertiesService.checkCanAddMod(build.value, request.itemId, request.path))
+      request.setResult(buildPropertiesService.canAddMod(build.value, request.itemId, request.path))
     }
 
     /**
@@ -395,7 +395,7 @@ export default defineComponent({
      * @param request - Compatibility request.
      */
     function onTacticalRigCompatibilityRequest(request: CompatibilityRequest) {
-      request.setResult(buildPropertiesService.checkCanAddVest(build.value, request.itemId))
+      request.setResult(buildPropertiesService.canAddVest(build.value, request.itemId))
     }
 
     /**

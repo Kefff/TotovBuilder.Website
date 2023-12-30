@@ -10,6 +10,7 @@ import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfi
 import { VersionService } from '../../../services/VersionService'
 import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
 import { describe, expect, it } from 'vitest'
+import { ReductionService } from '../../../services/ReductionService'
 
 describe('getBuild()', () => {
   it('should get a build', () => {
@@ -110,6 +111,7 @@ describe('getBuildFromSharableString()', () => {
     // Arrange
     useVersionServiceMock()
     Services.configure(BuildService)
+    Services.configure(ReductionService)
     Services.configure(VersionService)
 
     const service = new BuildComponentService()
@@ -120,7 +122,7 @@ describe('getBuildFromSharableString()', () => {
 
     // Assert
     expect(buildResult.success).toBe(true)
-    expect(buildResult.value).toEqual({
+    expect(buildResult.value).toStrictEqual({
       id: '',
       inventorySlots: [
         {

@@ -27,14 +27,14 @@ export class BuildPropertiesService {
    * @param build - Build.
    * @returns Success if the build doesn't contain an armored vest; otherwise Failure.
    */
-  public async checkCanAddArmor(build: IBuild): Promise<Result> {
+  public async canAddArmor(build: IBuild): Promise<Result> {
     const vestSlot = build.inventorySlots.find((is) => is.typeId === 'tacticalRig')
 
     if (vestSlot == null) {
       // Should never occur
       return Result.fail(
         FailureType.error,
-        'BuildService.checkCanAddArmor()',
+        'BuildService.canAddArmor()',
         vueI18n.t('message.modSlotNotFound', { modSlot: 'tacticalRig' })
       )
     }
@@ -55,7 +55,7 @@ export class BuildPropertiesService {
       if ((vestResult.value as IVest).armorClass > 0) {
         return Result.fail(
           FailureType.hidden,
-          'BuildService.checkCanAddArmor()',
+          'BuildService.canAddArmor()',
           vueI18n.t('message.cannotAddBodyArmor')
         )
       }
@@ -71,7 +71,7 @@ export class BuildPropertiesService {
    * @param path - Path to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
    * @returns Success if the mod can be added; otherwise Failure.
    */
-  public async checkCanAddMod(build: IBuild, modId: string, path: string): Promise<Result> {
+  public async canAddMod(build: IBuild, modId: string, path: string): Promise<Result> {
     const itemService = Services.get(ItemService)
     const modResult = await itemService.getItem(modId)
 
@@ -112,7 +112,7 @@ export class BuildPropertiesService {
 
       return Result.fail(
         FailureType.hidden,
-        'BuildService.checkCanAddMod()',
+        'BuildService.canAddMod()',
         vueI18n.t('message.cannotAddMod', {
           modName: modResult.value.name,
           conflictingItemName: conflictingItemResult.value.name
@@ -129,7 +129,7 @@ export class BuildPropertiesService {
    * @param vestId - Vest ID.
    * @returns Success if the build doesn't contain an armor; otherwise Failure.
    */
-  public async checkCanAddVest(build: IBuild, vestId: string): Promise<Result> {
+  public async canAddVest(build: IBuild, vestId: string): Promise<Result> {
     const itemService = Services.get(ItemService)
     const vestResult = await itemService.getItem(vestId)
 
@@ -149,7 +149,7 @@ export class BuildPropertiesService {
       // Should never occur
       return Result.fail(
         FailureType.error,
-        'BuildService.checkCanAddVest()',
+        'BuildService.canAddVest()',
         vueI18n.t('message.modSlotNotFound', { modSlot: 'bodyArmor' })
       )
     }
@@ -158,7 +158,7 @@ export class BuildPropertiesService {
       if (item != null) {
         return Result.fail(
           FailureType.hidden,
-          'BuildService.checkCanAddVest()',
+          'BuildService.canAddVest()',
           vueI18n.t('message.cannotAddTacticalRig')
         )
       }

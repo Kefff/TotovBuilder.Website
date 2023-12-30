@@ -533,7 +533,7 @@ export const build2: IBuild = {
   lastWebsiteVersion: undefined
 }
 
-describe('checkCanAddArmor()', () => {
+describe('canAddArmor()', () => {
   it.each([
     [
       {
@@ -546,7 +546,7 @@ describe('checkCanAddArmor()', () => {
         ]
       } as IBuild,
       {
-        failureContext: 'BuildService.checkCanAddArmor()',
+        failureContext: 'BuildService.canAddArmor()',
         failureMessage: 'Cannot find mod slot "tacticalRig".',
         success: false
       } as Result
@@ -634,7 +634,7 @@ describe('checkCanAddArmor()', () => {
         ]
       } as IBuild,
       {
-        failureContext: 'BuildService.checkCanAddArmor()',
+        failureContext: 'BuildService.canAddArmor()',
         failureMessage:
           'Cannot select a body armor because an armored tactical rig has already been added.',
         success: false
@@ -648,7 +648,7 @@ describe('checkCanAddArmor()', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.checkCanAddArmor(build)
+      const result = await service.canAddArmor(build)
 
       // Assert
       expect(result).toEqual(expected)
@@ -656,7 +656,7 @@ describe('checkCanAddArmor()', () => {
   )
 })
 
-describe('checkCanAddMod()', () => {
+describe('canAddMod()', () => {
   it.each([
     [
       {} as IBuild,
@@ -800,7 +800,7 @@ describe('checkCanAddMod()', () => {
       '5d15ce51d7ad1a1eff619092', // AKS-74U Alfa Arms Goliaf handguard, conflicts with AK-105 5.45x39 muzzle brake & compensator (6P44 0-20)
       'build:123456789/slot:onSling_0/item:57dc2fa62459775949412633/mod:mod_gas_block/item:59d36a0086f7747e673f3946/mod_handguard',
       {
-        failureContext: 'BuildService.checkCanAddMod()',
+        failureContext: 'BuildService.canAddMod()',
         failureMessage:
           'Cannot add mod "AKS-74U Alfa Arms Goliaf handguard" because it conflicts with item "AK-105 5.45x39 muzzle brake-compensator (6P44 0-20)".',
         success: false
@@ -985,7 +985,7 @@ describe('checkCanAddMod()', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.checkCanAddMod(build, modId, modSlotPath)
+      const result = await service.canAddMod(build, modId, modSlotPath)
 
       // Assert
       expect(result).toEqual(expected)
@@ -993,7 +993,7 @@ describe('checkCanAddMod()', () => {
   )
 })
 
-describe('checkCanAddVest()', () => {
+describe('canAddVest()', () => {
   it.each([
     [
       {
@@ -1057,7 +1057,7 @@ describe('checkCanAddVest()', () => {
       } as IBuild,
       '5b44cad286f77402a54ae7e5',
       {
-        failureContext: 'BuildService.checkCanAddVest()',
+        failureContext: 'BuildService.canAddVest()',
         failureMessage: 'Cannot find mod slot "bodyArmor".',
         success: false
       } as Result
@@ -1082,7 +1082,7 @@ describe('checkCanAddVest()', () => {
       } as IBuild,
       '5b44cad286f77402a54ae7e5',
       {
-        failureContext: 'BuildService.checkCanAddVest()',
+        failureContext: 'BuildService.canAddVest()',
         failureMessage:
           'Cannot select an armored tactical rig because a body armor has already been added.',
         success: false
@@ -1113,7 +1113,7 @@ describe('checkCanAddVest()', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.checkCanAddVest(build, vestId)
+      const result = await service.canAddVest(build, vestId)
 
       // Assert
       expect(result).toEqual(expected)

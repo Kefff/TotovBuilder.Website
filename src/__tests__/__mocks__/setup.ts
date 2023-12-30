@@ -11,6 +11,7 @@ beforeEach(() => {
 afterEach(() => {
   localStorage.clear() // Cleaning test that set values in the local storage mock
   vi.useRealTimers() // Cleaning tests that use fake times
+  vi.unstubAllGlobals() // Cleaning tests that change global variable values
 })
 
 // This code allows to find unhandled rejected promises (lines containing "UnhandledPromiseRejectionWarning" appearing in the test logs even when all tests pass).
