@@ -25,9 +25,9 @@ import { useGlobalFilterServiceMock } from '../__mocks__/GlobalFilterServiceMock
 import { IPrice } from '../../models/item/IPrice'
 import { IItem } from '../../models/item/IItem'
 import ItemCategoriesMock from '../__data__/item-categories.json'
-import ItemsMock from '../__data__/items.json'
-import PresetsMock from '../__data__/presets.json'
-import PricesMock from '../__data__/prices.json'
+import ItemsMock from '../__data__/items'
+import PresetsMock from '../__data__/presets'
+import PricesMock from '../__data__/prices'
 import { describe, expect, it } from 'vitest'
 import { LogService } from '../../services/LogService'
 
@@ -1346,7 +1346,7 @@ describe('updatePresetProperties', () => {
         {
           baseItemId: '57dc2fa62459775949412633',
           caliber: 'Caliber545x39',
-          defaultPresetId: null,
+          defaultPresetId: undefined,
           ergonomics: 44,
           fireModes: ['SingleFire', 'FullAuto'],
           fireRate: 650,

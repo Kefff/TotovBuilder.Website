@@ -105,7 +105,7 @@ export class InventoryItemService {
       itemId: '',
       merchant: '',
       merchantLevel: 0,
-      quest: null,
+      quest: undefined,
       value: 0,
       valueInMainCurrency: 0
     }
@@ -215,7 +215,7 @@ export class InventoryItemService {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: price.valueInMainCurrency,
         valueInMainCurrency: price.valueInMainCurrency
       },
@@ -231,7 +231,7 @@ export class InventoryItemService {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: price.value,
           valueInMainCurrency: price.valueInMainCurrency
         })
@@ -248,7 +248,7 @@ export class InventoryItemService {
                 itemId: '',
                 merchant: '',
                 merchantLevel: 0,
-                quest: null,
+                quest: undefined,
                 value: barterItemPriceWithContent.value * inventoryItem.quantity,
                 valueInMainCurrency: barterItemPriceWithContent.valueInMainCurrency * inventoryItem.quantity
               })

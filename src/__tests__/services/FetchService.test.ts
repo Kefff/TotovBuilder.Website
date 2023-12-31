@@ -58,7 +58,7 @@ describe('get()', () => {
     ]
   }
 ]`
-    const endpoint = 'data/prices.json'
+    const endpoint = 'data/prices.ts'
     useWebsiteConfigurationServiceMock()
     fetchMock.mockOnceIf(endpoint, response, { status: 200 })
 
@@ -204,7 +204,7 @@ describe('get()', () => {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     websiteConfigurationService.configuration.fetchMaxTries = 1
 
-    const endpoint = 'data/prices.json'
+    const endpoint = 'data/prices.ts'
     fetchMock.mockOnceIf('localhost:3000/' + endpoint, '', { status: 200 })
 
     // Act
@@ -213,7 +213,7 @@ describe('get()', () => {
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
     expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe('Failed to successfully request endpoint "data/prices.json" after 1 tries.')
+    expect(result.failureMessage).toBe('Failed to successfully request endpoint "data/prices.ts" after 1 tries.')
   })
 
   it('should fail if a success response is not received until the maximum number of tries is reached', async () => {

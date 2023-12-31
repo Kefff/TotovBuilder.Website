@@ -1327,7 +1327,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1337,7 +1337,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 479365,
           valueInMainCurrency: 479365
         },
@@ -1348,7 +1348,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 479365,
             valueInMainCurrency: 479365
           }
@@ -1359,7 +1359,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1376,7 +1376,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1386,7 +1386,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 138648,
           valueInMainCurrency: 138648
         },
@@ -1397,7 +1397,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 246,
             valueInMainCurrency: 27552
           },
@@ -1407,7 +1407,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 111096,
             valueInMainCurrency: 111096
           }
@@ -1418,7 +1418,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1492,7 +1492,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -1503,7 +1503,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -1513,7 +1513,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       },

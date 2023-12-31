@@ -305,9 +305,6 @@ describe('parseReducedItem', () => {
       {
         'ca': 'Caliber26x75',
         'e': 51,
-        'fm': [
-          'SingleFire'
-        ],
         'r': 30,
         'h': 400,
         'v': 200,

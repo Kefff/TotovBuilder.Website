@@ -235,7 +235,7 @@ export class BuildPropertiesService {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -245,7 +245,7 @@ export class BuildPropertiesService {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -256,7 +256,7 @@ export class BuildPropertiesService {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -357,7 +357,7 @@ export class BuildPropertiesService {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -367,7 +367,7 @@ export class BuildPropertiesService {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -378,7 +378,7 @@ export class BuildPropertiesService {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },

@@ -2,7 +2,7 @@ import { anyString, anything, instance, mock, when } from 'ts-mockito'
 import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import PresetsMock from '../__data__/presets.json'
+import PresetsMock from '../__data__/presets'
 import Result from '../../utils/Result'
 
 export function usePresetServiceMock(customPresetsList?: IInventoryItem[]): void {

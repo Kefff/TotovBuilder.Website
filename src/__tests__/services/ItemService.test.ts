@@ -13,9 +13,9 @@ import { NotificationService } from '../../services/NotificationService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import MockDate from 'mockdate'
 import ItemCategoriesMock from '../__data__/item-categories.json'
-import ItemsMock from '../__data__/items.json'
-import PresetsMock from '../__data__/presets.json'
-import PricesMock from '../__data__/prices.json'
+import ItemsMock from '../__data__/items'
+import PresetsMock from '../__data__/presets'
+import PricesMock from '../__data__/prices'
 import { IItem } from '../../models/item/IItem'
 import { usePresetServiceMock } from '../__mocks__/PresetPropertiesServiceMock'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
@@ -182,7 +182,7 @@ describe('getItem()', () => {
         itemId: '584147732459775a2b6d9f12',
         merchant: 'flea-market',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 28999,
         valueInMainCurrency: 28999
       }] as IPrice[])
@@ -272,7 +272,7 @@ describe('getItems()', () => {
         itemId: '584147732459775a2b6d9f12',
         merchant: 'flea-market',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 28999,
         valueInMainCurrency: 28999
       }] as IPrice[])
@@ -302,7 +302,7 @@ describe('getItems()', () => {
         itemId: '5c1d0f4986f7744bb01837fa',
         merchant: 'mechanic',
         merchantLevel: 4,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       }
@@ -364,7 +364,7 @@ describe('getItems()', () => {
         itemId: '584147732459775a2b6d9f12',
         merchant: 'flea-market',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 28999,
         valueInMainCurrency: 28999
       }] as IPrice[])

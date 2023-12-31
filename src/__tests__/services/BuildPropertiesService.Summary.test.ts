@@ -34,7 +34,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 0,
             valueInMainCurrency: 0
           },
@@ -44,7 +44,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 479365,
             valueInMainCurrency: 479365
           },
@@ -55,7 +55,7 @@ describe('getSummary()', () => {
               itemId: '',
               merchant: '',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 479365,
               valueInMainCurrency: 479365
             }
@@ -66,7 +66,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 0,
             valueInMainCurrency: 0
           },
@@ -86,6 +86,7 @@ describe('getSummary()', () => {
               maxStackableAmount: 1,
               movementSpeedPercentageModifier: 0,
               name: 'WARTECH Berkut BB-102 backpack',
+              presetWearableModifiers: undefined,
               prices: [
                 {
                   barterItems: [],
@@ -93,7 +94,7 @@ describe('getSummary()', () => {
                   itemId: '5ca20d5986f774331e7c9602',
                   merchant: 'ragman',
                   merchantLevel: 1,
-                  quest: null,
+                  quest: undefined,
                   value: 23444,
                   valueInMainCurrency: 23444
                 },
@@ -103,7 +104,7 @@ describe('getSummary()', () => {
                   itemId: '5ca20d5986f774331e7c9602',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 24046,
                   valueInMainCurrency: 24046
                 },
@@ -118,7 +119,7 @@ describe('getSummary()', () => {
                   itemId: '5ca20d5986f774331e7c9602',
                   merchant: 'ragman',
                   merchantLevel: 1,
-                  quest: null,
+                  quest: undefined,
                   value: 0,
                   valueInMainCurrency: 0
                 }
@@ -135,7 +136,7 @@ describe('getSummary()', () => {
               itemId: '5ca20d5986f774331e7c9602',
               merchant: 'ragman',
               merchantLevel: 1,
-              quest: null,
+              quest: undefined,
               value: 23444,
               valueInMainCurrency: 23444
             },
@@ -145,7 +146,7 @@ describe('getSummary()', () => {
               itemId: '5ca20d5986f774331e7c9602',
               merchant: 'ragman',
               merchantLevel: 1,
-              quest: null,
+              quest: undefined,
               value: 23444,
               valueInMainCurrency: 23444
             }
@@ -181,7 +182,7 @@ describe('getSummary()', () => {
                   itemId: '590c5d4b86f774784e1b9c45',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 21870,
                   valueInMainCurrency: 21870
                 },
@@ -196,7 +197,7 @@ describe('getSummary()', () => {
                   itemId: '590c5d4b86f774784e1b9c45',
                   merchant: 'therapist',
                   merchantLevel: 1,
-                  quest: null,
+                  quest: undefined,
                   value: 0,
                   valueInMainCurrency: 0
                 }
@@ -212,7 +213,7 @@ describe('getSummary()', () => {
               itemId: '590c5d4b86f774784e1b9c45',
               merchant: 'therapist',
               merchantLevel: 1,
-              quest: null,
+              quest: undefined,
               value: 0,
               valueInMainCurrency: 0
             },
@@ -222,7 +223,7 @@ describe('getSummary()', () => {
               itemId: '590c5d4b86f774784e1b9c45',
               merchant: 'therapist',
               merchantLevel: 1,
-              quest: null,
+              quest: undefined,
               value: 0,
               valueInMainCurrency: 0
             }
@@ -244,7 +245,7 @@ describe('getSummary()', () => {
                   itemId: '5d1b3f2d86f774253763b735',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 21792,
                   valueInMainCurrency: 21792
                 }
@@ -260,7 +261,7 @@ describe('getSummary()', () => {
               itemId: '5d1b3f2d86f774253763b735',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 21792,
               valueInMainCurrency: 21792
             },
@@ -270,7 +271,7 @@ describe('getSummary()', () => {
               itemId: '5d1b3f2d86f774253763b735',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 21792,
               valueInMainCurrency: 21792
             }
@@ -292,7 +293,7 @@ describe('getSummary()', () => {
                   itemId: '5448fee04bdc2dbc018b4567',
                   merchant: 'therapist',
                   merchantLevel: 1,
-                  quest: null,
+                  quest: undefined,
                   value: 12401,
                   valueInMainCurrency: 12401
                 },
@@ -302,7 +303,7 @@ describe('getSummary()', () => {
                   itemId: '5448fee04bdc2dbc018b4567',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 18179,
                   valueInMainCurrency: 18179
                 },
@@ -317,7 +318,7 @@ describe('getSummary()', () => {
                   itemId: '5448fee04bdc2dbc018b4567',
                   merchant: 'therapist',
                   merchantLevel: 1,
-                  quest: null,
+                  quest: undefined,
                   value: 0,
                   valueInMainCurrency: 0
                 }
@@ -333,7 +334,7 @@ describe('getSummary()', () => {
               itemId: '5448fee04bdc2dbc018b4567',
               merchant: 'therapist',
               merchantLevel: 1,
-              quest: null,
+              quest: undefined,
               value: 12401,
               valueInMainCurrency: 12401
             },
@@ -343,7 +344,7 @@ describe('getSummary()', () => {
               itemId: '5448fee04bdc2dbc018b4567',
               merchant: 'therapist',
               merchantLevel: 1,
-              quest: null,
+              quest: undefined,
               value: 12401,
               valueInMainCurrency: 12401
             }
@@ -367,6 +368,7 @@ describe('getSummary()', () => {
               maxStackableAmount: 1,
               movementSpeedPercentageModifier: -0.06,
               name: '6B13 assault armor (Flora)',
+              presetWearableModifiers: undefined,
               prices: [
                 {
                   barterItems: [],
@@ -374,7 +376,7 @@ describe('getSummary()', () => {
                   itemId: '5c0e51be86f774598e797894',
                   merchant: 'ragman',
                   merchantLevel: 2,
-                  quest: null,
+                  quest: undefined,
                   value: 77995,
                   valueInMainCurrency: 77995
                 },
@@ -384,7 +386,7 @@ describe('getSummary()', () => {
                   itemId: '5c0e51be86f774598e797894',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 67745,
                   valueInMainCurrency: 67745
                 }
@@ -402,7 +404,7 @@ describe('getSummary()', () => {
               itemId: '5c0e51be86f774598e797894',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 67745,
               valueInMainCurrency: 67745
             },
@@ -412,7 +414,7 @@ describe('getSummary()', () => {
               itemId: '5c0e51be86f774598e797894',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 67745,
               valueInMainCurrency: 67745
             }
@@ -435,7 +437,7 @@ describe('getSummary()', () => {
                   itemId: '5d5fca1ea4b93635fd598c07',
                   merchant: 'ragman',
                   merchantLevel: 2,
-                  quest: null,
+                  quest: undefined,
                   value: 3885,
                   valueInMainCurrency: 3885
                 },
@@ -445,7 +447,7 @@ describe('getSummary()', () => {
                   itemId: '5d5fca1ea4b93635fd598c07',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 12832,
                   valueInMainCurrency: 12832
                 }
@@ -461,7 +463,7 @@ describe('getSummary()', () => {
               itemId: '5d5fca1ea4b93635fd598c07',
               merchant: 'ragman',
               merchantLevel: 2,
-              quest: null,
+              quest: undefined,
               value: 3885,
               valueInMainCurrency: 3885
             },
@@ -471,7 +473,7 @@ describe('getSummary()', () => {
               itemId: '5d5fca1ea4b93635fd598c07',
               merchant: 'ragman',
               merchantLevel: 2,
-              quest: null,
+              quest: undefined,
               value: 3885,
               valueInMainCurrency: 3885
             }
@@ -493,7 +495,7 @@ describe('getSummary()', () => {
                   itemId: '5ab8f39486f7745cd93a1cca',
                   merchant: 'ragman',
                   merchantLevel: 2,
-                  quest: null,
+                  quest: undefined,
                   value: 4793,
                   valueInMainCurrency: 4793
                 },
@@ -503,7 +505,7 @@ describe('getSummary()', () => {
                   itemId: '5ab8f39486f7745cd93a1cca',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 13766,
                   valueInMainCurrency: 13766
                 }
@@ -519,7 +521,7 @@ describe('getSummary()', () => {
               itemId: '5ab8f39486f7745cd93a1cca',
               merchant: 'ragman',
               merchantLevel: 2,
-              quest: null,
+              quest: undefined,
               value: 4793,
               valueInMainCurrency: 4793
             },
@@ -529,7 +531,7 @@ describe('getSummary()', () => {
               itemId: '5ab8f39486f7745cd93a1cca',
               merchant: 'ragman',
               merchantLevel: 2,
-              quest: null,
+              quest: undefined,
               value: 4793,
               valueInMainCurrency: 4793
             }
@@ -542,12 +544,12 @@ describe('getSummary()', () => {
                 'Nape',
                 'Ears'
               ],
-              baseItemId: null,
+              baseItemId: undefined,
               blocksHeadphones: true,
               categoryId: 'headwear',
               conflictingItemIds: [],
               deafening: 'High',
-              defaultPresetId: null,
+              defaultPresetId: undefined,
               durability: 55,
               ergonomicsPercentageModifier: -0.03,
               iconLink: 'https://assets.tarkov.dev/5d6d3716a4b9361bc8618872-icon.webp',
@@ -599,6 +601,7 @@ describe('getSummary()', () => {
               ],
               movementSpeedPercentageModifier: 0,
               name: 'BNTI LShZ-2DTM helmet',
+              presetWearableModifiers: undefined,
               prices: [
                 {
                   barterItems: [],
@@ -606,7 +609,7 @@ describe('getSummary()', () => {
                   itemId: '5d6d3716a4b9361bc8618872',
                   merchant: 'ragman',
                   merchantLevel: 3,
-                  quest: null,
+                  quest: undefined,
                   value: 163075,
                   valueInMainCurrency: 163075
                 },
@@ -616,7 +619,7 @@ describe('getSummary()', () => {
                   itemId: '5d6d3716a4b9361bc8618872',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 79805,
                   valueInMainCurrency: 79805
                 }
@@ -634,7 +637,7 @@ describe('getSummary()', () => {
               itemId: '5d6d3716a4b9361bc8618872',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 79805,
               valueInMainCurrency: 79805
             },
@@ -644,7 +647,7 @@ describe('getSummary()', () => {
               itemId: '5d6d3716a4b9361bc8618872',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 79805,
               valueInMainCurrency: 79805
             }
@@ -656,7 +659,7 @@ describe('getSummary()', () => {
                 'Eyes',
                 'Jaws'
               ],
-              baseItemId: null,
+              baseItemId: undefined,
               blindnessProtectionPercentage: 0.1,
               categoryId: 'armorMod',
               conflictingItemIds: [
@@ -666,7 +669,7 @@ describe('getSummary()', () => {
                 '57235b6f24597759bf5a30f1',
                 '5c110624d174af029e69734c'
               ],
-              defaultPresetId: null,
+              defaultPresetId: undefined,
               durability: 50,
               ergonomicsPercentageModifier: -0.02,
               iconLink: 'https://assets.tarkov.dev/5d6d3829a4b9361bc8618943-icon.webp',
@@ -678,6 +681,7 @@ describe('getSummary()', () => {
               modSlots: [],
               movementSpeedPercentageModifier: 0,
               name: 'LShZ-2DTM face shield',
+              presetWearableModifiers: undefined,
               prices: [
                 {
                   barterItems: [],
@@ -685,7 +689,7 @@ describe('getSummary()', () => {
                   itemId: '5d6d3829a4b9361bc8618943',
                   merchant: 'ragman',
                   merchantLevel: 4,
-                  quest: null,
+                  quest: undefined,
                   value: 37019,
                   valueInMainCurrency: 37019
                 },
@@ -695,7 +699,7 @@ describe('getSummary()', () => {
                   itemId: '5d6d3829a4b9361bc8618943',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 68225,
                   valueInMainCurrency: 68225
                 },
@@ -710,7 +714,7 @@ describe('getSummary()', () => {
                   itemId: '5d6d3829a4b9361bc8618943',
                   merchant: 'ragman',
                   merchantLevel: 3,
-                  quest: null,
+                  quest: undefined,
                   value: 0,
                   valueInMainCurrency: 0
                 }
@@ -728,7 +732,7 @@ describe('getSummary()', () => {
               itemId: '5d6d3829a4b9361bc8618943',
               merchant: 'ragman',
               merchantLevel: 4,
-              quest: null,
+              quest: undefined,
               value: 37019,
               valueInMainCurrency: 37019
             },
@@ -738,7 +742,7 @@ describe('getSummary()', () => {
               itemId: '5d6d3829a4b9361bc8618943',
               merchant: 'ragman',
               merchantLevel: 4,
-              quest: null,
+              quest: undefined,
               value: 37019,
               valueInMainCurrency: 37019
             }
@@ -774,7 +778,7 @@ describe('getSummary()', () => {
                   itemId: '544fb3f34bdc2d03748b456a',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 18810,
                   valueInMainCurrency: 18810
                 }
@@ -790,7 +794,7 @@ describe('getSummary()', () => {
               itemId: '544fb3f34bdc2d03748b456a',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 18810,
               valueInMainCurrency: 18810
             },
@@ -800,7 +804,7 @@ describe('getSummary()', () => {
               itemId: '544fb3f34bdc2d03748b456a',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 18810,
               valueInMainCurrency: 18810
             }
@@ -822,7 +826,7 @@ describe('getSummary()', () => {
                   itemId: '5755383e24597772cb798966',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 37155,
                   valueInMainCurrency: 37155
                 }
@@ -838,7 +842,7 @@ describe('getSummary()', () => {
               itemId: '5755383e24597772cb798966',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 37155,
               valueInMainCurrency: 37155
             },
@@ -848,7 +852,7 @@ describe('getSummary()', () => {
               itemId: '5755383e24597772cb798966',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 37155,
               valueInMainCurrency: 37155
             }
@@ -874,7 +878,7 @@ describe('getSummary()', () => {
                   itemId: '5448be9a4bdc2dfd2f8b456a',
                   merchant: 'prapor',
                   merchantLevel: 3,
-                  quest: null,
+                  quest: undefined,
                   value: 11822,
                   valueInMainCurrency: 11822
                 },
@@ -884,7 +888,7 @@ describe('getSummary()', () => {
                   itemId: '5448be9a4bdc2dfd2f8b456a',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 15928,
                   valueInMainCurrency: 15928
                 },
@@ -899,7 +903,7 @@ describe('getSummary()', () => {
                   itemId: '5448be9a4bdc2dfd2f8b456a',
                   merchant: 'prapor',
                   merchantLevel: 2,
-                  quest: null,
+                  quest: undefined,
                   value: 0,
                   valueInMainCurrency: 0
                 }
@@ -916,7 +920,7 @@ describe('getSummary()', () => {
               itemId: '5448be9a4bdc2dfd2f8b456a',
               merchant: 'prapor',
               merchantLevel: 3,
-              quest: null,
+              quest: undefined,
               value: 11822,
               valueInMainCurrency: 11822
             },
@@ -926,7 +930,7 @@ describe('getSummary()', () => {
               itemId: '5448be9a4bdc2dfd2f8b456a',
               merchant: 'prapor',
               merchantLevel: 3,
-              quest: null,
+              quest: undefined,
               value: 11822,
               valueInMainCurrency: 11822
             }
@@ -966,7 +970,7 @@ describe('getSummary()', () => {
                   itemId: '56dfef82d2720bbd668b4567',
                   merchant: 'prapor',
                   merchantLevel: 3,
-                  quest: null,
+                  quest: undefined,
                   value: 443,
                   valueInMainCurrency: 443
                 },
@@ -976,7 +980,7 @@ describe('getSummary()', () => {
                   itemId: '56dfef82d2720bbd668b4567',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 683,
                   valueInMainCurrency: 683
                 }
@@ -997,7 +1001,7 @@ describe('getSummary()', () => {
               itemId: '56dfef82d2720bbd668b4567',
               merchant: 'prapor',
               merchantLevel: 3,
-              quest: null,
+              quest: undefined,
               value: 69108,
               valueInMainCurrency: 69108
             },
@@ -1007,7 +1011,7 @@ describe('getSummary()', () => {
               itemId: '56dfef82d2720bbd668b4567',
               merchant: 'prapor',
               merchantLevel: 3,
-              quest: null,
+              quest: undefined,
               value: 443,
               valueInMainCurrency: 443
             }
@@ -1018,7 +1022,7 @@ describe('getSummary()', () => {
               caliber: 'Caliber545x39',
               categoryId: 'mainWeapon',
               conflictingItemIds: [],
-              defaultPresetId: null,
+              defaultPresetId: undefined,
               ergonomics: 45,
               fireModes: [
                 'SingleFire',
@@ -1143,6 +1147,9 @@ describe('getSummary()', () => {
                 }
               ],
               name: 'RPK-16 5.45x39 light machine gun Default',
+              presetErgonomics: undefined,
+              presetHorizontalRecoil: undefined,
+              presetVerticalRecoil: undefined,
               prices: [
                 {
                   barterItems: [],
@@ -1150,7 +1157,7 @@ describe('getSummary()', () => {
                   itemId: '5c0d1ec986f77439512a1a72',
                   merchant: 'prapor',
                   merchantLevel: 4,
-                  quest: null,
+                  quest: undefined,
                   value: 68452,
                   valueInMainCurrency: 68452
                 },
@@ -1160,7 +1167,7 @@ describe('getSummary()', () => {
                   itemId: '5c0d1ec986f77439512a1a72',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 60572,
                   valueInMainCurrency: 60572
                 },
@@ -1179,7 +1186,7 @@ describe('getSummary()', () => {
                   itemId: '5c0d1ec986f77439512a1a72',
                   merchant: 'mechanic',
                   merchantLevel: 3,
-                  quest: null,
+                  quest: undefined,
                   value: 0,
                   valueInMainCurrency: 0
                 }
@@ -1196,7 +1203,7 @@ describe('getSummary()', () => {
               itemId: '5c0d1ec986f77439512a1a72',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 60572,
               valueInMainCurrency: 60572
             },
@@ -1206,7 +1213,7 @@ describe('getSummary()', () => {
               itemId: '5c0d1ec986f77439512a1a72',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 60572,
               valueInMainCurrency: 60572
             }
@@ -1228,12 +1235,12 @@ describe('getSummary()', () => {
                 '56dff4a2d2720bbd668b456a',
                 '56dff4ecd2720b5f5a8b4568'
               ],
-              baseItemId: null,
+              baseItemId: undefined,
               capacity: 95,
               categoryId: 'magazine',
               checkSpeedPercentageModifier: 0.25,
               conflictingItemIds: [],
-              defaultPresetId: null,
+              defaultPresetId: undefined,
               ergonomicsModifier: -24,
               iconLink: 'https://assets.tarkov.dev/5bed625c0db834001c062946-icon.webp',
               id: '5bed625c0db834001c062946',
@@ -1244,6 +1251,7 @@ describe('getSummary()', () => {
               maxStackableAmount: 1,
               modSlots: [],
               name: 'RPK-16 5.45x39 95-round drum magazine',
+              presetErgonomicsModifier: undefined,
               prices: [
                 {
                   barterItems: [],
@@ -1251,7 +1259,7 @@ describe('getSummary()', () => {
                   itemId: '5bed625c0db834001c062946',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 31014,
                   valueInMainCurrency: 31014
                 },
@@ -1266,7 +1274,7 @@ describe('getSummary()', () => {
                   itemId: '5bed625c0db834001c062946',
                   merchant: 'prapor',
                   merchantLevel: 3,
-                  quest: null,
+                  quest: undefined,
                   value: 0,
                   valueInMainCurrency: 0
                 }
@@ -1282,7 +1290,7 @@ describe('getSummary()', () => {
               itemId: '5bed625c0db834001c062946',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 31014,
               valueInMainCurrency: 31014
             },
@@ -1292,7 +1300,7 @@ describe('getSummary()', () => {
               itemId: '5bed625c0db834001c062946',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 31014,
               valueInMainCurrency: 31014
             }
@@ -1328,7 +1336,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 0,
             valueInMainCurrency: 0
           },
@@ -1338,7 +1346,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 138648,
             valueInMainCurrency: 138648
           },
@@ -1349,7 +1357,7 @@ describe('getSummary()', () => {
               itemId: '',
               merchant: '',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 246,
               valueInMainCurrency: 27552
             },
@@ -1359,7 +1367,7 @@ describe('getSummary()', () => {
               itemId: '',
               merchant: '',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 111096,
               valueInMainCurrency: 111096
             }
@@ -1370,7 +1378,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 0,
             valueInMainCurrency: 0
           },
@@ -1396,7 +1404,7 @@ describe('getSummary()', () => {
                   itemId: '5e4d34ca86f774264f758330',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 36195,
                   valueInMainCurrency: 36195
                 }
@@ -1412,7 +1420,7 @@ describe('getSummary()', () => {
               itemId: '5e4d34ca86f774264f758330',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 36195,
               valueInMainCurrency: 36195
             },
@@ -1422,7 +1430,7 @@ describe('getSummary()', () => {
               itemId: '5e4d34ca86f774264f758330',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 36195,
               valueInMainCurrency: 36195
             }
@@ -1433,7 +1441,7 @@ describe('getSummary()', () => {
               caliber: 'Caliber9x19PARA',
               categoryId: 'secondaryWeapon',
               conflictingItemIds: [],
-              defaultPresetId: null,
+              defaultPresetId: undefined,
               ergonomics: 70,
               fireModes: [
                 'SingleFire'
@@ -1515,6 +1523,9 @@ describe('getSummary()', () => {
                 }
               ],
               name: 'Beretta M9A3 9x19 pistol Default',
+              presetErgonomics: undefined,
+              presetHorizontalRecoil: undefined,
+              presetVerticalRecoil: undefined,
               prices: [
                 {
                   barterItems: [],
@@ -1522,7 +1533,7 @@ describe('getSummary()', () => {
                   itemId: '5d3f0bc986f7743cb332abdc',
                   merchant: 'peacekeeper',
                   merchantLevel: 1,
-                  quest: null,
+                  quest: undefined,
                   value: 124,
                   valueInMainCurrency: 13888
                 },
@@ -1532,7 +1543,7 @@ describe('getSummary()', () => {
                   itemId: '5d3f0bc986f7743cb332abdc',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 14253,
                   valueInMainCurrency: 14253
                 }
@@ -1549,7 +1560,7 @@ describe('getSummary()', () => {
               itemId: '5d3f0bc986f7743cb332abdc',
               merchant: 'peacekeeper',
               merchantLevel: 1,
-              quest: null,
+              quest: undefined,
               value: 124,
               valueInMainCurrency: 13888
             },
@@ -1559,7 +1570,7 @@ describe('getSummary()', () => {
               itemId: '5d3f0bc986f7743cb332abdc',
               merchant: 'peacekeeper',
               merchantLevel: 1,
-              quest: null,
+              quest: undefined,
               value: 124,
               valueInMainCurrency: 13888
             }
@@ -1567,10 +1578,10 @@ describe('getSummary()', () => {
           {
             item: {
               accuracyPercentageModifier: 0.01,
-              baseItemId: null,
+              baseItemId: undefined,
               categoryId: 'rangedWeaponMod',
               conflictingItemIds: [],
-              defaultPresetId: null,
+              defaultPresetId: undefined,
               ergonomicsModifier: -15,
               iconLink: 'https://assets.tarkov.dev/5c6165902e22160010261b28-icon.webp',
               id: '5c6165902e22160010261b28',
@@ -1579,6 +1590,8 @@ describe('getSummary()', () => {
               maxStackableAmount: 1,
               modSlots: [],
               name: 'SIG Sauer SRD9 9x19 sound suppressor',
+              presetErgonomicsModifier: undefined,
+              presetRecoilPercentageModifier: undefined,
               prices: [
                 {
                   barterItems: [],
@@ -1586,7 +1599,7 @@ describe('getSummary()', () => {
                   itemId: '5c6165902e22160010261b28',
                   merchant: 'peacekeeper',
                   merchantLevel: 2,
-                  quest: null,
+                  quest: undefined,
                   value: 310,
                   valueInMainCurrency: 34720
                 },
@@ -1596,7 +1609,7 @@ describe('getSummary()', () => {
                   itemId: '5c6165902e22160010261b28',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 29957,
                   valueInMainCurrency: 29957
                 }
@@ -1613,7 +1626,7 @@ describe('getSummary()', () => {
               itemId: '5c6165902e22160010261b28',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 29957,
               valueInMainCurrency: 29957
             },
@@ -1623,7 +1636,7 @@ describe('getSummary()', () => {
               itemId: '5c6165902e22160010261b28',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 29957,
               valueInMainCurrency: 29957
             }
@@ -1663,7 +1676,7 @@ describe('getSummary()', () => {
                   itemId: '5c3df7d588a4501f290594e5',
                   merchant: 'mechanic',
                   merchantLevel: 1,
-                  quest: null,
+                  quest: undefined,
                   value: 73,
                   valueInMainCurrency: 73
                 },
@@ -1673,7 +1686,7 @@ describe('getSummary()', () => {
                   itemId: '5c3df7d588a4501f290594e5',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 134,
                   valueInMainCurrency: 134
                 }
@@ -1694,7 +1707,7 @@ describe('getSummary()', () => {
               itemId: '5c3df7d588a4501f290594e5',
               merchant: 'mechanic',
               merchantLevel: 1,
-              quest: null,
+              quest: undefined,
               value: 1314,
               valueInMainCurrency: 1314
             },
@@ -1704,7 +1717,7 @@ describe('getSummary()', () => {
               itemId: '5c3df7d588a4501f290594e5',
               merchant: 'mechanic',
               merchantLevel: 1,
-              quest: null,
+              quest: undefined,
               value: 73,
               valueInMainCurrency: 73
             }
@@ -1712,10 +1725,10 @@ describe('getSummary()', () => {
           {
             item: {
               accuracyPercentageModifier: 0,
-              baseItemId: null,
+              baseItemId: undefined,
               categoryId: 'rangedWeaponMod',
               conflictingItemIds: [],
-              defaultPresetId: null,
+              defaultPresetId: undefined,
               ergonomicsModifier: -1,
               iconLink: 'https://assets.tarkov.dev/56def37dd2720bec348b456a-icon.webp',
               id: '56def37dd2720bec348b456a',
@@ -1724,6 +1737,8 @@ describe('getSummary()', () => {
               maxStackableAmount: 1,
               modSlots: [],
               name: 'SureFire X400 Ultra tactical flashlight with laser',
+              presetErgonomicsModifier: undefined,
+              presetRecoilPercentageModifier: undefined,
               prices: [
                 {
                   barterItems: [],
@@ -1731,7 +1746,7 @@ describe('getSummary()', () => {
                   itemId: '56def37dd2720bec348b456a',
                   merchant: 'peacekeeper',
                   merchantLevel: 2,
-                  quest: null,
+                  quest: undefined,
                   value: 122,
                   valueInMainCurrency: 13664
                 },
@@ -1741,7 +1756,7 @@ describe('getSummary()', () => {
                   itemId: '56def37dd2720bec348b456a',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 14797,
                   valueInMainCurrency: 14797
                 }
@@ -1758,7 +1773,7 @@ describe('getSummary()', () => {
               itemId: '56def37dd2720bec348b456a',
               merchant: 'peacekeeper',
               merchantLevel: 2,
-              quest: null,
+              quest: undefined,
               value: 122,
               valueInMainCurrency: 13664
             },
@@ -1768,7 +1783,7 @@ describe('getSummary()', () => {
               itemId: '56def37dd2720bec348b456a',
               merchant: 'peacekeeper',
               merchantLevel: 2,
-              quest: null,
+              quest: undefined,
               value: 122,
               valueInMainCurrency: 13664
             }
@@ -1790,6 +1805,7 @@ describe('getSummary()', () => {
               maxStackableAmount: 1,
               movementSpeedPercentageModifier: 0,
               name: 'Scav Vest',
+              presetWearableModifiers: undefined,
               prices: [
                 {
                   barterItems: [],
@@ -1797,7 +1813,7 @@ describe('getSummary()', () => {
                   itemId: '572b7adb24597762ae139821',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 20504,
                   valueInMainCurrency: 20504
                 },
@@ -1812,7 +1828,7 @@ describe('getSummary()', () => {
                   itemId: '572b7adb24597762ae139821',
                   merchant: 'jaeger',
                   merchantLevel: 1,
-                  quest: null,
+                  quest: undefined,
                   value: 0,
                   valueInMainCurrency: 0
                 }
@@ -1830,7 +1846,7 @@ describe('getSummary()', () => {
               itemId: '572b7adb24597762ae139821',
               merchant: 'jaeger',
               merchantLevel: 1,
-              quest: null,
+              quest: undefined,
               value: 0,
               valueInMainCurrency: 0
             },
@@ -1840,7 +1856,7 @@ describe('getSummary()', () => {
               itemId: '572b7adb24597762ae139821',
               merchant: 'jaeger',
               merchantLevel: 1,
-              quest: null,
+              quest: undefined,
               value: 0,
               valueInMainCurrency: 0
             }
@@ -1862,7 +1878,7 @@ describe('getSummary()', () => {
                   itemId: '544fb6cc4bdc2d34748b456e',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 10893,
                   valueInMainCurrency: 10893
                 },
@@ -1877,7 +1893,7 @@ describe('getSummary()', () => {
                   itemId: '544fb6cc4bdc2d34748b456e',
                   merchant: 'therapist',
                   merchantLevel: 1,
-                  quest: null,
+                  quest: undefined,
                   value: 0,
                   valueInMainCurrency: 0
                 }
@@ -1893,7 +1909,7 @@ describe('getSummary()', () => {
               itemId: '544fb6cc4bdc2d34748b456e',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 10893,
               valueInMainCurrency: 10893
             },
@@ -1903,7 +1919,7 @@ describe('getSummary()', () => {
               itemId: '544fb6cc4bdc2d34748b456e',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 10893,
               valueInMainCurrency: 10893
             }
@@ -1939,7 +1955,7 @@ describe('getSummary()', () => {
                   itemId: '544fb45d4bdc2dee738b4568',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 33428,
                   valueInMainCurrency: 33428
                 },
@@ -1954,7 +1970,7 @@ describe('getSummary()', () => {
                   itemId: '544fb45d4bdc2dee738b4568',
                   merchant: 'therapist',
                   merchantLevel: 1,
-                  quest: null,
+                  quest: undefined,
                   value: 0,
                   valueInMainCurrency: 0
                 }
@@ -1970,7 +1986,7 @@ describe('getSummary()', () => {
               itemId: '544fb45d4bdc2dee738b4568',
               merchant: 'therapist',
               merchantLevel: 1,
-              quest: null,
+              quest: undefined,
               value: 0,
               valueInMainCurrency: 0
             },
@@ -1980,7 +1996,7 @@ describe('getSummary()', () => {
               itemId: '544fb45d4bdc2dee738b4568',
               merchant: 'therapist',
               merchantLevel: 1,
-              quest: null,
+              quest: undefined,
               value: 0,
               valueInMainCurrency: 0
             }
@@ -2002,7 +2018,7 @@ describe('getSummary()', () => {
                   itemId: '59e3596386f774176c10a2a2',
                   merchant: 'flea-market',
                   merchantLevel: 0,
-                  quest: null,
+                  quest: undefined,
                   value: 32737,
                   valueInMainCurrency: 32737
                 }
@@ -2018,7 +2034,7 @@ describe('getSummary()', () => {
               itemId: '59e3596386f774176c10a2a2',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 32737,
               valueInMainCurrency: 32737
             },
@@ -2028,7 +2044,7 @@ describe('getSummary()', () => {
               itemId: '59e3596386f774176c10a2a2',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 32737,
               valueInMainCurrency: 32737
             }
@@ -2071,7 +2087,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 0,
             valueInMainCurrency: 0
           },
@@ -2081,7 +2097,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 0,
             valueInMainCurrency: 0
           },
@@ -2092,7 +2108,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 0,
             valueInMainCurrency: 0
           },
@@ -2265,7 +2281,7 @@ describe('getSummary()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -2275,7 +2291,7 @@ describe('getSummary()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 186445,
           valueInMainCurrency: 186445
         },
@@ -2286,7 +2302,7 @@ describe('getSummary()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 186445,
             valueInMainCurrency: 186445
           }
@@ -2297,7 +2313,7 @@ describe('getSummary()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -2317,6 +2333,7 @@ describe('getSummary()', () => {
             maxStackableAmount: 1,
             movementSpeedPercentageModifier: -0.05,
             name: '6Sh118 raid backpack',
+            presetWearableModifiers: undefined,
             prices: [
               {
                 barterItems: [
@@ -2348,7 +2365,7 @@ describe('getSummary()', () => {
                 itemId: '5df8a4d786f77412672a1e3b',
                 merchant: 'prapor',
                 merchantLevel: 4,
-                quest: null,
+                quest: undefined,
                 value: 0,
                 valueInMainCurrency: 0
               }
@@ -2365,7 +2382,7 @@ describe('getSummary()', () => {
             itemId: '5df8a4d786f77412672a1e3b',
             merchant: 'prapor',
             merchantLevel: 4,
-            quest: null,
+            quest: undefined,
             value: 0,
             valueInMainCurrency: 0
           },
@@ -2375,7 +2392,7 @@ describe('getSummary()', () => {
             itemId: '5df8a4d786f77412672a1e3b',
             merchant: 'prapor',
             merchantLevel: 4,
-            quest: null,
+            quest: undefined,
             value: 0,
             valueInMainCurrency: 0
           }
@@ -2397,7 +2414,7 @@ describe('getSummary()', () => {
                 itemId: '5d0375ff86f774186372f685',
                 merchant: 'flea-market',
                 merchantLevel: 0,
-                quest: null,
+                quest: undefined,
                 value: 53432,
                 valueInMainCurrency: 53432
               }
@@ -2413,7 +2430,7 @@ describe('getSummary()', () => {
             itemId: '5d0375ff86f774186372f685',
             merchant: 'flea-market',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 106864,
             valueInMainCurrency: 106864
           },
@@ -2423,7 +2440,7 @@ describe('getSummary()', () => {
             itemId: '5d0375ff86f774186372f685',
             merchant: 'flea-market',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 53432,
             valueInMainCurrency: 53432
           }
@@ -2434,7 +2451,7 @@ describe('getSummary()', () => {
             caliber: 'Caliber545x39',
             categoryId: 'mainWeapon',
             conflictingItemIds: [],
-            defaultPresetId: null,
+            defaultPresetId: undefined,
             ergonomics: 44,
             fireModes: [
               'SingleFire',
@@ -2573,6 +2590,9 @@ describe('getSummary()', () => {
               }
             ],
             name: 'Kalashnikov AKS-74U 5.45x39 assault rifle Default',
+            presetErgonomics: undefined,
+            presetHorizontalRecoil: undefined,
+            presetVerticalRecoil: undefined,
             prices: [
               {
                 barterItems: [],
@@ -2594,7 +2614,7 @@ describe('getSummary()', () => {
                 itemId: '584147732459775a2b6d9f12',
                 merchant: 'flea-market',
                 merchantLevel: 0,
-                quest: null,
+                quest: undefined,
                 value: 28999,
                 valueInMainCurrency: 28999
               }
@@ -2637,11 +2657,11 @@ describe('getSummary()', () => {
         {
           item: {
             accuracyPercentageModifier: 0,
-            baseItemId: null,
+            baseItemId: undefined,
             categoryId: 'rangedWeaponMod',
             conflictingItemIds: [],
             ergonomicsModifier: 12,
-            defaultPresetId: null,
+            defaultPresetId: undefined,
             iconLink: 'https://assets.tarkov.dev/5f6341043ada5942720e2dc5-icon.webp',
             id: '5f6341043ada5942720e2dc5',
             imageLink: 'https://assets.tarkov.dev/5f6341043ada5942720e2dc5-image.webp',
@@ -2649,6 +2669,8 @@ describe('getSummary()', () => {
             maxStackableAmount: 1,
             modSlots: [],
             name: 'AK Aeroknox Scorpius pistol grip',
+            presetErgonomicsModifier: undefined,
+            presetRecoilPercentageModifier: undefined,
             prices: [
               {
                 barterItems: [],
@@ -2656,7 +2678,7 @@ describe('getSummary()', () => {
                 itemId: '5f6341043ada5942720e2dc5',
                 merchant: 'mechanic',
                 merchantLevel: 4,
-                quest: null,
+                quest: undefined,
                 value: 6496,
                 valueInMainCurrency: 6496
               },
@@ -2666,7 +2688,7 @@ describe('getSummary()', () => {
                 itemId: '5f6341043ada5942720e2dc5',
                 merchant: 'flea-market',
                 merchantLevel: 0,
-                quest: null,
+                quest: undefined,
                 value: 45166,
                 valueInMainCurrency: 45166
               }
@@ -2683,7 +2705,7 @@ describe('getSummary()', () => {
             itemId: '5f6341043ada5942720e2dc5',
             merchant: 'flea-market',
             merchantLevel: 0.0,
-            quest: null,
+            quest: undefined,
             value: 45166.0,
             valueInMainCurrency: 45166.0
           },
@@ -2693,7 +2715,7 @@ describe('getSummary()', () => {
             itemId: '5f6341043ada5942720e2dc5',
             merchant: 'flea-market',
             merchantLevel: 0.0,
-            quest: null,
+            quest: undefined,
             value: 45166.0,
             valueInMainCurrency: 45166.0
           }
@@ -2747,7 +2769,7 @@ describe('getSummary()', () => {
                 itemId: '56dff3afd2720bba668b4567',
                 merchant: 'flea-market',
                 merchantLevel: 0,
-                quest: null,
+                quest: undefined,
                 value: 224,
                 valueInMainCurrency: 224
               }

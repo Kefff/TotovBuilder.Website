@@ -27,6 +27,8 @@ import { IMod } from '../models/item/IMod'
 import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
 import { IVest } from '../models/item/IVest'
+import { IMeleeWeapon } from '../models/item/IMeleeWeapon'
+import { IEyewear } from '../models/item/IEyewear'
 
 /**
  * Represents a service responsible for parsing reduced serialized elements and reducing elements in order to take less space.
@@ -146,6 +148,9 @@ export class ReductionService {
       case itemPropertiesService.isContainer(item):
         item = this.parseReducedContainer(reducedItem, item)
         break
+      case itemPropertiesService.isEyewear(item):
+        item = this.parseReducedEyewear(reducedItem, item)
+        break
       case itemPropertiesService.isGrenade(item):
         item = this.parseReducedGrenade(reducedItem, item)
         break
@@ -154,6 +159,9 @@ export class ReductionService {
         break
       case itemPropertiesService.isMagazine(item):
         item = this.parseReducedMagazine(reducedItem, item)
+        break
+      case itemPropertiesService.isMeleeWeapon(item):
+        item = this.parseReducedMeleeWeapon(reducedItem, item)
         break
       case itemPropertiesService.isMod(item):
         item = this.parseReducedMod(reducedItem, item)
@@ -185,7 +193,7 @@ export class ReductionService {
     const itemId = reducedPrice['i'] as string
     const merchant = reducedPrice['m'] as string ?? 'flea-market'
     const merchantLevel = reducedPrice['ml'] as number ?? 0
-    let quest: IQuest | null | undefined = null
+    let quest: IQuest | undefined = undefined
     const value = reducedPrice['v'] as number ?? 0
     const valueInMainCurrency = reducedPrice['vm'] as number ?? 0
 
@@ -415,6 +423,21 @@ export class ReductionService {
   }
 
   /**
+   * Parses a reduced eyewear.
+   * @param reducedItem - Reduced item.
+   * @param baseItemProperties - Item representing the parsed base item properties.
+   * @returns Item.
+   */
+  private parseReducedEyewear(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IEyewear {
+    const blindnessProtectionPercentage = reducedItem['bp'] as number
+
+    return {
+      ...baseItemProperties,
+      blindnessProtectionPercentage
+    }
+  }
+
+  /**
    * Parses a reduced grenade.
    * @param reducedItem - Reduced item.
    * @param baseItemProperties - Item representing the parsed base item properties.
@@ -486,6 +509,25 @@ export class ReductionService {
   }
 
   /**
+   * Parses a reduced melee weapon.
+   * @param reducedItem - Reduced item.
+   * @param baseItemProperties - Item representing the parsed base item properties.
+   * @returns Item.
+   */
+  private parseReducedMeleeWeapon(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IMeleeWeapon {
+    const chopDamage = reducedItem['ch'] as number
+    const hitRadius = reducedItem['r'] as number
+    const stabDamage = reducedItem['st'] as number
+
+    return {
+      ...baseItemProperties,
+      chopDamage,
+      hitRadius,
+      stabDamage
+    }
+  }
+
+  /**
    * Parses a reduced mod.
    * @param reducedItem - Reduced item.
    * @param baseItemProperties - Item representing the parsed base item properties.
@@ -553,10 +595,10 @@ export class ReductionService {
 
     const caliber = reducedItem['ca'] as string
     const ergonomics = reducedItem['e'] as number
-    const fireModes = reducedItem['fm'] as string[]
+    const fireModes = reducedItem['fm'] as string[] ?? ['SingleFire']
     const fireRate = reducedItem['r'] as number
     const horizontalRecoil = reducedItem['h'] as number
-    const minuteOfAngle = reducedItem['ma'] as number
+    const minuteOfAngle = reducedItem['ma'] as number ?? undefined
     const verticalRecoil = reducedItem['v'] as number
 
     return {

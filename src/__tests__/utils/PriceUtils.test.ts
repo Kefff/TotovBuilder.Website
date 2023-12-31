@@ -13,7 +13,7 @@ describe('sortByCurrency()', () => {
           itemId: '5449016a4bdc2d6f028b456f',
           merchant: 'prapor',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 10000,
           valueInMainCurrency: 10000
         },
@@ -28,7 +28,7 @@ describe('sortByCurrency()', () => {
           itemId: '',
           merchant: 'prapor',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -38,7 +38,7 @@ describe('sortByCurrency()', () => {
           itemId: '5696686a4bdc2da3298b456a',
           merchant: 'peacekeeper',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 10,
           valueInMainCurrency: 1200
         },
@@ -48,7 +48,7 @@ describe('sortByCurrency()', () => {
           itemId: '569668774bdc2da2298b4568',
           merchant: 'mechanic',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 20,
           valueInMainCurrency: 2400
         }
@@ -65,7 +65,7 @@ describe('sortByCurrency()', () => {
           itemId: '',
           merchant: 'prapor',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -75,7 +75,7 @@ describe('sortByCurrency()', () => {
           itemId: '569668774bdc2da2298b4568',
           merchant: 'mechanic',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 20,
           valueInMainCurrency: 2400
         },
@@ -85,7 +85,7 @@ describe('sortByCurrency()', () => {
           itemId: '5696686a4bdc2da3298b456a',
           merchant: 'peacekeeper',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 10,
           valueInMainCurrency: 1200
         },
@@ -95,7 +95,7 @@ describe('sortByCurrency()', () => {
           itemId: '5449016a4bdc2d6f028b456f',
           merchant: 'prapor',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 10000,
           valueInMainCurrency: 10000
         }
@@ -109,7 +109,7 @@ describe('sortByCurrency()', () => {
           itemId: '569668774bdc2da2298b4568',
           merchant: 'mechanic',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 20,
           valueInMainCurrency: 20
         },
@@ -119,7 +119,7 @@ describe('sortByCurrency()', () => {
           itemId: '5696686a4bdc2da3298b456a',
           merchant: 'peacekeeper',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 10,
           valueInMainCurrency: 10
         }
@@ -131,7 +131,7 @@ describe('sortByCurrency()', () => {
           itemId: '569668774bdc2da2298b4568',
           merchant: 'mechanic',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 20,
           valueInMainCurrency: 20
         },
@@ -141,7 +141,7 @@ describe('sortByCurrency()', () => {
           itemId: '5696686a4bdc2da3298b456a',
           merchant: 'peacekeeper',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 10,
           valueInMainCurrency: 10
         }

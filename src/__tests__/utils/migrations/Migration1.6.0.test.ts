@@ -143,11 +143,11 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
       true,
       [
         {
-          baseItemId: null,
+          baseItemId: undefined,
           caliber: '',
           categoryId: 'mainWeapon',
           conflictingItemIds: [],
-          defaultPresetId: null,
+          defaultPresetId: undefined,
           ergonomics: 0,
           fireModes: [],
           fireRate: 0,
