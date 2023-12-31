@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { ReductionService } from '../../services/ReductionService'
 import { IContainer } from '../../models/item/IContainer'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
   it.each([
@@ -63,13 +65,14 @@ describe('parseReducedItem', () => {
     ]
   ])('should parse a reduced container', (reducedContainer: Record<string, unknown>, expected: IContainer) => {
     // Arrange
+    Services.configure(ItemPropertiesService)
+
     const service = new ReductionService()
 
     // Act
-    const containerResult = service.parseReducedItem(reducedContainer)
+    const container = service.parseReducedItem(reducedContainer)
 
     // Assert
-    expect(containerResult.success).toBe(true)
-    expect(containerResult.value).toStrictEqual(expected)
+    expect(container).toStrictEqual(expected)
   })
 })

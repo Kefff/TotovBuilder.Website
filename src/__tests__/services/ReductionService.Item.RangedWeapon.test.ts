@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { ReductionService } from '../../services/ReductionService'
 import { IRangedWeapon } from '../../models/item/IRangedWeapon'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
   it.each([
@@ -183,6 +185,7 @@ describe('parseReducedItem', () => {
         imageLink: 'https://assets.tarkov.dev/57dc2fa62459775949412633-image.jpg',
         marketLink: 'https://tarkov.dev/item/kalashnikov-aks-74u-545x39-assault-rifle',
         maxStackableAmount: 1,
+        minuteOfAngle: undefined,
         modSlots: [
           {
             compatibleItemIds: [
@@ -333,6 +336,7 @@ describe('parseReducedItem', () => {
         imageLink: 'https://assets.tarkov.dev/624c0b3340357b5f566e8766-image.jpg',
         marketLink: 'https://tarkov.dev/item/rsp-30-reactive-signal-cartridge-yellow',
         maxStackableAmount: 1,
+        minuteOfAngle: undefined,
         modSlots: [],
         name: 'RSP-30 reactive signal cartridge (Yellow)',
         presetErgonomics: undefined,
@@ -347,13 +351,14 @@ describe('parseReducedItem', () => {
     ]
   ])('should parse a reduced ranged weapon', (reducedRangedWeapon: Record<string, unknown>, expected: IRangedWeapon) => {
     // Arrange
+    Services.configure(ItemPropertiesService)
+
     const service = new ReductionService()
 
     // Act
-    const rangedWeaponResult = service.parseReducedItem(reducedRangedWeapon)
+    const rangedWeapon = service.parseReducedItem(reducedRangedWeapon)
 
     // Assert
-    expect(rangedWeaponResult.success).toBe(true)
-    expect(rangedWeaponResult.value).toStrictEqual(expected)
+    expect(rangedWeapon).toStrictEqual(expected)
   })
 })

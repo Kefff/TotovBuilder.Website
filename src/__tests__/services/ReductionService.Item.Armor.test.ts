@@ -1,20 +1,22 @@
 import { describe, expect, it } from 'vitest'
 import { ReductionService } from '../../services/ReductionService'
 import { IArmor } from '../../models/item/IArmor'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
   it.each([
     [
       {
-        'c': 'headwear',
-        'ic': 'https://assets.tarkov.dev/5bd073c986f7747f627e796c-icon.jpg',
-        'i': '5bd073c986f7747f627e796c',
-        'im': 'https://assets.tarkov.dev/5bd073c986f7747f627e796c-image.jpg',
-        'm': 'https://tarkov.dev/item/kotton-beanie',
-        'n': 'Kotton beanie',
-        's': 'Kotton',
+        'c': 'armor',
+        'ic': 'https://assets.tarkov.dev/unknown-icon.jpg',
+        'i': 'unknown',
+        'im': 'https://assets.tarkov.dev/unknown-image.jpg',
+        'm': 'https://tarkov.dev/item/unknown',
+        'n': 'Unknown',
+        's': 'Unknown',
         'w': 0.2,
-        'wi': 'https://escapefromtarkov.fandom.com/wiki/Kotton_beanie'
+        'wi': 'https://escapefromtarkov.fandom.com/wiki/Unknown'
       },
       {
         armorClass: 0,
@@ -23,20 +25,21 @@ describe('parseReducedItem', () => {
         durability: 0,
         ergonomicsPercentageModifier: 0,
         material: '',
-        categoryId: 'headwear',
-        iconLink: 'https://assets.tarkov.dev/5bd073c986f7747f627e796c-icon.jpg',
-        id: '5bd073c986f7747f627e796c',
-        imageLink: 'https://assets.tarkov.dev/5bd073c986f7747f627e796c-image.jpg',
-        marketLink: 'https://tarkov.dev/item/kotton-beanie',
+        categoryId: 'armor',
+        iconLink: 'https://assets.tarkov.dev/unknown-icon.jpg',
+        id: 'unknown',
+        imageLink: 'https://assets.tarkov.dev/unknown-image.jpg',
+        marketLink: 'https://tarkov.dev/item/unknown',
         maxStackableAmount: 1,
         movementSpeedPercentageModifier: 0,
-        name: 'Kotton beanie',
+        name: 'Unknown',
+        presetWearableModifiers: undefined,
         prices: [],
         ricochetChance: '',
-        shortName: 'Kotton',
+        shortName: 'Unknown',
         turningSpeedPercentageModifier: 0,
         weight: 0.2,
-        wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Kotton_beanie'
+        wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Unknown'
       } as IArmor
     ],
     [
@@ -84,6 +87,7 @@ describe('parseReducedItem', () => {
         maxStackableAmount: 1,
         movementSpeedPercentageModifier: -0.35,
         name: '6B43 6A Zabralo-Sh body armor',
+        presetWearableModifiers: undefined,
         prices: [],
         ricochetChance: 'High',
         shortName: '6B43 6A',
@@ -94,13 +98,14 @@ describe('parseReducedItem', () => {
     ]
   ])('should parse a reduced armor', (reducedArmor: Record<string, unknown>, expected: IArmor) => {
     // Arrange
+    Services.configure(ItemPropertiesService)
+
     const service = new ReductionService()
 
     // Act
-    const armorResult = service.parseReducedItem(reducedArmor)
+    const armor = service.parseReducedItem(reducedArmor)
 
     // Assert
-    expect(armorResult.success).toBe(true)
-    expect(armorResult.value).toStrictEqual(expected)
+    expect(armor).toStrictEqual(expected)
   })
 })

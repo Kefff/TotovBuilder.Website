@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { ReductionService } from '../../services/ReductionService'
 import { IMagazine } from '../../models/item/IMagazine'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
   it.each([
@@ -252,7 +254,7 @@ describe('parseReducedItem', () => {
           }
         ],
         name: 'M32A1 40mm cylinder',
-        presetErgonomicsModifier: 0,
+        presetErgonomicsModifier: undefined,
         prices: [],
         shortName: 'MSGL',
         weight: 0.8,
@@ -261,13 +263,14 @@ describe('parseReducedItem', () => {
     ]
   ])('should parse a reduced magazine', (reducedMagazine: Record<string, unknown>, expected: IMagazine) => {
     // Arrange
+    Services.configure(ItemPropertiesService)
+
     const service = new ReductionService()
 
     // Act
-    const magazineResult = service.parseReducedItem(reducedMagazine)
+    const magazine = service.parseReducedItem(reducedMagazine)
 
     // Assert
-    expect(magazineResult.success).toBe(true)
-    expect(magazineResult.value).toStrictEqual(expected)
+    expect(magazine).toStrictEqual(expected)
   })
 })

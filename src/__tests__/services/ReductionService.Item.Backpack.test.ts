@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { ReductionService } from '../../services/ReductionService'
 import { IBackpack } from '../../models/item/IBackpack'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
   it.each([
@@ -32,6 +34,7 @@ describe('parseReducedItem', () => {
         maxStackableAmount: 1,
         movementSpeedPercentageModifier: -0.05,
         name: 'SSO Attack 2 raid backpack',
+        presetWearableModifiers: undefined,
         prices: [],
         shortName: 'Attack 2',
         turningSpeedPercentageModifier: -0.03,
@@ -62,6 +65,7 @@ describe('parseReducedItem', () => {
         marketLink: 'https://tarkov.dev/item/tactical-sling-bag',
         maxStackableAmount: 1,
         movementSpeedPercentageModifier: 0,
+        presetWearableModifiers: undefined,
         name: 'Tactical sling bag',
         prices: [],
         shortName: 'Sling',
@@ -72,13 +76,14 @@ describe('parseReducedItem', () => {
     ]
   ])('should parse a reduced backpack', (reducedBackpack: Record<string, unknown>, expected: IBackpack) => {
     // Arrange
+    Services.configure(ItemPropertiesService)
+
     const service = new ReductionService()
 
     // Act
-    const backpackResult = service.parseReducedItem(reducedBackpack)
+    const backpack = service.parseReducedItem(reducedBackpack)
 
     // Assert
-    expect(backpackResult.success).toBe(true)
-    expect(backpackResult.value).toStrictEqual(expected)
+    expect(backpack).toStrictEqual(expected)
   })
 })

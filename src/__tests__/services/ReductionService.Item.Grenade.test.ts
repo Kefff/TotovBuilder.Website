@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { ReductionService } from '../../services/ReductionService'
 import { IGrenade } from '../../models/item/IGrenade'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
   it.each([
@@ -77,13 +79,14 @@ describe('parseReducedItem', () => {
     ]
   ])('should parse a reduced grenade', (reducedGrenade: Record<string, unknown>, expected: IGrenade) => {
     // Arrange
+    Services.configure(ItemPropertiesService)
+
     const service = new ReductionService()
 
     // Act
-    const grenadeResult = service.parseReducedItem(reducedGrenade)
+    const grenade = service.parseReducedItem(reducedGrenade)
 
     // Assert
-    expect(grenadeResult.success).toBe(true)
-    expect(grenadeResult.value).toStrictEqual(expected)
+    expect(grenade).toStrictEqual(expected)
   })
 })

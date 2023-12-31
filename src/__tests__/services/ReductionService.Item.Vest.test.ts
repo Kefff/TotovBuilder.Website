@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { ReductionService } from '../../services/ReductionService'
 import { IVest } from '../../models/item/IVest'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
   it.each([
@@ -46,6 +48,7 @@ describe('parseReducedItem', () => {
         maxStackableAmount: 1,
         movementSpeedPercentageModifier: -0.10,
         name: '6B3TM-01M armored rig',
+        presetWearableModifiers: undefined,
         prices: [],
         ricochetChance: '',
         shortName: '6B3TM-01M',
@@ -83,6 +86,7 @@ describe('parseReducedItem', () => {
         maxStackableAmount: 1,
         movementSpeedPercentageModifier: 0,
         name: 'Scav Vest',
+        presetWearableModifiers: undefined,
         prices: [],
         ricochetChance: '',
         shortName: 'Scav Vest',
@@ -93,13 +97,14 @@ describe('parseReducedItem', () => {
     ]
   ])('should parse a reduced vest', (reducedVest: Record<string, unknown>, expected: IVest) => {
     // Arrange
+    Services.configure(ItemPropertiesService)
+
     const service = new ReductionService()
 
     // Act
-    const vestResult = service.parseReducedItem(reducedVest)
+    const vest = service.parseReducedItem(reducedVest)
 
     // Assert
-    expect(vestResult.success).toBe(true)
-    expect(vestResult.value).toStrictEqual(expected)
+    expect(vest).toStrictEqual(expected)
   })
 })

@@ -16,7 +16,7 @@ describe('parseReducedPrice', () => {
         itemId: '5447a9cd4bdc2dbd208b4567',
         merchant: 'flea-market',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 89934,
         valueInMainCurrency: 89934
       }
@@ -71,10 +71,9 @@ describe('parseReducedPrice', () => {
     const service = new ReductionService()
 
     // Act
-    const priceResult = service.parseReducedPrice(reducedPrice)
+    const price = service.parseReducedPrice(reducedPrice)
 
     // Assert
-    expect(priceResult.success).toBe(true)
-    expect(priceResult.value).toStrictEqual(expected)
+    expect(price).toStrictEqual(expected)
   })
 })

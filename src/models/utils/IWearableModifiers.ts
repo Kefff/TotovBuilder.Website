@@ -13,7 +13,7 @@ export interface IWearableModifiers {
   ergonomicsPercentageModifierWithMods: number
 
   /**
-   * Movement speed  percentage modifier.
+   * Movement speed percentage modifier.
    */
   movementSpeedPercentageModifier: number
 
@@ -23,7 +23,7 @@ export interface IWearableModifiers {
   movementSpeedPercentageModifierWithMods: number
 
   /**
-   * Turning speed  percentage modifier.
+   * Turning speed percentage modifier.
    */
   turningSpeedPercentageModifier: number
 
