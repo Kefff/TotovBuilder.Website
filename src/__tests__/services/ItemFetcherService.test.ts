@@ -11,6 +11,7 @@ import PricesMock from '../__data__/prices.json'
 import PresetsMock from '../__data__/presets.json'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 import { describe, expect, it } from 'vitest'
+import { ReductionService } from '../../services/ReductionService'
 
 describe('fetchItemCategories()', () => {
   it('should fetch item categories', async () => {
@@ -66,6 +67,7 @@ describe('fetchItems()', () => {
     // Arrange
     useFetchServiceMock(ItemsMock)
     useWebsiteConfigurationServiceMock()
+    Services.configure(ReductionService)
 
     const fetcher = new ItemFetcherService()
 
@@ -115,6 +117,7 @@ describe('fetchPrices()', () => {
     // Arrange
     useFetchServiceMock(PricesMock)
     useWebsiteConfigurationServiceMock()
+    Services.configure(ReductionService)
 
     const fetcher = new ItemFetcherService()
 

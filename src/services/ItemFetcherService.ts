@@ -7,6 +7,7 @@ import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import { IItem } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
 import { LogService } from './LogService'
+import { ReductionService } from './ReductionService'
 
 /**
  * Represents a service responsible for fetching items.
@@ -37,15 +38,23 @@ export class ItemFetcherService {
   public async fetchItems(): Promise<Result<IItem[]>> {
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointItems
-    const itemsResult = await fetchService.get<IItem[]>(endpoint)
+    const reducedItemsResult = await fetchService.get<Record<string, unknown>[]>(endpoint)
 
-    if (!itemsResult.success || itemsResult.value.length === 0) {
+    if (!reducedItemsResult.success || reducedItemsResult.value.length === 0) {
       return Result.fail(FailureType.error, 'ItemFetcherService.fetchItems()', i18n.t('message.itemsNotFetched'))
+    }
+
+    const items: IItem[] = []
+    const reductionService = Services.get(ReductionService)
+
+    for (const reducedItem of reducedItemsResult.value) {
+      const item = reductionService.parseReducedItem(reducedItem)
+      items.push(item)
     }
 
     Services.get(LogService).logInformation('message.itemsFetched')
 
-    return Result.ok(itemsResult.value)
+    return Result.ok(items)
   }
 
   /**
@@ -55,15 +64,23 @@ export class ItemFetcherService {
   public async fetchPrices(): Promise<Result<IPrice[]>> {
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointPrices
-    const pricesResult = await fetchService.get<IPrice[]>(endpoint)
+    const reducedPricesResult = await fetchService.get<Record<string, unknown>[]>(endpoint)
 
-    if (!pricesResult.success || pricesResult.value.length === 0) {
+    if (!reducedPricesResult.success || reducedPricesResult.value.length === 0) {
       return Result.fail(FailureType.error, 'ItemFetcherService.fetchPrices()', i18n.t('message.pricesNotFetched'))
+    }
+
+    const prices: IPrice[] = []
+    const reductionService = Services.get(ReductionService)
+
+    for (const reducedPrice of reducedPricesResult.value) {
+      const price = reductionService.parseReducedPrice(reducedPrice)
+      prices.push(price)
     }
 
     Services.get(LogService).logInformation('message.pricesFetched')
 
-    return pricesResult
+    return Result.ok(prices)
   }
 
   /**
@@ -73,14 +90,22 @@ export class ItemFetcherService {
   public async fetchPresets(): Promise<Result<IInventoryItem[]>> {
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointPresets
-    const presetsResult = await fetchService.get<IInventoryItem[]>(endpoint)
+    const reducedPresetsResult = await fetchService.get<Record<string, unknown>[]>(endpoint)
 
-    if (!presetsResult.success || presetsResult.value.length === 0) {
+    if (!reducedPresetsResult.success || reducedPresetsResult.value.length === 0) {
       return Result.fail(FailureType.error, 'ItemFetcherService.fetchPresets()', i18n.t('message.presetsNotFetched'))
+    }
+
+    const presets: IInventoryItem[] = []
+    const reductionService = Services.get(ReductionService)
+
+    for (const reducedPreset of reducedPresetsResult.value) {
+      const preset = reductionService.parseReducedInventoryItem(reducedPreset).value
+      presets.push(preset)
     }
 
     Services.get(LogService).logInformation('message.presetsFetched')
 
-    return presetsResult
+    return Result.ok(presets)
   }
 }

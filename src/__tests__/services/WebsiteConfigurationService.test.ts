@@ -75,7 +75,6 @@ describe('initialize', () => {
     verify(notificationServiceSpy.notify(
       NotificationType.information,
       'As we are in a post Tarkov update period, items and prices may not be up to date yet.\nThey are progressively being updated by the Tarkov.dev team.',
-      true,
       0)).once()
   })
 

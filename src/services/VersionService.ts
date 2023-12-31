@@ -121,7 +121,7 @@ export class VersionService {
         const errorMessage = vueI18n.t('message.buildMigrationError', { message: notificationMessage, errors: migrationResult.failureMessage })
 
         Services.get(LogService).logError(errorMessage)
-        Services.get(NotificationService).notify(NotificationType.error, notificationMessage, true)
+        Services.get(NotificationService).notify(NotificationType.error, notificationMessage)
 
         return false
       }
@@ -297,7 +297,7 @@ export class VersionService {
       Services.get(LogService).logInformation('message.changelogFetched')
     } else {
       Services.get(LogService).logError('message.changelogNotFetched')
-      Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.changelogLoadingError'), true)
+      Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.changelogLoadingError'))
     }
 
     this.isFetchingChangelogs = false

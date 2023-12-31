@@ -10,8 +10,7 @@ import { InventoryItemService } from '../../services/InventoryItemService'
 import { IHeadwear } from '../../models/item/IHeadwear'
 import { IMod } from '../../models/item/IMod'
 import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
-import { anyString, anything, instance, mock, spy, verify, when } from 'ts-mockito'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito'
 import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import Result, { FailureType } from '../../utils/Result'
@@ -30,6 +29,7 @@ import ItemsMock from '../__data__/items.json'
 import PresetsMock from '../__data__/presets.json'
 import PricesMock from '../__data__/prices.json'
 import { describe, expect, it } from 'vitest'
+import { LogService } from '../../services/LogService'
 
 describe('fetchPresets()', () => {
   it('should fetch presets', async () => {
@@ -37,9 +37,6 @@ describe('fetchPresets()', () => {
     useItemServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-
-    const notificationServiceMock = mock<NotificationService>()
-    Services.configure(NotificationService, undefined, instance(notificationServiceMock))
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
     when(itemFetcherServiceMock.fetchPresets()).thenReturn(Promise.resolve(Result.ok(PresetsMock)))
@@ -137,9 +134,6 @@ describe('fetchPresets()', () => {
     // Arrange
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-
-    const notificationServiceMock = mock<NotificationService>()
-    Services.configure(NotificationService, undefined, instance(notificationServiceMock))
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
     when(itemFetcherServiceMock.fetchPresets()).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'Fetch error')))
@@ -249,8 +243,6 @@ describe('getPreset()', () => {
     useItemFetcherServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
-
-    Services.configure(NotificationService)
 
     const service = new PresetService()
     await service.fetchPresets()
@@ -1164,7 +1156,7 @@ describe('updatePresetProperties', () => {
     expect(mod.presetErgonomicsModifier).toBe(undefined)
   })
 
-  it('should notify presets it did not find', async () => {
+  it('should log presets it did not find', async () => {
     // Arrange
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
@@ -1247,10 +1239,9 @@ describe('updatePresetProperties', () => {
 
     Services.configure(InventoryItemService)
     Services.configure(ItemPropertiesService)
-    Services.configure(NotificationService)
 
-    const notificationService = Services.get(NotificationService)
-    const notificationServiceSpy = spy(notificationService)
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
 
     const presetService = new PresetService()
     const itemResult = await Services.get(ItemService).getItem('presetMod')
@@ -1260,7 +1251,7 @@ describe('updatePresetProperties', () => {
     await presetService.updatePresetProperties([mod])
 
     // Assert
-    verify(notificationServiceSpy.notify(NotificationType.error, anyString(), true)).once()
+    verify(logServiceMock.logError(anyString())).once()
     expect(mod.ergonomicsModifier).toBe(5)
     expect(mod.presetErgonomicsModifier).toBe(undefined)
   })
@@ -1272,7 +1263,7 @@ describe('updatePresetProperties', () => {
     ['presetRangedWeaponMod', false, true, true, true],
     ['584147732459775a2b6d9f12', true, true, true, true],
     ['584147732459775a2b6d9f12', false, true, true, true]
-  ])('should notify presets it cannot update', async (
+  ])('should log presets it cannot update', async (
     presetId: string,
     ergonomicsFailure: boolean,
     wearableModifiersFailure: boolean,
@@ -1562,10 +1553,9 @@ describe('updatePresetProperties', () => {
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     Services.configure(ItemPropertiesService)
-    Services.configure(NotificationService)
 
-    const notificationService = Services.get(NotificationService)
-    const notificationServiceSpy = spy(notificationService)
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
 
     const presetService = new PresetService()
     await presetService.fetchPresets()
@@ -1577,7 +1567,7 @@ describe('updatePresetProperties', () => {
     await presetService.updatePresetProperties([itemResult.value])
 
     // Assert
-    verify(notificationServiceSpy.notify(NotificationType.error, anyString(), true)).once()
+    verify(logServiceMock.logError(anyString())).once()
     expect(itemResult.value).toStrictEqual(originalItem)
   })
 })

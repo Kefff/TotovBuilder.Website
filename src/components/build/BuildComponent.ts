@@ -284,9 +284,9 @@ export default defineComponent({
       const exportResult = await Services.get(ExportService).export([build.value])
 
       if (exportResult.success) {
-        notificationService.notify(NotificationType.success, vueI18n.t('message.buildsExported'), true)
+        notificationService.notify(NotificationType.success, vueI18n.t('message.buildsExported'))
       } else {
-        notificationService.notify(NotificationType.error, exportResult.failureMessage, true)
+        notificationService.notify(NotificationType.error, exportResult.failureMessage)
       }
     }
 

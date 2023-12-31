@@ -15,7 +15,7 @@
           :show-clear="editing"
           class="item-dropdown"
           :scroll-height="dropdownPanelHeight"
-          :virtual-scroller-options="{ orientation: 'vertical', itemSize: 64 }"
+          :virtual-scroller-options="{ orientation: 'vertical', itemSize: optionHeight }"
           @change="onSelectedItemChanged()"
         >
           <template #header>

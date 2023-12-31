@@ -100,7 +100,7 @@ export default defineComponent({
       const exportWarningShowed = sessionStorage.getItem(exportWarningShowedKey)
 
       if (hasBuildsNotExported.value && exportWarningShowed == null) {
-        Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.buildsNotExported'), true)
+        Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.buildsNotExported'))
         sessionStorage.setItem(exportWarningShowedKey, '')
       }
     }

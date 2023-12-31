@@ -7,7 +7,6 @@ import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
 import Result from '../utils/Result'
 import { InventoryItemService } from './InventoryItemService'
 import { ItemPropertiesService } from './ItemPropertiesService'
-import { NotificationService, NotificationType } from './NotificationService'
 import Services from './repository/Services'
 import i18n from '../plugins/vueI18n'
 import { IHeadwear } from '../models/item/IHeadwear'
@@ -15,6 +14,7 @@ import { IInventoryItem } from '../models/build/IInventoryItem'
 import { ItemFetcherService } from './ItemFetcherService'
 import { PathUtils } from '../utils/PathUtils'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
+import { LogService } from './LogService'
 
 /**
  * Represents a service responsible for managing presets.
@@ -137,7 +137,7 @@ export class PresetService {
       const presetInventoryItem = this.getPreset(presetItem.id)
 
       if (presetInventoryItem == null) {
-        Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.presetNotFound', { id: presetItem.id }), true)
+        Services.get(LogService).logError(i18n.t('message.presetNotFound', { id: presetItem.id }))
 
         continue
       }
@@ -155,7 +155,7 @@ export class PresetService {
       }
 
       if (!result.success) {
-        Services.get(NotificationService).notify(NotificationType.error, result.failureMessage, true)
+        Services.get(LogService).logError(result.failureMessage)
       }
     }
   }

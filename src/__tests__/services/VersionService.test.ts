@@ -221,7 +221,7 @@ describe('executeBuildMigrations()', () => {
 
     // Assert
     expect(result).toBe(false)
-    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build "Build 1" (build1) from version "1.4.0" to "1.6.0".', true)).once()
+    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build "Build 1" (build1) from version "1.4.0" to "1.6.0".')).once()
   })
 })
 
@@ -465,7 +465,7 @@ describe('getChangelog()', () => {
 
     // Assert
     expect(changelog.length).toBe(0)
-    verify(notificationServiceSpy.notify(NotificationType.error, 'Something went wrong while loading the changelog.\nWait a bit and before trying to open it again.', true)).once()
+    verify(notificationServiceSpy.notify(NotificationType.error, 'Something went wrong while loading the changelog.\nWait a bit and before trying to open it again.')).once()
   })
 
   it('should not fetch the changelog if already fetched', async () => {
@@ -696,7 +696,7 @@ describe('initialize()', () => {
     // Assert
     expect(version).toBe('1.6.0')
     expect(savedVersion).toBe('1.5.0')
-    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build "Build 1" (build1) from version "1.5.0" to "1.6.0".', true)).once()
+    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build "Build 1" (build1) from version "1.5.0" to "1.6.0".')).once()
   })
 
   it('should not initialize if it is already initialized', async () => {

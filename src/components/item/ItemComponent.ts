@@ -86,6 +86,7 @@ export default defineComponent({
     const editing = inject<Ref<boolean>>('editing')
 
     const dropdownPanelHeight = computed(() => Math.min(options.value.length === 0 ? 1 : options.value.length, 5) * 4 + 'rem') // Shows 5 items or less
+    const optionHeight = computed(() => Number.parseInt(window.getComputedStyle(document.documentElement).fontSize.replace('px', '')) * 4)
     const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? selectedItem.value?.maxStackableAmount ?? 1)
     const selectedInventoryItem = computed<IInventoryItem | undefined>({
       get: () => props.modelValue,
@@ -347,7 +348,7 @@ export default defineComponent({
         emitItemChangedEvent()
         setSelectedTab()
       } else {
-        notificationService.notify(NotificationType.warning, isCompatible.failureMessage, true)
+        notificationService.notify(NotificationType.warning, isCompatible.failureMessage)
         initializeSelectedItem() // Putting back the previous selected item
       }
 
@@ -366,6 +367,7 @@ export default defineComponent({
       onSortOptions,
       options,
       optionsFilter,
+      optionHeight,
       optionsSortingData,
       preset,
       quantity,

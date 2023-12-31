@@ -59,7 +59,6 @@ export default defineComponent({
         Services.get(NotificationService).notify(
           NotificationType.information,
           vueI18n.t('message.newVersion', { newVersion: version.value }),
-          true,
           0,
           [
             {

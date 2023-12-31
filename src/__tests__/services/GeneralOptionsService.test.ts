@@ -35,13 +35,11 @@ describe('getAllowCookiesIndicator()', () => {
         anything(),
         anything(),
         anything(),
-        anything(),
         anything())).never()
     } else {
       verify(notificationServiceSpy.notify(
         NotificationType.information,
         'Totov Builder uses cookies only to anonymously detect errors that may occur during your visit.\nAccepting cookies is not necessary but greatly helps to improve the website.',
-        true,
         0,
         anything())).once()
     }

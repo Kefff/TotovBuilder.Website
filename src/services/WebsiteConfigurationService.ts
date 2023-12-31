@@ -84,7 +84,7 @@ export class WebsiteConfigurationService {
     this.configuration = websiteConfigurationResult.value
 
     if (this.configuration.postUpdatePeriod) {
-      Services.get(NotificationService).notify(NotificationType.information, i18n.t('message.postUpdatePeriod'), true, 0)
+      Services.get(NotificationService).notify(NotificationType.information, i18n.t('message.postUpdatePeriod'), 0)
     }
 
     return true

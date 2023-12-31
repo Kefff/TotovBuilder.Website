@@ -1024,7 +1024,7 @@ describe('fromSharableString()', () => {
 
     // Assert
     expect(buildResult.success).toBe(true)
-    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build to version "1.6.0".', true)).once()
+    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build to version "1.6.0".')).once()
   })
 })
 

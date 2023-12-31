@@ -412,7 +412,7 @@ export class ItemService {
    */
   private updateItemsPrices(pricesResult: Result<IPrice[]>) {
     if (!pricesResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.pricesLoadingError'), true)
+      Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.pricesLoadingError'))
 
       // When an error occurs, we set the last fetch date in order to make the cache expire 20 seconds later.
       // This is to avoid making a new request for each of the 3000+ items.

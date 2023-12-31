@@ -339,7 +339,7 @@ describe('saveBuild()', () => {
 
     // Assert
     verify(buildServiceMock.add(build)).once()
-    verify(notificationServiceMock.notify(NotificationType.success, anyString(), true)).once()
+    verify(notificationServiceMock.notify(NotificationType.success, anyString())).once()
     verify(routerMock.push(anything())).once()
   })
 
@@ -367,7 +367,7 @@ describe('saveBuild()', () => {
 
     // Assert
     verify(buildServiceMock.update('123', build)).once()
-    verify(notificationServiceMock.notify(NotificationType.success, anyString(), true)).once()
+    verify(notificationServiceMock.notify(NotificationType.success, anyString())).once()
     verify(routerMock.push(anything())).never()
   })
 
@@ -424,7 +424,7 @@ describe('deleteBuild()', () => {
 
     // Assert
     verify(buildServiceMock.delete('123')).once()
-    verify(notificationServiceMock.notify(NotificationType.information, anyString(), true)).once()
+    verify(notificationServiceMock.notify(NotificationType.information, anyString())).once()
     verify(routerMock.push(anything())).once()
   })
 })

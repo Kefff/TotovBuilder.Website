@@ -66,7 +66,7 @@ export default defineComponent({
 
       emit('update:modelValue', false)
       emit('update:hasImported', true)
-      notificationService.notify(NotificationType.success, i18n.t('message.buildsImported'), true)
+      notificationService.notify(NotificationType.success, i18n.t('message.buildsImported'))
     }
 
     /**

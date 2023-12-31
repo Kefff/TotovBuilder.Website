@@ -31,11 +31,6 @@ export interface INotification {
   message: string
 
   /**
-   * Indicates whether a notification will be displayed as a toast or not.
-   */
-  toast: boolean
-
-  /**
    * Toast duration.
    */
   toastDuration: number | undefined
