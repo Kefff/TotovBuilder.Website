@@ -1,5 +1,5 @@
 import Result, { FailureType } from '../utils/Result'
-import i18n from '../plugins/vueI18n'
+import vueI18n from '../plugins/vueI18n'
 import { FetchService } from './FetchService'
 import Services from './repository/Services'
 import { IInventoryItem } from '../models/build/IInventoryItem'
@@ -23,7 +23,7 @@ export class ItemFetcherService {
     const itemCategoriesResult = await fetchService.get<string[]>(endpoint)
 
     if (!itemCategoriesResult.success || itemCategoriesResult.value.length === 0) {
-      return Result.fail(FailureType.error, 'ItemFetcherService.fetchItemCategories()', i18n.t('message.itemCategoriesNotFetched'))
+      return Result.fail(FailureType.error, 'ItemFetcherService.fetchItemCategories()', vueI18n.t('message.itemCategoriesNotFetched'))
     }
 
     Services.get(LogService).logInformation('message.itemCategoriesFetched')
@@ -41,7 +41,7 @@ export class ItemFetcherService {
     const reducedItemsResult = await fetchService.get<Record<string, unknown>[]>(endpoint)
 
     if (!reducedItemsResult.success || reducedItemsResult.value.length === 0) {
-      return Result.fail(FailureType.error, 'ItemFetcherService.fetchItems()', i18n.t('message.itemsNotFetched'))
+      return Result.fail(FailureType.error, 'ItemFetcherService.fetchItems()', vueI18n.t('message.itemsNotFetched'))
     }
 
     const items: IItem[] = []
@@ -67,7 +67,7 @@ export class ItemFetcherService {
     const reducedPricesResult = await fetchService.get<Record<string, unknown>[]>(endpoint)
 
     if (!reducedPricesResult.success || reducedPricesResult.value.length === 0) {
-      return Result.fail(FailureType.error, 'ItemFetcherService.fetchPrices()', i18n.t('message.pricesNotFetched'))
+      return Result.fail(FailureType.error, 'ItemFetcherService.fetchPrices()', vueI18n.t('message.pricesNotFetched'))
     }
 
     const prices: IPrice[] = []
@@ -93,7 +93,7 @@ export class ItemFetcherService {
     const reducedPresetsResult = await fetchService.get<Record<string, unknown>[]>(endpoint)
 
     if (!reducedPresetsResult.success || reducedPresetsResult.value.length === 0) {
-      return Result.fail(FailureType.error, 'ItemFetcherService.fetchPresets()', i18n.t('message.presetsNotFetched'))
+      return Result.fail(FailureType.error, 'ItemFetcherService.fetchPresets()', vueI18n.t('message.presetsNotFetched'))
     }
 
     const presets: IInventoryItem[] = []

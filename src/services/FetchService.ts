@@ -1,5 +1,5 @@
 import { IRequestParameter } from '../models/utils/IRequestParameter'
-import i18n from '../plugins/vueI18n'
+import vueI18n from '../plugins/vueI18n'
 import Result, { FailureType } from '../utils/Result'
 import Services from './repository/Services'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
@@ -31,7 +31,7 @@ export class FetchService {
     } while (tries < maxTries)
 
     if (!lastResult.success) {
-      return Result.fail(FailureType.exception, 'FetchService.get()', i18n.t('message.fetchMaxTriesError', { endpoint, maxTries }))
+      return Result.fail(FailureType.exception, 'FetchService.get()', vueI18n.t('message.fetchMaxTriesError', { endpoint, maxTries }))
     }
 
     return lastResult
@@ -60,7 +60,7 @@ export class FetchService {
             // Sometimes Azures responds an empty response with a 0 status code when the instance is shutting down when the request happens.
             // It's unclear whether this response is seen a OK on client-side, so in case where a GET gets an empty response
             // we consider it to be an error
-            return Result.fail<TResult>(FailureType.error, 'FetchService.get()', i18n.t('message.fetchError', { endpoint, errorMessage: i18n.t('message.emptyFetchResponse') }))
+            return Result.fail<TResult>(FailureType.error, 'FetchService.get()', vueI18n.t('message.fetchError', { endpoint, errorMessage: vueI18n.t('message.emptyFetchResponse') }))
           }
           /* c8 ignore stop */
 
@@ -73,17 +73,17 @@ export class FetchService {
           /* c8 ignore start */
           if (this.isEmptyResponseData(responseData)) {
             // For some reason, jest-fetch-mock cannot mock an error response with an empty body. The response has a 200 status even if we force it to 500 when configuring the mock.
-            return Result.fail<TResult>(FailureType.error, 'FetchService.get()', i18n.t('message.fetchError', { endpoint, errorMessage: i18n.t('message.emptyFetchResponse') }))
+            return Result.fail<TResult>(FailureType.error, 'FetchService.get()', vueI18n.t('message.fetchError', { endpoint, errorMessage: vueI18n.t('message.emptyFetchResponse') }))
           }
           /* c8 ignore stop */
 
           const result = JSON.parse(responseData) as Record<string, unknown>
           const errorMessage = result['error'] as string
 
-          return Result.fail<TResult>(FailureType.error, 'FetchService.get()', i18n.t('message.fetchError', { endpoint, errorMessage }))
+          return Result.fail<TResult>(FailureType.error, 'FetchService.get()', vueI18n.t('message.fetchError', { endpoint, errorMessage }))
         }
       })
-      .catch((error: Error) => Result.fail<TResult>(FailureType.error, 'FetchService.get()', i18n.t('message.fetchError', { endpoint, errorMessage: error.message })))
+      .catch((error: Error) => Result.fail<TResult>(FailureType.error, 'FetchService.get()', vueI18n.t('message.fetchError', { endpoint, errorMessage: error.message })))
 
     return result
   }

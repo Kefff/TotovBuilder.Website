@@ -14,7 +14,7 @@ import { ServiceInitializationState } from '../../services/repository/ServiceIni
 describe('initialize', () => {
   it('should fetch the website configuration', async () => {
     // Arrange
-    useFetchServiceMock(WebsiteConfigurationMock as IWebsiteConfiguration)
+    useFetchServiceMock(WebsiteConfigurationMock)
 
     const service = new WebsiteConfigurationService()
 

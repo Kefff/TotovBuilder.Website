@@ -9,9 +9,13 @@ import ItemCategoriesMock from '../__data__/item-categories.json'
 import ItemsMock from '../__data__/items.json'
 import PricesMock from '../__data__/prices.json'
 import PresetsMock from '../__data__/presets.json'
+import ReducedItemsMock from '../__data__/reduced-items.json'
+import ReducedPricesMock from '../__data__/reduced-prices.json'
+import ReducedPresetsMock from '../__data__/reduced-presets.json'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 import { describe, expect, it } from 'vitest'
 import { ReductionService } from '../../services/ReductionService'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 
 describe('fetchItemCategories()', () => {
   it('should fetch item categories', async () => {
@@ -65,8 +69,9 @@ describe('fetchItemCategories()', () => {
 describe('fetchItems()', () => {
   it('should fetch all items', async () => {
     // Arrange
-    useFetchServiceMock(ItemsMock)
+    useFetchServiceMock(ReducedItemsMock)
     useWebsiteConfigurationServiceMock()
+    Services.configure(ItemPropertiesService)
     Services.configure(ReductionService)
 
     const fetcher = new ItemFetcherService()
@@ -113,20 +118,20 @@ describe('fetchItems()', () => {
 })
 
 describe('fetchPrices()', () => {
-  it('should fetch prices', async () => {
+  it('should fetch all prices', async () => {
     // Arrange
-    useFetchServiceMock(PricesMock)
+    useFetchServiceMock(ReducedPricesMock)
     useWebsiteConfigurationServiceMock()
     Services.configure(ReductionService)
 
     const fetcher = new ItemFetcherService()
 
     // Act
-    const marketDataResult = await fetcher.fetchPrices()
+    const pricesResult = await fetcher.fetchPrices()
 
     // Assert
-    expect(marketDataResult.success).toBe(true)
-    expect(marketDataResult.value).toStrictEqual(PricesMock)
+    expect(pricesResult.success).toBe(true)
+    expect(pricesResult.value).toStrictEqual(PricesMock)
   })
 
   it('should fail when prices are not found', async () => {
@@ -163,10 +168,11 @@ describe('fetchPrices()', () => {
 })
 
 describe('fetchPresets()', () => {
-  it('should fetch presets', async () => {
+  it('should fetch all presets', async () => {
     // Arrange
-    useFetchServiceMock(PresetsMock)
+    useFetchServiceMock(ReducedPresetsMock)
     useWebsiteConfigurationServiceMock()
+    Services.configure(ReductionService)
 
     const fetcher = new ItemFetcherService()
 

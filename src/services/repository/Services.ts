@@ -1,4 +1,4 @@
-import i18n from '../../plugins/vueI18n'
+import vueI18n from '../../plugins/vueI18n'
 import { IRegisteredService } from './IRegisteredService'
 
 /**
@@ -36,7 +36,7 @@ class ServicesRepository {
       const warnWhenServiceReplaced = import.meta.env.VITE_WARN_WHEN_SERVICE_REPLACED === 'true'
 
       if (warnWhenServiceReplaced) {
-        console.warn(i18n.t('message.serviceAlreadyConfigured', { name: serviceName }))
+        console.warn(vueI18n.t('message.serviceAlreadyConfigured', { name: serviceName }))
       }
     }
   }
@@ -52,7 +52,7 @@ class ServicesRepository {
     if (registeredService != null) {
       return this.getInstance(registeredService)
     } else {
-      throw i18n.t('message.serviceNotConfigured', { name: type.name })
+      throw vueI18n.t('message.serviceNotConfigured', { name: type.name })
     }
   }
 
@@ -67,7 +67,7 @@ class ServicesRepository {
     if (registeredService != null) {
       return this.getInstance(registeredService)
     } else {
-      throw i18n.t('message.serviceNotConfigured', { name })
+      throw vueI18n.t('message.serviceNotConfigured', { name })
     }
   }
 

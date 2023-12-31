@@ -3,7 +3,7 @@ import { IBuild } from '../models/build/IBuild'
 import Result, { FailureType } from '../utils/Result'
 import InventorySlotTypes from '../data/inventory-slot-types.json'
 import { IInventoryItem } from '../models/build/IInventoryItem'
-import i18n from '../plugins/vueI18n'
+import vueI18n from '../plugins/vueI18n'
 import jsonUrl from 'json-url'
 import Services from './repository/Services'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
@@ -92,13 +92,13 @@ export class BuildService {
     try {
       reducedBuild = (await codec.decompress(sharableString)) as Record<string, unknown>
     } catch {
-      return Result.fail(FailureType.error, 'BuildService.fromSharableString()', i18n.t('message.invalidSharableString'))
+      return Result.fail(FailureType.error, 'BuildService.fromSharableString()', vueI18n.t('message.invalidSharableString'))
     }
 
     const buildResult = Services.get(ReductionService).parseReducedBuild(reducedBuild)
 
     if (!buildResult.success) {
-      return Result.fail(FailureType.error, 'BuildService.fromSharableString()', i18n.t('message.invalidSharableString'))
+      return Result.fail(FailureType.error, 'BuildService.fromSharableString()', vueI18n.t('message.invalidSharableString'))
     }
 
     Services.get(VersionService).executeBuildMigrations(buildResult.value) // Executing migrations on the build in case it is obsolete
@@ -119,7 +119,7 @@ export class BuildService {
       return Result.fail<IBuild>(
         FailureType.error,
         'BuildService.update()',
-        i18n.t('message.buildNotFound', { id })
+        vueI18n.t('message.buildNotFound', { id })
       )
     }
 
@@ -174,7 +174,7 @@ export class BuildService {
         build.lastExported = new Date(build.lastExported as unknown as string)
       }
     } catch {
-      return Result.fail(FailureType.error, 'BuildService.parse()', i18n.t('message.buildParsingError', { id }))
+      return Result.fail(FailureType.error, 'BuildService.parse()', vueI18n.t('message.buildParsingError', { id }))
     }
 
     return Result.ok(build)
@@ -198,7 +198,7 @@ export class BuildService {
       // 2048 is a hard limit for URL length on Azure Consumption tiers which is what is used to host the website
       // Cf. https://docs.microsoft.com/en-us/answers/questions/223022/azure-app-service-containers-max-url-length.html
       // Cf. https://github.com/MicrosoftDocs/azure-docs/blob/master/includes/api-management-service-limits.md
-      return Result.fail(FailureType.warning, 'BuildService.toSharableString()', i18n.t('message.cannotShareBuildTooLarge', { name: build.name }))
+      return Result.fail(FailureType.warning, 'BuildService.toSharableString()', vueI18n.t('message.cannotShareBuildTooLarge', { name: build.name }))
     }
 
     return Result.ok(sharableURL)
@@ -229,7 +229,7 @@ export class BuildService {
     return Result.fail(
       FailureType.error,
       'BuildService.update()',
-      i18n.t('message.buildNotFound', { id })
+      vueI18n.t('message.buildNotFound', { id })
     )
   }
 

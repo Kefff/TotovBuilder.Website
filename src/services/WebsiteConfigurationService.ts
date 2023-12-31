@@ -2,7 +2,7 @@ import { IWebsiteConfiguration } from '../models/configuration/IWebsiteConfigura
 import Services from './repository/Services'
 import { FetchService } from './FetchService'
 import Result, { FailureType } from '../utils/Result'
-import i18n from '../plugins/vueI18n'
+import vueI18n from '../plugins/vueI18n'
 import { TinyEmitter } from 'tiny-emitter'
 import { ServiceInitializationState } from './repository/ServiceInitializationState'
 import { NotificationService, NotificationType } from './NotificationService'
@@ -84,7 +84,7 @@ export class WebsiteConfigurationService {
     this.configuration = websiteConfigurationResult.value
 
     if (this.configuration.postUpdatePeriod) {
-      Services.get(NotificationService).notify(NotificationType.information, i18n.t('message.postUpdatePeriod'), 0)
+      Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.postUpdatePeriod'), 0)
     }
 
     return true
@@ -99,7 +99,7 @@ export class WebsiteConfigurationService {
     const websiteConfigurationResult = await fetchService.get<IWebsiteConfiguration>('/' + import.meta.env.VITE_WEBSITE_CONFIGURATION_ENDPOINT as string)
 
     if (!websiteConfigurationResult.success) {
-      return Result.fail(FailureType.error, 'WebsiteConfigurationService.fetchWebsiteConfiguration()', i18n.t('message.websiteConfigurationNotFetched'))
+      return Result.fail(FailureType.error, 'WebsiteConfigurationService.fetchWebsiteConfiguration()', vueI18n.t('message.websiteConfigurationNotFetched'))
     }
 
     Services.get(LogService).logInformation('message.websiteConfigurationFetched')

@@ -1,4 +1,4 @@
-import i18n from '../plugins/vueI18n'
+import vueI18n from '../plugins/vueI18n'
 import Services from '../services/repository/Services'
 import { TarkovValuesService } from '../services/TarkovValuesService'
 
@@ -14,7 +14,7 @@ export class ArmorUtils {
    */
   public static getArmorPenetrationTooltip(armorClass: number, penetration: number): string {
     const efficiency = Services.get(TarkovValuesService).values.armorPenetrationEfficiencies[penetration]
-    const tooltip = i18n.t('caption.armorClassPenetration', { class: armorClass }) + ' : ' + i18n.t('caption.armorClassPenetrationValue', { penetration, efficiency: efficiency })
+    const tooltip = vueI18n.t('caption.armorClassPenetration', { class: armorClass }) + ' : ' + vueI18n.t('caption.armorClassPenetrationValue', { penetration, efficiency: efficiency })
 
     return tooltip
   }

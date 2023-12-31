@@ -1,6 +1,5 @@
 import { TarkovValuesService } from '../../services/TarkovValuesService'
 import TarkovValuesMock from '../__data__/tarkov-values.json'
-import { ITarkovValues } from '../../models/configuration/ITarkovValues'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
 import Services from '../../services/repository/Services'
@@ -13,7 +12,7 @@ import { describe, expect, it } from 'vitest'
 describe('initialize', () => {
   it('should fetch the values related to Tarkov gameplay', async () => {
     // Arrange
-    useFetchServiceMock(TarkovValuesMock as ITarkovValues)
+    useFetchServiceMock(TarkovValuesMock)
     useWebsiteConfigurationServiceMock()
 
     const service = new TarkovValuesService()

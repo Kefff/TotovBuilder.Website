@@ -1,4 +1,4 @@
-import i18n from '../plugins/vueI18n'
+import vueI18n from '../plugins/vueI18n'
 import { LogService } from '../services/LogService'
 import Services from '../services/repository/Services'
 
@@ -26,11 +26,11 @@ export default class Result<T = void> {
    */
   public get value(): T {
     if (!this.success) {
-      throw i18n.t('message.resultCannotReadValueError')
+      throw vueI18n.t('message.resultCannotReadValueError')
     }
 
     if (this._value == null) {
-      throw i18n.t('message.resultUndefinedValue')
+      throw vueI18n.t('message.resultUndefinedValue')
     }
 
     return this._value as T

@@ -185,9 +185,9 @@ export class ReductionService {
     const itemId = reducedPrice['i'] as string
     const merchant = reducedPrice['m'] as string ?? 'flea-market'
     const merchantLevel = reducedPrice['ml'] as number ?? 0
-    let quest: IQuest | undefined = undefined
+    let quest: IQuest | null | undefined = null
     const value = reducedPrice['v'] as number ?? 0
-    const valueInMainCurrency = reducedPrice['v'] as number ?? 0
+    const valueInMainCurrency = reducedPrice['vm'] as number ?? 0
 
     const reducedBarterItems = reducedPrice['b'] as Record<string, unknown>[]
     const reducedQuest = reducedPrice['q'] as Record<string, unknown>

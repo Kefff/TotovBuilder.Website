@@ -1,5 +1,5 @@
 import { LogService } from '../../services/LogService'
-import i18n from '../../plugins/vueI18n'
+import vueI18n from '../../plugins/vueI18n'
 import { anything, spy, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 
@@ -9,7 +9,7 @@ describe('getMessage()', () => {
     const loggerService = new LogService()
     const key = 'test.logger1'
     let log: string | undefined = undefined
-    const expected = i18n.t('message.warningLog', { message: i18n.t(key) })
+    const expected = vueI18n.t('message.warningLog', { message: vueI18n.t(key) })
 
     const consoleSpy = spy(console)
     when(consoleSpy.warn(anything())).thenCall((args) => log = args as string)
@@ -26,7 +26,7 @@ describe('getMessage()', () => {
     const loggerService = new LogService()
     const key = 'test.logger2'
     const parameters = { article: 'an', messageType: 'error' }
-    const expected = i18n.t('message.warningLog', { message: i18n.t(key, parameters) })
+    const expected = vueI18n.t('message.warningLog', { message: vueI18n.t(key, parameters) })
     let log: string | undefined = undefined
 
 
@@ -45,7 +45,7 @@ describe('getMessage()', () => {
     const loggerService = new LogService()
     const key = 'test.logger3'
     const plural = 2
-    const expected = i18n.t('message.warningLog', { message: i18n.t(key, plural) })
+    const expected = vueI18n.t('message.warningLog', { message: vueI18n.t(key, plural) })
     let log: string | undefined = undefined
 
     const consoleSpy = spy(console)
@@ -64,7 +64,7 @@ describe('logError()', () => {
     // Arrange
     const loggerService = new LogService()
     const key = 'test.logger1'
-    const expected = i18n.t(key)
+    const expected = vueI18n.t(key)
     let log: string | undefined = undefined
 
     const consoleSpy = spy(console)
@@ -107,7 +107,7 @@ describe('logInformation()', () => {
     // Arrange
     const loggerService = new LogService()
     const key = 'test.logger1'
-    const expected = i18n.t(key)
+    const expected = vueI18n.t(key)
     let log: string | undefined = undefined
 
     const consoleSpy = spy(console)
@@ -127,7 +127,7 @@ describe('logWarning()', () => {
     // Arrange
     const loggerService = new LogService()
     const key = 'test.logger1'
-    const expected = i18n.t('message.warningLog', { message: i18n.t(key) })
+    const expected = vueI18n.t('message.warningLog', { message: vueI18n.t(key) })
     let log: string | undefined = undefined
 
     const consoleSpy = spy(console)

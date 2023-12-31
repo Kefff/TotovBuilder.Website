@@ -27,7 +27,7 @@ describe('checkHasNewVersion()', () => {
     [true, true]
   ])('should indicate whether the version is newer than the last visit version', async (hasVersionStored: boolean, expected: boolean) => {
     // Arrange
-    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock)
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
 
@@ -82,7 +82,7 @@ describe('compareVersions()', () => {
     ['10.1.1', '1.1.10', 1]
   ])('should compare two versions (%s, %s)', (version1: string | undefined, version2: string | undefined, expected: number) => {
     // Arrange
-    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock)
     useWebsiteConfigurationServiceMock()
 
     const service = new VersionService()
@@ -98,7 +98,7 @@ describe('compareVersions()', () => {
 describe('executeBuildMigrations()', () => {
   it('should execute build migrations in the correct order', async () => {
     // Arrange
-    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock)
     useWebsiteConfigurationServiceMock()
 
     Services.configure(BuildService)
@@ -192,7 +192,7 @@ describe('executeBuildMigrations()', () => {
 
   it('should fail when a migration fails', async () => {
     // Arrange
-    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock)
     useWebsiteConfigurationServiceMock()
 
     Services.configure(BuildService)
@@ -427,7 +427,7 @@ describe('getChangelog()', () => {
     ]
   ])('should get the changelog', async (version: string | undefined, language: string, expectedChangelogs: IChangelogEntry[]) => {
     // Arrange
-    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock)
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
 
@@ -470,7 +470,7 @@ describe('getChangelog()', () => {
 
   it('should not fetch the changelog if already fetched', async () => {
     // Arrange
-    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry[])
+    useFetchServiceMock(ChangelogMock)
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
 
@@ -488,7 +488,7 @@ describe('getChangelog()', () => {
 
   it('should not fetch the changelog while it is already being fetched', async () => {
     // Arrange
-    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry[])
+    useFetchServiceMock(ChangelogMock)
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
 
@@ -509,7 +509,7 @@ describe('getChangelog()', () => {
 describe('getVersion()', () => {
   it('should wait for the initialization to end', async () => {
     // Arrange
-    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock)
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
 
@@ -541,7 +541,7 @@ describe('initialize()', () => {
     ]
   ])('should fetch version data', async (lastVisitVersion: string | undefined, expectedVersion: string, expectedHasNewVersion: boolean) => {
     // Arrange
-    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock)
     useWebsiteConfigurationServiceMock()
 
     Services.configure(BuildService)
@@ -701,7 +701,7 @@ describe('initialize()', () => {
 
   it('should not initialize if it is already initialized', async () => {
     // Arrange
-    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock)
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
 
@@ -716,7 +716,7 @@ describe('initialize()', () => {
 
   it('should wait for the previous initialization to finish before returning', async () => {
     // Arrange
-    useFetchServiceMock(ChangelogMock as unknown as IChangelogEntry)
+    useFetchServiceMock(ChangelogMock)
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
 

@@ -6886,6 +6886,7 @@
     "itemId": "57dc2fa62459775949412633",
     "merchant": "mechanic",
     "merchantLevel": 1.0,
+    "quest": null,
     "value": 15281.0,
     "valueInMainCurrency": 15281.0
   },
@@ -23302,17 +23303,14 @@
     "valueInMainCurrency": 5083.0
   },
   {
-    "id": "5beed0f50db834001c062b12",
-    "buyFor": [
-      {
-        "currency": "RUB",
-        "price": 42440,
-        "priceRUB": 42440,
-        "vendor": {
-          "normalizedName": "flea-market"
-        }
-      }
-    ]
+    "barterItems": [],
+    "currencyName": "RUB",
+    "itemId": "5beed0f50db834001c062b12",
+    "merchant": "flea-market",
+    "merchantLevel": 0.0,
+    "quest": null,
+    "value": 42440,
+    "valueInMainCurrency": 42440
   },
   {
     "barterItems": [],

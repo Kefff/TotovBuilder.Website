@@ -3,7 +3,7 @@ import { FetchService } from './FetchService'
 import { ITarkovValues } from '../models/configuration/ITarkovValues'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import Result, { FailureType } from '../utils/Result'
-import i18n from '../plugins/vueI18n'
+import vueI18n from '../plugins/vueI18n'
 import { LogService } from './LogService'
 
 /**
@@ -48,7 +48,7 @@ export class TarkovValuesService {
     const tarkovValuesResult = await fetchService.get<ITarkovValues>(endpoint)
 
     if (!tarkovValuesResult.success) {
-      return Result.fail(FailureType.error, 'TarkovValuesService.fetchTarkovValues()', i18n.t('message.tarkovValuesNotFetched'))
+      return Result.fail(FailureType.error, 'TarkovValuesService.fetchTarkovValues()', vueI18n.t('message.tarkovValuesNotFetched'))
     }
 
     Services.get(LogService).logInformation('message.tarkovValuesFetched')

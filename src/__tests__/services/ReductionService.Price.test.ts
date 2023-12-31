@@ -16,7 +16,7 @@ describe('parseReducedPrice', () => {
         itemId: '5447a9cd4bdc2dbd208b4567',
         merchant: 'flea-market',
         merchantLevel: 0,
-        quest: undefined,
+        quest: null,
         value: 89934,
         valueInMainCurrency: 89934
       }

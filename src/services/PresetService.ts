@@ -8,7 +8,7 @@ import Result from '../utils/Result'
 import { InventoryItemService } from './InventoryItemService'
 import { ItemPropertiesService } from './ItemPropertiesService'
 import Services from './repository/Services'
-import i18n from '../plugins/vueI18n'
+import vueI18n from '../plugins/vueI18n'
 import { IHeadwear } from '../models/item/IHeadwear'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { ItemFetcherService } from './ItemFetcherService'
@@ -137,7 +137,7 @@ export class PresetService {
       const presetInventoryItem = this.getPreset(presetItem.id)
 
       if (presetInventoryItem == null) {
-        Services.get(LogService).logError(i18n.t('message.presetNotFound', { id: presetItem.id }))
+        Services.get(LogService).logError(vueI18n.t('message.presetNotFound', { id: presetItem.id }))
 
         continue
       }

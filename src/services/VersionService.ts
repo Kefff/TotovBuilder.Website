@@ -3,7 +3,6 @@ import vueI18n from '../plugins/vueI18n'
 import { FetchService } from './FetchService'
 import Services from './repository/Services'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
-import i18n from '../plugins/vueI18n'
 import { NotificationService, NotificationType } from './NotificationService'
 import Migrations from '../utils/migrations/Migrations'
 import { BuildService } from './BuildService'
@@ -297,7 +296,7 @@ export class VersionService {
       Services.get(LogService).logInformation('message.changelogFetched')
     } else {
       Services.get(LogService).logError('message.changelogNotFetched')
-      Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.changelogLoadingError'))
+      Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.changelogLoadingError'))
     }
 
     this.isFetchingChangelogs = false
