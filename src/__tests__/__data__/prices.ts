@@ -1,3 +1,5 @@
+import { IPrice } from '../../models/item/IPrice'
+
 const data = [
   {
     'barterItems': [],
@@ -47046,6 +47048,6 @@ const data = [
     'value': 0,
     'valueInMainCurrency': 0
   }
-]
+] as IPrice[]
 
 export default data
