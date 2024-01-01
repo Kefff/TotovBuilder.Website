@@ -45,9 +45,9 @@ export default defineComponent({
       const exportResult = await Services.get(ExportService).export(buildsToExport)
 
       if (exportResult.success) {
-        Services.get(NotificationService).notify(NotificationType.success, vueI18n.t('message.buildsExported'), true)
+        Services.get(NotificationService).notify(NotificationType.success, vueI18n.t('message.buildsExported'))
       } else {
-        Services.get(NotificationService).notify(NotificationType.error, exportResult.failureMessage, true)
+        Services.get(NotificationService).notify(NotificationType.error, exportResult.failureMessage)
       }
 
       emit('update:modelValue', false)

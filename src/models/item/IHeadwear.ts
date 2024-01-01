@@ -1,4 +1,3 @@
-import { IWearableModifiers } from '../utils/IWearableModifiers'
 import { IArmor } from './IArmor'
 import { IModdable } from './IModdable'
 
@@ -15,10 +14,4 @@ export interface IHeadwear extends IArmor, IModdable {
    * Severity of the hearing impairment caused by the helmet.
    */
   deafening: string
-
-  /**
-   * Wearable modifier of the whole preset added to the weapon in percentage.
-   * Undefined if the item is not a preset.
-   */
-  presetWearableModifiers: IWearableModifiers | undefined
 }

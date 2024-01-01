@@ -1,14 +1,16 @@
 import Result, { FailureType } from '../utils/Result'
-import i18n from '../plugins/vueI18n'
-import { ApiService } from './ApiService'
+import vueI18n from '../plugins/vueI18n'
+import { FetchService } from './FetchService'
 import Services from './repository/Services'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import { IItem } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
+import { LogService } from './LogService'
+import { ReductionService } from './ReductionService'
 
 /**
- * Represents a service responsible for fetching items through a web API.
+ * Represents a service responsible for fetching items.
  */
 export class ItemFetcherService {
   /**
@@ -16,12 +18,15 @@ export class ItemFetcherService {
    * @returns Item categories.
    */
   public async fetchItemCategories(): Promise<Result<string[]>> {
-    const apiService = Services.get(ApiService)
-    const itemCategoriesResult = await apiService.get<string[]>(Services.get(WebsiteConfigurationService).configuration.itemCategoriesApi)
+    const fetchService = Services.get(FetchService)
+    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointItemCategories
+    const itemCategoriesResult = await fetchService.get<string[]>(endpoint)
 
     if (!itemCategoriesResult.success || itemCategoriesResult.value.length === 0) {
-      return Result.fail(FailureType.error, 'ItemFetcherService.fetchItemCategories()', i18n.t('message.itemCategoriesNotFetched'))
+      return Result.fail(FailureType.error, 'ItemFetcherService.fetchItemCategories()', vueI18n.t('message.itemCategoriesNotFetched'))
     }
+
+    Services.get(LogService).logInformation('message.itemCategoriesFetched')
 
     return itemCategoriesResult
   }
@@ -31,14 +36,25 @@ export class ItemFetcherService {
    * @returns Items.
    */
   public async fetchItems(): Promise<Result<IItem[]>> {
-    const apiService = Services.get(ApiService)
-    const itemsResult = await apiService.get<IItem[]>(Services.get(WebsiteConfigurationService).configuration.itemsApi)
+    const fetchService = Services.get(FetchService)
+    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointItems
+    const reducedItemsResult = await fetchService.get<Record<string, unknown>[]>(endpoint)
 
-    if (!itemsResult.success || itemsResult.value.length === 0) {
-      return Result.fail(FailureType.error, 'ItemFetcherService.fetchItems()', i18n.t('message.itemsNotFetched'))
+    if (!reducedItemsResult.success || reducedItemsResult.value.length === 0) {
+      return Result.fail(FailureType.error, 'ItemFetcherService.fetchItems()', vueI18n.t('message.itemsNotFetched'))
     }
 
-    return Result.ok(itemsResult.value)
+    const items: IItem[] = []
+    const reductionService = Services.get(ReductionService)
+
+    for (const reducedItem of reducedItemsResult.value) {
+      const item = reductionService.parseReducedItem(reducedItem)
+      items.push(item)
+    }
+
+    Services.get(LogService).logInformation('message.itemsFetched')
+
+    return Result.ok(items)
   }
 
   /**
@@ -46,14 +62,25 @@ export class ItemFetcherService {
    * @returns Prices.
    */
   public async fetchPrices(): Promise<Result<IPrice[]>> {
-    const apiService = Services.get(ApiService)
-    const pricesResult = await apiService.get<IPrice[]>(Services.get(WebsiteConfigurationService).configuration.pricesApi)
+    const fetchService = Services.get(FetchService)
+    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointPrices
+    const reducedPricesResult = await fetchService.get<Record<string, unknown>[]>(endpoint)
 
-    if (!pricesResult.success || pricesResult.value.length === 0) {
-      return Result.fail(FailureType.error, 'ItemFetcherService.fetchPrices()', i18n.t('message.pricesNotFetched'))
+    if (!reducedPricesResult.success || reducedPricesResult.value.length === 0) {
+      return Result.fail(FailureType.error, 'ItemFetcherService.fetchPrices()', vueI18n.t('message.pricesNotFetched'))
     }
 
-    return pricesResult
+    const prices: IPrice[] = []
+    const reductionService = Services.get(ReductionService)
+
+    for (const reducedPrice of reducedPricesResult.value) {
+      const price = reductionService.parseReducedPrice(reducedPrice)
+      prices.push(price)
+    }
+
+    Services.get(LogService).logInformation('message.pricesFetched')
+
+    return Result.ok(prices)
   }
 
   /**
@@ -61,13 +88,24 @@ export class ItemFetcherService {
    * @returns Presets.
    */
   public async fetchPresets(): Promise<Result<IInventoryItem[]>> {
-    const apiService = Services.get(ApiService)
-    const presetsResult = await apiService.get<IInventoryItem[]>(Services.get(WebsiteConfigurationService).configuration.presetsApi)
+    const fetchService = Services.get(FetchService)
+    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointPresets
+    const reducedPresetsResult = await fetchService.get<Record<string, unknown>[]>(endpoint)
 
-    if (!presetsResult.success || presetsResult.value.length === 0) {
-      return Result.fail(FailureType.error, 'ItemFetcherService.fetchPresets()', i18n.t('message.presetsNotFetched'))
+    if (!reducedPresetsResult.success || reducedPresetsResult.value.length === 0) {
+      return Result.fail(FailureType.error, 'ItemFetcherService.fetchPresets()', vueI18n.t('message.presetsNotFetched'))
     }
 
-    return presetsResult
+    const presets: IInventoryItem[] = []
+    const reductionService = Services.get(ReductionService)
+
+    for (const reducedPreset of reducedPresetsResult.value) {
+      const preset = reductionService.parseReducedInventoryItem(reducedPreset).value
+      presets.push(preset)
+    }
+
+    Services.get(LogService).logInformation('message.presetsFetched')
+
+    return Result.ok(presets)
   }
 }

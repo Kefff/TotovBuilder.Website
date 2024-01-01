@@ -58,7 +58,7 @@
           <ShoppingList :shopping-list="summary.shoppingList" />
           <Button
             v-tooltip.top="$t('caption.copyBuild')"
-            :disabled="isLoading || hasLoadingError"
+            :disabled="isLoading || hasLoadingError || isNewBuild"
             class="p-button-text p-button-sm button-discreet"
             @click="copy()"
           >

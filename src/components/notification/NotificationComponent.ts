@@ -15,12 +15,10 @@ export default defineComponent({
     const successDuration = websiteConfigurationService.configuration.notificationSuccessDuration * 1000 // In milliseconds
     const warningDuration = websiteConfigurationService.configuration.notificationWarningDuration * 1000 // In milliseconds
 
-    const toastNotifications = ref<INotification[]>([])
+    const notifications = ref<INotification[]>([])
 
     notificationService.emitter.on(notificationService.addedEventName, (notification: INotification) => {
-      if (notification.toast) {
-        toastNotifications.value.push(notification)
-      }
+      notifications.value.push(notification)
     })
 
     /**
@@ -33,8 +31,8 @@ export default defineComponent({
         button.action()
       }
 
-      const notificationIndex = toastNotifications.value.indexOf(notification)
-      toastNotifications.value.splice(notificationIndex, 1)
+      const notificationIndex = notifications.value.indexOf(notification)
+      notifications.value.splice(notificationIndex, 1)
     }
 
     /**
@@ -71,7 +69,7 @@ export default defineComponent({
       getSeverity,
       informationDuration,
       successDuration,
-      toastNotifications,
+      notifications,
       warningDuration
     }
   }

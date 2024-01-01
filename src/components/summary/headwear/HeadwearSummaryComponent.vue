@@ -15,7 +15,7 @@
         class="custom-icon-after-text"
       >
         <span>{{ $t('caption.ricochetChance' + item.ricochetChance) }}</span>
-        <img src="/assets/ricochet.webp">
+        <img src="/images/ricochet.webp">
       </div>
     </div>
   </div>

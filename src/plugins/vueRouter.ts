@@ -4,15 +4,22 @@ import BuildComponent from '../components/build/BuildComponent.vue'
 import Welcome from '../components/welcome/WelcomeComponent.vue'
 import { App } from 'vue'
 import LanguageUtils from '../utils/LanguageUtils'
+import applicationInsights from './applicationInsights'
 
 const routes: RouteRecordRaw[] = [
   {
     component: Welcome,
     name: 'Welcome',
     path: '/',
-    beforeEnter: () => {
+    beforeEnter: (to, from) => {
       const language = LanguageUtils.getLanguage()
       LanguageUtils.setLanguage(language)
+
+      applicationInsights.trackPageView({
+        name: 'Welcome',
+        refUri: from.path,
+        uri: to.path
+      })
     }
   },
   {
@@ -28,22 +35,50 @@ const routes: RouteRecordRaw[] = [
   {
     component: Builds,
     name: 'Builds',
-    path: '/builds'
+    path: '/builds',
+    beforeEnter: (to, from) => {
+      applicationInsights.trackPageView({
+        name: 'Builds',
+        refUri: from.path,
+        uri: to.path
+      })
+    }
   },
   {
     component: BuildComponent,
     name: 'NewBuild',
-    path: '/build'
+    path: '/build',
+    beforeEnter: (to, from) => {
+      applicationInsights.trackPageView({
+        name: 'NewBuild',
+        refUri: from.path,
+        uri: to.path
+      })
+    }
   },
   {
     component: BuildComponent,
     name: 'Build',
-    path: '/build/:id'
+    path: '/build/:id',
+    beforeEnter: (to, from) => {
+      applicationInsights.trackPageView({
+        name: 'Build',
+        refUri: from.path,
+        uri: to.path
+      })
+    }
   },
   {
     component: BuildComponent,
     name: 'SharedBuild',
-    path: '/s/:sharedBuild'
+    path: '/s/:sharedBuild',
+    beforeEnter: (to, from) => {
+      applicationInsights.trackPageView({
+        name: 'SharedBuild',
+        refUri: from.path,
+        uri: to.path
+      })
+    }
   },
   {
     path: '/:pathMatch(.*)*',

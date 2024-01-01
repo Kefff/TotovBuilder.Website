@@ -6,15 +6,15 @@ import Result, { FailureType } from '../../../utils/Result'
 import { IInventorySlot } from '../../../models/build/IInventorySlot'
 import Services from '../../../services/repository/Services'
 import { BuildPropertiesService } from '../../../services/BuildPropertiesService'
-import { useItemServiceMock } from '../../../__mocks__/ItemServiceMock'
-import { useVersionServiceMock } from '../../../__mocks__/VersionServiceMock'
+import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
 import { InventorySlotPropertiesService } from '../../../services/InventorySlotPropertiesService'
 import { InventoryItemService } from '../../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
 import { GlobalFilterService } from '../../../services/GlobalFilterService'
-import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
-import { useTarkovValuesServiceMock } from '../../../__mocks__/TarkovValuesServiceMock'
-import { usePresetServiceMock } from '../../../__mocks__/PresetPropertiesServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
+import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
 import { IBuild } from '../../../models/build/IBuild'
 
 describe('readBuilds()', () => {
@@ -83,7 +83,7 @@ describe('readBuilds()', () => {
               itemId: '',
               merchant: '',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 0,
               valueInMainCurrency: 0
             },
@@ -93,7 +93,7 @@ describe('readBuilds()', () => {
               itemId: '',
               merchant: '',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 23444,
               valueInMainCurrency: 23444
             },
@@ -104,7 +104,7 @@ describe('readBuilds()', () => {
                 itemId: '',
                 merchant: '',
                 merchantLevel: 0,
-                quest: null,
+                quest: undefined,
                 value: 23444,
                 valueInMainCurrency: 23444
               }
@@ -115,7 +115,7 @@ describe('readBuilds()', () => {
               itemId: '',
               merchant: '',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 0,
               valueInMainCurrency: 0
             },
@@ -135,6 +135,7 @@ describe('readBuilds()', () => {
                 maxStackableAmount: 1,
                 movementSpeedPercentageModifier: 0,
                 name: 'WARTECH Berkut BB-102 backpack',
+                presetWearableModifiers: undefined,
                 prices: [
                   {
                     barterItems: [],
@@ -142,7 +143,7 @@ describe('readBuilds()', () => {
                     itemId: '5ca20d5986f774331e7c9602',
                     merchant: 'ragman',
                     merchantLevel: 1,
-                    quest: null,
+                    quest: undefined,
                     value: 23444,
                     valueInMainCurrency: 23444
                   },
@@ -152,7 +153,7 @@ describe('readBuilds()', () => {
                     itemId: '5ca20d5986f774331e7c9602',
                     merchant: 'flea-market',
                     merchantLevel: 0,
-                    quest: null,
+                    quest: undefined,
                     value: 24046,
                     valueInMainCurrency: 24046
                   },
@@ -167,7 +168,7 @@ describe('readBuilds()', () => {
                     itemId: '5ca20d5986f774331e7c9602',
                     merchant: 'ragman',
                     merchantLevel: 1,
-                    quest: null,
+                    quest: undefined,
                     value: 0,
                     valueInMainCurrency: 0
                   }
@@ -183,7 +184,7 @@ describe('readBuilds()', () => {
                 itemId: '5ca20d5986f774331e7c9602',
                 merchant: 'ragman',
                 merchantLevel: 1,
-                quest: null,
+                quest: undefined,
                 value: 23444,
                 valueInMainCurrency: 23444
               },
@@ -194,7 +195,7 @@ describe('readBuilds()', () => {
                 itemId: '5ca20d5986f774331e7c9602',
                 merchant: 'ragman',
                 merchantLevel: 1,
-                quest: null,
+                quest: undefined,
                 value: 23444,
                 valueInMainCurrency: 23444
               }

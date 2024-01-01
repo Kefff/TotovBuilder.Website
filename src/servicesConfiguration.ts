@@ -1,4 +1,4 @@
-import { ApiService } from './services/ApiService'
+import { FetchService } from './services/FetchService'
 import { BuildComponentService } from './services/components/BuildComponentService'
 import { BuildPropertiesService } from './services/BuildPropertiesService'
 import { BuildService } from './services/BuildService'
@@ -26,16 +26,17 @@ import { VersionService } from './services/VersionService'
 import { WebsiteConfigurationService } from './services/WebsiteConfigurationService'
 import Services from './services/repository/Services'
 import { ServiceInitializationState } from './services/repository/ServiceInitializationState'
+import { ReductionService } from './services/ReductionService'
 
 /**
  * Configures all the services used in the application.
  */
 export async function configureServices(): Promise<void> {
-  Services.configure(ApiService)
   Services.configure(BuildPropertiesService)
   Services.configure(BuildService)
   Services.configure(CompatibilityService)
   Services.configure(ExportService)
+  Services.configure(FetchService)
   Services.configure(GeneralOptionsService)
   Services.configure(GlobalFilterService)
   Services.configure(ImportService)
@@ -48,6 +49,7 @@ export async function configureServices(): Promise<void> {
   Services.configure(LogService)
   Services.configure(NotificationService)
   Services.configure(PresetService)
+  Services.configure(ReductionService)
   Services.configure(TarkovValuesService)
   Services.configure(VersionService)
   Services.configure(WebsiteConfigurationService)

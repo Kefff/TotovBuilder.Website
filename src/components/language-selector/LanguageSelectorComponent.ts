@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n'
 import LanguageUtils from '../../utils/LanguageUtils'
 
 export default defineComponent({
-  setup: (props) => {
+  setup: () => {
     const i18n = useI18n()
     const languages = ref<string[]>([])
     const currentLanguage = ref(i18n.locale.value)

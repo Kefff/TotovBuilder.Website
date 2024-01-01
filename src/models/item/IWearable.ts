@@ -1,3 +1,4 @@
+import { IWearableModifiers } from '../utils/IWearableModifiers'
 import { IItem } from './IItem'
 
 /**
@@ -13,6 +14,12 @@ export interface IWearable extends IItem {
    * Modifier added to the character movement speed in percentage.
    */
   movementSpeedPercentageModifier: number
+
+  /**
+   * Wearable modifier of the whole preset added to the weapon in percentage.
+   * Undefined if the item is not a preset.
+   */
+  presetWearableModifiers: IWearableModifiers | undefined
 
   /**
    * Modifier added to the character turning speed in percentage.

@@ -3,10 +3,10 @@ import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
-import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
-import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
-import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
-import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
+import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
+import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
+import { usePresetServiceMock } from '../__mocks__/PresetPropertiesServiceMock'
 import { describe, expect, it } from 'vitest'
 
 describe('getShoppingList', () => {
@@ -116,6 +116,7 @@ describe('getShoppingList', () => {
           maxStackableAmount: 1,
           movementSpeedPercentageModifier: -0.05,
           name: '6Sh118 raid backpack',
+          presetWearableModifiers: undefined,
           prices: [
             {
               barterItems: [
@@ -147,7 +148,7 @@ describe('getShoppingList', () => {
               itemId: '5df8a4d786f77412672a1e3b',
               merchant: 'prapor',
               merchantLevel: 4,
-              quest: null,
+              quest: undefined,
               value: 0,
               valueInMainCurrency: 0
             }
@@ -164,7 +165,7 @@ describe('getShoppingList', () => {
           itemId: '5df8a4d786f77412672a1e3b',
           merchant: 'prapor',
           merchantLevel: 4,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -174,7 +175,7 @@ describe('getShoppingList', () => {
           itemId: '5df8a4d786f77412672a1e3b',
           merchant: 'prapor',
           merchantLevel: 4,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         }
@@ -196,7 +197,7 @@ describe('getShoppingList', () => {
               itemId: '5d0375ff86f774186372f685',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 53432,
               valueInMainCurrency: 53432
             }
@@ -212,7 +213,7 @@ describe('getShoppingList', () => {
           itemId: '5d0375ff86f774186372f685',
           merchant: 'flea-market',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 106864,
           valueInMainCurrency: 106864
         },
@@ -222,7 +223,7 @@ describe('getShoppingList', () => {
           itemId: '5d0375ff86f774186372f685',
           merchant: 'flea-market',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 53432,
           valueInMainCurrency: 53432
         }
@@ -233,7 +234,7 @@ describe('getShoppingList', () => {
           caliber: 'Caliber545x39',
           categoryId: 'mainWeapon',
           conflictingItemIds: [],
-          defaultPresetId: null,
+          defaultPresetId: undefined,
           ergonomics: 44,
           fireModes: [
             'SingleFire',
@@ -372,6 +373,9 @@ describe('getShoppingList', () => {
             }
           ],
           name: 'Kalashnikov AKS-74U 5.45x39 assault rifle Default',
+          presetErgonomics: undefined,
+          presetHorizontalRecoil: undefined,
+          presetVerticalRecoil: undefined,
           prices: [
             {
               barterItems: [],
@@ -393,7 +397,7 @@ describe('getShoppingList', () => {
               itemId: '584147732459775a2b6d9f12',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 28999,
               valueInMainCurrency: 28999
             }
@@ -436,10 +440,10 @@ describe('getShoppingList', () => {
       {
         item: {
           accuracyPercentageModifier: 0,
-          baseItemId: null,
+          baseItemId: undefined,
           categoryId: 'rangedWeaponMod',
           conflictingItemIds: [],
-          defaultPresetId: null,
+          defaultPresetId: undefined,
           ergonomicsModifier: 12,
           iconLink: 'https://assets.tarkov.dev/5f6341043ada5942720e2dc5-icon.webp',
           id: '5f6341043ada5942720e2dc5',
@@ -448,6 +452,8 @@ describe('getShoppingList', () => {
           maxStackableAmount: 1,
           modSlots: [],
           name: 'AK Aeroknox Scorpius pistol grip',
+          presetErgonomicsModifier: undefined,
+          presetRecoilPercentageModifier: undefined,
           prices: [
             {
               barterItems: [],
@@ -455,7 +461,7 @@ describe('getShoppingList', () => {
               itemId: '5f6341043ada5942720e2dc5',
               merchant: 'mechanic',
               merchantLevel: 4,
-              quest: null,
+              quest: undefined,
               value: 6496,
               valueInMainCurrency: 6496
             },
@@ -465,7 +471,7 @@ describe('getShoppingList', () => {
               itemId: '5f6341043ada5942720e2dc5',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 45166,
               valueInMainCurrency: 45166
             }
@@ -482,7 +488,7 @@ describe('getShoppingList', () => {
           itemId: '5f6341043ada5942720e2dc5',
           merchant: 'flea-market',
           merchantLevel: 0.0,
-          quest: null,
+          quest: undefined,
           value: 45166.0,
           valueInMainCurrency: 45166.0
         },
@@ -492,7 +498,7 @@ describe('getShoppingList', () => {
           itemId: '5f6341043ada5942720e2dc5',
           merchant: 'flea-market',
           merchantLevel: 0.0,
-          quest: null,
+          quest: undefined,
           value: 45166.0,
           valueInMainCurrency: 45166.0
         }
@@ -546,7 +552,7 @@ describe('getShoppingList', () => {
               itemId: '56dff3afd2720bba668b4567',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 224,
               valueInMainCurrency: 224
             }
@@ -703,7 +709,7 @@ describe('getShoppingList', () => {
           caliber: 'Caliber762x51',
           categoryId: 'mainWeapon',
           conflictingItemIds: [],
-          defaultPresetId: null,
+          defaultPresetId: undefined,
           ergonomics: 48,
           fireModes: [
             'SingleFire'
@@ -769,6 +775,9 @@ describe('getShoppingList', () => {
             }
           ],
           name: 'Kel-Tec RFB 7.62x51 rifle Default',
+          presetErgonomics: undefined,
+          presetHorizontalRecoil: undefined,
+          presetVerticalRecoil: undefined,
           prices: [
             {
               barterItems: [
@@ -781,7 +790,7 @@ describe('getShoppingList', () => {
               itemId: '5f676b779ab5ec19f028eaf3',
               merchant: 'skier',
               merchantLevel: 2,
-              quest: null,
+              quest: undefined,
               value: 0,
               valueInMainCurrency: 0
             }
@@ -797,7 +806,7 @@ describe('getShoppingList', () => {
           itemId: '5f676b779ab5ec19f028eaf3',
           merchant: 'skier',
           merchantLevel: 2,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -808,7 +817,7 @@ describe('getShoppingList', () => {
           itemId: '5f676b779ab5ec19f028eaf3',
           merchant: 'skier',
           merchantLevel: 2,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         }
@@ -835,7 +844,7 @@ describe('getShoppingList', () => {
               itemId: '590a3efd86f77437d351a25b',
               merchant: 'mechanic',
               merchantLevel: 1,
-              quest: null,
+              quest: undefined,
               value: 0,
               valueInMainCurrency: 0
             }
@@ -850,7 +859,7 @@ describe('getShoppingList', () => {
           itemId: '590a3efd86f77437d351a25b',
           merchant: 'mechanic',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -861,7 +870,7 @@ describe('getShoppingList', () => {
           itemId: '590a3efd86f77437d351a25b',
           merchant: 'mechanic',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         }
@@ -883,7 +892,7 @@ describe('getShoppingList', () => {
               itemId: '5734779624597737e04bf329',
               merchant: 'flea-market',
               merchantLevel: 0,
-              quest: null,
+              quest: undefined,
               value: 17036,
               valueInMainCurrency: 17036
             }
@@ -898,7 +907,7 @@ describe('getShoppingList', () => {
           itemId: '5734779624597737e04bf329',
           merchant: 'flea-market',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 34072,
           valueInMainCurrency: 34072
         },
@@ -909,7 +918,7 @@ describe('getShoppingList', () => {
           itemId: '5734779624597737e04bf329',
           merchant: 'flea-market',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 17036,
           valueInMainCurrency: 17036
         }

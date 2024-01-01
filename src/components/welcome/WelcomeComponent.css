@@ -1,4 +1,4 @@
-@import '../../assets/css/icon.css';
+@import '../../css/icon.css';
 
 .welcome {
   display: flex;
@@ -39,6 +39,10 @@
   width: 17.5rem;
 }
 
+.welcome-action:last-child {
+  margin-bottom: 1rem;
+}
+
 .welcome-actions {
   display: flex;
   flex-direction: row;
@@ -75,7 +79,6 @@
 }
 
 .welcome-warning {
-  font-size: 1rem;
   margin-bottom: 6rem;
   margin-top: 6rem;
 }

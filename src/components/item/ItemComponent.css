@@ -13,9 +13,9 @@
 .item-dropdown-option {
   align-items: center;
   display: flex;
-  height: 4rem; /* Matches the 60px set in the virtual scroller options */
-  padding-left: 1rem;
-  padding-right: 1rem;
+  height: 4rem;
+  /* Matches the 60px set in the virtual scroller options */
+  margin-left: 1rem;
 }
 
 .item-selection {

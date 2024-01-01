@@ -6,10 +6,11 @@ import { NotificationService, NotificationType } from '../../../services/Notific
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito'
 import Services from '../../../services/repository/Services'
 import { BuildComponentService } from '../../../services/components/BuildComponentService'
-import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { VersionService } from '../../../services/VersionService'
-import { useVersionServiceMock } from '../../../__mocks__/VersionServiceMock'
+import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
 import { describe, expect, it } from 'vitest'
+import { ReductionService } from '../../../services/ReductionService'
 
 describe('getBuild()', () => {
   it('should get a build', () => {
@@ -110,6 +111,7 @@ describe('getBuildFromSharableString()', () => {
     // Arrange
     useVersionServiceMock()
     Services.configure(BuildService)
+    Services.configure(ReductionService)
     Services.configure(VersionService)
 
     const service = new BuildComponentService()
@@ -120,7 +122,7 @@ describe('getBuildFromSharableString()', () => {
 
     // Assert
     expect(buildResult.success).toBe(true)
-    expect(buildResult.value).toEqual({
+    expect(buildResult.value).toStrictEqual({
       id: '',
       inventorySlots: [
         {
@@ -337,7 +339,7 @@ describe('saveBuild()', () => {
 
     // Assert
     verify(buildServiceMock.add(build)).once()
-    verify(notificationServiceMock.notify(NotificationType.success, anyString(), true)).once()
+    verify(notificationServiceMock.notify(NotificationType.success, anyString())).once()
     verify(routerMock.push(anything())).once()
   })
 
@@ -365,7 +367,7 @@ describe('saveBuild()', () => {
 
     // Assert
     verify(buildServiceMock.update('123', build)).once()
-    verify(notificationServiceMock.notify(NotificationType.success, anyString(), true)).once()
+    verify(notificationServiceMock.notify(NotificationType.success, anyString())).once()
     verify(routerMock.push(anything())).never()
   })
 
@@ -422,7 +424,7 @@ describe('deleteBuild()', () => {
 
     // Assert
     verify(buildServiceMock.delete('123')).once()
-    verify(notificationServiceMock.notify(NotificationType.information, anyString(), true)).once()
+    verify(notificationServiceMock.notify(NotificationType.information, anyString())).once()
     verify(routerMock.push(anything())).once()
   })
 })

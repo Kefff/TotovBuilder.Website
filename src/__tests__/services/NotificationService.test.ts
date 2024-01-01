@@ -1,11 +1,13 @@
 import { NotificationService, NotificationType } from '../../services/NotificationService'
-import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 import { describe, expect, it } from 'vitest'
 import { INotification } from '../../models/utils/INotification'
 
 describe('clearNotification()', () => {
   it('should clear a notification from the notifications collection', () => {
     // Arrange
+    useWebsiteConfigurationServiceMock()
+
     const service = new NotificationService()
     service.notify(NotificationType.error, 'Error')
 
@@ -18,6 +20,8 @@ describe('clearNotification()', () => {
 
   it('should do nothing when a wrong notification ID is provided', () => {
     // Arrange
+    useWebsiteConfigurationServiceMock()
+
     const service = new NotificationService()
     service.notify(NotificationType.error, 'Error')
 
@@ -32,6 +36,8 @@ describe('clearNotification()', () => {
 describe('clearNotifications()', () => {
   it('should clear all notifications', () => {
     // Arrange
+    useWebsiteConfigurationServiceMock()
+
     const service = new NotificationService()
     service.notify(NotificationType.error, 'Error')
     service.notify(NotificationType.warning, 'Warning')
@@ -54,16 +60,15 @@ describe('notify()', () => {
     service.emitter.on(service.addedEventName, () => hasBeenCalled = true)
 
     // Act
-    service.notify(NotificationType.error, 'Error', true)
+    service.notify(NotificationType.error, 'Error')
     service.notify(NotificationType.information, 'Information')
-    service.notify(NotificationType.success, 'Success', true)
+    service.notify(NotificationType.success, 'Success')
     service.notify(NotificationType.warning, 'Warning')
-    service.notify(NotificationType.warning, 'Warning', true, 0)
-    service.notify(NotificationType.warning, 'Warning', true, 1000)
+    service.notify(NotificationType.warning, 'Warning', 0)
+    service.notify(NotificationType.warning, 'Warning', 1000)
     service.notify(
       NotificationType.warning,
       'Warning',
-      true,
       1000,
       [
         {
@@ -77,7 +82,6 @@ describe('notify()', () => {
     service.notify(
       NotificationType.warning,
       'Warning',
-      true,
       1000,
       [
         {
@@ -98,7 +102,6 @@ describe('notify()', () => {
           buttons: [],
           closable: true,
           message: 'Error',
-          toast: true,
           toastDuration: 10000,
           type: 'error'
         },
@@ -106,15 +109,13 @@ describe('notify()', () => {
           buttons: [],
           closable: true,
           message: 'Information',
-          toast: false,
-          toastDuration: undefined,
+          toastDuration: 5000,
           type: 'info'
         },
         {
           buttons: [],
           closable: true,
           message: 'Success',
-          toast: true,
           toastDuration: 5000,
           type: 'success'
         },
@@ -122,15 +123,13 @@ describe('notify()', () => {
           buttons: [],
           closable: true,
           message: 'Warning',
-          toast: false,
-          toastDuration: undefined,
+          toastDuration: 10000,
           type: 'warn'
         },
         {
           buttons: [],
           closable: true,
           message: 'Warning',
-          toast: true,
           toastDuration: 3600000,
           type: 'warn'
         },
@@ -138,7 +137,6 @@ describe('notify()', () => {
           buttons: [],
           closable: true,
           message: 'Warning',
-          toast: true,
           toastDuration: 1000,
           type: 'warn'
         },
@@ -154,7 +152,6 @@ describe('notify()', () => {
             }
           ],
           message: 'Warning',
-          toast: true,
           toastDuration: 1000,
           type: 'warn'
         },
@@ -170,7 +167,6 @@ describe('notify()', () => {
             }
           ],
           message: 'Warning',
-          toast: true,
           toastDuration: 1000,
           type: 'warn'
         }
@@ -188,7 +184,7 @@ describe('resetNewNotificationCount()', () => {
     const service = new NotificationService()
 
     service.notify(NotificationType.error, 'Error')
-    service.notify(NotificationType.information, 'Information', true)
+    service.notify(NotificationType.information, 'Information')
 
     // Act
     service.resetNewNotificationCount()

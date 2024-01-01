@@ -4,13 +4,15 @@
   "scripts": {
     "coverage": "cd \"coverage\" && index.html",
     "dev": "vite",
-    "build-prod": "vite build --mode production",
-    "build-staging": "vite build --mode staging",
+    "build-prod": "vite build --mode production && node scripts/postbuild.js",
+    "build-staging": "vite build --mode staging && node scripts/postbuild.js",
     "lint": "eslint ./src/**",
     "serve": "vite preview",
-    "vitest": "vitest",
-    "vitest-coverage": "vitest run --coverage && npm run coverage",
-    "vitest-run": "vitest run"
+    "test": "vitest run",
+    "test-c": "npm run test-coverage",
+    "test-coverage": "vitest run --coverage && npm run coverage",
+    "test-w": "npm run test-watch",
+    "test-watch": "vitest watch"
   },
   "dependencies": {
     "@babel/runtime": "^7.22.6",

@@ -8,12 +8,12 @@ export interface IModdable extends IItem {
   /**
    * Base item ID.
    */
-  baseItemId: string | null | undefined
+  baseItemId: string | undefined
 
   /**
    * Default preset ID.
    */
-  defaultPresetId: string | null | undefined
+  defaultPresetId: string | undefined
 
   /**
    * Mod slots.

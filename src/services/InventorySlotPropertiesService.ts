@@ -2,7 +2,7 @@ import { IInventorySlot } from '../models/build/IInventorySlot'
 import Result, { FailureType } from '../utils/Result'
 import Services from './repository/Services'
 import { InventoryItemService } from './InventoryItemService'
-import InventorySlotTypes from '../assets/data/inventory-slot-types.json'
+import InventorySlotTypes from '../data/inventory-slot-types.json'
 import vueI18n from '../plugins/vueI18n'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { ItemService } from './ItemService'
@@ -76,7 +76,7 @@ export class InventorySlotPropertiesService {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -86,7 +86,7 @@ export class InventorySlotPropertiesService {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -97,7 +97,7 @@ export class InventorySlotPropertiesService {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       },

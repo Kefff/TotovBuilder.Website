@@ -15,13 +15,13 @@ export default defineConfig({
   plugins: [
     vue(),
     VueI18nPlugin({
-      include: resolve(dirname(fileURLToPath(import.meta.url)), './src/assets/locales/**') // https://vue-i18n.intlify.dev/guide/advanced/optimization.html#how-to-configure
+      include: resolve(dirname(fileURLToPath(import.meta.url)), './src/locales/**') // https://vue-i18n.intlify.dev/guide/advanced/optimization.html#how-to-configure
     })
   ],
   test: {
     coverage: {
       exclude: [
-        '**/src/__mocks__/**',
+        '**/src/__tests__/**',
         '**/src/plugins/**',
         'ExportService.ts' // Because it requires access to the file system
       ]
@@ -30,7 +30,7 @@ export default defineConfig({
     globals: true,
     mockReset: false, // Required for local storage mock to work
     setupFiles: [
-      'src/__mocks__/setup.ts', // Global configuration for all mocks
+      'src/__tests__/__mocks__/setup.ts', // Global configuration for all mocks
       'vitest-localstorage-mock' // https://github.com/Mitscherlich/vitest-localstorage-mock#setup-file
     ]
   }

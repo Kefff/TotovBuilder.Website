@@ -9,11 +9,11 @@ import { InventoryItemService } from '../../services/InventoryItemService'
 import Services from '../../services/repository/Services'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
-import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
-import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
-import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
+import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
+import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
+import { usePresetServiceMock } from '../__mocks__/PresetPropertiesServiceMock'
 import { describe, expect, it } from 'vitest'
 
 const inventoryItem: IInventoryItem = {
@@ -368,7 +368,7 @@ describe('getPrice()', () => {
           itemId: '5ca20d5986f774331e7c9602',
           merchant: 'ragman',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 23444,
           valueInMainCurrency: 23444
         },
@@ -379,7 +379,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 61108,
             valueInMainCurrency: 61108
           }
@@ -390,7 +390,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 61108,
           valueInMainCurrency: 61108
         },
@@ -400,7 +400,7 @@ describe('getPrice()', () => {
           itemId: '5ca20d5986f774331e7c9602',
           merchant: 'ragman',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 23444,
           valueInMainCurrency: 23444
         },
@@ -424,7 +424,7 @@ describe('getPrice()', () => {
           itemId: '56d59d3ad2720bdb418b4577',
           merchant: 'mechanic',
           merchantLevel: 2,
-          quest: null,
+          quest: undefined,
           value: 3500,
           valueInMainCurrency: 3500
         },
@@ -435,7 +435,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 3500,
             valueInMainCurrency: 3500
           }
@@ -446,7 +446,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 3500,
           valueInMainCurrency: 3500
         },
@@ -456,7 +456,7 @@ describe('getPrice()', () => {
           itemId: '56d59d3ad2720bdb418b4577',
           merchant: 'mechanic',
           merchantLevel: 2,
-          quest: null,
+          quest: undefined,
           value: 70,
           valueInMainCurrency: 70
         },
@@ -507,7 +507,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -518,7 +518,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 72478,
             valueInMainCurrency: 72478
           }
@@ -529,7 +529,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 72478,
           valueInMainCurrency: 72478
         },
@@ -539,7 +539,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -574,7 +574,7 @@ describe('getPrice()', () => {
           itemId: '5c07c60e0db834002330051f',
           merchant: 'flea-market',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 40281,
           valueInMainCurrency: 40281
         },
@@ -584,7 +584,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 45881,
           valueInMainCurrency: 45881
         },
@@ -595,7 +595,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 50,
             valueInMainCurrency: 5600
           },
@@ -605,7 +605,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 40281,
             valueInMainCurrency: 40281
           }
@@ -616,7 +616,7 @@ describe('getPrice()', () => {
           itemId: '5c07c60e0db834002330051f',
           merchant: 'flea-market',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 40281,
           valueInMainCurrency: 40281
         },
@@ -656,7 +656,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -666,7 +666,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 10013,
           valueInMainCurrency: 10013
         },
@@ -677,7 +677,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 10013,
             valueInMainCurrency: 10013
           }
@@ -688,7 +688,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -753,7 +753,7 @@ describe('getPrice()', () => {
           itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
           merchantLevel: 3,
-          quest: null,
+          quest: undefined,
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -763,7 +763,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -774,7 +774,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 42938,
             valueInMainCurrency: 42938
           }
@@ -785,7 +785,7 @@ describe('getPrice()', () => {
           itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
           merchantLevel: 3,
-          quest: null,
+          quest: undefined,
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -830,7 +830,7 @@ describe('getPrice()', () => {
           itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
           merchantLevel: 3,
-          quest: null,
+          quest: undefined,
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -841,7 +841,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 64015,
             valueInMainCurrency: 64015
           }
@@ -852,7 +852,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 64015,
           valueInMainCurrency: 64015
         },
@@ -862,7 +862,7 @@ describe('getPrice()', () => {
           itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
           merchantLevel: 3,
-          quest: null,
+          quest: undefined,
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -907,7 +907,7 @@ describe('getPrice()', () => {
           itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
           merchantLevel: 3,
-          quest: null,
+          quest: undefined,
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -917,7 +917,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 211926,
           valueInMainCurrency: 211926
         },
@@ -928,7 +928,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 211926,
             valueInMainCurrency: 211926
           }
@@ -939,7 +939,7 @@ describe('getPrice()', () => {
           itemId: '5acf7dd986f774486e1281bf',
           merchant: 'mechanic',
           merchantLevel: 3,
-          quest: null,
+          quest: undefined,
           value: 42938,
           valueInMainCurrency: 42938
         },
@@ -992,7 +992,7 @@ describe('getPrice()', () => {
           itemId: '5c0e805e86f774683f3dd637',
           merchant: 'peacekeeper',
           merchantLevel: 4,
-          quest: null,
+          quest: undefined,
           value: 666,
           valueInMainCurrency: 74592
         },
@@ -1002,7 +1002,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 286518,
           valueInMainCurrency: 286518
         },
@@ -1013,7 +1013,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 666,
             valueInMainCurrency: 74592
           },
@@ -1023,7 +1023,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 211926,
             valueInMainCurrency: 211926
           }
@@ -1034,7 +1034,7 @@ describe('getPrice()', () => {
           itemId: '5c0e805e86f774683f3dd637',
           merchant: 'peacekeeper',
           merchantLevel: 4,
-          quest: null,
+          quest: undefined,
           value: 666,
           valueInMainCurrency: 74592
         },
@@ -1089,7 +1089,7 @@ describe('getPrice()', () => {
           itemId: '5ddbbeac582ed30a6134e577',
           merchant: 'jaeger',
           merchantLevel: 3,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 738760
         },
@@ -1100,7 +1100,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 738760,
           valueInMainCurrency: 738760
         },
@@ -1112,7 +1112,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 738760,
             valueInMainCurrency: 738760
           }
@@ -1136,7 +1136,7 @@ describe('getPrice()', () => {
           itemId: '5ddbbeac582ed30a6134e577',
           merchant: 'jaeger',
           merchantLevel: 3,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 738760
         },
@@ -1210,7 +1210,7 @@ describe('getPrice()', () => {
         itemId: '5a38e6bac4a2826c6e06d79b',
         merchant: 'skier',
         merchantLevel: 1,
-        quest: null,
+        quest: undefined,
         value: 8917,
         valueInMainCurrency: 8917
       },
@@ -1220,7 +1220,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 8917,
         valueInMainCurrency: 8917
       },
@@ -1231,7 +1231,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 8917,
           valueInMainCurrency: 8917
         }
@@ -1242,7 +1242,7 @@ describe('getPrice()', () => {
         itemId: '5a38e6bac4a2826c6e06d79b',
         merchant: 'skier',
         merchantLevel: 1,
-        quest: null,
+        quest: undefined,
         value: 8917,
         valueInMainCurrency: 8917
       },
@@ -1267,7 +1267,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1277,7 +1277,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1288,7 +1288,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -1319,7 +1319,7 @@ describe('getPrice()', () => {
           itemId: '5ca20d5986f774331e7c9602',
           merchant: 'ragman',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 23444,
           valueInMainCurrency: 23444
         },
@@ -1329,7 +1329,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 23444,
           valueInMainCurrency: 23444
         },
@@ -1340,7 +1340,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 23444,
             valueInMainCurrency: 23444
           }
@@ -1351,7 +1351,7 @@ describe('getPrice()', () => {
           itemId: '5ca20d5986f774331e7c9602',
           merchant: 'ragman',
           merchantLevel: 1,
-          quest: null,
+          quest: undefined,
           value: 23444,
           valueInMainCurrency: 23444
         },
@@ -1385,7 +1385,7 @@ describe('getPrice()', () => {
           itemId: '5e00903ae9dc277128008b87',
           merchant: 'flea-market',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 26282,
           valueInMainCurrency: 26282
         },
@@ -1395,7 +1395,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 26282,
           valueInMainCurrency: 26282
         },
@@ -1406,7 +1406,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 26282,
             valueInMainCurrency: 26282
           }
@@ -1417,7 +1417,7 @@ describe('getPrice()', () => {
           itemId: '5e00903ae9dc277128008b87',
           merchant: 'flea-market',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 26282,
           valueInMainCurrency: 26282
         },
@@ -1459,7 +1459,7 @@ describe('getPrice()', () => {
           itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
           merchant: 'peacekeeper',
           merchantLevel: 3.0,
-          quest: null,
+          quest: undefined,
           value: 0.0,
           valueInMainCurrency: 0.0
         },
@@ -1482,7 +1482,7 @@ describe('getPrice()', () => {
           itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
           merchant: 'peacekeeper',
           merchantLevel: 3.0,
-          quest: null,
+          quest: undefined,
           value: 0.0,
           valueInMainCurrency: 0.0
         },
@@ -1492,7 +1492,7 @@ describe('getPrice()', () => {
           itemId: '590a3b0486f7743954552bdb', // Printed circuit board
           merchant: 'flea-market',
           merchantLevel: 0.0,
-          quest: null,
+          quest: undefined,
           value: 15000.0,
           valueInMainCurrency: 15000.0
         },
@@ -1502,7 +1502,7 @@ describe('getPrice()', () => {
           itemId: '5672cb724bdc2dc2088b456b', // Geiger-Muller counter
           merchant: 'flea-market',
           merchantLevel: 0.0,
-          quest: null,
+          quest: undefined,
           value: 250.0,
           valueInMainCurrency: 25000.0
         },
@@ -1517,7 +1517,7 @@ describe('getPrice()', () => {
           itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
           merchant: 'prapor',
           merchantLevel: 0.0,
-          quest: null,
+          quest: undefined,
           value: 0.0,
           valueInMainCurrency: 0.0
         },
@@ -1527,7 +1527,7 @@ describe('getPrice()', () => {
           itemId: '590a3cd386f77436f20848cb', // Energy-saving lamp
           merchant: 'mechanic',
           merchantLevel: 1.0,
-          quest: null,
+          quest: undefined,
           value: 200.0,
           valueInMainCurrency: 200.0
         }
@@ -1574,7 +1574,7 @@ describe('getPrice()', () => {
         itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
         merchant: 'peacekeeper',
         merchantLevel: 3,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 111200
       },
@@ -1585,7 +1585,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 500,
           valueInMainCurrency: 50000
         },
@@ -1595,7 +1595,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 61200,
           valueInMainCurrency: 61200
         }
@@ -1606,7 +1606,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 111200,
         valueInMainCurrency: 111200
       },
@@ -1629,7 +1629,7 @@ describe('getPrice()', () => {
         itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
         merchant: 'peacekeeper',
         merchantLevel: 3,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 55600
       },
@@ -1654,7 +1654,7 @@ describe('getPrice()', () => {
           itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
           merchant: 'peacekeeper',
           merchantLevel: 3.0,
-          quest: null,
+          quest: undefined,
           value: 0.0,
           valueInMainCurrency: 0.0
         },
@@ -1664,7 +1664,7 @@ describe('getPrice()', () => {
           itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
           merchant: 'prapor',
           merchantLevel: 3.0,
-          quest: null,
+          quest: undefined,
           value: 25000000.0,
           valueInMainCurrency: 25000000.0
         }
@@ -1698,7 +1698,7 @@ describe('getPrice()', () => {
         itemId: '544a37c44bdc2d25388b4567',
         merchant: 'prapor',
         merchantLevel: 3,
-        quest: null,
+        quest: undefined,
         value: 50000000,
         valueInMainCurrency: 50000000
       },
@@ -1709,7 +1709,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 50000000,
           valueInMainCurrency: 50000000
         }
@@ -1720,7 +1720,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 50000000,
         valueInMainCurrency: 50000000
       },
@@ -1730,7 +1730,7 @@ describe('getPrice()', () => {
         itemId: '544a37c44bdc2d25388b4567',
         merchant: 'prapor',
         merchantLevel: 3,
-        quest: null,
+        quest: undefined,
         value: 25000000,
         valueInMainCurrency: 25000000
       },
@@ -1755,7 +1755,7 @@ describe('getPrice()', () => {
           itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
           merchant: 'peacekeeper',
           merchantLevel: 3.0,
-          quest: null,
+          quest: undefined,
           value: 0.0,
           valueInMainCurrency: 0.0
         },
@@ -1770,7 +1770,7 @@ describe('getPrice()', () => {
           itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
           merchant: 'peacekeeper',
           merchantLevel: 2.0,
-          quest: null,
+          quest: undefined,
           value: 0.0,
           valueInMainCurrency: 0.0
         }
@@ -1809,7 +1809,7 @@ describe('getPrice()', () => {
         itemId: '544a37c44bdc2d25388b4567',
         merchant: 'peacekeeper',
         merchantLevel: 3,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -1820,7 +1820,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -1835,7 +1835,7 @@ describe('getPrice()', () => {
         itemId: '544a37c44bdc2d25388b4567',
         merchant: 'peacekeeper',
         merchantLevel: 3,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -1900,7 +1900,7 @@ describe('getPrice()', () => {
           itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
           merchant: 'peacekeeper',
           merchantLevel: 3.0,
-          quest: null,
+          quest: undefined,
           value: 0.0,
           valueInMainCurrency: 0.0
         }
@@ -1940,7 +1940,7 @@ describe('getPrice()', () => {
           'itemId': '558022b54bdc2dac148b458d', // EOTech EXPS3 holographic sight (Tan)
           'merchant': 'mechanic',
           'merchantLevel': 4.0,
-          'quest': null,
+          'quest': undefined,
           'value': 29400.0,
           'valueInMainCurrency': 29400.0
         }

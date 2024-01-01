@@ -113,7 +113,7 @@ export default defineComponent({
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -123,7 +123,7 @@ export default defineComponent({
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -134,7 +134,7 @@ export default defineComponent({
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -284,9 +284,9 @@ export default defineComponent({
       const exportResult = await Services.get(ExportService).export([build.value])
 
       if (exportResult.success) {
-        notificationService.notify(NotificationType.success, vueI18n.t('message.buildsExported'), true)
+        notificationService.notify(NotificationType.success, vueI18n.t('message.buildsExported'))
       } else {
-        notificationService.notify(NotificationType.error, exportResult.failureMessage, true)
+        notificationService.notify(NotificationType.error, exportResult.failureMessage)
       }
     }
 
@@ -333,7 +333,7 @@ export default defineComponent({
      * @param request - Compatibility request.
      */
     function onArmorCompatibilityRequest(request: CompatibilityRequest) {
-      request.setResult(buildPropertiesService.checkCanAddArmor(build.value))
+      request.setResult(buildPropertiesService.canAddArmor(build.value))
     }
 
     /**
@@ -369,7 +369,7 @@ export default defineComponent({
      * @param request - Compatibility request that must be resolved.
      */
     function onModCompatibilityRequest(request: CompatibilityRequest) {
-      request.setResult(buildPropertiesService.checkCanAddMod(build.value, request.itemId, request.path))
+      request.setResult(buildPropertiesService.canAddMod(build.value, request.itemId, request.path))
     }
 
     /**
@@ -395,7 +395,7 @@ export default defineComponent({
      * @param request - Compatibility request.
      */
     function onTacticalRigCompatibilityRequest(request: CompatibilityRequest) {
-      request.setResult(buildPropertiesService.checkCanAddVest(build.value, request.itemId))
+      request.setResult(buildPropertiesService.canAddVest(build.value, request.itemId))
     }
 
     /**

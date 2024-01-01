@@ -32,7 +32,7 @@ export class InventorySlotComponentService {
     }
 
     if (compatibilityResult != null && !compatibilityResult.success) {
-      Services.get(NotificationService).notify(NotificationType.warning, compatibilityResult.failureMessage, true)
+      Services.get(NotificationService).notify(NotificationType.warning, compatibilityResult.failureMessage)
 
       return false
     }

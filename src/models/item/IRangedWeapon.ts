@@ -32,6 +32,11 @@ export interface IRangedWeapon extends IModdable {
   horizontalRecoil: number
 
   /**
+   * Minute of angle. Represents the weapon accuracy.
+   */
+  minuteOfAngle: number | undefined
+
+  /**
    * Ergonomics of the whole preset.
    * Undefined if the item is not a preset.
    */

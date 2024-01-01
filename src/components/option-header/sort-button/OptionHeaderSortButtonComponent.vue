@@ -14,7 +14,7 @@
     />
     <img
       v-else-if="customIcon != null"
-      :src="'/assets/' + customIcon + '.webp'"
+      :src="'/images/' + customIcon + '.webp'"
       class="custom-icon"
     >
   </div>

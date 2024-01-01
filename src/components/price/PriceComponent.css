@@ -1,5 +1,5 @@
-@import '../../assets/css/currency.css';
-@import '../../assets/css/icon.css';
+@import '../../css/currency.css';
+@import '../../css/icon.css';
 
 .price {
   align-items: center;

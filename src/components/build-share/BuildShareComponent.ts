@@ -49,12 +49,12 @@ export default defineComponent({
 
       navigator.clipboard.writeText(shareLinkInternal)
         .then(() => {
-          Services.get(NotificationService).notify(NotificationType.information, i18n.t('message.shareLinkCopied'), true)
+          Services.get(NotificationService).notify(NotificationType.information, i18n.t('message.shareLinkCopied'))
           closeSharingDialog()
         })
         .catch(() => {
           Services.get(LogService).logError('message.shareLinkCopyError')
-          Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.shareLinkCopyError'), true)
+          Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.shareLinkCopyError'))
         })
     }
 
@@ -72,7 +72,7 @@ export default defineComponent({
       const sharedLinkResult = await Services.get(BuildService).toSharableURL(props.build)
 
       if (!sharedLinkResult.success) {
-        Services.get(NotificationService).notify(NotificationType.warning, sharedLinkResult.failureMessage, true)
+        Services.get(NotificationService).notify(NotificationType.warning, sharedLinkResult.failureMessage)
 
         return
       }

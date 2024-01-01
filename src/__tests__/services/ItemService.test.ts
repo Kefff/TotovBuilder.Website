@@ -3,25 +3,25 @@ import Services from '../../services/repository/Services'
 import { ItemService } from '../../services/ItemService'
 import { IPrice } from '../../models/item/IPrice'
 import Result, { FailureType } from '../../utils/Result'
-import ItemCategories from '../../../test-data/item-categories.json'
+import ItemCategories from '../__data__/item-categories.json'
 import { ItemFetcherService } from '../../services/ItemFetcherService'
-import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
-import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
+import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { TarkovValuesService } from '../../services/TarkovValuesService'
-import { useItemFetcherServiceMock } from '../../__mocks__/ItemFetcherServiceMock'
+import { useItemFetcherServiceMock } from '../__mocks__/ItemFetcherServiceMock'
 import { NotificationService } from '../../services/NotificationService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import MockDate from 'mockdate'
-import ItemCategoriesMock from '../../../test-data/item-categories.json'
-import ItemsMock from '../../../test-data/items.json'
-import PresetsMock from '../../../test-data/presets.json'
-import PricesMock from '../../../test-data/prices.json'
+import ItemCategoriesMock from '../__data__/item-categories.json'
+import ItemsMock from '../__data__/items'
+import PresetsMock from '../__data__/presets'
+import PricesMock from '../__data__/prices'
 import { IItem } from '../../models/item/IItem'
-import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
+import { usePresetServiceMock } from '../__mocks__/PresetPropertiesServiceMock'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { PresetService } from '../../services/PresetService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { useGlobalFilterServiceMock } from '../../__mocks__/GlobalFilterServiceMock'
+import { useGlobalFilterServiceMock } from '../__mocks__/GlobalFilterServiceMock'
 import { describe, expect, it } from 'vitest'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 
@@ -69,7 +69,7 @@ describe('fetchItemCategories()', () => {
     useWebsiteConfigurationServiceMock()
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItemCategories()).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'API error')))
+    when(itemFetcherServiceMock.fetchItemCategories()).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'Fetch error')))
     when(itemFetcherServiceMock.fetchItems()).thenReturn(Promise.resolve(Result.ok(ItemsMock as IItem[])))
     when(itemFetcherServiceMock.fetchPresets()).thenReturn(Promise.resolve(Result.ok(PresetsMock)))
     when(itemFetcherServiceMock.fetchPrices()).thenReturn(Promise.resolve(Result.ok(PricesMock as IPrice[])))
@@ -94,7 +94,7 @@ describe('fetchItems()', () => {
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
     when(itemFetcherServiceMock.fetchItemCategories()).thenReturn(Promise.resolve(Result.ok(ItemCategoriesMock)))
-    when(itemFetcherServiceMock.fetchItems()).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'API error')))
+    when(itemFetcherServiceMock.fetchItems()).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'Fetch error')))
     when(itemFetcherServiceMock.fetchPresets()).thenReturn(Promise.resolve(Result.ok(PresetsMock)))
     when(itemFetcherServiceMock.fetchPrices()).thenReturn(Promise.resolve(Result.ok(PricesMock as IPrice[])))
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
@@ -182,7 +182,7 @@ describe('getItem()', () => {
         itemId: '584147732459775a2b6d9f12',
         merchant: 'flea-market',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 28999,
         valueInMainCurrency: 28999
       }] as IPrice[])
@@ -272,7 +272,7 @@ describe('getItems()', () => {
         itemId: '584147732459775a2b6d9f12',
         merchant: 'flea-market',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 28999,
         valueInMainCurrency: 28999
       }] as IPrice[])
@@ -302,7 +302,7 @@ describe('getItems()', () => {
         itemId: '5c1d0f4986f7744bb01837fa',
         merchant: 'mechanic',
         merchantLevel: 4,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       }
@@ -364,7 +364,7 @@ describe('getItems()', () => {
         itemId: '584147732459775a2b6d9f12',
         merchant: 'flea-market',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 28999,
         valueInMainCurrency: 28999
       }] as IPrice[])

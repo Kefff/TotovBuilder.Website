@@ -1,5 +1,5 @@
-import { useItemServiceMock } from '../../../__mocks__/ItemServiceMock'
-import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
+import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { IBuild } from '../../../models/build/IBuild'
 import { IRangedWeapon } from '../../../models/item/IRangedWeapon'
 import { Migration160 } from '../../../utils/migrations/Migration1.6.0'
@@ -143,11 +143,11 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
       true,
       [
         {
-          baseItemId: null,
+          baseItemId: undefined,
           caliber: '',
           categoryId: 'mainWeapon',
           conflictingItemIds: [],
-          defaultPresetId: null,
+          defaultPresetId: undefined,
           ergonomics: 0,
           fireModes: [],
           fireRate: 0,

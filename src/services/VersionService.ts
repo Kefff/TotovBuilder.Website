@@ -1,9 +1,8 @@
 import { IChangelogEntry } from '../models/configuration/IChangelogEntry'
 import vueI18n from '../plugins/vueI18n'
-import { ApiService } from './ApiService'
+import { FetchService } from './FetchService'
 import Services from './repository/Services'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
-import i18n from '../plugins/vueI18n'
 import { NotificationService, NotificationType } from './NotificationService'
 import Migrations from '../utils/migrations/Migrations'
 import { BuildService } from './BuildService'
@@ -121,7 +120,7 @@ export class VersionService {
         const errorMessage = vueI18n.t('message.buildMigrationError', { message: notificationMessage, errors: migrationResult.failureMessage })
 
         Services.get(LogService).logError(errorMessage)
-        Services.get(NotificationService).notify(NotificationType.error, notificationMessage, true)
+        Services.get(NotificationService).notify(NotificationType.error, notificationMessage)
 
         return false
       }
@@ -288,15 +287,16 @@ export class VersionService {
   private async startChangelogFetching(): Promise<void> {
     this.isFetchingChangelogs = true
 
-    const apiService = Services.get(ApiService)
-    const websiteConfiguration = Services.get(WebsiteConfigurationService).configuration
-    const changelogResult = await apiService.get<IChangelogEntry[]>(websiteConfiguration.changelogApi)
+    const fetchService = Services.get(FetchService)
+    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointChangelog
+    const changelogResult = await fetchService.get<IChangelogEntry[]>(endpoint)
 
     if (changelogResult.success) {
       this.changelog = changelogResult.value
+      Services.get(LogService).logInformation('message.changelogFetched')
     } else {
       Services.get(LogService).logError('message.changelogNotFetched')
-      Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.changelogLoadingError'), true)
+      Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.changelogLoadingError'))
     }
 
     this.isFetchingChangelogs = false

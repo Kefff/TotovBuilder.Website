@@ -19,7 +19,7 @@
       </div>
       <img
         v-if="hasLevels(merchanFilter.merchant)"
-        :src="'/assets/' + merchanFilter.merchant + '.webp'"
+        :src="'/images/' + merchanFilter.merchant + '.webp'"
         :class="'merchant-filter-icon' + (!merchanFilter.enabled ? ' merchant-filter-icon-disabled' : '')"
         @click="toggleFilter(merchanFilter)"
       >

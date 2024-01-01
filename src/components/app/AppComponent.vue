@@ -3,7 +3,7 @@
     <div>
       <img
         v-tooltip.bottom="$t('caption.approvedByPrapor')"
-        :src="isSanta ? '/assets/santa_prapor_smiling.webp' : '/assets/prapor_smiling.webp'"
+        :src="isSanta ? '/images/santa_prapor_smiling.webp' : '/images/prapor_smiling.webp'"
         class="app-title-prapor"
       >
       <h1>
@@ -90,6 +90,10 @@
           >
             {{ $t('message.apiDisclaimer2') }}
           </a>.
+        </span>
+      </div>
+      <div class="app-api-disclaimer">
+        <span>
           {{ $t('message.apiDisclaimer3') }}
           <a
             href="https://opencollective.com/tarkov-dev"

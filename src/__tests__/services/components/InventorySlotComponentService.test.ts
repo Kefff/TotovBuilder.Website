@@ -8,9 +8,9 @@ import { NotificationService } from '../../../services/NotificationService'
 import Services from '../../../services/repository/Services'
 import { PathUtils } from '../../../utils/PathUtils'
 import Result, { FailureType } from '../../../utils/Result'
-import { useItemServiceMock } from '../../../__mocks__/ItemServiceMock'
-import { useTarkovValuesServiceMock } from '../../../__mocks__/TarkovValuesServiceMock'
-import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
+import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { describe, expect, it } from 'vitest'
 
 describe('getAcceptedItems()', () => {

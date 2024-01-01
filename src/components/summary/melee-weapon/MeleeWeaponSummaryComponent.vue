@@ -5,7 +5,7 @@
       class="option-value custom-icon-after-text"
     >
       <span>{{ item.chopDamage }}</span>
-      <img src="/assets/chop.webp">
+      <img src="/images/chop.webp">
     </div>
   </div>
   <div class="option-entry">
@@ -14,7 +14,7 @@
       class="option-value custom-icon-after-text"
     >
       <span>{{ item.stabDamage }}</span>
-      <img src="/assets/stab.webp">
+      <img src="/images/stab.webp">
     </div>
   </div>
   <div class="option-entry">

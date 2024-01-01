@@ -4,12 +4,12 @@ import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import Services from '../../services/repository/Services'
 import { InventoryItemService } from '../../services/InventoryItemService'
-import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
-import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
-import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
-import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
+import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
+import { usePresetServiceMock } from '../__mocks__/PresetPropertiesServiceMock'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { describe, expect, it } from 'vitest'
 
@@ -386,7 +386,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -396,7 +396,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 116824,
           valueInMainCurrency: 116824
         },
@@ -407,7 +407,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 116824,
             valueInMainCurrency: 116824
           }
@@ -418,7 +418,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -435,7 +435,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -445,7 +445,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 1026292,
           valueInMainCurrency: 1026292
         },
@@ -456,7 +456,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 12,
             valueInMainCurrency: 1380
           },
@@ -466,7 +466,7 @@ describe('getPrice()', () => {
             itemId: '',
             merchant: '',
             merchantLevel: 0,
-            quest: null,
+            quest: undefined,
             value: 9151,
             valueInMainCurrency: 1024912
           }
@@ -477,7 +477,7 @@ describe('getPrice()', () => {
           itemId: '',
           merchant: '',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -536,7 +536,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -546,7 +546,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       },
@@ -557,7 +557,7 @@ describe('getPrice()', () => {
         itemId: '',
         merchant: '',
         merchantLevel: 0,
-        quest: null,
+        quest: undefined,
         value: 0,
         valueInMainCurrency: 0
       },

@@ -1,6 +1,6 @@
 import { IItem } from '../models/item/IItem'
 import Result, { FailureType } from '../utils/Result'
-import i18n from '../plugins/vueI18n'
+import vueI18n from '../plugins/vueI18n'
 import Services from './repository/Services'
 import { ICurrency } from '../models/configuration/ICurrency'
 import { NotificationService, NotificationType } from './NotificationService'
@@ -101,7 +101,7 @@ export class ItemService {
     const currency = Services.get(TarkovValuesService).values.currencies.find(c => c.name === name)
 
     if (currency == null) {
-      return Result.fail(FailureType.error, 'ItemService.getCurrency()', i18n.t('message.currencyNotFound', { currency: name }))
+      return Result.fail(FailureType.error, 'ItemService.getCurrency()', vueI18n.t('message.currencyNotFound', { currency: name }))
     }
 
     return Result.ok(currency)
@@ -120,7 +120,7 @@ export class ItemService {
       return Result.fail(
         FailureType.error,
         'ItemService.getItem()',
-        i18n.t('message.itemNotFound', { id })
+        vueI18n.t('message.itemNotFound', { id })
       )
     }
 
@@ -159,7 +159,7 @@ export class ItemService {
       return Result.fail(
         FailureType.error,
         'ItemService.getItems()',
-        i18n.t('message.itemsNotFound', { ids: `${notFoundItemIds.join('", "')}` })
+        vueI18n.t('message.itemsNotFound', { ids: `${notFoundItemIds.join('", "')}` })
       )
     }
 
@@ -186,7 +186,7 @@ export class ItemService {
       return Result.fail(
         FailureType.error,
         'ItemService.getItemsOfCategories',
-        i18n.t('message.itemsOfCategoriesNotFound', { ids: `${categoryIds.join('", "')}` }))
+        vueI18n.t('message.itemsOfCategoriesNotFound', { ids: `${categoryIds.join('", "')}` }))
     }
 
     return Result.ok(items)
@@ -200,7 +200,7 @@ export class ItemService {
     const currency = Services.get(TarkovValuesService).values.currencies.find(c => c.mainCurrency)
 
     if (currency == null) {
-      return Result.fail(FailureType.error, 'ItemService.getMainCurrency()', i18n.t('message.mainCurrencyNotFound'))
+      return Result.fail(FailureType.error, 'ItemService.getMainCurrency()', vueI18n.t('message.mainCurrencyNotFound'))
     }
 
     return Result.ok(currency)
@@ -412,10 +412,10 @@ export class ItemService {
    */
   private updateItemsPrices(pricesResult: Result<IPrice[]>) {
     if (!pricesResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, i18n.t('message.pricesLoadingError'), true)
+      Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.pricesLoadingError'))
 
       // When an error occurs, we set the last fetch date in order to make the cache expire 20 seconds later.
-      // This is to avoid making a new API request for each of the 2000+ items.
+      // This is to avoid making a new request for each of the 3000+ items.
       const websiteConfigurationService = Services.get(WebsiteConfigurationService)
       this.lastPricesFetchDate = new Date(
         new Date().getTime()

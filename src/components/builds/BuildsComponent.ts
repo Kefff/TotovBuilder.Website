@@ -96,11 +96,11 @@ export default defineComponent({
      * Checks hether builds have not been exported. Displays a warning if that is the case.
      */
     function checkBuildsNotExported() {
-      const exportWarningShowedKey = Services.get(WebsiteConfigurationService).configuration.exportWarningShowedStoregeKey
+      const exportWarningShowedKey = Services.get(WebsiteConfigurationService).configuration.exportWarningShowedStorageKey
       const exportWarningShowed = sessionStorage.getItem(exportWarningShowedKey)
 
       if (hasBuildsNotExported.value && exportWarningShowed == null) {
-        Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.buildsNotExported'), true)
+        Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.buildsNotExported'))
         sessionStorage.setItem(exportWarningShowedKey, '')
       }
     }

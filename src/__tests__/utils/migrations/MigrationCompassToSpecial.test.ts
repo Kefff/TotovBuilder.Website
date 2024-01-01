@@ -1,4 +1,4 @@
-import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 import { IBuild } from '../../../models/build/IBuild'
 import { MigrationCompassToSpecial } from '../../../utils/migrations/MigrationCompassToSpecial'
 import { describe, expect, it } from 'vitest'

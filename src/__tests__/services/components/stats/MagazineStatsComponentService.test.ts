@@ -2,7 +2,7 @@ import { IMagazine } from '../../../../models/item/IMagazine'
 import { MagazineStatsComponentService } from '../../../../services/components/stats/MagazineStatsComponentService'
 import { NotificationService } from '../../../../services/NotificationService'
 import Services from '../../../../services/repository/Services'
-import { useItemServiceMock } from '../../../../__mocks__/ItemServiceMock'
+import { useItemServiceMock } from '../../../__mocks__/ItemServiceMock'
 import { describe, expect, it } from 'vitest'
 
 describe('getAcceptedCartridgesNames()', () => {

@@ -1,7 +1,7 @@
 import { IBuild } from '../../models/build/IBuild'
 import { BuildService } from '../BuildService'
 import { NotificationService, NotificationType } from '../NotificationService'
-import i18n from '../../plugins/vueI18n'
+import vueI18n from '../../plugins/vueI18n'
 import { Router } from 'vue-router'
 import Services from '../repository/Services'
 import Result from '../../utils/Result'
@@ -21,7 +21,7 @@ export class BuildComponentService {
     const buildName = build.name
 
     buildService.delete(build.id)
-    notificationService.notify(NotificationType.information, i18n.t('message.buildDeleted', { name: buildName }), true)
+    notificationService.notify(NotificationType.information, vueI18n.t('message.buildDeleted', { name: buildName }))
     router.push({ name: 'Builds' })
   }
 
@@ -35,7 +35,7 @@ export class BuildComponentService {
     const buildResult = await buildService.fromSharableString(sharableString)
 
     if (!buildResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, buildResult.failureMessage, true)
+      Services.get(NotificationService).notify(NotificationType.error, buildResult.failureMessage)
     }
 
     return buildResult
@@ -56,7 +56,7 @@ export class BuildComponentService {
     const result = buildService.get(id)
 
     if (!result.success) {
-      Services.get(NotificationService).notify(NotificationType.warning, result.failureMessage, true)
+      Services.get(NotificationService).notify(NotificationType.warning, result.failureMessage)
 
       return buildService.create()
     }
@@ -88,6 +88,6 @@ export class BuildComponentService {
       }
     }
 
-    notificationService.notify(NotificationType.success, i18n.t('message.buildSaved', { name: build.name }), true)
+    notificationService.notify(NotificationType.success, vueI18n.t('message.buildSaved', { name: build.name }))
   }
 }

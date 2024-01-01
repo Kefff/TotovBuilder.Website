@@ -2,14 +2,14 @@ import { IItem } from '../../models/item/IItem'
 import { IMerchantFilter } from '../../models/utils/IMerchantFilter'
 import { IPrice } from '../../models/item/IPrice'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
-import WebsiteConfigurationMock from '../../../test-data/website-configuration.json'
-import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
-import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
+import WebsiteConfigurationMock from '../__data__/website-configuration.json'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
+import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { IItemExclusionFilter } from '../../models/utils/IItemExclusionFilter'
 import Services from '../../services/repository/Services'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
-import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { ItemService } from '../../services/ItemService'
 import { beforeEach, describe, expect, it } from 'vitest'
 
@@ -219,7 +219,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'flea-market',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -227,7 +227,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'prapor',
           merchantLevel: 4,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         }
@@ -237,7 +237,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'flea-market',
           merchantLevel: 0,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -245,7 +245,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'prapor',
           merchantLevel: 4,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         }
@@ -257,7 +257,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'prapor',
           merchantLevel: 4,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         },
@@ -265,7 +265,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'therapist',
           merchantLevel: 4,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         }
@@ -275,7 +275,7 @@ describe('getMatchingPrices()', () => {
           currencyName: '',
           merchant: 'prapor',
           merchantLevel: 4,
-          quest: null,
+          quest: undefined,
           value: 0,
           valueInMainCurrency: 0
         }

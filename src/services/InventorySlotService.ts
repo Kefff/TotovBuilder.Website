@@ -1,6 +1,6 @@
 import { IInventorySlotType } from '../models/build/IInventorySlotType'
-import i18n from '../plugins/vueI18n'
-import InventorySlotTypes from '../assets/data/inventory-slot-types.json'
+import vueI18n from '../plugins/vueI18n'
+import InventorySlotTypes from '../data/inventory-slot-types.json'
 import Result, { FailureType } from '../utils/Result'
 
 /**
@@ -16,7 +16,7 @@ export class InventorySlotService {
     const jsonSlotType = InventorySlotTypes.find((ist) => ist.id === id)
 
     if (jsonSlotType == null) {
-      return Result.fail(FailureType.error, 'InventorySlotTypeService.get()', i18n.t('message.inventorySlotTypeNotFound', { id: id }))
+      return Result.fail(FailureType.error, 'InventorySlotTypeService.get()', vueI18n.t('message.inventorySlotTypeNotFound', { id: id }))
     }
 
     const slotType: IInventorySlotType = {

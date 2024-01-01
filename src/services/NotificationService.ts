@@ -62,8 +62,8 @@ export class NotificationService {
    * @param message - Message.
    * @param toast - Indicates whether a notification will be displayed as a toast or not.
    * @param toastDuration - Duration of the toast.
-   * Zero means the toast will be displayed until manually closed by the user.
-   * undefined means the toast will be displayed until the default duration for the notification type is reached.
+   * `0` means the toast will be displayed until manually closed by the user.
+   * `undefined` means the toast will be displayed until the default duration for the notification type is reached.
    * @param buttons - Buttons to display.
    * When at least button exists, the default close button is hidden.
    * Clicking a button closes the notification.
@@ -71,35 +71,32 @@ export class NotificationService {
   public notify(
     type: NotificationType,
     message: string,
-    toast = false,
     toastDuration: number | undefined = undefined,
     buttons: INotificationButton[] | undefined = undefined,
     closable: boolean | undefined = undefined): void {
-    if (toast) {
-      if (toastDuration == null) {
-        const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+    if (toastDuration == null) {
+      const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
-        switch (type) {
-          case NotificationType.error: {
-            toastDuration = Number(websiteConfigurationService.configuration.notificationErrorDuration) * 1000 // In milliseconds
-            break
-          }
-          case NotificationType.information: {
-            toastDuration = Number(websiteConfigurationService.configuration.notificationInformationDuration) * 1000 // In milliseconds
-            break
-          }
-          case NotificationType.success: {
-            toastDuration = Number(websiteConfigurationService.configuration.notificationSuccessDuration) * 1000 // In milliseconds
-            break
-          }
-          case NotificationType.warning: {
-            toastDuration = Number(websiteConfigurationService.configuration.notificationWarningDuration) * 1000 // In milliseconds
-            break
-          }
+      switch (type) {
+        case NotificationType.error: {
+          toastDuration = Number(websiteConfigurationService.configuration.notificationErrorDuration) * 1000 // In milliseconds
+          break
         }
-      } else if (toastDuration === 0) {
-        toastDuration = 3600000
+        case NotificationType.information: {
+          toastDuration = Number(websiteConfigurationService.configuration.notificationInformationDuration) * 1000 // In milliseconds
+          break
+        }
+        case NotificationType.success: {
+          toastDuration = Number(websiteConfigurationService.configuration.notificationSuccessDuration) * 1000 // In milliseconds
+          break
+        }
+        case NotificationType.warning: {
+          toastDuration = Number(websiteConfigurationService.configuration.notificationWarningDuration) * 1000 // In milliseconds
+          break
+        }
       }
+    } else if (toastDuration === 0) {
+      toastDuration = 3600000
     }
 
     switch (type) {
@@ -116,7 +113,6 @@ export class NotificationService {
       date: new Date(),
       id: Guid.create().toString(),
       message,
-      toast,
       toastDuration,
       type
     }

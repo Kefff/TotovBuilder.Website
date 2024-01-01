@@ -1,9 +1,10 @@
 import Services from './repository/Services'
-import { ApiService } from './ApiService'
+import { FetchService } from './FetchService'
 import { ITarkovValues } from '../models/configuration/ITarkovValues'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import Result, { FailureType } from '../utils/Result'
-import i18n from '../plugins/vueI18n'
+import vueI18n from '../plugins/vueI18n'
+import { LogService } from './LogService'
 
 /**
  * Represents a service responsible for getting values related to Tarkov gameplay.
@@ -42,12 +43,15 @@ export class TarkovValuesService {
    * @returns Tarkov values.
    */
   private async fetchTarkovValues(): Promise<Result<ITarkovValues>> {
-    const apiService = Services.get(ApiService)
-    const tarkovValuesResult = await apiService.get<ITarkovValues>(Services.get(WebsiteConfigurationService).configuration.tarkovValuesApi)
+    const fetchService = Services.get(FetchService)
+    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointTarkovValues
+    const tarkovValuesResult = await fetchService.get<ITarkovValues>(endpoint)
 
     if (!tarkovValuesResult.success) {
-      return Result.fail(FailureType.error, 'TarkovValuesService.fetchTarkovValues()', i18n.t('message.tarkovValuesNotFetched'))
+      return Result.fail(FailureType.error, 'TarkovValuesService.fetchTarkovValues()', vueI18n.t('message.tarkovValuesNotFetched'))
     }
+
+    Services.get(LogService).logInformation('message.tarkovValuesFetched')
 
     return tarkovValuesResult
   }

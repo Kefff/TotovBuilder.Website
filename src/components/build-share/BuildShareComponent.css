@@ -1,6 +1,6 @@
-@import '../../assets/css/button.css';
-@import '../../assets/css/icon.css';
-@import '../../assets/css/toolbar.css';
+@import '../../css/button.css';
+@import '../../css/icon.css';
+@import '../../css/toolbar.css';
 
 .build-share {
   align-items: center;

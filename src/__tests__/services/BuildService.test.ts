@@ -1,18 +1,19 @@
 import { IBuild } from '../../models/build/IBuild'
 import { BuildService } from '../../services/BuildService'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { anything, spy, verify, when } from 'ts-mockito'
+import { anything, instance, mock, spy, verify, when } from 'ts-mockito'
 import Result, { FailureType } from '../../utils/Result'
-import WebsiteConfigurationMock from '../../../test-data/website-configuration.json'
+import WebsiteConfigurationMock from '../__data__/website-configuration.json'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
-import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
-import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
+import { useVersionServiceMock } from '../__mocks__/VersionServiceMock'
+import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { VersionService } from '../../services/VersionService'
 import Migrations from '../../utils/migrations/Migrations'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { ReductionService } from '../../services/ReductionService'
 
 const builds: IBuild[] = [
   {
@@ -645,7 +646,7 @@ describe('create()', () => {
     // Assert
     expect(build.id).toBe('')
     expect(build.name).toBe('')
-    expect(build.inventorySlots).toEqual([
+    expect(build.inventorySlots).toStrictEqual([
       {
         items: [undefined],
         typeId: 'onSling'
@@ -750,6 +751,8 @@ describe('delete()', () => {
 describe('fromSharableString()', () => {
   it('should get a build from a sharable string and execute migrations on it', async () => {
     // Arrange
+    Services.configure(BuildService)
+    Services.configure(ReductionService)
     Services.configure(VersionService)
 
     Migrations.splice(0)
@@ -775,7 +778,7 @@ describe('fromSharableString()', () => {
         version: '1.6.0'
       })
 
-    const service = new BuildService()
+    const service = Services.get(BuildService)
     const sharableString = 'XQAAAAKBAQAAAAAAAABAqEppVBKy3f2nWA1_4C5z8-v7-PB2PnO3yE24i4uplQNOe2AQti9qfQ3vHsOnTKDq2nEEFb79VsBzBnD-pb-5Nb0_87qgYNgUqN-kUzC-ixXoaUIxP5bVjrq-YghBtAFQa_O4inxq3hwebGM3jUCTpB0ou_BCcoJymajYEBQ2OvPuy_aF8Vtf4UR8KYA6nugVJv5Kd0v6DWN94D7Kgaza5GFSYqrRHItjPLx6krp0SGceYjtn1RNUBX-ea41hpKDXlBkYuxoBe-ZT10P4Ouq0e2Mmn82YwcUUBrZvQhh3uG6Dn_YU1No29Qi4js2uAwpm-nroMnPbxOd9jDkNeED-9xXjIA'
 
     // Act
@@ -783,7 +786,7 @@ describe('fromSharableString()', () => {
 
     // Assert
     expect(buildResult.success).toBe(true)
-    expect(buildResult.value).toEqual({
+    expect(buildResult.value).toStrictEqual({
       id: '',
       inventorySlots: [
         {
@@ -960,6 +963,8 @@ describe('fromSharableString()', () => {
 
   it('should fail when the sharable string is corrupted', async () => {
     // Arrange
+    Services.configure(ReductionService)
+
     const service = new BuildService()
     const sharableString = 'corrupted'
 
@@ -973,10 +978,13 @@ describe('fromSharableString()', () => {
 
   it('should fail when the parsing of the reduced build fails', async () => {
     // Arrange
+    const reductionServiceMock = mock<ReductionService>()
+    when(reductionServiceMock.parseReducedBuild(anything())).thenReturn(Result.fail(FailureType.error, '', 'Error'))
+
+    Services.configure(ReductionService, undefined, instance(reductionServiceMock))
+
     const service = new BuildService()
     const sharableString = 'XQAAAAIEAQAAAAAAAABAqEppJBKy3f2nWA1_4C5z8-v7-QmsFsh3-Xw5A4r6cKv_m0sfj0O9x9XIb5ScojjRsy4huWDxzBSG1zyaOOej9yI6eVsg6yXMNsehKkbkF4IxN4W52Wr0SPOgjzuUFCVV1O-07KKY5H2MxwF8NvWFSy9VOl89axpWIZlA4rMaW8zwrHUAdC7epHLneT1sKyazlWteJ--ZEOyd3csaogRVGPNtylBhm8wqX_KVr5aLtkpJU-9ba2mmXnpWUf_-OHdA'
-    const serviceSpy = spy(service)
-    when(serviceSpy.parseReducedBuild(anything())).thenReturn(Result.fail(FailureType.error, '', 'Error'))
 
     // Act
     const buildResult = await service.fromSharableString(sharableString)
@@ -989,7 +997,9 @@ describe('fromSharableString()', () => {
   it('should notify when a migration fails', async () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
+    Services.configure(BuildService)
     Services.configure(NotificationService)
+    Services.configure(ReductionService)
     Services.configure(VersionService)
 
     const notificationServiceSpy = spy(Services.get(NotificationService))
@@ -1006,7 +1016,7 @@ describe('fromSharableString()', () => {
         version: '1.6.0'
       })
 
-    const service = new BuildService()
+    const service = Services.get(BuildService)
     const sharableString = 'XQAAAAKBAQAAAAAAAABAqEppVBKy3f2nWA1_4C5z8-v7-PB2PnO3yE24i4uplQNOe2AQti9qfQ3vHsOnTKDq2nEEFb79VsBzBnD-pb-5Nb0_87qgYNgUqN-kUzC-ixXoaUIxP5bVjrq-YghBtAFQa_O4inxq3hwebGM3jUCTpB0ou_BCcoJymajYEBQ2OvPuy_aF8Vtf4UR8KYA6nugVJv5Kd0v6DWN94D7Kgaza5GFSYqrRHItjPLx6krp0SGceYjtn1RNUBX-ea41hpKDXlBkYuxoBe-ZT10P4Ouq0e2Mmn82YwcUUBrZvQhh3uG6Dn_YU1No29Qi4js2uAwpm-nroMnPbxOd9jDkNeED-9xXjIA'
 
     // Act
@@ -1014,7 +1024,7 @@ describe('fromSharableString()', () => {
 
     // Assert
     expect(buildResult.success).toBe(true)
-    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build to version "1.6.0".', true)).once()
+    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build to version "1.6.0".')).once()
   })
 })
 
@@ -1088,585 +1098,21 @@ describe('getAll()', () => {
   })
 })
 
-describe('parseReducedBuild()', () => {
-  it('should parse a reduced build', () => {
-    // Arrange
-    const service = new BuildService()
-    const reducedBuild = {
-      's': [
-        {
-          't': 'onSling',
-          'i': [
-            {
-              'i': '574d967124597745970e7c94', // Simonov SKS 7.62x39 semi-automatic carbine
-              'm': [
-                {
-                  'n': 'mod_stock',
-                  'i': {
-                    'i': '574dad8024597745964bf05c' // SKS TOZ wooden stock (56-A-231 Sb.5)
-                  }
-                },
-                {
-                  'n': 'mod_sight_rear',
-                  'i': {
-                    'i': '574db213245977459a2f3f5d' // SKS rear sight
-                  }
-                },
-                {
-                  'n': 'mod_magazine',
-                  'i': {
-                    'c': [
-                      {
-                        'i': '5656d7c34bdc2d9d198b4587', // 7.62x39mm PS gzh
-                        'q': 10
-                      }
-                    ],
-                    'i': '587df3a12459772c28142567' // SKS 7.62x39 10-round internal box magazine
-                  }
-                },
-                {
-                  'n': 'mod_muzzle'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          't': 'backpack',
-          'i': [
-            {
-              'i': '5c0e805e86f774683f3dd637', // 3V G Paratus 3-Day Operator's Tactical backpack
-              'c': [
-                {
-                  'i': '5448fee04bdc2dbc018b4567' // 0.6 liter water bottle
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-
-    // Act
-    const buildResult = service.parseReducedBuild(reducedBuild)
-
-    // Assert
-    expect(buildResult.success).toBe(true)
-    expect(buildResult.value).toEqual({
-      id: '',
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '574d967124597745970e7c94',
-              modSlots: [
-                {
-                  item: {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: '574dad8024597745964bf05c',
-                    modSlots: [],
-                    quantity: 1
-                  },
-                  modSlotName: 'mod_stock'
-                },
-                {
-                  item: {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: '574db213245977459a2f3f5d',
-                    modSlots: [],
-                    quantity: 1
-                  },
-                  modSlotName: 'mod_sight_rear'
-                },
-                {
-                  item: {
-                    content: [
-                      {
-                        content: [],
-                        ignorePrice: false,
-                        itemId: '5656d7c34bdc2d9d198b4587',
-                        modSlots: [],
-                        quantity: 10
-                      }
-                    ],
-                    ignorePrice: false,
-                    itemId: '587df3a12459772c28142567',
-                    modSlots: [],
-                    quantity: 1
-                  },
-                  modSlotName: 'mod_magazine'
-                },
-                {
-                  item: undefined,
-                  modSlotName: 'mod_muzzle'
-                }
-              ],
-              quantity: 1
-            }
-          ],
-          typeId: 'onSling'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'onBack'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'holster'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'bodyArmor'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'tacticalRig'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'headwear'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'earpiece'
-        },
-        {
-          items: [
-            undefined,
-            undefined,
-            undefined,
-            undefined
-          ],
-          typeId: 'pockets'
-        },
-        {
-          items: [
-            {
-              content: [
-                {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: '5448fee04bdc2dbc018b4567',
-                  modSlots: [],
-                  quantity: 1
-                }
-              ],
-              ignorePrice: false,
-              itemId: '5c0e805e86f774683f3dd637',
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'backpack'
-        },
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '544a11ac4bdc2d470e8b456a',
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'pouch'
-        },
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '54491bb74bdc2d09088b4567',
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'scabbard'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'faceCover'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'eyewear'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'armband'
-        },
-        {
-          items: [undefined, undefined, undefined],
-          typeId: 'special'
-        }
-      ],
-      lastExported: undefined,
-      lastUpdated: undefined,
-      lastWebsiteVersion: undefined,
-      name: ''
-    } as IBuild)
-  })
-
-  it.each([
-    [
-      {
-        's': null
-      },
-      'Cannot parse reduced build because it has no inventory slots.'
-    ],
-    [
-      {
-        's': [
-          {
-            't': 'invalid',
-            'i': [
-              {
-                'i': '5c0e805e86f774683f3dd637' // 3V G Paratus 3-Day Operator's Tactical backpack
-              }
-            ]
-          }
-        ]
-      },
-      'Cannot find inventory slot type "invalid".'
-    ],
-    [
-      {
-        's': [
-          {
-            't': 'backpack',
-            'i': []
-          }
-        ]
-      },
-      'Cannot parse inventory slot without items.'
-    ],
-    [
-      {
-        's': [
-          {
-            'i': [
-              {
-                'i': '5c0e805e86f774683f3dd637' // 3V G Paratus 3-Day Operator's Tactical backpack
-              }
-            ]
-          }
-        ]
-      },
-      'Cannot parse inventory slot without type ID.'
-    ],
-    [
-      {
-        's': [
-          {
-            't': 'backpack',
-            'i': [
-              {
-                'q': 2
-              }
-            ]
-          }
-        ]
-      },
-      'Cannot parse inventory item without item ID.'
-    ],
-    [
-      {
-        's': [
-          {
-            't': 'backpack',
-            'i': [
-              {
-                'c': [
-                  {
-                    'q': 2
-                  }
-                ],
-                'i': '5c0e805e86f774683f3dd637' // 3V G Paratus 3-Day Operator's Tactical backpack
-              }
-            ]
-          }
-        ]
-      },
-      'Cannot parse inventory item without item ID.'
-    ],
-    [
-      {
-        's': [
-          {
-            't': 'onSling',
-            'i': [
-              {
-                'i': '574d967124597745970e7c94', // Simonov SKS 7.62x39 semi-automatic carbine
-                'm': [
-                  {
-                    'i': {
-                      'i': '574dad8024597745964bf05c' // SKS TOZ wooden stock (56-A-231 Sb.5)
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      'Cannot parse inventory mod slot without mod slot name.'
-    ],
-    [
-      {
-        's': [
-          {
-            't': 'onSling',
-            'i': [
-              {
-                'i': '574d967124597745970e7c94', // Simonov SKS 7.62x39 semi-automatic carbine
-                'm': [
-                  {
-                    'n': 'mod_stock',
-                    'i': {
-                      'q': 2
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      'Cannot parse inventory item without item ID.'
-    ]
-  ])('should fail when the parsing of an inventory slot fails', (reducedBuild: Record<string, unknown>, expected: string) => {
-    // Arrange
-    useWebsiteConfigurationServiceMock()
-
-    const service = new BuildService()
-
-    // Act
-    const buildResult = service.parseReducedBuild(reducedBuild)
-
-    // Assert
-    expect(buildResult.success).toBe(false)
-    expect(buildResult.failureMessage).toBe(expected)
-  })
-})
-
-describe('reduceBuild()', () => {
-  it('should reduce a build', () => {
-    // Arrange
-    const service = new BuildService()
-
-    // Act
-    const reducedBuildResult = service.reduceBuild(builds[0])
-
-    // Assert
-    expect(reducedBuildResult).toStrictEqual({
-      's': [
-        {
-          'i': [
-            {
-              'i': '5beed0f50db834001c062b12', // RPK-16 5.45x39 light machine gun
-              'm': [
-                {
-                  'i': {
-                    'i': '5c0d5e4486f77478390952fe' // 5.45x39mm PPBS gs \"Igolnik\"
-                  },
-                  'n': 'chamber0'
-                },
-                {
-                  'i': {
-                    'i': '5beec8ea0db834001a6f9dbf' // AK-12 pistol grip
-                  },
-                  'n': 'mod_pistol_grip'
-                },
-                {
-                  'i': {
-                    'i': '5beec91a0db834001961942d', // RPK-16 dust cover
-                    'm': [
-                      {
-                        'i': {
-                          'i': '5beec9450db83400970084fd', // RPK-16 rear sight base
-                          'm': [
-                            {
-                              'i': {
-                                'i': '5bf3f59f0db834001a6fa060' // RPK-16 rear sight
-                              },
-                              'n': 'mod_sight_rear'
-                            }
-                          ]
-                        },
-                        'n': 'mod_sight_rear'
-                      }
-                    ]
-                  },
-                  'n': 'mod_reciever'
-                },
-                {
-                  'i': {
-                    'c': [
-                      {
-                        'i': '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs \"Igolnik\"
-                        'q': 95
-                      }
-                    ],
-                    'i': '5bed625c0db834001c062946' // RPK-16 5.45x39 95-round drum magazine
-                  },
-                  'n': 'mod_magazine'
-                },
-                {
-                  'i': {
-                    'i': '5beec8b20db834001961942a', // RPK-16 buffer tube
-                    'm': [
-                      {
-                        'i': {
-                          'i': '5beec8c20db834001d2c465c' // AK-12 stock
-                        },
-                        'n': 'mod_stock'
-                      }
-                    ]
-                  },
-                  'n': 'mod_stock_001'
-                },
-                {
-                  'i': {
-                    'i': '5beec3e30db8340019619424', // RPK-16 handguard
-                    'm': [
-                      {
-                        'i': {
-                          'i': '5beecbb80db834001d2c465e' // RPK-16 handguard rail
-                        },
-                        'n': 'mod_mount_000'
-                      },
-                      {
-                        'i': {
-                          'i': '5beecbb80db834001d2c465e' // RPK-16 handguard rail
-                        },
-                        'n': 'mod_mount_001'
-                      }
-                    ]
-                  },
-                  'n': 'mod_handguard'
-                },
-                {
-                  'i': {
-                    'i': '5beec1bd0db834001e6006f3', // RPK-16 5.45x39 15 inch barrel
-                    'm': [
-                      {
-                        'i': {
-                          'i': '5beec3420db834001b095429' // RPK-16 5.45x39 muzzle brake-compensator
-                        },
-                        'n': 'mod_muzzle'
-                      }
-                    ]
-                  },
-                  'n': 'mod_barrel'
-                }
-              ]
-            }
-          ],
-          't': 'onSling'
-        },
-        {
-          'i': [
-            {
-              'i': '5c0e51be86f774598e797894' // 6B13 assault armor (Flora)
-            }
-          ],
-          't': 'bodyArmor'
-        },
-        {
-          'i': [
-            {
-              'i': '5c17a7ed2e2216152142459c', // Crye Precision AirFrame helmet (Tan)',
-              'm': [
-                {
-                  'i': {
-                    'i': '5a16b7e1fcdbcb00165aa6c9' // Ops-Core FAST multi-hit ballistic face shield
-                  },
-                  'n': 'mod_equipment_000'
-                }
-              ]
-            }
-          ],
-          't': 'headwear'
-        },
-        {
-          'i': [
-            {
-              'i': '544fb3f34bdc2d03748b456a' // Morphine injector
-            },
-            {
-              'i': '5755383e24597772cb798966' // Vaseline balm
-            },
-            {
-              'i': '5448be9a4bdc2dfd2f8b456a' // RGD-5 hand grenade
-            }
-          ],
-          't': 'pockets'
-        },
-        {
-          'i': [
-            {
-              'c': [
-                {
-                  'i': '590c5d4b86f774784e1b9c45', // Iskra ration pack
-                  'p': ''
-                },
-                {
-                  'i': '5448fee04bdc2dbc018b4567' // Bottle of water (0.6L)
-                }
-              ],
-              'i': '5ca20d5986f774331e7c9602' // WARTECH Berkut BB-102 backpack
-            }
-          ],
-          't': 'backpack'
-        },
-        {
-          'i': [
-            {
-              'i': '5ab8f39486f7745cd93a1cca' // Cold Fear infrared balaclava
-            }
-          ],
-          't': 'faceCover'
-        },
-        {
-          'i': [
-            {
-              'i': '5d5fca1ea4b93635fd598c07' // Crossbow tactical glasses
-            }
-          ],
-          't': 'eyewear'
-        }
-      ]
-    })
-  })
-})
-
 describe('toSharableURL()', () => {
   it('should reduce a build and transform it into a URL', async () => {
     // Arrange
     useVersionServiceMock()
     useWebsiteConfigurationServiceMock()
+
+    Services.configure(ReductionService)
+
+    vi.stubGlobal(
+      'window',
+      {
+        location: {
+          origin: 'localhost:3000'
+        }
+      })
 
     const service = new BuildService()
 
@@ -1675,13 +1121,15 @@ describe('toSharableURL()', () => {
 
     // Assert
     expect(sharableStringResult.success).toBe(true)
-    expect(sharableStringResult.value).toBe('localhost:3000/s/XQAAAAJmBAAAAAAAAABAqEppdBKy3f2nWA1_4C5z8-v7-PB2PnO4TJBDN_RrefeMTA1oIOQNSLQmTZKQMA3nTnTUbHr2mi1gpHZ1QN0VIdkLEh60ZqLDitEtmoaW0W0HNH_zGoKaZEYJaP-iZbZ58SWF1EzZsZPqQKFC_vbt94cj3bvtzDD7pDiJOzAUPS4f-zBgDNFZaE2HYlN3Rz5M49-4gT5jlmRMoea0PcfnKGWOu8u8tLcMaC60pI27hakRDzyTuI4L8cYmi0QwjxRlItBak0OtOuG-v429VWpY_8LQtmewFcw-MWPYRuIj7UvZmreC9JUBrXokMOkD2EMRJmxeWr5xHf4Vs8zN5KN1dcMu7IWmt8WqBVNv-JM58Llo5jQE5TKnNPfD-joOOLpz48N6zW0E0DmgbkCCVNFhu-yHjiRyAyf04PMJIaKUvdNBdsm0NHnE7LdClTap-mQfC-nqV-k6mVFHnFL2kq7Ql_bAZyq4Ik6N4D7cvOhv2cJc9D3TNgdfAFJLbe9HMlDEQMAdEKPZ3RB0Z2tCpgwNkadeJMLdxab88Hy6Q3E8RCk78TwWmQCBRDcNNiyozBLO9hLg_5YfogDLAkPR3w59d3cPMRzqK28ZuDvblEyEucXvXnFRHD3OBlV59umKbt95m9rYcW7hlw_xWVQY_WZI9neXWYIlgpDYuacwp8IvIzbNCrVke9sIMVsMJ77sqDXtoZ00fot9AhpDkRciED16Kpm3v1UK6Qafo3-5TZQq_HdHHPgwVS0PfP_srPgE')
+    expect(sharableStringResult.value).toBe('localhost:3000/s/XQAAAAJmBAAAAAAAAABAqEppdBKy3f2nWA1_4C5z8-v7-PB2PnO4TJBDN_RrefeMTA1oIOQNSLQmTZKQMA3nTnTUbHr2mi1gpHZ1QN0VIdkLEh60ZqLDitEtmoaW0W0HNH_zGoKaZEYJaP-iZbZ58SWF1EzZsZPqQKFC_vbt94cj3bvtzDD7pDiJOzAUPS4f-zBgDNFZaE2HYlN3Rz5M49-4gT5jlmRMoea0PcfnKGWOu8u8tLcMaC60pI27hakRDzyTuI4L8cYmi0QwjxRlItBak0OtOuG-v429VWpY_8LQtmewFcw-MWPYRuIj7UvZmreC9JUBrXokMOkD2EMRJmxeWr5xHf4Vs8zN5KN1dcMu7IWmt8WqBVNv-JM58Llo5jQE5TKnNPfD-joOOLpz48N6zW0E0DmgbkCCVNFhu-yHjiRyAyf04PMJIaKUvdNBdsm0NHnE7LdClTap-mQfC-nqV-k6mVFHnFL2kq7Ql_bAZyq4Ik6N4D7cvOhv2cJc9D3TNgdfAFJLbe9HMlDEQMAdEKPZ3RB0Z2tCpgwNkadeJMLdxab88Hy6Q3E8RCk78TwWmQCBRDcNNiyozBLO9hLg_5YfogDLAkPR3w59d3cPMRzqK28ZuDvblEyEucXvXnFRHD3OBlV59umKbt95m9rYcW7hlw_xWVQY_WZI9neXWYIlgpDYuaJ0_NlbN81uGJUGOicymyXLw6VANfX8xlCLXfDHBezn3LYvEEY9JF_bbaQmcorZ9SY24M61fpKIRv5QqE3khP_Jwn9-')
   })
 
   it('should fail when the URL is longer thant 2048 characters', async () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
     Services.get(WebsiteConfigurationService).configuration.buildSharingUrl = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+
+    Services.configure(ReductionService)
 
     const service = new BuildService()
 
