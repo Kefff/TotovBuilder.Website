@@ -1,28 +1,28 @@
 <template>
   <div class="notification-toast">
     <Message
-      v-for="toastNotification of toastNotifications"
-      :key="toastNotification.id"
-      :closable="toastNotification.closable"
-      :life="toastNotification.toastDuration"
-      :severity="toastNotification.type"
+      v-for="notification of notifications"
+      :key="notification.id"
+      :closable="notification.closable"
+      :life="notification.toastDuration"
+      :severity="notification.type"
       :sticky="false"
     >
       <p :style="{ whiteSpace: 'pre-line' }">
         <!-- <p> used to allow line breaks -->
-        {{ toastNotification.message }}
+        {{ notification.message }}
       </p>
       <div class="notification-toast-buttons">
         <div
           class="notification-toast-buttons-grid"
-          :style="getButtonsGridTemplaceCss(toastNotification)"
+          :style="getButtonsGridTemplaceCss(notification)"
         >
           <Button
-            v-for="button of toastNotification.buttons"
+            v-for="button of notification.buttons"
             :key="button.name"
             :severity="getSeverity(button)"
             :class="button.type == null ? 'p-button-text button-discreet' : ''"
-            @click="executeButtonAction(toastNotification, button)"
+            @click="executeButtonAction(notification, button)"
           >
             <font-awesome-icon
               v-if="button.icon != null"
