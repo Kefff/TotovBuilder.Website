@@ -1,3 +1,5 @@
+import { IInventoryItem } from '../../models/build/IInventoryItem'
+
 const data = [
   {
     'content': [],
@@ -22338,6 +22340,6 @@ const data = [
     ],
     'quantity': 1
   }
-]
+] as IInventoryItem[]
 
 export default data

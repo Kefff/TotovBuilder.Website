@@ -54269,7 +54269,7 @@
     "i": "5d5d646386f7742797261fd9",
     "im": "https://assets.tarkov.dev/5d5d646386f7742797261fd9-image.webp",
     "m": "https://tarkov.dev/item/6b3tm-01m-armored-rig",
-    "n": "6B3TM-01M armored rig",
+    "n": "6B3TM-01 armored rig (Khaki)",
     "s": "6B3TM-01M",
     "w": 9.2,
     "wi": "https://escapefromtarkov.fandom.com/wiki/6B3TM-01M_armored_rig"
@@ -101447,5 +101447,41 @@
     "s": "Water",
     "w": 0.65,
     "wi": "https://escapefromtarkov.fandom.com/wiki/Bottle_of_water_(0.6L)"
+  },
+  {
+    "bi": "5c0e53c886f7747fa54205c7",
+    "c": "armor",
+    "ic": "https://assets.tarkov.dev/unknown-item-icon.jpg",
+    "i": "657123216d197c216005b354",
+    "im": "https://assets.tarkov.dev/unknown-item-inspect.webp",
+    "m": "https://tarkov.dev/item/6b13-assault-armor-digital-flora-default",
+    "n": "6B13 assault armor (Digital Flora) Default",
+    "s": "6B13 DFL Default",
+    "w": 10.6,
+    "wi": "https://escapefromtarkov.fandom.com/wiki/6B13_assault_armor"
+  },
+  {
+    "bi": "5d5d646386f7742797261fd9",
+    "c": "vest",
+    "ic": "https://assets.tarkov.dev/unknown-item-icon.jpg",
+    "i": "6576600186f11bca4106d331",
+    "im": "https://assets.tarkov.dev/unknown-item-inspect.webp",
+    "m": "https://tarkov.dev/item/6b3tm-01-armored-rig-khaki-default",
+    "n": "6B3TM-01 armored rig (Khaki) Default",
+    "s": "6B3TM-01 Default",
+    "w": 8.2,
+    "wi": ""
+  },
+  {
+    "bi": "5aa7cfc0e5b5b00015693143",
+    "c": "headwear",
+    "ic": "https://assets.tarkov.dev/unknown-item-icon.jpg",
+    "i": "657bc6ceaab96fccee08beb2",
+    "im": "https://assets.tarkov.dev/unknown-item-inspect.webp",
+    "m": "https://tarkov.dev/item/6b47-ratnik-bsh-helmet-digital-flora-cover-default",
+    "n": "6B47 Ratnik-BSh helmet (Digital Flora cover) Default",
+    "s": "6B47 DFL Default",
+    "w": 1.3,
+    "wi": "https://escapefromtarkov.fandom.com/wiki/6B47_Ratnik-BSh_helmet"
   }
 ]

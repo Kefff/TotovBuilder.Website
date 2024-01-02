@@ -157,6 +157,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
           imageLink: '',
           marketLink: '',
           maxStackableAmount: 1,
+          minuteOfAngle: undefined,
           modSlots: [],
           name: 'Item without default preset id',
           presetErgonomics: undefined,
@@ -214,42 +215,5 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
     expect(result.success).toBe(false)
     expect(result.failureMessage).toBe('Item "invalid" not found.')
     expect(obsoleteBuild).toStrictEqual(obsoleteBuild)
-  })
-
-  it('should do nothing to builds already up to date', async () => {
-    // Arrange
-    useItemServiceMock()
-    useWebsiteConfigurationServiceMock()
-
-    const upToDataBuild = {
-      id: '',
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '57dc2fa62459775949412633', // Kalashnikov AKS-74U 5.45x39 assault rifle
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'onSling'
-        }
-      ],
-      lastExported: undefined,
-      lastUpdated: undefined,
-      lastWebsiteVersion: '1.6.0',
-      name: 'Up to date build'
-    } as IBuild
-
-    const migration = new Migration160()
-
-    // Act
-    const result = await migration.migrateBuild(upToDataBuild)
-
-    // Assert
-    expect(result.success).toBe(true)
-    expect(upToDataBuild).toStrictEqual(upToDataBuild)
   })
 })

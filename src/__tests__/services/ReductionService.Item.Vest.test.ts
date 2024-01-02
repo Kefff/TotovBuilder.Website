@@ -24,7 +24,7 @@ describe('parseReducedItem', () => {
         'i': '5d5d646386f7742797261fd9',
         'im': 'https://assets.tarkov.dev/5d5d646386f7742797261fd9-image.jpg',
         'm': 'https://tarkov.dev/item/6b3tm-01m-armored-rig',
-        'n': '6B3TM-01M armored rig',
+        'n': '6B3TM-01 armored rig (Khaki)',
         's': '6B3TM-01M',
         'w': 9.2,
         'wi': 'https://escapefromtarkov.fandom.com/wiki/6B3TM-01M_armored_rig'
@@ -47,7 +47,7 @@ describe('parseReducedItem', () => {
         material: 'Titan',
         maxStackableAmount: 1,
         movementSpeedPercentageModifier: -0.10,
-        name: '6B3TM-01M armored rig',
+        name: '6B3TM-01 armored rig (Khaki)',
         presetWearableModifiers: undefined,
         prices: [],
         ricochetChance: '',
