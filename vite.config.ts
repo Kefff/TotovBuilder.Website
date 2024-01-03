@@ -23,8 +23,8 @@ export default defineConfig({
 
           return 'assets/[name]-[hash][extname]'
         },
-        chunkFileNames: 'src/js/[name]-[hash].js',
-        entryFileNames: 'src/js/[name]-[hash].js'
+        chunkFileNames: 'src/[name]-[hash].js',
+        entryFileNames: 'src/[name]-[hash].js'
       }
     }
   },
