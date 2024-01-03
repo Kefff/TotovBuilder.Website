@@ -18,8 +18,7 @@
         {{ $t('caption.merchant_' + merchanFilter.merchant) }}
       </div>
       <img
-        v-if="hasLevels(merchanFilter.merchant)"
-        :src="'/images/' + merchanFilter.merchant + '.webp'"
+        :src="Images[StringUtils.toCamelCase(merchanFilter.merchant)]"
         :class="'merchant-filter-icon' + (!merchanFilter.enabled ? ' merchant-filter-icon-disabled' : '')"
         @click="toggleFilter(merchanFilter)"
       >

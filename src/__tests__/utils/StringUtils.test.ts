@@ -56,6 +56,13 @@ describe('getCheckboxStateTooltip', () => {
   })
 })
 
+describe('toCamelCase()', () => {
+  it('should transform a string to camel case', () => {
+    // Assert
+    expect(StringUtils.toCamelCase('ThisIs-a.camelCase_string')).toBe('thisIsACamelCaseString')
+  })
+})
+
 describe('toUpperFirst()', () => {
   it('should set the first letter of a string to uppercase', () => {
     // Assert

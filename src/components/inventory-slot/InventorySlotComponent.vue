@@ -26,8 +26,8 @@
               class="inventory-slot-icon"
             />
             <img
-              v-else-if="customIcon != null"
-              :src="'/images/' + customIcon + '.webp'"
+              v-else-if="customIconName != null"
+              :src="Images[StringUtils.toCamelCase(customIconName)]"
               class="inventory-slot-custom-icon"
             >
             <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelValue.typeId)) }}</span>

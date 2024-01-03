@@ -3,7 +3,7 @@
     <div>
       <img
         v-tooltip.bottom="$t('caption.approvedByPrapor')"
-        :src="isSanta ? '/images/santa_prapor_smiling.webp' : '/images/prapor_smiling.webp'"
+        :src="isSanta ? Images.santaPraporSmiling : Images.praporSmiling"
         class="app-title-prapor"
       >
       <h1>

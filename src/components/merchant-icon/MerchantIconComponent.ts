@@ -1,5 +1,7 @@
 import { computed, defineComponent } from 'vue'
 import vueI18n from '../../plugins/vueI18n'
+import Images from '../../images'
+import StringUtils from '../../utils/StringUtils'
 
 export default defineComponent({
   props: {
@@ -39,6 +41,10 @@ export default defineComponent({
         : '')
       : '')
 
-    return { merchantTooltip }
+    return {
+      Images,
+      merchantTooltip,
+      StringUtils
+    }
   }
 })

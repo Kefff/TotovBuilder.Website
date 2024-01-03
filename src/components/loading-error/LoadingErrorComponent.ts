@@ -3,6 +3,7 @@ import { WebsiteConfigurationService } from '../../services/WebsiteConfiguration
 import Services from '../../services/repository/Services'
 import { ItemService } from '../../services/ItemService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
+import Images from '../../images'
 
 export default defineComponent({
   props: {
@@ -68,6 +69,7 @@ export default defineComponent({
 
     return {
       hasLoadingError,
+      Images,
       reload,
       signal
     }

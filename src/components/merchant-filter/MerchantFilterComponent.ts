@@ -4,6 +4,7 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 import StringUtils from '../../utils/StringUtils'
+import Images from '../../images'
 
 export default defineComponent({
   props: {
@@ -63,6 +64,7 @@ export default defineComponent({
     return {
       getMerchantLevels,
       hasLevels,
+      Images,
       merchantFilters,
       merchantLevelOptions,
       onFiltersChanged,

@@ -4,6 +4,7 @@ import Changelog from '../changelog/ChangelogComponent.vue'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import LanguageUtils from '../../utils/LanguageUtils'
+import Images from '../../images'
 
 export default defineComponent({
   components: {
@@ -72,6 +73,7 @@ export default defineComponent({
       displayChangelog,
       githubUrl,
       hasChangelogDisplayed,
+      Images,
       isLoading,
       isSanta
     }

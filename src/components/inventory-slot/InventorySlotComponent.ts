@@ -17,6 +17,7 @@ import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
+import Images from '../../images'
 
 export default defineComponent({
   components: {
@@ -55,7 +56,7 @@ export default defineComponent({
     const acceptedItems = ref<IItem[]>([])
     const acceptedItemsCategoryId = ref<string | undefined>(undefined)
     const canBeLooted = ref(true)
-    const customIcon = ref<string>()
+    const customIconName = ref<string>()
     const ergonomics = ref<number | undefined>()
     const horizontalRecoil = ref<number | undefined>()
     const icon = ref<string>()
@@ -220,11 +221,11 @@ export default defineComponent({
 
       if (inventorySlotTypeResult.success) {
         type.value = inventorySlotTypeResult.value
-        customIcon.value = type.value.customIcon
+        customIconName.value = type.value.customIcon
         icon.value = type.value.icon
       } else {
         type.value = undefined
-        customIcon.value = undefined
+        customIconName.value = undefined
         icon.value = undefined
       }
 
@@ -290,11 +291,12 @@ export default defineComponent({
       acceptedItems,
       acceptedItemsCategoryId,
       canBeLooted,
-      customIcon,
+      customIconName,
       displayed,
       ergonomics,
       horizontalRecoil,
       icon,
+      Images,
       itemPathPrefix,
       items,
       onItemChanged,

@@ -3,6 +3,7 @@ import { IArmor } from '../../../models/item/IArmor'
 import StatsUtils from '../../../utils/StatsUtils'
 import WearableStats from '../wearable/WearableStatsComponent.vue'
 import { IWearableModifiers } from '../../../models/utils/IWearableModifiers'
+import Images from '../../../images'
 
 export default defineComponent({
   components: {
@@ -24,6 +25,7 @@ export default defineComponent({
 
     return {
       hasRicochetChance,
+      Images,
       StatsUtils
     }
   }

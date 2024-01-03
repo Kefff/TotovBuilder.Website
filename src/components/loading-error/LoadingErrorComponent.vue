@@ -8,7 +8,7 @@
   >
     <div class="loading-error-message">
       <img
-        src="/images/prapor_angry.webp"
+        :src="Images.praporAngry"
         class="loading-error-message-image"
       >
       <p>{{ $t('message.websiteLoadingError') }}</p>

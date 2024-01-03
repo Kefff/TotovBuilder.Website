@@ -3,7 +3,7 @@
     v-tooltip.top="merchantTooltip"
     class="merchant-icon"
   >
-    <img :src="'/images/' + merchant + '.webp'">
+    <img :src="Images[StringUtils.toCamelCase(merchant)]">
     <div
       v-if="merchantLevel > 0"
       class="merchant-icon-level"

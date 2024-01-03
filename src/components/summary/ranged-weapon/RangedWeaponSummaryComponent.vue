@@ -5,7 +5,7 @@
       class="option-value-long custom-icon-after-text"
     >
       <div>{{ $t('caption.' + StringUtils.toLowerFirst(item.caliber)) }}</div>
-      <img src="/images/caliber.webp">
+      <img :src="Images.caliber">
     </div>
   </div>
   <div class="option-entry">
@@ -14,7 +14,7 @@
       class="option-value fire-rate custom-icon-after-text"
     >
       <div>{{ $t('caption.fireRateValueShort', { fireRate: item.fireRate }) }}</div>
-      <img src="/images/fire-rate.webp">
+      <img :src="Images.fireRate">
     </div>
   </div>
   <div class="option-entry">

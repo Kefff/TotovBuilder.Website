@@ -2,7 +2,7 @@
   <div class="stats-line">
     <div class="stats-entry">
       <div class="stats-caption custom-icon-before-text">
-        <img src="/images/chop.webp">
+        <img :src="Images.chop">
         <span>{{ $t('caption.chopDamage') }} :</span>
       </div>
       <div class="stats-value">
@@ -11,7 +11,7 @@
     </div>
     <div class="stats-entry">
       <div class="stats-caption custom-icon-before-text">
-        <img src="/images/stab.webp">
+        <img :src="Images.stab">
         <span>{{ $t('caption.stabDamage') }} :</span>
       </div>
       <div class="stats-value">
