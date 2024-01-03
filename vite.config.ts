@@ -9,7 +9,24 @@ import { fileURLToPath } from 'url'
 
 export default defineConfig({
   build: {
-    minify: true
+    minify: true,
+    rollupOptions: {
+      output: {
+        assetFileNames: ({ name }) => {
+          if (/\.(gif|jpe?g|png|svg|webp)$/.test(name ?? '')) {
+            return 'images/[name]-[hash][extname]'
+          } else if (/\.(css|js)$/.test(name ?? '')) {
+            return 'src/[name]-[hash][extname]'
+          } else if (/\.(eot|otf|ttf|woff|woff2)$/.test(name ?? '')) {
+            return 'fonts/[name]-[hash][extname]'
+          }
+
+          return 'assets/[name]-[hash][extname]'
+        },
+        chunkFileNames: 'src/js/[name]-[hash].js',
+        entryFileNames: 'src/js/[name]-[hash].js'
+      }
+    }
   },
   envDir: 'environment',
   plugins: [
