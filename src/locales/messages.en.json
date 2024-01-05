@@ -211,6 +211,7 @@
     "new": "New",
     "newBuild": "New build",
     "notifications": "Notifications",
+    "ok": "OK",
     "options": "Options",
     "patreon": "Patreon",
     "penetrationPower": "Penetration power",
@@ -373,7 +374,8 @@
     "welcomeWarning3": "feature in order to save your builds on your disk before closing your browser.",
     "welcomeWarning4": "They will otherwise be lost!",
     "welcomeWarning5": "You also need to use the",
-    "welcomeWarning6": "feature to manually load them each time you connect to the website."
+    "welcomeWarning6": "feature to manually load them each time you connect to the website.",
+    "armoredItemsRemovedFromApi": "Due to changes to the Tarkov.dev API, presets for armored items that only contain fixed armor slots no longer exist and have been removed from your builds.\nFor example, the \"PACA Soft Armor Default\" item which only contains fixed aramid inserts no longer exists, use the \"PACA Soft Armor\" item instead."
   },
   "test": {
     "logger1": "This is a message.",

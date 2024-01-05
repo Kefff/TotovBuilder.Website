@@ -5,7 +5,7 @@
     "coverage": "cd \"coverage\" && index.html",
     "dev": "vite",
     "build-prod": "vite build --mode production && node scripts/postbuild.js",
-    "build-staging": "vite build --mode staging && node scripts/postbuild.js",
+    "build-test": "vite build --mode test && node scripts/postbuild.js",
     "lint": "eslint ./src/**",
     "serve": "vite preview",
     "test": "vitest run",

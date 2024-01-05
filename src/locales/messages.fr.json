@@ -290,6 +290,7 @@
     "welcomeWarning3": "afin de sauvegarder vos équipement sur votre disque avant de fermer votre navigateur.",
     "welcomeWarning4": "Autrement, ils seront perdus!",
     "welcomeWarning5": "Vous devez aussi utilisez la fonctionnalité",
-    "welcomeWarning6": "pour les charger manuellement à chaque fois que vous vous connectez au site."
+    "welcomeWarning6": "pour les charger manuellement à chaque fois que vous vous connectez au site.",
+    "armoredItemsRemovedFromApi": "Suite à des changements de l'API Tarkov.dev, les préconfigurations pour les objets ayant de l'armure et ne contenant que des emplacement d'armure fixes ont été supprimés.\nPar exemple, l'objet \"PACA Soft Armor Default\" qui ne contient que des inserts d'aramide fixes n'exite plus, utilisez l'objet \"PACA Soft Armor\" à la place."
   }
 }
