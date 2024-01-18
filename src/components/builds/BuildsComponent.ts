@@ -142,9 +142,6 @@ export default defineComponent({
       }
 
       checkBuildsNotExported()
-
-      // TODO : REMOVE THIS NOTIFICATION IN NEXT VERSION
-      notifyArmoredItemsRemovedFromApi()
     }
 
     /**
@@ -195,29 +192,6 @@ export default defineComponent({
      */
     function showBuildsImportPopup() {
       isImporting.value = true
-    }
-
-    /**
-     * TODO : REMOVE THIS NOTIFICATION IN NEXT VERSION
-     */
-    function notifyArmoredItemsRemovedFromApi() {
-      const notificationName = 'armored_items_removed_notified'
-      const showArmoredItemsRemovedFromApiNotification = sessionStorage.getItem(notificationName)
-
-      if (showArmoredItemsRemovedFromApiNotification == null)
-        Services.get(NotificationService).notify(
-          NotificationType.warning,
-          vueI18n.t('message.armoredItemsRemovedFromApi'),
-          0,
-          [
-            {
-              action: () => sessionStorage.setItem(notificationName, ''),
-              caption: vueI18n.t('caption.ok'),
-              icon: undefined,
-              name: 'ok',
-              type: NotificationType.information
-            }
-          ])
     }
 
     return {

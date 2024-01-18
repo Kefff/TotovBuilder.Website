@@ -4,5 +4,8 @@ Disallow: /
 Allow: /$
 Allow: /en$
 Allow: /fr$
+Allow: /favicon.ico
+Allow: /sitemap.xml
+Allow: /robots.txt
 
 Sitemap: https://www.totovbuilder.com/sitemap.xml

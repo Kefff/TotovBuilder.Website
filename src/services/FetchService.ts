@@ -50,7 +50,7 @@ export class FetchService {
     const controller = new AbortController()
     setTimeout(() => controller.abort(), fetchTimeout)
 
-    const result = await fetch(endpoint, { method: 'GET', signal: controller.signal })
+    const result = await fetch(endpoint, { method: 'GET', signal: controller.signal, mode: 'same-origin' })
       .then(async (response) => {
         if (response.ok) {
           const responseData = await response.text()

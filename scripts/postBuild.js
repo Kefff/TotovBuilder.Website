@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fileSystem = require('fs')
 
-console.log('Start : Deleting files that should not be deployed"')
+console.log('Start : Deleting files that should not be deployed')
 
 const elementsToDelete = ['dist/data'] // This folder contains data used by the application when launching 'npm run dev'
 
