@@ -378,16 +378,19 @@ export default defineComponent({
     function onServicesInitialized() {
       isLoading.value = true
 
-      build.value = buildComponentService.getBuild(route.params['id'] as string)
-      getSharedBuild(route.params['sharedBuild'] as string)
-        .then(async () => {
-          getSummary()
+      setTimeout(() => { // Did not find another solution to make the loading animation appear when opening a build from the builds list (nextTick does not work)
+        build.value = buildComponentService.getBuild(route.params['id'] as string)
+        getSharedBuild(route.params['sharedBuild'] as string)
+          .then(async () => {
+            isLoading.value = false
+            getSummary()
 
-          build.value.inventorySlots.forEach(() => {
-            collapseStatuses.value.push(false) // All inventory slots expanded by default
+            build.value.inventorySlots.forEach(() => {
+              collapseStatuses.value.push(false) // All inventory slots expanded by default
+            })
           })
-        })
-        .finally(() => isLoading.value = false)
+          .finally(() => isLoading.value = false)
+      }, 1)
     }
 
     /**

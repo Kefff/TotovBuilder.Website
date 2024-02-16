@@ -111,16 +111,22 @@ export default defineComponent({
     async function getBuilds() {
       isLoading.value = true
 
-      buildsSummaries.value = []
-      builds = Services.get(BuildService).getAll()
-      const buildPropertiesService = Services.get(BuildPropertiesService)
+      const execute = new Promise<void>((resolve) => {
+        setTimeout(async () => { // Did not find another solution to make the loading animation appear when opening the builds list from the welcome page (nextTick does not work)
+          buildsSummaries.value = []
+          builds = Services.get(BuildService).getAll()
+          const buildPropertiesService = Services.get(BuildPropertiesService)
 
-      for (const build of builds) {
-        const summary = await buildPropertiesService.getSummary(build)
-        buildsSummaries.value.push(summary)
-      }
+          for (const build of builds) {
+            const summary = await buildPropertiesService.getSummary(build)
+            buildsSummaries.value.push(summary)
+          }
 
-      isLoading.value = false
+          isLoading.value = false
+          resolve()
+        }, 1)
+      })
+      await execute
     }
 
     /**
@@ -133,15 +139,15 @@ export default defineComponent({
         return
       }
 
-      getBuilds()
+      getBuilds().then(() => {
+        if (builds.length === 0) {
+          router.push({ name: 'Welcome' })
 
-      if (builds.length === 0) {
-        router.push({ name: 'Welcome' })
+          return
+        }
 
-        return
-      }
-
-      checkBuildsNotExported()
+        checkBuildsNotExported()
+      })
     }
 
     /**

@@ -45,15 +45,10 @@ export class FetchService {
    */
   private async executeGet<TResult>(endpoint: string, parameters: IRequestParameter[]): Promise<Result<TResult>> {
     endpoint += this.getParametersString(parameters)
-
     const fetchTimeout = Services.get(WebsiteConfigurationService).configuration.fetchTimeout * 1000 // In milliseconds
-    let aborter: AbortController | undefined = new AbortController()
-    setTimeout(() => aborter?.abort(), fetchTimeout)
 
-    const result = await fetch(endpoint, { method: 'GET', signal: aborter.signal })
+    const result = await fetch(endpoint, { method: 'GET', signal: AbortSignal.timeout(fetchTimeout) })
       .then(async (response) => {
-        aborter = undefined
-
         if (response.ok) {
           const responseData = await response.text()
           const result = JSON.parse(responseData) as TResult
