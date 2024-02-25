@@ -1,9 +1,10 @@
+import { IModdable } from './IModdable'
 import { IWearable } from './IWearable'
 
 /**
  * Provides the functionalities of an armor.
  */
-export interface IArmor extends IWearable {
+export interface IArmor extends IModdable, IWearable {
   /**
    * Armor class.
    */
@@ -23,9 +24,4 @@ export interface IArmor extends IWearable {
    * Material which composes the armor.
    */
   material: string
-
-  /**
-   * Chance of ricochet.
-   */
-  ricochetChance: string
 }

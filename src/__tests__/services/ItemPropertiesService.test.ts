@@ -526,7 +526,7 @@ describe('isModdable()', () => {
   it.each([
     ['ammunition', false],
     ['armband', false],
-    ['armor', false],
+    ['armor', true],
     ['armorMod', true],
     ['backpack', false],
     ['container', false],
@@ -545,7 +545,7 @@ describe('isModdable()', () => {
     ['secondaryWeapon', true],
     ['securedContainer', false],
     ['special', false],
-    ['vest', false]
+    ['vest', true]
   ])(
     'should determine if an item is moddable',
     (categoryId: string, expected: boolean) => {

@@ -351,22 +351,22 @@ export class ReductionService {
    * @returns Item.
    */
   private parseReducedArmor(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IArmor {
+    const moddableProperties = this.parseReducedModdable(reducedItem, baseItemProperties)
     const wearableProperties = this.parseReducedWearable(reducedItem, baseItemProperties)
 
     const armorClass = reducedItem['ac'] as number ?? 0
     const armoredAreas = reducedItem['aa'] as string[] ?? []
     const durability = reducedItem['d'] as number ?? 0
     const material = reducedItem['ma'] as string ?? ''
-    const ricochetChance = reducedItem['r'] as string ?? ''
 
     return {
       ...baseItemProperties,
+      ...moddableProperties,
       ...wearableProperties,
       armorClass,
       armoredAreas,
       durability,
-      material,
-      ricochetChance
+      material
     }
   }
 
@@ -378,14 +378,12 @@ export class ReductionService {
    */
   private parseReducedArmorMod(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IArmorMod {
     const armorProperties = this.parseReducedArmor(reducedItem, baseItemProperties)
-    const moddableProperties = this.parseReducedModdable(reducedItem, baseItemProperties)
 
     const blindnessProtectionPercentage = reducedItem['bp'] as number ?? 0
 
     return {
       ...baseItemProperties,
       ...armorProperties,
-      ...moddableProperties,
       blindnessProtectionPercentage
     }
   }
@@ -468,17 +466,17 @@ export class ReductionService {
    */
   private parseReducedHeadwear(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IHeadwear {
     const armorProperties = this.parseReducedArmor(reducedItem, baseItemProperties)
-    const moddableProperties = this.parseReducedModdable(reducedItem, baseItemProperties)
 
     const blocksHeadphones = reducedItem['h'] != null
     const deafening = reducedItem['de'] as string ?? 'None'
+    const ricochetChance = reducedItem['r'] as string ?? ''
 
     return {
       ...baseItemProperties,
       ...armorProperties,
-      ...moddableProperties,
       blocksHeadphones,
-      deafening
+      deafening,
+      ricochetChance
     }
   }
 
