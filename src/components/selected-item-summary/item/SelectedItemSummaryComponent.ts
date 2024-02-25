@@ -9,6 +9,7 @@ import { GlobalFilterService } from '../../../services/GlobalFilterService'
 import Services from '../../../services/repository/Services'
 import Result from '../../../utils/Result'
 import Price from '../../price/PriceComponent.vue'
+import StatsUtils from '../../../utils/StatsUtils'
 
 export default defineComponent({
   components: {
@@ -182,6 +183,7 @@ export default defineComponent({
     return {
       IgnoredUnitPrice,
       price,
+      StatsUtils,
       weight
     }
   }

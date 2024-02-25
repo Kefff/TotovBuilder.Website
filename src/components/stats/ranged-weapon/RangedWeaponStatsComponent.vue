@@ -29,7 +29,7 @@
         <span>{{ $t('caption.ergonomics') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.presetErgonomics ?? item.ergonomics }}
+        {{ StatsUtils.getDisplayValue(item.presetErgonomics ?? item.ergonomics, false, 0) }}
       </div>
     </div>
     <div class="stats-entry">
@@ -41,7 +41,7 @@
         <span>{{ $t('caption.verticalRecoil') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.presetVerticalRecoil ?? item.verticalRecoil }}
+        {{ StatsUtils.getDisplayValue(item.presetVerticalRecoil ?? item.verticalRecoil, false, 0) }}
       </div>
     </div>
     <div class="stats-entry">
@@ -53,7 +53,7 @@
         <span>{{ $t('caption.horizontalRecoil') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.presetHorizontalRecoil ?? item.horizontalRecoil }}
+        {{ StatsUtils.getDisplayValue(item.presetHorizontalRecoil ?? item.horizontalRecoil, false, 0) }}
       </div>
     </div>
   </div>

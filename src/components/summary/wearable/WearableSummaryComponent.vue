@@ -9,7 +9,7 @@
         v-tooltip.top="$t('caption.ergonomics')"
       >
         <span :class="StatsUtils.getValueColorClass(ergonomicsPercentageModifier)">
-          {{ StatsUtils.getDisplayValue(ergonomicsPercentageModifier, true, true) }}
+          {{ StatsUtils.getPercentageDisplayValue(ergonomicsPercentageModifier, true) }}
         </span>
         <font-awesome-icon
           icon="hand-paper"
@@ -28,7 +28,7 @@
         v-tooltip.top="$t('caption.movementSpeed')"
       >
         <span :class="StatsUtils.getValueColorClass(movementSpeedPercentageModifier)">
-          {{ StatsUtils.getDisplayValue(movementSpeedPercentageModifier, true, true) }}
+          {{ StatsUtils.getPercentageDisplayValue(movementSpeedPercentageModifier, true) }}
         </span>
         <font-awesome-icon
           icon="walking"
@@ -47,7 +47,7 @@
         v-tooltip.top="$t('caption.turningSpeed')"
       >
         <span :class="StatsUtils.getValueColorClass(turningSpeedPercentageModifier)">
-          {{ StatsUtils.getDisplayValue(turningSpeedPercentageModifier, true, true) }}
+          {{ StatsUtils.getPercentageDisplayValue(turningSpeedPercentageModifier, true) }}
         </span>
         <font-awesome-icon
           icon="undo"

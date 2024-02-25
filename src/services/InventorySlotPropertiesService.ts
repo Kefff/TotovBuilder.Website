@@ -232,6 +232,6 @@ export class InventorySlotPropertiesService {
       weight += weightResult.value.weightWithContent
     }
 
-    return Result.ok(+weight.toFixed(3)) // toFixed() used to avoir floating point imprecision, + used to transform it back to number
+    return Result.ok(weight)
   }
 }

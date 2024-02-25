@@ -1,4 +1,4 @@
-import { computed, defineComponent, PropType } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { IArmor } from '../../../models/item/IArmor'
 import StatsUtils from '../../../utils/StatsUtils'
 import WearableStats from '../wearable/WearableStatsComponent.vue'
@@ -20,11 +20,8 @@ export default defineComponent({
       default: undefined
     }
   },
-  setup: (props) => {
-    const hasRicochetChance = computed(() => props.item.ricochetChance !== '')
-
+  setup: () => {
     return {
-      hasRicochetChance,
       Images,
       StatsUtils
     }

@@ -102,7 +102,7 @@
                 v-tooltip.top="$t('caption.verticalRecoil')"
                 class="build-toolbar-summary-value"
               >
-                <span>{{ summary.verticalRecoil }}</span>
+                <span>{{ StatsUtils.getDisplayValue(summary.verticalRecoil ?? 0, false, 0) }}</span>
                 <font-awesome-icon
                   icon="arrows-alt-v"
                   class="icon-after-text"
@@ -113,7 +113,7 @@
                 v-tooltip.top="$t('caption.horizontalRecoil')"
                 class="build-toolbar-summary-value"
               >
-                <span>{{ summary.horizontalRecoil }}</span>
+                <span>{{ StatsUtils.getDisplayValue(summary.horizontalRecoil ?? 0, false, 0) }}</span>
                 <font-awesome-icon
                   icon="arrows-alt-h"
                   class="icon-after-text"
@@ -124,7 +124,7 @@
                 v-tooltip.top="$t('caption.ergonomics')"
                 class="build-toolbar-summary-value"
               >
-                <span>{{ summary.ergonomics }}</span>
+                <span>{{ StatsUtils.getDisplayValue(summary.ergonomics ?? 0, false, 0) }}</span>
                 <font-awesome-icon
                   icon="hand-paper"
                   class="icon-after-text"
@@ -141,7 +141,7 @@
                 class="build-toolbar-summary-value"
               >
                 <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsPercentageModifierWithMods)">
-                  {{ StatsUtils.getDisplayValue(summary.wearableModifiers.ergonomicsPercentageModifierWithMods, true, true) }}
+                  {{ StatsUtils.getPercentageDisplayValue(summary.wearableModifiers.ergonomicsPercentageModifierWithMods, true) }}
                 </span>
                 <font-awesome-icon
                   icon="hand-paper"
@@ -154,7 +154,7 @@
                 class="build-toolbar-summary-value"
               >
                 <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedPercentageModifierWithMods)">
-                  {{ StatsUtils.getDisplayValue(summary.wearableModifiers.movementSpeedPercentageModifierWithMods, true, true) }}
+                  {{ StatsUtils.getPercentageDisplayValue(summary.wearableModifiers.movementSpeedPercentageModifierWithMods, true) }}
                 </span>
                 <font-awesome-icon
                   icon="walking"
@@ -167,7 +167,7 @@
                 class="build-toolbar-summary-value"
               >
                 <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedPercentageModifierWithMods)">
-                  {{ StatsUtils.getDisplayValue(summary.wearableModifiers.turningSpeedPercentageModifierWithMods, true, true) }}
+                  {{ StatsUtils.getPercentageDisplayValue(summary.wearableModifiers.turningSpeedPercentageModifierWithMods, true) }}
                 </span>
                 <font-awesome-icon
                   icon="undo"
@@ -183,7 +183,7 @@
                 v-tooltip.top="$t('caption.weight')"
                 class="build-toolbar-summary-value"
               >
-                <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ summary.weight.toFixed(3) }}</span>
+                <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getDisplayValue(summary.weight, false, 3, 3) }}</span>
                 <font-awesome-icon
                   icon="weight-hanging"
                   class="icon-after-text"

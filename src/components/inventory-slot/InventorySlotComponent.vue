@@ -38,7 +38,7 @@
               v-tooltip.top="$t('caption.verticalRecoil')"
               class="inventory-slot-summary-value"
             >
-              <span>{{ verticalRecoil }}</span>
+              <span>{{ StatsUtils.getDisplayValue(verticalRecoil, false, 0) }}</span>
               <font-awesome-icon
                 icon="arrows-alt-v"
                 class="icon-after-text"
@@ -49,7 +49,7 @@
               v-tooltip.top="$t('caption.horizontalRecoil')"
               class="inventory-slot-summary-value"
             >
-              <span>{{ horizontalRecoil }}</span>
+              <span>{{ StatsUtils.getDisplayValue(horizontalRecoil, false, 0) }}</span>
               <font-awesome-icon
                 icon="arrows-alt-h"
                 class="icon-after-text"
@@ -60,7 +60,7 @@
               v-tooltip.top="$t('caption.ergonomics')"
               class="inventory-slot-summary-value"
             >
-              <span>{{ ergonomics }}</span>
+              <span>{{ StatsUtils.getDisplayValue(ergonomics, false, 0) }}</span>
               <font-awesome-icon
                 icon="hand-paper"
                 class="icon-after-text"
@@ -72,7 +72,7 @@
               class="inventory-slot-summary-value"
             >
               <span :class="StatsUtils.getValueColorClass(wearableModifiers.ergonomicsPercentageModifierWithMods)">
-                {{ StatsUtils.getDisplayValue(wearableModifiers.ergonomicsPercentageModifierWithMods, true, true) }}
+                {{ StatsUtils.getPercentageDisplayValue(wearableModifiers.ergonomicsPercentageModifierWithMods, true) }}
               </span>
               <font-awesome-icon
                 icon="hand-paper"
@@ -85,7 +85,7 @@
               class="inventory-slot-summary-value"
             >
               <span :class="StatsUtils.getValueColorClass(wearableModifiers.movementSpeedPercentageModifierWithMods)">
-                {{ StatsUtils.getDisplayValue(wearableModifiers.movementSpeedPercentageModifierWithMods, true, true) }}
+                {{ StatsUtils.getPercentageDisplayValue(wearableModifiers.movementSpeedPercentageModifierWithMods, true) }}
               </span>
               <font-awesome-icon
                 icon="walking"
@@ -98,7 +98,7 @@
               class="inventory-slot-summary-value"
             >
               <span :class="StatsUtils.getValueColorClass(wearableModifiers.turningSpeedPercentageModifierWithMods)">
-                {{ StatsUtils.getDisplayValue(wearableModifiers.turningSpeedPercentageModifierWithMods, true, true) }}
+                {{ StatsUtils.getPercentageDisplayValue(wearableModifiers.turningSpeedPercentageModifierWithMods, true) }}
               </span>
               <font-awesome-icon
                 icon="undo"
@@ -113,7 +113,7 @@
                 v-if="weight !== 0"
                 class="inventory-slot-weight"
               >
-                <span>{{ weight.toFixed(3) }}</span>
+                <span>{{ StatsUtils.getDisplayValue(weight, false, 3, 3) }}</span>
                 <font-awesome-icon
                   icon="weight-hanging"
                   class="icon-after-text"

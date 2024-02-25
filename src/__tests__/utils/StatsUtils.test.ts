@@ -2,17 +2,107 @@ import StatsUtils from '../../utils/StatsUtils'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { describe, expect, it } from 'vitest'
 
-describe('StringUtils.getValueClass()', () => {
+describe('StringUtils.getDisplayValue()', () => {
   it.each([
-    [1, false, false, '1'],
-    [-1, false, false, '-1'],
-    [0, false, false, '0'],
-    [0.01, true, true, '+1%'],
-    [-0.01, true, true, '-1%'],
-    [0, true, true, '0%']
-  ])('should get the caption corresponding to a stats value', (value: number, isBonusMalus: boolean, isPercentage: boolean, expected) => {
+    [1, false, 0, undefined, '1'],
+    [-1, false, 0, undefined, '-1'],
+    [0, false, 0, undefined, '0'],
+    [1, true, 0, undefined, '+1'],
+    [-1, true, 0, undefined, '-1'],
+    [0, true, 0, undefined, '0'],
+    [1, false, 0, 2, '1.00'],
+    [-1, false, 0, 2, '-1.00'],
+    [0, false, 0, 2, '0.00'],
+    [1, true, 0, 2, '+1.00'],
+    [-1, true, 0, 2, '-1.00'],
+    [0, true, 0, 2, '0.00'],
+    [1.111, false, 0, undefined, '1'],
+    [-1.111, false, 0, undefined, '-1'],
+    [1.111, true, 0, undefined, '+1'],
+    [-1.111, true, 0, undefined, '-1'],
+    [1.111, false, 0, 2, '1.00'],
+    [-1.111, false, 0, 2, '-1.00'],
+    [1.111, true, 0, 2, '+1.00'],
+    [-1.111, true, 0, 2, '-1.00'],
+    [1.999, false, 0, undefined, '2'],
+    [-1.999, false, 0, undefined, '-2'],
+    [1.999, true, 0, undefined, '+2'],
+    [-1.999, true, 0, undefined, '-2'],
+    [1.999, false, 0, 2, '2.00'],
+    [-1.999, false, 0, 2, '-2.00'],
+    [1.999, true, 0, 2, '+2.00'],
+    [-1.999, true, 0, 2, '-2.00'],
+    [1.111, false, 1, undefined, '1.1'],
+    [-1.111, false, 1, undefined, '-1.1'],
+    [1.111, true, 1, undefined, '+1.1'],
+    [-1.111, true, 1, undefined, '-1.1'],
+    [1.111, false, 1, 2, '1.10'],
+    [-1.111, false, 1, 2, '-1.10'],
+    [1.111, true, 1, 2, '+1.10'],
+    [-1.111, true, 1, 2, '-1.10'],
+    [1.199, false, 1, undefined, '1.2'],
+    [-1.199, false, 1, undefined, '-1.2'],
+    [1.199, true, 1, undefined, '+1.2'],
+    [-1.199, true, 1, undefined, '-1.2'],
+    [1.199, false, 1, 2, '1.20'],
+    [-1.199, false, 1, 2, '-1.20'],
+    [1.199, true, 1, 2, '+1.20'],
+    [-1.199, true, 1, 2, '-1.20']
+  ])('should get the caption corresponding to a stats value', (value: number, isBonusMalus: boolean, decimalNumbers: number, fixedDecimalNumbers: number | undefined, expected: string) => {
     // Assert
-    expect(StatsUtils.getDisplayValue(value, isBonusMalus, isPercentage)).toBe(expected)
+    expect(StatsUtils.getDisplayValue(value, isBonusMalus, decimalNumbers, fixedDecimalNumbers)).toBe(expected)
+  })
+})
+
+describe('StringUtils.getPercentageDisplayValue()', () => {
+  it.each([
+    [1, false, 0, undefined, '100%'],
+    [-1, false, 0, undefined, '-100%'],
+    [0, false, 0, undefined, '0%'],
+    [1, true, 0, undefined, '+100%'],
+    [-1, true, 0, undefined, '-100%'],
+    [0, true, 0, undefined, '0%'],
+    [1, false, 0, 2, '100.00%'],
+    [-1, false, 0, 2, '-100.00%'],
+    [0, false, 0, 2, '0.00%'],
+    [1, true, 0, 2, '+100.00%'],
+    [-1, true, 0, 2, '-100.00%'],
+    [0, true, 0, 2, '0.00%'],
+    [0.11111, false, 0, undefined, '11%'],
+    [-0.11111, false, 0, undefined, '-11%'],
+    [0.11111, true, 0, undefined, '+11%'],
+    [-0.11111, true, 0, undefined, '-11%'],
+    [0.11111, false, 0, 2, '11.00%'],
+    [-0.11111, false, 0, 2, '-11.00%'],
+    [0.11111, true, 0, 2, '+11.00%'],
+    [-0.11111, true, 0, 2, '-11.00%'],
+    [0.19999, false, 0, undefined, '20%'],
+    [-0.19999, false, 0, undefined, '-20%'],
+    [0.19999, true, 0, undefined, '+20%'],
+    [-0.19999, true, 0, undefined, '-20%'],
+    [0.19999, false, 0, 2, '20.00%'],
+    [-0.19999, false, 0, 2, '-20.00%'],
+    [0.19999, true, 0, 2, '+20.00%'],
+    [-0.19999, true, 0, 2, '-20.00%'],
+    [0.11111, false, 1, undefined, '11.1%'],
+    [-0.11111, false, 1, undefined, '-11.1%'],
+    [0.11111, true, 1, undefined, '+11.1%'],
+    [-0.11111, true, 1, undefined, '-11.1%'],
+    [0.11111, false, 1, 2, '11.10%'],
+    [-0.11111, false, 1, 2, '-11.10%'],
+    [0.11111, true, 1, 2, '+11.10%'],
+    [-0.11111, true, 1, 2, '-11.10%'],
+    [0.11199, false, 1, undefined, '11.2%'],
+    [-0.11199, false, 1, undefined, '-11.2%'],
+    [0.11199, true, 1, undefined, '+11.2%'],
+    [-0.11199, true, 1, undefined, '-11.2%'],
+    [0.11199, false, 1, 2, '11.20%'],
+    [-0.11199, false, 1, 2, '-11.20%'],
+    [0.11199, true, 1, 2, '+11.20%'],
+    [-0.11199, true, 1, 2, '-11.20%']
+  ])('should get the caption corresponding to a stats value', (value: number, isBonusMalus: boolean, decimalNumbers: number, fixedDecimalNumbers: number | undefined, expected: string) => {
+    // Assert
+    expect(StatsUtils.getPercentageDisplayValue(value, isBonusMalus, decimalNumbers, fixedDecimalNumbers)).toBe(expected)
   })
 })
 

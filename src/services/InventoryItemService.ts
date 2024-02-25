@@ -18,7 +18,6 @@ import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IPrice } from '../models/item/IPrice'
 import { GlobalFilterService } from './GlobalFilterService'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
-import { round } from 'round-ts'
 import { TinyEmitter } from 'tiny-emitter'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { PriceUtils } from '../utils/PriceUtils'
@@ -77,8 +76,8 @@ export class InventoryItemService {
     }
 
     return Result.ok({
-      ergonomics: round(ergonomics, 1),
-      ergonomicsWithMods: round(ergonomicsWithMods, 1)
+      ergonomics: ergonomics,
+      ergonomicsWithMods: ergonomicsWithMods
     })
   }
 
@@ -396,9 +395,9 @@ export class InventoryItemService {
 
     // Applying to the weapon recoil the recoil percentage modifiers of its mods
     recoil.horizontalRecoilWithMods = recoil.horizontalRecoil + (recoil.horizontalRecoil * modsRecoilPercentageModifiers)
-    recoil.horizontalRecoilWithMods = round(recoil.horizontalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier))
+    recoil.horizontalRecoilWithMods = recoil.horizontalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier)
     recoil.verticalRecoilWithMods = recoil.verticalRecoil + (recoil.verticalRecoil * modsRecoilPercentageModifiers)
-    recoil.verticalRecoilWithMods = round(recoil.verticalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier))
+    recoil.verticalRecoilWithMods = recoil.verticalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier)
 
     return Result.ok(recoil)
   }
@@ -441,7 +440,7 @@ export class InventoryItemService {
         return Result.failFrom(modRecoilPercentageModifierResult)
       }
 
-      recoilPercentageModifier.recoilPercentageModifierWithMods = round(recoilPercentageModifier.recoilPercentageModifierWithMods + modRecoilPercentageModifierResult.value.recoilPercentageModifierWithMods, 2)
+      recoilPercentageModifier.recoilPercentageModifierWithMods = recoilPercentageModifier.recoilPercentageModifierWithMods + modRecoilPercentageModifierResult.value.recoilPercentageModifierWithMods
     }
 
     return Result.ok(recoilPercentageModifier)
@@ -644,12 +643,12 @@ export class InventoryItemService {
     }
 
     return Result.ok({
-      ergonomicsPercentageModifier: round(ergonomicsPercentageModifier, 2),
-      ergonomicsPercentageModifierWithMods: round(ergonomicsPercentageModifierWithMods, 2),
-      movementSpeedPercentageModifier: round(movementSpeedPercentageModifier, 2),
-      movementSpeedPercentageModifierWithMods: round(movementSpeedPercentageModifierWithMods, 2),
-      turningSpeedPercentageModifier: round(turningSpeedPercentageModifier, 2),
-      turningSpeedPercentageModifierWithMods: round(turningSpeedPercentageModifierWithMods, 2)
+      ergonomicsPercentageModifier,
+      ergonomicsPercentageModifierWithMods,
+      movementSpeedPercentageModifier,
+      movementSpeedPercentageModifierWithMods,
+      turningSpeedPercentageModifier,
+      turningSpeedPercentageModifierWithMods
     })
   }
 
@@ -700,9 +699,9 @@ export class InventoryItemService {
     }
 
     return Result.ok({
-      weight: round(weight, 3),
-      weightWithContent: round(weightWithContent, 3),
-      unitWeight: round(itemResult.value.weight, 3)
+      weight: weight,
+      weightWithContent: weightWithContent,
+      unitWeight: itemResult.value.weight
     })
   }
 

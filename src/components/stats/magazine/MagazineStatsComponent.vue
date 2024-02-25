@@ -24,7 +24,7 @@
         <span>{{ $t('caption.loadSpeed') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.loadSpeedPercentageModifier, true)">
-        {{ StatsUtils.getDisplayValue(item.loadSpeedPercentageModifier, true, true) }}
+        {{ StatsUtils.getPercentageDisplayValue(item.loadSpeedPercentageModifier, true) }}
       </div>
     </div>
     <div
@@ -39,7 +39,7 @@
         <span>{{ $t('caption.checkSpeed') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.checkSpeedPercentageModifier, true)">
-        {{ StatsUtils.getDisplayValue(item.checkSpeedPercentageModifier, true, true) }}
+        {{ StatsUtils.getPercentageDisplayValue(item.checkSpeedPercentageModifier, true) }}
       </div>
     </div>
     <div
@@ -54,7 +54,7 @@
         <span>{{ $t('caption.ergonomics') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsModifier)">
-        {{ StatsUtils.getDisplayValue(ergonomicsModifier, true, false) }}
+        {{ StatsUtils.getDisplayValue(ergonomicsModifier, true) }}
       </div>
     </div>
   </div>

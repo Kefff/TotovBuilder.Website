@@ -13,7 +13,6 @@ import { InventoryItemService } from './InventoryItemService'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { PathUtils } from '../utils/PathUtils'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
-import { round } from 'round-ts'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { PriceUtils } from '../utils/PriceUtils'
 import { IWearableModifiers } from '../models/utils/IWearableModifiers'
@@ -409,7 +408,7 @@ export class BuildPropertiesService {
 
     if (ergonomicsResult != null) {
       if (ergonomicsResult.success) {
-        result.ergonomics = round(ergonomicsResult.value + (ergonomicsResult.value * result.wearableModifiers.ergonomicsPercentageModifierWithMods), 1)
+        result.ergonomics = ergonomicsResult.value + (ergonomicsResult.value * result.wearableModifiers.ergonomicsPercentageModifierWithMods)
       }
     }
 
@@ -474,12 +473,12 @@ export class BuildPropertiesService {
         return Result.failFrom(inventorySlotWearableModifiersResult)
       }
 
-      wearableModifiers.ergonomicsPercentageModifier += round(inventorySlotWearableModifiersResult.value.ergonomicsPercentageModifier, 2)
-      wearableModifiers.ergonomicsPercentageModifierWithMods += round(inventorySlotWearableModifiersResult.value.ergonomicsPercentageModifierWithMods, 2)
-      wearableModifiers.movementSpeedPercentageModifier += round(inventorySlotWearableModifiersResult.value.movementSpeedPercentageModifier, 2)
-      wearableModifiers.movementSpeedPercentageModifierWithMods += round(inventorySlotWearableModifiersResult.value.movementSpeedPercentageModifierWithMods, 2)
-      wearableModifiers.turningSpeedPercentageModifier += round(inventorySlotWearableModifiersResult.value.turningSpeedPercentageModifier, 2)
-      wearableModifiers.turningSpeedPercentageModifierWithMods += round(inventorySlotWearableModifiersResult.value.turningSpeedPercentageModifierWithMods, 2)
+      wearableModifiers.ergonomicsPercentageModifier += inventorySlotWearableModifiersResult.value.ergonomicsPercentageModifier
+      wearableModifiers.ergonomicsPercentageModifierWithMods += inventorySlotWearableModifiersResult.value.ergonomicsPercentageModifierWithMods
+      wearableModifiers.movementSpeedPercentageModifier += inventorySlotWearableModifiersResult.value.movementSpeedPercentageModifier
+      wearableModifiers.movementSpeedPercentageModifierWithMods += inventorySlotWearableModifiersResult.value.movementSpeedPercentageModifierWithMods
+      wearableModifiers.turningSpeedPercentageModifier += inventorySlotWearableModifiersResult.value.turningSpeedPercentageModifier
+      wearableModifiers.turningSpeedPercentageModifierWithMods += inventorySlotWearableModifiersResult.value.turningSpeedPercentageModifierWithMods
     }
 
     return Result.ok(wearableModifiers)
@@ -504,7 +503,7 @@ export class BuildPropertiesService {
       weight += inventorySlotWeightResult.value
     }
 
-    return Result.ok(round(weight, 3))
+    return Result.ok(weight)
   }
 
   /**

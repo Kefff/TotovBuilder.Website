@@ -81,7 +81,7 @@
           v-if="data.verticalRecoil != null"
           class="build-list-column"
         >
-          <span>{{ data.verticalRecoil }}</span>
+          <span>{{ StatsUtils.getDisplayValue(data.verticalRecoil, false, 0) }}</span>
           <font-awesome-icon
             icon="arrows-alt-v"
             class="icon-after-text"
@@ -103,7 +103,7 @@
           v-if="data.horizontalRecoil != null"
           class="build-list-column"
         >
-          <span>{{ data.horizontalRecoil }}</span>
+          <span>{{ StatsUtils.getDisplayValue(data.horizontalRecoil, false, 0) }}</span>
           <font-awesome-icon
             icon="arrows-alt-h"
             class="icon-after-text"
@@ -123,7 +123,7 @@
       <template #body="{ data }">
         <div class="build-list-column">
           <div v-if="data.ergonomics != null">
-            <span>{{ data.ergonomics }}</span>
+            <span>{{ StatsUtils.getDisplayValue(data.ergonomics, false, 0) }}</span>
             <font-awesome-icon
               icon="hand-paper"
               class="icon-after-text"
@@ -147,7 +147,7 @@
           class="build-list-column"
         >
           <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.ergonomicsPercentageModifierWithMods)">
-            {{ StatsUtils.getDisplayValue(data.wearableModifiers.ergonomicsPercentageModifierWithMods, true, true) }}
+            {{ StatsUtils.getPercentageDisplayValue(data.wearableModifiers.ergonomicsPercentageModifierWithMods, true) }}
           </span>
           <font-awesome-icon
             icon="hand-paper"
@@ -171,7 +171,7 @@
           class="build-list-column"
         >
           <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.movementSpeedPercentageModifierWithMods)">
-            {{ StatsUtils.getDisplayValue(data.wearableModifiers.movementSpeedPercentageModifierWithMods, true, true) }}
+            {{ StatsUtils.getPercentageDisplayValue(data.wearableModifiers.movementSpeedPercentageModifierWithMods, true) }}
           </span>
           <font-awesome-icon
             icon="walking"
@@ -195,7 +195,7 @@
           class="build-list-column"
         >
           <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.turningSpeedPercentageModifierWithMods)">
-            {{ StatsUtils.getDisplayValue(data.wearableModifiers.turningSpeedPercentageModifierWithMods, true, true) }}
+            {{ StatsUtils.getPercentageDisplayValue(data.wearableModifiers.turningSpeedPercentageModifierWithMods, true) }}
           </span>
           <font-awesome-icon
             icon="undo"
@@ -218,7 +218,7 @@
           v-if="data.weight > 0"
           class="build-list-column"
         >
-          <span :class="StatsUtils.getWeightColorClass(data.weight)">{{ data.weight }}</span>
+          <span :class="StatsUtils.getWeightColorClass(data.weight)">{{ StatsUtils.getDisplayValue(data.weight, false, 3, 3) }}</span>
           <font-awesome-icon
             icon="weight-hanging"
             class="icon-after-text"

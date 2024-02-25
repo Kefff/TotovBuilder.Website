@@ -27,7 +27,7 @@
             class="selected-item-summary-weight"
           >
             <div v-if="weight.weight > 0">
-              <span>{{ weight.weight.toFixed(3) }}</span>
+              <span>{{ StatsUtils.getDisplayValue(weight.weight, false, 3, 3) }}</span>
               <font-awesome-icon
                 icon="weight-hanging"
                 class="icon-after-text"
@@ -49,7 +49,7 @@
             class="selected-item-summary-weight selected-item-summary-weight-per-unit"
           >
             <div v-if="weight.unitWeight !== weight.weight">
-              <span>{{ weight.unitWeight.toFixed(3) }}</span>
+              <span>{{ StatsUtils.getDisplayValue(weight.unitWeight, false, 3, 3,) }}</span>
               <font-awesome-icon
                 icon="weight-hanging"
                 class="icon-after-text"
