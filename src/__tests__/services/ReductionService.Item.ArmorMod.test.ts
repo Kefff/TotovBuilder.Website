@@ -10,8 +10,8 @@ describe('parseReducedItem', () => {
       {
         'ac': 6,
         'aa': [
-          'TopOfTheHead',
-          'Nape'
+          'HeadTopOfTheHead',
+          'HeadNape'
         ],
         'd': 40,
         'e': -0.05,
@@ -25,7 +25,6 @@ describe('parseReducedItem', () => {
             'n': 'mod_nvg'
           }
         ],
-        'r': 'High',
         't': -0.06,
         'c': 'armorMod',
         'co': [
@@ -48,8 +47,8 @@ describe('parseReducedItem', () => {
       {
         armorClass: 6,
         armoredAreas: [
-          'TopOfTheHead',
-          'Nape'
+          'HeadTopOfTheHead',
+          'HeadNape'
         ],
         baseItemId: undefined,
         blindnessProtectionPercentage: 0,
@@ -86,7 +85,6 @@ describe('parseReducedItem', () => {
         name: 'Diamond Age Bastion helmet armor plate',
         presetWearableModifiers: undefined,
         prices: [],
-        ricochetChance: 'High',
         shortName: 'Bastion plate',
         turningSpeedPercentageModifier: -0.06,
         weight: 0.99,
@@ -97,12 +95,13 @@ describe('parseReducedItem', () => {
       {
         'ac': 3,
         'aa': [
-          'Eyes',
-          'Jaws'
+          'HeadFace',
+          'HeadEyes',
+          'HeadJaws'
         ],
         'bp': 0.1,
         'd': 40,
-        'e': -0.08,
+        'e': -0.04,
         'ma': 'Glass',
         't': -0.08,
         'c': 'armorMod',
@@ -113,11 +112,13 @@ describe('parseReducedItem', () => {
           '5c0558060db834001b735271',
           '57235b6f24597759bf5a30f1',
           '5c110624d174af029e69734c',
-          '5a16b8a9fcdbcb00165aa6ca'
+          '5a16b8a9fcdbcb00165aa6ca',
+          '5a398b75c4a282000a51a266',
+          '5a398ab9c4a282000c5a9842'
         ],
-        'ic': 'https://assets.tarkov.dev/5a16b7e1fcdbcb00165aa6c9-icon.jpg',
+        'ic': 'https://assets.tarkov.dev/5a16b7e1fcdbcb00165aa6c9-icon.webp',
         'i': '5a16b7e1fcdbcb00165aa6c9',
-        'im': 'https://assets.tarkov.dev/5a16b7e1fcdbcb00165aa6c9-image.jpg',
+        'im': 'https://assets.tarkov.dev/5a16b7e1fcdbcb00165aa6c9-image.webp',
         'm': 'https://tarkov.dev/item/ops-core-fast-multi-hit-ballistic-face-shield',
         'n': 'Ops-Core FAST multi-hit ballistic face shield',
         's': 'FAST FS',
@@ -127,8 +128,9 @@ describe('parseReducedItem', () => {
       {
         armorClass: 3,
         armoredAreas: [
-          'Eyes',
-          'Jaws'
+          'HeadFace',
+          'HeadEyes',
+          'HeadJaws'
         ],
         baseItemId: undefined,
         blindnessProtectionPercentage: 0.1,
@@ -140,14 +142,16 @@ describe('parseReducedItem', () => {
           '5c0558060db834001b735271',
           '57235b6f24597759bf5a30f1',
           '5c110624d174af029e69734c',
-          '5a16b8a9fcdbcb00165aa6ca'
+          '5a16b8a9fcdbcb00165aa6ca',
+          '5a398b75c4a282000a51a266',
+          '5a398ab9c4a282000c5a9842'
         ],
         defaultPresetId: undefined,
         durability: 40,
-        ergonomicsPercentageModifier: -0.08,
-        iconLink: 'https://assets.tarkov.dev/5a16b7e1fcdbcb00165aa6c9-icon.jpg',
+        ergonomicsPercentageModifier: -0.04,
+        iconLink: 'https://assets.tarkov.dev/5a16b7e1fcdbcb00165aa6c9-icon.webp',
         id: '5a16b7e1fcdbcb00165aa6c9',
-        imageLink: 'https://assets.tarkov.dev/5a16b7e1fcdbcb00165aa6c9-image.jpg',
+        imageLink: 'https://assets.tarkov.dev/5a16b7e1fcdbcb00165aa6c9-image.webp',
         marketLink: 'https://tarkov.dev/item/ops-core-fast-multi-hit-ballistic-face-shield',
         material: 'Glass',
         maxStackableAmount: 1,
@@ -156,7 +160,6 @@ describe('parseReducedItem', () => {
         name: 'Ops-Core FAST multi-hit ballistic face shield',
         presetWearableModifiers: undefined,
         prices: [],
-        ricochetChance: '',
         shortName: 'FAST FS',
         turningSpeedPercentageModifier: -0.08,
         weight: 1.2,
