@@ -1,19 +1,15 @@
-import { spy, when } from 'ts-mockito'
+import { anything, instance, mock, when } from 'ts-mockito'
+import { describe, expect, it } from 'vitest'
+import { IInventoryItem } from '../../../../models/build/IInventoryItem'
 import { IItem } from '../../../../models/item/IItem'
 import { IPrice } from '../../../../models/item/IPrice'
+import { IInventoryPrice } from '../../../../models/utils/IInventoryPrice'
 import SortingData, { SortingOrder } from '../../../../models/utils/SortingData'
 import { InventoryItemService } from '../../../../services/InventoryItemService'
-import { ItemService } from '../../../../services/ItemService'
-import { GlobalFilterService } from '../../../../services/GlobalFilterService'
 import Services from '../../../../services/repository/Services'
-import { ItemSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunction'
 import { SortingService } from '../../../../services/sorting/SortingService'
+import { ItemSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunction'
 import Result from '../../../../utils/Result'
-import { useItemServiceMock } from '../../../__mocks__/ItemServiceMock'
-import { useTarkovValuesServiceMock } from '../../../__mocks__/TarkovValuesServiceMock'
-import { useWebsiteConfigurationServiceMock } from '../../../__mocks__/WebsiteConfigurationServiceMock'
-import { usePresetServiceMock } from '../../../__mocks__/PresetPropertiesServiceMock'
-import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([
@@ -59,16 +55,13 @@ describe('comparisonFunction()', () => {
     ]
   ])('should compare by category, price and name', async (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
     // Arrange
-    useItemServiceMock()
-    usePresetServiceMock()
-    useTarkovValuesServiceMock()
-    useWebsiteConfigurationServiceMock()
-    Services.configure(InventoryItemService)
-    Services.configure(GlobalFilterService)
-
-    const itemServiceSpy = spy(Services.get(ItemService))
-    when(itemServiceSpy.getItem(item1.id)).thenReturn(Promise.resolve(Result.ok(item1)))
-    when(itemServiceSpy.getItem(item2.id)).thenReturn(Promise.resolve(Result.ok(item2)))
+    const inventoryItemService = mock<InventoryItemService>()
+    when(inventoryItemService.getPrice(anything())).thenCall((inventoryItem: IInventoryItem) => {
+      return inventoryItem.itemId === item1.id
+        ? Result.ok({ unitPrice: item1.prices[0] ?? { valueInMainCurrency: 0 } } as IInventoryPrice)
+        : Result.ok({ unitPrice: item2.prices[0] ?? { valueInMainCurrency: 0 } } as IInventoryPrice)
+    })
+    Services.configure(InventoryItemService, undefined, instance(inventoryItemService))
 
     const sortingService = new SortingService(ItemSortingFunctions)
 
@@ -87,18 +80,12 @@ describe('comparisonFunction()', () => {
 
   it('should compare by category and price even when the price is not found', async () => {
     // Arrange
-    useItemServiceMock()
-    useTarkovValuesServiceMock()
-    useWebsiteConfigurationServiceMock()
-    Services.configure(InventoryItemService)
-    Services.configure(GlobalFilterService)
-
     const item1 = { id: 'i1', name: 'a', categoryId: 'cat1', prices: [{ currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as IItem
     const item2 = { id: 'i2', name: 'a', categoryId: 'cat1', prices: [{ currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 2, valueInMainCurrency: 2 }] } as IItem
 
-    const itemServiceSpy = spy(Services.get(ItemService))
-    when(itemServiceSpy.getItem(item1.id)).thenReturn(Promise.resolve(Result.fail()))
-    when(itemServiceSpy.getItem(item2.id)).thenReturn(Promise.resolve(Result.fail()))
+    const inventoryItemService = mock<InventoryItemService>()
+    when(inventoryItemService.getPrice(anything())).thenResolve(Result.fail())
+    Services.configure(InventoryItemService, undefined, instance(inventoryItemService))
 
     const sortingService = new SortingService(ItemSortingFunctions)
 
@@ -117,8 +104,6 @@ describe('comparisonFunction()', () => {
 
   it('should compare by a category', async () => {
     // Arrange
-    Services.configure(InventoryItemService)
-
     const item1 = {
       categoryId: 'cat2',
       name: 'a'
@@ -146,8 +131,6 @@ describe('comparisonFunction()', () => {
 
   it('should compare by category and a name', async () => {
     // Arrange
-    Services.configure(InventoryItemService)
-
     const item1 = {
       categoryId: 'cat2',
       name: 'a'

@@ -1,26 +1,29 @@
-import { describe, expect, it } from 'vitest'
-import { BuildsImportComponentService } from '../../../services/components/BuildsImportComponentService'
 import { anything, instance, mock, when } from 'ts-mockito'
-import { ImportService } from '../../../services/ImportService'
-import Result, { FailureType } from '../../../utils/Result'
-import { IInventorySlot } from '../../../models/build/IInventorySlot'
-import Services from '../../../services/repository/Services'
-import { BuildPropertiesService } from '../../../services/BuildPropertiesService'
-import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
-import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
-import { InventorySlotPropertiesService } from '../../../services/InventorySlotPropertiesService'
-import { InventoryItemService } from '../../../services/InventoryItemService'
-import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
-import { GlobalFilterService } from '../../../services/GlobalFilterService'
-import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
-import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
-import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
+import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../../models/build/IBuild'
+import { IInventorySlot } from '../../../models/build/IInventorySlot'
+import { IBackpack } from '../../../models/item/IBackpack'
+import { IItem } from '../../../models/item/IItem'
+import { IPrice } from '../../../models/item/IPrice'
+import { BuildPropertiesService } from '../../../services/BuildPropertiesService'
+import { GlobalFilterService } from '../../../services/GlobalFilterService'
+import { ImportService } from '../../../services/ImportService'
+import { InventoryItemService } from '../../../services/InventoryItemService'
+import { InventorySlotPropertiesService } from '../../../services/InventorySlotPropertiesService'
+import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
+import { BuildsImportComponentService } from '../../../services/components/BuildsImportComponentService'
+import Services from '../../../services/repository/Services'
+import Result, { FailureType } from '../../../utils/Result'
+import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import { usePresetServiceMock } from '../../__mocks__/PresetServiceMock'
+import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
+import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('readBuilds()', () => {
   it('should read builds from a file', async () => {
     // Arrange
-    useItemServiceMock()
+    useItemServiceMock(true, [berkut, crikent], prices)
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useVersionServiceMock()
@@ -32,7 +35,7 @@ describe('readBuilds()', () => {
     Services.configure(ItemPropertiesService)
 
     const importServiceMock = mock<ImportService>()
-    when(importServiceMock.getBuildsFromFile(anything())).thenReturn(Promise.resolve(Result.ok<IBuild[]>([
+    when(importServiceMock.getBuildsFromFile(anything())).thenResolve(Result.ok<IBuild[]>([
       {
         id: 'build1',
         inventorySlots: [
@@ -54,7 +57,7 @@ describe('readBuilds()', () => {
         lastWebsiteVersion: '1.6.0',
         name: 'Build 1'
       }
-    ])))
+    ]))
     Services.configure(ImportService, undefined, instance(importServiceMock))
 
     const service = new BuildsImportComponentService()
@@ -94,8 +97,8 @@ describe('readBuilds()', () => {
               merchant: '',
               merchantLevel: 0,
               quest: undefined,
-              value: 23444,
-              valueInMainCurrency: 23444
+              value: 20762,
+              valueInMainCurrency: 20762
             },
             pricesWithContent: [
               {
@@ -105,8 +108,8 @@ describe('readBuilds()', () => {
                 merchant: '',
                 merchantLevel: 0,
                 quest: undefined,
-                value: 23444,
-                valueInMainCurrency: 23444
+                value: 20762,
+                valueInMainCurrency: 20762
               }
             ],
             unitPrice: {
@@ -144,8 +147,8 @@ describe('readBuilds()', () => {
                     merchant: 'ragman',
                     merchantLevel: 1,
                     quest: undefined,
-                    value: 23444,
-                    valueInMainCurrency: 23444
+                    value: 24509,
+                    valueInMainCurrency: 24509
                   },
                   {
                     barterItems: [],
@@ -154,14 +157,14 @@ describe('readBuilds()', () => {
                     merchant: 'flea-market',
                     merchantLevel: 0,
                     quest: undefined,
-                    value: 24046,
-                    valueInMainCurrency: 24046
+                    value: 26420,
+                    valueInMainCurrency: 26420
                   },
                   {
                     barterItems: [
                       {
-                        itemId: '5c0d2727d174af02a012cf58',
-                        quantity: 1
+                        itemId: '56742c284bdc2d98058b456d',
+                        quantity: 2
                       }
                     ],
                     currencyName: 'barter',
@@ -180,24 +183,72 @@ describe('readBuilds()', () => {
               },
               price: {
                 barterItems: [],
-                currencyName: 'RUB',
+                currencyName: 'barter',
                 itemId: '5ca20d5986f774331e7c9602',
                 merchant: 'ragman',
                 merchantLevel: 1,
                 quest: undefined,
-                value: 23444,
-                valueInMainCurrency: 23444
+                value: 0,
+                valueInMainCurrency: 0
               },
               quantity: 1,
               unitPrice: {
                 barterItems: [],
-                currencyName: 'RUB',
+                currencyName: 'barter',
                 itemId: '5ca20d5986f774331e7c9602',
                 merchant: 'ragman',
                 merchantLevel: 1,
                 quest: undefined,
-                value: 23444,
-                valueInMainCurrency: 23444
+                value: 0,
+                valueInMainCurrency: 0
+              }
+            },
+            {
+              item: {
+                categoryId: 'other',
+                conflictingItemIds: [],
+                iconLink: 'https://assets.tarkov.dev/56742c284bdc2d98058b456d-icon.webp',
+                id: '56742c284bdc2d98058b456d',
+                imageLink: 'https://assets.tarkov.dev/56742c284bdc2d98058b456d-image.webp',
+                marketLink: 'https://tarkov.dev/item/crickent-lighter',
+                maxStackableAmount: 1,
+                name: 'Crickent lighter',
+                prices: [
+                  {
+                    barterItems: [],
+                    currencyName: 'RUB',
+                    itemId: '56742c284bdc2d98058b456d',
+                    merchant: 'flea-market',
+                    merchantLevel: 0,
+                    quest: undefined,
+                    value: 10381,
+                    valueInMainCurrency: 10381
+                  }
+                ],
+                shortName: 'Crickent',
+                weight: 0.05,
+                wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Crickent_lighter'
+              },
+              price: {
+                barterItems: [],
+                currencyName: 'RUB',
+                itemId: '56742c284bdc2d98058b456d',
+                merchant: 'flea-market',
+                merchantLevel: 0,
+                quest: undefined,
+                value: 20762,
+                valueInMainCurrency: 20762
+              },
+              quantity: 2,
+              unitPrice: {
+                barterItems: [],
+                currencyName: 'RUB',
+                itemId: '56742c284bdc2d98058b456d',
+                merchant: 'flea-market',
+                merchantLevel: 0,
+                quest: undefined,
+                value: 10381,
+                valueInMainCurrency: 10381
               }
             }
           ],
@@ -255,7 +306,7 @@ describe('readBuilds()', () => {
     Services.configure(BuildPropertiesService)
 
     const importServiceMock = mock<ImportService>()
-    when(importServiceMock.getBuildsFromFile(anything())).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'Error')))
+    when(importServiceMock.getBuildsFromFile(anything())).thenResolve(Result.fail(FailureType.error, undefined, 'Error'))
     Services.configure(ImportService, undefined, instance(importServiceMock))
 
     const service = new BuildsImportComponentService()
@@ -269,3 +320,86 @@ describe('readBuilds()', () => {
     expect(result.success).toBe(false)
   })
 })
+
+const berkut: IBackpack = {
+  capacity: 20,
+  categoryId: 'backpack',
+  conflictingItemIds: [],
+  ergonomicsPercentageModifier: -0.02,
+  iconLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-icon.webp',
+  id: '5ca20d5986f774331e7c9602',
+  imageLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-image.webp',
+  marketLink: 'https://tarkov.dev/item/wartech-berkut-bb-102-backpack',
+  maxStackableAmount: 1,
+  movementSpeedPercentageModifier: 0,
+  name: 'WARTECH Berkut BB-102 backpack',
+  presetWearableModifiers: undefined,
+  prices: [],
+  shortName: 'Berkut',
+  turningSpeedPercentageModifier: 0,
+  weight: 1,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/WARTECH_Berkut_BB-102_backpack'
+}
+
+const crikent: IItem = {
+  categoryId: 'other',
+  conflictingItemIds: [],
+  iconLink: 'https://assets.tarkov.dev/56742c284bdc2d98058b456d-icon.webp',
+  id: '56742c284bdc2d98058b456d',
+  imageLink: 'https://assets.tarkov.dev/56742c284bdc2d98058b456d-image.webp',
+  marketLink: 'https://tarkov.dev/item/crickent-lighter',
+  maxStackableAmount: 1,
+  name: 'Crickent lighter',
+  prices: [],
+  shortName: 'Crickent',
+  weight: 0.05,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Crickent_lighter'
+}
+
+const prices: IPrice[] = [
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: '5ca20d5986f774331e7c9602',
+    merchant: 'ragman',
+    merchantLevel: 1,
+    quest: undefined,
+    value: 24509,
+    valueInMainCurrency: 24509
+  },
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: '5ca20d5986f774331e7c9602',
+    merchant: 'flea-market',
+    merchantLevel: 0,
+    quest: undefined,
+    value: 26420,
+    valueInMainCurrency: 26420
+  },
+  {
+    barterItems: [
+      {
+        itemId: '56742c284bdc2d98058b456d',
+        quantity: 2
+      }
+    ],
+    currencyName: 'barter',
+    itemId: '5ca20d5986f774331e7c9602',
+    merchant: 'ragman',
+    merchantLevel: 1,
+    quest: undefined,
+    value: 0,
+    valueInMainCurrency: 0
+  },
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: '56742c284bdc2d98058b456d',
+    merchant: 'flea-market',
+    merchantLevel: 0,
+    quest: undefined,
+    value: 10381,
+    valueInMainCurrency: 10381
+  }
+]

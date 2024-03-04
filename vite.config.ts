@@ -6,6 +6,7 @@ import vue from '@vitejs/plugin-vue'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'url'
+import AbortControllePolyfill from 'abortcontroller-polyfill/dist/polyfill-patch-fetch'
 
 export default defineConfig({
   build: {
@@ -33,7 +34,8 @@ export default defineConfig({
     vue(),
     VueI18nPlugin({
       include: resolve(dirname(fileURLToPath(import.meta.url)), './src/locales/**') // https://vue-i18n.intlify.dev/guide/advanced/optimization.html#how-to-configure
-    })
+    }),
+    AbortControllePolyfill
   ],
   test: {
     coverage: {
