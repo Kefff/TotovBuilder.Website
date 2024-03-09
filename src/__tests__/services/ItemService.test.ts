@@ -1,29 +1,28 @@
-import { anything, instance, mock, spy, verify, when } from 'ts-mockito'
-import Services from '../../services/repository/Services'
-import { ItemService } from '../../services/ItemService'
-import { IPrice } from '../../models/item/IPrice'
-import Result, { FailureType } from '../../utils/Result'
-import ItemCategories from '../__data__/item-categories.json'
-import { ItemFetcherService } from '../../services/ItemFetcherService'
-import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
-import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
-import { TarkovValuesService } from '../../services/TarkovValuesService'
-import { useItemFetcherServiceMock } from '../__mocks__/ItemFetcherServiceMock'
-import { NotificationService } from '../../services/NotificationService'
-import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import MockDate from 'mockdate'
-import ItemCategoriesMock from '../__data__/item-categories.json'
+import { anything, instance, mock, spy, verify, when } from 'ts-mockito'
+import { describe, expect, it } from 'vitest'
+import { IItem } from '../../models/item/IItem'
+import { IPrice } from '../../models/item/IPrice'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { ItemFetcherService } from '../../services/ItemFetcherService'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ItemService } from '../../services/ItemService'
+import { NotificationService } from '../../services/NotificationService'
+import { PresetService } from '../../services/PresetService'
+import { TarkovValuesService } from '../../services/TarkovValuesService'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
+import Services from '../../services/repository/Services'
+import Result, { FailureType } from '../../utils/Result'
+import { default as ItemCategories, default as ItemCategoriesMock } from '../__data__/item-categories.json'
 import ItemsMock from '../__data__/items'
 import PresetsMock from '../__data__/presets'
 import PricesMock from '../__data__/prices'
-import { IItem } from '../../models/item/IItem'
-import { usePresetServiceMock } from '../__mocks__/PresetPropertiesServiceMock'
-import { GlobalFilterService } from '../../services/GlobalFilterService'
-import { PresetService } from '../../services/PresetService'
-import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { useGlobalFilterServiceMock } from '../__mocks__/GlobalFilterServiceMock'
-import { describe, expect, it } from 'vitest'
-import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
+import { useItemFetcherServiceMock } from '../__mocks__/ItemFetcherServiceMock'
+import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
+import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('constructor', () => {
   it('should subscribe to the GlobalFilterService "globalFilterChanged" event and update the filtered items list when triggered', async () => {
@@ -69,10 +68,10 @@ describe('fetchItemCategories()', () => {
     useWebsiteConfigurationServiceMock()
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItemCategories()).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'Fetch error')))
-    when(itemFetcherServiceMock.fetchItems()).thenReturn(Promise.resolve(Result.ok(ItemsMock as IItem[])))
-    when(itemFetcherServiceMock.fetchPresets()).thenReturn(Promise.resolve(Result.ok(PresetsMock)))
-    when(itemFetcherServiceMock.fetchPrices()).thenReturn(Promise.resolve(Result.ok(PricesMock as IPrice[])))
+    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(Result.fail(FailureType.error, undefined, 'Fetch error'))
+    when(itemFetcherServiceMock.fetchItems()).thenResolve(Result.ok(ItemsMock as IItem[]))
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok(PresetsMock))
+    when(itemFetcherServiceMock.fetchPrices()).thenResolve(Result.ok(PricesMock as IPrice[]))
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     // Act
@@ -93,10 +92,10 @@ describe('fetchItems()', () => {
     useWebsiteConfigurationServiceMock()
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItemCategories()).thenReturn(Promise.resolve(Result.ok(ItemCategoriesMock)))
-    when(itemFetcherServiceMock.fetchItems()).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'Fetch error')))
-    when(itemFetcherServiceMock.fetchPresets()).thenReturn(Promise.resolve(Result.ok(PresetsMock)))
-    when(itemFetcherServiceMock.fetchPrices()).thenReturn(Promise.resolve(Result.ok(PricesMock as IPrice[])))
+    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(Result.ok(ItemCategoriesMock))
+    when(itemFetcherServiceMock.fetchItems()).thenResolve(Result.fail(FailureType.error, undefined, 'Fetch error'))
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok(PresetsMock))
+    when(itemFetcherServiceMock.fetchPrices()).thenResolve(Result.ok(PricesMock as IPrice[]))
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     // Act

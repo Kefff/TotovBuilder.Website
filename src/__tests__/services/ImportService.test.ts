@@ -1,10 +1,10 @@
 import { anything, instance, mock, when } from 'ts-mockito'
+import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { BuildService } from '../../services/BuildService'
 import { ImportService } from '../../services/ImportService'
-import Services from '../../services/repository/Services'
 import { VersionService } from '../../services/VersionService'
-import { describe, expect, it } from 'vitest'
+import Services from '../../services/repository/Services'
 
 describe('import()', () => {
   it('should import builds and execute migrations on them', async () => {
@@ -16,7 +16,7 @@ describe('import()', () => {
     })
 
     const versionServiceMock = mock<VersionService>()
-    when(versionServiceMock.executeBuildMigrations(anything())).thenReturn(Promise.resolve(true))
+    when(versionServiceMock.executeBuildMigrations(anything())).thenResolve(true)
 
     Services.configure(BuildService, undefined, instance(buildServiceMock))
     Services.configure(VersionService, undefined, instance(versionServiceMock))

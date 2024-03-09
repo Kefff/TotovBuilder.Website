@@ -9,7 +9,7 @@ import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
-import { usePresetServiceMock } from '../__mocks__/PresetPropertiesServiceMock'
+import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { describe, expect, it } from 'vitest'
 

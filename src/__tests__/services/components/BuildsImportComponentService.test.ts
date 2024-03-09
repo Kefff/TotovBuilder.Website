@@ -2,8 +2,6 @@ import { anything, instance, mock, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../../models/build/IBuild'
 import { IInventorySlot } from '../../../models/build/IInventorySlot'
-import { IBackpack } from '../../../models/item/IBackpack'
-import { IItem } from '../../../models/item/IItem'
 import { IPrice } from '../../../models/item/IPrice'
 import { BuildPropertiesService } from '../../../services/BuildPropertiesService'
 import { GlobalFilterService } from '../../../services/GlobalFilterService'
@@ -14,6 +12,7 @@ import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
 import { BuildsImportComponentService } from '../../../services/components/BuildsImportComponentService'
 import Services from '../../../services/repository/Services'
 import Result, { FailureType } from '../../../utils/Result'
+import { berkut, iskra } from '../../__data__/itemMocks'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
@@ -23,7 +22,7 @@ import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfi
 describe('readBuilds()', () => {
   it('should read builds from a file', async () => {
     // Arrange
-    useItemServiceMock(true, [berkut, crikent], prices)
+    useItemServiceMock(true, [berkut, iskra], prices)
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useVersionServiceMock()
@@ -44,7 +43,7 @@ describe('readBuilds()', () => {
               {
                 content: [],
                 ignorePrice: false,
-                itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
+                itemId: berkut.id,
                 modSlots: [],
                 quantity: 1
               }
@@ -127,23 +126,12 @@ describe('readBuilds()', () => {
           shoppingList: [
             {
               item: {
-                capacity: 20,
-                categoryId: 'backpack',
-                conflictingItemIds: [],
-                ergonomicsPercentageModifier: -0.02,
-                iconLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-icon.webp',
-                id: '5ca20d5986f774331e7c9602',
-                imageLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-image.webp',
-                marketLink: 'https://tarkov.dev/item/wartech-berkut-bb-102-backpack',
-                maxStackableAmount: 1,
-                movementSpeedPercentageModifier: 0,
-                name: 'WARTECH Berkut BB-102 backpack',
-                presetWearableModifiers: undefined,
+                ...berkut,
                 prices: [
                   {
                     barterItems: [],
                     currencyName: 'RUB',
-                    itemId: '5ca20d5986f774331e7c9602',
+                    itemId: berkut.id,
                     merchant: 'ragman',
                     merchantLevel: 1,
                     quest: undefined,
@@ -153,38 +141,34 @@ describe('readBuilds()', () => {
                   {
                     barterItems: [],
                     currencyName: 'RUB',
-                    itemId: '5ca20d5986f774331e7c9602',
+                    itemId: berkut.id,
                     merchant: 'flea-market',
                     merchantLevel: 0,
                     quest: undefined,
-                    value: 26420,
-                    valueInMainCurrency: 26420
+                    value: 26665,
+                    valueInMainCurrency: 26665
                   },
                   {
                     barterItems: [
                       {
-                        itemId: '56742c284bdc2d98058b456d',
+                        itemId: iskra.id,
                         quantity: 2
                       }
                     ],
                     currencyName: 'barter',
-                    itemId: '5ca20d5986f774331e7c9602',
+                    itemId: berkut.id,
                     merchant: 'ragman',
                     merchantLevel: 1,
                     quest: undefined,
                     value: 0,
                     valueInMainCurrency: 0
                   }
-                ],
-                shortName: 'Berkut',
-                turningSpeedPercentageModifier: 0,
-                weight: 1,
-                wikiLink: 'https://escapefromtarkov.fandom.com/wiki/WARTECH_Berkut_BB-102_backpack'
+                ]
               },
               price: {
                 barterItems: [],
                 currencyName: 'barter',
-                itemId: '5ca20d5986f774331e7c9602',
+                itemId: berkut.id,
                 merchant: 'ragman',
                 merchantLevel: 1,
                 quest: undefined,
@@ -195,7 +179,7 @@ describe('readBuilds()', () => {
               unitPrice: {
                 barterItems: [],
                 currencyName: 'barter',
-                itemId: '5ca20d5986f774331e7c9602',
+                itemId: berkut.id,
                 merchant: 'ragman',
                 merchantLevel: 1,
                 quest: undefined,
@@ -205,34 +189,24 @@ describe('readBuilds()', () => {
             },
             {
               item: {
-                categoryId: 'other',
-                conflictingItemIds: [],
-                iconLink: 'https://assets.tarkov.dev/56742c284bdc2d98058b456d-icon.webp',
-                id: '56742c284bdc2d98058b456d',
-                imageLink: 'https://assets.tarkov.dev/56742c284bdc2d98058b456d-image.webp',
-                marketLink: 'https://tarkov.dev/item/crickent-lighter',
-                maxStackableAmount: 1,
-                name: 'Crickent lighter',
+                ...iskra,
                 prices: [
                   {
                     barterItems: [],
                     currencyName: 'RUB',
-                    itemId: '56742c284bdc2d98058b456d',
+                    itemId: iskra.id,
                     merchant: 'flea-market',
                     merchantLevel: 0,
                     quest: undefined,
                     value: 10381,
                     valueInMainCurrency: 10381
                   }
-                ],
-                shortName: 'Crickent',
-                weight: 0.05,
-                wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Crickent_lighter'
+                ]
               },
               price: {
                 barterItems: [],
                 currencyName: 'RUB',
-                itemId: '56742c284bdc2d98058b456d',
+                itemId: iskra.id,
                 merchant: 'flea-market',
                 merchantLevel: 0,
                 quest: undefined,
@@ -243,7 +217,7 @@ describe('readBuilds()', () => {
               unitPrice: {
                 barterItems: [],
                 currencyName: 'RUB',
-                itemId: '56742c284bdc2d98058b456d',
+                itemId: iskra.id,
                 merchant: 'flea-market',
                 merchantLevel: 0,
                 quest: undefined,
@@ -273,7 +247,7 @@ describe('readBuilds()', () => {
                 {
                   content: [],
                   ignorePrice: false,
-                  itemId: '5ca20d5986f774331e7c9602',
+                  itemId: berkut.id,
                   modSlots: [],
                   quantity: 1
                 }
@@ -321,46 +295,11 @@ describe('readBuilds()', () => {
   })
 })
 
-const berkut: IBackpack = {
-  capacity: 20,
-  categoryId: 'backpack',
-  conflictingItemIds: [],
-  ergonomicsPercentageModifier: -0.02,
-  iconLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-icon.webp',
-  id: '5ca20d5986f774331e7c9602',
-  imageLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-image.webp',
-  marketLink: 'https://tarkov.dev/item/wartech-berkut-bb-102-backpack',
-  maxStackableAmount: 1,
-  movementSpeedPercentageModifier: 0,
-  name: 'WARTECH Berkut BB-102 backpack',
-  presetWearableModifiers: undefined,
-  prices: [],
-  shortName: 'Berkut',
-  turningSpeedPercentageModifier: 0,
-  weight: 1,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/WARTECH_Berkut_BB-102_backpack'
-}
-
-const crikent: IItem = {
-  categoryId: 'other',
-  conflictingItemIds: [],
-  iconLink: 'https://assets.tarkov.dev/56742c284bdc2d98058b456d-icon.webp',
-  id: '56742c284bdc2d98058b456d',
-  imageLink: 'https://assets.tarkov.dev/56742c284bdc2d98058b456d-image.webp',
-  marketLink: 'https://tarkov.dev/item/crickent-lighter',
-  maxStackableAmount: 1,
-  name: 'Crickent lighter',
-  prices: [],
-  shortName: 'Crickent',
-  weight: 0.05,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Crickent_lighter'
-}
-
 const prices: IPrice[] = [
   {
     barterItems: [],
     currencyName: 'RUB',
-    itemId: '5ca20d5986f774331e7c9602',
+    itemId: berkut.id,
     merchant: 'ragman',
     merchantLevel: 1,
     quest: undefined,
@@ -370,22 +309,22 @@ const prices: IPrice[] = [
   {
     barterItems: [],
     currencyName: 'RUB',
-    itemId: '5ca20d5986f774331e7c9602',
+    itemId: berkut.id,
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 26420,
-    valueInMainCurrency: 26420
+    value: 26665,
+    valueInMainCurrency: 26665
   },
   {
     barterItems: [
       {
-        itemId: '56742c284bdc2d98058b456d',
+        itemId: iskra.id,
         quantity: 2
       }
     ],
     currencyName: 'barter',
-    itemId: '5ca20d5986f774331e7c9602',
+    itemId: berkut.id,
     merchant: 'ragman',
     merchantLevel: 1,
     quest: undefined,
@@ -395,7 +334,7 @@ const prices: IPrice[] = [
   {
     barterItems: [],
     currencyName: 'RUB',
-    itemId: '56742c284bdc2d98058b456d',
+    itemId: iskra.id,
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,

@@ -13,7 +13,7 @@ import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { usePresetServiceMock } from '../__mocks__/PresetPropertiesServiceMock'
+import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { describe, expect, it } from 'vitest'
 
 const inventoryItem: IInventoryItem = {

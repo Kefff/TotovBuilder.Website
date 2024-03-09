@@ -6,7 +6,7 @@ import Services from '../../services/repository/Services'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
-import { usePresetServiceMock } from '../__mocks__/PresetPropertiesServiceMock'
+import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { describe, expect, it } from 'vitest'
 
 describe('getShoppingList', () => {

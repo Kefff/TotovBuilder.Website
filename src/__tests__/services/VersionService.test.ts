@@ -1,20 +1,20 @@
-import { VersionService } from '../../services/VersionService'
+import { anyString, anything, instance, mock, spy, verify, when } from 'ts-mockito'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { IBuild } from '../../models/build/IBuild'
 import { IChangelogEntry } from '../../models/configuration/IChangelogEntry'
 import vueI18n from '../../plugins/vueI18n'
-import WebsiteConfigurationMock from '../__data__/website-configuration.json'
-import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
-import ChangelogMock from '../__data__/changelog.json'
-import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
-import { FetchService } from '../../services/FetchService'
-import { anyString, anything, instance, mock, spy, verify, when } from 'ts-mockito'
-import Result, { FailureType } from '../../utils/Result'
-import Services from '../../services/repository/Services'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
-import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import { IBuild } from '../../models/build/IBuild'
 import { BuildService } from '../../services/BuildService'
+import { FetchService } from '../../services/FetchService'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
+import { VersionService } from '../../services/VersionService'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import Services from '../../services/repository/Services'
+import Result, { FailureType } from '../../utils/Result'
 import Migrations from '../../utils/migrations/Migrations'
-import { beforeEach, describe, expect, it } from 'vitest'
+import ChangelogMock from '../__data__/changelog.json'
+import WebsiteConfigurationMock from '../__data__/website-configuration.json'
+import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 beforeEach(() => {
   localStorage.setItem(WebsiteConfigurationMock.languageStorageKey, 'en')
@@ -453,7 +453,7 @@ describe('getChangelog()', () => {
     Services.configure(NotificationService)
 
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get(anything())).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'Error')))
+    when(fetchServiceMock.get(anything())).thenResolve(Result.fail(FailureType.error, undefined, 'Error'))
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const notificationServiceSpy = spy(Services.get(NotificationService))
