@@ -1,10 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { IAmmunition } from '../../../../models/item/IAmmunition'
 import { IMagazine } from '../../../../models/item/IMagazine'
 import { NotificationService } from '../../../../services/NotificationService'
 import { MagazineStatsComponentService } from '../../../../services/components/stats/MagazineStatsComponentService'
 import Services from '../../../../services/repository/Services'
-import { ammo545bp, ammo9mmGT } from '../../../__data__/itemMocks'
+import { ammo545bp, ammo545us, ammo9mmGT } from '../../../__data__/itemMocks'
 import { useItemServiceMock } from '../../../__mocks__/ItemServiceMock'
 
 describe('getAcceptedCartridgesNames()', () => {
@@ -13,9 +12,9 @@ describe('getAcceptedCartridgesNames()', () => {
     useItemServiceMock(
       true,
       [
-        ppbs,
+        ammo545bp,
         ammo9mmGT,
-        ammo545bp
+        ammo545us
       ])
     Services.configure(NotificationService)
 
@@ -33,13 +32,8 @@ describe('getAcceptedCartridgesNames()', () => {
 
     // Assert
     expect(names).toStrictEqual([
-      ppbs.name,
-      ammo545bp.name
+      ammo545bp.name,
+      ammo545us.name
     ])
   })
 })
-
-const ppbs = {
-  id: '5c0d5e4486f77478390952fe',
-  name: '5.45x39mm PPBS gs \'Igolnik\''
-} as IAmmunition

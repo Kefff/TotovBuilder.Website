@@ -1,8 +1,9 @@
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { armor6b13FlDefault } from './itemMocks'
 
 export const armor6b13FlDefaultPreset: IInventoryItem = {
   content: [],
-  itemId: '65765f39526e320fbe0357b1',
+  itemId: armor6b13FlDefault.id,
   ignorePrice: false,
   modSlots: [
     {
@@ -29,6 +30,35 @@ export const armor6b13FlDefaultPreset: IInventoryItem = {
   quantity: 1
 }
 
+export const bansheeDefaultPreset: IInventoryItem = {
+  content: [],
+  ignorePrice: false,
+  itemId: '657661ad234b9f6e050a42a2',
+  modSlots: [
+    {
+      item: {
+        content: [],
+        ignorePrice: false,
+        itemId: '656fad8c498d1b7e3e071da0',
+        modSlots: [],
+        quantity: 1
+      },
+      modSlotName: 'front_plate'
+    },
+    {
+      item: {
+        content: [],
+        ignorePrice: false,
+        itemId: '656fad8c498d1b7e3e071da0',
+        modSlots: [],
+        quantity: 1
+      },
+      modSlotName: 'back_plate'
+    }
+  ],
+  quantity: 1
+}
+
 export const m9a3DefaultPreset: IInventoryItem = {
   content: [],
   itemId: '5d3f0bc986f7743cb332abdc',
@@ -36,14 +66,12 @@ export const m9a3DefaultPreset: IInventoryItem = {
   modSlots: [
     {
       item: {
-
         content: [],
         itemId: '5cadc1c6ae9215000f2775a4',
         ignorePrice: false,
         modSlots: [
           {
             item: {
-
               content: [],
               itemId: '5cadc390ae921500126a77f1',
               ignorePrice: false,
@@ -59,7 +87,6 @@ export const m9a3DefaultPreset: IInventoryItem = {
     },
     {
       item: {
-
         content: [],
         itemId: '5cadc431ae921500113bb8d5',
         ignorePrice: false,
@@ -70,14 +97,12 @@ export const m9a3DefaultPreset: IInventoryItem = {
     },
     {
       item: {
-
         content: [],
         itemId: '5cadc55cae921500103bb3be',
         ignorePrice: false,
         modSlots: [
           {
             item: {
-
               content: [],
               itemId: '5cadd940ae9215051e1c2316',
               ignorePrice: false,
@@ -88,7 +113,6 @@ export const m9a3DefaultPreset: IInventoryItem = {
           },
           {
             item: {
-
               content: [],
               itemId: '5cadd919ae921500126a77f3',
               ignorePrice: false,
@@ -104,7 +128,6 @@ export const m9a3DefaultPreset: IInventoryItem = {
     },
     {
       item: {
-
         content: [],
         itemId: '5cadc2e0ae9215051e1c21e7',
         ignorePrice: false,
@@ -124,7 +147,6 @@ export const rpk16DefaultPreset: IInventoryItem = {
   modSlots: [
     {
       item: {
-
         content: [],
         itemId: '5beec8ea0db834001a6f9dbf',
         ignorePrice: false,
@@ -135,7 +157,6 @@ export const rpk16DefaultPreset: IInventoryItem = {
     },
     {
       item: {
-
         content: [],
         itemId: '5beec91a0db834001961942d',
         ignorePrice: false,
@@ -247,6 +268,7 @@ export const rpk16DefaultPreset: IInventoryItem = {
 
 export const PresetMocks: IInventoryItem[] = [
   armor6b13FlDefaultPreset,
+  bansheeDefaultPreset,
   m9a3DefaultPreset,
   rpk16DefaultPreset
 ]

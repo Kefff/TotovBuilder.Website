@@ -1,537 +1,26 @@
+import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { IMod } from '../../models/item/IMod'
+import { IRangedWeapon } from '../../models/item/IRangedWeapon'
+import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
-import { BuildPropertiesService } from '../../services/BuildPropertiesService'
-import Result from '../../utils/Result'
-import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
-import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
-import Services from '../../services/repository/Services'
-import { InventoryItemService } from '../../services/InventoryItemService'
-import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { InventorySlotService } from '../../services/InventorySlotService'
-import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
-import { GlobalFilterService } from '../../services/GlobalFilterService'
-import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
-import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
-import { usePresetServiceMock } from '../__mocks__/PresetPropertiesServiceMock'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
-import { describe, expect, it } from 'vitest'
-
-export const build1: IBuild = {
-  id: 'build_1',
-  name: 'Build 1',
-  inventorySlots: [
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'onBack'
-    },
-    {
-      items: [
-        {
-          content: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '590c5d4b86f774784e1b9c45', // Iskra ration pack
-              modSlots: [],
-              quantity: 1
-            },
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '5448fee04bdc2dbc018b4567', // 0.6 liter water bottle
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          ignorePrice: false,
-          itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'backpack'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: '5c0e51be86f774598e797894', // 6B13 assault armor (Flora)
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'bodyArmor'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'earpiece'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: '5d5fca1ea4b93635fd598c07', // Crossbow tactical glasses
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'eyewear'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: '5ab8f39486f7745cd93a1cca', // Cold Fear Infrared balaclava
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'faceCover'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: '5d6d3716a4b9361bc8618872', // BNTI LShZ-2DTM helmet
-          modSlots: [
-            {
-              item: {
-                content: [],
-                ignorePrice: false,
-                itemId: '5d6d3829a4b9361bc8618943', // LShZ-2DTM face shield
-                modSlots: [],
-                quantity: 1
-              },
-              modSlotName: 'mod_equipment'
-            }
-          ],
-          quantity: 1
-        }
-      ],
-      typeId: 'headwear'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'holster'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: '544fb3f34bdc2d03748b456a', // Morphine injector
-          modSlots: [],
-          quantity: 1
-        },
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: '5755383e24597772cb798966', // Vaseline balm
-          modSlots: [],
-          quantity: 1
-        },
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
-          modSlots: [],
-          quantity: 1
-        },
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: '56dfef82d2720bbd668b4567', // 5.45x39mm BP gs
-          modSlots: [],
-          quantity: 60
-        }
-      ],
-      typeId: 'pockets'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'pouch'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'scabbard'
-    },
-    {
-      items: [
-        {
-          content: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '56dfef82d2720bbd668b4567', // 5.45x39mm BP gs
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          ignorePrice: false,
-          itemId: '5c0d1ec986f77439512a1a72', // RPK-16 5.45x39 light machine gun Default
-          modSlots: [
-            {
-              item: {
-                content: [],
-                ignorePrice: false,
-                itemId: '5beec8ea0db834001a6f9dbf', // AK-12 pistol grip
-                modSlots: [],
-                quantity: 1
-              },
-              modSlotName: 'mod_pistol_grip'
-            },
-            {
-              item: {
-                content: [],
-                ignorePrice: false,
-                itemId: '5beec91a0db834001961942d', // RPK-16 dust cover
-                modSlots: [
-                  {
-                    item: {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '5beec9450db83400970084fd', // RPK-16 rear sight base
-                      modSlots: [
-                        {
-                          item: {
-                            content: [],
-                            ignorePrice: false,
-                            itemId: '5bf3f59f0db834001a6fa060', // RPK-16 rear sight
-                            modSlots: [],
-                            quantity: 1
-                          },
-                          modSlotName: 'mod_sight_rear'
-                        }
-                      ],
-                      quantity: 1
-                    },
-                    modSlotName: 'mod_sight_rear'
-                  }
-                ],
-                quantity: 1
-              },
-              modSlotName: 'mod_reciever'
-            },
-            {
-              item: {
-                content: [
-                  {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: '56dfef82d2720bbd668b4567', // 5.45x39mm BP gs
-                    modSlots: [],
-                    quantity: 95
-                  }
-                ],
-                ignorePrice: false,
-                itemId: '5bed625c0db834001c062946', // RPK-16 5.45x39 95-round drum magazine
-                modSlots: [],
-                quantity: 1
-              },
-              modSlotName: 'mod_magazine'
-            },
-            {
-              item: {
-                content: [],
-                ignorePrice: false,
-                itemId: '5beec8b20db834001961942a', // RPK-16 buffer tube
-                modSlots: [
-                  {
-                    item: {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '5beec8c20db834001d2c465c', // AK-12 stock
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    modSlotName: 'mod_stock'
-                  }
-                ],
-                quantity: 1
-              },
-              modSlotName: 'mod_stock_001'
-            },
-            {
-              item: {
-                content: [],
-                ignorePrice: false,
-                itemId: '5beec3e30db8340019619424', // RPK-16 handguard
-                modSlots: [
-                  {
-                    item: {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '5beecbb80db834001d2c465e', // RPK-16 handguard rail
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    modSlotName: 'mod_mount_000'
-                  },
-                  {
-                    item: {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '5beecbb80db834001d2c465e', // RPK-16 handguard rail
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    modSlotName: 'mod_mount_001'
-                  }
-                ],
-                quantity: 1
-              },
-              modSlotName: 'mod_handguard'
-            },
-            {
-              item: {
-                content: [],
-                ignorePrice: false,
-                itemId: '5beec1bd0db834001e6006f3', // RPK-16 5.45x39 15 inch barrel
-                modSlots: [
-                  {
-                    item: {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '5beec3420db834001b095429', // RPK-16 5.45x39 muzzle brake-compensator
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    modSlotName: 'mod_muzzle'
-                  }
-                ],
-                quantity: 1
-              },
-              modSlotName: 'mod_barrel'
-            }
-          ],
-          quantity: 1
-        }
-      ],
-      typeId: 'onSling'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'tacticalRig'
-    }
-  ],
-  lastExported: undefined,
-  lastUpdated: undefined,
-  lastWebsiteVersion: undefined
-}
-
-export const build2: IBuild = {
-  id: 'build_2',
-  name: 'Build 2',
-  inventorySlots: [
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'onBack'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'backpack'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'bodyArmor'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: '5e4d34ca86f774264f758330', // Walker's Razor Digital headset
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'earpiece'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'eyewear'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'faceCover'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'headwear'
-    },
-    {
-      items: [
-        {
-          content: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '5c3df7d588a4501f290594e5', // 9x19mm Green Tracer
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          ignorePrice: false,
-          itemId: '5d3f0bc986f7743cb332abdc', // Beretta M9A3 9x19 pistol Default
-          modSlots: [
-            {
-              item: {
-                content: [],
-                ignorePrice: false,
-                itemId: '5cadc1c6ae9215000f2775a4', // Threaded barrel for M9A3 9x19
-                modSlots: [
-                  {
-                    item: {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '5c6165902e22160010261b28', // Sig SRD 9 9x19mm sound suppressor
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    modSlotName: 'mod_muzzle'
-                  }
-                ],
-                quantity: 1
-              },
-              modSlotName: 'mod_barrel'
-            },
-            {
-              item: {
-                content: [],
-                ignorePrice: false,
-                itemId: '5cadc431ae921500113bb8d5', // Polymer pistol grip for M9A3
-                modSlots: [],
-                quantity: 1
-              },
-              modSlotName: 'mod_pistol_grip'
-            },
-            {
-              item: {
-                content: [],
-                ignorePrice: false,
-                itemId: '5cadc55cae921500103bb3be', // M9A3 Slide
-                modSlots: [
-                  {
-                    item: {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '5cadd940ae9215051e1c2316', // Beretta M9A3 Standard Rearsight
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    modSlotName: 'mod_sight_rear'
-                  },
-                  {
-                    item: {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '5cadd919ae921500126a77f3', // M9A3 Standard Frontsight
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    modSlotName: 'mod_sight_front'
-                  }
-                ],
-                quantity: 1
-              },
-              modSlotName: 'mod_reciever'
-            },
-            {
-              item: {
-                content: [
-                  {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: '5c3df7d588a4501f290594e5', // 9x19mm Green Tracer
-                    modSlots: [],
-                    quantity: 17
-                  }
-                ],
-                ignorePrice: false,
-                itemId: '5cadc2e0ae9215051e1c21e7', // M9A3 9x19 17-round magazine
-                modSlots: [],
-                quantity: 1
-              },
-              modSlotName: 'mod_magazine'
-            },
-            {
-              item: {
-                content: [],
-                ignorePrice: false,
-                itemId: '56def37dd2720bec348b456a', // SureFire X400 Ultra tactical flashlight with laser
-                modSlots: [],
-                quantity: 1
-              },
-              modSlotName: 'mod_tactical'
-            }
-          ],
-          quantity: 1
-        }
-      ],
-      typeId: 'holster'
-    },
-    {
-      items: Array<IInventoryItem>(4),
-      typeId: 'pockets'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: '544a11ac4bdc2d470e8b456a', // Alpha Container
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'pouch'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: '5bffdc370db834001d23eca8', // 6h5 Bayonet"
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'scabbard'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'onSling'
-    },
-    {
-      items: [
-        {
-          content: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '544fb45d4bdc2dee738b4568', // Salewa FIRST AID KIT (400/400)"
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          ignorePrice: false,
-          itemId: '572b7adb24597762ae139821', // Scav Vest"
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'tacticalRig'
-    }
-  ],
-  lastExported: undefined,
-  lastUpdated: undefined,
-  lastWebsiteVersion: undefined
-}
+import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
+import { BuildPropertiesService } from '../../services/BuildPropertiesService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { InventoryItemService } from '../../services/InventoryItemService'
+import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
+import { InventorySlotService } from '../../services/InventorySlotService'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
+import Result from '../../utils/Result'
+import { build1, build2 } from '../__data__/buildMocks'
+import { ItemMocks, ammo545bp, armor6b13FlDefault, bansheeDefault, berkut, rpk16, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, scavVest } from '../__data__/itemMocks'
+import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
+import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
+import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('canAddArmor()', () => {
   it.each([
@@ -601,7 +90,7 @@ describe('canAddArmor()', () => {
               {
                 content: [],
                 ignorePrice: false,
-                itemId: '572b7adb24597762ae139821',
+                itemId: scavVest.id,
                 modSlots: [],
                 quantity: 1
               }
@@ -625,7 +114,7 @@ describe('canAddArmor()', () => {
               {
                 content: [],
                 ignorePrice: false,
-                itemId: '5b44cad286f77402a54ae7e5',
+                itemId: bansheeDefault.id,
                 modSlots: [],
                 quantity: 1
               }
@@ -661,7 +150,7 @@ describe('canAddMod()', () => {
     [
       {} as IBuild,
       'invalid',
-      'build:123456789/slot:onSling_0/item:57dc2fa62459775949412633/mod:mod_gas_block/item:59d36a0086f7747e673f3946/mod_handguard',
+      `build:123456789/slot:onSling_0/item:${rpk16Default.id}/mod:mod_handguard/item:${rpk16Handguard.id}/mod_mount_000`,
       {
         failureContext: 'ItemService.getItem()',
         failureMessage: 'Item "invalid" not found.',
@@ -678,8 +167,8 @@ describe('canAddMod()', () => {
         lastWebsiteVersion: undefined,
         name: 'build1'
       } as IBuild,
-      '57dc2fa62459775949412633',
-      'build:123456789/slot:onSling_0/item:57dc2fa62459775949412633/invalid',
+      rpk16Rail.id,
+      `build:123456789/slot:onSling_0/item:${rpk16Default.id}/invalid`,
       {
         failureContext: 'PathUtils.getInventorySlotItem()',
         failureMessage: 'Cannot find inventory slot "onSling".',
@@ -709,8 +198,8 @@ describe('canAddMod()', () => {
         lastWebsiteVersion: undefined,
         name: 'build1'
       } as IBuild,
-      '5d15ce51d7ad1a1eff619092', // AKS-74U Alfa Arms Goliaf handguard
-      'build:123456789/slot:onSling_0/item:invalid/mod:mod_gas_block/item:59d36a0086f7747e673f3946/mod_handguard',
+      rpk16Rail.id,
+      `build:123456789/slot:onSling_0/item:invalid/mod:mod_handguard/item:${rpk16Handguard.id}/mod_mount_000`,
       {
         failureContext: 'ItemService.getItem()',
         failureMessage: 'Item "invalid" not found.',
@@ -727,63 +216,39 @@ describe('canAddMod()', () => {
               {
                 content: [],
                 ignorePrice: false,
-                itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+                itemId: rpk16Default.id,
                 modSlots: [
                   {
                     item: {
                       content: [],
+                      itemId: rpk16DustCover.id,
                       ignorePrice: false,
-                      itemId: '5ac72e945acfc43f3b691116', // AK-105 5.45x39 muzzle brake - compensator (6P44 0-20)
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    modSlotName: 'mod_muzzle'
-                  },
-                  {
-                    item: {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '59d36a0086f7747e673f3946', // AKS-74U gas tube
                       modSlots: [
                         {
                           item: {
                             content: [],
+                            itemId: rpk16RsBase.id,
                             ignorePrice: false,
-                            itemId: '57dc32dc245977596d4ef3d3', // AKS-74U wooden handguard (6P26 Sb.6
                             modSlots: [
                               {
                                 item: {
                                   content: [],
+                                  itemId: rpk16Rs.id,
                                   ignorePrice: false,
-                                  itemId: '5c1bc4812e22164bef5cfde7', // Zenit RK-0 foregrip
                                   modSlots: [],
                                   quantity: 1
                                 },
-                                modSlotName: 'mod_test'
+                                modSlotName: 'mod_sight_rear'
                               }
                             ],
                             quantity: 1
                           },
-                          modSlotName: 'mod_handguard'
+                          modSlotName: 'mod_sight_rear'
                         }
                       ],
                       quantity: 1
                     },
-                    modSlotName: 'mod_gas_block'
-                  },
-                  {
-                    item: {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '5d2c76ed48f03532f2136169', // AK AKademia Bastion dust cover
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    modSlotName: 'mod_test'
-                  },
-                  {
-                    item: undefined,
-                    modSlotName: 'mod_test2'
+                    modSlotName: 'mod_reciever'
                   }
                 ],
                 quantity: 1
@@ -797,12 +262,12 @@ describe('canAddMod()', () => {
         lastWebsiteVersion: undefined,
         name: 'buil1'
       } as IBuild,
-      '5d15ce51d7ad1a1eff619092', // AKS-74U Alfa Arms Goliaf handguard, conflicts with AK-105 5.45x39 muzzle brake & compensator (6P44 0-20)
-      'build:123456789/slot:onSling_0/item:57dc2fa62459775949412633/mod:mod_gas_block/item:59d36a0086f7747e673f3946/mod_handguard',
+      nf30mm.id, // Conflicts with rpk16RsBase
+      `build:123456789/slot:onSling_0/item:${rpk16Default.id}/mod:mod_reciever/item:${rpk16DustCover.id}/mod_scope`,
       {
         failureContext: 'BuildService.canAddMod()',
         failureMessage:
-          'Cannot add mod "AKS-74U Alfa Arms Goliaf handguard" because it conflicts with item "AK-105 5.45x39 muzzle brake-compensator (6P44 0-20)".',
+          'Cannot add mod "Nightforce Magmount 30mm ring scope mount" because it conflicts with item "RPK-16 rear sight base".',
         success: false
       } as Result
     ],
@@ -815,59 +280,39 @@ describe('canAddMod()', () => {
               {
                 content: [],
                 ignorePrice: false,
-                itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+                itemId: rpk16Default.id,
                 modSlots: [
                   {
                     item: {
                       content: [],
+                      itemId: rpk16DustCover.id,
                       ignorePrice: false,
-                      itemId: '59bffc1f86f77435b128b872', // SilencerCo Hybrid 46 Direct Thread Mount adapter
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    modSlotName: 'mod_muzzle'
-                  },
-                  {
-                    item: {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '59d36a0086f7747e673f3946', // AKS-74U gas tube
                       modSlots: [
                         {
                           item: {
                             content: [],
+                            itemId: rpk16RsBase.id,
                             ignorePrice: false,
-                            itemId: '57dc32dc245977596d4ef3d3', // AKS-74U wooden handguard (6P26 Sb.6)
                             modSlots: [
                               {
                                 item: {
                                   content: [],
+                                  itemId: rpk16Rs.id,
                                   ignorePrice: false,
-                                  itemId: '5c1bc4812e22164bef5cfde7', // Zenit RK-0 foregrip
                                   modSlots: [],
                                   quantity: 1
                                 },
-                                modSlotName: 'mod_test'
+                                modSlotName: 'mod_sight_rear'
                               }
                             ],
                             quantity: 1
                           },
-                          modSlotName: 'mod_handguard'
+                          modSlotName: 'mod_sight_rear'
                         }
                       ],
                       quantity: 1
                     },
-                    modSlotName: 'mod_gas_block'
-                  },
-                  {
-                    item: {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '5d2c76ed48f03532f2136169', // AK AKademia Bastion dust cover
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    modSlotName: 'mod_test'
+                    modSlotName: 'mod_reciever'
                   }
                 ],
                 quantity: 1
@@ -881,8 +326,8 @@ describe('canAddMod()', () => {
         lastWebsiteVersion: undefined,
         name: 'buil1'
       } as IBuild,
-      '5d15ce51d7ad1a1eff619092', // AKS-74U Alfa Arms Goliaf handguard, no conflict
-      'build:123456789/slot:onSling_0/item:57dc2fa62459775949412633/mod:mod_gas_block/item:59d36a0086f7747e673f3946/mod_handguard',
+      specterDr.id, // No conflict
+      `build:123456789/slot:onSling_0/item:${rpk16Default.id}/mod:mod_reciever/item:${rpk16DustCover.id}/mod_scope`,
       {
         failureContext: '',
         failureMessage: '',
@@ -898,52 +343,19 @@ describe('canAddMod()', () => {
               {
                 content: [],
                 ignorePrice: false,
-                itemId: '587e02ff24597743df3deaeb', // Simonov OP-SKS 7.62x39 semi-automatic carbine (Hunting Rifle Version)
+                itemId: opSks.id,
                 modSlots: [
                   {
-                    modSlotName: 'chamber0'
-                  },
-                  {
                     item: {
                       content: [],
                       ignorePrice: false,
-                      itemId: '587e0531245977466077a0f7', // stock_sks_molot_op_sks_std
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    modSlotName: 'mod_stock'
-                  },
-                  {
-                    item: {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '574db213245977459a2f3f5d', // SKS rear sight
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    modSlotName: 'mod_sight_rear'
-                  },
-                  {
-                    item: {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '587df3a12459772c28142567', // SKS 7.62x39 10-round internal box magazine
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    modSlotName: 'mod_magazine'
-                  },
-                  {
-                    item: {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '587e08ee245977446b4410cf', // mount_sks_molot_op_sks_std
+                      itemId: opSksDt.id,
                       modSlots: [
                         {
                           item: {
                             content: [],
                             ignorePrice: false,
-                            itemId: '5947db3f86f77447880cf76f', // Axion Kobra EKP-8-02 reflex sight (Dovetail)
+                            itemId: ekp802dt.id,
                             modSlots: [],
                             quantity: 1
                           },
@@ -953,9 +365,6 @@ describe('canAddMod()', () => {
                       quantity: 1
                     },
                     modSlotName: 'mod_mount'
-                  },
-                  {
-                    modSlotName: 'mod_muzzle'
                   }
                 ],
                 quantity: 1
@@ -969,8 +378,8 @@ describe('canAddMod()', () => {
         lastWebsiteVersion: undefined,
         name: 'buil1'
       } as IBuild,
-      '5c82342f2e221644f31c060e', // Zenit-BelOMO PSO-1 4x24 scope, conflicts with Axion Kobra EKP-8-02 reflex sight (Dovetail) that is being replaced (so there should be no error)
-      'build:123456789/slot:onSling_0/item:587e02ff24597743df3deaeb/mod:mod_mount/item:587e08ee245977446b4410cf/mod:mod_scope',
+      pso1.id, // Conflicts with the item it replaces, so the conflict is ignored
+      `build:123456789/slot:onSling_0/item:${opSks.id}/mod:mod_mount/item:${opSksDt.id}/mod:mod_scope`,
       {
         failureContext: '',
         failureMessage: '',
@@ -981,7 +390,7 @@ describe('canAddMod()', () => {
     'should check if a mod can be added to an item',
     async (build: IBuild, modId: string, modSlotPath: string, expected: Result) => {
       // Arrange
-      useItemServiceMock()
+      useItemServiceMock(true, [...ItemMocks, ekp802dt, nf30mm, opSks, opSksDt, pso1, specterDr])
       const service = new BuildPropertiesService()
 
       // Act
@@ -1005,7 +414,7 @@ describe('canAddVest()', () => {
               {
                 content: [],
                 ignorePrice: false,
-                itemId: '5648a7494bdc2d9d488b4583',
+                itemId: armor6b13FlDefault.id,
                 modSlots: [],
                 quantity: 1
               }
@@ -1030,7 +439,7 @@ describe('canAddVest()', () => {
               {
                 content: [],
                 ignorePrice: false,
-                itemId: '5648a7494bdc2d9d488b4583',
+                itemId: armor6b13FlDefault.id,
                 modSlots: [],
                 quantity: 1
               }
@@ -1038,7 +447,7 @@ describe('canAddVest()', () => {
           }
         ]
       } as IBuild,
-      '572b7adb24597762ae139821',
+      scavVest.id,
       {
         failureContext: '',
         failureMessage: '',
@@ -1055,7 +464,7 @@ describe('canAddVest()', () => {
           }
         ]
       } as IBuild,
-      '5b44cad286f77402a54ae7e5',
+      bansheeDefault.id,
       {
         failureContext: 'BuildService.canAddVest()',
         failureMessage: 'Cannot find mod slot "bodyArmor".',
@@ -1072,7 +481,7 @@ describe('canAddVest()', () => {
               {
                 content: [],
                 ignorePrice: false,
-                itemId: '5648a7494bdc2d9d488b4583',
+                itemId: armor6b13FlDefault.id,
                 modSlots: [],
                 quantity: 1
               }
@@ -1080,7 +489,7 @@ describe('canAddVest()', () => {
           }
         ]
       } as IBuild,
-      '5b44cad286f77402a54ae7e5',
+      bansheeDefault.id,
       {
         failureContext: 'BuildService.canAddVest()',
         failureMessage:
@@ -1098,7 +507,7 @@ describe('canAddVest()', () => {
           }
         ]
       } as IBuild,
-      '5b44cad286f77402a54ae7e5',
+      bansheeDefault.id,
       {
         failureContext: '',
         failureMessage: '',
@@ -1123,7 +532,7 @@ describe('canAddVest()', () => {
 
 describe('getErgonomics()', () => {
   it.each([
-    [build1, 37.5],
+    [build1, 38],
     [build2, 54],
     [
       {
@@ -1135,7 +544,7 @@ describe('getErgonomics()', () => {
               {
                 content: [],
                 ignorePrice: false,
-                itemId: '57dc2fa62459775949412633', // AKS-74U 5.45x39 assault rifle
+                itemId: rpk16.id,
                 modSlots: [],
                 quantity: 1
               }
@@ -1147,7 +556,7 @@ describe('getErgonomics()', () => {
         lastWebsiteVersion: undefined,
         name: 'Build 3'
       } as IBuild,
-      44
+      45
     ],
     [
       {
@@ -1240,7 +649,7 @@ describe('getWearableModifiers()', () => {
       build1,
       {
         ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithMods: -0.09,
+        ergonomicsPercentageModifierWithMods: -0.095,
         movementSpeedPercentageModifier: 0,
         movementSpeedPercentageModifierWithMods: -0.06,
         turningSpeedPercentageModifier: 0,
@@ -1251,11 +660,11 @@ describe('getWearableModifiers()', () => {
       build2,
       {
         ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithMods: 0,
+        ergonomicsPercentageModifierWithMods: -0.03,
         movementSpeedPercentageModifier: 0,
-        movementSpeedPercentageModifierWithMods: 0,
+        movementSpeedPercentageModifierWithMods: -0.03,
         turningSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifierWithMods: 0
+        turningSpeedPercentageModifierWithMods: -0.01
       } as IWearableModifiers
     ]
   ])(
@@ -1273,7 +682,12 @@ describe('getWearableModifiers()', () => {
 
       // Assert
       expect(wearableModifiersResult.success).toBe(true)
-      expect(wearableModifiersResult.value).toStrictEqual(expected)
+      expect(wearableModifiersResult.value.ergonomicsPercentageModifier.toFixed(3)).toBe(expected.ergonomicsPercentageModifier.toFixed(3))
+      expect(wearableModifiersResult.value.ergonomicsPercentageModifierWithMods.toFixed(3)).toBe(expected.ergonomicsPercentageModifierWithMods.toFixed(3))
+      expect(wearableModifiersResult.value.movementSpeedPercentageModifier.toFixed(3)).toBe(expected.movementSpeedPercentageModifier.toFixed(3))
+      expect(wearableModifiersResult.value.movementSpeedPercentageModifierWithMods.toFixed(3)).toBe(expected.movementSpeedPercentageModifierWithMods.toFixed(3))
+      expect(wearableModifiersResult.value.turningSpeedPercentageModifier.toFixed(3)).toBe(expected.turningSpeedPercentageModifier.toFixed(3))
+      expect(wearableModifiersResult.value.turningSpeedPercentageModifierWithMods.toFixed(3)).toBe(expected.turningSpeedPercentageModifierWithMods.toFixed(3))
     }
   )
 
@@ -1338,8 +752,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 479365,
-          valueInMainCurrency: 479365
+          value: 355315,
+          valueInMainCurrency: 355315
         },
         pricesWithContent: [
           {
@@ -1349,8 +763,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 479365,
-            valueInMainCurrency: 479365
+            value: 355315,
+            valueInMainCurrency: 355315
           }
         ],
         unitPrice: {
@@ -1387,8 +801,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 138648,
-          valueInMainCurrency: 138648
+          value: 199636,
+          valueInMainCurrency: 199636
         },
         pricesWithContent: [
           {
@@ -1398,8 +812,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 246,
-            valueInMainCurrency: 27552
+            value: 199,
+            valueInMainCurrency: 29048
           },
           {
             barterItems: [],
@@ -1408,8 +822,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 111096,
-            valueInMainCurrency: 111096
+            value: 170588,
+            valueInMainCurrency: 170588
           }
         ],
         unitPrice: {
@@ -1448,7 +862,7 @@ describe('getPrice()', () => {
     }
   )
 
-  it('should have a missing price when no merchants sell the item', async () => {
+  it('should have the missing price flag when no merchants sell on of the item', async () => {
     // Arrange
     useItemServiceMock()
     usePresetServiceMock()
@@ -1463,14 +877,24 @@ describe('getPrice()', () => {
       id: '',
       inventorySlots: [
         {
-          items: [{
-            content: [],
-            ignorePrice: false,
-            itemId: '5c0e874186f7745dc7616606', // Maska-1SCh bulletproof helmet (Killa)
-            modSlots: [],
-            quantity: 1
-          }],
-          typeId: 'headwear'
+          items: [
+            {
+              content: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: ammo545bp.id, // No merchant
+                  modSlots: [],
+                  quantity: 1
+                }
+              ],
+              ignorePrice: false,
+              itemId: berkut.id,
+              modSlots: [],
+              quantity: 1
+            }
+          ],
+          typeId: 'backpack'
         }
       ],
       lastExported: undefined,
@@ -1496,7 +920,6 @@ describe('getPrice()', () => {
         value: 0,
         valueInMainCurrency: 0
       },
-      pricesWithContent: [],
       priceWithContentInMainCurrency: {
         barterItems: [],
         currencyName: 'RUB',
@@ -1504,9 +927,21 @@ describe('getPrice()', () => {
         merchant: '',
         merchantLevel: 0,
         quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
+        value: 24509,
+        valueInMainCurrency: 24509
       },
+      pricesWithContent: [
+        {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 24509,
+          valueInMainCurrency: 24509
+        }
+      ],
       unitPrice: {
         barterItems: [],
         currencyName: 'RUB',
@@ -1539,8 +974,6 @@ describe('getPrice()', () => {
   it('should fail if an item cannot be found', async () => {
     // Arrange
     useItemServiceMock()
-    useTarkovValuesServiceMock()
-    useWebsiteConfigurationServiceMock()
     Services.configure(InventorySlotPropertiesService)
     Services.configure(InventoryItemService)
     Services.configure(GlobalFilterService)
@@ -1591,7 +1024,7 @@ describe('getPrice()', () => {
             {
               content: [],
               ignorePrice: false,
-              itemId: '57dc2fa62459775949412633', // Kalashnikov AKS- 74U 5.45x39
+              itemId: rpk16Default.id,
               modSlots: [],
               quantity: 1
             }
@@ -1630,8 +1063,8 @@ describe('getNotExportedTooltip()', () => {
 
 describe('getRecoil()', () => {
   it.each([
-    [build1, { horizontalRecoil: 200, verticalRecoil: 71 }],
-    [build2, { horizontalRecoil: 234, verticalRecoil: 397 }],
+    [build1, { horizontalRecoil: 226.44, verticalRecoil: 76.16 }],
+    [build2, { horizontalRecoil: 254.8, verticalRecoil: 367.64 }],
     [
       {
         name: 'Empty build',
@@ -1671,7 +1104,8 @@ describe('getRecoil()', () => {
         expect(recoil).toBeUndefined()
       } else {
         expect(recoil?.success).toBe(true)
-        expect(recoil?.value).toStrictEqual(expected)
+        expect(recoil?.value.horizontalRecoil.toFixed(3)).toStrictEqual(expected.horizontalRecoil.toFixed(3))
+        expect(recoil?.value.verticalRecoil.toFixed(3)).toStrictEqual(expected.verticalRecoil.toFixed(3))
       }
     }
   )
@@ -1717,8 +1151,8 @@ describe('getRecoil()', () => {
 
 describe('getWeight()', () => {
   it.each([
-    [build1, 24.188],
-    [build2, 3.562]
+    [build1, 24.153],
+    [build2, 8.936]
   ])(
     'should get the weight of a build',
     async (build: IBuild, expected: number) => {
@@ -1774,3 +1208,266 @@ describe('getWeight()', () => {
     expect(weight.failureMessage).toBe('Item "invalid" not found.')
   })
 })
+
+
+
+const ekp802dt: IRangedWeaponMod = {
+  accuracyPercentageModifier: 0,
+  baseItemId: undefined,
+  defaultPresetId: undefined,
+  ergonomicsModifier: -3,
+  maxStackableAmount: 1,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '591c4e1186f77410354b316e'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_tactical',
+      required: false
+    }
+  ],
+  presetErgonomicsModifier: undefined,
+  presetRecoilPercentageModifier: undefined,
+  prices: [],
+  recoilPercentageModifier: 0,
+  categoryId: 'rangedWeaponMod',
+  conflictingItemIds: [
+    '5827272a24597748c74bdeea'
+  ],
+  iconLink: 'https://assets.tarkov.dev/5947db3f86f77447880cf76f-icon.webp',
+  id: '5947db3f86f77447880cf76f',
+  imageLink: 'https://assets.tarkov.dev/5947db3f86f77447880cf76f-image.webp',
+  marketLink: 'https://tarkov.dev/item/axion-kobra-ekp-8-02-reflex-sight-dovetail',
+  name: 'Axion Kobra EKP-8-02 reflex sight (Dovetail)',
+  shortName: 'EKP-8-02 DT',
+  weight: 0.273,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Axion_Kobra_EKP-8-02_reflex_sight_(Dovetail)'
+}
+
+const nf30mm: IMod = {
+  baseItemId: undefined,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -1,
+  maxStackableAmount: 1,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '5b2388675acfc4771e1be0be',
+        '5b3b99475acfc432ff4dcbee',
+        '5a37cb10c4a282329a73b4e7',
+        '57c5ac0824597754771e88a9',
+        '618ba27d9008e4636a67f61d',
+        '617151c1d92c473c770214ab',
+        '6567e7681265c8a131069b0f'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_scope',
+      required: false
+    }
+  ],
+  presetErgonomicsModifier: undefined,
+  prices: [],
+  categoryId: 'mod',
+  iconLink: 'https://assets.tarkov.dev/5b3b99265acfc4704b4a1afb-icon.webp',
+  id: '5b3b99265acfc4704b4a1afb',
+  imageLink: 'https://assets.tarkov.dev/5b3b99265acfc4704b4a1afb-image.webp',
+  marketLink: 'https://tarkov.dev/item/nightforce-magmount-30mm-ring-scope-mount',
+  name: 'Nightforce Magmount 30mm ring scope mount',
+  shortName: 'NF 30mm',
+  weight: 0.19,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Nightforce_Magmount_30mm_ring_scope_mount'
+}
+
+const opSks: IRangedWeapon = {
+  baseItemId: '587e02ff24597743df3deaeb',
+  caliber: 'Caliber762x39',
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomics: 40,
+  fireModes: ['SingleFire'],
+  fireRate: 40,
+  horizontalRecoil: 360,
+  maxStackableAmount: 1,
+  minuteOfAngle: 4.13,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '5d0236dad7ad1a0940739d29',
+        '587e0531245977466077a0f7',
+        '5afd7ded5acfc40017541f5e',
+        '574dad8024597745964bf05c',
+        '653ecef836fae5a82f02b869'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_stock',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '634eff66517ccc8a960fc735',
+        '634f02331f9f536910079b51'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_barrel',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '61695095d92c473c7702147a',
+        '5c5970672e221602b21d7855',
+        '587df583245977373c4f1129',
+        '587df3a12459772c28142567'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_magazine',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '587e08ee245977446b4410cf',
+        '6415d33eda439c6a97048b5b'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_mount',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '634f06262e5def262d0b30ca',
+        '634f05ca517ccc8a960fc748',
+        '6415c694da439c6a97048b56'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_reciever',
+      required: false
+    }
+  ],
+  presetErgonomics: undefined,
+  presetHorizontalRecoil: undefined,
+  presetVerticalRecoil: undefined,
+  prices: [],
+  verticalRecoil: 155,
+  categoryId: 'mainWeapon',
+  iconLink: 'https://assets.tarkov.dev/59dcdbb386f77417b03f350d-icon.webp',
+  id: '59dcdbb386f77417b03f350d',
+  imageLink: 'https://assets.tarkov.dev/59dcdbb386f77417b03f350d-image.webp',
+  marketLink: 'https://tarkov.dev/item/molot-arms-simonov-op-sks-762x39-carbine-default',
+  name: 'Molot Arms Simonov OP-SKS 7.62x39 carbine Default',
+  shortName: 'OP-SKS Default',
+  weight: 0.82,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Molot_Arms_Simonov_OP-SKS_7.62x39_carbine'
+}
+
+const opSksDt: IMod = {
+  baseItemId: undefined,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -1,
+  maxStackableAmount: 1,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '5947db3f86f77447880cf76f',
+        '6113d6c3290d254f5e6b27db',
+        '57486e672459770abd687134',
+        '5c82342f2e221644f31c060e',
+        '576fd4ec2459777f0b518431',
+        '5c82343a2e221644f31c0611',
+        '5cf638cbd7f00c06595bc936',
+        '5a7c74b3e899ef0014332c29',
+        '591ee00d86f774592f7b841e',
+        '618a75c9a3884f56c957ca1b',
+        '57acb6222459771ec34b5cb0',
+        '638db77630c4240f9e06f8b6',
+        '63d114019e35b334d82302f7',
+        '6544d4187c5457729210d277'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_scope',
+      required: false
+    }
+  ],
+  presetErgonomicsModifier: undefined,
+  prices: [],
+  categoryId: 'mod',
+  iconLink: 'https://assets.tarkov.dev/587e08ee245977446b4410cf-icon.webp',
+  id: '587e08ee245977446b4410cf',
+  imageLink: 'https://assets.tarkov.dev/587e08ee245977446b4410cf-image.webp',
+  marketLink: 'https://tarkov.dev/item/op-sks-dovetail-mount',
+  name: 'OP-SKS dovetail mount',
+  shortName: 'OPSKS DT',
+  weight: 0.02,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/OP-SKS_dovetail_mount'
+}
+
+const pso1: IRangedWeaponMod = {
+  accuracyPercentageModifier: 0,
+  baseItemId: undefined,
+  defaultPresetId: undefined,
+  ergonomicsModifier: -7,
+  maxStackableAmount: 1,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '57f3a5ae2459772b0e0bf19e'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_tactical',
+      required: false
+    }
+  ],
+  presetErgonomicsModifier: undefined,
+  presetRecoilPercentageModifier: undefined,
+  prices: [],
+  recoilPercentageModifier: 0,
+  categoryId: 'rangedWeaponMod',
+  conflictingItemIds: [
+    '5827272a24597748c74bdeea',
+    '58272b392459774b4c7b3ccd',
+    '6113d6c3290d254f5e6b27db',
+    '57486e672459770abd687134',
+    '5947db3f86f77447880cf76f',
+    '57acb6222459771ec34b5cb0',
+    '591ee00d86f774592f7b841e'
+  ],
+  iconLink: 'https://assets.tarkov.dev/5c82342f2e221644f31c060e-icon.webp',
+  id: '5c82342f2e221644f31c060e',
+  imageLink: 'https://assets.tarkov.dev/5c82342f2e221644f31c060e-image.webp',
+  marketLink: 'https://tarkov.dev/item/belomo-pso-1-4x24-scope',
+  name: 'BelOMO PSO-1 4x24 scope',
+  shortName: 'PSO-1',
+  weight: 0.6,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/BelOMO_PSO-1_4x24_scope'
+}
+
+const specterDr: IRangedWeaponMod = {
+  accuracyPercentageModifier: 0,
+  baseItemId: undefined,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -4,
+  maxStackableAmount: 1,
+  modSlots: [
+    {
+      compatibleItemIds: [],
+      maxStackableAmount: 1,
+      name: 'mod_mount',
+      required: false
+    }
+  ],
+  presetErgonomicsModifier: undefined,
+  presetRecoilPercentageModifier: undefined,
+  prices: [],
+  recoilPercentageModifier: 0,
+  categoryId: 'rangedWeaponMod',
+  iconLink: 'https://assets.tarkov.dev/57ac965c24597706be5f975c-icon.webp',
+  id: '57ac965c24597706be5f975c',
+  imageLink: 'https://assets.tarkov.dev/57ac965c24597706be5f975c-image.webp',
+  marketLink: 'https://tarkov.dev/item/elcan-specterdr-1x4x-scope',
+  name: 'ELCAN SpecterDR 1x/4x scope',
+  shortName: 'SpecterDR',
+  weight: 0.64,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/ELCAN_SpecterDR_1x/4x_scope'
+}

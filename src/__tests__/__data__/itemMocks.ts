@@ -62,16 +62,14 @@ export const ak12Stock: IRangedWeaponMod = {
 
 export const alkali: IItem = {
   categoryId: 'other',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/59faf98186f774067b6be103-icon.webp',
   id: '59faf98186f774067b6be103',
   imageLink: 'https://assets.tarkov.dev/59faf98186f774067b6be103-image.webp',
   marketLink: 'https://tarkov.dev/item/alkaline-cleaner-for-heat-exchangers',
   maxStackableAmount: 1,
   name: 'Alkaline cleaner for heat exchangers',
-  prices: [
-  ],
+  prices: [],
   shortName: 'Alkali',
   weight: 1,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Alkaline_cleaner_for_heat_exchangers'
@@ -131,6 +129,44 @@ export const ammo545bp: IAmmunition = {
   velocity: 890
 }
 
+export const ammo545us: IAmmunition = {
+  armorDamagePercentage: 0.33,
+  armorPenetrations: [
+    6,
+    5,
+    1,
+    0,
+    0,
+    0
+  ],
+  blinding: false,
+  caliber: 'Caliber545x39',
+  conflictingItemIds: [],
+  durabilityBurnPercentageModifier: -0.2,
+  fleshDamage: 63,
+  fragmentationChancePercentage: 0.1,
+  heavyBleedingPercentageChance: 0,
+  lightBleedingPercentageChance: 0,
+  maxStackableAmount: 60,
+  prices: [],
+  projectiles: 1,
+  tracer: false,
+  penetrationPower: 17,
+  recoilPercentageModifier: -0.15,
+  subsonic: true,
+  velocity: 303,
+  categoryId: 'ammunition',
+  iconLink: 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-icon.webp',
+  id: '56dff4ecd2720b5f5a8b4568',
+  imageLink: 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-image.webp',
+  accuracyPercentageModifier: 60,
+  marketLink: 'https://tarkov.dev/item/545x39mm-us-gs',
+  name: '5.45x39mm US gs',
+  shortName: 'US',
+  weight: 0.01,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/5.45x39mm_US_gs'
+}
+
 export const ammo9mmGT: IAmmunition = {
   categoryId: 'ammunition',
   conflictingItemIds: [],
@@ -171,16 +207,14 @@ export const ammo9mmGT: IAmmunition = {
 
 export const aquamari: IItem = {
   categoryId: 'other',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5c0fa877d174af02a012e1cf-icon.webp',
   id: '5c0fa877d174af02a012e1cf',
   imageLink: 'https://assets.tarkov.dev/5c0fa877d174af02a012e1cf-image.webp',
   marketLink: 'https://tarkov.dev/item/aquamari-water-bottle-with-filter',
   maxStackableAmount: 1,
   name: 'Aquamari water bottle with filter',
-  prices: [
-  ],
+  prices: [],
   shortName: 'Aquamari',
   weight: 0.6,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Aquamari_water_bottle_with_filter'
@@ -195,8 +229,7 @@ export const armbandBlue: IItem = {
   marketLink: 'https://tarkov.dev/item/armband-blue',
   maxStackableAmount: 1,
   name: 'Armband (Blue)',
-  prices: [
-  ],
+  prices: [],
   shortName: 'Armband',
   weight: 0.05,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Armband_(Blue)'
@@ -414,6 +447,254 @@ export const armor6b13FlDefault: IArmor = {
   material: 'Aramid'
 }
 
+export const banshee: IVest = {
+  armorClass: 4,
+  armoredAreas: [
+    'FRPLATE',
+    'BCKPLATE',
+    'LPLATE',
+    'RPLATE',
+    'StomachLeftSide',
+    'StomachRightSide'
+  ],
+  baseItemId: undefined,
+  conflictingItemIds: [],
+  defaultPresetId: '657661ad234b9f6e050a42a2',
+  durability: 0,
+  ergonomicsPercentageModifier: -0.01,
+  material: 'Aramid',
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '64afc71497cf3a403c01ff38',
+        '64afdcb83efdfea28601d041',
+        '654a4dea7c17dec2f50cc86a',
+        '65573fa5655447403702a816',
+        '655746010177119f4a097ff7',
+        '656f57dc27aed95beb08f628',
+        '656f603f94b480b8a500c0d6',
+        '656f611f94b480b8a500c0db',
+        '656f63c027aed95beb08f62c',
+        '656f664200d62bcd2e024077',
+        '656f66b5c6baea13cd07e108',
+        '656f9d5900d62bcd2e02407c',
+        '656f9fa0498d1b7e3e071d98',
+        '656fa0fb498d1b7e3e071d9c',
+        '656fa25e94b480b8a500c0e0',
+        '656fa53d94b480b8a500c0e4',
+        '656fa61e94b480b8a500c0e8',
+        '656fa76500d62bcd2e024080',
+        '656fa8d700d62bcd2e024084',
+        '656fa99800d62bcd2e024088',
+        '656fac30c6baea13cd07e10c',
+        '656fad8c498d1b7e3e071da0',
+        '656fae5f7c2d57afe200c0d7',
+        '656faf0ca0dce000a2020f77',
+        '656fafe3498d1b7e3e071da4',
+        '656fb0bd7c2d57afe200c0dc',
+        '656fb21fa0dce000a2020f7c'
+      ],
+      maxStackableAmount: 1,
+      name: 'front_plate',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '64afc71497cf3a403c01ff38',
+        '64afdcb83efdfea28601d041',
+        '654a4a964b446df1ad03f192',
+        '65573fa5655447403702a816',
+        '655746010177119f4a097ff7',
+        '656efaf54772930db4031ff5',
+        '656efd66034e8e01c407f35c',
+        '656f9d5900d62bcd2e02407c',
+        '656f9fa0498d1b7e3e071d98',
+        '656fa0fb498d1b7e3e071d9c',
+        '656fa25e94b480b8a500c0e0',
+        '656fa53d94b480b8a500c0e4',
+        '656fa61e94b480b8a500c0e8',
+        '656fa76500d62bcd2e024080',
+        '656fa8d700d62bcd2e024084',
+        '656fa99800d62bcd2e024088',
+        '656fac30c6baea13cd07e10c',
+        '656fad8c498d1b7e3e071da0',
+        '656fae5f7c2d57afe200c0d7',
+        '656faf0ca0dce000a2020f77',
+        '656fafe3498d1b7e3e071da4',
+        '656fb0bd7c2d57afe200c0dc',
+        '656fb21fa0dce000a2020f7c',
+        '657b22485f444d6dff0c6c2f',
+        '657b2797c3dbcb01d60c35ea',
+        '657b28d25f444d6dff0c6c77'
+      ],
+      maxStackableAmount: 1,
+      name: 'back_plate',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '64afd81707e2cf40e903a316',
+        '64afdb577bb3bfe8fe03fd1d',
+        '654a4f8bc721968a4404ef18',
+        '6557458f83942d705f0c4962'
+      ],
+      maxStackableAmount: 1,
+      name: 'left_side_plate',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '64afd81707e2cf40e903a316',
+        '64afdb577bb3bfe8fe03fd1d',
+        '654a4f8bc721968a4404ef18',
+        '6557458f83942d705f0c4962'
+      ],
+      maxStackableAmount: 1,
+      name: 'right_side_plate',
+      required: false
+    }
+  ],
+  movementSpeedPercentageModifier: -0.01,
+  turningSpeedPercentageModifier: -0.01,
+  capacity: 16,
+  categoryId: 'vest',
+  iconLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-icon.webp',
+  id: '639343fce101f4caa40a4ef3',
+  imageLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-image.webp',
+  marketLink: 'https://tarkov.dev/item/shellback-tactical-banshee-plate-carrier-a-tacs-au',
+  maxStackableAmount: 1,
+  name: 'Shellback Tactical Banshee plate carrier (A-TACS AU)',
+  presetWearableModifiers: undefined,
+  prices: [],
+  shortName: 'Banshee',
+  weight: 3.08,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Shellback_Tactical_Banshee_plate_carrier_(A-TACS_AU)'
+}
+
+export const bansheeDefault: IVest = {
+  armorClass: 4,
+  armoredAreas: [
+    'FRPLATE',
+    'BCKPLATE',
+    'LPLATE',
+    'RPLATE',
+    'StomachLeftSide',
+    'StomachRightSide'
+  ],
+  baseItemId: '639343fce101f4caa40a4ef3',
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  durability: 0,
+  ergonomicsPercentageModifier: -0.01,
+  material: 'Aramid',
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '64afc71497cf3a403c01ff38',
+        '64afdcb83efdfea28601d041',
+        '654a4dea7c17dec2f50cc86a',
+        '65573fa5655447403702a816',
+        '655746010177119f4a097ff7',
+        '656f57dc27aed95beb08f628',
+        '656f603f94b480b8a500c0d6',
+        '656f611f94b480b8a500c0db',
+        '656f63c027aed95beb08f62c',
+        '656f664200d62bcd2e024077',
+        '656f66b5c6baea13cd07e108',
+        '656f9d5900d62bcd2e02407c',
+        '656f9fa0498d1b7e3e071d98',
+        '656fa0fb498d1b7e3e071d9c',
+        '656fa25e94b480b8a500c0e0',
+        '656fa53d94b480b8a500c0e4',
+        '656fa61e94b480b8a500c0e8',
+        '656fa76500d62bcd2e024080',
+        '656fa8d700d62bcd2e024084',
+        '656fa99800d62bcd2e024088',
+        '656fac30c6baea13cd07e10c',
+        '656fad8c498d1b7e3e071da0',
+        '656fae5f7c2d57afe200c0d7',
+        '656faf0ca0dce000a2020f77',
+        '656fafe3498d1b7e3e071da4',
+        '656fb0bd7c2d57afe200c0dc',
+        '656fb21fa0dce000a2020f7c'
+      ],
+      maxStackableAmount: 1,
+      name: 'front_plate',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '64afc71497cf3a403c01ff38',
+        '64afdcb83efdfea28601d041',
+        '654a4a964b446df1ad03f192',
+        '65573fa5655447403702a816',
+        '655746010177119f4a097ff7',
+        '656efaf54772930db4031ff5',
+        '656efd66034e8e01c407f35c',
+        '656f9d5900d62bcd2e02407c',
+        '656f9fa0498d1b7e3e071d98',
+        '656fa0fb498d1b7e3e071d9c',
+        '656fa25e94b480b8a500c0e0',
+        '656fa53d94b480b8a500c0e4',
+        '656fa61e94b480b8a500c0e8',
+        '656fa76500d62bcd2e024080',
+        '656fa8d700d62bcd2e024084',
+        '656fa99800d62bcd2e024088',
+        '656fac30c6baea13cd07e10c',
+        '656fad8c498d1b7e3e071da0',
+        '656fae5f7c2d57afe200c0d7',
+        '656faf0ca0dce000a2020f77',
+        '656fafe3498d1b7e3e071da4',
+        '656fb0bd7c2d57afe200c0dc',
+        '656fb21fa0dce000a2020f7c',
+        '657b22485f444d6dff0c6c2f',
+        '657b2797c3dbcb01d60c35ea',
+        '657b28d25f444d6dff0c6c77'
+      ],
+      maxStackableAmount: 1,
+      name: 'back_plate',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '64afd81707e2cf40e903a316',
+        '64afdb577bb3bfe8fe03fd1d',
+        '654a4f8bc721968a4404ef18',
+        '6557458f83942d705f0c4962'
+      ],
+      maxStackableAmount: 1,
+      name: 'left_side_plate',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '64afd81707e2cf40e903a316',
+        '64afdb577bb3bfe8fe03fd1d',
+        '654a4f8bc721968a4404ef18',
+        '6557458f83942d705f0c4962'
+      ],
+      maxStackableAmount: 1,
+      name: 'right_side_plate',
+      required: false
+    }
+  ],
+  movementSpeedPercentageModifier: -0.01,
+  turningSpeedPercentageModifier: -0.01,
+  capacity: 16,
+  categoryId: 'vest',
+  iconLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-icon.webp',
+  id: '657661ad234b9f6e050a42a2',
+  imageLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-image.webp',
+  marketLink: 'https://tarkov.dev/item/shellback-tactical-banshee-plate-carrier-a-tacs-au-default',
+  maxStackableAmount: 1,
+  name: 'Shellback Tactical Banshee plate carrier (A-TACS AU) Default',
+  presetWearableModifiers: undefined,
+  prices: [],
+  shortName: 'Banshee Default',
+  weight: 3.08,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Shellback_Tactical_Banshee_plate_carrier_(A-TACS_AU)'
+}
+
 export const bayonet6Kh5: IMeleeWeapon = {
   categoryId: 'meleeWeapon',
   conflictingItemIds: [],
@@ -454,16 +735,14 @@ export const berkut: IBackpack = {
 
 export const capacitors: IItem = {
   categoryId: 'other',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5c06782b86f77426df5407d2-icon.webp',
   id: '5c06782b86f77426df5407d2',
   imageLink: 'https://assets.tarkov.dev/5c06782b86f77426df5407d2-image.webp',
   marketLink: 'https://tarkov.dev/item/capacitors',
   maxStackableAmount: 1,
   name: 'Capacitors',
-  prices: [
-  ],
+  prices: [],
   shortName: 'Caps',
   weight: 0.1,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Capacitors'
@@ -502,33 +781,44 @@ export const crossbow: IEyewear = {
 
 export const esLamp: IItem = {
   categoryId: 'other',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/590a3cd386f77436f20848cb-icon.webp',
   id: '590a3cd386f77436f20848cb',
   imageLink: 'https://assets.tarkov.dev/590a3cd386f77436f20848cb-image.webp',
   marketLink: 'https://tarkov.dev/item/energy-saving-lamp',
   maxStackableAmount: 1,
   name: 'Energy-saving lamp',
-  prices: [
-  ],
+  prices: [],
   shortName: 'ES Lamp',
   weight: 0.2,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Energy-saving_lamp'
 }
 
+export const eur: IItem = {
+  categoryId: 'currency',
+  conflictingItemIds: [],
+  iconLink: 'https://assets.tarkov.dev/569668774bdc2da2298b4568-icon.webp',
+  id: '569668774bdc2da2298b4568',
+  imageLink: 'https://assets.tarkov.dev/569668774bdc2da2298b4568-image.webp',
+  maxStackableAmount: 50000,
+  marketLink: 'https://tarkov.dev/item/euros',
+  name: 'Euros',
+  prices: [],
+  shortName: 'EUR',
+  weight: 0,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Euros'
+}
+
 export const ewr: IItem = {
   categoryId: 'other',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/60098b1705871270cd5352a1-icon.webp',
   id: '60098b1705871270cd5352a1',
   imageLink: 'https://assets.tarkov.dev/60098b1705871270cd5352a1-image.webp',
   marketLink: 'https://tarkov.dev/item/emergency-water-ration',
   maxStackableAmount: 1,
   name: 'Emergency Water Ration',
-  prices: [
-  ],
+  prices: [],
   shortName: 'EWR',
   weight: 0.128,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Emergency_Water_Ration'
@@ -536,16 +826,14 @@ export const ewr: IItem = {
 
 export const filter: IItem = {
   categoryId: 'other',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/590c595c86f7747884343ad7-icon.webp',
   id: '590c595c86f7747884343ad7',
   imageLink: 'https://assets.tarkov.dev/590c595c86f7747884343ad7-image.webp',
   marketLink: 'https://tarkov.dev/item/gas-mask-air-filter',
   maxStackableAmount: 1,
   name: 'Gas mask air filter',
-  prices: [
-  ],
+  prices: [],
   shortName: 'Filter',
   weight: 0.5,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Gas_mask_air_filter'
@@ -553,16 +841,14 @@ export const filter: IItem = {
 
 export const h2o2: IItem = {
   categoryId: 'other',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/59e361e886f774176c10a2a5-icon.webp',
   id: '59e361e886f774176c10a2a5',
   imageLink: 'https://assets.tarkov.dev/59e361e886f774176c10a2a5-image.webp',
   marketLink: 'https://tarkov.dev/item/bottle-of-hydrogen-peroxide',
   maxStackableAmount: 1,
   name: 'Bottle of hydrogen peroxide',
-  prices: [
-  ],
+  prices: [],
   shortName: 'H2O2',
   weight: 0.1,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Bottle_of_hydrogen_peroxide'
@@ -1039,6 +1325,36 @@ export const m9a3Thr: IRangedWeaponMod = {
   recoilPercentageModifier: -0.03
 }
 
+export const monocletePe: IArmorMod = {
+  armorClass: 4,
+  armoredAreas: [
+    'FRPLATE',
+    'BCKPLATE'
+  ],
+  baseItemId: undefined,
+  blindnessProtectionPercentage: 0,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  durability: 40,
+  ergonomicsPercentageModifier: -0.01,
+  material: 'UHMWPE',
+  movementSpeedPercentageModifier: -0.01,
+  categoryId: 'armorMod',
+  iconLink: 'https://assets.tarkov.dev/656fad8c498d1b7e3e071da0-icon.webp',
+  id: '656fad8c498d1b7e3e071da0',
+  imageLink: 'https://assets.tarkov.dev/656fad8c498d1b7e3e071da0-image.webp',
+  marketLink: 'https://tarkov.dev/item/monoclete-level-iii-pe-ballistic-plate',
+  maxStackableAmount: 1,
+  modSlots: [],
+  presetWearableModifiers: undefined,
+  prices: [],
+  name: 'Monoclete level III PE ballistic plate',
+  shortName: 'Monoclete PE',
+  turningSpeedPercentageModifier: 0,
+  weight: 1.35,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Monoclete_level_III_PE_ballistic_plate'
+}
+
 export const morphine: IItem = {
   categoryId: 'other',
   conflictingItemIds: [],
@@ -1071,19 +1387,32 @@ export const ms2000 = {
 
 export const paid: IItem = {
   categoryId: 'other',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/59e3596386f774176c10a2a2-icon.webp',
   id: '59e3596386f774176c10a2a2',
   imageLink: 'https://assets.tarkov.dev/59e3596386f774176c10a2a2-image.webp',
   marketLink: 'https://tarkov.dev/item/paid-antiroach-spray',
   maxStackableAmount: 1,
   name: 'PAID AntiRoach spray',
-  prices: [
-  ],
+  prices: [],
   shortName: 'PAID',
   weight: 0.5,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/PAID_AntiRoach_spray'
+}
+
+export const pass: IItem = {
+  categoryId: 'other',
+  conflictingItemIds: [],
+  iconLink: 'https://assets.tarkov.dev/62a09cb7a04c0c5c6e0a84f8-icon.webp',
+  id: '62a09cb7a04c0c5c6e0a84f8',
+  imageLink: 'https://assets.tarkov.dev/62a09cb7a04c0c5c6e0a84f8-image.webp',
+  marketLink: 'https://tarkov.dev/item/press-pass-issued-for-noiceguy',
+  maxStackableAmount: 1,
+  name: 'Press pass (issued for NoiceGuy)',
+  prices: [],
+  shortName: 'Pass',
+  weight: 0.12,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Press_pass_(issued_for_NoiceGuy)'
 }
 
 export const plate6b33Back: IArmorMod = {
@@ -1130,8 +1459,7 @@ export const plate6b33Front: IArmorMod = {
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6B33_ballistic_plate_(Front)',
   baseItemId: undefined,
   defaultPresetId: undefined,
-  modSlots: [
-  ],
+  modSlots: [],
   ergonomicsPercentageModifier: -0.01,
   movementSpeedPercentageModifier: -0.025,
   presetWearableModifiers: undefined,
@@ -1147,16 +1475,14 @@ export const plate6b33Front: IArmorMod = {
 
 export const plexiglass: IItem = {
   categoryId: 'other',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/59e366c186f7741778269d85-icon.webp',
   id: '59e366c186f7741778269d85',
   imageLink: 'https://assets.tarkov.dev/59e366c186f7741778269d85-image.webp',
   marketLink: 'https://tarkov.dev/item/piece-of-plexiglass',
   maxStackableAmount: 1,
   name: 'Piece of plexiglass',
-  prices: [
-  ],
+  prices: [],
   shortName: 'Plexiglass',
   weight: 0.7,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Piece_of_plexiglass'
@@ -1173,8 +1499,7 @@ export const razor: IItem = {
   marketLink: 'https://tarkov.dev/item/walkers-razor-digital-headset',
   maxStackableAmount: 1,
   name: 'Walker\'s Razor Digital headset',
-  prices: [
-  ],
+  prices: [],
   shortName: 'Razor',
   weight: 0.43,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Walker%27s_Razor_Digital_headset'
@@ -1202,16 +1527,14 @@ export const rgd5: IGrenade = {
 
 export const rpk16: IRangedWeapon = {
   categoryId: 'mainWeapon',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5beed0f50db834001c062b12-icon.webp',
   id: '5beed0f50db834001c062b12',
   imageLink: 'https://assets.tarkov.dev/5beed0f50db834001c062b12-image.webp',
   marketLink: 'https://tarkov.dev/item/rpk-16-545x39-light-machine-gun',
   maxStackableAmount: 1,
   name: 'RPK-16 5.45x39 light machine gun',
-  prices: [
-  ],
+  prices: [],
   shortName: 'RPK-16',
   weight: 1.5,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_light_machine_gun',
@@ -1326,46 +1649,6 @@ export const rpk16: IRangedWeapon = {
   presetHorizontalRecoil: undefined,
   presetVerticalRecoil: undefined,
   verticalRecoil: 112
-}
-
-export const rpk1615inch: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
-  conflictingItemIds: [],
-  iconLink: 'https://assets.tarkov.dev/5beec1bd0db834001e6006f3-icon.webp',
-  id: '5beec1bd0db834001e6006f3',
-  imageLink: 'https://assets.tarkov.dev/5beec1bd0db834001e6006f3-image.webp',
-  marketLink: 'https://tarkov.dev/item/rpk-16-545x39-15-inch-barrel',
-  maxStackableAmount: 1,
-  name: 'RPK-16 5.45x39 15 inch barrel',
-  prices: [],
-  shortName: 'RPK-16 15\'',
-  weight: 0.54,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_15_inch_barrel',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [
-    {
-      compatibleItemIds: [
-        '5ac72e945acfc43f3b691116',
-        '5ac7655e5acfc40016339a19',
-        '5649aa744bdc2ded0b8b457e',
-        '5943eeeb86f77412d6384f6b',
-        '5cc9a96cd7f00c011c04e04a',
-        '5649ab884bdc2ded0b8b457f',
-        '5beec3420db834001b095429',
-        '593d493f86f7745e6b2ceb22',
-        '564caa3d4bdc2d17108b458e'
-      ],
-      maxStackableAmount: 1,
-      name: 'mod_muzzle',
-      required: false
-    }
-  ],
-  ergonomicsModifier: -2,
-  presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: -0.03
 }
 
 export const rpk16Default: IRangedWeapon = {
@@ -1492,6 +1775,46 @@ export const rpk16Default: IRangedWeapon = {
   presetHorizontalRecoil: undefined,
   presetVerticalRecoil: undefined,
   verticalRecoil: 112
+}
+
+export const rpk1615inch: IRangedWeaponMod = {
+  categoryId: 'rangedWeaponMod',
+  conflictingItemIds: [],
+  iconLink: 'https://assets.tarkov.dev/5beec1bd0db834001e6006f3-icon.webp',
+  id: '5beec1bd0db834001e6006f3',
+  imageLink: 'https://assets.tarkov.dev/5beec1bd0db834001e6006f3-image.webp',
+  marketLink: 'https://tarkov.dev/item/rpk-16-545x39-15-inch-barrel',
+  maxStackableAmount: 1,
+  name: 'RPK-16 5.45x39 15 inch barrel',
+  prices: [],
+  shortName: 'RPK-16 15\'',
+  weight: 0.54,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_15_inch_barrel',
+  baseItemId: undefined,
+  defaultPresetId: undefined,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '5ac72e945acfc43f3b691116',
+        '5ac7655e5acfc40016339a19',
+        '5649aa744bdc2ded0b8b457e',
+        '5943eeeb86f77412d6384f6b',
+        '5cc9a96cd7f00c011c04e04a',
+        '5649ab884bdc2ded0b8b457f',
+        '5beec3420db834001b095429',
+        '593d493f86f7745e6b2ceb22',
+        '564caa3d4bdc2d17108b458e'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_muzzle',
+      required: false
+    }
+  ],
+  ergonomicsModifier: -2,
+  presetErgonomicsModifier: undefined,
+  accuracyPercentageModifier: 0,
+  presetRecoilPercentageModifier: undefined,
+  recoilPercentageModifier: -0.03
 }
 
 export const rpk16Drum: IMagazine = {
@@ -1784,16 +2107,14 @@ export const rpk16MuzzleBreak: IRangedWeaponMod = {
 
 export const rpk16Rail: IMod = {
   categoryId: 'mod',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5beecbb80db834001d2c465e-icon.webp',
   id: '5beecbb80db834001d2c465e',
   imageLink: 'https://assets.tarkov.dev/5beecbb80db834001d2c465e-image.webp',
   marketLink: 'https://tarkov.dev/item/rpk-16-handguard-rail',
   maxStackableAmount: 1,
   name: 'RPK-16 handguard rail',
-  prices: [
-  ],
+  prices: [],
   shortName: 'RPK-16 rail',
   weight: 0.045,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_handguard_rail',
@@ -1996,16 +2317,14 @@ export const scavVest: IVest = {
 
 export const slickers: IItem = {
   categoryId: 'other',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/544fb6cc4bdc2d34748b456e-icon.webp',
   id: '544fb6cc4bdc2d34748b456e',
   imageLink: 'https://assets.tarkov.dev/544fb6cc4bdc2d34748b456e-image.webp',
   marketLink: 'https://tarkov.dev/item/slickers-chocolate-bar',
   maxStackableAmount: 1,
   name: 'Slickers chocolate bar',
-  prices: [
-  ],
+  prices: [],
   shortName: 'Slickers',
   weight: 0.048,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Slickers_chocolate_bar'
@@ -2013,23 +2332,20 @@ export const slickers: IItem = {
 
 export const srd9: IRangedWeaponMod = {
   categoryId: 'rangedWeaponMod',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5c6165902e22160010261b28-icon.webp',
   id: '5c6165902e22160010261b28',
   imageLink: 'https://assets.tarkov.dev/5c6165902e22160010261b28-image.webp',
   marketLink: 'https://tarkov.dev/item/sig-sauer-srd9-9x19-sound-suppressor',
   maxStackableAmount: 1,
   name: 'SIG Sauer SRD9 9x19 sound suppressor',
-  prices: [
-  ],
+  prices: [],
   shortName: 'SRD9',
   weight: 0.255,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/SIG_Sauer_SRD9_9x19_sound_suppressor',
   baseItemId: undefined,
   defaultPresetId: undefined,
-  modSlots: [
-  ],
+  modSlots: [],
   ergonomicsModifier: -15,
   presetErgonomicsModifier: undefined,
   accuracyPercentageModifier: 0,
@@ -2039,19 +2355,32 @@ export const srd9: IRangedWeaponMod = {
 
 export const syringe: IItem = {
   categoryId: 'other',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5d1b3f2d86f774253763b735-icon.webp',
   id: '5d1b3f2d86f774253763b735',
   imageLink: 'https://assets.tarkov.dev/5d1b3f2d86f774253763b735-image.webp',
   marketLink: 'https://tarkov.dev/item/disposable-syringe',
   maxStackableAmount: 1,
   name: 'Disposable syringe',
-  prices: [
-  ],
+  prices: [],
   shortName: 'Syringe',
   weight: 0.06,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Disposable_syringe'
+}
+
+export const usd: IItem = {
+  categoryId: 'currency',
+  conflictingItemIds: [],
+  iconLink: 'https://assets.tarkov.dev/5696686a4bdc2da3298b456a-icon.webp',
+  id: '5696686a4bdc2da3298b456a',
+  imageLink: 'https://assets.tarkov.dev/5696686a4bdc2da3298b456a-image.webp',
+  maxStackableAmount: 50000,
+  marketLink: 'https://tarkov.dev/item/dollars',
+  name: 'Dollars',
+  prices: [],
+  shortName: 'USD',
+  weight: 0,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Dollars'
 }
 
 export const vaseline: IItem = {
@@ -2069,18 +2398,31 @@ export const vaseline: IItem = {
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Vaseline_balm'
 }
 
+export const vhs: IItem = {
+  categoryId: 'other',
+  conflictingItemIds: [],
+  iconLink: 'https://assets.tarkov.dev/62a09e974f842e1bd12da3f0-icon.webp',
+  id: '62a09e974f842e1bd12da3f0',
+  imageLink: 'https://assets.tarkov.dev/62a09e974f842e1bd12da3f0-image.webp',
+  marketLink: 'https://tarkov.dev/item/video-cassette-with-the-cyborg-killer-movie',
+  maxStackableAmount: 1,
+  name: 'Video cassette with the Cyborg Killer movie',
+  prices: [],
+  shortName: 'VHS',
+  weight: 0.15,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Video_cassette_with_the_Cyborg_Killer_movie'
+}
+
 export const vita: IItem = {
   categoryId: 'other',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/57513fcc24597720a31c09a6-icon.webp',
   id: '57513fcc24597720a31c09a6',
   imageLink: 'https://assets.tarkov.dev/57513fcc24597720a31c09a6-image.webp',
   marketLink: 'https://tarkov.dev/item/pack-of-vita-juice',
   maxStackableAmount: 1,
   name: 'Pack of Vita juice',
-  prices: [
-  ],
+  prices: [],
   shortName: 'Vita',
   weight: 1,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Pack_of_Vita_juice'
@@ -2103,16 +2445,14 @@ export const water: IItem = {
 
 export const wParts: IItem = {
   categoryId: 'other',
-  conflictingItemIds: [
-  ],
+  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5d1c819a86f774771b0acd6c-icon.webp',
   id: '5d1c819a86f774771b0acd6c',
   imageLink: 'https://assets.tarkov.dev/5d1c819a86f774771b0acd6c-image.webp',
   marketLink: 'https://tarkov.dev/item/weapon-parts',
   maxStackableAmount: 1,
   name: 'Weapon parts',
-  prices: [
-  ],
+  prices: [],
   shortName: 'WParts',
   weight: 0.56,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Weapon_parts'
@@ -2149,17 +2489,21 @@ export const ItemMocks: IItem[] = [
   alkali,
   alpha,
   ammo545bp,
+  ammo545us,
   ammo9mmGT,
   aquamari,
   armbandBlue,
   armor6b13Fl,
   armor6b13FlDefault,
+  banshee,
+  bansheeDefault,
   bayonet6Kh5,
   berkut,
   capacitors,
   cf,
   crossbow,
   esLamp,
+  eur,
   ewr,
   filter,
   h2o2,
@@ -2174,11 +2518,13 @@ export const ItemMocks: IItem[] = [
   m9a3SideGrip,
   m9a3Slide,
   m9a3Thr,
+  monocletePe,
   morphine,
   ms2000,
   paid,
   plate6b33Back,
   plate6b33Front,
+  pass,
   plexiglass,
   razor,
   rgd5,
@@ -2198,7 +2544,9 @@ export const ItemMocks: IItem[] = [
   slickers,
   srd9,
   syringe,
+  usd,
   vaseline,
+  vhs,
   vita,
   water,
   wParts,

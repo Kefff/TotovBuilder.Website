@@ -1,28 +1,28 @@
-import { ItemPropertiesService } from './ItemPropertiesService'
-import { IInventoryItem } from '../models/build/IInventoryItem'
-import { IItem } from '../models/item/IItem'
-import Services from './repository/Services'
-import { IInventoryPrice } from '../models/utils/IInventoryPrice'
-import { IWeight } from '../models/utils/IWeight'
-import { IMod } from '../models/item/IMod'
-import { IErgonomics } from '../models/utils/IErgonomics'
-import { IWearableModifiers } from '../models/utils/IWearableModifiers'
-import { IRecoilPercentageModifier } from '../models/utils/IRecoilPercentageModifier'
-import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
-import { IRecoil } from '../models/utils/IRecoil'
-import Result from '../utils/Result'
-import { IRangedWeapon } from '../models/item/IRangedWeapon'
-import { ItemService } from './ItemService'
-import { IAmmunition } from '../models/item/IAmmunition'
-import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
-import { IPrice } from '../models/item/IPrice'
-import { GlobalFilterService } from './GlobalFilterService'
-import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import { TinyEmitter } from 'tiny-emitter'
+import { IInventoryItem } from '../models/build/IInventoryItem'
+import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
-import { PriceUtils } from '../utils/PriceUtils'
-import { PresetService } from './PresetService'
+import { IAmmunition } from '../models/item/IAmmunition'
+import { IItem } from '../models/item/IItem'
+import { IMod } from '../models/item/IMod'
+import { IPrice } from '../models/item/IPrice'
+import { IRangedWeapon } from '../models/item/IRangedWeapon'
+import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
 import { IWearable } from '../models/item/IWearable'
+import { IErgonomics } from '../models/utils/IErgonomics'
+import { IInventoryPrice } from '../models/utils/IInventoryPrice'
+import { IRecoil } from '../models/utils/IRecoil'
+import { IRecoilPercentageModifier } from '../models/utils/IRecoilPercentageModifier'
+import { IWearableModifiers } from '../models/utils/IWearableModifiers'
+import { IWeight } from '../models/utils/IWeight'
+import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
+import { PriceUtils } from '../utils/PriceUtils'
+import Result from '../utils/Result'
+import { GlobalFilterService } from './GlobalFilterService'
+import { ItemPropertiesService } from './ItemPropertiesService'
+import { ItemService } from './ItemService'
+import { PresetService } from './PresetService'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for managing inventory items.
@@ -368,13 +368,14 @@ export class InventoryItemService {
     }
 
     // Getting the chambered or in magazine ammunition recoil percentage modifier
-    const chamberedAmmunitionRecoilPercentageModifierResult = await this.getChamberedAmmunitionRecoilPercentageModifier(itemResult.value, inventoryItem.modSlots)
+    /*const chamberedAmmunitionRecoilPercentageModifierResult = await this.getChamberedAmmunitionRecoilPercentageModifier(itemResult.value, inventoryItem.modSlots)
 
     if (!chamberedAmmunitionRecoilPercentageModifierResult.success) {
       return Result.failFrom(chamberedAmmunitionRecoilPercentageModifierResult)
-    }
+    }*/
+    // TODO : Display the ammunition modifier next to the weapon recoil instead of including it in the calculation
 
-    const chamberedAmmunitionRecoilPercentageModifier = chamberedAmmunitionRecoilPercentageModifierResult.value
+    const chamberedAmmunitionRecoilPercentageModifier = 0/*chamberedAmmunitionRecoilPercentageModifierResult.value*/
 
     // Getting the recoil percentage modifier for each mods
     let modsRecoilPercentageModifiers = 0

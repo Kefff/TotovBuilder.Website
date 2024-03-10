@@ -1,6 +1,6 @@
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { ak12PistolGrip, ak12Stock, alpha, ammo545bp, ammo9mmGT, armor6b13FlDefault, bayonet6Kh5, berkut, cf, crossbow, iskra, lshZ2dtm, lshZ2dtmFs, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, morphine, razor, rgd5, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, salewa, scavVest, srd9, vaseline, water, x400 } from './itemMocks'
+import { ak12PistolGrip, ak12Stock, alpha, ammo545us, ammo9mmGT, armor6b13FlDefault, bansheeDefault, bayonet6Kh5, berkut, cf, crossbow, iskra, lshZ2dtm, lshZ2dtmFs, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, monocletePe, morphine, plate6b33Back, plate6b33Front, razor, rgd5, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, salewa, srd9, vaseline, water, x400 } from './itemMocks'
 
 export const build1: IBuild = {
   id: 'build_1',
@@ -43,7 +43,28 @@ export const build1: IBuild = {
           content: [],
           ignorePrice: false,
           itemId: armor6b13FlDefault.id,
-          modSlots: [],
+          modSlots: [
+            {
+              item: {
+                content: [],
+                itemId: plate6b33Front.id,
+                ignorePrice: false,
+                modSlots: [],
+                quantity: 1
+              },
+              modSlotName: 'front_plate'
+            },
+            {
+              item: {
+                content: [],
+                itemId: plate6b33Back.id,
+                ignorePrice: false,
+                modSlots: [],
+                quantity: 1
+              },
+              modSlotName: 'back_plate'
+            }
+          ],
           quantity: 1
         }
       ],
@@ -130,7 +151,7 @@ export const build1: IBuild = {
         {
           content: [],
           ignorePrice: false,
-          itemId: ammo545bp.id,
+          itemId: ammo545us.id,
           modSlots: [],
           quantity: 60
         }
@@ -200,7 +221,7 @@ export const build1: IBuild = {
                   {
                     content: [],
                     ignorePrice: false,
-                    itemId: ammo545bp.id,
+                    itemId: ammo545us.id,
                     modSlots: [],
                     quantity: 95
                   }
@@ -489,8 +510,29 @@ export const build2: IBuild = {
             }
           ],
           ignorePrice: false,
-          itemId: scavVest.id,
-          modSlots: [],
+          itemId: bansheeDefault.id,
+          modSlots: [
+            {
+              modSlotName: 'front_plate',
+              item: {
+                content: [],
+                ignorePrice: false,
+                itemId: monocletePe.id,
+                modSlots: [],
+                quantity: 1
+              }
+            },
+            {
+              modSlotName: 'back_plate',
+              item: {
+                content: [],
+                ignorePrice: false,
+                itemId: monocletePe.id,
+                modSlots: [],
+                quantity: 1
+              }
+            }
+          ],
           quantity: 1
         }
       ],

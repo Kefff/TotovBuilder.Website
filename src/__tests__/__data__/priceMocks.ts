@@ -48,8 +48,7 @@ export const ak12StockPrices: IPrice[] = [
 
 export const alkaliPrices: IPrice[] = [
   {
-    barterItems: [
-    ],
+    barterItems: [],
     currencyName: 'RUB',
     itemId: '59faf98186f774067b6be103',
     merchant: 'flea-market',
@@ -74,6 +73,29 @@ export const alphaPrices: IPrice[] = [
 ]
 
 export const ammo545bpPrices: IPrice[] = []
+
+export const ammo545usPrices: IPrice[] = [
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: '56dff4ecd2720b5f5a8b4568',
+    merchant: 'prapor',
+    merchantLevel: 1,
+    quest: undefined,
+    value: 96,
+    valueInMainCurrency: 96
+  },
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: '56dff4ecd2720b5f5a8b4568',
+    merchant: 'flea-market',
+    merchantLevel: 0,
+    quest: undefined,
+    value: 137,
+    valueInMainCurrency: 137
+  }
+]
 
 export const ammo9mmGTPrices: IPrice[] = [
   {
@@ -100,8 +122,7 @@ export const ammo9mmGTPrices: IPrice[] = [
 
 export const aquamariPrices: IPrice[] = [
   {
-    barterItems: [
-    ],
+    barterItems: [],
     currencyName: 'RUB',
     itemId: '5c0fa877d174af02a012e1cf',
     merchant: 'flea-market',
@@ -165,6 +186,51 @@ export const armor6b13FlDefaultPrices: IPrice[] = [
   }
 ]
 
+export const bansheePrices: IPrice[] = [
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: '639343fce101f4caa40a4ef3',
+    merchant: 'flea-market',
+    merchantLevel: 0,
+    quest: undefined,
+    value: 33950,
+    valueInMainCurrency: 33950
+  }
+]
+
+export const bansheeDefaultPrices: IPrice[] = [
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: '657661ad234b9f6e050a42a2',
+    merchant: 'flea-market',
+    merchantLevel: 0,
+    quest: undefined,
+    value: 63600,
+    valueInMainCurrency: 63600
+  },
+  {
+    barterItems: [
+      {
+        itemId: '60098b1705871270cd5352a1',
+        quantity: 1
+      },
+      {
+        itemId: '62a09e974f842e1bd12da3f0',
+        quantity: 1
+      }
+    ],
+    currencyName: 'barter',
+    itemId: '657661ad234b9f6e050a42a2',
+    merchant: 'ragman',
+    merchantLevel: 3,
+    quest: undefined,
+    value: 0,
+    valueInMainCurrency: 0
+  }
+]
+
 export const bayonet6Kh5Prices: IPrice[] = [
   {
     barterItems: [],
@@ -222,8 +288,7 @@ export const berkutPrices: IPrice[] = [
 
 export const capacitorsPrices: IPrice[] = [
   {
-    barterItems: [
-    ],
+    barterItems: [],
     currencyName: 'RUB',
     itemId: '5c06782b86f77426df5407d2',
     merchant: 'flea-market',
@@ -282,8 +347,7 @@ export const crossbowPrices: IPrice[] = [
 
 export const esLampPrices: IPrice[] = [
   {
-    barterItems: [
-    ],
+    barterItems: [],
     currencyName: 'RUB',
     itemId: '590a3cd386f77436f20848cb',
     merchant: 'flea-market',
@@ -294,10 +358,22 @@ export const esLampPrices: IPrice[] = [
   }
 ]
 
+export const eurPrices: IPrice[] = [
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: '569668774bdc2da2298b4568',
+    merchant: 'skier',
+    merchantLevel: 1,
+    quest: undefined,
+    value: 159,
+    valueInMainCurrency: 159
+  }
+]
+
 export const ewrPrices: IPrice[] = [
   {
-    barterItems: [
-    ],
+    barterItems: [],
     currencyName: 'RUB',
     itemId: '60098b1705871270cd5352a1',
     merchant: 'flea-market',
@@ -310,8 +386,7 @@ export const ewrPrices: IPrice[] = [
 
 export const filterPrices: IPrice[] = [
   {
-    barterItems: [
-    ],
+    barterItems: [],
     currencyName: 'RUB',
     itemId: '590c595c86f7747884343ad7',
     merchant: 'flea-market',
@@ -324,8 +399,7 @@ export const filterPrices: IPrice[] = [
 
 export const h2o2Prices: IPrice[] = [
   {
-    barterItems: [
-    ],
+    barterItems: [],
     currencyName: 'RUB',
     itemId: '59e361e886f774176c10a2a5',
     merchant: 'flea-market',
@@ -579,6 +653,34 @@ export const morphinePrices: IPrice[] = [
   }
 ]
 
+export const monocletePePrices: IPrice[] = [
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: '656fad8c498d1b7e3e071da0',
+    merchant: 'flea-market',
+    merchantLevel: 0,
+    quest: undefined,
+    value: 32315,
+    valueInMainCurrency: 32315
+  },
+  {
+    barterItems: [
+      {
+        itemId: '62a09cb7a04c0c5c6e0a84f8',
+        quantity: 1
+      }
+    ],
+    currencyName: 'barter',
+    itemId: '656fad8c498d1b7e3e071da0',
+    merchant: 'peacekeeper',
+    merchantLevel: 3,
+    quest: undefined,
+    value: 0,
+    valueInMainCurrency: 0
+  }
+]
+
 export const ms2000Prices: IPrice[] = [
   {
     barterItems: [],
@@ -614,8 +716,7 @@ export const ms2000Prices: IPrice[] = [
 
 export const paidPrices: IPrice[] = [
   {
-    barterItems: [
-    ],
+    barterItems: [],
     currencyName: 'RUB',
     itemId: '59e3596386f774176c10a2a2',
     merchant: 'flea-market',
@@ -662,10 +763,22 @@ export const plate6b33FrontPrices: IPrice[] = [
   }
 ]
 
+export const passPrices: IPrice[] = [
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: '62a09cb7a04c0c5c6e0a84f8',
+    merchant: 'flea-market',
+    merchantLevel: 0,
+    quest: undefined,
+    value: 31503,
+    valueInMainCurrency: 31503
+  }
+]
+
 export const plexiglassPrices: IPrice[] = [
   {
-    barterItems: [
-    ],
+    barterItems: [],
     currencyName: 'RUB',
     itemId: '59e366c186f7741778269d85',
     merchant: 'flea-market',
@@ -740,29 +853,6 @@ export const rpk16Prices: IPrice[] = [
   }
 ]
 
-export const rpk1615inchPrices: IPrice[] = [
-  {
-    barterItems: [],
-    currencyName: 'RUB',
-    itemId: '5beec1bd0db834001e6006f3',
-    merchant: 'prapor',
-    merchantLevel: 4,
-    quest: undefined,
-    value: 13298,
-    valueInMainCurrency: 13298
-  },
-  {
-    barterItems: [],
-    currencyName: 'RUB',
-    itemId: '5beec1bd0db834001e6006f3',
-    merchant: 'flea-market',
-    merchantLevel: 0,
-    quest: undefined,
-    value: 25000,
-    valueInMainCurrency: 25000
-  }
-]
-
 export const rpk16DefaultPrices: IPrice[] = [
   {
     barterItems: [],
@@ -802,6 +892,29 @@ export const rpk16DefaultPrices: IPrice[] = [
     quest: undefined,
     value: 0,
     valueInMainCurrency: 0
+  }
+]
+
+export const rpk1615inchPrices: IPrice[] = [
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: '5beec1bd0db834001e6006f3',
+    merchant: 'prapor',
+    merchantLevel: 4,
+    quest: undefined,
+    value: 13298,
+    valueInMainCurrency: 13298
+  },
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: '5beec1bd0db834001e6006f3',
+    merchant: 'flea-market',
+    merchantLevel: 0,
+    quest: undefined,
+    value: 25000,
+    valueInMainCurrency: 25000
   }
 ]
 
@@ -1061,8 +1174,7 @@ export const scavVestPrices: IPrice[] = [
 
 export const slickersPrices: IPrice[] = [
   {
-    barterItems: [
-    ],
+    barterItems: [],
     currencyName: 'RUB',
     itemId: '544fb6cc4bdc2d34748b456e',
     merchant: 'flea-market',
@@ -1113,8 +1225,7 @@ export const srd9Prices: IPrice[] = [
 
 export const syringePrices: IPrice[] = [
   {
-    barterItems: [
-    ],
+    barterItems: [],
     currencyName: 'RUB',
     itemId: '5d1b3f2d86f774253763b735',
     merchant: 'flea-market',
@@ -1122,6 +1233,19 @@ export const syringePrices: IPrice[] = [
     quest: undefined,
     value: 24745,
     valueInMainCurrency: 24745
+  }
+]
+
+export const usdPrices: IPrice[] = [
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: '5696686a4bdc2da3298b456a',
+    merchant: 'peacekeeper',
+    merchantLevel: 1,
+    quest: undefined,
+    value: 143,
+    valueInMainCurrency: 143
   }
 ]
 
@@ -1138,10 +1262,22 @@ export const vaselinePrices: IPrice[] = [
   }
 ]
 
+export const vhsPrices: IPrice[] = [
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: '62a09e974f842e1bd12da3f0',
+    merchant: 'flea-market',
+    merchantLevel: 0,
+    quest: undefined,
+    value: 37867,
+    valueInMainCurrency: 37867
+  }
+]
+
 export const vitaPrices: IPrice[] = [
   {
-    barterItems: [
-    ],
+    barterItems: [],
     currencyName: 'RUB',
     itemId: '57513fcc24597720a31c09a6',
     merchant: 'flea-market',
@@ -1192,8 +1328,7 @@ export const waterPrices: IPrice[] = [
 
 export const wPartsPrices: IPrice[] = [
   {
-    barterItems: [
-    ],
+    barterItems: [],
     currencyName: 'RUB',
     itemId: '5d1c819a86f774771b0acd6c',
     merchant: 'flea-market',
@@ -1235,17 +1370,21 @@ export const PriceMocks: IPrice[] = [
   ...alkaliPrices,
   ...alphaPrices,
   ...ammo545bpPrices,
+  ...ammo545usPrices,
   ...ammo9mmGTPrices,
   ...aquamariPrices,
   ...armbandBluePrices,
   ...armor6b13FlPrices,
   ...armor6b13FlDefaultPrices,
+  ...bansheePrices,
+  ...bansheeDefaultPrices,
   ...bayonet6Kh5Prices,
   ...berkutPrices,
   ...capacitorsPrices,
   ...cfPrices,
   ...crossbowPrices,
   ...esLampPrices,
+  ...eurPrices,
   ...ewrPrices,
   ...filterPrices,
   ...h2o2Prices,
@@ -1261,16 +1400,18 @@ export const PriceMocks: IPrice[] = [
   ...m9a3SlidePrices,
   ...m9a3ThrPrices,
   ...morphinePrices,
+  ...monocletePePrices,
   ...ms2000Prices,
   ...paidPrices,
   ...plate6b33BackPrices,
   ...plate6b33FrontPrices,
+  ...passPrices,
   ...plexiglassPrices,
   ...razorPrices,
   ...rgd5Prices,
   ...rpk16Prices,
-  ...rpk1615inchPrices,
   ...rpk16DefaultPrices,
+  ...rpk1615inchPrices,
   ...rpk16DrumPrices,
   ...rpk16DustCoverPrices,
   ...rpk16HandguardPrices,
@@ -1284,7 +1425,9 @@ export const PriceMocks: IPrice[] = [
   ...slickersPrices,
   ...srd9Prices,
   ...syringePrices,
+  ...usdPrices,
   ...vaselinePrices,
+  ...vhsPrices,
   ...vitaPrices,
   ...waterPrices,
   ...wPartsPrices,
