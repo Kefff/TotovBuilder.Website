@@ -21,8 +21,9 @@ describe('getAcceptedCartridgesNames()', () => {
     const magazine = {
       acceptedAmmunitionIds: [
         '5c0d5e4486f77478390952fe',
-        '56dfef82d2720bbd668b4567',
-        'invalid'
+        ammo545bp.id,
+        'invalid',
+        ammo545us.id
       ]
     } as IMagazine
     const magazineStatsComponentService = new MagazineStatsComponentService()

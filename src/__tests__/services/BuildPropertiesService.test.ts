@@ -682,12 +682,7 @@ describe('getWearableModifiers()', () => {
 
       // Assert
       expect(wearableModifiersResult.success).toBe(true)
-      expect(wearableModifiersResult.value.ergonomicsPercentageModifier.toFixed(3)).toBe(expected.ergonomicsPercentageModifier.toFixed(3))
-      expect(wearableModifiersResult.value.ergonomicsPercentageModifierWithMods.toFixed(3)).toBe(expected.ergonomicsPercentageModifierWithMods.toFixed(3))
-      expect(wearableModifiersResult.value.movementSpeedPercentageModifier.toFixed(3)).toBe(expected.movementSpeedPercentageModifier.toFixed(3))
-      expect(wearableModifiersResult.value.movementSpeedPercentageModifierWithMods.toFixed(3)).toBe(expected.movementSpeedPercentageModifierWithMods.toFixed(3))
-      expect(wearableModifiersResult.value.turningSpeedPercentageModifier.toFixed(3)).toBe(expected.turningSpeedPercentageModifier.toFixed(3))
-      expect(wearableModifiersResult.value.turningSpeedPercentageModifierWithMods.toFixed(3)).toBe(expected.turningSpeedPercentageModifierWithMods.toFixed(3))
+      expect(wearableModifiersResult.value).toStrictEqual(expected)
     }
   )
 
@@ -801,8 +796,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 199636,
-          valueInMainCurrency: 199636
+          value: 237151,
+          valueInMainCurrency: 237151
         },
         pricesWithContent: [
           {
@@ -822,8 +817,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 170588,
-            valueInMainCurrency: 170588
+            value: 208103,
+            valueInMainCurrency: 208103
           }
         ],
         unitPrice: {
@@ -1104,8 +1099,7 @@ describe('getRecoil()', () => {
         expect(recoil).toBeUndefined()
       } else {
         expect(recoil?.success).toBe(true)
-        expect(recoil?.value.horizontalRecoil.toFixed(3)).toStrictEqual(expected.horizontalRecoil.toFixed(3))
-        expect(recoil?.value.verticalRecoil.toFixed(3)).toStrictEqual(expected.verticalRecoil.toFixed(3))
+        expect(recoil?.value).toStrictEqual(expected)
       }
     }
   )
