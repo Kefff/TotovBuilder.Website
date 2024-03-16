@@ -7,166 +7,6 @@ export const build1: IBuild = {
   name: 'Build 1',
   inventorySlots: [
     {
-      items: Array<IInventoryItem>(1),
-      typeId: 'onBack'
-    },
-    {
-      items: [
-        {
-          content: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: iskra.id,
-              modSlots: [],
-              quantity: 1
-            },
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: water.id,
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          ignorePrice: false,
-          itemId: berkut.id,
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'backpack'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: armor6b13FlDefault.id,
-          modSlots: [
-            {
-              item: {
-                content: [],
-                itemId: plate6b33Front.id,
-                ignorePrice: false,
-                modSlots: [],
-                quantity: 1
-              },
-              modSlotName: 'front_plate'
-            },
-            {
-              item: {
-                content: [],
-                itemId: plate6b33Back.id,
-                ignorePrice: false,
-                modSlots: [],
-                quantity: 1
-              },
-              modSlotName: 'back_plate'
-            }
-          ],
-          quantity: 1
-        }
-      ],
-      typeId: 'bodyArmor'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'earpiece'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: crossbow.id,
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'eyewear'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: cf.id,
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'faceCover'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: lshZ2dtm.id,
-          modSlots: [
-            {
-              item: {
-                content: [],
-                ignorePrice: false,
-                itemId: lshZ2dtmFs.id,
-                modSlots: [],
-                quantity: 1
-              },
-              modSlotName: 'mod_equipment'
-            }
-          ],
-          quantity: 1
-        }
-      ],
-      typeId: 'headwear'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'holster'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: morphine.id,
-          modSlots: [],
-          quantity: 1
-        },
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: vaseline.id,
-          modSlots: [],
-          quantity: 1
-        },
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: rgd5.id,
-          modSlots: [],
-          quantity: 1
-        },
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: ammo545us.id,
-          modSlots: [],
-          quantity: 60
-        }
-      ],
-      typeId: 'pockets'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'pouch'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'scabbard'
-    },
-    {
       items: [
         {
           content: [],
@@ -314,12 +154,180 @@ export const build1: IBuild = {
     },
     {
       items: Array<IInventoryItem>(1),
+      typeId: 'onBack'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'holster'
+    },
+    {
+      items: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: armor6b13FlDefault.id,
+          modSlots: [
+            {
+              item: {
+                content: [],
+                ignorePrice: false,
+                itemId: plate6b33Front.id,
+                modSlots: [],
+                quantity: 1
+              },
+              modSlotName: 'front_plate'
+            },
+            {
+              item: {
+                content: [],
+                ignorePrice: false,
+                itemId: plate6b33Back.id,
+                modSlots: [],
+                quantity: 1
+              },
+              modSlotName: 'back_plate'
+            }
+          ],
+          quantity: 1
+        }
+      ],
+      typeId: 'bodyArmor'
+    },
+    {
+      items: Array<IInventoryItem>(1),
       typeId: 'tacticalRig'
+    },
+    {
+      items: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: lshZ2dtm.id,
+          modSlots: [
+            {
+              item: {
+                content: [],
+                ignorePrice: false,
+                itemId: lshZ2dtmFs.id,
+                modSlots: [],
+                quantity: 1
+              },
+              modSlotName: 'mod_equipment'
+            }
+          ],
+          quantity: 1
+        }
+      ],
+      typeId: 'headwear'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'earpiece'
+    },
+    {
+      items: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: morphine.id,
+          modSlots: [],
+          quantity: 1
+        },
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: vaseline.id,
+          modSlots: [],
+          quantity: 1
+        },
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: rgd5.id,
+          modSlots: [],
+          quantity: 1
+        },
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: ammo545us.id,
+          modSlots: [],
+          quantity: 60
+        }
+      ],
+      typeId: 'pockets'
+    },
+    {
+      items: [
+        {
+          content: [
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: iskra.id,
+              modSlots: [],
+              quantity: 1
+            },
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: water.id,
+              modSlots: [],
+              quantity: 1
+            }
+          ],
+          ignorePrice: false,
+          itemId: berkut.id,
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      typeId: 'backpack'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'pouch'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'scabbard'
+    },
+    {
+      items: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: cf.id,
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      typeId: 'faceCover'
+    },
+    {
+      items: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: crossbow.id,
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      typeId: 'eyewear'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'armband'
+    },
+    {
+      items: Array<IInventoryItem>(3),
+      typeId: 'special'
     }
   ],
-  lastExported: undefined,
-  lastUpdated: undefined,
-  lastWebsiteVersion: undefined
+  lastExported: new Date(2024, 2, 17),
+  lastUpdated: new Date(2024, 2, 17),
+  lastWebsiteVersion: '1.1.0'
 }
 
 export const build2: IBuild = {
@@ -328,39 +336,11 @@ export const build2: IBuild = {
   inventorySlots: [
     {
       items: Array<IInventoryItem>(1),
+      typeId: 'onSling'
+    },
+    {
+      items: Array<IInventoryItem>(1),
       typeId: 'onBack'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'backpack'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'bodyArmor'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: razor.id,
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'earpiece'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'eyewear'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'faceCover'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'headwear'
     },
     {
       items: [
@@ -466,36 +446,8 @@ export const build2: IBuild = {
       typeId: 'holster'
     },
     {
-      items: Array<IInventoryItem>(4),
-      typeId: 'pockets'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: alpha.id,
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'pouch'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: bayonet6Kh5.id,
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'scabbard'
-    },
-    {
       items: Array<IInventoryItem>(1),
-      typeId: 'onSling'
+      typeId: 'bodyArmor'
     },
     {
       items: [
@@ -537,6 +489,70 @@ export const build2: IBuild = {
         }
       ],
       typeId: 'tacticalRig'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'headwear'
+    },
+    {
+      items: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: razor.id,
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      typeId: 'earpiece'
+    },
+    {
+      items: Array<IInventoryItem>(4),
+      typeId: 'pockets'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'backpack'
+    },
+    {
+      items: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: alpha.id,
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      typeId: 'pouch'
+    },
+    {
+      items: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: bayonet6Kh5.id,
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      typeId: 'scabbard'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'faceCover'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'eyewear'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'armband'
+    },
+    {
+      items: Array<IInventoryItem>(3),
+      typeId: 'special'
     }
   ],
   lastExported: undefined,

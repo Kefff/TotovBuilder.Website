@@ -1,520 +1,20 @@
-import { IBuild } from '../../models/build/IBuild'
-import { BuildService } from '../../services/BuildService'
-import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito'
-import Result, { FailureType } from '../../utils/Result'
-import WebsiteConfigurationMock from '../__data__/website-configuration.json'
-import Services from '../../services/repository/Services'
-import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
-import { useVersionServiceMock } from '../__mocks__/VersionServiceMock'
-import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
-import { VersionService } from '../../services/VersionService'
-import Migrations from '../../utils/migrations/Migrations'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import WebsiteConfigurationMock from '../../../public/data/website-configuration.json'
+import { IBuild } from '../../models/build/IBuild'
+import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { BuildService } from '../../services/BuildService'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { ReductionService } from '../../services/ReductionService'
-
-const builds: IBuild[] = [
-  {
-    id: 'build_1',
-    name: 'Build 1',
-    inventorySlots: [
-      {
-        items: [
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5beed0f50db834001c062b12',
-            modSlots: [
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: '5c0d5e4486f77478390952fe',
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'chamber0'
-              },
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: '5beec8ea0db834001a6f9dbf',
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_pistol_grip'
-              },
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: '5beec91a0db834001961942d',
-                  modSlots: [
-                    {
-                      item: {
-                        content: [],
-                        ignorePrice: false,
-                        itemId: '5beec9450db83400970084fd',
-                        modSlots: [
-                          {
-                            item: {
-                              content: [],
-                              ignorePrice: false,
-                              itemId: '5bf3f59f0db834001a6fa060',
-                              modSlots: [],
-                              quantity: 1
-                            },
-                            modSlotName: 'mod_sight_rear'
-                          }
-                        ],
-                        quantity: 1
-                      },
-                      modSlotName: 'mod_sight_rear'
-                    }
-                  ],
-                  quantity: 1
-                },
-                modSlotName: 'mod_reciever'
-              },
-              {
-                item: {
-                  content: [
-                    {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '5c0d5e4486f77478390952fe',
-                      modSlots: [],
-                      quantity: 95
-                    }
-                  ],
-                  ignorePrice: false,
-                  itemId: '5bed625c0db834001c062946',
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_magazine'
-              },
-              { modSlotName: 'mod_charge' },
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: '5beec8b20db834001961942a',
-                  modSlots: [
-                    {
-                      item: {
-                        content: [],
-                        ignorePrice: false,
-                        itemId: '5beec8c20db834001d2c465c',
-                        modSlots: [],
-                        quantity: 1
-                      },
-                      modSlotName: 'mod_stock'
-                    }
-                  ],
-                  quantity: 1
-                },
-                modSlotName: 'mod_stock_001'
-              },
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: '5beec3e30db8340019619424',
-                  modSlots: [
-                    {
-                      item: {
-                        content: [],
-                        ignorePrice: false,
-                        itemId: '5beecbb80db834001d2c465e',
-                        modSlots: [],
-                        quantity: 1
-                      },
-                      modSlotName: 'mod_mount_000'
-                    },
-                    {
-                      item: {
-                        content: [],
-                        ignorePrice: false,
-                        itemId: '5beecbb80db834001d2c465e',
-                        modSlots: [],
-                        quantity: 1
-                      },
-                      modSlotName: 'mod_mount_001'
-                    }
-                  ],
-                  quantity: 1
-                },
-                modSlotName: 'mod_handguard'
-              },
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: '5beec1bd0db834001e6006f3',
-                  modSlots: [
-                    {
-                      item: {
-                        content: [],
-                        ignorePrice: false,
-                        itemId: '5beec3420db834001b095429',
-                        modSlots: [],
-                        quantity: 1
-                      },
-                      modSlotName: 'mod_muzzle'
-                    }
-                  ],
-                  quantity: 1
-                },
-                modSlotName: 'mod_barrel'
-              }
-            ],
-            quantity: 1
-          }
-        ],
-        typeId: 'onSling'
-      },
-      { items: [undefined], typeId: 'onBack' },
-      { items: [undefined], typeId: 'holster' },
-      {
-        items: [
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5c0e51be86f774598e797894',
-            modSlots: [],
-            quantity: 1
-          }
-        ],
-        typeId: 'bodyArmor'
-      },
-      { items: [undefined], typeId: 'tacticalRig' },
-      {
-        items: [
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5c17a7ed2e2216152142459c',
-            modSlots: [
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: '5a16b7e1fcdbcb00165aa6c9',
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_equipment_000'
-              },
-              { modSlotName: 'mod_nvg' },
-              { modSlotName: 'mod_mount' },
-              { modSlotName: 'mod_equipment_001' }
-            ],
-            quantity: 1
-          }
-        ],
-        typeId: 'headwear'
-      },
-      { items: [undefined], typeId: 'earpiece' },
-      {
-        items: [
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '544fb3f34bdc2d03748b456a',
-            modSlots: [],
-            quantity: 1
-          },
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5755383e24597772cb798966',
-            modSlots: [],
-            quantity: 1
-          },
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5448be9a4bdc2dfd2f8b456a',
-            modSlots: [],
-            quantity: 1
-          },
-          undefined
-        ],
-        typeId: 'pockets'
-      },
-      {
-        items: [
-          {
-            content: [
-              {
-                content: [],
-                ignorePrice: true,
-                itemId: '590c5d4b86f774784e1b9c45',
-                modSlots: [],
-                quantity: 1
-              },
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '5448fee04bdc2dbc018b4567',
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            ignorePrice: false,
-            itemId: '5ca20d5986f774331e7c9602',
-            modSlots: [],
-            quantity: 1
-          }
-        ],
-        typeId: 'backpack'
-      },
-      { items: [undefined], typeId: 'pouch' },
-      { items: [undefined], typeId: 'scabbard' },
-      {
-        items: [
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5ab8f39486f7745cd93a1cca',
-            modSlots: [],
-            quantity: 1
-          }
-        ],
-        typeId: 'faceCover'
-      },
-      {
-        items: [
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5d5fca1ea4b93635fd598c07',
-            modSlots: [],
-            quantity: 1
-          }
-        ],
-        typeId: 'eyewear'
-      },
-      { items: [undefined], typeId: 'armband' },
-      { items: [undefined, undefined, undefined], typeId: 'special' }
-    ],
-    lastExported: new Date(1),
-    lastUpdated: new Date(1),
-    lastWebsiteVersion: '999.999.999'
-  },
-  {
-    id: 'build_2',
-    name: 'Build 2',
-    inventorySlots: [
-      {
-        items: Array<IInventoryItem>(1),
-        typeId: 'onBack'
-      },
-      {
-        items: Array<IInventoryItem>(1),
-        typeId: 'backpack'
-      },
-      {
-        items: Array<IInventoryItem>(1),
-        typeId: 'bodyArmor'
-      },
-      {
-        items: [
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5e4d34ca86f774264f758330', // Walker's Razor Digital headset"
-            modSlots: [],
-            quantity: 1
-          }
-        ],
-        typeId: 'earpiece'
-      },
-      {
-        items: Array<IInventoryItem>(1),
-        typeId: 'eyewear'
-      },
-      {
-        items: Array<IInventoryItem>(1),
-        typeId: 'faceCover'
-      },
-      {
-        items: Array<IInventoryItem>(1),
-        typeId: 'headwear'
-      },
-      {
-        items: [
-          {
-            content: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '5efb0da7a29a85116f6ea05f', // 9x19 mm 7N31"
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            ignorePrice: false,
-            itemId: '5cadc190ae921500103bb3b6', // Beretta M9A3 9x19 pistol
-            modSlots: [
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: '5cadc1c6ae9215000f2775a4', // Threaded barrel for M9A3 9x19"
-                  modSlots: [
-                    {
-                      item: {
-                        content: [],
-                        ignorePrice: false,
-                        itemId: '5c6165902e22160010261b28', // Sig SRD 9 9x19mm sound suppressor"
-                        modSlots: [],
-                        quantity: 1
-                      },
-                      modSlotName: 'mod_muzzle'
-                    }
-                  ],
-                  quantity: 1
-                },
-                modSlotName: 'mod_barrel'
-              },
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: '5cadc431ae921500113bb8d5', // Polymer pistol grip for M9A3
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_pistol_grip'
-              },
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: '5cadc55cae921500103bb3be', // M9A3 Slide"
-                  modSlots: [
-                    {
-                      item: {
-                        content: [],
-                        ignorePrice: false,
-                        itemId: '5cadd940ae9215051e1c2316', // Beretta M9A3 Standard Rearsight"
-                        modSlots: [],
-                        quantity: 1
-                      },
-                      modSlotName: 'mod_sight_rear'
-                    },
-                    {
-                      item: {
-                        content: [],
-                        ignorePrice: false,
-                        itemId: '5cadd919ae921500126a77f3', // M9A3 Standard Frontsight"
-                        modSlots: [],
-                        quantity: 1
-                      },
-                      modSlotName: 'mod_sight_front'
-                    }
-                  ],
-                  quantity: 1
-                },
-                modSlotName: 'mod_reciever'
-              },
-              {
-                item: {
-                  content: [
-                    {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '5efb0da7a29a85116f6ea05f', // 9x19 mm 7N31"
-                      modSlots: [],
-                      quantity: 17
-                    }
-                  ],
-                  ignorePrice: false,
-                  itemId: '5cadc2e0ae9215051e1c21e7', // M9A3 9x19 17-round magazine"
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_magazine'
-              },
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: '5cc9c20cd7f00c001336c65d', // NcSTAR Tactical blue laser LAM-Module"
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_tactical'
-              }
-            ],
-            quantity: 1
-          }
-        ],
-        typeId: 'holster'
-      },
-      {
-        items: Array<IInventoryItem>(4),
-        typeId: 'pockets'
-      },
-      {
-        items: [
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '544a11ac4bdc2d470e8b456a', // Alpha Container
-            modSlots: [],
-            quantity: 1
-          }
-        ],
-        typeId: 'pouch'
-      },
-      {
-        items: [
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5bffdc370db834001d23eca8', // 6h5 Bayonet"
-            modSlots: [],
-            quantity: 1
-          }
-        ],
-        typeId: 'scabbard'
-      },
-      {
-        items: Array<IInventoryItem>(1),
-        typeId: 'onSling'
-      },
-      {
-        items: [
-          {
-            content: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: '544fb45d4bdc2dee738b4568', // Salewa FIRST AID KIT (400/400)"
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            ignorePrice: false,
-            itemId: '572b7adb24597762ae139821', // Scav Vest"
-            modSlots: [],
-            quantity: 1
-          }
-        ],
-        typeId: 'tacticalRig'
-      }
-    ],
-    lastExported: new Date(1),
-    lastUpdated: new Date(1),
-    lastWebsiteVersion: '999.999.999'
-  }
-]
+import { VersionService } from '../../services/VersionService'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import Services from '../../services/repository/Services'
+import Result, { FailureType } from '../../utils/Result'
+import Migrations from '../../utils/migrations/Migrations'
+import { build1, build2 } from '../__data__/buildMocks'
+import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
+import { useVersionServiceMock } from '../__mocks__/VersionServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 const newBuild: IBuild = {
   id: 'build_3',
@@ -598,13 +98,14 @@ const newBuild: IBuild = {
 }
 
 beforeEach(() => {
-  for (const build of builds) {
-    localStorage.setItem(
-      WebsiteConfigurationMock.buildStorageKeyPrefix + build.id,
-      JSON.stringify(build)
-    )
-  }
-
+  localStorage.setItem(
+    WebsiteConfigurationMock.buildStorageKeyPrefix + build1.id,
+    JSON.stringify(build1)
+  )
+  localStorage.setItem(
+    WebsiteConfigurationMock.buildStorageKeyPrefix + build2.id,
+    JSON.stringify(build2)
+  )
   localStorage.setItem(WebsiteConfigurationMock.languageStorageKey, 'en')
 })
 
@@ -636,94 +137,102 @@ describe('add()', () => {
 })
 
 describe('create()', () => {
-  it('should create a new build', () => {
+  it.each([
+    [true],
+    [false]
+  ])('should create a new build', (ignoreDefaultSlotItems: boolean) => {
     // Arrange
     const service = new BuildService()
 
+    const pouchDefaultItem = ignoreDefaultSlotItems ? undefined : {
+      content: [],
+      ignorePrice: false,
+      itemId: '544a11ac4bdc2d470e8b456a',
+      modSlots: [],
+      quantity: 1
+    }
+    const scabbardDefaultItem = ignoreDefaultSlotItems ? undefined : {
+      content: [],
+      ignorePrice: false,
+      itemId: '54491bb74bdc2d09088b4567',
+      modSlots: [],
+      quantity: 1
+    }
+    const expected: IBuild = {
+      id: '',
+      name: '',
+      inventorySlots: [
+        {
+          items: [undefined],
+          typeId: 'onSling'
+        },
+        {
+          items: [undefined],
+          typeId: 'onBack'
+        },
+        {
+          items: [undefined],
+          typeId: 'holster'
+        },
+        {
+          items: [undefined],
+          typeId: 'bodyArmor'
+        },
+        {
+          items: [undefined],
+          typeId: 'tacticalRig'
+        },
+        {
+          items: [undefined],
+          typeId: 'headwear'
+        },
+        {
+          items: [undefined],
+          typeId: 'earpiece'
+        },
+        {
+          items: [undefined, undefined, undefined, undefined],
+          typeId: 'pockets'
+        },
+        {
+          items: [undefined],
+          typeId: 'backpack'
+        },
+        {
+          items: [pouchDefaultItem],
+          typeId: 'pouch'
+        },
+        {
+          items: [scabbardDefaultItem],
+          typeId: 'scabbard'
+        },
+        {
+          items: [undefined],
+          typeId: 'faceCover'
+        },
+        {
+          items: [undefined],
+          typeId: 'eyewear'
+        },
+        {
+          items: [undefined],
+          typeId: 'armband'
+        },
+        {
+          items: [undefined, undefined, undefined],
+          typeId: 'special'
+        }
+      ],
+      lastExported: undefined,
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined
+    }
+
     // Act
-    const build = service.create()
+    const build = service.create(ignoreDefaultSlotItems)
 
     // Assert
-    expect(build.id).toBe('')
-    expect(build.name).toBe('')
-    expect(build.inventorySlots).toStrictEqual([
-      {
-        items: [undefined],
-        typeId: 'onSling'
-      },
-      {
-        items: [undefined],
-        typeId: 'onBack'
-      },
-      {
-        items: [undefined],
-        typeId: 'holster'
-      },
-      {
-        items: [undefined],
-        typeId: 'bodyArmor'
-      },
-      {
-        items: [undefined],
-        typeId: 'tacticalRig'
-      },
-      {
-        items: [undefined],
-        typeId: 'headwear'
-      },
-      {
-        items: [undefined],
-        typeId: 'earpiece'
-      },
-      {
-        items: [undefined, undefined, undefined, undefined],
-        typeId: 'pockets'
-      },
-      {
-        items: [undefined],
-        typeId: 'backpack'
-      },
-      {
-        items: [
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '544a11ac4bdc2d470e8b456a',
-            modSlots: [],
-            quantity: 1
-          }
-        ],
-        typeId: 'pouch'
-      },
-      {
-        items: [
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '54491bb74bdc2d09088b4567',
-            modSlots: [],
-            quantity: 1
-          }
-        ],
-        typeId: 'scabbard'
-      },
-      {
-        items: [undefined],
-        typeId: 'faceCover'
-      },
-      {
-        items: [undefined],
-        typeId: 'eyewear'
-      },
-      {
-        items: [undefined],
-        typeId: 'armband'
-      },
-      {
-        items: [undefined, undefined, undefined],
-        typeId: 'special'
-      }
-    ])
+    expect(build).toStrictEqual(expected)
   })
 })
 
@@ -736,8 +245,8 @@ describe('delete()', () => {
     const service = new BuildService()
 
     // Act
-    service.delete(builds[1].id)
-    const result = service.get(builds[1].id)
+    service.delete(build2.id)
+    const result = service.get(build2.id)
 
     // Assert
     expect(service.getAll().length).toBe(1)
@@ -749,7 +258,23 @@ describe('delete()', () => {
 })
 
 describe('fromSharableString()', () => {
-  it('should get a build from a sharable string and execute migrations on it', async () => {
+  it.each(
+    [
+      [
+        'XQAAAAKwBAAAAAAAAABAqEppdBKy3f2nWA1_4C5z8-v7-PB2PnO4T0FRqHCrunbQ824T11fLD0MMgpKzuGdnO-8eB5yHCYkn0JYO3VCC50O9MYgvuOr49cS5mtaJVptsaMiETu4-0oYouMfztK97JVyQiamvJHdA2W5i9dVVx7tG6R4CkXyLtwbAxz74UOVoRKsDpGU0H7BJshLAPue1edTU7OnozNCY5jfRvLYt8y_qwxB6Ol-uaqk4oI3cEDW9c94UKDSU8MVdPtA8P481abbFxOaLOXrDXvokQOpIV5t3nPBsd3EC-zc0p0C9miVd4PO9JJAGoS7c05hy5VxDyKAAC_MgjRgha9avVCb8UKrza2hWTiJRezgEmnBOip-6n2xY2JgD5E0KtCWg0w0jiA1gzqKs9AEfWiBesVfFcFto3Ni7YYqaWLjb4oeFTpI1UOaA89s8PwxYkFushiS2AWBA_pxTyrsgBBEwPRqQiEsgSp7QxqJX1mg1mc1ANj_K4bwv0roz9QGHB6RMz2Y4taQJ84R2EZkz1UrXHKzG46-gEoSRl563T5Zyd5u2bIw9VyY28KQ8Wax6YqxrRWGbnWcE7GlRFy5sVMlWaaATnenRHy6kUeVz1wXQHDL6P_QiRp6BHwaUWCg7go1K_zWSEGCil-qRNpCHLW6CItKv_KVUbBOG6vYq0myx9pmdaLJ7I0YixZWYXijwjjDlww0-zrGqNPW7_itHRo6qo86ugfFCv8qTuLUpQJZjXS_jhK4kUcOU1EK0NirDG7axwLlPjg7qKwX_qNdogCVenlUJa5EL02vEO8xufufi_xealgA',
+        {
+          ...build1,
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined
+        }
+      ],
+      [
+        'XQAAAAL0AgAAAAAAAABAqEppVBKy3f2f62vW6NGnAzQifk3h2Szo0R24FxL00kBK4cKfdwtejcfMvTZIkJ34NasHofmbTM8Q6MdRJEhOusAF9jlw3ZzCROr5jIUf6dnXgo5QhJNPM8S2XDQCtRsLoH_yAAk5q_Fz3NTbnXwpMGMiwSb51keeDYqXqVdUbdbgQOyEf84s_Z3auRsIsZpTBV8LOmcVfCw5ImzWr8-nVttGF6uqAvlwCDhNSOwT4tubwigtQO48c9XjLARE-vHiDHSzEsW3AOTRd0iuTt3Ldko4cgEMawl75mtaLVf8G8VvIBADnYoKPrxx0DGh-NAUmey_NRiPruQjfa_tLLaI1RqsZ9CtaExm1xvQPLHCJeDMyypXjBtucFYpvcEhMk3n1MLaH9VH4ZdBecR4rCQKJtBZl7OFKCbEelz9lZ5uv61W2oBy_y2cV_eHYseV2vaLR8Y3eLw4Bw6NOILeBfSS1v3nn_U_FGkHC72NhmMGBlV2y0KQ9gK-t4soj78addY-BMNymmwCHNw44I0UWjFUHXBprg0FBPaHojovgsWm0PuHZafHLDNRFBblnC9idPCxlodWjO3gg7cqGbKp_1ypMAA',
+        build2
+      ]
+    ]
+  )('should get a build from a sharable string and execute migrations on it', async (sharableString: string, expectedBuild: IBuild) => {
     // Arrange
     Services.configure(BuildService)
     Services.configure(ReductionService)
@@ -779,186 +304,18 @@ describe('fromSharableString()', () => {
       })
 
     const service = Services.get(BuildService)
-    const sharableString = 'XQAAAAKBAQAAAAAAAABAqEppVBKy3f2nWA1_4C5z8-v7-PB2PnO3yE24i4uplQNOe2AQti9qfQ3vHsOnTKDq2nEEFb79VsBzBnD-pb-5Nb0_87qgYNgUqN-kUzC-ixXoaUIxP5bVjrq-YghBtAFQa_O4inxq3hwebGM3jUCTpB0ou_BCcoJymajYEBQ2OvPuy_aF8Vtf4UR8KYA6nugVJv5Kd0v6DWN94D7Kgaza5GFSYqrRHItjPLx6krp0SGceYjtn1RNUBX-ea41hpKDXlBkYuxoBe-ZT10P4Ouq0e2Mmn82YwcUUBrZvQhh3uG6Dn_YU1No29Qi4js2uAwpm-nroMnPbxOd9jDkNeED-9xXjIA'
 
     // Act
     const buildResult = await service.fromSharableString(sharableString)
+    const expected = {
+      ...expectedBuild,
+      id: '',
+      name: '1.5.0|1.6.0'
+    } as IBuild
 
     // Assert
     expect(buildResult.success).toBe(true)
-    expect(buildResult.value).toStrictEqual({
-      id: '',
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '574d967124597745970e7c94', // Simonov SKS 7.62x39 carbine
-              modSlots: [
-                {
-                  item: {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: '574dad8024597745964bf05c', // SKS TOZ wooden stock (56-A-231 Sb.5)
-                    modSlots: [],
-                    quantity: 1
-                  },
-                  modSlotName: 'mod_stock'
-                },
-                {
-                  item: {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: '574db213245977459a2f3f5d', // SKS rear sight
-                    modSlots: [],
-                    quantity: 1
-                  },
-                  modSlotName: 'mod_sight_rear'
-                },
-                {
-                  item: {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: '587df3a12459772c28142567', // SKS 7.62x39 10-round internal box magazine
-                    modSlots: [],
-                    quantity: 1
-                  },
-                  modSlotName: 'mod_magazine'
-                }
-              ],
-              quantity: 1
-            }
-          ],
-          typeId: 'onSling'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'onBack'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'holster'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'bodyArmor'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'tacticalRig'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'headwear'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'earpiece'
-        },
-        {
-          items: [
-            undefined,
-            undefined,
-            undefined,
-            undefined
-          ],
-          typeId: 'pockets'
-        },
-        {
-          items: [
-            {
-              content: [
-                {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: '5448fee04bdc2dbc018b4567', // Bottle of water (0.6L)
-                  modSlots: [],
-                  quantity: 1
-                }
-              ],
-              ignorePrice: false,
-              itemId: '5c0e805e86f774683f3dd637', // 3V Gear Paratus 3-Day Operator's Tactical backpack
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'backpack'
-        },
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '544a11ac4bdc2d470e8b456a', // Secure container Alpha
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'pouch'
-        },
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '54491bb74bdc2d09088b4567', // ER FULCRUM BAYONET
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'scabbard'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'faceCover'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'eyewear'
-        },
-        {
-          items: [
-            undefined
-          ],
-          typeId: 'armband'
-        },
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: '5f4f9eb969cdc30ff33f09db', // EYE MK.2 professional hand-held compass
-              modSlots: [],
-              quantity: 1
-            },
-            undefined,
-            undefined
-          ],
-          typeId: 'special'
-        }
-      ],
-      lastExported: undefined,
-      lastUpdated: undefined,
-      lastWebsiteVersion: undefined,
-      name: '1.5.0|1.6.0'
-    } as IBuild)
+    expect(buildResult.value).toEqual(expected)
   })
 
   it('should fail when the sharable string is corrupted', async () => {
@@ -1017,7 +374,7 @@ describe('fromSharableString()', () => {
       })
 
     const service = Services.get(BuildService)
-    const sharableString = 'XQAAAAKBAQAAAAAAAABAqEppVBKy3f2nWA1_4C5z8-v7-PB2PnO3yE24i4uplQNOe2AQti9qfQ3vHsOnTKDq2nEEFb79VsBzBnD-pb-5Nb0_87qgYNgUqN-kUzC-ixXoaUIxP5bVjrq-YghBtAFQa_O4inxq3hwebGM3jUCTpB0ou_BCcoJymajYEBQ2OvPuy_aF8Vtf4UR8KYA6nugVJv5Kd0v6DWN94D7Kgaza5GFSYqrRHItjPLx6krp0SGceYjtn1RNUBX-ea41hpKDXlBkYuxoBe-ZT10P4Ouq0e2Mmn82YwcUUBrZvQhh3uG6Dn_YU1No29Qi4js2uAwpm-nroMnPbxOd9jDkNeED-9xXjIA'
+    const sharableString = 'XQAAAAJ5BAAAAAAAAABAqEppdBKy3f2nWA1_4C5z8-v7-PB2PnO4T0FRqHCrunbQ824T11fLD0MMgpKzuGdnO-8eB5yHCYkn0JYO3VCC50O9MYgvuOr49cS5mtaJVptsaMiETu4-0oYouMfztK97JVyQiamvJHdA2W5i9dVVx7tG6R4CkXyLtwbAxz74UOVoRKsDpGU0H7BJshLAPue1edTU7OnozNCY5jfRvLYt8y_qwxB6Ol-uaqk4oI3cEDW9c94UKDSU8MVdPtA8P481abbFxOaLOXrDXvokQOpIV5t3nPBsd3EC-zc0p0C9miVd4PO9JJAGoS7c05hy5VxDyKAAC_MgjRgha9avVCb8UKrza2hWTiJRezgEmnBOip-6n2xY2JgD5E0KtCWg0w0jiA1gzqKs9AEfWiBesVfFcFto3Ni7YYqaWLjb4oeFTpI1UOaA89s8PwxYkFlBErCbjBXKPYcNIOvqAU-p4NTO7X_3tMRPbzSZNVIcDu7Mq0zGn5IndeMyy-2aZulriecUtbL17JaE86mPQfaNe3DjKO0CmnqWf_LOvEAEPEHPimdpWCw8njwoqZF5uvGDsonEHU43POFgSVhXRB4cjppaxhKYb7XcJZDvNk1mZ-_SvOAtS70IE59cHGM7xBF_I74CpodKJstWTusp-qM_gDRAbpcqQm-ysqFXE9suINiKo0MmvEEcZSBU-iXFYHs-ezSDx9XYyn_suJkHXkgDkf4b0GzNnWPTrhWN-t4yTreDObhrm5M82k3njxXsKz_6__1B5U0'
 
     // Act
     const buildResult = await service.fromSharableString(sharableString)
@@ -1037,11 +394,11 @@ describe('get()', () => {
     const service = new BuildService()
 
     // Act
-    const result = service.get(builds[1].id)
+    const result = service.get(build2.id)
 
     // Assert
     expect(result.success).toBe(true)
-    expect(JSON.stringify(result.value)).toBe(JSON.stringify(builds[1])) // stringify() used because undefined is serialized to null and then deserialized to null so equality comparison doesn't work
+    expect(JSON.stringify(result.value)).toBe(JSON.stringify(build2)) // stringify() used because undefined is serialized to null and then deserialized to null so equality comparison doesn't work
   })
 
   it('should fail if the build does not exist', () => {
@@ -1066,7 +423,7 @@ describe('get()', () => {
 
     localStorage.setItem(
       WebsiteConfigurationMock.buildStorageKeyPrefix + 'not_parsable',
-      JSON.stringify('[')
+      '{ "name"=\'not_parsable\',  }'
     )
 
     const service = new BuildService()
@@ -1099,7 +456,15 @@ describe('getAll()', () => {
 })
 
 describe('toSharableURL()', () => {
-  it('should reduce a build and transform it into a URL', async () => {
+  it.each([
+    [
+      build1,
+      'XQAAAAKwBAAAAAAAAABAqEppdBKy3f2nWA1_4C5z8-v7-PB2PnO4T0FRqHCrunbQ824T11fLD0MMgpKzuGdnO-8eB5yHCYkn0JYO3VCC50O9MYgvuOr49cS5mtaJVptsaMiETu4-0oYouMfztK97JVyQiamvJHdA2W5i9dVVx7tG6R4CkXyLtwbAxz74UOVoRKsDpGU0H7BJshLAPue1edTU7OnozNCY5jfRvLYt8y_qwxB6Ol-uaqk4oI3cEDW9c94UKDSU8MVdPtA8P481abbFxOaLOXrDXvokQOpIV5t3nPBsd3EC-zc0p0C9miVd4PO9JJAGoS7c05hy5VxDyKAAC_MgjRgha9avVCb8UKrza2hWTiJRezgEmnBOip-6n2xY2JgD5E0KtCWg0w0jiA1gzqKs9AEfWiBesVfFcFto3Ni7YYqaWLjb4oeFTpI1UOaA89s8PwxYkFushiS2AWBA_pxTyrsgBBEwPRqQiEsgSp7QxqJX1mg1mc1ANj_K4bwv0roz9QGHB6RMz2Y4taQJ84R2EZkz1UrXHKzG46-gEoSRl563T5Zyd5u2bIw9VyY28KQ8Wax6YqxrRWGbnWcE7GlRFy5sVMlWaaATnenRHy6kUeVz1wXQHDL6P_QiRp6BHwaUWCg7go1K_zWSEGCil-qRNpCHLW6CItKv_KVUbBOG6vYq0myx9pmdaLJ7I0YixZWYXijwjjDlww0-zrGqNPW7_itHRo6qo86ugfFCv8qTuLUpQJZjXS_jhK4kUcOU1EK0NirDG7axwLlPjg7qKwX_qNdogCVenlUJa5EL02vEO8xufufi_xealgA'],
+    [
+      build2,
+      'XQAAAAL0AgAAAAAAAABAqEppVBKy3f2f62vW6NGnAzQifk3h2Szo0R24FxL00kBK4cKfdwtejcfMvTZIkJ34NasHofmbTM8Q6MdRJEhOusAF9jlw3ZzCROr5jIUf6dnXgo5QhJNPM8S2XDQCtRsLoH_yAAk5q_Fz3NTbnXwpMGMiwSb51keeDYqXqVdUbdbgQOyEf84s_Z3auRsIsZpTBV8LOmcVfCw5ImzWr8-nVttGF6uqAvlwCDhNSOwT4tubwigtQO48c9XjLARE-vHiDHSzEsW3AOTRd0iuTt3Ldko4cgEMawl75mtaLVf8G8VvIBADnYoKPrxx0DGh-NAUmey_NRiPruQjfa_tLLaI1RqsZ9CtaExm1xvQPLHCJeDMyypXjBtucFYpvcEhMk3n1MLaH9VH4ZdBecR4rCQKJtBZl7OFKCbEelz9lZ5uv61W2oBy_y2cV_eHYseV2vaLR8Y3eLw4Bw6NOILeBfSS1v3nn_U_FGkHC72NhmMGBlV2y0KQ9gK-t4soj78addY-BMNymmwCHNw44I0UWjFUHXBprg0FBPaHojovgsWm0PuHZafHLDNRFBblnC9idPCxlodWjO3gg7cqGbKp_1ypMAA'
+    ]
+  ])('should reduce a build and transform it into a URL', async (build: IBuild, expectedSharableString: string) => {
     // Arrange
     useVersionServiceMock()
     useWebsiteConfigurationServiceMock()
@@ -1117,11 +482,11 @@ describe('toSharableURL()', () => {
     const service = new BuildService()
 
     // Act
-    const sharableStringResult = await service.toSharableURL(builds[0])
+    const sharableStringResult = await service.toSharableURL(build)
 
     // Assert
     expect(sharableStringResult.success).toBe(true)
-    expect(sharableStringResult.value).toBe('localhost:3000/s/XQAAAAJmBAAAAAAAAABAqEppdBKy3f2nWA1_4C5z8-v7-PB2PnO4TJBDN_RrefeMTA1oIOQNSLQmTZKQMA3nTnTUbHr2mi1gpHZ1QN0VIdkLEh60ZqLDitEtmoaW0W0HNH_zGoKaZEYJaP-iZbZ58SWF1EzZsZPqQKFC_vbt94cj3bvtzDD7pDiJOzAUPS4f-zBgDNFZaE2HYlN3Rz5M49-4gT5jlmRMoea0PcfnKGWOu8u8tLcMaC60pI27hakRDzyTuI4L8cYmi0QwjxRlItBak0OtOuG-v429VWpY_8LQtmewFcw-MWPYRuIj7UvZmreC9JUBrXokMOkD2EMRJmxeWr5xHf4Vs8zN5KN1dcMu7IWmt8WqBVNv-JM58Llo5jQE5TKnNPfD-joOOLpz48N6zW0E0DmgbkCCVNFhu-yHjiRyAyf04PMJIaKUvdNBdsm0NHnE7LdClTap-mQfC-nqV-k6mVFHnFL2kq7Ql_bAZyq4Ik6N4D7cvOhv2cJc9D3TNgdfAFJLbe9HMlDEQMAdEKPZ3RB0Z2tCpgwNkadeJMLdxab88Hy6Q3E8RCk78TwWmQCBRDcNNiyozBLO9hLg_5YfogDLAkPR3w59d3cPMRzqK28ZuDvblEyEucXvXnFRHD3OBlV59umKbt95m9rYcW7hlw_xWVQY_WZI9neXWYIlgpDYuaJ0_NlbN81uGJUGOicymyXLw6VANfX8xlCLXfDHBezn3LYvEEY9JF_bbaQmcorZ9SY24M61fpKIRv5QqE3khP_Jwn9-')
+    expect(sharableStringResult.value).toBe(`localhost:3000/s/${expectedSharableString}`)
   })
 
   it('should fail when the URL is longer thant 2048 characters', async () => {
@@ -1134,7 +499,7 @@ describe('toSharableURL()', () => {
     const service = new BuildService()
 
     // Act
-    const sharableStringResult = await service.toSharableURL(builds[0])
+    const sharableStringResult = await service.toSharableURL(build1)
 
     // Assert
     expect(sharableStringResult.success).toBe(false)
@@ -1150,14 +515,14 @@ describe('update()', () => {
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
-    const build = service.get(builds[0].id).value
+    const build = service.get(build1.id).value
     build.name = 'New name'
 
     // Act / Assert
-    const updateResult = await service.update(builds[0].id, build)
+    const updateResult = await service.update(build1.id, build)
     expect(updateResult.success).toBe(true)
 
-    const getUpdatedBuildResult = service.get(builds[0].id)
+    const getUpdatedBuildResult = service.get(build1.id)
     expect(getUpdatedBuildResult.success).toBe(true)
     expect(getUpdatedBuildResult.value.name).toBe('New name')
   })
@@ -1168,7 +533,7 @@ describe('update()', () => {
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
-    const build = service.get(builds[0].id).value
+    const build = service.get(build1.id).value
     build.id = 'invalid'
     build.name = 'New name'
 
