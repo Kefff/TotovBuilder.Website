@@ -3,7 +3,6 @@ import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IAmmunition } from '../models/item/IAmmunition'
-import { IItem } from '../models/item/IItem'
 import { IMod } from '../models/item/IMod'
 import { IPrice } from '../models/item/IPrice'
 import { IRangedWeapon } from '../models/item/IRangedWeapon'
@@ -368,13 +367,13 @@ export class InventoryItemService {
     }
 
     // Getting the chambered or in magazine ammunition recoil percentage modifier
-    /*const chamberedAmmunitionRecoilPercentageModifierResult = await this.getChamberedAmmunitionRecoilPercentageModifier(itemResult.value, inventoryItem.modSlots)
+    const chamberedAmmunitionRecoilPercentageModifierResult = await this.getChamberedAmmunitionRecoilPercentageModifier(inventoryItem.modSlots)
 
     if (!chamberedAmmunitionRecoilPercentageModifierResult.success) {
       return Result.failFrom(chamberedAmmunitionRecoilPercentageModifierResult)
-    }*/
-    // TODO : Display the ammunition modifier next to the weapon recoil instead of including it in the calculation
+    }
 
+    // TODO : Display the ammunition modifier next to the weapon recoil instead of including it in the calculation
     const chamberedAmmunitionRecoilPercentageModifier = 0/*chamberedAmmunitionRecoilPercentageModifierResult.value*/
 
     // Getting the recoil percentage modifier for each mods
@@ -709,28 +708,18 @@ export class InventoryItemService {
   /**
    * Gets the recoil percentage modifier of the chambered ammunition (or contained in the magazine when not having a chamber)
    * of a ranged weapon.
-   * @param item - Item being checked.
    * @param modSlots - Mod slots.
    * @returns Recoil percentage modifier.
    */
-  private async getChamberedAmmunitionRecoilPercentageModifier(item: IItem, modSlots: IInventoryModSlot[]): Promise<Result<number>> {
-    const rangedWeapon = item as IRangedWeapon
+  private async getChamberedAmmunitionRecoilPercentageModifier(modSlots: IInventoryModSlot[]): Promise<Result<number>> {
     let ammunitionId: string | undefined
 
-    const chamber = rangedWeapon.modSlots.find((ms) => ms.name.startsWith('chamber'))
-
     for (const modSlot of modSlots) {
-      if (chamber != null && modSlot.modSlotName === chamber.name && modSlot.item != null) {
+      if (modSlot.modSlotName.startsWith('chamber') && modSlot.item != null) {
         ammunitionId = modSlot.item.itemId
 
         break
-      } else {
-        const magazine = rangedWeapon.modSlots.find((ms) => ms.name === 'mod_magazine')
-
-        if (modSlot.modSlotName !== /* istanbul ignore next */magazine?.name || modSlot.item == null) {
-          continue
-        }
-
+      } else if (modSlot.modSlotName === 'mod_magazine' && modSlot.item != null) {
         if (modSlot.item.content.length === 0 && modSlot.item.modSlots.length > 0) {
           // The magazine is composed of multiple slots that each receive a cartridge (revolver cylinder magazine)
           ammunitionId = modSlot.item.modSlots.filter(ms => ms.item != null)[0]?.item?.itemId
@@ -738,6 +727,8 @@ export class InventoryItemService {
           // Normal magazine
           ammunitionId = modSlot.item.content[0]?.itemId
         }
+
+        break
       }
     }
 

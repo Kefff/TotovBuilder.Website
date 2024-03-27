@@ -6,7 +6,7 @@ import { IPrice } from '../../models/item/IPrice'
 import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
 import Result, { FailureType } from '../../utils/Result'
-import { ItemMocks } from '../__data__/itemMocks'
+import { ItemMocks, rub } from '../__data__/itemMocks'
 import { PriceMocks } from '../__data__/priceMocks'
 
 export function useItemServiceMock(hasMainCurrency = true, customItemList?: IItem[], customPricesList?: IPrice[]): void {
@@ -56,9 +56,9 @@ function getMainCurrency(hasMainCurrency: boolean): Promise<Result<ICurrency>> {
   if (hasMainCurrency) {
     return Promise.resolve(Result.ok({
       iconName: 'ruble-sign',
-      itemId: '5449016a4bdc2d6f028b456f',
+      itemId: rub.id,
       mainCurrency: true,
-      name: 'RUB',
+      name: rub.shortName,
       sortOrder: 3,
       value: 1
     }))

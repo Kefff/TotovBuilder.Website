@@ -26,8 +26,8 @@ describe('getSummary()', () => {
         horizontalRecoil: 226.44,
         id: 'build_1',
         name: 'Build 1',
-        lastExported: undefined,
-        lastUpdated: undefined,
+        lastExported: new Date(2024, 2, 17),
+        lastUpdated: new Date(2024, 2, 17),
         price: {
           missingPrice: false,
           price: {
@@ -77,6 +77,311 @@ describe('getSummary()', () => {
         shoppingList: [
           {
             item: {
+              ...rpk16Default,
+              prices: rpk16DefaultPrices
+            },
+            quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: rpk16Default.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 39415,
+              valueInMainCurrency: 39415
+            },
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: rpk16Default.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 39415,
+              valueInMainCurrency: 39415
+            }
+          },
+          {
+            item: {
+              ...rpk16Drum,
+              prices: rpk16DrumPrices
+            },
+            quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'barter',
+              itemId: rpk16Drum.id,
+              merchant: 'prapor',
+              merchantLevel: 3,
+              quest: undefined,
+              value: 0,
+              valueInMainCurrency: 0
+            },
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'barter',
+              itemId: rpk16Drum.id,
+              merchant: 'prapor',
+              merchantLevel: 3,
+              quest: undefined,
+              value: 0,
+              valueInMainCurrency: 0
+            }
+          },
+          {
+            item: {
+              ...alkali,
+              prices: alkaliPrices
+            },
+            quantity: 2,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: alkali.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 25912,
+              valueInMainCurrency: 25912
+            },
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: alkali.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 12956,
+              valueInMainCurrency: 12956
+            }
+          },
+          {
+            item: {
+              ...ammo545us,
+              prices: ammo545usPrices
+            },
+            quantity: 155,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: ammo545us.id,
+              merchant: 'prapor',
+              merchantLevel: 1,
+              quest: undefined,
+              value: 14880,
+              valueInMainCurrency: 14880
+            },
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: ammo545us.id,
+              merchant: 'prapor',
+              merchantLevel: 1,
+              quest: undefined,
+              value: 96,
+              valueInMainCurrency: 96
+            }
+          },
+          {
+            item: {
+              ...armor6b13FlDefault,
+              prices: armor6b13FlDefaultPrices
+            },
+            quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: armor6b13FlDefault.id,
+              merchant: 'ragman',
+              merchantLevel: 2,
+              quest: {
+                id: '638fcd23dc65553116701d33',
+                name: 'Audit',
+                wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Audit'
+              },
+              value: 64269,
+              valueInMainCurrency: 64269
+            },
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: armor6b13FlDefault.id,
+              merchant: 'ragman',
+              merchantLevel: 2,
+              quest: {
+                id: '638fcd23dc65553116701d33',
+                name: 'Audit',
+                wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Audit'
+              },
+              value: 64269,
+              valueInMainCurrency: 64269
+            }
+          },
+          {
+            item: {
+              ...lshZ2dtm,
+              prices: lshZ2dtmPrices
+            },
+            quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: lshZ2dtm.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 62035,
+              valueInMainCurrency: 62035
+            },
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: lshZ2dtm.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 62035,
+              valueInMainCurrency: 62035
+            }
+          },
+          {
+            item: {
+              ...lshZ2dtmFs,
+              prices: lshZ2dtmFsPrices
+            },
+            quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'barter',
+              itemId: lshZ2dtmFs.id,
+              merchant: 'ragman',
+              merchantLevel: 3,
+              quest: undefined,
+              value: 0,
+              valueInMainCurrency: 0
+            },
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'barter',
+              itemId: lshZ2dtmFs.id,
+              merchant: 'ragman',
+              merchantLevel: 3,
+              quest: undefined,
+              value: 0,
+              valueInMainCurrency: 0
+            }
+          },
+          {
+            item: {
+              ...plexiglass,
+              prices: plexiglassPrices
+            },
+            quantity: 3,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: plexiglass.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 29805,
+              valueInMainCurrency: 29805
+            },
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: plexiglass.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 9935,
+              valueInMainCurrency: 9935
+            }
+          },
+          {
+            item: {
+              ...morphine,
+              prices: morphinePrices
+            },
+            quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: morphine.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 16998,
+              valueInMainCurrency: 16998
+            },
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: morphine.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 16998,
+              valueInMainCurrency: 16998
+            }
+          },
+          {
+            item: {
+              ...vaseline,
+              prices: vaselinePrices
+            },
+            quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: vaseline.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 20709,
+              valueInMainCurrency: 20709
+            },
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: vaseline.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 20709,
+              valueInMainCurrency: 20709
+            }
+          },
+          {
+            item: {
+              ...rgd5,
+              prices: rgd5Prices
+            },
+            quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: rgd5.id,
+              merchant: 'prapor',
+              merchantLevel: 3,
+              quest: undefined,
+              value: 11822,
+              valueInMainCurrency: 11822
+            },
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: rgd5.id,
+              merchant: 'prapor',
+              merchantLevel: 3,
+              quest: undefined,
+              value: 11822,
+              valueInMainCurrency: 11822
+            }
+          },
+          {
+            item: {
               ...berkut,
               prices: berkutPrices
             },
@@ -84,7 +389,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '5ca20d5986f774331e7c9602',
+              itemId: berkut.id,
               merchant: 'ragman',
               merchantLevel: 2,
               quest: undefined,
@@ -94,7 +399,7 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '5ca20d5986f774331e7c9602',
+              itemId: berkut.id,
               merchant: 'ragman',
               merchantLevel: 2,
               quest: undefined,
@@ -111,7 +416,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '590c5d4b86f774784e1b9c45',
+              itemId: iskra.id,
               merchant: 'jaeger',
               merchantLevel: 2,
               quest: {
@@ -125,7 +430,7 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '590c5d4b86f774784e1b9c45',
+              itemId: iskra.id,
               merchant: 'jaeger',
               merchantLevel: 2,
               quest: {
@@ -146,7 +451,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'barter',
-              itemId: '5448fee04bdc2dbc018b4567',
+              itemId: water.id,
               merchant: 'therapist',
               merchantLevel: 1,
               quest: undefined,
@@ -156,7 +461,7 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'barter',
-              itemId: '5448fee04bdc2dbc018b4567',
+              itemId: water.id,
               merchant: 'therapist',
               merchantLevel: 1,
               quest: undefined,
@@ -173,7 +478,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '59e361e886f774176c10a2a5',
+              itemId: h2o2.id,
               merchant: 'flea-market',
               merchantLevel: 0,
               quest: undefined,
@@ -183,74 +488,12 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '59e361e886f774176c10a2a5',
+              itemId: h2o2.id,
               merchant: 'flea-market',
               merchantLevel: 0,
               quest: undefined,
               value: 11891,
               valueInMainCurrency: 11891
-            }
-          },
-          {
-            item: {
-              ...armor6b13FlDefault,
-              prices: armor6b13FlDefaultPrices
-            },
-            quantity: 1,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '65765f39526e320fbe0357b1',
-              merchant: 'ragman',
-              merchantLevel: 2,
-              quest: {
-                id: '638fcd23dc65553116701d33',
-                name: 'Audit',
-                wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Audit'
-              },
-              value: 64269,
-              valueInMainCurrency: 64269
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '65765f39526e320fbe0357b1',
-              merchant: 'ragman',
-              merchantLevel: 2,
-              quest: {
-                id: '638fcd23dc65553116701d33',
-                name: 'Audit',
-                wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Audit'
-              },
-              value: 64269,
-              valueInMainCurrency: 64269
-            }
-          },
-          {
-            item: {
-              ...crossbow,
-              prices: crossbowPrices
-            },
-            quantity: 1,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '5d5fca1ea4b93635fd598c07',
-              merchant: 'ragman',
-              merchantLevel: 2,
-              quest: undefined,
-              value: 3885,
-              valueInMainCurrency: 3885
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '5d5fca1ea4b93635fd598c07',
-              merchant: 'ragman',
-              merchantLevel: 2,
-              quest: undefined,
-              value: 3885,
-              valueInMainCurrency: 3885
             }
           },
           {
@@ -262,7 +505,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '5ab8f39486f7745cd93a1cca',
+              itemId: cf.id,
               merchant: 'ragman',
               merchantLevel: 2,
               quest: undefined,
@@ -272,7 +515,7 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '5ab8f39486f7745cd93a1cca',
+              itemId: cf.id,
               merchant: 'ragman',
               merchantLevel: 2,
               quest: undefined,
@@ -282,279 +525,36 @@ describe('getSummary()', () => {
           },
           {
             item: {
-              ...lshZ2dtm,
-              prices: lshZ2dtmPrices
+              ...crossbow,
+              prices: crossbowPrices
             },
             quantity: 1,
             price: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '5d6d3716a4b9361bc8618872',
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 62035,
-              valueInMainCurrency: 62035
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '5d6d3716a4b9361bc8618872',
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 62035,
-              valueInMainCurrency: 62035
-            }
-          },
-          {
-            item: {
-              ...lshZ2dtmFs,
-              prices: lshZ2dtmFsPrices
-            },
-            quantity: 1,
-            price: {
-              barterItems: [],
-              currencyName: 'barter',
-              itemId: '5d6d3829a4b9361bc8618943',
+              itemId: crossbow.id,
               merchant: 'ragman',
-              merchantLevel: 3,
+              merchantLevel: 2,
               quest: undefined,
-              value: 0,
-              valueInMainCurrency: 0
+              value: 3885,
+              valueInMainCurrency: 3885
             },
             unitPrice: {
               barterItems: [],
-              currencyName: 'barter',
-              itemId: '5d6d3829a4b9361bc8618943',
+              currencyName: 'RUB',
+              itemId: crossbow.id,
               merchant: 'ragman',
-              merchantLevel: 3,
+              merchantLevel: 2,
               quest: undefined,
-              value: 0,
-              valueInMainCurrency: 0
-            }
-          },
-          {
-            item: {
-              ...plexiglass,
-              prices: plexiglassPrices
-            },
-            quantity: 3,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '59e366c186f7741778269d85',
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 29805,
-              valueInMainCurrency: 29805
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '59e366c186f7741778269d85',
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 9935,
-              valueInMainCurrency: 9935
-            }
-          },
-          {
-            item: {
-              ...morphine,
-              prices: morphinePrices
-            },
-            quantity: 1,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '544fb3f34bdc2d03748b456a',
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 16998,
-              valueInMainCurrency: 16998
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '544fb3f34bdc2d03748b456a',
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 16998,
-              valueInMainCurrency: 16998
-            }
-          },
-          {
-            item: {
-              ...vaseline,
-              prices: vaselinePrices
-            },
-            quantity: 1,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '5755383e24597772cb798966',
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 20709,
-              valueInMainCurrency: 20709
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '5755383e24597772cb798966',
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 20709,
-              valueInMainCurrency: 20709
-            }
-          },
-          {
-            item: {
-              ...rgd5,
-              prices: rgd5Prices
-            },
-            quantity: 1,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '5448be9a4bdc2dfd2f8b456a',
-              merchant: 'prapor',
-              merchantLevel: 3,
-              quest: undefined,
-              value: 11822,
-              valueInMainCurrency: 11822
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '5448be9a4bdc2dfd2f8b456a',
-              merchant: 'prapor',
-              merchantLevel: 3,
-              quest: undefined,
-              value: 11822,
-              valueInMainCurrency: 11822
-            }
-          },
-          {
-            item: {
-              ...ammo545us,
-              prices: ammo545usPrices
-            },
-            quantity: 155,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '56dff4ecd2720b5f5a8b4568',
-              merchant: 'prapor',
-              merchantLevel: 1,
-              quest: undefined,
-              value: 14880,
-              valueInMainCurrency: 14880
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '56dff4ecd2720b5f5a8b4568',
-              merchant: 'prapor',
-              merchantLevel: 1,
-              quest: undefined,
-              value: 96,
-              valueInMainCurrency: 96
-            }
-          },
-          {
-            item: {
-              ...rpk16Default,
-              prices: rpk16DefaultPrices
-            },
-            quantity: 1,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '5c0d1ec986f77439512a1a72',
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 39415,
-              valueInMainCurrency: 39415
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '5c0d1ec986f77439512a1a72',
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 39415,
-              valueInMainCurrency: 39415
-            }
-          },
-          {
-            item: {
-              ...rpk16Drum,
-              prices: rpk16DrumPrices
-            },
-            quantity: 1,
-            price: {
-              barterItems: [],
-              currencyName: 'barter',
-              itemId: '5bed625c0db834001c062946',
-              merchant: 'prapor',
-              merchantLevel: 3,
-              quest: undefined,
-              value: 0,
-              valueInMainCurrency: 0
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'barter',
-              itemId: '5bed625c0db834001c062946',
-              merchant: 'prapor',
-              merchantLevel: 3,
-              quest: undefined,
-              value: 0,
-              valueInMainCurrency: 0
-            }
-          },
-          {
-            item: {
-              ...alkali,
-              prices: alkaliPrices
-            },
-            quantity: 2,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '59faf98186f774067b6be103',
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 25912,
-              valueInMainCurrency: 25912
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '59faf98186f774067b6be103',
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 12956,
-              valueInMainCurrency: 12956
+              value: 3885,
+              valueInMainCurrency: 3885
             }
           }
         ],
         verticalRecoil: 76.16,
         wearableModifiers: {
           ergonomicsPercentageModifier: 0,
-          ergonomicsPercentageModifierWithMods: -0.095,
+          ergonomicsPercentageModifierWithMods: -0.09500000000000001,
           movementSpeedPercentageModifier: 0,
           movementSpeedPercentageModifierWithMods: -0.060000000000000005,
           turningSpeedPercentageModifier: 0,
@@ -632,33 +632,6 @@ describe('getSummary()', () => {
         shoppingList: [
           {
             item: {
-              ...razor,
-              prices: [...razorPrices]
-            },
-            quantity: 1,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '5e4d34ca86f774264f758330',
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 55864,
-              valueInMainCurrency: 55864
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '5e4d34ca86f774264f758330',
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 55864,
-              valueInMainCurrency: 55864
-            }
-          },
-          {
-            item: {
               ...m9a3Default,
               prices: [...m9a3DefaultPrices]
             },
@@ -666,7 +639,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'USD',
-              itemId: '5d3f0bc986f7743cb332abdc',
+              itemId: m9a3Default.id,
               merchant: 'peacekeeper',
               merchantLevel: 1,
               quest: undefined,
@@ -676,7 +649,7 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'USD',
-              itemId: '5d3f0bc986f7743cb332abdc',
+              itemId: m9a3Default.id,
               merchant: 'peacekeeper',
               merchantLevel: 1,
               quest: undefined,
@@ -693,7 +666,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '5c6165902e22160010261b28',
+              itemId: srd9.id,
               merchant: 'flea-market',
               merchantLevel: 0,
               quest: undefined,
@@ -703,7 +676,7 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '5c6165902e22160010261b28',
+              itemId: srd9.id,
               merchant: 'flea-market',
               merchantLevel: 0,
               quest: undefined,
@@ -720,7 +693,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '5c3df7d588a4501f290594e5',
+              itemId: ammo9mmGT.id,
               merchant: 'mechanic',
               merchantLevel: 1,
               quest: undefined,
@@ -730,7 +703,7 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '5c3df7d588a4501f290594e5',
+              itemId: ammo9mmGT.id,
               merchant: 'mechanic',
               merchantLevel: 1,
               quest: undefined,
@@ -747,7 +720,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'USD',
-              itemId: '56def37dd2720bec348b456a',
+              itemId: x400.id,
               merchant: 'peacekeeper',
               merchantLevel: 2,
               quest: undefined,
@@ -757,7 +730,7 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'USD',
-              itemId: '56def37dd2720bec348b456a',
+              itemId: x400.id,
               merchant: 'peacekeeper',
               merchantLevel: 2,
               quest: undefined,
@@ -774,7 +747,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '639343fce101f4caa40a4ef3',
+              itemId: banshee.id,
               merchant: 'flea-market',
               merchantLevel: 0,
               quest: undefined,
@@ -784,7 +757,7 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '639343fce101f4caa40a4ef3',
+              itemId: banshee.id,
               merchant: 'flea-market',
               merchantLevel: 0,
               quest: undefined,
@@ -801,7 +774,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'barter',
-              itemId: '656fad8c498d1b7e3e071da0',
+              itemId: monocletePe.id,
               merchant: 'peacekeeper',
               merchantLevel: 3,
               quest: undefined,
@@ -811,7 +784,7 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'barter',
-              itemId: '656fad8c498d1b7e3e071da0',
+              itemId: monocletePe.id,
               merchant: 'peacekeeper',
               merchantLevel: 3,
               quest: undefined,
@@ -828,7 +801,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '62a09cb7a04c0c5c6e0a84f8',
+              itemId: pass.id,
               merchant: 'flea-market',
               merchantLevel: 0,
               quest: undefined,
@@ -838,7 +811,7 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '62a09cb7a04c0c5c6e0a84f8',
+              itemId: pass.id,
               merchant: 'flea-market',
               merchantLevel: 0,
               quest: undefined,
@@ -855,7 +828,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'barter',
-              itemId: '544fb45d4bdc2dee738b4568',
+              itemId: salewa.id,
               merchant: 'therapist',
               merchantLevel: 1,
               quest: undefined,
@@ -865,7 +838,7 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'barter',
-              itemId: '544fb45d4bdc2dee738b4568',
+              itemId: salewa.id,
               merchant: 'therapist',
               merchantLevel: 1,
               quest: undefined,
@@ -882,7 +855,7 @@ describe('getSummary()', () => {
             price: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '60098b1705871270cd5352a1',
+              itemId: ewr.id,
               merchant: 'flea-market',
               merchantLevel: 0,
               quest: undefined,
@@ -892,12 +865,39 @@ describe('getSummary()', () => {
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: '60098b1705871270cd5352a1',
+              itemId: ewr.id,
               merchant: 'flea-market',
               merchantLevel: 0,
               quest: undefined,
               value: 21574,
               valueInMainCurrency: 21574
+            }
+          },
+          {
+            item: {
+              ...razor,
+              prices: [...razorPrices]
+            },
+            quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: razor.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 55864,
+              valueInMainCurrency: 55864
+            },
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: razor.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 55864,
+              valueInMainCurrency: 55864
             }
           }
         ],
@@ -910,7 +910,7 @@ describe('getSummary()', () => {
           turningSpeedPercentageModifier: 0,
           turningSpeedPercentageModifierWithMods: -0.01
         },
-        weight: 8.936
+        weight: 8.936000000000002
       } as IBuildSummary
     ],
     [

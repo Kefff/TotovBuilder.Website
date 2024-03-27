@@ -1,5 +1,5 @@
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { armor6b13FlDefault } from './itemMocks'
+import { ak12PistolGrip, ak12Stock, armor6b13FlDefault, bansheeDefault, m9a3Cap, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, monocletePe, mts25512755mmRib, mts25512Default, mts25512beech, mts25512choke, mts25512cyl, mts25512wood, plate6b33Back, plate6b33Front, rpk1615inch, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube } from './itemMocks'
 
 export const armor6b13FlDefaultPreset: IInventoryItem = {
   content: [],
@@ -9,7 +9,7 @@ export const armor6b13FlDefaultPreset: IInventoryItem = {
     {
       item: {
         content: [],
-        itemId: '656f603f94b480b8a500c0d6',
+        itemId: plate6b33Front.id,
         ignorePrice: false,
         modSlots: [],
         quantity: 1
@@ -19,7 +19,7 @@ export const armor6b13FlDefaultPreset: IInventoryItem = {
     {
       item: {
         content: [],
-        itemId: '656efd66034e8e01c407f35c',
+        itemId: plate6b33Back.id,
         ignorePrice: false,
         modSlots: [],
         quantity: 1
@@ -33,13 +33,13 @@ export const armor6b13FlDefaultPreset: IInventoryItem = {
 export const bansheeDefaultPreset: IInventoryItem = {
   content: [],
   ignorePrice: false,
-  itemId: '657661ad234b9f6e050a42a2',
+  itemId: bansheeDefault.id,
   modSlots: [
     {
       item: {
         content: [],
         ignorePrice: false,
-        itemId: '656fad8c498d1b7e3e071da0',
+        itemId: monocletePe.id,
         modSlots: [],
         quantity: 1
       },
@@ -49,7 +49,7 @@ export const bansheeDefaultPreset: IInventoryItem = {
       item: {
         content: [],
         ignorePrice: false,
-        itemId: '656fad8c498d1b7e3e071da0',
+        itemId: monocletePe.id,
         modSlots: [],
         quantity: 1
       },
@@ -61,19 +61,19 @@ export const bansheeDefaultPreset: IInventoryItem = {
 
 export const m9a3DefaultPreset: IInventoryItem = {
   content: [],
-  itemId: '5d3f0bc986f7743cb332abdc',
+  itemId: m9a3Default.id,
   ignorePrice: false,
   modSlots: [
     {
       item: {
         content: [],
-        itemId: '5cadc1c6ae9215000f2775a4',
+        itemId: m9a3Thr.id,
         ignorePrice: false,
         modSlots: [
           {
             item: {
               content: [],
-              itemId: '5cadc390ae921500126a77f1',
+              itemId: m9a3Cap.id,
               ignorePrice: false,
               modSlots: [],
               quantity: 1
@@ -88,7 +88,7 @@ export const m9a3DefaultPreset: IInventoryItem = {
     {
       item: {
         content: [],
-        itemId: '5cadc431ae921500113bb8d5',
+        itemId: m9a3SideGrip.id,
         ignorePrice: false,
         modSlots: [],
         quantity: 1
@@ -98,13 +98,13 @@ export const m9a3DefaultPreset: IInventoryItem = {
     {
       item: {
         content: [],
-        itemId: '5cadc55cae921500103bb3be',
+        itemId: m9a3Slide.id,
         ignorePrice: false,
         modSlots: [
           {
             item: {
               content: [],
-              itemId: '5cadd940ae9215051e1c2316',
+              itemId: m9a3Rs.id,
               ignorePrice: false,
               modSlots: [],
               quantity: 1
@@ -114,7 +114,7 @@ export const m9a3DefaultPreset: IInventoryItem = {
           {
             item: {
               content: [],
-              itemId: '5cadd919ae921500126a77f3',
+              itemId: m9a3Fs.id,
               ignorePrice: false,
               modSlots: [],
               quantity: 1
@@ -129,7 +129,7 @@ export const m9a3DefaultPreset: IInventoryItem = {
     {
       item: {
         content: [],
-        itemId: '5cadc2e0ae9215051e1c21e7',
+        itemId: m9a3Magazine.id,
         ignorePrice: false,
         modSlots: [],
         quantity: 1
@@ -140,15 +140,75 @@ export const m9a3DefaultPreset: IInventoryItem = {
   quantity: 1
 }
 
+export const mts25512DefaultPreset: IInventoryItem = {
+  content: [],
+  ignorePrice: false,
+  itemId: mts25512Default.id,
+  modSlots: [
+    {
+      item: {
+        content: [],
+        itemId: mts25512cyl.id,
+        ignorePrice: false,
+        modSlots: [],
+        quantity: 1
+      },
+      modSlotName: 'mod_magazine'
+    },
+    {
+      item: {
+        content: [],
+        ignorePrice: false,
+        itemId: mts25512755mmRib.id,
+        modSlots: [
+          {
+            item: {
+              content: [],
+              itemId: mts25512choke.id,
+              ignorePrice: false,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'mod_muzzle'
+          }
+        ],
+        quantity: 1
+      },
+      modSlotName: 'mod_barrel'
+    },
+    {
+      item: {
+        content: [],
+        itemId: mts25512wood.id,
+        ignorePrice: false,
+        modSlots: [],
+        quantity: 1
+      },
+      modSlotName: 'mod_stock'
+    },
+    {
+      item: {
+        content: [],
+        itemId: mts25512beech.id,
+        ignorePrice: false,
+        modSlots: [],
+        quantity: 1
+      },
+      modSlotName: 'mod_handguard'
+    }
+  ],
+  quantity: 1
+}
+
 export const rpk16DefaultPreset: IInventoryItem = {
   content: [],
-  itemId: '5c0d1ec986f77439512a1a72',
+  itemId: rpk16Default.id,
   ignorePrice: false,
   modSlots: [
     {
       item: {
         content: [],
-        itemId: '5beec8ea0db834001a6f9dbf',
+        itemId: ak12PistolGrip.id,
         ignorePrice: false,
         modSlots: [],
         quantity: 1
@@ -158,19 +218,19 @@ export const rpk16DefaultPreset: IInventoryItem = {
     {
       item: {
         content: [],
-        itemId: '5beec91a0db834001961942d',
+        itemId: rpk16DustCover.id,
         ignorePrice: false,
         modSlots: [
           {
             item: {
               content: [],
-              itemId: '5beec9450db83400970084fd',
+              itemId: rpk16RsBase.id,
               ignorePrice: false,
               modSlots: [
                 {
                   item: {
                     content: [],
-                    itemId: '5bf3f59f0db834001a6fa060',
+                    itemId: rpk16Rs.id,
                     ignorePrice: false,
                     modSlots: [],
                     quantity: 1
@@ -190,13 +250,13 @@ export const rpk16DefaultPreset: IInventoryItem = {
     {
       item: {
         content: [],
-        itemId: '5beec8b20db834001961942a',
+        itemId: rpk16Tube.id,
         ignorePrice: false,
         modSlots: [
           {
             item: {
               content: [],
-              itemId: '5beec8c20db834001d2c465c',
+              itemId: ak12Stock.id,
               ignorePrice: false,
               modSlots: [],
               quantity: 1
@@ -211,13 +271,13 @@ export const rpk16DefaultPreset: IInventoryItem = {
     {
       item: {
         content: [],
-        itemId: '5beec3e30db8340019619424',
+        itemId: rpk16Handguard.id,
         ignorePrice: false,
         modSlots: [
           {
             item: {
               content: [],
-              itemId: '5beecbb80db834001d2c465e',
+              itemId: rpk16Rail.id,
               ignorePrice: false,
               modSlots: [],
               quantity: 1
@@ -227,7 +287,7 @@ export const rpk16DefaultPreset: IInventoryItem = {
           {
             item: {
               content: [],
-              itemId: '5beecbb80db834001d2c465e',
+              itemId: rpk16Rail.id,
               ignorePrice: false,
               modSlots: [],
               quantity: 1
@@ -242,13 +302,13 @@ export const rpk16DefaultPreset: IInventoryItem = {
     {
       item: {
         content: [],
-        itemId: '5beec1bd0db834001e6006f3',
+        itemId: rpk1615inch.id,
         ignorePrice: false,
         modSlots: [
           {
             item: {
               content: [],
-              itemId: '5beec3420db834001b095429',
+              itemId: rpk16MuzzleBreak.id,
               ignorePrice: false,
               modSlots: [],
               quantity: 1
@@ -270,5 +330,6 @@ export const PresetMocks: IInventoryItem[] = [
   armor6b13FlDefaultPreset,
   bansheeDefaultPreset,
   m9a3DefaultPreset,
+  mts25512DefaultPreset,
   rpk16DefaultPreset
 ]

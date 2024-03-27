@@ -14,6 +14,65 @@ import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
 import { IVest } from '../../models/item/IVest'
 
+export const ak12bt: IRangedWeaponMod = {
+  accuracyPercentageModifier: 0,
+  baseItemId: undefined,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: 0,
+  maxStackableAmount: 1,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '602e620f9b513876d4338d9a',
+        '5a9eb32da2750c00171b3f9c',
+        '5bfe86df0db834001b734685',
+        '55d4ae6c4bdc2d8b2f8b456e',
+        '5c87a07c2e2216001219d4a2',
+        '5bb20e70d4351e0035629f8f',
+        '5beec8c20db834001d2c465c',
+        '5ae30c9a5acfc408fb139a03',
+        '5d135e83d7ad1a21b83f42d8',
+        '5d135ecbd7ad1a21c176542e',
+        '56eabf3bd2720b75698b4569',
+        '58d2946386f774496974c37e',
+        '58d2946c86f7744e271174b5',
+        '58d2947686f774485c6a1ee5',
+        '58d2947e86f77447aa070d53',
+        '5947c73886f7747701588af5',
+        '5c793fde2e221601da358614',
+        '5b39f8db5acfc40016387a1b',
+        '5fbbaa86f9986c4cff3fe5f6',
+        '5fce16961f152d4312622bc9',
+        '5fc2369685fd526b824a5713',
+        '606587d11246154cad35d635',
+        '628a85ee6b1d481ff772e9d5',
+        '5d44069ca4b9361ebd26fc37',
+        '5d4406a8a4b9361e4f6eb8b7',
+        '6516e91f609aaf354b34b3e2',
+        '6516e971a3d4c6497930b450',
+        '6529370c405a5f51dd023db8'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_stock',
+      required: false
+    }
+  ],
+  presetErgonomicsModifier: undefined,
+  presetRecoilPercentageModifier: undefined,
+  prices: [],
+  recoilPercentageModifier: -0.03,
+  categoryId: 'rangedWeaponMod',
+  iconLink: 'https://assets.tarkov.dev/649ec87d8007560a9001ab36-icon.webp',
+  id: '649ec87d8007560a9001ab36',
+  imageLink: 'https://assets.tarkov.dev/649ec87d8007560a9001ab36-image.webp',
+  marketLink: 'https://tarkov.dev/item/ak-12-buffer-tube',
+  name: 'AK-12 buffer tube',
+  shortName: 'AK-12 BT',
+  weight: 0.142,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/AK-12_buffer_tube'
+}
+
 export const ak12PistolGrip: IRangedWeaponMod = {
   categoryId: 'rangedWeaponMod',
   conflictingItemIds: [],
@@ -89,6 +148,44 @@ export const alpha: IContainer = {
   weight: 0.6,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Secure_container_Alpha',
   capacity: 4
+}
+
+export const ammo1270Magnum: IAmmunition = {
+  accuracyPercentageModifier: -0.15,
+  armorDamagePercentage: 0.26,
+  armorPenetrations: [
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+  ],
+  caliber: 'Caliber12g',
+  fleshDamage: 50,
+  heavyBleedingPercentageChance: 0.1,
+  lightBleedingPercentageChance: 0.2,
+  penetrationPower: 2,
+  projectiles: 8,
+  recoilPercentageModifier: 1.15,
+  velocity: 385,
+  categoryId: 'ammunition',
+  iconLink: 'https://assets.tarkov.dev/5d6e6806a4b936088465b17e-icon.webp',
+  id: '5d6e6806a4b936088465b17e',
+  imageLink: 'https://assets.tarkov.dev/5d6e6806a4b936088465b17e-image.webp',
+  maxStackableAmount: 20,
+  marketLink: 'https://tarkov.dev/item/1270-85mm-magnum-buckshot',
+  name: '12/70 8.5mm Magnum buckshot',
+  shortName: 'Magnum',
+  weight: 0.059,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/12/70_8.5mm_Magnum_buckshot',
+  blinding: false,
+  durabilityBurnPercentageModifier: 0,
+  fragmentationChancePercentage: 0,
+  subsonic: false,
+  tracer: false,
+  conflictingItemIds: [],
+  prices: []
 }
 
 export const ammo545bp: IAmmunition = {
@@ -779,6 +876,58 @@ export const crossbow: IEyewear = {
   blindnessProtectionPercentage: 0.3
 }
 
+export const ekp802dt: IRangedWeaponMod = {
+  accuracyPercentageModifier: 0,
+  baseItemId: undefined,
+  defaultPresetId: undefined,
+  ergonomicsModifier: -3,
+  maxStackableAmount: 1,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '591c4e1186f77410354b316e'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_tactical',
+      required: false
+    }
+  ],
+  presetErgonomicsModifier: undefined,
+  presetRecoilPercentageModifier: undefined,
+  prices: [],
+  recoilPercentageModifier: 0,
+  categoryId: 'rangedWeaponMod',
+  conflictingItemIds: [
+    '5827272a24597748c74bdeea'
+  ],
+  iconLink: 'https://assets.tarkov.dev/5947db3f86f77447880cf76f-icon.webp',
+  id: '5947db3f86f77447880cf76f',
+  imageLink: 'https://assets.tarkov.dev/5947db3f86f77447880cf76f-image.webp',
+  marketLink: 'https://tarkov.dev/item/axion-kobra-ekp-8-02-reflex-sight-dovetail',
+  name: 'Axion Kobra EKP-8-02 reflex sight (Dovetail)',
+  shortName: 'EKP-8-02 DT',
+  weight: 0.273,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Axion_Kobra_EKP-8-02_reflex_sight_(Dovetail)'
+}
+
+export const erBayonet: IMeleeWeapon = {
+  categoryId: 'meleeWeapon',
+  conflictingItemIds: [],
+  iconLink: 'https://assets.tarkov.dev/54491bb74bdc2d09088b4567-icon.webp',
+  id: '54491bb74bdc2d09088b4567',
+  imageLink: 'https://assets.tarkov.dev/54491bb74bdc2d09088b4567-image.webp',
+  marketLink: 'https://tarkov.dev/item/er-fulcrum-bayonet',
+  maxStackableAmount: 1,
+  name: 'ER FULCRUM BAYONET',
+  prices: [],
+  shortName: 'ER BAYONET',
+  weight: 0.45,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/ER_FULCRUM_BAYONET',
+  chopDamage: 25,
+  hitRadius: 0.4,
+  stabDamage: 27
+}
+
 export const esLamp: IItem = {
   categoryId: 'other',
   conflictingItemIds: [],
@@ -867,6 +1016,79 @@ export const iskra: IItem = {
   shortName: 'Iskra',
   weight: 1.75,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Iskra_ration_pack'
+}
+
+export const k1s: IHeadwear = {
+  armorClass: 2,
+  armoredAreas: [
+    'HeadTopOfTheHead',
+    'HeadNape',
+    'HeadEars'
+  ],
+  baseItemId: undefined,
+  blocksHeadphones: true,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  deafening: 'High',
+  durability: 0,
+  ergonomicsPercentageModifier: -0.02,
+  material: 'Aramid',
+  maxStackableAmount: 1,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '5ac4c50d5acfc40019262e87'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_equipment',
+      required: false
+    }
+  ],
+  movementSpeedPercentageModifier: 0,
+  presetWearableModifiers: undefined,
+  prices: [],
+  ricochetChance: 'Low',
+  turningSpeedPercentageModifier: -0.02,
+  categoryId: 'headwear',
+  iconLink: 'https://assets.tarkov.dev/59e7711e86f7746cae05fbe1-icon.webp',
+  id: '59e7711e86f7746cae05fbe1',
+  imageLink: 'https://assets.tarkov.dev/59e7711e86f7746cae05fbe1-image.webp',
+  marketLink: 'https://tarkov.dev/item/kolpak-1s-riot-helmet',
+  name: 'Kolpak-1S riot helmet',
+  shortName: 'K-1S',
+  weight: 1.9,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Kolpak-1S_riot_helmet'
+}
+
+export const k1sVisor: IArmorMod = {
+  armorClass: 2,
+  armoredAreas: [
+    'HeadFace',
+    'HeadEyes',
+    'HeadJaws'
+  ],
+  baseItemId: undefined,
+  blindnessProtectionPercentage: 0.15,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  durability: 30,
+  ergonomicsPercentageModifier: 0,
+  material: 'Glass',
+  maxStackableAmount: 1,
+  modSlots: [],
+  movementSpeedPercentageModifier: 0,
+  presetWearableModifiers: undefined,
+  prices: [],
+  turningSpeedPercentageModifier: 0,
+  categoryId: 'armorMod',
+  iconLink: 'https://assets.tarkov.dev/5ac4c50d5acfc40019262e87-icon.webp',
+  id: '5ac4c50d5acfc40019262e87',
+  imageLink: 'https://assets.tarkov.dev/5ac4c50d5acfc40019262e87-image.webp',
+  marketLink: 'https://tarkov.dev/item/kolpak-1s-face-shield',
+  name: 'Kolpak-1S face shield',
+  shortName: 'K-1S',
+  weight: 1,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Kolpak-1S_face_shield'
 }
 
 export const lshZ2dtm: IHeadwear = {
@@ -1325,6 +1547,29 @@ export const m9a3Thr: IRangedWeaponMod = {
   recoilPercentageModifier: -0.03
 }
 
+export const m9a3Cap: IRangedWeaponMod = {
+  categoryId: 'rangedWeaponMod',
+  conflictingItemIds: [],
+  iconLink: 'https://assets.tarkov.dev/5cadc390ae921500126a77f1-icon.webp',
+  id: '5cadc390ae921500126a77f1',
+  imageLink: 'https://assets.tarkov.dev/5cadc390ae921500126a77f1-image.webp',
+  marketLink: 'https://tarkov.dev/item/m9a3-thread-protection-cap',
+  maxStackableAmount: 1,
+  name: 'M9A3 thread protection cap',
+  prices: [],
+  shortName: 'M9A3 cap',
+  weight: 0.01,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_thread_protection_cap',
+  baseItemId: undefined,
+  defaultPresetId: undefined,
+  modSlots: [],
+  ergonomicsModifier: 1,
+  presetErgonomicsModifier: undefined,
+  accuracyPercentageModifier: 0,
+  presetRecoilPercentageModifier: undefined,
+  recoilPercentageModifier: 0
+}
+
 export const monocletePe: IArmorMod = {
   armorClass: 4,
   armoredAreas: [
@@ -1383,6 +1628,565 @@ export const ms2000 = {
   shortName: 'MS2000',
   weight: 0.15,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MS2000_Marker'
+}
+
+export const mts25512: IRangedWeapon = {
+  caliber: 'Caliber12g',
+  defaultPresetId: '6198e2ddef80673cae5d1c87',
+  ergonomics: 50,
+  fireModes: [
+    'SingleFire',
+    'DoubleAction'
+  ],
+  fireRate: 30,
+  horizontalRecoil: 650,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '60dc519adf4c47305f6d410d'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_magazine',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '612368f58b401f4f51239b33'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_barrel',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '612781056f3d944a17348d60'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_stock',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '6123649463849f3d843da7c4'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_handguard',
+      required: false
+    }
+  ],
+  verticalRecoil: 442,
+  categoryId: 'mainWeapon',
+  iconLink: 'https://assets.tarkov.dev/60db29ce99594040e04c4a27-icon.webp',
+  id: '60db29ce99594040e04c4a27',
+  imageLink: 'https://assets.tarkov.dev/60db29ce99594040e04c4a27-image.webp',
+  marketLink: 'https://tarkov.dev/item/mts-255-12-12ga-shotgun',
+  name: 'MTs-255-12 12ga shotgun',
+  shortName: 'MTs-255-12',
+  weight: 1.1,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_12ga_shotgun',
+  minuteOfAngle: undefined,
+  presetErgonomics: undefined,
+  presetHorizontalRecoil: undefined,
+  presetVerticalRecoil: undefined,
+  baseItemId: undefined,
+  conflictingItemIds: [],
+  maxStackableAmount: 1,
+  prices: []
+}
+
+export const mts25512Default: IRangedWeapon = {
+  baseItemId: '60db29ce99594040e04c4a27',
+  caliber: 'Caliber12g',
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomics: 50,
+  fireModes: [
+    'SingleFire',
+    'DoubleAction'
+  ],
+  fireRate: 30,
+  horizontalRecoil: 650,
+  maxStackableAmount: 1,
+  minuteOfAngle: 26.13,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '60dc519adf4c47305f6d410d'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_magazine',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '612368f58b401f4f51239b33'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_barrel',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '612781056f3d944a17348d60'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_stock',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '6123649463849f3d843da7c4'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_handguard',
+      required: false
+    }
+  ],
+  presetErgonomics: undefined,
+  presetHorizontalRecoil: undefined,
+  presetVerticalRecoil: undefined,
+  prices: [],
+  verticalRecoil: 442,
+  categoryId: 'mainWeapon',
+  iconLink: 'https://assets.tarkov.dev/6198e2ddef80673cae5d1c87-icon.webp',
+  id: '6198e2ddef80673cae5d1c87',
+  imageLink: 'https://assets.tarkov.dev/6198e2ddef80673cae5d1c87-image.webp',
+  marketLink: 'https://tarkov.dev/item/mts-255-12-12ga-shotgun-default',
+  name: 'MTs-255-12 12ga shotgun Default',
+  shortName: 'MTs-255-12 Default',
+  weight: 1.1,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_12ga_shotgun'
+}
+
+export const mts25512755mmRib: IRangedWeaponMod = {
+  accuracyPercentageModifier: 0,
+  baseItemId: undefined,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -18,
+  maxStackableAmount: 1,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '619d36da53b4d42ee724fae4'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_muzzle',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '609b9e31506cf869cf3eaf41',
+        '5dfe14f30b92095fd441edaf'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_mount',
+      required: false
+    }
+  ],
+  presetErgonomicsModifier: undefined,
+  presetRecoilPercentageModifier: undefined,
+  prices: [],
+  recoilPercentageModifier: -0.1,
+  categoryId: 'rangedWeaponMod',
+  iconLink: 'https://assets.tarkov.dev/612368f58b401f4f51239b33-icon.webp',
+  id: '612368f58b401f4f51239b33',
+  imageLink: 'https://assets.tarkov.dev/612368f58b401f4f51239b33-image.webp',
+  marketLink: 'https://tarkov.dev/item/mts-255-12-12ga-755mm-barrel-with-rib',
+  name: 'MTs-255-12 12ga 755mm barrel with rib',
+  shortName: 'MTs-255 755mm rib',
+  weight: 1.55,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_12ga_755mm_barrel_with_rib'
+}
+
+export const mts25512beech: IRangedWeaponMod = {
+  ergonomicsModifier: 9,
+  recoilPercentageModifier: -0.02,
+  categoryId: 'rangedWeaponMod',
+  iconLink: 'https://assets.tarkov.dev/6123649463849f3d843da7c4-icon.webp',
+  id: '6123649463849f3d843da7c4',
+  imageLink: 'https://assets.tarkov.dev/6123649463849f3d843da7c4-image.webp',
+  marketLink: 'https://tarkov.dev/item/mts-255-12-beechwood-forestock',
+  name: 'MTs-255-12 beechwood forestock',
+  shortName: 'MTs-255 beech',
+  weight: 0.8,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_beechwood_forestock',
+  accuracyPercentageModifier: 0,
+  presetRecoilPercentageModifier: undefined,
+  presetErgonomicsModifier: undefined,
+  baseItemId: undefined,
+  defaultPresetId: undefined,
+  modSlots: [],
+  conflictingItemIds: [],
+  maxStackableAmount: 1,
+  prices: []
+}
+
+export const mts25512choke: IRangedWeaponMod = {
+  accuracyPercentageModifier: 0.03,
+  baseItemId: undefined,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: 0,
+  maxStackableAmount: 1,
+  modSlots: [],
+  presetErgonomicsModifier: undefined,
+  presetRecoilPercentageModifier: undefined,
+  prices: [],
+  recoilPercentageModifier: -0.01,
+  categoryId: 'rangedWeaponMod',
+  iconLink: 'https://assets.tarkov.dev/619d36da53b4d42ee724fae4-icon.webp',
+  id: '619d36da53b4d42ee724fae4',
+  imageLink: 'https://assets.tarkov.dev/619d36da53b4d42ee724fae4-image.webp',
+  marketLink: 'https://tarkov.dev/item/mts-255-12-12ga-choke',
+  name: 'MTs-255-12 12ga choke',
+  shortName: 'MTs choke',
+  weight: 0.1,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_12ga_choke'
+}
+
+export const mts25512cyl: IMagazine = {
+  acceptedAmmunitionIds: [
+    '560d5e524bdc2d25448b4571',
+    '5d6e6772a4b936088465b17c',
+    '5d6e67fba4b9361bc73bc779',
+    '5d6e6806a4b936088465b17e',
+    '5d6e68dea4b9361bcc29e659',
+    '5d6e6911a4b9361bd5780d52',
+    '5c0d591486f7744c505b416f',
+    '58820d1224597753c90aeb13',
+    '5d6e68c4a4b9361b93413f79',
+    '5d6e68a8a4b9360b6c0d54e2',
+    '5d6e68e6a4b9361c140bcfe0',
+    '5d6e6869a4b9361c140bcfde',
+    '5d6e68b3a4b9361bca7e50b5',
+    '5d6e6891a4b9361bd473feea',
+    '5d6e689ca4b9361bc8618956',
+    '5d6e68d1a4b93622fe60e845',
+    '64b8ee384b75259c590fa89b'
+  ],
+  baseItemId: undefined,
+  capacity: 5,
+  checkSpeedPercentageModifier: 0,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -2,
+  loadSpeedPercentageModifier: 0,
+  malfunctionPercentage: 0,
+  maxStackableAmount: 1,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '560d5e524bdc2d25448b4571',
+        '5d6e6772a4b936088465b17c',
+        '5d6e67fba4b9361bc73bc779',
+        '5d6e6806a4b936088465b17e',
+        '5d6e68dea4b9361bcc29e659',
+        '5d6e6911a4b9361bd5780d52',
+        '5c0d591486f7744c505b416f',
+        '58820d1224597753c90aeb13',
+        '5d6e68c4a4b9361b93413f79',
+        '5d6e68a8a4b9360b6c0d54e2',
+        '5d6e68e6a4b9361c140bcfe0',
+        '5d6e6869a4b9361c140bcfde',
+        '5d6e68b3a4b9361bca7e50b5',
+        '5d6e6891a4b9361bd473feea',
+        '5d6e689ca4b9361bc8618956',
+        '5d6e68d1a4b93622fe60e845',
+        '64b8ee384b75259c590fa89b'
+      ],
+      maxStackableAmount: 1,
+      name: 'camora_000',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '560d5e524bdc2d25448b4571',
+        '5d6e6772a4b936088465b17c',
+        '5d6e67fba4b9361bc73bc779',
+        '5d6e6806a4b936088465b17e',
+        '5d6e68dea4b9361bcc29e659',
+        '5d6e6911a4b9361bd5780d52',
+        '5c0d591486f7744c505b416f',
+        '58820d1224597753c90aeb13',
+        '5d6e68c4a4b9361b93413f79',
+        '5d6e68a8a4b9360b6c0d54e2',
+        '5d6e68e6a4b9361c140bcfe0',
+        '5d6e6869a4b9361c140bcfde',
+        '5d6e68b3a4b9361bca7e50b5',
+        '5d6e6891a4b9361bd473feea',
+        '5d6e689ca4b9361bc8618956',
+        '5d6e68d1a4b93622fe60e845',
+        '64b8ee384b75259c590fa89b'
+      ],
+      maxStackableAmount: 1,
+      name: 'camora_001',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '560d5e524bdc2d25448b4571',
+        '5d6e6772a4b936088465b17c',
+        '5d6e67fba4b9361bc73bc779',
+        '5d6e6806a4b936088465b17e',
+        '5d6e68dea4b9361bcc29e659',
+        '5d6e6911a4b9361bd5780d52',
+        '5c0d591486f7744c505b416f',
+        '58820d1224597753c90aeb13',
+        '5d6e68c4a4b9361b93413f79',
+        '5d6e68a8a4b9360b6c0d54e2',
+        '5d6e68e6a4b9361c140bcfe0',
+        '5d6e6869a4b9361c140bcfde',
+        '5d6e68b3a4b9361bca7e50b5',
+        '5d6e6891a4b9361bd473feea',
+        '5d6e689ca4b9361bc8618956',
+        '5d6e68d1a4b93622fe60e845',
+        '64b8ee384b75259c590fa89b'
+      ],
+      maxStackableAmount: 1,
+      name: 'camora_002',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '560d5e524bdc2d25448b4571',
+        '5d6e6772a4b936088465b17c',
+        '5d6e67fba4b9361bc73bc779',
+        '5d6e6806a4b936088465b17e',
+        '5d6e68dea4b9361bcc29e659',
+        '5d6e6911a4b9361bd5780d52',
+        '5c0d591486f7744c505b416f',
+        '58820d1224597753c90aeb13',
+        '5d6e68c4a4b9361b93413f79',
+        '5d6e68a8a4b9360b6c0d54e2',
+        '5d6e68e6a4b9361c140bcfe0',
+        '5d6e6869a4b9361c140bcfde',
+        '5d6e68b3a4b9361bca7e50b5',
+        '5d6e6891a4b9361bd473feea',
+        '5d6e689ca4b9361bc8618956',
+        '5d6e68d1a4b93622fe60e845',
+        '64b8ee384b75259c590fa89b'
+      ],
+      maxStackableAmount: 1,
+      name: 'camora_003',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '560d5e524bdc2d25448b4571',
+        '5d6e6772a4b936088465b17c',
+        '5d6e67fba4b9361bc73bc779',
+        '5d6e6806a4b936088465b17e',
+        '5d6e68dea4b9361bcc29e659',
+        '5d6e6911a4b9361bd5780d52',
+        '5c0d591486f7744c505b416f',
+        '58820d1224597753c90aeb13',
+        '5d6e68c4a4b9361b93413f79',
+        '5d6e68a8a4b9360b6c0d54e2',
+        '5d6e68e6a4b9361c140bcfe0',
+        '5d6e6869a4b9361c140bcfde',
+        '5d6e68b3a4b9361bca7e50b5',
+        '5d6e6891a4b9361bd473feea',
+        '5d6e689ca4b9361bc8618956',
+        '5d6e68d1a4b93622fe60e845',
+        '64b8ee384b75259c590fa89b'
+      ],
+      maxStackableAmount: 1,
+      name: 'camora_004',
+      required: false
+    }
+  ],
+  presetErgonomicsModifier: undefined,
+  prices: [],
+  categoryId: 'magazine',
+  iconLink: 'https://assets.tarkov.dev/60dc519adf4c47305f6d410d-icon.webp',
+  id: '60dc519adf4c47305f6d410d',
+  imageLink: 'https://assets.tarkov.dev/60dc519adf4c47305f6d410d-image.webp',
+  marketLink: 'https://tarkov.dev/item/mts-255-12-12ga-cylinder',
+  name: 'MTs-255-12 12ga cylinder',
+  shortName: '255 cyl.',
+  weight: 0.25,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_12ga_cylinder'
+}
+
+export const mts25512wood: IRangedWeaponMod = {
+  ergonomicsModifier: 3,
+  recoilPercentageModifier: -0.23,
+  categoryId: 'rangedWeaponMod',
+  iconLink: 'https://assets.tarkov.dev/612781056f3d944a17348d60-icon.webp',
+  id: '612781056f3d944a17348d60',
+  imageLink: 'https://assets.tarkov.dev/612781056f3d944a17348d60-image.webp',
+  marketLink: 'https://tarkov.dev/item/mts-255-12-wooden-stock',
+  name: 'MTs-255-12 wooden stock',
+  shortName: 'MTs-255 wood',
+  weight: 0.45,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_wooden_stock',
+  accuracyPercentageModifier: 0,
+  presetRecoilPercentageModifier: undefined,
+  presetErgonomicsModifier: undefined,
+  baseItemId: undefined,
+  defaultPresetId: undefined,
+  modSlots: [],
+  conflictingItemIds: [],
+  maxStackableAmount: 1,
+  prices: []
+}
+
+export const nf30mm: IMod = {
+  baseItemId: undefined,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -1,
+  maxStackableAmount: 1,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '5b2388675acfc4771e1be0be',
+        '5b3b99475acfc432ff4dcbee',
+        '5a37cb10c4a282329a73b4e7',
+        '57c5ac0824597754771e88a9',
+        '618ba27d9008e4636a67f61d',
+        '617151c1d92c473c770214ab',
+        '6567e7681265c8a131069b0f'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_scope',
+      required: false
+    }
+  ],
+  presetErgonomicsModifier: undefined,
+  prices: [],
+  categoryId: 'mod',
+  iconLink: 'https://assets.tarkov.dev/5b3b99265acfc4704b4a1afb-icon.webp',
+  id: '5b3b99265acfc4704b4a1afb',
+  imageLink: 'https://assets.tarkov.dev/5b3b99265acfc4704b4a1afb-image.webp',
+  marketLink: 'https://tarkov.dev/item/nightforce-magmount-30mm-ring-scope-mount',
+  name: 'Nightforce Magmount 30mm ring scope mount',
+  shortName: 'NF 30mm',
+  weight: 0.19,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Nightforce_Magmount_30mm_ring_scope_mount'
+}
+
+export const opSksDefault: IRangedWeapon = {
+  baseItemId: '587e02ff24597743df3deaeb',
+  caliber: 'Caliber762x39',
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomics: 40,
+  fireModes: ['SingleFire'],
+  fireRate: 40,
+  horizontalRecoil: 360,
+  maxStackableAmount: 1,
+  minuteOfAngle: 4.13,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '5d0236dad7ad1a0940739d29',
+        '587e0531245977466077a0f7',
+        '5afd7ded5acfc40017541f5e',
+        '574dad8024597745964bf05c',
+        '653ecef836fae5a82f02b869'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_stock',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '634eff66517ccc8a960fc735',
+        '634f02331f9f536910079b51'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_barrel',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '61695095d92c473c7702147a',
+        '5c5970672e221602b21d7855',
+        '587df583245977373c4f1129',
+        '587df3a12459772c28142567'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_magazine',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '587e08ee245977446b4410cf',
+        '6415d33eda439c6a97048b5b'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_mount',
+      required: false
+    },
+    {
+      compatibleItemIds: [
+        '634f06262e5def262d0b30ca',
+        '634f05ca517ccc8a960fc748',
+        '6415c694da439c6a97048b56'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_reciever',
+      required: false
+    }
+  ],
+  presetErgonomics: undefined,
+  presetHorizontalRecoil: undefined,
+  presetVerticalRecoil: undefined,
+  prices: [],
+  verticalRecoil: 155,
+  categoryId: 'mainWeapon',
+  iconLink: 'https://assets.tarkov.dev/59dcdbb386f77417b03f350d-icon.webp',
+  id: '59dcdbb386f77417b03f350d',
+  imageLink: 'https://assets.tarkov.dev/59dcdbb386f77417b03f350d-image.webp',
+  marketLink: 'https://tarkov.dev/item/molot-arms-simonov-op-sks-762x39-carbine-default',
+  name: 'Molot Arms Simonov OP-SKS 7.62x39 carbine Default',
+  shortName: 'OP-SKS Default',
+  weight: 0.82,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Molot_Arms_Simonov_OP-SKS_7.62x39_carbine'
+}
+
+export const opSksDt: IMod = {
+  baseItemId: undefined,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -1,
+  maxStackableAmount: 1,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '5947db3f86f77447880cf76f',
+        '6113d6c3290d254f5e6b27db',
+        '57486e672459770abd687134',
+        '5c82342f2e221644f31c060e',
+        '576fd4ec2459777f0b518431',
+        '5c82343a2e221644f31c0611',
+        '5cf638cbd7f00c06595bc936',
+        '5a7c74b3e899ef0014332c29',
+        '591ee00d86f774592f7b841e',
+        '618a75c9a3884f56c957ca1b',
+        '57acb6222459771ec34b5cb0',
+        '638db77630c4240f9e06f8b6',
+        '63d114019e35b334d82302f7',
+        '6544d4187c5457729210d277'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_scope',
+      required: false
+    }
+  ],
+  presetErgonomicsModifier: undefined,
+  prices: [],
+  categoryId: 'mod',
+  iconLink: 'https://assets.tarkov.dev/587e08ee245977446b4410cf-icon.webp',
+  id: '587e08ee245977446b4410cf',
+  imageLink: 'https://assets.tarkov.dev/587e08ee245977446b4410cf-image.webp',
+  marketLink: 'https://tarkov.dev/item/op-sks-dovetail-mount',
+  name: 'OP-SKS dovetail mount',
+  shortName: 'OPSKS DT',
+  weight: 0.02,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/OP-SKS_dovetail_mount'
 }
 
 export const paid: IItem = {
@@ -1486,6 +2290,69 @@ export const plexiglass: IItem = {
   shortName: 'Plexiglass',
   weight: 0.7,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Piece_of_plexiglass'
+}
+
+export const precision: IRangedWeaponMod = {
+  accuracyPercentageModifier: 0,
+  baseItemId: undefined,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: 1,
+  maxStackableAmount: 1,
+  modSlots: [],
+  presetErgonomicsModifier: undefined,
+  presetRecoilPercentageModifier: undefined,
+  prices: [],
+  recoilPercentageModifier: -0.24,
+  categoryId: 'rangedWeaponMod',
+  iconLink: 'https://assets.tarkov.dev/5fc2369685fd526b824a5713-icon.webp',
+  id: '5fc2369685fd526b824a5713',
+  imageLink: 'https://assets.tarkov.dev/5fc2369685fd526b824a5713-image.webp',
+  marketLink: 'https://tarkov.dev/item/ar-15-b5-systems-precision-stock',
+  name: 'AR-15 B5 Systems Precision stock',
+  shortName: 'Precision',
+  weight: 0.16,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/AR-15_B5_Systems_Precision_stock'
+}
+
+export const pso1: IRangedWeaponMod = {
+  accuracyPercentageModifier: 0,
+  baseItemId: undefined,
+  defaultPresetId: undefined,
+  ergonomicsModifier: -7,
+  maxStackableAmount: 1,
+  modSlots: [
+    {
+      compatibleItemIds: [
+        '57f3a5ae2459772b0e0bf19e'
+      ],
+      maxStackableAmount: 1,
+      name: 'mod_tactical',
+      required: false
+    }
+  ],
+  presetErgonomicsModifier: undefined,
+  presetRecoilPercentageModifier: undefined,
+  prices: [],
+  recoilPercentageModifier: 0,
+  categoryId: 'rangedWeaponMod',
+  conflictingItemIds: [
+    '5827272a24597748c74bdeea',
+    '58272b392459774b4c7b3ccd',
+    '6113d6c3290d254f5e6b27db',
+    '57486e672459770abd687134',
+    '5947db3f86f77447880cf76f',
+    '57acb6222459771ec34b5cb0',
+    '591ee00d86f774592f7b841e'
+  ],
+  iconLink: 'https://assets.tarkov.dev/5c82342f2e221644f31c060e-icon.webp',
+  id: '5c82342f2e221644f31c060e',
+  imageLink: 'https://assets.tarkov.dev/5c82342f2e221644f31c060e-image.webp',
+  marketLink: 'https://tarkov.dev/item/belomo-pso-1-4x24-scope',
+  name: 'BelOMO PSO-1 4x24 scope',
+  shortName: 'PSO-1',
+  weight: 0.6,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/BelOMO_PSO-1_4x24_scope'
 }
 
 export const razor: IItem = {
@@ -2273,6 +3140,21 @@ export const rpk16Tube: IRangedWeaponMod = {
   recoilPercentageModifier: -0.01
 }
 
+export const rub: IItem = {
+  categoryId: 'currency',
+  conflictingItemIds: [],
+  iconLink: 'https://assets.tarkov.dev/5449016a4bdc2d6f028b456f-icon.webp',
+  id: '5449016a4bdc2d6f028b456f',
+  imageLink: 'https://assets.tarkov.dev/5449016a4bdc2d6f028b456f-image.webp',
+  maxStackableAmount: 50000,
+  marketLink: 'https://tarkov.dev/item/roubles',
+  name: 'Roubles',
+  prices: [],
+  shortName: 'RUB',
+  weight: 0,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Roubles'
+}
+
 export const salewa: IItem = {
   categoryId: 'other',
   conflictingItemIds: [],
@@ -2328,6 +3210,36 @@ export const slickers: IItem = {
   shortName: 'Slickers',
   weight: 0.048,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Slickers_chocolate_bar'
+}
+
+export const specterDr: IRangedWeaponMod = {
+  accuracyPercentageModifier: 0,
+  baseItemId: undefined,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -4,
+  maxStackableAmount: 1,
+  modSlots: [
+    {
+      compatibleItemIds: [],
+      maxStackableAmount: 1,
+      name: 'mod_mount',
+      required: false
+    }
+  ],
+  presetErgonomicsModifier: undefined,
+  presetRecoilPercentageModifier: undefined,
+  prices: [],
+  recoilPercentageModifier: 0,
+  categoryId: 'rangedWeaponMod',
+  iconLink: 'https://assets.tarkov.dev/57ac965c24597706be5f975c-icon.webp',
+  id: '57ac965c24597706be5f975c',
+  imageLink: 'https://assets.tarkov.dev/57ac965c24597706be5f975c-image.webp',
+  marketLink: 'https://tarkov.dev/item/elcan-specterdr-1x4x-scope',
+  name: 'ELCAN SpecterDR 1x/4x scope',
+  shortName: 'SpecterDR',
+  weight: 0.64,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/ELCAN_SpecterDR_1x/4x_scope'
 }
 
 export const srd9: IRangedWeaponMod = {
@@ -2484,10 +3396,12 @@ export const x400: IRangedWeaponMod = {
 
 
 export const ItemMocks: IItem[] = [
+  ak12bt,
   ak12PistolGrip,
   ak12Stock,
   alkali,
   alpha,
+  ammo1270Magnum,
   ammo545bp,
   ammo545us,
   ammo9mmGT,
@@ -2502,15 +3416,20 @@ export const ItemMocks: IItem[] = [
   capacitors,
   cf,
   crossbow,
+  ekp802dt,
+  erBayonet,
   esLamp,
   eur,
   ewr,
   filter,
   h2o2,
   iskra,
+  k1s,
+  k1sVisor,
   lshZ2dtm,
   lshZ2dtmFs,
   m9a3,
+  m9a3Cap,
   m9a3Default,
   m9a3Fs,
   m9a3Magazine,
@@ -2521,11 +3440,23 @@ export const ItemMocks: IItem[] = [
   monocletePe,
   morphine,
   ms2000,
+  mts25512,
+  mts25512755mmRib,
+  mts25512beech,
+  mts25512choke,
+  mts25512cyl,
+  mts25512Default,
+  mts25512wood,
+  nf30mm,
+  opSksDefault,
+  opSksDt,
   paid,
+  pass,
   plate6b33Back,
   plate6b33Front,
-  pass,
   plexiglass,
+  precision,
+  pso1,
   razor,
   rgd5,
   rpk16,
@@ -2539,9 +3470,11 @@ export const ItemMocks: IItem[] = [
   rpk16Rs,
   rpk16RsBase,
   rpk16Tube,
+  rub,
   salewa,
   scavVest,
   slickers,
+  specterDr,
   srd9,
   syringe,
   usd,

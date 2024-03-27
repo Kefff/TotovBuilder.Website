@@ -12,6 +12,7 @@ import Services from '../../services/repository/Services'
 import Result, { FailureType } from '../../utils/Result'
 import Migrations from '../../utils/migrations/Migrations'
 import { build1, build2 } from '../__data__/buildMocks'
+import { alpha, erBayonet, k1s, k1sVisor } from '../__data__/itemMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { useVersionServiceMock } from '../__mocks__/VersionServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
@@ -49,13 +50,13 @@ const newBuild: IBuild = {
         {
           content: [],
           ignorePrice: false,
-          itemId: '59e7711e86f7746cae05fbe1', // Kolpak-1S riot helmet
+          itemId: k1s.id,
           modSlots: [
             {
               item: {
                 content: [],
                 ignorePrice: false,
-                itemId: '5ac4c50d5acfc40019262e87', // K1S Visor
+                itemId: k1sVisor.id,
                 modSlots: [],
                 quantity: 1
               },
@@ -147,14 +148,14 @@ describe('create()', () => {
     const pouchDefaultItem = ignoreDefaultSlotItems ? undefined : {
       content: [],
       ignorePrice: false,
-      itemId: '544a11ac4bdc2d470e8b456a',
+      itemId: alpha.id,
       modSlots: [],
       quantity: 1
     }
     const scabbardDefaultItem = ignoreDefaultSlotItems ? undefined : {
       content: [],
       ignorePrice: false,
-      itemId: '54491bb74bdc2d09088b4567',
+      itemId: erBayonet.id,
       modSlots: [],
       quantity: 1
     }
