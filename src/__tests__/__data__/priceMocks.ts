@@ -42,8 +42,8 @@ export const ak12PistolGripPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 10235,
-    valueInMainCurrency: 10235
+    value: 12318,
+    valueInMainCurrency: 12318
   }
 ]
 
@@ -65,8 +65,8 @@ export const ak12StockPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 10604,
-    valueInMainCurrency: 10604
+    value: 15225,
+    valueInMainCurrency: 15225
   }
 ]
 
@@ -78,8 +78,8 @@ export const alkaliPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 12956,
-    valueInMainCurrency: 12956
+    value: 12109,
+    valueInMainCurrency: 12109
   }
 ]
 
@@ -91,8 +91,8 @@ export const alphaPrices: IPrice[] = [
     merchant: 'peacekeeper',
     merchantLevel: 2,
     quest: undefined,
-    value: 7050,
-    valueInMainCurrency: 1029300
+    value: 7158,
+    valueInMainCurrency: 1023660
   }
 ]
 
@@ -162,8 +162,8 @@ export const ammo9mmGTPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 119,
-    valueInMainCurrency: 119
+    value: 102,
+    valueInMainCurrency: 102
   }
 ]
 
@@ -175,8 +175,8 @@ export const aquamariPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 28434,
-    valueInMainCurrency: 28434
+    value: 28774,
+    valueInMainCurrency: 28774
   }
 ]
 
@@ -201,8 +201,8 @@ export const armor6b13FlPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 59781,
-    valueInMainCurrency: 59781
+    value: 66048,
+    valueInMainCurrency: 66048
   }
 ]
 
@@ -228,8 +228,8 @@ export const armor6b13FlDefaultPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 91990,
-    valueInMainCurrency: 91990
+    value: 74902,
+    valueInMainCurrency: 74902
   }
 ]
 
@@ -286,8 +286,8 @@ export const bayonet6Kh5Prices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 24515,
-    valueInMainCurrency: 24515
+    value: 24924,
+    valueInMainCurrency: 24924
   },
   {
     barterItems: [
@@ -328,8 +328,8 @@ export const berkutPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 26665,
-    valueInMainCurrency: 26665
+    value: 27285,
+    valueInMainCurrency: 27285
   }
 ]
 
@@ -341,8 +341,8 @@ export const capacitorsPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 15150,
-    valueInMainCurrency: 15150
+    value: 15510,
+    valueInMainCurrency: 15510
   }
 ]
 
@@ -364,8 +364,8 @@ export const cfPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 12089,
-    valueInMainCurrency: 12089
+    value: 16816,
+    valueInMainCurrency: 16816
   }
 ]
 
@@ -387,8 +387,8 @@ export const crossbowPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 11004,
-    valueInMainCurrency: 11004
+    value: 9460,
+    valueInMainCurrency: 9460
   }
 ]
 
@@ -410,8 +410,8 @@ export const ekp802dtPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 11320,
-    valueInMainCurrency: 11320
+    value: 10645,
+    valueInMainCurrency: 10645
   }
 ]
 
@@ -423,8 +423,8 @@ export const erBayonetPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 15061,
-    valueInMainCurrency: 15061
+    value: 13656,
+    valueInMainCurrency: 13656
   }
 ]
 
@@ -436,8 +436,8 @@ export const esLampPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 21165,
-    valueInMainCurrency: 21165
+    value: 25816,
+    valueInMainCurrency: 25816
   }
 ]
 
@@ -462,8 +462,8 @@ export const ewrPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 21574,
-    valueInMainCurrency: 21574
+    value: 21923,
+    valueInMainCurrency: 21923
   }
 ]
 
@@ -475,8 +475,8 @@ export const filterPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 34039,
-    valueInMainCurrency: 34039
+    value: 44924,
+    valueInMainCurrency: 44924
   }
 ]
 
@@ -488,8 +488,8 @@ export const h2o2Prices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 11891,
-    valueInMainCurrency: 11891
+    value: 11473,
+    valueInMainCurrency: 11473
   }
 ]
 
@@ -515,8 +515,8 @@ export const iskraPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 25010,
-    valueInMainCurrency: 25010
+    value: 28714,
+    valueInMainCurrency: 28714
   },
   {
     barterItems: [
@@ -599,8 +599,8 @@ export const lshZ2dtmPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 62035,
-    valueInMainCurrency: 62035
+    value: 63493,
+    valueInMainCurrency: 63493
   }
 ]
 
@@ -622,8 +622,8 @@ export const lshZ2dtmFsPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 51463,
-    valueInMainCurrency: 51463
+    value: 50084,
+    valueInMainCurrency: 50084
   },
   {
     barterItems: [
@@ -650,8 +650,8 @@ export const m9a3Prices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 18614,
-    valueInMainCurrency: 18614
+    value: 17511,
+    valueInMainCurrency: 17511
   }
 ]
 
@@ -663,8 +663,8 @@ export const m9a3DefaultPrices: IPrice[] = [
     merchant: 'peacekeeper',
     merchantLevel: 1,
     quest: undefined,
-    value: 106,
-    valueInMainCurrency: 15422
+    value: 107,
+    valueInMainCurrency: 15337
   },
   {
     barterItems: [],
@@ -673,8 +673,8 @@ export const m9a3DefaultPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 18614,
-    valueInMainCurrency: 18614
+    value: 17511,
+    valueInMainCurrency: 17511
   }
 ]
 
@@ -686,8 +686,8 @@ export const m9a3CapPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 50000,
-    valueInMainCurrency: 50000
+    value: 15000,
+    valueInMainCurrency: 15000
   }
 ]
 
@@ -699,8 +699,8 @@ export const m9a3FsPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 35000,
-    valueInMainCurrency: 35000
+    value: 10000,
+    valueInMainCurrency: 10000
   }
 ]
 
@@ -713,7 +713,7 @@ export const m9a3MagazinePrices: IPrice[] = [
     merchantLevel: 1,
     quest: undefined,
     value: 15,
-    valueInMainCurrency: 2190
+    valueInMainCurrency: 2178
   },
   {
     barterItems: [],
@@ -722,8 +722,8 @@ export const m9a3MagazinePrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 11478,
-    valueInMainCurrency: 11478
+    value: 11342,
+    valueInMainCurrency: 11342
   }
 ]
 
@@ -735,8 +735,8 @@ export const m9a3RsPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 23333,
-    valueInMainCurrency: 23333
+    value: 24700,
+    valueInMainCurrency: 24700
   }
 ]
 
@@ -750,8 +750,8 @@ export const m9a3SlidePrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 60000,
-    valueInMainCurrency: 60000
+    value: 50000,
+    valueInMainCurrency: 50000
   }
 ]
 
@@ -763,8 +763,8 @@ export const m9a3ThrPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 26077,
-    valueInMainCurrency: 26077
+    value: 29709,
+    valueInMainCurrency: 29709
   }
 ]
 
@@ -790,8 +790,8 @@ export const morphinePrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 16998,
-    valueInMainCurrency: 16998
+    value: 17421,
+    valueInMainCurrency: 17421
   }
 ]
 
@@ -851,8 +851,8 @@ export const ms2000Prices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 31218,
-    valueInMainCurrency: 31218
+    value: 26367,
+    valueInMainCurrency: 26367
   }
 ]
 
@@ -953,8 +953,8 @@ export const nf30mmPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 34073,
-    valueInMainCurrency: 34073
+    value: 178306,
+    valueInMainCurrency: 178306
   }
 ]
 
@@ -976,8 +976,8 @@ export const opSksDefaultPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 42467,
-    valueInMainCurrency: 42467
+    value: 41178,
+    valueInMainCurrency: 41178
   }
 ]
 
@@ -999,8 +999,8 @@ export const opSksDtPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 20624,
-    valueInMainCurrency: 20624
+    value: 15977,
+    valueInMainCurrency: 15977
   }
 ]
 
@@ -1012,8 +1012,8 @@ export const paidPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 24761,
-    valueInMainCurrency: 24761
+    value: 27326,
+    valueInMainCurrency: 27326
   }
 ]
 
@@ -1025,8 +1025,8 @@ export const plate6b33BackPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 41045,
-    valueInMainCurrency: 41045
+    value: 43868,
+    valueInMainCurrency: 43868
   }
 ]
 
@@ -1048,8 +1048,8 @@ export const plate6b33FrontPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 30238,
-    valueInMainCurrency: 30238
+    value: 28942,
+    valueInMainCurrency: 28942
   }
 ]
 
@@ -1120,8 +1120,8 @@ export const pso1Prices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 19322,
-    valueInMainCurrency: 19322
+    value: 19562,
+    valueInMainCurrency: 19562
   }
 ]
 
@@ -1133,8 +1133,8 @@ export const razorPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 55864,
-    valueInMainCurrency: 55864
+    value: 64132,
+    valueInMainCurrency: 64132
   }
 ]
 
@@ -1156,8 +1156,8 @@ export const rgd5Prices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 16801,
-    valueInMainCurrency: 16801
+    value: 19416,
+    valueInMainCurrency: 19416
   },
   {
     barterItems: [
@@ -1184,8 +1184,8 @@ export const rpk16Prices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 39415,
-    valueInMainCurrency: 39415
+    value: 43345,
+    valueInMainCurrency: 43345
   }
 ]
 
@@ -1207,8 +1207,8 @@ export const rpk16DefaultPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 39415,
-    valueInMainCurrency: 39415
+    value: 43345,
+    valueInMainCurrency: 43345
   },
   {
     barterItems: [
@@ -1249,8 +1249,8 @@ export const rpk1615inchPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 25000,
-    valueInMainCurrency: 25000
+    value: 29999,
+    valueInMainCurrency: 29999
   }
 ]
 
@@ -1262,8 +1262,8 @@ export const rpk16DrumPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 27731,
-    valueInMainCurrency: 27731
+    value: 29263,
+    valueInMainCurrency: 29263
   },
   {
     barterItems: [
@@ -1300,8 +1300,8 @@ export const rpk16DustCoverPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 19738,
-    valueInMainCurrency: 19738
+    value: 53701,
+    valueInMainCurrency: 53701
   }
 ]
 
@@ -1313,8 +1313,8 @@ export const rpk16HandguardPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 40000,
-    valueInMainCurrency: 40000
+    value: 50897,
+    valueInMainCurrency: 50897
   }
 ]
 
@@ -1326,8 +1326,8 @@ export const rpk16MuzzleBreakPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 5791,
-    valueInMainCurrency: 5791
+    value: 12144,
+    valueInMainCurrency: 12144
   }
 ]
 
@@ -1349,8 +1349,8 @@ export const rpk16RailPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 33792,
-    valueInMainCurrency: 33792
+    value: 26300,
+    valueInMainCurrency: 26300
   }
 ]
 
@@ -1372,8 +1372,8 @@ export const rpk16RsPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 871,
-    valueInMainCurrency: 871
+    value: 69111,
+    valueInMainCurrency: 69111
   }
 ]
 
@@ -1395,8 +1395,8 @@ export const rpk16RsBasePrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 871,
-    valueInMainCurrency: 871
+    value: 46308,
+    valueInMainCurrency: 46308
   }
 ]
 
@@ -1418,8 +1418,8 @@ export const rpk16TubePrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 19908,
-    valueInMainCurrency: 19908
+    value: 21436,
+    valueInMainCurrency: 21436
   }
 ]
 
@@ -1458,8 +1458,8 @@ export const salewaPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 33168,
-    valueInMainCurrency: 33168
+    value: 35183,
+    valueInMainCurrency: 35183
   },
   {
     barterItems: [
@@ -1501,8 +1501,8 @@ export const scavVestPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 34331,
-    valueInMainCurrency: 34331
+    value: 33447,
+    valueInMainCurrency: 33447
   },
   {
     barterItems: [
@@ -1529,8 +1529,8 @@ export const slickersPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 14832,
-    valueInMainCurrency: 14832
+    value: 16321,
+    valueInMainCurrency: 16321
   },
   {
     barterItems: [
@@ -1557,8 +1557,8 @@ export const specterDrPrices: IPrice[] = [
     merchant: 'peacekeeper',
     merchantLevel: 3,
     quest: undefined,
-    value: 277,
-    valueInMainCurrency: 40135
+    value: 279,
+    valueInMainCurrency: 39886
   },
   {
     barterItems: [],
@@ -1567,8 +1567,8 @@ export const specterDrPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 89447,
-    valueInMainCurrency: 89447
+    value: 94681,
+    valueInMainCurrency: 94681
   }
 ]
 
@@ -1580,8 +1580,8 @@ export const srd9Prices: IPrice[] = [
     merchant: 'peacekeeper',
     merchantLevel: 2,
     quest: undefined,
-    value: 238,
-    valueInMainCurrency: 34796
+    value: 242,
+    valueInMainCurrency: 34606
   },
   {
     barterItems: [],
@@ -1590,8 +1590,8 @@ export const srd9Prices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 32468,
-    valueInMainCurrency: 32468
+    value: 35151,
+    valueInMainCurrency: 35151
   }
 ]
 
@@ -1603,8 +1603,8 @@ export const syringePrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 24745,
-    valueInMainCurrency: 24745
+    value: 25320,
+    valueInMainCurrency: 25320
   }
 ]
 
@@ -1629,8 +1629,8 @@ export const vaselinePrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 20709,
-    valueInMainCurrency: 20709
+    value: 27714,
+    valueInMainCurrency: 27714
   }
 ]
 
@@ -1655,8 +1655,8 @@ export const vitaPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 16326,
-    valueInMainCurrency: 16326
+    value: 18464,
+    valueInMainCurrency: 18464
   }
 ]
 
@@ -1678,8 +1678,8 @@ export const waterPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 16470,
-    valueInMainCurrency: 16470
+    value: 17035,
+    valueInMainCurrency: 17035
   },
   {
     barterItems: [
@@ -1706,8 +1706,8 @@ export const wPartsPrices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 21288,
-    valueInMainCurrency: 21288
+    value: 27444,
+    valueInMainCurrency: 27444
   }
 ]
 
@@ -1719,8 +1719,8 @@ export const x400Prices: IPrice[] = [
     merchant: 'peacekeeper',
     merchantLevel: 2,
     quest: undefined,
-    value: 93,
-    valueInMainCurrency: 13626
+    value: 95,
+    valueInMainCurrency: 13552
   },
   {
     barterItems: [],
@@ -1729,8 +1729,8 @@ export const x400Prices: IPrice[] = [
     merchant: 'flea-market',
     merchantLevel: 0,
     quest: undefined,
-    value: 15038,
-    valueInMainCurrency: 15038
+    value: 15022,
+    valueInMainCurrency: 15022
   }
 ]
 

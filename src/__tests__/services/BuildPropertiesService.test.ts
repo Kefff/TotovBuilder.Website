@@ -744,8 +744,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 355315,
-          valueInMainCurrency: 355315
+          value: 366019,
+          valueInMainCurrency: 366019
         },
         pricesWithContent: [
           {
@@ -755,8 +755,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 355315,
-            valueInMainCurrency: 355315
+            value: 366019,
+            valueInMainCurrency: 366019
           }
         ],
         unitPrice: {
@@ -793,8 +793,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 237151,
-          valueInMainCurrency: 237151
+          value: 247747,
+          valueInMainCurrency: 247747
         },
         pricesWithContent: [
           {
@@ -804,8 +804,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 199,
-            valueInMainCurrency: 29048
+            value: 444,
+            valueInMainCurrency: 63495
           },
           {
             barterItems: [],
@@ -814,8 +814,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 208103,
-            valueInMainCurrency: 208103
+            value: 184252,
+            valueInMainCurrency: 184252
           }
         ],
         unitPrice: {

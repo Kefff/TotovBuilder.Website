@@ -418,8 +418,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 91840,
-          valueInMainCurrency: 91840
+          value: 93298,
+          valueInMainCurrency: 93298
         },
         pricesWithContent: [
           {
@@ -429,8 +429,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 91840,
-            valueInMainCurrency: 91840
+            value: 93298,
+            valueInMainCurrency: 93298
           }
         ],
         unitPrice: {
@@ -467,8 +467,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 74543,
-          valueInMainCurrency: 74543
+          value: 76779,
+          valueInMainCurrency: 76779
         },
         pricesWithContent: [
           {
@@ -478,8 +478,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 74543,
-            valueInMainCurrency: 74543
+            value: 76779,
+            valueInMainCurrency: 76779
           }
         ],
         unitPrice: {
@@ -516,8 +516,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 1084540,
-          valueInMainCurrency: 1084540
+          value: 1078651,
+          valueInMainCurrency: 1078651
         },
         pricesWithContent: [
           {
@@ -537,8 +537,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 7327,
-            valueInMainCurrency: 1069435
+            value: 7437,
+            valueInMainCurrency: 1063546
           }
         ],
         unitPrice: {

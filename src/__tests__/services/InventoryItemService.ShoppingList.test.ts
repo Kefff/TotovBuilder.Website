@@ -30,8 +30,8 @@ describe('getShoppingList', () => {
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
-            value: 39415,
-            valueInMainCurrency: 39415
+            value: 43345,
+            valueInMainCurrency: 43345
           },
           unitPrice: {
             barterItems: [],
@@ -40,8 +40,8 @@ describe('getShoppingList', () => {
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
-            value: 39415,
-            valueInMainCurrency: 39415
+            value: 43345,
+            valueInMainCurrency: 43345
           }
         },
         {
@@ -84,8 +84,8 @@ describe('getShoppingList', () => {
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
-            value: 25912,
-            valueInMainCurrency: 25912
+            value: 24218,
+            valueInMainCurrency: 24218
           },
           unitPrice: {
             barterItems: [],
@@ -94,8 +94,8 @@ describe('getShoppingList', () => {
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
-            value: 12956,
-            valueInMainCurrency: 12956
+            value: 12109,
+            valueInMainCurrency: 12109
           }
         },
         {
@@ -143,8 +143,8 @@ describe('getShoppingList', () => {
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
-            value: 26665,
-            valueInMainCurrency: 26665
+            value: 27285,
+            valueInMainCurrency: 27285
           },
           unitPrice: {
             barterItems: [],
@@ -153,8 +153,8 @@ describe('getShoppingList', () => {
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
-            value: 26665,
-            valueInMainCurrency: 26665
+            value: 27285,
+            valueInMainCurrency: 27285
           }
         },
         {
@@ -197,8 +197,8 @@ describe('getShoppingList', () => {
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
-            value: 24745,
-            valueInMainCurrency: 24745
+            value: 25320,
+            valueInMainCurrency: 25320
           },
           unitPrice: {
             barterItems: [],
@@ -207,8 +207,8 @@ describe('getShoppingList', () => {
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
-            value: 24745,
-            valueInMainCurrency: 24745
+            value: 25320,
+            valueInMainCurrency: 25320
           }
         },
         {
@@ -247,22 +247,22 @@ describe('getShoppingList', () => {
           price: {
             barterItems: [],
             currencyName: 'RUB',
-            itemId: h2o2.id,
+            itemId: '59e361e886f774176c10a2a5',
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
-            value: 11891,
-            valueInMainCurrency: 11891
+            value: 11473,
+            valueInMainCurrency: 11473
           },
           unitPrice: {
             barterItems: [],
             currencyName: 'RUB',
-            itemId: h2o2.id,
+            itemId: '59e361e886f774176c10a2a5',
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
-            value: 11891,
-            valueInMainCurrency: 11891
+            value: 11473,
+            valueInMainCurrency: 11473
           }
         }
       ] as IShoppingListItem[]
@@ -304,8 +304,8 @@ describe('getShoppingList', () => {
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
-            value: 26665,
-            valueInMainCurrency: 26665
+            value: 27285,
+            valueInMainCurrency: 27285
           },
           unitPrice: {
             barterItems: [],
@@ -314,8 +314,8 @@ describe('getShoppingList', () => {
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
-            value: 26665,
-            valueInMainCurrency: 26665
+            value: 27285,
+            valueInMainCurrency: 27285
           }
         },
         {
@@ -358,8 +358,8 @@ describe('getShoppingList', () => {
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
-            value: 51824,
-            valueInMainCurrency: 51824
+            value: 48436,
+            valueInMainCurrency: 48436
           },
           unitPrice: {
             barterItems: [],
@@ -368,8 +368,8 @@ describe('getShoppingList', () => {
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
-            value: 12956,
-            valueInMainCurrency: 12956
+            value: 12109,
+            valueInMainCurrency: 12109
           }
         }
       ] as IShoppingListItem[]

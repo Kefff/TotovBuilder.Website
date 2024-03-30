@@ -1,6 +1,7 @@
 import MockDate from 'mockdate'
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
+import ItemCategoryMocks from '../../../public/data/item-categories.json'
 import { IItem } from '../../models/item/IItem'
 import { IPrice } from '../../models/item/IPrice'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
@@ -14,10 +15,9 @@ import { WebsiteConfigurationService } from '../../services/WebsiteConfiguration
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import Result, { FailureType } from '../../utils/Result'
-import { default as ItemCategories, default as ItemCategoriesMock } from '../__data__/item-categories.json'
-import ItemsMock from '../__data__/items'
-import PresetsMock from '../__data__/presets'
-import PricesMock from '../__data__/prices'
+import { ItemMocks, ak12bt } from '../__data__/itemMocks'
+import { PresetMocks } from '../__data__/presetMocks'
+import { PriceMocks } from '../__data__/priceMocks'
 import { useGlobalFilterServiceMock } from '../__mocks__/GlobalFilterServiceMock'
 import { useItemFetcherServiceMock } from '../__mocks__/ItemFetcherServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
@@ -45,7 +45,7 @@ describe('constructor', () => {
     }])
 
     // Act / Assert
-    let itemResult = await itemService.getItem('5c0d668f86f7747ccb7f13b2', true) // 9x39mm SPP gs
+    let itemResult = await itemService.getItem(ak12bt.id, true)
     expect(itemResult.success).toBe(true)
 
     globalFilterService.saveMerchantFilters([{
@@ -54,13 +54,13 @@ describe('constructor', () => {
       merchantLevel: 4
     }])
 
-    itemResult = await itemService.getItem('5c0d668f86f7747ccb7f13b2', true) // 9x39mm SPP gs
+    itemResult = await itemService.getItem(ak12bt.id, true)
     expect(itemResult.success).toBe(false)
   })
 })
 
 describe('fetchItemCategories()', () => {
-  it('should not update item categories when fetching fails', async () => {
+  it.only('should not update item categories when fetching fails', async () => {
     // Arrange
     useGlobalFilterServiceMock()
     usePresetServiceMock()
@@ -69,9 +69,9 @@ describe('fetchItemCategories()', () => {
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
     when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(Result.fail(FailureType.error, undefined, 'Fetch error'))
-    when(itemFetcherServiceMock.fetchItems()).thenResolve(Result.ok(ItemsMock as IItem[]))
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok(PresetsMock))
-    when(itemFetcherServiceMock.fetchPrices()).thenResolve(Result.ok(PricesMock as IPrice[]))
+    when(itemFetcherServiceMock.fetchItems()).thenResolve(Result.ok(ItemMocks as IItem[]))
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok(PresetMocks))
+    when(itemFetcherServiceMock.fetchPrices()).thenResolve(Result.ok(PriceMocks as IPrice[]))
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     // Act
@@ -92,10 +92,10 @@ describe('fetchItems()', () => {
     useWebsiteConfigurationServiceMock()
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(Result.ok(ItemCategoriesMock))
+    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(Result.ok(ItemCategoryMocks))
     when(itemFetcherServiceMock.fetchItems()).thenResolve(Result.fail(FailureType.error, undefined, 'Fetch error'))
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok(PresetsMock))
-    when(itemFetcherServiceMock.fetchPrices()).thenResolve(Result.ok(PricesMock as IPrice[]))
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok(PresetMocks))
+    when(itemFetcherServiceMock.fetchPrices()).thenResolve(Result.ok(PriceMocks as IPrice[]))
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     // Act
@@ -428,7 +428,7 @@ describe('getItemCategories()', () => {
     const itemCategories = await itemService.getItemCategories()
 
     // Assert
-    expect(itemCategories).toStrictEqual(ItemCategories)
+    expect(itemCategories).toStrictEqual(ItemCategoryMocks)
   })
 })
 

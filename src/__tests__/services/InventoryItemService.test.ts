@@ -230,8 +230,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 93486,
-            valueInMainCurrency: 93486
+            value: 95722,
+            valueInMainCurrency: 95722
           }
         ],
         priceWithContentInMainCurrency: {
@@ -241,8 +241,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 93486,
-          valueInMainCurrency: 93486
+          value: 95722,
+          valueInMainCurrency: 95722
         },
         unitPrice: {
           barterItems: [],
@@ -353,8 +353,8 @@ describe('getPrice()', () => {
           merchant: 'flea-market',
           merchantLevel: 0,
           quest: undefined,
-          value: 39415,
-          valueInMainCurrency: 39415
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         priceWithContentInMainCurrency: {
           barterItems: [],
@@ -363,8 +363,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 87398,
-          valueInMainCurrency: 87398
+          value: 91079,
+          valueInMainCurrency: 91079
         },
         pricesWithContent: [
           {
@@ -374,8 +374,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 277,
-            valueInMainCurrency: 40135
+            value: 279,
+            valueInMainCurrency: 39886
           },
           {
             barterItems: [],
@@ -384,8 +384,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 47263,
-            valueInMainCurrency: 47263
+            value: 51193,
+            valueInMainCurrency: 51193
           }
         ],
         unitPrice: {
@@ -395,8 +395,8 @@ describe('getPrice()', () => {
           merchant: 'flea-market',
           merchantLevel: 0,
           quest: undefined,
-          value: 39415,
-          valueInMainCurrency: 39415
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
@@ -591,8 +591,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 74447,
-          valueInMainCurrency: 74447
+          value: 76683,
+          valueInMainCurrency: 76683
         }
       ],
       priceWithContentInMainCurrency: {
@@ -602,8 +602,8 @@ describe('getPrice()', () => {
         merchant: '',
         merchantLevel: 0,
         quest: undefined,
-        value: 74447,
-        valueInMainCurrency: 74447
+        value: 76683,
+        valueInMainCurrency: 76683
       },
       unitPrice: {
         barterItems: [],
@@ -678,8 +678,8 @@ describe('getPrice()', () => {
         merchant: '',
         merchantLevel: 0,
         quest: undefined,
-        value: 14832,
-        valueInMainCurrency: 14832
+        value: 16321,
+        valueInMainCurrency: 16321
       },
       pricesWithContent: [
         {
@@ -689,8 +689,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 14832,
-          valueInMainCurrency: 14832
+          value: 16321,
+          valueInMainCurrency: 16321
         }
       ],
       unitPrice: {
@@ -754,8 +754,8 @@ describe('getPrice()', () => {
           merchant: 'flea-market',
           merchantLevel: 0,
           quest: undefined,
-          value: 39415,
-          valueInMainCurrency: 39415
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         priceWithContentInMainCurrency: {
           barterItems: [],
@@ -764,8 +764,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 39415,
-          valueInMainCurrency: 39415
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         pricesWithContent: [
           {
@@ -775,8 +775,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 39415,
-            valueInMainCurrency: 39415
+            value: 43345,
+            valueInMainCurrency: 43345
           }
         ],
         unitPrice: {
@@ -786,8 +786,8 @@ describe('getPrice()', () => {
           merchant: 'flea-market',
           merchantLevel: 0,
           quest: undefined,
-          value: 39415,
-          valueInMainCurrency: 39415
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
@@ -831,8 +831,8 @@ describe('getPrice()', () => {
           merchant: 'flea-market',
           merchantLevel: 0,
           quest: undefined,
-          value: 39415,
-          valueInMainCurrency: 39415
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         pricesWithContent: [
           {
@@ -852,8 +852,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 39415,
-            valueInMainCurrency: 39415
+            value: 43345,
+            valueInMainCurrency: 43345
           }
         ],
         priceWithContentInMainCurrency: {
@@ -863,8 +863,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 61800,
-          valueInMainCurrency: 61800
+          value: 65730,
+          valueInMainCurrency: 65730
         },
         unitPrice: {
           barterItems: [],
@@ -873,8 +873,8 @@ describe('getPrice()', () => {
           merchant: 'flea-market',
           merchantLevel: 0,
           quest: undefined,
-          value: 39415,
-          valueInMainCurrency: 39415
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
@@ -918,8 +918,8 @@ describe('getPrice()', () => {
           merchant: 'flea-market',
           merchantLevel: 0,
           quest: undefined,
-          value: 39415,
-          valueInMainCurrency: 39415
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         priceWithContentInMainCurrency: {
           barterItems: [],
@@ -928,8 +928,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 43051,
-          valueInMainCurrency: 43051
+          value: 46981,
+          valueInMainCurrency: 46981
         },
         pricesWithContent: [
           {
@@ -939,8 +939,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 43051,
-            valueInMainCurrency: 43051
+            value: 46981,
+            valueInMainCurrency: 46981
           }
         ],
         unitPrice: {
@@ -950,8 +950,8 @@ describe('getPrice()', () => {
           merchant: 'flea-market',
           merchantLevel: 0,
           quest: undefined,
-          value: 39415,
-          valueInMainCurrency: 39415
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
@@ -1024,8 +1024,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 63924,
-            valueInMainCurrency: 63924
+            value: 67854,
+            valueInMainCurrency: 67854
           }
         ],
         priceWithContentInMainCurrency: {
@@ -1035,8 +1035,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 86309,
-          valueInMainCurrency: 86309
+          value: 90239,
+          valueInMainCurrency: 90239
         },
         unitPrice: {
           barterItems: [],
@@ -1099,7 +1099,7 @@ describe('getPrice()', () => {
           merchantLevel: 3,
           quest: undefined,
           value: 0,
-          valueInMainCurrency: 59441
+          valueInMainCurrency: 59790
         },
         priceWithContentInMainCurrency: {
           barterItems: [
@@ -1109,8 +1109,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 100486,
-          valueInMainCurrency: 100486
+          value: 103658,
+          valueInMainCurrency: 103658
         },
         pricesWithContent: [
           {
@@ -1121,8 +1121,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 100486,
-            valueInMainCurrency: 100486
+            value: 103658,
+            valueInMainCurrency: 103658
           }
         ],
         unitPrice: {
@@ -1142,7 +1142,7 @@ describe('getPrice()', () => {
           merchantLevel: 3,
           quest: undefined,
           value: 0,
-          valueInMainCurrency: 59441
+          valueInMainCurrency: 59790
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice
@@ -1221,7 +1221,7 @@ describe('getPrice()', () => {
         merchantLevel: 1,
         quest: undefined,
         value: 0,
-        valueInMainCurrency: 24745
+        valueInMainCurrency: 25320
       },
       priceWithContentInMainCurrency: {
         barterItems: [],
@@ -1230,8 +1230,8 @@ describe('getPrice()', () => {
         merchant: '',
         merchantLevel: 0,
         quest: undefined,
-        value: 24745,
-        valueInMainCurrency: 24745
+        value: 25320,
+        valueInMainCurrency: 25320
       },
       pricesWithContent: [
         {
@@ -1241,8 +1241,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 24745,
-          valueInMainCurrency: 24745
+          value: 25320,
+          valueInMainCurrency: 25320
         }
       ],
       unitPrice: {
@@ -1258,7 +1258,7 @@ describe('getPrice()', () => {
         merchantLevel: 1,
         quest: undefined,
         value: 0,
-        valueInMainCurrency: 24745
+        valueInMainCurrency: 25320
       },
       unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
     })
@@ -1400,8 +1400,8 @@ describe('getPrice()', () => {
           merchant: 'flea-market',
           merchantLevel: 0,
           quest: undefined,
-          value: 18614,
-          valueInMainCurrency: 18614
+          value: 17511,
+          valueInMainCurrency: 17511
         },
         priceWithContentInMainCurrency: {
           barterItems: [],
@@ -1410,8 +1410,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 18614,
-          valueInMainCurrency: 18614
+          value: 17511,
+          valueInMainCurrency: 17511
         },
         pricesWithContent: [
           {
@@ -1421,8 +1421,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 18614,
-            valueInMainCurrency: 18614
+            value: 17511,
+            valueInMainCurrency: 17511
           }
         ],
         unitPrice: {
@@ -1432,8 +1432,8 @@ describe('getPrice()', () => {
           merchant: 'flea-market',
           merchantLevel: 0,
           quest: undefined,
-          value: 18614,
-          valueInMainCurrency: 18614
+          value: 17511,
+          valueInMainCurrency: 17511
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice

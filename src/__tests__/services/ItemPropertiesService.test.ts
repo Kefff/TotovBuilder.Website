@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { IArmor } from '../../models/item/IArmor'
 import { IArmorMod } from '../../models/item/IArmorMod'
 import { IBackpack } from '../../models/item/IBackpack'
@@ -5,11 +6,10 @@ import { IContainer } from '../../models/item/IContainer'
 import { IHeadwear } from '../../models/item/IHeadwear'
 import { IItem } from '../../models/item/IItem'
 import { IMagazine } from '../../models/item/IMagazine'
-import { IModdable } from '../../models/item/IModdable'
 import { IModSlot } from '../../models/item/IModSlot'
+import { IModdable } from '../../models/item/IModdable'
 import { IVest } from '../../models/item/IVest'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { describe, expect, it } from 'vitest'
 
 describe('canBeModded()', () => {
   it.each([
@@ -678,6 +678,47 @@ describe('isVest()', () => {
       // Act
       const result1 = itemPropertiesService.isVest(categoryId)
       const result2 = itemPropertiesService.isVest({ categoryId, id: '12345' } as IItem)
+
+      // Assert
+      expect(result1).toBe(expected)
+      expect(result2).toBe(expected)
+    }
+  )
+})
+
+describe('isWearable()', () => {
+  it.each([
+    ['ammunition', false],
+    ['armband', false],
+    ['armor', true],
+    ['armorMod', true],
+    ['backpack', true],
+    ['container', false],
+    ['currency', false],
+    ['eyewear', false],
+    ['faceCover', false],
+    ['grenade', false],
+    ['headphones', false],
+    ['headwear', true],
+    ['magazine', false],
+    ['mainWeapon', false],
+    ['meleeWeapon', false],
+    ['mod', false],
+    ['other', false],
+    ['rangedWeaponMod', false],
+    ['secondaryWeapon', false],
+    ['securedContainer', false],
+    ['special', false],
+    ['vest', true]
+  ])(
+    'should determine if an item is a ranged weapon',
+    (categoryId: string, expected: boolean) => {
+      // Arrange
+      const itemPropertiesService = new ItemPropertiesService()
+
+      // Act
+      const result1 = itemPropertiesService.isWearable(categoryId)
+      const result2 = itemPropertiesService.isWearable({ categoryId, id: '12345' } as IItem)
 
       // Assert
       expect(result1).toBe(expected)

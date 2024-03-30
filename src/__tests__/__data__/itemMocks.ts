@@ -256,7 +256,7 @@ export const ammo545us: IAmmunition = {
   iconLink: 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-icon.webp',
   id: '56dff4ecd2720b5f5a8b4568',
   imageLink: 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-image.webp',
-  accuracyPercentageModifier: 60,
+  accuracyPercentageModifier: 0,
   marketLink: 'https://tarkov.dev/item/545x39mm-us-gs',
   name: '5.45x39mm US gs',
   shortName: 'US',
@@ -350,6 +350,8 @@ export const armor6b13Fl: IArmor = {
   modSlots: [
     {
       compatibleItemIds: [
+        '64afc71497cf3a403c01ff38',
+        '64afdcb83efdfea28601d041',
         '654a4dea7c17dec2f50cc86a',
         '65573fa5655447403702a816',
         '655746010177119f4a097ff7',
@@ -374,9 +376,7 @@ export const armor6b13Fl: IArmor = {
         '656faf0ca0dce000a2020f77',
         '656fafe3498d1b7e3e071da4',
         '656fb0bd7c2d57afe200c0dc',
-        '656fb21fa0dce000a2020f7c',
-        '64afc71497cf3a403c01ff38',
-        '64afdcb83efdfea28601d041'
+        '656fb21fa0dce000a2020f7c'
       ],
       maxStackableAmount: 1,
       name: 'front_plate',
@@ -384,6 +384,8 @@ export const armor6b13Fl: IArmor = {
     },
     {
       compatibleItemIds: [
+        '64afc71497cf3a403c01ff38',
+        '64afdcb83efdfea28601d041',
         '654a4a964b446df1ad03f192',
         '65573fa5655447403702a816',
         '655746010177119f4a097ff7',
@@ -407,9 +409,7 @@ export const armor6b13Fl: IArmor = {
         '656fb21fa0dce000a2020f7c',
         '657b22485f444d6dff0c6c2f',
         '657b2797c3dbcb01d60c35ea',
-        '657b28d25f444d6dff0c6c77',
-        '64afc71497cf3a403c01ff38',
-        '64afdcb83efdfea28601d041'
+        '657b28d25f444d6dff0c6c77'
       ],
       maxStackableAmount: 1,
       name: 'back_plate',
@@ -424,7 +424,7 @@ export const armor6b13Fl: IArmor = {
   armoredAreas: [
     'FRPLATE',
     'BCKPLATE',
-    'Chest',
+    'Thorax',
     'Stomach',
     'ThoraxUpperBack',
     'StomachLowerBack',
@@ -456,6 +456,8 @@ export const armor6b13FlDefault: IArmor = {
   modSlots: [
     {
       compatibleItemIds: [
+        '64afc71497cf3a403c01ff38',
+        '64afdcb83efdfea28601d041',
         '654a4dea7c17dec2f50cc86a',
         '65573fa5655447403702a816',
         '655746010177119f4a097ff7',
@@ -480,9 +482,7 @@ export const armor6b13FlDefault: IArmor = {
         '656faf0ca0dce000a2020f77',
         '656fafe3498d1b7e3e071da4',
         '656fb0bd7c2d57afe200c0dc',
-        '656fb21fa0dce000a2020f7c',
-        '64afc71497cf3a403c01ff38',
-        '64afdcb83efdfea28601d041'
+        '656fb21fa0dce000a2020f7c'
       ],
       maxStackableAmount: 1,
       name: 'front_plate',
@@ -490,6 +490,8 @@ export const armor6b13FlDefault: IArmor = {
     },
     {
       compatibleItemIds: [
+        '64afc71497cf3a403c01ff38',
+        '64afdcb83efdfea28601d041',
         '654a4a964b446df1ad03f192',
         '65573fa5655447403702a816',
         '655746010177119f4a097ff7',
@@ -513,9 +515,7 @@ export const armor6b13FlDefault: IArmor = {
         '656fb21fa0dce000a2020f7c',
         '657b22485f444d6dff0c6c2f',
         '657b2797c3dbcb01d60c35ea',
-        '657b28d25f444d6dff0c6c77',
-        '64afc71497cf3a403c01ff38',
-        '64afdcb83efdfea28601d041'
+        '657b28d25f444d6dff0c6c77'
       ],
       maxStackableAmount: 1,
       name: 'back_plate',
@@ -530,7 +530,7 @@ export const armor6b13FlDefault: IArmor = {
   armoredAreas: [
     'FRPLATE',
     'BCKPLATE',
-    'Chest',
+    'Thorax',
     'Stomach',
     'ThoraxUpperBack',
     'StomachLowerBack',
@@ -2654,7 +2654,7 @@ export const rpk1615inch: IRangedWeaponMod = {
   maxStackableAmount: 1,
   name: 'RPK-16 5.45x39 15 inch barrel',
   prices: [],
-  shortName: 'RPK-16 15\'',
+  shortName: 'RPK-16 15"',
   weight: 0.54,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_15_inch_barrel',
   baseItemId: undefined,
@@ -3146,7 +3146,7 @@ export const rub: IItem = {
   iconLink: 'https://assets.tarkov.dev/5449016a4bdc2d6f028b456f-icon.webp',
   id: '5449016a4bdc2d6f028b456f',
   imageLink: 'https://assets.tarkov.dev/5449016a4bdc2d6f028b456f-image.webp',
-  maxStackableAmount: 50000,
+  maxStackableAmount: 500000,
   marketLink: 'https://tarkov.dev/item/roubles',
   name: 'Roubles',
   prices: [],
