@@ -831,8 +831,8 @@ export const ms2000Prices: IPrice[] = [
     merchant: 'ragman',
     merchantLevel: 1,
     quest: undefined,
-    value: 110,
-    valueInMainCurrency: 17773
+    value: 95,
+    valueInMainCurrency: 15105
   },
   {
     barterItems: [],

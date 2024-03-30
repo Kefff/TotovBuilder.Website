@@ -1,30 +1,31 @@
-import { IInventorySlot } from '../../models/build/IInventorySlot'
-import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
-import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
-import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
-import Services from '../../services/repository/Services'
-import { InventoryItemService } from '../../services/InventoryItemService'
-import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
-import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { GlobalFilterService } from '../../services/GlobalFilterService'
-import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
-import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
-import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
-import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { describe, expect, it } from 'vitest'
+import { IInventorySlot } from '../../models/build/IInventorySlot'
+import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
+import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
+import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { InventoryItemService } from '../../services/InventoryItemService'
+import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
+import { ak12PistolGrip, ak12Stock, alpha, ammo545bp, ammo545us, lshZ2dtm, lshZ2dtmFs, ms2000, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, specterDr } from '../__data__/itemMocks'
+import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
+import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
+import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 const inventorySlot1: IInventorySlot = {
   items: [
     {
       content: [],
       ignorePrice: false,
-      itemId: '5d6d3716a4b9361bc8618872', // BNTI LShZ-2DTM helmet
+      itemId: lshZ2dtm.id,
       modSlots: [
         {
           item: {
             content: [],
             ignorePrice: false,
-            itemId: '5d6d3829a4b9361bc8618943', // LShZ-2DTM face shield
+            itemId: lshZ2dtmFs.id,
             modSlots: [],
             quantity: 1
           },
@@ -44,19 +45,19 @@ const inventorySlot2: IInventorySlot = {
         {
           content: [],
           ignorePrice: false,
-          itemId: '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs "Igolnik"
+          itemId: ammo545us.id,
           modSlots: [],
           quantity: 1
         }
       ],
       ignorePrice: false,
-      itemId: '5beed0f50db834001c062b12', // RPK-16 5.45x39 light machine gun
+      itemId: rpk16Default.id,
       modSlots: [
         {
           item: {
             content: [],
             ignorePrice: false,
-            itemId: '5beec8ea0db834001a6f9dbf', // AK-12 pistol grip
+            itemId: ak12PistolGrip.id,
             modSlots: [],
             quantity: 1
           },
@@ -66,19 +67,19 @@ const inventorySlot2: IInventorySlot = {
           item: {
             content: [],
             ignorePrice: false,
-            itemId: '5beec91a0db834001961942d', // RPK-16 dust cover
+            itemId: rpk16DustCover.id,
             modSlots: [
               {
                 item: {
                   content: [],
                   ignorePrice: false,
-                  itemId: '5beec9450db83400970084fd', // RPK-16 rear sight base
+                  itemId: rpk16RsBase.id,
                   modSlots: [
                     {
                       item: {
                         content: [],
                         ignorePrice: false,
-                        itemId: '5bf3f59f0db834001a6fa060', // RPK-16 rear sight
+                        itemId: rpk16Rs.id,
                         modSlots: [],
                         quantity: 1
                       },
@@ -100,13 +101,13 @@ const inventorySlot2: IInventorySlot = {
               {
                 content: [],
                 ignorePrice: false,
-                itemId: '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs "Igolnik"
+                itemId: ammo545us.id,
                 modSlots: [],
                 quantity: 95
               }
             ],
             ignorePrice: false,
-            itemId: '5bed625c0db834001c062946', // RPK-16 5.45x39 95-round drum magazine
+            itemId: rpk16Drum.id,
             modSlots: [],
             quantity: 1
           },
@@ -116,13 +117,13 @@ const inventorySlot2: IInventorySlot = {
           item: {
             content: [],
             ignorePrice: false,
-            itemId: '5beec8b20db834001961942a', // RPK-16 buffer tube
+            itemId: rpk16Tube.id,
             modSlots: [
               {
                 item: {
                   content: [],
                   ignorePrice: false,
-                  itemId: '5beec8c20db834001d2c465c', // AK-12 stock
+                  itemId: ak12Stock.id,
                   modSlots: [],
                   quantity: 1
                 },
@@ -137,13 +138,13 @@ const inventorySlot2: IInventorySlot = {
           item: {
             content: [],
             ignorePrice: false,
-            itemId: '5beec3e30db8340019619424', // RPK-16 handguard
+            itemId: rpk16Handguard.id,
             modSlots: [
               {
                 item: {
                   content: [],
                   ignorePrice: false,
-                  itemId: '5beecbb80db834001d2c465e', // RPK-16 handguard rail
+                  itemId: rpk16Rail.id,
                   modSlots: [],
                   quantity: 1
                 },
@@ -153,7 +154,7 @@ const inventorySlot2: IInventorySlot = {
                 item: {
                   content: [],
                   ignorePrice: false,
-                  itemId: '5beecbb80db834001d2c465e', // RPK-16 handguard rail
+                  itemId: rpk16Rail.id,
                   modSlots: [],
                   quantity: 1
                 },
@@ -168,13 +169,13 @@ const inventorySlot2: IInventorySlot = {
           item: {
             content: [],
             ignorePrice: false,
-            itemId: '5beec1bd0db834001e6006f3', // RPK-16 5.45x39 15 inch barrel
+            itemId: rpk1615inch.id,
             modSlots: [
               {
                 item: {
                   content: [],
                   ignorePrice: false,
-                  itemId: '5beec3420db834001b095429', // RPK-16 5.45x39 muzzle brake-compensator
+                  itemId: rpk16MuzzleBreak.id,
                   modSlots: [],
                   quantity: 1
                 },
@@ -200,43 +201,24 @@ const inventorySlot3: IInventorySlot = {
         {
           content: [],
           ignorePrice: false,
-          itemId: '5a6b59a08dc32e000b452fb7', // Glock SAI 9x19 thread protector
+          itemId: ms2000.id,
           modSlots: [],
           quantity: 1
         }
       ],
       ignorePrice: false,
-      itemId: '544a11ac4bdc2d470e8b456a', // Secure container Alpha
+      itemId: alpha.id,
+      modSlots: [],
+      quantity: 1
+    },
+    {
+      content: [],
+      ignorePrice: false,
+      itemId: specterDr.id,
       modSlots: [],
       quantity: 1
     }
   ]
-}
-
-const invalidRangedWeaponInventorySlot: IInventorySlot = {
-  items: [
-    {
-      content: [],
-      ignorePrice: false,
-      itemId: 'invalid',
-      modSlots: [],
-      quantity: 1
-    }
-  ],
-  typeId: 'onSling'
-}
-
-const invalidArmorInventorySlot: IInventorySlot = {
-  items: [
-    {
-      content: [],
-      ignorePrice: false,
-      itemId: 'invalid',
-      modSlots: [],
-      quantity: 1
-    }
-  ],
-  typeId: 'bodyArmor'
 }
 
 describe('canBeLooted()', () => {
@@ -283,12 +265,15 @@ describe('canBeLooted()', () => {
 
 describe('getErgonomics()', () => {
   it.each([
-    [inventorySlot2, 37.5],
+    [inventorySlot2, 38],
     [inventorySlot1, undefined],
-    [{
-      typeId: 'onSling',
-      items: []
-    } as IInventorySlot, undefined]
+    [
+      {
+        typeId: 'onSling',
+        items: []
+      } as IInventorySlot,
+      undefined
+    ]
   ])('should get the ergonomics of a ranged weapon inventory slot', async (inventorySlot: IInventorySlot, expected: number | undefined) => {
     // Arrange
     useItemServiceMock()
@@ -315,7 +300,18 @@ describe('getErgonomics()', () => {
     const service = new InventorySlotPropertiesService()
 
     // Act
-    const ergonomics = await service.getErgonomics(invalidRangedWeaponInventorySlot)
+    const ergonomics = await service.getErgonomics({
+      items: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: 'invalid',
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      typeId: 'onSling'
+    })
 
     // Assert
     expect(ergonomics?.success).toBe(false)
@@ -339,6 +335,20 @@ describe('getWearableModifiers()', () => {
     [
       inventorySlot2,
       undefined
+    ],
+    [
+      {
+        items: [undefined],
+        typeId: 'headwear'
+      },
+      {
+        ergonomicsPercentageModifier: 0,
+        ergonomicsPercentageModifierWithMods: 0,
+        movementSpeedPercentageModifier: 0,
+        movementSpeedPercentageModifierWithMods: 0,
+        turningSpeedPercentageModifier: 0,
+        turningSpeedPercentageModifierWithMods: 0
+      } as IWearableModifiers
     ]
   ])('should get the wearable modifiers of an inventory slot', async (inventorySlot: IInventorySlot, expected: IWearableModifiers | undefined) => {
     // Arrange
@@ -366,7 +376,18 @@ describe('getWearableModifiers()', () => {
     const service = new InventorySlotPropertiesService()
 
     // Act
-    const wearableModifiersResult = await service.getWearableModifiers(invalidArmorInventorySlot)
+    const wearableModifiersResult = await service.getWearableModifiers({
+      items: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: 'invalid',
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      typeId: 'bodyArmor'
+    })
 
     // Assert
     expect(wearableModifiersResult?.success).toBe(false)
@@ -397,8 +418,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 116824,
-          valueInMainCurrency: 116824
+          value: 91840,
+          valueInMainCurrency: 91840
         },
         pricesWithContent: [
           {
@@ -408,8 +429,57 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 116824,
-            valueInMainCurrency: 116824
+            value: 91840,
+            valueInMainCurrency: 91840
+          }
+        ],
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+      } as IInventoryPrice
+    ],
+    [
+      inventorySlot2,
+      {
+        missingPrice: false,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        priceWithContentInMainCurrency: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 74543,
+          valueInMainCurrency: 74543
+        },
+        pricesWithContent: [
+          {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: undefined,
+            value: 74543,
+            valueInMainCurrency: 74543
           }
         ],
         unitPrice: {
@@ -446,8 +516,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 1026292,
-          valueInMainCurrency: 1026292
+          value: 1084540,
+          valueInMainCurrency: 1084540
         },
         pricesWithContent: [
           {
@@ -457,8 +527,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 12,
-            valueInMainCurrency: 1380
+            value: 95,
+            valueInMainCurrency: 15105
           },
           {
             barterItems: [],
@@ -467,10 +537,51 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 9151,
-            valueInMainCurrency: 1024912
+            value: 7327,
+            valueInMainCurrency: 1069435
           }
         ],
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+      } as IInventoryPrice
+    ],
+    [
+      {
+        items: [undefined],
+        typeId: 'pockets'
+      },
+      {
+        missingPrice: false,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        priceWithContentInMainCurrency: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        pricesWithContent: [],
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
@@ -513,14 +624,16 @@ describe('getPrice()', () => {
     const service = new InventorySlotPropertiesService()
 
     const inventorySlot: IInventorySlot = {
-      items: [{
-        content: [],
-        ignorePrice: false,
-        itemId: '5c0e874186f7745dc7616606', // Maska-1SCh bulletproof helmet (Killa)
-        modSlots: [],
-        quantity: 1
-      }],
-      typeId: 'headwear'
+      items: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: ammo545bp.id,
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      typeId: 'pockets'
     }
 
     // Act
@@ -592,7 +705,20 @@ describe('getPrice()', () => {
     const service = new InventorySlotPropertiesService()
 
     // Act
-    const price = await service.getPrice(invalidArmorInventorySlot, true)
+    const price = await service.getPrice(
+      {
+        items: [
+          {
+            content: [],
+            ignorePrice: false,
+            itemId: 'invalid',
+            modSlots: [],
+            quantity: 1
+          }
+        ],
+        typeId: 'bodyArmor'
+      },
+      true)
 
     // Assert
     expect(price.success).toBe(false)
@@ -602,7 +728,7 @@ describe('getPrice()', () => {
 
 describe('getRecoil()', () => {
   it.each([
-    [inventorySlot2, { horizontalRecoil: 230, verticalRecoil: 81 }],
+    [inventorySlot2, { horizontalRecoil: 226.44, verticalRecoil: 76.16 }],
     [inventorySlot1, undefined],
     [{
       typeId: 'onSling',
@@ -634,7 +760,18 @@ describe('getRecoil()', () => {
     const service = new InventorySlotPropertiesService()
 
     // Act
-    const recoil = await service.getRecoil(invalidRangedWeaponInventorySlot)
+    const recoil = await service.getRecoil({
+      items: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: 'invalid',
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      typeId: 'onSling'
+    })
 
     // Assert
     expect(recoil?.success).toBe(false)
@@ -643,20 +780,31 @@ describe('getRecoil()', () => {
 })
 
 describe('getWeight()', () => {
-  it('should get the weight of an inventory slot', async () => {
+  it.each([
+    [
+      inventorySlot1,
+      4.4
+    ],
+    [
+      {
+        items: [undefined],
+        typeId: 'pockets'
+      },
+      0
+    ]
+  ])('should get the weight of an inventory slot', async (inventorySlot: IInventorySlot, expected: number) => {
     // Arrange
     useItemServiceMock()
     Services.configure(InventoryItemService)
     const service = new InventorySlotPropertiesService()
 
     // Act
-    const weight = await service.getWeight(inventorySlot1)
+    const weight = await service.getWeight(inventorySlot)
 
     // Assert
     expect(weight.success).toBe(true)
-    expect(weight.value).toBe(4.4)
-  }
-  )
+    expect(weight.value).toBe(expected)
+  })
 
   it('should fail if an item cannot be found', async () => {
     // Arrange
@@ -665,7 +813,18 @@ describe('getWeight()', () => {
     const service = new InventorySlotPropertiesService()
 
     // Act
-    const weight = await service.getWeight(invalidArmorInventorySlot)
+    const weight = await service.getWeight({
+      items: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: 'invalid',
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      typeId: 'bodyArmor'
+    })
 
     // Assert
     expect(weight.success).toBe(false)
