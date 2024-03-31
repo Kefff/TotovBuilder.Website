@@ -47,6 +47,7 @@ export class ReductionService {
     }
 
     const build = Services.get(BuildService).create(true)
+    build.name = reducedBuild['n'] as string ?? ''
 
     for (const reducedInventorySlot of reducedInventorySlots) {
       const inventorySlotResult = this.parseReducedInventorySlot(reducedInventorySlot)
@@ -251,6 +252,7 @@ export class ReductionService {
       reducedInventorySlots.push(reducedInventorySlot)
     }
 
+    reducedBuild['n'] = build.name
     reducedBuild['s'] = reducedInventorySlots
 
     return reducedBuild
@@ -270,7 +272,6 @@ export class ReductionService {
     reducedInventoryItem['i'] = inventoryItem.itemId
 
     if (inventoryItem.ignorePrice) {
-      // reducedInventoryItem['p'] = 1 // We don't set the boolean value, just having the property indicates that it is true
       reducedInventoryItem['p'] = 1
     }
 
@@ -563,7 +564,6 @@ export class ReductionService {
         const modSlotMaxStackableAmount = reducedModSlot['a'] as number ?? 1
         const modSlotName = reducedModSlot['n'] as string
         const modSlotRequired = reducedModSlot['r'] != null
-
 
         modSlots.push({
           compatibleItemIds: modSlotCompatibleItemIds,

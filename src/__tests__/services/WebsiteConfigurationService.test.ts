@@ -7,7 +7,7 @@ import { WebsiteConfigurationService } from '../../services/WebsiteConfiguration
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import Result, { FailureType } from '../../utils/Result'
-import WebsiteConfigurationMock from '../__data__/website-configuration.json'
+import WebsiteConfigurationMock from '../__data__/websiteConfigurationMock'
 import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 

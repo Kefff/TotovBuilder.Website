@@ -1,6 +1,6 @@
 import { round } from 'round-ts'
-import Services from '../services/repository/Services'
 import { TarkovValuesService } from '../services/TarkovValuesService'
+import Services from '../services/repository/Services'
 
 /**
  * Represents an utility class for manipulating item stats values.
@@ -19,7 +19,8 @@ export default class StatsUtils {
     value = round(value, decimalNumbers)
 
     if (fixedDecimalNumbers != null) {
-      displayValue = value.toFixed(fixedDecimalNumbers)
+      const roundingMultiplier = Math.pow(10, fixedDecimalNumbers)
+      displayValue = (Math.round(value * roundingMultiplier) / roundingMultiplier).toFixed(fixedDecimalNumbers)
     } else {
       displayValue = value.toString()
     }
@@ -44,7 +45,8 @@ export default class StatsUtils {
     value = round(value * 100, decimalNumbers)
 
     if (fixedDecimalNumbers != null) {
-      displayValue = value.toFixed(fixedDecimalNumbers)
+      const roundingMultiplier = Math.pow(10, fixedDecimalNumbers)
+      displayValue = (Math.round(value * roundingMultiplier) / roundingMultiplier).toFixed(fixedDecimalNumbers)
     } else {
       displayValue = value.toString()
     }

@@ -559,3 +559,320 @@ export const build2: IBuild = {
   lastUpdated: undefined,
   lastWebsiteVersion: undefined
 }
+
+export const reducedBuild1: Record<string, unknown> = {
+  'n': 'Build 1',
+  's': [
+    {
+      'i': [
+        {
+          'i': rpk16Default.id,
+          'm': [
+            {
+              'i': {
+                'i': ak12PistolGrip.id
+              },
+              'n': 'mod_pistol_grip'
+            },
+            {
+              'i': {
+                'i': rpk16DustCover.id,
+                'm': [
+                  {
+                    'i': {
+                      'i': rpk16RsBase.id,
+                      'm': [
+                        {
+                          'i': {
+                            'i': rpk16Rs.id
+                          },
+                          'n': 'mod_sight_rear'
+                        }
+                      ]
+                    },
+                    'n': 'mod_sight_rear'
+                  }
+                ]
+              },
+              'n': 'mod_reciever'
+            },
+            {
+              'i': {
+                'c': [
+                  {
+                    'i': ammo545us.id,
+                    'q': 95
+                  }
+                ],
+                'i': rpk16Drum.id
+              },
+              'n': 'mod_magazine'
+            },
+            {
+              'i': {
+                'i': rpk16Tube.id,
+                'm': [
+                  {
+                    'i': {
+                      'i': ak12Stock.id
+                    },
+                    'n': 'mod_stock'
+                  }
+                ]
+              },
+              'n': 'mod_stock_001'
+            },
+            {
+              'i': {
+                'i': rpk16Handguard.id,
+                'm': [
+                  {
+                    'i': {
+                      'i': rpk16Rail.id
+                    },
+                    'n': 'mod_mount_000'
+                  },
+                  {
+                    'i': {
+                      'i': rpk16Rail.id
+                    },
+                    'n': 'mod_mount_001'
+                  }
+                ]
+              },
+              'n': 'mod_handguard'
+            },
+            {
+              'i': {
+                'i': rpk1615inch.id,
+                'm': [
+                  {
+                    'i': {
+                      'i': rpk16MuzzleBreak.id
+                    },
+                    'n': 'mod_muzzle'
+                  }
+                ]
+              },
+              'n': 'mod_barrel'
+            }
+          ]
+        }
+      ],
+      't': 'onSling'
+    },
+    {
+      'i': [
+        {
+          'i': armor6b13FlDefault.id,
+          'm': [
+            {
+              'i': {
+                'i': plate6b33Front.id
+              },
+              'n': 'front_plate'
+            },
+            {
+              'i': {
+                'i': plate6b33Back.id
+              },
+              'n': 'back_plate'
+            }
+          ]
+        }
+      ],
+      't': 'bodyArmor'
+    },
+    {
+      'i': [
+        {
+          'i': lshZ2dtm.id,
+          'm': [
+            {
+              'i': {
+                'i': lshZ2dtmFs.id
+              },
+              'n': 'mod_equipment'
+            }
+          ]
+        }
+      ],
+      't': 'headwear'
+    },
+    {
+      'i': [
+        {
+          'i': morphine.id
+        },
+        {
+          'i': vaseline.id
+        },
+        {
+          'i': rgd5.id
+        },
+        {
+          'i': ammo545us.id,
+          'q': 60
+        }
+      ],
+      't': 'pockets'
+    },
+    {
+      'i': [
+        {
+          'c': [
+            {
+              'i': iskra.id
+            },
+            {
+              'i': water.id
+            }
+          ],
+          'i': berkut.id
+        }
+      ],
+      't': 'backpack'
+    },
+    {
+      'i': [
+        {
+          'i': cf.id
+        }
+      ],
+      't': 'faceCover'
+    },
+    {
+      'i': [
+        {
+          'i': crossbow.id
+        }
+      ],
+      't': 'eyewear'
+    }
+  ]
+}
+
+export const reducedBuild2: Record<string, unknown> = {
+  'n': 'Build 2',
+  's': [
+    {
+      'i': [
+        {
+          'i': m9a3Default.id,
+          'm': [
+            {
+              'i': {
+                'i': m9a3Thr.id,
+                'm': [
+                  {
+                    'i': {
+                      'i': srd9.id
+                    },
+                    'n': 'mod_muzzle'
+                  }
+                ]
+              },
+              'n': 'mod_barrel'
+            },
+            {
+              'i': {
+                'i': m9a3SideGrip.id
+              },
+              'n': 'mod_pistol_grip'
+            },
+            {
+              'i': {
+                'i': m9a3Slide.id,
+                'm': [
+                  {
+                    'i': {
+                      'i': m9a3Rs.id
+                    },
+                    'n': 'mod_sight_rear'
+                  },
+                  {
+                    'i': {
+                      'i': m9a3Fs.id
+                    },
+                    'n': 'mod_sight_front'
+                  }
+                ]
+              },
+              'n': 'mod_reciever'
+            },
+            {
+              'i': {
+                'c': [
+                  {
+                    'i': ammo9mmGT.id,
+                    'q': 17
+                  }
+                ],
+                'i': m9a3Magazine.id
+              },
+              'n': 'mod_magazine'
+            },
+            {
+              'i': {
+                'i': x400.id
+              },
+              'n': 'mod_tactical'
+            }
+          ]
+        }
+      ],
+      't': 'holster'
+    },
+    {
+      'i': [
+        {
+          'c': [
+            {
+              'i': salewa.id
+            }
+          ],
+          'i': banshee.id,
+          'm': [
+            {
+              'i': {
+                'i': monocletePe.id
+              },
+              'n': 'front_plate'
+            },
+            {
+              'i': {
+                'i': monocletePe.id
+              },
+              'n': 'back_plate'
+            }
+          ]
+        }
+      ],
+      't': 'tacticalRig'
+    },
+    {
+      'i': [
+        {
+          'i': razor.id
+        }
+      ],
+      't': 'earpiece'
+    },
+    {
+      'i': [
+        {
+          'i': alpha.id
+        }
+      ],
+      't': 'pouch'
+    },
+    {
+      'i': [
+        {
+          'i': bayonet6Kh5.id
+        }
+      ],
+      't': 'scabbard'
+    }
+  ]
+}

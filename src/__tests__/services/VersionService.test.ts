@@ -11,8 +11,8 @@ import { WebsiteConfigurationService } from '../../services/WebsiteConfiguration
 import Services from '../../services/repository/Services'
 import Result, { FailureType } from '../../utils/Result'
 import Migrations from '../../utils/migrations/Migrations'
-import ChangelogMock from '../__data__/changelog.json'
-import WebsiteConfigurationMock from '../__data__/website-configuration.json'
+import ChangelogMock from '../__data__/changelogMock'
+import WebsiteConfigurationMock from '../__data__/websiteConfigurationMock'
 import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
@@ -122,6 +122,11 @@ describe('executeBuildMigrations()', () => {
         id: 'build3',
         name: 'build3',
         lastWebsiteVersion: '1.6.0'
+      } as IBuild,
+      {
+        id: 'build4',
+        name: 'build4',
+        lastWebsiteVersion: undefined
       } as IBuild
     ]
 
@@ -161,6 +166,18 @@ describe('executeBuildMigrations()', () => {
           return Promise.resolve(Result.ok())
         },
         version: '1.5.0'
+      },
+      {
+        migrateBuild: (build: IBuild) => {
+          build.name = build.name + '|' + '1.3.0'
+          migrationResults.push('b1.3.0')
+          return Promise.resolve(Result.ok())
+        },
+        migrateBuildUnrelatedData: () => {
+          migrationResults.push('bud1.3.0')
+          return Promise.resolve(Result.ok())
+        },
+        version: '1.3.0'
       }
     )
 
@@ -185,12 +202,26 @@ describe('executeBuildMigrations()', () => {
         id: 'build3',
         name: 'build3',
         lastWebsiteVersion: '1.6.0'
+      } as IBuild,
+      {
+        id: 'build4',
+        name: 'build4|1.3.0|1.4.0|1.5.0|1.6.0',
+        lastWebsiteVersion: undefined
       } as IBuild
     ])
-    expect(migrationResults).toStrictEqual(['b1.5.0', 'b1.6.0', 'b1.6.0'])
+    expect(migrationResults).toStrictEqual(['b1.5.0', 'b1.6.0', 'b1.6.0', 'b1.3.0', 'b1.4.0', 'b1.5.0', 'b1.6.0'])
   })
 
-  it('should fail when a migration fails', async () => {
+  it.each([
+    [
+      'Build 1',
+      'Error while updating build "Build 1" (Build 1) from version "1.4.0" to "1.6.0".'
+    ],
+    [
+      '',
+      'Error while updating build to version "1.6.0".'
+    ]
+  ])('should fail when a migration fails', async (buildId: string, expected: string) => {
     // Arrange
     useFetchServiceMock(ChangelogMock)
     useWebsiteConfigurationServiceMock()
@@ -211,7 +242,7 @@ describe('executeBuildMigrations()', () => {
       })
 
     const build = {
-      id: 'build1',
+      id: buildId,
       name: 'Build 1',
       lastWebsiteVersion: '1.4.0'
     } as IBuild
@@ -221,7 +252,7 @@ describe('executeBuildMigrations()', () => {
 
     // Assert
     expect(result).toBe(false)
-    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build "Build 1" (build1) from version "1.4.0" to "1.6.0".')).once()
+    verify(notificationServiceSpy.notify(NotificationType.error, expected)).once()
   })
 })
 

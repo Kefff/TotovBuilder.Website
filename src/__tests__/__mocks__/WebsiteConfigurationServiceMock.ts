@@ -1,7 +1,7 @@
 import { instance, mock, when } from 'ts-mockito'
-import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import WebsiteConfigurationMock from '../../../public/data/website-configuration.json'
+import Services from '../../services/repository/Services'
+import WebsiteConfigurationMock from '../__data__/websiteConfigurationMock'
 
 export function useWebsiteConfigurationServiceMock(): void {
   const websiteConfigurationServiceMock = mock<WebsiteConfigurationService>()

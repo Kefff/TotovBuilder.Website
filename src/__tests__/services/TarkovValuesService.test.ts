@@ -1,11 +1,11 @@
 import { anyString, instance, mock, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
+import TarkovValuesMock from '../../../public/data/tarkov-values.json'
 import { FetchService } from '../../services/FetchService'
 import { NotificationService } from '../../services/NotificationService'
 import { TarkovValuesService } from '../../services/TarkovValuesService'
 import Services from '../../services/repository/Services'
 import Result, { FailureType } from '../../utils/Result'
-import TarkovValuesMock from '../__data__/tarkov-values.json'
 import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 

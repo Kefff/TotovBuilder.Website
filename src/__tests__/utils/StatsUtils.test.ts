@@ -1,6 +1,6 @@
+import { describe, expect, it } from 'vitest'
 import StatsUtils from '../../utils/StatsUtils'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
-import { describe, expect, it } from 'vitest'
 
 describe('StringUtils.getDisplayValue()', () => {
   it.each([
@@ -126,8 +126,8 @@ describe('StringUtils.getValueColorClass()', () => {
 
 describe('StringUtils.getWeightColorClass()', () => {
   it.each([
-    [24, ''],
-    [24.1, 'stats-encumberment-light'],
+    [26, ''],
+    [26.1, 'stats-encumberment-light'],
     [65, 'stats-encumberment-light'],
     [65.1, 'stats-encumberment-heavy']
   ])('should get the CSS class to apply to a stats value', (value: number, expected: string) => {
