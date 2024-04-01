@@ -262,20 +262,26 @@ describe('fromSharableString()', () => {
   it.each(
     [
       [
-        'XQAAAAKwBAAAAAAAAABAqEppdBKy3f2nWA1_4C5z8-v7-PB2PnO4T0FRqHCrunbQ824T11fLD0MMgpKzuGdnO-8eB5yHCYkn0JYO3VCC50O9MYgvuOr49cS5mtaJVptsaMiETu4-0oYouMfztK97JVyQiamvJHdA2W5i9dVVx7tG6R4CkXyLtwbAxz74UOVoRKsDpGU0H7BJshLAPue1edTU7OnozNCY5jfRvLYt8y_qwxB6Ol-uaqk4oI3cEDW9c94UKDSU8MVdPtA8P481abbFxOaLOXrDXvokQOpIV5t3nPBsd3EC-zc0p0C9miVd4PO9JJAGoS7c05hy5VxDyKAAC_MgjRgha9avVCb8UKrza2hWTiJRezgEmnBOip-6n2xY2JgD5E0KtCWg0w0jiA1gzqKs9AEfWiBesVfFcFto3Ni7YYqaWLjb4oeFTpI1UOaA89s8PwxYkFushiS2AWBA_pxTyrsgBBEwPRqQiEsgSp7QxqJX1mg1mc1ANj_K4bwv0roz9QGHB6RMz2Y4taQJ84R2EZkz1UrXHKzG46-gEoSRl563T5Zyd5u2bIw9VyY28KQ8Wax6YqxrRWGbnWcE7GlRFy5sVMlWaaATnenRHy6kUeVz1wXQHDL6P_QiRp6BHwaUWCg7go1K_zWSEGCil-qRNpCHLW6CItKv_KVUbBOG6vYq0myx9pmdaLJ7I0YixZWYXijwjjDlww0-zrGqNPW7_itHRo6qo86ugfFCv8qTuLUpQJZjXS_jhK4kUcOU1EK0NirDG7axwLlPjg7qKwX_qNdogCVenlUJa5EL02vEO8xufufi_xealgA',
+        'XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KETjsnnqqDlYa8teT26vMr7mcA4yJzLaCaKHfPnnQM4LV5edlloSISmpvJN3hlYvrz74DQyinjTwOr26OE9Lnqe7m55nUc1D6Xfe96wXdgNVhx1u8PO2ZlQ9ijOUvKKJjWrfnb3Y_z_HX9VZ0tc-GC8TifY5MzhZfr2mwp-SnV4lSZ91gfE5MsR7GcSvroCe9Nwn41ZhdEGt-z_Lb8j_gCygg',
         {
           ...build1,
+          id: '',
+          name: `${build1.name}|1.5.0|1.6.0`,
           lastExported: undefined,
           lastUpdated: undefined,
           lastWebsiteVersion: undefined
         }
       ],
       [
-        'XQAAAAL0AgAAAAAAAABAqEppVBKy3f2f62vW6NGnAzQifk3h2Szo0R24FxL00kBK4cKfdwtejcfMvTZIkJ34NasHofmbTM8Q6MdRJEhOusAF9jlw3ZzCROr5jIUf6dnXgo5QhJNPM8S2XDQCtRsLoH_yAAk5q_Fz3NTbnXwpMGMiwSb51keeDYqXqVdUbdbgQOyEf84s_Z3auRsIsZpTBV8LOmcVfCw5ImzWr8-nVttGF6uqAvlwCDhNSOwT4tubwigtQO48c9XjLARE-vHiDHSzEsW3AOTRd0iuTt3Ldko4cgEMawl75mtaLVf8G8VvIBADnYoKPrxx0DGh-NAUmey_NRiPruQjfa_tLLaI1RqsZ9CtaExm1xvQPLHCJeDMyypXjBtucFYpvcEhMk3n1MLaH9VH4ZdBecR4rCQKJtBZl7OFKCbEelz9lZ5uv61W2oBy_y2cV_eHYseV2vaLR8Y3eLw4Bw6NOILeBfSS1v3nn_U_FGkHC72NhmMGBlV2y0KQ9gK-t4soj78addY-BMNymmwCHNw44I0UWjFUHXBprg0FBPaHojovgsWm0PuHZafHLDNRFBblnC9idPCxlodWjO3gg7cqGbKp_1ypMAA',
-        build2
+        'XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv',
+        {
+          ...build2,
+          id: '',
+          name: `${build2.name}|1.5.0|1.6.0`
+        }
       ]
     ]
-  )('should get a build from a sharable string and execute migrations on it', async (sharableString: string, expectedBuild: IBuild) => {
+  )('should get a build from a sharable string and execute migrations on it', async (sharableString: string, expected: IBuild) => {
     // Arrange
     Services.configure(BuildService)
     Services.configure(ReductionService)
@@ -285,7 +291,7 @@ describe('fromSharableString()', () => {
     Migrations.push(
       {
         migrateBuild: (build: IBuild) => {
-          build.name = build.name + '1.5.0'
+          build.name = `${build.name}|1.5.0`
           return Promise.resolve(Result.ok())
         },
         migrateBuildUnrelatedData: () => {
@@ -295,7 +301,7 @@ describe('fromSharableString()', () => {
       },
       {
         migrateBuild: (build: IBuild) => {
-          build.name = build.name + '|' + '1.6.0'
+          build.name = `${build.name}|1.6.0`
           return Promise.resolve(Result.ok())
         },
         migrateBuildUnrelatedData: () => {
@@ -308,11 +314,6 @@ describe('fromSharableString()', () => {
 
     // Act
     const buildResult = await service.fromSharableString(sharableString)
-    const expected = {
-      ...expectedBuild,
-      id: '',
-      name: '1.5.0|1.6.0'
-    } as IBuild
 
     // Assert
     expect(buildResult.success).toBe(true)
@@ -460,10 +461,11 @@ describe('toSharableURL()', () => {
   it.each([
     [
       build1,
-      'XQAAAAKwBAAAAAAAAABAqEppdBKy3f2nWA1_4C5z8-v7-PB2PnO4T0FRqHCrunbQ824T11fLD0MMgpKzuGdnO-8eB5yHCYkn0JYO3VCC50O9MYgvuOr49cS5mtaJVptsaMiETu4-0oYouMfztK97JVyQiamvJHdA2W5i9dVVx7tG6R4CkXyLtwbAxz74UOVoRKsDpGU0H7BJshLAPue1edTU7OnozNCY5jfRvLYt8y_qwxB6Ol-uaqk4oI3cEDW9c94UKDSU8MVdPtA8P481abbFxOaLOXrDXvokQOpIV5t3nPBsd3EC-zc0p0C9miVd4PO9JJAGoS7c05hy5VxDyKAAC_MgjRgha9avVCb8UKrza2hWTiJRezgEmnBOip-6n2xY2JgD5E0KtCWg0w0jiA1gzqKs9AEfWiBesVfFcFto3Ni7YYqaWLjb4oeFTpI1UOaA89s8PwxYkFushiS2AWBA_pxTyrsgBBEwPRqQiEsgSp7QxqJX1mg1mc1ANj_K4bwv0roz9QGHB6RMz2Y4taQJ84R2EZkz1UrXHKzG46-gEoSRl563T5Zyd5u2bIw9VyY28KQ8Wax6YqxrRWGbnWcE7GlRFy5sVMlWaaATnenRHy6kUeVz1wXQHDL6P_QiRp6BHwaUWCg7go1K_zWSEGCil-qRNpCHLW6CItKv_KVUbBOG6vYq0myx9pmdaLJ7I0YixZWYXijwjjDlww0-zrGqNPW7_itHRo6qo86ugfFCv8qTuLUpQJZjXS_jhK4kUcOU1EK0NirDG7axwLlPjg7qKwX_qNdogCVenlUJa5EL02vEO8xufufi_xealgA'],
+      'XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KETjsnnqqDlYa8teT26vMr7mcA4yJzLaCaKHfPnnQM4LV5edlloSISmpvJN3hlYvrz74DQyinjTwOr26OE9Lnqe7m55nUc1D6Xfe96wXdgNVhx1u8PO2ZlQ9ijOUvKKJjWrfnb3Y_z_HX9VZ0tc-GC8TifY5MzhZfr2mwp-SnV4lSZ91gfE5MsR7GcSvroCe9Nwn41ZhdEGt-z_Lb8j_gCygg'
+    ],
     [
       build2,
-      'XQAAAAL0AgAAAAAAAABAqEppVBKy3f2f62vW6NGnAzQifk3h2Szo0R24FxL00kBK4cKfdwtejcfMvTZIkJ34NasHofmbTM8Q6MdRJEhOusAF9jlw3ZzCROr5jIUf6dnXgo5QhJNPM8S2XDQCtRsLoH_yAAk5q_Fz3NTbnXwpMGMiwSb51keeDYqXqVdUbdbgQOyEf84s_Z3auRsIsZpTBV8LOmcVfCw5ImzWr8-nVttGF6uqAvlwCDhNSOwT4tubwigtQO48c9XjLARE-vHiDHSzEsW3AOTRd0iuTt3Ldko4cgEMawl75mtaLVf8G8VvIBADnYoKPrxx0DGh-NAUmey_NRiPruQjfa_tLLaI1RqsZ9CtaExm1xvQPLHCJeDMyypXjBtucFYpvcEhMk3n1MLaH9VH4ZdBecR4rCQKJtBZl7OFKCbEelz9lZ5uv61W2oBy_y2cV_eHYseV2vaLR8Y3eLw4Bw6NOILeBfSS1v3nn_U_FGkHC72NhmMGBlV2y0KQ9gK-t4soj78addY-BMNymmwCHNw44I0UWjFUHXBprg0FBPaHojovgsWm0PuHZafHLDNRFBblnC9idPCxlodWjO3gg7cqGbKp_1ypMAA'
+      'XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv'
     ]
   ])('should reduce a build and transform it into a URL', async (build: IBuild, expectedSharableString: string) => {
     // Arrange

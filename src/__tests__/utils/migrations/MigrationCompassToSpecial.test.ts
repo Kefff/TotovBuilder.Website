@@ -1,7 +1,7 @@
-import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../../models/build/IBuild'
 import { MigrationCompassToSpecial } from '../../../utils/migrations/MigrationCompassToSpecial'
-import { describe, expect, it } from 'vitest'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
   it('should replaces the compass inventory slot by the special inventory slots in obsolete builds.', async () => {

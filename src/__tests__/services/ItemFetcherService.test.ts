@@ -136,7 +136,7 @@ describe('fetchPrices()', () => {
 
     // Assert
     expect(pricesResult.success).toBe(true)
-    expect(pricesResult.value.length).toBe(5195)
+    expect(pricesResult.value.length).toBe(5196)
 
     for (const priceMock of PriceMocks) {
       const fetchedPrice = pricesResult.value.find(p =>

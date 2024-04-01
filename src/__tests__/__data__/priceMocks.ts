@@ -645,6 +645,16 @@ export const lshZ2dtmFsPrices: IPrice[] = [
 export const m9a3Prices: IPrice[] = [
   {
     barterItems: [],
+    currencyName: 'USD',
+    itemId: m9a3.id,
+    merchant: 'peacekeeper',
+    merchantLevel: 1,
+    quest: undefined,
+    value: 75,
+    valueInMainCurrency: 8025
+  },
+  {
+    barterItems: [],
     currencyName: 'RUB',
     itemId: m9a3.id,
     merchant: 'flea-market',

@@ -15,9 +15,9 @@ import { WebsiteConfigurationService } from '../../services/WebsiteConfiguration
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import Result, { FailureType } from '../../utils/Result'
-import { ItemMocks, ak12bt } from '../__data__/itemMocks'
+import { ItemMocks, ak12PistolGrip, ak12bt, alpha, armbandBlue, m9a3, mts25512Default, nf30mm, opSksDefault, pso1, rpk16Default, scavVest } from '../__data__/itemMocks'
 import { PresetMocks } from '../__data__/presetMocks'
-import { PriceMocks } from '../__data__/priceMocks'
+import { PriceMocks, nf30mmPrices, pso1Prices, rpk16DefaultPrices } from '../__data__/priceMocks'
 import { useGlobalFilterServiceMock } from '../__mocks__/GlobalFilterServiceMock'
 import { useItemFetcherServiceMock } from '../__mocks__/ItemFetcherServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
@@ -60,7 +60,7 @@ describe('constructor', () => {
 })
 
 describe('fetchItemCategories()', () => {
-  it.only('should not update item categories when fetching fails', async () => {
+  it('should not update item categories when fetching fails', async () => {
     // Arrange
     useGlobalFilterServiceMock()
     usePresetServiceMock()
@@ -154,37 +154,14 @@ describe('getItem()', () => {
     const itemService = new ItemService()
 
     // Act
-    const itemResult = await itemService.getItem('584147732459775a2b6d9f12')
+    const itemResult = await itemService.getItem(rpk16Default.id)
 
     // Assert
     expect(itemResult.success).toBe(true)
-    expect(itemResult.value.id).toBe('584147732459775a2b6d9f12')
-    expect(itemResult.value.name).toBe('Kalashnikov AKS-74U 5.45x39 assault rifle Default')
-    expect(itemResult.value.prices).toStrictEqual([
-      {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
-        merchant: 'prapor',
-        merchantLevel: 1,
-        quest: {
-          id: '5936d90786f7742b1420ba5b',
-          name: 'Debut',
-          wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Debut'
-        },
-        value: 24605,
-        valueInMainCurrency: 24605
-      },
-      {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '584147732459775a2b6d9f12',
-        merchant: 'flea-market',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 28999,
-        valueInMainCurrency: 28999
-      }] as IPrice[])
+    expect(itemResult.value).toStrictEqual({
+      ...rpk16Default,
+      prices: rpk16DefaultPrices
+    })
   })
 
   it('should fail when getting an item that does not exist', async () => {
@@ -223,11 +200,11 @@ describe('getItem()', () => {
     const itemService = new ItemService()
 
     // Act
-    const itemResult = await itemService.getItem('57dc2fa62459775949412633')
+    const itemResult = await itemService.getItem(rpk16Default.id)
 
     // Assert
     expect(itemResult.success).toBe(false)
-    expect(itemResult.failureMessage).toBe('Item "57dc2fa62459775949412633" not found.')
+    expect(itemResult.failureMessage).toBe(`Item "${rpk16Default.id}" not found.`)
   })
 })
 
@@ -243,69 +220,22 @@ describe('getItems()', () => {
     const itemService = new ItemService()
 
     // Act
-    const itemsResult = await itemService.getItems(['584147732459775a2b6d9f12', '5c1d0f4986f7744bb01837fa'])
+    const itemsResult = await itemService.getItems([rpk16Default.id, nf30mm.id])
 
     // Assert
     expect(itemsResult.success).toBe(true)
-    expect(itemsResult.value).toHaveLength(2)
-    expect(itemsResult.value[0].id).toBe('584147732459775a2b6d9f12')
-    expect(itemsResult.value[0].name).toBe('Kalashnikov AKS-74U 5.45x39 assault rifle Default')
-    expect(itemsResult.value[0].prices).toStrictEqual([
-      {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
-        merchant: 'prapor',
-        merchantLevel: 1,
-        quest: {
-          id: '5936d90786f7742b1420ba5b',
-          name: 'Debut',
-          wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Debut'
+    expect(itemsResult.value).toStrictEqual(
+      [
+        {
+          ...rpk16Default,
+          prices: rpk16DefaultPrices
         },
-        value: 24605,
-        valueInMainCurrency: 24605
-      },
-      {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '584147732459775a2b6d9f12',
-        merchant: 'flea-market',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 28999,
-        valueInMainCurrency: 28999
-      }] as IPrice[])
-    expect(itemsResult.value[1].id).toBe('5c1d0f4986f7744bb01837fa')
-    expect(itemsResult.value[1].name).toBe('TerraGroup Labs keycard (Black)')
-    expect(itemsResult.value[1].prices).toStrictEqual([
-      {
-        barterItems: [
-          {
-            itemId: '5d03794386f77420415576f5',
-            quantity: 5
-          },
-          {
-            itemId: '5e2aee0a86f774755a234b62',
-            quantity: 8
-          },
-          {
-            itemId: '5c052fb986f7746b2101e909',
-            quantity: 2
-          },
-          {
-            itemId: '61bf7c024770ee6f9c6b8b53',
-            quantity: 1
-          }
-        ],
-        currencyName: 'barter',
-        itemId: '5c1d0f4986f7744bb01837fa',
-        merchant: 'mechanic',
-        merchantLevel: 4,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      }
-    ])
+        {
+          ...nf30mm,
+          prices: nf30mmPrices
+        }
+      ]
+    )
   })
 
   it('should filter items according to the global filter', async () => {
@@ -326,47 +256,30 @@ describe('getItems()', () => {
         enabled: true,
         merchant: 'prapor',
         merchantLevel: 1
+      },
+      {
+        enabled: true,
+        merchant: 'peacekeeper',
+        merchantLevel: 1
       }
     ])
 
     // Act
     const itemsResult = await itemService.getItems([
-      '584147732459775a2b6d9f12', // AKS-74U Default (Prapor 1)
-      '5c1d0f4986f7744bb01837fa', // TerraGroup Labs keycard (Black) (Mechanic 4)
-      '5dd7f8c524e5d7504a4e3077', // Kalashnikov AK-74 5.45x39 assault rifle Plum (Prapor 2),
-      '57dc2fa62459775949412633' // Kalashnikov AKS-74U 5.45x39 assault rifle (Prapor 1), excluded because is preset base item
+      pso1.id, // Praport 1
+      nf30mm.id, // Jaeger 3 (excluded)
+      ak12PistolGrip.id, //Prapor 2 (excluded)
+      m9a3.id // Peacekeeper 1 (excluded because is preset base item)
     ], true)
 
     // Assert
     expect(itemsResult.success).toBe(true)
-    expect(itemsResult.value).toHaveLength(1)
-    expect(itemsResult.value[0].id).toBe('584147732459775a2b6d9f12')
-    expect(itemsResult.value[0].name).toBe('Kalashnikov AKS-74U 5.45x39 assault rifle Default')
-    expect(itemsResult.value[0].prices).toStrictEqual([
+    expect(itemsResult.value).toStrictEqual([
       {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
-        merchant: 'prapor',
-        merchantLevel: 1,
-        quest: {
-          id: '5936d90786f7742b1420ba5b',
-          name: 'Debut',
-          wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Debut'
-        },
-        value: 24605,
-        valueInMainCurrency: 24605
-      },
-      {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '584147732459775a2b6d9f12',
-        merchant: 'flea-market',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 28999,
-        valueInMainCurrency: 28999
-      }] as IPrice[])
+        ...pso1,
+        prices: pso1Prices
+      }
+    ])
   })
 
   it('should fail when and item is not found and the global filter is not used', async () => {
@@ -380,7 +293,7 @@ describe('getItems()', () => {
     const itemService = new ItemService()
 
     // Act
-    const itemsResult = await itemService.getItems(['invalid1', '5c1d0f4986f7744bb01837fa', 'invalid2'], false)
+    const itemsResult = await itemService.getItems(['invalid1', nf30mm.id, 'invalid2'], false)
 
     // Assert
     expect(itemsResult.success).toBe(false)
@@ -405,11 +318,11 @@ describe('getItems()', () => {
     const itemService = new ItemService()
 
     // Act
-    const itemsResult = await itemService.getItems(['57dc2fa62459775949412633', '5c1d0f4986f7744bb01837fa'])
+    const itemsResult = await itemService.getItems([rpk16Default.id, nf30mm.id])
 
     // Assert
     expect(itemsResult.success).toBe(false)
-    expect(itemsResult.failureMessage).toBe('Items "57dc2fa62459775949412633", "5c1d0f4986f7744bb01837fa" not found.')
+    expect(itemsResult.failureMessage).toBe(`Items "${rpk16Default.id}", "${nf30mm.id}" not found.`)
   })
 })
 
@@ -449,29 +362,8 @@ describe('getItemsOfCategories()', () => {
     // Assert
     expect(itemResult.success).toBe(true)
     expect(itemResult.value.map((i) => i.id).sort()).toStrictEqual([
-      '544a11ac4bdc2d470e8b456a',
-      '5732ee6a24597719ae0c0281',
-      '5857a8b324597729ab0a0e7d',
-      '5857a8bc2459772bad15db29',
-      '59db794186f77448bc595262',
-      '5b3f16c486f7747c327f55f7',
-      '5b3f3ade86f7746b6b790d8e',
-      '5b3f3af486f774679e752c1f',
-      '5b3f3b0186f774021a2afef7',
-      '5b3f3b0e86f7746752107cda',
-      '5c093ca986f7740a1867ab12',
-      '5f9949d869e2777a0e779ba5',
-      '60b0f988c4449e4cb624c1da',
-      '619bc61e86e01e16f839a999',
-      '619bdd8886e01e16f839a99c',
-      '619bddc6c9546643a67df6ee',
-      '619bddffc9546643a67df6f0',
-      '619bde3dc9546643a67df6f2',
-      '619bde7fc9546643a67df6f4',
-      '619bdeb986e01e16f839a99e',
-      '619bdef8c9546643a67df6f6',
-      '619bdf9cc9546643a67df6f8',
-      '619bdfd4c9546643a67df6fa'
+      alpha.id,
+      armbandBlue.id
     ])
   })
 
@@ -491,19 +383,20 @@ describe('getItemsOfCategories()', () => {
     globalFitlerService.saveMerchantFilters([
       {
         enabled: true,
-        merchant: 'prapor',
+        merchant: 'jaeger',
         merchantLevel: 1
       }
     ])
 
     // Act
-    const itemResult = await itemService.getItemsOfCategories(['mainWeapon', 'secondaryWeapon'], true)
+    const itemResult = await itemService.getItemsOfCategories(['mainWeapon', 'secondaryWeapon', 'vest'], true)
 
     // Assert
     expect(itemResult.success).toBe(true)
     expect(itemResult.value.map((i) => i.id).sort()).toStrictEqual([
-      '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
-      'mosinscopedbarter0000001' // Mosin 7.62x54R bolt-action rifle (Sniper) PU 3.5x
+      scavVest.id,
+      opSksDefault.id,
+      mts25512Default.id
     ])
   })
 

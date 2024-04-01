@@ -1395,13 +1395,13 @@ describe('getPrice()', () => {
         missingPrice: true,
         price: {
           barterItems: [],
-          currencyName: 'RUB',
+          currencyName: 'USD',
           itemId: m9a3.id,
-          merchant: 'flea-market',
-          merchantLevel: 0,
+          merchant: 'peacekeeper',
+          merchantLevel: 1,
           quest: undefined,
-          value: 17511,
-          valueInMainCurrency: 17511
+          value: 75,
+          valueInMainCurrency: 8025
         },
         priceWithContentInMainCurrency: {
           barterItems: [],
@@ -1410,30 +1410,30 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 17511,
-          valueInMainCurrency: 17511
+          value: 8025,
+          valueInMainCurrency: 8025
         },
         pricesWithContent: [
           {
             barterItems: [],
-            currencyName: 'RUB',
+            currencyName: 'USD',
             itemId: '',
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 17511,
-            valueInMainCurrency: 17511
+            value: 75,
+            valueInMainCurrency: 8025
           }
         ],
         unitPrice: {
           barterItems: [],
-          currencyName: 'RUB',
+          currencyName: 'USD',
           itemId: m9a3.id,
-          merchant: 'flea-market',
-          merchantLevel: 0,
+          merchant: 'peacekeeper',
+          merchantLevel: 1,
           quest: undefined,
-          value: 17511,
-          valueInMainCurrency: 17511
+          value: 75,
+          valueInMainCurrency: 8025
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryPrice

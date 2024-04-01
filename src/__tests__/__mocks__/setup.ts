@@ -3,12 +3,15 @@ import { afterEach, beforeEach, vi } from 'vitest'
 import { polyfill } from '../../polyfill'
 import { LogService } from '../../services/LogService'
 import Services from '../../services/repository/Services'
+import Migrations from '../../utils/migrations/Migrations'
 
 
 beforeEach(() => {
   // Services
   Services.services = []
   Services.configure(LogService, undefined, instance(mock<LogService>()))
+
+  Migrations.splice(0) // Removing the migration list to avoid problems when testing migrations
 })
 
 afterEach(() => {
