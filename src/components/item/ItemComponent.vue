@@ -74,33 +74,40 @@
       v-if="selectedInventoryItem != null && selectedItem != null && !itemChanging"
       class="tabs"
     >
-      <div :class="selectedTab === SelectableTab.stats ? '' : 'item-tab-hidden'">
+      <div v-show="selectedTab === SelectableTab.stats">
         <StatsSelector :item-id="selectedItem.id" />
       </div>
-      <div
-        v-if="selectedItemIsModdable"
-        :class="selectedTab === SelectableTab.mods ? '' : 'item-tab-hidden'"
-      >
+      <div v-if="selectedItemIsModdable">
         <ItemMods
+          v-show="selectedTab === SelectableTab.mods"
           v-model="selectedInventoryItem.modSlots"
           :container-item="selectedItem"
           :path="path"
         />
       </div>
-      <div
-        v-if="selectedItemIsContainer"
-        :class="selectedTab === SelectableTab.content ? '' : 'item-tab-hidden'"
-      >
-        <ItemContent
-          v-model="selectedInventoryItem.content"
-          :container-item="selectedItem"
-          :path="path"
-        />
+      <div v-if="selectedItemIsContainer">
+        <div v-show="selectedTab === SelectableTab.content">
+          <ItemContent
+            v-model="selectedInventoryItem.content"
+            :container-item="selectedItem"
+            :path="path"
+          />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts" src="./ItemComponent.ts" />
-<style scoped lang="css" src="./ItemComponent.css" />
-<style lang="css" src="./ItemComponent.unscoped.css" />
+<script
+  lang="ts"
+  src="./ItemComponent.ts"
+/>
+<style
+  scoped
+  lang="css"
+  src="./ItemComponent.css"
+/>
+<style
+  lang="css"
+  src="./ItemComponent.unscoped.css"
+/>

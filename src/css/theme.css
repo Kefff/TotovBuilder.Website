@@ -7801,3 +7801,18 @@
 }
 
 /* Customizations to the designer theme should be defined here */
+.p-inputnumber-buttons-horizontal {
+
+  /* Fix for numeric input and its buttons not having proper borders */
+  > button:first-of-type {
+    border-radius: 0 4px 4px 0;
+  }
+
+  > button:last-of-type {
+    border-radius: 4px 0 0 4px;
+  }
+
+  > input {
+    border-radius: 0;
+  }
+}
