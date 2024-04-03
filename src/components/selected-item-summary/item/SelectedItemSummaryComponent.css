@@ -9,6 +9,7 @@
 
 .selected-item-summary-price-ignored-price-icon {
   align-items: center;
+  color: var(--error-color);
   display: flex;
   justify-content: center;
   width: 2rem;

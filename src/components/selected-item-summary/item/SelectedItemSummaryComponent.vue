@@ -16,7 +16,7 @@
             v-tooltip.top="$t('caption.ignoredPrice_' + price.unitPriceIgnoreStatus)"
             class="selected-item-summary-price-ignored-price-icon"
           >
-            <font-awesome-icon icon="minus" />
+            <font-awesome-icon icon="ban" />
           </div>
           <Price
             v-if="preset == null"
@@ -62,5 +62,12 @@
   </div>
 </template>
 
-<script lang="ts" src="./SelectedItemSummaryComponent.ts" />
-<style scoped lang="css" src="./SelectedItemSummaryComponent.css" />
+<script
+  lang="ts"
+  src="./SelectedItemSummaryComponent.ts"
+/>
+<style
+  scoped
+  lang="css"
+  src="./SelectedItemSummaryComponent.css"
+/>

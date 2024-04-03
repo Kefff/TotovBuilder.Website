@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; flex-direction: row;">
+  <div class="selected-item-functionalities">
     <Button
       v-if="canHaveContent"
       v-tooltip.top="$t('caption.showContent')"
@@ -23,18 +23,15 @@
     >
       <font-awesome-icon icon="clipboard-list" />
     </Button>
-    <div :class="'selected-item-functionalities-panel-item selected-item-functionalities-panel-ignore-price' + (!editing ? ' p-disabled' : '')">
-      <Checkbox
-        v-model="ignorePriceValue"
-        :disabled="!editing"
-        :binary="true"
-        class="selected-item-functionalities-panel-item-icon"
-      />
-      <span
-        class="selected-item-functionalities-panel-ignore-price-text"
-        @click="ignorePriceValue = !ignorePriceValue"
-      >{{ $t('caption.ignorePrice') }}</span>
-    </div>
+    <Button
+      v-if="editing && canBeLooted"
+      v-tooltip.top="$t('caption.ignorePrice')"
+      :class="'p-button-text p-button-sm' + (!ignorePrice ? ' button-discreet button-discreet-danger' : '')"
+      severity="danger"
+      @click="ignorePriceValue = !ignorePriceValue"
+    >
+      <font-awesome-icon icon="ban" />
+    </Button>
   </div>
 </template>
 

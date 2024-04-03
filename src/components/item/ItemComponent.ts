@@ -301,6 +301,7 @@ export default defineComponent({
     async function updateInventoryItem(newSelectedItem: IItem, isCompatible: Result) {
       if (isCompatible.success) {
         quantity.value = maxSelectableQuantity.value
+        const ignorePrice = selectedInventoryItem.value?.ignorePrice ?? false
 
         // Keeping the old item content if the new item is a container
         const newContent: IInventoryItem[] = []
@@ -331,13 +332,14 @@ export default defineComponent({
 
         if (preset != null) {
           // Creating a copy of the preset, otherwise the preset is modified for the whole application
-          const newSelectedInventoryItem = JSON.parse(JSON.stringify(preset))
+          const newSelectedInventoryItem = JSON.parse(JSON.stringify(preset)) as IInventoryItem
           newSelectedInventoryItem.content = newContent
+          newSelectedInventoryItem.ignorePrice = ignorePrice
           selectedInventoryItem.value = newSelectedInventoryItem
         } else {
           selectedInventoryItem.value = {
             content: newContent,
-            ignorePrice: false,
+            ignorePrice,
             itemId: newSelectedItem.id,
             modSlots: [],
             quantity: quantity.value

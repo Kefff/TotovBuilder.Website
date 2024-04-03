@@ -1,34 +1,34 @@
-import { computed, defineComponent, provide, ref, watch, onUnmounted, onMounted } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted, provide, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import InputTextField from '../input-text-field/InputTextFieldComponent.vue'
-import InventorySlot from '../inventory-slot/InventorySlotComponent.vue'
 import { IBuild } from '../../models/build/IBuild'
-import Services from '../../services/repository/Services'
-import { BuildComponentService } from '../../services/components/BuildComponentService'
-import { CompatibilityService } from '../../services/compatibility/CompatibilityService'
-import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
-import { CompatibilityRequest } from '../../services/compatibility/CompatibilityRequest'
-import { BuildPropertiesService } from '../../services/BuildPropertiesService'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
-import StatsUtils from '../../utils/StatsUtils'
-import { ExportService } from '../../services/ExportService'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
-import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
-import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
-import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
-import { GlobalFilterService } from '../../services/GlobalFilterService'
-import Loading from '../loading/LoadingComponent.vue'
-import BuildShare from '../build-share/BuildShareComponent.vue'
-import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
-import { PathUtils } from '../../utils/PathUtils'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
-import { InventoryItemService } from '../../services/InventoryItemService'
-import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
 import vueI18n from '../../plugins/vueI18n'
-import LoadingError from '../loading-error/LoadingErrorComponent.vue'
-import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
-import { ItemService } from '../../services/ItemService'
+import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
+import { ExportService } from '../../services/ExportService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { InventoryItemService } from '../../services/InventoryItemService'
+import { ItemService } from '../../services/ItemService'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
+import { CompatibilityRequest } from '../../services/compatibility/CompatibilityRequest'
+import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
+import { CompatibilityService } from '../../services/compatibility/CompatibilityService'
+import { BuildComponentService } from '../../services/components/BuildComponentService'
+import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
+import Services from '../../services/repository/Services'
+import { PathUtils } from '../../utils/PathUtils'
+import StatsUtils from '../../utils/StatsUtils'
+import BuildShare from '../build-share/BuildShareComponent.vue'
+import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
+import InputTextField from '../input-text-field/InputTextFieldComponent.vue'
+import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
+import InventorySlot from '../inventory-slot/InventorySlotComponent.vue'
+import LoadingError from '../loading-error/LoadingErrorComponent.vue'
+import Loading from '../loading/LoadingComponent.vue'
+import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
+import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
+import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
 
 export default defineComponent({
   components: {
@@ -347,12 +347,13 @@ export default defineComponent({
      * Reacts to a keyboard event.
      * @param event - Keyboard event.
      */
-    function onKeyDown(event: KeyboardEvent) {
+    async function onKeyDown(event: KeyboardEvent) {
       if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
         event.preventDefault() // Prevents the browser save action to be triggered
 
         if (editing.value && !invalid.value) {
-          save()
+          await save()
+          editing.value = true // After saving with the shortcut, we stay in edit mode unlike when using the button
         }
       }
     }
@@ -412,8 +413,10 @@ export default defineComponent({
      * Saves the build.
      */
     async function save() {
-      editing.value = false
+      isLoading.value = true
       await buildComponentService.saveBuild(router, build.value)
+      isLoading.value = false
+      editing.value = false
     }
 
     /**

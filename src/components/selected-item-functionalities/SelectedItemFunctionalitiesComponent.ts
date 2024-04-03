@@ -3,6 +3,10 @@ import { SelectableTab } from '../../models/utils/SelectableTab'
 
 export default defineComponent({
   props: {
+    canBeLooted: {
+      type: Boolean,
+      required: true
+    },
     canHaveContent: {
       type: Boolean,
       required: true

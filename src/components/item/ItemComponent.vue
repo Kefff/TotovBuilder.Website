@@ -59,6 +59,7 @@
         v-if="selectedInventoryItem != null"
         v-model:selectedTab="selectedTab"
         v-model:ignorePrice="selectedInventoryItem.ignorePrice"
+        :can-be-looted="canBeLooted"
         :can-have-content="selectedItemIsContainer"
         :can-have-mods="selectedItemIsModdable"
         @update:ignore-price="onIgnorePriceChanged()"
