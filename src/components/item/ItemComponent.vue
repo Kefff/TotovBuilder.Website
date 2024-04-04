@@ -62,6 +62,8 @@
         :can-be-looted="canBeLooted"
         :can-have-content="selectedItemIsContainer"
         :can-have-mods="selectedItemIsModdable"
+        :content-count="selectedInventoryItem.content.length"
+        :mods-count="selectedInventoryItem.modSlots.filter(ms => ms.item != null).length"
         @update:ignore-price="onIgnorePriceChanged()"
       />
       <SelectedItemSummarySelector
@@ -99,16 +101,6 @@
   </div>
 </template>
 
-<script
-  lang="ts"
-  src="./ItemComponent.ts"
-/>
-<style
-  scoped
-  lang="css"
-  src="./ItemComponent.css"
-/>
-<style
-  lang="css"
-  src="./ItemComponent.unscoped.css"
-/>
+<script lang="ts" src="./ItemComponent.ts" />
+<style scoped lang="css" src="./ItemComponent.css" />
+<style lang="css" src="./ItemComponent.unscoped.css" />

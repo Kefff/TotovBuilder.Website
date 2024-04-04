@@ -15,10 +15,20 @@ export default defineComponent({
       type: Boolean,
       required: true
     },
+    contentCount: {
+      type: Number,
+      required: false,
+      default: undefined
+    },
     ignorePrice: {
       type: Boolean,
       required: false,
       default: false
+    },
+    modsCount: {
+      type: Number,
+      required: false,
+      default: undefined
     },
     selectedTab: {
       type: String as PropType<SelectableTab>,
@@ -44,7 +54,6 @@ export default defineComponent({
       get: () => props.ignorePrice,
       set: (value: boolean) => emit('update:ignorePrice', value)
     })
-
     const selectedTabValue = computed({
       get: () => props.selectedTab,
       set: (value: SelectableTab) => emit('update:selectedTab', value)

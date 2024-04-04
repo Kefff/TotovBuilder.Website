@@ -2,8 +2,21 @@
 @import '../../css/icon.css';
 
 .selected-item-functionalities {
+  align-items: center;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   margin-right: 2rem;
+}
+
+.selected-item-functionalities-count-chip {
+  background-color: var(--primary-color);
+  border-radius: 1rem;
+  color: var(--text-color);
+  font-size: 0.8rem;
+  height: 1rem;
+  position: absolute;
+  text-align: center;
+  transform: translate(1.5rem, -0.7rem);
+  width: 1rem;
 }
