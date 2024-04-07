@@ -29,7 +29,7 @@ export class ArmorUtils {
    * @param inventoryItem - Inventory item.
    * @returns Front plate armor class.
    */
-  public static async getFrontPlateArmorClass(inventoryItem: IInventoryItem): Promise<Result<IArmorPlateModifiers>> {
+  public static async getFrontPlateArmorClass(inventoryItem: IInventoryItem): Promise<Result<IArmorPlateModifiers> | undefined> {
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.modSlotName === 'front_plate') {
         if (modSlot.item != null) {
@@ -51,9 +51,6 @@ export class ArmorUtils {
       }
     }
 
-    return Result.ok({
-      armorClass: 0,
-      durability: 0
-    })
+    return undefined
   }
 }

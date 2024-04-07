@@ -127,10 +127,7 @@ describe('getFrontPlateArmorClass()', () => {
         ],
         quantity: 1
       } as IInventoryItem,
-      {
-        armorClass: 0,
-        durability: 0
-      } as IArmorPlateModifiers
+      undefined
     ],
     [
       {
@@ -140,10 +137,7 @@ describe('getFrontPlateArmorClass()', () => {
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
-      {
-        armorClass: 0,
-        durability: 0
-      } as IArmorPlateModifiers
+      undefined
     ],
     [
       {
@@ -153,12 +147,9 @@ describe('getFrontPlateArmorClass()', () => {
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
-      {
-        armorClass: 0,
-        durability: 0
-      } as IArmorPlateModifiers
+      undefined
     ]
-  ])('should get the armor class of the front ballistic plate of the inventory item', async (inventoryItem: IInventoryItem, expected: IArmorPlateModifiers) => {
+  ])('should get the armor class of the front ballistic plate of the inventory item', async (inventoryItem: IInventoryItem, expected: IArmorPlateModifiers | undefined) => {
     // Arrange
     useItemServiceMock()
 
@@ -166,8 +157,12 @@ describe('getFrontPlateArmorClass()', () => {
     const armorClassResult = await ArmorUtils.getFrontPlateArmorClass(inventoryItem)
 
     // Assert
-    expect(armorClassResult.success).toBe(true)
-    expect(armorClassResult.value).toStrictEqual(expected)
+    if (expected == null) {
+      expect(armorClassResult).toBe(expected)
+    } else {
+      expect(armorClassResult!.success).toBe(true)
+      expect(armorClassResult!.value).toStrictEqual(expected)
+    }
   })
 
   it('should fail when the item cannot be found', async () => {

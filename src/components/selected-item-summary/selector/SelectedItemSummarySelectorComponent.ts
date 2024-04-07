@@ -197,7 +197,7 @@ export default defineComponent({
     async function setArmorPlateModifiers() {
       const armorPlateModifiersResult = await ArmorUtils.getFrontPlateArmorClass(props.modelValue)
 
-      if (armorPlateModifiersResult.success) {
+      if (armorPlateModifiersResult != null && armorPlateModifiersResult.success) {
         armorPlateModifiers.value = armorPlateModifiersResult.value
       } else {
         armorPlateModifiers.value = undefined
