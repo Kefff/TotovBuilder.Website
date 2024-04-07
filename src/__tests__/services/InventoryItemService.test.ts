@@ -11,7 +11,7 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
-import { ak12PistolGrip, ak12Stock, ak12bt, alpha, ammo1270Magnum, ammo545bp, ammo545us, ammo9mmGT, armor6b13Fl, bansheeDefault, berkut, esLamp, ewr, iskra, lshZ2dtm, lshZ2dtmFs, m9a3, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, monocletePe, mts25512Default, mts25512cyl, plate6b33Back, precision, rgd5, rpk16, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16MuzzleBreak, rpk16Tube, salewa, scavVest, specterDr, srd9, syringe, vhs, x400 } from '../__data__/itemMocks'
+import { ak12PistolGrip, ak12Stock, ak12bt, alpha, ammo1270Magnum, ammo545bp, ammo545us, ammo9mmGT, armor6b13Fl, armor6b13FlDefault, bansheeDefault, berkut, esLamp, ewr, iskra, lshZ2dtm, lshZ2dtmFs, m9a3, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, monocletePe, mts25512Default, mts25512cyl, plate6b33Back, plate6b33Front, precision, rgd5, rpk16, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16MuzzleBreak, rpk16Tube, salewa, scavVest, specterDr, srd9, syringe, vhs, x400 } from '../__data__/itemMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
@@ -410,6 +410,7 @@ describe('getPrice()', () => {
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()
       Services.configure(GlobalFilterService)
+
       const service = new InventoryItemService()
 
       // Act
@@ -2509,6 +2510,44 @@ describe('getWearableModifiers()', () => {
       {
         content: [],
         ignorePrice: false,
+        itemId: armor6b13FlDefault.id,
+        modSlots: [
+          {
+            modSlotName: 'front_plate',
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: plate6b33Front.id,
+              modSlots: [],
+              quantity: 1
+            }
+          },
+          {
+            modSlotName: 'back_plate',
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: plate6b33Back.id,
+              modSlots: [],
+              quantity: 1
+            }
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        ergonomicsPercentageModifier: armor6b13FlDefault.ergonomicsPercentageModifier,
+        ergonomicsPercentageModifierWithMods: armor6b13FlDefault.ergonomicsPercentageModifier + plate6b33Front.ergonomicsPercentageModifier + plate6b33Back.ergonomicsPercentageModifier,
+        movementSpeedPercentageModifier: armor6b13FlDefault.movementSpeedPercentageModifier,
+        movementSpeedPercentageModifierWithMods: armor6b13FlDefault.movementSpeedPercentageModifier + plate6b33Front.movementSpeedPercentageModifier + plate6b33Back.movementSpeedPercentageModifier,
+        turningSpeedPercentageModifier: armor6b13FlDefault.turningSpeedPercentageModifier,
+        turningSpeedPercentageModifierWithMods: armor6b13FlDefault.turningSpeedPercentageModifier + plate6b33Front.turningSpeedPercentageModifier + plate6b33Back.turningSpeedPercentageModifier
+      } as IWearableModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
         itemId: lshZ2dtm.id,
         modSlots: [
           {
@@ -2628,6 +2667,41 @@ describe('getWeight()', () => {
         weight: 1,
         weightWithContent: 3.53,
         unitWeight: 1
+      } as IWeight
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: bansheeDefault.id,
+        modSlots: [
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: monocletePe.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'front_plate'
+          },
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: monocletePe.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'back_plate'
+          }
+        ],
+        quantity: 1
+      },
+      {
+        weight: 3.08,
+        weightWithContent: 5.779999999999999,
+        unitWeight: 3.08
       } as IWeight
     ],
     [

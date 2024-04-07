@@ -392,6 +392,28 @@ export const crossbowPrices: IPrice[] = [
   }
 ]
 
+export const cultLocustPrices: IPrice[] = [
+  {
+    barterItems: [
+      {
+        itemId: '5bc9bc53d4351e00367fbcee',
+        quantity: 1
+      }
+    ],
+    currencyName: 'barter',
+    itemId: '656fa8d700d62bcd2e024084',
+    merchant: 'skier',
+    merchantLevel: 4,
+    quest: {
+      id: '5c0d4c12d09282029f539173',
+      name: 'Peacekeeping Mission',
+      wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Peacekeeping_Mission'
+    },
+    value: 0,
+    valueInMainCurrency: 0
+  }
+]
+
 export const ekp802dtPrices: IPrice[] = [
   {
     barterItems: [],
@@ -1014,6 +1036,44 @@ export const opSksDtPrices: IPrice[] = [
   }
 ]
 
+export const pacaPrices: IPrice[] = [
+  {
+    itemId: '5648a7494bdc2d9d488b4583',
+    merchant: 'ragman',
+    merchantLevel: 1,
+    value: 29152,
+    valueInMainCurrency: 29152,
+    barterItems: [],
+    currencyName: 'RUB',
+    quest: undefined
+  },
+  {
+    itemId: '5648a7494bdc2d9d488b4583',
+    value: 32043,
+    valueInMainCurrency: 32043,
+    barterItems: [],
+    currencyName: 'RUB',
+    merchant: 'flea-market',
+    merchantLevel: 0,
+    quest: undefined
+  },
+  {
+    barterItems: [
+      {
+        itemId: '572b7fa524597762b747ce82',
+        quantity: 3
+      }
+    ],
+    currencyName: 'barter',
+    itemId: '5648a7494bdc2d9d488b4583',
+    merchant: 'ragman',
+    merchantLevel: 1,
+    quest: undefined,
+    value: 0,
+    valueInMainCurrency: 0
+  }
+]
+
 export const paidPrices: IPrice[] = [
   {
     barterItems: [],
@@ -1024,6 +1084,19 @@ export const paidPrices: IPrice[] = [
     quest: undefined,
     value: 27326,
     valueInMainCurrency: 27326
+  }
+]
+
+export const passPrices: IPrice[] = [
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: pass.id,
+    merchant: 'flea-market',
+    merchantLevel: 0,
+    quest: undefined,
+    value: 31503,
+    valueInMainCurrency: 31503
   }
 ]
 
@@ -1060,19 +1133,6 @@ export const plate6b33FrontPrices: IPrice[] = [
     quest: undefined,
     value: 28942,
     valueInMainCurrency: 28942
-  }
-]
-
-export const passPrices: IPrice[] = [
-  {
-    barterItems: [],
-    currencyName: 'RUB',
-    itemId: pass.id,
-    merchant: 'flea-market',
-    merchantLevel: 0,
-    quest: undefined,
-    value: 31503,
-    valueInMainCurrency: 31503
   }
 ]
 
@@ -1767,6 +1827,7 @@ export const PriceMocks: IPrice[] = [
   ...capacitorsPrices,
   ...cfPrices,
   ...crossbowPrices,
+  ...cultLocustPrices,
   ...ekp802dtPrices,
   ...erBayonetPrices,
   ...esLampPrices,
@@ -1801,6 +1862,7 @@ export const PriceMocks: IPrice[] = [
   ...nf30mmPrices,
   ...opSksDefaultPrices,
   ...opSksDtPrices,
+  ...pacaPrices,
   ...paidPrices,
   ...passPrices,
   ...plate6b33BackPrices,

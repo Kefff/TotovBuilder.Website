@@ -876,6 +876,36 @@ export const crossbow: IEyewear = {
   blindnessProtectionPercentage: 0.3
 }
 
+export const cultLocust: IArmorMod = {
+  armorClass: 5,
+  armoredAreas: [
+    'FRPLATE',
+    'BCKPLATE'
+  ],
+  baseItemId: undefined,
+  blindnessProtectionPercentage: 0,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  maxStackableAmount: 1,
+  modSlots: [],
+  presetWearableModifiers: undefined,
+  prices: [],
+  durability: 60,
+  ergonomicsPercentageModifier: -0.01,
+  material: 'Titan',
+  movementSpeedPercentageModifier: -0.015,
+  turningSpeedPercentageModifier: -0.01,
+  categoryId: 'armorMod',
+  iconLink: 'https://assets.tarkov.dev/656fa8d700d62bcd2e024084-icon.webp',
+  id: '656fa8d700d62bcd2e024084',
+  imageLink: 'https://assets.tarkov.dev/656fa8d700d62bcd2e024084-image.webp',
+  marketLink: 'https://tarkov.dev/item/cult-locust-ballistic-plate',
+  name: 'Cult Locust ballistic plate',
+  shortName: 'Cult Locust',
+  weight: 2.56,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Cult_Locust_ballistic_plate'
+}
+
 export const ekp802dt: IRangedWeaponMod = {
   accuracyPercentageModifier: 0,
   baseItemId: undefined,
@@ -2189,6 +2219,39 @@ export const opSksDt: IMod = {
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/OP-SKS_dovetail_mount'
 }
 
+export const paca: IArmor = {
+  armorClass: 2,
+  armoredAreas: [
+    'Stomach',
+    'Thorax',
+    'StomachLowerBack',
+    'ThoraxUpperBack',
+    'StomachLeftSide',
+    'StomachRightSide'
+  ],
+  ergonomicsPercentageModifier: -0.01,
+  material: 'Aramid',
+  movementSpeedPercentageModifier: -0.01,
+  categoryId: 'armor',
+  iconLink: 'https://assets.tarkov.dev/5648a7494bdc2d9d488b4583-icon.webp',
+  id: '5648a7494bdc2d9d488b4583',
+  imageLink: 'https://assets.tarkov.dev/5648a7494bdc2d9d488b4583-image.webp',
+  marketLink: 'https://tarkov.dev/item/paca-soft-armor',
+  name: 'PACA Soft Armor',
+  shortName: 'PACA',
+  weight: 3.5,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/PACA_Soft_Armor',
+  durability: 0,
+  baseItemId: undefined,
+  defaultPresetId: undefined,
+  modSlots: [],
+  conflictingItemIds: [],
+  maxStackableAmount: 1,
+  prices: [],
+  presetWearableModifiers: undefined,
+  turningSpeedPercentageModifier: 0
+}
+
 export const paid: IItem = {
   categoryId: 'other',
   conflictingItemIds: [],
@@ -3416,6 +3479,7 @@ export const ItemMocks: IItem[] = [
   capacitors,
   cf,
   crossbow,
+  cultLocust,
   ekp802dt,
   erBayonet,
   esLamp,
@@ -3450,6 +3514,7 @@ export const ItemMocks: IItem[] = [
   nf30mm,
   opSksDefault,
   opSksDt,
+  paca,
   paid,
   pass,
   plate6b33Back,

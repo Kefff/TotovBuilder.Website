@@ -4,60 +4,9 @@
     class="stats"
   >
     <ItemStat :item="item">
-      <AmmunitionStat
-        v-if="itemPropertiesService.isAmmunition(item)"
-        :item="item"
-      />
-      <ArmorStat
-        v-else-if="itemPropertiesService.isArmor(item)"
-        :item="item"
-      />
-      <ArmorModStat
-        v-else-if="itemPropertiesService.isArmorMod(item)"
-        :item="item"
-      />
-      <BackpackStat
-        v-else-if="itemPropertiesService.isBackpack(item)"
-        :item="item"
-      />
-      <ContainerStat
-        v-else-if="itemPropertiesService.isContainer(item)"
-        :item="item"
-      />
-      <EyewearStat
-        v-else-if="itemPropertiesService.isEyewear(item)"
-        :item="item"
-      />
-      <GrenadeStat
-        v-else-if="itemPropertiesService.isGrenade(item)"
-        :item="item"
-      />
-      <HeadwearStat
-        v-else-if="itemPropertiesService.isHeadwear(item)"
-        :item="item"
-      />
-      <MagazineStat
-        v-else-if="itemPropertiesService.isMagazine(item)"
-        :item="item"
-      />
-      <MeleeWeaponStat
-        v-else-if="itemPropertiesService.isMeleeWeapon(item)"
-        :item="item"
-      />
-      <ModStat
-        v-else-if="itemPropertiesService.isMod(item)"
-        :item="item"
-      />
-      <RangedWeaponStat
-        v-else-if="itemPropertiesService.isRangedWeapon(item)"
-        :item="item"
-      />
-      <RangedWeaponModStat
-        v-else-if="itemPropertiesService.isRangedWeaponMod(item)"
-        :item="item"
-      />
-      <VestStat
-        v-else-if="itemPropertiesService.isVest(item)"
+      <component
+        :is="specializedComponent"
+        v-if="specializedComponent != null"
         :item="item"
       />
     </ItemStat>

@@ -12,7 +12,7 @@
         {{ build.name }}
       </span>
       <InputTextField
-        v-show="editing"
+        v-show="!isLoading && editing"
         v-model="build.name"
         :caption="$t('caption.name')"
         caption-mode="placeholder"

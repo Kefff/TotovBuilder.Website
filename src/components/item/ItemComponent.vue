@@ -70,6 +70,7 @@
         v-if="selectedInventoryItem != null"
         v-model="selectedInventoryItem"
         :can-be-looted="canBeLooted"
+        :path="path"
         :preset="preset"
       />
     </div>

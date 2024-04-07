@@ -8,7 +8,7 @@ import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
-import { ak12PistolGrip, ak12Stock, alpha, ammo545bp, ammo545us, lshZ2dtm, lshZ2dtmFs, ms2000, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, specterDr } from '../__data__/itemMocks'
+import { ak12PistolGrip, ak12Stock, alpha, ammo545bp, ammo545us, bansheeDefault, lshZ2dtm, lshZ2dtmFs, monocletePe, ms2000, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, specterDr } from '../__data__/itemMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
@@ -221,6 +221,48 @@ const inventorySlot3: IInventorySlot = {
   ]
 }
 
+const inventorySlot4: IInventorySlot = {
+  typeId: 'tacticalRig',
+  items: [
+    {
+      content: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: ms2000.id,
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      ignorePrice: false,
+      itemId: bansheeDefault.id,
+      modSlots: [
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: monocletePe.id,
+            modSlots: [],
+            quantity: 1
+          },
+          modSlotName: 'front_plate'
+        },
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: monocletePe.id,
+            modSlots: [],
+            quantity: 1
+          },
+          modSlotName: 'back_plate'
+        }
+      ],
+      quantity: 1
+    }
+  ]
+}
+
 describe('canBeLooted()', () => {
   it.each([
     [
@@ -331,6 +373,17 @@ describe('getWearableModifiers()', () => {
         turningSpeedPercentageModifier: 0,
         turningSpeedPercentageModifierWithMods: -0.08
       } as IWearableModifiers
+    ],
+    [
+      inventorySlot4,
+      {
+        ergonomicsPercentageModifier: 0,
+        ergonomicsPercentageModifierWithMods: -0.03,
+        movementSpeedPercentageModifier: 0,
+        movementSpeedPercentageModifierWithMods: -0.03,
+        turningSpeedPercentageModifier: 0,
+        turningSpeedPercentageModifierWithMods: -0.01
+      }
     ],
     [
       inventorySlot2,
@@ -784,6 +837,10 @@ describe('getWeight()', () => {
     [
       inventorySlot1,
       4.4
+    ],
+    [
+      inventorySlot4,
+      5.93
     ],
     [
       {

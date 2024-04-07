@@ -1,6 +1,10 @@
-import { ArmorUtils } from '../../utils/ArmorUtils'
-import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { describe, expect, it } from 'vitest'
+import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { IArmorPlateModifiers } from '../../models/utils/IArmorPlateModifiers'
+import { ArmorUtils } from '../../utils/ArmorUtils'
+import { armor6b13FlDefault, bansheeDefault, cultLocust, iskra, monocletePe, paca, plate6b33Back } from '../__data__/itemMocks'
+import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
+import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 
 describe('getArmorPenetrationTooltip()', () => {
   it.each([
@@ -27,5 +31,171 @@ Penetrated after < 1 bullets`]
 
     // Assert
     expect(tooltip).toBe(expected)
+  })
+})
+
+describe('getFrontPlateArmorClass()', () => {
+  it.each([
+    [
+      {
+        content: [],
+        itemId: armor6b13FlDefault.id,
+        ignorePrice: false,
+        modSlots: [
+          {
+            item: {
+              content: [],
+              itemId: cultLocust.id,
+              ignorePrice: false,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'front_plate'
+          },
+          {
+            item: {
+              content: [],
+              itemId: plate6b33Back.id,
+              ignorePrice: false,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'back_plate'
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: cultLocust.armorClass,
+        durability: cultLocust.durability
+      } as IArmorPlateModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: bansheeDefault.id,
+        modSlots: [
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: cultLocust.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'front_plate'
+          },
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: monocletePe.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'back_plate'
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: cultLocust.armorClass,
+        durability: cultLocust.durability
+      } as IArmorPlateModifiers
+    ],
+    [
+      {
+        content: [],
+        itemId: armor6b13FlDefault.id,
+        ignorePrice: false,
+        modSlots: [
+          {
+            item: undefined,
+            modSlotName: 'front_plate'
+          },
+          {
+            item: {
+              content: [],
+              itemId: plate6b33Back.id,
+              ignorePrice: false,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'back_plate'
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: 0,
+        durability: 0
+      } as IArmorPlateModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: paca.id,
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: 0,
+        durability: 0
+      } as IArmorPlateModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: iskra.id,
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: 0,
+        durability: 0
+      } as IArmorPlateModifiers
+    ]
+  ])('should get the armor class of the front ballistic plate of the inventory item', async (inventoryItem: IInventoryItem, expected: IArmorPlateModifiers) => {
+    // Arrange
+    useItemServiceMock()
+
+    // Act
+    const armorClassResult = await ArmorUtils.getFrontPlateArmorClass(inventoryItem)
+
+    // Assert
+    expect(armorClassResult.success).toBe(true)
+    expect(armorClassResult.value).toStrictEqual(expected)
+  })
+
+  it('should fail when the item cannot be found', async () => {
+    // Arrange
+    useItemServiceMock()
+
+    // Act
+    const armorClassResult = await ArmorUtils.getFrontPlateArmorClass({
+      content: [],
+      ignorePrice: false,
+      itemId: bansheeDefault.id,
+      modSlots: [
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: 'invalid',
+            modSlots: [],
+            quantity: 1
+          },
+          modSlotName: 'front_plate'
+        }
+      ],
+      quantity: 1
+    })
+
+    // Assert
+    expect(armorClassResult!.success).toBe(false)
+    expect(armorClassResult!.failureMessage).toBe('Item "invalid" not found.')
   })
 })

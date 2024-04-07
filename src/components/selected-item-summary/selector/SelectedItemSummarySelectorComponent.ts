@@ -1,5 +1,13 @@
 import { defineComponent, onMounted, PropType, ref, watch } from 'vue'
+import { IInventoryItem } from '../../../models/build/IInventoryItem'
+import { IInventoryModSlot } from '../../../models/build/IInventoryModSlot'
 import { IItem } from '../../../models/item/IItem'
+import { IArmorPlateModifiers } from '../../../models/utils/IArmorPlateModifiers'
+import { InventoryItemService } from '../../../services/InventoryItemService'
+import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
+import { ItemService } from '../../../services/ItemService'
+import Services from '../../../services/repository/Services'
+import { ArmorUtils } from '../../../utils/ArmorUtils'
 import AmmunitionSummary from '../../summary/ammunition/AmmunitionSummaryComponent.vue'
 import ArmorModSummary from '../../summary/armor-mod/ArmorModSummaryComponent.vue'
 import ArmorSummary from '../../summary/armor/ArmorSummaryComponent.vue'
@@ -13,13 +21,8 @@ import MeleeWeaponSummary from '../../summary/melee-weapon/MeleeWeaponSummaryCom
 import ModSummary from '../../summary/mod/ModSummaryComponent.vue'
 import RangedWeaponModSummary from '../../summary/ranged-weapon-mod/RangedWeaponModSummaryComponent.vue'
 import RangedWeaponSummary from '../../summary/ranged-weapon/RangedWeaponSummaryComponent.vue'
-import SelectedItemSummary from '../item/SelectedItemSummaryComponent.vue'
 import VestSummary from '../../summary/vest/VestSummaryComponent.vue'
-import { IInventoryItem } from '../../../models/build/IInventoryItem'
-import Services from '../../../services/repository/Services'
-import { ItemService } from '../../../services/ItemService'
-import { IInventoryModSlot } from '../../../models/build/IInventoryModSlot'
-import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
+import SelectedItemSummary from '../item/SelectedItemSummaryComponent.vue'
 
 export default defineComponent({
   components: {
@@ -49,6 +52,10 @@ export default defineComponent({
       required: false,
       default: true
     },
+    path: {
+      type: String,
+      required: true
+    },
     preset: {
       type: Object as PropType<IInventoryModSlot>,
       required: false,
@@ -56,29 +63,164 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const itemPropertiesService = Services.get(ItemPropertiesService)
+    const inventoryItemService = Services.get(InventoryItemService)
 
+    const armorPlateModifiers = ref<IArmorPlateModifiers>()
+    const isAmmunition = ref(false)
+    const isArmor = ref(false)
+    const isArmorMod = ref(false)
+    const isBackpack = ref(false)
+    const isContainer = ref(false)
+    const isEyewear = ref(false)
+    const isGrenade = ref(false)
+    const isHeadwear = ref(false)
+    const isMagazine = ref(false)
+    const isMeleeWeapon = ref(false)
+    const isMod = ref(false)
+    const isRangedWeapon = ref(false)
+    const isRangedWeaponMod = ref(false)
+    const isVest = ref(false)
     const item = ref<IItem>()
-    watch(() => props.modelValue, () => setItem())
 
-    onMounted(() => setItem())
+    watch(() => props.modelValue.itemId, () => setItem())
+
+    onMounted(() => {
+      inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
+
+      setItem()
+    })
 
     /**
-     * Sets the item based on the inventory item passed to the component.
+     * Updates the armor plates modifier when the front ballistic plate of an armor or a vest changes.
+     */
+    async function onInventoryItemChanged(path: string) {
+      const itemPropertiesService = Services.get(ItemPropertiesService)
+
+      if (item.value != null
+        && path.startsWith(props.path)
+        && (itemPropertiesService.isArmor(item.value)
+          || itemPropertiesService.isVest(item.value))) {
+        await setArmorPlateModifiers()
+      }
+    }
+
+    /**
+     * Sets the item based on the inventory item passed to the component and determines which summary component to display.
      */
     async function setItem() {
       const itemResult = await Services.get(ItemService).getItem(props.modelValue.itemId)
 
       if (itemResult.success) {
         item.value = itemResult.value
+        await setItemType(item.value)
       } else {
         item.value = undefined
+        armorPlateModifiers.value = undefined
+      }
+    }
+
+    /**
+     * Sets the type of specialized summary component to display.
+     * @param item - Item.
+     */
+    async function setItemType(item: IItem) {
+      if (item.categoryId === 'other') {
+        isAmmunition.value = false
+        isArmor.value = false
+        isArmorMod.value = false
+        isBackpack.value = false
+        isContainer.value = false
+        isEyewear.value = false
+        isGrenade.value = false
+        isHeadwear.value = false
+        isMagazine.value = false
+        isMeleeWeapon.value = false
+        isMod.value = false
+        isRangedWeapon.value = false
+        isRangedWeaponMod.value = false
+        isVest.value = false
+
+        return
+      }
+
+      const itemPropertiesService = Services.get(ItemPropertiesService)
+
+      if (itemPropertiesService.isAmmunition(item)) {
+        isAmmunition.value = true
+      }
+      else if (itemPropertiesService.isArmor(item)) {
+        isArmor.value = true
+        await setArmorPlateModifiers()
+      }
+      else if (itemPropertiesService.isArmorMod(item)) {
+        isArmorMod.value = true
+      }
+      else if (itemPropertiesService.isBackpack(item)) {
+        isBackpack.value = true
+      }
+      else if (itemPropertiesService.isContainer(item)) {
+        isContainer.value = true
+      }
+      else if (itemPropertiesService.isEyewear(item)) {
+        isEyewear.value = true
+      }
+      else if (itemPropertiesService.isGrenade(item)) {
+        isGrenade.value = true
+      }
+      else if (itemPropertiesService.isHeadwear(item)) {
+        isHeadwear.value = true
+      }
+      else if (itemPropertiesService.isMagazine(item)) {
+        isMagazine.value = true
+      }
+      else if (itemPropertiesService.isMeleeWeapon(item)) {
+        isMeleeWeapon.value = true
+      }
+      else if (itemPropertiesService.isMod(item)) {
+        isMod.value = true
+      }
+      else if (itemPropertiesService.isRangedWeapon(item)) {
+        isRangedWeapon.value = true
+      }
+      else if (itemPropertiesService.isRangedWeaponMod(item)) {
+        isRangedWeaponMod.value = true
+      }
+      else if (itemPropertiesService.isVest(item)) {
+        isVest.value = true
+        await setArmorPlateModifiers()
+      }
+    }
+
+    /**
+     * Sets the armor plate modifiers for items with armor plate.
+     */
+    async function setArmorPlateModifiers() {
+      const armorPlateModifiersResult = await ArmorUtils.getFrontPlateArmorClass(props.modelValue)
+
+      if (armorPlateModifiersResult.success) {
+        armorPlateModifiers.value = armorPlateModifiersResult.value
+      } else {
+        armorPlateModifiers.value = undefined
       }
     }
 
     return {
-      item,
-      itemPropertiesService
+      armorPlateModifiers,
+      isAmmunition,
+      isArmor,
+      isArmorMod,
+      isBackpack,
+      isContainer,
+      isEyewear,
+      isGrenade,
+      isHeadwear,
+      isMagazine,
+      isMeleeWeapon,
+      isMod,
+      isRangedWeapon,
+      isRangedWeaponMod,
+      isVest,
+      item
     }
   }
 })
