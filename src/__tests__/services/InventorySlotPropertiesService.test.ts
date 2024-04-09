@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IInventorySlot } from '../../models/build/IInventorySlot'
+import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
@@ -8,7 +9,7 @@ import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
-import { ak12PistolGrip, ak12Stock, alpha, ammo545bp, ammo545us, bansheeDefault, lshZ2dtm, lshZ2dtmFs, monocletePe, ms2000, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, specterDr } from '../__data__/itemMocks'
+import { ak12PistolGrip, ak12Stock, alpha, ammo545bp, ammo545us, armbandBlue, armor6b13FlDefault, bansheeDefault, cultLocust, lshZ2dtm, lshZ2dtmFs, monocletePe, ms2000, paca, plate6b33Back, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, scavVest, specterDr } from '../__data__/itemMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
@@ -302,6 +303,170 @@ describe('canBeLooted()', () => {
     if (expectedSuccess) {
       expect(result.value).toBe(expectedValue)
     }
+  })
+})
+
+describe('getArmorModifiers()', () => {
+  it.each([
+    [
+      {
+        items: [
+          {
+            content: [],
+            itemId: armor6b13FlDefault.id,
+            ignorePrice: false,
+            modSlots: [
+              {
+                item: {
+                  content: [],
+                  itemId: cultLocust.id,
+                  ignorePrice: false,
+                  modSlots: [],
+                  quantity: 1
+                },
+                modSlotName: 'front_plate'
+              },
+              {
+                item: {
+                  content: [],
+                  itemId: plate6b33Back.id,
+                  ignorePrice: false,
+                  modSlots: [],
+                  quantity: 1
+                },
+                modSlotName: 'back_plate'
+              }
+            ],
+            quantity: 1
+          }
+        ],
+        typeId: 'bodyArmor'
+      } as IInventorySlot,
+      {
+        armorClass: cultLocust.armorClass,
+        durability: cultLocust.durability
+      } as IArmorModifiers
+    ],
+    [
+      {
+        items: [
+          {
+            content: [],
+            itemId: paca.id,
+            ignorePrice: false,
+            modSlots: [],
+            quantity: 1
+          }
+        ],
+        typeId: 'bodyArmor'
+      } as IInventorySlot,
+      {
+        armorClass: 2,
+        durability: 0
+      } as IArmorModifiers
+    ],
+    [
+      {
+        items: [
+          {
+            content: [],
+            ignorePrice: false,
+            itemId: bansheeDefault.id,
+            modSlots: [
+              {
+                item: {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: cultLocust.id,
+                  modSlots: [],
+                  quantity: 1
+                },
+                modSlotName: 'front_plate'
+              },
+              {
+                item: {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: monocletePe.id,
+                  modSlots: [],
+                  quantity: 1
+                },
+                modSlotName: 'back_plate'
+              }
+            ],
+            quantity: 1
+          }
+        ],
+        typeId: 'tacticalRig'
+      } as IInventorySlot,
+      {
+        armorClass: cultLocust.armorClass,
+        durability: cultLocust.durability
+      } as IArmorModifiers
+    ],
+    [
+      {
+        items: [
+          {
+            content: [],
+            ignorePrice: false,
+            itemId: scavVest.id,
+            modSlots: [],
+            quantity: 1
+          }
+        ],
+        typeId: 'tacticalRig'
+      } as IInventorySlot,
+      {
+        armorClass: 0,
+        durability: 0
+      } as IArmorModifiers
+    ],
+    [
+      {
+        items: [
+          {
+            content: [],
+            ignorePrice: false,
+            itemId: armbandBlue.id,
+            modSlots: [],
+            quantity: 1
+          }
+        ],
+        typeId: 'armband'
+      } as IInventorySlot,
+      {
+        armorClass: 0,
+        durability: 0
+      } as IArmorModifiers
+    ],
+    [
+      {
+        items: [
+          undefined
+        ],
+        typeId: 'bodyArmor'
+      } as IInventorySlot,
+      {
+        armorClass: 0,
+        durability: 0
+      } as IArmorModifiers
+    ]
+  ])('should get the armor modifiers of an armor or vest inventory slot', async (inventorySlot: IInventorySlot, expected: IArmorModifiers) => {
+    // Arrange
+    useItemServiceMock()
+    Services.configure(InventoryItemService)
+    Services.configure(ItemPropertiesService)
+
+    const service = new InventorySlotPropertiesService()
+
+    // Act
+    const armorModifiersResult = await service.getArmorModifiers(inventorySlot)
+
+    // Assert
+    expect(armorModifiersResult).not.toBeUndefined()
+    expect(armorModifiersResult!.success).toBe(true)
+    expect(armorModifiersResult!.value).toStrictEqual(expected)
   })
 })
 

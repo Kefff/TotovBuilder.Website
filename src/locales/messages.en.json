@@ -353,7 +353,6 @@
     "mainCurrencyNotFound": "Main currency not found.",
     "migrationError": "Error during migration to \"{version}\".",
     "missingPrice": "This item or one of its children is not sold by any of the configured merchants, therefore its price is not taken into account.",
-    "modSlotNotFound": "Cannot find mod slot \"{modSlot}\".",
     "newVersion": "Version {newVersion} has been released.",
     "noItemsFound": "No item could be found for your search with the current merchants and items configuration.",
     "postUpdatePeriod": "As we are in a post Tarkov update period, items and prices may not be up to date yet.\nThey are progressively being updated by the Tarkov.dev team.",

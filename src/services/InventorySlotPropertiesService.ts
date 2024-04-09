@@ -1,14 +1,15 @@
-import { IInventorySlot } from '../models/build/IInventorySlot'
-import Result, { FailureType } from '../utils/Result'
-import Services from './repository/Services'
-import { InventoryItemService } from './InventoryItemService'
 import InventorySlotTypes from '../data/inventory-slot-types.json'
-import vueI18n from '../plugins/vueI18n'
+import { IInventorySlot } from '../models/build/IInventorySlot'
+import { IArmorModifiers } from '../models/utils/IArmorModifiers'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
-import { ItemService } from './ItemService'
-import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
-import { PriceUtils } from '../utils/PriceUtils'
 import { IWearableModifiers } from '../models/utils/IWearableModifiers'
+import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
+import vueI18n from '../plugins/vueI18n'
+import { PriceUtils } from '../utils/PriceUtils'
+import Result, { FailureType } from '../utils/Result'
+import { InventoryItemService } from './InventoryItemService'
+import { ItemService } from './ItemService'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for managing properties of an inventory slot.
@@ -27,6 +28,24 @@ export class InventorySlotPropertiesService {
     }
 
     return Result.ok(inventorySlotType.canBeLooted)
+  }
+
+  /**
+   * Gets the armor modifiers of an armor or vest inventory slot.
+   * @param inventorySlot - Inventory slot.
+   */
+  public async getArmorModifiers(inventorySlot: IInventorySlot): Promise<Result<IArmorModifiers>> {
+    if ((inventorySlot.typeId !== 'bodyArmor' && inventorySlot.typeId !== 'tacticalRig')
+      || inventorySlot.items[0] == null) {
+      return Result.ok({
+        armorClass: 0,
+        durability: 0
+      })
+    }
+
+    const armorModifiersResult = await Services.get(InventoryItemService).getArmorModifiers(inventorySlot.items[0])
+
+    return armorModifiersResult
   }
 
   /**

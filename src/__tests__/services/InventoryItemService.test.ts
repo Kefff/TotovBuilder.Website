@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import { IErgonomics } from '../../models/utils/IErgonomics'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { IRecoil } from '../../models/utils/IRecoil'
@@ -11,7 +12,7 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
-import { ak12PistolGrip, ak12Stock, ak12bt, alpha, ammo1270Magnum, ammo545bp, ammo545us, ammo9mmGT, armor6b13Fl, armor6b13FlDefault, bansheeDefault, berkut, esLamp, ewr, iskra, lshZ2dtm, lshZ2dtmFs, m9a3, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, monocletePe, mts25512Default, mts25512cyl, plate6b33Back, plate6b33Front, precision, rgd5, rpk16, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16MuzzleBreak, rpk16Tube, salewa, scavVest, specterDr, srd9, syringe, vhs, x400 } from '../__data__/itemMocks'
+import { ak12PistolGrip, ak12Stock, ak12bt, alpha, ammo1270Magnum, ammo545bp, ammo545us, ammo9mmGT, armor6b13Fl, armor6b13FlDefault, bansheeDefault, berkut, cultLocust, esLamp, ewr, iskra, lshZ2dtm, lshZ2dtmFs, m9a3, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, monocletePe, mts25512Default, mts25512cyl, paca, plate6b33Back, plate6b33Front, precision, rgd5, rpk16, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16MuzzleBreak, rpk16Tube, salewa, scavVest, specterDr, srd9, syringe, vhs, x400 } from '../__data__/itemMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
@@ -107,6 +108,212 @@ const invalidInventoryItem3: IInventoryItem = {
   modSlots: [],
   quantity: 1
 }
+
+describe('getArmorModifiers()', () => {
+  it.each([
+    [
+      {
+        content: [],
+        itemId: armor6b13FlDefault.id,
+        ignorePrice: false,
+        modSlots: [
+          {
+            item: {
+              content: [],
+              itemId: cultLocust.id,
+              ignorePrice: false,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'front_plate'
+          },
+          {
+            item: {
+              content: [],
+              itemId: plate6b33Back.id,
+              ignorePrice: false,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'back_plate'
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: cultLocust.armorClass,
+        durability: cultLocust.durability
+      } as IArmorModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: bansheeDefault.id,
+        modSlots: [
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: cultLocust.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'front_plate'
+          },
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: monocletePe.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'back_plate'
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: cultLocust.armorClass,
+        durability: cultLocust.durability
+      } as IArmorModifiers
+    ],
+    [
+      {
+        content: [],
+        itemId: armor6b13FlDefault.id,
+        ignorePrice: false,
+        modSlots: [
+          {
+            item: undefined,
+            modSlotName: 'front_plate'
+          },
+          {
+            item: {
+              content: [],
+              itemId: plate6b33Back.id,
+              ignorePrice: false,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'back_plate'
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: 0,
+        durability: 0
+      } as IArmorModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: paca.id,
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: 2,
+        durability: 0
+      } as IArmorModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: scavVest.id,
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: 0,
+        durability: 0
+      } as IArmorModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: iskra.id,
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: 0,
+        durability: 0
+      } as IArmorModifiers
+    ]
+  ])('should get the armor class of the front armor plate of the inventory item', async (inventoryItem: IInventoryItem, expected: IArmorModifiers) => {
+    // Arrange
+    useItemServiceMock()
+    Services.configure(ItemPropertiesService)
+
+    const service = new InventoryItemService()
+
+    // Act
+    const armorModifiersResult = await service.getArmorModifiers(inventoryItem)
+
+    // Assert
+    expect(armorModifiersResult).not.toBeUndefined()
+    expect(armorModifiersResult!.success).toBe(true)
+    expect(armorModifiersResult!.value).toStrictEqual(expected)
+  })
+
+  it('should fail when the armor plate cannot be found', async () => {
+    // Arrange
+    useItemServiceMock()
+    Services.configure(ItemPropertiesService)
+
+    const service = new InventoryItemService()
+
+    // Act
+    const armorClassResult = await service.getArmorModifiers({
+      content: [],
+      ignorePrice: false,
+      itemId: bansheeDefault.id,
+      modSlots: [
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: 'invalid',
+            modSlots: [],
+            quantity: 1
+          },
+          modSlotName: 'front_plate'
+        }
+      ],
+      quantity: 1
+    })
+
+    // Assert
+    expect(armorClassResult!.success).toBe(false)
+    expect(armorClassResult!.failureMessage).toBe('Item "invalid" not found.')
+  })
+
+  it('should fail when the armor cannot be found', async () => {
+    // Arrange
+    useItemServiceMock()
+
+    const service = new InventoryItemService()
+
+    // Act
+    const armorClassResult = await service.getArmorModifiers({
+      content: [],
+      ignorePrice: false,
+      itemId: 'invalid',
+      modSlots: [],
+      quantity: 1
+    })
+
+    // Assert
+    expect(armorClassResult!.success).toBe(false)
+    expect(armorClassResult!.failureMessage).toBe('Item "invalid" not found.')
+  })
+})
 
 describe('getErgonomics()', () => {
   it.each([

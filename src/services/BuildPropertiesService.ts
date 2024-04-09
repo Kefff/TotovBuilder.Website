@@ -1,21 +1,22 @@
 import { IBuild } from '../models/build/IBuild'
 import { IInventoryItem } from '../models/build/IInventoryItem'
+import { IInventorySlot } from '../models/build/IInventorySlot'
+import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IConflictingItem } from '../models/configuration/IConflictingItem'
 import { IVest } from '../models/item/IVest'
+import { IArmorModifiers } from '../models/utils/IArmorModifiers'
+import { IBuildSummary } from '../models/utils/IBuildSummary'
+import { IInventoryPrice } from '../models/utils/IInventoryPrice'
+import { IWearableModifiers } from '../models/utils/IWearableModifiers'
+import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import vueI18n from '../plugins/vueI18n'
+import { PathUtils } from '../utils/PathUtils'
+import { PriceUtils } from '../utils/PriceUtils'
 import Result, { FailureType } from '../utils/Result'
+import { InventoryItemService } from './InventoryItemService'
+import { InventorySlotPropertiesService } from './InventorySlotPropertiesService'
 import { ItemService } from './ItemService'
 import Services from './repository/Services'
-import { InventorySlotPropertiesService } from './InventorySlotPropertiesService'
-import { IInventorySlot } from '../models/build/IInventorySlot'
-import { IBuildSummary } from '../models/utils/IBuildSummary'
-import { InventoryItemService } from './InventoryItemService'
-import { IInventoryPrice } from '../models/utils/IInventoryPrice'
-import { PathUtils } from '../utils/PathUtils'
-import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
-import { IShoppingListItem } from '../models/build/IShoppingListItem'
-import { PriceUtils } from '../utils/PriceUtils'
-import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 
 /**
  * Represents a service responsible for managing properties of a build.
@@ -27,25 +28,11 @@ export class BuildPropertiesService {
    * @returns Success if the build doesn't contain an armored vest; otherwise Failure.
    */
   public async canAddArmor(build: IBuild): Promise<Result> {
-    const vestSlot = build.inventorySlots.find((is) => is.typeId === 'tacticalRig')
-
-    if (vestSlot == null) {
-      // Should never occur
-      return Result.fail(
-        FailureType.error,
-        'BuildService.canAddArmor()',
-        vueI18n.t('message.modSlotNotFound', { modSlot: 'tacticalRig' })
-      )
-    }
-
     const itemService = Services.get(ItemService)
+    const vestSlot = build.inventorySlots.find((is) => is.typeId === 'tacticalRig')!
 
-    for (const vest of vestSlot.items) {
-      if (vest == null) {
-        continue
-      }
-
-      const vestResult = await itemService.getItem(vest.itemId)
+    if (vestSlot.items[0] != null) {
+      const vestResult = await itemService.getItem(vestSlot.items[0].itemId)
 
       if (!vestResult.success) {
         return Result.failFrom(vestResult)
@@ -140,30 +127,39 @@ export class BuildPropertiesService {
       return Result.ok()
     }
 
-    const armorSlot = build.inventorySlots.find(
-      (is) => is.typeId === 'bodyArmor'
-    )
+    const armorSlot = build.inventorySlots.find((is) => is.typeId === 'bodyArmor')!
 
-    if (armorSlot == null) {
-      // Should never occur
+    if (armorSlot.items[0] != null) {
       return Result.fail(
-        FailureType.error,
+        FailureType.hidden,
         'BuildService.canAddVest()',
-        vueI18n.t('message.modSlotNotFound', { modSlot: 'bodyArmor' })
+        vueI18n.t('message.cannotAddTacticalRig')
       )
     }
 
-    for (const item of armorSlot.items) {
-      if (item != null) {
-        return Result.fail(
-          FailureType.hidden,
-          'BuildService.canAddVest()',
-          vueI18n.t('message.cannotAddTacticalRig')
-        )
-      }
+    return Result.ok()
+  }
+
+  /**
+   * Gets the armor modifiers of an armor or vest in a build.
+   * @param build - Build.
+   */
+  public async getArmorModifiers(build: IBuild): Promise<Result<IArmorModifiers>> {
+    const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
+
+    const armorSlot = build.inventorySlots.find((is) => is.typeId === 'bodyArmor')!
+    let result = await inventorySlotPropertiesService.getArmorModifiers(armorSlot)
+
+    if (!result.success) {
+      return Result.failFrom(result)
     }
 
-    return Result.ok()
+    if (result.value.armorClass === 0) {
+      const vestSlot = build.inventorySlots.find((is) => is.typeId === 'tacticalRig')!
+      result = await inventorySlotPropertiesService.getArmorModifiers(vestSlot)
+    }
+
+    return result
   }
 
   /**

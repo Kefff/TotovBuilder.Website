@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
@@ -13,7 +14,7 @@ import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
 import Result from '../../utils/Result'
 import { build1, build2 } from '../__data__/buildMocks'
-import { ammo545bp, armor6b13FlDefault, bansheeDefault, berkut, ekp802dt, nf30mm, opSksDefault, opSksDt, pso1, rpk16, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, scavVest, specterDr } from '../__data__/itemMocks'
+import { ammo545bp, armor6b13FlDefault, bansheeDefault, berkut, ekp802dt, nf30mm, opSksDefault, opSksDt, paca, pso1, rpk16, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, scavVest, specterDr } from '../__data__/itemMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
@@ -21,38 +22,6 @@ import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigur
 
 describe('canAddArmor()', () => {
   it.each([
-    [
-      {
-        id: '',
-        inventorySlots: [
-          {
-            typeId: 'backpack',
-            items: [] as IInventoryItem[]
-          }
-        ]
-      } as IBuild,
-      {
-        failureContext: 'BuildService.canAddArmor()',
-        failureMessage: 'Cannot find mod slot "tacticalRig".',
-        success: false
-      } as Result
-    ],
-    [
-      {
-        id: '',
-        inventorySlots: [
-          {
-            typeId: 'tacticalRig',
-            items: [undefined] as (IInventoryItem | undefined)[]
-          }
-        ]
-      } as IBuild,
-      {
-        failureContext: '',
-        failureMessage: '',
-        success: true
-      } as Result
-    ],
     [
       {
         id: '',
@@ -456,23 +425,6 @@ describe('canAddVest()', () => {
         id: '',
         inventorySlots: [
           {
-            typeId: 'backpack',
-            items: [undefined] as (IInventoryItem | undefined)[]
-          }
-        ]
-      } as IBuild,
-      bansheeDefault.id,
-      {
-        failureContext: 'BuildService.canAddVest()',
-        failureMessage: 'Cannot find mod slot "bodyArmor".',
-        success: false
-      } as Result
-    ],
-    [
-      {
-        id: '',
-        inventorySlots: [
-          {
             typeId: 'bodyArmor',
             items: [
               {
@@ -525,6 +477,215 @@ describe('canAddVest()', () => {
       expect(result).toEqual(expected)
     }
   )
+})
+
+describe('getArmorModifiers()', () => {
+  it.each([
+    [
+      build1,
+      {
+        armorClass: 4,
+        durability: 50
+      } as IArmorModifiers
+    ],
+    [
+      {
+        id: '',
+        name: '',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: paca.id,
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'bodyArmor'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined
+      },
+      {
+        armorClass: 2,
+        durability: 0
+      } as IArmorModifiers
+    ],
+    [
+      build2,
+      {
+        armorClass: 4,
+        durability: 40
+      } as IArmorModifiers
+    ],
+    [
+      {
+        id: '',
+        name: 'Build 3',
+        inventorySlots: [
+          {
+            items: [undefined],
+            typeId: 'bodyArmor'
+          },
+          {
+            items: [undefined],
+            typeId: 'tacticalRig'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined
+      } as IBuild,
+      {
+        armorClass: 0,
+        durability: 0
+      } as IArmorModifiers
+    ],
+    [
+      {
+        id: '',
+        name: '',
+        inventorySlots: [
+          {
+            items: [undefined],
+            typeId: 'bodyArmor'
+          },
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: scavVest.id,
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'tacticalRig'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined
+      } as IBuild,
+      {
+        armorClass: 0,
+        durability: 0
+      } as IArmorModifiers
+    ],
+    [
+      {
+        id: '',
+        name: '',
+        inventorySlots: [
+          {
+            items: [undefined],
+            typeId: 'bodyArmor'
+          },
+          {
+            items: [undefined],
+            typeId: 'tacticalRig'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined
+      } as IBuild,
+      {
+        armorClass: 0,
+        durability: 0
+      } as IArmorModifiers
+    ]
+  ])('should get the armor modifiers of an armor or vest in a build', async (build: IBuild, expected: IArmorModifiers) => {
+    // Arrange
+    useItemServiceMock()
+    Services.configure(InventoryItemService)
+    Services.configure(InventorySlotPropertiesService)
+    Services.configure(ItemPropertiesService)
+
+    const service = new BuildPropertiesService()
+
+    // Act
+    const armorModifiersResult = await service.getArmorModifiers(build)
+
+    // Assert
+    expect(armorModifiersResult).not.toBeUndefined()
+    expect(armorModifiersResult!.success).toBe(true)
+    expect(armorModifiersResult!.value).toStrictEqual(expected)
+  })
+
+  it.each(
+    [
+      [
+        {
+          id: '',
+          name: '',
+          inventorySlots: [
+            {
+              items: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: 'invalid',
+                  modSlots: [],
+                  quantity: 1
+                }
+              ],
+              typeId: 'bodyArmor'
+            }
+          ],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined
+        } as IBuild
+      ],
+      [
+        {
+          id: '',
+          name: '',
+          inventorySlots: [
+            {
+              items: [undefined],
+              typeId: 'bodyArmor'
+            },
+            {
+              items: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: 'invalid',
+                  modSlots: [],
+                  quantity: 1
+                }
+              ],
+              typeId: 'tacticalRig'
+            }
+          ],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined
+        } as IBuild
+      ]
+    ]
+  )('should fail when an item cannot be found', async (build: IBuild) => {
+    // Arrange
+    useItemServiceMock()
+    Services.configure(InventoryItemService)
+    Services.configure(InventorySlotPropertiesService)
+    Services.configure(ItemPropertiesService)
+
+    const service = new BuildPropertiesService()
+
+    // Act
+    const armorModifiersResult = await service.getArmorModifiers(build)
+
+    // Assert
+    expect(armorModifiersResult.success).toBe(false)
+    expect(armorModifiersResult.failureMessage).toBe('Item "invalid" not found.')
+  })
 })
 
 describe('getErgonomics()', () => {

@@ -1,6 +1,6 @@
 import { defineComponent, PropType } from 'vue'
 import { IHeadwear } from '../../../models/item/IHeadwear'
-import { IArmorPlateModifiers } from '../../../models/utils/IArmorPlateModifiers'
+import { IArmorModifiers } from '../../../models/utils/IArmorModifiers'
 import StatsUtils from '../../../utils/StatsUtils'
 import ArmorSummary from '../armor/ArmorSummaryComponent.vue'
 import ContainerSummary from '../container/ContainerSummaryComponent.vue'
@@ -11,8 +11,8 @@ export default defineComponent({
     ContainerSummary
   },
   props: {
-    armorPlateModifiersOverride: {
-      type: Object as PropType<IArmorPlateModifiers>,
+    armorModifiersOverride: {
+      type: Object as PropType<IArmorModifiers>,
       required: false,
       default: undefined
     },

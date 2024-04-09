@@ -12,7 +12,7 @@
     />
     <ArmorSummary
       v-else-if="isArmor"
-      :armor-plate-modifiers-override="armorPlateModifiers"
+      :armor-modifiers-override="armorModifiers"
       :item="item"
       :show-empty-entries="false"
     />
@@ -69,7 +69,7 @@
     />
     <VestSummary
       v-else-if="isVest"
-      :armor-plate-modifiers-override="armorPlateModifiers"
+      :armor-modifiers-override="armorModifiers"
       :item="item"
       :show-empty-entries="false"
     />

@@ -3,11 +3,14 @@ import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IAmmunition } from '../models/item/IAmmunition'
+import { IArmor } from '../models/item/IArmor'
+import { IArmorMod } from '../models/item/IArmorMod'
 import { IMod } from '../models/item/IMod'
 import { IPrice } from '../models/item/IPrice'
 import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
 import { IWearable } from '../models/item/IWearable'
+import { IArmorModifiers } from '../models/utils/IArmorModifiers'
 import { IErgonomics } from '../models/utils/IErgonomics'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { IRecoil } from '../models/utils/IRecoil'
@@ -36,6 +39,63 @@ export class InventoryItemService {
    * Event emitter used to signal compatibility check requests.
    */
   public emitter = new TinyEmitter()
+
+  /**
+   * Gets the armor class of an inventory item.
+   * When the inventory item has a front plate slot, it return the armor class and durability of the contained armor plate.
+   * Other whise it returns the armor class and durability of the armor or vest.
+   * @param inventoryItem - Inventory item.
+   * @returns Front plate armor class.
+   */
+  public async getArmorModifiers(inventoryItem: IInventoryItem): Promise<Result<IArmorModifiers>> {
+    const itemService = Services.get(ItemService)
+
+    const itemResult = await itemService.getItem(inventoryItem.itemId)
+
+    if (!itemResult.success) {
+      return Result.failFrom(itemResult)
+    }
+
+    const itemPropertiesService = Services.get(ItemPropertiesService)
+
+    if (!itemPropertiesService.isArmor(itemResult.value) &&
+      !itemPropertiesService.isVest(itemResult.value)) {
+      return Result.ok({
+        armorClass: 0,
+        durability: 0
+      })
+    }
+
+    for (const modSlot of inventoryItem.modSlots) {
+      if (modSlot.modSlotName === 'front_plate') {
+        if (modSlot.item == null) {
+          return Result.ok({
+            armorClass: 0,
+            durability: 0
+          })
+        }
+        const frontPlateResult = await itemService.getItem(modSlot.item.itemId)
+
+        if (!frontPlateResult.success) {
+          return Result.failFrom(frontPlateResult)
+        }
+
+        const frontPlate = frontPlateResult.value as IArmorMod
+
+        return Result.ok({
+          armorClass: frontPlate.armorClass,
+          durability: frontPlate.durability
+        })
+      }
+    }
+
+    const armor = itemResult.value as IArmor
+
+    return Result.ok({
+      armorClass: armor.armorClass,
+      durability: armor.durability
+    })
+  }
 
   /**
    * Gets the ergonomics of an item including or not its mods.

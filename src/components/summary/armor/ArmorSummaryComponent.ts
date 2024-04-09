@@ -1,6 +1,6 @@
 import { computed, defineComponent, PropType } from 'vue'
 import { IArmor } from '../../../models/item/IArmor'
-import { IArmorPlateModifiers } from '../../../models/utils/IArmorPlateModifiers'
+import { IArmorModifiers } from '../../../models/utils/IArmorModifiers'
 import { IWearableModifiers } from '../../../models/utils/IWearableModifiers'
 import StatsUtils from '../../../utils/StatsUtils'
 import WearableSummary from '../wearable/WearableSummaryComponent.vue'
@@ -13,8 +13,8 @@ export default defineComponent({
       type: Object as PropType<IArmor>,
       required: true
     },
-    armorPlateModifiersOverride: {
-      type: Object as PropType<IArmorPlateModifiers>,
+    armorModifiersOverride: {
+      type: Object as PropType<IArmorModifiers>,
       required: false,
       default: undefined
     },
@@ -30,8 +30,8 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const armorClass = computed(() => props.armorPlateModifiersOverride?.armorClass ?? props.item.armorClass)
-    const durability = computed(() => props.armorPlateModifiersOverride?.durability ?? props.item.durability)
+    const armorClass = computed(() => props.armorModifiersOverride?.armorClass ?? props.item.armorClass)
+    const durability = computed(() => props.armorModifiersOverride?.durability ?? props.item.durability)
 
     return {
       armorClass,

@@ -1,23 +1,23 @@
 import { computed, defineComponent, inject, onMounted, onUnmounted, PropType, Ref, ref, watch } from 'vue'
-import StringUtils from '../../utils/StringUtils'
-import { IInventorySlot } from '../../models/build/IInventorySlot'
-import Services from '../../services/repository/Services'
-import { InventorySlotService } from '../../services/InventorySlotService'
-import { IItem } from '../../models/item/IItem'
-import { InventorySlotComponentService } from '../../services/components/InventorySlotComponentService'
-import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
-import Item from '../item/ItemComponent.vue'
-import StatsUtils from '../../utils/StatsUtils'
-import { IInventorySlotType } from '../../models/build/IInventorySlotType'
-import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
-import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
-import { GlobalFilterService } from '../../services/GlobalFilterService'
-import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { PathUtils } from '../../utils/PathUtils'
-import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
-import { InventoryItemService } from '../../services/InventoryItemService'
-import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import Images from '../../images'
+import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { IInventorySlot } from '../../models/build/IInventorySlot'
+import { IInventorySlotType } from '../../models/build/IInventorySlotType'
+import { IItem } from '../../models/item/IItem'
+import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
+import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
+import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
+import { InventorySlotComponentService } from '../../services/components/InventorySlotComponentService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { InventoryItemService } from '../../services/InventoryItemService'
+import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
+import { InventorySlotService } from '../../services/InventorySlotService'
+import Services from '../../services/repository/Services'
+import { PathUtils } from '../../utils/PathUtils'
+import StatsUtils from '../../utils/StatsUtils'
+import StringUtils from '../../utils/StringUtils'
+import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
+import Item from '../item/ItemComponent.vue'
 
 export default defineComponent({
   components: {
@@ -130,7 +130,7 @@ export default defineComponent({
         ergonomics.value = undefined
       }
 
-      // Ergonomics percentage modifier
+      // Wearable modifiers
       const wearableModifiersResult = await service.getWearableModifiers(props.modelValue)
 
       if (wearableModifiersResult != null && wearableModifiersResult.success) {

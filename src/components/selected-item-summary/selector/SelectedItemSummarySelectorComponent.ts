@@ -2,7 +2,7 @@ import { defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { IInventoryItem } from '../../../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../../../models/build/IInventoryModSlot'
 import { IItem } from '../../../models/item/IItem'
-import { IArmorPlateModifiers } from '../../../models/utils/IArmorPlateModifiers'
+import { IarmorModifiers } from '../../../models/utils/IArmorModifiers'
 import { InventoryItemService } from '../../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
 import { ItemService } from '../../../services/ItemService'
@@ -65,7 +65,7 @@ export default defineComponent({
   setup: (props) => {
     const inventoryItemService = Services.get(InventoryItemService)
 
-    const armorPlateModifiers = ref<IArmorPlateModifiers>()
+    const armorModifiers = ref<IarmorModifiers>()
     const isAmmunition = ref(false)
     const isArmor = ref(false)
     const isArmorMod = ref(false)
@@ -91,7 +91,7 @@ export default defineComponent({
     })
 
     /**
-     * Updates the armor plates modifier when the front ballistic plate of an armor or a vest changes.
+     * Updates the armor plates modifier when the front armor plate of an armor or a vest changes.
      */
     async function onInventoryItemChanged(path: string) {
       const itemPropertiesService = Services.get(ItemPropertiesService)
@@ -100,7 +100,7 @@ export default defineComponent({
         && path.startsWith(props.path)
         && (itemPropertiesService.isArmor(item.value)
           || itemPropertiesService.isVest(item.value))) {
-        await setArmorPlateModifiers()
+        await setArmorModifiers()
       }
     }
 
@@ -115,7 +115,7 @@ export default defineComponent({
         await setItemType(item.value)
       } else {
         item.value = undefined
-        armorPlateModifiers.value = undefined
+        armorModifiers.value = undefined
       }
     }
 
@@ -150,7 +150,7 @@ export default defineComponent({
       }
       else if (itemPropertiesService.isArmor(item)) {
         isArmor.value = true
-        await setArmorPlateModifiers()
+        await setArmorModifiers()
       }
       else if (itemPropertiesService.isArmorMod(item)) {
         isArmorMod.value = true
@@ -187,25 +187,25 @@ export default defineComponent({
       }
       else if (itemPropertiesService.isVest(item)) {
         isVest.value = true
-        await setArmorPlateModifiers()
+        await setArmorModifiers()
       }
     }
 
     /**
      * Sets the armor plate modifiers for items with armor plate.
      */
-    async function setArmorPlateModifiers() {
-      const armorPlateModifiersResult = await ArmorUtils.getFrontPlateArmorClass(props.modelValue)
+    async function setArmorModifiers() {
+      const armorModifiersResult = await ArmorUtils.getArmorModifiers(props.modelValue)
 
-      if (armorPlateModifiersResult != null && armorPlateModifiersResult.success) {
-        armorPlateModifiers.value = armorPlateModifiersResult.value
+      if (armorModifiersResult.success) {
+        armorModifiers.value = armorModifiersResult.value
       } else {
-        armorPlateModifiers.value = undefined
+        armorModifiers.value = undefined
       }
     }
 
     return {
-      armorPlateModifiers,
+      armorModifiers,
       isAmmunition,
       isArmor,
       isArmorMod,
