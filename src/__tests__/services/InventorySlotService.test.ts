@@ -1,15 +1,15 @@
+import { describe, expect, it } from 'vitest'
 import { InventorySlotService } from '../../services/InventorySlotService'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
-import { describe, expect, it } from 'vitest'
 
 describe('getType()', () => {
-  it('should get an inventory slot type', async () => {
+  it('should get an inventory slot type', () => {
     // Arrange
     useItemServiceMock()
     const service = new InventorySlotService()
 
     // Act
-    const slotTypeResult = await service.getType('pockets')
+    const slotTypeResult = service.getType('pockets')
 
     // Assert
     expect(slotTypeResult.success).toBe(true)
@@ -36,12 +36,12 @@ describe('getType()', () => {
     })
   })
 
-  it('should fail if an inventory slot type is not found', async () => {
+  it('should fail if an inventory slot type is not found', () => {
     // Arrange
     const service = new InventorySlotService()
 
     // Act
-    const result = await service.getType('invalid')
+    const result = service.getType('invalid')
 
     // Assert
     expect(result.success).toBe(false)

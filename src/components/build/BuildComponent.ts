@@ -98,6 +98,7 @@ export default defineComponent({
     const hasWebsiteConfigurationLoadingError = ref(false)
     const isLoading = ref(true)
     const summary = ref<IBuildSummary>({
+      armorModifiers: undefined,
       ergonomics: undefined,
       exported: false,
       horizontalRecoil: undefined,

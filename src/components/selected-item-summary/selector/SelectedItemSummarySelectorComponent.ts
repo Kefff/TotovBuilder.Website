@@ -2,12 +2,11 @@ import { defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { IInventoryItem } from '../../../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../../../models/build/IInventoryModSlot'
 import { IItem } from '../../../models/item/IItem'
-import { IarmorModifiers } from '../../../models/utils/IArmorModifiers'
+import { IArmorModifiers } from '../../../models/utils/IArmorModifiers'
 import { InventoryItemService } from '../../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
 import { ItemService } from '../../../services/ItemService'
 import Services from '../../../services/repository/Services'
-import { ArmorUtils } from '../../../utils/ArmorUtils'
 import AmmunitionSummary from '../../summary/ammunition/AmmunitionSummaryComponent.vue'
 import ArmorModSummary from '../../summary/armor-mod/ArmorModSummaryComponent.vue'
 import ArmorSummary from '../../summary/armor/ArmorSummaryComponent.vue'
@@ -65,7 +64,7 @@ export default defineComponent({
   setup: (props) => {
     const inventoryItemService = Services.get(InventoryItemService)
 
-    const armorModifiers = ref<IarmorModifiers>()
+    const armorModifiers = ref<IArmorModifiers>()
     const isAmmunition = ref(false)
     const isArmor = ref(false)
     const isArmorMod = ref(false)
@@ -195,7 +194,7 @@ export default defineComponent({
      * Sets the armor plate modifiers for items with armor plate.
      */
     async function setArmorModifiers() {
-      const armorModifiersResult = await ArmorUtils.getArmorModifiers(props.modelValue)
+      const armorModifiersResult = await Services.get(InventoryItemService).getArmorModifiers(props.modelValue)
 
       if (armorModifiersResult.success) {
         armorModifiers.value = armorModifiersResult.value

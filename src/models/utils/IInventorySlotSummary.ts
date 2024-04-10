@@ -1,12 +1,12 @@
-import { IShoppingListItem } from '../build/IShoppingListItem'
+import { IInventorySlotType } from '../build/IInventorySlotType'
 import { IArmorModifiers } from './IArmorModifiers'
 import { IInventoryPrice } from './IInventoryPrice'
 import { IWearableModifiers } from './IWearableModifiers'
 
 /**
- * Represents a summary of a build.
+ * Represents a summary of an inventory slot.
  */
-export interface IBuildSummary {
+export interface IInventorySlotSummary {
   /**
    * Armor modifiers.
    */
@@ -18,34 +18,9 @@ export interface IBuildSummary {
   ergonomics: number | undefined
 
   /**
-   * Indicates whether the build has been exported since it was last updated or not.
-   */
-  exported: boolean
-
-  /**
    * Horizontal recoil.
    */
   horizontalRecoil: number | undefined
-
-  /**
-   * ID.
-   */
-  id: string
-
-  /**
-   * Last export date.
-   */
-  lastExported: Date | undefined,
-
-  /**
-   * Last update date.
-   */
-  lastUpdated: Date | undefined
-
-  /**
-   * Name.
-   */
-  name: string
 
   /**
    * Price.
@@ -53,9 +28,9 @@ export interface IBuildSummary {
   price: IInventoryPrice
 
   /**
-   * List of all the items, their content and barter items to buy to make the build.
+   * Inventory slot type.
    */
-  shoppingList: IShoppingListItem[]
+  type: IInventorySlotType
 
   /**
    * Vertical recoil.

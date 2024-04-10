@@ -1,6 +1,6 @@
+import InventorySlotTypes from '../data/inventory-slot-types.json'
 import { IInventorySlotType } from '../models/build/IInventorySlotType'
 import vueI18n from '../plugins/vueI18n'
-import InventorySlotTypes from '../data/inventory-slot-types.json'
 import Result, { FailureType } from '../utils/Result'
 
 /**
@@ -12,7 +12,7 @@ export class InventorySlotService {
    * @param id - ID of the slot type.
    * @returns Inventory slot type.
    */
-  public async getType(id: string): Promise<Result<IInventorySlotType>> {
+  public getType(id: string): Result<IInventorySlotType> {
     const jsonSlotType = InventorySlotTypes.find((ist) => ist.id === id)
 
     if (jsonSlotType == null) {

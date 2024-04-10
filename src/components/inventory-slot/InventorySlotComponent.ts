@@ -5,8 +5,7 @@ import { IInventorySlot } from '../../models/build/IInventorySlot'
 import { IInventorySlotType } from '../../models/build/IInventorySlotType'
 import { IItem } from '../../models/item/IItem'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
-import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
-import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
+import { IInventorySlotSummary } from '../../models/utils/IInventorySlotSummary'
 import { InventorySlotComponentService } from '../../services/components/InventorySlotComponentService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
@@ -47,6 +46,22 @@ export default defineComponent({
     const inventorySlotService = Services.get(InventorySlotService)
     const globalFilterService = Services.get(GlobalFilterService)
 
+    const hasSummaryErgonomics = computed(() => summary.value.ergonomics != null && summary.value.ergonomics !== 0)
+    const hasSummaryErgonomicsPercentageModifier = computed(() => summary.value.wearableModifiers.ergonomicsPercentageModifierWithMods !== 0)
+    const hasSummaryHorizontalRecoil = computed(() => summary.value.horizontalRecoil != null && summary.value.horizontalRecoil !== 0)
+    const hasSummaryModifiers = computed(() =>
+      summary.value.wearableModifiers != null
+      && (hasSummaryErgonomicsPercentageModifier.value
+        || hasSummaryMovementSpeedPercentageModifierWithMods.value
+        || hasSummaryTurningSpeedPercentageModifierWithMods.value)
+    )
+    const hasSummaryMovementSpeedPercentageModifierWithMods = computed(() => summary.value.wearableModifiers.movementSpeedPercentageModifierWithMods !== 0)
+    const hasSummaryPrice = computed(() => summary.value.price.priceWithContentInMainCurrency.valueInMainCurrency > 0)
+    const hasSummaryStats = computed(() => hasSummaryErgonomics.value || hasSummaryHorizontalRecoil.value || hasSummaryVerticalRecoil.value)
+    const hasSummaryTurningSpeedPercentageModifierWithMods = computed(() => summary.value.wearableModifiers.turningSpeedPercentageModifierWithMods !== 0)
+    const hasSummaryVerticalRecoil = computed(() => summary.value.verticalRecoil != null && summary.value.verticalRecoil !== 0)
+    const hasSummaryWeight = computed(() => summary.value.weight !== 0)
+
     const editing = inject<Ref<boolean>>('editing')
 
     const itemPathPrefix = PathUtils.itemPrefix
@@ -55,51 +70,67 @@ export default defineComponent({
 
     const acceptedItems = ref<IItem[]>([])
     const acceptedItemsCategoryId = ref<string | undefined>(undefined)
-    const canBeLooted = ref(true)
     const customIconName = ref<string>()
-    const ergonomics = ref<number | undefined>()
-    const horizontalRecoil = ref<number | undefined>()
     const icon = ref<string>()
     const items = ref<(IInventoryItem | undefined)[]>([]) // Used to be able to put back the previously selected item when changing it to an incompatible item
-    const price = ref<IInventoryPrice>({
-      missingPrice: false,
+    const summary = ref<IInventorySlotSummary>({
+      armorModifiers: undefined,
+      ergonomics: undefined,
+      horizontalRecoil: undefined,
       price: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
+        missingPrice: false,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        priceWithContentInMainCurrency: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        pricesWithContent: [],
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       },
-      priceWithContentInMainCurrency: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
+      type: {
+        acceptedItemCategories: [],
+        canBeLooted: false,
+        displayOrder: 0,
+        id: '',
+        itemSlotsAmount: 0
       },
-      pricesWithContent: [],
-      unitPrice: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
+      verticalRecoil: undefined,
+      wearableModifiers: {
+        ergonomicsPercentageModifier: 0,
+        ergonomicsPercentageModifierWithMods: 0,
+        movementSpeedPercentageModifier: 0,
+        movementSpeedPercentageModifierWithMods: 0,
+        turningSpeedPercentageModifier: 0,
+        turningSpeedPercentageModifierWithMods: 0
       },
-      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+      weight: 0
     })
     const type = ref<IInventorySlotType>()
-    const verticalRecoil = ref<number | undefined>()
-    const wearableModifiers = ref<IWearableModifiers | undefined>()
-    const weight = ref(0)
 
     watch(() => props.modelValue.items, () => initialize())
 
@@ -119,88 +150,7 @@ export default defineComponent({
      * Gets the values of the summary of the content of the inventory slot.
      */
     async function getSummary() {
-      const service = inventorySlotPropertiesService
-
-      // Ergonomics
-      const ergonomicsResult = await service.getErgonomics(props.modelValue)
-
-      if (ergonomicsResult != null && ergonomicsResult.success) {
-        ergonomics.value = ergonomicsResult.value
-      } else {
-        ergonomics.value = undefined
-      }
-
-      // Wearable modifiers
-      const wearableModifiersResult = await service.getWearableModifiers(props.modelValue)
-
-      if (wearableModifiersResult != null && wearableModifiersResult.success) {
-        wearableModifiers.value = wearableModifiersResult.value
-      } else {
-        wearableModifiers.value = undefined
-      }
-
-      // Price
-      const priceResult = await service.getPrice(props.modelValue, canBeLooted.value)
-
-      if (priceResult.success) {
-        price.value = priceResult.value
-      } else {
-        price.value = {
-          missingPrice: true,
-          price: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          priceWithContentInMainCurrency: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          pricesWithContent: [],
-          unitPrice: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-        }
-      }
-
-      // Recoil
-      const recoilResult = await service.getRecoil(props.modelValue)
-
-      if (recoilResult != null && recoilResult.success) {
-        horizontalRecoil.value = recoilResult.value.horizontalRecoil
-        verticalRecoil.value = recoilResult.value.verticalRecoil
-      } else {
-        horizontalRecoil.value = undefined
-        verticalRecoil.value = undefined
-      }
-
-      // Weight
-      const weightResult = await service.getWeight(props.modelValue)
-
-      if (weightResult.success) {
-        weight.value = weightResult.value
-      } else {
-        weight.value = 0
-      }
+      summary.value = await inventorySlotPropertiesService.getSummary(props.modelValue)
     }
 
     /**
@@ -208,14 +158,6 @@ export default defineComponent({
      */
     async function initialize() {
       items.value = [...props.modelValue.items]
-
-      const canBeLootedResult = inventorySlotPropertiesService.canBeLooted(props.modelValue)
-
-      if (canBeLootedResult.success) {
-        canBeLooted.value = canBeLootedResult.value
-      } else {
-        canBeLooted.value = true
-      }
 
       const inventorySlotTypeResult = await inventorySlotService.getType(props.modelValue.typeId)
 
@@ -290,23 +232,27 @@ export default defineComponent({
     return {
       acceptedItems,
       acceptedItemsCategoryId,
-      canBeLooted,
       customIconName,
       displayed,
-      ergonomics,
-      horizontalRecoil,
+      hasSummaryErgonomics,
+      hasSummaryErgonomicsPercentageModifier,
+      hasSummaryHorizontalRecoil,
+      hasSummaryModifiers,
+      hasSummaryMovementSpeedPercentageModifierWithMods,
+      hasSummaryPrice,
+      hasSummaryStats,
+      hasSummaryTurningSpeedPercentageModifierWithMods,
+      hasSummaryVerticalRecoil,
+      hasSummaryWeight,
       icon,
       Images,
       itemPathPrefix,
       items,
       onItemChanged,
-      price,
       StatsUtils,
       StringUtils,
-      toggle,
-      verticalRecoil,
-      wearableModifiers,
-      weight
+      summary,
+      toggle
     }
   }
 })

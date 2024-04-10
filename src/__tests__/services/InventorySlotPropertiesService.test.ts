@@ -435,10 +435,7 @@ describe('getArmorModifiers()', () => {
         ],
         typeId: 'armband'
       } as IInventorySlot,
-      {
-        armorClass: 0,
-        durability: 0
-      } as IArmorModifiers
+      undefined
     ],
     [
       {
@@ -447,12 +444,9 @@ describe('getArmorModifiers()', () => {
         ],
         typeId: 'bodyArmor'
       } as IInventorySlot,
-      {
-        armorClass: 0,
-        durability: 0
-      } as IArmorModifiers
+      undefined
     ]
-  ])('should get the armor modifiers of an armor or vest inventory slot', async (inventorySlot: IInventorySlot, expected: IArmorModifiers) => {
+  ])('should get the armor modifiers of an armor or vest inventory slot', async (inventorySlot: IInventorySlot, expected: IArmorModifiers | undefined) => {
     // Arrange
     useItemServiceMock()
     Services.configure(InventoryItemService)

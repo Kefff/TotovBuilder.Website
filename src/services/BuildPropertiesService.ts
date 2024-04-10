@@ -1,12 +1,12 @@
 import { IBuild } from '../models/build/IBuild'
 import { IInventoryItem } from '../models/build/IInventoryItem'
-import { IInventorySlot } from '../models/build/IInventorySlot'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IConflictingItem } from '../models/configuration/IConflictingItem'
 import { IVest } from '../models/item/IVest'
 import { IArmorModifiers } from '../models/utils/IArmorModifiers'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
+import { IInventorySlotSummary } from '../models/utils/IInventorySlotSummary'
 import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import vueI18n from '../plugins/vueI18n'
@@ -15,6 +15,7 @@ import { PriceUtils } from '../utils/PriceUtils'
 import Result, { FailureType } from '../utils/Result'
 import { InventoryItemService } from './InventoryItemService'
 import { InventorySlotPropertiesService } from './InventorySlotPropertiesService'
+import { InventorySlotService } from './InventorySlotService'
 import { ItemService } from './ItemService'
 import Services from './repository/Services'
 
@@ -141,55 +142,6 @@ export class BuildPropertiesService {
   }
 
   /**
-   * Gets the armor modifiers of an armor or vest in a build.
-   * @param build - Build.
-   */
-  public async getArmorModifiers(build: IBuild): Promise<Result<IArmorModifiers>> {
-    const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
-
-    const armorSlot = build.inventorySlots.find((is) => is.typeId === 'bodyArmor')!
-    let result = await inventorySlotPropertiesService.getArmorModifiers(armorSlot)
-
-    if (!result.success) {
-      return Result.failFrom(result)
-    }
-
-    if (result.value.armorClass === 0) {
-      const vestSlot = build.inventorySlots.find((is) => is.typeId === 'tacticalRig')!
-      result = await inventorySlotPropertiesService.getArmorModifiers(vestSlot)
-    }
-
-    return result
-  }
-
-  /**
-   * Gets the ergonomics of the main ranged weapon of a build (ergonomics percentage modifier not included).
-   * @param build - Build.
-   * @returns Ergonomics.
-   */
-  public async getErgonomics(build: IBuild): Promise<Result<number> | undefined> {
-    const mainRangedWeaponInventorySlot = this.getMainRangedWeaponInventorySlot(build)
-
-    if (mainRangedWeaponInventorySlot == null) {
-      return undefined
-    }
-
-    const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
-    const ergonomicsResult = await inventorySlotPropertiesService.getErgonomics(mainRangedWeaponInventorySlot)
-
-    /* c8 ignore start */
-    if (ergonomicsResult == null) {
-      return undefined
-    }
-    /* c8 ignore stop */
-    else if (!ergonomicsResult.success) {
-      return Result.failFrom(ergonomicsResult)
-    } else {
-      return ergonomicsResult
-    }
-  }
-
-  /**
    * Gets the tooltip for not exported builds.
    * @param lastUpdated - Date of the last update.
    * @param lastExported - Date of the last export.
@@ -208,135 +160,18 @@ export class BuildPropertiesService {
   }
 
   /**
-   * Gets the price of a build.
-   * @param build - Build.
-   * @returns Price.
-   */
-  public async getPrice(build: IBuild): Promise<Result<IInventoryPrice>> {
-    const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
-    const itemService = Services.get(ItemService)
-
-    const mainCurrencyResult = await itemService.getMainCurrency()
-
-    if (!mainCurrencyResult.success) {
-      return Result.failFrom(mainCurrencyResult)
-    }
-
-    const inventoryPrice: IInventoryPrice = {
-      missingPrice: false,
-      price: {
-        barterItems: [],
-        currencyName: mainCurrencyResult.value.name,
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      },
-      priceWithContentInMainCurrency: {
-        barterItems: [],
-        currencyName: mainCurrencyResult.value.name,
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      },
-      pricesWithContent: [],
-      unitPrice: {
-        barterItems: [],
-        currencyName: mainCurrencyResult.value.name,
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      },
-      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-    }
-
-    for (const inventorySlot of build.inventorySlots) {
-      const canBeLootedResult = inventorySlotPropertiesService.canBeLooted(inventorySlot)
-
-      if (!canBeLootedResult.success) {
-        return Result.failFrom(canBeLootedResult)
-      }
-
-      const inventorySlotPriceResult = await inventorySlotPropertiesService.getPrice(inventorySlot, canBeLootedResult.value)
-
-      if (!inventorySlotPriceResult.success) {
-        return Result.failFrom(inventorySlotPriceResult)
-      }
-
-      for (const inventorySlotPriceWithContent of inventorySlotPriceResult.value.pricesWithContent) {
-        const currencyIndex = inventoryPrice.pricesWithContent.findIndex(p => p.currencyName === inventorySlotPriceWithContent.currencyName)
-
-        if (currencyIndex < 0) {
-          inventoryPrice.pricesWithContent.push(inventorySlotPriceWithContent)
-        } else {
-          inventoryPrice.pricesWithContent[currencyIndex].value += inventorySlotPriceWithContent.value
-          inventoryPrice.pricesWithContent[currencyIndex].valueInMainCurrency += inventorySlotPriceWithContent.valueInMainCurrency
-        }
-
-        inventoryPrice.priceWithContentInMainCurrency.value += inventorySlotPriceWithContent.valueInMainCurrency
-        inventoryPrice.priceWithContentInMainCurrency.valueInMainCurrency += inventorySlotPriceWithContent.valueInMainCurrency
-      }
-
-      if (inventorySlotPriceResult.value.missingPrice) {
-        inventoryPrice.missingPrice = true
-      }
-    }
-
-    if (inventoryPrice.pricesWithContent.length > 1) {
-      inventoryPrice.pricesWithContent = PriceUtils.sortByCurrency(inventoryPrice.pricesWithContent)
-    }
-
-    return Result.ok(inventoryPrice)
-  }
-
-  /**
-   * Gets the recoil of the main ranged weapon of a build.
-   * @param build - Build.
-   * @returns Recoil.
-   */
-  public async getRecoil(build: IBuild): Promise<Result<{
-    horizontalRecoil: number
-    verticalRecoil: number
-  }> | undefined> {
-    const mainRangedWeaponInventorySlot = this.getMainRangedWeaponInventorySlot(build)
-
-    if (mainRangedWeaponInventorySlot == null) {
-      return undefined
-    }
-
-    const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
-    const recoilResult = await inventorySlotPropertiesService.getRecoil(mainRangedWeaponInventorySlot)
-
-    /* c8 ignore start */
-    if (recoilResult == null) {
-      return undefined
-    }
-    /* c8 ignore stop */
-    else if (!recoilResult.success) {
-      return Result.failFrom(recoilResult)
-    } else {
-      return recoilResult
-    }
-  }
-
-  /**
    * Gets a build summary.
    * @param build - Build.
    * @returns Build summary.
    */
   public async getSummary(build: IBuild): Promise<IBuildSummary> {
+    const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
+
     const lastExported = build.lastExported ?? new Date(1900, 1, 1)
     const lastUpdated = build.lastUpdated ?? new Date(1900, 1, 1)
 
     const result: IBuildSummary = {
+      armorModifiers: undefined,
       ergonomics: undefined,
       exported: lastExported.getTime() >= lastUpdated.getTime(),
       horizontalRecoil: undefined,
@@ -391,46 +226,32 @@ export class BuildPropertiesService {
       },
       weight: 0
     }
+    const inventorySlotSummaries: IInventorySlotSummary[] = []
 
-    // Wearable modifiers
-    const wearableModifiersResult = await this.getWearableModifiers(build)
-
-    if (wearableModifiersResult.success) {
-      result.wearableModifiers = wearableModifiersResult.value
+    for (const inventorySlot of build.inventorySlots) {
+      const inventorySlotSummary = await inventorySlotPropertiesService.getSummary(inventorySlot)
+      inventorySlotSummaries.push(inventorySlotSummary)
     }
 
-    // Ergonomics
-    const ergonomicsResult = await this.getErgonomics(build)
+    // Wearable modifiers
+    result.wearableModifiers = this.getWearableModifiers(inventorySlotSummaries)
 
-    if (ergonomicsResult != null) {
-      if (ergonomicsResult.success) {
-        result.ergonomics = ergonomicsResult.value + (ergonomicsResult.value * result.wearableModifiers.ergonomicsPercentageModifierWithMods)
-      }
+    // Ergonomics
+    const summaryErgonomics = this.getErgonomics(inventorySlotSummaries)
+
+    if (summaryErgonomics != null) {
+      result.ergonomics = summaryErgonomics * (1 + result.wearableModifiers.ergonomicsPercentageModifierWithMods)
     }
 
     // Price
-    const priceResult = await this.getPrice(build)
-
-    if (priceResult.success) {
-      result.price = priceResult.value
-    }
+    result.price = this.getPrice(inventorySlotSummaries)
 
     // Recoil
-    const recoilResult = await this.getRecoil(build)
-
-    if (recoilResult != null) {
-      if (recoilResult.success) {
-        result.horizontalRecoil = recoilResult.value.horizontalRecoil
-        result.verticalRecoil = recoilResult.value.verticalRecoil
-      }
-    }
+    result.horizontalRecoil = this.getHorizontalRecoil(inventorySlotSummaries)
+    result.verticalRecoil = this.getVerticalRecoil(inventorySlotSummaries)
 
     // Weight
-    const weightResult = await this.getWeight(build)
-
-    if (weightResult.success) {
-      result.weight = weightResult.value
-    }
+    result.weight = this.getWeight(inventorySlotSummaries)
 
     // Shopping list
     const shoppingListResult = await this.getShoppingList(build)
@@ -443,63 +264,19 @@ export class BuildPropertiesService {
   }
 
   /**
-   * Gets the ergonomics percentage modifier of a build.
-   * @param build - Build.
-   * @returns Ergonomics percentage modifier.
+   * Gets the armor modifiers of an armor or vest in a build.
+   * @param inventorySlotSummaries - Inventory slot summaries.
    */
-  public async getWearableModifiers(build: IBuild): Promise<Result<IWearableModifiers>> {
-    const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
-    const wearableModifiers: IWearableModifiers = {
-      ergonomicsPercentageModifier: 0,
-      ergonomicsPercentageModifierWithMods: 0,
-      movementSpeedPercentageModifier: 0,
-      movementSpeedPercentageModifierWithMods: 0,
-      turningSpeedPercentageModifier: 0,
-      turningSpeedPercentageModifierWithMods: 0
+  private getArmorModifiers(inventorySlotSummaries: IInventorySlotSummary[]): IArmorModifiers | undefined {
+    const armorSlotSummary = inventorySlotSummaries.find(iss => iss.type.id === 'bodyArmor')!
+
+    if (armorSlotSummary.armorModifiers != null) {
+      return armorSlotSummary.armorModifiers
     }
 
-    for (const inventorySlot of build.inventorySlots) {
-      const inventorySlotWearableModifiersResult = await inventorySlotPropertiesService.getWearableModifiers(inventorySlot)
+    const vestSlot = inventorySlotSummaries.find(iss => iss.type.id === 'tacticalRig')!
 
-      if (inventorySlotWearableModifiersResult == null) {
-        continue
-      }
-
-      if (!inventorySlotWearableModifiersResult.success) {
-        return Result.failFrom(inventorySlotWearableModifiersResult)
-      }
-
-      wearableModifiers.ergonomicsPercentageModifier += inventorySlotWearableModifiersResult.value.ergonomicsPercentageModifier
-      wearableModifiers.ergonomicsPercentageModifierWithMods += inventorySlotWearableModifiersResult.value.ergonomicsPercentageModifierWithMods
-      wearableModifiers.movementSpeedPercentageModifier += inventorySlotWearableModifiersResult.value.movementSpeedPercentageModifier
-      wearableModifiers.movementSpeedPercentageModifierWithMods += inventorySlotWearableModifiersResult.value.movementSpeedPercentageModifierWithMods
-      wearableModifiers.turningSpeedPercentageModifier += inventorySlotWearableModifiersResult.value.turningSpeedPercentageModifier
-      wearableModifiers.turningSpeedPercentageModifierWithMods += inventorySlotWearableModifiersResult.value.turningSpeedPercentageModifierWithMods
-    }
-
-    return Result.ok(wearableModifiers)
-  }
-
-  /**
-   * Gets the weight of a build.
-   * @param build - Build.
-   * @returns Weight.
-   */
-  public async getWeight(build: IBuild): Promise<Result<number>> {
-    const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
-    let weight = 0
-
-    for (const inventorySlot of build.inventorySlots) {
-      const inventorySlotWeightResult = await inventorySlotPropertiesService.getWeight(inventorySlot)
-
-      if (!inventorySlotWeightResult.success) {
-        return Result.failFrom(inventorySlotWeightResult)
-      }
-
-      weight += inventorySlotWeightResult.value
-    }
-
-    return Result.ok(weight)
+    return vestSlot.armorModifiers
   }
 
   /**
@@ -559,28 +336,170 @@ export class BuildPropertiesService {
   }
 
   /**
-   * Gets the main ranged weapon of a build.
-   * @param build - Build.
-   * @returns Main ranged weapon inventory slot.
+   * Gets the ergonomics of the main ranged weapon of a build (ergonomics percentage modifier not included).
+   * @param inventorySlotSummaries - Inventory slot summaries.
+   * @returns Ergonomics.
    */
-  private getMainRangedWeaponInventorySlot(build: IBuild): IInventorySlot | undefined {
-    const onSling = build.inventorySlots.find((is) => is.typeId === 'onSling')
+  private getErgonomics(inventorySlotSummaries: IInventorySlotSummary[]): number | undefined {
+    const mainRangedWeaponSummary = this.getMainRangedWeaponSummary(inventorySlotSummaries)
 
-    if (onSling != null && onSling.items[0] != null) {
+    return mainRangedWeaponSummary?.ergonomics
+  }
+
+  /**
+   * Gets the horizontal recoil of the main ranged weapon of a build.
+   * @param inventorySlotSummaries - Inventory slot summaries.
+   * @returns Recoil.
+   */
+  private getHorizontalRecoil(inventorySlotSummaries: IInventorySlotSummary[]): number | undefined {
+    const mainRangedWeaponSummary = this.getMainRangedWeaponSummary(inventorySlotSummaries)
+
+    return mainRangedWeaponSummary?.horizontalRecoil
+  }
+
+  /**
+   * Gets the summary of the main ranged weapon slot of a build.
+   * @param inventoryItemSummaries - Inventory slot summaries.
+   * @returns Main ranged weapon inventory slot summary.
+   */
+  private getMainRangedWeaponSummary(inventoryItemSummaries: IInventorySlotSummary[]): IInventorySlotSummary | undefined {
+    const onSling = inventoryItemSummaries.find(iss => iss.type.id === 'onSling')
+
+    if (onSling != null && onSling.verticalRecoil != null) {
       return onSling
     }
 
-    const onBack = build.inventorySlots.find((is) => is.typeId === 'onBack')
+    const onBack = inventoryItemSummaries.find(iss => iss.type.id === 'onBack')
 
-    if (onBack != null && onBack.items[0] != null) {
+    if (onBack != null && onBack.verticalRecoil != null) {
       return onBack
     }
 
-    const holster = build.inventorySlots.find((is) => is.typeId === 'holster')
+    const holster = inventoryItemSummaries.find(iss => iss.type.id === 'holster')
 
-    if (holster != null && holster.items[0] != null) {
-      return holster
+    return holster
+  }
+
+  /**
+   * Gets the price of a build.
+   * @param inventorySlotSummaries - Inventory slot summaries.
+   * @returns Price.
+   */
+  private getPrice(inventorySlotSummaries: IInventorySlotSummary[]): IInventoryPrice {
+    const inventoryPrice: IInventoryPrice = {
+      missingPrice: false,
+      price: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: undefined,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      priceWithContentInMainCurrency: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: undefined,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      pricesWithContent: [],
+      unitPrice: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: undefined,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
     }
+
+    for (const inventorySlotSummary of inventorySlotSummaries) {
+      for (const inventorySlotPriceWithContent of inventorySlotSummary.price.pricesWithContent) {
+        const currencyIndex = inventoryPrice.pricesWithContent.findIndex(p => p.currencyName === inventorySlotPriceWithContent.currencyName)
+
+        if (currencyIndex < 0) {
+          inventoryPrice.pricesWithContent.push(inventorySlotPriceWithContent)
+        } else {
+          inventoryPrice.pricesWithContent[currencyIndex].value += inventorySlotPriceWithContent.value
+          inventoryPrice.pricesWithContent[currencyIndex].valueInMainCurrency += inventorySlotPriceWithContent.valueInMainCurrency
+        }
+
+        inventoryPrice.priceWithContentInMainCurrency.value += inventorySlotPriceWithContent.valueInMainCurrency
+        inventoryPrice.priceWithContentInMainCurrency.valueInMainCurrency += inventorySlotPriceWithContent.valueInMainCurrency
+      }
+
+      if (inventorySlotSummary.price.missingPrice) {
+        inventoryPrice.missingPrice = true
+      }
+    }
+
+    if (inventoryPrice.pricesWithContent.length > 1) {
+      inventoryPrice.pricesWithContent = PriceUtils.sortByCurrency(inventoryPrice.pricesWithContent)
+    }
+
+    return inventoryPrice
+  }
+
+  /**
+   * Gets the vertical recoil of the main ranged weapon of a build.
+   * @param inventorySlotSummaries - Inventory slot summaries.
+   * @returns Recoil.
+   */
+  private getVerticalRecoil(inventorySlotSummaries: IInventorySlotSummary[]): number | undefined {
+    const mainRangedWeaponSummary = this.getMainRangedWeaponSummary(inventorySlotSummaries)
+
+    return mainRangedWeaponSummary?.verticalRecoil
+  }
+
+  /**
+   * Gets the ergonomics percentage modifier of a build.
+   * @param inventorySlotSummaries - Inventory slot summaries.
+   * @returns Ergonomics percentage modifier.
+   */
+  private getWearableModifiers(inventorySlotSummaries: IInventorySlotSummary[]): IWearableModifiers {
+    const wearableModifiers: IWearableModifiers = {
+      ergonomicsPercentageModifier: 0,
+      ergonomicsPercentageModifierWithMods: 0,
+      movementSpeedPercentageModifier: 0,
+      movementSpeedPercentageModifierWithMods: 0,
+      turningSpeedPercentageModifier: 0,
+      turningSpeedPercentageModifierWithMods: 0
+    }
+
+    for (const inventorySlotSummary of inventorySlotSummaries) {
+      wearableModifiers.ergonomicsPercentageModifier += inventorySlotSummary.wearableModifiers.ergonomicsPercentageModifier
+      wearableModifiers.ergonomicsPercentageModifierWithMods += inventorySlotSummary.wearableModifiers.ergonomicsPercentageModifierWithMods
+      wearableModifiers.movementSpeedPercentageModifier += inventorySlotSummary.wearableModifiers.movementSpeedPercentageModifier
+      wearableModifiers.movementSpeedPercentageModifierWithMods += inventorySlotSummary.wearableModifiers.movementSpeedPercentageModifierWithMods
+      wearableModifiers.turningSpeedPercentageModifier += inventorySlotSummary.wearableModifiers.turningSpeedPercentageModifier
+      wearableModifiers.turningSpeedPercentageModifierWithMods += inventorySlotSummary.wearableModifiers.turningSpeedPercentageModifierWithMods
+    }
+
+    return wearableModifiers
+  }
+
+  /**
+   * Gets the weight of a build.
+   * @param inventorySlotSummaries - Inventory slot summaries.
+   * @returns Weight.
+   */
+  private getWeight(inventorySlotSummaries: IInventorySlotSummary[]): number {
+    let weight = 0
+
+    for (const inventorySlotSummary of inventorySlotSummaries) {
+      weight += inventorySlotSummary.weight
+    }
+
+    return weight
   }
 
   /**
@@ -589,32 +508,26 @@ export class BuildPropertiesService {
    * @returns Shopping list items.
    */
   private async getShoppingList(build: IBuild): Promise<Result<IShoppingListItem[]>> {
-    const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
     const inventoryItemService = Services.get(InventoryItemService)
-
     const shoppingList: IShoppingListItem[] = []
 
     for (const inventorySlot of build.inventorySlots) {
-      const canBeLootedResult = inventorySlotPropertiesService.canBeLooted(inventorySlot)
+      const typeResult = Services.get(InventorySlotService).getType(inventorySlot.typeId)
 
-      /* c8 ignore start */
-      if (!canBeLootedResult.success) {
-        return Result.failFrom(canBeLootedResult)
+      if (!typeResult.success) {
+        return Result.failFrom(typeResult)
       }
-      /* c8 ignore stop */
 
       for (const item of inventorySlot.items) {
         if (item == null) {
           continue
         }
 
-        const shoppingListResult = await inventoryItemService.getShoppingList(item, undefined, canBeLootedResult.value)
+        const shoppingListResult = await inventoryItemService.getShoppingList(item, undefined, typeResult.value.canBeLooted)
 
-        /* c8 ignore start */
         if (!shoppingListResult.success) {
           return Result.failFrom(shoppingListResult)
         }
-        /* c8 ignore stop */
 
         for (const shoppingListItemToAdd of shoppingListResult.value) {
           const shoppingListItemIndex = shoppingList.findIndex(sli => sli.item.id === shoppingListItemToAdd.item.id)
