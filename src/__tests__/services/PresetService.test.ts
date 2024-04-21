@@ -9,7 +9,8 @@ import { IMod } from '../../models/item/IMod'
 import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
 import { IErgonomics } from '../../models/utils/IErgonomics'
-import { IRecoil } from '../../models/utils/IRecoil'
+import { IInventoryItemRecoil } from '../../models/utils/IInventoryItemRecoil'
+import { IInventoryItemWearableModifiers } from '../../models/utils/IInventoryItemWearableModifiers'
 import { IRecoilPercentageModifier } from '../../models/utils/IRecoilPercentageModifier'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { InventoryItemService } from '../../services/InventoryItemService'
@@ -1373,7 +1374,7 @@ describe('updatePresetProperties', () => {
             movementSpeedPercentageModifierWithMods: 0,
             turningSpeedPercentageModifier: 0,
             turningSpeedPercentageModifierWithMods: 0
-          } as IWearableModifiers))
+          } as IInventoryItemWearableModifiers))
     when(inventoryItemServiceMock.getRecoil(anything()))
       .thenResolve(
         recoilFailure
@@ -1383,7 +1384,7 @@ describe('updatePresetProperties', () => {
             horizontalRecoilWithMods: 0,
             verticalRecoil: 0,
             verticalRecoilWithMods: 0
-          } as IRecoil))
+          } as IInventoryItemRecoil))
     when(inventoryItemServiceMock.getRecoilPercentageModifier(anything()))
       .thenResolve(
         recoilPercentageModifierFailure

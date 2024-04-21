@@ -19,18 +19,6 @@
   </div>
   <div class="option-entry">
     <div
-      v-tooltip.top="$t('caption.ergonomics')"
-      class="option-value"
-    >
-      <span>{{ StatsUtils.getDisplayValue(item.presetErgonomics ?? item.ergonomics, false, 0) }}</span>
-      <font-awesome-icon
-        icon="hand-paper"
-        class="icon-after-text"
-      />
-    </div>
-  </div>
-  <div class="option-entry">
-    <div
       v-tooltip.top="$t('caption.verticalRecoil')"
       class="option-value"
     >
@@ -49,6 +37,18 @@
       <span>{{ StatsUtils.getDisplayValue(item.presetHorizontalRecoil ?? item.horizontalRecoil, false, 0) }}</span>
       <font-awesome-icon
         icon="arrows-alt-h"
+        class="icon-after-text"
+      />
+    </div>
+  </div>
+  <div class="option-entry">
+    <div
+      v-tooltip.top="$t('caption.ergonomics')"
+      class="option-value"
+    >
+      <span>{{ StatsUtils.getDisplayValue(item.presetErgonomics ?? item.ergonomics, false, 0) }}</span>
+      <font-awesome-icon
+        icon="hand-paper"
         class="icon-after-text"
       />
     </div>

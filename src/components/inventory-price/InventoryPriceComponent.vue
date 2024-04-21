@@ -13,7 +13,7 @@
       @click="(e) => togglePriceDetails(e)"
     >
       <div
-        v-for="(price, index) of inventoryPrice.pricesWithContent"
+        v-for="(price, index) of inventoryPrice.priceByCurrency"
         :key="index"
         class="inventory-price-list-price"
       >

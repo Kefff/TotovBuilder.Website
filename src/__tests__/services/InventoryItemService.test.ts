@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import { IErgonomics } from '../../models/utils/IErgonomics'
-import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
-import { IRecoil } from '../../models/utils/IRecoil'
+import { IInventoryItemPrice } from '../../models/utils/IInventoryItemPrice'
+import { IInventoryItemRecoil } from '../../models/utils/IInventoryItemRecoil'
+import { IInventoryItemWearableModifiers } from '../../models/utils/IInventoryItemWearableModifiers'
 import { IRecoilPercentageModifier } from '../../models/utils/IRecoilPercentageModifier'
-import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { IWeight } from '../../models/utils/IWeight'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
@@ -462,7 +462,7 @@ describe('getPrice()', () => {
           valueInMainCurrency: 24509
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ],
     [
       {
@@ -518,7 +518,7 @@ describe('getPrice()', () => {
           valueInMainCurrency: 96
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ],
     [
       {
@@ -606,11 +606,11 @@ describe('getPrice()', () => {
           valueInMainCurrency: 43345
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ]
   ])(
     'should get the price of an inventory item',
-    async (inventoryItem: IInventoryItem, canBeLooted: boolean, expected: IInventoryPrice) => {
+    async (inventoryItem: IInventoryItem, canBeLooted: boolean, expected: IInventoryItemPrice) => {
       // Arrange
       useItemServiceMock()
       usePresetServiceMock()
@@ -691,7 +691,7 @@ describe('getPrice()', () => {
       quantity: 1
     }
 
-    const expected: IInventoryPrice = {
+    const expected: IInventoryItemPrice = {
       missingPrice: false,
       price: {
         barterItems: [],
@@ -779,7 +779,7 @@ describe('getPrice()', () => {
       quantity: 1
     }
 
-    const expected: IInventoryPrice = {
+    const expected: IInventoryItemPrice = {
       missingPrice: false,
       price: {
         barterItems: [],
@@ -867,7 +867,7 @@ describe('getPrice()', () => {
       quantity: 1
     }
 
-    const expected: IInventoryPrice = {
+    const expected: IInventoryItemPrice = {
       missingPrice: false,
       price: {
         barterItems: [],
@@ -998,7 +998,7 @@ describe('getPrice()', () => {
           valueInMainCurrency: 43345
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ],
     [
       {
@@ -1085,7 +1085,7 @@ describe('getPrice()', () => {
           valueInMainCurrency: 43345
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ],
     [
       {
@@ -1162,7 +1162,7 @@ describe('getPrice()', () => {
           valueInMainCurrency: 43345
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ],
     [
       {
@@ -1257,7 +1257,7 @@ describe('getPrice()', () => {
           valueInMainCurrency: 24509
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ],
     [
       {
@@ -1353,10 +1353,10 @@ describe('getPrice()', () => {
           valueInMainCurrency: 59790
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ]
   ])('should get the price of an inventory item and ignore items present in the item preset',
-    async (inventoryItem: IInventoryItem, expected: IInventoryPrice) => {
+    async (inventoryItem: IInventoryItem, expected: IInventoryItemPrice) => {
       // Arrange
       useItemServiceMock()
       usePresetServiceMock()
@@ -1515,7 +1515,7 @@ describe('getPrice()', () => {
           valueInMainCurrency: 0
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ],
     [
       {
@@ -1578,7 +1578,7 @@ describe('getPrice()', () => {
           valueInMainCurrency: 24509
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ],
     [
       {
@@ -1644,9 +1644,9 @@ describe('getPrice()', () => {
           valueInMainCurrency: 8025
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ]
-  ])('should have a missing price when no merchants sell the item', async (inventoryItem: IInventoryItem, expected: IInventoryPrice) => {
+  ])('should have a missing price when no merchants sell the item', async (inventoryItem: IInventoryItem, expected: IInventoryItemPrice) => {
     // Arrange
     useItemServiceMock()
     usePresetServiceMock()
@@ -1856,7 +1856,7 @@ describe('getPrice()', () => {
         valueInMainCurrency: 55600
       },
       unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-    } as IInventoryPrice)
+    } as IInventoryItemPrice)
   })
 
   it('should ignore barters with missing barter item price', async () => {
@@ -1957,7 +1957,7 @@ describe('getPrice()', () => {
         valueInMainCurrency: 25000000
       },
       unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-    } as IInventoryPrice)
+    } as IInventoryItemPrice)
   })
 
   it('should arbitrarily select the first barter as the unit price when no the item has no prices available but has barter with missing barter item prices', async () => {
@@ -2062,7 +2062,7 @@ describe('getPrice()', () => {
         valueInMainCurrency: 0
       },
       unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-    } as IInventoryPrice)
+    } as IInventoryItemPrice)
   })
 
   it('should fail if the main currency cannot be found', async () => {
@@ -2214,7 +2214,7 @@ describe('getRecoil()', () => {
         horizontalRecoilWithMods: 0,
         verticalRecoil: 0,
         verticalRecoilWithMods: 0
-      } as IRecoil
+      } as IInventoryItemRecoil
     ],
     [
       {
@@ -2229,7 +2229,7 @@ describe('getRecoil()', () => {
         horizontalRecoilWithMods: 280,
         verticalRecoil: 404,
         verticalRecoilWithMods: 404
-      } as IRecoil
+      } as IInventoryItemRecoil
     ],
     [
       {
@@ -2335,7 +2335,7 @@ describe('getRecoil()', () => {
         horizontalRecoilWithMods: 254.8,
         verticalRecoil: 404,
         verticalRecoilWithMods: 367.64
-      } as IRecoil
+      } as IInventoryItemRecoil
     ],
     [
       {
@@ -2361,7 +2361,7 @@ describe('getRecoil()', () => {
         horizontalRecoilWithMods: 333,
         verticalRecoil: 112,
         verticalRecoilWithMods: 112
-      } as IRecoil
+      } as IInventoryItemRecoil
     ],
     [
       {
@@ -2381,7 +2381,7 @@ describe('getRecoil()', () => {
         horizontalRecoilWithMods: 333,
         verticalRecoil: 112,
         verticalRecoilWithMods: 112
-      } as IRecoil
+      } as IInventoryItemRecoil
     ],
     [
       {
@@ -2401,7 +2401,7 @@ describe('getRecoil()', () => {
         horizontalRecoilWithMods: 333,
         verticalRecoil: 112,
         verticalRecoilWithMods: 112
-      } as IRecoil
+      } as IInventoryItemRecoil
     ],
     [
       {
@@ -2452,9 +2452,9 @@ describe('getRecoil()', () => {
         horizontalRecoilWithMods: 650,
         verticalRecoil: 442,
         verticalRecoilWithMods: 442
-      } as IRecoil
+      } as IInventoryItemRecoil
     ]
-  ])('should get the recoil of an inventory item', async (inventoryItem: IInventoryItem, expected: IRecoil) => {
+  ])('should get the recoil of an inventory item', async (inventoryItem: IInventoryItem, expected: IInventoryItemRecoil) => {
     // Arrange
     useItemServiceMock()
     Services.configure(ItemPropertiesService)
@@ -2694,7 +2694,7 @@ describe('getWearableModifiers()', () => {
         movementSpeedPercentageModifierWithMods: 0,
         turningSpeedPercentageModifier: 0,
         turningSpeedPercentageModifierWithMods: 0
-      } as IWearableModifiers
+      } as IInventoryItemWearableModifiers
     ],
     [
       {
@@ -2711,7 +2711,7 @@ describe('getWearableModifiers()', () => {
         movementSpeedPercentageModifierWithMods: armor6b13Fl.movementSpeedPercentageModifier,
         turningSpeedPercentageModifier: armor6b13Fl.turningSpeedPercentageModifier,
         turningSpeedPercentageModifierWithMods: armor6b13Fl.turningSpeedPercentageModifier
-      } as IWearableModifiers
+      } as IInventoryItemWearableModifiers
     ],
     [
       {
@@ -2749,7 +2749,7 @@ describe('getWearableModifiers()', () => {
         movementSpeedPercentageModifierWithMods: armor6b13FlDefault.movementSpeedPercentageModifier + plate6b33Front.movementSpeedPercentageModifier + plate6b33Back.movementSpeedPercentageModifier,
         turningSpeedPercentageModifier: armor6b13FlDefault.turningSpeedPercentageModifier,
         turningSpeedPercentageModifierWithMods: armor6b13FlDefault.turningSpeedPercentageModifier + plate6b33Front.turningSpeedPercentageModifier + plate6b33Back.turningSpeedPercentageModifier
-      } as IWearableModifiers
+      } as IInventoryItemWearableModifiers
     ],
     [
       {
@@ -2780,7 +2780,7 @@ describe('getWearableModifiers()', () => {
         movementSpeedPercentageModifierWithMods: lshZ2dtm.movementSpeedPercentageModifier + lshZ2dtmFs.movementSpeedPercentageModifier,
         turningSpeedPercentageModifier: lshZ2dtm.turningSpeedPercentageModifier,
         turningSpeedPercentageModifierWithMods: lshZ2dtm.turningSpeedPercentageModifier + lshZ2dtmFs.turningSpeedPercentageModifier
-      } as IWearableModifiers
+      } as IInventoryItemWearableModifiers
     ],
     [
       {
@@ -2797,13 +2797,13 @@ describe('getWearableModifiers()', () => {
         movementSpeedPercentageModifierWithMods: berkut.movementSpeedPercentageModifier,
         turningSpeedPercentageModifier: berkut.turningSpeedPercentageModifier,
         turningSpeedPercentageModifierWithMods: berkut.turningSpeedPercentageModifier
-      } as IWearableModifiers
+      } as IInventoryItemWearableModifiers
     ]
   ])(
     'should get the wearable modifiers of an inventory item',
     async (
       inventoryItem: IInventoryItem,
-      expected: IWearableModifiers
+      expected: IInventoryItemWearableModifiers
     ) => {
       // Arrange
       useItemServiceMock()

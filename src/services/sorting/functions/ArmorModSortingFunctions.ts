@@ -10,14 +10,14 @@ export const ArmorModSortingFunctions: ISortingFunctionList<IArmorMod> = {
   ...ArmorSortingFunctions,
   ergonomicsPercentageModifier: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.presetWearableModifiers?.ergonomicsPercentageModifierWithMods ?? i.ergonomicsPercentageModifier
+    comparisonValueObtentionFunction: async (i) => i.presetWearableModifiers?.ergonomicsPercentageModifier ?? i.ergonomicsPercentageModifier
   },
   movementSpeedPercentageModifier: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.presetWearableModifiers?.movementSpeedPercentageModifierWithMods ?? i.movementSpeedPercentageModifier
+    comparisonValueObtentionFunction: async (i) => i.presetWearableModifiers?.movementSpeedPercentageModifier ?? i.movementSpeedPercentageModifier
   },
   turningSpeedPercentageModifier: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.presetWearableModifiers?.turningSpeedPercentageModifierWithMods ?? i.turningSpeedPercentageModifier
+    comparisonValueObtentionFunction: async (i) => i.presetWearableModifiers?.turningSpeedPercentageModifier ?? i.turningSpeedPercentageModifier
   }
 }

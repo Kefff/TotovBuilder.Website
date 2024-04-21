@@ -23,18 +23,6 @@
     <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
-          icon="hand-paper"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.ergonomics') }} :</span>
-      </div>
-      <div class="stats-value">
-        {{ StatsUtils.getDisplayValue(item.presetErgonomics ?? item.ergonomics, false, 0) }}
-      </div>
-    </div>
-    <div class="stats-entry">
-      <div class="stats-caption">
-        <font-awesome-icon
           icon="arrows-alt-v"
           class="icon-before-text"
         />
@@ -54,6 +42,18 @@
       </div>
       <div class="stats-value">
         {{ StatsUtils.getDisplayValue(item.presetHorizontalRecoil ?? item.horizontalRecoil, false, 0) }}
+      </div>
+    </div>
+    <div class="stats-entry">
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="hand-paper"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.ergonomics') }} :</span>
+      </div>
+      <div class="stats-value">
+        {{ StatsUtils.getDisplayValue(item.presetErgonomics ?? item.ergonomics, false, 0) }}
       </div>
     </div>
   </div>

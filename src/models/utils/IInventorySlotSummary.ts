@@ -1,6 +1,7 @@
 import { IInventorySlotType } from '../build/IInventorySlotType'
 import { IArmorModifiers } from './IArmorModifiers'
 import { IInventoryPrice } from './IInventoryPrice'
+import { IRecoil } from './IRecoil'
 import { IWearableModifiers } from './IWearableModifiers'
 
 /**
@@ -10,17 +11,11 @@ export interface IInventorySlotSummary {
   /**
    * Armor modifiers.
    */
-  armorModifiers: IArmorModifiers | undefined
-
+  armorModifiers: IArmorModifiers
   /**
    * Ergonomics.
    */
-  ergonomics: number | undefined
-
-  /**
-   * Horizontal recoil.
-   */
-  horizontalRecoil: number | undefined
+  ergonomics: number
 
   /**
    * Price.
@@ -28,14 +23,14 @@ export interface IInventorySlotSummary {
   price: IInventoryPrice
 
   /**
+   * Recoil.
+   */
+  recoil: IRecoil
+
+  /**
    * Inventory slot type.
    */
   type: IInventorySlotType
-
-  /**
-   * Vertical recoil.
-   */
-  verticalRecoil: number | undefined
 
   /**
    * Wearable modifiers.

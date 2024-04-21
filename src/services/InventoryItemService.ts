@@ -12,10 +12,10 @@ import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
 import { IWearable } from '../models/item/IWearable'
 import { IArmorModifiers } from '../models/utils/IArmorModifiers'
 import { IErgonomics } from '../models/utils/IErgonomics'
-import { IInventoryPrice } from '../models/utils/IInventoryPrice'
-import { IRecoil } from '../models/utils/IRecoil'
+import { IInventoryItemPrice } from '../models/utils/IInventoryItemPrice'
+import { IInventoryItemRecoil } from '../models/utils/IInventoryItemRecoil'
+import { IInventoryItemWearableModifiers } from '../models/utils/IInventoryItemWearableModifiers'
 import { IRecoilPercentageModifier } from '../models/utils/IRecoilPercentageModifier'
-import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 import { IWeight } from '../models/utils/IWeight'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import { PriceUtils } from '../utils/PriceUtils'
@@ -148,7 +148,7 @@ export class InventoryItemService {
    * @param useMerchantFilter - Indicates whether the merchant filter is used. If false, all prices are taken into consideration. Used mainly to ignore merchant filter to be able to display all the prices and barters of an item in its stats.
    * @returns Price.
    */
-  public async getPrice(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true, useMerchantFilter = true): Promise<Result<IInventoryPrice>> {
+  public async getPrice(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true, useMerchantFilter = true): Promise<Result<IInventoryItemPrice>> {
     const globalFilterService = Services.get(GlobalFilterService)
     const itemService = Services.get(ItemService)
     const itemResult = await itemService.getItem(inventoryItem.itemId)
@@ -167,7 +167,7 @@ export class InventoryItemService {
       value: 0,
       valueInMainCurrency: 0
     }
-    let barterItemPrices: IInventoryPrice[] = []
+    let barterItemPrices: IInventoryItemPrice[] = []
     let unitPriceIgnoreStatus = IgnoredUnitPrice.notIgnored
 
     if (!canBeLooted) {
@@ -188,7 +188,7 @@ export class InventoryItemService {
       for (const matchingPrice of matchingPrices) {
         let missingBarterItemPrice = false
         let matchingPriceInMainCurrency = matchingPrice.valueInMainCurrency
-        const matchingPriceBarterItemPrices: IInventoryPrice[] = []
+        const matchingPriceBarterItemPrices: IInventoryItemPrice[] = []
 
         if (matchingPrice.currencyName === 'barter') {
           for (const barterItem of matchingPrice.barterItems) {
@@ -263,7 +263,7 @@ export class InventoryItemService {
       return Result.failFrom(mainCurrencyResult)
     }
 
-    const inventoryPrice: IInventoryPrice = {
+    const inventoryPrice: IInventoryItemPrice = {
       missingPrice: unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored && !hasUnitPrice,
       price,
       pricesWithContent: [],
@@ -401,7 +401,7 @@ export class InventoryItemService {
    * @param inventoryItem - Inventory item.
    * @returns Recoil.
    */
-  public async getRecoil(inventoryItem: IInventoryItem): Promise<Result<IRecoil>> {
+  public async getRecoil(inventoryItem: IInventoryItem): Promise<Result<IInventoryItemRecoil>> {
     const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
     if (!itemResult.success) {
@@ -417,13 +417,12 @@ export class InventoryItemService {
       })
     }
 
-    const horizontalRecoil = (itemResult.value as IRangedWeapon).horizontalRecoil
-    const verticalRecoil = (itemResult.value as IRangedWeapon).verticalRecoil
-    const recoil: IRecoil = {
-      horizontalRecoil,
-      horizontalRecoilWithMods: horizontalRecoil,
-      verticalRecoil,
-      verticalRecoilWithMods: verticalRecoil
+    const rangedWeapon = itemResult.value as IRangedWeapon
+    const recoil: IInventoryItemRecoil = {
+      horizontalRecoil: rangedWeapon.horizontalRecoil,
+      horizontalRecoilWithMods: rangedWeapon.horizontalRecoil,
+      verticalRecoil: rangedWeapon.verticalRecoil,
+      verticalRecoilWithMods: rangedWeapon.verticalRecoil
     }
 
     // Getting the chambered or in magazine ammunition recoil percentage modifier
@@ -484,9 +483,11 @@ export class InventoryItemService {
       return Result.ok(recoilPercentageModifier)
     }
 
+    const rangedWeaponMod = itemResult.value as IRangedWeaponMod
+
     if (itemPropertiesService.isRangedWeaponMod(itemResult.value)) {
-      recoilPercentageModifier.recoilPercentageModifier = (itemResult.value as IRangedWeaponMod).recoilPercentageModifier
-      recoilPercentageModifier.recoilPercentageModifierWithMods = recoilPercentageModifier.recoilPercentageModifier
+      recoilPercentageModifier.recoilPercentageModifier = rangedWeaponMod.recoilPercentageModifier
+      recoilPercentageModifier.recoilPercentageModifierWithMods = rangedWeaponMod.recoilPercentageModifier
     }
 
     for (const modSlot of inventoryItem.modSlots) {
@@ -658,7 +659,7 @@ export class InventoryItemService {
    * @param inventoryItem - Inventory item.
    * @returns Wearable modifiers.
    */
-  public async getWearableModifiers(inventoryItem: IInventoryItem): Promise<Result<IWearableModifiers>> {
+  public async getWearableModifiers(inventoryItem: IInventoryItem): Promise<Result<IInventoryItemWearableModifiers>> {
     const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
     if (!itemResult.success) {

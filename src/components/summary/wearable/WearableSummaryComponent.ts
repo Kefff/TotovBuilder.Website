@@ -1,7 +1,7 @@
 import { computed, defineComponent, PropType } from 'vue'
-import StatsUtils from '../../../utils/StatsUtils'
 import { IWearable } from '../../../models/item/IWearable'
 import { IWearableModifiers } from '../../../models/utils/IWearableModifiers'
+import StatsUtils from '../../../utils/StatsUtils'
 
 export default defineComponent({
   props: {
@@ -21,9 +21,9 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const ergonomicsPercentageModifier = computed(() => props.wearableModifiersOverride?.ergonomicsPercentageModifierWithMods ?? props.item.ergonomicsPercentageModifier)
-    const movementSpeedPercentageModifier = computed(() => props.wearableModifiersOverride?.movementSpeedPercentageModifierWithMods ?? props.item.movementSpeedPercentageModifier)
-    const turningSpeedPercentageModifier = computed(() => props.wearableModifiersOverride?.turningSpeedPercentageModifierWithMods ?? props.item.turningSpeedPercentageModifier)
+    const ergonomicsPercentageModifier = computed(() => props.wearableModifiersOverride?.ergonomicsPercentageModifier ?? props.item.ergonomicsPercentageModifier)
+    const movementSpeedPercentageModifier = computed(() => props.wearableModifiersOverride?.movementSpeedPercentageModifier ?? props.item.movementSpeedPercentageModifier)
+    const turningSpeedPercentageModifier = computed(() => props.wearableModifiersOverride?.turningSpeedPercentageModifier ?? props.item.turningSpeedPercentageModifier)
 
     return {
       ergonomicsPercentageModifier,

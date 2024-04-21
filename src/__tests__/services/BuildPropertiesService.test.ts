@@ -3,8 +3,8 @@ import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
+import { IRecoil } from '../../models/utils/IRecoil'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
-import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
@@ -479,724 +479,6 @@ describe('canAddVest()', () => {
   )
 })
 
-describe('getArmorModifiers()', () => {
-  it.each([
-    [
-      build1,
-      {
-        armorClass: 4,
-        durability: 50
-      } as IArmorModifiers
-    ],
-    [
-      {
-        id: '',
-        name: '',
-        inventorySlots: [
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: paca.id,
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'bodyArmor'
-          }
-        ],
-        lastExported: undefined,
-        lastUpdated: undefined,
-        lastWebsiteVersion: undefined
-      },
-      {
-        armorClass: 2,
-        durability: 0
-      } as IArmorModifiers
-    ],
-    [
-      build2,
-      {
-        armorClass: 4,
-        durability: 40
-      } as IArmorModifiers
-    ],
-    [
-      {
-        id: '',
-        name: 'Build 3',
-        inventorySlots: [
-          {
-            items: [undefined],
-            typeId: 'bodyArmor'
-          },
-          {
-            items: [undefined],
-            typeId: 'tacticalRig'
-          }
-        ],
-        lastExported: undefined,
-        lastUpdated: undefined,
-        lastWebsiteVersion: undefined
-      } as IBuild,
-      {
-        armorClass: 0,
-        durability: 0
-      } as IArmorModifiers
-    ],
-    [
-      {
-        id: '',
-        name: '',
-        inventorySlots: [
-          {
-            items: [undefined],
-            typeId: 'bodyArmor'
-          },
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: scavVest.id,
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'tacticalRig'
-          }
-        ],
-        lastExported: undefined,
-        lastUpdated: undefined,
-        lastWebsiteVersion: undefined
-      } as IBuild,
-      {
-        armorClass: 0,
-        durability: 0
-      } as IArmorModifiers
-    ],
-    [
-      {
-        id: '',
-        name: '',
-        inventorySlots: [
-          {
-            items: [undefined],
-            typeId: 'bodyArmor'
-          },
-          {
-            items: [undefined],
-            typeId: 'tacticalRig'
-          }
-        ],
-        lastExported: undefined,
-        lastUpdated: undefined,
-        lastWebsiteVersion: undefined
-      } as IBuild,
-      {
-        armorClass: 0,
-        durability: 0
-      } as IArmorModifiers
-    ]
-  ])('should get the armor modifiers of an armor or vest in a build', async (build: IBuild, expected: IArmorModifiers) => {
-    // Arrange
-    useItemServiceMock()
-    Services.configure(InventoryItemService)
-    Services.configure(InventorySlotPropertiesService)
-    Services.configure(ItemPropertiesService)
-
-    const service = new BuildPropertiesService()
-
-    // Act
-    const armorModifiersResult = await service.getArmorModifiers(build)
-
-    // Assert
-    expect(armorModifiersResult).not.toBeUndefined()
-    expect(armorModifiersResult!.success).toBe(true)
-    expect(armorModifiersResult!.value).toStrictEqual(expected)
-  })
-
-  it.each(
-    [
-      [
-        {
-          id: '',
-          name: '',
-          inventorySlots: [
-            {
-              items: [
-                {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: 'invalid',
-                  modSlots: [],
-                  quantity: 1
-                }
-              ],
-              typeId: 'bodyArmor'
-            }
-          ],
-          lastExported: undefined,
-          lastUpdated: undefined,
-          lastWebsiteVersion: undefined
-        } as IBuild
-      ],
-      [
-        {
-          id: '',
-          name: '',
-          inventorySlots: [
-            {
-              items: [undefined],
-              typeId: 'bodyArmor'
-            },
-            {
-              items: [
-                {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: 'invalid',
-                  modSlots: [],
-                  quantity: 1
-                }
-              ],
-              typeId: 'tacticalRig'
-            }
-          ],
-          lastExported: undefined,
-          lastUpdated: undefined,
-          lastWebsiteVersion: undefined
-        } as IBuild
-      ]
-    ]
-  )('should fail when an item cannot be found', async (build: IBuild) => {
-    // Arrange
-    useItemServiceMock()
-    Services.configure(InventoryItemService)
-    Services.configure(InventorySlotPropertiesService)
-    Services.configure(ItemPropertiesService)
-
-    const service = new BuildPropertiesService()
-
-    // Act
-    const armorModifiersResult = await service.getArmorModifiers(build)
-
-    // Assert
-    expect(armorModifiersResult.success).toBe(false)
-    expect(armorModifiersResult.failureMessage).toBe('Item "invalid" not found.')
-  })
-})
-
-describe('getErgonomics()', () => {
-  it.each([
-    [build1, 38],
-    [build2, 54],
-    [
-      {
-        id: 'build3',
-        inventorySlots: [
-          {
-            typeId: 'onBack',
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: rpk16.id,
-                modSlots: [],
-                quantity: 1
-              }
-            ]
-          }
-        ],
-        lastExported: undefined,
-        lastUpdated: undefined,
-        lastWebsiteVersion: undefined,
-        name: 'Build 3'
-      } as IBuild,
-      45
-    ],
-    [
-      {
-        name: 'Empty build',
-        id: 'EmptyBuild',
-        inventorySlots: [
-          {
-            typeId: 'onSling',
-            items: []
-          },
-          {
-            typeId: 'onBack',
-            items: [undefined]
-          },
-          {
-            typeId: 'holster',
-            items: [null]
-          }
-        ]
-      } as IBuild,
-      undefined
-    ]
-  ])(
-    'should get the ergonomics of the main ranged weapon of a build',
-    async (build: IBuild, expected: number | undefined) => {
-      // Arrange
-      useItemServiceMock()
-      Services.configure(InventoryItemService)
-      Services.configure(ItemPropertiesService)
-      Services.configure(InventorySlotService)
-      Services.configure(InventorySlotPropertiesService)
-      const service = new BuildPropertiesService()
-
-      // Act
-      const ergonomics = await service.getErgonomics(build)
-
-      // Assert
-      if (expected == null) {
-        expect(ergonomics).toBeUndefined()
-      } else {
-        expect(ergonomics?.success).toBe(true)
-        expect(ergonomics?.value).toBe(expected)
-      }
-    }
-  )
-
-  it('should fail if an item cannot be found', async () => {
-    // Arrange
-    useItemServiceMock()
-    Services.configure(InventoryItemService)
-    Services.configure(ItemPropertiesService)
-    Services.configure(InventorySlotService)
-    Services.configure(InventorySlotPropertiesService)
-    const service = new BuildPropertiesService()
-
-    // Act
-    const ergonomics = await service.getErgonomics(
-      {
-        id: 'build1',
-        inventorySlots: [
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: 'invalid',
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'onSling'
-          }
-        ],
-        lastExported: undefined,
-        lastUpdated: undefined,
-        lastWebsiteVersion: undefined,
-        name: 'Build 1'
-      }
-    )
-
-    // Assert
-    expect(ergonomics?.success).toBe(false)
-    expect(ergonomics?.failureMessage).toBe('Item "invalid" not found.')
-  })
-})
-
-describe('getWearableModifiers()', () => {
-  it.each([
-    [
-      build1,
-      {
-        ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithMods: -0.09500000000000001,
-        movementSpeedPercentageModifier: 0,
-        movementSpeedPercentageModifierWithMods: -0.060000000000000005,
-        turningSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifierWithMods: -0.09
-      } as IWearableModifiers
-    ],
-    [
-      build2,
-      {
-        ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithMods: -0.03,
-        movementSpeedPercentageModifier: 0,
-        movementSpeedPercentageModifierWithMods: -0.03,
-        turningSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifierWithMods: -0.01
-      } as IWearableModifiers
-    ]
-  ])(
-    'should get the wearable modifiers of a build',
-    async (build: IBuild, expected: IWearableModifiers) => {
-      // Arrange
-      useItemServiceMock()
-      Services.configure(InventoryItemService)
-      Services.configure(ItemPropertiesService)
-      Services.configure(InventorySlotPropertiesService)
-      const service = new BuildPropertiesService()
-
-      // Act
-      const wearableModifiersResult = await service.getWearableModifiers(build)
-
-      // Assert
-      expect(wearableModifiersResult.success).toBe(true)
-      expect(wearableModifiersResult.value).toStrictEqual(expected)
-    }
-  )
-
-  it('should fail if an item cannot be found', async () => {
-    // Arrange
-    useItemServiceMock()
-    Services.configure(InventoryItemService)
-    Services.configure(InventorySlotPropertiesService)
-    const service = new BuildPropertiesService()
-
-    // Act
-    const wearableModifiersResult = await service.getWearableModifiers(
-      {
-        id: 'build1',
-        inventorySlots: [
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: 'invalid',
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'bodyArmor'
-          }
-        ],
-        lastExported: undefined,
-        lastUpdated: undefined,
-        lastWebsiteVersion: undefined,
-        name: 'Build 1'
-      }
-    )
-
-    // Assert
-    expect(wearableModifiersResult.success).toBe(false)
-    expect(wearableModifiersResult.failureMessage).toBe('Item "invalid" not found.')
-  })
-})
-
-describe('getPrice()', () => {
-  it.each([
-    [
-      build1,
-      {
-        missingPrice: false,
-        price: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        priceWithContentInMainCurrency: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 366019,
-          valueInMainCurrency: 366019
-        },
-        pricesWithContent: [
-          {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 366019,
-            valueInMainCurrency: 366019
-          }
-        ],
-        unitPrice: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
-    ],
-    [
-      build2,
-      {
-        missingPrice: false,
-        price: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        priceWithContentInMainCurrency: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 247747,
-          valueInMainCurrency: 247747
-        },
-        pricesWithContent: [
-          {
-            barterItems: [],
-            currencyName: 'USD',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 444,
-            valueInMainCurrency: 63495
-          },
-          {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 184252,
-            valueInMainCurrency: 184252
-          }
-        ],
-        unitPrice: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
-    ]
-  ])(
-    'should get the price of a build',
-    async (build: IBuild, expected: IInventoryPrice) => {
-      // Arrange
-      useItemServiceMock()
-      usePresetServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(GlobalFilterService)
-
-      const service = new BuildPropertiesService()
-
-      // Act
-      const price = await service.getPrice(build)
-
-      // Assert
-      expect(price.success).toBe(true)
-      expect(price.value).toStrictEqual(expected)
-    }
-  )
-
-  it('should have the missing price flag when no merchants sell on of the item', async () => {
-    // Arrange
-    useItemServiceMock()
-    usePresetServiceMock()
-    useTarkovValuesServiceMock()
-    useWebsiteConfigurationServiceMock()
-    Services.configure(InventorySlotPropertiesService)
-    Services.configure(InventoryItemService)
-    Services.configure(GlobalFilterService)
-    const service = new BuildPropertiesService()
-
-    const build: IBuild = {
-      id: '',
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [
-                {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: ammo545bp.id, // No merchant
-                  modSlots: [],
-                  quantity: 1
-                }
-              ],
-              ignorePrice: false,
-              itemId: berkut.id,
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'backpack'
-        }
-      ],
-      lastExported: undefined,
-      lastUpdated: undefined,
-      lastWebsiteVersion: undefined,
-      name: ''
-    }
-
-    // Act
-    const price = await service.getPrice(build)
-
-    // Assert
-    expect(price.success).toBe(true)
-    expect(price.value).toStrictEqual({
-      missingPrice: true,
-      price: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      },
-      priceWithContentInMainCurrency: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 24509,
-        valueInMainCurrency: 24509
-      },
-      pricesWithContent: [
-        {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 24509,
-          valueInMainCurrency: 24509
-        }
-      ],
-      unitPrice: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      },
-      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-    } as IInventoryPrice)
-  })
-
-  it('should fail if the main currency cannot be found', async () => {
-    // Arrange
-    useItemServiceMock(false)
-    Services.configure(InventorySlotPropertiesService)
-
-    const service = new BuildPropertiesService()
-
-    // Act
-    const price = await service.getPrice(build1)
-
-    // Assert
-    expect(price.success).toBe(false)
-    expect(price.failureMessage).toBe('Main currency not found.')
-  })
-
-  it('should fail if an item cannot be found', async () => {
-    // Arrange
-    useItemServiceMock()
-    Services.configure(InventorySlotPropertiesService)
-    Services.configure(InventoryItemService)
-    Services.configure(GlobalFilterService)
-
-    const service = new BuildPropertiesService()
-
-    // Act
-    const price = await service.getPrice({
-      id: 'build1',
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: 'invalid',
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'onBack'
-        }
-      ],
-      lastExported: undefined,
-      lastUpdated: undefined,
-      lastWebsiteVersion: undefined,
-      name: 'Build 1'
-    })
-
-    // Assert
-    expect(price.success).toBe(false)
-    expect(price.failureMessage).toBe('Item "invalid" not found.')
-  })
-
-  it('should fail if an inventory slot is invalid', async () => {
-    // Arrange
-    useItemServiceMock()
-    Services.configure(InventorySlotPropertiesService)
-
-    const service = new BuildPropertiesService()
-
-    // Act
-    const price = await service.getPrice({
-      id: 'build1',
-      inventorySlots: [
-        {
-          items: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: rpk16Default.id,
-              modSlots: [],
-              quantity: 1
-            }
-          ],
-          typeId: 'invalid'
-        }
-      ],
-      lastExported: undefined,
-      lastUpdated: undefined,
-      lastWebsiteVersion: undefined,
-      name: 'Build 1'
-    })
-
-    // Assert
-    expect(price.success).toBe(false)
-    expect(price.failureMessage).toBe('Inventory slot type "invalid" not found.')
-  })
-})
-
 describe('getNotExportedTooltip()', () => {
   it.each([
     [undefined, undefined, 'Build not exported. It will be lost if your browser history is cleared.'],
@@ -1214,149 +496,759 @@ describe('getNotExportedTooltip()', () => {
   })
 })
 
-describe('getRecoil()', () => {
-  it.each([
-    [build1, { horizontalRecoil: 226.44, verticalRecoil: 76.16 }],
-    [build2, { horizontalRecoil: 254.8, verticalRecoil: 367.64 }],
-    [
-      {
-        name: 'Empty build',
-        id: 'EmptyBuild',
-        inventorySlots: [
-          {
-            typeId: 'onSling',
-            items: []
-          },
-          {
-            typeId: 'onBack',
-            items: [undefined]
-          },
-          {
-            typeId: 'holster',
-            items: [null]
-          }
-        ]
-      } as IBuild, undefined
-    ]
-  ])(
-    'should get the recoil of the main ranged weapon of a build',
-    async (build: IBuild, expected: { horizontalRecoil: number; verticalRecoil: number } | undefined) => {
+describe('getSummary()', () => {
+  describe.only('Armor modifiers', () => {
+    it.each([
+      [
+        build1,
+        {
+          armorClass: 4,
+          durability: 50
+        } as IArmorModifiers
+      ],
+      [
+        {
+          id: '',
+          name: '',
+          inventorySlots: [
+            {
+              items: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: paca.id,
+                  modSlots: [],
+                  quantity: 1
+                }
+              ],
+              typeId: 'bodyArmor'
+            }
+          ],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined
+        },
+        {
+          armorClass: 2,
+          durability: 0
+        } as IArmorModifiers
+      ],
+      [
+        build2,
+        {
+          armorClass: 4,
+          durability: 40
+        } as IArmorModifiers
+      ],
+      [
+        {
+          id: '',
+          name: 'Build 3',
+          inventorySlots: [
+            {
+              items: [undefined],
+              typeId: 'bodyArmor'
+            },
+            {
+              items: [undefined],
+              typeId: 'tacticalRig'
+            }
+          ],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined
+        } as IBuild,
+        {
+          armorClass: 0,
+          durability: 0
+        } as IArmorModifiers
+      ],
+      [
+        {
+          id: '',
+          name: '',
+          inventorySlots: [
+            {
+              items: [undefined],
+              typeId: 'bodyArmor'
+            },
+            {
+              items: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: scavVest.id,
+                  modSlots: [],
+                  quantity: 1
+                }
+              ],
+              typeId: 'tacticalRig'
+            }
+          ],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined
+        } as IBuild,
+        {
+          armorClass: 0,
+          durability: 0
+        } as IArmorModifiers
+      ],
+      [
+        {
+          id: '',
+          name: '',
+          inventorySlots: [
+            {
+              items: [undefined],
+              typeId: 'bodyArmor'
+            },
+            {
+              items: [undefined],
+              typeId: 'tacticalRig'
+            }
+          ],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined
+        } as IBuild,
+        {
+          armorClass: 0,
+          durability: 0
+        } as IArmorModifiers
+      ]
+    ])('should get the armor modifiers of an armor or vest in a build', async (build: IBuild, expected: IArmorModifiers) => {
       // Arrange
       useItemServiceMock()
-      Services.configure(InventorySlotPropertiesService)
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
 
       const service = new BuildPropertiesService()
 
       // Act
-      const recoil = await service.getRecoil(build)
+      const summary = await service.getSummary(build)
 
       // Assert
-      if (expected == null) {
-        expect(recoil).toBeUndefined()
-      } else {
-        expect(recoil?.success).toBe(true)
-        expect(recoil?.value).toStrictEqual(expected)
-      }
-    }
-  )
+      expect(summary.armorModifiers).toStrictEqual(expected)
+    })
 
-  it('should fail if an item cannot be found', async () => {
-    // Arrange
-    useItemServiceMock()
-    Services.configure(InventorySlotPropertiesService)
-    Services.configure(InventoryItemService)
+    it('should not get an armor modifiers when no body armor nor vest summaries are found', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventorySlotService)
+      Services.configure(ItemPropertiesService)
 
-    const service = new BuildPropertiesService()
+      const service = new BuildPropertiesService()
 
-    // Act
-    const recoil = await service.getRecoil(
-      {
+      // Act
+      const summary = await service.getSummary({
         id: 'build1',
+        name: 'Build 1',
+        inventorySlots: [],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined
+      })
+
+      // Assert
+      expect(summary.armorModifiers).toStrictEqual({
+        armorClass: 0,
+        durability: 0
+      } as IArmorModifiers)
+    })
+  })
+
+  describe('Ergonomics', () => {
+    it.each([
+      [build1, 38],
+      [build2, 54],
+      [
+        {
+          id: 'build3',
+          inventorySlots: [
+            {
+              typeId: 'onBack',
+              items: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: rpk16.id,
+                  modSlots: [],
+                  quantity: 1
+                }
+              ]
+            }
+          ],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined,
+          name: 'Build 3'
+        } as IBuild,
+        45
+      ]
+    ])(
+      'should get the ergonomics of the main ranged weapon of a build',
+      async (build: IBuild, expected: number) => {
+        // Arrange
+        useItemServiceMock()
+        Services.configure(InventoryItemService)
+        Services.configure(ItemPropertiesService)
+        Services.configure(InventorySlotService)
+        Services.configure(InventorySlotPropertiesService)
+        const service = new BuildPropertiesService()
+
+        // Act
+        const summary = await service.getSummary(build)
+
+        // Assert
+        expect(summary.ergonomics).toBe(expected)
+      }
+    )
+
+    it.each([
+      [
+        {
+          name: 'Empty build',
+          id: 'EmptyBuild',
+          inventorySlots: [
+            {
+              typeId: 'onSling',
+              items: []
+            },
+            {
+              typeId: 'onBack',
+              items: [undefined]
+            },
+            {
+              typeId: 'holster',
+              items: [null]
+            }
+          ]
+        } as IBuild
+      ],
+      [
+        {
+          name: 'Empty build',
+          id: 'EmptyBuild',
+          inventorySlots: [],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined
+        } as IBuild
+      ]
+    ])('should not get the ergonomics of the main ranged when the build contains not ranged weapon', async (build: IBuild) => {
+      // Arrange
+      useItemServiceMock()
+      Services.configure(InventoryItemService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(InventorySlotService)
+      Services.configure(InventorySlotPropertiesService)
+      const service = new BuildPropertiesService()
+
+      // Act
+      const summary = await service.getSummary(build)
+
+      // Assert
+      expect(summary.ergonomics).toBe(0)
+    })
+  })
+
+  describe('Price', () => {
+    it.each([
+      [
+        build1,
+        {
+          missingPrice: false,
+          priceInMainCurrency: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: undefined,
+            value: 366019,
+            valueInMainCurrency: 366019
+          },
+          priceByCurrency: [
+            {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '',
+              merchant: '',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 366019,
+              valueInMainCurrency: 366019
+            }
+          ]
+        } as IInventoryPrice
+      ],
+      [
+        build2,
+        {
+          missingPrice: false,
+          priceInMainCurrency: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: undefined,
+            value: 247747,
+            valueInMainCurrency: 247747
+          },
+          priceByCurrency: [
+            {
+              barterItems: [],
+              currencyName: 'USD',
+              itemId: '',
+              merchant: '',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 444,
+              valueInMainCurrency: 63495
+            },
+            {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: '',
+              merchant: '',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 184252,
+              valueInMainCurrency: 184252
+            }
+          ]
+        } as IInventoryPrice
+      ],
+      [
+        {
+          id: 'EmptyBuild',
+          name: 'Empty build',
+          inventorySlots: [],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined
+        } as IBuild,
+        {
+          missingPrice: false,
+          price: {
+            barterItems: [],
+            currencyName: '',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: undefined,
+            value: 0,
+            valueInMainCurrency: 0
+          },
+          priceInMainCurrency: {
+            barterItems: [],
+            currencyName: '',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: undefined,
+            value: 0,
+            valueInMainCurrency: 0
+          },
+          priceByCurrency: [],
+          unitPrice: {
+            barterItems: [],
+            currencyName: '',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: undefined,
+            value: 0,
+            valueInMainCurrency: 0
+          }
+        } as IInventoryPrice
+      ]
+    ])(
+      'should get the price of a build',
+      async (build: IBuild, expected: IInventoryPrice) => {
+        // Arrange
+        useItemServiceMock()
+        usePresetServiceMock()
+        useTarkovValuesServiceMock()
+        useWebsiteConfigurationServiceMock()
+        Services.configure(InventoryItemService)
+        Services.configure(InventorySlotPropertiesService)
+        Services.configure(GlobalFilterService)
+
+        const service = new BuildPropertiesService()
+
+        // Act
+        const summary = await service.getSummary(build)
+
+        // Assert
+        expect(summary.price).toStrictEqual(expected)
+      }
+    )
+
+    it('should have the missing price flag when no merchants sell on of the item', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventoryItemService)
+      Services.configure(GlobalFilterService)
+      const service = new BuildPropertiesService()
+
+      const build: IBuild = {
+        id: '',
         inventorySlots: [
           {
             items: [
               {
-                content: [],
+                content: [
+                  {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: ammo545bp.id, // No merchant
+                    modSlots: [],
+                    quantity: 1
+                  }
+                ],
                 ignorePrice: false,
-                itemId: 'invalid',
+                itemId: berkut.id,
                 modSlots: [],
                 quantity: 1
               }
             ],
-            typeId: 'onSling'
+            typeId: 'backpack'
           }
         ],
         lastExported: undefined,
         lastUpdated: undefined,
         lastWebsiteVersion: undefined,
-        name: 'Build 1'
+        name: ''
       }
-    )
 
-    // Assert
-    expect(recoil?.success).toBe(false)
-    expect(recoil?.failureMessage).toBe('Item "invalid" not found.')
-  })
-})
+      // Act
+      const summary = await service.getSummary(build)
 
-describe('getWeight()', () => {
-  it.each([
-    [build1, 24.153],
-    [build2, 8.936000000000002]
-  ])(
-    'should get the weight of a build',
-    async (build: IBuild, expected: number) => {
+      // Assert
+      expect(summary.price).toStrictEqual({
+        missingPrice: true,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        priceInMainCurrency: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 24509,
+          valueInMainCurrency: 24509
+        },
+        priceByCurrency: [
+          {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: undefined,
+            value: 24509,
+            valueInMainCurrency: 24509
+          }
+        ],
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        }
+      } as IInventoryPrice)
+    })
+
+    it('should not get the price when the main currency cannot be found', async () => {
       // Arrange
-      useItemServiceMock()
+      useItemServiceMock(false)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventoryItemService)
 
       const service = new BuildPropertiesService()
 
       // Act
-      const weight = await service.getWeight(build)
+      const summary = await service.getSummary(build1)
 
       // Assert
-      expect(weight.success).toBe(true)
-      expect(weight.value).toBe(expected)
-    }
-  )
+      expect(summary.price).toStrictEqual({
+        missingPrice: false,
+        price: {
+          barterItems: [],
+          currencyName: '',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        priceInMainCurrency: {
+          barterItems: [],
+          currencyName: '',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        priceByCurrency: [],
+        unitPrice: {
+          barterItems: [],
+          currencyName: '',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        }
+      } as IInventoryPrice)
+    })
+  })
 
-  it('should fail if an item cannot be found', async () => {
-    // Arrange
-    useItemServiceMock()
-    Services.configure(InventorySlotPropertiesService)
-    Services.configure(InventoryItemService)
-
-    const service = new BuildPropertiesService()
-
-    // Act
-    const weight = await service.getWeight({
-      id: 'build1',
-      inventorySlots: [
+  describe('Recoil', () => {
+    it.each([
+      [
+        build1,
         {
-          items: [
+          horizontalRecoil: 226.44,
+          verticalRecoil: 76.16
+        } as IRecoil
+      ],
+      [
+        build2,
+        {
+          horizontalRecoil: 254.8,
+          verticalRecoil: 367.64
+        } as IRecoil
+      ],
+      [
+        {
+          name: 'Empty build',
+          id: 'EmptyBuild',
+          inventorySlots: [
             {
-              content: [],
-              itemId: 'invalid',
-              ignorePrice: false,
-              modSlots: [],
-              quantity: 1
+              typeId: 'onSling',
+              items: []
+            },
+            {
+              typeId: 'onBack',
+              items: [undefined]
+            },
+            {
+              typeId: 'holster',
+              items: [null]
+            }
+          ]
+        } as IBuild,
+        {
+          horizontalRecoil: 0,
+          verticalRecoil: 0
+        } as IRecoil
+      ]
+    ])(
+      'should get the recoil of the first ranged weapon found in the on sling, on back or holter inventory slots of a build',
+      async (build: IBuild, expected: IRecoil) => {
+        // Arrange
+        useItemServiceMock()
+        Services.configure(InventoryItemService)
+        Services.configure(InventorySlotPropertiesService)
+        Services.configure(InventorySlotService)
+
+        const service = new BuildPropertiesService()
+
+        // Act
+        const summary = await service.getSummary(build)
+
+        // Assert
+        expect(summary.recoil).toStrictEqual(expected)
+      }
+    )
+
+    it('should not get the recoil when an item cannot be found', async () => {
+      // Arrange
+      useItemServiceMock()
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventorySlotService)
+
+      const service = new BuildPropertiesService()
+
+      // Act
+      const summary = await service.getSummary(
+        {
+          id: 'build1',
+          inventorySlots: [
+            {
+              items: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: 'invalid',
+                  modSlots: [],
+                  quantity: 1
+                }
+              ],
+              typeId: 'onSling'
             }
           ],
-          typeId: 'onBack'
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined,
+          name: 'Build 1'
         }
-      ],
-      lastExported: undefined,
-      lastUpdated: undefined,
-      lastWebsiteVersion: undefined,
-      name: 'Build 1'
-    })
+      )
 
-    // Assert
-    expect(weight.success).toBe(false)
-    expect(weight.failureMessage).toBe('Item "invalid" not found.')
+      // Assert
+      expect(summary.recoil).toStrictEqual({
+        horizontalRecoil: 0,
+        verticalRecoil: 0
+      } as IRecoil)
+    })
+  })
+
+  describe('Weight', () => {
+    it.each([
+      [
+        build1,
+        24.153
+      ],
+      [
+        build2,
+        8.936000000000002
+      ],
+      [
+        {
+          name: 'Empty build',
+          id: 'EmptyBuild',
+          inventorySlots: [
+            {
+              typeId: 'onSling',
+              items: []
+            },
+            {
+              typeId: 'onBack',
+              items: [undefined]
+            },
+            {
+              typeId: 'holster',
+              items: [null]
+            }
+          ]
+        } as IBuild,
+        0
+      ]
+    ])(
+      'should get the weight of a build',
+      async (build: IBuild, expected: number) => {
+        // Arrange
+        useItemServiceMock()
+        Services.configure(InventoryItemService)
+        Services.configure(InventorySlotPropertiesService)
+        Services.configure(InventorySlotService)
+
+        const service = new BuildPropertiesService()
+
+        // Act
+        const summary = await service.getSummary(build)
+
+        // Assert
+        expect(summary.weight).toBe(expected)
+      }
+    )
+  })
+
+  describe('Wearable modifiers', () => {
+    it.each([
+      [
+        build1,
+        {
+          ergonomicsPercentageModifier: 0,
+          ergonomicsPercentageModifierWithMods: -0.09500000000000001,
+          movementSpeedPercentageModifier: 0,
+          movementSpeedPercentageModifierWithMods: -0.060000000000000005,
+          turningSpeedPercentageModifier: 0,
+          turningSpeedPercentageModifierWithMods: -0.09
+        } as IWearableModifiers
+      ],
+      [
+        build2,
+        {
+          ergonomicsPercentageModifier: 0,
+          ergonomicsPercentageModifierWithMods: -0.03,
+          movementSpeedPercentageModifier: 0,
+          movementSpeedPercentageModifierWithMods: -0.03,
+          turningSpeedPercentageModifier: 0,
+          turningSpeedPercentageModifierWithMods: -0.01
+        } as IWearableModifiers
+      ],
+      [
+        {
+          id: 'EmptyBuild',
+          inventorySlots: [],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined,
+          name: 'Empty build'
+        } as IBuild,
+        {
+          ergonomicsPercentageModifier: 0,
+          ergonomicsPercentageModifierWithMods: 0,
+          movementSpeedPercentageModifier: 0,
+          movementSpeedPercentageModifierWithMods: 0,
+          turningSpeedPercentageModifier: 0,
+          turningSpeedPercentageModifierWithMods: 0
+        } as IWearableModifiers
+      ]
+    ])(
+      'should get the wearable modifiers of a build',
+      async (build: IBuild, expected: IWearableModifiers) => {
+        // Arrange
+        useItemServiceMock()
+        Services.configure(InventoryItemService)
+        Services.configure(InventorySlotPropertiesService)
+        Services.configure(InventorySlotService)
+
+        const service = new BuildPropertiesService()
+
+        // Act
+        const summary = await service.getSummary(build)
+
+        // Assert
+        expect(summary.wearableModifiers).toStrictEqual(expected)
+      })
   })
 })

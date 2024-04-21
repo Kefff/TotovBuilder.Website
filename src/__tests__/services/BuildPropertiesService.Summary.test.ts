@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
-import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
@@ -21,6 +20,10 @@ describe('getSummary()', () => {
     [
       build1,
       {
+        armorModifiers: {
+          armorClass: 0,
+          durability: 0
+        },
         ergonomics: 34.39,
         exported: true,
         horizontalRecoil: 226.44,
@@ -40,7 +43,7 @@ describe('getSummary()', () => {
             value: 0,
             valueInMainCurrency: 0
           },
-          priceWithContentInMainCurrency: {
+          priceInMainCurrency: {
             barterItems: [],
             currencyName: 'RUB',
             itemId: '',
@@ -50,7 +53,7 @@ describe('getSummary()', () => {
             value: 366019,
             valueInMainCurrency: 366019
           },
-          pricesWithContent: [
+          priceByCurrency: [
             {
               barterItems: [],
               currencyName: 'RUB',
@@ -61,18 +64,11 @@ describe('getSummary()', () => {
               value: 366019,
               valueInMainCurrency: 366019
             }
-          ],
-          unitPrice: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+          ]
+        },
+        recoil: {
+          horizontalRecoil: 226.44,
+          verticalRecoil: 76.16
         },
         shoppingList: [
           {
@@ -551,14 +547,10 @@ describe('getSummary()', () => {
             }
           }
         ],
-        verticalRecoil: 76.16,
         wearableModifiers: {
           ergonomicsPercentageModifier: 0,
-          ergonomicsPercentageModifierWithMods: -0.09500000000000001,
           movementSpeedPercentageModifier: 0,
-          movementSpeedPercentageModifierWithMods: -0.060000000000000005,
-          turningSpeedPercentageModifier: 0,
-          turningSpeedPercentageModifierWithMods: -0.09
+          turningSpeedPercentageModifier: 0
         },
         weight: 24.153
       } as IBuildSummary
@@ -566,9 +558,12 @@ describe('getSummary()', () => {
     [
       build2,
       {
+        armorModifiers: {
+          armorClass: 0,
+          durability: 0
+        },
         ergonomics: 52.38,
         exported: true,
-        horizontalRecoil: 254.8,
         id: 'build_2',
         name: 'Build 2',
         lastExported: undefined,
@@ -585,7 +580,7 @@ describe('getSummary()', () => {
             value: 0,
             valueInMainCurrency: 0
           },
-          priceWithContentInMainCurrency: {
+          priceInMainCurrency: {
             barterItems: [],
             currencyName: 'RUB',
             itemId: '',
@@ -595,7 +590,7 @@ describe('getSummary()', () => {
             value: 247747,
             valueInMainCurrency: 247747
           },
-          pricesWithContent: [
+          priceByCurrency: [
             {
               barterItems: [],
               currencyName: 'USD',
@@ -616,18 +611,11 @@ describe('getSummary()', () => {
               value: 184252,
               valueInMainCurrency: 184252
             }
-          ],
-          unitPrice: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+          ]
+        },
+        recoil: {
+          horizontalRecoil: 254.8,
+          verticalRecoil: 367.64
         },
         shoppingList: [
           {
@@ -901,7 +889,6 @@ describe('getSummary()', () => {
             }
           }
         ],
-        verticalRecoil: 367.64,
         wearableModifiers: {
           ergonomicsPercentageModifier: 0,
           ergonomicsPercentageModifierWithMods: -0.03,
@@ -923,16 +910,19 @@ describe('getSummary()', () => {
         name: 'Empty build'
       } as IBuild,
       {
-        ergonomics: undefined,
+        armorModifiers: {
+          armorClass: 0,
+          durability: 0
+        },
+        ergonomics: 0,
         exported: true,
-        horizontalRecoil: undefined,
         id: 'emptyBuild',
         name: 'Empty build',
         lastExported: new Date(2),
         lastUpdated: new Date(1),
         price: {
           missingPrice: false,
-          price: {
+          priceInMainCurrency: {
             barterItems: [],
             currencyName: 'RUB',
             itemId: '',
@@ -942,38 +932,17 @@ describe('getSummary()', () => {
             value: 0,
             valueInMainCurrency: 0
           },
-          priceWithContentInMainCurrency: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          pricesWithContent: [],
-          unitPrice: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+          priceByCurrency: []
+        },
+        recoil: {
+          horizontalRecoil: 0,
+          verticalRecoil: 0
         },
         shoppingList: [],
-        verticalRecoil: undefined,
         wearableModifiers: {
           ergonomicsPercentageModifier: 0,
-          ergonomicsPercentageModifierWithMods: 0,
           movementSpeedPercentageModifier: 0,
-          movementSpeedPercentageModifierWithMods: 0,
-          turningSpeedPercentageModifier: 0,
-          turningSpeedPercentageModifierWithMods: 0
+          turningSpeedPercentageModifier: 0
         },
         weight: 0
       } as IBuildSummary

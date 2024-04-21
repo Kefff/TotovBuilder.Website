@@ -78,10 +78,10 @@
       </template>
       <template #body="{ data }">
         <div
-          v-if="data.verticalRecoil != null"
+          v-if="data.recoil.verticalRecoil !== 0"
           class="build-list-column"
         >
-          <span>{{ StatsUtils.getDisplayValue(data.verticalRecoil, false, 0) }}</span>
+          <span>{{ StatsUtils.getDisplayValue(data.recoil.verticalRecoil, false, 0) }}</span>
           <font-awesome-icon
             icon="arrows-alt-v"
             class="icon-after-text"
@@ -100,10 +100,10 @@
       </template>
       <template #body="{ data }">
         <div
-          v-if="data.horizontalRecoil != null"
+          v-if="data.recoil.horizontalRecoil !== 0"
           class="build-list-column"
         >
-          <span>{{ StatsUtils.getDisplayValue(data.horizontalRecoil, false, 0) }}</span>
+          <span>{{ StatsUtils.getDisplayValue(data.recoil.horizontalRecoil, false, 0) }}</span>
           <font-awesome-icon
             icon="arrows-alt-h"
             class="icon-after-text"
@@ -122,7 +122,7 @@
       </template>
       <template #body="{ data }">
         <div class="build-list-column">
-          <div v-if="data.ergonomics != null">
+          <div v-if="data.ergonomics !== 0">
             <span>{{ StatsUtils.getDisplayValue(data.ergonomics, false, 0) }}</span>
             <font-awesome-icon
               icon="hand-paper"
@@ -133,7 +133,7 @@
       </template>
     </Column>
     <Column
-      field="wearableModifiers.ergonomicsPercentageModifierWithMods"
+      field="wearableModifiers.ergonomicsPercentageModifier"
       :sortable="true"
     >
       <template #header>
@@ -143,11 +143,11 @@
       </template>
       <template #body="{ data }">
         <div
-          v-if="data.wearableModifiers != null && data.wearableModifiers.ergonomicsPercentageModifierWithMods !== 0"
+          v-if="data.wearableModifiers.ergonomicsPercentageModifier !== 0"
           class="build-list-column"
         >
-          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.ergonomicsPercentageModifierWithMods)">
-            {{ StatsUtils.getPercentageDisplayValue(data.wearableModifiers.ergonomicsPercentageModifierWithMods, true) }}
+          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.ergonomicsPercentageModifier)">
+            {{ StatsUtils.getPercentageDisplayValue(data.wearableModifiers.ergonomicsPercentageModifier, true) }}
           </span>
           <font-awesome-icon
             icon="hand-paper"
@@ -157,7 +157,7 @@
       </template>
     </Column>
     <Column
-      field="wearableModifiers.movementSpeedPercentageModifierWithMods"
+      field="wearableModifiers.movementSpeedPercentageModifier"
       :sortable="true"
     >
       <template #header>
@@ -167,11 +167,11 @@
       </template>
       <template #body="{ data }">
         <div
-          v-if="data.wearableModifiers != null && data.wearableModifiers.movementSpeedPercentageModifierWithMods !== 0"
+          v-if="data.wearableModifiers.movementSpeedPercentageModifier !== 0"
           class="build-list-column"
         >
-          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.movementSpeedPercentageModifierWithMods)">
-            {{ StatsUtils.getPercentageDisplayValue(data.wearableModifiers.movementSpeedPercentageModifierWithMods, true) }}
+          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.movementSpeedPercentageModifier)">
+            {{ StatsUtils.getPercentageDisplayValue(data.wearableModifiers.movementSpeedPercentageModifier, true) }}
           </span>
           <font-awesome-icon
             icon="walking"
@@ -181,7 +181,7 @@
       </template>
     </Column>
     <Column
-      field="wearableModifiers.turningSpeedPercentageModifierWithMods"
+      field="wearableModifiers.turningSpeedPercentageModifier"
       :sortable="true"
     >
       <template #header>
@@ -191,11 +191,11 @@
       </template>
       <template #body="{ data }">
         <div
-          v-if="data.wearableModifiers != null && data.wearableModifiers.turningSpeedPercentageModifierWithMods !== 0"
+          v-if="data.wearableModifiers.turningSpeedPercentageModifier !== 0"
           class="build-list-column"
         >
-          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.turningSpeedPercentageModifierWithMods)">
-            {{ StatsUtils.getPercentageDisplayValue(data.wearableModifiers.turningSpeedPercentageModifierWithMods, true) }}
+          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.turningSpeedPercentageModifier)">
+            {{ StatsUtils.getPercentageDisplayValue(data.wearableModifiers.turningSpeedPercentageModifier, true) }}
           </span>
           <font-awesome-icon
             icon="undo"

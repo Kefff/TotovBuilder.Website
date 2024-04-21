@@ -2,11 +2,11 @@ import { computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch
 import { ICurrency } from '../../models/configuration/ICurrency'
 import { IItem } from '../../models/item/IItem'
 import { IPrice } from '../../models/item/IPrice'
-import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
+import { IInventoryItemPrice } from '../../models/utils/IInventoryItemPrice'
 import vueI18n from '../../plugins/vueI18n'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemService } from '../../services/ItemService'
-import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
 import ItemIcon from '../item-icon/ItemIconComponent.vue'
 import MerchantIcon from '../merchant-icon/MerchantIconComponent.vue'
@@ -51,7 +51,7 @@ export default defineComponent({
     const globalFilterService = Services.get(GlobalFilterService)
     globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-    const barterItemPrices = ref<IInventoryPrice[]>([])
+    const barterItemPrices = ref<IInventoryItemPrice[]>([])
     const barterItems = ref<IItem[]>([])
     const currency = ref<ICurrency>()
     const displayedCurrency = ref<ICurrency>()

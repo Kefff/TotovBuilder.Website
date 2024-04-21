@@ -14,7 +14,8 @@
     "test-ui": "vitest --ui",
     "test-w": "npm run test-watch",
     "test-watch": "vitest watch",
-    "test": "vitest run"
+    "test": "vitest run",
+    "tsc": "tsc"
   },
   "dependencies": {
     "@babel/runtime": "^7.22.6",

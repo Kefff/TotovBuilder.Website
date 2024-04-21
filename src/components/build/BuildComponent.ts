@@ -2,7 +2,6 @@ import { computed, defineComponent, onMounted, onUnmounted, provide, ref, watch 
 import { useRoute, useRouter } from 'vue-router'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
-import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import vueI18n from '../../plugins/vueI18n'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
@@ -61,20 +60,18 @@ export default defineComponent({
     let originalBuild: IBuild
 
     const hasLoadingError = computed(() => hasItemsLoadingError.value || hasWebsiteConfigurationLoadingError.value)
-    const hasSummaryErgonomics = computed(() => summary.value.ergonomics != null && summary.value.ergonomics !== 0)
-    const hasSummaryErgonomicsPercentageModifier = computed(() => summary.value.wearableModifiers.ergonomicsPercentageModifierWithMods !== 0)
-    const hasSummaryHorizontalRecoil = computed(() => summary.value.horizontalRecoil != null && summary.value.horizontalRecoil !== 0)
-    const hasSummaryModifiers = computed(() =>
-      summary.value.wearableModifiers != null
-      && (hasSummaryErgonomicsPercentageModifier.value
-        || hasSummaryMovementSpeedPercentageModifierWithMods.value
-        || hasSummaryTurningSpeedPercentageModifierWithMods.value)
-    )
-    const hasSummaryMovementSpeedPercentageModifierWithMods = computed(() => summary.value.wearableModifiers.movementSpeedPercentageModifierWithMods !== 0)
-    const hasSummaryPrice = computed(() => summary.value.price.priceWithContentInMainCurrency.valueInMainCurrency > 0)
+    const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
+    const hasSummaryErgonomicsPercentageModifier = computed(() => summary.value.wearableModifiers.ergonomicsPercentageModifier !== 0)
+    const hasSummaryHorizontalRecoil = computed(() => summary.value.recoil.horizontalRecoil !== 0)
+    const hasSummaryMovementSpeedPercentageModifier = computed(() => summary.value.wearableModifiers.movementSpeedPercentageModifier !== 0)
+    const hasSummaryPrice = computed(() => summary.value.price.priceInMainCurrency.valueInMainCurrency > 0)
     const hasSummaryStats = computed(() => hasSummaryErgonomics.value || hasSummaryHorizontalRecoil.value || hasSummaryVerticalRecoil.value)
-    const hasSummaryTurningSpeedPercentageModifierWithMods = computed(() => summary.value.wearableModifiers.turningSpeedPercentageModifierWithMods !== 0)
-    const hasSummaryVerticalRecoil = computed(() => summary.value.verticalRecoil != null && summary.value.verticalRecoil !== 0)
+    const hasSummaryTurningSpeedPercentageModifier = computed(() => summary.value.wearableModifiers.turningSpeedPercentageModifier !== 0)
+    const hasSummaryVerticalRecoil = computed(() => summary.value.recoil.verticalRecoil !== 0)
+    const hasSummaryWearableModifiers = computed(() => hasSummaryErgonomicsPercentageModifier.value
+      || hasSummaryMovementSpeedPercentageModifier.value
+      || hasSummaryTurningSpeedPercentageModifier.value
+    )
     const hasSummaryWeight = computed(() => summary.value.weight !== 0)
     const invalid = computed(() => build.value.name === '')
     const isEmpty = computed(() => !build.value.inventorySlots.some(is => is.items.some(i => i != null)))
@@ -98,17 +95,19 @@ export default defineComponent({
     const hasWebsiteConfigurationLoadingError = ref(false)
     const isLoading = ref(true)
     const summary = ref<IBuildSummary>({
-      armorModifiers: undefined,
-      ergonomics: undefined,
+      armorModifiers: {
+        armorClass: 0,
+        durability: 0
+      },
+      ergonomics: 0,
       exported: false,
-      horizontalRecoil: undefined,
       id: build.value.id,
       name: build.value.name,
       lastExported: undefined,
       lastUpdated: new Date(),
       price: {
         missingPrice: false,
-        price: {
+        priceInMainCurrency: {
           barterItems: [],
           currencyName: 'RUB',
           itemId: '',
@@ -118,38 +117,17 @@ export default defineComponent({
           value: 0,
           valueInMainCurrency: 0
         },
-        priceWithContentInMainCurrency: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        pricesWithContent: [],
-        unitPrice: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+        priceByCurrency: []
+      },
+      recoil: {
+        horizontalRecoil: 0,
+        verticalRecoil: 0
       },
       shoppingList: [],
-      verticalRecoil: undefined,
       wearableModifiers: {
         ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithMods: 0,
         movementSpeedPercentageModifier: 0,
-        movementSpeedPercentageModifierWithMods: 0,
-        turningSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifierWithMods: 0
+        turningSpeedPercentageModifier: 0
       },
       weight: 0
     })
@@ -473,12 +451,12 @@ export default defineComponent({
       hasSummaryErgonomics,
       hasSummaryErgonomicsPercentageModifier,
       hasSummaryHorizontalRecoil,
-      hasSummaryModifiers,
-      hasSummaryMovementSpeedPercentageModifierWithMods,
+      hasSummaryMovementSpeedPercentageModifier,
       hasSummaryPrice,
       hasSummaryStats,
-      hasSummaryTurningSpeedPercentageModifierWithMods,
+      hasSummaryTurningSpeedPercentageModifier,
       hasSummaryVerticalRecoil,
+      hasSummaryWearableModifiers,
       hasSummaryWeight,
       hasWebsiteConfigurationLoadingError,
       invalid,

@@ -4,7 +4,6 @@ import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IInventorySlot } from '../../models/build/IInventorySlot'
 import { IInventorySlotType } from '../../models/build/IInventorySlotType'
 import { IItem } from '../../models/item/IItem'
-import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { IInventorySlotSummary } from '../../models/utils/IInventorySlotSummary'
 import { InventorySlotComponentService } from '../../services/components/InventorySlotComponentService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
@@ -46,20 +45,18 @@ export default defineComponent({
     const inventorySlotService = Services.get(InventorySlotService)
     const globalFilterService = Services.get(GlobalFilterService)
 
-    const hasSummaryErgonomics = computed(() => summary.value.ergonomics != null && summary.value.ergonomics !== 0)
-    const hasSummaryErgonomicsPercentageModifier = computed(() => summary.value.wearableModifiers.ergonomicsPercentageModifierWithMods !== 0)
-    const hasSummaryHorizontalRecoil = computed(() => summary.value.horizontalRecoil != null && summary.value.horizontalRecoil !== 0)
-    const hasSummaryModifiers = computed(() =>
-      summary.value.wearableModifiers != null
-      && (hasSummaryErgonomicsPercentageModifier.value
-        || hasSummaryMovementSpeedPercentageModifierWithMods.value
-        || hasSummaryTurningSpeedPercentageModifierWithMods.value)
-    )
-    const hasSummaryMovementSpeedPercentageModifierWithMods = computed(() => summary.value.wearableModifiers.movementSpeedPercentageModifierWithMods !== 0)
-    const hasSummaryPrice = computed(() => summary.value.price.priceWithContentInMainCurrency.valueInMainCurrency > 0)
+    const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
+    const hasSummaryErgonomicsPercentageModifier = computed(() => summary.value.wearableModifiers.ergonomicsPercentageModifier !== 0)
+    const hasSummaryHorizontalRecoil = computed(() => summary.value.recoil.horizontalRecoil !== 0)
+    const hasSummaryMovementSpeedPercentageModifier = computed(() => summary.value.wearableModifiers.movementSpeedPercentageModifier !== 0)
+    const hasSummaryPrice = computed(() => summary.value.price.priceInMainCurrency.valueInMainCurrency > 0)
     const hasSummaryStats = computed(() => hasSummaryErgonomics.value || hasSummaryHorizontalRecoil.value || hasSummaryVerticalRecoil.value)
-    const hasSummaryTurningSpeedPercentageModifierWithMods = computed(() => summary.value.wearableModifiers.turningSpeedPercentageModifierWithMods !== 0)
-    const hasSummaryVerticalRecoil = computed(() => summary.value.verticalRecoil != null && summary.value.verticalRecoil !== 0)
+    const hasSummaryTurningSpeedPercentageModifier = computed(() => summary.value.wearableModifiers.turningSpeedPercentageModifier !== 0)
+    const hasSummaryVerticalRecoil = computed(() => summary.value.recoil.verticalRecoil !== 0)
+    const hasSummaryWearableModifiers = computed(() => hasSummaryErgonomicsPercentageModifier.value
+      || hasSummaryMovementSpeedPercentageModifier.value
+      || hasSummaryTurningSpeedPercentageModifier.value
+    )
     const hasSummaryWeight = computed(() => summary.value.weight !== 0)
 
     const editing = inject<Ref<boolean>>('editing')
@@ -74,12 +71,14 @@ export default defineComponent({
     const icon = ref<string>()
     const items = ref<(IInventoryItem | undefined)[]>([]) // Used to be able to put back the previously selected item when changing it to an incompatible item
     const summary = ref<IInventorySlotSummary>({
-      armorModifiers: undefined,
-      ergonomics: undefined,
-      horizontalRecoil: undefined,
+      armorModifiers: {
+        armorClass: 0,
+        durability: 0
+      },
+      ergonomics: 0,
       price: {
         missingPrice: false,
-        price: {
+        priceInMainCurrency: {
           barterItems: [],
           currencyName: 'RUB',
           itemId: '',
@@ -89,28 +88,11 @@ export default defineComponent({
           value: 0,
           valueInMainCurrency: 0
         },
-        priceWithContentInMainCurrency: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        pricesWithContent: [],
-        unitPrice: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+        priceByCurrency: []
+      },
+      recoil: {
+        horizontalRecoil: 0,
+        verticalRecoil: 0
       },
       type: {
         acceptedItemCategories: [],
@@ -119,14 +101,10 @@ export default defineComponent({
         id: '',
         itemSlotsAmount: 0
       },
-      verticalRecoil: undefined,
       wearableModifiers: {
         ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithMods: 0,
         movementSpeedPercentageModifier: 0,
-        movementSpeedPercentageModifierWithMods: 0,
-        turningSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifierWithMods: 0
+        turningSpeedPercentageModifier: 0
       },
       weight: 0
     })
@@ -159,16 +137,12 @@ export default defineComponent({
     async function initialize() {
       items.value = [...props.modelValue.items]
 
-      const inventorySlotTypeResult = await inventorySlotService.getType(props.modelValue.typeId)
+      const inventorySlotTypeResult = inventorySlotService.getType(props.modelValue.typeId)
 
       if (inventorySlotTypeResult.success) {
         type.value = inventorySlotTypeResult.value
         customIconName.value = type.value.customIcon
         icon.value = type.value.icon
-      } else {
-        type.value = undefined
-        customIconName.value = undefined
-        icon.value = undefined
       }
 
       setItemComponentParameters()
@@ -237,12 +211,12 @@ export default defineComponent({
       hasSummaryErgonomics,
       hasSummaryErgonomicsPercentageModifier,
       hasSummaryHorizontalRecoil,
-      hasSummaryModifiers,
-      hasSummaryMovementSpeedPercentageModifierWithMods,
+      hasSummaryMovementSpeedPercentageModifier,
       hasSummaryPrice,
       hasSummaryStats,
-      hasSummaryTurningSpeedPercentageModifierWithMods,
+      hasSummaryTurningSpeedPercentageModifier,
       hasSummaryVerticalRecoil,
+      hasSummaryWearableModifiers,
       hasSummaryWeight,
       icon,
       Images,
@@ -252,7 +226,8 @@ export default defineComponent({
       StatsUtils,
       StringUtils,
       summary,
-      toggle
+      toggle,
+      type
     }
   }
 })

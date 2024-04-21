@@ -1,17 +1,17 @@
-import { IItem } from '../models/item/IItem'
-import Result, { FailureType } from '../utils/Result'
-import vueI18n from '../plugins/vueI18n'
-import Services from './repository/Services'
-import { ICurrency } from '../models/configuration/ICurrency'
-import { NotificationService, NotificationType } from './NotificationService'
-import { WebsiteConfigurationService } from './WebsiteConfigurationService'
-import { TarkovValuesService } from './TarkovValuesService'
-import { ItemFetcherService } from './ItemFetcherService'
-import { IPrice } from '../models/item/IPrice'
-import { GlobalFilterService } from './GlobalFilterService'
-import { PresetService } from './PresetService'
-import { ServiceInitializationState } from './repository/ServiceInitializationState'
 import { TinyEmitter } from 'tiny-emitter'
+import { ICurrency } from '../models/configuration/ICurrency'
+import { IItem } from '../models/item/IItem'
+import { IPrice } from '../models/item/IPrice'
+import vueI18n from '../plugins/vueI18n'
+import Result, { FailureType } from '../utils/Result'
+import { GlobalFilterService } from './GlobalFilterService'
+import { ItemFetcherService } from './ItemFetcherService'
+import { NotificationService, NotificationType } from './NotificationService'
+import { PresetService } from './PresetService'
+import { TarkovValuesService } from './TarkovValuesService'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import { ServiceInitializationState } from './repository/ServiceInitializationState'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for managing items.
@@ -305,11 +305,10 @@ export class ItemService {
     const foundItems: IItem[] = []
 
     for (const id of ids) {
-      for (const item of items) {
-        if (item.id === id) {
-          foundItems.push(item)
-          continue
-        }
+      const foundItem = items.find(i => i.id === id)
+
+      if (foundItem != null) {
+        foundItems.push(foundItem)
       }
     }
 

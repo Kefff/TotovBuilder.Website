@@ -25,17 +25,6 @@
     <div class="option-value">
       <OptionHeaderSortButton
         v-model="sortingData"
-        caption-resource="caption.ergonomics"
-        icon="hand-paper"
-        property="ergonomics"
-        :sorting-functions="sortingFunctions"
-      />
-    </div>
-  </div>
-  <div class="option-entry">
-    <div class="option-value">
-      <OptionHeaderSortButton
-        v-model="sortingData"
         caption-resource="caption.verticalRecoil"
         icon="arrows-alt-v"
         property="verticalRecoil"
@@ -50,6 +39,17 @@
         caption-resource="caption.horizontalRecoil"
         icon="arrows-alt-h"
         property="horizontalRecoil"
+        :sorting-functions="sortingFunctions"
+      />
+    </div>
+  </div>
+  <div class="option-entry">
+    <div class="option-value">
+      <OptionHeaderSortButton
+        v-model="sortingData"
+        caption-resource="caption.ergonomics"
+        icon="hand-paper"
+        property="ergonomics"
         :sorting-functions="sortingFunctions"
       />
     </div>

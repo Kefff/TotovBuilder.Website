@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { IInventoryItem } from '../../../../models/build/IInventoryItem'
 import { IItem } from '../../../../models/item/IItem'
 import { IPrice } from '../../../../models/item/IPrice'
-import { IInventoryPrice } from '../../../../models/utils/IInventoryPrice'
+import { IInventoryItemPrice } from '../../../../models/utils/IInventoryItemPrice'
 import SortingData, { SortingOrder } from '../../../../models/utils/SortingData'
 import { InventoryItemService } from '../../../../services/InventoryItemService'
 import Services from '../../../../services/repository/Services'
@@ -58,8 +58,8 @@ describe('comparisonFunction()', () => {
     const inventoryItemService = mock<InventoryItemService>()
     when(inventoryItemService.getPrice(anything())).thenCall((inventoryItem: IInventoryItem) => {
       return inventoryItem.itemId === item1.id
-        ? Result.ok({ unitPrice: item1.prices[0] ?? { valueInMainCurrency: 0 } } as IInventoryPrice)
-        : Result.ok({ unitPrice: item2.prices[0] ?? { valueInMainCurrency: 0 } } as IInventoryPrice)
+        ? Result.ok({ unitPrice: item1.prices[0] ?? { valueInMainCurrency: 0 } } as IInventoryItemPrice)
+        : Result.ok({ unitPrice: item2.prices[0] ?? { valueInMainCurrency: 0 } } as IInventoryItemPrice)
     })
     Services.configure(InventoryItemService, undefined, instance(inventoryItemService))
 

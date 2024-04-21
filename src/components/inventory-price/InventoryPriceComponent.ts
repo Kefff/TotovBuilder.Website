@@ -21,7 +21,7 @@ export default defineComponent({
     const priceInMainCurrency = ref(0)
     const showPriceInMainCurrency = ref(false)
 
-    const canShowDetails = computed(() => props.inventoryPrice.pricesWithContent.some(ip => ip.currencyName !== mainCurrency.value?.name))
+    const canShowDetails = computed(() => props.inventoryPrice.priceByCurrency.some(ip => ip.currencyName !== mainCurrency.value?.name))
 
     watch(() => props.inventoryPrice, () => initialize())
 
@@ -39,9 +39,9 @@ export default defineComponent({
       }
 
       mainCurrency.value = mainCurrencyResult.value
-      showPriceInMainCurrency.value = props.inventoryPrice.pricesWithContent.some(p => p.currencyName !== mainCurrency.value?.name)
+      showPriceInMainCurrency.value = props.inventoryPrice.priceByCurrency.some(p => p.currencyName !== mainCurrency.value?.name)
 
-      for (const priceWithContent of props.inventoryPrice.pricesWithContent) {
+      for (const priceWithContent of props.inventoryPrice.priceByCurrency) {
         priceInMainCurrency.value += priceWithContent.valueInMainCurrency
       }
     }

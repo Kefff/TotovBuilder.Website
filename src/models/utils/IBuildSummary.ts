@@ -1,6 +1,7 @@
 import { IShoppingListItem } from '../build/IShoppingListItem'
 import { IArmorModifiers } from './IArmorModifiers'
 import { IInventoryPrice } from './IInventoryPrice'
+import { IRecoil } from './IRecoil'
 import { IWearableModifiers } from './IWearableModifiers'
 
 /**
@@ -10,22 +11,17 @@ export interface IBuildSummary {
   /**
    * Armor modifiers.
    */
-  armorModifiers: IArmorModifiers | undefined
+  armorModifiers: IArmorModifiers
 
   /**
    * Ergonomics.
    */
-  ergonomics: number | undefined
+  ergonomics: number
 
   /**
    * Indicates whether the build has been exported since it was last updated or not.
    */
   exported: boolean
-
-  /**
-   * Horizontal recoil.
-   */
-  horizontalRecoil: number | undefined
 
   /**
    * ID.
@@ -53,14 +49,14 @@ export interface IBuildSummary {
   price: IInventoryPrice
 
   /**
+   * Recoil.
+   */
+  recoil: IRecoil
+
+  /**
    * List of all the items, their content and barter items to buy to make the build.
    */
   shoppingList: IShoppingListItem[]
-
-  /**
-   * Vertical recoil.
-   */
-  verticalRecoil: number | undefined
 
   /**
    * Wearable modifiers.
