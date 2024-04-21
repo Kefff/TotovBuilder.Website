@@ -184,16 +184,7 @@ export class BuildPropertiesService {
       price: {
         missingPrice: false,
         priceByCurrency: [],
-        priceInMainCurrency: {
-          barterItems: [],
-          currencyName: '',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        }
+        priceInMainCurrency: 0
       },
       shoppingList: [],
       recoil: {
@@ -254,7 +245,7 @@ export class BuildPropertiesService {
   private getArmorModifiers(inventorySlotSummaries: IInventorySlotSummary[]): IArmorModifiers {
     const armorSlotSummary = inventorySlotSummaries.find(iss => iss.type.id === 'bodyArmor')
 
-    if (armorSlotSummary != null) {
+    if (armorSlotSummary != null && armorSlotSummary.armorModifiers.armorClass !== 0) {
       return armorSlotSummary.armorModifiers
     }
 
@@ -362,24 +353,9 @@ export class BuildPropertiesService {
    * @returns Price.
    */
   private async getPrice(inventorySlotSummaries: IInventorySlotSummary[]): Promise<Result<IInventoryPrice>> {
-    const mainCurrencyResult = await Services.get(ItemService).getMainCurrency()
-
-    if (!mainCurrencyResult.success) {
-      return Result.failFrom(mainCurrencyResult)
-    }
-
     const inventoryPrice: IInventoryPrice = {
       missingPrice: false,
-      priceInMainCurrency: {
-        barterItems: [],
-        currencyName: mainCurrencyResult.value.name,
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      },
+      priceInMainCurrency: 0,
       priceByCurrency: []
     }
 
@@ -394,8 +370,7 @@ export class BuildPropertiesService {
           inventoryPrice.priceByCurrency[currencyIndex].valueInMainCurrency += inventorySlotPriceWithContent.valueInMainCurrency
         }
 
-        inventoryPrice.priceInMainCurrency.value += inventorySlotPriceWithContent.valueInMainCurrency
-        inventoryPrice.priceInMainCurrency.valueInMainCurrency += inventorySlotPriceWithContent.valueInMainCurrency
+        inventoryPrice.priceInMainCurrency += inventorySlotPriceWithContent.valueInMainCurrency
       }
 
       if (inventorySlotSummary.price.missingPrice) {

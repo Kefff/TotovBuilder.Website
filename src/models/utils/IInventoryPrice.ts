@@ -18,5 +18,5 @@ export interface IInventoryPrice {
   /**
    * Price in main currency.
    */
-  priceInMainCurrency: IPrice
+  priceInMainCurrency: number
 }

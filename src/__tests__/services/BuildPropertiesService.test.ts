@@ -11,6 +11,9 @@ import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
 import { InventorySlotService } from '../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { PresetService } from '../../services/PresetService'
+import { TarkovValuesService } from '../../services/TarkovValuesService'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import Services from '../../services/repository/Services'
 import Result from '../../utils/Result'
 import { build1, build2 } from '../__data__/buildMocks'
@@ -497,7 +500,7 @@ describe('getNotExportedTooltip()', () => {
 })
 
 describe('getSummary()', () => {
-  describe.only('Armor modifiers', () => {
+  describe('Armor modifiers', () => {
     it.each([
       [
         build1,
@@ -704,9 +707,14 @@ describe('getSummary()', () => {
         // Arrange
         useItemServiceMock()
         Services.configure(InventoryItemService)
-        Services.configure(ItemPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(InventorySlotPropertiesService)
+        Services.configure(InventorySlotService)
+        Services.configure(ItemPropertiesService)
+        Services.configure(GlobalFilterService)
+        Services.configure(PresetService)
+        Services.configure(TarkovValuesService)
+        Services.configure(WebsiteConfigurationService)
+
         const service = new BuildPropertiesService()
 
         // Act
@@ -771,16 +779,7 @@ describe('getSummary()', () => {
         build1,
         {
           missingPrice: false,
-          priceInMainCurrency: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 366019,
-            valueInMainCurrency: 366019
-          },
+          priceInMainCurrency: 366019,
           priceByCurrency: [
             {
               barterItems: [],
@@ -799,16 +798,7 @@ describe('getSummary()', () => {
         build2,
         {
           missingPrice: false,
-          priceInMainCurrency: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 247747,
-            valueInMainCurrency: 247747
-          },
+          priceInMainCurrency: 247747,
           priceByCurrency: [
             {
               barterItems: [],
@@ -844,37 +834,8 @@ describe('getSummary()', () => {
         } as IBuild,
         {
           missingPrice: false,
-          price: {
-            barterItems: [],
-            currencyName: '',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          priceInMainCurrency: {
-            barterItems: [],
-            currencyName: '',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          priceByCurrency: [],
-          unitPrice: {
-            barterItems: [],
-            currencyName: '',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          }
+          priceInMainCurrency: 0,
+          priceByCurrency: []
         } as IInventoryPrice
       ]
     ])(
@@ -887,7 +848,12 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
+        Services.configure(InventorySlotService)
+        Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
+        Services.configure(PresetService)
+        Services.configure(TarkovValuesService)
+        Services.configure(WebsiteConfigurationService)
 
         const service = new BuildPropertiesService()
 
@@ -907,7 +873,10 @@ describe('getSummary()', () => {
       useWebsiteConfigurationServiceMock()
       Services.configure(InventorySlotPropertiesService)
       Services.configure(InventoryItemService)
+      Services.configure(InventorySlotService)
+      Services.configure(ItemPropertiesService)
       Services.configure(GlobalFilterService)
+
       const service = new BuildPropertiesService()
 
       const build: IBuild = {
@@ -946,26 +915,7 @@ describe('getSummary()', () => {
       // Assert
       expect(summary.price).toStrictEqual({
         missingPrice: true,
-        price: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        priceInMainCurrency: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 24509,
-          valueInMainCurrency: 24509
-        },
+        priceInMainCurrency: 24509,
         priceByCurrency: [
           {
             barterItems: [],
@@ -977,64 +927,7 @@ describe('getSummary()', () => {
             value: 24509,
             valueInMainCurrency: 24509
           }
-        ],
-        unitPrice: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        }
-      } as IInventoryPrice)
-    })
-
-    it('should not get the price when the main currency cannot be found', async () => {
-      // Arrange
-      useItemServiceMock(false)
-      Services.configure(InventorySlotPropertiesService)
-
-      const service = new BuildPropertiesService()
-
-      // Act
-      const summary = await service.getSummary(build1)
-
-      // Assert
-      expect(summary.price).toStrictEqual({
-        missingPrice: false,
-        price: {
-          barterItems: [],
-          currencyName: '',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        priceInMainCurrency: {
-          barterItems: [],
-          currencyName: '',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        priceByCurrency: [],
-        unitPrice: {
-          barterItems: [],
-          currencyName: '',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        }
+        ]
       } as IInventoryPrice)
     })
   })
@@ -1087,6 +980,11 @@ describe('getSummary()', () => {
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
         Services.configure(InventorySlotService)
+        Services.configure(ItemPropertiesService)
+        Services.configure(GlobalFilterService)
+        Services.configure(PresetService)
+        Services.configure(TarkovValuesService)
+        Services.configure(WebsiteConfigurationService)
 
         const service = new BuildPropertiesService()
 
@@ -1104,6 +1002,11 @@ describe('getSummary()', () => {
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
       Services.configure(InventorySlotService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(GlobalFilterService)
+      Services.configure(PresetService)
+      Services.configure(TarkovValuesService)
+      Services.configure(WebsiteConfigurationService)
 
       const service = new BuildPropertiesService()
 
@@ -1179,6 +1082,11 @@ describe('getSummary()', () => {
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
         Services.configure(InventorySlotService)
+        Services.configure(ItemPropertiesService)
+        Services.configure(GlobalFilterService)
+        Services.configure(PresetService)
+        Services.configure(TarkovValuesService)
+        Services.configure(WebsiteConfigurationService)
 
         const service = new BuildPropertiesService()
 
@@ -1196,23 +1104,17 @@ describe('getSummary()', () => {
       [
         build1,
         {
-          ergonomicsPercentageModifier: 0,
-          ergonomicsPercentageModifierWithMods: -0.09500000000000001,
-          movementSpeedPercentageModifier: 0,
-          movementSpeedPercentageModifierWithMods: -0.060000000000000005,
-          turningSpeedPercentageModifier: 0,
-          turningSpeedPercentageModifierWithMods: -0.09
+          ergonomicsPercentageModifier: -0.09500000000000001,
+          movementSpeedPercentageModifier: -0.060000000000000005,
+          turningSpeedPercentageModifier: -0.09
         } as IWearableModifiers
       ],
       [
         build2,
         {
-          ergonomicsPercentageModifier: 0,
-          ergonomicsPercentageModifierWithMods: -0.03,
-          movementSpeedPercentageModifier: 0,
-          movementSpeedPercentageModifierWithMods: -0.03,
-          turningSpeedPercentageModifier: 0,
-          turningSpeedPercentageModifierWithMods: -0.01
+          ergonomicsPercentageModifier: -0.03,
+          movementSpeedPercentageModifier: -0.03,
+          turningSpeedPercentageModifier: -0.01
         } as IWearableModifiers
       ],
       [
@@ -1226,11 +1128,8 @@ describe('getSummary()', () => {
         } as IBuild,
         {
           ergonomicsPercentageModifier: 0,
-          ergonomicsPercentageModifierWithMods: 0,
           movementSpeedPercentageModifier: 0,
-          movementSpeedPercentageModifierWithMods: 0,
-          turningSpeedPercentageModifier: 0,
-          turningSpeedPercentageModifierWithMods: 0
+          turningSpeedPercentageModifier: 0
         } as IWearableModifiers
       ]
     ])(
@@ -1241,6 +1140,11 @@ describe('getSummary()', () => {
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
         Services.configure(InventorySlotService)
+        Services.configure(ItemPropertiesService)
+        Services.configure(GlobalFilterService)
+        Services.configure(PresetService)
+        Services.configure(TarkovValuesService)
+        Services.configure(WebsiteConfigurationService)
 
         const service = new BuildPropertiesService()
 

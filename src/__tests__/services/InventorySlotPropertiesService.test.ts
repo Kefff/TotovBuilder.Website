@@ -461,11 +461,8 @@ describe('getSummary()', () => {
     // Assert
     expect(summary.wearableModifiers).toStrictEqual({
       ergonomicsPercentageModifier: 0,
-      ergonomicsPercentageModifierWithMods: 0,
       movementSpeedPercentageModifier: 0,
-      movementSpeedPercentageModifierWithMods: 0,
-      turningSpeedPercentageModifier: 0,
-      turningSpeedPercentageModifierWithMods: 0
+      turningSpeedPercentageModifier: 0
     })
   })
 
@@ -535,16 +532,7 @@ describe('getSummary()', () => {
       inventorySlot1,
       {
         missingPrice: false,
-        priceInMainCurrency: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 93298,
-          valueInMainCurrency: 93298
-        },
+        priceInMainCurrency: 93298,
         priceByCurrency: [
           {
             barterItems: [],
@@ -563,16 +551,7 @@ describe('getSummary()', () => {
       inventorySlot2,
       {
         missingPrice: false,
-        priceInMainCurrency: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 76779,
-          valueInMainCurrency: 76779
-        },
+        priceInMainCurrency: 76779,
         priceByCurrency: [
           {
             barterItems: [],
@@ -591,16 +570,7 @@ describe('getSummary()', () => {
       inventorySlot3,
       {
         missingPrice: false,
-        priceInMainCurrency: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 89597,
-          valueInMainCurrency: 89597
-        },
+        priceInMainCurrency: 89597,
         priceByCurrency: [
           {
             barterItems: [],
@@ -632,16 +602,7 @@ describe('getSummary()', () => {
       },
       {
         missingPrice: false,
-        priceInMainCurrency: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
+        priceInMainCurrency: 0,
         priceByCurrency: []
       } as IInventoryPrice
     ]
@@ -697,89 +658,8 @@ describe('getSummary()', () => {
     // Assert
     expect(summary.price).toStrictEqual({
       missingPrice: true,
-      price: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      },
-      priceInMainCurrency: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      },
-      priceByCurrency: [],
-      unitPrice: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      }
-    } as IInventoryPrice)
-  })
-
-  it('should not get a price if the main currency cannot be found', async () => {
-    // Arrange
-    useItemServiceMock(false)
-    useTarkovValuesServiceMock()
-    useWebsiteConfigurationServiceMock()
-    Services.configure(GlobalFilterService)
-    Services.configure(InventoryItemService)
-    Services.configure(InventorySlotService)
-    Services.configure(ItemPropertiesService)
-
-    const service = new InventorySlotPropertiesService()
-
-    // Act
-    const summary = await service.getSummary(inventorySlot1)
-
-    // Assert
-    expect(summary.price).toStrictEqual({
-      missingPrice: false,
-      price: {
-        barterItems: [],
-        currencyName: '',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      },
-      priceInMainCurrency: {
-        barterItems: [],
-        currencyName: '',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      },
-      priceByCurrency: [],
-      unitPrice: {
-        barterItems: [],
-        currencyName: '',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      }
+      priceInMainCurrency: 0,
+      priceByCurrency: []
     } as IInventoryPrice)
   })
 
@@ -812,41 +692,12 @@ describe('getSummary()', () => {
     // Assert
     expect(summary.price).toStrictEqual({
       missingPrice: false,
-      price: {
-        barterItems: [],
-        currencyName: '',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      },
-      priceInMainCurrency: {
-        barterItems: [],
-        currencyName: '',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      },
-      priceByCurrency: [],
-      unitPrice: {
-        barterItems: [],
-        currencyName: '',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      }
+      priceInMainCurrency: 0,
+      priceByCurrency: []
     } as IInventoryPrice)
   })
 
-  it.only.each([
+  it.each([
     [
       inventorySlot2,
       {
@@ -929,34 +780,25 @@ describe('getSummary()', () => {
     [
       inventorySlot1,
       {
-        ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithMods: -0.05,
+        ergonomicsPercentageModifier: -0.05,
         movementSpeedPercentageModifier: 0,
-        movementSpeedPercentageModifierWithMods: 0,
-        turningSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifierWithMods: -0.08
+        turningSpeedPercentageModifier: -0.08
       } as IWearableModifiers
     ],
     [
       inventorySlot4,
       {
-        ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithMods: -0.03,
-        movementSpeedPercentageModifier: 0,
-        movementSpeedPercentageModifierWithMods: -0.03,
-        turningSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifierWithMods: -0.01
+        ergonomicsPercentageModifier: -0.03,
+        movementSpeedPercentageModifier: -0.03,
+        turningSpeedPercentageModifier: -0.01
       }
     ],
     [
       inventorySlot2,
       {
         ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithMods: 0,
         movementSpeedPercentageModifier: 0,
-        movementSpeedPercentageModifierWithMods: 0,
-        turningSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifierWithMods: 0
+        turningSpeedPercentageModifier: 0
       } as IWearableModifiers
     ],
     [
@@ -966,11 +808,8 @@ describe('getSummary()', () => {
       },
       {
         ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithMods: 0,
         movementSpeedPercentageModifier: 0,
-        movementSpeedPercentageModifierWithMods: 0,
-        turningSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifierWithMods: 0
+        turningSpeedPercentageModifier: 0
       } as IWearableModifiers
     ]
   ])('should get the wearable modifiers of an inventory slot', async (inventorySlot: IInventorySlot, expected: IWearableModifiers) => {
@@ -1023,11 +862,8 @@ describe('getSummary()', () => {
     // Assert
     expect(summary.wearableModifiers).toStrictEqual({
       ergonomicsPercentageModifier: 0,
-      ergonomicsPercentageModifierWithMods: 0,
       movementSpeedPercentageModifier: 0,
-      movementSpeedPercentageModifierWithMods: 0,
-      turningSpeedPercentageModifier: 0,
-      turningSpeedPercentageModifierWithMods: 0
+      turningSpeedPercentageModifier: 0
     })
   })
 

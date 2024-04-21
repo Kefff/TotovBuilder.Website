@@ -123,16 +123,18 @@
           </div>
         </div>
       </template>
-      <Item
-        v-for="(item, index) of items"
-        :key="path + '_' + index"
-        v-model="items[index]"
-        :accepted-items="acceptedItems"
-        :accepted-items-category-id="acceptedItemsCategoryId"
-        :can-be-looted="type.canBeLooted"
-        :path="path + '_' + index + '/' + itemPathPrefix + (item?.itemId ?? 'empty')"
-        @update:model-value="onItemChanged(index)"
-      />
+      <div v-if="type != null">
+        <Item
+          v-for="(item, index) of items"
+          :key="path + '_' + index"
+          v-model="items[index]"
+          :accepted-items="acceptedItems"
+          :accepted-items-category-id="acceptedItemsCategoryId"
+          :can-be-looted="type.canBeLooted"
+          :path="path + '_' + index + '/' + itemPathPrefix + (item?.itemId ?? 'empty')"
+          @update:model-value="onItemChanged(index)"
+        />
+      </div>
     </Panel>
   </div>
 </template>

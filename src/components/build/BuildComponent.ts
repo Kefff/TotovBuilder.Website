@@ -64,7 +64,7 @@ export default defineComponent({
     const hasSummaryErgonomicsPercentageModifier = computed(() => summary.value.wearableModifiers.ergonomicsPercentageModifier !== 0)
     const hasSummaryHorizontalRecoil = computed(() => summary.value.recoil.horizontalRecoil !== 0)
     const hasSummaryMovementSpeedPercentageModifier = computed(() => summary.value.wearableModifiers.movementSpeedPercentageModifier !== 0)
-    const hasSummaryPrice = computed(() => summary.value.price.priceInMainCurrency.valueInMainCurrency > 0)
+    const hasSummaryPrice = computed(() => summary.value.price.priceInMainCurrency !== 0)
     const hasSummaryStats = computed(() => hasSummaryErgonomics.value || hasSummaryHorizontalRecoil.value || hasSummaryVerticalRecoil.value)
     const hasSummaryTurningSpeedPercentageModifier = computed(() => summary.value.wearableModifiers.turningSpeedPercentageModifier !== 0)
     const hasSummaryVerticalRecoil = computed(() => summary.value.recoil.verticalRecoil !== 0)
@@ -107,16 +107,7 @@ export default defineComponent({
       lastUpdated: new Date(),
       price: {
         missingPrice: false,
-        priceInMainCurrency: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
+        priceInMainCurrency: 0,
         priceByCurrency: []
       },
       recoil: {

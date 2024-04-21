@@ -5,6 +5,7 @@ import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
+import { InventorySlotService } from '../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
 import { build1, build2 } from '../__data__/buildMocks'
@@ -21,38 +22,18 @@ describe('getSummary()', () => {
       build1,
       {
         armorModifiers: {
-          armorClass: 0,
-          durability: 0
+          armorClass: 4,
+          durability: 50
         },
         ergonomics: 34.39,
         exported: true,
-        horizontalRecoil: 226.44,
         id: 'build_1',
         name: 'Build 1',
         lastExported: new Date(2024, 2, 17),
         lastUpdated: new Date(2024, 2, 17),
         price: {
           missingPrice: false,
-          price: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          priceInMainCurrency: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 366019,
-            valueInMainCurrency: 366019
-          },
+          priceInMainCurrency: 366019,
           priceByCurrency: [
             {
               barterItems: [],
@@ -548,9 +529,9 @@ describe('getSummary()', () => {
           }
         ],
         wearableModifiers: {
-          ergonomicsPercentageModifier: 0,
-          movementSpeedPercentageModifier: 0,
-          turningSpeedPercentageModifier: 0
+          ergonomicsPercentageModifier: -0.09500000000000001,
+          movementSpeedPercentageModifier: -0.060000000000000005,
+          turningSpeedPercentageModifier: -0.09
         },
         weight: 24.153
       } as IBuildSummary
@@ -559,10 +540,10 @@ describe('getSummary()', () => {
       build2,
       {
         armorModifiers: {
-          armorClass: 0,
-          durability: 0
+          armorClass: 4,
+          durability: 40
         },
-        ergonomics: 52.38,
+        ergonomics: 52.379999999999995,
         exported: true,
         id: 'build_2',
         name: 'Build 2',
@@ -570,26 +551,7 @@ describe('getSummary()', () => {
         lastUpdated: undefined,
         price: {
           missingPrice: false,
-          price: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          priceInMainCurrency: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 247747,
-            valueInMainCurrency: 247747
-          },
+          priceInMainCurrency: 247747,
           priceByCurrency: [
             {
               barterItems: [],
@@ -890,12 +852,9 @@ describe('getSummary()', () => {
           }
         ],
         wearableModifiers: {
-          ergonomicsPercentageModifier: 0,
-          ergonomicsPercentageModifierWithMods: -0.03,
-          movementSpeedPercentageModifier: 0,
-          movementSpeedPercentageModifierWithMods: -0.03,
-          turningSpeedPercentageModifier: 0,
-          turningSpeedPercentageModifierWithMods: -0.01
+          ergonomicsPercentageModifier: -0.03,
+          movementSpeedPercentageModifier: -0.03,
+          turningSpeedPercentageModifier: -0.01
         },
         weight: 8.936000000000002
       } as IBuildSummary
@@ -922,16 +881,7 @@ describe('getSummary()', () => {
         lastUpdated: new Date(1),
         price: {
           missingPrice: false,
-          priceInMainCurrency: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
+          priceInMainCurrency: 0,
           priceByCurrency: []
         },
         recoil: {
@@ -955,8 +905,9 @@ describe('getSummary()', () => {
       usePresetServiceMock()
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()
-      Services.configure(InventorySlotPropertiesService)
       Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(GlobalFilterService)
 

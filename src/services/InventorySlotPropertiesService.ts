@@ -8,7 +8,6 @@ import { PriceUtils } from '../utils/PriceUtils'
 import Result from '../utils/Result'
 import { InventoryItemService } from './InventoryItemService'
 import { InventorySlotService } from './InventorySlotService'
-import { ItemService } from './ItemService'
 import Services from './repository/Services'
 
 /**
@@ -31,16 +30,7 @@ export class InventorySlotPropertiesService {
       price: {
         missingPrice: false,
         priceByCurrency: [],
-        priceInMainCurrency: {
-          barterItems: [],
-          currencyName: '',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        }
+        priceInMainCurrency: 0
       },
       recoil: {
         horizontalRecoil: 0,
@@ -137,27 +127,11 @@ export class InventorySlotPropertiesService {
    */
   private async getPrice(inventorySlot: IInventorySlot, canBeLooted: boolean): Promise<Result<IInventoryPrice>> {
     const inventoryItemService = Services.get(InventoryItemService)
-    const itemService = Services.get(ItemService)
-
-    const mainCurrencyResult = await itemService.getMainCurrency()
-
-    if (!mainCurrencyResult.success) {
-      return Result.failFrom(mainCurrencyResult)
-    }
 
     const inventoryPrice: IInventoryPrice = {
       missingPrice: false,
       priceByCurrency: [],
-      priceInMainCurrency: {
-        barterItems: [],
-        currencyName: mainCurrencyResult.value.name,
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      }
+      priceInMainCurrency: 0
     }
 
     for (const inventoryItem of inventorySlot.items) {
@@ -181,8 +155,7 @@ export class InventorySlotPropertiesService {
           inventoryPrice.priceByCurrency[currencyIndex].valueInMainCurrency += inventoryItemPriceWithContent.valueInMainCurrency
         }
 
-        inventoryPrice.priceInMainCurrency.value += inventoryItemPriceWithContent.valueInMainCurrency
-        inventoryPrice.priceInMainCurrency.valueInMainCurrency += inventoryItemPriceWithContent.valueInMainCurrency
+        inventoryPrice.priceInMainCurrency += inventoryItemPriceWithContent.valueInMainCurrency
       }
 
       if (priceResult.value.missingPrice) {

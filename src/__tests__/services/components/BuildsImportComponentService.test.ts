@@ -3,11 +3,13 @@ import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../../models/build/IBuild'
 import { IInventorySlot } from '../../../models/build/IInventorySlot'
 import { IPrice } from '../../../models/item/IPrice'
+import { IBuildsImportResult } from '../../../models/utils/IBuildsImportResult'
 import { BuildPropertiesService } from '../../../services/BuildPropertiesService'
 import { GlobalFilterService } from '../../../services/GlobalFilterService'
 import { ImportService } from '../../../services/ImportService'
 import { InventoryItemService } from '../../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../../services/InventorySlotPropertiesService'
+import { InventorySlotService } from '../../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
 import { BuildsImportComponentService } from '../../../services/components/BuildsImportComponentService'
 import Services from '../../../services/repository/Services'
@@ -29,8 +31,9 @@ describe('readBuilds()', () => {
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildPropertiesService)
     Services.configure(GlobalFilterService)
-    Services.configure(InventorySlotPropertiesService)
     Services.configure(InventoryItemService)
+    Services.configure(InventorySlotPropertiesService)
+    Services.configure(InventorySlotService)
     Services.configure(ItemPropertiesService)
 
     const importServiceMock = mock<ImportService>()
@@ -70,36 +73,20 @@ describe('readBuilds()', () => {
     expect(result.value).toStrictEqual({
       buildSummaries: [
         {
-          ergonomics: undefined,
+          armorModifiers: {
+            armorClass: 0,
+            durability: 0
+          },
+          ergonomics: 0,
           exported: true,
-          horizontalRecoil: undefined,
           id: 'build1',
           lastExported: new Date(2023, 1, 1),
           lastUpdated: new Date(2023, 1, 1),
           name: 'Build 1',
           price: {
             missingPrice: false,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '',
-              merchant: '',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 0,
-              valueInMainCurrency: 0
-            },
-            priceWithContentInMainCurrency: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '',
-              merchant: '',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 20762,
-              valueInMainCurrency: 20762
-            },
-            pricesWithContent: [
+            priceInMainCurrency: 20762,
+            priceByCurrency: [
               {
                 barterItems: [],
                 currencyName: 'RUB',
@@ -110,18 +97,11 @@ describe('readBuilds()', () => {
                 value: 20762,
                 valueInMainCurrency: 20762
               }
-            ],
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '',
-              merchant: '',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 0,
-              valueInMainCurrency: 0
-            },
-            unitPriceIgnoreStatus: 'notIgnored'
+            ]
+          },
+          recoil: {
+            horizontalRecoil: 0,
+            verticalRecoil: 0
           },
           shoppingList: [
             {
@@ -226,14 +206,10 @@ describe('readBuilds()', () => {
               }
             }
           ],
-          verticalRecoil: undefined,
           wearableModifiers: {
-            ergonomicsPercentageModifier: 0,
-            ergonomicsPercentageModifierWithMods: -0.02,
+            ergonomicsPercentageModifier: -0.02,
             movementSpeedPercentageModifier: 0,
-            movementSpeedPercentageModifierWithMods: 0,
-            turningSpeedPercentageModifier: 0,
-            turningSpeedPercentageModifierWithMods: 0
+            turningSpeedPercentageModifier: 0
           },
           weight: 1
         }
@@ -261,7 +237,7 @@ describe('readBuilds()', () => {
           name: 'Build 1'
         }
       ]
-    })
+    } as IBuildsImportResult)
   })
 
   it('should return when no file is provided', async () => {
