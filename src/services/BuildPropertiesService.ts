@@ -229,11 +229,7 @@ export class BuildPropertiesService {
     result.weight = this.getWeight(inventorySlotSummaries)
 
     // Shopping list
-    const shoppingListResult = await this.getShoppingList(build)
-
-    if (shoppingListResult.success) {
-      result.shoppingList = shoppingListResult.value
-    }
+    result.shoppingList = await this.getShoppingList(build)
 
     return result
   }
@@ -360,17 +356,17 @@ export class BuildPropertiesService {
     }
 
     for (const inventorySlotSummary of inventorySlotSummaries) {
-      for (const inventorySlotPriceWithContent of inventorySlotSummary.price.priceByCurrency) {
-        const currencyIndex = inventoryPrice.priceByCurrency.findIndex(p => p.currencyName === inventorySlotPriceWithContent.currencyName)
+      for (const priceInCurrency of inventorySlotSummary.price.priceByCurrency) {
+        const currencyIndex = inventoryPrice.priceByCurrency.findIndex(p => p.currencyName === priceInCurrency.currencyName)
 
         if (currencyIndex < 0) {
-          inventoryPrice.priceByCurrency.push(inventorySlotPriceWithContent)
+          inventoryPrice.priceByCurrency.push(priceInCurrency)
         } else {
-          inventoryPrice.priceByCurrency[currencyIndex].value += inventorySlotPriceWithContent.value
-          inventoryPrice.priceByCurrency[currencyIndex].valueInMainCurrency += inventorySlotPriceWithContent.valueInMainCurrency
+          inventoryPrice.priceByCurrency[currencyIndex].value += priceInCurrency.value
+          inventoryPrice.priceByCurrency[currencyIndex].valueInMainCurrency += priceInCurrency.valueInMainCurrency
         }
 
-        inventoryPrice.priceInMainCurrency += inventorySlotPriceWithContent.valueInMainCurrency
+        inventoryPrice.priceInMainCurrency += priceInCurrency.valueInMainCurrency
       }
 
       if (inventorySlotSummary.price.missingPrice) {
@@ -404,7 +400,7 @@ export class BuildPropertiesService {
    * @param build - Build.
    * @returns Shopping list items.
    */
-  private async getShoppingList(build: IBuild): Promise<Result<IShoppingListItem[]>> {
+  private async getShoppingList(build: IBuild): Promise<IShoppingListItem[]> {
     const inventoryItemService = Services.get(InventoryItemService)
     const shoppingList: IShoppingListItem[] = []
 
@@ -412,7 +408,7 @@ export class BuildPropertiesService {
       const typeResult = Services.get(InventorySlotService).getType(inventorySlot.typeId)
 
       if (!typeResult.success) {
-        return Result.failFrom(typeResult)
+        continue
       }
 
       for (const item of inventorySlot.items) {
@@ -423,7 +419,7 @@ export class BuildPropertiesService {
         const shoppingListResult = await inventoryItemService.getShoppingList(item, undefined, typeResult.value.canBeLooted)
 
         if (!shoppingListResult.success) {
-          return Result.failFrom(shoppingListResult)
+          continue
         }
 
         for (const shoppingListItemToAdd of shoppingListResult.value) {
@@ -440,7 +436,7 @@ export class BuildPropertiesService {
       }
     }
 
-    return Result.ok(shoppingList)
+    return shoppingList
   }
 
   /**
