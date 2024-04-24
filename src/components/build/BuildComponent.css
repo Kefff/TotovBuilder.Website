@@ -68,6 +68,7 @@
 }
 
 .build-toolbar-summary-group {
+  align-items: center;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;

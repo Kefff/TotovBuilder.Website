@@ -45,6 +45,7 @@ export default defineComponent({
     const inventorySlotService = Services.get(InventorySlotService)
     const globalFilterService = Services.get(GlobalFilterService)
 
+    const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
     const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
     const hasSummaryErgonomicsPercentageModifier = computed(() => summary.value.wearableModifiers.ergonomicsPercentageModifier !== 0)
     const hasSummaryHorizontalRecoil = computed(() => summary.value.recoil.horizontalRecoil !== 0)
@@ -58,6 +59,7 @@ export default defineComponent({
       || hasSummaryTurningSpeedPercentageModifier.value
     )
     const hasSummaryWeight = computed(() => summary.value.weight !== 0)
+    const isChildItemPathRegex = computed(() => new RegExp(props.path.replace('/', '\\/') + '_[0-9]+\\/item:[a-f0-9]+\\/((mod:)|(content:))'))
 
     const editing = inject<Ref<boolean>>('editing')
 
@@ -101,17 +103,21 @@ export default defineComponent({
     })
     const type = ref<IInventorySlotType>()
 
-    watch(() => props.modelValue.items, () => initialize())
+    watch(() => props.modelValue, async () => {
+      await initialize() // Initialization required for the case when we cancel changes
+    })
 
-    onMounted(() => {
-      inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
+    onMounted(async () => {
+      inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onModOrContentChanged)
+      inventoryItemService.emitter.on(InventoryItemService.inventoryItemQuantityChangeEvent, onQuantityChanged)
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-      initialize()
+      await initialize()
     })
 
     onUnmounted(() => {
-      inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
+      inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onModOrContentChanged)
+      inventoryItemService.emitter.off(InventoryItemService.inventoryItemQuantityChangeEvent, onQuantityChanged)
       globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
     })
 
@@ -136,8 +142,8 @@ export default defineComponent({
         icon.value = type.value.icon
       }
 
-      setItemComponentParameters()
-      getSummary()
+      await setItemComponentParameters()
+      await getSummary()
     }
 
     /**
@@ -161,20 +167,29 @@ export default defineComponent({
     }
 
     /**
-     * Updates the summary when an InventorySlot changes.
+     * Updates the inventory slot summary when a mod or content item changes.
      */
-    function onInventoryItemChanged(path: string) {
-      if (path.startsWith(props.path)) {
-        getSummary()
+    async function onModOrContentChanged(path: string) {
+      if (isChildItemPathRegex.value.test(path)) {
+        await getSummary()
       }
     }
 
     /**
      * Updates the inventory slot summary to reflect price changes due to the change in merchant filters.
      */
-    function onMerchantFilterChanged() {
-      setItemComponentParameters()
-      getSummary()
+    async function onMerchantFilterChanged() {
+      await setItemComponentParameters()
+      await getSummary()
+    }
+
+    /**
+     * Updates the inventory slot summary when an item quantity changes.
+     */
+    async function onQuantityChanged(path: string) {
+      if (path.startsWith(props.path)) {
+        await getSummary()
+      }
     }
 
     /**
@@ -199,6 +214,7 @@ export default defineComponent({
       acceptedItemsCategoryId,
       customIconName,
       displayed,
+      hasSummaryArmor,
       hasSummaryErgonomics,
       hasSummaryErgonomicsPercentageModifier,
       hasSummaryHorizontalRecoil,

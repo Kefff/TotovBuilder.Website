@@ -62,8 +62,6 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const inventoryItemService = Services.get(InventoryItemService)
-
     const armorModifiers = ref<IArmorModifiers>()
     const isAmmunition = ref(false)
     const isArmor = ref(false)
@@ -83,25 +81,7 @@ export default defineComponent({
 
     watch(() => props.modelValue.itemId, () => setItem())
 
-    onMounted(() => {
-      inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
-
-      setItem()
-    })
-
-    /**
-     * Updates the armor plates modifier when the front armor plate of an armor or a vest changes.
-     */
-    async function onInventoryItemChanged(path: string) {
-      const itemPropertiesService = Services.get(ItemPropertiesService)
-
-      if (item.value != null
-        && path.startsWith(props.path)
-        && (itemPropertiesService.isArmor(item.value)
-          || itemPropertiesService.isVest(item.value))) {
-        await setArmorModifiers()
-      }
-    }
+    onMounted(async () => await setItem())
 
     /**
      * Sets the item based on the inventory item passed to the component and determines which summary component to display.
@@ -191,15 +171,29 @@ export default defineComponent({
     }
 
     /**
-     * Sets the armor plate modifiers for items with armor plate.
+     * Sets the armor modifiers for items with armor.
      */
     async function setArmorModifiers() {
-      const armorModifiersResult = await Services.get(InventoryItemService).getArmorModifiers(props.modelValue)
+      const frontPlateModSlot = props.modelValue.modSlots.find(ms => ms.modSlotName === 'front_plate')
 
-      if (armorModifiersResult.success) {
-        armorModifiers.value = armorModifiersResult.value
-      } else {
-        armorModifiers.value = undefined
+      if (frontPlateModSlot == null) {
+        const armorModifiersResult = await Services.get(InventoryItemService).getArmorModifiers(props.modelValue)
+
+        if (armorModifiersResult.success) {
+          armorModifiers.value = armorModifiersResult.value
+
+        } else {
+          armorModifiers.value = undefined
+        }
+
+        return
+      }
+
+      // When the item has an armor plate slot, no armor modifier is displayed because
+      // it is the armor plate that defines the armor value
+      armorModifiers.value = {
+        armorClass: 0,
+        durability: 0
       }
     }
 

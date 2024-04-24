@@ -60,6 +60,7 @@ export default defineComponent({
     let originalBuild: IBuild
 
     const hasLoadingError = computed(() => hasItemsLoadingError.value || hasWebsiteConfigurationLoadingError.value)
+    const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
     const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
     const hasSummaryErgonomicsPercentageModifier = computed(() => summary.value.wearableModifiers.ergonomicsPercentageModifier !== 0)
     const hasSummaryHorizontalRecoil = computed(() => summary.value.recoil.horizontalRecoil !== 0)
@@ -137,6 +138,7 @@ export default defineComponent({
       compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.mod, onModCompatibilityRequest)
       inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
+      inventoryItemService.emitter.on(InventoryItemService.inventoryItemQuantityChangeEvent, onInventoryItemChanged)
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
 
@@ -150,6 +152,7 @@ export default defineComponent({
       compatibilityService.emitter.off(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
       inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
+      inventoryItemService.emitter.off(InventoryItemService.inventoryItemQuantityChangeEvent, onInventoryItemChanged)
       globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       document.onkeydown = null
@@ -309,8 +312,8 @@ export default defineComponent({
     /**
      * Updates the summary when an InventorySlot changes.
      */
-    function onInventoryItemChanged() {
-      getSummary()
+    async function onInventoryItemChanged() {
+      await getSummary()
     }
 
     /**
@@ -323,7 +326,7 @@ export default defineComponent({
 
         if (editing.value && !invalid.value) {
           await save()
-          editing.value = true // After saving with the shortcut, we stay in edit mode unlike when using the button
+          startEdit() // After saving with the shortcut, we stay in edit mode unlike when using the button
         }
       }
     }
@@ -439,6 +442,7 @@ export default defineComponent({
       goToBuilds,
       hasItemsLoadingError,
       hasLoadingError,
+      hasSummaryArmor,
       hasSummaryErgonomics,
       hasSummaryErgonomicsPercentageModifier,
       hasSummaryHorizontalRecoil,

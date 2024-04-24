@@ -36,6 +36,11 @@ export class InventoryItemService {
   public static inventoryItemChangeEvent = 'inventoryItemChanged'
 
   /**
+   * Quantity change event.
+   */
+  public static inventoryItemQuantityChangeEvent = 'inventoryItemQuantityChanged'
+
+  /**
    * Event emitter used to signal compatibility check requests.
    */
   public emitter = new TinyEmitter()
@@ -49,7 +54,6 @@ export class InventoryItemService {
    */
   public async getArmorModifiers(inventoryItem: IInventoryItem): Promise<Result<IArmorModifiers>> {
     const itemService = Services.get(ItemService)
-
     const itemResult = await itemService.getItem(inventoryItem.itemId)
 
     if (!itemResult.success) {
@@ -66,27 +70,28 @@ export class InventoryItemService {
       })
     }
 
-    for (const modSlot of inventoryItem.modSlots) {
-      if (modSlot.modSlotName === 'front_plate') {
-        if (modSlot.item == null) {
-          return Result.ok({
-            armorClass: 0,
-            durability: 0
-          })
-        }
-        const frontPlateResult = await itemService.getItem(modSlot.item.itemId)
+    const frontPlateModSlot = inventoryItem.modSlots.find(m => m.modSlotName === 'front_plate')
 
-        if (!frontPlateResult.success) {
-          return Result.failFrom(frontPlateResult)
-        }
-
-        const frontPlate = frontPlateResult.value as IArmorMod
-
+    if (frontPlateModSlot != null) {
+      if (frontPlateModSlot.item == null) {
         return Result.ok({
-          armorClass: frontPlate.armorClass,
-          durability: frontPlate.durability
+          armorClass: 0,
+          durability: 0
         })
       }
+
+      const frontPlateResult = await itemService.getItem(frontPlateModSlot.item.itemId)
+
+      if (!frontPlateResult.success) {
+        return Result.failFrom(frontPlateResult)
+      }
+
+      const frontPlate = frontPlateResult.value as IArmorMod
+
+      return Result.ok({
+        armorClass: frontPlate.armorClass,
+        durability: frontPlate.durability
+      })
     }
 
     const armor = itemResult.value as IArmor

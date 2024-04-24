@@ -133,6 +133,27 @@
       </template>
     </Column>
     <Column
+      field="armorModifiers.armorClass"
+      :sortable="true"
+    >
+      <template #header>
+        <div class="build-list-column">
+          {{ $t('caption.armorClass') }}
+        </div>
+      </template>
+      <template #body="{ data }">
+        <div class="build-list-column">
+          <div v-if="data.armorModifiers.armorClass !== 0">
+            <span>{{ StatsUtils.getDisplayValue(data.armorModifiers.armorClass, false, 0) }}</span>
+            <font-awesome-icon
+              icon="award"
+              class="icon-after-text"
+            />
+          </div>
+        </div>
+      </template>
+    </Column>
+    <Column
       field="wearableModifiers.ergonomicsPercentageModifier"
       :sortable="true"
     >

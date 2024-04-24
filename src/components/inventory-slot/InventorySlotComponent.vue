@@ -56,6 +56,17 @@
               />
             </div>
             <div
+              v-if="hasSummaryArmor"
+              v-tooltip.top="$t('caption.armorClass')"
+              class="inventory-slot-summary-value"
+            >
+              <span>{{ StatsUtils.getDisplayValue(summary.armorModifiers.armorClass, false, 0) }}</span>
+              <font-awesome-icon
+                icon="award"
+                class="icon-after-text"
+              />
+            </div>
+            <div
               v-if="hasSummaryErgonomics"
               v-tooltip.top="$t('caption.ergonomics')"
               class="inventory-slot-summary-value"

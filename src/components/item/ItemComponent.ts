@@ -136,10 +136,17 @@ export default defineComponent({
     })
 
     /**
-     * Emits an event for the build and the inventory slot to updated their summary.
+     * Emits an event for the build and the inventory slot to updated their summary when the selected item changes.
      */
     function emitItemChangedEvent() {
       nextTick(() => inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path))
+    }
+
+    /**
+     * Emits an event for the build and the inventory slot to updated their summary when the quantity changes.
+     */
+    function emitItemQuantityChangedEvent() {
+      nextTick(() => inventoryItemService.emitter.emit(InventoryItemService.inventoryItemQuantityChangeEvent, props.path))
     }
 
     /**
@@ -201,7 +208,7 @@ export default defineComponent({
       selectedInventoryItem.value.quantity = newQuantity
 
       // Emitting an event for the build and the inventory slot to updated their summary
-      emitItemChangedEvent()
+      emitItemQuantityChangedEvent()
     }
 
     /**

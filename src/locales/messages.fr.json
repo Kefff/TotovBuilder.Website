@@ -4,7 +4,7 @@
     "accuracy": "Précision",
     "allowCookies": "Autoriser les cookies",
     "approvedByPrapor": "Approuvé par Prapor!",
-    "armorClass": "Classe",
+    "armorClass": "Classe d'armure",
     "armorClassPenetration": "Pénetration d'armure de classe {class}",
     "armorClassPenetrationValue": "{penetration}\nPénétrée après {efficiency} balles",
     "armorDamage": "Dégâts à l'armure",

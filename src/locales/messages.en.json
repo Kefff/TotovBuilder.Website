@@ -5,7 +5,7 @@
     "allow": "Allow",
     "allowCookies": "Allow cookies",
     "approvedByPrapor": "Approved by Prapor!",
-    "armorClass": "Class",
+    "armorClass": "Armor class",
     "armorClassPenetration": "Armor class {class} penetration",
     "armorClassPenetrationValue": "{penetration}\nPenetrated after {efficiency} bullets",
     "armorDamage": "Armor damage",

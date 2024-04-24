@@ -83,17 +83,6 @@
             class="build-toolbar-summary"
           >
             <div
-              v-if="hasSummaryPrice"
-              class="build-toolbar-summary-group"
-            >
-              <div class="build-toolbar-summary-value">
-                <InventoryPrice
-                  v-if="!isLoading"
-                  :inventory-price="summary.price"
-                />
-              </div>
-            </div>
-            <div
               v-if="hasSummaryStats"
               class="build-toolbar-summary-group"
             >
@@ -132,9 +121,20 @@
               </div>
             </div>
             <div
-              v-if="hasSummaryWearableModifiers"
+              v-if="hasSummaryArmor || hasSummaryWearableModifiers"
               class="build-toolbar-summary-group"
             >
+              <div
+                v-if="hasSummaryArmor"
+                v-tooltip.top="$t('caption.armorClass')"
+                class="build-toolbar-summary-value"
+              >
+                <span>{{ StatsUtils.getDisplayValue(summary.armorModifiers.armorClass, false, 0) }}</span>
+                <font-awesome-icon
+                  icon="award"
+                  class="icon-after-text"
+                />
+              </div>
               <div
                 v-if="hasSummaryErgonomicsPercentageModifier"
                 v-tooltip.top="$t('caption.ergonomicsPercentageModifier')"
@@ -176,9 +176,15 @@
               </div>
             </div>
             <div
-              v-if="hasSummaryWeight"
+              v-if="hasSummaryPrice || hasSummaryWeight"
               class="build-toolbar-summary-group"
             >
+              <div class="build-toolbar-summary-value">
+                <InventoryPrice
+                  v-if="!isLoading"
+                  :inventory-price="summary.price"
+                />
+              </div>
               <div
                 v-tooltip.top="$t('caption.weight')"
                 class="build-toolbar-summary-value"
