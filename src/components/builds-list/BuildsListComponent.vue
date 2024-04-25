@@ -41,7 +41,7 @@
     <Column
       field="price"
       :sortable="true"
-      sortField="price.priceWithContentInMainCurrency.valueInMainCurrency"
+      sortField="price.priceInMainCurrency"
     >
       <!-- For some reason, using "sort-field" doesn't work while using "sortField" works -->
       <template #header>
@@ -70,6 +70,7 @@
     <Column
       field="verticalRecoil"
       :sortable="true"
+      sortField="recoil.verticalRecoil"
     >
       <template #header>
         <div class="build-list-column">
@@ -92,6 +93,7 @@
     <Column
       field="horizontalRecoil"
       :sortable="true"
+      sortField="recoil.horizontalRecoil"
     >
       <template #header>
         <div class="build-list-column">
