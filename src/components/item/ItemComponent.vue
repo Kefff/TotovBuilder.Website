@@ -59,6 +59,7 @@
         v-if="selectedInventoryItem != null"
         v-model:selectedTab="selectedTab"
         v-model:ignorePrice="selectedInventoryItem.ignorePrice"
+        v-model:showStats="showStats"
         :can-be-looted="canBeLooted"
         :can-have-content="selectedItemIsContainer"
         :can-have-mods="selectedItemIsModdable"
@@ -78,9 +79,10 @@
       v-if="selectedInventoryItem != null && selectedItem != null && !itemChanging"
       class="tabs"
     >
-      <div v-show="selectedTab === SelectableTab.stats">
-        <StatsSelector :item-id="selectedItem.id" />
-      </div>
+      <StatsSelector
+        v-model:showStats="showStats"
+        :item="selectedItem"
+      />
       <div v-if="selectedItemIsModdable">
         <ItemMods
           v-show="selectedTab === SelectableTab.mods"

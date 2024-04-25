@@ -33,12 +33,17 @@ export default defineComponent({
     selectedTab: {
       type: String as PropType<SelectableTab>,
       required: true
+    },
+    showStats: {
+      type: Boolean,
+      required: true
     }
   },
   emits: [
     'update:selectedTab',
     'update:ignorePrice',
-    'update:selectedTab'
+    'update:selectedTab',
+    'update:showStats'
   ],
   setup: (props, { emit }) => {
     const editing = inject<Ref<boolean>>('editing')
@@ -80,6 +85,13 @@ export default defineComponent({
       selectedTabValue.value = selectedTabValue.value !== newValue ? newValue : SelectableTab.hidden
     }
 
+    /**
+     * Toogles the stats popup.
+     */
+    function toggleStats() {
+      emit('update:showStats', !props.showStats)
+    }
+
     return {
       buttons,
       editing,
@@ -87,7 +99,8 @@ export default defineComponent({
       ignorePriceValue,
       SelectableTab,
       selectedTabValue,
-      setSelectedTab
+      setSelectedTab,
+      toggleStats
     }
   }
 })

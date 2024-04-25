@@ -5,7 +5,6 @@
     :header="$t('caption.changelog')"
     :modal="true"
     :draggable="false"
-    @hide="closeChangelog()"
   >
     <div class="changelog">
       <Loading v-show="isLoading" />

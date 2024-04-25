@@ -1,9 +1,9 @@
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import { IChangelogEntry } from '../../models/configuration/IChangelogEntry'
-import Services from '../../services/repository/Services'
-import { VersionService } from '../../services/VersionService'
 import vueI18n from '../../plugins/vueI18n'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
+import { VersionService } from '../../services/VersionService'
+import Services from '../../services/repository/Services'
 import Loading from '../loading/LoadingComponent.vue'
 
 export default defineComponent({
@@ -45,13 +45,6 @@ export default defineComponent({
     })
 
     /**
-     * Closes the changelog dialog.
-     */
-    function closeChangelog() {
-      hasChangelogDisplayed.value = false
-    }
-
-    /**
      * Displays the new version notification if needed.
      */
     function displayNewVersionNotification() {
@@ -91,7 +84,6 @@ export default defineComponent({
 
     return {
       changelogs,
-      closeChangelog,
       hasChangelogDisplayed,
       isLoading,
       showChangelog

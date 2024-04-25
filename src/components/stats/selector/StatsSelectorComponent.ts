@@ -1,8 +1,8 @@
-import { defineComponent, onMounted, ref, watch } from 'vue'
+import { PropType, computed, defineComponent, onMounted, ref, watch } from 'vue'
 import { IItem } from '../../../models/item/IItem'
 import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
-import { ItemService } from '../../../services/ItemService'
 import Services from '../../../services/repository/Services'
+import ItemIcon from '../../item-icon/ItemIconComponent.vue'
 import AmmunitionStat from '../ammunition/AmmunitionStatsComponent.vue'
 import ArmorModStat from '../armor-mod/ArmorModStatsComponent.vue'
 import ArmorStat from '../armor/ArmorStatsComponent.vue'
@@ -29,6 +29,7 @@ export default defineComponent({
     EyewearStat,
     GrenadeStat,
     HeadwearStat,
+    ItemIcon,
     ItemStat,
     MagazineStat,
     MeleeWeaponStat,
@@ -38,40 +39,33 @@ export default defineComponent({
     VestStat
   },
   props: {
-    itemId: {
-      type: String,
+    item: {
+      type: Object as PropType<IItem>,
+      required: true
+    },
+    showStats: {
+      type: Boolean,
       required: true
     }
   },
-  setup: (props) => {
-    const item = ref<IItem>()
+  emits: ['update:showStats'],
+  setup: (props, { emit }) => {
     const specializedComponent = ref<string>()
 
-    watch(() => props.itemId, () => setItem())
+    const showStatsInternal = computed({
+      get: () => props.showStats,
+      set: (value: boolean) => emit('update:showStats', value)
+    })
 
-    onMounted(() => setItem())
+    watch(() => props.item.id, () => selectSpecializeComponent())
 
-    /**
-     * Sets the item based on the item ID passed to the component.
-     */
-    async function setItem() {
-      const service = Services.get(ItemService)
-      const itemResult = await service.getItem(props.itemId)
-
-      if (itemResult.success) {
-        item.value = itemResult.value
-        selectSpecializeComponent(item.value)
-      } else {
-        item.value = undefined
-        specializedComponent.value = undefined
-      }
-    }
+    onMounted(() => selectSpecializeComponent())
 
     /**
      * Sets the type of specialized options header component to display.
      */
-    function selectSpecializeComponent(item: IItem) {
-      if (item.categoryId == null || item.categoryId === 'other') {
+    function selectSpecializeComponent() {
+      if (props.item.categoryId == null || props.item.categoryId === 'other') {
         specializedComponent.value = undefined
 
         return
@@ -79,52 +73,52 @@ export default defineComponent({
 
       const itemPropertiesService = Services.get(ItemPropertiesService)
 
-      if (itemPropertiesService.isAmmunition(item.categoryId)) {
+      if (itemPropertiesService.isAmmunition(props.item.categoryId)) {
         specializedComponent.value = 'AmmunitionStat'
       }
-      else if (itemPropertiesService.isArmor(item.categoryId)) {
+      else if (itemPropertiesService.isArmor(props.item.categoryId)) {
         specializedComponent.value = 'ArmorStat'
       }
-      else if (itemPropertiesService.isArmorMod(item.categoryId)) {
+      else if (itemPropertiesService.isArmorMod(props.item.categoryId)) {
         specializedComponent.value = 'ArmorModStat'
       }
-      else if (itemPropertiesService.isBackpack(item.categoryId)) {
+      else if (itemPropertiesService.isBackpack(props.item.categoryId)) {
         specializedComponent.value = 'BackpackStat'
       }
-      else if (itemPropertiesService.isContainer(item.categoryId)) {
+      else if (itemPropertiesService.isContainer(props.item.categoryId)) {
         specializedComponent.value = 'ContainerStat'
       }
-      else if (itemPropertiesService.isEyewear(item.categoryId)) {
+      else if (itemPropertiesService.isEyewear(props.item.categoryId)) {
         specializedComponent.value = 'EyewearStat'
       }
-      else if (itemPropertiesService.isGrenade(item.categoryId)) {
+      else if (itemPropertiesService.isGrenade(props.item.categoryId)) {
         specializedComponent.value = 'GrenadeStat'
       }
-      else if (itemPropertiesService.isHeadwear(item.categoryId)) {
+      else if (itemPropertiesService.isHeadwear(props.item.categoryId)) {
         specializedComponent.value = 'HeadwearStat'
       }
-      else if (itemPropertiesService.isMagazine(item.categoryId)) {
+      else if (itemPropertiesService.isMagazine(props.item.categoryId)) {
         specializedComponent.value = 'MagazineStat'
       }
-      else if (itemPropertiesService.isMeleeWeapon(item.categoryId)) {
+      else if (itemPropertiesService.isMeleeWeapon(props.item.categoryId)) {
         specializedComponent.value = 'MeleeWeaponStat'
       }
-      else if (itemPropertiesService.isMod(item.categoryId)) {
+      else if (itemPropertiesService.isMod(props.item.categoryId)) {
         specializedComponent.value = 'ModStat'
       }
-      else if (itemPropertiesService.isRangedWeapon(item.categoryId)) {
+      else if (itemPropertiesService.isRangedWeapon(props.item.categoryId)) {
         specializedComponent.value = 'RangedWeaponStat'
       }
-      else if (itemPropertiesService.isRangedWeaponMod(item.categoryId)) {
+      else if (itemPropertiesService.isRangedWeaponMod(props.item.categoryId)) {
         specializedComponent.value = 'RangedWeaponModStat'
       }
-      else if (itemPropertiesService.isVest(item.categoryId)) {
+      else if (itemPropertiesService.isVest(props.item.categoryId)) {
         specializedComponent.value = 'VestStat'
       }
     }
 
     return {
-      item,
+      showStatsInternal,
       specializedComponent
     }
   }

@@ -103,6 +103,7 @@ export default defineComponent({
     const selectedItemIsContainer = ref(false)
     const selectedItemIsModdable = ref(false)
     const selectedTab = ref(SelectableTab.hidden)
+    const showStats = ref(false)
 
     watch(() => props.acceptedItems, () => onFilterOptions(optionsFilter.value))
     watch(() => props.modelValue?.itemId, () => initializeSelectedItem())
@@ -383,7 +384,8 @@ export default defineComponent({
       selectedItem,
       selectedItemIsContainer,
       selectedItemIsModdable,
-      selectedTab
+      selectedTab,
+      showStats
     }
   }
 })

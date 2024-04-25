@@ -33,9 +33,9 @@
       </div>
     </div>
     <Button
-      v-tooltip.top="$t(selectedTabValue !== SelectableTab.stats ? 'caption.showStatistics' : 'caption.hideStatistics')"
-      :class="'p-button-text p-button-sm' + (selectedTabValue !== SelectableTab.stats ? ' button-discreet' : '')"
-      @click="setSelectedTab(SelectableTab.stats)"
+      v-tooltip.top="$t('caption.showStatistics')"
+      class="p-button-text p-button-sm button-discreet"
+      @click="toggleStats()"
     >
       <font-awesome-icon icon="clipboard-list" />
     </Button>
