@@ -1,10 +1,10 @@
 import { computed, defineComponent, onMounted, ref } from 'vue'
-import Notification from '../notification/NotificationComponent.vue'
-import Changelog from '../changelog/ChangelogComponent.vue'
-import Services from '../../services/repository/Services'
-import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import LanguageUtils from '../../utils/LanguageUtils'
 import Images from '../../images'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import Services from '../../services/repository/Services'
+import LanguageUtils from '../../utils/LanguageUtils'
+import Changelog from '../changelog/ChangelogComponent.vue'
+import Notification from '../notification/NotificationComponent.vue'
 
 export default defineComponent({
   components: {
