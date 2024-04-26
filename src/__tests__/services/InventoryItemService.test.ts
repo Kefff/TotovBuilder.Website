@@ -1,33 +1,35 @@
+import { describe, expect, it } from 'vitest'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import { IErgonomics } from '../../models/utils/IErgonomics'
-import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
-import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
-import { IRecoil } from '../../models/utils/IRecoil'
+import { IInventoryItemPrice } from '../../models/utils/IInventoryItemPrice'
+import { IInventoryItemRecoil } from '../../models/utils/IInventoryItemRecoil'
+import { IInventoryItemWearableModifiers } from '../../models/utils/IInventoryItemWearableModifiers'
 import { IRecoilPercentageModifier } from '../../models/utils/IRecoilPercentageModifier'
 import { IWeight } from '../../models/utils/IWeight'
-import { InventoryItemService } from '../../services/InventoryItemService'
-import Services from '../../services/repository/Services'
-import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
-import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
-import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
-import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { usePresetServiceMock } from '../__mocks__/PresetPropertiesServiceMock'
-import { describe, expect, it } from 'vitest'
+import Services from '../../services/repository/Services'
+import { ak12PistolGrip, ak12Stock, ak12bt, alpha, ammo1270Magnum, ammo545bp, ammo545us, ammo9mmGT, armor6b13Fl, armor6b13FlDefault, bansheeDefault, berkut, cultLocust, esLamp, ewr, iskra, lshZ2dtm, lshZ2dtmFs, m9a3, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, monocletePe, mts25512Default, mts25512cyl, paca, plate6b33Back, plate6b33Front, precision, rgd5, rpk16, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16MuzzleBreak, rpk16Tube, salewa, scavVest, specterDr, srd9, syringe, vhs, x400 } from '../__data__/itemMocks'
+import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
+import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
+import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 const inventoryItem: IInventoryItem = {
   content: [
     {
       content: [],
       ignorePrice: false,
-      itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
+      itemId: rpk16Default.id,
       modSlots: [
         {
           item: {
             content: [],
             ignorePrice: false,
-            itemId: '5f6341043ada5942720e2dc5', // AK Aeroknox Scorpius pistol grip
+            itemId: ak12PistolGrip.id,
             modSlots: [],
             quantity: 1
           },
@@ -41,11 +43,11 @@ const inventoryItem: IInventoryItem = {
           item: {
             content: [],
             ignorePrice: false,
-            itemId: '5648ac824bdc2ded0b8b457d', // AK Zenit RP-1 charging handle
+            itemId: rpk16Drum.id,
             modSlots: [],
             quantity: 1
           },
-          modSlotName: 'mod_charge'
+          modSlotName: 'mod_magazine'
         }
       ],
       quantity: 1
@@ -53,13 +55,13 @@ const inventoryItem: IInventoryItem = {
     {
       content: [],
       ignorePrice: false,
-      itemId: '56d59d3ad2720bdb418b4577', // 9x19mm Pst gzh
+      itemId: ammo9mmGT.id,
       modSlots: [],
       quantity: 50
     }
   ],
   ignorePrice: false,
-  itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
+  itemId: berkut.id,
   modSlots: [],
   quantity: 1
 }
@@ -75,7 +77,7 @@ const invalidInventoryItem1: IInventoryItem = {
 const invalidInventoryItem2: IInventoryItem = {
   content: [],
   ignorePrice: false,
-  itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
+  itemId: rpk16Default.id,
   modSlots: [
     {
       item: {
@@ -102,10 +104,216 @@ const invalidInventoryItem3: IInventoryItem = {
     }
   ],
   ignorePrice: false,
-  itemId: '5ca20d5986f774331e7c9602',
+  itemId: berkut.id,
   modSlots: [],
   quantity: 1
 }
+
+describe('getArmorModifiers()', () => {
+  it.each([
+    [
+      {
+        content: [],
+        itemId: armor6b13FlDefault.id,
+        ignorePrice: false,
+        modSlots: [
+          {
+            item: {
+              content: [],
+              itemId: cultLocust.id,
+              ignorePrice: false,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'front_plate'
+          },
+          {
+            item: {
+              content: [],
+              itemId: plate6b33Back.id,
+              ignorePrice: false,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'back_plate'
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: cultLocust.armorClass,
+        durability: cultLocust.durability
+      } as IArmorModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: bansheeDefault.id,
+        modSlots: [
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: cultLocust.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'front_plate'
+          },
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: monocletePe.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'back_plate'
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: cultLocust.armorClass,
+        durability: cultLocust.durability
+      } as IArmorModifiers
+    ],
+    [
+      {
+        content: [],
+        itemId: armor6b13FlDefault.id,
+        ignorePrice: false,
+        modSlots: [
+          {
+            item: undefined,
+            modSlotName: 'front_plate'
+          },
+          {
+            item: {
+              content: [],
+              itemId: plate6b33Back.id,
+              ignorePrice: false,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'back_plate'
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: 0,
+        durability: 0
+      } as IArmorModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: paca.id,
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: 2,
+        durability: 0
+      } as IArmorModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: scavVest.id,
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: 0,
+        durability: 0
+      } as IArmorModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: iskra.id,
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        armorClass: 0,
+        durability: 0
+      } as IArmorModifiers
+    ]
+  ])('should get the armor class of the front armor plate of the inventory item', async (inventoryItem: IInventoryItem, expected: IArmorModifiers) => {
+    // Arrange
+    useItemServiceMock()
+    Services.configure(ItemPropertiesService)
+
+    const service = new InventoryItemService()
+
+    // Act
+    const armorModifiersResult = await service.getArmorModifiers(inventoryItem)
+
+    // Assert
+    expect(armorModifiersResult).not.toBeUndefined()
+    expect(armorModifiersResult!.success).toBe(true)
+    expect(armorModifiersResult!.value).toStrictEqual(expected)
+  })
+
+  it('should fail when the armor plate cannot be found', async () => {
+    // Arrange
+    useItemServiceMock()
+    Services.configure(ItemPropertiesService)
+
+    const service = new InventoryItemService()
+
+    // Act
+    const armorClassResult = await service.getArmorModifiers({
+      content: [],
+      ignorePrice: false,
+      itemId: bansheeDefault.id,
+      modSlots: [
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: 'invalid',
+            modSlots: [],
+            quantity: 1
+          },
+          modSlotName: 'front_plate'
+        }
+      ],
+      quantity: 1
+    })
+
+    // Assert
+    expect(armorClassResult!.success).toBe(false)
+    expect(armorClassResult!.failureMessage).toBe('Item "invalid" not found.')
+  })
+
+  it('should fail when the armor cannot be found', async () => {
+    // Arrange
+    useItemServiceMock()
+
+    const service = new InventoryItemService()
+
+    // Act
+    const armorClassResult = await service.getArmorModifiers({
+      content: [],
+      ignorePrice: false,
+      itemId: 'invalid',
+      modSlots: [],
+      quantity: 1
+    })
+
+    // Assert
+    expect(armorClassResult!.success).toBe(false)
+    expect(armorClassResult!.failureMessage).toBe('Item "invalid" not found.')
+  })
+})
 
 describe('getErgonomics()', () => {
   it.each([
@@ -113,12 +321,12 @@ describe('getErgonomics()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
+        itemId: rpk16Default.id,
         modSlots: [
           {
             item: {
               content: [],
-              itemId: '5f6341043ada5942720e2dc5', // AK Aeroknox Scorpius pistol grip
+              itemId: ak12PistolGrip.id,
               modSlots: [],
               quantity: 1
             },
@@ -131,25 +339,25 @@ describe('getErgonomics()', () => {
           {
             item: {
               content: [],
-              itemId: '5648ac824bdc2ded0b8b457d', // AK Zenit RP-1 charging handle
+              itemId: rpk16Drum.id,
               modSlots: [],
               quantity: 1
             },
-            modSlotName: 'mod_charge'
+            modSlotName: 'mod_magazine'
           }
         ],
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomics: 44,
-        ergonomicsWithMods: 57
+        ergonomics: 45,
+        ergonomicsWithMods: 28
       } as IErgonomics
     ],
     [
       {
         content: [],
         ignorePrice: false,
-        itemId: '56d59d3ad2720bdb418b4577', // 9x19mm Pst gzh
+        itemId: iskra.id,
         modSlots: [],
         quantity: 50
       } as IInventoryItem,
@@ -204,157 +412,6 @@ describe('getErgonomics()', () => {
   )
 })
 
-describe('getWearableModifiers()', () => {
-  it.each([
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '544fb45d4bdc2dee738b4568', // Salewa FIRST AID KIT (400/400)
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      {
-        ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithMods: 0,
-        movementSpeedPercentageModifier: 0,
-        movementSpeedPercentageModifierWithMods: 0,
-        turningSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifierWithMods: 0
-      } as IWearableModifiers
-    ],
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5c0e541586f7747fa54205c9', // 6B13 M modified assault armor (Tan)
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      {
-        ergonomicsPercentageModifier: -0.02,
-        ergonomicsPercentageModifierWithMods: -0.02,
-        movementSpeedPercentageModifier: -0.04,
-        movementSpeedPercentageModifierWithMods: -0.04,
-        turningSpeedPercentageModifier: -0.01,
-        turningSpeedPercentageModifierWithMods: -0.01
-      } as IWearableModifiers
-    ],
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5aa7e276e5b5b000171d0647', // Altyn bulletproof helmet
-        modSlots: [
-          {
-            item: {
-              content: [],
-              itemId: '5aa7e373e5b5b000137b76f0', // Altyn face shield
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_equipment'
-          },
-          {
-            item: undefined,
-            modSlotName: 'mod_equipment'
-          }
-        ],
-        quantity: 1
-      } as IInventoryItem,
-      {
-        ergonomicsPercentageModifier: -0.03,
-        ergonomicsPercentageModifierWithMods: -0.06,
-        movementSpeedPercentageModifier: -0.01,
-        movementSpeedPercentageModifierWithMods: -0.01,
-        turningSpeedPercentageModifier: -0.04,
-        turningSpeedPercentageModifierWithMods: -0.12
-      } as IWearableModifiers
-    ],
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5ab8ebf186f7742d8b372e80', // SSO Attack 2 raid backpack
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      {
-        ergonomicsPercentageModifier: -0.07,
-        ergonomicsPercentageModifierWithMods: -0.07,
-        movementSpeedPercentageModifier: -0.05,
-        movementSpeedPercentageModifierWithMods: -0.05,
-        turningSpeedPercentageModifier: -0.03,
-        turningSpeedPercentageModifierWithMods: -0.03
-      } as IWearableModifiers
-    ]
-  ])(
-    'should get the wearable modifiers of an inventory item',
-    async (
-      inventoryItem: IInventoryItem,
-      expected: IWearableModifiers
-    ) => {
-      // Arrange
-      useItemServiceMock()
-      Services.configure(ItemPropertiesService)
-      const service = new InventoryItemService()
-
-      // Act
-      const wearableModifiers = await service.getWearableModifiers(
-        inventoryItem
-      )
-
-      // Assert
-      expect(wearableModifiers.success).toBe(true)
-      expect(wearableModifiers.value.ergonomicsPercentageModifier).toBe(expected.ergonomicsPercentageModifier)
-      expect(wearableModifiers.value.ergonomicsPercentageModifierWithMods).toBe(expected.ergonomicsPercentageModifierWithMods)
-      expect(wearableModifiers.value.movementSpeedPercentageModifier).toBe(expected.movementSpeedPercentageModifier)
-      expect(wearableModifiers.value.movementSpeedPercentageModifierWithMods).toBe(expected.movementSpeedPercentageModifierWithMods)
-      expect(wearableModifiers.value.turningSpeedPercentageModifier).toBe(expected.turningSpeedPercentageModifier)
-      expect(wearableModifiers.value.turningSpeedPercentageModifierWithMods).toBe(expected.turningSpeedPercentageModifierWithMods)
-    }
-  )
-
-  it.each([
-    [invalidInventoryItem1],
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5c0e874186f7745dc7616606',
-        modSlots: [
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: 'invalid',
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_equipment'
-          }
-        ],
-        quantity: 1
-      } as IInventoryItem
-    ]
-  ])(
-    'should fail if an item cannot be found',
-    async (inventoryItem: IInventoryItem) => {
-      // Arrange
-      useItemServiceMock()
-      Services.configure(ItemPropertiesService)
-      const service = new InventoryItemService()
-
-      // Act
-      const ergonomicsPercentageModifier = await service.getWearableModifiers(inventoryItem)
-
-      // Assert
-      expect(ergonomicsPercentageModifier.success).toBe(false)
-      expect(ergonomicsPercentageModifier.failureMessage).toBe('Item "invalid" not found.')
-    }
-  )
-})
-
 describe('getPrice()', () => {
   it.each([
     [
@@ -365,12 +422,12 @@ describe('getPrice()', () => {
         price: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ca20d5986f774331e7c9602',
+          itemId: berkut.id,
           merchant: 'ragman',
-          merchantLevel: 1,
+          merchantLevel: 2,
           quest: undefined,
-          value: 23444,
-          valueInMainCurrency: 23444
+          value: 24509,
+          valueInMainCurrency: 24509
         },
         pricesWithContent: [
           {
@@ -380,8 +437,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 61108,
-            valueInMainCurrency: 61108
+            value: 95722,
+            valueInMainCurrency: 95722
           }
         ],
         priceWithContentInMainCurrency: {
@@ -391,29 +448,29 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 61108,
-          valueInMainCurrency: 61108
+          value: 95722,
+          valueInMainCurrency: 95722
         },
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ca20d5986f774331e7c9602',
+          itemId: berkut.id,
           merchant: 'ragman',
-          merchantLevel: 1,
+          merchantLevel: 2,
           quest: undefined,
-          value: 23444,
-          valueInMainCurrency: 23444
+          value: 24509,
+          valueInMainCurrency: 24509
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ],
     [
       {
         content: [],
         ignorePrice: false,
-        itemId: '56d59d3ad2720bdb418b4577', // 9x19mm Pst gzh
+        itemId: ammo545us.id,
         modSlots: [],
-        quantity: 50
+        quantity: 60
       } as IInventoryItem,
       true,
       {
@@ -421,12 +478,12 @@ describe('getPrice()', () => {
         price: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '56d59d3ad2720bdb418b4577',
-          merchant: 'mechanic',
-          merchantLevel: 2,
+          itemId: ammo545us.id,
+          merchant: 'prapor',
+          merchantLevel: 1,
           quest: undefined,
-          value: 3500,
-          valueInMainCurrency: 3500
+          value: 5760,
+          valueInMainCurrency: 5760
         },
         pricesWithContent: [
           {
@@ -436,8 +493,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 3500,
-            valueInMainCurrency: 3500
+            value: 5760,
+            valueInMainCurrency: 5760
           }
         ],
         priceWithContentInMainCurrency: {
@@ -447,120 +504,48 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 3500,
-          valueInMainCurrency: 3500
+          value: 5760,
+          valueInMainCurrency: 5760
         },
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '56d59d3ad2720bdb418b4577',
-          merchant: 'mechanic',
-          merchantLevel: 2,
+          itemId: ammo545us.id,
+          merchant: 'prapor',
+          merchantLevel: 1,
           quest: undefined,
-          value: 70,
-          valueInMainCurrency: 70
+          value: 96,
+          valueInMainCurrency: 96
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
-    ],
-    [
-      {
-        content: [
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
-            modSlots: [
-              {
-                item: {
-                  content: [
-                    {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: '56dff061d2720bb5668b4567', // 5.45x39mm BT gs
-                      modSlots: [],
-                      quantity: 45
-                    }
-                  ],
-                  ignorePrice: false,
-                  itemId: '564ca9df4bdc2d35148b4569', // AK-74 5.45x39 6L18 45-round magazine
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_magazine'
-              }
-            ],
-            quantity: 1
-          }
-        ],
-        ignorePrice: false,
-        itemId: '5c093ca986f7740a1867ab12', // Secure container Kappa
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      false,
-      {
-        missingPrice: false,
-        price: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        pricesWithContent: [
-          {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 72478,
-            valueInMainCurrency: 72478
-          }
-        ],
-        priceWithContentInMainCurrency: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 72478,
-          valueInMainCurrency: 72478
-        },
-        unitPrice: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        unitPriceIgnoreStatus: IgnoredUnitPrice.notLootable
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ],
     [
       {
         content: [],
         ignorePrice: false,
-        itemId: '5c07c60e0db834002330051f',
+        itemId: rpk16.id,
         modSlots: [
           {
             item: {
               content: [],
+              itemId: rpk16DustCover.id,
               ignorePrice: false,
-              itemId: '59db3b0886f77429d72fb895',
-              modSlots: [],
+              modSlots: [
+                {
+                  item: {
+                    content: [],
+                    itemId: specterDr.id,
+                    ignorePrice: false,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  modSlotName: 'mod_scope'
+                }
+              ],
               quantity: 1
             },
-            modSlotName: 'mod_pistol_grip'
+            modSlotName: 'mod_reciever'
           }
         ],
         quantity: 1
@@ -571,12 +556,12 @@ describe('getPrice()', () => {
         price: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5c07c60e0db834002330051f',
+          itemId: rpk16.id,
           merchant: 'flea-market',
           merchantLevel: 0,
           quest: undefined,
-          value: 40281,
-          valueInMainCurrency: 40281
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         priceWithContentInMainCurrency: {
           barterItems: [],
@@ -585,8 +570,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 45881,
-          valueInMainCurrency: 45881
+          value: 91079,
+          valueInMainCurrency: 91079
         },
         pricesWithContent: [
           {
@@ -596,8 +581,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 50,
-            valueInMainCurrency: 5600
+            value: 279,
+            valueInMainCurrency: 39886
           },
           {
             barterItems: [],
@@ -606,104 +591,33 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 40281,
-            valueInMainCurrency: 40281
+            value: 51193,
+            valueInMainCurrency: 51193
           }
         ],
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5c07c60e0db834002330051f',
+          itemId: rpk16.id,
           merchant: 'flea-market',
           merchantLevel: 0,
           quest: undefined,
-          value: 40281,
-          valueInMainCurrency: 40281
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
-    ],
-    [
-      {
-        content: [
-          {
-            content: [
-              {
-                content: [],
-                ignorePrice: true,
-                itemId: '590c5d4b86f774784e1b9c45', // Iskra ration pack
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            ignorePrice: false,
-            itemId: '5e4abc1f86f774069619fbaa', // Spiritus Systems Bank Robber chest rig
-            modSlots: [],
-            quantity: 1
-          }
-        ],
-        ignorePrice: true,
-        itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      true,
-      {
-        missingPrice: false,
-        price: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        priceWithContentInMainCurrency: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 10013,
-          valueInMainCurrency: 10013
-        },
-        pricesWithContent: [
-          {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 10013,
-            valueInMainCurrency: 10013
-          }
-        ],
-        unitPrice: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        unitPriceIgnoreStatus: IgnoredUnitPrice.manuallyIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ]
   ])(
     'should get the price of an inventory item',
-    async (inventoryItem: IInventoryItem, canBeLooted: boolean, expected: IInventoryPrice) => {
+    async (inventoryItem: IInventoryItem, canBeLooted: boolean, expected: IInventoryItemPrice) => {
       // Arrange
       useItemServiceMock()
       usePresetServiceMock()
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()
       Services.configure(GlobalFilterService)
+
       const service = new InventoryItemService()
 
       // Act
@@ -714,33 +628,327 @@ describe('getPrice()', () => {
       expect(price.value).toStrictEqual(expected)
     })
 
+  it('should ignore the price of items in the content of a preset item', async () => {
+    // Arrange
+    useItemServiceMock()
+    usePresetServiceMock([
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: m9a3Default.id,
+        modSlots: [
+          {
+            item: {
+              content: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: ammo9mmGT.id,
+                  modSlots: [],
+                  quantity: 17
+                }
+              ],
+              itemId: m9a3Magazine.id,
+              ignorePrice: false,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'mod_magazine'
+          }
+        ],
+        quantity: 1
+      }
+    ])
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(GlobalFilterService)
+    const service = new InventoryItemService()
+
+    const inventoryItem: IInventoryItem = {
+      content: [],
+      ignorePrice: false,
+      itemId: m9a3Default.id,
+      modSlots: [
+        {
+          item: {
+            content: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: ammo9mmGT.id,
+                modSlots: [],
+                quantity: 17
+              }
+            ],
+            itemId: m9a3Magazine.id,
+            ignorePrice: false,
+            modSlots: [],
+            quantity: 1
+          },
+          modSlotName: 'mod_magazine'
+        }
+      ],
+      quantity: 1
+    }
+
+    const expected: IInventoryItemPrice = {
+      missingPrice: false,
+      price: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: undefined,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      pricesWithContent: [],
+      priceWithContentInMainCurrency: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: undefined,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      unitPrice: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: undefined,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.notLootable
+    }
+
+    // Act
+    const price = await service.getPrice(inventoryItem, undefined, false)
+
+    // Assert
+    expect(price.success).toBe(true)
+    expect(price.value).toStrictEqual(expected)
+  })
+
+  it('should ignore the price of non lootable items', async () => {
+    // Arrange
+    useItemServiceMock()
+    usePresetServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(GlobalFilterService)
+    const service = new InventoryItemService()
+
+    const inventoryItem: IInventoryItem = {
+      content: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: rpk16Default.id,
+          modSlots: [
+            {
+              item: {
+                content: [
+                  {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: ammo545us.id,
+                    modSlots: [],
+                    quantity: 95
+                  }
+                ],
+                ignorePrice: false,
+                itemId: rpk16Drum.id,
+                modSlots: [],
+                quantity: 1
+              },
+              modSlotName: 'mod_magazine'
+            }
+          ],
+          quantity: 1
+        }
+      ],
+      ignorePrice: false,
+      itemId: alpha.id,
+      modSlots: [],
+      quantity: 1
+    }
+
+    const expected: IInventoryItemPrice = {
+      missingPrice: false,
+      price: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: undefined,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      pricesWithContent: [
+        {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 76683,
+          valueInMainCurrency: 76683
+        }
+      ],
+      priceWithContentInMainCurrency: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: undefined,
+        value: 76683,
+        valueInMainCurrency: 76683
+      },
+      unitPrice: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: undefined,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.notLootable
+    }
+
+    // Act
+    const price = await service.getPrice(inventoryItem, undefined, false)
+
+    // Assert
+    expect(price.success).toBe(true)
+    expect(price.value).toStrictEqual(expected)
+  })
+
+  it('should ignore the price of manually ignored items', async () => {
+    // Arrange
+    useItemServiceMock()
+    usePresetServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(GlobalFilterService)
+    const service = new InventoryItemService()
+
+    const inventoryItem: IInventoryItem = {
+      content: [
+        {
+          content: [
+            {
+              content: [],
+              ignorePrice: true,
+              itemId: iskra.id,
+              modSlots: [],
+              quantity: 1
+            }
+          ],
+          ignorePrice: false,
+          itemId: scavVest.id,
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      ignorePrice: true,
+      itemId: berkut.id,
+      modSlots: [],
+      quantity: 1
+    }
+
+    const expected: IInventoryItemPrice = {
+      missingPrice: false,
+      price: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: undefined,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      priceWithContentInMainCurrency: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: undefined,
+        value: 16321,
+        valueInMainCurrency: 16321
+      },
+      pricesWithContent: [
+        {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 16321,
+          valueInMainCurrency: 16321
+        }
+      ],
+      unitPrice: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: undefined,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.manuallyIgnored
+    }
+
+    // Act
+    const price = await service.getPrice(inventoryItem, undefined, true)
+
+    // Assert
+    expect(price.success).toBe(true)
+    expect(price.value).toStrictEqual(expected)
+  })
+
   it.each([
     [
       {
         content: [],
         ignorePrice: false,
-        itemId: '5acf7dd986f774486e1281bf', // AK-101 5.56x45 assault rifle Default
+        itemId: rpk16Default.id,
         modSlots: [
           {
             item: {
               content: [],
+              itemId: rpk16Tube.id,
               ignorePrice: false,
-              itemId: '59c6633186f7740cf0493bb9', // AK-74 Gas tube
               modSlots: [
                 {
                   item: {
                     content: [],
+                    itemId: ak12Stock.id,
                     ignorePrice: false,
-                    itemId: '5648b1504bdc2d9d488b4584', // Polymer AK-74 foregrip (6P20 Sb.9)
                     modSlots: [],
                     quantity: 1
                   },
-                  modSlotName: 'mod_handguard'
+                  modSlotName: 'mod_stock'
                 }
               ],
               quantity: 1
             },
-            modSlotName: 'mod_gas_block'
+            modSlotName: 'mod_stock_001'
           }
         ],
         quantity: 1
@@ -750,12 +958,12 @@ describe('getPrice()', () => {
         price: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5acf7dd986f774486e1281bf',
-          merchant: 'mechanic',
-          merchantLevel: 3,
+          itemId: rpk16Default.id,
+          merchant: 'flea-market',
+          merchantLevel: 0,
           quest: undefined,
-          value: 42938,
-          valueInMainCurrency: 42938
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         priceWithContentInMainCurrency: {
           barterItems: [],
@@ -764,8 +972,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 42938,
-          valueInMainCurrency: 42938
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         pricesWithContent: [
           {
@@ -775,49 +983,49 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 42938,
-            valueInMainCurrency: 42938
+            value: 43345,
+            valueInMainCurrency: 43345
           }
         ],
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5acf7dd986f774486e1281bf',
-          merchant: 'mechanic',
-          merchantLevel: 3,
+          itemId: rpk16Default.id,
+          merchant: 'flea-market',
+          merchantLevel: 0,
           quest: undefined,
-          value: 42938,
-          valueInMainCurrency: 42938
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ],
     [
       {
         content: [],
         ignorePrice: false,
-        itemId: '5acf7dd986f774486e1281bf', // AK-101 5.56x45 assault rifle Default
+        itemId: rpk16Default.id,
         modSlots: [
           {
             item: {
               content: [],
+              itemId: rpk16Tube.id,
               ignorePrice: false,
-              itemId: '59c6633186f7740cf0493bb9', // AK-74 Gas tube
               modSlots: [
                 {
                   item: {
                     content: [],
+                    itemId: precision.id,
                     ignorePrice: false,
-                    itemId: '5efaf417aeb21837e749c7f2', // B-30 foregrip and rail mount B-31С
                     modSlots: [],
                     quantity: 1
                   },
-                  modSlotName: 'mod_handguard'
+                  modSlotName: 'mod_stock'
                 }
               ],
               quantity: 1
             },
-            modSlotName: 'mod_gas_block'
+            modSlotName: 'mod_stock_001'
           }
         ],
         quantity: 1
@@ -827,184 +1035,12 @@ describe('getPrice()', () => {
         price: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5acf7dd986f774486e1281bf',
-          merchant: 'mechanic',
-          merchantLevel: 3,
-          quest: undefined,
-          value: 42938,
-          valueInMainCurrency: 42938
-        },
-        pricesWithContent: [
-          {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 64015,
-            valueInMainCurrency: 64015
-          }
-        ],
-        priceWithContentInMainCurrency: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
+          itemId: rpk16Default.id,
+          merchant: 'flea-market',
           merchantLevel: 0,
           quest: undefined,
-          value: 64015,
-          valueInMainCurrency: 64015
-        },
-        unitPrice: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '5acf7dd986f774486e1281bf',
-          merchant: 'mechanic',
-          merchantLevel: 3,
-          quest: undefined,
-          value: 42938,
-          valueInMainCurrency: 42938
-        },
-        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
-    ],
-    [
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '5acf7dd986f774486e1281bf', // AK-101 5.56x45 assault rifle Default
-        modSlots: [
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: '59e649f986f77411d949b246', // Molot AKM type gas tube
-              modSlots: [
-                {
-                  item: {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: '5648b1504bdc2d9d488b4584', // Polymer AK-74 foregrip (6P20 Sb.9)
-                    modSlots: [],
-                    quantity: 1
-                  },
-                  modSlotName: 'mod_handguard'
-                }
-              ],
-              quantity: 1
-            },
-            modSlotName: 'mod_gas_block'
-          }
-        ],
-        quantity: 1
-      } as IInventoryItem,
-      {
-        missingPrice: false,
-        price: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '5acf7dd986f774486e1281bf',
-          merchant: 'mechanic',
-          merchantLevel: 3,
-          quest: undefined,
-          value: 42938,
-          valueInMainCurrency: 42938
-        },
-        priceWithContentInMainCurrency: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 211926,
-          valueInMainCurrency: 211926
-        },
-        pricesWithContent: [
-          {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 211926,
-            valueInMainCurrency: 211926
-          }
-        ],
-        unitPrice: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '5acf7dd986f774486e1281bf',
-          merchant: 'mechanic',
-          merchantLevel: 3,
-          quest: undefined,
-          value: 42938,
-          valueInMainCurrency: 42938
-        },
-        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
-    ],
-    [
-      {
-        content: [
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: '5acf7dd986f774486e1281bf', // AK-101 5.56x45 assault rifle Default
-            modSlots: [
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: '59e649f986f77411d949b246', // Molot AKM type gas tube
-                  modSlots: [
-                    {
-                      item: {
-                        content: [],
-                        ignorePrice: false,
-                        itemId: '5648b1504bdc2d9d488b4584', // Polymer AK-74 foregrip (6P20 Sb.9)
-                        modSlots: [],
-                        quantity: 1
-                      },
-                      modSlotName: 'mod_handguard'
-                    }
-                  ],
-                  quantity: 1
-                },
-                modSlotName: 'mod_gas_block'
-              }
-            ],
-            quantity: 1
-          }
-        ],
-        ignorePrice: false,
-        itemId: '5c0e805e86f774683f3dd637', // 3V G Paratus 3-Day Operator's Tactical Backpack
-        modSlots: [],
-        quantity: 1
-      } as IInventoryItem,
-      {
-        missingPrice: false,
-        price: {
-          barterItems: [],
-          currencyName: 'USD',
-          itemId: '5c0e805e86f774683f3dd637',
-          merchant: 'peacekeeper',
-          merchantLevel: 4,
-          quest: undefined,
-          value: 666,
-          valueInMainCurrency: 74592
-        },
-        priceWithContentInMainCurrency: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 286518,
-          valueInMainCurrency: 286518
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         pricesWithContent: [
           {
@@ -1014,8 +1050,8 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 666,
-            valueInMainCurrency: 74592
+            value: 157,
+            valueInMainCurrency: 22385
           },
           {
             barterItems: [],
@@ -1024,46 +1060,230 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 211926,
-            valueInMainCurrency: 211926
+            value: 43345,
+            valueInMainCurrency: 43345
           }
         ],
+        priceWithContentInMainCurrency: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 65730,
+          valueInMainCurrency: 65730
+        },
         unitPrice: {
           barterItems: [],
-          currencyName: 'USD',
-          itemId: '5c0e805e86f774683f3dd637',
-          merchant: 'peacekeeper',
-          merchantLevel: 4,
+          currencyName: 'RUB',
+          itemId: rpk16Default.id,
+          merchant: 'flea-market',
+          merchantLevel: 0,
           quest: undefined,
-          value: 666,
-          valueInMainCurrency: 74592
+          value: 43345,
+          valueInMainCurrency: 43345
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ],
     [
       {
         content: [],
         ignorePrice: false,
-        itemId: '5ddbbeac582ed30a6134e577', // Saiga 12ga ver.10 12/76 semi-automatic shotgun NERFGUN
+        itemId: rpk16Default.id,
         modSlots: [
           {
             item: {
-              content: [
+              content: [],
+              itemId: ak12bt.id,
+              ignorePrice: false,
+              modSlots: [
                 {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: '5d6e6891a4b9361bd473feea', // 12/70 \"Poleva-3\" slug
-                  modSlots: [],
-                  quantity: 20
+                  item: {
+                    content: [],
+                    itemId: ak12Stock.id,
+                    ignorePrice: false,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  modSlotName: 'mod_stock'
                 }
               ],
+              quantity: 1
+            },
+            modSlotName: 'mod_stock_001'
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        missingPrice: false,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: rpk16Default.id,
+          merchant: 'flea-market',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 43345,
+          valueInMainCurrency: 43345
+        },
+        priceWithContentInMainCurrency: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 46981,
+          valueInMainCurrency: 46981
+        },
+        pricesWithContent: [
+          {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: undefined,
+            value: 46981,
+            valueInMainCurrency: 46981
+          }
+        ],
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: rpk16Default.id,
+          merchant: 'flea-market',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 43345,
+          valueInMainCurrency: 43345
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+      } as IInventoryItemPrice
+    ],
+    [
+      {
+        content: [
+          {
+            content: [],
+            ignorePrice: false,
+            itemId: rpk16Default.id,
+            modSlots: [
+              {
+                item: {
+                  content: [],
+                  itemId: rpk16Tube.id,
+                  ignorePrice: false,
+                  modSlots: [
+                    {
+                      item: {
+                        content: [],
+                        itemId: precision.id,
+                        ignorePrice: false,
+                        modSlots: [],
+                        quantity: 1
+                      },
+                      modSlotName: 'mod_stock'
+                    }
+                  ],
+                  quantity: 1
+                },
+                modSlotName: 'mod_stock_001'
+              }
+            ],
+            quantity: 1
+          }
+        ],
+        ignorePrice: false,
+        itemId: berkut.id,
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        missingPrice: false,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: berkut.id,
+          merchant: 'ragman',
+          merchantLevel: 2,
+          quest: undefined,
+          value: 24509,
+          valueInMainCurrency: 24509
+        },
+        pricesWithContent: [
+          {
+            barterItems: [],
+            currencyName: 'USD',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: undefined,
+            value: 157,
+            valueInMainCurrency: 22385
+          },
+          {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: undefined,
+            value: 67854,
+            valueInMainCurrency: 67854
+          }
+        ],
+        priceWithContentInMainCurrency: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 90239,
+          valueInMainCurrency: 90239
+        },
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: berkut.id,
+          merchant: 'ragman',
+          merchantLevel: 2,
+          quest: undefined,
+          value: 24509,
+          valueInMainCurrency: 24509
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+      } as IInventoryItemPrice
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: bansheeDefault.id,
+        modSlots: [
+          {
+            item: {
+              content: [],
               ignorePrice: false,
-              itemId: '5cf8f3b0d7f00c00217872ef', // SOK-12 12/76 MaxRounds Powermag 20-round magazine
+              itemId: monocletePe.id,
               modSlots: [],
               quantity: 1
             },
-            modSlotName: 'mod_magazine'
+            modSlotName: 'front_plate'
+          },
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: plate6b33Back.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'back_plate'
           }
         ],
         quantity: 1
@@ -1073,25 +1293,21 @@ describe('getPrice()', () => {
         price: {
           barterItems: [
             {
-              itemId: '5bc9c29cd4351e003562b8a3',
-              quantity: 10
+              itemId: ewr.id,
+              quantity: 1
             },
             {
-              itemId: '5c0fa877d174af02a012e1cf',
-              quantity: 10
-            },
-            {
-              itemId: '57347d8724597744596b4e76',
-              quantity: 10
+              itemId: vhs.id,
+              quantity: 1
             }
           ],
           currencyName: 'barter',
-          itemId: '5ddbbeac582ed30a6134e577',
-          merchant: 'jaeger',
+          itemId: bansheeDefault.id,
+          merchant: 'ragman',
           merchantLevel: 3,
           quest: undefined,
           value: 0,
-          valueInMainCurrency: 738760
+          valueInMainCurrency: 59790
         },
         priceWithContentInMainCurrency: {
           barterItems: [
@@ -1101,8 +1317,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 738760,
-          valueInMainCurrency: 738760
+          value: 103658,
+          valueInMainCurrency: 103658
         },
         pricesWithContent: [
           {
@@ -1113,38 +1329,34 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 738760,
-            valueInMainCurrency: 738760
+            value: 103658,
+            valueInMainCurrency: 103658
           }
         ],
         unitPrice: {
           barterItems: [
             {
-              itemId: '5bc9c29cd4351e003562b8a3',
-              quantity: 10
+              itemId: ewr.id,
+              quantity: 1
             },
             {
-              itemId: '5c0fa877d174af02a012e1cf',
-              quantity: 10
-            },
-            {
-              itemId: '57347d8724597744596b4e76',
-              quantity: 10
+              itemId: vhs.id,
+              quantity: 1
             }
           ],
           currencyName: 'barter',
-          itemId: '5ddbbeac582ed30a6134e577',
-          merchant: 'jaeger',
+          itemId: bansheeDefault.id,
+          merchant: 'ragman',
           merchantLevel: 3,
           quest: undefined,
           value: 0,
-          valueInMainCurrency: 738760
+          valueInMainCurrency: 59790
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ]
   ])('should get the price of an inventory item and ignore items present in the item preset',
-    async (inventoryItem: IInventoryItem, expected: IInventoryPrice) => {
+    async (inventoryItem: IInventoryItem, expected: IInventoryItemPrice) => {
       // Arrange
       useItemServiceMock()
       usePresetServiceMock()
@@ -1181,11 +1393,11 @@ describe('getPrice()', () => {
       },
       {
         enabled: true,
-        merchant: 'skier',
+        merchant: 'therapist',
         merchantLevel: 1
       },
       {
-        enabled: false,
+        enabled: true,
         merchant: 'flea-market',
         merchantLevel: 0
       }
@@ -1195,7 +1407,7 @@ describe('getPrice()', () => {
     const priceResult = await inventoryItemService.getPrice({
       content: [],
       ignorePrice: false,
-      itemId: '5a38e6bac4a2826c6e06d79b', // TOZ-106 20ga bolt-action shotgun
+      itemId: iskra.id,
       modSlots: [],
       quantity: 1
     })
@@ -1205,14 +1417,19 @@ describe('getPrice()', () => {
     expect(priceResult.value).toStrictEqual({
       missingPrice: false,
       price: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '5a38e6bac4a2826c6e06d79b',
-        merchant: 'skier',
+        barterItems: [
+          {
+            itemId: syringe.id,
+            quantity: 1
+          }
+        ],
+        currencyName: 'barter',
+        itemId: iskra.id,
+        merchant: 'therapist',
         merchantLevel: 1,
         quest: undefined,
-        value: 8917,
-        valueInMainCurrency: 8917
+        value: 0,
+        valueInMainCurrency: 25320
       },
       priceWithContentInMainCurrency: {
         barterItems: [],
@@ -1221,8 +1438,8 @@ describe('getPrice()', () => {
         merchant: '',
         merchantLevel: 0,
         quest: undefined,
-        value: 8917,
-        valueInMainCurrency: 8917
+        value: 25320,
+        valueInMainCurrency: 25320
       },
       pricesWithContent: [
         {
@@ -1232,19 +1449,24 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 8917,
-          valueInMainCurrency: 8917
+          value: 25320,
+          valueInMainCurrency: 25320
         }
       ],
       unitPrice: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '5a38e6bac4a2826c6e06d79b',
-        merchant: 'skier',
+        barterItems: [
+          {
+            itemId: syringe.id,
+            quantity: 1
+          }
+        ],
+        currencyName: 'barter',
+        itemId: iskra.id,
+        merchant: 'therapist',
         merchantLevel: 1,
         quest: undefined,
-        value: 8917,
-        valueInMainCurrency: 8917
+        value: 0,
+        valueInMainCurrency: 25320
       },
       unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
     })
@@ -1255,7 +1477,7 @@ describe('getPrice()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '5de8e67c4a9f347bc92edbd7', // MP9-N 9x19 upper receiver
+        itemId: ammo545bp.id,
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
@@ -1293,7 +1515,7 @@ describe('getPrice()', () => {
           valueInMainCurrency: 0
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ],
     [
       {
@@ -1301,13 +1523,13 @@ describe('getPrice()', () => {
           {
             content: [],
             ignorePrice: false,
-            itemId: '5de8e67c4a9f347bc92edbd7', // MP9-N 9x19 upper receiver
+            itemId: ammo545bp.id,
             modSlots: [],
             quantity: 1
           }
         ],
         ignorePrice: false,
-        itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
+        itemId: berkut.id,
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
@@ -1316,12 +1538,12 @@ describe('getPrice()', () => {
         price: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ca20d5986f774331e7c9602',
+          itemId: berkut.id,
           merchant: 'ragman',
-          merchantLevel: 1,
+          merchantLevel: 2,
           quest: undefined,
-          value: 23444,
-          valueInMainCurrency: 23444
+          value: 24509,
+          valueInMainCurrency: 24509
         },
         priceWithContentInMainCurrency: {
           barterItems: [],
@@ -1330,8 +1552,8 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 23444,
-          valueInMainCurrency: 23444
+          value: 24509,
+          valueInMainCurrency: 24509
         },
         pricesWithContent: [
           {
@@ -1341,38 +1563,38 @@ describe('getPrice()', () => {
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 23444,
-            valueInMainCurrency: 23444
+            value: 24509,
+            valueInMainCurrency: 24509
           }
         ],
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5ca20d5986f774331e7c9602',
+          itemId: berkut.id,
           merchant: 'ragman',
-          merchantLevel: 1,
+          merchantLevel: 2,
           quest: undefined,
-          value: 23444,
-          valueInMainCurrency: 23444
+          value: 24509,
+          valueInMainCurrency: 24509
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ],
     [
       {
         content: [],
+        itemId: m9a3.id,
         ignorePrice: false,
-        itemId: '5e00903ae9dc277128008b87', // B&T MP9 9x19 submachine gun
         modSlots: [
           {
-            modSlotName: 'mod_reciever',
             item: {
               content: [],
+              itemId: m9a3SideGrip.id,
               ignorePrice: false,
-              itemId: '5de8e67c4a9f347bc92edbd7', // MP9-N 9x19 upper receiver
               modSlots: [],
               quantity: 1
-            }
+            },
+            modSlotName: 'mod_pistol_grip'
           }
         ],
         quantity: 1
@@ -1381,13 +1603,13 @@ describe('getPrice()', () => {
         missingPrice: true,
         price: {
           barterItems: [],
-          currencyName: 'RUB',
-          itemId: '5e00903ae9dc277128008b87',
-          merchant: 'flea-market',
-          merchantLevel: 0,
+          currencyName: 'USD',
+          itemId: m9a3.id,
+          merchant: 'peacekeeper',
+          merchantLevel: 1,
           quest: undefined,
-          value: 26282,
-          valueInMainCurrency: 26282
+          value: 75,
+          valueInMainCurrency: 8025
         },
         priceWithContentInMainCurrency: {
           barterItems: [],
@@ -1396,35 +1618,35 @@ describe('getPrice()', () => {
           merchant: '',
           merchantLevel: 0,
           quest: undefined,
-          value: 26282,
-          valueInMainCurrency: 26282
+          value: 8025,
+          valueInMainCurrency: 8025
         },
         pricesWithContent: [
           {
             barterItems: [],
-            currencyName: 'RUB',
+            currencyName: 'USD',
             itemId: '',
             merchant: '',
             merchantLevel: 0,
             quest: undefined,
-            value: 26282,
-            valueInMainCurrency: 26282
+            value: 75,
+            valueInMainCurrency: 8025
           }
         ],
         unitPrice: {
           barterItems: [],
-          currencyName: 'RUB',
-          itemId: '5e00903ae9dc277128008b87',
-          merchant: 'flea-market',
-          merchantLevel: 0,
+          currencyName: 'USD',
+          itemId: m9a3.id,
+          merchant: 'peacekeeper',
+          merchantLevel: 1,
           quest: undefined,
-          value: 26282,
-          valueInMainCurrency: 26282
+          value: 75,
+          valueInMainCurrency: 8025
         },
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      } as IInventoryPrice
+      } as IInventoryItemPrice
     ]
-  ])('should have a missing price when no merchants sell the item', async (inventoryItem: IInventoryItem, expected: IInventoryPrice) => {
+  ])('should have a missing price when no merchants sell the item', async (inventoryItem: IInventoryItem, expected: IInventoryItemPrice) => {
     // Arrange
     useItemServiceMock()
     usePresetServiceMock()
@@ -1451,12 +1673,12 @@ describe('getPrice()', () => {
         {
           barterItems: [
             {
-              itemId: '590a3b0486f7743954552bdb', // Printed circuit board
+              itemId: ammo9mmGT.id,
               quantity: 5000.0
             }
           ],
           currencyName: 'barter',
-          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          itemId: m9a3SideGrip.id,
           merchant: 'peacekeeper',
           merchantLevel: 3.0,
           quest: undefined,
@@ -1466,20 +1688,20 @@ describe('getPrice()', () => {
         {
           barterItems: [
             {
-              itemId: '590a3b0486f7743954552bdb', // Printed circuit board
+              itemId: ammo9mmGT.id,
               quantity: 2.0
             },
             {
-              itemId: '5672cb724bdc2dc2088b456b', // Geiger-Muller counter
+              itemId: vhs.id,
               quantity: 1.0
             },
             {
-              itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+              itemId: rgd5.id,
               quantity: 3.0
             }
           ],
           currencyName: 'barter',
-          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          itemId: m9a3SideGrip.id,
           merchant: 'peacekeeper',
           merchantLevel: 3.0,
           quest: undefined,
@@ -1489,7 +1711,7 @@ describe('getPrice()', () => {
         {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '590a3b0486f7743954552bdb', // Printed circuit board
+          itemId: ammo9mmGT.id,
           merchant: 'flea-market',
           merchantLevel: 0.0,
           quest: undefined,
@@ -1499,7 +1721,7 @@ describe('getPrice()', () => {
         {
           barterItems: [],
           currencyName: 'USD',
-          itemId: '5672cb724bdc2dc2088b456b', // Geiger-Muller counter
+          itemId: vhs.id,
           merchant: 'flea-market',
           merchantLevel: 0.0,
           quest: undefined,
@@ -1509,12 +1731,12 @@ describe('getPrice()', () => {
         {
           barterItems: [
             {
-              itemId: '590a3cd386f77436f20848cb', // Energy-saving lamp
+              itemId: esLamp.id,
               quantity: 1
             }
           ],
           currencyName: 'barter',
-          itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+          itemId: rgd5.id,
           merchant: 'prapor',
           merchantLevel: 0.0,
           quest: undefined,
@@ -1524,7 +1746,7 @@ describe('getPrice()', () => {
         {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '590a3cd386f77436f20848cb', // Energy-saving lamp
+          itemId: esLamp.id,
           merchant: 'mechanic',
           merchantLevel: 1.0,
           quest: undefined,
@@ -1543,7 +1765,7 @@ describe('getPrice()', () => {
     const inventoryItem: IInventoryItem = {
       content: [],
       ignorePrice: false,
-      itemId: '544a37c44bdc2d25388b4567',
+      itemId: m9a3SideGrip.id,
       modSlots: [],
       quantity: 2
     }
@@ -1558,20 +1780,20 @@ describe('getPrice()', () => {
       price: {
         barterItems: [
           {
-            itemId: '590a3b0486f7743954552bdb', // Printed circuit board
+            itemId: ammo9mmGT.id,
             quantity: 4.0
           },
           {
-            itemId: '5672cb724bdc2dc2088b456b', // Geiger-Muller counter
+            itemId: vhs.id,
             quantity: 2.0
           },
           {
-            itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+            itemId: rgd5.id,
             quantity: 6.0
           }
         ],
         currencyName: 'barter',
-        itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+        itemId: m9a3SideGrip.id,
         merchant: 'peacekeeper',
         merchantLevel: 3,
         quest: undefined,
@@ -1613,20 +1835,20 @@ describe('getPrice()', () => {
       unitPrice: {
         barterItems: [
           {
-            itemId: '590a3b0486f7743954552bdb', // Printed circuit board
+            itemId: ammo9mmGT.id,
             quantity: 2.0
           },
           {
-            itemId: '5672cb724bdc2dc2088b456b', // Geiger-Muller counter
+            itemId: vhs.id,
             quantity: 1.0
           },
           {
-            itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+            itemId: rgd5.id,
             quantity: 3.0
           }
         ],
         currencyName: 'barter',
-        itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+        itemId: m9a3SideGrip.id,
         merchant: 'peacekeeper',
         merchantLevel: 3,
         quest: undefined,
@@ -1634,7 +1856,7 @@ describe('getPrice()', () => {
         valueInMainCurrency: 55600
       },
       unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-    } as IInventoryPrice)
+    } as IInventoryItemPrice)
   })
 
   it('should ignore barters with missing barter item price', async () => {
@@ -1646,12 +1868,12 @@ describe('getPrice()', () => {
         {
           barterItems: [
             {
-              itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+              itemId: rgd5.id,
               quantity: 1.0
             }
           ],
           currencyName: 'barter',
-          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          itemId: m9a3SideGrip.id,
           merchant: 'peacekeeper',
           merchantLevel: 3.0,
           quest: undefined,
@@ -1661,7 +1883,7 @@ describe('getPrice()', () => {
         {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          itemId: m9a3SideGrip.id,
           merchant: 'prapor',
           merchantLevel: 3.0,
           quest: undefined,
@@ -1680,7 +1902,7 @@ describe('getPrice()', () => {
     const inventoryItem: IInventoryItem = {
       content: [],
       ignorePrice: false,
-      itemId: '544a37c44bdc2d25388b4567',
+      itemId: m9a3SideGrip.id,
       modSlots: [],
       quantity: 2
     }
@@ -1695,7 +1917,7 @@ describe('getPrice()', () => {
       price: {
         barterItems: [],
         currencyName: 'RUB',
-        itemId: '544a37c44bdc2d25388b4567',
+        itemId: m9a3SideGrip.id,
         merchant: 'prapor',
         merchantLevel: 3,
         quest: undefined,
@@ -1727,7 +1949,7 @@ describe('getPrice()', () => {
       unitPrice: {
         barterItems: [],
         currencyName: 'RUB',
-        itemId: '544a37c44bdc2d25388b4567',
+        itemId: m9a3SideGrip.id,
         merchant: 'prapor',
         merchantLevel: 3,
         quest: undefined,
@@ -1735,7 +1957,7 @@ describe('getPrice()', () => {
         valueInMainCurrency: 25000000
       },
       unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-    } as IInventoryPrice)
+    } as IInventoryItemPrice)
   })
 
   it('should arbitrarily select the first barter as the unit price when no the item has no prices available but has barter with missing barter item prices', async () => {
@@ -1747,12 +1969,12 @@ describe('getPrice()', () => {
         {
           barterItems: [
             {
-              itemId: '5448be9a4bdc2dfd2f8b456a', // RGD-5 hand grenade
+              itemId: rgd5.id,
               quantity: 1.0
             }
           ],
           currencyName: 'barter',
-          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          itemId: m9a3SideGrip.id,
           merchant: 'peacekeeper',
           merchantLevel: 3.0,
           quest: undefined,
@@ -1762,12 +1984,12 @@ describe('getPrice()', () => {
         {
           barterItems: [
             {
-              itemId: '59faff1d86f7746c51718c9c', // Physical bitcoin
+              itemId: vhs.id,
               quantity: 1.0
             }
           ],
           currencyName: 'barter',
-          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          itemId: m9a3SideGrip.id,
           merchant: 'peacekeeper',
           merchantLevel: 2.0,
           quest: undefined,
@@ -1786,7 +2008,7 @@ describe('getPrice()', () => {
     const inventoryItem: IInventoryItem = {
       content: [],
       ignorePrice: false,
-      itemId: '544a37c44bdc2d25388b4567',
+      itemId: m9a3SideGrip.id,
       modSlots: [],
       quantity: 2
     }
@@ -1801,12 +2023,12 @@ describe('getPrice()', () => {
       price: {
         barterItems: [
           {
-            itemId: '5448be9a4bdc2dfd2f8b456a',
+            itemId: rgd5.id,
             quantity: 2
           }
         ],
         currencyName: 'barter',
-        itemId: '544a37c44bdc2d25388b4567',
+        itemId: m9a3SideGrip.id,
         merchant: 'peacekeeper',
         merchantLevel: 3,
         quest: undefined,
@@ -1827,12 +2049,12 @@ describe('getPrice()', () => {
       unitPrice: {
         barterItems: [
           {
-            itemId: '5448be9a4bdc2dfd2f8b456a',
+            itemId: rgd5.id,
             quantity: 1
           }
         ],
         currencyName: 'barter',
-        itemId: '544a37c44bdc2d25388b4567',
+        itemId: m9a3SideGrip.id,
         merchant: 'peacekeeper',
         merchantLevel: 3,
         quest: undefined,
@@ -1840,7 +2062,7 @@ describe('getPrice()', () => {
         valueInMainCurrency: 0
       },
       unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-    } as IInventoryPrice)
+    } as IInventoryItemPrice)
   })
 
   it('should fail if the main currency cannot be found', async () => {
@@ -1897,7 +2119,7 @@ describe('getPrice()', () => {
             }
           ],
           currencyName: 'barter',
-          itemId: '544a37c44bdc2d25388b4567', // 5.56x45 SureFire MAG5-60 STANAG 60-round magazine
+          itemId: m9a3SideGrip.id,
           merchant: 'peacekeeper',
           merchantLevel: 3.0,
           quest: undefined,
@@ -1915,7 +2137,7 @@ describe('getPrice()', () => {
     const inventoryItem: IInventoryItem = {
       content: [],
       ignorePrice: false,
-      itemId: '544a37c44bdc2d25388b4567',
+      itemId: m9a3SideGrip.id,
       modSlots: [],
       quantity: 2
     }
@@ -1935,14 +2157,14 @@ describe('getPrice()', () => {
       undefined,
       [
         {
-          'barterItems': [],
-          'currencyName': 'RUB',
-          'itemId': '558022b54bdc2dac148b458d', // EOTech EXPS3 holographic sight (Tan)
-          'merchant': 'mechanic',
-          'merchantLevel': 4.0,
-          'quest': undefined,
-          'value': 29400.0,
-          'valueInMainCurrency': 29400.0
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: rpk16Tube.id,
+          merchant: 'mechanic',
+          merchantLevel: 4.0,
+          quest: undefined,
+          value: 29400.0,
+          valueInMainCurrency: 29400.0
         }
       ])
     usePresetServiceMock()
@@ -1963,7 +2185,7 @@ describe('getPrice()', () => {
     const inventoryItem: IInventoryItem = {
       content: [],
       ignorePrice: false,
-      itemId: '558022b54bdc2dac148b458d',
+      itemId: rpk16Tube.id,
       modSlots: [],
       quantity: 1
     }
@@ -1983,7 +2205,7 @@ describe('getRecoil()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '544fb45d4bdc2dee738b4568', // Salewa FIRST AID KIT (400/400)
+        itemId: salewa.id,
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
@@ -1992,72 +2214,104 @@ describe('getRecoil()', () => {
         horizontalRecoilWithMods: 0,
         verticalRecoil: 0,
         verticalRecoilWithMods: 0
-      } as IRecoil
+      } as IInventoryItemRecoil
     ],
     [
       {
         content: [],
         ignorePrice: false,
-        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
+        itemId: m9a3Default.id,
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
       {
-        horizontalRecoil: 415,
-        horizontalRecoilWithMods: 415,
-        verticalRecoil: 121,
-        verticalRecoilWithMods: 121
-      } as IRecoil
+        horizontalRecoil: 280,
+        horizontalRecoilWithMods: 280,
+        verticalRecoil: 404,
+        verticalRecoilWithMods: 404
+      } as IInventoryItemRecoil
     ],
     [
       {
         content: [],
+        itemId: m9a3Default.id,
         ignorePrice: false,
-        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
         modSlots: [
           {
             item: {
               content: [],
+              itemId: m9a3Thr.id,
               ignorePrice: false,
-              itemId: '5ab626e4d8ce87272e4c6e43', // AKS-74 metal skeletonized stock (6P21 Sb.5)
               modSlots: [
                 {
                   item: {
                     content: [],
+                    itemId: srd9.id,
                     ignorePrice: false,
-                    itemId: '5a0c59791526d8dba737bba7', // AK GP-25 accessory kit recoil pad
                     modSlots: [],
                     quantity: 1
                   },
-                  modSlotName: 'mod_stock'
+                  modSlotName: 'mod_muzzle'
                 }
               ],
               quantity: 1
             },
-            modSlotName: 'mod_stock'
+            modSlotName: 'mod_barrel'
           },
           {
             item: {
               content: [],
+              itemId: m9a3SideGrip.id,
               ignorePrice: false,
-              itemId: '5ac72e945acfc43f3b691116', // AK-105 5.45x39 muzzle brake-compensator (6P44 0-20)
               modSlots: [],
               quantity: 1
             },
-            modSlotName: 'mod_muzzle'
+            modSlotName: 'mod_pistol_grip'
+          },
+          {
+            item: {
+              content: [],
+              itemId: m9a3Slide.id,
+              ignorePrice: false,
+              modSlots: [
+                {
+                  item: {
+                    content: [],
+                    itemId: m9a3Rs.id,
+                    ignorePrice: false,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  modSlotName: 'mod_sight_rear'
+                },
+                {
+                  item: {
+                    content: [],
+                    itemId: m9a3Fs.id,
+                    ignorePrice: false,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  modSlotName: 'mod_sight_front'
+                }
+              ],
+              quantity: 1
+            },
+            modSlotName: 'mod_reciever'
           },
           {
             item: {
               content: [
                 {
                   content: [],
+                  itemId: ammo9mmGT.id,
                   ignorePrice: false,
-                  itemId: '56dff4ecd2720b5f5a8b4568', // 5.45x39 mm US gs
                   modSlots: [],
-                  quantity: 45
+                  quantity: 17
                 }
               ],
-              itemId: '564ca9df4bdc2d35148b4569', // AK-74 5.45x39 6L18 45-round magazine
+              itemId: m9a3Magazine.id,
+              ignorePrice: false,
               modSlots: [],
               quantity: 1
             },
@@ -2067,7 +2321,33 @@ describe('getRecoil()', () => {
             item: {
               content: [],
               ignorePrice: false,
-              itemId: '5c0d5e4486f77478390952fe', // 5.45x39mm PPBS gs "Igolnik"
+              itemId: x400.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'mod_tactical'
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        horizontalRecoil: 280,
+        horizontalRecoilWithMods: 254.8,
+        verticalRecoil: 404,
+        verticalRecoilWithMods: 367.64
+      } as IInventoryItemRecoil
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: rpk16Default.id,
+        modSlots: [
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: ammo545us.id,
               modSlots: [],
               quantity: 1
             },
@@ -2077,64 +2357,38 @@ describe('getRecoil()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        horizontalRecoil: 415,
-        horizontalRecoilWithMods: 272,
-        verticalRecoil: 121,
-        verticalRecoilWithMods: 79
-      } as IRecoil
+        horizontalRecoil: 333,
+        horizontalRecoilWithMods: 333,
+        verticalRecoil: 112,
+        verticalRecoilWithMods: 112
+      } as IInventoryItemRecoil
     ],
     [
       {
         content: [],
         ignorePrice: false,
-        itemId: '5ea03f7400685063ec28bfa8', // Submachinegun PPSH-41 7.62x25
+        itemId: rpk16Default.id,
         modSlots: [
           {
             item: undefined,
-            modSlotName: 'mod_stock'
-          },
-          {
-            item: {
-              content: [{
-                content: [],
-                ignorePrice: false,
-                itemId: '5735fdcd2459776445391d61', // 7.62x25mm TT AKBS
-                modSlots: [],
-                quantity: 71
-              }],
-              ignorePrice: false,
-              itemId: '5ea034f65aad6446a939737e', // 71-round 7.62x25 magazine for PPSH-41
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_magazine'
+            modSlotName: 'chamber0'
           }
         ],
         quantity: 1
       } as IInventoryItem,
       {
-        horizontalRecoil: 324,
-        horizontalRecoilWithMods: 275,
-        verticalRecoil: 69,
-        verticalRecoilWithMods: 59
-      } as IRecoil
+        horizontalRecoil: 333,
+        horizontalRecoilWithMods: 333,
+        verticalRecoil: 112,
+        verticalRecoilWithMods: 112
+      } as IInventoryItemRecoil
     ],
     [
       {
         content: [],
         ignorePrice: false,
-        itemId: '5ea03f7400685063ec28bfa8', // Submachinegun PPSH-41 7.62x25
+        itemId: rpk16Default.id,
         modSlots: [
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: '5ea03e9400685063ec28bfa4', // PPSH-41 stock
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_stock'
-          },
           {
             item: undefined,
             modSlotName: 'mod_magazine'
@@ -2143,224 +2397,64 @@ describe('getRecoil()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        horizontalRecoil: 324,
-        horizontalRecoilWithMods: 230,
-        verticalRecoil: 69,
-        verticalRecoilWithMods: 49
-      } as IRecoil
+        horizontalRecoil: 333,
+        horizontalRecoilWithMods: 333,
+        verticalRecoil: 112,
+        verticalRecoilWithMods: 112
+      } as IInventoryItemRecoil
     ],
     [
       {
         content: [],
         ignorePrice: false,
-        itemId: '5ea03f7400685063ec28bfa8', // Submachinegun PPSH-41 7.62x25
+        itemId: mts25512Default.id,
         modSlots: [
           {
             item: {
               content: [],
               ignorePrice: false,
-              itemId: '5ea03e9400685063ec28bfa4', // PPSH-41 stock
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_stock'
-          },
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: '5ea034eb5aad6446a939737b', // 35-round 7.62x25 magazine for PPSH-41
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_magazine'
-          }
-        ],
-        quantity: 1
-      } as IInventoryItem,
-      {
-        horizontalRecoil: 324,
-        horizontalRecoilWithMods: 230,
-        verticalRecoil: 69,
-        verticalRecoilWithMods: 49
-      } as IRecoil
-    ],
-    [
-      {
-        'content': [],
-        'ignorePrice': false,
-        'itemId': '60db29ce99594040e04c4a27', // MTs-255-12 12ga shotgun
-        'modSlots': [
-          {
-            'item': {
-              'content': [],
-              'ignorePrice': false,
-              'itemId': '60dc519adf4c47305f6d410d', // MTs-255-12 cylinder
-              'modSlots': [
+              itemId: mts25512cyl.id,
+              modSlots: [
                 {
-                  'modSlotName': 'camora_000'
+                  modSlotName: 'camora_000'
                 },
                 {
-                  'item': {
-                    'content': [],
-                    'ignorePrice': false,
-                    'itemId': '5d6e6806a4b936088465b17e', // 12/70 8.5mm Magnum buckshot
-                    'modSlots': [
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: ammo1270Magnum.id,
+                    modSlots: [
 
                     ],
-                    'quantity': 1
+                    quantity: 1
                   },
-                  'modSlotName': 'camora_001'
+                  modSlotName: 'camora_001'
                 },
                 {
-                  'modSlotName': 'camora_002'
+                  modSlotName: 'camora_002'
                 },
                 {
-                  'modSlotName': 'camora_003'
+                  modSlotName: 'camora_003'
                 },
                 {
-                  'modSlotName': 'camora_004'
+                  modSlotName: 'camora_004'
                 }
               ],
-              'quantity': 1
+              quantity: 1
             },
-            'modSlotName': 'mod_magazine'
-          },
-          {
-            'item': {
-              'content': [],
-              'ignorePrice': false,
-              'itemId': '612368f58b401f4f51239b33', // МTs-255-12 12ga 755mm barrel with rib
-              'modSlots': [
-                {
-                  'item': {
-                    'content': [],
-                    'ignorePrice': false,
-                    'itemId': '619d36da53b4d42ee724fae4', // MTs-255-12 12ga choke
-                    'modSlots': [],
-                    'quantity': 1
-                  },
-                  'modSlotName': 'mod_muzzle'
-                }
-              ],
-              'quantity': 1
-            },
-            'modSlotName': 'mod_barrel'
-          },
-          {
-            'item': {
-              'content': [],
-              'ignorePrice': false,
-              'itemId': '612781056f3d944a17348d60', // MTs-255-12 wooden stock
-              'modSlots': [],
-              'quantity': 1
-            },
-            'modSlotName': 'mod_stock'
-          },
-          {
-            'item': {
-              'content': [],
-              'ignorePrice': false,
-              'itemId': '6123649463849f3d843da7c4', // MTs-255-12 beechwood forestock
-              'modSlots': [],
-              'quantity': 1
-            },
-            'modSlotName': 'mod_handguard'
+            modSlotName: 'mod_magazine'
           }
         ],
         'quantity': 1
       } as IInventoryItem,
       {
         horizontalRecoil: 650,
-        horizontalRecoilWithMods: 396,
-        verticalRecoil: 520,
-        verticalRecoilWithMods: 317
-      } as IRecoil
-    ],
-    [
-      {
-        'content': [],
-        'ignorePrice': false,
-        'itemId': '60db29ce99594040e04c4a27', // MTs-255-12 12ga shotgun
-        'modSlots': [
-          {
-            'item': {
-              'content': [],
-              'ignorePrice': false,
-              'itemId': '60dc519adf4c47305f6d410d', // MTs-255-12 cylinder
-              'modSlots': [
-                {
-                  'modSlotName': 'camora_000'
-                },
-                {
-                  'modSlotName': 'camora_001'
-                },
-                {
-                  'modSlotName': 'camora_002'
-                },
-                {
-                  'modSlotName': 'camora_003'
-                },
-                {
-                  'modSlotName': 'camora_004'
-                }
-              ],
-              'quantity': 1
-            },
-            'modSlotName': 'mod_magazine'
-          },
-          {
-            'item': {
-              'content': [],
-              'ignorePrice': false,
-              'itemId': '612368f58b401f4f51239b33', // МTs-255-12 12ga 755mm barrel with rib
-              'modSlots': [
-                {
-                  'item': {
-                    'content': [],
-                    'ignorePrice': false,
-                    'itemId': '619d36da53b4d42ee724fae4', // MTs-255-12 12ga choke
-                    'modSlots': [],
-                    'quantity': 1
-                  },
-                  'modSlotName': 'mod_muzzle'
-                }
-              ],
-              'quantity': 1
-            },
-            'modSlotName': 'mod_barrel'
-          },
-          {
-            'item': {
-              'content': [],
-              'ignorePrice': false,
-              'itemId': '612781056f3d944a17348d60', // MTs-255-12 wooden stock
-              'modSlots': [],
-              'quantity': 1
-            },
-            'modSlotName': 'mod_stock'
-          },
-          {
-            'item': {
-              'content': [],
-              'ignorePrice': false,
-              'itemId': '6123649463849f3d843da7c4', // MTs-255-12 beechwood forestock
-              'modSlots': [],
-              'quantity': 1
-            },
-            'modSlotName': 'mod_handguard'
-          }
-        ],
-        'quantity': 1
-      } as IInventoryItem,
-      {
-        horizontalRecoil: 650,
-        horizontalRecoilWithMods: 345,
-        verticalRecoil: 520,
-        verticalRecoilWithMods: 276
-      } as IRecoil
+        horizontalRecoilWithMods: 650,
+        verticalRecoil: 442,
+        verticalRecoilWithMods: 442
+      } as IInventoryItemRecoil
     ]
-  ])('should get the recoil of an inventory item', async (inventoryItem: IInventoryItem, expected: IRecoil) => {
+  ])('should get the recoil of an inventory item', async (inventoryItem: IInventoryItem, expected: IInventoryItemRecoil) => {
     // Arrange
     useItemServiceMock()
     Services.configure(ItemPropertiesService)
@@ -2383,7 +2477,7 @@ describe('getRecoil()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
+        itemId: rpk16Default.id,
         modSlots: [
           {
             item: {
@@ -2403,17 +2497,25 @@ describe('getRecoil()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '584147732459775a2b6d9f12', // AKS-74U 5.45x39 assault rifle Default
+        itemId: rpk16Default.id,
         modSlots: [
           {
             item: {
-              content: [],
+              content: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: 'invalid',
+                  modSlots: [],
+                  quantity: 1
+                }
+              ],
               ignorePrice: false,
-              itemId: 'invalid',
+              itemId: rpk16Drum.id,
               modSlots: [],
               quantity: 1
             },
-            modSlotName: 'chamber0'
+            modSlotName: 'mod_magazine'
           }
         ],
         quantity: 1
@@ -2440,7 +2542,7 @@ describe('getRecoilPercentageModifier()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '544fb45d4bdc2dee738b4568', // Salewa FIRST AID KIT (400/400)
+        itemId: salewa.id,
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
@@ -2453,25 +2555,26 @@ describe('getRecoilPercentageModifier()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '58949dea86f77409483e16a8', // A2 9x19 Flash hider for MPX
+        itemId: rpk16MuzzleBreak.id,
         modSlots: [],
         quantity: 1
       } as IInventoryItem,
       {
-        recoilPercentageModifier: -0.07,
-        recoilPercentageModifierWithMods: -0.07
+        recoilPercentageModifier: -0.06,
+        recoilPercentageModifierWithMods: -0.06
       } as IRecoilPercentageModifier
     ],
     [
       {
         content: [],
+        itemId: rpk1615inch.id,
         ignorePrice: false,
-        itemId: '5c6d710d2e22165df16b81e7', // Surefire WarComp 5.56x45 Flash hider for AR-15
         modSlots: [
           {
             item: {
               content: [],
-              itemId: '55d6190f4bdc2d87028b4567', // Surefire SOCOM556-MINI MONSTER 5.56x45 Silencer
+              itemId: rpk16MuzzleBreak.id,
+              ignorePrice: false,
               modSlots: [],
               quantity: 1
             },
@@ -2483,23 +2586,23 @@ describe('getRecoilPercentageModifier()', () => {
           }
         ],
         quantity: 1
-      } as IInventoryItem,
+      },
       {
-        recoilPercentageModifier: -0.07,
-        recoilPercentageModifierWithMods: -0.14
+        recoilPercentageModifier: -0.03,
+        recoilPercentageModifierWithMods: -0.09
       } as IRecoilPercentageModifier
     ],
     [
       {
         content: [],
         ignorePrice: false,
-        itemId: '59d790f486f77403cb06aec6', // Armytek Predator Pro v3 XHP35 HI Flashlight. Testing the hypothetic case of a mod that on which a mod with recoil reduction could be mounted
+        itemId: x400.id, // Testing the hypothetic case of a mod on which a mod with recoil reduction could be mounted
         modSlots: [
           {
             item: {
               content: [],
               ignorePrice: false,
-              itemId: '55d6190f4bdc2d87028b4567', // Surefire SOCOM556-MINI MONSTER 5.56x45 Silencer
+              itemId: rpk16MuzzleBreak.id,
               modSlots: [],
               quantity: 1
             },
@@ -2514,7 +2617,7 @@ describe('getRecoilPercentageModifier()', () => {
       } as IInventoryItem,
       {
         recoilPercentageModifier: 0,
-        recoilPercentageModifierWithMods: -0.07
+        recoilPercentageModifierWithMods: -0.06
       } as IRecoilPercentageModifier
     ]
   ])('should get the recoil percentage modifier of an inventory item', async (inventoryItem: IInventoryItem, expected: IRecoilPercentageModifier) => {
@@ -2537,14 +2640,14 @@ describe('getRecoilPercentageModifier()', () => {
     [
       {
         content: [],
+        itemId: rpk1615inch.id,
         ignorePrice: false,
-        itemId: '5c6d710d2e22165df16b81e7', // Surefire WarComp 5.56x45 Flash hider for AR-15
         modSlots: [
           {
             item: {
               content: [],
-              ignorePrice: false,
               itemId: 'invalid',
+              ignorePrice: false,
               modSlots: [],
               quantity: 1
             },
@@ -2574,13 +2677,202 @@ describe('getRecoilPercentageModifier()', () => {
   )
 })
 
+describe('getWearableModifiers()', () => {
+  it.each([
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: iskra.id,
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        ergonomicsPercentageModifier: 0,
+        ergonomicsPercentageModifierWithMods: 0,
+        movementSpeedPercentageModifier: 0,
+        movementSpeedPercentageModifierWithMods: 0,
+        turningSpeedPercentageModifier: 0,
+        turningSpeedPercentageModifierWithMods: 0
+      } as IInventoryItemWearableModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: armor6b13Fl.id,
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        ergonomicsPercentageModifier: armor6b13Fl.ergonomicsPercentageModifier,
+        ergonomicsPercentageModifierWithMods: armor6b13Fl.ergonomicsPercentageModifier,
+        movementSpeedPercentageModifier: armor6b13Fl.movementSpeedPercentageModifier,
+        movementSpeedPercentageModifierWithMods: armor6b13Fl.movementSpeedPercentageModifier,
+        turningSpeedPercentageModifier: armor6b13Fl.turningSpeedPercentageModifier,
+        turningSpeedPercentageModifierWithMods: armor6b13Fl.turningSpeedPercentageModifier
+      } as IInventoryItemWearableModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: armor6b13FlDefault.id,
+        modSlots: [
+          {
+            modSlotName: 'front_plate',
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: plate6b33Front.id,
+              modSlots: [],
+              quantity: 1
+            }
+          },
+          {
+            modSlotName: 'back_plate',
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: plate6b33Back.id,
+              modSlots: [],
+              quantity: 1
+            }
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        ergonomicsPercentageModifier: armor6b13FlDefault.ergonomicsPercentageModifier,
+        ergonomicsPercentageModifierWithMods: armor6b13FlDefault.ergonomicsPercentageModifier + plate6b33Front.ergonomicsPercentageModifier + plate6b33Back.ergonomicsPercentageModifier,
+        movementSpeedPercentageModifier: armor6b13FlDefault.movementSpeedPercentageModifier,
+        movementSpeedPercentageModifierWithMods: armor6b13FlDefault.movementSpeedPercentageModifier + plate6b33Front.movementSpeedPercentageModifier + plate6b33Back.movementSpeedPercentageModifier,
+        turningSpeedPercentageModifier: armor6b13FlDefault.turningSpeedPercentageModifier,
+        turningSpeedPercentageModifierWithMods: armor6b13FlDefault.turningSpeedPercentageModifier + plate6b33Front.turningSpeedPercentageModifier + plate6b33Back.turningSpeedPercentageModifier
+      } as IInventoryItemWearableModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: lshZ2dtm.id,
+        modSlots: [
+          {
+            item: {
+              content: [],
+              itemId: lshZ2dtmFs.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'mod_equipment'
+          },
+          {
+            item: undefined,
+            modSlotName: 'mod_equipment'
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        ergonomicsPercentageModifier: lshZ2dtm.ergonomicsPercentageModifier,
+        ergonomicsPercentageModifierWithMods: lshZ2dtm.ergonomicsPercentageModifier + lshZ2dtmFs.ergonomicsPercentageModifier,
+        movementSpeedPercentageModifier: lshZ2dtm.movementSpeedPercentageModifier,
+        movementSpeedPercentageModifierWithMods: lshZ2dtm.movementSpeedPercentageModifier + lshZ2dtmFs.movementSpeedPercentageModifier,
+        turningSpeedPercentageModifier: lshZ2dtm.turningSpeedPercentageModifier,
+        turningSpeedPercentageModifierWithMods: lshZ2dtm.turningSpeedPercentageModifier + lshZ2dtmFs.turningSpeedPercentageModifier
+      } as IInventoryItemWearableModifiers
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: berkut.id,
+        modSlots: [],
+        quantity: 1
+      } as IInventoryItem,
+      {
+        ergonomicsPercentageModifier: berkut.ergonomicsPercentageModifier,
+        ergonomicsPercentageModifierWithMods: berkut.ergonomicsPercentageModifier,
+        movementSpeedPercentageModifier: berkut.movementSpeedPercentageModifier,
+        movementSpeedPercentageModifierWithMods: berkut.movementSpeedPercentageModifier,
+        turningSpeedPercentageModifier: berkut.turningSpeedPercentageModifier,
+        turningSpeedPercentageModifierWithMods: berkut.turningSpeedPercentageModifier
+      } as IInventoryItemWearableModifiers
+    ]
+  ])(
+    'should get the wearable modifiers of an inventory item',
+    async (
+      inventoryItem: IInventoryItem,
+      expected: IInventoryItemWearableModifiers
+    ) => {
+      // Arrange
+      useItemServiceMock()
+      Services.configure(ItemPropertiesService)
+      const service = new InventoryItemService()
+
+      // Act
+      const wearableModifiers = await service.getWearableModifiers(
+        inventoryItem
+      )
+
+      // Assert
+      expect(wearableModifiers.success).toBe(true)
+      expect(wearableModifiers.value.ergonomicsPercentageModifier).toBe(expected.ergonomicsPercentageModifier)
+      expect(wearableModifiers.value.ergonomicsPercentageModifierWithMods).toBe(expected.ergonomicsPercentageModifierWithMods)
+      expect(wearableModifiers.value.movementSpeedPercentageModifier).toBe(expected.movementSpeedPercentageModifier)
+      expect(wearableModifiers.value.movementSpeedPercentageModifierWithMods).toBe(expected.movementSpeedPercentageModifierWithMods)
+      expect(wearableModifiers.value.turningSpeedPercentageModifier).toBe(expected.turningSpeedPercentageModifier)
+      expect(wearableModifiers.value.turningSpeedPercentageModifierWithMods).toBe(expected.turningSpeedPercentageModifierWithMods)
+    }
+  )
+
+  it.each([
+    [invalidInventoryItem1],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: lshZ2dtm.id,
+        modSlots: [
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: 'invalid',
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'mod_equipment'
+          }
+        ],
+        quantity: 1
+      } as IInventoryItem
+    ]
+  ])(
+    'should fail if an item cannot be found',
+    async (inventoryItem: IInventoryItem) => {
+      // Arrange
+      useItemServiceMock()
+      Services.configure(ItemPropertiesService)
+      const service = new InventoryItemService()
+
+      // Act
+      const ergonomicsPercentageModifier = await service.getWearableModifiers(inventoryItem)
+
+      // Assert
+      expect(ergonomicsPercentageModifier.success).toBe(false)
+      expect(ergonomicsPercentageModifier.failureMessage).toBe('Item "invalid" not found.')
+    }
+  )
+})
+
 describe('getWeight()', () => {
   it.each([
     [
       inventoryItem,
       {
         weight: 1,
-        weightWithContent: 3.216,
+        weightWithContent: 3.53,
         unitWeight: 1
       } as IWeight
     ],
@@ -2588,14 +2880,49 @@ describe('getWeight()', () => {
       {
         content: [],
         ignorePrice: false,
-        itemId: '56d59d3ad2720bdb418b4577', // 0.005 * 50 = 0.25
+        itemId: bansheeDefault.id,
+        modSlots: [
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: monocletePe.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'front_plate'
+          },
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: monocletePe.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'back_plate'
+          }
+        ],
+        quantity: 1
+      },
+      {
+        weight: 3.08,
+        weightWithContent: 5.779999999999999,
+        unitWeight: 3.08
+      } as IWeight
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: ammo9mmGT.id,
         modSlots: [],
         quantity: 50
       } as IInventoryItem,
       {
-        weight: 0.25,
-        weightWithContent: 0.25,
-        unitWeight: 0.005
+        weight: 0.3,
+        weightWithContent: 0.3,
+        unitWeight: 0.006
       } as IWeight
     ]
   ])(

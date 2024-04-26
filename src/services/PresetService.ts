@@ -1,20 +1,19 @@
-import { IArmorMod } from '../models/item/IArmorMod'
+import { IInventoryItem } from '../models/build/IInventoryItem'
+import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
+import { IArmor } from '../models/item/IArmor'
 import { IItem } from '../models/item/IItem'
 import { IMod } from '../models/item/IMod'
 import { IModdable } from '../models/item/IModdable'
 import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
+import vueI18n from '../plugins/vueI18n'
+import { PathUtils } from '../utils/PathUtils'
 import Result from '../utils/Result'
 import { InventoryItemService } from './InventoryItemService'
-import { ItemPropertiesService } from './ItemPropertiesService'
-import Services from './repository/Services'
-import vueI18n from '../plugins/vueI18n'
-import { IHeadwear } from '../models/item/IHeadwear'
-import { IInventoryItem } from '../models/build/IInventoryItem'
 import { ItemFetcherService } from './ItemFetcherService'
-import { PathUtils } from '../utils/PathUtils'
-import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
+import { ItemPropertiesService } from './ItemPropertiesService'
 import { LogService } from './LogService'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for managing presets.
@@ -142,10 +141,8 @@ export class PresetService {
         continue
       }
 
-      if (itemPropertiesService.isArmorMod(presetItem)) {
-        result = await this.updatePresetWithArmorProperties(presetItem as IArmorMod, presetInventoryItem)
-      } else if (itemPropertiesService.isHeadwear(presetItem)) {
-        result = await this.updatePresetWithArmorProperties(presetItem as IHeadwear, presetInventoryItem)
+      if (itemPropertiesService.canHaveArmor(presetItem)) {
+        result = await this.updatePresetWithArmorProperties(presetItem as IArmor, presetInventoryItem)
       } else if (itemPropertiesService.isRangedWeapon(presetItem)) {
         result = await this.updateRangedWeapondPresetProperties(presetItem as IRangedWeapon, presetInventoryItem)
       } else if (itemPropertiesService.isRangedWeaponMod(presetItem)) {
@@ -192,7 +189,7 @@ export class PresetService {
    * @param presetItem - Preset item.
    * @param presetInventoryItem - Preset inventory item.
    */
-  private async updatePresetWithArmorProperties(presetItem: IArmorMod | IHeadwear, presetInventoryItem: IInventoryItem): Promise<Result> {
+  private async updatePresetWithArmorProperties(presetItem: IArmor, presetInventoryItem: IInventoryItem): Promise<Result> {
     const wearableModifiersResult = await Services.get(InventoryItemService).getWearableModifiers(presetInventoryItem)
 
     if (!wearableModifiersResult.success) {

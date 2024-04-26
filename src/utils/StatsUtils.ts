@@ -1,6 +1,6 @@
 import { round } from 'round-ts'
-import Services from '../services/repository/Services'
 import { TarkovValuesService } from '../services/TarkovValuesService'
+import Services from '../services/repository/Services'
 
 /**
  * Represents an utility class for manipulating item stats values.
@@ -9,26 +9,54 @@ export default class StatsUtils {
   /**
    * Gets the text to display for a stats value.
    * @param value - Value.
-   * @param isBonusMalus - Indicates whether the value is a bonus or malus and thus requires that a '+' or '-' sign be displayed.
-   * @param isPercentage - Indicates whether the value is a percentage or not ans thus requires that the values must be multiplyed by 100 and that a '%' sign be displayed.
+   * @param isBonusMalus - Indicates whether the value is a bonus or malus and thus requires that a '+' sign be displayed when it is greater than 0. false by default.
+   * @param decimalNumbers - Maximal number of decimal numbers. The value is rounded to respect it. 1 by default.
+   * @param fixedDecimalNumbers - Number of decimal numbers to display. Zeros are added to atteign the desired decimal numbers when needed. Undefined by default.
    * @returns Caption.
    */
-  public static getDisplayValue(value: number, isBonusMalus: boolean, isPercentage: boolean): string {
+  public static getDisplayValue(value: number, isBonusMalus: boolean = false, decimalNumbers: number = 1, fixedDecimalNumbers: number | undefined = undefined): string {
     let displayValue: string
+    value = round(value, decimalNumbers)
 
-    if (isPercentage) {
-      value = round(value * 100)
-    }
-
-    if (isBonusMalus && value > 0) {
-      displayValue = '+' + value
+    if (fixedDecimalNumbers != null) {
+      const roundingMultiplier = Math.pow(10, fixedDecimalNumbers)
+      displayValue = (Math.round(value * roundingMultiplier) / roundingMultiplier).toFixed(fixedDecimalNumbers)
     } else {
       displayValue = value.toString()
     }
 
-    if (isPercentage) {
-      displayValue = displayValue + '%'
+    if (isBonusMalus && value > 0) {
+      displayValue = '+' + displayValue
     }
+
+    return displayValue
+  }
+
+  /**
+   * Gets the text to display for a stats percentage.
+   * @param value - Value corresponding to a percentage.
+   * @param isBonusMalus - Indicates whether hte value is a bonus or malus an thus requires a '+' sign be displayed when it is greater than 0. false by default.
+   * @param decimalNumbers - Maximal number of decimal numbers. The value is rounded to respect it. 1 by default.
+   * @param fixedDecimalNumbers - Number of decimal numbers to display. Zeros are added to atteign the desired decimal numbers when needed. Undefined by default.
+   * @returns
+   */
+  public static getPercentageDisplayValue(value: number, isBonusMalus: boolean = false, decimalNumbers: number = 1, fixedDecimalNumbers: number | undefined = undefined): string {
+    let displayValue: string
+    value = round(value * 100, decimalNumbers)
+
+    if (fixedDecimalNumbers != null) {
+      const roundingMultiplier = Math.pow(10, fixedDecimalNumbers)
+      displayValue = (Math.round(value * roundingMultiplier) / roundingMultiplier).toFixed(fixedDecimalNumbers)
+    } else {
+      displayValue = value.toString()
+    }
+
+    displayValue += '%'
+
+    if (isBonusMalus && value > 0) {
+      displayValue = '+' + displayValue
+    }
+
 
     return displayValue
   }

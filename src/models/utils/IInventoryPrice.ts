@@ -1,4 +1,3 @@
-import { IgnoredUnitPrice } from './IgnoredUnitPrice'
 import { IPrice } from '../item/IPrice'
 
 /**
@@ -12,27 +11,12 @@ export interface IInventoryPrice {
   missingPrice: boolean
 
   /**
-   * Price.
+   * Price detailed by currency.
    */
-  price: IPrice
+  priceByCurrency: IPrice[]
 
   /**
-   * Price with content and mods.
+   * Price in main currency.
    */
-  pricesWithContent: IPrice[]
-
-  /**
-   * Price with content and mods in main currency.
-   */
-  priceWithContentInMainCurrency: IPrice
-
-  /**
-   * Unit price.
-   */
-  unitPrice: IPrice
-
-  /**
-   * Status indicating why the unit price is ignored.
-   */
-  unitPriceIgnoreStatus: IgnoredUnitPrice
+  priceInMainCurrency: number
 }

@@ -7,6 +7,7 @@ import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
 import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
 import ShoppingListMerchants from '../shopping-list-merchants/ShoppingListMerchantsComponent.vue'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import { DataTableSortEvent } from 'primevue/datatable'
 
 export default defineComponent({
   components: {
@@ -80,10 +81,10 @@ export default defineComponent({
      * Saves the last used sorting data.
      * @param event - Sorting event.
      */
-    function onSort(event: Record<string, unknown>) {
+    function onSort(event: DataTableSortEvent) {
       const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-      const sortField = event['sortField'] as string
-      const sortOrder = event['sortOrder'] as number
+      const sortField = event.sortField as string
+      const sortOrder = event.sortOrder as number
 
       localStorage.setItem(websiteConfigurationService.configuration.buildsSortFieldStorageKey, sortField)
       localStorage.setItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey, sortOrder.toLocaleString())

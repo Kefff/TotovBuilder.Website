@@ -1,38 +1,43 @@
-import { describe, expect, it } from 'vitest'
-import { BuildsImportComponentService } from '../../../services/components/BuildsImportComponentService'
 import { anything, instance, mock, when } from 'ts-mockito'
-import { ImportService } from '../../../services/ImportService'
-import Result, { FailureType } from '../../../utils/Result'
-import { IInventorySlot } from '../../../models/build/IInventorySlot'
-import Services from '../../../services/repository/Services'
-import { BuildPropertiesService } from '../../../services/BuildPropertiesService'
-import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
-import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
-import { InventorySlotPropertiesService } from '../../../services/InventorySlotPropertiesService'
-import { InventoryItemService } from '../../../services/InventoryItemService'
-import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
-import { GlobalFilterService } from '../../../services/GlobalFilterService'
-import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
-import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
-import { usePresetServiceMock } from '../../__mocks__/PresetPropertiesServiceMock'
+import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../../models/build/IBuild'
+import { IInventorySlot } from '../../../models/build/IInventorySlot'
+import { IPrice } from '../../../models/item/IPrice'
+import { IBuildsImportResult } from '../../../models/utils/IBuildsImportResult'
+import { BuildPropertiesService } from '../../../services/BuildPropertiesService'
+import { GlobalFilterService } from '../../../services/GlobalFilterService'
+import { ImportService } from '../../../services/ImportService'
+import { InventoryItemService } from '../../../services/InventoryItemService'
+import { InventorySlotPropertiesService } from '../../../services/InventorySlotPropertiesService'
+import { InventorySlotService } from '../../../services/InventorySlotService'
+import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
+import { BuildsImportComponentService } from '../../../services/components/BuildsImportComponentService'
+import Services from '../../../services/repository/Services'
+import Result, { FailureType } from '../../../utils/Result'
+import { berkut, iskra } from '../../__data__/itemMocks'
+import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import { usePresetServiceMock } from '../../__mocks__/PresetServiceMock'
+import { useTarkovValuesServiceMock } from '../../__mocks__/TarkovValuesServiceMock'
+import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('readBuilds()', () => {
   it('should read builds from a file', async () => {
     // Arrange
-    useItemServiceMock()
+    useItemServiceMock(true, [berkut, iskra], prices)
     usePresetServiceMock()
     useTarkovValuesServiceMock()
     useVersionServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildPropertiesService)
     Services.configure(GlobalFilterService)
-    Services.configure(InventorySlotPropertiesService)
     Services.configure(InventoryItemService)
+    Services.configure(InventorySlotPropertiesService)
+    Services.configure(InventorySlotService)
     Services.configure(ItemPropertiesService)
 
     const importServiceMock = mock<ImportService>()
-    when(importServiceMock.getBuildsFromFile(anything())).thenReturn(Promise.resolve(Result.ok<IBuild[]>([
+    when(importServiceMock.getBuildsFromFile(anything())).thenResolve(Result.ok<IBuild[]>([
       {
         id: 'build1',
         inventorySlots: [
@@ -41,7 +46,7 @@ describe('readBuilds()', () => {
               {
                 content: [],
                 ignorePrice: false,
-                itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
+                itemId: berkut.id,
                 modSlots: [],
                 quantity: 1
               }
@@ -54,7 +59,7 @@ describe('readBuilds()', () => {
         lastWebsiteVersion: '1.6.0',
         name: 'Build 1'
       }
-    ])))
+    ]))
     Services.configure(ImportService, undefined, instance(importServiceMock))
 
     const service = new BuildsImportComponentService()
@@ -68,36 +73,20 @@ describe('readBuilds()', () => {
     expect(result.value).toStrictEqual({
       buildSummaries: [
         {
-          ergonomics: undefined,
+          armorModifiers: {
+            armorClass: 0,
+            durability: 0
+          },
+          ergonomics: 0,
           exported: true,
-          horizontalRecoil: undefined,
           id: 'build1',
           lastExported: new Date(2023, 1, 1),
           lastUpdated: new Date(2023, 1, 1),
           name: 'Build 1',
           price: {
             missingPrice: false,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '',
-              merchant: '',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 0,
-              valueInMainCurrency: 0
-            },
-            priceWithContentInMainCurrency: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '',
-              merchant: '',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 23444,
-              valueInMainCurrency: 23444
-            },
-            pricesWithContent: [
+            priceInMainCurrency: 20762,
+            priceByCurrency: [
               {
                 barterItems: [],
                 currencyName: 'RUB',
@@ -105,110 +94,122 @@ describe('readBuilds()', () => {
                 merchant: '',
                 merchantLevel: 0,
                 quest: undefined,
-                value: 23444,
-                valueInMainCurrency: 23444
+                value: 20762,
+                valueInMainCurrency: 20762
               }
-            ],
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: '',
-              merchant: '',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 0,
-              valueInMainCurrency: 0
-            },
-            unitPriceIgnoreStatus: 'notIgnored'
+            ]
+          },
+          recoil: {
+            horizontalRecoil: 0,
+            verticalRecoil: 0
           },
           shoppingList: [
             {
               item: {
-                capacity: 20,
-                categoryId: 'backpack',
-                conflictingItemIds: [],
-                ergonomicsPercentageModifier: -0.02,
-                iconLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-icon.webp',
-                id: '5ca20d5986f774331e7c9602',
-                imageLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-image.webp',
-                marketLink: 'https://tarkov.dev/item/wartech-berkut-bb-102-backpack',
-                maxStackableAmount: 1,
-                movementSpeedPercentageModifier: 0,
-                name: 'WARTECH Berkut BB-102 backpack',
-                presetWearableModifiers: undefined,
+                ...berkut,
                 prices: [
                   {
                     barterItems: [],
                     currencyName: 'RUB',
-                    itemId: '5ca20d5986f774331e7c9602',
+                    itemId: berkut.id,
                     merchant: 'ragman',
                     merchantLevel: 1,
                     quest: undefined,
-                    value: 23444,
-                    valueInMainCurrency: 23444
+                    value: 24509,
+                    valueInMainCurrency: 24509
                   },
                   {
                     barterItems: [],
                     currencyName: 'RUB',
-                    itemId: '5ca20d5986f774331e7c9602',
+                    itemId: berkut.id,
                     merchant: 'flea-market',
                     merchantLevel: 0,
                     quest: undefined,
-                    value: 24046,
-                    valueInMainCurrency: 24046
+                    value: 26665,
+                    valueInMainCurrency: 26665
                   },
                   {
                     barterItems: [
                       {
-                        itemId: '5c0d2727d174af02a012cf58',
-                        quantity: 1
+                        itemId: iskra.id,
+                        quantity: 2
                       }
                     ],
                     currencyName: 'barter',
-                    itemId: '5ca20d5986f774331e7c9602',
+                    itemId: berkut.id,
                     merchant: 'ragman',
                     merchantLevel: 1,
                     quest: undefined,
                     value: 0,
                     valueInMainCurrency: 0
                   }
-                ],
-                shortName: 'Berkut',
-                turningSpeedPercentageModifier: 0,
-                weight: 1,
-                wikiLink: 'https://escapefromtarkov.fandom.com/wiki/WARTECH_Berkut_BB-102_backpack'
+                ]
               },
               price: {
                 barterItems: [],
-                currencyName: 'RUB',
-                itemId: '5ca20d5986f774331e7c9602',
+                currencyName: 'barter',
+                itemId: berkut.id,
                 merchant: 'ragman',
                 merchantLevel: 1,
                 quest: undefined,
-                value: 23444,
-                valueInMainCurrency: 23444
+                value: 0,
+                valueInMainCurrency: 0
               },
               quantity: 1,
               unitPrice: {
                 barterItems: [],
-                currencyName: 'RUB',
-                itemId: '5ca20d5986f774331e7c9602',
+                currencyName: 'barter',
+                itemId: berkut.id,
                 merchant: 'ragman',
                 merchantLevel: 1,
                 quest: undefined,
-                value: 23444,
-                valueInMainCurrency: 23444
+                value: 0,
+                valueInMainCurrency: 0
+              }
+            },
+            {
+              item: {
+                ...iskra,
+                prices: [
+                  {
+                    barterItems: [],
+                    currencyName: 'RUB',
+                    itemId: iskra.id,
+                    merchant: 'flea-market',
+                    merchantLevel: 0,
+                    quest: undefined,
+                    value: 10381,
+                    valueInMainCurrency: 10381
+                  }
+                ]
+              },
+              price: {
+                barterItems: [],
+                currencyName: 'RUB',
+                itemId: iskra.id,
+                merchant: 'flea-market',
+                merchantLevel: 0,
+                quest: undefined,
+                value: 20762,
+                valueInMainCurrency: 20762
+              },
+              quantity: 2,
+              unitPrice: {
+                barterItems: [],
+                currencyName: 'RUB',
+                itemId: iskra.id,
+                merchant: 'flea-market',
+                merchantLevel: 0,
+                quest: undefined,
+                value: 10381,
+                valueInMainCurrency: 10381
               }
             }
           ],
-          verticalRecoil: undefined,
           wearableModifiers: {
-            ergonomicsPercentageModifier: 0,
-            ergonomicsPercentageModifierWithMods: -0.02,
+            ergonomicsPercentageModifier: -0.02,
             movementSpeedPercentageModifier: 0,
-            movementSpeedPercentageModifierWithMods: 0,
-            turningSpeedPercentageModifier: 0,
-            turningSpeedPercentageModifierWithMods: 0
+            turningSpeedPercentageModifier: 0
           },
           weight: 1
         }
@@ -222,7 +223,7 @@ describe('readBuilds()', () => {
                 {
                   content: [],
                   ignorePrice: false,
-                  itemId: '5ca20d5986f774331e7c9602',
+                  itemId: berkut.id,
                   modSlots: [],
                   quantity: 1
                 }
@@ -236,7 +237,7 @@ describe('readBuilds()', () => {
           name: 'Build 1'
         }
       ]
-    })
+    } as IBuildsImportResult)
   })
 
   it('should return when no file is provided', async () => {
@@ -255,7 +256,7 @@ describe('readBuilds()', () => {
     Services.configure(BuildPropertiesService)
 
     const importServiceMock = mock<ImportService>()
-    when(importServiceMock.getBuildsFromFile(anything())).thenReturn(Promise.resolve(Result.fail(FailureType.error, undefined, 'Error')))
+    when(importServiceMock.getBuildsFromFile(anything())).thenResolve(Result.fail(FailureType.error, undefined, 'Error'))
     Services.configure(ImportService, undefined, instance(importServiceMock))
 
     const service = new BuildsImportComponentService()
@@ -269,3 +270,51 @@ describe('readBuilds()', () => {
     expect(result.success).toBe(false)
   })
 })
+
+const prices: IPrice[] = [
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: berkut.id,
+    merchant: 'ragman',
+    merchantLevel: 1,
+    quest: undefined,
+    value: 24509,
+    valueInMainCurrency: 24509
+  },
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: berkut.id,
+    merchant: 'flea-market',
+    merchantLevel: 0,
+    quest: undefined,
+    value: 26665,
+    valueInMainCurrency: 26665
+  },
+  {
+    barterItems: [
+      {
+        itemId: iskra.id,
+        quantity: 2
+      }
+    ],
+    currencyName: 'barter',
+    itemId: berkut.id,
+    merchant: 'ragman',
+    merchantLevel: 1,
+    quest: undefined,
+    value: 0,
+    valueInMainCurrency: 0
+  },
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: iskra.id,
+    merchant: 'flea-market',
+    merchantLevel: 0,
+    quest: undefined,
+    value: 10381,
+    valueInMainCurrency: 10381
+  }
+]

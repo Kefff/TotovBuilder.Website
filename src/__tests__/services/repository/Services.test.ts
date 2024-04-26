@@ -6,10 +6,6 @@ beforeEach(() => {
   Services.services = []
 })
 
-class TestService1 { }
-class TestService2 { }
-class TestService3 { }
-
 describe('configure', () => {
   it('should configure a new service', () => {
     // Act
@@ -110,3 +106,7 @@ describe('getServiceRepository', () => {
     expect(services).toBeDefined()
   })
 })
+
+class TestService1 { }
+class TestService2 { }
+class TestService3 { }

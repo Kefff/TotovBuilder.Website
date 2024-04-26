@@ -19,9 +19,9 @@ import TabView from 'primevue/tabview'
 
 import Tooltip from 'primevue/tooltip'
 
-import '../css/theme.css'
-import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
+import 'primevue/resources/primevue.min.css'
+import '../css/theme.css'
 
 
 export function usePrimeVue(app: App<Element>): void {

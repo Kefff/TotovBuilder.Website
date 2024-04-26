@@ -1,29 +1,30 @@
-import { ItemPropertiesService } from './ItemPropertiesService'
-import { IInventoryItem } from '../models/build/IInventoryItem'
-import { IItem } from '../models/item/IItem'
-import Services from './repository/Services'
-import { IInventoryPrice } from '../models/utils/IInventoryPrice'
-import { IWeight } from '../models/utils/IWeight'
-import { IMod } from '../models/item/IMod'
-import { IErgonomics } from '../models/utils/IErgonomics'
-import { IWearableModifiers } from '../models/utils/IWearableModifiers'
-import { IRecoilPercentageModifier } from '../models/utils/IRecoilPercentageModifier'
-import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
-import { IRecoil } from '../models/utils/IRecoil'
-import Result from '../utils/Result'
-import { IRangedWeapon } from '../models/item/IRangedWeapon'
-import { ItemService } from './ItemService'
-import { IAmmunition } from '../models/item/IAmmunition'
-import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
-import { IPrice } from '../models/item/IPrice'
-import { GlobalFilterService } from './GlobalFilterService'
-import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
-import { round } from 'round-ts'
 import { TinyEmitter } from 'tiny-emitter'
+import { IInventoryItem } from '../models/build/IInventoryItem'
+import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
-import { PriceUtils } from '../utils/PriceUtils'
-import { PresetService } from './PresetService'
+import { IAmmunition } from '../models/item/IAmmunition'
+import { IArmor } from '../models/item/IArmor'
+import { IArmorMod } from '../models/item/IArmorMod'
+import { IMod } from '../models/item/IMod'
+import { IPrice } from '../models/item/IPrice'
+import { IRangedWeapon } from '../models/item/IRangedWeapon'
+import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
 import { IWearable } from '../models/item/IWearable'
+import { IArmorModifiers } from '../models/utils/IArmorModifiers'
+import { IErgonomics } from '../models/utils/IErgonomics'
+import { IInventoryItemPrice } from '../models/utils/IInventoryItemPrice'
+import { IInventoryItemRecoil } from '../models/utils/IInventoryItemRecoil'
+import { IInventoryItemWearableModifiers } from '../models/utils/IInventoryItemWearableModifiers'
+import { IRecoilPercentageModifier } from '../models/utils/IRecoilPercentageModifier'
+import { IWeight } from '../models/utils/IWeight'
+import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
+import { PriceUtils } from '../utils/PriceUtils'
+import Result from '../utils/Result'
+import { GlobalFilterService } from './GlobalFilterService'
+import { ItemPropertiesService } from './ItemPropertiesService'
+import { ItemService } from './ItemService'
+import { PresetService } from './PresetService'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for managing inventory items.
@@ -35,9 +36,71 @@ export class InventoryItemService {
   public static inventoryItemChangeEvent = 'inventoryItemChanged'
 
   /**
+   * Quantity change event.
+   */
+  public static inventoryItemQuantityChangeEvent = 'inventoryItemQuantityChanged'
+
+  /**
    * Event emitter used to signal compatibility check requests.
    */
   public emitter = new TinyEmitter()
+
+  /**
+   * Gets the armor class of an inventory item.
+   * When the inventory item has a front plate slot, it return the armor class and durability of the contained armor plate.
+   * Other whise it returns the armor class and durability of the armor or vest.
+   * @param inventoryItem - Inventory item.
+   * @returns Front plate armor class.
+   */
+  public async getArmorModifiers(inventoryItem: IInventoryItem): Promise<Result<IArmorModifiers>> {
+    const itemService = Services.get(ItemService)
+    const itemResult = await itemService.getItem(inventoryItem.itemId)
+
+    if (!itemResult.success) {
+      return Result.failFrom(itemResult)
+    }
+
+    const itemPropertiesService = Services.get(ItemPropertiesService)
+
+    if (!itemPropertiesService.isArmor(itemResult.value) &&
+      !itemPropertiesService.isVest(itemResult.value)) {
+      return Result.ok({
+        armorClass: 0,
+        durability: 0
+      })
+    }
+
+    const frontPlateModSlot = inventoryItem.modSlots.find(m => m.modSlotName === 'front_plate')
+
+    if (frontPlateModSlot != null) {
+      if (frontPlateModSlot.item == null) {
+        return Result.ok({
+          armorClass: 0,
+          durability: 0
+        })
+      }
+
+      const frontPlateResult = await itemService.getItem(frontPlateModSlot.item.itemId)
+
+      if (!frontPlateResult.success) {
+        return Result.failFrom(frontPlateResult)
+      }
+
+      const frontPlate = frontPlateResult.value as IArmorMod
+
+      return Result.ok({
+        armorClass: frontPlate.armorClass,
+        durability: frontPlate.durability
+      })
+    }
+
+    const armor = itemResult.value as IArmor
+
+    return Result.ok({
+      armorClass: armor.armorClass,
+      durability: armor.durability
+    })
+  }
 
   /**
    * Gets the ergonomics of an item including or not its mods.
@@ -77,8 +140,8 @@ export class InventoryItemService {
     }
 
     return Result.ok({
-      ergonomics: round(ergonomics, 1),
-      ergonomicsWithMods: round(ergonomicsWithMods, 1)
+      ergonomics: ergonomics,
+      ergonomicsWithMods: ergonomicsWithMods
     })
   }
 
@@ -90,7 +153,7 @@ export class InventoryItemService {
    * @param useMerchantFilter - Indicates whether the merchant filter is used. If false, all prices are taken into consideration. Used mainly to ignore merchant filter to be able to display all the prices and barters of an item in its stats.
    * @returns Price.
    */
-  public async getPrice(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true, useMerchantFilter = true): Promise<Result<IInventoryPrice>> {
+  public async getPrice(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true, useMerchantFilter = true): Promise<Result<IInventoryItemPrice>> {
     const globalFilterService = Services.get(GlobalFilterService)
     const itemService = Services.get(ItemService)
     const itemResult = await itemService.getItem(inventoryItem.itemId)
@@ -109,7 +172,7 @@ export class InventoryItemService {
       value: 0,
       valueInMainCurrency: 0
     }
-    let barterItemPrices: IInventoryPrice[] = []
+    let barterItemPrices: IInventoryItemPrice[] = []
     let unitPriceIgnoreStatus = IgnoredUnitPrice.notIgnored
 
     if (!canBeLooted) {
@@ -130,7 +193,7 @@ export class InventoryItemService {
       for (const matchingPrice of matchingPrices) {
         let missingBarterItemPrice = false
         let matchingPriceInMainCurrency = matchingPrice.valueInMainCurrency
-        const matchingPriceBarterItemPrices: IInventoryPrice[] = []
+        const matchingPriceBarterItemPrices: IInventoryItemPrice[] = []
 
         if (matchingPrice.currencyName === 'barter') {
           for (const barterItem of matchingPrice.barterItems) {
@@ -205,7 +268,7 @@ export class InventoryItemService {
       return Result.failFrom(mainCurrencyResult)
     }
 
-    const inventoryPrice: IInventoryPrice = {
+    const inventoryPrice: IInventoryItemPrice = {
       missingPrice: unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored && !hasUnitPrice,
       price,
       pricesWithContent: [],
@@ -343,7 +406,7 @@ export class InventoryItemService {
    * @param inventoryItem - Inventory item.
    * @returns Recoil.
    */
-  public async getRecoil(inventoryItem: IInventoryItem): Promise<Result<IRecoil>> {
+  public async getRecoil(inventoryItem: IInventoryItem): Promise<Result<IInventoryItemRecoil>> {
     const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
     if (!itemResult.success) {
@@ -359,23 +422,23 @@ export class InventoryItemService {
       })
     }
 
-    const horizontalRecoil = (itemResult.value as IRangedWeapon).horizontalRecoil
-    const verticalRecoil = (itemResult.value as IRangedWeapon).verticalRecoil
-    const recoil: IRecoil = {
-      horizontalRecoil,
-      horizontalRecoilWithMods: horizontalRecoil,
-      verticalRecoil,
-      verticalRecoilWithMods: verticalRecoil
+    const rangedWeapon = itemResult.value as IRangedWeapon
+    const recoil: IInventoryItemRecoil = {
+      horizontalRecoil: rangedWeapon.horizontalRecoil,
+      horizontalRecoilWithMods: rangedWeapon.horizontalRecoil,
+      verticalRecoil: rangedWeapon.verticalRecoil,
+      verticalRecoilWithMods: rangedWeapon.verticalRecoil
     }
 
     // Getting the chambered or in magazine ammunition recoil percentage modifier
-    const chamberedAmmunitionRecoilPercentageModifierResult = await this.getChamberedAmmunitionRecoilPercentageModifier(itemResult.value, inventoryItem.modSlots)
+    const chamberedAmmunitionRecoilPercentageModifierResult = await this.getChamberedAmmunitionRecoilPercentageModifier(inventoryItem.modSlots)
 
     if (!chamberedAmmunitionRecoilPercentageModifierResult.success) {
       return Result.failFrom(chamberedAmmunitionRecoilPercentageModifierResult)
     }
 
-    const chamberedAmmunitionRecoilPercentageModifier = chamberedAmmunitionRecoilPercentageModifierResult.value
+    // TODO : Display the ammunition modifier next to the weapon recoil instead of including it in the calculation
+    const chamberedAmmunitionRecoilPercentageModifier = 0/*chamberedAmmunitionRecoilPercentageModifierResult.value*/
 
     // Getting the recoil percentage modifier for each mods
     let modsRecoilPercentageModifiers = 0
@@ -396,9 +459,9 @@ export class InventoryItemService {
 
     // Applying to the weapon recoil the recoil percentage modifiers of its mods
     recoil.horizontalRecoilWithMods = recoil.horizontalRecoil + (recoil.horizontalRecoil * modsRecoilPercentageModifiers)
-    recoil.horizontalRecoilWithMods = round(recoil.horizontalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier))
+    recoil.horizontalRecoilWithMods = recoil.horizontalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier)
     recoil.verticalRecoilWithMods = recoil.verticalRecoil + (recoil.verticalRecoil * modsRecoilPercentageModifiers)
-    recoil.verticalRecoilWithMods = round(recoil.verticalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier))
+    recoil.verticalRecoilWithMods = recoil.verticalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier)
 
     return Result.ok(recoil)
   }
@@ -425,9 +488,11 @@ export class InventoryItemService {
       return Result.ok(recoilPercentageModifier)
     }
 
+    const rangedWeaponMod = itemResult.value as IRangedWeaponMod
+
     if (itemPropertiesService.isRangedWeaponMod(itemResult.value)) {
-      recoilPercentageModifier.recoilPercentageModifier = (itemResult.value as IRangedWeaponMod).recoilPercentageModifier
-      recoilPercentageModifier.recoilPercentageModifierWithMods = recoilPercentageModifier.recoilPercentageModifier
+      recoilPercentageModifier.recoilPercentageModifier = rangedWeaponMod.recoilPercentageModifier
+      recoilPercentageModifier.recoilPercentageModifierWithMods = rangedWeaponMod.recoilPercentageModifier
     }
 
     for (const modSlot of inventoryItem.modSlots) {
@@ -441,7 +506,7 @@ export class InventoryItemService {
         return Result.failFrom(modRecoilPercentageModifierResult)
       }
 
-      recoilPercentageModifier.recoilPercentageModifierWithMods = round(recoilPercentageModifier.recoilPercentageModifierWithMods + modRecoilPercentageModifierResult.value.recoilPercentageModifierWithMods, 2)
+      recoilPercentageModifier.recoilPercentageModifierWithMods = recoilPercentageModifier.recoilPercentageModifierWithMods + modRecoilPercentageModifierResult.value.recoilPercentageModifierWithMods
     }
 
     return Result.ok(recoilPercentageModifier)
@@ -599,7 +664,7 @@ export class InventoryItemService {
    * @param inventoryItem - Inventory item.
    * @returns Wearable modifiers.
    */
-  public async getWearableModifiers(inventoryItem: IInventoryItem): Promise<Result<IWearableModifiers>> {
+  public async getWearableModifiers(inventoryItem: IInventoryItem): Promise<Result<IInventoryItemWearableModifiers>> {
     const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
     if (!itemResult.success) {
@@ -644,12 +709,12 @@ export class InventoryItemService {
     }
 
     return Result.ok({
-      ergonomicsPercentageModifier: round(ergonomicsPercentageModifier, 2),
-      ergonomicsPercentageModifierWithMods: round(ergonomicsPercentageModifierWithMods, 2),
-      movementSpeedPercentageModifier: round(movementSpeedPercentageModifier, 2),
-      movementSpeedPercentageModifierWithMods: round(movementSpeedPercentageModifierWithMods, 2),
-      turningSpeedPercentageModifier: round(turningSpeedPercentageModifier, 2),
-      turningSpeedPercentageModifierWithMods: round(turningSpeedPercentageModifierWithMods, 2)
+      ergonomicsPercentageModifier,
+      ergonomicsPercentageModifierWithMods,
+      movementSpeedPercentageModifier,
+      movementSpeedPercentageModifierWithMods,
+      turningSpeedPercentageModifier,
+      turningSpeedPercentageModifierWithMods
     })
   }
 
@@ -700,37 +765,27 @@ export class InventoryItemService {
     }
 
     return Result.ok({
-      weight: round(weight, 3),
-      weightWithContent: round(weightWithContent, 3),
-      unitWeight: round(itemResult.value.weight, 3)
+      weight: weight,
+      weightWithContent: weightWithContent,
+      unitWeight: itemResult.value.weight
     })
   }
 
   /**
    * Gets the recoil percentage modifier of the chambered ammunition (or contained in the magazine when not having a chamber)
    * of a ranged weapon.
-   * @param item - Item being checked.
    * @param modSlots - Mod slots.
    * @returns Recoil percentage modifier.
    */
-  private async getChamberedAmmunitionRecoilPercentageModifier(item: IItem, modSlots: IInventoryModSlot[]): Promise<Result<number>> {
-    const rangedWeapon = item as IRangedWeapon
+  private async getChamberedAmmunitionRecoilPercentageModifier(modSlots: IInventoryModSlot[]): Promise<Result<number>> {
     let ammunitionId: string | undefined
 
-    const chamber = rangedWeapon.modSlots.find((ms) => ms.name.startsWith('chamber'))
-
     for (const modSlot of modSlots) {
-      if (chamber != null && modSlot.modSlotName === chamber.name && modSlot.item != null) {
+      if (modSlot.modSlotName.startsWith('chamber') && modSlot.item != null) {
         ammunitionId = modSlot.item.itemId
 
         break
-      } else {
-        const magazine = rangedWeapon.modSlots.find((ms) => ms.name === 'mod_magazine')
-
-        if (modSlot.modSlotName !== /* istanbul ignore next */magazine?.name || modSlot.item == null) {
-          continue
-        }
-
+      } else if (modSlot.modSlotName === 'mod_magazine' && modSlot.item != null) {
         if (modSlot.item.content.length === 0 && modSlot.item.modSlots.length > 0) {
           // The magazine is composed of multiple slots that each receive a cartridge (revolver cylinder magazine)
           ammunitionId = modSlot.item.modSlots.filter(ms => ms.item != null)[0]?.item?.itemId
@@ -738,6 +793,8 @@ export class InventoryItemService {
           // Normal magazine
           ammunitionId = modSlot.item.content[0]?.itemId
         }
+
+        break
       }
     }
 

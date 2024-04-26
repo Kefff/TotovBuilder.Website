@@ -1,19 +1,20 @@
 import { describe, expect, it } from 'vitest'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { ReductionService } from '../../services/ReductionService'
+import { ak12PistolGrip, berkut, rpk16Default } from '../__data__/itemMocks'
 
 const inventoryItem: IInventoryItem = {
   content: [
     {
       content: [],
       ignorePrice: false,
-      itemId: '584147732459775a2b6d9f12',
+      itemId: rpk16Default.id,
       modSlots: [
         {
           item: {
             content: [],
             ignorePrice: false,
-            itemId: '57e3dba62459770f0c32322b',
+            itemId: ak12PistolGrip.id,
             modSlots: [],
             quantity: 1
           },
@@ -24,7 +25,7 @@ const inventoryItem: IInventoryItem = {
     }
   ],
   ignorePrice: true,
-  itemId: '5ab8ebf186f7742d8b372e80',
+  itemId: berkut.id,
   modSlots: [],
   quantity: 2
 }
@@ -32,11 +33,11 @@ const inventoryItem: IInventoryItem = {
 const reducedInventoryItem = {
   'c': [
     {
-      'i': '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle
+      'i': rpk16Default.id,
       'm': [
         {
           'i': {
-            'i': '57e3dba62459770f0c32322b' // AK bakelite pistol grip (6P4 Sb.9)
+            'i': ak12PistolGrip.id
           },
           'n': 'mod_pistol_grip'
         }
@@ -44,7 +45,7 @@ const reducedInventoryItem = {
     }
   ],
   'p': 1,
-  'i': '5ab8ebf186f7742d8b372e80', // SSO Attack 2 raid backpack
+  'i': berkut.id,
   'q': 2
 }
 

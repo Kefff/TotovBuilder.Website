@@ -6,68 +6,70 @@
     :preset="preset"
   >
     <AmmunitionSummary
-      v-if="itemPropertiesService.isAmmunition(item)"
+      v-if="isAmmunition"
       :item="item"
       :show-empty-entries="false"
     />
     <ArmorSummary
-      v-else-if="itemPropertiesService.isArmor(item)"
+      v-else-if="isArmor"
+      :armor-modifiers-override="armorModifiers"
       :item="item"
       :show-empty-entries="false"
     />
     <ArmorModSummary
-      v-else-if="itemPropertiesService.isArmorMod(item)"
+      v-else-if="isArmorMod"
       :item="item"
       :show-empty-entries="false"
     />
     <BackpackSummary
-      v-else-if="itemPropertiesService.isBackpack(item)"
+      v-else-if="isBackpack"
       :item="item"
     />
     <ContainerSummary
-      v-else-if="itemPropertiesService.isContainer(item)"
+      v-else-if="isContainer"
       :item="item"
     />
     <EyewearSummary
-      v-else-if="itemPropertiesService.isEyewear(item)"
+      v-else-if="isEyewear"
       :item="item"
       :show-empty-entries="false"
     />
     <GrenadeSummary
-      v-else-if="itemPropertiesService.isGrenade(item)"
+      v-else-if="isGrenade"
       :item="item"
       :show-empty-entries="false"
     />
     <HeadwearSummary
-      v-else-if="itemPropertiesService.isHeadwear(item)"
+      v-else-if="isHeadwear"
       :item="item"
       :show-empty-entries="false"
     />
     <MagazineSummary
-      v-else-if="itemPropertiesService.isMagazine(item)"
+      v-else-if="isMagazine"
       :item="item"
       :show-empty-entries="false"
     />
     <MeleeWeaponSummary
-      v-else-if="itemPropertiesService.isMeleeWeapon(item)"
+      v-else-if="isMeleeWeapon"
       :item="item"
     />
     <ModSummary
-      v-else-if="itemPropertiesService.isMod(item)"
+      v-else-if="isMod"
       :item="item"
       :show-empty-entries="false"
     />
     <RangedWeaponSummary
-      v-else-if="itemPropertiesService.isRangedWeapon(item)"
+      v-else-if="isRangedWeapon"
       :item="item"
     />
     <RangedWeaponModSummary
-      v-else-if="itemPropertiesService.isRangedWeaponMod(item)"
+      v-else-if="isRangedWeaponMod"
       :item="item"
       :show-empty-entries="false"
     />
     <VestSummary
-      v-else-if="itemPropertiesService.isVest(item)"
+      v-else-if="isVest"
+      :armor-modifiers-override="armorModifiers"
       :item="item"
       :show-empty-entries="false"
     />

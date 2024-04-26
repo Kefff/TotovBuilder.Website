@@ -1,23 +1,21 @@
 import { computed, defineComponent, inject, onMounted, onUnmounted, PropType, Ref, ref, watch } from 'vue'
-import StringUtils from '../../utils/StringUtils'
-import { IInventorySlot } from '../../models/build/IInventorySlot'
-import Services from '../../services/repository/Services'
-import { InventorySlotService } from '../../services/InventorySlotService'
-import { IItem } from '../../models/item/IItem'
-import { InventorySlotComponentService } from '../../services/components/InventorySlotComponentService'
-import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
-import Item from '../item/ItemComponent.vue'
-import StatsUtils from '../../utils/StatsUtils'
-import { IInventorySlotType } from '../../models/build/IInventorySlotType'
-import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
-import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
-import { GlobalFilterService } from '../../services/GlobalFilterService'
-import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { PathUtils } from '../../utils/PathUtils'
-import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
-import { InventoryItemService } from '../../services/InventoryItemService'
-import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import Images from '../../images'
+import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { IInventorySlot } from '../../models/build/IInventorySlot'
+import { IInventorySlotType } from '../../models/build/IInventorySlotType'
+import { IItem } from '../../models/item/IItem'
+import { IInventorySlotSummary } from '../../models/utils/IInventorySlotSummary'
+import { InventorySlotComponentService } from '../../services/components/InventorySlotComponentService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { InventoryItemService } from '../../services/InventoryItemService'
+import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
+import { InventorySlotService } from '../../services/InventorySlotService'
+import Services from '../../services/repository/Services'
+import { PathUtils } from '../../utils/PathUtils'
+import StatsUtils from '../../utils/StatsUtils'
+import StringUtils from '../../utils/StringUtils'
+import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
+import Item from '../item/ItemComponent.vue'
 
 export default defineComponent({
   components: {
@@ -47,6 +45,22 @@ export default defineComponent({
     const inventorySlotService = Services.get(InventorySlotService)
     const globalFilterService = Services.get(GlobalFilterService)
 
+    const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
+    const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
+    const hasSummaryErgonomicsPercentageModifier = computed(() => summary.value.wearableModifiers.ergonomicsPercentageModifier !== 0)
+    const hasSummaryHorizontalRecoil = computed(() => summary.value.recoil.horizontalRecoil !== 0)
+    const hasSummaryMovementSpeedPercentageModifier = computed(() => summary.value.wearableModifiers.movementSpeedPercentageModifier !== 0)
+    const hasSummaryPrice = computed(() => summary.value.price.priceInMainCurrency !== 0)
+    const hasSummaryStats = computed(() => hasSummaryErgonomics.value || hasSummaryHorizontalRecoil.value || hasSummaryVerticalRecoil.value)
+    const hasSummaryTurningSpeedPercentageModifier = computed(() => summary.value.wearableModifiers.turningSpeedPercentageModifier !== 0)
+    const hasSummaryVerticalRecoil = computed(() => summary.value.recoil.verticalRecoil !== 0)
+    const hasSummaryWearableModifiers = computed(() => hasSummaryErgonomicsPercentageModifier.value
+      || hasSummaryMovementSpeedPercentageModifier.value
+      || hasSummaryTurningSpeedPercentageModifier.value
+    )
+    const hasSummaryWeight = computed(() => summary.value.weight !== 0)
+    const isChildItemPathRegex = computed(() => new RegExp(props.path.replace('/', '\\/') + '_[0-9]+\\/item:[a-f0-9]+\\/((mod:)|(content:))'))
+
     const editing = inject<Ref<boolean>>('editing')
 
     const itemPathPrefix = PathUtils.itemPrefix
@@ -55,63 +69,55 @@ export default defineComponent({
 
     const acceptedItems = ref<IItem[]>([])
     const acceptedItemsCategoryId = ref<string | undefined>(undefined)
-    const canBeLooted = ref(true)
     const customIconName = ref<string>()
-    const ergonomics = ref<number | undefined>()
-    const horizontalRecoil = ref<number | undefined>()
     const icon = ref<string>()
     const items = ref<(IInventoryItem | undefined)[]>([]) // Used to be able to put back the previously selected item when changing it to an incompatible item
-    const price = ref<IInventoryPrice>({
-      missingPrice: false,
+    const summary = ref<IInventorySlotSummary>({
+      armorModifiers: {
+        armorClass: 0,
+        durability: 0
+      },
+      ergonomics: 0,
       price: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
+        missingPrice: false,
+        priceInMainCurrency: 0,
+        priceByCurrency: []
       },
-      priceWithContentInMainCurrency: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
+      recoil: {
+        horizontalRecoil: 0,
+        verticalRecoil: 0
       },
-      pricesWithContent: [],
-      unitPrice: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
+      type: {
+        acceptedItemCategories: [],
+        canBeLooted: false,
+        displayOrder: 0,
+        id: '',
+        itemSlotsAmount: 0
       },
-      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+      wearableModifiers: {
+        ergonomicsPercentageModifier: 0,
+        movementSpeedPercentageModifier: 0,
+        turningSpeedPercentageModifier: 0
+      },
+      weight: 0
     })
     const type = ref<IInventorySlotType>()
-    const verticalRecoil = ref<number | undefined>()
-    const wearableModifiers = ref<IWearableModifiers | undefined>()
-    const weight = ref(0)
 
-    watch(() => props.modelValue.items, () => initialize())
+    watch(() => props.modelValue, async () => {
+      await initialize() // Initialization required for the case when we cancel changes
+    })
 
-    onMounted(() => {
-      inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
+    onMounted(async () => {
+      inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onModOrContentChanged)
+      inventoryItemService.emitter.on(InventoryItemService.inventoryItemQuantityChangeEvent, onQuantityChanged)
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-      initialize()
+      await initialize()
     })
 
     onUnmounted(() => {
-      inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
+      inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onModOrContentChanged)
+      inventoryItemService.emitter.off(InventoryItemService.inventoryItemQuantityChangeEvent, onQuantityChanged)
       globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
     })
 
@@ -119,88 +125,7 @@ export default defineComponent({
      * Gets the values of the summary of the content of the inventory slot.
      */
     async function getSummary() {
-      const service = inventorySlotPropertiesService
-
-      // Ergonomics
-      const ergonomicsResult = await service.getErgonomics(props.modelValue)
-
-      if (ergonomicsResult != null && ergonomicsResult.success) {
-        ergonomics.value = ergonomicsResult.value
-      } else {
-        ergonomics.value = undefined
-      }
-
-      // Ergonomics percentage modifier
-      const wearableModifiersResult = await service.getWearableModifiers(props.modelValue)
-
-      if (wearableModifiersResult != null && wearableModifiersResult.success) {
-        wearableModifiers.value = wearableModifiersResult.value
-      } else {
-        wearableModifiers.value = undefined
-      }
-
-      // Price
-      const priceResult = await service.getPrice(props.modelValue, canBeLooted.value)
-
-      if (priceResult.success) {
-        price.value = priceResult.value
-      } else {
-        price.value = {
-          missingPrice: true,
-          price: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          priceWithContentInMainCurrency: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          pricesWithContent: [],
-          unitPrice: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-        }
-      }
-
-      // Recoil
-      const recoilResult = await service.getRecoil(props.modelValue)
-
-      if (recoilResult != null && recoilResult.success) {
-        horizontalRecoil.value = recoilResult.value.horizontalRecoil
-        verticalRecoil.value = recoilResult.value.verticalRecoil
-      } else {
-        horizontalRecoil.value = undefined
-        verticalRecoil.value = undefined
-      }
-
-      // Weight
-      const weightResult = await service.getWeight(props.modelValue)
-
-      if (weightResult.success) {
-        weight.value = weightResult.value
-      } else {
-        weight.value = 0
-      }
+      summary.value = await inventorySlotPropertiesService.getSummary(props.modelValue)
     }
 
     /**
@@ -209,28 +134,16 @@ export default defineComponent({
     async function initialize() {
       items.value = [...props.modelValue.items]
 
-      const canBeLootedResult = inventorySlotPropertiesService.canBeLooted(props.modelValue)
-
-      if (canBeLootedResult.success) {
-        canBeLooted.value = canBeLootedResult.value
-      } else {
-        canBeLooted.value = true
-      }
-
-      const inventorySlotTypeResult = await inventorySlotService.getType(props.modelValue.typeId)
+      const inventorySlotTypeResult = inventorySlotService.getType(props.modelValue.typeId)
 
       if (inventorySlotTypeResult.success) {
         type.value = inventorySlotTypeResult.value
         customIconName.value = type.value.customIcon
         icon.value = type.value.icon
-      } else {
-        type.value = undefined
-        customIconName.value = undefined
-        icon.value = undefined
       }
 
-      setItemComponentParameters()
-      getSummary()
+      await setItemComponentParameters()
+      await getSummary()
     }
 
     /**
@@ -254,20 +167,29 @@ export default defineComponent({
     }
 
     /**
-     * Updates the summary when an InventorySlot changes.
+     * Updates the inventory slot summary when a mod or content item changes.
      */
-    function onInventoryItemChanged(path: string) {
-      if (path.startsWith(props.path)) {
-        getSummary()
+    async function onModOrContentChanged(path: string) {
+      if (isChildItemPathRegex.value.test(path)) {
+        await getSummary()
       }
     }
 
     /**
      * Updates the inventory slot summary to reflect price changes due to the change in merchant filters.
      */
-    function onMerchantFilterChanged() {
-      setItemComponentParameters()
-      getSummary()
+    async function onMerchantFilterChanged() {
+      await setItemComponentParameters()
+      await getSummary()
+    }
+
+    /**
+     * Updates the inventory slot summary when an item quantity changes.
+     */
+    async function onQuantityChanged(path: string) {
+      if (path.startsWith(props.path)) {
+        await getSummary()
+      }
     }
 
     /**
@@ -290,23 +212,29 @@ export default defineComponent({
     return {
       acceptedItems,
       acceptedItemsCategoryId,
-      canBeLooted,
       customIconName,
       displayed,
-      ergonomics,
-      horizontalRecoil,
+      hasSummaryArmor,
+      hasSummaryErgonomics,
+      hasSummaryErgonomicsPercentageModifier,
+      hasSummaryHorizontalRecoil,
+      hasSummaryMovementSpeedPercentageModifier,
+      hasSummaryPrice,
+      hasSummaryStats,
+      hasSummaryTurningSpeedPercentageModifier,
+      hasSummaryVerticalRecoil,
+      hasSummaryWearableModifiers,
+      hasSummaryWeight,
       icon,
       Images,
       itemPathPrefix,
       items,
       onItemChanged,
-      price,
       StatsUtils,
       StringUtils,
+      summary,
       toggle,
-      verticalRecoil,
-      wearableModifiers,
-      weight
+      type
     }
   }
 })

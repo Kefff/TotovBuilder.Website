@@ -1,4 +1,14 @@
-.stats {
-  margin-left: 2rem;
-  margin-top: 1rem;
+.stats-modal-title {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.stats-modal-title > div {
+  margin-right: 1rem;
+}
+
+.stats-modal-title > span {
+  font-weight: bold;
 }

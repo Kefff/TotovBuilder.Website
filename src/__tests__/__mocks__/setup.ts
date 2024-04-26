@@ -1,11 +1,17 @@
 import { instance, mock } from 'ts-mockito'
+import { afterEach, beforeEach, vi } from 'vitest'
+import { polyfill } from '../../polyfill'
 import { LogService } from '../../services/LogService'
 import Services from '../../services/repository/Services'
-import { afterEach, beforeEach, vi } from 'vitest'
+import Migrations from '../../utils/migrations/Migrations'
+
 
 beforeEach(() => {
+  // Services
   Services.services = []
   Services.configure(LogService, undefined, instance(mock<LogService>()))
+
+  Migrations.splice(0) // Removing the migration list to avoid problems when testing migrations
 })
 
 afterEach(() => {
@@ -13,6 +19,9 @@ afterEach(() => {
   vi.useRealTimers() // Cleaning tests that use fake times
   vi.unstubAllGlobals() // Cleaning tests that change global variable values
 })
+
+// Polyfill
+polyfill()
 
 // This code allows to find unhandled rejected promises (lines containing "UnhandledPromiseRejectionWarning" appearing in the test logs even when all tests pass).
 // Test files containing this error will appear when using the "npm run test".

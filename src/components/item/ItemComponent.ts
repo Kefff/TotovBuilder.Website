@@ -1,31 +1,31 @@
 import { computed, defineComponent, inject, nextTick, onMounted, PropType, Ref, ref, watch } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import { IItem } from '../../models/item/IItem'
+import { IMagazine } from '../../models/item/IMagazine'
+import { SelectableTab } from '../../models/utils/SelectableTab'
+import SortingData from '../../models/utils/SortingData'
+import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
+import { CompatibilityService } from '../../services/compatibility/CompatibilityService'
+import { InventoryItemService } from '../../services/InventoryItemService'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ItemService } from '../../services/ItemService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
+import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
-import StatsSelector from '../stats/selector/StatsSelectorComponent.vue'
-import SelectedItemFunctionalities from '../selected-item-functionalities/SelectedItemFunctionalitiesComponent.vue'
-import SelectedItem from '../selected-item/SelectedItemComponent.vue'
-import OptionHeaderSelector from '../option-header/selector/OptionHeaderSelectorComponent.vue'
-import SummarySelector from '../summary/selector/SummarySelectorComponent.vue'
-import SortingData from '../../models/utils/SortingData'
-import StringUtils from '../../utils/StringUtils'
 import { SortingService } from '../../services/sorting/SortingService'
+import { PathUtils } from '../../utils/PathUtils'
+import Result from '../../utils/Result'
+import StringUtils from '../../utils/StringUtils'
+import InputNumberField from '../input-number-field/InputNumberFieldComponent.vue'
 import ItemContent from '../item-content/ItemContentComponent.vue'
 import ItemMods from '../item-mods/ItemModsComponent.vue'
-import InputNumberField from '../input-number-field/InputNumberFieldComponent.vue'
-import { CompatibilityService } from '../../services/compatibility/CompatibilityService'
-import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
-import Result from '../../utils/Result'
-import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import OptionHeaderSelector from '../option-header/selector/OptionHeaderSelectorComponent.vue'
+import SelectedItemFunctionalities from '../selected-item-functionalities/SelectedItemFunctionalitiesComponent.vue'
 import SelectedItemSummarySelector from '../selected-item-summary/selector/SelectedItemSummarySelectorComponent.vue'
-import { SelectableTab } from '../../models/utils/SelectableTab'
-import { InventoryItemService } from '../../services/InventoryItemService'
-import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
-import { PathUtils } from '../../utils/PathUtils'
-import { PresetService } from '../../services/PresetService'
-import { IMagazine } from '../../models/item/IMagazine'
+import SelectedItem from '../selected-item/SelectedItemComponent.vue'
+import StatsSelector from '../stats/selector/StatsSelectorComponent.vue'
+import SummarySelector from '../summary/selector/SummarySelectorComponent.vue'
 
 export default defineComponent({
   components: {
@@ -103,10 +103,33 @@ export default defineComponent({
     const selectedItemIsContainer = ref(false)
     const selectedItemIsModdable = ref(false)
     const selectedTab = ref(SelectableTab.hidden)
+    const showStats = ref(false)
 
     watch(() => props.acceptedItems, () => onFilterOptions(optionsFilter.value))
     watch(() => props.modelValue?.itemId, () => initializeSelectedItem())
     watch(() => props.modelValue?.quantity, () => quantity.value = props.modelValue?.quantity ?? 0)
+    watch(
+      () => selectedItem.value?.id,
+      () => {
+        if (selectedItem.value?.id != null) {
+          selectedItemIsModdable.value = itemPropertiesService.canBeModded(selectedItem.value)
+          selectedItemIsContainer.value = itemPropertiesService.canContain(selectedItem.value)
+
+          if (selectedTab.value === SelectableTab.hidden) {
+            if (selectedItemIsContainer.value) {
+              selectedTab.value = SelectableTab.content
+            } else if (selectedItemIsModdable.value) {
+              selectedTab.value = SelectableTab.mods
+            } else {
+              selectedTab.value = SelectableTab.hidden
+            }
+          }
+        } else {
+          selectedItemIsModdable.value = false
+          selectedItemIsContainer.value = false
+          selectedTab.value = SelectableTab.hidden
+        }
+      })
 
     onMounted(() => {
       setOptions(optionsFilter.value, optionsSortingData.value)
@@ -114,10 +137,17 @@ export default defineComponent({
     })
 
     /**
-     * Emits an event for the build and the inventory slot to updated their summary.
+     * Emits an event for the build and the inventory slot to updated their summary when the selected item changes.
      */
     function emitItemChangedEvent() {
       nextTick(() => inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path))
+    }
+
+    /**
+     * Emits an event for the build and the inventory slot to updated their summary when the quantity changes.
+     */
+    function emitItemQuantityChangedEvent() {
+      nextTick(() => inventoryItemService.emitter.emit(InventoryItemService.inventoryItemQuantityChangeEvent, props.path))
     }
 
     /**
@@ -127,8 +157,6 @@ export default defineComponent({
       if (props.modelValue == null) {
         quantity.value = 0
         selectedItem.value = undefined
-        selectedItemIsContainer.value = false
-        selectedItemIsModdable.value = false
 
         return
       }
@@ -146,8 +174,6 @@ export default defineComponent({
       } else {
         selectedItem.value = undefined
       }
-
-      setSelectedTab()
 
       if (selectedItem.value != null) {
         preset.value = await presetService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
@@ -183,7 +209,7 @@ export default defineComponent({
       selectedInventoryItem.value.quantity = newQuantity
 
       // Emitting an event for the build and the inventory slot to updated their summary
-      emitItemChangedEvent()
+      emitItemQuantityChangedEvent()
     }
 
     /**
@@ -197,8 +223,6 @@ export default defineComponent({
       if (selectedItem.value == null) {
         quantity.value = 0
         selectedInventoryItem.value = undefined
-        selectedItemIsContainer.value = false
-        selectedItemIsModdable.value = false
 
         // Emitting an event for the build and the inventory slot to updated their summary
         emitItemChangedEvent()
@@ -276,25 +300,6 @@ export default defineComponent({
       onSortOptions(sortingData)
     }
 
-    /**
-     * Sets the selected tab based on the selected item.
-     */
-    function setSelectedTab() {
-      if (selectedItem.value == null) {
-        selectedTab.value = SelectableTab.hidden
-
-        return
-      }
-
-      selectedItemIsModdable.value = itemPropertiesService.canBeModded(selectedItem.value)
-      selectedItemIsContainer.value = itemPropertiesService.canContain(selectedItem.value)
-
-      if (selectedItemIsModdable.value) {
-        selectedTab.value = SelectableTab.mods
-      } else if (selectedItemIsContainer.value) {
-        selectedTab.value = SelectableTab.content
-      }
-    }
 
     /**
      * Updates the inventory item based on a new selected item if it is compatible; otherwise puts back the previous selected item.
@@ -303,42 +308,46 @@ export default defineComponent({
      */
     async function updateInventoryItem(newSelectedItem: IItem, isCompatible: Result) {
       if (isCompatible.success) {
+        quantity.value = maxSelectableQuantity.value
+        const ignorePrice = selectedInventoryItem.value?.ignorePrice ?? false
+
+        // Keeping the old item content if the new item is a container
+        const newContent: IInventoryItem[] = []
+        const newSelectedItemIsContainer = itemPropertiesService.canContain(newSelectedItem)
+
+        if (newSelectedItemIsContainer
+          && selectedInventoryItem.value != null
+          && selectedInventoryItem.value.content.length > 0) {
+          const newSelectedItemIsMagazine = itemPropertiesService.isMagazine(newSelectedItem)
+
+          if (newSelectedItemIsMagazine) {
+            const magazine = (newSelectedItem as IMagazine)
+
+            for (const ammunitionInventoryItem of selectedInventoryItem.value.content) {
+              const isCompatible = magazine.acceptedAmmunitionIds.some(aci => aci === ammunitionInventoryItem.itemId)
+
+              if (isCompatible) {
+                ammunitionInventoryItem.quantity = magazine.capacity
+                newContent.push(ammunitionInventoryItem)
+              }
+            }
+          } else {
+            newContent.push(...selectedInventoryItem.value.content)
+          }
+        }
+
         const preset = presetService.getPreset(newSelectedItem.id)
 
         if (preset != null) {
-          // Creating a new object, otherwise the preset itself in the application presets list is modified when we change the selected item mods and content in the build
-          selectedInventoryItem.value = JSON.parse(JSON.stringify(preset))
+          // Creating a copy of the preset, otherwise the preset is modified for the whole application
+          const newSelectedInventoryItem = JSON.parse(JSON.stringify(preset)) as IInventoryItem
+          newSelectedInventoryItem.content = newContent
+          newSelectedInventoryItem.ignorePrice = ignorePrice
+          selectedInventoryItem.value = newSelectedInventoryItem
         } else {
-          quantity.value = maxSelectableQuantity.value
-
-          // Keeping the old item content if the new item is a container
-          const newContent: IInventoryItem[] = []
-          const newSelectedItemIsContainer = itemPropertiesService.canContain(newSelectedItem)
-
-          if (newSelectedItemIsContainer
-            && selectedInventoryItem.value != null
-            && selectedInventoryItem.value.content.length > 0) {
-            const newSelectedItemIsMagazine = itemPropertiesService.isMagazine(newSelectedItem)
-
-            if (newSelectedItemIsMagazine) {
-              const magazine = (newSelectedItem as IMagazine)
-
-              for (const ammunitionInventoryItem of selectedInventoryItem.value.content) {
-                const isCompatible = magazine.acceptedAmmunitionIds.some(aci => aci === ammunitionInventoryItem.itemId)
-
-                if (isCompatible) {
-                  ammunitionInventoryItem.quantity = magazine.capacity
-                  newContent.push(ammunitionInventoryItem)
-                }
-              }
-            } else {
-              newContent.push(...selectedInventoryItem.value.content)
-            }
-          }
-
           selectedInventoryItem.value = {
             content: newContent,
-            ignorePrice: false,
+            ignorePrice,
             itemId: newSelectedItem.id,
             modSlots: [],
             quantity: quantity.value
@@ -346,7 +355,6 @@ export default defineComponent({
         }
 
         emitItemChangedEvent()
-        setSelectedTab()
       } else {
         notificationService.notify(NotificationType.warning, isCompatible.failureMessage)
         initializeSelectedItem() // Putting back the previous selected item
@@ -365,9 +373,9 @@ export default defineComponent({
       onQuantityChanged,
       onSelectedItemChanged,
       onSortOptions,
+      optionHeight,
       options,
       optionsFilter,
-      optionHeight,
       optionsSortingData,
       preset,
       quantity,
@@ -376,7 +384,8 @@ export default defineComponent({
       selectedItem,
       selectedItemIsContainer,
       selectedItemIsModdable,
-      selectedTab
+      selectedTab,
+      showStats
     }
   }
 })

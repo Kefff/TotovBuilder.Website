@@ -171,12 +171,14 @@ export class ItemPropertiesService {
    * @returns true if the item is moddable; otherwise false.
    */
   public isModdable(value: IItem | string): boolean {
-    return this.isArmorMod(value)
+    return this.isArmor(value)
+      || this.isArmorMod(value)
       || this.isHeadwear(value)
       || this.isMagazine(value)
       || this.isMod(value)
       || this.isRangedWeapon(value)
       || this.isRangedWeaponMod(value)
+      || this.isVest(value)
   }
 
   /**

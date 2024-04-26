@@ -1,7 +1,8 @@
+import { describe, expect, it } from 'vitest'
 import { IPrice } from '../../models/item/IPrice'
 import { PriceUtils } from '../../utils/PriceUtils'
+import { eur, rgd5, rub, usd } from '../__data__/itemMocks'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
-import { describe, expect, it } from 'vitest'
 
 describe('sortByCurrency()', () => {
   it.each([
@@ -10,7 +11,7 @@ describe('sortByCurrency()', () => {
         {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5449016a4bdc2d6f028b456f',
+          itemId: rub.id,
           merchant: 'prapor',
           merchantLevel: 1,
           quest: undefined,
@@ -20,7 +21,7 @@ describe('sortByCurrency()', () => {
         {
           barterItems: [
             {
-              itemId: '5e32f56fcb6d5863cc5e5ee4',
+              itemId: rgd5.id,
               quantity: 1
             }
           ],
@@ -35,7 +36,7 @@ describe('sortByCurrency()', () => {
         {
           barterItems: [],
           currencyName: 'USD',
-          itemId: '5696686a4bdc2da3298b456a',
+          itemId: usd.id,
           merchant: 'peacekeeper',
           merchantLevel: 1,
           quest: undefined,
@@ -45,7 +46,7 @@ describe('sortByCurrency()', () => {
         {
           barterItems: [],
           currencyName: 'EUR',
-          itemId: '569668774bdc2da2298b4568',
+          itemId: eur.id,
           merchant: 'mechanic',
           merchantLevel: 1,
           quest: undefined,
@@ -57,7 +58,7 @@ describe('sortByCurrency()', () => {
         {
           barterItems: [
             {
-              itemId: '5e32f56fcb6d5863cc5e5ee4',
+              itemId: rgd5.id,
               quantity: 1
             }
           ],
@@ -72,7 +73,7 @@ describe('sortByCurrency()', () => {
         {
           barterItems: [],
           currencyName: 'EUR',
-          itemId: '569668774bdc2da2298b4568',
+          itemId: eur.id,
           merchant: 'mechanic',
           merchantLevel: 1,
           quest: undefined,
@@ -82,7 +83,7 @@ describe('sortByCurrency()', () => {
         {
           barterItems: [],
           currencyName: 'USD',
-          itemId: '5696686a4bdc2da3298b456a',
+          itemId: usd.id,
           merchant: 'peacekeeper',
           merchantLevel: 1,
           quest: undefined,
@@ -92,7 +93,7 @@ describe('sortByCurrency()', () => {
         {
           barterItems: [],
           currencyName: 'RUB',
-          itemId: '5449016a4bdc2d6f028b456f',
+          itemId: rub.id,
           merchant: 'prapor',
           merchantLevel: 1,
           quest: undefined,
@@ -106,7 +107,7 @@ describe('sortByCurrency()', () => {
         {
           barterItems: [],
           currencyName: 'Invalid',
-          itemId: '569668774bdc2da2298b4568',
+          itemId: eur.id,
           merchant: 'mechanic',
           merchantLevel: 1,
           quest: undefined,
@@ -116,7 +117,7 @@ describe('sortByCurrency()', () => {
         {
           barterItems: [],
           currencyName: 'Invalid',
-          itemId: '5696686a4bdc2da3298b456a',
+          itemId: usd.id,
           merchant: 'peacekeeper',
           merchantLevel: 1,
           quest: undefined,
@@ -128,7 +129,7 @@ describe('sortByCurrency()', () => {
         {
           barterItems: [],
           currencyName: 'Invalid',
-          itemId: '569668774bdc2da2298b4568',
+          itemId: eur.id,
           merchant: 'mechanic',
           merchantLevel: 1,
           quest: undefined,
@@ -138,7 +139,7 @@ describe('sortByCurrency()', () => {
         {
           barterItems: [],
           currencyName: 'Invalid',
-          itemId: '5696686a4bdc2da3298b456a',
+          itemId: usd.id,
           merchant: 'peacekeeper',
           merchantLevel: 1,
           quest: undefined,

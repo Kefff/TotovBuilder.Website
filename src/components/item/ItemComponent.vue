@@ -59,14 +59,19 @@
         v-if="selectedInventoryItem != null"
         v-model:selectedTab="selectedTab"
         v-model:ignorePrice="selectedInventoryItem.ignorePrice"
+        v-model:showStats="showStats"
+        :can-be-looted="canBeLooted"
         :can-have-content="selectedItemIsContainer"
         :can-have-mods="selectedItemIsModdable"
+        :content-count="selectedInventoryItem.content.length"
+        :mods-count="selectedInventoryItem.modSlots.filter(ms => ms.item != null).length"
         @update:ignore-price="onIgnorePriceChanged()"
       />
       <SelectedItemSummarySelector
         v-if="selectedInventoryItem != null"
         v-model="selectedInventoryItem"
         :can-be-looted="canBeLooted"
+        :path="path"
         :preset="preset"
       />
     </div>
@@ -74,28 +79,26 @@
       v-if="selectedInventoryItem != null && selectedItem != null && !itemChanging"
       class="tabs"
     >
-      <div :class="selectedTab === SelectableTab.stats ? '' : 'item-tab-hidden'">
-        <StatsSelector :item-id="selectedItem.id" />
-      </div>
-      <div
-        v-if="selectedItemIsModdable"
-        :class="selectedTab === SelectableTab.mods ? '' : 'item-tab-hidden'"
-      >
+      <StatsSelector
+        v-model:showStats="showStats"
+        :item="selectedItem"
+      />
+      <div v-if="selectedItemIsModdable">
         <ItemMods
+          v-show="selectedTab === SelectableTab.mods"
           v-model="selectedInventoryItem.modSlots"
           :container-item="selectedItem"
           :path="path"
         />
       </div>
-      <div
-        v-if="selectedItemIsContainer"
-        :class="selectedTab === SelectableTab.content ? '' : 'item-tab-hidden'"
-      >
-        <ItemContent
-          v-model="selectedInventoryItem.content"
-          :container-item="selectedItem"
-          :path="path"
-        />
+      <div v-if="selectedItemIsContainer">
+        <div v-show="selectedTab === SelectableTab.content">
+          <ItemContent
+            v-model="selectedInventoryItem.content"
+            :container-item="selectedItem"
+            :path="path"
+          />
+        </div>
       </div>
     </div>
   </div>

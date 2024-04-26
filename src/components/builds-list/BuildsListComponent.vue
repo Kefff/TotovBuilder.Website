@@ -41,7 +41,7 @@
     <Column
       field="price"
       :sortable="true"
-      sortField="price.priceWithContentInMainCurrency.valueInMainCurrency"
+      sortField="price.priceInMainCurrency"
     >
       <!-- For some reason, using "sort-field" doesn't work while using "sortField" works -->
       <template #header>
@@ -70,6 +70,7 @@
     <Column
       field="verticalRecoil"
       :sortable="true"
+      sortField="recoil.verticalRecoil"
     >
       <template #header>
         <div class="build-list-column">
@@ -78,10 +79,10 @@
       </template>
       <template #body="{ data }">
         <div
-          v-if="data.verticalRecoil != null"
+          v-if="data.recoil.verticalRecoil !== 0"
           class="build-list-column"
         >
-          <span>{{ data.verticalRecoil }}</span>
+          <span>{{ StatsUtils.getDisplayValue(data.recoil.verticalRecoil, false, 0) }}</span>
           <font-awesome-icon
             icon="arrows-alt-v"
             class="icon-after-text"
@@ -92,6 +93,7 @@
     <Column
       field="horizontalRecoil"
       :sortable="true"
+      sortField="recoil.horizontalRecoil"
     >
       <template #header>
         <div class="build-list-column">
@@ -100,10 +102,10 @@
       </template>
       <template #body="{ data }">
         <div
-          v-if="data.horizontalRecoil != null"
+          v-if="data.recoil.horizontalRecoil !== 0"
           class="build-list-column"
         >
-          <span>{{ data.horizontalRecoil }}</span>
+          <span>{{ StatsUtils.getDisplayValue(data.recoil.horizontalRecoil, false, 0) }}</span>
           <font-awesome-icon
             icon="arrows-alt-h"
             class="icon-after-text"
@@ -122,8 +124,8 @@
       </template>
       <template #body="{ data }">
         <div class="build-list-column">
-          <div v-if="data.ergonomics != null">
-            <span>{{ data.ergonomics }}</span>
+          <div v-if="data.ergonomics !== 0">
+            <span>{{ StatsUtils.getDisplayValue(data.ergonomics, false, 0) }}</span>
             <font-awesome-icon
               icon="hand-paper"
               class="icon-after-text"
@@ -133,7 +135,28 @@
       </template>
     </Column>
     <Column
-      field="wearableModifiers.ergonomicsPercentageModifierWithMods"
+      field="armorModifiers.armorClass"
+      :sortable="true"
+    >
+      <template #header>
+        <div class="build-list-column">
+          {{ $t('caption.armorClass') }}
+        </div>
+      </template>
+      <template #body="{ data }">
+        <div class="build-list-column">
+          <div v-if="data.armorModifiers.armorClass !== 0">
+            <span>{{ StatsUtils.getDisplayValue(data.armorModifiers.armorClass, false, 0) }}</span>
+            <font-awesome-icon
+              icon="award"
+              class="icon-after-text"
+            />
+          </div>
+        </div>
+      </template>
+    </Column>
+    <Column
+      field="wearableModifiers.ergonomicsPercentageModifier"
       :sortable="true"
     >
       <template #header>
@@ -143,11 +166,11 @@
       </template>
       <template #body="{ data }">
         <div
-          v-if="data.wearableModifiers != null && data.wearableModifiers.ergonomicsPercentageModifierWithMods !== 0"
+          v-if="data.wearableModifiers.ergonomicsPercentageModifier !== 0"
           class="build-list-column"
         >
-          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.ergonomicsPercentageModifierWithMods)">
-            {{ StatsUtils.getDisplayValue(data.wearableModifiers.ergonomicsPercentageModifierWithMods, true, true) }}
+          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.ergonomicsPercentageModifier)">
+            {{ StatsUtils.getPercentageDisplayValue(data.wearableModifiers.ergonomicsPercentageModifier, true) }}
           </span>
           <font-awesome-icon
             icon="hand-paper"
@@ -157,7 +180,7 @@
       </template>
     </Column>
     <Column
-      field="wearableModifiers.movementSpeedPercentageModifierWithMods"
+      field="wearableModifiers.movementSpeedPercentageModifier"
       :sortable="true"
     >
       <template #header>
@@ -167,11 +190,11 @@
       </template>
       <template #body="{ data }">
         <div
-          v-if="data.wearableModifiers != null && data.wearableModifiers.movementSpeedPercentageModifierWithMods !== 0"
+          v-if="data.wearableModifiers.movementSpeedPercentageModifier !== 0"
           class="build-list-column"
         >
-          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.movementSpeedPercentageModifierWithMods)">
-            {{ StatsUtils.getDisplayValue(data.wearableModifiers.movementSpeedPercentageModifierWithMods, true, true) }}
+          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.movementSpeedPercentageModifier)">
+            {{ StatsUtils.getPercentageDisplayValue(data.wearableModifiers.movementSpeedPercentageModifier, true) }}
           </span>
           <font-awesome-icon
             icon="walking"
@@ -181,7 +204,7 @@
       </template>
     </Column>
     <Column
-      field="wearableModifiers.turningSpeedPercentageModifierWithMods"
+      field="wearableModifiers.turningSpeedPercentageModifier"
       :sortable="true"
     >
       <template #header>
@@ -191,11 +214,11 @@
       </template>
       <template #body="{ data }">
         <div
-          v-if="data.wearableModifiers != null && data.wearableModifiers.turningSpeedPercentageModifierWithMods !== 0"
+          v-if="data.wearableModifiers.turningSpeedPercentageModifier !== 0"
           class="build-list-column"
         >
-          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.turningSpeedPercentageModifierWithMods)">
-            {{ StatsUtils.getDisplayValue(data.wearableModifiers.turningSpeedPercentageModifierWithMods, true, true) }}
+          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.turningSpeedPercentageModifier)">
+            {{ StatsUtils.getPercentageDisplayValue(data.wearableModifiers.turningSpeedPercentageModifier, true) }}
           </span>
           <font-awesome-icon
             icon="undo"
@@ -218,7 +241,7 @@
           v-if="data.weight > 0"
           class="build-list-column"
         >
-          <span :class="StatsUtils.getWeightColorClass(data.weight)">{{ data.weight }}</span>
+          <span :class="StatsUtils.getWeightColorClass(data.weight)">{{ StatsUtils.getDisplayValue(data.weight, false, 3, 3) }}</span>
           <font-awesome-icon
             icon="weight-hanging"
             class="icon-after-text"

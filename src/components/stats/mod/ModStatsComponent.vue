@@ -12,7 +12,7 @@
         <span>{{ $t('caption.ergonomics') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsModifier)">
-        {{ StatsUtils.getDisplayValue(ergonomicsModifier, true, true) }}
+        {{ StatsUtils.getDisplayValue(ergonomicsModifier, true) }}
       </div>
     </div>
   </div>
