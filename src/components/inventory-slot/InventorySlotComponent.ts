@@ -39,12 +39,16 @@ export default defineComponent({
   },
   emits: ['update:modelValue', 'update:collapsed'],
   setup: (props, { emit }) => {
+    const globalFilterService = Services.get(GlobalFilterService)
     const inventoryItemService = Services.get(InventoryItemService)
     const inventorySlotComponentService = Services.get(InventorySlotComponentService)
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
     const inventorySlotService = Services.get(InventorySlotService)
-    const globalFilterService = Services.get(GlobalFilterService)
+    const itemPathPrefix = PathUtils.itemPrefix
 
+    const editing = inject<Ref<boolean>>('editing')
+
+    const displayed = computed(() => editing?.value || props.modelValue.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
     const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
     const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
     const hasSummaryErgonomicsPercentageModifier = computed(() => summary.value.wearableModifiers.ergonomicsPercentageModifier !== 0)
@@ -59,13 +63,6 @@ export default defineComponent({
       || hasSummaryTurningSpeedPercentageModifier.value
     )
     const hasSummaryWeight = computed(() => summary.value.weight !== 0)
-    const isChildItemPathRegex = computed(() => new RegExp(props.path.replace('/', '\\/') + '_[0-9]+\\/item:[a-f0-9]+\\/((mod:)|(content:))'))
-
-    const editing = inject<Ref<boolean>>('editing')
-
-    const itemPathPrefix = PathUtils.itemPrefix
-
-    const displayed = computed(() => editing?.value || props.modelValue.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
 
     const acceptedItems = ref<IItem[]>([])
     const acceptedItemsCategoryId = ref<string | undefined>(undefined)
@@ -170,7 +167,7 @@ export default defineComponent({
      * Updates the inventory slot summary when a mod or content item changes.
      */
     async function onModOrContentChanged(path: string) {
-      if (isChildItemPathRegex.value.test(path)) {
+      if (path.startsWith(props.path)) {
         await getSummary()
       }
     }

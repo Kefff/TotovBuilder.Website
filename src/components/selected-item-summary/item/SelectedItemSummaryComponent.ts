@@ -1,4 +1,4 @@
-import { defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import { IInventoryItem } from '../../../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../../../models/build/IInventoryModSlot'
 import { IgnoredUnitPrice } from '../../../models/utils/IgnoredUnitPrice'
@@ -32,9 +32,12 @@ export default defineComponent({
   },
   setup: (props) => {
     const globalFilterService = Services.get(GlobalFilterService)
-    globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-
     const inventoryItemService = Services.get(InventoryItemService)
+
+    const hasMissingPrice = computed(() => price.value.missingPrice
+      && price.value.unitPrice.valueInMainCurrency === 0 // We don't show the missing price icon on items that contain an item with a missing price
+      && !props.modelValue.ignorePrice)
+
     const price = ref<IInventoryItemPrice>({
       missingPrice: false,
       price: {
@@ -90,6 +93,8 @@ export default defineComponent({
     })
 
     onMounted(() => {
+      globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+
       setPrice()
       setWeight()
     })
@@ -170,6 +175,7 @@ export default defineComponent({
     }
 
     return {
+      hasMissingPrice,
       IgnoredUnitPrice,
       price,
       StatsUtils,

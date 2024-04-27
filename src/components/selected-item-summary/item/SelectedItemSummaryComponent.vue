@@ -5,8 +5,8 @@
       <div class="selected-item-summary-right">
         <div class="selected-item-summary-right-price">
           <div
-            v-if="price.missingPrice"
-            v-tooltip.top="$t('message.missingPrice')"
+            v-if="hasMissingPrice"
+            v-tooltip.top="$t('message.itemWithMissingPrice')"
             class="selected-item-summary-price-missing-price-icon"
           >
             <font-awesome-icon icon="exclamation-triangle" />
@@ -62,12 +62,5 @@
   </div>
 </template>
 
-<script
-  lang="ts"
-  src="./SelectedItemSummaryComponent.ts"
-/>
-<style
-  scoped
-  lang="css"
-  src="./SelectedItemSummaryComponent.css"
-/>
+<script lang="ts" src="./SelectedItemSummaryComponent.ts" />
+<style scoped lang="css" src="./SelectedItemSummaryComponent.css" />

@@ -51,10 +51,6 @@ export default defineComponent({
       required: false,
       default: true
     },
-    path: {
-      type: String,
-      required: true
-    },
     preset: {
       type: Object as PropType<IInventoryModSlot>,
       required: false,
