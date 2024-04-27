@@ -3,11 +3,11 @@
     <Dialog
       v-model:visible="showStatsInternal"
       :closable="true"
+      :close-on-escape="true"
+      :dismissable-mask="true"
+      :draggable="false"
       :header="item.name"
       :modal="true"
-      :draggable="false"
-      :dismissable-mask="true"
-      :close-on-escape="true"
     >
       <template #header>
         <div class="stats-modal-title">

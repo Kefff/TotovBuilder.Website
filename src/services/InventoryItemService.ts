@@ -62,8 +62,9 @@ export class InventoryItemService {
 
     const itemPropertiesService = Services.get(ItemPropertiesService)
 
-    if (!itemPropertiesService.isArmor(itemResult.value) &&
-      !itemPropertiesService.isVest(itemResult.value)) {
+    if (!itemPropertiesService.isArmor(itemResult.value)
+      && !itemPropertiesService.isHeadwear(itemResult.value)
+      && !itemPropertiesService.isVest(itemResult.value)) {
       return Result.ok({
         armorClass: 0,
         durability: 0

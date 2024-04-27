@@ -80,7 +80,9 @@ export class InventorySlotPropertiesService {
    */
   private async getArmorModifiers(inventorySlot: IInventorySlot): Promise<IArmorModifiers> {
     if (inventorySlot.items[0] == null
-      || (inventorySlot.typeId !== 'bodyArmor' && inventorySlot.typeId !== 'tacticalRig')) {
+      || (inventorySlot.typeId !== 'bodyArmor'
+        && inventorySlot.typeId !== 'headwear'
+        && inventorySlot.typeId !== 'tacticalRig')) {
       return {
         armorClass: 0,
         durability: 0

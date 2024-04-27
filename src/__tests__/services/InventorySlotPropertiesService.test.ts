@@ -269,6 +269,13 @@ describe('getSummary()', () => {
   describe('Armor modifiers', () => {
     it.each([
       [
+        inventorySlot1,
+        {
+          armorClass: lshZ2dtm.armorClass,
+          durability: lshZ2dtm.durability
+        } as IArmorModifiers
+      ],
+      [
         {
           items: [
             {
