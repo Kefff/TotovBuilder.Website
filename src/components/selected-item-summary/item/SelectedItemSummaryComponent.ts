@@ -1,13 +1,13 @@
-import { defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import { IInventoryItem } from '../../../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../../../models/build/IInventoryModSlot'
 import { IgnoredUnitPrice } from '../../../models/utils/IgnoredUnitPrice'
-import { IInventoryPrice } from '../../../models/utils/IInventoryPrice'
+import { IInventoryItemPrice } from '../../../models/utils/IInventoryItemPrice'
 import { IWeight } from '../../../models/utils/IWeight'
-import { InventoryItemService } from '../../../services/InventoryItemService'
 import { GlobalFilterService } from '../../../services/GlobalFilterService'
+import { InventoryItemService } from '../../../services/InventoryItemService'
 import Services from '../../../services/repository/Services'
-import Result from '../../../utils/Result'
+import StatsUtils from '../../../utils/StatsUtils'
 import Price from '../../price/PriceComponent.vue'
 
 export default defineComponent({
@@ -32,10 +32,13 @@ export default defineComponent({
   },
   setup: (props) => {
     const globalFilterService = Services.get(GlobalFilterService)
-    globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-
     const inventoryItemService = Services.get(InventoryItemService)
-    const price = ref<IInventoryPrice>({
+
+    const hasMissingPrice = computed(() => price.value.missingPrice
+      && price.value.unitPrice.valueInMainCurrency === 0 // We don't show the missing price icon on items that contain an item with a missing price
+      && !props.modelValue.ignorePrice)
+
+    const price = ref<IInventoryItemPrice>({
       missingPrice: false,
       price: {
         barterItems: [],
@@ -76,8 +79,6 @@ export default defineComponent({
       unitWeight: 0
     })
 
-    let priceSettingPromise: Promise<Result<IInventoryPrice>> = Promise.resolve(Result.ok({} as IInventoryPrice))
-
     watch(() => [
       props.modelValue.ignorePrice,
       props.modelValue.itemId,
@@ -92,6 +93,8 @@ export default defineComponent({
     })
 
     onMounted(() => {
+      globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+
       setPrice()
       setWeight()
     })
@@ -111,15 +114,7 @@ export default defineComponent({
      * Sets the price of the inventory item.
      */
     async function setPrice() {
-      // Awaiting for previous price setting.
-      // This is because when the component is first mounted, the item preset is not always defined right away.
-      // So there were cases where the price is gotten with an undefined props.preset?.item that is then updated while inventoryItemService.getPrice() is being executed.
-      // That triggered another call to inventoryItemService.getPrice() that could be resolved before the first call.
-      // So the result of the first call could overwrite the result of the second call.
-      await priceSettingPromise
-
-      priceSettingPromise = inventoryItemService.getPrice(props.modelValue, props.preset?.item, props.canBeLooted)
-      const priceResult = await priceSettingPromise
+      const priceResult = await inventoryItemService.getPrice(props.modelValue, props.preset?.item, props.canBeLooted)
 
       if (priceResult.success) {
         price.value = priceResult.value
@@ -180,8 +175,10 @@ export default defineComponent({
     }
 
     return {
+      hasMissingPrice,
       IgnoredUnitPrice,
       price,
+      StatsUtils,
       weight
     }
   }

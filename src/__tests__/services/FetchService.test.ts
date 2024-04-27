@@ -1,9 +1,9 @@
-import { FetchService } from '../../services/FetchService'
-import createFetchMock from 'vitest-fetch-mock'
-import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
-import Services from '../../services/repository/Services'
-import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import createFetchMock from 'vitest-fetch-mock'
+import { FetchService } from '../../services/FetchService'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import Services from '../../services/repository/Services'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 const fetchMock = createFetchMock(vi)
 
@@ -24,38 +24,36 @@ describe('get()', () => {
     // Arrange
     const response = `[
   {
-    "id": "590c621186f774138d11ea29",
-    "name": "Secure Flash drive",
-    "shortName": "Flash drive",
-    "iconLink": "https://assets.tarkov-tools.com/590c621186f774138d11ea29-icon.jpg",
-    "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Secure_Flash_drive",
-    "imageLink": "https://assets.tarkov-tools.com/590c621186f774138d11ea29-image.jpg",
-    "link": "https://tarkov-tools.com/item/secure-flash-drive",
-    "buyFor": [
-      {
-        "source": "flea-market",
-        "price": 58486,
-        "currency": "RUB",
-        "requirements": [{ "type": "playerLevel", "value": 20 }]
-      }
-    ]
+    "ic": "https://assets.tarkov.dev/590c392f86f77444754deb29-icon.webp",
+    "i": "590c392f86f77444754deb29",
+    "im": "https://assets.tarkov.dev/590c392f86f77444754deb29-image.webp",
+    "m": "https://tarkov.dev/item/ssd-drive",
+    "n": "SSD drive",
+    "s": "SSD",
+    "w": 0.04,
+    "wi": "https://escapefromtarkov.fandom.com/wiki/SSD_drive"
   },
   {
-    "id": "590c392f86f77444754deb29",
-    "name": "SSD drive",
-    "shortName": "SSD",
-    "iconLink": "https://assets.tarkov-tools.com/590c392f86f77444754deb29-icon.jpg",
-    "wikiLink": "https://escapefromtarkov.fandom.com/wiki/SSD_drive",
-    "imageLink": "https://assets.tarkov-tools.com/590c392f86f77444754deb29-image.jpg",
-    "link": "https://tarkov-tools.com/item/ssd-drive",
-    "buyFor": [
+    "e": -1,
+    "mo": [
       {
-        "source": "flea-market",
-        "price": 60373,
-        "currency": "RUB",
-        "requirements": [{ "type": "playerLevel", "value": 20 }]
+        "i": [
+          "5addba3e5acfc4001669f0ab",
+          "5aafa49ae5b5b00015042a58"
+        ],
+        "n": "mod_sight_front"
       }
-    ]
+    ],
+    "r": -0.06,
+    "c": "rangedWeaponMod",
+    "ic": "https://assets.tarkov.dev/5addbbb25acfc40015621bd9-icon.webp",
+    "i": "5addbbb25acfc40015621bd9",
+    "im": "https://assets.tarkov.dev/5addbbb25acfc40015621bd9-image.webp",
+    "m": "https://tarkov.dev/item/m14-yankee-hill-phantom-762x51-flash-hider",
+    "n": "M14 Yankee Hill Phantom 7.62x51 flash hider",
+    "s": "Phantom",
+    "w": 0.07,
+    "wi": "https://escapefromtarkov.fandom.com/wiki/M14_Yankee_Hill_Phantom_7.62x51_flash_hider"
   }
 ]`
     const endpoint = 'data/prices.ts'
@@ -70,38 +68,36 @@ describe('get()', () => {
     expect(result.success).toBe(true)
     expect(result.value).toStrictEqual([
       {
-        'id': '590c621186f774138d11ea29',
-        'name': 'Secure Flash drive',
-        'shortName': 'Flash drive',
-        'iconLink': 'https://assets.tarkov-tools.com/590c621186f774138d11ea29-icon.jpg',
-        'wikiLink': 'https://escapefromtarkov.fandom.com/wiki/Secure_Flash_drive',
-        'imageLink': 'https://assets.tarkov-tools.com/590c621186f774138d11ea29-image.jpg',
-        'link': 'https://tarkov-tools.com/item/secure-flash-drive',
-        'buyFor': [
-          {
-            'source': 'flea-market',
-            'price': 58486,
-            'currency': 'RUB',
-            'requirements': [{ 'type': 'playerLevel', 'value': 20 }]
-          }
-        ]
+        ic: 'https://assets.tarkov.dev/590c392f86f77444754deb29-icon.webp',
+        i: '590c392f86f77444754deb29',
+        im: 'https://assets.tarkov.dev/590c392f86f77444754deb29-image.webp',
+        m: 'https://tarkov.dev/item/ssd-drive',
+        n: 'SSD drive',
+        s: 'SSD',
+        w: 0.04,
+        wi: 'https://escapefromtarkov.fandom.com/wiki/SSD_drive'
       },
       {
-        'id': '590c392f86f77444754deb29',
-        'name': 'SSD drive',
-        'shortName': 'SSD',
-        'iconLink': 'https://assets.tarkov-tools.com/590c392f86f77444754deb29-icon.jpg',
-        'wikiLink': 'https://escapefromtarkov.fandom.com/wiki/SSD_drive',
-        'imageLink': 'https://assets.tarkov-tools.com/590c392f86f77444754deb29-image.jpg',
-        'link': 'https://tarkov-tools.com/item/ssd-drive',
-        'buyFor': [
+        e: -1,
+        mo: [
           {
-            'source': 'flea-market',
-            'price': 60373,
-            'currency': 'RUB',
-            'requirements': [{ 'type': 'playerLevel', 'value': 20 }]
+            'i': [
+              '5addba3e5acfc4001669f0ab',
+              '5aafa49ae5b5b00015042a58'
+            ],
+            'n': 'mod_sight_front'
           }
-        ]
+        ],
+        r: -0.06,
+        c: 'rangedWeaponMod',
+        ic: 'https://assets.tarkov.dev/5addbbb25acfc40015621bd9-icon.webp',
+        i: '5addbbb25acfc40015621bd9',
+        im: 'https://assets.tarkov.dev/5addbbb25acfc40015621bd9-image.webp',
+        m: 'https://tarkov.dev/item/m14-yankee-hill-phantom-762x51-flash-hider',
+        n: 'M14 Yankee Hill Phantom 7.62x51 flash hider',
+        s: 'Phantom',
+        w: 0.07,
+        wi: 'https://escapefromtarkov.fandom.com/wiki/M14_Yankee_Hill_Phantom_7.62x51_flash_hider'
       }
     ])
   })
@@ -110,67 +106,35 @@ describe('get()', () => {
     // Arrange
     const response = `[
   {
-    "id": "57dc2fa62459775949412633",
-    "name": "AKS-74U 5.45x39 assault rifle",
-    "shortName": "AKS-74U",
-    "iconLink": "https://assets.tarkov-tools.com/57dc2fa62459775949412633-icon.jpg",
-    "wikiLink": "https://escapefromtarkov.fandom.com/wiki/AKS-74U_5.45x39_assault_rifle",
-    "imageLink": "https://assets.tarkov-tools.com/57dc2fa62459775949412633-image.jpg",
-    "link": "https://tarkov-tools.com/item/aks-74u-545x39-assault-rifle",
-    "buyFor": [
-      {
-        "source": "prapor",
-        "price": 28823,
-        "currency": "RUB",
-        "requirements": [
-          { "type": "loyaltyLevel", "value": 1 },
-          { "type": "questCompleted", "value": 1 }
-        ]
-      },
-      {
-        "source": "flea-market",
-        "price": 22761,
-        "currency": "RUB",
-        "requirements": [{ "type": "playerLevel", "value": 20 }]
-      }
-    ]
+    "ic": "https://assets.tarkov.dev/590c392f86f77444754deb29-icon.webp",
+    "i": "590c392f86f77444754deb29",
+    "im": "https://assets.tarkov.dev/590c392f86f77444754deb29-image.webp",
+    "m": "https://tarkov.dev/item/ssd-drive",
+    "n": "SSD drive",
+    "s": "SSD",
+    "w": 0.04,
+    "wi": "https://escapefromtarkov.fandom.com/wiki/SSD_drive"
   }
 ]`
     useWebsiteConfigurationServiceMock()
-    fetchMock.mockOnceIf('localhost:3000/method?id=57dc2fa62459775949412633', response, { status: 200 })
+    fetchMock.mockOnceIf('localhost:3000/method?id=590c392f86f77444754deb29', response, { status: 200 })
 
     // Act
-    const result = await new FetchService().get('localhost:3000/method', { name: 'id', value: '57dc2fa62459775949412633' })
+    const result = await new FetchService().get('localhost:3000/method', { name: 'id', value: '590c392f86f77444754deb29' })
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
     expect(result.success).toBe(true)
     expect(result.value).toStrictEqual([
       {
-        'id': '57dc2fa62459775949412633',
-        'name': 'AKS-74U 5.45x39 assault rifle',
-        'shortName': 'AKS-74U',
-        'iconLink': 'https://assets.tarkov-tools.com/57dc2fa62459775949412633-icon.jpg',
-        'wikiLink': 'https://escapefromtarkov.fandom.com/wiki/AKS-74U_5.45x39_assault_rifle',
-        'imageLink': 'https://assets.tarkov-tools.com/57dc2fa62459775949412633-image.jpg',
-        'link': 'https://tarkov-tools.com/item/aks-74u-545x39-assault-rifle',
-        'buyFor': [
-          {
-            'source': 'prapor',
-            'price': 28823,
-            'currency': 'RUB',
-            'requirements': [
-              { 'type': 'loyaltyLevel', 'value': 1 },
-              { 'type': 'questCompleted', 'value': 1 }
-            ]
-          },
-          {
-            'source': 'flea-market',
-            'price': 22761,
-            'currency': 'RUB',
-            'requirements': [{ 'type': 'playerLevel', 'value': 20 }]
-          }
-        ]
+        ic: 'https://assets.tarkov.dev/590c392f86f77444754deb29-icon.webp',
+        i: '590c392f86f77444754deb29',
+        im: 'https://assets.tarkov.dev/590c392f86f77444754deb29-image.webp',
+        m: 'https://tarkov.dev/item/ssd-drive',
+        n: 'SSD drive',
+        s: 'SSD',
+        w: 0.04,
+        wi: 'https://escapefromtarkov.fandom.com/wiki/SSD_drive'
       }
     ])
   })

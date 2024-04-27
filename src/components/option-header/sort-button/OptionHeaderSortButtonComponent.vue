@@ -14,7 +14,7 @@
     />
     <img
       v-else-if="customIcon != null"
-      :src="'/images/' + customIcon + '.webp'"
+      :src="Images[StringUtils.toCamelCase(customIcon)]"
       class="custom-icon"
     >
   </div>

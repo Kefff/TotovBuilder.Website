@@ -1,9 +1,10 @@
-import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
-import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
+import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../../models/build/IBuild'
 import { IRangedWeapon } from '../../../models/item/IRangedWeapon'
 import { Migration160 } from '../../../utils/migrations/Migration1.6.0'
-import { describe, expect, it } from 'vitest'
+import { berkut, m9a3, m9a3Default, rpk16, rpk16Default } from '../../__data__/itemMocks'
+import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
   it('should update obsolete builds to use the default preset item instead of the base item for their weapons', async () => {
@@ -19,7 +20,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
             {
               content: [],
               ignorePrice: false,
-              itemId: '57dc2fa62459775949412633', // Kalashnikov AKS-74U 5.45x39 assault rifle
+              itemId: rpk16.id,
               modSlots: [],
               quantity: 1
             }
@@ -31,7 +32,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
             {
               content: [],
               ignorePrice: false,
-              itemId: '57dc2fa62459775949412633', // Kalashnikov AKS-74U 5.45x39 assault rifle
+              itemId: rpk16.id,
               modSlots: [],
               quantity: 1
             }
@@ -43,7 +44,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
             {
               content: [],
               ignorePrice: false,
-              itemId: '5e81c3cbac2bb513793cdc75', // Colt M1911A1 .45 ACP pistol
+              itemId: m9a3.id,
               modSlots: [],
               quantity: 1
             }
@@ -55,7 +56,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
             {
               content: [],
               ignorePrice: false,
-              itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
+              itemId: berkut.id,
               modSlots: [],
               quantity: 1
             }
@@ -86,7 +87,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
             {
               content: [],
               ignorePrice: false,
-              itemId: '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
+              itemId: rpk16Default.id,
               modSlots: [],
               quantity: 1
             }
@@ -98,7 +99,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
             {
               content: [],
               ignorePrice: false,
-              itemId: '584147732459775a2b6d9f12', // Kalashnikov AKS-74U 5.45x39 assault rifle Default
+              itemId: rpk16Default.id,
               modSlots: [],
               quantity: 1
             }
@@ -110,7 +111,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
             {
               content: [],
               ignorePrice: false,
-              itemId: '5eb2968186f7746d1f1a4fd5', // Colt M1911A1 .45 ACP pistol Default
+              itemId: m9a3Default.id,
               modSlots: [],
               quantity: 1
             }
@@ -122,7 +123,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
             {
               content: [],
               ignorePrice: false,
-              itemId: '5ca20d5986f774331e7c9602', // WARTECH Berkut BB-102 backpack
+              itemId: berkut.id,
               modSlots: [],
               quantity: 1
             }

@@ -65,6 +65,16 @@ export default class StringUtils {
   }
 
   /**
+   * Transforms a string containing `-` and `.` to a camel case string.
+   * @param s - String.
+   */
+  public static toCamelCase(s: string): string {
+    const camelCaseString = s.replace(/[-_.](.)/g, (_, char) => char.toUpperCase())
+
+    return this.toLowerFirst(camelCaseString)
+  }
+
+  /**
    * Transforms the first letter of a string to uppercase.
    * @param s - String.
    */
@@ -74,7 +84,7 @@ export default class StringUtils {
     }
 
     const part1 = s[0].toUpperCase()
-    const part2 = s.substr(1)
+    const part2 = s.slice(1)
 
     return part1 + part2
   }

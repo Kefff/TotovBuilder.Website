@@ -1,17 +1,18 @@
-import { IItem } from '../../models/item/IItem'
-import { IMerchantFilter } from '../../models/utils/IMerchantFilter'
-import { IPrice } from '../../models/item/IPrice'
-import { GlobalFilterService } from '../../services/GlobalFilterService'
-import WebsiteConfigurationMock from '../__data__/website-configuration.json'
-import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
-import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
-import { IItemExclusionFilter } from '../../models/utils/IItemExclusionFilter'
-import Services from '../../services/repository/Services'
-import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
-import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
-import { ItemService } from '../../services/ItemService'
 import { beforeEach, describe, expect, it } from 'vitest'
+import { IItem } from '../../models/item/IItem'
+import { IPrice } from '../../models/item/IPrice'
+import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
+import { IItemExclusionFilter } from '../../models/utils/IItemExclusionFilter'
+import { IMerchantFilter } from '../../models/utils/IMerchantFilter'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ItemService } from '../../services/ItemService'
+import Services from '../../services/repository/Services'
+import { ammo545bp, berkut, rpk16 } from '../__data__/itemMocks'
+import WebsiteConfigurationMock from '../__data__/websiteConfigurationMock'
+import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
+import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 const itemExclusionFilters = [
   {
@@ -24,7 +25,7 @@ const itemExclusionFilters = [
   }
 ] as IItemExclusionFilter[]
 
-const merchantFilters = [
+const initialMerchantFilters = [
   {
     'enabled': true,
     'merchantLevel': 0,
@@ -68,10 +69,12 @@ const merchantFilters = [
 ] as IMerchantFilter[]
 
 beforeEach(() => {
-  localStorage.setItem(WebsiteConfigurationMock.globalFilterStorageKey, JSON.stringify({
-    itemExclusionFilters,
-    merchantFilters
-  } as IGlobalFilter))
+  localStorage.setItem(
+    WebsiteConfigurationMock.globalFilterStorageKey,
+    JSON.stringify({
+      itemExclusionFilters,
+      merchantFilters: initialMerchantFilters
+    } as IGlobalFilter))
 })
 
 describe('get()', () => {
@@ -508,10 +511,10 @@ describe('isMatchingFilter()', () => {
   })
 
   it.each([
-    ['5ca20d5986f774331e7c9602', false, true], // WARTECH Berkut BB-102 backpack
-    ['5c1d0efb86f7744baf2e7b7b', true, true], // TerraGroup Labs keycard (Red)
-    ['5c1d0efb86f7744baf2e7b7b', false, false], // TerraGroup Labs keycard (Red)
-    ['57dc2fa62459775949412633', false, false] // Kalashnikov AKS-74U 5.45x39 assault rifle
+    [berkut.id, false, true],
+    [ammo545bp.id, true, true],
+    [ammo545bp.id, false, false],
+    [rpk16.id, false, false]
   ])('should indicate that items included in the item exclusion filters do not match the filter', async (itemId: string, includeItemsWithoutMerchant: boolean, expected: boolean) => {
     // Arrange
     useItemServiceMock()

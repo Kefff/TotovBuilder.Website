@@ -2,7 +2,7 @@
   <div class="inventory-price">
     <div
       v-if="inventoryPrice.missingPrice"
-      v-tooltip.top="$t('message.missingPrice')"
+      v-tooltip.top="$t('message.inventorySlotWithMissingPrice')"
       class="inventory-price-missing-price-icon"
     >
       <font-awesome-icon icon="exclamation-triangle" />
@@ -13,7 +13,7 @@
       @click="(e) => togglePriceDetails(e)"
     >
       <div
-        v-for="(price, index) of inventoryPrice.pricesWithContent"
+        v-for="(price, index) of inventoryPrice.priceByCurrency"
         :key="index"
         class="inventory-price-list-price"
       >

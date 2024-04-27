@@ -2,10 +2,11 @@
   <Dialog
     v-model:visible="hasChangelogDisplayed"
     :closable="true"
+    :close-on-escape="true"
+    :dismissable-mask="true"
+    :draggable="false"
     :header="$t('caption.changelog')"
     :modal="true"
-    :draggable="false"
-    @hide="closeChangelog()"
   >
     <div class="changelog">
       <Loading v-show="isLoading" />

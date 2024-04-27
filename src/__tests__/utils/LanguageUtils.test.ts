@@ -35,8 +35,8 @@ describe('getLanguage()', () => {
 
 describe('setLanguage()', () => {
   it.each([
-    ['fr', 'fr', 'Totov Builder : Outil d\'équipement pour Escape From Tarkov', 'Totov Builder vous aide à créer des configurations d\'armes, choisir l\'équipement de votre PMC et visualiser facilement les prix, poids et statistiques de votre équipement entier avant de partir en raid. Gérez efficacement votre budget en suivant chaque rouble que vous dépensez.'],
-    ['invalid', 'en', 'Totov Builder : Loadout tool for Escape From Tarkov', 'Totov Builder helps you create your weapon builds, choose your PMC equipment and easily visualize the price, weight and stats of your entire loadout before going into a raid. Manage your budget efficiently by tracing every ruble that you spend.']
+    ['fr', 'fr', 'Configurateur d\'armes et d\'équipement pour Escape From Tarkov', 'Totov Builder aide à créer des configurations d\'armes et choisir vos mods et équipement entier en fonction des niveaux de marchands. Visualisez le prix et les stats de équipement.'],
+    ['invalid', 'en', 'Gun modding and loadout builder for Escape From Tarkov', 'Totov Builder helps you create weapon builds and choose all of your gear based on merchant levels. View the price and stats of your loadout.']
   ])('should change the language', (language: string, expectedLanguage: string, expectedTitle: string, expectedMetaDescription: string) => {
     // Arrange
     useWebsiteConfigurationServiceMock()

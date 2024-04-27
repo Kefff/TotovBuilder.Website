@@ -1,15 +1,15 @@
-import { IWebsiteConfiguration } from '../../models/configuration/IWebsiteConfiguration'
-import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import WebsiteConfigurationMock from '../__data__/website-configuration.json'
-import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
-import { FetchService } from '../../services/FetchService'
 import { anyString, instance, mock, spy, verify, when } from 'ts-mockito'
-import Result, { FailureType } from '../../utils/Result'
-import Services from '../../services/repository/Services'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
-import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 import { describe, expect, it } from 'vitest'
+import { IWebsiteConfiguration } from '../../models/configuration/IWebsiteConfiguration'
+import { FetchService } from '../../services/FetchService'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
+import Services from '../../services/repository/Services'
+import Result, { FailureType } from '../../utils/Result'
+import WebsiteConfigurationMock from '../__data__/websiteConfigurationMock'
+import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('initialize', () => {
   it('should fetch the website configuration', async () => {
@@ -84,7 +84,7 @@ describe('initialize', () => {
     Services.configure(NotificationService)
 
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get(anyString())).thenReturn(Promise.resolve(Result.fail<void>(FailureType.error, 'FetchService.get()', 'Fetch error')))
+    when(fetchServiceMock.get(anyString())).thenResolve(Result.fail<void>(FailureType.error, 'FetchService.get()', 'Fetch error'))
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const service = new WebsiteConfigurationService()

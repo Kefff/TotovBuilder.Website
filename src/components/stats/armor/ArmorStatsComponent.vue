@@ -15,7 +15,10 @@
         {{ item.armorClass }}
       </div>
     </div>
-    <div class="stats-entry">
+    <div
+      v-if="item.durability > 0"
+      class="stats-entry"
+    >
       <div class="stats-caption">
         <font-awesome-icon
           icon="heart"
@@ -34,18 +37,6 @@
       </div>
       <div class="stats-value">
         {{ $t('caption.material' + item.material) }}
-      </div>
-    </div>
-    <div
-      v-if="hasRicochetChance"
-      class="stats-entry"
-    >
-      <div class="stats-caption custom-icon-before-text">
-        <img src="/images/ricochet.webp">
-        <span>{{ $t('caption.ricochetChance') }} :</span>
-      </div>
-      <div class="stats-value">
-        {{ $t('caption.ricochetChance' + item.ricochetChance) }}
       </div>
     </div>
   </div>

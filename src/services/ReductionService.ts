@@ -1,34 +1,34 @@
+import InventorySlotTypes from '../data/inventory-slot-types.json'
+import { IBuild } from '../models/build/IBuild'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
-import vueI18n from '../plugins/vueI18n'
-import Result, { FailureType } from '../utils/Result'
-import InventorySlotTypes from '../data/inventory-slot-types.json'
 import { IInventorySlot } from '../models/build/IInventorySlot'
-import { IBuild } from '../models/build/IBuild'
-import { IPrice } from '../models/item/IPrice'
-import { IItem } from '../models/item/IItem'
-import { BuildService } from './BuildService'
-import Services from './repository/Services'
-import { IBarterItem } from '../models/item/IBarterItem'
 import { IQuest } from '../models/configuration/IQuest'
-import { ItemPropertiesService } from './ItemPropertiesService'
 import { IAmmunition } from '../models/item/IAmmunition'
 import { IArmor } from '../models/item/IArmor'
-import { IModdable } from '../models/item/IModdable'
-import { IModSlot } from '../models/item/IModSlot'
 import { IArmorMod } from '../models/item/IArmorMod'
 import { IBackpack } from '../models/item/IBackpack'
+import { IBarterItem } from '../models/item/IBarterItem'
 import { IContainer } from '../models/item/IContainer'
-import { IWearable } from '../models/item/IWearable'
+import { IEyewear } from '../models/item/IEyewear'
 import { IGrenade } from '../models/item/IGrenade'
 import { IHeadwear } from '../models/item/IHeadwear'
+import { IItem } from '../models/item/IItem'
 import { IMagazine } from '../models/item/IMagazine'
+import { IMeleeWeapon } from '../models/item/IMeleeWeapon'
 import { IMod } from '../models/item/IMod'
+import { IModSlot } from '../models/item/IModSlot'
+import { IModdable } from '../models/item/IModdable'
+import { IPrice } from '../models/item/IPrice'
 import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
 import { IVest } from '../models/item/IVest'
-import { IMeleeWeapon } from '../models/item/IMeleeWeapon'
-import { IEyewear } from '../models/item/IEyewear'
+import { IWearable } from '../models/item/IWearable'
+import vueI18n from '../plugins/vueI18n'
+import Result, { FailureType } from '../utils/Result'
+import { BuildService } from './BuildService'
+import { ItemPropertiesService } from './ItemPropertiesService'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for parsing reduced serialized elements and reducing elements in order to take less space.
@@ -46,7 +46,8 @@ export class ReductionService {
       return Result.fail(FailureType.error, 'ReductionService.parseReducedBuild()', vueI18n.t('message.cannotParseBuildWithoutInventorySlots'))
     }
 
-    const build = Services.get(BuildService).create()
+    const build = Services.get(BuildService).create(true)
+    build.name = reducedBuild['n'] as string ?? ''
 
     for (const reducedInventorySlot of reducedInventorySlots) {
       const inventorySlotResult = this.parseReducedInventorySlot(reducedInventorySlot)
@@ -251,6 +252,7 @@ export class ReductionService {
       reducedInventorySlots.push(reducedInventorySlot)
     }
 
+    reducedBuild['n'] = build.name
     reducedBuild['s'] = reducedInventorySlots
 
     return reducedBuild
@@ -270,7 +272,6 @@ export class ReductionService {
     reducedInventoryItem['i'] = inventoryItem.itemId
 
     if (inventoryItem.ignorePrice) {
-      // reducedInventoryItem['p'] = 1 // We don't set the boolean value, just having the property indicates that it is true
       reducedInventoryItem['p'] = 1
     }
 
@@ -351,22 +352,22 @@ export class ReductionService {
    * @returns Item.
    */
   private parseReducedArmor(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IArmor {
+    const moddableProperties = this.parseReducedModdable(reducedItem, baseItemProperties)
     const wearableProperties = this.parseReducedWearable(reducedItem, baseItemProperties)
 
     const armorClass = reducedItem['ac'] as number ?? 0
     const armoredAreas = reducedItem['aa'] as string[] ?? []
     const durability = reducedItem['d'] as number ?? 0
     const material = reducedItem['ma'] as string ?? ''
-    const ricochetChance = reducedItem['r'] as string ?? ''
 
     return {
       ...baseItemProperties,
+      ...moddableProperties,
       ...wearableProperties,
       armorClass,
       armoredAreas,
       durability,
-      material,
-      ricochetChance
+      material
     }
   }
 
@@ -378,14 +379,12 @@ export class ReductionService {
    */
   private parseReducedArmorMod(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IArmorMod {
     const armorProperties = this.parseReducedArmor(reducedItem, baseItemProperties)
-    const moddableProperties = this.parseReducedModdable(reducedItem, baseItemProperties)
 
     const blindnessProtectionPercentage = reducedItem['bp'] as number ?? 0
 
     return {
       ...baseItemProperties,
       ...armorProperties,
-      ...moddableProperties,
       blindnessProtectionPercentage
     }
   }
@@ -468,17 +467,17 @@ export class ReductionService {
    */
   private parseReducedHeadwear(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IHeadwear {
     const armorProperties = this.parseReducedArmor(reducedItem, baseItemProperties)
-    const moddableProperties = this.parseReducedModdable(reducedItem, baseItemProperties)
 
     const blocksHeadphones = reducedItem['h'] != null
     const deafening = reducedItem['de'] as string ?? 'None'
+    const ricochetChance = reducedItem['r'] as string ?? ''
 
     return {
       ...baseItemProperties,
       ...armorProperties,
-      ...moddableProperties,
       blocksHeadphones,
-      deafening
+      deafening,
+      ricochetChance
     }
   }
 
@@ -565,7 +564,6 @@ export class ReductionService {
         const modSlotMaxStackableAmount = reducedModSlot['a'] as number ?? 1
         const modSlotName = reducedModSlot['n'] as string
         const modSlotRequired = reducedModSlot['r'] != null
-
 
         modSlots.push({
           compatibleItemIds: modSlotCompatibleItemIds,
@@ -701,8 +699,8 @@ export class ReductionService {
     }
 
     return Result.ok({
-      modSlotName,
-      item: inventoryItem
+      item: inventoryItem,
+      modSlotName
     })
   }
 

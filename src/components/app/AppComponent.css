@@ -1,30 +1,37 @@
 @import '../../css/link.css';
 
+
+html {
+  display: flex;
+  font-size: 14px;
+  letter-spacing: 0.25px;
+  min-height: 100%;
+  min-width: 100%;
+}
+
+body {
+  background-color: var(--surface-0);
+  box-sizing: border-box;
+  color: var(--text-color);
+  display: flex;
+  font-size: 1rem;
+  justify-content: center;
+  margin: 0 auto 0 auto;
+  max-width: 137rem;
+  min-height: 100%;
+  width: 100%;
+}
+
 #app {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   display: flex;
   flex-direction: column;
   font-family: var(--font-main);
-  min-height: 100%;
+  height: 100%;
+  justify-content: center;
   padding: 1rem;
-}
-
-html {
-  font-size: 14px;
-  letter-spacing: 0.25px;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  background-color: var(--surface-0);
-  color: var(--text-color);
-  font-size: 1rem;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  width: 100%;
 }
 
 .app-footer {

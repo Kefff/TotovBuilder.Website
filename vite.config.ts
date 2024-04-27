@@ -1,15 +1,32 @@
 // https://vitest.dev/config/
 /// <reference types="vitest" />
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
-import { resolve, dirname } from 'node:path'
+import vue from '@vitejs/plugin-vue'
+import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'url'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   build: {
-    minify: true
+    minify: true,
+    rollupOptions: {
+      output: {
+        assetFileNames: ({ name }) => {
+          if (/\.(gif|jpe?g|png|svg|webp)$/.test(name ?? '')) {
+            return 'images/[name]-[hash][extname]'
+          } else if (/\.(css|js)$/.test(name ?? '')) {
+            return 'src/[name]-[hash][extname]'
+          } else if (/\.(eot|otf|ttf|woff|woff2)$/.test(name ?? '')) {
+            return 'fonts/[name]-[hash][extname]'
+          }
+
+          return 'assets/[name]-[hash][extname]'
+        },
+        chunkFileNames: 'src/[name]-[hash].js',
+        entryFileNames: 'src/[name]-[hash].js'
+      }
+    }
   },
   envDir: 'environment',
   plugins: [

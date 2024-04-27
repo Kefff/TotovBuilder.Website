@@ -1,16 +1,16 @@
+import { anyString, anything, instance, mock, verify, when } from 'ts-mockito'
+import { describe, expect, it } from 'vitest'
+import { Router } from 'vue-router'
 import { IBuild } from '../../../models/build/IBuild'
 import { BuildService } from '../../../services/BuildService'
-import Result, { FailureType } from '../../../utils/Result'
-import { Router } from 'vue-router'
 import { NotificationService, NotificationType } from '../../../services/NotificationService'
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito'
-import Services from '../../../services/repository/Services'
-import { BuildComponentService } from '../../../services/components/BuildComponentService'
-import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
-import { VersionService } from '../../../services/VersionService'
-import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
-import { describe, expect, it } from 'vitest'
 import { ReductionService } from '../../../services/ReductionService'
+import { VersionService } from '../../../services/VersionService'
+import { BuildComponentService } from '../../../services/components/BuildComponentService'
+import Services from '../../../services/repository/Services'
+import Result, { FailureType } from '../../../utils/Result'
+import { useVersionServiceMock } from '../../__mocks__/VersionServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('getBuild()', () => {
   it('should get a build', () => {
@@ -347,7 +347,7 @@ describe('saveBuild()', () => {
     // Arrange
     const buildComponentService = new BuildComponentService()
     const buildServiceMock = mock<BuildService>()
-    when(buildServiceMock.update('123', anything())).thenReturn(Promise.resolve(Result.ok()))
+    when(buildServiceMock.update('123', anything())).thenResolve(Result.ok())
     Services.configure(BuildService, undefined, instance(buildServiceMock))
     const notificationServiceMock = mock<NotificationService>()
     Services.configure(NotificationService, undefined, instance(notificationServiceMock))
@@ -375,7 +375,7 @@ describe('saveBuild()', () => {
     // Arrange
     const buildComponentService = new BuildComponentService()
     const buildServiceMock = mock<BuildService>()
-    when(buildServiceMock.update('123', anything())).thenReturn(Promise.resolve(Result.fail()))
+    when(buildServiceMock.update('123', anything())).thenResolve(Result.fail())
     Services.configure(BuildService, undefined, instance(buildServiceMock))
     const notificationServiceMock = mock<NotificationService>()
     Services.configure(NotificationService, undefined, instance(notificationServiceMock))

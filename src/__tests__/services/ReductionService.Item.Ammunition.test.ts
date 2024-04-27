@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { ReductionService } from '../../services/ReductionService'
 import { IAmmunition } from '../../models/item/IAmmunition'
-import Services from '../../services/repository/Services'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ReductionService } from '../../services/ReductionService'
+import Services from '../../services/repository/Services'
+import { ammo545us, ammo9mmGT } from '../__data__/itemMocks'
 
 describe('parseReducedItem', () => {
   it.each([
@@ -13,9 +14,9 @@ describe('parseReducedItem', () => {
         'p': 2,
         'v': 365,
         'c': 'ammunition',
-        'ic': 'https://assets.tarkov.dev/unknown-icon.jpg',
+        'ic': 'https://assets.tarkov.dev/unknown-icon.webp',
         'i': 'unknown',
-        'im': 'https://assets.tarkov.dev/unknown-image.jpg',
+        'im': 'https://assets.tarkov.dev/unknown-image.webp',
         'a': 60,
         'm': 'https://tarkov.dev/item/unknown',
         'n': 'Unknown',
@@ -35,9 +36,9 @@ describe('parseReducedItem', () => {
         fleshDamage: 0,
         fragmentationChancePercentage: 0,
         heavyBleedingPercentageChance: 0,
-        iconLink: 'https://assets.tarkov.dev/unknown-icon.jpg',
+        iconLink: 'https://assets.tarkov.dev/unknown-icon.webp',
         id: 'unknown',
-        imageLink: 'https://assets.tarkov.dev/unknown-image.jpg',
+        imageLink: 'https://assets.tarkov.dev/unknown-image.webp',
         lightBleedingPercentageChance: 0,
         marketLink: 'https://tarkov.dev/item/unknown',
         maxStackableAmount: 60,
@@ -56,27 +57,27 @@ describe('parseReducedItem', () => {
     ],
     [
       {
-        'ad': 0.34,
+        'ad': 0.33,
         'ap': [
           6,
-          3,
-          0,
+          5,
+          1,
           0,
           0,
           0
         ],
         'ca': 'Caliber545x39',
         'd': -0.2,
-        'f': 65,
+        'f': 63,
         'fr': 0.1,
-        'pp': 15,
-        'r': -0.25,
+        'pp': 17,
+        'r': -0.15,
         'su': 1,
         'v': 303,
         'c': 'ammunition',
-        'ic': 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-icon.jpg',
+        'ic': 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-icon.webp',
         'i': '56dff4ecd2720b5f5a8b4568',
-        'im': 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-image.jpg',
+        'im': 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-image.webp',
         'a': 60,
         'm': 'https://tarkov.dev/item/545x39mm-us-gs',
         'n': '5.45x39mm US gs',
@@ -84,36 +85,7 @@ describe('parseReducedItem', () => {
         'w': 0.01,
         'wi': 'https://escapefromtarkov.fandom.com/wiki/5.45x39mm_US_gs'
       },
-      {
-        accuracyPercentageModifier: 0,
-        armorDamagePercentage: 0.34,
-        armorPenetrations: [6, 3, 0, 0, 0, 0],
-        blinding: false,
-        caliber: 'Caliber545x39',
-        categoryId: 'ammunition',
-        conflictingItemIds: [],
-        durabilityBurnPercentageModifier: -0.2,
-        fleshDamage: 65,
-        fragmentationChancePercentage: 0.1,
-        heavyBleedingPercentageChance: 0,
-        iconLink: 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-icon.jpg',
-        id: '56dff4ecd2720b5f5a8b4568',
-        imageLink: 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-image.jpg',
-        lightBleedingPercentageChance: 0,
-        marketLink: 'https://tarkov.dev/item/545x39mm-us-gs',
-        maxStackableAmount: 60,
-        name: '5.45x39mm US gs',
-        penetrationPower: 15,
-        prices: [],
-        projectiles: 1,
-        recoilPercentageModifier: -0.25,
-        shortName: 'US',
-        subsonic: true,
-        tracer: false,
-        velocity: 303,
-        weight: 0.01,
-        wikiLink: 'https://escapefromtarkov.fandom.com/wiki/5.45x39mm_US_gs'
-      } as IAmmunition
+      ammo545us
     ],
     [
       {
@@ -146,36 +118,7 @@ describe('parseReducedItem', () => {
         'w': 0.006,
         'wi': 'https://escapefromtarkov.fandom.com/wiki/9x19mm_Green_Tracer'
       },
-      {
-        accuracyPercentageModifier: -0.05,
-        armorDamagePercentage: 0.33,
-        armorPenetrations: [6, 3, 1, 0, 0, 0],
-        blinding: false,
-        caliber: 'Caliber9x19PARA',
-        categoryId: 'ammunition',
-        conflictingItemIds: [],
-        durabilityBurnPercentageModifier: 0.15,
-        fleshDamage: 58,
-        fragmentationChancePercentage: 0.15,
-        heavyBleedingPercentageChance: 0,
-        iconLink: 'https://assets.tarkov.dev/5c3df7d588a4501f290594e5-icon.webp',
-        id: '5c3df7d588a4501f290594e5',
-        imageLink: 'https://assets.tarkov.dev/5c3df7d588a4501f290594e5-image.webp',
-        lightBleedingPercentageChance: 0,
-        marketLink: 'https://tarkov.dev/item/9x19mm-green-tracer',
-        maxStackableAmount: 50,
-        name: '9x19mm Green Tracer',
-        penetrationPower: 14,
-        prices: [],
-        projectiles: 1,
-        recoilPercentageModifier: -0.06,
-        shortName: 'GT',
-        subsonic: false,
-        tracer: true,
-        velocity: 365,
-        weight: 0.006,
-        wikiLink: 'https://escapefromtarkov.fandom.com/wiki/9x19mm_Green_Tracer'
-      } as IAmmunition
+      ammo9mmGT
     ]
   ])('should parse a reduced ammunition', (reducedAmmunition: Record<string, unknown>, expected: IAmmunition) => {
     // Arrange

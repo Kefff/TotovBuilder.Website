@@ -8,3 +8,7 @@
 .button-discreet:hover {
   color: var(--primary-color) !important;
 }
+
+.button-discreet-danger:hover {
+  color: var(--danger-color) !important;
+}

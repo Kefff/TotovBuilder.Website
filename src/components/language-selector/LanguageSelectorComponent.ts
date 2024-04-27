@@ -1,6 +1,8 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LanguageUtils from '../../utils/LanguageUtils'
+import Images from '../../images'
+import StringUtils from '../../utils/StringUtils'
 
 export default defineComponent({
   setup: () => {
@@ -34,8 +36,10 @@ export default defineComponent({
 
     return {
       currentLanguage,
+      Images,
       languages,
-      setLanguage
+      setLanguage,
+      StringUtils
     }
   }
 })

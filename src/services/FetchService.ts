@@ -45,25 +45,12 @@ export class FetchService {
    */
   private async executeGet<TResult>(endpoint: string, parameters: IRequestParameter[]): Promise<Result<TResult>> {
     endpoint += this.getParametersString(parameters)
-
     const fetchTimeout = Services.get(WebsiteConfigurationService).configuration.fetchTimeout * 1000 // In milliseconds
-    const controller = new AbortController()
-    setTimeout(() => controller.abort(), fetchTimeout)
 
-    const result = await fetch(endpoint, { method: 'GET', signal: controller.signal })
+    const result = await fetch(endpoint, { method: 'GET', signal: AbortSignal.timeout(fetchTimeout) })
       .then(async (response) => {
         if (response.ok) {
           const responseData = await response.text()
-
-          /* c8 ignore start */
-          if (this.isEmptyResponseData(responseData)) {
-            // Sometimes Azures responds an empty response with a 0 status code when the instance is shutting down when the request happens.
-            // It's unclear whether this response is seen a OK on client-side, so in case where a GET gets an empty response
-            // we consider it to be an error
-            return Result.fail<TResult>(FailureType.error, 'FetchService.get()', vueI18n.t('message.fetchError', { endpoint, errorMessage: vueI18n.t('message.emptyFetchResponse') }))
-          }
-          /* c8 ignore stop */
-
           const result = JSON.parse(responseData) as TResult
 
           return Result.ok(result)

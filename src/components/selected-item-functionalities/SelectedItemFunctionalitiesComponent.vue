@@ -1,42 +1,54 @@
 <template>
-  <Button
-    :key="selectedTab"
-    v-tooltip.top="$t('caption.options')"
-    class="selected-item-functionalities-button p-button-text p-button-sm button-discreet"
-    @click="toggleFunctionalitiesPanel($event)"
-  >
-    <font-awesome-icon icon="cog" />
-  </Button>
-
-  <OverlayPanel
-    ref="functionalitiesPanel"
-    :dismissable="true"
-  >
-    <div :class="'selected-item-functionalities-panel-item selected-item-functionalities-panel-ignore-price' + (!editing ? ' p-disabled' : '')">
-      <Checkbox
-        v-model="ignorePriceValue"
-        :disabled="!editing"
-        :binary="true"
-        class="selected-item-functionalities-panel-item-icon"
-      />
-      <span
-        class="selected-item-functionalities-panel-ignore-price-text"
-        @click="ignorePriceValue = !ignorePriceValue"
-      >{{ $t('caption.ignorePrice') }}</span>
+  <div class="selected-item-functionalities">
+    <div>
+      <Button
+        v-if="canHaveContent"
+        v-tooltip.top="$t(selectedTabValue !== SelectableTab.content ? 'caption.showContent' : 'caption.hideContent')"
+        :class="'p-button-text p-button-sm' + (selectedTabValue !== SelectableTab.content ? ' button-discreet' : '')"
+        @click="setSelectedTab(SelectableTab.content)"
+      >
+        <font-awesome-icon icon="box-open" />
+      </Button>
+      <div
+        v-if="(contentCount ?? 0) > 0"
+        class="selected-item-functionalities-count-chip"
+      >
+        {{ contentCount }}
+      </div>
     </div>
-    <div
-      v-for="tabButton of tabButtons"
-      :key="tabButton.label"
-      class="selected-item-functionalities-panel-item"
-      @click="tabButton.command()"
+    <div>
+      <Button
+        v-if="canHaveMods"
+        v-tooltip.top="$t(selectedTabValue !== SelectableTab.mods ? 'caption.showMods' : 'caption.hideMods')"
+        :class="'p-button-text p-button-sm' + (selectedTabValue !== SelectableTab.mods ? ' button-discreet' : '')"
+        @click="setSelectedTab(SelectableTab.mods)"
+      >
+        <font-awesome-icon icon="puzzle-piece" />
+      </Button>
+      <div
+        v-if="(modsCount ?? 0) > 0"
+        class="selected-item-functionalities-count-chip"
+      >
+        {{ modsCount }}
+      </div>
+    </div>
+    <Button
+      v-tooltip.top="$t('caption.showStatistics')"
+      class="p-button-text p-button-sm button-discreet"
+      @click="toggleStats()"
     >
-      <font-awesome-icon
-        :icon="tabButton.icon"
-        class="selected-item-functionalities-panel-item-icon"
-      />
-      <span>{{ $t(tabButton.label) }}</span>
-    </div>
-  </OverlayPanel>
+      <font-awesome-icon icon="clipboard-list" />
+    </Button>
+    <Button
+      v-if="editing && canBeLooted"
+      v-tooltip.top="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
+      :class="'p-button-text p-button-sm' + (!ignorePrice ? ' button-discreet button-discreet-danger' : '')"
+      severity="danger"
+      @click="ignorePriceValue = !ignorePriceValue"
+    >
+      <font-awesome-icon icon="ban" />
+    </Button>
+  </div>
 </template>
 
 <script lang="ts" src="./SelectedItemFunctionalitiesComponent.ts" />

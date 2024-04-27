@@ -1,21 +1,21 @@
-import { ItemFetcherService } from '../../services/ItemFetcherService'
-import Result, { FailureType } from '../../utils/Result'
 import { instance, mock, when } from 'ts-mockito'
-import { FetchService } from '../../services/FetchService'
-import Services from '../../services/repository/Services'
-import WebsiteConfigurationMock from '../__data__/website-configuration.json'
-import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
-import ItemCategoriesMock from '../__data__/item-categories.json'
-import ItemsMock from '../__data__/items'
-import PricesMock from '../__data__/prices'
-import PresetsMock from '../__data__/presets'
-import ReducedItemsMock from '../__data__/reduced-items.json'
-import ReducedPricesMock from '../__data__/reduced-prices.json'
-import ReducedPresetsMock from '../__data__/reduced-presets.json'
-import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 import { describe, expect, it } from 'vitest'
-import { ReductionService } from '../../services/ReductionService'
+import ItemCategoriesMock from '../../../public/data/item-categories.json'
+import { FetchService } from '../../services/FetchService'
+import { ItemFetcherService } from '../../services/ItemFetcherService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ReductionService } from '../../services/ReductionService'
+import Services from '../../services/repository/Services'
+import Result, { FailureType } from '../../utils/Result'
+import { ItemMocks } from '../__data__/itemMocks'
+import { PresetMocks } from '../__data__/presetMocks'
+import { PriceMocks } from '../__data__/priceMocks'
+import ReducedItemMocks from '../__data__/reduced-items.json'
+import ReducedPresetMocks from '../__data__/reduced-presets.json'
+import ReducedPriceMocks from '../__data__/reduced-prices.json'
+import WebsiteConfigurationMock from '../__data__/websiteConfigurationMock'
+import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('fetchItemCategories()', () => {
   it('should fetch item categories', async () => {
@@ -51,7 +51,7 @@ describe('fetchItemCategories()', () => {
   it('should fail when an error occurs requesting item categories', async () => {
     // Arrange
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointItemCategories)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointItemCategories)).thenResolve(Result.fail(FailureType.hidden, '', 'Error'))
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
     useWebsiteConfigurationServiceMock()
 
@@ -69,7 +69,7 @@ describe('fetchItemCategories()', () => {
 describe('fetchItems()', () => {
   it('should fetch all items', async () => {
     // Arrange
-    useFetchServiceMock(ReducedItemsMock)
+    useFetchServiceMock(ReducedItemMocks)
     useWebsiteConfigurationServiceMock()
     Services.configure(ItemPropertiesService)
     Services.configure(ReductionService)
@@ -81,7 +81,12 @@ describe('fetchItems()', () => {
 
     // Assert
     expect(itemsResult.success).toBe(true)
-    expect(itemsResult.value).toStrictEqual(ItemsMock)
+    expect(itemsResult.value.length).toBe(3512)
+
+    for (const itemMock of ItemMocks) {
+      const fetchedItem = itemsResult.value.find(i => i.id === itemMock.id)
+      expect(fetchedItem).toStrictEqual(itemMock)
+    }
   })
 
   it('should fail when items are not found', async () => {
@@ -102,7 +107,7 @@ describe('fetchItems()', () => {
   it('should fail when an error occurs requesting items', async () => {
     // Arrange
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointItems)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointItems)).thenResolve(Result.fail(FailureType.hidden, '', 'Error'))
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
     useWebsiteConfigurationServiceMock()
 
@@ -120,7 +125,7 @@ describe('fetchItems()', () => {
 describe('fetchPrices()', () => {
   it('should fetch all prices', async () => {
     // Arrange
-    useFetchServiceMock(ReducedPricesMock)
+    useFetchServiceMock(ReducedPriceMocks)
     useWebsiteConfigurationServiceMock()
     Services.configure(ReductionService)
 
@@ -131,7 +136,17 @@ describe('fetchPrices()', () => {
 
     // Assert
     expect(pricesResult.success).toBe(true)
-    expect(pricesResult.value).toStrictEqual(PricesMock)
+    expect(pricesResult.value.length).toBe(5196)
+
+    for (const priceMock of PriceMocks) {
+      const fetchedPrice = pricesResult.value.find(p =>
+        p.itemId === priceMock.itemId
+        && p.merchant === priceMock.merchant
+        && p.merchantLevel === priceMock.merchantLevel
+        && p.currencyName === priceMock.currencyName
+        && p.barterItems.map(bi => bi.itemId).join(',') === priceMock.barterItems.map(bi => bi.itemId).join(',')) // Needed because some items have multiple barters for the same merchant
+      expect(fetchedPrice).toStrictEqual(priceMock)
+    }
   })
 
   it('should fail when prices are not found', async () => {
@@ -152,7 +167,7 @@ describe('fetchPrices()', () => {
   it('should fail when an error occurs requesting prices', async () => {
     // Arrange
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointPrices)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointPrices)).thenResolve(Result.fail(FailureType.hidden, '', 'Error'))
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
     useWebsiteConfigurationServiceMock()
 
@@ -170,7 +185,7 @@ describe('fetchPrices()', () => {
 describe('fetchPresets()', () => {
   it('should fetch all presets', async () => {
     // Arrange
-    useFetchServiceMock(ReducedPresetsMock)
+    useFetchServiceMock(ReducedPresetMocks)
     useWebsiteConfigurationServiceMock()
     Services.configure(ReductionService)
 
@@ -181,7 +196,12 @@ describe('fetchPresets()', () => {
 
     // Assert
     expect(presetsResult.success).toBe(true)
-    expect(presetsResult.value).toStrictEqual(PresetsMock)
+    expect(presetsResult.value.length).toBe(309)
+
+    for (const presetMock of PresetMocks) {
+      const fetchedItem = presetsResult.value.find(i => i.itemId === presetMock.itemId)
+      expect(fetchedItem).toStrictEqual(presetMock)
+    }
   })
 
   it('should fail when presets are not found', async () => {
@@ -202,7 +222,7 @@ describe('fetchPresets()', () => {
   it('should fail when an error occurs requesting presets', async () => {
     // Arrange
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointPresets)).thenReturn(Promise.resolve(Result.fail(FailureType.hidden, '', 'Error')))
+    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointPresets)).thenResolve(Result.fail(FailureType.hidden, '', 'Error'))
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
     useWebsiteConfigurationServiceMock()
 

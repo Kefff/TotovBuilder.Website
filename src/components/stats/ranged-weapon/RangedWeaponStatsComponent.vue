@@ -2,7 +2,7 @@
   <div class="stats-line">
     <div class="stats-entry">
       <div class="stats-caption custom-icon-before-text">
-        <img src="/images/caliber.webp">
+        <img :src="Images.caliber">
         <span>{{ $t('caption.caliber') }} :</span>
       </div>
       <div class="stats-value">
@@ -11,7 +11,7 @@
     </div>
     <div class="stats-entry">
       <div class="stats-caption custom-icon-before-text">
-        <img src="/images/fire-rate.webp">
+        <img :src="Images.fireRateate">
         <span>{{ $t('caption.fireRate') }} :</span>
       </div>
       <div class="stats-value">
@@ -23,25 +23,13 @@
     <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
-          icon="hand-paper"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.ergonomics') }} :</span>
-      </div>
-      <div class="stats-value">
-        {{ item.presetErgonomics ?? item.ergonomics }}
-      </div>
-    </div>
-    <div class="stats-entry">
-      <div class="stats-caption">
-        <font-awesome-icon
           icon="arrows-alt-v"
           class="icon-before-text"
         />
         <span>{{ $t('caption.verticalRecoil') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.presetVerticalRecoil ?? item.verticalRecoil }}
+        {{ StatsUtils.getDisplayValue(item.presetVerticalRecoil ?? item.verticalRecoil, false, 0) }}
       </div>
     </div>
     <div class="stats-entry">
@@ -53,7 +41,19 @@
         <span>{{ $t('caption.horizontalRecoil') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.presetHorizontalRecoil ?? item.horizontalRecoil }}
+        {{ StatsUtils.getDisplayValue(item.presetHorizontalRecoil ?? item.horizontalRecoil, false, 0) }}
+      </div>
+    </div>
+    <div class="stats-entry">
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="hand-paper"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.ergonomics') }} :</span>
+      </div>
+      <div class="stats-value">
+        {{ StatsUtils.getDisplayValue(item.presetErgonomics ?? item.ergonomics, false, 0) }}
       </div>
     </div>
   </div>

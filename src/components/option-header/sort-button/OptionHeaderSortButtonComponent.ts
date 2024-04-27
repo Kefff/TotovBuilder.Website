@@ -4,6 +4,7 @@ import SortingData, { SortingOrder } from '../../../models/utils/SortingData'
 import StringUtils from '../../../utils/StringUtils'
 import { IItem } from '../../../models/item/IItem'
 import { ISortingFunctionList } from '../../../services/sorting/functions/ISortingFunctionList'
+import Images from '../../../images'
 
 export default defineComponent({
   props: {
@@ -52,6 +53,7 @@ export default defineComponent({
     }
 
     return {
+      Images,
       sortBy,
       sortingDirectionClass,
       StringUtils

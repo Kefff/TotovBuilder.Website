@@ -1,6 +1,7 @@
 <template>
   <ContainerSummary :item="item" />
   <ArmorSummary
+    :armor-modifiers-override="armorModifiersOverride"
     :item="item"
     :show-empty-entries="showEmptyEntries"
   />

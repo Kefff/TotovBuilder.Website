@@ -1,14 +1,14 @@
 import { Guid } from 'guid-typescript'
-import { IBuild } from '../models/build/IBuild'
-import Result, { FailureType } from '../utils/Result'
+import jsonUrl from 'json-url'
 import InventorySlotTypes from '../data/inventory-slot-types.json'
+import { IBuild } from '../models/build/IBuild'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import vueI18n from '../plugins/vueI18n'
-import jsonUrl from 'json-url'
-import Services from './repository/Services'
-import { WebsiteConfigurationService } from './WebsiteConfigurationService'
-import { VersionService } from './VersionService'
+import Result, { FailureType } from '../utils/Result'
 import { ReductionService } from './ReductionService'
+import { VersionService } from './VersionService'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for managing builds.
@@ -31,9 +31,10 @@ export class BuildService {
 
   /**
    * Creates a new build.
+   * @param ignoreDefaultSlotItems - Indicates whether the default items of inventory slots are ignored.
    * @returns New build.
    */
-  public create(): IBuild {
+  public create(ignoreDefaultSlotItems: boolean = false): IBuild {
     const newBuild: IBuild = {
       id: '',
       name: '',
@@ -50,14 +51,16 @@ export class BuildService {
         items.push(undefined)
       }
 
-      if (inventorySlotType.defaultItemsIds != null) {
-        for (let i = 0; i < inventorySlotType.defaultItemsIds.length; i++) {
-          items[i] = {
-            content: [],
-            ignorePrice: false,
-            itemId: inventorySlotType.defaultItemsIds[i],
-            modSlots: [],
-            quantity: 1
+      if (!ignoreDefaultSlotItems) {
+        if (inventorySlotType.defaultItemsIds != null) {
+          for (let i = 0; i < inventorySlotType.defaultItemsIds.length; i++) {
+            items[i] = {
+              content: [],
+              ignorePrice: false,
+              itemId: inventorySlotType.defaultItemsIds[i],
+              modSlots: [],
+              quantity: 1
+            }
           }
         }
       }
@@ -168,10 +171,12 @@ export class BuildService {
       build = JSON.parse(serializedBuild) as IBuild
 
       // Converting dates back to Date type
-      build.lastUpdated = new Date(build.lastUpdated as unknown as string)
-
       if (build.lastExported != null) {
         build.lastExported = new Date(build.lastExported as unknown as string)
+      }
+
+      if (build.lastUpdated != null) {
+        build.lastUpdated = new Date(build.lastUpdated as unknown as string)
       }
     } catch {
       return Result.fail(FailureType.error, 'BuildService.parse()', vueI18n.t('message.buildParsingError', { id }))

@@ -5,6 +5,7 @@ import StringUtils from '../../../utils/StringUtils'
 import { ArmorUtils } from '../../../utils/ArmorUtils'
 import Services from '../../../services/repository/Services'
 import { TarkovValuesService } from '../../../services/TarkovValuesService'
+import Images from '../../../images'
 
 export default defineComponent({
   props: {
@@ -29,6 +30,7 @@ export default defineComponent({
     return {
       canOneshot,
       getArmorPenetrationTooltip,
+      Images,
       StatsUtils,
       StringUtils
     }

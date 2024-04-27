@@ -1,4 +1,5 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
+import { faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons'
 import {
   faAngleDown,
   faAngleRight,
@@ -9,6 +10,7 @@ import {
   faArrowsAltV,
   faAward,
   faBalanceScale,
+  faBan,
   faBell,
   faBolt,
   faBoxOpen,
@@ -48,7 +50,6 @@ import {
   faLock,
   faLowVision,
   faMask,
-  faMinus,
   faMinusSquare,
   faPlus,
   faPlusSquare,
@@ -77,7 +78,6 @@ import {
   faWallet,
   faWeightHanging
 } from '@fortawesome/free-solid-svg-icons'
-import { faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { App } from 'vue'
 
@@ -92,6 +92,7 @@ export function useFontAwesome(app: App<Element>): void {
     faArrowsAltV,
     faAward,
     faBalanceScale,
+    faBan,
     faBell,
     faBolt,
     faBoxOpen,
@@ -133,7 +134,6 @@ export function useFontAwesome(app: App<Element>): void {
     faLock,
     faLowVision,
     faMask,
-    faMinus,
     faMinusSquare,
     faPlus,
     faPlusSquare,
