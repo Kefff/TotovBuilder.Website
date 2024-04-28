@@ -34,8 +34,9 @@ export default defineComponent({
     const inventoryItemService = Services.get(InventoryItemService)
 
     const hasMissingPrice = computed(() => price.value.missingPrice
-      && price.value.unitPrice.valueInMainCurrency === 0 // We don't show the missing price icon on items that contain an item with a missing price
-      && !props.modelValue.ignorePrice)
+      && !props.modelValue.ignorePrice
+      && price.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored
+      && price.value.unitPrice.valueInMainCurrency === 0) // We don't show the missing price icon on items that contain an item with a missing price
     const showPrice = computed(() => price.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored)
     const showUnitPrice = computed(() => showPrice.value && price.value.price.valueInMainCurrency !== price.value.unitPrice.valueInMainCurrency)
 
