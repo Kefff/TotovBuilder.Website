@@ -19,7 +19,7 @@
             <font-awesome-icon icon="ban" />
           </div>
           <Price
-            v-if="preset == null"
+            v-if="showPrice"
             :price="price.price"
           />
           <div
@@ -38,7 +38,7 @@
         <div class="selected-item-summary-right-unit-price">
           <div class="selected-item-summary-price-per-unit">
             <Price
-              v-if="preset == null && price.unitPrice.valueInMainCurrency !== price.price.valueInMainCurrency"
+              v-if="showUnitPrice"
               :price="price.unitPrice"
               :show-merchant-icon="false"
               :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"

@@ -138,7 +138,6 @@ export default defineComponent({
       compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.mod, onModCompatibilityRequest)
       inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
-      inventoryItemService.emitter.on(InventoryItemService.inventoryItemQuantityChangeEvent, onInventoryItemChanged)
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
 
@@ -152,7 +151,6 @@ export default defineComponent({
       compatibilityService.emitter.off(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
       inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
-      inventoryItemService.emitter.off(InventoryItemService.inventoryItemQuantityChangeEvent, onInventoryItemChanged)
       globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       document.onkeydown = null
@@ -312,8 +310,8 @@ export default defineComponent({
     /**
      * Updates the summary when an InventorySlot changes.
      */
-    async function onInventoryItemChanged() {
-      await getSummary()
+    function onInventoryItemChanged() {
+      getSummary()
     }
 
     /**

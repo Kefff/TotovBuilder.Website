@@ -106,7 +106,6 @@ export default defineComponent({
 
     onMounted(async () => {
       inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onModOrContentChanged)
-      inventoryItemService.emitter.on(InventoryItemService.inventoryItemQuantityChangeEvent, onQuantityChanged)
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       await initialize()
@@ -114,7 +113,6 @@ export default defineComponent({
 
     onUnmounted(() => {
       inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onModOrContentChanged)
-      inventoryItemService.emitter.off(InventoryItemService.inventoryItemQuantityChangeEvent, onQuantityChanged)
       globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
     })
 
@@ -178,15 +176,6 @@ export default defineComponent({
     async function onMerchantFilterChanged() {
       await setItemComponentParameters()
       await getSummary()
-    }
-
-    /**
-     * Updates the inventory slot summary when an item quantity changes.
-     */
-    async function onQuantityChanged(path: string) {
-      if (path.startsWith(props.path)) {
-        await getSummary()
-      }
     }
 
     /**

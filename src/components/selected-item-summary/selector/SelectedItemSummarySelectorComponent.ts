@@ -1,6 +1,5 @@
 import { defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { IInventoryItem } from '../../../models/build/IInventoryItem'
-import { IInventoryModSlot } from '../../../models/build/IInventoryModSlot'
 import { IItem } from '../../../models/item/IItem'
 import { IArmorModifiers } from '../../../models/utils/IArmorModifiers'
 import { InventoryItemService } from '../../../services/InventoryItemService'
@@ -51,8 +50,8 @@ export default defineComponent({
       required: false,
       default: true
     },
-    preset: {
-      type: Object as PropType<IInventoryModSlot>,
+    itemInSameSlotInPreset: { // When the parent item is a preset, represets the item that is in the same slot in the preset
+      type: Object as PropType<IInventoryItem>,
       required: false,
       default: undefined
     }

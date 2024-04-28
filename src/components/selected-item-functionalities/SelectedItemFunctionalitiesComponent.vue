@@ -40,7 +40,7 @@
       <font-awesome-icon icon="clipboard-list" />
     </Button>
     <Button
-      v-if="editing && canBeLooted"
+      v-if="editing && canBeLooted && canIgnorePrice"
       v-tooltip.top="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
       :class="'p-button-text p-button-sm' + (!ignorePrice ? ' button-discreet button-discreet-danger' : '')"
       severity="danger"

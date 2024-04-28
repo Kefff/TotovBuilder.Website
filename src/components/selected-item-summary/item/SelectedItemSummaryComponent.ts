@@ -1,6 +1,5 @@
 import { computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import { IInventoryItem } from '../../../models/build/IInventoryItem'
-import { IInventoryModSlot } from '../../../models/build/IInventoryModSlot'
 import { IgnoredUnitPrice } from '../../../models/utils/IgnoredUnitPrice'
 import { IInventoryItemPrice } from '../../../models/utils/IInventoryItemPrice'
 import { IWeight } from '../../../models/utils/IWeight'
@@ -24,8 +23,8 @@ export default defineComponent({
       required: false,
       default: true
     },
-    preset: {
-      type: Object as PropType<IInventoryModSlot>,
+    itemInSameSlotInPreset: { // When the parent item is a preset, represets the item that is in the same slot in the preset
+      type: Object as PropType<IInventoryItem>,
       required: false,
       default: undefined
     }
@@ -37,6 +36,8 @@ export default defineComponent({
     const hasMissingPrice = computed(() => price.value.missingPrice
       && price.value.unitPrice.valueInMainCurrency === 0 // We don't show the missing price icon on items that contain an item with a missing price
       && !props.modelValue.ignorePrice)
+    const showPrice = computed(() => price.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored)
+    const showUnitPrice = computed(() => showPrice.value && price.value.price.valueInMainCurrency !== price.value.unitPrice.valueInMainCurrency)
 
     const price = ref<IInventoryItemPrice>({
       missingPrice: false,
@@ -83,7 +84,7 @@ export default defineComponent({
       props.modelValue.ignorePrice,
       props.modelValue.itemId,
       props.modelValue.quantity,
-      props.preset?.item?.itemId
+      props.itemInSameSlotInPreset?.itemId
     ], () => {
       setPrice()
     })
@@ -114,7 +115,7 @@ export default defineComponent({
      * Sets the price of the inventory item.
      */
     async function setPrice() {
-      const priceResult = await inventoryItemService.getPrice(props.modelValue, props.preset?.item, props.canBeLooted)
+      const priceResult = await inventoryItemService.getPrice(props.modelValue, props.itemInSameSlotInPreset, props.canBeLooted)
 
       if (priceResult.success) {
         price.value = priceResult.value
@@ -178,6 +179,8 @@ export default defineComponent({
       hasMissingPrice,
       IgnoredUnitPrice,
       price,
+      showPrice,
+      showUnitPrice,
       StatsUtils,
       weight
     }

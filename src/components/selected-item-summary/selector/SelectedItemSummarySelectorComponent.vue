@@ -3,7 +3,7 @@
     v-if="modelValue != null && item != null"
     v-model="modelValue"
     :can-be-looted="canBeLooted"
-    :preset="preset"
+    :item-in-same-slot-in-preset="itemInSameSlotInPreset"
   >
     <AmmunitionSummary
       v-if="isAmmunition"

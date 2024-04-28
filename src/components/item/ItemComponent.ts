@@ -85,6 +85,7 @@ export default defineComponent({
 
     const editing = inject<Ref<boolean>>('editing')
 
+    const canIgnorePrice = computed(() => presetModSlotContainingItem.value?.item?.itemId !== selectedItem.value?.id)
     const dropdownPanelHeight = computed(() => Math.min(options.value.length === 0 ? 1 : options.value.length, 5) * 4 + 'rem') // Shows 5 items or less
     const optionHeight = computed(() => Number.parseInt(window.getComputedStyle(document.documentElement).fontSize.replace('px', '')) * 4)
     const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? selectedItem.value?.maxStackableAmount ?? 1)
@@ -98,7 +99,7 @@ export default defineComponent({
     const optionsFilter = ref('')
     const optionsSortingData = ref(new SortingData<IItem>())
     const quantity = ref(props.modelValue?.quantity ?? 1)
-    const preset = ref<IInventoryModSlot>()
+    const presetModSlotContainingItem = ref<IInventoryModSlot>()
     const selectedItem = ref<IItem | undefined>()
     const selectedItemIsContainer = ref(false)
     const selectedItemIsModdable = ref(false)
@@ -144,13 +145,6 @@ export default defineComponent({
     }
 
     /**
-     * Emits an event for the build and the inventory slot to updated their summary when the quantity changes.
-     */
-    function emitItemQuantityChangedEvent() {
-      nextTick(() => inventoryItemService.emitter.emit(InventoryItemService.inventoryItemQuantityChangeEvent, props.path))
-    }
-
-    /**
      * Initializes the selected item based on the inventory item passed to the component.
      */
     async function initializeSelectedItem() {
@@ -165,20 +159,19 @@ export default defineComponent({
         return
       }
 
-      quantity.value = props.modelValue.quantity
-
       const selectedItemResult = await itemService.getItem(props.modelValue.itemId)
 
       if (selectedItemResult.success) {
+        quantity.value = props.modelValue.quantity
         selectedItem.value = selectedItemResult.value
       } else {
         selectedItem.value = undefined
       }
 
       if (selectedItem.value != null) {
-        preset.value = await presetService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
+        presetModSlotContainingItem.value = await presetService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
       } else {
-        preset.value = undefined
+        presetModSlotContainingItem.value = undefined
       }
     }
 
@@ -209,7 +202,7 @@ export default defineComponent({
       selectedInventoryItem.value.quantity = newQuantity
 
       // Emitting an event for the build and the inventory slot to updated their summary
-      emitItemQuantityChangedEvent()
+      emitItemChangedEvent()
     }
 
     /**
@@ -231,16 +224,16 @@ export default defineComponent({
       }
 
       itemChanging.value = true
-      preset.value = await presetService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
+      presetModSlotContainingItem.value = await presetService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
 
       if (itemPropertiesService.isModdable(selectedItem.value) && PathUtils.checkIsModSlotPath(props.path)) {
         // Checking the compatibility if the selected item is a mod and we are in mod slot
         const path = props.path.slice(0, props.path.lastIndexOf('/' + PathUtils.itemPrefix))
         const compatibilityResult = await compatibilityService.checkCompatibility(CompatibilityRequestType.mod, selectedItem.value.id, path)
 
-        await updateInventoryItem(selectedItem.value, compatibilityResult)
+        updateInventoryItem(selectedItem.value, compatibilityResult)
       } else {
-        await updateInventoryItem(selectedItem.value, Result.ok())
+        updateInventoryItem(selectedItem.value, Result.ok())
       }
     }
 
@@ -336,6 +329,7 @@ export default defineComponent({
           }
         }
 
+        // Setting the preset content and mods when the newly selected item is a preset
         const preset = presetService.getPreset(newSelectedItem.id)
 
         if (preset != null) {
@@ -364,6 +358,7 @@ export default defineComponent({
     }
 
     return {
+      canIgnorePrice,
       dropdownPanelHeight,
       editing,
       itemChanging,
@@ -377,7 +372,7 @@ export default defineComponent({
       options,
       optionsFilter,
       optionsSortingData,
-      preset,
+      presetModSlotContainingItem,
       quantity,
       SelectableTab,
       selectedInventoryItem,

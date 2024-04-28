@@ -64,6 +64,7 @@
         :can-have-content="selectedItemIsContainer"
         :can-have-mods="selectedItemIsModdable"
         :content-count="selectedInventoryItem.content.length"
+        :can-ignore-price="canIgnorePrice"
         :mods-count="selectedInventoryItem.modSlots.filter(ms => ms.item != null).length"
         @update:ignore-price="onIgnorePriceChanged()"
       />
@@ -71,7 +72,7 @@
         v-if="selectedInventoryItem != null"
         v-model="selectedInventoryItem"
         :can-be-looted="canBeLooted"
-        :preset="preset"
+        :item-in-same-slot-in-preset="presetModSlotContainingItem?.item"
       />
     </div>
     <div

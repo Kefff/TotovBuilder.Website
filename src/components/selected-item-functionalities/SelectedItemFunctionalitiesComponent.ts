@@ -15,6 +15,10 @@ export default defineComponent({
       type: Boolean,
       required: true
     },
+    canIgnorePrice: {
+      type: Boolean,
+      required: true
+    },
     contentCount: {
       type: Number,
       required: false,

@@ -36,11 +36,6 @@ export class InventoryItemService {
   public static inventoryItemChangeEvent = 'inventoryItemChanged'
 
   /**
-   * Quantity change event.
-   */
-  public static inventoryItemQuantityChangeEvent = 'inventoryItemQuantityChanged'
-
-  /**
    * Event emitter used to signal compatibility check requests.
    */
   public emitter = new TinyEmitter()
@@ -149,12 +144,12 @@ export class InventoryItemService {
   /**
    * Gets the price of an inventory item including or not its content and mods.
    * @param inventoryItem - Inventory item.
-   * @param presetModSlotItem - Preset mod slot item used to ignore the price of mods that are installed by default on an item.
+   * @param itemInSameSlotInPreset - Preset item that is place in the same slot of a preset. If not null, this means that inventoryItem has been placed in the content or mods of a parent item that is a preset. When inventoryItem and itemInSameSlotInPreset are the same, this means that the price of inventoryItem must be ignored because its part of a preset.
    * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
    * @param useMerchantFilter - Indicates whether the merchant filter is used. If false, all prices are taken into consideration. Used mainly to ignore merchant filter to be able to display all the prices and barters of an item in its stats.
    * @returns Price.
    */
-  public async getPrice(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true, useMerchantFilter = true): Promise<Result<IInventoryItemPrice>> {
+  public async getPrice(inventoryItem: IInventoryItem, itemInSameSlotInPreset?: IInventoryItem, canBeLooted = true, useMerchantFilter = true): Promise<Result<IInventoryItemPrice>> {
     const globalFilterService = Services.get(GlobalFilterService)
     const itemService = Services.get(ItemService)
     const itemResult = await itemService.getItem(inventoryItem.itemId)
@@ -178,9 +173,9 @@ export class InventoryItemService {
 
     if (!canBeLooted) {
       unitPriceIgnoreStatus = IgnoredUnitPrice.notLootable
-    } else if (presetModSlotItem?.itemId === inventoryItem.itemId) {
+    } else if (itemInSameSlotInPreset?.itemId === inventoryItem.itemId) {
       unitPriceIgnoreStatus = IgnoredUnitPrice.inPreset
-    } else if (presetModSlotItem?.content.some(c => c.itemId === inventoryItem.itemId && c.quantity === inventoryItem.quantity)) {
+    } else if (itemInSameSlotInPreset?.content.some(c => c.itemId === inventoryItem.itemId && c.quantity === inventoryItem.quantity)) {
       unitPriceIgnoreStatus = IgnoredUnitPrice.inPreset
     } else if (inventoryItem.ignorePrice) {
       unitPriceIgnoreStatus = IgnoredUnitPrice.manuallyIgnored
@@ -334,7 +329,7 @@ export class InventoryItemService {
       }
       /* c8 ignore stop */
 
-      const containedItemPriceResult = await this.getPrice(containedItem, presetModSlotItem)
+      const containedItemPriceResult = await this.getPrice(containedItem, itemInSameSlotInPreset)
 
       if (!containedItemPriceResult.success) {
         return Result.failFrom(containedItemPriceResult)
@@ -360,8 +355,10 @@ export class InventoryItemService {
     }
 
     // Adding mod prices
-    if (presetModSlotItem == null) {
-      presetModSlotItem = Services.get(PresetService).getPreset(inventoryItem.itemId)
+    let preset = itemInSameSlotInPreset
+
+    if (preset == null) {
+      preset = Services.get(PresetService).getPreset(inventoryItem.itemId)
     }
 
     for (const modSlot of inventoryItem.modSlots) {
@@ -369,7 +366,7 @@ export class InventoryItemService {
         continue
       }
 
-      const presetModSlot = presetModSlotItem?.modSlots.find(pms => pms.modSlotName === modSlot.modSlotName)
+      const presetModSlot = preset?.modSlots.find(pms => pms.modSlotName === modSlot.modSlotName)
       const modPriceResult = await this.getPrice(modSlot.item, presetModSlot?.item)
 
       if (!modPriceResult.success) {
