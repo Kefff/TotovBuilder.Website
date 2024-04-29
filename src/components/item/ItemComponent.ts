@@ -192,11 +192,7 @@ export default defineComponent({
       // but I could not find a good combination of values for reducing the number of loaded elements
       // while avoiding having white space displayed in the dropdown panel.
       // Hence this hack.
-      const selectedItemPosition = options.value.findIndex(o => o.id === selectedItem.value!.id)
-      const selectedItemXPositionInDropdown = selectedItemPosition * optionHeight.value
-
-      const virtualScrollerElement = document.querySelector('.p-virtualscroller')
-      virtualScrollerElement?.scrollTo({ behavior: 'instant', top: selectedItemXPositionInDropdown })
+      scrollToSelectedItemInDropdown()
     }
 
     /**
@@ -268,6 +264,8 @@ export default defineComponent({
       const currentOptions = [...options.value] // Creating a new array because options.value can be updated while this function is being executed
       optionsSortingData.value = newSortingData
       options.value = await SortingService.sort(currentOptions, optionsSortingData.value)
+
+      scrollToSelectedItemInDropdown()
     }
 
     /**
@@ -317,6 +315,16 @@ export default defineComponent({
       onSortOptions(sortingData)
     }
 
+    /**
+     * Scrolls the dropdown to the selected item.
+     */
+    function scrollToSelectedItemInDropdown() {
+      const selectedItemPosition = options.value.findIndex(o => o.id === selectedItem.value!.id)
+      const selectedItemXPositionInDropdown = selectedItemPosition * optionHeight.value
+
+      const virtualScrollerElement = document.querySelector('.p-virtualscroller')
+      virtualScrollerElement?.scrollTo({ behavior: 'smooth', top: selectedItemXPositionInDropdown })
+    }
 
     /**
      * Updates the inventory item based on a new selected item if it is compatible; otherwise puts back the previous selected item.

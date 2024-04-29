@@ -62,8 +62,10 @@ export default defineComponent({
 
     onMounted(() => {
       // Focus the filter input to be able to type the name of the item.
-      // We use a delay because focusing conflicts with the scrolling to the selected item in the dropdown.
-      setTimeout(() => filterInput.value.$el.select(), 100)
+      // This conflicts with the PrimeVue as it prevents the automatic scrolling to the selected item.
+      // However this is not a problem because the PrimeVue behavior is not always working
+      // and a workaround has been made.
+      filterInput.value.$el.select()
     })
 
     return {
