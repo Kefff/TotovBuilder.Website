@@ -1,9 +1,9 @@
-import { computed, defineComponent, nextTick, onMounted, PropType, ref } from 'vue'
+import { computed, defineComponent, onMounted, PropType, ref } from 'vue'
+import { IItem } from '../../../models/item/IItem'
 import SortingData from '../../../models/utils/SortingData'
 import { ItemSortingFunctions } from '../../../services/sorting/functions/ItemSortingFunction'
 import StringUtils from '../../../utils/StringUtils'
 import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
-import { IItem } from '../../../models/item/IItem'
 
 export default defineComponent({
   components: {
@@ -62,8 +62,8 @@ export default defineComponent({
 
     onMounted(() => {
       // Focus the filter input to be able to type the name of the item.
-      // Using nextTick() otherwise focus() moves the screen to a completly wrong position for some reason.
-      nextTick(() => filterInput.value.$el.select())
+      // We use a delay because focusing conflicts with the scrolling to the selected item in the dropdown.
+      setTimeout(() => filterInput.value.$el.select(), 100)
     })
 
     return {

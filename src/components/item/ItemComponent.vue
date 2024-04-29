@@ -7,16 +7,17 @@
       <div class="item-dropdown-override">
         <Dropdown
           v-model="selectedItem"
-          data-key="id"
           :disabled="!editing"
           :empty-message="$t('message.noItemsFound')"
           :options="options"
-          option-label="caption"
-          :show-clear="editing"
-          class="item-dropdown"
           :scroll-height="dropdownPanelHeight"
+          :show-clear="editing"
           :virtual-scroller-options="{ orientation: 'vertical', itemSize: optionHeight }"
+          class="item-dropdown"
+          data-key="id"
+          option-label="caption"
           @change="onSelectedItemChanged()"
+          @show="onDropdownOpen()"
         >
           <template #header>
             <OptionHeaderSelector

@@ -176,6 +176,30 @@ export default defineComponent({
     }
 
     /**
+     * Scrolls to the selected item in the item dropdown.
+     */
+    function onDropdownOpen() {
+      if (selectedItem.value == null) {
+        return
+      }
+
+      // Hack for scrolling to the selected item when opening an item dropdown.
+      // Needed because PrimeVue VirtualScroller automatically loads 12 items when opening.
+      // Those 12 items a considered visible, therefore no scroll happens.
+      // However, since we only display 5 elements, we cannot see element 6 to 12.
+      // If the selected item is the 13th or higher, then the PrimeVue correctly scrolls to the item.
+      // The PrimeVue behaviour can be "controled" by playing with the options height and the dropdown panel height
+      // but I could not find a good combination of values for reducing the number of loaded elements
+      // while avoiding having white space displayed in the dropdown panel.
+      // Hence this hack.
+      const selectedItemPosition = options.value.findIndex(o => o.id === selectedItem.value!.id)
+      const selectedItemXPositionInDropdown = selectedItemPosition * optionHeight.value
+
+      const virtualScrollerElement = document.querySelector('.p-virtualscroller')
+      virtualScrollerElement?.scrollTo({ behavior: 'instant', top: selectedItemXPositionInDropdown })
+    }
+
+    /**
      * Sorts the options items.
      */
     function onFilterOptions(newValue: string) {
@@ -363,6 +387,7 @@ export default defineComponent({
       editing,
       itemChanging,
       maxSelectableQuantity,
+      onDropdownOpen,
       onFilterOptions,
       onIgnorePriceChanged,
       onQuantityChanged,
