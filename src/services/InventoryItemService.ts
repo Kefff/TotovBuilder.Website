@@ -101,13 +101,15 @@ export class InventoryItemService {
 
   /**
    * Converts an inventory item to a text.
-   * @param language - Language.
    * @param inventorySlot - Inventory item to convert.
+   * @param language - Language.
    * @param itemInSameSlotInPreset - Preset item that is place in the same slot of a preset. If not null, this means that inventoryItem has been placed in the content or mods of a parent item that is a preset. When inventoryItem and itemInSameSlotInPreset are the same, this means that the price of inventoryItem must be ignored because its part of a preset.
    * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
    */
-  public async getAsString(language: string, inventoryItem: IInventoryItem, itemInSameSlotInPreset?: IInventoryItem, canBeLooted = true): Promise<string> {
-    const priceSeparator = '    |    '
+  public async getAsString(inventoryItem: IInventoryItem, language: string, itemInSameSlotInPreset?: IInventoryItem, indentationLevel = 0, canBeLooted = true): Promise<string> {
+    const indentationPattern = '    '
+    const priceSeparator = `${indentationPattern}|${indentationPattern}`
+
     const acceptedLanguages = [language, 'en']
     const itemService = Services.get(ItemService)
 
@@ -123,23 +125,27 @@ export class InventoryItemService {
       return ''
     }
 
-    let inventoryItemAsString = itemResult.value.name
+    let inventoryItemAsString = ''
 
-    if (canBeLooted && !inventoryItem.ignorePrice) {
+    if (inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
+      inventoryItemAsString += itemResult.value.name
+    }
+
+    if (canBeLooted && !inventoryItem.ignorePrice && inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
       const priceResult = await this.getPrice(inventoryItem, itemInSameSlotInPreset, canBeLooted)
 
-      if (priceResult.success) {
+      if (priceResult.success && priceResult.value.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset) {
         if (priceResult.value.missingPrice && priceResult.value.unitPrice.valueInMainCurrency === 0) {
-          inventoryItemAsString += `${priceSeparator}${vueI18n.t('message.noMerchant')}`
+          inventoryItemAsString += `${priceSeparator}${vueI18n.t('message.noMerchant', 1, { locale: language })}`
         } else {
-          inventoryItemAsString += `${priceSeparator}${vueI18n.t('caption.merchant_' + priceResult.value.unitPrice.merchant)}`
+          inventoryItemAsString += `${priceSeparator}${vueI18n.t('caption.merchant_' + priceResult.value.unitPrice.merchant, 1, { locale: language })}`
 
           if (priceResult.value.unitPrice.merchant !== 'flea-market') {
             inventoryItemAsString += ` ${priceResult.value.unitPrice.merchantLevel}`
           }
 
           if (priceResult.value.unitPrice.currencyName === 'barter') {
-            inventoryItemAsString += ` (${vueI18n.t('caption.barter').toLocaleLowerCase()}): ${priceResult.value.price.valueInMainCurrency.toLocaleString(acceptedLanguages)}${mainCurrencyResult.value.symbol}`
+            inventoryItemAsString += ` (${vueI18n.t('caption.barter', 1, { locale: language }).toLocaleLowerCase()}): ${priceResult.value.price.valueInMainCurrency.toLocaleString(acceptedLanguages)}${mainCurrencyResult.value.symbol}`
           } else {
             inventoryItemAsString += `: ${priceResult.value.price.value.toLocaleString(acceptedLanguages)}`
 
@@ -157,9 +163,48 @@ export class InventoryItemService {
       }
     }
 
-    // Mods
+    if (inventoryItem.content.length > 0 || inventoryItem.modSlots.length > 0) {
+      let preset = itemInSameSlotInPreset
 
-    // Content
+      if (preset == null) {
+        preset = Services.get(PresetService).getPreset(inventoryItem.itemId)
+      }
+
+      indentationLevel++
+      let indentation = ''
+
+      for (let i = 1; i <= indentationLevel; i++) {
+        indentation += indentationPattern
+      }
+
+      // Mods
+      for (const modSlot of inventoryItem.modSlots) {
+        if (modSlot.item == null) {
+          continue
+        }
+
+        const modSlotInPreset = preset?.modSlots.find(ms => ms.modSlotName === modSlot.modSlotName)
+        const modSlotItemAsString = await this.getAsString(modSlot.item, language, modSlotInPreset?.item, indentationLevel)
+
+        if (modSlotItemAsString !== '') {
+          inventoryItemAsString += `
+${indentation}[${vueI18n.t('caption.modSlot_' + modSlot.modSlotName, 1, { locale: language })}] ${modSlotItemAsString}`
+        }
+      }
+
+      // Content
+      for (let i = 0; i < inventoryItem.content.length; i++) {
+        const containedItem = inventoryItem.content[i]
+        const containedItemInPreset = preset?.content[i]
+        const containedItemAsString = await this.getAsString(containedItem, language, containedItemInPreset, indentationLevel)
+        const itemCountAsString = containedItem.quantity > 1 ? `${containedItem.quantity} x ` : ''
+
+        if (containedItemAsString !== '') {
+          inventoryItemAsString += `
+${indentation}${itemCountAsString}${containedItemAsString}`
+        }
+      }
+    }
 
     return inventoryItemAsString
   }

@@ -16,10 +16,10 @@ import Services from './repository/Services'
 export class InventorySlotPropertiesService {
   /**
    * Converts an inventory slot to a text.
-   * @param language - Language.
    * @param inventorySlot - Inventory slot to convert.
+   * @param language - Language.
    */
-  public getAsString(language: string, inventorySlot: IInventorySlot) {
+  public getAsString(inventorySlot: IInventorySlot, language: string) {
     return ''
   }
 

@@ -476,7 +476,7 @@ describe('getAsString()', () => {
     const service = new BuildPropertiesService()
 
     // Act
-    const result = service.getAsString('fr', build)
+    const result = service.getAsString(build, 'fr')
 
     // Assert
     expect(result).toBe(expected)
@@ -504,14 +504,14 @@ const expectedToString1 = `Build 1
 348 012₽
 Recoil: 76v 226h    |    Armor: 4    |    Ergo: 34 (-9.5%)    |    Speed: -6%    |    Turn: -9%    |    Weight: 21.753kg
 
-[On sling] RPK-16 5.45x39 light machine gun Default    |    Flea market: 43 345₽
-    [Magazine] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (barter): 24 218₽
-        95 x 5.45x39mm US gs    |    Praport 1: 9 120₽
+[On sling] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
+    [Chargeur] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (barter): 24 218₽
+        95 x 5.45x39mm US gs    |    Prapor 1: 9 120₽
 [Body armor] 6B13 assault armor (Digital Flora) Default    |    Ragman 2: 64 269₽
-[Headwear] BNTI LShZ-2DTM helmet (Black)    |    Flea market: 63 493₽
+[Headwear] BNTI LShZ-2DTM helmet (Black)    |    Marché: 63 493₽
     [Equipment] LShZ-2DTM face shield    |    Ragman 3 (barter): 29 805₽
-[Pocket] Morphine injector    |    Flea market: 17 421₽
-[Pocket] Vaseline balm    |    Flea market: 27 714₽
+[Pocket] Morphine injector    |    Marché: 17 421₽
+[Pocket] Vaseline balm    |    Marché: 27 714₽
 [Pocket] RGD-5 hand grenade    |    Prapor 3: 11 822₽
 [Pocket] 60 x 5.45x39mm US gs    |    Prapor 1: 5 760₽
 [Backpack] WARTECH Berkut BB-102 backpack (A-TACS FG)    |    Ragman 2: 24 509₽
@@ -526,12 +526,12 @@ const expectedToString2 = `Build 2
 Recoil: 368v 255h    |    Armor: 4    |    Ergo: 52 (-3%)    |    Speed: -3%    |    Turn: -1%    |    Weight: 8.336kg
 
 [Holster] Beretta M9A3 9x19 pistol Default [Peacekeeper 1: 75$ (= 8 025₽)]
-    [Muzzle] SIG Sauer SRD9 9x19 sound suppressor    |    Peacekeeper 2: 242$ (= 34 606₽)
-    [Magazine]
+    [Bouche] SIG Sauer SRD9 9x19 sound suppressor    |    Peacekeeper 2: 242$ (= 34 606₽)
+    [Chargeur]
         17 x 9x19mm Green Tracer    |    Mechanic 1: 1 241₽
     [Tactical mod] SureFire X400 Ultra tactical flashlight with laser    |    Peacekeeper 2: 95$ (= 13 552₽)
 [Tactical rig] Shellback Tactical Banshee plate carrier (A-TACS AU) Default    |    Ragman 3 (barter): 59 790₽
-[Earpiece] Walker's Razor Digital headset    |    Flea market: 64 132₽
+[Earpiece] Walker's Razor Digital headset    |    Marché: 64 132₽
 [Pouch] Secure container alpha
 [Scabbard] 6Kh5 Bayonet
 

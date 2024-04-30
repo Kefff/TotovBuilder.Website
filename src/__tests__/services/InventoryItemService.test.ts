@@ -226,7 +226,7 @@ describe('getArmorModifiers()', () => {
 })
 
 describe('getAsString()', () => {
-  it.only.each([
+  it.each([
     [
       {
         content: [],
@@ -369,9 +369,9 @@ describe('getAsString()', () => {
         ],
         quantity: 1
       },
-      `RPK-16 5.45x39 light machine gun Default    |    Flea market: 43 345₽
-    [Magazine] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (barter): 24 218₽
-        95 x 5.45x39mm US gs    |    Praport 1: 9 120₽`
+      `RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
+    [Chargeur] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (echange): 24 218₽
+        95 x 5.45x39mm US gs    |    Prapor 1: 9 120₽`
     ],
     [
       {
@@ -473,10 +473,11 @@ describe('getAsString()', () => {
         quantity: 1
       },
       `Beretta M9A3 9x19 pistol Default    |    Peacekeeper 1: 107$ (= 15 337₽)
-    [Muzzle] SIG Sauer SRD9 9x19 sound suppressor    |    Peacekeeper 2: 242$ (= 34 606₽)
-    [Magazine]
-        17 x 9x19mm Green Tracer    |    Mechanic 1: 1 241₽
-    [Tactical mod] SureFire X400 Ultra tactical flashlight with laser    |    Peacekeeper 2: 95$ (= 13 552₽)`
+    [Canon] 
+        [Bouche] SIG Sauer SRD9 9x19 sound suppressor    |    Peacekeeper 2: 242$ (= 34 606₽)
+    [Chargeur] 
+        17 x 9x19mm Green Tracer    |    Le Mécano 1: 1 241₽
+    [Dispositif tactique] SureFire X400 Ultra tactical flashlight with laser    |    Peacekeeper 2: 95$ (= 13 552₽)`
     ],
     [
       {
@@ -515,8 +516,8 @@ describe('getAsString()', () => {
         ],
         quantity: 1
       },
-      `Shellback Tactical Banshee plate carrier (A-TACS AU) Default    |    Ragman 3 (barter): 59 790₽
-    [Back plate] 6B13 custom ballistic plates (Back)    |    Flea market: 43 868₽
+      `Shellback Tactical Banshee plate carrier (A-TACS AU) Default    |    Ragman 3 (echange): 59 790₽
+    [Plaque dorsale] 6B13 custom ballistic plates (Back)    |    Marché: 43 868₽
     MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)`
     ],
     [
@@ -527,7 +528,7 @@ describe('getAsString()', () => {
         modSlots: [],
         quantity: 1
       },
-      '5.45x39mm BP gs    |    No merchant'
+      '5.45x39mm BP gs    |    Pas de marchand'
     ],
     [
       {
@@ -550,7 +551,7 @@ describe('getAsString()', () => {
     const service = new InventoryItemService()
 
     // Act
-    const result = await service.getAsString('fr', inventoryItem)
+    const result = await service.getAsString(inventoryItem, 'fr')
 
     // Assert
     expect(result).toBe(expected)
@@ -558,7 +559,7 @@ describe('getAsString()', () => {
 
   it.each([
     ['en', 'Video cassette with the Cyborg Killer movie    |    Flea market: 37,867₽'],
-    ['fr', 'Video cassette with the Cyborg Killer movie    |    Flea market: 37 867₽'],
+    ['fr', 'Video cassette with the Cyborg Killer movie    |    Marché: 37 867₽'],
     ['invalid', 'Video cassette with the Cyborg Killer movie    |    Flea market: 37,867₽']
   ])('should format prices according to the language', async (language: string, expected: string) => {
     // Arrange
@@ -572,14 +573,14 @@ describe('getAsString()', () => {
 
     // Act
     const result = await service.getAsString(
-      language,
       {
         content: [],
         ignorePrice: false,
         itemId: vhs.id,
         modSlots: [],
         quantity: 1
-      })
+      },
+      language)
 
     // Assert
     expect(result).toBe(expected)
@@ -1917,7 +1918,7 @@ describe('getPrice()', () => {
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryItemPrice
     ]
-  ])('should have a missing price when no merchants sell the item', async (inventoryItem: IInventoryItem, expected: IInventoryItemPrice) => {
+  ])('should have a missing price when Pas de marchands sell the item', async (inventoryItem: IInventoryItem, expected: IInventoryItemPrice) => {
     // Arrange
     useItemServiceMock()
     usePresetServiceMock()

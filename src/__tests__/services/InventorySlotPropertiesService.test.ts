@@ -711,14 +711,14 @@ describe('getAsString()', () => {
   it.each([
     [
       inventorySlot1,
-      `[Headwear] BNTI LShZ-2DTM helmet (Black)    |    Flea market: 63 493₽
+      `[Headwear] BNTI LShZ-2DTM helmet (Black)    |    Marché: 63 493₽
     [Equipment] LShZ-2DTM face shield    |    Ragman 3 (barter): 29 805₽`
     ],
     [
       inventorySlot2,
-      `[On sling] RPK-16 5.45x39 light machine gun Default    |    Flea market: 43 345₽
+      `[On sling] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
     [Magazine] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (barter): 24 218₽
-        95 x 5.45x39mm US gs    |    Praport 1: 9 120₽`
+        95 x 5.45x39mm US gs    |    Prapor 1: 9 120₽`
     ],
     [
       {
@@ -790,7 +790,7 @@ describe('getAsString()', () => {
         ]
       },
       `[Tactical rig] Shellback Tactical Banshee plate carrier (A-TACS AU) Default    |    Ragman 3 (barter): 59 790₽
-    [Back plate] 6B13 custom ballistic plates (Back)    |    Flea market: 43 868₽
+    [Back plate] 6B13 custom ballistic plates (Back)    |    Marché: 43 868₽
     MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)`
     ]
   ])('should convert an inventory slot to a string', (inventorySlot: IInventorySlot, expected: string) => {
@@ -798,7 +798,7 @@ describe('getAsString()', () => {
     const service = new InventorySlotPropertiesService()
 
     // Act
-    const result = service.getAsString('fr', inventorySlot)
+    const result = service.getAsString(inventorySlot, 'fr')
 
     // Assert
     expect(result).toBe(expected)

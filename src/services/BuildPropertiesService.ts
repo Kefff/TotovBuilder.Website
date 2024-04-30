@@ -143,10 +143,10 @@ export class BuildPropertiesService {
 
   /**
    * Converts a build to a text.
-   * @param language - Language.
    * @param build - Build to convert.
+   * @param language - Language.
    */
-  public getAsString(language: string, build: IBuild) {
+  public getAsString(build: IBuild, language: string) {
     return ''
   }
 
