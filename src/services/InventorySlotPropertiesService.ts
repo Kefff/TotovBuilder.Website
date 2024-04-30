@@ -4,8 +4,10 @@ import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { IInventorySlotSummary } from '../models/utils/IInventorySlotSummary'
 import { IRecoil } from '../models/utils/IRecoil'
 import { IWearableModifiers } from '../models/utils/IWearableModifiers'
+import vueI18n from '../plugins/vueI18n'
 import { PriceUtils } from '../utils/PriceUtils'
 import Result from '../utils/Result'
+import StringUtils from '../utils/StringUtils'
 import { InventoryItemService } from './InventoryItemService'
 import { InventorySlotService } from './InventorySlotService'
 import Services from './repository/Services'
@@ -19,8 +21,32 @@ export class InventorySlotPropertiesService {
    * @param inventorySlot - Inventory slot to convert.
    * @param language - Language.
    */
-  public getAsString(inventorySlot: IInventorySlot, language: string) {
-    return ''
+  public async getAsString(inventorySlot: IInventorySlot, language: string) {
+    let inventorySlotAsString = ''
+    const inventorySlotTypeResult = Services.get(InventorySlotService).getType(inventorySlot.typeId)
+
+    if (!inventorySlotTypeResult.success) {
+      return ''
+    }
+
+    for (const inventoryItem of inventorySlot.items) {
+      if (inventoryItem == null) {
+        continue
+      }
+
+      const itemAsString = await Services.get(InventoryItemService).getAsString(inventoryItem, language, undefined, undefined, inventorySlotTypeResult.value.canBeLooted)
+
+      if (itemAsString !== '') {
+        if (inventorySlotAsString.length > 0) {
+          inventorySlotAsString += `
+`
+        }
+
+        inventorySlotAsString += `[${vueI18n.t('caption.slotType' + StringUtils.toUpperFirst(inventorySlotTypeResult.value.id), 1, { locale: language })}] ${itemAsString}`
+      }
+    }
+
+    return inventorySlotAsString
   }
 
   /**

@@ -471,12 +471,12 @@ describe('getAsString()', () => {
   it.each([
     [build1, expectedToString1],
     [build2, expectedToString2]
-  ])('should convert a build to a string', (build: IBuild, expected: string) => {
+  ])('should convert a build to a string', async (build: IBuild, expected: string) => {
     // Arrange
     const service = new BuildPropertiesService()
 
     // Act
-    const result = service.getAsString(build, 'fr')
+    const result = await service.getAsString(build, 'fr')
 
     // Assert
     expect(result).toBe(expected)

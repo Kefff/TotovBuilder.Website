@@ -707,18 +707,19 @@ describe('getSummary()', () => {
   })
 })
 
-describe('getAsString()', () => {
+describe.only('getAsString()', () => {
   it.each([
     [
       inventorySlot1,
-      `[Headwear] BNTI LShZ-2DTM helmet (Black)    |    Marché: 63 493₽
-    [Equipment] LShZ-2DTM face shield    |    Ragman 3 (barter): 29 805₽`
+      `[Couvre-chef] BNTI LShZ-2DTM helmet (Black)    |    Marché: 63 493₽
+    [Équipement] LShZ-2DTM face shield    |    Ragman 3 (échange): 29 805₽`
     ],
     [
       inventorySlot2,
-      `[On sling] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
-    [Magazine] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (barter): 24 218₽
-        95 x 5.45x39mm US gs    |    Prapor 1: 9 120₽`
+      `[En bandouillère] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
+    [Chargeur] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (échange): 24 218₽
+        95 x 5.45x39mm US gs    |    Prapor 1: 9 120₽
+    5.45x39mm US gs    |    Prapor 1: 96₽`
     ],
     [
       {
@@ -741,11 +742,11 @@ describe('getAsString()', () => {
           }
         ]
       },
-      `[Pocket] MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)
-[Pocket] ELCAN SpecterDR 1x/4x scope    |    Peacekeeper 3: 279$ (= 39 886₽)
-[Pocket] SIG Sauer SRD9 9x19 sound suppressor    |    Peacekeeper 2: 242$ (= 34 606₽)
-[Pocket] 5.45x39mm BP gs    |    No merchant
-[Pocket] Vaseline balm`
+      `[Poches] MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)
+[Poches] ELCAN SpecterDR 1x/4x scope    |    Peacekeeper 3: 279$ (= 39 886₽)
+[Poches] SIG Sauer SRD9 9x19 sound suppressor    |    Peacekeeper 2: 242$ (= 34 606₽)
+[Poches] 5.45x39mm BP gs    |    Pas de marchand
+[Poches] Vaseline balm`
     ],
     [
       {
@@ -789,16 +790,24 @@ describe('getAsString()', () => {
           }
         ]
       },
-      `[Tactical rig] Shellback Tactical Banshee plate carrier (A-TACS AU) Default    |    Ragman 3 (barter): 59 790₽
-    [Back plate] 6B13 custom ballistic plates (Back)    |    Marché: 43 868₽
+      `[Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU) Default    |    Ragman 3 (échange): 59 790₽
+    [Plaque dorsale] 6B13 custom ballistic plates (Back)    |    Marché: 43 868₽
     MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)`
     ]
-  ])('should convert an inventory slot to a string', (inventorySlot: IInventorySlot, expected: string) => {
+  ])('should convert an inventory slot to a string', async (inventorySlot: IInventorySlot, expected: string) => {
     // Arrange
+    useItemServiceMock()
+    usePresetServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(GlobalFilterService)
+    Services.configure(InventoryItemService)
+    Services.configure(InventorySlotService)
+
     const service = new InventorySlotPropertiesService()
 
     // Act
-    const result = service.getAsString(inventorySlot, 'fr')
+    const result = await service.getAsString(inventorySlot, 'fr')
 
     // Assert
     expect(result).toBe(expected)

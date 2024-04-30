@@ -370,7 +370,7 @@ describe('getAsString()', () => {
         quantity: 1
       },
       `RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
-    [Chargeur] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (echange): 24 218₽
+    [Chargeur] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (échange): 24 218₽
         95 x 5.45x39mm US gs    |    Prapor 1: 9 120₽`
     ],
     [
@@ -516,7 +516,7 @@ describe('getAsString()', () => {
         ],
         quantity: 1
       },
-      `Shellback Tactical Banshee plate carrier (A-TACS AU) Default    |    Ragman 3 (echange): 59 790₽
+      `Shellback Tactical Banshee plate carrier (A-TACS AU) Default    |    Ragman 3 (échange): 59 790₽
     [Plaque dorsale] 6B13 custom ballistic plates (Back)    |    Marché: 43 868₽
     MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)`
     ],

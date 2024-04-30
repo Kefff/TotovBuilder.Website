@@ -146,7 +146,7 @@ export class BuildPropertiesService {
    * @param build - Build to convert.
    * @param language - Language.
    */
-  public getAsString(build: IBuild, language: string) {
+  public async getAsString(build: IBuild, language: string) {
     return ''
   }
 
