@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 import { describe, expect, it } from 'vitest'
 import { IInventorySlot } from '../../models/build/IInventorySlot'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
@@ -10,260 +11,12 @@ import { InventorySlotPropertiesService } from '../../services/InventorySlotProp
 import { InventorySlotService } from '../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
-import { ak12PistolGrip, ak12Stock, ammo545bp, ammo545us, armbandBlue, armor6b13FlDefault, bansheeDefault, cultLocust, lshZ2dtm, lshZ2dtmFs, monocletePe, ms2000, paca, plate6b33Back, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, scavVest, specterDr, srd9 } from '../__data__/itemMocks'
+import { ak12PistolGrip, ak12Stock, ammo545bp, ammo545us, armbandBlue, armor6b13FlDefault, bansheeDefault, cultLocust, lshZ2dtm, lshZ2dtmFs, monocletePe, ms2000, paca, plate6b33Back, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, scavVest, specterDr, srd9, vaseline } from '../__data__/itemMocks'
 import { useGlobalFilterServiceMock } from '../__mocks__/GlobalFilterServiceMock'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
-
-const inventorySlot1: IInventorySlot = {
-  items: [
-    {
-      content: [],
-      ignorePrice: false,
-      itemId: lshZ2dtm.id,
-      modSlots: [
-        {
-          item: {
-            content: [],
-            ignorePrice: false,
-            itemId: lshZ2dtmFs.id,
-            modSlots: [],
-            quantity: 1
-          },
-          modSlotName: 'mod_equipment'
-        }
-      ],
-      quantity: 1
-    }
-  ],
-  typeId: 'headwear'
-}
-
-const inventorySlot2: IInventorySlot = {
-  items: [
-    {
-      content: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: ammo545us.id,
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      ignorePrice: false,
-      itemId: rpk16Default.id,
-      modSlots: [
-        {
-          item: {
-            content: [],
-            ignorePrice: false,
-            itemId: ak12PistolGrip.id,
-            modSlots: [],
-            quantity: 1
-          },
-          modSlotName: 'mod_pistol_grip'
-        },
-        {
-          item: {
-            content: [],
-            ignorePrice: false,
-            itemId: rpk16DustCover.id,
-            modSlots: [
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: rpk16RsBase.id,
-                  modSlots: [
-                    {
-                      item: {
-                        content: [],
-                        ignorePrice: false,
-                        itemId: rpk16Rs.id,
-                        modSlots: [],
-                        quantity: 1
-                      },
-                      modSlotName: 'mod_sight_rear'
-                    }
-                  ],
-                  quantity: 1
-                },
-                modSlotName: 'mod_sight_rear'
-              }
-            ],
-            quantity: 1
-          },
-          modSlotName: 'mod_reciever'
-        },
-        {
-          item: {
-            content: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: ammo545us.id,
-                modSlots: [],
-                quantity: 95
-              }
-            ],
-            ignorePrice: false,
-            itemId: rpk16Drum.id,
-            modSlots: [],
-            quantity: 1
-          },
-          modSlotName: 'mod_magazine'
-        },
-        {
-          item: {
-            content: [],
-            ignorePrice: false,
-            itemId: rpk16Tube.id,
-            modSlots: [
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: ak12Stock.id,
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_stock'
-              }
-            ],
-            quantity: 1
-          },
-          modSlotName: 'mod_stock_001'
-        },
-        {
-          item: {
-            content: [],
-            ignorePrice: false,
-            itemId: rpk16Handguard.id,
-            modSlots: [
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: rpk16Rail.id,
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_mount_000'
-              },
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: rpk16Rail.id,
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_mount_001'
-              }
-            ],
-            quantity: 1
-          },
-          modSlotName: 'mod_handguard'
-        },
-        {
-          item: {
-            content: [],
-            ignorePrice: false,
-            itemId: rpk1615inch.id,
-            modSlots: [
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: rpk16MuzzleBreak.id,
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'mod_muzzle'
-              }
-            ],
-            quantity: 1
-          },
-          modSlotName: 'mod_barrel'
-        }
-      ],
-      quantity: 1
-    }
-  ],
-  typeId: 'onSling'
-}
-
-const inventorySlot3: IInventorySlot = {
-  typeId: 'pockets',
-  items: [
-    {
-      content: [],
-      ignorePrice: false,
-      itemId: ms2000.id,
-      modSlots: [],
-      quantity: 1
-    },
-    {
-      content: [],
-      ignorePrice: false,
-      itemId: specterDr.id,
-      modSlots: [],
-      quantity: 1
-    },
-    {
-      content: [],
-      ignorePrice: false,
-      itemId: srd9.id,
-      modSlots: [],
-      quantity: 1
-    }
-  ]
-}
-
-const inventorySlot4: IInventorySlot = {
-  typeId: 'tacticalRig',
-  items: [
-    {
-      content: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: ms2000.id,
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      ignorePrice: false,
-      itemId: bansheeDefault.id,
-      modSlots: [
-        {
-          item: {
-            content: [],
-            ignorePrice: false,
-            itemId: monocletePe.id,
-            modSlots: [],
-            quantity: 1
-          },
-          modSlotName: 'front_plate'
-        },
-        {
-          item: {
-            content: [],
-            ignorePrice: false,
-            itemId: monocletePe.id,
-            modSlots: [],
-            quantity: 1
-          },
-          modSlotName: 'back_plate'
-        }
-      ],
-      quantity: 1
-    }
-  ]
-}
 
 describe('getSummary()', () => {
   describe('Armor modifiers', () => {
@@ -953,3 +706,349 @@ describe('getSummary()', () => {
     })
   })
 })
+
+describe('getAsString()', () => {
+  it.each([
+    [
+      inventorySlot1,
+      `[Headwear] BNTI LShZ-2DTM helmet (Black)    |    Flea market: 63 493₽
+    [Equipment] LShZ-2DTM face shield    |    Ragman 3 (barter): 29 805₽`
+    ],
+    [
+      inventorySlot2,
+      `[On sling] RPK-16 5.45x39 light machine gun Default    |    Flea market: 43 345₽
+    [Magazine] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (barter): 24 218₽
+        95 x 5.45x39mm US gs    |    Praport 1: 9 120₽`
+    ],
+    [
+      {
+        typeId: 'pockets',
+        items: [
+          ...inventorySlot3.items,
+          {
+            content: [],
+            ignorePrice: false,
+            itemId: ammo545bp.id,
+            modSlots: [],
+            quantity: 60
+          },
+          {
+            content: [],
+            ignorePrice: true,
+            itemId: vaseline.id,
+            modSlots: [],
+            quantity: 1
+          }
+        ]
+      },
+      `[Pocket] MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)
+[Pocket] ELCAN SpecterDR 1x/4x scope    |    Peacekeeper 3: 279$ (= 39 886₽)
+[Pocket] SIG Sauer SRD9 9x19 sound suppressor    |    Peacekeeper 2: 242$ (= 34 606₽)
+[Pocket] 5.45x39mm BP gs    |    No merchant
+[Pocket] Vaseline balm`
+    ],
+    [
+      {
+        typeId: 'tacticalRig',
+        items: [
+          {
+            content: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: ms2000.id,
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            ignorePrice: false,
+            itemId: bansheeDefault.id,
+            modSlots: [
+              {
+                item: {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: monocletePe.id,
+                  modSlots: [],
+                  quantity: 1
+                },
+                modSlotName: 'front_plate'
+              },
+              {
+                item: {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: plate6b33Back.id,
+                  modSlots: [],
+                  quantity: 1
+                },
+                modSlotName: 'back_plate'
+              }
+            ],
+            quantity: 1
+          }
+        ]
+      },
+      `[Tactical rig] Shellback Tactical Banshee plate carrier (A-TACS AU) Default    |    Ragman 3 (barter): 59 790₽
+    [Back plate] 6B13 custom ballistic plates (Back)    |    Flea market: 43 868₽
+    MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)`
+    ]
+  ])('should convert an inventory slot to a string', (inventorySlot: IInventorySlot, expected: string) => {
+    // Arrange
+    const service = new InventorySlotPropertiesService()
+
+    // Act
+    const result = service.getAsString('fr', inventorySlot)
+
+    // Assert
+    expect(result).toBe(expected)
+  })
+})
+
+const inventorySlot1: IInventorySlot = {
+  items: [
+    {
+      content: [],
+      ignorePrice: false,
+      itemId: lshZ2dtm.id,
+      modSlots: [
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: lshZ2dtmFs.id,
+            modSlots: [],
+            quantity: 1
+          },
+          modSlotName: 'mod_equipment'
+        }
+      ],
+      quantity: 1
+    }
+  ],
+  typeId: 'headwear'
+}
+
+const inventorySlot2: IInventorySlot = {
+  items: [
+    {
+      content: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: ammo545us.id,
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      ignorePrice: false,
+      itemId: rpk16Default.id,
+      modSlots: [
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: ak12PistolGrip.id,
+            modSlots: [],
+            quantity: 1
+          },
+          modSlotName: 'mod_pistol_grip'
+        },
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: rpk16DustCover.id,
+            modSlots: [
+              {
+                item: {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: rpk16RsBase.id,
+                  modSlots: [
+                    {
+                      item: {
+                        content: [],
+                        ignorePrice: false,
+                        itemId: rpk16Rs.id,
+                        modSlots: [],
+                        quantity: 1
+                      },
+                      modSlotName: 'mod_sight_rear'
+                    }
+                  ],
+                  quantity: 1
+                },
+                modSlotName: 'mod_sight_rear'
+              }
+            ],
+            quantity: 1
+          },
+          modSlotName: 'mod_reciever'
+        },
+        {
+          item: {
+            content: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: ammo545us.id,
+                modSlots: [],
+                quantity: 95
+              }
+            ],
+            ignorePrice: false,
+            itemId: rpk16Drum.id,
+            modSlots: [],
+            quantity: 1
+          },
+          modSlotName: 'mod_magazine'
+        },
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: rpk16Tube.id,
+            modSlots: [
+              {
+                item: {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: ak12Stock.id,
+                  modSlots: [],
+                  quantity: 1
+                },
+                modSlotName: 'mod_stock'
+              }
+            ],
+            quantity: 1
+          },
+          modSlotName: 'mod_stock_001'
+        },
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: rpk16Handguard.id,
+            modSlots: [
+              {
+                item: {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: rpk16Rail.id,
+                  modSlots: [],
+                  quantity: 1
+                },
+                modSlotName: 'mod_mount_000'
+              },
+              {
+                item: {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: rpk16Rail.id,
+                  modSlots: [],
+                  quantity: 1
+                },
+                modSlotName: 'mod_mount_001'
+              }
+            ],
+            quantity: 1
+          },
+          modSlotName: 'mod_handguard'
+        },
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: rpk1615inch.id,
+            modSlots: [
+              {
+                item: {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: rpk16MuzzleBreak.id,
+                  modSlots: [],
+                  quantity: 1
+                },
+                modSlotName: 'mod_muzzle'
+              }
+            ],
+            quantity: 1
+          },
+          modSlotName: 'mod_barrel'
+        }
+      ],
+      quantity: 1
+    }
+  ],
+  typeId: 'onSling'
+}
+
+const inventorySlot3: IInventorySlot = {
+  typeId: 'pockets',
+  items: [
+    {
+      content: [],
+      ignorePrice: false,
+      itemId: ms2000.id,
+      modSlots: [],
+      quantity: 1
+    },
+    {
+      content: [],
+      ignorePrice: false,
+      itemId: specterDr.id,
+      modSlots: [],
+      quantity: 1
+    },
+    {
+      content: [],
+      ignorePrice: false,
+      itemId: srd9.id,
+      modSlots: [],
+      quantity: 1
+    }
+  ]
+}
+
+const inventorySlot4: IInventorySlot = {
+  typeId: 'tacticalRig',
+  items: [
+    {
+      content: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: ms2000.id,
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      ignorePrice: false,
+      itemId: bansheeDefault.id,
+      modSlots: [
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: monocletePe.id,
+            modSlots: [],
+            quantity: 1
+          },
+          modSlotName: 'front_plate'
+        },
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: monocletePe.id,
+            modSlots: [],
+            quantity: 1
+          },
+          modSlotName: 'back_plate'
+        }
+      ],
+      quantity: 1
+    }
+  ]
+}

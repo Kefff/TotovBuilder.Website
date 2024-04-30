@@ -14,6 +14,14 @@ import Services from './repository/Services'
  * Represents a service responsible for managing properties of an inventory slot.
  */
 export class InventorySlotPropertiesService {
+  /**
+   * Converts an inventory slot to a text.
+   * @param language - Language.
+   * @param inventorySlot - Inventory slot to convert.
+   */
+  public getAsString(language: string, inventorySlot: IInventorySlot) {
+    return ''
+  }
 
   /**
    * Gets an inventory slot summary.

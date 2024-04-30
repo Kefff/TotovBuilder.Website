@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */
 import { describe, expect, it } from 'vitest'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
@@ -12,102 +13,11 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
-import { ak12PistolGrip, ak12Stock, ak12bt, alpha, ammo1270Magnum, ammo545bp, ammo545us, ammo9mmGT, armor6b13Fl, armor6b13FlDefault, bansheeDefault, berkut, cultLocust, esLamp, ewr, iskra, lshZ2dtm, lshZ2dtmFs, m9a3, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, monocletePe, mts25512Default, mts25512cyl, paca, plate6b33Back, plate6b33Front, precision, rgd5, rpk16, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16MuzzleBreak, rpk16Tube, salewa, scavVest, specterDr, srd9, syringe, vhs, x400 } from '../__data__/itemMocks'
+import { ak12PistolGrip, ak12Stock, ak12bt, alpha, ammo1270Magnum, ammo545bp, ammo545us, ammo9mmGT, armor6b13Fl, armor6b13FlDefault, bansheeDefault, berkut, cultLocust, esLamp, ewr, iskra, lshZ2dtm, lshZ2dtmFs, m9a3, m9a3Default, m9a3Fs, m9a3Magazine, m9a3Rs, m9a3SideGrip, m9a3Slide, m9a3Thr, monocletePe, ms2000, mts25512Default, mts25512cyl, paca, plate6b33Back, plate6b33Front, precision, rgd5, rpk16, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, salewa, scavVest, specterDr, srd9, syringe, vaseline, vhs, x400 } from '../__data__/itemMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
-
-const inventoryItem: IInventoryItem = {
-  content: [
-    {
-      content: [],
-      ignorePrice: false,
-      itemId: rpk16Default.id,
-      modSlots: [
-        {
-          item: {
-            content: [],
-            ignorePrice: false,
-            itemId: ak12PistolGrip.id,
-            modSlots: [],
-            quantity: 1
-          },
-          modSlotName: 'mod_pistol_grip'
-        },
-        {
-          item: undefined,
-          modSlotName: 'mod_stock'
-        },
-        {
-          item: {
-            content: [],
-            ignorePrice: false,
-            itemId: rpk16Drum.id,
-            modSlots: [],
-            quantity: 1
-          },
-          modSlotName: 'mod_magazine'
-        }
-      ],
-      quantity: 1
-    },
-    {
-      content: [],
-      ignorePrice: false,
-      itemId: ammo9mmGT.id,
-      modSlots: [],
-      quantity: 50
-    }
-  ],
-  ignorePrice: false,
-  itemId: berkut.id,
-  modSlots: [],
-  quantity: 1
-}
-
-const invalidInventoryItem1: IInventoryItem = {
-  content: [],
-  ignorePrice: false,
-  itemId: 'invalid',
-  modSlots: [],
-  quantity: 1
-}
-
-const invalidInventoryItem2: IInventoryItem = {
-  content: [],
-  ignorePrice: false,
-  itemId: rpk16Default.id,
-  modSlots: [
-    {
-      item: {
-        content: [],
-        ignorePrice: false,
-        itemId: 'invalid',
-        modSlots: [],
-        quantity: 1
-      },
-      modSlotName: 'mod_pistol_grip'
-    }
-  ],
-  quantity: 1
-}
-
-const invalidInventoryItem3: IInventoryItem = {
-  content: [
-    {
-      content: [],
-      ignorePrice: false,
-      itemId: 'invalid',
-      modSlots: [],
-      quantity: 1
-    }
-  ],
-  ignorePrice: false,
-  itemId: berkut.id,
-  modSlots: [],
-  quantity: 1
-}
 
 describe('getArmorModifiers()', () => {
   it.each([
@@ -312,6 +222,367 @@ describe('getArmorModifiers()', () => {
     // Assert
     expect(armorClassResult!.success).toBe(false)
     expect(armorClassResult!.failureMessage).toBe('Item "invalid" not found.')
+  })
+})
+
+describe('getAsString()', () => {
+  it.only.each([
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: rpk16Default.id,
+        modSlots: [
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: ak12PistolGrip.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'mod_pistol_grip'
+          },
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: rpk16DustCover.id,
+              modSlots: [
+                {
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: rpk16RsBase.id,
+                    modSlots: [
+                      {
+                        item: {
+                          content: [],
+                          ignorePrice: false,
+                          itemId: rpk16Rs.id,
+                          modSlots: [],
+                          quantity: 1
+                        },
+                        modSlotName: 'mod_sight_rear'
+                      }
+                    ],
+                    quantity: 1
+                  },
+                  modSlotName: 'mod_sight_rear'
+                }
+              ],
+              quantity: 1
+            },
+            modSlotName: 'mod_reciever'
+          },
+          {
+            item: {
+              content: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: ammo545us.id,
+                  modSlots: [],
+                  quantity: 95
+                }
+              ],
+              ignorePrice: false,
+              itemId: rpk16Drum.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'mod_magazine'
+          },
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: rpk16Tube.id,
+              modSlots: [
+                {
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: ak12Stock.id,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  modSlotName: 'mod_stock'
+                }
+              ],
+              quantity: 1
+            },
+            modSlotName: 'mod_stock_001'
+          },
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: rpk16Handguard.id,
+              modSlots: [
+                {
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: rpk16Rail.id,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  modSlotName: 'mod_mount_000'
+                },
+                {
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: rpk16Rail.id,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  modSlotName: 'mod_mount_001'
+                }
+              ],
+              quantity: 1
+            },
+            modSlotName: 'mod_handguard'
+          },
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: rpk1615inch.id,
+              modSlots: [
+                {
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: rpk16MuzzleBreak.id,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  modSlotName: 'mod_muzzle'
+                }
+              ],
+              quantity: 1
+            },
+            modSlotName: 'mod_barrel'
+          }
+        ],
+        quantity: 1
+      },
+      `RPK-16 5.45x39 light machine gun Default    |    Flea market: 43 345₽
+    [Magazine] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (barter): 24 218₽
+        95 x 5.45x39mm US gs    |    Praport 1: 9 120₽`
+    ],
+    [
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: m9a3Default.id,
+        modSlots: [
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: m9a3Thr.id,
+              modSlots: [
+                {
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: srd9.id,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  modSlotName: 'mod_muzzle'
+                }
+              ],
+              quantity: 1
+            },
+            modSlotName: 'mod_barrel'
+          },
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: m9a3SideGrip.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'mod_pistol_grip'
+          },
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: m9a3Slide.id,
+              modSlots: [
+                {
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: m9a3Rs.id,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  modSlotName: 'mod_sight_rear'
+                },
+                {
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: m9a3Fs.id,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  modSlotName: 'mod_sight_front'
+                }
+              ],
+              quantity: 1
+            },
+            modSlotName: 'mod_reciever'
+          },
+          {
+            item: {
+              content: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: ammo9mmGT.id,
+                  modSlots: [],
+                  quantity: 17
+                }
+              ],
+              ignorePrice: false,
+              itemId: m9a3Magazine.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'mod_magazine'
+          },
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: x400.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'mod_tactical'
+          }
+        ],
+        quantity: 1
+      },
+      `Beretta M9A3 9x19 pistol Default    |    Peacekeeper 1: 107$ (= 15 337₽)
+    [Muzzle] SIG Sauer SRD9 9x19 sound suppressor    |    Peacekeeper 2: 242$ (= 34 606₽)
+    [Magazine]
+        17 x 9x19mm Green Tracer    |    Mechanic 1: 1 241₽
+    [Tactical mod] SureFire X400 Ultra tactical flashlight with laser    |    Peacekeeper 2: 95$ (= 13 552₽)`
+    ],
+    [
+      {
+        content: [
+          {
+            content: [],
+            ignorePrice: false,
+            itemId: ms2000.id,
+            modSlots: [],
+            quantity: 1
+          }
+        ],
+        ignorePrice: false,
+        itemId: bansheeDefault.id,
+        modSlots: [
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: monocletePe.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'front_plate'
+          },
+          {
+            item: {
+              content: [],
+              ignorePrice: false,
+              itemId: plate6b33Back.id,
+              modSlots: [],
+              quantity: 1
+            },
+            modSlotName: 'back_plate'
+          }
+        ],
+        quantity: 1
+      },
+      `Shellback Tactical Banshee plate carrier (A-TACS AU) Default    |    Ragman 3 (barter): 59 790₽
+    [Back plate] 6B13 custom ballistic plates (Back)    |    Flea market: 43 868₽
+    MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)`
+    ],
+    [
+      {
+        content: [],
+        itemId: ammo545bp.id,
+        ignorePrice: false,
+        modSlots: [],
+        quantity: 1
+      },
+      '5.45x39mm BP gs    |    No merchant'
+    ],
+    [
+      {
+        content: [],
+        itemId: vaseline.id,
+        ignorePrice: true,
+        modSlots: [],
+        quantity: 1
+      },
+      'Vaseline balm'
+    ]
+  ])('should convert an inventory item to a string', async (inventoryItem: IInventoryItem, expected: string) => {
+    // Arrange
+    useItemServiceMock()
+    usePresetServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(GlobalFilterService)
+
+    const service = new InventoryItemService()
+
+    // Act
+    const result = await service.getAsString('fr', inventoryItem)
+
+    // Assert
+    expect(result).toBe(expected)
+  })
+
+  it.each([
+    ['en', 'Video cassette with the Cyborg Killer movie    |    Flea market: 37,867₽'],
+    ['fr', 'Video cassette with the Cyborg Killer movie    |    Flea market: 37 867₽'],
+    ['invalid', 'Video cassette with the Cyborg Killer movie    |    Flea market: 37,867₽']
+  ])('should format prices according to the language', async (language: string, expected: string) => {
+    // Arrange
+    useItemServiceMock()
+    usePresetServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(GlobalFilterService)
+
+    const service = new InventoryItemService()
+
+    // Act
+    const result = await service.getAsString(
+      language,
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: vhs.id,
+        modSlots: [],
+        quantity: 1
+      })
+
+    // Assert
+    expect(result).toBe(expected)
   })
 })
 
@@ -2963,3 +3234,94 @@ describe('getWeight()', () => {
     }
   )
 })
+
+const inventoryItem: IInventoryItem = {
+  content: [
+    {
+      content: [],
+      ignorePrice: false,
+      itemId: rpk16Default.id,
+      modSlots: [
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: ak12PistolGrip.id,
+            modSlots: [],
+            quantity: 1
+          },
+          modSlotName: 'mod_pistol_grip'
+        },
+        {
+          item: undefined,
+          modSlotName: 'mod_stock'
+        },
+        {
+          item: {
+            content: [],
+            ignorePrice: false,
+            itemId: rpk16Drum.id,
+            modSlots: [],
+            quantity: 1
+          },
+          modSlotName: 'mod_magazine'
+        }
+      ],
+      quantity: 1
+    },
+    {
+      content: [],
+      ignorePrice: false,
+      itemId: ammo9mmGT.id,
+      modSlots: [],
+      quantity: 50
+    }
+  ],
+  ignorePrice: false,
+  itemId: berkut.id,
+  modSlots: [],
+  quantity: 1
+}
+
+const invalidInventoryItem1: IInventoryItem = {
+  content: [],
+  ignorePrice: false,
+  itemId: 'invalid',
+  modSlots: [],
+  quantity: 1
+}
+
+const invalidInventoryItem2: IInventoryItem = {
+  content: [],
+  ignorePrice: false,
+  itemId: rpk16Default.id,
+  modSlots: [
+    {
+      item: {
+        content: [],
+        ignorePrice: false,
+        itemId: 'invalid',
+        modSlots: [],
+        quantity: 1
+      },
+      modSlotName: 'mod_pistol_grip'
+    }
+  ],
+  quantity: 1
+}
+
+const invalidInventoryItem3: IInventoryItem = {
+  content: [
+    {
+      content: [],
+      ignorePrice: false,
+      itemId: 'invalid',
+      modSlots: [],
+      quantity: 1
+    }
+  ],
+  ignorePrice: false,
+  itemId: berkut.id,
+  modSlots: [],
+  quantity: 1
+}

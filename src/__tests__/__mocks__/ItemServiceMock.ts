@@ -1,6 +1,8 @@
 import { anyString, anything, instance, mock, when } from 'ts-mockito'
 import ItemCategoriesMock from '../../../public/data/item-categories.json'
+import TarkovValuesMock from '../../../public/data/tarkov-values.json'
 import { ICurrency } from '../../models/configuration/ICurrency'
+import { ITarkovValues } from '../../models/configuration/ITarkovValues'
 import { IItem } from '../../models/item/IItem'
 import { IPrice } from '../../models/item/IPrice'
 import { ItemService } from '../../services/ItemService'
@@ -11,6 +13,7 @@ import { PriceMocks } from '../__data__/priceMocks'
 
 export function useItemServiceMock(hasMainCurrency = true, customItemList?: IItem[], customPricesList?: IPrice[]): void {
   const itemServiceMock = mock<ItemService>()
+  when(itemServiceMock.getCurrency(anyString())).thenCall(currencyName => getCurrency(currencyName))
   when(itemServiceMock.getItem(anyString())).thenCall((id: string) => getItem(id, customItemList, customPricesList))
   when(itemServiceMock.getItemCategories()).thenResolve(ItemCategoriesMock)
   when(itemServiceMock.getItems(anything(), anything())).thenCall((ids: string[]) => getItems(ids, customItemList))
@@ -18,6 +21,16 @@ export function useItemServiceMock(hasMainCurrency = true, customItemList?: IIte
   when(itemServiceMock.getMainCurrency()).thenCall(() => getMainCurrency(hasMainCurrency))
 
   Services.configure(ItemService, undefined, instance(itemServiceMock))
+}
+
+function getCurrency(currencyName: string) {
+  const currency = (TarkovValuesMock as ITarkovValues).currencies.find(c => c.name === currencyName)
+
+  if (currency != null) {
+    return Promise.resolve(Result.ok(currency))
+  }
+
+  return Result.fail(FailureType.error, 'ItemService.getCurrency()', `Currency "${currencyName}" not found`)
 }
 
 function getItem(id: string, customItemList?: IItem[], customPricesList?: IPrice[]): Promise<Result<IItem>> {
@@ -60,6 +73,7 @@ function getMainCurrency(hasMainCurrency: boolean): Promise<Result<ICurrency>> {
       mainCurrency: true,
       name: rub.shortName,
       sortOrder: 3,
+      symbol: '₽',
       value: 1
     }))
   } else {

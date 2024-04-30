@@ -224,7 +224,9 @@ export class GlobalFilterService {
     }
 
     // Merchant filters
-    for (const merchant of Services.get(TarkovValuesService).values.merchants.filter(m => m.showInFilter)) {
+    const tarkovValuesService = Services.get(TarkovValuesService)
+
+    for (const merchant of tarkovValuesService.values.merchants.filter(m => m.showInFilter)) {
       const savedMerchantFilter = savedFilter.merchantFilters.find(sf => sf.merchant === merchant.name)
 
       this.filter.merchantFilters.push({

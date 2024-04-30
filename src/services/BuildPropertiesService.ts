@@ -142,6 +142,15 @@ export class BuildPropertiesService {
   }
 
   /**
+   * Converts a build to a text.
+   * @param language - Language.
+   * @param build - Build to convert.
+   */
+  public getAsString(language: string, build: IBuild) {
+    return ''
+  }
+
+  /**
    * Gets the tooltip for not exported builds.
    * @param lastUpdated - Date of the last update.
    * @param lastExported - Date of the last export.

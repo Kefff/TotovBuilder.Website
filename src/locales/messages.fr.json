@@ -286,6 +286,7 @@
     "inventorySlotWithMissingPrice": "Cet emplacement d'inventaire contient un objet qui n'est vendu par aucun des marchands paramétrés. Le prix de l'équipement peut donc ne pas refléter la réalité.",
     "newVersion": "La version {newVersion} est sortie.",
     "noItemsFound": "Aucun objet n'a été trouvé pour votre recherche avec la configuration de marchands et d'objets actuelle.",
+    "noMerchant": "Pas de marchand",
     "postUpdatePeriod": "Comme nous sommes dans une période d'après mise à jour de Tarkov, les objets et prix peuvent ne pas être à jour.\nIls sont en train d'être progressivement mis à jour par l'équipe de Tarkov.dev.",
     "pricesLoadingError": "Quelque chose s'est mal passé lors de la mise à jour des prix.\nEssayez d'attendre un peu et de recharger la page.",
     "requiredField": "{caption} est obligatoire.",

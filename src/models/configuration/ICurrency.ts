@@ -28,6 +28,11 @@ export interface ICurrency {
   sortOrder: number
 
   /**
+   * Symbol.
+   */
+  symbol: string
+
+  /**
    * Value in main currency.
    */
   value: number

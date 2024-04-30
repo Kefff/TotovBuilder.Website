@@ -355,6 +355,7 @@
     "migrationError": "Error during migration to \"{version}\".",
     "newVersion": "Version {newVersion} has been released.",
     "noItemsFound": "No item could be found for your search with the current merchants and items configuration.",
+    "noMerchant": "No merchant",
     "postUpdatePeriod": "As we are in a post Tarkov update period, items and prices may not be up to date yet.\nThey are progressively being updated by the Tarkov.dev team.",
     "presetNotFound": "Preset \"{id}\" not found.",
     "presetsFetched": "Presets fetched with success.",

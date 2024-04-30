@@ -18,6 +18,7 @@ import { IInventoryItemWearableModifiers } from '../models/utils/IInventoryItemW
 import { IRecoilPercentageModifier } from '../models/utils/IRecoilPercentageModifier'
 import { IWeight } from '../models/utils/IWeight'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
+import vueI18n from '../plugins/vueI18n'
 import { PriceUtils } from '../utils/PriceUtils'
 import Result from '../utils/Result'
 import { GlobalFilterService } from './GlobalFilterService'
@@ -96,6 +97,71 @@ export class InventoryItemService {
       armorClass: armor.armorClass,
       durability: armor.durability
     })
+  }
+
+  /**
+   * Converts an inventory item to a text.
+   * @param language - Language.
+   * @param inventorySlot - Inventory item to convert.
+   * @param itemInSameSlotInPreset - Preset item that is place in the same slot of a preset. If not null, this means that inventoryItem has been placed in the content or mods of a parent item that is a preset. When inventoryItem and itemInSameSlotInPreset are the same, this means that the price of inventoryItem must be ignored because its part of a preset.
+   * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
+   */
+  public async getAsString(language: string, inventoryItem: IInventoryItem, itemInSameSlotInPreset?: IInventoryItem, canBeLooted = true): Promise<string> {
+    const priceSeparator = '    |    '
+    const acceptedLanguages = [language, 'en']
+    const itemService = Services.get(ItemService)
+
+    const mainCurrencyResult = await itemService.getMainCurrency()
+
+    if (!mainCurrencyResult.success) {
+      return ''
+    }
+
+    const itemResult = await itemService.getItem(inventoryItem.itemId)
+
+    if (!itemResult.success) {
+      return ''
+    }
+
+    let inventoryItemAsString = itemResult.value.name
+
+    if (canBeLooted && !inventoryItem.ignorePrice) {
+      const priceResult = await this.getPrice(inventoryItem, itemInSameSlotInPreset, canBeLooted)
+
+      if (priceResult.success) {
+        if (priceResult.value.missingPrice && priceResult.value.unitPrice.valueInMainCurrency === 0) {
+          inventoryItemAsString += `${priceSeparator}${vueI18n.t('message.noMerchant')}`
+        } else {
+          inventoryItemAsString += `${priceSeparator}${vueI18n.t('caption.merchant_' + priceResult.value.unitPrice.merchant)}`
+
+          if (priceResult.value.unitPrice.merchant !== 'flea-market') {
+            inventoryItemAsString += ` ${priceResult.value.unitPrice.merchantLevel}`
+          }
+
+          if (priceResult.value.unitPrice.currencyName === 'barter') {
+            inventoryItemAsString += ` (${vueI18n.t('caption.barter').toLocaleLowerCase()}): ${priceResult.value.price.valueInMainCurrency.toLocaleString(acceptedLanguages)}${mainCurrencyResult.value.symbol}`
+          } else {
+            inventoryItemAsString += `: ${priceResult.value.price.value.toLocaleString(acceptedLanguages)}`
+
+            if (priceResult.value.price.currencyName === mainCurrencyResult.value.name) {
+              inventoryItemAsString += mainCurrencyResult.value.symbol
+            } else {
+              const priceCurrencyResult = await itemService.getCurrency(priceResult.value.price.currencyName)
+
+              if (priceCurrencyResult.success) {
+                inventoryItemAsString += `${priceCurrencyResult.value.symbol} (= ${priceResult.value.price.valueInMainCurrency.toLocaleString(acceptedLanguages)}${mainCurrencyResult.value.symbol})`
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Mods
+
+    // Content
+
+    return inventoryItemAsString
   }
 
   /**
@@ -320,8 +386,16 @@ export class InventoryItemService {
       }
     }
 
+    let preset = itemInSameSlotInPreset
+
+    if (preset == null) {
+      preset = Services.get(PresetService).getPreset(inventoryItem.itemId)
+    }
+
     // Adding content prices
-    for (const containedItem of inventoryItem.content) {
+    for (let i = 0; i < inventoryItem.content.length; i++) {
+      const containedItem = inventoryItem.content[i]
+
       /* c8 ignore start */
       if (containedItem == null) {
         // !!! WORKAROUNG !!! In theory it should never happen, but it happened in production without being able to identify the source of the problem.
@@ -329,7 +403,7 @@ export class InventoryItemService {
       }
       /* c8 ignore stop */
 
-      const containedItemPriceResult = await this.getPrice(containedItem, itemInSameSlotInPreset)
+      const containedItemPriceResult = await this.getPrice(containedItem, preset?.content[i])
 
       if (!containedItemPriceResult.success) {
         return Result.failFrom(containedItemPriceResult)
@@ -355,12 +429,6 @@ export class InventoryItemService {
     }
 
     // Adding mod prices
-    let preset = itemInSameSlotInPreset
-
-    if (preset == null) {
-      preset = Services.get(PresetService).getPreset(inventoryItem.itemId)
-    }
-
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.item == null) {
         continue

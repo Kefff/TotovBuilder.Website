@@ -1,8 +1,10 @@
+/* eslint-disable no-irregular-whitespace */
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import Result from '../../utils/Result'
+import { build1, build2 } from '../__data__/buildMocks'
 import { armor6b13FlDefault, bansheeDefault, ekp802dt, nf30mm, opSksDefault, opSksDt, pso1, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, scavVest, specterDr } from '../__data__/itemMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 
@@ -465,6 +467,22 @@ describe('canAddVest()', () => {
   )
 })
 
+describe('getAsString()', () => {
+  it.each([
+    [build1, expectedToString1],
+    [build2, expectedToString2]
+  ])('should convert a build to a string', (build: IBuild, expected: string) => {
+    // Arrange
+    const service = new BuildPropertiesService()
+
+    // Act
+    const result = service.getAsString('fr', build)
+
+    // Assert
+    expect(result).toBe(expected)
+  })
+})
+
 describe('getNotExportedTooltip()', () => {
   it.each([
     [undefined, undefined, 'Build not exported. It will be lost if your browser history is cleared.'],
@@ -481,3 +499,41 @@ describe('getNotExportedTooltip()', () => {
     expect(tooltip).toBe(expected)
   })
 })
+
+const expectedToString1 = `Build 1
+348 012₽
+Recoil: 76v 226h    |    Armor: 4    |    Ergo: 34 (-9.5%)    |    Speed: -6%    |    Turn: -9%    |    Weight: 21.753kg
+
+[On sling] RPK-16 5.45x39 light machine gun Default    |    Flea market: 43 345₽
+    [Magazine] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (barter): 24 218₽
+        95 x 5.45x39mm US gs    |    Praport 1: 9 120₽
+[Body armor] 6B13 assault armor (Digital Flora) Default    |    Ragman 2: 64 269₽
+[Headwear] BNTI LShZ-2DTM helmet (Black)    |    Flea market: 63 493₽
+    [Equipment] LShZ-2DTM face shield    |    Ragman 3 (barter): 29 805₽
+[Pocket] Morphine injector    |    Flea market: 17 421₽
+[Pocket] Vaseline balm    |    Flea market: 27 714₽
+[Pocket] RGD-5 hand grenade    |    Prapor 3: 11 822₽
+[Pocket] 60 x 5.45x39mm US gs    |    Prapor 1: 5 760₽
+[Backpack] WARTECH Berkut BB-102 backpack (A-TACS FG)    |    Ragman 2: 24 509₽
+[Face cover] Cold Fear infrared balaclava    |    Ragman 2: 4 793₽
+[Eyewear] Crossbow tactical glasses    |    Ragman 2: 3 885₽
+
+Created with Totov Builder
+Interactive build:`
+
+const expectedToString2 = `Build 2
+412$ and 125 163₽ (= 181 346₽)
+Recoil: 368v 255h    |    Armor: 4    |    Ergo: 52 (-3%)    |    Speed: -3%    |    Turn: -1%    |    Weight: 8.336kg
+
+[Holster] Beretta M9A3 9x19 pistol Default [Peacekeeper 1: 75$ (= 8 025₽)]
+    [Muzzle] SIG Sauer SRD9 9x19 sound suppressor    |    Peacekeeper 2: 242$ (= 34 606₽)
+    [Magazine]
+        17 x 9x19mm Green Tracer    |    Mechanic 1: 1 241₽
+    [Tactical mod] SureFire X400 Ultra tactical flashlight with laser    |    Peacekeeper 2: 95$ (= 13 552₽)
+[Tactical rig] Shellback Tactical Banshee plate carrier (A-TACS AU) Default    |    Ragman 3 (barter): 59 790₽
+[Earpiece] Walker's Razor Digital headset    |    Flea market: 64 132₽
+[Pouch] Secure container alpha
+[Scabbard] 6Kh5 Bayonet
+
+Created with Totov Builder
+Interactive build:`
