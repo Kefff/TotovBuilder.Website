@@ -1,7 +1,7 @@
-import { LogService } from '../../services/LogService'
-import vueI18n from '../../plugins/vueI18n'
 import { anything, spy, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
+import vueI18n from '../../plugins/vueI18n'
+import { LogService } from '../../services/LogService'
 
 describe('getMessage()', () => {
   it('should get a message', () => {

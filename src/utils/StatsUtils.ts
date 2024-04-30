@@ -12,17 +12,31 @@ export default class StatsUtils {
    * @param isBonusMalus - Indicates whether the value is a bonus or malus and thus requires that a '+' sign be displayed when it is greater than 0. false by default.
    * @param decimalNumbers - Maximal number of decimal numbers. The value is rounded to respect it. 1 by default.
    * @param fixedDecimalNumbers - Number of decimal numbers to display. Zeros are added to atteign the desired decimal numbers when needed. Undefined by default.
+   * @param language - Language in which the value must be localized. By default, take the language of the browser.
    * @returns Caption.
    */
-  public static getDisplayValue(value: number, isBonusMalus: boolean = false, decimalNumbers: number = 1, fixedDecimalNumbers: number | undefined = undefined): string {
+  public static getDisplayValue(
+    value: number,
+    isBonusMalus: boolean = false,
+    decimalNumbers: number = 1,
+    fixedDecimalNumbers: number | undefined = undefined,
+    language: string | undefined = undefined) {
+    language ??= navigator.language
+
     let displayValue: string
     value = round(value, decimalNumbers)
 
     if (fixedDecimalNumbers != null) {
       const roundingMultiplier = Math.pow(10, fixedDecimalNumbers)
-      displayValue = (Math.round(value * roundingMultiplier) / roundingMultiplier).toFixed(fixedDecimalNumbers)
+      displayValue = (Math.round(value * roundingMultiplier) / roundingMultiplier)
+        .toLocaleString(
+          language,
+          {
+            minimumFractionDigits: fixedDecimalNumbers,
+            maximumFractionDigits: fixedDecimalNumbers
+          })
     } else {
-      displayValue = value.toString()
+      displayValue = value.toLocaleString(language)
     }
 
     if (isBonusMalus && value > 0) {
@@ -38,17 +52,31 @@ export default class StatsUtils {
    * @param isBonusMalus - Indicates whether hte value is a bonus or malus an thus requires a '+' sign be displayed when it is greater than 0. false by default.
    * @param decimalNumbers - Maximal number of decimal numbers. The value is rounded to respect it. 1 by default.
    * @param fixedDecimalNumbers - Number of decimal numbers to display. Zeros are added to atteign the desired decimal numbers when needed. Undefined by default.
+   * @param language - Language in which the value must be localized. By default, take the language of the browser.
    * @returns
    */
-  public static getPercentageDisplayValue(value: number, isBonusMalus: boolean = false, decimalNumbers: number = 1, fixedDecimalNumbers: number | undefined = undefined): string {
+  public static getPercentageDisplayValue(
+    value: number,
+    isBonusMalus: boolean = false,
+    decimalNumbers: number = 1,
+    fixedDecimalNumbers: number | undefined = undefined,
+    language: string | undefined = undefined): string {
+    language ??= navigator.language
+
     let displayValue: string
     value = round(value * 100, decimalNumbers)
 
     if (fixedDecimalNumbers != null) {
       const roundingMultiplier = Math.pow(10, fixedDecimalNumbers)
-      displayValue = (Math.round(value * roundingMultiplier) / roundingMultiplier).toFixed(fixedDecimalNumbers)
+      displayValue = (Math.round(value * roundingMultiplier) / roundingMultiplier)
+        .toLocaleString(
+          language,
+          {
+            minimumFractionDigits: fixedDecimalNumbers,
+            maximumFractionDigits: fixedDecimalNumbers
+          })
     } else {
-      displayValue = value.toString()
+      displayValue = value.toLocaleString(language)
     }
 
     displayValue += '%'

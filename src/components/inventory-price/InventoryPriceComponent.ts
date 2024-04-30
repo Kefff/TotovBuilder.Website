@@ -3,6 +3,7 @@ import { ICurrency } from '../../models/configuration/ICurrency'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
+import StatsUtils from '../../utils/StatsUtils'
 import Price from '../price/PriceComponent.vue'
 
 export default defineComponent({
@@ -12,6 +13,10 @@ export default defineComponent({
   props: {
     inventoryPrice: {
       type: Object as PropType<IInventoryPrice>,
+      required: true
+    },
+    isBuild: {
+      type: Boolean,
       required: true
     }
   },
@@ -63,6 +68,7 @@ export default defineComponent({
       mainCurrency,
       priceDetailPanel,
       priceInMainCurrency,
+      StatsUtils,
       togglePriceDetails
     }
   }

@@ -2,7 +2,7 @@
   <div class="inventory-price">
     <div
       v-if="inventoryPrice.missingPrice"
-      v-tooltip.top="$t('message.inventorySlotWithMissingPrice')"
+      v-tooltip.top="isBuild ? $t('message.buildWithMissingPrice') : $t('message.inventorySlotWithMissingPrice')"
       class="inventory-price-missing-price-icon"
     >
       <font-awesome-icon icon="exclamation-triangle" />
@@ -35,7 +35,7 @@
   >
     <div class="inventory-price-details">
       <div>
-        <span>{{ $t('caption.equalsTo') }} {{ priceInMainCurrency.toLocaleString() }}</span>
+        <span>{{ $t('caption.equalsTo') }} {{ StatsUtils.getDisplayValue(priceInMainCurrency) }}</span>
         <font-awesome-icon
           :icon="mainCurrency?.iconName"
           :class="'currency-' + mainCurrency?.name"

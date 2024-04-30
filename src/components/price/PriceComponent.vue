@@ -47,7 +47,7 @@
       >
         <div>{{ $t('caption.equalsTo') }}</div>
         <div class="price-details-main-currency-value">
-          <span>{{ price.valueInMainCurrency.toLocaleString() }}</span>
+          <span>{{ StatsUtils.getDisplayValue(price.valueInMainCurrency) }}</span>
           <font-awesome-icon
             :icon="mainCurrency?.iconName"
             :class="'currency-' + mainCurrency?.name"

@@ -183,6 +183,7 @@
                 <InventoryPrice
                   v-if="!isLoading"
                   :inventory-price="summary.price"
+                  :is-build="true"
                 />
               </div>
               <div

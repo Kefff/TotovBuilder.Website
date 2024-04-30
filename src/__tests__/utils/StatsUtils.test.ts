@@ -49,8 +49,23 @@ describe('StringUtils.getDisplayValue()', () => {
     [1.199, true, 1, 2, '+1.20'],
     [-1.199, true, 1, 2, '-1.20']
   ])('should get the caption corresponding to a stats value', (value: number, isBonusMalus: boolean, decimalNumbers: number, fixedDecimalNumbers: number | undefined, expected: string) => {
+    // Act
+    const result = StatsUtils.getDisplayValue(value, isBonusMalus, decimalNumbers, fixedDecimalNumbers)
+
     // Assert
-    expect(StatsUtils.getDisplayValue(value, isBonusMalus, decimalNumbers, fixedDecimalNumbers)).toBe(expected)
+    expect(result).toBe(expected)
+  })
+
+  it.each([
+    ['en', '1,234.60'],
+    ['fr', '1 234,60'],
+    [undefined, '1,234.60']
+  ])('should localize stat values', (language: string | undefined, expected: string) => {
+    // Act
+    const result = StatsUtils.getDisplayValue(1234.5678, false, 1, 2, language)
+
+    // Assert
+    expect(result).toBe(expected)
   })
 })
 
@@ -101,8 +116,23 @@ describe('StringUtils.getPercentageDisplayValue()', () => {
     [0.11199, true, 1, 2, '+11.20%'],
     [-0.11199, true, 1, 2, '-11.20%']
   ])('should get the caption corresponding to a stats value', (value: number, isBonusMalus: boolean, decimalNumbers: number, fixedDecimalNumbers: number | undefined, expected: string) => {
+    // Act
+    const result = StatsUtils.getPercentageDisplayValue(value, isBonusMalus, decimalNumbers, fixedDecimalNumbers)
+
     // Assert
-    expect(StatsUtils.getPercentageDisplayValue(value, isBonusMalus, decimalNumbers, fixedDecimalNumbers)).toBe(expected)
+    expect(result).toBe(expected)
+  })
+
+  it.each([
+    ['en', '123,456.80%'],
+    ['fr', '123 456,80%'],
+    [undefined, '123,456.80%']
+  ])('should localize stat values', (language: string | undefined, expected: string) => {
+    // Act
+    const result = StatsUtils.getPercentageDisplayValue(1234.5678, false, 1, 2, language)
+
+    // Assert
+    expect(result).toBe(expected)
   })
 })
 
@@ -115,12 +145,13 @@ describe('StringUtils.getValueColorClass()', () => {
     [0, undefined, ''],
     [0, true, '']
   ])('should get the CSS class to apply to a stats value', (value: number, invert: boolean | undefined, expected: string) => {
+    // Act
+    const result = invert != null
+      ? StatsUtils.getValueColorClass(value, invert)
+      : StatsUtils.getValueColorClass(value)
+
     // Assert
-    if (invert != null) {
-      expect(StatsUtils.getValueColorClass(value, invert)).toBe(expected)
-    } else {
-      expect(StatsUtils.getValueColorClass(value)).toBe(expected)
-    }
+    expect(result).toBe(expected)
   })
 })
 
@@ -134,7 +165,10 @@ describe('StringUtils.getWeightColorClass()', () => {
     // Arrange
     useTarkovValuesServiceMock()
 
+    // Act
+    const result = StatsUtils.getWeightColorClass(value)
+
     // Assert
-    expect(StatsUtils.getWeightColorClass(value)).toBe(expected)
+    expect(result).toBe(expected)
   })
 })

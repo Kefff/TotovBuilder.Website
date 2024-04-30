@@ -707,7 +707,7 @@ describe('getSummary()', () => {
   })
 })
 
-describe.only('getAsString()', () => {
+describe('getAsString()', () => {
   it.each([
     [
       inventorySlot1,

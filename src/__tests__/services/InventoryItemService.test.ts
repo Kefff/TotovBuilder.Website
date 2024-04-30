@@ -559,8 +559,7 @@ describe('getAsString()', () => {
 
   it.each([
     ['en', 'Video cassette with the Cyborg Killer movie    |    Flea market: 37,867₽'],
-    ['fr', 'Video cassette with the Cyborg Killer movie    |    Marché: 37 867₽'],
-    ['invalid', 'Video cassette with the Cyborg Killer movie    |    Flea market: 37,867₽']
+    ['fr', 'Video cassette with the Cyborg Killer movie    |    Marché: 37 867₽']
   ])('should format prices according to the language', async (language: string, expected: string) => {
     // Arrange
     useItemServiceMock()

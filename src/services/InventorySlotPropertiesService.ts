@@ -38,10 +38,10 @@ export class InventorySlotPropertiesService {
 
       if (itemAsString !== '') {
         if (inventorySlotAsString.length > 0) {
-          inventorySlotAsString += `
-`
+          inventorySlotAsString += '\n'
         }
 
+        // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
         inventorySlotAsString += `[${vueI18n.t('caption.slotType' + StringUtils.toUpperFirst(inventorySlotTypeResult.value.id), 1, { locale: language })}] ${itemAsString}`
       }
     }
