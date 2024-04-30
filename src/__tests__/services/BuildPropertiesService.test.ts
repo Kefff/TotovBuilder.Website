@@ -3,10 +3,19 @@ import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { InventoryItemService } from '../../services/InventoryItemService'
+import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
+import { InventorySlotService } from '../../services/InventorySlotService'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
 import Result from '../../utils/Result'
 import { build1, build2 } from '../__data__/buildMocks'
 import { armor6b13FlDefault, bansheeDefault, ekp802dt, nf30mm, opSksDefault, opSksDt, pso1, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, scavVest, specterDr } from '../__data__/itemMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
+import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
+import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('canAddArmor()', () => {
   it.each([
@@ -473,6 +482,16 @@ describe('getAsString()', () => {
     [build2, expectedToString2]
   ])('should convert a build to a string', async (build: IBuild, expected: string) => {
     // Arrange
+    useItemServiceMock()
+    usePresetServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(GlobalFilterService)
+    Services.configure(InventoryItemService)
+    Services.configure(InventorySlotPropertiesService)
+    Services.configure(InventorySlotService)
+    Services.configure(ItemPropertiesService)
+
     const service = new BuildPropertiesService()
 
     // Act
@@ -501,8 +520,8 @@ describe('getNotExportedTooltip()', () => {
 })
 
 const expectedToString1 = `Build 1
-348 012₽
-Recoil: 76v 226h    |    Armor: 4    |    Ergo: 34 (-9.5%)    |    Speed: -6%    |    Turn: -9%    |    Weight: 21.753kg
+Price: 348 012₽    |    Weight: 21.753kg
+Recoil: 76v 226h    |    Armor: 4    |    Ergo: 34 (-9.5%)    |    Speed: -6%    |    Turn: -9%
 
 [On sling] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
     [Chargeur] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (barter): 24 218₽
@@ -522,8 +541,8 @@ Created with Totov Builder
 Interactive build:`
 
 const expectedToString2 = `Build 2
-412$ and 125 163₽ (= 181 346₽)
-Recoil: 368v 255h    |    Armor: 4    |    Ergo: 52 (-3%)    |    Speed: -3%    |    Turn: -1%    |    Weight: 8.336kg
+Price: 444$ et 184 252₽ (= 247 747)    |    Weight: 8.336kg
+Recoil: 368v 255h    |    Armor: 4    |    Ergo: 52 (-3%)    |    Speed: -3%    |    Turn: -1%
 
 [Holster] Beretta M9A3 9x19 pistol Default [Peacekeeper 1: 75$ (= 8 025₽)]
     [Bouche] SIG Sauer SRD9 9x19 sound suppressor    |    Peacekeeper 2: 242$ (= 34 606₽)

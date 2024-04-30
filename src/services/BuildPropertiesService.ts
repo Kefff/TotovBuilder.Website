@@ -13,6 +13,7 @@ import vueI18n from '../plugins/vueI18n'
 import { PathUtils } from '../utils/PathUtils'
 import { PriceUtils } from '../utils/PriceUtils'
 import Result, { FailureType } from '../utils/Result'
+import StatsUtils from '../utils/StatsUtils'
 import { InventoryItemService } from './InventoryItemService'
 import { InventorySlotPropertiesService } from './InventorySlotPropertiesService'
 import { InventorySlotService } from './InventorySlotService'
@@ -147,7 +148,56 @@ export class BuildPropertiesService {
    * @param language - Language.
    */
   public async getAsString(build: IBuild, language: string) {
-    return ''
+    const itemService = Services.get(ItemService)
+
+    const mainCurrencyResult = await itemService.getMainCurrency()
+
+    if (!mainCurrencyResult.success) {
+      return ''
+    }
+
+    const separator = '    |    '
+    let buildAsString = build.name
+    const buildSummary = await this.getSummary(build)
+
+    // Price
+    if (buildSummary.price.priceInMainCurrency > 0) {
+      // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+      const priceCaption = vueI18n.t('caption.price', 1, { locale: language })
+      buildAsString += `
+${priceCaption}}: `
+
+      for (let i = 0; i < buildSummary.price.priceByCurrency.length; i++) {
+        if (i == buildSummary.price.priceByCurrency.length - 1) {
+          // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+          buildAsString += ` ${vueI18n.t('caption.and', 1, { locale: language })} `
+        } else if (i > 0) {
+          buildAsString += ', '
+        }
+
+        const priceInCurrency = buildSummary.price.priceByCurrency[i]
+        const priceCurrencyResult = await itemService.getCurrency(priceInCurrency.currencyName)
+
+        if (priceCurrencyResult.success) {
+          buildAsString += `${StatsUtils.getDisplayValue(priceInCurrency.value, false, 0, 0, language)}${priceCurrencyResult.value.symbol}`
+        }
+      }
+
+      if (buildSummary.price.priceByCurrency.length > 0) {
+        buildAsString += ` (= ${StatsUtils.getDisplayValue(buildSummary.price.priceInMainCurrency, false, 0, 0, language)}${mainCurrencyResult.value.symbol})`
+      }
+    }
+
+    // Weight
+    if (buildSummary.weight > 0) {
+      if (buildSummary.price.priceInMainCurrency > 0) {
+        buildAsString += separator
+      }
+
+      buildAsString += StatsUtils.getDisplayValue(buildSummary.weight, false, 3, 3, language)
+
+      return buildAsString
+    }
   }
 
   /**
