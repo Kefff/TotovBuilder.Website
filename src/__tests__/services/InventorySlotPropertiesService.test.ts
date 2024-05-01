@@ -745,7 +745,7 @@ describe('getAsString()', () => {
       `[Poches] MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)
 [Poches] ELCAN SpecterDR 1x/4x scope    |    Peacekeeper 3: 279$ (= 39 886₽)
 [Poches] SIG Sauer SRD9 9x19 sound suppressor    |    Peacekeeper 2: 242$ (= 34 606₽)
-[Poches] 5.45x39mm BP gs    |    Pas de marchand
+[Poches] 60 x 5.45x39mm BP gs    |    Pas de marchand
 [Poches] Vaseline balm`
     ],
     [

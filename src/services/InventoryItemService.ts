@@ -127,7 +127,8 @@ export class InventoryItemService {
     let inventoryItemAsString = ''
 
     if (inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
-      inventoryItemAsString += itemResult.value.name
+      const itemCountAsString = inventoryItem.quantity > 1 ? `${inventoryItem.quantity} x ` : ''
+      inventoryItemAsString += `${itemCountAsString}${itemResult.value.name}`
     }
 
     if (canBeLooted && !inventoryItem.ignorePrice && inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
@@ -201,11 +202,10 @@ ${indentation}[${modSlotName}] ${modSlotItemAsString}`
         const containedItem = inventoryItem.content[i]
         const containedItemInPreset = preset?.content[i]
         const containedItemAsString = await this.getAsString(containedItem, language, containedItemInPreset, indentationLevel)
-        const itemCountAsString = containedItem.quantity > 1 ? `${containedItem.quantity} x ` : ''
 
         if (containedItemAsString !== '') {
           inventoryItemAsString += `
-${indentation}${itemCountAsString}${containedItemAsString}`
+${indentation}${containedItemAsString}`
         }
       }
     }

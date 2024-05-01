@@ -14,6 +14,7 @@ import { PathUtils } from '../utils/PathUtils'
 import { PriceUtils } from '../utils/PriceUtils'
 import Result, { FailureType } from '../utils/Result'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
+import { BuildService } from './BuildService'
 import { InventoryItemService } from './InventoryItemService'
 import { InventorySlotPropertiesService } from './InventorySlotPropertiesService'
 import { InventorySlotService } from './InventorySlotService'
@@ -156,20 +157,25 @@ export class BuildPropertiesService {
       return ''
     }
 
+    const buildService = Services.get(BuildService)
+    const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
+
     const separator = '    |    '
     let buildAsString = build.name
     const buildSummary = await this.getSummary(build)
 
+    const hasArmor = buildSummary.armorModifiers.armorClass !== 0
     const hasErgonomics = buildSummary.ergonomics !== 0
-    const hasErgonomicsPercentageModifier = buildSummary.wearableModifiers.ergonomicsPercentageModifier !== 0
+    const hasErgonomicsModifierPercentage = buildSummary.wearableModifiers.ergonomicsPercentageModifier !== 0
+    const hasMovementSpeedModifierPercentage = buildSummary.wearableModifiers.movementSpeedPercentageModifier !== 0
     const hasPrice = buildSummary.price.priceInMainCurrency !== 0
     const hasRecoil = buildSummary.recoil.verticalRecoil !== 0
       || buildSummary.wearableModifiers.ergonomicsPercentageModifier !== 0
+    const hasTurningSpeedModifierPercentage = buildSummary.wearableModifiers.turningSpeedPercentageModifier !== 0
     const hasWeight = buildSummary.weight !== 0
 
-    // Recoil
-
-    if (hasRecoil || hasErgonomics || hasErgonomicsPercentageModifier) {
+    // Main weapon stats
+    if (hasRecoil || hasErgonomics || hasErgonomicsModifierPercentage) {
       buildAsString += '\n'
 
       if (hasRecoil) {
@@ -189,7 +195,7 @@ export class BuildPropertiesService {
         buildAsString += `${vueI18n.t('caption.ergonomics', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, buildSummary.ergonomics, language)}`
       }
 
-      if (hasErgonomicsPercentageModifier) {
+      if (hasErgonomicsModifierPercentage) {
         if (hasErgonomics) {
           buildAsString += ` (${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsPercentageModifier, language)})`
         } else {
@@ -199,7 +205,35 @@ export class BuildPropertiesService {
       }
     }
 
-    // Price
+    // Armor stats
+    if (hasArmor || hasMovementSpeedModifierPercentage || hasTurningSpeedModifierPercentage) {
+      buildAsString += '\n'
+
+      if (hasArmor) {
+        // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+        buildAsString += `${vueI18n.t('caption.armor', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, buildSummary.armorModifiers.armorClass, language)}`
+      }
+
+      if (hasMovementSpeedModifierPercentage) {
+        if (hasArmor) {
+          buildAsString += separator
+        }
+
+        // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+        buildAsString += `${vueI18n.t('caption.speed', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedPercentageModifier, language)}`
+      }
+
+      if (hasMovementSpeedModifierPercentage) {
+        if (hasArmor || hasMovementSpeedModifierPercentage) {
+          buildAsString += separator
+        }
+
+        // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+        buildAsString += `${vueI18n.t('caption.turningSpeed', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedPercentageModifier, language)}`
+      }
+    }
+
+    // Price / weight
     if (hasPrice || hasWeight) {
       buildAsString += '\n'
 
@@ -229,7 +263,6 @@ export class BuildPropertiesService {
         }
       }
 
-      // Weight
       if (hasWeight) {
         if (hasPrice) {
           buildAsString += separator
@@ -237,10 +270,39 @@ export class BuildPropertiesService {
 
         // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
         buildAsString += `${vueI18n.t('caption.weight', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight, language)}kg`
-
-        return buildAsString
       }
     }
+
+    // Inventory slots
+    let inventorySlotsAsString = ''
+
+    for (const inventorySlot of build.inventorySlots) {
+      const inventorySlotAsString = await inventorySlotPropertiesService.getAsString(inventorySlot, language)
+
+      if (inventorySlotAsString !== '') {
+        inventorySlotsAsString += `
+${inventorySlotAsString}`
+      }
+    }
+
+    if (inventorySlotsAsString !== '') {
+      buildAsString += `
+${inventorySlotsAsString}`
+    }
+
+    // Link
+    // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+    buildAsString += `\n\n${vueI18n.t('caption.createdWithTotovBuilder', 1, { locale: language })}`
+
+    const sharableUrlResult = await buildService.toSharableURL(build)
+
+    if (sharableUrlResult.success) {
+      // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+      buildAsString += `\n${vueI18n.t('caption.interactiveBuildAndFullStats', 1, { locale: language })}:
+${sharableUrlResult.value}`
+    }
+
+    return buildAsString
   }
 
   /**

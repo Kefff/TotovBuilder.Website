@@ -526,9 +526,9 @@ describe('getAsString()', () => {
         itemId: ammo545bp.id,
         ignorePrice: false,
         modSlots: [],
-        quantity: 1
+        quantity: 60
       },
-      '5.45x39mm BP gs    |    Pas de marchand'
+      '60 x 5.45x39mm BP gs    |    Pas de marchand'
     ],
     [
       {
