@@ -15,7 +15,7 @@
         <span>{{ $t('caption.ergonomics') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsPercentageModifier)">
-        {{ StatsUtils.getPercentageDisplayValue(ergonomicsPercentageModifier, true) }}
+        {{ StatsUtils.getPercentageDisplayValue(ergonomicsPercentageModifier, true, 1) }}
       </div>
     </div>
     <div
@@ -30,7 +30,7 @@
         <span>{{ $t('caption.movementSpeed') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(movementSpeedPercentageModifier)">
-        {{ StatsUtils.getPercentageDisplayValue(movementSpeedPercentageModifier, true) }}
+        {{ StatsUtils.getPercentageDisplayValue(movementSpeedPercentageModifier, true, 1) }}
       </div>
     </div>
     <div
@@ -45,7 +45,7 @@
         <span>{{ $t('caption.turningSpeed') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(turningSpeedPercentageModifier)">
-        {{ StatsUtils.getPercentageDisplayValue(turningSpeedPercentageModifier, true) }}
+        {{ StatsUtils.getPercentageDisplayValue(turningSpeedPercentageModifier, true, 1) }}
       </div>
     </div>
   </div>

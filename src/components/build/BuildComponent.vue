@@ -141,7 +141,7 @@
                 class="build-toolbar-summary-value"
               >
                 <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsPercentageModifier)">
-                  {{ StatsUtils.getPercentageDisplayValue(summary.wearableModifiers.ergonomicsPercentageModifier, true) }}
+                  {{ StatsUtils.getPercentageDisplayValue(summary.wearableModifiers.ergonomicsPercentageModifier, true, 1) }}
                 </span>
                 <font-awesome-icon
                   icon="hand-paper"
@@ -154,7 +154,7 @@
                 class="build-toolbar-summary-value"
               >
                 <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedPercentageModifier)">
-                  {{ StatsUtils.getPercentageDisplayValue(summary.wearableModifiers.movementSpeedPercentageModifier, true) }}
+                  {{ StatsUtils.getPercentageDisplayValue(summary.wearableModifiers.movementSpeedPercentageModifier, true, 1) }}
                 </span>
                 <font-awesome-icon
                   icon="walking"
@@ -167,7 +167,7 @@
                 class="build-toolbar-summary-value"
               >
                 <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedPercentageModifier)">
-                  {{ StatsUtils.getPercentageDisplayValue(summary.wearableModifiers.turningSpeedPercentageModifier, true) }}
+                  {{ StatsUtils.getPercentageDisplayValue(summary.wearableModifiers.turningSpeedPercentageModifier, true, 1) }}
                 </span>
                 <font-awesome-icon
                   icon="undo"

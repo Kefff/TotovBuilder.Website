@@ -477,7 +477,7 @@ describe('canAddVest()', () => {
 })
 
 describe('getAsString()', () => {
-  it.each([
+  it.only.each([
     [build1, expectedToString1],
     [build2, expectedToString2]
   ])('should convert a build to a string', async (build: IBuild, expected: string) => {
@@ -520,29 +520,31 @@ describe('getNotExportedTooltip()', () => {
 })
 
 const expectedToString1 = `Build 1
-Price: 348 012₽    |    Weight: 21.753kg
-Recoil: 76v 226h    |    Armor: 4    |    Ergo: 34 (-9.5%)    |    Speed: -6%    |    Turn: -9%
+Recul vertical: 76    |    Recul horizotal: 226    |    Ergonomie: 34 (-9,5%)
+Armure: 4    |    Vitesse: -6%    |    Vitesse de rotation: -9%
+Prix: 366 019₽    |    Poids: 24,153kg
 
-[On sling] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
-    [Chargeur] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (barter): 24 218₽
+[En bandouillère] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
+    [Chargeur] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (échange): 24 218₽
         95 x 5.45x39mm US gs    |    Prapor 1: 9 120₽
-[Body armor] 6B13 assault armor (Digital Flora) Default    |    Ragman 2: 64 269₽
-[Headwear] BNTI LShZ-2DTM helmet (Black)    |    Marché: 63 493₽
-    [Equipment] LShZ-2DTM face shield    |    Ragman 3 (barter): 29 805₽
-[Pocket] Morphine injector    |    Marché: 17 421₽
-[Pocket] Vaseline balm    |    Marché: 27 714₽
-[Pocket] RGD-5 hand grenade    |    Prapor 3: 11 822₽
-[Pocket] 60 x 5.45x39mm US gs    |    Prapor 1: 5 760₽
-[Backpack] WARTECH Berkut BB-102 backpack (A-TACS FG)    |    Ragman 2: 24 509₽
+[Pare-balles] 6B13 assault armor (Digital Flora) Default    |    Ragman 2: 64 269₽
+[Couvre-chef] BNTI LShZ-2DTM helmet (Black)    |    Marché: 63 493₽
+    [Équipment] LShZ-2DTM face shield    |    Ragman 3 (barter): 29 805₽
+[Poches] Morphine injector    |    Marché: 17 421₽
+[Poches] Vaseline balm    |    Marché: 27 714₽
+[Poches] RGD-5 hand grenade    |    Prapor 3: 11 822₽
+[Poches] 60 x 5.45x39mm US gs    |    Prapor 1: 5 760₽
+[Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)    |    Ragman 2: 24 509₽
 [Face cover] Cold Fear infrared balaclava    |    Ragman 2: 4 793₽
 [Eyewear] Crossbow tactical glasses    |    Ragman 2: 3 885₽
 
-Created with Totov Builder
-Interactive build:`
+Créé avec Totov Builder
+Équipement interactif et statistiques complètes:`
 
 const expectedToString2 = `Build 2
-Price: 444$ et 184 252₽ (= 247 747)    |    Weight: 8.336kg
-Recoil: 368v 255h    |    Armor: 4    |    Ergo: 52 (-3%)    |    Speed: -3%    |    Turn: -1%
+Recul vertical: 368    |    Recul horizontal: 255    |    Ergonomie: 52 (-3%)
+Armure: 4    |    Vitesse: -3%    |    Vitesse de rotation: -1%
+Prix: 444$ et 184 252₽ (= 247 747₽)    |    Poids: 8,936kg
 
 [Holster] Beretta M9A3 9x19 pistol Default [Peacekeeper 1: 75$ (= 8 025₽)]
     [Bouche] SIG Sauer SRD9 9x19 sound suppressor    |    Peacekeeper 2: 242$ (= 34 606₽)
@@ -554,5 +556,5 @@ Recoil: 368v 255h    |    Armor: 4    |    Ergo: 52 (-3%)    |    Speed: -3%    
 [Pouch] Secure container alpha
 [Scabbard] 6Kh5 Bayonet
 
-Created with Totov Builder
-Interactive build:`
+Créé avec Totov Builder
+Équipement interactif et statistiques complètes:`

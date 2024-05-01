@@ -21,7 +21,7 @@ import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import vueI18n from '../plugins/vueI18n'
 import { PriceUtils } from '../utils/PriceUtils'
 import Result from '../utils/Result'
-import StatsUtils from '../utils/StatsUtils'
+import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import { GlobalFilterService } from './GlobalFilterService'
 import { ItemPropertiesService } from './ItemPropertiesService'
 import { ItemService } from './ItemService'
@@ -147,9 +147,9 @@ export class InventoryItemService {
 
           if (priceResult.value.unitPrice.currencyName === 'barter') {
             // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-            inventoryItemAsString += ` (${vueI18n.t('caption.barter', 1, { locale: language }).toLocaleLowerCase()}): ${StatsUtils.getDisplayValue(priceResult.value.price.valueInMainCurrency, false, 0, 0, language)}${mainCurrencyResult.value.symbol}`
+            inventoryItemAsString += ` (${vueI18n.t('caption.barter', 1, { locale: language }).toLocaleLowerCase()}): ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceResult.value.price.valueInMainCurrency, language)}${mainCurrencyResult.value.symbol}`
           } else {
-            inventoryItemAsString += `: ${StatsUtils.getDisplayValue(priceResult.value.price.value, false, 0, 0, language)}`
+            inventoryItemAsString += `: ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceResult.value.price.value, language)}`
 
             if (priceResult.value.price.currencyName === mainCurrencyResult.value.name) {
               inventoryItemAsString += mainCurrencyResult.value.symbol
@@ -157,7 +157,7 @@ export class InventoryItemService {
               const priceCurrencyResult = await itemService.getCurrency(priceResult.value.price.currencyName)
 
               if (priceCurrencyResult.success) {
-                inventoryItemAsString += `${priceCurrencyResult.value.symbol} (= ${StatsUtils.getDisplayValue(priceResult.value.price.valueInMainCurrency, false, 0, 0, language)}${mainCurrencyResult.value.symbol})`
+                inventoryItemAsString += `${priceCurrencyResult.value.symbol} (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceResult.value.price.valueInMainCurrency, language)}${mainCurrencyResult.value.symbol})`
               }
             }
           }

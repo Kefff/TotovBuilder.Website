@@ -9,7 +9,7 @@
     >
       <div v-if="ergonomicsModifier !== 0">
         <span :class="StatsUtils.getValueColorClass(ergonomicsModifier)">
-          {{ StatsUtils.getDisplayValue(ergonomicsModifier, true) }}
+          {{ StatsUtils.getDisplayValue(ergonomicsModifier, true, 1) }}
         </span>
         <font-awesome-icon
           icon="hand-paper"
@@ -28,7 +28,7 @@
     >
       <div v-if="item.recoilPercentageModifier !== 0">
         <span :class="StatsUtils.getValueColorClass(item.recoilPercentageModifier, true)">
-          {{ StatsUtils.getPercentageDisplayValue(item.recoilPercentageModifier, true) }}
+          {{ StatsUtils.getPercentageDisplayValue(item.recoilPercentageModifier, true, 1) }}
         </span>
         <font-awesome-icon
           icon="arrows-alt"
@@ -47,7 +47,7 @@
     >
       <div v-if="item.accuracyPercentageModifier !== 0">
         <span :class="StatsUtils.getValueColorClass(item.accuracyPercentageModifier)">
-          {{ StatsUtils.getPercentageDisplayValue(item.accuracyPercentageModifier, true) }}
+          {{ StatsUtils.getPercentageDisplayValue(item.accuracyPercentageModifier, true, 1) }}
         </span>
         <font-awesome-icon
           icon="bullseye"

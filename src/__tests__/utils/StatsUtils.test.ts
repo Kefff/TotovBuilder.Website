@@ -1,6 +1,38 @@
 import { describe, expect, it } from 'vitest'
-import StatsUtils from '../../utils/StatsUtils'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
+
+describe('StringUtils.getStandardDisplayValue()', () => {
+  it.each([
+    [DisplayValueType.armorClass, '1,235'],
+    [DisplayValueType.ergonomics, '1,235'],
+    [DisplayValueType.price, '1,235'],
+    [DisplayValueType.recoil, '1,235'],
+    [DisplayValueType.armorDamagePercentage, '123,456.8%'],
+    [DisplayValueType.fragmentationChangePercentage, '123,456.8%'],
+    [DisplayValueType.accuracyModifierPercentage, '+123,456.8%'],
+    [DisplayValueType.bleedingChanceModifierPercentage, '+123,456.8%'],
+    [DisplayValueType.blindnessProtectionPercentage, '+123,456.8%'],
+    [DisplayValueType.checkSpeedModifierPercentage, '+123,456.8%'],
+    [DisplayValueType.durabilityBurnModifierPercentage, '+123,456.8%'],
+    [DisplayValueType.ergonomicsModifier, '+123,456.8%'],
+    [DisplayValueType.ergonomicsModifierPercentage, '+123,456.8%'],
+    [DisplayValueType.loadSpeedModifierPercentage, '+123,456.8%'],
+    [DisplayValueType.movementSpeedModifierPercentage, '+123,456.8%'],
+    [DisplayValueType.recoilModifierPercentage, '+123,456.8%'],
+    [DisplayValueType.turningSpeedModifierPercentage, '+123,456.8%'],
+    [DisplayValueType.weight, '1,234.568']
+  ])('should get the display value in the standard format associated with the value type', (type: DisplayValueType, expected: string) => {
+    // Arrange
+    const value = 1234.56789
+
+    // Act
+    const result = StatsUtils.getStandardDisplayValue(type, value)
+
+    // Assert
+    expect(result).toBe(expected)
+  })
+})
 
 describe('StringUtils.getDisplayValue()', () => {
   it.each([

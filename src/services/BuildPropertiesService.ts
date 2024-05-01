@@ -13,7 +13,7 @@ import vueI18n from '../plugins/vueI18n'
 import { PathUtils } from '../utils/PathUtils'
 import { PriceUtils } from '../utils/PriceUtils'
 import Result, { FailureType } from '../utils/Result'
-import StatsUtils from '../utils/StatsUtils'
+import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import { InventoryItemService } from './InventoryItemService'
 import { InventorySlotPropertiesService } from './InventorySlotPropertiesService'
 import { InventorySlotService } from './InventorySlotService'
@@ -160,43 +160,86 @@ export class BuildPropertiesService {
     let buildAsString = build.name
     const buildSummary = await this.getSummary(build)
 
-    // Price
-    if (buildSummary.price.priceInMainCurrency > 0) {
-      // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-      const priceCaption = vueI18n.t('caption.price', 1, { locale: language })
-      buildAsString += `
-${priceCaption}}: `
+    const hasErgonomics = buildSummary.ergonomics !== 0
+    const hasErgonomicsPercentageModifier = buildSummary.wearableModifiers.ergonomicsPercentageModifier !== 0
+    const hasPrice = buildSummary.price.priceInMainCurrency !== 0
+    const hasRecoil = buildSummary.recoil.verticalRecoil !== 0
+      || buildSummary.wearableModifiers.ergonomicsPercentageModifier !== 0
+    const hasWeight = buildSummary.weight !== 0
 
-      for (let i = 0; i < buildSummary.price.priceByCurrency.length; i++) {
-        if (i == buildSummary.price.priceByCurrency.length - 1) {
-          // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-          buildAsString += ` ${vueI18n.t('caption.and', 1, { locale: language })} `
-        } else if (i > 0) {
-          buildAsString += ', '
-        }
+    // Recoil
 
-        const priceInCurrency = buildSummary.price.priceByCurrency[i]
-        const priceCurrencyResult = await itemService.getCurrency(priceInCurrency.currencyName)
+    if (hasRecoil || hasErgonomics || hasErgonomicsPercentageModifier) {
+      buildAsString += '\n'
 
-        if (priceCurrencyResult.success) {
-          buildAsString += `${StatsUtils.getDisplayValue(priceInCurrency.value, false, 0, 0, language)}${priceCurrencyResult.value.symbol}`
-        }
+      if (hasRecoil) {
+        // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+        buildAsString += `${vueI18n.t('caption.verticalRecoil', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.verticalRecoil, language)}`
+
+        // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+        buildAsString += `${separator}${vueI18n.t('caption.horizontalRecoil', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.horizontalRecoil, language)}`
       }
 
-      if (buildSummary.price.priceByCurrency.length > 0) {
-        buildAsString += ` (= ${StatsUtils.getDisplayValue(buildSummary.price.priceInMainCurrency, false, 0, 0, language)}${mainCurrencyResult.value.symbol})`
+      if (hasErgonomics) {
+        if (hasRecoil) {
+          buildAsString += separator
+        }
+
+        // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+        buildAsString += `${vueI18n.t('caption.ergonomics', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, buildSummary.ergonomics, language)}`
+      }
+
+      if (hasErgonomicsPercentageModifier) {
+        if (hasErgonomics) {
+          buildAsString += ` (${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsPercentageModifier, language)})`
+        } else {
+          // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+          buildAsString += `${vueI18n.t('caption.ergonomics', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsPercentageModifier, language)}`
+        }
       }
     }
 
-    // Weight
-    if (buildSummary.weight > 0) {
-      if (buildSummary.price.priceInMainCurrency > 0) {
-        buildAsString += separator
+    // Price
+    if (hasPrice || hasWeight) {
+      buildAsString += '\n'
+
+      if (hasPrice) {
+        // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+        buildAsString += `${vueI18n.t('caption.price', 1, { locale: language })}: `
+
+        for (let i = 0; i < buildSummary.price.priceByCurrency.length; i++) {
+          if (buildSummary.price.priceByCurrency.length > 1
+            && i == buildSummary.price.priceByCurrency.length - 1) {
+            // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+            buildAsString += ` ${vueI18n.t('caption.and', 1, { locale: language })} `
+          } else if (i > 0) {
+            buildAsString += ', '
+          }
+
+          const priceInCurrency = buildSummary.price.priceByCurrency[i]
+          const priceCurrencyResult = await itemService.getCurrency(priceInCurrency.currencyName)
+
+          if (priceCurrencyResult.success) {
+            buildAsString += `${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInCurrency.value, language)}${priceCurrencyResult.value.symbol}`
+          }
+        }
+
+        if (buildSummary.price.priceByCurrency.length > 1) {
+          buildAsString += ` (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, buildSummary.price.priceInMainCurrency, language)}${mainCurrencyResult.value.symbol})`
+        }
       }
 
-      buildAsString += StatsUtils.getDisplayValue(buildSummary.weight, false, 3, 3, language)
+      // Weight
+      if (hasWeight) {
+        if (hasPrice) {
+          buildAsString += separator
+        }
 
-      return buildAsString
+        // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+        buildAsString += `${vueI18n.t('caption.weight', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight, language)}kg`
+
+        return buildAsString
+      }
     }
   }
 
