@@ -1,8 +1,8 @@
 import { defineComponent, PropType } from 'vue'
-import { IRangedWeapon } from '../../../models/item/IRangedWeapon'
-import StringUtils from '../../../utils/StringUtils'
 import Images from '../../../images'
-import StatsUtils from '../../../utils/StatsUtils'
+import { IRangedWeapon } from '../../../models/item/IRangedWeapon'
+import StatsUtils, { DisplayValueType } from '../../../utils/StatsUtils'
+import StringUtils from '../../../utils/StringUtils'
 
 export default defineComponent({
   props: {
@@ -13,6 +13,7 @@ export default defineComponent({
   },
   setup: () => {
     return {
+      DisplayValueType,
       Images,
       StatsUtils,
       StringUtils

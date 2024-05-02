@@ -12,7 +12,7 @@
         <span>{{ $t('caption.blindnessProtection') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.blindnessProtectionPercentage)">
-        {{ StatsUtils.getPercentageDisplayValue(item.blindnessProtectionPercentage, true, 1) }}
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.blindnessProtectionPercentage, item.blindnessProtectionPercentage) }}
       </div>
     </div>
   </div>

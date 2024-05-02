@@ -1,7 +1,7 @@
 import { computed, defineComponent, PropType } from 'vue'
 import { IMagazine } from '../../../models/item/IMagazine'
+import StatsUtils, { DisplayValueType } from '../../../utils/StatsUtils'
 import ContainerSummary from '../container/ContainerSummaryComponent.vue'
-import StatsUtils from '../../../utils/StatsUtils'
 
 export default defineComponent({
   components: {
@@ -22,6 +22,7 @@ export default defineComponent({
     const ergonomicsModifier = computed(() => props.item.presetErgonomicsModifier ?? props.item.ergonomicsModifier)
 
     return {
+      DisplayValueType,
       ergonomicsModifier,
       StatsUtils
     }

@@ -4,7 +4,7 @@ import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import StatsUtils from '../../utils/StatsUtils'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
 import ShoppingListMerchants from '../shopping-list-merchants/ShoppingListMerchantsComponent.vue'
 import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
@@ -115,6 +115,7 @@ export default defineComponent({
     }
 
     return {
+      DisplayValueType,
       getNotExportedTooltip,
       onSort,
       selectedBuildSummaries,

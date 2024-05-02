@@ -1,9 +1,9 @@
 import { computed, defineComponent, PropType } from 'vue'
 import { IAmmunition } from '../../../models/item/IAmmunition'
-import StatsUtils from '../../../utils/StatsUtils'
-import { ArmorUtils } from '../../../utils/ArmorUtils'
 import Services from '../../../services/repository/Services'
 import { TarkovValuesService } from '../../../services/TarkovValuesService'
+import { ArmorUtils } from '../../../utils/ArmorUtils'
+import StatsUtils, { DisplayValueType } from '../../../utils/StatsUtils'
 
 export default defineComponent({
   props: {
@@ -32,6 +32,7 @@ export default defineComponent({
 
     return {
       canOneshot,
+      DisplayValueType,
       getArmorPenetrationTooltip,
       StatsUtils
     }

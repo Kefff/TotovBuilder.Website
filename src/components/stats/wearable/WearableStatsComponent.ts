@@ -1,7 +1,7 @@
 import { computed, defineComponent, PropType } from 'vue'
 import { IWearable } from '../../../models/item/IWearable'
 import { IWearableModifiers } from '../../../models/utils/IWearableModifiers'
-import StatsUtils from '../../../utils/StatsUtils'
+import StatsUtils, { DisplayValueType } from '../../../utils/StatsUtils'
 
 export default defineComponent({
   props: {
@@ -21,6 +21,7 @@ export default defineComponent({
     const turningSpeedPercentageModifier = computed(() => props.wearableModifiersOverride?.turningSpeedPercentageModifier ?? props.item.turningSpeedPercentageModifier)
 
     return {
+      DisplayValueType,
       ergonomicsPercentageModifier,
       movementSpeedPercentageModifier,
       turningSpeedPercentageModifier,

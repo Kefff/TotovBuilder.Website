@@ -91,7 +91,7 @@
                 v-tooltip.top="$t('caption.verticalRecoil')"
                 class="build-toolbar-summary-value"
               >
-                <span>{{ StatsUtils.getDisplayValue(summary.recoil.verticalRecoil, false, 0) }}</span>
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.verticalRecoil) }}</span>
                 <font-awesome-icon
                   icon="arrows-alt-v"
                   class="icon-after-text"
@@ -102,7 +102,7 @@
                 v-tooltip.top="$t('caption.horizontalRecoil')"
                 class="build-toolbar-summary-value"
               >
-                <span>{{ StatsUtils.getDisplayValue(summary.recoil.horizontalRecoil, false, 0) }}</span>
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.horizontalRecoil) }}</span>
                 <font-awesome-icon
                   icon="arrows-alt-h"
                   class="icon-after-text"
@@ -113,7 +113,7 @@
                 v-tooltip.top="$t('caption.ergonomics')"
                 class="build-toolbar-summary-value"
               >
-                <span>{{ StatsUtils.getDisplayValue(summary.ergonomics, false, 0) }}</span>
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, summary.ergonomics) }}</span>
                 <font-awesome-icon
                   icon="hand-paper"
                   class="icon-after-text"
@@ -129,7 +129,7 @@
                 v-tooltip.top="$t('caption.armorClass')"
                 class="build-toolbar-summary-value"
               >
-                <span>{{ StatsUtils.getDisplayValue(summary.armorModifiers.armorClass, false, 0) }}</span>
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, summary.armorModifiers.armorClass) }}</span>
                 <font-awesome-icon
                   icon="award"
                   class="icon-after-text"
@@ -141,7 +141,7 @@
                 class="build-toolbar-summary-value"
               >
                 <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsPercentageModifier)">
-                  {{ StatsUtils.getPercentageDisplayValue(summary.wearableModifiers.ergonomicsPercentageModifier, true, 1) }}
+                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsPercentageModifier) }}
                 </span>
                 <font-awesome-icon
                   icon="hand-paper"
@@ -154,7 +154,7 @@
                 class="build-toolbar-summary-value"
               >
                 <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedPercentageModifier)">
-                  {{ StatsUtils.getPercentageDisplayValue(summary.wearableModifiers.movementSpeedPercentageModifier, true, 1) }}
+                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, summary.wearableModifiers.movementSpeedPercentageModifier) }}
                 </span>
                 <font-awesome-icon
                   icon="walking"
@@ -167,7 +167,7 @@
                 class="build-toolbar-summary-value"
               >
                 <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedPercentageModifier)">
-                  {{ StatsUtils.getPercentageDisplayValue(summary.wearableModifiers.turningSpeedPercentageModifier, true, 1) }}
+                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, summary.wearableModifiers.turningSpeedPercentageModifier) }}
                 </span>
                 <font-awesome-icon
                   icon="undo"
@@ -190,7 +190,7 @@
                 v-tooltip.top="$t('caption.weight')"
                 class="build-toolbar-summary-value"
               >
-                <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getDisplayValue(summary.weight, false, 3, 3) }}</span>
+                <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
                 <font-awesome-icon
                   icon="weight-hanging"
                   class="icon-after-text"

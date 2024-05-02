@@ -3,7 +3,7 @@ import { ICurrency } from '../../models/configuration/ICurrency'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
-import StatsUtils from '../../utils/StatsUtils'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import Price from '../price/PriceComponent.vue'
 
 export default defineComponent({
@@ -65,6 +65,7 @@ export default defineComponent({
 
     return {
       canShowDetails,
+      DisplayValueType,
       mainCurrency,
       priceDetailPanel,
       priceInMainCurrency,

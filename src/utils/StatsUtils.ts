@@ -99,6 +99,11 @@ export default class StatsUtils {
       case DisplayValueType.price:
       case DisplayValueType.recoil:
         return StatsUtils.getDisplayValue(value, false, 0, undefined, language)
+      case DisplayValueType.ergonomicsModifier:
+        return StatsUtils.getDisplayValue(value, true, 1, undefined, language)
+      case DisplayValueType.weight:
+        return StatsUtils.getDisplayValue(value, false, 3, 3, language)
+
       case DisplayValueType.armorDamagePercentage:
       case DisplayValueType.fragmentationChangePercentage:
         return StatsUtils.getPercentageDisplayValue(value, false, 1, undefined, language)
@@ -107,15 +112,12 @@ export default class StatsUtils {
       case DisplayValueType.blindnessProtectionPercentage:
       case DisplayValueType.checkSpeedModifierPercentage:
       case DisplayValueType.durabilityBurnModifierPercentage:
-      case DisplayValueType.ergonomicsModifier:
       case DisplayValueType.ergonomicsModifierPercentage:
       case DisplayValueType.loadSpeedModifierPercentage:
       case DisplayValueType.movementSpeedModifierPercentage:
       case DisplayValueType.recoilModifierPercentage:
       case DisplayValueType.turningSpeedModifierPercentage:
         return StatsUtils.getPercentageDisplayValue(value, true, 1, undefined, language)
-      case DisplayValueType.weight:
-        return StatsUtils.getDisplayValue(value, false, 3, 3, language)
       default:
         return 'Error'
     }

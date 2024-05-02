@@ -1,9 +1,9 @@
 import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
+import Images from '../../../images'
 import { IMagazine } from '../../../models/item/IMagazine'
 import { MagazineStatsComponentService } from '../../../services/components/stats/MagazineStatsComponentService'
 import Services from '../../../services/repository/Services'
-import StatsUtils from '../../../utils/StatsUtils'
-import Images from '../../../images'
+import StatsUtils, { DisplayValueType } from '../../../utils/StatsUtils'
 
 export default defineComponent({
   props: {
@@ -29,6 +29,7 @@ export default defineComponent({
 
     return {
       acceptedCartridesCaptions,
+      DisplayValueType,
       ergonomicsModifier,
       Images,
       StatsUtils

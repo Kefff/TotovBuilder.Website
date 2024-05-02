@@ -1,6 +1,6 @@
 import { defineComponent, PropType } from 'vue'
 import { IEyewear } from '../../../models/item/IEyewear'
-import StatsUtils from '../../../utils/StatsUtils'
+import StatsUtils, { DisplayValueType } from '../../../utils/StatsUtils'
 
 export default defineComponent({
   props: {
@@ -10,6 +10,9 @@ export default defineComponent({
     }
   },
   setup: () => {
-    return { StatsUtils }
+    return {
+      DisplayValueType,
+      StatsUtils
+    }
   }
 })

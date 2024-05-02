@@ -15,7 +15,7 @@
         <span>{{ $t('caption.ergonomics') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsModifier)">
-        {{ StatsUtils.getDisplayValue(ergonomicsModifier, true, 1) }}
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
       </div>
     </div>
     <div
@@ -30,7 +30,7 @@
         <span>{{ $t('caption.recoil') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.recoilPercentageModifier, true)">
-        {{ StatsUtils.getPercentageDisplayValue(item.recoilPercentageModifier, true, 1) }}
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, item.recoilPercentageModifier) }}
       </div>
     </div>
     <div
@@ -45,7 +45,7 @@
         <span>{{ $t('caption.accuracy') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.accuracyPercentageModifier)">
-        {{ StatsUtils.getPercentageDisplayValue(item.accuracyPercentageModifier, true, 1) }}
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, item.accuracyPercentageModifier) }}
       </div>
     </div>
   </div>

@@ -1,7 +1,7 @@
 import { defineComponent, PropType } from 'vue'
 import { IArmorMod } from '../../../models/item/IArmorMod'
+import StatsUtils, { DisplayValueType } from '../../../utils/StatsUtils'
 import ArmorStats from '../armor/ArmorStatsComponent.vue'
-import StatsUtils from '../../../utils/StatsUtils'
 
 export default defineComponent({
   components: {
@@ -15,6 +15,7 @@ export default defineComponent({
   },
   setup: () => {
     return {
+      DisplayValueType,
       StatsUtils
     }
   }

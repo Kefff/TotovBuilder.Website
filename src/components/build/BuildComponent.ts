@@ -17,7 +17,7 @@ import { BuildComponentService } from '../../services/components/BuildComponentS
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
-import StatsUtils from '../../utils/StatsUtils'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import BuildShare from '../build-share/BuildShareComponent.vue'
 import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
 import InputTextField from '../input-text-field/InputTextFieldComponent.vue'
@@ -432,6 +432,7 @@ export default defineComponent({
       confirmDelete,
       copy,
       deleting,
+      DisplayValueType,
       editing,
       expandAll,
       expandWithItem,

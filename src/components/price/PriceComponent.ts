@@ -8,7 +8,7 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
-import StatsUtils from '../../utils/StatsUtils'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import ItemIcon from '../item-icon/ItemIconComponent.vue'
 import MerchantIcon from '../merchant-icon/MerchantIconComponent.vue'
 
@@ -165,10 +165,10 @@ export default defineComponent({
 
       if (isBarter.value) {
         displayedCurrency.value = mainCurrency.value
-        displayedPrice.value = StatsUtils.getDisplayValue(props.price.valueInMainCurrency)
+        displayedPrice.value = StatsUtils.getStandardDisplayValue(DisplayValueType.price, props.price.valueInMainCurrency)
       } else {
         displayedCurrency.value = currency.value
-        displayedPrice.value = StatsUtils.getDisplayValue(props.price.value)
+        displayedPrice.value = StatsUtils.getStandardDisplayValue(DisplayValueType.price, props.price.value)
       }
 
       await getBarterItems()
@@ -204,6 +204,7 @@ export default defineComponent({
       currency,
       displayedCurrency,
       displayedPrice,
+      DisplayValueType,
       initialized,
       isBarter,
       mainCurrency,

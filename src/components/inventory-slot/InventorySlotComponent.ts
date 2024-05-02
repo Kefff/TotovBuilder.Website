@@ -12,7 +12,7 @@ import { InventorySlotPropertiesService } from '../../services/InventorySlotProp
 import { InventorySlotService } from '../../services/InventorySlotService'
 import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
-import StatsUtils from '../../utils/StatsUtils'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import StringUtils from '../../utils/StringUtils'
 import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
 import Item from '../item/ItemComponent.vue'
@@ -200,6 +200,7 @@ export default defineComponent({
       acceptedItemsCategoryId,
       customIconName,
       displayed,
+      DisplayValueType,
       hasSummaryArmor,
       hasSummaryErgonomics,
       hasSummaryErgonomicsPercentageModifier,

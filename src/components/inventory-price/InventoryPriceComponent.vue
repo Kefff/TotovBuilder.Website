@@ -35,7 +35,7 @@
   >
     <div class="inventory-price-details">
       <div>
-        <span>{{ $t('caption.equalsTo') }} {{ StatsUtils.getDisplayValue(priceInMainCurrency, false, 0) }}</span>
+        <span>{{ $t('caption.equalsTo') }} {{ StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInMainCurrency) }}</span>
         <font-awesome-icon
           :icon="mainCurrency?.iconName"
           :class="'currency-' + mainCurrency?.name"
