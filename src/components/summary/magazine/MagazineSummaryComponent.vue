@@ -1,16 +1,16 @@
 <template>
   <ContainerSummary :item="item" />
   <div
-    v-if="item.loadSpeedPercentageModifier !== 0 || showEmptyEntries"
+    v-if="item.loadSpeedModifierPercentage !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div class="option-value">
       <div
-        v-if="item.loadSpeedPercentageModifier !== 0"
+        v-if="item.loadSpeedModifierPercentage !== 0"
         v-tooltip.top="$t('caption.loadSpeed')"
       >
-        <span :class="StatsUtils.getValueColorClass(item.loadSpeedPercentageModifier, true)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.loadSpeedModifierPercentage, item.loadSpeedPercentageModifier) }}
+        <span :class="StatsUtils.getValueColorClass(item.loadSpeedModifierPercentage, true)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.loadSpeedModifierPercentage, item.loadSpeedModifierPercentage) }}
         </span>
         <font-awesome-icon
           icon="sync-alt"
@@ -20,16 +20,16 @@
     </div>
   </div>
   <div
-    v-if="item.checkSpeedPercentageModifier !== 0 || showEmptyEntries"
+    v-if="item.checkSpeedModifierPercentage !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div class="option-value">
       <div
-        v-if="item.checkSpeedPercentageModifier !== 0"
+        v-if="item.checkSpeedModifierPercentage !== 0"
         v-tooltip.top="$t('caption.checkSpeed')"
       >
-        <span :class="StatsUtils.getValueColorClass(item.checkSpeedPercentageModifier, true)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.checkSpeedModifierPercentage, item.checkSpeedPercentageModifier) }}
+        <span :class="StatsUtils.getValueColorClass(item.checkSpeedModifierPercentage, true)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.checkSpeedModifierPercentage, item.checkSpeedModifierPercentage) }}
         </span>
         <font-awesome-icon
           icon="eye"

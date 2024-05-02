@@ -15,7 +15,7 @@ import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
 import { IVest } from '../../models/item/IVest'
 
 export const ak12bt: IRangedWeaponMod = {
-  accuracyPercentageModifier: 0,
+  accuracyModifierPercentage: 0,
   baseItemId: undefined,
   conflictingItemIds: [],
   defaultPresetId: undefined,
@@ -59,9 +59,9 @@ export const ak12bt: IRangedWeaponMod = {
     }
   ],
   presetErgonomicsModifier: undefined,
-  presetRecoilPercentageModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
   prices: [],
-  recoilPercentageModifier: -0.03,
+  recoilModifierPercentage: -0.03,
   categoryId: 'rangedWeaponMod',
   iconLink: 'https://assets.tarkov.dev/649ec87d8007560a9001ab36-icon.webp',
   id: '649ec87d8007560a9001ab36',
@@ -91,9 +91,9 @@ export const ak12PistolGrip: IRangedWeaponMod = {
   modSlots: [],
   ergonomicsModifier: 7,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: 0
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: 0
 }
 
 export const ak12Stock: IRangedWeaponMod = {
@@ -114,9 +114,9 @@ export const ak12Stock: IRangedWeaponMod = {
   modSlots: [],
   ergonomicsModifier: 3,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: -0.21
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: -0.21
 }
 
 export const alkali: IItem = {
@@ -151,7 +151,7 @@ export const alpha: IContainer = {
 }
 
 export const ammo1270Magnum: IAmmunition = {
-  accuracyPercentageModifier: -0.15,
+  accuracyModifierPercentage: -0.15,
   armorDamagePercentage: 0.26,
   armorPenetrations: [
     3,
@@ -163,11 +163,11 @@ export const ammo1270Magnum: IAmmunition = {
   ],
   caliber: 'Caliber12g',
   fleshDamage: 50,
-  heavyBleedingPercentageChance: 0.1,
-  lightBleedingPercentageChance: 0.2,
+  heavyBleedingChance: 0.1,
+  lightBleedingChance: 0.2,
   penetrationPower: 2,
   projectiles: 8,
-  recoilPercentageModifier: 1.15,
+  recoilModifierPercentage: 1.15,
   velocity: 385,
   categoryId: 'ammunition',
   iconLink: 'https://assets.tarkov.dev/5d6e6806a4b936088465b17e-icon.webp',
@@ -180,8 +180,8 @@ export const ammo1270Magnum: IAmmunition = {
   weight: 0.059,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/12/70_8.5mm_Magnum_buckshot',
   blinding: false,
-  durabilityBurnPercentageModifier: 0,
-  fragmentationChancePercentage: 0,
+  durabilityBurnModifierPercentage: 0,
+  fragmentationChance: 0,
   subsonic: false,
   tracer: false,
   conflictingItemIds: [],
@@ -201,7 +201,7 @@ export const ammo545bp: IAmmunition = {
   shortName: 'BP',
   weight: 0.01,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/5.45x39mm_BP_gs',
-  accuracyPercentageModifier: -0.03,
+  accuracyModifierPercentage: -0.03,
   armorDamagePercentage: 0.46,
   armorPenetrations: [
     6,
@@ -213,14 +213,14 @@ export const ammo545bp: IAmmunition = {
   ],
   blinding: false,
   caliber: 'Caliber545x39',
-  durabilityBurnPercentageModifier: 0.35,
+  durabilityBurnModifierPercentage: 0.35,
   fleshDamage: 46,
-  fragmentationChancePercentage: 0.16,
-  heavyBleedingPercentageChance: 0,
-  lightBleedingPercentageChance: 0,
+  fragmentationChance: 0.16,
+  heavyBleedingChance: 0,
+  lightBleedingChance: 0,
   penetrationPower: 45,
   projectiles: 1,
-  recoilPercentageModifier: 0.07,
+  recoilModifierPercentage: 0.07,
   subsonic: false,
   tracer: false,
   velocity: 890
@@ -239,24 +239,24 @@ export const ammo545us: IAmmunition = {
   blinding: false,
   caliber: 'Caliber545x39',
   conflictingItemIds: [],
-  durabilityBurnPercentageModifier: -0.2,
+  durabilityBurnModifierPercentage: -0.2,
   fleshDamage: 63,
-  fragmentationChancePercentage: 0.1,
-  heavyBleedingPercentageChance: 0,
-  lightBleedingPercentageChance: 0,
+  fragmentationChance: 0.1,
+  heavyBleedingChance: 0,
+  lightBleedingChance: 0,
   maxStackableAmount: 60,
   prices: [],
   projectiles: 1,
   tracer: false,
   penetrationPower: 17,
-  recoilPercentageModifier: -0.15,
+  recoilModifierPercentage: -0.15,
   subsonic: true,
   velocity: 303,
   categoryId: 'ammunition',
   iconLink: 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-icon.webp',
   id: '56dff4ecd2720b5f5a8b4568',
   imageLink: 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-image.webp',
-  accuracyPercentageModifier: 0,
+  accuracyModifierPercentage: 0,
   marketLink: 'https://tarkov.dev/item/545x39mm-us-gs',
   name: '5.45x39mm US gs',
   shortName: 'US',
@@ -277,7 +277,7 @@ export const ammo9mmGT: IAmmunition = {
   shortName: 'GT',
   weight: 0.006,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/9x19mm_Green_Tracer',
-  accuracyPercentageModifier: -0.05,
+  accuracyModifierPercentage: -0.05,
   armorDamagePercentage: 0.33,
   armorPenetrations: [
     6,
@@ -289,14 +289,14 @@ export const ammo9mmGT: IAmmunition = {
   ],
   blinding: false,
   caliber: 'Caliber9x19PARA',
-  durabilityBurnPercentageModifier: 0.15,
+  durabilityBurnModifierPercentage: 0.15,
   fleshDamage: 58,
-  fragmentationChancePercentage: 0.15,
-  heavyBleedingPercentageChance: 0,
-  lightBleedingPercentageChance: 0,
+  fragmentationChance: 0.15,
+  heavyBleedingChance: 0,
+  lightBleedingChance: 0,
   penetrationPower: 14,
   projectiles: 1,
-  recoilPercentageModifier: -0.06,
+  recoilModifierPercentage: -0.06,
   subsonic: false,
   tracer: true,
   velocity: 365
@@ -416,10 +416,10 @@ export const armor6b13Fl: IArmor = {
       required: false
     }
   ],
-  ergonomicsPercentageModifier: -0.01,
-  movementSpeedPercentageModifier: -0.01,
+  ergonomicsModifierPercentage: -0.01,
+  movementSpeedModifierPercentage: -0.01,
   presetWearableModifiers: undefined,
-  turningSpeedPercentageModifier: 0,
+  turningSpeedModifierPercentage: 0,
   armorClass: 4,
   armoredAreas: [
     'FRPLATE',
@@ -522,10 +522,10 @@ export const armor6b13FlDefault: IArmor = {
       required: false
     }
   ],
-  ergonomicsPercentageModifier: -0.01,
-  movementSpeedPercentageModifier: -0.01,
+  ergonomicsModifierPercentage: -0.01,
+  movementSpeedModifierPercentage: -0.01,
   presetWearableModifiers: undefined,
-  turningSpeedPercentageModifier: 0,
+  turningSpeedModifierPercentage: 0,
   armorClass: 4,
   armoredAreas: [
     'FRPLATE',
@@ -558,7 +558,7 @@ export const banshee: IVest = {
   conflictingItemIds: [],
   defaultPresetId: '657661ad234b9f6e050a42a2',
   durability: 0,
-  ergonomicsPercentageModifier: -0.01,
+  ergonomicsModifierPercentage: -0.01,
   material: 'Aramid',
   modSlots: [
     {
@@ -651,8 +651,8 @@ export const banshee: IVest = {
       required: false
     }
   ],
-  movementSpeedPercentageModifier: -0.01,
-  turningSpeedPercentageModifier: -0.01,
+  movementSpeedModifierPercentage: -0.01,
+  turningSpeedModifierPercentage: -0.01,
   capacity: 16,
   categoryId: 'vest',
   iconLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-icon.webp',
@@ -682,7 +682,7 @@ export const bansheeDefault: IVest = {
   conflictingItemIds: [],
   defaultPresetId: undefined,
   durability: 0,
-  ergonomicsPercentageModifier: -0.01,
+  ergonomicsModifierPercentage: -0.01,
   material: 'Aramid',
   modSlots: [
     {
@@ -775,8 +775,8 @@ export const bansheeDefault: IVest = {
       required: false
     }
   ],
-  movementSpeedPercentageModifier: -0.01,
-  turningSpeedPercentageModifier: -0.01,
+  movementSpeedModifierPercentage: -0.01,
+  turningSpeedModifierPercentage: -0.01,
   capacity: 16,
   categoryId: 'vest',
   iconLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-icon.webp',
@@ -824,10 +824,10 @@ export const berkut: IBackpack = {
   weight: 1,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/WARTECH_Berkut_BB-102_backpack_(A-TACS_FG)',
   capacity: 20,
-  ergonomicsPercentageModifier: -0.02,
-  movementSpeedPercentageModifier: 0,
+  ergonomicsModifierPercentage: -0.02,
+  movementSpeedModifierPercentage: 0,
   presetWearableModifiers: undefined,
-  turningSpeedPercentageModifier: 0
+  turningSpeedModifierPercentage: 0
 }
 
 export const capacitors: IItem = {
@@ -891,10 +891,10 @@ export const cultLocust: IArmorMod = {
   presetWearableModifiers: undefined,
   prices: [],
   durability: 60,
-  ergonomicsPercentageModifier: -0.01,
+  ergonomicsModifierPercentage: -0.01,
   material: 'Titan',
-  movementSpeedPercentageModifier: -0.015,
-  turningSpeedPercentageModifier: -0.01,
+  movementSpeedModifierPercentage: -0.015,
+  turningSpeedModifierPercentage: -0.01,
   categoryId: 'armorMod',
   iconLink: 'https://assets.tarkov.dev/656fa8d700d62bcd2e024084-icon.webp',
   id: '656fa8d700d62bcd2e024084',
@@ -907,7 +907,7 @@ export const cultLocust: IArmorMod = {
 }
 
 export const ekp802dt: IRangedWeaponMod = {
-  accuracyPercentageModifier: 0,
+  accuracyModifierPercentage: 0,
   baseItemId: undefined,
   defaultPresetId: undefined,
   ergonomicsModifier: -3,
@@ -923,9 +923,9 @@ export const ekp802dt: IRangedWeaponMod = {
     }
   ],
   presetErgonomicsModifier: undefined,
-  presetRecoilPercentageModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
   prices: [],
-  recoilPercentageModifier: 0,
+  recoilModifierPercentage: 0,
   categoryId: 'rangedWeaponMod',
   conflictingItemIds: [
     '5827272a24597748c74bdeea'
@@ -1061,7 +1061,7 @@ export const k1s: IHeadwear = {
   defaultPresetId: undefined,
   deafening: 'High',
   durability: 0,
-  ergonomicsPercentageModifier: -0.02,
+  ergonomicsModifierPercentage: -0.02,
   material: 'Aramid',
   maxStackableAmount: 1,
   modSlots: [
@@ -1074,11 +1074,11 @@ export const k1s: IHeadwear = {
       required: false
     }
   ],
-  movementSpeedPercentageModifier: 0,
+  movementSpeedModifierPercentage: 0,
   presetWearableModifiers: undefined,
   prices: [],
   ricochetChance: 'Low',
-  turningSpeedPercentageModifier: -0.02,
+  turningSpeedModifierPercentage: -0.02,
   categoryId: 'headwear',
   iconLink: 'https://assets.tarkov.dev/59e7711e86f7746cae05fbe1-icon.webp',
   id: '59e7711e86f7746cae05fbe1',
@@ -1102,14 +1102,14 @@ export const k1sVisor: IArmorMod = {
   conflictingItemIds: [],
   defaultPresetId: undefined,
   durability: 30,
-  ergonomicsPercentageModifier: 0,
+  ergonomicsModifierPercentage: 0,
   material: 'Glass',
   maxStackableAmount: 1,
   modSlots: [],
-  movementSpeedPercentageModifier: 0,
+  movementSpeedModifierPercentage: 0,
   presetWearableModifiers: undefined,
   prices: [],
-  turningSpeedPercentageModifier: 0,
+  turningSpeedModifierPercentage: 0,
   categoryId: 'armorMod',
   iconLink: 'https://assets.tarkov.dev/5ac4c50d5acfc40019262e87-icon.webp',
   id: '5ac4c50d5acfc40019262e87',
@@ -1178,10 +1178,10 @@ export const lshZ2dtm: IHeadwear = {
       required: false
     }
   ],
-  ergonomicsPercentageModifier: -0.03,
-  movementSpeedPercentageModifier: 0,
+  ergonomicsModifierPercentage: -0.03,
+  movementSpeedModifierPercentage: 0,
   presetWearableModifiers: undefined,
-  turningSpeedPercentageModifier: -0.03,
+  turningSpeedModifierPercentage: -0.03,
   armorClass: 4,
   armoredAreas: [
     'HeadTopOfTheHead',
@@ -1217,10 +1217,10 @@ export const lshZ2dtmFs: IArmorMod = {
   baseItemId: undefined,
   defaultPresetId: undefined,
   modSlots: [],
-  ergonomicsPercentageModifier: -0.02,
-  movementSpeedPercentageModifier: 0,
+  ergonomicsModifierPercentage: -0.02,
+  movementSpeedModifierPercentage: 0,
   presetWearableModifiers: undefined,
-  turningSpeedPercentageModifier: -0.05,
+  turningSpeedModifierPercentage: -0.05,
   armorClass: 4,
   armoredAreas: [
     'HeadFace',
@@ -1414,9 +1414,9 @@ export const m9a3Fs: IRangedWeaponMod = {
   modSlots: [],
   ergonomicsModifier: 0,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: 0
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: 0
 }
 
 export const m9a3Magazine: IMagazine = {
@@ -1449,8 +1449,8 @@ export const m9a3Magazine: IMagazine = {
     '5c0d56a986f774449d5de529',
     '64b7bbb74b75259c590fa897'
   ],
-  checkSpeedPercentageModifier: 0,
-  loadSpeedPercentageModifier: 0,
+  checkSpeedModifierPercentage: 0,
+  loadSpeedModifierPercentage: 0,
   malfunctionPercentage: 0.01
 }
 
@@ -1472,9 +1472,9 @@ export const m9a3Rs: IRangedWeaponMod = {
   modSlots: [],
   ergonomicsModifier: 0,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: 0
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: 0
 }
 
 export const m9a3SideGrip: IRangedWeaponMod = {
@@ -1495,9 +1495,9 @@ export const m9a3SideGrip: IRangedWeaponMod = {
   modSlots: [],
   ergonomicsModifier: 4,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: 0
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: 0
 }
 
 export const m9a3Slide: IRangedWeaponMod = {
@@ -1536,9 +1536,9 @@ export const m9a3Slide: IRangedWeaponMod = {
   ],
   ergonomicsModifier: 1,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: 0
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: 0
 }
 
 export const m9a3Thr: IRangedWeaponMod = {
@@ -1572,9 +1572,9 @@ export const m9a3Thr: IRangedWeaponMod = {
   ],
   ergonomicsModifier: -4,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: -0.03
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: -0.03
 }
 
 export const m9a3Cap: IRangedWeaponMod = {
@@ -1595,9 +1595,9 @@ export const m9a3Cap: IRangedWeaponMod = {
   modSlots: [],
   ergonomicsModifier: 1,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: 0
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: 0
 }
 
 export const monocletePe: IArmorMod = {
@@ -1611,9 +1611,9 @@ export const monocletePe: IArmorMod = {
   conflictingItemIds: [],
   defaultPresetId: undefined,
   durability: 40,
-  ergonomicsPercentageModifier: -0.01,
+  ergonomicsModifierPercentage: -0.01,
   material: 'UHMWPE',
-  movementSpeedPercentageModifier: -0.01,
+  movementSpeedModifierPercentage: -0.01,
   categoryId: 'armorMod',
   iconLink: 'https://assets.tarkov.dev/656fad8c498d1b7e3e071da0-icon.webp',
   id: '656fad8c498d1b7e3e071da0',
@@ -1625,7 +1625,7 @@ export const monocletePe: IArmorMod = {
   prices: [],
   name: 'Monoclete level III PE ballistic plate',
   shortName: 'Monoclete PE',
-  turningSpeedPercentageModifier: 0,
+  turningSpeedModifierPercentage: 0,
   weight: 1.35,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Monoclete_level_III_PE_ballistic_plate'
 }
@@ -1789,7 +1789,7 @@ export const mts25512Default: IRangedWeapon = {
 }
 
 export const mts25512755mmRib: IRangedWeaponMod = {
-  accuracyPercentageModifier: 0,
+  accuracyModifierPercentage: 0,
   baseItemId: undefined,
   conflictingItemIds: [],
   defaultPresetId: undefined,
@@ -1815,9 +1815,9 @@ export const mts25512755mmRib: IRangedWeaponMod = {
     }
   ],
   presetErgonomicsModifier: undefined,
-  presetRecoilPercentageModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
   prices: [],
-  recoilPercentageModifier: -0.1,
+  recoilModifierPercentage: -0.1,
   categoryId: 'rangedWeaponMod',
   iconLink: 'https://assets.tarkov.dev/612368f58b401f4f51239b33-icon.webp',
   id: '612368f58b401f4f51239b33',
@@ -1831,7 +1831,7 @@ export const mts25512755mmRib: IRangedWeaponMod = {
 
 export const mts25512beech: IRangedWeaponMod = {
   ergonomicsModifier: 9,
-  recoilPercentageModifier: -0.02,
+  recoilModifierPercentage: -0.02,
   categoryId: 'rangedWeaponMod',
   iconLink: 'https://assets.tarkov.dev/6123649463849f3d843da7c4-icon.webp',
   id: '6123649463849f3d843da7c4',
@@ -1841,8 +1841,8 @@ export const mts25512beech: IRangedWeaponMod = {
   shortName: 'MTs-255 beech',
   weight: 0.8,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_beechwood_forestock',
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
   presetErgonomicsModifier: undefined,
   baseItemId: undefined,
   defaultPresetId: undefined,
@@ -1853,7 +1853,7 @@ export const mts25512beech: IRangedWeaponMod = {
 }
 
 export const mts25512choke: IRangedWeaponMod = {
-  accuracyPercentageModifier: 0.03,
+  accuracyModifierPercentage: 0.03,
   baseItemId: undefined,
   conflictingItemIds: [],
   defaultPresetId: undefined,
@@ -1861,9 +1861,9 @@ export const mts25512choke: IRangedWeaponMod = {
   maxStackableAmount: 1,
   modSlots: [],
   presetErgonomicsModifier: undefined,
-  presetRecoilPercentageModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
   prices: [],
-  recoilPercentageModifier: -0.01,
+  recoilModifierPercentage: -0.01,
   categoryId: 'rangedWeaponMod',
   iconLink: 'https://assets.tarkov.dev/619d36da53b4d42ee724fae4-icon.webp',
   id: '619d36da53b4d42ee724fae4',
@@ -1897,11 +1897,11 @@ export const mts25512cyl: IMagazine = {
   ],
   baseItemId: undefined,
   capacity: 5,
-  checkSpeedPercentageModifier: 0,
+  checkSpeedModifierPercentage: 0,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   ergonomicsModifier: -2,
-  loadSpeedPercentageModifier: 0,
+  loadSpeedModifierPercentage: 0,
   malfunctionPercentage: 0,
   maxStackableAmount: 1,
   modSlots: [
@@ -2041,7 +2041,7 @@ export const mts25512cyl: IMagazine = {
 
 export const mts25512wood: IRangedWeaponMod = {
   ergonomicsModifier: 3,
-  recoilPercentageModifier: -0.23,
+  recoilModifierPercentage: -0.23,
   categoryId: 'rangedWeaponMod',
   iconLink: 'https://assets.tarkov.dev/612781056f3d944a17348d60-icon.webp',
   id: '612781056f3d944a17348d60',
@@ -2051,8 +2051,8 @@ export const mts25512wood: IRangedWeaponMod = {
   shortName: 'MTs-255 wood',
   weight: 0.45,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_wooden_stock',
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
   presetErgonomicsModifier: undefined,
   baseItemId: undefined,
   defaultPresetId: undefined,
@@ -2229,9 +2229,9 @@ export const paca: IArmor = {
     'StomachLeftSide',
     'StomachRightSide'
   ],
-  ergonomicsPercentageModifier: -0.01,
+  ergonomicsModifierPercentage: -0.01,
   material: 'Aramid',
-  movementSpeedPercentageModifier: -0.01,
+  movementSpeedModifierPercentage: -0.01,
   categoryId: 'armor',
   iconLink: 'https://assets.tarkov.dev/5648a7494bdc2d9d488b4583-icon.webp',
   id: '5648a7494bdc2d9d488b4583',
@@ -2249,7 +2249,7 @@ export const paca: IArmor = {
   maxStackableAmount: 1,
   prices: [],
   presetWearableModifiers: undefined,
-  turningSpeedPercentageModifier: 0
+  turningSpeedModifierPercentage: 0
 }
 
 export const paid: IItem = {
@@ -2298,10 +2298,10 @@ export const plate6b33Back: IArmorMod = {
   baseItemId: undefined,
   defaultPresetId: undefined,
   modSlots: [],
-  ergonomicsPercentageModifier: -0.005,
-  movementSpeedPercentageModifier: -0.025,
+  ergonomicsModifierPercentage: -0.005,
+  movementSpeedModifierPercentage: -0.025,
   presetWearableModifiers: undefined,
-  turningSpeedPercentageModifier: 0,
+  turningSpeedModifierPercentage: 0,
   armorClass: 4,
   armoredAreas: [
     'BCKPLATE'
@@ -2327,10 +2327,10 @@ export const plate6b33Front: IArmorMod = {
   baseItemId: undefined,
   defaultPresetId: undefined,
   modSlots: [],
-  ergonomicsPercentageModifier: -0.01,
-  movementSpeedPercentageModifier: -0.025,
+  ergonomicsModifierPercentage: -0.01,
+  movementSpeedModifierPercentage: -0.025,
   presetWearableModifiers: undefined,
-  turningSpeedPercentageModifier: -0.01,
+  turningSpeedModifierPercentage: -0.01,
   armorClass: 4,
   armoredAreas: [
     'FRPLATE'
@@ -2356,7 +2356,7 @@ export const plexiglass: IItem = {
 }
 
 export const precision: IRangedWeaponMod = {
-  accuracyPercentageModifier: 0,
+  accuracyModifierPercentage: 0,
   baseItemId: undefined,
   conflictingItemIds: [],
   defaultPresetId: undefined,
@@ -2364,9 +2364,9 @@ export const precision: IRangedWeaponMod = {
   maxStackableAmount: 1,
   modSlots: [],
   presetErgonomicsModifier: undefined,
-  presetRecoilPercentageModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
   prices: [],
-  recoilPercentageModifier: -0.24,
+  recoilModifierPercentage: -0.24,
   categoryId: 'rangedWeaponMod',
   iconLink: 'https://assets.tarkov.dev/5fc2369685fd526b824a5713-icon.webp',
   id: '5fc2369685fd526b824a5713',
@@ -2379,7 +2379,7 @@ export const precision: IRangedWeaponMod = {
 }
 
 export const pso1: IRangedWeaponMod = {
-  accuracyPercentageModifier: 0,
+  accuracyModifierPercentage: 0,
   baseItemId: undefined,
   defaultPresetId: undefined,
   ergonomicsModifier: -7,
@@ -2395,9 +2395,9 @@ export const pso1: IRangedWeaponMod = {
     }
   ],
   presetErgonomicsModifier: undefined,
-  presetRecoilPercentageModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
   prices: [],
-  recoilPercentageModifier: 0,
+  recoilModifierPercentage: 0,
   categoryId: 'rangedWeaponMod',
   conflictingItemIds: [
     '5827272a24597748c74bdeea',
@@ -2742,9 +2742,9 @@ export const rpk1615inch: IRangedWeaponMod = {
   ],
   ergonomicsModifier: -2,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: -0.03
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: -0.03
 }
 
 export const rpk16Drum: IMagazine = {
@@ -2781,8 +2781,8 @@ export const rpk16Drum: IMagazine = {
     '56dff4a2d2720bbd668b456a',
     '56dff4ecd2720b5f5a8b4568'
   ],
-  checkSpeedPercentageModifier: 0.25,
-  loadSpeedPercentageModifier: 0.9,
+  checkSpeedModifierPercentage: 0.25,
+  loadSpeedModifierPercentage: 0.9,
   malfunctionPercentage: 0.394
 }
 
@@ -2886,9 +2886,9 @@ export const rpk16DustCover: IRangedWeaponMod = {
   ],
   ergonomicsModifier: 4,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: 0
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: 0
 }
 
 export const rpk16Handguard: IRangedWeaponMod = {
@@ -3007,9 +3007,9 @@ export const rpk16Handguard: IRangedWeaponMod = {
   ],
   ergonomicsModifier: 6,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: -0.01
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: -0.01
 }
 
 export const rpk16MuzzleBreak: IRangedWeaponMod = {
@@ -3030,9 +3030,9 @@ export const rpk16MuzzleBreak: IRangedWeaponMod = {
   modSlots: [],
   ergonomicsModifier: -1,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: -0.06
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: -0.06
 }
 
 export const rpk16Rail: IMod = {
@@ -3102,9 +3102,9 @@ export const rpk16Rs: IRangedWeaponMod = {
   modSlots: [],
   ergonomicsModifier: 0,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: 0
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: 0
 }
 
 export const rpk16RsBase: IRangedWeaponMod = {
@@ -3141,9 +3141,9 @@ export const rpk16RsBase: IRangedWeaponMod = {
   ],
   ergonomicsModifier: 0,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: 0
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: 0
 }
 
 export const rpk16Tube: IRangedWeaponMod = {
@@ -3198,9 +3198,9 @@ export const rpk16Tube: IRangedWeaponMod = {
   ],
   ergonomicsModifier: 0,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: -0.01
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: -0.01
 }
 
 export const rub: IItem = {
@@ -3249,10 +3249,10 @@ export const scavVest: IVest = {
   baseItemId: undefined,
   defaultPresetId: undefined,
   modSlots: [],
-  ergonomicsPercentageModifier: 0,
-  movementSpeedPercentageModifier: 0,
+  ergonomicsModifierPercentage: 0,
+  movementSpeedModifierPercentage: 0,
   presetWearableModifiers: undefined,
-  turningSpeedPercentageModifier: 0,
+  turningSpeedModifierPercentage: 0,
   armorClass: 0,
   armoredAreas: [],
   durability: 0,
@@ -3276,7 +3276,7 @@ export const slickers: IItem = {
 }
 
 export const specterDr: IRangedWeaponMod = {
-  accuracyPercentageModifier: 0,
+  accuracyModifierPercentage: 0,
   baseItemId: undefined,
   conflictingItemIds: [],
   defaultPresetId: undefined,
@@ -3291,9 +3291,9 @@ export const specterDr: IRangedWeaponMod = {
     }
   ],
   presetErgonomicsModifier: undefined,
-  presetRecoilPercentageModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
   prices: [],
-  recoilPercentageModifier: 0,
+  recoilModifierPercentage: 0,
   categoryId: 'rangedWeaponMod',
   iconLink: 'https://assets.tarkov.dev/57ac965c24597706be5f975c-icon.webp',
   id: '57ac965c24597706be5f975c',
@@ -3323,9 +3323,9 @@ export const srd9: IRangedWeaponMod = {
   modSlots: [],
   ergonomicsModifier: -15,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: -0.06
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: -0.06
 }
 
 export const syringe: IItem = {
@@ -3451,9 +3451,9 @@ export const x400: IRangedWeaponMod = {
   modSlots: [],
   ergonomicsModifier: -1,
   presetErgonomicsModifier: undefined,
-  accuracyPercentageModifier: 0,
-  presetRecoilPercentageModifier: undefined,
-  recoilPercentageModifier: 0
+  accuracyModifierPercentage: 0,
+  presetRecoilModifierPercentage: undefined,
+  recoilModifierPercentage: 0
 }
 
 

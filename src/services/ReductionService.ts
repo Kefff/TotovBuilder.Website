@@ -307,38 +307,38 @@ export class ReductionService {
    * @returns Item.
    */
   private parseReducedAmmunition(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IAmmunition {
-    const accuracyPercentageModifier = reducedItem['ac'] as number ?? 0
+    const accuracyModifierPercentage = reducedItem['ac'] as number ?? 0
     const armorDamagePercentage = reducedItem['ad'] as number ?? 0
     const armorPenetrations = reducedItem['ap'] as number[] ?? [0, 0, 0, 0, 0, 0]
     const blinding = reducedItem['b'] != null
     const caliber = reducedItem['ca'] as string
-    const durabilityBurnPercentageModifier = reducedItem['d'] as number ?? 0
+    const durabilityBurnModifierPercentage = reducedItem['d'] as number ?? 0
     const fleshDamage = reducedItem['f'] as number ?? 0
-    const fragmentationChancePercentage = reducedItem['fr'] as number ?? 0
-    const heavyBleedingPercentageChance = reducedItem['h'] as number ?? 0
-    const lightBleedingPercentageChance = reducedItem['l'] as number ?? 0
+    const fragmentationChance = reducedItem['fr'] as number ?? 0
+    const heavyBleedingChance = reducedItem['h'] as number ?? 0
+    const lightBleedingChance = reducedItem['l'] as number ?? 0
     const penetrationPower = reducedItem['pp'] as number ?? 0
     const projectiles = reducedItem['p'] as number ?? 1
-    const recoilPercentageModifier = reducedItem['r'] as number ?? 0
+    const recoilModifierPercentage = reducedItem['r'] as number ?? 0
     const subsonic = reducedItem['su'] != null
     const tracer = reducedItem['t'] != null
     const velocity = reducedItem['v'] as number
 
     return {
       ...baseItemProperties,
-      accuracyPercentageModifier,
+      accuracyModifierPercentage,
       armorDamagePercentage,
       armorPenetrations,
       blinding,
       caliber,
-      durabilityBurnPercentageModifier,
+      durabilityBurnModifierPercentage,
       fleshDamage,
-      fragmentationChancePercentage,
-      heavyBleedingPercentageChance,
-      lightBleedingPercentageChance,
+      fragmentationChance,
+      heavyBleedingChance,
+      lightBleedingChance,
       penetrationPower,
       projectiles,
-      recoilPercentageModifier,
+      recoilModifierPercentage,
       subsonic,
       tracer,
       velocity
@@ -492,8 +492,8 @@ export class ReductionService {
     const modProperties = this.parseReducedMod(reducedItem, baseItemProperties)
 
     const acceptedAmmunitionIds = reducedItem['aa'] as string[]
-    const checkSpeedPercentageModifier = reducedItem['cs'] as number ?? 0
-    const loadSpeedPercentageModifier = reducedItem['l'] as number ?? 0
+    const checkSpeedModifierPercentage = reducedItem['cs'] as number ?? 0
+    const loadSpeedModifierPercentage = reducedItem['l'] as number ?? 0
     const malfunctionPercentage = reducedItem['ma'] as number ?? 0
 
     return {
@@ -501,8 +501,8 @@ export class ReductionService {
       ...containerProperties,
       ...modProperties,
       acceptedAmmunitionIds,
-      checkSpeedPercentageModifier,
-      loadSpeedPercentageModifier,
+      checkSpeedModifierPercentage,
+      loadSpeedModifierPercentage,
       malfunctionPercentage
     }
   }
@@ -624,15 +624,15 @@ export class ReductionService {
   private parseReducedRangedWeaponMod(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IRangedWeaponMod {
     const modProperties = this.parseReducedMod(reducedItem, baseItemProperties)
 
-    const accuracyPercentageModifier = reducedItem['ac'] as number ?? 0
-    const recoilPercentageModifier = reducedItem['r'] as number ?? 0
+    const accuracyModifierPercentage = reducedItem['ac'] as number ?? 0
+    const recoilModifierPercentage = reducedItem['r'] as number ?? 0
 
     return {
       ...baseItemProperties,
       ...modProperties,
-      accuracyPercentageModifier,
-      presetRecoilPercentageModifier: undefined,
-      recoilPercentageModifier
+      accuracyModifierPercentage,
+      presetRecoilModifierPercentage: undefined,
+      recoilModifierPercentage
     }
   }
 
@@ -660,16 +660,16 @@ export class ReductionService {
    * @returns Item.
    */
   private parseReducedWearable(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IWearable {
-    const ergonomicsPercentageModifier = reducedItem['e'] as number ?? 0
-    const movementSpeedPercentageModifier = reducedItem['ms'] as number ?? 0
-    const turningSpeedPercentageModifier = reducedItem['t'] as number ?? 0
+    const ergonomicsModifierPercentage = reducedItem['e'] as number ?? 0
+    const movementSpeedModifierPercentage = reducedItem['ms'] as number ?? 0
+    const turningSpeedModifierPercentage = reducedItem['t'] as number ?? 0
 
     return {
       ...baseItemProperties,
-      ergonomicsPercentageModifier,
-      movementSpeedPercentageModifier,
+      ergonomicsModifierPercentage,
+      movementSpeedModifierPercentage,
       presetWearableModifiers: undefined,
-      turningSpeedPercentageModifier
+      turningSpeedModifierPercentage
     }
   }
 

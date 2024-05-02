@@ -319,6 +319,10 @@ export default defineComponent({
      * Scrolls the dropdown to the selected item.
      */
     function scrollToSelectedItemInDropdown() {
+      if (selectedItem.value == null) {
+        return
+      }
+
       const selectedItemPosition = options.value.findIndex(o => o.id === selectedItem.value!.id)
       const selectedItemXPositionInDropdown = selectedItemPosition * optionHeight.value
 

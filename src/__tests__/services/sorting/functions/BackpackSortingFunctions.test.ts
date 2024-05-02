@@ -1,31 +1,31 @@
+import { describe, expect, it } from 'vitest'
 import { IBackpack } from '../../../../models/item/IBackpack'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { BackpackSortingFunctions } from '../../../../services/sorting/functions/BackpackSortingFunctions'
-import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([
     ['capacity'],
-    ['ergonomicsPercentageModifier'],
-    ['movementSpeedPercentageModifier'],
-    ['turningSpeedPercentageModifier']
+    ['ergonomicsModifierPercentage'],
+    ['movementSpeedModifierPercentage'],
+    ['turningSpeedModifierPercentage']
   ])('should compare by a property', async (property: string) => {
     // Arrange
     // Arrange
     const item1 = {
       capacity: 2,
       categoryId: 'cat',
-      ergonomicsPercentageModifier: 2,
-      movementSpeedPercentageModifier: 2,
-      turningSpeedPercentageModifier: 2
+      ergonomicsModifierPercentage: 2,
+      movementSpeedModifierPercentage: 2,
+      turningSpeedModifierPercentage: 2
     } as IBackpack
 
     const item2 = {
       capacity: 1,
       categoryId: 'cat',
-      ergonomicsPercentageModifier: 1,
-      movementSpeedPercentageModifier: 1,
-      turningSpeedPercentageModifier: 1
+      ergonomicsModifierPercentage: 1,
+      movementSpeedModifierPercentage: 1,
+      turningSpeedModifierPercentage: 1
     } as IBackpack
 
     const sortingService = new SortingService(BackpackSortingFunctions)

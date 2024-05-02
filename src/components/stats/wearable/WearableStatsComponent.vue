@@ -1,10 +1,10 @@
 <template>
   <div
-    v-if="ergonomicsPercentageModifier !== 0 || movementSpeedPercentageModifier !== 0 || turningSpeedPercentageModifier !== 0"
+    v-if="ergonomicsModifierPercentage !== 0 || movementSpeedModifierPercentage !== 0 || turningSpeedModifierPercentage !== 0"
     class="stats-line"
   >
     <div
-      v-if="ergonomicsPercentageModifier !== 0"
+      v-if="ergonomicsModifierPercentage !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -14,12 +14,12 @@
         />
         <span>{{ $t('caption.ergonomics') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsPercentageModifier)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, ergonomicsPercentageModifier) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsModifierPercentage)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, ergonomicsModifierPercentage) }}
       </div>
     </div>
     <div
-      v-if="movementSpeedPercentageModifier !== 0"
+      v-if="movementSpeedModifierPercentage !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -29,12 +29,12 @@
         />
         <span>{{ $t('caption.movementSpeed') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(movementSpeedPercentageModifier)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, movementSpeedPercentageModifier) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(movementSpeedModifierPercentage)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, movementSpeedModifierPercentage) }}
       </div>
     </div>
     <div
-      v-if="turningSpeedPercentageModifier !== 0"
+      v-if="turningSpeedModifierPercentage !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -44,8 +44,8 @@
         />
         <span>{{ $t('caption.turningSpeed') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(turningSpeedPercentageModifier)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, turningSpeedPercentageModifier) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(turningSpeedModifierPercentage)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, turningSpeedModifierPercentage) }}
       </div>
     </div>
   </div>

@@ -1,32 +1,32 @@
+import { describe, expect, it } from 'vitest'
 import { IRangedWeaponMod } from '../../../../models/item/IRangedWeaponMod'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { RangedWeaponModSortingFunctions } from '../../../../services/sorting/functions/RangedWeaponModSortingFunctions'
-import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([
-    ['accuracyPercentageModifier', false],
-    ['accuracyPercentageModifier', true],
+    ['accuracyModifierPercentage', false],
+    ['accuracyModifierPercentage', true],
     ['ergonomicsModifier', false],
     ['ergonomicsModifier', true],
-    ['recoilPercentageModifier', false],
-    ['recoilPercentageModifier', true]
+    ['recoilModifierPercentage', false],
+    ['recoilModifierPercentage', true]
   ])('should compare by a property', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
-      accuracyPercentageModifier: 2,
+      accuracyModifierPercentage: 2,
       categoryId: 'cat',
       ergonomicsModifier: 2,
       presetErgonomicsModifier: isPreset ? 2 : undefined,
-      recoilPercentageModifier: 2
+      recoilModifierPercentage: 2
     } as IRangedWeaponMod
 
     const item2 = {
-      accuracyPercentageModifier: 1,
+      accuracyModifierPercentage: 1,
       categoryId: 'cat',
       ergonomicsModifier: 1,
       presetErgonomicsModifier: isPreset ? 1 : undefined,
-      recoilPercentageModifier: 1
+      recoilModifierPercentage: 1
     } as IRangedWeaponMod
 
     const sortingService = new SortingService(RangedWeaponModSortingFunctions)

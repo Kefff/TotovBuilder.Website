@@ -53,15 +53,15 @@
     </div>
   </div>
   <div
-    v-if="item.fragmentationChancePercentage !== 0 || showEmptyEntries"
+    v-if="item.fragmentationChance !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div class="option-value">
       <div
-        v-if="item.fragmentationChancePercentage !== 0"
+        v-if="item.fragmentationChance !== 0"
         v-tooltip.top="$t('caption.fragmentationChance')"
       >
-        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChangePercentage, item.fragmentationChancePercentage) }}</span>
+        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChance, item.fragmentationChance) }}</span>
         <font-awesome-icon
           icon="viruses"
           class="icon-after-text"
@@ -70,16 +70,16 @@
     </div>
   </div>
   <div
-    v-if="item.recoilPercentageModifier !== 0 || showEmptyEntries"
+    v-if="item.recoilModifierPercentage !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div class="option-value">
       <div
-        v-if="item.recoilPercentageModifier !== 0"
+        v-if="item.recoilModifierPercentage !== 0"
         v-tooltip.top="$t('caption.recoil')"
       >
-        <span :class="StatsUtils.getValueColorClass(item.recoilPercentageModifier, true)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, item.recoilPercentageModifier) }}
+        <span :class="StatsUtils.getValueColorClass(item.recoilModifierPercentage, true)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, item.recoilModifierPercentage) }}
         </span>
         <font-awesome-icon
           icon="arrows-alt"
@@ -89,16 +89,16 @@
     </div>
   </div>
   <div
-    v-if="item.accuracyPercentageModifier !== 0 || showEmptyEntries"
+    v-if="item.accuracyModifierPercentage !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div class="option-value">
       <div
-        v-if="item.accuracyPercentageModifier !== 0"
+        v-if="item.accuracyModifierPercentage !== 0"
         v-tooltip.top="$t('caption.accuracy')"
       >
-        <span :class="StatsUtils.getValueColorClass(item.accuracyPercentageModifier)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, item.accuracyPercentageModifier) }}
+        <span :class="StatsUtils.getValueColorClass(item.accuracyModifierPercentage)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, item.accuracyModifierPercentage) }}
         </span>
         <font-awesome-icon
           icon="bullseye"

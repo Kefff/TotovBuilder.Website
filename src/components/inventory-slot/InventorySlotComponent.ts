@@ -51,16 +51,16 @@ export default defineComponent({
     const displayed = computed(() => editing?.value || props.modelValue.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
     const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
     const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
-    const hasSummaryErgonomicsPercentageModifier = computed(() => summary.value.wearableModifiers.ergonomicsPercentageModifier !== 0)
+    const hasSummaryErgonomicsModifierPercentage = computed(() => summary.value.wearableModifiers.ergonomicsModifierPercentage !== 0)
     const hasSummaryHorizontalRecoil = computed(() => summary.value.recoil.horizontalRecoil !== 0)
-    const hasSummaryMovementSpeedPercentageModifier = computed(() => summary.value.wearableModifiers.movementSpeedPercentageModifier !== 0)
+    const hasSummaryMovementSpeedModifierPercentage = computed(() => summary.value.wearableModifiers.movementSpeedModifierPercentage !== 0)
     const hasSummaryPrice = computed(() => summary.value.price.priceInMainCurrency !== 0)
     const hasSummaryStats = computed(() => hasSummaryErgonomics.value || hasSummaryHorizontalRecoil.value || hasSummaryVerticalRecoil.value)
-    const hasSummaryTurningSpeedPercentageModifier = computed(() => summary.value.wearableModifiers.turningSpeedPercentageModifier !== 0)
+    const hasSummaryTurningSpeedModifierPercentage = computed(() => summary.value.wearableModifiers.turningSpeedModifierPercentage !== 0)
     const hasSummaryVerticalRecoil = computed(() => summary.value.recoil.verticalRecoil !== 0)
-    const hasSummaryWearableModifiers = computed(() => hasSummaryErgonomicsPercentageModifier.value
-      || hasSummaryMovementSpeedPercentageModifier.value
-      || hasSummaryTurningSpeedPercentageModifier.value
+    const hasSummaryWearableModifiers = computed(() => hasSummaryErgonomicsModifierPercentage.value
+      || hasSummaryMovementSpeedModifierPercentage.value
+      || hasSummaryTurningSpeedModifierPercentage.value
     )
     const hasSummaryWeight = computed(() => summary.value.weight !== 0)
 
@@ -92,9 +92,9 @@ export default defineComponent({
         itemSlotsAmount: 0
       },
       wearableModifiers: {
-        ergonomicsPercentageModifier: 0,
-        movementSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifier: 0
+        ergonomicsModifierPercentage: 0,
+        movementSpeedModifierPercentage: 0,
+        turningSpeedModifierPercentage: 0
       },
       weight: 0
     })
@@ -203,12 +203,12 @@ export default defineComponent({
       DisplayValueType,
       hasSummaryArmor,
       hasSummaryErgonomics,
-      hasSummaryErgonomicsPercentageModifier,
+      hasSummaryErgonomicsModifierPercentage,
       hasSummaryHorizontalRecoil,
-      hasSummaryMovementSpeedPercentageModifier,
+      hasSummaryMovementSpeedModifierPercentage,
       hasSummaryPrice,
       hasSummaryStats,
-      hasSummaryTurningSpeedPercentageModifier,
+      hasSummaryTurningSpeedModifierPercentage,
       hasSummaryVerticalRecoil,
       hasSummaryWearableModifiers,
       hasSummaryWeight,

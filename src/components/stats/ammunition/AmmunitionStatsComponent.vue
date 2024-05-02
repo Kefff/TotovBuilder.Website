@@ -31,15 +31,15 @@
       </div>
     </div>
     <div
-      v-if="item.durabilityBurnPercentageModifier !== 0"
+      v-if="item.durabilityBurnModifierPercentage !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
         <div class="icon-before-text" />
         <span>{{ $t('caption.durabilityBurn') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.durabilityBurnPercentageModifier, true)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.durabilityBurnModifierPercentage, item.durabilityBurnPercentageModifier) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.durabilityBurnModifierPercentage, true)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.durabilityBurnModifierPercentage, item.durabilityBurnModifierPercentage) }}
       </div>
     </div>
   </div>
@@ -100,7 +100,7 @@
         <span>{{ $t('caption.fragmentationChance') }} :</span>
       </div>
       <div class="stats-value">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChangePercentage, item.fragmentationChancePercentage) }}
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChance, item.fragmentationChance) }}
       </div>
     </div>
   </div>
@@ -129,11 +129,11 @@
     </div>
   </div>
   <div
-    v-if="item.recoilPercentageModifier !== 0 || item.accuracyPercentageModifier !== 0 || item.heavyBleedingPercentageChance !== 0 || item.lightBleedingPercentageChance !== 0"
+    v-if="item.recoilModifierPercentage !== 0 || item.accuracyModifierPercentage !== 0 || item.heavyBleedingChance !== 0 || item.lightBleedingChance !== 0"
     class="stats-line"
   >
     <div
-      v-if="item.recoilPercentageModifier !== 0"
+      v-if="item.recoilModifierPercentage !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -144,13 +144,13 @@
         <span>{{ $t('caption.recoil') }} :</span>
       </div>
       <div class="stats-value">
-        <span :class="StatsUtils.getValueColorClass(item.recoilPercentageModifier, true)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, item.recoilPercentageModifier) }}
+        <span :class="StatsUtils.getValueColorClass(item.recoilModifierPercentage, true)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, item.recoilModifierPercentage) }}
         </span>
       </div>
     </div>
     <div
-      v-if="item.accuracyPercentageModifier !== 0"
+      v-if="item.accuracyModifierPercentage !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -161,33 +161,33 @@
         <span>{{ $t('caption.accuracy') }} :</span>
       </div>
       <div class="stats-value">
-        <span :class="StatsUtils.getValueColorClass(item.accuracyPercentageModifier)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, item.accuracyPercentageModifier) }}
+        <span :class="StatsUtils.getValueColorClass(item.accuracyModifierPercentage)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, item.accuracyModifierPercentage) }}
         </span>
       </div>
     </div>
     <div
-      v-if="item.heavyBleedingPercentageChance !== 0"
+      v-if="item.heavyBleedingChance !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
         <div class="icon-before-text" />
         <span>{{ $t('caption.heavyBleeding') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.heavyBleedingPercentageChance)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.bleedingChanceModifierPercentage, item.heavyBleedingPercentageChance) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.heavyBleedingChance)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.bleedingChanceModifier, item.heavyBleedingChance) }}
       </div>
     </div>
     <div
-      v-if="item.lightBleedingPercentageChance !== 0"
+      v-if="item.lightBleedingChance !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
         <div class="icon-before-text" />
         <span>{{ $t('caption.lightBleeding') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.lightBleedingPercentageChance)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.bleedingChanceModifierPercentage, item.lightBleedingPercentageChance) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.lightBleedingChance)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.bleedingChanceModifier, item.lightBleedingChance) }}
       </div>
     </div>
   </div>

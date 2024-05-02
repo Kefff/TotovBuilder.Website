@@ -15,7 +15,7 @@ import { IErgonomics } from '../models/utils/IErgonomics'
 import { IInventoryItemPrice } from '../models/utils/IInventoryItemPrice'
 import { IInventoryItemRecoil } from '../models/utils/IInventoryItemRecoil'
 import { IInventoryItemWearableModifiers } from '../models/utils/IInventoryItemWearableModifiers'
-import { IRecoilPercentageModifier } from '../models/utils/IRecoilPercentageModifier'
+import { IRecoilModifierPercentage } from '../models/utils/IRecoilModifierPercentage'
 import { IWeight } from '../models/utils/IWeight'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import vueI18n from '../plugins/vueI18n'
@@ -543,38 +543,38 @@ ${indentation}${containedItemAsString}`
       verticalRecoilWithMods: rangedWeapon.verticalRecoil
     }
 
-    // Getting the chambered or in magazine ammunition recoil percentage modifier
-    const chamberedAmmunitionRecoilPercentageModifierResult = await this.getChamberedAmmunitionRecoilPercentageModifier(inventoryItem.modSlots)
+    // Getting the chambered or in magazine ammunition recoil modifier percentage
+    const chamberedAmmunitionRecoilModifierPercentageResult = await this.getChamberedAmmunitionRecoilModifierPercentage(inventoryItem.modSlots)
 
-    if (!chamberedAmmunitionRecoilPercentageModifierResult.success) {
-      return Result.failFrom(chamberedAmmunitionRecoilPercentageModifierResult)
+    if (!chamberedAmmunitionRecoilModifierPercentageResult.success) {
+      return Result.failFrom(chamberedAmmunitionRecoilModifierPercentageResult)
     }
 
     // TODO : Display the ammunition modifier next to the weapon recoil instead of including it in the calculation
-    const chamberedAmmunitionRecoilPercentageModifier = 0/*chamberedAmmunitionRecoilPercentageModifierResult.value*/
+    const chamberedAmmunitionRecoilModifierPercentage = 0/*chamberedAmmunitionRecoilModifierPercentageResult.value*/
 
-    // Getting the recoil percentage modifier for each mods
-    let modsRecoilPercentageModifiers = 0
+    // Getting the recoil modifier percentage for each mods
+    let modsRecoilModifierPercentages = 0
 
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.item == null) {
         continue
       }
 
-      const modRecoilPercentageModifierResult = await this.getRecoilPercentageModifier(modSlot.item)
+      const modRecoilModifierPercentageResult = await this.getRecoilModifierPercentage(modSlot.item)
 
-      if (!modRecoilPercentageModifierResult.success) {
-        return Result.failFrom(modRecoilPercentageModifierResult)
+      if (!modRecoilModifierPercentageResult.success) {
+        return Result.failFrom(modRecoilModifierPercentageResult)
       }
 
-      modsRecoilPercentageModifiers += modRecoilPercentageModifierResult.value.recoilPercentageModifierWithMods
+      modsRecoilModifierPercentages += modRecoilModifierPercentageResult.value.recoilModifierPercentageWithMods
     }
 
-    // Applying to the weapon recoil the recoil percentage modifiers of its mods
-    recoil.horizontalRecoilWithMods = recoil.horizontalRecoil + (recoil.horizontalRecoil * modsRecoilPercentageModifiers)
-    recoil.horizontalRecoilWithMods = recoil.horizontalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier)
-    recoil.verticalRecoilWithMods = recoil.verticalRecoil + (recoil.verticalRecoil * modsRecoilPercentageModifiers)
-    recoil.verticalRecoilWithMods = recoil.verticalRecoilWithMods * (1 + chamberedAmmunitionRecoilPercentageModifier)
+    // Applying to the weapon recoil the recoil modifier percentages of its mods
+    recoil.horizontalRecoilWithMods = recoil.horizontalRecoil + (recoil.horizontalRecoil * modsRecoilModifierPercentages)
+    recoil.horizontalRecoilWithMods = recoil.horizontalRecoilWithMods * (1 + chamberedAmmunitionRecoilModifierPercentage)
+    recoil.verticalRecoilWithMods = recoil.verticalRecoil + (recoil.verticalRecoil * modsRecoilModifierPercentages)
+    recoil.verticalRecoilWithMods = recoil.verticalRecoilWithMods * (1 + chamberedAmmunitionRecoilModifierPercentage)
 
     return Result.ok(recoil)
   }
@@ -582,9 +582,9 @@ ${indentation}${containedItemAsString}`
   /**
    * Gets the recoil modifier of an inventory item including or not its content and mods.
    * @param inventoryItem - Inventory item.
-   * @returns Recoil percentage modifier.
+   * @returns Recoil modifier percentage.
    */
-  public async getRecoilPercentageModifier(inventoryItem: IInventoryItem): Promise<Result<IRecoilPercentageModifier>> {
+  public async getRecoilModifierPercentage(inventoryItem: IInventoryItem): Promise<Result<IRecoilModifierPercentage>> {
     const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
     if (!itemResult.success) {
@@ -592,20 +592,20 @@ ${indentation}${containedItemAsString}`
     }
 
     const itemPropertiesService = Services.get(ItemPropertiesService)
-    const recoilPercentageModifier: IRecoilPercentageModifier = {
-      recoilPercentageModifier: 0,
-      recoilPercentageModifierWithMods: 0
+    const recoilModifierPercentage: IRecoilModifierPercentage = {
+      recoilModifierPercentage: 0,
+      recoilModifierPercentageWithMods: 0
     }
 
     if (!itemPropertiesService.isModdable(itemResult.value)) {
-      return Result.ok(recoilPercentageModifier)
+      return Result.ok(recoilModifierPercentage)
     }
 
     const rangedWeaponMod = itemResult.value as IRangedWeaponMod
 
     if (itemPropertiesService.isRangedWeaponMod(itemResult.value)) {
-      recoilPercentageModifier.recoilPercentageModifier = rangedWeaponMod.recoilPercentageModifier
-      recoilPercentageModifier.recoilPercentageModifierWithMods = rangedWeaponMod.recoilPercentageModifier
+      recoilModifierPercentage.recoilModifierPercentage = rangedWeaponMod.recoilModifierPercentage
+      recoilModifierPercentage.recoilModifierPercentageWithMods = rangedWeaponMod.recoilModifierPercentage
     }
 
     for (const modSlot of inventoryItem.modSlots) {
@@ -613,16 +613,16 @@ ${indentation}${containedItemAsString}`
         continue
       }
 
-      const modRecoilPercentageModifierResult = await this.getRecoilPercentageModifier(modSlot.item)
+      const modRecoilModifierPercentageResult = await this.getRecoilModifierPercentage(modSlot.item)
 
-      if (!modRecoilPercentageModifierResult.success) {
-        return Result.failFrom(modRecoilPercentageModifierResult)
+      if (!modRecoilModifierPercentageResult.success) {
+        return Result.failFrom(modRecoilModifierPercentageResult)
       }
 
-      recoilPercentageModifier.recoilPercentageModifierWithMods = recoilPercentageModifier.recoilPercentageModifierWithMods + modRecoilPercentageModifierResult.value.recoilPercentageModifierWithMods
+      recoilModifierPercentage.recoilModifierPercentageWithMods = recoilModifierPercentage.recoilModifierPercentageWithMods + modRecoilModifierPercentageResult.value.recoilModifierPercentageWithMods
     }
 
-    return Result.ok(recoilPercentageModifier)
+    return Result.ok(recoilModifierPercentage)
   }
 
   /**
@@ -786,24 +786,24 @@ ${indentation}${containedItemAsString}`
 
     if (!Services.get(ItemPropertiesService).isWearable(itemResult.value)) {
       return Result.ok({
-        ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithMods: 0,
-        movementSpeedPercentageModifier: 0,
-        movementSpeedPercentageModifierWithMods: 0,
-        turningSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifierWithMods: 0
+        ergonomicsModifierPercentage: 0,
+        ergonomicsModifierPercentageWithMods: 0,
+        movementSpeedModifierPercentage: 0,
+        movementSpeedModifierPercentageWithMods: 0,
+        turningSpeedModifierPercentage: 0,
+        turningSpeedModifierPercentageWithMods: 0
       })
     }
 
     const wearable = itemResult.value as IWearable
-    const ergonomicsPercentageModifier = wearable.ergonomicsPercentageModifier
-    let ergonomicsPercentageModifierWithMods = ergonomicsPercentageModifier
+    const ergonomicsModifierPercentage = wearable.ergonomicsModifierPercentage
+    let ergonomicsModifierPercentageWithMods = ergonomicsModifierPercentage
 
-    const movementSpeedPercentageModifier = wearable.movementSpeedPercentageModifier
-    let movementSpeedPercentageModifierWithMods = movementSpeedPercentageModifier
+    const movementSpeedModifierPercentage = wearable.movementSpeedModifierPercentage
+    let movementSpeedModifierPercentageWithMods = movementSpeedModifierPercentage
 
-    const turningSpeedPercentageModifier = wearable.turningSpeedPercentageModifier
-    let turningSpeedPercentageModifierWithMods = turningSpeedPercentageModifier
+    const turningSpeedModifierPercentage = wearable.turningSpeedModifierPercentage
+    let turningSpeedModifierPercentageWithMods = turningSpeedModifierPercentage
 
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.item == null) {
@@ -816,18 +816,18 @@ ${indentation}${containedItemAsString}`
         return Result.failFrom(modWearableModifiersResult)
       }
 
-      ergonomicsPercentageModifierWithMods += modWearableModifiersResult.value.ergonomicsPercentageModifierWithMods
-      movementSpeedPercentageModifierWithMods += modWearableModifiersResult.value.movementSpeedPercentageModifierWithMods
-      turningSpeedPercentageModifierWithMods += modWearableModifiersResult.value.turningSpeedPercentageModifierWithMods
+      ergonomicsModifierPercentageWithMods += modWearableModifiersResult.value.ergonomicsModifierPercentageWithMods
+      movementSpeedModifierPercentageWithMods += modWearableModifiersResult.value.movementSpeedModifierPercentageWithMods
+      turningSpeedModifierPercentageWithMods += modWearableModifiersResult.value.turningSpeedModifierPercentageWithMods
     }
 
     return Result.ok({
-      ergonomicsPercentageModifier,
-      ergonomicsPercentageModifierWithMods,
-      movementSpeedPercentageModifier,
-      movementSpeedPercentageModifierWithMods,
-      turningSpeedPercentageModifier,
-      turningSpeedPercentageModifierWithMods
+      ergonomicsModifierPercentage,
+      ergonomicsModifierPercentageWithMods,
+      movementSpeedModifierPercentage,
+      movementSpeedModifierPercentageWithMods,
+      turningSpeedModifierPercentage,
+      turningSpeedModifierPercentageWithMods
     })
   }
 
@@ -885,12 +885,12 @@ ${indentation}${containedItemAsString}`
   }
 
   /**
-   * Gets the recoil percentage modifier of the chambered ammunition (or contained in the magazine when not having a chamber)
+   * Gets the recoil modifier percentage of the chambered ammunition (or contained in the magazine when not having a chamber)
    * of a ranged weapon.
    * @param modSlots - Mod slots.
-   * @returns Recoil percentage modifier.
+   * @returns Recoil modifier percentage.
    */
-  private async getChamberedAmmunitionRecoilPercentageModifier(modSlots: IInventoryModSlot[]): Promise<Result<number>> {
+  private async getChamberedAmmunitionRecoilModifierPercentage(modSlots: IInventoryModSlot[]): Promise<Result<number>> {
     let ammunitionId: string | undefined
 
     for (const modSlot of modSlots) {
@@ -921,6 +921,6 @@ ${indentation}${containedItemAsString}`
       return Result.failFrom(ammunitionResult)
     }
 
-    return Result.ok((ammunitionResult.value as IAmmunition).recoilPercentageModifier)
+    return Result.ok((ammunitionResult.value as IAmmunition).recoilModifierPercentage)
   }
 }

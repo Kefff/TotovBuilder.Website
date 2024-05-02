@@ -8,16 +8,16 @@ import { ItemSortingFunctions } from './ItemSortingFunction'
  */
 export const WearableSortingFunctions: ISortingFunctionList<IWearable> = {
   ...ItemSortingFunctions,
-  ergonomicsPercentageModifier: {
+  ergonomicsModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.ergonomicsPercentageModifier
+    comparisonValueObtentionFunction: async (i) => i.ergonomicsModifierPercentage
   },
-  movementSpeedPercentageModifier: {
+  movementSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.movementSpeedPercentageModifier
+    comparisonValueObtentionFunction: async (i) => i.movementSpeedModifierPercentage
   },
-  turningSpeedPercentageModifier: {
+  turningSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.turningSpeedPercentageModifier
+    comparisonValueObtentionFunction: async (i) => i.turningSpeedModifierPercentage
   }
 }

@@ -207,9 +207,9 @@ describe('readBuilds()', () => {
             }
           ],
           wearableModifiers: {
-            ergonomicsPercentageModifier: -0.02,
-            movementSpeedPercentageModifier: 0,
-            turningSpeedPercentageModifier: 0
+            ergonomicsModifierPercentage: -0.02,
+            movementSpeedModifierPercentage: 0,
+            turningSpeedModifierPercentage: 0
           },
           weight: 1
         }

@@ -159,21 +159,21 @@
       </template>
     </Column>
     <Column
-      field="wearableModifiers.ergonomicsPercentageModifier"
+      field="wearableModifiers.ergonomicsModifierPercentage"
       :sortable="true"
     >
       <template #header>
         <div class="build-list-column">
-          {{ $t('caption.ergonomicsPercentageModifier') }}
+          {{ $t('caption.ergonomicsModifierPercentage') }}
         </div>
       </template>
       <template #body="{ data }">
         <div
-          v-if="data.wearableModifiers.ergonomicsPercentageModifier !== 0"
+          v-if="data.wearableModifiers.ergonomicsModifierPercentage !== 0"
           class="build-list-column"
         >
-          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.ergonomicsPercentageModifier)">
-            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, data.wearableModifiers.ergonomicsPercentageModifier) }}
+          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.ergonomicsModifierPercentage)">
+            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, data.wearableModifiers.ergonomicsModifierPercentage) }}
           </span>
           <font-awesome-icon
             icon="hand-paper"
@@ -183,21 +183,21 @@
       </template>
     </Column>
     <Column
-      field="wearableModifiers.movementSpeedPercentageModifier"
+      field="wearableModifiers.movementSpeedModifierPercentage"
       :sortable="true"
     >
       <template #header>
         <div class="build-list-column">
-          {{ $t('caption.movementSpeedPercentageModifier') }}
+          {{ $t('caption.movementSpeedModifierPercentage') }}
         </div>
       </template>
       <template #body="{ data }">
         <div
-          v-if="data.wearableModifiers.movementSpeedPercentageModifier !== 0"
+          v-if="data.wearableModifiers.movementSpeedModifierPercentage !== 0"
           class="build-list-column"
         >
-          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.movementSpeedPercentageModifier)">
-            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, data.wearableModifiers.movementSpeedPercentageModifier) }}
+          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.movementSpeedModifierPercentage)">
+            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, data.wearableModifiers.movementSpeedModifierPercentage) }}
           </span>
           <font-awesome-icon
             icon="walking"
@@ -207,21 +207,21 @@
       </template>
     </Column>
     <Column
-      field="wearableModifiers.turningSpeedPercentageModifier"
+      field="wearableModifiers.turningSpeedModifierPercentage"
       :sortable="true"
     >
       <template #header>
         <div class="build-list-column">
-          {{ $t('caption.turningSpeedPercentageModifier') }}
+          {{ $t('caption.turningSpeedModifierPercentage') }}
         </div>
       </template>
       <template #body="{ data }">
         <div
-          v-if="data.wearableModifiers.turningSpeedPercentageModifier !== 0"
+          v-if="data.wearableModifiers.turningSpeedModifierPercentage !== 0"
           class="build-list-column"
         >
-          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.turningSpeedPercentageModifier)">
-            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, data.wearableModifiers.turningSpeedPercentageModifier) }}
+          <span :class="StatsUtils.getValueColorClass(data.wearableModifiers.turningSpeedModifierPercentage)">
+            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, data.wearableModifiers.turningSpeedModifierPercentage) }}
           </span>
           <font-awesome-icon
             icon="undo"

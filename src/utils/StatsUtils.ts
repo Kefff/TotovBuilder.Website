@@ -94,6 +94,7 @@ export default class StatsUtils {
    */
   public static getStandardDisplayValue(type: DisplayValueType, value: number, language: string | undefined = navigator.language): string {
     switch (type) {
+      // Flat values
       case DisplayValueType.armorClass:
       case DisplayValueType.ergonomics:
       case DisplayValueType.price:
@@ -104,11 +105,12 @@ export default class StatsUtils {
       case DisplayValueType.weight:
         return StatsUtils.getDisplayValue(value, false, 3, 3, language)
 
+      // Percentages
       case DisplayValueType.armorDamagePercentage:
-      case DisplayValueType.fragmentationChangePercentage:
+      case DisplayValueType.fragmentationChance:
         return StatsUtils.getPercentageDisplayValue(value, false, 1, undefined, language)
       case DisplayValueType.accuracyModifierPercentage:
-      case DisplayValueType.bleedingChanceModifierPercentage:
+      case DisplayValueType.bleedingChanceModifier:
       case DisplayValueType.blindnessProtectionPercentage:
       case DisplayValueType.checkSpeedModifierPercentage:
       case DisplayValueType.durabilityBurnModifierPercentage:
@@ -171,12 +173,12 @@ export enum DisplayValueType {
   // Percentages
   accuracyModifierPercentage,
   armorDamagePercentage,
-  bleedingChanceModifierPercentage,
+  bleedingChanceModifier,
   blindnessProtectionPercentage,
   checkSpeedModifierPercentage,
   durabilityBurnModifierPercentage,
   ergonomicsModifierPercentage,
-  fragmentationChangePercentage,
+  fragmentationChance,
   loadSpeedModifierPercentage,
   movementSpeedModifierPercentage,
   recoilModifierPercentage,

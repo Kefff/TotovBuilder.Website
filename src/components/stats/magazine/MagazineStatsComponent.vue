@@ -13,7 +13,7 @@
       </div>
     </div>
     <div
-      v-if="item.loadSpeedPercentageModifier !== 0"
+      v-if="item.loadSpeedModifierPercentage !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -23,12 +23,12 @@
         />
         <span>{{ $t('caption.loadSpeed') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.loadSpeedPercentageModifier, true)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.loadSpeedModifierPercentage, item.loadSpeedPercentageModifier) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.loadSpeedModifierPercentage, true)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.loadSpeedModifierPercentage, item.loadSpeedModifierPercentage) }}
       </div>
     </div>
     <div
-      v-if="item.checkSpeedPercentageModifier !== 0"
+      v-if="item.checkSpeedModifierPercentage !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -38,8 +38,8 @@
         />
         <span>{{ $t('caption.checkSpeed') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.checkSpeedPercentageModifier, true)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.checkSpeedModifierPercentage, item.checkSpeedPercentageModifier) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.checkSpeedModifierPercentage, true)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.checkSpeedModifierPercentage, item.checkSpeedModifierPercentage) }}
       </div>
     </div>
     <div

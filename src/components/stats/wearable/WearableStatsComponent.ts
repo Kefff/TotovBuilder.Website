@@ -16,15 +16,15 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const ergonomicsPercentageModifier = computed(() => props.wearableModifiersOverride?.ergonomicsPercentageModifier ?? props.item.ergonomicsPercentageModifier)
-    const movementSpeedPercentageModifier = computed(() => props.wearableModifiersOverride?.movementSpeedPercentageModifier ?? props.item.movementSpeedPercentageModifier)
-    const turningSpeedPercentageModifier = computed(() => props.wearableModifiersOverride?.turningSpeedPercentageModifier ?? props.item.turningSpeedPercentageModifier)
+    const ergonomicsModifierPercentage = computed(() => props.wearableModifiersOverride?.ergonomicsModifierPercentage ?? props.item.ergonomicsModifierPercentage)
+    const movementSpeedModifierPercentage = computed(() => props.wearableModifiersOverride?.movementSpeedModifierPercentage ?? props.item.movementSpeedModifierPercentage)
+    const turningSpeedModifierPercentage = computed(() => props.wearableModifiersOverride?.turningSpeedModifierPercentage ?? props.item.turningSpeedModifierPercentage)
 
     return {
       DisplayValueType,
-      ergonomicsPercentageModifier,
-      movementSpeedPercentageModifier,
-      turningSpeedPercentageModifier,
+      ergonomicsModifierPercentage,
+      movementSpeedModifierPercentage,
+      turningSpeedModifierPercentage,
       StatsUtils
     }
   }

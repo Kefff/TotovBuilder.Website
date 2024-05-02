@@ -8,12 +8,12 @@ import { ModSortingFunctions } from './ModSortingFunctions'
  */
 export const RangedWeaponModSortingFunctions: ISortingFunctionList<IRangedWeaponMod> = {
   ...ModSortingFunctions,
-  accuracyPercentageModifier: {
+  accuracyModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.accuracyPercentageModifier
+    comparisonValueObtentionFunction: async (i) => i.accuracyModifierPercentage
   },
-  recoilPercentageModifier: {
+  recoilModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.recoilPercentageModifier
+    comparisonValueObtentionFunction: async (i) => i.recoilModifierPercentage
   }
 }

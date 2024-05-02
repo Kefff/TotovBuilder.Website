@@ -64,8 +64,8 @@ describe('canHaveArmor()', () => {
   it.each([
     [{ id: '12345', categoryId: 'armor', armorClass: 6 } as IArmor, true],
     [{ id: '12345', categoryId: 'armor', armorClass: 0 } as IArmor, true],
-    [{ id: '12345', categoryId: 'armorMod', armorClass: 3, ergonomicsPercentageModifier: 1, modSlots: [] as IModSlot[] } as IArmorMod, true],
-    [{ id: '12345', categoryId: 'armorMod', armorClass: 0, ergonomicsPercentageModifier: 1, modSlots: [] as IModSlot[] } as IArmorMod, true],
+    [{ id: '12345', categoryId: 'armorMod', armorClass: 3, ergonomicsModifierPercentage: 1, modSlots: [] as IModSlot[] } as IArmorMod, true],
+    [{ id: '12345', categoryId: 'armorMod', armorClass: 0, ergonomicsModifierPercentage: 1, modSlots: [] as IModSlot[] } as IArmorMod, true],
     [{ id: '12345', categoryId: 'headwear', armorClass: 2, blocksHeadphones: true, modSlots: [] as IModSlot[] } as IHeadwear, true],
     [{ id: '12345', categoryId: 'headwear', armorClass: 0, blocksHeadphones: true, modSlots: [] as IModSlot[] } as IHeadwear, true],
     [{ id: '12345', categoryId: 'vest', armorClass: 4, capacity: 10 } as IVest, true],
@@ -90,8 +90,8 @@ describe('hasArmor()', () => {
   it.each([
     [{ id: '12345', categoryId: 'armor', armorClass: 6 } as IArmor, true],
     [{ id: '12345', categoryId: 'armor', armorClass: 0 } as IArmor, false],
-    [{ id: '12345', categoryId: 'armorMod', armorClass: 3, ergonomicsPercentageModifier: 1, modSlots: [] as IModSlot[] } as IArmorMod, true],
-    [{ id: '12345', categoryId: 'armorMod', armorClass: 0, ergonomicsPercentageModifier: 1, modSlots: [] as IModSlot[] } as IArmorMod, false],
+    [{ id: '12345', categoryId: 'armorMod', armorClass: 3, ergonomicsModifierPercentage: 1, modSlots: [] as IModSlot[] } as IArmorMod, true],
+    [{ id: '12345', categoryId: 'armorMod', armorClass: 0, ergonomicsModifierPercentage: 1, modSlots: [] as IModSlot[] } as IArmorMod, false],
     [{ id: '12345', categoryId: 'headwear', armorClass: 2, blocksHeadphones: true, modSlots: [] as IModSlot[] } as IHeadwear, true],
     [{ id: '12345', categoryId: 'headwear', armorClass: 0, blocksHeadphones: true, modSlots: [] as IModSlot[] } as IHeadwear, false],
     [{ id: '12345', categoryId: 'vest', armorClass: 4, capacity: 10 } as IVest, true],

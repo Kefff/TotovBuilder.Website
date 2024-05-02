@@ -166,12 +166,12 @@ export class BuildPropertiesService {
 
     const hasArmor = buildSummary.armorModifiers.armorClass !== 0
     const hasErgonomics = buildSummary.ergonomics !== 0
-    const hasErgonomicsModifierPercentage = buildSummary.wearableModifiers.ergonomicsPercentageModifier !== 0
-    const hasMovementSpeedModifierPercentage = buildSummary.wearableModifiers.movementSpeedPercentageModifier !== 0
+    const hasErgonomicsModifierPercentage = buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0
+    const hasMovementSpeedModifierPercentage = buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
     const hasPrice = buildSummary.price.priceInMainCurrency !== 0
     const hasRecoil = buildSummary.recoil.verticalRecoil !== 0
-      || buildSummary.wearableModifiers.ergonomicsPercentageModifier !== 0
-    const hasTurningSpeedModifierPercentage = buildSummary.wearableModifiers.turningSpeedPercentageModifier !== 0
+      || buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0
+    const hasTurningSpeedModifierPercentage = buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0
     const hasWeight = buildSummary.weight !== 0
 
     // Main weapon stats
@@ -197,10 +197,10 @@ export class BuildPropertiesService {
 
       if (hasErgonomicsModifierPercentage) {
         if (hasErgonomics) {
-          buildAsString += ` (${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsPercentageModifier, language)})`
+          buildAsString += ` (${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, language)})`
         } else {
           // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-          buildAsString += `${vueI18n.t('caption.ergonomics', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsPercentageModifier, language)}`
+          buildAsString += `${vueI18n.t('caption.ergonomics', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, language)}`
         }
       }
     }
@@ -220,7 +220,7 @@ export class BuildPropertiesService {
         }
 
         // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-        buildAsString += `${vueI18n.t('caption.speed', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedPercentageModifier, language)}`
+        buildAsString += `${vueI18n.t('caption.speed', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedModifierPercentage, language)}`
       }
 
       if (hasMovementSpeedModifierPercentage) {
@@ -229,7 +229,7 @@ export class BuildPropertiesService {
         }
 
         // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-        buildAsString += `${vueI18n.t('caption.turningSpeed', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedPercentageModifier, language)}`
+        buildAsString += `${vueI18n.t('caption.turningSpeed', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage, language)}`
       }
     }
 
@@ -356,9 +356,9 @@ ${sharableUrlResult.value}`
         verticalRecoil: 0
       },
       wearableModifiers: {
-        ergonomicsPercentageModifier: 0,
-        movementSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifier: 0
+        ergonomicsModifierPercentage: 0,
+        movementSpeedModifierPercentage: 0,
+        turningSpeedModifierPercentage: 0
       },
       weight: 0
     }
@@ -377,7 +377,7 @@ ${sharableUrlResult.value}`
 
     // Ergonomics
     const summaryErgonomics = this.getErgonomics(inventorySlotSummaries)
-    result.ergonomics = summaryErgonomics * (1 + result.wearableModifiers.ergonomicsPercentageModifier)
+    result.ergonomics = summaryErgonomics * (1 + result.wearableModifiers.ergonomicsModifierPercentage)
 
     // Price
     const priceResult = await this.getPrice(inventorySlotSummaries)
@@ -474,7 +474,7 @@ ${sharableUrlResult.value}`
   }
 
   /**
-   * Gets the ergonomics of the main ranged weapon of a build (ergonomics percentage modifier not included).
+   * Gets the ergonomics of the main ranged weapon of a build (ergonomics modifier percentage not included).
    * @param inventorySlotSummaries - Inventory slot summaries.
    * @returns Ergonomics.
    */
@@ -604,21 +604,21 @@ ${sharableUrlResult.value}`
   }
 
   /**
-   * Gets the ergonomics percentage modifier of a build.
+   * Gets the ergonomics modifier percentage of a build.
    * @param inventorySlotSummaries - Inventory slot summaries.
-   * @returns Ergonomics percentage modifier.
+   * @returns Ergonomics modifier percentage.
    */
   private getWearableModifiers(inventorySlotSummaries: IInventorySlotSummary[]): IWearableModifiers {
     const wearableModifiers: IWearableModifiers = {
-      ergonomicsPercentageModifier: 0,
-      movementSpeedPercentageModifier: 0,
-      turningSpeedPercentageModifier: 0
+      ergonomicsModifierPercentage: 0,
+      movementSpeedModifierPercentage: 0,
+      turningSpeedModifierPercentage: 0
     }
 
     for (const inventorySlotSummary of inventorySlotSummaries) {
-      wearableModifiers.ergonomicsPercentageModifier += inventorySlotSummary.wearableModifiers.ergonomicsPercentageModifier
-      wearableModifiers.movementSpeedPercentageModifier += inventorySlotSummary.wearableModifiers.movementSpeedPercentageModifier
-      wearableModifiers.turningSpeedPercentageModifier += inventorySlotSummary.wearableModifiers.turningSpeedPercentageModifier
+      wearableModifiers.ergonomicsModifierPercentage += inventorySlotSummary.wearableModifiers.ergonomicsModifierPercentage
+      wearableModifiers.movementSpeedModifierPercentage += inventorySlotSummary.wearableModifiers.movementSpeedModifierPercentage
+      wearableModifiers.turningSpeedModifierPercentage += inventorySlotSummary.wearableModifiers.turningSpeedModifierPercentage
     }
 
     return wearableModifiers

@@ -16,7 +16,7 @@
         v-model="sortingData"
         caption-resource="caption.recoil"
         icon="arrows-alt"
-        property="recoilPercentageModifier"
+        property="recoilModifierPercentage"
         :sorting-functions="sortingFunctions"
       />
     </div>
@@ -27,7 +27,7 @@
         v-model="sortingData"
         caption-resource="caption.accuracy"
         icon="bullseye"
-        property="accuracyPercentageModifier"
+        property="accuracyModifierPercentage"
         :sorting-functions="sortingFunctions"
       />
     </div>

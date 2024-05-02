@@ -1,14 +1,14 @@
 /**
- * Provides the functionalities of recoil percentage modifier value.
+ * Provides the functionalities of recoil modifier percentage value.
  */
-export interface IRecoilPercentageModifier {
+export interface IRecoilModifierPercentage {
   /**
-   * Recoil percentage modifier.
+   * Recoil modifier percentage.
    */
-  recoilPercentageModifier: number
+  recoilModifierPercentage: number
 
   /**
-   * Recoil percentage modifier with mods.
+   * Recoil modifier percentage with mods.
    */
-  recoilPercentageModifierWithMods: number
+  recoilModifierPercentageWithMods: number
 }

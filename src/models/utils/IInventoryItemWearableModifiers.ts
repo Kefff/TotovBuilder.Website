@@ -4,32 +4,32 @@
  */
 export interface IInventoryItemWearableModifiers {
   /**
-     * Ergonomics percentage modifier.
+     * Ergonomics modifier percentage.
      */
-  ergonomicsPercentageModifier: number
+  ergonomicsModifierPercentage: number
 
   /**
-   * Ergonomics percentage modifier with mods.
+   * Ergonomics modifier percentage with mods.
    */
-  ergonomicsPercentageModifierWithMods: number
+  ergonomicsModifierPercentageWithMods: number
 
   /**
-   * Movement speed percentage modifier.
+   * Movement speed modifier percentage.
    */
-  movementSpeedPercentageModifier: number
+  movementSpeedModifierPercentage: number
 
   /**
-   * Movement speed percentage modifier with mods.
+   * Movement speed modifier percentage with mods.
    */
-  movementSpeedPercentageModifierWithMods: number
+  movementSpeedModifierPercentageWithMods: number
 
   /**
-   * Turning speed percentage modifier.
+   * Turning speed modifier percentage.
    */
-  turningSpeedPercentageModifier: number
+  turningSpeedModifierPercentage: number
 
   /**
-   * Turning speed percentage modifier with mods.
+   * Turning speed modifier percentage with mods.
    */
-  turningSpeedPercentageModifierWithMods: number
+  turningSpeedModifierPercentageWithMods: number
 }

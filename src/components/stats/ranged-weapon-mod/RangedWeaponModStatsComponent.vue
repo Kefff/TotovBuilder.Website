@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="item.accuracyPercentageModifier !== 0 || ergonomicsModifier !== 0 || item.recoilPercentageModifier !== 0"
+    v-if="item.accuracyModifierPercentage !== 0 || ergonomicsModifier !== 0 || item.recoilModifierPercentage !== 0"
     class="stats-line"
   >
     <div
@@ -19,7 +19,7 @@
       </div>
     </div>
     <div
-      v-if="item.recoilPercentageModifier !== 0"
+      v-if="item.recoilModifierPercentage !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -29,12 +29,12 @@
         />
         <span>{{ $t('caption.recoil') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.recoilPercentageModifier, true)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, item.recoilPercentageModifier) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.recoilModifierPercentage, true)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, item.recoilModifierPercentage) }}
       </div>
     </div>
     <div
-      v-if="item.accuracyPercentageModifier !== 0"
+      v-if="item.accuracyModifierPercentage !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -44,8 +44,8 @@
         />
         <span>{{ $t('caption.accuracy') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.accuracyPercentageModifier)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, item.accuracyPercentageModifier) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.accuracyModifierPercentage)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, item.accuracyModifierPercentage) }}
       </div>
     </div>
   </div>

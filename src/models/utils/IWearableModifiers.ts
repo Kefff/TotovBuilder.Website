@@ -3,17 +3,17 @@
  */
 export interface IWearableModifiers {
   /**
-   * Ergonomics percentage modifier.
+   * Ergonomics modifier percentage.
    */
-  ergonomicsPercentageModifier: number
+  ergonomicsModifierPercentage: number
 
   /**
-   * Movement speed percentage modifier.
+   * Movement speed modifier percentage.
    */
-  movementSpeedPercentageModifier: number
+  movementSpeedModifierPercentage: number
 
   /**
-   * Turning speed percentage modifier.
+   * Turning speed modifier percentage.
    */
-  turningSpeedPercentageModifier: number
+  turningSpeedModifierPercentage: number
 }

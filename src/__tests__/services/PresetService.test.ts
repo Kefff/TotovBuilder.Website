@@ -11,7 +11,7 @@ import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
 import { IErgonomics } from '../../models/utils/IErgonomics'
 import { IInventoryItemRecoil } from '../../models/utils/IInventoryItemRecoil'
 import { IInventoryItemWearableModifiers } from '../../models/utils/IInventoryItemWearableModifiers'
-import { IRecoilPercentageModifier } from '../../models/utils/IRecoilPercentageModifier'
+import { IRecoilModifierPercentage } from '../../models/utils/IRecoilModifierPercentage'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemFetcherService } from '../../services/ItemFetcherService'
@@ -430,12 +430,12 @@ describe('updatePresetProperties', () => {
 
     // Assert
     expect(armor.presetWearableModifiers).toStrictEqual({
-      ergonomicsPercentageModifier: -0.01,
-      ergonomicsPercentageModifierWithMods: -0.025,
-      movementSpeedPercentageModifier: -0.01,
-      movementSpeedPercentageModifierWithMods: -0.060000000000000005,
-      turningSpeedPercentageModifier: 0,
-      turningSpeedPercentageModifierWithMods: -0.01
+      ergonomicsModifierPercentage: -0.01,
+      ergonomicsModifierPercentageWithMods: -0.025,
+      movementSpeedModifierPercentage: -0.01,
+      movementSpeedModifierPercentageWithMods: -0.060000000000000005,
+      turningSpeedModifierPercentage: 0,
+      turningSpeedModifierPercentageWithMods: -0.01
     } as IWearableModifiers)
   })
 
@@ -455,7 +455,7 @@ describe('updatePresetProperties', () => {
           conflictingItemIds: [],
           defaultPresetId: 'presetArmorMod',
           durability: 10,
-          ergonomicsPercentageModifier: 0.05,
+          ergonomicsModifierPercentage: 0.05,
           iconLink: '',
           id: 'baseArmorMod',
           imageLink: '',
@@ -470,13 +470,13 @@ describe('updatePresetProperties', () => {
               required: false
             }
           ],
-          movementSpeedPercentageModifier: 0.04,
+          movementSpeedModifierPercentage: 0.04,
           name: 'Base armor mod',
           presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
           shortName: 'bam',
-          turningSpeedPercentageModifier: 0.03,
+          turningSpeedModifierPercentage: 0.03,
           weight: 1,
           wikiLink: ''
         } as IArmorMod,
@@ -489,7 +489,7 @@ describe('updatePresetProperties', () => {
           conflictingItemIds: [],
           defaultPresetId: undefined,
           durability: 10,
-          ergonomicsPercentageModifier: 0.05,
+          ergonomicsModifierPercentage: 0.05,
           iconLink: '',
           id: 'presetArmorMod',
           imageLink: '',
@@ -504,13 +504,13 @@ describe('updatePresetProperties', () => {
               required: false
             }
           ],
-          movementSpeedPercentageModifier: 0.04,
+          movementSpeedModifierPercentage: 0.04,
           name: 'Preset armor mod',
           presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
           shortName: 'pam',
-          turningSpeedPercentageModifier: 0.03,
+          turningSpeedModifierPercentage: 0.03,
           weight: 1,
           wikiLink: ''
         } as IArmorMod,
@@ -523,7 +523,7 @@ describe('updatePresetProperties', () => {
           conflictingItemIds: [],
           defaultPresetId: undefined,
           durability: 20,
-          ergonomicsPercentageModifier: 0.10,
+          ergonomicsModifierPercentage: 0.10,
           iconLink: '',
           id: 'childMod',
           imageLink: '',
@@ -531,13 +531,13 @@ describe('updatePresetProperties', () => {
           material: 'Glass',
           maxStackableAmount: 1,
           modSlots: [],
-          movementSpeedPercentageModifier: 0.20,
+          movementSpeedModifierPercentage: 0.20,
           name: 'Child armor mod',
           presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
           shortName: 'cam',
-          turningSpeedPercentageModifier: 0.30,
+          turningSpeedModifierPercentage: 0.30,
           weight: 1,
           wikiLink: ''
         } as IArmorMod
@@ -581,14 +581,14 @@ describe('updatePresetProperties', () => {
     await presetService.updatePresetProperties([armorMod])
 
     // Assert
-    expect(armorMod.ergonomicsPercentageModifier).toBe(0.05)
+    expect(armorMod.ergonomicsModifierPercentage).toBe(0.05)
     expect(armorMod.presetWearableModifiers).toStrictEqual({
-      ergonomicsPercentageModifier: 0.05,
-      ergonomicsPercentageModifierWithMods: 0.15000000000000002,
-      movementSpeedPercentageModifier: 0.04,
-      movementSpeedPercentageModifierWithMods: 0.24000000000000002,
-      turningSpeedPercentageModifier: 0.03,
-      turningSpeedPercentageModifierWithMods: 0.32999999999999996
+      ergonomicsModifierPercentage: 0.05,
+      ergonomicsModifierPercentageWithMods: 0.15000000000000002,
+      movementSpeedModifierPercentage: 0.04,
+      movementSpeedModifierPercentageWithMods: 0.24000000000000002,
+      turningSpeedModifierPercentage: 0.03,
+      turningSpeedModifierPercentageWithMods: 0.32999999999999996
     } as IWearableModifiers)
   })
 
@@ -609,7 +609,7 @@ describe('updatePresetProperties', () => {
           deafening: 'None',
           defaultPresetId: 'presetHeadwear',
           durability: 10,
-          ergonomicsPercentageModifier: 0.05,
+          ergonomicsModifierPercentage: 0.05,
           iconLink: '',
           id: 'baseArmorMod',
           imageLink: '',
@@ -624,13 +624,13 @@ describe('updatePresetProperties', () => {
               required: false
             }
           ],
-          movementSpeedPercentageModifier: 0.04,
+          movementSpeedModifierPercentage: 0.04,
           name: 'Base headwear',
           presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
           shortName: 'bh',
-          turningSpeedPercentageModifier: 0.03,
+          turningSpeedModifierPercentage: 0.03,
           weight: 1,
           wikiLink: ''
         } as IHeadwear,
@@ -644,7 +644,7 @@ describe('updatePresetProperties', () => {
           defaultPresetId: undefined,
           deafening: 'None',
           durability: 10,
-          ergonomicsPercentageModifier: 0.05,
+          ergonomicsModifierPercentage: 0.05,
           iconLink: '',
           id: 'presetHeadwear',
           imageLink: '',
@@ -659,13 +659,13 @@ describe('updatePresetProperties', () => {
               required: false
             }
           ],
-          movementSpeedPercentageModifier: 0.04,
+          movementSpeedModifierPercentage: 0.04,
           name: 'Preset headwear',
           presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
           shortName: 'ph',
-          turningSpeedPercentageModifier: 0.03,
+          turningSpeedModifierPercentage: 0.03,
           weight: 1,
           wikiLink: ''
         } as IHeadwear,
@@ -678,7 +678,7 @@ describe('updatePresetProperties', () => {
           conflictingItemIds: [],
           defaultPresetId: undefined,
           durability: 20,
-          ergonomicsPercentageModifier: 0.10,
+          ergonomicsModifierPercentage: 0.10,
           iconLink: '',
           id: 'childMod',
           imageLink: '',
@@ -686,13 +686,13 @@ describe('updatePresetProperties', () => {
           material: 'Glass',
           maxStackableAmount: 1,
           modSlots: [],
-          movementSpeedPercentageModifier: 0.20,
+          movementSpeedModifierPercentage: 0.20,
           name: 'Child armor mod',
           presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
           shortName: 'cam',
-          turningSpeedPercentageModifier: 0.30,
+          turningSpeedModifierPercentage: 0.30,
           weight: 1,
           wikiLink: ''
         } as IArmorMod
@@ -736,14 +736,14 @@ describe('updatePresetProperties', () => {
     await presetService.updatePresetProperties([headwear])
 
     // Assert
-    expect(headwear.ergonomicsPercentageModifier).toBe(0.05)
+    expect(headwear.ergonomicsModifierPercentage).toBe(0.05)
     expect(headwear.presetWearableModifiers).toStrictEqual({
-      ergonomicsPercentageModifier: 0.05,
-      ergonomicsPercentageModifierWithMods: 0.15000000000000002,
-      movementSpeedPercentageModifier: 0.04,
-      movementSpeedPercentageModifierWithMods: 0.24000000000000002,
-      turningSpeedPercentageModifier: 0.03,
-      turningSpeedPercentageModifierWithMods: 0.32999999999999996
+      ergonomicsModifierPercentage: 0.05,
+      ergonomicsModifierPercentageWithMods: 0.15000000000000002,
+      movementSpeedModifierPercentage: 0.04,
+      movementSpeedModifierPercentageWithMods: 0.24000000000000002,
+      turningSpeedModifierPercentage: 0.03,
+      turningSpeedModifierPercentageWithMods: 0.32999999999999996
     } as IWearableModifiers)
   })
 
@@ -904,7 +904,7 @@ describe('updatePresetProperties', () => {
       true,
       [
         {
-          accuracyPercentageModifier: 0.04,
+          accuracyModifierPercentage: 0.04,
           baseItemId: undefined,
           categoryId: 'rangedWeaponMod',
           conflictingItemIds: [],
@@ -925,15 +925,15 @@ describe('updatePresetProperties', () => {
           ],
           name: 'Base ranged weapon mod',
           presetErgonomicsModifier: undefined,
-          presetRecoilPercentageModifier: undefined,
+          presetRecoilModifierPercentage: undefined,
           prices: [],
-          recoilPercentageModifier: 0.06,
+          recoilModifierPercentage: 0.06,
           shortName: 'brwm',
           weight: 1,
           wikiLink: ''
         } as IRangedWeaponMod,
         {
-          accuracyPercentageModifier: 0.04,
+          accuracyModifierPercentage: 0.04,
           baseItemId: 'baseRangedWeaponMod',
           categoryId: 'rangedWeaponMod',
           conflictingItemIds: [],
@@ -954,15 +954,15 @@ describe('updatePresetProperties', () => {
           ],
           name: 'Preset ranged weapon mod',
           presetErgonomicsModifier: undefined,
-          presetRecoilPercentageModifier: undefined,
+          presetRecoilModifierPercentage: undefined,
           prices: [],
-          recoilPercentageModifier: 0.06,
+          recoilModifierPercentage: 0.06,
           shortName: 'prwm',
           weight: 1,
           wikiLink: ''
         } as IRangedWeaponMod,
         {
-          accuracyPercentageModifier: 0.03,
+          accuracyModifierPercentage: 0.03,
           baseItemId: undefined,
           categoryId: 'rangedWeaponMod',
           conflictingItemIds: [],
@@ -976,9 +976,9 @@ describe('updatePresetProperties', () => {
           modSlots: [],
           name: 'Child ranged weapon mod',
           presetErgonomicsModifier: undefined,
-          presetRecoilPercentageModifier: undefined,
+          presetRecoilModifierPercentage: undefined,
           prices: [],
-          recoilPercentageModifier: 0.2,
+          recoilModifierPercentage: 0.2,
           shortName: 'crwm',
           weight: 1,
           wikiLink: ''
@@ -1023,11 +1023,11 @@ describe('updatePresetProperties', () => {
     await presetService.updatePresetProperties([rangedWeaponMod])
 
     // Assert
-    expect(rangedWeaponMod.accuracyPercentageModifier).toBe(0.04)
+    expect(rangedWeaponMod.accuracyModifierPercentage).toBe(0.04)
     expect(rangedWeaponMod.ergonomicsModifier).toBe(5)
-    expect(rangedWeaponMod.recoilPercentageModifier).toBe(0.06)
+    expect(rangedWeaponMod.recoilModifierPercentage).toBe(0.06)
     expect(rangedWeaponMod.presetErgonomicsModifier).toBe(15)
-    expect(rangedWeaponMod.presetRecoilPercentageModifier).toBe(0.26)
+    expect(rangedWeaponMod.presetRecoilModifierPercentage).toBe(0.26)
   })
 
   it('should update the properties of a vest', async () => {
@@ -1050,12 +1050,12 @@ describe('updatePresetProperties', () => {
 
     // Assert
     expect(armor.presetWearableModifiers).toStrictEqual({
-      ergonomicsPercentageModifier: -0.01,
-      ergonomicsPercentageModifierWithMods: -0.03,
-      movementSpeedPercentageModifier: -0.01,
-      movementSpeedPercentageModifierWithMods: -0.03,
-      turningSpeedPercentageModifier: -0.01,
-      turningSpeedPercentageModifierWithMods: -0.01
+      ergonomicsModifierPercentage: -0.01,
+      ergonomicsModifierPercentageWithMods: -0.03,
+      movementSpeedModifierPercentage: -0.01,
+      movementSpeedModifierPercentageWithMods: -0.03,
+      turningSpeedModifierPercentage: -0.01,
+      turningSpeedModifierPercentageWithMods: -0.01
     } as IWearableModifiers)
   })
 
@@ -1249,7 +1249,7 @@ describe('updatePresetProperties', () => {
     ergonomicsFailure: boolean,
     wearableModifiersFailure: boolean,
     recoilFailure: boolean,
-    recoilPercentageModifierFailure: boolean) => {
+    recoilModifierPercentageFailure: boolean) => {
     // Arrange
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
@@ -1265,7 +1265,7 @@ describe('updatePresetProperties', () => {
           conflictingItemIds: [],
           defaultPresetId: undefined,
           durability: 10,
-          ergonomicsPercentageModifier: 0.05,
+          ergonomicsModifierPercentage: 0.05,
           iconLink: '',
           id: 'presetArmorMod',
           imageLink: '',
@@ -1273,13 +1273,13 @@ describe('updatePresetProperties', () => {
           material: 'Aluminum',
           maxStackableAmount: 1,
           modSlots: [],
-          movementSpeedPercentageModifier: 0.04,
+          movementSpeedModifierPercentage: 0.04,
           name: 'Preset armor mod',
           presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
           shortName: 'pam',
-          turningSpeedPercentageModifier: 0.03,
+          turningSpeedModifierPercentage: 0.03,
           weight: 1,
           wikiLink: ''
         } as IArmorMod,
@@ -1303,7 +1303,7 @@ describe('updatePresetProperties', () => {
           wikiLink: ''
         } as IMod,
         {
-          accuracyPercentageModifier: 0.04,
+          accuracyModifierPercentage: 0.04,
           baseItemId: 'baseRangedWeaponMod',
           categoryId: 'rangedWeaponMod',
           conflictingItemIds: [],
@@ -1317,9 +1317,9 @@ describe('updatePresetProperties', () => {
           modSlots: [],
           name: 'Preset ranged weapon mod',
           presetErgonomicsModifier: undefined,
-          presetRecoilPercentageModifier: undefined,
+          presetRecoilModifierPercentage: undefined,
           prices: [],
-          recoilPercentageModifier: 0.06,
+          recoilModifierPercentage: 0.06,
           shortName: 'prwm',
           weight: 1,
           wikiLink: ''
@@ -1368,12 +1368,12 @@ describe('updatePresetProperties', () => {
         wearableModifiersFailure
           ? Result.fail(FailureType.error)
           : Result.ok({
-            ergonomicsPercentageModifier: 0,
-            ergonomicsPercentageModifierWithMods: 0,
-            movementSpeedPercentageModifier: 0,
-            movementSpeedPercentageModifierWithMods: 0,
-            turningSpeedPercentageModifier: 0,
-            turningSpeedPercentageModifierWithMods: 0
+            ergonomicsModifierPercentage: 0,
+            ergonomicsModifierPercentageWithMods: 0,
+            movementSpeedModifierPercentage: 0,
+            movementSpeedModifierPercentageWithMods: 0,
+            turningSpeedModifierPercentage: 0,
+            turningSpeedModifierPercentageWithMods: 0
           } as IInventoryItemWearableModifiers))
     when(inventoryItemServiceMock.getRecoil(anything()))
       .thenResolve(
@@ -1385,14 +1385,14 @@ describe('updatePresetProperties', () => {
             verticalRecoil: 0,
             verticalRecoilWithMods: 0
           } as IInventoryItemRecoil))
-    when(inventoryItemServiceMock.getRecoilPercentageModifier(anything()))
+    when(inventoryItemServiceMock.getRecoilModifierPercentage(anything()))
       .thenResolve(
-        recoilPercentageModifierFailure
+        recoilModifierPercentageFailure
           ? Result.fail(FailureType.error)
           : Result.ok({
-            recoilPercentageModifier: 0,
-            recoilPercentageModifierWithMods: 0
-          } as IRecoilPercentageModifier))
+            recoilModifierPercentage: 0,
+            recoilModifierPercentageWithMods: 0
+          } as IRecoilModifierPercentage))
     Services.configure(InventoryItemService, undefined, instance(inventoryItemServiceMock))
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()

@@ -257,14 +257,14 @@ export class PresetService {
       return Result.failFrom(ergonomicsResult)
     }
 
-    const recoildPercentageModifierResult = await inventoryItemService.getRecoilPercentageModifier(presetInventoryItem)
+    const recoildModifierPercentageResult = await inventoryItemService.getRecoilModifierPercentage(presetInventoryItem)
 
-    if (!recoildPercentageModifierResult.success) {
-      return Result.failFrom(recoildPercentageModifierResult)
+    if (!recoildModifierPercentageResult.success) {
+      return Result.failFrom(recoildModifierPercentageResult)
     }
 
     presetItem.presetErgonomicsModifier = ergonomicsResult.value.ergonomicsWithMods
-    presetItem.presetRecoilPercentageModifier = recoildPercentageModifierResult.value.recoilPercentageModifierWithMods
+    presetItem.presetRecoilModifierPercentage = recoildModifierPercentageResult.value.recoilModifierPercentageWithMods
 
     return Result.ok()
   }

@@ -78,9 +78,9 @@ export class InventorySlotPropertiesService {
         itemSlotsAmount: 0
       },
       wearableModifiers: {
-        ergonomicsPercentageModifier: 0,
-        movementSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifier: 0
+        ergonomicsModifierPercentage: 0,
+        movementSpeedModifierPercentage: 0,
+        turningSpeedModifierPercentage: 0
       },
       weight: 0
     }
@@ -243,9 +243,9 @@ export class InventorySlotPropertiesService {
    */
   private async getWearableModifiers(inventorySlot: IInventorySlot): Promise<IWearableModifiers> {
     const wearableModifiers: IWearableModifiers = {
-      ergonomicsPercentageModifier: 0,
-      movementSpeedPercentageModifier: 0,
-      turningSpeedPercentageModifier: 0
+      ergonomicsModifierPercentage: 0,
+      movementSpeedModifierPercentage: 0,
+      turningSpeedModifierPercentage: 0
     }
 
     if (inventorySlot.typeId !== 'backpack'
@@ -269,9 +269,9 @@ export class InventorySlotPropertiesService {
         continue
       }
 
-      wearableModifiers.ergonomicsPercentageModifier += wearableeModifiersResult.value.ergonomicsPercentageModifierWithMods
-      wearableModifiers.movementSpeedPercentageModifier += wearableeModifiersResult.value.movementSpeedPercentageModifierWithMods
-      wearableModifiers.turningSpeedPercentageModifier += wearableeModifiersResult.value.turningSpeedPercentageModifierWithMods
+      wearableModifiers.ergonomicsModifierPercentage += wearableeModifiersResult.value.ergonomicsModifierPercentageWithMods
+      wearableModifiers.movementSpeedModifierPercentage += wearableeModifiersResult.value.movementSpeedModifierPercentageWithMods
+      wearableModifiers.turningSpeedModifierPercentage += wearableeModifiersResult.value.turningSpeedModifierPercentageWithMods
     }
 
     return wearableModifiers

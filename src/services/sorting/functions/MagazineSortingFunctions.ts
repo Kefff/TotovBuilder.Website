@@ -11,12 +11,12 @@ import { ModSortingFunctions } from './ModSortingFunctions'
 export const MagazineSortingFunctions: ISortingFunctionList<IMagazine> = {
   ...ContainerSortingFunctions,
   ...ModSortingFunctions,
-  checkSpeedPercentageModifier: {
+  checkSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.checkSpeedPercentageModifier
+    comparisonValueObtentionFunction: async (i) => i.checkSpeedModifierPercentage
   },
-  loadSpeedPercentageModifier: {
+  loadSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.loadSpeedPercentageModifier
+    comparisonValueObtentionFunction: async (i) => i.loadSpeedModifierPercentage
   }
 }

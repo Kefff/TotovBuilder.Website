@@ -8,21 +8,21 @@ import { ISortingFunctionList } from './ISortingFunctionList'
  */
 export const HeadwearSortingFunctions: ISortingFunctionList<IHeadwear> = {
   ...ArmorSortingFunctions,
-  ergonomicsPercentageModifier: {
+  ergonomicsModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.presetWearableModifiers?.ergonomicsPercentageModifier ?? i.ergonomicsPercentageModifier
+    comparisonValueObtentionFunction: async (i) => i.presetWearableModifiers?.ergonomicsModifierPercentage ?? i.ergonomicsModifierPercentage
   },
-  movementSpeedPercentageModifier: {
+  movementSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.presetWearableModifiers?.movementSpeedPercentageModifier ?? i.movementSpeedPercentageModifier
+    comparisonValueObtentionFunction: async (i) => i.presetWearableModifiers?.movementSpeedModifierPercentage ?? i.movementSpeedModifierPercentage
   },
   ricochetChance: {
     comparisonFunction: compareByNumber,
     comparisonValueObtentionFunction: async (i) => ricochetChances[i.ricochetChance]
   },
-  turningSpeedPercentageModifier: {
+  turningSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.presetWearableModifiers?.turningSpeedPercentageModifier ?? i.turningSpeedPercentageModifier
+    comparisonValueObtentionFunction: async (i) => i.presetWearableModifiers?.turningSpeedModifierPercentage ?? i.turningSpeedModifierPercentage
   }
 }
 

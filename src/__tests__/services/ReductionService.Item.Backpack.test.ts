@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { ReductionService } from '../../services/ReductionService'
 import { IBackpack } from '../../models/item/IBackpack'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
@@ -26,18 +26,18 @@ describe('parseReducedItem', () => {
         capacity: 35,
         categoryId: 'backpack',
         conflictingItemIds: [],
-        ergonomicsPercentageModifier: -0.07,
+        ergonomicsModifierPercentage: -0.07,
         iconLink: 'https://assets.tarkov.dev/5ab8ebf186f7742d8b372e80-icon.webp',
         id: '5ab8ebf186f7742d8b372e80',
         imageLink: 'https://assets.tarkov.dev/5ab8ebf186f7742d8b372e80-image.webp',
         marketLink: 'https://tarkov.dev/item/sso-attack-2-raid-backpack',
         maxStackableAmount: 1,
-        movementSpeedPercentageModifier: -0.05,
+        movementSpeedModifierPercentage: -0.05,
         name: 'SSO Attack 2 raid backpack',
         presetWearableModifiers: undefined,
         prices: [],
         shortName: 'Attack 2',
-        turningSpeedPercentageModifier: -0.03,
+        turningSpeedModifierPercentage: -0.03,
         weight: 2.8,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/SSO_Attack_2_raid_backpack'
       } as IBackpack
@@ -58,18 +58,18 @@ describe('parseReducedItem', () => {
         capacity: 0,
         categoryId: 'backpack',
         conflictingItemIds: [],
-        ergonomicsPercentageModifier: 0,
+        ergonomicsModifierPercentage: 0,
         iconLink: 'https://assets.tarkov.dev/5ab8f04f86f774585f4237d8-icon.webp',
         id: '5ab8f04f86f774585f4237d8',
         imageLink: 'https://assets.tarkov.dev/5ab8f04f86f774585f4237d8-image.webp',
         marketLink: 'https://tarkov.dev/item/tactical-sling-bag',
         maxStackableAmount: 1,
-        movementSpeedPercentageModifier: 0,
+        movementSpeedModifierPercentage: 0,
         presetWearableModifiers: undefined,
         name: 'Tactical sling bag',
         prices: [],
         shortName: 'Sling',
-        turningSpeedPercentageModifier: 0,
+        turningSpeedModifierPercentage: 0,
         weight: 0.48,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Tactical_sling_bag'
       } as IBackpack

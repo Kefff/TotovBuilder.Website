@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { ReductionService } from '../../services/ReductionService'
 import { IArmor } from '../../models/item/IArmor'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
@@ -25,7 +25,7 @@ describe('parseReducedItem', () => {
         conflictingItemIds: [],
         defaultPresetId: undefined,
         durability: 0,
-        ergonomicsPercentageModifier: 0,
+        ergonomicsModifierPercentage: 0,
         material: '',
         categoryId: 'armor',
         iconLink: 'https://assets.tarkov.dev/unknown-icon.jpg',
@@ -34,12 +34,12 @@ describe('parseReducedItem', () => {
         marketLink: 'https://tarkov.dev/item/unknown',
         maxStackableAmount: 1,
         modSlots: [],
-        movementSpeedPercentageModifier: 0,
+        movementSpeedModifierPercentage: 0,
         name: 'Unknown',
         presetWearableModifiers: undefined,
         prices: [],
         shortName: 'Unknown',
-        turningSpeedPercentageModifier: 0,
+        turningSpeedModifierPercentage: 0,
         weight: 0.2,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Unknown'
       } as IArmor
@@ -186,14 +186,14 @@ describe('parseReducedItem', () => {
         conflictingItemIds: [],
         defaultPresetId: '65766adc234b9f6e050a431a',
         durability: 0,
-        ergonomicsPercentageModifier: -0.1,
+        ergonomicsModifierPercentage: -0.1,
         iconLink: 'https://assets.tarkov.dev/545cdb794bdc2d3a198b456a-icon.webp',
         id: '545cdb794bdc2d3a198b456a',
         imageLink: 'https://assets.tarkov.dev/545cdb794bdc2d3a198b456a-image.webp',
         marketLink: 'https://tarkov.dev/item/6b43-zabralo-sh-body-armor-digital-flora',
         material: 'Aramid',
         maxStackableAmount: 1,
-        movementSpeedPercentageModifier: -0.115,
+        movementSpeedModifierPercentage: -0.115,
         name: '6B43 Zabralo-Sh body armor (Digital Flora)',
         modSlots: [
           {
@@ -289,7 +289,7 @@ describe('parseReducedItem', () => {
         presetWearableModifiers: undefined,
         prices: [],
         shortName: '6B43',
-        turningSpeedPercentageModifier: -0.055,
+        turningSpeedModifierPercentage: -0.055,
         weight: 10.8,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6B43_Zabralo-Sh_body_armor_(Digital_Flora)'
       } as IArmor
@@ -436,14 +436,14 @@ describe('parseReducedItem', () => {
         conflictingItemIds: [],
         defaultPresetId: undefined,
         durability: 0,
-        ergonomicsPercentageModifier: -0.1,
+        ergonomicsModifierPercentage: -0.1,
         iconLink: 'https://assets.tarkov.dev/545cdb794bdc2d3a198b456a-icon.webp',
         id: '65766adc234b9f6e050a431a',
         imageLink: 'https://assets.tarkov.dev/545cdb794bdc2d3a198b456a-image.webp',
         marketLink: 'https://tarkov.dev/item/6b43-zabralo-sh-body-armor-digital-flora-default',
         material: 'Aramid',
         maxStackableAmount: 1,
-        movementSpeedPercentageModifier: -0.115,
+        movementSpeedModifierPercentage: -0.115,
         name: '6B43 Zabralo-Sh body armor (Digital Flora) Default',
         modSlots: [
           {
@@ -539,7 +539,7 @@ describe('parseReducedItem', () => {
         presetWearableModifiers: undefined,
         prices: [],
         shortName: '6B43 Default',
-        turningSpeedPercentageModifier: -0.055,
+        turningSpeedModifierPercentage: -0.055,
         weight: 10.8,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6B43_Zabralo-Sh_body_armor_(Digital_Flora)'
       } as IArmor

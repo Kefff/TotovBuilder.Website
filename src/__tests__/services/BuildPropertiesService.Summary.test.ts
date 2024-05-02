@@ -1486,17 +1486,17 @@ describe('getSummary()', () => {
       [
         build1,
         {
-          ergonomicsPercentageModifier: -0.09500000000000001,
-          movementSpeedPercentageModifier: -0.060000000000000005,
-          turningSpeedPercentageModifier: -0.09
+          ergonomicsModifierPercentage: -0.09500000000000001,
+          movementSpeedModifierPercentage: -0.060000000000000005,
+          turningSpeedModifierPercentage: -0.09
         } as IWearableModifiers
       ],
       [
         build2,
         {
-          ergonomicsPercentageModifier: -0.03,
-          movementSpeedPercentageModifier: -0.03,
-          turningSpeedPercentageModifier: -0.01
+          ergonomicsModifierPercentage: -0.03,
+          movementSpeedModifierPercentage: -0.03,
+          turningSpeedModifierPercentage: -0.01
         } as IWearableModifiers
       ],
       [
@@ -1509,9 +1509,9 @@ describe('getSummary()', () => {
           name: 'Empty build'
         } as IBuild,
         {
-          ergonomicsPercentageModifier: 0,
-          movementSpeedPercentageModifier: 0,
-          turningSpeedPercentageModifier: 0
+          ergonomicsModifierPercentage: 0,
+          movementSpeedModifierPercentage: 0,
+          turningSpeedModifierPercentage: 0
         } as IWearableModifiers
       ]
     ])(

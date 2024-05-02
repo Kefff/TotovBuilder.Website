@@ -221,9 +221,9 @@ describe('getSummary()', () => {
 
       // Assert
       expect(summary.wearableModifiers).toStrictEqual({
-        ergonomicsPercentageModifier: 0,
-        movementSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifier: 0
+        ergonomicsModifierPercentage: 0,
+        movementSpeedModifierPercentage: 0,
+        turningSpeedModifierPercentage: 0
       })
     })
   })
@@ -549,25 +549,25 @@ describe('getSummary()', () => {
       [
         inventorySlot1,
         {
-          ergonomicsPercentageModifier: -0.05,
-          movementSpeedPercentageModifier: 0,
-          turningSpeedPercentageModifier: -0.08
+          ergonomicsModifierPercentage: -0.05,
+          movementSpeedModifierPercentage: 0,
+          turningSpeedModifierPercentage: -0.08
         } as IWearableModifiers
       ],
       [
         inventorySlot4,
         {
-          ergonomicsPercentageModifier: -0.03,
-          movementSpeedPercentageModifier: -0.03,
-          turningSpeedPercentageModifier: -0.01
+          ergonomicsModifierPercentage: -0.03,
+          movementSpeedModifierPercentage: -0.03,
+          turningSpeedModifierPercentage: -0.01
         }
       ],
       [
         inventorySlot2,
         {
-          ergonomicsPercentageModifier: 0,
-          movementSpeedPercentageModifier: 0,
-          turningSpeedPercentageModifier: 0
+          ergonomicsModifierPercentage: 0,
+          movementSpeedModifierPercentage: 0,
+          turningSpeedModifierPercentage: 0
         } as IWearableModifiers
       ],
       [
@@ -576,9 +576,9 @@ describe('getSummary()', () => {
           typeId: 'headwear'
         },
         {
-          ergonomicsPercentageModifier: 0,
-          movementSpeedPercentageModifier: 0,
-          turningSpeedPercentageModifier: 0
+          ergonomicsModifierPercentage: 0,
+          movementSpeedModifierPercentage: 0,
+          turningSpeedModifierPercentage: 0
         } as IWearableModifiers
       ]
     ])('should get the wearable modifiers of an inventory slot', async (inventorySlot: IInventorySlot, expected: IWearableModifiers) => {
@@ -630,9 +630,9 @@ describe('getSummary()', () => {
 
       // Assert
       expect(summary.wearableModifiers).toStrictEqual({
-        ergonomicsPercentageModifier: 0,
-        movementSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifier: 0
+        ergonomicsModifierPercentage: 0,
+        movementSpeedModifierPercentage: 0,
+        turningSpeedModifierPercentage: 0
       })
     })
   })

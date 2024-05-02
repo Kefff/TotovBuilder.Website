@@ -19,16 +19,16 @@
     </div>
   </div>
   <div
-    v-if="item.recoilPercentageModifier !== 0 || showEmptyEntries"
+    v-if="item.recoilModifierPercentage !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div
       v-tooltip.top="$t('caption.recoil')"
       class="option-value"
     >
-      <div v-if="item.recoilPercentageModifier !== 0">
-        <span :class="StatsUtils.getValueColorClass(item.recoilPercentageModifier, true)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, item.recoilPercentageModifier) }}
+      <div v-if="item.recoilModifierPercentage !== 0">
+        <span :class="StatsUtils.getValueColorClass(item.recoilModifierPercentage, true)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, item.recoilModifierPercentage) }}
         </span>
         <font-awesome-icon
           icon="arrows-alt"
@@ -38,16 +38,16 @@
     </div>
   </div>
   <div
-    v-if="item.accuracyPercentageModifier !== 0 || showEmptyEntries"
+    v-if="item.accuracyModifierPercentage !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div
       v-tooltip.top="$t('caption.accuracy')"
       class="option-value"
     >
-      <div v-if="item.accuracyPercentageModifier !== 0">
-        <span :class="StatsUtils.getValueColorClass(item.accuracyPercentageModifier)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, item.accuracyPercentageModifier) }}
+      <div v-if="item.accuracyModifierPercentage !== 0">
+        <span :class="StatsUtils.getValueColorClass(item.accuracyModifierPercentage)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, item.accuracyModifierPercentage) }}
         </span>
         <font-awesome-icon
           icon="bullseye"

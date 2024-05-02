@@ -136,12 +136,12 @@
                 />
               </div>
               <div
-                v-if="hasSummaryErgonomicsPercentageModifier"
-                v-tooltip.top="$t('caption.ergonomicsPercentageModifier')"
+                v-if="hasSummaryErgonomicsModifierPercentage"
+                v-tooltip.top="$t('caption.ergonomicsModifierPercentage')"
                 class="build-toolbar-summary-value"
               >
-                <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsPercentageModifier)">
-                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsPercentageModifier) }}
+                <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsModifierPercentage)">
+                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsModifierPercentage) }}
                 </span>
                 <font-awesome-icon
                   icon="hand-paper"
@@ -149,12 +149,12 @@
                 />
               </div>
               <div
-                v-if="hasSummaryMovementSpeedPercentageModifier"
-                v-tooltip.top="$t('caption.movementSpeedPercentageModifier')"
+                v-if="hasSummaryMovementSpeedModifierPercentage"
+                v-tooltip.top="$t('caption.movementSpeedModifierPercentage')"
                 class="build-toolbar-summary-value"
               >
-                <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedPercentageModifier)">
-                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, summary.wearableModifiers.movementSpeedPercentageModifier) }}
+                <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedModifierPercentage)">
+                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, summary.wearableModifiers.movementSpeedModifierPercentage) }}
                 </span>
                 <font-awesome-icon
                   icon="walking"
@@ -162,12 +162,12 @@
                 />
               </div>
               <div
-                v-if="hasSummaryTurningSpeedPercentageModifier"
-                v-tooltip.top="$t('caption.turningSpeedPercentageModifier')"
+                v-if="hasSummaryTurningSpeedModifierPercentage"
+                v-tooltip.top="$t('caption.turningSpeedModifierPercentage')"
                 class="build-toolbar-summary-value"
               >
-                <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedPercentageModifier)">
-                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, summary.wearableModifiers.turningSpeedPercentageModifier) }}
+                <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedModifierPercentage)">
+                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, summary.wearableModifiers.turningSpeedModifierPercentage) }}
                 </span>
                 <font-awesome-icon
                   icon="undo"

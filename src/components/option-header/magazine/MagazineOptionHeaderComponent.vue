@@ -9,7 +9,7 @@
         v-model="sortingData"
         caption-resource="caption.loadSpeed"
         icon="sync-alt"
-        property="loadSpeedPercentageModifier"
+        property="loadSpeedModifierPercentage"
         :sorting-functions="sortingFunctions"
       />
     </div>
@@ -20,7 +20,7 @@
         v-model="sortingData"
         caption-resource="caption.checkSpeed"
         icon="eye"
-        property="checkSpeedPercentageModifier"
+        property="checkSpeedModifierPercentage"
         :sorting-functions="sortingFunctions"
       />
     </div>

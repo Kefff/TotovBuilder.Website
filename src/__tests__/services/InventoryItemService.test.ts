@@ -6,7 +6,7 @@ import { IErgonomics } from '../../models/utils/IErgonomics'
 import { IInventoryItemPrice } from '../../models/utils/IInventoryItemPrice'
 import { IInventoryItemRecoil } from '../../models/utils/IInventoryItemRecoil'
 import { IInventoryItemWearableModifiers } from '../../models/utils/IInventoryItemWearableModifiers'
-import { IRecoilPercentageModifier } from '../../models/utils/IRecoilPercentageModifier'
+import { IRecoilModifierPercentage } from '../../models/utils/IRecoilModifierPercentage'
 import { IWeight } from '../../models/utils/IWeight'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
@@ -2841,7 +2841,7 @@ describe('getRecoil()', () => {
   })
 })
 
-describe('getRecoilPercentageModifier()', () => {
+describe('getRecoilModifierPercentage()', () => {
   it.each([
     [
       {
@@ -2852,9 +2852,9 @@ describe('getRecoilPercentageModifier()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        recoilPercentageModifier: 0,
-        recoilPercentageModifierWithMods: 0
-      } as IRecoilPercentageModifier
+        recoilModifierPercentage: 0,
+        recoilModifierPercentageWithMods: 0
+      } as IRecoilModifierPercentage
     ],
     [
       {
@@ -2865,9 +2865,9 @@ describe('getRecoilPercentageModifier()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        recoilPercentageModifier: -0.06,
-        recoilPercentageModifierWithMods: -0.06
-      } as IRecoilPercentageModifier
+        recoilModifierPercentage: -0.06,
+        recoilModifierPercentageWithMods: -0.06
+      } as IRecoilModifierPercentage
     ],
     [
       {
@@ -2893,9 +2893,9 @@ describe('getRecoilPercentageModifier()', () => {
         quantity: 1
       },
       {
-        recoilPercentageModifier: -0.03,
-        recoilPercentageModifierWithMods: -0.09
-      } as IRecoilPercentageModifier
+        recoilModifierPercentage: -0.03,
+        recoilModifierPercentageWithMods: -0.09
+      } as IRecoilModifierPercentage
     ],
     [
       {
@@ -2921,23 +2921,23 @@ describe('getRecoilPercentageModifier()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        recoilPercentageModifier: 0,
-        recoilPercentageModifierWithMods: -0.06
-      } as IRecoilPercentageModifier
+        recoilModifierPercentage: 0,
+        recoilModifierPercentageWithMods: -0.06
+      } as IRecoilModifierPercentage
     ]
-  ])('should get the recoil percentage modifier of an inventory item', async (inventoryItem: IInventoryItem, expected: IRecoilPercentageModifier) => {
+  ])('should get the recoil modifier percentage of an inventory item', async (inventoryItem: IInventoryItem, expected: IRecoilModifierPercentage) => {
     // Arrange
     useItemServiceMock()
     Services.configure(ItemPropertiesService)
     const service = new InventoryItemService()
 
     // Act
-    const recoilPercentageModifier = await service.getRecoilPercentageModifier(inventoryItem)
+    const recoilModifierPercentage = await service.getRecoilModifierPercentage(inventoryItem)
 
     // Assert
-    expect(recoilPercentageModifier.success).toBe(true)
-    expect(recoilPercentageModifier.value.recoilPercentageModifier).toBe(expected.recoilPercentageModifier)
-    expect(recoilPercentageModifier.value.recoilPercentageModifierWithMods).toBe(expected.recoilPercentageModifierWithMods)
+    expect(recoilModifierPercentage.success).toBe(true)
+    expect(recoilModifierPercentage.value.recoilModifierPercentage).toBe(expected.recoilModifierPercentage)
+    expect(recoilModifierPercentage.value.recoilModifierPercentageWithMods).toBe(expected.recoilModifierPercentageWithMods)
   })
 
   it.each([
@@ -2971,13 +2971,13 @@ describe('getRecoilPercentageModifier()', () => {
       const service = new InventoryItemService()
 
       // Act
-      const recoilPercentageModifier = await service.getRecoilPercentageModifier(
+      const recoilModifierPercentage = await service.getRecoilModifierPercentage(
         inventoryItem
       )
 
       // Assert
-      expect(recoilPercentageModifier.success).toBe(false)
-      expect(recoilPercentageModifier.failureMessage).toBe('Item "invalid" not found.')
+      expect(recoilModifierPercentage.success).toBe(false)
+      expect(recoilModifierPercentage.failureMessage).toBe('Item "invalid" not found.')
     }
   )
 })
@@ -2993,12 +2993,12 @@ describe('getWearableModifiers()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomicsPercentageModifier: 0,
-        ergonomicsPercentageModifierWithMods: 0,
-        movementSpeedPercentageModifier: 0,
-        movementSpeedPercentageModifierWithMods: 0,
-        turningSpeedPercentageModifier: 0,
-        turningSpeedPercentageModifierWithMods: 0
+        ergonomicsModifierPercentage: 0,
+        ergonomicsModifierPercentageWithMods: 0,
+        movementSpeedModifierPercentage: 0,
+        movementSpeedModifierPercentageWithMods: 0,
+        turningSpeedModifierPercentage: 0,
+        turningSpeedModifierPercentageWithMods: 0
       } as IInventoryItemWearableModifiers
     ],
     [
@@ -3010,12 +3010,12 @@ describe('getWearableModifiers()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomicsPercentageModifier: armor6b13Fl.ergonomicsPercentageModifier,
-        ergonomicsPercentageModifierWithMods: armor6b13Fl.ergonomicsPercentageModifier,
-        movementSpeedPercentageModifier: armor6b13Fl.movementSpeedPercentageModifier,
-        movementSpeedPercentageModifierWithMods: armor6b13Fl.movementSpeedPercentageModifier,
-        turningSpeedPercentageModifier: armor6b13Fl.turningSpeedPercentageModifier,
-        turningSpeedPercentageModifierWithMods: armor6b13Fl.turningSpeedPercentageModifier
+        ergonomicsModifierPercentage: armor6b13Fl.ergonomicsModifierPercentage,
+        ergonomicsModifierPercentageWithMods: armor6b13Fl.ergonomicsModifierPercentage,
+        movementSpeedModifierPercentage: armor6b13Fl.movementSpeedModifierPercentage,
+        movementSpeedModifierPercentageWithMods: armor6b13Fl.movementSpeedModifierPercentage,
+        turningSpeedModifierPercentage: armor6b13Fl.turningSpeedModifierPercentage,
+        turningSpeedModifierPercentageWithMods: armor6b13Fl.turningSpeedModifierPercentage
       } as IInventoryItemWearableModifiers
     ],
     [
@@ -3048,12 +3048,12 @@ describe('getWearableModifiers()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomicsPercentageModifier: armor6b13FlDefault.ergonomicsPercentageModifier,
-        ergonomicsPercentageModifierWithMods: armor6b13FlDefault.ergonomicsPercentageModifier + plate6b33Front.ergonomicsPercentageModifier + plate6b33Back.ergonomicsPercentageModifier,
-        movementSpeedPercentageModifier: armor6b13FlDefault.movementSpeedPercentageModifier,
-        movementSpeedPercentageModifierWithMods: armor6b13FlDefault.movementSpeedPercentageModifier + plate6b33Front.movementSpeedPercentageModifier + plate6b33Back.movementSpeedPercentageModifier,
-        turningSpeedPercentageModifier: armor6b13FlDefault.turningSpeedPercentageModifier,
-        turningSpeedPercentageModifierWithMods: armor6b13FlDefault.turningSpeedPercentageModifier + plate6b33Front.turningSpeedPercentageModifier + plate6b33Back.turningSpeedPercentageModifier
+        ergonomicsModifierPercentage: armor6b13FlDefault.ergonomicsModifierPercentage,
+        ergonomicsModifierPercentageWithMods: armor6b13FlDefault.ergonomicsModifierPercentage + plate6b33Front.ergonomicsModifierPercentage + plate6b33Back.ergonomicsModifierPercentage,
+        movementSpeedModifierPercentage: armor6b13FlDefault.movementSpeedModifierPercentage,
+        movementSpeedModifierPercentageWithMods: armor6b13FlDefault.movementSpeedModifierPercentage + plate6b33Front.movementSpeedModifierPercentage + plate6b33Back.movementSpeedModifierPercentage,
+        turningSpeedModifierPercentage: armor6b13FlDefault.turningSpeedModifierPercentage,
+        turningSpeedModifierPercentageWithMods: armor6b13FlDefault.turningSpeedModifierPercentage + plate6b33Front.turningSpeedModifierPercentage + plate6b33Back.turningSpeedModifierPercentage
       } as IInventoryItemWearableModifiers
     ],
     [
@@ -3079,12 +3079,12 @@ describe('getWearableModifiers()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomicsPercentageModifier: lshZ2dtm.ergonomicsPercentageModifier,
-        ergonomicsPercentageModifierWithMods: lshZ2dtm.ergonomicsPercentageModifier + lshZ2dtmFs.ergonomicsPercentageModifier,
-        movementSpeedPercentageModifier: lshZ2dtm.movementSpeedPercentageModifier,
-        movementSpeedPercentageModifierWithMods: lshZ2dtm.movementSpeedPercentageModifier + lshZ2dtmFs.movementSpeedPercentageModifier,
-        turningSpeedPercentageModifier: lshZ2dtm.turningSpeedPercentageModifier,
-        turningSpeedPercentageModifierWithMods: lshZ2dtm.turningSpeedPercentageModifier + lshZ2dtmFs.turningSpeedPercentageModifier
+        ergonomicsModifierPercentage: lshZ2dtm.ergonomicsModifierPercentage,
+        ergonomicsModifierPercentageWithMods: lshZ2dtm.ergonomicsModifierPercentage + lshZ2dtmFs.ergonomicsModifierPercentage,
+        movementSpeedModifierPercentage: lshZ2dtm.movementSpeedModifierPercentage,
+        movementSpeedModifierPercentageWithMods: lshZ2dtm.movementSpeedModifierPercentage + lshZ2dtmFs.movementSpeedModifierPercentage,
+        turningSpeedModifierPercentage: lshZ2dtm.turningSpeedModifierPercentage,
+        turningSpeedModifierPercentageWithMods: lshZ2dtm.turningSpeedModifierPercentage + lshZ2dtmFs.turningSpeedModifierPercentage
       } as IInventoryItemWearableModifiers
     ],
     [
@@ -3096,12 +3096,12 @@ describe('getWearableModifiers()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomicsPercentageModifier: berkut.ergonomicsPercentageModifier,
-        ergonomicsPercentageModifierWithMods: berkut.ergonomicsPercentageModifier,
-        movementSpeedPercentageModifier: berkut.movementSpeedPercentageModifier,
-        movementSpeedPercentageModifierWithMods: berkut.movementSpeedPercentageModifier,
-        turningSpeedPercentageModifier: berkut.turningSpeedPercentageModifier,
-        turningSpeedPercentageModifierWithMods: berkut.turningSpeedPercentageModifier
+        ergonomicsModifierPercentage: berkut.ergonomicsModifierPercentage,
+        ergonomicsModifierPercentageWithMods: berkut.ergonomicsModifierPercentage,
+        movementSpeedModifierPercentage: berkut.movementSpeedModifierPercentage,
+        movementSpeedModifierPercentageWithMods: berkut.movementSpeedModifierPercentage,
+        turningSpeedModifierPercentage: berkut.turningSpeedModifierPercentage,
+        turningSpeedModifierPercentageWithMods: berkut.turningSpeedModifierPercentage
       } as IInventoryItemWearableModifiers
     ]
   ])(
@@ -3122,12 +3122,12 @@ describe('getWearableModifiers()', () => {
 
       // Assert
       expect(wearableModifiers.success).toBe(true)
-      expect(wearableModifiers.value.ergonomicsPercentageModifier).toBe(expected.ergonomicsPercentageModifier)
-      expect(wearableModifiers.value.ergonomicsPercentageModifierWithMods).toBe(expected.ergonomicsPercentageModifierWithMods)
-      expect(wearableModifiers.value.movementSpeedPercentageModifier).toBe(expected.movementSpeedPercentageModifier)
-      expect(wearableModifiers.value.movementSpeedPercentageModifierWithMods).toBe(expected.movementSpeedPercentageModifierWithMods)
-      expect(wearableModifiers.value.turningSpeedPercentageModifier).toBe(expected.turningSpeedPercentageModifier)
-      expect(wearableModifiers.value.turningSpeedPercentageModifierWithMods).toBe(expected.turningSpeedPercentageModifierWithMods)
+      expect(wearableModifiers.value.ergonomicsModifierPercentage).toBe(expected.ergonomicsModifierPercentage)
+      expect(wearableModifiers.value.ergonomicsModifierPercentageWithMods).toBe(expected.ergonomicsModifierPercentageWithMods)
+      expect(wearableModifiers.value.movementSpeedModifierPercentage).toBe(expected.movementSpeedModifierPercentage)
+      expect(wearableModifiers.value.movementSpeedModifierPercentageWithMods).toBe(expected.movementSpeedModifierPercentageWithMods)
+      expect(wearableModifiers.value.turningSpeedModifierPercentage).toBe(expected.turningSpeedModifierPercentage)
+      expect(wearableModifiers.value.turningSpeedModifierPercentageWithMods).toBe(expected.turningSpeedModifierPercentageWithMods)
     }
   )
 
@@ -3162,11 +3162,11 @@ describe('getWearableModifiers()', () => {
       const service = new InventoryItemService()
 
       // Act
-      const ergonomicsPercentageModifier = await service.getWearableModifiers(inventoryItem)
+      const ergonomicsModifierPercentage = await service.getWearableModifiers(inventoryItem)
 
       // Assert
-      expect(ergonomicsPercentageModifier.success).toBe(false)
-      expect(ergonomicsPercentageModifier.failureMessage).toBe('Item "invalid" not found.')
+      expect(ergonomicsModifierPercentage.success).toBe(false)
+      expect(ergonomicsModifierPercentage.failureMessage).toBe('Item "invalid" not found.')
     }
   )
 })

@@ -8,24 +8,24 @@ import { ItemSortingFunctions } from './ItemSortingFunction'
  */
 export const AmmunitionSortingFunctions: ISortingFunctionList<IAmmunition> = {
   ...ItemSortingFunctions,
-  accuracyPercentageModifier: {
+  accuracyModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.accuracyPercentageModifier
+    comparisonValueObtentionFunction: async (i) => i.accuracyModifierPercentage
   },
   fleshDamage: {
     comparisonFunction: compareByNumber,
     comparisonValueObtentionFunction: async (i) => i.fleshDamage
   },
-  fragmentationChancePercentage: {
+  fragmentationChance: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.fragmentationChancePercentage
+    comparisonValueObtentionFunction: async (i) => i.fragmentationChance
   },
   penetrationPower: {
     comparisonFunction: compareByNumber,
     comparisonValueObtentionFunction: async (i) => i.penetrationPower
   },
-  recoilPercentageModifier: {
+  recoilModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.recoilPercentageModifier
+    comparisonValueObtentionFunction: async (i) => i.recoilModifierPercentage
   }
 }

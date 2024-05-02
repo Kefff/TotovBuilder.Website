@@ -1,7 +1,7 @@
+import { describe, expect, it } from 'vitest'
 import { IHeadwear } from '../../../../models/item/IHeadwear'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { HeadwearSortingFunctions } from '../../../../services/sorting/functions/HeadwearSortingFunctions'
-import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([
@@ -57,50 +57,50 @@ describe('comparisonFunction()', () => {
     ['armorClass', true],
     ['durability', false],
     ['durability', true],
-    ['ergonomicsPercentageModifier', false],
-    ['ergonomicsPercentageModifier', true],
-    ['movementSpeedPercentageModifier', false],
-    ['movementSpeedPercentageModifier', true],
+    ['ergonomicsModifierPercentage', false],
+    ['ergonomicsModifierPercentage', true],
+    ['movementSpeedModifierPercentage', false],
+    ['movementSpeedModifierPercentage', true],
     ['ricochetChance', false],
     ['ricochetChance', true],
-    ['turningSpeedPercentageModifier', false],
-    ['turningSpeedPercentageModifier', true]
+    ['turningSpeedModifierPercentage', false],
+    ['turningSpeedModifierPercentage', true]
   ])('should compare by a property', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
       armorClass: 2,
       categoryId: 'cat',
       durability: 2,
-      ergonomicsPercentageModifier: 2,
-      movementSpeedPercentageModifier: 2,
+      ergonomicsModifierPercentage: 2,
+      movementSpeedModifierPercentage: 2,
       name: 'cat',
       presetWearableModifiers: isPreset
         ? {
-          ergonomicsPercentageModifierWithMods: 20,
-          movementSpeedPercentageModifierWithMods: 20,
-          turningSpeedPercentageModifierWithMods: 20
+          ergonomicsModifierPercentageWithMods: 20,
+          movementSpeedModifierPercentageWithMods: 20,
+          turningSpeedModifierPercentageWithMods: 20
         }
         : undefined,
       ricochetChance: 'High',
-      turningSpeedPercentageModifier: 2
+      turningSpeedModifierPercentage: 2
     } as IHeadwear
 
     const item2 = {
       armorClass: 1,
       categoryId: 'cat',
       durability: 1,
-      ergonomicsPercentageModifier: 1,
-      movementSpeedPercentageModifier: 1,
+      ergonomicsModifierPercentage: 1,
+      movementSpeedModifierPercentage: 1,
       name: 'cat',
       presetWearableModifiers: isPreset
         ? {
-          ergonomicsPercentageModifierWithMods: 10,
-          movementSpeedPercentageModifierWithMods: 10,
-          turningSpeedPercentageModifierWithMods: 10
+          ergonomicsModifierPercentageWithMods: 10,
+          movementSpeedModifierPercentageWithMods: 10,
+          turningSpeedModifierPercentageWithMods: 10
         }
         : undefined,
       ricochetChance: 'Low',
-      turningSpeedPercentageModifier: 1
+      turningSpeedModifierPercentage: 1
     } as IHeadwear
 
     const sortingService = new SortingService(HeadwearSortingFunctions)

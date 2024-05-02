@@ -5,7 +5,7 @@
         v-model="sortingData"
         caption-resource="caption.ergonomics"
         icon="hand-paper"
-        property="ergonomicsPercentageModifier"
+        property="ergonomicsModifierPercentage"
         :sorting-functions="sortingFunctions"
       />
     </div>
@@ -16,7 +16,7 @@
         v-model="sortingData"
         caption-resource="caption.movementSpeed"
         icon="walking"
-        property="movementSpeedPercentageModifier"
+        property="movementSpeedModifierPercentage"
         :sorting-functions="sortingFunctions"
       />
     </div>
@@ -27,7 +27,7 @@
         v-model="sortingData"
         caption-resource="caption.turningSpeed"
         icon="undo"
-        property="turningSpeedPercentageModifier"
+        property="turningSpeedModifierPercentage"
         :sorting-functions="sortingFunctions"
       />
     </div>
