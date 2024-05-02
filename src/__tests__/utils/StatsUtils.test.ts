@@ -21,7 +21,8 @@ describe('StringUtils.getStandardDisplayValue()', () => {
     [DisplayValueType.movementSpeedModifierPercentage, '+123,456.8%'],
     [DisplayValueType.recoilModifierPercentage, '+123,456.8%'],
     [DisplayValueType.turningSpeedModifierPercentage, '+123,456.8%'],
-    [DisplayValueType.weight, '1,234.568']
+    [DisplayValueType.weight, '1,234.568'],
+    [999, 'Error']
   ])('should get the display value in the standard format associated with the value type', (type: DisplayValueType, expected: string) => {
     // Arrange
     const value = 1234.56789

@@ -812,6 +812,22 @@ describe('getAsString()', () => {
     // Assert
     expect(result).toBe(expected)
   })
+
+  it('should do nothing when the inventory slot type cannot be found', async () => {
+    // Arrange
+    Services.configure(InventorySlotService)
+
+    const service = new InventorySlotPropertiesService()
+
+    // Act
+    const result = await service.getAsString({
+      items: [],
+      typeId: 'invalid'
+    }, 'fr')
+
+    // Assert
+    expect(result).toBe('')
+  })
 })
 
 const inventorySlot1: IInventorySlot = {

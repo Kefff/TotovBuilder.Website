@@ -288,9 +288,7 @@ ${indentation}${containedItemAsString}`
 
     if (!canBeLooted) {
       unitPriceIgnoreStatus = IgnoredUnitPrice.notLootable
-    } else if (itemInSameSlotInPreset?.itemId === inventoryItem.itemId) {
-      unitPriceIgnoreStatus = IgnoredUnitPrice.inPreset
-    } else if (itemInSameSlotInPreset?.content.some(c => c.itemId === inventoryItem.itemId && c.quantity === inventoryItem.quantity)) {
+    } else if (itemInSameSlotInPreset?.itemId === inventoryItem.itemId && itemInSameSlotInPreset?.quantity === inventoryItem.quantity) {
       unitPriceIgnoreStatus = IgnoredUnitPrice.inPreset
     } else if (inventoryItem.ignorePrice) {
       unitPriceIgnoreStatus = IgnoredUnitPrice.manuallyIgnored

@@ -512,6 +512,14 @@ describe('getAsString()', () => {
               quantity: 1
             },
             modSlotName: 'back_plate'
+          },
+          {
+            item: undefined,
+            modSlotName: 'modSlot_left_side_plate'
+          },
+          {
+            item: undefined,
+            modSlotName: 'modSlot_right_side_plate'
           }
         ],
         quantity: 1
@@ -583,6 +591,32 @@ describe('getAsString()', () => {
 
     // Assert
     expect(result).toBe(expected)
+  })
+
+  it('should do nothing when the main currency cannot be found', async () => {
+    // Arrange
+    useItemServiceMock(false)
+
+    const service = new InventoryItemService()
+
+    // Act
+    const result = await service.getAsString(inventoryItem, 'fr')
+
+    // Assert
+    expect(result).toBe('')
+  })
+
+  it('should do nothing when the item cannot be found', async () => {
+    // Arrange
+    useItemServiceMock(true, [])
+
+    const service = new InventoryItemService()
+
+    // Act
+    const result = await service.getAsString(inventoryItem, 'fr')
+
+    // Assert
+    expect(result).toBe('')
   })
 })
 
@@ -1917,7 +1951,7 @@ describe('getPrice()', () => {
         unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
       } as IInventoryItemPrice
     ]
-  ])('should have a missing price when Pas de marchands sell the item', async (inventoryItem: IInventoryItem, expected: IInventoryItemPrice) => {
+  ])('should have a missing price when no merchant sells the item', async (inventoryItem: IInventoryItem, expected: IInventoryItemPrice) => {
     // Arrange
     useItemServiceMock()
     usePresetServiceMock()
