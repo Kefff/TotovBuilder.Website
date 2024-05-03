@@ -18,9 +18,9 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const price = ref<IPrice>({
+    const itemUnitPrice = ref<IPrice>({
       barterItems: [],
-      currencyName: 'RUB',
+      currencyName: '',
       itemId: '',
       merchant: '',
       merchantLevel: 0,
@@ -33,30 +33,16 @@ export default defineComponent({
     onMounted(() => initialize())
 
     async function initialize() {
-      const priceResult = await Services.get(InventoryItemService).getPrice({
+      const itemPrice = await Services.get(InventoryItemService).getPrice({
         content: [],
         ignorePrice: false,
         itemId: props.item.id,
         modSlots: [],
         quantity: 1
       })
-
-      if (priceResult.success) {
-        price.value = priceResult.value.unitPrice
-      } else {
-        price.value = {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        }
-      }
+      itemUnitPrice.value = itemPrice.unitPrice
     }
 
-    return { price }
+    return { itemUnitPrice }
   }
 })

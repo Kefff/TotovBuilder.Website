@@ -11,6 +11,6 @@ export const ModSortingFunctions: ISortingFunctionList<IMod> = {
   ...ItemSortingFunctions,
   ergonomicsModifier: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.ergonomicsModifier
+    comparisonValueObtentionFunction: i => Promise.resolve(i.ergonomicsModifier)
   }
 }

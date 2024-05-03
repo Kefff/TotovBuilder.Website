@@ -103,10 +103,10 @@ export default defineComponent({
       const itemService = Services.get(ItemService)
 
       for (const barterItem of props.price.barterItems) {
-        const itemResult = await itemService.getItem(barterItem.itemId)
+        const item = await itemService.getItem(barterItem.itemId)
 
-        if (itemResult.success) {
-          barterItems.value?.push(itemResult.value)
+        if (item != null) {
+          barterItems.value?.push(item)
         }
       }
     }
@@ -124,17 +124,18 @@ export default defineComponent({
       const inventoryItemService = Services.get(InventoryItemService)
 
       for (const barterItem of props.price.barterItems) {
-        const priceResult = await inventoryItemService.getPrice({
-          content: [],
-          ignorePrice: false,
-          itemId: barterItem.itemId,
-          modSlots: [],
-          quantity: barterItem.quantity
-        }, undefined, true, props.useMerchantFilter)
-
-        if (priceResult.success) {
-          barterItemPrices.value.push(priceResult.value)
-        }
+        const barterItemPrice = await inventoryItemService.getPrice(
+          {
+            content: [],
+            ignorePrice: false,
+            itemId: barterItem.itemId,
+            modSlots: [],
+            quantity: barterItem.quantity
+          },
+          undefined,
+          true,
+          props.useMerchantFilter)
+        barterItemPrices.value.push(barterItemPrice)
       }
     }
 
@@ -146,22 +147,8 @@ export default defineComponent({
 
       barterItems.value = []
       barterItemPrices.value = []
-
-      const mainCurrencyResult = await Services.get(ItemService).getMainCurrency()
-
-      if (mainCurrencyResult.success) {
-        mainCurrency.value = mainCurrencyResult.value
-      } else {
-        mainCurrency.value = undefined
-      }
-
-      const currencyResult = await Services.get(ItemService).getCurrency(props.price.currencyName)
-
-      if (currencyResult.success) {
-        currency.value = currencyResult.value
-      } else {
-        currency.value = undefined
-      }
+      mainCurrency.value = Services.get(ItemService).getMainCurrency()
+      currency.value = Services.get(ItemService).getCurrency(props.price.currencyName)
 
       if (isBarter.value) {
         displayedCurrency.value = mainCurrency.value

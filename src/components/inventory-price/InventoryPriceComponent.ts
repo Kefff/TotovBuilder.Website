@@ -35,15 +35,15 @@ export default defineComponent({
     /**
      * Initializes the component.
      */
-    async function initialize() {
-      const mainCurrencyResult = await Services.get(ItemService).getMainCurrency()
+    function initialize() {
+      const mainCurrencyResult = Services.get(ItemService).getMainCurrency()
       priceInMainCurrency.value = 0
 
-      if (!mainCurrencyResult.success) {
+      if (mainCurrencyResult == null) {
         return
       }
 
-      mainCurrency.value = mainCurrencyResult.value
+      mainCurrency.value = mainCurrencyResult
       showPriceInMainCurrency.value = props.inventoryPrice.priceByCurrency.some(p => p.currencyName !== mainCurrency.value?.name)
 
       for (const priceWithContent of props.inventoryPrice.priceByCurrency) {

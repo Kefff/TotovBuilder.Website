@@ -4,7 +4,8 @@ import InventorySlotTypes from '../data/inventory-slot-types.json'
 import { IBuild } from '../models/build/IBuild'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import vueI18n from '../plugins/vueI18n'
-import Result, { FailureType } from '../utils/Result'
+import Result from '../utils/Result'
+import { LogService } from './LogService'
 import { ReductionService } from './ReductionService'
 import { VersionService } from './VersionService'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
@@ -95,18 +96,18 @@ export class BuildService {
     try {
       reducedBuild = (await codec.decompress(sharableString)) as Record<string, unknown>
     } catch {
-      return Result.fail(FailureType.error, 'BuildService.fromSharableString()', vueI18n.t('message.invalidSharableString'))
+      return Result.fail(vueI18n.t('message.invalidSharableString'))
     }
 
-    const buildResult = Services.get(ReductionService).parseReducedBuild(reducedBuild)
+    const build = Services.get(ReductionService).parseReducedBuild(reducedBuild)
 
-    if (!buildResult.success) {
-      return Result.fail(FailureType.error, 'BuildService.fromSharableString()', vueI18n.t('message.invalidSharableString'))
+    if (build == null) {
+      return Result.fail(vueI18n.t('message.invalidSharableString'))
     }
 
-    Services.get(VersionService).executeBuildMigrations(buildResult.value) // Executing migrations on the build in case it is obsolete
+    Services.get(VersionService).executeBuildMigrations(build) // Executing migrations on the build in case it is obsolete
 
-    return Result.ok(buildResult.value)
+    return Result.ok(build)
   }
 
   /**
@@ -118,21 +119,17 @@ export class BuildService {
     const storageKey = this.getKey(id)
     const serializedBuild = localStorage.getItem(storageKey)
 
-    if (serializedBuild === null) {
-      return Result.fail<IBuild>(
-        FailureType.error,
-        'BuildService.update()',
-        vueI18n.t('message.buildNotFound', { id })
-      )
+    if (serializedBuild == null) {
+      return Result.fail<IBuild>(vueI18n.t('message.buildNotFound', { id }))
     }
 
-    const buildResult = this.parse(id, serializedBuild)
+    const build = this.parse(id, serializedBuild)
 
-    if (buildResult.success) {
-      return Result.ok(buildResult.value)
-    } else {
-      return Result.failFrom(buildResult)
+    if (build == null) {
+      return Result.fail<IBuild>(vueI18n.t('message.buildCorrupted', { id }))
     }
+
+    return Result.ok(build)
   }
 
   /**
@@ -164,11 +161,9 @@ export class BuildService {
    * @param serializedBuild - Serialized build.
    * @returns Parsed build.
    */
-  public parse(id: string, serializedBuild: string): Result<IBuild> {
-    let build: IBuild
-
+  public parse(id: string, serializedBuild: string): IBuild | undefined {
     try {
-      build = JSON.parse(serializedBuild) as IBuild
+      const build = JSON.parse(serializedBuild) as IBuild
 
       // Converting dates back to Date type
       if (build.lastExported != null) {
@@ -178,11 +173,13 @@ export class BuildService {
       if (build.lastUpdated != null) {
         build.lastUpdated = new Date(build.lastUpdated as unknown as string)
       }
-    } catch {
-      return Result.fail(FailureType.error, 'BuildService.parse()', vueI18n.t('message.buildParsingError', { id }))
-    }
 
-    return Result.ok(build)
+      return build
+    } catch {
+      Services.get(LogService).logError(vueI18n.t('message.buildParsingError', { id }))
+
+      return undefined
+    }
   }
 
   /**
@@ -203,7 +200,7 @@ export class BuildService {
       // 2048 is a hard limit for URL length on Azure Consumption tiers which is what is used to host the website
       // Cf. https://docs.microsoft.com/en-us/answers/questions/223022/azure-app-service-containers-max-url-length.html
       // Cf. https://github.com/MicrosoftDocs/azure-docs/blob/master/includes/api-management-service-limits.md
-      return Result.fail(FailureType.warning, 'BuildService.toSharableString()', vueI18n.t('message.cannotShareBuildTooLarge', { name: build.name }))
+      return Result.fail(vueI18n.t('message.cannotShareBuildTooLarge', { name: build.name }))
     }
 
     return Result.ok(sharableURL)
@@ -231,11 +228,7 @@ export class BuildService {
       }
     }
 
-    return Result.fail(
-      FailureType.error,
-      'BuildService.update()',
-      vueI18n.t('message.buildNotFound', { id })
-    )
+    return Result.fail(vueI18n.t('message.buildNotFound', { id }))
   }
 
   /**

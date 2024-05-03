@@ -10,6 +10,6 @@ export const ContainerSortingFunctions: ISortingFunctionList<IContainer> = {
   ...ItemSortingFunctions,
   capacity: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.capacity
+    comparisonValueObtentionFunction: i => Promise.resolve(i.capacity)
   }
 }

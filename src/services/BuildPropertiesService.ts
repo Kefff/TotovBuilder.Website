@@ -12,7 +12,7 @@ import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 import vueI18n from '../plugins/vueI18n'
 import { PathUtils } from '../utils/PathUtils'
 import { PriceUtils } from '../utils/PriceUtils'
-import Result, { FailureType } from '../utils/Result'
+import Result from '../utils/Result'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import { BuildService } from './BuildService'
 import { InventoryItemService } from './InventoryItemService'
@@ -35,18 +35,10 @@ export class BuildPropertiesService {
     const vestSlot = build.inventorySlots.find((is) => is.typeId === 'tacticalRig')!
 
     if (vestSlot.items[0] != null) {
-      const vestResult = await itemService.getItem(vestSlot.items[0].itemId)
+      const vest = await itemService.getItem(vestSlot.items[0].itemId)
 
-      if (!vestResult.success) {
-        return Result.failFrom(vestResult)
-      }
-
-      if ((vestResult.value as IVest).armorClass > 0) {
-        return Result.fail(
-          FailureType.hidden,
-          'BuildService.canAddArmor()',
-          vueI18n.t('message.cannotAddBodyArmor')
-        )
+      if (vest != null && (vest as IVest).armorClass > 0) {
+        return Result.fail(vueI18n.t('message.cannotAddBodyArmor'))
       }
     }
 
@@ -62,51 +54,39 @@ export class BuildPropertiesService {
    */
   public async canAddMod(build: IBuild, modId: string, path: string): Promise<Result> {
     const itemService = Services.get(ItemService)
-    const modResult = await itemService.getItem(modId)
+    const mod = await itemService.getItem(modId)
 
-    if (!modResult.success) {
-      return Result.failFrom(modResult)
+    if (mod == null) {
+      return Result.ok() // Returning OK since we cannot identify the item
     }
 
     const firstItemPath = path.slice(0, path.indexOf('/' + PathUtils.modSlotPrefix))
-    const inventoryItemResult = PathUtils.getInventoryItemFromPath(build, firstItemPath)
+    const inventoryItem = PathUtils.getInventoryItemFromPath(build, firstItemPath)
 
-    if (!inventoryItemResult.success) {
-      return Result.failFrom(inventoryItemResult)
+    if (inventoryItem == null) {
+      return Result.ok() // Returning OK since we cannot identify the inventory item in the path
     }
 
     const changedModSlotPath = path.slice(0, path.indexOf('/' + PathUtils.itemPrefix))
-    const conflictingItemsResult = await this.getConflictingItems(inventoryItemResult.value, changedModSlotPath)
+    const conflicts = await this.getConflictingItems(inventoryItem, changedModSlotPath)
 
-    if (!conflictingItemsResult.success) {
-      return Result.failFrom(conflictingItemsResult)
-    }
-
-    for (const conflictingItem of conflictingItemsResult.value) {
-      if (
-        conflictingItem.path.startsWith(path) || // Ignoring the mod (and its children mods) in the same slot that the mod being added because it is being replaced
-        (conflictingItem.conflictingItemId !== modId && // Checking the conflicting items for all the other mods
-          !modResult.value.conflictingItemIds.includes(conflictingItem.itemId)) // Checking the conflicting items of the mod being added
+    for (const conflict of conflicts) {
+      if (conflict.path.startsWith(path) // Ignoring the mod (and its children mods) in the same slot that the mod being added because it is being replaced
+        || (conflict.conflictingItemId !== modId // If the mod conflicts with itself, we ignore the conflict
+          && !mod.conflictingItemIds.includes(conflict.itemId)) // Checking the conflicting items of the mod being added
       ) {
         continue
       }
 
-      const conflictingItemResult = await itemService.getItem(conflictingItem.itemId)
+      const conflictingItem = await itemService.getItem(conflict.itemId)
 
       /* c8 ignore start */
-      if (!conflictingItemResult.success) {
-        return Result.failFrom(conflictingItemResult)
+      if (conflictingItem == null) {
+        continue
       }
       /* c8 ignore start */
 
-      return Result.fail(
-        FailureType.hidden,
-        'BuildService.canAddMod()',
-        vueI18n.t('message.cannotAddMod', {
-          modName: modResult.value.name,
-          conflictingItemName: conflictingItemResult.value.name
-        })
-      )
+      return Result.fail(vueI18n.t('message.cannotAddMod', { modName: mod.name, conflictingItemName: conflictingItem.name }))
     }
 
     return Result.ok()
@@ -120,24 +100,20 @@ export class BuildPropertiesService {
    */
   public async canAddVest(build: IBuild, vestId: string): Promise<Result> {
     const itemService = Services.get(ItemService)
-    const vestResult = await itemService.getItem(vestId)
+    const vest = await itemService.getItem(vestId)
 
-    if (!vestResult.success) {
-      return Result.failFrom(vestResult)
+    if (vest == null) {
+      return Result.ok() // Returning OK since we cannot identify the item
     }
 
-    if ((vestResult.value as IVest).armorClass === 0) {
+    if ((vest as IVest).armorClass === 0) {
       return Result.ok()
     }
 
     const armorSlot = build.inventorySlots.find((is) => is.typeId === 'bodyArmor')!
 
     if (armorSlot.items[0] != null) {
-      return Result.fail(
-        FailureType.hidden,
-        'BuildService.canAddVest()',
-        vueI18n.t('message.cannotAddTacticalRig')
-      )
+      return Result.fail(vueI18n.t('message.cannotAddTacticalRig'))
     }
 
     return Result.ok()
@@ -150,10 +126,9 @@ export class BuildPropertiesService {
    */
   public async getAsString(build: IBuild, language: string) {
     const itemService = Services.get(ItemService)
+    const mainCurrencyResult = itemService.getMainCurrency()
 
-    const mainCurrencyResult = await itemService.getMainCurrency()
-
-    if (!mainCurrencyResult.success) {
+    if (mainCurrencyResult == null) {
       return ''
     }
 
@@ -251,15 +226,15 @@ export class BuildPropertiesService {
           }
 
           const priceInCurrency = buildSummary.price.priceByCurrency[i]
-          const priceCurrencyResult = await itemService.getCurrency(priceInCurrency.currencyName)
+          const priceCurrency = itemService.getCurrency(priceInCurrency.currencyName)
 
-          if (priceCurrencyResult.success) {
-            buildAsString += `${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInCurrency.value, language)}${priceCurrencyResult.value.symbol}`
+          if (priceCurrency != null) {
+            buildAsString += `${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInCurrency.value, language)}${priceCurrency.symbol}`
           }
         }
 
         if (buildSummary.price.priceByCurrency.length > 1) {
-          buildAsString += ` (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, buildSummary.price.priceInMainCurrency, language)}${mainCurrencyResult.value.symbol})`
+          buildAsString += ` (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, buildSummary.price.priceInMainCurrency, language)}${mainCurrencyResult.symbol})`
         }
       }
 
@@ -369,30 +344,17 @@ ${sharableUrlResult.value}`
       inventorySlotSummaries.push(inventorySlotSummary)
     }
 
-    // Armor modifiers
-    result.armorModifiers = this.getArmorModifiers(inventorySlotSummaries)
 
-    // Wearable modifiers
+    result.armorModifiers = this.getArmorModifiers(inventorySlotSummaries)
     result.wearableModifiers = this.getWearableModifiers(inventorySlotSummaries)
 
-    // Ergonomics
     const summaryErgonomics = this.getErgonomics(inventorySlotSummaries)
     result.ergonomics = summaryErgonomics * (1 + result.wearableModifiers.ergonomicsModifierPercentage)
 
-    // Price
-    const priceResult = await this.getPrice(inventorySlotSummaries)
-
-    if (priceResult.success) {
-      result.price = priceResult.value
-    }
-
-    // Recoil
+    result.price = this.getPrice(inventorySlotSummaries)
     result.recoil = this.getRecoil(inventorySlotSummaries)
-
-    // Weight
     result.weight = this.getWeight(inventorySlotSummaries)
 
-    // Shopping list
     result.shoppingList = await this.getShoppingList(build)
 
     return result
@@ -427,27 +389,27 @@ ${sharableUrlResult.value}`
   private async getConflictingItems(
     inventoryItem: IInventoryItem,
     modSlotPath: string
-  ): Promise<Result<IConflictingItem[]>> {
+  ): Promise<IConflictingItem[]> {
     const itemService = Services.get(ItemService)
-    const itemResult = await itemService.getItem(inventoryItem.itemId)
+    const item = await itemService.getItem(inventoryItem.itemId)
 
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
+    if (item == null) {
+      return []
     }
 
     const conflictingItems: IConflictingItem[] = []
 
-    if (itemResult.value.conflictingItemIds.length > 0) {
-      for (const conflictingItemId of itemResult.value.conflictingItemIds) {
+    if (item.conflictingItemIds.length > 0) {
+      for (const conflictingItemId of item.conflictingItemIds) {
         conflictingItems.push({
-          itemId: itemResult.value.id,
+          itemId: item.id,
           path: modSlotPath,
           conflictingItemId
         })
       }
     } else {
       conflictingItems.push({
-        itemId: itemResult.value.id,
+        itemId: item.id,
         path: modSlotPath,
         conflictingItemId: undefined
       })
@@ -455,22 +417,16 @@ ${sharableUrlResult.value}`
 
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.item != null) {
-        const modConflictingItemIdsResult = await this.getConflictingItems(
+        const modConflictingItemIds = await this.getConflictingItems(
           modSlot.item,
           modSlotPath + '/' + PathUtils.itemPrefix + inventoryItem.itemId + '/' + PathUtils.modSlotPrefix + modSlot.modSlotName
         )
 
-        /* c8 ignore start */
-        if (!modConflictingItemIdsResult.success) {
-          return modConflictingItemIdsResult
-        }
-        /* c8 ignore stop */
-
-        conflictingItems.push(...modConflictingItemIdsResult.value)
+        conflictingItems.push(...modConflictingItemIds)
       }
     }
 
-    return Result.ok(conflictingItems)
+    return conflictingItems
   }
 
   /**
@@ -512,7 +468,7 @@ ${sharableUrlResult.value}`
    * @param inventorySlotSummaries - Inventory slot summaries.
    * @returns Price.
    */
-  private async getPrice(inventorySlotSummaries: IInventorySlotSummary[]): Promise<Result<IInventoryPrice>> {
+  private getPrice(inventorySlotSummaries: IInventorySlotSummary[]): IInventoryPrice {
     const inventoryPrice: IInventoryPrice = {
       missingPrice: false,
       priceInMainCurrency: 0,
@@ -542,7 +498,7 @@ ${sharableUrlResult.value}`
       inventoryPrice.priceByCurrency = PriceUtils.sortByCurrency(inventoryPrice.priceByCurrency)
     }
 
-    return Result.ok(inventoryPrice)
+    return inventoryPrice
   }
 
   /**
@@ -569,9 +525,9 @@ ${sharableUrlResult.value}`
     const shoppingList: IShoppingListItem[] = []
 
     for (const inventorySlot of build.inventorySlots) {
-      const typeResult = Services.get(InventorySlotService).getType(inventorySlot.typeId)
+      const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
 
-      if (!typeResult.success) {
+      if (inventorySlotType == null) {
         continue
       }
 
@@ -580,13 +536,9 @@ ${sharableUrlResult.value}`
           continue
         }
 
-        const shoppingListResult = await inventoryItemService.getShoppingList(item, undefined, typeResult.value.canBeLooted)
+        const shoppingList = await inventoryItemService.getShoppingList(item, undefined, inventorySlotType.canBeLooted)
 
-        if (!shoppingListResult.success) {
-          continue
-        }
-
-        for (const shoppingListItemToAdd of shoppingListResult.value) {
+        for (const shoppingListItemToAdd of shoppingList) {
           const shoppingListItemIndex = shoppingList.findIndex(sli => sli.item.id === shoppingListItemToAdd.item.id)
 
           if (shoppingListItemIndex < 0) {

@@ -1,8 +1,8 @@
 import { IBuild } from '../models/build/IBuild'
-import { BuildService } from './BuildService'
-import Services from './repository/Services'
 import vueI18n from '../plugins/vueI18n'
-import Result, { FailureType } from '../utils/Result'
+import { BuildService } from './BuildService'
+import { LogService } from './LogService'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for importing builds.
@@ -14,15 +14,17 @@ export class ImportService {
    * @returns Builds contained in the file.
    */
   /* c8 ignore start */
-  public async getBuildsFromFile(file: File): Promise<Result<IBuild[]>> {
-    return new Promise<Result<IBuild[]>>((resolve) => {
+  public getBuildsFromFile(file: File): Promise<IBuild[] | undefined> {
+    const fileReadingPromise = new Promise<IBuild[] | undefined>((resolve) => {
       const fileReader = new FileReader()
       fileReader.onloadend = () => {
-        const buildsResult = this.readFile(fileReader)
-        resolve(buildsResult)
+        const builds = this.readFile(fileReader)
+        resolve(builds)
       }
       fileReader.readAsText(file)
     })
+
+    return fileReadingPromise
   }
   /* c8 ignore stop */
 
@@ -44,15 +46,19 @@ export class ImportService {
    * @returns file - Builds.
    */
   /* c8 ignore start */
-  private readFile(fileReader: FileReader): Result<IBuild[]> {
+  private readFile(fileReader: FileReader): IBuild[] | undefined {
     if (fileReader.error != null) {
-      return Result.fail(FailureType.error, vueI18n.t('message.importError'))
+      Services.get(LogService).logError(vueI18n.t('message.importError'))
+
+      return undefined
     }
 
     const builds = JSON.parse(fileReader.result as string) as IBuild[]
 
     if (builds == null) {
-      return Result.fail(FailureType.error, vueI18n.t('message.importError'))
+      Services.get(LogService).logError(vueI18n.t('message.importError'))
+
+      return undefined
     }
 
     const importDate = new Date()
@@ -62,7 +68,7 @@ export class ImportService {
       build.lastUpdated = importDate
     }
 
-    return Result.ok(builds)
+    return builds
   }
   /* c8 ignore stop */
 }

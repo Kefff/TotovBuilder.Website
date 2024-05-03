@@ -69,7 +69,7 @@ export default defineComponent({
       set: (value: SortingData<IItem>) => emit('update:sortingData', value)
     })
 
-    watch(() => props.categoryId, async () => selectSpecializeComponent())
+    watch(() => props.categoryId, () => selectSpecializeComponent())
 
     onMounted(() => selectSpecializeComponent())
 

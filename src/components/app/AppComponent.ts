@@ -1,5 +1,7 @@
 import { computed, defineComponent, onMounted, ref } from 'vue'
 import Images from '../../images'
+import vueI18n from '../../plugins/vueI18n'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import Services from '../../services/repository/Services'
 import LanguageUtils from '../../utils/LanguageUtils'
@@ -55,6 +57,10 @@ export default defineComponent({
       githubUrl.value = websiteConfigurationService.configuration.githubUrl
 
       isLoading.value = false
+
+      if (websiteConfigurationService.configuration) {
+        Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.postUpdatePeriod'), 0)
+      }
     }
 
     /**

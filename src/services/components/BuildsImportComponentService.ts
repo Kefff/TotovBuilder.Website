@@ -1,5 +1,6 @@
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { IBuildsImportResult } from '../../models/utils/IBuildsImportResult'
+import vueI18n from '../../plugins/vueI18n'
 import Result from '../../utils/Result'
 import { BuildPropertiesService } from '../BuildPropertiesService'
 import { ImportService } from '../ImportService'
@@ -18,13 +19,13 @@ export class BuildsImportComponentService {
     }
 
     const buildPropertiesService = Services.get(BuildPropertiesService)
-    const buildsResult = await Services.get(ImportService).getBuildsFromFile(buildFile)
+    const builds = await Services.get(ImportService).getBuildsFromFile(buildFile)
 
-    if (!buildsResult.success) {
-      return Result.failFrom(buildsResult)
+    if (builds == null) {
+      return Result.fail(vueI18n.t('message.importError'))
     }
 
-    for (const build of buildsResult.value) {
+    for (const build of builds) {
       await Services.get(VersionService).executeBuildMigrations(build) // Executing migrations on the build in case it is obsolete
       const summary = await buildPropertiesService.getSummary(build)
 
@@ -32,7 +33,7 @@ export class BuildsImportComponentService {
     }
 
     return Result.ok({
-      builds: buildsResult.value,
+      builds: builds,
       buildSummaries: readenBuildSummaries
     })
   }

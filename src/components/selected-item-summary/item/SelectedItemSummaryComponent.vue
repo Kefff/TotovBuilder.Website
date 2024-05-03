@@ -12,22 +12,22 @@
             <font-awesome-icon icon="exclamation-triangle" />
           </div>
           <div
-            v-if="price.unitPriceIgnoreStatus === IgnoredUnitPrice.manuallyIgnored"
-            v-tooltip.top="$t('caption.ignoredPrice_' + price.unitPriceIgnoreStatus)"
+            v-if="selectedItemPrice.unitPriceIgnoreStatus === IgnoredUnitPrice.manuallyIgnored"
+            v-tooltip.top="$t('caption.ignoredPrice_' + selectedItemPrice.unitPriceIgnoreStatus)"
             class="selected-item-summary-price-ignored-price-icon"
           >
             <font-awesome-icon icon="ban" />
           </div>
           <Price
             v-if="showPrice"
-            :price="price.price"
+            :price="selectedItemPrice.price"
           />
           <div
             v-tooltip.top="$t('caption.weight')"
             class="selected-item-summary-weight"
           >
-            <div v-if="weight.weight > 0">
-              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, weight.weight) }}</span>
+            <div v-if="selectedItemWeight.weight > 0">
+              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weight) }}</span>
               <font-awesome-icon
                 icon="weight-hanging"
                 class="icon-after-text"
@@ -39,7 +39,7 @@
           <div class="selected-item-summary-price-per-unit">
             <Price
               v-if="showUnitPrice"
-              :price="price.unitPrice"
+              :price="selectedItemPrice.unitPrice"
               :show-merchant-icon="false"
               :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
             />
@@ -48,8 +48,8 @@
             v-tooltip.top="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'"
             class="selected-item-summary-weight selected-item-summary-weight-per-unit"
           >
-            <div v-if="weight.unitWeight !== weight.weight">
-              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, weight.unitWeight) }}</span>
+            <div v-if="selectedItemWeight.unitWeight !== selectedItemWeight.weight">
+              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
               <font-awesome-icon
                 icon="weight-hanging"
                 class="icon-after-text"

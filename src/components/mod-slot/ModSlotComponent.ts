@@ -2,9 +2,10 @@ import { defineComponent, inject, onMounted, onUnmounted, PropType, Ref, ref, wa
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import { IItem } from '../../models/item/IItem'
 import { IModSlot } from '../../models/item/IModSlot'
-import Services from '../../services/repository/Services'
 import { ModSlotComponentService } from '../../services/components/ModSlotComponentService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { ItemService } from '../../services/ItemService'
+import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
 
 export default defineComponent({
@@ -47,7 +48,7 @@ export default defineComponent({
      * Gets the category IDs and the accepted items to pass to the ItemComponent.
      */
     async function getItemComponentParameters() {
-      acceptedItems.value = await modSlotComponentService.getAcceptedItems(props.modSlot.compatibleItemIds)
+      acceptedItems.value = await Services.get(ItemService).getItems(props.modSlot.compatibleItemIds, true)
       acceptedItemsCategoryId.value = modSlotComponentService.getAcceptedItemsCategoryId(acceptedItems.value)
     }
 

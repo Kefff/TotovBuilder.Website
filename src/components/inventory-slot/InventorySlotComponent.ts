@@ -10,6 +10,7 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
 import { InventorySlotService } from '../../services/InventorySlotService'
+import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
@@ -129,12 +130,12 @@ export default defineComponent({
     async function initialize() {
       items.value = [...props.modelValue.items]
 
-      const inventorySlotTypeResult = inventorySlotService.getType(props.modelValue.typeId)
+      const inventorySlotType = inventorySlotService.getType(props.modelValue.typeId)
 
-      if (inventorySlotTypeResult.success) {
-        type.value = inventorySlotTypeResult.value
-        customIconName.value = type.value.customIcon
-        icon.value = type.value.icon
+      if (inventorySlotType != null) {
+        type.value = inventorySlotType
+        customIconName.value = inventorySlotType.customIcon
+        icon.value = inventorySlotType.icon
       }
 
       await setItemComponentParameters()
@@ -182,10 +183,12 @@ export default defineComponent({
      * Sets the category IDs and the accepted items to pass to the ItemComponent.
      */
     async function setItemComponentParameters() {
-      if (type.value != null) {
-        acceptedItemsCategoryId.value = type.value.acceptedItemCategories.length === 1 ? type.value.acceptedItemCategories[0] : undefined
-        acceptedItems.value = await inventorySlotComponentService.getAcceptedItems(type.value.acceptedItemCategories)
+      if (type.value == null) {
+        return
       }
+
+      acceptedItemsCategoryId.value = type.value.acceptedItemCategories.length === 1 ? type.value.acceptedItemCategories[0] : undefined
+      acceptedItems.value = await Services.get(ItemService).getItemsOfCategories(type.value.acceptedItemCategories, true)
     }
 
     /**

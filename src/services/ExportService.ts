@@ -1,10 +1,10 @@
-import { IBuild } from '../models/build/IBuild'
 import FileSaver from 'file-saver'
+import { IBuild } from '../models/build/IBuild'
 import vueI18n from '../plugins/vueI18n'
-import Result, { FailureType } from '../utils/Result'
-import Services from './repository/Services'
+import Result from '../utils/Result'
 import { BuildService } from './BuildService'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for exporting builds.
@@ -29,18 +29,14 @@ export class ExportService {
       FileSaver.saveAs(blob, fileName)
     }
     catch {
-      return Result.fail(FailureType.error, 'ExportService.export()', vueI18n.t('message.buildsExportError'))
+      return Result.fail(vueI18n.t('message.buildsExportError'))
     }
 
     const buildService = Services.get(BuildService)
 
     for (const build of builds) {
       build.lastExported = new Date()
-      const updateResult = await buildService.update(build.id, build)
-
-      if (!updateResult.success) {
-        return updateResult
-      }
+      await buildService.update(build.id, build)
     }
 
     return Result.ok()

@@ -4,9 +4,9 @@ import { IContainer } from '../../models/item/IContainer'
 import { IItem } from '../../models/item/IItem'
 import { ItemContentComponentService } from '../../services/components/ItemContentComponentService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
-import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 
 export default defineComponent({
   props: {
@@ -67,7 +67,7 @@ export default defineComponent({
     /**
      * Gets the category IDs used for determining the available sort buttons in the item selection dropdown.
      */
-    async function getCategoryIds() {
+    function getCategoryIds() {
       categoryId.value = Services.get(ItemContentComponentService).getAcceptedItemsCategoryId(props.containerItem.categoryId)
     }
 
@@ -76,13 +76,13 @@ export default defineComponent({
      */
     async function initialize() {
       await getAcceptedItems()
-      await getCategoryIds()
+      getCategoryIds()
     }
 
     /**
      * Adds an item to the content of the inventory item and emits the change to the parent component.
      */
-    async function onItemAdded(newInventoryItem: IInventoryItem) {
+    function onItemAdded(newInventoryItem: IInventoryItem) {
       content.value.push(newInventoryItem)
 
       nextTick(() => {
@@ -97,7 +97,7 @@ export default defineComponent({
      * @param updatedContainedInventoryItem - Updated contained item.
      * @param index - Index of the changed contained item in the inventory item content list.
      */
-    async function onItemChanged(updatedContainedInventoryItem: IInventoryItem, index: number) {
+    function onItemChanged(updatedContainedInventoryItem: IInventoryItem, index: number) {
       if (updatedContainedInventoryItem == null) {
         content.value.splice(index, 1)
       }

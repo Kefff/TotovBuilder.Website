@@ -10,10 +10,10 @@ export const RangedWeaponModSortingFunctions: ISortingFunctionList<IRangedWeapon
   ...ModSortingFunctions,
   accuracyModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.accuracyModifierPercentage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.accuracyModifierPercentage)
   },
   recoilModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.recoilModifierPercentage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.recoilModifierPercentage)
   }
 }

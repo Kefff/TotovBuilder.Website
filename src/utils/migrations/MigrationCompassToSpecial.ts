@@ -10,7 +10,7 @@ export class MigrationCompassToSpecial implements IMigration {
   public migrateBuildUnrelatedData = (): Promise<Result<void>> => Promise.resolve(Result.ok())
   public version = undefined
 
-  private async executeBuildMigration(build: IBuild): Promise<Result> {
+  private executeBuildMigration(build: IBuild): Promise<boolean> {
     const obsoleteInventorySlot = build.inventorySlots.find(is => is.typeId === 'compass')
 
     if (obsoleteInventorySlot != null) {
@@ -22,6 +22,6 @@ export class MigrationCompassToSpecial implements IMigration {
       ]
     }
 
-    return Result.ok()
+    return Promise.resolve(true)
   }
 }

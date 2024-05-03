@@ -55,17 +55,18 @@ export default defineComponent({
           let barterPrice = 0
 
           for (const barterItem of priceToAdd.barterItems) {
-            const barterItemPriceResult = await inventoryItemService.getPrice({
-              content: [],
-              ignorePrice: false,
-              itemId: barterItem.itemId,
-              modSlots: [],
-              quantity: barterItem.quantity
-            }, undefined, true, false)
-
-            if (barterItemPriceResult.success) {
-              barterPrice += barterItemPriceResult.value.priceWithContentInMainCurrency.valueInMainCurrency
-            }
+            const barterItemPrice = await inventoryItemService.getPrice(
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: barterItem.itemId,
+                modSlots: [],
+                quantity: barterItem.quantity
+              },
+              undefined,
+              true,
+              false)
+            barterPrice += barterItemPrice.priceWithContentInMainCurrency
           }
 
           priceToAdd.valueInMainCurrency = barterPrice

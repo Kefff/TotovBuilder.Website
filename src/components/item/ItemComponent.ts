@@ -159,14 +159,8 @@ export default defineComponent({
         return
       }
 
-      const selectedItemResult = await itemService.getItem(props.modelValue.itemId)
-
-      if (selectedItemResult.success) {
-        quantity.value = props.modelValue.quantity
-        selectedItem.value = selectedItemResult.value
-      } else {
-        selectedItem.value = undefined
-      }
+      selectedItem.value = await itemService.getItem(props.modelValue.itemId)
+      quantity.value = props.modelValue.quantity
 
       if (selectedItem.value != null) {
         presetModSlotContainingItem.value = await presetService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
@@ -333,10 +327,10 @@ export default defineComponent({
     /**
      * Updates the inventory item based on a new selected item if it is compatible; otherwise puts back the previous selected item.
      * @param newSelectedItem - New selected item.
-     * @param isCompatible - Indicates whether the new selected item is compatible or not.
+     * @param compatibilityCheckResult - Indicates whether the new selected item is compatible or not.
      */
-    async function updateInventoryItem(newSelectedItem: IItem, isCompatible: Result) {
-      if (isCompatible.success) {
+    function updateInventoryItem(newSelectedItem: IItem, compatibilityCheckResult: Result) {
+      if (compatibilityCheckResult.success) {
         quantity.value = maxSelectableQuantity.value
         const ignorePrice = selectedInventoryItem.value?.ignorePrice ?? false
 
@@ -386,7 +380,7 @@ export default defineComponent({
 
         emitItemChangedEvent()
       } else {
-        notificationService.notify(NotificationType.warning, isCompatible.failureMessage)
+        notificationService.notify(NotificationType.warning, compatibilityCheckResult.failureMessage)
         initializeSelectedItem() // Putting back the previous selected item
       }
 

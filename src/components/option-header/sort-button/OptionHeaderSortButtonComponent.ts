@@ -1,10 +1,10 @@
 import { computed, defineComponent, PropType } from 'vue'
-import { SortingService } from '../../../services/sorting/SortingService'
-import SortingData, { SortingOrder } from '../../../models/utils/SortingData'
-import StringUtils from '../../../utils/StringUtils'
-import { IItem } from '../../../models/item/IItem'
-import { ISortingFunctionList } from '../../../services/sorting/functions/ISortingFunctionList'
 import Images from '../../../images'
+import { IItem } from '../../../models/item/IItem'
+import SortingData, { SortingOrder } from '../../../models/utils/SortingData'
+import { ISortingFunctionList } from '../../../services/sorting/functions/ISortingFunctionList'
+import { SortingService } from '../../../services/sorting/SortingService'
+import StringUtils from '../../../utils/StringUtils'
 
 export default defineComponent({
   props: {
@@ -45,10 +45,10 @@ export default defineComponent({
      * @param property - Property.
      */
     function sortBy(property: string) {
-      const sortingDataResult = sortingService.setSortingProperty(property)
+      const sortingData = sortingService.setSortingProperty(property)
 
-      if (sortingDataResult.success) {
-        emit('update:modelValue', sortingDataResult.value)
+      if (sortingData != null) {
+        emit('update:modelValue', sortingData)
       }
     }
 

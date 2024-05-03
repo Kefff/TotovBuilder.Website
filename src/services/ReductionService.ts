@@ -25,9 +25,9 @@ import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
 import { IVest } from '../models/item/IVest'
 import { IWearable } from '../models/item/IWearable'
 import vueI18n from '../plugins/vueI18n'
-import Result, { FailureType } from '../utils/Result'
 import { BuildService } from './BuildService'
 import { ItemPropertiesService } from './ItemPropertiesService'
+import { LogService } from './LogService'
 import Services from './repository/Services'
 
 /**
@@ -39,31 +39,33 @@ export class ReductionService {
      * @param reducedBuild - Reduced build.
      * @returns Build.
      */
-  public parseReducedBuild(reducedBuild: Record<string, unknown>): Result<IBuild> {
+  public parseReducedBuild(reducedBuild: Record<string, unknown>): IBuild | undefined {
     const reducedInventorySlots = reducedBuild['s'] as Record<string, unknown>[]
 
     if (reducedInventorySlots == null) {
-      return Result.fail(FailureType.error, 'ReductionService.parseReducedBuild()', vueI18n.t('message.cannotParseBuildWithoutInventorySlots'))
+      Services.get(LogService).logError(vueI18n.t('message.cannotParseBuildWithoutInventorySlots'))
+
+      return undefined
     }
 
     const build = Services.get(BuildService).create(true)
     build.name = reducedBuild['n'] as string ?? ''
 
     for (const reducedInventorySlot of reducedInventorySlots) {
-      const inventorySlotResult = this.parseReducedInventorySlot(reducedInventorySlot)
+      const inventorySlot = this.parseReducedInventorySlot(reducedInventorySlot)
 
-      if (!inventorySlotResult.success) {
-        return Result.failFrom(inventorySlotResult)
+      if (inventorySlot == null) {
+        continue
       }
 
-      const index = build.inventorySlots.findIndex(is => is.typeId === inventorySlotResult.value.typeId)
+      const index = build.inventorySlots.findIndex(is => is.typeId === inventorySlot.typeId)
 
-      for (let i = 0; i < inventorySlotResult.value.items.length; i++) {
-        build.inventorySlots[index].items[i] = inventorySlotResult.value.items[i]
+      for (let i = 0; i < inventorySlot.items.length; i++) {
+        build.inventorySlots[index].items[i] = inventorySlot.items[i]
       }
     }
 
-    return Result.ok(build)
+    return build
   }
 
   /**
@@ -71,11 +73,13 @@ export class ReductionService {
    * @param reducedInventoryItem - Reduced inventory item.
    * @returns Inventory item.
    */
-  public parseReducedInventoryItem(reducedInventoryItem: Record<string, unknown>): Result<IInventoryItem> {
+  public parseReducedInventoryItem(reducedInventoryItem: Record<string, unknown>): IInventoryItem | undefined {
     const itemId = reducedInventoryItem['i'] as string
 
     if (itemId == null) {
-      return Result.fail(FailureType.error, 'ReductionService.parseReducedInventoryItem()', vueI18n.t('message.cannotParseInventoryItemWithoutItemId'))
+      Services.get(LogService).logError(vueI18n.t('message.cannotParseInventoryItemWithoutItemId'))
+
+      return undefined
     }
 
     const ignorePrice = reducedInventoryItem['p'] != null
@@ -90,13 +94,11 @@ export class ReductionService {
 
     if (reducedContainedItems != null) {
       for (const reducedContainedItem of reducedContainedItems) {
-        const itemResult = this.parseReducedInventoryItem(reducedContainedItem)
+        const item = this.parseReducedInventoryItem(reducedContainedItem)
 
-        if (!itemResult.success) {
-          return Result.failFrom(itemResult)
+        if (item != null) {
+          containedItems.push(item)
         }
-
-        containedItems.push(itemResult.value)
       }
     }
 
@@ -105,23 +107,21 @@ export class ReductionService {
 
     if (reducedModSlots != null) {
       for (const reducedModSlot of reducedModSlots) {
-        const modSlotResult = this.parseReducedInventoryModSlot(reducedModSlot)
+        const modSlot = this.parseReducedInventoryModSlot(reducedModSlot)
 
-        if (!modSlotResult.success) {
-          return Result.failFrom(modSlotResult)
+        if (modSlot != null) {
+          modSlots.push(modSlot)
         }
-
-        modSlots.push(modSlotResult.value)
       }
     }
 
-    return Result.ok({
+    return {
       content: containedItems,
       ignorePrice,
       itemId,
       modSlots,
       quantity
-    })
+    }
   }
 
   /**
@@ -678,30 +678,26 @@ export class ReductionService {
    * @param reducedInventoryModSlot - Reduced inventory mod slot.
    * @returns Mod slot.
    */
-  private parseReducedInventoryModSlot(reducedInventoryModSlot: Record<string, unknown>): Result<IInventoryModSlot> {
+  private parseReducedInventoryModSlot(reducedInventoryModSlot: Record<string, unknown>): IInventoryModSlot | undefined {
     const modSlotName = reducedInventoryModSlot['n'] as string
 
     if (modSlotName == null) {
-      return Result.fail(FailureType.error, 'ReductionService.parseReducedInventoryModSlot()', vueI18n.t('message.cannotParseInventoryModSlotWithoutModSlotName'))
+      Services.get(LogService).logError(vueI18n.t('message.cannotParseInventoryModSlotWithoutModSlotName'))
+
+      return undefined
     }
 
     let inventoryItem: IInventoryItem | undefined = undefined
     const reducedItem = reducedInventoryModSlot['i'] as Record<string, unknown> | undefined
 
     if (reducedItem != null) {
-      const inventoryItemResult = this.parseReducedInventoryItem(reducedItem)
-
-      if (!inventoryItemResult.success) {
-        return Result.failFrom(inventoryItemResult)
-      }
-
-      inventoryItem = inventoryItemResult.value
+      inventoryItem = this.parseReducedInventoryItem(reducedItem)
     }
 
-    return Result.ok({
+    return {
       item: inventoryItem,
       modSlotName
-    })
+    }
   }
 
   /**
@@ -709,42 +705,47 @@ export class ReductionService {
    * @param reducedInventorySlot - Reduced inventory slot.
    * @returns Inventory slot.
    */
-  private parseReducedInventorySlot(reducedInventorySlot: Record<string, unknown>): Result<IInventorySlot> {
+  private parseReducedInventorySlot(reducedInventorySlot: Record<string, unknown>): IInventorySlot | undefined {
+    const logService = Services.get(LogService)
     const reducedItems = reducedInventorySlot['i'] as Record<string, unknown>[]
 
     if (reducedItems == null || reducedItems.length === 0) {
-      return Result.fail(FailureType.error, 'ReductionService.parseReducedInventorySlot()', vueI18n.t('message.cannotParseInventorySlotWithoutItems'))
+      logService.logError(vueI18n.t('message.cannotParseInventorySlotWithoutItems'))
+
+      return undefined
     }
 
     const typeId = reducedInventorySlot['t'] as string
 
     if (typeId == null) {
-      return Result.fail(FailureType.error, 'ReductionService.parseReducedInventorySlot()', vueI18n.t('message.cannotParseInventorySlotWithoutTypeId'))
+      logService.logError(vueI18n.t('message.cannotParseInventorySlotWithoutTypeId'))
+
+      return undefined
     }
 
     const inventorySlotType = InventorySlotTypes.find(ist => ist.id === typeId)
 
     if (inventorySlotType == null) {
-      return Result.fail(FailureType.error, 'ReductionService.parseReducedInventorySlot()', vueI18n.t('message.cannotFindInventorySlotType', { inventorySlotTypeId: typeId }))
+      logService.logError(vueI18n.t('message.cannotFindInventorySlotType', { inventorySlotTypeId: typeId }))
+
+      return undefined
     }
 
     const inventoryItems: IInventoryItem[] = Array(inventorySlotType.itemSlotsAmount)
 
     for (let i = 0; i < reducedItems.length; i++) {
       const reducedItem = reducedItems[i]
-      const inventoryItemResult = this.parseReducedInventoryItem(reducedItem)
+      const inventoryItem = this.parseReducedInventoryItem(reducedItem)
 
-      if (!inventoryItemResult.success) {
-        return Result.failFrom(inventoryItemResult)
+      if (inventoryItem != null) {
+        inventoryItems[i] = inventoryItem
       }
-
-      inventoryItems[i] = inventoryItemResult.value
     }
 
-    return Result.ok({
+    return {
       items: inventoryItems,
       typeId
-    })
+    }
   }
 
   /**

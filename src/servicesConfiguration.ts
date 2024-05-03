@@ -31,7 +31,7 @@ import Services from './services/repository/Services'
 /**
  * Configures all the services used in the application.
  */
-export async function configureServices(): Promise<void> {
+export function configureServices() {
   Services.configure(BuildPropertiesService)
   Services.configure(BuildService)
   Services.configure(CompatibilityService)

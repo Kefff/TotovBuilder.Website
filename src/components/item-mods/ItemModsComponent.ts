@@ -40,7 +40,7 @@ export default defineComponent({
     /**
      * Gets the mod slots of the parent item and adds them to the list of inventory mod slots received.
      */
-    async function initialize() {
+    function initialize() {
       isInitializing.value = true
 
       const newInventoryModSlots: IInventoryModSlot[] = []

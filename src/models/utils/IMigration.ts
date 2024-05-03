@@ -9,7 +9,7 @@ export interface IMigration {
   /**
    * Migrates a build.
    */
-  migrateBuild: (build: IBuild) => Promise<Result<void>>
+  migrateBuild: (build: IBuild) => Promise<boolean>
 
   /**
    * Migrates elements of the application that are not related to builds.

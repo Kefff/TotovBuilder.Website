@@ -1,10 +1,9 @@
-import Services from './repository/Services'
-import { FetchService } from './FetchService'
 import { ITarkovValues } from '../models/configuration/ITarkovValues'
-import { WebsiteConfigurationService } from './WebsiteConfigurationService'
-import Result, { FailureType } from '../utils/Result'
 import vueI18n from '../plugins/vueI18n'
+import { FetchService } from './FetchService'
 import { LogService } from './LogService'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for getting values related to Tarkov gameplay.
@@ -27,32 +26,36 @@ export class TarkovValuesService {
    * Initializes the data used by the service.
    */
   public async initialize(): Promise<boolean> {
-    const tarkovValuesResult = await this.fetchTarkovValues()
+    const tarkovValues = await this.fetchTarkovValues()
 
-    if (tarkovValuesResult.success) {
-      this.values = tarkovValuesResult.value
-
-      return true
-    } else {
+    if (tarkovValues == undefined) {
       return false
     }
+
+    this.values = tarkovValues
+
+    return true
   }
 
   /**
    * Fetches the Tarkov values.
    * @returns Tarkov values.
    */
-  private async fetchTarkovValues(): Promise<Result<ITarkovValues>> {
+  private async fetchTarkovValues(): Promise<ITarkovValues | undefined> {
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointTarkovValues
-    const tarkovValuesResult = await fetchService.get<ITarkovValues>(endpoint)
+    const tarkovValues = await fetchService.get<ITarkovValues>(endpoint)
 
-    if (!tarkovValuesResult.success) {
-      return Result.fail(FailureType.error, 'TarkovValuesService.fetchTarkovValues()', vueI18n.t('message.tarkovValuesNotFetched'))
+    if (tarkovValues == null) {
+      Services.get(LogService).logError(vueI18n.t('message.tarkovValuesNotFetched'))
+
+      return undefined
     }
 
-    Services.get(LogService).logInformation('message.tarkovValuesFetched')
+    if (import.meta.env.VITE_DEBUG === 'true') {
+      Services.get(LogService).logInformation('message.tarkovValuesFetched')
+    }
 
-    return tarkovValuesResult
+    return tarkovValues
   }
 }

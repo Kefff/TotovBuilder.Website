@@ -15,12 +15,11 @@ import { IErgonomics } from '../models/utils/IErgonomics'
 import { IInventoryItemPrice } from '../models/utils/IInventoryItemPrice'
 import { IInventoryItemRecoil } from '../models/utils/IInventoryItemRecoil'
 import { IInventoryItemWearableModifiers } from '../models/utils/IInventoryItemWearableModifiers'
-import { IRecoilModifierPercentage } from '../models/utils/IRecoilModifierPercentage'
+import { IRecoilModifierPercentage } from '../models/utils/IRecoilPercentageModifier'
 import { IWeight } from '../models/utils/IWeight'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import vueI18n from '../plugins/vueI18n'
 import { PriceUtils } from '../utils/PriceUtils'
-import Result from '../utils/Result'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import { GlobalFilterService } from './GlobalFilterService'
 import { ItemPropertiesService } from './ItemPropertiesService'
@@ -49,55 +48,51 @@ export class InventoryItemService {
    * @param inventoryItem - Inventory item.
    * @returns Front plate armor class.
    */
-  public async getArmorModifiers(inventoryItem: IInventoryItem): Promise<Result<IArmorModifiers>> {
+  public async getArmorModifiers(inventoryItem: IInventoryItem): Promise<IArmorModifiers> {
     const itemService = Services.get(ItemService)
-    const itemResult = await itemService.getItem(inventoryItem.itemId)
-
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
-    }
-
     const itemPropertiesService = Services.get(ItemPropertiesService)
 
-    if (!itemPropertiesService.isArmor(itemResult.value)
-      && !itemPropertiesService.isHeadwear(itemResult.value)
-      && !itemPropertiesService.isVest(itemResult.value)) {
-      return Result.ok({
+    const item = await itemService.getItem(inventoryItem.itemId)
+
+    if (item == null || !itemPropertiesService.canHaveArmor(item)
+    ) {
+      return {
         armorClass: 0,
         durability: 0
-      })
+      }
     }
 
     const frontPlateModSlot = inventoryItem.modSlots.find(m => m.modSlotName === 'front_plate')
 
     if (frontPlateModSlot != null) {
       if (frontPlateModSlot.item == null) {
-        return Result.ok({
+        return {
           armorClass: 0,
           durability: 0
-        })
+        }
       }
 
-      const frontPlateResult = await itemService.getItem(frontPlateModSlot.item.itemId)
+      const frontPlate = await itemService.getItem(frontPlateModSlot.item.itemId) as IArmorMod
 
-      if (!frontPlateResult.success) {
-        return Result.failFrom(frontPlateResult)
+      if (frontPlate == null) {
+        return {
+          armorClass: 0,
+          durability: 0
+        }
       }
 
-      const frontPlate = frontPlateResult.value as IArmorMod
-
-      return Result.ok({
+      return {
         armorClass: frontPlate.armorClass,
         durability: frontPlate.durability
-      })
+      }
     }
 
-    const armor = itemResult.value as IArmor
+    const armor = item as IArmor
 
-    return Result.ok({
+    return {
       armorClass: armor.armorClass,
       durability: armor.durability
-    })
+    }
   }
 
   /**
@@ -110,15 +105,15 @@ export class InventoryItemService {
   public async getAsString(inventoryItem: IInventoryItem, language: string, itemInSameSlotInPreset?: IInventoryItem, indentationLevel = 0, canBeLooted = true): Promise<string> {
     const itemService = Services.get(ItemService)
 
-    const mainCurrencyResult = await itemService.getMainCurrency()
+    const mainCurrency = itemService.getMainCurrency()
 
-    if (!mainCurrencyResult.success) {
+    if (mainCurrency == null) {
       return ''
     }
 
-    const itemResult = await itemService.getItem(inventoryItem.itemId)
+    const item = await itemService.getItem(inventoryItem.itemId)
 
-    if (!itemResult.success) {
+    if (item == null) {
       return ''
     }
 
@@ -128,37 +123,37 @@ export class InventoryItemService {
 
     if (inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
       const itemCountAsString = inventoryItem.quantity > 1 ? `${inventoryItem.quantity} x ` : ''
-      inventoryItemAsString += `${itemCountAsString}${itemResult.value.name}`
+      inventoryItemAsString += `${itemCountAsString}${item.name}`
     }
 
     if (canBeLooted && !inventoryItem.ignorePrice && inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
-      const priceResult = await this.getPrice(inventoryItem, itemInSameSlotInPreset, canBeLooted)
+      const price = await this.getPrice(inventoryItem, itemInSameSlotInPreset, canBeLooted)
 
-      if (priceResult.success && priceResult.value.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset) {
-        if (priceResult.value.missingPrice && priceResult.value.unitPrice.valueInMainCurrency === 0) {
+      if (price != null && price.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset) {
+        if (price.missingPrice && price.unitPrice.valueInMainCurrency === 0) {
           // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
           inventoryItemAsString += `${separator}${vueI18n.t('message.noMerchant', 1, { locale: language })}`
         } else {
           // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-          inventoryItemAsString += `${separator}${vueI18n.t('caption.merchant_' + priceResult.value.unitPrice.merchant, 1, { locale: language })}`
+          inventoryItemAsString += `${separator}${vueI18n.t('caption.merchant_' + price.value.unitPrice.merchant, 1, { locale: language })}`
 
-          if (priceResult.value.unitPrice.merchant !== 'flea-market') {
-            inventoryItemAsString += ` ${priceResult.value.unitPrice.merchantLevel}`
+          if (price.unitPrice.merchant !== 'flea-market') {
+            inventoryItemAsString += ` ${price.unitPrice.merchantLevel}`
           }
 
-          if (priceResult.value.unitPrice.currencyName === 'barter') {
+          if (price.unitPrice.currencyName === 'barter') {
             // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-            inventoryItemAsString += ` (${vueI18n.t('caption.barter', 1, { locale: language }).toLocaleLowerCase()}): ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceResult.value.price.valueInMainCurrency, language)}${mainCurrencyResult.value.symbol}`
+            inventoryItemAsString += ` (${vueI18n.t('caption.barter', 1, { locale: language }).toLocaleLowerCase()}): ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.value.price.valueInMainCurrency, language)}${mainCurrency.value.symbol}`
           } else {
-            inventoryItemAsString += `: ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceResult.value.price.value, language)}`
+            inventoryItemAsString += `: ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.value, language)}`
 
-            if (priceResult.value.price.currencyName === mainCurrencyResult.value.name) {
-              inventoryItemAsString += mainCurrencyResult.value.symbol
+            if (price.price.currencyName === mainCurrency.name) {
+              inventoryItemAsString += mainCurrency.symbol
             } else {
-              const priceCurrencyResult = await itemService.getCurrency(priceResult.value.price.currencyName)
+              const priceCurrency = itemService.getCurrency(price.price.currencyName)
 
-              if (priceCurrencyResult.success) {
-                inventoryItemAsString += `${priceCurrencyResult.value.symbol} (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceResult.value.price.valueInMainCurrency, language)}${mainCurrencyResult.value.symbol})`
+              if (priceCurrency != null) {
+                inventoryItemAsString += `${priceCurrency.symbol} (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, language)}${mainCurrency.symbol})`
               }
             }
           }
@@ -218,20 +213,23 @@ ${indentation}${containedItemAsString}`
    * @param inventoryItem - Inventory item.
    * @returns Ergonomics.
    */
-  public async getErgonomics(inventoryItem: IInventoryItem): Promise<Result<IErgonomics>> {
-    const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
+  public async getErgonomics(inventoryItem: IInventoryItem): Promise<IErgonomics> {
+    const item = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
+    if (item == null) {
+      return {
+        ergonomics: 0,
+        ergonomicsWithMods: 0
+      }
     }
 
     const itemPropertiesService = Services.get(ItemPropertiesService)
     let ergonomics = 0
 
-    if (itemPropertiesService.isRangedWeapon(itemResult.value)) {
-      ergonomics = (itemResult.value as IRangedWeapon).ergonomics
-    } else if (itemPropertiesService.isModdable(itemResult.value)) {
-      ergonomics = (itemResult.value as IMod).ergonomicsModifier
+    if (itemPropertiesService.isRangedWeapon(item)) {
+      ergonomics = (item as IRangedWeapon).ergonomics
+    } else if (itemPropertiesService.isModdable(item)) {
+      ergonomics = (item as IMod).ergonomicsModifier
     }
 
     let ergonomicsWithMods = ergonomics
@@ -241,19 +239,17 @@ ${indentation}${containedItemAsString}`
         continue
       }
 
-      const modErgonomicsResult = await this.getErgonomics(modSlot.item)
+      const modErgonomics = await this.getErgonomics(modSlot.item)
 
-      if (!modErgonomicsResult.success) {
-        return Result.failFrom(modErgonomicsResult)
+      if (modErgonomics != null) {
+        ergonomicsWithMods += modErgonomics.ergonomicsWithMods
       }
-
-      ergonomicsWithMods += modErgonomicsResult.value.ergonomicsWithMods
     }
 
-    return Result.ok({
+    return {
       ergonomics: ergonomics,
       ergonomicsWithMods: ergonomicsWithMods
-    })
+    }
   }
 
   /**
@@ -264,18 +260,45 @@ ${indentation}${containedItemAsString}`
    * @param useMerchantFilter - Indicates whether the merchant filter is used. If false, all prices are taken into consideration. Used mainly to ignore merchant filter to be able to display all the prices and barters of an item in its stats.
    * @returns Price.
    */
-  public async getPrice(inventoryItem: IInventoryItem, itemInSameSlotInPreset?: IInventoryItem, canBeLooted = true, useMerchantFilter = true): Promise<Result<IInventoryItemPrice>> {
+  public async getPrice(inventoryItem: IInventoryItem, itemInSameSlotInPreset?: IInventoryItem, canBeLooted = true, useMerchantFilter = true): Promise<IInventoryItemPrice> {
     const globalFilterService = Services.get(GlobalFilterService)
     const itemService = Services.get(ItemService)
-    const itemResult = await itemService.getItem(inventoryItem.itemId)
 
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
+    const item = await itemService.getItem(inventoryItem.itemId)
+    const mainCurrency = itemService.getMainCurrency()
+
+    if (item == null || mainCurrency == null) {
+      return {
+        missingPrice: false,
+        price: {
+          barterItems: [],
+          currencyName: '',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        pricesWithContent: [],
+        priceWithContentInMainCurrency: 0,
+        unitPrice: {
+          barterItems: [],
+          currencyName: '',
+          itemId: '',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+      }
     }
 
     let unitPrice: IPrice = {
       barterItems: [],
-      currencyName: 'RUB',
+      currencyName: mainCurrency.name,
       itemId: '',
       merchant: '',
       merchantLevel: 0,
@@ -297,7 +320,7 @@ ${indentation}${containedItemAsString}`
     let hasUnitPrice = false
 
     if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
-      const matchingPrices = useMerchantFilter ? globalFilterService.getMatchingPrices(itemResult.value) : itemResult.value.prices
+      const matchingPrices = useMerchantFilter ? globalFilterService.getMatchingPrices(item) : item.prices
 
       for (const matchingPrice of matchingPrices) {
         let missingBarterItemPrice = false
@@ -306,25 +329,29 @@ ${indentation}${containedItemAsString}`
 
         if (matchingPrice.currencyName === 'barter') {
           for (const barterItem of matchingPrice.barterItems) {
-            const barterItemPriceResult = await this.getPrice({
-              content: [],
-              ignorePrice: false,
-              itemId: barterItem.itemId,
-              modSlots: [],
-              quantity: barterItem.quantity
-            }, undefined, true, useMerchantFilter)
+            const barterItemPrice = await this.getPrice(
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: barterItem.itemId,
+                modSlots: [],
+                quantity: barterItem.quantity
+              },
+              undefined,
+              true,
+              useMerchantFilter)
 
-            if (!barterItemPriceResult.success) {
-              return Result.failFrom(barterItemPriceResult)
+            if (barterItemPrice == undefined) {
+              continue
             }
 
-            if (barterItemPriceResult.value.missingPrice) {
+            if (barterItemPrice.missingPrice) {
               missingBarterItemPrice = true
               continue
             }
 
-            matchingPriceBarterItemPrices.push(barterItemPriceResult.value)
-            matchingPriceInMainCurrency += barterItemPriceResult.value.price.valueInMainCurrency
+            matchingPriceBarterItemPrices.push(barterItemPrice)
+            matchingPriceInMainCurrency += barterItemPrice.price.valueInMainCurrency
           }
         }
 
@@ -371,26 +398,11 @@ ${indentation}${containedItemAsString}`
       })
     }
 
-    const mainCurrencyResult = await itemService.getMainCurrency()
-
-    if (!mainCurrencyResult.success) {
-      return Result.failFrom(mainCurrencyResult)
-    }
-
     const inventoryPrice: IInventoryItemPrice = {
       missingPrice: unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored && !hasUnitPrice,
       price,
       pricesWithContent: [],
-      priceWithContentInMainCurrency: {
-        barterItems: [],
-        currencyName: mainCurrencyResult.value.name,
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: price.valueInMainCurrency,
-        valueInMainCurrency: price.valueInMainCurrency
-      },
+      priceWithContentInMainCurrency: price.valueInMainCurrency,
       unitPrice,
       unitPriceIgnoreStatus
     }
@@ -450,13 +462,13 @@ ${indentation}${containedItemAsString}`
       }
       /* c8 ignore stop */
 
-      const containedItemPriceResult = await this.getPrice(containedItem, preset?.content[i])
+      const containedItemPrice = await this.getPrice(containedItem, preset?.content[i])
 
-      if (!containedItemPriceResult.success) {
-        return Result.failFrom(containedItemPriceResult)
+      if (containedItemPrice == null) {
+        continue
       }
 
-      for (const containedItemPriceWithContent of containedItemPriceResult.value.pricesWithContent) {
+      for (const containedItemPriceWithContent of containedItemPrice.pricesWithContent) {
         const currencyIndex = inventoryPrice.pricesWithContent.findIndex(p => p.currencyName === containedItemPriceWithContent.currencyName)
 
         if (currencyIndex < 0) {
@@ -466,11 +478,10 @@ ${indentation}${containedItemAsString}`
           inventoryPrice.pricesWithContent[currencyIndex].valueInMainCurrency += containedItemPriceWithContent.valueInMainCurrency
         }
 
-        inventoryPrice.priceWithContentInMainCurrency.value += containedItemPriceWithContent.valueInMainCurrency
-        inventoryPrice.priceWithContentInMainCurrency.valueInMainCurrency += containedItemPriceWithContent.valueInMainCurrency
+        inventoryPrice.priceWithContentInMainCurrency += containedItemPriceWithContent.valueInMainCurrency
       }
 
-      if (containedItemPriceResult.value.missingPrice) {
+      if (containedItemPrice.missingPrice) {
         inventoryPrice.missingPrice = true
       }
     }
@@ -482,13 +493,13 @@ ${indentation}${containedItemAsString}`
       }
 
       const presetModSlot = preset?.modSlots.find(pms => pms.modSlotName === modSlot.modSlotName)
-      const modPriceResult = await this.getPrice(modSlot.item, presetModSlot?.item)
+      const modPrice = await this.getPrice(modSlot.item, presetModSlot?.item)
 
-      if (!modPriceResult.success) {
-        return Result.failFrom(modPriceResult)
+      if (modPrice == null) {
+        continue
       }
 
-      for (const modPriceWithContent of modPriceResult.value.pricesWithContent) {
+      for (const modPriceWithContent of modPrice.pricesWithContent) {
         const currencyIndex = inventoryPrice.pricesWithContent.findIndex(p => p.currencyName === modPriceWithContent.currencyName)
 
         if (currencyIndex < 0) {
@@ -498,11 +509,10 @@ ${indentation}${containedItemAsString}`
           inventoryPrice.pricesWithContent[currencyIndex].valueInMainCurrency += modPriceWithContent.valueInMainCurrency
         }
 
-        inventoryPrice.priceWithContentInMainCurrency.value += modPriceWithContent.valueInMainCurrency
-        inventoryPrice.priceWithContentInMainCurrency.valueInMainCurrency += modPriceWithContent.valueInMainCurrency
+        inventoryPrice.priceWithContentInMainCurrency += modPriceWithContent.valueInMainCurrency
       }
 
-      if (modPriceResult.value.missingPrice) {
+      if (modPrice.missingPrice) {
         inventoryPrice.missingPrice = true
       }
     }
@@ -511,7 +521,7 @@ ${indentation}${containedItemAsString}`
       inventoryPrice.pricesWithContent = PriceUtils.sortByCurrency(inventoryPrice.pricesWithContent)
     }
 
-    return Result.ok(inventoryPrice)
+    return inventoryPrice
   }
 
   /**
@@ -519,23 +529,19 @@ ${indentation}${containedItemAsString}`
    * @param inventoryItem - Inventory item.
    * @returns Recoil.
    */
-  public async getRecoil(inventoryItem: IInventoryItem): Promise<Result<IInventoryItemRecoil>> {
-    const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
+  public async getRecoil(inventoryItem: IInventoryItem): Promise<IInventoryItemRecoil> {
+    const item = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
-    }
-
-    if (!Services.get(ItemPropertiesService).isRangedWeapon(itemResult.value)) {
-      return Result.ok({
+    if (item == null || !Services.get(ItemPropertiesService).isRangedWeapon(item)) {
+      return {
         horizontalRecoil: 0,
         horizontalRecoilWithMods: 0,
         verticalRecoil: 0,
         verticalRecoilWithMods: 0
-      })
+      }
     }
 
-    const rangedWeapon = itemResult.value as IRangedWeapon
+    const rangedWeapon = item as IRangedWeapon
     const recoil: IInventoryItemRecoil = {
       horizontalRecoil: rangedWeapon.horizontalRecoil,
       horizontalRecoilWithMods: rangedWeapon.horizontalRecoil,
@@ -544,14 +550,8 @@ ${indentation}${containedItemAsString}`
     }
 
     // Getting the chambered or in magazine ammunition recoil modifier percentage
-    const chamberedAmmunitionRecoilModifierPercentageResult = await this.getChamberedAmmunitionRecoilModifierPercentage(inventoryItem.modSlots)
-
-    if (!chamberedAmmunitionRecoilModifierPercentageResult.success) {
-      return Result.failFrom(chamberedAmmunitionRecoilModifierPercentageResult)
-    }
-
     // TODO : Display the ammunition modifier next to the weapon recoil instead of including it in the calculation
-    const chamberedAmmunitionRecoilModifierPercentage = 0/*chamberedAmmunitionRecoilModifierPercentageResult.value*/
+    const chamberedAmmunitionRecoilModifierPercentage = await this.getChamberedAmmunitionRecoilModifierPercentage(inventoryItem.modSlots) ?? 0
 
     // Getting the recoil modifier percentage for each mods
     let modsRecoilModifierPercentages = 0
@@ -561,22 +561,22 @@ ${indentation}${containedItemAsString}`
         continue
       }
 
-      const modRecoilModifierPercentageResult = await this.getRecoilModifierPercentage(modSlot.item)
+      const modRecoilModifierPercentage = await this.getRecoilModifierPercentage(modSlot.item)
 
-      if (!modRecoilModifierPercentageResult.success) {
-        return Result.failFrom(modRecoilModifierPercentageResult)
+      if (modRecoilModifierPercentage == null) {
+        continue
       }
 
-      modsRecoilModifierPercentages += modRecoilModifierPercentageResult.value.recoilModifierPercentageWithMods
+      modsRecoilModifierPercentages += modRecoilModifierPercentage.recoilModifierPercentageWithMods
     }
 
     // Applying to the weapon recoil the recoil modifier percentages of its mods
     recoil.horizontalRecoilWithMods = recoil.horizontalRecoil + (recoil.horizontalRecoil * modsRecoilModifierPercentages)
-    recoil.horizontalRecoilWithMods = recoil.horizontalRecoilWithMods * (1 + chamberedAmmunitionRecoilModifierPercentage)
+    // recoil.horizontalRecoilWithMods = recoil.horizontalRecoilWithMods * (1 + chamberedAmmunitionRecoilModifierPercentage)
     recoil.verticalRecoilWithMods = recoil.verticalRecoil + (recoil.verticalRecoil * modsRecoilModifierPercentages)
-    recoil.verticalRecoilWithMods = recoil.verticalRecoilWithMods * (1 + chamberedAmmunitionRecoilModifierPercentage)
+    // recoil.verticalRecoilWithMods = recoil.verticalRecoilWithMods * (1 + chamberedAmmunitionRecoilModifierPercentage)
 
-    return Result.ok(recoil)
+    return recoil
   }
 
   /**
@@ -584,26 +584,25 @@ ${indentation}${containedItemAsString}`
    * @param inventoryItem - Inventory item.
    * @returns Recoil modifier percentage.
    */
-  public async getRecoilModifierPercentage(inventoryItem: IInventoryItem): Promise<Result<IRecoilModifierPercentage>> {
-    const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
+  public async getRecoilModifierPercentage(inventoryItem: IInventoryItem): Promise<IRecoilModifierPercentage> {
+    const itemPropertiesService = Services.get(ItemPropertiesService)
+    const item = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
+    if (item == null || !itemPropertiesService.isModdable(item)) {
+      return {
+        recoilModifierPercentage: 0,
+        recoilModifierPercentageWithMods: 0
+      }
     }
 
-    const itemPropertiesService = Services.get(ItemPropertiesService)
     const recoilModifierPercentage: IRecoilModifierPercentage = {
       recoilModifierPercentage: 0,
       recoilModifierPercentageWithMods: 0
     }
 
-    if (!itemPropertiesService.isModdable(itemResult.value)) {
-      return Result.ok(recoilModifierPercentage)
-    }
+    const rangedWeaponMod = item as IRangedWeaponMod
 
-    const rangedWeaponMod = itemResult.value as IRangedWeaponMod
-
-    if (itemPropertiesService.isRangedWeaponMod(itemResult.value)) {
+    if (itemPropertiesService.isRangedWeaponMod(item)) {
       recoilModifierPercentage.recoilModifierPercentage = rangedWeaponMod.recoilModifierPercentage
       recoilModifierPercentage.recoilModifierPercentageWithMods = rangedWeaponMod.recoilModifierPercentage
     }
@@ -613,16 +612,16 @@ ${indentation}${containedItemAsString}`
         continue
       }
 
-      const modRecoilModifierPercentageResult = await this.getRecoilModifierPercentage(modSlot.item)
+      const modRecoilModifierPercentage = await this.getRecoilModifierPercentage(modSlot.item)
 
-      if (!modRecoilModifierPercentageResult.success) {
-        return Result.failFrom(modRecoilModifierPercentageResult)
+      if (modRecoilModifierPercentage == null) {
+        continue
       }
 
-      recoilModifierPercentage.recoilModifierPercentageWithMods = recoilModifierPercentage.recoilModifierPercentageWithMods + modRecoilModifierPercentageResult.value.recoilModifierPercentageWithMods
+      recoilModifierPercentage.recoilModifierPercentageWithMods = recoilModifierPercentage.recoilModifierPercentageWithMods + modRecoilModifierPercentage.recoilModifierPercentageWithMods
     }
 
-    return Result.ok(recoilModifierPercentage)
+    return recoilModifierPercentage
   }
 
   /**
@@ -632,15 +631,15 @@ ${indentation}${containedItemAsString}`
    * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
    * @returns Shopping list items.
    */
-  public async getShoppingList(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true): Promise<Result<IShoppingListItem[]>> {
+  public async getShoppingList(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true): Promise<IShoppingListItem[]> {
     const itemService = Services.get(ItemService)
     const shoppingList: IShoppingListItem[] = []
     const shoppingListItemsToAdd: IShoppingListItem[] = []
 
-    const itemResult = await itemService.getItem(inventoryItem.itemId)
+    const item = await itemService.getItem(inventoryItem.itemId)
 
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
+    if (item == null) {
+      return []
     }
 
     let unitPriceIgnoreStatus = IgnoredUnitPrice.notIgnored
@@ -654,10 +653,10 @@ ${indentation}${containedItemAsString}`
     }
 
     if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
-      const priceResult = await this.getPrice(inventoryItem)
+      const price = await this.getPrice(inventoryItem)
 
-      if (!priceResult.success) {
-        return Result.failFrom(priceResult)
+      if (price == null) {
+        return []
       }
 
       let unitPrice: IPrice
@@ -665,24 +664,16 @@ ${indentation}${containedItemAsString}`
       // Barters
       const shoppingListBartersToAdd: IShoppingListItem[] = []
 
-      if (priceResult.value.unitPrice.currencyName === 'barter') {
-        for (const barterItem of priceResult.value.unitPrice.barterItems) {
-          const barterItemShoppingListResult = await this.getShoppingList({
+      if (price.unitPrice.currencyName === 'barter') {
+        for (const barterItem of price.unitPrice.barterItems) {
+          const barterItemShoppingList = await this.getShoppingList({
             content: [],
             ignorePrice: false,
             itemId: barterItem.itemId,
             modSlots: [],
             quantity: barterItem.quantity * inventoryItem.quantity
           })
-
-          /* c8 ignore start */
-          if (!barterItemShoppingListResult.success) {
-            // Should never happen since barter item prices are already searched in the getPrice() method
-            return Result.failFrom(barterItemShoppingListResult)
-          }
-          /* c8 ignore stop */
-
-          shoppingListBartersToAdd.push(...barterItemShoppingListResult.value)
+          shoppingListBartersToAdd.push(...barterItemShoppingList)
         }
 
         // Setting the unit price of items that have barter items to 0 since barter items and their price are added to the shopping list
@@ -690,18 +681,18 @@ ${indentation}${containedItemAsString}`
           barterItems: [],
           currencyName: 'barter',
           itemId: inventoryItem.itemId,
-          merchant: priceResult.value.unitPrice.merchant,
-          merchantLevel: priceResult.value.unitPrice.merchantLevel,
-          quest: priceResult.value.unitPrice.quest,
+          merchant: price.unitPrice.merchant,
+          merchantLevel: price.unitPrice.merchantLevel,
+          quest: price.unitPrice.quest,
           value: 0,
           valueInMainCurrency: 0
         }
       } else {
-        unitPrice = priceResult.value.unitPrice
+        unitPrice = price.unitPrice
       }
 
       shoppingListItemsToAdd.push({
-        item: itemResult.value,
+        item,
         quantity: inventoryItem.quantity,
         price: {
           barterItems: unitPrice.barterItems,
@@ -723,37 +714,19 @@ ${indentation}${containedItemAsString}`
     }
 
     for (const modSlot of inventoryItem.modSlots) {
-      /* c8 ignore start */
       if (modSlot.item == null) {
         continue
       }
-      /* c8 ignore stop */
 
       const presetModSlot = presetModSlotItem?.modSlots.find(pms => pms.modSlotName === modSlot.modSlotName)
-      const shoppingListResult = await this.getShoppingList(modSlot.item, presetModSlot?.item)
-
-      /* c8 ignore start */
-      if (!shoppingListResult.success) {
-        // Should never happen since mod prices are already searched in the getPrice() method
-        return Result.failFrom(shoppingListResult)
-      }
-      /* c8 ignore stop */
-
-      shoppingListItemsToAdd.push(...shoppingListResult.value)
+      const modShoppingList = await this.getShoppingList(modSlot.item, presetModSlot?.item)
+      shoppingListItemsToAdd.push(...modShoppingList)
     }
 
     // Content
     for (const content of inventoryItem.content) {
-      const shoppingListResult = await this.getShoppingList(content)
-
-      /* c8 ignore start */
-      if (!shoppingListResult.success) {
-        // Should never happen since content item prices are already searched in the getPrice() method
-        return Result.failFrom(shoppingListResult)
-      }
-      /* c8 ignore stop */
-
-      shoppingListItemsToAdd.push(...shoppingListResult.value)
+      const containedItemShoppingList = await this.getShoppingList(content)
+      shoppingListItemsToAdd.push(...containedItemShoppingList)
     }
 
     // Regrouping similar items
@@ -769,7 +742,7 @@ ${indentation}${containedItemAsString}`
       }
     }
 
-    return Result.ok(shoppingList)
+    return shoppingList
   }
 
   /**
@@ -777,32 +750,27 @@ ${indentation}${containedItemAsString}`
    * @param inventoryItem - Inventory item.
    * @returns Wearable modifiers.
    */
-  public async getWearableModifiers(inventoryItem: IInventoryItem): Promise<Result<IInventoryItemWearableModifiers>> {
-    const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
+  public async getWearableModifiers(inventoryItem: IInventoryItem): Promise<IInventoryItemWearableModifiers> {
+    const item = await Services.get(ItemService).getItem(inventoryItem.itemId) as IWearable
 
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
-    }
-
-    if (!Services.get(ItemPropertiesService).isWearable(itemResult.value)) {
-      return Result.ok({
+    if (item == null || !Services.get(ItemPropertiesService).isWearable(item)) {
+      return {
         ergonomicsModifierPercentage: 0,
         ergonomicsModifierPercentageWithMods: 0,
         movementSpeedModifierPercentage: 0,
         movementSpeedModifierPercentageWithMods: 0,
         turningSpeedModifierPercentage: 0,
         turningSpeedModifierPercentageWithMods: 0
-      })
+      }
     }
 
-    const wearable = itemResult.value as IWearable
-    const ergonomicsModifierPercentage = wearable.ergonomicsModifierPercentage
+    const ergonomicsModifierPercentage = item.ergonomicsModifierPercentage
     let ergonomicsModifierPercentageWithMods = ergonomicsModifierPercentage
 
-    const movementSpeedModifierPercentage = wearable.movementSpeedModifierPercentage
+    const movementSpeedModifierPercentage = item.movementSpeedModifierPercentage
     let movementSpeedModifierPercentageWithMods = movementSpeedModifierPercentage
 
-    const turningSpeedModifierPercentage = wearable.turningSpeedModifierPercentage
+    const turningSpeedModifierPercentage = item.turningSpeedModifierPercentage
     let turningSpeedModifierPercentageWithMods = turningSpeedModifierPercentage
 
     for (const modSlot of inventoryItem.modSlots) {
@@ -810,25 +778,25 @@ ${indentation}${containedItemAsString}`
         continue
       }
 
-      const modWearableModifiersResult = await this.getWearableModifiers(modSlot.item)
+      const modWearableModifiers = await this.getWearableModifiers(modSlot.item)
 
-      if (!modWearableModifiersResult.success) {
-        return Result.failFrom(modWearableModifiersResult)
+      if (modWearableModifiers == null) {
+        continue
       }
 
-      ergonomicsModifierPercentageWithMods += modWearableModifiersResult.value.ergonomicsModifierPercentageWithMods
-      movementSpeedModifierPercentageWithMods += modWearableModifiersResult.value.movementSpeedModifierPercentageWithMods
-      turningSpeedModifierPercentageWithMods += modWearableModifiersResult.value.turningSpeedModifierPercentageWithMods
+      ergonomicsModifierPercentageWithMods += modWearableModifiers.ergonomicsModifierPercentageWithMods
+      movementSpeedModifierPercentageWithMods += modWearableModifiers.movementSpeedModifierPercentageWithMods
+      turningSpeedModifierPercentageWithMods += modWearableModifiers.turningSpeedModifierPercentageWithMods
     }
 
-    return Result.ok({
+    return {
       ergonomicsModifierPercentage,
       ergonomicsModifierPercentageWithMods,
       movementSpeedModifierPercentage,
       movementSpeedModifierPercentageWithMods,
       turningSpeedModifierPercentage,
       turningSpeedModifierPercentageWithMods
-    })
+    }
   }
 
   /**
@@ -836,52 +804,55 @@ ${indentation}${containedItemAsString}`
    * @param inventoryItem - Inventory item.
    * @returns Weight.
    */
-  public async getWeight(inventoryItem: IInventoryItem): Promise<Result<IWeight>> {
-    const itemResult = await Services.get(ItemService).getItem(inventoryItem.itemId)
+  public async getWeight(inventoryItem: IInventoryItem): Promise<IWeight> {
+    const item = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
+    if (item == null) {
+      return {
+        unitWeight: 0,
+        weight: 0,
+        weightWithContent: 0
+      }
     }
 
-    const weight = itemResult.value.weight * inventoryItem.quantity
+    const weight = item.weight * inventoryItem.quantity
     let weightWithContent = weight
-
-    for (const containedItem of inventoryItem.content) {
-      /* c8 ignore start */
-      if (containedItem == null) {
-        // !!! WORKAROUNG !!! In theory it should never happen, but it happened in production without being able to identify the source of the problem.
-        continue
-      }
-      /* c8 ignore stop */
-
-      const containedItemWeightResult = await this.getWeight(containedItem)
-
-      if (!containedItemWeightResult.success) {
-        return Result.failFrom(containedItemWeightResult)
-      }
-
-      weightWithContent += containedItemWeightResult.value.weightWithContent
-    }
 
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.item == null) {
         continue
       }
 
-      const modWeightResult = await this.getWeight(modSlot.item)
+      const modWeight = await this.getWeight(modSlot.item)
 
-      if (!modWeightResult.success) {
-        return Result.failFrom(modWeightResult)
+      if (modWeight == null) {
+        continue
       }
 
-      weightWithContent += modWeightResult.value.weightWithContent
+      weightWithContent += modWeight.weightWithContent
     }
 
-    return Result.ok({
+    for (const containedItem of inventoryItem.content) {
+      /* c8 ignore start */ // !!! WORKAROUNG !!! In theory it should never happen, but it happened in production without being able to identify the source of the problem.
+      if (containedItem == null) {
+        continue
+      }
+      /* c8 ignore stop */
+
+      const containedItemWeight = await this.getWeight(containedItem)
+
+      if (containedItemWeight == null) {
+        continue
+      }
+
+      weightWithContent += containedItemWeight.weightWithContent
+    }
+
+    return {
       weight: weight,
       weightWithContent: weightWithContent,
-      unitWeight: itemResult.value.weight
-    })
+      unitWeight: item.weight
+    }
   }
 
   /**
@@ -890,7 +861,7 @@ ${indentation}${containedItemAsString}`
    * @param modSlots - Mod slots.
    * @returns Recoil modifier percentage.
    */
-  private async getChamberedAmmunitionRecoilModifierPercentage(modSlots: IInventoryModSlot[]): Promise<Result<number>> {
+  private async getChamberedAmmunitionRecoilModifierPercentage(modSlots: IInventoryModSlot[]): Promise<number> {
     let ammunitionId: string | undefined
 
     for (const modSlot of modSlots) {
@@ -912,15 +883,11 @@ ${indentation}${containedItemAsString}`
     }
 
     if (ammunitionId == null) {
-      return Result.ok(0)
+      return 0
     }
 
-    const ammunitionResult = await Services.get(ItemService).getItem(ammunitionId)
+    const ammunition = await Services.get(ItemService).getItem(ammunitionId) as IAmmunition
 
-    if (!ammunitionResult.success) {
-      return Result.failFrom(ammunitionResult)
-    }
-
-    return Result.ok((ammunitionResult.value as IAmmunition).recoilModifierPercentage)
+    return ammunition?.recoilModifierPercentage ?? 0
   }
 }

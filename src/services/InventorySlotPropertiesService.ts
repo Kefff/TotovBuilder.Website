@@ -6,7 +6,6 @@ import { IRecoil } from '../models/utils/IRecoil'
 import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 import vueI18n from '../plugins/vueI18n'
 import { PriceUtils } from '../utils/PriceUtils'
-import Result from '../utils/Result'
 import StringUtils from '../utils/StringUtils'
 import { InventoryItemService } from './InventoryItemService'
 import { InventorySlotService } from './InventorySlotService'
@@ -23,9 +22,9 @@ export class InventorySlotPropertiesService {
    */
   public async getAsString(inventorySlot: IInventorySlot, language: string) {
     let inventorySlotAsString = ''
-    const inventorySlotTypeResult = Services.get(InventorySlotService).getType(inventorySlot.typeId)
+    const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
 
-    if (!inventorySlotTypeResult.success) {
+    if (inventorySlotType == null) {
       return ''
     }
 
@@ -34,7 +33,7 @@ export class InventorySlotPropertiesService {
         continue
       }
 
-      const itemAsString = await Services.get(InventoryItemService).getAsString(inventoryItem, language, undefined, undefined, inventorySlotTypeResult.value.canBeLooted)
+      const itemAsString = await Services.get(InventoryItemService).getAsString(inventoryItem, language, undefined, undefined, inventorySlotType.canBeLooted)
 
       if (itemAsString !== '') {
         if (inventorySlotAsString.length > 0) {
@@ -42,7 +41,7 @@ export class InventorySlotPropertiesService {
         }
 
         // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-        inventorySlotAsString += `[${vueI18n.t('caption.slotType' + StringUtils.toUpperFirst(inventorySlotTypeResult.value.id), 1, { locale: language })}] ${itemAsString}`
+        inventorySlotAsString += `[${vueI18n.t('caption.slotType' + StringUtils.toUpperFirst(inventorySlotType.value.id), 1, { locale: language })}] ${itemAsString}`
       }
     }
 
@@ -85,22 +84,16 @@ export class InventorySlotPropertiesService {
       weight: 0
     }
 
-    const typeResult = Services.get(InventorySlotService).getType(inventorySlot.typeId)
+    const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
 
-    if (!typeResult.success) {
+    if (inventorySlotType == null) {
       return summary
     }
 
-    summary.type = typeResult.value
+    summary.type = inventorySlotType
     summary.armorModifiers = await this.getArmorModifiers(inventorySlot)
     summary.ergonomics = await this.getErgonomics(inventorySlot)
-
-    const priceResult = await this.getPrice(inventorySlot, summary.type.canBeLooted)
-
-    if (priceResult.success) {
-      summary.price = priceResult.value
-    }
-
+    summary.price = await this.getPrice(inventorySlot, summary.type.canBeLooted)
     summary.recoil = await this.getRecoil(inventorySlot)
     summary.wearableModifiers = await this.getWearableModifiers(inventorySlot)
     summary.weight = await this.getWeight(inventorySlot)
@@ -123,16 +116,9 @@ export class InventorySlotPropertiesService {
       }
     }
 
-    const armorModifiersResult = await Services.get(InventoryItemService).getArmorModifiers(inventorySlot.items[0])
+    const inventoryItemArmorModifiers = await Services.get(InventoryItemService).getArmorModifiers(inventorySlot.items[0])
 
-    if (!armorModifiersResult.success) {
-      return {
-        armorClass: 0,
-        durability: 0
-      }
-    }
-
-    return armorModifiersResult.value
+    return inventoryItemArmorModifiers
   }
 
   /**
@@ -146,13 +132,9 @@ export class InventorySlotPropertiesService {
       return 0
     }
 
-    const ergonomicsResult = await Services.get(InventoryItemService).getErgonomics(inventorySlot.items[0])
+    const inventoryItemErgonomics = await Services.get(InventoryItemService).getErgonomics(inventorySlot.items[0])
 
-    if (!ergonomicsResult.success) {
-      return 0
-    }
-
-    return ergonomicsResult.value.ergonomicsWithMods
+    return inventoryItemErgonomics.ergonomicsWithMods
   }
 
   /**
@@ -161,10 +143,9 @@ export class InventorySlotPropertiesService {
    * @param canBeLooted - Indicates whether items contained in the inventory slot can be looted or not.
    * @returns Price.
    */
-  private async getPrice(inventorySlot: IInventorySlot, canBeLooted: boolean): Promise<Result<IInventoryPrice>> {
+  private async getPrice(inventorySlot: IInventorySlot, canBeLooted: boolean): Promise<IInventoryPrice> {
     const inventoryItemService = Services.get(InventoryItemService)
-
-    const inventoryPrice: IInventoryPrice = {
+    const inventorySlotPrice: IInventoryPrice = {
       missingPrice: false,
       priceByCurrency: [],
       priceInMainCurrency: 0
@@ -175,36 +156,29 @@ export class InventorySlotPropertiesService {
         continue
       }
 
-      const priceResult = await inventoryItemService.getPrice(inventoryItem, undefined, canBeLooted)
+      const inventoryItemPrice = await inventoryItemService.getPrice(inventoryItem, undefined, canBeLooted)
+      inventorySlotPrice.missingPrice = inventoryItemPrice.missingPrice
 
-      if (!priceResult.success) {
-        return Result.failFrom(priceResult)
-      }
-
-      for (const inventoryItemPriceWithContent of priceResult.value.pricesWithContent) {
-        const currencyIndex = inventoryPrice.priceByCurrency.findIndex(p => p.currencyName === inventoryItemPriceWithContent.currencyName)
+      for (const inventoryItemPriceWithContent of inventoryItemPrice.pricesWithContent) {
+        const currencyIndex = inventorySlotPrice.priceByCurrency.findIndex(p => p.currencyName === inventoryItemPriceWithContent.currencyName)
 
         if (currencyIndex < 0) {
-          inventoryPrice.priceByCurrency.push(inventoryItemPriceWithContent)
+          inventorySlotPrice.priceByCurrency.push(inventoryItemPriceWithContent)
         } else {
-          inventoryPrice.priceByCurrency[currencyIndex].value += inventoryItemPriceWithContent.value
-          inventoryPrice.priceByCurrency[currencyIndex].valueInMainCurrency += inventoryItemPriceWithContent.valueInMainCurrency
+          inventorySlotPrice.priceByCurrency[currencyIndex].value += inventoryItemPriceWithContent.value
+          inventorySlotPrice.priceByCurrency[currencyIndex].valueInMainCurrency += inventoryItemPriceWithContent.valueInMainCurrency
         }
 
-        inventoryPrice.priceInMainCurrency += inventoryItemPriceWithContent.valueInMainCurrency
-      }
-
-      if (priceResult.value.missingPrice) {
-        inventoryPrice.missingPrice = true
+        inventorySlotPrice.priceInMainCurrency += inventoryItemPriceWithContent.valueInMainCurrency
       }
     }
 
-    if (inventoryPrice.priceByCurrency.length > 1) {
+    if (inventorySlotPrice.priceByCurrency.length > 1) {
       // Sorting currencies in the price detailed by currency
-      inventoryPrice.priceByCurrency = PriceUtils.sortByCurrency(inventoryPrice.priceByCurrency)
+      inventorySlotPrice.priceByCurrency = PriceUtils.sortByCurrency(inventorySlotPrice.priceByCurrency)
     }
 
-    return Result.ok(inventoryPrice)
+    return inventorySlotPrice
   }
 
   /**
@@ -221,18 +195,11 @@ export class InventorySlotPropertiesService {
       }
     }
 
-    const recoilResult = await Services.get(InventoryItemService).getRecoil(inventorySlot.items[0])
-
-    if (!recoilResult.success) {
-      return {
-        horizontalRecoil: 0,
-        verticalRecoil: 0
-      }
-    }
+    const inventoryItemRecoil = await Services.get(InventoryItemService).getRecoil(inventorySlot.items[0])
 
     return {
-      horizontalRecoil: recoilResult.value.horizontalRecoilWithMods,
-      verticalRecoil: recoilResult.value.verticalRecoilWithMods
+      horizontalRecoil: inventoryItemRecoil.horizontalRecoilWithMods,
+      verticalRecoil: inventoryItemRecoil.verticalRecoilWithMods
     }
   }
 
@@ -242,7 +209,8 @@ export class InventorySlotPropertiesService {
    * @returns Wearable modifiers.
    */
   private async getWearableModifiers(inventorySlot: IInventorySlot): Promise<IWearableModifiers> {
-    const wearableModifiers: IWearableModifiers = {
+    const inventoryItemService = Services.get(InventoryItemService)
+    const inventorySlotWearableModifiers: IWearableModifiers = {
       ergonomicsModifierPercentage: 0,
       movementSpeedModifierPercentage: 0,
       turningSpeedModifierPercentage: 0
@@ -252,29 +220,21 @@ export class InventorySlotPropertiesService {
       && inventorySlot.typeId !== 'bodyArmor'
       && inventorySlot.typeId !== 'headwear'
       && inventorySlot.typeId !== 'tacticalRig') {
-      return wearableModifiers
+      return inventorySlotWearableModifiers
     }
-
-    const inventoryItemService = Services.get(InventoryItemService)
-
 
     for (const inventoryItem of inventorySlot.items) {
       if (inventoryItem == null) {
         continue
       }
 
-      const wearableeModifiersResult = await inventoryItemService.getWearableModifiers(inventoryItem)
-
-      if (!wearableeModifiersResult.success) {
-        continue
-      }
-
-      wearableModifiers.ergonomicsModifierPercentage += wearableeModifiersResult.value.ergonomicsModifierPercentageWithMods
-      wearableModifiers.movementSpeedModifierPercentage += wearableeModifiersResult.value.movementSpeedModifierPercentageWithMods
-      wearableModifiers.turningSpeedModifierPercentage += wearableeModifiersResult.value.turningSpeedModifierPercentageWithMods
+      const inventoryItemWearableeModifiers = await inventoryItemService.getWearableModifiers(inventoryItem)
+      inventorySlotWearableModifiers.ergonomicsModifierPercentage += inventoryItemWearableeModifiers.ergonomicsModifierPercentageWithMods
+      inventorySlotWearableModifiers.movementSpeedModifierPercentage += inventoryItemWearableeModifiers.movementSpeedModifierPercentageWithMods
+      inventorySlotWearableModifiers.turningSpeedModifierPercentage += inventoryItemWearableeModifiers.turningSpeedModifierPercentageWithMods
     }
 
-    return wearableModifiers
+    return inventorySlotWearableModifiers
   }
 
   /**
@@ -284,22 +244,17 @@ export class InventorySlotPropertiesService {
    */
   private async getWeight(inventorySlot: IInventorySlot): Promise<number> {
     const inventoryItemService = Services.get(InventoryItemService)
-    let weight = 0
+    let inventorySlotWeight = 0
 
     for (const inventoryItem of inventorySlot.items) {
       if (inventoryItem == null) {
         continue
       }
 
-      const weightResult = await inventoryItemService.getWeight(inventoryItem)
-
-      if (!weightResult.success) {
-        continue
-      }
-
-      weight += weightResult.value.weightWithContent
+      const inventoryItemWeight = await inventoryItemService.getWeight(inventoryItem)
+      inventorySlotWeight += inventoryItemWeight.weightWithContent
     }
 
-    return weight
+    return inventorySlotWeight
   }
 }

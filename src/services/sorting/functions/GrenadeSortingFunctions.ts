@@ -10,14 +10,14 @@ export const GrenadeSortingFunctions: ISortingFunctionList<IGrenade> = {
   ...ItemSortingFunctions,
   explosionDelay: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.explosionDelay
+    comparisonValueObtentionFunction: i => Promise.resolve(i.explosionDelay)
   },
   fragmentsAmount: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.fragmentsAmount
+    comparisonValueObtentionFunction: i => Promise.resolve(i.fragmentsAmount)
   },
   maximumExplosionRange: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.maximumExplosionRange
+    comparisonValueObtentionFunction: i => Promise.resolve(i.maximumExplosionRange)
   }
 }

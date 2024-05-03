@@ -33,14 +33,14 @@ export default defineComponent({
     const globalFilterService = Services.get(GlobalFilterService)
     const inventoryItemService = Services.get(InventoryItemService)
 
-    const hasMissingPrice = computed(() => price.value.missingPrice
+    const hasMissingPrice = computed(() => selectedItemPrice.value.missingPrice
       && !props.modelValue.ignorePrice
-      && price.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored
-      && price.value.unitPrice.valueInMainCurrency === 0) // We don't show the missing price icon on items that contain an item with a missing price
-    const showPrice = computed(() => price.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored)
-    const showUnitPrice = computed(() => showPrice.value && price.value.price.valueInMainCurrency !== price.value.unitPrice.valueInMainCurrency)
+      && selectedItemPrice.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored
+      && selectedItemPrice.value.unitPrice.valueInMainCurrency === 0) // We don't show the missing price icon on items that contain an item with a missing price
+    const showPrice = computed(() => selectedItemPrice.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored)
+    const showUnitPrice = computed(() => showPrice.value && selectedItemPrice.value.price.valueInMainCurrency !== selectedItemPrice.value.unitPrice.valueInMainCurrency)
 
-    const price = ref<IInventoryItemPrice>({
+    const selectedItemPrice = ref<IInventoryItemPrice>({
       missingPrice: false,
       price: {
         barterItems: [],
@@ -53,16 +53,7 @@ export default defineComponent({
         valueInMainCurrency: 0
       },
       pricesWithContent: [],
-      priceWithContentInMainCurrency: {
-        barterItems: [],
-        currencyName: 'RUB',
-        itemId: '',
-        merchant: '',
-        merchantLevel: 0,
-        quest: undefined,
-        value: 0,
-        valueInMainCurrency: 0
-      },
+      priceWithContentInMainCurrency: 0,
       unitPrice: {
         barterItems: [],
         currencyName: 'RUB',
@@ -75,7 +66,7 @@ export default defineComponent({
       },
       unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
     })
-    const weight = ref<IWeight>({
+    const selectedItemWeight = ref<IWeight>({
       weight: 0,
       weightWithContent: 0,
       unitWeight: 0
@@ -116,75 +107,25 @@ export default defineComponent({
      * Sets the price of the inventory item.
      */
     async function setPrice() {
-      const priceResult = await inventoryItemService.getPrice(props.modelValue, props.itemInSameSlotInPreset, props.canBeLooted)
-
-      if (priceResult.success) {
-        price.value = priceResult.value
-      } else {
-        price.value = {
-          missingPrice: false,
-          price: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          pricesWithContent: [],
-          priceWithContentInMainCurrency: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          unitPrice: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
-          unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-        }
-      }
+      selectedItemPrice.value = await inventoryItemService.getPrice(props.modelValue, props.itemInSameSlotInPreset, props.canBeLooted)
     }
 
     /**
      * Sets the weight of the inventory items.
      */
     async function setWeight() {
-      const weightResult = await inventoryItemService.getWeight(props.modelValue)
-
-      if (weightResult.success) {
-        weight.value = weightResult.value
-      } else {
-        weight.value = {
-          unitWeight: 0,
-          weight: 0,
-          weightWithContent: 0
-        }
-      }
+      selectedItemWeight.value = await inventoryItemService.getWeight(props.modelValue)
     }
 
     return {
       DisplayValueType,
       hasMissingPrice,
       IgnoredUnitPrice,
-      price,
+      selectedItemPrice,
+      selectedItemWeight,
       showPrice,
       showUnitPrice,
-      StatsUtils,
-      weight
+      StatsUtils
     }
   }
 })
