@@ -1,6 +1,5 @@
 import { IItem } from '../../models/item/IItem'
 import SortingData, { SortingOrder } from '../../models/utils/SortingData'
-import vueI18n from '../../plugins/vueI18n'
 import StringUtils from '../../utils/StringUtils'
 import { LogService } from '../LogService'
 import Services from '../repository/Services'
@@ -56,7 +55,7 @@ export class SortingService<TItem extends IItem> {
     const sortingFunction = this.sortingFunctions[property]
 
     if (sortingFunction == null) {
-      Services.get(LogService).logError(vueI18n.t('message.sortingFunctionNotFound', { property: property }))
+      Services.get(LogService).logError('message.sortingFunctionNotFound', { property: property })
 
       return undefined
     }

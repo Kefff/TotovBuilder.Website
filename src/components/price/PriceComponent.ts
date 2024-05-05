@@ -52,13 +52,12 @@ export default defineComponent({
     const globalFilterService = Services.get(GlobalFilterService)
     globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
+    let _currency: ICurrency | undefined
+    const mainCurrency = Services.get(ItemService).getMainCurrency()
+
     const barterItemPrices = ref<IInventoryItemPrice[]>([])
     const barterItems = ref<IItem[]>([])
-    const currency = ref<ICurrency>()
-    const displayedCurrency = ref<ICurrency>()
-    const displayedPrice = ref('')
     const initialized = ref(false)
-    const mainCurrency = ref<ICurrency>()
     const priceDetailPanel = ref()
 
     const canShowDetails = computed(() => {
@@ -68,7 +67,22 @@ export default defineComponent({
           || isBarter.value)
     })
     const canShowMerchantIcon = computed(() => props.showMerchantIcon && props.price.merchant !== '')
+    const currency = computed(() => {
+      if (_currency == null) {
+        _currency = Services.get(ItemService).getCurrency(props.price.currencyName)
+      }
+
+      return _currency
+    })
+    const displayedCurrency = computed(() => isBarter.value ? mainCurrency.value : currency.value)
+    const displayedPrice = computed(() => {
+      const value = isBarter.value ? props.price.valueInMainCurrency : props.price.value
+      const displayedValue = StatsUtils.getStandardDisplayValue(DisplayValueType.price, value)
+
+      return displayedValue
+    })
     const isBarter = computed(() => props.price.currencyName === 'barter')
+
     const merchantTooltip = computed(() => props.showTooltip
       ? (props.price.merchant !== ''
         ? (vueI18n.t('caption.merchant_' + props.price.merchant)
@@ -80,7 +94,7 @@ export default defineComponent({
         : '')
       : '')
     const priceValueTooltip = computed(() => props.showTooltip ? vueI18n.t('caption.price') + (props.tooltipSuffix ?? '') : '')
-    const showPriceInMainCurrency = computed(() => !isBarter.value && currency.value?.name !== mainCurrency.value?.name)
+    const showPriceInMainCurrency = computed(() => !isBarter.value && currency.value.name !== mainCurrency.name)
 
     watch(() => props.price, () => initialize())
 
@@ -104,10 +118,7 @@ export default defineComponent({
 
       for (const barterItem of props.price.barterItems) {
         const item = await itemService.getItem(barterItem.itemId)
-
-        if (item != null) {
-          barterItems.value?.push(item)
-        }
+        barterItems.value.push(item)
       }
     }
 
@@ -147,16 +158,6 @@ export default defineComponent({
 
       barterItems.value = []
       barterItemPrices.value = []
-      mainCurrency.value = Services.get(ItemService).getMainCurrency()
-      currency.value = Services.get(ItemService).getCurrency(props.price.currencyName)
-
-      if (isBarter.value) {
-        displayedCurrency.value = mainCurrency.value
-        displayedPrice.value = StatsUtils.getStandardDisplayValue(DisplayValueType.price, props.price.valueInMainCurrency)
-      } else {
-        displayedCurrency.value = currency.value
-        displayedPrice.value = StatsUtils.getStandardDisplayValue(DisplayValueType.price, props.price.value)
-      }
 
       await getBarterItems()
       await getBarterItemPrices()

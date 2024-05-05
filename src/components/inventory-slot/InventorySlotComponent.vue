@@ -21,13 +21,13 @@
               class="collapsable-icon-deployed"
             />
             <font-awesome-icon
-              v-if="icon != null"
-              :icon="icon"
+              v-if="inventorySlotType.icon != null"
+              :icon="inventorySlotType.icon"
               class="inventory-slot-icon"
             />
             <img
-              v-else-if="customIconName != null"
-              :src="Images[StringUtils.toCamelCase(customIconName)]"
+              v-else-if="inventorySlotType.customIcon != null"
+              :src="Images[StringUtils.toCamelCase(inventorySlotType.customIcon)]"
               class="inventory-slot-custom-icon"
             >
             <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelValue.typeId)) }}</span>
@@ -137,18 +137,16 @@
           </div>
         </div>
       </template>
-      <div v-if="type != null">
-        <Item
-          v-for="(item, index) of items"
-          :key="path + '_' + index"
-          v-model="items[index]"
-          :accepted-items="acceptedItems"
-          :accepted-items-category-id="acceptedItemsCategoryId"
-          :can-be-looted="type.canBeLooted"
-          :path="path + '_' + index + '/' + itemPathPrefix + (item?.itemId ?? 'empty')"
-          @update:model-value="onItemChanged(index)"
-        />
-      </div>
+      <Item
+        v-for="(item, index) of items"
+        :key="path + '_' + index"
+        v-model="items[index]"
+        :accepted-items="acceptedItems"
+        :accepted-items-category-id="acceptedItemsCategoryId"
+        :can-be-looted="inventorySlotType.canBeLooted"
+        :path="path + '_' + index + '/' + itemPathPrefix + (item?.itemId ?? 'empty')"
+        @update:model-value="onItemChanged(index)"
+      />
     </Panel>
   </div>
 </template>

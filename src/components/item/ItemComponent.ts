@@ -10,12 +10,11 @@ import { CompatibilityService } from '../../services/compatibility/Compatibility
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ItemService } from '../../services/ItemService'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
+import { NotificationService } from '../../services/NotificationService'
 import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
 import { SortingService } from '../../services/sorting/SortingService'
 import { PathUtils } from '../../utils/PathUtils'
-import Result from '../../utils/Result'
 import StringUtils from '../../utils/StringUtils'
 import InputNumberField from '../input-number-field/InputNumberFieldComponent.vue'
 import ItemContent from '../item-content/ItemContentComponent.vue'
@@ -161,12 +160,7 @@ export default defineComponent({
 
       selectedItem.value = await itemService.getItem(props.modelValue.itemId)
       quantity.value = props.modelValue.quantity
-
-      if (selectedItem.value != null) {
-        presetModSlotContainingItem.value = await presetService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
-      } else {
-        presetModSlotContainingItem.value = undefined
-      }
+      presetModSlotContainingItem.value = presetService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
     }
 
     /**
@@ -238,7 +232,7 @@ export default defineComponent({
       }
 
       itemChanging.value = true
-      presetModSlotContainingItem.value = await presetService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
+      presetModSlotContainingItem.value = presetService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
 
       if (itemPropertiesService.isModdable(selectedItem.value) && PathUtils.checkIsModSlotPath(props.path)) {
         // Checking the compatibility if the selected item is a mod and we are in mod slot
@@ -247,7 +241,7 @@ export default defineComponent({
 
         updateInventoryItem(selectedItem.value, compatibilityResult)
       } else {
-        updateInventoryItem(selectedItem.value, Result.ok())
+        updateInventoryItem(selectedItem.value, true)
       }
     }
 
@@ -329,8 +323,10 @@ export default defineComponent({
      * @param newSelectedItem - New selected item.
      * @param compatibilityCheckResult - Indicates whether the new selected item is compatible or not.
      */
-    function updateInventoryItem(newSelectedItem: IItem, compatibilityCheckResult: Result) {
-      if (compatibilityCheckResult.success) {
+    function updateInventoryItem(newSelectedItem: IItem, compatibilityCheckResult: boolean) {
+      if (!compatibilityCheckResult) {
+        initializeSelectedItem() // Putting back the previous selected item when the new item is incomptatible
+      } else {
         quantity.value = maxSelectableQuantity.value
         const ignorePrice = selectedInventoryItem.value?.ignorePrice ?? false
 
@@ -379,9 +375,6 @@ export default defineComponent({
         }
 
         emitItemChangedEvent()
-      } else {
-        notificationService.notify(NotificationType.warning, compatibilityCheckResult.failureMessage)
-        initializeSelectedItem() // Putting back the previous selected item
       }
 
       itemChanging.value = false

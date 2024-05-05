@@ -1,7 +1,6 @@
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IItem } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
-import vueI18n from '../plugins/vueI18n'
 import { FetchService } from './FetchService'
 import { LogService } from './LogService'
 import { ReductionService } from './ReductionService'
@@ -26,16 +25,21 @@ export class ItemFetcherService {
   public async fetchItemCategories(): Promise<string[] | undefined> {
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointItemCategories
+
+    if (this.isDebug) {
+      Services.get(LogService).logInformation('message.fetchingItemCategories', { date: new Date().toISOString() })
+    }
+
     const itemCategories = await fetchService.get<string[]>(endpoint)
 
     if (itemCategories == null || itemCategories.length === 0) {
-      Services.get(LogService).logError(vueI18n.t('message.itemCategoriesNotFetched'))
+      Services.get(LogService).logException('message.itemCategoriesNotFetched')
 
       return undefined
     }
 
     if (this.isDebug) {
-      Services.get(LogService).logInformation('message.itemCategoriesFetched')
+      Services.get(LogService).logInformation('message.itemCategoriesFetched', { date: new Date().toISOString() })
     }
 
     return itemCategories
@@ -48,10 +52,15 @@ export class ItemFetcherService {
   public async fetchItems(): Promise<IItem[] | undefined> {
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointItems
+
+    if (this.isDebug) {
+      Services.get(LogService).logInformation('message.fetchingItems', { date: new Date().toISOString() })
+    }
+
     const reducedItems = await fetchService.get<Record<string, unknown>[]>(endpoint)
 
     if (reducedItems == null || reducedItems.length === 0) {
-      Services.get(LogService).logError(vueI18n.t('message.itemsNotFetched'))
+      Services.get(LogService).logException('message.itemsNotFetched')
 
       return undefined
     }
@@ -65,7 +74,7 @@ export class ItemFetcherService {
     }
 
     if (this.isDebug) {
-      Services.get(LogService).logInformation('message.itemsFetched')
+      Services.get(LogService).logInformation('message.itemsFetched', { date: new Date().toISOString() })
     }
 
     return items
@@ -78,10 +87,15 @@ export class ItemFetcherService {
   public async fetchPrices(): Promise<IPrice[] | undefined> {
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointPrices
+
+    if (this.isDebug) {
+      Services.get(LogService).logInformation('message.fetchingPrices', { date: new Date().toISOString() })
+    }
+
     const reducedPrices = await fetchService.get<Record<string, unknown>[]>(endpoint)
 
     if (reducedPrices == null || reducedPrices.length === 0) {
-      Services.get(LogService).logError(vueI18n.t('message.pricesNotFetched'))
+      Services.get(LogService).logException('message.pricesNotFetched')
 
       return undefined
     }
@@ -95,7 +109,7 @@ export class ItemFetcherService {
     }
 
     if (this.isDebug) {
-      Services.get(LogService).logInformation('message.pricesFetched')
+      Services.get(LogService).logInformation('message.pricesFetched', { date: new Date().toISOString() })
     }
 
     return prices
@@ -108,10 +122,15 @@ export class ItemFetcherService {
   public async fetchPresets(): Promise<IInventoryItem[] | undefined> {
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointPresets
+
+    if (this.isDebug) {
+      Services.get(LogService).logInformation('message.fetchingPresets', { date: new Date().toISOString() })
+    }
+
     const reducedPresets = await fetchService.get<Record<string, unknown>[]>(endpoint)
 
     if (reducedPresets == null || reducedPresets.length === 0) {
-      Services.get(LogService).logError(vueI18n.t('message.presetsNotFetched'))
+      Services.get(LogService).logException('message.presetsNotFetched')
 
       return undefined
     }
@@ -128,7 +147,7 @@ export class ItemFetcherService {
     }
 
     if (this.isDebug) {
-      Services.get(LogService).logInformation('message.presetsFetched')
+      Services.get(LogService).logInformation('message.presetsFetched', { date: new Date().toISOString() })
     }
 
     return presets

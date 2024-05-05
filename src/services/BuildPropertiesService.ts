@@ -12,13 +12,13 @@ import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 import vueI18n from '../plugins/vueI18n'
 import { PathUtils } from '../utils/PathUtils'
 import { PriceUtils } from '../utils/PriceUtils'
-import Result from '../utils/Result'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import { BuildService } from './BuildService'
 import { InventoryItemService } from './InventoryItemService'
 import { InventorySlotPropertiesService } from './InventorySlotPropertiesService'
 import { InventorySlotService } from './InventorySlotService'
 import { ItemService } from './ItemService'
+import { NotificationService, NotificationType } from './NotificationService'
 import Services from './repository/Services'
 
 /**
@@ -27,46 +27,42 @@ import Services from './repository/Services'
 export class BuildPropertiesService {
   /**
    * Checks if a build contains an armored vest preventing the usage of an armor.
+   * Displays a warnng notification when it is the case.
    * @param build - Build.
-   * @returns Success if the build doesn't contain an armored vest; otherwise Failure.
    */
-  public async canAddArmor(build: IBuild): Promise<Result> {
+  public async canAddArmor(build: IBuild): Promise<boolean> {
     const itemService = Services.get(ItemService)
     const vestSlot = build.inventorySlots.find((is) => is.typeId === 'tacticalRig')!
 
-    if (vestSlot.items[0] != null) {
-      const vest = await itemService.getItem(vestSlot.items[0].itemId)
-
-      if (vest != null && (vest as IVest).armorClass > 0) {
-        return Result.fail(vueI18n.t('message.cannotAddBodyArmor'))
-      }
+    if (vestSlot.items[0] == null) {
+      return true
     }
 
-    return Result.ok()
+    const item = await itemService.getItem(vestSlot.items[0].itemId)
+    const vest = item as IVest
+
+    if (vest.armorClass > 0) {
+      Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.cannotAddBodyArmor'))
+
+      return false
+    }
+
+    return true
   }
 
   /**
    * Checks if a mod can be added to an item by recursively checking if it appears in any of the conflicting items list of each of the children mods already added.
+   * Displays a warnng notification when it is the case.
    * @param build - Build.
    * @param modId - ID of the mod to be added.
    * @param path - Path to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
-   * @returns Success if the mod can be added; otherwise Failure.
    */
-  public async canAddMod(build: IBuild, modId: string, path: string): Promise<Result> {
+  public async canAddMod(build: IBuild, modId: string, path: string): Promise<boolean> {
     const itemService = Services.get(ItemService)
     const mod = await itemService.getItem(modId)
 
-    if (mod == null) {
-      return Result.ok() // Returning OK since we cannot identify the item
-    }
-
     const firstItemPath = path.slice(0, path.indexOf('/' + PathUtils.modSlotPrefix))
     const inventoryItem = PathUtils.getInventoryItemFromPath(build, firstItemPath)
-
-    if (inventoryItem == null) {
-      return Result.ok() // Returning OK since we cannot identify the inventory item in the path
-    }
-
     const changedModSlotPath = path.slice(0, path.indexOf('/' + PathUtils.itemPrefix))
     const conflicts = await this.getConflictingItems(inventoryItem, changedModSlotPath)
 
@@ -79,44 +75,38 @@ export class BuildPropertiesService {
       }
 
       const conflictingItem = await itemService.getItem(conflict.itemId)
+      Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.cannotAddMod', { modName: mod.name, conflictingItemName: conflictingItem.name }))
 
-      /* c8 ignore start */
-      if (conflictingItem == null) {
-        continue
-      }
-      /* c8 ignore start */
-
-      return Result.fail(vueI18n.t('message.cannotAddMod', { modName: mod.name, conflictingItemName: conflictingItem.name }))
+      return false
     }
 
-    return Result.ok()
+    return true
   }
 
   /**
    * Checks if a build contains an armor preventing the usage of an armored vest.
+   * Displays a warnng notification when it is the case.
    * @param build - Build.
    * @param vestId - Vest ID.
-   * @returns Success if the build doesn't contain an armor; otherwise Failure.
    */
-  public async canAddVest(build: IBuild, vestId: string): Promise<Result> {
+  public async canAddVest(build: IBuild, vestId: string): Promise<boolean> {
     const itemService = Services.get(ItemService)
-    const vest = await itemService.getItem(vestId)
+    const item = await itemService.getItem(vestId)
+    const vest = item as IVest
 
-    if (vest == null) {
-      return Result.ok() // Returning OK since we cannot identify the item
+    if (vest.armorClass === 0) {
+      return true
     }
 
-    if ((vest as IVest).armorClass === 0) {
-      return Result.ok()
+    const bodyArmorInventorySlot = build.inventorySlots.find((is) => is.typeId === 'bodyArmor')
+
+    if (bodyArmorInventorySlot?.items[0] != null) {
+      Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.cannotAddTacticalRig'))
+
+      return false
     }
 
-    const armorSlot = build.inventorySlots.find((is) => is.typeId === 'bodyArmor')!
-
-    if (armorSlot.items[0] != null) {
-      return Result.fail(vueI18n.t('message.cannotAddTacticalRig'))
-    }
-
-    return Result.ok()
+    return true
   }
 
   /**
@@ -126,17 +116,12 @@ export class BuildPropertiesService {
    */
   public async getAsString(build: IBuild, language: string) {
     const itemService = Services.get(ItemService)
-    const mainCurrencyResult = itemService.getMainCurrency()
-
-    if (mainCurrencyResult == null) {
-      return ''
-    }
-
     const buildService = Services.get(BuildService)
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
 
     const separator = '    |    '
     let buildAsString = build.name
+    const mainCurrency = itemService.getMainCurrency()
     const buildSummary = await this.getSummary(build)
 
     const hasArmor = buildSummary.armorModifiers.armorClass !== 0
@@ -227,14 +212,11 @@ export class BuildPropertiesService {
 
           const priceInCurrency = buildSummary.price.priceByCurrency[i]
           const priceCurrency = itemService.getCurrency(priceInCurrency.currencyName)
-
-          if (priceCurrency != null) {
-            buildAsString += `${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInCurrency.value, language)}${priceCurrency.symbol}`
-          }
+          buildAsString += `${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInCurrency.value, language)}${priceCurrency.symbol}`
         }
 
         if (buildSummary.price.priceByCurrency.length > 1) {
-          buildAsString += ` (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, buildSummary.price.priceInMainCurrency, language)}${mainCurrencyResult.symbol})`
+          buildAsString += ` (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, buildSummary.price.priceInMainCurrency, language)}${mainCurrency.symbol})`
         }
       }
 
@@ -271,10 +253,10 @@ ${inventorySlotsAsString}`
 
     const sharableUrlResult = await buildService.toSharableURL(build)
 
-    if (sharableUrlResult.success) {
+    if (sharableUrlResult != undefined) {
       // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
       buildAsString += `\n${vueI18n.t('caption.interactiveBuildAndFullStats', 1, { locale: language })}:
-${sharableUrlResult.value}`
+${sharableUrlResult}`
     }
 
     return buildAsString
@@ -391,13 +373,9 @@ ${sharableUrlResult.value}`
     modSlotPath: string
   ): Promise<IConflictingItem[]> {
     const itemService = Services.get(ItemService)
-    const item = await itemService.getItem(inventoryItem.itemId)
-
-    if (item == null) {
-      return []
-    }
 
     const conflictingItems: IConflictingItem[] = []
+    const item = await itemService.getItem(inventoryItem.itemId)
 
     if (item.conflictingItemIds.length > 0) {
       for (const conflictingItemId of item.conflictingItemIds) {
@@ -526,10 +504,6 @@ ${sharableUrlResult.value}`
 
     for (const inventorySlot of build.inventorySlots) {
       const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
-
-      if (inventorySlotType == null) {
-        continue
-      }
 
       for (const item of inventorySlot.items) {
         if (item == null) {

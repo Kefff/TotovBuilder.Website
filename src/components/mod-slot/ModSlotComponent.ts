@@ -35,28 +35,28 @@ export default defineComponent({
 
     const itemPathPrefix = PathUtils.itemPrefix
 
-    watch(() => props.modSlot, () => getItemComponentParameters())
+    watch(() => props.modSlot, () => updateAcceptedItems())
 
     onMounted(() => {
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-      getItemComponentParameters()
+      updateAcceptedItems()
     })
 
     onUnmounted(() => globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged))
 
     /**
-     * Gets the category IDs and the accepted items to pass to the ItemComponent.
-     */
-    async function getItemComponentParameters() {
-      acceptedItems.value = await Services.get(ItemService).getItems(props.modSlot.compatibleItemIds, true)
-      acceptedItemsCategoryId.value = modSlotComponentService.getAcceptedItemsCategoryId(acceptedItems.value)
-    }
-
-    /**
      * Updates the accepted items to reflect the change in merchant filters.
      */
     function onMerchantFilterChanged() {
-      getItemComponentParameters()
+      updateAcceptedItems()
+    }
+
+    /**
+     * Gets the category IDs and the accepted items to pass to the ItemComponent.
+     */
+    async function updateAcceptedItems() {
+      acceptedItems.value = await Services.get(ItemService).getItems(props.modSlot.compatibleItemIds, true)
+      acceptedItemsCategoryId.value = modSlotComponentService.getAcceptedItemsCategoryId(acceptedItems.value)
     }
 
     return {

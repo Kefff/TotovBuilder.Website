@@ -24,10 +24,6 @@ export class InventorySlotPropertiesService {
     let inventorySlotAsString = ''
     const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
 
-    if (inventorySlotType == null) {
-      return ''
-    }
-
     for (const inventoryItem of inventorySlot.items) {
       if (inventoryItem == null) {
         continue

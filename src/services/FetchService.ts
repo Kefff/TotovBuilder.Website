@@ -31,7 +31,7 @@ export class FetchService {
     } while (tries < maxTries)
 
     if (lastResult == null) {
-      Services.get(LogService).logError(vueI18n.t('message.fetchMaxTriesError', { endpoint, maxTries }))
+      Services.get(LogService).logException('message.fetchMaxTriesError', { endpoint, maxTries })
     }
 
     return lastResult
@@ -61,7 +61,7 @@ export class FetchService {
 
           /* c8 ignore start */ // For some reason, jest-fetch-mock cannot mock an error response with an empty body. The response has a 200 status even if we force it to 500 when configuring the mock.
           if (this.isEmptyResponseData(errorRespondeData)) {
-            logService.logError(vueI18n.t('message.fetchError', { endpoint, errorMessage: vueI18n.t('message.emptyFetchResponse') }))
+            logService.logError('message.fetchError', { endpoint, errorMessage: vueI18n.t('message.emptyFetchResponse') })
 
             return undefined
           }
@@ -70,13 +70,13 @@ export class FetchService {
           const result = JSON.parse(errorRespondeData) as Record<string, unknown>
           const errorMessage = result['error'] as string
 
-          logService.logException(vueI18n.t('message.fetchError', { endpoint, errorMessage }))
+          logService.logError('message.fetchError', { endpoint, errorMessage })
 
           return undefined
         }
       })
       .catch((error: Error) => {
-        logService.logException(vueI18n.t('message.fetchError', { endpoint, errorMessage: error.message }))
+        logService.logError('message.fetchError', { endpoint, errorMessage: error.message })
 
         return undefined
       })

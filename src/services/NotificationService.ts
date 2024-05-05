@@ -1,9 +1,9 @@
 import { Guid } from 'guid-typescript'
-import { INotification } from '../models/utils/INotification'
 import { TinyEmitter } from 'tiny-emitter'
-import Services from './repository/Services'
-import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import { INotification } from '../models/utils/INotification'
 import { INotificationButton } from '../models/utils/INotificationButton'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for managing notification messages.

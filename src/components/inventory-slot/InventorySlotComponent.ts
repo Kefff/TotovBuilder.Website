@@ -2,7 +2,6 @@ import { computed, defineComponent, inject, onMounted, onUnmounted, PropType, Re
 import Images from '../../images'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IInventorySlot } from '../../models/build/IInventorySlot'
-import { IInventorySlotType } from '../../models/build/IInventorySlotType'
 import { IItem } from '../../models/item/IItem'
 import { IInventorySlotSummary } from '../../models/utils/IInventorySlotSummary'
 import { InventorySlotComponentService } from '../../services/components/InventorySlotComponentService'
@@ -44,7 +43,6 @@ export default defineComponent({
     const inventoryItemService = Services.get(InventoryItemService)
     const inventorySlotComponentService = Services.get(InventorySlotComponentService)
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
-    const inventorySlotService = Services.get(InventorySlotService)
     const itemPathPrefix = PathUtils.itemPrefix
 
     const editing = inject<Ref<boolean>>('editing')
@@ -64,11 +62,10 @@ export default defineComponent({
       || hasSummaryTurningSpeedModifierPercentage.value
     )
     const hasSummaryWeight = computed(() => summary.value.weight !== 0)
+    const inventorySlotType = computed(() => Services.get(InventorySlotService).getType(props.modelValue.typeId))
 
     const acceptedItems = ref<IItem[]>([])
     const acceptedItemsCategoryId = ref<string | undefined>(undefined)
-    const customIconName = ref<string>()
-    const icon = ref<string>()
     const items = ref<(IInventoryItem | undefined)[]>([]) // Used to be able to put back the previously selected item when changing it to an incompatible item
     const summary = ref<IInventorySlotSummary>({
       armorModifiers: {
@@ -99,7 +96,6 @@ export default defineComponent({
       },
       weight: 0
     })
-    const type = ref<IInventorySlotType>()
 
     watch(() => props.modelValue, async () => {
       await initialize() // Initialization required for the case when we cancel changes
@@ -129,14 +125,6 @@ export default defineComponent({
      */
     async function initialize() {
       items.value = [...props.modelValue.items]
-
-      const inventorySlotType = inventorySlotService.getType(props.modelValue.typeId)
-
-      if (inventorySlotType != null) {
-        type.value = inventorySlotType
-        customIconName.value = inventorySlotType.customIcon
-        icon.value = inventorySlotType.icon
-      }
 
       await setItemComponentParameters()
       await getSummary()
@@ -183,12 +171,12 @@ export default defineComponent({
      * Sets the category IDs and the accepted items to pass to the ItemComponent.
      */
     async function setItemComponentParameters() {
-      if (type.value == null) {
+      if (inventorySlotType.value == null) {
         return
       }
 
-      acceptedItemsCategoryId.value = type.value.acceptedItemCategories.length === 1 ? type.value.acceptedItemCategories[0] : undefined
-      acceptedItems.value = await Services.get(ItemService).getItemsOfCategories(type.value.acceptedItemCategories, true)
+      acceptedItemsCategoryId.value = inventorySlotType.value.acceptedItemCategories.length === 1 ? inventorySlotType.value.acceptedItemCategories[0] : undefined
+      acceptedItems.value = await Services.get(ItemService).getItemsOfCategories(inventorySlotType.value.acceptedItemCategories, true)
     }
 
     /**
@@ -201,7 +189,6 @@ export default defineComponent({
     return {
       acceptedItems,
       acceptedItemsCategoryId,
-      customIconName,
       displayed,
       DisplayValueType,
       hasSummaryArmor,
@@ -215,16 +202,15 @@ export default defineComponent({
       hasSummaryVerticalRecoil,
       hasSummaryWearableModifiers,
       hasSummaryWeight,
-      icon,
       Images,
+      inventorySlotType,
       itemPathPrefix,
       items,
       onItemChanged,
       StatsUtils,
       StringUtils,
       summary,
-      toggle,
-      type
+      toggle
     }
   }
 })

@@ -6,7 +6,6 @@ import { IMod } from '../models/item/IMod'
 import { IModdable } from '../models/item/IModdable'
 import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
-import vueI18n from '../plugins/vueI18n'
 import { PathUtils } from '../utils/PathUtils'
 import { InventoryItemService } from './InventoryItemService'
 import { ItemFetcherService } from './ItemFetcherService'
@@ -45,6 +44,10 @@ export class PresetService {
    */
   public getPreset(id: string): IInventoryItem | undefined {
     const preset = this.presets.find(p => p.itemId === id)
+
+    if (preset == null) {
+      Services.get(LogService).logError('message.presetNotFound', { id })
+    }
 
     return preset
   }
@@ -133,8 +136,6 @@ export class PresetService {
       const presetInventoryItem = this.getPreset(presetItem.id)
 
       if (presetInventoryItem == null) {
-        Services.get(LogService).logError(vueI18n.t('message.presetNotFound', { id: presetItem.id }))
-
         continue
       }
 

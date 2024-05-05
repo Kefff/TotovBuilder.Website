@@ -1,4 +1,3 @@
-import Result from '../../utils/Result'
 import { IBuild } from '../build/IBuild'
 
 /**
@@ -14,7 +13,7 @@ export interface IMigration {
   /**
    * Migrates elements of the application that are not related to builds.
    */
-  migrateBuildUnrelatedData: () => Promise<Result<void>>
+  migrateBuildUnrelatedData: () => Promise<boolean>
 
   /**
    * Version of the website for which the migration must be triggered.

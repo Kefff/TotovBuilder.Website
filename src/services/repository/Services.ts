@@ -45,6 +45,7 @@ class ServicesRepository {
    * Gets a configured service.
    * @param type - Type of the service.
    * @returns Instance of the service.
+   * @throws When the service is not configured.
    */
   public get<T>(type: new () => T): T {
     const registeredService = this.services.find((s) => s.name === type.name)

@@ -71,15 +71,18 @@ export default defineComponent({
      */
     async function showChangelog() {
       hasChangelogDisplayed.value = true
+
       isLoading.value = true
-
-      changelogs.value = await versionService.getChangelog()
-
+      const fetchedChangelogs = await versionService.getChangelog()
       isLoading.value = false
 
-      if (changelogs.value.length === 0) {
-        hasChangelogDisplayed.value = false // Closing the popup when an error occurs
+      if (fetchedChangelogs == null) {
+        // TODO: AFFICHER UNE ERREUR QUAND LES CHANGELOGS NE SONT PAS CHARES
+
+        return
       }
+
+      changelogs.value = fetchedChangelogs
     }
 
     return {

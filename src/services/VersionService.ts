@@ -2,7 +2,6 @@ import { IBuild } from '../models/build/IBuild'
 import { IChangelogEntry } from '../models/configuration/IChangelogEntry'
 import { IMigration } from '../models/utils/IMigration'
 import vueI18n from '../plugins/vueI18n'
-import Result from '../utils/Result'
 import Migrations from '../utils/migrations/Migrations'
 import { BuildService } from './BuildService'
 import { FetchService } from './FetchService'
@@ -25,7 +24,7 @@ export class VersionService {
   /**
    * Changelog fetching promise.
    */
-  private changelogFetchingPromise: Promise<Result> = Promise.resolve(Result.ok())
+  private changelogFetchingPromise: Promise<IChangelogEntry[] | undefined> = Promise.resolve([])
 
   /**
    * Indicates whether the website has changed of version since the last visit.
@@ -55,12 +54,20 @@ export class VersionService {
   /**
    * Version during the last visit.
    */
-  private lastVisitVersion: string | undefined = undefined
+  private lastVisitVersion: string | undefined
 
   /**
    * Current version.
    */
-  private version = '1.0.0'
+  private get version(): string {
+    if (this._version == null) {
+      // This should never happen, data should have been loaded or a error message should have been displayed
+      throw new Error(vueI18n.t('message.websiteConfigurationNotFetched'))
+    }
+
+    return this._version
+  }
+  private _version: string | undefined
 
   /**
    * Indicates whether the website has changed of version since the last visit.
@@ -132,20 +139,18 @@ export class VersionService {
 
   /**
    * Gets the changelog.
+   * Displays a notification when no changelog could be fetched.
    * @returns Changelog.
    */
-  public async getChangelog(): Promise<IChangelogEntry[]> {
+  public async getChangelog(): Promise<IChangelogEntry[] | undefined> {
     await this.initialize()
-
     if (!this.changelogFetched) {
-      await this.fetchChangelog()
-    }
+      this.changelogFetched = await this.fetchChangelog()
 
-    if (this.changelog.length === 0) {
-      return []
+      if (!this.changelogFetched) {
+        Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.changelogLoadingError'))
+      }
     }
-
-    this.changelogFetched = true
 
     const changelogs: IChangelogEntry[] = []
     const hasChangelogsInCurrentLanguage = this.changelog.some(cl => cl.changes.some(c => c.language === vueI18n.locale.value))
@@ -193,15 +198,17 @@ export class VersionService {
   private async executeBuildUnrelatedMigrations(): Promise<boolean> {
     const migrationsToExecute = this.getMigrationsToExecute(this.lastVisitVersion)
 
-    for (const migration of migrationsToExecute) {
-      const migrationResult = await migration.migrateBuildUnrelatedData()
+    let hasSucceeded = true
 
-      if (!migrationResult.success) {
-        return false
+    for (const migration of migrationsToExecute) {
+      const migrationSuccess = await migration.migrateBuildUnrelatedData()
+
+      if (!migrationSuccess) {
+        hasSucceeded = false
       }
     }
 
-    return true
+    return hasSucceeded
   }
 
   /**
@@ -243,13 +250,22 @@ export class VersionService {
 
   /**
    * Fetches the changelog.
+   * @returns
    */
-  private async fetchChangelog(): Promise<Result> {
+  private async fetchChangelog(): Promise<boolean> {
     if (!this.isFetchingChangelogs) {
       this.changelogFetchingPromise = this.startChangelogFetching()
     }
 
-    return await this.changelogFetchingPromise
+    const changelog = await this.changelogFetchingPromise
+
+    if (changelog == undefined) {
+      return false
+    }
+
+    this.changelog = changelog
+
+    return true
   }
 
   /**
@@ -283,29 +299,34 @@ export class VersionService {
 
   /**
    * Starts the fetching of the changelog.
-   * @returns true when the changelog has been fetched; otherwise false.
+   * @returns Changelog.
    */
-  private async startChangelogFetching(): Promise<Result> {
+  private async startChangelogFetching(): Promise<IChangelogEntry[] | undefined> {
     this.isFetchingChangelogs = true
 
+    const isDebug = import.meta.env.VITE_DEBUG === 'true'
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointChangelog
+
+    if (isDebug) {
+      Services.get(LogService).logInformation('message.fetchingChangelog', { date: new Date().toISOString() })
+    }
+
     const changelog = await fetchService.get<IChangelogEntry[]>(endpoint)
 
-    if (changelog == null) {
-      Services.get(LogService).logError('message.changelogNotFetched')
+    if (changelog == null || changelog.length === 0) {
+      Services.get(LogService).logException('message.changelogNotFetched')
 
-      return Result.fail(vueI18n.t('message.changelogLoadingError'))
+      return undefined
     }
 
-    if (import.meta.env.VITE_DEBUG === 'true') {
-      Services.get(LogService).logInformation('message.changelogFetched')
+    if (isDebug) {
+      Services.get(LogService).logInformation('message.changelogFetched', { date: new Date().toISOString() })
     }
 
-    this.changelog = changelog
     this.isFetchingChangelogs = false
 
-    return Result.ok()
+    return changelog
   }
 
   /**
@@ -316,7 +337,7 @@ export class VersionService {
 
     const websiteConfiguration = Services.get(WebsiteConfigurationService).configuration
 
-    this.version = websiteConfiguration.version
+    this._version = websiteConfiguration.version
     this.lastVisitVersion = localStorage.getItem(websiteConfiguration.versionStorageKey) ?? undefined
     this.hasNewVersion = this.isNew(this.version)
 

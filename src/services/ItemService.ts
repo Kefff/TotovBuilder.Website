@@ -1,4 +1,5 @@
 import { TinyEmitter } from 'tiny-emitter'
+import Images from '../images'
 import { ICurrency } from '../models/configuration/ICurrency'
 import { IItem } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
@@ -48,12 +49,28 @@ export class ItemService {
   /**
    * Fetched item categories.
    */
-  private itemCategories: string[] = []
+  private get itemCategories(): string[] {
+    if (this._itemCategories == null) {
+      // This should never happen, data should have been loaded or a error message should have been displayed
+      throw new Error(vueI18n.t('message.itemCategoriesNotFetched'))
+    }
+
+    return this._itemCategories
+  }
+  private _itemCategories: string[] | undefined
 
   /**
    * Fetched items.
    */
-  private items: IItem[] = []
+  private get items(): IItem[] {
+    if (this._items == null) {
+      // This should never happen, data should have been loaded or a error message should have been displayed
+      throw new Error(vueI18n.t('message.itemsNotFetched'))
+    }
+
+    return this._items
+  }
+  private _items: IItem[] | undefined
 
   /**
    * List of items filtered using the current global filter.
@@ -96,12 +113,13 @@ export class ItemService {
    * Gets currency.
    * @param name - Name of the currency.
    * @returns Currency.
+   * @throws When the currency is not found.
    */
-  public getCurrency(name: string): ICurrency | undefined {
+  public getCurrency(name: string): ICurrency {
     const currency = Services.get(TarkovValuesService).values.currencies.find(c => c.name === name)
 
     if (currency == null) {
-      Services.get(LogService).logError(vueI18n.t('message.currencyNotFound', { currency: name }))
+      throw new Error(vueI18n.t('message.currencyNotFound', { currency: name }))
     }
 
     return currency
@@ -110,13 +128,32 @@ export class ItemService {
   /**
    * Gets an item. Updates the prices if the cache has expired.
    * @param id - Item ID.
-   * @param useGlobalFilter - Indicates whether the global filter must be applied. False by default.
    * @returns Item.
+   * @throws When the item is not found.
    */
-  public async getItem(id: string, useGlobalFilter = false): Promise<IItem | undefined> {
-    const items = await this.getItems([id], useGlobalFilter)
+  public async getItem(id: string): Promise<IItem> {
+    const items = await this.getItems([id], false)
+    const item = items[0]
 
-    return items[0]
+    if (item == null) {
+      // Returning a unknown item when the requested item is not found
+      return {
+        categoryId: '',
+        conflictingItemIds: [],
+        iconLink: Images.unknownItem,
+        id,
+        imageLink: '',
+        marketLink: '',
+        maxStackableAmount: 1,
+        name: vueI18n.t('caption.notFoundItem', { id }),
+        prices: [],
+        shortName: '',
+        weight: 0,
+        wikiLink: ''
+      }
+    }
+
+    return item
   }
 
   /**
@@ -134,8 +171,9 @@ export class ItemService {
    * @param ids - Item IDs.
    * @param useGlobalFilter - Indicates whether the global filter must be applied. False by default.
    * @returns Items.
+   * @throws When no item is found while the global filter is not used.
    */
-  public async getItems(ids: string[], useGlobalFilter = false): Promise<IItem[]> {
+  public async getItems(ids: string[], useGlobalFilter: boolean): Promise<IItem[]> {
     await this.initialize()
 
     let items: IItem[] = []
@@ -148,7 +186,9 @@ export class ItemService {
 
     if (items.length < ids.length && !useGlobalFilter) {
       const notFoundItemIds = ids.filter(id => !items.some(i => i.id === id))
-      Services.get(LogService).logError(vueI18n.t('message.itemsNotFound', { ids: `${notFoundItemIds.join('", "')}` }))
+      Services.get(LogService).logError('message.itemsNotFound', { ids: `${notFoundItemIds.join('", "')}` })
+
+      return []
     }
 
     return items
@@ -159,6 +199,7 @@ export class ItemService {
    * @param categoryIds - Category IDs.
    * @param useGlobalFilter - Indicates whether the global filter must be applied. False by default.
    * @returns Items belonging to the categories.
+   * @throws When no item is found while the global filter is not used.
    */
   public async getItemsOfCategories(categoryIds: string[], useGlobalFilter = false): Promise<IItem[]> {
     await this.initialize()
@@ -172,7 +213,9 @@ export class ItemService {
     }
 
     if (items.length === 0 && !useGlobalFilter) {
-      Services.get(LogService).logError(vueI18n.t('message.itemsOfCategoriesNotFound', { ids: `${categoryIds.join('", "')}` }))
+      Services.get(LogService).logError('message.itemsOfCategoriesNotFound', { ids: `${categoryIds.join('", "')}` })
+
+      return []
     }
 
     return items
@@ -181,12 +224,13 @@ export class ItemService {
   /**
    * Gets the main currency.
    * @returns Main currency.
+   * @throws When the main currency is not found.
    */
-  public getMainCurrency(): ICurrency | undefined {
+  public getMainCurrency(): ICurrency {
     const mainCurrency = Services.get(TarkovValuesService).values.currencies.find(c => c.mainCurrency)
 
     if (mainCurrency == null) {
-      Services.get(LogService).logError(vueI18n.t('message.mainCurrencyNotFound'))
+      throw new Error('message.mainCurrencyNotFound')
     }
 
     return mainCurrency
@@ -203,17 +247,15 @@ export class ItemService {
     }
 
     if (!this.hasStaticDataCached) {
-      if (!this.hasStaticDataCached) {
-        const staticDataFetched = await this.fetchStaticData()
+      const staticDataFetched = await this.fetchStaticData()
 
-        if (staticDataFetched) {
-          this._initializationState = ServiceInitializationState.initialized
-        } else {
-          this._initializationState = ServiceInitializationState.error
-        }
-
-        this.emitter.emit(ItemService.initializationFinishedEvent, this._initializationState)
+      if (staticDataFetched) {
+        this._initializationState = ServiceInitializationState.initialized
+      } else {
+        this._initializationState = ServiceInitializationState.error
       }
+
+      this.emitter.emit(ItemService.initializationFinishedEvent, this._initializationState)
     }
 
     if (!this.hasValidCache()) {
@@ -232,7 +274,7 @@ export class ItemService {
       return false
     }
 
-    this.itemCategories = itemCategories
+    this._itemCategories = itemCategories
 
     return true
   }
@@ -248,7 +290,7 @@ export class ItemService {
       return false
     }
 
-    this.items = items
+    this._items = items
 
     return true
   }
@@ -322,7 +364,16 @@ export class ItemService {
 
     const prices = await Services.get(ItemFetcherService).fetchPrices()
 
-    if (prices != undefined) {
+    if (prices == undefined) {
+      Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.pricesLoadingError'))
+
+      // When an error occurs, we set the last fetch date in order to make the cache expire 20 seconds later.
+      // This is to avoid making a new request for each of the 3000+ items.
+      const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+      this.lastPricesFetchDate = new Date(
+        new Date().getTime()
+        + (websiteConfigurationService.configuration.cacheDuration - (2 * websiteConfigurationService.configuration.fetchTimeout)) * 1000)
+    } else {
       this.updateItemsPrices(prices)
       this.updateFilteredItems() // Items and prices needed to filter
     }
@@ -398,19 +449,6 @@ export class ItemService {
    * @param prices - Prices fetching result.
    */
   private updateItemsPrices(prices: IPrice[]) {
-    if (prices.length === 0) {
-      Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.pricesLoadingError'))
-
-      // When an error occurs, we set the last fetch date in order to make the cache expire 20 seconds later.
-      // This is to avoid making a new request for each of the 3000+ items.
-      const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-      this.lastPricesFetchDate = new Date(
-        new Date().getTime()
-        + (websiteConfigurationService.configuration.cacheDuration - (2 * websiteConfigurationService.configuration.fetchTimeout)) * 1000)
-
-      return
-    }
-
     for (const item of this.items) {
       const itemPrices = prices.filter(p => p.itemId === item.id)
 
@@ -432,10 +470,7 @@ export class ItemService {
     for (const item of this.items) {
       for (const price of item.prices.filter(p => p.currencyName !== 'barter')) {
         const currency = this.getCurrency(price.currencyName)
-
-        if (currency != null) {
-          price.valueInMainCurrency = price.value * currency.value
-        }
+        price.valueInMainCurrency = price.value * currency.value
       }
     }
   }

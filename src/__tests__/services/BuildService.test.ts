@@ -8,7 +8,6 @@ import { ReductionService } from '../../services/ReductionService'
 import { VersionService } from '../../services/VersionService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import Services from '../../services/repository/Services'
-import Result, { FailureType } from '../../utils/Result'
 import Migrations from '../../utils/migrations/Migrations'
 import { build1, build2 } from '../__data__/buildMocks'
 import { alpha, erBayonet, k1s, k1sVisor } from '../__data__/itemMocks'
@@ -292,20 +291,20 @@ describe('fromSharableString()', () => {
       {
         migrateBuild: (build: IBuild) => {
           build.name = `${build.name}|1.5.0`
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         migrateBuildUnrelatedData: () => {
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         version: '1.5.0'
       },
       {
         migrateBuild: (build: IBuild) => {
           build.name = `${build.name}|1.6.0`
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         migrateBuildUnrelatedData: () => {
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         version: '1.6.0'
       })
@@ -338,7 +337,7 @@ describe('fromSharableString()', () => {
   it('should fail when the parsing of the reduced build fails', async () => {
     // Arrange
     const reductionServiceMock = mock<ReductionService>()
-    when(reductionServiceMock.parseReducedBuild(anything())).thenReturn(Result.fail(FailureType.error, '', 'Error'))
+    when(reductionServiceMock.parseReducedBuild(anything())).thenReturn(undefined)
 
     Services.configure(ReductionService, undefined, instance(reductionServiceMock))
 
@@ -366,12 +365,8 @@ describe('fromSharableString()', () => {
     Migrations.splice(0)
     Migrations.push(
       {
-        migrateBuild: () => {
-          return Promise.resolve(Result.fail(FailureType.error, undefined, 'Error'))
-        },
-        migrateBuildUnrelatedData: () => {
-          return Promise.resolve(Result.ok())
-        },
+        migrateBuild: () => Promise.resolve(false),
+        migrateBuildUnrelatedData: () => Promise.resolve(true),
         version: '1.6.0'
       })
 

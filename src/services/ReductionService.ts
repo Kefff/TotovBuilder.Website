@@ -24,7 +24,6 @@ import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
 import { IVest } from '../models/item/IVest'
 import { IWearable } from '../models/item/IWearable'
-import vueI18n from '../plugins/vueI18n'
 import { BuildService } from './BuildService'
 import { ItemPropertiesService } from './ItemPropertiesService'
 import { LogService } from './LogService'
@@ -43,7 +42,7 @@ export class ReductionService {
     const reducedInventorySlots = reducedBuild['s'] as Record<string, unknown>[]
 
     if (reducedInventorySlots == null) {
-      Services.get(LogService).logError(vueI18n.t('message.cannotParseBuildWithoutInventorySlots'))
+      Services.get(LogService).logError('message.cannotParseBuildWithoutInventorySlots')
 
       return undefined
     }
@@ -77,7 +76,7 @@ export class ReductionService {
     const itemId = reducedInventoryItem['i'] as string
 
     if (itemId == null) {
-      Services.get(LogService).logError(vueI18n.t('message.cannotParseInventoryItemWithoutItemId'))
+      Services.get(LogService).logError('message.cannotParseInventoryItemWithoutItemId')
 
       return undefined
     }
@@ -194,7 +193,7 @@ export class ReductionService {
     const itemId = reducedPrice['i'] as string
     const merchant = reducedPrice['m'] as string ?? 'flea-market'
     const merchantLevel = reducedPrice['ml'] as number ?? 0
-    let quest: IQuest | undefined = undefined
+    let quest: IQuest | undefined
     const value = reducedPrice['v'] as number ?? 0
     const valueInMainCurrency = reducedPrice['vm'] as number ?? 0
 
@@ -682,12 +681,12 @@ export class ReductionService {
     const modSlotName = reducedInventoryModSlot['n'] as string
 
     if (modSlotName == null) {
-      Services.get(LogService).logError(vueI18n.t('message.cannotParseInventoryModSlotWithoutModSlotName'))
+      Services.get(LogService).logError('message.cannotParseInventoryModSlotWithoutModSlotName')
 
       return undefined
     }
 
-    let inventoryItem: IInventoryItem | undefined = undefined
+    let inventoryItem: IInventoryItem | undefined
     const reducedItem = reducedInventoryModSlot['i'] as Record<string, unknown> | undefined
 
     if (reducedItem != null) {
@@ -710,7 +709,7 @@ export class ReductionService {
     const reducedItems = reducedInventorySlot['i'] as Record<string, unknown>[]
 
     if (reducedItems == null || reducedItems.length === 0) {
-      logService.logError(vueI18n.t('message.cannotParseInventorySlotWithoutItems'))
+      logService.logError('message.cannotParseInventorySlotWithoutItems')
 
       return undefined
     }
@@ -718,7 +717,7 @@ export class ReductionService {
     const typeId = reducedInventorySlot['t'] as string
 
     if (typeId == null) {
-      logService.logError(vueI18n.t('message.cannotParseInventorySlotWithoutTypeId'))
+      logService.logError('message.cannotParseInventorySlotWithoutTypeId')
 
       return undefined
     }
@@ -726,7 +725,7 @@ export class ReductionService {
     const inventorySlotType = InventorySlotTypes.find(ist => ist.id === typeId)
 
     if (inventorySlotType == null) {
-      logService.logError(vueI18n.t('message.cannotFindInventorySlotType', { inventorySlotTypeId: typeId }))
+      logService.logError('message.cannotFindInventorySlotType', { inventorySlotTypeId: typeId })
 
       return undefined
     }

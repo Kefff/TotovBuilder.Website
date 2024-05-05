@@ -82,15 +82,8 @@ export default defineComponent({
      * Sets the item based on the inventory item passed to the component and determines which summary component to display.
      */
     async function setItem() {
-      const item = await Services.get(ItemService).getItem(props.modelValue.itemId)
-
-      if (item != null) {
-        selectedItem.value = item
-        await setItemType(selectedItem.value)
-      } else {
-        selectedItem.value = undefined
-        selectedItemArmorModifiers.value = undefined
-      }
+      selectedItem.value = await Services.get(ItemService).getItem(props.modelValue.itemId)
+      await setItemType(selectedItem.value)
     }
 
     /**

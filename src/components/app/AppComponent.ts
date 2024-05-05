@@ -58,7 +58,7 @@ export default defineComponent({
 
       isLoading.value = false
 
-      if (websiteConfigurationService.configuration) {
+      if (websiteConfigurationService.configuration.postUpdatePeriod) {
         Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.postUpdatePeriod'), 0)
       }
     }

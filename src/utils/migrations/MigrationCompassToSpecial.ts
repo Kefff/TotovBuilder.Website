@@ -1,13 +1,12 @@
 import { IBuild } from '../../models/build/IBuild'
 import { IMigration } from '../../models/utils/IMigration'
-import Result from '../Result'
 
 /**
  * Represents a migration that replaces the compass inventory slot by the special inventory slots in obsolete builds.
  */
 export class MigrationCompassToSpecial implements IMigration {
   public migrateBuild = this.executeBuildMigration
-  public migrateBuildUnrelatedData = (): Promise<Result<void>> => Promise.resolve(Result.ok())
+  public migrateBuildUnrelatedData = (): Promise<boolean> => Promise.resolve(true)
   public version = undefined
 
   private executeBuildMigration(build: IBuild): Promise<boolean> {

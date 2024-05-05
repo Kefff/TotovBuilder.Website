@@ -16,10 +16,6 @@ export class ItemContentComponentService {
     let acceptedItems: IItem[] = []
     const item = await Services.get(ItemService).getItem(itemId)
 
-    if (item == null) {
-      return []
-    }
-
     switch (item.categoryId) {
       case 'magazine': {
         acceptedItems = await this.getMagazineAcceptedItems(item)

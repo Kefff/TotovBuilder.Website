@@ -54,8 +54,7 @@ export class InventoryItemService {
 
     const item = await itemService.getItem(inventoryItem.itemId)
 
-    if (item == null || !itemPropertiesService.canHaveArmor(item)
-    ) {
+    if (!itemPropertiesService.canHaveArmor(item)) {
       return {
         armorClass: 0,
         durability: 0
@@ -73,13 +72,6 @@ export class InventoryItemService {
       }
 
       const frontPlate = await itemService.getItem(frontPlateModSlot.item.itemId) as IArmorMod
-
-      if (frontPlate == null) {
-        return {
-          armorClass: 0,
-          durability: 0
-        }
-      }
 
       return {
         armorClass: frontPlate.armorClass,
@@ -105,21 +97,12 @@ export class InventoryItemService {
   public async getAsString(inventoryItem: IInventoryItem, language: string, itemInSameSlotInPreset?: IInventoryItem, indentationLevel = 0, canBeLooted = true): Promise<string> {
     const itemService = Services.get(ItemService)
 
-    const mainCurrency = itemService.getMainCurrency()
-
-    if (mainCurrency == null) {
-      return ''
-    }
-
-    const item = await itemService.getItem(inventoryItem.itemId)
-
-    if (item == null) {
-      return ''
-    }
-
     const indentationPattern = '    '
     const separator = `${indentationPattern}|${indentationPattern}`
     let inventoryItemAsString = ''
+
+    const mainCurrency = itemService.getMainCurrency()
+    const item = await itemService.getItem(inventoryItem.itemId)
 
     if (inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
       const itemCountAsString = inventoryItem.quantity > 1 ? `${inventoryItem.quantity} x ` : ''
@@ -151,10 +134,7 @@ export class InventoryItemService {
               inventoryItemAsString += mainCurrency.symbol
             } else {
               const priceCurrency = itemService.getCurrency(price.price.currencyName)
-
-              if (priceCurrency != null) {
-                inventoryItemAsString += `${priceCurrency.symbol} (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, language)}${mainCurrency.symbol})`
-              }
+              inventoryItemAsString += `${priceCurrency.symbol} (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, language)}${mainCurrency.symbol})`
             }
           }
         }
@@ -214,17 +194,10 @@ ${indentation}${containedItemAsString}`
    * @returns Ergonomics.
    */
   public async getErgonomics(inventoryItem: IInventoryItem): Promise<IErgonomics> {
-    const item = await Services.get(ItemService).getItem(inventoryItem.itemId)
-
-    if (item == null) {
-      return {
-        ergonomics: 0,
-        ergonomicsWithMods: 0
-      }
-    }
-
     const itemPropertiesService = Services.get(ItemPropertiesService)
+
     let ergonomics = 0
+    const item = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
     if (itemPropertiesService.isRangedWeapon(item)) {
       ergonomics = (item as IRangedWeapon).ergonomics
@@ -266,35 +239,6 @@ ${indentation}${containedItemAsString}`
 
     const item = await itemService.getItem(inventoryItem.itemId)
     const mainCurrency = itemService.getMainCurrency()
-
-    if (item == null || mainCurrency == null) {
-      return {
-        missingPrice: false,
-        price: {
-          barterItems: [],
-          currencyName: '',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        pricesWithContent: [],
-        priceWithContentInMainCurrency: 0,
-        unitPrice: {
-          barterItems: [],
-          currencyName: '',
-          itemId: '',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
-      }
-    }
 
     let unitPrice: IPrice = {
       barterItems: [],
@@ -361,7 +305,7 @@ ${indentation}${containedItemAsString}`
           hasUnitPrice = true
           unitPrice = {
             // Creating a new instance because we need to set the valueInMainCurrency.
-            // If we directly use a reference to matchinPrice.valueInMainCurrency, then we modify this price for the whole application each time we pass here
+            // If we directly use a reference to matchingPrice.valueInMainCurrency, then we modify this price for the whole application each time we pass here
             ...matchingPrice,
             valueInMainCurrency: matchingPriceInMainCurrency
           }
@@ -532,7 +476,7 @@ ${indentation}${containedItemAsString}`
   public async getRecoil(inventoryItem: IInventoryItem): Promise<IInventoryItemRecoil> {
     const item = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
-    if (item == null || !Services.get(ItemPropertiesService).isRangedWeapon(item)) {
+    if (!Services.get(ItemPropertiesService).isRangedWeapon(item)) {
       return {
         horizontalRecoil: 0,
         horizontalRecoilWithMods: 0,
@@ -588,7 +532,7 @@ ${indentation}${containedItemAsString}`
     const itemPropertiesService = Services.get(ItemPropertiesService)
     const item = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
-    if (item == null || !itemPropertiesService.isModdable(item)) {
+    if (!itemPropertiesService.isModdable(item)) {
       return {
         recoilModifierPercentage: 0,
         recoilModifierPercentageWithMods: 0
@@ -637,11 +581,6 @@ ${indentation}${containedItemAsString}`
     const shoppingListItemsToAdd: IShoppingListItem[] = []
 
     const item = await itemService.getItem(inventoryItem.itemId)
-
-    if (item == null) {
-      return []
-    }
-
     let unitPriceIgnoreStatus = IgnoredUnitPrice.notIgnored
 
     if (!canBeLooted) {
@@ -751,9 +690,9 @@ ${indentation}${containedItemAsString}`
    * @returns Wearable modifiers.
    */
   public async getWearableModifiers(inventoryItem: IInventoryItem): Promise<IInventoryItemWearableModifiers> {
-    const item = await Services.get(ItemService).getItem(inventoryItem.itemId) as IWearable
+    const item = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
-    if (item == null || !Services.get(ItemPropertiesService).isWearable(item)) {
+    if (!Services.get(ItemPropertiesService).isWearable(item)) {
       return {
         ergonomicsModifierPercentage: 0,
         ergonomicsModifierPercentageWithMods: 0,
@@ -764,13 +703,15 @@ ${indentation}${containedItemAsString}`
       }
     }
 
-    const ergonomicsModifierPercentage = item.ergonomicsModifierPercentage
+    const wearable = item as IWearable
+
+    const ergonomicsModifierPercentage = wearable.ergonomicsModifierPercentage
     let ergonomicsModifierPercentageWithMods = ergonomicsModifierPercentage
 
-    const movementSpeedModifierPercentage = item.movementSpeedModifierPercentage
+    const movementSpeedModifierPercentage = wearable.movementSpeedModifierPercentage
     let movementSpeedModifierPercentageWithMods = movementSpeedModifierPercentage
 
-    const turningSpeedModifierPercentage = item.turningSpeedModifierPercentage
+    const turningSpeedModifierPercentage = wearable.turningSpeedModifierPercentage
     let turningSpeedModifierPercentageWithMods = turningSpeedModifierPercentage
 
     for (const modSlot of inventoryItem.modSlots) {
@@ -806,15 +747,6 @@ ${indentation}${containedItemAsString}`
    */
   public async getWeight(inventoryItem: IInventoryItem): Promise<IWeight> {
     const item = await Services.get(ItemService).getItem(inventoryItem.itemId)
-
-    if (item == null) {
-      return {
-        unitWeight: 0,
-        weight: 0,
-        weightWithContent: 0
-      }
-    }
-
     const weight = item.weight * inventoryItem.quantity
     let weightWithContent = weight
 
@@ -886,8 +818,9 @@ ${indentation}${containedItemAsString}`
       return 0
     }
 
-    const ammunition = await Services.get(ItemService).getItem(ammunitionId) as IAmmunition
+    const item = await Services.get(ItemService).getItem(ammunitionId)
+    const ammunition = item as IAmmunition
 
-    return ammunition?.recoilModifierPercentage ?? 0
+    return ammunition.recoilModifierPercentage
   }
 }

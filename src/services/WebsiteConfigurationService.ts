@@ -1,6 +1,5 @@
 import { TinyEmitter } from 'tiny-emitter'
 import { IWebsiteConfiguration } from '../models/configuration/IWebsiteConfiguration'
-import vueI18n from '../plugins/vueI18n'
 import { FetchService } from './FetchService'
 import { LogService } from './LogService'
 import { ServiceInitializationState } from './repository/ServiceInitializationState'
@@ -18,7 +17,10 @@ export class WebsiteConfigurationService {
   /**
    * Website configuration.
    */
-  public configuration: IWebsiteConfiguration = {
+  public get configuration(): IWebsiteConfiguration {
+    return this._configuration
+  }
+  private _configuration: IWebsiteConfiguration = { // Base configuration to be able to fetch the real full configuration
     allowCookiesStorageKey: 'allow_cookies',
     bugReportUrl: import.meta.env.VITE_DISCORD_URL,
     buildSharingUrl: '',
@@ -26,7 +28,7 @@ export class WebsiteConfigurationService {
     buildsSortOrderStorageKey: 'builds_sort_order',
     buildStorageKeyPrefix: 'build_',
     cacheDuration: 3600,
-    contactAddress: 'totovbuilder@gmail.com',
+    contactAddress: import.meta.env.VITE_CONTACT_ADDRESS,
     discordUrl: import.meta.env.VITE_BUG_REPORT_URL,
     endpointChangelog: '',
     endpointItemCategories: '',
@@ -79,7 +81,7 @@ export class WebsiteConfigurationService {
       return false
     }
 
-    this.configuration = websiteConfiguration
+    this._configuration = websiteConfiguration
 
     return true
   }
@@ -89,17 +91,23 @@ export class WebsiteConfigurationService {
    * @returns Website configuration.
    */
   private async fetchWebsiteConfiguration(): Promise<IWebsiteConfiguration | undefined> {
+    const isDebug = import.meta.env.VITE_DEBUG === 'true'
     const fetchService = Services.get(FetchService)
+
+    if (isDebug) {
+      Services.get(LogService).logInformation('message.fetchingWebsiteConfiguration', { date: new Date().toISOString() })
+    }
+
     const websiteConfiguration = await fetchService.get<IWebsiteConfiguration>('/' + import.meta.env.VITE_WEBSITE_CONFIGURATION_ENDPOINT as string)
 
     if (websiteConfiguration == null) {
-      Services.get(LogService).logError(vueI18n.t('message.websiteConfigurationNotFetched'))
+      Services.get(LogService).logException('message.websiteConfigurationNotFetched')
 
       return undefined
     }
 
-    if (import.meta.env.VITE_DEBUG === 'true') {
-      Services.get(LogService).logInformation('message.websiteConfigurationFetched')
+    if (isDebug) {
+      Services.get(LogService).logInformation('message.websiteConfigurationFetched', { date: new Date().toISOString() })
     }
 
     return websiteConfiguration

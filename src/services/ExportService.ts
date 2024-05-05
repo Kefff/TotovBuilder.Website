@@ -1,8 +1,9 @@
 import FileSaver from 'file-saver'
 import { IBuild } from '../models/build/IBuild'
 import vueI18n from '../plugins/vueI18n'
-import Result from '../utils/Result'
 import { BuildService } from './BuildService'
+import { LogService } from './LogService'
+import { NotificationService, NotificationType } from './NotificationService'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import Services from './repository/Services'
 
@@ -12,9 +13,10 @@ import Services from './repository/Services'
 export class ExportService {
   /**
    * Exports a list of builds.
+   * Displayes a notification indicating whetherexport has succeeded.
    * @param builds - Builds.
    */
-  public async export(builds: IBuild[]): Promise<Result> {
+  public async export(builds: IBuild[]) {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
     try {
@@ -29,7 +31,10 @@ export class ExportService {
       FileSaver.saveAs(blob, fileName)
     }
     catch {
-      return Result.fail(vueI18n.t('message.buildsExportError'))
+      Services.get(LogService).logError('message.buildsExportError')
+      Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.buildsExportError'))
+
+      return
     }
 
     const buildService = Services.get(BuildService)
@@ -39,6 +44,6 @@ export class ExportService {
       await buildService.update(build.id, build)
     }
 
-    return Result.ok()
+    Services.get(NotificationService).notify(NotificationType.success, vueI18n.t('message.buildsExported'))
   }
 }

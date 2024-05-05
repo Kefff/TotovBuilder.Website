@@ -16,11 +16,6 @@ export class MagazineStatsComponentService {
 
     for (const acceptedAmmunitionId of magazine.acceptedAmmunitionIds) {
       const item = await itemService.getItem(acceptedAmmunitionId)
-
-      if (item == null) {
-        continue
-      }
-
       acceptedAmmunitionNames.push(item.name)
     }
 

@@ -1,5 +1,4 @@
 import { IBuild } from '../models/build/IBuild'
-import vueI18n from '../plugins/vueI18n'
 import { BuildService } from './BuildService'
 import { LogService } from './LogService'
 import Services from './repository/Services'
@@ -48,7 +47,7 @@ export class ImportService {
   /* c8 ignore start */
   private readFile(fileReader: FileReader): IBuild[] | undefined {
     if (fileReader.error != null) {
-      Services.get(LogService).logError(vueI18n.t('message.importError'))
+      Services.get(LogService).logError('message.importError')
 
       return undefined
     }
@@ -56,7 +55,7 @@ export class ImportService {
     const builds = JSON.parse(fileReader.result as string) as IBuild[]
 
     if (builds == null) {
-      Services.get(LogService).logError(vueI18n.t('message.importError'))
+      Services.get(LogService).logError('message.importError')
 
       return undefined
     }

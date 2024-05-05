@@ -1,8 +1,6 @@
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import Result from '../../utils/Result'
 import { CompatibilityRequestType } from '../compatibility/CompatibilityRequestType'
 import { CompatibilityService } from '../compatibility/CompatibilityService'
-import { NotificationService, NotificationType } from '../NotificationService'
 import Services from '../repository/Services'
 
 /**
@@ -21,7 +19,7 @@ export class InventorySlotComponentService {
       return true
     }
 
-    let compatibilityResult: Result | undefined
+    let compatibilityResult: boolean = true
 
     if (inventorySlotTypeId === 'bodyArmor') {
       compatibilityResult = await Services.get(CompatibilityService).checkCompatibility(CompatibilityRequestType.armor, item.itemId, path)
@@ -29,12 +27,6 @@ export class InventorySlotComponentService {
       compatibilityResult = await Services.get(CompatibilityService).checkCompatibility(CompatibilityRequestType.tacticalRig, item.itemId, path)
     }
 
-    if (compatibilityResult != null && !compatibilityResult.success) {
-      Services.get(NotificationService).notify(NotificationType.warning, compatibilityResult.failureMessage)
-
-      return false
-    }
-
-    return true
+    return compatibilityResult
   }
 }

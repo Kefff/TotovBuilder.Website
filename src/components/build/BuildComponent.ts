@@ -9,7 +9,6 @@ import { ExportService } from '../../services/ExportService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemService } from '../../services/ItemService'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { CompatibilityRequest } from '../../services/compatibility/CompatibilityRequest'
 import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
 import { CompatibilityService } from '../../services/compatibility/CompatibilityService'
@@ -54,7 +53,6 @@ export default defineComponent({
     const compatibilityService = Services.get(CompatibilityService)
     const inventoryItemService = Services.get(InventoryItemService)
     const globalFilterService = Services.get(GlobalFilterService)
-    const notificationService = Services.get(NotificationService)
 
     const inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
     let originalBuild: IBuild
@@ -252,13 +250,7 @@ export default defineComponent({
         return
       }
 
-      const exportResult = await Services.get(ExportService).export([build.value])
-
-      if (exportResult.success) {
-        notificationService.notify(NotificationType.success, vueI18n.t('message.buildsExported'))
-      } else {
-        notificationService.notify(NotificationType.error, exportResult.failureMessage)
-      }
+      await Services.get(ExportService).export([build.value])
     }
 
     /**
@@ -270,15 +262,15 @@ export default defineComponent({
         return
       }
 
-      const sharedBuildResult = await buildComponentService.getBuildFromSharableString(sharableString)
+      const sharedBuild = await Services.get(BuildService).fromSharableString(sharableString)
 
-      if (!sharedBuildResult.success) {
+      if (sharedBuild == null) {
         goToBuilds()
 
         return
       }
 
-      build.value = sharedBuildResult.value
+      build.value = sharedBuild
     }
 
     /**
