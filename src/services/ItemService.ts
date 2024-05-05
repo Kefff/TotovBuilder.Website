@@ -453,7 +453,7 @@ export class ItemService {
       const itemPrices = prices.filter(p => p.itemId === item.id)
 
       if (itemPrices.length > 0) {
-        item.prices = prices
+        item.prices = itemPrices
       }
     }
 

@@ -74,7 +74,7 @@ export default defineComponent({
 
       return _currency
     })
-    const displayedCurrency = computed(() => isBarter.value ? mainCurrency.value : currency.value)
+    const displayedCurrency = computed(() => isBarter.value ? mainCurrency : currency.value)
     const displayedPrice = computed(() => {
       const value = isBarter.value ? props.price.valueInMainCurrency : props.price.value
       const displayedValue = StatsUtils.getStandardDisplayValue(DisplayValueType.price, value)

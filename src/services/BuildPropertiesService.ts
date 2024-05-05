@@ -510,17 +510,17 @@ ${sharableUrlResult}`
           continue
         }
 
-        const shoppingList = await inventoryItemService.getShoppingList(item, undefined, inventorySlotType.canBeLooted)
+        const inventoryItemShoopingList = await inventoryItemService.getShoppingList(item, undefined, inventorySlotType.canBeLooted)
 
-        for (const shoppingListItemToAdd of shoppingList) {
-          const shoppingListItemIndex = shoppingList.findIndex(sli => sli.item.id === shoppingListItemToAdd.item.id)
+        for (const inventoryItemShoppingListItemToAdd of inventoryItemShoopingList) {
+          const inventoryItemShoppingListItemIndex = shoppingList.findIndex(sli => sli.item.id === inventoryItemShoppingListItemToAdd.item.id)
 
-          if (shoppingListItemIndex < 0) {
-            shoppingList.push(shoppingListItemToAdd)
+          if (inventoryItemShoppingListItemIndex < 0) {
+            shoppingList.push(inventoryItemShoppingListItemToAdd)
           } else {
-            shoppingList[shoppingListItemIndex].quantity += shoppingListItemToAdd.quantity
-            shoppingList[shoppingListItemIndex].price.value += shoppingListItemToAdd.unitPrice.value * shoppingListItemToAdd.quantity
-            shoppingList[shoppingListItemIndex].price.valueInMainCurrency += shoppingListItemToAdd.unitPrice.valueInMainCurrency * shoppingListItemToAdd.quantity
+            shoppingList[inventoryItemShoppingListItemIndex].quantity += inventoryItemShoppingListItemToAdd.quantity
+            shoppingList[inventoryItemShoppingListItemIndex].price.value += inventoryItemShoppingListItemToAdd.unitPrice.value * inventoryItemShoppingListItemToAdd.quantity
+            shoppingList[inventoryItemShoppingListItemIndex].price.valueInMainCurrency += inventoryItemShoppingListItemToAdd.unitPrice.valueInMainCurrency * inventoryItemShoppingListItemToAdd.quantity
           }
         }
       }

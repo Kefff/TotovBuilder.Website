@@ -112,7 +112,7 @@ export class InventoryItemService {
     if (canBeLooted && !inventoryItem.ignorePrice && inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
       const price = await this.getPrice(inventoryItem, itemInSameSlotInPreset, canBeLooted)
 
-      if (price != null && price.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset) {
+      if (price.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset) {
         if (price.missingPrice && price.unitPrice.valueInMainCurrency === 0) {
           // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
           inventoryItemAsString += `${separator}${vueI18n.t('message.noMerchant', 1, { locale: language })}`
@@ -285,10 +285,6 @@ ${indentation}${containedItemAsString}`
               true,
               useMerchantFilter)
 
-            if (barterItemPrice == undefined) {
-              continue
-            }
-
             if (barterItemPrice.missingPrice) {
               missingBarterItemPrice = true
               continue
@@ -408,10 +404,6 @@ ${indentation}${containedItemAsString}`
 
       const containedItemPrice = await this.getPrice(containedItem, preset?.content[i])
 
-      if (containedItemPrice == null) {
-        continue
-      }
-
       for (const containedItemPriceWithContent of containedItemPrice.pricesWithContent) {
         const currencyIndex = inventoryPrice.pricesWithContent.findIndex(p => p.currencyName === containedItemPriceWithContent.currencyName)
 
@@ -438,10 +430,6 @@ ${indentation}${containedItemAsString}`
 
       const presetModSlot = preset?.modSlots.find(pms => pms.modSlotName === modSlot.modSlotName)
       const modPrice = await this.getPrice(modSlot.item, presetModSlot?.item)
-
-      if (modPrice == null) {
-        continue
-      }
 
       for (const modPriceWithContent of modPrice.pricesWithContent) {
         const currencyIndex = inventoryPrice.pricesWithContent.findIndex(p => p.currencyName === modPriceWithContent.currencyName)
@@ -592,13 +580,8 @@ ${indentation}${containedItemAsString}`
     }
 
     if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
-      const price = await this.getPrice(inventoryItem)
-
-      if (price == null) {
-        return []
-      }
-
       let unitPrice: IPrice
+      const price = await this.getPrice(inventoryItem)
 
       // Barters
       const shoppingListBartersToAdd: IShoppingListItem[] = []

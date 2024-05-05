@@ -10,7 +10,6 @@ import { PathUtils } from '../utils/PathUtils'
 import { InventoryItemService } from './InventoryItemService'
 import { ItemFetcherService } from './ItemFetcherService'
 import { ItemPropertiesService } from './ItemPropertiesService'
-import { LogService } from './LogService'
 import Services from './repository/Services'
 
 /**
@@ -40,14 +39,10 @@ export class PresetService {
   /**
    * Gets the preset of an item.
    * @param id - ID of the item for which the preset must be found.
-   * @returns Preset.
+   * @returns Preset or undefined when no preset exist for the item.
    */
   public getPreset(id: string): IInventoryItem | undefined {
     const preset = this.presets.find(p => p.itemId === id)
-
-    if (preset == null) {
-      Services.get(LogService).logError('message.presetNotFound', { id })
-    }
 
     return preset
   }

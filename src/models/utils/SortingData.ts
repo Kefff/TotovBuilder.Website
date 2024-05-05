@@ -21,7 +21,7 @@ export default class SortingData<TItem extends IItem> {
    */
   public sortingFunction: ISortingFunction<TItem> = {
     comparisonFunction: compareByString,
-    comparisonValueObtentionFunction: async (item: IItem) => item.name
+    comparisonValueObtentionFunction: (item: IItem) => Promise.resolve(item.name)
   }
 }
 
