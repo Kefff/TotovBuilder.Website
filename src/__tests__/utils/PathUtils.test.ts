@@ -1,7 +1,7 @@
+import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { PathUtils } from '../../utils/PathUtils'
-import { describe, expect, it } from 'vitest'
 
 describe('checkIsModSlotPath()', () => {
   it.each([
@@ -118,11 +118,10 @@ describe('getInventoryItemFromPath()', () => {
     ]
   ])('should get an inventory item from a path', (build: IBuild, path: string, expected: IInventoryItem) => {
     // Act
-    const inventorySlotResult = PathUtils.getInventoryItemFromPath(build, path)
+    const inventorySlot = PathUtils.getInventoryItemFromPath(build, path)
 
     // Assert
-    expect(inventorySlotResult.success).toBe(true)
-    expect(inventorySlotResult.value).toStrictEqual(expected)
+    expect(inventorySlot).toStrictEqual(expected)
   })
 
   it.each([
@@ -285,12 +284,11 @@ describe('getInventoryItemFromPath()', () => {
       'build:123456789/slot:backpack_0/item:5ca20d5986f774331e7c9602/invalid',
       'Path "build:123456789/slot:backpack_0/item:5ca20d5986f774331e7c9602/invalid" is invalid.'
     ]
-  ])('should fail when the path is invalid', (build: IBuild, path: string, expected: string) => {
+  ])('should throw when the path is invalid', (build: IBuild, path: string, expected: string) => {
     // Act
-    const inventorySlotResult = PathUtils.getInventoryItemFromPath(build, path)
+    const act = () => PathUtils.getInventoryItemFromPath(build, path)
 
     // Assert
-    expect(inventorySlotResult.success).toBe(false)
-    expect(inventorySlotResult.failureMessage).toBe(expected)
+    expect(act).toThrow(expected)
   })
 })

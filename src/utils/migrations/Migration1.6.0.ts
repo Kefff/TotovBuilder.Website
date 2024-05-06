@@ -26,18 +26,16 @@ export class Migration160 implements IMigration {
           continue
         }
 
-        try {
-          const item = await itemService.getItem(inventoryItem.itemId)
-          const rangedWeapon = item as IRangedWeapon
+        const item = await itemService.getItem(inventoryItem.itemId)
 
-          if (rangedWeapon.defaultPresetId != null) {
-            inventoryItem.itemId = rangedWeapon.defaultPresetId
-          }
-        }
-        catch {
+        if (item.categoryId === 'notFound') {
           success = false
+        }
 
-          continue
+        const rangedWeapon = item as IRangedWeapon
+
+        if (rangedWeapon.defaultPresetId != null) {
+          inventoryItem.itemId = rangedWeapon.defaultPresetId
         }
       }
     }

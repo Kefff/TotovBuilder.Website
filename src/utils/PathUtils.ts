@@ -71,7 +71,7 @@ export class PathUtils {
       currentPathArrayIndex++
       const expectedItemId = pathArray[currentPathArrayIndex]?.replace(PathUtils.itemPrefix, '')
 
-      if (currentInventoryItem.content[contentIndex].itemId !== expectedItemId) {
+      if (isNaN(contentIndex) || currentInventoryItem.content[contentIndex].itemId !== expectedItemId) {
         throw new Error(vueI18n.t('message.cannotFindContentItemInPath', { path, itemId: expectedItemId }))
       }
 

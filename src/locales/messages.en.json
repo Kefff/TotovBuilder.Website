@@ -342,7 +342,6 @@
     "emptyBuild3": "button to equip items.",
     "emptyFetchResponse": "Empty response.",
     "errorLog": "Error : {message}",
-    "failureDebug": "{message} - Context : {context}.",
     "fetchError": "Error while requesting endpoint \"{endpoint}\".\nResponse : \"{errorMessage}\".",
     "fetchingChangelog": "{date} Fetching changelog.",
     "fetchingItemCategories": "{date} Fetching item categories.",

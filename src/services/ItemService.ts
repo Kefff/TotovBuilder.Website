@@ -226,7 +226,7 @@ export class ItemService {
    */
   public static getNotFoundItem(id: string) {
     return {
-      categoryId: '',
+      categoryId: 'notFound',
       conflictingItemIds: [],
       iconLink: Images.unknownItem,
       id,

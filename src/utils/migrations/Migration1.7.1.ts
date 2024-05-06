@@ -13,7 +13,7 @@ export class Migration171 implements IMigration {
 
   private async executeBuildMigration(build: IBuild): Promise<boolean> {
     const itemService = Services.get(ItemService)
-    let success = false
+    let success = true
 
     for (const inventorySlot of build.inventorySlots) {
       if (inventorySlot.typeId !== 'bodyArmor' && inventorySlot.typeId !== 'headwear' && inventorySlot.typeId !== 'tacticalRig') {
@@ -25,22 +25,20 @@ export class Migration171 implements IMigration {
           continue
         }
 
-        try {
-          const item = await itemService.getItem(inventoryItem.itemId)
-          const itemsOfCategory = await itemService.getItemsOfCategories([item.categoryId], false)
-          const preset = itemsOfCategory.filter(v => v.name === item.name + ' Default')[0]
+        const item = await itemService.getItem(inventoryItem.itemId)
 
-          if (preset == null) {
-            continue
-          }
-
-          inventoryItem.itemId = preset.id
-        }
-        catch {
+        if (item.categoryId === 'notFound') {
           success = false
+        }
 
+        const itemsOfCategory = await itemService.getItemsOfCategories([item.categoryId], false)
+        const preset = itemsOfCategory.filter(v => v.name === item.name + ' Default')[0]
+
+        if (preset == null) {
           continue
         }
+
+        inventoryItem.itemId = preset.id
       }
     }
 
