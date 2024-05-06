@@ -21,7 +21,10 @@ export class BuildService {
    * @returns Build ID.
    */
   public async add(build: IBuild): Promise<string> {
-    build.id = Guid.create().toString()
+    if (build.id !== '') {
+      build.id = Guid.create().toString()
+    }
+
     build.lastWebsiteVersion = await Services.get(VersionService).getVersion()
 
     const storageKey = this.getKey(build.id)
@@ -226,16 +229,15 @@ export class BuildService {
 
   /**
    * Updates a build.
-   * If the build is not found, saves the build as a new build.
+   * If the build is not found, created a new build.
    * @param id - ID of the build to update.
    * @param build - Updated version of the build.
    */
-  public async update(id: string, build: IBuild) {
-    build.id = id
+  public async update(build: IBuild) {
     build.lastUpdated = new Date()
     build.lastWebsiteVersion = await Services.get(VersionService).getVersion()
 
-    const storageKey = this.getKey(id)
+    const storageKey = this.getKey(build.id)
 
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i)
@@ -246,6 +248,8 @@ export class BuildService {
         return
       }
     }
+
+    Services.get(LogService).logError('message.buildToUpdateNotFound', { id: build.id })
 
     this.add(build)
   }

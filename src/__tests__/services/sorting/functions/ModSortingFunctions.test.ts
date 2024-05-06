@@ -1,7 +1,7 @@
+import { describe, expect, it } from 'vitest'
 import { IMod } from '../../../../models/item/IMod'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ModSortingFunctions } from '../../../../services/sorting/functions/ModSortingFunctions'
-import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([
@@ -22,10 +22,10 @@ describe('comparisonFunction()', () => {
     } as IMod
 
     const sortingService = new SortingService(ModSortingFunctions)
-    const updatedSortingDataResult = sortingService.setSortingProperty(property)
+    const updatedSortingData = sortingService.setSortingProperty(property)
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2], updatedSortingDataResult.value)
+    const sortedItems = await SortingService.sort([item1, item2], updatedSortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item1])

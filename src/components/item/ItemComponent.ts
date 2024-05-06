@@ -10,7 +10,6 @@ import { CompatibilityService } from '../../services/compatibility/Compatibility
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ItemService } from '../../services/ItemService'
-import { NotificationService } from '../../services/NotificationService'
 import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
 import { SortingService } from '../../services/sorting/SortingService'
@@ -80,7 +79,6 @@ export default defineComponent({
     const itemPropertiesService = Services.get(ItemPropertiesService)
     const itemService = Services.get(ItemService)
     const presetService = Services.get(PresetService)
-    const notificationService = Services.get(NotificationService)
 
     const editing = inject<Ref<boolean>>('editing')
 

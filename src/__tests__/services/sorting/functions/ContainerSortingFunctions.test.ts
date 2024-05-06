@@ -1,7 +1,7 @@
+import { describe, expect, it } from 'vitest'
 import { IContainer } from '../../../../models/item/IContainer'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ContainerSortingFunctions } from '../../../../services/sorting/functions/ContainerSortingFunctions'
-import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([['capacity']])('should compare by a property', async (property: string) => {
@@ -17,10 +17,10 @@ describe('comparisonFunction()', () => {
     } as IContainer
 
     const sortingService = new SortingService(ContainerSortingFunctions)
-    const updatedSortingDataResult = sortingService.setSortingProperty(property)
+    const updatedSortingData = sortingService.setSortingProperty(property)
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2], updatedSortingDataResult.value)
+    const sortedItems = await SortingService.sort([item1, item2], updatedSortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item1])

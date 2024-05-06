@@ -133,24 +133,11 @@ export class ItemService {
    */
   public async getItem(id: string): Promise<IItem> {
     const items = await this.getItems([id], false)
-    const item = items[0]
+    let item = items[0]
 
     if (item == null) {
       // Returning a unknown item when the requested item is not found
-      return {
-        categoryId: '',
-        conflictingItemIds: [],
-        iconLink: Images.unknownItem,
-        id,
-        imageLink: '',
-        marketLink: '',
-        maxStackableAmount: 1,
-        name: vueI18n.t('caption.notFoundItem', { id }),
-        prices: [],
-        shortName: '',
-        weight: 0,
-        wikiLink: ''
-      }
+      item = ItemService.getNotFoundItem(id)
     }
 
     return item
@@ -187,8 +174,6 @@ export class ItemService {
     if (items.length < ids.length && !useGlobalFilter) {
       const notFoundItemIds = ids.filter(id => !items.some(i => i.id === id))
       Services.get(LogService).logError('message.itemsNotFound', { ids: `${notFoundItemIds.join('", "')}` })
-
-      return []
     }
 
     return items
@@ -214,8 +199,6 @@ export class ItemService {
 
     if (items.length === 0 && !useGlobalFilter) {
       Services.get(LogService).logError('message.itemsOfCategoriesNotFound', { ids: `${categoryIds.join('", "')}` })
-
-      return []
     }
 
     return items
@@ -230,10 +213,32 @@ export class ItemService {
     const mainCurrency = Services.get(TarkovValuesService).values.currencies.find(c => c.mainCurrency)
 
     if (mainCurrency == null) {
-      throw new Error('message.mainCurrencyNotFound')
+      throw new Error(vueI18n.t('message.mainCurrencyNotFound'))
     }
 
     return mainCurrency
+  }
+
+  /**
+   * Gets the item returned when getting an item that is not found in the items list.
+   * @param id - ID of the item that is not found.
+   * @returns Not found item.
+   */
+  public static getNotFoundItem(id: string) {
+    return {
+      categoryId: '',
+      conflictingItemIds: [],
+      iconLink: Images.unknownItem,
+      id,
+      imageLink: '',
+      marketLink: '',
+      maxStackableAmount: 1,
+      name: vueI18n.t('caption.notFoundItem', { id }),
+      prices: [],
+      shortName: '',
+      weight: 0,
+      wikiLink: ''
+    }
   }
 
   /**

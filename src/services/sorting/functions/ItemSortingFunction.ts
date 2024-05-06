@@ -37,5 +37,5 @@ async function getPrice(item: IItem): Promise<number> {
     quantity: 1
   })
 
-  return price != null ? price.unitPrice.valueInMainCurrency : 0
+  return price.unitPrice.valueInMainCurrency
 }

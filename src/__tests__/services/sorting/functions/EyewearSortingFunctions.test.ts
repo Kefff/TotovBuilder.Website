@@ -1,7 +1,7 @@
+import { describe, expect, it } from 'vitest'
 import { IEyewear } from '../../../../models/item/IEyewear'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { EyewearSortingFunctions } from '../../../../services/sorting/functions/EyewearSortingFunctions'
-import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([['blindnessProtectionPercentage']])('should compare by a property', async (property: string) => {
@@ -17,10 +17,10 @@ describe('comparisonFunction()', () => {
     } as IEyewear
 
     const sortingService = new SortingService(EyewearSortingFunctions)
-    const updatedSortingDataResult = sortingService.setSortingProperty(property)
+    const updatedSortingData = sortingService.setSortingProperty(property)
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2], updatedSortingDataResult.value)
+    const sortedItems = await SortingService.sort([item1, item2], updatedSortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item1])

@@ -23,7 +23,7 @@ export class BuildsImportComponentService {
       Services.get(LogService).logError('message.invalidBuildFile')
       Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.importError'))
 
-      return
+      return undefined
     }
 
     const buildPropertiesService = Services.get(BuildPropertiesService)
@@ -34,7 +34,7 @@ export class BuildsImportComponentService {
     if (builds == null) {
       Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.importError'))
 
-      return
+      return undefined
     }
 
     for (const build of builds) {

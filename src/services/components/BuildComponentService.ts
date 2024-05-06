@@ -61,7 +61,7 @@ export class BuildComponentService {
       router.push({ name: 'Build', params: { id: newBuildId } })
     } else {
       // Update
-      await buildService.update(build.id, build)
+      await buildService.update(build)
     }
 
     notificationService.notify(NotificationType.success, vueI18n.t('message.buildSaved', { name: build.name }))

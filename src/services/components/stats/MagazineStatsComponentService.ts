@@ -11,8 +11,8 @@ export class MagazineStatsComponentService {
    * @param magazine - Magazine.
    */
   public async getAcceptedCartridgesNames(magazine: IMagazine): Promise<string[]> {
-    const acceptedAmmunitionNames: string[] = []
     const itemService = Services.get(ItemService)
+    const acceptedAmmunitionNames: string[] = []
 
     for (const acceptedAmmunitionId of magazine.acceptedAmmunitionIds) {
       const item = await itemService.getItem(acceptedAmmunitionId)

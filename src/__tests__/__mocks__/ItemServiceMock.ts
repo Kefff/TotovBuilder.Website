@@ -33,16 +33,16 @@ function getCurrency(currencyName: string): ICurrency {
   return currency
 }
 
-function getItem(id: string, customItemList?: IItem[], customPricesList?: IPrice[]): Promise<IItem | undefined> {
-  const item = (customItemList ?? ItemMocks).find(i => i.id === id) as IItem
+function getItem(id: string, customItemList?: IItem[], customPricesList?: IPrice[]): Promise<IItem> {
+  let item = (customItemList ?? ItemMocks).find(i => i.id === id) as IItem
 
-  if (item != null) {
+  if (item == null) {
+    item = ItemService.getNotFoundItem(id)
+  } else {
     item.prices = (customPricesList ?? PriceMocks).filter(p => p.itemId === id)
-
-    return Promise.resolve(item)
   }
 
-  return Promise.resolve(undefined)
+  return Promise.resolve(item)
 }
 
 function getItems(ids: string[], customItemsList?: IItem[], customPricesList?: IPrice[]): Promise<IItem[]> {
@@ -66,18 +66,18 @@ function getItemsOfCategories(ids: string[], customItemsList?: IItem[], customPr
 }
 
 function getMainCurrency(hasMainCurrency: boolean): Promise<ICurrency | undefined> {
-  if (hasMainCurrency) {
-    return Promise.resolve(
-      {
-        iconName: 'ruble-sign',
-        itemId: rub.id,
-        mainCurrency: true,
-        name: rub.shortName,
-        sortOrder: 3,
-        symbol: '₽',
-        value: 1
-      })
-  } else {
-    return Promise.resolve(undefined)
+  if (!hasMainCurrency) {
+    throw new Error(vueI18n.t('message.mainCurrencyNotFound'))
   }
+
+  return Promise.resolve(
+    {
+      iconName: 'ruble-sign',
+      itemId: rub.id,
+      mainCurrency: true,
+      name: rub.shortName,
+      sortOrder: 3,
+      symbol: '₽',
+      value: 1
+    })
 }

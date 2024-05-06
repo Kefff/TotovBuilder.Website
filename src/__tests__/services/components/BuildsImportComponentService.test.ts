@@ -1,6 +1,5 @@
 import { anything, instance, mock, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
-import { IBuild } from '../../../models/build/IBuild'
 import { IInventorySlot } from '../../../models/build/IInventorySlot'
 import { IPrice } from '../../../models/item/IPrice'
 import { IBuildsImportResult } from '../../../models/utils/IBuildsImportResult'
@@ -11,9 +10,9 @@ import { InventoryItemService } from '../../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../../services/InventorySlotPropertiesService'
 import { InventorySlotService } from '../../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../../services/ItemPropertiesService'
+import { NotificationService } from '../../../services/NotificationService'
 import { BuildsImportComponentService } from '../../../services/components/BuildsImportComponentService'
 import Services from '../../../services/repository/Services'
-import Result, { FailureType } from '../../../utils/Result'
 import { berkut, iskra } from '../../__data__/itemMocks'
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../../__mocks__/PresetServiceMock'
@@ -35,9 +34,10 @@ describe('readBuilds()', () => {
     Services.configure(InventorySlotPropertiesService)
     Services.configure(InventorySlotService)
     Services.configure(ItemPropertiesService)
+    Services.configure(NotificationService)
 
     const importServiceMock = mock<ImportService>()
-    when(importServiceMock.getBuildsFromFile(anything())).thenResolve(Result.ok<IBuild[]>([
+    when(importServiceMock.getBuildsFromFile(anything())).thenResolve([
       {
         id: 'build1',
         inventorySlots: [
@@ -59,18 +59,18 @@ describe('readBuilds()', () => {
         lastWebsiteVersion: '1.6.0',
         name: 'Build 1'
       }
-    ]))
+    ])
     Services.configure(ImportService, undefined, instance(importServiceMock))
 
-    const service = new BuildsImportComponentService()
     const fileMock = mock<File>()
+
+    const service = new BuildsImportComponentService()
 
     // Act
     const result = await service.readBuilds(instance(fileMock))
 
     // Assert
-    expect(result.success).toBe(true)
-    expect(result.value).toStrictEqual({
+    expect(result).toStrictEqual({
       buildSummaries: [
         {
           armorModifiers: {
@@ -240,23 +240,28 @@ describe('readBuilds()', () => {
     } as IBuildsImportResult)
   })
 
-  it('should return when no file is provided', async () => {
+  it('should return undefined when no file is provided', async () => {
     // Arrange
+    Services.configure(NotificationService)
+    useWebsiteConfigurationServiceMock()
+
     const service = new BuildsImportComponentService()
 
     // Act
     const result = await service.readBuilds(undefined)
 
     // Assert
-    expect(result.success).toBe(true)
+    expect(result).toBe(undefined)
   })
 
-  it('should fail when builds cannot be read from the file', async () => {
+  it('should return undefined  when builds cannot be read from the file', async () => {
     // Arrange
     Services.configure(BuildPropertiesService)
+    Services.configure(NotificationService)
+    useWebsiteConfigurationServiceMock()
 
     const importServiceMock = mock<ImportService>()
-    when(importServiceMock.getBuildsFromFile(anything())).thenResolve(Result.fail(FailureType.error, undefined, 'Error'))
+    when(importServiceMock.getBuildsFromFile(anything())).thenResolve(undefined)
     Services.configure(ImportService, undefined, instance(importServiceMock))
 
     const service = new BuildsImportComponentService()
@@ -267,7 +272,7 @@ describe('readBuilds()', () => {
     const result = await service.readBuilds(instance(fileMock))
 
     // Assert
-    expect(result.success).toBe(false)
+    expect(result).toBe(undefined)
   })
 })
 
