@@ -1,4 +1,5 @@
 /* eslint-disable no-irregular-whitespace */
+import { anything, instance, mock, verify } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
@@ -9,11 +10,11 @@ import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
 import { InventorySlotService } from '../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
-import Result from '../../utils/Result'
 import { build1, build2 } from '../__data__/buildMocks'
-import { armor6b13FlDefault, bansheeDefault, ekp802dt, nf30mm, opSksDefault, opSksDt, pso1, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, scavVest, specterDr } from '../__data__/itemMocks'
+import { ammo545bp, armor6b13FlDefault, bansheeDefault, ekp802dt, mechanism, ms2000, nf30mm, opSksDefault, opSksDt, plate6b33Back, plate6b33Front, precision, pso1, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, scavVest, specterDr } from '../__data__/itemMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
@@ -21,6 +22,19 @@ import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigur
 
 describe('canAddArmor()', () => {
   it.each([
+    [
+      {
+        id: '',
+        inventorySlots: [
+          {
+            typeId: 'tacticalRig',
+            items: [undefined] as (IInventoryItem | undefined)[]
+          }
+        ]
+      } as IBuild,
+      true,
+      undefined
+    ],
     [
       {
         id: '',
@@ -39,11 +53,8 @@ describe('canAddArmor()', () => {
           }
         ]
       } as IBuild,
-      {
-        failureContext: 'ItemService.getItem()',
-        failureMessage: 'Item "invalid" not found.',
-        success: false
-      } as Result
+      true,
+      undefined
     ],
     [
       {
@@ -63,11 +74,8 @@ describe('canAddArmor()', () => {
           }
         ]
       } as IBuild,
-      {
-        failureContext: '',
-        failureMessage: '',
-        success: true
-      } as Result
+      true,
+      undefined
     ],
     [
       {
@@ -87,60 +95,37 @@ describe('canAddArmor()', () => {
           }
         ]
       } as IBuild,
-      {
-        failureContext: 'BuildService.canAddArmor()',
-        failureMessage:
-          'Cannot select a body armor because an armored tactical rig has already been added.',
-        success: false
-      } as Result
+      false,
+      'Cannot select a body armor because an armored tactical rig has already been added.'
     ]
   ])(
     'should check if an armor can be added to the build',
-    async (build: IBuild, expected: Result) => {
+    async (build: IBuild, expectedResult: boolean, expectedErrorMessage: string | undefined) => {
       // Arrange
       useItemServiceMock()
+
+      const notificationServiceMock = mock<NotificationService>()
+      Services.configure(NotificationService, undefined, instance(notificationServiceMock))
+
       const service = new BuildPropertiesService()
 
       // Act
       const result = await service.canAddArmor(build)
 
       // Assert
-      expect(result).toEqual(expected)
+      expect(result).toBe(expectedResult)
+
+      if (expectedErrorMessage != null) {
+        verify(notificationServiceMock.notify(NotificationType.warning, expectedErrorMessage)).once()
+      } else {
+        verify(notificationServiceMock.notify(NotificationType.warning, anything())).never()
+      }
     }
   )
 })
 
 describe('canAddMod()', () => {
   it.each([
-    [
-      {} as IBuild,
-      'invalid',
-      `build:123456789/slot:onSling_0/item:${rpk16Default.id}/mod:mod_handguard/item:${rpk16Handguard.id}/mod_mount_000`,
-      {
-        failureContext: 'ItemService.getItem()',
-        failureMessage: 'Item "invalid" not found.',
-        success: false,
-        value: undefined
-      } as Result
-    ],
-    [
-      {
-        id: '123456789',
-        inventorySlots: [],
-        lastExported: undefined,
-        lastUpdated: undefined,
-        lastWebsiteVersion: undefined,
-        name: 'build1'
-      } as IBuild,
-      rpk16Rail.id,
-      `build:123456789/slot:onSling_0/item:${rpk16Default.id}/invalid`,
-      {
-        failureContext: 'PathUtils.getInventorySlotItem()',
-        failureMessage: 'Cannot find inventory slot "onSling".',
-        success: false,
-        value: undefined
-      } as Result
-    ],
     [
       {
         id: '123456789',
@@ -165,12 +150,8 @@ describe('canAddMod()', () => {
       } as IBuild,
       rpk16Rail.id,
       `build:123456789/slot:onSling_0/item:invalid/mod:mod_handguard/item:${rpk16Handguard.id}/mod_mount_000`,
-      {
-        failureContext: 'ItemService.getItem()',
-        failureMessage: 'Item "invalid" not found.',
-        success: false,
-        value: undefined
-      } as Result
+      true,
+      undefined
     ],
     [
       {
@@ -229,12 +210,8 @@ describe('canAddMod()', () => {
       } as IBuild,
       nf30mm.id, // Conflicts with rpk16RsBase
       `build:123456789/slot:onSling_0/item:${rpk16Default.id}/mod:mod_reciever/item:${rpk16DustCover.id}/mod_scope`,
-      {
-        failureContext: 'BuildService.canAddMod()',
-        failureMessage:
-          'Cannot add mod "Nightforce Magmount 30mm ring scope mount" because it conflicts with item "RPK-16 rear sight base".',
-        success: false
-      } as Result
+      false,
+      'Cannot add mod "Nightforce Magmount 30mm ring scope mount" because it conflicts with item "RPK-16 rear sight base".'
     ],
     [
       {
@@ -293,11 +270,8 @@ describe('canAddMod()', () => {
       } as IBuild,
       specterDr.id, // No conflict
       `build:123456789/slot:onSling_0/item:${rpk16Default.id}/mod:mod_reciever/item:${rpk16DustCover.id}/mod_scope`,
-      {
-        failureContext: '',
-        failureMessage: '',
-        success: true
-      } as Result
+      true,
+      undefined
     ],
     [
       {
@@ -345,26 +319,56 @@ describe('canAddMod()', () => {
       } as IBuild,
       pso1.id, // Conflicts with the item it replaces, so the conflict is ignored
       `build:123456789/slot:onSling_0/item:${opSksDefault.id}/mod:mod_mount/item:${opSksDt.id}/mod:mod_scope`,
-      {
-        failureContext: '',
-        failureMessage: '',
-        success: true
-      } as Result
+      true,
+      undefined
     ]
   ])(
     'should check if a mod can be added to an item',
-    async (build: IBuild, modId: string, modSlotPath: string, expected: Result) => {
+    async (build: IBuild, modId: string, modSlotPath: string, expectedResult: boolean, expectedErrorMessage: string | undefined) => {
       // Arrange
       useItemServiceMock()
+
+      const notificationServiceMock = mock<NotificationService>()
+      Services.configure(NotificationService, undefined, instance(notificationServiceMock))
+
       const service = new BuildPropertiesService()
 
       // Act
       const result = await service.canAddMod(build, modId, modSlotPath)
 
       // Assert
-      expect(result).toEqual(expected)
+      expect(result).toEqual(expectedResult)
+
+      if (expectedErrorMessage != null) {
+        verify(notificationServiceMock.notify(NotificationType.warning, expectedErrorMessage)).once()
+      } else {
+        verify(notificationServiceMock.notify(NotificationType.warning, anything())).never()
+      }
     }
   )
+
+  it('should throw when a build has no inventory slot', async () => {
+    // Arrange
+    useItemServiceMock()
+
+    const service = new BuildPropertiesService()
+
+    // Act
+    const act = service.canAddMod(
+      {
+        id: '123456789',
+        inventorySlots: [],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'build1'
+      } as IBuild,
+      rpk16Rail.id,
+      `build:123456789/slot:onSling_0/item:${rpk16Default.id}`)
+
+    // Assert
+    await expect(act).rejects.toThrowError('Cannot find inventory slot "onSling".')
+  })
 })
 
 describe('canAddVest()', () => {
@@ -388,11 +392,8 @@ describe('canAddVest()', () => {
         ]
       } as IBuild,
       'invalid',
-      {
-        failureContext: 'ItemService.getItem()',
-        failureMessage: 'Item "invalid" not found.',
-        success: false
-      } as Result
+      true,
+      undefined
     ],
     [
       {
@@ -413,11 +414,8 @@ describe('canAddVest()', () => {
         ]
       } as IBuild,
       scavVest.id,
-      {
-        failureContext: '',
-        failureMessage: '',
-        success: true
-      } as Result
+      true,
+      undefined
     ],
     [
       {
@@ -438,12 +436,8 @@ describe('canAddVest()', () => {
         ]
       } as IBuild,
       bansheeDefault.id,
-      {
-        failureContext: 'BuildService.canAddVest()',
-        failureMessage:
-          'Cannot select an armored tactical rig because a body armor has already been added.',
-        success: false
-      } as Result
+      false,
+      'Cannot select an armored tactical rig because a body armor has already been added.'
     ],
     [
       {
@@ -456,24 +450,32 @@ describe('canAddVest()', () => {
         ]
       } as IBuild,
       bansheeDefault.id,
-      {
-        failureContext: '',
-        failureMessage: '',
-        success: true
-      } as Result
+      true,
+      undefined
     ]
   ])(
     'should check if a vest can be added to the build',
-    async (build: IBuild, vestId: string, expected: Result) => {
+    async (build: IBuild, vestId: string, expectedResult: boolean, expectedErrorMessage: string | undefined) => {
       // Arrange
       useItemServiceMock()
+      Services.configure(ItemPropertiesService)
+
+      const notificationServiceMock = mock<NotificationService>()
+      Services.configure(NotificationService, undefined, instance(notificationServiceMock))
+
       const service = new BuildPropertiesService()
 
       // Act
       const result = await service.canAddVest(build, vestId)
 
       // Assert
-      expect(result).toEqual(expected)
+      expect(result).toEqual(expectedResult)
+
+      if (expectedErrorMessage != null) {
+        verify(notificationServiceMock.notify(NotificationType.warning, expectedErrorMessage)).once()
+      } else {
+        verify(notificationServiceMock.notify(NotificationType.warning, anything())).never()
+      }
     }
   )
 })
@@ -481,7 +483,139 @@ describe('canAddVest()', () => {
 describe('getAsString()', () => {
   it.each([
     [build1, expectedToString1],
-    [build2, expectedToString2]
+    [build2, expectedToString2],
+    [
+      {
+        id: 'buildWithArmorOnly',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: armor6b13FlDefault.id,
+                modSlots: [
+                  {
+                    item: {
+                      content: [],
+                      ignorePrice: false,
+                      itemId: plate6b33Front.id,
+                      modSlots: [],
+                      quantity: 1
+                    },
+                    modSlotName: 'front_plate'
+                  },
+                  {
+                    item: {
+                      content: [],
+                      ignorePrice: false,
+                      itemId: plate6b33Back.id,
+                      modSlots: [],
+                      quantity: 1
+                    },
+                    modSlotName: 'back_plate'
+                  }
+                ],
+                quantity: 1
+              }
+            ],
+            typeId: 'bodyArmor'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build with armor only'
+      } as IBuild,
+      expectedToString3
+    ],
+    [
+      {
+        id: 'buildWithBackpackOnly',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [
+                  {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: ms2000.id,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: precision.id,
+                    modSlots: [],
+                    quantity: 1
+                  }
+                ],
+                ignorePrice: false,
+                itemId: mechanism.id,
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'backpack'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build with backpack only and every currency'
+      } as IBuild,
+      expectedToString4
+    ],
+    [
+      {
+        id: 'buildWithWeaponOnBackOnly',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: rpk16Default.id,
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'onBack'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build with weapon on back only'
+      } as IBuild,
+      expectedToString5
+    ],
+    [
+      {
+        id: 'buildWithMissingPrice',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: ammo545bp.id,
+                modSlots: [],
+                quantity: 60
+              }
+            ],
+            typeId: 'pockets'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build with missing price'
+      } as IBuild,
+      expectedToString6
+    ]
   ])('should convert a build to a string', async (build: IBuild, expected: string) => {
     // Arrange
     useItemServiceMock()
@@ -570,3 +704,46 @@ Prix: 444$ et 184 252₽ (= 247 747₽)    |    Poids: 8,936kg
 Créé avec Totov Builder
 Équipement interactif et statistiques complètes:
 http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv`
+
+const expectedToString3 = `Build with armor only
+Ergonomie: -2,5%
+Armure: 4    |    Vitesse: -6%    |    Vitesse de rotation: -1%
+Prix: 64 269₽    |    Poids: 10,600kg
+
+[Pare-balles] 6B13 assault armor (Flora) Default    |    Ragman 2: 64 269₽
+
+Créé avec Totov Builder
+Équipement interactif et statistiques complètes:
+http://localhost:3000/s/XQAAAAKkAAAAAAAAAABBKEnLUiJ9Ha4afnegDxWD05WKxGsZJsgWhKhOKNccaw3ZYUhII89YeYBEADewHwT4SGNj7DB88SCLjMqubc8aJnAxII091CJSM4SdhD3Qa9S2y0Vz5NwKfe7JWo68FWPa4TwknuMgjK_pWAhF3oXl3tBC8fxmQ6DU1JvAQhu_xIOgBiIycu6J3DYNVgf20v_7OcoA`
+
+const expectedToString4 = `Build with backpack only and every currency
+Ergonomie: -3%
+Vitesse: -2%    |    Vitesse de rotation: -1%
+Prix: 95€, 157$ et 67 446₽ (= 104 936₽)    |    Poids: 1,307kg
+
+[Sac à dos] Oakley Mechanism heavy duty backpack (Black)    |    Ragman 2: 67 446₽
+    MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)
+    AR-15 B5 Systems Precision stock    |    Peacekeeper 4: 157$ (= 22 385₽)
+
+Créé avec Totov Builder
+Équipement interactif et statistiques complètes:
+http://localhost:3000/s/XQAAAAKZAAAAAAAAAABBKEnNkWPZwxLGD5AbqDRCABlUfHwjFlOcCKJCZtnY_G5Iw3yl8ARRMk-8vspnH0kfziAl5_AEWuLGxK4m_HrE19pZnFe2Mnv-2lo_MvFl_2QXgBgRDw5_ZiTl1OB6KjSSCgtwlxM5CvykrSWukYlKP_xOWFPMroTf86mmjAF-y9Dp-SQibkX8Ap5A`
+
+const expectedToString5 = `Build with weapon on back only
+Recul vertical: 112    |    Recul horizontal: 333    |    Ergonomie: 45
+Prix: 43 345₽    |    Poids: 1,500kg
+
+[Dans le dos] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
+
+Créé avec Totov Builder
+Équipement interactif et statistiques complètes:
+http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17Rk0UiykRW0ApjpaFQ6TR_AWFoFNHfz758PAigkjDNzljvK7CyqK5Q3NR5CNalmBcKYWWwRr_692wAA`
+
+const expectedToString6 = `Build with missing price
+Poids: 0,600kg
+
+[Poches] 60 x 5.45x39mm BP gs    |    Pas de marchand
+
+Créé avec Totov Builder
+Équipement interactif et statistiques complètes:
+http://localhost:3000/s/XQAAAAJMAAAAAAAAAABBKEnLgiJ9Ha4afnegDxWD1AyOSjT9n_TYdhCtEy9EU1vXI1gHKo_6AMbgo9kFz-nmBlk3iys6khYTodWFDluyJb2ICHD2ow222Wddpp99A___y7mAAA`

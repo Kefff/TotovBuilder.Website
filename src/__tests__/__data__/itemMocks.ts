@@ -1600,6 +1600,26 @@ export const m9a3Cap: IRangedWeaponMod = {
   recoilModifierPercentage: 0
 }
 
+export const mechanism: IBackpack = {
+  capacity: 32,
+  categoryId: 'backpack',
+  conflictingItemIds: [],
+  ergonomicsModifierPercentage: -0.03,
+  iconLink: 'https://assets.tarkov.dev/5d5d940f86f7742797262046-icon.webp',
+  id: '5d5d940f86f7742797262046',
+  imageLink: 'https://assets.tarkov.dev/5d5d940f86f7742797262046-image.webp',
+  marketLink: 'https://tarkov.dev/item/oakley-mechanism-heavy-duty-backpack-black',
+  maxStackableAmount: 1,
+  movementSpeedModifierPercentage: -0.02,
+  name: 'Oakley Mechanism heavy duty backpack (Black)',
+  presetWearableModifiers: undefined,
+  prices: [],
+  shortName: 'Mechanism',
+  turningSpeedModifierPercentage: -0.01,
+  weight: 0.997,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Oakley_Mechanism_heavy_duty_backpack_(Black)'
+}
+
 export const monocletePe: IArmorMod = {
   armorClass: 4,
   armoredAreas: [
@@ -3501,6 +3521,7 @@ export const ItemMocks: IItem[] = [
   m9a3SideGrip,
   m9a3Slide,
   m9a3Thr,
+  mechanism,
   monocletePe,
   morphine,
   ms2000,

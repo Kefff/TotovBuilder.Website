@@ -15,7 +15,7 @@ import { IErgonomics } from '../models/utils/IErgonomics'
 import { IInventoryItemPrice } from '../models/utils/IInventoryItemPrice'
 import { IInventoryItemRecoil } from '../models/utils/IInventoryItemRecoil'
 import { IInventoryItemWearableModifiers } from '../models/utils/IInventoryItemWearableModifiers'
-import { IRecoilModifierPercentage } from '../models/utils/IRecoilPercentageModifier'
+import { IRecoilModifierPercentage } from '../models/utils/IRecoilModifierPercentage'
 import { IWeight } from '../models/utils/IWeight'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import vueI18n from '../plugins/vueI18n'
@@ -72,10 +72,11 @@ export class InventoryItemService {
       }
 
       const frontPlate = await itemService.getItem(frontPlateModSlot.item.itemId) as IArmorMod
+      const isArmorMod = itemPropertiesService.isArmorMod(frontPlate)
 
       return {
-        armorClass: frontPlate.armorClass,
-        durability: frontPlate.durability
+        armorClass: isArmorMod ? frontPlate.armorClass : 0,
+        durability: isArmorMod ? frontPlate.durability : 0
       }
     }
 
@@ -118,7 +119,7 @@ export class InventoryItemService {
           inventoryItemAsString += `${separator}${vueI18n.t('message.noMerchant', 1, { locale: language })}`
         } else {
           // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-          inventoryItemAsString += `${separator}${vueI18n.t('caption.merchant_' + price.value.unitPrice.merchant, 1, { locale: language })}`
+          inventoryItemAsString += `${separator}${vueI18n.t('caption.merchant_' + price.unitPrice.merchant, 1, { locale: language })}`
 
           if (price.unitPrice.merchant !== 'flea-market') {
             inventoryItemAsString += ` ${price.unitPrice.merchantLevel}`
@@ -126,7 +127,7 @@ export class InventoryItemService {
 
           if (price.unitPrice.currencyName === 'barter') {
             // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-            inventoryItemAsString += ` (${vueI18n.t('caption.barter', 1, { locale: language }).toLocaleLowerCase()}): ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.value.price.valueInMainCurrency, language)}${mainCurrency.value.symbol}`
+            inventoryItemAsString += ` (${vueI18n.t('caption.barter', 1, { locale: language }).toLocaleLowerCase()}): ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, language)}${mainCurrency.symbol}`
           } else {
             inventoryItemAsString += `: ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.value, language)}`
 
@@ -243,7 +244,7 @@ ${indentation}${containedItemAsString}`
     let unitPrice: IPrice = {
       barterItems: [],
       currencyName: mainCurrency.name,
-      itemId: '',
+      itemId: item.id,
       merchant: '',
       merchantLevel: 0,
       quest: undefined,
@@ -494,11 +495,6 @@ ${indentation}${containedItemAsString}`
       }
 
       const modRecoilModifierPercentage = await this.getRecoilModifierPercentage(modSlot.item)
-
-      if (modRecoilModifierPercentage == null) {
-        continue
-      }
-
       modsRecoilModifierPercentages += modRecoilModifierPercentage.recoilModifierPercentageWithMods
     }
 
@@ -545,11 +541,6 @@ ${indentation}${containedItemAsString}`
       }
 
       const modRecoilModifierPercentage = await this.getRecoilModifierPercentage(modSlot.item)
-
-      if (modRecoilModifierPercentage == null) {
-        continue
-      }
-
       recoilModifierPercentage.recoilModifierPercentageWithMods = recoilModifierPercentage.recoilModifierPercentageWithMods + modRecoilModifierPercentage.recoilModifierPercentageWithMods
     }
 
@@ -703,11 +694,6 @@ ${indentation}${containedItemAsString}`
       }
 
       const modWearableModifiers = await this.getWearableModifiers(modSlot.item)
-
-      if (modWearableModifiers == null) {
-        continue
-      }
-
       ergonomicsModifierPercentageWithMods += modWearableModifiers.ergonomicsModifierPercentageWithMods
       movementSpeedModifierPercentageWithMods += modWearableModifiers.movementSpeedModifierPercentageWithMods
       turningSpeedModifierPercentageWithMods += modWearableModifiers.turningSpeedModifierPercentageWithMods
@@ -739,11 +725,6 @@ ${indentation}${containedItemAsString}`
       }
 
       const modWeight = await this.getWeight(modSlot.item)
-
-      if (modWeight == null) {
-        continue
-      }
-
       weightWithContent += modWeight.weightWithContent
     }
 
@@ -755,11 +736,6 @@ ${indentation}${containedItemAsString}`
       /* c8 ignore stop */
 
       const containedItemWeight = await this.getWeight(containedItem)
-
-      if (containedItemWeight == null) {
-        continue
-      }
-
       weightWithContent += containedItemWeight.weightWithContent
     }
 

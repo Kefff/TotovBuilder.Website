@@ -289,6 +289,6 @@ describe('getInventoryItemFromPath()', () => {
     const act = () => PathUtils.getInventoryItemFromPath(build, path)
 
     // Assert
-    expect(act).toThrow(expected)
+    expect(act).toThrowError(expected)
   })
 })

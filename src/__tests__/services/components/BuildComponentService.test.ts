@@ -105,11 +105,12 @@ describe('getBuild()', () => {
 describe('saveBuild()', () => {
   it('should add a new build', async () => {
     // Arrange
-    const buildComponentService = new BuildComponentService()
     const buildServiceMock = mock<BuildService>()
     Services.configure(BuildService, undefined, instance(buildServiceMock))
+
     const notificationServiceMock = mock<NotificationService>()
     Services.configure(NotificationService, undefined, instance(notificationServiceMock))
+
     const routerMock = mock<Router>()
 
     const build: IBuild = {
@@ -120,6 +121,8 @@ describe('saveBuild()', () => {
       lastWebsiteVersion: undefined,
       name: 'Test'
     }
+
+    const buildComponentService = new BuildComponentService()
 
     // Act
     await buildComponentService.saveBuild(instance(routerMock), build)
@@ -163,11 +166,12 @@ describe('saveBuild()', () => {
 describe('deleteBuild()', () => {
   it('should delete a build', () => {
     // Arrange
-    const buildComponentService = new BuildComponentService()
     const buildServiceMock = mock<BuildService>()
     Services.configure(BuildService, undefined, instance(buildServiceMock))
+
     const notificationServiceMock = mock<NotificationService>()
     Services.configure(NotificationService, undefined, instance(notificationServiceMock))
+
     const routerMock = mock<Router>()
 
     const build: IBuild = {
@@ -178,6 +182,8 @@ describe('deleteBuild()', () => {
       lastWebsiteVersion: undefined,
       name: ''
     }
+
+    const buildComponentService = new BuildComponentService()
 
     // Act
     buildComponentService.deleteBuild(instance(routerMock), build)

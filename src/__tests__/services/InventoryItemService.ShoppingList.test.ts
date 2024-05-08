@@ -3,10 +3,11 @@ import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
+import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
 import { build1 } from '../__data__/buildMocks'
-import { alkali, alpha, ammo545us, ammo9mmGT, armbandBlue, berkut, h2o2, iskra, rpk16Default, rpk16Drum, syringe, water } from '../__data__/itemMocks'
-import { alkaliPrices, ammo545usPrices, ammo9mmGTPrices, berkutPrices, h2o2Prices, iskraPrices, rpk16DefaultPrices, rpk16DrumPrices, syringePrices, waterPrices } from '../__data__/priceMocks'
+import { alkali, alpha, ammo545bp, ammo545us, ammo9mmGT, berkut, h2o2, iskra, rpk16Default, rpk16Drum, rpk16RsBase, syringe, water } from '../__data__/itemMocks'
+import { alkaliPrices, ammo545usPrices, ammo9mmGTPrices, berkutPrices, h2o2Prices, iskraPrices, rpk16DefaultPrices, rpk16DrumPrices, rpk16RsBasePrices, syringePrices, waterPrices } from '../__data__/priceMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
@@ -283,6 +284,18 @@ describe('getShoppingList', () => {
             itemId: rpk16Drum.id,
             modSlots: [],
             quantity: 1
+          },
+          {
+            content: [],
+            ignorePrice: false,
+            itemId: rpk16RsBase.id,
+            modSlots: [
+              {
+                modSlotName: 'mod_sight_rear',
+                item: undefined
+              }
+            ],
+            quantity: 1
           }
         ],
         ignorePrice: false,
@@ -371,6 +384,33 @@ describe('getShoppingList', () => {
             value: 12109,
             valueInMainCurrency: 12109
           }
+        },
+        {
+          item: {
+            ...rpk16RsBase,
+            prices: rpk16RsBasePrices
+          },
+          quantity: 1,
+          price: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: rpk16RsBase.id,
+            merchant: 'prapor',
+            merchantLevel: 3,
+            quest: undefined,
+            value: 872,
+            valueInMainCurrency: 872
+          },
+          unitPrice: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: rpk16RsBase.id,
+            merchant: 'prapor',
+            merchantLevel: 3,
+            quest: undefined,
+            value: 872,
+            valueInMainCurrency: 872
+          }
         }
       ] as IShoppingListItem[]
     ]
@@ -406,8 +446,7 @@ describe('getShoppingList', () => {
     const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
 
     // Assert
-    expect(shoppingListResult.success).toBe(true)
-    expect(shoppingListResult.value).toStrictEqual(expected)
+    expect(shoppingListResult).toStrictEqual(expected)
   })
 
   it('should ignore items that cannot be looted', async () => {
@@ -440,8 +479,7 @@ describe('getShoppingList', () => {
     const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
 
     // Assert
-    expect(shoppingListResult.success).toBe(true)
-    expect(shoppingListResult.value).toStrictEqual([
+    expect(shoppingListResult).toStrictEqual([
       {
         item: {
           ...ammo9mmGT,
@@ -502,8 +540,7 @@ describe('getShoppingList', () => {
     const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem, undefined, false)
 
     // Assert
-    expect(shoppingListResult.success).toBe(true)
-    expect(shoppingListResult.value).toStrictEqual([
+    expect(shoppingListResult).toStrictEqual([
       {
         item: {
           ...ammo9mmGT,
@@ -534,12 +571,13 @@ describe('getShoppingList', () => {
     ] as IShoppingListItem[])
   })
 
-  it('should fail when an item search fails', async () => {
+  it('should use the not found item for items that are not found', async () => {
     // Arrange
     useItemServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(GlobalFilterService)
+    Services.configure(PresetService)
 
     const inventoryItemService = new InventoryItemService()
 
@@ -555,54 +593,94 @@ describe('getShoppingList', () => {
     const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
 
     // Assert
-    expect(shoppingListResult.success).toBe(false)
+    expect(shoppingListResult).toStrictEqual([
+      {
+        item: {
+          categoryId: 'notFound',
+          conflictingItemIds: [],
+          iconLink: '/assets/images/unknown_item.webp',
+          id: 'invalid',
+          imageLink: '',
+          marketLink: '',
+          maxStackableAmount: 1,
+          name: 'Unknown item "invalid"',
+          prices: [],
+          shortName: '',
+          weight: 0,
+          wikiLink: ''
+        },
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: 'invalid',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        quantity: 1,
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: 'invalid',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        }
+      }
+    ])
   })
 
-  it('should fail when an item price search fails', async () => {
+  it('should ignore the prices of items without price', async () => {
     // Arrange
     useItemServiceMock()
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
     Services.configure(GlobalFilterService)
+    Services.configure(PresetService)
 
     const inventoryItemService = new InventoryItemService()
 
     const inventoryItem: IInventoryItem = {
       content: [],
       ignorePrice: false,
-      itemId: '5b3f16c486f7747c327f55f7', // Armband (White)
+      itemId: ammo545bp.id,
       modSlots: [],
-      quantity: 1
+      quantity: 60
     }
 
     // Act
     const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
 
     // Assert
-    expect(shoppingListResult.success).toBe(false)
-  })
-
-  it('should fail when an item price search fails', async () => {
-    // Arrange
-    useItemServiceMock(false)
-    useTarkovValuesServiceMock()
-    useWebsiteConfigurationServiceMock()
-    Services.configure(GlobalFilterService)
-
-    const inventoryItemService = new InventoryItemService()
-
-    const inventoryItem: IInventoryItem = {
-      content: [],
-      ignorePrice: false,
-      itemId: armbandBlue.id,
-      modSlots: [],
-      quantity: 1
-    }
-
-    // Act
-    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
-
-    // Assert
-    expect(shoppingListResult.success).toBe(false)
+    expect(shoppingListResult).toStrictEqual([
+      {
+        item: ammo545bp,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: ammo545bp.id,
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        quantity: 60,
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: ammo545bp.id,
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        }
+      }
+    ])
   })
 })

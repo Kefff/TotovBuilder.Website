@@ -1,6 +1,8 @@
+import { anything, instance, mock, verify } from 'ts-mockito'
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 import { FetchService } from '../../services/FetchService'
+import { LogService } from '../../services/LogService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import Services from '../../services/repository/Services'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
@@ -65,8 +67,7 @@ describe('get()', () => {
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
-    expect(result.success).toBe(true)
-    expect(result.value).toStrictEqual([
+    expect(result).toStrictEqual([
       {
         ic: 'https://assets.tarkov.dev/590c392f86f77444754deb29-icon.webp',
         i: '590c392f86f77444754deb29',
@@ -124,8 +125,7 @@ describe('get()', () => {
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
-    expect(result.success).toBe(true)
-    expect(result.value).toStrictEqual([
+    expect(result).toStrictEqual([
       {
         ic: 'https://assets.tarkov.dev/590c392f86f77444754deb29-icon.webp',
         i: '590c392f86f77444754deb29',
@@ -157,13 +157,15 @@ describe('get()', () => {
     const result = await new FetchService().get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
 
     // Assert
-    expect(result.success).toBe(true)
-    expect(result.value).toStrictEqual({ success: 'Access granted' })
+    expect(result).toStrictEqual({ success: 'Access granted' })
   })
 
-  it('should return empty data when the response is empty', async () => {
+  it('should return undefined data when the response is empty', async () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
+
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
 
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     websiteConfigurationService.configuration.fetchMaxTries = 1
@@ -176,16 +178,21 @@ describe('get()', () => {
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
-    expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe('Failed to successfully request endpoint "data/prices.ts" after 1 tries.')
+    expect(result).toBeUndefined()
+    verify(logServiceMock.logError('message.fetchError', anything())).once()
+    verify(logServiceMock.logException('message.fetchMaxTriesError', anything())).once()
   })
 
-  it('should fail if a success response is not received until the maximum number of tries is reached', async () => {
+  it('should return undefined if a success response is not received until the maximum number of tries is reached', async () => {
     // Arrange
     const response = `{
   "error": "Access denied"
 }`
+
     useWebsiteConfigurationServiceMock()
+
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
 
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     websiteConfigurationService.configuration.fetchTimeout = 0.1
@@ -198,20 +205,26 @@ describe('get()', () => {
     const result = await new FetchService().get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
 
     // Assert
-    expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe('Failed to successfully request endpoint "item" after 2 tries.')
+    expect(result).toBeUndefined()
+    verify(logServiceMock.logError('message.fetchError', anything())).times(websiteConfigurationService.configuration.fetchMaxTries)
+    verify(logServiceMock.logException('message.fetchMaxTriesError', anything())).once()
   })
 
-  it('should fail if it times out', async () => {
+  it('should return undefined if it times out', async () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
+
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
 
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     websiteConfigurationService.configuration.fetchTimeout = 0.5
     websiteConfigurationService.configuration.fetchMaxTries = 1
 
     fetchMock.doMock(async () => {
-      return new Promise(resolve => setTimeout(resolve, 1000)).then(() => '')
+      await new Promise(resolve => setTimeout(resolve, 1000))
+
+      return ''
     })
 
     const service = new FetchService()
@@ -220,7 +233,8 @@ describe('get()', () => {
     const result = await service.get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
 
     // Assert
-    expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe('Failed to successfully request endpoint "item" after 1 tries.')
+    expect(result).toBeUndefined()
+    verify(logServiceMock.logError('message.fetchError', anything())).times(websiteConfigurationService.configuration.fetchMaxTries)
+    verify(logServiceMock.logException('message.fetchMaxTriesError', anything())).once()
   })
 })

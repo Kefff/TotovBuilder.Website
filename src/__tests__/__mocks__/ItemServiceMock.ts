@@ -65,19 +65,18 @@ function getItemsOfCategories(ids: string[], customItemsList?: IItem[], customPr
   return Promise.resolve(items)
 }
 
-function getMainCurrency(hasMainCurrency: boolean): Promise<ICurrency | undefined> {
+function getMainCurrency(hasMainCurrency: boolean): ICurrency {
   if (!hasMainCurrency) {
     throw new Error(vueI18n.t('message.mainCurrencyNotFound'))
   }
 
-  return Promise.resolve(
-    {
-      iconName: 'ruble-sign',
-      itemId: rub.id,
-      mainCurrency: true,
-      name: rub.shortName,
-      sortOrder: 3,
-      symbol: '₽',
-      value: 1
-    })
+  return {
+    iconName: 'ruble-sign',
+    itemId: rub.id,
+    mainCurrency: true,
+    name: rub.shortName,
+    sortOrder: 3,
+    symbol: '₽',
+    value: 1
+  }
 }

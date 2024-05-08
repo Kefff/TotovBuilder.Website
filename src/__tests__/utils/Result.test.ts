@@ -15,7 +15,7 @@ describe('get value()', () => {
     const result = Result.ok()
 
     // Act / Assert
-    expect(() => result.value).toThrow()
+    expect(() => result.value).toThrow('Undefined result value.')
   })
 
   it('should throw if the result is an error', () => {
@@ -23,7 +23,7 @@ describe('get value()', () => {
     const result = Result.fail('Error')
 
     // Act / Assert
-    expect(() => result.value).toThrow()
+    expect(() => result.value).toThrow('Cannot read "value" property of an error result.')
   })
 })
 

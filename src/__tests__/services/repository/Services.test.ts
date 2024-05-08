@@ -1,6 +1,6 @@
 import { instance, mock } from 'ts-mockito'
-import Services from '../../../services/repository/Services'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import Services from '../../../services/repository/Services'
 
 beforeEach(() => {
   Services.services = []
@@ -72,7 +72,7 @@ describe('get', () => {
     const test = () => Services.get(TestService1)
 
     // Assert
-    expect(test).toThrow('Service "TestService1" not configured.')
+    expect(test).toThrowError('Service "TestService1" not configured.')
   })
 })
 
@@ -93,7 +93,7 @@ describe('getByName', () => {
     const test = () => Services.getByName<TestService1>('TestService')
 
     // Assert
-    expect(test).toThrow('Service "TestService" not configured.')
+    expect(test).toThrowError('Service "TestService" not configured.')
   })
 })
 

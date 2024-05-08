@@ -239,7 +239,7 @@ export class VersionService {
         continue
       }
 
-      buidService.update(build.id, build)
+      buidService.update(build)
     }
 
     if (buildUnrelatedMigrationsResult && buildsMigrationsResult) {

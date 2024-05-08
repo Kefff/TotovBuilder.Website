@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { BuildService } from '../../services/BuildService'
+import { LogService } from '../../services/LogService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { ReductionService } from '../../services/ReductionService'
 import { VersionService } from '../../services/VersionService'
@@ -15,87 +16,6 @@ import WebsiteConfigurationMock from '../__data__/websiteConfigurationMock'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { useVersionServiceMock } from '../__mocks__/VersionServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
-
-const newBuild: IBuild = {
-  id: 'build_3',
-  name: 'Kaptain Kolpak',
-  inventorySlots: [
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'onBack'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'backpack'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'bodyArmor'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'earpiece'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'eyewear'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'faceCover'
-    },
-    {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: k1s.id,
-          modSlots: [
-            {
-              item: {
-                content: [],
-                ignorePrice: false,
-                itemId: k1sVisor.id,
-                modSlots: [],
-                quantity: 1
-              },
-              modSlotName: 'mod_equipment'
-            }
-          ],
-          quantity: 1
-        }
-      ],
-      typeId: 'headwear'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'holster'
-    },
-    {
-      items: Array<IInventoryItem>(4),
-      typeId: 'pockets'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'pouch'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'scabbard'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'onSling'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'tacticalRig'
-    }
-  ],
-  lastExported: undefined,
-  lastUpdated: undefined,
-  lastWebsiteVersion: undefined
-}
 
 beforeEach(() => {
   localStorage.setItem(
@@ -121,15 +41,15 @@ describe('add()', () => {
 
     // Act
     const id = await service.add(newBuild)
-    const result = service.get(id)
+    const build = service.get(id)
 
     // Assert
     expect(id).toBeDefined()
     expect(id).not.toBe('')
-    expect(result.success).toBe(true)
-    expect(result.value.id).toBe(id)
-    expect(result.value.name).toBe(newBuild.name)
-    expect(JSON.stringify(result.value.inventorySlots)).toBe(
+    expect(build).not.toBeUndefined()
+    expect(build!.id).toBe(id)
+    expect(build!.name).toBe(newBuild.name)
+    expect(JSON.stringify(build!.inventorySlots)).toBe(
       JSON.stringify(newBuild.inventorySlots)
     ) // stringify() used because undefined is serialized to null and then deserialized to null so equality comparison doesn't work
     expect(service.getAll().length).toBe(3)
@@ -242,18 +162,19 @@ describe('delete()', () => {
     useItemServiceMock()
     useWebsiteConfigurationServiceMock()
 
+    const notificationServiceMock = mock<NotificationService>()
+    Services.configure(NotificationService, undefined, instance(notificationServiceMock))
+
     const service = new BuildService()
 
     // Act
     service.delete(build2.id)
-    const result = service.get(build2.id)
+    const build = service.get(build2.id)
 
     // Assert
     expect(service.getAll().length).toBe(1)
-    expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe(
-      'Build "build_2" not found. It may have been deleted.'
-    )
+    expect(build).toBe(undefined)
+    verify(notificationServiceMock.notify(NotificationType.error, 'Build "build_2" not found. It may have been deleted.')).once()
   })
 })
 
@@ -312,44 +233,48 @@ describe('fromSharableString()', () => {
     const service = Services.get(BuildService)
 
     // Act
-    const buildResult = await service.fromSharableString(sharableString)
+    const build = await service.fromSharableString(sharableString)
 
     // Assert
-    expect(buildResult.success).toBe(true)
-    expect(buildResult.value).toEqual(expected)
+    expect(build).toEqual(expected)
   })
 
-  it('should fail when the sharable string is corrupted', async () => {
+  it('should return undefined and notify when the sharable string is corrupted', async () => {
     // Arrange
     Services.configure(ReductionService)
+
+    const notificationServiceMock = mock<NotificationService>()
+    Services.configure(NotificationService, undefined, instance(notificationServiceMock))
 
     const service = new BuildService()
     const sharableString = 'corrupted'
 
     // Act
-    const buildResult = await service.fromSharableString(sharableString)
+    const build = await service.fromSharableString(sharableString)
 
     // Assert
-    expect(buildResult.success).toBe(false)
-    expect(buildResult.failureMessage).toBe('Error while reading the shared link.\nIt seems to be corrupted.')
+    expect(build).toBeUndefined()
+    verify(notificationServiceMock.notify(NotificationType.error, 'Error while reading the shared link.\nIt seems to be corrupted.')).once()
   })
 
-  it('should fail when the parsing of the reduced build fails', async () => {
+  it('should return undefined and notify when the parsing of the reduced build fails', async () => {
     // Arrange
     const reductionServiceMock = mock<ReductionService>()
     when(reductionServiceMock.parseReducedBuild(anything())).thenReturn(undefined)
-
     Services.configure(ReductionService, undefined, instance(reductionServiceMock))
+
+    const notificationServiceMock = mock<NotificationService>()
+    Services.configure(NotificationService, undefined, instance(notificationServiceMock))
 
     const service = new BuildService()
     const sharableString = 'XQAAAAIEAQAAAAAAAABAqEppJBKy3f2nWA1_4C5z8-v7-QmsFsh3-Xw5A4r6cKv_m0sfj0O9x9XIb5ScojjRsy4huWDxzBSG1zyaOOej9yI6eVsg6yXMNsehKkbkF4IxN4W52Wr0SPOgjzuUFCVV1O-07KKY5H2MxwF8NvWFSy9VOl89axpWIZlA4rMaW8zwrHUAdC7epHLneT1sKyazlWteJ--ZEOyd3csaogRVGPNtylBhm8wqX_KVr5aLtkpJU-9ba2mmXnpWUf_-OHdA'
 
     // Act
-    const buildResult = await service.fromSharableString(sharableString)
+    const build = await service.fromSharableString(sharableString)
 
     // Assert
-    expect(buildResult.success).toBe(false)
-    expect(buildResult.failureMessage).toBe('Error while reading the shared link.\nIt seems to be corrupted.')
+    expect(build).toBeUndefined()
+    verify(notificationServiceMock.notify(NotificationType.error, 'Error while reading the shared link.\nIt seems to be corrupted.')).once()
   })
 
   it('should notify when a migration fails', async () => {
@@ -374,11 +299,11 @@ describe('fromSharableString()', () => {
     const sharableString = 'XQAAAAJ5BAAAAAAAAABAqEppdBKy3f2nWA1_4C5z8-v7-PB2PnO4T0FRqHCrunbQ824T11fLD0MMgpKzuGdnO-8eB5yHCYkn0JYO3VCC50O9MYgvuOr49cS5mtaJVptsaMiETu4-0oYouMfztK97JVyQiamvJHdA2W5i9dVVx7tG6R4CkXyLtwbAxz74UOVoRKsDpGU0H7BJshLAPue1edTU7OnozNCY5jfRvLYt8y_qwxB6Ol-uaqk4oI3cEDW9c94UKDSU8MVdPtA8P481abbFxOaLOXrDXvokQOpIV5t3nPBsd3EC-zc0p0C9miVd4PO9JJAGoS7c05hy5VxDyKAAC_MgjRgha9avVCb8UKrza2hWTiJRezgEmnBOip-6n2xY2JgD5E0KtCWg0w0jiA1gzqKs9AEfWiBesVfFcFto3Ni7YYqaWLjb4oeFTpI1UOaA89s8PwxYkFlBErCbjBXKPYcNIOvqAU-p4NTO7X_3tMRPbzSZNVIcDu7Mq0zGn5IndeMyy-2aZulriecUtbL17JaE86mPQfaNe3DjKO0CmnqWf_LOvEAEPEHPimdpWCw8njwoqZF5uvGDsonEHU43POFgSVhXRB4cjppaxhKYb7XcJZDvNk1mZ-_SvOAtS70IE59cHGM7xBF_I74CpodKJstWTusp-qM_gDRAbpcqQm-ysqFXE9suINiKo0MmvEEcZSBU-iXFYHs-ezSDx9XYyn_suJkHXkgDkf4b0GzNnWPTrhWN-t4yTreDObhrm5M82k3njxXsKz_6__1B5U0'
 
     // Act
-    const buildResult = await service.fromSharableString(sharableString)
+    const build = await service.fromSharableString(sharableString)
 
     // Assert
-    expect(buildResult.success).toBe(true)
-    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build to version "1.6.0".')).once()
+    expect(build).not.toBeUndefined()
+    verify(notificationServiceSpy.notify(NotificationType.error, 'Error while updating build to version "1.6.0".'))
   })
 })
 
@@ -391,32 +316,35 @@ describe('get()', () => {
     const service = new BuildService()
 
     // Act
-    const result = service.get(build2.id)
+    const build = service.get(build2.id)
 
     // Assert
-    expect(result.success).toBe(true)
-    expect(JSON.stringify(result.value)).toBe(JSON.stringify(build2)) // stringify() used because undefined is serialized to null and then deserialized to null so equality comparison doesn't work
+    expect(JSON.stringify(build)).toBe(JSON.stringify(build2)) // stringify() used because undefined is serialized to null and then deserialized to null so equality comparison doesn't work
   })
 
-  it('should fail if the build does not exist', () => {
+  it('should return undefined and notify if the build does not exist', () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
+
+    const notificationServiceMock = mock<NotificationService>()
+    Services.configure(NotificationService, undefined, instance(notificationServiceMock))
 
     const service = new BuildService()
 
     // Act
-    const result = service.get('invalid')
+    const build = service.get('invalid')
 
     // Assert
-    expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe(
-      'Build "invalid" not found. It may have been deleted.'
-    )
+    expect(build).toBeUndefined()
+    verify(notificationServiceMock.notify(NotificationType.error, 'Build "invalid" not found. It may have been deleted.')).once()
   })
 
-  it('should fail if the build cannot be parsed', () => {
+  it('should return undefined and notify if the build cannot be parsed', () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
+
+    const notificationServiceMock = mock<NotificationService>()
+    Services.configure(NotificationService, undefined, instance(notificationServiceMock))
 
     localStorage.setItem(
       WebsiteConfigurationMock.buildStorageKeyPrefix + 'not_parsable',
@@ -426,13 +354,11 @@ describe('get()', () => {
     const service = new BuildService()
 
     // Act
-    const result = service.get('not_parsable')
+    const build = service.get('not_parsable')
 
     // Assert
-    expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe(
-      'Cannot parse build "not_parsable".'
-    )
+    expect(build).toBe(undefined)
+    verify(notificationServiceMock.notify(NotificationType.error, 'Error loading build "not_parsable".\nIt seems to be corrupted.')).once()
   })
 })
 
@@ -480,19 +406,21 @@ describe('toSharableURL()', () => {
     const service = new BuildService()
 
     // Act
-    const sharableStringResult = await service.toSharableURL(build)
+    const sharableString = await service.toSharableURL(build)
 
     // Assert
-    expect(sharableStringResult.success).toBe(true)
-    expect(sharableStringResult.value).toBe(`localhost:3000/s/${expectedSharableString}`)
+    expect(sharableString).toBe(`localhost:3000/s/${expectedSharableString}`)
   })
 
-  it('should fail when the URL is longer thant 2048 characters', async () => {
+  it('should return undefined and notify when the URL is longer thant 2048 characters', async () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
-    Services.get(WebsiteConfigurationService).configuration.buildSharingUrl = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
-
     Services.configure(ReductionService)
+
+    const notificationServiceMock = mock<NotificationService>()
+    Services.configure(NotificationService, undefined, instance(notificationServiceMock))
+
+    Services.get(WebsiteConfigurationService).configuration.buildSharingUrl = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
 
     const service = new BuildService()
 
@@ -500,8 +428,8 @@ describe('toSharableURL()', () => {
     const sharableStringResult = await service.toSharableURL(build1)
 
     // Assert
-    expect(sharableStringResult.success).toBe(false)
-    expect(sharableStringResult.failureMessage).toBe('Cannot share build "Build 1" by link because it is too large. You can still share it by using the "Export builds to a file" button to export it as a file that can be imported by another person.')
+    expect(sharableStringResult).toBeUndefined()
+    verify(notificationServiceMock.notify(NotificationType.warning, 'Cannot share build "Build 1" by link because it is too large. You can still share it by using the "Export builds to a file" button to export it as a file that can be imported by another person.')).once()
   })
 })
 
@@ -513,35 +441,123 @@ describe('update()', () => {
     useWebsiteConfigurationServiceMock()
 
     const service = new BuildService()
-    const build = service.get(build1.id).value
+
+    const build = service.get(build1.id)!
     build.name = 'New name'
 
     // Act / Assert
-    const updateResult = await service.update(build1.id, build)
-    expect(updateResult.success).toBe(true)
+    await service.update(build)
 
-    const getUpdatedBuildResult = service.get(build1.id)
-    expect(getUpdatedBuildResult.success).toBe(true)
-    expect(getUpdatedBuildResult.value.name).toBe('New name')
+    const updatedBuild = service.get(build1.id)
+    expect(updatedBuild).not.toBeUndefined()
+    expect(updatedBuild!.name).toBe('New name')
   })
 
-  it('should fail if the build does not exist', async () => {
+  it('should create an new build if the build does not exist', async () => {
     // Arrange
     useVersionServiceMock()
     useWebsiteConfigurationServiceMock()
 
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
+
+    const build: IBuild = {
+      id: 'notExistingBuild',
+      inventorySlots: [],
+      lastExported: undefined,
+      lastUpdated: undefined,
+      lastWebsiteVersion: undefined,
+      name: 'Not existing build'
+    }
+
     const service = new BuildService()
-    const build = service.get(build1.id).value
-    build.id = 'invalid'
-    build.name = 'New name'
 
     // Act / Assert
-    const updateResult = await service.update(build.id, build)
-    expect(updateResult.success).toBe(false)
-    expect(updateResult.failureMessage).toBe('Build "invalid" not found. It may have been deleted.')
+    await service.update(build)
+    verify(logServiceMock.logError('message.buildToUpdateNotFound', { id: build.id }))
 
-    const getResult = service.get(build.id)
-    expect(getResult.success).toBe(false)
-    expect(getResult.failureMessage).toBe('Build "invalid" not found. It may have been deleted.')
+    const updatedBuild = service.get(build.id)
+    expect(updatedBuild?.name).toBe(build.name)
   })
 })
+
+const newBuild: IBuild = {
+  id: 'build_3',
+  name: 'Kaptain Kolpak',
+  inventorySlots: [
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'onBack'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'backpack'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'bodyArmor'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'earpiece'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'eyewear'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'faceCover'
+    },
+    {
+      items: [
+        {
+          content: [],
+          ignorePrice: false,
+          itemId: k1s.id,
+          modSlots: [
+            {
+              item: {
+                content: [],
+                ignorePrice: false,
+                itemId: k1sVisor.id,
+                modSlots: [],
+                quantity: 1
+              },
+              modSlotName: 'mod_equipment'
+            }
+          ],
+          quantity: 1
+        }
+      ],
+      typeId: 'headwear'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'holster'
+    },
+    {
+      items: Array<IInventoryItem>(4),
+      typeId: 'pockets'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'pouch'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'scabbard'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'onSling'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'tacticalRig'
+    }
+  ],
+  lastExported: undefined,
+  lastUpdated: undefined,
+  lastWebsiteVersion: undefined
+}

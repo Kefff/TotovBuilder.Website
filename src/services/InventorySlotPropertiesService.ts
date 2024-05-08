@@ -37,7 +37,7 @@ export class InventorySlotPropertiesService {
         }
 
         // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-        inventorySlotAsString += `[${vueI18n.t('caption.slotType' + StringUtils.toUpperFirst(inventorySlotType.value.id), 1, { locale: language })}] ${itemAsString}`
+        inventorySlotAsString += `[${vueI18n.t('caption.slotType' + StringUtils.toUpperFirst(inventorySlotType.id), 1, { locale: language })}] ${itemAsString}`
       }
     }
 

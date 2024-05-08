@@ -17,6 +17,7 @@ import { BuildService } from './BuildService'
 import { InventoryItemService } from './InventoryItemService'
 import { InventorySlotPropertiesService } from './InventorySlotPropertiesService'
 import { InventorySlotService } from './InventorySlotService'
+import { ItemPropertiesService } from './ItemPropertiesService'
 import { ItemService } from './ItemService'
 import { NotificationService, NotificationType } from './NotificationService'
 import Services from './repository/Services'
@@ -94,7 +95,7 @@ export class BuildPropertiesService {
     const item = await itemService.getItem(vestId)
     const vest = item as IVest
 
-    if (vest.armorClass === 0) {
+    if (!Services.get(ItemPropertiesService).isVest(item) || vest.armorClass === 0) {
       return true
     }
 
@@ -130,7 +131,6 @@ export class BuildPropertiesService {
     const hasMovementSpeedModifierPercentage = buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
     const hasPrice = buildSummary.price.priceInMainCurrency !== 0
     const hasRecoil = buildSummary.recoil.verticalRecoil !== 0
-      || buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0
     const hasTurningSpeedModifierPercentage = buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0
     const hasWeight = buildSummary.weight !== 0
 
