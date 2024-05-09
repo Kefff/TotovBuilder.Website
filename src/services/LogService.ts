@@ -33,7 +33,7 @@ export class LogService {
     const message = this.getMessage(messageOrKey, parameters, plural)
     const errorMessage = vueI18n.t('message.errorLog', { message })
 
-    console.error(errorMessage)
+    console.error(message)
     applicationInsights.trackException({
       exception: new Error(errorMessage),
       severityLevel: SeverityLevel.Error

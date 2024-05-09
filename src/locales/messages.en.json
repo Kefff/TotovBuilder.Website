@@ -373,6 +373,7 @@
     "postUpdatePeriod": "As we are in a post Tarkov update period, items and prices may not be up to date yet.\nThey are progressively being updated by the Tarkov.dev team.",
     "presetsFetched": "{date} Presets fetched with success.",
     "presetsNotFetched": "No preset could be fetched.",
+    "presetsNotFound": "Presets for items {ids} could not be found.",
     "pricesFetched": "{date} Prices fetched with success.",
     "pricesLoadingError": "Something went wrong while updating prices.\nTry waiting a bit and reloading the page.",
     "pricesNotFetched": "No price could be fetched.",

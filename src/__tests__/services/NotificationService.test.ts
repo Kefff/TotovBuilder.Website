@@ -1,7 +1,7 @@
-import { NotificationService, NotificationType } from '../../services/NotificationService'
-import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 import { describe, expect, it } from 'vitest'
 import { INotification } from '../../models/utils/INotification'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('clearNotification()', () => {
   it('should clear a notification from the notifications collection', () => {
@@ -51,7 +51,7 @@ describe('clearNotifications()', () => {
 })
 
 describe('notify()', () => {
-  it('should add a notification', async () => {
+  it('should add a notification', () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
 
@@ -177,7 +177,7 @@ describe('notify()', () => {
 })
 
 describe('resetNewNotificationCount()', () => {
-  it('should reset the new notification count', async () => {
+  it('should reset the new notification count', () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
 

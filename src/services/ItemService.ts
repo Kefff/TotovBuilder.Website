@@ -133,14 +133,8 @@ export class ItemService {
    */
   public async getItem(id: string): Promise<IItem> {
     const items = await this.getItems([id], false)
-    let item = items[0]
 
-    if (item == null) {
-      // Returning a unknown item when the requested item is not found
-      item = ItemService.getNotFoundItem(id)
-    }
-
-    return item
+    return items[0]
   }
 
   /**
@@ -173,6 +167,11 @@ export class ItemService {
 
     if (items.length < ids.length && !useGlobalFilter) {
       const notFoundItemIds = ids.filter(id => !items.some(i => i.id === id))
+      const notFoundItems = notFoundItemIds.map(id => ItemService.getNotFoundItem(id))
+
+      // Returning unknown items when the requested items are not found
+      items.push(...notFoundItems)
+
       Services.get(LogService).logError('message.itemsNotFound', { ids: `${notFoundItemIds.join('", "')}` })
     }
 
@@ -263,7 +262,7 @@ export class ItemService {
       this.emitter.emit(ItemService.initializationFinishedEvent, this._initializationState)
     }
 
-    if (!this.hasValidCache()) {
+    if (!this.hasValidCache() && this._initializationState !== ServiceInitializationState.error) {
       await this.fetchPrices()
     }
   }

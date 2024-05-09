@@ -80,13 +80,7 @@ export class InventorySlotPropertiesService {
       weight: 0
     }
 
-    const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
-
-    if (inventorySlotType == null) {
-      return summary
-    }
-
-    summary.type = inventorySlotType
+    summary.type = Services.get(InventorySlotService).getType(inventorySlot.typeId)
     summary.armorModifiers = await this.getArmorModifiers(inventorySlot)
     summary.ergonomics = await this.getErgonomics(inventorySlot)
     summary.price = await this.getPrice(inventorySlot, summary.type.canBeLooted)

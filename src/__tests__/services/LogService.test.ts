@@ -80,7 +80,7 @@ describe('logError()', () => {
 })
 
 describe('logException()', () => {
-  it('should log an exception message when in debug mode, otherwise a generic exception message', () => {
+  it('should log an exception message', () => {
     // Arrange
     const loggerService = new LogService()
     const key = 'test.logger1'

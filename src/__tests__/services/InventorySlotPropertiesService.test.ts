@@ -10,6 +10,7 @@ import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
 import { InventorySlotService } from '../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
 import { ak12PistolGrip, ak12Stock, ammo545bp, ammo545us, armbandBlue, armor6b13FlDefault, bansheeDefault, cultLocust, lshZ2dtm, lshZ2dtmFs, monocletePe, ms2000, paca, plate6b33Back, rpk1615inch, rpk16Default, rpk16Drum, rpk16DustCover, rpk16Handguard, rpk16MuzzleBreak, rpk16Rail, rpk16Rs, rpk16RsBase, rpk16Tube, scavVest, specterDr, srd9, vaseline } from '../__data__/itemMocks'
 import { useGlobalFilterServiceMock } from '../__mocks__/GlobalFilterServiceMock'
@@ -17,6 +18,139 @@ import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
+
+
+describe('getAsString()', () => {
+  it.each([
+    [
+      inventorySlot1,
+      `[Couvre-chef] BNTI LShZ-2DTM helmet (Black)    |    Marché: 63 493₽
+    [Équipement] LShZ-2DTM face shield    |    Ragman 3 (échange): 29 805₽`
+    ],
+    [
+      inventorySlot2,
+      `[En bandouillère] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
+    [Chargeur] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (échange): 24 218₽
+        95 x 5.45x39mm US gs    |    Prapor 1: 9 120₽
+    5.45x39mm US gs    |    Prapor 1: 96₽`
+    ],
+    [
+      {
+        typeId: 'pockets',
+        items: [
+          ...inventorySlot3.items,
+          {
+            content: [],
+            ignorePrice: false,
+            itemId: ammo545bp.id,
+            modSlots: [],
+            quantity: 60
+          },
+          {
+            content: [],
+            ignorePrice: true,
+            itemId: vaseline.id,
+            modSlots: [],
+            quantity: 1
+          }
+        ]
+      },
+      `[Poches] MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)
+[Poches] ELCAN SpecterDR 1x/4x scope    |    Peacekeeper 3: 279$ (= 39 886₽)
+[Poches] SIG Sauer SRD9 9x19 sound suppressor    |    Peacekeeper 2: 242$ (= 34 606₽)
+[Poches] 60 x 5.45x39mm BP gs    |    Pas de marchand
+[Poches] Vaseline balm`
+    ],
+    [
+      {
+        typeId: 'tacticalRig',
+        items: [
+          {
+            content: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: ms2000.id,
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            ignorePrice: false,
+            itemId: bansheeDefault.id,
+            modSlots: [
+              {
+                item: {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: monocletePe.id,
+                  modSlots: [],
+                  quantity: 1
+                },
+                modSlotName: 'front_plate'
+              },
+              {
+                item: {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: plate6b33Back.id,
+                  modSlots: [],
+                  quantity: 1
+                },
+                modSlotName: 'back_plate'
+              }
+            ],
+            quantity: 1
+          }
+        ]
+      } as IInventorySlot,
+      `[Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU) Default    |    Ragman 3 (échange): 59 790₽
+    [Plaque dorsale] 6B13 custom ballistic plates (Back)    |    Marché: 43 868₽
+    MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)`
+    ],
+    [
+      {
+        items: [undefined, undefined, undefined, undefined],
+        typeId: 'pockets'
+      } as IInventorySlot,
+      ''
+    ]
+  ])('should convert an inventory slot to a string', async (inventorySlot: IInventorySlot, expected: string) => {
+    // Arrange
+    useItemServiceMock()
+    usePresetServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(GlobalFilterService)
+    Services.configure(InventoryItemService)
+    Services.configure(InventorySlotService)
+
+    const service = new InventorySlotPropertiesService()
+
+    // Act
+    const result = await service.getAsString(inventorySlot, 'fr')
+
+    // Assert
+    expect(result).toBe(expected)
+  })
+
+  it('should ignore undefined items in an inventory slot', async () => {
+    // Arrange
+    Services.configure(InventorySlotService)
+
+    const service = new InventorySlotPropertiesService()
+
+    // Act
+    const result = await service.getAsString(
+      {
+        items: [undefined, undefined, undefined, undefined],
+        typeId: 'pockets'
+      },
+      'fr')
+
+    // Assert
+    expect(result).toBe('')
+  })
+})
 
 describe('getSummary()', () => {
   describe('Armor modifiers', () => {
@@ -428,7 +562,7 @@ describe('getSummary()', () => {
       } as IInventoryPrice)
     })
 
-    it('should not get a price if an item cannot be found', async () => {
+    it('should ignore the price of items that cannot be found', async () => {
       // Arrange
       useItemServiceMock()
       useTarkovValuesServiceMock()
@@ -437,6 +571,7 @@ describe('getSummary()', () => {
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
+      Services.configure(PresetService)
       const service = new InventorySlotPropertiesService()
 
       // Act
@@ -456,7 +591,7 @@ describe('getSummary()', () => {
 
       // Assert
       expect(summary.price).toStrictEqual({
-        missingPrice: false,
+        missingPrice: true,
         priceInMainCurrency: 0,
         priceByCurrency: []
       } as IInventoryPrice)
@@ -704,129 +839,6 @@ describe('getSummary()', () => {
       // Assert
       expect(summary.weight).toBe(0)
     })
-  })
-})
-
-describe('getAsString()', () => {
-  it.each([
-    [
-      inventorySlot1,
-      `[Couvre-chef] BNTI LShZ-2DTM helmet (Black)    |    Marché: 63 493₽
-    [Équipement] LShZ-2DTM face shield    |    Ragman 3 (échange): 29 805₽`
-    ],
-    [
-      inventorySlot2,
-      `[En bandouillère] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
-    [Chargeur] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (échange): 24 218₽
-        95 x 5.45x39mm US gs    |    Prapor 1: 9 120₽
-    5.45x39mm US gs    |    Prapor 1: 96₽`
-    ],
-    [
-      {
-        typeId: 'pockets',
-        items: [
-          ...inventorySlot3.items,
-          {
-            content: [],
-            ignorePrice: false,
-            itemId: ammo545bp.id,
-            modSlots: [],
-            quantity: 60
-          },
-          {
-            content: [],
-            ignorePrice: true,
-            itemId: vaseline.id,
-            modSlots: [],
-            quantity: 1
-          }
-        ]
-      },
-      `[Poches] MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)
-[Poches] ELCAN SpecterDR 1x/4x scope    |    Peacekeeper 3: 279$ (= 39 886₽)
-[Poches] SIG Sauer SRD9 9x19 sound suppressor    |    Peacekeeper 2: 242$ (= 34 606₽)
-[Poches] 60 x 5.45x39mm BP gs    |    Pas de marchand
-[Poches] Vaseline balm`
-    ],
-    [
-      {
-        typeId: 'tacticalRig',
-        items: [
-          {
-            content: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: ms2000.id,
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            ignorePrice: false,
-            itemId: bansheeDefault.id,
-            modSlots: [
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: monocletePe.id,
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'front_plate'
-              },
-              {
-                item: {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: plate6b33Back.id,
-                  modSlots: [],
-                  quantity: 1
-                },
-                modSlotName: 'back_plate'
-              }
-            ],
-            quantity: 1
-          }
-        ]
-      },
-      `[Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU) Default    |    Ragman 3 (échange): 59 790₽
-    [Plaque dorsale] 6B13 custom ballistic plates (Back)    |    Marché: 43 868₽
-    MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)`
-    ]
-  ])('should convert an inventory slot to a string', async (inventorySlot: IInventorySlot, expected: string) => {
-    // Arrange
-    useItemServiceMock()
-    usePresetServiceMock()
-    useTarkovValuesServiceMock()
-    useWebsiteConfigurationServiceMock()
-    Services.configure(GlobalFilterService)
-    Services.configure(InventoryItemService)
-    Services.configure(InventorySlotService)
-
-    const service = new InventorySlotPropertiesService()
-
-    // Act
-    const result = await service.getAsString(inventorySlot, 'fr')
-
-    // Assert
-    expect(result).toBe(expected)
-  })
-
-  it('should do nothing when the inventory slot type cannot be found', async () => {
-    // Arrange
-    Services.configure(InventorySlotService)
-
-    const service = new InventorySlotPropertiesService()
-
-    // Act
-    const result = await service.getAsString({
-      items: [],
-      typeId: 'invalid'
-    }, 'fr')
-
-    // Assert
-    expect(result).toBe('')
   })
 })
 

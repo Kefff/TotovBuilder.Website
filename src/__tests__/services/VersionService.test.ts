@@ -5,11 +5,11 @@ import { IChangelogEntry } from '../../models/configuration/IChangelogEntry'
 import vueI18n from '../../plugins/vueI18n'
 import { BuildService } from '../../services/BuildService'
 import { FetchService } from '../../services/FetchService'
+import { LogService } from '../../services/LogService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { VersionService } from '../../services/VersionService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import Services from '../../services/repository/Services'
-import Result, { FailureType } from '../../utils/Result'
 import Migrations from '../../utils/migrations/Migrations'
 import ChangelogMock from '../__data__/changelogMock'
 import WebsiteConfigurationMock from '../__data__/websiteConfigurationMock'
@@ -135,11 +135,11 @@ describe('executeBuildMigrations()', () => {
         migrateBuild: (build: IBuild) => {
           build.name = build.name + '|' + '1.6.0'
           migrationResults.push('b1.6.0')
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         migrateBuildUnrelatedData: () => {
           migrationResults.push('bud1.6.0')
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         version: '1.6.0'
       },
@@ -147,11 +147,11 @@ describe('executeBuildMigrations()', () => {
         migrateBuild: (build: IBuild) => {
           build.name = build.name + '|' + '1.4.0'
           migrationResults.push('b1.4.0')
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         migrateBuildUnrelatedData: () => {
           migrationResults.push('bud1.4.0')
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         version: '1.4.0'
       },
@@ -159,11 +159,11 @@ describe('executeBuildMigrations()', () => {
         migrateBuild: (build: IBuild) => {
           build.name = build.name + '|' + '1.5.0'
           migrationResults.push('b1.5.0')
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         migrateBuildUnrelatedData: () => {
           migrationResults.push('bud1.5.0')
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         version: '1.5.0'
       },
@@ -171,11 +171,11 @@ describe('executeBuildMigrations()', () => {
         migrateBuild: (build: IBuild) => {
           build.name = build.name + '|' + '1.3.0'
           migrationResults.push('b1.3.0')
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         migrateBuildUnrelatedData: () => {
           migrationResults.push('bud1.3.0')
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         version: '1.3.0'
       }
@@ -236,8 +236,8 @@ describe('executeBuildMigrations()', () => {
 
     Migrations.push(
       {
-        migrateBuild: () => Promise.resolve(Result.fail(FailureType.error, 'Error')),
-        migrateBuildUnrelatedData: () => Promise.resolve(Result.ok()),
+        migrateBuild: () => Promise.resolve(false),
+        migrateBuildUnrelatedData: () => Promise.resolve(true),
         version: '1.6.0'
       })
 
@@ -477,17 +477,20 @@ describe('getChangelog()', () => {
     expect(changelog).toStrictEqual(expectedChangelogs)
   })
 
-  it('should fail when fetching fails', async () => {
+  it('should return an empty list and notify when fail when fetching fails', async () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
-    Services.configure(NotificationService)
 
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get(anything())).thenResolve(Result.fail(FailureType.error, undefined, 'Error'))
+    when(fetchServiceMock.get(anything())).thenResolve(undefined)
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
-    const notificationServiceSpy = spy(Services.get(NotificationService))
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
+
+    const notificationServiceMock = mock<NotificationService>()
+    Services.configure(NotificationService, undefined, instance(notificationServiceMock))
 
     const service = new VersionService()
 
@@ -495,8 +498,9 @@ describe('getChangelog()', () => {
     const changelog = await service.getChangelog()
 
     // Assert
-    expect(changelog.length).toBe(0)
-    verify(notificationServiceSpy.notify(NotificationType.error, 'Something went wrong while loading the changelog.\nWait a bit and before trying to open it again.')).once()
+    expect(changelog).toStrictEqual([])
+    verify(logServiceMock.logException('message.changelogNotFetched')).once()
+    verify(notificationServiceMock.notify(NotificationType.error, 'Something went wrong while loading the changelog.\nWait a bit and before trying to open it again.')).once()
   })
 
   it('should not fetch the changelog if already fetched', async () => {
@@ -544,8 +548,9 @@ describe('getVersion()', () => {
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
 
-    // Act
     const service = new VersionService()
+
+    // Act
     const currentVersion = await service.getVersion()
 
     // Assert
@@ -621,33 +626,33 @@ describe('initialize()', () => {
       {
         migrateBuild: () => {
           migrationResults.push('b1.6.0')
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         migrateBuildUnrelatedData: () => {
           migrationResults.push('bud1.6.0')
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         version: '1.6.0'
       },
       {
         migrateBuild: () => {
           migrationResults.push('b1.4.0')
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         migrateBuildUnrelatedData: () => {
           migrationResults.push('bud1.4.0')
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         version: '1.4.0'
       },
       {
         migrateBuild: () => {
           migrationResults.push('b1.5.0')
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         migrateBuildUnrelatedData: () => {
           migrationResults.push('bud1.5.0')
-          return Promise.resolve(Result.ok())
+          return Promise.resolve(true)
         },
         version: '1.5.0'
       }
@@ -673,8 +678,8 @@ describe('initialize()', () => {
     localStorage.setItem(WebsiteConfigurationMock.versionStorageKey, '1.5.0')
     Migrations.push(
       {
-        migrateBuild: () => Promise.resolve(Result.ok()),
-        migrateBuildUnrelatedData: () => Promise.resolve(Result.fail(FailureType.error, undefined, 'Error')),
+        migrateBuild: () => Promise.resolve(true),
+        migrateBuildUnrelatedData: () => Promise.resolve(false),
         version: '1.6.0'
       }
     )
@@ -711,8 +716,8 @@ describe('initialize()', () => {
     localStorage.setItem(WebsiteConfigurationMock.versionStorageKey, '1.5.0')
     Migrations.push(
       {
-        migrateBuild: () => Promise.resolve(Result.fail(FailureType.error, undefined, 'Error')),
-        migrateBuildUnrelatedData: () => Promise.resolve(Result.ok()),
+        migrateBuild: () => Promise.resolve(false),
+        migrateBuildUnrelatedData: () => Promise.resolve(true),
         version: '1.6.0'
       }
     )

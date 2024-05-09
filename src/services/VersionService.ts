@@ -59,15 +59,7 @@ export class VersionService {
   /**
    * Current version.
    */
-  private get version(): string {
-    if (this._version == null) {
-      // This should never happen, data should have been loaded or a error message should have been displayed
-      throw new Error(vueI18n.t('message.websiteConfigurationNotFetched'))
-    }
-
-    return this._version
-  }
-  private _version: string | undefined
+  private version: string = ''
 
   /**
    * Indicates whether the website has changed of version since the last visit.
@@ -144,6 +136,7 @@ export class VersionService {
    */
   public async getChangelog(): Promise<IChangelogEntry[] | undefined> {
     await this.initialize()
+
     if (!this.changelogFetched) {
       this.changelogFetched = await this.fetchChangelog()
 
@@ -337,7 +330,7 @@ export class VersionService {
 
     const websiteConfiguration = Services.get(WebsiteConfigurationService).configuration
 
-    this._version = websiteConfiguration.version
+    this.version = websiteConfiguration.version
     this.lastVisitVersion = localStorage.getItem(websiteConfiguration.versionStorageKey) ?? undefined
     this.hasNewVersion = this.isNew(this.version)
 

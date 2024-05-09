@@ -12,8 +12,7 @@ describe('getType()', () => {
     const slotTypeResult = service.getType('pockets')
 
     // Assert
-    expect(slotTypeResult.success).toBe(true)
-    expect(slotTypeResult.value).toStrictEqual({
+    expect(slotTypeResult).toStrictEqual({
       acceptedItemCategories: [
         'ammunition',
         'armband',
@@ -47,15 +46,14 @@ describe('getType()', () => {
     })
   })
 
-  it('should fail if an inventory slot type is not found', () => {
+  it('should throw if an inventory slot type is not found', () => {
     // Arrange
     const service = new InventorySlotService()
 
     // Act
-    const result = service.getType('invalid')
+    const act = () => service.getType('invalid')
 
     // Assert
-    expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe('Inventory slot type "invalid" not found.')
+    expect(act).toThrowError('Inventory slot type "invalid" not found.')
   })
 })

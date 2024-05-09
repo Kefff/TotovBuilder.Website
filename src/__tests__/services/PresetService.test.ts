@@ -1,4 +1,4 @@
-import { anyString, anything, instance, mock, verify, when } from 'ts-mockito'
+import { anything, instance, mock, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
@@ -8,10 +8,6 @@ import { IHeadwear } from '../../models/item/IHeadwear'
 import { IMod } from '../../models/item/IMod'
 import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
-import { IErgonomics } from '../../models/utils/IErgonomics'
-import { IInventoryItemRecoil } from '../../models/utils/IInventoryItemRecoil'
-import { IInventoryItemWearableModifiers } from '../../models/utils/IInventoryItemWearableModifiers'
-import { IRecoilModifierPercentage } from '../../models/utils/IRecoilModifierPercentage'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemFetcherService } from '../../services/ItemFetcherService'
@@ -20,7 +16,6 @@ import { ItemService } from '../../services/ItemService'
 import { LogService } from '../../services/LogService'
 import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
-import Result, { FailureType } from '../../utils/Result'
 import { ak12bt, ammo545bp, ammo545us, ammo9mmGT, armor6b13FlDefault, bansheeDefault, iskra, m9a3Cap, m9a3Default, m9a3Magazine, m9a3Rs, m9a3Slide, m9a3Thr, rpk16Default, rpk16Drum, srd9 } from '../__data__/itemMocks'
 import { PresetMocks, rpk16DefaultPreset } from '../__data__/presetMocks'
 import { useGlobalFilterServiceMock } from '../__mocks__/GlobalFilterServiceMock'
@@ -37,26 +32,27 @@ describe('fetchPresets()', () => {
     useWebsiteConfigurationServiceMock()
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok(PresetMocks))
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve(PresetMocks)
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     const presetService = new PresetService()
 
     // Act
-    await presetService.fetchPresets()
+    const result = await presetService.fetchPresets()
     const preset = presetService.getPreset(rpk16Default.id)
 
     // Assert
+    expect(result).toBe(true)
     expect(preset).toStrictEqual(rpk16DefaultPreset)
   })
 
-  it('should fail when fetching fails', async () => {
+  it('should return false when fetching fails', async () => {
     // Arrange
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.fail(FailureType.error, undefined, 'Fetch error'))
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve(undefined)
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
 
@@ -65,8 +61,7 @@ describe('fetchPresets()', () => {
     const result = await presetService.fetchPresets()
 
     // Assert
-    expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe('Fetch error')
+    expect(result).toBe(false)
   })
 })
 
@@ -398,10 +393,10 @@ describe('isPreset()', () => {
       const presetService = new PresetService()
       Services.configure(PresetService, undefined, presetService)
 
-      const itemResult = await Services.get(ItemService).getItem(itemId)
+      const item = await Services.get(ItemService).getItem(itemId)
 
       // Act
-      const result = presetService.isPreset(itemResult.value)
+      const result = presetService.isPreset(item)
 
       // Assert
       expect(result).toBe(expected)
@@ -422,8 +417,8 @@ describe('updatePresetProperties', () => {
     const presetService = new PresetService()
     await presetService.fetchPresets()
 
-    const itemResult = await Services.get(ItemService).getItem(armor6b13FlDefault.id)
-    const armor = itemResult.value as IArmor
+    const item = await Services.get(ItemService).getItem(armor6b13FlDefault.id)
+    const armor = item as IArmor
 
     // Act
     await presetService.updatePresetProperties([armor])
@@ -545,7 +540,7 @@ describe('updatePresetProperties', () => {
       undefined)
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok(
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve(
       [
         {
           content: [],
@@ -565,7 +560,7 @@ describe('updatePresetProperties', () => {
           ],
           quantity: 1
         }
-      ] as IInventoryItem[]))
+      ] as IInventoryItem[])
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     Services.configure(InventoryItemService)
@@ -574,8 +569,8 @@ describe('updatePresetProperties', () => {
     const presetService = new PresetService()
     await presetService.fetchPresets()
 
-    const itemResult = await Services.get(ItemService).getItem('presetArmorMod')
-    const armorMod = itemResult.value as IArmorMod
+    const item = await Services.get(ItemService).getItem('presetArmorMod')
+    const armorMod = item as IArmorMod
 
     // Act
     await presetService.updatePresetProperties([armorMod])
@@ -700,7 +695,7 @@ describe('updatePresetProperties', () => {
       undefined)
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok(
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve(
       [
         {
           content: [],
@@ -720,7 +715,7 @@ describe('updatePresetProperties', () => {
           ],
           quantity: 1
         }
-      ] as IInventoryItem[]))
+      ] as IInventoryItem[])
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     Services.configure(InventoryItemService)
@@ -729,8 +724,8 @@ describe('updatePresetProperties', () => {
     const presetService = new PresetService()
     await presetService.fetchPresets()
 
-    const itemResult = await Services.get(ItemService).getItem('presetHeadwear')
-    const headwear = itemResult.value as IHeadwear
+    const item = await Services.get(ItemService).getItem('presetHeadwear')
+    const headwear = item as IHeadwear
 
     // Act
     await presetService.updatePresetProperties([headwear])
@@ -829,7 +824,7 @@ describe('updatePresetProperties', () => {
       undefined)
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok(
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve(
       [
         {
           content: [],
@@ -849,7 +844,7 @@ describe('updatePresetProperties', () => {
           ],
           quantity: 1
         }
-      ] as IInventoryItem[]))
+      ] as IInventoryItem[])
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     Services.configure(InventoryItemService)
@@ -858,8 +853,8 @@ describe('updatePresetProperties', () => {
     const presetService = new PresetService()
     await presetService.fetchPresets()
 
-    const itemResult = await Services.get(ItemService).getItem('presetMod')
-    const mod = itemResult.value as IMod
+    const item = await Services.get(ItemService).getItem('presetMod')
+    const mod = item as IMod
 
     // Act
     await presetService.updatePresetProperties([mod])
@@ -881,8 +876,8 @@ describe('updatePresetProperties', () => {
     const presetService = new PresetService()
     await presetService.fetchPresets()
 
-    const itemResult = await Services.get(ItemService).getItem(rpk16Default.id)
-    const rangedWeapon = itemResult.value as IRangedWeapon
+    const item = await Services.get(ItemService).getItem(rpk16Default.id)
+    const rangedWeapon = item as IRangedWeapon
 
     // Act
     await presetService.updatePresetProperties([rangedWeapon])
@@ -987,7 +982,7 @@ describe('updatePresetProperties', () => {
       undefined)
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok(
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve(
       [
         {
           content: [],
@@ -1007,7 +1002,7 @@ describe('updatePresetProperties', () => {
           ],
           quantity: 1
         }
-      ] as IInventoryItem[]))
+      ] as IInventoryItem[])
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     Services.configure(InventoryItemService)
@@ -1016,8 +1011,8 @@ describe('updatePresetProperties', () => {
     const presetService = new PresetService()
     await presetService.fetchPresets()
 
-    const itemResult = await Services.get(ItemService).getItem('presetRangedWeaponMod')
-    const rangedWeaponMod = itemResult.value as IRangedWeaponMod
+    const item = await Services.get(ItemService).getItem('presetRangedWeaponMod')
+    const rangedWeaponMod = item as IRangedWeaponMod
 
     // Act
     await presetService.updatePresetProperties([rangedWeaponMod])
@@ -1042,8 +1037,8 @@ describe('updatePresetProperties', () => {
     const presetService = new PresetService()
     await presetService.fetchPresets()
 
-    const itemResult = await Services.get(ItemService).getItem(bansheeDefault.id)
-    const armor = itemResult.value as IArmor
+    const item = await Services.get(ItemService).getItem(bansheeDefault.id)
+    const armor = item as IArmor
 
     // Act
     await presetService.updatePresetProperties([armor])
@@ -1115,15 +1110,15 @@ describe('updatePresetProperties', () => {
       undefined)
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok([] as IInventoryItem[]))
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve([] as IInventoryItem[])
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     Services.configure(InventoryItemService)
     Services.configure(ItemPropertiesService)
 
     const presetService = new PresetService()
-    const itemResult = await Services.get(ItemService).getItem('nonPresetMod')
-    const mod = itemResult.value as IMod
+    const item = await Services.get(ItemService).getItem('nonPresetMod')
+    const mod = item as IMod
 
     // Act
     await presetService.updatePresetProperties([mod])
@@ -1133,7 +1128,7 @@ describe('updatePresetProperties', () => {
     expect(mod.presetErgonomicsModifier).toBe(undefined)
   })
 
-  it('should log presets it did not find', async () => {
+  it('should log an error with the presets it did not find', async () => {
     // Arrange
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
@@ -1215,7 +1210,7 @@ describe('updatePresetProperties', () => {
       undefined)
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok([] as IInventoryItem[]))
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve([])
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     Services.configure(InventoryItemService)
@@ -1225,330 +1220,15 @@ describe('updatePresetProperties', () => {
     Services.configure(LogService, undefined, instance(logServiceMock))
 
     const presetService = new PresetService()
-    const itemResult = await Services.get(ItemService).getItem('presetMod')
-    const mod = itemResult.value as IMod
+    const item = await Services.get(ItemService).getItem('presetMod')
+    const mod = item as IMod
 
     // Act
     await presetService.updatePresetProperties([mod])
 
     // Assert
-    verify(logServiceMock.logError(anyString())).once()
     expect(mod.ergonomicsModifier).toBe(5)
     expect(mod.presetErgonomicsModifier).toBe(undefined)
-  })
-
-  it.each([
-    ['presetArmorMod', true, true, true, true],
-    ['presetMod', true, true, true, true],
-    ['presetRangedWeaponMod', true, true, true, true],
-    ['presetRangedWeaponMod', false, true, true, true],
-    ['584147732459775a2b6d9f12', true, true, true, true],
-    ['584147732459775a2b6d9f12', false, true, true, true]
-  ])('should log presets it cannot update', async (
-    presetId: string,
-    ergonomicsFailure: boolean,
-    wearableModifiersFailure: boolean,
-    recoilFailure: boolean,
-    recoilModifierPercentageFailure: boolean) => {
-    // Arrange
-    useTarkovValuesServiceMock()
-    useWebsiteConfigurationServiceMock()
-    useItemServiceMock(
-      true,
-      [
-        {
-          armorClass: 1,
-          armoredAreas: ['TopOfTheHead'],
-          baseItemId: 'baseArmorMod',
-          blindnessProtectionPercentage: 0,
-          categoryId: 'armorMod',
-          conflictingItemIds: [],
-          defaultPresetId: undefined,
-          durability: 10,
-          ergonomicsModifierPercentage: 0.05,
-          iconLink: '',
-          id: 'presetArmorMod',
-          imageLink: '',
-          marketLink: '',
-          material: 'Aluminum',
-          maxStackableAmount: 1,
-          modSlots: [],
-          movementSpeedModifierPercentage: 0.04,
-          name: 'Preset armor mod',
-          presetWearableModifiers: undefined,
-          prices: [],
-          ricochetChance: 'low',
-          shortName: 'pam',
-          turningSpeedModifierPercentage: 0.03,
-          weight: 1,
-          wikiLink: ''
-        } as IArmorMod,
-        {
-          baseItemId: 'baseMod',
-          categoryId: 'mod',
-          conflictingItemIds: [],
-          defaultPresetId: undefined,
-          ergonomicsModifier: 5,
-          iconLink: '',
-          id: 'presetMod',
-          imageLink: '',
-          marketLink: '',
-          maxStackableAmount: 1,
-          modSlots: [],
-          name: 'Preset mod',
-          presetErgonomicsModifier: undefined,
-          prices: [],
-          shortName: 'pm',
-          weight: 1,
-          wikiLink: ''
-        } as IMod,
-        {
-          accuracyModifierPercentage: 0.04,
-          baseItemId: 'baseRangedWeaponMod',
-          categoryId: 'rangedWeaponMod',
-          conflictingItemIds: [],
-          defaultPresetId: undefined,
-          ergonomicsModifier: 5,
-          iconLink: '',
-          id: 'presetRangedWeaponMod',
-          imageLink: '',
-          marketLink: '',
-          maxStackableAmount: 1,
-          modSlots: [],
-          name: 'Preset ranged weapon mod',
-          presetErgonomicsModifier: undefined,
-          presetRecoilModifierPercentage: undefined,
-          prices: [],
-          recoilModifierPercentage: 0.06,
-          shortName: 'prwm',
-          weight: 1,
-          wikiLink: ''
-        } as IRangedWeaponMod,
-        {
-          baseItemId: '57dc2fa62459775949412633',
-          caliber: 'Caliber545x39',
-          defaultPresetId: undefined,
-          ergonomics: 44,
-          fireModes: ['SingleFire', 'FullAuto'],
-          fireRate: 650,
-          horizontalRecoil: 415,
-          minuteOfAngle: 3.44,
-          modSlots: [],
-          verticalRecoil: 121,
-          categoryId: 'mainWeapon',
-          conflictingItemIds: [],
-          iconLink: 'https://assets.tarkov.dev/584147732459775a2b6d9f12-icon.webp',
-          id: '584147732459775a2b6d9f12',
-          imageLink: 'https://assets.tarkov.dev/584147732459775a2b6d9f12-image.webp',
-          maxStackableAmount: 1,
-          marketLink: 'https://tarkov.dev/item/kalashnikov-aks-74u-545x39-assault-rifle-default',
-          name: 'Kalashnikov AKS-74U 5.45x39 assault rifle Default',
-          presetErgonomics: undefined,
-          presetHorizontalRecoil: undefined,
-          presetVerticalRecoil: undefined,
-          prices: [],
-          shortName: 'AKS-74U Default',
-          weight: 1.809,
-          wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Kalashnikov_AKS-74U_5.45x39_assault_rifle'
-        } as IRangedWeapon
-      ],
-      undefined)
-
-    const inventoryItemServiceMock = mock<InventoryItemService>()
-    when(inventoryItemServiceMock.getErgonomics(anything()))
-      .thenResolve(
-        ergonomicsFailure
-          ? Result.fail(FailureType.error)
-          : Result.ok({
-            ergonomics: 0,
-            ergonomicsWithMods: 0
-          } as IErgonomics))
-    when(inventoryItemServiceMock.getWearableModifiers(anything()))
-      .thenResolve(
-        wearableModifiersFailure
-          ? Result.fail(FailureType.error)
-          : Result.ok({
-            ergonomicsModifierPercentage: 0,
-            ergonomicsModifierPercentageWithMods: 0,
-            movementSpeedModifierPercentage: 0,
-            movementSpeedModifierPercentageWithMods: 0,
-            turningSpeedModifierPercentage: 0,
-            turningSpeedModifierPercentageWithMods: 0
-          } as IInventoryItemWearableModifiers))
-    when(inventoryItemServiceMock.getRecoil(anything()))
-      .thenResolve(
-        recoilFailure
-          ? Result.fail(FailureType.error)
-          : Result.ok({
-            horizontalRecoil: 0,
-            horizontalRecoilWithMods: 0,
-            verticalRecoil: 0,
-            verticalRecoilWithMods: 0
-          } as IInventoryItemRecoil))
-    when(inventoryItemServiceMock.getRecoilModifierPercentage(anything()))
-      .thenResolve(
-        recoilModifierPercentageFailure
-          ? Result.fail(FailureType.error)
-          : Result.ok({
-            recoilModifierPercentage: 0,
-            recoilModifierPercentageWithMods: 0
-          } as IRecoilModifierPercentage))
-    Services.configure(InventoryItemService, undefined, instance(inventoryItemServiceMock))
-
-    const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok([
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: 'presetArmorMod',
-        modSlots: [
-          {
-            modSlotName: '',
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: 'childMod',
-              modSlots: [],
-              quantity: 1
-            }
-          }
-        ],
-        quantity: 1
-      },
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: 'presetMod',
-        modSlots: [
-          {
-            modSlotName: '',
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: 'childMod',
-              modSlots: [],
-              quantity: 1
-            }
-          }
-        ],
-        quantity: 1
-      },
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: 'presetRangedWeaponMod',
-        modSlots: [
-          {
-            modSlotName: '',
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: 'childMod',
-              modSlots: [],
-              quantity: 1
-            }
-          }
-        ],
-        quantity: 1
-      },
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: '584147732459775a2b6d9f12',
-        modSlots: [
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: '57e3dba62459770f0c32322b',
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_pistol_grip'
-          },
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: '57dc347d245977596754e7a1',
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_stock'
-          },
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: '564ca99c4bdc2d16268b4589',
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_magazine'
-          },
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: '57dc324a24597759501edc20',
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_muzzle'
-          },
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: '57dc334d245977597164366f',
-              modSlots: [],
-              quantity: 1
-            },
-            modSlotName: 'mod_reciever'
-          },
-          {
-            item: {
-              content: [],
-              ignorePrice: false,
-              itemId: '59d36a0086f7747e673f3946',
-              modSlots: [
-                {
-                  item: {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: '57dc32dc245977596d4ef3d3',
-                    modSlots: [],
-                    quantity: 1
-                  },
-                  modSlotName: 'mod_handguard'
-                }
-              ],
-              quantity: 1
-            },
-            modSlotName: 'mod_gas_block'
-          }
-        ],
-        quantity: 1
-      }
-    ] as IInventoryItem[]))
-    Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
-
-    Services.configure(ItemPropertiesService)
-
-    const logServiceMock = mock<LogService>()
-    Services.configure(LogService, undefined, instance(logServiceMock))
-
-    const presetService = new PresetService()
-    await presetService.fetchPresets()
-
-    const itemResult = await Services.get(ItemService).getItem(presetId)
-    const originalItem = { ...itemResult.value }
-
-    // Act
-    await presetService.updatePresetProperties([itemResult.value])
-
-    // Assert
-    verify(logServiceMock.logError(anyString())).once()
-    expect(itemResult.value).toStrictEqual(originalItem)
+    verify(logServiceMock.logError('message.presetsNotFound', anything())).once()
   })
 })
