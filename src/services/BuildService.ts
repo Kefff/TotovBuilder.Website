@@ -21,7 +21,7 @@ export class BuildService {
    * @returns Build ID.
    */
   public async add(build: IBuild): Promise<string> {
-    if (build.id !== '') {
+    if (build.id === '') {
       build.id = Guid.create().toString()
     }
 

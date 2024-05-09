@@ -18,18 +18,10 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const itemUnitPrice = ref<IPrice>({
-      barterItems: [],
-      currencyName: '',
-      itemId: '',
-      merchant: '',
-      merchantLevel: 0,
-      quest: undefined,
-      value: 0,
-      valueInMainCurrency: 0
-    })
+    const itemUnitPrice = ref<IPrice>()
 
     watch(() => props.item, () => initialize())
+
     onMounted(() => initialize())
 
     async function initialize() {

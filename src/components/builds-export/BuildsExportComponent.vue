@@ -1,15 +1,14 @@
 <template>
   <Dialog
-    v-model:visible="modelValue"
+    v-model:visible="isExporting"
     :closable="false"
     :header="$t('message.selectBuildsToExport')"
     :modal="true"
     :draggable="false"
   >
     <BuildsList
-      v-model="buildsToExportIds"
+      v-model:selectedBuildIds="buildsToExportIds"
       :builds-summaries="buildsSummaries"
-      :multiple="true"
     />
     <template #footer>
       <div class="builds-export-buttons">

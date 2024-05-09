@@ -16,12 +16,12 @@ export default defineComponent({
       type: Array as PropType<IBuildSummary[]>,
       required: true
     },
-    modelValue: {
+    isExporting: {
       type: Boolean,
       required: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:isExporting'],
   setup: (props, { emit }) => {
     const buildsToExportIds = ref<string[]>([])
     const allSelected = computed(() => buildsToExportIds.value.length === props.buildsSummaries.length)
@@ -32,7 +32,7 @@ export default defineComponent({
      * Cancels the export.
      */
     function cancelExport() {
-      emit('update:modelValue', false)
+      emit('update:isExporting', false)
     }
 
     /**
@@ -52,7 +52,7 @@ export default defineComponent({
 
       await Services.get(ExportService).export(buildsToExport)
 
-      emit('update:modelValue', false)
+      emit('update:isExporting', false)
     }
 
     /**
@@ -60,7 +60,7 @@ export default defineComponent({
      * @param event - Keyboard event.
      */
     function onKeyDown(event: KeyboardEvent) {
-      if (!props.modelValue) {
+      if (!props.isExporting) {
         return
       }
 

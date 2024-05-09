@@ -18,7 +18,7 @@
   </div>
   <Changelog
     v-if="!isLoading"
-    v-model="hasChangelogDisplayed"
+    v-model:hasChangelogDisplayed="hasChangelogDisplayed"
   />
   <router-view />
   <div class="app-footer">

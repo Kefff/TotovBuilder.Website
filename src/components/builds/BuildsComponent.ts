@@ -49,14 +49,6 @@ export default defineComponent({
     const canImport = computed(() => !isLoading.value && !isExporting.value && !isImporting.value)
     const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
     const hasLoadingError = computed(() => hasItemsLoadingError.value || hasWebsiteConfigurationLoadingError.value)
-    const selectedBuildSummary = computed({
-      get: () => [],
-      set: (value: string[]) => {
-        if (value.length === 1) {
-          openBuild(value[0])
-        }
-      }
-    })
 
     const hasImported = ref(false)
     const hasItemsLoadingError = ref(false)
@@ -130,6 +122,23 @@ export default defineComponent({
     }
 
     /**
+     * Opens a the build on which the user clicks.
+     * @param selectedBuildIds - Builds the user clicked on.
+     */
+    function onBuildClick(selectedBuildIds: string[]) {
+      if (selectedBuildIds.length === 1) {
+        openBuild(selectedBuildIds[0])
+      }
+    }
+
+    /**
+     * Updates the selected item price to reflect the change in merchant filters.
+     */
+    function onMerchantFilterChanged() {
+      getBuilds()
+    }
+
+    /**
      * Gets builds and ends loading.
      */
     function onServicesInitialized() {
@@ -148,13 +157,6 @@ export default defineComponent({
 
         checkBuildsNotExported()
       })
-    }
-
-    /**
-     * Updates the selected item price to reflect the change in merchant filters.
-     */
-    function onMerchantFilterChanged() {
-      getBuilds()
     }
 
     /**
@@ -212,8 +214,8 @@ export default defineComponent({
       isImporting,
       isLoading,
       merchantItemsOptionsSidebarVisible,
+      onBuildClick,
       openNewBuild,
-      selectedBuildSummary,
       showBuildsExportPopup,
       showBuildsImportPopup,
       StatsUtils,

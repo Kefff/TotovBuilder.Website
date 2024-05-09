@@ -12,7 +12,7 @@
       > *</span>
     </div>
     <Item
-      v-model="modelValue.item"
+      v-model:inventory-item="modelValue.item"
       :accepted-items="acceptedItems"
       :accepted-items-category-id="acceptedItemsCategoryId"
       :path="path + '/' + itemPathPrefix + (modelValue.item?.itemId ?? 'empty')"

@@ -482,7 +482,7 @@ describe('update()', () => {
 })
 
 const newBuild: IBuild = {
-  id: 'build_3',
+  id: '',
   name: 'Kaptain Kolpak',
   inventorySlots: [
     {

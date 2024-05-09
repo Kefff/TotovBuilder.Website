@@ -11,12 +11,12 @@ export default defineComponent({
     Loading
   },
   props: {
-    modelValue: {
+    hasChangelogDisplayed: {
       type: Boolean,
       required: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:hasChangelogDisplayed'],
   setup(props, { emit }) {
     const versionService = Services.get(VersionService)
 
@@ -25,13 +25,13 @@ export default defineComponent({
     const isLoading = ref(true)
     const version = ref('1.0.0')
 
-    const hasChangelogDisplayed = computed({
-      get: () => props.modelValue,
-      set: (value: boolean) => emit('update:modelValue', value)
+    const hasChangelogDisplayedInternal = computed({
+      get: () => props.hasChangelogDisplayed,
+      set: (value: boolean) => emit('update:hasChangelogDisplayed', value)
     })
 
-    watch(() => props.modelValue, () => {
-      if (props.modelValue) {
+    watch(() => props.hasChangelogDisplayed, () => {
+      if (props.hasChangelogDisplayed) {
         showChangelog()
       }
     })
@@ -70,7 +70,7 @@ export default defineComponent({
      * Shows the changelog.
      */
     async function showChangelog() {
-      hasChangelogDisplayed.value = true
+      hasChangelogDisplayedInternal.value = true
 
       isLoading.value = true
       const fetchedChangelogs = await versionService.getChangelog()
@@ -87,7 +87,7 @@ export default defineComponent({
 
     return {
       changelogs,
-      hasChangelogDisplayed,
+      hasChangelogDisplayedInternal,
       isLoading,
       showChangelog
     }

@@ -3,7 +3,7 @@
     <Item
       v-for="(containedItem, index) of content"
       :key="path + '/' + index + '_' + content.length"
-      v-model="content[index]"
+      v-model:inventory-item="content[index]"
       :accepted-items="acceptedItems"
       :accepted-items-category-id="categoryId"
       :force-quantity-to-max-selectable-amount="isMagazine"
@@ -13,7 +13,7 @@
     />
     <Item
       v-show="editing && canAddItem"
-      v-model="itemToAdd"
+      v-model:inventory-item="itemToAdd"
       :accepted-items="acceptedItems"
       :accepted-items-category-id="categoryId"
       :max-stackable-amount="maximumQuantity"

@@ -1,5 +1,5 @@
 import { DataTableSortEvent } from 'primevue/datatable'
-import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
+import { defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import Services from '../../services/repository/Services'
@@ -20,14 +20,10 @@ export default defineComponent({
       type: Array as PropType<IBuildSummary[]>,
       required: true
     },
-    modelValue: {
+    selectedBuildIds: {
       type: Array as PropType<string[]>,
-      required: true
-    },
-    multiple: {
-      type: Boolean,
       required: false,
-      default: false
+      default: () => []
     },
     showNotExported: {
       type: Boolean,
@@ -35,22 +31,20 @@ export default defineComponent({
       default: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:selectedBuildIds'],
   setup: (props, { emit }) => {
     const buildPropertiesService = Services.get(BuildPropertiesService)
 
     const sortField = ref('name')
     const sortOrder = ref(1)
-    const selectedBuildSummaries = ref<IBuildSummary | IBuildSummary[]>()
-
-    const selectionMode = computed(() => props.multiple ? 'multiple' : 'single')
+    const selectedBuildSummaries = ref<IBuildSummary[]>([])
 
     onMounted(() => {
       getSortingData()
       setSelectedBuilds()
     })
 
-    watch(() => props.modelValue, () => setSelectedBuilds())
+    watch(() => props.selectedBuildIds, () => setSelectedBuilds())
 
     /**
      * Gets the tooltip for not exported builds.
@@ -94,24 +88,16 @@ export default defineComponent({
      * Sets the selected builds.
      */
     function setSelectedBuilds() {
-      if (props.multiple) {
-        if (props.modelValue.length > 0) {
-          selectedBuildSummaries.value = props.buildsSummaries.filter((bs) => props.modelValue.some((mv) => mv === bs.id))
-        } else {
-          selectedBuildSummaries.value = []
-        }
-      } else if (props.modelValue.length > 0) {
-        selectedBuildSummaries.value = props.buildsSummaries[0]
-      }
+      selectedBuildSummaries.value = props.buildsSummaries.filter((bs) => props.selectedBuildIds.some((mv) => mv === bs.id))
     }
 
     /**
      * Updates selected build summaries
      */
     function updateSelectedBuildSummaries() {
-      emit('update:modelValue', props.multiple
-        ? (selectedBuildSummaries.value as IBuildSummary[]).map((bs) => bs.id)
-        : [(selectedBuildSummaries.value as IBuildSummary).id])
+      const selectedBuildIds = selectedBuildSummaries.value.map((bs) => bs.id)
+
+      emit('update:selectedBuildIds', selectedBuildIds)
     }
 
     return {
@@ -119,7 +105,6 @@ export default defineComponent({
       getNotExportedTooltip,
       onSort,
       selectedBuildSummaries,
-      selectionMode,
       sortField,
       sortOrder,
       StatsUtils,

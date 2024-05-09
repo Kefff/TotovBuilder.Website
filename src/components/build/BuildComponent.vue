@@ -13,7 +13,7 @@
       </span>
       <InputTextField
         v-show="!isLoading && editing"
-        v-model="build.name"
+        v-model:value="build.name"
         :caption="$t('caption.name')"
         caption-mode="placeholder"
         :required="true"

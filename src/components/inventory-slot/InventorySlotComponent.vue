@@ -140,11 +140,11 @@
       <Item
         v-for="(item, index) of items"
         :key="path + '_' + index"
-        v-model="items[index]"
+        v-model:inventory-item="items[index]"
         :accepted-items="acceptedItems"
         :accepted-items-category-id="acceptedItemsCategoryId"
         :can-be-looted="inventorySlotType.canBeLooted"
-        :path="path + '_' + index + '/' + itemPathPrefix + (item?.itemId ?? 'empty')"
+        :path="`${path}_${index}/${itemPathPrefix}${item?.itemId ?? 'empty'}`"
         @update:model-value="onItemChanged(index)"
       />
     </Panel>

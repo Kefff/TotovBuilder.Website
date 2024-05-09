@@ -14,7 +14,7 @@ export default defineComponent({
     BuildsList
   },
   props: {
-    modelValue: {
+    isImporting: {
       type: Boolean,
       required: true
     },
@@ -23,7 +23,7 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['update:modelValue', 'update:hasImported'],
+  emits: ['update:isImporting', 'update:hasImported'],
   setup: (props, { emit }) => {
     const buildsImportComponentService = Services.get(BuildsImportComponentService)
 
@@ -50,7 +50,7 @@ export default defineComponent({
       readenBuildSummaries.value = []
       buildsToImportIds.value = []
 
-      emit('update:modelValue', false)
+      emit('update:isImporting', false)
     }
 
     /**
@@ -64,7 +64,7 @@ export default defineComponent({
       readenBuildSummaries.value = []
       buildsToImportIds.value = []
 
-      emit('update:modelValue', false)
+      emit('update:isImporting', false)
       emit('update:hasImported', true)
       notificationService.notify(NotificationType.success, i18n.t('message.buildsImported'))
     }
@@ -94,7 +94,7 @@ export default defineComponent({
      * @param event - Keyboard event.
      */
     function onKeyDown(event: KeyboardEvent) {
-      if (!props.modelValue || !showingList.value) {
+      if (!props.isImporting || !showingList.value) {
         return
       }
 
