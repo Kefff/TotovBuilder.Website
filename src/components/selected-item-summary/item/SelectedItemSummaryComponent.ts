@@ -14,7 +14,7 @@ export default defineComponent({
     Price
   },
   props: {
-    modelValue: {
+    inventoryItem: {
       type: Object as PropType<IInventoryItem>,
       required: true
     },
@@ -23,7 +23,7 @@ export default defineComponent({
       required: false,
       default: true
     },
-    itemInSameSlotInPreset: { // When the parent item is a preset, represets the item that is in the same slot in the preset
+    inventoryItemInSameSlotInPreset: { // When the parent item is a preset, represents the inventory item that is in the same slot in the preset
       type: Object as PropType<IInventoryItem>,
       required: false,
       default: undefined
@@ -34,7 +34,7 @@ export default defineComponent({
     const inventoryItemService = Services.get(InventoryItemService)
 
     const hasMissingPrice = computed(() => selectedItemPrice.value.missingPrice
-      && !props.modelValue.ignorePrice
+      && !props.inventoryItem.ignorePrice
       && selectedItemPrice.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored
       && selectedItemPrice.value.unitPrice.valueInMainCurrency === 0) // We don't show the missing price icon on items that contain an item with a missing price
     const showPrice = computed(() => selectedItemPrice.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored)
@@ -73,15 +73,15 @@ export default defineComponent({
     })
 
     watch(() => [
-      props.modelValue.ignorePrice,
-      props.modelValue.itemId,
-      props.modelValue.quantity,
-      props.itemInSameSlotInPreset?.itemId
+      props.inventoryItem.ignorePrice,
+      props.inventoryItem.itemId,
+      props.inventoryItem.quantity,
+      props.inventoryItemInSameSlotInPreset?.itemId
     ], () => {
       setPrice()
     })
 
-    watch(() => [props.modelValue.itemId, props.modelValue.quantity], () => {
+    watch(() => [props.inventoryItem.itemId, props.inventoryItem.quantity], () => {
       setWeight()
     })
 
@@ -107,14 +107,14 @@ export default defineComponent({
      * Sets the price of the inventory item.
      */
     async function setPrice() {
-      selectedItemPrice.value = await inventoryItemService.getPrice(props.modelValue, props.itemInSameSlotInPreset, props.canBeLooted)
+      selectedItemPrice.value = await inventoryItemService.getPrice(props.inventoryItem, props.inventoryItemInSameSlotInPreset, props.canBeLooted)
     }
 
     /**
      * Sets the weight of the inventory items.
      */
     async function setWeight() {
-      selectedItemWeight.value = await inventoryItemService.getWeight(props.modelValue)
+      selectedItemWeight.value = await inventoryItemService.getWeight(props.inventoryItem)
     }
 
     return {

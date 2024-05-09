@@ -1,5 +1,4 @@
 import { computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
-import { ICurrency } from '../../models/configuration/ICurrency'
 import { IItem } from '../../models/item/IItem'
 import { IPrice } from '../../models/item/IPrice'
 import { IInventoryItemPrice } from '../../models/utils/IInventoryItemPrice'
@@ -49,10 +48,10 @@ export default defineComponent({
     }
   },
   setup: (props) => {
+    const itemService = Services.get(ItemService)
     const globalFilterService = Services.get(GlobalFilterService)
-    globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-    let _currency: ICurrency | undefined
+
     const mainCurrency = Services.get(ItemService).getMainCurrency()
 
     const barterItemPrices = ref<IInventoryItemPrice[]>([])
@@ -67,13 +66,7 @@ export default defineComponent({
           || isBarter.value)
     })
     const canShowMerchantIcon = computed(() => props.showMerchantIcon && props.price.merchant !== '')
-    const currency = computed(() => {
-      if (_currency == null) {
-        _currency = Services.get(ItemService).getCurrency(props.price.currencyName)
-      }
-
-      return _currency
-    })
+    const currency = computed(() => itemService.getCurrency(props.price.currencyName))
     const displayedCurrency = computed(() => isBarter.value ? mainCurrency : currency.value)
     const displayedPrice = computed(() => {
       const value = isBarter.value ? props.price.valueInMainCurrency : props.price.value
@@ -98,7 +91,11 @@ export default defineComponent({
 
     watch(() => props.price, () => initialize())
 
-    onMounted(() => initialize())
+    onMounted(() => {
+      globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+
+      initialize()
+    })
 
     onUnmounted(() => {
       globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)

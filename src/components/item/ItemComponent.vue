@@ -35,7 +35,7 @@
           </template>
           <template #value="slotProps">
             <div v-tooltip.top="item?.name">
-              <SelectedItem v-model="slotProps.value" />
+              <SelectedItem v-model:item="slotProps.value" />
             </div>
           </template>
         </Dropdown>
@@ -45,7 +45,7 @@
         class="item-quantity"
       >
         <InputNumberField
-          v-model="quantity"
+          v-model:value="quantity"
           :caption="$t('caption.quantity')"
           caption-mode="placeholder"
           :max="maxSelectableQuantity"
@@ -53,7 +53,7 @@
           :read-only="!editing || forceQuantityToMaxSelectableAmount"
           :required="true"
           required-message-position="right"
-          @update:model-value="onQuantityChanged($event)"
+          @update:value="onQuantityChanged($event)"
         />
       </div>
       <SelectedItemFunctionalities
@@ -71,9 +71,9 @@
       />
       <SelectedItemSummarySelector
         v-if="inventoryItemInternal != null"
-        v-model="inventoryItemInternal"
         :can-be-looted="canBeLooted"
-        :item-in-same-slot-in-preset="presetModSlotContainingItem?.item"
+        :inventory-item-in-same-slot-in-preset="presetModSlotContainingItem?.item"
+        :inventory-item="inventoryItemInternal"
       />
     </div>
     <div
@@ -87,7 +87,7 @@
       <div v-if="itemIsModdable">
         <ItemMods
           v-show="selectedTab === SelectableTab.mods"
-          v-model="inventoryItemInternal.modSlots"
+          v-model:inventory-mod-slots="inventoryItemInternal.modSlots"
           :container-item="item"
           :path="path"
         />
@@ -95,7 +95,7 @@
       <div v-if="itemIsContainer">
         <div v-show="selectedTab === SelectableTab.content">
           <ItemContent
-            v-model="inventoryItemInternal.content"
+            v-model:inventory-items="inventoryItemInternal.content"
             :container-item="item"
             :path="path"
           />

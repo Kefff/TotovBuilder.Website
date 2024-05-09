@@ -1,9 +1,9 @@
 <template>
   <SelectedItemSummary
-    v-if="modelValue != null && selectedItem != null"
-    v-model="modelValue"
+    v-if="inventoryItem != null && selectedItem != null"
     :can-be-looted="canBeLooted"
-    :item-in-same-slot-in-preset="itemInSameSlotInPreset"
+    :inventory-item-in-same-slot-in-preset="inventoryItemInSameSlotInPreset"
+    :inventory-item="inventoryItem"
   >
     <AmmunitionSummary
       v-if="isAmmunition"

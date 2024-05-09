@@ -14,7 +14,7 @@ export default defineComponent({
       type: Object as PropType<IContainer>,
       required: true
     },
-    modelValue: {
+    inventoryItems: {
       type: Array as PropType<IInventoryItem[]>,
       required: true
     },
@@ -23,17 +23,17 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:inventory-items'],
   setup: (props, { emit }) => {
     const itemPropertiesService = Services.get(ItemPropertiesService)
     const globalFilterService = Services.get(GlobalFilterService)
 
     const editing = inject<Ref<boolean>>('editing')
 
-    const canAddItem = computed(() => !isMagazine.value || props.modelValue.length === 0)
-    const content = computed({
-      get: () => props.modelValue,
-      set: (value: IInventoryItem[]) => emit('update:modelValue', value)
+    const canAddItem = computed(() => !isMagazine.value || props.inventoryItems.length === 0)
+    const inventoryItemsInternal = computed({
+      get: () => props.inventoryItems,
+      set: (value: IInventoryItem[]) => emit('update:inventory-items', value)
     })
     const isMagazine = computed(() => itemPropertiesService.isMagazine(props.containerItem))
     const maximumQuantity = computed(() => isMagazine.value ? props.containerItem.capacity : undefined)
@@ -83,7 +83,7 @@ export default defineComponent({
      * Adds an item to the content of the inventory item and emits the change to the parent component.
      */
     function onItemAdded(newInventoryItem: IInventoryItem) {
-      content.value.push(newInventoryItem)
+      inventoryItemsInternal.value.push(newInventoryItem)
 
       nextTick(() => {
         // nextTick required in order to the emitting and the resetting of itemToAdd to work properly.
@@ -99,7 +99,7 @@ export default defineComponent({
      */
     function onItemChanged(updatedContainedInventoryItem: IInventoryItem, index: number) {
       if (updatedContainedInventoryItem == null) {
-        content.value.splice(index, 1)
+        inventoryItemsInternal.value.splice(index, 1)
       }
     }
 
@@ -114,9 +114,9 @@ export default defineComponent({
       acceptedItems,
       canAddItem,
       categoryId,
-      content,
       contentPathPrefix,
       editing,
+      inventoryItemsInternal,
       isMagazine,
       itemPathPrefix,
       itemToAdd,

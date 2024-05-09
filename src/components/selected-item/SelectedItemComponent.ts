@@ -1,15 +1,15 @@
 import { computed, defineComponent, PropType } from 'vue'
 import { IItem } from '../../models/item/IItem'
-import ItemIcon from '../item-icon/ItemIconComponent.vue'
-import Services from '../../services/repository/Services'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
+import ItemIcon from '../item-icon/ItemIconComponent.vue'
 
 export default defineComponent({
   components: {
     ItemIcon
   },
   props: {
-    modelValue: {
+    item: {
       type: Object as PropType<IItem | undefined>,
       required: false,
       default: undefined
@@ -18,15 +18,18 @@ export default defineComponent({
   setup: (props) => {
     const itemPropertiesService = Services.get(ItemPropertiesService)
 
-    const iconClass = computed(() => 'selected-item-icon' + (props.modelValue?.iconLink !== '' ? '' : ' selected-item-icon-border'))
+    const iconClass = computed(() => 'selected-item-icon' + (props.item?.iconLink !== '' ? '' : ' selected-item-icon-border'))
     const iconUrl = computed(() => {
-      if (props.modelValue != null && itemPropertiesService.isRangedWeapon(props.modelValue)) {
-        return props.modelValue.imageLink
+      if (props.item != null && itemPropertiesService.isRangedWeapon(props.item)) {
+        return props.item.imageLink
       }
 
-      return props.modelValue?.iconLink
+      return props.item?.iconLink
     })
 
-    return { iconClass, iconUrl }
+    return {
+      iconClass,
+      iconUrl
+    }
   }
 })

@@ -13,7 +13,7 @@ export default defineComponent({
       type: Object as PropType<IModdable>,
       required: true
     },
-    modelValue: {
+    inventoryModSlots: {
       type: Object as PropType<IInventoryModSlot[]>,
       required: true
     },
@@ -22,13 +22,13 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:inventory-mod-slots'],
   setup: (props, { emit }) => {
     const modSlotPathPrefix = PathUtils.modSlotPrefix
 
-    const inventoryModSlots = computed({
-      get: () => props.modelValue,
-      set: (value: IInventoryModSlot[]) => emit('update:modelValue', value)
+    const inventoryModSlotsInternal = computed({
+      get: () => props.inventoryModSlots,
+      set: (value: IInventoryModSlot[]) => emit('update:inventory-mod-slots', value)
     })
 
     const isInitializing = ref(true)
@@ -47,18 +47,18 @@ export default defineComponent({
 
       for (const modSlot of props.containerItem.modSlots) {
         newInventoryModSlots.push({
-          item: props.modelValue.find((ms) => ms.modSlotName === modSlot.name)?.item,
+          item: props.inventoryModSlots.find((ms) => ms.modSlotName === modSlot.name)?.item,
           modSlotName: modSlot.name
         })
       }
 
-      inventoryModSlots.value = newInventoryModSlots
+      inventoryModSlotsInternal.value = newInventoryModSlots
 
       isInitializing.value = false
     }
 
     return {
-      inventoryModSlots,
+      inventoryModSlotsInternal,
       isInitializing,
       modSlotPathPrefix
     }
