@@ -26,17 +26,19 @@ export default defineComponent({
   },
   emits: [
     'update:filter',
-    'update:sortingData'
+    'update:sorting-data'
   ],
   setup: (props, { emit }) => {
-    const updatableSortingData = computed({
-      get: () => props.sortingData,
-      set: (value: SortingData<IItem>) => emit('update:sortingData', value)
-    })
-    const filterInput = ref()
-    const filterDelay = 500 // Milliseconds passed without typing before emitting the filter update
     let filterLastEdit = new Date()
-    const updatableFilter = ref(props.filter)
+
+    const sortingDataInternal = computed({
+      get: () => props.sortingData,
+      set: (value: SortingData<IItem>) => emit('update:sorting-data', value)
+    })
+
+    const filterDelay = 500 // Milliseconds passed without typing before emitting the filter update
+    const filterInput = ref()
+    const filterInternal = ref(props.filter)
 
     /**
      * Emits to the parent component the filter to use to filter options.
@@ -56,7 +58,7 @@ export default defineComponent({
           reject()
         }
       }, filterDelay))
-        .then(() => emit('update:filter', updatableFilter.value))
+        .then(() => emit('update:filter', filterInternal.value))
         .catch(() => undefined)
     }
 
@@ -70,11 +72,11 @@ export default defineComponent({
 
     return {
       filterInput,
+      filterInternal,
+      ItemSortingFunctions,
       onFilterChange,
-      sortingFunctions: ItemSortingFunctions,
-      StringUtils,
-      updatableFilter,
-      updatableSortingData
+      sortingDataInternal,
+      StringUtils
     }
   }
 })

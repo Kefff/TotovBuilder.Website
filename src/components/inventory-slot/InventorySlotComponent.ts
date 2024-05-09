@@ -23,7 +23,7 @@ export default defineComponent({
     Item
   },
   props: {
-    modelValue: {
+    inventorySlot: {
       type: Object as PropType<IInventorySlot>,
       required: true
     },
@@ -37,7 +37,7 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['update:modelValue', 'update:collapsed'],
+  emits: ['update:inventory-slot', 'update:collapsed'],
   setup: (props, { emit }) => {
     const globalFilterService = Services.get(GlobalFilterService)
     const inventoryItemService = Services.get(InventoryItemService)
@@ -47,7 +47,7 @@ export default defineComponent({
 
     const editing = inject<Ref<boolean>>('editing')
 
-    const displayed = computed(() => editing?.value || props.modelValue.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
+    const displayed = computed(() => editing?.value || props.inventorySlot.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
     const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
     const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
     const hasSummaryErgonomicsModifierPercentage = computed(() => summary.value.wearableModifiers.ergonomicsModifierPercentage !== 0)
@@ -62,7 +62,7 @@ export default defineComponent({
       || hasSummaryTurningSpeedModifierPercentage.value
     )
     const hasSummaryWeight = computed(() => summary.value.weight !== 0)
-    const inventorySlotType = computed(() => Services.get(InventorySlotService).getType(props.modelValue.typeId))
+    const inventorySlotType = computed(() => Services.get(InventorySlotService).getType(props.inventorySlot.typeId))
 
     const acceptedItems = ref<IItem[]>([])
     const acceptedItemsCategoryId = ref<string | undefined>(undefined)
@@ -97,7 +97,7 @@ export default defineComponent({
       weight: 0
     })
 
-    watch(() => props.modelValue, async () => {
+    watch(() => props.inventorySlot, async () => {
       await initialize() // Initialization required for the case when we cancel changes
     })
 
@@ -117,14 +117,14 @@ export default defineComponent({
      * Gets the values of the summary of the content of the inventory slot.
      */
     async function getSummary() {
-      summary.value = await inventorySlotPropertiesService.getSummary(props.modelValue)
+      summary.value = await inventorySlotPropertiesService.getSummary(props.inventorySlot)
     }
 
     /**
      * Initializes the inventory slot.
      */
     async function initialize() {
-      items.value = [...props.modelValue.items]
+      items.value = [...props.inventorySlot.items]
 
       await setItemComponentParameters()
       await getSummary()
@@ -135,18 +135,18 @@ export default defineComponent({
      * @param index - Index of the changed item.
      */
     async function onItemChanged(index: number) {
-      const canSelect = await inventorySlotComponentService.checkCompatibility(props.modelValue.typeId, items.value[index], props.path + '_' + index)
+      const canSelect = await inventorySlotComponentService.checkCompatibility(props.inventorySlot.typeId, items.value[index], props.path + '_' + index)
 
       if (canSelect) {
         const updatedInventorySlot: IInventorySlot = {
           items: items.value,
-          typeId: props.modelValue.typeId
+          typeId: props.inventorySlot.typeId
         }
 
-        emit('update:modelValue', updatedInventorySlot)
+        emit('update:inventory-slot', updatedInventorySlot)
       } else {
         // Putting back the old item
-        items.value[index] = props.modelValue.items[index]
+        items.value[index] = props.inventorySlot.items[index]
       }
     }
 

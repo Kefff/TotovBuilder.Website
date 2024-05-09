@@ -2,7 +2,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.ergonomics"
         icon="hand-paper"
         property="ergonomicsModifierPercentage"
@@ -13,7 +13,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.movementSpeed"
         icon="walking"
         property="movementSpeedModifierPercentage"
@@ -24,7 +24,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.turningSpeed"
         icon="undo"
         property="turningSpeedModifierPercentage"

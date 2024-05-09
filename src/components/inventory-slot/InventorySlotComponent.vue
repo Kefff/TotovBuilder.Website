@@ -30,7 +30,7 @@
               :src="Images[StringUtils.toCamelCase(inventorySlotType.customIcon)]"
               class="inventory-slot-custom-icon"
             >
-            <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelValue.typeId)) }}</span>
+            <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(inventorySlot.typeId)) }}</span>
           </div>
           <div class="option-line">
             <div
@@ -145,7 +145,7 @@
         :accepted-items-category-id="acceptedItemsCategoryId"
         :can-be-looted="inventorySlotType.canBeLooted"
         :path="`${path}_${index}/${itemPathPrefix}${item?.itemId ?? 'empty'}`"
-        @update:model-value="onItemChanged(index)"
+        @update:inventory-item="onItemChanged(index)"
       />
     </Panel>
   </div>

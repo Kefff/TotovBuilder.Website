@@ -54,19 +54,19 @@ export default defineComponent({
   },
   emits: [
     'update:filter',
-    'update:sortingData'
+    'update:sorting-data'
   ],
   setup: (props, { emit }) => {
     const specializedComponent = ref<string>()
 
+    const sortingDataInternal = computed({
+      get: () => props.sortingData,
+      set: (value: SortingData<IItem>) => emit('update:sorting-data', value)
+    })
     const useLongestHeaderWidth = computed(() => props.categoryId == null)
     const updatableFilter = computed({
       get: () => props.filter,
       set: (value: string) => emit('update:filter', value)
-    })
-    const updatableSortingData = computed({
-      get: () => props.sortingData,
-      set: (value: SortingData<IItem>) => emit('update:sortingData', value)
     })
 
     watch(() => props.categoryId, () => selectSpecializeComponent())
@@ -132,7 +132,7 @@ export default defineComponent({
     return {
       specializedComponent,
       updatableFilter,
-      updatableSortingData,
+      sortingDataInternal,
       useLongestHeaderWidth
     }
   }

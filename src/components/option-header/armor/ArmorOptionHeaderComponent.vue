@@ -2,7 +2,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.armorClass"
         icon="award"
         property="armorClass"
@@ -13,7 +13,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.durability"
         icon="heart"
         property="durability"
@@ -22,7 +22,7 @@
     </div>
   </div>
   <WearableOptionHeader
-    v-model="sortingData"
+    v-model:sorting-data="sortingDataInternal"
     :sorting-functions-override="sortingFunctions"
   />
 </template>

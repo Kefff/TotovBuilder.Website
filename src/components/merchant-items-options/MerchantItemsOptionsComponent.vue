@@ -41,8 +41,8 @@
     </div>
     <div class="sidebar-option">
       <ItemFilterComponent
-        v-model="globalFilter"
-        @update:model-value="() => hasChanged = true"
+        v-model:global-filter="globalFilter"
+        @update:global-filter="() => hasChanged = true"
       />
     </div>
   </Sidebar>

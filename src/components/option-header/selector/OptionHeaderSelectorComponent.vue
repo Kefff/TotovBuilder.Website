@@ -1,13 +1,13 @@
 <template>
   <ItemOptionHeader
-    v-model:sortingData="updatableSortingData"
+    v-model:sortingData="sortingDataInternal"
     v-model:filter="updatableFilter"
     :use-longest-header-width="useLongestHeaderWidth"
   >
     <component
       :is="specializedComponent"
       v-if="specializedComponent != null"
-      v-model="updatableSortingData"
+      v-model="sortingDataInternal"
     />
   </ItemOptionHeader>
 </template>

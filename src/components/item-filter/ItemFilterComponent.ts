@@ -5,22 +5,22 @@ import StringUtils from '../../utils/StringUtils'
 
 export default defineComponent({
   props: {
-    modelValue: {
+    globalFilter: {
       type: Object as PropType<IGlobalFilter>,
       required: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:global-filter'],
   setup: (props, { emit }) => {
-    const itemExclusionFilters = reactive(props.modelValue.itemExclusionFilters)
+    const itemExclusionFilters = reactive(props.globalFilter.itemExclusionFilters)
 
     /**
      * Emits changes to the parent component.
      */
     function onFiltersChanged() {
-      emit('update:modelValue', {
+      emit('update:global-filter', {
         itemExclusionFilters,
-        merchantFilters: props.modelValue.merchantFilters
+        merchantFilters: props.globalFilter.merchantFilters
       } as IGlobalFilter)
     }
 

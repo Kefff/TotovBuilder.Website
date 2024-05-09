@@ -1,9 +1,9 @@
 import { computed, defineComponent, PropType } from 'vue'
-import SortingData from '../../../models/utils/SortingData'
-import WearableOptionHeader from '../wearable/WearableOptionHeaderComponent.vue'
-import ContainerOptionHeader from '../container/ContainerOptionHeaderComponent.vue'
 import { IBackpack } from '../../../models/item/IBackpack'
+import SortingData from '../../../models/utils/SortingData'
 import { BackpackSortingFunctions } from '../../../services/sorting/functions/BackpackSortingFunctions'
+import ContainerOptionHeader from '../container/ContainerOptionHeaderComponent.vue'
+import WearableOptionHeader from '../wearable/WearableOptionHeaderComponent.vue'
 
 export default defineComponent({
   components: {
@@ -11,21 +11,21 @@ export default defineComponent({
     WearableOptionHeader
   },
   props: {
-    modelValue: {
+    sortingData: {
       type: Object as PropType<SortingData<IBackpack>>,
       required: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:sorting-data'],
   setup: (props, { emit }) => {
-    const sortingData = computed({
-      get: () => props.modelValue,
-      set: (value: SortingData<IBackpack>) => emit('update:modelValue', value)
+    const sortingDataInternal = computed({
+      get: () => props.sortingData,
+      set: (value: SortingData<IBackpack>) => emit('update:sorting-data', value)
     })
 
     return {
-      sortingData,
-      sortingFunctions: BackpackSortingFunctions
+      sortingDataInternal,
+      BackpackSortingFunctions
     }
   }
 })

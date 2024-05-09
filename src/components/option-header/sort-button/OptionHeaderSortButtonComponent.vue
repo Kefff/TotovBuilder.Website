@@ -4,7 +4,7 @@
     class="options-header-sort-button"
     @click="sortBy(property)"
   >
-    <div :class="'options-header-sort-button-sort-arrow ' + sortingDirectionClass + ' ' + (modelValue.property === property ? 'options-header-sort-button-sort-arrow-visible' : '')">
+    <div :class="'options-header-sort-button-sort-arrow ' + sortingDirectionClass + ' ' + (sortingData.property === property ? 'options-header-sort-button-sort-arrow-visible' : '')">
       <font-awesome-icon icon="angle-down" />
     </div>
     <font-awesome-icon

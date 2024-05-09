@@ -1,11 +1,11 @@
 <template>
   <ContainerOptionHeader
-    v-model="sortingData"
-    :sorting-functions-override="sortingFunctions"
+    v-model:sorting-data="sortingDataInternal"
+    :sorting-functions-override="VestSortingFunctions"
   />
   <ArmorOptionHeader
-    v-model="sortingData"
-    :sorting-functions-override="sortingFunctions"
+    v-model:sorting-data="sortingDataInternal"
+    :sorting-functions-override="VestSortingFunctions"
   />
 </template>
 

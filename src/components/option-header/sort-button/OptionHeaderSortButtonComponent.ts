@@ -22,7 +22,7 @@ export default defineComponent({
       required: false,
       default: undefined
     },
-    modelValue: {
+    sortingData: {
       type: Object as PropType<SortingData<IItem>>,
       required: true
     },
@@ -35,10 +35,11 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:sorting-data'],
   setup: (props, { emit }) => {
-    const sortingDirectionClass = computed(() => props.modelValue.order === SortingOrder.asc ? 'options-header-sort-button-sort-arrow-down' : 'options-header-sort-button-sort-arrow-up')
     const sortingService = new SortingService(props.sortingFunctions)
+
+    const sortingDirectionClass = computed(() => props.sortingData.order === SortingOrder.asc ? 'options-header-sort-button-sort-arrow-down' : 'options-header-sort-button-sort-arrow-up')
 
     /**
      * Emits to the parent component the updated sorting data.
@@ -48,7 +49,7 @@ export default defineComponent({
       const sortingData = sortingService.setSortingProperty(property)
 
       if (sortingData != null) {
-        emit('update:modelValue', sortingData)
+        emit('update:sorting-data', sortingData)
       }
     }
 
