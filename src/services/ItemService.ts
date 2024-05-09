@@ -450,7 +450,7 @@ export class ItemService {
 
   /**
    * Updates items prices.
-   * @param prices - Prices fetching result.
+   * @param prices - Fetched prices.
    */
   private updateItemsPrices(prices: IPrice[]) {
     for (const item of this.items) {

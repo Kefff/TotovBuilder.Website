@@ -809,7 +809,7 @@ describe('getSummary()', () => {
       expect(summary.weight).toBe(expected)
     })
 
-    it('should fail if an item cannot be found', async () => {
+    it('should ignore the weight of items that cannot be found', async () => {
       // Arrange
       useItemServiceMock()
       usePresetServiceMock()

@@ -101,7 +101,7 @@ describe('setSortingProperty()', () => {
     expect(comparison).toBe(expectedComparisonResult)
   })
 
-  it('should fail when no comparison function is configured for the property', () => {
+  it('should return undefined when no comparison function is configured for the property', () => {
     // Arrange
     const sortService = new SortingService({})
 

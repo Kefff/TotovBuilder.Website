@@ -48,7 +48,7 @@ export default defineComponent({
 
       for (const price of props.item.prices) {
         // Creating a new instance because we need to calculate de valueInMainCurrency of the barter prices ignoring the merchant filter.
-        // If we directly use references to itemResult.value.prices, then we modify those prices for the whole application each time we pass here
+        // If we directly use references to props.item.prices, then we modify those prices for the whole application each time we pass here
         const priceToAdd = { ...price }
 
         if (priceToAdd.currencyName === 'barter') {

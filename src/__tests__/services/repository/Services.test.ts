@@ -67,7 +67,7 @@ describe('get', () => {
     expect(service).toBeInstanceOf(TestService1)
   })
 
-  it('should fail when the service not configured.', () => {
+  it('should throw when the service not configured.', () => {
     // Act
     const test = () => Services.get(TestService1)
 
@@ -88,7 +88,7 @@ describe('getByName', () => {
     expect(service).toBeInstanceOf(TestService1)
   })
 
-  it('should fail when the service is not configured', () => {
+  it('should throw when the service is not configured', () => {
     // Act
     const test = () => Services.getByName<TestService1>('TestService')
 

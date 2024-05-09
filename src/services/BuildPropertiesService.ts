@@ -291,7 +291,7 @@ ${sharableUrlResult}`
     const lastExported = build.lastExported ?? new Date(1900, 1, 1)
     const lastUpdated = build.lastUpdated ?? new Date(1900, 1, 1)
 
-    const result: IBuildSummary = {
+    const summary: IBuildSummary = {
       armorModifiers: {
         armorClass: 0,
         durability: 0
@@ -327,19 +327,19 @@ ${sharableUrlResult}`
     }
 
 
-    result.armorModifiers = this.getArmorModifiers(inventorySlotSummaries)
-    result.wearableModifiers = this.getWearableModifiers(inventorySlotSummaries)
+    summary.armorModifiers = this.getArmorModifiers(inventorySlotSummaries)
+    summary.wearableModifiers = this.getWearableModifiers(inventorySlotSummaries)
 
     const summaryErgonomics = this.getErgonomics(inventorySlotSummaries)
-    result.ergonomics = summaryErgonomics * (1 + result.wearableModifiers.ergonomicsModifierPercentage)
+    summary.ergonomics = summaryErgonomics * (1 + summary.wearableModifiers.ergonomicsModifierPercentage)
 
-    result.price = this.getPrice(inventorySlotSummaries)
-    result.recoil = this.getRecoil(inventorySlotSummaries)
-    result.weight = this.getWeight(inventorySlotSummaries)
+    summary.price = this.getPrice(inventorySlotSummaries)
+    summary.recoil = this.getRecoil(inventorySlotSummaries)
+    summary.weight = this.getWeight(inventorySlotSummaries)
 
-    result.shoppingList = await this.getShoppingList(build)
+    summary.shoppingList = await this.getShoppingList(build)
 
-    return result
+    return summary
   }
 
   /**

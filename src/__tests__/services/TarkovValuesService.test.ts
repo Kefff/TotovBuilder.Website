@@ -24,7 +24,7 @@ describe('initialize', () => {
     expect(service.values.chestHp).toBe(85)
   })
 
-  it('should return false and log exception when fetching fails', async () => {
+  it('should return false and log an exception when fetching fails', async () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
 

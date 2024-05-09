@@ -221,7 +221,7 @@ describe('executeBuildMigrations()', () => {
       '',
       'Error while updating build to version "1.6.0".'
     ]
-  ])('should fail when a migration fails', async (buildId: string, expected: string) => {
+  ])('should return false when a migration fails', async (buildId: string, expected: string) => {
     // Arrange
     useFetchServiceMock(ChangelogMock)
     useWebsiteConfigurationServiceMock()
@@ -477,7 +477,7 @@ describe('getChangelog()', () => {
     expect(changelog).toStrictEqual(expectedChangelogs)
   })
 
-  it('should return an empty list and notify when fail when fetching fails', async () => {
+  it('should return an empty list and notify when fetching fails', async () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
     Services.configure(BuildService)
