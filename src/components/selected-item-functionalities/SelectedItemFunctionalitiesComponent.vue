@@ -1,36 +1,32 @@
 <template>
   <div class="selected-item-functionalities">
-    <div>
-      <Button
-        v-if="canHaveContent"
-        v-tooltip.top="$t(selectedTabValue !== SelectableTab.content ? 'caption.showContent' : 'caption.hideContent')"
-        :class="'p-button-text p-button-sm' + (selectedTabValue !== SelectableTab.content ? ' button-discreet' : '')"
-        @click="setSelectedTab(SelectableTab.content)"
-      >
-        <font-awesome-icon icon="box-open" />
-      </Button>
-      <div
-        v-if="(contentCount ?? 0) > 0"
-        class="selected-item-functionalities-count-chip"
-      >
-        {{ contentCount }}
-      </div>
+    <Button
+      v-if="canHaveContent"
+      v-tooltip.top="$t(selectedTabValue !== SelectableTab.content ? 'caption.showContent' : 'caption.hideContent')"
+      :class="'p-button-text p-button-sm' + (selectedTabValue !== SelectableTab.content ? ' button-discreet' : '')"
+      @click="setSelectedTab(SelectableTab.content)"
+    >
+      <font-awesome-icon icon="box-open" />
+    </Button>
+    <div
+      v-if="(contentCount ?? 0) > 0"
+      class="selected-item-functionalities-count-chip"
+    >
+      {{ contentCount }}
     </div>
-    <div>
-      <Button
-        v-if="canHaveMods"
-        v-tooltip.top="$t(selectedTabValue !== SelectableTab.mods ? 'caption.showMods' : 'caption.hideMods')"
-        :class="'p-button-text p-button-sm' + (selectedTabValue !== SelectableTab.mods ? ' button-discreet' : '')"
-        @click="setSelectedTab(SelectableTab.mods)"
-      >
-        <font-awesome-icon icon="puzzle-piece" />
-      </Button>
-      <div
-        v-if="(modsCount ?? 0) > 0"
-        class="selected-item-functionalities-count-chip"
-      >
-        {{ modsCount }}
-      </div>
+    <Button
+      v-if="canHaveMods"
+      v-tooltip.top="$t(selectedTabValue !== SelectableTab.mods ? 'caption.showMods' : 'caption.hideMods')"
+      :class="'p-button-text p-button-sm' + (selectedTabValue !== SelectableTab.mods ? ' button-discreet' : '')"
+      @click="setSelectedTab(SelectableTab.mods)"
+    >
+      <font-awesome-icon icon="puzzle-piece" />
+    </Button>
+    <div
+      v-if="(modsCount ?? 0) > 0"
+      class="selected-item-functionalities-count-chip"
+    >
+      {{ modsCount }}
     </div>
     <Button
       v-tooltip.top="$t('caption.showStatistics')"

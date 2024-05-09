@@ -10,7 +10,7 @@ import { PathUtils } from '../../utils/PathUtils'
 
 export default defineComponent({
   props: {
-    modelValue: {
+    inventoryModSlot: {
       type: Object as PropType<IInventoryModSlot>,
       required: true
     },
@@ -23,7 +23,7 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:inventory-mod-slot'],
   setup: (props) => {
     const globalFilterService = Services.get(GlobalFilterService)
     const modSlotComponentService = Services.get(ModSlotComponentService)

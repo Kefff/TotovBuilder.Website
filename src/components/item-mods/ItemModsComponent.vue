@@ -6,9 +6,9 @@
     >
       <ModSlot
         v-if="containerItem.modSlots[index] != null"
-        v-model="inventoryModSlotsInternal[index]"
-        :path="path + '/' + modSlotPathPrefix + modSlot.modSlotName"
+        v-model:inventory-mod-slot="inventoryModSlotsInternal[index]"
         :mod-slot="containerItem.modSlots[index]"
+        :path="path + '/' + modSlotPathPrefix + modSlot.modSlotName"
       />
     </div>
   </div>

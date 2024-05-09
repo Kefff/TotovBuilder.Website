@@ -1,5 +1,5 @@
 <template>
-  <div class="indent">
+  <div class="item-content-indent">
     <Item
       v-for="(containedItem, index) of inventoryItemsInternal"
       :key="`${path}/${index}_${inventoryItemsInternal.length}`"
