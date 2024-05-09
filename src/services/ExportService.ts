@@ -41,7 +41,7 @@ export class ExportService {
 
     for (const build of builds) {
       build.lastExported = new Date()
-      await buildService.update(build.id, build)
+      await buildService.update(build)
     }
 
     Services.get(NotificationService).notify(NotificationType.success, vueI18n.t('message.buildsExported'))

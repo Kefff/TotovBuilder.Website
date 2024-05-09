@@ -102,11 +102,11 @@ export function compareByName(item1: IItem, item2: IItem): number {
 * @param item2ValueToCompare - Number value obtained from the first item used to compare.
 * @returns Comparison value.
 */
-export function compareByNumber(item1: IItem, item1ValueToCompare: number, item2: IItem, item2ValueToCompare: number): number {
+export function compareByNumber(item1: IItem, item1ValueToCompare: string | number, item2: IItem, item2ValueToCompare: string | number): number {
   let comparisonValue = compareByCategory(item1, item2)
 
   if (comparisonValue === 0) {
-    comparisonValue = item1ValueToCompare - item2ValueToCompare
+    comparisonValue = (item1ValueToCompare as number ?? 0) - (item2ValueToCompare as number ?? 0)
   }
 
   if (comparisonValue === 0) {
