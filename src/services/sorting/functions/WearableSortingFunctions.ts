@@ -10,14 +10,14 @@ export const WearableSortingFunctions: ISortingFunctionList<IWearable> = {
   ...ItemSortingFunctions,
   ergonomicsModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.ergonomicsModifierPercentage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.ergonomicsModifierPercentage)
   },
   movementSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.movementSpeedModifierPercentage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.movementSpeedModifierPercentage)
   },
   turningSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.turningSpeedModifierPercentage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.turningSpeedModifierPercentage)
   }
 }

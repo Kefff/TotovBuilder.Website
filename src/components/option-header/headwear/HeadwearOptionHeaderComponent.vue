@@ -1,16 +1,16 @@
 <template>
   <ArmorOptionHeader
-    v-model="sortingData"
-    :sorting-functions-override="sortingFunctions"
+    v-model:sorting-data="sortingDataInternal"
+    :sorting-functions-override="sortingDataInternal"
   />
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.ricochetChance"
         custom-icon="ricochet"
         property="ricochetChance"
-        :sorting-functions="sortingFunctions"
+        :sorting-functions="sortingDataInternal"
       />
     </div>
   </div>

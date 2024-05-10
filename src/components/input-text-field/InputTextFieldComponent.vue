@@ -2,7 +2,7 @@
   <div :class="'p-field field input-text-field required-message-' + requiredMessagePosition">
     <label v-if="!captionAsPlaceholder">{{ caption }}</label>
     <InputText
-      v-model="value"
+      v-model="valueInternal"
       :class="invalid ? 'p-invalid' : ''"
       :disabled="readOnly"
       :placeholder="captionAsPlaceholder ? caption : undefined"

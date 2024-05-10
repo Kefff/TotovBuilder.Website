@@ -1354,7 +1354,7 @@ describe('getSummary()', () => {
       }
     )
 
-    it('should ignore inventory slots with an invalid type', async () => {
+    it('should throw when an inventory slots has an invalid type', async () => {
       // Arrange
       useItemServiceMock()
       usePresetServiceMock()
@@ -1369,7 +1369,7 @@ describe('getSummary()', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const summary = await service.getSummary({
+      const act = () => service.getSummary({
         name: 'Build',
         id: 'build',
         inventorySlots: [
@@ -1396,32 +1396,7 @@ describe('getSummary()', () => {
       })
 
       // Assert
-      expect(summary.shoppingList).toStrictEqual([
-        {
-          item: berkut,
-          price: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: berkut.id,
-            merchant: 'ragman',
-            merchantLevel: 2,
-            quest: undefined,
-            value: 24509,
-            valueInMainCurrency: 24509
-          },
-          quantity: 1,
-          unitPrice: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: berkut.id,
-            merchant: 'ragman',
-            merchantLevel: 2,
-            quest: undefined,
-            value: 24509,
-            valueInMainCurrency: 24509
-          }
-        }
-      ] as IShoppingListItem[])
+      await expect(act).rejects.toThrowError('Inventory slot type "invalid" not found.')
     })
   })
 
@@ -1433,7 +1408,7 @@ describe('getSummary()', () => {
       ],
       [
         build2,
-        8.936000000000002
+        8.936
       ],
       [
         {

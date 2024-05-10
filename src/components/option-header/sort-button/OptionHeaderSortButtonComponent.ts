@@ -1,10 +1,10 @@
 import { computed, defineComponent, PropType } from 'vue'
-import { SortingService } from '../../../services/sorting/SortingService'
-import SortingData, { SortingOrder } from '../../../models/utils/SortingData'
-import StringUtils from '../../../utils/StringUtils'
-import { IItem } from '../../../models/item/IItem'
-import { ISortingFunctionList } from '../../../services/sorting/functions/ISortingFunctionList'
 import Images from '../../../images'
+import { IItem } from '../../../models/item/IItem'
+import SortingData, { SortingOrder } from '../../../models/utils/SortingData'
+import { ISortingFunctionList } from '../../../services/sorting/functions/ISortingFunctionList'
+import { SortingService } from '../../../services/sorting/SortingService'
+import StringUtils from '../../../utils/StringUtils'
 
 export default defineComponent({
   props: {
@@ -22,7 +22,7 @@ export default defineComponent({
       required: false,
       default: undefined
     },
-    modelValue: {
+    sortingData: {
       type: Object as PropType<SortingData<IItem>>,
       required: true
     },
@@ -35,20 +35,21 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:sorting-data'],
   setup: (props, { emit }) => {
-    const sortingDirectionClass = computed(() => props.modelValue.order === SortingOrder.asc ? 'options-header-sort-button-sort-arrow-down' : 'options-header-sort-button-sort-arrow-up')
     const sortingService = new SortingService(props.sortingFunctions)
+
+    const sortingDirectionClass = computed(() => props.sortingData.order === SortingOrder.asc ? 'options-header-sort-button-sort-arrow-down' : 'options-header-sort-button-sort-arrow-up')
 
     /**
      * Emits to the parent component the updated sorting data.
      * @param property - Property.
      */
     function sortBy(property: string) {
-      const sortingDataResult = sortingService.setSortingProperty(property)
+      const sortingData = sortingService.setSortingProperty(property)
 
-      if (sortingDataResult.success) {
-        emit('update:modelValue', sortingDataResult.value)
+      if (sortingData != null) {
+        emit('update:sorting-data', sortingData)
       }
     }
 

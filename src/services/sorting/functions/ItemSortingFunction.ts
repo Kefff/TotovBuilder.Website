@@ -10,15 +10,15 @@ import { ISortingFunctionList } from './ISortingFunctionList'
 export const ItemSortingFunctions: ISortingFunctionList<IItem> = {
   categoryId: {
     comparisonFunction: (item1: IItem, item1Value: string | number, item2: IItem) => compareByCategory(item1, item2),
-    comparisonValueObtentionFunction: async () => ''
+    comparisonValueObtentionFunction: () => Promise.resolve('')
   },
   name: {
     comparisonFunction: compareByString,
-    comparisonValueObtentionFunction: async (item: IItem) => item.name
+    comparisonValueObtentionFunction: i => Promise.resolve(i.name)
   },
   price: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => await getPrice(i)
+    comparisonValueObtentionFunction: async i => await getPrice(i)
   }
 }
 
@@ -29,7 +29,7 @@ export const ItemSortingFunctions: ISortingFunctionList<IItem> = {
  */
 async function getPrice(item: IItem): Promise<number> {
   const inventoryItemService = Services.get(InventoryItemService)
-  const priceResult = await inventoryItemService.getPrice({
+  const price = await inventoryItemService.getPrice({
     content: [],
     ignorePrice: false,
     itemId: item.id,
@@ -37,5 +37,5 @@ async function getPrice(item: IItem): Promise<number> {
     quantity: 1
   })
 
-  return priceResult.success ? priceResult.value.unitPrice.valueInMainCurrency : 0
+  return price.unitPrice.valueInMainCurrency
 }

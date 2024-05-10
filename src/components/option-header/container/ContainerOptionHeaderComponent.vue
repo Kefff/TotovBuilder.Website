@@ -2,7 +2,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.capacity"
         icon="box-open"
         property="capacity"

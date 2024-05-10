@@ -1,7 +1,7 @@
+import { describe, expect, it } from 'vitest'
 import { IMeleeWeapon } from '../../../../models/item/IMeleeWeapon'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { MeleeWeaponSortingFunctions } from '../../../../services/sorting/functions/MeleeWeaponSortingFunctions'
-import { describe, expect, it } from 'vitest'
 
 describe('comparisonFunction()', () => {
   it.each([
@@ -25,10 +25,10 @@ describe('comparisonFunction()', () => {
     } as IMeleeWeapon
 
     const sortingService = new SortingService(MeleeWeaponSortingFunctions)
-    const updatedSortingDataResult = sortingService.setSortingProperty(property)
+    const updatedSortingData = sortingService.setSortingProperty(property)
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2], updatedSortingDataResult.value)
+    const sortedItems = await SortingService.sort([item1, item2], updatedSortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item1])

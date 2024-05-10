@@ -1,29 +1,29 @@
 import { computed, defineComponent, PropType } from 'vue'
-import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
+import { IMeleeWeapon } from '../../../models/item/IMeleeWeapon'
 import SortingData from '../../../models/utils/SortingData'
 import { MeleeWeaponSortingFunctions } from '../../../services/sorting/functions/MeleeWeaponSortingFunctions'
-import { IMeleeWeapon } from '../../../models/item/IMeleeWeapon'
+import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
 
 export default defineComponent({
   components: {
     OptionHeaderSortButton
   },
   props: {
-    modelValue: {
+    sortingData: {
       type: Object as PropType<SortingData<IMeleeWeapon>>,
       required: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:sorting-data'],
   setup: (props, { emit }) => {
-    const sortingData = computed({
-      get: () => props.modelValue,
-      set: (value: SortingData<IMeleeWeapon>) => emit('update:modelValue', value)
+    const sortingDataInternal = computed({
+      get: () => props.sortingData,
+      set: (value: SortingData<IMeleeWeapon>) => emit('update:sorting-data', value)
     })
 
     return {
-      sortingData,
-      sortingFunctions: MeleeWeaponSortingFunctions
+      sortingDataInternal,
+      MeleeWeaponSortingFunctions
     }
   }
 })

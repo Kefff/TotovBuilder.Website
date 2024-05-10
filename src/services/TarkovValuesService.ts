@@ -1,10 +1,9 @@
-import Services from './repository/Services'
-import { FetchService } from './FetchService'
 import { ITarkovValues } from '../models/configuration/ITarkovValues'
-import { WebsiteConfigurationService } from './WebsiteConfigurationService'
-import Result, { FailureType } from '../utils/Result'
 import vueI18n from '../plugins/vueI18n'
+import { FetchService } from './FetchService'
 import { LogService } from './LogService'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for getting values related to Tarkov gameplay.
@@ -13,46 +12,56 @@ export class TarkovValuesService {
   /**
    * Values related to Tarkov gameplay.
    */
-  public values: ITarkovValues = {
-    armorPenetrationEfficiencies: [],
-    chestHp: 0,
-    currencies: [],
-    heavyEncumbermentWeight: 0,
-    lightEncumbermentWeight: 0,
-    merchants: [],
-    ricochetChances: []
+  public get values(): ITarkovValues {
+    if (this._values == null) {
+      // This should never happen, data should have been loaded or a error message should have been displayed
+      throw new Error(vueI18n.t('message.tarkovValuesNotFetched'))
+    }
+
+    return this._values
   }
+  private _values: ITarkovValues | undefined
 
   /**
    * Initializes the data used by the service.
    */
   public async initialize(): Promise<boolean> {
-    const tarkovValuesResult = await this.fetchTarkovValues()
+    const fetchedValues = await this.fetchTarkovValues()
 
-    if (tarkovValuesResult.success) {
-      this.values = tarkovValuesResult.value
-
-      return true
-    } else {
+    if (fetchedValues == undefined) {
       return false
     }
+
+    this._values = fetchedValues
+
+    return true
   }
 
   /**
    * Fetches the Tarkov values.
    * @returns Tarkov values.
    */
-  private async fetchTarkovValues(): Promise<Result<ITarkovValues>> {
+  private async fetchTarkovValues(): Promise<ITarkovValues | undefined> {
+    const isDebug = import.meta.env.VITE_DEBUG === 'true'
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointTarkovValues
-    const tarkovValuesResult = await fetchService.get<ITarkovValues>(endpoint)
 
-    if (!tarkovValuesResult.success) {
-      return Result.fail(FailureType.error, 'TarkovValuesService.fetchTarkovValues()', vueI18n.t('message.tarkovValuesNotFetched'))
+    if (isDebug) {
+      Services.get(LogService).logInformation('message.fetchingTarkovValues', { date: new Date().toISOString() })
     }
 
-    Services.get(LogService).logInformation('message.tarkovValuesFetched')
+    const tarkovValues = await fetchService.get<ITarkovValues>(endpoint)
 
-    return tarkovValuesResult
+    if (tarkovValues == null) {
+      Services.get(LogService).logException('message.tarkovValuesNotFetched')
+
+      return undefined
+    }
+
+    if (isDebug) {
+      Services.get(LogService).logInformation('message.tarkovValuesFetched', { date: new Date().toISOString() })
+    }
+
+    return tarkovValues
   }
 }

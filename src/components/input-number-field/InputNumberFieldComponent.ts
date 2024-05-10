@@ -23,11 +23,6 @@ export default defineComponent({
       required: false,
       default: 0
     },
-    modelValue: {
-      type: Number,
-      required: false,
-      default: undefined
-    },
     readOnly: {
       type: Boolean,
       required: false,
@@ -43,17 +38,26 @@ export default defineComponent({
       required: false,
       default: 'bottom',
       validator: (value: string) => value === 'bottom' || value === 'right'
+    },
+    value: {
+      type: Number,
+      required: false,
+      default: undefined
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:value'],
   setup: (props, { emit }) => {
-    const value = computed({
-      get: () => props.modelValue,
-      set: (value: number | undefined) => emit('update:modelValue', value ?? undefined)
+    const valueInternal = computed({
+      get: () => props.value,
+      set: (value: number | undefined) => emit('update:value', value ?? undefined)
     })
     const captionAsPlaceholder = computed(() => props.captionMode === 'placeholder')
-    const invalid = computed(() => props.required && value.value == null)
+    const invalid = computed(() => props.required && valueInternal.value == null)
 
-    return { captionAsPlaceholder, invalid, value }
+    return {
+      captionAsPlaceholder,
+      invalid,
+      valueInternal
+    }
   }
 })

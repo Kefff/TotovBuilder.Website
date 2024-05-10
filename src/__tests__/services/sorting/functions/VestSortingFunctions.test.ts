@@ -28,10 +28,10 @@ describe('comparisonFunction()', () => {
     } as IVest
 
     const sortingService = new SortingService(VestSortingFunctions)
-    const updatedSortingDataResult = sortingService.setSortingProperty(property)
+    const updatedSortingData = sortingService.setSortingProperty(property)
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2], updatedSortingDataResult.value)
+    const sortedItems = await SortingService.sort([item1, item2], updatedSortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item1])

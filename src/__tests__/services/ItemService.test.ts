@@ -2,19 +2,17 @@ import MockDate from 'mockdate'
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import ItemCategoryMocks from '../../../public/data/item-categories.json'
-import { IItem } from '../../models/item/IItem'
-import { IPrice } from '../../models/item/IPrice'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { ItemFetcherService } from '../../services/ItemFetcherService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ItemService } from '../../services/ItemService'
-import { NotificationService } from '../../services/NotificationService'
+import { LogService } from '../../services/LogService'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { PresetService } from '../../services/PresetService'
 import { TarkovValuesService } from '../../services/TarkovValuesService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
-import Result, { FailureType } from '../../utils/Result'
 import { ItemMocks, ak12PistolGrip, ak12bt, alpha, armbandBlue, m9a3, mts25512Default, nf30mm, opSksDefault, pso1, rpk16Default, scavVest } from '../__data__/itemMocks'
 import { PresetMocks } from '../__data__/presetMocks'
 import { PriceMocks, nf30mmPrices, pso1Prices, rpk16DefaultPrices } from '../__data__/priceMocks'
@@ -37,16 +35,21 @@ describe('constructor', () => {
     const itemService = new ItemService()
     Services.configure(ItemService, undefined, itemService) // Registering the tested service because the GlobalFilterService uses it
 
-    const globalFilterService = Services.get(GlobalFilterService)
-    globalFilterService.saveMerchantFilters([{
-      enabled: true,
-      merchant: 'prapor',
-      merchantLevel: 4
-    }])
-
     // Act / Assert
-    let itemResult = await itemService.getItem(ak12bt.id, true)
-    expect(itemResult.success).toBe(true)
+    await itemService.initialize()
+
+    const globalFilterService = Services.get(GlobalFilterService)
+    globalFilterService.saveMerchantFilters([
+      {
+        enabled: true,
+        merchant: 'prapor',
+        merchantLevel: 4
+      }
+    ])
+
+    let items = await itemService.getItems([ak12bt.id], true)
+    expect(items.length).toBe(1)
+    expect(items[0]).toStrictEqual(ak12bt)
 
     globalFilterService.saveMerchantFilters([{
       enabled: false,
@@ -54,57 +57,8 @@ describe('constructor', () => {
       merchantLevel: 4
     }])
 
-    itemResult = await itemService.getItem(ak12bt.id, true)
-    expect(itemResult.success).toBe(false)
-  })
-})
-
-describe('fetchItemCategories()', () => {
-  it('should not update item categories when fetching fails', async () => {
-    // Arrange
-    useGlobalFilterServiceMock()
-    usePresetServiceMock()
-    useTarkovValuesServiceMock()
-    useWebsiteConfigurationServiceMock()
-
-    const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(Result.fail(FailureType.error, undefined, 'Fetch error'))
-    when(itemFetcherServiceMock.fetchItems()).thenResolve(Result.ok(ItemMocks as IItem[]))
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok(PresetMocks))
-    when(itemFetcherServiceMock.fetchPrices()).thenResolve(Result.ok(PriceMocks as IPrice[]))
-    Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
-
-    // Act
-    const itemService = new ItemService()
-    const itemCategories = await itemService.getItemCategories()
-
-    // Assert
-    expect(itemCategories).toStrictEqual([])
-  })
-})
-
-describe('fetchItems()', () => {
-  it('should not update items when fetching fails', async () => {
-    // Arrange
-    useGlobalFilterServiceMock()
-    usePresetServiceMock()
-    useTarkovValuesServiceMock()
-    useWebsiteConfigurationServiceMock()
-
-    const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(Result.ok(ItemCategoryMocks))
-    when(itemFetcherServiceMock.fetchItems()).thenResolve(Result.fail(FailureType.error, undefined, 'Fetch error'))
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.ok(PresetMocks))
-    when(itemFetcherServiceMock.fetchPrices()).thenResolve(Result.ok(PriceMocks as IPrice[]))
-    Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
-
-    // Act
-    const itemService = new ItemService()
-    const itemResult = await itemService.getItem('624c0b3340357b5f566e8766')
-
-    // Assert
-    expect(itemResult.success).toBe(false)
-    expect(itemResult.failureMessage).toBe('Item "624c0b3340357b5f566e8766" not found.')
+    items = await itemService.getItems([ak12bt.id], true)
+    expect(items.length).toBe(0)
   })
 })
 
@@ -113,32 +67,31 @@ describe('getCurrency()', () => {
     ['RUB'],
     ['USD'],
     ['EUR']
-  ])('should get a currency', async (currencyName: string) => {
+  ])('should get a currency', (currencyName: string) => {
     // Arrange
     useGlobalFilterServiceMock()
     useTarkovValuesServiceMock()
     const itemService = new ItemService()
 
     // Act
-    const currencyResult = await itemService.getCurrency(currencyName)
+    const currency = itemService.getCurrency(currencyName)
 
     // Assert
-    expect(currencyResult.success).toBe(true)
-    expect(currencyResult.value.name).toBe(currencyName)
+    expect(currency.name).toBe(currencyName)
   })
 
-  it('should fail when the currency is not found', async () => {
+  it('should throw when the currency is not found', () => {
     // Arrange
     useGlobalFilterServiceMock()
     useTarkovValuesServiceMock()
+
     const itemService = new ItemService()
 
     // Act
-    const currencyResult = await itemService.getCurrency('invalid')
+    const act = () => itemService.getCurrency('invalid')
 
     // Assert
-    expect(currencyResult.success).toBe(false)
-    expect(currencyResult.failureMessage).toBe('Currency "invalid" not found')
+    expect(act).toThrowError('Currency "invalid" not found')
   })
 })
 
@@ -154,17 +107,67 @@ describe('getItem()', () => {
     const itemService = new ItemService()
 
     // Act
-    const itemResult = await itemService.getItem(rpk16Default.id)
+    const item = await itemService.getItem(rpk16Default.id)
 
     // Assert
-    expect(itemResult.success).toBe(true)
-    expect(itemResult.value).toStrictEqual({
+    expect(item).toStrictEqual({
       ...rpk16Default,
       prices: rpk16DefaultPrices
     })
   })
 
-  it('should fail when getting an item that does not exist', async () => {
+  it('should return the not found item and log an error when getting an item that does not exist', async () => {
+    // Arrange
+    useGlobalFilterServiceMock()
+    useItemFetcherServiceMock()
+    usePresetServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
+
+    const itemService = new ItemService()
+
+    // Act
+    const item = await itemService.getItem('invalid')
+
+    // Assert
+    const expected = ItemService.getNotFoundItem('invalid')
+
+    expect(item).toStrictEqual(expected)
+    verify(logServiceMock.logError('message.itemsNotFound', anything()))
+  })
+
+  it('should throw when accessing items after fetching failed', async () => {
+    // Arrange
+    useGlobalFilterServiceMock()
+    usePresetServiceMock()
+    useWebsiteConfigurationServiceMock()
+
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
+
+
+    const itemFetcherServiceMock = mock<ItemFetcherService>()
+    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(ItemCategoryMocks)
+    when(itemFetcherServiceMock.fetchItems()).thenResolve(undefined)
+    when(itemFetcherServiceMock.fetchPrices()).thenResolve(PriceMocks)
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve(undefined)
+    Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
+
+    const itemService = new ItemService()
+
+    // Act
+    const act = () => itemService.getItem(rpk16Default.id)
+
+    // Assert
+    await expect(act).rejects.toThrowError('No item could be fetched.')
+  })
+})
+
+describe('getItemCategories()', () => {
+  it('should get item categories', async () => {
     // Arrange
     useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
@@ -175,36 +178,33 @@ describe('getItem()', () => {
     const itemService = new ItemService()
 
     // Act
-    const itemResult = await itemService.getItem('invalid')
+    const itemCategories = await itemService.getItemCategories()
 
     // Assert
-    expect(itemResult.success).toBe(false)
-    expect(itemResult.failureMessage).toBe('Item "invalid" not found.')
+    expect(itemCategories).toStrictEqual(ItemCategoryMocks)
   })
 
-  it('should fail when fetching fails', async () => {
+  it('should throw when accessing item categories after fetching failed', async () => {
     // Arrange
     useGlobalFilterServiceMock()
     usePresetServiceMock()
+    useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
-    Services.configure(NotificationService)
-
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(Result.fail(FailureType.error))
-    when(itemFetcherServiceMock.fetchItems()).thenResolve(Result.fail(FailureType.error))
-    when(itemFetcherServiceMock.fetchPrices()).thenResolve(Result.fail(FailureType.error))
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.fail(FailureType.error))
+    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(undefined)
+    when(itemFetcherServiceMock.fetchItems()).thenResolve(ItemMocks)
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve(PresetMocks)
+    when(itemFetcherServiceMock.fetchPrices()).thenResolve(PriceMocks)
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     const itemService = new ItemService()
 
     // Act
-    const itemResult = await itemService.getItem(rpk16Default.id)
+    const act = () => itemService.getItemCategories()
 
     // Assert
-    expect(itemResult.success).toBe(false)
-    expect(itemResult.failureMessage).toBe(`Item "${rpk16Default.id}" not found.`)
+    await expect(act).rejects.toThrowError('No item category could be fetched.')
   })
 })
 
@@ -220,11 +220,10 @@ describe('getItems()', () => {
     const itemService = new ItemService()
 
     // Act
-    const itemsResult = await itemService.getItems([rpk16Default.id, nf30mm.id])
+    const items = await itemService.getItems([rpk16Default.id, nf30mm.id], false)
 
     // Assert
-    expect(itemsResult.success).toBe(true)
-    expect(itemsResult.value).toStrictEqual(
+    expect(items).toStrictEqual(
       [
         {
           ...rpk16Default,
@@ -250,6 +249,9 @@ describe('getItems()', () => {
     const itemService = new ItemService()
     Services.configure(ItemService, undefined, itemService) // Registering the tested service because the GlobalFilterService uses it
 
+    // Act
+    await itemService.initialize()
+
     const globalFitlerService = Services.get(GlobalFilterService)
     globalFitlerService.saveMerchantFilters([
       {
@@ -264,17 +266,15 @@ describe('getItems()', () => {
       }
     ])
 
-    // Act
-    const itemsResult = await itemService.getItems([
-      pso1.id, // Praport 1
+    const items = await itemService.getItems([
+      pso1.id, // Prapor 1
       nf30mm.id, // Jaeger 3 (excluded)
-      ak12PistolGrip.id, //Prapor 2 (excluded)
+      ak12PistolGrip.id, // Prapor 2 (excluded)
       m9a3.id // Peacekeeper 1 (excluded because is preset base item)
     ], true)
 
     // Assert
-    expect(itemsResult.success).toBe(true)
-    expect(itemsResult.value).toStrictEqual([
+    expect(items).toStrictEqual([
       {
         ...pso1,
         prices: pso1Prices
@@ -282,7 +282,7 @@ describe('getItems()', () => {
     ])
   })
 
-  it('should fail when and item is not found and the global filter is not used', async () => {
+  it('should return the not found item and log an error when an item is not found and the global filter is not used', async () => {
     // Arrange
     useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
@@ -290,58 +290,46 @@ describe('getItems()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
+
     const itemService = new ItemService()
 
     // Act
-    const itemsResult = await itemService.getItems(['invalid1', nf30mm.id, 'invalid2'], false)
+    const items = await itemService.getItems(['invalid1', nf30mm.id, 'invalid2'], false)
 
     // Assert
-    expect(itemsResult.success).toBe(false)
-    expect(itemsResult.failureMessage).toBe('Items "invalid1", "invalid2" not found.')
+    const expected1 = ItemService.getNotFoundItem('invalid1')
+    const expected2 = ItemService.getNotFoundItem('invalid2')
+
+    expect(items).toStrictEqual([nf30mm, expected1, expected2])
+    verify(logServiceMock.logError('message.itemsNotFound', anything()))
   })
 
-  it('should fail when fetching fails', async () => {
+  it('should throw when accessing items after fetching failed', async () => {
     // Arrange
     useGlobalFilterServiceMock()
     usePresetServiceMock()
     useWebsiteConfigurationServiceMock()
-
     Services.configure(NotificationService)
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(Result.fail(FailureType.error))
-    when(itemFetcherServiceMock.fetchItems()).thenResolve(Result.fail(FailureType.error))
-    when(itemFetcherServiceMock.fetchPrices()).thenResolve(Result.fail(FailureType.error))
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(Result.fail(FailureType.error))
+    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(ItemCategoryMocks)
+    when(itemFetcherServiceMock.fetchItems()).thenResolve(undefined)
+    when(itemFetcherServiceMock.fetchPrices()).thenResolve(PriceMocks)
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve(undefined)
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
-    const itemService = new ItemService()
-
-    // Act
-    const itemsResult = await itemService.getItems([rpk16Default.id, nf30mm.id])
-
-    // Assert
-    expect(itemsResult.success).toBe(false)
-    expect(itemsResult.failureMessage).toBe(`Items "${rpk16Default.id}", "${nf30mm.id}" not found.`)
-  })
-})
-
-describe('getItemCategories()', () => {
-  it('should get item categories', async () => {
-    // Arrange
-    useGlobalFilterServiceMock()
-    useItemFetcherServiceMock()
-    usePresetServiceMock()
-    useTarkovValuesServiceMock()
-    useWebsiteConfigurationServiceMock()
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
 
     const itemService = new ItemService()
 
     // Act
-    const itemCategories = await itemService.getItemCategories()
+    const act = () => itemService.getItems([rpk16Default.id], false)
 
     // Assert
-    expect(itemCategories).toStrictEqual(ItemCategoryMocks)
+    await expect(act).rejects.toThrowError('No item could be fetched.')
   })
 })
 
@@ -357,11 +345,10 @@ describe('getItemsOfCategories()', () => {
     const itemService = new ItemService()
 
     // Act
-    const itemResult = await itemService.getItemsOfCategories(['armband', 'securedContainer'])
+    const items = await itemService.getItemsOfCategories(['armband', 'securedContainer'])
 
     // Assert
-    expect(itemResult.success).toBe(true)
-    expect(itemResult.value.map((i) => i.id).sort()).toStrictEqual([
+    expect(items.map((i) => i.id).sort()).toStrictEqual([
       alpha.id,
       armbandBlue.id
     ])
@@ -379,6 +366,9 @@ describe('getItemsOfCategories()', () => {
     const itemService = new ItemService()
     Services.configure(ItemService, undefined, itemService) // Registering the tested service because the GlobalFilterService uses it
 
+    // Act
+    await itemService.initialize()
+
     const globalFitlerService = Services.get(GlobalFilterService)
     globalFitlerService.saveMerchantFilters([
       {
@@ -388,19 +378,17 @@ describe('getItemsOfCategories()', () => {
       }
     ])
 
-    // Act
-    const itemResult = await itemService.getItemsOfCategories(['mainWeapon', 'secondaryWeapon', 'vest'], true)
+    const items = await itemService.getItemsOfCategories(['mainWeapon', 'secondaryWeapon', 'vest'], true)
 
     // Assert
-    expect(itemResult.success).toBe(true)
-    expect(itemResult.value.map((i) => i.id).sort()).toStrictEqual([
+    expect(items.map((i) => i.id).sort()).toStrictEqual([
       scavVest.id,
       opSksDefault.id,
       mts25512Default.id
     ])
   })
 
-  it('should fail when no items belong to the categories', async () => {
+  it('should return no items when no items belong to the categories', async () => {
     // Arrange
     useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
@@ -408,17 +396,19 @@ describe('getItemsOfCategories()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
+
     const itemService = new ItemService()
 
     // Act
-    const itemResult = await itemService.getItemsOfCategories(['invalid, invalid2'])
+    const items = await itemService.getItemsOfCategories(['invalid, invalid2'])
 
     // Assert
-    expect(itemResult.success).toBe(false)
-    expect(itemResult.failureMessage).not.toBe('')
+    expect(items.length).toBe(0)
   })
 
-  it('should fail when no items are found an the merchant filter is not used', async () => {
+  it('should return no items and log an error when no items are found an the global filter is not used', async () => {
     // Arrange
     useGlobalFilterServiceMock()
     useItemFetcherServiceMock()
@@ -426,19 +416,22 @@ describe('getItemsOfCategories()', () => {
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
 
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
+
     const itemService = new ItemService()
 
     // Act
-    const itemsResult = await itemService.getItemsOfCategories(['invalid1', 'invalid2'], false)
+    const items = await itemService.getItemsOfCategories(['invalid1', 'invalid2'], false)
 
     // Assert
-    expect(itemsResult.success).toBe(false)
-    expect(itemsResult.failureMessage).toBe('No items found for the "invalid1", "invalid2" item categories.')
+    expect(items.length).toBe(0)
+    verify(logServiceMock.logError('message.itemsOfCategoriesNotFound', anything()))
   })
 })
 
 describe('getMainCurrency()', () => {
-  it('should get the main currency', async () => {
+  it('should get the main currency', () => {
     // Arrange
     useGlobalFilterServiceMock()
     useTarkovValuesServiceMock()
@@ -446,14 +439,13 @@ describe('getMainCurrency()', () => {
     const itemService = new ItemService()
 
     // Act
-    const currency = await itemService.getMainCurrency()
+    const currency = itemService.getMainCurrency()
 
     // Assert
-    expect(currency.success).toBe(true)
-    expect(currency.value.name).toBe('RUB')
+    expect(currency.name).toBe('RUB')
   })
 
-  it('should fail if the main currency cannot be found', async () => {
+  it('should throw if the main currency cannot be found', () => {
     // Arrange
     useGlobalFilterServiceMock()
     useTarkovValuesServiceMock()
@@ -465,11 +457,10 @@ describe('getMainCurrency()', () => {
     const itemService = new ItemService()
 
     // Act
-    const currencyResult = await itemService.getMainCurrency()
+    const act = () => itemService.getMainCurrency()
 
     // Assert
-    expect(currencyResult.success).toBe(false)
-    expect(currencyResult.failureMessage).toBe('Main currency not found.')
+    expect(act).toThrowError('Main currency not found.')
 
     // Clean
     tarkovValuesServiceMock.values.currencies = originalCurrencies
@@ -568,5 +559,32 @@ describe('initialize', () => {
     verify(itemFetcherServiceSpy.fetchPrices()).never()
     verify(itemFetcherServiceSpy.fetchPresets()).never()
     expect(itemService.initializationState).toBe(ServiceInitializationState.error)
+  })
+
+  it('should notify when price fetching fails and set the last price fetch date in the future to avoid fetching prices again immediatly', async () => {
+    // Arrange
+    useGlobalFilterServiceMock()
+    useItemFetcherServiceMock()
+    usePresetServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+
+    const itemFetcherServiceMock = mock<ItemFetcherService>()
+    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(ItemCategoryMocks)
+    when(itemFetcherServiceMock.fetchItems()).thenResolve(ItemMocks)
+    when(itemFetcherServiceMock.fetchPresets()).thenResolve(PresetMocks)
+    when(itemFetcherServiceMock.fetchPrices()).thenResolve(undefined)
+    Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
+
+    const notificationServiceMock = mock<NotificationService>()
+    Services.configure(NotificationService, undefined, instance(notificationServiceMock))
+
+    const itemService = new ItemService()
+
+    // Act
+    await itemService.initialize()
+
+    // Assert
+    verify(notificationServiceMock.notify(NotificationType.error, 'Something went wrong while updating prices.\nTry waiting a bit and reloading the page.')).once()
   })
 })

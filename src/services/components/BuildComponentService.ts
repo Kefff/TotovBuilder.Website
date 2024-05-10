@@ -1,10 +1,9 @@
+import { Router } from 'vue-router'
 import { IBuild } from '../../models/build/IBuild'
+import vueI18n from '../../plugins/vueI18n'
 import { BuildService } from '../BuildService'
 import { NotificationService, NotificationType } from '../NotificationService'
-import vueI18n from '../../plugins/vueI18n'
-import { Router } from 'vue-router'
 import Services from '../repository/Services'
-import Result from '../../utils/Result'
 
 /**
  * Represents a service responsible for managing a BuildComponent.
@@ -26,22 +25,6 @@ export class BuildComponentService {
   }
 
   /**
-   * Gets a build from an encoded string that can be shared in a URL.
-   * @param sharableString - Encoded string that can be shared in a URL.
-   * @returns Build.
-   */
-  public async getBuildFromSharableString(sharableString: string): Promise<Result<IBuild>> {
-    const buildService = Services.get(BuildService)
-    const buildResult = await buildService.fromSharableString(sharableString)
-
-    if (!buildResult.success) {
-      Services.get(NotificationService).notify(NotificationType.error, buildResult.failureMessage)
-    }
-
-    return buildResult
-  }
-
-  /**
    * Gets the build to edit.
    * @param id - ID of the build to get.
    * @returns Found build, or an empty build if creating a new build or an error occurs.
@@ -53,15 +36,14 @@ export class BuildComponentService {
       return buildService.create()
     }
 
-    const result = buildService.get(id)
+    const build = buildService.get(id)
 
-    if (!result.success) {
-      Services.get(NotificationService).notify(NotificationType.warning, result.failureMessage)
-
+    if (build == null) {
+      // If the build cannot be found, we create a new build
       return buildService.create()
     }
 
-    return result.value
+    return build
   }
 
   /**
@@ -79,13 +61,7 @@ export class BuildComponentService {
       router.push({ name: 'Build', params: { id: newBuildId } })
     } else {
       // Update
-      const result = await buildService.update(build.id, build)
-
-      if (!result.success) {
-        notificationService.notify(NotificationType.error, result.failureMessage)
-
-        return
-      }
+      await buildService.update(build)
     }
 
     notificationService.notify(NotificationType.success, vueI18n.t('message.buildSaved', { name: build.name }))

@@ -6,9 +6,7 @@ import { IMod } from '../models/item/IMod'
 import { IModdable } from '../models/item/IModdable'
 import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
-import vueI18n from '../plugins/vueI18n'
 import { PathUtils } from '../utils/PathUtils'
-import Result from '../utils/Result'
 import { InventoryItemService } from './InventoryItemService'
 import { ItemFetcherService } from './ItemFetcherService'
 import { ItemPropertiesService } from './ItemPropertiesService'
@@ -27,22 +25,22 @@ export class PresetService {
   /**
    * Fetches presets.
    */
-  public async fetchPresets(): Promise<Result<void>> {
-    const presetsResult = await Services.get(ItemFetcherService).fetchPresets()
+  public async fetchPresets(): Promise<boolean> {
+    const presets = await Services.get(ItemFetcherService).fetchPresets()
 
-    if (!presetsResult.success) {
-      return Result.failFrom(presetsResult)
+    if (presets == undefined) {
+      return false
     }
 
-    this.presets = presetsResult.value
+    this.presets = presets
 
-    return Result.ok()
+    return true
   }
 
   /**
    * Gets the preset of an item.
    * @param id - ID of the item for which the preset must be found.
-   * @returns Preset.
+   * @returns Preset or undefined when no preset exist for the item.
    */
   public getPreset(id: string): IInventoryItem | undefined {
     const preset = this.presets.find(p => p.itemId === id)
@@ -56,7 +54,7 @@ export class PresetService {
    * @param path - Mod slot path indicating the inventory object position within a parent item.
    * @returns Preset mod slot if the inventory item is in a preset; otherwise undefined.
    */
-  public async getPresetModSlotContainingItem(itemId: string, path: string): Promise<IInventoryModSlot | undefined> {
+  public getPresetModSlotContainingItem(itemId: string, path: string): IInventoryModSlot | undefined {
     const pathArray = path.split('/')
     const firstModIndex = pathArray.findIndex(p => p.startsWith(PathUtils.modSlotPrefix))
 
@@ -114,9 +112,7 @@ export class PresetService {
    * @returns true if the item is a preset; otherwise false.
    */
   public isPreset(item: IItem): boolean {
-    const itemPropertiesService = Services.get(ItemPropertiesService)
-
-    if (itemPropertiesService.isModdable(item)) {
+    if (Services.get(ItemPropertiesService).isModdable(item)) {
       return (item as IModdable).baseItemId != null
     }
 
@@ -128,32 +124,50 @@ export class PresetService {
    */
   public async updatePresetProperties(items: IItem[]): Promise<void> {
     const itemPropertiesService = Services.get(ItemPropertiesService)
+    const inventoryItemService = Services.get(InventoryItemService)
+
+    const notFoundPresetIds: string[] = []
     const presetItems = items.filter(i => this.isPreset(i))
 
     for (const presetItem of presetItems) {
-      let result: Result
-
       const presetInventoryItem = this.getPreset(presetItem.id)
 
       if (presetInventoryItem == null) {
-        Services.get(LogService).logError(vueI18n.t('message.presetNotFound', { id: presetItem.id }))
+        notFoundPresetIds.push(presetItem.id)
 
         continue
       }
 
       if (itemPropertiesService.canHaveArmor(presetItem)) {
-        result = await this.updatePresetWithArmorProperties(presetItem as IArmor, presetInventoryItem)
-      } else if (itemPropertiesService.isRangedWeapon(presetItem)) {
-        result = await this.updateRangedWeapondPresetProperties(presetItem as IRangedWeapon, presetInventoryItem)
-      } else if (itemPropertiesService.isRangedWeaponMod(presetItem)) {
-        result = await this.updateRangedWeapondModPresetProperties(presetItem as IRangedWeaponMod, presetInventoryItem)
-      } else {
-        result = await this.updateModPresetProperties(presetItem as IMod, presetInventoryItem)
-      }
+        const wearableModifiers = await inventoryItemService.getWearableModifiers(presetInventoryItem)
 
-      if (!result.success) {
-        Services.get(LogService).logError(result.failureMessage)
+        const armorPreset = presetItem as IArmor
+        armorPreset.presetWearableModifiers = wearableModifiers
+      } else if (itemPropertiesService.isRangedWeapon(presetItem)) {
+        const ergonomics = await inventoryItemService.getErgonomics(presetInventoryItem)
+        const recoil = await inventoryItemService.getRecoil(presetInventoryItem)
+
+        const rangedWeaponPreset = presetItem as IRangedWeapon
+        rangedWeaponPreset.presetErgonomics = ergonomics.ergonomicsWithMods
+        rangedWeaponPreset.presetHorizontalRecoil = recoil.horizontalRecoilWithMods
+        rangedWeaponPreset.presetVerticalRecoil = recoil.verticalRecoilWithMods
+      } else if (itemPropertiesService.isRangedWeaponMod(presetItem)) {
+        const ergonomics = await inventoryItemService.getErgonomics(presetInventoryItem)
+        const recoildModifierPercentage = await inventoryItemService.getRecoilModifierPercentage(presetInventoryItem)
+
+        const rangedWeaponModPreset = presetItem as IRangedWeaponMod
+        rangedWeaponModPreset.presetErgonomicsModifier = ergonomics.ergonomicsWithMods
+        rangedWeaponModPreset.presetRecoilModifierPercentage = recoildModifierPercentage.recoilModifierPercentageWithMods
+      } else {
+        const ergonomics = await inventoryItemService.getErgonomics(presetInventoryItem)
+
+        const modPreset = presetItem as IMod
+        modPreset.presetErgonomicsModifier = ergonomics.ergonomicsWithMods
       }
+    }
+
+    if (notFoundPresetIds.length > 0) {
+      Services.get(LogService).logError('message.presetsNotFound', { ids: notFoundPresetIds.join(', ') })
     }
   }
 
@@ -182,90 +196,5 @@ export class PresetService {
     }
 
     return presetModSlot
-  }
-
-  /**
-   * Updates the properties of a preset that has armor.
-   * @param presetItem - Preset item.
-   * @param presetInventoryItem - Preset inventory item.
-   */
-  private async updatePresetWithArmorProperties(presetItem: IArmor, presetInventoryItem: IInventoryItem): Promise<Result> {
-    const wearableModifiersResult = await Services.get(InventoryItemService).getWearableModifiers(presetInventoryItem)
-
-    if (!wearableModifiersResult.success) {
-      return Result.failFrom(wearableModifiersResult)
-    }
-
-    presetItem.presetWearableModifiers = wearableModifiersResult.value
-
-    return Result.ok()
-  }
-
-  /**
-   * Updates the properties of a mod preset.
-   * @param presetItem - Preset item.
-   * @param presetInventoryItem - Preset inventory item.
-   */
-  private async updateModPresetProperties(presetItem: IMod, presetInventoryItem: IInventoryItem): Promise<Result> {
-    const ergonomicsResult = await Services.get(InventoryItemService).getErgonomics(presetInventoryItem)
-
-    if (!ergonomicsResult.success) {
-      return Result.failFrom(ergonomicsResult)
-    }
-
-    presetItem.presetErgonomicsModifier = ergonomicsResult.value.ergonomicsWithMods
-
-    return Result.ok()
-  }
-
-  /**
-   * Updates the properties of a ranged weapon preset.
-   * @param presetItem - Preset item.
-   * @param presetInventoryItem - Preset inventory item.
-   */
-  private async updateRangedWeapondPresetProperties(presetItem: IRangedWeapon, presetInventoryItem: IInventoryItem): Promise<Result> {
-    const inventoryItemService = Services.get(InventoryItemService)
-    const ergonomicsResult = await inventoryItemService.getErgonomics(presetInventoryItem)
-
-    if (!ergonomicsResult.success) {
-      return Result.failFrom(ergonomicsResult)
-    }
-
-    const recoilResult = await inventoryItemService.getRecoil(presetInventoryItem)
-
-    if (!recoilResult.success) {
-      return Result.failFrom(recoilResult)
-    }
-
-    presetItem.presetErgonomics = ergonomicsResult.value.ergonomicsWithMods
-    presetItem.presetHorizontalRecoil = recoilResult.value.horizontalRecoilWithMods
-    presetItem.presetVerticalRecoil = recoilResult.value.verticalRecoilWithMods
-
-    return Result.ok()
-  }
-
-  /**
-   * Updates the properties of a ranged weapon mod preset.
-   * @param presetItem - Preset item.
-   * @param presetInventoryItem - Preset inventory item.
-   */
-  private async updateRangedWeapondModPresetProperties(presetItem: IRangedWeaponMod, presetInventoryItem: IInventoryItem): Promise<Result> {
-    const inventoryItemService = Services.get(InventoryItemService)
-    const ergonomicsResult = await inventoryItemService.getErgonomics(presetInventoryItem)
-
-    if (!ergonomicsResult.success) {
-      return Result.failFrom(ergonomicsResult)
-    }
-
-    const recoildModifierPercentageResult = await inventoryItemService.getRecoilModifierPercentage(presetInventoryItem)
-
-    if (!recoildModifierPercentageResult.success) {
-      return Result.failFrom(recoildModifierPercentageResult)
-    }
-
-    presetItem.presetErgonomicsModifier = ergonomicsResult.value.ergonomicsWithMods
-    presetItem.presetRecoilModifierPercentage = recoildModifierPercentageResult.value.recoilModifierPercentageWithMods
-
-    return Result.ok()
   }
 }

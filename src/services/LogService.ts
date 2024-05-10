@@ -1,6 +1,6 @@
+import { SeverityLevel } from '@microsoft/applicationinsights-web'
 import applicationInsights from '../plugins/applicationInsights'
 import vueI18n from '../plugins/vueI18n'
-import { SeverityLevel } from '@microsoft/applicationinsights-web'
 
 /**
  * Represents a service responsible for logging messages.
@@ -31,13 +31,11 @@ export class LogService {
    */
   public logException(messageOrKey: string, parameters?: Record<string, unknown>, plural?: number): void {
     const message = this.getMessage(messageOrKey, parameters, plural)
-    const displayedMessage = import.meta.env.VITE_DEBUG === 'true'
-      ? vueI18n.t('message.errorLog', { message })
-      : this.getMessage('message.internalErrorLog')
+    const errorMessage = vueI18n.t('message.errorLog', { message })
 
-    console.error(displayedMessage)
+    console.error(message)
     applicationInsights.trackException({
-      exception: new Error(message),
+      exception: new Error(errorMessage),
       severityLevel: SeverityLevel.Error
     })
   }

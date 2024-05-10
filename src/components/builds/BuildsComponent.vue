@@ -55,9 +55,8 @@
       id="builds-content"
     >
       <BuildsList
-        v-model="selectedBuildSummary"
         :builds-summaries="buildsSummaries"
-        :multiple="false"
+        @update:selected-build-ids="($event: string[]) => onBuildClick($event)"
       />
     </div>
   </div>
@@ -65,14 +64,14 @@
   <!-- Export -->
   <BuildsExport
     v-if="!isLoading && !hasLoadingError"
-    v-model="isExporting"
+    v-model:is-exporting="isExporting"
     :builds-summaries="buildsSummaries"
   />
 
   <!-- Import -->
   <BuildsImport
     v-if="!isLoading && !hasLoadingError"
-    v-model="isImporting"
+    v-model:is-importing="isImporting"
     v-model:has-imported="hasImported"
   />
 

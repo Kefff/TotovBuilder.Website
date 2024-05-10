@@ -1,11 +1,11 @@
-import { defineComponent, inject, nextTick, PropType, ref, Ref } from 'vue'
-import { IBuild } from '../../models/build/IBuild'
-import Services from '../../services/repository/Services'
-import { BuildService } from '../../services/BuildService'
-import InputTextField from '../input-text-field/InputTextFieldComponent.vue'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
+import { defineComponent, inject, PropType, ref, Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { IBuild } from '../../models/build/IBuild'
+import { BuildService } from '../../services/BuildService'
 import { LogService } from '../../services/LogService'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
+import Services from '../../services/repository/Services'
+import InputTextField from '../input-text-field/InputTextFieldComponent.vue'
 
 export default defineComponent({
   components: {
@@ -27,7 +27,6 @@ export default defineComponent({
     const i18n = useI18n()
 
     const isSharing = ref(false)
-    let shareLinkInternal: string | undefined = undefined
     const shareLink = ref<string>()
 
     /**
@@ -35,7 +34,6 @@ export default defineComponent({
      */
     function closeSharingDialog() {
       isSharing.value = false
-      shareLinkInternal = undefined
       shareLink.value = undefined
     }
 
@@ -43,11 +41,11 @@ export default defineComponent({
      * Copies the share link to the clipboard.
      */
     function copyLink() {
-      if (shareLinkInternal == null) {
+      if (shareLink.value == null) {
         return
       }
 
-      navigator.clipboard.writeText(shareLinkInternal)
+      navigator.clipboard.writeText(shareLink.value)
         .then(() => {
           Services.get(NotificationService).notify(NotificationType.information, i18n.t('message.shareLinkCopied'))
           closeSharingDialog()
@@ -59,27 +57,16 @@ export default defineComponent({
     }
 
     /**
-     * Cancels changes made to the share link.
-     */
-    function onUpdateShareLink() {
-      nextTick(() => shareLink.value = shareLinkInternal) // nextTick() required here otherwise the InputText doesn't update properly
-    }
-
-    /**
      * Generates a URL to share the build.
      */
     async function share() {
-      const sharedLinkResult = await Services.get(BuildService).toSharableURL(props.build)
+      shareLink.value = await Services.get(BuildService).toSharableURL(props.build)
 
-      if (!sharedLinkResult.success) {
-        Services.get(NotificationService).notify(NotificationType.warning, sharedLinkResult.failureMessage)
-
-        return
+      if (shareLink.value != null) {
+        // Only displaying the share modal when a URL has successfuly been generated
+        isSharing.value = true
       }
 
-      isSharing.value = true
-      shareLinkInternal = sharedLinkResult.value
-      shareLink.value = shareLinkInternal
     }
 
     return {
@@ -87,7 +74,6 @@ export default defineComponent({
       copyLink,
       editing,
       isSharing,
-      onUpdateShareLink,
       share,
       shareLink
     }

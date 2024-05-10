@@ -4,29 +4,29 @@
       <div class="option-caption">
         <InputText
           ref="filterInput"
-          v-model="updatableFilter"
+          v-model="filterInternal"
           class="filter-input"
           :placeholder="$t('caption.search')"
           type="text"
           @input="onFilterChange()"
         />
         <OptionHeaderSortButton
-          v-model="updatableSortingData"
+          v-model:sorting-data="sortingDataInternal"
           caption-resource="caption.name"
           icon="font"
           property="name"
-          :sorting-functions="sortingFunctions"
+          :sorting-functions="ItemSortingFunctions"
         />
       </div>
     </div>
     <div class="option-entry">
       <div class="option-value-long">
         <OptionHeaderSortButton
-          v-model="updatableSortingData"
+          v-model:sorting-data="sortingDataInternal"
           caption-resource="caption.price"
           icon="coins"
           property="price"
-          :sorting-functions="sortingFunctions"
+          :sorting-functions="ItemSortingFunctions"
         />
       </div>
     </div>

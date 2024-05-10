@@ -12,13 +12,14 @@ import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 import vueI18n from '../plugins/vueI18n'
 import { PathUtils } from '../utils/PathUtils'
 import { PriceUtils } from '../utils/PriceUtils'
-import Result, { FailureType } from '../utils/Result'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import { BuildService } from './BuildService'
 import { InventoryItemService } from './InventoryItemService'
 import { InventorySlotPropertiesService } from './InventorySlotPropertiesService'
 import { InventorySlotService } from './InventorySlotService'
+import { ItemPropertiesService } from './ItemPropertiesService'
 import { ItemService } from './ItemService'
+import { NotificationService, NotificationType } from './NotificationService'
 import Services from './repository/Services'
 
 /**
@@ -27,120 +28,86 @@ import Services from './repository/Services'
 export class BuildPropertiesService {
   /**
    * Checks if a build contains an armored vest preventing the usage of an armor.
+   * Displays a warnng notification when it is the case.
    * @param build - Build.
-   * @returns Success if the build doesn't contain an armored vest; otherwise Failure.
    */
-  public async canAddArmor(build: IBuild): Promise<Result> {
+  public async canAddArmor(build: IBuild): Promise<boolean> {
     const itemService = Services.get(ItemService)
     const vestSlot = build.inventorySlots.find((is) => is.typeId === 'tacticalRig')!
 
-    if (vestSlot.items[0] != null) {
-      const vestResult = await itemService.getItem(vestSlot.items[0].itemId)
-
-      if (!vestResult.success) {
-        return Result.failFrom(vestResult)
-      }
-
-      if ((vestResult.value as IVest).armorClass > 0) {
-        return Result.fail(
-          FailureType.hidden,
-          'BuildService.canAddArmor()',
-          vueI18n.t('message.cannotAddBodyArmor')
-        )
-      }
+    if (vestSlot.items[0] == null) {
+      return true
     }
 
-    return Result.ok()
+    const item = await itemService.getItem(vestSlot.items[0].itemId)
+    const vest = item as IVest
+
+    if (vest.armorClass > 0) {
+      Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.cannotAddBodyArmor'))
+
+      return false
+    }
+
+    return true
   }
 
   /**
    * Checks if a mod can be added to an item by recursively checking if it appears in any of the conflicting items list of each of the children mods already added.
+   * Displays a warnng notification when it is the case.
    * @param build - Build.
    * @param modId - ID of the mod to be added.
    * @param path - Path to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
-   * @returns Success if the mod can be added; otherwise Failure.
    */
-  public async canAddMod(build: IBuild, modId: string, path: string): Promise<Result> {
+  public async canAddMod(build: IBuild, modId: string, path: string): Promise<boolean> {
     const itemService = Services.get(ItemService)
-    const modResult = await itemService.getItem(modId)
-
-    if (!modResult.success) {
-      return Result.failFrom(modResult)
-    }
+    const mod = await itemService.getItem(modId)
 
     const firstItemPath = path.slice(0, path.indexOf('/' + PathUtils.modSlotPrefix))
-    const inventoryItemResult = PathUtils.getInventoryItemFromPath(build, firstItemPath)
-
-    if (!inventoryItemResult.success) {
-      return Result.failFrom(inventoryItemResult)
-    }
-
+    const inventoryItem = PathUtils.getInventoryItemFromPath(build, firstItemPath)
     const changedModSlotPath = path.slice(0, path.indexOf('/' + PathUtils.itemPrefix))
-    const conflictingItemsResult = await this.getConflictingItems(inventoryItemResult.value, changedModSlotPath)
+    const conflicts = await this.getConflictingItems(inventoryItem, changedModSlotPath)
 
-    if (!conflictingItemsResult.success) {
-      return Result.failFrom(conflictingItemsResult)
-    }
-
-    for (const conflictingItem of conflictingItemsResult.value) {
-      if (
-        conflictingItem.path.startsWith(path) || // Ignoring the mod (and its children mods) in the same slot that the mod being added because it is being replaced
-        (conflictingItem.conflictingItemId !== modId && // Checking the conflicting items for all the other mods
-          !modResult.value.conflictingItemIds.includes(conflictingItem.itemId)) // Checking the conflicting items of the mod being added
+    for (const conflict of conflicts) {
+      if (conflict.path.startsWith(path) // Ignoring the mod (and its children mods) in the same slot that the mod being added because it is being replaced
+        || (conflict.conflictingItemId !== modId // If the mod conflicts with itself, we ignore the conflict
+          && !mod.conflictingItemIds.includes(conflict.itemId)) // Checking the conflicting items of the mod being added
       ) {
         continue
       }
 
-      const conflictingItemResult = await itemService.getItem(conflictingItem.itemId)
+      const conflictingItem = await itemService.getItem(conflict.itemId)
+      Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.cannotAddMod', { modName: mod.name, conflictingItemName: conflictingItem.name }))
 
-      /* c8 ignore start */
-      if (!conflictingItemResult.success) {
-        return Result.failFrom(conflictingItemResult)
-      }
-      /* c8 ignore start */
-
-      return Result.fail(
-        FailureType.hidden,
-        'BuildService.canAddMod()',
-        vueI18n.t('message.cannotAddMod', {
-          modName: modResult.value.name,
-          conflictingItemName: conflictingItemResult.value.name
-        })
-      )
+      return false
     }
 
-    return Result.ok()
+    return true
   }
 
   /**
    * Checks if a build contains an armor preventing the usage of an armored vest.
+   * Displays a warnng notification when it is the case.
    * @param build - Build.
    * @param vestId - Vest ID.
-   * @returns Success if the build doesn't contain an armor; otherwise Failure.
    */
-  public async canAddVest(build: IBuild, vestId: string): Promise<Result> {
+  public async canAddVest(build: IBuild, vestId: string): Promise<boolean> {
     const itemService = Services.get(ItemService)
-    const vestResult = await itemService.getItem(vestId)
+    const item = await itemService.getItem(vestId)
+    const vest = item as IVest
 
-    if (!vestResult.success) {
-      return Result.failFrom(vestResult)
+    if (!Services.get(ItemPropertiesService).isVest(item) || vest.armorClass === 0) {
+      return true
     }
 
-    if ((vestResult.value as IVest).armorClass === 0) {
-      return Result.ok()
+    const bodyArmorInventorySlot = build.inventorySlots.find((is) => is.typeId === 'bodyArmor')
+
+    if (bodyArmorInventorySlot?.items[0] != null) {
+      Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.cannotAddTacticalRig'))
+
+      return false
     }
 
-    const armorSlot = build.inventorySlots.find((is) => is.typeId === 'bodyArmor')!
-
-    if (armorSlot.items[0] != null) {
-      return Result.fail(
-        FailureType.hidden,
-        'BuildService.canAddVest()',
-        vueI18n.t('message.cannotAddTacticalRig')
-      )
-    }
-
-    return Result.ok()
+    return true
   }
 
   /**
@@ -150,18 +117,12 @@ export class BuildPropertiesService {
    */
   public async getAsString(build: IBuild, language: string) {
     const itemService = Services.get(ItemService)
-
-    const mainCurrencyResult = await itemService.getMainCurrency()
-
-    if (!mainCurrencyResult.success) {
-      return ''
-    }
-
     const buildService = Services.get(BuildService)
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
 
     const separator = '    |    '
     let buildAsString = build.name
+    const mainCurrency = itemService.getMainCurrency()
     const buildSummary = await this.getSummary(build)
 
     const hasArmor = buildSummary.armorModifiers.armorClass !== 0
@@ -170,7 +131,6 @@ export class BuildPropertiesService {
     const hasMovementSpeedModifierPercentage = buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
     const hasPrice = buildSummary.price.priceInMainCurrency !== 0
     const hasRecoil = buildSummary.recoil.verticalRecoil !== 0
-      || buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0
     const hasTurningSpeedModifierPercentage = buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0
     const hasWeight = buildSummary.weight !== 0
 
@@ -251,15 +211,12 @@ export class BuildPropertiesService {
           }
 
           const priceInCurrency = buildSummary.price.priceByCurrency[i]
-          const priceCurrencyResult = await itemService.getCurrency(priceInCurrency.currencyName)
-
-          if (priceCurrencyResult.success) {
-            buildAsString += `${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInCurrency.value, language)}${priceCurrencyResult.value.symbol}`
-          }
+          const priceCurrency = itemService.getCurrency(priceInCurrency.currencyName)
+          buildAsString += `${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInCurrency.value, language)}${priceCurrency.symbol}`
         }
 
         if (buildSummary.price.priceByCurrency.length > 1) {
-          buildAsString += ` (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, buildSummary.price.priceInMainCurrency, language)}${mainCurrencyResult.value.symbol})`
+          buildAsString += ` (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, buildSummary.price.priceInMainCurrency, language)}${mainCurrency.symbol})`
         }
       }
 
@@ -296,10 +253,10 @@ ${inventorySlotsAsString}`
 
     const sharableUrlResult = await buildService.toSharableURL(build)
 
-    if (sharableUrlResult.success) {
+    if (sharableUrlResult != undefined) {
       // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
       buildAsString += `\n${vueI18n.t('caption.interactiveBuildAndFullStats', 1, { locale: language })}:
-${sharableUrlResult.value}`
+${sharableUrlResult}`
     }
 
     return buildAsString
@@ -334,7 +291,7 @@ ${sharableUrlResult.value}`
     const lastExported = build.lastExported ?? new Date(1900, 1, 1)
     const lastUpdated = build.lastUpdated ?? new Date(1900, 1, 1)
 
-    const result: IBuildSummary = {
+    const summary: IBuildSummary = {
       armorModifiers: {
         armorClass: 0,
         durability: 0
@@ -369,33 +326,20 @@ ${sharableUrlResult.value}`
       inventorySlotSummaries.push(inventorySlotSummary)
     }
 
-    // Armor modifiers
-    result.armorModifiers = this.getArmorModifiers(inventorySlotSummaries)
 
-    // Wearable modifiers
-    result.wearableModifiers = this.getWearableModifiers(inventorySlotSummaries)
+    summary.armorModifiers = this.getArmorModifiers(inventorySlotSummaries)
+    summary.wearableModifiers = this.getWearableModifiers(inventorySlotSummaries)
 
-    // Ergonomics
     const summaryErgonomics = this.getErgonomics(inventorySlotSummaries)
-    result.ergonomics = summaryErgonomics * (1 + result.wearableModifiers.ergonomicsModifierPercentage)
+    summary.ergonomics = summaryErgonomics * (1 + summary.wearableModifiers.ergonomicsModifierPercentage)
 
-    // Price
-    const priceResult = await this.getPrice(inventorySlotSummaries)
+    summary.price = this.getPrice(inventorySlotSummaries)
+    summary.recoil = this.getRecoil(inventorySlotSummaries)
+    summary.weight = this.getWeight(inventorySlotSummaries)
 
-    if (priceResult.success) {
-      result.price = priceResult.value
-    }
+    summary.shoppingList = await this.getShoppingList(build)
 
-    // Recoil
-    result.recoil = this.getRecoil(inventorySlotSummaries)
-
-    // Weight
-    result.weight = this.getWeight(inventorySlotSummaries)
-
-    // Shopping list
-    result.shoppingList = await this.getShoppingList(build)
-
-    return result
+    return summary
   }
 
   /**
@@ -427,27 +371,23 @@ ${sharableUrlResult.value}`
   private async getConflictingItems(
     inventoryItem: IInventoryItem,
     modSlotPath: string
-  ): Promise<Result<IConflictingItem[]>> {
+  ): Promise<IConflictingItem[]> {
     const itemService = Services.get(ItemService)
-    const itemResult = await itemService.getItem(inventoryItem.itemId)
-
-    if (!itemResult.success) {
-      return Result.failFrom(itemResult)
-    }
 
     const conflictingItems: IConflictingItem[] = []
+    const item = await itemService.getItem(inventoryItem.itemId)
 
-    if (itemResult.value.conflictingItemIds.length > 0) {
-      for (const conflictingItemId of itemResult.value.conflictingItemIds) {
+    if (item.conflictingItemIds.length > 0) {
+      for (const conflictingItemId of item.conflictingItemIds) {
         conflictingItems.push({
-          itemId: itemResult.value.id,
+          itemId: item.id,
           path: modSlotPath,
           conflictingItemId
         })
       }
     } else {
       conflictingItems.push({
-        itemId: itemResult.value.id,
+        itemId: item.id,
         path: modSlotPath,
         conflictingItemId: undefined
       })
@@ -455,22 +395,16 @@ ${sharableUrlResult.value}`
 
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.item != null) {
-        const modConflictingItemIdsResult = await this.getConflictingItems(
+        const modConflictingItemIds = await this.getConflictingItems(
           modSlot.item,
           modSlotPath + '/' + PathUtils.itemPrefix + inventoryItem.itemId + '/' + PathUtils.modSlotPrefix + modSlot.modSlotName
         )
 
-        /* c8 ignore start */
-        if (!modConflictingItemIdsResult.success) {
-          return modConflictingItemIdsResult
-        }
-        /* c8 ignore stop */
-
-        conflictingItems.push(...modConflictingItemIdsResult.value)
+        conflictingItems.push(...modConflictingItemIds)
       }
     }
 
-    return Result.ok(conflictingItems)
+    return conflictingItems
   }
 
   /**
@@ -512,7 +446,7 @@ ${sharableUrlResult.value}`
    * @param inventorySlotSummaries - Inventory slot summaries.
    * @returns Price.
    */
-  private async getPrice(inventorySlotSummaries: IInventorySlotSummary[]): Promise<Result<IInventoryPrice>> {
+  private getPrice(inventorySlotSummaries: IInventorySlotSummary[]): IInventoryPrice {
     const inventoryPrice: IInventoryPrice = {
       missingPrice: false,
       priceInMainCurrency: 0,
@@ -542,7 +476,7 @@ ${sharableUrlResult.value}`
       inventoryPrice.priceByCurrency = PriceUtils.sortByCurrency(inventoryPrice.priceByCurrency)
     }
 
-    return Result.ok(inventoryPrice)
+    return inventoryPrice
   }
 
   /**
@@ -569,32 +503,24 @@ ${sharableUrlResult.value}`
     const shoppingList: IShoppingListItem[] = []
 
     for (const inventorySlot of build.inventorySlots) {
-      const typeResult = Services.get(InventorySlotService).getType(inventorySlot.typeId)
-
-      if (!typeResult.success) {
-        continue
-      }
+      const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
 
       for (const item of inventorySlot.items) {
         if (item == null) {
           continue
         }
 
-        const shoppingListResult = await inventoryItemService.getShoppingList(item, undefined, typeResult.value.canBeLooted)
+        const inventoryItemShoopingList = await inventoryItemService.getShoppingList(item, undefined, inventorySlotType.canBeLooted)
 
-        if (!shoppingListResult.success) {
-          continue
-        }
+        for (const inventoryItemShoppingListItemToAdd of inventoryItemShoopingList) {
+          const inventoryItemShoppingListItemIndex = shoppingList.findIndex(sli => sli.item.id === inventoryItemShoppingListItemToAdd.item.id)
 
-        for (const shoppingListItemToAdd of shoppingListResult.value) {
-          const shoppingListItemIndex = shoppingList.findIndex(sli => sli.item.id === shoppingListItemToAdd.item.id)
-
-          if (shoppingListItemIndex < 0) {
-            shoppingList.push(shoppingListItemToAdd)
+          if (inventoryItemShoppingListItemIndex < 0) {
+            shoppingList.push(inventoryItemShoppingListItemToAdd)
           } else {
-            shoppingList[shoppingListItemIndex].quantity += shoppingListItemToAdd.quantity
-            shoppingList[shoppingListItemIndex].price.value += shoppingListItemToAdd.unitPrice.value * shoppingListItemToAdd.quantity
-            shoppingList[shoppingListItemIndex].price.valueInMainCurrency += shoppingListItemToAdd.unitPrice.valueInMainCurrency * shoppingListItemToAdd.quantity
+            shoppingList[inventoryItemShoppingListItemIndex].quantity += inventoryItemShoppingListItemToAdd.quantity
+            shoppingList[inventoryItemShoppingListItemIndex].price.value += inventoryItemShoppingListItemToAdd.unitPrice.value * inventoryItemShoppingListItemToAdd.quantity
+            shoppingList[inventoryItemShoppingListItemIndex].price.valueInMainCurrency += inventoryItemShoppingListItemToAdd.unitPrice.valueInMainCurrency * inventoryItemShoppingListItemToAdd.quantity
           }
         }
       }

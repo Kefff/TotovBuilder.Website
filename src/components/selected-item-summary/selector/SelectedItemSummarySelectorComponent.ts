@@ -41,7 +41,7 @@ export default defineComponent({
     VestSummary
   },
   props: {
-    modelValue: {
+    inventoryItem: {
       type: Object as PropType<IInventoryItem>,
       required: true
     },
@@ -50,14 +50,13 @@ export default defineComponent({
       required: false,
       default: true
     },
-    itemInSameSlotInPreset: { // When the parent item is a preset, represets the item that is in the same slot in the preset
+    inventoryItemInSameSlotInPreset: { // When the parent item is a preset, represents the inventory item that is in the same slot in the preset
       type: Object as PropType<IInventoryItem>,
       required: false,
       default: undefined
     }
   },
   setup: (props) => {
-    const armorModifiers = ref<IArmorModifiers>()
     const isAmmunition = ref(false)
     const isArmor = ref(false)
     const isArmorMod = ref(false)
@@ -72,9 +71,10 @@ export default defineComponent({
     const isRangedWeapon = ref(false)
     const isRangedWeaponMod = ref(false)
     const isVest = ref(false)
-    const item = ref<IItem>()
+    const selectedItem = ref<IItem>()
+    const selectedItemArmorModifiers = ref<IArmorModifiers>()
 
-    watch(() => props.modelValue.itemId, () => setItem())
+    watch(() => props.inventoryItem.itemId, () => setItem())
 
     onMounted(async () => await setItem())
 
@@ -82,15 +82,8 @@ export default defineComponent({
      * Sets the item based on the inventory item passed to the component and determines which summary component to display.
      */
     async function setItem() {
-      const itemResult = await Services.get(ItemService).getItem(props.modelValue.itemId)
-
-      if (itemResult.success) {
-        item.value = itemResult.value
-        await setItemType(item.value)
-      } else {
-        item.value = undefined
-        armorModifiers.value = undefined
-      }
+      selectedItem.value = await Services.get(ItemService).getItem(props.inventoryItem.itemId)
+      await setItemType(selectedItem.value)
     }
 
     /**
@@ -169,31 +162,21 @@ export default defineComponent({
      * Sets the armor modifiers for items with armor.
      */
     async function setArmorModifiers() {
-      const frontPlateModSlot = props.modelValue.modSlots.find(ms => ms.modSlotName === 'front_plate')
+      const frontPlateModSlot = props.inventoryItem.modSlots.find(ms => ms.modSlotName === 'front_plate')
 
-      if (frontPlateModSlot == null) {
-        const armorModifiersResult = await Services.get(InventoryItemService).getArmorModifiers(props.modelValue)
-
-        if (armorModifiersResult.success) {
-          armorModifiers.value = armorModifiersResult.value
-
-        } else {
-          armorModifiers.value = undefined
+      if (frontPlateModSlot != null) {
+        // When the item has an armor plate slot, no armor modifier is displayed because
+        // it is the armor plate that defines the armor value
+        selectedItemArmorModifiers.value = {
+          armorClass: 0,
+          durability: 0
         }
-
-        return
-      }
-
-      // When the item has an armor plate slot, no armor modifier is displayed because
-      // it is the armor plate that defines the armor value
-      armorModifiers.value = {
-        armorClass: 0,
-        durability: 0
+      } else {
+        selectedItemArmorModifiers.value = await Services.get(InventoryItemService).getArmorModifiers(props.inventoryItem)
       }
     }
 
     return {
-      armorModifiers,
       isAmmunition,
       isArmor,
       isArmorMod,
@@ -208,7 +191,8 @@ export default defineComponent({
       isRangedWeapon,
       isRangedWeaponMod,
       isVest,
-      item
+      selectedItem,
+      selectedItemArmorModifiers
     }
   }
 })

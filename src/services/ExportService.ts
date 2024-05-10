@@ -1,10 +1,11 @@
-import { IBuild } from '../models/build/IBuild'
 import FileSaver from 'file-saver'
+import { IBuild } from '../models/build/IBuild'
 import vueI18n from '../plugins/vueI18n'
-import Result, { FailureType } from '../utils/Result'
-import Services from './repository/Services'
 import { BuildService } from './BuildService'
+import { LogService } from './LogService'
+import { NotificationService, NotificationType } from './NotificationService'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for exporting builds.
@@ -12,9 +13,10 @@ import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 export class ExportService {
   /**
    * Exports a list of builds.
+   * Displayes a notification indicating whetherexport has succeeded.
    * @param builds - Builds.
    */
-  public async export(builds: IBuild[]): Promise<Result> {
+  public async export(builds: IBuild[]) {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
     try {
@@ -29,20 +31,19 @@ export class ExportService {
       FileSaver.saveAs(blob, fileName)
     }
     catch {
-      return Result.fail(FailureType.error, 'ExportService.export()', vueI18n.t('message.buildsExportError'))
+      Services.get(LogService).logError('message.buildsExportError')
+      Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.buildsExportError'))
+
+      return
     }
 
     const buildService = Services.get(BuildService)
 
     for (const build of builds) {
       build.lastExported = new Date()
-      const updateResult = await buildService.update(build.id, build)
-
-      if (!updateResult.success) {
-        return updateResult
-      }
+      await buildService.update(build)
     }
 
-    return Result.ok()
+    Services.get(NotificationService).notify(NotificationType.success, vueI18n.t('message.buildsExported'))
   }
 }

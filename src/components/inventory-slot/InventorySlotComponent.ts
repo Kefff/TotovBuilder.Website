@@ -2,7 +2,6 @@ import { computed, defineComponent, inject, onMounted, onUnmounted, PropType, Re
 import Images from '../../images'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IInventorySlot } from '../../models/build/IInventorySlot'
-import { IInventorySlotType } from '../../models/build/IInventorySlotType'
 import { IItem } from '../../models/item/IItem'
 import { IInventorySlotSummary } from '../../models/utils/IInventorySlotSummary'
 import { InventorySlotComponentService } from '../../services/components/InventorySlotComponentService'
@@ -10,6 +9,7 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
 import { InventorySlotService } from '../../services/InventorySlotService'
+import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
@@ -23,7 +23,7 @@ export default defineComponent({
     Item
   },
   props: {
-    modelValue: {
+    inventorySlot: {
       type: Object as PropType<IInventorySlot>,
       required: true
     },
@@ -37,18 +37,17 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['update:modelValue', 'update:collapsed'],
+  emits: ['update:inventory-slot', 'update:collapsed'],
   setup: (props, { emit }) => {
     const globalFilterService = Services.get(GlobalFilterService)
     const inventoryItemService = Services.get(InventoryItemService)
     const inventorySlotComponentService = Services.get(InventorySlotComponentService)
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
-    const inventorySlotService = Services.get(InventorySlotService)
     const itemPathPrefix = PathUtils.itemPrefix
 
     const editing = inject<Ref<boolean>>('editing')
 
-    const displayed = computed(() => editing?.value || props.modelValue.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
+    const displayed = computed(() => editing?.value || props.inventorySlot.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
     const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
     const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
     const hasSummaryErgonomicsModifierPercentage = computed(() => summary.value.wearableModifiers.ergonomicsModifierPercentage !== 0)
@@ -63,11 +62,10 @@ export default defineComponent({
       || hasSummaryTurningSpeedModifierPercentage.value
     )
     const hasSummaryWeight = computed(() => summary.value.weight !== 0)
+    const inventorySlotType = computed(() => Services.get(InventorySlotService).getType(props.inventorySlot.typeId))
 
     const acceptedItems = ref<IItem[]>([])
     const acceptedItemsCategoryId = ref<string | undefined>(undefined)
-    const customIconName = ref<string>()
-    const icon = ref<string>()
     const items = ref<(IInventoryItem | undefined)[]>([]) // Used to be able to put back the previously selected item when changing it to an incompatible item
     const summary = ref<IInventorySlotSummary>({
       armorModifiers: {
@@ -98,9 +96,8 @@ export default defineComponent({
       },
       weight: 0
     })
-    const type = ref<IInventorySlotType>()
 
-    watch(() => props.modelValue, async () => {
+    watch(() => props.inventorySlot, async () => {
       await initialize() // Initialization required for the case when we cancel changes
     })
 
@@ -120,22 +117,14 @@ export default defineComponent({
      * Gets the values of the summary of the content of the inventory slot.
      */
     async function getSummary() {
-      summary.value = await inventorySlotPropertiesService.getSummary(props.modelValue)
+      summary.value = await inventorySlotPropertiesService.getSummary(props.inventorySlot)
     }
 
     /**
      * Initializes the inventory slot.
      */
     async function initialize() {
-      items.value = [...props.modelValue.items]
-
-      const inventorySlotTypeResult = inventorySlotService.getType(props.modelValue.typeId)
-
-      if (inventorySlotTypeResult.success) {
-        type.value = inventorySlotTypeResult.value
-        customIconName.value = type.value.customIcon
-        icon.value = type.value.icon
-      }
+      items.value = [...props.inventorySlot.items]
 
       await setItemComponentParameters()
       await getSummary()
@@ -146,18 +135,18 @@ export default defineComponent({
      * @param index - Index of the changed item.
      */
     async function onItemChanged(index: number) {
-      const canSelect = await inventorySlotComponentService.checkCompatibility(props.modelValue.typeId, items.value[index], props.path + '_' + index)
+      const canSelect = await inventorySlotComponentService.checkCompatibility(props.inventorySlot.typeId, items.value[index], props.path + '_' + index)
 
       if (canSelect) {
         const updatedInventorySlot: IInventorySlot = {
           items: items.value,
-          typeId: props.modelValue.typeId
+          typeId: props.inventorySlot.typeId
         }
 
-        emit('update:modelValue', updatedInventorySlot)
+        emit('update:inventory-slot', updatedInventorySlot)
       } else {
         // Putting back the old item
-        items.value[index] = props.modelValue.items[index]
+        items.value[index] = props.inventorySlot.items[index]
       }
     }
 
@@ -182,10 +171,12 @@ export default defineComponent({
      * Sets the category IDs and the accepted items to pass to the ItemComponent.
      */
     async function setItemComponentParameters() {
-      if (type.value != null) {
-        acceptedItemsCategoryId.value = type.value.acceptedItemCategories.length === 1 ? type.value.acceptedItemCategories[0] : undefined
-        acceptedItems.value = await inventorySlotComponentService.getAcceptedItems(type.value.acceptedItemCategories)
+      if (inventorySlotType.value == null) {
+        return
       }
+
+      acceptedItemsCategoryId.value = inventorySlotType.value.acceptedItemCategories.length === 1 ? inventorySlotType.value.acceptedItemCategories[0] : undefined
+      acceptedItems.value = await Services.get(ItemService).getItemsOfCategories(inventorySlotType.value.acceptedItemCategories, true)
     }
 
     /**
@@ -198,7 +189,6 @@ export default defineComponent({
     return {
       acceptedItems,
       acceptedItemsCategoryId,
-      customIconName,
       displayed,
       DisplayValueType,
       hasSummaryArmor,
@@ -212,16 +202,15 @@ export default defineComponent({
       hasSummaryVerticalRecoil,
       hasSummaryWearableModifiers,
       hasSummaryWeight,
-      icon,
       Images,
+      inventorySlotType,
       itemPathPrefix,
       items,
       onItemChanged,
       StatsUtils,
       StringUtils,
       summary,
-      toggle,
-      type
+      toggle
     }
   }
 })

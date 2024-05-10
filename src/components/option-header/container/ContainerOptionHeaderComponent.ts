@@ -1,16 +1,16 @@
 import { computed, defineComponent, PropType } from 'vue'
-import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
+import { IContainer } from '../../../models/item/IContainer'
 import SortingData from '../../../models/utils/SortingData'
 import { ContainerSortingFunctions } from '../../../services/sorting/functions/ContainerSortingFunctions'
-import { IContainer } from '../../../models/item/IContainer'
 import { ISortingFunctionList } from '../../../services/sorting/functions/ISortingFunctionList'
+import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
 
 export default defineComponent({
   components: {
     OptionHeaderSortButton
   },
   props: {
-    modelValue: {
+    sortingData: {
       type: Object as PropType<SortingData<IContainer>>,
       required: true
     },
@@ -20,15 +20,15 @@ export default defineComponent({
       default: undefined
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:sorting-data'],
   setup: (props, { emit }) => {
-    const sortingData = computed({
-      get: () => props.modelValue,
-      set: (value: SortingData<IContainer>) => emit('update:modelValue', value)
+    const sortingDataInternal = computed({
+      get: () => props.sortingData,
+      set: (value: SortingData<IContainer>) => emit('update:sorting-data', value)
     })
 
     return {
-      sortingData,
+      sortingDataInternal,
       sortingFunctions: props.sortingFunctionsOverride ?? ContainerSortingFunctions
     }
   }

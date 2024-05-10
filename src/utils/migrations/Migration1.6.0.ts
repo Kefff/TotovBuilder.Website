@@ -3,21 +3,18 @@ import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import { IMigration } from '../../models/utils/IMigration'
 import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
-import Result, { FailureType } from '../Result'
 
 /**
  * Represents a migration updates obsolete builds to use the default preset item instead of the base item for their weapons.
  */
 export class Migration160 implements IMigration {
   public migrateBuild = this.executeBuildMigration
-  public migrateBuildUnrelatedData = (): Promise<Result<void>> => Promise.resolve(Result.ok())
+  public migrateBuildUnrelatedData = (): Promise<boolean> => Promise.resolve(true)
   public version = '1.6.0'
 
-  private async executeBuildMigration(build: IBuild): Promise<Result> {
+  private async executeBuildMigration(build: IBuild): Promise<boolean> {
     const itemService = Services.get(ItemService)
-
-    let hasFailed = false
-    const errorMessages: string[] = []
+    let success = true
 
     for (const inventorySlot of build.inventorySlots) {
       if (inventorySlot.typeId !== 'onSling' && inventorySlot.typeId !== 'onBack' && inventorySlot.typeId !== 'holster') {
@@ -29,16 +26,13 @@ export class Migration160 implements IMigration {
           continue
         }
 
-        const itemResult = await itemService.getItem(inventoryItem.itemId)
+        const item = await itemService.getItem(inventoryItem.itemId)
 
-        if (!itemResult.success) {
-          errorMessages.push(itemResult.failureMessage)
-          hasFailed = true
-
-          continue
+        if (item.categoryId === 'notFound') {
+          success = false
         }
 
-        const rangedWeapon = itemResult.value as IRangedWeapon
+        const rangedWeapon = item as IRangedWeapon
 
         if (rangedWeapon.defaultPresetId != null) {
           inventoryItem.itemId = rangedWeapon.defaultPresetId
@@ -46,8 +40,6 @@ export class Migration160 implements IMigration {
       }
     }
 
-    return hasFailed
-      ? Result.fail(FailureType.error, 'Migration160.executeBuildMigration()', errorMessages.join('\n'))
-      : Result.ok()
+    return success
   }
 }

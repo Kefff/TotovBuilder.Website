@@ -1,5 +1,4 @@
 import { TinyEmitter } from 'tiny-emitter'
-import Result from '../../utils/Result'
 import { CompatibilityRequest } from './CompatibilityRequest'
 import { CompatibilityRequestType } from './CompatibilityRequestType'
 
@@ -21,7 +20,7 @@ export class CompatibilityService {
    * @param path - When checking the compatibility of a mod, path to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
    * @returns Result indicating whether the item can be added to the build or not.
    */
-  public checkCompatibility(compatibilityRequestType: CompatibilityRequestType, itemId: string, path: string): Promise<Result> {
+  public checkCompatibility(compatibilityRequestType: CompatibilityRequestType, itemId: string, path: string): Promise<boolean> {
     const request = new CompatibilityRequest(compatibilityRequestType, itemId, path)
     this.emitter.emit(compatibilityRequestType, request)
 

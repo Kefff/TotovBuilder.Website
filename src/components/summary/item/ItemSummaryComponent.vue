@@ -7,7 +7,10 @@
     </div>
     <div class="option-entry">
       <div class="option-value-long">
-        <Price :price="price" />
+        <Price
+          v-if="itemUnitPrice != null"
+          :price="itemUnitPrice"
+        />
       </div>
     </div>
     <slot />

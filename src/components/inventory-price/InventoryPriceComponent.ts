@@ -1,4 +1,4 @@
-import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
+import { computed, defineComponent, PropType, ref } from 'vue'
 import { ICurrency } from '../../models/configuration/ICurrency'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { ItemService } from '../../services/ItemService'
@@ -21,35 +21,19 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const mainCurrency = ref<ICurrency>()
+    let _mainCurrency: ICurrency | undefined
+
     const priceDetailPanel = ref()
-    const priceInMainCurrency = ref(0)
-    const showPriceInMainCurrency = ref(false)
 
+    const priceInMainCurrency = computed(() => props.inventoryPrice.priceByCurrency.reduce((total, priceInCurrency) => total + priceInCurrency.valueInMainCurrency, 0))
     const canShowDetails = computed(() => props.inventoryPrice.priceByCurrency.some(ip => ip.currencyName !== mainCurrency.value?.name))
-
-    watch(() => props.inventoryPrice, () => initialize())
-
-    onMounted(() => initialize())
-
-    /**
-     * Initializes the component.
-     */
-    async function initialize() {
-      const mainCurrencyResult = await Services.get(ItemService).getMainCurrency()
-      priceInMainCurrency.value = 0
-
-      if (!mainCurrencyResult.success) {
-        return
+    const mainCurrency = computed(() => {
+      if (_mainCurrency == null) {
+        _mainCurrency = Services.get(ItemService).getMainCurrency()
       }
 
-      mainCurrency.value = mainCurrencyResult.value
-      showPriceInMainCurrency.value = props.inventoryPrice.priceByCurrency.some(p => p.currencyName !== mainCurrency.value?.name)
-
-      for (const priceWithContent of props.inventoryPrice.priceByCurrency) {
-        priceInMainCurrency.value += priceWithContent.valueInMainCurrency
-      }
-    }
+      return _mainCurrency
+    })
 
     /**
      * Toggles the details of the price.

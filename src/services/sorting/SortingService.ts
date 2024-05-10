@@ -1,9 +1,9 @@
 import { IItem } from '../../models/item/IItem'
-import vueI18n from '../../plugins/vueI18n'
-import Result, { FailureType } from '../../utils/Result'
 import SortingData, { SortingOrder } from '../../models/utils/SortingData'
-import { ISortingFunctionList } from './functions/ISortingFunctionList'
 import StringUtils from '../../utils/StringUtils'
+import { LogService } from '../LogService'
+import Services from '../repository/Services'
+import { ISortingFunctionList } from './functions/ISortingFunctionList'
 
 /**
  * Represents a service responsible for sorting items.
@@ -51,14 +51,13 @@ export class SortingService<TItem extends IItem> {
    * @param property - Property that will be used to sort.
    * @returns Updated sorting data.
    */
-  public setSortingProperty(property: string): Result<SortingData<TItem>> {
+  public setSortingProperty(property: string): SortingData<TItem> | undefined {
     const sortingFunction = this.sortingFunctions[property]
 
     if (sortingFunction == null) {
-      return Result.fail(
-        FailureType.error,
-        'OptionSortingService.getSortingFunction()',
-        vueI18n.t('message.sortingFunctionNotFound', { property: property }))
+      Services.get(LogService).logError('message.sortingFunctionNotFound', { property: property })
+
+      return undefined
     }
 
     const order = this.sortingData.property === property ? -this.sortingData.order : SortingOrder.asc
@@ -71,7 +70,7 @@ export class SortingService<TItem extends IItem> {
     }
     this.sortingData.sortingFunction.comparisonValueObtentionFunction = sortingFunction.comparisonValueObtentionFunction
 
-    return Result.ok(this.sortingData)
+    return this.sortingData
   }
 }
 

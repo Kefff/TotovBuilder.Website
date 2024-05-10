@@ -10,10 +10,10 @@ export const ArmorSortingFunctions: ISortingFunctionList<IArmor> = {
   ...WearableSortingFunctions,
   armorClass: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.armorClass
+    comparisonValueObtentionFunction: i => Promise.resolve(i.armorClass)
   },
   durability: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.durability
+    comparisonValueObtentionFunction: i => Promise.resolve(i.durability)
   }
 }

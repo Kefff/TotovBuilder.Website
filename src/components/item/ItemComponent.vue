@@ -1,12 +1,12 @@
 <template>
   <div
-    v-if="selectedInventoryItem != null || editing"
+    v-if="inventoryItemInternal != null || editing"
     class="item"
   >
     <div class="item-selection">
       <div class="item-dropdown-override">
         <Dropdown
-          v-model="selectedItem"
+          v-model="item"
           :disabled="!editing"
           :empty-message="$t('message.noItemsFound')"
           :options="options"
@@ -16,7 +16,7 @@
           class="item-dropdown"
           data-key="id"
           option-label="caption"
-          @change="onSelectedItemChanged()"
+          @change="onItemChanged()"
           @show="onDropdownOpen()"
         >
           <template #header>
@@ -34,18 +34,18 @@
             </div>
           </template>
           <template #value="slotProps">
-            <div v-tooltip.top="selectedItem?.name">
-              <SelectedItem v-model="slotProps.value" />
+            <div v-tooltip.top="item?.name">
+              <SelectedItem v-model:item="slotProps.value" />
             </div>
           </template>
         </Dropdown>
       </div>
       <div
-        v-if="selectedItem != null && maxSelectableQuantity > 1"
+        v-if="item != null && maxSelectableQuantity > 1"
         class="item-quantity"
       >
         <InputNumberField
-          v-model="quantity"
+          v-model:value="quantity"
           :caption="$t('caption.quantity')"
           caption-mode="placeholder"
           :max="maxSelectableQuantity"
@@ -53,50 +53,50 @@
           :read-only="!editing || forceQuantityToMaxSelectableAmount"
           :required="true"
           required-message-position="right"
-          @update:model-value="onQuantityChanged($event)"
+          @update:value="onQuantityChanged($event)"
         />
       </div>
       <SelectedItemFunctionalities
-        v-if="selectedInventoryItem != null"
+        v-if="inventoryItemInternal != null"
         v-model:selectedTab="selectedTab"
-        v-model:ignorePrice="selectedInventoryItem.ignorePrice"
+        v-model:ignorePrice="inventoryItemInternal.ignorePrice"
         v-model:showStats="showStats"
         :can-be-looted="canBeLooted"
-        :can-have-content="selectedItemIsContainer"
-        :can-have-mods="selectedItemIsModdable"
-        :content-count="selectedInventoryItem.content.length"
+        :can-have-content="itemIsContainer"
+        :can-have-mods="itemIsModdable"
+        :content-count="contentCount"
         :can-ignore-price="canIgnorePrice"
-        :mods-count="selectedInventoryItem.modSlots.filter(ms => ms.item != null).length"
+        :mods-count="modsCount"
         @update:ignore-price="onIgnorePriceChanged()"
       />
       <SelectedItemSummarySelector
-        v-if="selectedInventoryItem != null"
-        v-model="selectedInventoryItem"
+        v-if="inventoryItemInternal != null"
         :can-be-looted="canBeLooted"
-        :item-in-same-slot-in-preset="presetModSlotContainingItem?.item"
+        :inventory-item-in-same-slot-in-preset="presetModSlotContainingItem?.item"
+        :inventory-item="inventoryItemInternal"
       />
     </div>
     <div
-      v-if="selectedInventoryItem != null && selectedItem != null && !itemChanging"
+      v-if="inventoryItemInternal != null && item != null && !itemChanging"
       class="tabs"
     >
       <StatsSelector
         v-model:showStats="showStats"
-        :item="selectedItem"
+        :item="item"
       />
-      <div v-if="selectedItemIsModdable">
+      <div v-if="itemIsModdable">
         <ItemMods
           v-show="selectedTab === SelectableTab.mods"
-          v-model="selectedInventoryItem.modSlots"
-          :container-item="selectedItem"
+          v-model:inventory-mod-slots="inventoryItemInternal.modSlots"
+          :moddable-item="item"
           :path="path"
         />
       </div>
-      <div v-if="selectedItemIsContainer">
+      <div v-if="itemIsContainer">
         <div v-show="selectedTab === SelectableTab.content">
           <ItemContent
-            v-model="selectedInventoryItem.content"
-            :container-item="selectedItem"
+            v-model:inventory-items="inventoryItemInternal.content"
+            :container-item="item"
             :path="path"
           />
         </div>

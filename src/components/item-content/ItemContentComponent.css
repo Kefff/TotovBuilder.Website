@@ -1,11 +1,4 @@
-.add-button {
-  color: var(--success-color);
-}
-
-.indent {
-  margin-left: 2rem;
-}
-
-.item {
+.item-content-indent {
+  margin-left: 3.125rem;
   margin-top: 0.5rem;
 }

@@ -48,24 +48,25 @@ export default defineComponent({
 
       for (const price of props.item.prices) {
         // Creating a new instance because we need to calculate de valueInMainCurrency of the barter prices ignoring the merchant filter.
-        // If we directly use references to itemResult.value.prices, then we modify those prices for the whole application each time we pass here
+        // If we directly use references to props.item.prices, then we modify those prices for the whole application each time we pass here
         const priceToAdd = { ...price }
 
         if (priceToAdd.currencyName === 'barter') {
           let barterPrice = 0
 
           for (const barterItem of priceToAdd.barterItems) {
-            const barterItemPriceResult = await inventoryItemService.getPrice({
-              content: [],
-              ignorePrice: false,
-              itemId: barterItem.itemId,
-              modSlots: [],
-              quantity: barterItem.quantity
-            }, undefined, true, false)
-
-            if (barterItemPriceResult.success) {
-              barterPrice += barterItemPriceResult.value.priceWithContentInMainCurrency.valueInMainCurrency
-            }
+            const barterItemPrice = await inventoryItemService.getPrice(
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: barterItem.itemId,
+                modSlots: [],
+                quantity: barterItem.quantity
+              },
+              undefined,
+              true,
+              false)
+            barterPrice += barterItemPrice.priceWithContentInMainCurrency
           }
 
           priceToAdd.valueInMainCurrency = barterPrice

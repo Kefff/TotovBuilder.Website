@@ -33,7 +33,9 @@ describe('getAcceptedCartridgesNames()', () => {
 
     // Assert
     expect(names).toStrictEqual([
+      'Unknown item "5c0d5e4486f77478390952fe"',
       ammo545bp.name,
+      'Unknown item "invalid"',
       ammo545us.name
     ])
   })

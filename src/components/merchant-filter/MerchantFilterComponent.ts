@@ -1,24 +1,24 @@
 import { PropType, defineComponent, reactive } from 'vue'
+import Images from '../../images'
+import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 import { IMerchantFilter } from '../../models/utils/IMerchantFilter'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import Services from '../../services/repository/Services'
-import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 import StringUtils from '../../utils/StringUtils'
-import Images from '../../images'
 
 export default defineComponent({
   props: {
-    modelValue: {
+    globalFilter: {
       type: Object as PropType<IGlobalFilter>,
       required: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:global-filter'],
   setup: (props, { emit }) => {
     const globalFilterService = Services.get(GlobalFilterService)
     const merchantLevelOptions = [1, 2, 3, 4]
 
-    const merchantFilters = reactive(props.modelValue.merchantFilters).sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant))
+    const merchantFilters = reactive(props.globalFilter.merchantFilters).sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant))
 
     /**
      * Gets the level options for a merchant.
@@ -46,8 +46,8 @@ export default defineComponent({
      * Emits changes to the parent component.
      */
     function onFiltersChanged() {
-      emit('update:modelValue', {
-        itemExclusionFilters: props.modelValue.itemExclusionFilters,
+      emit('update:global-filter', {
+        itemExclusionFilters: props.globalFilter.itemExclusionFilters,
         merchantFilters
       } as IGlobalFilter)
     }

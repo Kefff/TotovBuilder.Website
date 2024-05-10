@@ -1,14 +1,14 @@
+import { IBuild } from '../models/build/IBuild'
 import { IChangelogEntry } from '../models/configuration/IChangelogEntry'
+import { IMigration } from '../models/utils/IMigration'
 import vueI18n from '../plugins/vueI18n'
-import { FetchService } from './FetchService'
-import Services from './repository/Services'
-import { WebsiteConfigurationService } from './WebsiteConfigurationService'
-import { NotificationService, NotificationType } from './NotificationService'
 import Migrations from '../utils/migrations/Migrations'
 import { BuildService } from './BuildService'
-import { IMigration } from '../models/utils/IMigration'
-import { IBuild } from '../models/build/IBuild'
+import { FetchService } from './FetchService'
 import { LogService } from './LogService'
+import { NotificationService, NotificationType } from './NotificationService'
+import { WebsiteConfigurationService } from './WebsiteConfigurationService'
+import Services from './repository/Services'
 
 export class VersionService {
   /**
@@ -24,7 +24,7 @@ export class VersionService {
   /**
    * Changelog fetching promise.
    */
-  private changelogFetchingPromise: Promise<void> = Promise.resolve()
+  private changelogFetchingPromise: Promise<IChangelogEntry[] | undefined> = Promise.resolve([])
 
   /**
    * Indicates whether the website has changed of version since the last visit.
@@ -54,12 +54,12 @@ export class VersionService {
   /**
    * Version during the last visit.
    */
-  private lastVisitVersion: string | undefined = undefined
+  private lastVisitVersion: string | undefined
 
   /**
    * Current version.
    */
-  private version = '1.0.0'
+  private version: string = ''
 
   /**
    * Indicates whether the website has changed of version since the last visit.
@@ -108,43 +108,42 @@ export class VersionService {
    * @returns true when all the required migrations have successfuly been executed; otherwise false.
    */
   public async executeBuildMigrations(build: IBuild): Promise<boolean> {
+    let success = true
     const migrationsToExecute = this.getMigrationsToExecute(build.lastWebsiteVersion)
 
     for (const migration of migrationsToExecute) {
-      const migrationResult = await migration.migrateBuild(build)
+      const migrationSuccess = await migration.migrateBuild(build)
 
-      if (!migrationResult.success) {
-        const notificationMessage = build.id !== ''
+      if (!migrationSuccess) {
+        const errorMessage = build.id !== ''
           ? vueI18n.t('message.buildMigrationErrorNotification', { buildName: build.name, buildId: build.id, oldVersion: build.lastWebsiteVersion, newVersion: migration.version })
           : vueI18n.t('message.sharedBuildMigrationErrorNotification', { newVersion: migration.version })
-        const errorMessage = vueI18n.t('message.buildMigrationError', { message: notificationMessage, errors: migrationResult.failureMessage })
 
         Services.get(LogService).logError(errorMessage)
-        Services.get(NotificationService).notify(NotificationType.error, notificationMessage)
+        Services.get(NotificationService).notify(NotificationType.error, errorMessage)
 
-        return false
+        success = false
       }
     }
 
-    return true
+    return success
   }
 
   /**
    * Gets the changelog.
+   * Displays a notification when no changelog could be fetched.
    * @returns Changelog.
    */
-  public async getChangelog(): Promise<IChangelogEntry[]> {
+  public async getChangelog(): Promise<IChangelogEntry[] | undefined> {
     await this.initialize()
 
     if (!this.changelogFetched) {
-      await this.fetchChangelog()
-    }
+      this.changelogFetched = await this.fetchChangelog()
 
-    if (this.changelog.length === 0) {
-      return []
+      if (!this.changelogFetched) {
+        Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.changelogLoadingError'))
+      }
     }
-
-    this.changelogFetched = true
 
     const changelogs: IChangelogEntry[] = []
     const hasChangelogsInCurrentLanguage = this.changelog.some(cl => cl.changes.some(c => c.language === vueI18n.locale.value))
@@ -192,15 +191,17 @@ export class VersionService {
   private async executeBuildUnrelatedMigrations(): Promise<boolean> {
     const migrationsToExecute = this.getMigrationsToExecute(this.lastVisitVersion)
 
-    for (const migration of migrationsToExecute) {
-      const migrationResult = await migration.migrateBuildUnrelatedData()
+    let hasSucceeded = true
 
-      if (!migrationResult.success) {
-        return false
+    for (const migration of migrationsToExecute) {
+      const migrationSuccess = await migration.migrateBuildUnrelatedData()
+
+      if (!migrationSuccess) {
+        hasSucceeded = false
       }
     }
 
-    return true
+    return hasSucceeded
   }
 
   /**
@@ -231,7 +232,7 @@ export class VersionService {
         continue
       }
 
-      buidService.update(build.id, build)
+      buidService.update(build)
     }
 
     if (buildUnrelatedMigrationsResult && buildsMigrationsResult) {
@@ -242,13 +243,22 @@ export class VersionService {
 
   /**
    * Fetches the changelog.
+   * @returns
    */
-  private async fetchChangelog(): Promise<void> {
+  private async fetchChangelog(): Promise<boolean> {
     if (!this.isFetchingChangelogs) {
       this.changelogFetchingPromise = this.startChangelogFetching()
     }
 
-    await this.changelogFetchingPromise
+    const changelog = await this.changelogFetchingPromise
+
+    if (changelog == undefined) {
+      return false
+    }
+
+    this.changelog = changelog
+
+    return true
   }
 
   /**
@@ -282,24 +292,34 @@ export class VersionService {
 
   /**
    * Starts the fetching of the changelog.
-   * @returns true when the changelog has been fetched; otherwise false.
+   * @returns Changelog.
    */
-  private async startChangelogFetching(): Promise<void> {
+  private async startChangelogFetching(): Promise<IChangelogEntry[] | undefined> {
     this.isFetchingChangelogs = true
 
+    const isDebug = import.meta.env.VITE_DEBUG === 'true'
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointChangelog
-    const changelogResult = await fetchService.get<IChangelogEntry[]>(endpoint)
 
-    if (changelogResult.success) {
-      this.changelog = changelogResult.value
-      Services.get(LogService).logInformation('message.changelogFetched')
-    } else {
-      Services.get(LogService).logError('message.changelogNotFetched')
-      Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.changelogLoadingError'))
+    if (isDebug) {
+      Services.get(LogService).logInformation('message.fetchingChangelog', { date: new Date().toISOString() })
+    }
+
+    const changelog = await fetchService.get<IChangelogEntry[]>(endpoint)
+
+    if (changelog == null || changelog.length === 0) {
+      Services.get(LogService).logException('message.changelogNotFetched')
+
+      return undefined
+    }
+
+    if (isDebug) {
+      Services.get(LogService).logInformation('message.changelogFetched', { date: new Date().toISOString() })
     }
 
     this.isFetchingChangelogs = false
+
+    return changelog
   }
 
   /**

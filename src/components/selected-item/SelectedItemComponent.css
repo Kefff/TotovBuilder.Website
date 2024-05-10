@@ -15,7 +15,6 @@
 .selected-item {
   align-items: center;
   display: flex;
-  padding-right: 1rem;
 }
 
 .selected-item-icon {

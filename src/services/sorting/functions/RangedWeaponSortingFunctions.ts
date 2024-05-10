@@ -10,22 +10,22 @@ export const RangedWeaponSortingFunctions: ISortingFunctionList<IRangedWeapon> =
   ...ItemSortingFunctions,
   caliber: {
     comparisonFunction: compareByString,
-    comparisonValueObtentionFunction: async (i) => i.caliber
+    comparisonValueObtentionFunction: i => Promise.resolve(i.caliber)
   },
   ergonomics: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.presetErgonomics ?? i.ergonomics
+    comparisonValueObtentionFunction: i => Promise.resolve(i.presetErgonomics ?? i.ergonomics)
   },
   fireRate: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.fireRate
+    comparisonValueObtentionFunction: i => Promise.resolve(i.fireRate)
   },
   horizontalRecoil: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.presetHorizontalRecoil ?? i.horizontalRecoil
+    comparisonValueObtentionFunction: i => Promise.resolve(i.presetHorizontalRecoil ?? i.horizontalRecoil)
   },
   verticalRecoil: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.presetVerticalRecoil ?? i.verticalRecoil
+    comparisonValueObtentionFunction: i => Promise.resolve(i.presetVerticalRecoil ?? i.verticalRecoil)
   }
 }

@@ -1,7 +1,7 @@
 import { IItem } from '../../models/item/IItem'
+import { IMagazine } from '../../models/item/IMagazine'
 import { ItemService } from '../ItemService'
 import Services from '../repository/Services'
-import { IMagazine } from '../../models/item/IMagazine'
 
 /**
  * Represents a service responsible for managing an ItemContentComponent.
@@ -14,15 +14,11 @@ export class ItemContentComponentService {
    */
   public async getAcceptedItems(itemId: string): Promise<IItem[]> {
     let acceptedItems: IItem[] = []
-    const itemResult = await Services.get(ItemService).getItem(itemId)
+    const item = await Services.get(ItemService).getItem(itemId)
 
-    if (!itemResult.success) {
-      return []
-    }
-
-    switch (itemResult.value.categoryId) {
+    switch (item.categoryId) {
       case 'magazine': {
-        acceptedItems = await this.getMagazineAcceptedItems(itemResult.value)
+        acceptedItems = await this.getMagazineAcceptedItems(item)
         break
       }
       default: {
@@ -56,13 +52,9 @@ export class ItemContentComponentService {
   private async getItemAcceptedItems(): Promise<IItem[]> {
     const itemService = Services.get(ItemService)
     const itemCategories = await itemService.getItemCategories()
-    const itemsResult = await itemService.getItemsOfCategories(itemCategories, true)
+    const items = await itemService.getItemsOfCategories(itemCategories, true)
 
-    if (itemsResult.success) {
-      return itemsResult.value
-    } else {
-      return []
-    }
+    return items
   }
 
   /**
@@ -71,14 +63,8 @@ export class ItemContentComponentService {
    * @returns Accepted items.
    */
   private async getMagazineAcceptedItems(magazine: IItem): Promise<IItem[]> {
-    const itemService = Services.get(ItemService)
-    const itemsResult = await itemService.getItems((magazine as IMagazine).acceptedAmmunitionIds, true)
+    const items = await Services.get(ItemService).getItems((magazine as IMagazine).acceptedAmmunitionIds, true)
 
-    if (itemsResult.success) {
-      return itemsResult.value
-    } else {
-      return []
-    }
-
+    return items
   }
 }

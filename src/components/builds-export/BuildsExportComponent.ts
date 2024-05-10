@@ -1,12 +1,11 @@
 
 import { computed, defineComponent, onMounted, PropType, ref } from 'vue'
-import BuildsList from '../builds-list/BuildsListComponent.vue'
+import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
-import Services from '../../services/repository/Services'
-import { ExportService } from '../../services/ExportService'
 import { BuildService } from '../../services/BuildService'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
-import vueI18n from '../../plugins/vueI18n'
+import { ExportService } from '../../services/ExportService'
+import Services from '../../services/repository/Services'
+import BuildsList from '../builds-list/BuildsListComponent.vue'
 
 export default defineComponent({
   components: {
@@ -17,12 +16,12 @@ export default defineComponent({
       type: Array as PropType<IBuildSummary[]>,
       required: true
     },
-    modelValue: {
+    isExporting: {
       type: Boolean,
       required: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:isExporting'],
   setup: (props, { emit }) => {
     const buildsToExportIds = ref<string[]>([])
     const allSelected = computed(() => buildsToExportIds.value.length === props.buildsSummaries.length)
@@ -33,7 +32,7 @@ export default defineComponent({
      * Cancels the export.
      */
     function cancelExport() {
-      emit('update:modelValue', false)
+      emit('update:isExporting', false)
     }
 
     /**
@@ -41,16 +40,19 @@ export default defineComponent({
      */
     async function confirmExport() {
       const buildService = Services.get(BuildService)
-      const buildsToExport = buildsToExportIds.value.map((bti) => buildService.get(bti).value)
-      const exportResult = await Services.get(ExportService).export(buildsToExport)
+      const buildsToExport: IBuild[] = []
 
-      if (exportResult.success) {
-        Services.get(NotificationService).notify(NotificationType.success, vueI18n.t('message.buildsExported'))
-      } else {
-        Services.get(NotificationService).notify(NotificationType.error, exportResult.failureMessage)
+      for (const buildToExportId of buildsToExportIds.value) {
+        const buildToExport = buildService.get(buildToExportId)
+
+        if (buildToExport != null) {
+          buildsToExport.push(buildToExport)
+        }
       }
 
-      emit('update:modelValue', false)
+      await Services.get(ExportService).export(buildsToExport)
+
+      emit('update:isExporting', false)
     }
 
     /**
@@ -58,7 +60,7 @@ export default defineComponent({
      * @param event - Keyboard event.
      */
     function onKeyDown(event: KeyboardEvent) {
-      if (!props.modelValue) {
+      if (!props.isExporting) {
         return
       }
 

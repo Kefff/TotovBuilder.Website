@@ -2,11 +2,11 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.blindnessProtection"
         icon="low-vision"
         property="blindnessProtectionPercentage"
-        :sorting-functions="sortingFunctions"
+        :sorting-functions="EyewearSortingFunctions"
       />
     </div>
   </div>

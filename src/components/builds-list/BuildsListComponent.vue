@@ -5,7 +5,7 @@
     data-key="id"
     :sort-field="sortField"
     :sort-order="sortOrder"
-    :selection-mode="selectionMode"
+    selection-mode="multiple"
     :meta-key-selection="false"
     @row-select="updateSelectedBuildSummaries()"
     @row-unselect="updateSelectedBuildSummaries()"

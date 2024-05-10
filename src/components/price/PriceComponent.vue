@@ -11,7 +11,6 @@
     >
       <span>{{ displayedPrice }}</span>
       <font-awesome-icon
-        v-if="displayedCurrency != null"
         :icon="displayedCurrency.iconName"
         :class="'currency-' + displayedCurrency.name"
       />
@@ -49,8 +48,8 @@
         <div class="price-details-main-currency-value">
           <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.valueInMainCurrency) }}</span>
           <font-awesome-icon
-            :icon="mainCurrency?.iconName"
-            :class="'currency-' + mainCurrency?.name"
+            :icon="mainCurrency.iconName"
+            :class="'currency-' + mainCurrency.name"
           />
         </div>
       </div>
@@ -78,7 +77,7 @@
       >
         <div class="price-details-barter-title">
           <font-awesome-icon
-            :icon="currency?.iconName"
+            :icon="currency.iconName"
             class="icon-before-text"
           />
           <span>{{ $t('caption.barter') }} :</span>

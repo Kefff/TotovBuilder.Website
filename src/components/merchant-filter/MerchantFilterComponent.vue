@@ -1,36 +1,36 @@
 <template>
   <div>
     <div
-      v-for="merchanFilter of merchantFilters"
-      :key="merchanFilter.merchant"
+      v-for="merchantFilter of merchantFilters"
+      :key="merchantFilter.merchant"
       class="merchant-filter"
     >
       <Checkbox
-        v-model="merchanFilter.enabled"
-        v-tooltip.top="StringUtils.getCheckboxStateTooltip(merchanFilter.enabled)"
+        v-model="merchantFilter.enabled"
+        v-tooltip.top="StringUtils.getCheckboxStateTooltip(merchantFilter.enabled)"
         :binary="true"
         @change="onFiltersChanged()"
       />
       <div
-        :class="'merchant-filter-merchant' + (!merchanFilter.enabled ? ' merchant-filter-disabled-text' : '')"
-        @click="toggleFilter(merchanFilter)"
+        :class="'merchant-filter-merchant' + (!merchantFilter.enabled ? ' merchant-filter-disabled-text' : '')"
+        @click="toggleFilter(merchantFilter)"
       >
-        {{ $t('caption.merchant_' + merchanFilter.merchant) }}
+        {{ $t('caption.merchant_' + merchantFilter.merchant) }}
       </div>
       <img
-        :src="Images[StringUtils.toCamelCase(merchanFilter.merchant)]"
-        :class="'merchant-filter-icon' + (!merchanFilter.enabled ? ' merchant-filter-icon-disabled' : '')"
-        @click="toggleFilter(merchanFilter)"
+        :src="Images[StringUtils.toCamelCase(merchantFilter.merchant)]"
+        :class="'merchant-filter-icon' + (!merchantFilter.enabled ? ' merchant-filter-icon-disabled' : '')"
+        @click="toggleFilter(merchantFilter)"
       >
       <div
         v-tooltip.top="$t('caption.level')"
         class="merchant-filter-level"
       >
         <Dropdown
-          v-if="hasLevels(merchanFilter.merchant)"
-          v-model="merchanFilter.merchantLevel"
-          :options="getMerchantLevels(merchanFilter.merchant)"
-          :disabled="!merchanFilter.enabled"
+          v-if="hasLevels(merchantFilter.merchant)"
+          v-model="merchantFilter.merchantLevel"
+          :options="getMerchantLevels(merchantFilter.merchant)"
+          :disabled="!merchantFilter.enabled"
           class="merchant-filter-level"
           :placeholder="$t('caption.level')"
           @change="onFiltersChanged()"

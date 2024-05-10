@@ -1,12 +1,12 @@
 <template>
   <div>
     <div
-      v-if="modelValue != null"
+      v-if="item != null"
       class="selected-item"
     >
-      <ItemIcon :item="modelValue" />
+      <ItemIcon :item="item" />
       <div class="selected-item-name">
-        {{ modelValue.name }}
+        {{ item.name }}
       </div>
     </div>
     <div

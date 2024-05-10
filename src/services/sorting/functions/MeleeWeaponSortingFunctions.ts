@@ -10,14 +10,14 @@ export const MeleeWeaponSortingFunctions: ISortingFunctionList<IMeleeWeapon> = {
   ...ItemSortingFunctions,
   chopDamage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.chopDamage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.chopDamage)
   },
   hitRadius: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.hitRadius
+    comparisonValueObtentionFunction: i => Promise.resolve(i.hitRadius)
   },
   stabDamage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.stabDamage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.stabDamage)
   }
 }

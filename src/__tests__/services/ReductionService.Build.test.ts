@@ -1,6 +1,8 @@
+import { anything, instance, mock, verify } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { BuildService } from '../../services/BuildService'
+import { LogService } from '../../services/LogService'
 import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 import { build1, build2, reducedBuild1, reducedBuild2 } from '../__data__/buildMocks'
@@ -35,20 +37,13 @@ describe('parseReducedBuild()', () => {
     const service = new ReductionService()
 
     // Act
-    const buildResult = service.parseReducedBuild(reducedBuild)
+    const build = service.parseReducedBuild(reducedBuild)
 
     // Assert
-    expect(buildResult.success).toBe(true)
-    expect(buildResult.value).toEqual(expected)
+    expect(build).toEqual(expected)
   })
 
   it.each([
-    [
-      {
-        's': null
-      },
-      'Cannot parse reduced build because it has no inventory slots.'
-    ],
     [
       {
         's': [
@@ -62,7 +57,111 @@ describe('parseReducedBuild()', () => {
           }
         ]
       },
-      'Cannot find inventory slot type "invalid".'
+      {
+        id: '',
+        inventorySlots: [
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'onSling'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'onBack'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'holster'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'bodyArmor'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'tacticalRig'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'headwear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'earpiece'
+          },
+          {
+            items: [
+              undefined,
+              undefined,
+              undefined,
+              undefined
+            ],
+            typeId: 'pockets'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'backpack'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'pouch'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'scabbard'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'faceCover'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'eyewear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'armband'
+          },
+          {
+            items: [
+              undefined,
+              undefined,
+              undefined
+            ],
+            typeId: 'special'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: ''
+      } as IBuild,
+      'messages.cannotFindInventorySlotType'
     ],
     [
       {
@@ -73,7 +172,111 @@ describe('parseReducedBuild()', () => {
           }
         ]
       },
-      'Cannot parse inventory slot without items.'
+      {
+        id: '',
+        inventorySlots: [
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'onSling'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'onBack'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'holster'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'bodyArmor'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'tacticalRig'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'headwear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'earpiece'
+          },
+          {
+            items: [
+              undefined,
+              undefined,
+              undefined,
+              undefined
+            ],
+            typeId: 'pockets'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'backpack'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'pouch'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'scabbard'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'faceCover'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'eyewear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'armband'
+          },
+          {
+            items: [
+              undefined,
+              undefined,
+              undefined
+            ],
+            typeId: 'special'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: ''
+      } as IBuild,
+      'messages.cannotParseInventorySlotWithoutItems'
     ],
     [
       {
@@ -87,7 +290,111 @@ describe('parseReducedBuild()', () => {
           }
         ]
       },
-      'Cannot parse inventory slot without type ID.'
+      {
+        id: '',
+        inventorySlots: [
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'onSling'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'onBack'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'holster'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'bodyArmor'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'tacticalRig'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'headwear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'earpiece'
+          },
+          {
+            items: [
+              undefined,
+              undefined,
+              undefined,
+              undefined
+            ],
+            typeId: 'pockets'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'backpack'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'pouch'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'scabbard'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'faceCover'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'eyewear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'armband'
+          },
+          {
+            items: [
+              undefined,
+              undefined,
+              undefined
+            ],
+            typeId: 'special'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: ''
+      } as IBuild,
+      'messages.cannotParseInventorySlotWithoutTypeId'
     ],
     [
       {
@@ -102,7 +409,111 @@ describe('parseReducedBuild()', () => {
           }
         ]
       },
-      'Cannot parse inventory item without item ID.'
+      {
+        id: '',
+        inventorySlots: [
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'onSling'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'onBack'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'holster'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'bodyArmor'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'tacticalRig'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'headwear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'earpiece'
+          },
+          {
+            items: [
+              undefined,
+              undefined,
+              undefined,
+              undefined
+            ],
+            typeId: 'pockets'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'backpack'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'pouch'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'scabbard'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'faceCover'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'eyewear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'armband'
+          },
+          {
+            items: [
+              undefined,
+              undefined,
+              undefined
+            ],
+            typeId: 'special'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: ''
+      } as IBuild,
+      'messages.cannotParseInventoryItemWithoutItemId'
     ],
     [
       {
@@ -122,7 +533,117 @@ describe('parseReducedBuild()', () => {
           }
         ]
       },
-      'Cannot parse inventory item without item ID.'
+      {
+        id: '',
+        inventorySlots: [
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'onSling'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'onBack'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'holster'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'bodyArmor'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'tacticalRig'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'headwear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'earpiece'
+          },
+          {
+            items: [
+              undefined,
+              undefined,
+              undefined,
+              undefined
+            ],
+            typeId: 'pockets'
+          },
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: berkut.id,
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'backpack'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'pouch'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'scabbard'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'faceCover'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'eyewear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'armband'
+          },
+          {
+            items: [
+              undefined,
+              undefined,
+              undefined
+            ],
+            typeId: 'special'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: ''
+      } as IBuild,
+      'messages.cannotParseInventoryItemWithoutItemId'
     ],
     [
       {
@@ -144,7 +665,117 @@ describe('parseReducedBuild()', () => {
           }
         ]
       },
-      'Cannot parse inventory mod slot without mod slot name.'
+      {
+        id: '',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: rpk16.id,
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'onSling'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'onBack'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'holster'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'bodyArmor'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'tacticalRig'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'headwear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'earpiece'
+          },
+          {
+            items: [
+              undefined,
+              undefined,
+              undefined,
+              undefined
+            ],
+            typeId: 'pockets'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'backpack'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'pouch'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'scabbard'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'faceCover'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'eyewear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'armband'
+          },
+          {
+            items: [
+              undefined,
+              undefined,
+              undefined
+            ],
+            typeId: 'special'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: ''
+      } as IBuild,
+      'messages.cannotParseInventoryModSlotWithoutModSlotName'
     ],
     [
       {
@@ -167,21 +798,159 @@ describe('parseReducedBuild()', () => {
           }
         ]
       },
-      'Cannot parse inventory item without item ID.'
+      {
+        id: '',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: rpk16.id,
+                modSlots: [
+                  {
+                    item: undefined,
+                    modSlotName: 'mod_magazine'
+                  }
+                ],
+                quantity: 1
+              }
+            ],
+            typeId: 'onSling'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'onBack'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'holster'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'bodyArmor'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'tacticalRig'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'headwear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'earpiece'
+          },
+          {
+            items: [
+              undefined,
+              undefined,
+              undefined,
+              undefined
+            ],
+            typeId: 'pockets'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'backpack'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'pouch'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'scabbard'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'faceCover'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'eyewear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'armband'
+          },
+          {
+            items: [
+              undefined,
+              undefined,
+              undefined
+            ],
+            typeId: 'special'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: ''
+      } as IBuild,
+      'messages.cannotParseInventoryItemWithoutItemId'
     ]
-  ])('should fail when the parsing of an inventory slot fails', (reducedBuild: Record<string, unknown>, expected: string) => {
+  ])('should ignore elements that could not be parsed and log an error', (reducedBuild: Record<string, unknown>, expectedBuild: IBuild, expectedErrorMessageKey: string) => {
     // Arrange
     useWebsiteConfigurationServiceMock()
-
     Services.configure(BuildService)
+
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
+
     const service = new ReductionService()
 
     // Act
-    const buildResult = service.parseReducedBuild(reducedBuild)
+    const build = service.parseReducedBuild(reducedBuild)
 
     // Assert
-    expect(buildResult.success).toBe(false)
-    expect(buildResult.failureMessage).toBe(expected)
+    expect(build).toStrictEqual(expectedBuild)
+    verify(logServiceMock.logError(expectedErrorMessageKey))
+  })
+
+  it('should return undefined and log an error when a build has no inventory slots', () => {
+    // Arrange
+    useWebsiteConfigurationServiceMock()
+    Services.configure(BuildService)
+
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
+
+    const service = new ReductionService()
+
+    // Act
+    const build = service.parseReducedBuild({
+      's': null
+    })
+
+    // Assert
+    expect(build).toBeUndefined()
+    verify(logServiceMock.logError('message.cannotParseBuildWithoutInventorySlots', anything()))
   })
 })
 

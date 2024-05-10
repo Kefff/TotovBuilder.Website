@@ -1,7 +1,7 @@
 <template>
   <ArmorOptionHeader
-    v-model="sortingData"
-    :sorting-functions-override="sortingFunctions"
+    v-model:sorting-data="sortingDataInternal"
+    :sorting-functions-override="ArmorModSortingFunctions"
   />
 </template>
 

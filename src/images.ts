@@ -20,6 +20,7 @@ import imageSantaPraporSmiling from '../assets/images/santa-prapor-smiling.webp'
 import imageSkier from '../assets/images/skier.webp'
 import imageStab from '../assets/images/stab.webp'
 import imageTherapist from '../assets/images/therapist.webp'
+import imageUnknownItem from '../assets/images/unknown_item.webp'
 
 export interface IImages {
   [key: string]: string
@@ -47,7 +48,8 @@ const Images: IImages = {
   santaPraporSmiling: imageSantaPraporSmiling,
   skier: imageSkier,
   stab: imageStab,
-  therapist: imageTherapist
+  therapist: imageTherapist,
+  unknownItem: imageUnknownItem
 }
 
 export default Images

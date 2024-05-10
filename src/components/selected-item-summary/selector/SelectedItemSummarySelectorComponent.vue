@@ -1,76 +1,76 @@
 <template>
   <SelectedItemSummary
-    v-if="modelValue != null && item != null"
-    v-model="modelValue"
+    v-if="inventoryItem != null && selectedItem != null"
     :can-be-looted="canBeLooted"
-    :item-in-same-slot-in-preset="itemInSameSlotInPreset"
+    :inventory-item-in-same-slot-in-preset="inventoryItemInSameSlotInPreset"
+    :inventory-item="inventoryItem"
   >
     <AmmunitionSummary
       v-if="isAmmunition"
-      :item="item"
+      :item="selectedItem"
       :show-empty-entries="false"
     />
     <ArmorSummary
       v-else-if="isArmor"
-      :armor-modifiers-override="armorModifiers"
-      :item="item"
+      :armor-modifiers-override="selectedItemArmorModifiers"
+      :item="selectedItem"
       :show-empty-entries="false"
     />
     <ArmorModSummary
       v-else-if="isArmorMod"
-      :item="item"
+      :item="selectedItem"
       :show-empty-entries="false"
     />
     <BackpackSummary
       v-else-if="isBackpack"
-      :item="item"
+      :item="selectedItem"
     />
     <ContainerSummary
       v-else-if="isContainer"
-      :item="item"
+      :item="selectedItem"
     />
     <EyewearSummary
       v-else-if="isEyewear"
-      :item="item"
+      :item="selectedItem"
       :show-empty-entries="false"
     />
     <GrenadeSummary
       v-else-if="isGrenade"
-      :item="item"
+      :item="selectedItem"
       :show-empty-entries="false"
     />
     <HeadwearSummary
       v-else-if="isHeadwear"
-      :item="item"
+      :item="selectedItem"
       :show-empty-entries="false"
     />
     <MagazineSummary
       v-else-if="isMagazine"
-      :item="item"
+      :item="selectedItem"
       :show-empty-entries="false"
     />
     <MeleeWeaponSummary
       v-else-if="isMeleeWeapon"
-      :item="item"
+      :item="selectedItem"
     />
     <ModSummary
       v-else-if="isMod"
-      :item="item"
+      :item="selectedItem"
       :show-empty-entries="false"
     />
     <RangedWeaponSummary
       v-else-if="isRangedWeapon"
-      :item="item"
+      :item="selectedItem"
     />
     <RangedWeaponModSummary
       v-else-if="isRangedWeaponMod"
-      :item="item"
+      :item="selectedItem"
       :show-empty-entries="false"
     />
     <VestSummary
       v-else-if="isVest"
-      :armor-modifiers-override="armorModifiers"
-      :item="item"
+      :armor-modifiers-override="selectedItemArmorModifiers"
+      :item="selectedItem"
       :show-empty-entries="false"
     />
   </SelectedItemSummary>

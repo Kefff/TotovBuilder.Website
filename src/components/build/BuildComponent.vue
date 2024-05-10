@@ -13,7 +13,7 @@
       </span>
       <InputTextField
         v-show="!isLoading && editing"
-        v-model="build.name"
+        v-model:value="build.name"
         :caption="$t('caption.name')"
         caption-mode="placeholder"
         :required="true"
@@ -306,7 +306,7 @@
         <InventorySlot
           v-for="(inventorySlot, index) of build.inventorySlots"
           :key="path + '/' + inventorySlot.typeId"
-          v-model:modelValue="build.inventorySlots[index]"
+          v-model:inventory-slot="build.inventorySlots[index]"
           v-model:collapsed="collapseStatuses[index]"
           :path="path + '/' + inventorySlotPathPrefix + inventorySlot.typeId"
         />

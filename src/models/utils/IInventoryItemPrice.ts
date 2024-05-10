@@ -25,7 +25,7 @@ export interface IInventoryItemPrice {
   /**
    * Price with content and mods in main currency.
    */
-  priceWithContentInMainCurrency: IPrice
+  priceWithContentInMainCurrency: number
 
   /**
    * Unit price.

@@ -24,6 +24,7 @@
   text-align: right;
   white-space: normal;
   width: 5rem;
+  min-width: 3rem;
 }
 
 .option-value-long {
@@ -33,6 +34,7 @@
   text-align: right;
   white-space: normal;
   width: 8.5rem;
+  min-width: 3rem;
 }
 
 .option-value-long > div {

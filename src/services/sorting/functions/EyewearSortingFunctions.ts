@@ -9,6 +9,6 @@ export const EyewearSortingFunctions: ISortingFunctionList<IEyewear> = {
   ...ItemSortingFunctions,
   blindnessProtectionPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.blindnessProtectionPercentage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.blindnessProtectionPercentage)
   }
 }

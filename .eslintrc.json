@@ -39,6 +39,7 @@
       "warn",
       "never"
     ],
+    "require-await": "error",
     "tsdoc/syntax": "warn",
     "vue/attribute-hyphenation": [
       "error",

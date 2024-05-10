@@ -1,22 +1,19 @@
-import { IMigration } from '../../models/utils/IMigration'
-import Services from '../../services/repository/Services'
 import { IBuild } from '../../models/build/IBuild'
+import { IMigration } from '../../models/utils/IMigration'
 import { ItemService } from '../../services/ItemService'
-import Result, { FailureType } from '../Result'
+import Services from '../../services/repository/Services'
 
 /**
  * Represents a migration updates obsolete builds to use the default preset item instead of the base item for their armored items.
  */
 export class Migration171 implements IMigration {
   public migrateBuild = this.executeBuildMigration
-  public migrateBuildUnrelatedData = (): Promise<Result<void>> => Promise.resolve(Result.ok())
+  public migrateBuildUnrelatedData = (): Promise<boolean> => Promise.resolve(true)
   public version = '1.7.1'
 
-  private async executeBuildMigration(build: IBuild): Promise<Result> {
+  private async executeBuildMigration(build: IBuild): Promise<boolean> {
     const itemService = Services.get(ItemService)
-
-    let hasFailed = false
-    const errorMessages: string[] = []
+    let success = true
 
     for (const inventorySlot of build.inventorySlots) {
       if (inventorySlot.typeId !== 'bodyArmor' && inventorySlot.typeId !== 'headwear' && inventorySlot.typeId !== 'tacticalRig') {
@@ -28,25 +25,14 @@ export class Migration171 implements IMigration {
           continue
         }
 
-        const itemResult = await itemService.getItem(inventoryItem.itemId)
+        const item = await itemService.getItem(inventoryItem.itemId)
 
-        if (!itemResult.success) {
-          errorMessages.push(itemResult.failureMessage)
-          hasFailed = true
-
-          continue
+        if (item.categoryId === 'notFound') {
+          success = false
         }
 
-        const itemsOfCategoryResult = await itemService.getItemsOfCategories([itemResult.value.categoryId], false)
-
-        if (!itemsOfCategoryResult.success) {
-          errorMessages.push(itemsOfCategoryResult.failureMessage)
-          hasFailed = true
-
-          continue
-        }
-
-        const preset = itemsOfCategoryResult.value.filter(v => v.name === itemResult.value.name + ' Default')[0]
+        const itemsOfCategory = await itemService.getItemsOfCategories([item.categoryId], false)
+        const preset = itemsOfCategory.filter(v => v.name === item.name + ' Default')[0]
 
         if (preset == null) {
           continue
@@ -56,8 +42,6 @@ export class Migration171 implements IMigration {
       }
     }
 
-    return hasFailed
-      ? Result.fail(FailureType.error, 'Migration171.executeBuildMigration()', errorMessages.join('\n'))
-      : Result.ok()
+    return success
   }
 }

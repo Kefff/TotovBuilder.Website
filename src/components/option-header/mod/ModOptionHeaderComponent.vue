@@ -2,11 +2,11 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.ergonomics"
         icon="hand-paper"
         property="ergonomicsModifier"
-        :sorting-functions="sortingFunctions"
+        :sorting-functions="ModSortingFunctions"
       />
     </div>
   </div>

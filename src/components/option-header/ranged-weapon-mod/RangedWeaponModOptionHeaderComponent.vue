@@ -2,33 +2,33 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.ergonomics"
         icon="hand-paper"
         property="ergonomicsModifier"
-        :sorting-functions="sortingFunctions"
+        :sorting-functions="RangedWeaponModSortingFunctions"
       />
     </div>
   </div>
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.recoil"
         icon="arrows-alt"
         property="recoilModifierPercentage"
-        :sorting-functions="sortingFunctions"
+        :sorting-functions="RangedWeaponModSortingFunctions"
       />
     </div>
   </div>
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.accuracy"
         icon="bullseye"
         property="accuracyModifierPercentage"
-        :sorting-functions="sortingFunctions"
+        :sorting-functions="RangedWeaponModSortingFunctions"
       />
     </div>
   </div>

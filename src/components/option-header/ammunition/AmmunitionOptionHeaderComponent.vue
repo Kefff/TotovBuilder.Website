@@ -2,7 +2,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.fleshDamage"
         icon="heart-broken"
         property="fleshDamage"
@@ -13,7 +13,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.penetrationPower"
         icon="bolt"
         property="penetrationPower"
@@ -27,7 +27,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.fragmentationChance"
         icon="viruses"
         property="fragmentationChance"
@@ -38,7 +38,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.recoil"
         icon="arrows-alt"
         property="recoilModifierPercentage"
@@ -49,7 +49,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.accuracy"
         icon="bullseye"
         property="accuracyModifierPercentage"

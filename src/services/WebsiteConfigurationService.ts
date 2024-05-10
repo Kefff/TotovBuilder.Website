@@ -1,12 +1,9 @@
-import { IWebsiteConfiguration } from '../models/configuration/IWebsiteConfiguration'
-import Services from './repository/Services'
-import { FetchService } from './FetchService'
-import Result, { FailureType } from '../utils/Result'
-import vueI18n from '../plugins/vueI18n'
 import { TinyEmitter } from 'tiny-emitter'
-import { ServiceInitializationState } from './repository/ServiceInitializationState'
-import { NotificationService, NotificationType } from './NotificationService'
+import { IWebsiteConfiguration } from '../models/configuration/IWebsiteConfiguration'
+import { FetchService } from './FetchService'
 import { LogService } from './LogService'
+import { ServiceInitializationState } from './repository/ServiceInitializationState'
+import Services from './repository/Services'
 
 /**
  * Represents a service responsible for getting the website configuration.
@@ -20,7 +17,10 @@ export class WebsiteConfigurationService {
   /**
    * Website configuration.
    */
-  public configuration: IWebsiteConfiguration = {
+  public get configuration(): IWebsiteConfiguration {
+    return this._configuration
+  }
+  private _configuration: IWebsiteConfiguration = { // Base configuration to be able to fetch the real full configuration
     allowCookiesStorageKey: 'allow_cookies',
     bugReportUrl: import.meta.env.VITE_DISCORD_URL,
     buildSharingUrl: '',
@@ -28,7 +28,7 @@ export class WebsiteConfigurationService {
     buildsSortOrderStorageKey: 'builds_sort_order',
     buildStorageKeyPrefix: 'build_',
     cacheDuration: 3600,
-    contactAddress: 'totovbuilder@gmail.com',
+    contactAddress: import.meta.env.VITE_CONTACT_ADDRESS,
     discordUrl: import.meta.env.VITE_BUG_REPORT_URL,
     endpointChangelog: '',
     endpointItemCategories: '',
@@ -75,17 +75,13 @@ export class WebsiteConfigurationService {
    * Initializes the data used by the service.
    */
   public async initialize(): Promise<boolean> {
-    const websiteConfigurationResult = await this.fetchWebsiteConfiguration()
+    const websiteConfiguration = await this.fetchWebsiteConfiguration()
 
-    if (!websiteConfigurationResult.success) {
+    if (websiteConfiguration == null) {
       return false
     }
 
-    this.configuration = websiteConfigurationResult.value
-
-    if (this.configuration.postUpdatePeriod) {
-      Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.postUpdatePeriod'), 0)
-    }
+    this._configuration = websiteConfiguration
 
     return true
   }
@@ -94,16 +90,26 @@ export class WebsiteConfigurationService {
    * Fetches the website configuration.
    * @returns Website configuration.
    */
-  private async fetchWebsiteConfiguration(): Promise<Result<IWebsiteConfiguration>> {
+  private async fetchWebsiteConfiguration(): Promise<IWebsiteConfiguration | undefined> {
+    const isDebug = import.meta.env.VITE_DEBUG === 'true'
     const fetchService = Services.get(FetchService)
-    const websiteConfigurationResult = await fetchService.get<IWebsiteConfiguration>('/' + import.meta.env.VITE_WEBSITE_CONFIGURATION_ENDPOINT as string)
 
-    if (!websiteConfigurationResult.success) {
-      return Result.fail(FailureType.error, 'WebsiteConfigurationService.fetchWebsiteConfiguration()', vueI18n.t('message.websiteConfigurationNotFetched'))
+    if (isDebug) {
+      Services.get(LogService).logInformation('message.fetchingWebsiteConfiguration', { date: new Date().toISOString() })
     }
 
-    Services.get(LogService).logInformation('message.websiteConfigurationFetched')
+    const websiteConfiguration = await fetchService.get<IWebsiteConfiguration>('/' + import.meta.env.VITE_WEBSITE_CONFIGURATION_ENDPOINT as string)
 
-    return websiteConfigurationResult
+    if (websiteConfiguration == null) {
+      Services.get(LogService).logException('message.websiteConfigurationNotFetched')
+
+      return undefined
+    }
+
+    if (isDebug) {
+      Services.get(LogService).logInformation('message.websiteConfigurationFetched', { date: new Date().toISOString() })
+    }
+
+    return websiteConfiguration
   }
 }

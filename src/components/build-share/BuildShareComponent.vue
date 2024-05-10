@@ -23,11 +23,10 @@
     </div>
     <div class="build-share">
       <InputTextField
-        v-model="shareLink"
+        v-model:value="shareLink"
         :caption="$t('caption.link')"
         caption-mode="placeholder"
         class="build-share-input"
-        @update:model-value="onUpdateShareLink()"
       />
       <Button
         v-tooltip.top="$t('caption.copyLink')"

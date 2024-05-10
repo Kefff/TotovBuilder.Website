@@ -1,5 +1,4 @@
 import { computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
-import { ICurrency } from '../../models/configuration/ICurrency'
 import { IItem } from '../../models/item/IItem'
 import { IPrice } from '../../models/item/IPrice'
 import { IInventoryItemPrice } from '../../models/utils/IInventoryItemPrice'
@@ -49,16 +48,15 @@ export default defineComponent({
     }
   },
   setup: (props) => {
+    const itemService = Services.get(ItemService)
     const globalFilterService = Services.get(GlobalFilterService)
-    globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+
+
+    const mainCurrency = Services.get(ItemService).getMainCurrency()
 
     const barterItemPrices = ref<IInventoryItemPrice[]>([])
     const barterItems = ref<IItem[]>([])
-    const currency = ref<ICurrency>()
-    const displayedCurrency = ref<ICurrency>()
-    const displayedPrice = ref('')
     const initialized = ref(false)
-    const mainCurrency = ref<ICurrency>()
     const priceDetailPanel = ref()
 
     const canShowDetails = computed(() => {
@@ -68,7 +66,16 @@ export default defineComponent({
           || isBarter.value)
     })
     const canShowMerchantIcon = computed(() => props.showMerchantIcon && props.price.merchant !== '')
+    const currency = computed(() => itemService.getCurrency(props.price.currencyName))
+    const displayedCurrency = computed(() => isBarter.value ? mainCurrency : currency.value)
+    const displayedPrice = computed(() => {
+      const value = isBarter.value ? props.price.valueInMainCurrency : props.price.value
+      const displayedValue = StatsUtils.getStandardDisplayValue(DisplayValueType.price, value)
+
+      return displayedValue
+    })
     const isBarter = computed(() => props.price.currencyName === 'barter')
+
     const merchantTooltip = computed(() => props.showTooltip
       ? (props.price.merchant !== ''
         ? (vueI18n.t('caption.merchant_' + props.price.merchant)
@@ -80,11 +87,15 @@ export default defineComponent({
         : '')
       : '')
     const priceValueTooltip = computed(() => props.showTooltip ? vueI18n.t('caption.price') + (props.tooltipSuffix ?? '') : '')
-    const showPriceInMainCurrency = computed(() => !isBarter.value && currency.value?.name !== mainCurrency.value?.name)
+    const showPriceInMainCurrency = computed(() => !isBarter.value && currency.value.name !== mainCurrency.name)
 
     watch(() => props.price, () => initialize())
 
-    onMounted(() => initialize())
+    onMounted(() => {
+      globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+
+      initialize()
+    })
 
     onUnmounted(() => {
       globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
@@ -103,11 +114,8 @@ export default defineComponent({
       const itemService = Services.get(ItemService)
 
       for (const barterItem of props.price.barterItems) {
-        const itemResult = await itemService.getItem(barterItem.itemId)
-
-        if (itemResult.success) {
-          barterItems.value?.push(itemResult.value)
-        }
+        const item = await itemService.getItem(barterItem.itemId)
+        barterItems.value.push(item)
       }
     }
 
@@ -124,17 +132,18 @@ export default defineComponent({
       const inventoryItemService = Services.get(InventoryItemService)
 
       for (const barterItem of props.price.barterItems) {
-        const priceResult = await inventoryItemService.getPrice({
-          content: [],
-          ignorePrice: false,
-          itemId: barterItem.itemId,
-          modSlots: [],
-          quantity: barterItem.quantity
-        }, undefined, true, props.useMerchantFilter)
-
-        if (priceResult.success) {
-          barterItemPrices.value.push(priceResult.value)
-        }
+        const barterItemPrice = await inventoryItemService.getPrice(
+          {
+            content: [],
+            ignorePrice: false,
+            itemId: barterItem.itemId,
+            modSlots: [],
+            quantity: barterItem.quantity
+          },
+          undefined,
+          true,
+          props.useMerchantFilter)
+        barterItemPrices.value.push(barterItemPrice)
       }
     }
 
@@ -146,30 +155,6 @@ export default defineComponent({
 
       barterItems.value = []
       barterItemPrices.value = []
-
-      const mainCurrencyResult = await Services.get(ItemService).getMainCurrency()
-
-      if (mainCurrencyResult.success) {
-        mainCurrency.value = mainCurrencyResult.value
-      } else {
-        mainCurrency.value = undefined
-      }
-
-      const currencyResult = await Services.get(ItemService).getCurrency(props.price.currencyName)
-
-      if (currencyResult.success) {
-        currency.value = currencyResult.value
-      } else {
-        currency.value = undefined
-      }
-
-      if (isBarter.value) {
-        displayedCurrency.value = mainCurrency.value
-        displayedPrice.value = StatsUtils.getStandardDisplayValue(DisplayValueType.price, props.price.valueInMainCurrency)
-      } else {
-        displayedCurrency.value = currency.value
-        displayedPrice.value = StatsUtils.getStandardDisplayValue(DisplayValueType.price, props.price.value)
-      }
 
       await getBarterItems()
       await getBarterItemPrices()

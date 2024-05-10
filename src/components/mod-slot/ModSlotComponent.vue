@@ -1,21 +1,21 @@
 <template>
   <div
-    v-if="editing || modelValue.item != null"
+    v-if="editing || inventoryModSlot.item != null"
     class="mod-slot"
   >
-    <div class="slot-name">
+    <div class="mod-slot-slot-name">
       {{ $t('caption.modSlot_' + (modSlot.name.startsWith('chamber') ? 'chamber' : modSlot.name)) }}
       <span
         v-if="modSlot.required"
         v-tooltip.top="$t('caption.requiredMod')"
-        :class="modelValue.item != null ? 'required-ok' : 'required-nok'"
+        :class="inventoryModSlot.item != null ? 'mod-slot-required-ok' : 'mod-slot-required-nok'"
       > *</span>
     </div>
     <Item
-      v-model="modelValue.item"
+      v-model:inventory-item="inventoryModSlot.item"
       :accepted-items="acceptedItems"
       :accepted-items-category-id="acceptedItemsCategoryId"
-      :path="path + '/' + itemPathPrefix + (modelValue.item?.itemId ?? 'empty')"
+      :path="`${path}/${itemPathPrefix}${inventoryModSlot.item?.itemId ?? 'empty'}`"
       :max-stackable-amount="modSlot.maxStackableAmount"
     />
   </div>

@@ -284,7 +284,7 @@ describe('getMatchingPrices()', () => {
         }
       ] as IPrice[]
     ]
-  ])('should indicate that an item has matching prices', async (prices: IPrice[], expected: IPrice[]) => {
+  ])('should indicate that an item has matching prices', (prices: IPrice[], expected: IPrice[]) => {
     // Arrange
     useTarkovValuesServiceMock()
     useWebsiteConfigurationServiceMock()
@@ -456,7 +456,7 @@ describe('isMatchingFilter()', () => {
       [] as IPrice[],
       false
     ]
-  ])('should indicate whether an item matches the item filter and has prices matching the merchant filters', async (prices: IPrice[], expected: boolean) => {
+  ])('should indicate whether an item matches the item filter and has prices matching the merchant filters', (prices: IPrice[], expected: boolean) => {
     // Arrange
     useItemServiceMock()
     useTarkovValuesServiceMock()
@@ -533,7 +533,7 @@ describe('isMatchingFilter()', () => {
 
     service.save(globalFilter)
 
-    const item = (await Services.get(ItemService).getItem(itemId)).value
+    const item = (await Services.get(ItemService).getItem(itemId))
 
     // Act
     const result = service.isMatchingFilter(item)

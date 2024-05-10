@@ -2,7 +2,7 @@
   <div :class="'p-field input-number-field required-message-' + requiredMessagePosition">
     <label v-if="!captionAsPlaceholder">{{ caption }}</label>
     <InputNumber
-      v-model="value"
+      v-model="valueInternal"
       button-layout="horizontal"
       :class="invalid ? 'p-invalid' : ''"
       decrement-button-icon="pi pi-minus"

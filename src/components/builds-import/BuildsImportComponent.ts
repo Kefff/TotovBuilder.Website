@@ -1,20 +1,20 @@
 import { computed, defineComponent, onMounted, ref } from 'vue'
-import BuildsList from '../builds-list/BuildsListComponent.vue'
-import Services from '../../services/repository/Services'
-import { ImportService } from '../../services/ImportService'
-import { IBuildSummary } from '../../models/utils/IBuildSummary'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
-import { IBuild } from '../../models/build/IBuild'
 import { useI18n } from 'vue-i18n'
+import { IBuild } from '../../models/build/IBuild'
+import { IBuildSummary } from '../../models/utils/IBuildSummary'
+import { ImportService } from '../../services/ImportService'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import { BuildsImportComponentService } from '../../services/components/BuildsImportComponentService'
+import Services from '../../services/repository/Services'
+import BuildsList from '../builds-list/BuildsListComponent.vue'
 
 export default defineComponent({
   components: {
     BuildsList
   },
   props: {
-    modelValue: {
+    isImporting: {
       type: Boolean,
       required: true
     },
@@ -23,7 +23,7 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['update:modelValue', 'update:hasImported'],
+  emits: ['update:isImporting', 'update:hasImported'],
   setup: (props, { emit }) => {
     const buildsImportComponentService = Services.get(BuildsImportComponentService)
 
@@ -50,7 +50,7 @@ export default defineComponent({
       readenBuildSummaries.value = []
       buildsToImportIds.value = []
 
-      emit('update:modelValue', false)
+      emit('update:isImporting', false)
     }
 
     /**
@@ -64,7 +64,7 @@ export default defineComponent({
       readenBuildSummaries.value = []
       buildsToImportIds.value = []
 
-      emit('update:modelValue', false)
+      emit('update:isImporting', false)
       emit('update:hasImported', true)
       notificationService.notify(NotificationType.success, i18n.t('message.buildsImported'))
     }
@@ -81,17 +81,12 @@ export default defineComponent({
       }
 
       const buildFile = importInput.value.files[0]
-
       const buildsImportResult = await buildsImportComponentService.readBuilds(buildFile)
 
-      if (!buildsImportResult.success) {
-        Services.get(NotificationService).notify(NotificationType.error, buildsImportResult.failureMessage)
-
-        return
+      if (buildsImportResult != null) {
+        readenBuilds.value = buildsImportResult.builds
+        readenBuildSummaries.value = buildsImportResult.buildSummaries
       }
-
-      readenBuilds.value = buildsImportResult.value.builds
-      readenBuildSummaries.value = buildsImportResult.value.buildSummaries
     }
 
     /**
@@ -99,7 +94,7 @@ export default defineComponent({
      * @param event - Keyboard event.
      */
     function onKeyDown(event: KeyboardEvent) {
-      if (!props.modelValue || !showingList.value) {
+      if (!props.isImporting || !showingList.value) {
         return
       }
 

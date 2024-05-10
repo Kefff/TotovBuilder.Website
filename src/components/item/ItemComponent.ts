@@ -10,12 +10,10 @@ import { CompatibilityService } from '../../services/compatibility/Compatibility
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ItemService } from '../../services/ItemService'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
 import { SortingService } from '../../services/sorting/SortingService'
 import { PathUtils } from '../../utils/PathUtils'
-import Result from '../../utils/Result'
 import StringUtils from '../../utils/StringUtils'
 import InputNumberField from '../input-number-field/InputNumberFieldComponent.vue'
 import ItemContent from '../item-content/ItemContentComponent.vue'
@@ -33,11 +31,11 @@ export default defineComponent({
     ItemContent,
     ItemMods,
     OptionHeaderSelector,
-    SummarySelector,
     SelectedItem,
+    SelectedItemFunctionalities,
     SelectedItemSummarySelector,
     StatsSelector,
-    SelectedItemFunctionalities
+    SummarySelector
   },
   props: {
     acceptedItems: {
@@ -59,6 +57,11 @@ export default defineComponent({
       required: false,
       default: false
     },
+    inventoryItem: {
+      type: Object as PropType<IInventoryItem | undefined>,
+      required: false,
+      default: undefined
+    },
     maxStackableAmount: {
       type: Number,
       required: false,
@@ -67,119 +70,107 @@ export default defineComponent({
     path: {
       type: String,
       required: true
-    },
-    modelValue: {
-      type: Object as PropType<IInventoryItem | undefined>,
-      required: false,
-      default: undefined
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:inventory-item'],
   setup: (props, { emit }) => {
     const compatibilityService = Services.get(CompatibilityService)
     const inventoryItemService = Services.get(InventoryItemService)
     const itemPropertiesService = Services.get(ItemPropertiesService)
     const itemService = Services.get(ItemService)
     const presetService = Services.get(PresetService)
-    const notificationService = Services.get(NotificationService)
 
     const editing = inject<Ref<boolean>>('editing')
 
-    const canIgnorePrice = computed(() => presetModSlotContainingItem.value?.item?.itemId !== selectedItem.value?.id)
+    const canIgnorePrice = computed(() => presetModSlotContainingItem.value?.item?.itemId !== item.value?.id)
+    const contentCount = computed(() => inventoryItemInternal.value?.content.length ?? 0)
     const dropdownPanelHeight = computed(() => Math.min(options.value.length === 0 ? 1 : options.value.length, 5) * 4 + 'rem') // Shows 5 items or less
-    const optionHeight = computed(() => Number.parseInt(window.getComputedStyle(document.documentElement).fontSize.replace('px', '')) * 4)
-    const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? selectedItem.value?.maxStackableAmount ?? 1)
-    const selectedInventoryItem = computed<IInventoryItem | undefined>({
-      get: () => props.modelValue,
-      set: (value: IInventoryItem | undefined) => emit('update:modelValue', value)
+    const inventoryItemInternal = computed<IInventoryItem | undefined>({
+      get: () => props.inventoryItem,
+      set: (value: IInventoryItem | undefined) => emit('update:inventory-item', value)
     })
+    const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.value?.maxStackableAmount ?? 1)
+    const modsCount = computed(() => inventoryItemInternal.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
+    const optionHeight = computed(() => Number.parseInt(window.getComputedStyle(document.documentElement).fontSize.replace('px', '')) * 4)
 
+    const item = ref<IItem | undefined>()
     const itemChanging = ref(false)
+    const itemIsContainer = ref(false)
+    const itemIsModdable = ref(false)
     const options = ref<IItem[]>([])
     const optionsFilter = ref('')
     const optionsSortingData = ref(new SortingData<IItem>())
-    const quantity = ref(props.modelValue?.quantity ?? 1)
     const presetModSlotContainingItem = ref<IInventoryModSlot>()
-    const selectedItem = ref<IItem | undefined>()
-    const selectedItemIsContainer = ref(false)
-    const selectedItemIsModdable = ref(false)
+    const quantity = ref(props.inventoryItem?.quantity ?? 1)
     const selectedTab = ref(SelectableTab.hidden)
     const showStats = ref(false)
 
     watch(() => props.acceptedItems, () => onFilterOptions(optionsFilter.value))
-    watch(() => props.modelValue?.itemId, () => initializeSelectedItem())
-    watch(() => props.modelValue?.quantity, () => quantity.value = props.modelValue?.quantity ?? 0)
+    watch(() => props.inventoryItem?.itemId, () => initializeItem())
+    watch(() => props.inventoryItem?.quantity, () => quantity.value = props.inventoryItem?.quantity ?? 0)
     watch(
-      () => selectedItem.value?.id,
+      () => item.value?.id,
       () => {
-        if (selectedItem.value?.id != null) {
-          selectedItemIsModdable.value = itemPropertiesService.canBeModded(selectedItem.value)
-          selectedItemIsContainer.value = itemPropertiesService.canContain(selectedItem.value)
+        if (item.value?.id != null) {
+          // When an item is not found, but has mods or content, we consider it is moddable / a container in order to be able to display its possible child items
+          itemIsModdable.value = itemPropertiesService.canBeModded(item.value)
+            || (item.value.categoryId === 'notFound' && (props.inventoryItem?.modSlots.length ?? 0) > 0)
+          itemIsContainer.value = itemPropertiesService.canContain(item.value)
+            || (item.value.categoryId === 'notFound' && (props.inventoryItem?.content.length ?? 0) > 0)
 
           if (selectedTab.value === SelectableTab.hidden) {
-            if (selectedItemIsContainer.value) {
+            if (itemIsContainer.value) {
               selectedTab.value = SelectableTab.content
-            } else if (selectedItemIsModdable.value) {
+            } else if (itemIsModdable.value) {
               selectedTab.value = SelectableTab.mods
             } else {
               selectedTab.value = SelectableTab.hidden
             }
           }
         } else {
-          selectedItemIsModdable.value = false
-          selectedItemIsContainer.value = false
+          itemIsModdable.value = false
+          itemIsContainer.value = false
           selectedTab.value = SelectableTab.hidden
         }
       })
 
     onMounted(() => {
       setOptions(optionsFilter.value, optionsSortingData.value)
-      initializeSelectedItem()
+      initializeItem()
     })
 
     /**
-     * Emits an event for the build and the inventory slot to updated their summary when the selected item changes.
+     * Emits an event for the build and the inventory slot to updated their summary when the item changes.
      */
     function emitItemChangedEvent() {
       nextTick(() => inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path))
     }
 
     /**
-     * Initializes the selected item based on the inventory item passed to the component.
+     * Initializes the item based on the inventory item passed to the component.
      */
-    async function initializeSelectedItem() {
-      if (props.modelValue == null) {
+    async function initializeItem() {
+      if (props.inventoryItem == null) {
         quantity.value = 0
-        selectedItem.value = undefined
+        item.value = undefined
 
         return
       }
 
-      if (selectedItem.value?.id === selectedInventoryItem.value?.itemId) {
+      if (item.value?.id === inventoryItemInternal.value?.itemId) {
         return
       }
 
-      const selectedItemResult = await itemService.getItem(props.modelValue.itemId)
-
-      if (selectedItemResult.success) {
-        quantity.value = props.modelValue.quantity
-        selectedItem.value = selectedItemResult.value
-      } else {
-        selectedItem.value = undefined
-      }
-
-      if (selectedItem.value != null) {
-        presetModSlotContainingItem.value = await presetService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
-      } else {
-        presetModSlotContainingItem.value = undefined
-      }
+      item.value = await itemService.getItem(props.inventoryItem.itemId)
+      quantity.value = props.inventoryItem.quantity
+      presetModSlotContainingItem.value = presetService.getPresetModSlotContainingItem(item.value.id, props.path)
     }
 
     /**
-     * Scrolls to the selected item in the item dropdown.
+     * Scrolls to the item in the item dropdown.
      */
     function onDropdownOpen() {
-      if (selectedItem.value == null) {
+      if (item.value == null) {
         return
       }
 
@@ -192,7 +183,7 @@ export default defineComponent({
       // but I could not find a good combination of values for reducing the number of loaded elements
       // while avoiding having white space displayed in the dropdown panel.
       // Hence this hack.
-      scrollToSelectedItemInDropdown()
+      scrollToItemInDropdown()
     }
 
     /**
@@ -215,11 +206,11 @@ export default defineComponent({
      * Updates the inventory item based on the quantity.
      */
     function onQuantityChanged(newQuantity: number) {
-      if (selectedInventoryItem.value == null) {
+      if (inventoryItemInternal.value == null) {
         return
       }
 
-      selectedInventoryItem.value.quantity = newQuantity
+      inventoryItemInternal.value.quantity = newQuantity
 
       // Emitting an event for the build and the inventory slot to updated their summary
       emitItemChangedEvent()
@@ -228,14 +219,14 @@ export default defineComponent({
     /**
      * Updates the inventory item based on the selected item.
      */
-    async function onSelectedItemChanged() {
-      if (selectedItem.value?.id === selectedInventoryItem.value?.itemId) {
+    async function onItemChanged() {
+      if (item.value?.id === inventoryItemInternal.value?.itemId) {
         return
       }
 
-      if (selectedItem.value == null) {
+      if (item.value == null) {
         quantity.value = 0
-        selectedInventoryItem.value = undefined
+        inventoryItemInternal.value = undefined
 
         // Emitting an event for the build and the inventory slot to updated their summary
         emitItemChangedEvent()
@@ -244,16 +235,16 @@ export default defineComponent({
       }
 
       itemChanging.value = true
-      presetModSlotContainingItem.value = await presetService.getPresetModSlotContainingItem(selectedItem.value.id, props.path)
+      presetModSlotContainingItem.value = presetService.getPresetModSlotContainingItem(item.value.id, props.path)
 
-      if (itemPropertiesService.isModdable(selectedItem.value) && PathUtils.checkIsModSlotPath(props.path)) {
+      if (itemPropertiesService.isModdable(item.value) && PathUtils.checkIsModSlotPath(props.path)) {
         // Checking the compatibility if the selected item is a mod and we are in mod slot
         const path = props.path.slice(0, props.path.lastIndexOf('/' + PathUtils.itemPrefix))
-        const compatibilityResult = await compatibilityService.checkCompatibility(CompatibilityRequestType.mod, selectedItem.value.id, path)
+        const compatibilityResult = await compatibilityService.checkCompatibility(CompatibilityRequestType.mod, item.value.id, path)
 
-        updateInventoryItem(selectedItem.value, compatibilityResult)
+        updateInventoryItem(item.value, compatibilityResult)
       } else {
-        updateInventoryItem(selectedItem.value, Result.ok())
+        updateInventoryItem(item.value, true)
       }
     }
 
@@ -265,7 +256,7 @@ export default defineComponent({
       optionsSortingData.value = newSortingData
       options.value = await SortingService.sort(currentOptions, optionsSortingData.value)
 
-      scrollToSelectedItemInDropdown()
+      scrollToItemInDropdown()
     }
 
     /**
@@ -318,41 +309,43 @@ export default defineComponent({
     /**
      * Scrolls the dropdown to the selected item.
      */
-    function scrollToSelectedItemInDropdown() {
-      if (selectedItem.value == null) {
+    function scrollToItemInDropdown() {
+      if (item.value == null) {
         return
       }
 
-      const selectedItemPosition = options.value.findIndex(o => o.id === selectedItem.value!.id)
-      const selectedItemXPositionInDropdown = selectedItemPosition * optionHeight.value
+      const itemPosition = options.value.findIndex(o => o.id === item.value!.id)
+      const itemXPositionInDropdown = itemPosition * optionHeight.value
 
       const virtualScrollerElement = document.querySelector('.p-virtualscroller')
-      virtualScrollerElement?.scrollTo({ behavior: 'smooth', top: selectedItemXPositionInDropdown })
+      virtualScrollerElement?.scrollTo({ behavior: 'smooth', top: itemXPositionInDropdown })
     }
 
     /**
      * Updates the inventory item based on a new selected item if it is compatible; otherwise puts back the previous selected item.
-     * @param newSelectedItem - New selected item.
-     * @param isCompatible - Indicates whether the new selected item is compatible or not.
+     * @param newItem - New selected item.
+     * @param compatibilityCheckResult - Indicates whether the new selected item is compatible or not.
      */
-    async function updateInventoryItem(newSelectedItem: IItem, isCompatible: Result) {
-      if (isCompatible.success) {
+    function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean) {
+      if (!compatibilityCheckResult) {
+        initializeItem() // Putting back the previous selected item when the new item is incomptatible
+      } else {
         quantity.value = maxSelectableQuantity.value
-        const ignorePrice = selectedInventoryItem.value?.ignorePrice ?? false
+        const ignorePrice = inventoryItemInternal.value?.ignorePrice ?? false
 
         // Keeping the old item content if the new item is a container
         const newContent: IInventoryItem[] = []
-        const newSelectedItemIsContainer = itemPropertiesService.canContain(newSelectedItem)
+        const newItemIsContainer = itemPropertiesService.canContain(newItem)
 
-        if (newSelectedItemIsContainer
-          && selectedInventoryItem.value != null
-          && selectedInventoryItem.value.content.length > 0) {
-          const newSelectedItemIsMagazine = itemPropertiesService.isMagazine(newSelectedItem)
+        if (newItemIsContainer
+          && inventoryItemInternal.value != null
+          && inventoryItemInternal.value.content.length > 0) {
+          const newItemIsMagazine = itemPropertiesService.isMagazine(newItem)
 
-          if (newSelectedItemIsMagazine) {
-            const magazine = (newSelectedItem as IMagazine)
+          if (newItemIsMagazine) {
+            const magazine = (newItem as IMagazine)
 
-            for (const ammunitionInventoryItem of selectedInventoryItem.value.content) {
+            for (const ammunitionInventoryItem of inventoryItemInternal.value.content) {
               const isCompatible = magazine.acceptedAmmunitionIds.some(aci => aci === ammunitionInventoryItem.itemId)
 
               if (isCompatible) {
@@ -361,33 +354,30 @@ export default defineComponent({
               }
             }
           } else {
-            newContent.push(...selectedInventoryItem.value.content)
+            newContent.push(...inventoryItemInternal.value.content)
           }
         }
 
         // Setting the preset content and mods when the newly selected item is a preset
-        const preset = presetService.getPreset(newSelectedItem.id)
+        const preset = presetService.getPreset(newItem.id)
 
         if (preset != null) {
           // Creating a copy of the preset, otherwise the preset is modified for the whole application
           const newSelectedInventoryItem = JSON.parse(JSON.stringify(preset)) as IInventoryItem
           newSelectedInventoryItem.content = newContent
           newSelectedInventoryItem.ignorePrice = ignorePrice
-          selectedInventoryItem.value = newSelectedInventoryItem
+          inventoryItemInternal.value = newSelectedInventoryItem
         } else {
-          selectedInventoryItem.value = {
+          inventoryItemInternal.value = {
             content: newContent,
             ignorePrice,
-            itemId: newSelectedItem.id,
+            itemId: newItem.id,
             modSlots: [],
             quantity: quantity.value
           }
         }
 
         emitItemChangedEvent()
-      } else {
-        notificationService.notify(NotificationType.warning, isCompatible.failureMessage)
-        initializeSelectedItem() // Putting back the previous selected item
       }
 
       itemChanging.value = false
@@ -395,15 +385,21 @@ export default defineComponent({
 
     return {
       canIgnorePrice,
+      contentCount,
       dropdownPanelHeight,
       editing,
+      inventoryItemInternal,
+      item,
       itemChanging,
+      itemIsContainer,
+      itemIsModdable,
       maxSelectableQuantity,
+      modsCount,
       onDropdownOpen,
       onFilterOptions,
       onIgnorePriceChanged,
+      onItemChanged,
       onQuantityChanged,
-      onSelectedItemChanged,
       onSortOptions,
       optionHeight,
       options,
@@ -412,10 +408,6 @@ export default defineComponent({
       presetModSlotContainingItem,
       quantity,
       SelectableTab,
-      selectedInventoryItem,
-      selectedItem,
-      selectedItemIsContainer,
-      selectedItemIsModdable,
       selectedTab,
       showStats
     }

@@ -1,14 +1,17 @@
-import { IItem } from '../../../models/item/IItem'
-import { SortingService, compareByCategory, compareByName, compareByNumber, compareByString } from '../../../services/sorting/SortingService'
-import { SortingOrder } from '../../../models/utils/SortingData'
+import { anything, instance, mock, verify } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
+import { IItem } from '../../../models/item/IItem'
+import { SortingOrder } from '../../../models/utils/SortingData'
+import { LogService } from '../../../services/LogService'
+import Services from '../../../services/repository/Services'
+import { SortingService, compareByCategory, compareByName, compareByNumber, compareByString } from '../../../services/sorting/SortingService'
 
 describe('compareByCategory()', () => {
   it.each([
     [{ categoryId: 'cat1' } as IItem, { categoryId: 'cat2' } as IItem, -1],
     [{ categoryId: 'cat2' } as IItem, { categoryId: 'cat1' } as IItem, 1],
     [{ categoryId: 'cat1' } as IItem, { categoryId: 'cat1' } as IItem, 0]
-  ])('it should compare by category', async (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
+  ])('it should compare by category', (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
     // Act
     const result = compareByCategory(item1, item2)
 
@@ -24,7 +27,7 @@ describe('compareByName()', () => {
     [{ name: 'a', categoryId: 'cat1' } as IItem, { name: 'b', categoryId: 'cat1' } as IItem, -1],
     [{ name: 'b', categoryId: 'cat1' } as IItem, { name: 'a', categoryId: 'cat1' } as IItem, 1],
     [{ name: 'a', categoryId: 'cat1' } as IItem, { name: 'a', categoryId: 'cat1' } as IItem, 0]
-  ])('it should compare by category and name', async (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
+  ])('it should compare by category and name', (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
     // Act
     const result = compareByName(item1, item2)
 
@@ -73,7 +76,7 @@ describe('setSortingProperty()', () => {
   it.each([
     ['name', SortingOrder.desc, -1],
     ['price', SortingOrder.asc, 2]
-  ])('should set the sorting property and get the comparison function', async (property: string, expectedSortingOrder: SortingOrder, expectedComparisonResult: number) => {
+  ])('should set the sorting property and get the comparison function', (property: string, expectedSortingOrder: SortingOrder, expectedComparisonResult: number) => {
     // Arrange
     const sortService = new SortingService({
       name: {
@@ -89,26 +92,28 @@ describe('setSortingProperty()', () => {
     })
 
     // Act
-    const sortingDataResult = sortService.setSortingProperty(property)
-    const comparisonResult = sortingDataResult.value.sortingFunction.comparisonFunction({} as IItem, 0, {} as IItem, 0)
+    const sortingData = sortService.setSortingProperty(property)
+    const comparison = sortingData!.sortingFunction.comparisonFunction({} as IItem, 0, {} as IItem, 0)
 
     // Assert
-    expect(sortingDataResult.success).toBe(true)
-    expect(sortingDataResult.value.property).toBe(property)
-    expect(sortingDataResult.value.order).toBe(expectedSortingOrder)
-    expect(comparisonResult).toBe(expectedComparisonResult)
+    expect(sortingData!.property).toBe(property)
+    expect(sortingData!.order).toBe(expectedSortingOrder)
+    expect(comparison).toBe(expectedComparisonResult)
   })
 
-  it('should fail when no comparison function is configured for the property', () => {
+  it('should return undefined when no comparison function is configured for the property', () => {
     // Arrange
     const sortService = new SortingService({})
 
+    const logServiceMock = mock<LogService>()
+    Services.configure(LogService, undefined, instance(logServiceMock))
+
     // Act
-    const sortingDataResult = sortService.setSortingProperty('invalid')
+    const sortingData = sortService.setSortingProperty('invalid')
 
     // Assert
-    expect(sortingDataResult.success).toBe(false)
-    expect(sortingDataResult.failureMessage).toBe('Sorting function for property "invalid" not found.')
+    expect(sortingData).toBe(undefined)
+    verify(logServiceMock.logError('message.sortingFunctionNotFound', anything())).once()
   })
 })
 
@@ -130,8 +135,8 @@ describe('sort()', () => {
     })
 
     // Act
-    const updatedSortingDataResult = sortingService.setSortingProperty('shortName')
-    const result = await SortingService.sort(items, updatedSortingDataResult.value)
+    const updatedSortingData = sortingService.setSortingProperty('shortName')
+    const result = await SortingService.sort(items, updatedSortingData!)
 
     // Assert
     expect(result).toStrictEqual([

@@ -10,19 +10,19 @@ export const HeadwearSortingFunctions: ISortingFunctionList<IHeadwear> = {
   ...ArmorSortingFunctions,
   ergonomicsModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.presetWearableModifiers?.ergonomicsModifierPercentage ?? i.ergonomicsModifierPercentage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.presetWearableModifiers?.ergonomicsModifierPercentage ?? i.ergonomicsModifierPercentage)
   },
   movementSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.presetWearableModifiers?.movementSpeedModifierPercentage ?? i.movementSpeedModifierPercentage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.presetWearableModifiers?.movementSpeedModifierPercentage ?? i.movementSpeedModifierPercentage)
   },
   ricochetChance: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => ricochetChances[i.ricochetChance]
+    comparisonValueObtentionFunction: i => Promise.resolve(ricochetChances[i.ricochetChance])
   },
   turningSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.presetWearableModifiers?.turningSpeedModifierPercentage ?? i.turningSpeedModifierPercentage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.presetWearableModifiers?.turningSpeedModifierPercentage ?? i.turningSpeedModifierPercentage)
   }
 }
 

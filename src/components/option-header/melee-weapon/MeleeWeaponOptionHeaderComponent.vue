@@ -2,33 +2,33 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.chopDamage"
         custom-icon="chop"
         property="chopDamage"
-        :sorting-functions="sortingFunctions"
+        :sorting-functions="MeleeWeaponSortingFunctions"
       />
     </div>
   </div>
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.stabDamage"
         custom-icon="stab"
         property="stabDamage"
-        :sorting-functions="sortingFunctions"
+        :sorting-functions="MeleeWeaponSortingFunctions"
       />
     </div>
   </div>
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model="sortingData"
+        v-model:sorting-data="sortingDataInternal"
         caption-resource="caption.hitRadius"
         icon="dot-circle"
         property="hitRadius"
-        :sorting-functions="sortingFunctions"
+        :sorting-functions="MeleeWeaponSortingFunctions"
       />
     </div>
   </div>

@@ -1,6 +1,6 @@
 <template>
   <Dialog
-    v-model:visible="hasChangelogDisplayed"
+    v-model:visible="hasChangelogDisplayedInternal"
     :closable="true"
     :close-on-escape="true"
     :dismissable-mask="true"

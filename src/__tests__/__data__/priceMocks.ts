@@ -800,6 +800,19 @@ export const m9a3ThrPrices: IPrice[] = [
   }
 ]
 
+export const mechanismPrices: IPrice[] = [
+  {
+    barterItems: [],
+    currencyName: 'RUB',
+    itemId: '5d5d940f86f7742797262046',
+    merchant: 'ragman',
+    merchantLevel: 2,
+    quest: undefined,
+    value: 67446,
+    valueInMainCurrency: 67446
+  }
+]
+
 export const morphinePrices: IPrice[] = [
   {
     barterItems: [],
@@ -1849,6 +1862,7 @@ export const PriceMocks: IPrice[] = [
   ...m9a3SideGripPrices,
   ...m9a3SlidePrices,
   ...m9a3ThrPrices,
+  ...mechanismPrices,
   ...monocletePePrices,
   ...morphinePrices,
   ...ms2000Prices,

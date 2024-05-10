@@ -22,7 +22,7 @@ export default defineComponent({
     contentCount: {
       type: Number,
       required: false,
-      default: undefined
+      default: 0
     },
     ignorePrice: {
       type: Boolean,
@@ -32,7 +32,7 @@ export default defineComponent({
     modsCount: {
       type: Number,
       required: false,
-      default: undefined
+      default: 0
     },
     selectedTab: {
       type: String as PropType<SelectableTab>,

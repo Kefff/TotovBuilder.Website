@@ -4,12 +4,12 @@ import { IInventoryItem } from '../../../../models/build/IInventoryItem'
 import { IItem } from '../../../../models/item/IItem'
 import { IPrice } from '../../../../models/item/IPrice'
 import { IInventoryItemPrice } from '../../../../models/utils/IInventoryItemPrice'
+import { IgnoredUnitPrice } from '../../../../models/utils/IgnoredUnitPrice'
 import SortingData, { SortingOrder } from '../../../../models/utils/SortingData'
 import { InventoryItemService } from '../../../../services/InventoryItemService'
 import Services from '../../../../services/repository/Services'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ItemSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunction'
-import Result from '../../../../utils/Result'
 
 describe('comparisonFunction()', () => {
   it.each([
@@ -58,23 +58,22 @@ describe('comparisonFunction()', () => {
     const inventoryItemService = mock<InventoryItemService>()
     when(inventoryItemService.getPrice(anything())).thenCall((inventoryItem: IInventoryItem) => {
       return inventoryItem.itemId === item1.id
-        ? Result.ok({ unitPrice: item1.prices[0] ?? { valueInMainCurrency: 0 } } as IInventoryItemPrice)
-        : Result.ok({ unitPrice: item2.prices[0] ?? { valueInMainCurrency: 0 } } as IInventoryItemPrice)
+        ? { unitPrice: item1.prices[0] ?? { valueInMainCurrency: 0 } } as IInventoryItemPrice
+        : { unitPrice: item2.prices[0] ?? { valueInMainCurrency: 0 } } as IInventoryItemPrice
     })
     Services.configure(InventoryItemService, undefined, instance(inventoryItemService))
 
     const sortingService = new SortingService(ItemSortingFunctions)
 
     // Act
-    const updatedSortingDataResult = sortingService.setSortingProperty('price')
-    const value1 = await updatedSortingDataResult.value.sortingFunction.comparisonValueObtentionFunction(item1)
-    const value2 = await updatedSortingDataResult.value.sortingFunction.comparisonValueObtentionFunction(item2)
-    const result = updatedSortingDataResult.value.sortingFunction.comparisonFunction(item1, value1, item2, value2)
+    const updatedSortingData = sortingService.setSortingProperty('price')
+    const value1 = await updatedSortingData!.sortingFunction.comparisonValueObtentionFunction(item1)
+    const value2 = await updatedSortingData!.sortingFunction.comparisonValueObtentionFunction(item2)
+    const result = updatedSortingData!.sortingFunction.comparisonFunction(item1, value1, item2, value2)
 
     // Assert
-    expect(updatedSortingDataResult.success).toBe(true)
-    expect(updatedSortingDataResult.value.property).toBe('price')
-    expect(updatedSortingDataResult.value.order).toBe(SortingOrder.asc)
+    expect(updatedSortingData!.property).toBe('price')
+    expect(updatedSortingData!.order).toBe(SortingOrder.asc)
     expect(result).toBe(expectedComparisonValue)
   })
 
@@ -84,21 +83,45 @@ describe('comparisonFunction()', () => {
     const item2 = { id: 'i2', name: 'a', categoryId: 'cat1', prices: [{ currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 2, valueInMainCurrency: 2 }] } as IItem
 
     const inventoryItemService = mock<InventoryItemService>()
-    when(inventoryItemService.getPrice(anything())).thenResolve(Result.fail())
+    when(inventoryItemService.getPrice(anything())).thenResolve({
+      missingPrice: false,
+      price: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: undefined,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      pricesWithContent: [],
+      priceWithContentInMainCurrency: 0,
+      unitPrice: {
+        barterItems: [],
+        currencyName: 'RUB',
+        itemId: '',
+        merchant: '',
+        merchantLevel: 0,
+        quest: undefined,
+        value: 0,
+        valueInMainCurrency: 0
+      },
+      unitPriceIgnoreStatus: IgnoredUnitPrice.notIgnored
+    })
     Services.configure(InventoryItemService, undefined, instance(inventoryItemService))
 
     const sortingService = new SortingService(ItemSortingFunctions)
 
     // Act
-    const updatedSortingDataResult = sortingService.setSortingProperty('price')
-    const value1 = await updatedSortingDataResult.value.sortingFunction.comparisonValueObtentionFunction(item1)
-    const value2 = await updatedSortingDataResult.value.sortingFunction.comparisonValueObtentionFunction(item2)
-    const result = updatedSortingDataResult.value.sortingFunction.comparisonFunction(item1, value1, item2, value2)
+    const updatedSortingData = sortingService.setSortingProperty('price')
+    const value1 = await updatedSortingData!.sortingFunction.comparisonValueObtentionFunction(item1)
+    const value2 = await updatedSortingData!.sortingFunction.comparisonValueObtentionFunction(item2)
+    const result = updatedSortingData!.sortingFunction.comparisonFunction(item1, value1, item2, value2)
 
     // Assert
-    expect(updatedSortingDataResult.success).toBe(true)
-    expect(updatedSortingDataResult.value.property).toBe('price')
-    expect(updatedSortingDataResult.value.order).toBe(SortingOrder.asc)
+    expect(updatedSortingData!.property).toBe('price')
+    expect(updatedSortingData!.order).toBe(SortingOrder.asc)
     expect(result).toBe(0)
   })
 
@@ -120,10 +143,10 @@ describe('comparisonFunction()', () => {
     } as IItem
 
     const sortingService = new SortingService(ItemSortingFunctions)
-    const updatedSortingDataResult = sortingService.setSortingProperty('categoryId')
+    const updatedSortingData = sortingService.setSortingProperty('categoryId')
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2, item3], updatedSortingDataResult.value)
+    const sortedItems = await SortingService.sort([item1, item2, item3], updatedSortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item3, item1])
@@ -147,10 +170,10 @@ describe('comparisonFunction()', () => {
     } as IItem
 
     const sortingService = new SortingService(ItemSortingFunctions)
-    const updatedSortingDataResult = sortingService.setSortingProperty('name')
+    const updatedSortingData = sortingService.setSortingProperty('name')
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2, item3], updatedSortingDataResult.value)
+    const sortedItems = await SortingService.sort([item1, item2, item3], updatedSortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item1, item3, item2]) // By default it is already sorted by name, so here we expected items to be sorted in a descending way

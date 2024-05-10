@@ -1,7 +1,6 @@
-
 <template>
   <Dialog
-    v-model:visible="modelValue"
+    v-model:visible="isImporting"
     :closable="false"
     :header="$t('message.selectBuildsToImport')"
     :modal="true"
@@ -9,9 +8,8 @@
   >
     <BuildsList
       v-if="showingList"
-      v-model="buildsToImportIds"
+      v-model:selectedBuildIds="buildsToImportIds"
       :builds-summaries="readenBuildSummaries"
-      :multiple="true"
       :show-not-exported="false"
     />
     <div

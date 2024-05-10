@@ -1,6 +1,7 @@
 import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import { IModdable } from '../../models/item/IModdable'
+import { IModSlot } from '../../models/item/IModSlot'
 import { PathUtils } from '../../utils/PathUtils'
 import ModSlot from '../mod-slot/ModSlotComponent.vue'
 
@@ -9,11 +10,11 @@ export default defineComponent({
     ModSlot
   },
   props: {
-    containerItem: {
+    moddableItem: {
       type: Object as PropType<IModdable>,
       required: true
     },
-    modelValue: {
+    inventoryModSlots: {
       type: Object as PropType<IInventoryModSlot[]>,
       required: true
     },
@@ -22,44 +23,53 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:inventory-mod-slots'],
   setup: (props, { emit }) => {
     const modSlotPathPrefix = PathUtils.modSlotPrefix
 
-    const inventoryModSlots = computed({
-      get: () => props.modelValue,
-      set: (value: IInventoryModSlot[]) => emit('update:modelValue', value)
+    const inventoryModSlotsInternal = computed({
+      get: () => props.inventoryModSlots,
+      set: (value: IInventoryModSlot[]) => emit('update:inventory-mod-slots', value)
     })
 
     const isInitializing = ref(true)
+    const moddableItemInternal = ref<IModdable>(props.moddableItem)
 
-    watch(() => props.containerItem.id, () => initialize())
+    watch(() => props.moddableItem.id, () => initialize())
 
     onMounted(() => initialize())
 
     /**
      * Gets the mod slots of the parent item and adds them to the list of inventory mod slots received.
      */
-    async function initialize() {
+    function initialize() {
       isInitializing.value = true
 
-      const newInventoryModSlots: IInventoryModSlot[] = []
+      if (props.moddableItem.categoryId === 'notFound') {
+        // When an item in a build contains is not found, we assume it is moddable in order to be able
+        // to display its possible mods.
+        // We create a fake list of mod slots for it.
+        const modSlots: IModSlot[] = []
 
-      for (const modSlot of props.containerItem.modSlots) {
-        newInventoryModSlots.push({
-          item: props.modelValue.find((ms) => ms.modSlotName === modSlot.name)?.item,
-          modSlotName: modSlot.name
-        })
+        for (const inventoryModSlot of props.inventoryModSlots) {
+          modSlots.push({
+            compatibleItemIds: [inventoryModSlot.item?.itemId ?? ''],
+            maxStackableAmount: 1,
+            name: inventoryModSlot.modSlotName,
+            required: false
+          })
+        }
+
+        moddableItemInternal.value.modSlots = modSlots
       }
-
-      inventoryModSlots.value = newInventoryModSlots
 
       isInitializing.value = false
     }
 
     return {
-      inventoryModSlots,
+      inventoryModSlotsInternal,
       isInitializing,
+      moddableItemInternal,
       modSlotPathPrefix
     }
   }

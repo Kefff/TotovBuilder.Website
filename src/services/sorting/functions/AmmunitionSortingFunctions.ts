@@ -10,22 +10,22 @@ export const AmmunitionSortingFunctions: ISortingFunctionList<IAmmunition> = {
   ...ItemSortingFunctions,
   accuracyModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.accuracyModifierPercentage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.accuracyModifierPercentage)
   },
   fleshDamage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.fleshDamage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.fleshDamage)
   },
   fragmentationChance: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.fragmentationChance
+    comparisonValueObtentionFunction: i => Promise.resolve(i.fragmentationChance)
   },
   penetrationPower: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.penetrationPower
+    comparisonValueObtentionFunction: i => Promise.resolve(i.penetrationPower)
   },
   recoilModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.recoilModifierPercentage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.recoilModifierPercentage)
   }
 }

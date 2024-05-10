@@ -1,16 +1,16 @@
 import { computed, defineComponent, PropType } from 'vue'
-import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
-import SortingData from '../../../models/utils/SortingData'
 import { IWearable } from '../../../models/item/IWearable'
+import SortingData from '../../../models/utils/SortingData'
 import { ISortingFunctionList } from '../../../services/sorting/functions/ISortingFunctionList'
 import { WearableSortingFunctions } from '../../../services/sorting/functions/WearableSortingFunctions'
+import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
 
 export default defineComponent({
   components: {
     OptionHeaderSortButton
   },
   props: {
-    modelValue: {
+    sortingData: {
       type: Object as PropType<SortingData<IWearable>>,
       required: true
     },
@@ -20,17 +20,16 @@ export default defineComponent({
       default: undefined
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:sorting-data'],
   setup: (props, { emit }) => {
-    const sortingData = computed({
-      get: () => props.modelValue,
-      set: (value: SortingData<IWearable>) => emit('update:modelValue', value)
+    const sortingDataInternal = computed({
+      get: () => props.sortingData,
+      set: (value: SortingData<IWearable>) => emit('update:sorting-data', value)
     })
-    const sortingFunctions = props.sortingFunctionsOverride ?? WearableSortingFunctions
 
     return {
-      sortingData,
-      sortingFunctions
+      sortingDataInternal,
+      sortingFunctions: props.sortingFunctionsOverride ?? WearableSortingFunctions
     }
   }
 })

@@ -13,10 +13,10 @@ export const MagazineSortingFunctions: ISortingFunctionList<IMagazine> = {
   ...ModSortingFunctions,
   checkSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.checkSpeedModifierPercentage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.checkSpeedModifierPercentage)
   },
   loadSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: async (i) => i.loadSpeedModifierPercentage
+    comparisonValueObtentionFunction: i => Promise.resolve(i.loadSpeedModifierPercentage)
   }
 }

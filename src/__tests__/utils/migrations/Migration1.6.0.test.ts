@@ -77,8 +77,8 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
     const result2 = await migration.migrateBuild(obsoleteBuild)
 
     // Assert
-    expect(result1.success).toBe(true)
-    expect(result2.success).toBe(true)
+    expect(result1).toBe(true)
+    expect(result2).toBe(true)
     expect(obsoleteBuild).toStrictEqual({
       id: '',
       inventorySlots: [
@@ -213,8 +213,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
     const result = await migration.migrateBuild(obsoleteBuild)
 
     // Assert
-    expect(result.success).toBe(false)
-    expect(result.failureMessage).toBe('Item "invalid" not found.')
+    expect(result).toBe(false)
     expect(obsoleteBuild).toStrictEqual(obsoleteBuild)
   })
 })

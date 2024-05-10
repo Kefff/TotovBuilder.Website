@@ -1,10 +1,10 @@
 import { computed, defineComponent, PropType, ref } from 'vue'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
+import { IBuildSummaryShoppingMerchant } from '../../models/utils/IBuildSummaryMerchant'
 import ItemIcon from '../item-icon/ItemIconComponent.vue'
 import MerchantIcon from '../merchant-icon/MerchantIconComponent.vue'
-import ShoppingListMerchants from '../shopping-list-merchants/ShoppingListMerchantsComponent.vue'
 import Price from '../price/PriceComponent.vue'
-import { IBuildSummaryShoppingMerchant } from '../../models/utils/IBuildSummaryMerchant'
+import ShoppingListMerchants from '../shopping-list-merchants/ShoppingListMerchantsComponent.vue'
 
 export default defineComponent({
   components: {

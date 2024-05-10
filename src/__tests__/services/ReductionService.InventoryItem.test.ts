@@ -55,11 +55,10 @@ describe('parseReducedInventoryItem', () => {
     const service = new ReductionService()
 
     // Act
-    const result = service.parseReducedInventoryItem(reducedInventoryItem)
+    const inventoryItem = service.parseReducedInventoryItem(reducedInventoryItem)
 
     // Assert
-    expect(result.success).toBe(true)
-    expect(result.value).toStrictEqual(inventoryItem)
+    expect(inventoryItem).toStrictEqual(inventoryItem)
   })
 })
 
