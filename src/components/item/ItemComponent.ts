@@ -83,12 +83,14 @@ export default defineComponent({
     const editing = inject<Ref<boolean>>('editing')
 
     const canIgnorePrice = computed(() => presetModSlotContainingItem.value?.item?.itemId !== item.value?.id)
+    const contentCount = computed(() => inventoryItemInternal.value?.content.length ?? 0)
     const dropdownPanelHeight = computed(() => Math.min(options.value.length === 0 ? 1 : options.value.length, 5) * 4 + 'rem') // Shows 5 items or less
     const inventoryItemInternal = computed<IInventoryItem | undefined>({
       get: () => props.inventoryItem,
       set: (value: IInventoryItem | undefined) => emit('update:inventory-item', value)
     })
     const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.value?.maxStackableAmount ?? 1)
+    const modsCount = computed(() => inventoryItemInternal.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
     const optionHeight = computed(() => Number.parseInt(window.getComputedStyle(document.documentElement).fontSize.replace('px', '')) * 4)
 
     const item = ref<IItem | undefined>()
@@ -380,6 +382,7 @@ export default defineComponent({
 
     return {
       canIgnorePrice,
+      contentCount,
       dropdownPanelHeight,
       editing,
       inventoryItemInternal,
@@ -388,6 +391,7 @@ export default defineComponent({
       itemIsContainer,
       itemIsModdable,
       maxSelectableQuantity,
+      modsCount,
       onDropdownOpen,
       onFilterOptions,
       onIgnorePriceChanged,

@@ -64,9 +64,9 @@
         :can-be-looted="canBeLooted"
         :can-have-content="itemIsContainer"
         :can-have-mods="itemIsModdable"
-        :content-count="inventoryItemInternal.content.length"
+        :content-count="contentCount"
         :can-ignore-price="canIgnorePrice"
-        :mods-count="inventoryItemInternal.modSlots.filter(ms => ms.item != null).length"
+        :mods-count="modsCount"
         @update:ignore-price="onIgnorePriceChanged()"
       />
       <SelectedItemSummarySelector

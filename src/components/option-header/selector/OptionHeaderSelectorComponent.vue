@@ -7,7 +7,7 @@
     <component
       :is="specializedComponent"
       v-if="specializedComponent != null"
-      v-model="sortingDataInternal"
+      v-model:sorting-data="sortingDataInternal"
     />
   </ItemOptionHeader>
 </template>
