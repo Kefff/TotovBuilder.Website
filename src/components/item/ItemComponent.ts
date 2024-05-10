@@ -112,8 +112,11 @@ export default defineComponent({
       () => item.value?.id,
       () => {
         if (item.value?.id != null) {
+          // When an item is not found, but has mods or content, we consider it is moddable / a container in order to be able to display its possible child items
           itemIsModdable.value = itemPropertiesService.canBeModded(item.value)
+            || (item.value.categoryId === 'notFound' && (props.inventoryItem?.modSlots.length ?? 0) > 0)
           itemIsContainer.value = itemPropertiesService.canContain(item.value)
+            || (item.value.categoryId === 'notFound' && (props.inventoryItem?.content.length ?? 0) > 0)
 
           if (selectedTab.value === SelectableTab.hidden) {
             if (itemIsContainer.value) {

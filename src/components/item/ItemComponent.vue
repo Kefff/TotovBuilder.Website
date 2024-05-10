@@ -88,7 +88,7 @@
         <ItemMods
           v-show="selectedTab === SelectableTab.mods"
           v-model:inventory-mod-slots="inventoryItemInternal.modSlots"
-          :container-item="item"
+          :moddable-item="item"
           :path="path"
         />
       </div>

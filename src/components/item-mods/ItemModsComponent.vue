@@ -1,14 +1,13 @@
 <template>
   <div v-if="!isInitializing">
     <div
-      v-for="(modSlot, index) of inventoryModSlotsInternal"
-      :key="path + '/' + modSlotPathPrefix + modSlot.modSlotName"
+      v-for="(inventoryModSlot, index) of inventoryModSlotsInternal"
+      :key="path + '/' + modSlotPathPrefix + inventoryModSlot.modSlotName"
     >
       <ModSlot
-        v-if="containerItem.modSlots[index] != null"
         v-model:inventory-mod-slot="inventoryModSlotsInternal[index]"
-        :mod-slot="containerItem.modSlots[index]"
-        :path="path + '/' + modSlotPathPrefix + modSlot.modSlotName"
+        :mod-slot="moddableItemInternal.modSlots[index]"
+        :path="path + '/' + modSlotPathPrefix + inventoryModSlot.modSlotName"
       />
     </div>
   </div>

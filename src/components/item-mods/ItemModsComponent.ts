@@ -1,6 +1,7 @@
 import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import { IModdable } from '../../models/item/IModdable'
+import { IModSlot } from '../../models/item/IModSlot'
 import { PathUtils } from '../../utils/PathUtils'
 import ModSlot from '../mod-slot/ModSlotComponent.vue'
 
@@ -9,7 +10,7 @@ export default defineComponent({
     ModSlot
   },
   props: {
-    containerItem: {
+    moddableItem: {
       type: Object as PropType<IModdable>,
       required: true
     },
@@ -32,8 +33,9 @@ export default defineComponent({
     })
 
     const isInitializing = ref(true)
+    const moddableItemInternal = ref<IModdable>(props.moddableItem)
 
-    watch(() => props.containerItem.id, () => initialize())
+    watch(() => props.moddableItem.id, () => initialize())
 
     onMounted(() => initialize())
 
@@ -43,16 +45,23 @@ export default defineComponent({
     function initialize() {
       isInitializing.value = true
 
-      const newInventoryModSlots: IInventoryModSlot[] = []
+      if (props.moddableItem.categoryId === 'notFound') {
+        // When an item in a build contains is not found, we assume it is moddable in order to be able
+        // to display its possible mods.
+        // We create a fake list of mod slots for it.
+        const modSlots: IModSlot[] = []
 
-      for (const modSlot of props.containerItem.modSlots) {
-        newInventoryModSlots.push({
-          item: props.inventoryModSlots.find((ms) => ms.modSlotName === modSlot.name)?.item,
-          modSlotName: modSlot.name
-        })
+        for (const inventoryModSlot of props.inventoryModSlots) {
+          modSlots.push({
+            compatibleItemIds: [inventoryModSlot.item?.itemId ?? ''],
+            maxStackableAmount: 1,
+            name: inventoryModSlot.modSlotName,
+            required: false
+          })
+        }
+
+        moddableItemInternal.value.modSlots = modSlots
       }
-
-      inventoryModSlotsInternal.value = newInventoryModSlots
 
       isInitializing.value = false
     }
@@ -60,6 +69,7 @@ export default defineComponent({
     return {
       inventoryModSlotsInternal,
       isInitializing,
+      moddableItemInternal,
       modSlotPathPrefix
     }
   }
