@@ -23,22 +23,21 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['update:isImporting', 'update:hasImported'],
+  emits: ['update:is-importing', 'update:has-imported'],
   setup: (props, { emit }) => {
+    const vueI18n = useI18n()
     const buildsImportComponentService = Services.get(BuildsImportComponentService)
-
-    const i18n = useI18n()
+    const exportFileExtension = Services.get(WebsiteConfigurationService).configuration.exportFileExtension
     const importService = Services.get(ImportService)
     const notificationService = Services.get(NotificationService)
 
+    const allSelected = computed(() => buildToImportSummaries.value.length === readenBuildSummaries.value.length)
+    const showingList = computed(() => readenBuildSummaries.value.length > 0)
+
+    const buildToImportSummaries = ref<IBuildSummary[]>([])
     const importInput = ref()
     const readenBuilds = ref<IBuild[]>([])
     const readenBuildSummaries = ref<IBuildSummary[]>([])
-    const buildsToImportIds = ref<string[]>([])
-    const showingList = computed(() => readenBuildSummaries.value.length > 0)
-    const allSelected = computed(() => buildsToImportIds.value.length === readenBuildSummaries.value.length)
-
-    const exportFileExtension = Services.get(WebsiteConfigurationService).configuration.exportFileExtension
 
     onMounted(() => document.onkeydown = (e) => onKeyDown(e))
 
@@ -48,25 +47,25 @@ export default defineComponent({
     function cancelImport() {
       readenBuilds.value = []
       readenBuildSummaries.value = []
-      buildsToImportIds.value = []
+      buildToImportSummaries.value = []
 
-      emit('update:isImporting', false)
+      emit('update:is-importing', false)
     }
 
     /**
      * Imports the selected builds.
      */
     async function confirmImport() {
-      const buildsToImport = readenBuilds.value.filter((rb) => buildsToImportIds.value.some((btii) => btii === rb.id))
+      const buildsToImport = readenBuilds.value.filter((rb) => buildToImportSummaries.value.some((btis) => btis.id === rb.id))
       await importService.import(buildsToImport)
 
       readenBuilds.value = []
       readenBuildSummaries.value = []
-      buildsToImportIds.value = []
+      buildToImportSummaries.value = []
 
-      emit('update:isImporting', false)
-      emit('update:hasImported', true)
-      notificationService.notify(NotificationType.success, i18n.t('message.buildsImported'))
+      emit('update:is-importing', false)
+      emit('update:has-imported', true)
+      notificationService.notify(NotificationType.success, vueI18n.t('message.buildsImported'))
     }
 
     /**
@@ -100,7 +99,7 @@ export default defineComponent({
 
       if (event.key === 'a' && (event.ctrlKey || event.metaKey)) {
         event.preventDefault() // Prevents the browser save action to be triggered
-        buildsToImportIds.value = readenBuildSummaries.value.map(rbs => rbs.id)
+        buildToImportSummaries.value = readenBuildSummaries.value
       }
     }
 
@@ -109,9 +108,9 @@ export default defineComponent({
      */
     function toggleSelection() {
       if (allSelected.value) {
-        buildsToImportIds.value = []
+        buildToImportSummaries.value = []
       } else {
-        buildsToImportIds.value = readenBuildSummaries.value.map(rbs => rbs.id)
+        buildToImportSummaries.value = readenBuildSummaries.value
       }
     }
 
@@ -124,7 +123,7 @@ export default defineComponent({
 
     return {
       allSelected,
-      buildsToImportIds,
+      buildToImportSummaries,
       cancelImport,
       confirmImport,
       exportFileExtension,

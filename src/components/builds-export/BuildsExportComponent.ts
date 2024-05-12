@@ -21,10 +21,11 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['update:isExporting'],
+  emits: ['update:is-exporting'],
   setup: (props, { emit }) => {
-    const buildsToExportIds = ref<string[]>([])
-    const allSelected = computed(() => buildsToExportIds.value.length === props.buildSummaries.length)
+    const allSelected = computed(() => buildToExportSummaries.value.length === props.buildSummaries.length)
+
+    const buildToExportSummaries = ref<IBuildSummary[]>([])
 
     onMounted(() => document.onkeydown = (e) => onKeyDown(e))
 
@@ -32,7 +33,7 @@ export default defineComponent({
      * Cancels the export.
      */
     function cancelExport() {
-      emit('update:isExporting', false)
+      emit('update:is-exporting', false)
     }
 
     /**
@@ -42,8 +43,8 @@ export default defineComponent({
       const buildService = Services.get(BuildService)
       const buildsToExport: IBuild[] = []
 
-      for (const buildToExportId of buildsToExportIds.value) {
-        const buildToExport = buildService.get(buildToExportId)
+      for (const buildToExportId of buildToExportSummaries.value) {
+        const buildToExport = buildService.get(buildToExportId.id)
 
         if (buildToExport != null) {
           buildsToExport.push(buildToExport)
@@ -52,7 +53,7 @@ export default defineComponent({
 
       await Services.get(ExportService).export(buildsToExport)
 
-      emit('update:isExporting', false)
+      emit('update:is-exporting', false)
     }
 
     /**
@@ -66,7 +67,7 @@ export default defineComponent({
 
       if (event.key === 'a' && (event.ctrlKey || event.metaKey)) {
         event.preventDefault() // Prevents the browser save action to be triggered
-        buildsToExportIds.value = props.buildSummaries.map(bs => bs.id)
+        buildToExportSummaries.value = props.buildSummaries
       }
     }
 
@@ -75,15 +76,15 @@ export default defineComponent({
      */
     function toggleSelection() {
       if (allSelected.value) {
-        buildsToExportIds.value = []
+        buildToExportSummaries.value = []
       } else {
-        buildsToExportIds.value = props.buildSummaries.map(bs => bs.id)
+        buildToExportSummaries.value = props.buildSummaries
       }
     }
 
     return {
       allSelected,
-      buildsToExportIds,
+      buildToExportSummaries,
       cancelExport,
       confirmExport,
       toggleSelection

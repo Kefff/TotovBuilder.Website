@@ -14,7 +14,7 @@
               icon="plus"
               class="icon-before-text"
             />
-            <span>{{ $t('caption.newBuild') }}</span>
+            <span>{{ $t('caption.new') }}</span>
           </Button>
           <Button
             v-tooltip.top="$t('caption.exportBuilds')"
@@ -56,7 +56,7 @@
     >
       <BuildsList
         :build-summaries="buildSummaries"
-        @update:selected-build-ids="($event: string[]) => onBuildClick($event)"
+        @update:selected-build-summaries="onBuildClick"
       />
     </div>
   </div>

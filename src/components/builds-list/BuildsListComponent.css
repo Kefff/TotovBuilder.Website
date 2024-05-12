@@ -12,6 +12,20 @@
   width: 100%;
 }
 
+.builds-list-card-buttons {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+  margin-top: auto;
+}
+
+.builds-list-card-buttons-edit {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
 .builds-list-card-items {
   display: flex;
   flex-direction: row;
@@ -20,7 +34,7 @@
   width: 100%;
 }
 
-.builds-list-card-line {
+.builds-list-card-stats {
   align-items: center;
   display: grid;
   gap: 1.5rem;
@@ -56,7 +70,7 @@
 /* Smartphone in landscape */
 @media only screen and (min-width: 481px) and (max-width: 767px) {
   .builds-list {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
 }
 
@@ -67,46 +81,8 @@
   }
 }
 
-/* Tablet in landscape and PC */
-@media only screen and (min-width: 992px) {}
+/* Tablet in landscape */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {}
 
-
-
-
-
-
-
-
-
-
-.build-list-column {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: end;
-  text-align: right;
-  width: 100%;
-}
-
-.build-list-column-merchants {
-  min-width: 8rem;
-}
-
-.build-list-column-name {
-  width: 15rem;
-}
-
-.build-list-column-name-buttons {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: end;
-  margin-right: auto;
-  width: 4rem;
-}
-
-.build-list-not-exported {
-  color: var(--warning-color);
-}
+/* PC */
+@media only screen and (min-width: 1200px) {}

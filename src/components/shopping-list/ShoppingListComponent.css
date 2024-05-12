@@ -2,6 +2,12 @@
 @import '../../css/icon.css';
 @import '../../css/sidebar.css';
 
+.shopping-list-button {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
 .shopping-list-item {
   align-items: center;
   display: flex;

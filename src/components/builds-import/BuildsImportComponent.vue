@@ -8,7 +8,7 @@
   >
     <BuildsList
       v-if="showingList"
-      v-model:selectedBuildIds="buildsToImportIds"
+      v-model:selected-build-summaries="buildToImportSummaries"
       :build-summaries="readenBuildSummaries"
       :show-not-exported="false"
     />

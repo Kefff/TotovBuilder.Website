@@ -7,13 +7,13 @@
     :draggable="false"
   >
     <BuildsList
-      v-model:selectedBuildIds="buildsToExportIds"
+      v-model:selectedBuildIds="buildToExportSummaries"
       :build-summaries="buildSummaries"
     />
     <template #footer>
       <div class="builds-export-buttons">
         <Button
-          :disabled="buildsToExportIds.length === 0"
+          :disabled="buildToExportSummaries.length === 0"
           @click="confirmExport()"
         >
           <font-awesome-icon

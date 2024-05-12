@@ -17,6 +17,11 @@ export default defineComponent({
     shoppingList: {
       type: Object as PropType<IShoppingListItem[]>,
       required: true
+    },
+    buttonStyle: {
+      type: String as PropType<'full' | 'discreet'>,
+      required: false,
+      default: 'discreet'
     }
   },
   setup: (props) => {

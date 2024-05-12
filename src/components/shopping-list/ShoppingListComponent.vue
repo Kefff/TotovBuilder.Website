@@ -1,14 +1,26 @@
 <template>
-  <div>
-    <Button
-      v-tooltip.top="$t('caption.shoppingList')"
-      class="p-button-text p-button-sm button-discreet"
-      :disabled="shoppingList.length === 0"
-      @click="show()"
-    >
-      <font-awesome-icon icon="shopping-cart" />
-    </button>
-  </div>
+  <Button
+    v-if="buttonStyle === 'discreet'"
+    v-tooltip.top="$t('caption.shoppingList')"
+    class="p-button-text p-button-sm button-discreet"
+    :disabled="shoppingList.length === 0"
+    @click="show()"
+  >
+    <font-awesome-icon icon="shopping-cart" />
+  </button>
+  <Button
+    v-if="buttonStyle === 'full'"
+    v-tooltip.top="$t('caption.shoppingList')"
+    :disabled="shoppingList.length === 0"
+    class="shopping-list-button"
+    @click="show()"
+  >
+    <font-awesome-icon
+      class="icon-before-text"
+      icon="shopping-cart"
+    />
+    <span>{{ $t('caption.shoppingList') }}</span>
+  </button>
 
   <Sidebar
     v-model:visible="visible"

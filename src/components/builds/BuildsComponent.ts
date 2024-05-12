@@ -123,11 +123,11 @@ export default defineComponent({
 
     /**
      * Opens a the build on which the user clicks.
-     * @param selectedBuildIds - Builds the user clicked on.
+     * @param selectedBuildSummary - Summary of the build the user has clicked on.
      */
-    function onBuildClick(selectedBuildIds: string[]) {
-      if (selectedBuildIds.length === 1) {
-        openBuild(selectedBuildIds[0])
+    function onBuildClick(selectedBuildSummary: IBuildSummary[]) {
+      if (selectedBuildSummary.length === 1) {
+        openBuild(selectedBuildSummary[0].id)
       }
     }
 

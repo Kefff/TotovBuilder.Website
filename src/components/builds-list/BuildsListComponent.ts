@@ -1,5 +1,5 @@
 import { DataTableSortEvent } from 'primevue/datatable'
-import { defineComponent, onMounted, PropType, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
@@ -25,8 +25,8 @@ export default defineComponent({
       type: Array as PropType<IBuildSummary[]>,
       required: true
     },
-    selectedBuildIds: {
-      type: Array as PropType<string[]>,
+    selectedBuildSummaries: {
+      type: Array as PropType<IBuildSummary[]>,
       required: false,
       default: () => []
     },
@@ -36,24 +36,24 @@ export default defineComponent({
       default: true
     }
   },
-  emits: ['update:selectedBuildIds'],
+  emits: ['update:selected-build-summaries'],
   setup: (props, { emit }) => {
     const buildPropertiesService = Services.get(BuildPropertiesService)
 
+    const selectedBuildSummariesInternal = computed({
+      get: () => props.selectedBuildSummaries,
+      set: (value: IBuildSummary[]) => emit('update:selected-build-summaries', value)
+    })
+
     const buildsItemsInInventorySlot = ref<IShoppingListItem[][]>([])
-    const selectedBuilds = ref<IBuildSummary[]>([])
     const sortField = ref('name')
     const sortOrder = ref(1)
 
     onMounted(() => {
       getSortingData()
-      setSelectedBuilds()
-      // getBuildsArmor()
-      // getBuildsMainWeapon()
       getBuildsItemsInInventorySlot()
     })
 
-    watch(() => props.selectedBuildIds, () => setSelectedBuilds())
     watch(() => props.buildSummaries.length, () => {
       // getBuildsArmor()
       // getBuildsMainWeapon()
@@ -111,32 +111,15 @@ export default defineComponent({
       localStorage.setItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey, sortOrder.toString())
     }
 
-    /**
-     * Sets the selected builds.
-     */
-    function setSelectedBuilds() {
-      selectedBuilds.value = props.buildSummaries.filter((bs) => props.selectedBuildIds.some((mv) => mv === bs.id))
-    }
-
-    /**
-     * Updates selected build summaries
-     */
-    function updateSelectedBuildSummaries() {
-      const selectedBuildIds = selectedBuilds.value.map((bs) => bs.id)
-
-      emit('update:selectedBuildIds', selectedBuildIds)
-    }
-
     return {
       buildsItemsInInventorySlot,
       DisplayValueType,
       getNotExportedTooltip,
       onSort,
-      selectedBuilds,
+      selectedBuildSummariesInternal,
       sortField,
       sortOrder,
-      StatsUtils,
-      updateSelectedBuildSummaries
+      StatsUtils
     }
   }
 })

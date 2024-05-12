@@ -1,0 +1,16 @@
+@import '../../css/icon.css';
+@import '../../css/stats.css';
+
+.builds-list-card > .p-card-body {
+  height: 100%;
+}
+
+.builds-list-card > .p-card-body > .p-card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.builds-list-card-buttons > button {
+  width: 50%;
+}
