@@ -93,6 +93,7 @@ export default defineComponent({
     const hasItemsLoadingError = ref(false)
     const hasWebsiteConfigurationLoadingError = ref(false)
     const isLoading = ref(true)
+    const isShoppingListVisible = ref(false)
     const summary = ref<IBuildSummary>({
       armorModifiers: {
         armorClass: 0,
@@ -212,6 +213,13 @@ export default defineComponent({
       build.value.id = ''
       build.value.name = build.value.name + ' - ' + vueI18n.t('caption.copy')
       startEdit()
+    }
+
+    /**
+     * Displays the shopping list.
+     */
+    function displayShoppingList() {
+      isShoppingListVisible.value = true
     }
 
     /**
@@ -424,6 +432,7 @@ export default defineComponent({
       confirmDelete,
       copy,
       deleting,
+      displayShoppingList,
       DisplayValueType,
       editing,
       expandAll,
@@ -450,6 +459,7 @@ export default defineComponent({
       isEmpty,
       isLoading,
       isNewBuild,
+      isShoppingListVisible,
       notExportedTooltip,
       path,
       remove,

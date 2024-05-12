@@ -37,7 +37,7 @@
     "blinding": "Aveuglante",
     "blindnessProtection": "Protection contre l'aveuglement",
     "buildLastChangesNotExported": "Les changements du {lastUpdated} n'ont pas été exportés. Ils seront perdus si vos données de navigation sont effacées. Dernier export le {lastExported}.",
-    "buildNotExported": "Equipement non exporté. Il sera perdu si votre historique de navigation est supprimé.",
+    "buildNotExported": "Equipement non exporté. Il sera perdu si vous effacez vos données de navigation.",
     "builds": "Equipements",
     "buildsList": "Liste des équipements",
     "caliber": "Calibre",

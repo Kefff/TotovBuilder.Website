@@ -20,6 +20,13 @@
   margin-top: auto;
 }
 
+.builds-list-card-buttons > button {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 50%;
+}
+
 .builds-list-card-buttons-edit {
   align-items: center;
   display: flex;
@@ -37,7 +44,6 @@
 .builds-list-card-stats {
   align-items: center;
   display: grid;
-  gap: 1.5rem;
   grid-template-columns: repeat(3, 1fr);
   margin-top: 1rem;
 }

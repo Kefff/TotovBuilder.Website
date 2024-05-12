@@ -10,7 +10,3 @@
   flex-direction: column;
   height: 100%;
 }
-
-.builds-list-card-buttons > button {
-  width: 50%;
-}

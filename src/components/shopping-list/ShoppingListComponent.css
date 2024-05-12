@@ -43,11 +43,6 @@
   margin-right: 2.35rem;
 }
 
-.shopping-list-item-quantity {
-  text-align: right;
-  width: 4rem;
-}
-
 .shopping-list-title {
   display: flex;
   flex-direction: row;

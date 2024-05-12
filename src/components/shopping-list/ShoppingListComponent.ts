@@ -1,4 +1,4 @@
-import { computed, defineComponent, PropType, ref } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { IBuildSummaryShoppingMerchant } from '../../models/utils/IBuildSummaryMerchant'
 import ItemIcon from '../item-icon/ItemIconComponent.vue'
@@ -18,23 +18,19 @@ export default defineComponent({
       type: Object as PropType<IShoppingListItem[]>,
       required: true
     },
-    buttonStyle: {
-      type: String as PropType<'full' | 'discreet'>,
-      required: false,
-      default: 'discreet'
+    visible: {
+      type: Boolean,
+      required: true
     }
   },
-  setup: (props) => {
+  emits: ['update:visible'],
+  setup: (props, { emit }) => {
     const requiredMerchants = computed(() => getRequiredMerchants())
 
-    const visible = ref(false)
-
-    /**
-     * Closes shopping list.
-     */
-    function close() {
-      visible.value = false
-    }
+    const visibleInternal = computed({
+      get: () => props.visible,
+      set: (value: boolean) => emit('update:visible', value)
+    })
 
     /**
      * Gets the required merchants.
@@ -60,18 +56,9 @@ export default defineComponent({
       return merchants
     }
 
-    /**
-     * Displays the shopping list.
-     */
-    function show() {
-      visible.value = true
-    }
-
     return {
-      close,
       requiredMerchants,
-      show,
-      visible
+      visibleInternal
     }
   }
 })

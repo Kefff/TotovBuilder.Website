@@ -4,6 +4,12 @@
       v-if="iconUrl != null"
       :src="iconUrl"
     >
+    <div
+      v-if="quantity != null && quantity > 1"
+      class="item-icon-quantity"
+    >
+      {{ quantity }}
+    </div>
   </div>
 </template>
 

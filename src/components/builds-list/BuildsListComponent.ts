@@ -46,6 +46,8 @@ export default defineComponent({
     })
 
     const buildsItemsInInventorySlot = ref<IShoppingListItem[][]>([])
+    const currentShopppingList = ref<IShoppingListItem[]>()
+    const isShoppingListVisible = ref(false)
     const sortField = ref('name')
     const sortOrder = ref(1)
 
@@ -55,8 +57,6 @@ export default defineComponent({
     })
 
     watch(() => props.buildSummaries.length, () => {
-      // getBuildsArmor()
-      // getBuildsMainWeapon()
       getBuildsItemsInInventorySlot()
     })
 
@@ -111,12 +111,24 @@ export default defineComponent({
       localStorage.setItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey, sortOrder.toString())
     }
 
+    /**
+     * Displays the shopping list for the specified build.
+     * @param buildSummary - Summary of the build.
+     */
+    function showShoppingList(shoppingList: IShoppingListItem[]) {
+      currentShopppingList.value = shoppingList
+      isShoppingListVisible.value = true
+    }
+
     return {
       buildsItemsInInventorySlot,
       DisplayValueType,
       getNotExportedTooltip,
+      isShoppingListVisible,
       onSort,
       selectedBuildSummariesInternal,
+      currentShopppingList,
+      showShoppingList,
       sortField,
       sortOrder,
       StatsUtils

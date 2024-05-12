@@ -1,29 +1,6 @@
 <template>
-  <Button
-    v-if="buttonStyle === 'discreet'"
-    v-tooltip.top="$t('caption.shoppingList')"
-    class="p-button-text p-button-sm button-discreet"
-    :disabled="shoppingList.length === 0"
-    @click="show()"
-  >
-    <font-awesome-icon icon="shopping-cart" />
-  </button>
-  <Button
-    v-if="buttonStyle === 'full'"
-    v-tooltip.top="$t('caption.shoppingList')"
-    :disabled="shoppingList.length === 0"
-    class="shopping-list-button"
-    @click="show()"
-  >
-    <font-awesome-icon
-      class="icon-before-text"
-      icon="shopping-cart"
-    />
-    <span>{{ $t('caption.shoppingList') }}</span>
-  </button>
-
   <Sidebar
-    v-model:visible="visible"
+    v-model:visible="visibleInternal"
     position="left"
     style="width: auto"
   >
@@ -45,12 +22,12 @@
         :key="index"
         class="shopping-list-item"
       >
-        <div class="shopping-list-item-quantity">
-          <span v-if="shoppingListItem.quantity > 1">{{ shoppingListItem.quantity }} x</span>
-        </div>
         <div class="shopping-list-item-icon">
           <div>
-            <ItemIcon :item="shoppingListItem.item" />
+            <ItemIcon
+              :item="shoppingListItem.item"
+              :quantity="shoppingListItem.quantity"
+            />
           </div>
         </div>
         <div class="shopping-list-item-name">

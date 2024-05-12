@@ -55,7 +55,14 @@
             />
             <span>{{ $t('caption.save') }}</span>
           </Button>
-          <ShoppingList :shopping-list="summary.shoppingList" />
+          <Button
+            v-tooltip.top="$t('caption.shoppingList')"
+            class="p-button-text p-button-sm button-discreet"
+            :disabled="summary.shoppingList.length === 0"
+            @click="() => displayShoppingList()"
+          >
+            <font-awesome-icon icon="shopping-cart" />
+          </button>
           <Button
             v-tooltip.top="$t('caption.copyBuild')"
             :disabled="isLoading || hasLoadingError || isNewBuild"
@@ -353,6 +360,12 @@
   <LoadingError
     v-model:hasItemsLoadingError="hasItemsLoadingError"
     v-model:hasWebsiteConfigurationLoadingError="hasWebsiteConfigurationLoadingError"
+  />
+
+  <!-- Shopping list-->
+  <ShoppingList
+    v-model:visible="isShoppingListVisible"
+    :shopping-list="summary.shoppingList"
   />
 </template>
 

@@ -8,6 +8,11 @@ export default defineComponent({
     item: {
       type: Object as PropType<IItem>,
       required: true
+    },
+    quantity: {
+      type: Number,
+      required: false,
+      default: undefined
     }
   },
   setup: (props) => {
