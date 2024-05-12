@@ -15,13 +15,14 @@
     style="width: auto"
   >
     <!-- Display options -->
-    <div class="sidebar-title">
-      <font-awesome-icon
-        icon="tv"
-        class="icon-before-text"
-      />
-      <span>{{ $t('caption.displayOptions') }}</span>
-    </div>
+    <template #header>
+      <div class="sidebar-title">
+        <div class="sidebar-title-icon">
+          <font-awesome-icon icon="tv" />
+        </div>
+        <span>{{ $t('caption.displayOptions') }}</span>
+      </div>
+    </template>
     <div class="sidebar-option">
       <LanguageSelector />
     </div>
@@ -29,10 +30,9 @@
 
     <!-- General options -->
     <div class="sidebar-title">
-      <font-awesome-icon
-        icon="cog"
-        class="icon-before-text"
-      />
+      <div class="sidebar-title-icon">
+        <font-awesome-icon icon="cog" />
+      </div>
       <span>{{ $t('caption.generalOptions') }}</span>
     </div>
     <div class="sidebar-option">

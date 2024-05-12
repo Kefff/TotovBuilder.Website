@@ -19,24 +19,24 @@
     style="width: auto"
     @hide="save()"
   >
-    <div class="sidebar-title merchant-items-options-title">
-      <font-awesome-icon
-        icon="user-tag"
-        class="icon-before-text"
-      />
-      <span>{{ $t('caption.merchants') }}</span>
-    </div>
+    <template #header>
+      <div class="sidebar-title">
+        <div class="sidebar-title-icon">
+          <font-awesome-icon icon="user-tag" />
+        </div>
+        <span>{{ $t('caption.merchants') }}</span>
+      </div>
+    </template>
     <div class="sidebar-option">
       <MerchantFilter
         v-model:global-filter="globalFilter"
         @update:global-filter="() => hasChanged = true"
       />
     </div>
-    <div class="sidebar-title merchant-items-options-title">
-      <font-awesome-icon
-        icon="shopping-basket"
-        class="icon-before-text"
-      />
+    <div class="sidebar-title">
+      <div class="sidebar-title-icon">
+        <font-awesome-icon icon="shopping-basket" />
+      </div>
       <span>{{ $t('caption.items') }}</span>
     </div>
     <div class="sidebar-option">

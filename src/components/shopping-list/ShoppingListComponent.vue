@@ -4,36 +4,31 @@
     position="left"
     style="width: auto"
   >
-    <div class="shopping-list-title">
-      <div class="sidebar-title">
-        <font-awesome-icon
-          icon="shopping-cart"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.shoppingList') }}</span>
+    <template #header>
+      <div class="shopping-list-title">
+        <div class="sidebar-title">
+          <div class="sidebar-title-icon">
+            <font-awesome-icon icon="shopping-cart" />
+          </div>
+          <span>{{ $t('caption.shoppingList') }}</span>
+        </div>
       </div>
-      <div class="shopping-list-title-merchants">
-        <ShoppingListMerchants :shopping-list="shoppingList" />
-      </div>
-    </div>
+    </template>
     <div class="sidebar-option">
+      <ShoppingListMerchants :shopping-list="shoppingList" />
       <div
         v-for="(shoppingListItem, index) of shoppingList"
         :key="index"
         class="shopping-list-item"
       >
         <div class="shopping-list-item-icon">
-          <div>
-            <ItemIcon
-              :item="shoppingListItem.item"
-              :quantity="shoppingListItem.quantity"
-            />
-          </div>
+          <ItemIcon
+            :item="shoppingListItem.item"
+            :quantity="shoppingListItem.quantity"
+          />
         </div>
-        <div class="shopping-list-item-name">
-          <div>
-            {{ shoppingListItem.item.name }}
-          </div>
+        <div>
+          {{ shoppingListItem.item.name }}
         </div>
         <div class="shopping-list-item-price">
           <Price

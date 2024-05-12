@@ -259,7 +259,7 @@
     "turningSpeedModifierPercentage": "Malus vitesse rotation",
     "velocity": "Vitesse",
     "verticalRecoil": "Recul vertical",
-    "weight": "Poids"
+    "weight": "Poids (kg)"
   },
   "message": {
     "apiDisclaimer1": "Données fournies gratuitement par ",

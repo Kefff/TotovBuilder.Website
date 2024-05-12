@@ -2,10 +2,12 @@
 
 .merchant-filter {
   align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 2rem 1fr 3rem 5rem;
   height: 3.5rem;
+  margin-right: 1px;
+  /* Needed otherwise there is a horizontal scroll bar for some reason*/
 }
 
 .merchant-filter:last-child {
@@ -23,7 +25,6 @@
   border-style: solid;
   border-width: 1px;
   cursor: pointer;
-  margin-left: auto;
   width: 3rem;
 }
 
@@ -33,17 +34,4 @@
 
 .merchant-filter-merchant {
   cursor: pointer;
-  margin-left: 1rem;
-  margin-right: 1rem;
-  width: 7.5rem
-}
-
-.merchant-filter-level {
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  width: 5.125rem;
-}
-
-.merchant-filter-level-option {
-  padding: 1rem
 }

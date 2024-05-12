@@ -1,17 +1,14 @@
 .sidebar-option {
   display: flex;
   flex-direction: column;
+  margin-top: 1rem;
   min-height: 3.25rem;
-  padding: 0.5rem;
-  overflow-x: hidden;
-  /* Needed for Firefox to avoid having an horizontal scrolling in certain situations for some reason */
 }
 
 .sidebar-option-with-hover {
   align-items: center;
   display: flex;
   min-height: 3.25rem;
-  padding: 0.5rem;
 }
 
 .sidebar-option-with-hover:hover {
@@ -21,13 +18,19 @@
 }
 
 .sidebar-title {
+  display: flex;
+  align-items: center;
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 1rem;
+  margin-right: 2rem;
   margin-top: 3rem;
-  white-space: nowrap;
+}
+
+.sidebar-title-icon {
+  margin-right: 0.5rem;
+  width: 2rem;
 }
 
 .sidebar-title:first-child {
-  margin-top: 0rem;
+  margin-top: 0;
 }

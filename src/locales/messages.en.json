@@ -294,7 +294,7 @@
     "turningSpeedModifierPercentage": "Turning speed malus",
     "velocity": "Velocity",
     "verticalRecoil": "Vertical recoil",
-    "weight": "Weight"
+    "weight": "Weight (kg)"
   },
   "message": {
     "apiDisclaimer1": "Data provided for free by ",

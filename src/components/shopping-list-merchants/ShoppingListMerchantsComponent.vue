@@ -1,5 +1,5 @@
 <template>
-  <div class="merchants-list">
+  <div class="shopping-list-merchants">
     <div
       v-for="merchant of requiredMerchants"
       :key="merchant.name"

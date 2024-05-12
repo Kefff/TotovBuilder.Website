@@ -18,7 +18,7 @@
   margin-top: 0.25rem;
 }
 
-.price-details :first-child {
+.price-details:first-child {
   margin-top: 0;
 }
 
