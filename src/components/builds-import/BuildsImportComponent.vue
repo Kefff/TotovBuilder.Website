@@ -9,7 +9,7 @@
     <BuildsList
       v-if="showingList"
       v-model:selectedBuildIds="buildsToImportIds"
-      :builds-summaries="readenBuildSummaries"
+      :build-summaries="readenBuildSummaries"
       :show-not-exported="false"
     />
     <div

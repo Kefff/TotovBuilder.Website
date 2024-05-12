@@ -9,11 +9,11 @@
       :class="'price-value' + (canShowDetails ? ' price-value-with-details' : '')"
       @click="(e) => togglePriceDetails(e)"
     >
-      <span>{{ displayedPrice }}</span>
       <font-awesome-icon
         :icon="displayedCurrency.iconName"
         :class="'currency-' + displayedCurrency.name"
       />
+      <span>{{ displayedPrice }}</span>
     </div>
     <div
       :class="canShowDetails ? 'price-value-with-details' : ''"

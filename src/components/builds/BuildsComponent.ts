@@ -42,10 +42,10 @@ export default defineComponent({
     const globalFilterService = Services.get(GlobalFilterService)
 
     const router = useRouter()
-    const buildsSummaries = ref<IBuildSummary[]>([])
+    const buildSummaries = ref<IBuildSummary[]>([])
     let builds: IBuild[] = []
 
-    const canExport = computed(() => !isLoading.value && buildsSummaries.value.length > 0 && !isExporting.value && !isImporting.value)
+    const canExport = computed(() => !isLoading.value && buildSummaries.value.length > 0 && !isExporting.value && !isImporting.value)
     const canImport = computed(() => !isLoading.value && !isExporting.value && !isImporting.value)
     const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
     const hasLoadingError = computed(() => hasItemsLoadingError.value || hasWebsiteConfigurationLoadingError.value)
@@ -105,13 +105,13 @@ export default defineComponent({
 
       const execute = new Promise<void>((resolve) => {
         setTimeout(async () => { // Did not find another solution to make the loading animation appear when opening the builds list from the welcome page (nextTick does not work)
-          buildsSummaries.value = []
+          buildSummaries.value = []
           builds = Services.get(BuildService).getAll()
           const buildPropertiesService = Services.get(BuildPropertiesService)
 
           for (const build of builds) {
             const summary = await buildPropertiesService.getSummary(build)
-            buildsSummaries.value.push(summary)
+            buildSummaries.value.push(summary)
           }
 
           isLoading.value = false
@@ -203,7 +203,7 @@ export default defineComponent({
     }
 
     return {
-      buildsSummaries,
+      buildSummaries,
       canExport,
       canImport,
       hasImported,

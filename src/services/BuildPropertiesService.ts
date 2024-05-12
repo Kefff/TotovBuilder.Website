@@ -510,9 +510,9 @@ ${sharableUrlResult}`
           continue
         }
 
-        const inventoryItemShoopingList = await inventoryItemService.getShoppingList(item, undefined, inventorySlotType.canBeLooted)
+        const inventoryItemShoppingList = await inventoryItemService.getShoppingList(item, inventorySlotType.canBeLooted, undefined, inventorySlotType.id)
 
-        for (const inventoryItemShoppingListItemToAdd of inventoryItemShoopingList) {
+        for (const inventoryItemShoppingListItemToAdd of inventoryItemShoppingList) {
           const inventoryItemShoppingListItemIndex = shoppingList.findIndex(sli => sli.item.id === inventoryItemShoppingListItemToAdd.item.id)
 
           if (inventoryItemShoppingListItemIndex < 0) {

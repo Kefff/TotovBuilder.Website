@@ -12,7 +12,7 @@ export default defineComponent({
     BuildsList
   },
   props: {
-    buildsSummaries: {
+    buildSummaries: {
       type: Array as PropType<IBuildSummary[]>,
       required: true
     },
@@ -24,7 +24,7 @@ export default defineComponent({
   emits: ['update:isExporting'],
   setup: (props, { emit }) => {
     const buildsToExportIds = ref<string[]>([])
-    const allSelected = computed(() => buildsToExportIds.value.length === props.buildsSummaries.length)
+    const allSelected = computed(() => buildsToExportIds.value.length === props.buildSummaries.length)
 
     onMounted(() => document.onkeydown = (e) => onKeyDown(e))
 
@@ -66,7 +66,7 @@ export default defineComponent({
 
       if (event.key === 'a' && (event.ctrlKey || event.metaKey)) {
         event.preventDefault() // Prevents the browser save action to be triggered
-        buildsToExportIds.value = props.buildsSummaries.map(bs => bs.id)
+        buildsToExportIds.value = props.buildSummaries.map(bs => bs.id)
       }
     }
 
@@ -77,7 +77,7 @@ export default defineComponent({
       if (allSelected.value) {
         buildsToExportIds.value = []
       } else {
-        buildsToExportIds.value = props.buildsSummaries.map(bs => bs.id)
+        buildsToExportIds.value = props.buildSummaries.map(bs => bs.id)
       }
     }
 

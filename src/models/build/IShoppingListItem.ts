@@ -7,6 +7,11 @@ import { IPrice } from '../item/IPrice'
  */
 export interface IShoppingListItem {
   /**
+   * ID of the inventory slot in which the item is placed.
+   */
+  inventorySlotId: string | undefined
+
+  /**
    * Item.
    */
   item: IItem
@@ -17,12 +22,12 @@ export interface IShoppingListItem {
   price: IPrice
 
   /**
-   * Unit price.
-   */
-  unitPrice: IPrice
-
-  /**
    * Quantity.
    */
   quantity: number
+
+  /**
+   * Unit price.
+   */
+  unitPrice: IPrice
 }

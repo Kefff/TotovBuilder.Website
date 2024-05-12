@@ -159,6 +159,7 @@ describe('fetchPrices()', () => {
         && p.merchantLevel === priceMock.merchantLevel
         && p.currencyName === priceMock.currencyName
         && p.barterItems.map(bi => bi.itemId).join(',') === priceMock.barterItems.map(bi => bi.itemId).join(',')) // Needed because some items have multiple barters for the same merchant
+
       expect(fetchedPrice).toStrictEqual(priceMock)
     }
   })

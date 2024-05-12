@@ -1,22 +1,27 @@
 import { DataTableSortEvent } from 'primevue/datatable'
 import { defineComponent, onMounted, PropType, ref, watch } from 'vue'
+import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
+import ItemIcon from '../item-icon/ItemIconComponent.vue'
 import ShoppingListMerchants from '../shopping-list-merchants/ShoppingListMerchantsComponent.vue'
 import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
+import Tooltip from '../tooltip/TooltipComponent.vue'
 
 export default defineComponent({
   components: {
     InventoryPrice,
+    ItemIcon,
     ShoppingList,
-    ShoppingListMerchants
+    ShoppingListMerchants,
+    Tooltip
   },
   props: {
-    buildsSummaries: {
+    buildSummaries: {
       type: Array as PropType<IBuildSummary[]>,
       required: true
     },
@@ -35,16 +40,38 @@ export default defineComponent({
   setup: (props, { emit }) => {
     const buildPropertiesService = Services.get(BuildPropertiesService)
 
+    const buildsItemsInInventorySlot = ref<IShoppingListItem[][]>([])
+    const selectedBuilds = ref<IBuildSummary[]>([])
     const sortField = ref('name')
     const sortOrder = ref(1)
-    const selectedBuildSummaries = ref<IBuildSummary[]>([])
 
     onMounted(() => {
       getSortingData()
       setSelectedBuilds()
+      // getBuildsArmor()
+      // getBuildsMainWeapon()
+      getBuildsItemsInInventorySlot()
     })
 
     watch(() => props.selectedBuildIds, () => setSelectedBuilds())
+    watch(() => props.buildSummaries.length, () => {
+      // getBuildsArmor()
+      // getBuildsMainWeapon()
+      getBuildsItemsInInventorySlot()
+    })
+
+    /**
+     * Gets the items of each build that are in an inventory slot.
+     */
+    function getBuildsItemsInInventorySlot() {
+      const buildsItems: IShoppingListItem[][] = []
+      for (const buildSummary of props.buildSummaries) {
+        const buildItems = buildSummary.shoppingList.filter(sli => sli.inventorySlotId != null)
+        buildsItems.push(buildItems)
+      }
+
+      buildsItemsInInventorySlot.value = buildsItems
+    }
 
     /**
      * Gets the tooltip for not exported builds.
@@ -88,23 +115,24 @@ export default defineComponent({
      * Sets the selected builds.
      */
     function setSelectedBuilds() {
-      selectedBuildSummaries.value = props.buildsSummaries.filter((bs) => props.selectedBuildIds.some((mv) => mv === bs.id))
+      selectedBuilds.value = props.buildSummaries.filter((bs) => props.selectedBuildIds.some((mv) => mv === bs.id))
     }
 
     /**
      * Updates selected build summaries
      */
     function updateSelectedBuildSummaries() {
-      const selectedBuildIds = selectedBuildSummaries.value.map((bs) => bs.id)
+      const selectedBuildIds = selectedBuilds.value.map((bs) => bs.id)
 
       emit('update:selectedBuildIds', selectedBuildIds)
     }
 
     return {
+      buildsItemsInInventorySlot,
       DisplayValueType,
       getNotExportedTooltip,
       onSort,
-      selectedBuildSummaries,
+      selectedBuilds,
       sortField,
       sortOrder,
       StatsUtils,

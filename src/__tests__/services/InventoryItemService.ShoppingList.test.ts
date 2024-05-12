@@ -19,6 +19,7 @@ describe('getShoppingList', () => {
       build1.inventorySlots[0].items[0]!,
       [
         {
+          inventorySlotId: undefined,
           item: {
             ...rpk16Default,
             prices: rpk16DefaultPrices
@@ -46,6 +47,7 @@ describe('getShoppingList', () => {
           }
         },
         {
+          inventorySlotId: undefined,
           item: {
             ...rpk16Drum,
             prices: rpk16DrumPrices
@@ -73,6 +75,7 @@ describe('getShoppingList', () => {
           }
         },
         {
+          inventorySlotId: undefined,
           item: {
             ...alkali,
             prices: alkaliPrices
@@ -100,6 +103,7 @@ describe('getShoppingList', () => {
           }
         },
         {
+          inventorySlotId: undefined,
           item: {
             ...ammo545us,
             prices: ammo545usPrices
@@ -132,6 +136,7 @@ describe('getShoppingList', () => {
       build1.inventorySlots[8].items[0]!,
       [
         {
+          inventorySlotId: undefined,
           item: {
             ...berkut,
             prices: berkutPrices
@@ -159,6 +164,7 @@ describe('getShoppingList', () => {
           }
         },
         {
+          inventorySlotId: undefined,
           item: {
             ...iskra,
             prices: iskraPrices
@@ -186,6 +192,7 @@ describe('getShoppingList', () => {
           }
         },
         {
+          inventorySlotId: undefined,
           item: {
             ...syringe,
             prices: syringePrices
@@ -213,6 +220,7 @@ describe('getShoppingList', () => {
           }
         },
         {
+          inventorySlotId: undefined,
           item: {
             ...water,
             prices: waterPrices
@@ -240,6 +248,7 @@ describe('getShoppingList', () => {
           }
         },
         {
+          inventorySlotId: undefined,
           item: {
             ...h2o2,
             prices: h2o2Prices
@@ -305,6 +314,7 @@ describe('getShoppingList', () => {
       } as IInventoryItem,
       [
         {
+          inventorySlotId: undefined,
           item: {
             ...berkut,
             prices: berkutPrices
@@ -332,6 +342,7 @@ describe('getShoppingList', () => {
           }
         },
         {
+          inventorySlotId: undefined,
           item: {
             ...rpk16Drum,
             prices: rpk16DrumPrices
@@ -359,6 +370,7 @@ describe('getShoppingList', () => {
           }
         },
         {
+          inventorySlotId: undefined,
           item: {
             ...alkali,
             prices: alkaliPrices
@@ -386,6 +398,7 @@ describe('getShoppingList', () => {
           }
         },
         {
+          inventorySlotId: undefined,
           item: {
             ...rpk16RsBase,
             prices: rpk16RsBasePrices
@@ -449,6 +462,60 @@ describe('getShoppingList', () => {
     expect(shoppingListResult).toStrictEqual(expected)
   })
 
+  it('should indicate the inventory slot in which an item is found', async () => {
+    // Arrange
+    useItemServiceMock()
+    usePresetServiceMock()
+    useTarkovValuesServiceMock()
+    useWebsiteConfigurationServiceMock()
+    Services.configure(GlobalFilterService)
+
+    const inventoryItemService = new InventoryItemService()
+
+    const inventoryItem: IInventoryItem = {
+      content: [],
+      ignorePrice: false,
+      itemId: rpk16Default.id,
+      modSlots: [],
+      quantity: 1
+    }
+
+    // Act
+    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem, true, undefined, 'onSling')
+
+    // Assert
+    expect(shoppingListResult).toStrictEqual([
+      {
+        inventorySlotId: 'onSling',
+        item: {
+          ...rpk16Default,
+          prices: rpk16DefaultPrices
+        },
+        quantity: 1,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: rpk16Default.id,
+          merchant: 'flea-market',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 43345,
+          valueInMainCurrency: 43345
+        },
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: rpk16Default.id,
+          merchant: 'flea-market',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 43345,
+          valueInMainCurrency: 43345
+        }
+      }
+    ] as IShoppingListItem[])
+  })
+
   it('should ignore items that cannot be looted', async () => {
     // Arrange
     useItemServiceMock()
@@ -481,6 +548,7 @@ describe('getShoppingList', () => {
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
+        inventorySlotId: undefined,
         item: {
           ...ammo9mmGT,
           prices: ammo9mmGTPrices
@@ -537,11 +605,12 @@ describe('getShoppingList', () => {
     }
 
     // Act
-    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem, undefined, false)
+    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem, false)
 
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
+        inventorySlotId: undefined,
         item: {
           ...ammo9mmGT,
           prices: ammo9mmGTPrices
@@ -595,6 +664,7 @@ describe('getShoppingList', () => {
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
+        inventorySlotId: undefined,
         item: {
           categoryId: 'notFound',
           conflictingItemIds: [],
@@ -631,7 +701,7 @@ describe('getShoppingList', () => {
           valueInMainCurrency: 0
         }
       }
-    ])
+    ] as IShoppingListItem[])
   })
 
   it('should ignore the prices of items without price', async () => {
@@ -658,6 +728,7 @@ describe('getShoppingList', () => {
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
+        inventorySlotId: undefined,
         item: ammo545bp,
         price: {
           barterItems: [],
@@ -681,6 +752,6 @@ describe('getShoppingList', () => {
           valueInMainCurrency: 0
         }
       }
-    ])
+    ] as IShoppingListItem[])
   })
 })

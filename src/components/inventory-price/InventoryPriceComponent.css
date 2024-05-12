@@ -1,10 +1,10 @@
 @import '../../css/currency.css';
 
 .inventory-price {
+  align-items: center;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  padding-right: 0.25rem;
 }
 
 .inventory-price-details {
@@ -40,6 +40,6 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  margin-right: auto;
+  padding-left: 0.5rem;
   padding-right: 0.5rem;
 }

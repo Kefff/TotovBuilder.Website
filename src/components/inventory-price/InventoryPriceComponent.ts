@@ -5,10 +5,12 @@ import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import Price from '../price/PriceComponent.vue'
+import Tooltip from '../tooltip/TooltipComponent.vue'
 
 export default defineComponent({
   components: {
-    Price
+    Price,
+    Tooltip
   },
   props: {
     inventoryPrice: {

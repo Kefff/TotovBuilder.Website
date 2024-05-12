@@ -51,11 +51,11 @@
       <Loading />
     </div>
     <div
-      v-show="!isLoading && buildsSummaries.length > 0"
+      v-show="!isLoading && buildSummaries.length > 0"
       id="builds-content"
     >
       <BuildsList
-        :builds-summaries="buildsSummaries"
+        :build-summaries="buildSummaries"
         @update:selected-build-ids="($event: string[]) => onBuildClick($event)"
       />
     </div>
@@ -65,7 +65,7 @@
   <BuildsExport
     v-if="!isLoading && !hasLoadingError"
     v-model:is-exporting="isExporting"
-    :builds-summaries="buildsSummaries"
+    :build-summaries="buildSummaries"
   />
 
   <!-- Import -->

@@ -1033,6 +1033,21 @@ export const h2o2: IItem = {
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Bottle_of_hydrogen_peroxide'
 }
 
+export const halfMask: IItem = {
+  categoryId: 'faceCover',
+  conflictingItemIds: [],
+  iconLink: 'https://assets.tarkov.dev/572b7fa524597762b747ce82-icon.webp',
+  id: '572b7fa524597762b747ce82',
+  imageLink: 'https://assets.tarkov.dev/572b7fa524597762b747ce82-image.webp',
+  marketLink: 'https://tarkov.dev/item/lower-half-mask',
+  maxStackableAmount: 1,
+  name: 'Lower half-mask',
+  prices: [],
+  shortName: 'Half-mask',
+  weight: 0.1,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Lower_half-mask'
+}
+
 export const iskra: IItem = {
   categoryId: 'other',
   conflictingItemIds: [],
@@ -2475,6 +2490,21 @@ export const rgd5: IGrenade = {
   type: 'Grenade'
 }
 
+export const rooster: IItem = {
+  categoryId: 'other',
+  conflictingItemIds: [],
+  iconLink: 'https://assets.tarkov.dev/5bc9bc53d4351e00367fbcee-icon.webp',
+  id: '5bc9bc53d4351e00367fbcee',
+  imageLink: 'https://assets.tarkov.dev/5bc9bc53d4351e00367fbcee-image.webp',
+  marketLink: 'https://tarkov.dev/item/golden-rooster-figurine',
+  maxStackableAmount: 1,
+  name: 'Golden rooster figurine',
+  prices: [],
+  shortName: 'Rooster',
+  weight: 3.8,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Golden_rooster_figurine'
+}
+
 export const rpk16: IRangedWeapon = {
   categoryId: 'mainWeapon',
   conflictingItemIds: [],
@@ -3507,6 +3537,7 @@ export const ItemMocks: IItem[] = [
   ewr,
   filter,
   h2o2,
+  halfMask,
   iskra,
   k1s,
   k1sVisor,
@@ -3545,6 +3576,7 @@ export const ItemMocks: IItem[] = [
   pso1,
   razor,
   rgd5,
+  rooster,
   rpk16,
   rpk1615inch,
   rpk16Default,

@@ -14,7 +14,7 @@
       "backpack"
     ],
     "canBeLooted": true,
-    "displayOrder": 9,
+    "displayOrder": 8,
     "icon": "suitcase",
     "id": "backpack",
     "itemSlotsAmount": 1
@@ -55,7 +55,7 @@
       "eyewear"
     ],
     "canBeLooted": true,
-    "displayOrder": 13,
+    "displayOrder": 10,
     "icon": "glasses",
     "id": "eyewear",
     "itemSlotsAmount": 1
@@ -65,7 +65,7 @@
       "faceCover"
     ],
     "canBeLooted": true,
-    "displayOrder": 12,
+    "displayOrder": 11,
     "icon": "mask",
     "id": "faceCover",
     "itemSlotsAmount": 1
@@ -116,7 +116,7 @@
       "vest"
     ],
     "canBeLooted": true,
-    "displayOrder": 8,
+    "displayOrder": 9,
     "icon": "th-large",
     "id": "pockets",
     "itemSlotsAmount": 4
@@ -129,7 +129,7 @@
     "defaultItemsIds": [
       "544a11ac4bdc2d470e8b456a"
     ],
-    "displayOrder": 10,
+    "displayOrder": 12,
     "icon": "wallet",
     "id": "pouch",
     "itemSlotsAmount": 1
@@ -163,7 +163,7 @@
     "defaultItemsIds": [
       "54491bb74bdc2d09088b4567"
     ],
-    "displayOrder": 11,
+    "displayOrder": 13,
     "id": "scabbard",
     "itemSlotsAmount": 1
   },

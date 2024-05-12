@@ -550,11 +550,16 @@ ${indentation}${containedItemAsString}`
   /**
    * Gets a shopping list for this item and all its content, mod and barter items that must be bought.
    * @param inventoryItem - Inventory item.
-   * @param presetModSlotItem - Preset mod slot item used to ignore the price of mods that are installed by default on an item.
    * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
+   * @param presetModSlotItem - Preset mod slot item used to ignore the price of mods that are installed by default on an item.
+   * @param inventorySlotId - Name of the inventory slot in which the item is found.
    * @returns Shopping list items.
    */
-  public async getShoppingList(inventoryItem: IInventoryItem, presetModSlotItem?: IInventoryItem, canBeLooted = true): Promise<IShoppingListItem[]> {
+  public async getShoppingList(
+    inventoryItem: IInventoryItem,
+    canBeLooted = true,
+    presetModSlotItem: IInventoryItem | undefined = undefined,
+    inventorySlotId: string | undefined = undefined): Promise<IShoppingListItem[]> {
     const itemService = Services.get(ItemService)
     const shoppingList: IShoppingListItem[] = []
     const shoppingListItemsToAdd: IShoppingListItem[] = []
@@ -605,6 +610,7 @@ ${indentation}${containedItemAsString}`
       }
 
       shoppingListItemsToAdd.push({
+        inventorySlotId: inventorySlotId,
         item,
         quantity: inventoryItem.quantity,
         price: {
@@ -632,7 +638,7 @@ ${indentation}${containedItemAsString}`
       }
 
       const presetModSlot = presetModSlotItem?.modSlots.find(pms => pms.modSlotName === modSlot.modSlotName)
-      const modShoppingList = await this.getShoppingList(modSlot.item, presetModSlot?.item)
+      const modShoppingList = await this.getShoppingList(modSlot.item, true, presetModSlot?.item)
       shoppingListItemsToAdd.push(...modShoppingList)
     }
 

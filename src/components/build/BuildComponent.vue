@@ -305,10 +305,10 @@
       <div v-else>
         <InventorySlot
           v-for="(inventorySlot, index) of build.inventorySlots"
-          :key="path + '/' + inventorySlot.typeId"
+          :key="`${path}/${inventorySlot.typeId}`"
           v-model:inventory-slot="build.inventorySlots[index]"
           v-model:collapsed="collapseStatuses[index]"
-          :path="path + '/' + inventorySlotPathPrefix + inventorySlot.typeId"
+          :path="`${path}/${inventorySlotPathPrefix}${inventorySlot.typeId}`"
         />
       </div>
     </div>

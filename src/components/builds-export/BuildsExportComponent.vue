@@ -8,7 +8,7 @@
   >
     <BuildsList
       v-model:selectedBuildIds="buildsToExportIds"
-      :builds-summaries="buildsSummaries"
+      :build-summaries="buildSummaries"
     />
     <template #footer>
       <div class="builds-export-buttons">
@@ -23,7 +23,7 @@
           <span>{{ $t('caption.exportBuilds') }}</span>
         </Button>
         <Button
-          v-if="buildsSummaries.length > 1"
+          v-if="buildSummaries.length > 1"
           class="p-button-text button-discreet"
           @click="toggleSelection()"
         >

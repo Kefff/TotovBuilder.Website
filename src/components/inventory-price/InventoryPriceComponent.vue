@@ -2,10 +2,14 @@
   <div class="inventory-price">
     <div
       v-if="inventoryPrice.missingPrice"
-      v-tooltip.top="isBuild ? $t('message.buildWithMissingPrice') : $t('message.inventorySlotWithMissingPrice')"
       class="inventory-price-missing-price-icon"
     >
-      <font-awesome-icon icon="exclamation-triangle" />
+      <Tooltip
+        :tooltip="isBuild ? $t('message.buildWithMissingPrice') : $t('message.inventorySlotWithMissingPrice')"
+        position="right"
+      >
+        <font-awesome-icon icon="exclamation-triangle" />
+      </Tooltip>
     </div>
     <div
       v-tooltip.top="$t('caption.price')"
