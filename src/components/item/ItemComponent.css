@@ -6,6 +6,14 @@
   margin-bottom: 0;
 }
 
+.item-clear-button {
+  align-items: center;
+  color: var(--error-color);
+  display: flex;
+  justify-content: center;
+  width: 2.375rem;
+}
+
 .item-dropdown {
   width: 25rem;
 }

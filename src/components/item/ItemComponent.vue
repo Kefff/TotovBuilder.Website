@@ -38,6 +38,14 @@
               <SelectedItem v-model:item="slotProps.value" />
             </div>
           </template>
+          <template #clearicon>
+            <div
+              class="item-clear-button"
+              @click="removeItem"
+            >
+              <font-awesome-icon icon="times" />
+            </div>
+          </template>
         </Dropdown>
       </div>
       <div

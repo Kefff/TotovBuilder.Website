@@ -25,3 +25,7 @@
   padding-right: 0;
   padding-top: 0;
 }
+
+.item-dropdown-override > .p-dropdown.p-dropdown-clearable .p-dropdown-label {
+  padding-right: 0;
+}

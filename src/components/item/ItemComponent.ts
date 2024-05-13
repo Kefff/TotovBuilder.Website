@@ -260,6 +260,17 @@ export default defineComponent({
     }
 
     /**
+     * Removes the selected item.
+     * @param event - Click event.
+     */
+    async function removeItem(event: MouseEvent) {
+      event.stopPropagation()
+
+      item.value = undefined
+      await onItemChanged()
+    }
+
+    /**
      * Sets an item as an option if it matches the filter.
      * @param acceptedItem - Item that must set as an options.
      * @param filterWords - Filter words.
@@ -407,6 +418,7 @@ export default defineComponent({
       optionsSortingData,
       presetModSlotContainingItem,
       quantity,
+      removeItem,
       SelectableTab,
       selectedTab,
       showStats
