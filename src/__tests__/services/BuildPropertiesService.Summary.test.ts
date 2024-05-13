@@ -652,7 +652,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            inventorySlotId: undefined,
+            inventorySlotId: 'pockets',
             item: {
               ...ammo545us,
               prices: ammo545usPrices
