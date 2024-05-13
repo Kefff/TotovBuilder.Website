@@ -226,7 +226,7 @@ export class BuildPropertiesService {
         }
 
         // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-        buildAsString += `${vueI18n.t('caption.weight', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight, language)}kg`
+        buildAsString += `${vueI18n.t('caption.weight', 1, { locale: language })}: ${StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight, language)}`
       }
     }
 

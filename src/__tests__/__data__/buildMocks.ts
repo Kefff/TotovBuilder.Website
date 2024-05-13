@@ -227,6 +227,33 @@ export const build1: IBuild = {
     {
       items: [
         {
+          content: [
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: iskra.id,
+              modSlots: [],
+              quantity: 1
+            },
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: water.id,
+              modSlots: [],
+              quantity: 1
+            }
+          ],
+          ignorePrice: false,
+          itemId: berkut.id,
+          modSlots: [],
+          quantity: 1
+        }
+      ],
+      typeId: 'backpack'
+    },
+    {
+      items: [
+        {
           content: [],
           ignorePrice: false,
           itemId: morphine.id,
@@ -260,37 +287,14 @@ export const build1: IBuild = {
     {
       items: [
         {
-          content: [
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: iskra.id,
-              modSlots: [],
-              quantity: 1
-            },
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: water.id,
-              modSlots: [],
-              quantity: 1
-            }
-          ],
+          content: [],
           ignorePrice: false,
-          itemId: berkut.id,
+          itemId: crossbow.id,
           modSlots: [],
           quantity: 1
         }
       ],
-      typeId: 'backpack'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'pouch'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'scabbard'
+      typeId: 'eyewear'
     },
     {
       items: [
@@ -305,16 +309,12 @@ export const build1: IBuild = {
       typeId: 'faceCover'
     },
     {
-      items: [
-        {
-          content: [],
-          ignorePrice: false,
-          itemId: crossbow.id,
-          modSlots: [],
-          quantity: 1
-        }
-      ],
-      typeId: 'eyewear'
+      items: Array<IInventoryItem>(1),
+      typeId: 'pouch'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'scabbard'
     },
     {
       items: Array<IInventoryItem>(1),
@@ -507,12 +507,20 @@ export const build2: IBuild = {
       typeId: 'earpiece'
     },
     {
+      items: Array<IInventoryItem>(1),
+      typeId: 'backpack'
+    },
+    {
       items: Array<IInventoryItem>(4),
       typeId: 'pockets'
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'backpack'
+      typeId: 'eyewear'
+    },
+    {
+      items: Array<IInventoryItem>(1),
+      typeId: 'faceCover'
     },
     {
       items: [
@@ -537,14 +545,6 @@ export const build2: IBuild = {
         }
       ],
       typeId: 'scabbard'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'faceCover'
-    },
-    {
-      items: Array<IInventoryItem>(1),
-      typeId: 'eyewear'
     },
     {
       items: Array<IInventoryItem>(1),
@@ -702,6 +702,22 @@ export const reducedBuild1: Record<string, unknown> = {
     {
       'i': [
         {
+          'c': [
+            {
+              'i': iskra.id
+            },
+            {
+              'i': water.id
+            }
+          ],
+          'i': berkut.id
+        }
+      ],
+      't': 'backpack'
+    },
+    {
+      'i': [
+        {
           'i': morphine.id
         },
         {
@@ -720,18 +736,10 @@ export const reducedBuild1: Record<string, unknown> = {
     {
       'i': [
         {
-          'c': [
-            {
-              'i': iskra.id
-            },
-            {
-              'i': water.id
-            }
-          ],
-          'i': berkut.id
+          'i': crossbow.id
         }
       ],
-      't': 'backpack'
+      't': 'eyewear'
     },
     {
       'i': [
@@ -740,14 +748,6 @@ export const reducedBuild1: Record<string, unknown> = {
         }
       ],
       't': 'faceCover'
-    },
-    {
-      'i': [
-        {
-          'i': crossbow.id
-        }
-      ],
-      't': 'eyewear'
     }
   ]
 }

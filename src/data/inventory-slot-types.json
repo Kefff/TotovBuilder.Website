@@ -1,22 +1,32 @@
 [
   {
     "acceptedItemCategoryIds": [
-      "armband"
+      "mainWeapon"
     ],
-    "canBeLooted": false,
-    "displayOrder": 14,
-    "icon": "id-card-alt",
-    "id": "armband",
+    "canBeLooted": true,
+    "customIcon": "rifle1",
+    "displayOrder": 1,
+    "id": "onSling",
     "itemSlotsAmount": 1
   },
   {
     "acceptedItemCategoryIds": [
-      "backpack"
+      "mainWeapon"
     ],
     "canBeLooted": true,
-    "displayOrder": 8,
-    "icon": "suitcase",
-    "id": "backpack",
+    "customIcon": "rifle2",
+    "displayOrder": 2,
+    "id": "onBack",
+    "itemSlotsAmount": 1
+  },
+  {
+    "acceptedItemCategoryIds": [
+      "secondaryWeapon"
+    ],
+    "canBeLooted": true,
+    "customIcon": "pistol",
+    "displayOrder": 3,
+    "id": "holster",
     "itemSlotsAmount": 1
   },
   {
@@ -31,43 +41,12 @@
   },
   {
     "acceptedItemCategoryIds": [
-      "special"
-    ],
-    "canBeLooted": false,
-    "defaultItemsIds": [],
-    "displayOrder": 15,
-    "icon": "compass",
-    "id": "special",
-    "itemSlotsAmount": 3
-  },
-  {
-    "acceptedItemCategoryIds": [
-      "headphones"
+      "vest"
     ],
     "canBeLooted": true,
-    "displayOrder": 7,
-    "icon": "headphones",
-    "id": "earpiece",
-    "itemSlotsAmount": 1
-  },
-  {
-    "acceptedItemCategoryIds": [
-      "eyewear"
-    ],
-    "canBeLooted": true,
-    "displayOrder": 10,
-    "icon": "glasses",
-    "id": "eyewear",
-    "itemSlotsAmount": 1
-  },
-  {
-    "acceptedItemCategoryIds": [
-      "faceCover"
-    ],
-    "canBeLooted": true,
-    "displayOrder": 11,
-    "icon": "mask",
-    "id": "faceCover",
+    "displayOrder": 5,
+    "icon": "vest",
+    "id": "tacticalRig",
     "itemSlotsAmount": 1
   },
   {
@@ -82,12 +61,22 @@
   },
   {
     "acceptedItemCategoryIds": [
-      "secondaryWeapon"
+      "headphones"
     ],
     "canBeLooted": true,
-    "customIcon": "pistol",
-    "displayOrder": 3,
-    "id": "holster",
+    "displayOrder": 7,
+    "icon": "headphones",
+    "id": "earpiece",
+    "itemSlotsAmount": 1
+  },
+  {
+    "acceptedItemCategoryIds": [
+      "backpack"
+    ],
+    "canBeLooted": true,
+    "displayOrder": 8,
+    "icon": "suitcase",
+    "id": "backpack",
     "itemSlotsAmount": 1
   },
   {
@@ -123,6 +112,26 @@
   },
   {
     "acceptedItemCategoryIds": [
+      "eyewear"
+    ],
+    "canBeLooted": true,
+    "displayOrder": 10,
+    "icon": "glasses",
+    "id": "eyewear",
+    "itemSlotsAmount": 1
+  },
+  {
+    "acceptedItemCategoryIds": [
+      "faceCover"
+    ],
+    "canBeLooted": true,
+    "displayOrder": 11,
+    "icon": "mask",
+    "id": "faceCover",
+    "itemSlotsAmount": 1
+  },
+  {
+    "acceptedItemCategoryIds": [
       "securedContainer"
     ],
     "canBeLooted": false,
@@ -132,26 +141,6 @@
     "displayOrder": 12,
     "icon": "wallet",
     "id": "pouch",
-    "itemSlotsAmount": 1
-  },
-  {
-    "acceptedItemCategoryIds": [
-      "mainWeapon"
-    ],
-    "canBeLooted": true,
-    "customIcon": "rifle2",
-    "displayOrder": 2,
-    "id": "onBack",
-    "itemSlotsAmount": 1
-  },
-  {
-    "acceptedItemCategoryIds": [
-      "mainWeapon"
-    ],
-    "canBeLooted": true,
-    "customIcon": "rifle1",
-    "displayOrder": 1,
-    "id": "onSling",
     "itemSlotsAmount": 1
   },
   {
@@ -169,12 +158,23 @@
   },
   {
     "acceptedItemCategoryIds": [
-      "vest"
+      "armband"
     ],
-    "canBeLooted": true,
-    "displayOrder": 5,
-    "icon": "vest",
-    "id": "tacticalRig",
+    "canBeLooted": false,
+    "displayOrder": 14,
+    "icon": "id-card-alt",
+    "id": "armband",
     "itemSlotsAmount": 1
+  },
+  {
+    "acceptedItemCategoryIds": [
+      "special"
+    ],
+    "canBeLooted": false,
+    "defaultItemsIds": [],
+    "displayOrder": 15,
+    "icon": "compass",
+    "id": "special",
+    "itemSlotsAmount": 3
   }
 ]

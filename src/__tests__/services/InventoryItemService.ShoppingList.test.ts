@@ -133,7 +133,7 @@ describe('getShoppingList', () => {
       ] as IShoppingListItem[]
     ],
     [
-      build1.inventorySlots[8].items[0]!,
+      build1.inventorySlots[7].items[0]!,
       [
         {
           inventorySlotId: undefined,
