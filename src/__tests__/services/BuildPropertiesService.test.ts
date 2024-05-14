@@ -3,6 +3,7 @@ import { anything, instance, mock, verify } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { IBuildSummaryShoppingMerchant } from '../../models/utils/IBuildSummaryMerchant'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
@@ -14,7 +15,7 @@ import { NotificationService, NotificationType } from '../../services/Notificati
 import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 import { build1, build2 } from '../__data__/buildMocks'
-import { ammo545bp, armor6b13FlDefault, bansheeDefault, ekp802dt, mechanism, ms2000, nf30mm, opSksDefault, opSksDt, plate6b33Back, plate6b33Front, precision, pso1, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, scavVest, specterDr } from '../__data__/itemMocks'
+import { ak12PistolGrip, ammo545bp, armor6b13FlDefault, bansheeDefault, ekp802dt, mechanism, ms2000, nf30mm, opSksDefault, opSksDt, plate6b33Back, plate6b33Front, precision, pso1, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, salewa, scavVest, specterDr } from '../__data__/itemMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
@@ -654,6 +655,141 @@ describe('getNotExportedTooltip()', () => {
 
     // Assert
     expect(tooltip).toBe(expected)
+  })
+})
+
+describe('getShoppingListMerchants()', () => {
+  it('should get the merchants and their maximum level from a shopping list', () => {
+    // Arrange
+    const services = new BuildPropertiesService()
+
+    // Act
+    const merchants = services.getShoppingListMerchants([
+      {
+        inventorySlotId: undefined,
+        item: ak12PistolGrip,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: ak12PistolGrip.id,
+          merchant: 'prapor',
+          merchantLevel: 2,
+          quest: undefined,
+          value: 2163,
+          valueInMainCurrency: 2163
+        },
+        quantity: 1,
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: ak12PistolGrip.id,
+          merchant: 'prapor',
+          merchantLevel: 2,
+          quest: undefined,
+          value: 2163,
+          valueInMainCurrency: 2163
+        }
+      },
+      {
+        inventorySlotId: undefined,
+        item: salewa,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: salewa.id,
+          merchant: 'therapist',
+          merchantLevel: 2,
+          quest: {
+            id: '596760e186f7741e11214d58',
+            name: 'Postman Pat - Part 2',
+            wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Postman_Pat_-_Part_2'
+          },
+          value: 37061,
+          valueInMainCurrency: 37061
+        },
+        quantity: 1,
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: salewa.id,
+          merchant: 'therapist',
+          merchantLevel: 2,
+          quest: {
+            id: '596760e186f7741e11214d58',
+            name: 'Postman Pat - Part 2',
+            wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Postman_Pat_-_Part_2'
+          },
+          value: 37061,
+          valueInMainCurrency: 37061
+        }
+      },
+      {
+        inventorySlotId: 'onSling',
+        item: rpk16Default,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: rpk16Default.id,
+          merchant: 'prapor',
+          merchantLevel: 4,
+          quest: undefined,
+          value: 69734,
+          valueInMainCurrency: 69734
+        },
+        quantity: 1,
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: rpk16Default.id,
+          merchant: 'prapor',
+          merchantLevel: 4,
+          quest: undefined,
+          value: 69734,
+          valueInMainCurrency: 69734
+        }
+      },
+      {
+        inventorySlotId: 'tacticalRig',
+        item: scavVest,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: scavVest.id,
+          merchant: 'flea-market',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 33447,
+          valueInMainCurrency: 33447
+        },
+        quantity: 1,
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: scavVest.id,
+          merchant: 'flea-market',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 33447,
+          valueInMainCurrency: 33447
+        }
+      }
+    ])
+
+    // Assert
+    expect(merchants).toStrictEqual([
+      {
+        level: 4,
+        name: 'prapor'
+      },
+      {
+        level: 2,
+        name: 'therapist'
+      },
+      {
+        level: 0,
+        name: 'flea-market'
+      }
+    ] as IBuildSummaryShoppingMerchant[])
   })
 })
 

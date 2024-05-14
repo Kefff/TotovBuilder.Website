@@ -13,6 +13,7 @@ import { CompatibilityRequest } from '../../services/compatibility/Compatibility
 import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
 import { CompatibilityService } from '../../services/compatibility/CompatibilityService'
 import { BuildComponentService } from '../../services/components/BuildComponentService'
+import { ShoppingListComponentService } from '../../services/components/ShoppingListComponentService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
@@ -44,6 +45,8 @@ export default defineComponent({
   setup: () => {
     const itemService = Services.get(ItemService)
     itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
+
+    const shoppingListComponentService = Services.get(ShoppingListComponentService)
 
     const route = useRoute()
     const router = useRouter()
@@ -93,7 +96,6 @@ export default defineComponent({
     const hasItemsLoadingError = ref(false)
     const hasWebsiteConfigurationLoadingError = ref(false)
     const isLoading = ref(true)
-    const isShoppingListVisible = ref(false)
     const summary = ref<IBuildSummary>({
       armorModifiers: {
         armorClass: 0,
@@ -219,7 +221,7 @@ export default defineComponent({
      * Displays the shopping list.
      */
     function displayShoppingList() {
-      isShoppingListVisible.value = true
+      shoppingListComponentService.display(summary.value.shoppingList)
     }
 
     /**
@@ -459,7 +461,6 @@ export default defineComponent({
       isEmpty,
       isLoading,
       isNewBuild,
-      isShoppingListVisible,
       notExportedTooltip,
       path,
       remove,

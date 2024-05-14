@@ -363,10 +363,7 @@
   />
 
   <!-- Shopping list-->
-  <ShoppingList
-    v-model:visible="isShoppingListVisible"
-    :shopping-list="summary.shoppingList"
-  />
+  <ShoppingList />
 </template>
 
 <script lang="ts" src="./BuildComponent.ts" />

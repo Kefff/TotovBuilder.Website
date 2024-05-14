@@ -3,6 +3,7 @@ import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
+import { ShoppingListComponentService } from '../../services/components/ShoppingListComponentService'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
@@ -39,6 +40,7 @@ export default defineComponent({
   emits: ['update:selected-build-summaries'],
   setup: (props, { emit }) => {
     const buildPropertiesService = Services.get(BuildPropertiesService)
+    const shoppingListComponentService = Services.get(ShoppingListComponentService)
 
     const selectedBuildSummariesInternal = computed({
       get: () => props.selectedBuildSummaries,
@@ -46,8 +48,6 @@ export default defineComponent({
     })
 
     const buildsItemsInInventorySlot = ref<IShoppingListItem[][]>([])
-    const currentShopppingList = ref<IShoppingListItem[]>()
-    const isShoppingListVisible = ref(false)
     const sortField = ref('name')
     const sortOrder = ref(1)
 
@@ -115,20 +115,17 @@ export default defineComponent({
      * Displays the shopping list for the specified build.
      * @param buildSummary - Summary of the build.
      */
-    function showShoppingList(shoppingList: IShoppingListItem[]) {
-      currentShopppingList.value = shoppingList
-      isShoppingListVisible.value = true
+    function displayShoppingList(shoppingList: IShoppingListItem[]) {
+      shoppingListComponentService.display(shoppingList)
     }
 
     return {
       buildsItemsInInventorySlot,
+      displayShoppingList,
       DisplayValueType,
       getNotExportedTooltip,
-      isShoppingListVisible,
       onSort,
       selectedBuildSummariesInternal,
-      currentShopppingList,
-      showShoppingList,
       sortField,
       sortOrder,
       StatsUtils

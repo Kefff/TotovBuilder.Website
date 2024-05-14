@@ -80,7 +80,7 @@
             :icon="currency.iconName"
             class="icon-before-text"
           />
-          <span>{{ $t('caption.barter') }} :</span>
+          <span>{{ $t('caption.barter') }}</span>
         </div>
         <div
           v-for="(barterItem, index) of price.barterItems"

@@ -15,7 +15,6 @@ export default defineComponent({
   },
   setup() {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-
     websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
 
     const bugReportUrl = ref<string>()

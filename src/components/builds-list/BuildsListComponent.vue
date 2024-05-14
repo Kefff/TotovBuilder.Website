@@ -154,7 +154,7 @@
             v-tooltip.top="$t('caption.shoppingList')"
             :disabled="buildSummary.shoppingList.length === 0"
             class="shopping-list-button"
-            @click="showShoppingList(buildSummary.shoppingList)"
+            @click="displayShoppingList(buildSummary.shoppingList)"
           >
             <font-awesome-icon
               class="icon-before-text"
@@ -168,11 +168,7 @@
   </div>
 
   <!-- Shopping list -->
-  <ShoppingList
-    v-if="currentShopppingList != null"
-    v-model:visible="isShoppingListVisible"
-    :shopping-list="currentShopppingList"
-  />
+  <ShoppingList />
 </template>
 
 <script lang="ts" src="./BuildsListComponent.ts" />

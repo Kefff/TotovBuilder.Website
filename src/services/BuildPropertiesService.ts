@@ -5,6 +5,7 @@ import { IConflictingItem } from '../models/configuration/IConflictingItem'
 import { IVest } from '../models/item/IVest'
 import { IArmorModifiers } from '../models/utils/IArmorModifiers'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
+import { IBuildSummaryShoppingMerchant } from '../models/utils/IBuildSummaryMerchant'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { IInventorySlotSummary } from '../models/utils/IInventorySlotSummary'
 import { IRecoil } from '../models/utils/IRecoil'
@@ -278,6 +279,28 @@ ${sharableUrlResult}`
     }
 
     return tooltip
+  }
+
+  /**
+   * Gets the merchants and their maximum level from a shopping list..
+   */
+  public getShoppingListMerchants(shoppingList: IShoppingListItem[]): IBuildSummaryShoppingMerchant[] {
+    const merchants: IBuildSummaryShoppingMerchant[] = []
+
+    for (const item of shoppingList) {
+      const merchant = merchants.find(m => m.name === item.price.merchant)
+
+      if (merchant == null) {
+        merchants.push({
+          name: item.price.merchant,
+          level: item.price.merchantLevel
+        })
+      } else if (merchant.level < item.price.merchantLevel) {
+        merchant.level = item.price.merchantLevel
+      }
+    }
+
+    return merchants
   }
 
   /**

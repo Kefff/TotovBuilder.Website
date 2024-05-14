@@ -1,9 +1,9 @@
 import { defineComponent, onMounted, ref, watch } from 'vue'
-import Services from '../../services/repository/Services'
 import { GeneralOptionsService } from '../../services/GeneralOptionsService'
-import StringUtils from '../../utils/StringUtils'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
+import Services from '../../services/repository/Services'
+import StringUtils from '../../utils/StringUtils'
 import LanguageSelector from '../language-selector/LanguageSelectorComponent.vue'
 
 export default defineComponent({
@@ -20,7 +20,6 @@ export default defineComponent({
   emits: ['update:visible'],
   setup: (props, { emit }) => {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-
     websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
 
     const sidebarVisible = ref(false)

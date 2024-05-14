@@ -1,9 +1,9 @@
 import { computed, defineComponent, onMounted } from 'vue'
-import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import Services from '../../services/repository/Services'
-import { ItemService } from '../../services/ItemService'
-import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Images from '../../images'
+import { ItemService } from '../../services/ItemService'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
+import Services from '../../services/repository/Services'
 
 export default defineComponent({
   props: {
@@ -24,9 +24,9 @@ export default defineComponent({
   ],
   setup: (props, { emit }) => {
     const itemService = Services.get(ItemService)
-    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-
     itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitialized)
+
+    const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
 
     const hasLoadingError = computed(() => props.hasItemsLoadingError || props.hasWebsiteConfigurationLoadingError)
