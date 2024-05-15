@@ -11,7 +11,7 @@ export class ShoppingListComponentService {
   public static openShoppingListEvent = 'openShoppingList'
 
   /**
-   * Event emitter used to initialization state change.
+   * Event emitter used to open the shopping list.
    */
   public emitter = new TinyEmitter()
 

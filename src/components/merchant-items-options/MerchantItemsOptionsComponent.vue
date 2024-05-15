@@ -1,22 +1,8 @@
 <template>
-  <div
-    class="merchant-items-options-button"
-    @click="display()"
-  >
-    <slot name="button">
-      <Button
-        v-tooltip.top="$t('caption.merchantItemsOptions')"
-        class="p-button-text p-button-sm button-discreet"
-      >
-        <font-awesome-icon icon="user-tag" />
-      </Button>
-    </slot>
-  </div>
-
   <Sidebar
-    v-model:visible="sidebarVisible"
+    v-model:visible="visible"
     position="right"
-    style="width: auto"
+    style="max-width: 100vw; width: auto;"
     @hide="save()"
   >
     <template #header>

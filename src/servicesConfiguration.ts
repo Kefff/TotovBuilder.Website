@@ -21,8 +21,10 @@ import { WebsiteConfigurationService } from './services/WebsiteConfigurationServ
 import { CompatibilityService } from './services/compatibility/CompatibilityService'
 import { BuildComponentService } from './services/components/BuildComponentService'
 import { BuildsImportComponentService } from './services/components/BuildsImportComponentService'
+import { GeneralOptionsComponentService } from './services/components/GeneralOptionsComponentService'
 import { InventorySlotComponentService } from './services/components/InventorySlotComponentService'
 import { ItemContentComponentService } from './services/components/ItemContentComponentService'
+import { MerchantItemsOptionsComponentService } from './services/components/MerchantItemsOptionsComponentService'
 import { ModSlotComponentService } from './services/components/ModSlotComponentService'
 import { ShoppingListComponentService } from './services/components/ShoppingListComponentService'
 import { MagazineStatsComponentService } from './services/components/stats/MagazineStatsComponentService'
@@ -58,9 +60,11 @@ export function configureServices() {
   // Components
   Services.configure(BuildComponentService)
   Services.configure(BuildsImportComponentService)
+  Services.configure(GeneralOptionsComponentService)
   Services.configure(InventorySlotComponentService)
   Services.configure(ItemContentComponentService)
   Services.configure(MagazineStatsComponentService)
+  Services.configure(MerchantItemsOptionsComponentService)
   Services.configure(ModSlotComponentService)
   Services.configure(ShoppingListComponentService)
 

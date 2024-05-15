@@ -1,4 +1,4 @@
-import { computed, defineComponent, onMounted } from 'vue'
+import { computed, defineComponent, onMounted, ref } from 'vue'
 import Images from '../../images'
 import { ItemService } from '../../services/ItemService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
@@ -6,50 +6,35 @@ import { ServiceInitializationState } from '../../services/repository/ServiceIni
 import Services from '../../services/repository/Services'
 
 export default defineComponent({
-  props: {
-    hasItemsLoadingError: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    hasWebsiteConfigurationLoadingError: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
-  },
-  emits: [
-    'update:hasItemsLoadingError',
-    'update:hasWebsiteConfigurationLoadingError'
-  ],
-  setup: (props, { emit }) => {
+  setup: () => {
     const itemService = Services.get(ItemService)
     itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitialized)
 
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
 
-    const hasLoadingError = computed(() => props.hasItemsLoadingError || props.hasWebsiteConfigurationLoadingError)
+    const hasItemError = ref(false)
+    const hasWebsiteConfigurationError = ref(false)
+
+    const hasLoadingError = computed(() => hasItemError.value || hasWebsiteConfigurationError.value)
 
     onMounted(() => {
-      onWebsiteConfigurationServiceInitialized()
       onItemServiceInitialized()
+      onWebsiteConfigurationServiceInitialized()
     })
 
     /**
      * Checks whether an item loading error has occured and emits to its parent component.
      */
     function onItemServiceInitialized() {
-      const hasError = itemService.initializationState === ServiceInitializationState.error
-      emit('update:hasItemsLoadingError', hasError)
+      hasItemError.value = itemService.initializationState === ServiceInitializationState.error
     }
 
     /**
      * Checks whether a website configuration loading error has occured and emits to its parent component.
      */
     function onWebsiteConfigurationServiceInitialized() {
-      const hasError = websiteConfigurationService.initializationState === ServiceInitializationState.error
-      emit('update:hasWebsiteConfigurationLoadingError', hasError)
+      hasWebsiteConfigurationError.value = websiteConfigurationService.initializationState === ServiceInitializationState.error
     }
 
     /**

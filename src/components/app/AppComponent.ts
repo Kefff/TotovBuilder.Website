@@ -6,12 +6,16 @@ import { WebsiteConfigurationService } from '../../services/WebsiteConfiguration
 import Services from '../../services/repository/Services'
 import LanguageUtils from '../../utils/LanguageUtils'
 import Changelog from '../changelog/ChangelogComponent.vue'
+import LoadingError from '../loading-error/LoadingErrorComponent.vue'
+import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
 import Notification from '../notification/NotificationComponent.vue'
 
 export default defineComponent({
   components: {
-    Notification,
-    Changelog
+    Changelog,
+    LoadingError,
+    MerchantItemsOptions,
+    Notification
   },
   setup() {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
@@ -24,14 +28,6 @@ export default defineComponent({
     const hasChangelogDisplayed = ref(false)
     const isLoading = ref(true)
 
-    const isSanta = computed(() => {
-      const date = new Date()
-      const santaMinDate = new Date(date.getFullYear(), 11, 21).getTime()
-      const santaMaxDate = new Date(date.getFullYear(), 11, 29, 23, 59, 59).getTime()
-
-      return date.getTime() >= santaMinDate && date.getTime() <= santaMaxDate
-    })
-
     const copyrightYear = computed(() => {
       const year = new Date().getFullYear()
       let text = '2021'
@@ -42,9 +38,19 @@ export default defineComponent({
 
       return text
     })
+    const isSanta = computed(() => {
+      const date = new Date()
+      const santaMinDate = new Date(date.getFullYear(), 11, 21).getTime()
+      const santaMaxDate = new Date(date.getFullYear(), 11, 29, 23, 59, 59).getTime()
+
+      return date.getTime() >= santaMinDate && date.getTime() <= santaMaxDate
+    })
 
     onMounted(() => setLanguage())
 
+    /**
+     * Displays the changelog.
+     */
     function displayChangelog() {
       hasChangelogDisplayed.value = true
     }

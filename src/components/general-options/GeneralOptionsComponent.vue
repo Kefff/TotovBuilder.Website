@@ -1,18 +1,8 @@
 <template>
-  <slot name="button">
-    <Button
-      v-tooltip.top="$t('caption.options')"
-      class="p-button-text p-button-sm button-discreet"
-      @click="display()"
-    >
-      <font-awesome-icon icon="cog" />
-    </Button>
-  </slot>
-
   <Sidebar
-    v-model:visible="sidebarVisible"
+    v-model:visible="visible"
     position="right"
-    style="width: auto"
+    style="max-width: 100vw; width: auto;"
   >
     <!-- Display options -->
     <template #header>

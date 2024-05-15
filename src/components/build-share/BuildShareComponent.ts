@@ -15,10 +15,6 @@ export default defineComponent({
     build: {
       type: Object as PropType<IBuild>,
       required: true
-    },
-    hasLoadingError: {
-      type: Boolean,
-      required: true
     }
   },
   setup: (props) => {

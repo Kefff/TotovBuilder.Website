@@ -12,6 +12,8 @@ import {
   NotificationType
 } from '../../services/NotificationService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import { GeneralOptionsComponentService } from '../../services/components/GeneralOptionsComponentService'
+import { MerchantItemsOptionsComponentService } from '../../services/components/MerchantItemsOptionsComponentService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import StatsUtils from '../../utils/StatsUtils'
@@ -36,42 +38,31 @@ export default defineComponent({
     NotificationButton
   },
   setup: () => {
+    const globalFilterService = Services.get(GlobalFilterService)
+
     const itemService = Services.get(ItemService)
     itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
 
-    const globalFilterService = Services.get(GlobalFilterService)
-
     const router = useRouter()
-    const buildSummaries = ref<IBuildSummary[]>([])
     let builds: IBuild[] = []
 
     const canExport = computed(() => !isLoading.value && buildSummaries.value.length > 0 && !isExporting.value && !isImporting.value)
     const canImport = computed(() => !isLoading.value && !isExporting.value && !isImporting.value)
     const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
-    const hasLoadingError = computed(() => hasItemsLoadingError.value || hasWebsiteConfigurationLoadingError.value)
 
+    const buildSummaries = ref<IBuildSummary[]>([])
     const hasImported = ref(false)
-    const hasItemsLoadingError = ref(false)
-    const hasWebsiteConfigurationLoadingError = ref(false)
     const isExporting = ref(false)
     const isImporting = ref(false)
     const isLoading = ref(true)
     const merchantItemsOptionsSidebarVisible = ref(false)
     const toolbarCssClass = ref('toolbar')
 
-    watch(() => hasImported.value, () => {
-      // Updating the list of builds after import
-      if (hasImported.value) {
-        getBuilds()
-        hasImported.value = false
-      }
-    })
-
     onMounted(() => {
-      window.addEventListener('scroll', setToolbarCssClass)
-      window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
-
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+      window.addEventListener('scroll', setToolbarCssClass)
+
+      window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
 
       if (itemService.initializationState !== ServiceInitializationState.initializing) {
         onServicesInitialized()
@@ -80,8 +71,15 @@ export default defineComponent({
 
     onUnmounted(() => {
       globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-
       window.removeEventListener('scroll', setToolbarCssClass)
+    })
+
+    watch(() => hasImported.value, () => {
+      // Updating the list of builds after import
+      if (hasImported.value) {
+        getBuilds()
+        hasImported.value = false
+      }
     })
 
     /**
@@ -95,6 +93,20 @@ export default defineComponent({
         Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.buildsNotExported'))
         sessionStorage.setItem(exportWarningShowedKey, '')
       }
+    }
+
+    /**
+     * Displays the general options.
+     */
+    function displayGeneralOptions() {
+      Services.get(GeneralOptionsComponentService).emitter.emit(GeneralOptionsComponentService.openGeneralOptionsEvent)
+    }
+
+    /**
+     * Displays the merchant items options.
+     */
+    function displayMerchantItemsOptions() {
+      Services.get(MerchantItemsOptionsComponentService).emitter.emit(MerchantItemsOptionsComponentService.openMerchantItemsOptionsEvent)
     }
 
     /**
@@ -142,12 +154,6 @@ export default defineComponent({
      * Gets builds and ends loading.
      */
     function onServicesInitialized() {
-      if (hasLoadingError.value) {
-        isLoading.value = false
-
-        return
-      }
-
       getBuilds().then(() => {
         if (builds.length === 0) {
           router.push({ name: 'Welcome' })
@@ -206,10 +212,9 @@ export default defineComponent({
       buildSummaries,
       canExport,
       canImport,
+      displayGeneralOptions,
+      displayMerchantItemsOptions,
       hasImported,
-      hasItemsLoadingError,
-      hasLoadingError,
-      hasWebsiteConfigurationLoadingError,
       isExporting,
       isImporting,
       isLoading,

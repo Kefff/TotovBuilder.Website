@@ -3,7 +3,7 @@
     <Button
       v-tooltip.top="$t('caption.share')"
       class="p-button-text p-button-sm button-discreet"
-      :disabled="editing || hasLoadingError"
+      :disabled="editing"
       @click="share()"
     >
       <font-awesome-icon icon="share-alt" />

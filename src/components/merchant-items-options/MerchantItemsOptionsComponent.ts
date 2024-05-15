@@ -1,17 +1,18 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
+import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { MerchantItemsOptionsComponentService } from '../../services/components/MerchantItemsOptionsComponentService'
+import Services from '../../services/repository/Services'
 import ItemFilterComponent from '../item-filter/ItemFilterComponent.vue'
 import MerchantFilter from '../merchant-filter/MerchantFilterComponent.vue'
-import Services from '../../services/repository/Services'
-import { GlobalFilterService } from '../../services/GlobalFilterService'
-import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 
 export default defineComponent({
   components: {
     ItemFilterComponent,
     MerchantFilter
   },
-  emits: ['update:visible'],
   setup: () => {
+    const merchantItemsOptionsComponentService = Services.get(MerchantItemsOptionsComponentService)
     const globalFilterService = Services.get(GlobalFilterService)
 
     const globalFilter = ref<IGlobalFilter>({
@@ -19,14 +20,22 @@ export default defineComponent({
       merchantFilters: []
     })
     const hasChanged = ref(false)
-    const sidebarVisible = ref(false)
+    const visible = ref(false)
+
+    onMounted(() => {
+      merchantItemsOptionsComponentService.emitter.on(MerchantItemsOptionsComponentService.openMerchantItemsOptionsEvent, openMerchantItemsOptions)
+    })
+
+    onUnmounted(() => {
+      merchantItemsOptionsComponentService.emitter.off(MerchantItemsOptionsComponentService.openMerchantItemsOptionsEvent, openMerchantItemsOptions)
+    })
 
     /**
-     * Displays the side bar.
+     * Opens the merchants and items options.
      */
-    function display() {
+    function openMerchantItemsOptions() {
       globalFilter.value = globalFilterService.get() // Getting back the really applied filter when he user did not hit the save button
-      sidebarVisible.value = true
+      visible.value = true
     }
 
     /**
@@ -40,11 +49,10 @@ export default defineComponent({
     }
 
     return {
-      display,
       globalFilter,
       hasChanged,
       save,
-      sidebarVisible
+      visible
     }
   }
 })

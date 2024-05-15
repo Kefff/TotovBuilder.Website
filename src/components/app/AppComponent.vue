@@ -117,6 +117,13 @@
       </div>
     </div>
 
+    <!-- Loading error -->
+    <LoadingError />
+
+    <!-- Merchant and items options -->
+    <MerchantItemsOptions />
+
+    <!-- Notification -->
     <Notification />
   </div>
 </template>

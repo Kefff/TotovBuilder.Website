@@ -2,7 +2,7 @@
   <div class="welcome">
     <div>
       <div
-        v-if="!hasBuilds || hasWebsiteConfigurationLoadingError"
+        v-if="!hasBuilds"
         class="welcome-text"
       >
         <h2>{{ $t('message.welcome1') }}Totov <span class="welcome-builder">Builder</span>{{ $t('message.welcome2') }}</h2>
@@ -24,7 +24,7 @@
         <Loading />
       </div>
       <div
-        v-show="!isLoading && !hasWebsiteConfigurationLoadingError && !isImporting"
+        v-show="!isLoading && !isImporting"
         class="welcome-actions"
       >
         <div
@@ -73,33 +73,28 @@
           </Button>
         </div>
         <div class="welcome-action">
-          <MerchantItemsOptions>
-            <template #button>
-              <Button class="welcome-button">
-                <font-awesome-icon
-                  icon="user-tag"
-                  class="icon-before-text"
-                />
-                <span>{{ $t('message.welcomeConfigureMerchants') }}</span>
-              </Button>
-            </template>
-          </MerchantItemsOptions>
+          <Button
+            class="welcome-button"
+            @click="displayMerchantItemsOptions()"
+          >
+            <font-awesome-icon
+              icon="user-tag"
+              class="icon-before-text"
+            />
+            <span>{{ $t('message.welcomeConfigureMerchants') }}</span>
+          </Button>
         </div>
         <div class="welcome-action">
-          <GeneralOptions v-model:visible="generalOptionsSidebarVisible">
-            <template #button>
-              <Button
-                class="welcome-button"
-                @click="generalOptionsSidebarVisible = true"
-              >
-                <font-awesome-icon
-                  icon="language"
-                  class="icon-before-text"
-                />
-                <span>{{ $t('message.welcomeChooseLanguage') }}</span>
-              </Button>
-            </template>
-          </GeneralOptions>
+          <Button
+            class="welcome-button"
+            @click="displayGeneralOptions()"
+          >
+            <font-awesome-icon
+              icon="language"
+              class="icon-before-text"
+            />
+            <span>{{ $t('message.welcomeChooseLanguage') }}</span>
+          </Button>
         </div>
       </div>
       <div class="welcome-warning">
@@ -122,15 +117,15 @@
       </div>
     </div>
 
+    <!-- General options -->
+    <GeneralOptions />
+
     <!-- Import -->
     <BuildsImport
       v-if="!isLoading"
       v-model:is-importing="isImporting"
       v-model:has-imported="hasImported"
     />
-
-    <!-- Loading error -->
-    <LoadingError v-model:has-website-configuration-loading-error="hasWebsiteConfigurationLoadingError" />
   </div>
 </template>
 

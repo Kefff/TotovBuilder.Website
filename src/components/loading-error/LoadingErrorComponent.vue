@@ -1,6 +1,7 @@
 <template>
   <Dialog
-    v-model:visible="hasLoadingError"
+    v-if="hasLoadingError"
+    :visible="true"
     :closable="false"
     :modal="true"
     :draggable="false"

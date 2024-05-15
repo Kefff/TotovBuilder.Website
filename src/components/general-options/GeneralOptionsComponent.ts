@@ -1,6 +1,7 @@
-import { defineComponent, onMounted, ref, watch } from 'vue'
+import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
 import { GeneralOptionsService } from '../../services/GeneralOptionsService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import { GeneralOptionsComponentService } from '../../services/components/GeneralOptionsComponentService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import StringUtils from '../../utils/StringUtils'
@@ -10,27 +11,19 @@ export default defineComponent({
   components: {
     LanguageSelector
   },
-  props: {
-    visible: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
-  },
-  emits: ['update:visible'],
-  setup: (props, { emit }) => {
+  setup: () => {
+    const generalOptionsComponentService = Services.get(GeneralOptionsComponentService)
+
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
 
-    const sidebarVisible = ref(false)
     const allowCookies = ref(true)
     const isLoading = ref(true)
-
-    watch(() => props.visible, newValue => sidebarVisible.value = newValue)
-
-    watch(() => sidebarVisible.value, newValue => emit('update:visible', newValue))
+    const visible = ref(false)
 
     onMounted(() => {
+      generalOptionsComponentService.emitter.on(GeneralOptionsComponentService.openGeneralOptionsEvent, onOpenGeneralOptions)
+
       isLoading.value = websiteConfigurationService.initializationState === ServiceInitializationState.initializing
 
       if (!isLoading.value) {
@@ -38,19 +31,22 @@ export default defineComponent({
       }
     })
 
-    /**
-     * Displays the side bar.
-     */
-    function display() {
-      sidebarVisible.value = true
-      emit('update:visible', sidebarVisible.value)
-    }
+    onUnmounted(() => {
+      generalOptionsComponentService.emitter.off(GeneralOptionsComponentService.openGeneralOptionsEvent, onOpenGeneralOptions)
+    })
 
     /**
      * Sets the allow cookie indicator.
      */
     function onAllowCookiesChanged() {
       Services.get(GeneralOptionsService).setAllowCookiesIndicator(allowCookies.value)
+    }
+
+    /**
+     * Opens the general options.
+     */
+    function onOpenGeneralOptions() {
+      visible.value = true
     }
 
     /**
@@ -72,11 +68,10 @@ export default defineComponent({
 
     return {
       allowCookies,
-      display,
       onAllowCookiesChanged,
-      sidebarVisible,
       StringUtils,
-      toggleAllowCookies
+      toggleAllowCookies,
+      visible
     }
   }
 })

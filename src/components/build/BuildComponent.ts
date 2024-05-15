@@ -13,6 +13,8 @@ import { CompatibilityRequest } from '../../services/compatibility/Compatibility
 import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
 import { CompatibilityService } from '../../services/compatibility/CompatibilityService'
 import { BuildComponentService } from '../../services/components/BuildComponentService'
+import { GeneralOptionsComponentService } from '../../services/components/GeneralOptionsComponentService'
+import { MerchantItemsOptionsComponentService } from '../../services/components/MerchantItemsOptionsComponentService'
 import { ShoppingListComponentService } from '../../services/components/ShoppingListComponentService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
@@ -25,7 +27,6 @@ import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
 import InventorySlot from '../inventory-slot/InventorySlotComponent.vue'
 import LoadingError from '../loading-error/LoadingErrorComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
-import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
 import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
 
@@ -38,7 +39,6 @@ export default defineComponent({
     InventorySlot,
     Loading,
     LoadingError,
-    MerchantItemsOptions,
     NotificationButton,
     ShoppingList
   },
@@ -60,7 +60,6 @@ export default defineComponent({
     const inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
     let originalBuild: IBuild
 
-    const hasLoadingError = computed(() => hasItemsLoadingError.value || hasWebsiteConfigurationLoadingError.value)
     const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
     const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
     const hasSummaryErgonomicsModifierPercentage = computed(() => summary.value.wearableModifiers.ergonomicsModifierPercentage !== 0)
@@ -94,7 +93,6 @@ export default defineComponent({
     const editing = isNewBuild.value ? ref(true) : ref(false)
     const generalOptionsSidebarVisible = ref(false)
     const hasItemsLoadingError = ref(false)
-    const hasWebsiteConfigurationLoadingError = ref(false)
     const isLoading = ref(true)
     const summary = ref<IBuildSummary>({
       armorModifiers: {
@@ -215,6 +213,20 @@ export default defineComponent({
       build.value.id = ''
       build.value.name = build.value.name + ' - ' + vueI18n.t('caption.copy')
       startEdit()
+    }
+
+    /**
+     * Displays the general options.
+     */
+    function displayGeneralOptions() {
+      Services.get(GeneralOptionsComponentService).emitter.emit(GeneralOptionsComponentService.openGeneralOptionsEvent)
+    }
+
+    /**
+     * Displays the merchant items options.
+     */
+    function displayMerchantItemsOptions() {
+      Services.get(MerchantItemsOptionsComponentService).emitter.emit(MerchantItemsOptionsComponentService.openMerchantItemsOptionsEvent)
     }
 
     /**
@@ -434,6 +446,8 @@ export default defineComponent({
       confirmDelete,
       copy,
       deleting,
+      displayGeneralOptions,
+      displayMerchantItemsOptions,
       displayShoppingList,
       DisplayValueType,
       editing,
@@ -443,7 +457,6 @@ export default defineComponent({
       generalOptionsSidebarVisible,
       goToBuilds,
       hasItemsLoadingError,
-      hasLoadingError,
       hasSummaryArmor,
       hasSummaryErgonomics,
       hasSummaryErgonomicsModifierPercentage,
@@ -455,7 +468,6 @@ export default defineComponent({
       hasSummaryVerticalRecoil,
       hasSummaryWearableModifiers,
       hasSummaryWeight,
-      hasWebsiteConfigurationLoadingError,
       invalid,
       inventorySlotPathPrefix,
       isEmpty,
