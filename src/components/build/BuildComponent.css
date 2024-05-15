@@ -5,6 +5,9 @@
 @import '../../css/sidebar.css';
 
 .build {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   margin-bottom: 3rem;
 }
 
@@ -36,7 +39,8 @@
 }
 
 .build-loading {
-  margin-top: 3rem;
+  margin-bottom: auto;
+  margin-top: auto;
 }
 
 .build-title {
