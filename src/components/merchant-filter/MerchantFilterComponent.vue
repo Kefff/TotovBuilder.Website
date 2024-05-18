@@ -1,42 +1,44 @@
 <template>
-  <div
-    v-for="merchantFilter of merchantFilters"
-    :key="merchantFilter.merchant"
-    class="merchant-filter"
-  >
-    <Checkbox
-      v-model="merchantFilter.enabled"
-      v-tooltip.top="StringUtils.getCheckboxStateTooltip(merchantFilter.enabled)"
-      :binary="true"
-      @change="onFiltersChanged()"
-    />
+  <div>
     <div
-      :class="'merchant-filter-merchant' + (!merchantFilter.enabled ? ' merchant-filter-disabled-text' : '')"
-      @click="toggleFilter(merchantFilter)"
+      v-for="merchantFilter of merchantFilters"
+      :key="merchantFilter.merchant"
+      class="merchant-filter"
     >
-      {{ $t('caption.merchant_' + merchantFilter.merchant) }}
-    </div>
-    <img
-      :src="Images[StringUtils.toCamelCase(merchantFilter.merchant)]"
-      :class="'merchant-filter-icon' + (!merchantFilter.enabled ? ' merchant-filter-icon-disabled' : '')"
-      @click="toggleFilter(merchantFilter)"
-    >
-    <div v-tooltip.top="$t('caption.level')">
-      <Dropdown
-        v-if="hasLevels(merchantFilter.merchant)"
-        v-model="merchantFilter.merchantLevel"
-        :options="getMerchantLevels(merchantFilter.merchant)"
-        :disabled="!merchantFilter.enabled"
-        class="merchant-filter-level"
-        :placeholder="$t('caption.level')"
+      <Checkbox
+        v-model="merchantFilter.enabled"
+        v-tooltip.top="StringUtils.getCheckboxStateTooltip(merchantFilter.enabled)"
+        :binary="true"
         @change="onFiltersChanged()"
+      />
+      <div
+        :class="'merchant-filter-merchant' + (!merchantFilter.enabled ? ' merchant-filter-disabled-text' : '')"
+        @click="toggleFilter(merchantFilter)"
       >
-        <template #option="slotProps">
-          <div>
-            {{ slotProps.option }}
-          </div>
-        </template>
-      </Dropdown>
+        {{ $t('caption.merchant_' + merchantFilter.merchant) }}
+      </div>
+      <img
+        :src="Images[StringUtils.toCamelCase(merchantFilter.merchant)]"
+        :class="'merchant-filter-icon' + (!merchantFilter.enabled ? ' merchant-filter-icon-disabled' : '')"
+        @click="toggleFilter(merchantFilter)"
+      >
+      <div v-tooltip.top="$t('caption.level')">
+        <Dropdown
+          v-if="hasLevels(merchantFilter.merchant)"
+          v-model="merchantFilter.merchantLevel"
+          :options="getMerchantLevels(merchantFilter.merchant)"
+          :disabled="!merchantFilter.enabled"
+          class="merchant-filter-level"
+          :placeholder="$t('caption.level')"
+          @change="onFiltersChanged()"
+        >
+          <template #option="slotProps">
+            <div>
+              {{ slotProps.option }}
+            </div>
+          </template>
+        </Dropdown>
+      </div>
     </div>
   </div>
 </template>

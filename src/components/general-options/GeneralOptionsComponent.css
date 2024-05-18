@@ -2,6 +2,10 @@
 @import '../../css/icon.css';
 @import '../../css/sidebar.css';
 
+.general-options-addition-group {
+  margin-top: 3rem;
+}
+
 .general-options-cookies {
   align-items: center;
   display: flex;
@@ -16,6 +20,4 @@
 
 .general-options-name {
   cursor: pointer;
-  margin-left: 1rem;
-  margin-right: 1rem;
 }

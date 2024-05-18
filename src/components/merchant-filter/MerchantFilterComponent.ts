@@ -1,4 +1,4 @@
-import { PropType, defineComponent, reactive } from 'vue'
+import { PropType, computed, defineComponent } from 'vue'
 import Images from '../../images'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 import { IMerchantFilter } from '../../models/utils/IMerchantFilter'
@@ -18,7 +18,7 @@ export default defineComponent({
     const globalFilterService = Services.get(GlobalFilterService)
     const merchantLevelOptions = [1, 2, 3, 4]
 
-    const merchantFilters = reactive(props.globalFilter.merchantFilters).sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant))
+    const merchantFilters = computed(() => [...props.globalFilter.merchantFilters].sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant)))
 
     /**
      * Gets the level options for a merchant.
@@ -48,7 +48,7 @@ export default defineComponent({
     function onFiltersChanged() {
       emit('update:global-filter', {
         itemExclusionFilters: props.globalFilter.itemExclusionFilters,
-        merchantFilters
+        merchantFilters: merchantFilters.value
       } as IGlobalFilter)
     }
 

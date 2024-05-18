@@ -1,7 +1,7 @@
-import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
-import { MerchantItemsOptionsComponentService } from '../../services/components/MerchantItemsOptionsComponentService'
+import { GlobalSidebarComponentService } from '../../services/components/GlobalSidebarComponentService'
 import Services from '../../services/repository/Services'
 import ItemFilterComponent from '../item-filter/ItemFilterComponent.vue'
 import MerchantFilter from '../merchant-filter/MerchantFilterComponent.vue'
@@ -11,8 +11,17 @@ export default defineComponent({
     ItemFilterComponent,
     MerchantFilter
   },
+  props: {
+    parameters: {
+      type: undefined,
+      required: false,
+      default: undefined
+    }
+  },
   setup: () => {
-    const merchantItemsOptionsComponentService = Services.get(MerchantItemsOptionsComponentService)
+    const globalSidebarComponentService = Services.get(GlobalSidebarComponentService)
+    globalSidebarComponentService.registerOnClosingAction(save)
+
     const globalFilterService = Services.get(GlobalFilterService)
 
     const globalFilter = ref<IGlobalFilter>({
@@ -20,23 +29,10 @@ export default defineComponent({
       merchantFilters: []
     })
     const hasChanged = ref(false)
-    const visible = ref(false)
 
     onMounted(() => {
-      merchantItemsOptionsComponentService.emitter.on(MerchantItemsOptionsComponentService.openMerchantItemsOptionsEvent, openMerchantItemsOptions)
+      globalFilter.value = globalFilterService.get()
     })
-
-    onUnmounted(() => {
-      merchantItemsOptionsComponentService.emitter.off(MerchantItemsOptionsComponentService.openMerchantItemsOptionsEvent, openMerchantItemsOptions)
-    })
-
-    /**
-     * Opens the merchants and items options.
-     */
-    function openMerchantItemsOptions() {
-      globalFilter.value = globalFilterService.get() // Getting back the really applied filter when he user did not hit the save button
-      visible.value = true
-    }
 
     /**
      * Saves the global filter and closes the side bar.
@@ -51,8 +47,7 @@ export default defineComponent({
     return {
       globalFilter,
       hasChanged,
-      save,
-      visible
+      save
     }
   }
 })

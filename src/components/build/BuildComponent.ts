@@ -2,6 +2,7 @@ import { computed, defineComponent, onMounted, onUnmounted, provide, ref, watch 
 import { useRoute, useRouter } from 'vue-router'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
+import { IGeneralOptionsGroup } from '../../models/utils/IGeneralOptionsGroup'
 import vueI18n from '../../plugins/vueI18n'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
@@ -13,9 +14,7 @@ import { CompatibilityRequest } from '../../services/compatibility/Compatibility
 import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
 import { CompatibilityService } from '../../services/compatibility/CompatibilityService'
 import { BuildComponentService } from '../../services/components/BuildComponentService'
-import { GeneralOptionsComponentService } from '../../services/components/GeneralOptionsComponentService'
-import { MerchantItemsOptionsComponentService } from '../../services/components/MerchantItemsOptionsComponentService'
-import { ShoppingListComponentService } from '../../services/components/ShoppingListComponentService'
+import { GlobalSidebarComponentService } from '../../services/components/GlobalSidebarComponentService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
@@ -45,8 +44,6 @@ export default defineComponent({
   setup: () => {
     const itemService = Services.get(ItemService)
     itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
-
-    const shoppingListComponentService = Services.get(ShoppingListComponentService)
 
     const route = useRoute()
     const router = useRouter()
@@ -200,6 +197,8 @@ export default defineComponent({
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = true
       }
+
+      Services.get(GlobalSidebarComponentService).close()
     }
 
     /**
@@ -219,21 +218,55 @@ export default defineComponent({
      * Displays the general options.
      */
     function displayGeneralOptions() {
-      Services.get(GeneralOptionsComponentService).emitter.emit(GeneralOptionsComponentService.openGeneralOptionsEvent)
+      Services.get(GlobalSidebarComponentService).display({
+        displayedComponentType: 'GeneralOptions',
+        displayedComponentParameters: [
+          {
+            caption: 'caption.displayOptions',
+            icon: '',
+            name: 'display-options',
+            options: [
+              {
+                caption: 'caption.collapseAll',
+                icon: 'minus-square',
+                onClick: collapseAll
+              },
+              {
+                caption: 'caption.expandWithItem',
+                icon: 'search-plus',
+                onClick: expandWithItem
+              },
+              {
+                caption: 'caption.expandAll',
+                icon: 'plus-square',
+                onClick: expandAll
+              }
+            ]
+          }
+        ] as IGeneralOptionsGroup[],
+        position: 'right'
+      })
     }
 
     /**
      * Displays the merchant items options.
      */
     function displayMerchantItemsOptions() {
-      Services.get(MerchantItemsOptionsComponentService).emitter.emit(MerchantItemsOptionsComponentService.openMerchantItemsOptionsEvent)
+      Services.get(GlobalSidebarComponentService).display({
+        displayedComponentType: 'MerchantItemsOptions',
+        position: 'right'
+      })
     }
 
     /**
      * Displays the shopping list.
      */
     function displayShoppingList() {
-      shoppingListComponentService.display(summary.value.shoppingList)
+      Services.get(GlobalSidebarComponentService).display({
+        displayedComponentType: 'ShoppingList',
+        displayedComponentParameters: summary.value.shoppingList,
+        position: 'left'
+      })
     }
 
     /**
@@ -245,6 +278,8 @@ export default defineComponent({
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = false
       }
+
+      Services.get(GlobalSidebarComponentService).close()
     }
 
     /**
@@ -258,6 +293,8 @@ export default defineComponent({
           collapseStatuses.value[i] = false
         }
       }
+
+      Services.get(GlobalSidebarComponentService).close()
     }
 
     /**

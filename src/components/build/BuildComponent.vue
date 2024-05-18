@@ -330,46 +330,6 @@
       </Button>
     </template>
   </Dialog>
-
-  <!-- General options -->
-  <GeneralOptions>
-    <template #additional-display-options>
-      <div
-        class="sidebar-option-with-hover"
-        @click="collapseAll()"
-      >
-        <font-awesome-icon
-          icon="minus-square"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.collapseAll') }}</span>
-      </div>
-      <div
-        class="sidebar-option-with-hover"
-        @click="expandWithItem()"
-      >
-        <font-awesome-icon
-          icon="search-plus"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.expandWithItem') }}</span>
-      </div>
-      <div
-        v-if="editing"
-        class="sidebar-option-with-hover"
-        @click="expandAll()"
-      >
-        <font-awesome-icon
-          icon="plus-square"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.expandAll') }}</span>
-      </div>
-    </template>
-  </GeneralOptions>
-
-  <!-- Shopping list-->
-  <ShoppingList />
 </template>
 
 <script lang="ts" src="./BuildComponent.ts" />

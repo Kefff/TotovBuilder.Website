@@ -166,9 +166,6 @@
       </template>
     </Card>
   </div>
-
-  <!-- Shopping list -->
-  <ShoppingList />
 </template>
 
 <script lang="ts" src="./BuildsListComponent.ts" />

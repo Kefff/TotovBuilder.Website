@@ -1,9 +1,11 @@
 <template>
   <div class="language-selector">
-    <font-awesome-icon
-      icon="language"
-      class="icon-before-text"
-    />
+    <div class="language-selector-icon">
+      <font-awesome-icon
+        icon="language"
+        class="icon-before-text"
+      />
+    </div>
     <span class="language-selector-caption">{{ $t('caption.language') }}</span>
     <div class="language-selector-dropdown language-selector-dropdown-override">
       <Dropdown

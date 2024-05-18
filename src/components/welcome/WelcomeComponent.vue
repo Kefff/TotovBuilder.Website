@@ -117,9 +117,6 @@
       </div>
     </div>
 
-    <!-- General options -->
-    <GeneralOptions />
-
     <!-- Import -->
     <BuildsImport
       v-if="!isLoading"

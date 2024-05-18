@@ -1,7 +1,8 @@
-import { defineComponent, onMounted, onUnmounted, ref } from 'vue'
+import { PropType, computed, defineComponent, onMounted, ref } from 'vue'
+import { IGeneralOption } from '../../models/utils/IGeneralOption'
+import { IGeneralOptionsGroup } from '../../models/utils/IGeneralOptionsGroup'
 import { GeneralOptionsService } from '../../services/GeneralOptionsService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import { GeneralOptionsComponentService } from '../../services/components/GeneralOptionsComponentService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import StringUtils from '../../utils/StringUtils'
@@ -11,19 +12,25 @@ export default defineComponent({
   components: {
     LanguageSelector
   },
-  setup: () => {
-    const generalOptionsComponentService = Services.get(GeneralOptionsComponentService)
-
+  props: {
+    parameters: {
+      type: Array as PropType<IGeneralOptionsGroup[]>,
+      required: false,
+      default: undefined
+    }
+  },
+  setup: (props) => {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
     websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
 
+    const additionalDisplayOptions = computed(() => props.parameters?.filter(og => og.name === 'display-options').flatMap(og => og.options) ?? [])
+    const additionalGeneralOptions = computed(() => props.parameters?.filter(og => og.name === 'general-options').flatMap(og => og.options) ?? [])
+    const additionalsOptionGroups = computed(() => props.parameters?.filter(og => og.name !== 'display-options' && og.name !== 'general-options') ?? [])
+
     const allowCookies = ref(true)
     const isLoading = ref(true)
-    const visible = ref(false)
 
     onMounted(() => {
-      generalOptionsComponentService.emitter.on(GeneralOptionsComponentService.openGeneralOptionsEvent, onOpenGeneralOptions)
-
       isLoading.value = websiteConfigurationService.initializationState === ServiceInitializationState.initializing
 
       if (!isLoading.value) {
@@ -31,22 +38,26 @@ export default defineComponent({
       }
     })
 
-    onUnmounted(() => {
-      generalOptionsComponentService.emitter.off(GeneralOptionsComponentService.openGeneralOptionsEvent, onOpenGeneralOptions)
-    })
+    /**
+     * Gets the CSS classes to apply to an option.
+     */
+    function getAdditionalOptionCssClasses(option: IGeneralOption) {
+      let classes = 'sidebar-option'
+
+      if (option.enabled != null && !option.enabled()) {
+        classes += ' sidebar-option-disabled'
+      } else {
+        classes += ' sidebar-option-clickable'
+      }
+
+      return classes
+    }
 
     /**
      * Sets the allow cookie indicator.
      */
     function onAllowCookiesChanged() {
       Services.get(GeneralOptionsService).setAllowCookiesIndicator(allowCookies.value)
-    }
-
-    /**
-     * Opens the general options.
-     */
-    function onOpenGeneralOptions() {
-      visible.value = true
     }
 
     /**
@@ -67,11 +78,14 @@ export default defineComponent({
     }
 
     return {
+      additionalDisplayOptions,
+      additionalGeneralOptions,
+      additionalsOptionGroups,
       allowCookies,
+      getAdditionalOptionCssClasses,
       onAllowCookiesChanged,
       StringUtils,
-      toggleAllowCookies,
-      visible
+      toggleAllowCookies
     }
   }
 })

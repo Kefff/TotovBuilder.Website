@@ -1,22 +1,24 @@
 <template>
-  <div
-    v-for="itemExclusionFilter of itemExclusionFilters"
-    :key="itemExclusionFilter.name"
-    class="item-filter"
-  >
-    <Checkbox
-      v-model="itemExclusionFilter.enabled"
-      v-tooltip.top="StringUtils.getCheckboxStateTooltip(!itemExclusionFilter.enabled)"
-      :binary="true"
-      :true-value="false"
-      :false-value="true"
-      @change="onFiltersChanged()"
-    />
+  <div>
     <div
-      :class="'item-filter-name' + (itemExclusionFilter.enabled ? ' item-filter-disabled-text' : '')"
-      @click="toggleFilter(itemExclusionFilter)"
+      v-for="itemExclusionFilter of itemExclusionFilters"
+      :key="itemExclusionFilter.name"
+      class="item-filter"
     >
-      {{ $t('caption.itemExclusionFilter_' + itemExclusionFilter.name) }}
+      <Checkbox
+        v-model="itemExclusionFilter.enabled"
+        v-tooltip.top="StringUtils.getCheckboxStateTooltip(!itemExclusionFilter.enabled)"
+        :binary="true"
+        :true-value="false"
+        :false-value="true"
+        @change="onFiltersChanged()"
+      />
+      <div
+        :class="'item-filter-name' + (itemExclusionFilter.enabled ? ' item-filter-disabled-text' : '')"
+        @click="toggleFilter(itemExclusionFilter)"
+      >
+        {{ $t('caption.itemExclusionFilter_' + itemExclusionFilter.name) }}
+      </div>
     </div>
   </div>
 </template>

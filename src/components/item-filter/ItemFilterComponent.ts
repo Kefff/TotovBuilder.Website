@@ -1,4 +1,4 @@
-import { PropType, defineComponent, reactive } from 'vue'
+import { PropType, computed, defineComponent } from 'vue'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 import { IItemExclusionFilter } from '../../models/utils/IItemExclusionFilter'
 import StringUtils from '../../utils/StringUtils'
@@ -12,14 +12,14 @@ export default defineComponent({
   },
   emits: ['update:global-filter'],
   setup: (props, { emit }) => {
-    const itemExclusionFilters = reactive(props.globalFilter.itemExclusionFilters)
+    const itemExclusionFilters = computed(() => props.globalFilter.itemExclusionFilters)
 
     /**
      * Emits changes to the parent component.
      */
     function onFiltersChanged() {
       emit('update:global-filter', {
-        itemExclusionFilters,
+        itemExclusionFilters: itemExclusionFilters.value,
         merchantFilters: props.globalFilter.merchantFilters
       } as IGlobalFilter)
     }

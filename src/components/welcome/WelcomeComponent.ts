@@ -2,19 +2,16 @@ import { defineComponent, onMounted, ref, watch } from 'vue'
 import router from '../../plugins/vueRouter'
 import { BuildService } from '../../services/BuildService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import { GeneralOptionsComponentService } from '../../services/components/GeneralOptionsComponentService'
-import { MerchantItemsOptionsComponentService } from '../../services/components/MerchantItemsOptionsComponentService'
+import { GlobalSidebarComponentService } from '../../services/components/GlobalSidebarComponentService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import BuildsImport from '../builds-import/BuildsImportComponent.vue'
-import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
 import LoadingError from '../loading-error/LoadingErrorComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
 
 export default defineComponent({
   components: {
     BuildsImport,
-    GeneralOptions,
     Loading,
     LoadingError
   },
@@ -52,14 +49,20 @@ export default defineComponent({
      * Displays the general options.
      */
     function displayGeneralOptions() {
-      Services.get(GeneralOptionsComponentService).emitter.emit(GeneralOptionsComponentService.openGeneralOptionsEvent)
+      Services.get(GlobalSidebarComponentService).display({
+        displayedComponentType: 'GeneralOptions',
+        position: 'right'
+      })
     }
 
     /**
      * Displays the merchant items options.
      */
     function displayMerchantItemsOptions() {
-      Services.get(MerchantItemsOptionsComponentService).emitter.emit(MerchantItemsOptionsComponentService.openMerchantItemsOptionsEvent)
+      Services.get(GlobalSidebarComponentService).display({
+        displayedComponentType: 'MerchantItemsOptions',
+        position: 'right'
+      })
     }
 
     /**

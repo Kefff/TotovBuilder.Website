@@ -16,6 +16,14 @@
   margin-left: 1rem;
 }
 
+.language-selector-icon {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-right: 0.5rem;
+  width: 2rem;
+}
+
 .language-selector-item {
   align-items: center;
   display: flex;

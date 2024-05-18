@@ -12,18 +12,15 @@ import {
   NotificationType
 } from '../../services/NotificationService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import { GeneralOptionsComponentService } from '../../services/components/GeneralOptionsComponentService'
-import { MerchantItemsOptionsComponentService } from '../../services/components/MerchantItemsOptionsComponentService'
+import { GlobalSidebarComponentService } from '../../services/components/GlobalSidebarComponentService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import StatsUtils from '../../utils/StatsUtils'
 import BuildsExport from '../builds-export/BuildsExportComponent.vue'
 import BuildsImport from '../builds-import/BuildsImportComponent.vue'
 import BuildsList from '../builds-list/BuildsListComponent.vue'
-import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
 import LoadingError from '../loading-error/LoadingErrorComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
-import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
 
 export default defineComponent({
@@ -31,10 +28,8 @@ export default defineComponent({
     BuildsExport,
     BuildsImport,
     BuildsList,
-    GeneralOptions,
     Loading,
     LoadingError,
-    MerchantItemsOptions,
     NotificationButton
   },
   setup: () => {
@@ -99,14 +94,20 @@ export default defineComponent({
      * Displays the general options.
      */
     function displayGeneralOptions() {
-      Services.get(GeneralOptionsComponentService).emitter.emit(GeneralOptionsComponentService.openGeneralOptionsEvent)
+      Services.get(GlobalSidebarComponentService).display({
+        displayedComponentType: 'GeneralOptions',
+        position: 'right'
+      })
     }
 
     /**
      * Displays the merchant items options.
      */
     function displayMerchantItemsOptions() {
-      Services.get(MerchantItemsOptionsComponentService).emitter.emit(MerchantItemsOptionsComponentService.openMerchantItemsOptionsEvent)
+      Services.get(GlobalSidebarComponentService).display({
+        displayedComponentType: 'MerchantItemsOptions',
+        position: 'right'
+      })
     }
 
     /**

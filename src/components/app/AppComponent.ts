@@ -5,16 +5,16 @@ import { NotificationService, NotificationType } from '../../services/Notificati
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import Services from '../../services/repository/Services'
 import LanguageUtils from '../../utils/LanguageUtils'
+import GlobalSidebar from '../GlobalSidebarComponent.vue'
 import Changelog from '../changelog/ChangelogComponent.vue'
 import LoadingError from '../loading-error/LoadingErrorComponent.vue'
-import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
 import Notification from '../notification/NotificationComponent.vue'
 
 export default defineComponent({
   components: {
     Changelog,
+    GlobalSidebar,
     LoadingError,
-    MerchantItemsOptions,
     Notification
   },
   setup() {

@@ -1,37 +1,28 @@
 <template>
-  <Sidebar
-    v-model:visible="visible"
-    position="right"
-    style="max-width: 100vw; width: auto;"
-    @hide="save()"
-  >
-    <template #header>
-      <div class="sidebar-title">
-        <div class="sidebar-title-icon">
-          <font-awesome-icon icon="user-tag" />
-        </div>
-        <span>{{ $t('caption.merchants') }}</span>
-      </div>
-    </template>
-    <div class="sidebar-option">
-      <MerchantFilter
-        v-model:global-filter="globalFilter"
-        @update:global-filter="() => hasChanged = true"
-      />
+  <div class="sidebar-title">
+    <div class="sidebar-title-icon">
+      <font-awesome-icon icon="user-tag" />
     </div>
-    <div class="sidebar-title">
-      <div class="sidebar-title-icon">
-        <font-awesome-icon icon="shopping-basket" />
-      </div>
-      <span>{{ $t('caption.items') }}</span>
+    <span>{{ $t('caption.merchants') }}</span>
+  </div>
+  <div class="sidebar-option">
+    <MerchantFilter
+      v-model:global-filter="globalFilter"
+      @update:global-filter="() => hasChanged = true"
+    />
+  </div>
+  <div class="sidebar-title">
+    <div class="sidebar-title-icon">
+      <font-awesome-icon icon="shopping-basket" />
     </div>
-    <div class="sidebar-option">
-      <ItemFilterComponent
-        v-model:global-filter="globalFilter"
-        @update:global-filter="() => hasChanged = true"
-      />
-    </div>
-  </Sidebar>
+    <span>{{ $t('caption.items') }}</span>
+  </div>
+  <div class="sidebar-option">
+    <ItemFilterComponent
+      v-model:global-filter="globalFilter"
+      @update:global-filter="() => hasChanged = true"
+    />
+  </div>
 </template>
 
 <script lang="ts" src="./MerchantItemsOptionsComponent.ts" />

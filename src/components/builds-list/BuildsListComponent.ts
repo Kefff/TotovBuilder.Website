@@ -3,22 +3,18 @@ import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
-import { ShoppingListComponentService } from '../../services/components/ShoppingListComponentService'
+import { GlobalSidebarComponentService } from '../../services/components/GlobalSidebarComponentService'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
 import ItemIcon from '../item-icon/ItemIconComponent.vue'
-import ShoppingListMerchants from '../shopping-list-merchants/ShoppingListMerchantsComponent.vue'
-import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
 import Tooltip from '../tooltip/TooltipComponent.vue'
 
 export default defineComponent({
   components: {
     InventoryPrice,
     ItemIcon,
-    ShoppingList,
-    ShoppingListMerchants,
     Tooltip
   },
   props: {
@@ -40,7 +36,6 @@ export default defineComponent({
   emits: ['update:selected-build-summaries'],
   setup: (props, { emit }) => {
     const buildPropertiesService = Services.get(BuildPropertiesService)
-    const shoppingListComponentService = Services.get(ShoppingListComponentService)
 
     const selectedBuildSummariesInternal = computed({
       get: () => props.selectedBuildSummaries,
@@ -116,7 +111,11 @@ export default defineComponent({
      * @param buildSummary - Summary of the build.
      */
     function displayShoppingList(shoppingList: IShoppingListItem[]) {
-      shoppingListComponentService.display(shoppingList)
+      Services.get(GlobalSidebarComponentService).display({
+        displayedComponentType: 'ShoppingList',
+        displayedComponentParameters: shoppingList,
+        position: 'left'
+      })
     }
 
     return {

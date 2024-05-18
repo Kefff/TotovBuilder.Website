@@ -117,11 +117,11 @@
       </div>
     </div>
 
+    <!-- Global sidebar -->
+    <GlobalSidebar />
+
     <!-- Loading error -->
     <LoadingError />
-
-    <!-- Merchant and items options -->
-    <MerchantItemsOptions />
 
     <!-- Notification -->
     <Notification />

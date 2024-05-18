@@ -1,5 +1,7 @@
 {
   "css.format.enable": true,
+  "css.format.newlineBetweenRules": true,
+  "css.format.newlineBetweenSelectors": true,
   "css.format.spaceAroundSelectorSeparator": true,
   "editor.detectIndentation": false,
   "editor.formatOnSave": true,
@@ -20,33 +22,35 @@
   "typescript.format.enable": true,
   "typescript.format.semicolons": "remove",
   "typescript.preferences.quoteStyle": "single",
+  "vue.autoInsert.bracketSpacing": true,
   "vue.autoInsert.dotValue": true,
-  "vue.inlayHints.inlineHandlerLeading": true,
-  "vue.inlayHints.missingProps": true,
-  "vue.inlayHints.optionsWrapper": true,
+  "vue.autoInsert.parentheses": true,
   "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features",
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "vscode.css-language-features"
   },
   "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features",
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "vscode.html-language-features"
   },
   "[json][jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[typescript]": {
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "vscode.typescript-language-features"
+    "editor.defaultFormatter": "vscode.typescript-language-features",
   },
   "[vue]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "never"
+    },
+    "editor.defaultFormatter": "Vue.volar",
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "Vue.volar"
   },
   "search.exclude": {
     "public/data/*": true

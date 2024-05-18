@@ -80,9 +80,6 @@
     :build-summaries="buildSummaries"
   />
 
-  <!-- General options -->
-  <GeneralOptions />
-
   <!-- Import -->
   <BuildsImport
     v-if="!isLoading"

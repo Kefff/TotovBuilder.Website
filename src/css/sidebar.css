@@ -1,25 +1,32 @@
 .sidebar-option {
+  align-items: center;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   margin-top: 1rem;
   min-height: 3.25rem;
 }
 
-.sidebar-option-with-hover {
-  align-items: center;
-  display: flex;
-  min-height: 3.25rem;
-}
-
-.sidebar-option-with-hover:hover {
-  background: var(--util-color2);
-  border-radius: 3px;
+.sidebar-option-clickable {
   cursor: pointer;
 }
 
-.sidebar-title {
+.sidebar-option-disabled {
+  color: var(--util-color5);
+  filter: grayscale(100%);
+  pointer-events: none;
+}
+
+.sidebar-option-icon {
   display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-right: 0.5rem;
+  width: 2rem;
+}
+
+.sidebar-title {
   align-items: center;
+  display: flex;
   font-size: 1.5rem;
   font-weight: bold;
   margin-right: 2rem;
@@ -27,6 +34,9 @@
 }
 
 .sidebar-title-icon {
+  align-items: center;
+  display: flex;
+  justify-content: center;
   margin-right: 0.5rem;
   width: 2rem;
 }
