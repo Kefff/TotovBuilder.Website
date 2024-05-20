@@ -2,7 +2,7 @@ import { computed, defineComponent, PropType } from 'vue'
 import { IItem } from '../../models/item/IItem'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
-import ItemIcon from '../item-icon/ItemIconComponent.vue'
+import ItemIcon from '../ItemIconComponent.vue'
 
 export default defineComponent({
   components: {

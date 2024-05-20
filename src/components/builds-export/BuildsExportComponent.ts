@@ -5,7 +5,7 @@ import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildService } from '../../services/BuildService'
 import { ExportService } from '../../services/ExportService'
 import Services from '../../services/repository/Services'
-import BuildsList from '../builds-list/BuildsListComponent.vue'
+import BuildsList from '../BuildsListComponent.vue'
 
 export default defineComponent({
   components: {

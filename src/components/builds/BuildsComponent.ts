@@ -16,11 +16,10 @@ import { WebsiteConfigurationService } from '../../services/WebsiteConfiguration
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import StatsUtils from '../../utils/StatsUtils'
+import BuildsList from '../BuildsListComponent.vue'
+import Loading from '../LoadingComponent.vue'
 import BuildsExport from '../builds-export/BuildsExportComponent.vue'
 import BuildsImport from '../builds-import/BuildsImportComponent.vue'
-import BuildsList from '../builds-list/BuildsListComponent.vue'
-import LoadingError from '../loading-error/LoadingErrorComponent.vue'
-import Loading from '../loading/LoadingComponent.vue'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
 
 export default defineComponent({
@@ -29,7 +28,6 @@ export default defineComponent({
     BuildsImport,
     BuildsList,
     Loading,
-    LoadingError,
     NotificationButton
   },
   setup: () => {

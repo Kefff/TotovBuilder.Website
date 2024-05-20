@@ -9,7 +9,7 @@ import { WebsiteConfigurationService } from '../services/WebsiteConfigurationSer
 import Services from '../services/repository/Services'
 import LanguageUtils from '../utils/LanguageUtils'
 import GlobalSidebar from './GlobalSidebarComponent.vue'
-import LoadingError from './loading-error/LoadingErrorComponent.vue'
+import LoadingError from './LoadingErrorComponent.vue'
 import Notification from './notification/NotificationComponent.vue'
 
 const websiteConfigurationService = Services.get(WebsiteConfigurationService)

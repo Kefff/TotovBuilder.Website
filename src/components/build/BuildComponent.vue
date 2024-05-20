@@ -17,7 +17,6 @@
         :caption="$t('caption.name')"
         caption-mode="placeholder"
         :required="true"
-        required-message-position="right"
       />
     </div>
     <div :class="toolbarCssClass">

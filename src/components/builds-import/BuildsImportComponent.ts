@@ -7,7 +7,7 @@ import { NotificationService, NotificationType } from '../../services/Notificati
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import { BuildsImportComponentService } from '../../services/components/BuildsImportComponentService'
 import Services from '../../services/repository/Services'
-import BuildsList from '../builds-list/BuildsListComponent.vue'
+import BuildsList from '../BuildsListComponent.vue'
 
 export default defineComponent({
   components: {

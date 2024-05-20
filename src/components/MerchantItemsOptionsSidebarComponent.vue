@@ -4,18 +4,17 @@ import { IGlobalFilter } from '../models/utils/IGlobalFilter'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
-import ItemFilter from './item-filter/ItemFilterComponent.vue'
-import MerchantFilter from './merchant-filter/MerchantFilterComponent.vue'
-
-
-defineProps<{
-  parameters: undefined
-}>()
+import ItemFilter from './ItemFilterComponent.vue'
+import MerchantFilter from './MerchantFilterComponent.vue'
 
 const globalSidebarService = Services.get(GlobalSidebarService)
 globalSidebarService.registerOnClosingAction(save)
 
 const globalFilterService = Services.get(GlobalFilterService)
+
+defineProps<{
+  parameters: undefined
+}>()
 
 const globalFilter = ref<IGlobalFilter>({
   itemExclusionFilters: [],
@@ -32,8 +31,8 @@ onMounted(() => {
  */
 function save() {
   if (hasChanged.value) {
-    hasChanged.value = false
     globalFilterService.save(globalFilter.value)
+    hasChanged.value = false
   }
 }
 </script>
@@ -87,7 +86,5 @@ function save() {
 
 
 <style scoped>
-@import '../css/button.css';
-@import '../css/icon.css';
 @import '../css/sidebar.css';
 </style>

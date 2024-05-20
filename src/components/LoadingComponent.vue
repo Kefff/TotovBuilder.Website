@@ -1,3 +1,33 @@
+<template>
+  <div class="loading">
+    <div class="loading-icon">
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+    </div>
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+
+
+<style scoped>
 .loading {
   display: flex;
   height: 100%;
@@ -13,7 +43,7 @@
 
 .loading-icon div {
   animation: loading-icon 1.2s linear infinite;
-  background: #fff;
+  background-color: var(--text-color);
   border-radius: 50%;
   height: 6px;
   position: absolute;
@@ -94,14 +124,13 @@
 
 @keyframes loading-icon {
 
-  0%,
-  20%,
-  80%,
-  100% {
-    transform: scale(1);
-  }
-
-  50% {
+  0% {
+    background: var(--primary-color);
     transform: scale(1.5);
   }
+
+  100% {
+    transform: scale(0.5);
+  }
 }
+</style>

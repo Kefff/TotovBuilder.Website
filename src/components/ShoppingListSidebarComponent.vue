@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IBuildSummaryShoppingMerchant } from '../models/utils/IBuildSummaryMerchant'
 import StringUtils from '../utils/StringUtils'
-import ItemIcon from './item-icon/ItemIconComponent.vue'
+import ItemIcon from './ItemIconComponent.vue'
 import MerchantIcon from './merchant-icon/MerchantIconComponent.vue'
 
 const props = defineProps<{

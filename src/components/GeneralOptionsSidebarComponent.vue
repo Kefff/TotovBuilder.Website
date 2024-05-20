@@ -7,14 +7,14 @@ import { WebsiteConfigurationService } from '../services/WebsiteConfigurationSer
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
 import StringUtils from '../utils/StringUtils'
-import LanguageSelector from './language-selector/LanguageSelectorComponent.vue'
+import LanguageSelector from './LanguageSelectorComponent.vue'
+
+const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
 
 const props = defineProps<{
   parameters?: IGeneralOptionsGroup[]
 }>()
-
-const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
 
 const additionalDisplayOptions = computed(() => props.parameters?.filter(og => og.name === 'display-options').flatMap(og => og.options) ?? [])
 const additionalGeneralOptions = computed(() => props.parameters?.filter(og => og.name === 'general-options').flatMap(og => og.options) ?? [])

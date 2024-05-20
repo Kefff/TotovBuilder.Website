@@ -5,15 +5,13 @@ import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
+import Loading from '../LoadingComponent.vue'
 import BuildsImport from '../builds-import/BuildsImportComponent.vue'
-import LoadingError from '../loading-error/LoadingErrorComponent.vue'
-import Loading from '../loading/LoadingComponent.vue'
 
 export default defineComponent({
   components: {
     BuildsImport,
-    Loading,
-    LoadingError
+    Loading
   },
   setup: () => {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)

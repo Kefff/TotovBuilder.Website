@@ -1,4 +1,4 @@
-import { computed, defineComponent, onMounted, onUnmounted, provide, ref, watch } from 'vue'
+import { computed, defineComponent, nextTick, onMounted, onUnmounted, provide, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
@@ -19,12 +19,11 @@ import { ServiceInitializationState } from '../../services/repository/ServiceIni
 import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import InputTextField from '../InputTextFieldComponent.vue'
+import InventoryPrice from '../InventoryPriceComponent.vue'
+import InventorySlot from '../InventorySlotComponent.vue'
+import Loading from '../LoadingComponent.vue'
 import BuildShare from '../build-share/BuildShareComponent.vue'
-import InputTextField from '../input-text-field/InputTextFieldComponent.vue'
-import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
-import InventorySlot from '../inventory-slot/InventorySlotComponent.vue'
-import LoadingError from '../loading-error/LoadingErrorComponent.vue'
-import Loading from '../loading/LoadingComponent.vue'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
 
 export default defineComponent({
@@ -34,7 +33,6 @@ export default defineComponent({
     InventoryPrice,
     InventorySlot,
     Loading,
-    LoadingError,
     NotificationButton
   },
   setup: () => {
@@ -401,12 +399,12 @@ export default defineComponent({
         build.value = buildComponentService.getBuild(route.params['id'] as string)
         getSharedBuild(route.params['sharedBuild'] as string)
           .then(() => {
-            isLoading.value = false
-            getSummary()
-
             build.value.inventorySlots.forEach(() => {
               collapseStatuses.value.push(false) // All inventory slots expanded by default
             })
+
+            isLoading.value = false
+            getSummary()
           })
           .finally(() => isLoading.value = false)
       }, 1)
@@ -433,8 +431,11 @@ export default defineComponent({
     async function save() {
       isLoading.value = true
       await buildComponentService.saveBuild(router, build.value)
-      isLoading.value = false
-      editing.value = false
+
+      nextTick(() => {
+        isLoading.value = false
+        editing.value = false
+      })
     }
 
     /**

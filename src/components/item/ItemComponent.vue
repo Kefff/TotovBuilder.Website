@@ -4,7 +4,7 @@
     class="item"
   >
     <div class="item-selection">
-      <div class="item-dropdown-override">
+      <div class="item-selection-dropdown">
         <Dropdown
           v-model="item"
           :disabled="!editing"

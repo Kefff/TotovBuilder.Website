@@ -23,7 +23,7 @@ export class GlobalSidebarService {
   /**
    * Actions to execute when closing the global sidebar.
    */
-  private onClosingActions: (() => void)[] = []
+  private onClosingActions: (() => void | Promise<void>)[] = []
 
   /**
    * Closes the global sidebar.

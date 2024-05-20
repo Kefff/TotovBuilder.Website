@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import { IChangelogEntry } from '../models/configuration/IChangelogEntry'
 import { VersionService } from '../services/VersionService'
 import Services from '../services/repository/Services'
-import Loading from './loading/LoadingComponent.vue'
+import Loading from './LoadingComponent.vue'
 
 defineProps<{
   parameters: undefined
