@@ -4,6 +4,7 @@ import { ExportService } from './services/ExportService'
 import { FetchService } from './services/FetchService'
 import { GeneralOptionsService } from './services/GeneralOptionsService'
 import { GlobalFilterService } from './services/GlobalFilterService'
+import { GlobalSidebarService } from './services/GlobalSidebarService'
 import { ImportService } from './services/ImportService'
 import { InventoryItemService } from './services/InventoryItemService'
 import { InventorySlotPropertiesService } from './services/InventorySlotPropertiesService'
@@ -21,7 +22,6 @@ import { WebsiteConfigurationService } from './services/WebsiteConfigurationServ
 import { CompatibilityService } from './services/compatibility/CompatibilityService'
 import { BuildComponentService } from './services/components/BuildComponentService'
 import { BuildsImportComponentService } from './services/components/BuildsImportComponentService'
-import { GlobalSidebarComponentService } from './services/components/GlobalSidebarComponentService'
 import { InventorySlotComponentService } from './services/components/InventorySlotComponentService'
 import { ItemContentComponentService } from './services/components/ItemContentComponentService'
 import { ModSlotComponentService } from './services/components/ModSlotComponentService'
@@ -58,7 +58,7 @@ export function configureServices() {
   // Components
   Services.configure(BuildComponentService)
   Services.configure(BuildsImportComponentService)
-  Services.configure(GlobalSidebarComponentService)
+  Services.configure(GlobalSidebarService)
   Services.configure(InventorySlotComponentService)
   Services.configure(ItemContentComponentService)
   Services.configure(MagazineStatsComponentService)

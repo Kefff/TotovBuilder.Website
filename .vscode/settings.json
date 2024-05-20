@@ -46,9 +46,6 @@
     "editor.defaultFormatter": "vscode.typescript-language-features",
   },
   "[vue]": {
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": "never"
-    },
     "editor.defaultFormatter": "Vue.volar",
     "editor.tabSize": 2,
   },

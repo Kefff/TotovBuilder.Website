@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { IGlobalSidebarOptions } from '../models/utils/IGlobalSidebarOptions'
-import { GlobalSidebarComponentService } from '../services/components/GlobalSidebarComponentService'
-import GeneralOptions from './general-options/GeneralOptionsComponent.vue'
-import MerchantItemsOptions from './merchant-items-options/MerchantItemsOptionsComponent.vue'
-import ShoppingList from './shopping-list/ShoppingListComponent.vue'
+import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
+import ChangelogSidebar from './ChangelogSidebarComponent.vue'
+import GeneralOptionsSidebar from './GeneralOptionsSidebarComponent.vue'
+import MerchantItemsOptionsSidebar from './MerchantItemsOptionsSidebarComponent.vue'
+import ShoppingListSidebar from './ShoppingListSidebarComponent.vue'
 
-const globalSidebarComponentService = Services.get(GlobalSidebarComponentService)
+const globalSidebarService = Services.get(GlobalSidebarService)
 
 const displayableComponents: Record<string, unknown> = {
-  GeneralOptions,
-  MerchantItemsOptions,
-  ShoppingList
+  ChangelogSidebar,
+  GeneralOptionsSidebar,
+  MerchantItemsOptionsSidebar,
+  ShoppingListSidebar
 }
 
 const visible = computed({
@@ -31,20 +33,20 @@ const _visible = ref(false)
 const options = ref<IGlobalSidebarOptions>()
 
 onMounted(() => {
-  globalSidebarComponentService.emitter.on(GlobalSidebarComponentService.closeGlobalSidebarEvent, onGlobalSidebarClose)
-  globalSidebarComponentService.emitter.on(GlobalSidebarComponentService.openGlobalSidebarEvent, onGlobalSidebarOpen)
+  globalSidebarService.emitter.on(GlobalSidebarService.closeGlobalSidebarEvent, onGlobalSidebarClose)
+  globalSidebarService.emitter.on(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
 })
 
 onUnmounted(() => {
-  globalSidebarComponentService.emitter.off(GlobalSidebarComponentService.closeGlobalSidebarEvent, onGlobalSidebarClose)
-  globalSidebarComponentService.emitter.off(GlobalSidebarComponentService.openGlobalSidebarEvent, onGlobalSidebarOpen)
+  globalSidebarService.emitter.off(GlobalSidebarService.closeGlobalSidebarEvent, onGlobalSidebarClose)
+  globalSidebarService.emitter.off(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
 })
 
 /**
  * Closes the global sidebard.
  */
 function onGlobalSidebarClose() {
-  globalSidebarComponentService.executeOnClosingActions()
+  globalSidebarService.executeOnClosingActions()
   _visible.value = false
 }
 
@@ -62,26 +64,58 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions) {
 <template>
   <Sidebar
     v-model:visible="visible"
-    :block-scroll="true"
     :modal="true"
     :position="options?.position"
-    style="max-width: 100vw; width: auto;"
+    style="width: auto;"
   >
     <template #header>
       <div class="global-sidebar-spacer" />
     </template>
-    <component
-      :is="currentDisplayedComponent"
-      v-if="currentDisplayedComponent != null"
-      :parameters="options?.displayedComponentParameters"
-    />
+    <div class="global-sidebar-content">
+      <component
+        :is="currentDisplayedComponent"
+        v-if="currentDisplayedComponent != null"
+        :parameters="options?.displayedComponentParameters"
+      />
+    </div>
   </sidebar>
 </template>
 
 
 
 <style scoped>
+.global-sidebar-content {
+  max-width: 100vw;
+}
+
 .global-sidebar-spacer {
   width: 100%;
+}
+
+/* Smartphone in portrait */
+@media only screen and (min-width: 320px) and (max-width: 480px) {}
+
+/* Smartphone in landscape */
+@media only screen and (min-width: 481px) and (max-width: 767px) {}
+
+/* Tablet in portrait */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .global-sidebar-content {
+    max-width: 50vw;
+  }
+}
+
+/* Tablet in landscape */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .global-sidebar-content {
+    max-width: 50vw;
+  }
+}
+
+/* PC */
+@media only screen and (min-width: 1200px) {
+  .global-sidebar-content {
+    max-width: 50vw;
+  }
 }
 </style>

@@ -1,8 +1,8 @@
 import { defineComponent, onMounted, ref, watch } from 'vue'
 import router from '../../plugins/vueRouter'
 import { BuildService } from '../../services/BuildService'
+import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import { GlobalSidebarComponentService } from '../../services/components/GlobalSidebarComponentService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import BuildsImport from '../builds-import/BuildsImportComponent.vue'
@@ -49,8 +49,8 @@ export default defineComponent({
      * Displays the general options.
      */
     function displayGeneralOptions() {
-      Services.get(GlobalSidebarComponentService).display({
-        displayedComponentType: 'GeneralOptions',
+      Services.get(GlobalSidebarService).display({
+        displayedComponentType: 'GeneralOptionsSidebar',
         position: 'right'
       })
     }
@@ -59,8 +59,8 @@ export default defineComponent({
      * Displays the merchant items options.
      */
     function displayMerchantItemsOptions() {
-      Services.get(GlobalSidebarComponentService).display({
-        displayedComponentType: 'MerchantItemsOptions',
+      Services.get(GlobalSidebarService).display({
+        displayedComponentType: 'MerchantItemsOptionsSidebar',
         position: 'right'
       })
     }

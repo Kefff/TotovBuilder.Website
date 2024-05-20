@@ -1,10 +1,10 @@
 import { TinyEmitter } from 'tiny-emitter'
-import { IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
+import { IGlobalSidebarOptions } from '../models/utils/IGlobalSidebarOptions'
 
 /**
  * Represents a service responsible for managing a GlobalSidebarComponent.
  */
-export class GlobalSidebarComponentService {
+export class GlobalSidebarService {
   /**
    * Name of the event fired to ask the global sidebar to close.
    */
@@ -29,7 +29,7 @@ export class GlobalSidebarComponentService {
    * Closes the global sidebar.
    */
   public close() {
-    this.emitter.emit(GlobalSidebarComponentService.closeGlobalSidebarEvent)
+    this.emitter.emit(GlobalSidebarService.closeGlobalSidebarEvent)
   }
 
   /**
@@ -37,7 +37,7 @@ export class GlobalSidebarComponentService {
    * @param options - Options.
    */
   public display(options: IGlobalSidebarOptions) {
-    this.emitter.emit(GlobalSidebarComponentService.openGlobalSidebarEvent, options)
+    this.emitter.emit(GlobalSidebarService.openGlobalSidebarEvent, options)
   }
 
   /**

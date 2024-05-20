@@ -10,3 +10,4 @@
 
 <script lang="ts" src="./TooltipComponent.ts" />
 <style scoped lang="css" src="./TooltipComponent.css" />
+<style lang="css" src="./TooltipComponent.unscoped.css" />

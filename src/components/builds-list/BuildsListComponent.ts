@@ -3,7 +3,7 @@ import { computed, defineComponent, onMounted, PropType, ref, watch } from 'vue'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
-import { GlobalSidebarComponentService } from '../../services/components/GlobalSidebarComponentService'
+import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
@@ -111,8 +111,8 @@ export default defineComponent({
      * @param buildSummary - Summary of the build.
      */
     function displayShoppingList(shoppingList: IShoppingListItem[]) {
-      Services.get(GlobalSidebarComponentService).display({
-        displayedComponentType: 'ShoppingList',
+      Services.get(GlobalSidebarService).display({
+        displayedComponentType: 'ShoppingListSidebar',
         displayedComponentParameters: shoppingList,
         position: 'left'
       })

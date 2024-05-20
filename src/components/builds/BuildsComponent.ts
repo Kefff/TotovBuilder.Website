@@ -6,13 +6,13 @@ import vueI18n from '../../plugins/vueI18n'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { ItemService } from '../../services/ItemService'
 import {
   NotificationService,
   NotificationType
 } from '../../services/NotificationService'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
-import { GlobalSidebarComponentService } from '../../services/components/GlobalSidebarComponentService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import StatsUtils from '../../utils/StatsUtils'
@@ -94,8 +94,8 @@ export default defineComponent({
      * Displays the general options.
      */
     function displayGeneralOptions() {
-      Services.get(GlobalSidebarComponentService).display({
-        displayedComponentType: 'GeneralOptions',
+      Services.get(GlobalSidebarService).display({
+        displayedComponentType: 'GeneralOptionsSidebar',
         position: 'right'
       })
     }
@@ -104,8 +104,8 @@ export default defineComponent({
      * Displays the merchant items options.
      */
     function displayMerchantItemsOptions() {
-      Services.get(GlobalSidebarComponentService).display({
-        displayedComponentType: 'MerchantItemsOptions',
+      Services.get(GlobalSidebarService).display({
+        displayedComponentType: 'MerchantItemsOptionsSidebar',
         position: 'right'
       })
     }

@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import App from './components/app/AppComponent.vue'
+import App from './components/AppComponent.vue'
 import Item from './components/item/ItemComponent.vue'
 import Price from './components/price/PriceComponent.vue'
 import { useApplicationInsights } from './plugins/applicationInsights'

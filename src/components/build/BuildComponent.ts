@@ -8,38 +8,34 @@ import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
 import { ExportService } from '../../services/ExportService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemService } from '../../services/ItemService'
 import { CompatibilityRequest } from '../../services/compatibility/CompatibilityRequest'
 import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
 import { CompatibilityService } from '../../services/compatibility/CompatibilityService'
 import { BuildComponentService } from '../../services/components/BuildComponentService'
-import { GlobalSidebarComponentService } from '../../services/components/GlobalSidebarComponentService'
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import BuildShare from '../build-share/BuildShareComponent.vue'
-import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
 import InputTextField from '../input-text-field/InputTextFieldComponent.vue'
 import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
 import InventorySlot from '../inventory-slot/InventorySlotComponent.vue'
 import LoadingError from '../loading-error/LoadingErrorComponent.vue'
 import Loading from '../loading/LoadingComponent.vue'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
-import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
 
 export default defineComponent({
   components: {
     BuildShare,
-    GeneralOptions,
     InputTextField,
     InventoryPrice,
     InventorySlot,
     Loading,
     LoadingError,
-    NotificationButton,
-    ShoppingList
+    NotificationButton
   },
   setup: () => {
     const itemService = Services.get(ItemService)
@@ -198,7 +194,7 @@ export default defineComponent({
         collapseStatuses.value[i] = true
       }
 
-      Services.get(GlobalSidebarComponentService).close()
+      Services.get(GlobalSidebarService).close()
     }
 
     /**
@@ -218,8 +214,8 @@ export default defineComponent({
      * Displays the general options.
      */
     function displayGeneralOptions() {
-      Services.get(GlobalSidebarComponentService).display({
-        displayedComponentType: 'GeneralOptions',
+      Services.get(GlobalSidebarService).display({
+        displayedComponentType: 'GeneralOptionsSidebar',
         displayedComponentParameters: [
           {
             caption: 'caption.displayOptions',
@@ -252,8 +248,8 @@ export default defineComponent({
      * Displays the merchant items options.
      */
     function displayMerchantItemsOptions() {
-      Services.get(GlobalSidebarComponentService).display({
-        displayedComponentType: 'MerchantItemsOptions',
+      Services.get(GlobalSidebarService).display({
+        displayedComponentType: 'MerchantItemsOptionsSidebar',
         position: 'right'
       })
     }
@@ -262,8 +258,8 @@ export default defineComponent({
      * Displays the shopping list.
      */
     function displayShoppingList() {
-      Services.get(GlobalSidebarComponentService).display({
-        displayedComponentType: 'ShoppingList',
+      Services.get(GlobalSidebarService).display({
+        displayedComponentType: 'ShoppingListSidebar',
         displayedComponentParameters: summary.value.shoppingList,
         position: 'left'
       })
@@ -279,7 +275,7 @@ export default defineComponent({
         collapseStatuses.value[i] = false
       }
 
-      Services.get(GlobalSidebarComponentService).close()
+      Services.get(GlobalSidebarService).close()
     }
 
     /**
@@ -294,7 +290,7 @@ export default defineComponent({
         }
       }
 
-      Services.get(GlobalSidebarComponentService).close()
+      Services.get(GlobalSidebarService).close()
     }
 
     /**
