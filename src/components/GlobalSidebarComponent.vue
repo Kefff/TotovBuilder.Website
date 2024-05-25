@@ -1,3 +1,32 @@
+<template>
+  <Sidebar
+    v-model:visible="visible"
+    :modal="true"
+    :position="options?.position"
+    style="width: auto;"
+  >
+    <template #header>
+      <div class="global-sidebar-spacer" />
+    </template>
+    <div class="global-sidebar-content">
+      <component
+        :is="currentDisplayedComponent"
+        v-if="currentDisplayedComponent != null"
+        :parameters="options?.displayedComponentParameters"
+      />
+    </div>
+  </sidebar>
+</template>
+
+
+
+
+
+
+
+
+
+
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { IGlobalSidebarOptions } from '../models/utils/IGlobalSidebarOptions'
@@ -61,25 +90,10 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions) {
 
 
 
-<template>
-  <Sidebar
-    v-model:visible="visible"
-    :modal="true"
-    :position="options?.position"
-    style="width: auto;"
-  >
-    <template #header>
-      <div class="global-sidebar-spacer" />
-    </template>
-    <div class="global-sidebar-content">
-      <component
-        :is="currentDisplayedComponent"
-        v-if="currentDisplayedComponent != null"
-        :parameters="options?.displayedComponentParameters"
-      />
-    </div>
-  </sidebar>
-</template>
+
+
+
+
 
 
 

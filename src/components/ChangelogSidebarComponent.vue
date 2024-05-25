@@ -1,50 +1,3 @@
-<script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { IChangelogEntry } from '../models/configuration/IChangelogEntry'
-import { VersionService } from '../services/VersionService'
-import Services from '../services/repository/Services'
-import Loading from './LoadingComponent.vue'
-
-defineProps<{
-  parameters: undefined
-}>()
-
-const changelogs = ref<IChangelogEntry[]>([])
-const isLoading = ref(true)
-
-onMounted(() => {
-  loadChangelog()
-})
-
-/**
- * Loads the changelog.
- */
-async function loadChangelog() {
-  isLoading.value = true
-  const fetchedChangelogs = await Services.get(VersionService).getChangelog()
-  isLoading.value = false
-
-  if (fetchedChangelogs == null) {
-    // TODO: AFFICHER UNE ERREUR QUAND LES CHANGELOGS NE SONT PAS CHARGES
-
-    return
-  }
-
-  changelogs.value = fetchedChangelogs
-}
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
 <template>
   <div class="sidebar-title">
     <div class="sidebar-title-icon">
@@ -84,6 +37,47 @@ async function loadChangelog() {
 </template>
 
 
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { IChangelogEntry } from '../models/configuration/IChangelogEntry'
+import { VersionService } from '../services/VersionService'
+import Services from '../services/repository/Services'
+import Loading from './LoadingComponent.vue'
+
+defineProps<{ parameters: undefined }>()
+
+const changelogs = ref<IChangelogEntry[]>([])
+const isLoading = ref(true)
+
+onMounted(() => {
+  loadChangelog()
+})
+
+/**
+ * Loads the changelog.
+ */
+async function loadChangelog() {
+  isLoading.value = true
+  const fetchedChangelogs = await Services.get(VersionService).getChangelog()
+  isLoading.value = false
+
+  if (fetchedChangelogs == null) {
+    // TODO: AFFICHER UNE ERREUR QUAND LES CHANGELOGS NE SONT PAS CHARGES
+
+    return
+  }
+
+  changelogs.value = fetchedChangelogs
+}
+</script>
 
 
 

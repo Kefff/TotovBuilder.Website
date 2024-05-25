@@ -1,3 +1,30 @@
+<template>
+  <div :class="'p-field field input-text-field input-text-field-required-message-' + requiredMessagePosition">
+    <label v-if="!captionAsPlaceholder">{{ caption }}</label>
+    <InputText
+      v-model="modelValue"
+      :class="invalid ? 'p-invalid' : ''"
+      :disabled="readOnly"
+      :placeholder="captionAsPlaceholder ? caption : undefined"
+    />
+    <div
+      v-if="invalid"
+      class="p-error"
+    >
+      {{ $t('message.requiredField', { caption }) }}
+    </div>
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+
 <script setup lang="ts">
 import { computed } from 'vue'
 
@@ -22,37 +49,6 @@ const props = withDefaults(
 const captionAsPlaceholder = computed(() => props.captionMode === 'placeholder')
 const invalid = computed(() => props.required && (modelValue.value == null || modelValue.value === ''))
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-<template>
-  <div :class="'p-field field input-text-field input-text-field-required-message-' + requiredMessagePosition">
-    <label v-if="!captionAsPlaceholder">{{ caption }}</label>
-    <InputText
-      v-model="modelValue"
-      :class="invalid ? 'p-invalid' : ''"
-      :disabled="readOnly"
-      :placeholder="captionAsPlaceholder ? caption : undefined"
-    />
-    <div
-      v-if="invalid"
-      class="p-error"
-    >
-      {{ $t('message.requiredField', { caption }) }}
-    </div>
-  </div>
-</template>
-
-
 
 
 

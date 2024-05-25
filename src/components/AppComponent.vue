@@ -1,122 +1,3 @@
-<script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-import Images from '../images'
-import vueI18n from '../plugins/vueI18n'
-import { GlobalSidebarService } from '../services/GlobalSidebarService'
-import { NotificationService, NotificationType } from '../services/NotificationService'
-import { VersionService } from '../services/VersionService'
-import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
-import Services from '../services/repository/Services'
-import LanguageUtils from '../utils/LanguageUtils'
-import GlobalSidebar from './GlobalSidebarComponent.vue'
-import LoadingError from './LoadingErrorComponent.vue'
-import Notification from './notification/NotificationComponent.vue'
-
-const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
-
-const versionService = Services.get(VersionService)
-
-const bugReportUrl = ref<string>()
-const contactAddress = ref<string>()
-const discordUrl = ref<string>()
-const githubUrl = ref<string>()
-const hasNewVersion = ref(false)
-const isLoading = ref(true)
-const version = ref('1.0.0')
-
-const copyrightYear = computed(() => {
-  const year = new Date().getFullYear()
-  let text = '2021'
-
-  if (year > 2021) {
-    text += '-' + year
-  }
-
-  return text
-})
-const isSanta = computed(() => {
-  const date = new Date()
-  const santaMinDate = new Date(date.getFullYear(), 11, 21).getTime()
-  const santaMaxDate = new Date(date.getFullYear(), 11, 29, 23, 59, 59).getTime()
-
-  return date.getTime() >= santaMinDate && date.getTime() <= santaMaxDate
-})
-
-onMounted(() => {
-  setLanguage()
-})
-
-/**
- * Displays the changelog.
- */
-function displayChangelog() {
-  Services.get(GlobalSidebarService).display({
-    displayedComponentType: 'ChangelogSidebar',
-    position: 'right'
-  })
-}
-
-/**
- * Displays the new version notification.
- */
-function displayNewVersionNotification() {
-  Services.get(NotificationService).notify(
-    NotificationType.information,
-    vueI18n.t('message.newVersion', { newVersion: version.value }),
-    0,
-    [
-      {
-        action: () => displayChangelog(),
-        caption: vueI18n.t('caption.seeChanges'),
-        icon: undefined,
-        name: 'seeChanges',
-        type: NotificationType.success
-      }
-    ],
-    true)
-}
-
-async function onWebsiteConfigurationServiceInitialized() {
-  bugReportUrl.value = websiteConfigurationService.configuration.bugReportUrl
-  contactAddress.value = websiteConfigurationService.configuration.contactAddress
-  discordUrl.value = websiteConfigurationService.configuration.discordUrl
-  githubUrl.value = websiteConfigurationService.configuration.githubUrl
-
-  await versionService.getVersion().then(v => version.value = v)
-  hasNewVersion.value = await versionService.checkHasNewVersion()
-
-  if (hasNewVersion.value) {
-    displayNewVersionNotification()
-  }
-
-  isLoading.value = false
-
-  if (websiteConfigurationService.configuration.postUpdatePeriod) {
-    Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.postUpdatePeriod'), 0)
-  }
-}
-
-/**
- * Sets the language.
- */
-function setLanguage() {
-  const language = localStorage.getItem(Services.get(WebsiteConfigurationService).configuration.languageStorageKey) ?? 'en'
-  LanguageUtils.setLanguage(language)
-}
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
 <template>
   <div class="app-title">
     <div>
@@ -244,6 +125,127 @@ function setLanguage() {
 </template>
 
 
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
+import Images from '../images'
+import vueI18n from '../plugins/vueI18n'
+import { GlobalSidebarService } from '../services/GlobalSidebarService'
+import { NotificationService, NotificationType } from '../services/NotificationService'
+import { VersionService } from '../services/VersionService'
+import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
+import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
+import Services from '../services/repository/Services'
+import LanguageUtils from '../utils/LanguageUtils'
+import GlobalSidebar from './GlobalSidebarComponent.vue'
+import LoadingError from './LoadingErrorComponent.vue'
+import Notification from './notification/NotificationComponent.vue'
+
+const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
+const versionService = Services.get(VersionService)
+
+const bugReportUrl = ref<string>()
+const contactAddress = ref<string>()
+const discordUrl = ref<string>()
+const githubUrl = ref<string>()
+const hasNewVersion = ref(false)
+const version = ref('1.0.0')
+
+const copyrightYear = computed(() => {
+  const year = new Date().getFullYear()
+  let text = '2021'
+
+  if (year > 2021) {
+    text += '-' + year
+  }
+
+  return text
+})
+const isSanta = computed(() => {
+  const date = new Date()
+  const santaMinDate = new Date(date.getFullYear(), 11, 21).getTime()
+  const santaMaxDate = new Date(date.getFullYear(), 11, 29, 23, 59, 59).getTime()
+
+  return date.getTime() >= santaMinDate && date.getTime() <= santaMaxDate
+})
+
+const loading = ref(true)
+
+onMounted(() => {
+  if (websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
+    websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
+    loading.value = true
+  } else {
+    onWebsiteConfigurationServiceInitialized()
+  }
+
+  setLanguage()
+})
+
+/**
+ * Displays the changelog.
+ */
+function displayChangelog() {
+  Services.get(GlobalSidebarService).display({
+    displayedComponentType: 'ChangelogSidebar',
+    position: 'right'
+  })
+}
+
+/**
+ * Displays the new version notification.
+ */
+function displayNewVersionNotification() {
+  Services.get(NotificationService).notify(
+    NotificationType.information,
+    vueI18n.t('message.newVersion', { newVersion: version.value }),
+    0,
+    [
+      {
+        action: () => displayChangelog(),
+        caption: vueI18n.t('caption.seeChanges'),
+        icon: undefined,
+        name: 'seeChanges',
+        type: NotificationType.success
+      }
+    ],
+    true)
+}
+
+async function onWebsiteConfigurationServiceInitialized() {
+  bugReportUrl.value = websiteConfigurationService.configuration.bugReportUrl
+  contactAddress.value = websiteConfigurationService.configuration.contactAddress
+  discordUrl.value = websiteConfigurationService.configuration.discordUrl
+  githubUrl.value = websiteConfigurationService.configuration.githubUrl
+
+  await versionService.getVersion().then(v => version.value = v)
+  hasNewVersion.value = await versionService.checkHasNewVersion()
+
+  if (hasNewVersion.value) {
+    displayNewVersionNotification()
+  }
+
+  if (websiteConfigurationService.configuration.postUpdatePeriod) {
+    Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.postUpdatePeriod'), 0)
+  }
+}
+
+/**
+ * Sets the language.
+ */
+function setLanguage() {
+  const language = localStorage.getItem(Services.get(WebsiteConfigurationService).configuration.languageStorageKey) ?? 'en'
+  LanguageUtils.setLanguage(language)
+}
+</script>
 
 
 

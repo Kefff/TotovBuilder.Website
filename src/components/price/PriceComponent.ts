@@ -9,8 +9,7 @@ import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import ItemIcon from '../ItemIconComponent.vue'
-import MerchantIcon from '../merchant-icon/MerchantIconComponent.vue'
-
+import MerchantIcon from '../MerchantIconComponent.vue'
 export default defineComponent({
   components: {
     ItemIcon,

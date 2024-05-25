@@ -15,7 +15,6 @@ export default defineComponent({
   },
   setup: () => {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-    websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
 
     const generalOptionsSidebarVisible = ref(false)
     const hasBuilds = ref(false)
@@ -25,7 +24,9 @@ export default defineComponent({
     const merchantItemsOptionsSidebarVisible = ref(false)
 
     onMounted(() => {
-      if (websiteConfigurationService.initializationState === ServiceInitializationState.initialized) {
+      if (websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
+        websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
+      } else {
         onWebsiteConfigurationServiceInitialized()
       }
     })

@@ -87,7 +87,12 @@ export default defineComponent({
     const dropdownPanelHeight = computed(() => Math.min(options.value.length === 0 ? 1 : options.value.length, 5) * 4 + 'rem') // Shows 5 items or less
     const inventoryItemInternal = computed<IInventoryItem | undefined>({
       get: () => props.inventoryItem,
-      set: (value: IInventoryItem | undefined) => emit('update:inventory-item', value)
+      set: (value: IInventoryItem | undefined) => {
+        emit('update:inventory-item', value)
+
+        // Emitting an event for the build and the inventory slot to updated their summary
+        nextTick(() => inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path))
+      }
     })
     const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.value?.maxStackableAmount ?? 1)
     const modsCount = computed(() => inventoryItemInternal.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
@@ -140,13 +145,6 @@ export default defineComponent({
     })
 
     /**
-     * Emits an event for the build and the inventory slot to updated their summary when the item changes.
-     */
-    function emitItemChangedEvent() {
-      nextTick(() => inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path))
-    }
-
-    /**
      * Initializes the item based on the inventory item passed to the component.
      */
     async function initializeItem() {
@@ -164,6 +162,23 @@ export default defineComponent({
       item.value = await itemService.getItem(props.inventoryItem.itemId)
       quantity.value = props.inventoryItem.quantity
       presetModSlotContainingItem.value = presetService.getPresetModSlotContainingItem(item.value.id, props.path)
+    }
+
+    /**
+     * Updates the inventory item based on the contained items.
+     */
+    function onContentChanged(newContent: IInventoryItem[]) {
+      if (inventoryItemInternal.value == null) {
+        return
+      }
+
+      inventoryItemInternal.value = {
+        content: newContent,
+        ignorePrice: inventoryItemInternal.value.ignorePrice,
+        itemId: inventoryItemInternal.value.itemId,
+        modSlots: inventoryItemInternal.value.modSlots,
+        quantity: inventoryItemInternal.value.quantity
+      }
     }
 
     /**
@@ -197,23 +212,18 @@ export default defineComponent({
     /**
      * Updates the inventory item based on the fact that the price is ignored or not.
      */
-    function onIgnorePriceChanged() {
-      // Emitting an event for the build and the inventory slot to updated their summary
-      emitItemChangedEvent()
-    }
-
-    /**
-     * Updates the inventory item based on the quantity.
-     */
-    function onQuantityChanged(newQuantity: number) {
+    function onIgnorePriceChanged(newIgnorePrice: boolean) {
       if (inventoryItemInternal.value == null) {
         return
       }
 
-      inventoryItemInternal.value.quantity = newQuantity
-
-      // Emitting an event for the build and the inventory slot to updated their summary
-      emitItemChangedEvent()
+      inventoryItemInternal.value = {
+        content: inventoryItemInternal.value.content,
+        ignorePrice: newIgnorePrice,
+        itemId: inventoryItemInternal.value.itemId,
+        modSlots: inventoryItemInternal.value.modSlots,
+        quantity: inventoryItemInternal.value?.quantity
+      }
     }
 
     /**
@@ -227,9 +237,6 @@ export default defineComponent({
       if (item.value == null) {
         quantity.value = 0
         inventoryItemInternal.value = undefined
-
-        // Emitting an event for the build and the inventory slot to updated their summary
-        emitItemChangedEvent()
 
         return
       }
@@ -245,6 +252,40 @@ export default defineComponent({
         updateInventoryItem(item.value, compatibilityResult)
       } else {
         updateInventoryItem(item.value, true)
+      }
+    }
+
+    /**
+     * Updates the inventory item based on the mods.
+     */
+    function onModsChanged(newModsSlots: IInventoryModSlot[]) {
+      if (inventoryItemInternal.value == null) {
+        return
+      }
+
+      inventoryItemInternal.value = {
+        content: inventoryItemInternal.value.content,
+        ignorePrice: inventoryItemInternal.value.ignorePrice,
+        itemId: inventoryItemInternal.value.itemId,
+        modSlots: newModsSlots,
+        quantity: inventoryItemInternal.value.quantity
+      }
+    }
+
+    /**
+     * Updates the inventory item based on the quantity.
+     */
+    function onQuantityChanged(newQuantity: number) {
+      if (inventoryItemInternal.value == null) {
+        return
+      }
+
+      inventoryItemInternal.value = {
+        content: inventoryItemInternal.value.content,
+        ignorePrice: inventoryItemInternal.value.ignorePrice,
+        itemId: inventoryItemInternal.value.itemId,
+        modSlots: inventoryItemInternal.value.modSlots,
+        quantity: newQuantity
       }
     }
 
@@ -387,8 +428,6 @@ export default defineComponent({
             quantity: quantity.value
           }
         }
-
-        emitItemChangedEvent()
       }
 
       itemChanging.value = false
@@ -406,10 +445,12 @@ export default defineComponent({
       itemIsModdable,
       maxSelectableQuantity,
       modsCount,
+      onContentChanged,
       onDropdownOpen,
       onFilterOptions,
       onIgnorePriceChanged,
       onItemChanged,
+      onModsChanged,
       onQuantityChanged,
       onSortOptions,
       optionHeight,

@@ -32,9 +32,7 @@ export default defineComponent({
   },
   setup: () => {
     const globalFilterService = Services.get(GlobalFilterService)
-
     const itemService = Services.get(ItemService)
-    itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
 
     const router = useRouter()
     let builds: IBuild[] = []
@@ -55,11 +53,13 @@ export default defineComponent({
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
       window.addEventListener('scroll', setToolbarCssClass)
 
-      window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
-
-      if (itemService.initializationState !== ServiceInitializationState.initializing) {
+      if (itemService.initializationState === ServiceInitializationState.initializing) {
+        itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
+      } else {
         onServicesInitialized()
       }
+
+      window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
     })
 
     onUnmounted(() => {
@@ -134,11 +134,11 @@ export default defineComponent({
 
     /**
      * Opens a the build on which the user clicks.
-     * @param selectedBuildSummary - Summary of the build the user has clicked on.
+     * @param selectedBuildIds - IDs of the selected builds.
      */
-    function onBuildClick(selectedBuildSummary: IBuildSummary[]) {
-      if (selectedBuildSummary.length === 1) {
-        openBuild(selectedBuildSummary[0].id)
+    function onBuildClick(selectedBuildIds: string[]) {
+      if (selectedBuildIds.length === 1) {
+        openBuild(selectedBuildIds[0])
       }
     }
 

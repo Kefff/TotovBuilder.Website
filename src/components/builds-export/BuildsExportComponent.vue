@@ -9,6 +9,7 @@
     <BuildsList
       v-model:selectedBuildIds="buildToExportSummaries"
       :build-summaries="buildSummaries"
+      :show-not-exported="true"
     />
     <template #footer>
       <div class="builds-export-buttons">

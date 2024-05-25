@@ -207,6 +207,7 @@
             <Button
               v-tooltip.top="$t('caption.merchantItemsOptions')"
               class="p-button-text p-button-sm button-discreet"
+              :disabled="isLoading"
               @click="displayMerchantItemsOptions()"
             >
               <font-awesome-icon icon="user-tag" />

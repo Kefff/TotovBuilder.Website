@@ -1,57 +1,20 @@
-<script setup lang="ts">
-import { IGlobalFilter } from '../models/utils/IGlobalFilter'
-import StringUtils from '../utils/StringUtils'
-
-const props = defineProps<{
-  globalFilter: IGlobalFilter
-}>()
-
-const emit = defineEmits<{
-  (e: 'update:globalFilter', value: IGlobalFilter): void
-}>()
-
-/**
- * Updates the filter.
- */
-function onItemExclusionFilterChanged(index: number, enabled: boolean) {
-  const newGlobalFilter: IGlobalFilter = {
-    itemExclusionFilters: props.globalFilter.itemExclusionFilters,
-    merchantFilters: props.globalFilter.merchantFilters
-  }
-  newGlobalFilter.itemExclusionFilters[index].enabled = enabled
-
-  emit('update:globalFilter', newGlobalFilter)
-}
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
 <template>
   <div>
     <div
-      v-for="(itemExclusionFilter, index) of props.globalFilter.itemExclusionFilters"
+      v-for="(itemExclusionFilter, index) of modelItemExclusionFilters"
       :key="itemExclusionFilter.name"
       class="item-filter"
     >
       <Checkbox
         v-tooltip.top="StringUtils.getCheckboxStateTooltip(!itemExclusionFilter.enabled)"
-        model-value="itemExclusionFilter.enabled"
         :binary="true"
-        :true-value="false"
         :false-value="true"
+        :model-value="itemExclusionFilter.enabled"
+        :true-value="false"
         @update:model-value="onItemExclusionFilterChanged(index, $event)"
       />
       <div
-        :class="'item-filter-name' + (itemExclusionFilter.enabled ? ' item-filter-disabled-text' : '')"
+        :class="`item-filter-name${itemExclusionFilter.enabled ? ' item-filter-disabled-text' : ''}`"
         @click="onItemExclusionFilterChanged(index, !itemExclusionFilter.enabled)"
       >
         {{ $t('caption.itemExclusionFilter_' + itemExclusionFilter.name) }}
@@ -60,6 +23,31 @@ function onItemExclusionFilterChanged(index: number, enabled: boolean) {
   </div>
 </template>
 
+
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import { IItemExclusionFilter } from '../models/utils/IItemExclusionFilter'
+import StringUtils from '../utils/StringUtils'
+
+const modelItemExclusionFilters = defineModel<IItemExclusionFilter[]>('itemExclusionFilters', { required: true })
+
+/**
+ * Updates the filter.
+ */
+function onItemExclusionFilterChanged(index: number, enabled: boolean) {
+  const newItemExclusionFilters = [...modelItemExclusionFilters.value]
+  newItemExclusionFilters[index].enabled = enabled
+
+  modelItemExclusionFilters.value = newItemExclusionFilters
+}
+</script>
 
 
 

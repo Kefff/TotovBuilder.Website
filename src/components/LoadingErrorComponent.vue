@@ -1,68 +1,3 @@
-<script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-import Images from '../images'
-import { ItemService } from '../services/ItemService'
-import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
-import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
-import Services from '../services/repository/Services'
-
-const itemService = Services.get(ItemService)
-itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitialized)
-
-const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
-
-const hasItemError = ref(false)
-const hasWebsiteConfigurationError = ref(false)
-
-const hasLoadingError = computed(() => hasItemError.value || hasWebsiteConfigurationError.value)
-
-onMounted(() => {
-  onItemServiceInitialized()
-  onWebsiteConfigurationServiceInitialized()
-})
-
-/**
- * Checks whether an item loading error has occured and emits to its parent component.
- */
-function onItemServiceInitialized() {
-  hasItemError.value = itemService.initializationState === ServiceInitializationState.error
-}
-
-/**
- * Checks whether a website configuration loading error has occured and emits to its parent component.
- */
-function onWebsiteConfigurationServiceInitialized() {
-  hasWebsiteConfigurationError.value = websiteConfigurationService.initializationState === ServiceInitializationState.error
-}
-
-/**
- * Reloads the page.
- */
-function reload() {
-  location.reload()
-}
-
-/**
- * Opens the report a bug link.
- */
-function signal() {
-  const url = Services.get(WebsiteConfigurationService).configuration.bugReportUrl
-  window.open(url)
-}
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
 <template>
   <Dialog
     v-if="hasLoadingError"
@@ -105,6 +40,73 @@ function signal() {
 </template>
 
 
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
+import Images from '../images'
+import { ItemService } from '../services/ItemService'
+import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
+import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
+import Services from '../services/repository/Services'
+
+const itemService = Services.get(ItemService)
+const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
+const hasItemError = ref(false)
+const hasWebsiteConfigurationError = ref(false)
+
+const hasLoadingError = computed(() => hasItemError.value || hasWebsiteConfigurationError.value)
+
+onMounted(() => {
+  if (websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
+    websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
+  } else {
+    onWebsiteConfigurationServiceInitialized()
+  }
+
+  if (itemService.initializationState === ServiceInitializationState.initializing) {
+    itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitialized)
+  } else {
+    onItemServiceInitialized()
+  }
+})
+
+/**
+ * Checks whether an item loading error has occured and emits to its parent component.
+ */
+function onItemServiceInitialized() {
+  hasItemError.value = itemService.initializationState === ServiceInitializationState.error
+}
+
+/**
+ * Checks whether a website configuration loading error has occured and emits to its parent component.
+ */
+function onWebsiteConfigurationServiceInitialized() {
+  hasWebsiteConfigurationError.value = websiteConfigurationService.initializationState === ServiceInitializationState.error
+}
+
+/**
+ * Reloads the page.
+ */
+function reload() {
+  location.reload()
+}
+
+/**
+ * Opens the report a bug link.
+ */
+function signal() {
+  const url = Services.get(WebsiteConfigurationService).configuration.bugReportUrl
+  window.open(url)
+}
+</script>
 
 
 

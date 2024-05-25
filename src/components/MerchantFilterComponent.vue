@@ -1,24 +1,69 @@
+<template>
+  <div>
+    <div
+      v-for="(merchantFilter, index) of merchantFiltersInternal"
+      :key="merchantFilter.merchant"
+      class="merchant-filter"
+    >
+      <Checkbox
+        v-tooltip.top="StringUtils.getCheckboxStateTooltip(merchantFilter.enabled)"
+        :binary="true"
+        :model-value="merchantFilter.enabled"
+        @update:model-value="onMerchantFilterChanged(index, $event, merchantFilter.merchantLevel)"
+      />
+      <div
+        :class="`merchant-filter-merchant${(!merchantFilter.enabled ? ' merchant-filter-disabled-text' : '')}`"
+        @click="onMerchantFilterChanged(index, !merchantFilter.enabled, merchantFilter.merchantLevel)"
+      >
+        {{ $t('caption.merchant_' + merchantFilter.merchant) }}
+      </div>
+      <img
+        :src="Images[StringUtils.toCamelCase(merchantFilter.merchant)]"
+        :class="`merchant-filter-icon${!merchantFilter.enabled ? ' merchant-filter-icon-disabled' : ''}`"
+        @click="onMerchantFilterChanged(index, !merchantFilter.enabled, merchantFilter.merchantLevel)"
+      >
+      <div v-tooltip.top="$t('caption.level')">
+        <Dropdown
+          v-if="hasLevels(merchantFilter.merchant)"
+          :disabled="!merchantFilter.enabled"
+          :model-value="merchantFilter.merchantLevel"
+          :options="getMerchantLevels(merchantFilter.merchant)"
+          :placeholder="$t('caption.level')"
+          @update:model-value="onMerchantFilterChanged(index, merchantFilter.enabled, $event)"
+        >
+          <template #option="slotProps">
+            <div class="merchant-filter-level-option">
+              {{ slotProps.option }}
+            </div>
+          </template>
+        </Dropdown>
+      </div>
+    </div>
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+
 <script setup lang="ts">
 import { computed } from 'vue'
 import Images from '../images'
-import { IGlobalFilter } from '../models/utils/IGlobalFilter'
+import { IMerchantFilter } from '../models/utils/IMerchantFilter'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import Services from '../services/repository/Services'
 import StringUtils from '../utils/StringUtils'
 
 const globalFilterService = Services.get(GlobalFilterService)
 
-const props = defineProps<{
-  globalFilter: IGlobalFilter
-}>()
+const modelMerchantFilters = defineModel<IMerchantFilter[]>('merchantFilters', { required: true })
 
-const emit = defineEmits<{
-  (e: 'update:globalFilter', value: IGlobalFilter): void
-}>()
-
-const merchantFilters = computed(() =>
-  [...props.globalFilter.merchantFilters]
-    .sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant)))
+const merchantFiltersInternal = computed(() => [...modelMerchantFilters.value].sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant)))
 
 /**
  * Gets the level options for a merchant.
@@ -46,14 +91,11 @@ function hasLevels(merchantName: string): boolean {
  * Updates the filter.
  */
 function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel: number) {
-  const newGlobalFilter: IGlobalFilter = {
-    itemExclusionFilters: props.globalFilter.itemExclusionFilters,
-    merchantFilters: merchantFilters.value
-  }
-  newGlobalFilter.merchantFilters[index].enabled = enabled
-  newGlobalFilter.merchantFilters[index].merchantLevel = merchantLevel
+  const newMerchantFilters: IMerchantFilter[] = [...merchantFiltersInternal.value]
+  newMerchantFilters[index].enabled = enabled
+  newMerchantFilters[index].merchantLevel = merchantLevel
 
-  emit('update:globalFilter', newGlobalFilter)
+  modelMerchantFilters.value = newMerchantFilters
 }
 </script>
 
@@ -66,66 +108,7 @@ function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel:
 
 
 
-
-
-<template>
-  <div>
-    <div
-      v-for="(merchantFilter, index) of merchantFilters"
-      :key="merchantFilter.merchant"
-      class="merchant-filter"
-    >
-      <Checkbox
-        v-tooltip.top="StringUtils.getCheckboxStateTooltip(merchantFilter.enabled)"
-        :model-value="merchantFilter.enabled"
-        :binary="true"
-        @update:model-value="onMerchantFilterChanged(index, $event, merchantFilter.merchantLevel)"
-      />
-      <div
-        :class="`merchant-filter-merchant${(!merchantFilter.enabled ? ' merchant-filter-disabled-text' : '')}`"
-        @click="onMerchantFilterChanged(index, !merchantFilter.enabled, merchantFilter.merchantLevel)"
-      >
-        {{ $t('caption.merchant_' + merchantFilter.merchant) }}
-      </div>
-      <img
-        :src="Images[StringUtils.toCamelCase(merchantFilter.merchant)]"
-        :class="`merchant-filter-icon${!merchantFilter.enabled ? ' merchant-filter-icon-disabled' : ''}`"
-        @click="onMerchantFilterChanged(index, !merchantFilter.enabled, merchantFilter.merchantLevel)"
-      >
-      <div v-tooltip.top="$t('caption.level')">
-        <Dropdown
-          v-if="hasLevels(merchantFilter.merchant)"
-          :model-value="merchantFilter.merchantLevel"
-          :options="getMerchantLevels(merchantFilter.merchant)"
-          :disabled="!merchantFilter.enabled"
-          :placeholder="$t('caption.level')"
-          @update:model-value="onMerchantFilterChanged(index, merchantFilter.enabled, $event)"
-        >
-          <template #option="slotProps">
-            <div class="merchant-filter-level-option">
-              {{ slotProps.option }}
-            </div>
-          </template>
-        </Dropdown>
-      </div>
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
-
-
 <style scoped>
-@import '../css/icon.css';
-
 .merchant-filter {
   align-items: center;
   display: grid;

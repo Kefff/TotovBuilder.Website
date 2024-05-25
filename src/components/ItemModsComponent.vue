@@ -1,28 +1,43 @@
+<template>
+  <div v-if="!isInitializing">
+    <ModSlot
+      v-for="(modSlot, index) of modSlots"
+      :key="`${path}/${PathUtils.modSlotPrefix}${modSlot.name}`"
+      :inventory-item="modelInventoryModSlots.find(ims => ims.modSlotName === modSlot.name)?.item"
+      :mod-slot="modSlot"
+      :path="`${path}/${PathUtils.modSlotPrefix}${modSlot.name}`"
+      @update:inventory-item="onItemChanged(index, modSlot.name, $event)"
+    />
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IModSlot } from '../models/item/IModSlot'
 import { IModdable } from '../models/item/IModdable'
 import { PathUtils } from '../utils/PathUtils'
-import ModSlot from './mod-slot/ModSlotComponent.vue'
+import ModSlot from './ModSlotComponent.vue'
+
+const modelInventoryModSlots = defineModel<IInventoryModSlot[]>('inventoryModSlots', { required: true })
 
 const props = defineProps<{
   moddableItem: IModdable,
-  inventoryModSlots: IInventoryModSlot[],
   path: string
 }>()
 
-const emit = defineEmits<{
-  (e: 'update:inventoryModSlots', value: IInventoryModSlot[]): void
-}>()
-
-const inventoryModSlotsInternal = computed({
-  get: () => props.inventoryModSlots,
-  set: (value: IInventoryModSlot[]) => emit('update:inventoryModSlots', value)
-})
-
 const isInitializing = ref(true)
-const moddableItemInternal = ref<IModdable>(props.moddableItem)
+const modSlots = ref<IModSlot[]>(props.moddableItem.modSlots)
 
 watch(() => props.moddableItem.id, () => initialize())
 
@@ -34,50 +49,40 @@ onMounted(() => initialize())
 function initialize() {
   isInitializing.value = true
 
+  modSlots.value = props.moddableItem.modSlots
+
   if (props.moddableItem.categoryId === 'notFound') {
-    // When an item in a build contains is not found, we assume it is moddable in order to be able
+    // When an item in a build is not found, we assume it is moddable in order to be able
     // to display its possible mods.
     // We create a fake list of mod slots for it.
-    const modSlots: IModSlot[] = []
-
-    for (const inventoryModSlot of props.inventoryModSlots) {
-      modSlots.push({
+    for (const inventoryModSlot of modelInventoryModSlots.value) {
+      modSlots.value.push({
         compatibleItemIds: [inventoryModSlot.item?.itemId ?? ''],
         maxStackableAmount: 1,
         name: inventoryModSlot.modSlotName,
         required: false
       })
     }
-
-    moddableItemInternal.value.modSlots = modSlots
   }
 
   isInitializing.value = false
 }
+
+/**
+ * Emits updates inventory mod slots.
+ */
+function onItemChanged(index: number, modSlotName: string, newInventoryItem: IInventoryItem | undefined) {
+  const newInventoryModSlots = [...modelInventoryModSlots.value]
+
+  if (newInventoryModSlots[index] != null) {
+    newInventoryModSlots[index].item = newInventoryItem
+  } else {
+    newInventoryModSlots.push({
+      modSlotName,
+      item: newInventoryItem
+    })
+  }
+
+  modelInventoryModSlots.value = newInventoryModSlots
+}
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-<template>
-  <div v-if="!isInitializing">
-    <div
-      v-for="(inventoryModSlot, index) of inventoryModSlotsInternal"
-      :key="path + '/' + PathUtils.modSlotPrefix + inventoryModSlot.modSlotName"
-    >
-      <ModSlot
-        v-model:inventory-mod-slot="inventoryModSlotsInternal[index]"
-        :mod-slot="moddableItemInternal.modSlots[index]"
-        :path="path + '/' + PathUtils.modSlotPrefix + inventoryModSlot.modSlotName"
-      />
-    </div>
-  </div>
-</template>

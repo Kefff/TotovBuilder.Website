@@ -37,7 +37,6 @@ export default defineComponent({
   },
   setup: () => {
     const itemService = Services.get(ItemService)
-    itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
 
     const route = useRoute()
     const router = useRouter()
@@ -120,9 +119,8 @@ export default defineComponent({
     watch(() => route.params, onServicesInitialized)
 
     onMounted(() => {
-      window.addEventListener('scroll', setToolbarCssClass)
-      window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
       document.onkeydown = (e) => onKeyDown(e)
+      window.addEventListener('scroll', setToolbarCssClass)
 
       compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
@@ -130,10 +128,13 @@ export default defineComponent({
       inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-
-      if (itemService.initializationState !== ServiceInitializationState.initializing) {
+      if (itemService.initializationState === ServiceInitializationState.initializing) {
+        itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
+      } else {
         onServicesInitialized()
       }
+
+      window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
     })
 
     onUnmounted(() => {

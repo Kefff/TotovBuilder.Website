@@ -1,3 +1,37 @@
+<template>
+  <div class="item-content-indent">
+    <Item
+      v-for="(containedItem, index) of modelInventoryItems"
+      :key="`${path}/${index}_${modelInventoryItems.length}`"
+      v-model:inventory-item="modelInventoryItems[index]"
+      :accepted-items="acceptedItems"
+      :accepted-items-category-id="categoryId"
+      :force-quantity-to-max-selectable-amount="isMagazine"
+      :max-stackable-amount="maximumQuantity"
+      :path="`${path}/${contentPathPrefix}${index}_${modelInventoryItems.length}/${itemPathPrefix}${containedItem.itemId}`"
+      @update:inventory-item="onItemChanged(index, $event)"
+    />
+    <Item
+      v-show="editing && canAddItem"
+      v-model:inventory-item="itemToAdd"
+      :accepted-items="acceptedItems"
+      :accepted-items-category-id="categoryId"
+      :max-stackable-amount="maximumQuantity"
+      :path="`${path}/new`"
+      @update:inventory-item="onItemAdded($event)"
+    />
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+
 <script setup lang="ts">
 import { Ref, computed, inject, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
@@ -71,24 +105,32 @@ async function initialize() {
  * Adds an item to the content of the inventory item and emits the change to the parent component.
  */
 function onItemAdded(newInventoryItem: IInventoryItem) {
-  modelInventoryItems.value.push(newInventoryItem)
+  modelInventoryItems.value = [
+    ...modelInventoryItems.value,
+    newInventoryItem
+  ]
 
   nextTick(() => {
-    // nextTick required in order to the emitting and the resetting of itemToAdd to work properly.
-    // Also the resetting of itemToAdd must happen after the emit.
+    // nextTick required for the reset of itemToAdd to take effect in the Item component
     itemToAdd.value = undefined
   })
 }
 
 /**
  * Emits to the parent component the updated inventory item.
- * @param updatedContainedInventoryItem - Updated contained item.
  * @param index - Index of the changed contained item in the inventory item content list.
+ * @param newInventoryItem - Updated contained item.
  */
-function onItemChanged(updatedContainedInventoryItem: IInventoryItem, index: number) {
-  if (updatedContainedInventoryItem == null) {
-    modelInventoryItems.value.splice(index, 1)
+function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefined) {
+  const newInventoryItems = [...modelInventoryItems.value]
+
+  if (newInventoryItem == null) {
+    newInventoryItems.splice(index, 1)
+  } else {
+    newInventoryItems[index]
   }
+
+  modelInventoryItems.value = newInventoryItems
 }
 
 /**
@@ -98,43 +140,6 @@ function onMerchantFilterChanged() {
   getAcceptedItems()
 }
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-<template>
-  <div class="item-content-indent">
-    <Item
-      v-for="(containedItem, index) of modelInventoryItems"
-      :key="`${path}/${index}_${modelInventoryItems.length}`"
-      v-model:inventory-item="modelInventoryItems[index]"
-      :accepted-items="acceptedItems"
-      :accepted-items-category-id="categoryId"
-      :force-quantity-to-max-selectable-amount="isMagazine"
-      :max-stackable-amount="maximumQuantity"
-      :path="`${path}/${contentPathPrefix}${index}_${modelInventoryItems.length}/${itemPathPrefix}${containedItem.itemId}`"
-      @update:inventory-item="onItemChanged($event, index)"
-    />
-    <Item
-      v-show="editing && canAddItem"
-      v-model:inventory-item="itemToAdd"
-      :accepted-items="acceptedItems"
-      :accepted-items-category-id="categoryId"
-      :max-stackable-amount="maximumQuantity"
-      :path="`${path}/new`"
-      @update:inventory-item="onItemAdded($event)"
-    />
-  </div>
-</template>
-
 
 
 

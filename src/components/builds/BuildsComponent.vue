@@ -39,6 +39,7 @@
             <Button
               v-tooltip.top="$t('caption.merchantItemsOptions')"
               class="p-button-text p-button-sm button-discreet"
+              :disabled="isLoading"
               @click="displayMerchantItemsOptions()"
             >
               <font-awesome-icon icon="user-tag" />
@@ -68,7 +69,8 @@
     >
       <BuildsList
         :build-summaries="buildSummaries"
-        @update:selected-build-summaries="onBuildClick"
+        :show-not-exported="true"
+        @update:selected-build-ids="onBuildClick"
       />
     </div>
   </div>

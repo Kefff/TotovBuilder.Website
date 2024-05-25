@@ -1,3 +1,37 @@
+<template>
+  <div :class="'p-field input-number-field input-number-field-required-message-' + requiredMessagePosition">
+    <label v-if="!captionAsPlaceholder">{{ caption }}</label>
+    <InputNumber
+      v-model="modelValue"
+      button-layout="horizontal"
+      :class="invalid ? 'p-invalid' : ''"
+      decrement-button-icon="pi pi-minus"
+      :disabled="readOnly"
+      increment-button-icon="pi pi-plus"
+      :min="min"
+      :max="max"
+      :placeholder="captionAsPlaceholder ? caption : undefined"
+      show-buttons
+      :step="1"
+    />
+    <div
+      v-if="invalid"
+      class="'p-error"
+    >
+      {{ $t('message.requiredField', { caption }) }}
+    </div>
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+
 <script setup lang="ts">
 import { computed } from 'vue'
 
@@ -36,44 +70,6 @@ const invalid = computed(() => props.required && modelValue.value == null)
 
 
 
-
-
-<template>
-  <div :class="'p-field input-number-field input-number-field-required-message-' + requiredMessagePosition">
-    <label v-if="!captionAsPlaceholder">{{ caption }}</label>
-    <InputNumber
-      v-model="modelValue"
-      button-layout="horizontal"
-      :class="invalid ? 'p-invalid' : ''"
-      decrement-button-icon="pi pi-minus"
-      :disabled="readOnly"
-      increment-button-icon="pi pi-plus"
-      :min="min"
-      :max="max"
-      :placeholder="captionAsPlaceholder ? caption : undefined"
-      show-buttons
-      :step="1"
-    />
-    <div
-      v-if="invalid"
-      class="'p-error"
-    >
-      {{ $t('message.requiredField', { caption }) }}
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
-
-
 <style scoped>
 .input-number-field-required-message-bottom {
   font-size: 0.85rem;
@@ -91,6 +87,13 @@ const invalid = computed(() => props.required && modelValue.value == null)
   width: 100%;
 }
 </style>
+
+
+
+
+
+
+
 
 
 

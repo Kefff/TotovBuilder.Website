@@ -1,60 +1,3 @@
-<script setup lang="ts">
-import { computed } from 'vue'
-import { IShoppingListItem } from '../models/build/IShoppingListItem'
-import { IBuildSummaryShoppingMerchant } from '../models/utils/IBuildSummaryMerchant'
-import StringUtils from '../utils/StringUtils'
-import ItemIcon from './ItemIconComponent.vue'
-import MerchantIcon from './merchant-icon/MerchantIconComponent.vue'
-
-const props = defineProps<{
-  parameters: IShoppingListItem[]
-}>()
-
-const requiredMerchants = computed(() => getRequiredMerchants())
-
-/**
- * Gets the required merchants.
- */
-function getRequiredMerchants(): IBuildSummaryShoppingMerchant[] {
-  const merchants: IBuildSummaryShoppingMerchant[] = []
-
-  for (const item of props.parameters) {
-    if (item.price.merchant === '') {
-      // When no merchant is found, a price without merchant and a 0 value is returned
-      continue
-    }
-
-    const merchant = merchants.find(m => m.name === item.price.merchant)
-
-    if (merchant == null) {
-      merchants.push({
-        name: item.price.merchant,
-        level: item.price.merchantLevel
-      })
-    } else {
-      if (merchant.level < item.price.merchantLevel) {
-        merchant.level = item.price.merchantLevel
-      }
-    }
-  }
-
-  merchants.sort((m1, m2) => StringUtils.compare(m1.name, m2.name))
-
-  return merchants
-}
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
 <template>
   <div class="shopping-list-title">
     <div class="sidebar-title">
@@ -124,10 +67,60 @@ function getRequiredMerchants(): IBuildSummaryShoppingMerchant[] {
 
 
 
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IShoppingListItem } from '../models/build/IShoppingListItem'
+import { IBuildSummaryShoppingMerchant } from '../models/utils/IBuildSummaryMerchant'
+import StringUtils from '../utils/StringUtils'
+import ItemIcon from './ItemIconComponent.vue'
+import MerchantIcon from './MerchantIconComponent.vue'
+
+const props = defineProps<{ parameters: IShoppingListItem[] }>()
+
+const requiredMerchants = computed(() => getRequiredMerchants())
+
+/**
+ * Gets the required merchants.
+ */
+function getRequiredMerchants(): IBuildSummaryShoppingMerchant[] {
+  const merchants: IBuildSummaryShoppingMerchant[] = []
+
+  for (const item of props.parameters) {
+    if (item.price.merchant === '') {
+      // When no merchant is found, a price without merchant and a 0 value is returned
+      continue
+    }
+
+    const merchant = merchants.find(m => m.name === item.price.merchant)
+
+    if (merchant == null) {
+      merchants.push({
+        name: item.price.merchant,
+        level: item.price.merchantLevel
+      })
+    } else {
+      if (merchant.level < item.price.merchantLevel) {
+        merchant.level = item.price.merchantLevel
+      }
+    }
+  }
+
+  merchants.sort((m1, m2) => StringUtils.compare(m1.name, m2.name))
+
+  return merchants
+}
+</script>
+
+
+
+
+
+
+
+
+
 
 <style scoped>
-@import '../css/button.css';
-@import '../css/icon.css';
 @import '../css/sidebar.css';
 
 .shopping-list-button {

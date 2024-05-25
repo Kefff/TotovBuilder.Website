@@ -1,56 +1,3 @@
-<script setup lang="ts">
-import { computed, ref } from 'vue'
-import { ICurrency } from '../models/configuration/ICurrency'
-import { IInventoryPrice } from '../models/utils/IInventoryPrice'
-import { ItemService } from '../services/ItemService'
-import Services from '../services/repository/Services'
-import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
-import Price from './price/PriceComponent.vue'
-import Tooltip from './tooltip/TooltipComponent.vue'
-
-const props = defineProps<{
-  inventoryPrice: IInventoryPrice,
-  isBuild: boolean
-}>()
-
-let _mainCurrency: ICurrency | undefined
-
-const priceDetailPanel = ref()
-
-const canShowDetails = computed(() => props.inventoryPrice.priceByCurrency.some(ip => ip.currencyName !== mainCurrency.value?.name))
-const mainCurrency = computed(() => {
-  if (_mainCurrency == null) {
-    _mainCurrency = Services.get(ItemService).getMainCurrency()
-  }
-
-  return _mainCurrency
-})
-const priceInMainCurrency = computed(() => props.inventoryPrice.priceByCurrency.reduce((total, priceInCurrency) => total + priceInCurrency.valueInMainCurrency, 0))
-
-/**
- * Toggles the details of the price.
- */
-function togglePriceDetails(event: Event) {
-  if (!canShowDetails.value) {
-    return
-  }
-
-  priceDetailPanel.value.toggle(event)
-  event.stopPropagation()
-}
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
 <template>
   <div class="inventory-price">
     <div
@@ -103,6 +50,55 @@ function togglePriceDetails(event: Event) {
 </template>
 
 
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { ICurrency } from '../models/configuration/ICurrency'
+import { IInventoryPrice } from '../models/utils/IInventoryPrice'
+import { ItemService } from '../services/ItemService'
+import Services from '../services/repository/Services'
+import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
+import Price from './price/PriceComponent.vue'
+import Tooltip from './tooltip/TooltipComponent.vue'
+
+const props = defineProps<{
+  inventoryPrice: IInventoryPrice,
+  isBuild: boolean
+}>()
+
+let _mainCurrency: ICurrency | undefined
+
+const priceDetailPanel = ref()
+
+const canShowDetails = computed(() => props.inventoryPrice.priceByCurrency.some(ip => ip.currencyName !== mainCurrency.value?.name))
+const mainCurrency = computed(() => {
+  if (_mainCurrency == null) {
+    _mainCurrency = Services.get(ItemService).getMainCurrency()
+  }
+
+  return _mainCurrency
+})
+const priceInMainCurrency = computed(() => props.inventoryPrice.priceByCurrency.reduce((total, priceInCurrency) => total + priceInCurrency.valueInMainCurrency, 0))
+
+/**
+ * Toggles the details of the price.
+ */
+function togglePriceDetails(event: Event) {
+  if (!canShowDetails.value) {
+    return
+  }
+
+  priceDetailPanel.value.toggle(event)
+  event.stopPropagation()
+}
+</script>
 
 
 

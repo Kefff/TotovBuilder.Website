@@ -1,50 +1,3 @@
-<script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
-import Images from '../images'
-import LanguageUtils from '../utils/LanguageUtils'
-import StringUtils from '../utils/StringUtils'
-
-const vueI18n = useI18n()
-const languages = ref<string[]>([])
-const currentLanguage = ref(vueI18n.locale.value)
-
-onMounted(() => {
-  getLanguages()
-})
-
-/**
- * Gets available languages.
- */
-function getLanguages() {
-  languages.value = []
-  currentLanguage.value = vueI18n.locale.value
-
-  for (const language of vueI18n.availableLocales.filter(l => l !== vueI18n.locale.value)) {
-    languages.value.push(language)
-  }
-}
-
-/**
- * Sets the language.
- */
-function setLanguage() {
-  LanguageUtils.setLanguage(currentLanguage.value)
-  getLanguages()
-}
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
 <template>
   <div class="language-selector">
     <div class="language-selector-icon">
@@ -81,6 +34,52 @@ function setLanguage() {
   </div>
 </template>
 
+
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import Images from '../images'
+import LanguageUtils from '../utils/LanguageUtils'
+import StringUtils from '../utils/StringUtils'
+
+const vueI18n = useI18n()
+
+const languages = ref<string[]>([])
+
+const currentLanguage = ref(vueI18n.locale.value)
+
+onMounted(() => {
+  getLanguages()
+})
+
+/**
+ * Gets available languages.
+ */
+function getLanguages() {
+  languages.value = []
+  currentLanguage.value = vueI18n.locale.value
+
+  for (const language of vueI18n.availableLocales.filter(l => l !== vueI18n.locale.value)) {
+    languages.value.push(language)
+  }
+}
+
+/**
+ * Sets the language.
+ */
+function setLanguage() {
+  LanguageUtils.setLanguage(currentLanguage.value)
+  getLanguages()
+}
+</script>
 
 
 
