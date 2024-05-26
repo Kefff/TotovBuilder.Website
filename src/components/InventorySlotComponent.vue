@@ -358,14 +358,6 @@ async function setItemComponentParameters() {
   width: 100%;
 }
 
-.inventory-slot-header:hover {
-  color: var(--primary-color);
-}
-
-.inventory-slot-header:hover .inventory-slot-icon {
-  color: var(--text-color);
-}
-
 .inventory-slot-icon {
   font-size: 1.75rem;
   margin-left: 1rem;

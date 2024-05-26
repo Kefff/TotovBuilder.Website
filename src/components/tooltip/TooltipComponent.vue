@@ -1,7 +1,7 @@
 <template>
   <span
     v-tooltip:[directiveArguments]="tooltip"
-    class="tooltip"
+    :class="applyHoverStyle ? 'tooltip' : ''"
     :tabindex="isTouchScreen ? 9999 : undefined"
   >
     <slot />

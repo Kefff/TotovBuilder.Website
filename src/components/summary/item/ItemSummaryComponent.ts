@@ -4,7 +4,7 @@ import { IPrice } from '../../../models/item/IPrice'
 import { InventoryItemService } from '../../../services/InventoryItemService'
 import Services from '../../../services/repository/Services'
 import ItemIcon from '../../ItemIconComponent.vue'
-import Price from '../../price/PriceComponent.vue'
+import Price from '../../PriceComponent.vue'
 
 export default defineComponent({
   components: {

@@ -2,6 +2,11 @@ import { PropType, computed, defineComponent } from 'vue'
 
 export default defineComponent({
   props: {
+    applyHoverStyle: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
     position: {
       type: String as PropType<'bottom' | 'left' | 'right' | 'top'>,
       required: false,
@@ -9,7 +14,8 @@ export default defineComponent({
     },
     tooltip: {
       type: String,
-      required: true
+      required: false,
+      default: undefined
     }
   },
   setup: (props) => {

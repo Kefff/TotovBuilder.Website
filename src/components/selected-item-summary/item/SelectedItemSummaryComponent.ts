@@ -7,7 +7,7 @@ import { GlobalFilterService } from '../../../services/GlobalFilterService'
 import { InventoryItemService } from '../../../services/InventoryItemService'
 import Services from '../../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../../utils/StatsUtils'
-import Price from '../../price/PriceComponent.vue'
+import Price from '../../PriceComponent.vue'
 
 export default defineComponent({
   components: {

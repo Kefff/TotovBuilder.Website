@@ -11,24 +11,26 @@
         <font-awesome-icon icon="exclamation-triangle" />
       </Tooltip>
     </div>
-    <div
-      v-tooltip.top="$t('caption.price')"
-      :class="'inventory-price-list' + (canShowDetails ? ' inventory-price-with-details' : '')"
-      @click="(e) => togglePriceDetails(e)"
-    >
+    <Tooltip :tooltip="$t('caption.price')">
       <div
-        v-for="(price, index) of inventoryPrice.priceByCurrency"
-        :key="index"
-        class="inventory-price-list-price"
+        :class="'inventory-price-list' + (canShowDetails ? ' inventory-price-with-details' : '')"
+        @click="(e) => togglePriceDetails(e)"
       >
-        <Price
-          :price="price"
-          :show-details="false"
-          :show-merchant-icon="false"
-          :show-tooltip="false"
-        />
+        <div
+          v-for="(price, index) of inventoryPrice.priceByCurrency"
+          :key="index"
+          class="inventory-price-list-price"
+        >
+          <Price
+            :apply-hover-style="false"
+            :price="price"
+            :show-details="false"
+            :show-merchant-icon="false"
+            :show-tooltip="false"
+          />
+        </div>
       </div>
-    </div>
+    </Tooltip>
   </div>
 
   <!-- Price details -->
@@ -65,7 +67,7 @@ import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { ItemService } from '../services/ItemService'
 import Services from '../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
-import Price from './price/PriceComponent.vue'
+import Price from './PriceComponent.vue'
 import Tooltip from './tooltip/TooltipComponent.vue'
 
 const props = defineProps<{
@@ -122,12 +124,6 @@ function togglePriceDetails(event: Event) {
 .inventory-price-details {
   font-size: 0.85rem;
   padding-right: 0.25rem;
-}
-
-.inventory-price-with-details:hover {
-  border-radius: 3px;
-  color: var(--primary-color);
-  cursor: pointer;
 }
 
 .inventory-price-list {

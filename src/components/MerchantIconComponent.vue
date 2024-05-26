@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-tooltip.top="merchantTooltip"
-    class="merchant-icon"
-  >
+  <div class="merchant-icon">
     <img :src="Images[StringUtils.toCamelCase(merchant)]">
     <div
       v-if="merchantLevel > 0"
@@ -38,12 +35,10 @@
 
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import Images from '../images'
-import vueI18n from '../plugins/vueI18n'
 import StringUtils from '../utils/StringUtils'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     isBarter?: boolean,
     merchant: string,
@@ -56,17 +51,6 @@ const props = withDefaults(
     requiresQuest: false,
     showTooltip: true
   })
-
-const merchantTooltip = computed(() => props.showTooltip
-  ? (props.merchant !== ''
-    ? (vueI18n.t('caption.merchant_' + props.merchant)
-      + (props.merchantLevel !== 0
-        ? (' ' + vueI18n.t('caption.level').toLowerCase() + ' ' + props.merchantLevel)
-        : '')
-      + (props.isBarter ? '\n' + vueI18n.t('caption.barter') : '')
-      + (props.requiresQuest ? '\n' + vueI18n.t('caption.questRequired') : ''))
-    : '')
-  : '')
 </script>
 
 

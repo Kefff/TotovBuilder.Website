@@ -36,10 +36,7 @@
           {{ shoppingListItem.item.name }}
         </div>
         <div class="shopping-list-item-price">
-          <Price
-            :price="shoppingListItem.price"
-            :show-details="false"
-          />
+          <Price :price="shoppingListItem.price" />
           <div
             v-if="shoppingListItem.quantity > 1"
             class="shopping-list-item-price-per-unit"
@@ -47,7 +44,6 @@
             <Price
               :price="shoppingListItem.unitPrice"
               :show-merchant-icon="false"
-              :show-details="false"
               :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
             />
           </div>
@@ -74,6 +70,7 @@ import { IBuildSummaryShoppingMerchant } from '../models/utils/IBuildSummaryMerc
 import StringUtils from '../utils/StringUtils'
 import ItemIcon from './ItemIconComponent.vue'
 import MerchantIcon from './MerchantIconComponent.vue'
+import Price from './PriceComponent.vue'
 
 const props = defineProps<{ parameters: IShoppingListItem[] }>()
 

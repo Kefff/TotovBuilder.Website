@@ -146,7 +146,7 @@ import Services from '../services/repository/Services'
 import LanguageUtils from '../utils/LanguageUtils'
 import GlobalSidebar from './GlobalSidebarComponent.vue'
 import LoadingError from './LoadingErrorComponent.vue'
-import Notification from './notification/NotificationComponent.vue'
+import Notification from './NotificationComponent.vue'
 
 const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 

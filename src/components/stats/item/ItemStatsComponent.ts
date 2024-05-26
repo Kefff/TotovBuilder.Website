@@ -3,7 +3,7 @@ import { IItem } from '../../../models/item/IItem'
 import { IPrice } from '../../../models/item/IPrice'
 import { InventoryItemService } from '../../../services/InventoryItemService'
 import Services from '../../../services/repository/Services'
-import Price from '../../price/PriceComponent.vue'
+import Price from '../../PriceComponent.vue'
 
 export default defineComponent({
   components: {
