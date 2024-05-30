@@ -11,9 +11,10 @@
         <font-awesome-icon icon="exclamation-triangle" />
       </Tooltip>
     </div>
-    <Tooltip :tooltip="$t('caption.price')">
+    <Tooltip :tooltip="tooltip">
       <div
-        :class="'inventory-price-list' + (canShowDetails ? ' inventory-price-with-details' : '')"
+        class="inventory-price-list"
+        :class="canShowDetails ? ' inventory-price-with-details' : ''"
         @click="(e) => togglePriceDetails(e)"
       >
         <div
@@ -64,11 +65,12 @@
 import { computed, ref } from 'vue'
 import { ICurrency } from '../models/configuration/ICurrency'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
+import vueI18n from '../plugins/vueI18n'
 import { ItemService } from '../services/ItemService'
 import Services from '../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import Price from './PriceComponent.vue'
-import Tooltip from './tooltip/TooltipComponent.vue'
+import Tooltip from './TooltipComponent.vue'
 
 const props = defineProps<{
   inventoryPrice: IInventoryPrice,
@@ -88,6 +90,15 @@ const mainCurrency = computed(() => {
   return _mainCurrency
 })
 const priceInMainCurrency = computed(() => props.inventoryPrice.priceByCurrency.reduce((total, priceInCurrency) => total + priceInCurrency.valueInMainCurrency, 0))
+const tooltip = computed(() => {
+  let value = vueI18n.t('caption.price')
+
+  if (canShowDetails.value) {
+    value += ` ${vueI18n.t('caption.priceDetails')}`
+  }
+
+  return value
+})
 
 /**
  * Toggles the details of the price.
@@ -119,6 +130,10 @@ function togglePriceDetails(event: Event) {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+}
+
+.inventory-price-with-details {
+  cursor: pointer;
 }
 
 .inventory-price-details {

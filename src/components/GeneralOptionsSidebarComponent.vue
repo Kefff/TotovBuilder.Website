@@ -18,7 +18,7 @@
     <div class="sidebar-option-icon">
       <font-awesome-icon :icon="additionalDisplayOption.icon" />
     </div>
-    <div>{{ $t(additionalDisplayOption.caption) }}</div>
+    <span>{{ $t(additionalDisplayOption.caption) }}</span>
   </div>
 
   <!-- General options -->
@@ -47,12 +47,11 @@
       </div>
     </div>
   </div>
-  <div class="general-options-cookies-explanation">
-    <font-awesome-icon
-      icon="info-circle"
-      class="icon-before-text"
-    />
-    <div>{{ $t('caption.cookiesExplanation') }}</div>
+  <div class="sidebar-option general-options-cookies-explanation">
+    <div class="sidebar-option-icon">
+      <font-awesome-icon icon="info-circle" />
+    </div>
+    <span>{{ $t('caption.cookiesExplanation') }}</span>
   </div>
   <div
     v-for="(additionalGeneralOption, index) of additionalGeneralOptions"
@@ -115,7 +114,7 @@ import Services from '../services/repository/Services'
 import StringUtils from '../utils/StringUtils'
 import LanguageSelector from './LanguageSelectorComponent.vue'
 
-const props = defineProps<{ parameters?: IGeneralOptionsGroup[] }>()
+const props = defineProps<{ parameters: IGeneralOptionsGroup[] }>()
 
 const additionalDisplayOptions = computed(() => props.parameters?.filter(og => og.name === 'display-options').flatMap(og => og.options) ?? [])
 const additionalGeneralOptions = computed(() => props.parameters?.filter(og => og.name === 'general-options').flatMap(og => og.options) ?? [])
@@ -178,11 +177,12 @@ function toggleAllowCookies() {
 }
 
 .general-options-cookies-explanation {
-  align-items: center;
   color: var(--util-color7);
-  display: flex;
+  margin-top: 0;
+}
+
+.general-options-cookies-explanation > span {
   font-size: 0.85rem;
-  flex-direction: row;
   max-width: 20rem;
   white-space: pre-wrap;
 }

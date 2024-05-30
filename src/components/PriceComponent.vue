@@ -8,10 +8,12 @@
       :tooltip="priceTooltip"
       @click="(e: MouseEvent) => togglePriceDetails(e)"
     >
-      <div class="price-value-and-icon">
+      <div
+        class="price-value-and-icon"
+        :class="canShowDetails ? 'price-value-and-icon-with-details' : ''"
+      >
         <div
           v-if="price.valueInMainCurrency > 0"
-          :class="canShowDetails ? ' price-value-with-details' : ''"
           class="price-value"
         >
           <font-awesome-icon
@@ -153,7 +155,7 @@ import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import ItemIcon from './ItemIconComponent.vue'
 import MerchantIcon from './MerchantIconComponent.vue'
 import Price from './PriceComponent.vue'
-import Tooltip from './tooltip/TooltipComponent.vue'
+import Tooltip from './TooltipComponent.vue'
 
 const itemService = Services.get(ItemService)
 const globalFilterService = Services.get(GlobalFilterService)
@@ -338,7 +340,7 @@ function togglePriceDetails(event: Event) {
   white-space: nowrap;
 }
 
-.price-value-and-icon:hover {
+.price-value-and-icon-with-details:hover {
   cursor: pointer;
 }
 

@@ -181,7 +181,7 @@ import Services from '../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import InventoryPrice from './InventoryPriceComponent.vue'
 import ItemIcon from './ItemIconComponent.vue'
-import Tooltip from './tooltip/TooltipComponent.vue'
+import Tooltip from './TooltipComponent.vue'
 
 const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
 

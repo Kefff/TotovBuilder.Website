@@ -19,11 +19,11 @@ import InputNumberField from '../InputNumberFieldComponent.vue'
 import ItemContent from '../ItemContentComponent.vue'
 import ItemMods from '../ItemModsComponent.vue'
 import OptionHeaderSelector from '../option-header/selector/OptionHeaderSelectorComponent.vue'
-import SelectedItemFunctionalities from '../selected-item-functionalities/SelectedItemFunctionalitiesComponent.vue'
-import SelectedItemSummarySelector from '../selected-item-summary/selector/SelectedItemSummarySelectorComponent.vue'
-import SelectedItem from '../selected-item/SelectedItemComponent.vue'
+import SelectedItemSummarySelector from '../selected-item-summary/SelectedItemSummarySelectorComponent.vue'
+import SelectedItem from '../SelectedItemComponent.vue'
+import SelectedItemFunctionalities from '../SelectedItemFunctionalitiesComponent.vue'
 import StatsSelector from '../stats/selector/StatsSelectorComponent.vue'
-import SummarySelector from '../summary/selector/SummarySelectorComponent.vue'
+import SummarySelector from '../summary/SummarySelectorComponent.vue'
 
 export default defineComponent({
   components: {

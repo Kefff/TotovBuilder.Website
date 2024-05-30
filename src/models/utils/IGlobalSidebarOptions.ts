@@ -1,3 +1,5 @@
+import { IShoppingListItem } from '../build/IShoppingListItem'
+import { IGeneralOptionsGroup } from './IGeneralOptionsGroup'
 
 /**
  * Provides the functionalities of options passed to the global sidebar when opening it.
@@ -14,7 +16,7 @@ export interface IGlobalSidebarOptions {
   /**
    * Parameters to pass as props to the component to display in the global sidebar.
    */
-  displayedComponentParameters?: unknown
+  displayedComponentParameters?: IGeneralOptionsGroup[] | IShoppingListItem[]
 
   /**
    * Position from which the global sidebar is displayed.

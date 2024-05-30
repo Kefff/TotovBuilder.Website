@@ -10,8 +10,8 @@
     </template>
     <div class="global-sidebar-content">
       <component
-        :is="currentDisplayedComponent"
-        v-if="currentDisplayedComponent != null"
+        :is="displayedComponent"
+        v-if="displayedComponent != null"
         :parameters="options?.displayedComponentParameters"
       />
     </div>
@@ -39,13 +39,20 @@ import ShoppingListSidebar from './ShoppingListSidebarComponent.vue'
 
 const globalSidebarService = Services.get(GlobalSidebarService)
 
-const displayableComponents: Record<string, unknown> = {
-  ChangelogSidebar,
-  GeneralOptionsSidebar,
-  MerchantItemsOptionsSidebar,
-  ShoppingListSidebar
-}
-
+const displayedComponent = computed(() => {
+  switch (options.value?.displayedComponentType) {
+    case 'ChangelogSidebar':
+      return ChangelogSidebar
+    case 'GeneralOptionsSidebar':
+      return GeneralOptionsSidebar
+    case 'MerchantItemsOptionsSidebar':
+      return MerchantItemsOptionsSidebar
+    case 'ShoppingListSidebar':
+      return ShoppingListSidebar
+    default:
+      return undefined
+  }
+})
 const visible = computed({
   get: () => _visible.value,
   set: (value: boolean) => {
@@ -56,7 +63,6 @@ const visible = computed({
     }
   }
 })
-const currentDisplayedComponent = computed(() => displayableComponents[options.value?.displayedComponentType ?? ''])
 
 const _visible = ref(false)
 const options = ref<IGlobalSidebarOptions>()
