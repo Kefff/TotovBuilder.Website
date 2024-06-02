@@ -33,6 +33,7 @@
 import { computed } from 'vue'
 import Images from '../../images'
 import SortingData, { SortingOrder } from '../../models/utils/SortingData'
+import Services from '../../services/repository/Services'
 import { SortingService } from '../../services/sorting/SortingService'
 import { ISortingFunctionList } from '../../services/sorting/functions/ISortingFunctionList'
 import StringUtils from '../../utils/StringUtils'
@@ -53,8 +54,6 @@ const props = withDefaults(
 
 const emit = defineEmits(['update:sortingData'])
 
-const sortingService = new SortingService(props.sortingFunctions)
-
 const sortingDirectionClass = computed(() => props.sortingData.order === SortingOrder.asc
   ? 'options-header-sort-button-sort-arrow-down'
   : 'options-header-sort-button-sort-arrow-up')
@@ -64,7 +63,7 @@ const sortingDirectionClass = computed(() => props.sortingData.order === Sorting
  * @param property - Property.
  */
 function sortBy(property: string) {
-  const sortingData = sortingService.setSortingProperty(property)
+  const sortingData = Services.get(SortingService).setSortingProperty(props.sortingData, props.sortingFunctions, property)
 
   if (sortingData != null) {
     emit('update:sortingData', sortingData)

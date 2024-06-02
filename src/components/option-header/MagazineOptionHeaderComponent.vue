@@ -1,12 +1,12 @@
 <template>
   <ContainerOptionHeader
-    v-model:sorting-data="sortingDataInternal"
+    v-model:sorting-data="modelSortingData"
     :sorting-functions-override="MagazineSortingFunctions"
   />
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model:sorting-data="sortingDataInternal"
+        v-model:sorting-data="modelSortingData"
         caption-resource="caption.loadSpeed"
         icon="sync-alt"
         property="loadSpeedModifierPercentage"
@@ -17,7 +17,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model:sorting-data="sortingDataInternal"
+        v-model:sorting-data="modelSortingData"
         caption-resource="caption.checkSpeed"
         icon="eye"
         property="checkSpeedModifierPercentage"
@@ -28,7 +28,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model:sorting-data="sortingDataInternal"
+        v-model:sorting-data="modelSortingData"
         caption-resource="caption.ergonomics"
         icon="hand-paper"
         property="ergonomicsModifier"
@@ -38,5 +38,33 @@
   </div>
 </template>
 
-<script lang="ts" src="./MagazineOptionHeaderComponent.ts" />
-<style scoped lang="css" src="./MagazineOptionHeaderComponent.css" />
+
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import SortingData from '../../models/utils/SortingData'
+import { MagazineSortingFunctions } from '../../services/sorting/functions/MagazineSortingFunctions'
+import ContainerOptionHeader from './ContainerOptionHeaderComponent.vue'
+import OptionHeaderSortButton from './OptionHeaderSortButtonComponent.vue'
+
+const modelSortingData = defineModel<SortingData>('sortingData', { required: true })
+</script>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+@import '../../css/option.css';
+</style>

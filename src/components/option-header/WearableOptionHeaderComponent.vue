@@ -3,9 +3,9 @@
     <div class="option-value">
       <OptionHeaderSortButton
         v-model:sorting-data="modelSortingData"
-        caption-resource="caption.armorClass"
-        icon="award"
-        property="armorClass"
+        caption-resource="caption.ergonomics"
+        icon="hand-paper"
+        property="ergonomicsModifierPercentage"
         :sorting-functions="sortingFunctions"
       />
     </div>
@@ -14,17 +14,24 @@
     <div class="option-value">
       <OptionHeaderSortButton
         v-model:sorting-data="modelSortingData"
-        caption-resource="caption.durability"
-        icon="heart"
-        property="durability"
+        caption-resource="caption.movementSpeed"
+        icon="walking"
+        property="movementSpeedModifierPercentage"
         :sorting-functions="sortingFunctions"
       />
     </div>
   </div>
-  <WearableOptionHeader
-    v-model:sorting-data="modelSortingData"
-    :sorting-functions-override="sortingFunctions"
-  />
+  <div class="option-entry">
+    <div class="option-value">
+      <OptionHeaderSortButton
+        v-model:sorting-data="modelSortingData"
+        caption-resource="caption.turningSpeed"
+        icon="undo"
+        property="turningSpeedModifierPercentage"
+        :sorting-functions="sortingFunctions"
+      />
+    </div>
+  </div>
 </template>
 
 
@@ -39,10 +46,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import SortingData from '../../models/utils/SortingData'
-import { ArmorSortingFunctions } from '../../services/sorting/functions/ArmorSortingFunctions'
 import { ISortingFunctionList } from '../../services/sorting/functions/ISortingFunctionList'
+import { WearableSortingFunctions } from '../../services/sorting/functions/WearableSortingFunctions'
 import OptionHeaderSortButton from './OptionHeaderSortButtonComponent.vue'
-import WearableOptionHeader from './WearableOptionHeaderComponent.vue'
 
 const modelSortingData = defineModel<SortingData>('sortingData', { required: true })
 
@@ -54,7 +60,7 @@ const props = withDefaults(
     sortingFunctionsOverride: undefined
   })
 
-const sortingFunctions = computed(() => props.sortingFunctionsOverride ?? ArmorSortingFunctions)
+const sortingFunctions = computed(() => props.sortingFunctionsOverride ?? WearableSortingFunctions)
 </script>
 
 

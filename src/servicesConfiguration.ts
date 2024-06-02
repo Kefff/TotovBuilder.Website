@@ -28,6 +28,7 @@ import { ModSlotComponentService } from './services/components/ModSlotComponentS
 import { MagazineStatsComponentService } from './services/components/stats/MagazineStatsComponentService'
 import { ServiceInitializationState } from './services/repository/ServiceInitializationState'
 import Services from './services/repository/Services'
+import { SortingService } from './services/sorting/SortingService'
 
 /**
  * Configures all the services used in the application.
@@ -51,6 +52,7 @@ export function configureServices() {
   Services.configure(NotificationService)
   Services.configure(PresetService)
   Services.configure(ReductionService)
+  Services.configure(SortingService)
   Services.configure(TarkovValuesService)
   Services.configure(VersionService)
   Services.configure(WebsiteConfigurationService)

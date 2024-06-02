@@ -2,7 +2,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model:sorting-data="sortingDataInternal"
+        v-model:sorting-data="modelSortingData"
         caption-resource="caption.ergonomics"
         icon="hand-paper"
         property="ergonomicsModifier"
@@ -13,7 +13,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model:sorting-data="sortingDataInternal"
+        v-model:sorting-data="modelSortingData"
         caption-resource="caption.recoil"
         icon="arrows-alt"
         property="recoilModifierPercentage"
@@ -24,7 +24,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model:sorting-data="sortingDataInternal"
+        v-model:sorting-data="modelSortingData"
         caption-resource="caption.accuracy"
         icon="bullseye"
         property="accuracyModifierPercentage"
@@ -34,5 +34,32 @@
   </div>
 </template>
 
-<script lang="ts" src="./RangedWeaponModOptionHeaderComponent.ts" />
-<style scoped lang="css" src="./RangedWeaponModOptionHeaderComponent.css" />
+
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import SortingData from '../../models/utils/SortingData'
+import { RangedWeaponModSortingFunctions } from '../../services/sorting/functions/RangedWeaponModSortingFunctions'
+import OptionHeaderSortButton from './OptionHeaderSortButtonComponent.vue'
+
+const modelSortingData = defineModel<SortingData>('sortingData', { required: true })
+</script>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+@import '../../css/option.css';
+</style>

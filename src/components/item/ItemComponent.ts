@@ -295,7 +295,7 @@ export default defineComponent({
     async function onSortOptions(newSortingData: SortingData) {
       const currentOptions = [...options.value] // Creating a new array because options.value can be updated while this function is being executed
       optionsSortingData.value = newSortingData
-      options.value = await SortingService.sort(currentOptions, optionsSortingData.value)
+      options.value = await Services.get(SortingService).sort(currentOptions, optionsSortingData.value)
 
       scrollToItemInDropdown()
     }
