@@ -1,12 +1,12 @@
 <template>
   <div v-if="!isInitializing">
     <ModSlot
-      v-for="(modSlot, index) of modSlots"
+      v-for="modSlot of modSlots"
       :key="`${path}/${PathUtils.modSlotPrefix}${modSlot.name}`"
-      :inventory-item="modelInventoryModSlots.find(ims => ims.modSlotName === modSlot.name)?.item"
+      :inventory-item="findInventoryItemOfModSlot(modSlot.name)"
       :mod-slot="modSlot"
       :path="`${path}/${PathUtils.modSlotPrefix}${modSlot.name}`"
-      @update:inventory-item="onItemChanged(index, modSlot.name, $event)"
+      @update:inventory-item="onItemChanged(modSlot.name, $event)"
     />
   </div>
 </template>
@@ -39,9 +39,9 @@ const props = defineProps<{
 const isInitializing = ref(true)
 const modSlots = ref<IModSlot[]>(props.moddableItem.modSlots)
 
-watch(() => props.moddableItem.id, () => initialize())
-
 onMounted(() => initialize())
+
+watch(() => props.moddableItem.id, () => initialize())
 
 /**
  * Gets the mod slots of the parent item and adds them to the list of inventory mod slots received.
@@ -69,13 +69,21 @@ function initialize() {
 }
 
 /**
+ * Find the inventory item corresponding to a mod slot if it exists in the inventory mod slot list.
+ */
+function findInventoryItemOfModSlot(modSlotName: string): IInventoryItem | undefined {
+  return modelInventoryModSlots.value.find(ims => ims.modSlotName === modSlotName)?.item
+}
+
+/**
  * Emits updates inventory mod slots.
  */
-function onItemChanged(index: number, modSlotName: string, newInventoryItem: IInventoryItem | undefined) {
+function onItemChanged(modSlotName: string, newInventoryItem: IInventoryItem | undefined) {
   const newInventoryModSlots = [...modelInventoryModSlots.value]
+  const newInventoryModSlot = newInventoryModSlots.find(ms => ms.modSlotName === modSlotName)
 
-  if (newInventoryModSlots[index] != null) {
-    newInventoryModSlots[index].item = newInventoryItem
+  if (newInventoryModSlot != null) {
+    newInventoryModSlot.item = newInventoryItem
   } else {
     newInventoryModSlots.push({
       modSlotName,

@@ -8,18 +8,18 @@ import { ISortingFunctionList } from './functions/ISortingFunctionList'
 /**
  * Represents a service responsible for sorting items.
  */
-export class SortingService<TItem extends IItem> {
+export class SortingService {
   /**
    * Sorting data.
    * By default, sorts by name.
    */
-  private sortingData = new SortingData<TItem>()
+  private sortingData = new SortingData()
 
   /**
    * Initializes a new instance of the SortingService class.
    * @param sortingFunctions - Sorting functions to use.
    */
-  constructor(private sortingFunctions: ISortingFunctionList<TItem>) { }
+  constructor(private sortingFunctions: ISortingFunctionList) { }
 
   /**
    * Sorts a collection of items according to sorting data.
@@ -27,7 +27,7 @@ export class SortingService<TItem extends IItem> {
    * @param items - Collection of items.
    * @param sortingData - Sorting data.
    */
-  public static async sort<TItem extends IItem>(items: TItem[], sortingData: SortingData<TItem>): Promise<TItem[]> {
+  public static async sort<TItem extends IItem>(items: TItem[], sortingData: SortingData): Promise<TItem[]> {
     const itemsWithSortingValue = await Promise.all(items.map(i => SortingService.getItemAndSortingValue(i, sortingData)))
     itemsWithSortingValue.sort((iwsv1, iwsv2) => sortingData.sortingFunction.comparisonFunction(iwsv1.item, iwsv1.value, iwsv2.item, iwsv2.value))
     const result = itemsWithSortingValue.map(iwsv1 => iwsv1.item)
@@ -40,7 +40,7 @@ export class SortingService<TItem extends IItem> {
    * @param item - Item.
    * @returns Item and its sorting value.
    */
-  private static async getItemAndSortingValue<TItem extends IItem>(item: TItem, sortingData: SortingData<TItem>): Promise<{ item: TItem, value: number | string }> {
+  private static async getItemAndSortingValue<TItem extends IItem>(item: TItem, sortingData: SortingData): Promise<{ item: TItem, value: number | string }> {
     const value = await sortingData.sortingFunction.comparisonValueObtentionFunction(item)
 
     return { item, value }
@@ -51,7 +51,7 @@ export class SortingService<TItem extends IItem> {
    * @param property - Property that will be used to sort.
    * @returns Updated sorting data.
    */
-  public setSortingProperty(property: string): SortingData<TItem> | undefined {
+  public setSortingProperty(property: string): SortingData | undefined {
     const sortingFunction = this.sortingFunctions[property]
 
     if (sortingFunction == null) {
@@ -62,10 +62,10 @@ export class SortingService<TItem extends IItem> {
 
     const order = this.sortingData.property === property ? -this.sortingData.order : SortingOrder.asc
 
-    this.sortingData = new SortingData<TItem>()
+    this.sortingData = new SortingData()
     this.sortingData.property = property
     this.sortingData.order = order
-    this.sortingData.sortingFunction.comparisonFunction = (item1: TItem, item1ValueToCompare: string | number, item2: TItem, item2ValueToCompare: string | number) => {
+    this.sortingData.sortingFunction.comparisonFunction = (item1: IItem, item1ValueToCompare: string | number, item2: IItem, item2ValueToCompare: string | number) => {
       return sortingFunction.comparisonFunction(item1, item1ValueToCompare, item2, item2ValueToCompare) * this.sortingData.order
     }
     this.sortingData.sortingFunction.comparisonValueObtentionFunction = sortingFunction.comparisonValueObtentionFunction

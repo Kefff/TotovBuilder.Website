@@ -12,11 +12,11 @@
         <div
           v-if="canOneshot"
           v-tooltip.top="$t('caption.canOneshot')"
-          class="flesh-damage-ammunition-summary-oneshot"
+          class="flesh-damage-oneshot"
         >
           <font-awesome-icon
             icon="skull"
-            class="flesh-damage-ammunition-summary-oneshot-icon"
+            class="flesh-damage-oneshot-icon"
           />
         </div>
       </div>

@@ -153,6 +153,6 @@ function onMerchantFilterChanged() {
 <style scoped>
 .item-content-indent {
   margin-left: 3.125rem;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
 }
 </style>

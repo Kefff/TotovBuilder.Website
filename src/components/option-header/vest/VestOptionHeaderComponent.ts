@@ -2,8 +2,8 @@ import { computed, defineComponent, PropType } from 'vue'
 import { IVest } from '../../../models/item/IVest'
 import SortingData from '../../../models/utils/SortingData'
 import { VestSortingFunctions } from '../../../services/sorting/functions/VestSortingFunctions'
-import ArmorOptionHeader from '../armor/ArmorOptionHeaderComponent.vue'
-import ContainerOptionHeader from '../container/ContainerOptionHeaderComponent.vue'
+import ArmorOptionHeader from '../ArmorOptionHeaderComponent.vue'
+import ContainerOptionHeader from '../ContainerOptionHeaderComponent.vue'
 
 export default defineComponent({
   components: {

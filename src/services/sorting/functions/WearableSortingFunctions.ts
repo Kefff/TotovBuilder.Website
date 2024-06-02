@@ -6,18 +6,18 @@ import { ItemSortingFunctions } from './ItemSortingFunction'
 /**
  * Functions for sorting wearable pieces of equipment.
  */
-export const WearableSortingFunctions: ISortingFunctionList<IWearable> = {
+export const WearableSortingFunctions: ISortingFunctionList = {
   ...ItemSortingFunctions,
   ergonomicsModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.ergonomicsModifierPercentage)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IWearable).ergonomicsModifierPercentage)
   },
   movementSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.movementSpeedModifierPercentage)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IWearable).movementSpeedModifierPercentage)
   },
   turningSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.turningSpeedModifierPercentage)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IWearable).turningSpeedModifierPercentage)
   }
 }

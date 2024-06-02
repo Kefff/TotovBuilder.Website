@@ -11,7 +11,7 @@
   <div class="option-entry">
     <div
       v-tooltip.top="$t('caption.fireRate')"
-      class="option-value fire-rate custom-icon-after-text"
+      class="option-value ranged-weapon-summary-fire-rate custom-icon-after-text"
     >
       <div>{{ $t('caption.fireRateValueShort', { fireRate: rangedWeapon.fireRate }) }}</div>
       <img :src="Images.fireRate">
@@ -92,7 +92,7 @@ const rangedWeapon = computed(() => props.item as IRangedWeapon)
 @import '../../css/icon.css';
 @import '../../css/option.css';
 
-.fire-rate {
+.ranged-weapon-summary-fire-rate {
   width: 6rem;
 }
 </style>

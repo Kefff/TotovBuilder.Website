@@ -2,8 +2,8 @@ import { computed, defineComponent, PropType } from 'vue'
 import { IHeadwear } from '../../../models/item/IHeadwear'
 import SortingData from '../../../models/utils/SortingData'
 import { HeadwearSortingFunctions } from '../../../services/sorting/functions/HeadwearSortingFunctions'
-import ArmorOptionHeader from '../armor/ArmorOptionHeaderComponent.vue'
-import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
+import ArmorOptionHeader from '../ArmorOptionHeaderComponent.vue'
+import OptionHeaderSortButton from '../OptionHeaderSortButtonComponent.vue'
 
 export default defineComponent({
   components: {

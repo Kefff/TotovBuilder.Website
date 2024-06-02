@@ -2,8 +2,8 @@ import { computed, defineComponent, PropType } from 'vue'
 import { IMagazine } from '../../../models/item/IMagazine'
 import SortingData from '../../../models/utils/SortingData'
 import { MagazineSortingFunctions } from '../../../services/sorting/functions/MagazineSortingFunctions'
-import ContainerOptionHeader from '../container/ContainerOptionHeaderComponent.vue'
-import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
+import ContainerOptionHeader from '../ContainerOptionHeaderComponent.vue'
+import OptionHeaderSortButton from '../OptionHeaderSortButtonComponent.vue'
 
 export default defineComponent({
   components: {

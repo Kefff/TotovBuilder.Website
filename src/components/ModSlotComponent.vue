@@ -56,14 +56,14 @@ const editing = inject<Ref<boolean>>('editing')
 const acceptedItems = ref<IItem[]>([])
 const acceptedItemsCategoryId = ref<string | undefined>(undefined)
 
-watch(() => props.modSlot.name, () => updateAcceptedItems())
-
 onMounted(() => {
   globalFilterService.emitter.on(GlobalFilterService.changeEvent, updateAcceptedItems)
   updateAcceptedItems()
 })
 
 onUnmounted(() => globalFilterService.emitter.off(GlobalFilterService.changeEvent, updateAcceptedItems))
+
+watch(() => props.modSlot.name, () => updateAcceptedItems())
 
 /**
  * Gets the category IDs and the accepted items to pass to the Item component.
@@ -85,7 +85,7 @@ async function updateAcceptedItems() {
 
 <style scoped>
 .mod-slot {
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
   margin-left: 3.125rem;
 }
 

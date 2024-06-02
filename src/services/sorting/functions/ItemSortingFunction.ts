@@ -7,7 +7,7 @@ import { ISortingFunctionList } from './ISortingFunctionList'
 /**
  * Functions for sorting items.
  */
-export const ItemSortingFunctions: ISortingFunctionList<IItem> = {
+export const ItemSortingFunctions: ISortingFunctionList = {
   categoryId: {
     comparisonFunction: (item1: IItem, item1Value: string | number, item2: IItem) => compareByCategory(item1, item2),
     comparisonValueObtentionFunction: () => Promise.resolve('')

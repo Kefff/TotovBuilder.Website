@@ -3,7 +3,7 @@ import { IWearable } from '../../../models/item/IWearable'
 import SortingData from '../../../models/utils/SortingData'
 import { ISortingFunctionList } from '../../../services/sorting/functions/ISortingFunctionList'
 import { WearableSortingFunctions } from '../../../services/sorting/functions/WearableSortingFunctions'
-import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
+import OptionHeaderSortButton from '../OptionHeaderSortButtonComponent.vue'
 
 export default defineComponent({
   components: {

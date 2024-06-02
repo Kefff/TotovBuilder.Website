@@ -6,18 +6,18 @@ import { ItemSortingFunctions } from './ItemSortingFunction'
 /**
  * Functions for sorting melee weapons.
  */
-export const MeleeWeaponSortingFunctions: ISortingFunctionList<IMeleeWeapon> = {
+export const MeleeWeaponSortingFunctions: ISortingFunctionList = {
   ...ItemSortingFunctions,
   chopDamage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.chopDamage)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IMeleeWeapon).chopDamage)
   },
   hitRadius: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.hitRadius)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IMeleeWeapon).hitRadius)
   },
   stabDamage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.stabDamage)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IMeleeWeapon).stabDamage)
   }
 }

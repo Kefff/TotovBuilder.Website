@@ -18,11 +18,11 @@ import StringUtils from '../../utils/StringUtils'
 import InputNumberField from '../InputNumberFieldComponent.vue'
 import ItemContent from '../ItemContentComponent.vue'
 import ItemMods from '../ItemModsComponent.vue'
-import OptionHeaderSelector from '../option-header/selector/OptionHeaderSelectorComponent.vue'
-import SelectedItemSummarySelector from '../selected-item-summary/SelectedItemSummarySelectorComponent.vue'
+import OptionHeaderSelector from '../option-header/OptionHeaderSelectorComponent.vue'
 import SelectedItem from '../SelectedItemComponent.vue'
 import SelectedItemFunctionalities from '../SelectedItemFunctionalitiesComponent.vue'
 import StatsSelector from '../stats/selector/StatsSelectorComponent.vue'
+import SelectedItemSummarySelector from '../summary/SelectedItemSummarySelectorComponent.vue'
 import SummarySelector from '../summary/SummarySelectorComponent.vue'
 
 export default defineComponent({
@@ -104,7 +104,7 @@ export default defineComponent({
     const itemIsModdable = ref(false)
     const options = ref<IItem[]>([])
     const optionsFilter = ref('')
-    const optionsSortingData = ref(new SortingData<IItem>())
+    const optionsSortingData = ref(new SortingData())
     const presetModSlotContainingItem = ref<IInventoryModSlot>()
     const quantity = ref(props.inventoryItem?.quantity ?? 1)
     const selectedTab = ref(SelectableTab.hidden)
@@ -292,7 +292,7 @@ export default defineComponent({
     /**
      * Sorts the options items.
      */
-    async function onSortOptions(newSortingData: SortingData<IItem>) {
+    async function onSortOptions(newSortingData: SortingData) {
       const currentOptions = [...options.value] // Creating a new array because options.value can be updated while this function is being executed
       optionsSortingData.value = newSortingData
       options.value = await SortingService.sort(currentOptions, optionsSortingData.value)
@@ -338,7 +338,7 @@ export default defineComponent({
      * @param filter - Filter.
      * @param sortingData - Sorting data.
      */
-    async function setOptions(filter: string, sortingData: SortingData<IItem>) {
+    async function setOptions(filter: string, sortingData: SortingData) {
       let newOptions: IItem[] = []
 
       if (filter === '') {

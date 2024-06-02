@@ -107,8 +107,8 @@ import MeleeWeaponSummary from '../summary/MeleeWeaponSummaryComponent.vue'
 import ModSummary from '../summary/ModSummaryComponent.vue'
 import RangedWeaponModSummary from '../summary/RangedWeaponModSummaryComponent.vue'
 import RangedWeaponSummary from '../summary/RangedWeaponSummaryComponent.vue'
+import SelectedItemSummary from '../summary/SelectedItemSummaryComponent.vue'
 import VestSummary from '../summary/VestSummaryComponent.vue'
-import SelectedItemSummary from './SelectedItemSummaryComponent.vue'
 
 const props = withDefaults(
   defineProps<{

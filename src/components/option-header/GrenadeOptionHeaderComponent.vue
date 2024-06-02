@@ -2,7 +2,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model:sorting-data="sortingDataInternal"
+        v-model:sorting-data="modelSortingData"
         caption-resource="caption.fleshDamage"
         icon="heart-broken"
         property="fleshDamage"
@@ -13,7 +13,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model:sorting-data="sortingDataInternal"
+        v-model:sorting-data="modelSortingData"
         caption-resource="caption.fragmentsAmount"
         icon="viruses"
         property="fragmentsAmount"
@@ -24,7 +24,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model:sorting-data="sortingDataInternal"
+        v-model:sorting-data="modelSortingData"
         caption-resource="caption.explosionRadius"
         icon="dot-circle"
         property="maximumExplosionRange"
@@ -35,7 +35,7 @@
   <div class="option-entry">
     <div class="option-value">
       <OptionHeaderSortButton
-        v-model:sorting-data="sortingDataInternal"
+        v-model:sorting-data="modelSortingData"
         caption-resource="caption.explosionDelay"
         icon="stopwatch"
         property="explosionDelay"
@@ -45,5 +45,32 @@
   </div>
 </template>
 
-<script lang="ts" src="./GrenadeOptionHeaderComponent.ts" />
-<style scoped lang="css" src="./GrenadeOptionHeaderComponent.css" />
+
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import SortingData from '../../models/utils/SortingData'
+import { GrenadeSortingFunctions } from '../../services/sorting/functions/GrenadeSortingFunctions'
+import OptionHeaderSortButton from './OptionHeaderSortButtonComponent.vue'
+
+const modelSortingData = defineModel<SortingData>('sortingData', { required: true })
+</script>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+@import '../../css/option.css';
+</style>

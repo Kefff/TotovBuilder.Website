@@ -1,0 +1,112 @@
+<template>
+  <ItemOptionHeader
+    v-model:sortingData="modelSortingData"
+    v-model:filter="modelFilter"
+    :use-longest-header-width="useLongestHeaderWidth"
+  >
+    <component
+      :is="specializedComponent"
+      v-if="specializedComponent != null"
+      v-model:sorting-data="modelSortingData"
+    />
+  </ItemOptionHeader>
+</template>
+
+
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import SortingData from '../../models/utils/SortingData'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
+import AmmunitionOptionHeader from './AmmunitionOptionHeaderComponent.vue'
+import ArmorModOptionHeader from './ArmorModOptionHeaderComponent.vue'
+import ArmorOptionHeader from './ArmorOptionHeaderComponent.vue'
+import BackpackOptionHeader from './BackpackOptionHeaderComponent.vue'
+import ContainerOptionHeader from './ContainerOptionHeaderComponent.vue'
+import EyewearOptionHeader from './EyewearOptionHeaderComponent.vue'
+import GrenadeOptionHeader from './GrenadeOptionHeaderComponent.vue'
+import ItemOptionHeader from './ItemOptionHeaderComponent.vue'
+import HeadwearOptionHeader from './headwear/HeadwearOptionHeaderComponent.vue'
+import MagazineOptionHeader from './magazine/MagazineOptionHeaderComponent.vue'
+import MeleeWeaponOptionHeader from './melee-weapon/MeleeWeaponOptionHeaderComponent.vue'
+import ModOptionHeader from './mod/ModOptionHeaderComponent.vue'
+import RangedWeaponModOptionHeader from './ranged-weapon-mod/RangedWeaponModOptionHeaderComponent.vue'
+import RangedWeaponOptionHeader from './ranged-weapon/RangedWeaponOptionHeaderComponent.vue'
+import VestOptionHeader from './vest/VestOptionHeaderComponent.vue'
+
+const modelFilter = defineModel<string>('filter', { required: true })
+const modelSortingData = defineModel<SortingData>('sortingData', { required: true })
+
+const props = withDefaults(
+  defineProps<{
+    categoryId?: string
+  }>(),
+  {
+    categoryId: undefined
+  })
+
+const specializedComponent = computed(() => getSpecializedComponent(props.categoryId))
+const useLongestHeaderWidth = computed(() => props.categoryId == null)
+
+/**
+ * Sets the type of specialized options header component to display.
+ */
+function getSpecializedComponent(categoryId?: string) {
+  if (categoryId == null || categoryId === 'other') {
+    return undefined
+  }
+
+  const itemPropertiesService = Services.get(ItemPropertiesService)
+
+  if (itemPropertiesService.isAmmunition(categoryId)) {
+    return AmmunitionOptionHeader
+  }
+  else if (itemPropertiesService.isArmor(categoryId)) {
+    return ArmorOptionHeader
+  }
+  else if (itemPropertiesService.isArmorMod(categoryId)) {
+    return ArmorModOptionHeader
+  }
+  else if (itemPropertiesService.isBackpack(categoryId)) {
+    return BackpackOptionHeader
+  }
+  else if (itemPropertiesService.isContainer(categoryId)) {
+    return ContainerOptionHeader
+  }
+  else if (itemPropertiesService.isEyewear(categoryId)) {
+    return EyewearOptionHeader
+  }
+  else if (itemPropertiesService.isGrenade(categoryId)) {
+    return GrenadeOptionHeader
+  }
+  else if (itemPropertiesService.isHeadwear(categoryId)) {
+    return HeadwearOptionHeader
+  }
+  else if (itemPropertiesService.isMagazine(categoryId)) {
+    return MagazineOptionHeader
+  }
+  else if (itemPropertiesService.isMeleeWeapon(categoryId)) {
+    return MeleeWeaponOptionHeader
+  }
+  else if (itemPropertiesService.isMod(categoryId)) {
+    return ModOptionHeader
+  }
+  else if (itemPropertiesService.isRangedWeapon(categoryId)) {
+    return RangedWeaponOptionHeader
+  }
+  else if (itemPropertiesService.isRangedWeaponMod(categoryId)) {
+    return RangedWeaponModOptionHeader
+  }
+  else if (itemPropertiesService.isVest(categoryId)) {
+    return VestOptionHeader
+  }
+}
+</script>

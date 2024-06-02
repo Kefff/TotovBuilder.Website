@@ -6,18 +6,18 @@ import { ItemSortingFunctions } from './ItemSortingFunction'
 /**
  * Functions for sorting grenades.
  */
-export const GrenadeSortingFunctions: ISortingFunctionList<IGrenade> = {
+export const GrenadeSortingFunctions: ISortingFunctionList = {
   ...ItemSortingFunctions,
   explosionDelay: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.explosionDelay)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IGrenade).explosionDelay)
   },
   fragmentsAmount: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.fragmentsAmount)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IGrenade).fragmentsAmount)
   },
   maximumExplosionRange: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.maximumExplosionRange)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IGrenade).maximumExplosionRange)
   }
 }

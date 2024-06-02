@@ -427,7 +427,7 @@ function togglePriceDetails(event: Event) {
 }
 
 .price-merchant-icon {
-  margin-left: 0.25rem;
+  margin-left: 0.5rem;
 }
 
 .price-quest-icon {

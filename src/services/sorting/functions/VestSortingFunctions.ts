@@ -1,4 +1,3 @@
-import { IVest } from '../../../models/item/IVest'
 import { ArmorSortingFunctions } from './ArmorSortingFunctions'
 import { ContainerSortingFunctions } from './ContainerSortingFunctions'
 import { ISortingFunctionList } from './ISortingFunctionList'
@@ -6,7 +5,7 @@ import { ISortingFunctionList } from './ISortingFunctionList'
 /**
  * Functions for sorting vests.
  */
-export const VestSortingFunctions: ISortingFunctionList<IVest> = {
+export const VestSortingFunctions: ISortingFunctionList = {
   ...ArmorSortingFunctions,
   ...ContainerSortingFunctions
 }

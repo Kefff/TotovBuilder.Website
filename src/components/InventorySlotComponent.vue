@@ -137,15 +137,15 @@
           </div>
         </div>
       </template>
-      <Item
-        v-for="(item, index) of items"
+      <InventorySlotItem
+        v-for="(inventoryItem, index) of modelInventorySlot.items"
         :key="`${path}_${index}`"
-        v-model:inventory-item="items[index]"
+        v-model:inventory-item="modelInventorySlot.items[index]"
         :accepted-items="acceptedItems"
         :accepted-items-category-id="acceptedItemsCategoryId"
         :can-be-looted="inventorySlotType.canBeLooted"
-        :path="`${path}_${index}/${PathUtils.itemPrefix}${item?.itemId ?? 'empty'}`"
-        @update:inventory-item="onItemChanged(index)"
+        :path="`${path}_${index}`"
+        :inventory-slot-type-id="modelInventorySlot.typeId"
       />
     </Panel>
   </div>
@@ -163,26 +163,22 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, onUnmounted, Ref, ref, watch } from 'vue'
 import Images from '../images'
-import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import { IItem } from '../models/item/IItem'
 import { IInventorySlotSummary } from '../models/utils/IInventorySlotSummary'
-import { InventorySlotComponentService } from '../services/components/InventorySlotComponentService'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { InventoryItemService } from '../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../services/InventorySlotPropertiesService'
 import { InventorySlotService } from '../services/InventorySlotService'
 import { ItemService } from '../services/ItemService'
 import Services from '../services/repository/Services'
-import { PathUtils } from '../utils/PathUtils'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import StringUtils from '../utils/StringUtils'
 import InventoryPrice from './InventoryPriceComponent.vue'
-import Item from './item/ItemComponent.vue'
+import InventorySlotItem from './InventorySlotItemComponent.vue'
 
 const globalFilterService = Services.get(GlobalFilterService)
 const inventoryItemService = Services.get(InventoryItemService)
-const inventorySlotComponentService = Services.get(InventorySlotComponentService)
 const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
 const inventorySlotService = Services.get(InventorySlotService)
 
@@ -193,6 +189,11 @@ const props = defineProps<{ path: string }>()
 
 const editing = inject<Ref<boolean>>('editing')
 
+const acceptedItemsCategoryId = computed(() => {
+  setAcceptedItems()
+
+  return inventorySlotType.value.acceptedItemCategories.length === 1 ? inventorySlotType.value.acceptedItemCategories[0] : undefined
+})
 const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
 const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
 const hasSummaryErgonomicsModifierPercentage = computed(() => summary.value.wearableModifiers.ergonomicsModifierPercentage !== 0)
@@ -205,8 +206,6 @@ const inventorySlotType = computed(() => inventorySlotService.getType(modelInven
 const isDisplayed = computed(() => editing?.value || modelInventorySlot.value.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
 
 const acceptedItems = ref<IItem[]>([])
-const acceptedItemsCategoryId = ref<string | undefined>(undefined)
-const items = ref<(IInventoryItem | undefined)[]>([]) // Used to be able to put back the previously selected item when changing it to an incompatible item
 const summary = ref<IInventorySlotSummary>({
   armorModifiers: {
     armorClass: 0,
@@ -237,15 +236,11 @@ const summary = ref<IInventorySlotSummary>({
   weight: 0
 })
 
-watch(() => modelInventorySlot, async () => {
-  await initialize() // Initialization required for the case when we cancel changes
-})
-
-onMounted(async () => {
+onMounted(() => {
   inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onModOrContentChanged)
   globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-  await initialize()
+  setSummary()
 })
 
 onUnmounted(() => {
@@ -253,68 +248,39 @@ onUnmounted(() => {
   globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
 
-/**
- * Gets the values of the summary of the content of the inventory slot.
- */
-async function getSummary() {
-  summary.value = await inventorySlotPropertiesService.getSummary(modelInventorySlot.value)
-}
-
-/**
- * Initializes the inventory slot.
- */
-async function initialize() {
-  items.value = [...modelInventorySlot.value.items]
-
-  await setItemComponentParameters()
-  getSummary()
-}
-
-/**
- * Checks if the item can be selected. Emits the new value to the parent component if it can be selected; otherwise puts back the old item.
- * @param index - Index of the changed item.
- */
-async function onItemChanged(index: number) {
-  const canSelect = await inventorySlotComponentService.checkCompatibility(modelInventorySlot.value.typeId, items.value[index], props.path + '_' + index)
-
-  if (canSelect) {
-    modelInventorySlot.value = {
-      items: items.value,
-      typeId: modelInventorySlot.value.typeId
-    }
-  } else {
-    // Putting back the old item
-    items.value[index] = modelInventorySlot.value.items[index]
-  }
-}
+watch(() => modelInventorySlot, () => {
+  setSummary()
+})
 
 /**
  * Updates the inventory slot summary when a mod or content item changes.
  */
 function onModOrContentChanged(path: string) {
   if (path.startsWith(props.path)) {
-    getSummary()
+    setSummary()
   }
 }
 
 /**
  * Updates the inventory slot summary to reflect price changes due to the change in merchant filters.
  */
-async function onMerchantFilterChanged() {
-  await setItemComponentParameters()
-  getSummary()
+function onMerchantFilterChanged() {
+  setAcceptedItems()
+  setSummary()
 }
 
 /**
- * Sets the category IDs and the accepted items to pass to the ItemComponent.
+ * Sets the accepted items selected by the user.
  */
-async function setItemComponentParameters() {
-  if (inventorySlotType.value == null) {
-    return
-  }
-
-  acceptedItemsCategoryId.value = inventorySlotType.value.acceptedItemCategories.length === 1 ? inventorySlotType.value.acceptedItemCategories[0] : undefined
+async function setAcceptedItems() {
   acceptedItems.value = await Services.get(ItemService).getItemsOfCategories(inventorySlotType.value.acceptedItemCategories, true)
+}
+
+/**
+ * Gets the values of the summary of the content of the inventory slot.
+ */
+async function setSummary() {
+  summary.value = await inventorySlotPropertiesService.getSummary(modelInventorySlot.value)
 }
 </script>
 
@@ -375,8 +341,9 @@ async function setItemComponentParameters() {
 
 .inventory-slot-summary-price {
   margin-left: auto;
-  margin-right: 2.75rem;
+  margin-right: 3rem;
   /* Space to align the price with the children prices that have the merchant icon */
+  padding-left: 1rem;
 }
 
 .inventory-slot-summary-value {

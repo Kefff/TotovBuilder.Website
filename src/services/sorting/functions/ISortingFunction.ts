@@ -3,7 +3,7 @@ import { IItem } from '../../../models/item/IItem'
 /**
  * Provides the functionalities of a sorting function.
  */
-export interface ISortingFunction<TItem extends IItem> {
+export interface ISortingFunction {
   /**
    * Comparison function.
    * @param item1 - First item. It is required here as the comparison function can use values from the item such as its name or category in addition to item1Value when comparing.
@@ -11,7 +11,7 @@ export interface ISortingFunction<TItem extends IItem> {
    * @param item2 - Second item. It is required here as the comparison function can use values from the item such as its name or category in addition to item1Value when comparing.
    * @param item2Value - Value from the second item used to compare.
    */
-  comparisonFunction: (item1: TItem, item1Value: string | number, item2: TItem, item2Value: string | number) => number
+  comparisonFunction: (item1: IItem, item1Value: string | number, item2: IItem, item2Value: string | number) => number
 
   /**
    * Function for getting the value used to compare.
@@ -19,5 +19,5 @@ export interface ISortingFunction<TItem extends IItem> {
    * Therefore the sorting service needs to asynchronously get values before sorting them.
    * @param item - Item from which the value is gotten.
    */
-  comparisonValueObtentionFunction: (item: TItem) => Promise<number | string>
+  comparisonValueObtentionFunction: (item: IItem) => Promise<number | string>
 }

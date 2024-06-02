@@ -2,7 +2,7 @@ import { computed, defineComponent, PropType } from 'vue'
 import { IRangedWeaponMod } from '../../../models/item/IRangedWeaponMod'
 import SortingData from '../../../models/utils/SortingData'
 import { RangedWeaponModSortingFunctions } from '../../../services/sorting/functions/RangedWeaponModSortingFunctions'
-import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
+import OptionHeaderSortButton from '../OptionHeaderSortButtonComponent.vue'
 
 export default defineComponent({
   components: {

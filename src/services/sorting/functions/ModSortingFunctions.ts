@@ -7,10 +7,10 @@ import { ItemSortingFunctions } from './ItemSortingFunction'
 /**
  * Functions for sorting mods.
  */
-export const ModSortingFunctions: ISortingFunctionList<IMod> = {
+export const ModSortingFunctions: ISortingFunctionList = {
   ...ItemSortingFunctions,
   ergonomicsModifier: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.ergonomicsModifier)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IMod).ergonomicsModifier)
   }
 }

@@ -2,7 +2,7 @@ import { computed, defineComponent, PropType } from 'vue'
 import { IMod } from '../../../models/item/IMod'
 import SortingData from '../../../models/utils/SortingData'
 import { ModSortingFunctions } from '../../../services/sorting/functions/ModSortingFunctions'
-import OptionHeaderSortButton from '../sort-button/OptionHeaderSortButtonComponent.vue'
+import OptionHeaderSortButton from '../OptionHeaderSortButtonComponent.vue'
 
 export default defineComponent({
   components: {
