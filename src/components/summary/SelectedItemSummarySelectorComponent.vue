@@ -5,71 +5,16 @@
     :inventory-item-in-same-slot-in-preset="inventoryItemInSameSlotInPreset"
     :inventory-item="inventoryItem"
   >
-    <AmmunitionSummary
-      v-if="isAmmunition"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <ArmorSummary
-      v-else-if="isArmor"
+    <component
+      :is="specializedComponent"
+      v-if="specializedComponent != null && selectedItemArmorModifiers != null"
       :armor-modifiers-override="selectedItemArmorModifiers"
       :item="selectedItem"
       :show-empty-entries="false"
     />
-    <ArmorModSummary
-      v-else-if="isArmorMod"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <BackpackSummary
-      v-else-if="isBackpack"
-      :item="selectedItem"
-    />
-    <ContainerSummary
-      v-else-if="isContainer"
-      :item="selectedItem"
-    />
-    <EyewearSummary
-      v-else-if="isEyewear"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <GrenadeSummary
-      v-else-if="isGrenade"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <HeadwearSummary
-      v-else-if="isHeadwear"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <MagazineSummary
-      v-else-if="isMagazine"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <MeleeWeaponSummary
-      v-else-if="isMeleeWeapon"
-      :item="selectedItem"
-    />
-    <ModSummary
-      v-else-if="isMod"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <RangedWeaponSummary
-      v-else-if="isRangedWeapon"
-      :item="selectedItem"
-    />
-    <RangedWeaponModSummary
-      v-else-if="isRangedWeaponMod"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <VestSummary
-      v-else-if="isVest"
-      :armor-modifiers-override="selectedItemArmorModifiers"
+    <component
+      :is="specializedComponent"
+      v-else-if="specializedComponent != null"
       :item="selectedItem"
       :show-empty-entries="false"
     />
@@ -86,7 +31,7 @@
 
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IItem } from '../../models/item/IItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
@@ -121,104 +66,75 @@ const props = withDefaults(
     inventoryItemInSameSlotInPreset: undefined
   })
 
-const isAmmunition = ref(false)
-const isArmor = ref(false)
-const isArmorMod = ref(false)
-const isBackpack = ref(false)
-const isContainer = ref(false)
-const isEyewear = ref(false)
-const isGrenade = ref(false)
-const isHeadwear = ref(false)
-const isMagazine = ref(false)
-const isMeleeWeapon = ref(false)
-const isMod = ref(false)
-const isRangedWeapon = ref(false)
-const isRangedWeaponMod = ref(false)
-const isVest = ref(false)
 const selectedItem = ref<IItem>()
 const selectedItemArmorModifiers = ref<IArmorModifiers>()
 
-onMounted(() => initialize())
+onMounted(() => getSelectedItem())
 
-watch(() => props.inventoryItem.itemId, () => initialize())
+watch(() => props.inventoryItem.itemId, () => getSelectedItem())
 
 /**
- * Sets the item based on the inventory item passed to the component and determines which summary component to display.
+ * Gets the item based on the inventory item passed to the component and determines which summary component to display.
  */
-async function initialize() {
+async function getSelectedItem() {
   selectedItem.value = await Services.get(ItemService).getItem(props.inventoryItem.itemId)
-  setItemType(selectedItem.value)
 }
 
-/**
- * Sets the type of specialized summary component to display.
- * @param item - Item.
- */
-function setItemType(item: IItem) {
-  isAmmunition.value = false
-  isArmor.value = false
-  isArmorMod.value = false
-  isBackpack.value = false
-  isContainer.value = false
-  isEyewear.value = false
-  isGrenade.value = false
-  isHeadwear.value = false
-  isMagazine.value = false
-  isMeleeWeapon.value = false
-  isMod.value = false
-  isRangedWeapon.value = false
-  isRangedWeaponMod.value = false
-  isVest.value = false
+const specializedComponent = computed(() => getSpecializedComponent(selectedItem.value?.categoryId))
 
-  if (item.categoryId === 'other') {
-    return
+/**
+ * Sets the type of specialized options header component to display.
+ */
+function getSpecializedComponent(itemCategoryId?: string) {
+  if (itemCategoryId == null || itemCategoryId === 'other') {
+    return undefined
   }
 
   const itemPropertiesService = Services.get(ItemPropertiesService)
 
-  if (itemPropertiesService.isAmmunition(item)) {
-    isAmmunition.value = true
+  if (itemPropertiesService.isAmmunition(itemCategoryId)) {
+    return AmmunitionSummary
   }
-  else if (itemPropertiesService.isArmor(item)) {
-    isArmor.value = true
+  else if (itemPropertiesService.isArmor(itemCategoryId)) {
     setArmorModifiers()
+    return ArmorSummary
   }
-  else if (itemPropertiesService.isArmorMod(item)) {
-    isArmorMod.value = true
+  else if (itemPropertiesService.isArmorMod(itemCategoryId)) {
+    return ArmorModSummary
   }
-  else if (itemPropertiesService.isBackpack(item)) {
-    isBackpack.value = true
+  else if (itemPropertiesService.isBackpack(itemCategoryId)) {
+    return BackpackSummary
   }
-  else if (itemPropertiesService.isContainer(item)) {
-    isContainer.value = true
+  else if (itemPropertiesService.isContainer(itemCategoryId)) {
+    return ContainerSummary
   }
-  else if (itemPropertiesService.isEyewear(item)) {
-    isEyewear.value = true
+  else if (itemPropertiesService.isEyewear(itemCategoryId)) {
+    return EyewearSummary
   }
-  else if (itemPropertiesService.isGrenade(item)) {
-    isGrenade.value = true
+  else if (itemPropertiesService.isGrenade(itemCategoryId)) {
+    return GrenadeSummary
   }
-  else if (itemPropertiesService.isHeadwear(item)) {
-    isHeadwear.value = true
+  else if (itemPropertiesService.isHeadwear(itemCategoryId)) {
+    return HeadwearSummary
   }
-  else if (itemPropertiesService.isMagazine(item)) {
-    isMagazine.value = true
+  else if (itemPropertiesService.isMagazine(itemCategoryId)) {
+    return MagazineSummary
   }
-  else if (itemPropertiesService.isMeleeWeapon(item)) {
-    isMeleeWeapon.value = true
+  else if (itemPropertiesService.isMeleeWeapon(itemCategoryId)) {
+    return MeleeWeaponSummary
   }
-  else if (itemPropertiesService.isMod(item)) {
-    isMod.value = true
+  else if (itemPropertiesService.isMod(itemCategoryId)) {
+    return ModSummary
   }
-  else if (itemPropertiesService.isRangedWeapon(item)) {
-    isRangedWeapon.value = true
+  else if (itemPropertiesService.isRangedWeapon(itemCategoryId)) {
+    return RangedWeaponSummary
   }
-  else if (itemPropertiesService.isRangedWeaponMod(item)) {
-    isRangedWeaponMod.value = true
+  else if (itemPropertiesService.isRangedWeaponMod(itemCategoryId)) {
+    return RangedWeaponModSummary
   }
-  else if (itemPropertiesService.isVest(item)) {
-    isVest.value = true
+  else if (itemPropertiesService.isVest(itemCategoryId)) {
     setArmorModifiers()
+    return VestSummary
   }
 }
 

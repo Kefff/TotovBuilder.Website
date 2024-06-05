@@ -1,6 +1,6 @@
 import { defineComponent, PropType } from 'vue'
 import { IHeadwear } from '../../../models/item/IHeadwear'
-import ArmorStats from '../armor/ArmorStatsComponent.vue'
+import ArmorStats from '../ArmorStatsComponent.vue'
 
 export default defineComponent({
   components: {

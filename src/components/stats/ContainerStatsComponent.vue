@@ -1,0 +1,51 @@
+<template>
+  <div class="stats-line">
+    <div class="stats-entry">
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="box-open"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.capacity') }} :</span>
+      </div>
+      <div class="stats-value">
+        {{ container.capacity }}
+      </div>
+    </div>
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IContainer } from '../../models/item/IContainer'
+import { IItem } from '../../models/item/IItem'
+
+const props = defineProps<{
+  item: IItem
+}>()
+
+const container = computed(() => props.item as IContainer)
+</script>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+@import '../../css/icon.css';
+@import '../../css/stats.css';
+</style>

@@ -21,7 +21,7 @@
 
 
 <script setup lang="ts">
-import { computed, type Component } from 'vue'
+import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
@@ -55,8 +55,8 @@ const specializedComponent = computed(() => getSpecializedComponent(props.item.c
 /**
  * Sets the type of specialized options header component to display.
  */
-function getSpecializedComponent(itemCategoryId: string): Component | undefined {
-  if (itemCategoryId == null || itemCategoryId === 'other') {
+function getSpecializedComponent(itemCategoryId: string) {
+  if (itemCategoryId === 'other') {
     return undefined
   }
 

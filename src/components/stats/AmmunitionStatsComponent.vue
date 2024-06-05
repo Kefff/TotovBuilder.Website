@@ -6,7 +6,7 @@
         <span>{{ $t('caption.caliber') }} :</span>
       </div>
       <div class="stats-value">
-        {{ $t('caption.' + StringUtils.toLowerFirst(item.caliber)) }}
+        {{ $t('caption.' + StringUtils.toLowerFirst(ammunition.caliber)) }}
       </div>
     </div>
     <div class="stats-entry">
@@ -15,11 +15,11 @@
         <span>{{ $t('caption.projectiles') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.projectiles }}
+        {{ ammunition.projectiles }}
       </div>
     </div>
     <div
-      v-if="item.velocity !== 0"
+      v-if="ammunition.velocity !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -27,19 +27,19 @@
         <span>{{ $t('caption.velocity') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.velocity }}m/s
+        {{ ammunition.velocity }}m/s
       </div>
     </div>
     <div
-      v-if="item.durabilityBurnModifierPercentage !== 0"
+      v-if="ammunition.durabilityBurnModifierPercentage !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
         <div class="icon-before-text" />
         <span>{{ $t('caption.durabilityBurn') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.durabilityBurnModifierPercentage, true)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.durabilityBurnModifierPercentage, item.durabilityBurnModifierPercentage) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(ammunition.durabilityBurnModifierPercentage, true)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.durabilityBurnModifierPercentage, ammunition.durabilityBurnModifierPercentage) }}
       </div>
     </div>
   </div>
@@ -67,7 +67,7 @@
         <span>{{ $t('caption.fleshDamage') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.fleshDamage }}
+        {{ ammunition.fleshDamage }}
       </div>
     </div>
     <div class="stats-entry">
@@ -79,7 +79,7 @@
         <span>{{ $t('caption.penetrationPower') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.penetrationPower }}
+        {{ ammunition.penetrationPower }}
       </div>
     </div>
     <div class="stats-entry">
@@ -88,7 +88,7 @@
         <span>{{ $t('caption.armorDamage') }} :</span>
       </div>
       <div class="stats-value">
-        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorDamagePercentage, item.armorDamagePercentage) }}</span>
+        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorDamagePercentage, ammunition.armorDamagePercentage) }}</span>
       </div>
     </div>
     <div class="stats-entry">
@@ -100,16 +100,16 @@
         <span>{{ $t('caption.fragmentationChance') }} :</span>
       </div>
       <div class="stats-value">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChance, item.fragmentationChance) }}
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChance, ammunition.fragmentationChance) }}
       </div>
     </div>
   </div>
   <div
-    v-if="item.armorPenetrations.length > 0"
+    v-if="ammunition.armorPenetrations.length > 0"
     class="stats-line"
   >
     <div
-      v-for="c of item.armorPenetrations.length"
+      v-for="c of ammunition.armorPenetrations.length"
       :key="c"
       class="stats-entry"
     >
@@ -121,19 +121,19 @@
         <span>{{ $t('caption.armorClassPenetration', { class: c }) }} :</span>
       </div>
       <div
-        v-tooltip.top="getArmorPenetrationTooltip(c, item.armorPenetrations[c - 1])"
+        v-tooltip.top="getArmorPenetrationTooltip(c, ammunition.armorPenetrations[c - 1])"
         class="stats-value"
       >
-        <span :class="'armor-penetration' + item.armorPenetrations[c - 1]">{{ item.armorPenetrations[c - 1] }}<span /></span>
+        <span :class="'armor-penetration' + ammunition.armorPenetrations[c - 1]">{{ ammunition.armorPenetrations[c - 1] }}<span /></span>
       </div>
     </div>
   </div>
   <div
-    v-if="item.recoilModifierPercentage !== 0 || item.accuracyModifierPercentage !== 0 || item.heavyBleedingChance !== 0 || item.lightBleedingChance !== 0"
+    v-if="ammunition.recoilModifierPercentage !== 0 || ammunition.accuracyModifierPercentage !== 0 || ammunition.heavyBleedingChance !== 0 || ammunition.lightBleedingChance !== 0"
     class="stats-line"
   >
     <div
-      v-if="item.recoilModifierPercentage !== 0"
+      v-if="ammunition.recoilModifierPercentage !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -144,13 +144,13 @@
         <span>{{ $t('caption.recoil') }} :</span>
       </div>
       <div class="stats-value">
-        <span :class="StatsUtils.getValueColorClass(item.recoilModifierPercentage, true)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, item.recoilModifierPercentage) }}
+        <span :class="StatsUtils.getValueColorClass(ammunition.recoilModifierPercentage, true)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, ammunition.recoilModifierPercentage) }}
         </span>
       </div>
     </div>
     <div
-      v-if="item.accuracyModifierPercentage !== 0"
+      v-if="ammunition.accuracyModifierPercentage !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -161,42 +161,42 @@
         <span>{{ $t('caption.accuracy') }} :</span>
       </div>
       <div class="stats-value">
-        <span :class="StatsUtils.getValueColorClass(item.accuracyModifierPercentage)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, item.accuracyModifierPercentage) }}
+        <span :class="StatsUtils.getValueColorClass(ammunition.accuracyModifierPercentage)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, ammunition.accuracyModifierPercentage) }}
         </span>
       </div>
     </div>
     <div
-      v-if="item.heavyBleedingChance !== 0"
+      v-if="ammunition.heavyBleedingChance !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
         <div class="icon-before-text" />
         <span>{{ $t('caption.heavyBleeding') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.heavyBleedingChance)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.bleedingChanceModifier, item.heavyBleedingChance) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(ammunition.heavyBleedingChance)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.bleedingChanceModifier, ammunition.heavyBleedingChance) }}
       </div>
     </div>
     <div
-      v-if="item.lightBleedingChance !== 0"
+      v-if="ammunition.lightBleedingChance !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
         <div class="icon-before-text" />
         <span>{{ $t('caption.lightBleeding') }} :</span>
       </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(item.lightBleedingChance)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.bleedingChanceModifier, item.lightBleedingChance) }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(ammunition.lightBleedingChance)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.bleedingChanceModifier, ammunition.lightBleedingChance) }}
       </div>
     </div>
   </div>
   <div
-    v-if="item.tracer || item.subsonic || item.blinding"
+    v-if="ammunition.tracer || ammunition.subsonic || ammunition.blinding"
     class="stats-line"
   >
     <div
-      v-if="item.tracer"
+      v-if="ammunition.tracer"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -205,7 +205,7 @@
       </div>
     </div>
     <div
-      v-if="item.subsonic"
+      v-if="ammunition.subsonic"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -214,7 +214,7 @@
       </div>
     </div>
     <div
-      v-if="item.blinding"
+      v-if="ammunition.blinding"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -225,5 +225,56 @@
   </div>
 </template>
 
-<script lang="ts" src="./AmmunitionStatsComponent.ts" />
-<style scoped lang="css" src="./AmmunitionStatsComponent.css" />
+
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import Images from '../../images'
+import { IAmmunition } from '../../models/item/IAmmunition'
+import { IItem } from '../../models/item/IItem'
+import { TarkovValuesService } from '../../services/TarkovValuesService'
+import Services from '../../services/repository/Services'
+import { ArmorUtils } from '../../utils/ArmorUtils'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import StringUtils from '../../utils/StringUtils'
+
+const props = defineProps<{
+  item: IItem
+}>()
+
+const canOneshot = computed(() => ammunition.value.fleshDamage >= Services.get(TarkovValuesService).values.chestHp)
+const ammunition = computed(() => props.item as IAmmunition)
+
+/**
+ * Gets the tooltip for an armor penetration.
+ * @param armorClass - Armor class penetrated.
+ * @param penetration - Penetration value.
+ * @returns Tooltip.
+ */
+function getArmorPenetrationTooltip(armorClass: number, penetration: number): string {
+  return ArmorUtils.getArmorPenetrationTooltip(armorClass, penetration)
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+@import '../../css/armor-penetration.css';
+@import '../../css/flesh-damage.css';
+@import '../../css/icon.css';
+@import '../../css/stats.css';
+</style>

@@ -1,7 +1,7 @@
 import { defineComponent, PropType } from 'vue'
 import { IVest } from '../../../models/item/IVest'
-import ArmorStats from '../armor/ArmorStatsComponent.vue'
-import ContainerStats from '../container/ContainerStatsComponent.vue'
+import ArmorStats from '../ArmorStatsComponent.vue'
+import ContainerStats from '../ContainerStatsComponent.vue'
 
 export default defineComponent({
   components: {

@@ -46,9 +46,14 @@ import Images from '../../images'
 import { IItem } from '../../models/item/IItem'
 import { IMeleeWeapon } from '../../models/item/IMeleeWeapon'
 
-const props = defineProps<{
-  item: IItem
-}>()
+const props = withDefaults(
+  defineProps<{
+    item: IItem,
+    showEmptyEntries?: boolean
+  }>(),
+  {
+    showEmptyEntries: true
+  })
 
 const meleeWeapon = computed(() => props.item as IMeleeWeapon)
 </script>

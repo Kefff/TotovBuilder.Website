@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="item.armorClass > 0"
+    v-if="armor.armorClass > 0"
     class="stats-line"
   >
     <div class="stats-entry">
@@ -12,22 +12,22 @@
         <span>{{ $t('caption.armorClass') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.armorClass }}
+        {{ armor.armorClass }}
       </div>
     </div>
     <div
-      v-if="item.durability > 0"
+      v-if="armor.durability > 0"
       class="stats-entry"
     >
       <div class="stats-caption">
         <font-awesome-icon
           icon="heart"
-          class="icon-before-text durability"
+          class="icon-before-text armor-stats-durability"
         />
         <span>{{ $t('caption.durability') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.durability }}
+        {{ armor.durability }}
       </div>
     </div>
     <div class="stats-entry">
@@ -36,11 +36,11 @@
         <span>{{ $t('caption.material') }} :</span>
       </div>
       <div class="stats-value">
-        {{ $t('caption.material' + item.material) }}
+        {{ $t('caption.material' + armor.material) }}
       </div>
     </div>
   </div>
-  <div v-if="item.armorClass > 0">
+  <div v-if="armor.armorClass > 0">
     <div stats-entry>
       <div class="stats-caption">
         <font-awesome-icon
@@ -52,11 +52,11 @@
     </div>
   </div>
   <div
-    v-if="item.armorClass > 0"
+    v-if="armor.armorClass > 0"
     class="stats-line"
   >
     <div
-      v-for="armoredArea of item.armoredAreas"
+      v-for="armoredArea of armor.armoredAreas"
       :key="armoredArea"
       class="stats-entry"
     >
@@ -72,5 +72,47 @@
   />
 </template>
 
-<script lang="ts" src="./ArmorStatsComponent.ts" />
-<style scoped lang="css" src="./ArmorStatsComponent.css" />
+
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IArmor } from '../../models/item/IArmor'
+import { IItem } from '../../models/item/IItem'
+import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
+import WearableStats from './WearableStatsComponent.vue'
+
+const props = withDefaults(
+  defineProps<{
+    item: IItem,
+    wearableModifiersOverride?: IWearableModifiers
+  }>(),
+  {
+    wearableModifiersOverride: undefined
+  })
+const armor = computed(() => props.item as IArmor)
+</script>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+@import '../../css/icon.css';
+@import '../../css/stats.css';
+
+.armor-stats-durability {
+  color: var(--error-color);
+}
+</style>

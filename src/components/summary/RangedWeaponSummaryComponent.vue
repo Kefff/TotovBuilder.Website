@@ -72,9 +72,14 @@ import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import StringUtils from '../../utils/StringUtils'
 
-const props = defineProps<{
-  item: IItem,
-}>()
+const props = withDefaults(
+  defineProps<{
+    item: IItem,
+    showEmptyEntries?: boolean
+  }>(),
+  {
+    showEmptyEntries: true
+  })
 
 const rangedWeapon = computed(() => props.item as IRangedWeapon)
 </script>

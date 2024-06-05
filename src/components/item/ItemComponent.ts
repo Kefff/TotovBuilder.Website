@@ -21,7 +21,7 @@ import ItemMods from '../ItemModsComponent.vue'
 import OptionHeaderSelector from '../option-header/OptionHeaderSelectorComponent.vue'
 import SelectedItem from '../SelectedItemComponent.vue'
 import SelectedItemFunctionalities from '../SelectedItemFunctionalitiesComponent.vue'
-import StatsSelector from '../stats/selector/StatsSelectorComponent.vue'
+import StatsSelector from '../stats/StatsSelectorComponent.vue'
 import SelectedItemSummarySelector from '../summary/SelectedItemSummarySelectorComponent.vue'
 import SummarySelector from '../summary/SummarySelectorComponent.vue'
 
