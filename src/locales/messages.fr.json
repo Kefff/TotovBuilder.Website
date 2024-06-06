@@ -74,9 +74,10 @@
     "expandAll": "Déployer tous les emplacements",
     "expandWithItem": "Déployer les emplacements contenant un objet",
     "explosionDelay": "Délai d'explosion",
+    "explosionDelayValue": "{delay} s",
     "explosionRadius": "Rayon d'explosion",
-    "explosionRadiusSingleValue": "{radius}m",
-    "explosionRadiusValue": "{min} à {max}m",
+    "explosionRadiusSingleValue": "{radius} m",
+    "explosionRadiusValue": "{min} à {max} m",
     "exportBuild": "Exporter l'équipement",
     "exportBuilds": "Exporter des équipements",
     "fireRate": "Cadence de tir",
@@ -90,6 +91,7 @@
     "hideDetails": "Masquer les détails",
     "hideMods": "Masquer les mods",
     "hitRadius": "Portée",
+    "hitRadiusValue": "{radius} m",
     "horizontalRecoil": "Recul horizontal",
     "ignoredPrice_inPreset": "Prix ignoré car l'objet fait partie d'une préconfiguration",
     "ignoredPrice_manuallyIgnored": "Prix ignoré manuellement",
@@ -260,7 +262,7 @@
     "turningSpeedModifierPercentage": "Malus vitesse rotation",
     "velocity": "Vitesse",
     "verticalRecoil": "Recul vertical",
-    "weight": "Poids (kg)"
+    "weight": "Poids"
   },
   "message": {
     "apiDisclaimer1": "Données fournies gratuitement par ",

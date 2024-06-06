@@ -1,16 +1,5 @@
 <template>
   <div class="inventory-price">
-    <div
-      v-if="inventoryPrice.missingPrice"
-      class="inventory-price-missing-price-icon"
-    >
-      <Tooltip
-        :tooltip="isBuild ? $t('message.buildWithMissingPrice') : $t('message.inventorySlotWithMissingPrice')"
-        position="right"
-      >
-        <font-awesome-icon icon="exclamation-triangle" />
-      </Tooltip>
-    </div>
     <Tooltip :tooltip="tooltip">
       <div
         class="inventory-price-list"
@@ -32,6 +21,17 @@
         </div>
       </div>
     </Tooltip>
+    <div
+      v-if="inventoryPrice.missingPrice"
+      class="inventory-price-missing-price-icon"
+    >
+      <Tooltip
+        :tooltip="isBuild ? $t('message.buildWithMissingPrice') : $t('message.inventorySlotWithMissingPrice')"
+        position="right"
+      >
+        <font-awesome-icon icon="exclamation-triangle" />
+      </Tooltip>
+    </div>
   </div>
 
   <!-- Price details -->
@@ -163,7 +163,6 @@ function togglePriceDetails(event: Event) {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  margin-left: 0.5rem;
 }
 </style>

@@ -22,7 +22,7 @@
       v-tooltip.top="$t('caption.hitRadius')"
       class="option-value"
     >
-      <span>{{ meleeWeapon.hitRadius }}m</span>
+      <span>{{ $t('caption.hitRadiusValue', { radius: meleeWeapon.hitRadius }) }}</span>
       <font-awesome-icon
         icon="dot-circle"
         class="icon-after-text"

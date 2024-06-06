@@ -6,7 +6,7 @@
         <span>{{ $t('caption.chopDamage') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.chopDamage }}
+        {{ meleeWeapon.chopDamage }}
       </div>
     </div>
     <div class="stats-entry">
@@ -15,7 +15,7 @@
         <span>{{ $t('caption.stabDamage') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.stabDamage }}
+        {{ meleeWeapon.stabDamage }}
       </div>
     </div>
     <div class="stats-entry">
@@ -27,11 +27,44 @@
         <span>{{ $t('caption.hitRadius') }} :</span>
       </div>
       <div class="stats-value">
-        {{ item.hitRadius }}m
+        {{ $t('caption.hitRadiusValue', { radius: meleeWeapon.hitRadius }) }}
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts" src="./MeleeWeaponStatsComponent.ts" />
-<style scoped lang="css" src="./MeleeWeaponStatsComponent.css" />
+
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import Images from '../../images'
+import { IItem } from '../../models/item/IItem'
+import { IMeleeWeapon } from '../../models/item/IMeleeWeapon'
+
+const props = defineProps<{
+  item: IItem
+}>()
+
+const meleeWeapon = computed(() => props.item as IMeleeWeapon)
+</script>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+@import '../../css/icon.css';
+@import '../../css/stats.css';
+</style>

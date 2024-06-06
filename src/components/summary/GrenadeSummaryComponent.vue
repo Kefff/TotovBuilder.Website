@@ -39,7 +39,7 @@
       v-tooltip.top="$t('caption.explosionDelay')"
       class="option-value"
     >
-      <span>{{ grenade.explosionDelay }}s</span>
+      <span>{{ $t('caption.explosionDelayValue', { delay: grenade.explosionDelay }) }}</span>
       <font-awesome-icon
         icon="stopwatch"
         class="icon-after-text"

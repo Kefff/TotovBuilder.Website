@@ -106,7 +106,7 @@ export default class StatsUtils {
         displayValue = StatsUtils.getDisplayValue(value, true, 1, undefined, language)
         break
       case DisplayValueType.weight:
-        displayValue = StatsUtils.getDisplayValue(value, false, 3, 3, language)
+        displayValue = StatsUtils.getDisplayValue(value, false, 3, 3, language) + ' kg'
         break
 
       // Percentages

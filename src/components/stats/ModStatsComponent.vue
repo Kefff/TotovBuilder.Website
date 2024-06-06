@@ -18,5 +18,40 @@
   </div>
 </template>
 
-<script lang="ts" src="./ModStatsComponent.ts" />
-<style scoped lang="css" src="./ModStatsComponent.css" />
+
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IMod } from '../../models/item/IMod'
+import { IItem } from '../../models/item/IItem'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+
+const props = defineProps<{
+  item: IItem
+}>()
+
+const ergonomicsModifier = computed(() => mod.value.presetErgonomicsModifier ?? mod.value.ergonomicsModifier)
+const mod = computed(() => props.item as IMod)
+
+</script>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+@import '../../css/icon.css';
+@import '../../css/stats.css';
+</style>

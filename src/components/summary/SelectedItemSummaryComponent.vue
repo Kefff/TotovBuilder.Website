@@ -221,7 +221,7 @@ async function setWeight() {
 
 .selected-item-summary-price-per-unit {
   font-size: 0.75rem;
-  margin-right: 2.3rem;
+  margin-right: 2.5rem;
   /* Alignment with the item total price */
 }
 
@@ -259,18 +259,18 @@ async function setWeight() {
 }
 
 .selected-item-summary-weight .icon-after-text {
-  margin-left: 0.4rem;
+  margin-left: 0.85rem;
   /* Alignment with the inventory slot weight */
 }
 
 .selected-item-summary-weight-per-unit {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   margin-right: 0.3rem;
   /* Alignment with the item total weight */
 }
 
 .selected-item-summary-weight-per-unit .icon-after-text {
-  margin-left: 0.5rem;
+  margin-left: 1.05rem;
   /* Alignment with the item total weight */
   min-height: auto;
   min-width: auto;

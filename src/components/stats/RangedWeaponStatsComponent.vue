@@ -6,16 +6,16 @@
         <span>{{ $t('caption.caliber') }} :</span>
       </div>
       <div class="stats-value">
-        {{ $t('caption.' + StringUtils.toLowerFirst(item.caliber)) }}
+        {{ $t('caption.' + StringUtils.toLowerFirst(rangedWeapon.caliber)) }}
       </div>
     </div>
     <div class="stats-entry">
       <div class="stats-caption custom-icon-before-text">
-        <img :src="Images.fireRateate">
+        <img :src="Images.fireRate">
         <span>{{ $t('caption.fireRate') }} :</span>
       </div>
       <div class="stats-value">
-        {{ $t('caption.fireRateValue', { fireRate: item.fireRate }) }}
+        {{ $t('caption.fireRateValue', { fireRate: rangedWeapon.fireRate }) }}
       </div>
     </div>
   </div>
@@ -29,7 +29,7 @@
         <span>{{ $t('caption.verticalRecoil') }} :</span>
       </div>
       <div class="stats-value">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, item.presetVerticalRecoil ?? item.verticalRecoil) }}
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, rangedWeapon.presetVerticalRecoil ?? rangedWeapon.verticalRecoil) }}
       </div>
     </div>
     <div class="stats-entry">
@@ -41,7 +41,7 @@
         <span>{{ $t('caption.horizontalRecoil') }} :</span>
       </div>
       <div class="stats-value">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, item.presetHorizontalRecoil ?? item.horizontalRecoil) }}
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, rangedWeapon.presetHorizontalRecoil ?? rangedWeapon.horizontalRecoil) }}
       </div>
     </div>
     <div class="stats-entry">
@@ -53,11 +53,46 @@
         <span>{{ $t('caption.ergonomics') }} :</span>
       </div>
       <div class="stats-value">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, item.presetErgonomics ?? item.ergonomics) }}
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, rangedWeapon.presetErgonomics ?? rangedWeapon.ergonomics) }}
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts" src="./RangedWeaponStatsComponent.ts" />
-<style scoped lang="css" src="./RangedWeaponStatsComponent.css" />
+
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import Images from '../../images'
+import { IItem } from '../../models/item/IItem'
+import { IRangedWeapon } from '../../models/item/IRangedWeapon'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import StringUtils from '../../utils/StringUtils'
+
+const props = defineProps<{
+  item: IItem
+}>()
+
+const rangedWeapon = computed(() => props.item as IRangedWeapon)
+</script>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+@import '../../css/icon.css';
+@import '../../css/stats.css';
+</style>
