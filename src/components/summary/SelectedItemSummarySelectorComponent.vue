@@ -5,18 +5,85 @@
     :inventory-item-in-same-slot-in-preset="inventoryItemInSameSlotInPreset"
     :inventory-item="inventoryItem"
   >
-    <component
-      :is="specializedComponent"
-      v-if="specializedComponent != null && selectedItemArmorModifiers != null"
-      :armor-modifiers-override="selectedItemArmorModifiers"
+    <AmmunitionSummary
+      v-if="specializedComponent === AmmunitionSummary"
       :item="selectedItem"
       :show-empty-entries="false"
     />
-    <component
-      :is="specializedComponent"
-      v-else-if="specializedComponent != null"
+    <ArmorModSummary
+      v-if="specializedComponent === ArmorModSummary"
+      :armor-modifiers-override="selectedItemArmorModifiers"
       :item="selectedItem"
       :show-empty-entries="false"
+      :wearable-modifiers-override="selectedItemWearableModifiers"
+    />
+    <ArmorSummary
+      v-if="specializedComponent === ArmorSummary"
+      :armor-modifiers-override="selectedItemArmorModifiers"
+      :item="selectedItem"
+      :show-empty-entries="false"
+      :wearable-modifiers-override="selectedItemWearableModifiers"
+    />
+    <BackpackSummary
+      v-if="specializedComponent === BackpackSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+      :wearable-modifiers-override="selectedItemWearableModifiers"
+    />
+    <ContainerSummary
+      v-if="specializedComponent === ContainerSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+    />
+    <EyewearSummary
+      v-if="specializedComponent === EyewearSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+    />
+    <GrenadeSummary
+      v-if="specializedComponent === GrenadeSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+    />
+    <HeadwearSummary
+      v-if="specializedComponent === HeadwearSummary"
+      :armor-modifiers-override="selectedItemArmorModifiers"
+      :item="selectedItem"
+      :show-empty-entries="false"
+      :wearable-modifiers-override="selectedItemWearableModifiers"
+    />
+    <MagazineSummary
+      v-if="specializedComponent === MagazineSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+    />
+    <MeleeWeaponSummary
+      v-if="specializedComponent === MeleeWeaponSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+    />
+    <ModSummary
+      v-if="specializedComponent === ModSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+    />
+    <RangedWeaponModSummary
+      v-if="specializedComponent === RangedWeaponModSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+    />
+    <RangedWeaponSummary
+      v-if="specializedComponent === RangedWeaponSummary"
+      :item="selectedItem"
+      :ranged-weapons-modifiers-override="selectedItemRangedWeaponModifiers"
+      :show-empty-entries="false"
+    />
+    <VestSummary
+      v-if="specializedComponent === VestSummary"
+      :armor-modifiers-override="selectedItemArmorModifiers"
+      :item="selectedItem"
+      :show-empty-entries="false"
+      :wearable-modifiers-override="selectedItemWearableModifiers"
     />
   </SelectedItemSummary>
 </template>
@@ -34,7 +101,11 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IItem } from '../../models/item/IItem'
+import { IRangedWeapon } from '../../models/item/IRangedWeapon'
+import { IWearable } from '../../models/item/IWearable'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
+import { IRangedWeaponModifiers } from '../../models/utils/IRangedWeaponModifiers'
+import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ItemService } from '../../services/ItemService'
@@ -68,6 +139,8 @@ const props = withDefaults(
 
 const selectedItem = ref<IItem>()
 const selectedItemArmorModifiers = ref<IArmorModifiers>()
+const selectedItemRangedWeaponModifiers = ref<IRangedWeaponModifiers>()
+const selectedItemWearableModifiers = ref<IWearableModifiers>()
 
 onMounted(() => getSelectedItem())
 
@@ -97,12 +170,19 @@ function getSpecializedComponent(itemCategoryId?: string) {
   }
   else if (itemPropertiesService.isArmor(itemCategoryId)) {
     setArmorModifiers()
+    setWearableModifiers()
+
     return ArmorSummary
   }
   else if (itemPropertiesService.isArmorMod(itemCategoryId)) {
+    setArmorModifiers()
+    setWearableModifiers()
+
     return ArmorModSummary
   }
   else if (itemPropertiesService.isBackpack(itemCategoryId)) {
+    setWearableModifiers()
+
     return BackpackSummary
   }
   else if (itemPropertiesService.isContainer(itemCategoryId)) {
@@ -115,6 +195,9 @@ function getSpecializedComponent(itemCategoryId?: string) {
     return GrenadeSummary
   }
   else if (itemPropertiesService.isHeadwear(itemCategoryId)) {
+    setArmorModifiers()
+    setWearableModifiers()
+
     return HeadwearSummary
   }
   else if (itemPropertiesService.isMagazine(itemCategoryId)) {
@@ -127,6 +210,8 @@ function getSpecializedComponent(itemCategoryId?: string) {
     return ModSummary
   }
   else if (itemPropertiesService.isRangedWeapon(itemCategoryId)) {
+    setRangedWeaponModifiers()
+
     return RangedWeaponSummary
   }
   else if (itemPropertiesService.isRangedWeaponMod(itemCategoryId)) {
@@ -134,12 +219,15 @@ function getSpecializedComponent(itemCategoryId?: string) {
   }
   else if (itemPropertiesService.isVest(itemCategoryId)) {
     setArmorModifiers()
+    setWearableModifiers()
+
     return VestSummary
   }
 }
 
 /**
- * Sets the armor modifiers for items with armor.
+ * Sets the modifiers for armors.
+ * We display the base stats of presets because the full stats are displayed in the inventory slot.
  */
 async function setArmorModifiers() {
   const frontPlateModSlot = props.inventoryItem.modSlots.find(ms => ms.modSlotName === 'front_plate')
@@ -153,6 +241,32 @@ async function setArmorModifiers() {
     }
   } else {
     selectedItemArmorModifiers.value = await Services.get(InventoryItemService).getArmorModifiers(props.inventoryItem)
+  }
+}
+
+/**
+ * Sets the modifiers for ranged weapons.
+ * We display the base stats of presets because the full stats are displayed in the inventory slot.
+ */
+async function setRangedWeaponModifiers() {
+  const rangedWeapon = (await Services.get(ItemService).getItem(props.inventoryItem.itemId)) as IRangedWeapon
+  selectedItemRangedWeaponModifiers.value = {
+    ergonomics: rangedWeapon.ergonomics,
+    horizontalRecoil: rangedWeapon.horizontalRecoil,
+    verticalRecoil: rangedWeapon.verticalRecoil
+  }
+}
+
+/**
+ * Sets the modifiers for wearable items.
+ * We display the base stats of presets because the full stats are displayed in the inventory slot.
+ */
+async function setWearableModifiers() {
+  const wearable = (await Services.get(ItemService).getItem(props.inventoryItem.itemId)) as IWearable
+  selectedItemWearableModifiers.value = {
+    ergonomicsModifierPercentage: wearable.ergonomicsModifierPercentage,
+    movementSpeedModifierPercentage: wearable.movementSpeedModifierPercentage,
+    turningSpeedModifierPercentage: wearable.turningSpeedModifierPercentage
   }
 }
 </script>

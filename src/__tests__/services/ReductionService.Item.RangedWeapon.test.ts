@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { ReductionService } from '../../services/ReductionService'
 import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
@@ -48,9 +48,7 @@ describe('parseReducedItem', () => {
         modSlots: [],
         name: 'Kalashnikov AKS-74U 5.45x39 assault rifle Default',
         minuteOfAngle: 3.44,
-        presetErgonomics: undefined,
-        presetHorizontalRecoil: undefined,
-        presetVerticalRecoil: undefined,
+        presetRangedWeaponModifiers: undefined,
         prices: [],
         shortName: 'AKS-74U Default',
         verticalRecoil: 141,
@@ -291,9 +289,7 @@ describe('parseReducedItem', () => {
           }
         ],
         name: 'Kalashnikov AKS-74U 5.45x39 assault rifle',
-        presetErgonomics: undefined,
-        presetHorizontalRecoil: undefined,
-        presetVerticalRecoil: undefined,
+        presetRangedWeaponModifiers: undefined,
         prices: [],
         shortName: 'AKS-74U',
         verticalRecoil: 141,
@@ -336,9 +332,7 @@ describe('parseReducedItem', () => {
         minuteOfAngle: undefined,
         modSlots: [],
         name: 'RSP-30 reactive signal cartridge (Yellow)',
-        presetErgonomics: undefined,
-        presetHorizontalRecoil: undefined,
-        presetVerticalRecoil: undefined,
+        presetRangedWeaponModifiers: undefined,
         prices: [],
         shortName: 'Yellow',
         verticalRecoil: 200,

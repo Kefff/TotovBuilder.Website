@@ -16,7 +16,7 @@ export interface IWearable extends IItem {
   movementSpeedModifierPercentage: number
 
   /**
-   * Wearable modifier of the whole preset added to the weapon in percentage.
+   * Wearable modifier of the whole preset added to the wearable in percentage.
    * Undefined if the item is not a preset.
    */
   presetWearableModifiers: IWearableModifiers | undefined

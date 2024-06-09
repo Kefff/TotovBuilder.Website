@@ -14,7 +14,7 @@ export const RangedWeaponSortingFunctions: ISortingFunctionList = {
   },
   ergonomics: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve((i as IRangedWeapon).presetErgonomics ?? (i as IRangedWeapon).ergonomics)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IRangedWeapon).presetRangedWeaponModifiers?.ergonomics ?? (i as IRangedWeapon).ergonomics)
   },
   fireRate: {
     comparisonFunction: compareByNumber,
@@ -22,10 +22,10 @@ export const RangedWeaponSortingFunctions: ISortingFunctionList = {
   },
   horizontalRecoil: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve((i as IRangedWeapon).presetHorizontalRecoil ?? (i as IRangedWeapon).horizontalRecoil)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IRangedWeapon).presetRangedWeaponModifiers?.horizontalRecoil ?? (i as IRangedWeapon).horizontalRecoil)
   },
   verticalRecoil: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve((i as IRangedWeapon).presetVerticalRecoil ?? (i as IRangedWeapon).verticalRecoil)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IRangedWeapon).presetRangedWeaponModifiers?.verticalRecoil ?? (i as IRangedWeapon).verticalRecoil)
   }
 }

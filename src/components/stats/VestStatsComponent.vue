@@ -1,6 +1,6 @@
 <template>
-  <ArmorStats :item="wearable" />
-  <ContainerStats :item="wearable" />
+  <ArmorStats :item="vest" />
+  <ContainerStats :item="vest" />
 </template>
 
 
@@ -14,8 +14,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { IWearable } from '../../models/item/IWearable'
 import { IItem } from '../../models/item/IItem'
+import { IVest } from '../../models/item/IVest'
 import ArmorStats from './ArmorStatsComponent.vue'
 import ContainerStats from './ContainerStatsComponent.vue'
 
@@ -23,7 +23,7 @@ const props = defineProps<{
   item: IItem
 }>()
 
-const wearable = computed(() => props.item as IWearable)
+const vest = computed(() => props.item as IVest)
 </script>
 
 

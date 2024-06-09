@@ -36,6 +36,7 @@ describe('parseReducedItem', () => {
         modSlots: [],
         movementSpeedModifierPercentage: 0,
         name: 'Unknown',
+        presetArmorModifiers: undefined,
         presetWearableModifiers: undefined,
         prices: [],
         shortName: 'Unknown',
@@ -286,6 +287,7 @@ describe('parseReducedItem', () => {
             required: false
           }
         ],
+        presetArmorModifiers: undefined,
         presetWearableModifiers: undefined,
         prices: [],
         shortName: '6B43',
@@ -536,6 +538,7 @@ describe('parseReducedItem', () => {
             required: false
           }
         ],
+        presetArmorModifiers: undefined,
         presetWearableModifiers: undefined,
         prices: [],
         shortName: '6B43 Default',

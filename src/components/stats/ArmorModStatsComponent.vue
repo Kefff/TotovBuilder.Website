@@ -1,8 +1,7 @@
 <template>
   <ArmorStats
     v-if="armorMod.armorClass > 0"
-    :item="item"
-    :wearable-modifiers-override="armorMod.presetWearableModifiers"
+    :item="armorMod"
   />
   <div
     v-if="armorMod.blindnessProtectionPercentage !== 0"

@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="armor.armorClass > 0"
+    v-if="armorClass > 0"
     class="stats-line"
   >
     <div class="stats-entry">
@@ -12,11 +12,11 @@
         <span>{{ $t('caption.armorClass') }} :</span>
       </div>
       <div class="stats-value">
-        {{ armor.armorClass }}
+        {{ armorClass }}
       </div>
     </div>
     <div
-      v-if="armor.durability > 0"
+      v-if="durability > 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -27,7 +27,7 @@
         <span>{{ $t('caption.durability') }} :</span>
       </div>
       <div class="stats-value">
-        {{ armor.durability }}
+        {{ durability }}
       </div>
     </div>
     <div class="stats-entry">
@@ -40,7 +40,7 @@
       </div>
     </div>
   </div>
-  <div v-if="armor.armorClass > 0">
+  <div v-if="armor.armoredAreas.length > 0">
     <div stats-entry>
       <div class="stats-caption">
         <font-awesome-icon
@@ -52,7 +52,7 @@
     </div>
   </div>
   <div
-    v-if="armor.armorClass > 0"
+    v-if="armor.armoredAreas.length > 0"
     class="stats-line"
   >
     <div
@@ -67,8 +67,8 @@
     </div>
   </div>
   <WearableStats
-    :item="item"
-    :wearable-modifiers-override="wearableModifiersOverride"
+    :item="armor"
+    :wearable-modifiers-override="wearableModifiers"
   />
 </template>
 
@@ -85,18 +85,16 @@
 import { computed } from 'vue'
 import { IArmor } from '../../models/item/IArmor'
 import { IItem } from '../../models/item/IItem'
-import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import WearableStats from './WearableStatsComponent.vue'
 
-const props = withDefaults(
-  defineProps<{
-    item: IItem,
-    wearableModifiersOverride?: IWearableModifiers
-  }>(),
-  {
-    wearableModifiersOverride: undefined
-  })
+const props = defineProps<{
+  item: IItem
+}>()
+
 const armor = computed(() => props.item as IArmor)
+const armorClass = computed(() => armor.value.presetArmorModifiers?.armorClass ?? armor.value.armorClass)
+const durability = computed(() => armor.value.presetArmorModifiers?.durability ?? armor.value.durability)
+const wearableModifiers = computed(() => armor.value.presetWearableModifiers ?? undefined)
 </script>
 
 

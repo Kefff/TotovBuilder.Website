@@ -425,12 +425,9 @@ describe('updatePresetProperties', () => {
 
     // Assert
     expect(armor.presetWearableModifiers).toStrictEqual({
-      ergonomicsModifierPercentage: -0.01,
-      ergonomicsModifierPercentageWithMods: -0.025,
-      movementSpeedModifierPercentage: -0.01,
-      movementSpeedModifierPercentageWithMods: -0.060000000000000005,
-      turningSpeedModifierPercentage: 0,
-      turningSpeedModifierPercentageWithMods: -0.01
+      ergonomicsModifierPercentage: -0.025,
+      movementSpeedModifierPercentage: -0.060000000000000005,
+      turningSpeedModifierPercentage: -0.01
     } as IWearableModifiers)
   })
 
@@ -467,6 +464,7 @@ describe('updatePresetProperties', () => {
           ],
           movementSpeedModifierPercentage: 0.04,
           name: 'Base armor mod',
+          presetArmorModifiers: undefined,
           presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
@@ -501,6 +499,7 @@ describe('updatePresetProperties', () => {
           ],
           movementSpeedModifierPercentage: 0.04,
           name: 'Preset armor mod',
+          presetArmorModifiers: undefined,
           presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
@@ -528,6 +527,7 @@ describe('updatePresetProperties', () => {
           modSlots: [],
           movementSpeedModifierPercentage: 0.20,
           name: 'Child armor mod',
+          presetArmorModifiers: undefined,
           presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
@@ -578,12 +578,9 @@ describe('updatePresetProperties', () => {
     // Assert
     expect(armorMod.ergonomicsModifierPercentage).toBe(0.05)
     expect(armorMod.presetWearableModifiers).toStrictEqual({
-      ergonomicsModifierPercentage: 0.05,
-      ergonomicsModifierPercentageWithMods: 0.15000000000000002,
-      movementSpeedModifierPercentage: 0.04,
-      movementSpeedModifierPercentageWithMods: 0.24000000000000002,
-      turningSpeedModifierPercentage: 0.03,
-      turningSpeedModifierPercentageWithMods: 0.32999999999999996
+      ergonomicsModifierPercentage: 0.15000000000000002,
+      movementSpeedModifierPercentage: 0.24000000000000002,
+      turningSpeedModifierPercentage: 0.32999999999999996
     } as IWearableModifiers)
   })
 
@@ -621,6 +618,7 @@ describe('updatePresetProperties', () => {
           ],
           movementSpeedModifierPercentage: 0.04,
           name: 'Base headwear',
+          presetArmorModifiers: undefined,
           presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
@@ -656,6 +654,7 @@ describe('updatePresetProperties', () => {
           ],
           movementSpeedModifierPercentage: 0.04,
           name: 'Preset headwear',
+          presetArmorModifiers: undefined,
           presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
@@ -683,6 +682,7 @@ describe('updatePresetProperties', () => {
           modSlots: [],
           movementSpeedModifierPercentage: 0.20,
           name: 'Child armor mod',
+          presetArmorModifiers: undefined,
           presetWearableModifiers: undefined,
           prices: [],
           ricochetChance: 'low',
@@ -733,12 +733,9 @@ describe('updatePresetProperties', () => {
     // Assert
     expect(headwear.ergonomicsModifierPercentage).toBe(0.05)
     expect(headwear.presetWearableModifiers).toStrictEqual({
-      ergonomicsModifierPercentage: 0.05,
-      ergonomicsModifierPercentageWithMods: 0.15000000000000002,
-      movementSpeedModifierPercentage: 0.04,
-      movementSpeedModifierPercentageWithMods: 0.24000000000000002,
-      turningSpeedModifierPercentage: 0.03,
-      turningSpeedModifierPercentageWithMods: 0.32999999999999996
+      ergonomicsModifierPercentage: 0.15000000000000002,
+      movementSpeedModifierPercentage: 0.24000000000000002,
+      turningSpeedModifierPercentage: 0.32999999999999996
     } as IWearableModifiers)
   })
 
@@ -886,9 +883,9 @@ describe('updatePresetProperties', () => {
     expect(rangedWeapon.ergonomics).toBe(45)
     expect(rangedWeapon.horizontalRecoil).toBe(333)
     expect(rangedWeapon.verticalRecoil).toBe(112)
-    expect(rangedWeapon.presetErgonomics).toBe(62)
-    expect(rangedWeapon.presetHorizontalRecoil).toBe(226.44)
-    expect(rangedWeapon.presetVerticalRecoil).toBe(76.16)
+    expect(rangedWeapon.presetRangedWeaponModifiers?.ergonomics).toBe(62)
+    expect(rangedWeapon.presetRangedWeaponModifiers?.horizontalRecoil).toBe(226.44)
+    expect(rangedWeapon.presetRangedWeaponModifiers?.verticalRecoil).toBe(76.16)
   })
 
   it('should update the properties of a ranged weapond mod', async () => {
@@ -1045,12 +1042,9 @@ describe('updatePresetProperties', () => {
 
     // Assert
     expect(armor.presetWearableModifiers).toStrictEqual({
-      ergonomicsModifierPercentage: -0.01,
-      ergonomicsModifierPercentageWithMods: -0.03,
-      movementSpeedModifierPercentage: -0.01,
-      movementSpeedModifierPercentageWithMods: -0.03,
-      turningSpeedModifierPercentage: -0.01,
-      turningSpeedModifierPercentageWithMods: -0.01
+      ergonomicsModifierPercentage: -0.03,
+      movementSpeedModifierPercentage: -0.03,
+      turningSpeedModifierPercentage: -0.01
     } as IWearableModifiers)
   })
 

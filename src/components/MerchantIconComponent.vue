@@ -74,11 +74,7 @@ withDefaults(
 }
 
 .merchant-icon > img {
-  border-color: var(--util-color);
   border-radius: 3px;
-  border-radius: 3px;
-  border-style: solid;
-  border-width: 1px;
   width: 2rem;
 }
 

@@ -29,7 +29,7 @@
         <span>{{ $t('caption.verticalRecoil') }} :</span>
       </div>
       <div class="stats-value">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, rangedWeapon.presetVerticalRecoil ?? rangedWeapon.verticalRecoil) }}
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, verticalRecoil) }}
       </div>
     </div>
     <div class="stats-entry">
@@ -41,7 +41,7 @@
         <span>{{ $t('caption.horizontalRecoil') }} :</span>
       </div>
       <div class="stats-value">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, rangedWeapon.presetHorizontalRecoil ?? rangedWeapon.horizontalRecoil) }}
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, horizontalRecoil) }}
       </div>
     </div>
     <div class="stats-entry">
@@ -53,7 +53,7 @@
         <span>{{ $t('caption.ergonomics') }} :</span>
       </div>
       <div class="stats-value">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, rangedWeapon.presetErgonomics ?? rangedWeapon.ergonomics) }}
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, ergonomics) }}
       </div>
     </div>
   </div>
@@ -80,7 +80,10 @@ const props = defineProps<{
   item: IItem
 }>()
 
+const ergonomics = computed(() => rangedWeapon.value.presetRangedWeaponModifiers?.ergonomics ?? rangedWeapon.value.ergonomics)
+const horizontalRecoil = computed(() => rangedWeapon.value.presetRangedWeaponModifiers?.horizontalRecoil ?? rangedWeapon.value.horizontalRecoil)
 const rangedWeapon = computed(() => props.item as IRangedWeapon)
+const verticalRecoil = computed(() => rangedWeapon.value.presetRangedWeaponModifiers?.verticalRecoil ?? rangedWeapon.value.verticalRecoil)
 </script>
 
 

@@ -218,10 +218,10 @@ export class InventorySlotPropertiesService {
         continue
       }
 
-      const inventoryItemWearableeModifiers = await inventoryItemService.getWearableModifiers(inventoryItem)
-      inventorySlotWearableModifiers.ergonomicsModifierPercentage += inventoryItemWearableeModifiers.ergonomicsModifierPercentageWithMods
-      inventorySlotWearableModifiers.movementSpeedModifierPercentage += inventoryItemWearableeModifiers.movementSpeedModifierPercentageWithMods
-      inventorySlotWearableModifiers.turningSpeedModifierPercentage += inventoryItemWearableeModifiers.turningSpeedModifierPercentageWithMods
+      const inventoryItemWearableModifiers = await inventoryItemService.getWearableModifiers(inventoryItem)
+      inventorySlotWearableModifiers.ergonomicsModifierPercentage += inventoryItemWearableModifiers.ergonomicsModifierPercentage
+      inventorySlotWearableModifiers.movementSpeedModifierPercentage += inventoryItemWearableModifiers.movementSpeedModifierPercentage
+      inventorySlotWearableModifiers.turningSpeedModifierPercentage += inventoryItemWearableModifiers.turningSpeedModifierPercentage
     }
 
     return inventorySlotWearableModifiers

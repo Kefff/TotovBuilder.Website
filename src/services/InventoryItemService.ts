@@ -14,8 +14,8 @@ import { IArmorModifiers } from '../models/utils/IArmorModifiers'
 import { IErgonomics } from '../models/utils/IErgonomics'
 import { IInventoryItemPrice } from '../models/utils/IInventoryItemPrice'
 import { IInventoryItemRecoil } from '../models/utils/IInventoryItemRecoil'
-import { IInventoryItemWearableModifiers } from '../models/utils/IInventoryItemWearableModifiers'
 import { IRecoilModifierPercentage } from '../models/utils/IRecoilModifierPercentage'
+import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 import { IWeight } from '../models/utils/IWeight'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import vueI18n from '../plugins/vueI18n'
@@ -669,30 +669,22 @@ ${indentation}${containedItemAsString}`
    * @param inventoryItem - Inventory item.
    * @returns Wearable modifiers.
    */
-  public async getWearableModifiers(inventoryItem: IInventoryItem): Promise<IInventoryItemWearableModifiers> {
+  public async getWearableModifiers(inventoryItem: IInventoryItem): Promise<IWearableModifiers> {
     const item = await Services.get(ItemService).getItem(inventoryItem.itemId)
 
     if (!Services.get(ItemPropertiesService).isWearable(item)) {
       return {
         ergonomicsModifierPercentage: 0,
-        ergonomicsModifierPercentageWithMods: 0,
         movementSpeedModifierPercentage: 0,
-        movementSpeedModifierPercentageWithMods: 0,
-        turningSpeedModifierPercentage: 0,
-        turningSpeedModifierPercentageWithMods: 0
+        turningSpeedModifierPercentage: 0
       }
     }
 
     const wearable = item as IWearable
 
-    const ergonomicsModifierPercentage = wearable.ergonomicsModifierPercentage
-    let ergonomicsModifierPercentageWithMods = ergonomicsModifierPercentage
-
-    const movementSpeedModifierPercentage = wearable.movementSpeedModifierPercentage
-    let movementSpeedModifierPercentageWithMods = movementSpeedModifierPercentage
-
-    const turningSpeedModifierPercentage = wearable.turningSpeedModifierPercentage
-    let turningSpeedModifierPercentageWithMods = turningSpeedModifierPercentage
+    let ergonomicsModifierPercentage = wearable.ergonomicsModifierPercentage
+    let movementSpeedModifierPercentage = wearable.movementSpeedModifierPercentage
+    let turningSpeedModifierPercentage = wearable.turningSpeedModifierPercentage
 
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.item == null) {
@@ -700,18 +692,15 @@ ${indentation}${containedItemAsString}`
       }
 
       const modWearableModifiers = await this.getWearableModifiers(modSlot.item)
-      ergonomicsModifierPercentageWithMods += modWearableModifiers.ergonomicsModifierPercentageWithMods
-      movementSpeedModifierPercentageWithMods += modWearableModifiers.movementSpeedModifierPercentageWithMods
-      turningSpeedModifierPercentageWithMods += modWearableModifiers.turningSpeedModifierPercentageWithMods
+      ergonomicsModifierPercentage += modWearableModifiers.ergonomicsModifierPercentage
+      movementSpeedModifierPercentage += modWearableModifiers.movementSpeedModifierPercentage
+      turningSpeedModifierPercentage += modWearableModifiers.turningSpeedModifierPercentage
     }
 
     return {
       ergonomicsModifierPercentage,
-      ergonomicsModifierPercentageWithMods,
       movementSpeedModifierPercentage,
-      movementSpeedModifierPercentageWithMods,
-      turningSpeedModifierPercentage,
-      turningSpeedModifierPercentageWithMods
+      turningSpeedModifierPercentage
     }
   }
 

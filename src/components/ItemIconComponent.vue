@@ -33,7 +33,7 @@ const itemPropertiesService = Services.get(ItemPropertiesService)
 const props = withDefaults(
   defineProps<{
     item: IItem,
-    quantity?: number
+    quantity?: number,
   }>(),
   {
     quantity: undefined
@@ -67,6 +67,7 @@ const iconUrl = computed(() => {
 }
 
 .item-icon > img {
+  border-radius: 3px;
   max-height: 3.25rem;
 }
 

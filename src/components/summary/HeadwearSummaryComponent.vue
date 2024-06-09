@@ -1,8 +1,9 @@
 <template>
   <ArmorSummary
+    :armor-modifiers-override="armorModifiers"
     :item="headwear"
     :show-empty-entries="showEmptyEntries"
-    :wearable-modifiers-override="headwear.presetWearableModifiers"
+    :wearable-modifiers-override="wearableModifiers"
   />
   <div
     v-if="hasRicochetChance || showEmptyEntries"
@@ -35,19 +36,27 @@ import { computed } from 'vue'
 import Images from '../../images'
 import { IHeadwear } from '../../models/item/IHeadwear'
 import { IItem } from '../../models/item/IItem'
+import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
+import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import ArmorSummary from './ArmorSummaryComponent.vue'
 
 const props = withDefaults(
   defineProps<{
+    armorModifiersOverride?: IArmorModifiers,
     item: IItem,
-    showEmptyEntries?: boolean
+    showEmptyEntries?: boolean,
+    wearableModifiersOverride?: IWearableModifiers
   }>(),
   {
-    showEmptyEntries: true
+    armorModifiersOverride: undefined,
+    showEmptyEntries: true,
+    wearableModifiersOverride: undefined
   })
 
+const armorModifiers = computed(() => props.armorModifiersOverride ?? headwear.value.presetArmorModifiers)
 const hasRicochetChance = computed(() => headwear.value.ricochetChance !== '')
 const headwear = computed(() => props.item as IHeadwear)
+const wearableModifiers = computed(() => props.wearableModifiersOverride ?? headwear.value.presetWearableModifiers)
 </script>
 
 

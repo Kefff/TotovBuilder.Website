@@ -71,8 +71,8 @@ const props = withDefaults(
   })
 
 const armor = computed(() => props.item as IArmor)
-const armorClass = computed(() => props.armorModifiersOverride?.armorClass ?? armor.value.armorClass)
-const durability = computed(() => props.armorModifiersOverride?.durability ?? armor.value.durability)
+const armorClass = computed(() => props.armorModifiersOverride?.armorClass ?? armor.value.presetArmorModifiers?.armorClass ?? armor.value.armorClass)
+const durability = computed(() => props.armorModifiersOverride?.durability ?? armor.value.presetArmorModifiers?.durability ?? armor.value.durability)
 </script>
 
 

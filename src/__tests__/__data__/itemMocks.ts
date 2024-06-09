@@ -418,6 +418,7 @@ export const armor6b13Fl: IArmor = {
   ],
   ergonomicsModifierPercentage: -0.01,
   movementSpeedModifierPercentage: -0.01,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: 0,
   armorClass: 4,
@@ -524,6 +525,7 @@ export const armor6b13FlDefault: IArmor = {
   ],
   ergonomicsModifierPercentage: -0.01,
   movementSpeedModifierPercentage: -0.01,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: 0,
   armorClass: 4,
@@ -661,6 +663,7 @@ export const banshee: IVest = {
   marketLink: 'https://tarkov.dev/item/shellback-tactical-banshee-plate-carrier-a-tacs-au',
   maxStackableAmount: 1,
   name: 'Shellback Tactical Banshee plate carrier (A-TACS AU)',
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   prices: [],
   shortName: 'Banshee',
@@ -785,6 +788,7 @@ export const bansheeDefault: IVest = {
   marketLink: 'https://tarkov.dev/item/shellback-tactical-banshee-plate-carrier-a-tacs-au-default',
   maxStackableAmount: 1,
   name: 'Shellback Tactical Banshee plate carrier (A-TACS AU) Default',
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   prices: [],
   shortName: 'Banshee Default',
@@ -888,6 +892,7 @@ export const cultLocust: IArmorMod = {
   defaultPresetId: undefined,
   maxStackableAmount: 1,
   modSlots: [],
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   prices: [],
   durability: 60,
@@ -1090,6 +1095,7 @@ export const k1s: IHeadwear = {
     }
   ],
   movementSpeedModifierPercentage: 0,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   prices: [],
   ricochetChance: 'Low',
@@ -1122,6 +1128,7 @@ export const k1sVisor: IArmorMod = {
   maxStackableAmount: 1,
   modSlots: [],
   movementSpeedModifierPercentage: 0,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   prices: [],
   turningSpeedModifierPercentage: 0,
@@ -1195,6 +1202,7 @@ export const lshZ2dtm: IHeadwear = {
   ],
   ergonomicsModifierPercentage: -0.03,
   movementSpeedModifierPercentage: 0,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: -0.03,
   armorClass: 4,
@@ -1234,6 +1242,7 @@ export const lshZ2dtmFs: IArmorMod = {
   modSlots: [],
   ergonomicsModifierPercentage: -0.02,
   movementSpeedModifierPercentage: 0,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: -0.05,
   armorClass: 4,
@@ -1323,9 +1332,7 @@ export const m9a3: IRangedWeapon = {
   fireRate: 30,
   horizontalRecoil: 280,
   minuteOfAngle: undefined,
-  presetErgonomics: undefined,
-  presetHorizontalRecoil: undefined,
-  presetVerticalRecoil: undefined,
+  presetRangedWeaponModifiers: undefined,
   verticalRecoil: 404
 }
 
@@ -1405,9 +1412,7 @@ export const m9a3Default: IRangedWeapon = {
   fireRate: 30,
   horizontalRecoil: 280,
   minuteOfAngle: 9.97,
-  presetErgonomics: undefined,
-  presetHorizontalRecoil: undefined,
-  presetVerticalRecoil: undefined,
+  presetRangedWeaponModifiers: undefined,
   verticalRecoil: 404
 }
 
@@ -1656,6 +1661,7 @@ export const monocletePe: IArmorMod = {
   marketLink: 'https://tarkov.dev/item/monoclete-level-iii-pe-ballistic-plate',
   maxStackableAmount: 1,
   modSlots: [],
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   prices: [],
   name: 'Monoclete level III PE ballistic plate',
@@ -1750,9 +1756,7 @@ export const mts25512: IRangedWeapon = {
   weight: 1.1,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_12ga_shotgun',
   minuteOfAngle: undefined,
-  presetErgonomics: undefined,
-  presetHorizontalRecoil: undefined,
-  presetVerticalRecoil: undefined,
+  presetRangedWeaponModifiers: undefined,
   baseItemId: undefined,
   conflictingItemIds: [],
   maxStackableAmount: 1,
@@ -1807,9 +1811,7 @@ export const mts25512Default: IRangedWeapon = {
       required: false
     }
   ],
-  presetErgonomics: undefined,
-  presetHorizontalRecoil: undefined,
-  presetVerticalRecoil: undefined,
+  presetRangedWeaponModifiers: undefined,
   prices: [],
   verticalRecoil: 442,
   categoryId: 'mainWeapon',
@@ -2196,9 +2198,7 @@ export const opSksDefault: IRangedWeapon = {
       required: false
     }
   ],
-  presetErgonomics: undefined,
-  presetHorizontalRecoil: undefined,
-  presetVerticalRecoil: undefined,
+  presetRangedWeaponModifiers: undefined,
   prices: [],
   verticalRecoil: 155,
   categoryId: 'mainWeapon',
@@ -2283,6 +2283,7 @@ export const paca: IArmor = {
   conflictingItemIds: [],
   maxStackableAmount: 1,
   prices: [],
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: 0
 }
@@ -2335,6 +2336,7 @@ export const plate6b33Back: IArmorMod = {
   modSlots: [],
   ergonomicsModifierPercentage: -0.005,
   movementSpeedModifierPercentage: -0.025,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: 0,
   armorClass: 4,
@@ -2364,6 +2366,7 @@ export const plate6b33Front: IArmorMod = {
   modSlots: [],
   ergonomicsModifierPercentage: -0.01,
   movementSpeedModifierPercentage: -0.025,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: -0.01,
   armorClass: 4,
@@ -2625,9 +2628,7 @@ export const rpk16: IRangedWeapon = {
   fireRate: 650,
   horizontalRecoil: 333,
   minuteOfAngle: undefined,
-  presetErgonomics: undefined,
-  presetHorizontalRecoil: undefined,
-  presetVerticalRecoil: undefined,
+  presetRangedWeaponModifiers: undefined,
   verticalRecoil: 112
 }
 
@@ -2751,9 +2752,7 @@ export const rpk16Default: IRangedWeapon = {
   fireRate: 650,
   horizontalRecoil: 333,
   minuteOfAngle: 3.03,
-  presetErgonomics: undefined,
-  presetHorizontalRecoil: undefined,
-  presetVerticalRecoil: undefined,
+  presetRangedWeaponModifiers: undefined,
   verticalRecoil: 112
 }
 
@@ -3301,6 +3300,7 @@ export const scavVest: IVest = {
   modSlots: [],
   ergonomicsModifierPercentage: 0,
   movementSpeedModifierPercentage: 0,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: 0,
   armorClass: 0,
