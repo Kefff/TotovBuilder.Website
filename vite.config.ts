@@ -38,9 +38,14 @@ export default defineConfig({
   test: {
     coverage: {
       exclude: [
-        '**/src/__tests__/**',
-        '**/src/plugins/**',
-        'ExportService.ts' // Because it requires access to the file system
+        '**/scripts/**',
+        'src/__tests__/**',
+        'src/components/**',
+        'src/main.ts',
+        'src/models/**',
+        'src/plugins/**',
+        'src/services/ExportService.ts', // Requires access to the file system
+        'src/servicesConfiguration.ts'
       ]
     },
     environment: 'happy-dom', // Required for browser components like "document" to be accessible during tests

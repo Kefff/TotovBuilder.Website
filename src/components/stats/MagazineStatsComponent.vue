@@ -62,7 +62,7 @@
     <div class="stats-entry">
       <div class="stats-caption custom-icon-before-text">
         <img :src="Images.caliber">
-        <span>{{ $t('caption.acceptedCartridges') }} :</span>
+        <span>{{ $t('caption.acceptedAmmunition') }} :</span>
       </div>
     </div>
   </div>

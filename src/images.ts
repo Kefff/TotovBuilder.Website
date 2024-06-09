@@ -13,6 +13,7 @@ import imagePraporAngry from '../assets/images/prapor-angry.webp'
 import imagePraporSmiling from '../assets/images/prapor-smiling.webp'
 import imagePrapor from '../assets/images/prapor.webp'
 import imageRagman from '../assets/images/ragman.webp'
+import imageRef from '../assets/images/ref.webp'
 import imageRicochet from '../assets/images/ricochet.webp'
 import imageRifle1 from '../assets/images/rifle1.webp'
 import imageRifle2 from '../assets/images/rifle2.webp'
@@ -42,6 +43,7 @@ const Images: IImages = {
   praporSmiling: imagePraporSmiling,
   prapor: imagePrapor,
   ragman: imageRagman,
+  ref: imageRef,
   ricochet: imageRicochet,
   rifle1: imageRifle1,
   rifle2: imageRifle2,

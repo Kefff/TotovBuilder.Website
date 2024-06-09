@@ -1,3 +1,4 @@
+import { createHead } from 'unhead'
 import { createApp } from 'vue'
 import App from './components/AppComponent.vue'
 import Item from './components/item/ItemComponent.vue'
@@ -17,11 +18,11 @@ polyfill()
 // Services
 configureServices()
 
-
 // App
 const app = createApp(App)
 
 // Plugins
+createHead()
 useFontAwesome(app)
 useI18n(app)
 usePrimeVue(app)

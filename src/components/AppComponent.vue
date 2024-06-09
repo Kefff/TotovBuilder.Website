@@ -149,7 +149,6 @@ import LoadingError from './LoadingErrorComponent.vue'
 import Notification from './NotificationComponent.vue'
 
 const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-
 const versionService = Services.get(VersionService)
 
 const bugReportUrl = ref<string>()

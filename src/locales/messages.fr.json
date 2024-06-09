@@ -1,6 +1,6 @@
 {
   "caption": {
-    "acceptedCartridges": "Munitions acceptées",
+    "acceptedAmmunition": "Munitions acceptées",
     "accuracy": "Précision",
     "allowCookies": "Autoriser les cookies",
     "and": "et",
@@ -125,6 +125,7 @@
     "merchant_peacekeeper": "Peacekeeper",
     "merchant_prapor": "Prapor",
     "merchant_ragman": "Ragman",
+    "merchant_ref": "Ref",
     "merchant_skier": "Skier",
     "merchant_therapist": "La Toubib",
     "merchantItemsOptions": "Options de marchands & objets",
@@ -235,8 +236,8 @@
     "shoppingList": "Liste de courses",
     "show": "Afficher",
     "showContent": "Afficher le contenu",
+    "showDetails": "Afficher les détails",
     "showMods": "Afficher les mods",
-    "showStatistics": "Afficher les statistiques",
     "signalProblem": "Signaler le problème",
     "slotTypeArmband": "Brassard",
     "slotTypeBackpack": "Sac à dos",

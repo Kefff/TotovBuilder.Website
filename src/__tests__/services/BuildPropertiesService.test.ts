@@ -796,7 +796,7 @@ describe('getShoppingListMerchants()', () => {
 const expectedToString1 = `Build 1
 Recul vertical: 76    |    Recul horizontal: 226    |    Ergonomie: 34 (-9,5%)
 Armure: 4    |    Vitesse: -6%    |    Vitesse de rotation: -9%
-Prix: 366 019₽    |    Poids (kg): 24,153
+Prix: 366 019₽    |    Poids: 24,153 kg
 
 [En bandouillère] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
     [Chargeur] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (échange): 24 218₽
@@ -821,7 +821,7 @@ http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9G
 const expectedToString2 = `Build 2
 Recul vertical: 368    |    Recul horizontal: 255    |    Ergonomie: 52 (-3%)
 Armure: 4    |    Vitesse: -3%    |    Vitesse de rotation: -1%
-Prix: 444$ et 184 252₽ (= 247 747₽)    |    Poids (kg): 8,936
+Prix: 444$ et 184 252₽ (= 247 747₽)    |    Poids: 8,936 kg
 
 [Holster] Beretta M9A3 9x19 pistol Default    |    Peacekeeper 1: 107$ (= 15 337₽)
     [Canon] 
@@ -844,7 +844,7 @@ http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzs
 const expectedToString3 = `Build with armor only
 Ergonomie: -2,5%
 Armure: 4    |    Vitesse: -6%    |    Vitesse de rotation: -1%
-Prix: 64 269₽    |    Poids (kg): 10,600
+Prix: 64 269₽    |    Poids: 10,600 kg
 
 [Pare-balles] 6B13 assault armor (Flora) Default    |    Ragman 2: 64 269₽
 
@@ -855,7 +855,7 @@ http://localhost:3000/s/XQAAAAKkAAAAAAAAAABBKEnLUiJ9Ha4afnegDxWD05WKxGsZJsgWhKhO
 const expectedToString4 = `Build with backpack only and every currency
 Ergonomie: -3%
 Vitesse: -2%    |    Vitesse de rotation: -1%
-Prix: 95€, 157$ et 67 446₽ (= 104 936₽)    |    Poids (kg): 1,307
+Prix: 95€, 157$ et 67 446₽ (= 104 936₽)    |    Poids: 1,307 kg
 
 [Sac à dos] Oakley Mechanism heavy duty backpack (Black)    |    Ragman 2: 67 446₽
     MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)
@@ -867,7 +867,7 @@ http://localhost:3000/s/XQAAAAKZAAAAAAAAAABBKEnNkWPZwxLGD5AbqDRCABlUfHwjFlOcCKJC
 
 const expectedToString5 = `Build with weapon on back only
 Recul vertical: 112    |    Recul horizontal: 333    |    Ergonomie: 45
-Prix: 43 345₽    |    Poids (kg): 1,500
+Prix: 43 345₽    |    Poids: 1,500 kg
 
 [Dans le dos] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
 
@@ -876,7 +876,7 @@ Créé avec Totov Builder
 http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17Rk0UiykRW0ApjpaFQ6TR_AWFoFNHfz758PAigkjDNzljvK7CyqK5Q3NR5CNalmBcKYWWwRr_692wAA`
 
 const expectedToString6 = `Build with missing price
-Poids (kg): 0,600
+Poids: 0,600 kg
 
 [Poches] 60 x 5.45x39mm BP gs    |    Pas de marchand
 

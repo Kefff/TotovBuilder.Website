@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IArmorMod } from '../../../../models/item/IArmorMod'
+import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ArmorModSortingFunctions } from '../../../../services/sorting/functions/ArmorModSortingFunctions'
 
@@ -49,11 +50,12 @@ describe('setSortingProperty()', () => {
       turningSpeedModifierPercentage: 1
     } as IArmorMod
 
-    const sortingService = new SortingService<IArmorMod>(ArmorModSortingFunctions)
-    const updatedSortingData = sortingService.setSortingProperty(property)
+    let sortingData: SortingData | undefined = new SortingData()
+    const sortingService = new SortingService()
+    sortingData = sortingService.setSortingProperty(sortingData, ArmorModSortingFunctions, property)
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2], updatedSortingData!)
+    const sortedItems = await sortingService.sort([item1, item2], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item1])

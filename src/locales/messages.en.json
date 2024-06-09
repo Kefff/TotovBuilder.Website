@@ -1,6 +1,6 @@
 {
   "caption": {
-    "acceptedCartridges": "Accepted cartridges",
+    "acceptedAmmunition": "Accepted ammunition",
     "accuracy": "Accuracy",
     "allow": "Allow",
     "allowCookies": "Allow cookies",
@@ -159,6 +159,7 @@
     "merchant_peacekeeper": "Peacekeeper",
     "merchant_prapor": "Prapor",
     "merchant_ragman": "Ragman",
+    "merchant_ref": "Ref",
     "merchant_skier": "Skier",
     "merchant_therapist": "Therapist",
     "merchantItemsOptions": "Merchants & items options",
@@ -270,8 +271,8 @@
     "shoppingList": "Shopping list",
     "show": "Show",
     "showContent": "Show content",
+    "showDetails": "Show details",
     "showMods": "Show mods",
-    "showStatistics": "Show statistics",
     "signalProblem": "Signal the problem",
     "slotTypeArmband": "Armband",
     "slotTypeBackpack": "Backpack",

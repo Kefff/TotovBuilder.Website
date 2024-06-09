@@ -32,7 +32,7 @@
     </div>
     <div>
       <Button
-        v-tooltip.top="$t('caption.showStatistics')"
+        v-tooltip.top="$t('caption.showDetails')"
         class="p-button-text p-button-sm button-discreet"
         @click="modelShowStats = !modelShowStats"
       >

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IVest } from '../../../../models/item/IVest'
+import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { VestSortingFunctions } from '../../../../services/sorting/functions/VestSortingFunctions'
 
@@ -27,11 +28,12 @@ describe('comparisonFunction()', () => {
       capacity: 1
     } as IVest
 
-    const sortingService = new SortingService(VestSortingFunctions)
-    const updatedSortingData = sortingService.setSortingProperty(property)
+    let sortingData: SortingData | undefined = new SortingData()
+    const sortingService = new SortingService()
+    sortingData = sortingService.setSortingProperty(sortingData, VestSortingFunctions, property)
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2], updatedSortingData!)
+    const sortedItems = await sortingService.sort([item1, item2], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item1])

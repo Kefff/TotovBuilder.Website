@@ -7,6 +7,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@intlify/unplugin-vue-i18n": "^4.0.0",
     "@microsoft/applicationinsights-web": "^3.2.1",
+    "@unhead/schema": "^1.9.12",
     "file-saver": "^2.0.5",
     "guid-typescript": "^1.0.9",
     "json-url": "^3.1.0",
@@ -14,6 +15,7 @@
     "primevue": "^3.30.0",
     "round-ts": "^1.0.1",
     "tiny-emitter": "^2.1.0",
+    "unhead": "^1.9.12",
     "vue": "^3.4.27",
     "vue-i18n": "^9.13.1",
     "vue-router": "^4.3.2"

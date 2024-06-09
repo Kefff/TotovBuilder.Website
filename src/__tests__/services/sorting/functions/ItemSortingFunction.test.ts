@@ -63,17 +63,18 @@ describe('comparisonFunction()', () => {
     })
     Services.configure(InventoryItemService, undefined, instance(inventoryItemService))
 
-    const sortingService = new SortingService(ItemSortingFunctions)
+    let sortingData: SortingData | undefined = new SortingData()
+    const sortingService = new SortingService()
 
     // Act
-    const updatedSortingData = sortingService.setSortingProperty('price')
-    const value1 = await updatedSortingData!.sortingFunction.comparisonValueObtentionFunction(item1)
-    const value2 = await updatedSortingData!.sortingFunction.comparisonValueObtentionFunction(item2)
-    const result = updatedSortingData!.sortingFunction.comparisonFunction(item1, value1, item2, value2)
+    sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'price')
+    const value1 = await sortingData!.sortingFunction.comparisonValueObtentionFunction(item1)
+    const value2 = await sortingData!.sortingFunction.comparisonValueObtentionFunction(item2)
+    const result = sortingData!.sortingFunction.comparisonFunction(item1, value1, item2, value2)
 
     // Assert
-    expect(updatedSortingData!.property).toBe('price')
-    expect(updatedSortingData!.order).toBe(SortingOrder.asc)
+    expect(sortingData!.property).toBe('price')
+    expect(sortingData!.order).toBe(SortingOrder.asc)
     expect(result).toBe(expectedComparisonValue)
   })
 
@@ -111,17 +112,18 @@ describe('comparisonFunction()', () => {
     })
     Services.configure(InventoryItemService, undefined, instance(inventoryItemService))
 
-    const sortingService = new SortingService(ItemSortingFunctions)
+    let sortingData: SortingData | undefined = new SortingData()
+    const sortingService = new SortingService()
 
     // Act
-    const updatedSortingData = sortingService.setSortingProperty('price')
-    const value1 = await updatedSortingData!.sortingFunction.comparisonValueObtentionFunction(item1)
-    const value2 = await updatedSortingData!.sortingFunction.comparisonValueObtentionFunction(item2)
-    const result = updatedSortingData!.sortingFunction.comparisonFunction(item1, value1, item2, value2)
+    sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'price')
+    const value1 = await sortingData!.sortingFunction.comparisonValueObtentionFunction(item1)
+    const value2 = await sortingData!.sortingFunction.comparisonValueObtentionFunction(item2)
+    const result = sortingData!.sortingFunction.comparisonFunction(item1, value1, item2, value2)
 
     // Assert
-    expect(updatedSortingData!.property).toBe('price')
-    expect(updatedSortingData!.order).toBe(SortingOrder.asc)
+    expect(sortingData!.property).toBe('price')
+    expect(sortingData!.order).toBe(SortingOrder.asc)
     expect(result).toBe(0)
   })
 
@@ -142,11 +144,12 @@ describe('comparisonFunction()', () => {
       name: 'b'
     } as IItem
 
-    const sortingService = new SortingService(ItemSortingFunctions)
-    const updatedSortingData = sortingService.setSortingProperty('categoryId')
+    let sortingData: SortingData | undefined = new SortingData()
+    const sortingService = new SortingService()
+    sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'categoryId')
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2, item3], updatedSortingData!)
+    const sortedItems = await sortingService.sort([item1, item2, item3], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item3, item1])
@@ -169,11 +172,12 @@ describe('comparisonFunction()', () => {
       name: 'b'
     } as IItem
 
-    const sortingService = new SortingService(ItemSortingFunctions)
-    const updatedSortingData = sortingService.setSortingProperty('name')
+    let sortingData: SortingData | undefined = new SortingData()
+    const sortingService = new SortingService()
+    sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'name')
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2, item3], updatedSortingData!)
+    const sortedItems = await sortingService.sort([item1, item2, item3], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item1, item3, item2]) // By default it is already sorted by name, so here we expected items to be sorted in a descending way
@@ -193,7 +197,7 @@ describe('defaultSortingFunction', () => {
       name: 'a'
     } as IItem
 
-    const sortingData = new SortingData<IItem>()
+    const sortingData = new SortingData()
     const comparisonValue1 = await sortingData.sortingFunction.comparisonValueObtentionFunction(item1)
     const comparisonValue2 = await sortingData.sortingFunction.comparisonValueObtentionFunction(item2)
 

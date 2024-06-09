@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IAmmunition } from '../../../../models/item/IAmmunition'
+import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { AmmunitionSortingFunctions } from '../../../../services/sorting/functions/AmmunitionSortingFunctions'
 
@@ -30,11 +31,12 @@ describe('comparisonFunction()', () => {
       accuracyModifierPercentage: 1
     } as IAmmunition
 
-    const sortingService = new SortingService(AmmunitionSortingFunctions)
-    const updatedSortingData = sortingService.setSortingProperty(property)
+    let sortingData: SortingData | undefined = new SortingData()
+    const sortingService = new SortingService()
+    sortingData = sortingService.setSortingProperty(sortingData, AmmunitionSortingFunctions, property)
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2], updatedSortingData!)
+    const sortedItems = await sortingService.sort([item1, item2], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item1])

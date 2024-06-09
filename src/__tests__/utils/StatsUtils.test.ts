@@ -21,7 +21,7 @@ describe('StringUtils.getStandardDisplayValue()', () => {
     [DisplayValueType.recoil, '1,235'],
     [DisplayValueType.recoilModifierPercentage, '+123,456.8%'],
     [DisplayValueType.turningSpeedModifierPercentage, '+123,456.8%'],
-    [DisplayValueType.weight, '1,234.568'],
+    [DisplayValueType.weight, '1,234.568 kg'],
     [999, 'Error']
   ])('should get the display value in the standard format associated with the value type', (type: DisplayValueType, expected: string) => {
     // Arrange
