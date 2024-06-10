@@ -189,22 +189,7 @@ const props = defineProps<{ path: string }>()
 
 const editing = inject<Ref<boolean>>('editing')
 
-const acceptedItemsCategoryId = computed(() => {
-  setAcceptedItems()
-
-  return inventorySlotType.value.acceptedItemCategories.length === 1 ? inventorySlotType.value.acceptedItemCategories[0] : undefined
-})
-const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
-const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
-const hasSummaryErgonomicsModifierPercentage = computed(() => summary.value.wearableModifiers.ergonomicsModifierPercentage !== 0)
-const hasSummaryHorizontalRecoil = computed(() => summary.value.recoil.horizontalRecoil !== 0)
-const hasSummaryMovementSpeedModifierPercentage = computed(() => summary.value.wearableModifiers.movementSpeedModifierPercentage !== 0)
-const hasSummaryTurningSpeedModifierPercentage = computed(() => summary.value.wearableModifiers.turningSpeedModifierPercentage !== 0)
-const hasSummaryVerticalRecoil = computed(() => summary.value.recoil.verticalRecoil !== 0)
-const hasSummaryWeight = computed(() => summary.value.weight !== 0)
-const inventorySlotType = computed(() => inventorySlotService.getType(modelInventorySlot.value.typeId))
-const isDisplayed = computed(() => editing?.value || modelInventorySlot.value.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
-
+const acceptedItemsCategoryId = ref<string>()
 const acceptedItems = ref<IItem[]>([])
 const summary = ref<IInventorySlotSummary>({
   armorModifiers: {
@@ -236,6 +221,17 @@ const summary = ref<IInventorySlotSummary>({
   weight: 0
 })
 
+const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
+const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
+const hasSummaryErgonomicsModifierPercentage = computed(() => summary.value.wearableModifiers.ergonomicsModifierPercentage !== 0)
+const hasSummaryHorizontalRecoil = computed(() => summary.value.recoil.horizontalRecoil !== 0)
+const hasSummaryMovementSpeedModifierPercentage = computed(() => summary.value.wearableModifiers.movementSpeedModifierPercentage !== 0)
+const hasSummaryTurningSpeedModifierPercentage = computed(() => summary.value.wearableModifiers.turningSpeedModifierPercentage !== 0)
+const hasSummaryVerticalRecoil = computed(() => summary.value.recoil.verticalRecoil !== 0)
+const hasSummaryWeight = computed(() => summary.value.weight !== 0)
+const inventorySlotType = computed(() => inventorySlotService.getType(modelInventorySlot.value.typeId))
+const isDisplayed = computed(() => editing?.value || modelInventorySlot.value.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
+
 onMounted(() => {
   inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onModOrContentChanged)
   globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
@@ -248,9 +244,14 @@ onUnmounted(() => {
   globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
 
-watch(() => modelInventorySlot, () => {
-  setSummary()
-})
+watch(() => modelInventorySlot, () => setSummary())
+watch(
+  () => editing?.value,
+  () => {
+    if (editing?.value && acceptedItems.value.length === 0) {
+      setAcceptedItems()
+    }
+  })
 
 /**
  * Updates the inventory slot summary when a mod or content item changes.
@@ -273,6 +274,9 @@ function onMerchantFilterChanged() {
  * Sets the accepted items selected by the user.
  */
 async function setAcceptedItems() {
+  acceptedItemsCategoryId.value = inventorySlotType.value.acceptedItemCategories.length === 1
+    ? inventorySlotType.value.acceptedItemCategories[0]
+    : undefined
   acceptedItems.value = await Services.get(ItemService).getItemsOfCategories(inventorySlotType.value.acceptedItemCategories, true)
 }
 
@@ -280,6 +284,7 @@ async function setAcceptedItems() {
  * Gets the values of the summary of the content of the inventory slot.
  */
 async function setSummary() {
+  console.log('setSummary: ', inventorySlotType.value)
   summary.value = await inventorySlotPropertiesService.getSummary(modelInventorySlot.value)
 }
 </script>

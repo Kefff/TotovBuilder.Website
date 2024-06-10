@@ -96,6 +96,8 @@ describe('notify()', () => {
     const notifications = service.getNotifications()
 
     // Assert
+    expect(hasBeenCalled).toBe(true)
+    expect(service.newNotificationCount).toBe(6)
     expect(notifications).toMatchObject( // toMatchObject used to avoid comparing date and id properties that are different each test
       [
         {
@@ -171,8 +173,6 @@ describe('notify()', () => {
           type: 'warn'
         }
       ] as INotification[])
-    expect(hasBeenCalled).toBe(true)
-    expect(service.newNotificationCount).toBe(6)
   })
 })
 

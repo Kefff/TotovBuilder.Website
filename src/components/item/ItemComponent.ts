@@ -202,11 +202,11 @@ export default defineComponent({
     }
 
     /**
-     * Sorts the options items.
+     * Filters the options items.
      */
     function onFilterOptions(newValue: string) {
       optionsFilter.value = newValue
-      setOptions(newValue, optionsSortingData.value)
+      setOptions(optionsFilter.value, optionsSortingData.value)
     }
 
     /**
