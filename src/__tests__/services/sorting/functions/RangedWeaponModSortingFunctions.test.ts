@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IRangedWeaponMod } from '../../../../models/item/IRangedWeaponMod'
+import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { RangedWeaponModSortingFunctions } from '../../../../services/sorting/functions/RangedWeaponModSortingFunctions'
 
@@ -29,11 +30,12 @@ describe('comparisonFunction()', () => {
       recoilModifierPercentage: 1
     } as IRangedWeaponMod
 
-    const sortingService = new SortingService(RangedWeaponModSortingFunctions)
-    const updatedSortingData = sortingService.setSortingProperty(property)
+    let sortingData: SortingData | undefined = new SortingData()
+    const sortingService = new SortingService()
+    sortingData = sortingService.setSortingProperty(sortingData, RangedWeaponModSortingFunctions, property)
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2], updatedSortingData!)
+    const sortedItems = await sortingService.sort([item1, item2], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item1])

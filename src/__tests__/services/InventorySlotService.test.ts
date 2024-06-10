@@ -39,7 +39,7 @@ describe('getType()', () => {
       ],
       canBeLooted: true,
       customIcon: undefined,
-      displayOrder: 8,
+      displayOrder: 9,
       icon: 'th-large',
       id: 'pockets',
       itemSlotsAmount: 4

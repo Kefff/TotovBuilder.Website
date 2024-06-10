@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IMod } from '../../../../models/item/IMod'
+import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ModSortingFunctions } from '../../../../services/sorting/functions/ModSortingFunctions'
 
@@ -21,11 +22,12 @@ describe('comparisonFunction()', () => {
       presetErgonomicsModifier: isPreset ? 1 : undefined
     } as IMod
 
-    const sortingService = new SortingService(ModSortingFunctions)
-    const updatedSortingData = sortingService.setSortingProperty(property)
+    let sortingData: SortingData | undefined = new SortingData()
+    const sortingService = new SortingService()
+    sortingData = sortingService.setSortingProperty(sortingData, ModSortingFunctions, property)
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2], updatedSortingData!)
+    const sortedItems = await sortingService.sort([item1, item2], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item1])

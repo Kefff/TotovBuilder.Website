@@ -6,23 +6,23 @@ import { ISortingFunctionList } from './ISortingFunctionList'
 /**
  * Functions for sorting headwear.
  */
-export const HeadwearSortingFunctions: ISortingFunctionList<IHeadwear> = {
+export const HeadwearSortingFunctions: ISortingFunctionList = {
   ...ArmorSortingFunctions,
   ergonomicsModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.presetWearableModifiers?.ergonomicsModifierPercentage ?? i.ergonomicsModifierPercentage)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IHeadwear).presetWearableModifiers?.ergonomicsModifierPercentage ?? (i as IHeadwear).ergonomicsModifierPercentage)
   },
   movementSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.presetWearableModifiers?.movementSpeedModifierPercentage ?? i.movementSpeedModifierPercentage)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IHeadwear).presetWearableModifiers?.movementSpeedModifierPercentage ?? (i as IHeadwear).movementSpeedModifierPercentage)
   },
   ricochetChance: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(ricochetChances[i.ricochetChance])
+    comparisonValueObtentionFunction: i => Promise.resolve(ricochetChances[(i as IHeadwear).ricochetChance])
   },
   turningSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.presetWearableModifiers?.turningSpeedModifierPercentage ?? i.turningSpeedModifierPercentage)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IHeadwear).presetWearableModifiers?.turningSpeedModifierPercentage ?? (i as IHeadwear).turningSpeedModifierPercentage)
   }
 }
 

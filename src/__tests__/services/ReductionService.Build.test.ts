@@ -104,6 +104,12 @@ describe('parseReducedBuild()', () => {
           },
           {
             items: [
+              undefined
+            ],
+            typeId: 'backpack'
+          },
+          {
+            items: [
               undefined,
               undefined,
               undefined,
@@ -115,7 +121,13 @@ describe('parseReducedBuild()', () => {
             items: [
               undefined
             ],
-            typeId: 'backpack'
+            typeId: 'eyewear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'faceCover'
           },
           {
             items: [
@@ -128,18 +140,6 @@ describe('parseReducedBuild()', () => {
               undefined
             ],
             typeId: 'scabbard'
-          },
-          {
-            items: [
-              undefined
-            ],
-            typeId: 'faceCover'
-          },
-          {
-            items: [
-              undefined
-            ],
-            typeId: 'eyewear'
           },
           {
             items: [
@@ -219,6 +219,12 @@ describe('parseReducedBuild()', () => {
           },
           {
             items: [
+              undefined
+            ],
+            typeId: 'backpack'
+          },
+          {
+            items: [
               undefined,
               undefined,
               undefined,
@@ -230,7 +236,13 @@ describe('parseReducedBuild()', () => {
             items: [
               undefined
             ],
-            typeId: 'backpack'
+            typeId: 'eyewear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'faceCover'
           },
           {
             items: [
@@ -243,18 +255,6 @@ describe('parseReducedBuild()', () => {
               undefined
             ],
             typeId: 'scabbard'
-          },
-          {
-            items: [
-              undefined
-            ],
-            typeId: 'faceCover'
-          },
-          {
-            items: [
-              undefined
-            ],
-            typeId: 'eyewear'
           },
           {
             items: [
@@ -337,6 +337,12 @@ describe('parseReducedBuild()', () => {
           },
           {
             items: [
+              undefined
+            ],
+            typeId: 'backpack'
+          },
+          {
+            items: [
               undefined,
               undefined,
               undefined,
@@ -348,7 +354,13 @@ describe('parseReducedBuild()', () => {
             items: [
               undefined
             ],
-            typeId: 'backpack'
+            typeId: 'eyewear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'faceCover'
           },
           {
             items: [
@@ -361,18 +373,6 @@ describe('parseReducedBuild()', () => {
               undefined
             ],
             typeId: 'scabbard'
-          },
-          {
-            items: [
-              undefined
-            ],
-            typeId: 'faceCover'
-          },
-          {
-            items: [
-              undefined
-            ],
-            typeId: 'eyewear'
           },
           {
             items: [
@@ -456,6 +456,12 @@ describe('parseReducedBuild()', () => {
           },
           {
             items: [
+              undefined
+            ],
+            typeId: 'backpack'
+          },
+          {
+            items: [
               undefined,
               undefined,
               undefined,
@@ -467,7 +473,13 @@ describe('parseReducedBuild()', () => {
             items: [
               undefined
             ],
-            typeId: 'backpack'
+            typeId: 'eyewear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'faceCover'
           },
           {
             items: [
@@ -480,18 +492,6 @@ describe('parseReducedBuild()', () => {
               undefined
             ],
             typeId: 'scabbard'
-          },
-          {
-            items: [
-              undefined
-            ],
-            typeId: 'faceCover'
-          },
-          {
-            items: [
-              undefined
-            ],
-            typeId: 'eyewear'
           },
           {
             items: [
@@ -580,15 +580,6 @@ describe('parseReducedBuild()', () => {
           },
           {
             items: [
-              undefined,
-              undefined,
-              undefined,
-              undefined
-            ],
-            typeId: 'pockets'
-          },
-          {
-            items: [
               {
                 content: [],
                 ignorePrice: false,
@@ -601,15 +592,18 @@ describe('parseReducedBuild()', () => {
           },
           {
             items: [
+              undefined,
+              undefined,
+              undefined,
               undefined
             ],
-            typeId: 'pouch'
+            typeId: 'pockets'
           },
           {
             items: [
               undefined
             ],
-            typeId: 'scabbard'
+            typeId: 'eyewear'
           },
           {
             items: [
@@ -621,7 +615,13 @@ describe('parseReducedBuild()', () => {
             items: [
               undefined
             ],
-            typeId: 'eyewear'
+            typeId: 'pouch'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'scabbard'
           },
           {
             items: [
@@ -718,6 +718,12 @@ describe('parseReducedBuild()', () => {
           },
           {
             items: [
+              undefined
+            ],
+            typeId: 'backpack'
+          },
+          {
+            items: [
               undefined,
               undefined,
               undefined,
@@ -729,7 +735,13 @@ describe('parseReducedBuild()', () => {
             items: [
               undefined
             ],
-            typeId: 'backpack'
+            typeId: 'eyewear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'faceCover'
           },
           {
             items: [
@@ -742,18 +754,6 @@ describe('parseReducedBuild()', () => {
               undefined
             ],
             typeId: 'scabbard'
-          },
-          {
-            items: [
-              undefined
-            ],
-            typeId: 'faceCover'
-          },
-          {
-            items: [
-              undefined
-            ],
-            typeId: 'eyewear'
           },
           {
             items: [
@@ -856,6 +856,12 @@ describe('parseReducedBuild()', () => {
           },
           {
             items: [
+              undefined
+            ],
+            typeId: 'backpack'
+          },
+          {
+            items: [
               undefined,
               undefined,
               undefined,
@@ -867,7 +873,13 @@ describe('parseReducedBuild()', () => {
             items: [
               undefined
             ],
-            typeId: 'backpack'
+            typeId: 'eyewear'
+          },
+          {
+            items: [
+              undefined
+            ],
+            typeId: 'faceCover'
           },
           {
             items: [
@@ -880,18 +892,6 @@ describe('parseReducedBuild()', () => {
               undefined
             ],
             typeId: 'scabbard'
-          },
-          {
-            items: [
-              undefined
-            ],
-            typeId: 'faceCover'
-          },
-          {
-            items: [
-              undefined
-            ],
-            typeId: 'eyewear'
           },
           {
             items: [

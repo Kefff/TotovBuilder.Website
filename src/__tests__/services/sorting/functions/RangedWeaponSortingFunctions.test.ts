@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IRangedWeapon } from '../../../../models/item/IRangedWeapon'
+import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { RangedWeaponSortingFunctions } from '../../../../services/sorting/functions/RangedWeaponSortingFunctions'
 
@@ -23,9 +24,11 @@ describe('comparisonFunction()', () => {
       ergonomics: 2,
       fireRate: 2,
       horizontalRecoil: 2,
-      presetErgonomics: isPreset ? 2 : undefined,
-      presetHorizontalRecoil: isPreset ? 2 : undefined,
-      presetVerticalRecoil: isPreset ? 2 : undefined,
+      presetRangedWeaponModifiers: {
+        ergonomics: isPreset ? 2 : undefined,
+        horizontalRecoil: isPreset ? 2 : undefined,
+        verticalRecoil: isPreset ? 2 : undefined
+      },
       verticalRecoil: 2
     } as IRangedWeapon
 
@@ -35,17 +38,20 @@ describe('comparisonFunction()', () => {
       ergonomics: 1,
       fireRate: 1,
       horizontalRecoil: 1,
-      presetErgonomics: isPreset ? 1 : undefined,
-      presetHorizontalRecoil: isPreset ? 1 : undefined,
-      presetVerticalRecoil: isPreset ? 1 : undefined,
+      presetRangedWeaponModifiers: {
+        ergonomics: isPreset ? 1 : undefined,
+        horizontalRecoil: isPreset ? 1 : undefined,
+        verticalRecoil: isPreset ? 1 : undefined
+      },
       verticalRecoil: 1
     } as IRangedWeapon
 
-    const sortingService = new SortingService(RangedWeaponSortingFunctions)
-    const updatedSortingData = sortingService.setSortingProperty(property)
+    let sortingData: SortingData | undefined = new SortingData()
+    const sortingService = new SortingService()
+    sortingData = sortingService.setSortingProperty(sortingData, RangedWeaponSortingFunctions, property)
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2], updatedSortingData!)
+    const sortedItems = await sortingService.sort([item1, item2], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item1])

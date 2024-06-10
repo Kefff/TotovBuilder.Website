@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IBackpack } from '../../../../models/item/IBackpack'
+import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { BackpackSortingFunctions } from '../../../../services/sorting/functions/BackpackSortingFunctions'
 
@@ -28,11 +29,12 @@ describe('comparisonFunction()', () => {
       turningSpeedModifierPercentage: 1
     } as IBackpack
 
-    const sortingService = new SortingService(BackpackSortingFunctions)
-    const updatedSortingData = sortingService.setSortingProperty(property)
+    let sortingData: SortingData | undefined = new SortingData()
+    const sortingService = new SortingService()
+    sortingData = sortingService.setSortingProperty(sortingData, BackpackSortingFunctions, property)
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2], updatedSortingData!)
+    const sortedItems = await sortingService.sort([item1, item2], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item1])

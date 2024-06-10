@@ -95,6 +95,12 @@
       "showInFilter": true
     },
     {
+      "maxLevel": 4,
+      "minLevel": 1,
+      "name": "ref",
+      "showInFilter": true
+    },
+    {
       "maxLevel": 0,
       "minLevel": 0,
       "name": "flea-market",

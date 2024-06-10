@@ -366,7 +366,8 @@ export class ReductionService {
       armorClass,
       armoredAreas,
       durability,
-      material
+      material,
+      presetArmorModifiers: undefined
     }
   }
 
@@ -607,9 +608,7 @@ export class ReductionService {
       fireRate,
       horizontalRecoil,
       minuteOfAngle,
-      presetErgonomics: undefined,
-      presetHorizontalRecoil: undefined,
-      presetVerticalRecoil: undefined,
+      presetRangedWeaponModifiers: undefined,
       verticalRecoil
     }
   }

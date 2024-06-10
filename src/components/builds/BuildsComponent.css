@@ -5,6 +5,8 @@
 .builds {
   margin-bottom: 3rem;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .builds-title {
@@ -17,7 +19,8 @@
 }
 
 .builds-loading {
-  margin-top: 3rem;
+  margin-bottom: auto;
+  margin-top: auto;
 }
 
 .builds-toolbar-right {

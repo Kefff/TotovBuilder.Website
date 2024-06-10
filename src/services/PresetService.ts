@@ -139,18 +139,22 @@ export class PresetService {
       }
 
       if (itemPropertiesService.canHaveArmor(presetItem)) {
+        const armorModifiers = await inventoryItemService.getArmorModifiers(presetInventoryItem)
         const wearableModifiers = await inventoryItemService.getWearableModifiers(presetInventoryItem)
 
         const armorPreset = presetItem as IArmor
+        armorPreset.presetArmorModifiers = armorModifiers
         armorPreset.presetWearableModifiers = wearableModifiers
       } else if (itemPropertiesService.isRangedWeapon(presetItem)) {
         const ergonomics = await inventoryItemService.getErgonomics(presetInventoryItem)
         const recoil = await inventoryItemService.getRecoil(presetInventoryItem)
 
         const rangedWeaponPreset = presetItem as IRangedWeapon
-        rangedWeaponPreset.presetErgonomics = ergonomics.ergonomicsWithMods
-        rangedWeaponPreset.presetHorizontalRecoil = recoil.horizontalRecoilWithMods
-        rangedWeaponPreset.presetVerticalRecoil = recoil.verticalRecoilWithMods
+        rangedWeaponPreset.presetRangedWeaponModifiers = {
+          ergonomics: ergonomics.ergonomicsWithMods,
+          horizontalRecoil: recoil.horizontalRecoilWithMods,
+          verticalRecoil: recoil.verticalRecoilWithMods
+        }
       } else if (itemPropertiesService.isRangedWeaponMod(presetItem)) {
         const ergonomics = await inventoryItemService.getErgonomics(presetInventoryItem)
         const recoildModifierPercentage = await inventoryItemService.getRecoilModifierPercentage(presetInventoryItem)

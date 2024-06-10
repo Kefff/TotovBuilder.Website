@@ -5,8 +5,8 @@ import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import { IErgonomics } from '../../models/utils/IErgonomics'
 import { IInventoryItemPrice } from '../../models/utils/IInventoryItemPrice'
 import { IInventoryItemRecoil } from '../../models/utils/IInventoryItemRecoil'
-import { IInventoryItemWearableModifiers } from '../../models/utils/IInventoryItemWearableModifiers'
 import { IRecoilModifierPercentage } from '../../models/utils/IRecoilModifierPercentage'
+import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { IWeight } from '../../models/utils/IWeight'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
@@ -2989,12 +2989,9 @@ describe('getWearableModifiers()', () => {
       } as IInventoryItem,
       {
         ergonomicsModifierPercentage: 0,
-        ergonomicsModifierPercentageWithMods: 0,
         movementSpeedModifierPercentage: 0,
-        movementSpeedModifierPercentageWithMods: 0,
-        turningSpeedModifierPercentage: 0,
-        turningSpeedModifierPercentageWithMods: 0
-      } as IInventoryItemWearableModifiers
+        turningSpeedModifierPercentage: 0
+      } as IWearableModifiers
     ],
     [
       {
@@ -3006,12 +3003,9 @@ describe('getWearableModifiers()', () => {
       } as IInventoryItem,
       {
         ergonomicsModifierPercentage: armor6b13Fl.ergonomicsModifierPercentage,
-        ergonomicsModifierPercentageWithMods: armor6b13Fl.ergonomicsModifierPercentage,
         movementSpeedModifierPercentage: armor6b13Fl.movementSpeedModifierPercentage,
-        movementSpeedModifierPercentageWithMods: armor6b13Fl.movementSpeedModifierPercentage,
-        turningSpeedModifierPercentage: armor6b13Fl.turningSpeedModifierPercentage,
-        turningSpeedModifierPercentageWithMods: armor6b13Fl.turningSpeedModifierPercentage
-      } as IInventoryItemWearableModifiers
+        turningSpeedModifierPercentage: armor6b13Fl.turningSpeedModifierPercentage
+      } as IWearableModifiers
     ],
     [
       {
@@ -3043,13 +3037,10 @@ describe('getWearableModifiers()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomicsModifierPercentage: armor6b13FlDefault.ergonomicsModifierPercentage,
-        ergonomicsModifierPercentageWithMods: armor6b13FlDefault.ergonomicsModifierPercentage + plate6b33Front.ergonomicsModifierPercentage + plate6b33Back.ergonomicsModifierPercentage,
-        movementSpeedModifierPercentage: armor6b13FlDefault.movementSpeedModifierPercentage,
-        movementSpeedModifierPercentageWithMods: armor6b13FlDefault.movementSpeedModifierPercentage + plate6b33Front.movementSpeedModifierPercentage + plate6b33Back.movementSpeedModifierPercentage,
-        turningSpeedModifierPercentage: armor6b13FlDefault.turningSpeedModifierPercentage,
-        turningSpeedModifierPercentageWithMods: armor6b13FlDefault.turningSpeedModifierPercentage + plate6b33Front.turningSpeedModifierPercentage + plate6b33Back.turningSpeedModifierPercentage
-      } as IInventoryItemWearableModifiers
+        ergonomicsModifierPercentage: armor6b13FlDefault.ergonomicsModifierPercentage + plate6b33Front.ergonomicsModifierPercentage + plate6b33Back.ergonomicsModifierPercentage,
+        movementSpeedModifierPercentage: armor6b13FlDefault.movementSpeedModifierPercentage + plate6b33Front.movementSpeedModifierPercentage + plate6b33Back.movementSpeedModifierPercentage,
+        turningSpeedModifierPercentage: armor6b13FlDefault.turningSpeedModifierPercentage + plate6b33Front.turningSpeedModifierPercentage + plate6b33Back.turningSpeedModifierPercentage
+      } as IWearableModifiers
     ],
     [
       {
@@ -3074,13 +3065,10 @@ describe('getWearableModifiers()', () => {
         quantity: 1
       } as IInventoryItem,
       {
-        ergonomicsModifierPercentage: lshZ2dtm.ergonomicsModifierPercentage,
-        ergonomicsModifierPercentageWithMods: lshZ2dtm.ergonomicsModifierPercentage + lshZ2dtmFs.ergonomicsModifierPercentage,
-        movementSpeedModifierPercentage: lshZ2dtm.movementSpeedModifierPercentage,
-        movementSpeedModifierPercentageWithMods: lshZ2dtm.movementSpeedModifierPercentage + lshZ2dtmFs.movementSpeedModifierPercentage,
-        turningSpeedModifierPercentage: lshZ2dtm.turningSpeedModifierPercentage,
-        turningSpeedModifierPercentageWithMods: lshZ2dtm.turningSpeedModifierPercentage + lshZ2dtmFs.turningSpeedModifierPercentage
-      } as IInventoryItemWearableModifiers
+        ergonomicsModifierPercentage: lshZ2dtm.ergonomicsModifierPercentage + lshZ2dtmFs.ergonomicsModifierPercentage,
+        movementSpeedModifierPercentage: lshZ2dtm.movementSpeedModifierPercentage + lshZ2dtmFs.movementSpeedModifierPercentage,
+        turningSpeedModifierPercentage: lshZ2dtm.turningSpeedModifierPercentage + lshZ2dtmFs.turningSpeedModifierPercentage
+      } as IWearableModifiers
     ],
     [
       {
@@ -3092,18 +3080,15 @@ describe('getWearableModifiers()', () => {
       } as IInventoryItem,
       {
         ergonomicsModifierPercentage: berkut.ergonomicsModifierPercentage,
-        ergonomicsModifierPercentageWithMods: berkut.ergonomicsModifierPercentage,
         movementSpeedModifierPercentage: berkut.movementSpeedModifierPercentage,
-        movementSpeedModifierPercentageWithMods: berkut.movementSpeedModifierPercentage,
-        turningSpeedModifierPercentage: berkut.turningSpeedModifierPercentage,
-        turningSpeedModifierPercentageWithMods: berkut.turningSpeedModifierPercentage
-      } as IInventoryItemWearableModifiers
+        turningSpeedModifierPercentage: berkut.turningSpeedModifierPercentage
+      } as IWearableModifiers
     ]
   ])(
     'should get the wearable modifiers of an inventory item',
     async (
       inventoryItem: IInventoryItem,
-      expected: IInventoryItemWearableModifiers
+      expected: IWearableModifiers
     ) => {
       // Arrange
       useItemServiceMock()
@@ -3125,12 +3110,9 @@ describe('getWearableModifiers()', () => {
       invalidInventoryItem1,
       {
         ergonomicsModifierPercentage: 0,
-        ergonomicsModifierPercentageWithMods: 0,
         movementSpeedModifierPercentage: 0,
-        movementSpeedModifierPercentageWithMods: 0,
-        turningSpeedModifierPercentage: 0,
-        turningSpeedModifierPercentageWithMods: 0
-      } as IInventoryItemWearableModifiers
+        turningSpeedModifierPercentage: 0
+      } as IWearableModifiers
     ],
     [
       {
@@ -3153,16 +3135,13 @@ describe('getWearableModifiers()', () => {
       } as IInventoryItem,
       {
         ergonomicsModifierPercentage: lshZ2dtm.ergonomicsModifierPercentage,
-        ergonomicsModifierPercentageWithMods: lshZ2dtm.ergonomicsModifierPercentage,
         movementSpeedModifierPercentage: lshZ2dtm.movementSpeedModifierPercentage,
-        movementSpeedModifierPercentageWithMods: lshZ2dtm.movementSpeedModifierPercentage,
-        turningSpeedModifierPercentage: lshZ2dtm.turningSpeedModifierPercentage,
-        turningSpeedModifierPercentageWithMods: lshZ2dtm.turningSpeedModifierPercentage
-      } as IInventoryItemWearableModifiers
+        turningSpeedModifierPercentage: lshZ2dtm.turningSpeedModifierPercentage
+      } as IWearableModifiers
     ]
   ])(
     'should ignore wearable modifiers of items that cannot be found',
-    async (inventoryItem: IInventoryItem, expected: IInventoryItemWearableModifiers) => {
+    async (inventoryItem: IInventoryItem, expected: IWearableModifiers) => {
       // Arrange
       useItemServiceMock()
       Services.configure(ItemPropertiesService)

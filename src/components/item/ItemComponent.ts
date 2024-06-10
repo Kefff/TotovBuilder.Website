@@ -15,15 +15,15 @@ import Services from '../../services/repository/Services'
 import { SortingService } from '../../services/sorting/SortingService'
 import { PathUtils } from '../../utils/PathUtils'
 import StringUtils from '../../utils/StringUtils'
-import InputNumberField from '../input-number-field/InputNumberFieldComponent.vue'
-import ItemContent from '../item-content/ItemContentComponent.vue'
-import ItemMods from '../item-mods/ItemModsComponent.vue'
-import OptionHeaderSelector from '../option-header/selector/OptionHeaderSelectorComponent.vue'
-import SelectedItemFunctionalities from '../selected-item-functionalities/SelectedItemFunctionalitiesComponent.vue'
-import SelectedItemSummarySelector from '../selected-item-summary/selector/SelectedItemSummarySelectorComponent.vue'
-import SelectedItem from '../selected-item/SelectedItemComponent.vue'
-import StatsSelector from '../stats/selector/StatsSelectorComponent.vue'
-import SummarySelector from '../summary/selector/SummarySelectorComponent.vue'
+import InputNumberField from '../InputNumberFieldComponent.vue'
+import ItemContent from '../ItemContentComponent.vue'
+import ItemMods from '../ItemModsComponent.vue'
+import OptionHeaderSelector from '../option-header/OptionHeaderSelectorComponent.vue'
+import SelectedItem from '../SelectedItemComponent.vue'
+import SelectedItemFunctionalities from '../SelectedItemFunctionalitiesComponent.vue'
+import StatsSelector from '../stats/StatsSelectorComponent.vue'
+import SelectedItemSummarySelector from '../summary/SelectedItemSummarySelectorComponent.vue'
+import SummarySelector from '../summary/SummarySelectorComponent.vue'
 
 export default defineComponent({
   components: {
@@ -87,7 +87,12 @@ export default defineComponent({
     const dropdownPanelHeight = computed(() => Math.min(options.value.length === 0 ? 1 : options.value.length, 5) * 4 + 'rem') // Shows 5 items or less
     const inventoryItemInternal = computed<IInventoryItem | undefined>({
       get: () => props.inventoryItem,
-      set: (value: IInventoryItem | undefined) => emit('update:inventory-item', value)
+      set: (value: IInventoryItem | undefined) => {
+        emit('update:inventory-item', value)
+
+        // Emitting an event for the build and the inventory slot to updated their summary
+        nextTick(() => inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path))
+      }
     })
     const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.value?.maxStackableAmount ?? 1)
     const modsCount = computed(() => inventoryItemInternal.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
@@ -99,7 +104,7 @@ export default defineComponent({
     const itemIsModdable = ref(false)
     const options = ref<IItem[]>([])
     const optionsFilter = ref('')
-    const optionsSortingData = ref(new SortingData<IItem>())
+    const optionsSortingData = ref(new SortingData())
     const presetModSlotContainingItem = ref<IInventoryModSlot>()
     const quantity = ref(props.inventoryItem?.quantity ?? 1)
     const selectedTab = ref(SelectableTab.hidden)
@@ -140,13 +145,6 @@ export default defineComponent({
     })
 
     /**
-     * Emits an event for the build and the inventory slot to updated their summary when the item changes.
-     */
-    function emitItemChangedEvent() {
-      nextTick(() => inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path))
-    }
-
-    /**
      * Initializes the item based on the inventory item passed to the component.
      */
     async function initializeItem() {
@@ -164,6 +162,23 @@ export default defineComponent({
       item.value = await itemService.getItem(props.inventoryItem.itemId)
       quantity.value = props.inventoryItem.quantity
       presetModSlotContainingItem.value = presetService.getPresetModSlotContainingItem(item.value.id, props.path)
+    }
+
+    /**
+     * Updates the inventory item based on the contained items.
+     */
+    function onContentChanged(newContent: IInventoryItem[]) {
+      if (inventoryItemInternal.value == null) {
+        return
+      }
+
+      inventoryItemInternal.value = {
+        content: newContent,
+        ignorePrice: inventoryItemInternal.value.ignorePrice,
+        itemId: inventoryItemInternal.value.itemId,
+        modSlots: inventoryItemInternal.value.modSlots,
+        quantity: inventoryItemInternal.value.quantity
+      }
     }
 
     /**
@@ -187,33 +202,28 @@ export default defineComponent({
     }
 
     /**
-     * Sorts the options items.
+     * Filters the options items.
      */
     function onFilterOptions(newValue: string) {
       optionsFilter.value = newValue
-      setOptions(newValue, optionsSortingData.value)
+      setOptions(optionsFilter.value, optionsSortingData.value)
     }
 
     /**
      * Updates the inventory item based on the fact that the price is ignored or not.
      */
-    function onIgnorePriceChanged() {
-      // Emitting an event for the build and the inventory slot to updated their summary
-      emitItemChangedEvent()
-    }
-
-    /**
-     * Updates the inventory item based on the quantity.
-     */
-    function onQuantityChanged(newQuantity: number) {
+    function onIgnorePriceChanged(newIgnorePrice: boolean) {
       if (inventoryItemInternal.value == null) {
         return
       }
 
-      inventoryItemInternal.value.quantity = newQuantity
-
-      // Emitting an event for the build and the inventory slot to updated their summary
-      emitItemChangedEvent()
+      inventoryItemInternal.value = {
+        content: inventoryItemInternal.value.content,
+        ignorePrice: newIgnorePrice,
+        itemId: inventoryItemInternal.value.itemId,
+        modSlots: inventoryItemInternal.value.modSlots,
+        quantity: inventoryItemInternal.value?.quantity
+      }
     }
 
     /**
@@ -227,9 +237,6 @@ export default defineComponent({
       if (item.value == null) {
         quantity.value = 0
         inventoryItemInternal.value = undefined
-
-        // Emitting an event for the build and the inventory slot to updated their summary
-        emitItemChangedEvent()
 
         return
       }
@@ -249,14 +256,59 @@ export default defineComponent({
     }
 
     /**
+     * Updates the inventory item based on the mods.
+     */
+    function onModsChanged(newModsSlots: IInventoryModSlot[]) {
+      if (inventoryItemInternal.value == null) {
+        return
+      }
+
+      inventoryItemInternal.value = {
+        content: inventoryItemInternal.value.content,
+        ignorePrice: inventoryItemInternal.value.ignorePrice,
+        itemId: inventoryItemInternal.value.itemId,
+        modSlots: newModsSlots,
+        quantity: inventoryItemInternal.value.quantity
+      }
+    }
+
+    /**
+     * Updates the inventory item based on the quantity.
+     */
+    function onQuantityChanged(newQuantity: number) {
+      if (inventoryItemInternal.value == null) {
+        return
+      }
+
+      inventoryItemInternal.value = {
+        content: inventoryItemInternal.value.content,
+        ignorePrice: inventoryItemInternal.value.ignorePrice,
+        itemId: inventoryItemInternal.value.itemId,
+        modSlots: inventoryItemInternal.value.modSlots,
+        quantity: newQuantity
+      }
+    }
+
+    /**
      * Sorts the options items.
      */
-    async function onSortOptions(newSortingData: SortingData<IItem>) {
+    async function onSortOptions(newSortingData: SortingData) {
       const currentOptions = [...options.value] // Creating a new array because options.value can be updated while this function is being executed
       optionsSortingData.value = newSortingData
-      options.value = await SortingService.sort(currentOptions, optionsSortingData.value)
+      options.value = await Services.get(SortingService).sort(currentOptions, optionsSortingData.value)
 
       scrollToItemInDropdown()
+    }
+
+    /**
+     * Removes the selected item.
+     * @param event - Click event.
+     */
+    async function removeItem(event: MouseEvent) {
+      event.stopPropagation()
+
+      item.value = undefined
+      await onItemChanged()
     }
 
     /**
@@ -286,7 +338,7 @@ export default defineComponent({
      * @param filter - Filter.
      * @param sortingData - Sorting data.
      */
-    async function setOptions(filter: string, sortingData: SortingData<IItem>) {
+    async function setOptions(filter: string, sortingData: SortingData) {
       let newOptions: IItem[] = []
 
       if (filter === '') {
@@ -376,8 +428,6 @@ export default defineComponent({
             quantity: quantity.value
           }
         }
-
-        emitItemChangedEvent()
       }
 
       itemChanging.value = false
@@ -395,10 +445,12 @@ export default defineComponent({
       itemIsModdable,
       maxSelectableQuantity,
       modsCount,
+      onContentChanged,
       onDropdownOpen,
       onFilterOptions,
       onIgnorePriceChanged,
       onItemChanged,
+      onModsChanged,
       onQuantityChanged,
       onSortOptions,
       optionHeight,
@@ -407,6 +459,7 @@ export default defineComponent({
       optionsSortingData,
       presetModSlotContainingItem,
       quantity,
+      removeItem,
       SelectableTab,
       selectedTab,
       showStats

@@ -5,7 +5,7 @@ import { IItem } from '../item/IItem'
 /**
  * Prodides the functionalities of data used for sorting.
  */
-export default class SortingData<TItem extends IItem> {
+export default class SortingData {
   /**
    * Sorting order.
    */
@@ -19,7 +19,7 @@ export default class SortingData<TItem extends IItem> {
   /**
    * Comparison function to used for sorting.
    */
-  public sortingFunction: ISortingFunction<TItem> = {
+  public sortingFunction: ISortingFunction = {
     comparisonFunction: compareByString,
     comparisonValueObtentionFunction: (item: IItem) => Promise.resolve(item.name)
   }

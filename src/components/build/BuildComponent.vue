@@ -17,7 +17,6 @@
         :caption="$t('caption.name')"
         caption-mode="placeholder"
         :required="true"
-        required-message-position="right"
       />
     </div>
     <div :class="toolbarCssClass">
@@ -34,7 +33,7 @@
           <Button
             v-show="!editing"
             class="toolbar-button"
-            :disabled="isLoading || hasLoadingError"
+            :disabled="isLoading"
             @click="startEdit()"
           >
             <font-awesome-icon
@@ -55,23 +54,27 @@
             />
             <span>{{ $t('caption.save') }}</span>
           </Button>
-          <ShoppingList :shopping-list="summary.shoppingList" />
+          <Button
+            v-tooltip.top="$t('caption.shoppingList')"
+            class="p-button-text p-button-sm button-discreet"
+            :disabled="summary.shoppingList.length === 0"
+            @click="() => displayShoppingList()"
+          >
+            <font-awesome-icon icon="shopping-cart" />
+          </button>
           <Button
             v-tooltip.top="$t('caption.copyBuild')"
-            :disabled="isLoading || hasLoadingError || isNewBuild"
+            :disabled="isLoading || isNewBuild"
             class="p-button-text p-button-sm button-discreet"
             @click="copy()"
           >
             <font-awesome-icon icon="copy" />
           </Button>
-          <BuildShare
-            :build="build"
-            :has-loading-error="hasLoadingError"
-          />
+          <BuildShare :build="build" />
           <Button
             v-tooltip.top="$t('caption.exportBuild')"
             class="p-button-text p-button-sm button-discreet"
-            :disabled="isLoading || hasLoadingError || editing"
+            :disabled="isLoading || editing"
             @click="exportBuild()"
           >
             <font-awesome-icon icon="file-export" />
@@ -201,42 +204,21 @@
         </div>
         <div class="toolbar-part">
           <div class="build-toolbar-right">
-            <MerchantItemsOptions />
-            <GeneralOptions v-model:visible="generalOptionsSidebarVisible">
-              <template #additional-display-options>
-                <div
-                  class="sidebar-option-with-hover"
-                  @click="collapseAll()"
-                >
-                  <font-awesome-icon
-                    icon="minus-square"
-                    class="icon-before-text"
-                  />
-                  <span>{{ $t('caption.collapseAll') }}</span>
-                </div>
-                <div
-                  class="sidebar-option-with-hover"
-                  @click="expandWithItem()"
-                >
-                  <font-awesome-icon
-                    icon="search-plus"
-                    class="icon-before-text"
-                  />
-                  <span>{{ $t('caption.expandWithItem') }}</span>
-                </div>
-                <div
-                  v-if="editing"
-                  class="sidebar-option-with-hover"
-                  @click="expandAll()"
-                >
-                  <font-awesome-icon
-                    icon="plus-square"
-                    class="icon-before-text"
-                  />
-                  <span>{{ $t('caption.expandAll') }}</span>
-                </div>
-              </template>
-            </GeneralOptions>
+            <Button
+              v-tooltip.top="$t('caption.merchantItemsOptions')"
+              class="p-button-text p-button-sm button-discreet"
+              :disabled="isLoading"
+              @click="displayMerchantItemsOptions()"
+            >
+              <font-awesome-icon icon="user-tag" />
+            </Button>
+            <Button
+              v-tooltip.top="$t('caption.options')"
+              class="p-button-text p-button-sm button-discreet"
+              @click="displayGeneralOptions()"
+            >
+              <font-awesome-icon icon="cog" />
+            </Button>
             <NotificationButton />
             <Button
               v-show="editing"
@@ -252,7 +234,7 @@
             <Button
               v-show="!editing"
               class="p-button-danger toolbar-button"
-              :disabled="isLoading || hasLoadingError"
+              :disabled="isLoading"
               @click="startDelete()"
             >
               <font-awesome-icon
@@ -305,10 +287,10 @@
       <div v-else>
         <InventorySlot
           v-for="(inventorySlot, index) of build.inventorySlots"
-          :key="path + '/' + inventorySlot.typeId"
+          :key="`${path}/${inventorySlot.typeId}`"
           v-model:inventory-slot="build.inventorySlots[index]"
           v-model:collapsed="collapseStatuses[index]"
-          :path="path + '/' + inventorySlotPathPrefix + inventorySlot.typeId"
+          :path="`${path}/${inventorySlotPathPrefix}${inventorySlot.typeId}`"
         />
       </div>
     </div>
@@ -348,12 +330,6 @@
       </Button>
     </template>
   </Dialog>
-
-  <!-- Loading error -->
-  <LoadingError
-    v-model:hasItemsLoadingError="hasItemsLoadingError"
-    v-model:hasWebsiteConfigurationLoadingError="hasWebsiteConfigurationLoadingError"
-  />
 </template>
 
 <script lang="ts" src="./BuildComponent.ts" />

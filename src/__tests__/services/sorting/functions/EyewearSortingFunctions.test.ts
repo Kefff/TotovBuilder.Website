@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IEyewear } from '../../../../models/item/IEyewear'
+import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { EyewearSortingFunctions } from '../../../../services/sorting/functions/EyewearSortingFunctions'
 
@@ -16,11 +17,12 @@ describe('comparisonFunction()', () => {
       blindnessProtectionPercentage: 1
     } as IEyewear
 
-    const sortingService = new SortingService(EyewearSortingFunctions)
-    const updatedSortingData = sortingService.setSortingProperty(property)
+    let sortingData: SortingData | undefined = new SortingData()
+    const sortingService = new SortingService()
+    sortingData = sortingService.setSortingProperty(sortingData, EyewearSortingFunctions, property)
 
     // Act
-    const sortedItems = await SortingService.sort([item1, item2], updatedSortingData!)
+    const sortedItems = await sortingService.sort([item1, item2], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item1])

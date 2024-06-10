@@ -6,6 +6,7 @@ import vueI18n from '../../plugins/vueI18n'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { ItemService } from '../../services/ItemService'
 import {
   NotificationService,
@@ -15,13 +16,10 @@ import { WebsiteConfigurationService } from '../../services/WebsiteConfiguration
 import { ServiceInitializationState } from '../../services/repository/ServiceInitializationState'
 import Services from '../../services/repository/Services'
 import StatsUtils from '../../utils/StatsUtils'
+import BuildsList from '../BuildsListComponent.vue'
+import Loading from '../LoadingComponent.vue'
 import BuildsExport from '../builds-export/BuildsExportComponent.vue'
 import BuildsImport from '../builds-import/BuildsImportComponent.vue'
-import BuildsList from '../builds-list/BuildsListComponent.vue'
-import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
-import LoadingError from '../loading-error/LoadingErrorComponent.vue'
-import Loading from '../loading/LoadingComponent.vue'
-import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
 
 export default defineComponent({
@@ -29,35 +27,45 @@ export default defineComponent({
     BuildsExport,
     BuildsImport,
     BuildsList,
-    GeneralOptions,
     Loading,
-    LoadingError,
-    MerchantItemsOptions,
     NotificationButton
   },
   setup: () => {
-    const itemService = Services.get(ItemService)
-    itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
-
     const globalFilterService = Services.get(GlobalFilterService)
+    const itemService = Services.get(ItemService)
 
     const router = useRouter()
-    const buildsSummaries = ref<IBuildSummary[]>([])
     let builds: IBuild[] = []
 
-    const canExport = computed(() => !isLoading.value && buildsSummaries.value.length > 0 && !isExporting.value && !isImporting.value)
+    const canExport = computed(() => !isLoading.value && buildSummaries.value.length > 0 && !isExporting.value && !isImporting.value)
     const canImport = computed(() => !isLoading.value && !isExporting.value && !isImporting.value)
     const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
-    const hasLoadingError = computed(() => hasItemsLoadingError.value || hasWebsiteConfigurationLoadingError.value)
 
+    const buildSummaries = ref<IBuildSummary[]>([])
     const hasImported = ref(false)
-    const hasItemsLoadingError = ref(false)
-    const hasWebsiteConfigurationLoadingError = ref(false)
     const isExporting = ref(false)
     const isImporting = ref(false)
     const isLoading = ref(true)
     const merchantItemsOptionsSidebarVisible = ref(false)
     const toolbarCssClass = ref('toolbar')
+
+    onMounted(() => {
+      globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+      window.addEventListener('scroll', setToolbarCssClass)
+
+      if (itemService.initializationState === ServiceInitializationState.initializing) {
+        itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
+      } else {
+        onServicesInitialized()
+      }
+
+      window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
+    })
+
+    onUnmounted(() => {
+      globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+      window.removeEventListener('scroll', setToolbarCssClass)
+    })
 
     watch(() => hasImported.value, () => {
       // Updating the list of builds after import
@@ -65,23 +73,6 @@ export default defineComponent({
         getBuilds()
         hasImported.value = false
       }
-    })
-
-    onMounted(() => {
-      window.addEventListener('scroll', setToolbarCssClass)
-      window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
-
-      globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-
-      if (itemService.initializationState !== ServiceInitializationState.initializing) {
-        onServicesInitialized()
-      }
-    })
-
-    onUnmounted(() => {
-      globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-
-      window.removeEventListener('scroll', setToolbarCssClass)
     })
 
     /**
@@ -98,6 +89,26 @@ export default defineComponent({
     }
 
     /**
+     * Displays the general options.
+     */
+    function displayGeneralOptions() {
+      Services.get(GlobalSidebarService).display({
+        displayedComponentType: 'GeneralOptionsSidebar',
+        position: 'right'
+      })
+    }
+
+    /**
+     * Displays the merchant items options.
+     */
+    function displayMerchantItemsOptions() {
+      Services.get(GlobalSidebarService).display({
+        displayedComponentType: 'MerchantItemsOptionsSidebar',
+        position: 'right'
+      })
+    }
+
+    /**
      * Gets the builds.
      */
     async function getBuilds() {
@@ -105,13 +116,13 @@ export default defineComponent({
 
       const execute = new Promise<void>((resolve) => {
         setTimeout(async () => { // Did not find another solution to make the loading animation appear when opening the builds list from the welcome page (nextTick does not work)
-          buildsSummaries.value = []
+          buildSummaries.value = []
           builds = Services.get(BuildService).getAll()
           const buildPropertiesService = Services.get(BuildPropertiesService)
 
           for (const build of builds) {
             const summary = await buildPropertiesService.getSummary(build)
-            buildsSummaries.value.push(summary)
+            buildSummaries.value.push(summary)
           }
 
           isLoading.value = false
@@ -123,7 +134,7 @@ export default defineComponent({
 
     /**
      * Opens a the build on which the user clicks.
-     * @param selectedBuildIds - Builds the user clicked on.
+     * @param selectedBuildIds - IDs of the selected builds.
      */
     function onBuildClick(selectedBuildIds: string[]) {
       if (selectedBuildIds.length === 1) {
@@ -142,12 +153,6 @@ export default defineComponent({
      * Gets builds and ends loading.
      */
     function onServicesInitialized() {
-      if (hasLoadingError.value) {
-        isLoading.value = false
-
-        return
-      }
-
       getBuilds().then(() => {
         if (builds.length === 0) {
           router.push({ name: 'Welcome' })
@@ -203,13 +208,12 @@ export default defineComponent({
     }
 
     return {
-      buildsSummaries,
+      buildSummaries,
       canExport,
       canImport,
+      displayGeneralOptions,
+      displayMerchantItemsOptions,
       hasImported,
-      hasItemsLoadingError,
-      hasLoadingError,
-      hasWebsiteConfigurationLoadingError,
       isExporting,
       isImporting,
       isLoading,

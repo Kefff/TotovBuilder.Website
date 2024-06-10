@@ -4,7 +4,7 @@
     class="item"
   >
     <div class="item-selection">
-      <div class="item-dropdown-override">
+      <div class="item-selection-dropdown">
         <Dropdown
           v-model="item"
           :disabled="!editing"
@@ -38,6 +38,14 @@
               <SelectedItem v-model:item="slotProps.value" />
             </div>
           </template>
+          <template #clearicon>
+            <div
+              class="item-clear-button"
+              @click="removeItem"
+            >
+              <font-awesome-icon icon="times" />
+            </div>
+          </template>
         </Dropdown>
       </div>
       <div
@@ -59,15 +67,15 @@
       <SelectedItemFunctionalities
         v-if="inventoryItemInternal != null"
         v-model:selectedTab="selectedTab"
-        v-model:ignorePrice="inventoryItemInternal.ignorePrice"
         v-model:showStats="showStats"
+        :ignore-price="inventoryItemInternal.ignorePrice"
         :can-be-looted="canBeLooted"
         :can-have-content="itemIsContainer"
         :can-have-mods="itemIsModdable"
         :content-count="contentCount"
         :can-ignore-price="canIgnorePrice"
         :mods-count="modsCount"
-        @update:ignore-price="onIgnorePriceChanged()"
+        @update:ignore-price="onIgnorePriceChanged($event)"
       />
       <SelectedItemSummarySelector
         v-if="inventoryItemInternal != null"
@@ -87,17 +95,19 @@
       <div v-if="itemIsModdable">
         <ItemMods
           v-show="selectedTab === SelectableTab.mods"
-          v-model:inventory-mod-slots="inventoryItemInternal.modSlots"
+          :inventory-mod-slots="inventoryItemInternal.modSlots"
           :moddable-item="item"
           :path="path"
+          @update:inventory-mod-slots="onModsChanged($event)"
         />
       </div>
       <div v-if="itemIsContainer">
         <div v-show="selectedTab === SelectableTab.content">
           <ItemContent
-            v-model:inventory-items="inventoryItemInternal.content"
+            :inventory-items="inventoryItemInternal.content"
             :container-item="item"
             :path="path"
+            @update:inventory-items="onContentChanged($event)"
           />
         </div>
       </div>

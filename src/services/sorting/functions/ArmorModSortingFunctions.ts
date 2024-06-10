@@ -6,18 +6,18 @@ import { ISortingFunctionList } from './ISortingFunctionList'
 /**
  * Functions for sorting armor mods.
  */
-export const ArmorModSortingFunctions: ISortingFunctionList<IArmorMod> = {
+export const ArmorModSortingFunctions: ISortingFunctionList = {
   ...ArmorSortingFunctions,
   ergonomicsModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.presetWearableModifiers?.ergonomicsModifierPercentage ?? i.ergonomicsModifierPercentage)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IArmorMod).presetWearableModifiers?.ergonomicsModifierPercentage ?? (i as IArmorMod).ergonomicsModifierPercentage)
   },
   movementSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.presetWearableModifiers?.movementSpeedModifierPercentage ?? i.movementSpeedModifierPercentage)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IArmorMod).presetWearableModifiers?.movementSpeedModifierPercentage ?? (i as IArmorMod).movementSpeedModifierPercentage)
   },
   turningSpeedModifierPercentage: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.presetWearableModifiers?.turningSpeedModifierPercentage ?? i.turningSpeedModifierPercentage)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IArmorMod).presetWearableModifiers?.turningSpeedModifierPercentage ?? (i as IArmorMod).turningSpeedModifierPercentage)
   }
 }

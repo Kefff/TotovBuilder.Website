@@ -3,6 +3,7 @@ import { App } from 'vue'
 import PrimeVue from 'primevue/config'
 
 import Button from 'primevue/button'
+import Card from 'primevue/card'
 import Checkbox from 'primevue/checkbox'
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
@@ -28,6 +29,7 @@ export function usePrimeVue(app: App<Element>): void {
   app.use(PrimeVue)
 
   app.component('Button', Button)
+  app.component('Card', Card)
   app.component('Checkbox', Checkbox)
   app.component('Column', Column)
   app.component('DataTable', DataTable)

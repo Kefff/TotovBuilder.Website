@@ -4,6 +4,7 @@ import { ExportService } from './services/ExportService'
 import { FetchService } from './services/FetchService'
 import { GeneralOptionsService } from './services/GeneralOptionsService'
 import { GlobalFilterService } from './services/GlobalFilterService'
+import { GlobalSidebarService } from './services/GlobalSidebarService'
 import { ImportService } from './services/ImportService'
 import { InventoryItemService } from './services/InventoryItemService'
 import { InventorySlotPropertiesService } from './services/InventorySlotPropertiesService'
@@ -24,9 +25,9 @@ import { BuildsImportComponentService } from './services/components/BuildsImport
 import { InventorySlotComponentService } from './services/components/InventorySlotComponentService'
 import { ItemContentComponentService } from './services/components/ItemContentComponentService'
 import { ModSlotComponentService } from './services/components/ModSlotComponentService'
-import { MagazineStatsComponentService } from './services/components/stats/MagazineStatsComponentService'
 import { ServiceInitializationState } from './services/repository/ServiceInitializationState'
 import Services from './services/repository/Services'
+import { SortingService } from './services/sorting/SortingService'
 
 /**
  * Configures all the services used in the application.
@@ -50,6 +51,7 @@ export function configureServices() {
   Services.configure(NotificationService)
   Services.configure(PresetService)
   Services.configure(ReductionService)
+  Services.configure(SortingService)
   Services.configure(TarkovValuesService)
   Services.configure(VersionService)
   Services.configure(WebsiteConfigurationService)
@@ -57,9 +59,9 @@ export function configureServices() {
   // Components
   Services.configure(BuildComponentService)
   Services.configure(BuildsImportComponentService)
+  Services.configure(GlobalSidebarService)
   Services.configure(InventorySlotComponentService)
   Services.configure(ItemContentComponentService)
-  Services.configure(MagazineStatsComponentService)
   Services.configure(ModSlotComponentService)
 
   initialize()

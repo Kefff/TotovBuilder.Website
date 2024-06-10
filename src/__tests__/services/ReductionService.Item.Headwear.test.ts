@@ -95,6 +95,7 @@ describe('parseReducedItem', () => {
         modSlots: [],
         movementSpeedModifierPercentage: 0,
         name: 'Kotton beanie',
+        presetArmorModifiers: undefined,
         presetWearableModifiers: undefined,
         prices: [],
         ricochetChance: '',

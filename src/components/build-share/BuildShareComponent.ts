@@ -5,7 +5,7 @@ import { BuildService } from '../../services/BuildService'
 import { LogService } from '../../services/LogService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import Services from '../../services/repository/Services'
-import InputTextField from '../input-text-field/InputTextFieldComponent.vue'
+import InputTextField from '../InputTextFieldComponent.vue'
 
 export default defineComponent({
   components: {
@@ -14,10 +14,6 @@ export default defineComponent({
   props: {
     build: {
       type: Object as PropType<IBuild>,
-      required: true
-    },
-    hasLoadingError: {
-      type: Boolean,
       required: true
     }
   },

@@ -59,6 +59,11 @@ const initialMerchantFilters = [
   {
     'enabled': true,
     'merchantLevel': 3,
+    'merchant': 'ref'
+  },
+  {
+    'enabled': true,
+    'merchantLevel': 3,
     'merchant': 'skier'
   },
   {
@@ -138,6 +143,11 @@ describe('get()', () => {
         },
         {
           enabled: true,
+          merchant: 'ref',
+          merchantLevel: 3
+        },
+        {
+          enabled: true,
           merchant: 'flea-market',
           merchantLevel: 0
         }
@@ -202,6 +212,11 @@ describe('get()', () => {
         {
           enabled: true,
           merchant: 'jaeger',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'ref',
           merchantLevel: 4
         },
         {
@@ -625,6 +640,11 @@ describe('save', () => {
           merchantLevel: 3
         },
         {
+          enabled: true,
+          merchant: 'ref',
+          merchantLevel: 3
+        },
+        {
           enabled: false,
           merchant: 'flea-market',
           merchantLevel: 0
@@ -732,6 +752,11 @@ describe('saveMerchantFilters()', () => {
       {
         enabled: false,
         merchant: 'jaeger',
+        merchantLevel: 3
+      },
+      {
+        enabled: true,
+        merchant: 'ref',
         merchantLevel: 3
       },
       {

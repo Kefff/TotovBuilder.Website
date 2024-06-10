@@ -418,6 +418,7 @@ export const armor6b13Fl: IArmor = {
   ],
   ergonomicsModifierPercentage: -0.01,
   movementSpeedModifierPercentage: -0.01,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: 0,
   armorClass: 4,
@@ -524,6 +525,7 @@ export const armor6b13FlDefault: IArmor = {
   ],
   ergonomicsModifierPercentage: -0.01,
   movementSpeedModifierPercentage: -0.01,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: 0,
   armorClass: 4,
@@ -661,6 +663,7 @@ export const banshee: IVest = {
   marketLink: 'https://tarkov.dev/item/shellback-tactical-banshee-plate-carrier-a-tacs-au',
   maxStackableAmount: 1,
   name: 'Shellback Tactical Banshee plate carrier (A-TACS AU)',
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   prices: [],
   shortName: 'Banshee',
@@ -785,6 +788,7 @@ export const bansheeDefault: IVest = {
   marketLink: 'https://tarkov.dev/item/shellback-tactical-banshee-plate-carrier-a-tacs-au-default',
   maxStackableAmount: 1,
   name: 'Shellback Tactical Banshee plate carrier (A-TACS AU) Default',
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   prices: [],
   shortName: 'Banshee Default',
@@ -888,6 +892,7 @@ export const cultLocust: IArmorMod = {
   defaultPresetId: undefined,
   maxStackableAmount: 1,
   modSlots: [],
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   prices: [],
   durability: 60,
@@ -1033,6 +1038,21 @@ export const h2o2: IItem = {
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Bottle_of_hydrogen_peroxide'
 }
 
+export const halfMask: IItem = {
+  categoryId: 'faceCover',
+  conflictingItemIds: [],
+  iconLink: 'https://assets.tarkov.dev/572b7fa524597762b747ce82-icon.webp',
+  id: '572b7fa524597762b747ce82',
+  imageLink: 'https://assets.tarkov.dev/572b7fa524597762b747ce82-image.webp',
+  marketLink: 'https://tarkov.dev/item/lower-half-mask',
+  maxStackableAmount: 1,
+  name: 'Lower half-mask',
+  prices: [],
+  shortName: 'Half-mask',
+  weight: 0.1,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Lower_half-mask'
+}
+
 export const iskra: IItem = {
   categoryId: 'other',
   conflictingItemIds: [],
@@ -1075,6 +1095,7 @@ export const k1s: IHeadwear = {
     }
   ],
   movementSpeedModifierPercentage: 0,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   prices: [],
   ricochetChance: 'Low',
@@ -1107,6 +1128,7 @@ export const k1sVisor: IArmorMod = {
   maxStackableAmount: 1,
   modSlots: [],
   movementSpeedModifierPercentage: 0,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   prices: [],
   turningSpeedModifierPercentage: 0,
@@ -1180,6 +1202,7 @@ export const lshZ2dtm: IHeadwear = {
   ],
   ergonomicsModifierPercentage: -0.03,
   movementSpeedModifierPercentage: 0,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: -0.03,
   armorClass: 4,
@@ -1219,6 +1242,7 @@ export const lshZ2dtmFs: IArmorMod = {
   modSlots: [],
   ergonomicsModifierPercentage: -0.02,
   movementSpeedModifierPercentage: 0,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: -0.05,
   armorClass: 4,
@@ -1308,9 +1332,7 @@ export const m9a3: IRangedWeapon = {
   fireRate: 30,
   horizontalRecoil: 280,
   minuteOfAngle: undefined,
-  presetErgonomics: undefined,
-  presetHorizontalRecoil: undefined,
-  presetVerticalRecoil: undefined,
+  presetRangedWeaponModifiers: undefined,
   verticalRecoil: 404
 }
 
@@ -1390,9 +1412,7 @@ export const m9a3Default: IRangedWeapon = {
   fireRate: 30,
   horizontalRecoil: 280,
   minuteOfAngle: 9.97,
-  presetErgonomics: undefined,
-  presetHorizontalRecoil: undefined,
-  presetVerticalRecoil: undefined,
+  presetRangedWeaponModifiers: undefined,
   verticalRecoil: 404
 }
 
@@ -1641,6 +1661,7 @@ export const monocletePe: IArmorMod = {
   marketLink: 'https://tarkov.dev/item/monoclete-level-iii-pe-ballistic-plate',
   maxStackableAmount: 1,
   modSlots: [],
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   prices: [],
   name: 'Monoclete level III PE ballistic plate',
@@ -1735,9 +1756,7 @@ export const mts25512: IRangedWeapon = {
   weight: 1.1,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_12ga_shotgun',
   minuteOfAngle: undefined,
-  presetErgonomics: undefined,
-  presetHorizontalRecoil: undefined,
-  presetVerticalRecoil: undefined,
+  presetRangedWeaponModifiers: undefined,
   baseItemId: undefined,
   conflictingItemIds: [],
   maxStackableAmount: 1,
@@ -1792,9 +1811,7 @@ export const mts25512Default: IRangedWeapon = {
       required: false
     }
   ],
-  presetErgonomics: undefined,
-  presetHorizontalRecoil: undefined,
-  presetVerticalRecoil: undefined,
+  presetRangedWeaponModifiers: undefined,
   prices: [],
   verticalRecoil: 442,
   categoryId: 'mainWeapon',
@@ -2181,9 +2198,7 @@ export const opSksDefault: IRangedWeapon = {
       required: false
     }
   ],
-  presetErgonomics: undefined,
-  presetHorizontalRecoil: undefined,
-  presetVerticalRecoil: undefined,
+  presetRangedWeaponModifiers: undefined,
   prices: [],
   verticalRecoil: 155,
   categoryId: 'mainWeapon',
@@ -2268,6 +2283,7 @@ export const paca: IArmor = {
   conflictingItemIds: [],
   maxStackableAmount: 1,
   prices: [],
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: 0
 }
@@ -2320,6 +2336,7 @@ export const plate6b33Back: IArmorMod = {
   modSlots: [],
   ergonomicsModifierPercentage: -0.005,
   movementSpeedModifierPercentage: -0.025,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: 0,
   armorClass: 4,
@@ -2349,6 +2366,7 @@ export const plate6b33Front: IArmorMod = {
   modSlots: [],
   ergonomicsModifierPercentage: -0.01,
   movementSpeedModifierPercentage: -0.025,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: -0.01,
   armorClass: 4,
@@ -2475,6 +2493,21 @@ export const rgd5: IGrenade = {
   type: 'Grenade'
 }
 
+export const rooster: IItem = {
+  categoryId: 'other',
+  conflictingItemIds: [],
+  iconLink: 'https://assets.tarkov.dev/5bc9bc53d4351e00367fbcee-icon.webp',
+  id: '5bc9bc53d4351e00367fbcee',
+  imageLink: 'https://assets.tarkov.dev/5bc9bc53d4351e00367fbcee-image.webp',
+  marketLink: 'https://tarkov.dev/item/golden-rooster-figurine',
+  maxStackableAmount: 1,
+  name: 'Golden rooster figurine',
+  prices: [],
+  shortName: 'Rooster',
+  weight: 3.8,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Golden_rooster_figurine'
+}
+
 export const rpk16: IRangedWeapon = {
   categoryId: 'mainWeapon',
   conflictingItemIds: [],
@@ -2595,9 +2628,7 @@ export const rpk16: IRangedWeapon = {
   fireRate: 650,
   horizontalRecoil: 333,
   minuteOfAngle: undefined,
-  presetErgonomics: undefined,
-  presetHorizontalRecoil: undefined,
-  presetVerticalRecoil: undefined,
+  presetRangedWeaponModifiers: undefined,
   verticalRecoil: 112
 }
 
@@ -2721,9 +2752,7 @@ export const rpk16Default: IRangedWeapon = {
   fireRate: 650,
   horizontalRecoil: 333,
   minuteOfAngle: 3.03,
-  presetErgonomics: undefined,
-  presetHorizontalRecoil: undefined,
-  presetVerticalRecoil: undefined,
+  presetRangedWeaponModifiers: undefined,
   verticalRecoil: 112
 }
 
@@ -3271,6 +3300,7 @@ export const scavVest: IVest = {
   modSlots: [],
   ergonomicsModifierPercentage: 0,
   movementSpeedModifierPercentage: 0,
+  presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
   turningSpeedModifierPercentage: 0,
   armorClass: 0,
@@ -3507,6 +3537,7 @@ export const ItemMocks: IItem[] = [
   ewr,
   filter,
   h2o2,
+  halfMask,
   iskra,
   k1s,
   k1sVisor,
@@ -3545,6 +3576,7 @@ export const ItemMocks: IItem[] = [
   pso1,
   razor,
   rgd5,
+  rooster,
   rpk16,
   rpk1615inch,
   rpk16Default,

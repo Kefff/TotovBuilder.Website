@@ -105,6 +105,7 @@ describe('readBuilds()', () => {
           },
           shoppingList: [
             {
+              inventorySlotId: 'backpack',
               item: {
                 ...berkut,
                 prices: [
@@ -168,6 +169,7 @@ describe('readBuilds()', () => {
               }
             },
             {
+              inventorySlotId: undefined,
               item: {
                 ...iskra,
                 prices: [

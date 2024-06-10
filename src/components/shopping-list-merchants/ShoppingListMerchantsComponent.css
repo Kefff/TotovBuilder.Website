@@ -1,7 +1,0 @@
-.merchants-list {
-  display: grid;
-  gap: 0.5rem 1rem;
-  grid-template-columns: repeat(auto-fit, 2rem);
-  justify-content: end;
-  width: 100%;
-}

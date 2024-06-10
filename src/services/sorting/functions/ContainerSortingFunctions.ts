@@ -6,10 +6,10 @@ import { ItemSortingFunctions } from './ItemSortingFunction'
 /**
  * Functions for sorting containers.
  */
-export const ContainerSortingFunctions: ISortingFunctionList<IContainer> = {
+export const ContainerSortingFunctions: ISortingFunctionList = {
   ...ItemSortingFunctions,
   capacity: {
     comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.capacity)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IContainer).capacity)
   }
 }

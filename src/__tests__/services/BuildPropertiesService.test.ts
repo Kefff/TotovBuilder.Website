@@ -3,6 +3,7 @@ import { anything, instance, mock, verify } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { IBuildSummaryShoppingMerchant } from '../../models/utils/IBuildSummaryMerchant'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
@@ -14,7 +15,7 @@ import { NotificationService, NotificationType } from '../../services/Notificati
 import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 import { build1, build2 } from '../__data__/buildMocks'
-import { ammo545bp, armor6b13FlDefault, bansheeDefault, ekp802dt, mechanism, ms2000, nf30mm, opSksDefault, opSksDt, plate6b33Back, plate6b33Front, precision, pso1, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, scavVest, specterDr } from '../__data__/itemMocks'
+import { ak12PistolGrip, ammo545bp, armor6b13FlDefault, bansheeDefault, ekp802dt, mechanism, ms2000, nf30mm, opSksDefault, opSksDt, plate6b33Back, plate6b33Front, precision, pso1, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, salewa, scavVest, specterDr } from '../__data__/itemMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
@@ -642,9 +643,9 @@ describe('getAsString()', () => {
 
 describe('getNotExportedTooltip()', () => {
   it.each([
-    [undefined, undefined, 'Build not exported. It will be lost if your browser history is cleared.'],
-    [new Date(1), undefined, 'Build not exported. It will be lost if your browser history is cleared.'],
-    [new Date(2), new Date(1), 'Changes from the 01/01/1970 01:00:00 have not been exported. They will be lost if your browser data is cleared. Last export on 01/01/1970 01:00:00.']
+    [undefined, undefined, 'Build not exported. It will be lost if you clear your browser data.'],
+    [new Date(1), undefined, 'Build not exported. It will be lost if you clear your browser data.'],
+    [new Date(2), new Date(1), 'Changes from the 01/01/1970 01:00:00 have not been exported. They will be lost if you clear your browser data. Last export on 01/01/1970 01:00:00.']
   ])('should get the tooltip for not exported builds', (lastUpdated: Date | undefined, lastExported: Date | undefined, expected: string) => {
     // Arrange
     const service = new BuildPropertiesService()
@@ -657,10 +658,145 @@ describe('getNotExportedTooltip()', () => {
   })
 })
 
+describe('getShoppingListMerchants()', () => {
+  it('should get the merchants and their maximum level from a shopping list', () => {
+    // Arrange
+    const services = new BuildPropertiesService()
+
+    // Act
+    const merchants = services.getShoppingListMerchants([
+      {
+        inventorySlotId: undefined,
+        item: ak12PistolGrip,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: ak12PistolGrip.id,
+          merchant: 'prapor',
+          merchantLevel: 2,
+          quest: undefined,
+          value: 2163,
+          valueInMainCurrency: 2163
+        },
+        quantity: 1,
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: ak12PistolGrip.id,
+          merchant: 'prapor',
+          merchantLevel: 2,
+          quest: undefined,
+          value: 2163,
+          valueInMainCurrency: 2163
+        }
+      },
+      {
+        inventorySlotId: undefined,
+        item: salewa,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: salewa.id,
+          merchant: 'therapist',
+          merchantLevel: 2,
+          quest: {
+            id: '596760e186f7741e11214d58',
+            name: 'Postman Pat - Part 2',
+            wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Postman_Pat_-_Part_2'
+          },
+          value: 37061,
+          valueInMainCurrency: 37061
+        },
+        quantity: 1,
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: salewa.id,
+          merchant: 'therapist',
+          merchantLevel: 2,
+          quest: {
+            id: '596760e186f7741e11214d58',
+            name: 'Postman Pat - Part 2',
+            wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Postman_Pat_-_Part_2'
+          },
+          value: 37061,
+          valueInMainCurrency: 37061
+        }
+      },
+      {
+        inventorySlotId: 'onSling',
+        item: rpk16Default,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: rpk16Default.id,
+          merchant: 'prapor',
+          merchantLevel: 4,
+          quest: undefined,
+          value: 69734,
+          valueInMainCurrency: 69734
+        },
+        quantity: 1,
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: rpk16Default.id,
+          merchant: 'prapor',
+          merchantLevel: 4,
+          quest: undefined,
+          value: 69734,
+          valueInMainCurrency: 69734
+        }
+      },
+      {
+        inventorySlotId: 'tacticalRig',
+        item: scavVest,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: scavVest.id,
+          merchant: 'flea-market',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 33447,
+          valueInMainCurrency: 33447
+        },
+        quantity: 1,
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: scavVest.id,
+          merchant: 'flea-market',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 33447,
+          valueInMainCurrency: 33447
+        }
+      }
+    ])
+
+    // Assert
+    expect(merchants).toStrictEqual([
+      {
+        level: 4,
+        name: 'prapor'
+      },
+      {
+        level: 2,
+        name: 'therapist'
+      },
+      {
+        level: 0,
+        name: 'flea-market'
+      }
+    ] as IBuildSummaryShoppingMerchant[])
+  })
+})
+
 const expectedToString1 = `Build 1
 Recul vertical: 76    |    Recul horizontal: 226    |    Ergonomie: 34 (-9,5%)
 Armure: 4    |    Vitesse: -6%    |    Vitesse de rotation: -9%
-Prix: 366 019₽    |    Poids: 24,153kg
+Prix: 366 019₽    |    Poids: 24,153 kg
 
 [En bandouillère] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
     [Chargeur] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (échange): 24 218₽
@@ -668,24 +804,24 @@ Prix: 366 019₽    |    Poids: 24,153kg
 [Pare-balles] 6B13 assault armor (Flora) Default    |    Ragman 2: 64 269₽
 [Couvre-chef] BNTI LShZ-2DTM helmet (Black)    |    Marché: 63 493₽
     [Équipement] LShZ-2DTM face shield    |    Ragman 3 (échange): 29 805₽
+[Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)    |    Ragman 2: 24 509₽
+    Iskra ration pack    |    Jaeger 2: 24 392₽
+    Bottle of water (0.6L)    |    La Toubib 1 (échange): 11 473₽
 [Poches] Morphine injector    |    Marché: 17 421₽
 [Poches] Vaseline balm    |    Marché: 27 714₽
 [Poches] RGD-5 hand grenade    |    Prapor 3: 11 822₽
 [Poches] 60 x 5.45x39mm US gs    |    Prapor 1: 5 760₽
-[Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)    |    Ragman 2: 24 509₽
-    Iskra ration pack    |    Jaeger 2: 24 392₽
-    Bottle of water (0.6L)    |    La Toubib 1 (échange): 11 473₽
-[Masque] Cold Fear infrared balaclava    |    Ragman 2: 4 793₽
 [Lunettes] Crossbow tactical glasses    |    Ragman 2: 3 885₽
+[Masque] Cold Fear infrared balaclava    |    Ragman 2: 4 793₽
 
 Créé avec Totov Builder
 Équipement interactif et statistiques complètes:
-http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KETjsnnqqDlYa8teT26vMr7mcA4yJzLaCaKHfPnnQM4LV5edlloSISmpvJN3hlYvrz74DQyinjTwOr26OE9Lnqe7m55nUc1D6Xfe96wXdgNVhx1u8PO2ZlQ9ijOUvKKJjWrfnb3Y_z_HX9VZ0tc-GC8TifY5MzhZfr2mwp-SnV4lSZ91gfE5MsR7GcSvroCe9Nwn41ZhdEGt-z_Lb8j_gCygg`
+http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU`
 
 const expectedToString2 = `Build 2
 Recul vertical: 368    |    Recul horizontal: 255    |    Ergonomie: 52 (-3%)
 Armure: 4    |    Vitesse: -3%    |    Vitesse de rotation: -1%
-Prix: 444$ et 184 252₽ (= 247 747₽)    |    Poids: 8,936kg
+Prix: 444$ et 184 252₽ (= 247 747₽)    |    Poids: 8,936 kg
 
 [Holster] Beretta M9A3 9x19 pistol Default    |    Peacekeeper 1: 107$ (= 15 337₽)
     [Canon] 
@@ -708,7 +844,7 @@ http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzs
 const expectedToString3 = `Build with armor only
 Ergonomie: -2,5%
 Armure: 4    |    Vitesse: -6%    |    Vitesse de rotation: -1%
-Prix: 64 269₽    |    Poids: 10,600kg
+Prix: 64 269₽    |    Poids: 10,600 kg
 
 [Pare-balles] 6B13 assault armor (Flora) Default    |    Ragman 2: 64 269₽
 
@@ -719,7 +855,7 @@ http://localhost:3000/s/XQAAAAKkAAAAAAAAAABBKEnLUiJ9Ha4afnegDxWD05WKxGsZJsgWhKhO
 const expectedToString4 = `Build with backpack only and every currency
 Ergonomie: -3%
 Vitesse: -2%    |    Vitesse de rotation: -1%
-Prix: 95€, 157$ et 67 446₽ (= 104 936₽)    |    Poids: 1,307kg
+Prix: 95€, 157$ et 67 446₽ (= 104 936₽)    |    Poids: 1,307 kg
 
 [Sac à dos] Oakley Mechanism heavy duty backpack (Black)    |    Ragman 2: 67 446₽
     MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)
@@ -731,7 +867,7 @@ http://localhost:3000/s/XQAAAAKZAAAAAAAAAABBKEnNkWPZwxLGD5AbqDRCABlUfHwjFlOcCKJC
 
 const expectedToString5 = `Build with weapon on back only
 Recul vertical: 112    |    Recul horizontal: 333    |    Ergonomie: 45
-Prix: 43 345₽    |    Poids: 1,500kg
+Prix: 43 345₽    |    Poids: 1,500 kg
 
 [Dans le dos] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
 
@@ -740,7 +876,7 @@ Créé avec Totov Builder
 http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17Rk0UiykRW0ApjpaFQ6TR_AWFoFNHfz758PAigkjDNzljvK7CyqK5Q3NR5CNalmBcKYWWwRr_692wAA`
 
 const expectedToString6 = `Build with missing price
-Poids: 0,600kg
+Poids: 0,600 kg
 
 [Poches] 60 x 5.45x39mm BP gs    |    Pas de marchand
 

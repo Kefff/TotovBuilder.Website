@@ -1,12 +1,14 @@
-import { computed, defineComponent, onMounted, onUnmounted, provide, ref, watch } from 'vue'
+import { computed, defineComponent, nextTick, onMounted, onUnmounted, provide, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
+import { IGeneralOptionsGroup } from '../../models/utils/IGeneralOptionsGroup'
 import vueI18n from '../../plugins/vueI18n'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
 import { ExportService } from '../../services/ExportService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
+import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemService } from '../../services/ItemService'
 import { CompatibilityRequest } from '../../services/compatibility/CompatibilityRequest'
@@ -17,33 +19,24 @@ import { ServiceInitializationState } from '../../services/repository/ServiceIni
 import Services from '../../services/repository/Services'
 import { PathUtils } from '../../utils/PathUtils'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import InputTextField from '../InputTextFieldComponent.vue'
+import InventoryPrice from '../InventoryPriceComponent.vue'
+import InventorySlot from '../InventorySlotComponent.vue'
+import Loading from '../LoadingComponent.vue'
 import BuildShare from '../build-share/BuildShareComponent.vue'
-import GeneralOptions from '../general-options/GeneralOptionsComponent.vue'
-import InputTextField from '../input-text-field/InputTextFieldComponent.vue'
-import InventoryPrice from '../inventory-price/InventoryPriceComponent.vue'
-import InventorySlot from '../inventory-slot/InventorySlotComponent.vue'
-import LoadingError from '../loading-error/LoadingErrorComponent.vue'
-import Loading from '../loading/LoadingComponent.vue'
-import MerchantItemsOptions from '../merchant-items-options/MerchantItemsOptionsComponent.vue'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
-import ShoppingList from '../shopping-list/ShoppingListComponent.vue'
 
 export default defineComponent({
   components: {
     BuildShare,
-    GeneralOptions,
     InputTextField,
     InventoryPrice,
     InventorySlot,
     Loading,
-    LoadingError,
-    MerchantItemsOptions,
-    NotificationButton,
-    ShoppingList
+    NotificationButton
   },
   setup: () => {
     const itemService = Services.get(ItemService)
-    itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
 
     const route = useRoute()
     const router = useRouter()
@@ -57,7 +50,6 @@ export default defineComponent({
     const inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
     let originalBuild: IBuild
 
-    const hasLoadingError = computed(() => hasItemsLoadingError.value || hasWebsiteConfigurationLoadingError.value)
     const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
     const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
     const hasSummaryErgonomicsModifierPercentage = computed(() => summary.value.wearableModifiers.ergonomicsModifierPercentage !== 0)
@@ -91,7 +83,6 @@ export default defineComponent({
     const editing = isNewBuild.value ? ref(true) : ref(false)
     const generalOptionsSidebarVisible = ref(false)
     const hasItemsLoadingError = ref(false)
-    const hasWebsiteConfigurationLoadingError = ref(false)
     const isLoading = ref(true)
     const summary = ref<IBuildSummary>({
       armorModifiers: {
@@ -128,9 +119,8 @@ export default defineComponent({
     watch(() => route.params, onServicesInitialized)
 
     onMounted(() => {
-      window.addEventListener('scroll', setToolbarCssClass)
-      window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
       document.onkeydown = (e) => onKeyDown(e)
+      window.addEventListener('scroll', setToolbarCssClass)
 
       compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
@@ -138,10 +128,13 @@ export default defineComponent({
       inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-
-      if (itemService.initializationState !== ServiceInitializationState.initializing) {
+      if (itemService.initializationState === ServiceInitializationState.initializing) {
+        itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
+      } else {
         onServicesInitialized()
       }
+
+      window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
     })
 
     onUnmounted(() => {
@@ -199,6 +192,8 @@ export default defineComponent({
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = true
       }
+
+      Services.get(GlobalSidebarService).close()
     }
 
     /**
@@ -215,6 +210,61 @@ export default defineComponent({
     }
 
     /**
+     * Displays the general options.
+     */
+    function displayGeneralOptions() {
+      Services.get(GlobalSidebarService).display({
+        displayedComponentType: 'GeneralOptionsSidebar',
+        displayedComponentParameters: [
+          {
+            caption: 'caption.displayOptions',
+            icon: '',
+            name: 'display-options',
+            options: [
+              {
+                caption: 'caption.collapseAll',
+                icon: 'minus-square',
+                onClick: collapseAll
+              },
+              {
+                caption: 'caption.expandWithItem',
+                icon: 'search-plus',
+                onClick: expandWithItem
+              },
+              {
+                caption: 'caption.expandAll',
+                icon: 'plus-square',
+                onClick: expandAll
+              }
+            ]
+          }
+        ] as IGeneralOptionsGroup[],
+        position: 'right'
+      })
+    }
+
+    /**
+     * Displays the merchant items options.
+     */
+    function displayMerchantItemsOptions() {
+      Services.get(GlobalSidebarService).display({
+        displayedComponentType: 'MerchantItemsOptionsSidebar',
+        position: 'right'
+      })
+    }
+
+    /**
+     * Displays the shopping list.
+     */
+    function displayShoppingList() {
+      Services.get(GlobalSidebarService).display({
+        displayedComponentType: 'ShoppingListSidebar',
+        displayedComponentParameters: summary.value.shoppingList,
+        position: 'left'
+      })
+    }
+
+    /**
      * Expands all the inventory slots.
      */
     function expandAll() {
@@ -223,6 +273,8 @@ export default defineComponent({
       for (let i = 0; i < collapseStatuses.value.length; i++) {
         collapseStatuses.value[i] = false
       }
+
+      Services.get(GlobalSidebarService).close()
     }
 
     /**
@@ -236,6 +288,8 @@ export default defineComponent({
           collapseStatuses.value[i] = false
         }
       }
+
+      Services.get(GlobalSidebarService).close()
     }
 
     /**
@@ -346,12 +400,12 @@ export default defineComponent({
         build.value = buildComponentService.getBuild(route.params['id'] as string)
         getSharedBuild(route.params['sharedBuild'] as string)
           .then(() => {
-            isLoading.value = false
-            getSummary()
-
             build.value.inventorySlots.forEach(() => {
               collapseStatuses.value.push(false) // All inventory slots expanded by default
             })
+
+            isLoading.value = false
+            getSummary()
           })
           .finally(() => isLoading.value = false)
       }, 1)
@@ -378,8 +432,11 @@ export default defineComponent({
     async function save() {
       isLoading.value = true
       await buildComponentService.saveBuild(router, build.value)
-      isLoading.value = false
-      editing.value = false
+
+      nextTick(() => {
+        isLoading.value = false
+        editing.value = false
+      })
     }
 
     /**
@@ -424,6 +481,9 @@ export default defineComponent({
       confirmDelete,
       copy,
       deleting,
+      displayGeneralOptions,
+      displayMerchantItemsOptions,
+      displayShoppingList,
       DisplayValueType,
       editing,
       expandAll,
@@ -432,7 +492,6 @@ export default defineComponent({
       generalOptionsSidebarVisible,
       goToBuilds,
       hasItemsLoadingError,
-      hasLoadingError,
       hasSummaryArmor,
       hasSummaryErgonomics,
       hasSummaryErgonomicsModifierPercentage,
@@ -444,7 +503,6 @@ export default defineComponent({
       hasSummaryVerticalRecoil,
       hasSummaryWearableModifiers,
       hasSummaryWeight,
-      hasWebsiteConfigurationLoadingError,
       invalid,
       inventorySlotPathPrefix,
       isEmpty,

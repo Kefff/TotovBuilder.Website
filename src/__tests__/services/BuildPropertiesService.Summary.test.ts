@@ -568,6 +568,7 @@ describe('getSummary()', () => {
         build1,
         [
           {
+            inventorySlotId: 'onSling',
             item: {
               ...rpk16Default,
               prices: rpk16DefaultPrices
@@ -595,6 +596,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: undefined,
             item: {
               ...rpk16Drum,
               prices: rpk16DrumPrices
@@ -622,6 +624,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: undefined,
             item: {
               ...alkali,
               prices: alkaliPrices
@@ -649,6 +652,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: 'pockets',
             item: {
               ...ammo545us,
               prices: ammo545usPrices
@@ -676,6 +680,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: 'bodyArmor',
             item: {
               ...armor6b13FlDefault,
               prices: armor6b13FlDefaultPrices
@@ -711,6 +716,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: 'headwear',
             item: {
               ...lshZ2dtm,
               prices: lshZ2dtmPrices
@@ -738,6 +744,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: undefined,
             item: {
               ...lshZ2dtmFs,
               prices: lshZ2dtmFsPrices
@@ -765,6 +772,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: undefined,
             item: {
               ...plexiglass,
               prices: plexiglassPrices
@@ -792,87 +800,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            item: {
-              ...morphine,
-              prices: morphinePrices
-            },
-            quantity: 1,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: morphine.id,
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 17421,
-              valueInMainCurrency: 17421
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: morphine.id,
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 17421,
-              valueInMainCurrency: 17421
-            }
-          },
-          {
-            item: {
-              ...vaseline,
-              prices: vaselinePrices
-            },
-            quantity: 1,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: vaseline.id,
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 27714,
-              valueInMainCurrency: 27714
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: vaseline.id,
-              merchant: 'flea-market',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 27714,
-              valueInMainCurrency: 27714
-            }
-          },
-          {
-            item: {
-              ...rgd5,
-              prices: rgd5Prices
-            },
-            quantity: 1,
-            price: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: rgd5.id,
-              merchant: 'prapor',
-              merchantLevel: 3,
-              quest: undefined,
-              value: 11822,
-              valueInMainCurrency: 11822
-            },
-            unitPrice: {
-              barterItems: [],
-              currencyName: 'RUB',
-              itemId: rgd5.id,
-              merchant: 'prapor',
-              merchantLevel: 3,
-              quest: undefined,
-              value: 11822,
-              valueInMainCurrency: 11822
-            }
-          },
-          {
+            inventorySlotId: 'backpack',
             item: {
               ...berkut,
               prices: berkutPrices
@@ -900,6 +828,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: undefined,
             item: {
               ...iskra,
               prices: iskraPrices
@@ -935,6 +864,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: undefined,
             item: {
               ...water,
               prices: waterPrices
@@ -962,6 +892,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: undefined,
             item: {
               ...h2o2,
               prices: h2o2Prices
@@ -989,33 +920,91 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: 'pockets',
             item: {
-              ...cf,
-              prices: cfPrices
+              ...morphine,
+              prices: morphinePrices
             },
             quantity: 1,
             price: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: cf.id,
-              merchant: 'ragman',
-              merchantLevel: 2,
+              itemId: morphine.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
               quest: undefined,
-              value: 4793,
-              valueInMainCurrency: 4793
+              value: 17421,
+              valueInMainCurrency: 17421
             },
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
-              itemId: cf.id,
-              merchant: 'ragman',
-              merchantLevel: 2,
+              itemId: morphine.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
               quest: undefined,
-              value: 4793,
-              valueInMainCurrency: 4793
+              value: 17421,
+              valueInMainCurrency: 17421
             }
           },
           {
+            inventorySlotId: 'pockets',
+            item: {
+              ...vaseline,
+              prices: vaselinePrices
+            },
+            quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: vaseline.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 27714,
+              valueInMainCurrency: 27714
+            },
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: vaseline.id,
+              merchant: 'flea-market',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 27714,
+              valueInMainCurrency: 27714
+            }
+          },
+          {
+            inventorySlotId: 'pockets',
+            item: {
+              ...rgd5,
+              prices: rgd5Prices
+            },
+            quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: rgd5.id,
+              merchant: 'prapor',
+              merchantLevel: 3,
+              quest: undefined,
+              value: 11822,
+              valueInMainCurrency: 11822
+            },
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: rgd5.id,
+              merchant: 'prapor',
+              merchantLevel: 3,
+              quest: undefined,
+              value: 11822,
+              valueInMainCurrency: 11822
+            }
+          },
+          {
+            inventorySlotId: 'eyewear',
             item: {
               ...crossbow,
               prices: crossbowPrices
@@ -1041,6 +1030,34 @@ describe('getSummary()', () => {
               value: 3885,
               valueInMainCurrency: 3885
             }
+          },
+          {
+            inventorySlotId: 'faceCover',
+            item: {
+              ...cf,
+              prices: cfPrices
+            },
+            quantity: 1,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: cf.id,
+              merchant: 'ragman',
+              merchantLevel: 2,
+              quest: undefined,
+              value: 4793,
+              valueInMainCurrency: 4793
+            },
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: cf.id,
+              merchant: 'ragman',
+              merchantLevel: 2,
+              quest: undefined,
+              value: 4793,
+              valueInMainCurrency: 4793
+            }
           }
         ] as IShoppingListItem[]
       ],
@@ -1048,6 +1065,7 @@ describe('getSummary()', () => {
         build2,
         [
           {
+            inventorySlotId: 'holster',
             item: {
               ...m9a3Default,
               prices: [...m9a3DefaultPrices]
@@ -1075,6 +1093,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: undefined,
             item: {
               ...srd9,
               prices: [...srd9Prices]
@@ -1102,6 +1121,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: undefined,
             item: {
               ...ammo9mmGT,
               prices: [...ammo9mmGTPrices]
@@ -1129,6 +1149,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: undefined,
             item: {
               ...x400,
               prices: [...x400Prices]
@@ -1156,6 +1177,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: 'tacticalRig',
             item: {
               ...banshee,
               prices: [...bansheePrices]
@@ -1183,6 +1205,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: undefined,
             item: {
               ...monocletePe,
               prices: [...monocletePePrices]
@@ -1210,6 +1233,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: undefined,
             item: {
               ...pass,
               prices: [...passPrices]
@@ -1237,6 +1261,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: undefined,
             item: {
               ...salewa,
               prices: [...salewaPrices]
@@ -1264,6 +1289,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: undefined,
             item: {
               ...ewr,
               prices: [...ewrPrices]
@@ -1291,6 +1317,7 @@ describe('getSummary()', () => {
             }
           },
           {
+            inventorySlotId: 'earpiece',
             item: {
               ...razor,
               prices: [...razorPrices]

@@ -81,7 +81,6 @@ export default class StatsUtils {
       displayValue = '+' + displayValue
     }
 
-
     return displayValue
   }
 
@@ -93,22 +92,28 @@ export default class StatsUtils {
    * @returns Display value in the standard format associated with the type of value.
    */
   public static getStandardDisplayValue(type: DisplayValueType, value: number, language: string | undefined = navigator.language): string {
+    let displayValue: string
+
     switch (type) {
       // Flat values
       case DisplayValueType.armorClass:
       case DisplayValueType.ergonomics:
       case DisplayValueType.price:
       case DisplayValueType.recoil:
-        return StatsUtils.getDisplayValue(value, false, 0, undefined, language)
+        displayValue = StatsUtils.getDisplayValue(value, false, 0, undefined, language)
+        break
       case DisplayValueType.ergonomicsModifier:
-        return StatsUtils.getDisplayValue(value, true, 1, undefined, language)
+        displayValue = StatsUtils.getDisplayValue(value, true, 1, undefined, language)
+        break
       case DisplayValueType.weight:
-        return StatsUtils.getDisplayValue(value, false, 3, 3, language)
+        displayValue = StatsUtils.getDisplayValue(value, false, 3, 3, language) + ' kg'
+        break
 
       // Percentages
       case DisplayValueType.armorDamagePercentage:
       case DisplayValueType.fragmentationChance:
-        return StatsUtils.getPercentageDisplayValue(value, false, 1, undefined, language)
+        displayValue = StatsUtils.getPercentageDisplayValue(value, false, 1, undefined, language)
+        break
       case DisplayValueType.accuracyModifierPercentage:
       case DisplayValueType.bleedingChanceModifier:
       case DisplayValueType.blindnessProtectionPercentage:
@@ -119,10 +124,14 @@ export default class StatsUtils {
       case DisplayValueType.movementSpeedModifierPercentage:
       case DisplayValueType.recoilModifierPercentage:
       case DisplayValueType.turningSpeedModifierPercentage:
-        return StatsUtils.getPercentageDisplayValue(value, true, 1, undefined, language)
+        displayValue = StatsUtils.getPercentageDisplayValue(value, true, 1, undefined, language)
+        break
       default:
-        return 'Error'
+        displayValue = 'Error'
+        break
     }
+
+    return displayValue
   }
 
   /**

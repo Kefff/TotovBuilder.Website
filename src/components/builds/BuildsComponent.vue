@@ -7,19 +7,19 @@
       <div class="toolbar-line">
         <div class="toolbar-part">
           <Button
-            :disabled="isLoading || hasLoadingError"
+            :disabled="isLoading"
             @click="openNewBuild()"
           >
             <font-awesome-icon
               icon="plus"
               class="icon-before-text"
             />
-            <span>{{ $t('caption.newBuild') }}</span>
+            <span>{{ $t('caption.new') }}</span>
           </Button>
           <Button
             v-tooltip.top="$t('caption.exportBuilds')"
             class="p-button-text p-button-sm button-discreet"
-            :disabled="isLoading || hasLoadingError || !canExport"
+            :disabled="isLoading || !canExport"
             @click="showBuildsExportPopup()"
           >
             <font-awesome-icon icon="file-export" />
@@ -27,7 +27,7 @@
           <Button
             v-tooltip.top="$t('caption.importBuilds')"
             class="p-button-text p-button-sm button-discreet"
-            :disabled="isLoading || hasLoadingError || !canImport"
+            :disabled="isLoading || !canImport"
             @click="showBuildsImportPopup()"
           >
             <font-awesome-icon icon="file-import" />
@@ -36,8 +36,21 @@
         <div class="toolbar-part toolbar-center" />
         <div class="toolbar-part">
           <div class="builds-toolbar-right">
-            <MerchantItemsOptions />
-            <GeneralOptions />
+            <Button
+              v-tooltip.top="$t('caption.merchantItemsOptions')"
+              class="p-button-text p-button-sm button-discreet"
+              :disabled="isLoading"
+              @click="displayMerchantItemsOptions()"
+            >
+              <font-awesome-icon icon="user-tag" />
+            </Button>
+            <Button
+              v-tooltip.top="$t('caption.options')"
+              class="p-button-text p-button-sm button-discreet"
+              @click="displayGeneralOptions()"
+            >
+              <font-awesome-icon icon="cog" />
+            </Button>
             <NotificationButton />
           </div>
         </div>
@@ -51,34 +64,29 @@
       <Loading />
     </div>
     <div
-      v-show="!isLoading && buildsSummaries.length > 0"
+      v-show="!isLoading && buildSummaries.length > 0"
       id="builds-content"
     >
       <BuildsList
-        :builds-summaries="buildsSummaries"
-        @update:selected-build-ids="($event: string[]) => onBuildClick($event)"
+        :build-summaries="buildSummaries"
+        :show-not-exported="true"
+        @update:selected-build-ids="onBuildClick"
       />
     </div>
   </div>
 
   <!-- Export -->
   <BuildsExport
-    v-if="!isLoading && !hasLoadingError"
+    v-if="!isLoading"
     v-model:is-exporting="isExporting"
-    :builds-summaries="buildsSummaries"
+    :build-summaries="buildSummaries"
   />
 
   <!-- Import -->
   <BuildsImport
-    v-if="!isLoading && !hasLoadingError"
+    v-if="!isLoading"
     v-model:is-importing="isImporting"
     v-model:has-imported="hasImported"
-  />
-
-  <!-- Loading error -->
-  <LoadingError
-    v-model:hasItemsLoadingError="hasItemsLoadingError"
-    v-model:hasWebsiteConfigurationLoadingError="hasWebsiteConfigurationLoadingError"
   />
 </template>
 

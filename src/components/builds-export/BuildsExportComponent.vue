@@ -7,13 +7,14 @@
     :draggable="false"
   >
     <BuildsList
-      v-model:selectedBuildIds="buildsToExportIds"
-      :builds-summaries="buildsSummaries"
+      v-model:selectedBuildIds="buildToExportSummaries"
+      :build-summaries="buildSummaries"
+      :show-not-exported="true"
     />
     <template #footer>
       <div class="builds-export-buttons">
         <Button
-          :disabled="buildsToExportIds.length === 0"
+          :disabled="buildToExportSummaries.length === 0"
           @click="confirmExport()"
         >
           <font-awesome-icon
@@ -23,7 +24,7 @@
           <span>{{ $t('caption.exportBuilds') }}</span>
         </Button>
         <Button
-          v-if="buildsSummaries.length > 1"
+          v-if="buildSummaries.length > 1"
           class="p-button-text button-discreet"
           @click="toggleSelection()"
         >

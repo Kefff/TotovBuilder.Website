@@ -2,7 +2,6 @@ User-agent: *
 Disallow: /
 
 Allow: /$
-Allow: /en$
 Allow: /fr$
 Allow: /favicon.ico
 Allow: /sitemap.xml

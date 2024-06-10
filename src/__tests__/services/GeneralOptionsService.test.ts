@@ -1,10 +1,10 @@
+import { anything, spy, verify } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
-import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
-import Services from '../../services/repository/Services'
-import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import { GeneralOptionsService } from '../../services/GeneralOptionsService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
-import { anything, spy, verify } from 'ts-mockito'
+import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
+import Services from '../../services/repository/Services'
+import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('getAllowCookiesIndicator()', () => {
   it.each([
@@ -39,7 +39,7 @@ describe('getAllowCookiesIndicator()', () => {
     } else {
       verify(notificationServiceSpy.notify(
         NotificationType.information,
-        'Totov Builder uses cookies only to anonymously detect errors that may occur during your visit.\nAccepting cookies is not necessary but greatly helps to improve the website.',
+        'Totov Builder uses cookies to anonymously detect errors that may occur during your visit.\nAccepting cookies is not necessary but helps to improve the website.',
         0,
         anything())).once()
     }
