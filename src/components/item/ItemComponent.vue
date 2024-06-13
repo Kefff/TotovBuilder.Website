@@ -21,9 +21,9 @@
         >
           <template #header>
             <OptionHeaderSelector
-              v-model:filter="optionsFilter"
-              v-model:sortingData="optionsSortingData"
               :category-id="acceptedItemsCategoryId"
+              :filter="optionsFilter"
+              :sorting-data="optionsSortingData"
               @update:filter="onFilterOptions($event)"
               @update:sorting-data="onSortOptions($event)"
             />
@@ -55,11 +55,11 @@
         <InputNumberField
           v-model:value="quantity"
           :caption="$t('caption.quantity')"
-          caption-mode="placeholder"
           :max="maxSelectableQuantity"
           :min="1"
           :read-only="!editing || forceQuantityToMaxSelectableAmount"
           :required="true"
+          caption-mode="placeholder"
           required-message-position="right"
           @update:value="onQuantityChanged($event)"
         />
@@ -68,12 +68,12 @@
         v-if="inventoryItemInternal != null"
         v-model:selectedTab="selectedTab"
         v-model:showStats="showStats"
-        :ignore-price="inventoryItemInternal.ignorePrice"
         :can-be-looted="canBeLooted"
         :can-have-content="itemIsContainer"
         :can-have-mods="itemIsModdable"
-        :content-count="contentCount"
         :can-ignore-price="canIgnorePrice"
+        :content-count="contentCount"
+        :ignore-price="inventoryItemInternal.ignorePrice"
         :mods-count="modsCount"
         @update:ignore-price="onIgnorePriceChanged($event)"
       />

@@ -1,9 +1,9 @@
 <template>
   <Item
-    v-model:inventory-item="modelInventoryItem"
     :accepted-items-category-id="acceptedItemsCategoryId"
     :accepted-items="acceptedItems"
     :can-be-looted="canBeLooted"
+    :inventory-item="modelInventoryItem"
     :path="`${path}/${PathUtils.itemPrefix}${modelInventoryItem?.itemId ?? 'empty'}`"
     @update:inventory-item="onItemChanged($event)"
   />
@@ -50,7 +50,9 @@ onMounted(() => {
 })
 
 /**
- * Checks if the item can be selected. Emits the new value to the parent component if it can be selected; otherwise puts back the old item.
+ * Checks if the item can be selected.
+ * Signals to the parent inventory slot the inventory item has changed if the new item can be selected;
+ * otherwise puts back the old item.
  */
 async function onItemChanged(newInventoryItem?: IInventoryItem) {
   const canSelect = await inventorySlotComponentService.checkCompatibility(props.inventorySlotTypeId, newInventoryItem, props.path)

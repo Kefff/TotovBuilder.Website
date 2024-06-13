@@ -1,4 +1,4 @@
-import { computed, defineComponent, inject, nextTick, onMounted, PropType, Ref, ref, watch } from 'vue'
+import { computed, defineComponent, inject, onMounted, PropType, Ref, ref, watch } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import { IItem } from '../../models/item/IItem'
@@ -7,7 +7,6 @@ import { SelectableTab } from '../../models/utils/SelectableTab'
 import SortingData from '../../models/utils/SortingData'
 import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
 import { CompatibilityService } from '../../services/compatibility/CompatibilityService'
-import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ItemService } from '../../services/ItemService'
 import { PresetService } from '../../services/PresetService'
@@ -75,7 +74,6 @@ export default defineComponent({
   emits: ['update:inventory-item'],
   setup: (props, { emit }) => {
     const compatibilityService = Services.get(CompatibilityService)
-    const inventoryItemService = Services.get(InventoryItemService)
     const itemPropertiesService = Services.get(ItemPropertiesService)
     const itemService = Services.get(ItemService)
     const presetService = Services.get(PresetService)
@@ -87,12 +85,7 @@ export default defineComponent({
     const dropdownPanelHeight = computed(() => Math.min(options.value.length === 0 ? 1 : options.value.length, 5) * 4 + 'rem') // Shows 5 items or less
     const inventoryItemInternal = computed<IInventoryItem | undefined>({
       get: () => props.inventoryItem,
-      set: (value: IInventoryItem | undefined) => {
-        emit('update:inventory-item', value)
-
-        // Emitting an event for the build and the inventory slot to updated their summary
-        nextTick(() => inventoryItemService.emitter.emit(InventoryItemService.inventoryItemChangeEvent, props.path))
-      }
+      set: (value: IInventoryItem | undefined) => emit('update:inventory-item', value)
     })
     const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.value?.maxStackableAmount ?? 1)
     const modsCount = computed(() => inventoryItemInternal.value?.modSlots.filter(ms => ms.item != null).length ?? 0)

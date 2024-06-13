@@ -76,7 +76,7 @@ function findInventoryItemOfModSlot(modSlotName: string): IInventoryItem | undef
 }
 
 /**
- * Emits updates inventory mod slots.
+ * Signals to the parent item a mod slot item has changed.
  */
 function onItemChanged(modSlotName: string, newInventoryItem: IInventoryItem | undefined) {
   const newInventoryModSlots = [...modelInventoryModSlots.value]

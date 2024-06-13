@@ -140,12 +140,13 @@
       <InventorySlotItem
         v-for="(inventoryItem, index) of modelInventorySlot.items"
         :key="`${path}_${index}`"
-        v-model:inventory-item="modelInventorySlot.items[index]"
-        :accepted-items="acceptedItems"
         :accepted-items-category-id="acceptedItemsCategoryId"
+        :accepted-items="acceptedItems"
         :can-be-looted="inventorySlotType.canBeLooted"
-        :path="`${path}_${index}`"
+        :inventory-item="modelInventorySlot.items[index]"
         :inventory-slot-type-id="modelInventorySlot.typeId"
+        :path="`${path}_${index}`"
+        @update:inventory-item="onItemChanged(index, $event)"
       />
     </Panel>
   </div>
@@ -163,11 +164,11 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, onUnmounted, Ref, ref, watch } from 'vue'
 import Images from '../images'
+import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import { IItem } from '../models/item/IItem'
 import { IInventorySlotSummary } from '../models/utils/IInventorySlotSummary'
 import { GlobalFilterService } from '../services/GlobalFilterService'
-import { InventoryItemService } from '../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../services/InventorySlotPropertiesService'
 import { InventorySlotService } from '../services/InventorySlotService'
 import { ItemService } from '../services/ItemService'
@@ -178,14 +179,13 @@ import InventoryPrice from './InventoryPriceComponent.vue'
 import InventorySlotItem from './InventorySlotItemComponent.vue'
 
 const globalFilterService = Services.get(GlobalFilterService)
-const inventoryItemService = Services.get(InventoryItemService)
 const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
 const inventorySlotService = Services.get(InventorySlotService)
 
 const modelCollapsed = defineModel<boolean>('collapsed')
 const modelInventorySlot = defineModel<IInventorySlot>('inventorySlot', { required: true })
 
-const props = defineProps<{ path: string }>()
+defineProps<{ path: string }>()
 
 const editing = inject<Ref<boolean>>('editing')
 
@@ -233,18 +233,15 @@ const inventorySlotType = computed(() => inventorySlotService.getType(modelInven
 const isDisplayed = computed(() => editing?.value || modelInventorySlot.value.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
 
 onMounted(() => {
-  inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onModOrContentChanged)
   globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
   setSummary()
 })
 
 onUnmounted(() => {
-  inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onModOrContentChanged)
   globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
 
-watch(() => modelInventorySlot, () => setSummary())
 watch(
   () => editing?.value,
   () => {
@@ -254,19 +251,21 @@ watch(
   })
 
 /**
- * Updates the inventory slot summary when a mod or content item changes.
- */
-function onModOrContentChanged(path: string) {
-  if (path.startsWith(props.path)) {
-    setSummary()
-  }
-}
-
-/**
  * Updates the inventory slot summary to reflect price changes due to the change in merchant filters.
  */
 function onMerchantFilterChanged() {
   setAcceptedItems()
+  setSummary()
+}
+
+/**
+ * Signals to the build one of its inventory slots has changed.
+ */
+function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefined) {
+  const newInventorySlot = { ...modelInventorySlot.value }
+  newInventorySlot.items[index] = newInventoryItem
+  modelInventorySlot.value = newInventorySlot
+
   setSummary()
 }
 
@@ -284,7 +283,6 @@ async function setAcceptedItems() {
  * Gets the values of the summary of the content of the inventory slot.
  */
 async function setSummary() {
-  console.log('setSummary: ', inventorySlotType.value)
   summary.value = await inventorySlotPropertiesService.getSummary(modelInventorySlot.value)
 }
 </script>

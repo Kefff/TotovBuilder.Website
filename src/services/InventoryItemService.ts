@@ -1,4 +1,3 @@
-import { TinyEmitter } from 'tiny-emitter'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
@@ -31,16 +30,6 @@ import Services from './repository/Services'
  * Represents a service responsible for managing inventory items.
  */
 export class InventoryItemService {
-  /**
-   * Item change event.
-   */
-  public static inventoryItemChangeEvent = 'inventoryItemChanged'
-
-  /**
-   * Event emitter used to signal compatibility check requests.
-   */
-  public emitter = new TinyEmitter()
-
   /**
    * Gets the armor class of an inventory item.
    * When the inventory item has a front plate slot, it return the armor class and durability of the contained armor plate.

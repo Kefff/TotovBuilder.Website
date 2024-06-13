@@ -3,10 +3,10 @@
     <Item
       v-for="(containedItem, index) of modelInventoryItems"
       :key="`${path}/${index}_${modelInventoryItems.length}`"
-      v-model:inventory-item="modelInventoryItems[index]"
-      :accepted-items="acceptedItems"
       :accepted-items-category-id="categoryId"
+      :accepted-items="acceptedItems"
       :force-quantity-to-max-selectable-amount="isMagazine"
+      :inventory-item="modelInventoryItems[index]"
       :max-stackable-amount="maximumQuantity"
       :path="`${path}/${contentPathPrefix}${index}_${modelInventoryItems.length}/${itemPathPrefix}${containedItem.itemId}`"
       @update:inventory-item="onItemChanged(index, $event)"
@@ -102,7 +102,7 @@ async function initialize() {
 }
 
 /**
- * Adds an item to the content of the inventory item and emits the change to the parent component.
+ * Adds an item to the content of the inventory item and signals the parent item that its content has changed.
  */
 function onItemAdded(newInventoryItem: IInventoryItem) {
   modelInventoryItems.value = [
@@ -117,7 +117,7 @@ function onItemAdded(newInventoryItem: IInventoryItem) {
 }
 
 /**
- * Emits to the parent component the updated inventory item.
+ * Signals to the parent item that its content has changed.
  * @param index - Index of the changed contained item in the inventory item content list.
  * @param newInventoryItem - Updated contained item.
  */

@@ -79,14 +79,14 @@ onMounted(() => {
 })
 
 /**
- * Checks whether an item loading error has occured and emits to its parent component.
+ * Checks whether an item loading error has occured and signals it to the parent component.
  */
 function onItemServiceInitialized() {
   hasItemError.value = itemService.initializationState === ServiceInitializationState.error
 }
 
 /**
- * Checks whether a website configuration loading error has occured and emits to its parent component.
+ * Checks whether a website configuration loading error has occured and signals it to the parent component.
  */
 function onWebsiteConfigurationServiceInitialized() {
   hasWebsiteConfigurationError.value = websiteConfigurationService.initializationState === ServiceInitializationState.error

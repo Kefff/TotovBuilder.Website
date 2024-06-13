@@ -1,6 +1,7 @@
 import { computed, defineComponent, nextTick, onMounted, onUnmounted, provide, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { IBuild } from '../../models/build/IBuild'
+import { IInventorySlot } from '../../models/build/IInventorySlot'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { IGeneralOptionsGroup } from '../../models/utils/IGeneralOptionsGroup'
 import vueI18n from '../../plugins/vueI18n'
@@ -9,7 +10,6 @@ import { BuildService } from '../../services/BuildService'
 import { ExportService } from '../../services/ExportService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
-import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemService } from '../../services/ItemService'
 import { CompatibilityRequest } from '../../services/compatibility/CompatibilityRequest'
 import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
@@ -44,7 +44,6 @@ export default defineComponent({
     const buildComponentService = Services.get(BuildComponentService)
     const buildPropertiesService = Services.get(BuildPropertiesService)
     const compatibilityService = Services.get(CompatibilityService)
-    const inventoryItemService = Services.get(InventoryItemService)
     const globalFilterService = Services.get(GlobalFilterService)
 
     const inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
@@ -125,7 +124,6 @@ export default defineComponent({
       compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.mod, onModCompatibilityRequest)
-      inventoryItemService.emitter.on(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       if (itemService.initializationState === ServiceInitializationState.initializing) {
@@ -141,7 +139,6 @@ export default defineComponent({
       compatibilityService.emitter.off(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
       compatibilityService.emitter.off(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
       compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
-      inventoryItemService.emitter.off(InventoryItemService.inventoryItemChangeEvent, onInventoryItemChanged)
       globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       document.onkeydown = null
@@ -172,7 +169,7 @@ export default defineComponent({
         goToBuilds()
       } else {
         build.value = originalBuild
-        getSummary()
+        setSummary()
       }
     }
 
@@ -328,17 +325,6 @@ export default defineComponent({
     }
 
     /**
-     * Gets the values of the summary of the content of the build.
-     */
-    async function getSummary() {
-      if (build.value == null) {
-        return
-      }
-
-      summary.value = await buildPropertiesService.getSummary(build.value)
-    }
-
-    /**
      * Redirects to the builds page.
      */
     function goToBuilds() {
@@ -354,10 +340,12 @@ export default defineComponent({
     }
 
     /**
-     * Updates the summary when an InventorySlot changes.
+     * Signals to the build one of its inventory slots has changed.
      */
-    function onInventoryItemChanged() {
-      getSummary()
+    function onInventorySlotChanged(index: number, newInventorySlot: IInventorySlot) {
+      build.value.inventorySlots[index] = newInventorySlot
+
+      setSummary()
     }
 
     /**
@@ -379,7 +367,7 @@ export default defineComponent({
      * Updates the build summary price to reflect the change in merchant filters.
      */
     function onMerchantFilterChanged() {
-      getSummary()
+      setSummary()
     }
 
     /**
@@ -405,7 +393,7 @@ export default defineComponent({
             })
 
             isLoading.value = false
-            getSummary()
+            setSummary()
           })
           .finally(() => isLoading.value = false)
       }, 1)
@@ -437,6 +425,17 @@ export default defineComponent({
         isLoading.value = false
         editing.value = false
       })
+    }
+
+    /**
+     * Sets the values of the summary of the content of the build.
+     */
+    async function setSummary() {
+      if (build.value == null) {
+        return
+      }
+
+      summary.value = await buildPropertiesService.getSummary(build.value)
     }
 
     /**
@@ -509,6 +508,7 @@ export default defineComponent({
       isLoading,
       isNewBuild,
       notExportedTooltip,
+      onInventorySlotChanged,
       path,
       remove,
       save,

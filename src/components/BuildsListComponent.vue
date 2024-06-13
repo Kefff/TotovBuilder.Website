@@ -3,8 +3,8 @@
     <BuildCard
       v-for="buildSummary of buildSummaries"
       :key="buildSummary.id"
-      :is-selected="isSelected(buildSummary.id)"
       :build-summary="buildSummary"
+      :is-selected="isSelected(buildSummary.id)"
       :show-not-exported="showNotExported"
       @update:is-selected="updatedSelectedBuilds(buildSummary.id, $event)"
     />

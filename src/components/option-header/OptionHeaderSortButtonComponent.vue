@@ -59,7 +59,7 @@ const sortingDirectionClass = computed(() => props.sortingData.order === Sorting
   : 'options-header-sort-button-sort-arrow-up')
 
 /**
- * Emits to the parent component the updated sorting data.
+ * Signals to the parent options header that sorting data has changed.
  * @param property - Property.
  */
 function sortBy(property: string) {

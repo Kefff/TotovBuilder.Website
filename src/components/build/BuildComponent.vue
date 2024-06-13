@@ -288,9 +288,10 @@
         <InventorySlot
           v-for="(inventorySlot, index) of build.inventorySlots"
           :key="`${path}/${inventorySlot.typeId}`"
-          v-model:inventory-slot="build.inventorySlots[index]"
           v-model:collapsed="collapseStatuses[index]"
+          :inventory-slot="build.inventorySlots[index]"
           :path="`${path}/${inventorySlotPathPrefix}${inventorySlot.typeId}`"
+          @update:inventory-slot="onInventorySlotChanged(index, $event)"
         />
       </div>
     </div>
