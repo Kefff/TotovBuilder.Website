@@ -67,8 +67,6 @@ const itemToAdd = ref<IInventoryItem>()
 
 const contentPathPrefix = PathUtils.contentPrefix
 
-watch(() => props.containerItem.id, () => initialize())
-
 onMounted(() => {
   globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
@@ -79,26 +77,14 @@ onUnmounted(() => {
   globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
 
-/**
- * Gets the accepted items for the item to add.
- */
-async function getAcceptedItems() {
-  acceptedItems.value = await Services.get(ItemContentComponentService).getAcceptedItems(props.containerItem.id)
-}
-
-/**
- * Gets the category IDs used for determining the available sort buttons in the item selection dropdown.
- */
-function getCategoryIds() {
-  categoryId.value = Services.get(ItemContentComponentService).getAcceptedItemsCategoryId(props.containerItem.categoryId)
-}
+watch(() => props.containerItem.id, () => initialize())
 
 /**
  * Initializes the component.
  */
-async function initialize() {
-  await getAcceptedItems()
-  getCategoryIds()
+function initialize() {
+  setCategoryId()
+  setAcceptedItems()
 }
 
 /**
@@ -137,7 +123,21 @@ function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefin
  * Updates the accepted items to reflect the change in merchant filters.
  */
 function onMerchantFilterChanged() {
-  getAcceptedItems()
+  setAcceptedItems()
+}
+
+/**
+ * Sets the accepted items for the item to add.
+ */
+async function setAcceptedItems() {
+  acceptedItems.value = await Services.get(ItemContentComponentService).getAcceptedItems(props.containerItem.id)
+}
+
+/**
+ * Gets the category IDs used for determining the available sort buttons in the item selection dropdown.
+ */
+function setCategoryId() {
+  categoryId.value = Services.get(ItemContentComponentService).getAcceptedItemsCategoryId(props.containerItem.categoryId)
 }
 </script>
 

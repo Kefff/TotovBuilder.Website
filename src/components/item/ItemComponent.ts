@@ -17,6 +17,7 @@ import StringUtils from '../../utils/StringUtils'
 import InputNumberField from '../InputNumberFieldComponent.vue'
 import ItemContent from '../ItemContentComponent.vue'
 import ItemMods from '../ItemModsComponent.vue'
+import Loading from '../LoadingComponent.vue'
 import OptionHeaderSelector from '../option-header/OptionHeaderSelectorComponent.vue'
 import SelectedItem from '../SelectedItemComponent.vue'
 import SelectedItemFunctionalities from '../SelectedItemFunctionalitiesComponent.vue'
@@ -29,6 +30,7 @@ export default defineComponent({
     InputNumberField,
     ItemContent,
     ItemMods,
+    Loading,
     OptionHeaderSelector,
     SelectedItem,
     SelectedItemFunctionalities,
@@ -95,6 +97,8 @@ export default defineComponent({
     const itemChanging = ref(false)
     const itemIsContainer = ref(false)
     const itemIsModdable = ref(false)
+    const loadingOptions = ref(false)
+    const neetToSetOptions = ref(true)
     const options = ref<IItem[]>([])
     const optionsFilter = ref('')
     const optionsSortingData = ref(new SortingData())
@@ -103,37 +107,20 @@ export default defineComponent({
     const selectedTab = ref(SelectableTab.hidden)
     const showStats = ref(false)
 
-    watch(() => props.acceptedItems, () => onFilterOptions(optionsFilter.value))
-    watch(() => props.inventoryItem?.itemId, () => initializeItem())
-    watch(() => props.inventoryItem?.quantity, () => quantity.value = props.inventoryItem?.quantity ?? 0)
+    watch(
+      () => props.acceptedItems,
+      () => neetToSetOptions.value = true)
+    watch(
+      () => props.inventoryItem?.itemId,
+      () => initializeItem())
+    watch(
+      () => props.inventoryItem?.quantity,
+      () => quantity.value = props.inventoryItem?.quantity ?? 0)
     watch(
       () => item.value?.id,
-      () => {
-        if (item.value?.id != null) {
-          // When an item is not found, but has mods or content, we consider it is moddable / a container in order to be able to display its possible child items
-          itemIsModdable.value = itemPropertiesService.canBeModded(item.value)
-            || (item.value.categoryId === 'notFound' && (props.inventoryItem?.modSlots.length ?? 0) > 0)
-          itemIsContainer.value = itemPropertiesService.canContain(item.value)
-            || (item.value.categoryId === 'notFound' && (props.inventoryItem?.content.length ?? 0) > 0)
-
-          if (selectedTab.value === SelectableTab.hidden) {
-            if (itemIsContainer.value) {
-              selectedTab.value = SelectableTab.content
-            } else if (itemIsModdable.value) {
-              selectedTab.value = SelectableTab.mods
-            } else {
-              selectedTab.value = SelectableTab.hidden
-            }
-          }
-        } else {
-          itemIsModdable.value = false
-          itemIsContainer.value = false
-          selectedTab.value = SelectableTab.hidden
-        }
-      })
+      () => setSelectedTab())
 
     onMounted(() => {
-      setOptions(optionsFilter.value, optionsSortingData.value)
       initializeItem()
     })
 
@@ -199,7 +186,7 @@ export default defineComponent({
      */
     function onFilterOptions(newValue: string) {
       optionsFilter.value = newValue
-      setOptions(optionsFilter.value, optionsSortingData.value)
+      setOptions()
     }
 
     /**
@@ -286,9 +273,13 @@ export default defineComponent({
      * Sorts the options items.
      */
     async function onSortOptions(newSortingData: SortingData) {
-      const currentOptions = [...options.value] // Creating a new array because options.value can be updated while this function is being executed
+      loadingOptions.value = true
+
       optionsSortingData.value = newSortingData
+      const currentOptions = [...options.value] // Creating a new array because options.value can be updated while this function is being executed
       options.value = await Services.get(SortingService).sort(currentOptions, optionsSortingData.value)
+
+      loadingOptions.value = false
 
       scrollToItemInDropdown()
     }
@@ -327,17 +318,22 @@ export default defineComponent({
     }
 
     /**
-     * Sets the options selectable in the drop down input.
-     * @param filter - Filter.
-     * @param sortingData - Sorting data.
+     * Sets the options selectable in the drop down input based on the current filter and sorting.
      */
-    async function setOptions(filter: string, sortingData: SortingData) {
+    async function setOptions() {
+      if (!neetToSetOptions.value) {
+        return
+      }
+
+      neetToSetOptions.value = false
+      loadingOptions.value = true
+
       let newOptions: IItem[] = []
 
-      if (filter === '') {
+      if (optionsFilter.value === '') {
         newOptions = [...props.acceptedItems]
       } else {
-        const filterWords = filter.split(' ')
+        const filterWords = optionsFilter.value.split(' ')
         const promises: Promise<void>[] = []
 
         for (const acceptedItem of props.acceptedItems) {
@@ -348,7 +344,9 @@ export default defineComponent({
       }
 
       options.value = newOptions
-      onSortOptions(sortingData)
+      onSortOptions(optionsSortingData.value)
+
+      loadingOptions.value = false
     }
 
     /**
@@ -364,6 +362,33 @@ export default defineComponent({
 
       const virtualScrollerElement = document.querySelector('.p-virtualscroller')
       virtualScrollerElement?.scrollTo({ behavior: 'smooth', top: itemXPositionInDropdown })
+    }
+
+    /**
+     * Sets the selected tab based on the type of selected item.
+     */
+    function setSelectedTab() {
+      if (item.value?.id != null) {
+        // When an item is not found, but has mods or content, we consider it is moddable / a container in order to be able to display its possible child items
+        itemIsModdable.value = itemPropertiesService.canBeModded(item.value)
+          || (item.value.categoryId === 'notFound' && (props.inventoryItem?.modSlots.length ?? 0) > 0)
+        itemIsContainer.value = itemPropertiesService.canContain(item.value)
+          || (item.value.categoryId === 'notFound' && (props.inventoryItem?.content.length ?? 0) > 0)
+
+        if (selectedTab.value === SelectableTab.hidden) {
+          if (itemIsContainer.value) {
+            selectedTab.value = SelectableTab.content
+          } else if (itemIsModdable.value) {
+            selectedTab.value = SelectableTab.mods
+          } else {
+            selectedTab.value = SelectableTab.hidden
+          }
+        }
+      } else {
+        itemIsModdable.value = false
+        itemIsContainer.value = false
+        selectedTab.value = SelectableTab.hidden
+      }
     }
 
     /**
@@ -436,6 +461,7 @@ export default defineComponent({
       itemChanging,
       itemIsContainer,
       itemIsModdable,
+      loadingOptions,
       maxSelectableQuantity,
       modsCount,
       onContentChanged,
@@ -455,6 +481,7 @@ export default defineComponent({
       removeItem,
       SelectableTab,
       selectedTab,
+      setOptions,
       showStats
     }
   }

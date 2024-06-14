@@ -162,7 +162,7 @@
 
 
 <script setup lang="ts">
-import { computed, inject, onMounted, onUnmounted, Ref, ref, watch } from 'vue'
+import { computed, inject, onMounted, onUnmounted, Ref, ref } from 'vue'
 import Images from '../images'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventorySlot } from '../models/build/IInventorySlot'
@@ -236,26 +236,19 @@ onMounted(() => {
   globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
   setSummary()
+  setAcceptedItems()
 })
 
 onUnmounted(() => {
   globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
 
-watch(
-  () => editing?.value,
-  () => {
-    if (editing?.value && acceptedItems.value.length === 0) {
-      setAcceptedItems()
-    }
-  })
-
 /**
  * Updates the inventory slot summary to reflect price changes due to the change in merchant filters.
  */
 function onMerchantFilterChanged() {
-  setAcceptedItems()
   setSummary()
+  setAcceptedItems()
 }
 
 /**
@@ -270,7 +263,7 @@ function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefin
 }
 
 /**
- * Sets the accepted items selected by the user.
+ * Sets the accepted items selectable by the user.
  */
 async function setAcceptedItems() {
   acceptedItemsCategoryId.value = inventorySlotType.value.acceptedItemCategories.length === 1

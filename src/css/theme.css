@@ -998,7 +998,7 @@
 }
 
 .p-dropdown-panel .p-dropdown-items .p-dropdown-empty-message {
-  padding: 1rem 1rem;
+  /*padding: 1rem 1rem;*/
   color: var(--text-color);
   background: transparent;
 }

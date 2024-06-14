@@ -1,19 +1,28 @@
 <template>
   <div class="loading">
-    <div class="loading-icon">
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
+    <div
+      class="loading-container"
+      :style="containerStyle"
+    >
+      <div
+        class="loading-icon"
+        :style="loadingIconStyle"
+      >
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+        <div />
+      </div>
     </div>
+    <div />
   </div>
 </template>
 
@@ -26,19 +35,50 @@
 
 
 
+<script setup lang="ts">
+import { computed } from 'vue'
+
+const props = withDefaults(
+  defineProps<{
+    scale: number
+  }>(),
+  {
+    scale: 1
+  })
+
+const containerStyle = computed(() => `height: ${80 * props.scale}px; width: ${80 * props.scale}px`)
+const loadingIconStyle = computed(() => `scale: ${props.scale}`)
+
+</script>
+
+
+
+
+
+
+
+
+
 
 <style scoped>
 .loading {
+  align-items: center;
   display: flex;
   height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
+.loading-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
 
 .loading-icon {
-  display: inline-block;
   height: 80px;
-  position: relative;
   width: 80px;
-  margin: auto;
+  position: absolute;
 }
 
 .loading-icon div {

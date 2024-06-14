@@ -8,7 +8,6 @@
         <Dropdown
           v-model="item"
           :disabled="!editing"
-          :empty-message="$t('message.noItemsFound')"
           :options="options"
           :scroll-height="dropdownPanelHeight"
           :show-clear="editing"
@@ -16,9 +15,30 @@
           class="item-dropdown"
           data-key="id"
           option-label="caption"
+          @before-show="setOptions()"
           @change="onItemChanged()"
           @show="onDropdownOpen()"
         >
+          <template #clearicon>
+            <div
+              class="item-clear-button"
+              @click="removeItem"
+            >
+              <font-awesome-icon icon="times" />
+            </div>
+          </template>
+          <template #empty>
+            <div class="item-dropdown-empty">
+              <Loading
+                v-if="loadingOptions"
+                :scale="0.5"
+              />
+              <span v-else>
+                {{ $t('message.noItemsFound') }}
+              </span>
+              <div />
+            </div>
+          </template>
           <template #header>
             <OptionHeaderSelector
               :category-id="acceptedItemsCategoryId"
@@ -36,14 +56,6 @@
           <template #value="slotProps">
             <div v-tooltip.top="item?.name">
               <SelectedItem v-model:item="slotProps.value" />
-            </div>
-          </template>
-          <template #clearicon>
-            <div
-              class="item-clear-button"
-              @click="removeItem"
-            >
-              <font-awesome-icon icon="times" />
             </div>
           </template>
         </Dropdown>

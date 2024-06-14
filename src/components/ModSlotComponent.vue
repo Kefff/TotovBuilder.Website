@@ -31,7 +31,7 @@
 
 
 <script setup lang="ts">
-import { Ref, inject, onMounted, onUnmounted, ref, watch } from 'vue'
+import { Ref, inject, onMounted, onUnmounted, ref } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IItem } from '../models/item/IItem'
 import { IModSlot } from '../models/item/IModSlot'
@@ -57,18 +57,17 @@ const acceptedItems = ref<IItem[]>([])
 const acceptedItemsCategoryId = ref<string | undefined>(undefined)
 
 onMounted(() => {
-  globalFilterService.emitter.on(GlobalFilterService.changeEvent, updateAcceptedItems)
-  updateAcceptedItems()
+  globalFilterService.emitter.on(GlobalFilterService.changeEvent, setAcceptedItems)
+
+  setAcceptedItems()
 })
 
-onUnmounted(() => globalFilterService.emitter.off(GlobalFilterService.changeEvent, updateAcceptedItems))
-
-watch(() => props.modSlot.name, () => updateAcceptedItems())
+onUnmounted(() => globalFilterService.emitter.off(GlobalFilterService.changeEvent, setAcceptedItems))
 
 /**
  * Gets the category IDs and the accepted items to pass to the Item component.
  */
-async function updateAcceptedItems() {
+async function setAcceptedItems() {
   acceptedItems.value = await Services.get(ItemService).getItems(props.modSlot.compatibleItemIds, true)
   acceptedItemsCategoryId.value = modSlotComponentService.getAcceptedItemsCategoryId(acceptedItems.value)
 }

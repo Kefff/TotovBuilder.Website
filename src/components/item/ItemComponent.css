@@ -18,6 +18,13 @@
   width: 25rem;
 }
 
+.item-dropdown-empty {
+  align-items: center;
+  display: flex;
+  height: 4rem;
+  justify-content: center;
+}
+
 .item-dropdown-option {
   align-items: center;
   display: flex;
