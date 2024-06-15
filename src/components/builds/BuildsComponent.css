@@ -3,10 +3,11 @@
 @import '../../css/toolbar.css';
 
 .builds {
-  margin-bottom: 3rem;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  padding-bottom: 3rem;
+  width: 100%;
 }
 
 .builds-title {

@@ -231,6 +231,7 @@ function showBuildsImportPopup() {
   display: flex;
   flex-direction: column;
   margin-top: auto;
+  margin-bottom: auto;
 }
 
 .welcome > div {

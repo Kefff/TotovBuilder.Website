@@ -16,7 +16,9 @@
       </h1>
     </div>
   </div>
-  <router-view />
+  <div class="app-content">
+    <router-view />
+  </div>
   <div class="app-footer">
     <div class="app-footer-line">
       <div class="app-footer-element">
@@ -112,16 +114,16 @@
         © {{ copyrightYear }} Kefff
       </div>
     </div>
-
-    <!-- Global sidebar -->
-    <GlobalSidebar />
-
-    <!-- Loading error -->
-    <LoadingError />
-
-    <!-- Notification -->
-    <Notification />
   </div>
+
+  <!-- Global sidebar -->
+  <GlobalSidebar />
+
+  <!-- Loading error -->
+  <LoadingError />
+
+  <!-- Notification -->
+  <Notification />
 </template>
 
 
@@ -260,13 +262,12 @@ body {
   background-color: var(--surface-0);
   box-sizing: border-box;
   color: var(--text-color);
-  display: flex;
   font-size: 1rem;
-  justify-content: center;
-  margin: 0 auto 0 auto;
+  height: 100vh;
+  margin: 0;
   max-width: 137rem;
-  min-height: 100%;
-  width: 100%;
+  overflow: hidden;
+  width: 100vw;
 }
 
 h1 {
@@ -279,11 +280,16 @@ h1 {
 }
 
 html {
+  align-items: center;
   display: flex;
   font-size: 14px;
+  justify-content: center;
   letter-spacing: 0.25px;
-  min-height: 100%;
-  min-width: 100%;
+}
+
+html * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) rgba(0, 0, 0, 0);
 }
 
 #app {
@@ -293,9 +299,8 @@ html {
   flex-direction: column;
   font-family: var(--font-main);
   height: 100%;
-  justify-content: center;
+  overflow: auto;
   padding: 1rem;
-  width: 100%;
 }
 
 .p-button {
@@ -331,10 +336,17 @@ html {
   margin-left: 0.25rem;
 }
 
+.app-content {
+  align-items: center;
+  display: flex;
+  flex-grow: 2;
+  justify-content: center;
+  width: 100%;
+}
+
 .app-footer {
   display: flex;
   flex-direction: column;
-  margin-top: auto;
 }
 
 .app-footer-line {

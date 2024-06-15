@@ -40,7 +40,7 @@ import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    scale: number
+    scale?: number
   }>(),
   {
     scale: 1
@@ -76,9 +76,10 @@ const loadingIconStyle = computed(() => `scale: ${props.scale}`)
 }
 
 .loading-icon {
+  /* flex-shrink required otherwise the width it further reduced when using a scale lesser than 1  */
+  flex-shrink: 0;
   height: 80px;
   width: 80px;
-  position: absolute;
 }
 
 .loading-icon div {
