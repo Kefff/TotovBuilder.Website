@@ -69,6 +69,7 @@ const iconUrl = computed(() => {
 .item-icon > img {
   border-radius: 3px;
   max-height: 3.25rem;
+  max-width: 4.75rem;
 }
 
 .item-icon-quantity {

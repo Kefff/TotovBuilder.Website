@@ -289,7 +289,6 @@ html {
 
 html * {
   scrollbar-width: thin;
-  scrollbar-color: var(--primary-color) rgba(0, 0, 0, 0);
 }
 
 #app {
