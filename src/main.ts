@@ -28,8 +28,8 @@ useI18n(app)
 usePrimeVue(app)
 useRouter(app)
 
-// Global components to be able to call themselves
-app.component('Item', Item)
+// Global components
+app.component('Item', Item) // To be able to call itself
 
 // Start
 app.mount('#app')

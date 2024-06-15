@@ -83,9 +83,10 @@ withDefaults(
 </style>
 
 <style>
-.selected-item > .item-icon > img {
-  max-height: 3.3rem;
-  /* Hack for hidding item icon borders that are included in the icon */
-  transform: translate(-1px, -1px);
+.selected-item > .item-icon {
+  border-bottom-style: none;
+  border-left-style: none;
+  border-radius: 0;
+  border-top-style: none;
 }
 </style>

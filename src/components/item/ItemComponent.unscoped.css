@@ -11,6 +11,10 @@
   border-color: rgba(255, 255, 255, 0.1);
 }
 
+.item-selection-dropdown .p-disabled .selected-item .item-icon {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
 .item-selection-dropdown > .p-disabled > .p-dropdown-trigger {
   opacity: 0.38;
 }

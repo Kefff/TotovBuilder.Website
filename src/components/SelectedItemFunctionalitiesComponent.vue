@@ -127,12 +127,14 @@ function setSelectedTab(newValue: SelectableTab) {
   flex-direction: row;
   flex-wrap: nowrap;
   margin-right: 4rem;
+  position: relative;
 }
 
 .selected-item-functionalities-count-chip {
   background-color: var(--primary-color);
   border-radius: 1rem;
   color: var(--text-color);
+  flex-shrink: 0;
   font-size: 0.8rem;
   height: 1rem;
   position: absolute;
@@ -144,8 +146,11 @@ function setSelectedTab(newValue: SelectableTab) {
 .selected-item-functionalities > div {
   display: flex;
   justify-content: center;
-  margin-left: 0.3125rem;
-  margin-right: 0.3125rem;
-  width: 2.5rem;
+  margin-left: 0.125rem;
+  width: 3.125rem;
+}
+
+.selected-item-functionalities > div:first-child {
+  margin-left: 0;
 }
 </style>

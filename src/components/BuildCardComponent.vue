@@ -264,6 +264,7 @@ function displayShoppingList(shoppingList: IShoppingListItem[]) {
   flex-direction: row;
   gap: 0.25rem;
   overflow-x: auto;
+  padding-bottom: 0.25rem;
   width: 100%;
 }
 
@@ -271,7 +272,7 @@ function displayShoppingList(shoppingList: IShoppingListItem[]) {
   align-items: center;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin-top: 1rem;
+  margin-top: 0.75rem;
 }
 
 .build-card-price {

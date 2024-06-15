@@ -12,7 +12,7 @@
       @update:inventory-item="onItemChanged(index, $event)"
     />
     <Item
-      v-show="editing && canAddItem"
+      v-if="editing && canAddItem"
       v-model:inventory-item="itemToAdd"
       :accepted-items="acceptedItems"
       :accepted-items-category-id="categoryId"
@@ -152,7 +152,7 @@ function setCategoryId() {
 
 <style scoped>
 .item-content-indent {
-  margin-left: 3.125rem;
+  margin-left: 3.25rem;
   margin-top: 0.5rem;
 }
 </style>

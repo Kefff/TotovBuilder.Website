@@ -60,16 +60,25 @@ const iconUrl = computed(() => {
 <style scoped>
 .item-icon {
   align-items: center;
+  border-color: var(--util-color5);
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 1px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  flex-shrink: 0;
+  overflow: hidden;
   position: relative;
 }
 
 .item-icon > img {
-  border-radius: 3px;
+  /* Cropping the image to remove the border on some images */
+  clip-path: inset(1px 1px 1px 1px);
   max-height: 3.25rem;
   max-width: 4.75rem;
+  /* Zooming on the image to fill the cropped pixels */
+  transform: scale(1.05);
 }
 
 .item-icon-quantity {

@@ -41,13 +41,14 @@
     :style="'max-width: 16rem'"
   >
     <div class="inventory-price-details">
-      <div>
-        <span>{{ $t('caption.equalsTo') }} {{ StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInMainCurrency) }}</span>
+      <div>{{ $t('caption.equalsTo') }}</div>
+      <div class="inventory-price-details-main-currency-value">
         <font-awesome-icon
           :icon="mainCurrency?.iconName"
           :class="'currency-' + mainCurrency?.name"
         />
       </div>
+      <div>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInMainCurrency) }}</div>
     </div>
   </OverlayPanel>
 </template>
@@ -137,8 +138,13 @@ function togglePriceDetails(event: Event) {
 }
 
 .inventory-price-details {
+  display: flex;
   font-size: 0.85rem;
   padding-right: 0.25rem;
+}
+
+.inventory-price-details-main-currency-value {
+  margin-left: 0.25rem;
 }
 
 .inventory-price-list {
