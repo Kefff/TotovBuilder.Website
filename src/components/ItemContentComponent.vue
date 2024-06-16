@@ -113,7 +113,7 @@ function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefin
   if (newInventoryItem == null) {
     newInventoryItems.splice(index, 1)
   } else {
-    newInventoryItems[index]
+    newInventoryItems[index] = newInventoryItem
   }
 
   modelInventoryItems.value = newInventoryItems
