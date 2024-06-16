@@ -16,41 +16,57 @@
             />
             <span>{{ $t('caption.new') }}</span>
           </Button>
-          <Button
-            v-tooltip.top="$t('caption.exportBuilds')"
-            class="p-button-text p-button-sm button-discreet"
-            :disabled="isLoading || !canExport"
-            @click="showBuildsExportPopup()"
+          <Tooltip
+            :tooltip="$t('caption.exportBuilds')"
+            :apply-hover-style="false"
           >
-            <font-awesome-icon icon="file-export" />
-          </Button>
-          <Button
-            v-tooltip.top="$t('caption.importBuilds')"
-            class="p-button-text p-button-sm button-discreet"
-            :disabled="isLoading || !canImport"
-            @click="showBuildsImportPopup()"
+            <Button
+              class="p-button-text p-button-sm button-discreet"
+              :disabled="isLoading || !canExport"
+              @click="showBuildsExportPopup()"
+            >
+              <font-awesome-icon icon="file-export" />
+            </Button>
+          </Tooltip>
+          <Tooltip
+            :tooltip="$t('caption.importBuilds')"
+            :apply-hover-style="false"
           >
-            <font-awesome-icon icon="file-import" />
-          </Button>
+            <Button
+              class="p-button-text p-button-sm button-discreet"
+              :disabled="isLoading || !canImport"
+              @click="showBuildsImportPopup()"
+            >
+              <font-awesome-icon icon="file-import" />
+            </Button>
+          </Tooltip>
         </div>
         <div class="toolbar-part toolbar-center" />
         <div class="toolbar-part">
           <div class="builds-toolbar-right">
-            <Button
-              v-tooltip.top="$t('caption.merchantItemsOptions')"
-              class="p-button-text p-button-sm button-discreet"
-              :disabled="isLoading"
-              @click="displayMerchantItemsOptions()"
+            <Tooltip
+              :tooltip="$t('caption.merchantItemsOptions')"
+              :apply-hover-style="false"
             >
-              <font-awesome-icon icon="user-tag" />
-            </Button>
-            <Button
-              v-tooltip.top="$t('caption.options')"
-              class="p-button-text p-button-sm button-discreet"
-              @click="displayGeneralOptions()"
+              <Button
+                class="p-button-text p-button-sm button-discreet"
+                :disabled="isLoading"
+                @click="displayMerchantItemsOptions()"
+              >
+                <font-awesome-icon icon="user-tag" />
+              </Button>
+            </Tooltip>
+            <Tooltip
+              :tooltip="$t('caption.options')"
+              :apply-hover-style="false"
             >
-              <font-awesome-icon icon="cog" />
-            </Button>
+              <Button
+                class="p-button-text p-button-sm button-discreet"
+                @click="displayGeneralOptions()"
+              >
+                <font-awesome-icon icon="cog" />
+              </Button>
+            </Tooltip>
             <NotificationButton />
           </div>
         </div>

@@ -54,9 +54,12 @@
             </div>
           </template>
           <template #value="slotProps">
-            <div v-tooltip.top="item?.name">
+            <Tooltip
+              :apply-hover-style="false"
+              :tooltip="item?.name"
+            >
               <SelectedItem v-model:item="slotProps.value" />
-            </div>
+            </Tooltip>
           </template>
         </Dropdown>
       </div>

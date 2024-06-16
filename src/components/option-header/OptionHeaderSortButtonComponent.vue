@@ -1,22 +1,25 @@
 <template>
-  <div
-    v-tooltip.top="$t('caption.sortBy', { property: StringUtils.toLowerFirst($t(captionResource)) })"
-    class="options-header-sort-button"
-    @click="sortBy(property)"
-  >
-    <div :class="'options-header-sort-button-sort-arrow ' + sortingDirectionClass + ' ' + (sortingData.property === property ? 'options-header-sort-button-sort-arrow-visible' : '')">
-      <font-awesome-icon icon="angle-down" />
-    </div>
-    <font-awesome-icon
-      v-if="icon != null"
-      :icon="icon"
-      class="options-header-sort-button-icon"
-    />
-    <img
-      v-else-if="customIcon != null"
-      :src="Images[StringUtils.toCamelCase(customIcon)]"
-      class="custom-icon"
-    >
+  <div class="options-header-sort-button">
+    <Tooltip :tooltip="$t('caption.sortBy', { property: StringUtils.toLowerFirst($t(captionResource)) })">
+      <div
+        class="options-header-sort-button-group"
+        @click="sortBy(property)"
+      >
+        <div :class="'options-header-sort-button-sort-arrow ' + sortingDirectionClass + ' ' + (sortingData.property === property ? 'options-header-sort-button-sort-arrow-visible' : '')">
+          <font-awesome-icon icon="angle-down" />
+        </div>
+        <font-awesome-icon
+          v-if="icon != null"
+          :icon="icon"
+          class="options-header-sort-button-icon"
+        />
+        <img
+          v-else-if="customIcon != null"
+          :src="Images[StringUtils.toCamelCase(customIcon)]"
+          class="custom-icon"
+        >
+      </div>
+    </Tooltip>
   </div>
 </template>
 
@@ -86,12 +89,16 @@ function sortBy(property: string) {
 .options-header-sort-button {
   align-items: center;
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
   justify-content: flex-end;
 }
 
-.options-header-sort-button:hover {
+.options-header-sort-button-group {
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.options-header-sort-button-group:hover {
   cursor: pointer;
 }
 

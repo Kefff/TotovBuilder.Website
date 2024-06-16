@@ -1,18 +1,22 @@
 <template>
-  <Button
-    v-tooltip.top="$t('caption.notifications')"
-    :disabled="notifications.length === 0"
-    class="p-button-text p-button-sm button-discreet"
-    @click="toggleNotificationPanel"
+  <Tooltip
+    :apply-hover-style="false"
+    :tooltip="$t('caption.notifications')"
   >
-    <font-awesome-icon icon="bell" />
-    <div
-      v-if="newNotificationCount > 0"
-      class="notification-button-count"
+    <Button
+      :disabled="notifications.length === 0"
+      class="p-button-text p-button-sm button-discreet"
+      @click="toggleNotificationPanel"
     >
-      <div>{{ newNotificationCount }}</div>
-    </div>
-  </Button>
+      <font-awesome-icon icon="bell" />
+      <div
+        v-if="newNotificationCount > 0"
+        class="notification-button-count"
+      >
+        <div>{{ newNotificationCount }}</div>
+      </div>
+    </Button>
+  </Tooltip>
 
   <OverlayPanel
     ref="notificationPanel"

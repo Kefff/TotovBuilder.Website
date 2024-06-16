@@ -1,13 +1,17 @@
 <template>
   <div>
-    <Button
-      v-tooltip.top="$t('caption.share')"
-      class="p-button-text p-button-sm button-discreet"
-      :disabled="editing"
-      @click="share()"
+    <Tooltip
+      :tooltip="$t('caption.share')"
+      :apply-hover-style="false"
     >
-      <font-awesome-icon icon="share-alt" />
-    </button>
+      <Button
+        class="p-button-text p-button-sm button-discreet"
+        :disabled="editing"
+        @click="share()"
+      >
+        <font-awesome-icon icon="share-alt" />
+      </button>
+    </Tooltip>
   </div>
 
   <Dialog
@@ -28,13 +32,17 @@
         caption-mode="placeholder"
         class="build-share-input"
       />
-      <Button
-        v-tooltip.top="$t('caption.copyLink')"
-        class="build-share-button"
-        @click="copyLink()"
+      <Tooltip
+        :tooltip="$t('caption.copyLink')"
+        :apply-hover-style="false"
       >
-        <font-awesome-icon icon="copy" />
-      </Button>
+        <Button
+          class="build-share-button"
+          @click="copyLink()"
+        >
+          <font-awesome-icon icon="copy" />
+        </Button>
+      </Tooltip>
     </div>
   </Dialog>
 </template>
