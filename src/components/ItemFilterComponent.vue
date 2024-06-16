@@ -6,7 +6,6 @@
       class="item-filter"
     >
       <Checkbox
-        v-tooltip.top="StringUtils.getCheckboxStateTooltip(!itemExclusionFilter.enabled)"
         :binary="true"
         :false-value="true"
         :model-value="itemExclusionFilter.enabled"
@@ -34,7 +33,6 @@
 
 <script setup lang="ts">
 import { IItemExclusionFilter } from '../models/utils/IItemExclusionFilter'
-import StringUtils from '../utils/StringUtils'
 
 const modelItemExclusionFilters = defineModel<IItemExclusionFilter[]>('itemExclusionFilters', { required: true })
 

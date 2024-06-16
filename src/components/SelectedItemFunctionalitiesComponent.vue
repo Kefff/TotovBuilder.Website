@@ -1,13 +1,17 @@
 <template>
   <div class="selected-item-functionalities">
     <div v-if="canHaveContent">
-      <Button
-        v-tooltip.top="$t(modelSelectedTab !== SelectableTab.content ? 'caption.showContent' : 'caption.hideContent')"
-        :class="'p-button-text p-button-sm' + (modelSelectedTab !== SelectableTab.content ? ' button-discreet' : '')"
-        @click="setSelectedTab(SelectableTab.content)"
+      <Tooltip
+        :tooltip="$t(modelSelectedTab !== SelectableTab.content ? 'caption.showContent' : 'caption.hideContent')"
+        :apply-hover-style="false"
       >
-        <font-awesome-icon icon="box-open" />
-      </Button>
+        <Button
+          :class="'p-button-text p-button-sm' + (modelSelectedTab !== SelectableTab.content ? ' button-discreet' : '')"
+          @click="setSelectedTab(SelectableTab.content)"
+        >
+          <font-awesome-icon icon="box-open" />
+        </Button>
+      </Tooltip>
       <div
         v-if="contentCount > 0"
         class="selected-item-functionalities-count-chip"
@@ -16,13 +20,17 @@
       </div>
     </div>
     <div v-if="canHaveMods">
-      <Button
-        v-tooltip.top="$t(modelSelectedTab !== SelectableTab.mods ? 'caption.showMods' : 'caption.hideMods')"
-        :class="'p-button-text p-button-sm' + (modelSelectedTab !== SelectableTab.mods ? ' button-discreet' : '')"
-        @click="setSelectedTab(SelectableTab.mods)"
+      <Tooltip
+        :tooltip="$t(modelSelectedTab !== SelectableTab.mods ? 'caption.showMods' : 'caption.hideMods')"
+        :apply-hover-style="false"
       >
-        <font-awesome-icon icon="puzzle-piece" />
-      </Button>
+        <Button
+          :class="'p-button-text p-button-sm' + (modelSelectedTab !== SelectableTab.mods ? ' button-discreet' : '')"
+          @click="setSelectedTab(SelectableTab.mods)"
+        >
+          <font-awesome-icon icon="puzzle-piece" />
+        </Button>
+      </Tooltip>
       <div
         v-if="modsCount > 0"
         class="selected-item-functionalities-count-chip"
@@ -31,23 +39,31 @@
       </div>
     </div>
     <div>
-      <Button
-        v-tooltip.top="$t('caption.showDetails')"
-        class="p-button-text p-button-sm button-discreet"
-        @click="modelShowStats = !modelShowStats"
+      <Tooltip
+        :tooltip="$t('caption.showDetails')"
+        :apply-hover-style="false"
       >
-        <font-awesome-icon icon="clipboard-list" />
-      </Button>
+        <Button
+          class="p-button-text p-button-sm button-discreet"
+          @click="modelShowStats = !modelShowStats"
+        >
+          <font-awesome-icon icon="clipboard-list" />
+        </Button>
+      </Tooltip>
     </div>
     <div v-if="editing && canBeLooted && canIgnorePrice">
-      <Button
-        v-tooltip.top="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
-        :class="'p-button-text p-button-sm' + (!ignorePrice ? ' button-discreet button-discreet-danger' : '')"
-        severity="danger"
-        @click="modelIgnorePrice = !modelIgnorePrice"
+      <Tooltip
+        :tooltip="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
+        :apply-hover-style="false"
       >
-        <font-awesome-icon icon="ban" />
-      </Button>
+        <Button
+          :class="'p-button-text p-button-sm' + (!ignorePrice ? ' button-discreet button-discreet-danger' : '')"
+          severity="danger"
+          @click="modelIgnorePrice = !modelIgnorePrice"
+        >
+          <font-awesome-icon icon="ban" />
+        </Button>
+      </Tooltip>
     </div>
   </div>
 </template>
@@ -147,7 +163,7 @@ function setSelectedTab(newValue: SelectableTab) {
   display: flex;
   justify-content: center;
   margin-left: 0.125rem;
-  width: 3.125rem;
+  width: 3rem;
 }
 
 .selected-item-functionalities > div:first-child {

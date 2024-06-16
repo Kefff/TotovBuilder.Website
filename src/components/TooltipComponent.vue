@@ -3,6 +3,7 @@
     v-tooltip:[directiveArguments]="tooltip"
     :class="applyHoverStyle ? 'tooltip' : ''"
     :tabindex="isTouchScreen ? 9999 : undefined"
+    @click="onClick($event)"
   >
     <slot />
   </span>
@@ -25,11 +26,13 @@ const props = withDefaults(
   defineProps<{
     applyHoverStyle?: boolean,
     position?: 'bottom' | 'left' | 'right' | 'top',
+    stopClickPropagation?: boolean,
     tooltip?: string
   }>(),
   {
     applyHoverStyle: true,
     position: 'top',
+    stopClickPropagation: false,
     tooltip: undefined
   })
 
@@ -38,6 +41,12 @@ const isTouchScreen = matchMedia('(hover: none)').matches
 
 // cf. https://github.com/primefaces/primevue/issues/2255#issuecomment-1073903453
 const directiveArguments = computed(() => new DirectiveArguments(props.position, isTouchScreen ? 'focus' : undefined))
+
+function onClick(event: MouseEvent) {
+  if (props.stopClickPropagation) {
+    event.stopPropagation()
+  }
+}
 </script>
 
 

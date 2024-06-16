@@ -1,11 +1,12 @@
 <template>
   <div class="app-title">
     <div>
-      <img
-        v-tooltip.bottom="$t('caption.approvedByPrapor')"
-        :src="isSanta ? Images.santaPraporSmiling : Images.praporSmiling"
-        class="app-title-prapor"
-      >
+      <Tooltip :tooltip="$t('caption.approvedByPrapor')">
+        <img
+          :src="isSanta ? Images.santaPraporSmiling : Images.praporSmiling"
+          class="app-title-prapor"
+        >
+      </Tooltip>
       <h1>
         <div class="app-title-part1">
           TOTOV

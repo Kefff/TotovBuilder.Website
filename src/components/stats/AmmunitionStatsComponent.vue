@@ -55,7 +55,7 @@
           </div>
           <div
             v-if="canOneshot"
-            v-tooltip.right="$t('caption.canOneshot')"
+            v-tooltip="$t('caption.canOneshot')"
             class="flesh-damage-oneshot"
           >
             <font-awesome-icon

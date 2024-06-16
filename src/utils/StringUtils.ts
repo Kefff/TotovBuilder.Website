@@ -1,4 +1,3 @@
-import vueI18n from '../plugins/vueI18n'
 
 /**
  * Represents an utility class for manipulating strings.
@@ -53,15 +52,6 @@ export default class StringUtils {
     }
 
     return 0
-  }
-
-  /**
-     * Gets a tooltip indicating the activation state of a checkbox.
-     * @param enabled - Indicates whether the checkbox is enabled or not.
-     * @returns Tooltip.
-     */
-  public static getCheckboxStateTooltip(enabled: boolean): string {
-    return vueI18n.t('caption.' + (enabled ? 'enabled' : 'disabled'))
   }
 
   /**

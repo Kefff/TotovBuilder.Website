@@ -130,7 +130,7 @@ function getRequiredMerchants(): IBuildSummaryShoppingMerchant[] {
   align-items: center;
   display: grid;
   gap: 0.25rem;
-  grid-template-columns: 4.75rem 1fr 9rem;
+  grid-template-columns: 4.85rem 1fr 9rem;
   margin-bottom: 0.5rem;
 }
 

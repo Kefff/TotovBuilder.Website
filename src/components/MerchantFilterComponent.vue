@@ -6,7 +6,6 @@
       class="merchant-filter"
     >
       <Checkbox
-        v-tooltip.top="StringUtils.getCheckboxStateTooltip(merchantFilter.enabled)"
         :binary="true"
         :model-value="merchantFilter.enabled"
         @update:model-value="onMerchantFilterChanged(index, $event, merchantFilter.merchantLevel)"
@@ -22,7 +21,10 @@
         :class="`merchant-filter-icon${!merchantFilter.enabled ? ' merchant-filter-icon-disabled' : ''}`"
         @click="onMerchantFilterChanged(index, !merchantFilter.enabled, merchantFilter.merchantLevel)"
       >
-      <div v-tooltip.top="$t('caption.level')">
+      <Tooltip
+        :apply-hover-style="false"
+        :tooltip="$t('caption.level')"
+      >
         <Dropdown
           v-if="hasLevels(merchantFilter.merchant)"
           :disabled="!merchantFilter.enabled"
@@ -37,7 +39,7 @@
             </div>
           </template>
         </Dropdown>
-      </div>
+      </Tooltip>
     </div>
   </div>
 </template>

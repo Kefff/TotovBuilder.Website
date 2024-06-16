@@ -41,7 +41,7 @@
     :style="'max-width: 16rem'"
   >
     <div class="inventory-price-details">
-      <div>{{ $t('caption.equalsTo') }}</div>
+      <div>{{ $t('caption.priceEqualsTo') }}</div>
       <div class="inventory-price-details-main-currency-value">
         <font-awesome-icon
           :icon="mainCurrency?.iconName"
@@ -71,7 +71,6 @@ import { ItemService } from '../services/ItemService'
 import Services from '../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import Price from './PriceComponent.vue'
-import Tooltip from './TooltipComponent.vue'
 
 const props = defineProps<{
   inventoryPrice: IInventoryPrice,
@@ -140,7 +139,6 @@ function togglePriceDetails(event: Event) {
 .inventory-price-details {
   display: flex;
   font-size: 0.85rem;
-  padding-right: 0.25rem;
 }
 
 .inventory-price-details-main-currency-value {

@@ -32,7 +32,6 @@
     <div class="sidebar-option-icon">
       <Checkbox
         v-model="allowCookies"
-        v-tooltip.top="StringUtils.getCheckboxStateTooltip(allowCookies)"
         :binary="true"
         @change="onAllowCookiesChanged()"
       />
@@ -111,7 +110,6 @@ import { IGeneralOption } from '../models/utils/IGeneralOption'
 import { IGeneralOptionsGroup } from '../models/utils/IGeneralOptionsGroup'
 import { GeneralOptionsService } from '../services/GeneralOptionsService'
 import Services from '../services/repository/Services'
-import StringUtils from '../utils/StringUtils'
 import LanguageSelector from './LanguageSelectorComponent.vue'
 
 const props = defineProps<{ parameters: IGeneralOptionsGroup[] }>()

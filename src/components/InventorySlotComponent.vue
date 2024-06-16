@@ -33,96 +33,114 @@
             <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelInventorySlot.typeId)) }}</span>
           </div>
           <div class="option-line">
-            <div
+            <Tooltip
               v-if="hasSummaryVerticalRecoil"
-              v-tooltip.top="$t('caption.verticalRecoil')"
-              class="inventory-slot-summary-value"
+              :stop-click-propagation="true"
+              :tooltip="$t('caption.verticalRecoil')"
             >
-              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.verticalRecoil) }}</span>
-              <font-awesome-icon
-                icon="arrows-alt-v"
-                class="icon-after-text"
-              />
-            </div>
-            <div
+              <div class="inventory-slot-summary-value">
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.verticalRecoil) }}</span>
+                <font-awesome-icon
+                  icon="arrows-alt-v"
+                  class="icon-after-text"
+                />
+              </div>
+            </Tooltip>
+            <Tooltip
               v-if="hasSummaryHorizontalRecoil"
-              v-tooltip.top="$t('caption.horizontalRecoil')"
-              class="inventory-slot-summary-value"
+              :stop-click-propagation="true"
+              :tooltip="$t('caption.horizontalRecoil')"
             >
-              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.horizontalRecoil) }}</span>
-              <font-awesome-icon
-                icon="arrows-alt-h"
-                class="icon-after-text"
-              />
-            </div>
-            <div
+              <div class="inventory-slot-summary-value">
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.horizontalRecoil) }}</span>
+                <font-awesome-icon
+                  icon="arrows-alt-h"
+                  class="icon-after-text"
+                />
+              </div>
+            </Tooltip>
+            <Tooltip
               v-if="hasSummaryArmor"
-              v-tooltip.top="$t('caption.armorClass')"
-              class="inventory-slot-summary-value"
+              :stop-click-propagation="true"
+              :tooltip="$t('caption.armorClass')"
             >
-              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, summary.armorModifiers.armorClass) }}</span>
-              <font-awesome-icon
-                icon="award"
-                class="icon-after-text"
-              />
-            </div>
-            <div
+              <div class="inventory-slot-summary-value">
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, summary.armorModifiers.armorClass) }}</span>
+                <font-awesome-icon
+                  icon="award"
+                  class="icon-after-text"
+                />
+              </div>
+            </Tooltip>
+            <Tooltip
               v-if="hasSummaryErgonomics"
-              v-tooltip.top="$t('caption.ergonomics')"
-              class="inventory-slot-summary-value"
+              :stop-click-propagation="true"
+              :tooltip="$t('caption.ergonomics')"
             >
-              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, summary.ergonomics) }}</span>
-              <font-awesome-icon
-                icon="hand-paper"
-                class="icon-after-text"
-              />
-            </div>
-            <div
+              <div class="inventory-slot-summary-value">
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, summary.ergonomics) }}</span>
+                <font-awesome-icon
+                  icon="hand-paper"
+                  class="icon-after-text"
+                />
+              </div>
+            </Tooltip>
+            <Tooltip
               v-if="hasSummaryErgonomicsModifierPercentage"
-              v-tooltip.top="$t('caption.ergonomics')"
-              class="inventory-slot-summary-value"
+              :stop-click-propagation="true"
+              :tooltip="$t('caption.ergonomics')"
             >
-              <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsModifierPercentage)">
-                {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsModifierPercentage) }}
-              </span>
-              <font-awesome-icon
-                icon="hand-paper"
-                class="icon-after-text"
-              />
-            </div>
-            <div
+              <div class="inventory-slot-summary-value">
+                <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsModifierPercentage)">
+                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsModifierPercentage) }}
+                </span>
+                <font-awesome-icon
+                  icon="hand-paper"
+                  class="icon-after-text"
+                />
+              </div>
+            </Tooltip>
+            <Tooltip
               v-if="hasSummaryMovementSpeedModifierPercentage"
-              v-tooltip.top="$t('caption.movementSpeed')"
-              class="inventory-slot-summary-value"
+              :stop-click-propagation="true"
+              :tooltip="$t('caption.movementSpeed')"
             >
-              <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedModifierPercentage)">
-                {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, summary.wearableModifiers.movementSpeedModifierPercentage) }}
-              </span>
-              <font-awesome-icon
-                icon="walking"
-                class="icon-after-text"
-              />
-            </div>
-            <div
+              <div class="inventory-slot-summary-value">
+                <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedModifierPercentage)">
+                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, summary.wearableModifiers.movementSpeedModifierPercentage) }}
+                </span>
+                <font-awesome-icon
+                  icon="walking"
+                  class="icon-after-text"
+                />
+              </div>
+            </Tooltip>
+            <Tooltip
               v-if="hasSummaryTurningSpeedModifierPercentage"
-              v-tooltip.top="$t('caption.turningSpeed')"
-              class="inventory-slot-summary-value"
+              :stop-click-propagation="true"
+              :tooltip="$t('caption.turningSpeed')"
             >
-              <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedModifierPercentage)">
-                {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, summary.wearableModifiers.turningSpeedModifierPercentage) }}
-              </span>
-              <font-awesome-icon
-                icon="undo"
-                class="icon-after-text"
-              />
-            </div>
+              <div class="inventory-slot-summary-value">
+                <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedModifierPercentage)">
+                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, summary.wearableModifiers.turningSpeedModifierPercentage) }}
+                </span>
+                <font-awesome-icon
+                  icon="undo"
+                  class="icon-after-text"
+                />
+              </div>
+            </Tooltip>
             <div class="option-entry inventory-slot-summary-price">
               <InventoryPrice
                 :inventory-price="summary.price"
                 :is-build="false"
               />
             </div>
-            <div v-tooltip.top="$t('caption.weight')">
+            <Tooltip
+              v-if="hasSummaryWeight"
+              :stop-click-propagation="true"
+              :tooltip="$t('caption.weight')"
+            >
               <div
                 v-if="hasSummaryWeight"
                 class="inventory-slot-weight"
@@ -133,7 +151,7 @@
                   class="icon-after-text"
                 />
               </div>
-            </div>
+            </Tooltip>
           </div>
         </div>
       </template>

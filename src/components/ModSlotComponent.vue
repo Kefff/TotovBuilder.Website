@@ -5,11 +5,14 @@
   >
     <div class="mod-slot-slot-name">
       {{ $t('caption.modSlot_' + (modSlot.name.startsWith('chamber') ? 'chamber' : modSlot.name)) }}
-      <span
-        v-if="modSlot.required"
-        v-tooltip.top="$t('caption.requiredMod')"
-        :class="modelInventoryItem != null ? 'mod-slot-required-ok' : 'mod-slot-required-nok'"
-      > *</span>
+      <Tooltip :tooltip="$t('caption.requiredMod')">
+        <span
+          v-if="modSlot.required"
+          :class="modelInventoryItem != null ? 'mod-slot-required-ok' : 'mod-slot-required-nok'"
+        >
+          *
+        </span>
+      </Tooltip>
     </div>
     <Item
       v-model:inventory-item="modelInventoryItem"

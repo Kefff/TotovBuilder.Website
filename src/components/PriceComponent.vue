@@ -50,7 +50,7 @@
         v-if="showPriceInMainCurrency"
         class="price-details-main-currency"
       >
-        <div>{{ $t('caption.equalsTo') }}</div>
+        <div>{{ $t('caption.priceEqualsTo') }}</div>
         <div class="price-details-main-currency-value">
           <font-awesome-icon
             :icon="mainCurrency.iconName"
@@ -155,7 +155,6 @@ import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import ItemIcon from './ItemIconComponent.vue'
 import MerchantIcon from './MerchantIconComponent.vue'
 import Price from './PriceComponent.vue'
-import Tooltip from './TooltipComponent.vue'
 
 const itemService = Services.get(ItemService)
 const globalFilterService = Services.get(GlobalFilterService)

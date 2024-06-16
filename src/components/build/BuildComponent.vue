@@ -1,13 +1,15 @@
 <template>
   <div class="build">
     <div class="build-title">
-      <span
+      <Tooltip
         v-if="!isLoading && !summary.exported && !isNewBuild"
-        v-tooltip.top="notExportedTooltip"
-        class="build-toolbar-not-exported"
+        :tooltip="notExportedTooltip"
       >
-        <font-awesome-icon icon="exclamation-triangle" />
-      </span>
+        <font-awesome-icon
+          icon="exclamation-triangle"
+          class="build-toolbar-not-exported"
+        />
+      </Tooltip>
       <span v-show="!editing">
         {{ build.name }}
       </span>
@@ -22,14 +24,19 @@
     <div :class="toolbarCssClass">
       <div class="toolbar-line">
         <div class="toolbar-part">
-          <Button
-            v-tooltip.right="$t('caption.backToBuilds')"
-            class="p-button-text p-button-sm button-discreet"
-            :disabled="editing"
-            @click="goToBuilds()"
+          <Tooltip
+            :apply-hover-style="false"
+            position="right"
+            :tooltip="$t('caption.backToBuilds')"
           >
-            <font-awesome-icon icon="arrow-left" />
-          </Button>
+            <Button
+              class="p-button-text p-button-sm button-discreet"
+              :disabled="editing"
+              @click="goToBuilds()"
+            >
+              <font-awesome-icon icon="arrow-left" />
+            </Button>
+          </Tooltip>
           <Button
             v-show="!editing"
             class="toolbar-button"
@@ -54,31 +61,43 @@
             />
             <span>{{ $t('caption.save') }}</span>
           </Button>
-          <Button
-            v-tooltip.top="$t('caption.shoppingList')"
-            class="p-button-text p-button-sm button-discreet"
-            :disabled="summary.shoppingList.length === 0"
-            @click="() => displayShoppingList()"
+          <Tooltip
+            :apply-hover-style="false"
+            :tooltip="$t('caption.shoppingList')"
           >
-            <font-awesome-icon icon="shopping-cart" />
-          </button>
-          <Button
-            v-tooltip.top="$t('caption.copyBuild')"
-            :disabled="isLoading || isNewBuild"
-            class="p-button-text p-button-sm button-discreet"
-            @click="copy()"
+            <Button
+              class="p-button-text p-button-sm button-discreet"
+              :disabled="summary.shoppingList.length === 0"
+              @click="() => displayShoppingList()"
+            >
+              <font-awesome-icon icon="shopping-cart" />
+            </Button>
+          </Tooltip>
+          <Tooltip
+            :apply-hover-style="false"
+            :tooltip="$t('caption.copyBuild')"
           >
-            <font-awesome-icon icon="copy" />
-          </Button>
+            <Button
+              :disabled="isLoading || isNewBuild"
+              class="p-button-text p-button-sm button-discreet"
+              @click="copy()"
+            >
+              <font-awesome-icon icon="copy" />
+            </Button>
+          </Tooltip>
           <BuildShare :build="build" />
-          <Button
-            v-tooltip.top="$t('caption.exportBuild')"
-            class="p-button-text p-button-sm button-discreet"
-            :disabled="isLoading || editing"
-            @click="exportBuild()"
+          <Tooltip
+            :apply-hover-style="false"
+            :tooltip="$t('caption.exportBuild')"
           >
-            <font-awesome-icon icon="file-export" />
-          </Button>
+            <Button
+              class="p-button-text p-button-sm button-discreet"
+              :disabled="isLoading || editing"
+              @click="exportBuild()"
+            >
+              <font-awesome-icon icon="file-export" />
+            </Button>
+          </Tooltip>
         </div>
         <div class="toolbar-part toolbar-center">
           <div
@@ -89,9 +108,9 @@
               v-if="hasSummaryStats"
               class="build-toolbar-summary-group"
             >
-              <div
+              <Tooltip
                 v-if="hasSummaryVerticalRecoil"
-                v-tooltip.top="$t('caption.verticalRecoil')"
+                :tooltip="$t('caption.verticalRecoil')"
                 class="build-toolbar-summary-value"
               >
                 <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.verticalRecoil) }}</span>
@@ -99,10 +118,10 @@
                   icon="arrows-alt-v"
                   class="icon-after-text"
                 />
-              </div>
-              <div
+              </Tooltip>
+              <Tooltip
                 v-if="hasSummaryVerticalRecoil"
-                v-tooltip.top="$t('caption.horizontalRecoil')"
+                :tooltip="$t('caption.horizontalRecoil')"
                 class="build-toolbar-summary-value"
               >
                 <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.horizontalRecoil) }}</span>
@@ -110,10 +129,10 @@
                   icon="arrows-alt-h"
                   class="icon-after-text"
                 />
-              </div>
-              <div
+              </Tooltip>
+              <Tooltip
                 v-if="hasSummaryErgonomics"
-                v-tooltip.top="$t('caption.ergonomics')"
+                :tooltip="$t('caption.ergonomics')"
                 class="build-toolbar-summary-value"
               >
                 <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, summary.ergonomics) }}</span>
@@ -121,15 +140,15 @@
                   icon="hand-paper"
                   class="icon-after-text"
                 />
-              </div>
+              </Tooltip>
             </div>
             <div
               v-if="hasSummaryArmor || hasSummaryWearableModifiers"
               class="build-toolbar-summary-group"
             >
-              <div
+              <Tooltip
                 v-if="hasSummaryArmor"
-                v-tooltip.top="$t('caption.armorClass')"
+                :tooltip="$t('caption.armorClass')"
                 class="build-toolbar-summary-value"
               >
                 <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, summary.armorModifiers.armorClass) }}</span>
@@ -137,10 +156,10 @@
                   icon="award"
                   class="icon-after-text"
                 />
-              </div>
-              <div
+              </Tooltip>
+              <Tooltip
                 v-if="hasSummaryErgonomicsModifierPercentage"
-                v-tooltip.top="$t('caption.ergonomicsModifierPercentage')"
+                :tooltip="$t('caption.ergonomicsModifierPercentage')"
                 class="build-toolbar-summary-value"
               >
                 <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsModifierPercentage)">
@@ -150,10 +169,10 @@
                   icon="hand-paper"
                   class="icon-after-text"
                 />
-              </div>
-              <div
+              </Tooltip>
+              <Tooltip
                 v-if="hasSummaryMovementSpeedModifierPercentage"
-                v-tooltip.top="$t('caption.movementSpeedModifierPercentage')"
+                :tooltip="$t('caption.movementSpeedModifierPercentage')"
                 class="build-toolbar-summary-value"
               >
                 <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedModifierPercentage)">
@@ -163,10 +182,10 @@
                   icon="walking"
                   class="icon-after-text"
                 />
-              </div>
-              <div
+              </Tooltip>
+              <Tooltip
                 v-if="hasSummaryTurningSpeedModifierPercentage"
-                v-tooltip.top="$t('caption.turningSpeedModifierPercentage')"
+                :tooltip="$t('caption.turningSpeedModifierPercentage')"
                 class="build-toolbar-summary-value"
               >
                 <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedModifierPercentage)">
@@ -176,21 +195,26 @@
                   icon="undo"
                   class="icon-after-text"
                 />
-              </div>
+              </Tooltip>
             </div>
             <div
               v-if="hasSummaryPrice || hasSummaryWeight"
               class="build-toolbar-summary-group"
             >
-              <div class="build-toolbar-summary-value">
+              <div
+                v-if="hasSummaryPrice"
+                class="build-toolbar-summary-value"
+              >
                 <InventoryPrice
-                  v-if="!isLoading"
+                  v-if="
+                    !isLoading"
                   :inventory-price="summary.price"
                   :is-build="true"
                 />
               </div>
-              <div
-                v-tooltip.top="$t('caption.weight')"
+              <Tooltip
+                v-if="hasSummaryWeight"
+                :tooltip="$t('caption.weight')"
                 class="build-toolbar-summary-value"
               >
                 <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
@@ -198,27 +222,35 @@
                   icon="weight-hanging"
                   class="icon-after-text"
                 />
-              </div>
+              </Tooltip>
             </div>
           </div>
         </div>
         <div class="toolbar-part">
           <div class="build-toolbar-right">
-            <Button
-              v-tooltip.top="$t('caption.merchantItemsOptions')"
-              class="p-button-text p-button-sm button-discreet"
-              :disabled="isLoading"
-              @click="displayMerchantItemsOptions()"
+            <Tooltip
+              :apply-hover-style="false"
+              :tooltip="$t('caption.merchantItemsOptions')"
             >
-              <font-awesome-icon icon="user-tag" />
-            </Button>
-            <Button
-              v-tooltip.top="$t('caption.options')"
-              class="p-button-text p-button-sm button-discreet"
-              @click="displayGeneralOptions()"
+              <Button
+                class="p-button-text p-button-sm button-discreet"
+                :disabled="isLoading"
+                @click="displayMerchantItemsOptions()"
+              >
+                <font-awesome-icon icon="user-tag" />
+              </Button>
+            </Tooltip>
+            <Tooltip
+              :apply-hover-style="false"
+              :tooltip="$t('caption.options')"
             >
-              <font-awesome-icon icon="cog" />
-            </Button>
+              <Button
+                class="p-button-text p-button-sm button-discreet"
+                @click="displayGeneralOptions()"
+              >
+                <font-awesome-icon icon="cog" />
+              </Button>
+            </Tooltip>
             <NotificationButton />
             <Button
               v-show="editing"

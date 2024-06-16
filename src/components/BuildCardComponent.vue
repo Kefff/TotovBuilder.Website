@@ -146,7 +146,6 @@
           <span>{{ $t('caption.edit') }}</span>
         </Button>
         <Button
-          v-tooltip.top="$t('caption.shoppingList')"
           :disabled="buildSummary.shoppingList.length === 0"
           class="shopping-list-button"
           @click="displayShoppingList(buildSummary.shoppingList)"
@@ -181,7 +180,6 @@ import Services from '../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import InventoryPrice from './InventoryPriceComponent.vue'
 import ItemIcon from './ItemIconComponent.vue'
-import Tooltip from './TooltipComponent.vue'
 
 const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
 
@@ -264,7 +262,7 @@ function displayShoppingList(shoppingList: IShoppingListItem[]) {
   flex-direction: row;
   gap: 0.25rem;
   overflow-x: auto;
-  padding-bottom: 0.25rem;
+  padding-bottom: 0.5rem;
   width: 100%;
 }
 
@@ -272,7 +270,7 @@ function displayShoppingList(shoppingList: IShoppingListItem[]) {
   align-items: center;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
 }
 
 .build-card-price {
