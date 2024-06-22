@@ -3,18 +3,17 @@
     v-if="ergonomicsModifier !== 0 || showEmptyEntries"
     class="option-entry"
   >
-    <div
-      v-tooltip.top="$t('caption.ergonomics')"
-      class="option-value"
-    >
+    <div class="option-value">
       <div v-if="ergonomicsModifier !== 0">
-        <span :class="StatsUtils.getValueColorClass(ergonomicsModifier)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
-        </span>
-        <font-awesome-icon
-          icon="hand-paper"
-          class="icon-after-text"
-        />
+        <Tooltip :tooltip="$t('caption.ergonomics')">
+          <span :class="StatsUtils.getValueColorClass(ergonomicsModifier)">
+            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
+          </span>
+          <font-awesome-icon
+            icon="hand-paper"
+            class="icon-after-text"
+          />
+        </Tooltip>
       </div>
     </div>
   </div>

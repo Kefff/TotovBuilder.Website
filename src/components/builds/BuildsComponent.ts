@@ -18,6 +18,7 @@ import Services from '../../services/repository/Services'
 import StatsUtils from '../../utils/StatsUtils'
 import BuildsList from '../BuildsListComponent.vue'
 import Loading from '../LoadingComponent.vue'
+import Toolbar from '../ToolbarComponent.vue'
 import BuildsExport from '../builds-export/BuildsExportComponent.vue'
 import BuildsImport from '../builds-import/BuildsImportComponent.vue'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
@@ -28,7 +29,8 @@ export default defineComponent({
     BuildsImport,
     BuildsList,
     Loading,
-    NotificationButton
+    NotificationButton,
+    Toolbar
   },
   setup: () => {
     const globalFilterService = Services.get(GlobalFilterService)

@@ -1,32 +1,35 @@
 <template>
   <div class="option-entry">
-    <div
-      v-tooltip.top="$t('caption.chopDamage')"
-      class="option-value custom-icon-after-text"
-    >
-      <span>{{ meleeWeapon.chopDamage }}</span>
-      <img :src="Images.chop">
+    <div class="option-value">
+      <Tooltip
+        :tooltip="$t('caption.chopDamage')"
+        class="custom-icon-after-text"
+      >
+        <span>{{ meleeWeapon.chopDamage }}</span>
+        <img :src="Images.chop">
+      </Tooltip>
     </div>
   </div>
   <div class="option-entry">
-    <div
-      v-tooltip.top="$t('caption.stabDamage')"
-      class="option-value custom-icon-after-text"
-    >
-      <span>{{ meleeWeapon.stabDamage }}</span>
-      <img :src="Images.stab">
+    <div class="option-value">
+      <Tooltip
+        :tooltip="$t('caption.stabDamage')"
+        class="custom-icon-after-text"
+      >
+        <span>{{ meleeWeapon.stabDamage }}</span>
+        <img :src="Images.stab">
+      </Tooltip>
     </div>
   </div>
   <div class="option-entry">
-    <div
-      v-tooltip.top="$t('caption.hitRadius')"
-      class="option-value"
-    >
-      <span>{{ $t('caption.hitRadiusValue', { radius: meleeWeapon.hitRadius }) }}</span>
-      <font-awesome-icon
-        icon="dot-circle"
-        class="icon-after-text"
-      />
+    <div class="option-value">
+      <Tooltip :tooltip="$t('caption.hitRadius')">
+        <span>{{ $t('caption.hitRadiusValue', { radius: meleeWeapon.hitRadius }) }}</span>
+        <font-awesome-icon
+          icon="dot-circle"
+          class="icon-after-text"
+        />
+      </Tooltip>
     </div>
   </div>
 </template>

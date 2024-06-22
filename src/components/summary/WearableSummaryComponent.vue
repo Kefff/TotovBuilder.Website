@@ -4,17 +4,16 @@
     class="option-entry"
   >
     <div class="option-value">
-      <div
-        v-if="ergonomicsModifierPercentage !== 0"
-        v-tooltip.top="$t('caption.ergonomics')"
-      >
-        <span :class="StatsUtils.getValueColorClass(ergonomicsModifierPercentage)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, ergonomicsModifierPercentage) }}
-        </span>
-        <font-awesome-icon
-          icon="hand-paper"
-          class="icon-after-text"
-        />
+      <div v-if="ergonomicsModifierPercentage !== 0">
+        <Tooltip :tooltip="$t('caption.ergonomics')">
+          <span :class="StatsUtils.getValueColorClass(ergonomicsModifierPercentage)">
+            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, ergonomicsModifierPercentage) }}
+          </span>
+          <font-awesome-icon
+            icon="hand-paper"
+            class="icon-after-text"
+          />
+        </Tooltip>
       </div>
     </div>
   </div>
@@ -23,17 +22,16 @@
     class="option-entry"
   >
     <div class="option-value">
-      <div
-        v-if="movementSpeedModifierPercentage !== 0"
-        v-tooltip.top="$t('caption.movementSpeed')"
-      >
-        <span :class="StatsUtils.getValueColorClass(movementSpeedModifierPercentage)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, movementSpeedModifierPercentage) }}
-        </span>
-        <font-awesome-icon
-          icon="walking"
-          class="icon-after-text"
-        />
+      <div v-if="movementSpeedModifierPercentage !== 0">
+        <Tooltip :tooltip="$t('caption.movementSpeed')">
+          <span :class="StatsUtils.getValueColorClass(movementSpeedModifierPercentage)">
+            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, movementSpeedModifierPercentage) }}
+          </span>
+          <font-awesome-icon
+            icon="walking"
+            class="icon-after-text"
+          />
+        </Tooltip>
       </div>
     </div>
   </div>
@@ -42,17 +40,16 @@
     class="option-entry"
   >
     <div class="option-value">
-      <div
-        v-if="turningSpeedModifierPercentage !== 0"
-        v-tooltip.top="$t('caption.turningSpeed')"
-      >
-        <span :class="StatsUtils.getValueColorClass(turningSpeedModifierPercentage)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, turningSpeedModifierPercentage) }}
-        </span>
-        <font-awesome-icon
-          icon="undo"
-          class="icon-after-text"
-        />
+      <div v-if="turningSpeedModifierPercentage !== 0">
+        <Tooltip :tooltip="$t('caption.turningSpeed')">
+          <span :class="StatsUtils.getValueColorClass(turningSpeedModifierPercentage)">
+            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, turningSpeedModifierPercentage) }}
+          </span>
+          <font-awesome-icon
+            icon="undo"
+            class="icon-after-text"
+          />
+        </Tooltip>
       </div>
     </div>
   </div>

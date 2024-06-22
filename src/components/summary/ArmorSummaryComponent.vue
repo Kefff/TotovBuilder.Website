@@ -4,15 +4,14 @@
     class="option-entry"
   >
     <div class="option-value">
-      <div
-        v-if="armorClass > 0"
-        v-tooltip.top="$t('caption.armorClass')"
-      >
-        <span>{{ armorClass }}</span>
-        <font-awesome-icon
-          icon="award"
-          class="icon-after-text"
-        />
+      <div v-if="armorClass > 0">
+        <Tooltip :tooltip="$t('caption.armorClass')">
+          <span>{{ armorClass }}</span>
+          <font-awesome-icon
+            icon="award"
+            class="icon-after-text"
+          />
+        </Tooltip>
       </div>
     </div>
   </div>
@@ -21,15 +20,14 @@
     class="option-entry"
   >
     <div class="option-value">
-      <div
-        v-if="durability > 0"
-        v-tooltip.top="$t('caption.durability')"
-      >
-        <span>{{ durability }}</span>
-        <font-awesome-icon
-          icon="heart"
-          class="icon-after-text armor-summary-durability"
-        />
+      <div v-if="durability > 0">
+        <Tooltip :tooltip="$t('caption.durability')">
+          <span>{{ durability }}</span>
+          <font-awesome-icon
+            icon="heart"
+            class="icon-after-text armor-summary-durability"
+          />
+        </Tooltip>
       </div>
     </div>
   </div>

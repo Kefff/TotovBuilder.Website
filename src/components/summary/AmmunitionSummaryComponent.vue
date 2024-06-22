@@ -1,45 +1,50 @@
 <template>
   <div class="option-entry">
     <div class="option-value">
-      <span v-tooltip.top="$t('caption.fleshDamage')">{{ ammunition.fleshDamage }}</span>
-      <div class="flesh-damage">
-        <div v-tooltip.top="$t('caption.fleshDamage')">
-          <font-awesome-icon
-            icon="heart-broken"
-            class="icon-after-text flesh-damage-color"
-          />
-        </div>
+      <div class="ammunition-summary-flesh-damage-group">
+        <Tooltip
+          :tooltip="$t('caption.fleshDamage')"
+          class="ammunition-summary-flesh-damage"
+        >
+          <span>{{ ammunition.fleshDamage }}</span>
+          <div class="flesh-damage">
+            <font-awesome-icon
+              icon="heart-broken"
+              class="icon-after-text flesh-damage-color"
+            />
+          </div>
+        </Tooltip>
         <div
           v-if="canOneshot"
-          v-tooltip.top="$t('caption.canOneshot')"
           class="flesh-damage-oneshot"
         >
-          <font-awesome-icon
-            icon="skull"
-            class="flesh-damage-oneshot-icon"
-          />
+          <Tooltip :tooltip="$t('caption.canOneshot')">
+            <font-awesome-icon
+              icon="skull"
+              class="flesh-damage-oneshot-icon"
+            />
+          </Tooltip>
         </div>
       </div>
     </div>
   </div>
   <div class="option-entry">
-    <div
-      v-tooltip.top="$t('caption.penetrationPower')"
-      class="option-value"
-    >
-      <span>{{ ammunition.penetrationPower }}</span>
-      <font-awesome-icon
-        icon="bolt"
-        class="icon-after-text"
-      />
+    <div class="option-value">
+      <Tooltip :tooltip="$t('caption.penetrationPower')">
+        <span>{{ ammunition.penetrationPower }}</span>
+        <font-awesome-icon
+          icon="bolt"
+          class="icon-after-text"
+        />
+      </Tooltip>
     </div>
   </div>
   <div class="option-entry">
     <div class="ammunition-summary-penetrated-armor-list">
-      <div
+      <Tooltip
         v-for="c of ammunition.armorPenetrations.length"
         :key="c"
-        v-tooltip.top="getArmorPenetrationTooltip(c, ammunition.armorPenetrations[c - 1])"
+        :tooltip="getArmorPenetrationTooltip(c, ammunition.armorPenetrations[c - 1])"
         class="ammunition-summary-penetrated-armor"
       >
         <div class="ammunition-summary-penetrated-armor-class">
@@ -49,7 +54,7 @@
           icon="award"
           :class="'ammunition-summary-penetrated-armor-icon armor-penetration' + ammunition.armorPenetrations[c - 1]"
         />
-      </div>
+      </Tooltip>
     </div>
   </div>
   <div
@@ -57,15 +62,14 @@
     class="option-entry"
   >
     <div class="option-value">
-      <div
-        v-if="ammunition.fragmentationChance !== 0"
-        v-tooltip.top="$t('caption.fragmentationChance')"
-      >
-        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChance, ammunition.fragmentationChance) }}</span>
-        <font-awesome-icon
-          icon="viruses"
-          class="icon-after-text"
-        />
+      <div v-if="ammunition.fragmentationChance !== 0">
+        <Tooltip :tooltip="$t('caption.fragmentationChance')">
+          <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChance, ammunition.fragmentationChance) }}</span>
+          <font-awesome-icon
+            icon="viruses"
+            class="icon-after-text"
+          />
+        </Tooltip>
       </div>
     </div>
   </div>
@@ -74,17 +78,16 @@
     class="option-entry"
   >
     <div class="option-value">
-      <div
-        v-if="ammunition.recoilModifierPercentage !== 0"
-        v-tooltip.top="$t('caption.recoil')"
-      >
-        <span :class="StatsUtils.getValueColorClass(ammunition.recoilModifierPercentage, true)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, ammunition.recoilModifierPercentage) }}
-        </span>
-        <font-awesome-icon
-          icon="arrows-alt"
-          class="icon-after-text"
-        />
+      <div v-if="ammunition.recoilModifierPercentage !== 0">
+        <Tooltip :tooltip="$t('caption.recoil')">
+          <span :class="StatsUtils.getValueColorClass(ammunition.recoilModifierPercentage, true)">
+            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, ammunition.recoilModifierPercentage) }}
+          </span>
+          <font-awesome-icon
+            icon="arrows-alt"
+            class="icon-after-text"
+          />
+        </Tooltip>
       </div>
     </div>
   </div>
@@ -93,17 +96,16 @@
     class="option-entry"
   >
     <div class="option-value">
-      <div
-        v-if="ammunition.accuracyModifierPercentage !== 0"
-        v-tooltip.top="$t('caption.accuracy')"
-      >
-        <span :class="StatsUtils.getValueColorClass(ammunition.accuracyModifierPercentage)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, ammunition.accuracyModifierPercentage) }}
-        </span>
-        <font-awesome-icon
-          icon="bullseye"
-          class="icon-after-text"
-        />
+      <div v-if="ammunition.accuracyModifierPercentage !== 0">
+        <Tooltip :tooltip="$t('caption.accuracy')">
+          <span :class="StatsUtils.getValueColorClass(ammunition.accuracyModifierPercentage)">
+            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, ammunition.accuracyModifierPercentage) }}
+          </span>
+          <font-awesome-icon
+            icon="bullseye"
+            class="icon-after-text"
+          />
+        </Tooltip>
       </div>
     </div>
   </div>
@@ -165,6 +167,16 @@ function getArmorPenetrationTooltip(armorClass: number, penetration: number) {
 @import '../../css/icon.css';
 @import '../../css/option.css';
 @import '../../css/stats.css';
+
+.ammunition-summary-flesh-damage {
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.ammunition-summary-flesh-damage-group {
+  position: relative;
+}
 
 .ammunition-summary-penetrated-armor {
   align-items: center;

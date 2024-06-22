@@ -3,76 +3,73 @@
     <div class="builds-title">
       {{ $t('caption.buildsList') }}
     </div>
-    <div :class="toolbarCssClass">
-      <div class="toolbar-line">
-        <div class="toolbar-part">
+    <Toolbar sticky-trigger-selector="#builds-content">
+      <div class="toolbar-part">
+        <Button
+          :disabled="isLoading"
+          @click="openNewBuild()"
+        >
+          <font-awesome-icon
+            icon="plus"
+            class="icon-before-text"
+          />
+          <span>{{ $t('caption.new') }}</span>
+        </Button>
+        <Tooltip
+          :tooltip="$t('caption.exportBuilds')"
+          :apply-hover-style="false"
+        >
           <Button
-            :disabled="isLoading"
-            @click="openNewBuild()"
+            class="p-button-text p-button-sm button-discreet"
+            :disabled="isLoading || !canExport"
+            @click="showBuildsExportPopup()"
           >
-            <font-awesome-icon
-              icon="plus"
-              class="icon-before-text"
-            />
-            <span>{{ $t('caption.new') }}</span>
+            <font-awesome-icon icon="file-export" />
           </Button>
+        </Tooltip>
+        <Tooltip
+          :tooltip="$t('caption.importBuilds')"
+          :apply-hover-style="false"
+        >
+          <Button
+            class="p-button-text p-button-sm button-discreet"
+            :disabled="isLoading || !canImport"
+            @click="showBuildsImportPopup()"
+          >
+            <font-awesome-icon icon="file-import" />
+          </Button>
+        </Tooltip>
+      </div>
+      <div class="toolbar-part toolbar-center" />
+      <div class="toolbar-part">
+        <div class="builds-toolbar-right">
           <Tooltip
-            :tooltip="$t('caption.exportBuilds')"
+            :tooltip="$t('caption.merchantItemsOptions')"
             :apply-hover-style="false"
           >
             <Button
               class="p-button-text p-button-sm button-discreet"
-              :disabled="isLoading || !canExport"
-              @click="showBuildsExportPopup()"
+              :disabled="isLoading"
+              @click="displayMerchantItemsOptions()"
             >
-              <font-awesome-icon icon="file-export" />
+              <font-awesome-icon icon="user-tag" />
             </Button>
           </Tooltip>
           <Tooltip
-            :tooltip="$t('caption.importBuilds')"
+            :tooltip="$t('caption.options')"
             :apply-hover-style="false"
           >
             <Button
               class="p-button-text p-button-sm button-discreet"
-              :disabled="isLoading || !canImport"
-              @click="showBuildsImportPopup()"
+              @click="displayGeneralOptions()"
             >
-              <font-awesome-icon icon="file-import" />
+              <font-awesome-icon icon="cog" />
             </Button>
           </Tooltip>
-        </div>
-        <div class="toolbar-part toolbar-center" />
-        <div class="toolbar-part">
-          <div class="builds-toolbar-right">
-            <Tooltip
-              :tooltip="$t('caption.merchantItemsOptions')"
-              :apply-hover-style="false"
-            >
-              <Button
-                class="p-button-text p-button-sm button-discreet"
-                :disabled="isLoading"
-                @click="displayMerchantItemsOptions()"
-              >
-                <font-awesome-icon icon="user-tag" />
-              </Button>
-            </Tooltip>
-            <Tooltip
-              :tooltip="$t('caption.options')"
-              :apply-hover-style="false"
-            >
-              <Button
-                class="p-button-text p-button-sm button-discreet"
-                @click="displayGeneralOptions()"
-              >
-                <font-awesome-icon icon="cog" />
-              </Button>
-            </Tooltip>
-            <NotificationButton />
-          </div>
+          <NotificationButton />
         </div>
       </div>
-      <div class="toolbar-gradient" />
-    </div>
+    </Toolbar>
     <div
       v-show="isLoading"
       class="builds-loading"

@@ -3,18 +3,17 @@
     v-if="eyewear.blindnessProtectionPercentage !== 0 || showEmptyEntries"
     class="option-entry"
   >
-    <div
-      v-tooltip.top="$t('caption.blindnessProtection')"
-      class="option-value"
-    >
+    <div class="option-value">
       <div v-if="eyewear.blindnessProtectionPercentage !== 0">
-        <span :class="StatsUtils.getValueColorClass(eyewear.blindnessProtectionPercentage)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.blindnessProtectionPercentage, eyewear.blindnessProtectionPercentage) }}
-        </span>
-        <font-awesome-icon
-          icon="low-vision"
-          class="icon-after-text"
-        />
+        <Tooltip :tooltip="$t('caption.blindnessProtection')">
+          <span :class="StatsUtils.getValueColorClass(eyewear.blindnessProtectionPercentage)">
+            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.blindnessProtectionPercentage, eyewear.blindnessProtectionPercentage) }}
+          </span>
+          <font-awesome-icon
+            icon="low-vision"
+            class="icon-after-text"
+          />
+        </Tooltip>
       </div>
     </div>
   </div>

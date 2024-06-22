@@ -1,14 +1,13 @@
 <template>
   <div class="option-entry">
-    <div
-      v-tooltip.top="$t('caption.capacity')"
-      class="option-value"
-    >
-      <span>{{ container.capacity }}</span>
-      <font-awesome-icon
-        icon="box-open"
-        class="icon-after-text"
-      />
+    <div class="option-value">
+      <Tooltip :tooltip="$t('caption.capacity')">
+        <span>{{ container.capacity }}</span>
+        <font-awesome-icon
+          icon="box-open"
+          class="icon-after-text"
+        />
+      </Tooltip>
     </div>
   </div>
 </template>

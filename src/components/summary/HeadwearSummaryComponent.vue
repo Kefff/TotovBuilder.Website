@@ -10,13 +10,14 @@
     class="option-entry"
   >
     <div class="option-value">
-      <div
-        v-if="hasRicochetChance"
-        v-tooltip.top="$t('caption.ricochetChance')"
-        class="custom-icon-after-text"
-      >
-        <span>{{ $t('caption.ricochetChance' + headwear.ricochetChance) }}</span>
-        <img :src="Images.ricochet">
+      <div v-if="hasRicochetChance">
+        <Tooltip
+          :tooltip="$t('caption.ricochetChance')"
+          class="custom-icon-after-text"
+        >
+          <span>{{ $t('caption.ricochetChance' + headwear.ricochetChance) }}</span>
+          <img :src="Images.ricochet">
+        </Tooltip>
       </div>
     </div>
   </div>

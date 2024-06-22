@@ -53,21 +53,20 @@
               class="flesh-damage-color"
             />
           </div>
-          <div
-            v-if="canOneshot"
-            v-tooltip="$t('caption.canOneshot')"
-            class="flesh-damage-oneshot"
-          >
-            <font-awesome-icon
-              icon="skull"
-              class="flesh-damage-oneshot-icon"
-            />
-          </div>
         </div>
         <span>{{ $t('caption.fleshDamage') }} :</span>
       </div>
       <div class="stats-value">
-        {{ ammunition.fleshDamage }}
+        <Tooltip
+          v-if="canOneshot"
+          :tooltip="$t('caption.canOneshot')"
+          class="ammunition-stats-oneshot"
+        >
+          <font-awesome-icon icon="skull" />
+        </Tooltip>
+        <span>
+          {{ ammunition.fleshDamage }}
+        </span>
       </div>
     </div>
     <div class="stats-entry">
@@ -120,11 +119,12 @@
         />
         <span>{{ $t('caption.armorClassPenetration', { class: c }) }} :</span>
       </div>
-      <div
-        v-tooltip.top="getArmorPenetrationTooltip(c, ammunition.armorPenetrations[c - 1])"
-        class="stats-value"
-      >
-        <span :class="'armor-penetration' + ammunition.armorPenetrations[c - 1]">{{ ammunition.armorPenetrations[c - 1] }}<span /></span>
+      <div class="stats-value">
+        <Tooltip :tooltip="getArmorPenetrationTooltip(c, ammunition.armorPenetrations[c - 1])">
+          <span :class="'armor-penetration' + ammunition.armorPenetrations[c - 1]">
+            {{ ammunition.armorPenetrations[c - 1] }}
+          </span>
+        </Tooltip>
       </div>
     </div>
   </div>
@@ -277,4 +277,8 @@ function getArmorPenetrationTooltip(armorClass: number, penetration: number): st
 @import '../../css/flesh-damage.css';
 @import '../../css/icon.css';
 @import '../../css/stats.css';
+
+.ammunition-stats-oneshot {
+  margin-right: 0.5rem
+}
 </style>

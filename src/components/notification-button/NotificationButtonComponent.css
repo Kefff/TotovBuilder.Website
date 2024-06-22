@@ -1,7 +1,6 @@
 @import '../../css/button.css';
 @import '../../css/icon.css';
 @import '../../css/link.css';
-@import '../../css/toolbar.css';
 
 .notification-button-count {
   background-color: var(--danger-color);
@@ -34,11 +33,6 @@
   flex-wrap: nowrap;
   margin-top: 0.5rem;
   padding: 0.5rem;
-}
-
-.notification-button-panel-item:hover {
-  background: var(--util-color2);
-  border-radius: 3px;
 }
 
 .notification-button-panel-item-delete-icon {

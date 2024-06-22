@@ -23,6 +23,7 @@ import InputTextField from '../InputTextFieldComponent.vue'
 import InventoryPrice from '../InventoryPriceComponent.vue'
 import InventorySlot from '../InventorySlotComponent.vue'
 import Loading from '../LoadingComponent.vue'
+import Toolbar from '../ToolbarComponent.vue'
 import BuildShare from '../build-share/BuildShareComponent.vue'
 import NotificationButton from '../notification-button/NotificationButtonComponent.vue'
 
@@ -33,7 +34,8 @@ export default defineComponent({
     InventoryPrice,
     InventorySlot,
     Loading,
-    NotificationButton
+    NotificationButton,
+    Toolbar
   },
   setup: () => {
     const itemService = Services.get(ItemService)
@@ -111,7 +113,6 @@ export default defineComponent({
       },
       weight: 0
     })
-    const toolbarCssClass = ref('toolbar')
 
     provide('editing', editing)
 
@@ -119,7 +120,6 @@ export default defineComponent({
 
     onMounted(() => {
       document.onkeydown = (e) => onKeyDown(e)
-      window.addEventListener('scroll', setToolbarCssClass)
 
       compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
@@ -142,7 +142,6 @@ export default defineComponent({
       globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       document.onkeydown = null
-      window.removeEventListener('scroll', setToolbarCssClass)
     })
 
     window.onbeforeunload = function () {
@@ -439,18 +438,6 @@ export default defineComponent({
     }
 
     /**
-     * Sets the toolbar CSS class.
-     * Used to set its sticky status and work around Z index problems with PrimeVue components that appear behind the toolbar.
-     */
-    function setToolbarCssClass() {
-      const buildContentElement = document.querySelector('#build-content')
-      const rectangle = buildContentElement?.getBoundingClientRect()
-      const y = rectangle?.top ?? 0
-
-      toolbarCssClass.value = window.scrollY <= y ? 'toolbar' : 'toolbar toolbar-sticky'
-    }
-
-    /**
      * Displays the deletion confirmation dialog.
      */
     function startDelete() {
@@ -515,8 +502,7 @@ export default defineComponent({
       startDelete,
       startEdit,
       StatsUtils,
-      summary,
-      toolbarCssClass
+      summary
     }
   }
 })

@@ -6,32 +6,33 @@
         <div class="selected-item-summary-right-price">
           <div
             v-if="hasMissingPrice"
-            v-tooltip.top="$t('message.itemWithMissingPrice')"
             class="selected-item-summary-price-missing-price-icon"
           >
-            <font-awesome-icon icon="exclamation-triangle" />
+            <Tooltip :tooltip="$t('message.itemWithMissingPrice')">
+              <font-awesome-icon icon="exclamation-triangle" />
+            </Tooltip>
           </div>
           <div
             v-if="selectedItemPrice.unitPriceIgnoreStatus === IgnoredUnitPrice.manuallyIgnored"
-            v-tooltip.top="$t('caption.ignoredPrice_' + selectedItemPrice.unitPriceIgnoreStatus)"
             class="selected-item-summary-price-ignored-price-icon"
           >
-            <font-awesome-icon icon="ban" />
+            <Tooltip :tooltip="$t('caption.ignoredPrice_' + selectedItemPrice.unitPriceIgnoreStatus)">
+              <font-awesome-icon icon="ban" />
+            </Tooltip>
           </div>
           <Price
             v-if="showPrice"
             :price="selectedItemPrice.price"
           />
-          <div
-            v-tooltip.top="$t('caption.weight')"
-            class="selected-item-summary-weight"
-          >
+          <div class="selected-item-summary-weight">
             <div v-if="selectedItemWeight.weight > 0">
-              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weight) }}</span>
-              <font-awesome-icon
-                icon="weight-hanging"
-                class="icon-after-text"
-              />
+              <Tooltip :tooltip="$t('caption.weight')">
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weight) }}</span>
+                <font-awesome-icon
+                  icon="weight-hanging"
+                  class="icon-after-text"
+                />
+              </Tooltip>
             </div>
           </div>
         </div>
@@ -44,16 +45,15 @@
               :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
             />
           </div>
-          <div
-            v-tooltip.top="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'"
-            class="selected-item-summary-weight selected-item-summary-weight-per-unit"
-          >
+          <div class="selected-item-summary-weight selected-item-summary-weight-per-unit">
             <div v-if="selectedItemWeight.unitWeight !== selectedItemWeight.weight">
-              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
-              <font-awesome-icon
-                icon="weight-hanging"
-                class="icon-after-text"
-              />
+              <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
+                <font-awesome-icon
+                  icon="weight-hanging"
+                  class="icon-after-text"
+                />
+              </Tooltip>
             </div>
           </div>
         </div>
@@ -215,7 +215,6 @@ async function setWeight() {
   display: flex;
   justify-content: center;
   margin-left: 0.5rem;
-  margin-right: 0.075rem;
   width: 2rem;
 }
 
