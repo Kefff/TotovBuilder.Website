@@ -32,7 +32,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', setToolbarCssClass)
+  app.value?.removeEventListener('scroll', setToolbarCssClass)
 })
 
 /**

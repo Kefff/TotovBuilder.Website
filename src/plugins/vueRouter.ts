@@ -1,7 +1,7 @@
 import { App } from 'vue'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import BuildComponent from '../components/build/BuildComponent.vue'
-import Builds from '../components/builds/BuildsComponent.vue'
+import Builds from '../components/BuildsComponent.vue'
 import Welcome from '../components/WelcomeComponent.vue'
 import LanguageUtils from '../utils/LanguageUtils'
 import applicationInsights from './applicationInsights'
