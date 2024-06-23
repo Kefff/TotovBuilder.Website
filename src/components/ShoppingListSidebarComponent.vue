@@ -21,35 +21,15 @@
           />
         </div>
       </div>
-      <div
+      <PriceDetailItem
         v-for="(shoppingListItem, index) of parameters"
         :key="index"
+        :item="shoppingListItem.item"
+        :price="shoppingListItem.price"
+        :quantity="shoppingListItem.quantity"
+        :unit-price="shoppingListItem.unitPrice"
         class="shopping-list-item"
-      >
-        <div class="shopping-list-item-icon">
-          <ItemIcon
-            :item="shoppingListItem.item"
-            :quantity="shoppingListItem.quantity"
-          />
-        </div>
-        <div>
-          {{ shoppingListItem.item.name }}
-        </div>
-        <div class="shopping-list-item-price">
-          <Price :price="shoppingListItem.price" />
-          <div
-            v-if="shoppingListItem.quantity > 1"
-            class="shopping-list-item-price-per-unit"
-          >
-            <Price
-              :price="shoppingListItem.unitPrice"
-              :show-merchant-icon="false"
-              :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
-            />
-          </div>
-        </div>
-      </div>
-      <div />
+      />
     </div>
   </div>
 </template>
@@ -68,9 +48,8 @@ import { computed } from 'vue'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IBuildSummaryShoppingMerchant } from '../models/utils/IBuildSummaryMerchant'
 import StringUtils from '../utils/StringUtils'
-import ItemIcon from './ItemIconComponent.vue'
 import MerchantIcon from './MerchantIconComponent.vue'
-import Price from './PriceComponent.vue'
+import PriceDetailItem from './PriceDetailItemComponent.vue'
 
 const props = defineProps<{ parameters: IShoppingListItem[] }>()
 
@@ -127,30 +106,13 @@ function getRequiredMerchants(): IBuildSummaryShoppingMerchant[] {
 }
 
 .shopping-list-item {
-  align-items: center;
-  display: grid;
-  gap: 0.25rem;
-  grid-template-columns: 4.85rem 1fr 9rem;
   margin-bottom: 0.5rem;
-}
-
-.shopping-list-item:last-child {
-  margin-bottom: 0;
-}
-
-.shopping-list-item-icon {
-  display: flex;
-  justify-content: center;
-}
-
-.shopping-list-item-price {
   margin-right: 0.5rem;
   /* For the merchant level to be fully displayed */
 }
 
-.shopping-list-item-price-per-unit {
-  font-size: 0.75rem;
-  margin-right: 2.35rem;
+.shopping-list-item:last-child {
+  margin-bottom: 0;
 }
 
 .shopping-list-merchants {

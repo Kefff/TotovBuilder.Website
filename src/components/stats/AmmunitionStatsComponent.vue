@@ -1,9 +1,13 @@
 <template>
   <div class="stats-line">
     <div class="stats-entry">
-      <div class="stats-caption custom-icon-before-text">
-        <img :src="Images.caliber">
-        <span>{{ $t('caption.caliber') }} :</span>
+      <div class="stats-caption">
+        <CustomIcon
+          :icon="Images.caliber"
+          position="before"
+        >
+          <span>{{ $t('caption.caliber') }} :</span>
+        </CustomIcon>
       </div>
       <div class="stats-value">
         {{ $t('caption.' + StringUtils.toLowerFirst(ammunition.caliber)) }}
@@ -244,6 +248,7 @@ import Services from '../../services/repository/Services'
 import { ArmorUtils } from '../../utils/ArmorUtils'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import StringUtils from '../../utils/StringUtils'
+import CustomIcon from '../CustomIconComponent.vue'
 
 const props = defineProps<{
   item: IItem

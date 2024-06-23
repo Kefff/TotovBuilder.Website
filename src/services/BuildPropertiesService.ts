@@ -388,7 +388,7 @@ ${sharableUrlResult}`
    * Gets the list conflicting items for an item and each of its mods.
    * Items that do not have any conflicting items still are added in the list (with an undefined conflictingItemId) to be able to be tested against the added item conflicting items list.
    * @param inventoryItem - Item.
-   * @param modSlotPath -"Path" to the mod slot the inventory item is in.
+   * @param modSlotPath - "Path" to the mod slot the inventory item is in.
    * @returns Conflicting items.
    */
   private async getConflictingItems(

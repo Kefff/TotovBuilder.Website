@@ -4,6 +4,7 @@
   "css.format.newlineBetweenSelectors": true,
   "css.format.spaceAroundSelectorSeparator": true,
   "editor.detectIndentation": false,
+  "editor.formatOnPaste": false,
   "editor.formatOnSave": true,
   "editor.wordWrap": "off",
   "eslint.enable": true,
@@ -24,7 +25,6 @@
   "typescript.preferences.quoteStyle": "single",
   "vue.autoInsert.bracketSpacing": true,
   "vue.autoInsert.dotValue": true,
-  "vue.autoInsert.parentheses": true,
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features",
     "editor.tabSize": 2,

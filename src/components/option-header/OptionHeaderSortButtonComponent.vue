@@ -13,11 +13,11 @@
           :icon="icon"
           class="options-header-sort-button-icon"
         />
-        <img
+        <CustomIcon
           v-else-if="customIcon != null"
-          :src="Images[StringUtils.toCamelCase(customIcon)]"
-          class="custom-icon"
-        >
+          :icon="Images[StringUtils.toCamelCase(customIcon)]"
+          position="after"
+        />
       </div>
     </Tooltip>
   </div>
@@ -40,6 +40,7 @@ import Services from '../../services/repository/Services'
 import { SortingService } from '../../services/sorting/SortingService'
 import { ISortingFunctionList } from '../../services/sorting/functions/ISortingFunctionList'
 import StringUtils from '../../utils/StringUtils'
+import CustomIcon from '../CustomIconComponent.vue'
 
 const props = withDefaults(
   defineProps<{

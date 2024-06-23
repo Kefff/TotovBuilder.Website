@@ -38,9 +38,12 @@
   <OverlayPanel
     ref="priceDetailPanel"
     :dismissable="true"
-    :style="'max-width: 16rem'"
   >
     <div class="inventory-price-details">
+      <font-awesome-icon
+        icon="coins"
+        class="icon-before-text"
+      />
       <div>{{ $t('caption.priceEqualsTo') }}</div>
       <div class="inventory-price-details-main-currency-value">
         <font-awesome-icon
@@ -124,6 +127,7 @@ function togglePriceDetails(event: Event) {
 
 <style scoped>
 @import '../css/currency.css';
+@import '../css/icon.css';
 
 .inventory-price {
   align-items: center;

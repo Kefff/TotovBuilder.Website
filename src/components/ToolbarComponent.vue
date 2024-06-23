@@ -76,7 +76,8 @@ function setToolbarCssClass() {
 .toolbar-sticky {
   position: sticky;
   z-index: 1;
-  top: -1rem;
+  top: -1.05rem;
+  /* 0.5 otherwise there is a gap of 1 pixel */
 }
 
 .toolbar-gradient {

@@ -5,20 +5,27 @@
       :key="merchantFilter.merchant"
       class="merchant-filter"
     >
-      <Checkbox
-        :binary="true"
-        :model-value="merchantFilter.enabled"
-        @update:model-value="onMerchantFilterChanged(index, $event, merchantFilter.merchantLevel)"
-      />
       <div
-        :class="`merchant-filter-merchant${(!merchantFilter.enabled ? ' merchant-filter-disabled-text' : '')}`"
+        class="sidebar-option-icon"
+        :class="!merchantFilter.enabled ? 'sidebar-option-disabled' : ''"
+      >
+        <Checkbox
+          :binary="true"
+          :model-value="merchantFilter.enabled"
+          @update:model-value="onMerchantFilterChanged(index, $event, merchantFilter.merchantLevel)"
+        />
+      </div>
+      <div
+        class="merchant-filter-merchant"
+        :class="!merchantFilter.enabled ? 'sidebar-option-disabled' : ''"
         @click="onMerchantFilterChanged(index, !merchantFilter.enabled, merchantFilter.merchantLevel)"
       >
         {{ $t('caption.merchant_' + merchantFilter.merchant) }}
       </div>
       <img
         :src="Images[StringUtils.toCamelCase(merchantFilter.merchant)]"
-        :class="`merchant-filter-icon${!merchantFilter.enabled ? ' merchant-filter-icon-disabled' : ''}`"
+        class="merchant-filter-icon"
+        :class="!merchantFilter.enabled ? 'sidebar-option-disabled' : ''"
         @click="onMerchantFilterChanged(index, !merchantFilter.enabled, merchantFilter.merchantLevel)"
       >
       <Tooltip
@@ -111,36 +118,24 @@ function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel:
 
 
 <style scoped>
+@import '../css/sidebar.css';
+
 .merchant-filter {
   align-items: center;
   display: grid;
   gap: 0.5rem;
-  grid-template-columns: 2rem 1fr 3rem 5rem;
+  grid-template-columns: 2rem 1fr 3rem 5.25rem;
   height: 3.5rem;
-  margin-right: 1px;
-  /* Needed otherwise there is a horizontal scroll bar for some reason*/
 }
 
 .merchant-filter:last-child {
   margin-bottom: 0;
 }
 
-.merchant-filter-disabled-text {
-  color: var(--util-color5);
-}
-
 .merchant-filter-icon {
-  border-color: var(--util-color);
   border-radius: 3px;
-  border-radius: 3px;
-  border-style: solid;
-  border-width: 1px;
   cursor: pointer;
   width: 3rem;
-}
-
-.merchant-filter-icon-disabled {
-  filter: grayscale(100%);
 }
 
 .merchant-filter-merchant {

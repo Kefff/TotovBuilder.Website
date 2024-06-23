@@ -1,18 +1,26 @@
 <template>
   <div class="stats-line">
     <div class="stats-entry">
-      <div class="stats-caption custom-icon-before-text">
-        <img :src="Images.caliber">
-        <span>{{ $t('caption.caliber') }} :</span>
+      <div class="stats-caption">
+        <CustomIcon
+          :icon="Images.caliber"
+          position="before"
+        >
+          <span>{{ $t('caption.caliber') }} :</span>
+        </CustomIcon>
       </div>
       <div class="stats-value">
         {{ $t('caption.' + StringUtils.toLowerFirst(rangedWeapon.caliber)) }}
       </div>
     </div>
     <div class="stats-entry">
-      <div class="stats-caption custom-icon-before-text">
-        <img :src="Images.fireRate">
-        <span>{{ $t('caption.fireRate') }} :</span>
+      <div class="stats-caption">
+        <CustomIcon
+          :icon="Images.fireRate"
+          position="before"
+        >
+          <span>{{ $t('caption.fireRate') }} :</span>
+        </CustomIcon>
       </div>
       <div class="stats-value">
         {{ $t('caption.fireRateValue', { fireRate: rangedWeapon.fireRate }) }}
@@ -75,6 +83,7 @@ import { IItem } from '../../models/item/IItem'
 import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import StringUtils from '../../utils/StringUtils'
+import CustomIcon from '../CustomIconComponent.vue'
 
 const props = defineProps<{
   item: IItem

@@ -2,11 +2,11 @@
   <div class="option-entry">
     <div class="option-value">
       <Tooltip :tooltip="$t('caption.capacity')">
-        <span>{{ container.capacity }}</span>
         <font-awesome-icon
           icon="box-open"
-          class="icon-after-text"
+          class="icon-before-text"
         />
+        <span>{{ container.capacity }}</span>
       </Tooltip>
     </div>
   </div>

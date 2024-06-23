@@ -11,7 +11,7 @@
     >
       <div class="stats-caption">
         <font-awesome-icon
-          icon="ruble-sign"
+          icon="coins"
           class="icon-before-text"
         />
         <span>{{ $t('caption.merchant_' + price.merchant) + (price.merchantLevel > 0 ? ' ' + $t('caption.level').toLocaleLowerCase() + ' ' + price.merchantLevel : '') }} :</span>
@@ -57,7 +57,10 @@
     </div>
     <div class="stats-entry">
       <div class="stats-caption">
-        <div class="icon-before-text" />
+        <font-awesome-icon
+          icon="globe"
+          class="icon-before-text"
+        />
         <span
           class="link"
           @click="openMarket()"
@@ -68,7 +71,10 @@
     </div>
     <div class="stats-entry">
       <div class="stats-caption">
-        <div class="icon-before-text" />
+        <font-awesome-icon
+          icon="globe"
+          class="icon-before-text"
+        />
         <span
           class="link"
           @click="openWiki()"

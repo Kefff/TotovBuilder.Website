@@ -54,7 +54,7 @@
 
 .build-toolbar-not-exported {
   color: var(--warning-color);
-  margin-right: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 .build-toolbar-right {

@@ -8,8 +8,8 @@
 
 .flesh-damage-oneshot {
   position: absolute;
-  right: -3px;
-  bottom: -6px;
+  left: 10px;
+  top: 6px;
 }
 
 .flesh-damage-oneshot-icon {

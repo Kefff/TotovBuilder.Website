@@ -4332,6 +4332,10 @@
 }
 
 .p-overlaypanel .p-overlaypanel-content {
+  border-color: var(--primary-color);
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
   padding: 1rem;
 }
 
@@ -4355,7 +4359,7 @@
 .p-overlaypanel:after {
   border: solid transparent;
   border-color: rgba(38, 38, 38, 0);
-  border-bottom-color: var(--surface-f);
+  border-bottom-color: var(--primary-color);
 }
 
 .p-overlaypanel:before {

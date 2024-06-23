@@ -1,15 +1,6 @@
 <template>
   <div class="build">
     <div class="build-title">
-      <Tooltip
-        v-if="!isLoading && !summary.exported && !isNewBuild"
-        :tooltip="notExportedTooltip"
-      >
-        <font-awesome-icon
-          icon="exclamation-triangle"
-          class="build-toolbar-not-exported"
-        />
-      </Tooltip>
       <span v-show="!editing">
         {{ build.name }}
       </span>
@@ -20,6 +11,15 @@
         caption-mode="placeholder"
         :required="true"
       />
+      <Tooltip
+        v-if="!isLoading && !summary.exported && !isNewBuild"
+        :tooltip="notExportedTooltip"
+      >
+        <font-awesome-icon
+          icon="exclamation-triangle"
+          class="build-toolbar-not-exported"
+        />
+      </Tooltip>
     </div>
     <Toolbar sticky-trigger-selector="#build-content">
       <div class="toolbar-part">
@@ -112,33 +112,33 @@
               :tooltip="$t('caption.verticalRecoil')"
               class="build-toolbar-summary-value"
             >
-              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.verticalRecoil) }}</span>
               <font-awesome-icon
                 icon="arrows-alt-v"
-                class="icon-after-text"
+                class="icon-before-text"
               />
+              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.verticalRecoil) }}</span>
             </Tooltip>
             <Tooltip
               v-if="hasSummaryVerticalRecoil"
               :tooltip="$t('caption.horizontalRecoil')"
               class="build-toolbar-summary-value"
             >
-              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.horizontalRecoil) }}</span>
               <font-awesome-icon
                 icon="arrows-alt-h"
-                class="icon-after-text"
+                class="icon-before-text"
               />
+              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.horizontalRecoil) }}</span>
             </Tooltip>
             <Tooltip
               v-if="hasSummaryErgonomics"
               :tooltip="$t('caption.ergonomics')"
               class="build-toolbar-summary-value"
             >
-              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, summary.ergonomics) }}</span>
               <font-awesome-icon
                 icon="hand-paper"
-                class="icon-after-text"
+                class="icon-before-text"
               />
+              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, summary.ergonomics) }}</span>
             </Tooltip>
           </div>
           <div
@@ -150,50 +150,50 @@
               :tooltip="$t('caption.armorClass')"
               class="build-toolbar-summary-value"
             >
-              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, summary.armorModifiers.armorClass) }}</span>
               <font-awesome-icon
                 icon="award"
-                class="icon-after-text"
+                class="icon-before-text"
               />
+              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, summary.armorModifiers.armorClass) }}</span>
             </Tooltip>
             <Tooltip
               v-if="hasSummaryErgonomicsModifierPercentage"
               :tooltip="$t('caption.ergonomicsModifierPercentage')"
               class="build-toolbar-summary-value"
             >
+              <font-awesome-icon
+                icon="hand-paper"
+                class="icon-before-text"
+              />
               <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsModifierPercentage)">
                 {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsModifierPercentage) }}
               </span>
-              <font-awesome-icon
-                icon="hand-paper"
-                class="icon-after-text"
-              />
             </Tooltip>
             <Tooltip
               v-if="hasSummaryMovementSpeedModifierPercentage"
               :tooltip="$t('caption.movementSpeedModifierPercentage')"
               class="build-toolbar-summary-value"
             >
+              <font-awesome-icon
+                icon="walking"
+                class="icon-before-text"
+              />
               <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedModifierPercentage)">
                 {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, summary.wearableModifiers.movementSpeedModifierPercentage) }}
               </span>
-              <font-awesome-icon
-                icon="walking"
-                class="icon-after-text"
-              />
             </Tooltip>
             <Tooltip
               v-if="hasSummaryTurningSpeedModifierPercentage"
               :tooltip="$t('caption.turningSpeedModifierPercentage')"
               class="build-toolbar-summary-value"
             >
+              <font-awesome-icon
+                icon="undo"
+                class="icon-before-text"
+              />
               <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedModifierPercentage)">
                 {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, summary.wearableModifiers.turningSpeedModifierPercentage) }}
               </span>
-              <font-awesome-icon
-                icon="undo"
-                class="icon-after-text"
-              />
             </Tooltip>
           </div>
           <div
@@ -216,11 +216,11 @@
               :tooltip="$t('caption.weight')"
               class="build-toolbar-summary-value"
             >
-              <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
               <font-awesome-icon
                 icon="weight-hanging"
-                class="icon-after-text"
+                class="icon-before-text"
               />
+              <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
             </Tooltip>
           </div>
         </div>

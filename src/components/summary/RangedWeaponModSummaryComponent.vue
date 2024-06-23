@@ -6,13 +6,13 @@
     <div class="option-value">
       <div v-if="ergonomicsModifier !== 0">
         <Tooltip :tooltip="$t('caption.ergonomics')">
+          <font-awesome-icon
+            icon="hand-paper"
+            class="icon-before-text"
+          />
           <span :class="StatsUtils.getValueColorClass(ergonomicsModifier)">
             {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
           </span>
-          <font-awesome-icon
-            icon="hand-paper"
-            class="icon-after-text"
-          />
         </Tooltip>
       </div>
     </div>
@@ -24,13 +24,13 @@
     <div class="option-value">
       <div v-if="rangedWeaponMod.recoilModifierPercentage !== 0">
         <Tooltip :tooltip="$t('caption.recoil')">
+          <font-awesome-icon
+            icon="arrows-alt"
+            class="icon-before-text"
+          />
           <span :class="StatsUtils.getValueColorClass(rangedWeaponMod.recoilModifierPercentage, true)">
             {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, rangedWeaponMod.recoilModifierPercentage) }}
           </span>
-          <font-awesome-icon
-            icon="arrows-alt"
-            class="icon-after-text"
-          />
         </Tooltip>
       </div>
     </div>
@@ -42,13 +42,13 @@
     <div class="option-value">
       <div v-if="rangedWeaponMod.accuracyModifierPercentage !== 0">
         <Tooltip :tooltip="$t('caption.accuracy')">
+          <font-awesome-icon
+            icon="bullseye"
+            class="icon-before-text"
+          />
           <span :class="StatsUtils.getValueColorClass(rangedWeaponMod.accuracyModifierPercentage)">
             {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, rangedWeaponMod.accuracyModifierPercentage) }}
           </span>
-          <font-awesome-icon
-            icon="bullseye"
-            class="icon-after-text"
-          />
         </Tooltip>
       </div>
     </div>

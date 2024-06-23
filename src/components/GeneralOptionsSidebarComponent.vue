@@ -39,7 +39,7 @@
     <div>
       <div
         class="general-options-name"
-        :class="!allowCookies ? ' general-options-disabled-text' : ''"
+        :class="!allowCookies ? ' sidebar-option-disabled' : ''"
         @click="toggleAllowCookies()"
       >
         {{ $t('caption.allowCookies') }}
@@ -131,7 +131,7 @@ function getAdditionalOptionCssClasses(option: IGeneralOption) {
   let classes = 'sidebar-option'
 
   if (option.enabled != null && !option.enabled()) {
-    classes += ' sidebar-option-disabled'
+    classes += ' sidebar-option-disabled sidebar-option-prevent-click'
   } else {
     classes += ' sidebar-option-clickable'
   }
@@ -183,10 +183,6 @@ function toggleAllowCookies() {
   font-size: 0.85rem;
   max-width: 20rem;
   white-space: pre-wrap;
-}
-
-.general-options-disabled-text {
-  color: var(--util-color5);
 }
 
 .general-options-name {

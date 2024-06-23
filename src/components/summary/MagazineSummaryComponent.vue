@@ -7,13 +7,13 @@
     <div class="option-value">
       <div v-if="magazine.loadSpeedModifierPercentage !== 0">
         <Tooltip :tooltip="$t('caption.loadSpeed')">
+          <font-awesome-icon
+            icon="sync-alt"
+            class="icon-before-text"
+          />
           <span :class="StatsUtils.getValueColorClass(magazine.loadSpeedModifierPercentage, true)">
             {{ StatsUtils.getStandardDisplayValue(DisplayValueType.loadSpeedModifierPercentage, magazine.loadSpeedModifierPercentage) }}
           </span>
-          <font-awesome-icon
-            icon="sync-alt"
-            class="icon-after-text"
-          />
         </Tooltip>
       </div>
     </div>
@@ -25,13 +25,13 @@
     <div class="option-value">
       <div v-if="magazine.checkSpeedModifierPercentage !== 0">
         <Tooltip :tooltip="$t('caption.checkSpeed')">
+          <font-awesome-icon
+            icon="eye"
+            class="icon-before-text"
+          />
           <span :class="StatsUtils.getValueColorClass(magazine.checkSpeedModifierPercentage, true)">
             {{ StatsUtils.getStandardDisplayValue(DisplayValueType.checkSpeedModifierPercentage, magazine.checkSpeedModifierPercentage) }}
           </span>
-          <font-awesome-icon
-            icon="eye"
-            class="icon-after-text"
-          />
         </Tooltip>
       </div>
     </div>
@@ -43,13 +43,13 @@
     <div class="option-value">
       <div v-if="ergonomicsModifier !== 0">
         <Tooltip :tooltip="$t('caption.ergonomics')">
+          <font-awesome-icon
+            icon="hand-paper"
+            class="icon-before-text"
+          />
           <span :class="StatsUtils.getValueColorClass(ergonomicsModifier)">
             {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
           </span>
-          <font-awesome-icon
-            icon="hand-paper"
-            class="icon-after-text"
-          />
         </Tooltip>
       </div>
     </div>

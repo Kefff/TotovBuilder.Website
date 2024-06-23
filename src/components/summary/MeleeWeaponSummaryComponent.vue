@@ -1,34 +1,36 @@
 <template>
   <div class="option-entry">
     <div class="option-value">
-      <Tooltip
-        :tooltip="$t('caption.chopDamage')"
-        class="custom-icon-after-text"
-      >
-        <span>{{ meleeWeapon.chopDamage }}</span>
-        <img :src="Images.chop">
+      <Tooltip :tooltip="$t('caption.chopDamage')">
+        <CustomIcon
+          :icon="Images.chop"
+          position="before"
+        >
+          <span>{{ meleeWeapon.chopDamage }}</span>
+        </CustomIcon>
       </Tooltip>
     </div>
   </div>
   <div class="option-entry">
     <div class="option-value">
-      <Tooltip
-        :tooltip="$t('caption.stabDamage')"
-        class="custom-icon-after-text"
-      >
-        <span>{{ meleeWeapon.stabDamage }}</span>
-        <img :src="Images.stab">
+      <Tooltip :tooltip="$t('caption.stabDamage')">
+        <CustomIcon
+          :icon="Images.stab"
+          position="before"
+        >
+          <span>{{ meleeWeapon.stabDamage }}</span>
+        </CustomIcon>
       </Tooltip>
     </div>
   </div>
   <div class="option-entry">
     <div class="option-value">
       <Tooltip :tooltip="$t('caption.hitRadius')">
-        <span>{{ $t('caption.hitRadiusValue', { radius: meleeWeapon.hitRadius }) }}</span>
         <font-awesome-icon
           icon="dot-circle"
-          class="icon-after-text"
+          class="icon-before-text"
         />
+        <span>{{ $t('caption.hitRadiusValue', { radius: meleeWeapon.hitRadius }) }}</span>
       </Tooltip>
     </div>
   </div>
@@ -48,6 +50,7 @@ import { computed } from 'vue'
 import Images from '../../images'
 import { IItem } from '../../models/item/IItem'
 import { IMeleeWeapon } from '../../models/item/IMeleeWeapon'
+import CustomIcon from '../CustomIconComponent.vue'
 
 const props = withDefaults(
   defineProps<{

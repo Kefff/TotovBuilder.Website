@@ -6,13 +6,13 @@
     <div class="option-value">
       <div v-if="eyewear.blindnessProtectionPercentage !== 0">
         <Tooltip :tooltip="$t('caption.blindnessProtection')">
+          <font-awesome-icon
+            icon="low-vision"
+            class="icon-before-text"
+          />
           <span :class="StatsUtils.getValueColorClass(eyewear.blindnessProtectionPercentage)">
             {{ StatsUtils.getStandardDisplayValue(DisplayValueType.blindnessProtectionPercentage, eyewear.blindnessProtectionPercentage) }}
           </span>
-          <font-awesome-icon
-            icon="low-vision"
-            class="icon-after-text"
-          />
         </Tooltip>
       </div>
     </div>

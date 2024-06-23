@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar-title">
     <div class="sidebar-title-icon">
-      <font-awesome-icon icon="tv" />
+      <font-awesome-icon icon="clipboard-list" />
     </div>
     <span>{{ $t('caption.changelog') }}</span>
   </div>

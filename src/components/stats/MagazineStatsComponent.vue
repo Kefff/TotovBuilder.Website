@@ -60,9 +60,13 @@
   </div>
   <div v-if="acceptedAmmunition.length > 0">
     <div class="stats-entry">
-      <div class="stats-caption custom-icon-before-text">
-        <img :src="Images.caliber">
-        <span>{{ $t('caption.acceptedAmmunition') }} :</span>
+      <div class="stats-caption">
+        <CustomIcon
+          :icon="Images.caliber"
+          position="before"
+        >
+          <span>{{ $t('caption.acceptedAmmunition') }} :</span>
+        </CustomIcon>
       </div>
     </div>
   </div>
@@ -103,6 +107,7 @@ import { IMagazine } from '../../models/item/IMagazine'
 import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import CustomIcon from '../CustomIconComponent.vue'
 import ItemIcon from '../ItemIconComponent.vue'
 
 const props = defineProps<{

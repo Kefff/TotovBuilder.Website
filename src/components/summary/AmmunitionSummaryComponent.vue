@@ -6,13 +6,13 @@
           :tooltip="$t('caption.fleshDamage')"
           class="ammunition-summary-flesh-damage"
         >
-          <span>{{ ammunition.fleshDamage }}</span>
           <div class="flesh-damage">
             <font-awesome-icon
               icon="heart-broken"
-              class="icon-after-text flesh-damage-color"
+              class="icon-before-text flesh-damage-color"
             />
           </div>
+          <span>{{ ammunition.fleshDamage }}</span>
         </Tooltip>
         <div
           v-if="canOneshot"
@@ -31,11 +31,11 @@
   <div class="option-entry">
     <div class="option-value">
       <Tooltip :tooltip="$t('caption.penetrationPower')">
-        <span>{{ ammunition.penetrationPower }}</span>
         <font-awesome-icon
           icon="bolt"
-          class="icon-after-text"
+          class="icon-before-text"
         />
+        <span>{{ ammunition.penetrationPower }}</span>
       </Tooltip>
     </div>
   </div>
@@ -47,13 +47,13 @@
         :tooltip="getArmorPenetrationTooltip(c, ammunition.armorPenetrations[c - 1])"
         class="ammunition-summary-penetrated-armor"
       >
-        <div class="ammunition-summary-penetrated-armor-class">
-          {{ c }}
-        </div>
         <font-awesome-icon
           icon="award"
           :class="'ammunition-summary-penetrated-armor-icon armor-penetration' + ammunition.armorPenetrations[c - 1]"
         />
+        <div class="ammunition-summary-penetrated-armor-class">
+          {{ c }}
+        </div>
       </Tooltip>
     </div>
   </div>
@@ -64,11 +64,11 @@
     <div class="option-value">
       <div v-if="ammunition.fragmentationChance !== 0">
         <Tooltip :tooltip="$t('caption.fragmentationChance')">
-          <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChance, ammunition.fragmentationChance) }}</span>
           <font-awesome-icon
             icon="viruses"
-            class="icon-after-text"
+            class="icon-before-text"
           />
+          <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChance, ammunition.fragmentationChance) }}</span>
         </Tooltip>
       </div>
     </div>
@@ -80,13 +80,13 @@
     <div class="option-value">
       <div v-if="ammunition.recoilModifierPercentage !== 0">
         <Tooltip :tooltip="$t('caption.recoil')">
+          <font-awesome-icon
+            icon="arrows-alt"
+            class="icon-before-text"
+          />
           <span :class="StatsUtils.getValueColorClass(ammunition.recoilModifierPercentage, true)">
             {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, ammunition.recoilModifierPercentage) }}
           </span>
-          <font-awesome-icon
-            icon="arrows-alt"
-            class="icon-after-text"
-          />
         </Tooltip>
       </div>
     </div>
@@ -98,13 +98,13 @@
     <div class="option-value">
       <div v-if="ammunition.accuracyModifierPercentage !== 0">
         <Tooltip :tooltip="$t('caption.accuracy')">
+          <font-awesome-icon
+            icon="bullseye"
+            class="icon-before-text"
+          />
           <span :class="StatsUtils.getValueColorClass(ammunition.accuracyModifierPercentage)">
             {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, ammunition.accuracyModifierPercentage) }}
           </span>
-          <font-awesome-icon
-            icon="bullseye"
-            class="icon-after-text"
-          />
         </Tooltip>
       </div>
     </div>
@@ -190,12 +190,9 @@ function getArmorPenetrationTooltip(armorClass: number, penetration: number) {
 
 .ammunition-summary-penetrated-armor-class {
   font-size: 0.75rem;
-  text-align: right;
-  width: 0.5rem;
 }
 
 .ammunition-summary-penetrated-armor-icon {
-  margin-right: 0;
   width: 1rem;
 }
 

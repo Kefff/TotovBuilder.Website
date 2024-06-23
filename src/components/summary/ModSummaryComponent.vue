@@ -6,13 +6,13 @@
     <div class="option-value">
       <div v-if="ergonomicsModifier !== 0">
         <Tooltip :tooltip="$t('caption.ergonomics')">
+          <font-awesome-icon
+            icon="hand-paper"
+            class="icon-before-text"
+          />
           <span :class="StatsUtils.getValueColorClass(ergonomicsModifier)">
             {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
           </span>
-          <font-awesome-icon
-            icon="hand-paper"
-            class="icon-after-text"
-          />
         </Tooltip>
       </div>
     </div>

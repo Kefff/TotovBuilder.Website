@@ -5,13 +5,15 @@
       :key="itemExclusionFilter.name"
       class="item-filter"
     >
-      <Checkbox
-        :binary="true"
-        :false-value="true"
-        :model-value="itemExclusionFilter.enabled"
-        :true-value="false"
-        @update:model-value="onItemExclusionFilterChanged(index, $event)"
-      />
+      <div class="sidebar-option-icon">
+        <Checkbox
+          :binary="true"
+          :false-value="true"
+          :model-value="itemExclusionFilter.enabled"
+          :true-value="false"
+          @update:model-value="onItemExclusionFilterChanged(index, $event)"
+        />
+      </div>
       <div
         :class="`item-filter-name${itemExclusionFilter.enabled ? ' item-filter-disabled-text' : ''}`"
         @click="onItemExclusionFilterChanged(index, !itemExclusionFilter.enabled)"
@@ -57,6 +59,8 @@ function onItemExclusionFilterChanged(index: number, enabled: boolean) {
 
 
 <style scoped>
+@import '../css/sidebar.css';
+
 .item-filter {
   align-items: center;
   display: flex;
@@ -75,7 +79,5 @@ function onItemExclusionFilterChanged(index: number, enabled: boolean) {
 
 .item-filter-name {
   cursor: pointer;
-  margin-left: 1rem;
-  margin-right: 1rem;
 }
 </style>

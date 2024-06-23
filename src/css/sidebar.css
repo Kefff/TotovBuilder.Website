@@ -11,9 +11,7 @@
 }
 
 .sidebar-option-disabled {
-  color: var(--util-color5);
-  filter: grayscale(100%);
-  pointer-events: none;
+  opacity: 50%;
 }
 
 .sidebar-option-icon {
@@ -22,6 +20,10 @@
   justify-content: center;
   margin-right: 0.5rem;
   width: 2rem;
+}
+
+.sidebar-option-prevent-click {
+  pointer-events: none;
 }
 
 .sidebar-title {

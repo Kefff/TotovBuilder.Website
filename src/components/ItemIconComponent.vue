@@ -88,7 +88,10 @@ const iconUrl = computed(() => {
   position: absolute;
   right: 3px;
   text-align: end;
-  text-shadow: black 1px 1px;
+  text-shadow: 1px 1px 0 black,
+    -1px 1px 0 black,
+    1px -1px 0 black,
+    -1px -1px 0 black;
   width: 2rem;
 }
 </style>

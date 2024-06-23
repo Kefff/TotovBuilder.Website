@@ -6,11 +6,11 @@
     <div class="option-value">
       <div v-if="armorClass > 0">
         <Tooltip :tooltip="$t('caption.armorClass')">
-          <span>{{ armorClass }}</span>
           <font-awesome-icon
             icon="award"
-            class="icon-after-text"
+            class="icon-before-text"
           />
+          <span>{{ armorClass }}</span>
         </Tooltip>
       </div>
     </div>
@@ -22,11 +22,11 @@
     <div class="option-value">
       <div v-if="durability > 0">
         <Tooltip :tooltip="$t('caption.durability')">
-          <span>{{ durability }}</span>
           <font-awesome-icon
             icon="heart"
-            class="icon-after-text armor-summary-durability"
+            class="icon-before-text armor-summary-durability"
           />
+          <span>{{ durability }}</span>
         </Tooltip>
       </div>
     </div>

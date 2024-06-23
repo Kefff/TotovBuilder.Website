@@ -27,11 +27,11 @@
           <div class="selected-item-summary-weight">
             <div v-if="selectedItemWeight.weight > 0">
               <Tooltip :tooltip="$t('caption.weight')">
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weight) }}</span>
                 <font-awesome-icon
                   icon="weight-hanging"
-                  class="icon-after-text"
+                  class="icon-before-text"
                 />
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weight) }}</span>
               </Tooltip>
             </div>
           </div>
@@ -48,11 +48,11 @@
           <div class="selected-item-summary-weight selected-item-summary-weight-per-unit">
             <div v-if="selectedItemWeight.unitWeight !== selectedItemWeight.weight">
               <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
                 <font-awesome-icon
                   icon="weight-hanging"
-                  class="icon-after-text"
+                  class="icon-before-text"
                 />
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
               </Tooltip>
             </div>
           </div>
@@ -250,28 +250,18 @@ async function setWeight() {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: end;
-  margin-left: 1.5rem;
+  margin-left: 1.7rem;
   /* Alignment with the inventory slot price */
-  margin-right: 0.2rem;
-  /* Alignment with the inventory slot weight */
   width: 7rem;
 }
 
-.selected-item-summary-weight .icon-after-text {
-  margin-left: 0.85rem;
-  /* Alignment with the inventory slot weight */
-}
 
 .selected-item-summary-weight-per-unit {
   font-size: 0.85rem;
-  margin-right: 0.3rem;
-  /* Alignment with the item total weight */
 }
 
-.selected-item-summary-weight-per-unit .icon-after-text {
-  margin-left: 1.05rem;
-  /* Alignment with the item total weight */
-  min-height: auto;
-  min-width: auto;
+.selected-item-summary-weight-per-unit .icon-before-text {
+  min-width: 0.85rem;
+  width: 0.85rem;
 }
 </style>

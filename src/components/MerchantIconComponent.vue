@@ -17,10 +17,7 @@
       v-if="requiresQuest"
       class="merchant-icon-quest-icon"
     >
-      <font-awesome-icon
-        icon="lock"
-        class="price-quest-icon"
-      />
+      <font-awesome-icon icon="lock" />
     </div>
   </div>
 </template>

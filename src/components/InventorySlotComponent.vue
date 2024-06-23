@@ -39,11 +39,11 @@
               :tooltip="$t('caption.verticalRecoil')"
             >
               <div class="inventory-slot-summary-value">
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.verticalRecoil) }}</span>
                 <font-awesome-icon
                   icon="arrows-alt-v"
-                  class="icon-after-text"
+                  class="icon-before-text"
                 />
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.verticalRecoil) }}</span>
               </div>
             </Tooltip>
             <Tooltip
@@ -52,11 +52,11 @@
               :tooltip="$t('caption.horizontalRecoil')"
             >
               <div class="inventory-slot-summary-value">
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.horizontalRecoil) }}</span>
                 <font-awesome-icon
                   icon="arrows-alt-h"
-                  class="icon-after-text"
+                  class="icon-before-text"
                 />
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.horizontalRecoil) }}</span>
               </div>
             </Tooltip>
             <Tooltip
@@ -65,11 +65,11 @@
               :tooltip="$t('caption.armorClass')"
             >
               <div class="inventory-slot-summary-value">
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, summary.armorModifiers.armorClass) }}</span>
                 <font-awesome-icon
                   icon="award"
-                  class="icon-after-text"
+                  class="icon-before-text"
                 />
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, summary.armorModifiers.armorClass) }}</span>
               </div>
             </Tooltip>
             <Tooltip
@@ -78,11 +78,11 @@
               :tooltip="$t('caption.ergonomics')"
             >
               <div class="inventory-slot-summary-value">
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, summary.ergonomics) }}</span>
                 <font-awesome-icon
                   icon="hand-paper"
-                  class="icon-after-text"
+                  class="icon-before-text"
                 />
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, summary.ergonomics) }}</span>
               </div>
             </Tooltip>
             <Tooltip
@@ -91,13 +91,13 @@
               :tooltip="$t('caption.ergonomics')"
             >
               <div class="inventory-slot-summary-value">
+                <font-awesome-icon
+                  icon="hand-paper"
+                  class="icon-before-text"
+                />
                 <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsModifierPercentage)">
                   {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsModifierPercentage) }}
                 </span>
-                <font-awesome-icon
-                  icon="hand-paper"
-                  class="icon-after-text"
-                />
               </div>
             </Tooltip>
             <Tooltip
@@ -106,13 +106,13 @@
               :tooltip="$t('caption.movementSpeed')"
             >
               <div class="inventory-slot-summary-value">
+                <font-awesome-icon
+                  icon="walking"
+                  class="icon-before-text"
+                />
                 <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedModifierPercentage)">
                   {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, summary.wearableModifiers.movementSpeedModifierPercentage) }}
                 </span>
-                <font-awesome-icon
-                  icon="walking"
-                  class="icon-after-text"
-                />
               </div>
             </Tooltip>
             <Tooltip
@@ -121,16 +121,19 @@
               :tooltip="$t('caption.turningSpeed')"
             >
               <div class="inventory-slot-summary-value">
+                <font-awesome-icon
+                  icon="undo"
+                  class="icon-before-text"
+                />
                 <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedModifierPercentage)">
                   {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, summary.wearableModifiers.turningSpeedModifierPercentage) }}
                 </span>
-                <font-awesome-icon
-                  icon="undo"
-                  class="icon-after-text"
-                />
               </div>
             </Tooltip>
-            <div class="option-entry inventory-slot-summary-price">
+            <div
+              class="option-entry inventory-slot-summary-price"
+              :class="summary.price.missingPrice ? 'inventory-slot-summary-price-with-missing-price' : ''"
+            >
               <InventoryPrice
                 :inventory-price="summary.price"
                 :is-build="false"
@@ -145,11 +148,11 @@
                 v-if="hasSummaryWeight"
                 class="inventory-slot-weight"
               >
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
                 <font-awesome-icon
                   icon="weight-hanging"
-                  class="icon-after-text"
+                  class="icon-before-text"
                 />
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
               </div>
             </Tooltip>
           </div>
@@ -357,6 +360,11 @@ async function setSummary() {
   margin-right: 3rem;
   /* Space to align the price with the children prices that have the merchant icon */
   padding-left: 1rem;
+}
+
+.inventory-slot-summary-price-with-missing-price {
+  margin-right: 0.93rem !important;
+  /* Space to align the price with the children prices that have the merchant icon and have the missing price icon aligne with the merchant icon */
 }
 
 .inventory-slot-summary-value {

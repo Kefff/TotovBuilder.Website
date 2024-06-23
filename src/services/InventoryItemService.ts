@@ -585,7 +585,7 @@ ${indentation}${containedItemAsString}`
 
         // Setting the unit price of items that have barter items to 0 since barter items and their price are added to the shopping list
         unitPrice = {
-          barterItems: [],
+          barterItems: price.unitPrice.barterItems,
           currencyName: 'barter',
           itemId: inventoryItem.itemId,
           merchant: price.unitPrice.merchant,

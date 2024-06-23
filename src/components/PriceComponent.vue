@@ -50,6 +50,10 @@
         v-if="showPriceInMainCurrency"
         class="price-details-main-currency"
       >
+        <font-awesome-icon
+          icon="coins"
+          class="icon-before-text"
+        />
         <div>{{ $t('caption.priceEqualsTo') }}</div>
         <div class="price-details-main-currency-value">
           <font-awesome-icon
@@ -60,7 +64,11 @@
         </div>
       </div>
       <div v-if="price.merchant !== ''">
-        {{ $t('caption.merchant_' + price.merchant) + (price.merchantLevel !== 0 ? ` ${$t('caption.level').toLowerCase()} ${price.merchantLevel}` : '') }}
+        <font-awesome-icon
+          icon="user-tag"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.merchant') + ' : ' + $t('caption.merchant_' + price.merchant) + (price.merchantLevel !== 0 ? ` ${$t('caption.level').toLowerCase()} ${price.merchantLevel}` : '') }}</span>
       </div>
       <div
         v-if="price.quest != null"
@@ -89,44 +97,17 @@
             :icon="currency.iconName"
             class="icon-before-text"
           />
-          <span>{{ $t('caption.barter') }}</span>
+          <span>{{ $t('caption.barter') }} :</span>
         </div>
-        <div
+        <PriceDetailItem
           v-for="(barterItem, index) of price.barterItems"
           :key="barterItem.itemId"
+          :item="barterItems[index]"
+          :price="barterItemPrices[index].price"
+          :quantity="barterItem.quantity"
+          :unit-price="barterItemPrices[index].unitPrice"
           class="price-details-barter-item"
-        >
-          <div class="price-details-barter-item-quantity">
-            <span v-if="barterItem.quantity > 1">{{ barterItem.quantity }} x</span>
-          </div>
-          <div class="price-details-barter-item-icon">
-            <div>
-              <ItemIcon :item="barterItems[index]" />
-            </div>
-          </div>
-          <div class="price-details-barter-item-name">
-            {{ barterItems[index].name }}
-          </div>
-          <div class="price-details-barter-item-price">
-            <div>
-              <Price :price="barterItemPrices[index].price" />
-              <div>
-                <div
-                  v-if="barterItem.quantity > 1"
-                  class="price-details-barter-item-price-per-unit"
-                >
-                  <Price
-                    :price="barterItemPrices[index].unitPrice"
-                    :show-merchant-icon="false"
-                    :show-details="false"
-                    :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
-                  />
-                  <div />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        />
       </div>
     </div>
   </OverlayPanel>
@@ -152,9 +133,8 @@ import { InventoryItemService } from '../services/InventoryItemService'
 import { ItemService } from '../services/ItemService'
 import Services from '../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
-import ItemIcon from './ItemIconComponent.vue'
 import MerchantIcon from './MerchantIconComponent.vue'
-import Price from './PriceComponent.vue'
+import PriceDetailItem from './PriceDetailItemComponent.vue'
 
 const itemService = Services.get(ItemService)
 const globalFilterService = Services.get(GlobalFilterService)
@@ -362,39 +342,8 @@ function togglePriceDetails(event: Event) {
 }
 
 .price-details-barter-item {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
   margin-top: 0.25rem;
-}
-
-.price-details-barter-item-icon {
-  display: flex;
-  justify-content: center;
-  margin-left: 0.25rem;
-  width: 4.5rem;
-}
-
-.price-details-barter-item-name {
-  margin-left: 0.25rem;
-  margin-right: auto;
-  max-width: 16.5rem;
-}
-
-.price-details-barter-item-quantity {
-  text-align: right;
-  width: 4rem;
-}
-
-.price-details-barter-item-price {
-  justify-content: flex-end;
-  width: 10rem;
-}
-
-.price-details-barter-item-price-per-unit {
-  font-size: 0.75rem;
-  margin-right: 2.6rem;
+  margin-left: 0.5rem;
 }
 
 .price-details-barter-title {
@@ -402,6 +351,11 @@ function togglePriceDetails(event: Event) {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+}
+
+.icon-before-text {
+  margin-right: 0.25rem;
+  width: 1rem;
 }
 
 .price-details-main-currency {

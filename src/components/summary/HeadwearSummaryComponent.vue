@@ -11,12 +11,13 @@
   >
     <div class="option-value">
       <div v-if="hasRicochetChance">
-        <Tooltip
-          :tooltip="$t('caption.ricochetChance')"
-          class="custom-icon-after-text"
-        >
-          <span>{{ $t('caption.ricochetChance' + headwear.ricochetChance) }}</span>
-          <img :src="Images.ricochet">
+        <Tooltip :tooltip="$t('caption.ricochetChance')">
+          <CustomIcon
+            :icon="Images.ricochet"
+            position="before"
+          >
+            <span>{{ $t('caption.ricochetChance' + headwear.ricochetChance) }}</span>
+          </CustomIcon>
         </Tooltip>
       </div>
     </div>
@@ -39,6 +40,7 @@ import { IHeadwear } from '../../models/item/IHeadwear'
 import { IItem } from '../../models/item/IItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
+import CustomIcon from '../CustomIconComponent.vue'
 import ArmorSummary from './ArmorSummaryComponent.vue'
 
 const props = withDefaults(
