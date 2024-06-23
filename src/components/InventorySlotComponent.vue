@@ -5,11 +5,11 @@
   >
     <Panel v-model:collapsed="modelCollapsed">
       <template #header>
-        <div
-          class="inventory-slot-header"
-          @click="modelCollapsed = !modelCollapsed"
-        >
-          <div class="inventory-slot-title">
+        <div class="inventory-slot-header">
+          <div
+            class="inventory-slot-title"
+            @click="modelCollapsed = !modelCollapsed"
+          >
             <font-awesome-icon
               v-if="modelCollapsed"
               icon="angle-right"
@@ -332,7 +332,6 @@ async function setSummary() {
 
 .inventory-slot-header {
   align-items: center;
-  cursor: pointer;
   display: flex;
   font-size: 1.35rem;
   width: 100%;
@@ -366,6 +365,7 @@ async function setSummary() {
 
 .inventory-slot-title {
   align-items: center;
+  cursor: pointer;
   display: flex;
   white-space: nowrap;
 }

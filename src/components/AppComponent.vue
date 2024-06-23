@@ -286,6 +286,7 @@ html {
   font-size: 14px;
   justify-content: center;
   letter-spacing: 0.25px;
+  scrollbar-color: var(--primary-color) rgba(0, 0, 0, 0);
 }
 
 html * {
