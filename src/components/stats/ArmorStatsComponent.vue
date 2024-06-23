@@ -32,7 +32,10 @@
     </div>
     <div class="stats-entry">
       <div class="stats-caption">
-        <div class="icon-before-text" />
+        <font-awesome-icon
+          icon="swatchbook"
+          class="icon-before-text"
+        />
         <span>{{ $t('caption.material') }} :</span>
       </div>
       <div class="stats-value">

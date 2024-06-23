@@ -15,7 +15,10 @@
     </div>
     <div class="stats-entry">
       <div class="stats-caption">
-        <div class="icon-before-text" />
+        <font-awesome-icon
+          icon="tablets"
+          class="icon-before-text"
+        />
         <span>{{ $t('caption.projectiles') }} :</span>
       </div>
       <div class="stats-value">
@@ -27,7 +30,10 @@
       class="stats-entry"
     >
       <div class="stats-caption">
-        <div class="icon-before-text" />
+        <font-awesome-icon
+          icon="wind"
+          class="icon-before-text"
+        />
         <span>{{ $t('caption.velocity') }} :</span>
       </div>
       <div class="stats-value">
@@ -39,7 +45,10 @@
       class="stats-entry"
     >
       <div class="stats-caption">
-        <div class="icon-before-text" />
+        <font-awesome-icon
+          icon="fire"
+          class="icon-before-text"
+        />
         <span>{{ $t('caption.durabilityBurn') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(ammunition.durabilityBurnModifierPercentage, true)">
@@ -87,7 +96,10 @@
     </div>
     <div class="stats-entry">
       <div class="stats-caption">
-        <div class="icon-before-text" />
+        <font-awesome-icon
+          icon="shield-virus"
+          class="icon-before-text"
+        />
         <span>{{ $t('caption.armorDamage') }} :</span>
       </div>
       <div class="stats-value">

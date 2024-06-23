@@ -36,6 +36,7 @@ import {
   faFileExport,
   faFileImport,
   faFilter,
+  faFire,
   faFont,
   faGlasses,
   faGlobe,
@@ -61,12 +62,15 @@ import {
   faSearchPlus,
   faShareAlt,
   faShieldAlt,
+  faShieldVirus,
   faShoppingBasket,
   faShoppingCart,
   faSkull,
   faStopwatch,
   faSuitcase,
+  faSwatchbook,
   faSyncAlt,
+  faTablets,
   faThLarge,
   faTimes,
   faTrash,
@@ -77,7 +81,8 @@ import {
   faViruses,
   faWalking,
   faWallet,
-  faWeightHanging
+  faWeightHanging,
+  faWind
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { App } from 'vue'
@@ -120,6 +125,7 @@ export function useFontAwesome(app: App<Element>): void {
     faFileExport,
     faFileImport,
     faFilter,
+    faFire,
     faFont,
     faGithub,
     faGlasses,
@@ -146,12 +152,15 @@ export function useFontAwesome(app: App<Element>): void {
     faSearchPlus,
     faShareAlt,
     faShieldAlt,
+    faShieldVirus,
     faShoppingBasket,
     faShoppingCart,
     faSkull,
     faStopwatch,
     faSuitcase,
+    faSwatchbook,
     faSyncAlt,
+    faTablets,
     faThLarge,
     faTimes,
     faTrash,
@@ -162,7 +171,8 @@ export function useFontAwesome(app: App<Element>): void {
     faViruses,
     faWalking,
     faWallet,
-    faWeightHanging
+    faWeightHanging,
+    faWind
   )
   app.component('FontAwesomeIcon', FontAwesomeIcon)
 }

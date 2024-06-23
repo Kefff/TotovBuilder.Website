@@ -1,10 +1,14 @@
 <template>
   <span
+    v-if="tooltip != null"
     v-tooltip:[directiveArguments]="tooltip"
     :class="applyHoverStyle ? 'tooltip' : ''"
     :tabindex="isTouchScreen ? 9999 : undefined"
     @click="onClick($event)"
   >
+    <slot />
+  </span>
+  <span v-else>
     <slot />
   </span>
 </template>

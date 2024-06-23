@@ -88,8 +88,16 @@
 }
 
 .build-toolbar-summary-value {
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
   margin-right: 1rem;
   white-space: nowrap;
+}
+
+.build-toolbar-summary-value .icon-before-text {
+  height: 1.5rem;
+  width: 1.5rem;
 }
 
 .build-toolbar-summary-value:last-child {

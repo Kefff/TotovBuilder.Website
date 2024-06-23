@@ -4,7 +4,7 @@
       <div
         class="inventory-price-list"
         :class="canShowDetails ? ' inventory-price-with-details' : ''"
-        @click="(e) => togglePriceDetails(e)"
+        @click="(e) => toggleInventoryPriceDetails(e)"
       >
         <div
           v-for="(price, index) of inventoryPrice.priceByCurrency"
@@ -36,9 +36,17 @@
 
   <!-- Price details -->
   <OverlayPanel
-    ref="priceDetailPanel"
+    ref="inventoryPriceDetailPanel"
     :dismissable="true"
   >
+    <div class="inventory-price-details-header">
+      <Button
+        class="inventory-price-details-header-close-button p-button-text p-button-sm button-discreet"
+        @click="toggleInventoryPriceDetails($event)"
+      >
+        <font-awesome-icon icon="times" />
+      </Button>
+    </div>
     <div class="inventory-price-details">
       <font-awesome-icon
         icon="coins"
@@ -80,9 +88,11 @@ const props = defineProps<{
   isBuild: boolean
 }>()
 
+// cf. https://stackoverflow.com/a/63666289
+const isTouchScreen = matchMedia('(hover: none)').matches
 let _mainCurrency: ICurrency | undefined
 
-const priceDetailPanel = ref()
+const inventoryPriceDetailPanel = ref()
 
 const canShowDetails = computed(() => props.inventoryPrice.priceByCurrency.some(ip => ip.currencyName !== mainCurrency.value?.name))
 const mainCurrency = computed(() => {
@@ -94,9 +104,9 @@ const mainCurrency = computed(() => {
 })
 const priceInMainCurrency = computed(() => props.inventoryPrice.priceByCurrency.reduce((total, priceInCurrency) => total + priceInCurrency.valueInMainCurrency, 0))
 const tooltip = computed(() => {
-  let value = vueI18n.t('caption.price')
+  let value: string = vueI18n.t('caption.price')
 
-  if (canShowDetails.value) {
+  if (canShowDetails.value && !isTouchScreen) {
     value += ` ${vueI18n.t('caption.priceDetails')}`
   }
 
@@ -104,14 +114,14 @@ const tooltip = computed(() => {
 })
 
 /**
- * Toggles the details of the price.
+ * Toggles the details of the inventory price.
  */
-function togglePriceDetails(event: Event) {
+function toggleInventoryPriceDetails(event: Event) {
   if (!canShowDetails.value) {
     return
   }
 
-  priceDetailPanel.value.toggle(event)
+  inventoryPriceDetailPanel.value.toggle(event)
   event.stopPropagation()
 }
 </script>
@@ -126,6 +136,7 @@ function togglePriceDetails(event: Event) {
 
 
 <style scoped>
+@import '../css/button.css';
 @import '../css/currency.css';
 @import '../css/icon.css';
 
@@ -136,13 +147,22 @@ function togglePriceDetails(event: Event) {
   flex-wrap: nowrap;
 }
 
-.inventory-price-with-details {
-  cursor: pointer;
-}
-
 .inventory-price-details {
   display: flex;
   font-size: 0.85rem;
+}
+
+.inventory-price-details-header {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  height: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.inventory-price-details-header-close-button {
+  font-size: 1rem !important;
+  padding: 0 !important;
 }
 
 .inventory-price-details-main-currency-value {
@@ -172,5 +192,9 @@ function togglePriceDetails(event: Event) {
   flex-wrap: nowrap;
   justify-content: center;
   margin-left: 0.5rem;
+}
+
+.inventory-price-with-details {
+  cursor: pointer;
 }
 </style>

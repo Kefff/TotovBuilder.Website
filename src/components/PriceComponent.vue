@@ -45,6 +45,14 @@
     ref="priceDetailPanel"
     :dismissable="true"
   >
+    <div class="price-details-header">
+      <Button
+        class="price-details-header-close-button p-button-text p-button-sm button-discreet"
+        @click="togglePriceDetails($event)"
+      >
+        <font-awesome-icon icon="times" />
+      </Button>
+    </div>
     <div class="price-details">
       <div
         v-if="showPriceInMainCurrency"
@@ -158,6 +166,8 @@ const props = withDefaults(
     useMerchantFilter: true
   })
 
+// cf. https://stackoverflow.com/a/63666289
+const isTouchScreen = matchMedia('(hover: none)').matches
 const mainCurrency = Services.get(ItemService).getMainCurrency()
 
 const barterItemPrices = ref<IInventoryItemPrice[]>([])
@@ -191,7 +201,7 @@ const priceTooltip = computed(() => {
     tooltip += ` ${props.tooltipSuffix}`
   }
 
-  if (canShowDetails.value) {
+  if (canShowDetails.value && !isTouchScreen) {
     tooltip += ` ${vueI18n.t('caption.priceDetails')}`
   }
 
@@ -302,6 +312,7 @@ function togglePriceDetails(event: Event) {
 
 
 <style scoped>
+@import '../css/button.css';
 @import '../css/currency.css';
 @import '../css/icon.css';
 @import '../css/link.css';
@@ -351,6 +362,19 @@ function togglePriceDetails(event: Event) {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+}
+
+.price-details-header {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  height: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.price-details-header-close-button {
+  font-size: 1rem !important;
+  padding: 0 !important;
 }
 
 .icon-before-text {
