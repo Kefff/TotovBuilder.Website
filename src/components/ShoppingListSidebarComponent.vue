@@ -14,11 +14,13 @@
           v-for="merchant of requiredMerchants"
           :key="merchant.name"
         >
-          <MerchantIcon
-            :merchant="merchant.name"
-            :merchant-level="merchant.level"
-            :show-tooltip="true"
-          />
+          <Tooltip :tooltip="$t('caption.merchant_' + merchant.name) + (merchant.level !== 0 ? ` ${$t('caption.level').toLowerCase()} ${merchant.level}` : '')">
+            <MerchantIcon
+              :merchant="merchant.name"
+              :merchant-level="merchant.level"
+              :show-tooltip="true"
+            />
+          </Tooltip>
         </div>
       </div>
       <PriceDetailItem
@@ -50,6 +52,7 @@ import { IBuildSummaryShoppingMerchant } from '../models/utils/IBuildSummaryMerc
 import StringUtils from '../utils/StringUtils'
 import MerchantIcon from './MerchantIconComponent.vue'
 import PriceDetailItem from './PriceDetailItemComponent.vue'
+import Tooltip from './TooltipComponent.vue'
 
 const props = defineProps<{ parameters: IShoppingListItem[] }>()
 
