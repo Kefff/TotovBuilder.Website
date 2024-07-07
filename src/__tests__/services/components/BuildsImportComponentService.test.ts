@@ -147,7 +147,12 @@ describe('readBuilds()', () => {
                 ]
               },
               price: {
-                barterItems: [],
+                barterItems: [
+                  {
+                    itemId: iskra.id,
+                    quantity: 2
+                  }
+                ],
                 currencyName: 'barter',
                 itemId: berkut.id,
                 merchant: 'ragman',
@@ -158,7 +163,12 @@ describe('readBuilds()', () => {
               },
               quantity: 1,
               unitPrice: {
-                barterItems: [],
+                barterItems: [
+                  {
+                    itemId: iskra.id,
+                    quantity: 2
+                  }
+                ],
                 currencyName: 'barter',
                 itemId: berkut.id,
                 merchant: 'ragman',

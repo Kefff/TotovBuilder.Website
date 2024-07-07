@@ -54,7 +54,12 @@ describe('getShoppingList', () => {
           },
           quantity: 1,
           price: {
-            barterItems: [],
+            barterItems: [
+              {
+                itemId: alkali.id,
+                quantity: 2
+              }
+            ],
             currencyName: 'barter',
             itemId: rpk16Drum.id,
             merchant: 'prapor',
@@ -64,7 +69,12 @@ describe('getShoppingList', () => {
             valueInMainCurrency: 0
           },
           unitPrice: {
-            barterItems: [],
+            barterItems: [
+              {
+                itemId: alkali.id,
+                quantity: 2
+              }
+            ],
             currencyName: 'barter',
             itemId: rpk16Drum.id,
             merchant: 'prapor',
@@ -171,7 +181,12 @@ describe('getShoppingList', () => {
           },
           quantity: 1,
           price: {
-            barterItems: [],
+            barterItems: [
+              {
+                itemId: syringe.id,
+                quantity: 1
+              }
+            ],
             currencyName: 'barter',
             itemId: iskra.id,
             merchant: 'therapist',
@@ -181,7 +196,12 @@ describe('getShoppingList', () => {
             valueInMainCurrency: 0
           },
           unitPrice: {
-            barterItems: [],
+            barterItems: [
+              {
+                itemId: syringe.id,
+                quantity: 1
+              }
+            ],
             currencyName: 'barter',
             itemId: iskra.id,
             merchant: 'therapist',
@@ -227,7 +247,12 @@ describe('getShoppingList', () => {
           },
           quantity: 1,
           price: {
-            barterItems: [],
+            barterItems: [
+              {
+                itemId: h2o2.id,
+                quantity: 1
+              }
+            ],
             currencyName: 'barter',
             itemId: water.id,
             merchant: 'therapist',
@@ -237,7 +262,12 @@ describe('getShoppingList', () => {
             valueInMainCurrency: 0
           },
           unitPrice: {
-            barterItems: [],
+            barterItems: [
+              {
+                itemId: h2o2.id,
+                quantity: 1
+              }
+            ],
             currencyName: 'barter',
             itemId: water.id,
             merchant: 'therapist',
@@ -257,7 +287,7 @@ describe('getShoppingList', () => {
           price: {
             barterItems: [],
             currencyName: 'RUB',
-            itemId: '59e361e886f774176c10a2a5',
+            itemId: h2o2.id,
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
@@ -267,7 +297,7 @@ describe('getShoppingList', () => {
           unitPrice: {
             barterItems: [],
             currencyName: 'RUB',
-            itemId: '59e361e886f774176c10a2a5',
+            itemId: h2o2.id,
             merchant: 'flea-market',
             merchantLevel: 0,
             quest: undefined,
@@ -349,7 +379,12 @@ describe('getShoppingList', () => {
           },
           quantity: 2,
           price: {
-            barterItems: [],
+            barterItems: [
+              {
+                itemId: alkali.id,
+                quantity: 2
+              }
+            ],
             currencyName: 'barter',
             itemId: rpk16Drum.id,
             merchant: 'prapor',
@@ -359,7 +394,12 @@ describe('getShoppingList', () => {
             valueInMainCurrency: 0
           },
           unitPrice: {
-            barterItems: [],
+            barterItems: [
+              {
+                itemId: alkali.id,
+                quantity: 2
+              }
+            ],
             currencyName: 'barter',
             itemId: rpk16Drum.id,
             merchant: 'prapor',

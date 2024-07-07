@@ -603,7 +603,12 @@ describe('getSummary()', () => {
             },
             quantity: 1,
             price: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: alkali.id,
+                  quantity: 2
+                }
+              ],
               currencyName: 'barter',
               itemId: rpk16Drum.id,
               merchant: 'prapor',
@@ -613,7 +618,12 @@ describe('getSummary()', () => {
               valueInMainCurrency: 0
             },
             unitPrice: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: alkali.id,
+                  quantity: 2
+                }
+              ],
               currencyName: 'barter',
               itemId: rpk16Drum.id,
               merchant: 'prapor',
@@ -751,7 +761,12 @@ describe('getSummary()', () => {
             },
             quantity: 1,
             price: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: plexiglass.id,
+                  quantity: 3
+                }
+              ],
               currencyName: 'barter',
               itemId: lshZ2dtmFs.id,
               merchant: 'ragman',
@@ -761,7 +776,12 @@ describe('getSummary()', () => {
               valueInMainCurrency: 0
             },
             unitPrice: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: plexiglass.id,
+                  quantity: 3
+                }
+              ],
               currencyName: 'barter',
               itemId: lshZ2dtmFs.id,
               merchant: 'ragman',
@@ -871,7 +891,12 @@ describe('getSummary()', () => {
             },
             quantity: 1,
             price: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: h2o2.id,
+                  quantity: 1
+                }
+              ],
               currencyName: 'barter',
               itemId: water.id,
               merchant: 'therapist',
@@ -881,7 +906,12 @@ describe('getSummary()', () => {
               valueInMainCurrency: 0
             },
             unitPrice: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: h2o2.id,
+                  quantity: 1
+                }
+              ],
               currencyName: 'barter',
               itemId: water.id,
               merchant: 'therapist',
@@ -1212,7 +1242,12 @@ describe('getSummary()', () => {
             },
             quantity: 2,
             price: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: pass.id,
+                  quantity: 1
+                }
+              ],
               currencyName: 'barter',
               itemId: monocletePe.id,
               merchant: 'peacekeeper',
@@ -1222,7 +1257,12 @@ describe('getSummary()', () => {
               valueInMainCurrency: 0
             },
             unitPrice: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: pass.id,
+                  quantity: 1
+                }
+              ],
               currencyName: 'barter',
               itemId: monocletePe.id,
               merchant: 'peacekeeper',
@@ -1268,7 +1308,12 @@ describe('getSummary()', () => {
             },
             quantity: 1,
             price: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: ewr.id,
+                  quantity: 1
+                }
+              ],
               currencyName: 'barter',
               itemId: salewa.id,
               merchant: 'therapist',
@@ -1278,7 +1323,12 @@ describe('getSummary()', () => {
               valueInMainCurrency: 0
             },
             unitPrice: {
-              barterItems: [],
+              barterItems: [
+                {
+                  itemId: ewr.id,
+                  quantity: 1
+                }
+              ],
               currencyName: 'barter',
               itemId: salewa.id,
               merchant: 'therapist',

@@ -192,6 +192,7 @@ export default defineComponent({
      */
     function onFilterOptions(newValue: string) {
       optionsFilter.value = newValue
+      neetToSetOptions.value = true
       setOptions()
     }
 
