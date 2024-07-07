@@ -137,6 +137,7 @@ export function useFontAwesome(app: App<Element>): void {
     faHeartBroken,
     faIdCardAlt,
     faInfoCircle,
+    faInfoCircle,
     faLanguage,
     faList,
     faLock,

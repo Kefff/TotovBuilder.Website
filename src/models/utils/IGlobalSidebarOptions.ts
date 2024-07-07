@@ -8,10 +8,12 @@ export interface IGlobalSidebarOptions {
   /**
    * Name of the component to display in the global sidebar.
    */
-  displayedComponentType: 'ChangelogSidebar'
+  displayedComponentType:
+  'ChangelogSidebar'
   | 'GeneralOptionsSidebar'
   | 'MerchantItemsOptionsSidebar'
-  | 'ShoppingListSidebar',
+  | 'NotificationsSidebar'
+  | 'ShoppingListSidebar'
 
   /**
    * Parameters to pass as props to the component to display in the global sidebar.

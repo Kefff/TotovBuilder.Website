@@ -132,10 +132,10 @@ import { ServiceInitializationState } from '../services/repository/ServiceInitia
 import Services from '../services/repository/Services'
 import BuildsList from './BuildsListComponent.vue'
 import Loading from './LoadingComponent.vue'
+import NotificationButton from './NotificationButtonComponent.vue'
 import Toolbar from './ToolbarComponent.vue'
 import BuildsExport from './builds-export/BuildsExportComponent.vue'
 import BuildsImport from './builds-import/BuildsImportComponent.vue'
-import NotificationButton from './notification-button/NotificationButtonComponent.vue'
 
 const globalFilterService = Services.get(GlobalFilterService)
 const itemService = Services.get(ItemService)

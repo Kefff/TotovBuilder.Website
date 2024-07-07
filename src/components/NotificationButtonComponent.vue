@@ -1,0 +1,133 @@
+<template>
+  <Tooltip
+    :apply-hover-style="false"
+    :tooltip="$t('caption.notifications')"
+    position="left"
+  >
+    <Button
+      :disabled="notifications.length === 0"
+      class="p-button-text p-button-sm button-discreet notification-button"
+      @click="onClick()"
+    >
+      <font-awesome-icon icon="bell" />
+      <div
+        v-if="newNotificationCount > 0"
+        class="notification-button-count"
+      >
+        <div>{{ newNotificationCount }}</div>
+      </div>
+    </Button>
+  </Tooltip>
+</template>
+
+
+
+
+
+
+
+
+
+
+<script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue'
+import { INotification } from '../models/utils/INotification'
+import { GlobalSidebarService } from '../services/GlobalSidebarService'
+import { NotificationService } from '../services/NotificationService'
+import Services from '../services/repository/Services'
+
+const globalSidebarService = Services.get(GlobalSidebarService)
+const notificationService = Services.get(NotificationService)
+
+const notifications = ref<INotification[]>([])
+const newNotificationCount = ref(notificationService.newNotificationCount)
+
+onMounted(() => {
+  notificationService.emitter.on(notificationService.addedEventName, onNotificationCountChanged)
+  notificationService.emitter.on(notificationService.clearedEventName, onNotificationCountChanged)
+
+  notifications.value = notificationService.getNotifications()
+  newNotificationCount.value = notificationService.newNotificationCount
+})
+
+onUnmounted(() => {
+  notificationService.emitter.off(notificationService.addedEventName, onNotificationCountChanged)
+  notificationService.emitter.off(notificationService.clearedEventName, onNotificationCountChanged)
+})
+
+/**
+ * Reacts to the click on the notification button.
+ *
+ * Displays the notification sidebar.
+ * @param event - Event.
+ */
+function onClick(event?: MouseEvent) {
+  // Stopping the event propagation, otherwise, when we click on the badge showing the number of notifications,
+  // the method is called one time for the badge and another time for the button
+  event?.stopPropagation()
+
+  globalSidebarService.display({ displayedComponentType: 'NotificationsSidebar', position: 'right' })
+  notificationService.resetNewNotificationCount()
+  newNotificationCount.value = notificationService.newNotificationCount
+}
+
+/**
+ * Reacts to a new notification being added.
+ *
+ * Updates the new notifications count.
+ */
+function onNotificationCountChanged() {
+  notifications.value = notificationService.getNotifications()
+  newNotificationCount.value = notificationService.newNotificationCount
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+@import '../css/button.css';
+
+.notification-button {
+  position: relative;
+}
+
+.notification-button-count {
+  background-color: var(--danger-color);
+  border-radius: 1rem;
+  color: var(--text-color);
+  font-size: 0.85rem;
+  height: 1rem;
+  position: absolute;
+  text-align: center;
+  transform: translate(0.5rem, 0.5rem);
+  width: 1rem;
+}
+
+.notification-button-count > div {
+  position: absolute;
+  transform: translate(0, -0.050rem);
+  width: 100%;
+}
+
+.notification-button-panel {
+  max-height: 31.25rem;
+  max-width: 31.25rem;
+  overflow: auto;
+}
+
+.notification-button-panel-item {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+}
+</style>

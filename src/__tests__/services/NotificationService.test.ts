@@ -9,12 +9,16 @@ describe('clearNotification()', () => {
     useWebsiteConfigurationServiceMock()
 
     const service = new NotificationService()
+    let hasBeenCalled = false
+    service.emitter.on(service.clearedEventName, () => hasBeenCalled = true)
+
     service.notify(NotificationType.error, 'Error')
 
     // Act
     service.clearNotification(service.getNotifications()[0].id)
 
     // Assert
+    expect(hasBeenCalled).toBe(true)
     expect(service.getNotifications().length).toBe(0)
   })
 
@@ -23,12 +27,16 @@ describe('clearNotification()', () => {
     useWebsiteConfigurationServiceMock()
 
     const service = new NotificationService()
+    let hasBeenCalled = false
+    service.emitter.on(service.clearedEventName, () => hasBeenCalled = true)
+
     service.notify(NotificationType.error, 'Error')
 
     // Act
     service.clearNotification('invalid')
 
     // Assert
+    expect(hasBeenCalled).toBe(false)
     expect(service.getNotifications().length).toBe(1)
   })
 })
@@ -39,6 +47,9 @@ describe('clearNotifications()', () => {
     useWebsiteConfigurationServiceMock()
 
     const service = new NotificationService()
+    let hasBeenCalled = false
+    service.emitter.on(service.clearedEventName, () => hasBeenCalled = true)
+
     service.notify(NotificationType.error, 'Error')
     service.notify(NotificationType.warning, 'Warning')
 
@@ -46,6 +57,7 @@ describe('clearNotifications()', () => {
     service.clearNotifications()
 
     // Assert
+    expect(hasBeenCalled).toBe(true)
     expect(service.getNotifications().length).toBe(0)
   })
 })

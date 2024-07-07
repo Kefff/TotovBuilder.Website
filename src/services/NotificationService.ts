@@ -10,6 +10,16 @@ import Services from './repository/Services'
  */
 export class NotificationService {
   /**
+   * Name of the event signaling that a new notification has been added to the collection.
+   */
+  public addedEventName = 'added'
+
+  /**
+   * Name of the event signaling that a notification has been cleared from the collection.
+   */
+  public clearedEventName = 'cleared'
+
+  /**
    * Event emitter used to signal changes in the notification lists.
    */
   public emitter = new TinyEmitter()
@@ -18,11 +28,6 @@ export class NotificationService {
    * Amount of new notifications.
    */
   public newNotificationCount = 0
-
-  /**
-   * Name of the event signaling that a new notification has been added to the collection.
-   */
-  public addedEventName = 'added'
 
   /**
    * Collection of notifications.
@@ -38,6 +43,7 @@ export class NotificationService {
 
     if (index >= 0) {
       this.notifications.splice(index, 1)
+      this.emitter.emit(this.clearedEventName)
     }
   }
 
@@ -46,6 +52,8 @@ export class NotificationService {
    */
   public clearNotifications(): void {
     this.notifications = []
+
+    this.emitter.emit(this.clearedEventName)
   }
 
   /**

@@ -1,5 +1,5 @@
 <template>
-  <div class="notification-toast">
+  <div class="notification">
     <Message
       v-for="notification of notifications"
       :key="notification.id"
@@ -8,13 +8,12 @@
       :severity="notification.type"
       :sticky="false"
     >
-      <p :style="{ whiteSpace: 'pre-line' }">
-        <!-- <p> used to allow line breaks -->
+      <div class="notification-text">
         {{ notification.message }}
-      </p>
-      <div class="notification-toast-buttons">
+      </div>
+      <div class="notification-buttons">
         <div
-          class="notification-toast-buttons-grid"
+          class="notification-buttons-grid"
           :style="getButtonsGridTemplaceCss(notification)"
         >
           <Button
@@ -28,7 +27,7 @@
               v-if="button.icon != null"
               :icon="button.icon"
             />
-            <span class="notification-toast-buttons-text">{{ button.caption }}</span>
+            <span class="notification-buttons-text">{{ button.caption }}</span>
           </Button>
         </div>
       </div>
@@ -112,7 +111,7 @@ function getSeverity(button: INotificationButton) {
 
 
 <style scoped>
-.notification-toast {
+.notification {
   align-items: flex-end;
   bottom: 0;
   display: flex;
@@ -125,41 +124,47 @@ function getSeverity(button: INotificationButton) {
   z-index: 2;
 }
 
-.notification-toast > .p-message {
+.notification-text {
+  /* Keeps line breaks */
+  white-space: preserve;
+}
+
+.notification > .p-message {
   margin-bottom: 1rem;
   margin-top: 0;
   width: fit-content;
 }
 
-.notification-toast > .p-message:first-child {
+.notification > .p-message:first-child {
   margin-top: 1rem;
 }
 
-.notification-toast-buttons {
+.notification-buttons {
   align-items: center;
   display: flex;
   justify-content: center;
+  margin-top: 0.5rem
 }
 
-.notification-toast-buttons-grid {
+.notification-buttons-grid {
   display: grid;
   grid-gap: 1rem;
 }
 
-.notification-toast-buttons-text {
+.notification-buttons-text {
   width: 100%;
 }
 
 /* Smartphone in portrait */
 @media only screen and (min-width: 320px) and (max-width: 480px) {
-  .notification-toast {
+  .notification {
     max-width: unset;
   }
 }
 
 /* Smartphone in landscape */
 @media only screen and (min-width: 481px) and (max-width: 767px) {
-  .notification-toast {
+  .notification {
     max-width: unset;
   }
 }

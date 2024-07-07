@@ -35,6 +35,7 @@ import Services from '../services/repository/Services'
 import ChangelogSidebar from './ChangelogSidebarComponent.vue'
 import GeneralOptionsSidebar from './GeneralOptionsSidebarComponent.vue'
 import MerchantItemsOptionsSidebar from './MerchantItemsOptionsSidebarComponent.vue'
+import NotificationsSidebar from './NotificationsSidebarComponent.vue'
 import ShoppingListSidebar from './ShoppingListSidebarComponent.vue'
 
 const globalSidebarService = Services.get(GlobalSidebarService)
@@ -47,6 +48,8 @@ const displayedComponent = computed(() => {
       return GeneralOptionsSidebar
     case 'MerchantItemsOptionsSidebar':
       return MerchantItemsOptionsSidebar
+    case 'NotificationsSidebar':
+      return NotificationsSidebar
     case 'ShoppingListSidebar':
       return ShoppingListSidebar
     default:

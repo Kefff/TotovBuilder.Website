@@ -140,6 +140,7 @@
 import { computed, onMounted, ref } from 'vue'
 import Images from '../images'
 import vueI18n from '../plugins/vueI18n'
+import { GeneralOptionsService } from '../services/GeneralOptionsService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { NotificationService, NotificationType } from '../services/NotificationService'
 import { VersionService } from '../services/VersionService'
@@ -230,6 +231,8 @@ async function onWebsiteConfigurationServiceInitialized() {
   contactAddress.value = websiteConfigurationService.configuration.contactAddress
   discordUrl.value = websiteConfigurationService.configuration.discordUrl
   githubUrl.value = websiteConfigurationService.configuration.githubUrl
+
+  Services.get(GeneralOptionsService).getAllowCookiesIndicator() // Used to trigger the allow cookie check and display a notification
 
   await versionService.getVersion().then(v => version.value = v)
   hasNewVersion.value = await versionService.checkHasNewVersion()
