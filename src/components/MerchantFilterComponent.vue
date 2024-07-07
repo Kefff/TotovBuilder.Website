@@ -97,6 +97,8 @@ function hasLevels(merchantName: string): boolean {
 }
 
 /**
+ * Reacts to the merchant filter being changed.
+ *
  * Updates the filter.
  */
 function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel: number) {

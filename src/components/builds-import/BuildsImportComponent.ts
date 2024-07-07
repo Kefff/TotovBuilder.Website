@@ -98,7 +98,7 @@ export default defineComponent({
       }
 
       if (event.key === 'a' && (event.ctrlKey || event.metaKey)) {
-        event.preventDefault() // Prevents the browser save action to be triggered
+        event.preventDefault() // Prevents the browser save action from being triggered
         buildToImportSummaries.value = readenBuildSummaries.value
       }
     }

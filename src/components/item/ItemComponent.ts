@@ -145,6 +145,8 @@ export default defineComponent({
     }
 
     /**
+     * Reacts to the inventory item content being changed.
+     *
      * Updates the inventory item based on the contained items.
      */
     function onContentChanged(newContent: IInventoryItem[]) {
@@ -162,6 +164,8 @@ export default defineComponent({
     }
 
     /**
+     * Reacts to the items selection dropdown being opened.
+     *
      * Scrolls to the item in the item dropdown.
      */
     function onDropdownOpen() {
@@ -182,6 +186,8 @@ export default defineComponent({
     }
 
     /**
+     * Reacts to the item selection filter being changed.
+     *
      * Filters the options items.
      */
     function onFilterOptions(newValue: string) {
@@ -190,6 +196,8 @@ export default defineComponent({
     }
 
     /**
+     * Reacts to the click on the item ignore price button.
+     *
      * Updates the inventory item based on the fact that the price is ignored or not.
      */
     function onIgnorePriceChanged(newIgnorePrice: boolean) {
@@ -207,6 +215,8 @@ export default defineComponent({
     }
 
     /**
+     * Reacts to the selected item being changed.
+     *
      * Updates the inventory item based on the selected item.
      */
     async function onItemChanged() {
@@ -236,6 +246,8 @@ export default defineComponent({
     }
 
     /**
+     * Reacts to the inventory item mods being changed.
+     *
      * Updates the inventory item based on the mods.
      */
     function onModsChanged(newModsSlots: IInventoryModSlot[]) {
@@ -253,6 +265,8 @@ export default defineComponent({
     }
 
     /**
+     * Reacts to the item quantity being changed.
+     *
      * Updates the inventory item based on the quantity.
      */
     function onQuantityChanged(newQuantity: number) {
@@ -270,6 +284,8 @@ export default defineComponent({
     }
 
     /**
+     * Reacts to the click on an item selection sort button.
+     *
      * Sorts the options items.
      */
     async function onSortOptions(newSortingData: SortingData) {

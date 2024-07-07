@@ -88,7 +88,9 @@ function initialize() {
 }
 
 /**
- * Adds an item to the content of the inventory item and signals the parent item that its content has changed.
+ * Reacts to an inventory item being added.
+ *
+ * Adds the item to the content of the inventory item and signals the parent item that its content has changed.
  */
 function onItemAdded(newInventoryItem: IInventoryItem) {
   modelInventoryItems.value = [
@@ -103,6 +105,8 @@ function onItemAdded(newInventoryItem: IInventoryItem) {
 }
 
 /**
+ * Reacts to an inventory item being changed.
+ *
  * Signals to the parent item that its content has changed.
  * @param index - Index of the changed contained item in the inventory item content list.
  * @param newInventoryItem - Updated contained item.
@@ -120,6 +124,8 @@ function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefin
 }
 
 /**
+ * Reacts to the merchant filter being changed.
+ *
  * Updates the accepted items to reflect the change in merchant filters.
  */
 function onMerchantFilterChanged() {

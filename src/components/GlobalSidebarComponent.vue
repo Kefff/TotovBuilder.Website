@@ -78,7 +78,9 @@ onUnmounted(() => {
 })
 
 /**
- * Closes the global sidebard.
+ * Reacts to the global sidebar being closed.
+ *
+ * Executes closing actions and closes the global sidebar.
  */
 function onGlobalSidebarClose() {
   globalSidebarService.executeOnClosingActions()
@@ -86,7 +88,9 @@ function onGlobalSidebarClose() {
 }
 
 /**
- * Displays the global sidebar
+ * Reacts to the global sidebar being opened.
+ *
+ * Sets the options to display and opens the global sidebar.
  */
 function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions) {
   visible.value = true

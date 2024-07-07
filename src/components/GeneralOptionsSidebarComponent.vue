@@ -140,6 +140,8 @@ function getAdditionalOptionCssClasses(option: IGeneralOption) {
 }
 
 /**
+ * Reacts to the allow cookies option being changed.
+ *
  * Sets the allow cookie indicator.
  */
 function onAllowCookiesChanged() {

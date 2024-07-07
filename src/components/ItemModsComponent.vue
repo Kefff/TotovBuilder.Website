@@ -76,6 +76,8 @@ function findInventoryItemOfModSlot(modSlotName: string): IInventoryItem | undef
 }
 
 /**
+ * Reacts to an inventory item being changed.
+ *
  * Signals to the parent item a mod slot item has changed.
  */
 function onItemChanged(modSlotName: string, newInventoryItem: IInventoryItem | undefined) {

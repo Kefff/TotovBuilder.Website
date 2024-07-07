@@ -59,6 +59,8 @@ function isSelected(buildId: string) {
 }
 
 /**
+ * Reacts to sorting being applied.
+ *
  * Saves the last used sorting data.
  * @param event - Sorting event.
  */

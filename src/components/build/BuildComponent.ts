@@ -116,7 +116,7 @@ export default defineComponent({
 
     provide('editing', editing)
 
-    watch(() => route.params, onServicesInitialized)
+    watch(() => route.params, onItemServiceInitialized)
 
     onMounted(() => {
       document.onkeydown = (e) => onKeyDown(e)
@@ -127,9 +127,9 @@ export default defineComponent({
       globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       if (itemService.initializationState === ServiceInitializationState.initializing) {
-        itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
+        itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitialized)
       } else {
-        onServicesInitialized()
+        onItemServiceInitialized()
       }
 
       window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
@@ -331,6 +331,8 @@ export default defineComponent({
     }
 
     /**
+     * Reacts to an armor compatibility check request.
+     *
      * Checks whether an armor can be added to the build or not.
      * @param request - Compatibility request.
      */
@@ -339,6 +341,8 @@ export default defineComponent({
     }
 
     /**
+     * Reacts to an inventory item being changed.
+     *
      * Signals to the build one of its inventory slots has changed.
      */
     function onInventorySlotChanged(index: number, newInventorySlot: IInventorySlot) {
@@ -348,39 +352,11 @@ export default defineComponent({
     }
 
     /**
-     * Reacts to a keyboard event.
-     * @param event - Keyboard event.
-     */
-    async function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
-        event.preventDefault() // Prevents the browser save action to be triggered
-
-        if (editing.value && !invalid.value) {
-          await save()
-          startEdit() // After saving with the shortcut, we stay in edit mode unlike when using the button
-        }
-      }
-    }
-
-    /**
-     * Updates the build summary price to reflect the change in merchant filters.
-     */
-    function onMerchantFilterChanged() {
-      setSummary()
-    }
-
-    /**
-     * Checks if a mod can be added to the selected item.
-     * @param request - Compatibility request that must be resolved.
-     */
-    function onModCompatibilityRequest(request: CompatibilityRequest) {
-      request.setResult(buildPropertiesService.canAddMod(build.value, request.itemId, request.path))
-    }
-
-    /**
+     * Reacts to the item service being initialized.
+     *
      * Initializes the build.
      */
-    function onServicesInitialized() {
+    function onItemServiceInitialized() {
       isLoading.value = true
 
       setTimeout(() => { // Did not find another solution to make the loading animation appear when opening a build from the builds list (nextTick does not work)
@@ -399,6 +375,42 @@ export default defineComponent({
     }
 
     /**
+     * Reacts to a keyboard event.
+     * @param event - Keyboard event.
+     */
+    async function onKeyDown(event: KeyboardEvent) {
+      if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault() // Prevents the browser save action to be triggered
+
+        if (editing.value && !invalid.value) {
+          await save()
+          startEdit() // After saving with the shortcut, we stay in edit mode unlike when using the button
+        }
+      }
+    }
+
+    /**
+     * Reacts to the merchant filter being changed.
+     *
+     * Updates the build summary price to reflect the change in merchant filters.
+     */
+    function onMerchantFilterChanged() {
+      setSummary()
+    }
+
+    /**
+     * Reacts to a mod compatibility check request.
+     *
+     * Checks if a mod can be added to the selected item.
+     * @param request - Compatibility request that must be resolved.
+     */
+    function onModCompatibilityRequest(request: CompatibilityRequest) {
+      request.setResult(buildPropertiesService.canAddMod(build.value, request.itemId, request.path))
+    }
+
+    /**
+     * Reacts to a tactical rig compatibility check request.
+     *
      * Checks whether a tactical rig can be added to the build or not.
      * @param request - Compatibility request.
      */

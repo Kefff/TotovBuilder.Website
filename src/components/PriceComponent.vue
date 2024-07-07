@@ -44,6 +44,7 @@
   <OverlayPanel
     ref="priceDetailPanel"
     :dismissable="true"
+    @click="onClick($event)"
   >
     <div class="price-details-header">
       <Button
@@ -283,6 +284,17 @@ async function initialize() {
 }
 
 /**
+ * Reacts to the click inside the price detail overlay.
+ *
+ * Prevents the item selection dropdown to close when clicking inside of the price detail popup of one of the dropdown items.
+ */
+function onClick(event: MouseEvent) {
+  event.stopPropagation()
+}
+
+/**
+ * Reacts to the merchant filter being changed.
+ *
  * Updates the selected item price to reflect the change in merchant filters.
  */
 function onMerchantFilterChanged() {

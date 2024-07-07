@@ -50,6 +50,8 @@ onMounted(() => {
 })
 
 /**
+ * Reacts to an inventory item being changed.
+ *
  * Checks if the item can be selected.
  * Signals to the parent inventory slot the inventory item has changed if the new item can be selected;
  * otherwise puts back the old item.

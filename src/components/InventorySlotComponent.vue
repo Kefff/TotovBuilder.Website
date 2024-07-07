@@ -265,6 +265,8 @@ onUnmounted(() => {
 })
 
 /**
+ * Reacts to the merchant filter being changed.
+ *
  * Updates the inventory slot summary to reflect price changes due to the change in merchant filters.
  */
 function onMerchantFilterChanged() {
@@ -273,6 +275,8 @@ function onMerchantFilterChanged() {
 }
 
 /**
+ * Reacts to an inventory item being changed.
+ *
  * Signals to the build one of its inventory slots has changed.
  */
 function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefined) {

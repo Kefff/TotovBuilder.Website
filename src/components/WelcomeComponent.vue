@@ -193,6 +193,8 @@ function displayMerchantItemsOptions() {
 }
 
 /**
+ * Racts to the website configuration service being iniialized.
+ *
  * Gets builds and ends loading.
  */
 function onWebsiteConfigurationServiceInitialized() {

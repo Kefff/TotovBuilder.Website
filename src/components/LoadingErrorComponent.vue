@@ -79,6 +79,8 @@ onMounted(() => {
 })
 
 /**
+ * Reacts to the item service being initialized.
+ *
  * Checks whether an item loading error has occured and signals it to the parent component.
  */
 function onItemServiceInitialized() {
@@ -86,6 +88,8 @@ function onItemServiceInitialized() {
 }
 
 /**
+ * Reacts to the website configuration service being initialized.
+ *
  * Checks whether a website configuration loading error has occured and signals it to the parent component.
  */
 function onWebsiteConfigurationServiceInitialized() {

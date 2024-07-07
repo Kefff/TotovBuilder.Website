@@ -83,6 +83,8 @@ onMounted(() => {
 })
 
 /**
+ * Reacts to the user filling the filter input.
+ *
  * Emits to the parent component the filter to use to filter options.
  */
 function onFilterChanged(filterValue: string) {

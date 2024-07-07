@@ -157,9 +157,9 @@ onMounted(() => {
   globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
   if (itemService.initializationState === ServiceInitializationState.initializing) {
-    itemService.emitter.once(ItemService.initializationFinishedEvent, onServicesInitialized)
+    itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServicesInitialized)
   } else {
-    onServicesInitialized()
+    onItemServicesInitialized()
   }
 })
 
@@ -233,6 +233,8 @@ async function getBuilds() {
 }
 
 /**
+ * Reacts to the click on a build.
+ *
  * Opens a the build on which the user clicks.
  * @param selectedBuildIds - IDs of the selected builds.
  */
@@ -242,17 +244,14 @@ function onBuildClick(selectedBuildIds: string[]) {
   }
 }
 
-/**
- * Updates the selected item price to reflect the change in merchant filters.
- */
-function onMerchantFilterChanged() {
-  getBuilds()
-}
+
 
 /**
- * Gets builds and ends loading.
+ * Reacts to the item service being initialized.
+ *
+ * Updates the selected item price to reflect the change in merchant filters.
  */
-function onServicesInitialized() {
+function onItemServicesInitialized() {
   getBuilds().then(() => {
     if (builds.length === 0) {
       router.push({ name: 'Welcome' })
@@ -262,6 +261,15 @@ function onServicesInitialized() {
 
     checkBuildsNotExported()
   })
+}
+
+/**
+ * Reacts to the merchant filter being changed.
+ *
+ * Gets builds and ends loading.
+ */
+function onMerchantFilterChanged() {
+  getBuilds()
 }
 
 /**

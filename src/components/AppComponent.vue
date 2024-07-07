@@ -222,6 +222,9 @@ function displayNewVersionNotification() {
     true)
 }
 
+/**
+ * Reacts to the website configuration service being initialized.
+ */
 async function onWebsiteConfigurationServiceInitialized() {
   bugReportUrl.value = websiteConfigurationService.configuration.bugReportUrl
   contactAddress.value = websiteConfigurationService.configuration.contactAddress

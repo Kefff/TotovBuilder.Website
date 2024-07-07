@@ -39,6 +39,8 @@ import { IItemExclusionFilter } from '../models/utils/IItemExclusionFilter'
 const modelItemExclusionFilters = defineModel<IItemExclusionFilter[]>('itemExclusionFilters', { required: true })
 
 /**
+ * Reacts to an item exclusion filter being changed.
+ *
  * Updates the filter.
  */
 function onItemExclusionFilterChanged(index: number, enabled: boolean) {

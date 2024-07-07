@@ -46,6 +46,9 @@ const isTouchScreen = matchMedia('(hover: none)').matches
 // cf. https://github.com/primefaces/primevue/issues/2255#issuecomment-1073903453
 const directiveArguments = computed(() => new DirectiveArguments(props.position, isTouchScreen ? 'focus' : undefined))
 
+/**
+ * Reacts to the click on the element the tooltip is attached to.
+ */
 function onClick(event: MouseEvent) {
   if (props.stopClickPropagation) {
     event.stopPropagation()

@@ -161,6 +161,8 @@ watch(() => [props.inventoryItem.itemId, props.inventoryItem.quantity], () => {
 })
 
 /**
+ * Reacts to the merchant filter being changed.
+ *
  * Updates the selected item price to reflect the change in merchant filters.
  */
 function onMerchantFilterChanged() {
