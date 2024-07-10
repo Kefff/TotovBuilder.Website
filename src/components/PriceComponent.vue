@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="initialized"
+    v-if="showPrice"
     class="price"
   >
     <Tooltip
@@ -22,19 +22,30 @@
           />
           <span>{{ displayedPrice }}</span>
         </div>
-        <div>
+        <div
+          v-if="canShowIcon"
+          class="price-icon"
+        >
           <div
-            v-if="canShowMerchantIcon"
-            class="price-merchant-icon"
+            v-if="ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored"
+            class="price-ignored-icon"
           >
-            <MerchantIcon
-              :is-barter="isBarter"
-              :merchant="price.merchant"
-              :merchant-level="price.merchantLevel"
-              :requires-quest="price.quest != null"
-              :show-tooltip="showTooltip"
-            />
+            <font-awesome-icon icon="ban" />
           </div>
+          <div
+            v-else-if="missing"
+            class="price-missing-icon"
+          >
+            <font-awesome-icon icon="exclamation-triangle" />
+          </div>
+          <MerchantIcon
+            v-else-if="ignorePriceStatus === IgnoredUnitPrice.notIgnored"
+            :is-barter="isBarter"
+            :merchant="price.merchant"
+            :merchant-level="price.merchantLevel"
+            :requires-quest="price.quest != null"
+            :show-tooltip="showTooltip"
+          />
         </div>
       </div>
     </Tooltip>
@@ -56,8 +67,28 @@
     </div>
     <div class="price-details">
       <div
+        v-if="ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored"
+        class="price-details-line"
+      >
+        <font-awesome-icon
+          icon="ban"
+          class="icon-before-text price-details-ignored-icon"
+        />
+        <span>{{ $t('caption.ignoredPrice_manuallyIgnored') }}</span>
+      </div>
+      <div
+        v-else-if="missing"
+        class="price-details-line"
+      >
+        <font-awesome-icon
+          icon="exclamation-triangle"
+          class="icon-before-text price-details-missing-icon"
+        />
+        <span>{{ $t('message.itemWithMissingPrice') }}</span>
+      </div>
+      <div
         v-if="showPriceInMainCurrency"
-        class="price-details-main-currency"
+        class="price-details-line price-details-main-currency"
       >
         <font-awesome-icon
           icon="coins"
@@ -72,7 +103,10 @@
           <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.valueInMainCurrency) }}</span>
         </div>
       </div>
-      <div v-if="price.merchant !== ''">
+      <div
+        v-if="price.merchant !== ''"
+        class="price-details-line"
+      >
         <font-awesome-icon
           icon="user-tag"
           class="icon-before-text"
@@ -81,7 +115,7 @@
       </div>
       <div
         v-if="price.quest != null"
-        class="price-details-quest"
+        class="price-details-line price-details-quest"
       >
         <font-awesome-icon
           icon="lock"
@@ -101,7 +135,7 @@
         v-if="isBarter"
         class="price-details-barter"
       >
-        <div class="price-details-barter-title">
+        <div class="price-details-line price-details-barter-title">
           <font-awesome-icon
             :icon="currency.iconName"
             class="icon-before-text"
@@ -135,6 +169,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IItem } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
+import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import { IInventoryItemPrice } from '../models/utils/IInventoryItemPrice'
 import vueI18n from '../plugins/vueI18n'
 import { GlobalFilterService } from '../services/GlobalFilterService'
@@ -151,6 +186,8 @@ const globalFilterService = Services.get(GlobalFilterService)
 const props = withDefaults(
   defineProps<{
     applyHoverStyle?: boolean,
+    ignorePriceStatus?: IgnoredUnitPrice
+    missing?: boolean,
     price: IPrice,
     showDetails?: boolean,
     showMerchantIcon?: boolean,
@@ -160,6 +197,8 @@ const props = withDefaults(
   }>(),
   {
     applyHoverStyle: true,
+    ignorePriceStatus: IgnoredUnitPrice.notIgnored,
+    missing: false,
     showDetails: true,
     showMerchantIcon: true,
     showTooltip: true,
@@ -180,8 +219,13 @@ const canShowDetails = computed(() => props.showDetails
   && (props.price.merchant !== ''
     || showPriceInMainCurrency.value
     || props.price.quest != null
-    || isBarter.value))
-const canShowMerchantIcon = computed(() => props.showMerchantIcon && props.price.merchant !== '')
+    || isBarter.value
+    || props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored
+    || props.missing))
+const canShowIcon = computed(() => props.showMerchantIcon
+  && (props.price.merchant !== ''
+    || props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored
+    || props.missing))
 const currency = computed(() => itemService.getCurrency(props.price.currencyName))
 const displayedCurrency = computed(() => isBarter.value ? mainCurrency : currency.value)
 const displayedPrice = computed(() => {
@@ -208,6 +252,7 @@ const priceTooltip = computed(() => {
 
   return tooltip
 })
+const showPrice = computed(() => initialized.value && (props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored || props.ignorePriceStatus === IgnoredUnitPrice.notIgnored))
 const showPriceInMainCurrency = computed(() => !isBarter.value && currency.value.name !== mainCurrency.name)
 
 watch(() => props.price, () => initialize())
@@ -335,6 +380,24 @@ function togglePriceDetails(event: Event) {
   justify-content: end;
 }
 
+.price-ignored-icon {
+  align-items: center;
+  color: var(--error-color);
+  display: flex;
+  height: 2rem;
+  justify-content: center;
+  width: 2rem;
+}
+
+.price-missing-icon {
+  align-items: center;
+  color: var(--error-color);
+  display: flex;
+  height: 2rem;
+  justify-content: center;
+  width: 2rem;
+}
+
 .price-value-and-icon {
   display: flex;
   flex-direction: row;
@@ -370,9 +433,6 @@ function togglePriceDetails(event: Event) {
 }
 
 .price-details-barter-title {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
   flex-wrap: nowrap;
 }
 
@@ -389,25 +449,32 @@ function togglePriceDetails(event: Event) {
   padding: 0 !important;
 }
 
-.icon-before-text {
-  margin-right: 0.25rem;
-  width: 1rem;
+.price-details-ignored-icon {
+  color: var(--error-color);
+}
+
+.price-details-line {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  white-space: preserve;
 }
 
 .price-details-main-currency {
-  display: flex;
-  flex-direction: row;
   flex-wrap: nowrap;
 }
 
 .price-details-main-currency-value {
+  align-items: center;
+  display: flex;
   margin-left: 0.25rem;
 }
 
+.price-details-missing-icon {
+  color: var(--error-color);
+}
+
 .price-details-quest {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
 }
 
@@ -415,7 +482,7 @@ function togglePriceDetails(event: Event) {
   margin-right: 0.25rem;
 }
 
-.price-merchant-icon {
+.price-icon {
   margin-left: 0.5rem;
 }
 

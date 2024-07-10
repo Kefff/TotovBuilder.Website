@@ -564,7 +564,8 @@ ${indentation}${containedItemAsString}`
       unitPriceIgnoreStatus = IgnoredUnitPrice.manuallyIgnored
     }
 
-    if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
+    if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored
+      || unitPriceIgnoreStatus === IgnoredUnitPrice.manuallyIgnored) {
       let unitPrice: IPrice
       const price = await this.getPrice(inventoryItem)
 
@@ -599,8 +600,10 @@ ${indentation}${containedItemAsString}`
       }
 
       shoppingListItemsToAdd.push({
+        ignorePrice: inventoryItem.ignorePrice,
         inventorySlotId: inventorySlotId,
         item,
+        missingPrice: price.missingPrice,
         quantity: inventoryItem.quantity,
         price: {
           barterItems: unitPrice.barterItems,
@@ -639,7 +642,10 @@ ${indentation}${containedItemAsString}`
 
     // Regrouping similar items
     for (const shoppingListItemToAdd of shoppingListItemsToAdd) {
-      const shoppingListItemIndex = shoppingList.findIndex(sli => sli.item.id === shoppingListItemToAdd.item.id)
+      const shoppingListItemIndex = shoppingList.findIndex(sli =>
+        sli.item.id === shoppingListItemToAdd.item.id
+        && sli.ignorePrice === shoppingListItemToAdd.ignorePrice
+        && sli.missingPrice === shoppingListItemToAdd.missingPrice)
 
       if (shoppingListItemIndex < 0) {
         shoppingList.push(shoppingListItemToAdd)

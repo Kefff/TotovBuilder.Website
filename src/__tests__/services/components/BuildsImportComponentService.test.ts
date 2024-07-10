@@ -105,6 +105,7 @@ describe('readBuilds()', () => {
           },
           shoppingList: [
             {
+              ignorePrice: false,
               inventorySlotId: 'backpack',
               item: {
                 ...berkut,
@@ -146,6 +147,7 @@ describe('readBuilds()', () => {
                   }
                 ]
               },
+              missingPrice: false,
               price: {
                 barterItems: [
                   {
@@ -179,6 +181,7 @@ describe('readBuilds()', () => {
               }
             },
             {
+              ignorePrice: false,
               inventorySlotId: undefined,
               item: {
                 ...iskra,
@@ -195,6 +198,7 @@ describe('readBuilds()', () => {
                   }
                 ]
               },
+              missingPrice: false,
               price: {
                 barterItems: [],
                 currencyName: 'RUB',

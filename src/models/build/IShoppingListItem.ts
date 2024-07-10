@@ -7,6 +7,11 @@ import { IPrice } from '../item/IPrice'
  */
 export interface IShoppingListItem {
   /**
+   * Indicates whether the price of the item is ignored.
+   */
+  ignorePrice: boolean
+
+  /**
    * ID of the inventory slot in which the item is placed.
    */
   inventorySlotId: string | undefined
@@ -15,6 +20,11 @@ export interface IShoppingListItem {
    * Item.
    */
   item: IItem
+
+  /**
+   * Indicates whether the price of the item is missing.
+   */
+  missingPrice: boolean
 
   /**
    * Price.

@@ -568,12 +568,13 @@ describe('getSummary()', () => {
         build1,
         [
           {
+            ignorePrice: false,
             inventorySlotId: 'onSling',
             item: {
               ...rpk16Default,
               prices: rpk16DefaultPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -584,6 +585,7 @@ describe('getSummary()', () => {
               value: 43345,
               valueInMainCurrency: 43345
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -596,12 +598,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: undefined,
             item: {
               ...rpk16Drum,
               prices: rpk16DrumPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [
                 {
@@ -617,6 +620,7 @@ describe('getSummary()', () => {
               value: 0,
               valueInMainCurrency: 0
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [
                 {
@@ -634,12 +638,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: undefined,
             item: {
               ...alkali,
               prices: alkaliPrices
             },
-            quantity: 2,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -650,6 +655,7 @@ describe('getSummary()', () => {
               value: 24218,
               valueInMainCurrency: 24218
             },
+            quantity: 2,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -662,12 +668,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: 'pockets',
             item: {
               ...ammo545us,
               prices: ammo545usPrices
             },
-            quantity: 155,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -678,6 +685,7 @@ describe('getSummary()', () => {
               value: 14880,
               valueInMainCurrency: 14880
             },
+            quantity: 155,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -690,12 +698,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: 'bodyArmor',
             item: {
               ...armor6b13FlDefault,
               prices: armor6b13FlDefaultPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -710,6 +719,7 @@ describe('getSummary()', () => {
               value: 64269,
               valueInMainCurrency: 64269
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -726,12 +736,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: 'headwear',
             item: {
               ...lshZ2dtm,
               prices: lshZ2dtmPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -742,6 +753,7 @@ describe('getSummary()', () => {
               value: 63493,
               valueInMainCurrency: 63493
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -754,12 +766,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: undefined,
             item: {
               ...lshZ2dtmFs,
               prices: lshZ2dtmFsPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [
                 {
@@ -775,6 +788,7 @@ describe('getSummary()', () => {
               value: 0,
               valueInMainCurrency: 0
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [
                 {
@@ -792,12 +806,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: undefined,
             item: {
               ...plexiglass,
               prices: plexiglassPrices
             },
-            quantity: 3,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -808,6 +823,7 @@ describe('getSummary()', () => {
               value: 29805,
               valueInMainCurrency: 29805
             },
+            quantity: 3,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -820,12 +836,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: 'backpack',
             item: {
               ...berkut,
               prices: berkutPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -836,6 +853,7 @@ describe('getSummary()', () => {
               value: 24509,
               valueInMainCurrency: 24509
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -848,12 +866,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: undefined,
             item: {
               ...iskra,
               prices: iskraPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -868,6 +887,7 @@ describe('getSummary()', () => {
               value: 24392,
               valueInMainCurrency: 24392
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -884,12 +904,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: undefined,
             item: {
               ...water,
               prices: waterPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [
                 {
@@ -905,6 +926,7 @@ describe('getSummary()', () => {
               value: 0,
               valueInMainCurrency: 0
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [
                 {
@@ -922,12 +944,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: undefined,
             item: {
               ...h2o2,
               prices: h2o2Prices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -938,6 +961,7 @@ describe('getSummary()', () => {
               value: 11473,
               valueInMainCurrency: 11473
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -950,12 +974,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: 'pockets',
             item: {
               ...morphine,
               prices: morphinePrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -966,6 +991,7 @@ describe('getSummary()', () => {
               value: 17421,
               valueInMainCurrency: 17421
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -978,12 +1004,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: 'pockets',
             item: {
               ...vaseline,
               prices: vaselinePrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -994,6 +1021,7 @@ describe('getSummary()', () => {
               value: 27714,
               valueInMainCurrency: 27714
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1006,12 +1034,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: 'pockets',
             item: {
               ...rgd5,
               prices: rgd5Prices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1022,6 +1051,7 @@ describe('getSummary()', () => {
               value: 11822,
               valueInMainCurrency: 11822
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1034,12 +1064,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: 'eyewear',
             item: {
               ...crossbow,
               prices: crossbowPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1050,6 +1081,7 @@ describe('getSummary()', () => {
               value: 3885,
               valueInMainCurrency: 3885
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1062,12 +1094,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: 'faceCover',
             item: {
               ...cf,
               prices: cfPrices
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1078,6 +1111,7 @@ describe('getSummary()', () => {
               value: 4793,
               valueInMainCurrency: 4793
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1095,12 +1129,13 @@ describe('getSummary()', () => {
         build2,
         [
           {
+            ignorePrice: false,
             inventorySlotId: 'holster',
             item: {
               ...m9a3Default,
               prices: [...m9a3DefaultPrices]
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'USD',
@@ -1111,6 +1146,7 @@ describe('getSummary()', () => {
               value: 107,
               valueInMainCurrency: 15337
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'USD',
@@ -1123,12 +1159,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: undefined,
             item: {
               ...srd9,
               prices: [...srd9Prices]
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'USD',
@@ -1139,6 +1176,7 @@ describe('getSummary()', () => {
               value: 242,
               valueInMainCurrency: 34606
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'USD',
@@ -1151,12 +1189,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: undefined,
             item: {
               ...ammo9mmGT,
               prices: [...ammo9mmGTPrices]
             },
-            quantity: 17,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1167,6 +1206,7 @@ describe('getSummary()', () => {
               value: 1241,
               valueInMainCurrency: 1241
             },
+            quantity: 17,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1179,12 +1219,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: undefined,
             item: {
               ...x400,
               prices: [...x400Prices]
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'USD',
@@ -1195,6 +1236,7 @@ describe('getSummary()', () => {
               value: 95,
               valueInMainCurrency: 13552
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'USD',
@@ -1207,12 +1249,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: 'tacticalRig',
             item: {
               ...banshee,
               prices: [...bansheePrices]
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1223,6 +1266,7 @@ describe('getSummary()', () => {
               value: 33950,
               valueInMainCurrency: 33950
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1235,12 +1279,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: undefined,
             item: {
               ...monocletePe,
               prices: [...monocletePePrices]
             },
-            quantity: 2,
+            missingPrice: false,
             price: {
               barterItems: [
                 {
@@ -1256,6 +1301,7 @@ describe('getSummary()', () => {
               value: 0,
               valueInMainCurrency: 0
             },
+            quantity: 2,
             unitPrice: {
               barterItems: [
                 {
@@ -1273,12 +1319,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: undefined,
             item: {
               ...pass,
               prices: [...passPrices]
             },
-            quantity: 2,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1289,6 +1336,7 @@ describe('getSummary()', () => {
               value: 63006,
               valueInMainCurrency: 63006
             },
+            quantity: 2,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1301,12 +1349,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: undefined,
             item: {
               ...salewa,
               prices: [...salewaPrices]
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [
                 {
@@ -1322,6 +1371,7 @@ describe('getSummary()', () => {
               value: 0,
               valueInMainCurrency: 0
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [
                 {
@@ -1339,12 +1389,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: undefined,
             item: {
               ...ewr,
               prices: [...ewrPrices]
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1355,6 +1406,7 @@ describe('getSummary()', () => {
               value: 21923,
               valueInMainCurrency: 21923
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1367,12 +1419,13 @@ describe('getSummary()', () => {
             }
           },
           {
+            ignorePrice: false,
             inventorySlotId: 'earpiece',
             item: {
               ...razor,
               prices: [...razorPrices]
             },
-            quantity: 1,
+            missingPrice: false,
             price: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1383,6 +1436,7 @@ describe('getSummary()', () => {
               value: 64132,
               valueInMainCurrency: 64132
             },
+            quantity: 1,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',

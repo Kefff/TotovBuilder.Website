@@ -535,8 +535,12 @@ ${sharableUrlResult}`
 
         const inventoryItemShoppingList = await inventoryItemService.getShoppingList(item, inventorySlotType.canBeLooted, undefined, inventorySlotType.id)
 
+        // Regrouping similar items
         for (const inventoryItemShoppingListItemToAdd of inventoryItemShoppingList) {
-          const inventoryItemShoppingListItemIndex = shoppingList.findIndex(sli => sli.item.id === inventoryItemShoppingListItemToAdd.item.id)
+          const inventoryItemShoppingListItemIndex = shoppingList.findIndex(sli =>
+            sli.item.id === inventoryItemShoppingListItemToAdd.item.id
+            && sli.ignorePrice === inventoryItemShoppingListItemToAdd.ignorePrice
+            && sli.missingPrice === inventoryItemShoppingListItemToAdd.missingPrice)
 
           if (inventoryItemShoppingListItemIndex < 0) {
             shoppingList.push(inventoryItemShoppingListItemToAdd)

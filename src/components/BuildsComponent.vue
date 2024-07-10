@@ -7,6 +7,7 @@
       <div class="toolbar-part">
         <Button
           :disabled="isLoading"
+          class="p-button-success"
           @click="openNewBuild()"
         >
           <font-awesome-icon

@@ -4,25 +4,10 @@
       <slot />
       <div class="selected-item-summary-right">
         <div class="selected-item-summary-right-price">
-          <div
-            v-if="hasMissingPrice"
-            class="selected-item-summary-price-missing-price-icon"
-          >
-            <Tooltip :tooltip="$t('message.itemWithMissingPrice')">
-              <font-awesome-icon icon="exclamation-triangle" />
-            </Tooltip>
-          </div>
-          <div
-            v-if="selectedItemPrice.unitPriceIgnoreStatus === IgnoredUnitPrice.manuallyIgnored"
-            class="selected-item-summary-price-ignored-price-icon"
-          >
-            <Tooltip :tooltip="$t('caption.ignoredPrice_' + selectedItemPrice.unitPriceIgnoreStatus)">
-              <font-awesome-icon icon="ban" />
-            </Tooltip>
-          </div>
           <Price
-            v-if="showPrice"
             :price="selectedItemPrice.price"
+            :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
+            :missing="hasMissingPrice"
           />
           <div class="selected-item-summary-weight">
             <div v-if="selectedItemWeight.weight > 0">
@@ -40,6 +25,7 @@
           <div class="selected-item-summary-price-per-unit">
             <Price
               v-if="showUnitPrice"
+              :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
               :price="selectedItemPrice.unitPrice"
               :show-merchant-icon="false"
               :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
@@ -101,8 +87,7 @@ const hasMissingPrice = computed(() => selectedItemPrice.value.missingPrice
   && !props.inventoryItem.ignorePrice
   && selectedItemPrice.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored
   && selectedItemPrice.value.unitPrice.valueInMainCurrency === 0) // We don't show the missing price icon on items that contain an item with a missing price
-const showPrice = computed(() => selectedItemPrice.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored)
-const showUnitPrice = computed(() => showPrice.value && selectedItemPrice.value.price.valueInMainCurrency !== selectedItemPrice.value.unitPrice.valueInMainCurrency)
+const showUnitPrice = computed(() => selectedItemPrice.value.price.valueInMainCurrency !== selectedItemPrice.value.unitPrice.valueInMainCurrency)
 
 const selectedItemPrice = ref<IInventoryItemPrice>({
   missingPrice: false,
@@ -201,23 +186,6 @@ async function setWeight() {
   align-items: center;
   display: flex;
   flex-grow: 1;
-}
-
-.selected-item-summary-price-ignored-price-icon {
-  align-items: center;
-  color: var(--error-color);
-  display: flex;
-  justify-content: center;
-  width: 2rem;
-}
-
-.selected-item-summary-price-missing-price-icon {
-  align-items: center;
-  color: var(--error-color);
-  display: flex;
-  justify-content: center;
-  margin-left: 0.5rem;
-  width: 2rem;
 }
 
 .selected-item-summary-price-per-unit {

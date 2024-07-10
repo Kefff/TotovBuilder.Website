@@ -65,6 +65,7 @@ withDefaults(
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  height: 2rem;
   position: relative;
   /* Needed for the absolute positions of the badges stick to the merchant icon when scrolling in an overlay */
   width: 2rem;

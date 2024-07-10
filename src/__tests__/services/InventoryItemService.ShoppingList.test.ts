@@ -19,12 +19,13 @@ describe('getShoppingList', () => {
       build1.inventorySlots[0].items[0]!,
       [
         {
+          ignorePrice: false,
           inventorySlotId: undefined,
           item: {
             ...rpk16Default,
             prices: rpk16DefaultPrices
           },
-          quantity: 1,
+          missingPrice: false,
           price: {
             barterItems: [],
             currencyName: 'RUB',
@@ -35,6 +36,7 @@ describe('getShoppingList', () => {
             value: 43345,
             valueInMainCurrency: 43345
           },
+          quantity: 1,
           unitPrice: {
             barterItems: [],
             currencyName: 'RUB',
@@ -47,12 +49,13 @@ describe('getShoppingList', () => {
           }
         },
         {
+          ignorePrice: false,
           inventorySlotId: undefined,
           item: {
             ...rpk16Drum,
             prices: rpk16DrumPrices
           },
-          quantity: 1,
+          missingPrice: false,
           price: {
             barterItems: [
               {
@@ -68,6 +71,7 @@ describe('getShoppingList', () => {
             value: 0,
             valueInMainCurrency: 0
           },
+          quantity: 1,
           unitPrice: {
             barterItems: [
               {
@@ -85,12 +89,13 @@ describe('getShoppingList', () => {
           }
         },
         {
+          ignorePrice: false,
           inventorySlotId: undefined,
           item: {
             ...alkali,
             prices: alkaliPrices
           },
-          quantity: 2,
+          missingPrice: false,
           price: {
             barterItems: [],
             currencyName: 'RUB',
@@ -101,6 +106,7 @@ describe('getShoppingList', () => {
             value: 24218,
             valueInMainCurrency: 24218
           },
+          quantity: 2,
           unitPrice: {
             barterItems: [],
             currencyName: 'RUB',
@@ -113,12 +119,13 @@ describe('getShoppingList', () => {
           }
         },
         {
+          ignorePrice: false,
           inventorySlotId: undefined,
           item: {
             ...ammo545us,
             prices: ammo545usPrices
           },
-          quantity: 95,
+          missingPrice: false,
           price: {
             barterItems: [],
             currencyName: 'RUB',
@@ -129,6 +136,7 @@ describe('getShoppingList', () => {
             value: 9120,
             valueInMainCurrency: 9120
           },
+          quantity: 95,
           unitPrice: {
             barterItems: [],
             currencyName: 'RUB',
@@ -146,12 +154,13 @@ describe('getShoppingList', () => {
       build1.inventorySlots[7].items[0]!,
       [
         {
+          ignorePrice: false,
           inventorySlotId: undefined,
           item: {
             ...berkut,
             prices: berkutPrices
           },
-          quantity: 1,
+          missingPrice: false,
           price: {
             barterItems: [],
             currencyName: 'RUB',
@@ -162,6 +171,7 @@ describe('getShoppingList', () => {
             value: 27285,
             valueInMainCurrency: 27285
           },
+          quantity: 1,
           unitPrice: {
             barterItems: [],
             currencyName: 'RUB',
@@ -174,12 +184,13 @@ describe('getShoppingList', () => {
           }
         },
         {
+          ignorePrice: false,
           inventorySlotId: undefined,
           item: {
             ...iskra,
             prices: iskraPrices
           },
-          quantity: 1,
+          missingPrice: false,
           price: {
             barterItems: [
               {
@@ -195,6 +206,7 @@ describe('getShoppingList', () => {
             value: 0,
             valueInMainCurrency: 0
           },
+          quantity: 1,
           unitPrice: {
             barterItems: [
               {
@@ -212,12 +224,13 @@ describe('getShoppingList', () => {
           }
         },
         {
+          ignorePrice: false,
           inventorySlotId: undefined,
           item: {
             ...syringe,
             prices: syringePrices
           },
-          quantity: 1,
+          missingPrice: false,
           price: {
             barterItems: [],
             currencyName: 'RUB',
@@ -228,6 +241,7 @@ describe('getShoppingList', () => {
             value: 25320,
             valueInMainCurrency: 25320
           },
+          quantity: 1,
           unitPrice: {
             barterItems: [],
             currencyName: 'RUB',
@@ -240,12 +254,13 @@ describe('getShoppingList', () => {
           }
         },
         {
+          ignorePrice: false,
           inventorySlotId: undefined,
           item: {
             ...water,
             prices: waterPrices
           },
-          quantity: 1,
+          missingPrice: false,
           price: {
             barterItems: [
               {
@@ -261,6 +276,7 @@ describe('getShoppingList', () => {
             value: 0,
             valueInMainCurrency: 0
           },
+          quantity: 1,
           unitPrice: {
             barterItems: [
               {
@@ -278,12 +294,13 @@ describe('getShoppingList', () => {
           }
         },
         {
+          ignorePrice: false,
           inventorySlotId: undefined,
           item: {
             ...h2o2,
             prices: h2o2Prices
           },
-          quantity: 1,
+          missingPrice: false,
           price: {
             barterItems: [],
             currencyName: 'RUB',
@@ -294,6 +311,7 @@ describe('getShoppingList', () => {
             value: 11473,
             valueInMainCurrency: 11473
           },
+          quantity: 1,
           unitPrice: {
             barterItems: [],
             currencyName: 'RUB',
@@ -344,12 +362,13 @@ describe('getShoppingList', () => {
       } as IInventoryItem,
       [
         {
+          ignorePrice: false,
           inventorySlotId: undefined,
           item: {
             ...berkut,
             prices: berkutPrices
           },
-          quantity: 1,
+          missingPrice: false,
           price: {
             barterItems: [],
             currencyName: 'RUB',
@@ -360,6 +379,7 @@ describe('getShoppingList', () => {
             value: 27285,
             valueInMainCurrency: 27285
           },
+          quantity: 1,
           unitPrice: {
             barterItems: [],
             currencyName: 'RUB',
@@ -372,12 +392,13 @@ describe('getShoppingList', () => {
           }
         },
         {
+          ignorePrice: false,
           inventorySlotId: undefined,
           item: {
             ...rpk16Drum,
             prices: rpk16DrumPrices
           },
-          quantity: 2,
+          missingPrice: false,
           price: {
             barterItems: [
               {
@@ -393,6 +414,7 @@ describe('getShoppingList', () => {
             value: 0,
             valueInMainCurrency: 0
           },
+          quantity: 2,
           unitPrice: {
             barterItems: [
               {
@@ -410,12 +432,13 @@ describe('getShoppingList', () => {
           }
         },
         {
+          ignorePrice: false,
           inventorySlotId: undefined,
           item: {
             ...alkali,
             prices: alkaliPrices
           },
-          quantity: 4,
+          missingPrice: false,
           price: {
             barterItems: [],
             currencyName: 'RUB',
@@ -426,6 +449,7 @@ describe('getShoppingList', () => {
             value: 48436,
             valueInMainCurrency: 48436
           },
+          quantity: 4,
           unitPrice: {
             barterItems: [],
             currencyName: 'RUB',
@@ -438,12 +462,13 @@ describe('getShoppingList', () => {
           }
         },
         {
+          ignorePrice: false,
           inventorySlotId: undefined,
           item: {
             ...rpk16RsBase,
             prices: rpk16RsBasePrices
           },
-          quantity: 1,
+          missingPrice: false,
           price: {
             barterItems: [],
             currencyName: 'RUB',
@@ -454,6 +479,7 @@ describe('getShoppingList', () => {
             value: 872,
             valueInMainCurrency: 872
           },
+          quantity: 1,
           unitPrice: {
             barterItems: [],
             currencyName: 'RUB',
@@ -526,12 +552,13 @@ describe('getShoppingList', () => {
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
+        ignorePrice: false,
         inventorySlotId: 'onSling',
         item: {
           ...rpk16Default,
           prices: rpk16DefaultPrices
         },
-        quantity: 1,
+        missingPrice: false,
         price: {
           barterItems: [],
           currencyName: 'RUB',
@@ -542,6 +569,7 @@ describe('getShoppingList', () => {
           value: 43345,
           valueInMainCurrency: 43345
         },
+        quantity: 1,
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
@@ -556,7 +584,7 @@ describe('getShoppingList', () => {
     ] as IShoppingListItem[])
   })
 
-  it('should ignore items that cannot be looted', async () => {
+  it('should ignore the price of items that are manually ignored', async () => {
     // Arrange
     useItemServiceMock()
     usePresetServiceMock()
@@ -588,12 +616,65 @@ describe('getShoppingList', () => {
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
+        ignorePrice: true,
+        inventorySlotId: undefined,
+        item: {
+          capacity: 4,
+          categoryId: 'securedContainer',
+          conflictingItemIds: [],
+          iconLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-icon.webp',
+          id: '544a11ac4bdc2d470e8b456a',
+          imageLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-image.webp',
+          marketLink: 'https://tarkov.dev/item/secure-container-alpha',
+          maxStackableAmount: 1,
+          name: 'Secure container Alpha',
+          prices: [
+            {
+              barterItems: [],
+              currencyName: 'USD',
+              itemId: '544a11ac4bdc2d470e8b456a',
+              merchant: 'peacekeeper',
+              merchantLevel: 2,
+              quest: undefined,
+              value: 7158,
+              valueInMainCurrency: 1023660
+            }
+          ],
+          shortName: 'Alpha',
+          weight: 0.6,
+          wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Secure_container_Alpha'
+        },
+        missingPrice: false,
+        price: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '544a11ac4bdc2d470e8b456a',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        },
+        quantity: 1,
+        unitPrice: {
+          barterItems: [],
+          currencyName: 'RUB',
+          itemId: '544a11ac4bdc2d470e8b456a',
+          merchant: '',
+          merchantLevel: 0,
+          quest: undefined,
+          value: 0,
+          valueInMainCurrency: 0
+        }
+      },
+      {
+        ignorePrice: false,
         inventorySlotId: undefined,
         item: {
           ...ammo9mmGT,
           prices: ammo9mmGTPrices
         },
-        quantity: 2,
+        missingPrice: false,
         price: {
           barterItems: [],
           currencyName: 'RUB',
@@ -604,6 +685,7 @@ describe('getShoppingList', () => {
           value: 146,
           valueInMainCurrency: 146
         },
+        quantity: 2,
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
@@ -618,7 +700,7 @@ describe('getShoppingList', () => {
     ] as IShoppingListItem[])
   })
 
-  it('should ignore items that are manually ignored', async () => {
+  it('should ignore items cannot be looted', async () => {
     // Arrange
     useItemServiceMock()
     usePresetServiceMock()
@@ -650,12 +732,13 @@ describe('getShoppingList', () => {
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
+        ignorePrice: false,
         inventorySlotId: undefined,
         item: {
           ...ammo9mmGT,
           prices: ammo9mmGTPrices
         },
-        quantity: 2,
+        missingPrice: false,
         price: {
           barterItems: [],
           currencyName: 'RUB',
@@ -666,6 +749,7 @@ describe('getShoppingList', () => {
           value: 146,
           valueInMainCurrency: 146
         },
+        quantity: 2,
         unitPrice: {
           barterItems: [],
           currencyName: 'RUB',
@@ -704,6 +788,7 @@ describe('getShoppingList', () => {
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
+        ignorePrice: false,
         inventorySlotId: undefined,
         item: {
           categoryId: 'notFound',
@@ -719,6 +804,7 @@ describe('getShoppingList', () => {
           weight: 0,
           wikiLink: ''
         },
+        missingPrice: true,
         price: {
           barterItems: [],
           currencyName: 'RUB',
@@ -768,8 +854,10 @@ describe('getShoppingList', () => {
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
+        ignorePrice: false,
         inventorySlotId: undefined,
         item: ammo545bp,
+        missingPrice: true,
         price: {
           barterItems: [],
           currencyName: 'RUB',

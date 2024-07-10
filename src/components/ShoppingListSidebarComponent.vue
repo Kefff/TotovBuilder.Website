@@ -23,15 +23,20 @@
           </Tooltip>
         </div>
       </div>
-      <PriceDetailItem
+      <div
         v-for="(shoppingListItem, index) of parameters"
         :key="index"
-        :item="shoppingListItem.item"
-        :price="shoppingListItem.price"
-        :quantity="shoppingListItem.quantity"
-        :unit-price="shoppingListItem.unitPrice"
         class="shopping-list-item"
-      />
+      >
+        <PriceDetailItem
+          :ignore-price-status="shoppingListItem.ignorePrice ? IgnoredUnitPrice.manuallyIgnored : IgnoredUnitPrice.notIgnored"
+          :item="shoppingListItem.item"
+          :missing="shoppingListItem.missingPrice"
+          :price="shoppingListItem.price"
+          :quantity="shoppingListItem.quantity"
+          :unit-price="shoppingListItem.unitPrice"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -49,6 +54,7 @@
 import { computed } from 'vue'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IBuildSummaryShoppingMerchant } from '../models/utils/IBuildSummaryMerchant'
+import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import StringUtils from '../utils/StringUtils'
 import MerchantIcon from './MerchantIconComponent.vue'
 import PriceDetailItem from './PriceDetailItemComponent.vue'
@@ -122,7 +128,7 @@ function getRequiredMerchants(): IBuildSummaryShoppingMerchant[] {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 0.625rem;
+  gap: 1rem;
   margin-bottom: 1rem;
 }
 

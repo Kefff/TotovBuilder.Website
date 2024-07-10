@@ -10,12 +10,18 @@
       {{ item.name }}
     </div>
     <div>
-      <Price :price="price" />
+      <Price
+        :ignore-price-status="ignorePriceStatus"
+        :missing="missing"
+        :price="price"
+      />
       <div
         v-if="quantity > 1"
         class="price-detail-item-price-per-unit"
       >
         <Price
+          :ignore-price-status="ignorePriceStatus"
+          :missing="missing"
           :price="unitPrice"
           :show-merchant-icon="false"
           :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
@@ -37,15 +43,23 @@
 <script setup lang="ts">
 import { IItem } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
+import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import ItemIcon from './ItemIconComponent.vue'
 import Price from './PriceComponent.vue'
 
-defineProps<{
-  item: IItem,
-  price: IPrice,
-  quantity: number,
-  unitPrice: IPrice
-}>()
+withDefaults(
+  defineProps<{
+    ignorePriceStatus?: IgnoredUnitPrice
+    item: IItem,
+    missing?: boolean,
+    price: IPrice,
+    quantity: number,
+    unitPrice: IPrice
+  }>(),
+  {
+    ignorePriceStatus: IgnoredUnitPrice.notIgnored,
+    missing: false
+  })
 </script>
 
 
