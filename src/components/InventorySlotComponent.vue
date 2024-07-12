@@ -361,13 +361,13 @@ async function setSummary() {
 
 .inventory-slot-summary-price {
   margin-left: auto;
-  margin-right: 3rem;
+  margin-right: 4.25rem;
   /* Space to align the price with the children prices that have the merchant icon */
   padding-left: 1rem;
 }
 
 .inventory-slot-summary-price-with-missing-price {
-  margin-right: 0.93rem !important;
+  margin-right: 2rem !important;
   /* Space to align the price with the children prices that have the merchant icon and have the missing price icon aligne with the merchant icon */
 }
 

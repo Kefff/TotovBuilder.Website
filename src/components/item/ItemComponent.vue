@@ -82,13 +82,13 @@
       <SelectedItemFunctionalities
         v-if="inventoryItemInternal != null"
         v-model:selectedTab="selectedTab"
-        v-model:showStats="showStats"
         :can-be-looted="canBeLooted"
         :can-have-content="itemIsContainer"
         :can-have-mods="itemIsModdable"
         :can-ignore-price="canIgnorePrice"
         :content-count="contentCount"
         :ignore-price="inventoryItemInternal.ignorePrice"
+        :item="item"
         :mods-count="modsCount"
         @update:ignore-price="onIgnorePriceChanged($event)"
       />
@@ -103,10 +103,6 @@
       v-if="inventoryItemInternal != null && item != null && !itemChanging"
       class="tabs"
     >
-      <StatsSelector
-        v-model:showStats="showStats"
-        :item="item"
-      />
       <div v-if="itemIsModdable">
         <ItemMods
           v-show="selectedTab === SelectableTab.mods"

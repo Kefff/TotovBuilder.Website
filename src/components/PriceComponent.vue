@@ -484,6 +484,7 @@ function togglePriceDetails(event: Event) {
 
 .price-icon {
   margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .price-quest-icon {

@@ -148,9 +148,9 @@ import { WebsiteConfigurationService } from '../services/WebsiteConfigurationSer
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
 import LanguageUtils from '../utils/LanguageUtils'
-import GlobalSidebar from './GlobalSidebarComponent.vue'
 import LoadingError from './LoadingErrorComponent.vue'
 import Notification from './NotificationComponent.vue'
+import GlobalSidebar from './sidebar/GlobalSidebarComponent.vue'
 
 const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 const versionService = Services.get(VersionService)

@@ -45,7 +45,7 @@
       >
         <Button
           class="p-button-text p-button-sm button-discreet"
-          @click="modelShowStats = !modelShowStats"
+          @click="onShowDetailsClick()"
         >
           <font-awesome-icon icon="clipboard-list" />
         </Button>
@@ -79,11 +79,13 @@
 
 <script setup lang="ts">
 import { Ref, inject, watch } from 'vue'
+import { IItem } from '../models/item/IItem'
 import { SelectableTab } from '../models/utils/SelectableTab'
+import { GlobalSidebarService } from '../services/GlobalSidebarService'
+import Services from '../services/repository/Services'
 
 const modelIgnorePrice = defineModel<boolean>('ignorePrice')
 const modelSelectedTab = defineModel<SelectableTab>('selectedTab')
-const modelShowStats = defineModel<boolean>('showStats')
 
 const props = withDefaults(
   defineProps<{
@@ -93,6 +95,7 @@ const props = withDefaults(
     canIgnorePrice: boolean,
     contentCount?: number,
     ignorePrice: boolean,
+    item: IItem,
     modsCount?: number
   }>(),
   {
@@ -113,6 +116,19 @@ watch(() => props.canHaveMods, () => {
     modelSelectedTab.value = props.canHaveContent ? SelectableTab.content : SelectableTab.hidden
   }
 })
+
+/**
+ * Reacts to the click on the "Show details" button.
+ *
+ * Opens the stats sidebar.
+ */
+function onShowDetailsClick() {
+  Services.get(GlobalSidebarService).display({
+    displayedComponentType: 'StatsSidebar',
+    position: 'left',
+    displayedComponentParameters: props.item
+  })
+}
 
 /**
  * Sets the selected tab.

@@ -1,9 +1,8 @@
 <template>
-  <slot />
-  <div
-    v-if="prices.length > 1"
-    class="stats-line"
-  >
+  <div class="stats-category">
+    {{ $t('caption.pricesAndWeight') }}
+  </div>
+  <div class="stats-line">
     <div
       v-for="(price, index) of prices"
       :key="index"
@@ -20,29 +19,12 @@
         <Price
           :price="price"
           :use-merchant-filter="false"
+          class="item-stats-price"
         />
       </div>
     </div>
   </div>
   <div class="stats-line">
-    <div
-      v-if="prices.length === 1"
-      class="stats-entry"
-    >
-      <div class="stats-caption">
-        <font-awesome-icon
-          icon="ruble-sign"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.price') }} :</span>
-      </div>
-      <div class="stats-value">
-        <Price
-          :price="prices[0]"
-          :use-merchant-filter="false"
-        />
-      </div>
-    </div>
     <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
@@ -55,6 +37,12 @@
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, item.weight) }}
       </div>
     </div>
+  </div>
+  <slot />
+  <div class="stats-category">
+    {{ $t('caption.links') }}
+  </div>
+  <div class="stats-line">
     <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
@@ -185,4 +173,8 @@ async function setPrices() {
 @import '../../css/icon.css';
 @import '../../css/link.css';
 @import '../../css/stats.css';
+
+.item-stats-price {
+  margin-right: 0.5rem;
+}
 </style>

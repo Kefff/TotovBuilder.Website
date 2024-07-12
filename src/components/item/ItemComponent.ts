@@ -21,7 +21,6 @@ import Loading from '../LoadingComponent.vue'
 import OptionHeaderSelector from '../option-header/OptionHeaderSelectorComponent.vue'
 import SelectedItem from '../SelectedItemComponent.vue'
 import SelectedItemFunctionalities from '../SelectedItemFunctionalitiesComponent.vue'
-import StatsSelector from '../stats/StatsSelectorComponent.vue'
 import SelectedItemSummarySelector from '../summary/SelectedItemSummarySelectorComponent.vue'
 import SummarySelector from '../summary/SummarySelectorComponent.vue'
 
@@ -35,7 +34,6 @@ export default defineComponent({
     SelectedItem,
     SelectedItemFunctionalities,
     SelectedItemSummarySelector,
-    StatsSelector,
     SummarySelector
   },
   props: {
@@ -105,7 +103,6 @@ export default defineComponent({
     const presetModSlotContainingItem = ref<IInventoryModSlot>()
     const quantity = ref(props.inventoryItem?.quantity ?? 1)
     const selectedTab = ref(SelectableTab.hidden)
-    const showStats = ref(false)
 
     watch(
       () => props.acceptedItems,
@@ -498,8 +495,7 @@ export default defineComponent({
       removeItem,
       SelectableTab,
       selectedTab,
-      setOptions,
-      showStats
+      setOptions
     }
   }
 })

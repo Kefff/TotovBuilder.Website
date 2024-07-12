@@ -29,14 +29,15 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { IGlobalSidebarOptions } from '../models/utils/IGlobalSidebarOptions'
-import { GlobalSidebarService } from '../services/GlobalSidebarService'
-import Services from '../services/repository/Services'
+import { IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
+import { GlobalSidebarService } from '../../services/GlobalSidebarService'
+import Services from '../../services/repository/Services'
 import ChangelogSidebar from './ChangelogSidebarComponent.vue'
 import GeneralOptionsSidebar from './GeneralOptionsSidebarComponent.vue'
 import MerchantItemsOptionsSidebar from './MerchantItemsOptionsSidebarComponent.vue'
 import NotificationsSidebar from './NotificationsSidebarComponent.vue'
 import ShoppingListSidebar from './ShoppingListSidebarComponent.vue'
+import StatsSidebar from './StatsSidebarComponent.vue'
 
 const globalSidebarService = Services.get(GlobalSidebarService)
 
@@ -52,6 +53,8 @@ const displayedComponent = computed(() => {
       return NotificationsSidebar
     case 'ShoppingListSidebar':
       return ShoppingListSidebar
+    case 'StatsSidebar':
+      return StatsSidebar
     default:
       return undefined
   }

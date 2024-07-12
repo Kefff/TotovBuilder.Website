@@ -52,13 +52,13 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { IShoppingListItem } from '../models/build/IShoppingListItem'
-import { IBuildSummaryShoppingMerchant } from '../models/utils/IBuildSummaryMerchant'
-import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
-import StringUtils from '../utils/StringUtils'
-import MerchantIcon from './MerchantIconComponent.vue'
-import PriceDetailItem from './PriceDetailItemComponent.vue'
-import Tooltip from './TooltipComponent.vue'
+import { IShoppingListItem } from '../../models/build/IShoppingListItem'
+import { IBuildSummaryShoppingMerchant } from '../../models/utils/IBuildSummaryMerchant'
+import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
+import StringUtils from '../../utils/StringUtils'
+import MerchantIcon from '../MerchantIconComponent.vue'
+import PriceDetailItem from '../PriceDetailItemComponent.vue'
+import Tooltip from '../TooltipComponent.vue'
 
 const props = defineProps<{ parameters: IShoppingListItem[] }>()
 
@@ -106,7 +106,7 @@ function getRequiredMerchants(): IBuildSummaryShoppingMerchant[] {
 
 
 <style scoped>
-@import '../css/sidebar.css';
+@import '../../css/sidebar.css';
 
 .shopping-list-button {
   align-items: center;
@@ -116,7 +116,6 @@ function getRequiredMerchants(): IBuildSummaryShoppingMerchant[] {
 
 .shopping-list-item {
   margin-bottom: 0.5rem;
-  margin-right: 0.5rem;
   /* For the merchant level to be fully displayed */
 }
 

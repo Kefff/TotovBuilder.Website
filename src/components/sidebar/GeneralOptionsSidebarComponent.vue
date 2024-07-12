@@ -106,11 +106,11 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { IGeneralOption } from '../models/utils/IGeneralOption'
-import { IGeneralOptionsGroup } from '../models/utils/IGeneralOptionsGroup'
-import { GeneralOptionsService } from '../services/GeneralOptionsService'
-import Services from '../services/repository/Services'
-import LanguageSelector from './LanguageSelectorComponent.vue'
+import { IGeneralOption } from '../../models/utils/IGeneralOption'
+import { IGeneralOptionsGroup } from '../../models/utils/IGeneralOptionsGroup'
+import { GeneralOptionsService } from '../../services/GeneralOptionsService'
+import Services from '../../services/repository/Services'
+import LanguageSelector from '../LanguageSelectorComponent.vue'
 
 const props = defineProps<{ parameters: IGeneralOptionsGroup[] }>()
 
@@ -168,9 +168,9 @@ function toggleAllowCookies() {
 
 
 <style scoped>
-@import '../css/button.css';
-@import '../css/icon.css';
-@import '../css/sidebar.css';
+@import '../../css/button.css';
+@import '../../css/icon.css';
+@import '../../css/sidebar.css';
 
 .general-options-addition-group {
   margin-top: 3rem;

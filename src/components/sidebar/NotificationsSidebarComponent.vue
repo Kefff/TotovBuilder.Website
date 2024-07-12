@@ -54,10 +54,10 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
-import { INotification } from '../models/utils/INotification'
-import { GlobalSidebarService } from '../services/GlobalSidebarService'
-import { NotificationService, NotificationType } from '../services/NotificationService'
-import Services from '../services/repository/Services'
+import { INotification } from '../../models/utils/INotification'
+import { GlobalSidebarService } from '../../services/GlobalSidebarService'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
+import Services from '../../services/repository/Services'
 
 const globalSidebarService = Services.get(GlobalSidebarService)
 const notificationService = Services.get(NotificationService)
@@ -130,8 +130,8 @@ function onNotificationAdded() {
 
 
 <style scoped>
-@import '../css/link.css';
-@import '../css/sidebar.css';
+@import '../../css/link.css';
+@import '../../css/sidebar.css';
 
 .notifications {
   max-height: 31.25rem;

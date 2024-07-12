@@ -190,7 +190,7 @@ async function setWeight() {
 
 .selected-item-summary-price-per-unit {
   font-size: 0.75rem;
-  margin-right: 2.5rem;
+  margin-right: 2.8rem;
   /* Alignment with the item total price */
 }
 
@@ -221,6 +221,7 @@ async function setWeight() {
   flex-wrap: nowrap;
   justify-content: end;
   margin-left: 1.7rem;
+  margin-right: 0.6rem;
   /* Alignment with the inventory slot price */
   width: 7rem;
 }
@@ -228,6 +229,7 @@ async function setWeight() {
 
 .selected-item-summary-weight-per-unit {
   font-size: 0.85rem;
+  margin-right: 0.85rem;
 }
 
 .selected-item-summary-weight-per-unit .icon-before-text {

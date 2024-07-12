@@ -66,10 +66,11 @@ const iconUrl = computed(() => {
   border-width: 1px;
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
   flex-shrink: 0;
+  flex-wrap: nowrap;
   overflow: hidden;
   position: relative;
+  width: fit-content;
 }
 
 .item-icon > img {

@@ -47,10 +47,10 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { IChangelogEntry } from '../models/configuration/IChangelogEntry'
-import { VersionService } from '../services/VersionService'
-import Services from '../services/repository/Services'
-import Loading from './LoadingComponent.vue'
+import { IChangelogEntry } from '../../models/configuration/IChangelogEntry'
+import { VersionService } from '../../services/VersionService'
+import Services from '../../services/repository/Services'
+import Loading from '../LoadingComponent.vue'
 
 defineProps<{ parameters: undefined }>()
 
@@ -89,8 +89,8 @@ async function loadChangelog() {
 
 
 <style scoped>
-@import '../css/link.css';
-@import '../css/sidebar.css';
+@import '../../css/link.css';
+@import '../../css/sidebar.css';
 
 .changelog-change {
   margin-top: 1rem;
