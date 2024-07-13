@@ -72,7 +72,7 @@ withDefaults(
 }
 
 .merchant-icon > img {
-  border-radius: 6px;
+  border-radius: 3px;
   width: 2rem;
 }
 

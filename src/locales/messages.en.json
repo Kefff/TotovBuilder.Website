@@ -37,6 +37,7 @@
     "armorPenetration": "Armor penetration",
     "backToBuilds": "Back to builds",
     "barter": "Barter",
+    "baseItem": "Base item",
     "blinding": "Blinding",
     "blindnessProtection": "Blindness protection",
     "buildLastChangesNotExported": "Changes from the {lastUpdated} have not been exported. They will be lost if you clear your browser data. Last export on {lastExported}.",

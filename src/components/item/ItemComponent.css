@@ -6,6 +6,11 @@
   margin-bottom: 0;
 }
 
+.item-base-item {
+  margin-left: 3.125rem;
+  margin-top: 0.25rem;
+}
+
 .item-clear-button {
   align-items: center;
   color: var(--error-color);

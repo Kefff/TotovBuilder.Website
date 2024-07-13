@@ -3,6 +3,7 @@ import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import { IItem } from '../../models/item/IItem'
 import { IMagazine } from '../../models/item/IMagazine'
+import { IModdable } from '../../models/item/IModdable'
 import { SelectableTab } from '../../models/utils/SelectableTab'
 import SortingData from '../../models/utils/SortingData'
 import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
@@ -69,6 +70,11 @@ export default defineComponent({
     path: {
       type: String,
       required: true
+    },
+    readOnly: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   emits: ['update:inventory-item'],
@@ -91,6 +97,7 @@ export default defineComponent({
     const modsCount = computed(() => inventoryItemInternal.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
     const optionHeight = computed(() => Number.parseInt(window.getComputedStyle(document.documentElement).fontSize.replace('px', '')) * 4)
 
+    const baseItem = ref<IInventoryItem | undefined>()
     const item = ref<IItem | undefined>()
     const itemChanging = ref(false)
     const itemIsContainer = ref(false)
@@ -139,6 +146,7 @@ export default defineComponent({
       item.value = await itemService.getItem(props.inventoryItem.itemId)
       quantity.value = props.inventoryItem.quantity
       presetModSlotContainingItem.value = presetService.getPresetModSlotContainingItem(item.value.id, props.path)
+      setBaseItem(item.value)
     }
 
     /**
@@ -310,6 +318,33 @@ export default defineComponent({
     }
 
     /**
+     * Sets the base item.
+     * This can correspond to the base item if the selected item is a preset.
+     * This can also correspond to the item itselft if it is the base item of a preset.
+     * @param item - Item from which we search the base item.
+     */
+    function setBaseItem(item: IItem) {
+      if (itemPropertiesService.isModdable(item)) {
+        const moddable = item as IModdable
+        const baseItemId = moddable.defaultPresetId != null ? moddable.id : moddable.baseItemId
+
+        if (baseItemId != null) {
+          baseItem.value = {
+            content: [],
+            ignorePrice: true,
+            itemId: baseItemId,
+            modSlots: [],
+            quantity: 1
+          }
+
+          return
+        }
+      }
+
+      baseItem.value = undefined
+    }
+
+    /**
      * Sets an item as an option if it matches the filter.
      * @param acceptedItem - Item that must set as an options.
      * @param filterWords - Filter words.
@@ -460,12 +495,15 @@ export default defineComponent({
             quantity: quantity.value
           }
         }
+
+        setBaseItem(newItem)
       }
 
       itemChanging.value = false
     }
 
     return {
+      baseItem,
       canIgnorePrice,
       contentCount,
       dropdownPanelHeight,

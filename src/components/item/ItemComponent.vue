@@ -7,10 +7,10 @@
       <div class="item-selection-dropdown">
         <Dropdown
           v-model="item"
-          :disabled="!editing"
+          :disabled="!editing || readOnly"
           :options="options"
           :scroll-height="dropdownPanelHeight"
-          :show-clear="editing"
+          :show-clear="editing && !readOnly"
           :virtual-scroller-options="{ orientation: 'vertical', itemSize: optionHeight }"
           class="item-dropdown"
           data-key="id"
@@ -84,7 +84,7 @@
         v-model:selectedTab="selectedTab"
         :can-be-looted="canBeLooted"
         :can-have-content="itemIsContainer"
-        :can-have-mods="itemIsModdable"
+        :can-have-mods="itemIsModdable && !readOnly"
         :can-ignore-price="canIgnorePrice"
         :content-count="contentCount"
         :ignore-price="inventoryItemInternal.ignorePrice"
@@ -99,11 +99,23 @@
         :inventory-item="inventoryItemInternal"
       />
     </div>
-    <div
-      v-if="inventoryItemInternal != null && item != null && !itemChanging"
-      class="tabs"
-    >
+    <div v-if="inventoryItemInternal != null && item != null && !itemChanging && !readOnly">
       <div v-if="itemIsModdable">
+        <div
+          v-if="baseItem != null"
+          class="item-base-item"
+        >
+          <div>
+            {{ $t('caption.baseItem') }}
+          </div>
+          <Item
+            :accepted-items="[]"
+            :can-be-looted="false"
+            :inventory-item="baseItem"
+            :path="path"
+            :read-only="true"
+          />
+        </div>
         <ItemMods
           v-show="selectedTab === SelectableTab.mods"
           :inventory-mod-slots="inventoryItemInternal.modSlots"

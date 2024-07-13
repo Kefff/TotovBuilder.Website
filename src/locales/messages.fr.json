@@ -36,6 +36,7 @@
     "armorPenetration": "Pénétration d'armure",
     "backToBuilds": "Retour au équipements",
     "barter": "Échange",
+    "baseItem": "Objet de base",
     "blinding": "Aveuglante",
     "blindnessProtection": "Protection contre l'aveuglement",
     "buildLastChangesNotExported": "Les changements du {lastUpdated} n'ont pas été exportés. Ils seront perdus si vos données de navigation sont effacées. Dernier export le {lastExported}.",
