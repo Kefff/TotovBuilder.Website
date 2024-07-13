@@ -333,6 +333,7 @@ export const armbandBlue: IItem = {
 }
 
 export const armor6b13Fl: IArmor = {
+  blindnessProtectionPercentage: 0,
   categoryId: 'armor',
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5c0e51be86f774598e797894-icon.webp',
@@ -440,6 +441,7 @@ export const armor6b13Fl: IArmor = {
 }
 
 export const armor6b13FlDefault: IArmor = {
+  blindnessProtectionPercentage: 0,
   categoryId: 'armor',
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5c0e51be86f774598e797894-icon.webp',
@@ -557,6 +559,7 @@ export const banshee: IVest = {
     'StomachRightSide'
   ],
   baseItemId: undefined,
+  blindnessProtectionPercentage: 0,
   conflictingItemIds: [],
   defaultPresetId: '657661ad234b9f6e050a42a2',
   durability: 0,
@@ -682,6 +685,7 @@ export const bansheeDefault: IVest = {
     'StomachRightSide'
   ],
   baseItemId: '639343fce101f4caa40a4ef3',
+  blindnessProtectionPercentage: 0,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   durability: 0,
@@ -865,19 +869,31 @@ export const cf: IItem = {
 }
 
 export const crossbow: IEyewear = {
+  armorClass: 0,
+  armoredAreas: [],
+  baseItemId: undefined,
+  blindnessProtectionPercentage: 0.3,
   categoryId: 'eyewear',
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  durability: 0,
+  ergonomicsModifierPercentage: 0,
   iconLink: 'https://assets.tarkov.dev/5d5fca1ea4b93635fd598c07-icon.webp',
   id: '5d5fca1ea4b93635fd598c07',
   imageLink: 'https://assets.tarkov.dev/5d5fca1ea4b93635fd598c07-image.webp',
   marketLink: 'https://tarkov.dev/item/crossbow-tactical-glasses',
+  material: 'UHMWPE',
   maxStackableAmount: 1,
+  modSlots: [],
+  movementSpeedModifierPercentage: 0,
   name: 'Crossbow tactical glasses',
+  presetArmorModifiers: undefined,
+  presetWearableModifiers: undefined,
   prices: [],
   shortName: 'Crossbow',
+  turningSpeedModifierPercentage: 0,
   weight: 0.03,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Crossbow_tactical_glasses',
-  blindnessProtectionPercentage: 0.3
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Crossbow_tactical_glasses'
 }
 
 export const cultLocust: IArmorMod = {
@@ -1076,6 +1092,7 @@ export const k1s: IHeadwear = {
     'HeadEars'
   ],
   baseItemId: undefined,
+  blindnessProtectionPercentage: 0,
   blocksHeadphones: true,
   conflictingItemIds: [],
   defaultPresetId: undefined,
@@ -1144,6 +1161,7 @@ export const k1sVisor: IArmorMod = {
 }
 
 export const lshZ2dtm: IHeadwear = {
+  blindnessProtectionPercentage: 0,
   categoryId: 'headwear',
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5d6d3716a4b9361bc8618872-icon.webp',
@@ -2264,6 +2282,7 @@ export const paca: IArmor = {
     'StomachLeftSide',
     'StomachRightSide'
   ],
+  blindnessProtectionPercentage: 0,
   ergonomicsModifierPercentage: -0.01,
   material: 'Aramid',
   movementSpeedModifierPercentage: -0.01,
@@ -3283,6 +3302,7 @@ export const salewa: IItem = {
 }
 
 export const scavVest: IVest = {
+  blindnessProtectionPercentage: 0,
   categoryId: 'vest',
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/572b7adb24597762ae139821-icon.webp',

@@ -1,15 +1,28 @@
 <template>
-  <div class="stats-line">
-    <div class="stats-entry">
+  <ContainerStats :item="magazine" />
+  <div
+    v-if="hasModifiers"
+    class="stats-category"
+  >
+    {{ $t('caption.modifiers') }}
+  </div>
+  <div
+    v-if="hasModifiers"
+    class="stats-line"
+  >
+    <div
+      v-if="ergonomicsModifier !== 0"
+      class="stats-entry"
+    >
       <div class="stats-caption">
         <font-awesome-icon
-          icon="box-open"
+          icon="hand-paper"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.capacity') }} :</span>
+        <span>{{ $t('caption.ergonomics') }} :</span>
       </div>
-      <div class="stats-value">
-        {{ magazine.capacity }}
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsModifier)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
       </div>
     </div>
     <div
@@ -42,33 +55,12 @@
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.checkSpeedModifierPercentage, magazine.checkSpeedModifierPercentage) }}
       </div>
     </div>
-    <div
-      v-if="ergonomicsModifier !== 0"
-      class="stats-entry"
-    >
-      <div class="stats-caption">
-        <font-awesome-icon
-          icon="hand-paper"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.ergonomics') }} :</span>
-      </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsModifier)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
-      </div>
-    </div>
   </div>
-  <div v-if="acceptedAmmunition.length > 0">
-    <div class="stats-entry">
-      <div class="stats-caption">
-        <CustomIcon
-          :icon="Images.caliber"
-          position="before"
-        >
-          <span>{{ $t('caption.acceptedAmmunition') }} :</span>
-        </CustomIcon>
-      </div>
-    </div>
+  <div
+    v-if="acceptedAmmunition.length > 0"
+    class="stats-category"
+  >
+    {{ $t('caption.acceptedAmmunition') }}
   </div>
   <div
     v-if="acceptedAmmunition.length > 0"
@@ -101,14 +93,13 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import Images from '../../images'
 import { IItem } from '../../models/item/IItem'
 import { IMagazine } from '../../models/item/IMagazine'
 import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
-import CustomIcon from '../CustomIconComponent.vue'
 import ItemIcon from '../ItemIconComponent.vue'
+import ContainerStats from './ContainerStatsComponent.vue'
 
 const props = defineProps<{
   item: IItem
@@ -116,8 +107,12 @@ const props = defineProps<{
 
 const acceptedAmmunition = ref<IItem[]>([])
 
-const magazine = computed(() => props.item as IMagazine)
 const ergonomicsModifier = computed(() => magazine.value.presetErgonomicsModifier ?? magazine.value.ergonomicsModifier)
+const hasModifiers = computed(() =>
+  ergonomicsModifier.value !== 0
+  || magazine.value.loadSpeedModifierPercentage !== 0
+  || magazine.value.checkSpeedModifierPercentage !== 0)
+const magazine = computed(() => props.item as IMagazine)
 
 onMounted(() => getAcceptedAmmunition())
 
@@ -148,11 +143,15 @@ async function getAcceptedAmmunition() {
 @import '../../css/icon.css';
 @import '../../css/stats.css';
 
+.magazine-stats-ammunition {
+  height: unset;
+}
+
 .magazine-stats-ammunition:first-child {
   margin-top: 0.5rem
 }
 
 .magazine-stats-ammunition-icon {
-  margin-right: 0.5rem
+  margin-right: 0.5rem;
 }
 </style>

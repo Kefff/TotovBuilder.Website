@@ -445,6 +445,7 @@ function togglePriceDetails(event: Event) {
 }
 
 .price-details-header-close-button {
+  color: var(--util-color7) !important;
   font-size: 1rem !important;
   padding: 0 !important;
 }

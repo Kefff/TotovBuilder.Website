@@ -372,6 +372,8 @@ async function setSummary() {
 }
 
 .inventory-slot-summary-value {
+  align-items: center;
+  display: flex;
   margin-left: 2rem;
 }
 
@@ -383,6 +385,8 @@ async function setSummary() {
 }
 
 .inventory-slot-weight {
+  align-items: center;
+  display: flex;
   margin-left: 1rem;
   text-align: right;
   width: 7rem;

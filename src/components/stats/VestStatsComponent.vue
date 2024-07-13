@@ -1,6 +1,6 @@
 <template>
-  <ArmorStats :item="vest" />
   <ContainerStats :item="vest" />
+  <ArmorStats :item="vest" />
 </template>
 
 

@@ -666,8 +666,10 @@ describe('getShoppingListMerchants()', () => {
     // Act
     const merchants = services.getShoppingListMerchants([
       {
+        ignorePrice: false,
         inventorySlotId: undefined,
         item: ak12PistolGrip,
+        missingPrice: false,
         price: {
           barterItems: [],
           currencyName: 'RUB',
@@ -691,8 +693,10 @@ describe('getShoppingListMerchants()', () => {
         }
       },
       {
+        ignorePrice: false,
         inventorySlotId: undefined,
         item: salewa,
+        missingPrice: false,
         price: {
           barterItems: [],
           currencyName: 'RUB',
@@ -724,8 +728,10 @@ describe('getShoppingListMerchants()', () => {
         }
       },
       {
+        ignorePrice: false,
         inventorySlotId: 'onSling',
         item: rpk16Default,
+        missingPrice: false,
         price: {
           barterItems: [],
           currencyName: 'RUB',
@@ -749,8 +755,10 @@ describe('getShoppingListMerchants()', () => {
         }
       },
       {
+        ignorePrice: false,
         inventorySlotId: 'tacticalRig',
         item: scavVest,
+        missingPrice: false,
         price: {
           barterItems: [],
           currencyName: 'RUB',

@@ -1,6 +1,12 @@
 <template>
   <div
-    v-if="rangedWeaponMod.accuracyModifierPercentage !== 0 || ergonomicsModifier !== 0 || rangedWeaponMod.recoilModifierPercentage !== 0"
+    v-if="hasModifiers"
+    class="stats-category"
+  >
+    {{ $t('caption.modifiers') }}
+  </div>
+  <div
+    v-if="hasModifiers"
     class="stats-line"
   >
     <div
@@ -62,8 +68,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
 import { IItem } from '../../models/item/IItem'
+import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 
 const props = defineProps<{
@@ -71,6 +77,10 @@ const props = defineProps<{
 }>()
 
 const ergonomicsModifier = computed(() => rangedWeaponMod.value.presetErgonomicsModifier ?? rangedWeaponMod.value.ergonomicsModifier)
+const hasModifiers = computed(() =>
+  rangedWeaponMod.value.accuracyModifierPercentage !== 0
+  || ergonomicsModifier.value !== 0
+  || rangedWeaponMod.value.recoilModifierPercentage !== 0)
 const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
 </script>
 

@@ -84,9 +84,9 @@ withDefaults(
 
 <style>
 .selected-item > .item-icon {
-  border-bottom-style: none;
-  border-left-style: none;
   border-radius: 0;
-  border-top-style: none;
+  border-right-color: var(--util-color5);
+  border-right-width: 1px;
+  border-right-style: solid;
 }
 </style>

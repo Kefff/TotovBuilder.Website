@@ -79,6 +79,7 @@ describe('parseReducedItem', () => {
         armorClass: 0,
         armoredAreas: [],
         baseItemId: undefined,
+        blindnessProtectionPercentage: 0,
         blocksHeadphones: false,
         categoryId: 'headwear',
         conflictingItemIds: [],

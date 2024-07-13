@@ -1,4 +1,7 @@
 <template>
+  <div class="stats-category">
+    {{ $t('caption.ammunition') }}
+  </div>
   <div class="stats-line">
     <div class="stats-entry">
       <div class="stats-caption">
@@ -13,6 +16,8 @@
         {{ $t('caption.' + StringUtils.toLowerFirst(ammunition.caliber)) }}
       </div>
     </div>
+  </div>
+  <div class="stats-line">
     <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
@@ -25,10 +30,21 @@
         {{ ammunition.projectiles }}
       </div>
     </div>
-    <div
-      v-if="ammunition.velocity !== 0"
-      class="stats-entry"
-    >
+    <div class="stats-entry">
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="viruses"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.fragmentationChance') }} :</span>
+      </div>
+      <div class="stats-value">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChance, ammunition.fragmentationChance) }}
+      </div>
+    </div>
+  </div>
+  <div class="stats-line">
+    <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
           icon="wind"
@@ -41,20 +57,40 @@
       </div>
     </div>
     <div
-      v-if="ammunition.durabilityBurnModifierPercentage !== 0"
+      v-if="ammunition.subsonic"
       class="stats-entry"
     >
       <div class="stats-caption">
-        <font-awesome-icon
-          icon="fire"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.durabilityBurn') }} :</span>
-      </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(ammunition.durabilityBurnModifierPercentage, true)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.durabilityBurnModifierPercentage, ammunition.durabilityBurnModifierPercentage) }}
+        <div class="icon-before-text" />
+        <span class="stats-value-positive">{{ $t('caption.subsonic') }}</span>
       </div>
     </div>
+  </div>
+  <div
+    v-if="ammunition.tracer || ammunition.blinding"
+    class="stats-line"
+  >
+    <div
+      v-if="ammunition.tracer"
+      class="stats-entry"
+    >
+      <div class="stats-caption">
+        <div class="icon-before-text" />
+        <span class="stats-value-negative">{{ $t('caption.tracer') }}</span>
+      </div>
+    </div>
+    <div
+      v-if="ammunition.blinding"
+      class="stats-entry"
+    >
+      <div class="stats-caption">
+        <div class="icon-before-text" />
+        <span class="stats-value-positive">{{ $t('caption.blinding') }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-category">
+    {{ $t('caption.damageAndArmorPenetration') }}
   </div>
   <div class="stats-line">
     <div class="stats-entry">
@@ -82,6 +118,8 @@
         </span>
       </div>
     </div>
+  </div>
+  <div class="stats-line">
     <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
@@ -106,46 +144,45 @@
         <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorDamagePercentage, ammunition.armorDamagePercentage) }}</span>
       </div>
     </div>
-    <div class="stats-entry">
-      <div class="stats-caption">
-        <font-awesome-icon
-          icon="viruses"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.fragmentationChance') }} :</span>
-      </div>
-      <div class="stats-value">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChance, ammunition.fragmentationChance) }}
-      </div>
-    </div>
   </div>
   <div
     v-if="ammunition.armorPenetrations.length > 0"
     class="stats-line"
   >
-    <div
-      v-for="c of ammunition.armorPenetrations.length"
-      :key="c"
-      class="stats-entry"
-    >
+    <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
           icon="award"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.armorClassPenetration', { class: c }) }} :</span>
+        <span>{{ $t('caption.armorPenetration') }} :</span>
       </div>
-      <div class="stats-value">
-        <Tooltip :tooltip="getArmorPenetrationTooltip(c, ammunition.armorPenetrations[c - 1])">
-          <span :class="'armor-penetration' + ammunition.armorPenetrations[c - 1]">
-            {{ ammunition.armorPenetrations[c - 1] }}
-          </span>
+      <div class="ammunition-stats-penetrated-armor-list">
+        <Tooltip
+          v-for="c of ammunition.armorPenetrations.length"
+          :key="c"
+          :tooltip="getArmorPenetrationTooltip(c, ammunition.armorPenetrations[c - 1])"
+          class="ammunition-stats-penetrated-armor"
+        >
+          <font-awesome-icon
+            icon="award"
+            :class="'ammunition-stats-penetrated-armor-icon armor-penetration' + ammunition.armorPenetrations[c - 1]"
+          />
+          <div class="ammunition-stats-penetrated-armor-class">
+            {{ c }}
+          </div>
         </Tooltip>
       </div>
     </div>
   </div>
   <div
-    v-if="ammunition.recoilModifierPercentage !== 0 || ammunition.accuracyModifierPercentage !== 0 || ammunition.heavyBleedingChance !== 0 || ammunition.lightBleedingChance !== 0"
+    v-if="hasModifiers"
+    class="stats-category"
+  >
+    {{ $t('caption.modifiers') }}
+  </div>
+  <div
+    v-if="ammunition.recoilModifierPercentage !== 0 || ammunition.accuracyModifierPercentage !== 0"
     class="stats-line"
   >
     <div
@@ -182,12 +219,20 @@
         </span>
       </div>
     </div>
+  </div>
+  <div
+    v-if="ammunition.heavyBleedingChance !== 0 || ammunition.lightBleedingChance !== 0"
+    class="stats-line"
+  >
     <div
       v-if="ammunition.heavyBleedingChance !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
-        <div class="icon-before-text" />
+        <font-awesome-icon
+          icon="tint"
+          class="icon-before-text"
+        />
         <span>{{ $t('caption.heavyBleeding') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(ammunition.heavyBleedingChance)">
@@ -199,7 +244,10 @@
       class="stats-entry"
     >
       <div class="stats-caption">
-        <div class="icon-before-text" />
+        <font-awesome-icon
+          icon="tint"
+          class="icon-before-text"
+        />
         <span>{{ $t('caption.lightBleeding') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(ammunition.lightBleedingChance)">
@@ -208,34 +256,22 @@
     </div>
   </div>
   <div
-    v-if="ammunition.tracer || ammunition.subsonic || ammunition.blinding"
+    v-if="ammunition.durabilityBurnModifierPercentage !== 0"
     class="stats-line"
   >
     <div
-      v-if="ammunition.tracer"
+      v-if="ammunition.durabilityBurnModifierPercentage !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
-        <div class="icon-before-text" />
-        <span class="stats-value-negative">{{ $t('caption.tracer') }}</span>
+        <font-awesome-icon
+          icon="fire"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.durabilityBurn') }} :</span>
       </div>
-    </div>
-    <div
-      v-if="ammunition.subsonic"
-      class="stats-entry"
-    >
-      <div class="stats-caption">
-        <div class="icon-before-text" />
-        <span class="stats-value-positive">{{ $t('caption.subsonic') }}</span>
-      </div>
-    </div>
-    <div
-      v-if="ammunition.blinding"
-      class="stats-entry"
-    >
-      <div class="stats-caption">
-        <div class="icon-before-text" />
-        <span class="stats-value-positive">{{ $t('caption.blinding') }}</span>
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(ammunition.durabilityBurnModifierPercentage, true)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.durabilityBurnModifierPercentage, ammunition.durabilityBurnModifierPercentage) }}
       </div>
     </div>
   </div>
@@ -266,8 +302,14 @@ const props = defineProps<{
   item: IItem
 }>()
 
-const canOneshot = computed(() => ammunition.value.fleshDamage >= Services.get(TarkovValuesService).values.chestHp)
 const ammunition = computed(() => props.item as IAmmunition)
+const canOneshot = computed(() => ammunition.value.fleshDamage >= Services.get(TarkovValuesService).values.chestHp)
+const hasModifiers = computed(() =>
+  ammunition.value.accuracyModifierPercentage !== 0
+  || ammunition.value.durabilityBurnModifierPercentage !== 0
+  || ammunition.value.heavyBleedingChance !== 0
+  || ammunition.value.lightBleedingChance !== 0
+  || ammunition.value.recoilModifierPercentage !== 0)
 
 /**
  * Gets the tooltip for an armor penetration.
@@ -297,5 +339,24 @@ function getArmorPenetrationTooltip(armorClass: number, penetration: number): st
 
 .ammunition-stats-oneshot {
   margin-right: 0.5rem
+}
+
+.ammunition-stats-penetrated-armor {
+  align-items: center;
+  display: flex;
+  margin-right: 0.25rem;
+}
+
+.ammunition-stats-penetrated-armor:last-child {
+  margin-right: 0;
+}
+
+.ammunition-stats-penetrated-armor-class {
+  font-size: 0.75rem;
+}
+
+.ammunition-stats-penetrated-armor-list {
+  align-items: center;
+  display: flex;
 }
 </style>

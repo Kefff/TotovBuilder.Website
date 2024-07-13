@@ -1,4 +1,7 @@
 <template>
+  <div class="stats-category">
+    {{ $t('caption.rangedWeapon') }}
+  </div>
   <div class="stats-line">
     <div class="stats-entry">
       <div class="stats-caption">

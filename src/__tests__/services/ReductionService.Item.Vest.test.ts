@@ -43,6 +43,7 @@ describe('parseReducedItem', () => {
           'StomachButtocks'
         ],
         baseItemId: undefined,
+        blindnessProtectionPercentage: 0,
         capacity: 12,
         categoryId: 'vest',
         conflictingItemIds: [],
@@ -160,6 +161,7 @@ describe('parseReducedItem', () => {
           'BCKPLATE'
         ],
         baseItemId: undefined,
+        blindnessProtectionPercentage: 0,
         capacity: 18,
         categoryId: 'vest',
         conflictingItemIds: [],
@@ -345,6 +347,7 @@ describe('parseReducedItem', () => {
           'BCKPLATE'
         ],
         baseItemId: '5b44cad286f77402a54ae7e5',
+        blindnessProtectionPercentage: 0,
         capacity: 18,
         categoryId: 'vest',
         conflictingItemIds: [],
@@ -454,6 +457,7 @@ describe('parseReducedItem', () => {
         armorClass: 0,
         armoredAreas: [],
         baseItemId: undefined,
+        blindnessProtectionPercentage: 0,
         capacity: 6,
         categoryId: 'vest',
         conflictingItemIds: [],

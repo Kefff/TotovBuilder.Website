@@ -7,19 +7,24 @@
   </div>
   <div class="sidebar-option">
     <div class="stats-sidebar">
-      <span class="stats-category">{{ parameters.name }}</span>
-      <img
-        v-if="parameters.imageLink != null"
-        class="stats-sidebar-image"
-        :src="parameters.imageLink"
-      >
-      <ItemStats :item="parameters">
-        <component
-          :is="specializedComponent"
-          v-if="specializedComponent != null"
-          :item="parameters"
-        />
-      </ItemStats>
+      <div class="stats-category">
+        {{ parameters.name }}
+      </div>
+      <div>
+        <div class="stats-sidebar-image">
+          <img
+            v-if="parameters.imageLink != null"
+            :src="parameters.imageLink"
+          >
+        </div>
+        <ItemStats :item="parameters">
+          <component
+            :is="specializedComponent"
+            v-if="specializedComponent != null"
+            :item="parameters"
+          />
+        </ItemStats>
+      </div>
     </div>
   </div>
 </template>
@@ -132,11 +137,14 @@ function getSpecializedComponent(itemCategoryId?: string) {
 }
 
 .stats-sidebar-image {
-  border-color: var(--util-color5);
-  border-radius: 3px;
-  border-style: solid;
-  border-width: 1px;
-  margin-top: 1rem;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.stats-sidebar-image > img {
+  border-radius: 9px;
+  margin-top: 0.25rem;
   max-width: 36rem;
   width: 100%;
 }

@@ -1,5 +1,14 @@
 <template>
-  <div class="stats-line">
+  <div
+    v-if="container.capacity > 0"
+    class="stats-category"
+  >
+    {{ $t('caption.content') }}
+  </div>
+  <div
+    v-if="container.capacity > 0"
+    class="stats-line"
+  >
     <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon

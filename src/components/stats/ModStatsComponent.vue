@@ -1,6 +1,12 @@
 <template>
   <div
     v-if="ergonomicsModifier !== 0"
+    class="stats-category"
+  >
+    {{ $t('caption.modifiers') }}
+  </div>
+  <div
+    v-if="ergonomicsModifier !== 0"
     class="stats-line"
   >
     <div class="stats-entry">
@@ -29,8 +35,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { IMod } from '../../models/item/IMod'
 import { IItem } from '../../models/item/IItem'
+import { IMod } from '../../models/item/IMod'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 
 const props = defineProps<{

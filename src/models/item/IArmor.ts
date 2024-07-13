@@ -17,6 +17,11 @@ export interface IArmor extends IModdable, IWearable {
   armoredAreas: string[]
 
   /**
+  * Blindness protection percentage.
+  */
+  blindnessProtectionPercentage: number
+
+  /**
    * Durability
    */
   durability: number

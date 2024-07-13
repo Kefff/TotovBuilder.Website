@@ -60,10 +60,7 @@ const iconUrl = computed(() => {
 <style scoped>
 .item-icon {
   align-items: center;
-  border-color: var(--util-color5);
-  border-radius: 3px;
-  border-style: solid;
-  border-width: 1px;
+  border-radius: 6px;
   display: flex;
   flex-direction: row;
   flex-shrink: 0;

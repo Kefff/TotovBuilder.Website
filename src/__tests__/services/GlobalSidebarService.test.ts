@@ -27,7 +27,7 @@ describe('display()', () => {
 
     // Act
     service.display({
-      displayedComponentType: 'GeneralOptions',
+      displayedComponentType: 'GeneralOptionsSidebar',
       position: 'left'
     })
 

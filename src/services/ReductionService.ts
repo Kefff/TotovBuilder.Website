@@ -356,6 +356,7 @@ export class ReductionService {
 
     const armorClass = reducedItem['ac'] as number ?? 0
     const armoredAreas = reducedItem['aa'] as string[] ?? []
+    const blindnessProtectionPercentage = reducedItem['bp'] as number ?? 0
     const durability = reducedItem['d'] as number ?? 0
     const material = reducedItem['ma'] as string ?? ''
 
@@ -365,6 +366,7 @@ export class ReductionService {
       ...wearableProperties,
       armorClass,
       armoredAreas,
+      blindnessProtectionPercentage,
       durability,
       material,
       presetArmorModifiers: undefined
@@ -380,12 +382,9 @@ export class ReductionService {
   private parseReducedArmorMod(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IArmorMod {
     const armorProperties = this.parseReducedArmor(reducedItem, baseItemProperties)
 
-    const blindnessProtectionPercentage = reducedItem['bp'] as number ?? 0
-
     return {
       ...baseItemProperties,
-      ...armorProperties,
-      blindnessProtectionPercentage
+      ...armorProperties
     }
   }
 
@@ -428,11 +427,11 @@ export class ReductionService {
    * @returns Item.
    */
   private parseReducedEyewear(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IEyewear {
-    const blindnessProtectionPercentage = reducedItem['bp'] as number
+    const armorProperties = this.parseReducedArmor(reducedItem, baseItemProperties)
 
     return {
       ...baseItemProperties,
-      blindnessProtectionPercentage
+      ...armorProperties
     }
   }
 

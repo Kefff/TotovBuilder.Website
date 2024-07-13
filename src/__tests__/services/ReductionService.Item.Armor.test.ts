@@ -22,6 +22,7 @@ describe('parseReducedItem', () => {
         armorClass: 0,
         armoredAreas: [],
         baseItemId: undefined,
+        blindnessProtectionPercentage: 0,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         durability: 0,
@@ -182,6 +183,7 @@ describe('parseReducedItem', () => {
           'RightArmShoulder',
           'StomachGroin'
         ],
+        blindnessProtectionPercentage: 0,
         categoryId: 'armor',
         baseItemId: undefined,
         conflictingItemIds: [],
@@ -433,6 +435,7 @@ describe('parseReducedItem', () => {
           'RightArmShoulder',
           'StomachGroin'
         ],
+        blindnessProtectionPercentage: 0,
         categoryId: 'armor',
         baseItemId: '545cdb794bdc2d3a198b456a',
         conflictingItemIds: [],

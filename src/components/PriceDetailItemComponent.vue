@@ -86,6 +86,6 @@ withDefaults(
 
 .price-detail-item-price-per-unit {
   font-size: 0.75rem;
-  margin-right: 2.5rem;
+  margin-right: 3rem;
 }
 </style>

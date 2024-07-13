@@ -1,21 +1,5 @@
 <template>
-  <div
-    v-if="eyewear.blindnessProtectionPercentage !== 0"
-    class="stats-line"
-  >
-    <div class="stats-entry">
-      <div class="stats-caption">
-        <font-awesome-icon
-          icon="low-vision"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.blindnessProtection') }} :</span>
-      </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(eyewear.blindnessProtectionPercentage)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.blindnessProtectionPercentage, eyewear.blindnessProtectionPercentage) }}
-      </div>
-    </div>
-  </div>
+  <ArmorStats :item="eyewear" />
 </template>
 
 
@@ -31,7 +15,7 @@
 import { computed } from 'vue'
 import { IEyewear } from '../../models/item/IEyewear'
 import { IItem } from '../../models/item/IItem'
-import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import ArmorStats from './ArmorStatsComponent.vue'
 
 const props = defineProps<{
   item: IItem
@@ -39,17 +23,3 @@ const props = defineProps<{
 
 const eyewear = computed(() => props.item as IEyewear)
 </script>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/icon.css';
-@import '../../css/stats.css';
-</style>

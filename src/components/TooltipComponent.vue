@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { DirectiveArguments } from '../models/utils/TootipDirectiveArguments'
+import { DirectiveArguments } from '../models/utils/TooltipDirectiveArguments'
 
 const props = withDefaults(
   defineProps<{

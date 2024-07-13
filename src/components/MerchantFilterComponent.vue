@@ -135,7 +135,7 @@ function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel:
 }
 
 .merchant-filter-icon {
-  border-radius: 3px;
+  border-radius: 6px;
   cursor: pointer;
   width: 3rem;
 }

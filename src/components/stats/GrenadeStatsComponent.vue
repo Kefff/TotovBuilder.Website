@@ -1,4 +1,7 @@
 <template>
+  <div class="stats-category">
+    {{ $t('caption.grenade') }}
+  </div>
   <div class="stats-line">
     <div
       v-if="grenade.fragmentsAmount > 0"
