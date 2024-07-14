@@ -130,10 +130,7 @@
                 </span>
               </div>
             </Tooltip>
-            <div
-              class="option-entry inventory-slot-summary-price"
-              :class="summary.price.missingPrice ? 'inventory-slot-summary-price-with-missing-price' : ''"
-            >
+            <div class="option-entry inventory-slot-summary-price">
               <InventoryPrice
                 :inventory-price="summary.price"
                 :is-build="false"
@@ -361,14 +358,9 @@ async function setSummary() {
 
 .inventory-slot-summary-price {
   margin-left: auto;
-  margin-right: 4.25rem;
+  margin-right: 1.25rem;
   /* Space to align the price with the children prices that have the merchant icon */
   padding-left: 1rem;
-}
-
-.inventory-slot-summary-price-with-missing-price {
-  margin-right: 2rem !important;
-  /* Space to align the price with the children prices that have the merchant icon and have the missing price icon aligne with the merchant icon */
 }
 
 .inventory-slot-summary-value {
@@ -387,6 +379,7 @@ async function setSummary() {
 .inventory-slot-weight {
   align-items: center;
   display: flex;
+  justify-content: end;
   margin-left: 1rem;
   text-align: right;
   width: 7rem;

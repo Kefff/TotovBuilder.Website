@@ -3,14 +3,42 @@
     <div class="option-line">
       <slot />
       <div class="selected-item-summary-right">
-        <div class="selected-item-summary-right-price">
-          <Price
-            :price="selectedItemPrice.price"
-            :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
-            :missing="hasMissingPrice"
-          />
-          <div class="selected-item-summary-weight">
-            <div v-if="selectedItemWeight.weight > 0">
+        <div class="selected-item-summary-right-base">
+          <div>
+            <div v-if="summaryForItemWithMods">
+              <div class="selected-item-summary-right-with-mods">
+                <InventoryPrice
+                  :custom-tooltip="$t('caption.priceWithModsAndContent')"
+                  :inventory-price="selectedItemInventoryPrice"
+                  :is-build="false"
+                />
+              </div>
+            </div>
+            <Price
+              :price="selectedItemPrice.price"
+              :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
+              :missing="hasMissingPrice"
+            />
+          </div>
+          <div class="selected-item-summary-right-weight">
+            <div v-if="selectedItemWeight.weight > 0 && summaryForItemWithMods">
+              <div class="selected-item-summary-right-with-mods">
+                <Tooltip
+                  :tooltip="$t('caption.weightWithModsAndContent')"
+                  position="left"
+                >
+                  <font-awesome-icon
+                    icon="weight-hanging"
+                    class="icon-before-text"
+                  />
+                  <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weightWithContent) }}</span>
+                </Tooltip>
+              </div>
+            </div>
+            <div
+              v-if="selectedItemWeight.weight > 0"
+              class="selected-item-summary-right-weight-base"
+            >
               <Tooltip :tooltip="$t('caption.weight')">
                 <font-awesome-icon
                   icon="weight-hanging"
@@ -21,8 +49,8 @@
             </div>
           </div>
         </div>
-        <div class="selected-item-summary-right-unit-price">
-          <div class="selected-item-summary-price-per-unit">
+        <div class="selected-item-summary-right-per-unit">
+          <div class="selected-item-summary-right-per-unit-price">
             <Price
               v-if="showUnitPrice"
               :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
@@ -31,7 +59,7 @@
               :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
             />
           </div>
-          <div class="selected-item-summary-weight selected-item-summary-weight-per-unit">
+          <div class="selected-item-summary-right-weight">
             <div v-if="selectedItemWeight.unitWeight !== selectedItemWeight.weight">
               <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
                 <font-awesome-icon
@@ -61,23 +89,27 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IInventoryItemPrice } from '../../models/utils/IInventoryItemPrice'
+import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { IWeight } from '../../models/utils/IWeight'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import InventoryPrice from '../InventoryPriceComponent.vue'
 import Price from '../PriceComponent.vue'
 
 const props = withDefaults(
   defineProps<{
     canBeLooted?: boolean
     inventoryItem: IInventoryItem,
-    inventoryItemInSameSlotInPreset?: IInventoryItem
+    inventoryItemInSameSlotInPreset?: IInventoryItem,
+    summaryForItemWithMods?: boolean
   }>(),
   {
     canBeLooted: true,
-    inventoryItemInSameSlotInPreset: undefined
+    inventoryItemInSameSlotInPreset: undefined,
+    summaryForItemWithMods: false
   })
 
 const globalFilterService = Services.get(GlobalFilterService)
@@ -120,6 +152,11 @@ const selectedItemWeight = ref<IWeight>({
   weightWithContent: 0,
   unitWeight: 0
 })
+const selectedItemInventoryPrice = computed<IInventoryPrice>(() => ({
+  missingPrice: hasMissingPrice.value,
+  priceByCurrency: selectedItemPrice.value.pricesWithContent,
+  priceInMainCurrency: selectedItemPrice.value.priceWithContentInMainCurrency
+}))
 
 onMounted(() => {
   globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
@@ -188,12 +225,6 @@ async function setWeight() {
   flex-grow: 1;
 }
 
-.selected-item-summary-price-per-unit {
-  font-size: 0.75rem;
-  margin-right: 2.8rem;
-  /* Alignment with the item total price */
-}
-
 .selected-item-summary-right {
   align-items: end;
   display: flex;
@@ -201,39 +232,42 @@ async function setWeight() {
   margin-left: auto;
 }
 
-.selected-item-summary-right-price {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  height: 2rem;
-}
-
-.selected-item-summary-right-unit-price {
+.selected-item-summary-right-base {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
 }
 
-.selected-item-summary-weight {
-  align-items: center;
+.selected-item-summary-right-per-unit {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: end;
+  font-style: italic;
+  margin-right: 0.15rem;
+}
+
+.selected-item-summary-right-per-unit-price {
+  margin-right: 3rem;
+  /* Alignment with the item total price */
+}
+
+.selected-item-summary-right-weight {
+  align-items: end;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-left: 1.7rem;
   margin-right: 0.6rem;
   /* Alignment with the inventory slot price */
   width: 7rem;
 }
 
-
-.selected-item-summary-weight-per-unit {
-  font-size: 0.85rem;
-  margin-right: 0.85rem;
+.selected-item-summary-right-weight-base {
+  align-items: center;
+  display: flex;
+  height: 2rem;
 }
 
-.selected-item-summary-weight-per-unit .icon-before-text {
-  min-width: 0.85rem;
-  width: 0.85rem;
+.selected-item-summary-right-with-mods {
+  font-weight: bold;
 }
 </style>

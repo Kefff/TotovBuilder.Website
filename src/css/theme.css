@@ -4365,15 +4365,15 @@
 .p-overlaypanel:before {
   border: solid transparent;
   border-color: rgba(38, 38, 38, 0);
-  border-bottom-color: var(--surface-f);
+  border-bottom-color: var(--primary-color);
 }
 
 .p-overlaypanel.p-overlaypanel-flipped:after {
-  border-top-color: var(--surface-f);
+  border-top-color: var(--primary-color);
 }
 
 .p-overlaypanel.p-overlaypanel-flipped:before {
-  border-top-color: var(--surface-f);
+  border-top-color: var(--primary-color);
 }
 
 .p-sidebar {

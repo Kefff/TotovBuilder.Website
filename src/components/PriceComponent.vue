@@ -186,6 +186,7 @@ const globalFilterService = Services.get(GlobalFilterService)
 const props = withDefaults(
   defineProps<{
     applyHoverStyle?: boolean,
+    customTooltip?: string,
     ignorePriceStatus?: IgnoredUnitPrice
     missing?: boolean,
     price: IPrice,
@@ -197,6 +198,7 @@ const props = withDefaults(
   }>(),
   {
     applyHoverStyle: true,
+    customTooltip: undefined,
     ignorePriceStatus: IgnoredUnitPrice.notIgnored,
     missing: false,
     showDetails: true,
@@ -240,7 +242,7 @@ const priceTooltip = computed(() => {
     return undefined
   }
 
-  let tooltip = vueI18n.t('caption.price')
+  let tooltip = props.customTooltip ?? vueI18n.t('caption.price')
 
   if (props.tooltipSuffix != null) {
     tooltip += ` ${props.tooltipSuffix}`

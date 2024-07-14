@@ -80,7 +80,7 @@
         />
       </div>
       <SelectedItemFunctionalities
-        v-if="inventoryItemInternal != null"
+        v-if="inventoryItemInternal != null && item != null"
         v-model:selectedTab="selectedTab"
         :can-be-looted="canBeLooted"
         :can-have-content="itemIsContainer"
@@ -93,16 +93,19 @@
         @update:ignore-price="onIgnorePriceChanged($event)"
       />
       <SelectedItemSummarySelector
-        v-if="inventoryItemInternal != null"
+        v-if="inventoryItemInternal != null && item != null"
         :can-be-looted="canBeLooted"
         :inventory-item-in-same-slot-in-preset="presetModSlotContainingItem?.item"
         :inventory-item="inventoryItemInternal"
+        :selected-item="item"
+        :summary-for-item-with-mods="baseItem != null && !readOnly"
       />
     </div>
     <div v-if="inventoryItemInternal != null && item != null && !itemChanging && !readOnly">
       <div v-if="itemIsModdable">
         <div
           v-if="baseItem != null"
+          v-show="selectedTab === SelectableTab.mods"
           class="item-base-item"
         >
           <div>

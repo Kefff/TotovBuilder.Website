@@ -223,6 +223,7 @@
     "priceDetails": "(cliquer pour détails)",
     "priceEqualsTo": "Prix : égal à",
     "pricesAndWeight": "Prix & poids",
+    "priceWithModsAndContent": "Prix (avec mods & contenu)",
     "projectiles": "Projectiles",
     "protectedZones": "Zones protégées",
     "quantity": "Quantité",
@@ -275,7 +276,8 @@
     "turningSpeedModifierPercentage": "Malus vitesse rotation",
     "velocity": "Vitesse",
     "verticalRecoil": "Recul vertical",
-    "weight": "Poids"
+    "weight": "Poids",
+    "weightWithModsAndContent": "Poids (avec mods & contenu)"
   },
   "message": {
     "apiDisclaimer1": "Données fournies gratuitement par ",

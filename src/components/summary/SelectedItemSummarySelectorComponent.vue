@@ -4,6 +4,7 @@
     :can-be-looted="canBeLooted"
     :inventory-item-in-same-slot-in-preset="inventoryItemInSameSlotInPreset"
     :inventory-item="inventoryItem"
+    :summary-for-item-with-mods="summaryForItemWithMods"
   >
     <AmmunitionSummary
       v-if="specializedComponent === AmmunitionSummary"
@@ -98,17 +99,14 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IItem } from '../../models/item/IItem'
-import { IRangedWeapon } from '../../models/item/IRangedWeapon'
-import { IWearable } from '../../models/item/IWearable'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import { IRangedWeaponModifiers } from '../../models/utils/IRangedWeaponModifiers'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
 import AmmunitionSummary from '../summary/AmmunitionSummaryComponent.vue'
 import ArmorModSummary from '../summary/ArmorModSummaryComponent.vue'
@@ -131,29 +129,22 @@ const props = withDefaults(
     canBeLooted?: boolean,
     inventoryItem: IInventoryItem,
     inventoryItemInSameSlotInPreset?: IInventoryItem
+    selectedItem: IItem,
+    summaryForItemWithMods: boolean
   }>(),
   {
     canBeLooted: true,
-    inventoryItemInSameSlotInPreset: undefined
+    inventoryItemInSameSlotInPreset: undefined,
+    summaryForItemWithMods: false
   })
 
-const selectedItem = ref<IItem>()
+const inventoryItemService = Services.get(InventoryItemService)
+
 const selectedItemArmorModifiers = ref<IArmorModifiers>()
 const selectedItemRangedWeaponModifiers = ref<IRangedWeaponModifiers>()
 const selectedItemWearableModifiers = ref<IWearableModifiers>()
 
-onMounted(() => getSelectedItem())
-
-watch(() => props.inventoryItem.itemId, () => getSelectedItem())
-
-/**
- * Gets the item based on the inventory item passed to the component and determines which summary component to display.
- */
-async function getSelectedItem() {
-  selectedItem.value = await Services.get(ItemService).getItem(props.inventoryItem.itemId)
-}
-
-const specializedComponent = computed(() => getSpecializedComponent(selectedItem.value?.categoryId))
+const specializedComponent = computed(() => getSpecializedComponent(props.selectedItem.categoryId))
 
 /**
  * Sets the type of specialized options header component to display.
@@ -230,18 +221,7 @@ function getSpecializedComponent(itemCategoryId?: string) {
  * We display the base stats of presets because the full stats are displayed in the inventory slot.
  */
 async function setArmorModifiers() {
-  const frontPlateModSlot = props.inventoryItem.modSlots.find(ms => ms.modSlotName === 'front_plate')
-
-  if (frontPlateModSlot != null) {
-    // When the item has an armor plate slot, no armor modifier is displayed because
-    // it is the armor plate that defines the armor value
-    selectedItemArmorModifiers.value = {
-      armorClass: 0,
-      durability: 0
-    }
-  } else {
-    selectedItemArmorModifiers.value = await Services.get(InventoryItemService).getArmorModifiers(props.inventoryItem)
-  }
+  selectedItemArmorModifiers.value = await inventoryItemService.getArmorModifiers(props.inventoryItem)
 }
 
 /**
@@ -249,11 +229,13 @@ async function setArmorModifiers() {
  * We display the base stats of presets because the full stats are displayed in the inventory slot.
  */
 async function setRangedWeaponModifiers() {
-  const rangedWeapon = (await Services.get(ItemService).getItem(props.inventoryItem.itemId)) as IRangedWeapon
+  const ergonomics = await inventoryItemService.getErgonomics(props.inventoryItem)
+  const recoil = await inventoryItemService.getRecoil(props.inventoryItem)
+
   selectedItemRangedWeaponModifiers.value = {
-    ergonomics: rangedWeapon.ergonomics,
-    horizontalRecoil: rangedWeapon.horizontalRecoil,
-    verticalRecoil: rangedWeapon.verticalRecoil
+    ergonomics: ergonomics.ergonomicsWithMods,
+    horizontalRecoil: recoil.horizontalRecoilWithMods,
+    verticalRecoil: recoil.verticalRecoilWithMods
   }
 }
 
@@ -262,11 +244,12 @@ async function setRangedWeaponModifiers() {
  * We display the base stats of presets because the full stats are displayed in the inventory slot.
  */
 async function setWearableModifiers() {
-  const wearable = (await Services.get(ItemService).getItem(props.inventoryItem.itemId)) as IWearable
+  const wearableModifiers = await inventoryItemService.getWearableModifiers(props.inventoryItem)
+
   selectedItemWearableModifiers.value = {
-    ergonomicsModifierPercentage: wearable.ergonomicsModifierPercentage,
-    movementSpeedModifierPercentage: wearable.movementSpeedModifierPercentage,
-    turningSpeedModifierPercentage: wearable.turningSpeedModifierPercentage
+    ergonomicsModifierPercentage: wearableModifiers.ergonomicsModifierPercentage,
+    movementSpeedModifierPercentage: wearableModifiers.movementSpeedModifierPercentage,
+    turningSpeedModifierPercentage: wearableModifiers.turningSpeedModifierPercentage
   }
 }
 </script>

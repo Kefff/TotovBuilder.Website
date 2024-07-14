@@ -21,16 +21,18 @@
         </div>
       </div>
     </Tooltip>
-    <div
-      v-if="inventoryPrice.missingPrice"
-      class="inventory-price-missing-price-icon"
-    >
-      <Tooltip
-        :tooltip="isBuild ? $t('message.buildWithMissingPrice') : $t('message.inventorySlotWithMissingPrice')"
-        position="right"
+    <div class="inventory-price-icon">
+      <div
+        v-if="inventoryPrice.missingPrice"
+        class="inventory-price-missing-price-icon"
       >
-        <font-awesome-icon icon="exclamation-triangle" />
-      </Tooltip>
+        <Tooltip
+          :tooltip="isBuild ? $t('message.buildWithMissingPrice') : $t('message.inventorySlotWithMissingPrice')"
+          position="right"
+        >
+          <font-awesome-icon icon="exclamation-triangle" />
+        </Tooltip>
+      </div>
     </div>
   </div>
 
@@ -83,10 +85,15 @@ import Services from '../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import Price from './PriceComponent.vue'
 
-const props = defineProps<{
-  inventoryPrice: IInventoryPrice,
-  isBuild: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    customTooltip?: string,
+    inventoryPrice: IInventoryPrice,
+    isBuild: boolean
+  }>(),
+  {
+    customTooltip: undefined
+  })
 
 // cf. https://stackoverflow.com/a/63666289
 const isTouchScreen = matchMedia('(hover: none)').matches
@@ -104,7 +111,7 @@ const mainCurrency = computed(() => {
 })
 const priceInMainCurrency = computed(() => props.inventoryPrice.priceByCurrency.reduce((total, priceInCurrency) => total + priceInCurrency.valueInMainCurrency, 0))
 const tooltip = computed(() => {
-  let value: string = vueI18n.t('caption.price')
+  let value: string = props.customTooltip ?? vueI18n.t('caption.price')
 
   if (canShowDetails.value && !isTouchScreen) {
     value += ` ${vueI18n.t('caption.priceDetails')}`
@@ -145,6 +152,7 @@ function toggleInventoryPriceDetails(event: Event) {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  justify-content: end;
 }
 
 .inventory-price-details {
@@ -169,6 +177,15 @@ function toggleInventoryPriceDetails(event: Event) {
   margin-left: 0.25rem;
 }
 
+.inventory-price-icon {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  width: 2rem;
+}
+
 .inventory-price-list {
   display: flex;
   flex-direction: row;
@@ -191,7 +208,6 @@ function toggleInventoryPriceDetails(event: Event) {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  margin-left: 0.5rem;
 }
 
 .inventory-price-with-details {
