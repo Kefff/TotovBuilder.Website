@@ -5,14 +5,15 @@
       <div class="selected-item-summary-right">
         <div class="selected-item-summary-right-base">
           <div>
-            <div v-if="includeModsAndContent">
-              <div class="selected-item-summary-right-with-mods">
-                <InventoryPrice
-                  :custom-tooltip="$t('caption.price') + $t('caption.withModsAndContent')"
-                  :inventory-price="selectedItemInventoryPrice"
-                  :is-build="false"
-                />
-              </div>
+            <div
+              v-if="includeModsAndContent"
+              class="selected-item-summary-right-with-mods"
+            >
+              <InventoryPrice
+                :custom-tooltip="$t('caption.price') + $t('caption.withModsAndContent')"
+                :inventory-price="selectedItemInventoryPrice"
+                :is-build="false"
+              />
             </div>
             <Price
               v-if="showPrice"
@@ -22,28 +23,26 @@
             />
           </div>
           <div class="selected-item-summary-right-weight">
-            <div v-if="selectedItemWeight.weight > 0 && includeModsAndContent">
-              <div class="selected-item-summary-right-with-mods">
-                <Tooltip
-                  :tooltip="$t('caption.weight') + $t('caption.withModsAndContent')"
-                  position="left"
-                >
-                  <font-awesome-icon
-                    icon="weight-hanging"
-                    class="icon-before-text"
-                  />
-                  <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weightWithContent) }}</span>
-                </Tooltip>
-              </div>
-            </div>
             <div
-              v-if="selectedItemWeight.weight > 0"
-              class="selected-item-summary-right-weight-base"
+              v-if="includeModsAndContent && selectedItemWeight.weight > 0"
+              class="selected-item-summary-right-with-mods"
             >
               <Tooltip
-                v-if="!includeModsAndContent"
-                :tooltip="$t('caption.weight')"
+                :tooltip="$t('caption.weight') + $t('caption.withModsAndContent')"
+                position="left"
               >
+                <font-awesome-icon
+                  icon="weight-hanging"
+                  class="icon-before-text"
+                />
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weightWithContent) }}</span>
+              </Tooltip>
+            </div>
+            <div
+              v-if="!includeModsAndContent && selectedItemWeight.weight > 0"
+              class="selected-item-summary-right-weight-base"
+            >
+              <Tooltip :tooltip="$t('caption.weight')">
                 <font-awesome-icon
                   icon="weight-hanging"
                   class="icon-before-text"

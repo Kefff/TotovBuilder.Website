@@ -3,7 +3,10 @@
     v-if="inventoryItemInternal != null || editing"
     class="item"
   >
-    <div class="item-selection">
+    <div
+      class="item-selection"
+      :class="(item != null && isMainInventorySlotItem) ? 'item-selection-main' : ''"
+    >
       <div class="item-selection-dropdown">
         <Dropdown
           v-model="item"
@@ -104,7 +107,10 @@
         :show-price="showPrice"
       />
     </div>
-    <div v-if="inventoryItemInternal != null && item != null && !itemChanging && !isBaseItem">
+    <div
+      v-if="inventoryItemInternal != null && item != null && !itemChanging && !isBaseItem"
+      :class="(item != null && isMainInventorySlotItem) ? 'item-content-and-mods-main' : ''"
+    >
       <div v-if="itemIsModdable">
         <div
           v-if="baseItem != null"

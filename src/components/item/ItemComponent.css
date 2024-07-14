@@ -19,6 +19,10 @@
   width: 2.375rem;
 }
 
+.item-content-and-mods-main {
+  padding: 0.5rem;
+}
+
 .item-dropdown {
   width: 25rem;
 }
@@ -41,6 +45,12 @@
 .item-selection {
   display: flex;
   flex-direction: row;
+}
+
+.item-selection-main {
+  background-color: var(--primary-color6);
+  border-radius: 6px;
+  padding: 0.5rem;
 }
 
 .item-quantity {
