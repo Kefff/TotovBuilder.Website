@@ -67,6 +67,11 @@ export default defineComponent({
       required: false,
       default: false
     },
+    isMainInventorySlotItem: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     maxStackableAmount: {
       type: Number,
       required: false,
@@ -98,7 +103,12 @@ export default defineComponent({
     const optionHeight = computed(() => Number.parseInt(window.getComputedStyle(document.documentElement).fontSize.replace('px', '')) * 4)
 
     const baseItem = ref<IInventoryItem | undefined>()
-    const includeModsAndContentInSummary = computed(() => baseItem.value != null && !props.isBaseItem)
+    const includeModsAndContentInSummary = computed(() =>
+      (itemIsModdable.value
+        && baseItem.value != null
+        && !props.isBaseItem)
+      || (itemIsContainer.value
+        && props.isMainInventorySlotItem))
     const item = ref<IItem | undefined>()
     const itemChanging = ref(false)
     const itemIsContainer = ref(false)

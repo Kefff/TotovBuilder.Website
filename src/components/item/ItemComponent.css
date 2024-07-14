@@ -41,7 +41,6 @@
 .item-selection {
   display: flex;
   flex-direction: row;
-  height: 3.25rem;
 }
 
 .item-quantity {

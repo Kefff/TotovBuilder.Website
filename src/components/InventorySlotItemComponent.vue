@@ -4,6 +4,7 @@
     :accepted-items="acceptedItems"
     :can-be-looted="canBeLooted"
     :inventory-item="modelInventoryItem"
+    :is-main-inventory-slot-item="true"
     :path="`${path}/${PathUtils.itemPrefix}${modelInventoryItem?.itemId ?? 'empty'}`"
     @update:inventory-item="onItemChanged($event)"
   />

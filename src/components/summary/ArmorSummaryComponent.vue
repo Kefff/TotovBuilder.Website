@@ -93,11 +93,11 @@ const durability = computed(() => props.armorModifiersOverride?.durability ?? ar
 @import '../../css/option.css';
 @import '../../css/stats.css';
 
-.armor-summary-durability {
-  color: var(--error-color);
-}
-
 .armor-summary-bold {
   font-weight: bold;
+}
+
+.armor-summary-durability {
+  color: var(--error-color);
 }
 </style>

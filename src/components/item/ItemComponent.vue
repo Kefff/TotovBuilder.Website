@@ -99,6 +99,7 @@
         :inventory-item-in-same-slot-in-preset="presetModSlotContainingItem?.item"
         :inventory-item="inventoryItemInternal"
         :is-base-item="isBaseItem"
+        :is-main-inventory-slot-item="isMainInventorySlotItem"
         :selected-item="item"
         :show-price="showPrice"
       />
