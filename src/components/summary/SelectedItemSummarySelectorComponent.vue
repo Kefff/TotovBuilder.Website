@@ -2,9 +2,11 @@
   <SelectedItemSummary
     v-if="selectedItem != null"
     :can-be-looted="canBeLooted"
+    :include-mods-and-content="includeModsAndContent"
     :inventory-item-in-same-slot-in-preset="inventoryItemInSameSlotInPreset"
     :inventory-item="inventoryItem"
-    :summary-for-item-with-mods="summaryForItemWithMods"
+    :is-base-item="isBaseItem"
+    :show-price="showPrice"
   >
     <AmmunitionSummary
       v-if="specializedComponent === AmmunitionSummary"
@@ -21,6 +23,7 @@
     <ArmorSummary
       v-if="specializedComponent === ArmorSummary"
       :armor-modifiers-override="selectedItemArmorModifiers"
+      :include-mods-and-content="includeModsAndContent"
       :item="selectedItem"
       :show-empty-entries="false"
       :wearable-modifiers-override="selectedItemWearableModifiers"
@@ -75,6 +78,8 @@
     />
     <RangedWeaponSummary
       v-if="specializedComponent === RangedWeaponSummary"
+      :include-mods-and-content="includeModsAndContent"
+      :is-base-item="isBaseItem"
       :item="selectedItem"
       :ranged-weapons-modifiers-override="selectedItemRangedWeaponModifiers"
       :show-empty-entries="false"
@@ -82,6 +87,8 @@
     <VestSummary
       v-if="specializedComponent === VestSummary"
       :armor-modifiers-override="selectedItemArmorModifiers"
+      :include-mods-and-content="includeModsAndContent"
+      :is-base-item="isBaseItem"
       :item="selectedItem"
       :show-empty-entries="false"
       :wearable-modifiers-override="selectedItemWearableModifiers"
@@ -127,15 +134,19 @@ import VestSummary from '../summary/VestSummaryComponent.vue'
 const props = withDefaults(
   defineProps<{
     canBeLooted?: boolean,
+    includeModsAndContent?: boolean
     inventoryItem: IInventoryItem,
     inventoryItemInSameSlotInPreset?: IInventoryItem
+    isBaseItem?: boolean,
     selectedItem: IItem,
-    summaryForItemWithMods: boolean
+    showPrice?: boolean
   }>(),
   {
     canBeLooted: true,
+    includeModsAndContent: false,
     inventoryItemInSameSlotInPreset: undefined,
-    summaryForItemWithMods: false
+    isBaseItem: false,
+    showPrice: true
   })
 
 const inventoryItemService = Services.get(InventoryItemService)

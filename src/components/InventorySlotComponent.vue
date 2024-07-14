@@ -338,6 +338,7 @@ async function setSummary() {
   align-items: center;
   display: flex;
   font-size: 1.35rem;
+  font-weight: bold;
   width: 100%;
 }
 
@@ -358,7 +359,7 @@ async function setSummary() {
 
 .inventory-slot-summary-price {
   margin-left: auto;
-  margin-right: 1.25rem;
+  margin-right: 0;
   /* Space to align the price with the children prices that have the merchant icon */
   padding-left: 1rem;
 }
@@ -382,6 +383,6 @@ async function setSummary() {
   justify-content: end;
   margin-left: 1rem;
   text-align: right;
-  width: 7rem;
+  width: 8.25rem;
 }
 </style>

@@ -7,10 +7,10 @@
       <div class="item-selection-dropdown">
         <Dropdown
           v-model="item"
-          :disabled="!editing || readOnly"
+          :disabled="!editing || isBaseItem"
           :options="options"
           :scroll-height="dropdownPanelHeight"
-          :show-clear="editing && !readOnly"
+          :show-clear="editing && !isBaseItem"
           :virtual-scroller-options="{ orientation: 'vertical', itemSize: optionHeight }"
           class="item-dropdown"
           data-key="id"
@@ -84,7 +84,7 @@
         v-model:selectedTab="selectedTab"
         :can-be-looted="canBeLooted"
         :can-have-content="itemIsContainer"
-        :can-have-mods="itemIsModdable && !readOnly"
+        :can-have-mods="itemIsModdable && !isBaseItem"
         :can-ignore-price="canIgnorePrice"
         :content-count="contentCount"
         :ignore-price="inventoryItemInternal.ignorePrice"
@@ -95,13 +95,15 @@
       <SelectedItemSummarySelector
         v-if="inventoryItemInternal != null && item != null"
         :can-be-looted="canBeLooted"
+        :include-mods-and-content="includeModsAndContentInSummary"
         :inventory-item-in-same-slot-in-preset="presetModSlotContainingItem?.item"
         :inventory-item="inventoryItemInternal"
+        :is-base-item="isBaseItem"
         :selected-item="item"
-        :summary-for-item-with-mods="baseItem != null && !readOnly"
+        :show-price="showPrice"
       />
     </div>
-    <div v-if="inventoryItemInternal != null && item != null && !itemChanging && !readOnly">
+    <div v-if="inventoryItemInternal != null && item != null && !itemChanging && !isBaseItem">
       <div v-if="itemIsModdable">
         <div
           v-if="baseItem != null"
@@ -113,10 +115,10 @@
           </div>
           <Item
             :accepted-items="[]"
-            :can-be-looted="false"
+            :can-be-looted="showBaseItemPrice"
             :inventory-item="baseItem"
+            :is-base-item="true"
             :path="path"
-            :read-only="true"
           />
         </div>
         <ItemMods

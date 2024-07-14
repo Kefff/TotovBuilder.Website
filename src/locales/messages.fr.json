@@ -87,6 +87,7 @@
     "fleshDamage": "Dégâts au corps",
     "fragmentationChance": "Chance de fragmentation",
     "fragmentsAmount": "Fragments",
+    "frontPlate": " (plaque frontale)",
     "generalOptions": "Options générales",
     "grenade": "Grenade",
     "heavyBleeding": "Saignement important",
@@ -223,7 +224,6 @@
     "priceDetails": "(cliquer pour détails)",
     "priceEqualsTo": "Prix : égal à",
     "pricesAndWeight": "Prix & poids",
-    "priceWithModsAndContent": "Prix (avec mods & contenu)",
     "projectiles": "Projectiles",
     "protectedZones": "Zones protégées",
     "quantity": "Quantité",
@@ -277,7 +277,8 @@
     "velocity": "Vitesse",
     "verticalRecoil": "Recul vertical",
     "weight": "Poids",
-    "weightWithModsAndContent": "Poids (avec mods & contenu)"
+    "withMods": " (avec mods)",
+    "withModsAndContent": " (avec mods & contenu)"
   },
   "message": {
     "apiDisclaimer1": "Données fournies gratuitement par ",

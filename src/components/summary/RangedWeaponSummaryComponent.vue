@@ -1,7 +1,10 @@
 <template>
   <div class="option-entry">
-    <div class="option-value">
-      <Tooltip :tooltip="$t('caption.verticalRecoil')">
+    <div
+      class="option-value"
+      :class="boldCssClass"
+    >
+      <Tooltip :tooltip="$t('caption.verticalRecoil') + (includeModsAndContent ? $t('caption.withMods') : '')">
         <font-awesome-icon
           icon="arrows-alt-v"
           class="icon-before-text"
@@ -11,8 +14,11 @@
     </div>
   </div>
   <div class="option-entry">
-    <div class="option-value">
-      <Tooltip :tooltip="$t('caption.horizontalRecoil')">
+    <div
+      class="option-value"
+      :class="boldCssClass"
+    >
+      <Tooltip :tooltip="$t('caption.horizontalRecoil') + (includeModsAndContent ? $t('caption.withMods') : '')">
         <font-awesome-icon
           icon="arrows-alt-h"
           class="icon-before-text"
@@ -22,8 +28,11 @@
     </div>
   </div>
   <div class="option-entry">
-    <div class="option-value">
-      <Tooltip :tooltip="$t('caption.ergonomics')">
+    <div
+      class="option-value"
+      :class="boldCssClass"
+    >
+      <Tooltip :tooltip="$t('caption.ergonomics') + (includeModsAndContent ? $t('caption.withMods') : '')">
         <font-awesome-icon
           icon="hand-paper"
           class="icon-before-text"
@@ -32,7 +41,10 @@
       </Tooltip>
     </div>
   </div>
-  <div class="option-entry">
+  <div
+    v-if="!isBaseItem"
+    class="option-entry"
+  >
     <div class="option-value-long">
       <Tooltip :tooltip="$t('caption.caliber')">
         <CustomIcon
@@ -46,7 +58,10 @@
       </Tooltip>
     </div>
   </div>
-  <div class="option-entry">
+  <div
+    v-if="!isBaseItem"
+    class="option-entry"
+  >
     <div class="option-value ranged-weapon-summary-fire-rate">
       <Tooltip :tooltip="$t('caption.fireRate')">
         <CustomIcon
@@ -83,15 +98,20 @@ import CustomIcon from '../CustomIconComponent.vue'
 
 const props = withDefaults(
   defineProps<{
+    includeModsAndContent?: boolean,
     item: IItem,
+    isBaseItem?: boolean,
     rangedWeaponsModifiersOverride?: IRangedWeaponModifiers,
     showEmptyEntries?: boolean
   }>(),
   {
+    includeModsAndContent: false,
+    isBaseItem: false,
     rangedWeaponsModifiersOverride: undefined,
     showEmptyEntries: true
   })
 
+const boldCssClass = computed(() => props.includeModsAndContent ? 'ranged-weapon-summary-bold' : '')
 const ergonomics = computed(() => props.rangedWeaponsModifiersOverride?.ergonomics ?? rangedWeapon.value.presetRangedWeaponModifiers?.ergonomics ?? rangedWeapon.value.ergonomics)
 const horizontalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.horizontalRecoil ?? rangedWeapon.value.presetRangedWeaponModifiers?.horizontalRecoil ?? rangedWeapon.value.horizontalRecoil)
 const rangedWeapon = computed(() => props.item as IRangedWeapon)
@@ -110,6 +130,10 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
 <style scoped>
 @import '../../css/icon.css';
 @import '../../css/option.css';
+
+.ranged-weapon-summary-bold {
+  font-weight: bold;
+}
 
 .ranged-weapon-summary-fire-rate {
   width: 6rem;

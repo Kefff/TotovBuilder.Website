@@ -5,26 +5,27 @@
       <div class="selected-item-summary-right">
         <div class="selected-item-summary-right-base">
           <div>
-            <div v-if="summaryForItemWithMods">
+            <div v-if="includeModsAndContent">
               <div class="selected-item-summary-right-with-mods">
                 <InventoryPrice
-                  :custom-tooltip="$t('caption.priceWithModsAndContent')"
+                  :custom-tooltip="$t('caption.price') + $t('caption.withModsAndContent')"
                   :inventory-price="selectedItemInventoryPrice"
                   :is-build="false"
                 />
               </div>
             </div>
             <Price
-              :price="selectedItemPrice.price"
+              v-if="showPrice"
               :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
               :missing="hasMissingPrice"
+              :price="selectedItemPrice.price"
             />
           </div>
           <div class="selected-item-summary-right-weight">
-            <div v-if="selectedItemWeight.weight > 0 && summaryForItemWithMods">
+            <div v-if="selectedItemWeight.weight > 0 && includeModsAndContent">
               <div class="selected-item-summary-right-with-mods">
                 <Tooltip
-                  :tooltip="$t('caption.weightWithModsAndContent')"
+                  :tooltip="$t('caption.weight') + $t('caption.withModsAndContent')"
                   position="left"
                 >
                   <font-awesome-icon
@@ -39,7 +40,10 @@
               v-if="selectedItemWeight.weight > 0"
               class="selected-item-summary-right-weight-base"
             >
-              <Tooltip :tooltip="$t('caption.weight')">
+              <Tooltip
+                v-if="!includeModsAndContent"
+                :tooltip="$t('caption.weight')"
+              >
                 <font-awesome-icon
                   icon="weight-hanging"
                   class="icon-before-text"
@@ -102,14 +106,18 @@ import Price from '../PriceComponent.vue'
 const props = withDefaults(
   defineProps<{
     canBeLooted?: boolean
+    includeModsAndContent?: boolean
     inventoryItem: IInventoryItem,
     inventoryItemInSameSlotInPreset?: IInventoryItem,
-    summaryForItemWithMods?: boolean
+    isBaseItem?: boolean,
+    showPrice?: boolean
   }>(),
   {
     canBeLooted: true,
+    includeModsAndContent: false,
     inventoryItemInSameSlotInPreset: undefined,
-    summaryForItemWithMods: false
+    isBaseItem: false,
+    showPrice: true
   })
 
 const globalFilterService = Services.get(GlobalFilterService)

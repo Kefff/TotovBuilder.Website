@@ -1,7 +1,11 @@
 <template>
-  <ContainerSummary :item="vest" />
+  <ContainerSummary
+    v-if="!isBaseItem"
+    :item="vest"
+  />
   <ArmorSummary
     :armor-modifiers-override="armorModifiers"
+    :include-mods-and-content="includeModsAndContent"
     :item="vest"
     :show-empty-entries="showEmptyEntries"
     :wearable-modifiers-override="wearableModifiers"
@@ -28,13 +32,17 @@ import ContainerSummary from './ContainerSummaryComponent.vue'
 
 const props = withDefaults(
   defineProps<{
-    armorModifiersOverride?: IArmorModifiers
+    armorModifiersOverride?: IArmorModifiers,
+    includeModsAndContent?: boolean,
+    isBaseItem?: boolean,
     item: IItem,
     showEmptyEntries?: boolean,
     wearableModifiersOverride?: IWearableModifiers
   }>(),
   {
     armorModifiersOverride: undefined,
+    includeModsAndContent: false,
+    isBaseItem: false,
     showEmptyEntries: true,
     wearableModifiersOverride: undefined
   })

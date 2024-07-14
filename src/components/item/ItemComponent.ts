@@ -62,6 +62,11 @@ export default defineComponent({
       required: false,
       default: undefined
     },
+    isBaseItem: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     maxStackableAmount: {
       type: Number,
       required: false,
@@ -70,11 +75,6 @@ export default defineComponent({
     path: {
       type: String,
       required: true
-    },
-    readOnly: {
-      type: Boolean,
-      required: false,
-      default: false
     }
   },
   emits: ['update:inventory-item'],
@@ -98,6 +98,7 @@ export default defineComponent({
     const optionHeight = computed(() => Number.parseInt(window.getComputedStyle(document.documentElement).fontSize.replace('px', '')) * 4)
 
     const baseItem = ref<IInventoryItem | undefined>()
+    const includeModsAndContentInSummary = computed(() => baseItem.value != null && !props.isBaseItem)
     const item = ref<IItem | undefined>()
     const itemChanging = ref(false)
     const itemIsContainer = ref(false)
@@ -110,6 +111,8 @@ export default defineComponent({
     const presetModSlotContainingItem = ref<IInventoryModSlot>()
     const quantity = ref(props.inventoryItem?.quantity ?? 1)
     const selectedTab = ref(SelectableTab.hidden)
+    const showBaseItemPrice = ref(false)
+    const showPrice = ref(true)
 
     watch(
       () => props.acceptedItems,
@@ -324,17 +327,29 @@ export default defineComponent({
      * @param item - Item from which we search the base item.
      */
     function setBaseItem(item: IItem) {
-      if (itemPropertiesService.isModdable(item)) {
+      if (itemPropertiesService.isModdable(item) && !props.isBaseItem) {
         const moddable = item as IModdable
-        const baseItemId = moddable.defaultPresetId != null ? moddable.id : moddable.baseItemId
+        const baseItemId = moddable.defaultPresetId == null ? moddable.baseItemId : moddable.id
 
         if (baseItemId != null) {
           baseItem.value = {
             content: [],
-            ignorePrice: true,
+            ignorePrice: false,
             itemId: baseItemId,
             modSlots: [],
             quantity: 1
+          }
+
+          if (moddable.id === baseItemId) {
+            // When the selected item is the same as the base item,
+            // we display its price on the base item
+            showPrice.value = false
+            showBaseItemPrice.value = true
+          } else {
+            // When the selected item is a preset
+            // we display the price of the preset
+            showPrice.value = true
+            showBaseItemPrice.value = false
           }
 
           return
@@ -342,6 +357,8 @@ export default defineComponent({
       }
 
       baseItem.value = undefined
+      showPrice.value = true
+      showBaseItemPrice.value = true
     }
 
     /**
@@ -508,6 +525,7 @@ export default defineComponent({
       contentCount,
       dropdownPanelHeight,
       editing,
+      includeModsAndContentInSummary,
       inventoryItemInternal,
       item,
       itemChanging,
@@ -533,7 +551,9 @@ export default defineComponent({
       removeItem,
       SelectableTab,
       selectedTab,
-      setOptions
+      setOptions,
+      showBaseItemPrice,
+      showPrice
     }
   }
 })

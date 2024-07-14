@@ -118,6 +118,7 @@
     "fleshDamage": "Flesh damage",
     "fragmentationChance": "Fragmentation chance",
     "fragmentsAmount": "Fragments",
+    "frontPlate": " (front plate)",
     "generalOptions": "General options",
     "github": "GitHub",
     "grenade": "Grenade",
@@ -258,7 +259,6 @@
     "priceDetails": "(click for details)",
     "priceEqualsTo": "Price : equal to",
     "pricesAndWeight": "Prices & weight",
-    "priceWithModsAndContent": "Price (with mods & content)",
     "projectiles": "Projectiles",
     "protectedZones": "Protected zones",
     "quantity": "Quantity",
@@ -312,7 +312,8 @@
     "velocity": "Velocity",
     "verticalRecoil": "Vertical recoil",
     "weight": "Weight",
-    "weightWithModsAndContent": "Weight (with mods & content)"
+    "withMods": " (with mods)",
+    "withModsAndContent": " (with mods & content)"
   },
   "message": {
     "apiDisclaimer1": "Data provided for free by ",
