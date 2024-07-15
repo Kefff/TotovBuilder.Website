@@ -13,6 +13,7 @@
                 :custom-tooltip="$t('caption.price') + $t('caption.withModsAndContent')"
                 :inventory-price="selectedItemInventoryPrice"
                 :is-build="false"
+                :show-empty-missing-price-spot="true"
               />
             </div>
             <Price

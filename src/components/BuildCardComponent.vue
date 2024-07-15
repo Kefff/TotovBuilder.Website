@@ -274,6 +274,7 @@ function displayShoppingList(shoppingList: IShoppingListItem[]) {
 }
 
 .build-card-price {
+  display: flex;
   grid-column: span 2;
 }
 

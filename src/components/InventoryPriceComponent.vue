@@ -21,7 +21,10 @@
         </div>
       </div>
     </Tooltip>
-    <div class="inventory-price-icon">
+    <div
+      v-if="inventoryPrice.missingPrice || showEmptyMissingPriceSpot"
+      class="inventory-price-icon"
+    >
       <div
         v-if="inventoryPrice.missingPrice"
         class="inventory-price-missing-price-icon"
@@ -89,10 +92,12 @@ const props = withDefaults(
   defineProps<{
     customTooltip?: string,
     inventoryPrice: IInventoryPrice,
-    isBuild: boolean
+    isBuild: boolean,
+    showEmptyMissingPriceSpot?: boolean
   }>(),
   {
-    customTooltip: undefined
+    customTooltip: undefined,
+    showMissingPriceSpot: false
   })
 
 // cf. https://stackoverflow.com/a/63666289
@@ -189,16 +194,16 @@ function toggleInventoryPriceDetails(event: Event) {
 .inventory-price-list {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: end;
 }
 
 .inventory-price-list-price {
-  margin-right: 0.5rem;
+  margin-left: 0.5rem;
 }
 
-.inventory-price-list-price:last-child {
-  margin-right: 0;
+.inventory-price-list-price:first-child {
+  margin-left: 0;
 }
 
 .inventory-price-missing-price-icon {

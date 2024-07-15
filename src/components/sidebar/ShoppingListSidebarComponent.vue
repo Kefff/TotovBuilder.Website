@@ -27,6 +27,7 @@
         v-for="(shoppingListItem, index) of parameters"
         :key="index"
         class="shopping-list-item"
+        :class="shoppingListItem.inventorySlotId != null ? 'shopping-list-item-of-inventory-slot' : ''"
       >
         <PriceDetailItem
           :ignore-price-status="shoppingListItem.ignorePrice ? IgnoredUnitPrice.manuallyIgnored : IgnoredUnitPrice.notIgnored"
@@ -116,19 +117,29 @@ function getRequiredMerchants(): IBuildSummaryShoppingMerchant[] {
 
 .shopping-list-item {
   margin-bottom: 0.5rem;
-  /* For the merchant level to be fully displayed */
+  padding-left: 0.5rem;
 }
 
 .shopping-list-item:last-child {
   margin-bottom: 0;
 }
 
+.shopping-list-item-of-inventory-slot {
+  background-color: var(--primary-color6);
+  border-radius: 6px;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
+
 .shopping-list-merchants {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: end;
   gap: 1rem;
   margin-bottom: 1rem;
+  /* Margin-right needed to avoid having merchant levels trucated */
+  margin-right: 0.5rem;
 }
 
 .shopping-list-title {

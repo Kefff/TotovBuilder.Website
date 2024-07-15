@@ -6,7 +6,7 @@
         :quantity="quantity"
       />
     </div>
-    <div>
+    <div class="price-detail-item-name">
       {{ item.name }}
     </div>
     <div>
@@ -84,8 +84,13 @@ withDefaults(
   justify-content: center;
 }
 
+.price-detail-item-name {
+  /* To allow breaking long words, cf https://developer.mozilla.org/fr/docs/Web/CSS/word-break#break-word */
+  overflow-wrap: anywhere;
+}
+
 .price-detail-item-price-per-unit {
-  font-size: 0.75rem;
+  font-style: italic;
   margin-right: 3rem;
 }
 </style>
