@@ -123,7 +123,8 @@ const props = withDefaults(
 const globalFilterService = Services.get(GlobalFilterService)
 const inventoryItemService = Services.get(InventoryItemService)
 
-const hasMissingPrice = computed(() => selectedItemPrice.value.missingPrice
+const hasMissingPrice = computed(() =>
+  selectedItemPrice.value.missingPrice
   && !props.inventoryItem.ignorePrice
   && selectedItemPrice.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored
   && selectedItemPrice.value.unitPrice.valueInMainCurrency === 0) // We don't show the missing price icon on items that contain an item with a missing price

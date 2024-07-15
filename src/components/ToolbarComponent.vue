@@ -88,7 +88,7 @@ function setToolbarCssClass() {
 .toolbar-line {
   background-color: var(--surface-0);
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr auto 1fr;
   font-size: 2rem;
   min-height: 3.5rem;
 }
