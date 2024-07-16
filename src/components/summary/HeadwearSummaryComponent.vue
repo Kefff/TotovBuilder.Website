@@ -1,12 +1,14 @@
 <template>
   <ArmorSummary
     :armor-modifiers-override="armorModifiers"
+    :include-mods-and-content="includeModsAndContent"
+    :is-base-item="isBaseItem"
     :item="headwear"
     :show-empty-entries="showEmptyEntries"
     :wearable-modifiers-override="wearableModifiers"
   />
   <div
-    v-if="hasRicochetChance || showEmptyEntries"
+    v-if="(!isBaseItem && hasRicochetChance) || showEmptyEntries"
     class="option-entry"
   >
     <div class="option-value">
@@ -46,12 +48,16 @@ import ArmorSummary from './ArmorSummaryComponent.vue'
 const props = withDefaults(
   defineProps<{
     armorModifiersOverride?: IArmorModifiers,
+    includeModsAndContent?: boolean,
+    isBaseItem?: boolean,
     item: IItem,
     showEmptyEntries?: boolean,
     wearableModifiersOverride?: IWearableModifiers
   }>(),
   {
     armorModifiersOverride: undefined,
+    isBaseItem: false,
+    includeModsAndContent: false,
     showEmptyEntries: true,
     wearableModifiersOverride: undefined
   })
@@ -74,4 +80,9 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? head
 <style scoped>
 @import '../../css/icon.css';
 @import '../../css/option.css';
+
+.headwear-summary-bold {
+  font-style: italic;
+  font-weight: bold;
+}
 </style>

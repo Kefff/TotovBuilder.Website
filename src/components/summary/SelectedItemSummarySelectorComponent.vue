@@ -6,8 +6,8 @@
     :inventory-item-in-same-slot-in-preset="inventoryItemInSameSlotInPreset"
     :inventory-item="inventoryItem"
     :is-base-item="isBaseItem"
-    :is-main-inventory-slot-item="isMainInventorySlotItem"
     :show-price="showPrice"
+    :show-weight="showWeight"
   >
     <AmmunitionSummary
       v-if="specializedComponent === AmmunitionSummary"
@@ -25,14 +25,12 @@
       v-if="specializedComponent === ArmorSummary"
       :armor-modifiers-override="selectedItemArmorModifiers"
       :include-mods-and-content="includeModsAndContent"
-      :is-main-inventory-slot-item="isMainInventorySlotItem"
       :item="selectedItem"
       :show-empty-entries="false"
       :wearable-modifiers-override="selectedItemWearableModifiers"
     />
     <BackpackSummary
       v-if="specializedComponent === BackpackSummary"
-      :is-main-inventory-slot-item="isMainInventorySlotItem"
       :item="selectedItem"
       :show-empty-entries="false"
       :wearable-modifiers-override="selectedItemWearableModifiers"
@@ -55,7 +53,8 @@
     <HeadwearSummary
       v-if="specializedComponent === HeadwearSummary"
       :armor-modifiers-override="selectedItemArmorModifiers"
-      :is-main-inventory-slot-item="isMainInventorySlotItem"
+      :include-mods-and-content="includeModsAndContent"
+      :is-base-item="isBaseItem"
       :item="selectedItem"
       :show-empty-entries="false"
       :wearable-modifiers-override="selectedItemWearableModifiers"
@@ -84,7 +83,6 @@
       v-if="specializedComponent === RangedWeaponSummary"
       :include-mods-and-content="includeModsAndContent"
       :is-base-item="isBaseItem"
-      :is-main-inventory-slot-item="isMainInventorySlotItem"
       :item="selectedItem"
       :ranged-weapons-modifiers-override="selectedItemRangedWeaponModifiers"
       :show-empty-entries="false"
@@ -94,7 +92,6 @@
       :armor-modifiers-override="selectedItemArmorModifiers"
       :include-mods-and-content="includeModsAndContent"
       :is-base-item="isBaseItem"
-      :is-main-inventory-slot-item="isMainInventorySlotItem"
       :item="selectedItem"
       :show-empty-entries="false"
       :wearable-modifiers-override="selectedItemWearableModifiers"
@@ -144,17 +141,17 @@ const props = withDefaults(
     inventoryItem: IInventoryItem,
     inventoryItemInSameSlotInPreset?: IInventoryItem
     isBaseItem?: boolean,
-    isMainInventorySlotItem?: boolean,
     selectedItem: IItem,
-    showPrice?: boolean
+    showPrice?: boolean,
+    showWeight?: boolean
   }>(),
   {
     canBeLooted: true,
     includeModsAndContent: false,
     inventoryItemInSameSlotInPreset: undefined,
     isBaseItem: false,
-    isMainInventorySlotItem: false,
-    showPrice: true
+    showPrice: true,
+    showWeight: true
   })
 
 const inventoryItemService = Services.get(InventoryItemService)

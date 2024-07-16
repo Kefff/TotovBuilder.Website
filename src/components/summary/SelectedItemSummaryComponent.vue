@@ -6,7 +6,7 @@
         <div class="selected-item-summary-right-base">
           <div>
             <div
-              v-if="includeModsAndContent"
+              v-if="includeModsAndContent && selectedItemInventoryPrice.priceInMainCurrency > 0"
               class="selected-item-summary-right-with-mods"
             >
               <InventoryPrice
@@ -17,7 +17,7 @@
               />
             </div>
             <Price
-              v-if="showPrice"
+              v-if="showPrice && selectedItemPrice.price.valueInMainCurrency > 0"
               :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
               :missing="hasMissingPrice"
               :price="selectedItemPrice.price"
@@ -40,7 +40,7 @@
               </Tooltip>
             </div>
             <div
-              v-if="!includeModsAndContent && selectedItemWeight.weight > 0"
+              v-if="(!includeModsAndContent || showWeight) && selectedItemWeight.weight > 0"
               class="selected-item-summary-right-weight-base"
             >
               <Tooltip :tooltip="$t('caption.weight')">
@@ -110,14 +110,16 @@ const props = withDefaults(
     inventoryItem: IInventoryItem,
     inventoryItemInSameSlotInPreset?: IInventoryItem,
     isBaseItem?: boolean,
-    showPrice?: boolean
+    showPrice?: boolean,
+    showWeight?: boolean
   }>(),
   {
     canBeLooted: true,
     includeModsAndContent: false,
     inventoryItemInSameSlotInPreset: undefined,
     isBaseItem: false,
-    showPrice: true
+    showPrice: true,
+    showWeight: true
   })
 
 const globalFilterService = Services.get(GlobalFilterService)
@@ -250,13 +252,13 @@ async function setWeight() {
 .selected-item-summary-right-per-unit {
   display: flex;
   flex-direction: row;
+  font-size: 0.85rem;
   font-style: italic;
   margin-right: 0.15rem;
 }
 
 .selected-item-summary-right-per-unit-price {
   margin-right: 3rem;
-  /* Alignment with the item total price */
 }
 
 .selected-item-summary-right-weight {
@@ -265,8 +267,6 @@ async function setWeight() {
   flex-direction: column;
   justify-content: center;
   margin-left: 1.7rem;
-  margin-right: 0.6rem;
-  /* Alignment with the inventory slot price */
   width: 7rem;
 }
 
@@ -277,6 +277,7 @@ async function setWeight() {
 }
 
 .selected-item-summary-right-with-mods {
+  font-style: italic;
   font-weight: bold;
 }
 </style>

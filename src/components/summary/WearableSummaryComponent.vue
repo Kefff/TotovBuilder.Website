@@ -109,6 +109,7 @@ const wearable = computed(() => props.item as IWearable)
 @import '../../css/stats.css';
 
 .wearable-summary-bold {
+  font-style: italic;
   font-weight: bold;
 }
 </style>

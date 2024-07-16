@@ -277,8 +277,8 @@
     "velocity": "Vitesse",
     "verticalRecoil": "Recul vertical",
     "weight": "Poids",
-    "withMods": " (avec mods)",
-    "withModsAndContent": " (avec mods & contenu)"
+    "withMods": " avec mods",
+    "withModsAndContent": " avec mods & contenu"
   },
   "message": {
     "apiDisclaimer1": "Données fournies gratuitement par ",

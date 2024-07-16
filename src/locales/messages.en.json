@@ -312,8 +312,8 @@
     "velocity": "Velocity",
     "verticalRecoil": "Vertical recoil",
     "weight": "Weight",
-    "withMods": " (with mods)",
-    "withModsAndContent": " (with mods & content)"
+    "withMods": " with mods",
+    "withModsAndContent": " with mods & content"
   },
   "message": {
     "apiDisclaimer1": "Data provided for free by ",

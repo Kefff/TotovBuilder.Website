@@ -132,6 +132,7 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
 @import '../../css/option.css';
 
 .ranged-weapon-summary-bold {
+  font-style: italic;
   font-weight: bold;
 }
 

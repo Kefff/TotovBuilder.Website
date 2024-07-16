@@ -46,8 +46,6 @@
 .item-selection {
   display: flex;
   flex-direction: row;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
 }
 
 .item-selection-main {

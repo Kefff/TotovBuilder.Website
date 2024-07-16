@@ -123,6 +123,7 @@ export default defineComponent({
     const selectedTab = ref(SelectableTab.hidden)
     const showBaseItemPrice = ref(false)
     const showPrice = ref(true)
+    const showWeight = ref(true)
 
     watch(
       () => props.acceptedItems,
@@ -339,7 +340,14 @@ export default defineComponent({
     function setBaseItem(item: IItem) {
       if (itemPropertiesService.isModdable(item) && !props.isBaseItem) {
         const moddable = item as IModdable
-        const baseItemId = moddable.defaultPresetId == null ? moddable.baseItemId : moddable.id
+        let baseItemId = moddable.defaultPresetId == null ? moddable.baseItemId : moddable.id
+
+        if (baseItemId == null
+          && itemPropertiesService.isHeadwear(moddable)
+          && moddable.modSlots.length > 0) {
+          // Special case for moddable helmets that for the most part do not have presets like weapons
+          baseItemId = moddable.id
+        }
 
         if (baseItemId != null) {
           baseItem.value = {
@@ -353,13 +361,14 @@ export default defineComponent({
           if (moddable.id === baseItemId) {
             // When the selected item is the same as the base item,
             // we display its price on the base item
-            showPrice.value = false
             showBaseItemPrice.value = true
+            showPrice.value = false
+            showWeight.value = false
           } else {
-            // When the selected item is a preset
-            // we display the price of the preset
-            showPrice.value = true
+            // When the selected item is a preset we display the price of the preset
             showBaseItemPrice.value = false
+            showPrice.value = true
+            showWeight.value = false
           }
 
           return
@@ -367,8 +376,9 @@ export default defineComponent({
       }
 
       baseItem.value = undefined
-      showPrice.value = true
       showBaseItemPrice.value = true
+      showPrice.value = true
+      showWeight.value = true
     }
 
     /**
@@ -563,7 +573,8 @@ export default defineComponent({
       selectedTab,
       setOptions,
       showBaseItemPrice,
-      showPrice
+      showPrice,
+      showWeight
     }
   }
 })
