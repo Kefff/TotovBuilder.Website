@@ -4,9 +4,9 @@
       <slot />
       <div class="selected-item-summary-right">
         <div class="selected-item-summary-right-base">
-          <div>
+          <div class="selected-item-summary-right-price">
             <div
-              v-if="includeModsAndContent && selectedItemInventoryPrice.priceInMainCurrency > 0"
+              v-if="includeModsAndContent"
               class="selected-item-summary-right-with-mods"
             >
               <InventoryPrice
@@ -17,11 +17,22 @@
               />
             </div>
             <Price
-              v-if="showPrice && selectedItemPrice.price.valueInMainCurrency > 0"
+              v-if="showPrice"
               :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
-              :missing="hasMissingPrice"
+              :missing="showSelectedItemMissingPrice"
               :price="selectedItemPrice.price"
             />
+            <div
+              v-if="showUnitPrice"
+              class="selected-item-summary-right-per-unit-price selected-item-summary-right-per-unit"
+            >
+              <Price
+                :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
+                :price="selectedItemPrice.unitPrice"
+                :show-merchant-icon="false"
+                :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
+              />
+            </div>
           </div>
           <div class="selected-item-summary-right-weight">
             <div
@@ -51,27 +62,19 @@
                 <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weight) }}</span>
               </Tooltip>
             </div>
-          </div>
-        </div>
-        <div class="selected-item-summary-right-per-unit">
-          <div class="selected-item-summary-right-per-unit-price">
-            <Price
-              v-if="showUnitPrice"
-              :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
-              :price="selectedItemPrice.unitPrice"
-              :show-merchant-icon="false"
-              :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
-            />
-          </div>
-          <div class="selected-item-summary-right-weight">
-            <div v-if="selectedItemWeight.unitWeight !== selectedItemWeight.weight">
-              <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
-                <font-awesome-icon
-                  icon="weight-hanging"
-                  class="icon-before-text"
-                />
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
-              </Tooltip>
+            <div
+              v-if="showUnitWeight"
+              class="selected-item-summary-right-weight selected-item-summary-right-per-unit"
+            >
+              <div>
+                <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
+                  <font-awesome-icon
+                    icon="weight-hanging"
+                    class="icon-before-text"
+                  />
+                  <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
+                </Tooltip>
+              </div>
             </div>
           </div>
         </div>
@@ -128,9 +131,13 @@ const inventoryItemService = Services.get(InventoryItemService)
 const hasMissingPrice = computed(() =>
   selectedItemPrice.value.missingPrice
   && !props.inventoryItem.ignorePrice
-  && selectedItemPrice.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored
-  && selectedItemPrice.value.unitPrice.valueInMainCurrency === 0) // We don't show the missing price icon on items that contain an item with a missing price
+  && selectedItemPrice.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored)
+const showSelectedItemMissingPrice = computed(() =>
+  hasMissingPrice.value
+  && !props.includeModsAndContent
+  && selectedItemPrice.value.unitPrice.valueInMainCurrency === 0) // We do not show the missing price icon on items that contain an item with a missing price
 const showUnitPrice = computed(() => selectedItemPrice.value.price.valueInMainCurrency !== selectedItemPrice.value.unitPrice.valueInMainCurrency)
+const showUnitWeight = computed(() => selectedItemWeight.value.unitWeight !== selectedItemWeight.value.weight)
 
 const selectedItemPrice = ref<IInventoryItemPrice>({
   missingPrice: false,
@@ -258,13 +265,22 @@ async function setWeight() {
 }
 
 .selected-item-summary-right-per-unit-price {
-  margin-right: 3rem;
+  margin-right: 3.15rem;
+}
+
+.selected-item-summary-right-price {
+  align-items: end;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: center;
 }
 
 .selected-item-summary-right-weight {
   align-items: end;
   display: flex;
   flex-direction: column;
+  gap: 0.25rem;
   justify-content: center;
   margin-left: 1.7rem;
   width: 7rem;

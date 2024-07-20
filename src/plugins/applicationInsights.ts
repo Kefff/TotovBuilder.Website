@@ -10,7 +10,10 @@ const applicationInsights = new ApplicationInsights({
 })
 
 export function useApplicationInsights(): void {
-  applicationInsights.loadAppInsights()
+  if (import.meta.env.VITE_APPLICATION_INSIGHTS_CONNECTION_STRING != null
+    && import.meta.env.VITE_APPLICATION_INSIGHTS_CONNECTION_STRING != '') {
+    applicationInsights.loadAppInsights()
+  }
 }
 
 export default applicationInsights

@@ -30,7 +30,7 @@
         class="inventory-price-missing-price-icon"
       >
         <Tooltip
-          :tooltip="isBuild ? $t('message.buildWithMissingPrice') : $t('message.inventorySlotWithMissingPrice')"
+          :tooltip="isBuild ? $t('message.buildWithMissingPrice') : $t('message.itemWithModsAndContentAndMissingPrice')"
           position="right"
         >
           <font-awesome-icon icon="exclamation-triangle" />
