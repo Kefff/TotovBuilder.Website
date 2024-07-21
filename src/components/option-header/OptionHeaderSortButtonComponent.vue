@@ -35,19 +35,21 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import Images from '../../images'
-import SortingData, { SortingOrder } from '../../models/utils/SortingData'
+import ItemSortingData from '../../models/utils/ItemSortingData'
+import { SortingOrder } from '../../models/utils/SortingOrder'
 import Services from '../../services/repository/Services'
-import { SortingService } from '../../services/sorting/SortingService'
+import { ItemSortingService } from '../../services/sorting/ItemSortingService'
 import { ISortingFunctionList } from '../../services/sorting/functions/ISortingFunctionList'
 import StringUtils from '../../utils/StringUtils'
 import CustomIcon from '../CustomIconComponent.vue'
+
+const modelSortingData = defineModel<ItemSortingData>('sortingData', { required: true })
 
 const props = withDefaults(
   defineProps<{
     captionResource: string,
     customIcon?: string,
     icon?: string,
-    sortingData: SortingData,
     property: string,
     sortingFunctions: ISortingFunctionList
   }>(),
@@ -56,9 +58,7 @@ const props = withDefaults(
     icon: undefined
   })
 
-const emit = defineEmits(['update:sortingData'])
-
-const sortingDirectionClass = computed(() => props.sortingData.order === SortingOrder.asc
+const sortingDirectionClass = computed(() => modelSortingData.value.order === SortingOrder.asc
   ? 'options-header-sort-button-sort-arrow-down'
   : 'options-header-sort-button-sort-arrow-up')
 
@@ -67,10 +67,10 @@ const sortingDirectionClass = computed(() => props.sortingData.order === Sorting
  * @param property - Property.
  */
 function sortBy(property: string) {
-  const sortingData = Services.get(SortingService).setSortingProperty(props.sortingData, props.sortingFunctions, property)
+  const sortingData = Services.get(ItemSortingService).setSortingProperty(modelSortingData.value, props.sortingFunctions, property)
 
   if (sortingData != null) {
-    emit('update:sortingData', sortingData)
+    modelSortingData.value = sortingData
   }
 }
 </script>

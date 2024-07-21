@@ -4,15 +4,15 @@ import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import { IItem } from '../../models/item/IItem'
 import { IMagazine } from '../../models/item/IMagazine'
 import { IModdable } from '../../models/item/IModdable'
+import ItemSortingData from '../../models/utils/ItemSortingData'
 import { SelectableTab } from '../../models/utils/SelectableTab'
-import SortingData from '../../models/utils/SortingData'
 import { CompatibilityRequestType } from '../../services/compatibility/CompatibilityRequestType'
 import { CompatibilityService } from '../../services/compatibility/CompatibilityService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ItemService } from '../../services/ItemService'
 import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
-import { SortingService } from '../../services/sorting/SortingService'
+import { ItemSortingService } from '../../services/sorting/ItemSortingService'
 import { PathUtils } from '../../utils/PathUtils'
 import StringUtils from '../../utils/StringUtils'
 import InputNumberField from '../InputNumberFieldComponent.vue'
@@ -117,7 +117,7 @@ export default defineComponent({
     const neetToSetOptions = ref(true)
     const options = ref<IItem[]>([])
     const optionsFilter = ref('')
-    const optionsSortingData = ref(new SortingData())
+    const optionsSortingData = ref(new ItemSortingData())
     const presetModSlotContainingItem = ref<IInventoryModSlot>()
     const quantity = ref(props.inventoryItem?.quantity ?? 1)
     const selectedTab = ref(SelectableTab.hidden)
@@ -308,12 +308,12 @@ export default defineComponent({
      *
      * Sorts the options items.
      */
-    async function onSortOptions(newSortingData: SortingData) {
+    async function onSortOptions(newSortingData: ItemSortingData) {
       loadingOptions.value = true
 
       optionsSortingData.value = newSortingData
       const currentOptions = [...options.value] // Creating a new array because options.value can be updated while this function is being executed
-      options.value = await Services.get(SortingService).sort(currentOptions, optionsSortingData.value)
+      options.value = await Services.get(ItemSortingService).sort(currentOptions, optionsSortingData.value)
 
       loadingOptions.value = false
 

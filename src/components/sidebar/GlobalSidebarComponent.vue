@@ -2,7 +2,7 @@
   <Sidebar
     v-model:visible="visible"
     :modal="true"
-    :position="options?.position"
+    :position="options.position"
     style="width: auto;"
   >
     <template #header>
@@ -12,7 +12,7 @@
       <component
         :is="displayedComponent"
         v-if="displayedComponent != null"
-        :parameters="options?.displayedComponentParameters"
+        v-model:parameters="options.displayedComponentParameters"
       />
     </div>
   </sidebar>
@@ -32,6 +32,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
+import BuildsListSidebar from './BuildsListSidebarComponent.vue'
 import ChangelogSidebar from './ChangelogSidebarComponent.vue'
 import GeneralOptionsSidebar from './GeneralOptionsSidebarComponent.vue'
 import MerchantItemsOptionsSidebar from './MerchantItemsOptionsSidebarComponent.vue'
@@ -43,6 +44,8 @@ const globalSidebarService = Services.get(GlobalSidebarService)
 
 const displayedComponent = computed(() => {
   switch (options.value?.displayedComponentType) {
+    case 'BuildsListSidebar':
+      return BuildsListSidebar
     case 'ChangelogSidebar':
       return ChangelogSidebar
     case 'GeneralOptionsSidebar':
@@ -71,7 +74,7 @@ const visible = computed({
 })
 
 const _visible = ref(false)
-const options = ref<IGlobalSidebarOptions>()
+const options = ref<IGlobalSidebarOptions>({} as IGlobalSidebarOptions)
 
 onMounted(() => {
   globalSidebarService.emitter.on(GlobalSidebarService.closeGlobalSidebarEvent, onGlobalSidebarClose)
@@ -89,7 +92,7 @@ onUnmounted(() => {
  * Executes closing actions and closes the global sidebar.
  */
 function onGlobalSidebarClose() {
-  globalSidebarService.executeOnClosingActions()
+  globalSidebarService.executeOnClosingActions(options.value.displayedComponentParameters)
   _visible.value = false
 }
 

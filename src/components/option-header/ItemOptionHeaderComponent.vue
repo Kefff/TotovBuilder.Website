@@ -49,12 +49,12 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import SortingData from '../../models/utils/SortingData'
+import ItemSortingData from '../../models/utils/ItemSortingData'
 import { ItemSortingFunctions } from '../../services/sorting/functions/ItemSortingFunction'
 import OptionHeaderSortButton from './OptionHeaderSortButtonComponent.vue'
 
 const modelFilter = defineModel<string>('filter', { required: true })
-const modelSortingData = defineModel<SortingData>('sortingData', { required: true })
+const modelSortingData = defineModel<ItemSortingData>('sortingData', { required: true })
 
 withDefaults(
   defineProps<{

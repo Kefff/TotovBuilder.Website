@@ -1,7 +1,7 @@
 import { IItem } from '../../../models/item/IItem'
 import { InventoryItemService } from '../../InventoryItemService'
 import Services from '../../repository/Services'
-import { compareByCategory, compareByNumber, compareByString } from '../SortingService'
+import { compareByCategory, compareByNumber, compareByString } from '../ItemSortingService'
 import { ISortingFunctionList } from './ISortingFunctionList'
 
 /**

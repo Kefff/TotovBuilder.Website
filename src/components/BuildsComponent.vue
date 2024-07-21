@@ -17,6 +17,18 @@
           <span>{{ $t('caption.new') }}</span>
         </Button>
         <Tooltip
+          :tooltip="$t('caption.filterAndSort')"
+          :apply-hover-style="false"
+        >
+          <Button
+            class="p-button-text p-button-sm button-discreet"
+            :disabled="isLoading"
+            @click="showFilterAndSortSidebar = true"
+          >
+            <font-awesome-icon icon="filter" />
+          </Button>
+        </Tooltip>
+        <Tooltip
           :tooltip="$t('caption.exportBuilds')"
           :apply-hover-style="false"
         >
@@ -82,6 +94,7 @@
       id="builds-content"
     >
       <BuildsList
+        v-model:filter-and-sort-sidebar-visible="showFilterAndSortSidebar"
         :build-summaries="buildSummaries"
         :show-not-exported="true"
         @update:selected-build-ids="onBuildClick"
@@ -153,6 +166,7 @@ const hasImported = ref(false)
 const isExporting = ref(false)
 const isImporting = ref(false)
 const isLoading = ref(true)
+const showFilterAndSortSidebar = ref(false)
 
 onMounted(() => {
   globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)

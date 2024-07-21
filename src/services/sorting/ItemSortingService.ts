@@ -1,5 +1,6 @@
 import { IItem } from '../../models/item/IItem'
-import SortingData, { SortingOrder } from '../../models/utils/SortingData'
+import ItemSortingData from '../../models/utils/ItemSortingData'
+import { SortingOrder } from '../../models/utils/SortingOrder'
 import StringUtils from '../../utils/StringUtils'
 import { LogService } from '../LogService'
 import Services from '../repository/Services'
@@ -8,14 +9,14 @@ import { ISortingFunctionList } from './functions/ISortingFunctionList'
 /**
  * Represents a service responsible for sorting items.
  */
-export class SortingService {
+export class ItemSortingService {
   /**
    * Sorts a collection of items according to sorting data.
    * Allows the use of asynchronous comparison functions.
    * @param items - Collection of items.
    * @param sortingData - Sorting data.
    */
-  public async sort<TItem extends IItem>(items: TItem[], sortingData: SortingData): Promise<TItem[]> {
+  public async sort<TItem extends IItem>(items: TItem[], sortingData: ItemSortingData): Promise<TItem[]> {
     const itemsWithSortingValue = await Promise.all(items.map(i => this.getItemAndSortingValue(i, sortingData)))
     itemsWithSortingValue.sort((iwsv1, iwsv2) => sortingData.sortingFunction.comparisonFunction(iwsv1.item, iwsv1.value, iwsv2.item, iwsv2.value))
     const result = itemsWithSortingValue.map(iwsv1 => iwsv1.item)
@@ -28,7 +29,7 @@ export class SortingService {
    * @param property - Property that will be used to sort.
    * @returns Updated sorting data.
    */
-  public setSortingProperty(sortingData: SortingData, sortingFunctions: ISortingFunctionList, property: string): SortingData | undefined {
+  public setSortingProperty(sortingData: ItemSortingData, sortingFunctions: ISortingFunctionList, property: string): ItemSortingData | undefined {
     const sortingFunction = sortingFunctions[property]
 
     if (sortingFunction == null) {
@@ -52,7 +53,7 @@ export class SortingService {
    * @param item - Item.
    * @returns Item and its sorting value.
    */
-  private async getItemAndSortingValue<TItem extends IItem>(item: TItem, sortingData: SortingData): Promise<{ item: TItem, value: number | string }> {
+  private async getItemAndSortingValue<TItem extends IItem>(item: TItem, sortingData: ItemSortingData): Promise<{ item: TItem, value: number | string }> {
     const value = await sortingData.sortingFunction.comparisonValueObtentionFunction(item)
 
     return { item, value }

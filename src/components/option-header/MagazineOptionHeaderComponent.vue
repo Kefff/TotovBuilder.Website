@@ -48,12 +48,12 @@
 
 
 <script setup lang="ts">
-import SortingData from '../../models/utils/SortingData'
+import ItemSortingData from '../../models/utils/ItemSortingData'
 import { MagazineSortingFunctions } from '../../services/sorting/functions/MagazineSortingFunctions'
 import ContainerOptionHeader from './ContainerOptionHeaderComponent.vue'
 import OptionHeaderSortButton from './OptionHeaderSortButtonComponent.vue'
 
-const modelSortingData = defineModel<SortingData>('sortingData', { required: true })
+const modelSortingData = defineModel<ItemSortingData>('sortingData', { required: true })
 </script>
 
 

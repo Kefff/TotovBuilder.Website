@@ -5,10 +5,11 @@ import { IItem } from '../../../../models/item/IItem'
 import { IPrice } from '../../../../models/item/IPrice'
 import { IInventoryItemPrice } from '../../../../models/utils/IInventoryItemPrice'
 import { IgnoredUnitPrice } from '../../../../models/utils/IgnoredUnitPrice'
-import SortingData, { SortingOrder } from '../../../../models/utils/SortingData'
+import ItemSortingData from '../../../../models/utils/ItemSortingData'
+import { SortingOrder } from '../../../../models/utils/SortingOrder'
 import { InventoryItemService } from '../../../../services/InventoryItemService'
 import Services from '../../../../services/repository/Services'
-import { SortingService } from '../../../../services/sorting/SortingService'
+import { ItemSortingService } from '../../../../services/sorting/ItemSortingService'
 import { ItemSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunction'
 
 describe('comparisonFunction()', () => {
@@ -63,8 +64,8 @@ describe('comparisonFunction()', () => {
     })
     Services.configure(InventoryItemService, undefined, instance(inventoryItemService))
 
-    let sortingData: SortingData | undefined = new SortingData()
-    const sortingService = new SortingService()
+    let sortingData: ItemSortingData | undefined = new ItemSortingData()
+    const sortingService = new ItemSortingService()
 
     // Act
     sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'price')
@@ -112,8 +113,8 @@ describe('comparisonFunction()', () => {
     })
     Services.configure(InventoryItemService, undefined, instance(inventoryItemService))
 
-    let sortingData: SortingData | undefined = new SortingData()
-    const sortingService = new SortingService()
+    let sortingData: ItemSortingData | undefined = new ItemSortingData()
+    const sortingService = new ItemSortingService()
 
     // Act
     sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'price')
@@ -144,8 +145,8 @@ describe('comparisonFunction()', () => {
       name: 'b'
     } as IItem
 
-    let sortingData: SortingData | undefined = new SortingData()
-    const sortingService = new SortingService()
+    let sortingData: ItemSortingData | undefined = new ItemSortingData()
+    const sortingService = new ItemSortingService()
     sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'categoryId')
 
     // Act
@@ -172,8 +173,8 @@ describe('comparisonFunction()', () => {
       name: 'b'
     } as IItem
 
-    let sortingData: SortingData | undefined = new SortingData()
-    const sortingService = new SortingService()
+    let sortingData: ItemSortingData | undefined = new ItemSortingData()
+    const sortingService = new ItemSortingService()
     sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'name')
 
     // Act
@@ -197,7 +198,7 @@ describe('defaultSortingFunction', () => {
       name: 'a'
     } as IItem
 
-    const sortingData = new SortingData()
+    const sortingData = new ItemSortingData()
     const comparisonValue1 = await sortingData.sortingFunction.comparisonValueObtentionFunction(item1)
     const comparisonValue2 = await sortingData.sortingFunction.comparisonValueObtentionFunction(item2)
 

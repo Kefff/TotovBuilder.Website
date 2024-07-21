@@ -23,12 +23,14 @@
           @show="onDropdownOpen()"
         >
           <template #clearicon>
-            <div
-              class="item-clear-button"
-              @click="removeItem"
-            >
-              <font-awesome-icon icon="times" />
-            </div>
+            <Tooltip :tooltip="$t('caption.clearItem')">
+              <div
+                class="item-clear-button"
+                @click="removeItem"
+              >
+                <font-awesome-icon icon="times" />
+              </div>
+            </Tooltip>
           </template>
           <template #empty>
             <div class="item-dropdown-empty">

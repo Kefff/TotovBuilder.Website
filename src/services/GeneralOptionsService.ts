@@ -32,7 +32,7 @@ export class GeneralOptionsService {
 
       Services.get(NotificationService).notify(
         NotificationType.information,
-        vueI18n.t('caption.cookiesExplanation'),
+        vueI18n.t('message.cookiesExplanation'),
         0,
         [
           {

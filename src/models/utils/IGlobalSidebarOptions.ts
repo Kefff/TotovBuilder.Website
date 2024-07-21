@@ -1,5 +1,6 @@
 import { IShoppingListItem } from '../build/IShoppingListItem'
 import { IItem } from '../item/IItem'
+import { IBuildsListFilterSortingData } from './IBuildsListFilterSortingData'
 import { IGeneralOptionsGroup } from './IGeneralOptionsGroup'
 
 /**
@@ -10,7 +11,8 @@ export interface IGlobalSidebarOptions {
    * Name of the component to display in the global sidebar.
    */
   displayedComponentType:
-  'ChangelogSidebar'
+  'BuildsListSidebar'
+  | 'ChangelogSidebar'
   | 'GeneralOptionsSidebar'
   | 'MerchantItemsOptionsSidebar'
   | 'NotificationsSidebar'
@@ -20,10 +22,19 @@ export interface IGlobalSidebarOptions {
   /**
    * Parameters to pass as props to the component to display in the global sidebar.
    */
-  displayedComponentParameters?: IGeneralOptionsGroup[] | IItem | IShoppingListItem[]
+  displayedComponentParameters?: GlobalSidebarDisplayedComponentParametersType
 
   /**
    * Position from which the global sidebar is displayed.
    */
   position: 'left' | 'right',
 }
+
+/**
+ * Type of parameters allowed to be passed to a component displayed in the global sidebar.
+ */
+export type GlobalSidebarDisplayedComponentParametersType =
+  IBuildsListFilterSortingData
+  | IGeneralOptionsGroup[]
+  | IItem
+  | IShoppingListItem[]

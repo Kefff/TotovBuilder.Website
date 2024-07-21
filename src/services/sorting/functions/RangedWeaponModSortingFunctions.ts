@@ -1,5 +1,5 @@
 import { IRangedWeaponMod } from '../../../models/item/IRangedWeaponMod'
-import { compareByNumber } from '../SortingService'
+import { compareByNumber } from '../ItemSortingService'
 import { ISortingFunctionList } from './ISortingFunctionList'
 import { ModSortingFunctions } from './ModSortingFunctions'
 

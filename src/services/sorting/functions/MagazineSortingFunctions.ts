@@ -1,5 +1,5 @@
 import { IMagazine } from '../../../models/item/IMagazine'
-import { compareByNumber } from '../SortingService'
+import { compareByNumber } from '../ItemSortingService'
 import { ContainerSortingFunctions } from './ContainerSortingFunctions'
 import { ISortingFunctionList } from './ISortingFunctionList'
 import { ModSortingFunctions } from './ModSortingFunctions'

@@ -1,11 +1,12 @@
-import { compareByString } from '../../services/sorting/SortingService'
+import { compareByString } from '../../services/sorting/ItemSortingService'
 import { ISortingFunction } from '../../services/sorting/functions/ISortingFunction'
 import { IItem } from '../item/IItem'
+import { SortingOrder } from './SortingOrder'
 
 /**
- * Prodides the functionalities of data used for sorting.
+ * Provides the functionalities of sorting data for items.
  */
-export default class SortingData {
+export default class ItemSortingData {
   /**
    * Sorting order.
    */
@@ -23,19 +24,4 @@ export default class SortingData {
     comparisonFunction: compareByString,
     comparisonValueObtentionFunction: (item: IItem) => Promise.resolve(item.name)
   }
-}
-
-/**
- * Sorting order.
- */
-export enum SortingOrder {
-  /**
-   * Ascendent.
-   */
-  asc = 1,
-
-  /**
-   * Descendant
-   */
-  desc = -1
 }

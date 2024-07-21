@@ -1,5 +1,5 @@
 import { IGrenade } from '../../../models/item/IGrenade'
-import { compareByNumber } from '../SortingService'
+import { compareByNumber } from '../ItemSortingService'
 import { ISortingFunctionList } from './ISortingFunctionList'
 import { ItemSortingFunctions } from './ItemSortingFunction'
 

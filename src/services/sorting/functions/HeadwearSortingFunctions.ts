@@ -1,5 +1,5 @@
 import { IHeadwear } from '../../../models/item/IHeadwear'
-import { compareByNumber } from '../SortingService'
+import { compareByNumber } from '../ItemSortingService'
 import { ArmorSortingFunctions } from './ArmorSortingFunctions'
 import { ISortingFunctionList } from './ISortingFunctionList'
 

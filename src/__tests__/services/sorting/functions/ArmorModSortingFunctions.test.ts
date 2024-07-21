@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { IArmorMod } from '../../../../models/item/IArmorMod'
-import SortingData from '../../../../models/utils/SortingData'
-import { SortingService } from '../../../../services/sorting/SortingService'
+import ItemSortingData from '../../../../models/utils/ItemSortingData'
+import { ItemSortingService } from '../../../../services/sorting/ItemSortingService'
 import { ArmorModSortingFunctions } from '../../../../services/sorting/functions/ArmorModSortingFunctions'
 
 describe('setSortingProperty()', () => {
@@ -50,8 +50,8 @@ describe('setSortingProperty()', () => {
       turningSpeedModifierPercentage: 1
     } as IArmorMod
 
-    let sortingData: SortingData | undefined = new SortingData()
-    const sortingService = new SortingService()
+    let sortingData: ItemSortingData | undefined = new ItemSortingData()
+    const sortingService = new ItemSortingService()
     sortingData = sortingService.setSortingProperty(sortingData, ArmorModSortingFunctions, property)
 
     // Act

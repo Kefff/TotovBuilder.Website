@@ -1,5 +1,5 @@
 import { TinyEmitter } from 'tiny-emitter'
-import { IGlobalSidebarOptions } from '../models/utils/IGlobalSidebarOptions'
+import { GlobalSidebarDisplayedComponentParametersType, IGlobalSidebarOptions } from '../models/utils/IGlobalSidebarOptions'
 
 /**
  * Represents a service responsible for managing a GlobalSidebarComponent.
@@ -16,14 +16,14 @@ export class GlobalSidebarService {
   public static openGlobalSidebarEvent = 'openGlobalSidebar'
 
   /**
-   * Event emitter used to open the global sidebar.
+   * Event emitter used to open and close the global sidebar.
    */
   public emitter = new TinyEmitter()
 
   /**
    * Actions to execute when closing the global sidebar.
    */
-  private onClosingActions: (() => void | Promise<void>)[] = []
+  private onClosingActions: ((updatedParameters?: GlobalSidebarDisplayedComponentParametersType) => void | Promise<void>)[] = []
 
   /**
    * Closes the global sidebar.
@@ -43,9 +43,9 @@ export class GlobalSidebarService {
   /**
    * Executes the actions registered to be closed when the sidebare is closing.
    */
-  public executeOnClosingActions() {
+  public executeOnClosingActions(updatedParameters?: GlobalSidebarDisplayedComponentParametersType) {
     for (const onClosingAction of this.onClosingActions) {
-      onClosingAction()
+      onClosingAction(updatedParameters)
     }
 
     this.onClosingActions = []
@@ -55,7 +55,7 @@ export class GlobalSidebarService {
    * Registers an action to be executed when the global sidebard is closing.
    * @param action - Action.
    */
-  public registerOnClosingAction(action: () => void | Promise<void>) {
+  public registerOnClosingAction(action: (updatedParameters?: GlobalSidebarDisplayedComponentParametersType) => void | Promise<void>) {
     this.onClosingActions.push(action)
   }
 }

@@ -1,10 +1,11 @@
 import { anything, instance, mock, verify } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IItem } from '../../../models/item/IItem'
-import SortingData, { SortingOrder } from '../../../models/utils/SortingData'
+import ItemSortingData from '../../../models/utils/ItemSortingData'
+import { SortingOrder } from '../../../models/utils/SortingOrder'
 import { LogService } from '../../../services/LogService'
 import Services from '../../../services/repository/Services'
-import { SortingService, compareByCategory, compareByName, compareByNumber, compareByString } from '../../../services/sorting/SortingService'
+import { ItemSortingService, compareByCategory, compareByName, compareByNumber, compareByString } from '../../../services/sorting/ItemSortingService'
 import { ISortingFunctionList } from '../../../services/sorting/functions/ISortingFunctionList'
 
 describe('compareByCategory()', () => {
@@ -79,7 +80,7 @@ describe('setSortingProperty()', () => {
     ['price', SortingOrder.asc, 2]
   ])('should set the sorting property and get the comparison function', (property: string, expectedSortingOrder: SortingOrder, expectedComparisonResult: number) => {
     // Arrange
-    let sortingData: SortingData | undefined = new SortingData()
+    let sortingData: ItemSortingData | undefined = new ItemSortingData()
     const sortingFunctions: ISortingFunctionList = {
       name: {
         comparisonFunction: () => {
@@ -92,7 +93,7 @@ describe('setSortingProperty()', () => {
         comparisonValueObtentionFunction: (item: IItem) => Promise.resolve(item.prices[0].valueInMainCurrency)
       }
     }
-    const sortService = new SortingService()
+    const sortService = new ItemSortingService()
 
     // Act
     sortingData = sortService.setSortingProperty(sortingData, sortingFunctions, property)
@@ -106,9 +107,9 @@ describe('setSortingProperty()', () => {
 
   it('should return undefined when no comparison function is configured for the property', () => {
     // Arrange
-    let sortingData: SortingData | undefined = new SortingData()
+    let sortingData: ItemSortingData | undefined = new ItemSortingData()
     const sortingFunctions: ISortingFunctionList = {}
-    const sortService = new SortingService()
+    const sortService = new ItemSortingService()
 
     const logServiceMock = mock<LogService>()
     Services.configure(LogService, undefined, instance(logServiceMock))
@@ -125,7 +126,7 @@ describe('setSortingProperty()', () => {
 describe('sort()', () => {
   it('should sort an array or items', async () => {
     // Arrange
-    let sortingData: SortingData | undefined = new SortingData()
+    let sortingData: ItemSortingData | undefined = new ItemSortingData()
     const sortingFunctions: ISortingFunctionList = {
       shortName: {
         comparisonFunction: compareByString,
@@ -139,7 +140,7 @@ describe('sort()', () => {
       { categoryId: 'cat1', shortName: 'f' } as IItem,
       { categoryId: 'cat1', shortName: 'i' } as IItem
     ]
-    const sortingService = new SortingService()
+    const sortingService = new ItemSortingService()
 
     // Act
     sortingData = sortingService.setSortingProperty(sortingData, sortingFunctions, 'shortName')

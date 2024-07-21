@@ -1,5 +1,5 @@
 import { IArmorMod } from '../../../models/item/IArmorMod'
-import { compareByNumber } from '../SortingService'
+import { compareByNumber } from '../ItemSortingService'
 import { ArmorSortingFunctions } from './ArmorSortingFunctions'
 import { ISortingFunctionList } from './ISortingFunctionList'
 

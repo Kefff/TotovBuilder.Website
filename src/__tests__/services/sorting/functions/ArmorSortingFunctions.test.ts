@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { IArmor } from '../../../../models/item/IArmor'
-import SortingData from '../../../../models/utils/SortingData'
-import { SortingService } from '../../../../services/sorting/SortingService'
+import ItemSortingData from '../../../../models/utils/ItemSortingData'
+import { ItemSortingService } from '../../../../services/sorting/ItemSortingService'
 import { ArmorSortingFunctions } from '../../../../services/sorting/functions/ArmorSortingFunctions'
 
 describe('comparisonFunction()', () => {
@@ -25,8 +25,8 @@ describe('comparisonFunction()', () => {
       ergonomicsModifierPercentage: 1
     } as IArmor
 
-    let sortingData: SortingData | undefined = new SortingData()
-    const sortingService = new SortingService()
+    let sortingData: ItemSortingData | undefined = new ItemSortingData()
+    const sortingService = new ItemSortingService()
     sortingData = sortingService.setSortingProperty(sortingData, ArmorSortingFunctions, property)
 
     // Act
