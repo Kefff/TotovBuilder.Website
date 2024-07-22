@@ -119,7 +119,7 @@ const tooltip = computed(() => {
   let value: string = props.customTooltip ?? vueI18n.t('caption.price')
 
   if (canShowDetails.value && !isTouchScreen) {
-    value += ` ${vueI18n.t('caption.priceDetails')}`
+    value += ` ${vueI18n.t('caption.clickForDetails')}`
   }
 
   return value

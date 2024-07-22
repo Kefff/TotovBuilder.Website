@@ -24,7 +24,7 @@
   </div>
   <div class="sidebar-title">
     <div class="sidebar-title-icon">
-      <font-awesome-icon icon="sort-alpha-down" />
+      <font-awesome-icon :icon="sortIcon" />
     </div>
     <span>{{ $t('caption.sort') }}</span>
   </div>
@@ -94,6 +94,8 @@ const defaultSortOrder = SortingOrder.asc
 
 const buildsListSidebarFilterInput = ref()
 const sortableProperties = ref<string[]>([])
+
+const sortIcon = computed(() => modelFilterSortingData.value.currentSortOrder === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
 
 onMounted(() => {
   sortableProperties.value = getSortableProperties()

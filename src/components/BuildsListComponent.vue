@@ -1,21 +1,71 @@
 <template>
-  <Chip
-    v-if="filterAndSort.filter != null"
-    class="builds-list-filter-chip"
-  >
-    <div class="builds-list-filter-chip-filter-icon">
-      <font-awesome-icon icon="filter" />
-    </div>
-    <span>{{ $t('caption.filter') }} : {{ filterAndSort.filter }}</span>
-    <Tooltip :tooltip="$t('caption.removeFilter')">
-      <div
-        class="builds-list-filter-chip-remove-icon"
-        @click="filterAndSort.filter = undefined"
+  <div class="builds-list-chips-container">
+    <div class="builds-list-chips">
+      <Chip
+        class="builds-list-chip"
+        @click="showFilterAndSortSidebar()"
       >
-        <font-awesome-icon icon="times" />
-      </div>
-    </Tooltip>
-  </Chip>
+        <Tooltip
+          :tooltip="`${$t('caption.sort')} ${$t('caption.clickForDetails')}`"
+          style="overflow: hidden;"
+        >
+          <div class="builds-list-chip-group">
+            <div class="builds-list-chip-icon">
+              <font-awesome-icon :icon="sortChipIcon" />
+            </div>
+            <span>{{ $t(`caption.${filterAndSort.currentSortField}`) }}</span>
+          </div>
+        </Tooltip>
+      </Chip>
+      <Chip
+        v-if="filterAndSort.filter == null"
+        class="builds-list-chip"
+        @click="showFilterAndSortSidebar()"
+      >
+        <Tooltip
+          :tooltip="$t('caption.addFilter')"
+          style="overflow: hidden;"
+        >
+          <div class="builds-list-chip-group">
+            <div class="builds-list-chip-icon">
+              <font-awesome-icon icon="filter" />
+            </div>
+            <span>{{ $t('caption.filter') }}</span>
+            <div class="builds-list-chip-icon-button builds-list-chip-icon-button-add-filter">
+              <font-awesome-icon icon="plus" />
+            </div>
+          </div>
+        </Tooltip>
+      </Chip>
+      <Chip
+        v-else
+        class="builds-list-chip"
+      >
+        <Tooltip
+          :tooltip="`${$t('caption.filter')} ${$t('caption.clickForDetails')}`"
+          style="overflow: hidden;"
+        >
+          <div
+            class="builds-list-chip-group"
+            @click="showFilterAndSortSidebar()"
+          >
+            <div class="builds-list-chip-icon">
+              <font-awesome-icon icon="filter" />
+            </div>
+            <span>{{ filterAndSort.filter }}</span>
+          </div>
+        </Tooltip>
+        <Tooltip :tooltip="$t('caption.removeFilter')">
+          <div
+            class="builds-list-chip-icon-button builds-list-chip-icon-button-remove-filter"
+            @click="filterAndSort.filter = undefined"
+          >
+            <font-awesome-icon icon="times" />
+          </div>
+        </Tooltip>
+      </Chip>
+    </div>
+  </div>
   <div class="builds-list-cards">
     <BuildCard
       v-for="buildSummary of buildSummariesInternal"
@@ -38,7 +88,7 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { IBuildsListFilterSortingData } from '../models/utils/IBuildsListFilterSortingData'
 import { GlobalSidebarDisplayedComponentParametersType } from '../models/utils/IGlobalSidebarOptions'
@@ -50,7 +100,6 @@ import BuildCard from './BuildCardComponent.vue'
 
 const globalSidebarService = Services.get(GlobalSidebarService)
 
-const modelFilterAndSortSidebarVisible = defineModel<boolean>('filterAndSortSidebarVisible', { required: true })
 const modelSelectedBuildIds = defineModel<string[]>('selectedBuildIds', { required: false, default: [] })
 
 const props = defineProps<{
@@ -65,8 +114,7 @@ const filterAndSort = ref<IBuildsListFilterSortingData>({
 })
 
 const buildSummariesInternal = computed(() => props.buildSummaries)
-
-watch(() => modelFilterAndSortSidebarVisible.value, () => showFilterAndSortSidebar())
+const sortChipIcon = computed(() => filterAndSort.value.currentSortOrder === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
 
 onMounted(() => {
   getSortingData()
@@ -107,8 +155,6 @@ function onFilterAndSortSidebarClosing(updatedParameters?: GlobalSidebarDisplaye
     filterAndSort.value = updatedParameters as IBuildsListFilterSortingData
     saveSortingData()
   }
-
-  modelFilterAndSortSidebarVisible.value = false
 }
 
 /**
@@ -124,10 +170,6 @@ function saveSortingData() {
  * Opens the filter and sort sidebar.
  */
 function showFilterAndSortSidebar() {
-  if (!modelFilterAndSortSidebarVisible.value) {
-    return
-  }
-
   globalSidebarService.display({
     displayedComponentType: 'BuildsListSidebar',
     displayedComponentParameters: filterAndSort.value,
@@ -169,27 +211,58 @@ function updatedSelectedBuilds(buildId: string, isSelected: boolean) {
   grid-template-columns: repeat(3, 1fr);
 }
 
-.builds-list-filter-chip {
-  padding: 0.5rem;
+.builds-list-chip {
+  cursor: pointer;
   margin-bottom: 0.5rem;
+  overflow: hidden;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
 }
 
-.builds-list-filter-chip-filter-icon {
-  margin-left: 0.5rem;
+.builds-list-chip-group {
+  align-items: center;
+  display: flex;
+  overflow: hidden;
+}
+
+.builds-list-chip-group > span {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.builds-list-chip-icon {
   margin-right: 0.5rem;
 }
 
-.builds-list-filter-chip-remove-icon {
+.builds-list-chip-icon-button {
   align-items: center;
-  color: var(--error-color);
   display: flex;
   justify-content: center;
   padding-left: 1rem;
-  padding-right: 1rem;
 }
 
-.builds-list-filter-chip-remove-icon:hover {
+.builds-list-chip-icon-button:hover {
   cursor: pointer;
+}
+
+.builds-list-chip-icon-button-add-filter {
+  color: var(--success-color);
+}
+
+.builds-list-chip-icon-button-remove-filter {
+  color: var(--error-color);
+}
+
+.builds-list-chips {
+  align-items: center;
+  display: grid;
+  grid-gap: 0.5rem;
+  grid-template-columns: auto auto;
+}
+
+.builds-list-chips-container {
+  display: flex;
 }
 
 /* Smartphone in portrait */

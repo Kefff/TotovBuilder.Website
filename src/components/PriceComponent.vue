@@ -249,7 +249,7 @@ const priceTooltip = computed(() => {
   }
 
   if (canShowDetails.value && !isTouchScreen) {
-    tooltip += ` ${vueI18n.t('caption.priceDetails')}`
+    tooltip += ` ${vueI18n.t('caption.clickForDetails')}`
   }
 
   return tooltip
