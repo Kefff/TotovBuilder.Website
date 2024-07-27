@@ -1,23 +1,24 @@
+import { IItem } from '../../../models/item/IItem'
 import { IMeleeWeapon } from '../../../models/item/IMeleeWeapon'
-import { compareByNumber } from '../ItemSortingService'
-import { ISortingFunctionList } from './ISortingFunctionList'
-import { ItemSortingFunctions } from './ItemSortingFunction'
+import { compareByItemNumber } from '../SortingService'
+import { ItemSortingFunctions } from './ItemSortingFunctions'
+import { ISortingFunctionList } from './SortingFunctionList'
 
 /**
  * Functions for sorting melee weapons.
  */
-export const MeleeWeaponSortingFunctions: ISortingFunctionList = {
+export const MeleeWeaponSortingFunctions: ISortingFunctionList<IItem> = {
   ...ItemSortingFunctions,
   chopDamage: {
-    comparisonFunction: compareByNumber,
+    comparisonFunction: compareByItemNumber,
     comparisonValueObtentionFunction: i => Promise.resolve((i as IMeleeWeapon).chopDamage)
   },
   hitRadius: {
-    comparisonFunction: compareByNumber,
+    comparisonFunction: compareByItemNumber,
     comparisonValueObtentionFunction: i => Promise.resolve((i as IMeleeWeapon).hitRadius)
   },
   stabDamage: {
-    comparisonFunction: compareByNumber,
+    comparisonFunction: compareByItemNumber,
     comparisonValueObtentionFunction: i => Promise.resolve((i as IMeleeWeapon).stabDamage)
   }
 }

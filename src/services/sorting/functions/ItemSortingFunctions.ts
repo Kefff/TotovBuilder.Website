@@ -1,23 +1,23 @@
 import { IItem } from '../../../models/item/IItem'
 import { InventoryItemService } from '../../InventoryItemService'
 import Services from '../../repository/Services'
-import { compareByCategory, compareByNumber, compareByString } from '../ItemSortingService'
-import { ISortingFunctionList } from './ISortingFunctionList'
+import { compareByItemNumber, compareByItemString, compareByString } from '../SortingService'
+import { ISortingFunctionList } from './SortingFunctionList'
 
 /**
  * Functions for sorting items.
  */
-export const ItemSortingFunctions: ISortingFunctionList = {
+export const ItemSortingFunctions: ISortingFunctionList<IItem> = {
   categoryId: {
-    comparisonFunction: (item1: IItem, item1Value: string | number, item2: IItem) => compareByCategory(item1, item2),
-    comparisonValueObtentionFunction: () => Promise.resolve('')
+    comparisonFunction: (i1, i1v, i2, i2v) => compareByString(i1 as unknown as Record<string, unknown>, i1v, i2 as unknown as Record<string, unknown>, i2v),
+    comparisonValueObtentionFunction: i => Promise.resolve(i.categoryId)
   },
   name: {
-    comparisonFunction: compareByString,
+    comparisonFunction: compareByItemString,
     comparisonValueObtentionFunction: i => Promise.resolve(i.name)
   },
   price: {
-    comparisonFunction: compareByNumber,
+    comparisonFunction: compareByItemNumber,
     comparisonValueObtentionFunction: async i => await getPrice(i)
   }
 }

@@ -1,6 +1,6 @@
 import { IShoppingListItem } from '../build/IShoppingListItem'
 import { IItem } from '../item/IItem'
-import { IBuildsListFilterSortingData } from './IBuildsListFilterSortingData'
+import { BuildFilterAndSortingData } from './BuildFilterAndSortingData'
 import { IGeneralOptionsGroup } from './IGeneralOptionsGroup'
 
 /**
@@ -34,7 +34,7 @@ export interface IGlobalSidebarOptions {
  * Type of parameters allowed to be passed to a component displayed in the global sidebar.
  */
 export type GlobalSidebarDisplayedComponentParametersType =
-  IBuildsListFilterSortingData
+  BuildFilterAndSortingData
   | IGeneralOptionsGroup[]
   | IItem
   | IShoppingListItem[]

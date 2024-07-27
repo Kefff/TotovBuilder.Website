@@ -15,7 +15,10 @@
       </div>
     </template>
     <template #content>
-      <div class="build-card-items">
+      <div
+        v-if="itemsInInventorySlots.length > 0"
+        class="build-card-items"
+      >
         <div
           v-for="itemInInventorySlot of itemsInInventorySlots"
           :key="itemInInventorySlot.inventorySlotId"

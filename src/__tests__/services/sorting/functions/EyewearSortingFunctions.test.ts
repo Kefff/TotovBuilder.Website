@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { IEyewear } from '../../../../models/item/IEyewear'
-import ItemSortingData from '../../../../models/utils/ItemSortingData'
-import { ItemSortingService } from '../../../../services/sorting/ItemSortingService'
+import { IItem } from '../../../../models/item/IItem'
+import SortingData from '../../../../models/utils/SortingData'
+import { SortingService } from '../../../../services/sorting/SortingService'
 import { EyewearSortingFunctions } from '../../../../services/sorting/functions/EyewearSortingFunctions'
 
 describe('comparisonFunction()', () => {
@@ -17,8 +18,8 @@ describe('comparisonFunction()', () => {
       blindnessProtectionPercentage: 1
     } as IEyewear
 
-    let sortingData: ItemSortingData | undefined = new ItemSortingData()
-    const sortingService = new ItemSortingService()
+    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    const sortingService = new SortingService()
     sortingData = sortingService.setSortingProperty(sortingData, EyewearSortingFunctions, property)
 
     // Act

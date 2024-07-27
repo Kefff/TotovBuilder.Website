@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { IContainer } from '../../../../models/item/IContainer'
-import ItemSortingData from '../../../../models/utils/ItemSortingData'
-import { ItemSortingService } from '../../../../services/sorting/ItemSortingService'
+import { IItem } from '../../../../models/item/IItem'
+import SortingData from '../../../../models/utils/SortingData'
+import { SortingService } from '../../../../services/sorting/SortingService'
 import { ContainerSortingFunctions } from '../../../../services/sorting/functions/ContainerSortingFunctions'
 
 describe('comparisonFunction()', () => {
@@ -17,8 +18,8 @@ describe('comparisonFunction()', () => {
       capacity: 1
     } as IContainer
 
-    let sortingData: ItemSortingData | undefined = new ItemSortingData()
-    const sortingService = new ItemSortingService()
+    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    const sortingService = new SortingService()
     sortingData = sortingService.setSortingProperty(sortingData, ContainerSortingFunctions, property)
 
     // Act

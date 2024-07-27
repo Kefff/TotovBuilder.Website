@@ -19,12 +19,12 @@
 
 
 <script setup lang="ts">
-import ItemSortingData from '../../models/utils/ItemSortingData'
+import SortingData from '../../models/utils/SortingData'
 import { BackpackSortingFunctions } from '../../services/sorting/functions/BackpackSortingFunctions'
 import ContainerOptionHeader from './ContainerOptionHeaderComponent.vue'
 import WearableOptionHeader from './WearableOptionHeaderComponent.vue'
 
-const modelSortingData = defineModel<ItemSortingData>('sortingData', { required: true })
+const modelSortingData = defineModel<SortingData>('sortingData', { required: true })
 </script>
 
 

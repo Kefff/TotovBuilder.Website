@@ -2,7 +2,6 @@
   "caption": {
     "acceptedAmmunition": "Accepted ammunition",
     "accuracy": "Accuracy",
-    "addFilter": "Add filter",
     "allow": "Allow",
     "allowCookies": "Allow cookies",
     "ammunition": "Ammunition",
@@ -273,7 +272,6 @@
     "recoil": "Recoil",
     "rejectCookies": "Reject cookies",
     "reloadPage": "Reload the page",
-    "removeFilter": "Remove filter",
     "reportBug": "Report a bug",
     "requiredMod": "Required mod",
     "resetFilterAndSort": "Reset filter & sort",

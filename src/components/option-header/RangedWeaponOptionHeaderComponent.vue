@@ -66,11 +66,11 @@
 
 
 <script setup lang="ts">
-import ItemSortingData from '../../models/utils/ItemSortingData'
+import SortingData from '../../models/utils/SortingData'
 import { RangedWeaponSortingFunctions } from '../../services/sorting/functions/RangedWeaponSortingFunctions'
 import OptionHeaderSortButton from './OptionHeaderSortButtonComponent.vue'
 
-const modelSortingData = defineModel<ItemSortingData>('sortingData', { required: true })
+const modelSortingData = defineModel<SortingData>('sortingData', { required: true })
 </script>
 
 

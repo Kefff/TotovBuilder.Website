@@ -58,7 +58,7 @@
     "test-w": "npm run test-watch",
     "test-watch": "vitest watch",
     "test": "vitest run",
-    "tsc": "tsc"
+    "tsc": "tsc --noEmit"
   },
   "type": "module",
   "version": "0.0.0"

@@ -35,15 +35,16 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import Images from '../../images'
-import ItemSortingData from '../../models/utils/ItemSortingData'
+import { IItem } from '../../models/item/IItem'
+import SortingData from '../../models/utils/SortingData'
 import { SortingOrder } from '../../models/utils/SortingOrder'
 import Services from '../../services/repository/Services'
-import { ItemSortingService } from '../../services/sorting/ItemSortingService'
-import { ISortingFunctionList } from '../../services/sorting/functions/ISortingFunctionList'
+import { SortingService } from '../../services/sorting/SortingService'
+import { ISortingFunctionList } from '../../services/sorting/functions/SortingFunctionList'
 import StringUtils from '../../utils/StringUtils'
 import CustomIcon from '../CustomIconComponent.vue'
 
-const modelSortingData = defineModel<ItemSortingData>('sortingData', { required: true })
+const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { required: true })
 
 const props = withDefaults(
   defineProps<{
@@ -51,7 +52,7 @@ const props = withDefaults(
     customIcon?: string,
     icon?: string,
     property: string,
-    sortingFunctions: ISortingFunctionList
+    sortingFunctions: ISortingFunctionList<IItem>
   }>(),
   {
     customIcon: undefined,
@@ -67,7 +68,7 @@ const sortingDirectionClass = computed(() => modelSortingData.value.order === So
  * @param property - Property.
  */
 function sortBy(property: string) {
-  const sortingData = Services.get(ItemSortingService).setSortingProperty(modelSortingData.value, props.sortingFunctions, property)
+  const sortingData = Services.get(SortingService).setSortingProperty(modelSortingData.value, props.sortingFunctions, property)
 
   if (sortingData != null) {
     modelSortingData.value = sortingData

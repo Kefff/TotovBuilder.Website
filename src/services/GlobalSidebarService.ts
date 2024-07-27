@@ -43,9 +43,9 @@ export class GlobalSidebarService {
   /**
    * Executes the actions registered to be closed when the sidebare is closing.
    */
-  public executeOnClosingActions(updatedParameters?: GlobalSidebarDisplayedComponentParametersType) {
+  public async executeOnClosingActions(updatedParameters?: GlobalSidebarDisplayedComponentParametersType) {
     for (const onClosingAction of this.onClosingActions) {
-      onClosingAction(updatedParameters)
+      await onClosingAction(updatedParameters)
     }
 
     this.onClosingActions = []

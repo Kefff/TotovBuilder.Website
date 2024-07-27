@@ -1,31 +1,38 @@
+import { IItem } from '../../../models/item/IItem'
 import { IRangedWeapon } from '../../../models/item/IRangedWeapon'
-import { compareByNumber, compareByString } from '../ItemSortingService'
-import { ISortingFunctionList } from './ISortingFunctionList'
-import { ItemSortingFunctions } from './ItemSortingFunction'
+import { compareByItemNumber, compareByItemString } from '../SortingService'
+import { ItemSortingFunctions } from './ItemSortingFunctions'
+import { ISortingFunctionList } from './SortingFunctionList'
 
 /**
  * Functions for sorting ranged weapons.
  */
-export const RangedWeaponSortingFunctions: ISortingFunctionList = {
+export const RangedWeaponSortingFunctions: ISortingFunctionList<IItem> = {
   ...ItemSortingFunctions,
   caliber: {
-    comparisonFunction: compareByString,
+    comparisonFunction: compareByItemString,
     comparisonValueObtentionFunction: i => Promise.resolve((i as IRangedWeapon).caliber)
   },
   ergonomics: {
-    comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve((i as IRangedWeapon).presetRangedWeaponModifiers?.ergonomics ?? (i as IRangedWeapon).ergonomics)
+    comparisonFunction: compareByItemNumber,
+    comparisonValueObtentionFunction: i => Promise.resolve(
+      (i as IRangedWeapon).presetRangedWeaponModifiers?.ergonomics
+      ?? (i as IRangedWeapon).ergonomics)
   },
   fireRate: {
-    comparisonFunction: compareByNumber,
+    comparisonFunction: compareByItemNumber,
     comparisonValueObtentionFunction: i => Promise.resolve((i as IRangedWeapon).fireRate)
   },
   horizontalRecoil: {
-    comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve((i as IRangedWeapon).presetRangedWeaponModifiers?.horizontalRecoil ?? (i as IRangedWeapon).horizontalRecoil)
+    comparisonFunction: compareByItemNumber,
+    comparisonValueObtentionFunction: i => Promise.resolve(
+      (i as IRangedWeapon).presetRangedWeaponModifiers?.horizontalRecoil
+      ?? (i as IRangedWeapon).horizontalRecoil)
   },
   verticalRecoil: {
-    comparisonFunction: compareByNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve((i as IRangedWeapon).presetRangedWeaponModifiers?.verticalRecoil ?? (i as IRangedWeapon).verticalRecoil)
+    comparisonFunction: compareByItemNumber,
+    comparisonValueObtentionFunction: i => Promise.resolve(
+      (i as IRangedWeapon).presetRangedWeaponModifiers?.verticalRecoil
+      ?? (i as IRangedWeapon).verticalRecoil)
   }
 }

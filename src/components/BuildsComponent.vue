@@ -138,6 +138,7 @@ import Toolbar from './ToolbarComponent.vue'
 import BuildsExport from './builds-export/BuildsExportComponent.vue'
 import BuildsImport from './builds-import/BuildsImportComponent.vue'
 
+const buildPropertiesService = Services.get(BuildPropertiesService)
 const globalFilterService = Services.get(GlobalFilterService)
 const itemService = Services.get(ItemService)
 
@@ -217,16 +218,17 @@ async function getBuilds() {
 
   const execute = new Promise<void>((resolve) => {
     setTimeout(async () => { // Did not find another solution to make the loading animation appear when opening the builds list from the welcome page (nextTick does not work)
-      buildSummaries.value = []
+      const summaries: IBuildSummary[] = []
       builds = Services.get(BuildService).getAll()
-      const buildPropertiesService = Services.get(BuildPropertiesService)
 
       for (const build of builds) {
         const summary = await buildPropertiesService.getSummary(build)
-        buildSummaries.value.push(summary)
+        summaries.push(summary)
       }
 
+      buildSummaries.value = summaries
       isLoading.value = false
+
       resolve()
     }, 1)
   })

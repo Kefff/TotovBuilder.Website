@@ -5,64 +5,47 @@
         class="builds-list-chip"
         @click="showFilterAndSortSidebar()"
       >
-        <Tooltip
-          :tooltip="`${$t('caption.sort')} ${$t('caption.clickForDetails')}`"
-          style="overflow: hidden;"
-        >
-          <div class="builds-list-chip-group">
-            <div class="builds-list-chip-icon">
-              <font-awesome-icon :icon="sortChipIcon" />
-            </div>
-            <span>{{ $t(`caption.${filterAndSort.currentSortField}`) }}</span>
+        <div class="builds-list-chip-group">
+          <div class="builds-list-chip-icon">
+            <font-awesome-icon :icon="sortChipIcon" />
           </div>
-        </Tooltip>
+          <span>{{ $t(`caption.${filterAndSortingData.property}`) }}</span>
+        </div>
       </Chip>
       <Chip
-        v-if="filterAndSort.filter == null"
+        v-if="filterAndSortingData.filter == null"
         class="builds-list-chip"
         @click="showFilterAndSortSidebar()"
       >
-        <Tooltip
-          :tooltip="$t('caption.addFilter')"
-          style="overflow: hidden;"
-        >
-          <div class="builds-list-chip-group">
-            <div class="builds-list-chip-icon">
-              <font-awesome-icon icon="filter" />
-            </div>
-            <span>{{ $t('caption.filter') }}</span>
-            <div class="builds-list-chip-icon-button builds-list-chip-icon-button-add-filter">
-              <font-awesome-icon icon="plus" />
-            </div>
+        <div class="builds-list-chip-group">
+          <div class="builds-list-chip-icon">
+            <font-awesome-icon icon="filter" />
           </div>
-        </Tooltip>
+          <span>{{ $t('caption.filter') }}</span>
+          <div class="builds-list-chip-icon-button builds-list-chip-icon-button-add-filter">
+            <font-awesome-icon icon="plus" />
+          </div>
+        </div>
       </Chip>
       <Chip
         v-else
         class="builds-list-chip"
       >
-        <Tooltip
-          :tooltip="`${$t('caption.filter')} ${$t('caption.clickForDetails')}`"
-          style="overflow: hidden;"
+        <div
+          class="builds-list-chip-group"
+          @click="showFilterAndSortSidebar()"
         >
-          <div
-            class="builds-list-chip-group"
-            @click="showFilterAndSortSidebar()"
-          >
-            <div class="builds-list-chip-icon">
-              <font-awesome-icon icon="filter" />
-            </div>
-            <span>{{ filterAndSort.filter }}</span>
+          <div class="builds-list-chip-icon">
+            <font-awesome-icon icon="filter" />
           </div>
-        </Tooltip>
-        <Tooltip :tooltip="$t('caption.removeFilter')">
-          <div
-            class="builds-list-chip-icon-button builds-list-chip-icon-button-remove-filter"
-            @click="filterAndSort.filter = undefined"
-          >
-            <font-awesome-icon icon="times" />
-          </div>
-        </Tooltip>
+          <span>{{ filterAndSortingData.filter }}</span>
+        </div>
+        <div
+          class="builds-list-chip-icon-button builds-list-chip-icon-button-remove-filter"
+          @click="filterAndSortingData.filter = undefined"
+        >
+          <font-awesome-icon icon="times" />
+        </div>
       </Chip>
     </div>
   </div>
@@ -88,17 +71,19 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
-import { IBuildsListFilterSortingData } from '../models/utils/IBuildsListFilterSortingData'
-import { GlobalSidebarDisplayedComponentParametersType } from '../models/utils/IGlobalSidebarOptions'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import Services from '../services/repository/Services'
+import { SortingService } from '../services/sorting/SortingService'
+import { BuildSummarySortingFunctions } from '../services/sorting/functions/BuildSummarySortingFunctions'
 import BuildCard from './BuildCardComponent.vue'
 
 const globalSidebarService = Services.get(GlobalSidebarService)
+const sortingService = Services.get(SortingService)
 
 const modelSelectedBuildIds = defineModel<string[]>('selectedBuildIds', { required: false, default: [] })
 
@@ -107,18 +92,20 @@ const props = defineProps<{
   showNotExported: boolean,
 }>()
 
-const filterAndSort = ref<IBuildsListFilterSortingData>({
-  currentSortField: 'name',
-  currentSortOrder: SortingOrder.asc,
-  filter: undefined
-})
+const buildSummariesInternal = ref<IBuildSummary[]>([])
+const filterAndSortingData = ref<BuildFilterAndSortingData>(new BuildFilterAndSortingData())
+const oldFilterAndSort = ref<BuildFilterAndSortingData>()
 
-const buildSummariesInternal = computed(() => props.buildSummaries)
-const sortChipIcon = computed(() => filterAndSort.value.currentSortOrder === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
+const sortChipIcon = computed(() => filterAndSortingData.value.order === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
 
 onMounted(() => {
   getSortingData()
+  filterAndSortBuildSummaries()
 })
+
+watch(
+  () => props.buildSummaries,
+  () => filterAndSortBuildSummaries())
 
 /**
  * Indicates whether a build is selected.
@@ -132,13 +119,29 @@ function checkIsSelected(buildId: string): boolean {
 }
 
 /**
+ * Filters and sorts build summaries.
+ */
+async function filterAndSortBuildSummaries() {
+  filterBuildSummaries()
+  await sortBuildSummaries()
+}
+
+/**
+ * Filters build summaries.
+ */
+function filterBuildSummaries() {
+  buildSummariesInternal.value = [...props.buildSummaries]
+}
+
+/**
  * Gets the sorting data.
  */
 function getSortingData() {
   const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
-  filterAndSort.value.currentSortField = localStorage.getItem(websiteConfigurationService.configuration.buildsSortFieldStorageKey) ?? 'name'
-  filterAndSort.value.currentSortOrder = Number(localStorage.getItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey)) ?? 1
+  const property = localStorage.getItem(websiteConfigurationService.configuration.buildsSortFieldStorageKey) ?? 'name'
+  const order = Number(localStorage.getItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey)) ?? SortingOrder.asc
+  sortingService.setSortingProperty(filterAndSortingData.value, BuildSummarySortingFunctions, property, order)
 }
 
 /**
@@ -146,15 +149,22 @@ function getSortingData() {
  *
  * Applies the filter and sort, and saves the sort.
  */
-function onFilterAndSortSidebarClosing(updatedParameters?: GlobalSidebarDisplayedComponentParametersType) {
-  const updatedFilterAndSort = updatedParameters as IBuildsListFilterSortingData
+async function onFilterAndSortSidebarClosing() {
+  const hasSortChange =
+    filterAndSortingData.value.property !== oldFilterAndSort.value?.property
+    || filterAndSortingData.value.order !== oldFilterAndSort.value?.order
+  const hasChangedFilter = filterAndSortingData.value.filter !== oldFilterAndSort.value?.filter
 
-  if (updatedFilterAndSort.currentSortField !== filterAndSort.value.currentSortField
-    || updatedFilterAndSort.currentSortOrder !== filterAndSort.value.currentSortOrder
-    || updatedFilterAndSort.filter !== filterAndSort.value.filter) {
-    filterAndSort.value = updatedParameters as IBuildsListFilterSortingData
+  if (hasChangedFilter) {
+    filterBuildSummaries()
+  }
+
+  if (hasSortChange || hasChangedFilter) {
+    await sortBuildSummaries()
     saveSortingData()
   }
+
+  oldFilterAndSort.value = undefined
 }
 
 /**
@@ -162,20 +172,31 @@ function onFilterAndSortSidebarClosing(updatedParameters?: GlobalSidebarDisplaye
  */
 function saveSortingData() {
   const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-  localStorage.setItem(websiteConfigurationService.configuration.buildsSortFieldStorageKey, filterAndSort.value.currentSortField)
-  localStorage.setItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey, filterAndSort.value.currentSortOrder.toString())
+  localStorage.setItem(websiteConfigurationService.configuration.buildsSortFieldStorageKey, filterAndSortingData.value.property)
+  localStorage.setItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey, filterAndSortingData.value.order.toString())
 }
 
 /**
  * Opens the filter and sort sidebar.
  */
 function showFilterAndSortSidebar() {
+  // Saving the old filter to be able to detect changes to apply
+  oldFilterAndSort.value = {
+    ...filterAndSortingData.value
+  }
   globalSidebarService.display({
     displayedComponentType: 'BuildsListSidebar',
-    displayedComponentParameters: filterAndSort.value,
+    displayedComponentParameters: filterAndSortingData.value,
     position: 'left'
   })
   globalSidebarService.registerOnClosingAction(onFilterAndSortSidebarClosing)
+}
+
+/**
+ * Sorts build summaries.
+ */
+async function sortBuildSummaries() {
+  buildSummariesInternal.value = await sortingService.sort(props.buildSummaries, filterAndSortingData.value)
 }
 
 /**

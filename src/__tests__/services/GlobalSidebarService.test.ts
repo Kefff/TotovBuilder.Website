@@ -41,16 +41,13 @@ describe('executeOnClosingActions()', () => {
     // Arrange
     let action1ExecutionCount = 0
     let action2ExecutionCount = 0
-    let action2Promise: Promise<void>
 
     const action1 = () => { action1ExecutionCount++ }
     const action2 = () => {
-      action2Promise = new Promise<void>(resolve => {
+      return new Promise<void>(resolve => {
         action2ExecutionCount++
         resolve()
       })
-
-      return action2Promise
     }
     const service = new GlobalSidebarService()
 
@@ -58,11 +55,8 @@ describe('executeOnClosingActions()', () => {
     service.registerOnClosingAction(action1)
     service.registerOnClosingAction(action2)
 
-    service.executeOnClosingActions()
-    await action2Promise!
-
-    service.executeOnClosingActions()
-    await action2Promise!
+    await service.executeOnClosingActions()
+    await service.executeOnClosingActions()
 
     // Assert
     expect(action1ExecutionCount).toBe(1)

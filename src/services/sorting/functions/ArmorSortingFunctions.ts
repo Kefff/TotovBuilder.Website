@@ -1,19 +1,20 @@
 import { IArmor } from '../../../models/item/IArmor'
-import { compareByNumber } from '../ItemSortingService'
-import { ISortingFunctionList } from './ISortingFunctionList'
+import { IItem } from '../../../models/item/IItem'
+import { compareByItemNumber } from '../SortingService'
+import { ISortingFunctionList } from './SortingFunctionList'
 import { WearableSortingFunctions } from './WearableSortingFunctions'
 
 /**
  * Functions for sorting armors.
  */
-export const ArmorSortingFunctions: ISortingFunctionList = {
+export const ArmorSortingFunctions: ISortingFunctionList<IItem> = {
   ...WearableSortingFunctions,
   armorClass: {
-    comparisonFunction: compareByNumber,
+    comparisonFunction: compareByItemNumber,
     comparisonValueObtentionFunction: i => Promise.resolve((i as IArmor).armorClass)
   },
   durability: {
-    comparisonFunction: compareByNumber,
+    comparisonFunction: compareByItemNumber,
     comparisonValueObtentionFunction: i => Promise.resolve((i as IArmor).durability)
   }
 }

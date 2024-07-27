@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
+import { IItem } from '../../../../models/item/IItem'
 import { IVest } from '../../../../models/item/IVest'
-import ItemSortingData from '../../../../models/utils/ItemSortingData'
-import { ItemSortingService } from '../../../../services/sorting/ItemSortingService'
+import SortingData from '../../../../models/utils/SortingData'
+import { SortingService } from '../../../../services/sorting/SortingService'
 import { VestSortingFunctions } from '../../../../services/sorting/functions/VestSortingFunctions'
 
 describe('comparisonFunction()', () => {
@@ -28,8 +29,8 @@ describe('comparisonFunction()', () => {
       capacity: 1
     } as IVest
 
-    let sortingData: ItemSortingData | undefined = new ItemSortingData()
-    const sortingService = new ItemSortingService()
+    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    const sortingService = new SortingService()
     sortingData = sortingService.setSortingProperty(sortingData, VestSortingFunctions, property)
 
     // Act

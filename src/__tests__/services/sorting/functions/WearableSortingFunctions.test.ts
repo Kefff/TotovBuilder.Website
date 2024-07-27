@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { IBackpack } from '../../../../models/item/IBackpack'
-import ItemSortingData from '../../../../models/utils/ItemSortingData'
-import { ItemSortingService } from '../../../../services/sorting/ItemSortingService'
+import { IItem } from '../../../../models/item/IItem'
+import SortingData from '../../../../models/utils/SortingData'
+import { SortingService } from '../../../../services/sorting/SortingService'
 import { WearableSortingFunctions } from '../../../../services/sorting/functions/WearableSortingFunctions'
 
 describe('comparisonFunction()', () => {
@@ -25,8 +26,8 @@ describe('comparisonFunction()', () => {
       turningSpeedModifierPercentage: 1
     } as IBackpack
 
-    let sortingData: ItemSortingData | undefined = new ItemSortingData()
-    const sortingService = new ItemSortingService()
+    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    const sortingService = new SortingService()
     sortingData = sortingService.setSortingProperty(sortingData, WearableSortingFunctions, property)
 
     // Act

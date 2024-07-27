@@ -38,13 +38,13 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import ItemSortingData from '../../models/utils/ItemSortingData'
+import SortingData from '../../models/utils/SortingData'
 import { ArmorSortingFunctions } from '../../services/sorting/functions/ArmorSortingFunctions'
-import { ISortingFunctionList } from '../../services/sorting/functions/ISortingFunctionList'
+import { ISortingFunctionList } from '../../services/sorting/functions/SortingFunctionList'
 import OptionHeaderSortButton from './OptionHeaderSortButtonComponent.vue'
 import WearableOptionHeader from './WearableOptionHeaderComponent.vue'
 
-const modelSortingData = defineModel<ItemSortingData>('sortingData', { required: true })
+const modelSortingData = defineModel<SortingData>('sortingData', { required: true })
 
 const props = withDefaults(
   defineProps<{

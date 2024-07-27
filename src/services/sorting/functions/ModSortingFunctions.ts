@@ -1,16 +1,17 @@
+import { IItem } from '../../../models/item/IItem'
 import { IMod } from '../../../models/item/IMod'
-import { compareByNumber } from '../ItemSortingService'
-import { ISortingFunctionList } from './ISortingFunctionList'
-import { ItemSortingFunctions } from './ItemSortingFunction'
+import { compareByItemNumber } from '../SortingService'
+import { ItemSortingFunctions } from './ItemSortingFunctions'
+import { ISortingFunctionList } from './SortingFunctionList'
 
 
 /**
  * Functions for sorting mods.
  */
-export const ModSortingFunctions: ISortingFunctionList = {
+export const ModSortingFunctions: ISortingFunctionList<IItem> = {
   ...ItemSortingFunctions,
   ergonomicsModifier: {
-    comparisonFunction: compareByNumber,
+    comparisonFunction: compareByItemNumber,
     comparisonValueObtentionFunction: i => Promise.resolve((i as IMod).ergonomicsModifier)
   }
 }

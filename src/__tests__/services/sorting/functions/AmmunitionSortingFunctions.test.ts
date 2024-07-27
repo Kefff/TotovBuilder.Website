@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { IAmmunition } from '../../../../models/item/IAmmunition'
-import ItemSortingData from '../../../../models/utils/ItemSortingData'
-import { ItemSortingService } from '../../../../services/sorting/ItemSortingService'
+import { IItem } from '../../../../models/item/IItem'
+import SortingData from '../../../../models/utils/SortingData'
+import { SortingService } from '../../../../services/sorting/SortingService'
 import { AmmunitionSortingFunctions } from '../../../../services/sorting/functions/AmmunitionSortingFunctions'
 
 describe('comparisonFunction()', () => {
@@ -31,8 +32,8 @@ describe('comparisonFunction()', () => {
       accuracyModifierPercentage: 1
     } as IAmmunition
 
-    let sortingData: ItemSortingData | undefined = new ItemSortingData()
-    const sortingService = new ItemSortingService()
+    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    const sortingService = new SortingService()
     sortingData = sortingService.setSortingProperty(sortingData, AmmunitionSortingFunctions, property)
 
     // Act

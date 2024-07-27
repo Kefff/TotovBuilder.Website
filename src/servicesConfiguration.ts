@@ -27,7 +27,7 @@ import { ItemContentComponentService } from './services/components/ItemContentCo
 import { ModSlotComponentService } from './services/components/ModSlotComponentService'
 import { ServiceInitializationState } from './services/repository/ServiceInitializationState'
 import Services from './services/repository/Services'
-import { ItemSortingService } from './services/sorting/ItemSortingService'
+import { SortingService } from './services/sorting/SortingService'
 
 /**
  * Configures all the services used in the application.
@@ -51,7 +51,7 @@ export function configureServices() {
   Services.configure(NotificationService)
   Services.configure(PresetService)
   Services.configure(ReductionService)
-  Services.configure(ItemSortingService)
+  Services.configure(SortingService)
   Services.configure(TarkovValuesService)
   Services.configure(VersionService)
   Services.configure(WebsiteConfigurationService)

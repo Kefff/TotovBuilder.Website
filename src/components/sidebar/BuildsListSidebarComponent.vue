@@ -82,20 +82,22 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref } from 'vue'
-import { IBuildsListFilterSortingData } from '../../models/utils/IBuildsListFilterSortingData'
+import BuildFilterAndSortingData from '../../models/utils/BuildFilterAndSortingData'
 import { SortingOrder } from '../../models/utils/SortingOrder'
 import vueI18n from '../../plugins/vueI18n'
+import Services from '../../services/repository/Services'
+import { BuildSummarySortingFunctions } from '../../services/sorting/functions/BuildSummarySortingFunctions'
+import { SortingService } from '../../services/sorting/SortingService'
 import StringUtils from '../../utils/StringUtils'
 
-const modelFilterSortingData = defineModel<IBuildsListFilterSortingData>('parameters', { required: true })
+const modelFilterSortingData = defineModel<BuildFilterAndSortingData>('parameters', { required: true })
 
-const defaultSortField = 'name'
-const defaultSortOrder = SortingOrder.asc
+const sortingService = Services.get(SortingService)
 
 const buildsListSidebarFilterInput = ref()
 const sortableProperties = ref<string[]>([])
 
-const sortIcon = computed(() => modelFilterSortingData.value.currentSortOrder === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
+const sortIcon = computed(() => modelFilterSortingData.value.order === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
 
 onMounted(() => {
   sortableProperties.value = getSortableProperties()
@@ -108,33 +110,20 @@ const filter = computed({
   get: () => modelFilterSortingData.value.filter,
   set: (value?: string) => {
     modelFilterSortingData.value = {
-      currentSortField: modelFilterSortingData.value.currentSortField,
-      currentSortOrder: modelFilterSortingData.value.currentSortOrder,
+      ...modelFilterSortingData.value,
       filter: value
     }
   }
 })
 
 const sortField = computed({
-  get: () => modelFilterSortingData.value.currentSortField,
-  set: (value: string) => {
-    modelFilterSortingData.value = {
-      currentSortField: value,
-      currentSortOrder: modelFilterSortingData.value.currentSortOrder,
-      filter: modelFilterSortingData.value.filter
-    }
-  }
+  get: () => modelFilterSortingData.value.property,
+  set: (value: string) => sortingService.setSortingProperty(modelFilterSortingData.value, BuildSummarySortingFunctions, value, sortOrder.value)
 })
 
 const sortOrder = computed({
-  get: () => modelFilterSortingData.value.currentSortOrder,
-  set: (value: SortingOrder) => {
-    modelFilterSortingData.value = {
-      currentSortField: modelFilterSortingData.value.currentSortField,
-      currentSortOrder: value,
-      filter: modelFilterSortingData.value.filter
-    }
-  }
+  get: () => modelFilterSortingData.value.order,
+  set: (value: SortingOrder) => sortingService.setSortingProperty(modelFilterSortingData.value, BuildSummarySortingFunctions, modelFilterSortingData.value.property, value)
 })
 
 /**
@@ -171,11 +160,7 @@ function getSortableProperties(): string[] {
  * Resets the filter an sort.
  */
 function reset() {
-  modelFilterSortingData.value = {
-    currentSortField: defaultSortField,
-    currentSortOrder: defaultSortOrder,
-    filter: undefined
-  }
+  modelFilterSortingData.value = new BuildFilterAndSortingData()
 }
 </script>
 
