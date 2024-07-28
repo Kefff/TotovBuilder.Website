@@ -14,7 +14,6 @@ import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
 import { SortingService } from '../../services/sorting/SortingService'
 import { PathUtils } from '../../utils/PathUtils'
-import StringUtils from '../../utils/StringUtils'
 import InputNumberField from '../InputNumberFieldComponent.vue'
 import ItemContent from '../ItemContentComponent.vue'
 import ItemMods from '../ItemModsComponent.vue'
@@ -382,28 +381,6 @@ export default defineComponent({
     }
 
     /**
-     * Sets an item as an option if it matches the filter.
-     * @param acceptedItem - Item that must set as an options.
-     * @param filterWords - Filter words.
-     * @param options - Option list in which the item mus be added.
-     */
-    async function setOption(acceptedItem: IItem, filterWords: string[], options: IItem[]) {
-      let contains = await StringUtils.containsAll(acceptedItem.shortName, filterWords)
-
-      if (contains) {
-        options.push(acceptedItem)
-
-        return
-      }
-
-      contains = await StringUtils.containsAll(acceptedItem.name, filterWords)
-
-      if (contains) {
-        options.push(acceptedItem)
-      }
-    }
-
-    /**
      * Sets the options selectable in the drop down input based on the current filter and sorting.
      */
     async function setOptions() {
@@ -414,25 +391,32 @@ export default defineComponent({
       neetToSetOptions.value = false
       loadingOptions.value = true
 
-      let newOptions: IItem[] = []
+      let filteredOptions: IItem[] = []
 
       if (optionsFilter.value === '') {
-        newOptions = [...props.acceptedItems]
+        filteredOptions = [...props.acceptedItems]
       } else {
         const filterWords = optionsFilter.value.split(' ')
         const promises: Promise<void>[] = []
 
         for (const acceptedItem of props.acceptedItems) {
-          promises.push(setOption(acceptedItem, filterWords, newOptions))
+          promises.push(new Promise(resolve => {
+            const matchesFilter = itemPropertiesService.checkMatchesFilter(acceptedItem, filterWords)
+
+            if (matchesFilter) {
+              filteredOptions.push(acceptedItem)
+            }
+
+            resolve()
+          }))
         }
 
         await Promise.allSettled(promises)
+        options.value = filteredOptions
+        onSortOptions(optionsSortingData.value)
+
+        loadingOptions.value = false
       }
-
-      options.value = newOptions
-      onSortOptions(optionsSortingData.value)
-
-      loadingOptions.value = false
     }
 
     /**

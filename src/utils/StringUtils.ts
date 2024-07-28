@@ -15,22 +15,16 @@ export default class StringUtils {
 
   /**
    * Indicates whether a string contains other strings without casing.
-   * @param container - String that should contain the other string.
+   * @param container - String that should contain the other strings.
    * @param searchedStrings - Strings that should be contained in the string.
    * @returns True if all the strings are contained in the string; otherwise false.
    */
-  public static async containsAll(container: string, searchedStrings: string[]): Promise<boolean> {
-    const promises: Promise<void>[] = []
+  public static containsAll(container: string, searchedStrings: string[]): boolean {
     const results: boolean[] = []
 
     for (const searchedString of searchedStrings) {
-      promises.push(new Promise((resolve) => {
-        results.push(this.contains(container, searchedString))
-        resolve()
-      }))
+      results.push(this.contains(container, searchedString))
     }
-
-    await Promise.allSettled(promises)
 
     return results.every(r => r === true)
   }

@@ -13,6 +13,7 @@
         v-model="filter"
         class="builds-list-sidebar-value"
         type="text"
+        @keydown="onFilterKeyDown"
       />
     </div>
   </div>
@@ -66,6 +67,7 @@
       </Dropdown>
     </div>
   </div>
+  <div class="sidebar-title" />
   <div class="sidebar-option">
     <Button
       class="p-button-danger builds-list-sidebar-reset-button"
@@ -85,6 +87,7 @@ import { computed, nextTick, onMounted, ref } from 'vue'
 import BuildFilterAndSortingData from '../../models/utils/BuildFilterAndSortingData'
 import { SortingOrder } from '../../models/utils/SortingOrder'
 import vueI18n from '../../plugins/vueI18n'
+import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 import { BuildSummarySortingFunctions } from '../../services/sorting/functions/BuildSummarySortingFunctions'
 import { SortingService } from '../../services/sorting/SortingService'
@@ -92,6 +95,7 @@ import StringUtils from '../../utils/StringUtils'
 
 const modelFilterSortingData = defineModel<BuildFilterAndSortingData>('parameters', { required: true })
 
+const globalSidebarService = Services.get(GlobalSidebarService)
 const sortingService = Services.get(SortingService)
 
 const buildsListSidebarFilterInput = ref()
@@ -108,7 +112,7 @@ onMounted(() => {
 
 const filter = computed({
   get: () => modelFilterSortingData.value.filter,
-  set: (value?: string) => {
+  set: (value: string) => {
     modelFilterSortingData.value = {
       ...modelFilterSortingData.value,
       filter: value
@@ -140,6 +144,16 @@ function getSortOrderCaption(sortOrder: SortingOrder): string {
 }
 
 /**
+ * Reacts to a keyboard event in the filter input.
+ * @param event - Keyboard event.
+ */
+function onFilterKeyDown(event: KeyboardEvent) {
+  if (event.key === 'Enter') {
+    globalSidebarService.close()
+  }
+}
+
+/**
  * Gets sortable properties.
  */
 function getSortableProperties(): string[] {
@@ -161,6 +175,7 @@ function getSortableProperties(): string[] {
  */
 function reset() {
   modelFilterSortingData.value = new BuildFilterAndSortingData()
+  globalSidebarService.close()
 }
 </script>
 

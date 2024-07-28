@@ -2,6 +2,7 @@ import { IArmor } from '../models/item/IArmor'
 import { IContainer } from '../models/item/IContainer'
 import { IItem } from '../models/item/IItem'
 import { IModdable } from '../models/item/IModdable'
+import StringUtils from '../utils/StringUtils'
 
 /**
  * Represents a service responsible for managing properties of an item.
@@ -33,6 +34,24 @@ export class ItemPropertiesService {
    */
   public canHaveArmor(item: IItem): boolean {
     return this.isArmor(item) || this.isArmorMod(item) || this.isHeadwear(item) || this.isVest(item)
+  }
+
+  /**
+     * Checks whether an item matches the filter.
+     * @param itemToCheck - Item that must be checked against the filter.
+     * @param filterWords - Filter words.
+     * @returns true when the item matches the filter; otherwise false.
+     */
+  public checkMatchesFilter(itemToCheck: IItem, filterWords: string[]) {
+    let contains = StringUtils.containsAll(itemToCheck.shortName, filterWords)
+
+    if (contains) {
+      return true
+    }
+
+    contains = StringUtils.containsAll(itemToCheck.name, filterWords)
+
+    return contains
   }
 
   /**

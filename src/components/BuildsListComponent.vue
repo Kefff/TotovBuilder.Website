@@ -13,7 +13,7 @@
         </div>
       </Chip>
       <Chip
-        v-if="filterAndSortingData.filter == null"
+        v-if="filterAndSortingData.filter == ''"
         class="builds-list-chip"
         @click="showFilterAndSortSidebar()"
       >
@@ -42,7 +42,7 @@
         </div>
         <div
           class="builds-list-chip-icon-button builds-list-chip-icon-button-remove-filter"
-          @click="filterAndSortingData.filter = undefined"
+          @click="filterAndSortingData.filter = ''"
         >
           <font-awesome-icon icon="times" />
         </div>
@@ -74,15 +74,19 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
+import { GlobalSidebarDisplayedComponentParametersType } from '../models/utils/IGlobalSidebarOptions'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
+import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
 import { BuildSummarySortingFunctions } from '../services/sorting/functions/BuildSummarySortingFunctions'
+import StringUtils from '../utils/StringUtils'
 import BuildCard from './BuildCardComponent.vue'
 
 const globalSidebarService = Services.get(GlobalSidebarService)
+const itemPropertiesService = Services.get(ItemPropertiesService)
 const sortingService = Services.get(SortingService)
 
 const modelSelectedBuildIds = defineModel<string[]>('selectedBuildIds', { required: false, default: [] })
@@ -94,7 +98,6 @@ const props = defineProps<{
 
 const buildSummariesInternal = ref<IBuildSummary[]>([])
 const filterAndSortingData = ref<BuildFilterAndSortingData>(new BuildFilterAndSortingData())
-const oldFilterAndSort = ref<BuildFilterAndSortingData>()
 
 const sortChipIcon = computed(() => filterAndSortingData.value.order === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
 
@@ -106,6 +109,35 @@ onMounted(() => {
 watch(
   () => props.buildSummaries,
   () => filterAndSortBuildSummaries())
+
+watch(
+  () => filterAndSortingData.value.filter,
+  () => filterAndSortBuildSummaries())
+
+/**
+ * Checks whether a build summary matches the filter.
+ * @param buildSummaryToCheck - Build summary that must be checked against the filter.
+ * @param filterWords - Filter words.
+ */
+function checkMatchesFilter(buildSummaryToCheck: IBuildSummary, filterWords: string[]): boolean {
+  let contains = StringUtils.containsAll(buildSummaryToCheck.name, filterWords)
+
+  if (contains) {
+    return true
+  }
+
+  const items = buildSummaryToCheck.shoppingList.map(sli => sli.item)
+
+  for (const item of items) {
+    contains = itemPropertiesService.checkMatchesFilter(item, filterWords)
+
+    if (contains) {
+      return true
+    }
+  }
+
+  return contains
+}
 
 /**
  * Indicates whether a build is selected.
@@ -122,15 +154,41 @@ function checkIsSelected(buildId: string): boolean {
  * Filters and sorts build summaries.
  */
 async function filterAndSortBuildSummaries() {
-  filterBuildSummaries()
-  await sortBuildSummaries()
+  let buildSummariesToFilter = [...props.buildSummaries]
+  buildSummariesToFilter = await filterBuildSummaries(buildSummariesToFilter)
+  buildSummariesToFilter = await sortBuildSummaries(buildSummariesToFilter)
+
+  buildSummariesInternal.value = buildSummariesToFilter
 }
 
 /**
  * Filters build summaries.
+ * @param buildSummariesToFilter - Build summaries to filter.
  */
-function filterBuildSummaries() {
-  buildSummariesInternal.value = [...props.buildSummaries]
+async function filterBuildSummaries(buildSummariesToFilter: IBuildSummary[]): Promise<IBuildSummary[]> {
+  if (filterAndSortingData.value.filter === '') {
+    return buildSummariesToFilter
+  }
+
+  const filteredBuildSummaries: IBuildSummary[] = []
+  const filterWords = filterAndSortingData.value.filter.split(' ')
+  const promises: Promise<void>[] = []
+
+  for (const buildSummaryToFilter of buildSummariesToFilter) {
+    promises.push(new Promise((resolve) => {
+      const matchesFilter = checkMatchesFilter(buildSummaryToFilter, filterWords)
+
+      if (matchesFilter) {
+        filteredBuildSummaries.push(buildSummaryToFilter)
+      }
+
+      resolve()
+    }))
+  }
+
+  await Promise.allSettled(promises)
+
+  return filteredBuildSummaries
 }
 
 /**
@@ -149,22 +207,25 @@ function getSortingData() {
  *
  * Applies the filter and sort, and saves the sort.
  */
-async function onFilterAndSortSidebarClosing() {
+async function onFilterAndSortSidebarClosing(updatedParameters?: GlobalSidebarDisplayedComponentParametersType) {
+  const updatedFilterAndSortingData = updatedParameters as BuildFilterAndSortingData
   const hasSortChange =
-    filterAndSortingData.value.property !== oldFilterAndSort.value?.property
-    || filterAndSortingData.value.order !== oldFilterAndSort.value?.order
-  const hasChangedFilter = filterAndSortingData.value.filter !== oldFilterAndSort.value?.filter
+    updatedFilterAndSortingData.property !== filterAndSortingData.value.property
+    || updatedFilterAndSortingData.order !== filterAndSortingData.value.order
+  const hasFilterChange = updatedFilterAndSortingData.filter !== filterAndSortingData.value.filter
+  let buildSummariesToFilter = [...props.buildSummaries]
+  filterAndSortingData.value = updatedFilterAndSortingData
 
-  if (hasChangedFilter) {
-    filterBuildSummaries()
+  if (hasFilterChange) {
+    buildSummariesToFilter = await filterBuildSummaries(buildSummariesToFilter)
   }
 
-  if (hasSortChange || hasChangedFilter) {
-    await sortBuildSummaries()
+  if (hasSortChange || hasFilterChange) {
+    buildSummariesToFilter = await sortBuildSummaries(buildSummariesToFilter)
     saveSortingData()
   }
 
-  oldFilterAndSort.value = undefined
+  buildSummariesInternal.value = buildSummariesToFilter
 }
 
 /**
@@ -180,13 +241,9 @@ function saveSortingData() {
  * Opens the filter and sort sidebar.
  */
 function showFilterAndSortSidebar() {
-  // Saving the old filter to be able to detect changes to apply
-  oldFilterAndSort.value = {
-    ...filterAndSortingData.value
-  }
   globalSidebarService.display({
     displayedComponentType: 'BuildsListSidebar',
-    displayedComponentParameters: filterAndSortingData.value,
+    displayedComponentParameters: { ...filterAndSortingData.value },
     position: 'left'
   })
   globalSidebarService.registerOnClosingAction(onFilterAndSortSidebarClosing)
@@ -194,9 +251,12 @@ function showFilterAndSortSidebar() {
 
 /**
  * Sorts build summaries.
+ * @param buildSummariesToSort - Build summaries to sort.
  */
-async function sortBuildSummaries() {
-  buildSummariesInternal.value = await sortingService.sort(props.buildSummaries, filterAndSortingData.value)
+async function sortBuildSummaries(buildSummariesToSort: IBuildSummary[]): Promise<IBuildSummary[]> {
+  buildSummariesToSort = await sortingService.sort(buildSummariesToSort, filterAndSortingData.value)
+
+  return buildSummariesToSort
 }
 
 /**
