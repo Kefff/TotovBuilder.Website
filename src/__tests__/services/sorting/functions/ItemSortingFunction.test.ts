@@ -54,7 +54,7 @@ describe('comparisonFunction()', () => {
       { id: 'i2', name: 'a', categoryId: 'cat1', prices: [] as IPrice[] } as IItem,
       1
     ]
-  ])('should compare by category, price and name', async (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
+  ])('should sort by category, price and name', async (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
     // Arrange
     const inventoryItemService = mock<InventoryItemService>()
     when(inventoryItemService.getPrice(anything())).thenCall((inventoryItem: IInventoryItem) => {
@@ -79,7 +79,7 @@ describe('comparisonFunction()', () => {
     expect(result).toBe(expectedComparisonValue)
   })
 
-  it('should compare by category and price even when the price is not found', async () => {
+  it('should sort by category and price even when the price is not found', async () => {
     // Arrange
     const item1 = { id: 'i1', name: 'a', categoryId: 'cat1', prices: [{ currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as IItem
     const item2 = { id: 'i2', name: 'a', categoryId: 'cat1', prices: [{ currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 2, valueInMainCurrency: 2 }] } as IItem
@@ -128,7 +128,7 @@ describe('comparisonFunction()', () => {
     expect(result).toBe(0)
   })
 
-  it('should compare by a category', async () => {
+  it('should sort by category', async () => {
     // Arrange
     const item1 = {
       categoryId: 'cat2',
@@ -156,7 +156,7 @@ describe('comparisonFunction()', () => {
     expect(sortedItems).toStrictEqual([item2, item3, item1])
   })
 
-  it('should compare by category and a name', async () => {
+  it('should sort by category and name', async () => {
     // Arrange
     const item1 = {
       categoryId: 'cat2',
@@ -186,7 +186,7 @@ describe('comparisonFunction()', () => {
 })
 
 describe('defaultSortingFunction', () => {
-  it('should compare by name', async () => {
+  it('should sort by name', async () => {
     // Arrange
     const item1 = {
       categoryId: 'cat',

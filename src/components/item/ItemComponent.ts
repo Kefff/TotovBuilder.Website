@@ -117,7 +117,7 @@ export default defineComponent({
     const neetToSetOptions = ref(true)
     const options = ref<IItem[]>([])
     const optionsFilter = ref('')
-    const optionsSortingData = ref(new SortingData())
+    const optionsSortingData = ref(new SortingData<IItem>())
     const presetModSlotContainingItem = ref<IInventoryModSlot>()
     const quantity = ref(props.inventoryItem?.quantity ?? 1)
     const selectedTab = ref(SelectableTab.hidden)
@@ -308,7 +308,7 @@ export default defineComponent({
      *
      * Sorts the options items.
      */
-    async function onSortOptions(newSortingData: SortingData) {
+    async function onSortOptions(newSortingData: SortingData<IItem>) {
       loadingOptions.value = true
 
       optionsSortingData.value = newSortingData

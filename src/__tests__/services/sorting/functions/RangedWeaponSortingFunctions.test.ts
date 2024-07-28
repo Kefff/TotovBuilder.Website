@@ -17,7 +17,7 @@ describe('comparisonFunction()', () => {
     ['horizontalRecoil', true],
     ['verticalRecoil', false],
     ['verticalRecoil', true]
-  ])('should compare by a property', async (property: string, isPreset: boolean) => {
+  ])('should sort by %s', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
       caliber: 'b',

@@ -5,7 +5,7 @@ import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ArmorModSortingFunctions } from '../../../../services/sorting/functions/ArmorModSortingFunctions'
 
-describe('setSortingProperty()', () => {
+describe('comparisonFunction()', () => {
   it.each([
     ['armorClass', false],
     ['armorClass', true],
@@ -17,7 +17,7 @@ describe('setSortingProperty()', () => {
     ['movementSpeedModifierPercentage', true],
     ['turningSpeedModifierPercentage', false],
     ['turningSpeedModifierPercentage', true]
-  ])('should sort by a property', async (property: string, isPreset: boolean) => {
+  ])('should sort by %s (preset: %s)', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
       armorClass: 2,

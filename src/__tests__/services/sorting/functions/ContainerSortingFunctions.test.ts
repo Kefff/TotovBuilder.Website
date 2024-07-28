@@ -6,7 +6,7 @@ import { SortingService } from '../../../../services/sorting/SortingService'
 import { ContainerSortingFunctions } from '../../../../services/sorting/functions/ContainerSortingFunctions'
 
 describe('comparisonFunction()', () => {
-  it.each([['capacity']])('should compare by a property', async (property: string) => {
+  it.each([['capacity']])('should sort by %s', async (property: string) => {
     // Arrange
     const item1 = {
       categoryId: 'cat',

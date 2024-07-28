@@ -13,7 +13,7 @@ describe('comparisonFunction()', () => {
     ['ergonomicsModifier', true],
     ['recoilModifierPercentage', false],
     ['recoilModifierPercentage', true]
-  ])('should compare by a property', async (property: string, isPreset: boolean) => {
+  ])('should sort by %s', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
       accuracyModifierPercentage: 2,

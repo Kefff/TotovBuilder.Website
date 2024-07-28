@@ -6,7 +6,7 @@ import { SortingService } from '../../../../services/sorting/SortingService'
 import { EyewearSortingFunctions } from '../../../../services/sorting/functions/EyewearSortingFunctions'
 
 describe('comparisonFunction()', () => {
-  it.each([['blindnessProtectionPercentage']])('should compare by a property', async (property: string) => {
+  it.each([['blindnessProtectionPercentage']])('should sort by %s', async (property: string) => {
     // Arrange
     const item1 = {
       categoryId: 'cat',

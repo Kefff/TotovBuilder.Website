@@ -10,7 +10,7 @@ describe('comparisonFunction()', () => {
     ['explosionDelay'],
     ['fragmentsAmount'],
     ['maximumExplosionRange']
-  ])('should compare by a property', async (property: string) => {
+  ])('should sort by %s', async (property: string) => {
     // Arrange
     const item1 = {
       categoryId: 'cat',

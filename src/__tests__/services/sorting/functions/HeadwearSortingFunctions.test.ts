@@ -67,7 +67,7 @@ describe('comparisonFunction()', () => {
     ['ricochetChance', true],
     ['turningSpeedModifierPercentage', false],
     ['turningSpeedModifierPercentage', true]
-  ])('should compare by a property', async (property: string, isPreset: boolean) => {
+  ])('should sort by %s (preset: %s)', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
       armorClass: 2,

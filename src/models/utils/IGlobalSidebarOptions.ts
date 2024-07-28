@@ -1,6 +1,6 @@
 import { IShoppingListItem } from '../build/IShoppingListItem'
 import { IItem } from '../item/IItem'
-import { BuildFilterAndSortingData } from './BuildFilterAndSortingData'
+import BuildFilterAndSortingData from './BuildFilterAndSortingData'
 import { IGeneralOptionsGroup } from './IGeneralOptionsGroup'
 
 /**
