@@ -4,6 +4,7 @@ const websiteConfiguration: IWebsiteConfiguration = {
   allowCookiesStorageKey: 'allow_cookies',
   bugReportUrl: 'https://discord.gg/bugreport',
   buildSharingUrl: 's/',
+  buildsFilterStorageKey: 'builds_filter',
   buildsSortFieldStorageKey: 'builds_sort_field',
   buildsSortOrderStorageKey: 'builds_sort_order',
   buildStorageKeyPrefix: 'build_',

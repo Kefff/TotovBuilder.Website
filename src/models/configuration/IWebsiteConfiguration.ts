@@ -7,7 +7,7 @@ export interface IWebsiteConfiguration {
    */
   allowCookiesStorageKey: string
 
-  /*
+  /**
    * Bug report URL.
    */
   bugReportUrl: string
@@ -17,57 +17,62 @@ export interface IWebsiteConfiguration {
    */
   buildSharingUrl: string
 
-  /*
+  /**
+   * Storage key for the current build filter.
+   */
+  buildsFilterStorageKey: string,
+
+  /**
    * Storage key for the current build sorting colum.
    */
   buildsSortFieldStorageKey: string
 
-  /*
+  /**
    * Storage key for the current build sort order.
    */
   buildsSortOrderStorageKey: string
 
-  /*
+  /**
    * Storage key prefix for builds.
    */
   buildStorageKeyPrefix: string
 
-  /*
+  /**
    * Cache dureation (in seconds).
    */
   cacheDuration: number
 
-  /*
+  /**
    * Contact mail address.
    */
   contactAddress: string
 
-  /*
+  /**
    * Discord server URL.
    */
   discordUrl: string
 
-  /*
+  /**
    * Changelog endpoint.
    */
   endpointChangelog: string
 
-  /*
+  /**
    * Item categories endpoint.
    */
   endpointItemCategories: string
 
-  /*
+  /**
    * Items endpoint.
    */
   endpointItems: string
 
-  /*
+  /**
    * Presets endpoint.
    */
   endpointPresets: string
 
-  /*
+  /**
    * Prices endpoint.
    */
   endpointPrices: string
@@ -77,17 +82,17 @@ export interface IWebsiteConfiguration {
    */
   endpointTarkovValues: string
 
-  /*
+  /**
    * Export file extension.
    */
   exportFileExtension: string
 
-  /*
+  /**
    * Export file prefix.
    */
   exportFileNamePrefix: string
 
-  /*
+  /**
    * Storage key for the value indicating whether the warning about builds not exported has been displayed.
    */
   exportWarningShowedStorageKey: string
@@ -97,7 +102,7 @@ export interface IWebsiteConfiguration {
    */
   fetchMaxTries: number
 
-  /*
+  /**
    * Fetch timeout (in seconds).
    */
   fetchTimeout: number
@@ -107,37 +112,37 @@ export interface IWebsiteConfiguration {
    */
   fetchWaitTimeBetweenRetries: number
 
-  /*
+  /**
    * Github project URL.
    */
   githubUrl: string
 
-  /*
+  /**
    * Storage key for the current global filter.
    */
   globalFilterStorageKey: string
 
-  /*
+  /**
    * Storage key for the current language.
    */
   languageStorageKey: string
 
-  /*
+  /**
    * Error notifications duration (in seconds).
    */
   notificationErrorDuration: number
 
-  /*
+  /**
    * Information notifications duration (in seconds).
    */
   notificationInformationDuration: number
 
-  /*
+  /**
    * Success notifications duration (in seconds).
    */
   notificationSuccessDuration: number
 
-  /*
+  /**
    * Warning notifications duration (in seconds).
    */
   notificationWarningDuration: number
@@ -152,7 +157,7 @@ export interface IWebsiteConfiguration {
    */
   version: string,
 
-  /*
+  /**
    * Storage key for the current version.
    */
   versionStorageKey: string

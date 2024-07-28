@@ -102,7 +102,7 @@ const filterAndSortingData = ref<BuildFilterAndSortingData>(new BuildFilterAndSo
 const sortChipIcon = computed(() => filterAndSortingData.value.order === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
 
 onMounted(() => {
-  getSortingData()
+  getFilterAndSortingData()
   filterAndSortBuildSummaries()
 })
 
@@ -120,23 +120,28 @@ watch(
  * @param filterWords - Filter words.
  */
 function checkMatchesFilter(buildSummaryToCheck: IBuildSummary, filterWords: string[]): boolean {
-  let contains = StringUtils.containsAll(buildSummaryToCheck.name, filterWords)
+  for (const filterWord of filterWords) {
+    if (StringUtils.contains(buildSummaryToCheck.name, filterWord)) {
+      continue
+    }
 
-  if (contains) {
-    return true
-  }
+    let itemContains = false
+    const items = buildSummaryToCheck.shoppingList.map(sli => sli.item)
 
-  const items = buildSummaryToCheck.shoppingList.map(sli => sli.item)
+    for (const item of items) {
+      if (StringUtils.contains(item.shortName, filterWord)
+        || StringUtils.contains(item.name, filterWord)) {
+        itemContains = true
+        break
+      }
+    }
 
-  for (const item of items) {
-    contains = itemPropertiesService.checkMatchesFilter(item, filterWords)
-
-    if (contains) {
-      return true
+    if (!itemContains) {
+      return false
     }
   }
 
-  return contains
+  return true
 }
 
 /**
@@ -175,7 +180,7 @@ async function filterBuildSummaries(buildSummariesToFilter: IBuildSummary[]): Pr
   const promises: Promise<void>[] = []
 
   for (const buildSummaryToFilter of buildSummariesToFilter) {
-    promises.push(new Promise((resolve) => {
+    promises.push(new Promise(resolve => {
       const matchesFilter = checkMatchesFilter(buildSummaryToFilter, filterWords)
 
       if (matchesFilter) {
@@ -194,9 +199,10 @@ async function filterBuildSummaries(buildSummariesToFilter: IBuildSummary[]): Pr
 /**
  * Gets the sorting data.
  */
-function getSortingData() {
+function getFilterAndSortingData() {
   const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
+  filterAndSortingData.value.filter = sessionStorage.getItem(websiteConfigurationService.configuration.buildsFilterStorageKey) ?? ''
   const property = localStorage.getItem(websiteConfigurationService.configuration.buildsSortFieldStorageKey) ?? 'name'
   const order = Number(localStorage.getItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey)) ?? SortingOrder.asc
   sortingService.setSortingProperty(filterAndSortingData.value, BuildSummarySortingFunctions, property, order)
@@ -213,26 +219,30 @@ async function onFilterAndSortSidebarClosing(updatedParameters?: GlobalSidebarDi
     updatedFilterAndSortingData.property !== filterAndSortingData.value.property
     || updatedFilterAndSortingData.order !== filterAndSortingData.value.order
   const hasFilterChange = updatedFilterAndSortingData.filter !== filterAndSortingData.value.filter
-  let buildSummariesToFilter = [...props.buildSummaries]
+
+  if (!hasSortChange && !hasFilterChange) {
+    return
+  }
+
+  let buildSummariesToFilter = [...(hasFilterChange ? props.buildSummaries : buildSummariesInternal.value)]
   filterAndSortingData.value = updatedFilterAndSortingData
 
   if (hasFilterChange) {
     buildSummariesToFilter = await filterBuildSummaries(buildSummariesToFilter)
   }
 
-  if (hasSortChange || hasFilterChange) {
-    buildSummariesToFilter = await sortBuildSummaries(buildSummariesToFilter)
-    saveSortingData()
-  }
-
+  buildSummariesToFilter = await sortBuildSummaries(buildSummariesToFilter)
   buildSummariesInternal.value = buildSummariesToFilter
+
+  saveFilterAndSortingData()
 }
 
 /**
- * Saves sorting data.
+ * Saves filter and sorting data.
  */
-function saveSortingData() {
+function saveFilterAndSortingData() {
   const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+  sessionStorage.setItem(websiteConfigurationService.configuration.buildsFilterStorageKey, filterAndSortingData.value.filter)
   localStorage.setItem(websiteConfigurationService.configuration.buildsSortFieldStorageKey, filterAndSortingData.value.property)
   localStorage.setItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey, filterAndSortingData.value.order.toString())
 }

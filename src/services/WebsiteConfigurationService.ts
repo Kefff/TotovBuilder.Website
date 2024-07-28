@@ -24,6 +24,7 @@ export class WebsiteConfigurationService {
     allowCookiesStorageKey: 'allow_cookies',
     bugReportUrl: import.meta.env.VITE_DISCORD_URL,
     buildSharingUrl: '',
+    buildsFilterStorageKey: 'builds_filter_field',
     buildsSortFieldStorageKey: 'builds_sort_field',
     buildsSortOrderStorageKey: 'builds_sort_order',
     buildStorageKeyPrefix: 'build_',

@@ -30,6 +30,22 @@ export default class StringUtils {
   }
 
   /**
+   * Indicates whether a string contains one of several strings without casing.
+   * @param container - String that should contain the other strings.
+   * @param searchedStrings - Strings that should be contained in the string.
+   * @returns True if any of the strings are contained in the string; otherwise false.
+   */
+  public static containsAny(container: string, searchedStrings: string[]): boolean {
+    for (const searchedString of searchedStrings) {
+      if (this.contains(container, searchedString)) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  /**
    * Compares two string without casing.
    * @param string1 - First string.
    * @param string2 - Second string.

@@ -32,6 +32,26 @@ describe('containsAll()', () => {
   })
 })
 
+describe('containsAny()', () => {
+  it.each([
+    ['ABC', ['A', 'BC'], true],
+    ['ABC', ['A', 'D'], true],
+    ['ABC', ['D', 'EF'], false],
+    ['abc', ['a', 'bc'], true],
+    ['abc', ['a', 'd'], true],
+    ['ABC', ['d', 'ef'], false],
+    ['aBc', ['A', 'bC'], true],
+    ['aBc', ['A', 'd'], true],
+    ['aBc', ['D', 'eF'], false]
+  ])('should indicates if the first string contains the second string', (string1: string, strings: string[], expected: boolean) => {
+    // Act
+    const result = StringUtils.containsAny(string1, strings)
+
+    // Assert
+    expect(result).toBe(expected)
+  })
+})
+
 describe('compare', () => {
   it.each([
     ['AAbBCc', 'aABbCc', 0],

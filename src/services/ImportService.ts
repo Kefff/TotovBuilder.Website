@@ -14,7 +14,7 @@ export class ImportService {
    */
   /* c8 ignore start */
   public getBuildsFromFile(file: File): Promise<IBuild[] | undefined> {
-    const fileReadingPromise = new Promise<IBuild[] | undefined>((resolve) => {
+    const fileReadingPromise = new Promise<IBuild[] | undefined>(resolve => {
       const fileReader = new FileReader()
       fileReader.onloadend = () => {
         const builds = this.readFile(fileReader)

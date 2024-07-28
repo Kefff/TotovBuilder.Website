@@ -216,7 +216,7 @@ function displayMerchantItemsOptions() {
 async function getBuilds() {
   isLoading.value = true
 
-  const execute = new Promise<void>((resolve) => {
+  const execute = new Promise<void>(resolve => {
     setTimeout(async () => { // Did not find another solution to make the loading animation appear when opening the builds list from the welcome page (nextTick does not work)
       const summaries: IBuildSummary[] = []
       builds = Services.get(BuildService).getAll()
