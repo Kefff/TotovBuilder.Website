@@ -10,6 +10,7 @@ import { IModSlot } from '../../models/item/IModSlot'
 import { IModdable } from '../../models/item/IModdable'
 import { IVest } from '../../models/item/IVest'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { rpk16 } from '../__data__/itemMocks'
 
 describe('canBeModded()', () => {
   it.each([
@@ -84,6 +85,23 @@ describe('canHaveArmor()', () => {
       expect(result).toBe(expected)
     }
   )
+})
+
+describe('checkMatchesFilter', () => {
+  it.each([
+    [['rpk', '16'], true],
+    [['light', 'gun'], true],
+    [['light', 'invalid'], false]
+  ])('should check whether an item matches a filter', (filterWords: string[], expected: boolean) => {
+    // Arrange
+    const service = new ItemPropertiesService()
+
+    // Act
+    const result = service.checkMatchesFilter(rpk16, filterWords)
+
+    // Assert
+    expect(result).toBe(expected)
+  })
 })
 
 describe('hasArmor()', () => {

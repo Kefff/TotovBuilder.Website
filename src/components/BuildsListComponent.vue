@@ -77,7 +77,6 @@ import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { GlobalSidebarDisplayedComponentParametersType } from '../models/utils/IGlobalSidebarOptions'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
-import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
@@ -86,7 +85,6 @@ import StringUtils from '../utils/StringUtils'
 import BuildCard from './BuildCardComponent.vue'
 
 const globalSidebarService = Services.get(GlobalSidebarService)
-const itemPropertiesService = Services.get(ItemPropertiesService)
 const sortingService = Services.get(SortingService)
 
 const modelSelectedBuildIds = defineModel<string[]>('selectedBuildIds', { required: false, default: [] })
