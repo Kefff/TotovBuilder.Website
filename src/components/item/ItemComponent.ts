@@ -391,11 +391,10 @@ export default defineComponent({
       neetToSetOptions.value = false
       loadingOptions.value = true
 
-      let filteredOptions: IItem[] = []
-
       if (optionsFilter.value === '') {
-        filteredOptions = [...props.acceptedItems]
+        options.value = [...props.acceptedItems]
       } else {
+        const filteredOptions: IItem[] = []
         const promises: Promise<void>[] = []
 
         for (const acceptedItem of props.acceptedItems) {
@@ -413,9 +412,9 @@ export default defineComponent({
         await Promise.allSettled(promises)
         options.value = filteredOptions
         onSortOptions(optionsSortingData.value)
-
-        loadingOptions.value = false
       }
+
+      loadingOptions.value = false
     }
 
     /**
