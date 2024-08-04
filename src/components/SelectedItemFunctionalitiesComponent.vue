@@ -126,7 +126,7 @@ function onShowDetailsClick() {
   Services.get(GlobalSidebarService).display({
     displayedComponentType: 'StatsSidebar',
     displayedComponentParameters: props.item,
-    position: 'left'
+    position: 'right'
   })
 }
 

@@ -88,7 +88,7 @@ function clearNotifications(id?: string) {
   notifications.value = notificationService.getNotifications()
 
   if (notifications.value.length === 0) {
-    globalSidebarService.close()
+    globalSidebarService.close('NotificationsSidebar')
   }
 }
 

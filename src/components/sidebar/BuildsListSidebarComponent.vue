@@ -153,7 +153,7 @@ function getSortOrderCaption(sortOrder: SortingOrder): string {
  */
 function onFilterKeyDown(event: KeyboardEvent) {
   if (event.key === 'Enter') {
-    globalSidebarService.close()
+    globalSidebarService.close('BuildsListSidebar')
   }
 }
 
@@ -179,7 +179,7 @@ function getSortableProperties(): string[] {
  */
 function reset() {
   modelFilterSortingData.value = new BuildFilterAndSortingData()
-  globalSidebarService.close()
+  globalSidebarService.close('BuildsListSidebar')
 }
 </script>
 

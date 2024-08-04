@@ -2,7 +2,7 @@
   <Sidebar
     v-model:visible="visible"
     :modal="true"
-    :position="options.position"
+    :position="props.position"
     style="width: auto;"
   >
     <template #header>
@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
+import { GlobalSidebarComponentType, GlobalSidebarPosition, IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 import BuildsListSidebar from './BuildsListSidebarComponent.vue'
@@ -41,6 +41,10 @@ import ShoppingListSidebar from './ShoppingListSidebarComponent.vue'
 import StatsSidebar from './StatsSidebarComponent.vue'
 
 const globalSidebarService = Services.get(GlobalSidebarService)
+
+const props = defineProps<{
+  position: GlobalSidebarPosition
+}>()
 
 const displayedComponent = computed(() => {
   switch (options.value?.displayedComponentType) {
@@ -68,7 +72,7 @@ const visible = computed({
     _visible.value = value
 
     if (!_visible.value) {
-      onGlobalSidebarClose()
+      onGlobalSidebarClose(options.value.displayedComponentType)
     }
   }
 })
@@ -89,21 +93,26 @@ onUnmounted(() => {
 /**
  * Reacts to the global sidebar being closed.
  *
- * Executes closing actions and closes the global sidebar.
+ * Executes the close action if defined and closes the global sidebar.
+ * @param displayedComponentType- Type of component displayed in the global sidebar to close.
  */
-function onGlobalSidebarClose() {
-  globalSidebarService.executeOnClosingActions(options.value.displayedComponentParameters)
-  _visible.value = false
+function onGlobalSidebarClose(displayedComponentType: GlobalSidebarComponentType) {
+  if (displayedComponentType === options.value.displayedComponentType) {
+    Services.get(GlobalSidebarService).executeOnCloseActions(displayedComponentType, options.value.displayedComponentParameters)
+    _visible.value = false
+  }
 }
 
 /**
  * Reacts to the global sidebar being opened.
  *
- * Sets the options to display and opens the global sidebar.
+ * Sets the component to display and opens the global sidebar.
  */
 function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions) {
-  visible.value = true
-  options.value = openingOptions
+  if (openingOptions.position === props.position) {
+    visible.value = true
+    options.value = openingOptions
+  }
 }
 </script>
 

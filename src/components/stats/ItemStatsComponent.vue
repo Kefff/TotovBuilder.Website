@@ -16,11 +16,12 @@
         <span>{{ $t('caption.merchant_' + price.merchant) + (price.merchantLevel > 0 ? ' ' + $t('caption.level').toLocaleLowerCase() + ' ' + price.merchantLevel : '') }} :</span>
       </div>
       <div class="stats-value">
-        <Price
-          :price="price"
-          :use-merchant-filter="false"
-          class="item-stats-price"
-        />
+        <div class="item-stats-price">
+          <Price
+            :price="price"
+            :use-merchant-filter="false"
+          />
+        </div>
       </div>
     </div>
   </div>

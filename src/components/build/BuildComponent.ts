@@ -189,7 +189,7 @@ export default defineComponent({
         collapseStatuses.value[i] = true
       }
 
-      Services.get(GlobalSidebarService).close()
+      Services.get(GlobalSidebarService).close('GeneralOptionsSidebar')
     }
 
     /**
@@ -270,7 +270,7 @@ export default defineComponent({
         collapseStatuses.value[i] = false
       }
 
-      Services.get(GlobalSidebarService).close()
+      Services.get(GlobalSidebarService).close('GeneralOptionsSidebar')
     }
 
     /**
@@ -285,7 +285,7 @@ export default defineComponent({
         }
       }
 
-      Services.get(GlobalSidebarService).close()
+      Services.get(GlobalSidebarService).close('GeneralOptionsSidebar')
     }
 
     /**

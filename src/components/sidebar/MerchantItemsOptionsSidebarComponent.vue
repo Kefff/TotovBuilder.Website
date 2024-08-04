@@ -44,7 +44,7 @@ import ItemFilter from '../ItemFilterComponent.vue'
 import MerchantFilter from '../MerchantFilterComponent.vue'
 
 const globalSidebarService = Services.get(GlobalSidebarService)
-globalSidebarService.registerOnClosingAction(save)
+globalSidebarService.registerOnCloseAction('MerchantItemsOptionsSidebar', save)
 
 const globalFilterService = Services.get(GlobalFilterService)
 

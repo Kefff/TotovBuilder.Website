@@ -30,6 +30,7 @@
         :class="shoppingListItem.inventorySlotId != null ? 'shopping-list-item-of-inventory-slot' : ''"
       >
         <PriceDetailItem
+          :can-show-item-stats="true"
           :ignore-price-status="shoppingListItem.ignorePrice ? IgnoredUnitPrice.manuallyIgnored : IgnoredUnitPrice.notIgnored"
           :item="shoppingListItem.item"
           :missing="shoppingListItem.missingPrice"

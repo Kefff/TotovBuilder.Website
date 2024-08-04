@@ -23,7 +23,10 @@
           v-for="itemInInventorySlot of itemsInInventorySlots"
           :key="itemInInventorySlot.inventorySlotId"
         >
-          <div>
+          <div
+            class="build-card-items-icon"
+            @click="displayStats(itemInInventorySlot.item)"
+          >
             <Tooltip :tooltip="itemInInventorySlot.item.name">
               <ItemIcon
                 :item="itemInInventorySlot.item"
@@ -176,6 +179,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
+import { IItem } from '../models/item/IItem'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
@@ -211,6 +215,18 @@ function displayShoppingList(shoppingList: IShoppingListItem[]) {
     displayedComponentType: 'ShoppingListSidebar',
     displayedComponentParameters: shoppingList,
     position: 'left'
+  })
+}
+
+/**
+ * Displays the stats of an item.
+ * @param item - Item.
+ */
+function displayStats(item: IItem) {
+  Services.get(GlobalSidebarService).display({
+    displayedComponentType: 'StatsSidebar',
+    position: 'right',
+    displayedComponentParameters: item
   })
 }
 </script>
@@ -267,6 +283,10 @@ function displayShoppingList(shoppingList: IShoppingListItem[]) {
   overflow-x: auto;
   padding-bottom: 0.5rem;
   width: 100%;
+}
+
+.build-card-items-icon {
+  cursor: pointer;
 }
 
 .build-card-stats {

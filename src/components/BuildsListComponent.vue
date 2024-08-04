@@ -165,8 +165,9 @@ async function filterBuildSummaries(buildSummariesToFilter: IBuildSummary[]): Pr
  * React to the filter an sort sidebar being closed.
  *
  * Applies the filter and sort, and saves the sort.
+ * @param updatedParameters - Filter and sort data updated by the side bar.
  */
-async function onFilterAndSortSidebarClosing(updatedParameters?: GlobalSidebarDisplayedComponentParametersType) {
+async function onFilterAndSortSidebarClose(updatedParameters?: GlobalSidebarDisplayedComponentParametersType) {
   const updatedFilterAndSortingData = updatedParameters as BuildFilterAndSortingData
   const hasSortChange =
     updatedFilterAndSortingData.property !== modelFilterAndSortingData.value.property
@@ -206,9 +207,9 @@ function showFilterAndSortSidebar() {
   globalSidebarService.display({
     displayedComponentType: 'BuildsListSidebar',
     displayedComponentParameters: { ...modelFilterAndSortingData.value },
-    position: 'left'
+    position: 'left',
+    onCloseAction: onFilterAndSortSidebarClose
   })
-  globalSidebarService.registerOnClosingAction(onFilterAndSortSidebarClosing)
 }
 
 /**

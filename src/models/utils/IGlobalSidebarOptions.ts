@@ -10,14 +10,7 @@ export interface IGlobalSidebarOptions {
   /**
    * Name of the component to display in the global sidebar.
    */
-  displayedComponentType:
-  'BuildsListSidebar'
-  | 'ChangelogSidebar'
-  | 'GeneralOptionsSidebar'
-  | 'MerchantItemsOptionsSidebar'
-  | 'NotificationsSidebar'
-  | 'ShoppingListSidebar'
-  | 'StatsSidebar'
+  displayedComponentType: GlobalSidebarComponentType
 
   /**
    * Parameters to pass as props to the component to display in the global sidebar.
@@ -25,10 +18,28 @@ export interface IGlobalSidebarOptions {
   displayedComponentParameters?: GlobalSidebarDisplayedComponentParametersType
 
   /**
+   * Action to execute when the sidebar is closed.
+   * @param updatedParameters - Parameters with updated values if the opened sidebar has changed them.
+   */
+  onCloseAction?: (updatedParameters?: GlobalSidebarDisplayedComponentParametersType) => void | Promise<void>
+
+  /**
    * Position from which the global sidebar is displayed.
    */
-  position: 'left' | 'right',
+  position: GlobalSidebarPosition,
 }
+
+/**
+ * Type component to display in a global sidebar.
+ */
+export type GlobalSidebarComponentType =
+  'BuildsListSidebar'
+  | 'ChangelogSidebar'
+  | 'GeneralOptionsSidebar'
+  | 'MerchantItemsOptionsSidebar'
+  | 'NotificationsSidebar'
+  | 'ShoppingListSidebar'
+  | 'StatsSidebar'
 
 /**
  * Type of parameters allowed to be passed to a component displayed in the global sidebar.
@@ -38,3 +49,8 @@ export type GlobalSidebarDisplayedComponentParametersType =
   | IGeneralOptionsGroup[]
   | IItem
   | IShoppingListItem[]
+
+/**
+ * Position of a global sidebar.
+ */
+export type GlobalSidebarPosition = 'left' | 'right'

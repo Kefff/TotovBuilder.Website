@@ -117,8 +117,9 @@
     </div>
   </div>
 
-  <!-- Global sidebar -->
-  <GlobalSidebar />
+  <!-- Global sidebars -->
+  <GlobalSidebar position="left" />
+  <GlobalSidebar position="right" />
 
   <!-- Loading error -->
   <LoadingError />
