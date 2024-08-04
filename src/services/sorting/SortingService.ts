@@ -34,13 +34,13 @@ export class SortingService {
     sortingData: SortingData<T>,
     sortingFunctions: ISortingFunctionList<T>,
     property: string,
-    order?: SortingOrder): SortingData<T> | undefined {
+    order?: SortingOrder): SortingData<T> {
     const sortingFunction = sortingFunctions[property]
 
     if (sortingFunction == null) {
       Services.get(LogService).logError('message.sortingFunctionNotFound', { property: property })
 
-      return undefined
+      return sortingData
     }
 
     if (order != null) {

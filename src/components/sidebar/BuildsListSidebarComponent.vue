@@ -122,12 +122,16 @@ const filter = computed({
 
 const sortField = computed({
   get: () => modelFilterSortingData.value.property,
-  set: (value: string) => sortingService.setSortingProperty(modelFilterSortingData.value, BuildSummarySortingFunctions, value, sortOrder.value)
+  set: (value: string) => {
+    modelFilterSortingData.value = sortingService.setSortingProperty(modelFilterSortingData.value, BuildSummarySortingFunctions, value, sortOrder.value) as BuildFilterAndSortingData
+  }
 })
 
 const sortOrder = computed({
   get: () => modelFilterSortingData.value.order,
-  set: (value: SortingOrder) => sortingService.setSortingProperty(modelFilterSortingData.value, BuildSummarySortingFunctions, modelFilterSortingData.value.property, value)
+  set: (value: SortingOrder) => {
+    modelFilterSortingData.value = sortingService.setSortingProperty(modelFilterSortingData.value, BuildSummarySortingFunctions, modelFilterSortingData.value.property, value) as BuildFilterAndSortingData
+  }
 })
 
 /**

@@ -14,6 +14,7 @@ import vueI18n from '../plugins/vueI18n'
 import { PathUtils } from '../utils/PathUtils'
 import { PriceUtils } from '../utils/PriceUtils'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
+import StringUtils from '../utils/StringUtils'
 import { BuildService } from './BuildService'
 import { InventoryItemService } from './InventoryItemService'
 import { InventorySlotPropertiesService } from './InventorySlotPropertiesService'
@@ -106,6 +107,38 @@ export class BuildPropertiesService {
       Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.cannotAddTacticalRig'))
 
       return false
+    }
+
+    return true
+  }
+
+  /**
+ * Checks whether a build summary matches a filter.
+ * @param buildSummaryToCheck - Build summary that must be checked against the filter.
+ * @param filter - Filter.
+ */
+  public checkMatchesFilter(buildSummaryToCheck: IBuildSummary, filter: string): boolean {
+    const filterWords = filter.split(' ')
+
+    for (const filterWord of filterWords) {
+      if (StringUtils.contains(buildSummaryToCheck.name, filterWord)) {
+        continue
+      }
+
+      let itemContains = false
+      const items = buildSummaryToCheck.shoppingList.map(sli => sli.item)
+
+      for (const item of items) {
+        if (StringUtils.contains(item.shortName, filterWord)
+          || StringUtils.contains(item.name, filterWord)) {
+          itemContains = true
+          break
+        }
+      }
+
+      if (!itemContains) {
+        return false
+      }
     }
 
     return true

@@ -69,10 +69,7 @@ const sortingDirectionClass = computed(() => modelSortingData.value.order === So
  */
 function sortBy(property: string) {
   const sortingData = Services.get(SortingService).setSortingProperty(modelSortingData.value, props.sortingFunctions, property)
-
-  if (sortingData != null) {
-    modelSortingData.value = sortingData
-  }
+  modelSortingData.value = sortingData
 }
 </script>
 

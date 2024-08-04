@@ -3,6 +3,8 @@ import { anything, instance, mock, verify } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { IShoppingListItem } from '../../models/build/IShoppingListItem'
+import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { IBuildSummaryShoppingMerchant } from '../../models/utils/IBuildSummaryMerchant'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
@@ -16,6 +18,7 @@ import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 import { build1, build2 } from '../__data__/buildMocks'
 import { ak12PistolGrip, ammo545bp, armor6b13FlDefault, bansheeDefault, ekp802dt, mechanism, ms2000, nf30mm, opSksDefault, opSksDt, plate6b33Back, plate6b33Front, precision, pso1, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, salewa, scavVest, specterDr } from '../__data__/itemMocks'
+import { rpk16DefaultPrices, salewaPrices } from '../__data__/priceMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
@@ -479,6 +482,49 @@ describe('canAddVest()', () => {
       }
     }
   )
+})
+
+describe('checkMatchesFilter()', () => {
+  it.each([
+    ['invalid', false],
+    ['meta', true],
+    ['kedr meta', false],
+    ['rpk meta', true],
+    ['rpk meta first aid kit', true]
+  ])('should check whether a build summary matches a filter', (filter: string, expected: boolean) => {
+    // Arrange
+    const buildSummary = {
+      name: 'Meta',
+      shoppingList: [
+        {
+          ignorePrice: false,
+          inventorySlotId: undefined,
+          item: rpk16Default,
+          missingPrice: false,
+          price: rpk16DefaultPrices[0],
+          quantity: 1,
+          unitPrice: rpk16DefaultPrices[0]
+        } as IShoppingListItem,
+        {
+          ignorePrice: false,
+          inventorySlotId: undefined,
+          item: salewa,
+          missingPrice: false,
+          price: salewaPrices[0],
+          quantity: 1,
+          unitPrice: salewaPrices[0]
+        } as IShoppingListItem
+      ] as IShoppingListItem[]
+    } as IBuildSummary
+
+    const service = new BuildPropertiesService()
+
+    // Act
+    const result = service.checkMatchesFilter(buildSummary, filter)
+
+    // Assert
+    expect(result).toBe(expected)
+  })
 })
 
 describe('getAsString()', () => {

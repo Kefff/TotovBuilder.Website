@@ -82,8 +82,10 @@
       id="builds-content"
     >
       <BuildsList
+        v-model:filter-and-sorting-data="filterAndSortingData"
         :build-summaries="buildSummaries"
         :show-not-exported="true"
+        @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
         @update:selected-build-ids="onBuildClick"
       />
     </div>
@@ -117,7 +119,9 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
+import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
+import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import { BuildService } from '../services/BuildService'
@@ -131,6 +135,8 @@ import {
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
+import { SortingService } from '../services/sorting/SortingService'
+import { BuildSummarySortingFunctions } from '../services/sorting/functions/BuildSummarySortingFunctions'
 import BuildsList from './BuildsListComponent.vue'
 import Loading from './LoadingComponent.vue'
 import NotificationButton from './NotificationButtonComponent.vue'
@@ -141,6 +147,7 @@ import BuildsImport from './builds-import/BuildsImportComponent.vue'
 const buildPropertiesService = Services.get(BuildPropertiesService)
 const globalFilterService = Services.get(GlobalFilterService)
 const itemService = Services.get(ItemService)
+const sortingService = Services.get(SortingService)
 
 const router = useRouter()
 let builds: IBuild[] = []
@@ -150,6 +157,7 @@ const canImport = computed(() => !isLoading.value && !isExporting.value && !isIm
 const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
 
 const buildSummaries = ref<IBuildSummary[]>([])
+const filterAndSortingData = ref<BuildFilterAndSortingData>(new BuildFilterAndSortingData())
 const hasImported = ref(false)
 const isExporting = ref(false)
 const isImporting = ref(false)
@@ -163,6 +171,8 @@ onMounted(() => {
   } else {
     onItemServicesInitialized()
   }
+
+  getFilterAndSortingData()
 })
 
 onUnmounted(() => {
@@ -236,6 +246,18 @@ async function getBuilds() {
 }
 
 /**
+ * Gets the sorting data.
+ */
+function getFilterAndSortingData() {
+  const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
+  filterAndSortingData.value.filter = sessionStorage.getItem(websiteConfigurationService.configuration.buildsFilterStorageKey) ?? ''
+  const property = localStorage.getItem(websiteConfigurationService.configuration.buildsSortFieldStorageKey) ?? 'name'
+  const order = Number(localStorage.getItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey)) ?? SortingOrder.asc
+  sortingService.setSortingProperty(filterAndSortingData.value, BuildSummarySortingFunctions, property, order)
+}
+
+/**
  * Reacts to the click on a build.
  *
  * Opens a the build on which the user clicks.
@@ -247,7 +269,17 @@ function onBuildClick(selectedBuildIds: string[]) {
   }
 }
 
-
+/**
+ * Reacts to the filter and sorting data being changed.
+ *
+ * Saves filter and sorting data.
+ */
+function onFilterAndSortingDataChanged() {
+  const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+  sessionStorage.setItem(websiteConfigurationService.configuration.buildsFilterStorageKey, filterAndSortingData.value.filter)
+  localStorage.setItem(websiteConfigurationService.configuration.buildsSortFieldStorageKey, filterAndSortingData.value.property)
+  localStorage.setItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey, filterAndSortingData.value.order.toString())
+}
 
 /**
  * Reacts to the item service being initialized.

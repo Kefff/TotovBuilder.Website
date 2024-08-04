@@ -39,10 +39,11 @@ export class ItemPropertiesService {
   /**
    * Checks whether an item matches the filter.
    * @param itemToCheck - Item that must be checked against the filter.
-   * @param filterWords - Filter words.
+   * @param filter - Filter.
    * @returns true when the item matches the filter; otherwise false.
    */
-  public checkMatchesFilter(itemToCheck: IItem, filterWords: string[]) {
+  public checkMatchesFilter(itemToCheck: IItem, filter: string) {
+    const filterWords = filter.split(' ')
     let contains = StringUtils.containsAll(itemToCheck.shortName, filterWords)
 
     if (contains) {

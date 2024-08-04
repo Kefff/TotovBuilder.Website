@@ -396,12 +396,11 @@ export default defineComponent({
       if (optionsFilter.value === '') {
         filteredOptions = [...props.acceptedItems]
       } else {
-        const filterWords = optionsFilter.value.split(' ')
         const promises: Promise<void>[] = []
 
         for (const acceptedItem of props.acceptedItems) {
           promises.push(new Promise(resolve => {
-            const matchesFilter = itemPropertiesService.checkMatchesFilter(acceptedItem, filterWords)
+            const matchesFilter = itemPropertiesService.checkMatchesFilter(acceptedItem, optionsFilter.value)
 
             if (matchesFilter) {
               filteredOptions.push(acceptedItem)

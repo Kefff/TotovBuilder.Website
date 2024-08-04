@@ -94,9 +94,12 @@ describe('setSortingProperty()', () => {
     expect(comparison).toBe(expectedComparisonResult)
   })
 
-  it('should return undefined when no comparison function is configured for the property', () => {
+  it('should return original sorting data when no comparison function is configured for the property', () => {
     // Arrange
     let sortingData: SortingData<IItem> | undefined = new SortingData()
+    sortingData.property = 'name'
+    sortingData.order = SortingOrder.desc
+
     const sortingFunctions: ISortingFunctionList<IItem> = {}
     const sortService = new SortingService()
 
@@ -107,7 +110,8 @@ describe('setSortingProperty()', () => {
     sortingData = sortService.setSortingProperty(sortingData, sortingFunctions, 'invalid')
 
     // Assert
-    expect(sortingData).toBe(undefined)
+    expect(sortingData.property).toBe('name')
+    expect(sortingData.order).toBe(SortingOrder.desc)
     verify(logServiceMock.logError('message.sortingFunctionNotFound', anything())).once()
   })
 })

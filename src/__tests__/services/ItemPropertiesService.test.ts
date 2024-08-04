@@ -89,15 +89,15 @@ describe('canHaveArmor()', () => {
 
 describe('checkMatchesFilter', () => {
   it.each([
-    [['rpk', '16'], true],
-    [['light', 'gun'], true],
-    [['light', 'invalid'], false]
-  ])('should check whether an item matches a filter', (filterWords: string[], expected: boolean) => {
+    ['rpk 16', true],
+    ['light gun', true],
+    ['light invalid', false]
+  ])('should check whether an item matches a filter', (filter: string, expected: boolean) => {
     // Arrange
     const service = new ItemPropertiesService()
 
     // Act
-    const result = service.checkMatchesFilter(rpk16, filterWords)
+    const result = service.checkMatchesFilter(rpk16, filter)
 
     // Assert
     expect(result).toBe(expected)
