@@ -5,10 +5,10 @@ import { IConflictingItem } from '../models/configuration/IConflictingItem'
 import { IVest } from '../models/item/IVest'
 import { IArmorModifiers } from '../models/utils/IArmorModifiers'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
-import { IBuildSummaryShoppingMerchant } from '../models/utils/IBuildSummaryMerchant'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { IInventorySlotSummary } from '../models/utils/IInventorySlotSummary'
 import { IRecoil } from '../models/utils/IRecoil'
+import { IShoppingListMerchant } from '../models/utils/IShoppingListMerchant'
 import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 import vueI18n from '../plugins/vueI18n'
 import { PathUtils } from '../utils/PathUtils'
@@ -317,10 +317,32 @@ ${sharableUrlResult}`
   /**
    * Gets the merchants and their maximum level from a shopping list..
    */
-  public getShoppingListMerchants(shoppingList: IShoppingListItem[]): IBuildSummaryShoppingMerchant[] {
-    const merchants: IBuildSummaryShoppingMerchant[] = []
+  public getShoppingListMerchants(shoppingList: IShoppingListItem[]): IShoppingListMerchant[] {
+    // const merchants: IShoppingListMerchant[] = []
+
+    // for (const item of shoppingList) {
+    //   const merchant = merchants.find(m => m.name === item.price.merchant)
+
+    //   if (merchant == null) {
+    //     merchants.push({
+    //       name: item.price.merchant,
+    //       level: item.price.merchantLevel
+    //     })
+    //   } else if (merchant.level < item.price.merchantLevel) {
+    //     merchant.level = item.price.merchantLevel
+    //   }
+    // }
+
+    // return merchants
+
+    const merchants: IShoppingListMerchant[] = []
 
     for (const item of shoppingList) {
+      if (item.price.merchant === '') {
+        // When no merchant is found, a price without merchant and a 0 value is returned
+        continue
+      }
+
       const merchant = merchants.find(m => m.name === item.price.merchant)
 
       if (merchant == null) {
@@ -328,10 +350,14 @@ ${sharableUrlResult}`
           name: item.price.merchant,
           level: item.price.merchantLevel
         })
-      } else if (merchant.level < item.price.merchantLevel) {
-        merchant.level = item.price.merchantLevel
+      } else {
+        if (merchant.level < item.price.merchantLevel) {
+          merchant.level = item.price.merchantLevel
+        }
       }
     }
+
+    merchants.sort((m1, m2) => StringUtils.compare(m1.name, m2.name))
 
     return merchants
   }

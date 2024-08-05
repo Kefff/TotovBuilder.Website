@@ -10,18 +10,7 @@
   <div class="sidebar-option">
     <div>
       <div class="shopping-list-merchants">
-        <div
-          v-for="merchant of requiredMerchants"
-          :key="merchant.name"
-        >
-          <Tooltip :tooltip="$t('caption.merchant_' + merchant.name) + (merchant.level !== 0 ? ` ${$t('caption.level').toLowerCase()} ${merchant.level}` : '')">
-            <MerchantIcon
-              :merchant="merchant.name"
-              :merchant-level="merchant.level"
-              :show-tooltip="true"
-            />
-          </Tooltip>
-        </div>
+        <ShoppingListMerchantsList :shopping-list="parameters" />
       </div>
       <div
         v-for="(shoppingListItem, index) of parameters"
@@ -53,49 +42,12 @@
 
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
-import { IBuildSummaryShoppingMerchant } from '../../models/utils/IBuildSummaryMerchant'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
-import StringUtils from '../../utils/StringUtils'
-import MerchantIcon from '../MerchantIconComponent.vue'
 import PriceDetailItem from '../PriceDetailItemComponent.vue'
-import Tooltip from '../TooltipComponent.vue'
+import ShoppingListMerchantsList from '../ShoppingListMerchantsListComponent.vue'
 
-const props = defineProps<{ parameters: IShoppingListItem[] }>()
-
-const requiredMerchants = computed(() => getRequiredMerchants())
-
-/**
- * Gets the required merchants.
- */
-function getRequiredMerchants(): IBuildSummaryShoppingMerchant[] {
-  const merchants: IBuildSummaryShoppingMerchant[] = []
-
-  for (const item of props.parameters) {
-    if (item.price.merchant === '') {
-      // When no merchant is found, a price without merchant and a 0 value is returned
-      continue
-    }
-
-    const merchant = merchants.find(m => m.name === item.price.merchant)
-
-    if (merchant == null) {
-      merchants.push({
-        name: item.price.merchant,
-        level: item.price.merchantLevel
-      })
-    } else {
-      if (merchant.level < item.price.merchantLevel) {
-        merchant.level = item.price.merchantLevel
-      }
-    }
-  }
-
-  merchants.sort((m1, m2) => StringUtils.compare(m1.name, m2.name))
-
-  return merchants
-}
+defineProps<{ parameters: IShoppingListItem[] }>()
 </script>
 
 
@@ -133,14 +85,7 @@ function getRequiredMerchants(): IBuildSummaryShoppingMerchant[] {
 }
 
 .shopping-list-merchants {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: end;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  /* Margin-right needed to avoid having merchant levels trucated */
-  margin-right: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .shopping-list-title {

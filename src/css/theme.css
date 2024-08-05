@@ -4379,10 +4379,22 @@
 .p-sidebar {
   background: var(--surface-f);
   color: var(--text-color);
-  padding: 1rem;
+  /* padding: 1rem; */
   border: 0 none;
   box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2),
     0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12);
+}
+
+.p-sidebar-header {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 1rem;
+}
+
+.p-sidebar-content {
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .p-sidebar .p-sidebar-close {

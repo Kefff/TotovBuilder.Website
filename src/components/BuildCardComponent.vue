@@ -61,6 +61,9 @@
           </Tooltip>
         </div>
       </div>
+      <div class="build-card-merchants">
+        <ShoppingListMerchantsList :shopping-list="buildSummary.shoppingList" />
+      </div>
       <div
         v-if="buildSummary.recoil.verticalRecoil !== 0 || buildSummary.recoil.horizontalRecoil !== 0 || buildSummary.ergonomics !== 0 || buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0"
         class="build-card-stats"
@@ -187,6 +190,7 @@ import Services from '../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import InventoryPrice from './InventoryPriceComponent.vue'
 import ItemIcon from './ItemIconComponent.vue'
+import ShoppingListMerchantsList from './ShoppingListMerchantsListComponent.vue'
 
 const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
 
@@ -259,8 +263,8 @@ function displayStats(item: IItem) {
   display: flex;
   gap: 2rem;
   justify-content: center;
-  margin-bottom: 1rem;
   margin-top: auto;
+  padding-top: 1rem;
 }
 
 .build-card-buttons > button {
@@ -280,7 +284,7 @@ function displayStats(item: IItem) {
   display: flex;
   flex-direction: row;
   gap: 0.25rem;
-  overflow-x: auto;
+  overflow-x: scroll;
   padding-bottom: 0.5rem;
   width: 100%;
 }
@@ -289,16 +293,20 @@ function displayStats(item: IItem) {
   cursor: pointer;
 }
 
-.build-card-stats {
-  align-items: center;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.build-card-merchants {
   margin-top: 0.5rem;
 }
 
 .build-card-price {
   display: flex;
   grid-column: span 2;
+}
+
+.build-card-stats {
+  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 0.5rem;
 }
 
 .build-card-title {
@@ -320,6 +328,8 @@ function displayStats(item: IItem) {
 
 <style>
 .build-card > .p-card-body {
+  display: flex;
+  flex-direction: column;
   height: 100%;
 }
 
@@ -327,5 +337,6 @@ function displayStats(item: IItem) {
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding: 0;
 }
 </style>

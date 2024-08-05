@@ -16,12 +16,10 @@
         <span>{{ $t('caption.merchant_' + price.merchant) + (price.merchantLevel > 0 ? ' ' + $t('caption.level').toLocaleLowerCase() + ' ' + price.merchantLevel : '') }} :</span>
       </div>
       <div class="stats-value">
-        <div class="item-stats-price">
-          <Price
-            :price="price"
-            :use-merchant-filter="false"
-          />
-        </div>
+        <Price
+          :price="price"
+          :use-merchant-filter="false"
+        />
       </div>
     </div>
   </div>
@@ -174,8 +172,4 @@ async function setPrices() {
 @import '../../css/icon.css';
 @import '../../css/link.css';
 @import '../../css/stats.css';
-
-.item-stats-price {
-  margin-right: 0.5rem;
-}
 </style>
