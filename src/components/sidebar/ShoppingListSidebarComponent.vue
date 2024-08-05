@@ -71,6 +71,7 @@ defineProps<{ parameters: IShoppingListItem[] }>()
 .shopping-list-item {
   margin-bottom: 0.5rem;
   padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .shopping-list-item:last-child {
@@ -85,7 +86,7 @@ defineProps<{ parameters: IShoppingListItem[] }>()
 }
 
 .shopping-list-merchants {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .shopping-list-title {

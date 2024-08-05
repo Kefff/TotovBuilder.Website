@@ -65,11 +65,14 @@ function setRequiredMerchants() {
 <style scoped>
 .shopping-list-merchants-list {
   display: flex;
-  flex-wrap: wrap;
   gap: 1rem;
-  margin-top: 0.5rem;
-  /* Margins needed to avoid having merchant levels trucated */
-  margin-bottom: 0.5rem;
-  margin-right: 0.5rem;
+  margin-top: 1rem;
+  max-width: calc(100vw - 1rem - 1rem);
+  overflow-x: scroll;
+  padding-bottom: 0.5rem;
+}
+
+.shopping-list-merchants-list > div {
+  margin-bottom: 0.25rem;
 }
 </style>

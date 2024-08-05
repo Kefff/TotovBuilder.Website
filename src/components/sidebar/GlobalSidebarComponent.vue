@@ -127,7 +127,7 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions) {
 
 <style scoped>
 .global-sidebar-content {
-  max-width: 100vw;
+  max-width: calc(100vw - 1rem - 1rem);
 }
 
 .global-sidebar-spacer {
@@ -143,21 +143,21 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions) {
 /* Tablet in portrait */
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .global-sidebar-content {
-    max-width: 50vw;
+    max-width: calc(50vw - 1rem - 1rem);
   }
 }
 
 /* Tablet in landscape */
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .global-sidebar-content {
-    max-width: 50vw;
+    max-width: calc(50vw - 1rem - 1rem);
   }
 }
 
 /* PC */
 @media only screen and (min-width: 1200px) {
   .global-sidebar-content {
-    max-width: 50vw;
+    max-width: calc(50vw - 1rem - 1rem);
   }
 }
 </style>
