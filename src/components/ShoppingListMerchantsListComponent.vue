@@ -66,9 +66,8 @@ function setRequiredMerchants() {
 .shopping-list-merchants-list {
   display: flex;
   gap: 1rem;
-  margin-top: 1rem;
   max-width: calc(100vw - 1rem - 1rem);
-  overflow-x: scroll;
+  overflow-x: auto;
   padding-bottom: 0.5rem;
 }
 

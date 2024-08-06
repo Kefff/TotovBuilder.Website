@@ -37,34 +37,6 @@
         </div>
       </div>
       <div
-        v-if="buildSummary.price.priceInMainCurrency > 0 || buildSummary.weight != 0"
-        class="build-card-stats"
-      >
-        <div
-          v-if="buildSummary.price.priceInMainCurrency > 0"
-          class="build-card-price"
-        >
-          <InventoryPrice
-            :inventory-price="buildSummary.price"
-            :is-build="true"
-          />
-        </div>
-        <div v-if="buildSummary.weight != 0">
-          <Tooltip :tooltip="$t('caption.weight')">
-            <font-awesome-icon
-              icon="weight-hanging"
-              class="icon-before-text"
-            />
-            <span :class="StatsUtils.getWeightColorClass(buildSummary.weight)">
-              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight) }}
-            </span>
-          </Tooltip>
-        </div>
-      </div>
-      <div class="build-card-merchants">
-        <ShoppingListMerchantsList :shopping-list="buildSummary.shoppingList" />
-      </div>
-      <div
         v-if="buildSummary.recoil.verticalRecoil !== 0 || buildSummary.recoil.horizontalRecoil !== 0 || buildSummary.ergonomics !== 0 || buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0"
         class="build-card-stats"
       >
@@ -145,6 +117,34 @@
             </span>
           </Tooltip>
         </div>
+      </div>
+      <div
+        v-if="buildSummary.price.priceInMainCurrency > 0 || buildSummary.weight != 0"
+        class="build-card-stats"
+      >
+        <div
+          v-if="buildSummary.price.priceInMainCurrency > 0"
+          class="build-card-price"
+        >
+          <InventoryPrice
+            :inventory-price="buildSummary.price"
+            :is-build="true"
+          />
+        </div>
+        <div v-if="buildSummary.weight != 0">
+          <Tooltip :tooltip="$t('caption.weight')">
+            <font-awesome-icon
+              icon="weight-hanging"
+              class="icon-before-text"
+            />
+            <span :class="StatsUtils.getWeightColorClass(buildSummary.weight)">
+              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight) }}
+            </span>
+          </Tooltip>
+        </div>
+      </div>
+      <div class="build-card-merchants">
+        <ShoppingListMerchantsList :shopping-list="buildSummary.shoppingList" />
       </div>
       <div class="build-card-buttons">
         <Button @click="modelIsSelected = !modelIsSelected">
@@ -284,7 +284,7 @@ function displayStats(item: IItem) {
   display: flex;
   flex-direction: row;
   gap: 0.25rem;
-  overflow-x: scroll;
+  overflow-x: auto;
   padding-bottom: 0.5rem;
   width: 100%;
 }
