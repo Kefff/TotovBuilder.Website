@@ -833,16 +833,16 @@ describe('BuildPropertiesService', () => {
       // Assert
       expect(merchants).toStrictEqual([
         {
+          level: 0,
+          name: 'flea-market'
+        },
+        {
           level: 4,
           name: 'prapor'
         },
         {
           level: 2,
           name: 'therapist'
-        },
-        {
-          level: 0,
-          name: 'flea-market'
         }
       ] as IShoppingListMerchant[])
     })
