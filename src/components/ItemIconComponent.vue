@@ -75,6 +75,7 @@ const iconUrl = computed(() => {
   clip-path: inset(1px 1px 1px 1px);
   max-height: 3.25rem;
   max-width: 4.75rem;
+  min-width: 3.25rem;
   /* Zooming on the image to fill the cropped pixels */
   transform: scale(1.05);
 }

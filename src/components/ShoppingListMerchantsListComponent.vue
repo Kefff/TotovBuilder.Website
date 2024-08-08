@@ -1,14 +1,14 @@
 <template>
   <div class="shopping-list-merchants-list-container">
     <div
-      class="shopping-list-merchants-list-left-indicator"
-      :style="listElementHasLeftScroll ? 'display: initial' : 'display: none'"
+      class="shopping-list-merchants-list-left-scroll-indicator"
+      :style="merchantsListElementHasLeftScroll ? 'display: initial' : 'display: none'"
     />
     <div
       v-if="merchants.length > 0"
-      ref="listElement"
+      ref="merchantsListElement"
       class="shopping-list-merchants-list"
-      @scroll="onMerchantListScroll"
+      @scroll="onMerchantsListScroll"
     >
       <div>
         <div
@@ -26,8 +26,8 @@
       </div>
     </div>
     <div
-      class="shopping-list-merchants-list-right-indicator"
-      :style="listElementHasRightScroll ? 'display: initial' : 'display: none'"
+      class="shopping-list-merchants-list-right-scroll-indicator"
+      :style="merchantsListElementHasRightScroll ? 'display: initial' : 'display: none'"
     />
   </div>
 </template>
@@ -54,14 +54,14 @@ const buildPropertiesService = Services.get(BuildPropertiesService)
 const props = defineProps<{ shoppingList: IShoppingListItem[] }>()
 
 const merchants = ref<IShoppingListMerchant[]>([])
-const listElement = ref<HTMLDivElement>()
-const listElementHasLeftScroll = ref(false)
-const listElementHasRightScroll = ref(false)
+const merchantsListElement = ref<HTMLDivElement>()
+const merchantsListElementHasLeftScroll = ref(false)
+const merchantsListElementHasRightScroll = ref(false)
 
 onMounted(() => setRequiredMerchants())
 
-watch(() => listElement.value, () => {
-  setListElementHasScroll()
+watch(() => merchantsListElement.value?.scrollWidth, () => {
+  setMerchantsListElementHasScroll()
 })
 
 watch(() => props.shoppingList, () => setRequiredMerchants())
@@ -73,20 +73,25 @@ function setRequiredMerchants() {
   merchants.value = buildPropertiesService.getShoppingListMerchants(props.shoppingList)
 }
 
-function onMerchantListScroll() {
-  setListElementHasScroll()
+/**
+ * React to the horizontal scroll in the merchants list.
+ *
+ * Updates the values indicating whether left or right scroll are possible.
+ */
+function onMerchantsListScroll() {
+  setMerchantsListElementHasScroll()
 }
 
 /**
- * Checks whether the list element has left and right scroll and sets a value indicating it.
+ * Checks whether the merchants list element has left and right scroll and sets a value indicating it.
  */
-function setListElementHasScroll() {
-  if (listElement.value != null) {
-    listElementHasLeftScroll.value = listElement.value.scrollLeft !== 0
-    listElementHasRightScroll.value = listElement.value.scrollLeft + listElement.value.clientWidth < listElement.value.scrollWidth
+function setMerchantsListElementHasScroll() {
+  if (merchantsListElement.value != null) {
+    merchantsListElementHasLeftScroll.value = merchantsListElement.value.scrollLeft !== 0
+    merchantsListElementHasRightScroll.value = merchantsListElement.value.scrollLeft + merchantsListElement.value.clientWidth < merchantsListElement.value.scrollWidth
   } else {
-    listElementHasLeftScroll.value = false
-    listElementHasRightScroll.value = false
+    merchantsListElementHasLeftScroll.value = false
+    merchantsListElementHasRightScroll.value = false
   }
 }
 </script>
@@ -101,12 +106,6 @@ function setListElementHasScroll() {
 
 
 <style scoped>
-.shopping-list-merchants-list-container {
-  max-width: calc(100vw - 1rem - 1rem);
-  padding-top: 0.5rem;
-  position: relative;
-}
-
 .shopping-list-merchants-list {
   overflow-x: auto;
   padding-bottom: 0.5rem;
@@ -118,20 +117,25 @@ function setListElementHasScroll() {
   margin-bottom: 0.25rem;
 }
 
-.shopping-list-merchants-list-left-indicator {
+.shopping-list-merchants-list-container {
+  padding-top: 0.5rem;
+  position: relative;
+}
+
+.shopping-list-merchants-list-left-scroll-indicator {
   border-bottom-left-radius: 3px;
   border-left-color: var(--primary-color);
   border-left-style: solid;
   border-left-width: 3px;
   border-top-left-radius: 3px;
   height: calc(100% - 0.15rem);
-  left: 0;
+  left: -0.5rem;
   position: absolute;
   top: 0;
   z-index: 1;
 }
 
-.shopping-list-merchants-list-right-indicator {
+.shopping-list-merchants-list-right-scroll-indicator {
   border-bottom-right-radius: 3px;
   border-right-color: var(--primary-color);
   border-right-style: solid;
@@ -139,7 +143,7 @@ function setListElementHasScroll() {
   border-top-right-radius: 3px;
   height: calc(100% - 0.15rem);
   position: absolute;
-  right: 0;
+  right: -0.5rem;
   top: 0;
   z-index: 1;
 }

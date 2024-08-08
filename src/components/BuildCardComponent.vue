@@ -15,26 +15,38 @@
       </div>
     </template>
     <template #content>
-      <div
-        v-if="itemsInInventorySlots.length > 0"
-        class="build-card-items"
-      >
+      <div class="build-card-items-container">
         <div
-          v-for="itemInInventorySlot of itemsInInventorySlots"
-          :key="itemInInventorySlot.inventorySlotId"
+          class="build-card-items-left-scroll-indicator"
+          :style="itemsListElementHasLeftScroll ? 'display: initial' : 'display: none'"
+        />
+        <div
+          v-if="itemsInInventorySlots.length > 0"
+          ref="itemsListElement"
+          class="build-card-items"
+          @scroll="onItemsListScroll"
         >
           <div
-            class="build-card-items-icon"
-            @click="displayStats(itemInInventorySlot.item)"
+            v-for="itemInInventorySlot of itemsInInventorySlots"
+            :key="itemInInventorySlot.inventorySlotId"
           >
-            <Tooltip :tooltip="itemInInventorySlot.item.name">
-              <ItemIcon
-                :item="itemInInventorySlot.item"
-                :quantity="itemInInventorySlot.quantity"
-              />
-            </Tooltip>
+            <div
+              class="build-card-items-icon"
+              @click="displayStats(itemInInventorySlot.item)"
+            >
+              <Tooltip :tooltip="itemInInventorySlot.item.name">
+                <ItemIcon
+                  :item="itemInInventorySlot.item"
+                  :quantity="itemInInventorySlot.quantity"
+                />
+              </Tooltip>
+            </div>
           </div>
         </div>
+        <div
+          class="build-card-items-right-scroll-indicator"
+          :style="itemsListElementHasRightScroll ? 'display: initial' : 'display: none'"
+        />
       </div>
       <div
         v-if="buildSummary.recoil.verticalRecoil !== 0 || buildSummary.recoil.horizontalRecoil !== 0 || buildSummary.ergonomics !== 0 || buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0"
@@ -180,7 +192,7 @@
 
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IItem } from '../models/item/IItem'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
@@ -199,6 +211,10 @@ const props = defineProps<{
   showNotExported: boolean
 }>()
 
+const itemsListElement = ref<HTMLDivElement>()
+const itemsListElementHasLeftScroll = ref(false)
+const itemsListElementHasRightScroll = ref(false)
+
 const itemsInInventorySlots = computed(() => props.buildSummary.shoppingList.filter(sli => sli.inventorySlotId != null))
 const notExportedTooltip = computed(() => {
   if (props.buildSummary.exported) {
@@ -208,6 +224,10 @@ const notExportedTooltip = computed(() => {
   const tooltip = Services.get(BuildPropertiesService).getNotExportedTooltip(props.buildSummary.lastUpdated, props.buildSummary.lastExported)
 
   return tooltip
+})
+
+watch(() => itemsListElement.value?.scrollWidth, () => {
+  setItemsListElementHasScroll()
 })
 
 /**
@@ -232,6 +252,28 @@ function displayStats(item: IItem) {
     position: 'right',
     displayedComponentParameters: item
   })
+}
+
+/**
+ * React to the horizontal scroll in the merchants list.
+ *
+ * Updates the values indicating whether left or right scroll are possible.
+ */
+function onItemsListScroll() {
+  setItemsListElementHasScroll()
+}
+
+/**
+ * Checks whether the items list element has left and right scroll and sets a value indicating it.
+ */
+function setItemsListElementHasScroll() {
+  if (itemsListElement.value != null) {
+    itemsListElementHasLeftScroll.value = itemsListElement.value.scrollLeft !== 0
+    itemsListElementHasRightScroll.value = itemsListElement.value.scrollLeft + itemsListElement.value.clientWidth < itemsListElement.value.scrollWidth
+  } else {
+    itemsListElementHasLeftScroll.value = false
+    itemsListElementHasRightScroll.value = false
+  }
 }
 </script>
 
@@ -289,8 +331,39 @@ function displayStats(item: IItem) {
   width: 100%;
 }
 
+.build-card-items-container {
+  padding-top: 0.5rem;
+  position: relative;
+}
+
 .build-card-items-icon {
   cursor: pointer;
+}
+
+.build-card-items-left-scroll-indicator {
+  border-bottom-left-radius: 3px;
+  border-left-color: var(--primary-color);
+  border-left-style: solid;
+  border-left-width: 3px;
+  border-top-left-radius: 3px;
+  height: calc(100% - 0.15rem);
+  left: -0.5rem;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+.build-card-items-right-scroll-indicator {
+  border-bottom-right-radius: 3px;
+  border-right-color: var(--primary-color);
+  border-right-style: solid;
+  border-right-width: 3px;
+  border-top-right-radius: 3px;
+  height: calc(100% - 0.15rem);
+  position: absolute;
+  right: -0.5rem;
+  top: 0;
+  z-index: 1;
 }
 
 .build-card-merchants {

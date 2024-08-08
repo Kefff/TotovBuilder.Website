@@ -195,6 +195,7 @@ function toggleInventoryPriceDetails(event: Event) {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: end;
 }
 
 .inventory-price-list-price {
