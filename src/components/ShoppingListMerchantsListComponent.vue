@@ -42,7 +42,7 @@
 
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IShoppingListMerchant } from '../models/utils/IShoppingListMerchant'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
@@ -58,7 +58,19 @@ const merchantsListElement = ref<HTMLDivElement>()
 const merchantsListElementHasLeftScroll = ref(false)
 const merchantsListElementHasRightScroll = ref(false)
 
-onMounted(() => setRequiredMerchants())
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    setMerchantsListElementHasScroll()
+  })
+
+  setRequiredMerchants()
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', () => {
+    setMerchantsListElementHasScroll()
+  })
+})
 
 watch(() => merchantsListElement.value?.scrollWidth, () => {
   setMerchantsListElementHasScroll()

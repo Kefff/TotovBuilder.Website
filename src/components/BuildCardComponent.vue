@@ -192,7 +192,7 @@
 
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IItem } from '../models/item/IItem'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
@@ -226,9 +226,22 @@ const notExportedTooltip = computed(() => {
   return tooltip
 })
 
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    setItemsListElementHasScroll()
+  })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', () => {
+    setItemsListElementHasScroll()
+  })
+})
+
 watch(() => itemsListElement.value?.scrollWidth, () => {
   setItemsListElementHasScroll()
 })
+
 
 /**
  * Displays the shopping list for the specified build.
