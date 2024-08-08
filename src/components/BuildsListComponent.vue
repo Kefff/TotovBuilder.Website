@@ -252,7 +252,7 @@ function updatedSelectedBuilds(buildId: string, isSelected: boolean) {
 .builds-list-cards {
   display: grid;
   grid-gap: 1rem;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .builds-list-chip {
@@ -331,8 +331,18 @@ function updatedSelectedBuilds(buildId: string, isSelected: boolean) {
 }
 
 /* Tablet in landscape */
-@media only screen and (min-width: 992px) and (max-width: 1199px) {}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .builds-list-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 
 /* PC */
-@media only screen and (min-width: 1200px) {}
+@media only screen and (min-width: 1200px) and (max-width: 1599px) {
+  .builds-list-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media only screen and (min-width: 1600px) {}
 </style>
