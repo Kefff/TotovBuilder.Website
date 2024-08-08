@@ -5,47 +5,55 @@
         class="builds-list-chip"
         @click="showFilterAndSortSidebar()"
       >
-        <div class="builds-list-chip-group">
-          <div class="builds-list-chip-icon">
-            <font-awesome-icon :icon="sortChipIcon" />
+        <Tooltip :tooltip="sortButtonTooltip">
+          <div class="builds-list-chip-group">
+            <div class="builds-list-chip-icon">
+              <font-awesome-icon :icon="sortChipIcon" />
+            </div>
+            <span>{{ $t(`caption.${modelFilterAndSortingData.property}`) }}</span>
           </div>
-          <span>{{ $t(`caption.${modelFilterAndSortingData.property}`) }}</span>
-        </div>
+        </Tooltip>
       </Chip>
       <Chip
         v-if="modelFilterAndSortingData.filter == ''"
         class="builds-list-chip"
         @click="showFilterAndSortSidebar()"
       >
-        <div class="builds-list-chip-group">
-          <div class="builds-list-chip-icon">
-            <font-awesome-icon icon="filter" />
+        <Tooltip :tooltip="$t('caption.addFilter')">
+          <div class="builds-list-chip-group">
+            <div class="builds-list-chip-icon">
+              <font-awesome-icon icon="filter" />
+            </div>
+            <span>{{ $t('caption.filter') }}</span>
+            <div class="builds-list-chip-icon-button builds-list-chip-icon-button-add-filter">
+              <font-awesome-icon icon="plus" />
+            </div>
           </div>
-          <span>{{ $t('caption.filter') }}</span>
-          <div class="builds-list-chip-icon-button builds-list-chip-icon-button-add-filter">
-            <font-awesome-icon icon="plus" />
-          </div>
-        </div>
+        </Tooltip>
       </Chip>
       <Chip
         v-else
         class="builds-list-chip"
       >
-        <div
-          class="builds-list-chip-group"
-          @click="showFilterAndSortSidebar()"
-        >
-          <div class="builds-list-chip-icon">
-            <font-awesome-icon icon="filter" />
+        <Tooltip :tooltip="$t('caption.filteredWith', { filter: modelFilterAndSortingData.filter })">
+          <div
+            class="builds-list-chip-group"
+            @click="showFilterAndSortSidebar()"
+          >
+            <div class="builds-list-chip-icon">
+              <font-awesome-icon icon="filter" />
+            </div>
+            <span>{{ modelFilterAndSortingData.filter }}</span>
           </div>
-          <span>{{ modelFilterAndSortingData.filter }}</span>
-        </div>
-        <div
-          class="builds-list-chip-icon-button builds-list-chip-icon-button-remove-filter"
-          @click="removeFilter()"
-        >
-          <font-awesome-icon icon="times" />
-        </div>
+        </Tooltip>
+        <Tooltip :tooltip="$t('caption.removeFilter')">
+          <div
+            class="builds-list-chip-icon-button builds-list-chip-icon-button-remove-filter"
+            @click="removeFilter()"
+          >
+            <font-awesome-icon icon="times" />
+          </div>
+        </Tooltip>
       </Chip>
     </div>
   </div>
@@ -76,6 +84,7 @@ import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { GlobalSidebarDisplayedComponentParametersType } from '../models/utils/IGlobalSidebarOptions'
 import { SortingOrder } from '../models/utils/SortingOrder'
+import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
@@ -96,6 +105,14 @@ const props = defineProps<{
 
 const buildSummariesInternal = ref<IBuildSummary[]>([])
 
+const sortButtonTooltip = computed(() => vueI18n.t(
+  'caption.sortedBy',
+  {
+    property: modelFilterAndSortingData.value.property,
+    order: modelFilterAndSortingData.value.order === SortingOrder.asc
+      ? vueI18n.t('caption.ascendant').toLocaleLowerCase()
+      : vueI18n.t('caption.descendant').toLocaleLowerCase()
+  }))
 const sortChipIcon = computed(() => modelFilterAndSortingData.value.order === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
 
 onMounted(() => {
