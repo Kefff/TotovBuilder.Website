@@ -271,6 +271,7 @@ function setLanguage() {
 body {
   backdrop-filter: blur(2px);
   background: rgba(18, 18, 18, 75%);
+  /* Required for the #app to be able to use height:100% */
   display: flex;
   font-size: 1rem;
   height: 100%;
@@ -300,9 +301,10 @@ html {
   color: var(--text-color);
   font-family: var(--font-main);
   font-size: 14px;
-  height: 100vh;
+  height: 100%;
   letter-spacing: 0.25px;
-  overflow: hidden;
+  /* Required otherwise the right Sidebar breaks the layout while its open animation plays */
+  position: fixed;
   scrollbar-color: var(--primary-color) rgba(0, 0, 0, 0);
   width: 100%;
 }
