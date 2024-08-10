@@ -356,7 +356,6 @@ function showBuildsImportPopup() {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding-bottom: 3rem;
   width: 100%;
 }
 

@@ -71,13 +71,13 @@ function setToolbarCssClass() {
   margin-top: 0.5rem;
   position: unset;
   width: 100%;
+  border-radius: 6px;
 }
 
 .toolbar-sticky {
   position: sticky;
   z-index: 1;
-  top: -1.05rem;
-  /* 0.5 otherwise there is a gap of 1 pixel */
+  top: 0;
 }
 
 .toolbar-gradient {

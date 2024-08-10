@@ -91,7 +91,7 @@ withDefaults(
 .merchant-icon-level {
   align-items: center;
   background-color: var(--primary-color);
-  border-radius: 1rem;
+  border-radius: 9px;
   color: var(--text-color);
   display: flex;
   font-size: 0.8rem;

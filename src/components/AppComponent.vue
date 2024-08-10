@@ -269,8 +269,8 @@ function setLanguage() {
 
 <style>
 body {
+  background-color: var(--surface-transparent-0);
   backdrop-filter: blur(2px);
-  background: rgba(18, 18, 18, 75%);
   /* Required for the #app to be able to use height:100% */
   display: flex;
   font-size: 1rem;
@@ -305,7 +305,7 @@ html {
   letter-spacing: 0.25px;
   /* Required otherwise the right Sidebar breaks the layout while its open animation plays */
   position: fixed;
-  scrollbar-color: var(--primary-color) rgba(0, 0, 0, 0);
+  scrollbar-color: var(--primary-color3) rgba(0, 0, 0, 0);
   width: 100%;
 }
 
@@ -368,8 +368,8 @@ html * {
   display: flex;
   flex-grow: 2;
   justify-content: center;
-  /* margin-top: auto;
-  margin-bottom: auto; */
+  padding-bottom: 3rem;
+  padding-top: 3rem;
   width: 100%;
 }
 

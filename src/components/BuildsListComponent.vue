@@ -278,6 +278,7 @@ function updatedSelectedBuilds(buildId: string, isSelected: boolean) {
   overflow: hidden;
   padding-bottom: 0.5rem;
   padding-top: 0.5rem;
+  background-color: var(--surface-300);
 }
 
 .builds-list-chip-group {
@@ -355,7 +356,7 @@ function updatedSelectedBuilds(buildId: string, isSelected: boolean) {
 }
 
 /* PC */
-@media only screen and (min-width: 1200px) and (max-width: 1599px) {
+@media only screen and (min-width: 1200px) and (max-width: 1799px) {
   .builds-list-cards {
     grid-template-columns: repeat(3, 1fr);
   }
