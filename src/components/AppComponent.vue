@@ -267,15 +267,20 @@ function setLanguage() {
 
 <style>
 body {
-  background-color: var(--surface-0);
+  backdrop-filter: blur(2px);
+  background: rgba(18, 18, 18, 75%);
   box-sizing: border-box;
   color: var(--text-color);
+  display: flex;
+  justify-content: center;
   font-size: 1rem;
-  height: 100vh;
-  margin: 0;
-  max-width: 137rem;
-  overflow: hidden;
-  width: 100vw;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  height: 100%;
+  overflow: auto;
+  width: 100%;
 }
 
 h1 {
@@ -294,6 +299,14 @@ html {
   justify-content: center;
   letter-spacing: 0.25px;
   scrollbar-color: var(--primary-color) rgba(0, 0, 0, 0);
+  background-image: url('../../assets/images/Background.webp');
+  background-repeat: no-repeat;
+  background-color: var(--surface-0);
+  background-position: center;
+  background-size: cover;
+  height: 100vh;
+  overflow: hidden;
+  width: 100%;
 }
 
 html * {
@@ -306,9 +319,11 @@ html * {
   display: flex;
   flex-direction: column;
   font-family: var(--font-main);
-  height: 100%;
-  overflow: auto;
-  padding: 1rem;
+  max-width: 137rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  max-width: 137rem;
+  width: 100%;
 }
 
 .p-button {
@@ -318,6 +333,10 @@ html * {
 
 <style scoped>
 @import '../css/link.css';
+
+.app-container {
+  height: 100%;
+}
 
 .app-api-disclaimer {
   align-items: center;
