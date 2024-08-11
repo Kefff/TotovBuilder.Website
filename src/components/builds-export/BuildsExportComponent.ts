@@ -1,5 +1,5 @@
 
-import { computed, defineComponent, onMounted, PropType, ref } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted, PropType, ref } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildService } from '../../services/BuildService'
@@ -27,7 +27,13 @@ export default defineComponent({
 
     const buildToExportSummaries = ref<IBuildSummary[]>([])
 
-    onMounted(() => document.onkeydown = (e) => onKeyDown(e))
+    onMounted(() => {
+      addEventListener('keydown', (e) => onKeyDown(e))
+    })
+
+    onUnmounted(() => {
+      removeEventListener('keydown', (e) => onKeyDown(e))
+    })
 
     /**
      * Cancels the export.

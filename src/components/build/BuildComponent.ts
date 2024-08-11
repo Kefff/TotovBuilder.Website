@@ -119,7 +119,7 @@ export default defineComponent({
     watch(() => route.params, onItemServiceInitialized)
 
     onMounted(() => {
-      document.onkeydown = (e) => onKeyDown(e)
+      addEventListener('keydown', (e) => onKeyDown(e))
 
       compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
       compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
@@ -141,7 +141,7 @@ export default defineComponent({
       compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
       globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-      document.onkeydown = null
+      removeEventListener('keydown', (e) => onKeyDown(e))
     })
 
     window.onbeforeunload = function () {

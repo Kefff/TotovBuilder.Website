@@ -22,7 +22,7 @@
           :can-show-item-stats="true"
           :ignore-price-status="shoppingListItem.ignorePrice ? IgnoredUnitPrice.manuallyIgnored : IgnoredUnitPrice.notIgnored"
           :item="shoppingListItem.item"
-          :missing="shoppingListItem.missingPrice"
+          :missing="shoppingListItem.missingPrice && shoppingListItem.unitPrice.merchant === ''"
           :price="shoppingListItem.price"
           :quantity="shoppingListItem.quantity"
           :unit-price="shoppingListItem.unitPrice"

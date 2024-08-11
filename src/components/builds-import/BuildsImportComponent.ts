@@ -1,4 +1,4 @@
-import { computed, defineComponent, onMounted, ref } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
@@ -39,7 +39,13 @@ export default defineComponent({
     const readenBuilds = ref<IBuild[]>([])
     const readenBuildSummaries = ref<IBuildSummary[]>([])
 
-    onMounted(() => document.onkeydown = (e) => onKeyDown(e))
+    onMounted(() => {
+      addEventListener('keydown', (e) => onKeyDown(e))
+    })
+
+    onUnmounted(() => {
+      removeEventListener('keydown', (e) => onKeyDown(e))
+    })
 
     /**
      * Cancels the import.

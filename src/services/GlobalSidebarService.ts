@@ -25,6 +25,8 @@ export class GlobalSidebarService {
    */
   private onCloseActions: { type: GlobalSidebarComponentType, action: (updatedParameters?: GlobalSidebarDisplayedComponentParametersType) => void | Promise<void> }[] = []
 
+  private displayedAmount = 0
+
   /**
    * Closes a global sidebar.
    * @param displayedComponentType- Type of component displayed in the global sidebar to close.
@@ -38,6 +40,8 @@ export class GlobalSidebarService {
    * @param options - Options.
    */
   public display(options: IGlobalSidebarOptions) {
+    this.displayedAmount++
+
     if (options.onCloseAction != null) {
       this.registerOnCloseAction(options.displayedComponentType, options.onCloseAction)
     }
@@ -50,6 +54,8 @@ export class GlobalSidebarService {
    * @param displayedComponentType - Type of component displayed in the closed sidebar.
    */
   public async executeOnCloseActions(displayedComponentType: GlobalSidebarComponentType, updatedParameters?: GlobalSidebarDisplayedComponentParametersType) {
+    this.displayedAmount--
+
     for (const onCloseAction of this.onCloseActions) {
       if (onCloseAction.type === displayedComponentType) {
         await onCloseAction.action(updatedParameters)
@@ -57,6 +63,14 @@ export class GlobalSidebarService {
     }
 
     this.onCloseActions = this.onCloseActions.filter(a => a.type !== displayedComponentType)
+  }
+
+  /**
+   * Indicates whether a global sidebar is opened.
+   * @returns true when a global sidebar is opened; otherwise false.
+   */
+  public isDisplayed() {
+    return this.displayedAmount > 0
   }
 
   /**

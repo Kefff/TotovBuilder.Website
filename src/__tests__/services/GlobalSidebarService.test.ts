@@ -89,4 +89,40 @@ describe('GlobalSideBarService', () => {
       expect(action3ExecutionCount).toBe(0)
     })
   })
+
+  describe('isDisplayed()', () => {
+    it('should indicate when a sidebar is displayed', () => {
+      // Arrange
+      const service = new GlobalSidebarService()
+
+      // Act
+      service.display({
+        displayedComponentType: 'BuildsListSidebar',
+        position: 'left'
+      })
+      service.display({
+        displayedComponentType: 'ChangelogSidebar',
+        position: 'right'
+      })
+
+      let result = service.isDisplayed()
+
+      // Assert
+      expect(result).toBe(true)
+
+      // Act
+      service.executeOnCloseActions('BuildsListSidebar')
+      result = service.isDisplayed()
+
+      // Assert
+      expect(result).toBe(true)
+
+      // Act
+      service.executeOnCloseActions('ChangelogSidebar')
+      result = service.isDisplayed()
+
+      // Assert
+      expect(result).toBe(false)
+    })
+  })
 })

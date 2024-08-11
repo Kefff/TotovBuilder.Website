@@ -107,7 +107,7 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { GlobalSidebarDisplayedComponentParametersType } from '../models/utils/IGlobalSidebarOptions'
@@ -151,7 +151,13 @@ const sortButtonTooltip = computed(() => vueI18n.t(
 const sortChipIcon = computed(() => modelFilterAndSortingData.value.order === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
 
 onMounted(() => {
+  addEventListener('keydown', (e) => onKeyDown(e))
+
   filterAndSortBuildSummaries()
+})
+
+onUnmounted(() => {
+  removeEventListener('keydown', (e) => onKeyDown(e))
 })
 
 watch(
@@ -240,6 +246,22 @@ async function onFilterAndSortSidebarClose(updatedParameters?: GlobalSidebarDisp
   buildSummariesInternal.value = buildSummariesToFilter
 
   modelFilterAndSortingData.value = updatedFilterAndSortingData
+}
+
+/**
+ * Reacts to a keyboard event.
+ * @param event - Keyboard event.
+ */
+function onKeyDown(event: KeyboardEvent) {
+  if (event.key === 'f'
+    && (event.ctrlKey
+      || event.metaKey)) {
+
+    if (!globalSidebarService.isDisplayed()) {
+      event.preventDefault() // Prevents the browser save action to be triggered
+      showFilterAndSortSidebar()
+    }
+  }
 }
 
 /**
