@@ -43,7 +43,10 @@
             v-else
             class="builds-list-chip"
           >
-            <Tooltip :tooltip="$t('caption.filteredWith', { filter: modelFilterAndSortingData.filter })">
+            <Tooltip
+              :tooltip="$t('caption.filteredWith', { filter: modelFilterAndSortingData.filter })"
+              style="overflow: hidden;"
+            >
               <div
                 class="builds-list-chip-group"
                 @click="showFilterAndSortSidebar()"
@@ -304,20 +307,19 @@ function updatedSelectedBuilds(buildId: string, isSelected: boolean) {
   border-width: 1px;
   border-color: var(--primary-color);
   cursor: pointer;
-  overflow: hidden;
   padding-bottom: 0.5rem;
   padding-top: 0.5rem;
+  overflow: hidden;
 }
 
 .builds-list-chip-group {
   align-items: center;
   display: flex;
-  overflow: hidden;
 }
 
 .builds-list-chip-group > span {
-  text-overflow: ellipsis;
   overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
