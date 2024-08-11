@@ -77,7 +77,7 @@
     <Loading />
   </div>
   <div
-    v-if="!isLoading"
+    v-if="!isLoading && buildSummariesInternal.length > 0"
     class="builds-list-cards"
   >
     <BuildCard
@@ -88,6 +88,12 @@
       :show-not-exported="showNotExported"
       @update:is-selected="updatedSelectedBuilds(buildSummary.id, $event)"
     />
+  </div>
+  <div
+    v-else-if="!isLoading"
+    class="builds-list-no-results-message"
+  >
+    {{ $t('message.noBuildsFound') }}
   </div>
 </template>
 
@@ -361,6 +367,15 @@ function updatedSelectedBuilds(buildId: string, isSelected: boolean) {
 .builds-list-loading {
   margin-bottom: auto;
   margin-top: auto;
+  padding-top: 3rem;
+}
+
+.builds-list-no-results-message {
+  margin-bottom: auto;
+  margin-top: auto;
+  padding-top: 3rem;
+  font-size: 1.5rem;
+  text-align: center;
 }
 
 /* Smartphone in portrait */

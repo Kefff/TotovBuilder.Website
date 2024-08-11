@@ -18,7 +18,9 @@
   display: flex;
   flex-direction: column;
   font-size: 1.5rem;
-  margin-top: 3rem;
+  margin-bottom: auto;
+  margin-top: auto;
+  padding-top: 3rem;
 }
 
 .build-empty-message-button {
@@ -29,7 +31,7 @@
 .build-empty-message-line {
   align-items: center;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .build-empty-message-text {
@@ -37,9 +39,14 @@
   margin-right: auto;
 }
 
+.build-inventory-slots {
+  width: 100%;
+}
+
 .build-loading {
   margin-bottom: auto;
   margin-top: auto;
+  padding-top: 3rem;
 }
 
 .build-title {
