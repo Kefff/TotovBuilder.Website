@@ -2,7 +2,7 @@ import { IItem } from '../../../models/item/IItem'
 import { InventoryItemService } from '../../InventoryItemService'
 import Services from '../../repository/Services'
 import { compareByItemNumber, compareByItemString, compareByString } from '../SortingService'
-import { ISortingFunctionList } from './SortingFunctionList'
+import ISortingFunctionList from './ISortingFunctionList'
 
 /**
  * Functions for sorting items.

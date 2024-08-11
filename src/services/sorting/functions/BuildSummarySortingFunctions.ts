@@ -1,6 +1,6 @@
 import { IBuildSummary } from '../../../models/utils/IBuildSummary'
 import { compareByNumber, compareByString } from '../SortingService'
-import { ISortingFunctionList } from './SortingFunctionList'
+import ISortingFunctionList from './ISortingFunctionList'
 
 /**
  * Functions for sorting build summaries.

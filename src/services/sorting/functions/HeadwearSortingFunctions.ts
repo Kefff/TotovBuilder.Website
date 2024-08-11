@@ -2,7 +2,7 @@ import { IHeadwear } from '../../../models/item/IHeadwear'
 import { IItem } from '../../../models/item/IItem'
 import { compareByItemNumber } from '../SortingService'
 import { ArmorSortingFunctions } from './ArmorSortingFunctions'
-import { ISortingFunctionList } from './SortingFunctionList'
+import ISortingFunctionList from './ISortingFunctionList'
 
 /**
  * Functions for sorting headwear.

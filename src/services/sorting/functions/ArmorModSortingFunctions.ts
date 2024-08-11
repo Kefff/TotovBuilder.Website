@@ -2,7 +2,7 @@ import { IArmorMod } from '../../../models/item/IArmorMod'
 import { IItem } from '../../../models/item/IItem'
 import { compareByItemNumber } from '../SortingService'
 import { ArmorSortingFunctions } from './ArmorSortingFunctions'
-import { ISortingFunctionList } from './SortingFunctionList'
+import ISortingFunctionList from './ISortingFunctionList'
 
 /**
  * Functions for sorting armor mods.

@@ -5,7 +5,7 @@ import { SortingOrder } from '../../models/utils/SortingOrder'
 import StringUtils from '../../utils/StringUtils'
 import { LogService } from '../LogService'
 import Services from '../repository/Services'
-import { ISortingFunctionList } from './functions/SortingFunctionList'
+import ISortingFunctionList from './functions/ISortingFunctionList'
 
 /**
  * Represents a service responsible for sorting elements.

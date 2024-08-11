@@ -1,7 +1,7 @@
 import { IItem } from '../../../models/item/IItem'
 import { ArmorSortingFunctions } from './ArmorSortingFunctions'
 import { ContainerSortingFunctions } from './ContainerSortingFunctions'
-import { ISortingFunctionList } from './SortingFunctionList'
+import ISortingFunctionList from './ISortingFunctionList'
 
 /**
  * Functions for sorting vests.

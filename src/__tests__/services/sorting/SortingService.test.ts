@@ -7,7 +7,7 @@ import { SortingOrder } from '../../../models/utils/SortingOrder'
 import { LogService } from '../../../services/LogService'
 import Services from '../../../services/repository/Services'
 import { SortingService, compareByElementName, compareByItemNumber, compareByItemString, compareByNumber } from '../../../services/sorting/SortingService'
-import { ISortingFunctionList } from '../../../services/sorting/functions/SortingFunctionList'
+import ISortingFunctionList from '../../../services/sorting/functions/ISortingFunctionList'
 
 describe('compareByElementName()', () => {
   it.each([

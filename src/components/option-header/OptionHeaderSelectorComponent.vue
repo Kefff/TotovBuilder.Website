@@ -23,6 +23,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { IItem } from '../../models/item/IItem'
 import SortingData from '../../models/utils/SortingData'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
@@ -43,7 +44,7 @@ import RangedWeaponOptionHeader from './RangedWeaponOptionHeaderComponent.vue'
 import VestOptionHeader from './VestOptionHeaderComponent.vue'
 
 const modelFilter = defineModel<string>('filter', { required: true })
-const modelSortingData = defineModel<SortingData>('sortingData', { required: true })
+const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { required: true })
 
 const props = withDefaults(
   defineProps<{

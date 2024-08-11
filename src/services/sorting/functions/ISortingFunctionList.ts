@@ -6,6 +6,6 @@ import { ISortingFunction } from './ISortingFunction'
 /**
  * Represents the functionalities of an element sorting function list.
  */
-export interface ISortingFunctionList<T extends IBuildSummary | IItem> {
+export default interface ISortingFunctionList<T extends IBuildSummary | IItem> {
   [property: string]: ISortingFunction<T>
 }

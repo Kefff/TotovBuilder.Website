@@ -1,6 +1,6 @@
 import { IItem } from '../../../models/item/IItem'
 import { ContainerSortingFunctions } from './ContainerSortingFunctions'
-import { ISortingFunctionList } from './SortingFunctionList'
+import ISortingFunctionList from './ISortingFunctionList'
 import { WearableSortingFunctions } from './WearableSortingFunctions'
 
 /**

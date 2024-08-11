@@ -1,8 +1,8 @@
 import { IItem } from '../../../models/item/IItem'
 import { IMod } from '../../../models/item/IMod'
 import { compareByItemNumber } from '../SortingService'
+import ISortingFunctionList from './ISortingFunctionList'
 import { ItemSortingFunctions } from './ItemSortingFunctions'
-import { ISortingFunctionList } from './SortingFunctionList'
 
 
 /**

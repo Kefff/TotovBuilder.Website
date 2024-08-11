@@ -1,8 +1,8 @@
 import { IAmmunition } from '../../../models/item/IAmmunition'
 import { IItem } from '../../../models/item/IItem'
 import { compareByItemNumber } from '../SortingService'
+import ISortingFunctionList from './ISortingFunctionList'
 import { ItemSortingFunctions } from './ItemSortingFunctions'
-import { ISortingFunctionList } from './SortingFunctionList'
 
 /**
  * Functions for sorting ammunition.

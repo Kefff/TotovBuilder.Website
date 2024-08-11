@@ -1,8 +1,8 @@
 import { IItem } from '../../../models/item/IItem'
 import { IMeleeWeapon } from '../../../models/item/IMeleeWeapon'
 import { compareByItemNumber } from '../SortingService'
+import ISortingFunctionList from './ISortingFunctionList'
 import { ItemSortingFunctions } from './ItemSortingFunctions'
-import { ISortingFunctionList } from './SortingFunctionList'
 
 /**
  * Functions for sorting melee weapons.

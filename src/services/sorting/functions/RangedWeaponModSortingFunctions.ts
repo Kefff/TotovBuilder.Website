@@ -1,8 +1,8 @@
 import { IItem } from '../../../models/item/IItem'
 import { IRangedWeaponMod } from '../../../models/item/IRangedWeaponMod'
 import { compareByItemNumber } from '../SortingService'
+import ISortingFunctionList from './ISortingFunctionList'
 import { ModSortingFunctions } from './ModSortingFunctions'
-import { ISortingFunctionList } from './SortingFunctionList'
 
 /**
  * Functions for sorting ranged weapon mods.

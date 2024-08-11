@@ -1,8 +1,8 @@
 import { IEyewear } from '../../../models/item/IEyewear'
 import { IItem } from '../../../models/item/IItem'
 import { compareByItemNumber } from '../SortingService'
+import ISortingFunctionList from './ISortingFunctionList'
 import { ItemSortingFunctions } from './ItemSortingFunctions'
-import { ISortingFunctionList } from './SortingFunctionList'
 /**
  * Functions for sorting eyewear.
  */

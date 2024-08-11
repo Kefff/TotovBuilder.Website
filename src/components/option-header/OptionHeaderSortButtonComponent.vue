@@ -40,7 +40,7 @@ import SortingData from '../../models/utils/SortingData'
 import { SortingOrder } from '../../models/utils/SortingOrder'
 import Services from '../../services/repository/Services'
 import { SortingService } from '../../services/sorting/SortingService'
-import { ISortingFunctionList } from '../../services/sorting/functions/SortingFunctionList'
+import ISortingFunctionList from '../../services/sorting/functions/ISortingFunctionList'
 import StringUtils from '../../utils/StringUtils'
 import CustomIcon from '../CustomIconComponent.vue'
 
