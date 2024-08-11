@@ -365,7 +365,6 @@ function setItemsListElementHasScroll() {
   left: -0.5rem;
   position: absolute;
   top: 0;
-  z-index: 1;
 }
 
 .build-card-items-right-scroll-indicator {
@@ -378,7 +377,6 @@ function setItemsListElementHasScroll() {
   position: absolute;
   right: -0.5rem;
   top: 0;
-  z-index: 1;
 }
 
 .build-card-merchants {

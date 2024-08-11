@@ -144,6 +144,10 @@ async function setAcceptedItems() {
 @import '../css/icon.css';
 
 .inventory-slot {
+  border-color: var(--primary-color6);
+  border-radius: 6px;
+  border-style: solid;
+  border-width: 1px;
   margin-bottom: 1rem;
 }
 

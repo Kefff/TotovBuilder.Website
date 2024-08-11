@@ -3,92 +3,83 @@
     <div class="builds-title">
       {{ $t('caption.buildsList') }}
     </div>
-    <Toolbar sticky-trigger-selector="#builds-content">
-      <div class="toolbar-part">
-        <Button
-          :disabled="isLoading"
-          class="p-button-success"
-          @click="openNewBuild()"
-        >
-          <font-awesome-icon
-            icon="plus"
-            class="icon-before-text"
-          />
-          <span>{{ $t('caption.new') }}</span>
-        </Button>
-        <Tooltip
-          :tooltip="$t('caption.exportBuilds')"
-          :apply-hover-style="false"
-        >
+    <BuildsList
+      v-model:filter-and-sorting-data="filterAndSortingData"
+      :build-summaries="buildSummaries"
+      :is-loading="isLoading"
+      :show-not-exported="true"
+      @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
+      @update:selected-build-ids="onBuildClick"
+    >
+      <template #toolbarContent>
+        <div class="toolbar-part">
           <Button
-            class="p-button-text p-button-sm button-discreet"
-            :disabled="isLoading || !canExport"
-            @click="showBuildsExportPopup()"
+            :disabled="isLoading"
+            class="p-button-success"
+            @click="openNewBuild()"
           >
-            <font-awesome-icon icon="file-export" />
+            <font-awesome-icon
+              icon="plus"
+              class="icon-before-text"
+            />
+            <span>{{ $t('caption.new') }}</span>
           </Button>
-        </Tooltip>
-        <Tooltip
-          :tooltip="$t('caption.importBuilds')"
-          :apply-hover-style="false"
-        >
-          <Button
-            class="p-button-text p-button-sm button-discreet"
-            :disabled="isLoading || !canImport"
-            @click="showBuildsImportPopup()"
-          >
-            <font-awesome-icon icon="file-import" />
-          </Button>
-        </Tooltip>
-      </div>
-      <div class="toolbar-part toolbar-center" />
-      <div class="toolbar-part">
-        <div class="builds-toolbar-right">
           <Tooltip
-            :tooltip="$t('caption.merchantItemsOptions')"
+            :tooltip="$t('caption.exportBuilds')"
             :apply-hover-style="false"
           >
             <Button
               class="p-button-text p-button-sm button-discreet"
-              :disabled="isLoading"
-              @click="displayMerchantItemsOptions()"
+              :disabled="isLoading || !canExport"
+              @click="showBuildsExportPopup()"
             >
-              <font-awesome-icon icon="user-tag" />
+              <font-awesome-icon icon="file-export" />
             </Button>
           </Tooltip>
           <Tooltip
-            :tooltip="$t('caption.options')"
+            :tooltip="$t('caption.importBuilds')"
             :apply-hover-style="false"
           >
             <Button
               class="p-button-text p-button-sm button-discreet"
-              @click="displayGeneralOptions()"
+              :disabled="isLoading || !canImport"
+              @click="showBuildsImportPopup()"
             >
-              <font-awesome-icon icon="cog" />
+              <font-awesome-icon icon="file-import" />
             </Button>
           </Tooltip>
-          <NotificationButton />
         </div>
-      </div>
-    </Toolbar>
-    <div
-      v-show="isLoading"
-      class="builds-loading"
-    >
-      <Loading />
-    </div>
-    <div
-      v-show="!isLoading && buildSummaries.length > 0"
-      id="builds-content"
-    >
-      <BuildsList
-        v-model:filter-and-sorting-data="filterAndSortingData"
-        :build-summaries="buildSummaries"
-        :show-not-exported="true"
-        @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
-        @update:selected-build-ids="onBuildClick"
-      />
-    </div>
+        <div class="toolbar-part toolbar-center" />
+        <div class="toolbar-part">
+          <div class="builds-toolbar-right">
+            <Tooltip
+              :tooltip="$t('caption.merchantItemsOptions')"
+              :apply-hover-style="false"
+            >
+              <Button
+                class="p-button-text p-button-sm button-discreet"
+                :disabled="isLoading"
+                @click="displayMerchantItemsOptions()"
+              >
+                <font-awesome-icon icon="user-tag" />
+              </Button>
+            </Tooltip>
+            <Tooltip
+              :tooltip="$t('caption.options')"
+              :apply-hover-style="false"
+            >
+              <Button
+                class="p-button-text p-button-sm button-discreet"
+                @click="displayGeneralOptions()"
+              >
+                <font-awesome-icon icon="cog" />
+              </Button>
+            </Tooltip>
+            <NotificationButton />
+          </div>
+        </div>
+      </template>
+    </BuildsList>
   </div>
 
   <!-- Export -->
@@ -138,9 +129,7 @@ import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
 import { BuildSummarySortingFunctions } from '../services/sorting/functions/BuildSummarySortingFunctions'
 import BuildsList from './BuildsListComponent.vue'
-import Loading from './LoadingComponent.vue'
 import NotificationButton from './NotificationButtonComponent.vue'
-import Toolbar from './ToolbarComponent.vue'
 import BuildsExport from './builds-export/BuildsExportComponent.vue'
 import BuildsImport from './builds-import/BuildsImportComponent.vue'
 
@@ -366,11 +355,7 @@ function showBuildsImportPopup() {
   font-size: 1.5rem;
   height: 3.5rem;
   justify-content: center;
-}
-
-.builds-loading {
-  margin-bottom: auto;
-  margin-top: auto;
+  margin-bottom: 0.5rem;
 }
 
 .builds-toolbar-right {

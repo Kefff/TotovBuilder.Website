@@ -144,7 +144,6 @@ function setMerchantsListElementHasScroll() {
   left: -0.5rem;
   position: absolute;
   top: 0;
-  z-index: 1;
 }
 
 .shopping-list-merchants-list-right-scroll-indicator {
@@ -157,6 +156,5 @@ function setMerchantsListElementHasScroll() {
   position: absolute;
   right: -0.5rem;
   top: 0;
-  z-index: 1;
 }
 </style>
