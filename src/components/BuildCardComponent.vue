@@ -155,9 +155,6 @@
           </Tooltip>
         </div>
       </div>
-      <div class="build-card-merchants">
-        <ShoppingListMerchantsList :shopping-list="buildSummary.shoppingList" />
-      </div>
       <div class="build-card-buttons">
         <Button @click="modelIsSelected = !modelIsSelected">
           <font-awesome-icon
@@ -169,6 +166,7 @@
         <Button
           :disabled="buildSummary.shoppingList.length === 0"
           class="shopping-list-button"
+          outlined
           @click="displayShoppingList(buildSummary.shoppingList)"
         >
           <font-awesome-icon
@@ -202,7 +200,6 @@ import Services from '../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import InventoryPrice from './InventoryPriceComponent.vue'
 import ItemIcon from './ItemIconComponent.vue'
-import ShoppingListMerchantsList from './ShoppingListMerchantsListComponent.vue'
 
 const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
 
@@ -310,8 +307,13 @@ function setItemsListElementHasScroll() {
 }
 
 .build-card {
+  background-color: var(--surface-transparent-0);
   overflow: hidden;
   width: 100%;
+  border-color: var(--primary-color6);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 6px;
 }
 
 .build-card-buttons {
@@ -363,12 +365,11 @@ function setItemsListElementHasScroll() {
   left: -0.5rem;
   position: absolute;
   top: 0;
-  z-index: 1;
 }
 
 .build-card-items-right-scroll-indicator {
   border-bottom-right-radius: 3px;
-  border-right-color: var(--primary-color);
+  border-right-color: var(--primary-color3);
   border-right-style: solid;
   border-right-width: 3px;
   border-top-right-radius: 3px;
@@ -376,7 +377,6 @@ function setItemsListElementHasScroll() {
   position: absolute;
   right: -0.5rem;
   top: 0;
-  z-index: 1;
 }
 
 .build-card-merchants {

@@ -136,7 +136,7 @@ function setMerchantsListElementHasScroll() {
 
 .shopping-list-merchants-list-left-scroll-indicator {
   border-bottom-left-radius: 3px;
-  border-left-color: var(--primary-color);
+  border-left-color: var(--primary-color3);
   border-left-style: solid;
   border-left-width: 3px;
   border-top-left-radius: 3px;
@@ -144,12 +144,11 @@ function setMerchantsListElementHasScroll() {
   left: -0.5rem;
   position: absolute;
   top: 0;
-  z-index: 1;
 }
 
 .shopping-list-merchants-list-right-scroll-indicator {
   border-bottom-right-radius: 3px;
-  border-right-color: var(--primary-color);
+  border-right-color: var(--primary-color3);
   border-right-style: solid;
   border-right-width: 3px;
   border-top-right-radius: 3px;
@@ -157,6 +156,5 @@ function setMerchantsListElementHasScroll() {
   position: absolute;
   right: -0.5rem;
   top: 0;
-  z-index: 1;
 }
 </style>

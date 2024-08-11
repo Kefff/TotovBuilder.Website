@@ -1,9 +1,19 @@
 <template>
-  <div :class="toolbarCssClass">
-    <div class="toolbar-line">
-      <slot />
+  <div
+    ref="toolbarContainer"
+    class="toolbar-container"
+    :class="stickied ? 'toolbar-container-stickied' : ''"
+  >
+    <div
+      v-if="$slots.content"
+      class="toolbar"
+      :class="stickied ? 'toolbar-stickied' : ''"
+    >
+      <div class="toolbar-line">
+        <slot name="content" />
+      </div>
     </div>
-    <div class="toolbar-gradient" />
+    <slot name="under" />
   </div>
 </template>
 
@@ -19,37 +29,27 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 
-const props = defineProps<{
-  stickyTriggerSelector: string
-}>()
-
-const app = ref<HTMLElement>()
-const toolbarCssClass = ref('toolbar')
+const app = ref<HTMLElement | undefined | null>()
+const toolbarContainer = ref<HTMLDivElement | undefined>()
+const stickied = ref(false)
 
 onMounted(() => {
-  app.value = document.getElementById('app') ?? undefined
-  app.value?.addEventListener('scroll', setToolbarCssClass)
+  app.value = document.getElementById('app')
+  app.value?.addEventListener('scroll', onScroll)
 })
 
 onUnmounted(() => {
-  app.value?.removeEventListener('scroll', setToolbarCssClass)
+  app.value?.removeEventListener('scroll', onScroll)
 })
 
 /**
- * Sets the toolbar CSS class.
- * Used to set its sticky status and work around Z index problems with PrimeVue components that appear behind the toolbar.
+ * Reacts to the content being scrolled.
+ *
+ * Used to dynamically set its z-index to work around problems with PrimeVue components that appear behind the toolbar.
  */
-function setToolbarCssClass() {
-  const toolbarElement = document.querySelector('.toolbar')
-  const toolbarHeight = toolbarElement?.clientHeight ?? 0
-
-  const elementUnderToolbar = document.querySelector(props.stickyTriggerSelector)
-  const elementUnderToolbarHeight = elementUnderToolbar?.clientHeight ?? 0
-  const elementUnderToolbarYPosition = elementUnderToolbar?.getBoundingClientRect()?.top ?? 0
-
-  const canDisplayElementUnderToolbar = elementUnderToolbarYPosition > toolbarHeight + elementUnderToolbarHeight
-
-  toolbarCssClass.value = canDisplayElementUnderToolbar ? 'toolbar' : 'toolbar toolbar-sticky'
+function onScroll() {
+  const toolbarRectangle = toolbarContainer.value!.getBoundingClientRect()
+  stickied.value = toolbarRectangle.y == 0
 }
 </script>
 
@@ -68,28 +68,36 @@ function setToolbarCssClass() {
 @import '../css/toolbar.css';
 
 .toolbar {
-  margin-top: 0.5rem;
-  position: unset;
+  backdrop-filter: blur(10px);
+  background-color: rgba(18, 18, 18, 0.85);
+  border-color: var(--primary-color6);
+  border-radius: 6px;
+  border-style: solid;
+  border-width: 1px;
+  padding: 0.5rem;
   width: 100%;
 }
 
-.toolbar-sticky {
+.toolbar-container {
+  margin-bottom: 0.5rem;
   position: sticky;
-  z-index: 1;
-  top: -1.05rem;
-  /* 0.5 otherwise there is a gap of 1 pixel */
+  top: 0;
 }
 
-.toolbar-gradient {
-  background-image: linear-gradient(to bottom, var(--surface-0), rgba(0, 0, 0, 0));
-  height: 1rem;
+.toolbar-container-stickied {
+  z-index: 1;
+}
+
+.toolbar-stickied {
+  border-top-style: none;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  z-index: 1;
 }
 
 .toolbar-line {
-  background-color: var(--surface-0);
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   font-size: 2rem;
-  min-height: 3.5rem;
 }
 </style>

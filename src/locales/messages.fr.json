@@ -324,6 +324,7 @@
     "itemWithModsAndContentAndMissingPrice": "Cet objet ou un des objets qu'il contient n'est vendu par aucun des marchands paramétrés.\nLe prix de l'équipement peut donc ne pas refléter la réalité.",
     "migrationError": "Erreur lors de la migration vers \"{version}\".",
     "newVersion": "La version {newVersion} est sortie.",
+    "noBuildsFound": "Aucun équipement correspond à votre filtre n'a été trouvé.",
     "noItemsFound": "Aucun objet n'a été trouvé pour votre recherche avec la configuration de marchands et d'objets actuelle.",
     "noMerchant": "Pas de marchand",
     "postUpdatePeriod": "Comme nous sommes dans une période d'après mise à jour de Tarkov, les objets et prix peuvent ne pas être à jour.\nIls sont en train d'être progressivement mis à jour par l'équipe de Tarkov.dev.",

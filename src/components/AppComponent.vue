@@ -1,118 +1,120 @@
 <template>
-  <div class="app-title">
-    <div>
-      <Tooltip :tooltip="$t('caption.approvedByPrapor')">
-        <img
-          :src="isSanta ? Images.santaPraporSmiling : Images.praporSmiling"
-          class="app-title-prapor"
-        >
-      </Tooltip>
-      <h1>
-        <div class="app-title-part1">
-          TOTOV
-        </div>
-        <div class="app-title-part2">
-          BUILDER
-        </div>
-      </h1>
-    </div>
-  </div>
-  <div class="app-content">
-    <router-view />
-  </div>
-  <div class="app-footer">
-    <div class="app-footer-line">
-      <div class="app-footer-element">
-        <font-awesome-icon
-          icon="envelope"
-          class="app-footer-element-icon"
-        />
-        <a
-          :href="'mailto:' + contactAddress"
-          class="link"
-        >{{ $t('caption.contact') }}</a>
-      </div>
-      <div class="app-footer-element">
-        <font-awesome-icon
-          :icon="['fab', 'discord']"
-          class="app-footer-element-icon"
-        />
-        <a
-          :href="discordUrl"
-          target="_blank"
-          class="link"
-        >{{ $t('caption.discord') }}</a>
-      </div>
-      <div class="app-footer-element">
-        <font-awesome-icon
-          icon="bug"
-          class="app-footer-element-icon"
-        />
-        <a
-          :href="bugReportUrl"
-          target="_blank"
-          class="link"
-        >{{ $t('caption.reportBug') }}</a>
-      </div>
-      <div class="app-footer-element">
-        <font-awesome-icon
-          icon="clipboard-list"
-          class="app-footer-element-icon"
-        />
-        <a
-          class="link"
-          @click="displayChangelog()"
-        >
-          {{ $t('caption.changelog') }}
-        </a>
-      </div>
-      <div class="app-footer-element">
-        <font-awesome-icon
-          :icon="['fab', 'github']"
-          class="app-footer-element-icon"
-        />
-        <a
-          :href="githubUrl"
-          target="_blank"
-          class="link"
-        >{{ $t('caption.github') }}</a>
+  <div class="app-container">
+    <div class="app-title">
+      <div>
+        <Tooltip :tooltip="$t('caption.approvedByPrapor')">
+          <img
+            :src="isSanta ? Images.santaPraporSmiling : Images.praporSmiling"
+            class="app-title-prapor"
+          >
+        </Tooltip>
+        <h1>
+          <div class="app-title-part1">
+            TOTOV
+          </div>
+          <div class="app-title-part2">
+            BUILDER
+          </div>
+        </h1>
       </div>
     </div>
-    <div class="app-footer-line">
-      <div class="app-api-disclaimer">
-        <span>
-          {{ $t('message.apiDisclaimer1') }}
+    <div class="app-content">
+      <router-view />
+    </div>
+    <div class="app-footer">
+      <div class="app-footer-line">
+        <div class="app-footer-element">
+          <font-awesome-icon
+            icon="envelope"
+            class="app-footer-element-icon"
+          />
           <a
-            href="https://tarkov.dev/"
+            :href="'mailto:' + contactAddress"
+            class="link"
+          >{{ $t('caption.contact') }}</a>
+        </div>
+        <div class="app-footer-element">
+          <font-awesome-icon
+            :icon="['fab', 'discord']"
+            class="app-footer-element-icon"
+          />
+          <a
+            :href="discordUrl"
             target="_blank"
             class="link"
-          >
-            {{ $t('message.apiDisclaimer2') }}
-          </a>.
-        </span>
-      </div>
-      <div class="app-api-disclaimer">
-        <span>
-          {{ $t('message.apiDisclaimer3') }}
+          >{{ $t('caption.discord') }}</a>
+        </div>
+        <div class="app-footer-element">
+          <font-awesome-icon
+            icon="bug"
+            class="app-footer-element-icon"
+          />
           <a
-            href="https://opencollective.com/tarkov-dev"
+            :href="bugReportUrl"
             target="_blank"
             class="link"
+          >{{ $t('caption.reportBug') }}</a>
+        </div>
+        <div class="app-footer-element">
+          <font-awesome-icon
+            icon="clipboard-list"
+            class="app-footer-element-icon"
+          />
+          <a
+            class="link"
+            @click="displayChangelog()"
           >
-            {{ $t('message.apiDisclaimer4') }}
-          </a>.
-        </span>
+            {{ $t('caption.changelog') }}
+          </a>
+        </div>
+        <div class="app-footer-element">
+          <font-awesome-icon
+            :icon="['fab', 'github']"
+            class="app-footer-element-icon"
+          />
+          <a
+            :href="githubUrl"
+            target="_blank"
+            class="link"
+          >{{ $t('caption.github') }}</a>
+        </div>
       </div>
-    </div>
-    <div class="app-footer-line">
-      <div class="app-api-disclaimer">
-        <span>{{ $t('message.battleStateDisclaimer1') }}</span>
-        <span>{{ $t('message.battleStateDisclaimer2') }}</span>
+      <div class="app-footer-line">
+        <div class="app-api-disclaimer">
+          <span>
+            {{ $t('message.apiDisclaimer1') }}
+            <a
+              href="https://tarkov.dev/"
+              target="_blank"
+              class="link"
+            >
+              {{ $t('message.apiDisclaimer2') }}
+            </a>.
+          </span>
+        </div>
+        <div class="app-api-disclaimer">
+          <span>
+            {{ $t('message.apiDisclaimer3') }}
+            <a
+              href="https://opencollective.com/tarkov-dev"
+              target="_blank"
+              class="link"
+            >
+              {{ $t('message.apiDisclaimer4') }}
+            </a>.
+          </span>
+        </div>
       </div>
-    </div>
-    <div class="app-footer-line">
-      <div class="app-api-disclaimer">
-        © {{ copyrightYear }} Kefff
+      <div class="app-footer-line">
+        <div class="app-api-disclaimer">
+          <span>{{ $t('message.battleStateDisclaimer1') }}</span>
+          <span>{{ $t('message.battleStateDisclaimer2') }}</span>
+        </div>
+      </div>
+      <div class="app-footer-line">
+        <div class="app-api-disclaimer">
+          © {{ copyrightYear }} Kefff
+        </div>
       </div>
     </div>
   </div>
@@ -267,33 +269,44 @@ function setLanguage() {
 
 <style>
 body {
-  background-color: var(--surface-0);
-  box-sizing: border-box;
-  color: var(--text-color);
+  background-color: var(--surface-transparent-0);
+  backdrop-filter: blur(2px);
+  /* Required for the #app to be able to use height:100% */
+  display: flex;
   font-size: 1rem;
-  height: 100vh;
+  height: 100%;
   margin: 0;
-  max-width: 137rem;
   overflow: hidden;
-  width: 100vw;
+  width: 100%;
 }
 
 h1 {
   font-size: 3rem;
   margin: 0;
-  letter-spacing: 2px;
   /* Required for Chrome, otherwise letters are overlapping */
-  line-height: 3rem;
+  letter-spacing: 2px;
   /* Required for Chrome and Firefox to have the same behaviour */
+  line-height: 3rem;
 }
 
 html {
-  align-items: center;
-  display: flex;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--surface-0);
+  background-image: url('../../assets/images/Background.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-sizing: border-box;
+  color: var(--text-color);
+  font-family: var(--font-main);
   font-size: 14px;
-  justify-content: center;
+  height: 100%;
   letter-spacing: 0.25px;
-  scrollbar-color: var(--primary-color) rgba(0, 0, 0, 0);
+  /* Required otherwise the right Sidebar breaks the layout while its open animation plays */
+  position: fixed;
+  scrollbar-color: var(--primary-color3) rgba(0, 0, 0, 0);
+  width: 100%;
 }
 
 html * {
@@ -301,14 +314,10 @@ html * {
 }
 
 #app {
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
   display: flex;
-  flex-direction: column;
-  font-family: var(--font-main);
-  height: 100%;
+  justify-content: center;
   overflow: auto;
-  padding: 1rem;
+  width: 100%;
 }
 
 .p-button {
@@ -318,6 +327,16 @@ html * {
 
 <style scoped>
 @import '../css/link.css';
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 137rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  width: 100%;
+}
 
 .app-api-disclaimer {
   align-items: center;
@@ -349,6 +368,8 @@ html * {
   display: flex;
   flex-grow: 2;
   justify-content: center;
+  padding-bottom: 3rem;
+  padding-top: 3rem;
   width: 100%;
 }
 
