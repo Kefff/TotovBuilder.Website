@@ -1,5 +1,6 @@
 import { Guid } from 'guid-typescript'
 import jsonUrl from 'json-url'
+import { TinyEmitter } from 'tiny-emitter'
 import InventorySlotTypes from '../data/inventory-slot-types.json'
 import { IBuild } from '../models/build/IBuild'
 import { IInventoryItem } from '../models/build/IInventoryItem'
@@ -15,6 +16,16 @@ import Services from './repository/Services'
  * Represents a service responsible for managing builds.
  */
 export class BuildService {
+  /**
+   * Build deleted event.
+   */
+  public static deletedEvent = 'buildDeleted'
+
+  /**
+   * Event emitter used to signal filter changes.
+   */
+  public emitter = new TinyEmitter()
+
   /**
    * Adds build.
    * @param build - Build to add.
@@ -83,8 +94,15 @@ export class BuildService {
    * @param id - Build ID.
    */
   public delete(id: string): void {
-    const storageKey = this.getKey(id)
-    localStorage.removeItem(storageKey)
+    const build = this.get(id)
+
+    if (build != null) {
+      const storageKey = this.getKey(id)
+      localStorage.removeItem(storageKey)
+
+      Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.buildDeleted', { name: build.name }))
+      this.emitter.emit(BuildService.deletedEvent)
+    }
   }
 
   /**

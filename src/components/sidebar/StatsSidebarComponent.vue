@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { IItem } from '../../models/item/IItem'
+import { StatsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
 import AmmunitionStats from '../stats/AmmunitionStatsComponent.vue'
@@ -59,7 +59,7 @@ import RangedWeaponModStats from '../stats/RangedWeaponModStatsComponent.vue'
 import RangedWeaponStats from '../stats/RangedWeaponStatsComponent.vue'
 import VestStats from '../stats/VestStatsComponent.vue'
 
-const props = defineProps<{ parameters: IItem }>()
+const props = defineProps<{ parameters: StatsSidebarParameters }>()
 
 const specializedComponent = computed(() => getSpecializedComponent(props.parameters.categoryId))
 

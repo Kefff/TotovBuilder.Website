@@ -12,6 +12,18 @@
             icon="exclamation-triangle"
           />
         </Tooltip>
+        <Tooltip
+          :tooltip="$t('caption.actions')"
+          :apply-hover-style="false"
+        >
+          <Button
+            class="p-button p-button-sm"
+            outlined
+            @click="displayActions()"
+          >
+            <font-awesome-icon icon="ellipsis-h" />
+          </Button>
+        </Tooltip>
       </div>
     </template>
     <template #content>
@@ -167,7 +179,7 @@
           :disabled="buildSummary.shoppingList.length === 0"
           class="shopping-list-button"
           outlined
-          @click="displayShoppingList(buildSummary.shoppingList)"
+          @click="displayShoppingList()"
         >
           <font-awesome-icon
             class="icon-before-text"
@@ -191,10 +203,10 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IItem } from '../models/item/IItem'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
+import { BuildService } from '../services/BuildService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
@@ -207,6 +219,9 @@ const props = defineProps<{
   buildSummary: IBuildSummary,
   showNotExported: boolean
 }>()
+
+const _buildService = Services.get(BuildService)
+const _globalSidebarService = Services.get(GlobalSidebarService)
 
 const itemsListElement = ref<HTMLDivElement>()
 const itemsListElementHasLeftScroll = ref(false)
@@ -239,15 +254,31 @@ watch(() => itemsListElement.value?.scrollWidth, () => {
   setItemsListElementHasScroll()
 })
 
+/**
+ * Displays the actions for the specified build.
+ */
+function displayActions() {
+  const build = _buildService.get(props.buildSummary.id)
+
+  if (build != null) {
+    _globalSidebarService.display({
+      displayedComponentType: 'BuildSidebar',
+      displayedComponentParameters: build,
+      position: 'right'
+    })
+  }
+}
 
 /**
  * Displays the shopping list for the specified build.
- * @param buildSummary - Summary of the build.
  */
-function displayShoppingList(shoppingList: IShoppingListItem[]) {
-  Services.get(GlobalSidebarService).display({
+function displayShoppingList() {
+  _globalSidebarService.display({
     displayedComponentType: 'ShoppingListSidebar',
-    displayedComponentParameters: shoppingList,
+    displayedComponentParameters: {
+      buildName: props.buildSummary.name,
+      shoppingList: props.buildSummary.shoppingList
+    },
     position: 'left'
   })
 }
@@ -257,7 +288,7 @@ function displayShoppingList(shoppingList: IShoppingListItem[]) {
  * @param item - Item.
  */
 function displayStats(item: IItem) {
-  Services.get(GlobalSidebarService).display({
+  _globalSidebarService.display({
     displayedComponentType: 'StatsSidebar',
     position: 'right',
     displayedComponentParameters: item
@@ -396,8 +427,10 @@ function setItemsListElementHasScroll() {
 }
 
 .build-card-title {
+  align-items: center;
   display: flex;
   font-size: 1.25rem;
+  gap: 0.5rem
 }
 
 .build-card-title > div {

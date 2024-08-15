@@ -1,5 +1,5 @@
 import { TinyEmitter } from 'tiny-emitter'
-import { GlobalSidebarComponentType, GlobalSidebarDisplayedComponentParametersType, IGlobalSidebarOptions } from '../models/utils/IGlobalSidebarOptions'
+import { GlobalSidebarComponent, GlobalSidebarDisplayedComponentParameters, IGlobalSidebarOptions } from '../models/utils/IGlobalSidebarOptions'
 
 /**
  * Represents a service responsible for managing a GlobalSidebarComponent.
@@ -23,7 +23,7 @@ export class GlobalSidebarService {
   /**
    * Actions to execute when a global sidebar is closed.
    */
-  private onCloseActions: { type: GlobalSidebarComponentType, action: (updatedParameters?: GlobalSidebarDisplayedComponentParametersType) => void | Promise<void> }[] = []
+  private onCloseActions: { type: GlobalSidebarComponent, action: (updatedParameters?: GlobalSidebarDisplayedComponentParameters) => void | Promise<void> }[] = []
 
   private displayedAmount = 0
 
@@ -31,7 +31,7 @@ export class GlobalSidebarService {
    * Closes a global sidebar.
    * @param displayedComponentType- Type of component displayed in the global sidebar to close.
    */
-  public close(displayedComponentType: GlobalSidebarComponentType) {
+  public close(displayedComponentType: GlobalSidebarComponent) {
     this.emitter.emit(GlobalSidebarService.closeGlobalSidebarEvent, displayedComponentType)
   }
 
@@ -53,7 +53,7 @@ export class GlobalSidebarService {
    * Executes the actions registered to be executed when a sidebar is closed.
    * @param displayedComponentType - Type of component displayed in the closed sidebar.
    */
-  public async executeOnCloseActions(displayedComponentType: GlobalSidebarComponentType, updatedParameters?: GlobalSidebarDisplayedComponentParametersType) {
+  public async executeOnCloseActions(displayedComponentType: GlobalSidebarComponent, updatedParameters?: GlobalSidebarDisplayedComponentParameters) {
     this.displayedAmount--
 
     for (const onCloseAction of this.onCloseActions) {
@@ -78,7 +78,7 @@ export class GlobalSidebarService {
    * @param displayedComponentType - Type of component displayed in the closed sidebar.
    * @param action - Action.
    */
-  public registerOnCloseAction(displayedComponentType: GlobalSidebarComponentType, action: (updatedParameters?: GlobalSidebarDisplayedComponentParametersType) => void | Promise<void>) {
+  public registerOnCloseAction(displayedComponentType: GlobalSidebarComponent, action: (updatedParameters?: GlobalSidebarDisplayedComponentParameters) => void | Promise<void>) {
     this.onCloseActions.push({ action, type: displayedComponentType })
   }
 }

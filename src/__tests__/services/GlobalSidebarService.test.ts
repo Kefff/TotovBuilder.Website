@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import { GlobalSidebarComponentType, IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
+import { GlobalSidebarComponent, IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 
 describe('GlobalSideBarService', () => {
   describe('close()', () => {
     it('should emit the close global sidebar event', () => {
       // Arrange
-      let globalSidebarToCloseType: GlobalSidebarComponentType | undefined = undefined
+      let globalSidebarToCloseType: GlobalSidebarComponent | undefined = undefined
       const service = new GlobalSidebarService()
 
-      service.emitter.once(GlobalSidebarService.closeGlobalSidebarEvent, (type: GlobalSidebarComponentType) => globalSidebarToCloseType = type)
+      service.emitter.once(GlobalSidebarService.closeGlobalSidebarEvent, (type: GlobalSidebarComponent) => globalSidebarToCloseType = type)
 
       // Act
       service.close('BuildsListSidebar')

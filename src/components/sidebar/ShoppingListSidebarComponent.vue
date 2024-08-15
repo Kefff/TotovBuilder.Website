@@ -1,19 +1,20 @@
 <template>
-  <div class="shopping-list-title">
-    <div class="sidebar-title">
-      <div class="sidebar-title-icon">
-        <font-awesome-icon icon="shopping-cart" />
-      </div>
+  <div class="sidebar-title">
+    <div class="sidebar-title-icon">
+      <font-awesome-icon icon="shopping-cart" />
+    </div>
+    <div class="shopping-list-title">
       <span>{{ $t('caption.shoppingList') }}</span>
+      <span>{{ parameters.buildName }}</span>
     </div>
   </div>
   <div class="sidebar-option">
     <div>
       <div class="shopping-list-merchants">
-        <ShoppingListMerchantsList :shopping-list="parameters" />
+        <ShoppingListMerchantsList :shopping-list="parameters.shoppingList" />
       </div>
       <div
-        v-for="(shoppingListItem, index) of parameters"
+        v-for="(shoppingListItem, index) of parameters.shoppingList"
         :key="index"
         class="shopping-list-item"
         :class="shoppingListItem.inventorySlotId != null ? 'shopping-list-item-of-inventory-slot' : ''"
@@ -42,12 +43,12 @@
 
 
 <script setup lang="ts">
-import { IShoppingListItem } from '../../models/build/IShoppingListItem'
+import { ShoppingListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import PriceDetailItem from '../PriceDetailItemComponent.vue'
 import ShoppingListMerchantsList from '../ShoppingListMerchantsListComponent.vue'
 
-defineProps<{ parameters: IShoppingListItem[] }>()
+defineProps<{ parameters: ShoppingListSidebarParameters }>()
 </script>
 
 
@@ -90,10 +91,7 @@ defineProps<{ parameters: IShoppingListItem[] }>()
 }
 
 .shopping-list-title {
-  align-items: center;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 1rem 2rem;
+  flex-direction: column;
 }
 </style>

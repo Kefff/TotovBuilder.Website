@@ -59,6 +59,8 @@ import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import Services from '../../services/repository/Services'
 
+defineProps<{ parameters: undefined }>()
+
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _notificationService = Services.get(NotificationService)
 

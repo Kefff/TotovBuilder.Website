@@ -110,7 +110,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
-import { GlobalSidebarDisplayedComponentParametersType } from '../models/utils/IGlobalSidebarOptions'
+import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlobalSidebarOptions'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
@@ -225,7 +225,7 @@ async function filterBuildSummaries(buildSummariesToFilter: IBuildSummary[]): Pr
  * Applies the filter and sort, and saves the sort.
  * @param updatedParameters - Filter and sort data updated by the side bar.
  */
-async function onFilterAndSortSidebarClose(updatedParameters?: GlobalSidebarDisplayedComponentParametersType) {
+async function onFilterAndSortSidebarClose(updatedParameters?: GlobalSidebarDisplayedComponentParameters) {
   const updatedFilterAndSortingData = updatedParameters as BuildFilterAndSortingData
   const hasSortChange =
     updatedFilterAndSortingData.property !== modelFilterAndSortingData.value.property

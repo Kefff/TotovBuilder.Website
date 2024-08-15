@@ -136,6 +136,7 @@ import BuildsImport from './builds-import/BuildsImportComponent.vue'
 
 const router = useRouter()
 
+const _buildService = Services.get(BuildService)
 const _buildPropertiesService = Services.get(BuildPropertiesService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _itemService = Services.get(ItemService)
@@ -155,6 +156,7 @@ const isImporting = ref(false)
 const isLoading = ref(true)
 
 onMounted(() => {
+  _buildService.emitter.on(BuildService.deletedEvent, onItemServicesInitialized)
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
@@ -167,6 +169,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  _buildService.emitter.off(BuildService.deletedEvent, onItemServicesInitialized)
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
 
@@ -220,7 +223,7 @@ async function getBuilds() {
   const execute = new Promise<void>(resolve => {
     setTimeout(async () => { // Did not find another solution to make the loading animation appear when opening the builds list from the welcome page (nextTick does not work)
       const summaries: IBuildSummary[] = []
-      _builds = Services.get(BuildService).getAll()
+      _builds = _buildService.getAll()
 
       for (const build of _builds) {
         const summary = await _buildPropertiesService.getSummary(build)

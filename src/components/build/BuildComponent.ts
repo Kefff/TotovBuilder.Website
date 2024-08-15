@@ -255,7 +255,10 @@ export default defineComponent({
     function displayShoppingList() {
       Services.get(GlobalSidebarService).display({
         displayedComponentType: 'ShoppingListSidebar',
-        displayedComponentParameters: summary.value.shoppingList,
+        displayedComponentParameters: {
+          buildName: summary.value.name,
+          shoppingList: summary.value.shoppingList
+        },
         position: 'left'
       })
     }

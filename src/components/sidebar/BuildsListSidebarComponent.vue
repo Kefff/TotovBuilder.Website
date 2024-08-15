@@ -85,6 +85,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref } from 'vue'
 import BuildFilterAndSortingData from '../../models/utils/BuildFilterAndSortingData'
+import { BuildsListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { SortingOrder } from '../../models/utils/SortingOrder'
 import vueI18n from '../../plugins/vueI18n'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
@@ -93,7 +94,7 @@ import { BuildSummarySortingFunctions } from '../../services/sorting/functions/B
 import { SortingService } from '../../services/sorting/SortingService'
 import StringUtils from '../../utils/StringUtils'
 
-const modelFilterSortingData = defineModel<BuildFilterAndSortingData>('parameters', { required: true })
+const modelFilterSortingData = defineModel<BuildsListSidebarParameters>('parameters', { required: true })
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _sortingService = Services.get(SortingService)

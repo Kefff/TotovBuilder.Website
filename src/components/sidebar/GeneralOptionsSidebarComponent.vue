@@ -107,12 +107,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { IGeneralOption } from '../../models/utils/IGeneralOption'
-import { IGeneralOptionsGroup } from '../../models/utils/IGeneralOptionsGroup'
+import { GeneralOptionsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { GeneralOptionsService } from '../../services/GeneralOptionsService'
 import Services from '../../services/repository/Services'
 import LanguageSelector from '../LanguageSelectorComponent.vue'
 
-const props = defineProps<{ parameters: IGeneralOptionsGroup[] | undefined }>()
+const props = defineProps<{ parameters?: GeneralOptionsSidebarParameters }>()
 
 const allowCookies = ref(true)
 

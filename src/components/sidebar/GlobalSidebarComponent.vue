@@ -29,9 +29,10 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { GlobalSidebarComponentType, GlobalSidebarPosition, IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
+import { GlobalSidebarComponent, GlobalSidebarPosition, IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
+import BuildSidebarComponent from './BuildSidebarComponent.vue'
 import BuildsListSidebar from './BuildsListSidebarComponent.vue'
 import ChangelogSidebar from './ChangelogSidebarComponent.vue'
 import GeneralOptionsSidebar from './GeneralOptionsSidebarComponent.vue'
@@ -53,6 +54,8 @@ const displayedComponent = computed(() => {
   switch (options.value?.displayedComponentType) {
     case 'BuildsListSidebar':
       return BuildsListSidebar
+    case 'BuildSidebar':
+      return BuildSidebarComponent
     case 'ChangelogSidebar':
       return ChangelogSidebar
     case 'GeneralOptionsSidebar':
@@ -96,7 +99,7 @@ onUnmounted(() => {
  * Executes the close action if defined and closes the global sidebar.
  * @param displayedComponentType- Type of component displayed in the global sidebar to close.
  */
-function onGlobalSidebarClose(displayedComponentType: GlobalSidebarComponentType) {
+function onGlobalSidebarClose(displayedComponentType: GlobalSidebarComponent) {
   if (displayedComponentType === options.value.displayedComponentType) {
     Services.get(GlobalSidebarService).executeOnCloseActions(displayedComponentType, options.value.displayedComponentParameters)
     visibleInternal.value = false

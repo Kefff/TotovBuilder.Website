@@ -2,6 +2,7 @@
   "caption": {
     "acceptedAmmunition": "Accepted ammunition",
     "accuracy": "Accuracy",
+    "actions": "Actions",
     "addFilter": "Add filter",
     "allow": "Allow",
     "allowCookies": "Allow cookies",
@@ -365,7 +366,7 @@
     "changelogFetched": "{date} Changelog fetched with success.",
     "changelogLoadingError": "Something went wrong while loading the changelog.\nWait a bit and before trying to open it again.",
     "changelogNotFetched": "No changelog could be fetched.",
-    "confirmDeleteBuild": "Delete build \"{name}\"?",
+    "confirmDeleteBuild": "Delete build \"{name}\" ?",
     "cookiesExplanation": "Totov Builder uses cookies to anonymously detect errors that may occur during your visit.\nAccepting cookies is not necessary but helps to improve the website.",
     "currencyNotFound": "Currency \"{currency}\" not found",
     "emptyBuild1": "This build is empty.",
