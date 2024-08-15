@@ -146,7 +146,8 @@ import { WebsiteConfigurationService } from '../services/WebsiteConfigurationSer
 import BuildsImport from './builds-import/BuildsImportComponent.vue'
 import Loading from './LoadingComponent.vue'
 
-const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+const _globalSidebarService = Services.get(GlobalSidebarService)
+const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
 const hasBuilds = ref(false)
 const hasImported = ref(false)
@@ -154,8 +155,8 @@ const isImporting = ref(false)
 const isLoading = ref(true)
 
 onMounted(() => {
-  if (websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
-    websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
+  if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
+    _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
   } else {
     onWebsiteConfigurationServiceInitialized()
   }
@@ -178,7 +179,7 @@ function displayBuilds() {
  * Displays the general options.
  */
 function displayGeneralOptions() {
-  Services.get(GlobalSidebarService).display({
+  _globalSidebarService.display({
     displayedComponentType: 'GeneralOptionsSidebar',
     position: 'right'
   })
@@ -188,7 +189,7 @@ function displayGeneralOptions() {
  * Displays the merchant items options.
  */
 function displayMerchantItemsOptions() {
-  Services.get(GlobalSidebarService).display({
+  _globalSidebarService.display({
     displayedComponentType: 'MerchantItemsOptionsSidebar',
     position: 'right'
   })

@@ -125,19 +125,8 @@ const props = withDefaults(
     showWeight: true
   })
 
-const globalFilterService = Services.get(GlobalFilterService)
-const inventoryItemService = Services.get(InventoryItemService)
-
-const hasMissingPrice = computed(() =>
-  selectedItemPrice.value.missingPrice
-  && !props.inventoryItem.ignorePrice
-  && selectedItemPrice.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored)
-const showSelectedItemMissingPrice = computed(() =>
-  hasMissingPrice.value
-  && !props.includeModsAndContent
-  && selectedItemPrice.value.unitPrice.valueInMainCurrency === 0) // We do not show the missing price icon on items that contain an item with a missing price
-const showUnitPrice = computed(() => selectedItemPrice.value.price.valueInMainCurrency !== selectedItemPrice.value.unitPrice.valueInMainCurrency)
-const showUnitWeight = computed(() => selectedItemWeight.value.unitWeight !== selectedItemWeight.value.weight)
+const _globalFilterService = Services.get(GlobalFilterService)
+const _inventoryItemService = Services.get(InventoryItemService)
 
 const selectedItemPrice = ref<IInventoryItemPrice>({
   missingPrice: false,
@@ -176,15 +165,26 @@ const selectedItemInventoryPrice = computed<IInventoryPrice>(() => ({
   priceInMainCurrency: selectedItemPrice.value.priceWithContentInMainCurrency
 }))
 
+const hasMissingPrice = computed(() =>
+  selectedItemPrice.value.missingPrice
+  && !props.inventoryItem.ignorePrice
+  && selectedItemPrice.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored)
+const showSelectedItemMissingPrice = computed(() =>
+  hasMissingPrice.value
+  && !props.includeModsAndContent
+  && selectedItemPrice.value.unitPrice.valueInMainCurrency === 0) // We do not show the missing price icon on items that contain an item with a missing price
+const showUnitPrice = computed(() => selectedItemPrice.value.price.valueInMainCurrency !== selectedItemPrice.value.unitPrice.valueInMainCurrency)
+const showUnitWeight = computed(() => selectedItemWeight.value.unitWeight !== selectedItemWeight.value.weight)
+
 onMounted(() => {
-  globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
   setPrice()
   setWeight()
 })
 
 onUnmounted(() => {
-  globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
 
 watch(() => [
@@ -213,14 +213,14 @@ function onMerchantFilterChanged() {
  * Sets the price of the inventory item.
  */
 async function setPrice() {
-  selectedItemPrice.value = await inventoryItemService.getPrice(props.inventoryItem, props.inventoryItemInSameSlotInPreset, props.canBeLooted)
+  selectedItemPrice.value = await _inventoryItemService.getPrice(props.inventoryItem, props.inventoryItemInSameSlotInPreset, props.canBeLooted)
 }
 
 /**
  * Sets the weight of the inventory items.
  */
 async function setWeight() {
-  selectedItemWeight.value = await inventoryItemService.getWeight(props.inventoryItem)
+  selectedItemWeight.value = await _inventoryItemService.getWeight(props.inventoryItem)
 }
 </script>
 

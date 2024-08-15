@@ -121,10 +121,6 @@ import BuildCard from './BuildCardComponent.vue'
 import Loading from './LoadingComponent.vue'
 import Toolbar from './ToolbarComponent.vue'
 
-const buildPropertiesService = Services.get(BuildPropertiesService)
-const globalSidebarService = Services.get(GlobalSidebarService)
-const sortingService = Services.get(SortingService)
-
 const modelSelectedBuildIds = defineModel<string[]>('selectedBuildIds', { required: false, default: [] })
 const modelFilterAndSortingData = defineModel<BuildFilterAndSortingData>('filterAndSortingData', { required: false, default: new BuildFilterAndSortingData() })
 
@@ -137,6 +133,10 @@ const props = withDefaults(
   {
     isLoading: false
   })
+
+const _buildPropertiesService = Services.get(BuildPropertiesService)
+const _globalSidebarService = Services.get(GlobalSidebarService)
+const _sortingService = Services.get(SortingService)
 
 const buildSummariesInternal = ref<IBuildSummary[]>([])
 
@@ -204,7 +204,7 @@ async function filterBuildSummaries(buildSummariesToFilter: IBuildSummary[]): Pr
 
   for (const buildSummaryToFilter of buildSummariesToFilter) {
     promises.push(new Promise(resolve => {
-      const matchesFilter = buildPropertiesService.checkMatchesFilter(buildSummaryToFilter, modelFilterAndSortingData.value.filter)
+      const matchesFilter = _buildPropertiesService.checkMatchesFilter(buildSummaryToFilter, modelFilterAndSortingData.value.filter)
 
       if (matchesFilter) {
         filteredBuildSummaries.push(buildSummaryToFilter)
@@ -257,7 +257,7 @@ function onKeyDown(event: KeyboardEvent) {
     && (event.ctrlKey
       || event.metaKey)) {
 
-    if (!globalSidebarService.isDisplayed()) {
+    if (!_globalSidebarService.isDisplayed()) {
       event.preventDefault() // Prevents the browser save action to be triggered
       showFilterAndSortSidebar()
     }
@@ -278,7 +278,7 @@ function removeFilter() {
  * Opens the filter and sort sidebar.
  */
 function showFilterAndSortSidebar() {
-  globalSidebarService.display({
+  _globalSidebarService.display({
     displayedComponentType: 'BuildsListSidebar',
     displayedComponentParameters: { ...modelFilterAndSortingData.value },
     position: 'left',
@@ -291,7 +291,7 @@ function showFilterAndSortSidebar() {
  * @param buildSummariesToSort - Build summaries to sort.
  */
 async function sortBuildSummaries(buildSummariesToSort: IBuildSummary[]): Promise<IBuildSummary[]> {
-  buildSummariesToSort = await sortingService.sort(buildSummariesToSort, modelFilterAndSortingData.value)
+  buildSummariesToSort = await _sortingService.sort(buildSummariesToSort, modelFilterAndSortingData.value)
 
   return buildSummariesToSort
 }

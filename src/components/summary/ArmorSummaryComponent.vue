@@ -78,13 +78,13 @@ const props = withDefaults(
     wearableModifiersOverride: undefined
   })
 
-const itemPropertiesService = Services.get(ItemPropertiesService)
+const _itemPropertiesService = Services.get(ItemPropertiesService)
 
 const armor = computed(() => props.item as IArmor)
 const armorClass = computed(() => props.armorModifiersOverride?.armorClass ?? armor.value.presetArmorModifiers?.armorClass ?? armor.value.armorClass)
 const boldCssClass = computed(() => props.includeModsAndContent ? 'armor-summary-bold' : '')
 const durability = computed(() => props.armorModifiersOverride?.durability ?? armor.value.presetArmorModifiers?.durability ?? armor.value.durability)
-const isHeadwear = computed(() => itemPropertiesService.isHeadwear(props.item))
+const isHeadwear = computed(() => _itemPropertiesService.isHeadwear(props.item))
 const tooltipSuffix = computed(() => {
   if (!props.includeModsAndContent) {
     return ''

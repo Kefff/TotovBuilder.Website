@@ -49,9 +49,9 @@ import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import Services from '../services/repository/Services'
 import MerchantIcon from './MerchantIconComponent.vue'
 
-const buildPropertiesService = Services.get(BuildPropertiesService)
-
 const props = defineProps<{ shoppingList: IShoppingListItem[] }>()
+
+const _buildPropertiesService = Services.get(BuildPropertiesService)
 
 const merchants = ref<IShoppingListMerchant[]>([])
 const merchantsListElement = ref<HTMLDivElement>()
@@ -82,7 +82,7 @@ watch(() => props.shoppingList, () => setRequiredMerchants())
  * Sets the required merchants from the shopping list.
  */
 function setRequiredMerchants() {
-  merchants.value = buildPropertiesService.getShoppingListMerchants(props.shoppingList)
+  merchants.value = _buildPropertiesService.getShoppingListMerchants(props.shoppingList)
 }
 
 /**

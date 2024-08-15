@@ -154,7 +154,7 @@ const props = withDefaults(
     showWeight: true
   })
 
-const inventoryItemService = Services.get(InventoryItemService)
+const _inventoryItemService = Services.get(InventoryItemService)
 
 const selectedItemArmorModifiers = ref<IArmorModifiers>()
 const selectedItemRangedWeaponModifiers = ref<IRangedWeaponModifiers>()
@@ -237,7 +237,7 @@ function getSpecializedComponent(itemCategoryId?: string) {
  * We display the base stats of presets because the full stats are displayed in the inventory slot.
  */
 async function setArmorModifiers() {
-  selectedItemArmorModifiers.value = await inventoryItemService.getArmorModifiers(props.inventoryItem)
+  selectedItemArmorModifiers.value = await _inventoryItemService.getArmorModifiers(props.inventoryItem)
 }
 
 /**
@@ -245,8 +245,8 @@ async function setArmorModifiers() {
  * We display the base stats of presets because the full stats are displayed in the inventory slot.
  */
 async function setRangedWeaponModifiers() {
-  const ergonomics = await inventoryItemService.getErgonomics(props.inventoryItem)
-  const recoil = await inventoryItemService.getRecoil(props.inventoryItem)
+  const ergonomics = await _inventoryItemService.getErgonomics(props.inventoryItem)
+  const recoil = await _inventoryItemService.getRecoil(props.inventoryItem)
 
   selectedItemRangedWeaponModifiers.value = {
     ergonomics: ergonomics.ergonomicsWithMods,
@@ -260,7 +260,7 @@ async function setRangedWeaponModifiers() {
  * We display the base stats of presets because the full stats are displayed in the inventory slot.
  */
 async function setWearableModifiers() {
-  const wearableModifiers = await inventoryItemService.getWearableModifiers(props.inventoryItem)
+  const wearableModifiers = await _inventoryItemService.getWearableModifiers(props.inventoryItem)
 
   selectedItemWearableModifiers.value = {
     ergonomicsModifierPercentage: wearableModifiers.ergonomicsModifierPercentage,

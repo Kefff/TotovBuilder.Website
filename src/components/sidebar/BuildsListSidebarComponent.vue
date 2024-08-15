@@ -95,20 +95,11 @@ import StringUtils from '../../utils/StringUtils'
 
 const modelFilterSortingData = defineModel<BuildFilterAndSortingData>('parameters', { required: true })
 
-const globalSidebarService = Services.get(GlobalSidebarService)
-const sortingService = Services.get(SortingService)
+const _globalSidebarService = Services.get(GlobalSidebarService)
+const _sortingService = Services.get(SortingService)
 
 const buildsListSidebarFilterInput = ref()
 const sortableProperties = ref<string[]>([])
-
-const sortIcon = computed(() => modelFilterSortingData.value.order === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
-
-onMounted(() => {
-  sortableProperties.value = getSortableProperties()
-
-  // Focus the filter input to be able to search.
-  nextTick(() => buildsListSidebarFilterInput.value.$el.select()) // nextTick required for the focus to work
-})
 
 const filter = computed({
   get: () => modelFilterSortingData.value.filter,
@@ -119,19 +110,25 @@ const filter = computed({
     }
   }
 })
-
 const sortField = computed({
   get: () => modelFilterSortingData.value.property,
   set: (value: string) => {
-    modelFilterSortingData.value = sortingService.setSortingProperty(modelFilterSortingData.value, BuildSummarySortingFunctions, value, sortOrder.value) as BuildFilterAndSortingData
+    modelFilterSortingData.value = _sortingService.setSortingProperty(modelFilterSortingData.value, BuildSummarySortingFunctions, value, sortOrder.value) as BuildFilterAndSortingData
   }
 })
-
+const sortIcon = computed(() => modelFilterSortingData.value.order === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
 const sortOrder = computed({
   get: () => modelFilterSortingData.value.order,
   set: (value: SortingOrder) => {
-    modelFilterSortingData.value = sortingService.setSortingProperty(modelFilterSortingData.value, BuildSummarySortingFunctions, modelFilterSortingData.value.property, value) as BuildFilterAndSortingData
+    modelFilterSortingData.value = _sortingService.setSortingProperty(modelFilterSortingData.value, BuildSummarySortingFunctions, modelFilterSortingData.value.property, value) as BuildFilterAndSortingData
   }
+})
+
+onMounted(() => {
+  sortableProperties.value = getSortableProperties()
+
+  // Focus the filter input to be able to search.
+  nextTick(() => buildsListSidebarFilterInput.value.$el.select()) // nextTick required for the focus to work
 })
 
 /**
@@ -153,7 +150,7 @@ function getSortOrderCaption(sortOrder: SortingOrder): string {
  */
 function onFilterKeyDown(event: KeyboardEvent) {
   if (event.key === 'Enter') {
-    globalSidebarService.close('BuildsListSidebar')
+    _globalSidebarService.close('BuildsListSidebar')
   }
 }
 
@@ -179,7 +176,7 @@ function getSortableProperties(): string[] {
  */
 function reset() {
   modelFilterSortingData.value = new BuildFilterAndSortingData()
-  globalSidebarService.close('BuildsListSidebar')
+  _globalSidebarService.close('BuildsListSidebar')
 }
 </script>
 

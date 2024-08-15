@@ -36,23 +36,23 @@ import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { NotificationService } from '../services/NotificationService'
 import Services from '../services/repository/Services'
 
-const globalSidebarService = Services.get(GlobalSidebarService)
-const notificationService = Services.get(NotificationService)
+const _globalSidebarService = Services.get(GlobalSidebarService)
+const _notificationService = Services.get(NotificationService)
 
 const notifications = ref<INotification[]>([])
-const newNotificationCount = ref(notificationService.newNotificationCount)
+const newNotificationCount = ref(_notificationService.newNotificationCount)
 
 onMounted(() => {
-  notificationService.emitter.on(notificationService.addedEventName, onNotificationCountChanged)
-  notificationService.emitter.on(notificationService.clearedEventName, onNotificationCountChanged)
+  _notificationService.emitter.on(_notificationService.addedEventName, onNotificationCountChanged)
+  _notificationService.emitter.on(_notificationService.clearedEventName, onNotificationCountChanged)
 
-  notifications.value = notificationService.getNotifications()
-  newNotificationCount.value = notificationService.newNotificationCount
+  notifications.value = _notificationService.getNotifications()
+  newNotificationCount.value = _notificationService.newNotificationCount
 })
 
 onUnmounted(() => {
-  notificationService.emitter.off(notificationService.addedEventName, onNotificationCountChanged)
-  notificationService.emitter.off(notificationService.clearedEventName, onNotificationCountChanged)
+  _notificationService.emitter.off(_notificationService.addedEventName, onNotificationCountChanged)
+  _notificationService.emitter.off(_notificationService.clearedEventName, onNotificationCountChanged)
 })
 
 /**
@@ -66,9 +66,9 @@ function onClick(event?: MouseEvent) {
   // the method is called one time for the badge and another time for the button
   event?.stopPropagation()
 
-  globalSidebarService.display({ displayedComponentType: 'NotificationsSidebar', position: 'right' })
-  notificationService.resetNewNotificationCount()
-  newNotificationCount.value = notificationService.newNotificationCount
+  _globalSidebarService.display({ displayedComponentType: 'NotificationsSidebar', position: 'right' })
+  _notificationService.resetNewNotificationCount()
+  newNotificationCount.value = _notificationService.newNotificationCount
 }
 
 /**
@@ -77,8 +77,8 @@ function onClick(event?: MouseEvent) {
  * Updates the new notifications count.
  */
 function onNotificationCountChanged() {
-  notifications.value = notificationService.getNotifications()
-  newNotificationCount.value = notificationService.newNotificationCount
+  notifications.value = _notificationService.getNotifications()
+  newNotificationCount.value = _notificationService.newNotificationCount
 }
 </script>
 

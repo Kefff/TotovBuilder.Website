@@ -1,11 +1,11 @@
 <template>
   <div class="build">
     <div class="build-title">
-      <div v-show="!editing">
+      <div v-show="!isEditing">
         {{ build.name }}
       </div>
       <InputTextField
-        v-show="!isLoading && editing"
+        v-show="!isLoading && isEditing"
         v-model:value="build.name"
         :caption="$t('caption.name')"
         caption-mode="placeholder"
@@ -31,14 +31,14 @@
           >
             <Button
               class="p-button-text p-button-sm button-discreet"
-              :disabled="editing"
+              :disabled="isEditing"
               @click="goToBuilds()"
             >
               <font-awesome-icon icon="arrow-left" />
             </Button>
           </Tooltip>
           <Button
-            v-show="!editing"
+            v-show="!isEditing"
             class="toolbar-button"
             :disabled="isLoading"
             @click="startEdit()"
@@ -50,7 +50,7 @@
             <span>{{ $t('caption.edit') }}</span>
           </Button>
           <Button
-            v-show="editing"
+            v-show="isEditing"
             class="p-button-success toolbar-button"
             :disabled="invalid"
             @click="save()"
@@ -92,7 +92,7 @@
           >
             <Button
               class="p-button-text p-button-sm button-discreet"
-              :disabled="isLoading || editing"
+              :disabled="isLoading || isEditing"
               @click="exportBuild()"
             >
               <font-awesome-icon icon="file-export" />
@@ -253,7 +253,7 @@
             </Tooltip>
             <NotificationButton />
             <Button
-              v-show="editing"
+              v-show="isEditing"
               class="p-button-danger toolbar-button"
               @click="cancelEdit()"
             >
@@ -264,7 +264,7 @@
               <span>{{ $t('caption.cancel') }}</span>
             </Button>
             <Button
-              v-show="!editing"
+              v-show="!isEditing"
               class="p-button-danger toolbar-button"
               :disabled="isLoading"
               @click="startDelete()"
@@ -288,7 +288,7 @@
       <Loading />
     </div>
     <div
-      v-if="!isLoading && !editing && isEmpty"
+      v-if="!isLoading && !isEditing && isEmpty"
       class="build-empty-message"
     >
       <div class="build-empty-message-text">
@@ -312,7 +312,7 @@
       </div>
     </div>
     <div
-      v-else-if="!isLoading && !editing"
+      v-else-if="!isLoading"
       class="build-inventory-slots"
     >
       <InventorySlot

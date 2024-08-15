@@ -83,23 +83,10 @@ export default defineComponent({
   },
   emits: ['update:inventory-item'],
   setup: (props, { emit }) => {
-    const compatibilityService = Services.get(CompatibilityService)
-    const itemPropertiesService = Services.get(ItemPropertiesService)
-    const itemService = Services.get(ItemService)
-    const presetService = Services.get(PresetService)
-
-    const editing = inject<Ref<boolean>>('editing')
-
-    const canIgnorePrice = computed(() => presetModSlotContainingItem.value?.item?.itemId !== item.value?.id)
-    const contentCount = computed(() => inventoryItemInternal.value?.content.length ?? 0)
-    const dropdownPanelHeight = computed(() => Math.min(options.value.length === 0 ? 1 : options.value.length, 5) * 4 + 'rem') // Shows 5 items or less
-    const inventoryItemInternal = computed<IInventoryItem | undefined>({
-      get: () => props.inventoryItem,
-      set: (value: IInventoryItem | undefined) => emit('update:inventory-item', value)
-    })
-    const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.value?.maxStackableAmount ?? 1)
-    const modsCount = computed(() => inventoryItemInternal.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
-    const optionHeight = computed(() => Number.parseInt(window.getComputedStyle(document.documentElement).fontSize.replace('px', '')) * 4)
+    const _compatibilityService = Services.get(CompatibilityService)
+    const _itemPropertiesService = Services.get(ItemPropertiesService)
+    const _itemService = Services.get(ItemService)
+    const _presetService = Services.get(PresetService)
 
     const baseItem = ref<IInventoryItem | undefined>()
     const includeModsAndContentInSummary = computed(() =>
@@ -108,6 +95,7 @@ export default defineComponent({
         && !props.isBaseItem)
       || (itemIsContainer.value
         && props.isMainInventorySlotItem))
+    const isEditing = inject<Ref<boolean>>('isEditing')
     const item = ref<IItem | undefined>()
     const itemChanging = ref(false)
     const itemIsContainer = ref(false)
@@ -123,6 +111,17 @@ export default defineComponent({
     const showBaseItemPrice = ref(false)
     const showPrice = ref(true)
     const showWeight = ref(true)
+
+    const canIgnorePrice = computed(() => presetModSlotContainingItem.value?.item?.itemId !== item.value?.id)
+    const contentCount = computed(() => inventoryItemInternal.value?.content.length ?? 0)
+    const dropdownPanelHeight = computed(() => Math.min(options.value.length === 0 ? 1 : options.value.length, 5) * 4 + 'rem') // Shows 5 items or less
+    const inventoryItemInternal = computed<IInventoryItem | undefined>({
+      get: () => props.inventoryItem,
+      set: (value: IInventoryItem | undefined) => emit('update:inventory-item', value)
+    })
+    const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.value?.maxStackableAmount ?? 1)
+    const modsCount = computed(() => inventoryItemInternal.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
+    const optionHeight = computed(() => Number.parseInt(window.getComputedStyle(document.documentElement).fontSize.replace('px', '')) * 4)
 
     watch(
       () => props.acceptedItems,
@@ -156,9 +155,9 @@ export default defineComponent({
         return
       }
 
-      item.value = await itemService.getItem(props.inventoryItem.itemId)
+      item.value = await _itemService.getItem(props.inventoryItem.itemId)
       quantity.value = props.inventoryItem.quantity
-      presetModSlotContainingItem.value = presetService.getPresetModSlotContainingItem(item.value.id, props.path)
+      presetModSlotContainingItem.value = _presetService.getPresetModSlotContainingItem(item.value.id, props.path)
       setBaseItem(item.value)
     }
 
@@ -251,12 +250,12 @@ export default defineComponent({
       }
 
       itemChanging.value = true
-      presetModSlotContainingItem.value = presetService.getPresetModSlotContainingItem(item.value.id, props.path)
+      presetModSlotContainingItem.value = _presetService.getPresetModSlotContainingItem(item.value.id, props.path)
 
-      if (itemPropertiesService.isModdable(item.value) && PathUtils.checkIsModSlotPath(props.path)) {
+      if (_itemPropertiesService.isModdable(item.value) && PathUtils.checkIsModSlotPath(props.path)) {
         // Checking the compatibility if the selected item is a mod and we are in mod slot
         const path = props.path.slice(0, props.path.lastIndexOf('/' + PathUtils.itemPrefix))
-        const compatibilityResult = await compatibilityService.checkCompatibility(CompatibilityRequestType.mod, item.value.id, path)
+        const compatibilityResult = await _compatibilityService.checkCompatibility(CompatibilityRequestType.mod, item.value.id, path)
 
         updateInventoryItem(item.value, compatibilityResult)
       } else {
@@ -337,12 +336,12 @@ export default defineComponent({
      * @param item - Item from which we search the base item.
      */
     function setBaseItem(item: IItem) {
-      if (itemPropertiesService.isModdable(item) && !props.isBaseItem) {
+      if (_itemPropertiesService.isModdable(item) && !props.isBaseItem) {
         const moddable = item as IModdable
         let baseItemId = moddable.defaultPresetId == null ? moddable.baseItemId : moddable.id
 
         if (baseItemId == null
-          && itemPropertiesService.isHeadwear(moddable)
+          && _itemPropertiesService.isHeadwear(moddable)
           && moddable.modSlots.length > 0) {
           // Special case for moddable helmets that for the most part do not have presets like weapons
           baseItemId = moddable.id
@@ -399,7 +398,7 @@ export default defineComponent({
 
         for (const acceptedItem of props.acceptedItems) {
           promises.push(new Promise(resolve => {
-            const matchesFilter = itemPropertiesService.checkMatchesFilter(acceptedItem, optionsFilter.value)
+            const matchesFilter = _itemPropertiesService.checkMatchesFilter(acceptedItem, optionsFilter.value)
 
             if (matchesFilter) {
               filteredOptions.push(acceptedItem)
@@ -438,9 +437,9 @@ export default defineComponent({
     function setSelectedTab() {
       if (item.value?.id != null) {
         // When an item is not found, but has mods or content, we consider it is moddable / a container in order to be able to display its possible child items
-        itemIsModdable.value = itemPropertiesService.canBeModded(item.value)
+        itemIsModdable.value = _itemPropertiesService.canBeModded(item.value)
           || (item.value.categoryId === 'notFound' && (props.inventoryItem?.modSlots.length ?? 0) > 0)
-        itemIsContainer.value = itemPropertiesService.canContain(item.value)
+        itemIsContainer.value = _itemPropertiesService.canContain(item.value)
           || (item.value.categoryId === 'notFound' && (props.inventoryItem?.content.length ?? 0) > 0)
 
         if (selectedTab.value === SelectableTab.hidden) {
@@ -473,12 +472,12 @@ export default defineComponent({
 
         // Keeping the old item content if the new item is a container
         const newContent: IInventoryItem[] = []
-        const newItemIsContainer = itemPropertiesService.canContain(newItem)
+        const newItemIsContainer = _itemPropertiesService.canContain(newItem)
 
         if (newItemIsContainer
           && inventoryItemInternal.value != null
           && inventoryItemInternal.value.content.length > 0) {
-          const newItemIsMagazine = itemPropertiesService.isMagazine(newItem)
+          const newItemIsMagazine = _itemPropertiesService.isMagazine(newItem)
 
           if (newItemIsMagazine) {
             const magazine = (newItem as IMagazine)
@@ -497,7 +496,7 @@ export default defineComponent({
         }
 
         // Setting the preset content and mods when the newly selected item is a preset
-        const preset = presetService.getPreset(newItem.id)
+        const preset = _presetService.getPreset(newItem.id)
 
         if (preset != null) {
           // Creating a copy of the preset, otherwise the preset is modified for the whole application
@@ -526,9 +525,9 @@ export default defineComponent({
       canIgnorePrice,
       contentCount,
       dropdownPanelHeight,
-      editing,
       includeModsAndContentInSummary,
       inventoryItemInternal,
+      isEditing,
       item,
       itemChanging,
       itemIsContainer,

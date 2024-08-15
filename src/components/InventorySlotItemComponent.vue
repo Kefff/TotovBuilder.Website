@@ -28,10 +28,6 @@ import Services from '../services/repository/Services'
 import { PathUtils } from '../utils/PathUtils'
 import Item from './item/ItemComponent.vue'
 
-const inventorySlotComponentService = Services.get(InventorySlotComponentService)
-
-let _oldInventoryItem: IInventoryItem | undefined = undefined
-
 const modelInventoryItem = defineModel<IInventoryItem>('inventoryItem')
 
 const props = withDefaults(
@@ -46,6 +42,10 @@ const props = withDefaults(
     acceptedItemsCategoryId: undefined
   })
 
+const _inventorySlotComponentService = Services.get(InventorySlotComponentService)
+
+let _oldInventoryItem: IInventoryItem | undefined = undefined
+
 onMounted(() => {
   setOldInventoryItem()
 })
@@ -58,7 +58,7 @@ onMounted(() => {
  * otherwise puts back the old item.
  */
 async function onItemChanged(newInventoryItem?: IInventoryItem) {
-  const canSelect = await inventorySlotComponentService.checkCompatibility(props.inventorySlotTypeId, newInventoryItem, props.path)
+  const canSelect = await _inventorySlotComponentService.checkCompatibility(props.inventorySlotTypeId, newInventoryItem, props.path)
 
   if (canSelect) {
     modelInventoryItem.value = newInventoryItem

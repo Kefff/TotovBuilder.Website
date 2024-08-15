@@ -97,8 +97,8 @@
         <div>{{ $t('caption.priceEqualsTo') }}</div>
         <div class="price-details-main-currency-value">
           <font-awesome-icon
-            :icon="mainCurrency.iconName"
-            :class="'currency-' + mainCurrency.name"
+            :icon="_mainCurrency.iconName"
+            :class="'currency-' + _mainCurrency.name"
           />
           <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.valueInMainCurrency) }}</span>
         </div>
@@ -166,7 +166,7 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, inject, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IItem } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
@@ -179,9 +179,6 @@ import Services from '../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 import MerchantIcon from './MerchantIconComponent.vue'
 import PriceDetailItem from './PriceDetailItemComponent.vue'
-
-const itemService = Services.get(ItemService)
-const globalFilterService = Services.get(GlobalFilterService)
 
 const props = withDefaults(
   defineProps<{
@@ -208,9 +205,11 @@ const props = withDefaults(
     useMerchantFilter: true
   })
 
-// cf. https://stackoverflow.com/a/63666289
-const isTouchScreen = matchMedia('(hover: none)').matches
-const mainCurrency = Services.get(ItemService).getMainCurrency()
+const _globalFilterService = Services.get(GlobalFilterService)
+const _itemService = Services.get(ItemService)
+
+const _isTouchScreen = inject<boolean>('isTouchScreen')
+const _mainCurrency = _itemService.getMainCurrency()
 
 const barterItemPrices = ref<IInventoryItemPrice[]>([])
 const barterItems = ref<IItem[]>([])
@@ -228,8 +227,8 @@ const canShowIcon = computed(() => props.showMerchantIcon
   && (props.price.merchant !== ''
     || props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored
     || props.missing))
-const currency = computed(() => itemService.getCurrency(props.price.currencyName))
-const displayedCurrency = computed(() => isBarter.value ? mainCurrency : currency.value)
+const currency = computed(() => _itemService.getCurrency(props.price.currencyName))
+const displayedCurrency = computed(() => isBarter.value ? _mainCurrency : currency.value)
 const displayedPrice = computed(() => {
   const value = isBarter.value ? props.price.valueInMainCurrency : props.price.value
   const displayedValue = StatsUtils.getStandardDisplayValue(DisplayValueType.price, value)
@@ -248,26 +247,26 @@ const priceTooltip = computed(() => {
     tooltip += ` ${props.tooltipSuffix}`
   }
 
-  if (canShowDetails.value && !isTouchScreen) {
+  if (canShowDetails.value && !_isTouchScreen) {
     tooltip += ` ${vueI18n.t('caption.clickForDetails')}`
   }
 
   return tooltip
 })
 const showPrice = computed(() => initialized.value && (props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored || props.ignorePriceStatus === IgnoredUnitPrice.notIgnored))
-const showPriceInMainCurrency = computed(() => !isBarter.value && currency.value.name !== mainCurrency.name)
-
-watch(() => props.price, () => initialize())
+const showPriceInMainCurrency = computed(() => !isBarter.value && currency.value.name !== _mainCurrency.name)
 
 onMounted(() => {
-  globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
   initialize()
 })
 
 onUnmounted(() => {
-  globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
+
+watch(() => props.price, () => initialize())
 
 /**
  * Gets barter items.

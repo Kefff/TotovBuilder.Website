@@ -133,17 +133,19 @@ import NotificationButton from './NotificationButtonComponent.vue'
 import BuildsExport from './builds-export/BuildsExportComponent.vue'
 import BuildsImport from './builds-import/BuildsImportComponent.vue'
 
-const buildPropertiesService = Services.get(BuildPropertiesService)
-const globalFilterService = Services.get(GlobalFilterService)
-const itemService = Services.get(ItemService)
-const sortingService = Services.get(SortingService)
 
 const router = useRouter()
-let builds: IBuild[] = []
+
+const _buildPropertiesService = Services.get(BuildPropertiesService)
+const _globalFilterService = Services.get(GlobalFilterService)
+const _itemService = Services.get(ItemService)
+const _sortingService = Services.get(SortingService)
+
+let _builds: IBuild[] = []
 
 const canExport = computed(() => !isLoading.value && buildSummaries.value.length > 0 && !isExporting.value && !isImporting.value)
 const canImport = computed(() => !isLoading.value && !isExporting.value && !isImporting.value)
-const hasBuildsNotExported = computed(() => builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
+const hasBuildsNotExported = computed(() => _builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
 
 const buildSummaries = ref<IBuildSummary[]>([])
 const filterAndSortingData = ref<BuildFilterAndSortingData>(new BuildFilterAndSortingData())
@@ -153,10 +155,10 @@ const isImporting = ref(false)
 const isLoading = ref(true)
 
 onMounted(() => {
-  globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-  if (itemService.initializationState === ServiceInitializationState.initializing) {
-    itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServicesInitialized)
+  if (_itemService.initializationState === ServiceInitializationState.initializing) {
+    _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServicesInitialized)
   } else {
     onItemServicesInitialized()
   }
@@ -165,7 +167,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
 
 watch(() => hasImported.value, () => {
@@ -218,10 +220,10 @@ async function getBuilds() {
   const execute = new Promise<void>(resolve => {
     setTimeout(async () => { // Did not find another solution to make the loading animation appear when opening the builds list from the welcome page (nextTick does not work)
       const summaries: IBuildSummary[] = []
-      builds = Services.get(BuildService).getAll()
+      _builds = Services.get(BuildService).getAll()
 
-      for (const build of builds) {
-        const summary = await buildPropertiesService.getSummary(build)
+      for (const build of _builds) {
+        const summary = await _buildPropertiesService.getSummary(build)
         summaries.push(summary)
       }
 
@@ -243,7 +245,7 @@ function getFilterAndSortingData() {
   filterAndSortingData.value.filter = sessionStorage.getItem(websiteConfigurationService.configuration.buildsFilterStorageKey) ?? ''
   const property = localStorage.getItem(websiteConfigurationService.configuration.buildsSortFieldStorageKey) ?? 'name'
   const order = Number(localStorage.getItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey)) ?? SortingOrder.asc
-  sortingService.setSortingProperty(filterAndSortingData.value, BuildSummarySortingFunctions, property, order)
+  _sortingService.setSortingProperty(filterAndSortingData.value, BuildSummarySortingFunctions, property, order)
 }
 
 /**
@@ -277,7 +279,7 @@ function onFilterAndSortingDataChanged() {
  */
 function onItemServicesInitialized() {
   getBuilds().then(() => {
-    if (builds.length === 0) {
+    if (_builds.length === 0) {
       router.push({ name: 'Welcome' })
 
       return

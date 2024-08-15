@@ -59,20 +59,19 @@ import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import Services from '../../services/repository/Services'
 
-const globalSidebarService = Services.get(GlobalSidebarService)
-const notificationService = Services.get(NotificationService)
+const _globalSidebarService = Services.get(GlobalSidebarService)
+const _notificationService = Services.get(NotificationService)
 
 const notifications = ref<INotification[]>([])
 
-
 onMounted(() => {
-  notificationService.emitter.on(notificationService.addedEventName, onNotificationAdded)
+  _notificationService.emitter.on(_notificationService.addedEventName, onNotificationAdded)
 
-  notifications.value = notificationService.getNotifications()
+  notifications.value = _notificationService.getNotifications()
 })
 
 onUnmounted(() => {
-  notificationService.emitter.off(notificationService.addedEventName, onNotificationAdded)
+  _notificationService.emitter.off(_notificationService.addedEventName, onNotificationAdded)
 })
 
 /**
@@ -80,15 +79,15 @@ onUnmounted(() => {
  */
 function clearNotifications(id?: string) {
   if (id == null) {
-    notificationService.clearNotifications()
+    _notificationService.clearNotifications()
   } else {
-    notificationService.clearNotification(id)
+    _notificationService.clearNotification(id)
   }
 
-  notifications.value = notificationService.getNotifications()
+  notifications.value = _notificationService.getNotifications()
 
   if (notifications.value.length === 0) {
-    globalSidebarService.close('NotificationsSidebar')
+    _globalSidebarService.close('NotificationsSidebar')
   }
 }
 
@@ -116,7 +115,7 @@ function getNotificationIcon(type: NotificationType) {
  * Updates the new notifications count.
  */
 function onNotificationAdded() {
-  notifications.value = notificationService.getNotifications()
+  notifications.value = _notificationService.getNotifications()
 }
 </script>
 

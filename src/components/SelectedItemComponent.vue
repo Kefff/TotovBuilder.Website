@@ -57,6 +57,7 @@ withDefaults(
 .selected-item {
   align-items: center;
   display: flex;
+  height: 100%;
 }
 
 .selected-item-name {

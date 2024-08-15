@@ -43,12 +43,10 @@ import Services from '../../services/repository/Services'
 import ItemFilter from '../ItemFilterComponent.vue'
 import MerchantFilter from '../MerchantFilterComponent.vue'
 
-const globalSidebarService = Services.get(GlobalSidebarService)
-globalSidebarService.registerOnCloseAction('MerchantItemsOptionsSidebar', save)
-
-const globalFilterService = Services.get(GlobalFilterService)
-
 defineProps<{ parameters: undefined }>()
+
+const _globalFilterService = Services.get(GlobalFilterService)
+const _globalSidebarService = Services.get(GlobalSidebarService)
 
 const globalFilter = ref<IGlobalFilter>({
   itemExclusionFilters: [],
@@ -57,7 +55,8 @@ const globalFilter = ref<IGlobalFilter>({
 const hasChanged = ref(false)
 
 onMounted(() => {
-  globalFilter.value = globalFilterService.get()
+  _globalSidebarService.registerOnCloseAction('MerchantItemsOptionsSidebar', save)
+  globalFilter.value = _globalFilterService.get()
 })
 
 /**
@@ -65,7 +64,7 @@ onMounted(() => {
  */
 function save() {
   if (hasChanged.value) {
-    globalFilterService.save(globalFilter.value)
+    _globalFilterService.save(globalFilter.value)
     hasChanged.value = false
   }
 }

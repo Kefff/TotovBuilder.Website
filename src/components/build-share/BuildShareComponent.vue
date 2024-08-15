@@ -6,7 +6,7 @@
     >
       <Button
         class="p-button-text p-button-sm button-discreet"
-        :disabled="editing"
+        :disabled="isEditing"
         @click="share()"
       >
         <font-awesome-icon icon="share-alt" />

@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="inventoryItemInternal != null || editing"
+    v-if="inventoryItemInternal != null || isEditing"
     class="item"
   >
     <div
@@ -10,10 +10,10 @@
       <div class="item-selection-dropdown">
         <Dropdown
           v-model="item"
-          :disabled="!editing || isBaseItem"
+          :disabled="!isEditing || isBaseItem"
           :options="options"
           :scroll-height="dropdownPanelHeight"
-          :show-clear="editing && !isBaseItem"
+          :show-clear="isEditing && !isBaseItem"
           :virtual-scroller-options="{ orientation: 'vertical', itemSize: optionHeight }"
           class="item-dropdown"
           data-key="id"
@@ -77,7 +77,7 @@
           :caption="$t('caption.quantity')"
           :max="maxSelectableQuantity"
           :min="1"
-          :read-only="!editing || forceQuantityToMaxSelectableAmount"
+          :read-only="!isEditing || forceQuantityToMaxSelectableAmount"
           :required="true"
           caption-mode="placeholder"
           required-message-position="right"

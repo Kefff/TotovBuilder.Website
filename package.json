@@ -6,7 +6,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@intlify/unplugin-vue-i18n": "^4.0.0",
-    "@microsoft/applicationinsights-web": "^3.2.1",
+    "@microsoft/applicationinsights-web": "^3.3.1",
     "@unhead/schema": "^1.9.12",
     "file-saver": "^2.0.5",
     "guid-typescript": "^1.0.9",
@@ -58,7 +58,8 @@
     "test-w": "npm run test-watch",
     "test-watch": "vitest watch",
     "test": "vitest run",
-    "tsc": "tsc --noEmit"
+    "tsc": "npm run type-check",
+    "type-check": "tsc --noEmit"
   },
   "type": "module",
   "version": "0.0.0"

@@ -51,7 +51,7 @@
         </Button>
       </Tooltip>
     </div>
-    <div v-if="editing && canBeLooted && canIgnorePrice">
+    <div v-if="isEditing && canBeLooted && canIgnorePrice">
       <Tooltip
         :tooltip="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
         :apply-hover-style="false"
@@ -103,7 +103,7 @@ const props = withDefaults(
     modsCount: 0
   })
 
-const editing = inject<Ref<boolean>>('editing')
+const isEditing = inject<Ref<boolean>>('isEditing')
 
 watch(() => props.canHaveContent, () => {
   if (!props.canHaveContent && modelSelectedTab.value === SelectableTab.content) {

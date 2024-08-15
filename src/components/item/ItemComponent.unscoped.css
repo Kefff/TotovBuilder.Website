@@ -1,5 +1,5 @@
 .item-selection-dropdown > .p-dropdown {
-  height: 3.25rem;
+  height: 3.5rem;
 }
 
 .item-selection-dropdown .placeholder {
@@ -24,6 +24,10 @@
   padding-left: 0;
   padding-right: 0;
   padding-top: 0;
+}
+
+.item-selection-dropdown > .p-dropdown > .p-dropdown-label > span > div {
+  height: 100%;
 }
 
 .item-selection-dropdown > .p-dropdown.p-dropdown-clearable .p-dropdown-label {

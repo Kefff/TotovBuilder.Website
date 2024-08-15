@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="editing || modelInventoryItem != null"
+    v-if="isEditing || modelInventoryItem != null"
     class="mod-slot"
   >
     <div class="mod-slot-slot-name">
@@ -44,35 +44,34 @@ import { ModSlotComponentService } from '../services/components/ModSlotComponent
 import Services from '../services/repository/Services'
 import { PathUtils } from '../utils/PathUtils'
 
-const globalFilterService = Services.get(GlobalFilterService)
-const modSlotComponentService = Services.get(ModSlotComponentService)
-
 const modelInventoryItem = defineModel<IInventoryItem>('inventoryItem')
+
+const _globalFilterService = Services.get(GlobalFilterService)
+const _modSlotComponentService = Services.get(ModSlotComponentService)
 
 const props = defineProps<{
   modSlot: IModSlot,
   path: string
 }>()
 
-const editing = inject<Ref<boolean>>('editing')
-
 const acceptedItems = ref<IItem[]>([])
 const acceptedItemsCategoryId = ref<string | undefined>(undefined)
+const isEditing = inject<Ref<boolean>>('isEditing')
 
 onMounted(() => {
-  globalFilterService.emitter.on(GlobalFilterService.changeEvent, setAcceptedItems)
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, setAcceptedItems)
 
   setAcceptedItems()
 })
 
-onUnmounted(() => globalFilterService.emitter.off(GlobalFilterService.changeEvent, setAcceptedItems))
+onUnmounted(() => _globalFilterService.emitter.off(GlobalFilterService.changeEvent, setAcceptedItems))
 
 /**
  * Gets the category IDs and the accepted items to pass to the Item component.
  */
 async function setAcceptedItems() {
   acceptedItems.value = await Services.get(ItemService).getItems(props.modSlot.compatibleItemIds, true)
-  acceptedItemsCategoryId.value = modSlotComponentService.getAcceptedItemsCategoryId(acceptedItems.value)
+  acceptedItemsCategoryId.value = _modSlotComponentService.getAcceptedItemsCategoryId(acceptedItems.value)
 }
 </script>
 

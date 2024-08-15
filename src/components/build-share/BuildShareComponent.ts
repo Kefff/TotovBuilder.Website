@@ -18,10 +18,8 @@ export default defineComponent({
     }
   },
   setup: (props) => {
-    const editing = inject<Ref<boolean>>('editing')
-
     const i18n = useI18n()
-
+    const isEditing = inject<Ref<boolean>>('isEditing')
     const isSharing = ref(false)
     const shareLink = ref<string>()
 
@@ -68,7 +66,7 @@ export default defineComponent({
     return {
       closeSharingDialog,
       copyLink,
-      editing,
+      isEditing,
       isSharing,
       share,
       shareLink

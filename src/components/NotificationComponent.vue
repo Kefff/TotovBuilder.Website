@@ -45,18 +45,26 @@
 
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { INotification } from '../models/utils/INotification'
 import { INotificationButton } from '../models/utils/INotificationButton'
 import { NotificationService, NotificationType } from '../services/NotificationService'
 import Services from '../services/repository/Services'
 
-const notificationService = Services.get(NotificationService)
+const _notificationService = Services.get(NotificationService)
 
 const notifications = ref<INotification[]>([])
 
-notificationService.emitter.on(notificationService.addedEventName, (notification: INotification) => {
-  notifications.value.push(notification)
+onMounted(() => {
+  _notificationService.emitter.on(_notificationService.addedEventName, (notification: INotification) => {
+    notifications.value.push(notification)
+  })
+})
+
+onUnmounted(() => {
+  _notificationService.emitter.off(_notificationService.addedEventName, (notification: INotification) => {
+    notifications.value.push(notification)
+  })
 })
 
 /**

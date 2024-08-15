@@ -66,7 +66,7 @@
 
   <!-- Additional option groups -->
   <div
-    v-for="additionalOptionsGroup of additionalsOptionGroups"
+    v-for="additionalOptionsGroup of additionalOptionGroups"
     :key="additionalOptionsGroup.name"
     class="general-options-addition-group"
   >
@@ -114,11 +114,11 @@ import LanguageSelector from '../LanguageSelectorComponent.vue'
 
 const props = defineProps<{ parameters: IGeneralOptionsGroup[] | undefined }>()
 
+const allowCookies = ref(true)
+
 const additionalDisplayOptions = computed(() => props.parameters?.filter(og => og.name === 'display-options').flatMap(og => og.options) ?? [])
 const additionalGeneralOptions = computed(() => props.parameters?.filter(og => og.name === 'general-options').flatMap(og => og.options) ?? [])
-const additionalsOptionGroups = computed(() => props.parameters?.filter(og => og.name !== 'display-options' && og.name !== 'general-options') ?? [])
-
-const allowCookies = ref(true)
+const additionalOptionGroups = computed(() => props.parameters?.filter(og => og.name !== 'display-options' && og.name !== 'general-options') ?? [])
 
 onMounted(() => {
   allowCookies.value = Services.get(GeneralOptionsService).getAllowCookiesIndicator()

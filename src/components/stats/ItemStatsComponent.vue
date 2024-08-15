@@ -95,7 +95,7 @@ const props = defineProps<{
   item: IItem
 }>()
 
-const inventoryItemService = Services.get(InventoryItemService)
+const _inventoryItemService = Services.get(InventoryItemService)
 
 const prices = ref<IPrice[]>([])
 
@@ -134,7 +134,7 @@ async function setPrices() {
       let barterPrice = 0
 
       for (const barterItem of priceToAdd.barterItems) {
-        const barterItemPrice = await inventoryItemService.getPrice(
+        const barterItemPrice = await _inventoryItemService.getPrice(
           {
             content: [],
             ignorePrice: false,

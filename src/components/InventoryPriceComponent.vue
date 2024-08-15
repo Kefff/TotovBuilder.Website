@@ -79,7 +79,7 @@
 
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { ICurrency } from '../models/configuration/ICurrency'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import vueI18n from '../plugins/vueI18n'
@@ -100,8 +100,7 @@ const props = withDefaults(
     showMissingPriceSpot: false
   })
 
-// cf. https://stackoverflow.com/a/63666289
-const isTouchScreen = matchMedia('(hover: none)').matches
+const _isTouchScreen = inject<boolean>('isTouchScreen')
 let _mainCurrency: ICurrency | undefined
 
 const inventoryPriceDetailPanel = ref()
@@ -118,7 +117,7 @@ const priceInMainCurrency = computed(() => props.inventoryPrice.priceByCurrency.
 const tooltip = computed(() => {
   let value: string = props.customTooltip ?? vueI18n.t('caption.price')
 
-  if (canShowDetails.value && !isTouchScreen) {
+  if (canShowDetails.value && !_isTouchScreen) {
     value += ` ${vueI18n.t('caption.clickForDetails')}`
   }
 

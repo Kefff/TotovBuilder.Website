@@ -52,9 +52,8 @@ import StringUtils from '../utils/StringUtils'
 
 const vueI18n = useI18n()
 
-const languages = ref<string[]>([])
-
 const currentLanguage = ref(vueI18n.locale.value)
+const languages = ref<string[]>([])
 
 onMounted(() => {
   getLanguages()

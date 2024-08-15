@@ -65,15 +65,15 @@ withDefaults(
     useLongestHeaderWidth: false
   })
 
-let filterLastEdit = new Date()
-const filterDelay = 500 // Milliseconds passed without typing before emitting the filter update
+const _filterDelay = 500 // Milliseconds passed without typing before emitting the filter update
+let _filterLastEdit = new Date()
+
+const filterInput = ref()
 
 const filterInternal = computed({
   get: () => modelFilter.value,
   set: (value: string) => onFilterChanged(value)
 })
-
-const filterInput = ref()
 
 onMounted(() => {
   // Focus the filter input to be able to type the name of the item.
@@ -89,22 +89,22 @@ onMounted(() => {
  * Emits to the parent component the filter to use to filter options.
  */
 function onFilterChanged(filterValue: string) {
-  filterLastEdit = new Date()
+  _filterLastEdit = new Date()
 
   // Creating a promise that will check after a delay if the filter has changed.
   // If not, emits the filter to the parent component; otherwise silently rejects the promise.
   new Promise<void>((resolve, reject) => setTimeout(
     () => {
       const now = new Date()
-      const timeSinceLastInput = now.getTime() - filterLastEdit.getTime()
+      const timeSinceLastInput = now.getTime() - _filterLastEdit.getTime()
 
-      if (timeSinceLastInput >= filterDelay) {
+      if (timeSinceLastInput >= _filterDelay) {
         resolve()
       } else {
         reject()
       }
     },
-    filterDelay))
+    _filterDelay))
     .then(() => modelFilter.value = filterValue)
     .catch(() => undefined)
 }

@@ -8,11 +8,11 @@
       :force-quantity-to-max-selectable-amount="isMagazine"
       :inventory-item="modelInventoryItems[index]"
       :max-stackable-amount="maximumQuantity"
-      :path="`${path}/${contentPathPrefix}${index}_${modelInventoryItems.length}/${itemPathPrefix}${containedItem.itemId}`"
+      :path="`${path}/${PathUtils.contentPrefix}${index}_${modelInventoryItems.length}/${itemPathPrefix}${containedItem.itemId}`"
       @update:inventory-item="onItemChanged(index, $event)"
     />
     <Item
-      v-if="editing && canAddItem"
+      v-if="isEditing && canAddItem"
       v-model:inventory-item="itemToAdd"
       :accepted-items="acceptedItems"
       :accepted-items-category-id="categoryId"
@@ -44,9 +44,6 @@ import Services from '../services/repository/Services'
 import { PathUtils } from '../utils/PathUtils'
 import Item from './item/ItemComponent.vue'
 
-const itemPropertiesService = Services.get(ItemPropertiesService)
-const globalFilterService = Services.get(GlobalFilterService)
-
 const modelInventoryItems = defineModel<IInventoryItem[]>('inventoryItems', { required: true })
 
 const props = defineProps<{
@@ -54,27 +51,27 @@ const props = defineProps<{
   path: string
 }>()
 
-const editing = inject<Ref<boolean>>('editing')
-
-const canAddItem = computed(() => !isMagazine.value || modelInventoryItems.value.length === 0)
-const isMagazine = computed(() => itemPropertiesService.isMagazine(props.containerItem))
-const maximumQuantity = computed(() => isMagazine.value ? props.containerItem.capacity : undefined)
+const _globalFilterService = Services.get(GlobalFilterService)
+const _itemPropertiesService = Services.get(ItemPropertiesService)
 
 const acceptedItems = ref<IItem[]>([])
 const categoryId = ref<string | undefined>(undefined)
+const isEditing = inject<Ref<boolean>>('isEditing')
 const itemPathPrefix = PathUtils.itemPrefix
 const itemToAdd = ref<IInventoryItem>()
 
-const contentPathPrefix = PathUtils.contentPrefix
+const canAddItem = computed(() => !isMagazine.value || modelInventoryItems.value.length === 0)
+const isMagazine = computed(() => _itemPropertiesService.isMagazine(props.containerItem))
+const maximumQuantity = computed(() => isMagazine.value ? props.containerItem.capacity : undefined)
 
 onMounted(() => {
-  globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
   initialize()
 })
 
 onUnmounted(() => {
-  globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
 
 watch(() => props.containerItem.id, () => initialize())

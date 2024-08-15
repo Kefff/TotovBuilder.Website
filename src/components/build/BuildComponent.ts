@@ -38,38 +38,17 @@ export default defineComponent({
     Toolbar
   },
   setup: () => {
-    const itemService = Services.get(ItemService)
-
     const route = useRoute()
     const router = useRouter()
 
-    const buildComponentService = Services.get(BuildComponentService)
-    const buildPropertiesService = Services.get(BuildPropertiesService)
-    const compatibilityService = Services.get(CompatibilityService)
-    const globalFilterService = Services.get(GlobalFilterService)
+    const _buildComponentService = Services.get(BuildComponentService)
+    const _buildPropertiesService = Services.get(BuildPropertiesService)
+    const _compatibilityService = Services.get(CompatibilityService)
+    const _globalFilterService = Services.get(GlobalFilterService)
+    const _itemService = Services.get(ItemService)
 
-    const inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
-    let originalBuild: IBuild
-
-    const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
-    const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
-    const hasSummaryErgonomicsModifierPercentage = computed(() => summary.value.wearableModifiers.ergonomicsModifierPercentage !== 0)
-    const hasSummaryHorizontalRecoil = computed(() => summary.value.recoil.horizontalRecoil !== 0)
-    const hasSummaryMovementSpeedModifierPercentage = computed(() => summary.value.wearableModifiers.movementSpeedModifierPercentage !== 0)
-    const hasSummaryPrice = computed(() => summary.value.price.priceInMainCurrency !== 0)
-    const hasSummaryStats = computed(() => hasSummaryErgonomics.value || hasSummaryHorizontalRecoil.value || hasSummaryVerticalRecoil.value)
-    const hasSummaryTurningSpeedModifierPercentage = computed(() => summary.value.wearableModifiers.turningSpeedModifierPercentage !== 0)
-    const hasSummaryVerticalRecoil = computed(() => summary.value.recoil.verticalRecoil !== 0)
-    const hasSummaryWearableModifiers = computed(() => hasSummaryErgonomicsModifierPercentage.value
-      || hasSummaryMovementSpeedModifierPercentage.value
-      || hasSummaryTurningSpeedModifierPercentage.value
-    )
-    const hasSummaryWeight = computed(() => summary.value.weight !== 0)
-    const invalid = computed(() => build.value.name === '')
-    const isEmpty = computed(() => !build.value.inventorySlots.some(is => is.items.some(i => i != null)))
-    const isNewBuild = computed(() => build.value.id === '')
-    const notExportedTooltip = computed(() => !summary.value.exported ? buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
-    const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
+    const _inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
+    let _originalBuild: IBuild
 
     const build = ref<IBuild>({
       id: route.params['id'] as string ?? '',
@@ -81,7 +60,7 @@ export default defineComponent({
     })
     const collapseStatuses = ref<boolean[]>([])
     const deleting = ref(false)
-    const editing = isNewBuild.value ? ref(true) : ref(false)
+    const isEditing = ref(false)
     const generalOptionsSidebarVisible = ref(false)
     const hasItemsLoadingError = ref(false)
     const isLoading = ref(true)
@@ -114,42 +93,63 @@ export default defineComponent({
       weight: 0
     })
 
-    provide('editing', editing)
+    const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
+    const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
+    const hasSummaryErgonomicsModifierPercentage = computed(() => summary.value.wearableModifiers.ergonomicsModifierPercentage !== 0)
+    const hasSummaryHorizontalRecoil = computed(() => summary.value.recoil.horizontalRecoil !== 0)
+    const hasSummaryMovementSpeedModifierPercentage = computed(() => summary.value.wearableModifiers.movementSpeedModifierPercentage !== 0)
+    const hasSummaryPrice = computed(() => summary.value.price.priceInMainCurrency !== 0)
+    const hasSummaryStats = computed(() => hasSummaryErgonomics.value || hasSummaryHorizontalRecoil.value || hasSummaryVerticalRecoil.value)
+    const hasSummaryTurningSpeedModifierPercentage = computed(() => summary.value.wearableModifiers.turningSpeedModifierPercentage !== 0)
+    const hasSummaryVerticalRecoil = computed(() => summary.value.recoil.verticalRecoil !== 0)
+    const hasSummaryWearableModifiers = computed(() => hasSummaryErgonomicsModifierPercentage.value
+      || hasSummaryMovementSpeedModifierPercentage.value
+      || hasSummaryTurningSpeedModifierPercentage.value
+    )
+    const hasSummaryWeight = computed(() => summary.value.weight !== 0)
+    const invalid = computed(() => build.value.name === '')
+    const isEmpty = computed(() => !build.value.inventorySlots.some(is => is.items.some(i => i != null)))
+    const isNewBuild = computed(() => build.value.id === '')
+    const notExportedTooltip = computed(() => !summary.value.exported ? _buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
+    const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
 
-    watch(() => route.params, onItemServiceInitialized)
+    provide('isEditing', isEditing)
 
     onMounted(() => {
       addEventListener('keydown', (e) => onKeyDown(e))
 
-      compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
-      compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
-      compatibilityService.emitter.on(CompatibilityRequestType.mod, onModCompatibilityRequest)
-      globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+      _compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
+      _compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
+      _compatibilityService.emitter.on(CompatibilityRequestType.mod, onModCompatibilityRequest)
+      _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-      if (itemService.initializationState === ServiceInitializationState.initializing) {
-        itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitialized)
+      isEditing.value = isNewBuild.value
+
+      if (_itemService.initializationState === ServiceInitializationState.initializing) {
+        _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitialized)
       } else {
         onItemServiceInitialized()
       }
 
       window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
+      window.onbeforeunload = function () {
+        if (isEditing.value) {
+          // Confirmation message before closing a tab or the browser
+          return ''
+        }
+      }
     })
 
     onUnmounted(() => {
-      compatibilityService.emitter.off(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
-      compatibilityService.emitter.off(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
-      compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
-      globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+      _compatibilityService.emitter.off(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
+      _compatibilityService.emitter.off(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
+      _compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
+      _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
       removeEventListener('keydown', (e) => onKeyDown(e))
     })
 
-    window.onbeforeunload = function () {
-      if (editing.value) {
-        // Confirmation message before closing a tab or the browser
-        return ''
-      }
-    }
+    watch(() => route.params, onItemServiceInitialized)
 
     /**
      * Cancels the deletion process.
@@ -162,12 +162,12 @@ export default defineComponent({
      * Cancels modifications and stops edit mode.
      */
     function cancelEdit() {
-      editing.value = false
+      isEditing.value = false
 
       if (isNewBuild.value) {
         goToBuilds()
       } else {
-        build.value = originalBuild
+        build.value = _originalBuild
         setSummary()
       }
     }
@@ -196,7 +196,7 @@ export default defineComponent({
      * Creates a copy of the current build.
      */
     function copy() {
-      if (editing.value) {
+      if (isEditing.value) {
         return
       }
 
@@ -292,7 +292,7 @@ export default defineComponent({
      * Exports the build.
      */
     async function exportBuild() {
-      if (editing.value) {
+      if (isEditing.value) {
         return
       }
 
@@ -337,7 +337,7 @@ export default defineComponent({
      * @param request - Compatibility request.
      */
     function onArmorCompatibilityRequest(request: CompatibilityRequest) {
-      request.setResult(buildPropertiesService.canAddArmor(build.value))
+      request.setResult(_buildPropertiesService.canAddArmor(build.value))
     }
 
     /**
@@ -360,7 +360,7 @@ export default defineComponent({
       isLoading.value = true
 
       setTimeout(() => { // Did not find another solution to make the loading animation appear when opening a build from the builds list (nextTick does not work)
-        build.value = buildComponentService.getBuild(route.params['id'] as string)
+        build.value = _buildComponentService.getBuild(route.params['id'] as string)
         getSharedBuild(route.params['sharedBuild'] as string)
           .then(() => {
             build.value.inventorySlots.forEach(() => {
@@ -382,7 +382,7 @@ export default defineComponent({
       if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
         event.preventDefault() // Prevents the browser save action to be triggered
 
-        if (editing.value && !invalid.value) {
+        if (isEditing.value && !invalid.value) {
           await save()
           startEdit() // After saving with the shortcut, we stay in edit mode unlike when using the button
         }
@@ -405,7 +405,7 @@ export default defineComponent({
      * @param request - Compatibility request that must be resolved.
      */
     function onModCompatibilityRequest(request: CompatibilityRequest) {
-      request.setResult(buildPropertiesService.canAddMod(build.value, request.itemId, request.path))
+      request.setResult(_buildPropertiesService.canAddMod(build.value, request.itemId, request.path))
     }
 
     /**
@@ -415,14 +415,14 @@ export default defineComponent({
      * @param request - Compatibility request.
      */
     function onTacticalRigCompatibilityRequest(request: CompatibilityRequest) {
-      request.setResult(buildPropertiesService.canAddVest(build.value, request.itemId))
+      request.setResult(_buildPropertiesService.canAddVest(build.value, request.itemId))
     }
 
     /**
      * Deletes the build.
      */
     function remove() {
-      buildComponentService.deleteBuild(router, build.value)
+      _buildComponentService.deleteBuild(router, build.value)
     }
 
     /**
@@ -430,11 +430,11 @@ export default defineComponent({
      */
     async function save() {
       isLoading.value = true
-      await buildComponentService.saveBuild(router, build.value)
+      await _buildComponentService.saveBuild(router, build.value)
 
       nextTick(() => {
         isLoading.value = false
-        editing.value = false
+        isEditing.value = false
       })
     }
 
@@ -446,7 +446,7 @@ export default defineComponent({
         return
       }
 
-      summary.value = await buildPropertiesService.getSummary(build.value)
+      summary.value = await _buildPropertiesService.getSummary(build.value)
     }
 
     /**
@@ -460,13 +460,13 @@ export default defineComponent({
      * Starts the edit mode.
      */
     function startEdit() {
-      editing.value = true
+      isEditing.value = true
 
       // Creating a copy without reference of the build in its original state
       const originalBuildResult = Services.get(BuildService).parse(build.value.id, JSON.stringify(build.value))
 
       if (originalBuildResult != null) {
-        originalBuild = originalBuildResult
+        _originalBuild = originalBuildResult
       }
     }
 
@@ -483,7 +483,6 @@ export default defineComponent({
       displayMerchantItemsOptions,
       displayShoppingList,
       DisplayValueType,
-      editing,
       expandAll,
       expandWithItem,
       exportBuild,
@@ -502,7 +501,8 @@ export default defineComponent({
       hasSummaryWearableModifiers,
       hasSummaryWeight,
       invalid,
-      inventorySlotPathPrefix,
+      inventorySlotPathPrefix: _inventorySlotPathPrefix,
+      isEditing,
       isEmpty,
       isLoading,
       isNewBuild,

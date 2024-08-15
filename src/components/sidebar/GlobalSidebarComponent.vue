@@ -40,11 +40,14 @@ import NotificationsSidebar from './NotificationsSidebarComponent.vue'
 import ShoppingListSidebar from './ShoppingListSidebarComponent.vue'
 import StatsSidebar from './StatsSidebarComponent.vue'
 
-const globalSidebarService = Services.get(GlobalSidebarService)
-
 const props = defineProps<{
   position: GlobalSidebarPosition
 }>()
+
+const _globalSidebarService = Services.get(GlobalSidebarService)
+
+const options = ref<IGlobalSidebarOptions>({} as IGlobalSidebarOptions)
+let visibleInternal = ref(false)
 
 const displayedComponent = computed(() => {
   switch (options.value?.displayedComponentType) {
@@ -67,27 +70,24 @@ const displayedComponent = computed(() => {
   }
 })
 const visible = computed({
-  get: () => _visible.value,
+  get: () => visibleInternal.value,
   set: (value: boolean) => {
-    _visible.value = value
+    visibleInternal.value = value
 
-    if (!_visible.value) {
+    if (!visibleInternal.value) {
       onGlobalSidebarClose(options.value.displayedComponentType)
     }
   }
 })
 
-const _visible = ref(false)
-const options = ref<IGlobalSidebarOptions>({} as IGlobalSidebarOptions)
-
 onMounted(() => {
-  globalSidebarService.emitter.on(GlobalSidebarService.closeGlobalSidebarEvent, onGlobalSidebarClose)
-  globalSidebarService.emitter.on(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
+  _globalSidebarService.emitter.on(GlobalSidebarService.closeGlobalSidebarEvent, onGlobalSidebarClose)
+  _globalSidebarService.emitter.on(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
 })
 
 onUnmounted(() => {
-  globalSidebarService.emitter.off(GlobalSidebarService.closeGlobalSidebarEvent, onGlobalSidebarClose)
-  globalSidebarService.emitter.off(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
+  _globalSidebarService.emitter.off(GlobalSidebarService.closeGlobalSidebarEvent, onGlobalSidebarClose)
+  _globalSidebarService.emitter.off(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
 })
 
 /**
@@ -99,7 +99,7 @@ onUnmounted(() => {
 function onGlobalSidebarClose(displayedComponentType: GlobalSidebarComponentType) {
   if (displayedComponentType === options.value.displayedComponentType) {
     Services.get(GlobalSidebarService).executeOnCloseActions(displayedComponentType, options.value.displayedComponentParameters)
-    _visible.value = false
+    visibleInternal.value = false
   }
 }
 

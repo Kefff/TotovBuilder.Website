@@ -56,8 +56,8 @@ import { WebsiteConfigurationService } from '../services/WebsiteConfigurationSer
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
 
-const itemService = Services.get(ItemService)
-const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+const _itemService = Services.get(ItemService)
+const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
 const hasItemError = ref(false)
 const hasWebsiteConfigurationError = ref(false)
@@ -65,14 +65,14 @@ const hasWebsiteConfigurationError = ref(false)
 const hasLoadingError = computed(() => hasItemError.value || hasWebsiteConfigurationError.value)
 
 onMounted(() => {
-  if (websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
-    websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
+  if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
+    _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
   } else {
     onWebsiteConfigurationServiceInitialized()
   }
 
-  if (itemService.initializationState === ServiceInitializationState.initializing) {
-    itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitialized)
+  if (_itemService.initializationState === ServiceInitializationState.initializing) {
+    _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitialized)
   } else {
     onItemServiceInitialized()
   }
@@ -84,7 +84,7 @@ onMounted(() => {
  * Checks whether an item loading error has occured and signals it to the parent component.
  */
 function onItemServiceInitialized() {
-  hasItemError.value = itemService.initializationState === ServiceInitializationState.error
+  hasItemError.value = _itemService.initializationState === ServiceInitializationState.error
 }
 
 /**
@@ -93,7 +93,7 @@ function onItemServiceInitialized() {
  * Checks whether a website configuration loading error has occured and signals it to the parent component.
  */
 function onWebsiteConfigurationServiceInitialized() {
-  hasWebsiteConfigurationError.value = websiteConfigurationService.initializationState === ServiceInitializationState.error
+  hasWebsiteConfigurationError.value = _websiteConfigurationService.initializationState === ServiceInitializationState.error
 }
 
 /**

@@ -140,7 +140,7 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, provide, ref } from 'vue'
 import Images from '../images'
 import vueI18n from '../plugins/vueI18n'
 import { GeneralOptionsService } from '../services/GeneralOptionsService'
@@ -155,14 +155,17 @@ import LoadingError from './LoadingErrorComponent.vue'
 import Notification from './NotificationComponent.vue'
 import GlobalSidebar from './sidebar/GlobalSidebarComponent.vue'
 
-const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-const versionService = Services.get(VersionService)
+const _versionService = Services.get(VersionService)
+const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
+const _isTouchScreen = matchMedia('(hover: none)').matches
 
 const bugReportUrl = ref<string>()
 const contactAddress = ref<string>()
 const discordUrl = ref<string>()
 const githubUrl = ref<string>()
 const hasNewVersion = ref(false)
+const loading = ref(true)
 const version = ref('1.0.0')
 
 const copyrightYear = computed(() => {
@@ -183,11 +186,11 @@ const isSanta = computed(() => {
   return date.getTime() >= santaMinDate && date.getTime() <= santaMaxDate
 })
 
-const loading = ref(true)
+provide('isTouchScreen', _isTouchScreen) // cf. https://stackoverflow.com/a/63666289
 
 onMounted(() => {
-  if (websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
-    websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
+  if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
+    _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
     loading.value = true
   } else {
     onWebsiteConfigurationServiceInitialized()
@@ -230,21 +233,21 @@ function displayNewVersionNotification() {
  * Reacts to the website configuration service being initialized.
  */
 async function onWebsiteConfigurationServiceInitialized() {
-  bugReportUrl.value = websiteConfigurationService.configuration.bugReportUrl
-  contactAddress.value = websiteConfigurationService.configuration.contactAddress
-  discordUrl.value = websiteConfigurationService.configuration.discordUrl
-  githubUrl.value = websiteConfigurationService.configuration.githubUrl
+  bugReportUrl.value = _websiteConfigurationService.configuration.bugReportUrl
+  contactAddress.value = _websiteConfigurationService.configuration.contactAddress
+  discordUrl.value = _websiteConfigurationService.configuration.discordUrl
+  githubUrl.value = _websiteConfigurationService.configuration.githubUrl
 
   Services.get(GeneralOptionsService).getAllowCookiesIndicator() // Used to trigger the allow cookie check and display a notification
 
-  await versionService.getVersion().then(v => version.value = v)
-  hasNewVersion.value = await versionService.checkHasNewVersion()
+  await _versionService.getVersion().then(v => version.value = v)
+  hasNewVersion.value = await _versionService.checkHasNewVersion()
 
   if (hasNewVersion.value) {
     displayNewVersionNotification()
   }
 
-  if (websiteConfigurationService.configuration.postUpdatePeriod) {
+  if (_websiteConfigurationService.configuration.postUpdatePeriod) {
     Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.postUpdatePeriod'), 0)
   }
 }

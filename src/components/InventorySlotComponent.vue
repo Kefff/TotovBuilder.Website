@@ -73,30 +73,29 @@ import Services from '../services/repository/Services'
 import StringUtils from '../utils/StringUtils'
 import InventorySlotItem from './InventorySlotItemComponent.vue'
 
-const globalFilterService = Services.get(GlobalFilterService)
-const inventorySlotService = Services.get(InventorySlotService)
-
 const modelCollapsed = defineModel<boolean>('collapsed')
 const modelInventorySlot = defineModel<IInventorySlot>('inventorySlot', { required: true })
 
 defineProps<{ path: string }>()
 
-const editing = inject<Ref<boolean>>('editing')
+const _globalFilterService = Services.get(GlobalFilterService)
+const _inventorySlotService = Services.get(InventorySlotService)
 
 const acceptedItemsCategoryId = ref<string>()
 const acceptedItems = ref<IItem[]>([])
+const isEditing = inject<Ref<boolean>>('isEditing')
 
-const inventorySlotType = computed(() => inventorySlotService.getType(modelInventorySlot.value.typeId))
-const isDisplayed = computed(() => editing?.value || modelInventorySlot.value.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
+const inventorySlotType = computed(() => _inventorySlotService.getType(modelInventorySlot.value.typeId))
+const isDisplayed = computed(() => isEditing?.value || modelInventorySlot.value.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
 
 onMounted(() => {
-  globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
   setAcceptedItems()
 })
 
 onUnmounted(() => {
-  globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
 
 /**

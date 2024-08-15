@@ -68,9 +68,9 @@ import { GlobalFilterService } from '../services/GlobalFilterService'
 import Services from '../services/repository/Services'
 import StringUtils from '../utils/StringUtils'
 
-const globalFilterService = Services.get(GlobalFilterService)
-
 const modelMerchantFilters = defineModel<IMerchantFilter[]>('merchantFilters', { required: true })
+
+const _globalFilterService = Services.get(GlobalFilterService)
 
 const merchantFiltersInternal = computed(() => [...modelMerchantFilters.value].sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant)))
 
@@ -80,7 +80,7 @@ const merchantFiltersInternal = computed(() => [...modelMerchantFilters.value].s
  * @returns Level options.
  */
 function getMerchantLevels(merchantName: string): number[] {
-  const levels = globalFilterService.getMerchantLevels(merchantName)
+  const levels = _globalFilterService.getMerchantLevels(merchantName)
 
   return levels
 }
@@ -91,7 +91,7 @@ function getMerchantLevels(merchantName: string): number[] {
  * @returns true when the merchant has levels; otherwise false.
  */
 function hasLevels(merchantName: string): boolean {
-  const result = globalFilterService.hasLevels(merchantName)
+  const result = _globalFilterService.hasLevels(merchantName)
 
   return result
 }
