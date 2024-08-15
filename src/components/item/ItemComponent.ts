@@ -410,8 +410,9 @@ export default defineComponent({
 
         await Promise.allSettled(promises)
         options.value = filteredOptions
-        onSortOptions(optionsSortingData.value)
       }
+
+      onSortOptions(optionsSortingData.value)
 
       loadingOptions.value = false
     }
