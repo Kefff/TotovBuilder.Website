@@ -3,49 +3,59 @@
     <div class="sidebar-title-icon">
       <font-awesome-icon icon="ellipsis-h" />
     </div>
-    <div class="build-sidebar-title">
-      <span>{{ $t('caption.actions', { build: parameters.name }) }}</span>
-      <span>{{ parameters.name }}</span>
-    </div>
+    <span>{{ $t('caption.actions', { build: parameters.name }) }}</span>
+  </div>
+  <span class="build-sidebar-name">{{ parameters.name }}</span>
+  <div class="sidebar-option">
+    <Button
+      class="p-button build-sidebar-button"
+      @click="displayShareBuildSidebar()"
+    >
+      <font-awesome-icon
+        icon="share-alt"
+        class="icon-before-text"
+      />
+      <span>{{ $t('caption.share') }}</span>
+    </Button>
   </div>
   <div class="sidebar-option">
-    <div>
-      <Button
-        class="p-button-danger"
-        @click="deleteBuild()"
-      >
-        <font-awesome-icon
-          icon="trash"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.delete') }}</span>
-      </Button>
-    </div>
+    <Button
+      class="p-button build-sidebar-button"
+      @click="displaySaveBuildToFileSidebar()"
+    >
+      <font-awesome-icon
+        icon="download"
+        class="icon-before-text"
+      />
+      <span>{{ $t('caption.saveBuildToFile') }}</span>
+    </Button>
   </div>
-
-  <Dialog
-    v-model:visible="deleting"
-    :closable="false"
-    :modal="true"
-    :draggable="false"
-  >
-    <div>
-      <span>{{ $t('message.confirmDeleteBuild', { name: parameters.name }) }}</span>
+  <div class="sidebar-option-description">
+    <div class="sidebar-option-icon">
+      <font-awesome-icon icon="info-circle" />
     </div>
-    <template #footer>
+    <span>{{ $t('message.saveBuildToFileExplanation') }}</span>
+  </div>
+  <div class="sidebar-title" />
+  <div class="sidebar-option">
+    <Button
+      v-if="!deleting"
+      class="p-button-danger build-sidebar-button"
+      @click="deleteBuild()"
+    >
+      <font-awesome-icon
+        icon="trash"
+        class="icon-before-text"
+      />
+      <span>{{ $t('caption.delete') }}</span>
+    </Button>
+    <div
+      v-else
+      class="build-sidebar-deletetion-confirmation"
+    >
+      <div>{{ $t('message.confirmDeleteBuild', { name: parameters.name }) }}</div>
       <Button
-        class="p-button-danger"
-        :label="$t('caption.delete')"
-        @click="confirmDeletion()"
-      >
-        <font-awesome-icon
-          icon="trash"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.delete') }}</span>
-      </Button>
-      <Button
-        class="p-button"
+        class="p-button build-sidebar-button"
         outlined
         @click="cancelDeletion()"
       >
@@ -55,8 +65,18 @@
         />
         <span>{{ $t('caption.cancel') }}</span>
       </Button>
-    </template>
-  </Dialog>
+      <Button
+        class="p-button-danger build-sidebar-button"
+        @click="confirmDeletion()"
+      >
+        <font-awesome-icon
+          icon="trash"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.delete') }}</span>
+      </Button>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -97,14 +117,49 @@ function deleteBuild() {
   deleting.value = true
 }
 
+/**
+ * Opens the save build to file sidebar.
+ */
+function displaySaveBuildToFileSidebar() {
+  _globalSidebarService.display({
+    displayedComponentParameters: props.parameters,
+    displayedComponentType: 'SaveBuildToFileSidebar',
+    position: 'left'
+  })
+}
+
+/**
+ * Opens the sahre build sidebar.
+ */
+function displayShareBuildSidebar() {
+  _globalSidebarService.display({
+    displayedComponentParameters: props.parameters,
+    displayedComponentType: 'ShareBuildSidebar',
+    position: 'left'
+  })
+}
+
 </script>
 
 <style scoped>
 @import '../../css/icon.css';
 @import '../../css/sidebar.css';
 
-.build-sidebar-title {
+.build-sidebar-button {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.build-sidebar-deletetion-confirmation {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.build-sidebar-name {
+  margin-left: 2.5rem;
 }
 </style>

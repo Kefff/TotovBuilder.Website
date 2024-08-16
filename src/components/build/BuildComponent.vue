@@ -95,7 +95,7 @@
               :disabled="isLoading || isEditing"
               @click="exportBuild()"
             >
-              <font-awesome-icon icon="file-export" />
+              <font-awesome-icon icon="download" />
             </Button>
           </Tooltip>
         </div>

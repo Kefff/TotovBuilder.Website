@@ -38,7 +38,7 @@
             @click="confirmImport()"
           >
             <font-awesome-icon
-              icon="file-import"
+              icon="file-upload"
               class="icon-before-text"
             />
             <span>{{ $t('caption.importBuilds') }}</span>

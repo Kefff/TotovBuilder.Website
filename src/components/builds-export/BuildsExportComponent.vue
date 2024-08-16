@@ -18,7 +18,7 @@
           @click="confirmExport()"
         >
           <font-awesome-icon
-            icon="file-export"
+            icon="download"
             class="icon-before-text"
           />
           <span>{{ $t('caption.exportBuilds') }}</span>

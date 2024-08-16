@@ -46,7 +46,7 @@
       </div>
     </div>
   </div>
-  <div class="sidebar-option general-options-cookies-explanation">
+  <div class="sidebar-option-description">
     <div class="sidebar-option-icon">
       <font-awesome-icon icon="info-circle" />
     </div>
@@ -174,17 +174,6 @@ function toggleAllowCookies() {
 
 .general-options-addition-group {
   margin-top: 3rem;
-}
-
-.general-options-cookies-explanation {
-  color: var(--util-color7);
-  margin-top: 0;
-}
-
-.general-options-cookies-explanation > span {
-  font-size: 0.85rem;
-  max-width: 20rem;
-  white-space: preserve;
 }
 
 .general-options-name {

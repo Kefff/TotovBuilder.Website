@@ -38,6 +38,8 @@ import ChangelogSidebar from './ChangelogSidebarComponent.vue'
 import GeneralOptionsSidebar from './GeneralOptionsSidebarComponent.vue'
 import MerchantItemsOptionsSidebar from './MerchantItemsOptionsSidebarComponent.vue'
 import NotificationsSidebar from './NotificationsSidebarComponent.vue'
+import SaveBuildToFileSidebar from './SaveBuildToFileSidebarComponent.vue'
+import ShareBuildSidebar from './ShareBuildSidebarComponent.vue'
 import ShoppingListSidebar from './ShoppingListSidebarComponent.vue'
 import StatsSidebar from './StatsSidebarComponent.vue'
 
@@ -64,6 +66,10 @@ const displayedComponent = computed(() => {
       return MerchantItemsOptionsSidebar
     case 'NotificationsSidebar':
       return NotificationsSidebar
+    case 'SaveBuildToFileSidebar':
+      return SaveBuildToFileSidebar
+    case 'ShareBuildSidebar':
+      return ShareBuildSidebar
     case 'ShoppingListSidebar':
       return ShoppingListSidebar
     case 'StatsSidebar':

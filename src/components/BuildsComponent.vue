@@ -33,7 +33,7 @@
               :disabled="isLoading || !canExport"
               @click="showBuildsExportPopup()"
             >
-              <font-awesome-icon icon="file-export" />
+              <font-awesome-icon icon="download" />
             </Button>
           </Tooltip>
           <Tooltip
@@ -45,7 +45,7 @@
               :disabled="isLoading || !canImport"
               @click="showBuildsImportPopup()"
             >
-              <font-awesome-icon icon="file-import" />
+              <font-awesome-icon icon="file-upload" />
             </Button>
           </Tooltip>
         </div>

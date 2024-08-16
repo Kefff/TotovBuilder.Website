@@ -17,7 +17,7 @@ import { NotificationService, NotificationType } from '../../services/Notificati
 import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 import { build1, build2 } from '../__data__/buildMocks'
-import { ak12PistolGrip, ammo545bp, armor6b13FlDefault, bansheeDefault, ekp802dt, mechanism, ms2000, nf30mm, opSksDefault, opSksDt, plate6b33Back, plate6b33Front, precision, pso1, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, salewa, scavVest, specterDr } from '../__data__/itemMocks'
+import { ak12PistolGrip, ammo545bp, armor6b13FlDefault, bansheeDefault, bayonet6Kh5, ekp802dt, mechanism, ms2000, nf30mm, opSksDefault, opSksDt, plate6b33Back, plate6b33Front, precision, pso1, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, salewa, scavVest, specterDr } from '../__data__/itemMocks'
 import { rpk16DefaultPrices, salewaPrices } from '../__data__/priceMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
@@ -530,8 +530,9 @@ describe('BuildPropertiesService', () => {
 
   describe('getAsString()', () => {
     it.each([
-      [build1, expectedToString1],
-      [build2, expectedToString2],
+      [build1, 'fr', expectedToString1Fr],
+      [build1, 'en', expectedToString1En],
+      [build2, 'fr', expectedToString2],
       [
         {
           id: 'buildWithArmorOnly',
@@ -575,6 +576,7 @@ describe('BuildPropertiesService', () => {
           lastWebsiteVersion: undefined,
           name: 'Build with armor only'
         } as IBuild,
+        'fr',
         expectedToString3
       ],
       [
@@ -614,6 +616,7 @@ describe('BuildPropertiesService', () => {
           lastWebsiteVersion: undefined,
           name: 'Build with backpack only and every currency'
         } as IBuild,
+        'fr',
         expectedToString4
       ],
       [
@@ -638,6 +641,7 @@ describe('BuildPropertiesService', () => {
           lastWebsiteVersion: undefined,
           name: 'Build with weapon on back only'
         } as IBuild,
+        'fr',
         expectedToString5
       ],
       [
@@ -662,9 +666,10 @@ describe('BuildPropertiesService', () => {
           lastWebsiteVersion: undefined,
           name: 'Build with missing price'
         } as IBuild,
+        'fr',
         expectedToString6
       ]
-    ])('should convert a build to a string', async (build: IBuild, expected: string) => {
+    ])('should convert a build to a string', async (build: IBuild, language: string, expected: string) => {
       // Arrange
       useItemServiceMock()
       usePresetServiceMock()
@@ -681,7 +686,7 @@ describe('BuildPropertiesService', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.getAsString(build, 'fr')
+      const result = await service.getAsString(build, language)
 
       // Assert
       expect(result).toBe(expected)
@@ -827,6 +832,43 @@ describe('BuildPropertiesService', () => {
             value: 33447,
             valueInMainCurrency: 33447
           }
+        },
+        {
+          ignorePrice: false,
+          inventorySlotId: undefined,
+          item: bayonet6Kh5,
+          missingPrice: false,
+          price: {
+            barterItems: [
+              {
+                itemId: ammo545bp.id,
+                quantity: 60
+              }
+            ],
+            currencyName: 'barter',
+            itemId: bayonet6Kh5.id,
+            merchant: '',
+            merchantLevel: 0,
+            quest: undefined,
+            value: 0,
+            valueInMainCurrency: 0
+          },
+          quantity: 1,
+          unitPrice: {
+            barterItems: [
+              {
+                itemId: ammo545bp.id,
+                quantity: 60
+              }
+            ],
+            currencyName: 'barter',
+            itemId: bayonet6Kh5.id,
+            merchant: '',
+            merchantLevel: 0,
+            quest: undefined,
+            value: 0,
+            valueInMainCurrency: 0
+          }
         }
       ])
 
@@ -849,7 +891,32 @@ describe('BuildPropertiesService', () => {
   })
 })
 
-const expectedToString1 = `Build 1
+const expectedToString1En = `Build 1
+Vertical recoil: 76    |    Horizontal recoil: 226    |    Ergonomics: 34 (-9.5%)
+Armor: 4    |    Speed: -6%    |    Turning speed: -9%
+Price: 366,019₽    |    Weight: 24.153 kg
+
+[On sling] RPK-16 5.45x39 light machine gun Default    |    Flea market: 43,345₽
+    [Magazine] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (barter): 24,218₽
+        95 x 5.45x39mm US gs    |    Prapor 1: 9,120₽
+[Body armor] 6B13 assault armor (Flora) Default    |    Ragman 2: 64,269₽
+[Headwear] BNTI LShZ-2DTM helmet (Black)    |    Flea market: 63,493₽
+    [Equipment] LShZ-2DTM face shield    |    Ragman 3 (barter): 29,805₽
+[Backpack] WARTECH Berkut BB-102 backpack (A-TACS FG)    |    Ragman 2: 24,509₽
+    Iskra ration pack    |    Jaeger 2: 24,392₽
+    Bottle of water (0.6L)    |    Therapist 1 (barter): 11,473₽
+[Pockets] Morphine injector    |    Flea market: 17,421₽
+[Pockets] Vaseline balm    |    Flea market: 27,714₽
+[Pockets] RGD-5 hand grenade    |    Prapor 3: 11,822₽
+[Pockets] 60 x 5.45x39mm US gs    |    Prapor 1: 5,760₽
+[Eyewear] Crossbow tactical glasses    |    Ragman 2: 3,885₽
+[Face cover] Cold Fear infrared balaclava    |    Ragman 2: 4,793₽
+
+Create with Totov Builder
+Interactive build and full stats:
+http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU`
+
+const expectedToString1Fr = `Build 1
 Recul vertical: 76    |    Recul horizontal: 226    |    Ergonomie: 34 (-9,5%)
 Armure: 4    |    Vitesse: -6%    |    Vitesse de rotation: -9%
 Prix: 366 019₽    |    Poids: 24,153 kg
