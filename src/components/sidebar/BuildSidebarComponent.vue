@@ -3,7 +3,7 @@
     <div class="sidebar-title-icon">
       <font-awesome-icon icon="ellipsis-h" />
     </div>
-    <span>{{ $t('caption.actions', { build: parameters.name }) }}</span>
+    <span>{{ $t('caption.actions') }}</span>
   </div>
   <span class="build-sidebar-name">{{ parameters.name }}</span>
   <div class="sidebar-option">
@@ -34,12 +34,14 @@
     <div class="sidebar-option-icon">
       <font-awesome-icon icon="info-circle" />
     </div>
-    <span>{{ $t('message.saveBuildToFileExplanation') }}</span>
+    <span class="build-sidebar-save-to-file-explanation">
+      {{ $t('message.saveBuildToFileExplanation') }}
+    </span>
   </div>
   <div class="sidebar-title" />
   <div class="sidebar-option">
     <Button
-      v-if="!deleting"
+      v-if="!isDeleting"
       class="p-button-danger build-sidebar-button"
       @click="deleteBuild()"
     >
@@ -79,6 +81,15 @@
   </div>
 </template>
 
+
+
+
+
+
+
+
+
+
 <script setup lang="ts">
 import { defineProps, ref } from 'vue'
 import { BuildSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
@@ -91,13 +102,13 @@ const props = defineProps<{ parameters: BuildSidebarParameters }>()
 const _buildService = Services.get(BuildService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
-const deleting = ref(false)
+const isDeleting = ref(false)
 
 /**
  * Cancels the build deletion.
  */
 function cancelDeletion() {
-  deleting.value = false
+  isDeleting.value = false
 }
 
 /**
@@ -106,7 +117,7 @@ function cancelDeletion() {
 function confirmDeletion() {
   _buildService.delete(props.parameters.id)
 
-  deleting.value = false
+  isDeleting.value = false
   _globalSidebarService.close('BuildSidebar')
 }
 
@@ -114,7 +125,7 @@ function confirmDeletion() {
  * Starts the build deletion process.
  */
 function deleteBuild() {
-  deleting.value = true
+  isDeleting.value = true
 }
 
 /**
@@ -138,8 +149,16 @@ function displayShareBuildSidebar() {
     position: 'left'
   })
 }
-
 </script>
+
+
+
+
+
+
+
+
+
 
 <style scoped>
 @import '../../css/icon.css';
@@ -161,5 +180,9 @@ function displayShareBuildSidebar() {
 
 .build-sidebar-name {
   margin-left: 2.5rem;
+}
+
+.build-sidebar-save-to-file-explanation {
+  max-width: 20rem;
 }
 </style>

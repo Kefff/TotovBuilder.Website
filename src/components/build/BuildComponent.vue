@@ -85,7 +85,6 @@
               <font-awesome-icon icon="copy" />
             </Button>
           </Tooltip>
-          <BuildShare :build="build" />
           <Tooltip
             :apply-hover-style="false"
             :tooltip="$t('caption.exportBuild')"

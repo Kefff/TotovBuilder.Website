@@ -7,7 +7,7 @@
     <span>{{ $t('caption.displayOptions') }}</span>
   </div>
   <div class="sidebar-option">
-    <LanguageSelector />
+    <ApplicationLanguageSelector />
   </div>
   <div
     v-for="(additionalDisplayOption, index) of additionalDisplayOptions"
@@ -50,7 +50,9 @@
     <div class="sidebar-option-icon">
       <font-awesome-icon icon="info-circle" />
     </div>
-    <span>{{ $t('message.cookiesExplanation') }}</span>
+    <span class="general-options-cookies-explanation">
+      {{ $t('message.cookiesExplanation') }}
+    </span>
   </div>
   <div
     v-for="(additionalGeneralOption, index) of additionalGeneralOptions"
@@ -110,7 +112,7 @@ import { IGeneralOption } from '../../models/utils/IGeneralOption'
 import { GeneralOptionsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { GeneralOptionsService } from '../../services/GeneralOptionsService'
 import Services from '../../services/repository/Services'
-import LanguageSelector from '../LanguageSelectorComponent.vue'
+import ApplicationLanguageSelector from '../ApplicationLanguageSelectorComponent.vue'
 
 const props = defineProps<{ parameters?: GeneralOptionsSidebarParameters }>()
 
@@ -174,6 +176,10 @@ function toggleAllowCookies() {
 
 .general-options-addition-group {
   margin-top: 3rem;
+}
+
+.general-options-cookies-explanation {
+  max-width: 20rem;
 }
 
 .general-options-name {

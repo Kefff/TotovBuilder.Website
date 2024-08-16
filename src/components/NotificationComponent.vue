@@ -129,7 +129,7 @@ function getSeverity(button: INotificationButton) {
   margin-right: 1rem;
   position: fixed;
   right: 0;
-  z-index: 2;
+  z-index: 9999;
 }
 
 .notification-text {

@@ -25,11 +25,9 @@ import InventorySlot from '../InventorySlotComponent.vue'
 import Loading from '../LoadingComponent.vue'
 import NotificationButton from '../NotificationButtonComponent.vue'
 import Toolbar from '../ToolbarComponent.vue'
-import BuildShare from '../build-share/BuildShareComponent.vue'
 
 export default defineComponent({
   components: {
-    BuildShare,
     InputTextField,
     InventoryPrice,
     InventorySlot,

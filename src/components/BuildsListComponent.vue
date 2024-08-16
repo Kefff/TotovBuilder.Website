@@ -383,7 +383,7 @@ function updatedSelectedBuilds(buildId: string, isSelected: boolean) {
 
 .builds-list-chips-container {
   display: flex;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .builds-list-loading {

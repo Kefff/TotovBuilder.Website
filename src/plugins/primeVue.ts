@@ -18,6 +18,7 @@ import Panel from 'primevue/panel'
 import Sidebar from 'primevue/sidebar'
 import TabPanel from 'primevue/tabpanel'
 import TabView from 'primevue/tabview'
+import Textarea from 'primevue/textarea'
 
 import Tooltip from 'primevue/tooltip'
 
@@ -45,6 +46,7 @@ export function usePrimeVue(app: App<Element>): void {
   app.component('Sidebar', Sidebar)
   app.component('TabPanel', TabPanel)
   app.component('TabView', TabView)
+  app.component('TextArea', Textarea)
 
   app.directive('tooltip', Tooltip)
 }
