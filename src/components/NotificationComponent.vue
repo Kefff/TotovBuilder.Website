@@ -181,8 +181,8 @@ function getSeverity(button: INotificationButton) {
 @media only screen and (min-width: 768px) and (max-width: 991px) {}
 
 /* Tablet in landscape */
-@media only screen and (min-width: 992px) and (max-width: 1199px) {}
+@media only screen and (min-width: 992px) and (max-width: 1299px) {}
 
 /* PC */
-@media only screen and (min-width: 1200px) {}
+@media only screen and (min-width: 1300px) {}
 </style>

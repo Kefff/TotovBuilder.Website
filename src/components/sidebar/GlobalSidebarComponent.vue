@@ -136,7 +136,7 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions) {
 
 <style scoped>
 .global-sidebar-content {
-  max-width: calc(100vw - 1rem - 1rem);
+  max-width: calc(50vw - 1rem - 1rem);
 }
 
 .global-sidebar-spacer {
@@ -144,29 +144,25 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions) {
 }
 
 /* Smartphone in portrait */
-@media only screen and (min-width: 320px) and (max-width: 480px) {}
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+  .global-sidebar-content {
+    max-width: calc(100vw - 1rem - 1rem);
+  }
+}
 
 /* Smartphone in landscape */
-@media only screen and (min-width: 481px) and (max-width: 767px) {}
+@media only screen and (min-width: 481px) and (max-width: 767px) {
+  .global-sidebar-content {
+    max-width: calc(100vw - 1rem - 1rem);
+  }
+}
 
 /* Tablet in portrait */
-@media only screen and (min-width: 768px) and (max-width: 991px) {
-  .global-sidebar-content {
-    max-width: calc(50vw - 1rem - 1rem);
-  }
-}
+@media only screen and (min-width: 768px) and (max-width: 991px) {}
 
 /* Tablet in landscape */
-@media only screen and (min-width: 992px) and (max-width: 1199px) {
-  .global-sidebar-content {
-    max-width: calc(50vw - 1rem - 1rem);
-  }
-}
+@media only screen and (min-width: 992px) and (max-width: 1299px) {}
 
 /* PC */
-@media only screen and (min-width: 1200px) {
-  .global-sidebar-content {
-    max-width: calc(50vw - 1rem - 1rem);
-  }
-}
+@media only screen and (min-width: 1300px) {}
 </style>
