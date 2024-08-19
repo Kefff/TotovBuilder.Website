@@ -55,8 +55,8 @@ export type GlobalSidebarComponent =
   | 'GeneralOptionsSidebar'
   | 'MerchantItemsOptionsSidebar'
   | 'NotificationsSidebar'
-  | 'SaveBuildToFileSidebar'
-  | 'ShareBuildSidebar'
+  | 'BuildsExportSidebar'
+  | 'BuildShareSideBar'
   | 'ShoppingListSidebar'
   | 'StatsSidebar'
 
@@ -67,8 +67,8 @@ export type GlobalSidebarDisplayedComponentParameters =
   BuildSidebarParameters
   | BuildsListSidebarParameters
   | GeneralOptionsSidebarParameters
-  | SaveBuildToFileSidebarParameters
-  | ShareBuildSidebarParameters
+  | BuildsExportSidebarParameters
+  | BuildShareSideBarParameters
   | ShoppingListSidebarParameters
   | StatsSidebarParameters
 
@@ -78,14 +78,14 @@ export type GlobalSidebarDisplayedComponentParameters =
 export type GlobalSidebarPosition = 'left' | 'right'
 
 /**
- * Save build to file sidebar parameters.
+ * Builds export sidebar parameters.
  */
-export type SaveBuildToFileSidebarParameters = IBuild
+export type BuildsExportSidebarParameters = IBuild
 
 /**
  * Share build sidebar parameters.
  */
-export type ShareBuildSidebarParameters = IBuild
+export type BuildShareSideBarParameters = IBuild
 
 /**
  * Shopping list sidebar parameters.

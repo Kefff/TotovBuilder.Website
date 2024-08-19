@@ -93,7 +93,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { ShareBuildSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { BuildShareSideBarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import vueI18n from '../../plugins/vueI18n'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
@@ -103,7 +103,7 @@ import Services from '../../services/repository/Services'
 import InputTextField from '../InputTextFieldComponent.vue'
 import LanguageSelector from '../LanguageSelectorComponent.vue'
 
-const props = defineProps<{ parameters: ShareBuildSidebarParameters }>()
+const props = defineProps<{ parameters: BuildShareSideBarParameters }>()
 
 const _buildService = Services.get(BuildService)
 const _buildPropertiesService = Services.get(BuildPropertiesService)

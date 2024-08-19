@@ -60,10 +60,7 @@
           :style="itemsListElementHasRightScroll ? 'display: initial' : 'display: none'"
         />
       </div>
-      <div
-        v-if="buildSummary.recoil.verticalRecoil !== 0 || buildSummary.recoil.horizontalRecoil !== 0 || buildSummary.ergonomics !== 0 || buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0"
-        class="build-card-stats"
-      >
+      <div class="build-card-stats">
         <div v-if="buildSummary.recoil.verticalRecoil !== 0">
           <Tooltip :tooltip="$t('caption.verticalRecoil')">
             <font-awesome-icon
@@ -106,10 +103,7 @@
           </span>
         </div>
       </div>
-      <div
-        v-if="buildSummary.armorModifiers.armorClass > 0 || buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0 || buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0"
-        class="build-card-stats"
-      >
+      <div class="build-card-stats">
         <div v-if="buildSummary.armorModifiers.armorClass > 0">
           <Tooltip :tooltip="$t('caption.armorClass')">
             <font-awesome-icon
@@ -142,10 +136,7 @@
           </Tooltip>
         </div>
       </div>
-      <div
-        v-if="buildSummary.price.priceInMainCurrency > 0 || buildSummary.weight != 0"
-        class="build-card-stats"
-      >
+      <div class="build-card-stats">
         <div
           v-if="buildSummary.price.priceInMainCurrency > 0"
           class="build-card-price"
@@ -424,6 +415,7 @@ function setItemsListElementHasScroll() {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin-top: 0.5rem;
+  min-height: 1.25rem;
 }
 
 .build-card-title {

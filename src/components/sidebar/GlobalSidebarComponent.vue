@@ -32,14 +32,14 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { GlobalSidebarComponent, GlobalSidebarPosition, IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
+import BuildsExportSidebar from './BuildsExportSidebarComponent.vue'
+import BuildShareSideBar from './BuildShareSideBarComponent.vue'
 import BuildSidebarComponent from './BuildSidebarComponent.vue'
 import BuildsListSidebar from './BuildsListSidebarComponent.vue'
 import ChangelogSidebar from './ChangelogSidebarComponent.vue'
 import GeneralOptionsSidebar from './GeneralOptionsSidebarComponent.vue'
 import MerchantItemsOptionsSidebar from './MerchantItemsOptionsSidebarComponent.vue'
 import NotificationsSidebar from './NotificationsSidebarComponent.vue'
-import SaveBuildToFileSidebar from './SaveBuildToFileSidebarComponent.vue'
-import ShareBuildSidebar from './ShareBuildSidebarComponent.vue'
 import ShoppingListSidebar from './ShoppingListSidebarComponent.vue'
 import StatsSidebar from './StatsSidebarComponent.vue'
 
@@ -66,10 +66,10 @@ const displayedComponent = computed(() => {
       return MerchantItemsOptionsSidebar
     case 'NotificationsSidebar':
       return NotificationsSidebar
-    case 'SaveBuildToFileSidebar':
-      return SaveBuildToFileSidebar
-    case 'ShareBuildSidebar':
-      return ShareBuildSidebar
+    case 'BuildsExportSidebar':
+      return BuildsExportSidebar
+    case 'BuildShareSideBar':
+      return BuildShareSideBar
     case 'ShoppingListSidebar':
       return ShoppingListSidebar
     case 'StatsSidebar':

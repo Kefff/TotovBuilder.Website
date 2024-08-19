@@ -13,7 +13,7 @@ import Services from './repository/Services'
 export class ExportService {
   /**
    * Exports a list of builds.
-   * Displayes a notification indicating whetherexport has succeeded.
+   * Displayes a notification indicating whether export has succeeded.
    * @param builds - Builds.
    */
   public async export(builds: IBuild[]) {

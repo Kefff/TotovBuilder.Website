@@ -9,7 +9,7 @@
   <div class="sidebar-option">
     <Button
       class="p-button build-sidebar-button"
-      @click="displayShareBuildSidebar()"
+      @click="displayBuildShareSideBar()"
     >
       <font-awesome-icon
         icon="share-alt"
@@ -21,7 +21,7 @@
   <div class="sidebar-option">
     <Button
       class="p-button build-sidebar-button"
-      @click="displaySaveBuildToFileSidebar()"
+      @click="exportBuild()"
     >
       <font-awesome-icon
         icon="download"
@@ -94,12 +94,14 @@
 import { ref } from 'vue'
 import { BuildSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { BuildService } from '../../services/BuildService'
+import { ExportService } from '../../services/ExportService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 
 const props = defineProps<{ parameters: BuildSidebarParameters }>()
 
 const _buildService = Services.get(BuildService)
+const _exportService = Services.get(ExportService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
 const isDeleting = ref(false)
@@ -129,23 +131,19 @@ function deleteBuild() {
 }
 
 /**
- * Opens the save build to file sidebar.
+ * Export the build to a file.
  */
-function displaySaveBuildToFileSidebar() {
-  _globalSidebarService.display({
-    displayedComponentParameters: props.parameters,
-    displayedComponentType: 'SaveBuildToFileSidebar',
-    position: 'left'
-  })
+function exportBuild() {
+  _exportService.export([props.parameters])
 }
 
 /**
- * Opens the sahre build sidebar.
+ * Opens the share build sidebar.
  */
-function displayShareBuildSidebar() {
+function displayBuildShareSideBar() {
   _globalSidebarService.display({
     displayedComponentParameters: props.parameters,
-    displayedComponentType: 'ShareBuildSidebar',
+    displayedComponentType: 'BuildShareSideBar',
     position: 'left'
   })
 }

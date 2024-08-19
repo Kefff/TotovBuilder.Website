@@ -1,5 +1,5 @@
 <template>
-  Save build to file
+  Export builds
 </template>
 
 <script setup lang="ts">
