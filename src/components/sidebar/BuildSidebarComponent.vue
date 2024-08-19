@@ -91,7 +91,7 @@
 
 
 <script setup lang="ts">
-import { defineProps, ref } from 'vue'
+import { ref } from 'vue'
 import { BuildSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { BuildService } from '../../services/BuildService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'

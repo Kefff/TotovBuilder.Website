@@ -16,7 +16,7 @@
       </div>
       <div class="share-build-sidebar-link">
         <InputTextField
-          v-model:value="shareLink"
+          :value="shareLink"
           :caption="$t('caption.link')"
           caption-mode="placeholder"
           :read-only="true"

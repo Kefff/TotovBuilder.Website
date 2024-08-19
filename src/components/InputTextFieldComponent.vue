@@ -4,8 +4,9 @@
     <InputText
       v-model="modelValue"
       :class="invalid ? 'p-invalid' : ''"
-      :disabled="readOnly"
+      :disabled="disabled"
       :placeholder="captionAsPlaceholder ? caption : undefined"
+      :readonly="readOnly"
     />
     <div
       v-if="invalid"
@@ -34,6 +35,7 @@ const props = withDefaults(
   defineProps<{
     caption?: string,
     captionMode: 'caption' | 'placeholder',
+    disabled?: boolean,
     readOnly?: boolean,
     required: boolean,
     requiredMessagePosition?: 'bottom' | 'right'
@@ -41,6 +43,7 @@ const props = withDefaults(
   {
     caption: '',
     captionMode: 'caption',
+    disabled: false,
     readOnly: false,
     required: false,
     requiredMessagePosition: 'bottom'

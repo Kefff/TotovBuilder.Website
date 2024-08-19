@@ -190,3 +190,13 @@ async function setAcceptedItems() {
   white-space: nowrap;
 }
 </style>
+
+<style>
+.inventory-slot > .p-panel > .p-panel-header {
+  background-color: var(--surface-transparent-0) !important;
+}
+
+.inventory-slot > .p-panel .p-panel-content {
+  background-color: var(--surface-transparent-0);
+}
+</style>
