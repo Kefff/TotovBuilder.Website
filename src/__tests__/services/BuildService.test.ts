@@ -430,7 +430,7 @@ describe('toSharableURL()', () => {
 
     // Assert
     expect(sharableStringResult).toBeUndefined()
-    verify(notificationServiceMock.notify(NotificationType.warning, 'Cannot share build "Build 1" by link because it is too large. You can still share it by using the "Export builds to a file" button to export it as a file that can be imported by another person.')).once()
+    verify(notificationServiceMock.notify(NotificationType.warning, 'Cannot share build "Build 1" by link because it is too large. You can still share it by using the "Save builds to a file" button to save it as a file that can be imported by another person.')).once()
   })
 })
 

@@ -66,7 +66,9 @@ function onClick(event?: MouseEvent) {
   // the method is called one time for the badge and another time for the button
   event?.stopPropagation()
 
-  _globalSidebarService.display({ displayedComponentType: 'NotificationsSidebar', position: 'right' })
+  _globalSidebarService.display({
+    displayedComponentType: 'NotificationsSidebar'
+  })
   _notificationService.resetNewNotificationCount()
   newNotificationCount.value = _notificationService.newNotificationCount
 }

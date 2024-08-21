@@ -11,6 +11,11 @@ export class GlobalSidebarService {
   public static closeGlobalSidebarEvent = 'closeGlobalSidebar'
 
   /**
+   * Level of last sidebar displayed.
+   */
+  private currentLevel = 0
+
+  /**
    * Name of the event fired to ask a global sidebar to open.
    */
   public static openGlobalSidebarEvent = 'openGlobalSidebar'
@@ -25,8 +30,6 @@ export class GlobalSidebarService {
    */
   private onCloseActions: { type: GlobalSidebarComponent, action: (updatedParameters?: GlobalSidebarDisplayedComponentParameters) => void | Promise<void> }[] = []
 
-  private displayedAmount = 0
-
   /**
    * Closes a global sidebar.
    * @param displayedComponentType- Type of component displayed in the global sidebar to close.
@@ -40,13 +43,17 @@ export class GlobalSidebarService {
    * @param options - Options.
    */
   public display(options: IGlobalSidebarOptions) {
-    this.displayedAmount++
+    if (this.currentLevel === 3) {
+      return
+    }
+
+    this.currentLevel++
 
     if (options.onCloseAction != null) {
       this.registerOnCloseAction(options.displayedComponentType, options.onCloseAction)
     }
 
-    this.emitter.emit(GlobalSidebarService.openGlobalSidebarEvent, options)
+    this.emitter.emit(GlobalSidebarService.openGlobalSidebarEvent, options, this.currentLevel)
   }
 
   /**
@@ -54,7 +61,7 @@ export class GlobalSidebarService {
    * @param displayedComponentType - Type of component displayed in the closed sidebar.
    */
   public async executeOnCloseActions(displayedComponentType: GlobalSidebarComponent, updatedParameters?: GlobalSidebarDisplayedComponentParameters) {
-    this.displayedAmount--
+    this.currentLevel--
 
     for (const onCloseAction of this.onCloseActions) {
       if (onCloseAction.type === displayedComponentType) {
@@ -70,7 +77,7 @@ export class GlobalSidebarService {
    * @returns true when a global sidebar is opened; otherwise false.
    */
   public isDisplayed() {
-    return this.displayedAmount > 0
+    return this.currentLevel > 0
   }
 
   /**

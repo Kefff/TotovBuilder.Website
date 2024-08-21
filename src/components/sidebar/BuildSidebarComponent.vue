@@ -143,8 +143,7 @@ function exportBuild() {
 function displayBuildShareSideBar() {
   _globalSidebarService.display({
     displayedComponentParameters: props.parameters,
-    displayedComponentType: 'BuildShareSideBar',
-    position: 'left'
+    displayedComponentType: 'BuildShareSideBar'
   })
 }
 </script>

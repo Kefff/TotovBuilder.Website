@@ -2,7 +2,7 @@
   <Sidebar
     v-model:visible="visible"
     :modal="true"
-    :position="props.position"
+    position="left"
     style="width: auto;"
   >
     <template #header>
@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { GlobalSidebarComponent, GlobalSidebarPosition, IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
+import { GlobalSidebarComponent, IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 import BuildsExportSidebar from './BuildsExportSidebarComponent.vue'
@@ -44,7 +44,7 @@ import ShoppingListSidebar from './ShoppingListSidebarComponent.vue'
 import StatsSidebar from './StatsSidebarComponent.vue'
 
 const props = defineProps<{
-  position: GlobalSidebarPosition
+  level: number
 }>()
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
@@ -116,9 +116,11 @@ function onGlobalSidebarClose(displayedComponentType: GlobalSidebarComponent) {
  * Reacts to the global sidebar being opened.
  *
  * Sets the component to display and opens the global sidebar.
+ * @param openingOptions - Opening options.
+ * @param level - Level of the sidebar to open.
  */
-function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions) {
-  if (openingOptions.position === props.position) {
+function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: number) {
+  if (level === props.level) {
     visible.value = true
     options.value = openingOptions
   }

@@ -232,8 +232,7 @@ export default defineComponent({
               }
             ]
           }
-        ] as IGeneralOptionsGroup[],
-        position: 'right'
+        ] as IGeneralOptionsGroup[]
       })
     }
 
@@ -242,8 +241,7 @@ export default defineComponent({
      */
     function displayMerchantItemsOptions() {
       Services.get(GlobalSidebarService).display({
-        displayedComponentType: 'MerchantItemsOptionsSidebar',
-        position: 'right'
+        displayedComponentType: 'MerchantItemsOptionsSidebar'
       })
     }
 
@@ -256,8 +254,7 @@ export default defineComponent({
         displayedComponentParameters: {
           buildName: summary.value.name,
           shoppingList: summary.value.shoppingList
-        },
-        position: 'left'
+        }
       })
     }
 

@@ -189,8 +189,7 @@ function checkBuildsNotExported() {
  */
 function displayGeneralOptions() {
   Services.get(GlobalSidebarService).display({
-    displayedComponentType: 'GeneralOptionsSidebar',
-    position: 'right'
+    displayedComponentType: 'GeneralOptionsSidebar'
   })
 }
 
@@ -199,8 +198,7 @@ function displayGeneralOptions() {
  */
 function displayMerchantItemsOptions() {
   Services.get(GlobalSidebarService).display({
-    displayedComponentType: 'MerchantItemsOptionsSidebar',
-    position: 'right'
+    displayedComponentType: 'MerchantItemsOptionsSidebar'
   })
 }
 
@@ -313,7 +311,6 @@ function showBuildsExportSidebar() {
   if (canImportExport.value) {
     _globalSidebarService.display({
       displayedComponentType: 'BuildsExportSidebar',
-      position: 'right',
       displayedComponentParameters: buildSummaries.value
     })
   }

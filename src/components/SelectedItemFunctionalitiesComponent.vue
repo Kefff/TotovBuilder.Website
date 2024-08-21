@@ -125,8 +125,7 @@ watch(() => props.canHaveMods, () => {
 function onShowDetailsClick() {
   Services.get(GlobalSidebarService).display({
     displayedComponentType: 'StatsSidebar',
-    displayedComponentParameters: props.item,
-    position: 'right'
+    displayedComponentParameters: props.item
   })
 }
 

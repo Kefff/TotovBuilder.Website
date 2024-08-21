@@ -44,7 +44,7 @@
     "blinding": "Blinding",
     "blindnessProtection": "Blindness protection",
     "buildLastChangesNotExported": "Changes from the {lastUpdated} have not been saved to a file. They will be lost if you clear your browser data. Last file save on {lastExported}.",
-    "buildNotExported": "Build not not saved to a file. It will be lost if you clear your browser data.",
+    "buildNotExported": "Build not saved to a file. It will be lost if you clear your browser data.",
     "builds": "Builds",
     "buildsList": "Builds list",
     "caliber": "Caliber",

@@ -23,8 +23,7 @@ describe('GlobalSideBarService', () => {
     it('should emit the open global sidebar event', () => {
       // Arrange
       const options: IGlobalSidebarOptions = {
-        displayedComponentType: 'GeneralOptionsSidebar',
-        position: 'left'
+        displayedComponentType: 'GeneralOptionsSidebar'
       }
       let globalSidebarToOpenOptions: IGlobalSidebarOptions | undefined = undefined
       const service = new GlobalSidebarService()
@@ -46,7 +45,6 @@ describe('GlobalSideBarService', () => {
       // Act
       service.display({
         displayedComponentType: 'GeneralOptionsSidebar',
-        position: 'left',
         onCloseAction: () => {
           executed = true
         }
@@ -55,6 +53,24 @@ describe('GlobalSideBarService', () => {
 
       // Assert
       expect(executed).toBe(true)
+    })
+
+    it('should do nothing when the maximum level is already reached', () => {
+      // Arrange
+      const service = new GlobalSidebarService()
+
+      // Act
+      service.display({ displayedComponentType: 'BuildShareSideBar' })
+      service.display({ displayedComponentType: 'BuildSidebar' })
+      service.display({ displayedComponentType: 'BuildsExportSidebar' })
+      service.display({ displayedComponentType: 'BuildsListSidebar' })
+      service.executeOnCloseActions('BuildShareSideBar')
+      service.executeOnCloseActions('BuildSidebar')
+      service.executeOnCloseActions('BuildsExportSidebar')
+
+      // Assert
+      const isDisplayed = service.isDisplayed()
+      expect(isDisplayed).toBe(false)
     })
   })
 
@@ -97,12 +113,10 @@ describe('GlobalSideBarService', () => {
 
       // Act
       service.display({
-        displayedComponentType: 'BuildsListSidebar',
-        position: 'left'
+        displayedComponentType: 'BuildsListSidebar'
       })
       service.display({
-        displayedComponentType: 'ChangelogSidebar',
-        position: 'right'
+        displayedComponentType: 'ChangelogSidebar'
       })
 
       let result = service.isDisplayed()

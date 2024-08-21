@@ -86,7 +86,6 @@ function displayItemStats(item: IItem) {
   const globalSidebarService = Services.get(GlobalSidebarService)
   globalSidebarService.display({
     displayedComponentType: 'StatsSidebar',
-    position: 'right',
     displayedComponentParameters: item
   })
 }

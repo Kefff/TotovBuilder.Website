@@ -287,7 +287,6 @@ function showFilterAndSortSidebar() {
   _globalSidebarService.display({
     displayedComponentType: 'BuildsListSidebar',
     displayedComponentParameters: { ...modelFilterAndSortingData.value },
-    position: 'left',
     onCloseAction: onFilterAndSortSidebarClose
   })
 }

@@ -285,8 +285,7 @@ function displayActions() {
   if (build != null) {
     _globalSidebarService.display({
       displayedComponentType: 'BuildSidebar',
-      displayedComponentParameters: build,
-      position: 'right'
+      displayedComponentParameters: build
     })
   }
 }
@@ -300,8 +299,7 @@ function displayShoppingList() {
     displayedComponentParameters: {
       buildName: props.buildSummary.name,
       shoppingList: props.buildSummary.shoppingList
-    },
-    position: 'left'
+    }
   })
 }
 
@@ -312,7 +310,6 @@ function displayShoppingList() {
 function displayStats(item: IItem) {
   _globalSidebarService.display({
     displayedComponentType: 'StatsSidebar',
-    position: 'right',
     displayedComponentParameters: item
   })
 }

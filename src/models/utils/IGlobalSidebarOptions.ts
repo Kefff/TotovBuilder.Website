@@ -24,11 +24,6 @@ export interface IGlobalSidebarOptions {
    * @param updatedParameters - Parameters with updated values if the opened sidebar has changed them.
    */
   onCloseAction?: (updatedParameters?: GlobalSidebarDisplayedComponentParameters) => void | Promise<void>
-
-  /**
-   * Position from which the global sidebar is displayed.
-   */
-  position: GlobalSidebarPosition,
 }
 
 /**
@@ -72,11 +67,6 @@ export type GlobalSidebarDisplayedComponentParameters =
   | GeneralOptionsSidebarParameters
   | ShoppingListSidebarParameters
   | StatsSidebarParameters
-
-/**
- * Position of a global sidebar.
- */
-export type GlobalSidebarPosition = 'left' | 'right'
 
 /**
  * Builds export sidebar parameters.

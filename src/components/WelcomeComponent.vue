@@ -180,8 +180,7 @@ function displayBuilds() {
  */
 function displayGeneralOptions() {
   _globalSidebarService.display({
-    displayedComponentType: 'GeneralOptionsSidebar',
-    position: 'right'
+    displayedComponentType: 'GeneralOptionsSidebar'
   })
 }
 
@@ -190,8 +189,7 @@ function displayGeneralOptions() {
  */
 function displayMerchantItemsOptions() {
   _globalSidebarService.display({
-    displayedComponentType: 'MerchantItemsOptionsSidebar',
-    position: 'right'
+    displayedComponentType: 'MerchantItemsOptionsSidebar'
   })
 }
 

@@ -120,8 +120,9 @@
   </div>
 
   <!-- Global sidebars -->
-  <GlobalSidebar position="left" />
-  <GlobalSidebar position="right" />
+  <GlobalSidebar :level="1" />
+  <GlobalSidebar :level="2" />
+  <GlobalSidebar :level="3" />
 
   <!-- Loading error -->
   <LoadingError />
@@ -204,8 +205,7 @@ onMounted(() => {
  */
 function displayChangelog() {
   Services.get(GlobalSidebarService).display({
-    displayedComponentType: 'ChangelogSidebar',
-    position: 'right'
+    displayedComponentType: 'ChangelogSidebar'
   })
 }
 

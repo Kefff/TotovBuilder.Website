@@ -37,7 +37,7 @@ const props = withDefaults(
     captionMode: 'caption' | 'placeholder',
     disabled?: boolean,
     readOnly?: boolean,
-    required: boolean,
+    required?: boolean,
     requiredMessagePosition?: 'bottom' | 'right'
   }>(),
   {
