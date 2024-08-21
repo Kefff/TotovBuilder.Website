@@ -2,6 +2,7 @@ import { IBuild } from '../build/IBuild'
 import { IShoppingListItem } from '../build/IShoppingListItem'
 import { IItem } from '../item/IItem'
 import BuildFilterAndSortingData from './BuildFilterAndSortingData'
+import { IBuildSummary } from './IBuildSummary'
 import { IGeneralOptionsGroup } from './IGeneralOptionsGroup'
 
 /**
@@ -64,11 +65,11 @@ export type GlobalSidebarComponent =
  * Parameters allowed to be passed to a component displayed in the global sidebar.
  */
 export type GlobalSidebarDisplayedComponentParameters =
-  BuildSidebarParameters
+  BuildsExportSidebarParameters
+  | BuildShareSideBarParameters
+  | BuildSidebarParameters
   | BuildsListSidebarParameters
   | GeneralOptionsSidebarParameters
-  | BuildsExportSidebarParameters
-  | BuildShareSideBarParameters
   | ShoppingListSidebarParameters
   | StatsSidebarParameters
 
@@ -80,7 +81,7 @@ export type GlobalSidebarPosition = 'left' | 'right'
 /**
  * Builds export sidebar parameters.
  */
-export type BuildsExportSidebarParameters = IBuild
+export type BuildsExportSidebarParameters = IBuildSummary[]
 
 /**
  * Share build sidebar parameters.

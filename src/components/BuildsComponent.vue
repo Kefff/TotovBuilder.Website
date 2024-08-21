@@ -9,7 +9,7 @@
       :is-loading="isLoading"
       :show-not-exported="true"
       @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
-      @update:selected-build-ids="onBuildClick"
+      @update:selected-builds="onBuildClick"
     >
       <template #toolbarContent>
         <div class="toolbar-part">
@@ -30,8 +30,8 @@
           >
             <Button
               class="p-button-text p-button-sm button-discreet"
-              :disabled="isLoading || !canExport"
-              @click="showBuildsExportPopup()"
+              :disabled="isLoading || !canImportExport"
+              @click="showBuildsExportSidebar()"
             >
               <font-awesome-icon icon="download" />
             </Button>
@@ -42,7 +42,7 @@
           >
             <Button
               class="p-button-text p-button-sm button-discreet"
-              :disabled="isLoading || !canImport"
+              :disabled="isLoading || !canImportExport"
               @click="showBuildsImportPopup()"
             >
               <font-awesome-icon icon="file-upload" />
@@ -81,13 +81,6 @@
       </template>
     </BuildsList>
   </div>
-
-  <!-- Export -->
-  <BuildsExport
-    v-if="!isLoading"
-    v-model:is-exporting="isExporting"
-    :build-summaries="buildSummaries"
-  />
 
   <!-- Import -->
   <BuildsImport
@@ -130,28 +123,25 @@ import { SortingService } from '../services/sorting/SortingService'
 import { BuildSummarySortingFunctions } from '../services/sorting/functions/BuildSummarySortingFunctions'
 import BuildsList from './BuildsListComponent.vue'
 import NotificationButton from './NotificationButtonComponent.vue'
-import BuildsExport from './builds-export/BuildsExportComponent.vue'
 import BuildsImport from './builds-import/BuildsImportComponent.vue'
-
 
 const router = useRouter()
 
 const _buildService = Services.get(BuildService)
 const _buildPropertiesService = Services.get(BuildPropertiesService)
 const _globalFilterService = Services.get(GlobalFilterService)
+const _globalSidebarService = Services.get(GlobalSidebarService)
 const _itemService = Services.get(ItemService)
 const _sortingService = Services.get(SortingService)
 
 let _builds: IBuild[] = []
 
-const canExport = computed(() => !isLoading.value && buildSummaries.value.length > 0 && !isExporting.value && !isImporting.value)
-const canImport = computed(() => !isLoading.value && !isExporting.value && !isImporting.value)
+const canImportExport = computed(() => !isLoading.value && buildSummaries.value.length > 0)
 const hasBuildsNotExported = computed(() => _builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
 
 const buildSummaries = ref<IBuildSummary[]>([])
 const filterAndSortingData = ref<BuildFilterAndSortingData>(new BuildFilterAndSortingData())
 const hasImported = ref(false)
-const isExporting = ref(false)
 const isImporting = ref(false)
 const isLoading = ref(true)
 
@@ -255,11 +245,11 @@ function getFilterAndSortingData() {
  * Reacts to the click on a build.
  *
  * Opens a the build on which the user clicks.
- * @param selectedBuildIds - IDs of the selected builds.
+ * @param selectedBuilds - Selected builds.
  */
-function onBuildClick(selectedBuildIds: string[]) {
-  if (selectedBuildIds.length === 1) {
-    openBuild(selectedBuildIds[0])
+function onBuildClick(selectedBuilds: IBuildSummary[]) {
+  if (selectedBuilds.length === 1) {
+    openBuild(selectedBuilds[0].id)
   }
 }
 
@@ -319,9 +309,13 @@ function openNewBuild() {
 /**
  * Shows the build export popup.
  */
-function showBuildsExportPopup() {
-  if (canExport.value) {
-    isExporting.value = true
+function showBuildsExportSidebar() {
+  if (canImportExport.value) {
+    _globalSidebarService.display({
+      displayedComponentType: 'BuildsExportSidebar',
+      position: 'right',
+      displayedComponentParameters: buildSummaries.value
+    })
   }
 }
 

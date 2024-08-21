@@ -1,99 +1,103 @@
 <template>
-  <Toolbar>
-    <template #content>
-      <slot name="toolbarContent" />
-    </template>
-    <template #under>
-      <div
-        v-if="buildSummaries.length > 0"
-        class="builds-list-chips-container"
-      >
-        <div class="builds-list-chips">
-          <Chip
-            class="builds-list-chip"
-            @click="showFilterAndSortSidebar()"
-          >
-            <Tooltip :tooltip="sortButtonTooltip">
-              <div class="builds-list-chip-group">
-                <div class="builds-list-chip-icon">
-                  <font-awesome-icon :icon="sortChipIcon" />
-                </div>
-                <span>{{ $t(`caption.${modelFilterAndSortingData.property}`) }}</span>
-              </div>
-            </Tooltip>
-          </Chip>
-          <Chip
-            v-if="modelFilterAndSortingData.filter == ''"
-            class="builds-list-chip"
-            @click="showFilterAndSortSidebar()"
-          >
-            <Tooltip :tooltip="$t('caption.addFilter')">
-              <div class="builds-list-chip-group">
-                <div class="builds-list-chip-icon">
-                  <font-awesome-icon icon="filter" />
-                </div>
-                <span>{{ $t('caption.filter') }}</span>
-                <div class="builds-list-chip-icon-button builds-list-chip-icon-button-add-filter">
-                  <font-awesome-icon icon="plus" />
-                </div>
-              </div>
-            </Tooltip>
-          </Chip>
-          <Chip
-            v-else
-            class="builds-list-chip"
-          >
-            <Tooltip
-              :tooltip="$t('caption.filteredWith', { filter: modelFilterAndSortingData.filter })"
-              style="overflow: hidden;"
+  <div>
+    <Toolbar>
+      <template #content>
+        <slot name="toolbarContent" />
+      </template>
+      <template #under>
+        <div
+          v-if="buildSummaries.length > 0"
+          class="builds-list-chips-container"
+        >
+          <div class="builds-list-chips">
+            <Chip
+              class="builds-list-chip"
+              @click="showFilterAndSortSidebar()"
             >
-              <div
-                class="builds-list-chip-group"
-                @click="showFilterAndSortSidebar()"
-              >
-                <div class="builds-list-chip-icon">
-                  <font-awesome-icon icon="filter" />
+              <Tooltip :tooltip="sortButtonTooltip">
+                <div class="builds-list-chip-group">
+                  <div class="builds-list-chip-icon">
+                    <font-awesome-icon :icon="sortChipIcon" />
+                  </div>
+                  <span>{{ $t(`caption.${modelFilterAndSortingData.property}`) }}</span>
                 </div>
-                <span>{{ modelFilterAndSortingData.filter }}</span>
-              </div>
-            </Tooltip>
-            <Tooltip :tooltip="$t('caption.removeFilter')">
-              <div
-                class="builds-list-chip-icon-button builds-list-chip-icon-button-remove-filter"
-                @click="removeFilter()"
+              </Tooltip>
+            </Chip>
+            <Chip
+              v-if="modelFilterAndSortingData.filter == ''"
+              class="builds-list-chip"
+              @click="showFilterAndSortSidebar()"
+            >
+              <Tooltip :tooltip="$t('caption.addFilter')">
+                <div class="builds-list-chip-group">
+                  <div class="builds-list-chip-icon">
+                    <font-awesome-icon icon="filter" />
+                  </div>
+                  <span>{{ $t('caption.filter') }}</span>
+                  <div class="builds-list-chip-icon-button builds-list-chip-icon-button-add-filter">
+                    <font-awesome-icon icon="plus" />
+                  </div>
+                </div>
+              </Tooltip>
+            </Chip>
+            <Chip
+              v-else
+              class="builds-list-chip"
+            >
+              <Tooltip
+                :tooltip="$t('caption.filteredWith', { filter: modelFilterAndSortingData.filter })"
+                style="overflow: hidden;"
               >
-                <font-awesome-icon icon="times" />
-              </div>
-            </Tooltip>
-          </Chip>
+                <div
+                  class="builds-list-chip-group"
+                  @click="showFilterAndSortSidebar()"
+                >
+                  <div class="builds-list-chip-icon">
+                    <font-awesome-icon icon="filter" />
+                  </div>
+                  <span>{{ modelFilterAndSortingData.filter }}</span>
+                </div>
+              </Tooltip>
+              <Tooltip :tooltip="$t('caption.removeFilter')">
+                <div
+                  class="builds-list-chip-icon-button builds-list-chip-icon-button-remove-filter"
+                  @click="removeFilter()"
+                >
+                  <font-awesome-icon icon="times" />
+                </div>
+              </Tooltip>
+            </Chip>
+          </div>
         </div>
-      </div>
-    </template>
-  </Toolbar>
-  <div
-    v-if="isLoading"
-    class="builds-list-loading"
-  >
-    <Loading />
-  </div>
-  <div
-    v-if="!isLoading && buildSummariesInternal.length > 0"
-    class="builds-list-cards"
-  >
-    <BuildCard
-      v-for="buildSummary of buildSummariesInternal"
-      :key="buildSummary.id"
-      :build-summary="buildSummary"
-      :is-selected="checkIsSelected(buildSummary.id)"
-      :show-not-exported="showNotExported"
-      @update:is-selected="updatedSelectedBuilds(buildSummary.id, $event)"
-    />
-  </div>
-  <div
-    v-else-if="!isLoading"
-    class="builds-list-no-results-message"
-  >
-    {{ $t('message.noBuildsFound') }}
+      </template>
+    </Toolbar>
+    <div
+      v-if="isLoading"
+      class="builds-list-loading"
+    >
+      <Loading />
+    </div>
+    <div
+      v-if="!isLoading && buildSummariesInternal.length > 0"
+      class="builds-list-cards"
+      :class="mode !== 'default' ? 'builds-list-cards-import-export' : ''"
+    >
+      <BuildCard
+        v-for="buildSummary of buildSummariesInternal"
+        :key="buildSummary.id"
+        :build-summary="buildSummary"
+        :mode="mode"
+        :is-selected="checkIsSelected(buildSummary)"
+        :show-not-exported="showNotExported"
+        @update:is-selected="updateSelectedBuilds(buildSummary, $event)"
+      />
+    </div>
+    <div
+      v-else-if="!isLoading"
+      class="builds-list-no-results-message"
+    >
+      {{ $t('message.noBuildsFound') }}
+    </div>
   </div>
 </template>
 
@@ -121,17 +125,19 @@ import BuildCard from './BuildCardComponent.vue'
 import Loading from './LoadingComponent.vue'
 import Toolbar from './ToolbarComponent.vue'
 
-const modelSelectedBuildIds = defineModel<string[]>('selectedBuildIds', { required: false, default: [] })
+const modelSelectedBuilds = defineModel<IBuildSummary[]>('selectedBuilds', { required: false, default: [] })
 const modelFilterAndSortingData = defineModel<BuildFilterAndSortingData>('filterAndSortingData', { required: false, default: new BuildFilterAndSortingData() })
 
 const props = withDefaults(
   defineProps<{
     buildSummaries: IBuildSummary[],
     isLoading?: boolean,
+    mode?: 'default' | 'export' | 'import',
     showNotExported: boolean,
   }>(),
   {
-    isLoading: false
+    isLoading: false,
+    mode: 'default'
   })
 
 const _buildPropertiesService = Services.get(BuildPropertiesService)
@@ -170,11 +176,11 @@ watch(
 
 /**
  * Indicates whether a build is selected.
- * @param buildId - ID of the build.
+ * @param buildSummary - Build.
  * @returns true when the build is selected; otherwise false.
  */
-function checkIsSelected(buildId: string): boolean {
-  const isSelected = modelSelectedBuildIds.value.some(sbi => sbi === buildId)
+function checkIsSelected(buildSummary: IBuildSummary): boolean {
+  const isSelected = modelSelectedBuilds.value.some(sbi => sbi.id === buildSummary.id)
 
   return isSelected
 }
@@ -298,17 +304,17 @@ async function sortBuildSummaries(buildSummariesToSort: IBuildSummary[]): Promis
 
 /**
  * Updates the list of selected build IDs.
- * @param buildId - ID of the build.
+ * @param buildSummary - Build.
  * @param isSelected - Indicates whetehr the build is selected.
  */
-function updatedSelectedBuilds(buildId: string, isSelected: boolean) {
+function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean) {
   if (isSelected) {
-    modelSelectedBuildIds.value = [
-      ...modelSelectedBuildIds.value,
-      buildId
+    modelSelectedBuilds.value = [
+      ...modelSelectedBuilds.value,
+      buildSummary
     ]
   } else {
-    modelSelectedBuildIds.value = modelSelectedBuildIds.value.filter(sbi => sbi !== buildId)
+    modelSelectedBuilds.value = modelSelectedBuilds.value.filter(sbi => sbi.id !== buildSummary.id)
   }
 }
 </script>
@@ -323,10 +329,16 @@ function updatedSelectedBuilds(buildId: string, isSelected: boolean) {
 
 
 <style scoped>
+@import '../css/icon.css';
+
 .builds-list-cards {
   display: grid;
   grid-gap: 1rem;
   grid-template-columns: repeat(4, 1fr);
+}
+
+.builds-list-cards-import-export {
+  grid-template-columns: 1fr !important;
 }
 
 .builds-list-chip {

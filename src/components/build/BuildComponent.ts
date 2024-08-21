@@ -293,11 +293,7 @@ export default defineComponent({
      * Exports the build.
      */
     async function exportBuild() {
-      if (isEditing.value) {
-        return
-      }
-
-      if (isNewBuild.value) {
+      if (isEditing.value || isNewBuild.value) {
         return
       }
 

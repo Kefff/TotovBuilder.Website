@@ -1,5 +1,8 @@
 <template>
-  <Card class="build-card">
+  <Card
+    class="build-card"
+    :class="modelIsSelected ? 'build-card-selected ' : ''"
+  >
     <template #title>
       <div class="build-card-title">
         <div>{{ buildSummary.name }}</div>
@@ -13,6 +16,7 @@
           />
         </Tooltip>
         <Tooltip
+          v-if="mode === 'default'"
           :tooltip="$t('caption.actions')"
           :apply-hover-style="false"
         >
@@ -159,12 +163,16 @@
         </div>
       </div>
       <div class="build-card-buttons">
-        <Button @click="modelIsSelected = !modelIsSelected">
+        <Button
+          :outlined="modelIsSelected"
+          @click="modelIsSelected = !modelIsSelected"
+        >
           <font-awesome-icon
-            icon="edit"
+            v-if="selectionButtonIcon != null"
+            :icon="selectionButtonIcon"
             class="icon-before-text"
           />
-          <span>{{ $t('caption.edit') }}</span>
+          <span>{{ $t(selectionButtonCaption) }}</span>
         </Button>
         <Button
           :disabled="buildSummary.shoppingList.length === 0"
@@ -206,10 +214,15 @@ import ItemIcon from './ItemIconComponent.vue'
 
 const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
 
-const props = defineProps<{
-  buildSummary: IBuildSummary,
-  showNotExported: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    buildSummary: IBuildSummary,
+    mode?: 'default' | 'export' | 'import',
+    showNotExported: boolean
+  }>(),
+  {
+    mode: 'default'
+  })
 
 const _buildService = Services.get(BuildService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
@@ -227,6 +240,24 @@ const notExportedTooltip = computed(() => {
   const tooltip = Services.get(BuildPropertiesService).getNotExportedTooltip(props.buildSummary.lastUpdated, props.buildSummary.lastExported)
 
   return tooltip
+})
+const selectionButtonCaption = computed(() => {
+  if (props.mode === 'default') {
+    return 'caption.edit'
+  } else if (modelIsSelected.value) {
+    return 'caption.deselect'
+  } else {
+    return 'caption.select'
+  }
+})
+const selectionButtonIcon = computed(() => {
+  if (props.mode === 'default') {
+    return 'edit'
+  } else if (modelIsSelected.value) {
+    return 'times'
+  } else {
+    return 'check'
+  }
 })
 
 onMounted(() => {
@@ -408,6 +439,10 @@ function setItemsListElementHasScroll() {
 .build-card-price {
   display: flex;
   grid-column: span 2;
+}
+
+.build-card-selected {
+  background-color: var(--primary-color6)
 }
 
 .build-card-stats {

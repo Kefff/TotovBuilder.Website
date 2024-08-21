@@ -87,7 +87,7 @@
           </Tooltip>
           <Tooltip
             :apply-hover-style="false"
-            :tooltip="$t('caption.exportBuild')"
+            :tooltip="$t('caption.saveBuildToFile')"
           >
             <Button
               class="p-button-text p-button-sm button-discreet"
