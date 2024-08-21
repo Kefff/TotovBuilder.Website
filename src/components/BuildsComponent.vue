@@ -109,6 +109,7 @@ import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import { BuildService } from '../services/BuildService'
+import { ExportService } from '../services/ExportService'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ItemService } from '../services/ItemService'
@@ -129,6 +130,7 @@ const router = useRouter()
 
 const _buildService = Services.get(BuildService)
 const _buildPropertiesService = Services.get(BuildPropertiesService)
+const _exportService = Services.get(ExportService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _itemService = Services.get(ItemService)
@@ -147,6 +149,7 @@ const isLoading = ref(true)
 
 onMounted(() => {
   _buildService.emitter.on(BuildService.deletedEvent, onItemServicesInitialized)
+  _exportService.emitter.on(ExportService.buildsExportedEvent, getBuilds)
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
@@ -160,6 +163,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   _buildService.emitter.off(BuildService.deletedEvent, onItemServicesInitialized)
+  _exportService.emitter.off(ExportService.buildsExportedEvent, getBuilds)
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
 

@@ -65,7 +65,7 @@ import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 import BuildsList from '../BuildsListComponent.vue'
 
-const props = defineProps<{ parameters: BuildsExportSidebarParameters }>()
+const modelParameters = defineModel<BuildsExportSidebarParameters>('parameters', { required: true })
 
 const _buildService = Services.get(BuildService)
 const _exportService = Services.get(ExportService)
@@ -73,7 +73,7 @@ const _globalSidebarService = Services.get(GlobalSidebarService)
 
 const selectedBuilds = ref<IBuildSummary[]>([])
 
-const allSelected = computed(() => selectedBuilds.value.length === props.parameters.length)
+const allSelected = computed(() => selectedBuilds.value.length === modelParameters.value.length)
 
 /**
  * Exports the selected builds.
@@ -100,7 +100,7 @@ function toggleSelection() {
   if (allSelected.value) {
     selectedBuilds.value = []
   } else {
-    selectedBuilds.value = props.parameters
+    selectedBuilds.value = modelParameters.value
   }
 }
 </script>

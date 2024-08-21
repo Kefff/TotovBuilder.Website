@@ -94,7 +94,7 @@ import { BuildSummarySortingFunctions } from '../../services/sorting/functions/B
 import { SortingService } from '../../services/sorting/SortingService'
 import StringUtils from '../../utils/StringUtils'
 
-const modelFilterSortingData = defineModel<BuildsListSidebarParameters>('parameters', { required: true })
+const modelParameters = defineModel<BuildsListSidebarParameters>('parameters', { required: true })
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _sortingService = Services.get(SortingService)
@@ -103,25 +103,25 @@ const buildsListSidebarFilterInput = ref()
 const sortableProperties = ref<string[]>([])
 
 const filter = computed({
-  get: () => modelFilterSortingData.value.filter,
+  get: () => modelParameters.value.filter,
   set: (value: string) => {
-    modelFilterSortingData.value = {
-      ...modelFilterSortingData.value,
+    modelParameters.value = {
+      ...modelParameters.value,
       filter: value
     }
   }
 })
 const sortField = computed({
-  get: () => modelFilterSortingData.value.property,
+  get: () => modelParameters.value.property,
   set: (value: string) => {
-    modelFilterSortingData.value = _sortingService.setSortingProperty(modelFilterSortingData.value, BuildSummarySortingFunctions, value, sortOrder.value) as BuildFilterAndSortingData
+    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, BuildSummarySortingFunctions, value, sortOrder.value) as BuildFilterAndSortingData
   }
 })
-const sortIcon = computed(() => modelFilterSortingData.value.order === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
+const sortIcon = computed(() => modelParameters.value.order === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
 const sortOrder = computed({
-  get: () => modelFilterSortingData.value.order,
+  get: () => modelParameters.value.order,
   set: (value: SortingOrder) => {
-    modelFilterSortingData.value = _sortingService.setSortingProperty(modelFilterSortingData.value, BuildSummarySortingFunctions, modelFilterSortingData.value.property, value) as BuildFilterAndSortingData
+    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, BuildSummarySortingFunctions, modelParameters.value.property, value) as BuildFilterAndSortingData
   }
 })
 
@@ -176,7 +176,7 @@ function getSortableProperties(): string[] {
  * Resets the filter an sort.
  */
 function reset() {
-  modelFilterSortingData.value = new BuildFilterAndSortingData()
+  modelParameters.value = new BuildFilterAndSortingData()
   _globalSidebarService.close('BuildsListSidebar')
 }
 </script>

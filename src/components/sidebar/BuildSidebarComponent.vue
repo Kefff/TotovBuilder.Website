@@ -135,6 +135,7 @@ function deleteBuild() {
  */
 function exportBuild() {
   _exportService.export([props.parameters])
+  _globalSidebarService.close('BuildSidebar')
 }
 
 /**

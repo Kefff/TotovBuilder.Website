@@ -1,4 +1,5 @@
 import FileSaver from 'file-saver'
+import { TinyEmitter } from 'tiny-emitter'
 import { IBuild } from '../models/build/IBuild'
 import vueI18n from '../plugins/vueI18n'
 import { BuildService } from './BuildService'
@@ -11,6 +12,16 @@ import Services from './repository/Services'
  * Represents a service responsible for exporting builds.
  */
 export class ExportService {
+  /**
+   * Name of the event fired when builds have been exported.
+   */
+  public static buildsExportedEvent = 'buildsExported'
+
+  /**
+   * Event emitter used to indicate an export has succeeded.
+   */
+  public emitter = new TinyEmitter()
+
   /**
    * Exports a list of builds.
    * Displayes a notification indicating whether export has succeeded.
@@ -44,6 +55,7 @@ export class ExportService {
       await buildService.update(build)
     }
 
+    this.emitter.emit(ExportService.buildsExportedEvent)
     Services.get(NotificationService).notify(NotificationType.success, vueI18n.t('message.buildsExported'))
   }
 }
