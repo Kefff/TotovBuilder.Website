@@ -7,6 +7,7 @@
       <InputTextField
         v-show="!isLoading && isEditing"
         v-model:value="build.name"
+        class="build-name"
         :caption="$t('caption.name')"
         caption-mode="placeholder"
         :required="true"

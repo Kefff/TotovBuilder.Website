@@ -49,6 +49,10 @@
   padding-top: 3rem;
 }
 
+.build-name {
+  width: 20.725rem;
+}
+
 .build-title {
   align-items: center;
   display: flex;

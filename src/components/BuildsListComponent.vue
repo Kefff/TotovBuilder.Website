@@ -394,7 +394,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean) 
 
 .builds-list-chips-container {
   display: flex;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
 }
 
 .builds-list-loading {

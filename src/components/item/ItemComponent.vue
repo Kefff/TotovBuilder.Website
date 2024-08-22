@@ -119,7 +119,7 @@
           v-show="selectedTab === SelectableTab.mods"
           class="item-base-item"
         >
-          <div>
+          <div class="item-base-item-name">
             {{ $t('caption.baseItem') }}
           </div>
           <Item
