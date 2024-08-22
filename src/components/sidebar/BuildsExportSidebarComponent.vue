@@ -41,7 +41,7 @@
           <span v-else>{{ $t('caption.selectAll') }}</span>
         </Button>
       </template>
-    </buildslist>
+    </BuildsList>
   </div>
 </template>
 

@@ -146,16 +146,6 @@ function getSortOrderCaption(sortOrder: SortingOrder): string {
 }
 
 /**
- * Reacts to a keyboard event in the filter input.
- * @param event - Keyboard event.
- */
-function onFilterKeyDown(event: KeyboardEvent) {
-  if (event.key === 'Enter') {
-    _globalSidebarService.close('BuildsListSidebar')
-  }
-}
-
-/**
  * Gets sortable properties.
  */
 function getSortableProperties(): string[] {
@@ -170,6 +160,16 @@ function getSortableProperties(): string[] {
   properties.sort((a, b) => StringUtils.compare(vueI18n.t(a), vueI18n.t(b)))
 
   return properties
+}
+
+/**
+ * Reacts to a keyboard event in the filter input.
+ * @param event - Keyboard event.
+ */
+function onFilterKeyDown(event: KeyboardEvent) {
+  if (event.key === 'Enter') {
+    _globalSidebarService.close('BuildsListSidebar')
+  }
 }
 
 /**

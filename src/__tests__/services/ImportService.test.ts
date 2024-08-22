@@ -468,19 +468,7 @@ describe('ImportService', () => {
   describe('import()', () => {
     it('should import builds', async () => {
       // Arrange
-      const buildServiceMock = mock<BuildService>()
-      when(buildServiceMock.add(anything())).thenCall((build: IBuild) => {
-        importedBuilds.push(build)
-        return ''
-      })
-      Services.configure(BuildService, undefined, instance(buildServiceMock))
-
-      const notificationServiceMock = mock<NotificationService>()
-      Services.configure(NotificationService, undefined, instance(notificationServiceMock))
-
-      const importedBuilds: IBuild[] = []
-
-      const importService = new ImportService()
+      let imported = false
       const builds: IBuild[] = [
         {
           id: '1',
@@ -500,10 +488,28 @@ describe('ImportService', () => {
         }
       ]
 
+      const buildServiceMock = mock<BuildService>()
+      when(buildServiceMock.add(anything())).thenCall((build: IBuild) => {
+        importedBuilds.push(build)
+        return ''
+      })
+      Services.configure(BuildService, undefined, instance(buildServiceMock))
+
+      const notificationServiceMock = mock<NotificationService>()
+      Services.configure(NotificationService, undefined, instance(notificationServiceMock))
+
+      const importedBuilds: IBuild[] = []
+
+      const importService = new ImportService()
+      importService.emitter.once(ImportService.buildsImportedEvent, () => {
+        imported = true
+      })
+
       // Act
       await importService.import(builds)
 
       // Assert
+      expect(imported).toBe(true)
       expect(importedBuilds).toStrictEqual(builds)
       verify(notificationServiceMock.notify(NotificationType.success, 'Builds imported'))
     })

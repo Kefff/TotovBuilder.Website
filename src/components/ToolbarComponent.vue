@@ -148,6 +148,12 @@ function onScroll() {
   font-size: 2rem;
 }
 
+.toolbar-line > button {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
 .toolbar-container-stickied-z-index-fix {
   /* For some reason, when the buils list is displayed in a sidebar, item icons appear over the toolbar. */
   z-index: 9999;

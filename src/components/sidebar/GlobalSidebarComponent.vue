@@ -35,6 +35,7 @@ import Services from '../../services/repository/Services'
 import BuildsExportSidebar from './BuildsExportSidebarComponent.vue'
 import BuildShareSideBar from './BuildShareSideBarComponent.vue'
 import BuildSidebarComponent from './BuildSidebarComponent.vue'
+import BuildsImportSidebar from './BuildsImportSidebarComponent.vue'
 import BuildsListSidebar from './BuildsListSidebarComponent.vue'
 import ChangelogSidebar from './ChangelogSidebarComponent.vue'
 import GeneralOptionsSidebar from './GeneralOptionsSidebarComponent.vue'
@@ -54,8 +55,14 @@ let visibleInternal = ref(false)
 
 const displayedComponent = computed(() => {
   switch (options.value?.displayedComponentType) {
+    case 'BuildsExportSidebar':
+      return BuildsExportSidebar
+    case 'BuildsImportSidebar':
+      return BuildsImportSidebar
     case 'BuildsListSidebar':
       return BuildsListSidebar
+    case 'BuildShareSideBar':
+      return BuildShareSideBar
     case 'BuildSidebar':
       return BuildSidebarComponent
     case 'ChangelogSidebar':
@@ -66,10 +73,6 @@ const displayedComponent = computed(() => {
       return MerchantItemsOptionsSidebar
     case 'NotificationsSidebar':
       return NotificationsSidebar
-    case 'BuildsExportSidebar':
-      return BuildsExportSidebar
-    case 'BuildShareSideBar':
-      return BuildShareSideBar
     case 'ShoppingListSidebar':
       return ShoppingListSidebar
     case 'StatsSidebar':

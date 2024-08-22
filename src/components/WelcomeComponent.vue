@@ -24,7 +24,7 @@
         <Loading />
       </div>
       <div
-        v-show="!isLoading && !isImporting"
+        v-show="!isLoading"
         class="welcome-actions"
       >
         <div
@@ -63,7 +63,7 @@
         >
           <Button
             class="welcome-button"
-            @click="showBuildsImportPopup()"
+            @click="displayImportSidebar()"
           >
             <font-awesome-icon
               icon="file-upload"
@@ -116,13 +116,6 @@
         </p>
       </div>
     </div>
-
-    <!-- Import -->
-    <BuildsImport
-      v-if="!isLoading"
-      v-model:is-importing="isImporting"
-      v-model:has-imported="hasImported"
-    />
   </div>
 </template>
 
@@ -136,25 +129,26 @@
 
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import router from '../plugins/vueRouter'
 import { BuildService } from '../services/BuildService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
+import { ImportService } from '../services/ImportService'
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
-import BuildsImport from './builds-import/BuildsImportComponent.vue'
 import Loading from './LoadingComponent.vue'
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
+const _importService = Services.get(ImportService)
 const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
 const hasBuilds = ref(false)
-const hasImported = ref(false)
-const isImporting = ref(false)
 const isLoading = ref(true)
 
 onMounted(() => {
+  _importService.emitter.on(ImportService.buildsImportedEvent, goToBuilds)
+
   if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
     _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
   } else {
@@ -162,10 +156,8 @@ onMounted(() => {
   }
 })
 
-watch(() => hasImported.value, () => {
-  if (hasImported.value) {
-    router.push({ name: 'Builds' })
-  }
+onUnmounted(() => {
+  _importService.emitter.off(ImportService.buildsImportedEvent, goToBuilds)
 })
 
 /**
@@ -185,12 +177,28 @@ function displayGeneralOptions() {
 }
 
 /**
+ * Displays the build import sidebar.
+ */
+function displayImportSidebar() {
+  _globalSidebarService.display({
+    displayedComponentType: 'BuildsImportSidebar'
+  })
+}
+
+/**
  * Displays the merchant items options.
  */
 function displayMerchantItemsOptions() {
   _globalSidebarService.display({
     displayedComponentType: 'MerchantItemsOptionsSidebar'
   })
+}
+
+/**
+ * Navigates to the builds list.
+ */
+function goToBuilds() {
+  router.push({ name: 'Builds' })
 }
 
 /**
@@ -208,13 +216,6 @@ function onWebsiteConfigurationServiceInitialized() {
  */
 function openNewBuild() {
   router.push({ name: 'NewBuild' })
-}
-
-/**
- * Shows the build import popup.
- */
-function showBuildsImportPopup() {
-  isImporting.value = true
 }
 </script>
 

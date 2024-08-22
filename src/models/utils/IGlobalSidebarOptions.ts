@@ -45,14 +45,15 @@ export type GeneralOptionsSidebarParameters = IGeneralOptionsGroup[]
  * Components allowed to be displayed in a global sidebar.
  */
 export type GlobalSidebarComponent =
-  'BuildSidebar'
+  'BuildsExportSidebar'
+  | 'BuildsImportSidebar'
+  | 'BuildShareSideBar'
+  | 'BuildSidebar'
   | 'BuildsListSidebar'
   | 'ChangelogSidebar'
   | 'GeneralOptionsSidebar'
   | 'MerchantItemsOptionsSidebar'
   | 'NotificationsSidebar'
-  | 'BuildsExportSidebar'
-  | 'BuildShareSideBar'
   | 'ShoppingListSidebar'
   | 'StatsSidebar'
 

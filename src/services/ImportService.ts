@@ -1,3 +1,4 @@
+import { TinyEmitter } from 'tiny-emitter'
 import { IBuild } from '../models/build/IBuild'
 import { IBuildsImportResult } from '../models/utils/IBuildsImportResult'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
@@ -14,6 +15,16 @@ import { VersionService } from './VersionService'
  * Represents a service responsible for importing builds.
  */
 export class ImportService {
+  /**
+   * Name of the event fired when builds have been imported.
+   */
+  public static buildsImportedEvent = 'buildsImported'
+
+  /**
+   * Event emitter used to indicate an export has succeeded.
+   */
+  public emitter = new TinyEmitter()
+
   /**
    * Gets the builds from a file.
    * @param file - File.
@@ -67,6 +78,7 @@ export class ImportService {
       await buildService.add(build)
     }
 
+    this.emitter.emit(ImportService.buildsImportedEvent)
     Services.get(NotificationService).notify(NotificationType.success, vueI18n.t('message.buildsImported'))
   }
 
