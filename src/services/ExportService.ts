@@ -1,9 +1,8 @@
-import FileSaver from 'file-saver'
 import { TinyEmitter } from 'tiny-emitter'
 import { IBuild } from '../models/build/IBuild'
 import vueI18n from '../plugins/vueI18n'
 import { BuildService } from './BuildService'
-import { LogService } from './LogService'
+import { FileService } from './FileService'
 import { NotificationService, NotificationType } from './NotificationService'
 import { WebsiteConfigurationService } from './WebsiteConfigurationService'
 import Services from './repository/Services'
@@ -24,27 +23,22 @@ export class ExportService {
 
   /**
    * Exports a list of builds.
-   * Displayes a notification indicating whether export has succeeded.
+   * Displays a notification indicating whether export has succeeded.
    * @param builds - Builds.
    */
   public async export(builds: IBuild[]) {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
-    try {
-      const json = JSON.stringify(builds)
-      const blob = new Blob([json], { type: 'text/json;charset=utf-8' })
-      const exportedBuildsName = builds.length === 1 ? builds[0].name : builds.length + ' ' + vueI18n.t('caption.builds')
-      const fileName =
-        websiteConfigurationService.configuration.exportFileNamePrefix
-        + ' - ' + exportedBuildsName + ' - '
-        + new Date().toLocaleString()
-        + websiteConfigurationService.configuration.exportFileExtension
-      FileSaver.saveAs(blob, fileName)
-    }
-    catch {
-      Services.get(LogService).logError('message.buildsExportError')
-      Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.buildsExportError'))
+    const json = JSON.stringify(builds)
+    const exportedBuildsName = builds.length === 1 ? builds[0].name : builds.length + ' ' + vueI18n.t('caption.builds')
+    const fileName =
+      websiteConfigurationService.configuration.exportFileNamePrefix
+      + ' - ' + exportedBuildsName + ' - '
+      + new Date().toLocaleString()
+      + websiteConfigurationService.configuration.exportFileExtension
+    const fileSaved = Services.get(FileService).writeFile(fileName, json)
 
+    if (!fileSaved) {
       return
     }
 

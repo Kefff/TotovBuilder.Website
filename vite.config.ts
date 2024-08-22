@@ -44,7 +44,7 @@ export default defineConfig({
         'src/main.ts',
         'src/models/**',
         'src/plugins/**',
-        'src/services/ExportService.ts', // Requires access to the file system
+        'src/services/FileService.ts', // Requires access to the file system
         'src/servicesConfiguration.ts'
       ]
     },

@@ -1,7 +1,14 @@
 import { IBuild } from '../models/build/IBuild'
+import { IBuildsImportResult } from '../models/utils/IBuildsImportResult'
+import { IBuildSummary } from '../models/utils/IBuildSummary'
+import vueI18n from '../plugins/vueI18n'
+import { BuildPropertiesService } from './BuildPropertiesService'
 import { BuildService } from './BuildService'
+import { FileService } from './FileService'
 import { LogService } from './LogService'
+import { NotificationService, NotificationType } from './NotificationService'
 import Services from './repository/Services'
+import { VersionService } from './VersionService'
 
 /**
  * Represents a service responsible for importing builds.
@@ -12,20 +19,42 @@ export class ImportService {
    * @param file - File.
    * @returns Builds contained in the file.
    */
-  /* c8 ignore start */
-  public getBuildsFromFile(file: File): Promise<IBuild[] | undefined> {
-    const fileReadingPromise = new Promise<IBuild[] | undefined>(resolve => {
-      const fileReader = new FileReader()
-      fileReader.onloadend = () => {
-        const builds = this.readFile(fileReader)
-        resolve(builds)
-      }
-      fileReader.readAsText(file)
-    })
+  public async getBuildsFromFile(file: File | undefined): Promise<IBuildsImportResult | undefined> {
+    if (file == null) {
+      Services.get(LogService).logError('message.invalidBuildFile')
+      Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.importError'))
 
-    return fileReadingPromise
+      return undefined
+    }
+
+    const fileContent = await Services.get(FileService).readFile(file)
+
+    if (fileContent == null) {
+      return undefined
+    }
+
+    const builds = this.parseBuilds(fileContent)
+
+    if (builds == null || builds.length === 0) {
+      return undefined
+    }
+
+    const buildPropertiesService = Services.get(BuildPropertiesService)
+    const versionsService = Services.get(VersionService)
+    const buildSummaries: IBuildSummary[] = []
+
+    for (const build of builds) {
+      await versionsService.executeBuildMigrations(build) // Executing migrations on the build in case it is obsolete
+      const summary = await buildPropertiesService.getSummary(build)
+
+      buildSummaries.push(summary)
+    }
+
+    return {
+      builds,
+      buildSummaries
+    }
   }
-  /* c8 ignore stop */
 
   /**
    * Imports builds.
@@ -37,6 +66,8 @@ export class ImportService {
     for (const build of builds) {
       await buildService.add(build)
     }
+
+    Services.get(NotificationService).notify(NotificationType.success, vueI18n.t('message.buildsImported'))
   }
 
   /**
@@ -44,18 +75,19 @@ export class ImportService {
    * @param fileReader - File reader.
    * @returns file - Builds.
    */
-  /* c8 ignore start */
-  private readFile(fileReader: FileReader): IBuild[] | undefined {
-    if (fileReader.error != null) {
-      Services.get(LogService).logError('message.importError')
+  private parseBuilds(fileContent: string): IBuild[] | undefined {
+    let builds: IBuild[] | undefined
 
-      return undefined
+    try {
+      builds = JSON.parse(fileContent) as IBuild[]
+    }
+    catch {
+      // Do nothing
     }
 
-    const builds = JSON.parse(fileReader.result as string) as IBuild[]
-
-    if (builds == null) {
+    if (builds == null || builds.length == null) {
       Services.get(LogService).logError('message.importError')
+      Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.importError'))
 
       return undefined
     }
@@ -69,5 +101,4 @@ export class ImportService {
 
     return builds
   }
-  /* c8 ignore stop */
 }

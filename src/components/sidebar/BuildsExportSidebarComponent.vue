@@ -55,7 +55,7 @@
 
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildsExportSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
@@ -75,6 +75,14 @@ const selectedBuilds = ref<IBuildSummary[]>([])
 
 const allSelected = computed(() => selectedBuilds.value.length === modelParameters.value.length)
 
+onMounted(() => {
+  addEventListener('keydown', (e) => onKeyDown(e))
+})
+
+onUnmounted(() => {
+  removeEventListener('keydown', (e) => onKeyDown(e))
+})
+
 /**
  * Exports the selected builds.
  */
@@ -91,6 +99,17 @@ async function exportBuilds() {
 
   await _exportService.export(buildsToExport)
   _globalSidebarService.close('BuildsExportSidebar')
+}
+
+/**
+ * Reacts to a keyboard event.
+ * @param event - Keyboard event.
+ */
+function onKeyDown(event: KeyboardEvent) {
+  if (event.key === 'a' && (event.ctrlKey || event.metaKey)) {
+    event.preventDefault() // Prevents the browser action from being triggered
+    selectedBuilds.value = modelParameters.value
+  }
 }
 
 /**
