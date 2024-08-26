@@ -397,8 +397,9 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean) 
 }
 
 .builds-list-chips-container-under-toolbar {
-  /* Height of the toolbar */
-  top: 4.25rem;
+  /* Height of the toolbar + margin */
+  margin-top: 0.5rem;
+  top: 4.385rem;
 }
 
 .builds-list-loading {

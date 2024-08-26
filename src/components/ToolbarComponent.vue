@@ -16,13 +16,16 @@
           />
           <slot name="left" />
         </div>
+        <div>
+          <slot name="center" />
+        </div>
         <div class="toolbar-line-right">
-          <slot name="right" />
           <ToolbarButton
             v-for="button of rightDisplayedButtons"
             :key="button.name"
             :button="button"
           />
+          <slot name="right" />
         </div>
       </div>
     </div>
@@ -157,7 +160,6 @@ function setButtonsAreHidden() {
 }
 
 .toolbar-container {
-  margin-bottom: 0.5rem;
   position: sticky;
   top: 0;
   z-index: 1;
@@ -165,7 +167,7 @@ function setButtonsAreHidden() {
 
 .toolbar-line {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 0.5rem;
   font-size: 2rem;
   width: 100%;

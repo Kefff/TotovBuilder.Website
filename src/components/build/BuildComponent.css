@@ -14,6 +14,14 @@
   width: 1.5rem !important;
 }
 
+.build-deletion-confirmation-buttons {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  width: 100%;
+}
+
 .build-empty-message {
   display: flex;
   flex-direction: column;
@@ -53,19 +61,18 @@
   width: 20.725rem;
 }
 
+.build-not-exported {
+  color: var(--warning-color);
+  margin-left: 0.5rem;
+}
+
 .build-title {
   align-items: center;
   display: flex;
-  flex-direction: row;
   font-size: 1.5rem;
-  height: 3.5rem;
+  height: 100%;
   justify-content: center;
-  margin-bottom: 0.5rem;
-}
-
-.build-toolbar-not-exported {
-  color: var(--warning-color);
-  margin-left: 0.5rem;
+  text-align: center;
 }
 
 .build-toolbar-right {
@@ -76,14 +83,34 @@
   margin-left: auto;
 }
 
-.build-toolbar-summary {
+.build-summary {
   align-items: center;
+  /* Same color as the toolbar */
+  background-color: rgba(18, 18, 18, 0.85);
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-color: var(--primary-color6);
+  border-style: solid;
+  border-top-style: none;
+  border-width: 1px;
   display: flex;
-  font-weight: bold;
   font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0.5rem;
 }
 
-.build-toolbar-summary-group {
+.build-summary-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  position: sticky;
+  /* Height of the toolbar */
+  top: 3.885rem;
+  z-index: 1;
+}
+
+.build-summary-group {
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -91,15 +118,15 @@
   margin-right: 2rem;
 }
 
-.build-toolbar-summary-group:last-child {
+.build-summary-group:last-child {
   margin-right: 0;
 }
 
-.build-toolbar-summary-icon {
+.build-summary-icon {
   margin-left: 0.25rem;
 }
 
-.build-toolbar-summary-value {
+.build-summary-value {
   align-items: center;
   display: flex;
   flex-wrap: nowrap;
@@ -107,11 +134,11 @@
   white-space: nowrap;
 }
 
-.build-toolbar-summary-value .icon-before-text {
+.build-summary-value .icon-before-text {
   height: 1.5rem;
   width: 1.5rem;
 }
 
-.build-toolbar-summary-value:last-child {
+.build-summary-value:last-child {
   margin-right: 0;
 }

@@ -1,162 +1,162 @@
 <template>
   <div class="build">
-    <div class="build-title">
-      <div v-show="!isEditing">
-        {{ build.name }}
-      </div>
-      <InputTextField
-        v-show="!isLoading && isEditing"
-        v-model:value="build.name"
-        :caption="$t('caption.name')"
-        :centered="true"
-        :required="true"
-        caption-mode="placeholder"
-        class="build-name"
-      />
-      <Tooltip
-        v-if="!isLoading && !summary.exported && !isNewBuild"
-        :tooltip="notExportedTooltip"
-      >
-        <font-awesome-icon
-          icon="exclamation-triangle"
-          class="build-toolbar-not-exported"
-        />
-      </Tooltip>
-    </div>
     <Toolbar :buttons="toolbarButtons">
+      <template #center>
+        <div class="build-title">
+          <div v-show="!isEditing">
+            {{ build.name }}
+          </div>
+          <InputTextField
+            v-show="!isLoading && isEditing"
+            v-model:value="build.name"
+            :caption="$t('caption.name')"
+            :centered="true"
+            :required="true"
+            caption-mode="placeholder"
+            class="build-name"
+          />
+          <Tooltip
+            v-if="!isLoading && !summary.exported && !isNewBuild"
+            :tooltip="notExportedTooltip"
+          >
+            <font-awesome-icon
+              icon="exclamation-triangle"
+              class="build-not-exported"
+            />
+          </Tooltip>
+        </div>
+      </template>
       <template #right>
         <NotificationButton />
       </template>
-      <template #content>
-        <div class="toolbar-part toolbar-center">
-          <div
-            v-show="!isLoading"
-            class="build-toolbar-summary"
-          >
-            <div
-              v-if="hasSummaryStats"
-              class="build-toolbar-summary-group"
-            >
-              <Tooltip
-                v-if="hasSummaryVerticalRecoil"
-                :tooltip="$t('caption.verticalRecoil')"
-                class="build-toolbar-summary-value"
-              >
-                <font-awesome-icon
-                  icon="arrows-alt-v"
-                  class="icon-before-text"
-                />
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.verticalRecoil) }}</span>
-              </Tooltip>
-              <Tooltip
-                v-if="hasSummaryVerticalRecoil"
-                :tooltip="$t('caption.horizontalRecoil')"
-                class="build-toolbar-summary-value"
-              >
-                <font-awesome-icon
-                  icon="arrows-alt-h"
-                  class="icon-before-text"
-                />
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.horizontalRecoil) }}</span>
-              </Tooltip>
-              <Tooltip
-                v-if="hasSummaryErgonomics"
-                :tooltip="$t('caption.ergonomics')"
-                class="build-toolbar-summary-value"
-              >
-                <font-awesome-icon
-                  icon="hand-paper"
-                  class="icon-before-text"
-                />
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, summary.ergonomics) }}</span>
-              </Tooltip>
-            </div>
-            <div
-              v-if="hasSummaryArmor || hasSummaryWearableModifiers"
-              class="build-toolbar-summary-group"
-            >
-              <Tooltip
-                v-if="hasSummaryArmor"
-                :tooltip="$t('caption.armorClass')"
-                class="build-toolbar-summary-value"
-              >
-                <font-awesome-icon
-                  icon="award"
-                  class="icon-before-text"
-                />
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, summary.armorModifiers.armorClass) }}</span>
-              </Tooltip>
-              <Tooltip
-                v-if="hasSummaryErgonomicsModifierPercentage"
-                :tooltip="$t('caption.ergonomicsModifierPercentage')"
-                class="build-toolbar-summary-value"
-              >
-                <font-awesome-icon
-                  icon="hand-paper"
-                  class="icon-before-text"
-                />
-                <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsModifierPercentage)">
-                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsModifierPercentage) }}
-                </span>
-              </Tooltip>
-              <Tooltip
-                v-if="hasSummaryMovementSpeedModifierPercentage"
-                :tooltip="$t('caption.movementSpeedModifierPercentage')"
-                class="build-toolbar-summary-value"
-              >
-                <font-awesome-icon
-                  icon="walking"
-                  class="icon-before-text"
-                />
-                <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedModifierPercentage)">
-                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, summary.wearableModifiers.movementSpeedModifierPercentage) }}
-                </span>
-              </Tooltip>
-              <Tooltip
-                v-if="hasSummaryTurningSpeedModifierPercentage"
-                :tooltip="$t('caption.turningSpeedModifierPercentage')"
-                class="build-toolbar-summary-value"
-              >
-                <font-awesome-icon
-                  icon="undo"
-                  class="icon-before-text"
-                />
-                <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedModifierPercentage)">
-                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, summary.wearableModifiers.turningSpeedModifierPercentage) }}
-                </span>
-              </Tooltip>
-            </div>
-            <div
-              v-if="hasSummaryPrice || hasSummaryWeight"
-              class="build-toolbar-summary-group"
-            >
-              <div
-                v-if="hasSummaryPrice"
-                class="build-toolbar-summary-value"
-              >
-                <InventoryPrice
-                  v-if="
-                    !isLoading"
-                  :inventory-price="summary.price"
-                  :is-build="true"
-                />
-              </div>
-              <Tooltip
-                v-if="hasSummaryWeight"
-                :tooltip="$t('caption.weight')"
-                class="build-toolbar-summary-value"
-              >
-                <font-awesome-icon
-                  icon="weight-hanging"
-                  class="icon-before-text"
-                />
-                <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
-              </Tooltip>
-            </div>
-          </div>
-        </div>
-      </template>
     </Toolbar>
+    <div
+      v-show="!isLoading"
+      class="build-summary-container"
+    >
+      <div class="build-summary">
+        <div
+          v-if="hasSummaryStats"
+          class="build-summary-group"
+        >
+          <Tooltip
+            v-if="hasSummaryVerticalRecoil"
+            :tooltip="$t('caption.verticalRecoil')"
+            class="build-summary-value"
+          >
+            <font-awesome-icon
+              icon="arrows-alt-v"
+              class="icon-before-text"
+            />
+            <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.verticalRecoil) }}</span>
+          </Tooltip>
+          <Tooltip
+            v-if="hasSummaryVerticalRecoil"
+            :tooltip="$t('caption.horizontalRecoil')"
+            class="build-summary-value"
+          >
+            <font-awesome-icon
+              icon="arrows-alt-h"
+              class="icon-before-text"
+            />
+            <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.horizontalRecoil) }}</span>
+          </Tooltip>
+          <Tooltip
+            v-if="hasSummaryErgonomics"
+            :tooltip="$t('caption.ergonomics')"
+            class="build-summary-value"
+          >
+            <font-awesome-icon
+              icon="hand-paper"
+              class="icon-before-text"
+            />
+            <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, summary.ergonomics) }}</span>
+          </Tooltip>
+        </div>
+        <div
+          v-if="hasSummaryArmor || hasSummaryWearableModifiers"
+          class="build-summary-group"
+        >
+          <Tooltip
+            v-if="hasSummaryArmor"
+            :tooltip="$t('caption.armorClass')"
+            class="build-summary-value"
+          >
+            <font-awesome-icon
+              icon="award"
+              class="icon-before-text"
+            />
+            <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, summary.armorModifiers.armorClass) }}</span>
+          </Tooltip>
+          <Tooltip
+            v-if="hasSummaryErgonomicsModifierPercentage"
+            :tooltip="$t('caption.ergonomicsModifierPercentage')"
+            class="build-summary-value"
+          >
+            <font-awesome-icon
+              icon="hand-paper"
+              class="icon-before-text"
+            />
+            <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsModifierPercentage)">
+              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsModifierPercentage) }}
+            </span>
+          </Tooltip>
+          <Tooltip
+            v-if="hasSummaryMovementSpeedModifierPercentage"
+            :tooltip="$t('caption.movementSpeedModifierPercentage')"
+            class="build-summary-value"
+          >
+            <font-awesome-icon
+              icon="walking"
+              class="icon-before-text"
+            />
+            <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedModifierPercentage)">
+              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, summary.wearableModifiers.movementSpeedModifierPercentage) }}
+            </span>
+          </Tooltip>
+          <Tooltip
+            v-if="hasSummaryTurningSpeedModifierPercentage"
+            :tooltip="$t('caption.turningSpeedModifierPercentage')"
+            class="build-summary-value"
+          >
+            <font-awesome-icon
+              icon="undo"
+              class="icon-before-text"
+            />
+            <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedModifierPercentage)">
+              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, summary.wearableModifiers.turningSpeedModifierPercentage) }}
+            </span>
+          </Tooltip>
+        </div>
+        <div
+          v-if="hasSummaryPrice || hasSummaryWeight"
+          class="build-summary-group"
+        >
+          <div
+            v-if="hasSummaryPrice"
+            class="build-summary-value"
+          >
+            <InventoryPrice
+              v-if="
+                !isLoading"
+              :inventory-price="summary.price"
+              :is-build="true"
+            />
+          </div>
+          <Tooltip
+            v-if="hasSummaryWeight"
+            :tooltip="$t('caption.weight')"
+            class="build-summary-value"
+          >
+            <font-awesome-icon
+              icon="weight-hanging"
+              class="icon-before-text"
+            />
+            <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
+          </Tooltip>
+        </div>
+      </div>
+    </div>
 
     <!-- Inventory slots -->
     <div
@@ -215,27 +215,29 @@
       <span>{{ $t('message.confirmDeleteBuild', { name: build.name }) }}</span>
     </div>
     <template #footer>
-      <Button
-        class="p-button-danger"
-        :label="$t('caption.delete')"
-        @click="confirmDelete()"
-      >
-        <font-awesome-icon
-          icon="trash"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.delete') }}</span>
-      </Button>
-      <Button
-        class="p-button-text button-discreet"
-        @click="cancelDelete()"
-      >
-        <font-awesome-icon
-          icon="undo"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.cancel') }}</span>
-      </Button>
+      <div class="build-deletion-confirmation-buttons">
+        <Button
+          :label="$t('caption.delete')"
+          severity="danger"
+          @click="confirmDelete()"
+        >
+          <font-awesome-icon
+            icon="trash"
+            class="icon-before-text"
+          />
+          <span>{{ $t('caption.delete') }}</span>
+        </Button>
+        <Button
+          outlined
+          @click="cancelDelete()"
+        >
+          <font-awesome-icon
+            icon="undo"
+            class="icon-before-text"
+          />
+          <span>{{ $t('caption.cancel') }}</span>
+        </Button>
+      </div>
     </template>
   </Dialog>
 </template>

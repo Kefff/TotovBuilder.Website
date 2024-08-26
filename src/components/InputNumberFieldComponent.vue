@@ -99,12 +99,11 @@ const invalid = computed(() => props.required && modelValue.value == null)
 
 <style>
 .input-number-field .p-inputnumber {
-  height: 3.25rem;
+  height: 2.75rem;
 }
 
 .input-number-field input {
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
+  padding: 0.25rem;
   text-align: center;
   width: 100%;
 }

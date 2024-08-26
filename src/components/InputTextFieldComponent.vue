@@ -88,9 +88,8 @@ const invalid = computed(() => props.required && (modelValue.value == null || mo
 
 <style>
 .input-text-field input {
-  height: 3.25rem;
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
+  height: 2.75rem;
+  padding: 0.25rem;
   width: 100%;
 }
 

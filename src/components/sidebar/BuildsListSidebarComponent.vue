@@ -70,7 +70,8 @@
   <div class="sidebar-title" />
   <div class="sidebar-option">
     <Button
-      class="p-button-danger builds-list-sidebar-reset-button"
+      class="builds-list-sidebar-reset-button"
+      severity="danger"
       @click="reset()"
     >
       <font-awesome-icon

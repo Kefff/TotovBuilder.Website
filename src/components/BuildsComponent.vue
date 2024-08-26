@@ -1,9 +1,11 @@
 <template>
   <div class="builds">
-    <div class="builds-title">
-      {{ $t('caption.buildsList') }}
-    </div>
     <Toolbar :buttons="toolbarButtons">
+      <template #center>
+        <div class="builds-title">
+          {{ $t('caption.buildsList') }}
+        </div>
+      </template>
       <template #right>
         <NotificationButton />
       </template>
@@ -339,10 +341,9 @@ function openNewBuild() {
 .builds-title {
   align-items: center;
   display: flex;
-  flex-direction: row;
   font-size: 1.5rem;
-  height: 3.5rem;
+  height: 100%;
   justify-content: center;
-  margin-bottom: 0.5rem;
+  text-align: center;
 }
 </style>

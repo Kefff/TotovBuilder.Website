@@ -44,6 +44,7 @@ export default defineComponent({
     const _buildPropertiesService = Services.get(BuildPropertiesService)
     const _compatibilityService = Services.get(CompatibilityService)
     const _globalFilterService = Services.get(GlobalFilterService)
+    const _globalSidebarService = Services.get(GlobalSidebarService)
     const _itemService = Services.get(ItemService)
 
     const _inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
@@ -88,11 +89,32 @@ export default defineComponent({
         style: () => 'outlined'
       },
       {
-        action: copy,
-        caption: () => 'caption.copyBuild',
-        icon: () => 'copy',
-        isDisabled: () => isLoading.value || isNewBuild.value,
-        name: 'copy',
+        action: cancelEdit,
+        caption: () => 'caption.cancel',
+        icon: () => 'undo',
+        isVisible: () => isEditing.value,
+        name: 'cancel',
+        position: () => 'left',
+        style: () => 'outlined',
+        variant: () => 'danger'
+      },
+      {
+        action: startDelete,
+        caption: () => 'caption.delete',
+        icon: () => 'trash',
+        isDisabled: () => isLoading.value,
+        isVisible: () => !isEditing.value,
+        name: 'delete',
+        position: () => 'left',
+        style: () => 'outlined',
+        variant: () => 'danger'
+      },
+      {
+        action: displayBuildShareSideBar,
+        caption: () => 'caption.share',
+        icon: () => 'share-alt',
+        isDisabled: () => isLoading.value || isEditing.value,
+        name: 'share',
         showCaption: () => false,
         style: () => 'discreet'
       },
@@ -102,6 +124,15 @@ export default defineComponent({
         icon: () => 'download',
         isDisabled: () => isLoading.value || isEditing.value,
         name: 'export',
+        showCaption: () => false,
+        style: () => 'discreet'
+      },
+      {
+        action: copy,
+        caption: () => 'caption.copyBuild',
+        icon: () => 'copy',
+        isDisabled: () => isLoading.value || isNewBuild.value,
+        name: 'copy',
         showCaption: () => false,
         style: () => 'discreet'
       },
@@ -123,26 +154,6 @@ export default defineComponent({
         position: () => 'right',
         showCaption: () => false,
         style: () => 'discreet'
-      },
-      {
-        action: cancelEdit,
-        caption: () => 'caption.cancel',
-        icon: () => 'undo',
-        isVisible: () => isEditing.value,
-        name: 'cancel',
-        position: () => 'right',
-        variant: () => 'danger'
-      },
-      {
-        action: startDelete,
-        caption: () => 'caption.delete',
-        icon: () => 'trash',
-        isDisabled: () => isLoading.value,
-        isVisible: () => !isEditing.value,
-        name: 'delete',
-        position: () => 'right',
-        showCaption: () => false,
-        variant: () => 'danger'
       }
     ]
 
@@ -285,7 +296,7 @@ export default defineComponent({
         collapseStatuses.value[i] = true
       }
 
-      Services.get(GlobalSidebarService).close('GeneralOptionsSidebar')
+      _globalSidebarService.close('GeneralOptionsSidebar')
     }
 
     /**
@@ -305,7 +316,7 @@ export default defineComponent({
      * Displays the general options.
      */
     function displayGeneralOptions() {
-      Services.get(GlobalSidebarService).display({
+      _globalSidebarService.display({
         displayedComponentType: 'GeneralOptionsSidebar',
         displayedComponentParameters: [
           {
@@ -335,10 +346,20 @@ export default defineComponent({
     }
 
     /**
+ * Displays the share build sidebar.
+ */
+    function displayBuildShareSideBar() {
+      _globalSidebarService.display({
+        displayedComponentParameters: build.value,
+        displayedComponentType: 'BuildShareSideBar'
+      })
+    }
+
+    /**
      * Displays the merchant items options.
      */
     function displayMerchantItemsOptions() {
-      Services.get(GlobalSidebarService).display({
+      _globalSidebarService.display({
         displayedComponentType: 'MerchantItemsOptionsSidebar'
       })
     }
@@ -347,12 +368,12 @@ export default defineComponent({
      * Displays the shopping list.
      */
     function displayShoppingList() {
-      Services.get(GlobalSidebarService).display({
-        displayedComponentType: 'ShoppingListSidebar',
+      _globalSidebarService.display({
         displayedComponentParameters: {
           buildName: summary.value.name,
           shoppingList: summary.value.shoppingList
-        }
+        },
+        displayedComponentType: 'ShoppingListSidebar'
       })
     }
 
@@ -366,7 +387,7 @@ export default defineComponent({
         collapseStatuses.value[i] = false
       }
 
-      Services.get(GlobalSidebarService).close('GeneralOptionsSidebar')
+      _globalSidebarService.close('GeneralOptionsSidebar')
     }
 
     /**
@@ -381,7 +402,7 @@ export default defineComponent({
         }
       }
 
-      Services.get(GlobalSidebarService).close('GeneralOptionsSidebar')
+      _globalSidebarService.close('GeneralOptionsSidebar')
     }
 
     /**

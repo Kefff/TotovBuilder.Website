@@ -42,7 +42,8 @@
   <div class="sidebar-option">
     <Button
       v-if="!isDeleting"
-      class="p-button-danger build-sidebar-button"
+      class="build-sidebar-button"
+      severity="danger"
       @click="deleteBuild()"
     >
       <font-awesome-icon
@@ -68,7 +69,8 @@
         <span>{{ $t('caption.cancel') }}</span>
       </Button>
       <Button
-        class="p-button-danger build-sidebar-button"
+        class="build-sidebar-button"
+        severity="danger"
         @click="confirmDeletion()"
       >
         <font-awesome-icon
@@ -131,21 +133,21 @@ function deleteBuild() {
 }
 
 /**
- * Export the build to a file.
- */
-function exportBuild() {
-  _exportService.export([props.parameters])
-  _globalSidebarService.close('BuildSidebar')
-}
-
-/**
- * Opens the share build sidebar.
+ * Displays the share build sidebar.
  */
 function displayBuildShareSideBar() {
   _globalSidebarService.display({
     displayedComponentParameters: props.parameters,
     displayedComponentType: 'BuildShareSideBar'
   })
+}
+
+/**
+ * Export the build to a file.
+ */
+function exportBuild() {
+  _exportService.export([props.parameters])
+  _globalSidebarService.close('BuildSidebar')
 }
 </script>
 
