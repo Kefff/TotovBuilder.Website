@@ -3,83 +3,20 @@
     <div class="builds-title">
       {{ $t('caption.buildsList') }}
     </div>
+    <Toolbar :buttons="toolbarButtons">
+      <template #right>
+        <NotificationButton />
+      </template>
+    </Toolbar>
     <BuildsList
       v-model:filter-and-sorting-data="filterAndSortingData"
       :build-summaries="buildSummaries"
       :is-loading="isLoading"
+      :is-under-toolbar="true"
       :show-not-exported="true"
       @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
       @update:selected-builds="onBuildClick"
-    >
-      <template #toolbarContent>
-        <div class="toolbar-part">
-          <Button
-            :disabled="isLoading"
-            class="p-button-success"
-            @click="openNewBuild()"
-          >
-            <font-awesome-icon
-              icon="plus"
-              class="icon-before-text"
-            />
-            <span>{{ $t('caption.new') }}</span>
-          </Button>
-          <Tooltip
-            :tooltip="$t('caption.exportBuilds')"
-            :apply-hover-style="false"
-          >
-            <Button
-              class="p-button-text p-button-sm button-discreet"
-              :disabled="isLoading || !canImportExport"
-              @click="displayExportSidebar()"
-            >
-              <font-awesome-icon icon="download" />
-            </Button>
-          </Tooltip>
-          <Tooltip
-            :tooltip="$t('caption.importBuilds')"
-            :apply-hover-style="false"
-          >
-            <Button
-              class="p-button-text p-button-sm button-discreet"
-              :disabled="isLoading || !canImportExport"
-              @click="displayImportSidebar()"
-            >
-              <font-awesome-icon icon="file-upload" />
-            </Button>
-          </Tooltip>
-        </div>
-        <div class="toolbar-part toolbar-center" />
-        <div class="toolbar-part">
-          <div class="builds-toolbar-right">
-            <Tooltip
-              :tooltip="$t('caption.merchantItemsOptions')"
-              :apply-hover-style="false"
-            >
-              <Button
-                class="p-button-text p-button-sm button-discreet"
-                :disabled="isLoading"
-                @click="displayMerchantItemsOptions()"
-              >
-                <font-awesome-icon icon="user-tag" />
-              </Button>
-            </Tooltip>
-            <Tooltip
-              :tooltip="$t('caption.options')"
-              :apply-hover-style="false"
-            >
-              <Button
-                class="p-button-text p-button-sm button-discreet"
-                @click="displayGeneralOptions()"
-              >
-                <font-awesome-icon icon="cog" />
-              </Button>
-            </Tooltip>
-            <NotificationButton />
-          </div>
-        </div>
-      </template>
-    </BuildsList>
+    />
   </div>
 </template>
 
@@ -98,6 +35,7 @@ import { useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
+import { IToolbarButton } from '../models/utils/IToolbarButton'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
@@ -118,6 +56,7 @@ import { SortingService } from '../services/sorting/SortingService'
 import { BuildSummarySortingFunctions } from '../services/sorting/functions/BuildSummarySortingFunctions'
 import BuildsList from './BuildsListComponent.vue'
 import NotificationButton from './NotificationButtonComponent.vue'
+import Toolbar from './ToolbarComponent.vue'
 
 const router = useRouter()
 
@@ -131,14 +70,76 @@ const _itemService = Services.get(ItemService)
 const _sortingService = Services.get(SortingService)
 
 let _builds: IBuild[] = []
-
-const canImportExport = computed(() => !isLoading.value && buildSummaries.value.length > 0)
-const hasBuildsNotExported = computed(() => _builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
+let toolbarButtons: IToolbarButton[] = [
+  {
+    action: () => openNewBuild(),
+    canBeMovedToSidebar: () => false,
+    caption: () => 'caption.new',
+    isDisabled: () => isLoading.value,
+    icon: () => 'plus',
+    name: 'newBuild',
+    position: () => 'left',
+    showCaption: () => true,
+    variant: () => 'success',
+    visible: () => true
+  },
+  {
+    action: () => displayExportSidebar(),
+    canBeMovedToSidebar: () => true,
+    caption: () => 'caption.exportBuilds',
+    isDisabled: () => isLoading.value || !canImportExport.value,
+    icon: () => 'download',
+    name: 'export',
+    position: () => 'left',
+    showCaption: () => false,
+    style: () => 'discreet',
+    visible: () => true
+  },
+  {
+    action: () => displayImportSidebar(),
+    canBeMovedToSidebar: () => true,
+    caption: () => 'caption.importBuilds',
+    isDisabled: () => isLoading.value || !canImportExport.value,
+    icon: () => 'file-upload',
+    name: 'import',
+    position: () => 'left',
+    showCaption: () => false,
+    style: () => 'discreet',
+    visible: () => true
+  },
+  {
+    action: () => displayMerchantItemsOptions(),
+    canBeMovedToSidebar: () => true,
+    caption: () => 'caption.merchantItemsOptions',
+    isDisabled: () => isLoading.value,
+    icon: () => 'user-tag',
+    name: 'merchantIptions',
+    position: () => 'right',
+    showCaption: () => false,
+    style: () => 'discreet',
+    visible: () => true
+  },
+  {
+    action: () => displayGeneralOptions(),
+    canBeMovedToSidebar: () => true,
+    caption: () => 'caption.options',
+    isDisabled: () => isLoading.value,
+    icon: () => 'cog',
+    name: 'generalOptions',
+    position: () => 'right',
+    showCaption: () => false,
+    style: () => 'discreet',
+    visible: () => true
+  }
+]
 
 const buildSummaries = ref<IBuildSummary[]>([])
 const filterAndSortingData = ref<BuildFilterAndSortingData>(new BuildFilterAndSortingData())
 const hasImported = ref(false)
 const isLoading = ref(true)
+
+const canImportExport = computed(() => !isLoading.value && buildSummaries.value.length > 0)
+const hasBuildsNotExported = computed(() => _builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
 
 onMounted(() => {
   _buildService.emitter.on(BuildService.deletedEvent, onItemServicesInitialized)
@@ -356,13 +357,5 @@ function openNewBuild() {
   height: 3.5rem;
   justify-content: center;
   margin-bottom: 0.5rem;
-}
-
-.builds-toolbar-right {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  margin-left: auto;
 }
 </style>

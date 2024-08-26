@@ -18,43 +18,44 @@
         <span>{{ ` ${$t('caption.selectFile')}` }}</span>
       </Button>
     </div>
-    <BuildsList
-      v-else
-      v-model:selected-builds="selectedBuilds"
-      :build-summaries="availableBuildSummaries"
-      mode="export"
-      :show-not-exported="true"
-    >
-      <template #toolbarContent>
-        <Button
-          :disabled="selectedBuilds?.length == 0"
-          class="p-button-success"
-          @click="importBuilds()"
-        >
-          <font-awesome-icon
-            icon="file-upload"
-            class="icon-before-text"
-          />
-          <span>{{ ` ${$t('caption.import')}` }}</span>
-          <span
-            v-show="selectedBuilds.length > 1"
-            style="margin-left: 0.25rem;"
-          >{{ `(${selectedBuilds.length})` }}</span>
-        </Button>
-        <Button
-          v-if="availableBuildSummaries.length > 1"
-          outlined
-          @click="toggleSelection()"
-        >
-          <font-awesome-icon
-            icon="list"
-            class="icon-before-text"
-          />
-          <span v-if="allSelected">{{ $t('caption.deselectAll') }}</span>
-          <span v-else>{{ $t('caption.selectAll') }}</span>
-        </Button>
-      </template>
-    </BuildsList>
+    <div v-else>
+      <BuildsList
+        v-model:selected-builds="selectedBuilds"
+        :build-summaries="availableBuildSummaries"
+        mode="export"
+        :show-not-exported="true"
+      >
+        <template #toolbarContent>
+          <Button
+            :disabled="selectedBuilds?.length == 0"
+            class="p-button-success"
+            @click="importBuilds()"
+          >
+            <font-awesome-icon
+              icon="file-upload"
+              class="icon-before-text"
+            />
+            <span>{{ ` ${$t('caption.import')}` }}</span>
+            <span
+              v-show="selectedBuilds.length > 1"
+              style="margin-left: 0.25rem;"
+            >{{ `(${selectedBuilds.length})` }}</span>
+          </Button>
+          <Button
+            v-if="availableBuildSummaries.length > 1"
+            outlined
+            @click="toggleSelection()"
+          >
+            <font-awesome-icon
+              icon="list"
+              class="icon-before-text"
+            />
+            <span v-if="allSelected">{{ $t('caption.deselectAll') }}</span>
+            <span v-else>{{ $t('caption.selectAll') }}</span>
+          </Button>
+        </template>
+      </BuildsList>
+    </div>
   </div>
 
   <!-- Hidden input for import file selection -->

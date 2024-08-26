@@ -261,15 +261,11 @@ const selectionButtonIcon = computed(() => {
 })
 
 onMounted(() => {
-  window.addEventListener('resize', () => {
-    setItemsListElementHasScroll()
-  })
+  window.addEventListener('resize', onResize)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('resize', () => {
-    setItemsListElementHasScroll()
-  })
+  window.removeEventListener('resize', onResize)
 })
 
 watch(() => itemsListElement.value?.scrollWidth, () => {
@@ -320,6 +316,15 @@ function displayStats(item: IItem) {
  * Updates the values indicating whether left or right scroll are possible.
  */
 function onItemsListScroll() {
+  setItemsListElementHasScroll()
+}
+
+/**
+ * Reacts to the window being resized.
+ *
+ * Sets a value indicating whether the items list is scrollable.
+ */
+function onResize() {
   setItemsListElementHasScroll()
 }
 

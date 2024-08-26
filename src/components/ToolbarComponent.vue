@@ -2,18 +2,30 @@
   <div
     ref="toolbarContainer"
     class="toolbar-container"
-    :class="toolbarContainerClasses"
   >
     <div
-      v-if="$slots.content"
       class="toolbar"
       :class="toolbarClasses"
     >
       <div class="toolbar-line">
-        <slot name="content" />
+        <div class="toolbar-line-left">
+          <ToolbarButton
+            v-for="button of leftDisplayedButtons"
+            :key="button.name"
+            :button="button"
+          />
+          <slot name="left" />
+        </div>
+        <div class="toolbar-line-right">
+          <ToolbarButton
+            v-for="button of rightDisplayedButtons"
+            :key="button.name"
+            :button="button"
+          />
+          <slot name="right" />
+        </div>
       </div>
     </div>
-    <slot name="under" />
   </div>
 </template>
 
@@ -28,39 +40,46 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { IToolbarButton } from '../models/utils/IToolbarButton'
+import ToolbarButton from './ToolbarButtonComponent.vue'
 
+const props = defineProps<{ buttons: IToolbarButton[] }>()
+
+const hideButtonsWidth = 480
+
+const areButtonsHidden = ref(false)
 const isInGlobalSidebar = ref(false)
 const scrollableParent = ref<HTMLElement>()
 const stickied = ref(false)
 const toolbarContainer = ref<HTMLDivElement>()
 
-const toolbarContainerClasses = computed(() => {
-  if (stickied.value && isInGlobalSidebar.value) {
-    return 'toolbar-container-stickied-z-index-fix'
-  } else if (stickied.value) {
-    return 'toolbar-container-stickied'
-  }
-
-  return ''
-})
-
-const toolbarClasses = computed(() => {
-  if (stickied.value && isInGlobalSidebar.value) {
-    return 'toolbar-stickied-sidebar'
-  } else if (stickied.value) {
-    return 'toolbar-stickied'
-  }
-
-  return ''
-})
+const leftDisplayedButtons = computed(() =>
+  areButtonsHidden.value
+    ? props.buttons.filter(b => b.position() === 'left' && !b.canBeMovedToSidebar())
+    : props.buttons.filter(b => b.position() === 'left'))
+const rightDisplayedButtons = computed(() =>
+  areButtonsHidden.value
+    ? props.buttons.filter(b => b.position() === 'right' && !b.canBeMovedToSidebar())
+    : props.buttons.filter(b => b.position() === 'right'))
+const hiddenButtons = computed(() => areButtonsHidden.value ? props.buttons.filter(b => b.canBeMovedToSidebar()) : [])
+const toolbarClasses = computed(() => ({
+  'toolbar-stickied': stickied.value && !isInGlobalSidebar.value,
+  'toolbar-stickied-sidebar': stickied.value && isInGlobalSidebar.value
+}))
 
 onMounted(() => {
   scrollableParent.value = getScrollableParent(toolbarContainer.value?.parentElement)
   scrollableParent.value?.addEventListener('scroll', onScroll)
+
+  setButtonsAreHidden()
+
+  window.addEventListener('resize', onResize)
 })
 
 onUnmounted(() => {
   scrollableParent.value?.removeEventListener('scroll', onScroll)
+
+  window.removeEventListener('resize', onResize)
 })
 
 /**
@@ -94,6 +113,22 @@ function onScroll() {
   const toolbarRectangle = toolbarContainer.value!.getBoundingClientRect()
   stickied.value = toolbarRectangle.y - scrollableParentRectangle.y === 0
 }
+
+/**
+ * Reacts to the window being resized.
+ *
+ * Sets a value indicating whether toolbar buttons should be hidden.
+ */
+function onResize() {
+  setButtonsAreHidden()
+}
+
+/**
+ * Set a value indicating whether the media query trigger for hiding buttons is reached.
+ */
+function setButtonsAreHidden() {
+  areButtonsHidden.value = window.matchMedia(`only screen and (max-width: ${hideButtonsWidth}px)`).matches
+}
 </script>
 
 
@@ -108,7 +143,7 @@ function onScroll() {
 
 
 <style>
-@import '../css/toolbar.css';
+@import '../css/icon.css';
 
 .toolbar {
   backdrop-filter: blur(10px);
@@ -125,10 +160,35 @@ function onScroll() {
   margin-bottom: 0.5rem;
   position: sticky;
   top: 0;
+  z-index: 1;
 }
 
-.toolbar-container-stickied {
-  z-index: 1;
+.toolbar-line {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
+  font-size: 2rem;
+  width: 100%;
+}
+
+.toolbar-line button {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.toolbar-line-left {
+  align-items: center;
+  display: flex;
+  gap: 0.25rem;
+  justify-content: start;
+}
+
+.toolbar-line-right {
+  align-items: center;
+  display: flex;
+  gap: 0.25rem;
+  justify-content: end;
 }
 
 .toolbar-stickied {
@@ -140,22 +200,5 @@ function onScroll() {
 .toolbar-stickied-sidebar {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-}
-
-.toolbar-line {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  font-size: 2rem;
-}
-
-.toolbar-line > button {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-}
-
-.toolbar-container-stickied-z-index-fix {
-  /* For some reason, when the buils list is displayed in a sidebar, item icons appear over the toolbar. */
-  z-index: 9999;
 }
 </style>

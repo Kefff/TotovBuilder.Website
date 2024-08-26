@@ -6,42 +6,44 @@
     <span>{{ $t('message.selectBuildsToExport') }}</span>
   </div>
   <div class="sidebar-option">
-    <BuildsList
-      v-model:selected-builds="selectedBuilds"
-      :build-summaries="parameters"
-      mode="export"
-      :show-not-exported="true"
-    >
-      <template #toolbarContent>
-        <Button
-          :disabled="selectedBuilds?.length == 0"
-          class="p-button-success"
-          @click="exportBuilds()"
-        >
-          <font-awesome-icon
-            icon="download"
-            class="icon-before-text"
-          />
-          <span>{{ ` ${$t('caption.save')}` }}</span>
-          <span
-            v-show="selectedBuilds.length > 1"
-            style="margin-left: 0.25rem;"
-          >{{ `(${selectedBuilds.length})` }}</span>
-        </Button>
-        <Button
-          v-if="parameters.length > 1"
-          outlined
-          @click="toggleSelection()"
-        >
-          <font-awesome-icon
-            icon="list"
-            class="icon-before-text"
-          />
-          <span v-if="allSelected">{{ $t('caption.deselectAll') }}</span>
-          <span v-else>{{ $t('caption.selectAll') }}</span>
-        </Button>
-      </template>
-    </BuildsList>
+    <div>
+      <BuildsList
+        v-model:selected-builds="selectedBuilds"
+        :build-summaries="parameters"
+        mode="export"
+        :show-not-exported="true"
+      >
+        <template #toolbarContent>
+          <Button
+            :disabled="selectedBuilds?.length == 0"
+            class="p-button-success"
+            @click="exportBuilds()"
+          >
+            <font-awesome-icon
+              icon="download"
+              class="icon-before-text"
+            />
+            <span>{{ ` ${$t('caption.save')}` }}</span>
+            <span
+              v-show="selectedBuilds.length > 1"
+              style="margin-left: 0.25rem;"
+            >{{ `(${selectedBuilds.length})` }}</span>
+          </Button>
+          <Button
+            v-if="parameters.length > 1"
+            outlined
+            @click="toggleSelection()"
+          >
+            <font-awesome-icon
+              icon="list"
+              class="icon-before-text"
+            />
+            <span v-if="allSelected">{{ $t('caption.deselectAll') }}</span>
+            <span v-else>{{ $t('caption.selectAll') }}</span>
+          </Button>
+        </template>
+      </BuildsList>
+    </div>
   </div>
 </template>
 

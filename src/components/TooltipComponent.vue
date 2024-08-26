@@ -8,9 +8,7 @@
   >
     <slot />
   </span>
-  <span v-else>
-    <slot />
-  </span>
+  <slot v-else />
 </template>
 
 
@@ -25,6 +23,10 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue'
 import { DirectiveArguments } from '../models/utils/TooltipDirectiveArguments'
+
+const emits = defineEmits<{
+  click: [event: MouseEvent]
+}>()
 
 const props = withDefaults(
   defineProps<{
@@ -52,6 +54,8 @@ function onClick(event: MouseEvent) {
   if (props.stopClickPropagation) {
     event.stopPropagation()
   }
+
+  emits('click', event)
 }
 </script>
 

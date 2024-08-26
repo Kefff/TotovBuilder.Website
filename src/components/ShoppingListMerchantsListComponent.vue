@@ -59,17 +59,13 @@ const merchantsListElementHasLeftScroll = ref(false)
 const merchantsListElementHasRightScroll = ref(false)
 
 onMounted(() => {
-  window.addEventListener('resize', () => {
-    setMerchantsListElementHasScroll()
-  })
+  window.addEventListener('resize', onResize)
 
   setRequiredMerchants()
 })
 
 onUnmounted(() => {
-  window.removeEventListener('resize', () => {
-    setMerchantsListElementHasScroll()
-  })
+  window.removeEventListener('resize', onResize)
 })
 
 watch(() => merchantsListElement.value?.scrollWidth, () => {
@@ -91,6 +87,15 @@ function setRequiredMerchants() {
  * Updates the values indicating whether left or right scroll are possible.
  */
 function onMerchantsListScroll() {
+  setMerchantsListElementHasScroll()
+}
+
+/**
+ * Reacts to the window being resized.
+ *
+ * Sets a value indicating whether the merdhant list is scrollable.
+ */
+function onResize() {
   setMerchantsListElementHasScroll()
 }
 

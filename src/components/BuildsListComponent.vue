@@ -1,103 +1,98 @@
 <template>
-  <div>
-    <Toolbar>
-      <template #content>
-        <slot name="toolbarContent" />
-      </template>
-      <template #under>
-        <div
-          v-if="buildSummaries.length > 0"
-          class="builds-list-chips-container"
+  <div
+    v-if="buildSummaries.length > 0"
+    class="builds-list-chips-container"
+    :class="isUnderToolbar ? 'builds-list-chips-container-under-toolbar' : ''"
+  >
+    <div class="builds-list-chips">
+      <Chip
+        class="builds-list-chip"
+        @click="showFilterAndSortSidebar()"
+      >
+        <Tooltip
+          :tooltip="sortButtonTooltip"
+          position="right"
         >
-          <div class="builds-list-chips">
-            <Chip
-              class="builds-list-chip"
-              @click="showFilterAndSortSidebar()"
-            >
-              <Tooltip :tooltip="sortButtonTooltip">
-                <div class="builds-list-chip-group">
-                  <div class="builds-list-chip-icon">
-                    <font-awesome-icon :icon="sortChipIcon" />
-                  </div>
-                  <span>{{ $t(`caption.${modelFilterAndSortingData.property}`) }}</span>
-                </div>
-              </Tooltip>
-            </Chip>
-            <Chip
-              v-if="modelFilterAndSortingData.filter == ''"
-              class="builds-list-chip"
-              @click="showFilterAndSortSidebar()"
-            >
-              <Tooltip :tooltip="$t('caption.addFilter')">
-                <div class="builds-list-chip-group">
-                  <div class="builds-list-chip-icon">
-                    <font-awesome-icon icon="filter" />
-                  </div>
-                  <span>{{ $t('caption.filter') }}</span>
-                  <div class="builds-list-chip-icon-button builds-list-chip-icon-button-add-filter">
-                    <font-awesome-icon icon="plus" />
-                  </div>
-                </div>
-              </Tooltip>
-            </Chip>
-            <Chip
-              v-else
-              class="builds-list-chip"
-            >
-              <Tooltip
-                :tooltip="$t('caption.filteredWith', { filter: modelFilterAndSortingData.filter })"
-                style="overflow: hidden;"
-              >
-                <div
-                  class="builds-list-chip-group"
-                  @click="showFilterAndSortSidebar()"
-                >
-                  <div class="builds-list-chip-icon">
-                    <font-awesome-icon icon="filter" />
-                  </div>
-                  <span>{{ modelFilterAndSortingData.filter }}</span>
-                </div>
-              </Tooltip>
-              <Tooltip :tooltip="$t('caption.removeFilter')">
-                <div
-                  class="builds-list-chip-icon-button builds-list-chip-icon-button-remove-filter"
-                  @click="removeFilter()"
-                >
-                  <font-awesome-icon icon="times" />
-                </div>
-              </Tooltip>
-            </Chip>
+          <div class="builds-list-chip-group">
+            <div class="builds-list-chip-icon">
+              <font-awesome-icon :icon="sortChipIcon" />
+            </div>
+            <span>{{ $t(`caption.${modelFilterAndSortingData.property}`) }}</span>
           </div>
-        </div>
-      </template>
-    </Toolbar>
-    <div
-      v-if="isLoading"
-      class="builds-list-loading"
-    >
-      <Loading />
+        </Tooltip>
+      </Chip>
+      <Chip
+        v-if="modelFilterAndSortingData.filter == ''"
+        class="builds-list-chip"
+        @click="showFilterAndSortSidebar()"
+      >
+        <Tooltip :tooltip="$t('caption.addFilter')">
+          <div class="builds-list-chip-group">
+            <div class="builds-list-chip-icon">
+              <font-awesome-icon icon="filter" />
+            </div>
+            <span>{{ $t('caption.filter') }}</span>
+            <div class="builds-list-chip-icon-button builds-list-chip-icon-button-add-filter">
+              <font-awesome-icon icon="plus" />
+            </div>
+          </div>
+        </Tooltip>
+      </Chip>
+      <Chip
+        v-else
+        class="builds-list-chip"
+      >
+        <Tooltip
+          :tooltip="$t('caption.filteredWith', { filter: modelFilterAndSortingData.filter })"
+          style="overflow: hidden;"
+        >
+          <div
+            class="builds-list-chip-group"
+            @click="showFilterAndSortSidebar()"
+          >
+            <div class="builds-list-chip-icon">
+              <font-awesome-icon icon="filter" />
+            </div>
+            <span>{{ modelFilterAndSortingData.filter }}</span>
+          </div>
+        </Tooltip>
+        <Tooltip :tooltip="$t('caption.removeFilter')">
+          <div
+            class="builds-list-chip-icon-button builds-list-chip-icon-button-remove-filter"
+            @click="removeFilter()"
+          >
+            <font-awesome-icon icon="times" />
+          </div>
+        </Tooltip>
+      </Chip>
     </div>
-    <div
-      v-if="!isLoading && buildSummariesInternal.length > 0"
-      class="builds-list-cards"
-      :class="mode !== 'default' ? 'builds-list-cards-import-export' : ''"
-    >
-      <BuildCard
-        v-for="buildSummary of buildSummariesInternal"
-        :key="buildSummary.id"
-        :build-summary="buildSummary"
-        :mode="mode"
-        :is-selected="checkIsSelected(buildSummary)"
-        :show-not-exported="showNotExported"
-        @update:is-selected="updateSelectedBuilds(buildSummary, $event)"
-      />
-    </div>
-    <div
-      v-else-if="!isLoading"
-      class="builds-list-no-results-message"
-    >
-      {{ $t('message.noBuildsFound') }}
-    </div>
+  </div>
+  <div
+    v-if="isLoading"
+    class="builds-list-loading"
+  >
+    <Loading />
+  </div>
+  <div
+    v-if="!isLoading && buildSummariesInternal.length > 0"
+    class="builds-list-cards"
+    :class="mode !== 'default' ? 'builds-list-cards-import-export' : ''"
+  >
+    <BuildCard
+      v-for="buildSummary of buildSummariesInternal"
+      :key="buildSummary.id"
+      :build-summary="buildSummary"
+      :mode="mode"
+      :is-selected="checkIsSelected(buildSummary)"
+      :show-not-exported="showNotExported"
+      @update:is-selected="updateSelectedBuilds(buildSummary, $event)"
+    />
+  </div>
+  <div
+    v-else-if="!isLoading"
+    class="builds-list-no-results-message"
+  >
+    {{ $t('message.noBuildsFound') }}
   </div>
 </template>
 
@@ -123,7 +118,6 @@ import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
 import BuildCard from './BuildCardComponent.vue'
 import Loading from './LoadingComponent.vue'
-import Toolbar from './ToolbarComponent.vue'
 
 const modelSelectedBuilds = defineModel<IBuildSummary[]>('selectedBuilds', { required: false, default: [] })
 const modelFilterAndSortingData = defineModel<BuildFilterAndSortingData>('filterAndSortingData', { required: false, default: new BuildFilterAndSortingData() })
@@ -132,11 +126,13 @@ const props = withDefaults(
   defineProps<{
     buildSummaries: IBuildSummary[],
     isLoading?: boolean,
+    isUnderToolbar?: boolean,
     mode?: 'default' | 'export' | 'import',
     showNotExported: boolean,
   }>(),
   {
     isLoading: false,
+    isUnderToolbar: false,
     mode: 'default'
   })
 
@@ -149,7 +145,7 @@ const buildSummariesInternal = ref<IBuildSummary[]>([])
 const sortButtonTooltip = computed(() => vueI18n.t(
   'caption.sortedBy',
   {
-    property: modelFilterAndSortingData.value.property,
+    property: vueI18n.t(`caption.${modelFilterAndSortingData.value.property}`).toLocaleLowerCase(),
     order: modelFilterAndSortingData.value.order === SortingOrder.asc
       ? vueI18n.t('caption.ascendant').toLocaleLowerCase()
       : vueI18n.t('caption.descendant').toLocaleLowerCase()
@@ -394,7 +390,15 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean) 
 
 .builds-list-chips-container {
   display: flex;
-  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.builds-list-chips-container-under-toolbar {
+  /* Height of the toolbar */
+  top: 4.25rem;
 }
 
 .builds-list-loading {
