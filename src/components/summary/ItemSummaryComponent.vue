@@ -13,6 +13,11 @@
         />
       </div>
     </div>
+    <div class="option-entry">
+      <div class="option-value">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, item.weight) }}
+      </div>
+    </div>
     <slot />
     <div class="option-entry item-summary-icon">
       <ItemIcon :item="item" />
@@ -35,6 +40,7 @@ import { IItem } from '../../models/item/IItem'
 import { IPrice } from '../../models/item/IPrice'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import Services from '../../services/repository/Services'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import ItemIcon from '../ItemIconComponent.vue'
 import Price from '../PriceComponent.vue'
 

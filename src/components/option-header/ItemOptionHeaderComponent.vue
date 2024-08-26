@@ -29,6 +29,17 @@
         />
       </div>
     </div>
+    <div class="option-entry">
+      <div class="option-value">
+        <OptionHeaderSortButton
+          v-model:sorting-data="modelSortingData"
+          caption-resource="caption.weight"
+          icon="weight-hanging"
+          property="weight"
+          :sorting-functions="ItemSortingFunctions"
+        />
+      </div>
+    </div>
     <slot />
     <div
       v-if="useLongestHeaderWidth"

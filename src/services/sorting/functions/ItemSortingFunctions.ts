@@ -19,6 +19,10 @@ export const ItemSortingFunctions: ISortingFunctionList<IItem> = {
   price: {
     comparisonFunction: compareByItemNumber,
     comparisonValueObtentionFunction: async i => await getPrice(i)
+  },
+  weight: {
+    comparisonFunction: compareByItemNumber,
+    comparisonValueObtentionFunction: i => Promise.resolve(i.weight)
   }
 }
 

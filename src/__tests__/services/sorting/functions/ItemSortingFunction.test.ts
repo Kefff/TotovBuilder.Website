@@ -183,6 +183,37 @@ describe('comparisonFunction()', () => {
     // Assert
     expect(sortedItems).toStrictEqual([item1, item3, item2]) // By default it is already sorted by name, so here we expected items to be sorted in a descending way
   })
+
+  it('should sort by category and weight', async () => {
+    // Arrange
+    const item1 = {
+      categoryId: 'cat2',
+      name: 'a',
+      weight: 2
+    } as IItem
+
+    const item2 = {
+      categoryId: 'cat1',
+      name: 'a',
+      weight: 3
+    } as IItem
+
+    const item3 = {
+      categoryId: 'cat1',
+      name: 'b',
+      weight: 1
+    } as IItem
+
+    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    const sortingService = new SortingService()
+    sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'weight')
+
+    // Act
+    const sortedItems = await sortingService.sort([item1, item2, item3], sortingData!)
+
+    // Assert
+    expect(sortedItems).toStrictEqual([item3, item2, item1])
+  })
 })
 
 describe('defaultSortingFunction', () => {
