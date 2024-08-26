@@ -417,7 +417,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean) 
 }
 
 /* Smartphone in portrait */
-@media only screen and (min-width: 320px) and (max-width: 480px) {
+@media only screen and (max-width: 480px) {
   .builds-list-cards {
     grid-template-columns: 1fr;
   }

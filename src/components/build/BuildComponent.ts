@@ -53,44 +53,78 @@ export default defineComponent({
       {
         action: goToBuilds,
         canBeMovedToSidebar: () => false,
-        caption: () => 'caption.backToBuilds',
+        caption: () => vueI18n.t('caption.backToBuilds'),
         icon: () => 'arrow-left',
         isDisabled: () => isEditing.value,
+        isVisible: () => !isEditing.value,
         name: 'backToBuilds',
-        showCaption: () => false,
+        showCaption: () => 'never',
         style: () => 'discreet',
         tooltipPosition: () => 'right'
       },
       {
         action: startEdit,
         canBeMovedToSidebar: () => false,
-        caption: () => 'caption.edit',
+        caption: () => vueI18n.t('caption.edit'),
         icon: () => 'edit',
         isDisabled: () => isLoading.value,
         isVisible: () => !isEditing.value,
-        name: 'edit'
+        name: 'edit',
+        showCaption: () => 'always'
       },
       {
         action: save,
         canBeMovedToSidebar: () => false,
-        caption: () => 'caption.save',
+        caption: () => vueI18n.t('caption.save'),
         icon: () => 'save',
         isDisabled: () => invalid.value,
         isVisible: () => isEditing.value,
         name: 'save',
-        variant: () => 'success'
+        variant: () => 'success',
+        showCaption: () => 'always'
       },
       {
         action: displayShoppingList,
-        caption: () => 'caption.shoppingList',
+        caption: () => vueI18n.t('caption.shoppingList'),
         icon: () => 'shopping-cart',
         isDisabled: () => summary.value.shoppingList.length === 0,
         name: 'shoppingList',
         style: () => 'outlined'
       },
       {
+        action: displayBuildShareSideBar,
+        caption: () => vueI18n.t('caption.share'),
+        icon: () => 'share-alt',
+        isDisabled: () => isLoading.value,
+        isVisible: () => !isEditing.value,
+        name: 'share',
+        showCaption: () => 'never',
+        style: () => 'discreet'
+      },
+      {
+        action: exportBuild,
+        caption: () => vueI18n.t('caption.export'),
+        icon: () => 'download',
+        isDisabled: () => isLoading.value,
+        isVisible: () => !isEditing.value,
+        name: 'export',
+        showCaption: () => 'never',
+        style: () => 'discreet'
+      },
+      {
+        action: copy,
+        caption: () => vueI18n.t('caption.copyBuild'),
+        icon: () => 'copy',
+        isDisabled: () => isLoading.value,
+        isVisible: () => !isEditing.value,
+        name: 'copy',
+        showCaption: () => 'never',
+        style: () => 'discreet'
+      },
+      {
         action: cancelEdit,
-        caption: () => 'caption.cancel',
+        canBeMovedToSidebar: () => false,
+        caption: () => vueI18n.t('caption.cancel'),
         icon: () => 'undo',
         isVisible: () => isEditing.value,
         name: 'cancel',
@@ -100,7 +134,7 @@ export default defineComponent({
       },
       {
         action: startDelete,
-        caption: () => 'caption.delete',
+        caption: () => vueI18n.t('caption.delete'),
         icon: () => 'trash',
         isDisabled: () => isLoading.value,
         isVisible: () => !isEditing.value,
@@ -110,49 +144,22 @@ export default defineComponent({
         variant: () => 'danger'
       },
       {
-        action: displayBuildShareSideBar,
-        caption: () => 'caption.share',
-        icon: () => 'share-alt',
-        isDisabled: () => isLoading.value || isEditing.value,
-        name: 'share',
-        showCaption: () => false,
-        style: () => 'discreet'
-      },
-      {
-        action: exportBuild,
-        caption: () => 'caption.export',
-        icon: () => 'download',
-        isDisabled: () => isLoading.value || isEditing.value,
-        name: 'export',
-        showCaption: () => false,
-        style: () => 'discreet'
-      },
-      {
-        action: copy,
-        caption: () => 'caption.copyBuild',
-        icon: () => 'copy',
-        isDisabled: () => isLoading.value || isNewBuild.value,
-        name: 'copy',
-        showCaption: () => false,
-        style: () => 'discreet'
-      },
-      {
         action: displayMerchantItemsOptions,
-        caption: () => 'caption.merchantItemsOptions',
+        caption: () => vueI18n.t('caption.merchantItemsOptions'),
         icon: () => 'user-tag',
         isDisabled: () => isLoading.value,
         name: 'merchantItemsOptions',
         position: () => 'right',
-        showCaption: () => false,
+        showCaption: () => 'never',
         style: () => 'discreet'
       },
       {
         action: displayGeneralOptions,
-        caption: () => 'caption.options',
+        caption: () => vueI18n.t('caption.options'),
         icon: () => 'cog',
         name: 'generalOptions',
         position: () => 'right',
-        showCaption: () => false,
+        showCaption: () => 'never',
         style: () => 'discreet'
       }
     ]
@@ -346,8 +353,8 @@ export default defineComponent({
     }
 
     /**
- * Displays the share build sidebar.
- */
+     * Displays the share build sidebar.
+     */
     function displayBuildShareSideBar() {
       _globalSidebarService.display({
         displayedComponentParameters: build.value,

@@ -43,6 +43,7 @@ import MerchantItemsOptionsSidebar from './MerchantItemsOptionsSidebarComponent.
 import NotificationsSidebar from './NotificationsSidebarComponent.vue'
 import ShoppingListSidebar from './ShoppingListSidebarComponent.vue'
 import StatsSidebar from './StatsSidebarComponent.vue'
+import ToolbarSidebar from './ToolbarSidebarComponent.vue'
 
 const props = defineProps<{
   level: number
@@ -77,6 +78,8 @@ const displayedComponent = computed(() => {
       return ShoppingListSidebar
     case 'StatsSidebar':
       return StatsSidebar
+    case 'ToolbarSidebar':
+      return ToolbarSidebar
     default:
       return undefined
   }
@@ -149,7 +152,7 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: numbe
 }
 
 /* Smartphone in portrait */
-@media only screen and (min-width: 320px) and (max-width: 480px) {
+@media only screen and (max-width: 480px) {
   .global-sidebar-content {
     max-width: calc(100vw - 1rem - 1rem);
   }

@@ -50,10 +50,10 @@ export interface IToolbarButton {
 
   /**
    * Method for indicating whether the button caption is shown.
-   * When true, it is displayed as long as the trigger that hides buttons is not reached.
-   * True by default.
+   * When 'auto', it is displayed as long as the trigger that hides buttons is not reached.
+   * 'auto' by default.
    */
-  showCaption?: () => boolean
+  showCaption?: () => 'always' | 'auto' | 'never'
 
   /**
    * Method for getting the button style.

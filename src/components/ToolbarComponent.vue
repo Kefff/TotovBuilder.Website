@@ -10,13 +10,17 @@
       <div class="toolbar-line">
         <div class="toolbar-line-left">
           <ToolbarButton
+            v-if="hiddenButtons.length > 0"
+            :button="displayToolbarSidebarButton"
+          />
+          <ToolbarButton
             v-for="button of leftDisplayedButtons"
             :key="button.name"
             :button="button"
           />
           <slot name="left" />
         </div>
-        <div>
+        <div class="toolbar-line-center">
           <slot name="center" />
         </div>
         <div class="toolbar-line-right">
@@ -44,11 +48,27 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
+import vueI18n from '../plugins/vueI18n'
+import { GlobalSidebarService } from '../services/GlobalSidebarService'
+import Services from '../services/repository/Services'
 import ToolbarButton from './ToolbarButtonComponent.vue'
 
 const props = defineProps<{ buttons: IToolbarButton[] }>()
 
-const hideButtonsWidth = 480
+const _globalSidebarService = Services.get(GlobalSidebarService)
+
+const displayToolbarSidebarButton: IToolbarButton = {
+  action: displayToolbarSideBar,
+  caption: () => vueI18n.t('caption.menu'),
+  icon: () => 'bars',
+  name: 'toolbarSidebar',
+  canBeMovedToSidebar: () => false,
+  isVisible: () => areButtonsHidden.value,
+  showCaption: () => 'never',
+  style: () => 'discreet',
+  tooltipPosition: () => 'left'
+}
+const hideButtonsWidth = 991
 
 const areButtonsHidden = ref(false)
 const isInGlobalSidebar = ref(false)
@@ -84,6 +104,15 @@ onUnmounted(() => {
 
   window.removeEventListener('resize', onResize)
 })
+
+/**
+ * Displays the toolbar sidebar.
+ */
+function displayToolbarSideBar() {
+  _globalSidebarService.display({
+    displayedComponentType: 'ToolbarSidebar'
+  })
+}
 
 /**
  * Gets the parent element that can be scrolled.
@@ -203,4 +232,35 @@ function setButtonsAreHidden() {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+/* Smartphone in portrait */
+@media only screen and (max-width: 480px) {
+  .toolbar-line {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .toolbar-line-center {
+    display: none;
+  }
+}
+
+/* Smartphone in landscape */
+@media only screen and (min-width: 481px) and (max-width: 767px) {
+  .toolbar-line {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .toolbar-line-center {
+    display: none;
+  }
+}
+
+/* Tablet in portrait */
+@media only screen and (min-width: 768px) and (max-width: 991px) {}
+
+/* Tablet in landscape */
+@media only screen and (min-width: 992px) and (max-width: 1299px) {}
+
+/* PC */
+@media only screen and (min-width: 1300px) {}
 </style>

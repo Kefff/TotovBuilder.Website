@@ -1,8 +1,11 @@
 <template>
   <div class="builds">
+    <div class="builds-title builds-title-outside-toolbar">
+      {{ $t('caption.buildsList') }}
+    </div>
     <Toolbar :buttons="toolbarButtons">
       <template #center>
-        <div class="builds-title">
+        <div class="builds-title builds-title-in-toolbar">
           {{ $t('caption.buildsList') }}
         </div>
       </template>
@@ -76,48 +79,49 @@ const toolbarButtons: IToolbarButton[] = [
   {
     action: openNewBuild,
     canBeMovedToSidebar: () => false,
-    caption: () => 'caption.new',
+    caption: () => vueI18n.t('caption.new'),
     icon: () => 'plus',
     isDisabled: () => isLoading.value,
     name: 'newBuild',
+    showCaption: () => 'always',
     tooltipPosition: () => 'right',
     variant: () => 'success'
   },
   {
     action: displayExportSidebar,
-    caption: () => 'caption.exportBuilds',
+    caption: () => vueI18n.t('caption.exportBuilds'),
     icon: () => 'download',
     isDisabled: () => isLoading.value || !canImportExport.value,
     name: 'export',
-    showCaption: () => false,
+    showCaption: () => 'never',
     style: () => 'discreet'
   },
   {
     action: displayImportSidebar,
-    caption: () => 'caption.importBuilds',
+    caption: () => vueI18n.t('caption.importBuilds'),
     icon: () => 'file-upload',
     isDisabled: () => isLoading.value || !canImportExport.value,
     name: 'import',
-    showCaption: () => false,
+    showCaption: () => 'never',
     style: () => 'discreet'
   },
   {
     action: displayMerchantItemsOptions,
-    caption: () => 'caption.merchantItemsOptions',
+    caption: () => vueI18n.t('caption.merchantItemsOptions'),
     icon: () => 'user-tag',
     isDisabled: () => isLoading.value,
     name: 'merchantItemsOptions',
     position: () => 'right',
-    showCaption: () => false,
+    showCaption: () => 'never',
     style: () => 'discreet'
   },
   {
     action: displayGeneralOptions,
-    caption: () => 'caption.options',
+    caption: () => vueI18n.t('caption.options'),
     icon: () => 'cog',
     name: 'generalOptions',
     position: () => 'right',
-    showCaption: () => false,
+    showCaption: () => 'never',
     style: () => 'discreet'
   }
 ]
@@ -342,8 +346,51 @@ function openNewBuild() {
   align-items: center;
   display: flex;
   font-size: 1.5rem;
-  height: 100%;
   justify-content: center;
+  min-height: 2.75rem;
   text-align: center;
+}
+
+.builds-title-in-toolbar {
+  height: 100%;
+}
+
+.builds-title-outside-toolbar {
+  margin-bottom: 1rem;
+}
+
+/* Smartphone in portrait */
+@media only screen and (max-width: 480px) {
+  .builds-title-in-toolbar {
+    display: none;
+  }
+}
+
+/* Smartphone in landscape */
+@media only screen and (min-width: 481px) and (max-width: 767px) {
+  .builds-title-in-toolbar {
+    display: none;
+  }
+}
+
+/* Tablet in portrait */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .builds-title-outside-toolbar {
+    display: none;
+  }
+}
+
+/* Tablet in landscape */
+@media only screen and (min-width: 992px) and (max-width: 1299px) {
+  .builds-title-outside-toolbar {
+    display: none;
+  }
+}
+
+/* PC */
+@media only screen and (min-width: 1300px) {
+  .builds-title-outside-toolbar {
+    display: none;
+  }
 }
 </style>

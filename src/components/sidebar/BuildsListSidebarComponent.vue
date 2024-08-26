@@ -8,9 +8,9 @@
   <div class="sidebar-option">
     <div class="builds-list-sidebar-group">
       <span class="builds-list-sidebar-caption">{{ $t('caption.filter') }}</span>
-      <InputText
+      <InputTextField
         ref="buildsListSidebarFilterInput"
-        v-model="filter"
+        v-model:value="filter"
         class="builds-list-sidebar-value"
         type="text"
         @keydown="onFilterKeyDown"
@@ -25,7 +25,7 @@
   </div>
   <div class="sidebar-title">
     <div class="sidebar-title-icon">
-      <font-awesome-icon :icon="sortIcon" />
+      <font-awesome-icon :icon="getSortOrderIcon(modelParameters.order)" />
     </div>
     <span>{{ $t('caption.sort') }}</span>
   </div>
@@ -43,8 +43,8 @@
           </div>
         </template>
         <template #value="slotProps">
-          <div>
-            {{ $t(`caption.${slotProps.value}`) }}
+          <div class="builds-list-sidebar-value-value">
+            <span>{{ $t(`caption.${slotProps.value}`) }}</span>
           </div>
         </template>
       </Dropdown>
@@ -56,12 +56,20 @@
       >
         <template #option="slotProps">
           <div class="builds-list-sidebar-option">
-            {{ getSortOrderCaption(slotProps.option) }}
+            <font-awesome-icon
+              :icon="getSortOrderIcon(slotProps.option)"
+              class="icon-before-text"
+            />
+            <span>{{ getSortOrderCaption(slotProps.option) }}</span>
           </div>
         </template>
         <template #value="slotProps">
-          <div>
-            {{ getSortOrderCaption(slotProps.value) }}
+          <div class="builds-list-sidebar-value-value">
+            <font-awesome-icon
+              :icon="getSortOrderIcon(slotProps.value)"
+              class="icon-before-text"
+            />
+            <span>{{ getSortOrderCaption(slotProps.value) }}</span>
           </div>
         </template>
       </Dropdown>
@@ -72,6 +80,7 @@
     <Button
       class="builds-list-sidebar-reset-button"
       severity="danger"
+      outlined
       @click="reset()"
     >
       <font-awesome-icon
@@ -94,6 +103,7 @@ import Services from '../../services/repository/Services'
 import { BuildSummarySortingFunctions } from '../../services/sorting/functions/BuildSummarySortingFunctions'
 import { SortingService } from '../../services/sorting/SortingService'
 import StringUtils from '../../utils/StringUtils'
+import InputTextField from '../InputTextFieldComponent.vue'
 
 const modelParameters = defineModel<BuildsListSidebarParameters>('parameters', { required: true })
 
@@ -118,7 +128,6 @@ const sortField = computed({
     modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, BuildSummarySortingFunctions, value, sortOrder.value) as BuildFilterAndSortingData
   }
 })
-const sortIcon = computed(() => modelParameters.value.order === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
 const sortOrder = computed({
   get: () => modelParameters.value.order,
   set: (value: SortingOrder) => {
@@ -143,6 +152,19 @@ function getSortOrderCaption(sortOrder: SortingOrder): string {
     return vueI18n.t('caption.ascendant')
   } else {
     return vueI18n.t('caption.descendant')
+  }
+}
+
+/**
+ * Gets the icon for a sort order.
+ * @param sortOrder - Sort order.
+ * @returns - Icon.
+ */
+function getSortOrderIcon(sortOrder: SortingOrder): string {
+  if (sortOrder === SortingOrder.asc) {
+    return 'sort-alpha-down'
+  } else {
+    return 'sort-alpha-up-alt'
   }
 }
 
@@ -218,5 +240,11 @@ function reset() {
 
 .builds-list-sidebar-value {
   width: 15rem;
+}
+
+.builds-list-sidebar-value-value {
+  align-items: center;
+  display: flex;
+  height: 100%;
 }
 </style>

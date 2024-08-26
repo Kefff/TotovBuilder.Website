@@ -1,48 +1,22 @@
 <template>
-  <div class="sidebar-title">
-    <div class="sidebar-title-icon">
-      <font-awesome-icon icon="download" />
+  <div class="builds-export-sidebar">
+    <div class="sidebar-title">
+      <div class="sidebar-title-icon">
+        <font-awesome-icon icon="download" />
+      </div>
+      <span>{{ $t('caption.exportBuilds') }}</span>
     </div>
-    <span>{{ $t('message.selectBuildsToExport') }}</span>
-  </div>
-  <div class="sidebar-option">
-    <div>
-      <BuildsList
-        v-model:selected-builds="selectedBuilds"
-        :build-summaries="parameters"
-        mode="export"
-        :show-not-exported="true"
-      >
-        <template #toolbarContent>
-          <Button
-            :disabled="selectedBuilds?.length == 0"
-            class="p-button-success"
-            @click="exportBuilds()"
-          >
-            <font-awesome-icon
-              icon="download"
-              class="icon-before-text"
-            />
-            <span>{{ ` ${$t('caption.save')}` }}</span>
-            <span
-              v-show="selectedBuilds.length > 1"
-              style="margin-left: 0.25rem;"
-            >{{ `(${selectedBuilds.length})` }}</span>
-          </Button>
-          <Button
-            v-if="parameters.length > 1"
-            outlined
-            @click="toggleSelection()"
-          >
-            <font-awesome-icon
-              icon="list"
-              class="icon-before-text"
-            />
-            <span v-if="allSelected">{{ $t('caption.deselectAll') }}</span>
-            <span v-else>{{ $t('caption.selectAll') }}</span>
-          </Button>
-        </template>
-      </BuildsList>
+    <div class="sidebar-option">
+      <div>
+        <Toolbar :buttons="toolbarButtons" />
+        <BuildsList
+          v-model:selected-builds="selectedBuilds"
+          :build-summaries="parameters"
+          :is-under-toolbar="true"
+          :show-not-exported="true"
+          mode="export"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -61,17 +35,42 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildsExportSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { IToolbarButton } from '../../models/utils/IToolbarButton'
+import vueI18n from '../../plugins/vueI18n'
 import { BuildService } from '../../services/BuildService'
 import { ExportService } from '../../services/ExportService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 import BuildsList from '../BuildsListComponent.vue'
+import Toolbar from '../ToolbarComponent.vue'
 
 const modelParameters = defineModel<BuildsExportSidebarParameters>('parameters', { required: true })
 
 const _buildService = Services.get(BuildService)
 const _exportService = Services.get(ExportService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
+
+const toolbarButtons: IToolbarButton[] = [
+  {
+    action: exportBuilds,
+    canBeMovedToSidebar: () => false,
+    caption: () => `${vueI18n.t('caption.save')}` + (selectedBuilds.value.length > 1 ? ` (${selectedBuilds.value.length})` : ''),
+    icon: () => 'download',
+    isDisabled: () => selectedBuilds.value?.length == 0,
+    name: 'export',
+    showCaption: () => 'always',
+    variant: () => 'success'
+  },
+  {
+    action: toggleSelection,
+    canBeMovedToSidebar: () => false,
+    caption: () => allSelected.value ? vueI18n.t('caption.deselectAll') : vueI18n.t('caption.selectAll'),
+    icon: () => allSelected.value ? 'folder-minus' : 'folder-plus',
+    isVisible: () => modelParameters.value.length > 1,
+    name: 'toggleSelection',
+    style: () => 'outlined'
+  }
+]
 
 const selectedBuilds = ref<IBuildSummary[]>([])
 
@@ -138,4 +137,8 @@ function toggleSelection() {
 <style scoped>
 @import '../../css/icon.css';
 @import '../../css/sidebar.css';
+
+.builds-export-sidebar {
+  max-width: 37.5rem;
+}
 </style>

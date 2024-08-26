@@ -1,8 +1,31 @@
 <template>
   <div class="build">
+    <div class="build-title build-title-outside-toolbar">
+      <div v-show="!isEditing">
+        {{ build.name }}
+      </div>
+      <InputTextField
+        v-show="!isLoading && isEditing"
+        v-model:value="build.name"
+        :caption="$t('caption.name')"
+        :centered="true"
+        :required="true"
+        caption-mode="placeholder"
+        class="build-name"
+      />
+      <Tooltip
+        v-if="!isLoading && !summary.exported && !isNewBuild"
+        :tooltip="notExportedTooltip"
+      >
+        <font-awesome-icon
+          icon="exclamation-triangle"
+          class="build-not-exported"
+        />
+      </Tooltip>
+    </div>
     <Toolbar :buttons="toolbarButtons">
       <template #center>
-        <div class="build-title">
+        <div class="build-title build-title-in-toolbar">
           <div v-show="!isEditing">
             {{ build.name }}
           </div>

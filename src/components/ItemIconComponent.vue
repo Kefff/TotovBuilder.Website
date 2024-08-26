@@ -65,6 +65,7 @@ const iconUrl = computed(() => {
   flex-direction: row;
   flex-shrink: 0;
   flex-wrap: nowrap;
+  height: 100%;
   overflow: hidden;
   position: relative;
   width: fit-content;

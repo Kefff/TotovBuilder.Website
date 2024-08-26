@@ -1,60 +1,64 @@
 <template>
-  <div class="sidebar-title">
-    <div class="sidebar-title-icon">
-      <font-awesome-icon icon="file-upload" />
+  <div class="builds-import-sidebar">
+    <div class="sidebar-title">
+      <div class="sidebar-title-icon">
+        <font-awesome-icon icon="file-upload" />
+      </div>
+      <span>{{ $t('caption.importBuilds') }}</span>
     </div>
-    <span>{{ $t('message.selectBuildsToImport') }}</span>
-  </div>
-  <div class="sidebar-option">
-    <div
-      v-if="!isFileSelected"
-      class="builds-import-sidebar-button"
-    >
-      <Button @click="displayFileSelectionPopup()">
-        <font-awesome-icon
-          icon="file-upload"
-          class="icon-before-text"
-        />
-        <span>{{ ` ${$t('caption.selectFile')}` }}</span>
-      </Button>
-    </div>
-    <div v-else>
-      <BuildsList
-        v-model:selected-builds="selectedBuilds"
-        :build-summaries="availableBuildSummaries"
-        mode="export"
-        :show-not-exported="true"
+    <div class="sidebar-option">
+      <div
+        v-if="!isFileSelected"
+        class="builds-import-sidebar-button"
       >
-        <template #toolbarContent>
-          <Button
-            :disabled="selectedBuilds?.length == 0"
-            class="p-button-success"
-            @click="importBuilds()"
-          >
-            <font-awesome-icon
-              icon="file-upload"
-              class="icon-before-text"
-            />
-            <span>{{ ` ${$t('caption.import')}` }}</span>
-            <span
-              v-show="selectedBuilds.length > 1"
-              style="margin-left: 0.25rem;"
-            >{{ `(${selectedBuilds.length})` }}</span>
-          </Button>
-          <Button
-            v-if="availableBuildSummaries.length > 1"
-            outlined
-            @click="toggleSelection()"
-          >
-            <font-awesome-icon
-              icon="list"
-              class="icon-before-text"
-            />
-            <span v-if="allSelected">{{ $t('caption.deselectAll') }}</span>
-            <span v-else>{{ $t('caption.selectAll') }}</span>
-          </Button>
-        </template>
-      </BuildsList>
+        <Button @click="displayFileSelectionPopup()">
+          <font-awesome-icon
+            icon="file-upload"
+            class="icon-before-text"
+          />
+          <span>{{ ` ${$t('caption.selectFile')}` }}</span>
+        </Button>
+      </div>
+      <div v-else>
+        <Toolbar :buttons="toolbarButtons" />
+        <BuildsList
+          v-model:selected-builds="selectedBuilds"
+          :build-summaries="availableBuildSummaries"
+          :is-under-toolbar="true"
+          :show-not-exported="true"
+          mode="export"
+        >
+          <template #toolbarContent>
+            <Button
+              :disabled="selectedBuilds?.length == 0"
+              class="p-button-success"
+              @click="importBuilds()"
+            >
+              <font-awesome-icon
+                icon="file-upload"
+                class="icon-before-text"
+              />
+              <span>{{ ` ${$t('caption.import')}` }}</span>
+              <span
+                v-show="selectedBuilds.length > 1"
+                style="margin-left: 0.25rem;"
+              >{{ `(${selectedBuilds.length})` }}</span>
+            </Button>
+            <Button
+              v-if="availableBuildSummaries.length > 1"
+              outlined
+              @click="toggleSelection()"
+            >
+              <font-awesome-icon
+                icon="list"
+                class="icon-before-text"
+              />
+              <span v-if="allSelected">{{ $t('caption.deselectAll') }}</span>
+              <span v-else>{{ $t('caption.selectAll') }}</span>
+            </Button>
+          </template>
+        </BuildsList>
+      </div>
     </div>
   </div>
 
@@ -81,17 +85,42 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
+import { IToolbarButton } from '../../models/utils/IToolbarButton'
+import vueI18n from '../../plugins/vueI18n'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { ImportService } from '../../services/ImportService'
 import Services from '../../services/repository/Services'
 import { WebsiteConfigurationService } from '../../services/WebsiteConfigurationService'
 import BuildsList from '../BuildsListComponent.vue'
+import Toolbar from '../ToolbarComponent.vue'
 
 defineModel<undefined>('parameters')
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _importService = Services.get(ImportService)
 const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
+const toolbarButtons: IToolbarButton[] = [
+  {
+    action: importBuilds,
+    canBeMovedToSidebar: () => false,
+    caption: () => `${vueI18n.t('caption.import')}` + (selectedBuilds.value.length > 1 ? ` (${selectedBuilds.value.length})` : ''),
+    icon: () => 'file-upload',
+    isDisabled: () => selectedBuilds.value?.length == 0,
+    name: 'import',
+    showCaption: () => 'always',
+    variant: () => 'success'
+  },
+  {
+    action: toggleSelection,
+    canBeMovedToSidebar: () => false,
+    caption: () => allSelected.value ? vueI18n.t('caption.deselectAll') : vueI18n.t('caption.selectAll'),
+    icon: () => allSelected.value ? 'folder-minus' : 'folder-plus',
+    isVisible: () => availableBuildSummaries.value.length > 1,
+    name: 'toggleSelection',
+    style: () => 'outlined'
+  }
+]
 
 const acceptedFileExtension = _websiteConfigurationService.configuration.exportFileExtension
 const availableBuilds = ref<IBuild[]>([])
@@ -182,6 +211,10 @@ function toggleSelection() {
 <style scoped>
 @import '../../css/icon.css';
 @import '../../css/sidebar.css';
+
+.builds-import-sidebar {
+  max-width: 37.5rem;
+}
 
 .builds-import-sidebar-button {
   align-items: center;

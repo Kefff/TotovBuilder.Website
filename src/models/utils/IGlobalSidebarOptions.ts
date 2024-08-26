@@ -56,6 +56,7 @@ export type GlobalSidebarComponent =
   | 'NotificationsSidebar'
   | 'ShoppingListSidebar'
   | 'StatsSidebar'
+  | 'ToolbarSidebar'
 
 /**
  * Parameters allowed to be passed to a component displayed in the global sidebar.

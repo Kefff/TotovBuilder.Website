@@ -32,20 +32,27 @@
         :apply-hover-style="false"
         :tooltip="$t('caption.level')"
       >
-        <Dropdown
-          v-if="hasLevels(merchantFilter.merchant)"
-          :disabled="!merchantFilter.enabled"
-          :model-value="merchantFilter.merchantLevel"
-          :options="getMerchantLevels(merchantFilter.merchant)"
-          :placeholder="$t('caption.level')"
-          @update:model-value="onMerchantFilterChanged(index, merchantFilter.enabled, $event)"
-        >
-          <template #option="slotProps">
-            <div class="merchant-filter-level-option">
-              {{ slotProps.option }}
-            </div>
-          </template>
-        </Dropdown>
+        <div class="language-selector-dropdown-override">
+          <Dropdown
+            v-if="hasLevels(merchantFilter.merchant)"
+            :disabled="!merchantFilter.enabled"
+            :model-value="merchantFilter.merchantLevel"
+            :options="getMerchantLevels(merchantFilter.merchant)"
+            :placeholder="$t('caption.level')"
+            @update:model-value="onMerchantFilterChanged(index, merchantFilter.enabled, $event)"
+          >
+            <template #option="slotProps">
+              <div class="merchant-filter-level-option">
+                {{ slotProps.option }}
+              </div>
+            </template>
+            <template #value="slotProps">
+              <div class="merchant-filter-level-value">
+                {{ slotProps.value }}
+              </div>
+            </template>
+          </Dropdown>
+        </div>
       </Tooltip>
     </div>
   </div>
@@ -122,6 +129,7 @@ function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel:
 <style scoped>
 @import '../css/sidebar.css';
 
+
 .merchant-filter {
   align-items: center;
   display: grid;
@@ -146,5 +154,14 @@ function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel:
 
 .merchant-filter-level-option {
   padding: 1rem;
+  padding-left: 1.25rem;
+}
+
+.merchant-filter-level-value {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 2rem;
 }
 </style>

@@ -21,6 +21,7 @@
   <div class="sidebar-option">
     <Button
       class="p-button build-sidebar-button"
+      outlined
       @click="exportBuild()"
     >
       <font-awesome-icon
@@ -35,7 +36,7 @@
       <font-awesome-icon icon="info-circle" />
     </div>
     <span class="build-sidebar-save-to-file-explanation">
-      {{ $t('message.saveBuildToFileExplanation') }}
+      {{ $t('message.exportExplanation') }}
     </span>
   </div>
   <div class="sidebar-title" />

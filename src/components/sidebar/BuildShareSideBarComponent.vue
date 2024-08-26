@@ -229,7 +229,7 @@ async function getBuildAsText() {
 }
 
 /* Smartphone in portrait */
-@media only screen and (min-width: 320px) and (max-width: 480px) {
+@media only screen and (max-width: 480px) {
   .share-build-sidebar-link > .p-button > .icon-before-text {
     margin-right: 0;
   }
