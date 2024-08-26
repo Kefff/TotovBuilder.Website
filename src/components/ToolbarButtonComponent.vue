@@ -1,22 +1,23 @@
 <template>
   <Tooltip
-    v-if="button.visible()"
+    v-show="button.isVisible?.() ?? true"
     :apply-hover-style="false"
     :tooltip="$t(tooltip)"
+    :position="button.tooltipPosition?.()"
   >
     <Button
       class="toolbar-button"
       :class="buttonClasses"
-      :disabled="button.isDisabled()"
+      :disabled="button.isDisabled?.() ?? false"
       :severity="button.variant?.()"
       :outlined="outlined"
       @click="button.action"
     >
       <font-awesome-icon
         :icon="button.icon()"
-        :class="{ 'icon-before-text': button.showCaption() }"
+        :class="{ 'icon-before-text': showCaptionInternal }"
       />
-      <span v-if="button.showCaption()">{{ $t(button.caption()) }}</span>
+      <span v-show="showCaptionInternal">{{ $t(button.caption()) }}</span>
     </Button>
   </Tooltip>
 </template>
@@ -42,8 +43,9 @@ const buttonClasses = computed(() => ({
   'p-button-sm': props.button.style?.() === 'discreet',
   'p-button-text': props.button.style?.() === 'discreet'
 }))
+const showCaptionInternal = computed(() => props.button.showCaption?.() ?? true)
 const outlined = computed(() => props.button.style?.() === 'outlined')
-const tooltip = computed(() => !props.button.showCaption() ? props.button.caption() : '')
+const tooltip = computed(() => !showCaptionInternal.value ? props.button.caption() : '')
 </script>
 
 

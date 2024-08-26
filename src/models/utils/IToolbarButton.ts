@@ -1,16 +1,18 @@
+
 /**
  * Provides the functionalities of a toolbar button.
  */
 export interface IToolbarButton {
   /**
-   * Action to execute when the button is clicked.
+   * Method to execute when the button is clicked.
    */
   action: () => void
 
   /**
-   * Indicates whether the button can be moved from the the toolbar to the toolbar sidebar.
+   * Method for indicating whether the button can be moved from the the toolbar to the toolbar sidebar.
+   * True by default.
    */
-  canBeMovedToSidebar: () => boolean
+  canBeMovedToSidebar?: () => boolean
 
   /**
    * Method for getting the caption.
@@ -25,8 +27,15 @@ export interface IToolbarButton {
 
   /**
    * Method for indicating whether the button is disabled.
+   * False by default.
    */
-  isDisabled: () => boolean
+  isDisabled?: () => boolean
+
+  /**
+   * Method for indicating whether the button is visible.
+   * True by default.
+   */
+  isVisible?: () => boolean
 
   /**
    * Name.
@@ -34,28 +43,32 @@ export interface IToolbarButton {
   name: string
 
   /**
-   * Indicates the side of the toolbar the button is displayed.
+   * Method for getting the side of the toolbar the button is displayed.
+   * 'left' by default.
    */
-  position: () => 'left' | 'right'
+  position?: () => 'left' | 'right'
 
   /**
    * Method for indicating whether the button caption is shown.
    * When true, it is displayed as long as the trigger that hides buttons is not reached.
+   * True by default.
    */
-  showCaption: () => boolean
+  showCaption?: () => boolean
 
   /**
-   * Button style.
+   * Method for getting the button style.
    */
   style?: () => 'discreet' | 'outlined'
 
   /**
-   * Variant.
+   * Method for getting the tooltip position.
+   * 'top' by default.
    */
-  variant?: () => 'danger' | 'help' | 'info' | 'secondary' | 'success' | 'warning'
+  tooltipPosition?: () => 'bottom' | 'left' | 'right' | 'top'
 
   /**
-   * Method for indicating whether the button is visible.
+   * Method for getting the variant.
+   * Primary variant is used by default.
    */
-  visible: () => boolean
+  variant?: () => 'danger' | 'help' | 'info' | 'secondary' | 'success' | 'warning'
 }

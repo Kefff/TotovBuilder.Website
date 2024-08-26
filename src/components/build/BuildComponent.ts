@@ -4,6 +4,7 @@ import { IBuild } from '../../models/build/IBuild'
 import { IInventorySlot } from '../../models/build/IInventorySlot'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { IGeneralOptionsGroup } from '../../models/utils/IGeneralOptionsGroup'
+import { IToolbarButton } from '../../models/utils/IToolbarButton'
 import vueI18n from '../../plugins/vueI18n'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
@@ -47,6 +48,103 @@ export default defineComponent({
 
     const _inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
     let _originalBuild: IBuild
+    const toolbarButtons: IToolbarButton[] = [
+      {
+        action: goToBuilds,
+        canBeMovedToSidebar: () => false,
+        caption: () => 'caption.backToBuilds',
+        icon: () => 'arrow-left',
+        isDisabled: () => isEditing.value,
+        name: 'backToBuilds',
+        showCaption: () => false,
+        style: () => 'discreet',
+        tooltipPosition: () => 'right'
+      },
+      {
+        action: startEdit,
+        canBeMovedToSidebar: () => false,
+        caption: () => 'caption.edit',
+        icon: () => 'edit',
+        isDisabled: () => isLoading.value,
+        isVisible: () => !isEditing.value,
+        name: 'edit'
+      },
+      {
+        action: save,
+        canBeMovedToSidebar: () => false,
+        caption: () => 'caption.save',
+        icon: () => 'save',
+        isDisabled: () => invalid.value,
+        isVisible: () => isEditing.value,
+        name: 'save',
+        variant: () => 'success'
+      },
+      {
+        action: displayShoppingList,
+        caption: () => 'caption.shoppingList',
+        icon: () => 'shopping-cart',
+        isDisabled: () => summary.value.shoppingList.length === 0,
+        name: 'shoppingList',
+        style: () => 'outlined'
+      },
+      {
+        action: copy,
+        caption: () => 'caption.copyBuild',
+        icon: () => 'copy',
+        isDisabled: () => isLoading.value || isNewBuild.value,
+        name: 'copy',
+        showCaption: () => false,
+        style: () => 'discreet'
+      },
+      {
+        action: exportBuild,
+        caption: () => 'caption.export',
+        icon: () => 'download',
+        isDisabled: () => isLoading.value || isEditing.value,
+        name: 'export',
+        showCaption: () => false,
+        style: () => 'discreet'
+      },
+      {
+        action: displayMerchantItemsOptions,
+        caption: () => 'caption.merchantItemsOptions',
+        icon: () => 'user-tag',
+        isDisabled: () => isLoading.value,
+        name: 'merchantItemsOptions',
+        position: () => 'right',
+        showCaption: () => false,
+        style: () => 'discreet'
+      },
+      {
+        action: displayGeneralOptions,
+        caption: () => 'caption.options',
+        icon: () => 'cog',
+        name: 'generalOptions',
+        position: () => 'right',
+        showCaption: () => false,
+        style: () => 'discreet'
+      },
+      {
+        action: cancelEdit,
+        caption: () => 'caption.cancel',
+        icon: () => 'undo',
+        isVisible: () => isEditing.value,
+        name: 'cancel',
+        position: () => 'right',
+        variant: () => 'danger'
+      },
+      {
+        action: startDelete,
+        caption: () => 'caption.delete',
+        icon: () => 'trash',
+        isDisabled: () => isLoading.value,
+        isVisible: () => !isEditing.value,
+        name: 'delete',
+        position: () => 'right',
+        showCaption: () => false,
+        variant: () => 'danger'
+      }
+    ]
 
     const build = ref<IBuild>({
       id: route.params['id'] as string ?? '',
@@ -321,6 +419,7 @@ export default defineComponent({
      * Redirects to the builds page.
      */
     function goToBuilds() {
+      console.log('connard')
       router.push({ name: 'Builds' })
     }
 
@@ -508,7 +607,8 @@ export default defineComponent({
       startDelete,
       startEdit,
       StatsUtils,
-      summary
+      summary,
+      toolbarButtons
     }
   }
 })

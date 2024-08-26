@@ -27,7 +27,7 @@
         icon="download"
         class="icon-before-text"
       />
-      <span>{{ $t('caption.saveBuildToFile') }}</span>
+      <span>{{ $t('caption.export') }}</span>
     </Button>
   </div>
   <div class="sidebar-option-description">

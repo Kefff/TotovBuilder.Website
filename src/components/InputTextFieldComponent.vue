@@ -3,7 +3,7 @@
     <label v-if="!captionAsPlaceholder">{{ caption }}</label>
     <InputText
       v-model="modelValue"
-      :class="invalid ? 'p-invalid' : ''"
+      :class="inputClasses"
       :disabled="disabled"
       :placeholder="captionAsPlaceholder ? caption : undefined"
       :readonly="readOnly"
@@ -35,6 +35,7 @@ const props = withDefaults(
   defineProps<{
     caption?: string,
     captionMode: 'caption' | 'placeholder',
+    centered?: boolean,
     disabled?: boolean,
     readOnly?: boolean,
     required?: boolean,
@@ -43,6 +44,7 @@ const props = withDefaults(
   {
     caption: '',
     captionMode: 'caption',
+    centered: false,
     disabled: false,
     readOnly: false,
     required: false,
@@ -50,6 +52,10 @@ const props = withDefaults(
   })
 
 const captionAsPlaceholder = computed(() => props.captionMode === 'placeholder')
+const inputClasses = computed(() => ({
+  'input-text-field-centered': props.centered,
+  'p-invalid': invalid.value
+}))
 const invalid = computed(() => props.required && (modelValue.value == null || modelValue.value === ''))
 </script>
 
@@ -86,5 +92,9 @@ const invalid = computed(() => props.required && (modelValue.value == null || mo
   padding-left: 0.25rem;
   padding-right: 0.25rem;
   width: 100%;
+}
+
+.input-text-field-centered {
+  text-align: center;
 }
 </style>

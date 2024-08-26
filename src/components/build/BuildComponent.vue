@@ -7,10 +7,11 @@
       <InputTextField
         v-show="!isLoading && isEditing"
         v-model:value="build.name"
-        class="build-name"
         :caption="$t('caption.name')"
-        caption-mode="placeholder"
+        :centered="true"
         :required="true"
+        caption-mode="placeholder"
+        class="build-name"
       />
       <Tooltip
         v-if="!isLoading && !summary.exported && !isNewBuild"
@@ -22,83 +23,11 @@
         />
       </Tooltip>
     </div>
-    <Toolbar>
+    <Toolbar :buttons="toolbarButtons">
+      <template #right>
+        <NotificationButton />
+      </template>
       <template #content>
-        <div class="toolbar-part">
-          <Tooltip
-            :apply-hover-style="false"
-            position="right"
-            :tooltip="$t('caption.backToBuilds')"
-          >
-            <Button
-              class="p-button-text p-button-sm button-discreet"
-              :disabled="isEditing"
-              @click="goToBuilds()"
-            >
-              <font-awesome-icon icon="arrow-left" />
-            </Button>
-          </Tooltip>
-          <Button
-            v-show="!isEditing"
-            class="toolbar-button"
-            :disabled="isLoading"
-            @click="startEdit()"
-          >
-            <font-awesome-icon
-              icon="edit"
-              class="icon-before-text"
-            />
-            <span>{{ $t('caption.edit') }}</span>
-          </Button>
-          <Button
-            v-show="isEditing"
-            class="p-button-success toolbar-button"
-            :disabled="invalid"
-            @click="save()"
-          >
-            <font-awesome-icon
-              icon="save"
-              class="icon-before-text"
-            />
-            <span>{{ $t('caption.save') }}</span>
-          </Button>
-          <Tooltip
-            :apply-hover-style="false"
-            :tooltip="$t('caption.shoppingList')"
-          >
-            <Button
-              class="p-button-text p-button-sm button-discreet"
-              :disabled="summary.shoppingList.length === 0"
-              @click="() => displayShoppingList()"
-            >
-              <font-awesome-icon icon="shopping-cart" />
-            </Button>
-          </Tooltip>
-          <Tooltip
-            :apply-hover-style="false"
-            :tooltip="$t('caption.copyBuild')"
-          >
-            <Button
-              :disabled="isLoading || isNewBuild"
-              class="p-button-text p-button-sm button-discreet"
-              @click="copy()"
-            >
-              <font-awesome-icon icon="copy" />
-            </Button>
-          </Tooltip>
-          <Tooltip
-            :apply-hover-style="false"
-            :tooltip="$t('caption.saveBuildToFile')"
-          >
-            <Button
-              class="p-button-text p-button-sm button-discreet"
-              :disabled="isLoading || isEditing"
-              @click="exportBuild()"
-            >
-              <font-awesome-icon icon="download" />
-            </Button>
-          </Tooltip>
-        </div>
         <div class="toolbar-part toolbar-center">
           <div
             v-show="!isLoading"
@@ -224,57 +153,6 @@
                 <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
               </Tooltip>
             </div>
-          </div>
-        </div>
-        <div class="toolbar-part">
-          <div class="build-toolbar-right">
-            <Tooltip
-              :apply-hover-style="false"
-              :tooltip="$t('caption.merchantItemsOptions')"
-            >
-              <Button
-                class="p-button-text p-button-sm button-discreet"
-                :disabled="isLoading"
-                @click="displayMerchantItemsOptions()"
-              >
-                <font-awesome-icon icon="user-tag" />
-              </Button>
-            </Tooltip>
-            <Tooltip
-              :apply-hover-style="false"
-              :tooltip="$t('caption.options')"
-            >
-              <Button
-                class="p-button-text p-button-sm button-discreet"
-                @click="displayGeneralOptions()"
-              >
-                <font-awesome-icon icon="cog" />
-              </Button>
-            </Tooltip>
-            <NotificationButton />
-            <Button
-              v-show="isEditing"
-              class="p-button-danger toolbar-button"
-              @click="cancelEdit()"
-            >
-              <font-awesome-icon
-                icon="undo"
-                class="icon-before-text"
-              />
-              <span>{{ $t('caption.cancel') }}</span>
-            </Button>
-            <Button
-              v-show="!isEditing"
-              class="p-button-danger toolbar-button"
-              :disabled="isLoading"
-              @click="startDelete()"
-            >
-              <font-awesome-icon
-                icon="trash"
-                class="icon-before-text"
-              />
-              <span>{{ $t('caption.delete') }}</span>
-            </Button>
           </div>
         </div>
       </template>

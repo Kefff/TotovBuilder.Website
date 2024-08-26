@@ -17,12 +17,12 @@
           <slot name="left" />
         </div>
         <div class="toolbar-line-right">
+          <slot name="right" />
           <ToolbarButton
             v-for="button of rightDisplayedButtons"
             :key="button.name"
             :button="button"
           />
-          <slot name="right" />
         </div>
       </div>
     </div>
@@ -55,13 +55,13 @@ const toolbarContainer = ref<HTMLDivElement>()
 
 const leftDisplayedButtons = computed(() =>
   areButtonsHidden.value
-    ? props.buttons.filter(b => b.position() === 'left' && !b.canBeMovedToSidebar())
-    : props.buttons.filter(b => b.position() === 'left'))
+    ? props.buttons.filter(b => (b.position?.() ?? 'left') === 'left' && !(b.canBeMovedToSidebar?.() ?? true))
+    : props.buttons.filter(b => (b.position?.() ?? 'left') === 'left'))
 const rightDisplayedButtons = computed(() =>
   areButtonsHidden.value
-    ? props.buttons.filter(b => b.position() === 'right' && !b.canBeMovedToSidebar())
-    : props.buttons.filter(b => b.position() === 'right'))
-const hiddenButtons = computed(() => areButtonsHidden.value ? props.buttons.filter(b => b.canBeMovedToSidebar()) : [])
+    ? props.buttons.filter(b => (b.position?.() ?? 'left') === 'right' && !(b.canBeMovedToSidebar?.() ?? true))
+    : props.buttons.filter(b => (b.position?.() ?? 'left') === 'right'))
+const hiddenButtons = computed(() => areButtonsHidden.value ? props.buttons.filter(b => (b.canBeMovedToSidebar?.() ?? true)) : [])
 const toolbarClasses = computed(() => ({
   'toolbar-stickied': stickied.value && !isInGlobalSidebar.value,
   'toolbar-stickied-sidebar': stickied.value && isInGlobalSidebar.value
@@ -166,7 +166,7 @@ function setButtonsAreHidden() {
 .toolbar-line {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.25rem;
+  gap: 0.5rem;
   font-size: 2rem;
   width: 100%;
 }
@@ -180,7 +180,7 @@ function setButtonsAreHidden() {
 .toolbar-line-left {
   align-items: center;
   display: flex;
-  gap: 0.25rem;
+  gap: 0.5rem;
   justify-content: start;
 }
 

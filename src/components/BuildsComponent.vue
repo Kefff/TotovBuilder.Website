@@ -70,66 +70,53 @@ const _itemService = Services.get(ItemService)
 const _sortingService = Services.get(SortingService)
 
 let _builds: IBuild[] = []
-let toolbarButtons: IToolbarButton[] = [
+const toolbarButtons: IToolbarButton[] = [
   {
-    action: () => openNewBuild(),
+    action: openNewBuild,
     canBeMovedToSidebar: () => false,
     caption: () => 'caption.new',
-    isDisabled: () => isLoading.value,
     icon: () => 'plus',
-    name: 'newBuild',
-    position: () => 'left',
-    showCaption: () => true,
-    variant: () => 'success',
-    visible: () => true
-  },
-  {
-    action: () => displayExportSidebar(),
-    canBeMovedToSidebar: () => true,
-    caption: () => 'caption.exportBuilds',
-    isDisabled: () => isLoading.value || !canImportExport.value,
-    icon: () => 'download',
-    name: 'export',
-    position: () => 'left',
-    showCaption: () => false,
-    style: () => 'discreet',
-    visible: () => true
-  },
-  {
-    action: () => displayImportSidebar(),
-    canBeMovedToSidebar: () => true,
-    caption: () => 'caption.importBuilds',
-    isDisabled: () => isLoading.value || !canImportExport.value,
-    icon: () => 'file-upload',
-    name: 'import',
-    position: () => 'left',
-    showCaption: () => false,
-    style: () => 'discreet',
-    visible: () => true
-  },
-  {
-    action: () => displayMerchantItemsOptions(),
-    canBeMovedToSidebar: () => true,
-    caption: () => 'caption.merchantItemsOptions',
     isDisabled: () => isLoading.value,
+    name: 'newBuild',
+    tooltipPosition: () => 'right',
+    variant: () => 'success'
+  },
+  {
+    action: displayExportSidebar,
+    caption: () => 'caption.exportBuilds',
+    icon: () => 'download',
+    isDisabled: () => isLoading.value || !canImportExport.value,
+    name: 'export',
+    showCaption: () => false,
+    style: () => 'discreet'
+  },
+  {
+    action: displayImportSidebar,
+    caption: () => 'caption.importBuilds',
+    icon: () => 'file-upload',
+    isDisabled: () => isLoading.value || !canImportExport.value,
+    name: 'import',
+    showCaption: () => false,
+    style: () => 'discreet'
+  },
+  {
+    action: displayMerchantItemsOptions,
+    caption: () => 'caption.merchantItemsOptions',
     icon: () => 'user-tag',
-    name: 'merchantIptions',
+    isDisabled: () => isLoading.value,
+    name: 'merchantItemsOptions',
     position: () => 'right',
     showCaption: () => false,
-    style: () => 'discreet',
-    visible: () => true
+    style: () => 'discreet'
   },
   {
-    action: () => displayGeneralOptions(),
-    canBeMovedToSidebar: () => true,
+    action: displayGeneralOptions,
     caption: () => 'caption.options',
-    isDisabled: () => isLoading.value,
     icon: () => 'cog',
     name: 'generalOptions',
     position: () => 'right',
     showCaption: () => false,
-    style: () => 'discreet',
-    visible: () => true
+    style: () => 'discreet'
   }
 ]
 
