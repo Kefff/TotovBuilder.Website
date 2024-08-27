@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar-option">
-    <div>
+    <div class="shopping-list-sidebar">
       <div class="shopping-list-sidebar-merchants">
         <ShoppingListMerchantsList :shopping-list="parameters.shoppingList" />
       </div>
@@ -53,6 +53,10 @@ defineProps<{ parameters: ShoppingListSidebarParameters }>()
 
 <style scoped>
 @import '../../css/sidebar.css';
+
+.shopping-list-sidebar {
+  width: 100%;
+}
 
 .shopping-list-sidebar-build-name {
   margin-left: 2.5rem;

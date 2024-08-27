@@ -6,11 +6,11 @@
     :position="button.tooltipPosition?.()"
   >
     <Button
-      class="p-button-sm toolbar-button"
       :class="buttonClasses"
       :disabled="button.isDisabled?.() ?? false"
-      :severity="button.variant?.()"
       :outlined="outlined"
+      :severity="button.variant?.()"
+      class="p-button-sm toolbar-button"
       @click="button.action"
     >
       <font-awesome-icon :icon="button.icon()" />

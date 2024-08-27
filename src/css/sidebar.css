@@ -2,8 +2,12 @@
   align-items: center;
   display: flex;
   flex-direction: row;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   min-height: 3.25rem;
+}
+
+.sidebar-option:first-child {
+  margin-top: 0;
 }
 
 .sidebar-option-description {

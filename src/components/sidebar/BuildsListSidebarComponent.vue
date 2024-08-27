@@ -132,8 +132,7 @@ const sortOrder = computed({
 onMounted(() => {
   sortableProperties.value = getSortableProperties()
 
-  // Focus the filter input to be able to search.
-  nextTick(() => buildsListSidebarFilterInput.value.$el.select()) // nextTick required for the focus to work
+  setFocusOnFilterInput()
 })
 
 /**
@@ -195,6 +194,14 @@ function onFilterKeyDown(event: KeyboardEvent) {
 function reset() {
   modelParameters.value = new BuildFilterAndSortingData()
   _globalSidebarService.close('BuildsListSidebar')
+}
+
+/**
+ * Sets the focus on the filter input.
+ */
+function setFocusOnFilterInput() {
+  const input = buildsListSidebarFilterInput.value.$el.querySelector('input') as HTMLInputElement
+  nextTick(() => input?.select()) // nextTick required for the focus to work
 }
 </script>
 

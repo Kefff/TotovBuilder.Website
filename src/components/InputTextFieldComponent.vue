@@ -34,7 +34,7 @@ const modelValue = defineModel<string>('value')
 const props = withDefaults(
   defineProps<{
     caption?: string,
-    captionMode: 'caption' | 'placeholder',
+    captionMode?: 'caption' | 'placeholder',
     centered?: boolean,
     disabled?: boolean,
     readOnly?: boolean,

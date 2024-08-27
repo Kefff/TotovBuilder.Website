@@ -50,7 +50,7 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue'
 import { BuildShareSideBarParameters, BuildSidebarParameters, GlobalSidebarComponent, IGlobalSidebarOptions, ShoppingListSidebarParameters, StatsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
@@ -73,7 +73,7 @@ const props = defineProps<{
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
-const displayedComponent = ref()
+const displayedComponent = shallowRef()
 const icon = ref<string>()
 const options = ref<IGlobalSidebarOptions>({} as IGlobalSidebarOptions)
 const title = ref<string>()
