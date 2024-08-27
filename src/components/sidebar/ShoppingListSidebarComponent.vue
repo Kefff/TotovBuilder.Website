@@ -1,11 +1,4 @@
 <template>
-  <div class="sidebar-title">
-    <div class="sidebar-title-icon">
-      <font-awesome-icon icon="shopping-cart" />
-    </div>
-    <span>{{ $t('caption.shoppingList') }}</span>
-  </div>
-  <span class="shopping-list-sidebar-build-name">{{ parameters.buildName }}</span>
   <div class="sidebar-option">
     <div>
       <div class="shopping-list-sidebar-merchants">

@@ -145,13 +145,12 @@ export default defineComponent({
       },
       {
         action: displayMerchantItemsOptions,
-        caption: () => vueI18n.t('caption.merchantItemsOptions'),
+        caption: () => vueI18n.t('caption.merchants'),
         icon: () => 'user-tag',
         isDisabled: () => isLoading.value,
         name: 'merchantItemsOptions',
         position: () => 'right',
-        showCaption: () => 'never',
-        style: () => 'discreet'
+        style: () => 'outlined'
       },
       {
         action: displayGeneralOptions,
@@ -447,7 +446,6 @@ export default defineComponent({
      * Redirects to the builds page.
      */
     function goToBuilds() {
-      console.log('connard')
       router.push({ name: 'Builds' })
     }
 

@@ -1,13 +1,7 @@
 <template>
-  <div class="sidebar-title">
-    <div class="sidebar-title-icon">
-      <font-awesome-icon icon="clipboard-list" />
-    </div>
-    <span>{{ $t('caption.changelog') }}</span>
-  </div>
   <div class="sidebar-option">
     <Loading v-show="isLoading" />
-    <div v-if="!isLoading && changelogs.length > 0">
+    <div v-if="!isLoading">
       <div
         v-for="changelog of changelogs"
         :key="changelog.version"

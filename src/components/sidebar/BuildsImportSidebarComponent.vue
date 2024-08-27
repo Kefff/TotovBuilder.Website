@@ -1,11 +1,5 @@
 <template>
   <div class="builds-import-sidebar">
-    <div class="sidebar-title">
-      <div class="sidebar-title-icon">
-        <font-awesome-icon icon="file-upload" />
-      </div>
-      <span>{{ $t('caption.importBuilds') }}</span>
-    </div>
     <div class="sidebar-option">
       <div
         v-if="!isFileSelected"
@@ -213,7 +207,7 @@ function toggleSelection() {
 @import '../../css/sidebar.css';
 
 .builds-import-sidebar {
-  max-width: 37.5rem;
+  max-width: 40rem;
 }
 
 .builds-import-sidebar-button {

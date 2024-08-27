@@ -4,6 +4,7 @@ import { IItem } from '../item/IItem'
 import BuildFilterAndSortingData from './BuildFilterAndSortingData'
 import { IBuildSummary } from './IBuildSummary'
 import { IGeneralOptionsGroup } from './IGeneralOptionsGroup'
+import { IToolbarButton } from './IToolbarButton'
 
 /**
  * Provides the functionalities of options passed to the global sidebar when opening it.
@@ -69,6 +70,7 @@ export type GlobalSidebarDisplayedComponentParameters =
   | GeneralOptionsSidebarParameters
   | ShoppingListSidebarParameters
   | StatsSidebarParameters
+  | ToolbarSidebarParameters
 
 /**
  * Builds export sidebar parameters.
@@ -92,3 +94,8 @@ export type ShoppingListSidebarParameters = {
  * Stats sidebar parameters.
  */
 export type StatsSidebarParameters = IItem
+
+/**
+ * Toolbar sidebar parameters.
+ */
+export type ToolbarSidebarParameters = IToolbarButton[]

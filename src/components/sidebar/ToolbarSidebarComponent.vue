@@ -12,7 +12,9 @@
 
 
 <script setup lang="ts">
-defineModel<undefined>('parameters', { required: true })
+import { ToolbarSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
+
+defineModel<ToolbarSidebarParameters>('parameters', { required: true })
 </script>
 
 

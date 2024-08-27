@@ -6,7 +6,29 @@
     style="width: auto;"
   >
     <template #header>
-      <div class="global-sidebar-spacer" />
+      <div class="global-sidebar-header">
+        <div
+          v-if="icon != null"
+          class="global-sidebar-icon sidebar-title-icon"
+        >
+          <font-awesome-icon :icon="icon" />
+        </div>
+        <div class="global-sidebar-title">
+          <div
+            v-if="title == null"
+            class="global-sidebar-spacer"
+          />
+          <div
+            v-else
+            class="sidebar-title"
+          >
+            <span>{{ $t(title) }}</span>
+          </div>
+          <div v-if="subtitle != null">
+            {{ subtitle }}
+          </div>
+        </div>
+      </div>
     </template>
     <div class="global-sidebar-content">
       <component
@@ -28,8 +50,8 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { GlobalSidebarComponent, IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { BuildShareSideBarParameters, BuildSidebarParameters, GlobalSidebarComponent, IGlobalSidebarOptions, ShoppingListSidebarParameters, StatsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 import BuildsExportSidebar from './BuildsExportSidebarComponent.vue'
@@ -51,39 +73,19 @@ const props = defineProps<{
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
+const displayedComponent = ref()
+const icon = ref<string>()
 const options = ref<IGlobalSidebarOptions>({} as IGlobalSidebarOptions)
-let visibleInternal = ref(false)
+const title = ref<string>()
+const subtitle = ref<string>()
+const visibleInternal = ref(false)
 
-const displayedComponent = computed(() => {
-  switch (options.value?.displayedComponentType) {
-    case 'BuildsExportSidebar':
-      return BuildsExportSidebar
-    case 'BuildsImportSidebar':
-      return BuildsImportSidebar
-    case 'BuildsListSidebar':
-      return BuildsListSidebar
-    case 'BuildShareSideBar':
-      return BuildShareSideBar
-    case 'BuildSidebar':
-      return BuildSidebarComponent
-    case 'ChangelogSidebar':
-      return ChangelogSidebar
-    case 'GeneralOptionsSidebar':
-      return GeneralOptionsSidebar
-    case 'MerchantItemsOptionsSidebar':
-      return MerchantItemsOptionsSidebar
-    case 'NotificationsSidebar':
-      return NotificationsSidebar
-    case 'ShoppingListSidebar':
-      return ShoppingListSidebar
-    case 'StatsSidebar':
-      return StatsSidebar
-    case 'ToolbarSidebar':
-      return ToolbarSidebar
-    default:
-      return undefined
-  }
-})
+onMounted(() => setDisplayedComponent())
+
+watch(
+  () => options.value,
+  () => setDisplayedComponent())
+
 const visible = computed({
   get: () => visibleInternal.value,
   set: (value: boolean) => {
@@ -131,6 +133,94 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: numbe
     options.value = openingOptions
   }
 }
+
+/**
+ * Sets the component to display.
+ */
+function setDisplayedComponent() {
+  subtitle.value = undefined
+
+  switch (options.value?.displayedComponentType) {
+    case 'BuildsExportSidebar':
+      displayedComponent.value = BuildsExportSidebar
+      icon.value = 'download'
+      title.value = 'caption.exportBuilds'
+
+      break
+    case 'BuildShareSideBar':
+      displayedComponent.value = BuildShareSideBar
+      icon.value = 'share-alt'
+      subtitle.value = (options.value.displayedComponentParameters as BuildShareSideBarParameters).name
+      title.value = 'caption.share'
+
+      break
+    case 'BuildSidebar':
+      displayedComponent.value = BuildSidebarComponent
+      icon.value = 'ellipsis-h'
+      subtitle.value = (options.value.displayedComponentParameters as BuildSidebarParameters).name
+      title.value = 'caption.actions'
+
+      break
+    case 'BuildsImportSidebar':
+      displayedComponent.value = BuildsImportSidebar
+      icon.value = 'file-upload'
+      title.value = 'caption.importBuilds'
+
+      break
+    case 'BuildsListSidebar':
+      displayedComponent.value = BuildsListSidebar
+      icon.value = 'filter'
+      title.value = 'caption.filter'
+
+      break
+    case 'ChangelogSidebar':
+      displayedComponent.value = ChangelogSidebar
+      icon.value = 'clipboard-list'
+      title.value = 'caption.changelog'
+
+      break
+    case 'GeneralOptionsSidebar':
+      displayedComponent.value = GeneralOptionsSidebar
+      icon.value = 'tv'
+      title.value = 'caption.displayOptions'
+
+      break
+    case 'MerchantItemsOptionsSidebar':
+      displayedComponent.value = MerchantItemsOptionsSidebar
+      icon.value = 'user-tag'
+      title.value = 'caption.merchants'
+
+      break
+    case 'NotificationsSidebar':
+      displayedComponent.value = NotificationsSidebar
+      icon.value = 'bell'
+      title.value = 'caption.notifications'
+
+      break
+    case 'ShoppingListSidebar':
+      displayedComponent.value = ShoppingListSidebar
+      icon.value = 'shopping-cart'
+      subtitle.value = (options.value.displayedComponentParameters as ShoppingListSidebarParameters).buildName
+      title.value = 'caption.shoppingList'
+
+      break
+    case 'StatsSidebar':
+      displayedComponent.value = StatsSidebar
+      icon.value = 'clipboard-list'
+      subtitle.value = (options.value.displayedComponentParameters as StatsSidebarParameters).name
+      title.value = 'caption.itemDetails'
+
+      break
+    case 'ToolbarSidebar':
+      displayedComponent.value = ToolbarSidebar
+      icon.value = 'bars'
+      title.value = 'caption.menu'
+
+      break
+    default:
+      break
+  }
+}
 </script>
 
 
@@ -143,11 +233,26 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: numbe
 
 
 <style scoped>
+@import '../../css/sidebar.css';
+
 .global-sidebar-content {
   max-width: calc(50vw - 1rem - 1rem);
 }
 
+.global-sidebar-icon {
+  font-size: 1.5rem;
+}
+
 .global-sidebar-spacer {
+  width: 100%;
+}
+
+.global-sidebar-header {
+  align-items: center;
+  display: flex;
+}
+
+.global-sidebar-title {
   width: 100%;
 }
 
@@ -173,4 +278,14 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: numbe
 
 /* PC */
 @media only screen and (min-width: 1300px) {}
+</style>
+
+<style>
+.p-sidebar-header {
+  margin-bottom: 0.5rem;
+}
+
+.p-sidebar-header-content {
+  width: 100%;
+}
 </style>

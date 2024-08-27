@@ -110,6 +110,7 @@ onUnmounted(() => {
  */
 function displayToolbarSideBar() {
   _globalSidebarService.display({
+    displayedComponentParameters: hiddenButtons.value,
     displayedComponentType: 'ToolbarSidebar'
   })
 }

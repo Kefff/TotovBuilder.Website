@@ -107,13 +107,12 @@ const toolbarButtons: IToolbarButton[] = [
   },
   {
     action: displayMerchantItemsOptions,
-    caption: () => vueI18n.t('caption.merchantItemsOptions'),
+    caption: () => vueI18n.t('caption.merchants'),
     icon: () => 'user-tag',
     isDisabled: () => isLoading.value,
     name: 'merchantItemsOptions',
     position: () => 'right',
-    showCaption: () => 'never',
-    style: () => 'discreet'
+    style: () => 'outlined'
   },
   {
     action: displayGeneralOptions,

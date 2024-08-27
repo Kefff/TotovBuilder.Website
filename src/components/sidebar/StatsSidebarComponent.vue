@@ -1,15 +1,6 @@
 <template>
-  <div class="sidebar-title">
-    <div class="sidebar-title-icon">
-      <font-awesome-icon icon="clipboard-list" />
-    </div>
-    <span>{{ $t('caption.itemDetails') }}</span>
-  </div>
   <div class="sidebar-option">
     <div class="stats-sidebar">
-      <div class="stats-category">
-        {{ parameters.name }}
-      </div>
       <div>
         <div class="stats-sidebar-image">
           <img

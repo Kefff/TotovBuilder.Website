@@ -68,6 +68,6 @@ function setLanguage() {
   display: flex;
   justify-content: center;
   margin-right: 0.5rem;
-  width: 2rem;
+  width: 2.875rem;
 }
 </style>

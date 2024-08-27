@@ -1,11 +1,5 @@
 <template>
   <div class="builds-export-sidebar">
-    <div class="sidebar-title">
-      <div class="sidebar-title-icon">
-        <font-awesome-icon icon="download" />
-      </div>
-      <span>{{ $t('caption.exportBuilds') }}</span>
-    </div>
     <div class="sidebar-option">
       <div>
         <Toolbar :buttons="toolbarButtons" />
@@ -139,6 +133,6 @@ function toggleSelection() {
 @import '../../css/sidebar.css';
 
 .builds-export-sidebar {
-  max-width: 37.5rem;
+  max-width: 40rem;
 }
 </style>

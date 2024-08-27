@@ -1,10 +1,4 @@
 <template>
-  <div class="sidebar-title">
-    <div class="sidebar-title-icon">
-      <font-awesome-icon icon="user-tag" />
-    </div>
-    <span>{{ $t('caption.merchants') }}</span>
-  </div>
   <div class="sidebar-option">
     <MerchantFilter
       v-model:merchant-filters="globalFilter.merchantFilters"

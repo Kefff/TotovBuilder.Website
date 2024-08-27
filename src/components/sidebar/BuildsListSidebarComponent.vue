@@ -1,10 +1,4 @@
 <template>
-  <div class="sidebar-title">
-    <div class="sidebar-title-icon">
-      <font-awesome-icon icon="filter" />
-    </div>
-    <span>{{ $t('caption.filter') }}</span>
-  </div>
   <div class="sidebar-option">
     <div class="builds-list-sidebar-group">
       <span class="builds-list-sidebar-caption">{{ $t('caption.filter') }}</span>
@@ -235,7 +229,10 @@ function reset() {
 }
 
 .builds-list-sidebar-reset-button {
-  margin-left: auto;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .builds-list-sidebar-value {

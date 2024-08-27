@@ -94,6 +94,11 @@
               class="icon-before-text"
             />
             <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, summary.ergonomics) }}</span>
+            <span v-if="hasSummaryErgonomicsModifierPercentage">
+              &nbsp;(<span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsModifierPercentage)">
+                {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsModifierPercentage) }}
+              </span>)
+            </span>
           </Tooltip>
         </div>
         <div
@@ -110,19 +115,6 @@
               class="icon-before-text"
             />
             <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, summary.armorModifiers.armorClass) }}</span>
-          </Tooltip>
-          <Tooltip
-            v-if="hasSummaryErgonomicsModifierPercentage"
-            :tooltip="$t('caption.ergonomicsModifierPercentage')"
-            class="build-summary-value"
-          >
-            <font-awesome-icon
-              icon="hand-paper"
-              class="icon-before-text"
-            />
-            <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsModifierPercentage)">
-              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsModifierPercentage) }}
-            </span>
           </Tooltip>
           <Tooltip
             v-if="hasSummaryMovementSpeedModifierPercentage"

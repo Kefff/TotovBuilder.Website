@@ -1,10 +1,4 @@
 <template>
-  <div class="sidebar-title">
-    <div class="sidebar-title-icon">
-      <font-awesome-icon icon="bell" />
-    </div>
-    <span>{{ $t('caption.notifications') }}</span>
-  </div>
   <div class="sidebar-option">
     <div class="notifications">
       <div

@@ -1,11 +1,5 @@
 <template>
   <!-- Display options -->
-  <div class="sidebar-title">
-    <div class="sidebar-title-icon">
-      <font-awesome-icon icon="tv" />
-    </div>
-    <span>{{ $t('caption.displayOptions') }}</span>
-  </div>
   <div class="sidebar-option">
     <ApplicationLanguageSelector />
   </div>

@@ -1,11 +1,4 @@
 <template>
-  <div class="sidebar-title">
-    <div class="sidebar-title-icon">
-      <font-awesome-icon icon="share-alt" />
-    </div>
-    <span>{{ $t('caption.share', { build: parameters.name }) }}</span>
-  </div>
-  <span class="share-build-sidebar-name">{{ parameters.name }}</span>
   <div
     v-if="shareLink != null"
     class="sidebar-option"

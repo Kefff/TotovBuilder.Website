@@ -1,11 +1,4 @@
 <template>
-  <div class="sidebar-title">
-    <div class="sidebar-title-icon">
-      <font-awesome-icon icon="ellipsis-h" />
-    </div>
-    <span>{{ $t('caption.actions') }}</span>
-  </div>
-  <span class="build-sidebar-name">{{ parameters.name }}</span>
   <div class="sidebar-option">
     <Button
       class="p-button build-sidebar-button"
