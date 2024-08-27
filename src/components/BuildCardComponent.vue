@@ -21,7 +21,7 @@
           :apply-hover-style="false"
         >
           <Button
-            class="p-button p-button-sm"
+            class="p-button-sm"
             outlined
             @click="displayActions()"
           >

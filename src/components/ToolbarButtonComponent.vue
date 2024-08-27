@@ -6,7 +6,7 @@
     :position="button.tooltipPosition?.()"
   >
     <Button
-      class="toolbar-button"
+      class="p-button-sm toolbar-button"
       :class="buttonClasses"
       :disabled="button.isDisabled?.() ?? false"
       :severity="button.variant?.()"
@@ -44,7 +44,6 @@ const areCaptionsHidden = ref(false)
 const buttonClasses = computed(() => ({
   'button-discreet-danger': props.button.style?.() === 'discreet' && props.button.variant?.() === 'danger',
   'button-discreet': props.button.style?.() === 'discreet',
-  'p-button-sm': props.button.style?.() === 'discreet',
   'p-button-text': props.button.style?.() === 'discreet'
 }))
 const captionClasses = computed(() => ({

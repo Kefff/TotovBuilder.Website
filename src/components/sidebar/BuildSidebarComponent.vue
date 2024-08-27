@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar-option">
     <Button
-      class="p-button build-sidebar-button"
+      class="build-sidebar-button"
       @click="displayBuildShareSideBar()"
     >
       <font-awesome-icon
@@ -13,7 +13,7 @@
   </div>
   <div class="sidebar-option">
     <Button
-      class="p-button build-sidebar-button"
+      class="build-sidebar-button"
       outlined
       @click="exportBuild()"
     >
@@ -38,6 +38,7 @@
       v-if="!isDeleting"
       class="build-sidebar-button"
       severity="danger"
+      outlined
       @click="deleteBuild()"
     >
       <font-awesome-icon
@@ -52,7 +53,7 @@
     >
       <div>{{ $t('message.confirmDeleteBuild', { name: parameters.name }) }}</div>
       <Button
-        class="p-button build-sidebar-button"
+        class="build-sidebar-button"
         outlined
         @click="cancelDeletion()"
       >

@@ -15,10 +15,7 @@
           :read-only="true"
           class="share-build-sidebar-link-input"
         />
-        <Button
-          class="p-button"
-          @click="copyLink()"
-        >
+        <Button @click="copyLink()">
           <font-awesome-icon
             icon="copy"
             class="icon-before-text"
@@ -54,10 +51,7 @@
           class="share-build-sidebar-text-options-language-selector"
           @update:language="getBuildAsText()"
         />
-        <Button
-          class="p-button"
-          @click="copyText()"
-        >
+        <Button @click="copyText()">
           <font-awesome-icon
             icon="copy"
             class="icon-before-text"

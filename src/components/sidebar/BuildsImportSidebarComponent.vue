@@ -25,7 +25,7 @@
           <template #toolbarContent>
             <Button
               :disabled="selectedBuilds?.length == 0"
-              class="p-button-success"
+              severity="success"
               @click="importBuilds()"
             >
               <font-awesome-icon
