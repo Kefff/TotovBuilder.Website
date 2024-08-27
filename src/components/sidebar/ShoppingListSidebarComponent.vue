@@ -10,6 +10,12 @@
         class="shopping-list-sidebar-item"
         :class="shoppingListItem.inventorySlotId != null ? 'shopping-list-sidebar-item-of-inventory-slot' : ''"
       >
+        <div
+          v-if="shoppingListItem.inventorySlotId != null"
+          class="shopping-list-sidebar-inventory-slot-name"
+        >
+          {{ $t(`caption.slotType${StringUtils.toUpperFirst(shoppingListItem.inventorySlotId)}`) }}
+        </div>
         <PriceDetailItem
           :can-show-item-stats="true"
           :ignore-price-status="shoppingListItem.ignorePrice ? IgnoredUnitPrice.manuallyIgnored : IgnoredUnitPrice.notIgnored"
@@ -36,6 +42,7 @@
 <script setup lang="ts">
 import { ShoppingListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
+import StringUtils from '../../utils/StringUtils'
 import PriceDetailItem from '../PriceDetailItemComponent.vue'
 import ShoppingListMerchantsList from '../ShoppingListMerchantsListComponent.vue'
 
@@ -66,6 +73,10 @@ defineProps<{ parameters: ShoppingListSidebarParameters }>()
   align-items: center;
   display: flex;
   justify-content: center;
+}
+
+.shopping-list-sidebar-inventory-slot-name {
+  margin-bottom: 0.25rem;
 }
 
 .shopping-list-sidebar-item {

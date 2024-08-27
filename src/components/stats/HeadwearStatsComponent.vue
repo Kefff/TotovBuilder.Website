@@ -1,8 +1,5 @@
 <template>
-  <ArmorStats
-    :item="item"
-    :wearable-modifiers-override="headwear.presetWearableModifiers"
-  />
+  <ArmorStats :item="headwear" />
 </template>
 
 

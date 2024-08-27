@@ -50,7 +50,7 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { BuildShareSideBarParameters, BuildSidebarParameters, GlobalSidebarComponent, IGlobalSidebarOptions, ShoppingListSidebarParameters, StatsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
@@ -73,19 +73,13 @@ const props = defineProps<{
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
-const displayedComponent = shallowRef()
 const icon = ref<string>()
 const options = ref<IGlobalSidebarOptions>({} as IGlobalSidebarOptions)
 const title = ref<string>()
 const subtitle = ref<string>()
 const visibleInternal = ref(false)
 
-onMounted(() => setDisplayedComponent())
-
-watch(
-  () => options.value,
-  () => setDisplayedComponent())
-
+const displayedComponent = computed(() => getDisplayedComponent(options.value?.displayedComponentType))
 const visible = computed({
   get: () => visibleInternal.value,
   set: (value: boolean) => {
@@ -137,88 +131,76 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: numbe
 /**
  * Sets the component to display.
  */
-function setDisplayedComponent() {
+function getDisplayedComponent(displayedComponentType: GlobalSidebarComponent) {
   subtitle.value = undefined
 
-  switch (options.value?.displayedComponentType) {
+  switch (displayedComponentType) {
     case 'BuildsExportSidebar':
-      displayedComponent.value = BuildsExportSidebar
       icon.value = 'download'
       title.value = 'caption.exportBuilds'
 
-      break
+      return BuildsExportSidebar
     case 'BuildShareSideBar':
-      displayedComponent.value = BuildShareSideBar
       icon.value = 'share-alt'
       subtitle.value = (options.value.displayedComponentParameters as BuildShareSideBarParameters).name
       title.value = 'caption.share'
 
-      break
+      return BuildShareSideBar
     case 'BuildSidebar':
-      displayedComponent.value = BuildSidebarComponent
       icon.value = 'ellipsis-h'
       subtitle.value = (options.value.displayedComponentParameters as BuildSidebarParameters).name
       title.value = 'caption.actions'
 
-      break
+      return BuildSidebarComponent
     case 'BuildsImportSidebar':
-      displayedComponent.value = BuildsImportSidebar
       icon.value = 'file-upload'
       title.value = 'caption.importBuilds'
 
-      break
+      return BuildsImportSidebar
     case 'BuildsListSidebar':
-      displayedComponent.value = BuildsListSidebar
       icon.value = 'filter'
       title.value = 'caption.filter'
 
-      break
+      return BuildsListSidebar
     case 'ChangelogSidebar':
-      displayedComponent.value = ChangelogSidebar
       icon.value = 'clipboard-list'
       title.value = 'caption.changelog'
 
-      break
+      return ChangelogSidebar
     case 'GeneralOptionsSidebar':
-      displayedComponent.value = GeneralOptionsSidebar
       icon.value = 'tv'
       title.value = 'caption.displayOptions'
 
-      break
+      return GeneralOptionsSidebar
     case 'MerchantItemsOptionsSidebar':
-      displayedComponent.value = MerchantItemsOptionsSidebar
       icon.value = 'user-tag'
       title.value = 'caption.merchants'
 
-      break
+      return MerchantItemsOptionsSidebar
     case 'NotificationsSidebar':
-      displayedComponent.value = NotificationsSidebar
       icon.value = 'bell'
       title.value = 'caption.notifications'
 
-      break
+      return NotificationsSidebar
     case 'ShoppingListSidebar':
-      displayedComponent.value = ShoppingListSidebar
       icon.value = 'shopping-cart'
       subtitle.value = (options.value.displayedComponentParameters as ShoppingListSidebarParameters).buildName
       title.value = 'caption.shoppingList'
 
-      break
+      return ShoppingListSidebar
     case 'StatsSidebar':
-      displayedComponent.value = StatsSidebar
       icon.value = 'clipboard-list'
       subtitle.value = (options.value.displayedComponentParameters as StatsSidebarParameters).name
       title.value = 'caption.itemDetails'
 
-      break
+      return StatsSidebar
     case 'ToolbarSidebar':
-      displayedComponent.value = ToolbarSidebar
       icon.value = 'bars'
       title.value = 'caption.menu'
 
-      break
+      return ToolbarSidebar
     default:
-      break
+      return undefined
   }
 }
 </script>
