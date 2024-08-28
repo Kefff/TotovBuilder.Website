@@ -6,11 +6,12 @@
   >
     <Button
       :disabled="button.isDisabled?.() ?? false"
-      :outlined="button.style?.() === 'outlined' || button.style?.() === 'discreet'"
+      :outlined="button.style?.() === 'outlined'"
       :severity="button.variant?.()"
       class="toolbar-sidebar-button"
       :class="{
-        'button-discreet': button.style?.() === 'discreet'
+        'button-discreet': button.style?.() === 'discreet',
+        'p-button-text': button.style?.() === 'discreet'
       }"
       @click="() => executeAction(button.action)"
     >
@@ -29,7 +30,7 @@
   >
     <Button
       :disabled="button.isDisabled?.() ?? false"
-      :outlined="button.style?.() === 'outlined' || button.style?.() === 'discreet'"
+      :outlined="button.style?.() === 'outlined'"
       :severity="button.variant?.()"
       class="toolbar-sidebar-button"
       :class="{
