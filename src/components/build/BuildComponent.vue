@@ -23,7 +23,10 @@
         />
       </Tooltip>
     </div>
-    <Toolbar :buttons="toolbarButtons">
+    <Toolbar
+      ref="toolbar"
+      :buttons="toolbarButtons"
+    >
       <template #center>
         <div class="build-title build-title-in-toolbar">
           <div v-show="!isEditing">
@@ -53,11 +56,14 @@
         <NotificationButton />
       </template>
     </Toolbar>
-    <div
-      v-show="!isLoading"
+    <Sticky
+      :element-to-stick-to="toolbar?.toolbarContainer"
       class="build-summary-container"
     >
-      <div class="build-summary">
+      <div
+        v-show="!isLoading"
+        class="build-summary"
+      >
         <div
           v-if="hasSummaryStats"
           class="build-summary-group"
@@ -171,7 +177,7 @@
           </Tooltip>
         </div>
       </div>
-    </div>
+    </Sticky>
 
     <!-- Inventory slots -->
     <div

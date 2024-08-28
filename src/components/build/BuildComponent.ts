@@ -25,6 +25,7 @@ import InventoryPrice from '../InventoryPriceComponent.vue'
 import InventorySlot from '../InventorySlotComponent.vue'
 import Loading from '../LoadingComponent.vue'
 import NotificationButton from '../NotificationButtonComponent.vue'
+import Sticky from '../StickyComponent.vue'
 import Toolbar from '../ToolbarComponent.vue'
 
 export default defineComponent({
@@ -34,7 +35,8 @@ export default defineComponent({
     InventorySlot,
     Loading,
     NotificationButton,
-    Toolbar
+    Toolbar,
+    Sticky
   },
   setup: () => {
     const route = useRoute()
@@ -205,6 +207,7 @@ export default defineComponent({
       },
       weight: 0
     })
+    const toolbar = ref()
 
     const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
     const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
@@ -634,6 +637,7 @@ export default defineComponent({
       startEdit,
       StatsUtils,
       summary,
+      toolbar,
       toolbarButtons
     }
   }

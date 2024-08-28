@@ -3,7 +3,10 @@
     <div class="builds-title builds-title-outside-toolbar">
       {{ $t('caption.buildsList') }}
     </div>
-    <Toolbar :buttons="toolbarButtons">
+    <Toolbar
+      ref="buildsToolbar"
+      :buttons="toolbarButtons"
+    >
       <template #center>
         <div class="builds-title builds-title-in-toolbar">
           {{ $t('caption.buildsList') }}
@@ -16,8 +19,8 @@
     <BuildsList
       v-model:filter-and-sorting-data="filterAndSortingData"
       :build-summaries="buildSummaries"
+      :element-to-stick-to="toolbarContainer"
       :is-loading="isLoading"
-      :is-under-toolbar="true"
       :show-not-exported="true"
       @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
       @update:selected-builds="onBuildClick"
@@ -125,6 +128,7 @@ const toolbarButtons: IToolbarButton[] = [
   }
 ]
 
+const buildsToolbar = ref()
 const buildSummaries = ref<IBuildSummary[]>([])
 const filterAndSortingData = ref<BuildFilterAndSortingData>(new BuildFilterAndSortingData())
 const hasImported = ref(false)
@@ -132,6 +136,7 @@ const isLoading = ref(true)
 
 const canImportExport = computed(() => !isLoading.value && buildSummaries.value.length > 0)
 const hasBuildsNotExported = computed(() => _builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
+const toolbarContainer = computed(() => buildsToolbar.value?.container)
 
 onMounted(() => {
   _buildService.emitter.on(BuildService.deletedEvent, onItemServicesInitialized)

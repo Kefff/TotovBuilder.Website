@@ -2,11 +2,14 @@
   <div class="builds-export-sidebar">
     <div class="sidebar-option">
       <div>
-        <Toolbar :buttons="toolbarButtons" />
+        <Toolbar
+          ref="buildsExportToolbar"
+          :buttons="toolbarButtons"
+        />
         <BuildsList
           v-model:selected-builds="selectedBuilds"
           :build-summaries="parameters"
-          :is-under-toolbar="true"
+          :element-to-stick-to="toolbarContainer"
           :show-not-exported="true"
           mode="export"
         />
@@ -66,9 +69,11 @@ const toolbarButtons: IToolbarButton[] = [
   }
 ]
 
+const buildsExportToolbar = ref()
 const selectedBuilds = ref<IBuildSummary[]>([])
 
 const allSelected = computed(() => selectedBuilds.value.length === modelParameters.value.length)
+const toolbarContainer = computed(() => buildsExportToolbar.value?.container)
 
 onMounted(() => {
   addEventListener('keydown', (e) => onKeyDown(e))

@@ -1,11 +1,14 @@
 <template>
-  <div
-    ref="toolbarContainer"
+  <Sticky
+    ref="stickyElement"
+    v-model:isInGlobalSidebar="isInGlobalSidebar"
+    v-model:isStickied="isStickied"
     class="toolbar-container"
+    width="fill"
   >
     <div
       class="toolbar"
-      :class="toolbarClasses"
+      :class="stickiedClasses"
     >
       <div class="toolbar-line">
         <div class="toolbar-line-left">
@@ -33,7 +36,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </Sticky>
 </template>
 
 
@@ -51,6 +54,7 @@ import { IToolbarButton } from '../models/utils/IToolbarButton'
 import vueI18n from '../plugins/vueI18n'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
+import Sticky from './StickyComponent.vue'
 import ToolbarButton from './ToolbarButtonComponent.vue'
 
 const props = defineProps<{ buttons: IToolbarButton[] }>()
@@ -72,9 +76,8 @@ const hideButtonsWidth = 991
 
 const areButtonsHidden = ref(false)
 const isInGlobalSidebar = ref(false)
-const scrollableParent = ref<HTMLElement>()
-const stickied = ref(false)
-const toolbarContainer = ref<HTMLDivElement>()
+const isStickied = ref(false)
+const stickyElement = ref()
 
 const leftDisplayedButtons = computed(() =>
   areButtonsHidden.value
@@ -85,23 +88,23 @@ const rightDisplayedButtons = computed(() =>
     ? props.buttons.filter(b => (b.position?.() ?? 'left') === 'right' && !(b.canBeMovedToSidebar?.() ?? true))
     : props.buttons.filter(b => (b.position?.() ?? 'left') === 'right'))
 const hiddenButtons = computed(() => areButtonsHidden.value ? props.buttons.filter(b => (b.canBeMovedToSidebar?.() ?? true)) : [])
-const toolbarClasses = computed(() => ({
-  'toolbar-stickied': stickied.value && !isInGlobalSidebar.value,
-  'toolbar-stickied-sidebar': stickied.value && isInGlobalSidebar.value
+const stickiedClasses = computed(() => ({
+  'toolbar-stickied': isStickied.value && !isInGlobalSidebar.value,
+  'toolbar-stickied-sidebar': isStickied.value && isInGlobalSidebar.value
 }))
+const toolbarContainer = computed(() => stickyElement.value?.container)
+
+// Exposing the main div to be able to use it as a reference to stick other elements to it.
+// This must be the whole computed and not just its value; otherwise the parent component does not receive the value.
+defineExpose({ container: toolbarContainer })
 
 onMounted(() => {
-  scrollableParent.value = getScrollableParent(toolbarContainer.value?.parentElement)
-  scrollableParent.value?.addEventListener('scroll', onScroll)
-
   setButtonsAreHidden()
 
   window.addEventListener('resize', onResize)
 })
 
 onUnmounted(() => {
-  scrollableParent.value?.removeEventListener('scroll', onScroll)
-
   window.removeEventListener('resize', onResize)
 })
 
@@ -113,38 +116,6 @@ function displayToolbarSideBar() {
     displayedComponentParameters: props.buttons,
     displayedComponentType: 'ToolbarSidebar'
   })
-}
-
-/**
- * Gets the parent element that can be scrolled.
- * It can either be the "p-sidebar-content" div of a global sidebar or the "app" div.
- * @param parentElement - Parent element.
- */
-function getScrollableParent(parentElement: HTMLElement | undefined | null): HTMLElement | undefined {
-  if (parentElement == null) {
-    return undefined
-  }
-
-  if (parentElement.classList.contains('p-sidebar-content')) {
-    isInGlobalSidebar.value = true
-
-    return parentElement
-  } else if (parentElement.id === 'app') {
-    return parentElement
-  }
-
-  return getScrollableParent(parentElement.parentElement)
-}
-
-/**
- * Reacts to the content being scrolled.
- *
- * Used to dynamically set its z-index to work around problems with PrimeVue components that appear behind the toolbar.
- */
-function onScroll() {
-  const scrollableParentRectangle = scrollableParent.value!.getBoundingClientRect()
-  const toolbarRectangle = toolbarContainer.value!.getBoundingClientRect()
-  stickied.value = toolbarRectangle.y - scrollableParentRectangle.y === 0
 }
 
 /**
@@ -190,9 +161,7 @@ function setButtonsAreHidden() {
 }
 
 .toolbar-container {
-  position: sticky;
-  top: 0;
-  z-index: 1;
+  width: 100%;
 }
 
 .toolbar-line {

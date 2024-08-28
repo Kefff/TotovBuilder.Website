@@ -155,9 +155,9 @@ function getSortOrderCaption(sortOrder: SortingOrder): string {
  */
 function getSortOrderIcon(sortOrder: SortingOrder): string {
   if (sortOrder === SortingOrder.asc) {
-    return 'sort-alpha-down'
+    return 'sort-amount-down-alt'
   } else {
-    return 'sort-alpha-up-alt'
+    return 'sort-amount-up'
   }
 }
 

@@ -1,8 +1,8 @@
 <template>
-  <div
+  <Sticky
     v-if="buildSummaries.length > 0"
-    class="builds-list-chips-container"
-    :class="isUnderToolbar ? 'builds-list-chips-container-under-toolbar' : ''"
+    :element-to-stick-to="elementToStickTo"
+    align="left"
   >
     <div class="builds-list-chips">
       <Chip
@@ -66,7 +66,7 @@
         </Tooltip>
       </Chip>
     </div>
-  </div>
+  </Sticky>
   <div
     v-if="isLoading"
     class="builds-list-loading"
@@ -118,6 +118,7 @@ import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
 import BuildCard from './BuildCardComponent.vue'
 import Loading from './LoadingComponent.vue'
+import Sticky from './StickyComponent.vue'
 
 const modelSelectedBuilds = defineModel<IBuildSummary[]>('selectedBuilds', { required: false, default: [] })
 const modelFilterAndSortingData = defineModel<BuildFilterAndSortingData>('filterAndSortingData', { required: false, default: new BuildFilterAndSortingData() })
@@ -125,14 +126,14 @@ const modelFilterAndSortingData = defineModel<BuildFilterAndSortingData>('filter
 const props = withDefaults(
   defineProps<{
     buildSummaries: IBuildSummary[],
+    elementToStickTo?: HTMLElement,
     isLoading?: boolean,
-    isUnderToolbar?: boolean,
     mode?: 'default' | 'export' | 'import',
     showNotExported: boolean,
   }>(),
   {
+    elementToStickTo: undefined,
     isLoading: false,
-    isUnderToolbar: false,
     mode: 'default'
   })
 
@@ -150,7 +151,7 @@ const sortButtonTooltip = computed(() => vueI18n.t(
       ? vueI18n.t('caption.ascendant').toLocaleLowerCase()
       : vueI18n.t('caption.descendant').toLocaleLowerCase()
   }))
-const sortChipIcon = computed(() => modelFilterAndSortingData.value.order === SortingOrder.asc ? 'sort-alpha-down' : 'sort-alpha-up-alt')
+const sortChipIcon = computed(() => modelFilterAndSortingData.value.order === SortingOrder.asc ? 'sort-amount-down-alt' : 'sort-amount-up')
 
 onMounted(() => {
   addEventListener('keydown', (e) => onKeyDown(e))
@@ -386,20 +387,14 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean) 
   display: grid;
   grid-gap: 0.5rem;
   grid-template-columns: auto auto;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .builds-list-chips-container {
-  display: flex;
   margin-bottom: 0.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
-.builds-list-chips-container-under-toolbar {
-  /* Height of the toolbar + margin */
-  margin-top: 0.5rem;
-  top: 4.385rem;
+  margin-right: auto;
+  display: flex;
 }
 
 .builds-list-loading {

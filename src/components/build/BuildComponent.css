@@ -83,17 +83,12 @@
   font-weight: bold;
   max-width: 100%;
   padding: 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .build-summary-container {
-  align-items: center;
-  display: flex;
-  justify-content: center;
   margin-bottom: 1rem;
-  position: sticky;
-  /* Height of the toolbar */
-  top: 3.885rem;
-  z-index: 1;
 }
 
 .build-summary-group {
