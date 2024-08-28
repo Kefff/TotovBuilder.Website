@@ -102,7 +102,7 @@ function onScroll() {
   scrollableParentElementRectangle.value = scrollableParentElement.value!.getBoundingClientRect()
   stickyElementRectangle.value = stickyElement.value!.getBoundingClientRect()
 
-  modelIsStickied.value = stickyElementRectangle.value.y == scrollableParentElementRectangle.value!.y
+  modelIsStickied.value = stickyElementRectangle.value.y == (elementToStickToRectangle.value?.bottom ?? scrollableParentElementRectangle.value.y)
 }
 </script>
 

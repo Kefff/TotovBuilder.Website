@@ -72,23 +72,20 @@
   backdrop-filter: blur(10px);
   /* Same color as the toolbar */
   background-color: rgba(18, 18, 18, 0.85);
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
   border-color: var(--primary-color6);
+  border-radius: 6px;
   border-style: solid;
-  border-top-style: none;
   border-width: 1px;
   display: flex;
   font-size: 1.5rem;
   font-weight: bold;
   max-width: 100%;
   padding: 0.5rem;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .build-summary-container {
   margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .build-summary-group {
@@ -105,6 +102,12 @@
 
 .build-summary-icon {
   margin-left: 0.25rem;
+}
+
+.build-summary-stickied {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top-style: none;
 }
 
 .build-summary-value {

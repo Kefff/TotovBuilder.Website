@@ -173,8 +173,10 @@ export default defineComponent({
       lastWebsiteVersion: undefined,
       name: ''
     })
+    const buildToolbar = ref()
     const collapseStatuses = ref<boolean[]>([])
     const deleting = ref(false)
+    const isBuildSummaryStickied = ref(false)
     const isEditing = ref(false)
     const generalOptionsSidebarVisible = ref(false)
     const hasItemsLoadingError = ref(false)
@@ -207,7 +209,6 @@ export default defineComponent({
       },
       weight: 0
     })
-    const toolbar = ref()
 
     const hasSummaryArmor = computed(() => summary.value.armorModifiers.armorClass !== 0)
     const hasSummaryErgonomics = computed(() => summary.value.ergonomics !== 0)
@@ -228,6 +229,7 @@ export default defineComponent({
     const isNewBuild = computed(() => build.value.id === '')
     const notExportedTooltip = computed(() => !summary.value.exported ? _buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
     const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
+    const toolbarContainer = computed(() => buildToolbar.value?.container)
 
     provide('isEditing', isEditing)
 
@@ -594,6 +596,7 @@ export default defineComponent({
 
     return {
       build,
+      buildToolbar,
       cancelDelete,
       cancelEdit,
       collapseAll,
@@ -622,6 +625,7 @@ export default defineComponent({
       hasSummaryVerticalRecoil,
       hasSummaryWearableModifiers,
       hasSummaryWeight,
+      isBuildSummaryStickied,
       invalid,
       inventorySlotPathPrefix: _inventorySlotPathPrefix,
       isEditing,
@@ -637,8 +641,8 @@ export default defineComponent({
       startEdit,
       StatsUtils,
       summary,
-      toolbar,
-      toolbarButtons
+      toolbarButtons,
+      toolbarContainer
     }
   }
 })

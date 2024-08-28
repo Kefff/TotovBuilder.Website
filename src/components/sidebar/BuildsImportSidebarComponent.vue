@@ -17,6 +17,7 @@
         <Toolbar
           ref="buildsImportToolbar"
           :buttons="toolbarButtons"
+          style="margin-top: 1px;"
         />
         <BuildsList
           v-model:selected-builds="selectedBuilds"

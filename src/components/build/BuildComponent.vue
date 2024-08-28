@@ -24,7 +24,7 @@
       </Tooltip>
     </div>
     <Toolbar
-      ref="toolbar"
+      ref="buildToolbar"
       :buttons="toolbarButtons"
     >
       <template #center>
@@ -57,12 +57,15 @@
       </template>
     </Toolbar>
     <Sticky
-      :element-to-stick-to="toolbar?.toolbarContainer"
+      v-model:isStickied="isBuildSummaryStickied"
+      align="center"
+      :element-to-stick-to="toolbarContainer"
       class="build-summary-container"
     >
       <div
         v-show="!isLoading"
         class="build-summary"
+        :class="isBuildSummaryStickied ? 'build-summary-stickied' : undefined"
       >
         <div
           v-if="hasSummaryStats"
