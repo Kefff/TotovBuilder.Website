@@ -19,8 +19,29 @@ export class InventorySlotPropertiesService {/**
   * @param inventorySlot - Inventory slot to convert.
   * @param language - Language.
   */
-  public getAsMarkdownString(inventorySlot: IInventorySlot, language: string): Promise<string> {
-    return Promise.resolve('')
+  public async getAsMarkdownString(inventorySlot: IInventorySlot, language: string): Promise<string> {
+    let inventorySlotAsString = ''
+    const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
+    const inventoryItemService = Services.get(InventoryItemService)
+
+    for (const inventoryItem of inventorySlot.items) {
+      if (inventoryItem == null) {
+        continue
+      }
+
+      const itemAsString = await inventoryItemService.getAsMarkdownString(inventoryItem, language, undefined, undefined, inventorySlotType.canBeLooted)
+
+      if (itemAsString !== '') {
+        if (inventorySlotAsString.length > 0) {
+          inventorySlotAsString += '\n'
+        }
+
+        // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+        inventorySlotAsString += `| **${vueI18n.t('caption.slotType' + StringUtils.toUpperFirst(inventorySlotType.id), 1, { locale: language })}** |${itemAsString}`
+      }
+    }
+
+    return inventorySlotAsString
   }
 
   /**
@@ -31,13 +52,14 @@ export class InventorySlotPropertiesService {/**
   public async getAsString(inventorySlot: IInventorySlot, language: string): Promise<string> {
     let inventorySlotAsString = ''
     const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
+    const inventoryItemService = Services.get(InventoryItemService)
 
     for (const inventoryItem of inventorySlot.items) {
       if (inventoryItem == null) {
         continue
       }
 
-      const itemAsString = await Services.get(InventoryItemService).getAsString(inventoryItem, language, undefined, undefined, inventorySlotType.canBeLooted)
+      const itemAsString = await inventoryItemService.getAsString(inventoryItem, language, undefined, undefined, inventorySlotType.canBeLooted)
 
       if (itemAsString !== '') {
         if (inventorySlotAsString.length > 0) {

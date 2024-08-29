@@ -84,8 +84,100 @@ export class InventoryItemService {
    * @param itemInSameSlotInPreset - Preset item that is place in the same slot of a preset. If not null, this means that inventoryItem has been placed in the content or mods of a parent item that is a preset. When inventoryItem and itemInSameSlotInPreset are the same, this means that the price of inventoryItem must be ignored because its part of a preset.
    * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
    */
-  public getAsMarkdownString(inventoryItem: IInventoryItem, language: string, itemInSameSlotInPreset?: IInventoryItem, indentationLevel = 0, canBeLooted = true): Promise<string> {
-    return Promise.resolve('')
+  public async getAsMarkdownString(inventoryItem: IInventoryItem, language: string, itemInSameSlotInPreset?: IInventoryItem, indentationLevel = 0, canBeLooted = true): Promise<string> {
+    const indentationPattern = '&nbsp;&nbsp;&nbsp;&nbsp;'
+    let inventoryItemAsString = ''
+
+    const itemService = Services.get(ItemService)
+    const mainCurrency = itemService.getMainCurrency()
+    const item = await itemService.getItem(inventoryItem.itemId)
+
+    if (inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
+      const itemCountAsString = inventoryItem.quantity > 1 ? `${inventoryItem.quantity} x ` : ''
+      inventoryItemAsString += ` ${itemCountAsString}${item.name} |`
+    }
+
+    if (canBeLooted && !inventoryItem.ignorePrice && inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
+      const price = await this.getPrice(inventoryItem, itemInSameSlotInPreset, canBeLooted)
+
+      if (price.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset) {
+        if (price.missingPrice && price.unitPrice.valueInMainCurrency === 0) {
+          // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+          inventoryItemAsString += ` **${vueI18n.t('message.noMerchant', 1, { locale: language })}** |`
+        } else {
+          // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+          inventoryItemAsString += ` **${vueI18n.t('caption.merchant_' + price.unitPrice.merchant, 1, { locale: language })}`
+
+          if (price.unitPrice.merchant !== 'flea-market') {
+            inventoryItemAsString += ` ${price.unitPrice.merchantLevel}`
+          }
+
+          inventoryItemAsString += '**'
+
+          if (price.unitPrice.currencyName === 'barter') {
+            // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+            inventoryItemAsString += ` (*${vueI18n.t('caption.barter', 1, { locale: language }).toLocaleLowerCase()}*) | ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, language)}${mainCurrency.symbol} |`
+          } else {
+            inventoryItemAsString += ` | ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.value, language)}`
+
+            if (price.price.currencyName === mainCurrency.name) {
+              inventoryItemAsString += mainCurrency.symbol
+            } else {
+              const priceCurrency = itemService.getCurrency(price.price.currencyName)
+              inventoryItemAsString += `${priceCurrency.symbol} (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, language)}${mainCurrency.symbol})`
+            }
+
+            inventoryItemAsString += ' |'
+          }
+        }
+      }
+    }
+
+    if (inventoryItem.content.length > 0 || inventoryItem.modSlots.length > 0) {
+      let preset = itemInSameSlotInPreset
+
+      if (preset == null) {
+        preset = Services.get(PresetService).getPreset(inventoryItem.itemId)
+      }
+
+      indentationLevel++
+      let indentation = ''
+
+      for (let i = 1; i <= indentationLevel; i++) {
+        indentation += indentationPattern
+      }
+
+      // Mods
+      for (const modSlot of inventoryItem.modSlots) {
+        if (modSlot.item == null) {
+          continue
+        }
+
+        const modSlotInPreset = preset?.modSlots.find(ms => ms.modSlotName === modSlot.modSlotName)
+        const modSlotItemAsString = await this.getAsMarkdownString(modSlot.item, language, modSlotInPreset?.item, indentationLevel)
+
+        if (modSlotItemAsString !== '') {
+          // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
+          const modSlotName = vueI18n.t('caption.modSlot_' + modSlot.modSlotName, 1, { locale: language })
+          inventoryItemAsString += `
+| ${indentation} **${modSlotName}** |${modSlotItemAsString}`
+        }
+      }
+
+      // Content
+      for (let i = 0; i < inventoryItem.content.length; i++) {
+        const containedItem = inventoryItem.content[i]
+        const containedItemInPreset = preset?.content[i]
+        const containedItemAsString = await this.getAsMarkdownString(containedItem, language, containedItemInPreset, indentationLevel)
+
+        if (containedItemAsString !== '') {
+          inventoryItemAsString += `
+| | ${indentation}${containedItemAsString}`
+        }
+      }
+    }
+
+    return inventoryItemAsString
   }
 
   /**
