@@ -78,6 +78,17 @@ export class InventoryItemService {
   }
 
   /**
+   * Converts an inventory item to a markdown text.
+   * @param inventorySlot - Inventory item to convert.
+   * @param language - Language.
+   * @param itemInSameSlotInPreset - Preset item that is place in the same slot of a preset. If not null, this means that inventoryItem has been placed in the content or mods of a parent item that is a preset. When inventoryItem and itemInSameSlotInPreset are the same, this means that the price of inventoryItem must be ignored because its part of a preset.
+   * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
+   */
+  public getAsMarkdownString(inventoryItem: IInventoryItem, language: string, itemInSameSlotInPreset?: IInventoryItem, indentationLevel = 0, canBeLooted = true): Promise<string> {
+    return Promise.resolve('')
+  }
+
+  /**
    * Converts an inventory item to a text.
    * @param inventorySlot - Inventory item to convert.
    * @param language - Language.

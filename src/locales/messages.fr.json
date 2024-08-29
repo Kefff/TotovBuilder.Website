@@ -57,6 +57,7 @@
     "clearItem": "Effacer objet",
     "clickForDetails": "(cliquer pour détails)",
     "collapseAll": "Réduire tous les emplacements",
+    "configuredMerchants": "Marchands configurés",
     "contact": "Contact",
     "content": "Contenu",
     "copy": "Copie",
@@ -146,7 +147,7 @@
     "merchant": "Marchand",
     "merchantItemsOptions": "Options de marchands & objets",
     "merchants": "Marchands",
-    "metaDescription": "Totov Builder aide à créer des configurations d'armes et choisir vos mods et équipement entier en fonction des niveaux de marchands. Visualisez le prix et les stats de équipement.",
+    "metaDescription": "Totov Builder aide à créer des configurations d'armes et choisir vos mods et équipement entier en fonction des niveaux de marchands. Visualisez le prix et les stats d'équipement.",
     "metaTitle": "Configurateur d'armes et d'équipement pour Escape From Tarkov",
     "modifiers": "Modificateurs",
     "modSlot_back_plate": "Plaque dorsale",
@@ -220,6 +221,7 @@
     "movementSpeedModifierPercentage": "Malus vitesse déplacement",
     "name": "Nom",
     "new": "Nouveau",
+    "no": "Non",
     "noNotifications": "Aucune notification",
     "notFoundItem": "Objet inconnu {id}",
     "notifications": "Notifications",
@@ -279,6 +281,7 @@
     "sortedBy": "Trié par {property} ({order})",
     "speed": "Vitesse",
     "stabDamage": "Dégâts d'estoc",
+    "statistics": "Statistiques",
     "subsonic": "Subsonique",
     "textVersion": "Version texte",
     "tracer": "Traçante",
@@ -288,7 +291,8 @@
     "verticalRecoil": "Recul vertical",
     "weight": "Poids",
     "withMods": " avec mods",
-    "withModsAndContent": " avec mods & contenu"
+    "withModsAndContent": " avec mods & contenu",
+    "yes": "Oui"
   },
   "message": {
     "apiDisclaimer1": "Données fournies gratuitement par ",

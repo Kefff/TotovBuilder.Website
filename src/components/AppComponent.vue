@@ -205,9 +205,7 @@ onMounted(() => {
  */
 function displayChangelog() {
   Services.get(GlobalSidebarService).display({
-    displayedComponentType: 'ChangelogSidebar',
-    icon: 'clipboard-list',
-    title: vueI18n.t('caption.changelog')
+    displayedComponentType: 'ChangelogSidebar'
   })
 }
 

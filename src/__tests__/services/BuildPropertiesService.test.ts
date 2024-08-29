@@ -891,14 +891,51 @@ describe('BuildPropertiesService', () => {
   })
 })
 
+const expectedToMarkdownString1En = `### Build 1
+*[Interactive version with full stats](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU)*
+
+| *Stats* | | | | | |
+| - | -: | - | -: | - | -: |
+| **Vertical recoil** | 76 | **Horizontal recoil** | 226 | **Ergonomics** | 34 (-9.5%)   |
+| **Armor class** | 4 | **Speed** | -6% | **Turning speed** | -9%   |
+| **Price** | 366,019₽ | **Weight** | 24.153 kg |
+
+| *Items* | | | |
+| - | - | - | -: | 
+| **On sling** | RPK-16 5.45x39 light machine gun Default | **Flea market** | 43,345₽ |
+| &nbsp;&nbsp;&nbsp;&nbsp;**Magazine** | RPK-16 5.45x39 95-round drum magazine | **Prapor 3** (*barter*) | 24,218₽
+| | 95 x 5.45x39mm US gs | **Prapor 1** | 9,120₽ |
+| **Body armor** | 6B13 assault armor (Flora) Default | **Ragman 2** | 64,269₽ |
+| **Headwear** | BNTI LShZ-2DTM helmet (Black) | **Flea market** | 63,493₽
+|&nbsp;&nbsp;&nbsp;&nbsp;**Equipment** | LShZ-2DTM face shield | **Ragman 3** (*barter*) | 29,805₽
+| **Backpack** | WARTECH Berkut BB-102 backpack (A-TACS FG) | **Ragman 2** | 24,509₽
+| | Iskra ration pack | **Jaeger 2** | 24,392₽
+| | Bottle of water (0.6L) | **Therapist 1** (*barter*) | 11,473₽
+| **Pockets** | Morphine injector | **Flea market** | 17,421₽
+| **Pockets** | Vaseline balm | **Flea market** | 27,714₽
+| **Pockets** | RGD-5 hand grenade | **Prapor 3** | 11,822₽
+| **Pockets** | 60 x 5.45x39mm US gs | **Prapor 1** | 5,760₽
+| **Eyewear** | Crossbow tactical glasses | **Ragman 2** | 3,885₽
+| **Face cover** | Cold Fear infrared balaclava | **Ragman 2** | 4,793₽
+
+| *Configured merchants* | | | | | |
+| - | -: | - | -: | - | -: |
+| **Flea market** | Yes | **Jaeger** | 4  | **Mechanic** | 4 |
+| **Peacekeeper** | 4 | **Prapor** | 4 | **Ragman** | 4 |
+| **Ref** | 4 | **Skier** | 4 | **Therapist** | 4 |
+
+*Created with [Totov Builder](http://localhost:3000)*`
+
 const expectedToString1En = `Build 1
 
+Statistics:
 Vertical recoil: 76    |    Horizontal recoil: 226    |    Ergonomics: 34 (-9.5%)
-Armor: 4    |    Speed: -6%    |    Turning speed: -9%
+Armor class: 4    |    Speed: -6%    |    Turning speed: -9%
 Price: 366,019₽    |    Weight: 24.153 kg
 
 
 
+Items:
 [On sling] RPK-16 5.45x39 light machine gun Default    |    Flea market: 43,345₽
     [Magazine] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (barter): 24,218₽
         95 x 5.45x39mm US gs    |    Prapor 1: 9,120₽
@@ -923,18 +960,68 @@ Price: 366,019₽    |    Weight: 24.153 kg
 
 
 
-Create with Totov Builder
+Configured merchants:
+Flea market: Yes    |    Jaeger: 4    |    Mechanic: 4
+Peacekeeper: 4    |    Prapor: 4    |    Ragman: 4
+Ref: 4    |    Skier: 4    |    Therapist: 4
+
+
+
+Created with Totov Builder
 Interactive build and full stats:
 http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU`
 
+const expectedToMarkdownString1Fr = `### Build 1
+*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU)*
+
+| *Statistiques* | | | | | |
+| - | -: | - | -: | - | -: |
+| **Recul vertical** | 76 | **Recul horizontal** | 226 | **Ergonomie** | 34 (-9.5%)   |
+| **Classe d'armure** | 4 | **Vitesse** | -6% | **Vitesse de rotation** | -9%   |
+| **Prix** | 366,019₽ | **Poids** | 24.153 kg |
+
+| *Objets* | | | |
+| - | - | - | -: | 
+| **En bandouillère** | RPK-16 5.45x39 light machine gun Default | **Marché** | 43,345₽ |
+| &nbsp;&nbsp;&nbsp;&nbsp;**Chargeur** | RPK-16 5.45x39 95-round drum magazine | **Prapor 3** (*échange*) | 24,218₽
+| | 95 x 5.45x39mm US gs | **Prapor 1** | 9,120₽ |
+| **Pare-balles** | 6B13 assault armor (Flora) Default | **Ragman 2** | 64,269₽ |
+| **Couvre-chef** | BNTI LShZ-2DTM helmet (Black) | **Flea market** | 63,493₽
+|&nbsp;&nbsp;&nbsp;&nbsp;**Équipement** | LShZ-2DTM face shield | **Ragman 3** (*échange*) | 29,805₽
+| **Sac à dos** | WARTECH Berkut BB-102 backpack (A-TACS FG) | **Ragman 2** | 24,509₽
+| | Iskra ration pack | **Jaeger 2** | 24,392₽
+| | Bottle of water (0.6L) | **Therapist 1** (*échange*) | 11,473₽
+| **Poches** | Morphine injector | **Flea market** | 17,421₽
+| **Poches** | Vaseline balm | **Flea market** | 27,714₽
+| **Poches** | RGD-5 hand grenade | **Prapor 3** | 11,822₽
+| **Poches** | 60 x 5.45x39mm US gs | **Prapor 1** | 5,760₽
+| **Lunettes** | Crossbow tactical glasses | **Ragman 2** | 3,885₽
+| **Masque** | Cold Fear infrared balaclava | **Ragman 2** | 4,793₽
+
+| *Configuration utilisée* | |
+| - | -: |
+| **Flea market** | Oui |
+| **Jaeger** | 4 |
+| **Mechanic** | 4 |
+| **Peacekeeper** | 4 |
+| **Prapor** | 4 |
+| **Ragman** | 4 |
+| **Ref** | 4 |
+| **Skier** | 4 |
+| **Therapist** | 4 |
+
+*Créé avec [Totov Builder](http://localhost:3000)*`
+
 const expectedToString1Fr = `Build 1
 
+Statistiques:
 Recul vertical: 76    |    Recul horizontal: 226    |    Ergonomie: 34 (-9,5%)
-Armure: 4    |    Vitesse: -6%    |    Vitesse de rotation: -9%
+Classe d'armure: 4    |    Vitesse: -6%    |    Vitesse de rotation: -9%
 Prix: 366 019₽    |    Poids: 24,153 kg
 
 
 
+Objets:
 [En bandouillère] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
     [Chargeur] RPK-16 5.45x39 95-round drum magazine    |    Prapor 3 (échange): 24 218₽
         95 x 5.45x39mm US gs    |    Prapor 1: 9 120₽
@@ -959,18 +1046,61 @@ Prix: 366 019₽    |    Poids: 24,153 kg
 
 
 
+Marchands configurés:
+Marché: Yes    |    Jaeger: 4    |    Le Mécano: 4
+Peacekeeper: 4    |    Prapor: 4    |    Ragman: 4
+Ref: 4    |    Skier: 4    |    La Toubib: 4
+
+
+
 Créé avec Totov Builder
 Équipement interactif et statistiques complètes:
 http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU`
 
+const expectedToMarkdownString2 = `### Build 2
+
+[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv)
+
+| *Statistiques* | | | | | |
+| - | -: | - | -: | - | -: |
+| **Recul vertical** | 368 | **Recul horizontal** | 255 | **Ergonomie** | 52 (-3%)
+| **Classe d'armure** | 4 | **Vitesse** | -3% | **Vitesse de rotation** | -1%
+| **Prix** | 444$ et 184 252₽ (= 247 747₽) | **Poids** | 8,936 kg
+
+| *Objets* | | | |
+| - | - | - | -: | 
+| **Holster** | Beretta M9A3 9x19 pistol Default | **Peacekeeper 1** | 107$ (= 15 337₽) |
+| &nbsp;&nbsp;&nbsp;&nbsp;**Canon** | | | |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Bouche** | SIG Sauer SRD9 9x19 sound suppressor | **Peacekeeper 2** | 242$ (= 34 606₽) |
+| &nbsp;&nbsp;&nbsp;&nbsp;**Chargeur** | | | |
+| | 17 x 9x19mm Green Tracer | **Le Mécano 1** | 1 241₽ |
+| &nbsp;&nbsp;&nbsp;&nbsp; **Dispositif tactique** | SureFire X400 Ultra tactical flashlight with laser | **Peacekeeper 2** | 95$ (= 13 552₽) |
+| **Gilet tactique** | Shellback Tactical Banshee plate carrier (A-TACS AU) | Marché | 33 950₽ |
+| &nbsp;&nbsp;&nbsp;&nbsp;**Plaque frontale** | Monoclete level III PE ballistic plate | **Peacekeeper 3 (échange)** | 31 503₽ |
+| &nbsp;&nbsp;&nbsp;&nbsp;**Plaque dorsale** | Monoclete level III PE ballistic plate | **Peacekeeper 3 (échange)** | 31 503₽ |
+| | Salewa first aid kit | **La Toubib 1 (échange)** | 21 923₽ |
+| **Dispositif audio** | Walker's Razor Digital headset | **Marché** | 64 132₽ |
+| **Pochette** | Secure container Alpha | | |
+| **Fourreau** | 6Kh5 Bayonet | | |
+
+| *Marchands configurés* | | | | | |
+| - | -: | - | -: | - | -: |
+| **Marché** | Oui | **Jaeger** | 4  | **Le Mécano** | 4 |
+| **Peacekeeper** | 4 | **Prapor** | 4 | **Ragman** | 4 |
+| **Ref** | 4 | **Skier** | 4 | **La Toubib** | 4 |
+
+*Créé avec [Totov Builder](http://localhost:3000)*`
+
 const expectedToString2 = `Build 2
 
+Statistiques:
 Recul vertical: 368    |    Recul horizontal: 255    |    Ergonomie: 52 (-3%)
-Armure: 4    |    Vitesse: -3%    |    Vitesse de rotation: -1%
+Classe d'armure: 4    |    Vitesse: -3%    |    Vitesse de rotation: -1%
 Prix: 444$ et 184 252₽ (= 247 747₽)    |    Poids: 8,936 kg
 
 
 
+Objets:
 [Holster] Beretta M9A3 9x19 pistol Default    |    Peacekeeper 1: 107$ (= 15 337₽)
     [Canon] 
         [Bouche] SIG Sauer SRD9 9x19 sound suppressor    |    Peacekeeper 2: 242$ (= 34 606₽)
@@ -991,19 +1121,57 @@ Prix: 444$ et 184 252₽ (= 247 747₽)    |    Poids: 8,936 kg
 
 
 
+Marchands configurés:
+Marché: Yes    |    Jaeger: 4    |    Le Mécano: 4
+Peacekeeper: 4    |    Prapor: 4    |    Ragman: 4
+Ref: 4    |    Skier: 4    |    La Toubib: 4
+
+
+
 Créé avec Totov Builder
 Équipement interactif et statistiques complètes:
 http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv`
 
+const expctedToMarkdownString3 = `### Build with armor only
+
+[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAKkAAAAAAAAAABBKEnLUiJ9Ha4afnegDxWD05WKxGsZJsgWhKhOKNccaw3ZYUhII89YeYBEADewHwT4SGNj7DB88SCLjMqubc8aJnAxII091CJSM4SdhD3Qa9S2y0Vz5NwKfe7JWo68FWPa4TwknuMgjK_pWAhF3oXl3tBC8fxmQ6DU1JvAQhu_xIOgBiIycu6J3DYNVgf20v_7OcoA)
+
+| *Statistiques* | | | | | |
+| - | -: | - | -: | -: | - |
+| **Ergonomie** | -2,5% | | | | |
+| **Armure** | 4 | **Vitesse** | -6% | **Vitesse de rotation** | -1% |
+| **Prix** | 64 269₽ | **Poids** | 10,600 kg | | |
+
+| *Objets* | | | |
+| - | - | - | -:|
+| **Pare-balles** | 6B13 assault armor (Flora) Default | **Ragman 2** | 64 269₽ |
+
+| *Marchands configurés* | | | | | |
+| - | -: | - | -: | - | -: |
+| **Marché** | Oui | **Jaeger** | 4  | **Le Mécano** | 4 |
+| **Peacekeeper** | 4 | **Prapor** | 4 | **Ragman** | 4 |
+| **Ref** | 4 | **Skier** | 4 | **La Toubib** | 4 |
+
+*Créé avec [Totov Builder](http://localhost:3000)*`
+
 const expectedToString3 = `Build with armor only
 
+Statistiques:
 Ergonomie: -2,5%
-Armure: 4    |    Vitesse: -6%    |    Vitesse de rotation: -1%
+Classe d'armure: 4    |    Vitesse: -6%    |    Vitesse de rotation: -1%
 Prix: 64 269₽    |    Poids: 10,600 kg
 
 
 
+Objets:
 [Pare-balles] 6B13 assault armor (Flora) Default    |    Ragman 2: 64 269₽
+
+
+
+Marchands configurés:
+Marché: Yes    |    Jaeger: 4    |    Le Mécano: 4
+Peacekeeper: 4    |    Prapor: 4    |    Ragman: 4
+Ref: 4    |    Skier: 4    |    La Toubib: 4
 
 
 
@@ -1011,17 +1179,50 @@ Créé avec Totov Builder
 Équipement interactif et statistiques complètes:
 http://localhost:3000/s/XQAAAAKkAAAAAAAAAABBKEnLUiJ9Ha4afnegDxWD05WKxGsZJsgWhKhOKNccaw3ZYUhII89YeYBEADewHwT4SGNj7DB88SCLjMqubc8aJnAxII091CJSM4SdhD3Qa9S2y0Vz5NwKfe7JWo68FWPa4TwknuMgjK_pWAhF3oXl3tBC8fxmQ6DU1JvAQhu_xIOgBiIycu6J3DYNVgf20v_7OcoA`
 
+const expctedToMarkdownString4 = `### Build with backpack only and every currency
+
+[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAKZAAAAAAAAAABBKEnNkWPZwxLGD5AbqDRCABlUfHwjFlOcCKJCZtnY_G5Iw3yl8ARRMk-8vspnH0kfziAl5_AEWuLGxK4m_HrE19pZnFe2Mnv-2lo_MvFl_2QXgBgRDw5_ZiTl1OB6KjSSCgtwlxM5CvykrSWukYlKP_xOWFPMroTf86mmjAF-y9Dp-SQibkX8Ap5A)
+
+| *Statistiques* | | | | | |
+| - | -: | - | -: | -: | - |
+| **Ergonomie** | -3% | | | | |
+| **Vitesse** | -2% | **Vitesse de rotation** | -1% |
+| **Prix** | 95€, 157$ et 67 446₽ (= 104 936₽) | **Poids** | 1,307 kg |
+
+| *Objets* | | | |
+| - | - | - | -:|
+| **Sac à dos** | Oakley Mechanism heavy duty backpack (Black) | **Ragman 2** | 67 446₽ |
+| | MS2000 Marker | **Ragman 1** | 95€ (= 15 105₽) |
+| | AR-15 B5 Systems Precision stock | **Peacekeeper 4** | 157$ (= 22 385₽) |
+
+| *Marchands configurés* | | | | | |
+| - | -: | - | -: | - | -: |
+| **Marché** | Oui | **Jaeger** | 4  | **Le Mécano** | 4 |
+| **Peacekeeper** | 4 | **Prapor** | 4 | **Ragman** | 4 |
+| **Ref** | 4 | **Skier** | 4 | **La Toubib** | 4 |
+
+*Créé avec [Totov Builder](http://localhost:3000)*`
+
 const expectedToString4 = `Build with backpack only and every currency
 
+Statistiques:
 Ergonomie: -3%
 Vitesse: -2%    |    Vitesse de rotation: -1%
 Prix: 95€, 157$ et 67 446₽ (= 104 936₽)    |    Poids: 1,307 kg
 
 
 
+Objets:
 [Sac à dos] Oakley Mechanism heavy duty backpack (Black)    |    Ragman 2: 67 446₽
     MS2000 Marker    |    Ragman 1: 95€ (= 15 105₽)
     AR-15 B5 Systems Precision stock    |    Peacekeeper 4: 157$ (= 22 385₽)
+
+
+
+Marchands configurés:
+Marché: Yes    |    Jaeger: 4    |    Le Mécano: 4
+Peacekeeper: 4    |    Prapor: 4    |    Ragman: 4
+Ref: 4    |    Skier: 4    |    La Toubib: 4
 
 
 
@@ -1029,14 +1230,44 @@ Créé avec Totov Builder
 Équipement interactif et statistiques complètes:
 http://localhost:3000/s/XQAAAAKZAAAAAAAAAABBKEnNkWPZwxLGD5AbqDRCABlUfHwjFlOcCKJCZtnY_G5Iw3yl8ARRMk-8vspnH0kfziAl5_AEWuLGxK4m_HrE19pZnFe2Mnv-2lo_MvFl_2QXgBgRDw5_ZiTl1OB6KjSSCgtwlxM5CvykrSWukYlKP_xOWFPMroTf86mmjAF-y9Dp-SQibkX8Ap5A`
 
+const expectedToMarkdownString5 = `### Build with weapon on back only
+
+[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17Rk0UiykRW0ApjpaFQ6TR_AWFoFNHfz758PAigkjDNzljvK7CyqK5Q3NR5CNalmBcKYWWwRr_692wAA)
+
+| *Statistiques* | | | | | |
+| - | -: | - | -: | -: | - |
+| **Recul vertical** | 112 | **Recul horizontal** | 333 | **Ergonomie** | 45 |
+| **Prix** | 43 345₽ | **Poids** | 1,500 kg |
+
+| *Objets* | | | |
+| - | - | - | -:|
+| **Dans le dos** | RPK-16 5.45x39 light machine gun Default | **Marché** | 43 345₽ |
+
+| *Marchands configurés* | | | | | |
+| - | -: | - | -: | - | -: |
+| **Marché** | Oui | **Jaeger** | 4  | **Le Mécano** | 4 |
+| **Peacekeeper** | 4 | **Prapor** | 4 | **Ragman** | 4 |
+| **Ref** | 4 | **Skier** | 4 | **La Toubib** | 4 |
+
+*Créé avec [Totov Builder](http://localhost:3000)*`
+
 const expectedToString5 = `Build with weapon on back only
 
+Statistiques:
 Recul vertical: 112    |    Recul horizontal: 333    |    Ergonomie: 45
 Prix: 43 345₽    |    Poids: 1,500 kg
 
 
 
+Objets:
 [Dans le dos] RPK-16 5.45x39 light machine gun Default    |    Marché: 43 345₽
+
+
+
+Marchands configurés:
+Marché: Yes    |    Jaeger: 4    |    Le Mécano: 4
+Peacekeeper: 4    |    Prapor: 4    |    Ragman: 4
+Ref: 4    |    Skier: 4    |    La Toubib: 4
 
 
 
@@ -1044,13 +1275,42 @@ Créé avec Totov Builder
 Équipement interactif et statistiques complètes:
 http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17Rk0UiykRW0ApjpaFQ6TR_AWFoFNHfz758PAigkjDNzljvK7CyqK5Q3NR5CNalmBcKYWWwRr_692wAA`
 
+const expctedToMarkdownString6 = `### Build with missing price
+
+[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAJMAAAAAAAAAABBKEnLgiJ9Ha4afnegDxWD1AyOSjT9n_TYdhCtEy9EU1vXI1gHKo_6AMbgo9kFz-nmBlk3iys6khYTodWFDluyJb2ICHD2ow222Wddpp99A___y7mAAA)
+
+| *Statistiques* | | | | | |
+| - | -: | - | -: | -: | - |
+| **Poids**: 0,600 kg |
+
+| *Objets* | | | |
+| - | - | - | -:|
+| **Poches** | 60 x 5.45x39mm BP gs | **Pas de marchand** | |
+
+| *Marchands configurés* | | | | | |
+| - | -: | - | -: | - | -: |
+| **Marché** | Oui | **Jaeger** | 4  | **Le Mécano** | 4 |
+| **Peacekeeper** | 4 | **Prapor** | 4 | **Ragman** | 4 |
+| **Ref** | 4 | **Skier** | 4 | **La Toubib** | 4 |
+
+*Créé avec [Totov Builder](http://localhost:3000)*`
+
 const expectedToString6 = `Build with missing price
 
+Statistiques:
 Poids: 0,600 kg
 
 
 
+Objets:
 [Poches] 60 x 5.45x39mm BP gs    |    Pas de marchand
+
+
+
+Marchands configurés:
+Marché: Yes    |    Jaeger: 4    |    Le Mécano: 4
+Peacekeeper: 4    |    Prapor: 4    |    Ragman: 4
+Ref: 4    |    Skier: 4    |    La Toubib: 4
 
 
 

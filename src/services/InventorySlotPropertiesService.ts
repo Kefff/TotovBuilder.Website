@@ -14,13 +14,21 @@ import Services from './repository/Services'
 /**
  * Represents a service responsible for managing properties of an inventory slot.
  */
-export class InventorySlotPropertiesService {
+export class InventorySlotPropertiesService {/**
+  * Converts an inventory slot to a markdown text.
+  * @param inventorySlot - Inventory slot to convert.
+  * @param language - Language.
+  */
+  public getAsMarkdownString(inventorySlot: IInventorySlot, language: string): Promise<string> {
+    return Promise.resolve('')
+  }
+
   /**
    * Converts an inventory slot to a text.
    * @param inventorySlot - Inventory slot to convert.
    * @param language - Language.
    */
-  public async getAsString(inventorySlot: IInventorySlot, language: string) {
+  public async getAsString(inventorySlot: IInventorySlot, language: string): Promise<string> {
     let inventorySlotAsString = ''
     const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
 
