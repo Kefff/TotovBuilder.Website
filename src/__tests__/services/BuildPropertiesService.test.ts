@@ -14,10 +14,11 @@ import { InventorySlotPropertiesService } from '../../services/InventorySlotProp
 import { InventorySlotService } from '../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
+import { PresetService } from '../../services/PresetService'
 import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 import { build1, build2 } from '../__data__/buildMocks'
-import { ak12PistolGrip, ammo545bp, armor6b13FlDefault, bansheeDefault, bayonet6Kh5, ekp802dt, mechanism, ms2000, nf30mm, opSksDefault, opSksDt, plate6b33Back, plate6b33Front, precision, pso1, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, salewa, scavVest, specterDr } from '../__data__/itemMocks'
+import { ak12PistolGrip, ammo545bp, ammo9mmGT, armor6b13FlDefault, bansheeDefault, bayonet6Kh5, ekp802dt, k1s, mechanism, ms2000, nf30mm, opSksDefault, opSksDt, plate6b33Back, plate6b33Front, precision, pso1, rgd5, rpk16Default, rpk16DustCover, rpk16Handguard, rpk16Rail, rpk16Rs, rpk16RsBase, salewa, scavVest, specterDr } from '../__data__/itemMocks'
 import { rpk16DefaultPrices, salewaPrices } from '../__data__/priceMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
@@ -686,10 +687,129 @@ describe('BuildPropertiesService', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.getAsMarkdownString(build, language)
+      const result = await service.getAsMarkdownString([build], language)
 
       // Assert
       expect(result).toBe(expected)
+    })
+
+    it('should convert builds to a string', async () => {
+      // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventorySlotService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(PresetService)
+      Services.configure(ReductionService)
+
+      const build1: IBuild = {
+        id: 'build1',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: rgd5.id,
+                modSlots: [],
+                quantity: 1
+              },
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: ms2000.id,
+                modSlots: [],
+                quantity: 1
+              },
+              undefined,
+              undefined
+            ],
+            typeId: 'pockets'
+          },
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: k1s.id,
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'headwear'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build 1'
+      }
+
+      const build2: IBuild = {
+        id: 'build2',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: ammo9mmGT.id,
+                modSlots: [],
+                quantity: 25
+              },
+              undefined
+            ],
+            typeId: 'pockets'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build 2'
+      }
+
+      const buildPropertiesService = new BuildPropertiesService()
+
+      // Act
+      const result = await buildPropertiesService.getAsMarkdownString([build1, build2], 'fr')
+
+      // Assert
+      expect(result).toBe(`# Build 1
+
+*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAJ_AAAAAAAAAABBKEnKciJ9Ha4afmksn3ID9gJ5PAcWvYvzduA6qCQ2iyxE_CSen9_XpufSHSHL8RJDDjOD4mYmwzzDzmcTT-fkYBTyehet34mLudzTvi5EDfQCawD5zgMXn__9qMg4z5LrVAzkyhkulsb266vl0hhN-Df_7WGwAA)*
+
+✋ Ergonomie **-2%**  
+  
+💵 Prix **95€** et **20 701₽** (= **35 806₽**)   ⚓ Poids **2,360 kg**  
+
+[*Poches*] **RGD-5 hand grenade**   💵 Prapor 3 **11 822₽**  
+[*Poches*] **MS2000 Marker**   💵 Ragman 1 **95€** (= **15 105₽**)  
+
+[*Couvre-chef*] **Kolpak-1S riot helmet**   💵 Ragman 1 **8 879₽**  
+
+
+
+# Build 2
+
+*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAI7AAAAAAAAAABBKEnKciJ9Ha4afmlhjXH78TJ5PAcWvYvzduA6soV_78fsVnl_BZRLWWGOMdaAD74_p_rPIryYaIhPJc_2yv__6hmgAA)*
+
+💵 Prix **1 825₽**   ⚓ Poids **0,150 kg**  
+
+[*Poches*] 25 x **9x19mm Green Tracer**   💵 Le Mécano 1 **1 825₽**  
+
+
+
+*Marchands configurés*  
+Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
+Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
+Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣  
+
+*Créé avec [Totov Builder](http://localhost:3000)*`)
     })
 
     it('should include the configured merchants', async () => {
@@ -749,7 +869,7 @@ describe('BuildPropertiesService', () => {
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.getAsMarkdownString(build, 'fr')
+      const result = await buildPropertiesService.getAsMarkdownString([build], 'fr')
 
       // Assert
       expect(result).toBe(`# Build
@@ -924,10 +1044,131 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.getAsString(build, language)
+      const result = await service.getAsString([build], language)
 
       // Assert
       expect(result).toBe(expected)
+    })
+
+    it('should convert builds to a string', async () => {
+      // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventorySlotService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(PresetService)
+      Services.configure(ReductionService)
+
+      const build1: IBuild = {
+        id: 'build1',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: rgd5.id,
+                modSlots: [],
+                quantity: 1
+              },
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: ms2000.id,
+                modSlots: [],
+                quantity: 1
+              },
+              undefined,
+              undefined
+            ],
+            typeId: 'pockets'
+          },
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: k1s.id,
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: 'headwear'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build 1'
+      }
+
+      const build2: IBuild = {
+        id: 'build2',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: ammo9mmGT.id,
+                modSlots: [],
+                quantity: 25
+              },
+              undefined
+            ],
+            typeId: 'pockets'
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build 2'
+      }
+
+      const buildPropertiesService = new BuildPropertiesService()
+
+      // Act
+      const result = await buildPropertiesService.getAsString([build1, build2], 'fr')
+
+      // Assert
+      expect(result).toBe(`Build 1
+
+Ergonomie -2%
+
+Prix 95€ et 20 701₽ (= 35 806₽)   Poids 2,360 kg
+
+[Poches] RGD-5 hand grenade   Prapor 3 11 822₽
+[Poches] MS2000 Marker   Ragman 1 95€ (= 15 105₽)
+
+[Couvre-chef] Kolpak-1S riot helmet   Ragman 1 8 879₽
+
+Version interactive avec statistiques complètes:
+http://localhost:3000/s/XQAAAAJ_AAAAAAAAAABBKEnKciJ9Ha4afmksn3ID9gJ5PAcWvYvzduA6qCQ2iyxE_CSen9_XpufSHSHL8RJDDjOD4mYmwzzDzmcTT-fkYBTyehet34mLudzTvi5EDfQCawD5zgMXn__9qMg4z5LrVAzkyhkulsb266vl0hhN-Df_7WGwAA
+
+
+
+Build 2
+
+Prix 1 825₽   Poids 0,150 kg
+
+[Poches] 25 x 9x19mm Green Tracer   Le Mécano 1 1 825₽
+
+Version interactive avec statistiques complètes:
+http://localhost:3000/s/XQAAAAI7AAAAAAAAAABBKEnKciJ9Ha4afmlhjXH78TJ5PAcWvYvzduA6soV_78fsVnl_BZRLWWGOMdaAD74_p_rPIryYaIhPJc_2yv__6hmgAA
+
+
+
+Marchands configurés:
+Marché Oui   Jaeger 4   Le Mécano 4
+Peacekeeper 4   Prapor 4   Ragman 4
+Ref 4   Skier 4   La Toubib 4
+
+Créé avec Totov Builder`)
     })
 
     it('should include the configured merchants', async () => {
@@ -972,19 +1213,20 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.getAsString(build, 'fr')
+      const result = await buildPropertiesService.getAsString([build], 'fr')
 
       // Assert
       expect(result).toBe(`Build
+
+Version interactive avec statistiques complètes:
+http://localhost:3000/s/XQAAAAIMAAAAAAAAAABBKEnKUiJ9Ha4atWFNg2Pf___404AA
 
 
 
 Marchands configurés:
 Marché Oui   Le Mécano 2   Prapor Non
 
-Créé avec Totov Builder
-Version interactive avec statistiques complètes:
-http://localhost:3000/s/XQAAAAIMAAAAAAAAAABBKEnKUiJ9Ha4atWFNg2Pf___404AA`)
+Créé avec Totov Builder`)
     })
   })
 
@@ -1406,6 +1648,9 @@ Price 366,019₽   Weight 24.153 kg
 
 [Face cover] Cold Fear infrared balaclava   Ragman 2 4,793₽
 
+Interactive version with full statistics:
+http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU
+
 
 
 Configured merchants:
@@ -1413,9 +1658,7 @@ Flea market Yes   Jaeger 4   Mechanic 4
 Peacekeeper 4   Prapor 4   Ragman 4
 Ref 4   Skier 4   Therapist 4
 
-Created with Totov Builder
-Interactive version with full statistics:
-http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU`
+Created with Totov Builder`
 
 const expectedString1Fr = `Build 1
 
@@ -1445,6 +1688,9 @@ Prix 366 019₽   Poids 24,153 kg
 
 [Masque] Cold Fear infrared balaclava   Ragman 2 4 793₽
 
+Version interactive avec statistiques complètes:
+http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU
+
 
 
 Marchands configurés:
@@ -1452,9 +1698,7 @@ Marché Oui   Jaeger 4   Le Mécano 4
 Peacekeeper 4   Prapor 4   Ragman 4
 Ref 4   Skier 4   La Toubib 4
 
-Créé avec Totov Builder
-Version interactive avec statistiques complètes:
-http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU`
+Créé avec Totov Builder`
 
 const expectedString2 = `Build 2
 
@@ -1480,6 +1724,9 @@ Prix 444$ et 184 252₽ (= 247 747₽)   Poids 8,936 kg
 
 [Fourreau] 6Kh5 Bayonet
 
+Version interactive avec statistiques complètes:
+http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv
+
 
 
 Marchands configurés:
@@ -1487,9 +1734,7 @@ Marché Oui   Jaeger 4   Le Mécano 4
 Peacekeeper 4   Prapor 4   Ragman 4
 Ref 4   Skier 4   La Toubib 4
 
-Créé avec Totov Builder
-Version interactive avec statistiques complètes:
-http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv`
+Créé avec Totov Builder`
 
 const expectedString3 = `Build with armor only
 
@@ -1499,6 +1744,9 @@ Prix 64 269₽   Poids 10,600 kg
 
 [Pare-balles] 6B13 assault armor (Flora) Default   Ragman 2 64 269₽
 
+Version interactive avec statistiques complètes:
+http://localhost:3000/s/XQAAAAKkAAAAAAAAAABBKEnLUiJ9Ha4afnegDxWD05WKxGsZJsgWhKhOKNccaw3ZYUhII89YeYBEADewHwT4SGNj7DB88SCLjMqubc8aJnAxII091CJSM4SdhD3Qa9S2y0Vz5NwKfe7JWo68FWPa4TwknuMgjK_pWAhF3oXl3tBC8fxmQ6DU1JvAQhu_xIOgBiIycu6J3DYNVgf20v_7OcoA
+
 
 
 Marchands configurés:
@@ -1506,9 +1754,7 @@ Marché Oui   Jaeger 4   Le Mécano 4
 Peacekeeper 4   Prapor 4   Ragman 4
 Ref 4   Skier 4   La Toubib 4
 
-Créé avec Totov Builder
-Version interactive avec statistiques complètes:
-http://localhost:3000/s/XQAAAAKkAAAAAAAAAABBKEnLUiJ9Ha4afnegDxWD05WKxGsZJsgWhKhOKNccaw3ZYUhII89YeYBEADewHwT4SGNj7DB88SCLjMqubc8aJnAxII091CJSM4SdhD3Qa9S2y0Vz5NwKfe7JWo68FWPa4TwknuMgjK_pWAhF3oXl3tBC8fxmQ6DU1JvAQhu_xIOgBiIycu6J3DYNVgf20v_7OcoA`
+Créé avec Totov Builder`
 
 const expectedString4 = `Build with backpack only and every currency
 
@@ -1520,6 +1766,9 @@ Prix 95€, 157$ et 67 446₽ (= 104 936₽)   Poids 1,307 kg
  MS2000 Marker   Ragman 1 95€ (= 15 105₽)
  AR-15 B5 Systems Precision stock   Peacekeeper 4 157$ (= 22 385₽)
 
+Version interactive avec statistiques complètes:
+http://localhost:3000/s/XQAAAAKZAAAAAAAAAABBKEnNkWPZwxLGD5AbqDRCABlUfHwjFlOcCKJCZtnY_G5Iw3yl8ARRMk-8vspnH0kfziAl5_AEWuLGxK4m_HrE19pZnFe2Mnv-2lo_MvFl_2QXgBgRDw5_ZiTl1OB6KjSSCgtwlxM5CvykrSWukYlKP_xOWFPMroTf86mmjAF-y9Dp-SQibkX8Ap5A
+
 
 
 Marchands configurés:
@@ -1527,9 +1776,7 @@ Marché Oui   Jaeger 4   Le Mécano 4
 Peacekeeper 4   Prapor 4   Ragman 4
 Ref 4   Skier 4   La Toubib 4
 
-Créé avec Totov Builder
-Version interactive avec statistiques complètes:
-http://localhost:3000/s/XQAAAAKZAAAAAAAAAABBKEnNkWPZwxLGD5AbqDRCABlUfHwjFlOcCKJCZtnY_G5Iw3yl8ARRMk-8vspnH0kfziAl5_AEWuLGxK4m_HrE19pZnFe2Mnv-2lo_MvFl_2QXgBgRDw5_ZiTl1OB6KjSSCgtwlxM5CvykrSWukYlKP_xOWFPMroTf86mmjAF-y9Dp-SQibkX8Ap5A`
+Créé avec Totov Builder`
 
 const expectedString5 = `Build with weapon on back only
 
@@ -1538,6 +1785,9 @@ Prix 43 345₽   Poids 1,500 kg
 
 [Dans le dos] RPK-16 5.45x39 light machine gun Default   Marché 43 345₽
 
+Version interactive avec statistiques complètes:
+http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17Rk0UiykRW0ApjpaFQ6TR_AWFoFNHfz758PAigkjDNzljvK7CyqK5Q3NR5CNalmBcKYWWwRr_692wAA
+
 
 
 Marchands configurés:
@@ -1545,9 +1795,7 @@ Marché Oui   Jaeger 4   Le Mécano 4
 Peacekeeper 4   Prapor 4   Ragman 4
 Ref 4   Skier 4   La Toubib 4
 
-Créé avec Totov Builder
-Version interactive avec statistiques complètes:
-http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17Rk0UiykRW0ApjpaFQ6TR_AWFoFNHfz758PAigkjDNzljvK7CyqK5Q3NR5CNalmBcKYWWwRr_692wAA`
+Créé avec Totov Builder`
 
 const expectedString6 = `Build with missing price
 
@@ -1555,6 +1803,9 @@ Poids 0,600 kg
 
 [Poches] 60 x 5.45x39mm BP gs   Pas de marchand
 
+Version interactive avec statistiques complètes:
+http://localhost:3000/s/XQAAAAJMAAAAAAAAAABBKEnLgiJ9Ha4afnegDxWD1AyOSjT9n_TYdhCtEy9EU1vXI1gHKo_6AMbgo9kFz-nmBlk3iys6khYTodWFDluyJb2ICHD2ow222Wddpp99A___y7mAAA
+
 
 
 Marchands configurés:
@@ -1562,6 +1813,4 @@ Marché Oui   Jaeger 4   Le Mécano 4
 Peacekeeper 4   Prapor 4   Ragman 4
 Ref 4   Skier 4   La Toubib 4
 
-Créé avec Totov Builder
-Version interactive avec statistiques complètes:
-http://localhost:3000/s/XQAAAAJMAAAAAAAAAABBKEnLgiJ9Ha4afnegDxWD1AyOSjT9n_TYdhCtEy9EU1vXI1gHKo_6AMbgo9kFz-nmBlk3iys6khYTodWFDluyJb2ICHD2ow222Wddpp99A___y7mAAA`
+Créé avec Totov Builder`

@@ -147,144 +147,155 @@ export class BuildPropertiesService {
   }
 
   /**
-   * Converts a build to a markdown text.
-   * @param build - Build to convert.
+   * Converts builds to a markdown text.
+   * @param builds - Builds to convert.
    * @param language - Language.
    */
-  public async getAsMarkdownString(build: IBuild, language: string): Promise<string> {
+  public async getAsMarkdownString(builds: IBuild[], language: string): Promise<string> {
     const itemService = Services.get(ItemService)
     const buildService = Services.get(BuildService)
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
 
     const mainCurrency = itemService.getMainCurrency()
-    const buildSummary = await this.getSummary(build)
 
-    let buildAsString = `# ${build.name}`
+    let buildsAsString = ''
 
-    // Build link
-    const sharableUrlResult = await buildService.toSharableURL(build)
+    for (const build of builds) {
+      const buildSummary = await this.getSummary(build)
 
-    if (sharableUrlResult != null) {
-      buildAsString += `\n\n*[${this.translate('caption.interactiveVersionWithFullStats', language)}](${sharableUrlResult})*`
-    }
+      let buildAsString = `# ${build.name}`
 
-    const hasArmor = buildSummary.armorModifiers.armorClass !== 0
-    const hasErgonomics = buildSummary.ergonomics !== 0
-    const hasErgonomicsModifierPercentage = buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0
-    const hasMovementSpeedModifierPercentage = buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
-    const hasPrice = buildSummary.price.priceInMainCurrency !== 0
-    const hasRecoil = buildSummary.recoil.verticalRecoil !== 0
-    const hasTurningSpeedModifierPercentage = buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0
-    const hasWeight = buildSummary.weight !== 0
+      // Build link
+      const sharableUrlResult = await buildService.toSharableURL(build)
 
-    // Main weapon stats
-    let statsAsString = ''
-
-    if (hasRecoil || hasErgonomics || hasErgonomicsModifierPercentage) {
-      if (hasRecoil) {
-        statsAsString += `↕️ ${this.translate('caption.verticalRecoil', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.verticalRecoil, language)}**`
-        statsAsString += `   ↔️ ${this.translate('caption.horizontalRecoil', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.horizontalRecoil, language)}**`
+      if (sharableUrlResult != null) {
+        buildAsString += `\n\n*[${this.translate('caption.interactiveVersionWithFullStats', language)}](${sharableUrlResult})*`
       }
 
-      if (hasErgonomics) {
+      const hasArmor = buildSummary.armorModifiers.armorClass !== 0
+      const hasErgonomics = buildSummary.ergonomics !== 0
+      const hasErgonomicsModifierPercentage = buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0
+      const hasMovementSpeedModifierPercentage = buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
+      const hasPrice = buildSummary.price.priceInMainCurrency !== 0
+      const hasRecoil = buildSummary.recoil.verticalRecoil !== 0
+      const hasTurningSpeedModifierPercentage = buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0
+      const hasWeight = buildSummary.weight !== 0
+
+      // Main weapon stats
+      let statsAsString = ''
+
+      if (hasRecoil || hasErgonomics || hasErgonomicsModifierPercentage) {
         if (hasRecoil) {
-          statsAsString += '   '
+          statsAsString += `↕️ ${this.translate('caption.verticalRecoil', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.verticalRecoil, language)}**`
+          statsAsString += `   ↔️ ${this.translate('caption.horizontalRecoil', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.horizontalRecoil, language)}**`
         }
 
-        statsAsString += `✋ ${this.translate('caption.ergonomics', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, buildSummary.ergonomics, language)}**`
-      }
-
-      if (hasErgonomicsModifierPercentage) {
         if (hasErgonomics) {
-          statsAsString += ` (**${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, language)}**)`
-        } else {
-          statsAsString += `✋ ${this.translate('caption.ergonomics', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, language)}**`
-        }
-      }
-
-      statsAsString += '  \n'
-    }
-
-    // Armor stats
-    if (hasArmor || hasMovementSpeedModifierPercentage || hasTurningSpeedModifierPercentage) {
-      if (hasArmor) {
-        statsAsString += `🛡️ ${this.translate('caption.armorClass', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, buildSummary.armorModifiers.armorClass, language)}**`
-      }
-
-      if (hasMovementSpeedModifierPercentage) {
-        if (hasArmor) {
-          statsAsString += '   '
-        }
-
-        statsAsString += `🏃 ${this.translate('caption.speed', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedModifierPercentage, language)}**`
-      }
-
-      if (hasMovementSpeedModifierPercentage) {
-        if (hasArmor || hasMovementSpeedModifierPercentage) {
-          statsAsString += '   '
-        }
-
-        statsAsString += `🔄 ${this.translate('caption.turningSpeed', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage, language)}**`
-      }
-
-      statsAsString += '  \n'
-    }
-
-    // Price / weight
-    if (hasPrice || hasWeight) {
-      if (hasPrice) {
-        statsAsString += `💵 ${this.translate('caption.price', language)} `
-
-        for (let i = 0; i < buildSummary.price.priceByCurrency.length; i++) {
-          if (buildSummary.price.priceByCurrency.length > 1
-            && i == buildSummary.price.priceByCurrency.length - 1) {
-            statsAsString += ` ${this.translate('caption.and', language)} `
-          } else if (i > 0) {
-            statsAsString += ', '
+          if (hasRecoil) {
+            statsAsString += '   '
           }
 
-          const priceInCurrency = buildSummary.price.priceByCurrency[i]
-          const priceCurrency = itemService.getCurrency(priceInCurrency.currencyName)
-          statsAsString += `**${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInCurrency.value, language)}${priceCurrency.symbol}**`
+          statsAsString += `✋ ${this.translate('caption.ergonomics', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, buildSummary.ergonomics, language)}**`
         }
 
-        if (buildSummary.price.priceByCurrency.length > 1) {
-          statsAsString += ` (= **${StatsUtils.getStandardDisplayValue(DisplayValueType.price, buildSummary.price.priceInMainCurrency, language)}${mainCurrency.symbol}**)`
+        if (hasErgonomicsModifierPercentage) {
+          if (hasErgonomics) {
+            statsAsString += ` (**${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, language)}**)`
+          } else {
+            statsAsString += `✋ ${this.translate('caption.ergonomics', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, language)}**`
+          }
         }
+
+        statsAsString += '  \n'
       }
 
-      if (hasWeight) {
+      // Armor stats
+      if (hasArmor || hasMovementSpeedModifierPercentage || hasTurningSpeedModifierPercentage) {
+        if (hasArmor) {
+          statsAsString += `🛡️ ${this.translate('caption.armorClass', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, buildSummary.armorModifiers.armorClass, language)}**`
+        }
+
+        if (hasMovementSpeedModifierPercentage) {
+          if (hasArmor) {
+            statsAsString += '   '
+          }
+
+          statsAsString += `🏃 ${this.translate('caption.speed', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedModifierPercentage, language)}**`
+        }
+
+        if (hasMovementSpeedModifierPercentage) {
+          if (hasArmor || hasMovementSpeedModifierPercentage) {
+            statsAsString += '   '
+          }
+
+          statsAsString += `🔄 ${this.translate('caption.turningSpeed', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage, language)}**`
+        }
+
+        statsAsString += '  \n'
+      }
+
+      // Price / weight
+      if (hasPrice || hasWeight) {
         if (hasPrice) {
-          statsAsString += '   '
+          statsAsString += `💵 ${this.translate('caption.price', language)} `
+
+          for (let i = 0; i < buildSummary.price.priceByCurrency.length; i++) {
+            if (buildSummary.price.priceByCurrency.length > 1
+              && i == buildSummary.price.priceByCurrency.length - 1) {
+              statsAsString += ` ${this.translate('caption.and', language)} `
+            } else if (i > 0) {
+              statsAsString += ', '
+            }
+
+            const priceInCurrency = buildSummary.price.priceByCurrency[i]
+            const priceCurrency = itemService.getCurrency(priceInCurrency.currencyName)
+            statsAsString += `**${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInCurrency.value, language)}${priceCurrency.symbol}**`
+          }
+
+          if (buildSummary.price.priceByCurrency.length > 1) {
+            statsAsString += ` (= **${StatsUtils.getStandardDisplayValue(DisplayValueType.price, buildSummary.price.priceInMainCurrency, language)}${mainCurrency.symbol}**)`
+          }
         }
 
-        statsAsString += `⚓ ${this.translate('caption.weight', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight, language)}**`
-      }
+        if (hasWeight) {
+          if (hasPrice) {
+            statsAsString += '   '
+          }
 
-      statsAsString += '  '
-    }
-
-    if (statsAsString !== '') {
-      buildAsString += `\n\n${statsAsString}`
-    }
-
-    // Inventory slots
-    let inventorySlotsAsString = ''
-
-    for (const inventorySlot of build.inventorySlots) {
-      const inventorySlotAsString = await inventorySlotPropertiesService.getAsMarkdownString(inventorySlot, language)
-
-      if (inventorySlotAsString !== '') {
-        if (inventorySlotsAsString !== '') {
-          inventorySlotsAsString += '\n\n'
+          statsAsString += `⚓ ${this.translate('caption.weight', language)} **${StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight, language)}**`
         }
 
-        inventorySlotsAsString += inventorySlotAsString
+        statsAsString += '  '
       }
-    }
 
-    if (inventorySlotsAsString !== '') {
-      buildAsString += `\n\n${inventorySlotsAsString}`
+      if (statsAsString !== '') {
+        buildAsString += `\n\n${statsAsString}`
+      }
+
+      // Inventory slots
+      let inventorySlotsAsString = ''
+
+      for (const inventorySlot of build.inventorySlots) {
+        const inventorySlotAsString = await inventorySlotPropertiesService.getAsMarkdownString(inventorySlot, language)
+
+        if (inventorySlotAsString !== '') {
+          if (inventorySlotsAsString !== '') {
+            inventorySlotsAsString += '\n\n'
+          }
+
+          inventorySlotsAsString += inventorySlotAsString
+        }
+      }
+
+      if (inventorySlotsAsString !== '') {
+        buildAsString += `\n\n${inventorySlotsAsString}`
+      }
+
+      if (buildsAsString !== '') {
+        buildsAsString += '\n\n\n\n'
+      }
+
+      buildsAsString += buildAsString
     }
 
     // Configured merchants
@@ -304,144 +315,161 @@ export class BuildPropertiesService {
       merchantsAsString += `${this.translate('caption.merchant_' + merchantFilters[i].merchant, language)} ${level}`
     }
 
-    buildAsString += `\n\n\n\n*${this.translate('caption.configuredMerchants', language)}*${merchantsAsString}  `
-
+    buildsAsString += `\n\n\n\n*${this.translate('caption.configuredMerchants', language)}*${merchantsAsString}  `
 
     // Totov builder link
-    buildAsString += `\n\n*${this.translate('caption.createdWith', language)} [${this.translate('caption.totovBuilder', language)}](${window.location.origin})*`
+    buildsAsString += `\n\n*${this.translate('caption.createdWith', language)} [${this.translate('caption.totovBuilder', language)}](${window.location.origin})*`
 
-    return buildAsString
+    return buildsAsString
   }
 
   /**
-   * Converts a build to a text.
-   * @param build - Build to convert.
+   * Converts builds to a text.
+   * @param builds - Builds to convert.
    * @param language - Language.
    */
-  public async getAsString(build: IBuild, language: string): Promise<string> {
+  public async getAsString(builds: IBuild[], language: string): Promise<string> {
     const itemService = Services.get(ItemService)
     const buildService = Services.get(BuildService)
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
 
-    let buildAsString = `${build.name}`
-    const mainCurrency = itemService.getMainCurrency()
-    const buildSummary = await this.getSummary(build)
+    let buildsAsString = ''
 
-    const hasArmor = buildSummary.armorModifiers.armorClass !== 0
-    const hasErgonomics = buildSummary.ergonomics !== 0
-    const hasErgonomicsModifierPercentage = buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0
-    const hasMovementSpeedModifierPercentage = buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
-    const hasPrice = buildSummary.price.priceInMainCurrency !== 0
-    const hasRecoil = buildSummary.recoil.verticalRecoil !== 0
-    const hasTurningSpeedModifierPercentage = buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0
-    const hasWeight = buildSummary.weight !== 0
+    for (const build of builds) {
+      let buildAsString = `${build.name}`
+      const mainCurrency = itemService.getMainCurrency()
+      const buildSummary = await this.getSummary(build)
 
-    // Main weapon stats
-    let statsAsString = ''
+      const hasArmor = buildSummary.armorModifiers.armorClass !== 0
+      const hasErgonomics = buildSummary.ergonomics !== 0
+      const hasErgonomicsModifierPercentage = buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0
+      const hasMovementSpeedModifierPercentage = buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
+      const hasPrice = buildSummary.price.priceInMainCurrency !== 0
+      const hasRecoil = buildSummary.recoil.verticalRecoil !== 0
+      const hasTurningSpeedModifierPercentage = buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0
+      const hasWeight = buildSummary.weight !== 0
 
-    if (hasRecoil || hasErgonomics || hasErgonomicsModifierPercentage) {
-      if (hasRecoil) {
-        statsAsString += `${this.translate('caption.verticalRecoil', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.verticalRecoil, language)}`
-        statsAsString += `   ${this.translate('caption.horizontalRecoil', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.horizontalRecoil, language)}`
-      }
+      // Main weapon stats
+      let statsAsString = ''
 
-      if (hasErgonomics) {
+      if (hasRecoil || hasErgonomics || hasErgonomicsModifierPercentage) {
         if (hasRecoil) {
-          statsAsString += '   '
+          statsAsString += `${this.translate('caption.verticalRecoil', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.verticalRecoil, language)}`
+          statsAsString += `   ${this.translate('caption.horizontalRecoil', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.horizontalRecoil, language)}`
         }
 
-        statsAsString += `${this.translate('caption.ergonomics', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, buildSummary.ergonomics, language)}`
-      }
-
-      if (hasErgonomicsModifierPercentage) {
         if (hasErgonomics) {
-          statsAsString += ` (${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, language)})`
-        } else {
-          statsAsString += `${this.translate('caption.ergonomics', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, language)}`
-        }
-      }
-
-      statsAsString += '\n'
-    }
-
-    // Armor stats
-    if (hasArmor || hasMovementSpeedModifierPercentage || hasTurningSpeedModifierPercentage) {
-      if (hasArmor) {
-        statsAsString += `${this.translate('caption.armorClass', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, buildSummary.armorModifiers.armorClass, language)}`
-      }
-
-      if (hasMovementSpeedModifierPercentage) {
-        if (hasArmor) {
-          statsAsString += '   '
-        }
-
-        statsAsString += `${this.translate('caption.speed', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedModifierPercentage, language)}`
-      }
-
-      if (hasMovementSpeedModifierPercentage) {
-        if (hasArmor || hasMovementSpeedModifierPercentage) {
-          statsAsString += '   '
-        }
-
-        statsAsString += `${this.translate('caption.turningSpeed', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage, language)}`
-      }
-
-      statsAsString += '\n'
-    }
-
-    // Price / weight
-    if (hasPrice || hasWeight) {
-      if (hasPrice) {
-        statsAsString += `${this.translate('caption.price', language)} `
-
-        for (let i = 0; i < buildSummary.price.priceByCurrency.length; i++) {
-          if (buildSummary.price.priceByCurrency.length > 1
-            && i == buildSummary.price.priceByCurrency.length - 1) {
-            statsAsString += ` ${this.translate('caption.and', language)} `
-          } else if (i > 0) {
-            statsAsString += ', '
+          if (hasRecoil) {
+            statsAsString += '   '
           }
 
-          const priceInCurrency = buildSummary.price.priceByCurrency[i]
-          const priceCurrency = itemService.getCurrency(priceInCurrency.currencyName)
-          statsAsString += `${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInCurrency.value, language)}${priceCurrency.symbol}`
+          statsAsString += `${this.translate('caption.ergonomics', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, buildSummary.ergonomics, language)}`
         }
 
-        if (buildSummary.price.priceByCurrency.length > 1) {
-          statsAsString += ` (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, buildSummary.price.priceInMainCurrency, language)}${mainCurrency.symbol})`
+        if (hasErgonomicsModifierPercentage) {
+          if (hasErgonomics) {
+            statsAsString += ` (${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, language)})`
+          } else {
+            statsAsString += `${this.translate('caption.ergonomics', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, language)}`
+          }
         }
+
+        statsAsString += '\n'
       }
 
-      if (hasWeight) {
+      // Armor stats
+      if (hasArmor || hasMovementSpeedModifierPercentage || hasTurningSpeedModifierPercentage) {
+        if (hasArmor) {
+          statsAsString += `${this.translate('caption.armorClass', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, buildSummary.armorModifiers.armorClass, language)}`
+        }
+
+        if (hasMovementSpeedModifierPercentage) {
+          if (hasArmor) {
+            statsAsString += '   '
+          }
+
+          statsAsString += `${this.translate('caption.speed', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedModifierPercentage, language)}`
+        }
+
+        if (hasMovementSpeedModifierPercentage) {
+          if (hasArmor || hasMovementSpeedModifierPercentage) {
+            statsAsString += '   '
+          }
+
+          statsAsString += `${this.translate('caption.turningSpeed', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage, language)}`
+        }
+
+        statsAsString += '\n'
+      }
+
+      // Price / weight
+      if (hasPrice || hasWeight) {
         if (hasPrice) {
-          statsAsString += '   '
+          statsAsString += `${this.translate('caption.price', language)} `
+
+          for (let i = 0; i < buildSummary.price.priceByCurrency.length; i++) {
+            if (buildSummary.price.priceByCurrency.length > 1
+              && i == buildSummary.price.priceByCurrency.length - 1) {
+              statsAsString += ` ${this.translate('caption.and', language)} `
+            } else if (i > 0) {
+              statsAsString += ', '
+            }
+
+            const priceInCurrency = buildSummary.price.priceByCurrency[i]
+            const priceCurrency = itemService.getCurrency(priceInCurrency.currencyName)
+            statsAsString += `${StatsUtils.getStandardDisplayValue(DisplayValueType.price, priceInCurrency.value, language)}${priceCurrency.symbol}`
+          }
+
+          if (buildSummary.price.priceByCurrency.length > 1) {
+            statsAsString += ` (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, buildSummary.price.priceInMainCurrency, language)}${mainCurrency.symbol})`
+          }
         }
 
-        statsAsString += `${this.translate('caption.weight', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight, language)}`
-      }
-    }
+        if (hasWeight) {
+          if (hasPrice) {
+            statsAsString += '   '
+          }
 
-    if (statsAsString !== '') {
-      buildAsString += `\n\n${statsAsString}`
-    }
-
-    // Inventory slots
-    let inventorySlotsAsString = ''
-
-    for (const inventorySlot of build.inventorySlots) {
-      const inventorySlotAsString = await inventorySlotPropertiesService.getAsString(inventorySlot, language)
-
-      if (inventorySlotAsString !== '') {
-        if (inventorySlotsAsString !== '') {
-          inventorySlotsAsString += '\n\n'
+          statsAsString += `${this.translate('caption.weight', language)} ${StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight, language)}`
         }
-
-        inventorySlotsAsString += inventorySlotAsString
       }
-    }
 
-    if (inventorySlotsAsString !== '') {
-      buildAsString += `\n\n${inventorySlotsAsString}`
+      if (statsAsString !== '') {
+        buildAsString += `\n\n${statsAsString}`
+      }
+
+      // Inventory slots
+      let inventorySlotsAsString = ''
+
+      for (const inventorySlot of build.inventorySlots) {
+        const inventorySlotAsString = await inventorySlotPropertiesService.getAsString(inventorySlot, language)
+
+        if (inventorySlotAsString !== '') {
+          if (inventorySlotsAsString !== '') {
+            inventorySlotsAsString += '\n\n'
+          }
+
+          inventorySlotsAsString += inventorySlotAsString
+        }
+      }
+
+      if (inventorySlotsAsString !== '') {
+        buildAsString += `\n\n${inventorySlotsAsString}`
+      }
+
+      // Build link
+      const sharableUrlResult = await buildService.toSharableURL(build)
+
+      if (sharableUrlResult != null) {
+        buildAsString += `\n\n${this.translate('caption.interactiveVersionWithFullStats', language)}:
+${sharableUrlResult}`
+      }
+
+      if (buildsAsString !== '') {
+        buildsAsString += '\n\n\n\n'
+      }
+
+      buildsAsString += buildAsString
     }
 
     // Configured merchants
@@ -466,19 +494,11 @@ export class BuildPropertiesService {
       merchantsAsString += `${this.translate('caption.merchant_' + merchantFilters[i].merchant, language)} ${level}`
     }
 
-    buildAsString += `\n\n\n\n${merchantsAsString}`
+    buildsAsString += `\n\n\n\n${merchantsAsString}`
 
-    // Build link
-    buildAsString += `\n\n${this.translate('caption.createdWith', language)} ${this.translate('caption.totovBuilder', language)}`
+    buildsAsString += `\n\n${this.translate('caption.createdWith', language)} ${this.translate('caption.totovBuilder', language)}`
 
-    const sharableUrlResult = await buildService.toSharableURL(build)
-
-    if (sharableUrlResult != null) {
-      buildAsString += `\n${this.translate('caption.interactiveVersionWithFullStats', language)}:
-${sharableUrlResult}`
-    }
-
-    return buildAsString
+    return buildsAsString
   }
 
   /**
