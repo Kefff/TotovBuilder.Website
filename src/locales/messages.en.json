@@ -143,7 +143,6 @@
     "import": "Load",
     "importBuilds": "Load builds from a file",
     "includePrice": "Include price",
-    "interactiveBuildWithFullStats": "Interactive build and full stats",
     "interactiveVersion": "Interactive version",
     "interactiveVersionWithFullStats": "Interactive version with full statistics",
     "itemDetails": "Item details",

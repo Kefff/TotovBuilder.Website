@@ -110,7 +110,6 @@
     "import": "Charger",
     "importBuilds": "Charger des équipements depuis un fichier",
     "includePrice": "Inclure le prix",
-    "interactiveBuildWithFullStats": "Équipement interactif avec statistiques complètes",
     "interactiveVersion": "Version interactive",
     "interactiveVersionWithFullStats": "Version interactive avec statistiques complètes",
     "itemDetails": "Details de l'objet",

@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */ // Special character used to force markdown to take into account spaces
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
@@ -11,12 +12,12 @@ import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
 import { IWearable } from '../models/item/IWearable'
 import { IArmorModifiers } from '../models/utils/IArmorModifiers'
 import { IErgonomics } from '../models/utils/IErgonomics'
+import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import { IInventoryItemPrice } from '../models/utils/IInventoryItemPrice'
 import { IInventoryItemRecoil } from '../models/utils/IInventoryItemRecoil'
 import { IRecoilModifierPercentage } from '../models/utils/IRecoilModifierPercentage'
 import { IWearableModifiers } from '../models/utils/IWearableModifiers'
 import { IWeight } from '../models/utils/IWeight'
-import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import vueI18n from '../plugins/vueI18n'
 import { PriceUtils } from '../utils/PriceUtils'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
@@ -85,7 +86,6 @@ export class InventoryItemService {
    * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
    */
   public async getAsMarkdownString(inventoryItem: IInventoryItem, language: string, itemInSameSlotInPreset?: IInventoryItem, indentationLevel = 0, canBeLooted = true): Promise<string> {
-    const indentationPattern = '&nbsp;&nbsp;&nbsp;&nbsp;'
     let inventoryItemAsString = ''
 
     const itemService = Services.get(ItemService)
@@ -94,7 +94,7 @@ export class InventoryItemService {
 
     if (inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
       const itemCountAsString = inventoryItem.quantity > 1 ? `${inventoryItem.quantity} x ` : ''
-      inventoryItemAsString += ` ${itemCountAsString}${item.name} |`
+      inventoryItemAsString += `${itemCountAsString}**${item.name}**`
     }
 
     if (canBeLooted && !inventoryItem.ignorePrice && inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
@@ -102,35 +102,32 @@ export class InventoryItemService {
 
       if (price.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset) {
         if (price.missingPrice && price.unitPrice.valueInMainCurrency === 0) {
-          // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-          inventoryItemAsString += ` **${vueI18n.t('message.noMerchant', 1, { locale: language })}** |`
+          inventoryItemAsString += `   💵 ${this.translate('message.noMerchant', language)}`
         } else {
-          // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-          inventoryItemAsString += ` **${vueI18n.t('caption.merchant_' + price.unitPrice.merchant, 1, { locale: language })}`
+          inventoryItemAsString += `   💵 ${this.translate('caption.merchant_' + price.unitPrice.merchant, language)}`
 
           if (price.unitPrice.merchant !== 'flea-market') {
             inventoryItemAsString += ` ${price.unitPrice.merchantLevel}`
           }
 
-          inventoryItemAsString += '**'
-
           if (price.unitPrice.currencyName === 'barter') {
-            // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-            inventoryItemAsString += ` (*${vueI18n.t('caption.barter', 1, { locale: language }).toLocaleLowerCase()}*) | ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, language)}${mainCurrency.symbol} |`
+            inventoryItemAsString += ` (*${this.translate('caption.barter', language).toLocaleLowerCase()}*) **${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, language)}${mainCurrency.symbol}**`
           } else {
-            inventoryItemAsString += ` | ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.value, language)}`
+            inventoryItemAsString += ` **${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.value, language)}`
 
             if (price.price.currencyName === mainCurrency.name) {
-              inventoryItemAsString += mainCurrency.symbol
+              inventoryItemAsString += `${mainCurrency.symbol}**`
             } else {
               const priceCurrency = itemService.getCurrency(price.price.currencyName)
-              inventoryItemAsString += `${priceCurrency.symbol} (= ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, language)}${mainCurrency.symbol})`
+              inventoryItemAsString += `${priceCurrency.symbol}** (= **${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, language)}${mainCurrency.symbol}**)`
             }
-
-            inventoryItemAsString += ' |'
           }
         }
       }
+    }
+
+    if (inventoryItemAsString !== '') {
+      inventoryItemAsString += '  '
     }
 
     if (inventoryItem.content.length > 0 || inventoryItem.modSlots.length > 0) {
@@ -144,7 +141,7 @@ export class InventoryItemService {
       let indentation = ''
 
       for (let i = 1; i <= indentationLevel; i++) {
-        indentation += indentationPattern
+        indentation += ' '
       }
 
       // Mods
@@ -157,10 +154,13 @@ export class InventoryItemService {
         const modSlotItemAsString = await this.getAsMarkdownString(modSlot.item, language, modSlotInPreset?.item, indentationLevel)
 
         if (modSlotItemAsString !== '') {
-          // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-          const modSlotName = vueI18n.t('caption.modSlot_' + modSlot.modSlotName, 1, { locale: language })
-          inventoryItemAsString += `
-| ${indentation} **${modSlotName}** |${modSlotItemAsString}`
+          const modSlotName = this.translate('caption.modSlot_' + modSlot.modSlotName, language)
+
+          if (modSlotItemAsString.startsWith('\n')) {
+            inventoryItemAsString += `\n${indentation}[*${modSlotName}*]  ${modSlotItemAsString}`
+          } else {
+            inventoryItemAsString += `\n${indentation}[*${modSlotName}*] ${modSlotItemAsString}`
+          }
         }
       }
 
@@ -171,8 +171,7 @@ export class InventoryItemService {
         const containedItemAsString = await this.getAsMarkdownString(containedItem, language, containedItemInPreset, indentationLevel)
 
         if (containedItemAsString !== '') {
-          inventoryItemAsString += `
-| | ${indentation}${containedItemAsString}`
+          inventoryItemAsString += `\n${indentation}${containedItemAsString}`
         }
       }
     }
@@ -190,10 +189,7 @@ export class InventoryItemService {
   public async getAsString(inventoryItem: IInventoryItem, language: string, itemInSameSlotInPreset?: IInventoryItem, indentationLevel = 0, canBeLooted = true): Promise<string> {
     const itemService = Services.get(ItemService)
 
-    const indentationPattern = '    '
-    const separator = `${indentationPattern}|${indentationPattern}`
     let inventoryItemAsString = ''
-
     const mainCurrency = itemService.getMainCurrency()
     const item = await itemService.getItem(inventoryItem.itemId)
 
@@ -207,21 +203,18 @@ export class InventoryItemService {
 
       if (price.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset) {
         if (price.missingPrice && price.unitPrice.valueInMainCurrency === 0) {
-          // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-          inventoryItemAsString += `${separator}${vueI18n.t('message.noMerchant', 1, { locale: language })}`
+          inventoryItemAsString += `   ${this.translate('message.noMerchant', language)}`
         } else {
-          // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-          inventoryItemAsString += `${separator}${vueI18n.t('caption.merchant_' + price.unitPrice.merchant, 1, { locale: language })}`
+          inventoryItemAsString += `   ${this.translate('caption.merchant_' + price.unitPrice.merchant, language)}`
 
           if (price.unitPrice.merchant !== 'flea-market') {
             inventoryItemAsString += ` ${price.unitPrice.merchantLevel}`
           }
 
           if (price.unitPrice.currencyName === 'barter') {
-            // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-            inventoryItemAsString += ` (${vueI18n.t('caption.barter', 1, { locale: language }).toLocaleLowerCase()}): ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, language)}${mainCurrency.symbol}`
+            inventoryItemAsString += ` (${this.translate('caption.barter', language).toLocaleLowerCase()}) ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, language)}${mainCurrency.symbol}`
           } else {
-            inventoryItemAsString += `: ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.value, language)}`
+            inventoryItemAsString += ` ${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.value, language)}`
 
             if (price.price.currencyName === mainCurrency.name) {
               inventoryItemAsString += mainCurrency.symbol
@@ -245,7 +238,7 @@ export class InventoryItemService {
       let indentation = ''
 
       for (let i = 1; i <= indentationLevel; i++) {
-        indentation += indentationPattern
+        indentation += ' '
       }
 
       // Mods
@@ -258,10 +251,8 @@ export class InventoryItemService {
         const modSlotItemAsString = await this.getAsString(modSlot.item, language, modSlotInPreset?.item, indentationLevel)
 
         if (modSlotItemAsString !== '') {
-          // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-          const modSlotName = vueI18n.t('caption.modSlot_' + modSlot.modSlotName, 1, { locale: language })
-          inventoryItemAsString += `
-${indentation}[${modSlotName}] ${modSlotItemAsString}`
+          const modSlotName = this.translate('caption.modSlot_' + modSlot.modSlotName, language)
+          inventoryItemAsString += `\n${indentation}[${modSlotName}] ${modSlotItemAsString}`
         }
       }
 
@@ -272,8 +263,7 @@ ${indentation}[${modSlotName}] ${modSlotItemAsString}`
         const containedItemAsString = await this.getAsString(containedItem, language, containedItemInPreset, indentationLevel)
 
         if (containedItemAsString !== '') {
-          inventoryItemAsString += `
-${indentation}${containedItemAsString}`
+          inventoryItemAsString += `\n${indentation}${containedItemAsString}`
         }
       }
     }
@@ -874,5 +864,16 @@ ${indentation}${containedItemAsString}`
     const ammunition = item as IAmmunition
 
     return ammunition.recoilModifierPercentage
+  }
+
+  /**
+   * Translates a caption.
+   * @param caption - Caption.
+   * @param language - Language.
+   * @returns Translated caption.
+   */
+  private translate(caption: string, language: string): string {
+    // @ts-expect-error - For some reason, this signature of vueI18n.t() is not recognized while it really exists
+    return vueI18n.t(caption, 1, { 'locale': language })
   }
 }

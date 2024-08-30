@@ -1,3 +1,4 @@
+/* eslint-disable no-irregular-whitespace */ // Special character used to force markdown to take into account spaces
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import { IArmorModifiers } from '../models/utils/IArmorModifiers'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
@@ -14,7 +15,8 @@ import Services from './repository/Services'
 /**
  * Represents a service responsible for managing properties of an inventory slot.
  */
-export class InventorySlotPropertiesService {/**
+export class InventorySlotPropertiesService {
+  /**
   * Converts an inventory slot to a markdown text.
   * @param inventorySlot - Inventory slot to convert.
   * @param language - Language.
@@ -36,8 +38,7 @@ export class InventorySlotPropertiesService {/**
           inventorySlotAsString += '\n'
         }
 
-        // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-        inventorySlotAsString += `| **${vueI18n.t('caption.slotType' + StringUtils.toUpperFirst(inventorySlotType.id), 1, { locale: language })}** |${itemAsString}`
+        inventorySlotAsString += `[*${this.translate('caption.slotType' + StringUtils.toUpperFirst(inventorySlotType.id), language)}*] ${itemAsString}`
       }
     }
 
@@ -66,8 +67,7 @@ export class InventorySlotPropertiesService {/**
           inventorySlotAsString += '\n'
         }
 
-        // @ts-expect-error For some reason, this signature of vueI18n.t() is not recognized while it really exists
-        inventorySlotAsString += `[${vueI18n.t('caption.slotType' + StringUtils.toUpperFirst(inventorySlotType.id), 1, { locale: language })}] ${itemAsString}`
+        inventorySlotAsString += `[${this.translate('caption.slotType' + StringUtils.toUpperFirst(inventorySlotType.id), language)}] ${itemAsString}`
       }
     }
 
@@ -276,5 +276,16 @@ export class InventorySlotPropertiesService {/**
     }
 
     return inventorySlotWeight
+  }
+
+  /**
+   * Translates a caption.
+   * @param caption - Caption.
+   * @param language - Language.
+   * @returns Translated caption.
+   */
+  private translate(caption: string, language: string): string {
+    // @ts-expect-error - For some reason, this signature of vueI18n.t() is not recognized while it really exists
+    return vueI18n.t(caption, 1, { 'locale': language })
   }
 }
