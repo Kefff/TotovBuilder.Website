@@ -20,8 +20,9 @@ export class InventorySlotPropertiesService {
   * Converts an inventory slot to a markdown text.
   * @param inventorySlot - Inventory slot to convert.
   * @param language - Language.
+  * @param includePrices - Indicates whether prices are included.
   */
-  public async getAsMarkdownString(inventorySlot: IInventorySlot, language: string): Promise<string> {
+  public async getAsMarkdownString(inventorySlot: IInventorySlot, language: string, includePrices: boolean): Promise<string> {
     let inventorySlotAsString = ''
     const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
     const inventoryItemService = Services.get(InventoryItemService)
@@ -31,7 +32,7 @@ export class InventorySlotPropertiesService {
         continue
       }
 
-      const itemAsString = await inventoryItemService.getAsMarkdownString(inventoryItem, language, undefined, undefined, inventorySlotType.canBeLooted)
+      const itemAsString = await inventoryItemService.getAsMarkdownString(inventoryItem, language, includePrices, undefined, undefined, inventorySlotType.canBeLooted)
 
       if (itemAsString !== '') {
         if (inventorySlotAsString.length > 0) {
@@ -49,8 +50,9 @@ export class InventorySlotPropertiesService {
    * Converts an inventory slot to a text.
    * @param inventorySlot - Inventory slot to convert.
    * @param language - Language.
+   * @param includePrices - Indicates whether prices are included.
    */
-  public async getAsString(inventorySlot: IInventorySlot, language: string): Promise<string> {
+  public async getAsString(inventorySlot: IInventorySlot, language: string, includePrices: boolean): Promise<string> {
     let inventorySlotAsString = ''
     const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
     const inventoryItemService = Services.get(InventoryItemService)
@@ -60,7 +62,7 @@ export class InventorySlotPropertiesService {
         continue
       }
 
-      const itemAsString = await inventoryItemService.getAsString(inventoryItem, language, undefined, undefined, inventorySlotType.canBeLooted)
+      const itemAsString = await inventoryItemService.getAsString(inventoryItem, language, includePrices, undefined, undefined, inventorySlotType.canBeLooted)
 
       if (itemAsString !== '') {
         if (inventorySlotAsString.length > 0) {

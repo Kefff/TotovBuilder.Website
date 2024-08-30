@@ -150,8 +150,9 @@ export class BuildPropertiesService {
    * Converts builds to a markdown text.
    * @param builds - Builds to convert.
    * @param language - Language.
+   * @param includePrices - Indicates whether prices are included.
    */
-  public async getAsMarkdownString(builds: IBuild[], language: string): Promise<string> {
+  public async getAsMarkdownString(builds: IBuild[], language: string, includePrices: boolean): Promise<string> {
     const itemService = Services.get(ItemService)
     const buildService = Services.get(BuildService)
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
@@ -176,7 +177,7 @@ export class BuildPropertiesService {
       const hasErgonomics = buildSummary.ergonomics !== 0
       const hasErgonomicsModifierPercentage = buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0
       const hasMovementSpeedModifierPercentage = buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
-      const hasPrice = buildSummary.price.priceInMainCurrency !== 0
+      const hasPrice = includePrices && buildSummary.price.priceInMainCurrency !== 0
       const hasRecoil = buildSummary.recoil.verticalRecoil !== 0
       const hasTurningSpeedModifierPercentage = buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0
       const hasWeight = buildSummary.weight !== 0
@@ -276,7 +277,7 @@ export class BuildPropertiesService {
       let inventorySlotsAsString = ''
 
       for (const inventorySlot of build.inventorySlots) {
-        const inventorySlotAsString = await inventorySlotPropertiesService.getAsMarkdownString(inventorySlot, language)
+        const inventorySlotAsString = await inventorySlotPropertiesService.getAsMarkdownString(inventorySlot, language, includePrices)
 
         if (inventorySlotAsString !== '') {
           if (inventorySlotsAsString !== '') {
@@ -299,23 +300,25 @@ export class BuildPropertiesService {
     }
 
     // Configured merchants
-    const globalFilter = Services.get(GlobalFilterService).get()
-    const merchantFilters = globalFilter.merchantFilters.sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant))
+    if (includePrices) {
+      const globalFilter = Services.get(GlobalFilterService).get()
+      const merchantFilters = globalFilter.merchantFilters.sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant))
 
-    let merchantsAsString = ''
+      let merchantsAsString = ''
 
-    for (let i = 0; i < merchantFilters.length; i++) {
-      if (i % 3 === 0) {
-        merchantsAsString += '  \n'
-      } else {
-        merchantsAsString += '   '
+      for (let i = 0; i < merchantFilters.length; i++) {
+        if (i % 3 === 0) {
+          merchantsAsString += '  \n'
+        } else {
+          merchantsAsString += '   '
+        }
+
+        const level = this.getMarkdownMerchantLevel(merchantFilters[i].enabled, merchantFilters[i].merchantLevel)
+        merchantsAsString += `${this.translate('caption.merchant_' + merchantFilters[i].merchant, language)} ${level}`
       }
 
-      const level = this.getMarkdownMerchantLevel(merchantFilters[i].enabled, merchantFilters[i].merchantLevel)
-      merchantsAsString += `${this.translate('caption.merchant_' + merchantFilters[i].merchant, language)} ${level}`
+      buildsAsString += `\n\n\n\n*${this.translate('caption.configuredMerchants', language)}*${merchantsAsString}  `
     }
-
-    buildsAsString += `\n\n\n\n*${this.translate('caption.configuredMerchants', language)}*${merchantsAsString}  `
 
     // Totov builder link
     buildsAsString += `\n\n*${this.translate('caption.createdWith', language)} [${this.translate('caption.totovBuilder', language)}](${window.location.origin})*`
@@ -327,8 +330,9 @@ export class BuildPropertiesService {
    * Converts builds to a text.
    * @param builds - Builds to convert.
    * @param language - Language.
+   * @param includePrices - Indicates whether prices are included.
    */
-  public async getAsString(builds: IBuild[], language: string): Promise<string> {
+  public async getAsString(builds: IBuild[], language: string, includePrices: boolean): Promise<string> {
     const itemService = Services.get(ItemService)
     const buildService = Services.get(BuildService)
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
@@ -344,7 +348,7 @@ export class BuildPropertiesService {
       const hasErgonomics = buildSummary.ergonomics !== 0
       const hasErgonomicsModifierPercentage = buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0
       const hasMovementSpeedModifierPercentage = buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
-      const hasPrice = buildSummary.price.priceInMainCurrency !== 0
+      const hasPrice = includePrices && buildSummary.price.priceInMainCurrency !== 0
       const hasRecoil = buildSummary.recoil.verticalRecoil !== 0
       const hasTurningSpeedModifierPercentage = buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0
       const hasWeight = buildSummary.weight !== 0
@@ -442,7 +446,7 @@ export class BuildPropertiesService {
       let inventorySlotsAsString = ''
 
       for (const inventorySlot of build.inventorySlots) {
-        const inventorySlotAsString = await inventorySlotPropertiesService.getAsString(inventorySlot, language)
+        const inventorySlotAsString = await inventorySlotPropertiesService.getAsString(inventorySlot, language, includePrices)
 
         if (inventorySlotAsString !== '') {
           if (inventorySlotsAsString !== '') {
@@ -473,28 +477,30 @@ ${sharableUrlResult}`
     }
 
     // Configured merchants
-    const globalFilter = Services.get(GlobalFilterService).get()
-    const merchantFilters = globalFilter.merchantFilters.sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant))
+    if (includePrices) {
+      const globalFilter = Services.get(GlobalFilterService).get()
+      const merchantFilters = globalFilter.merchantFilters.sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant))
 
-    let merchantsAsString = `${this.translate('caption.configuredMerchants', language)}:`
+      let merchantsAsString = `${this.translate('caption.configuredMerchants', language)}:`
 
-    for (let i = 0; i < merchantFilters.length; i++) {
-      if (i % 3 === 0) {
-        merchantsAsString += '\n'
-      } else {
-        merchantsAsString += '   '
+      for (let i = 0; i < merchantFilters.length; i++) {
+        if (i % 3 === 0) {
+          merchantsAsString += '\n'
+        } else {
+          merchantsAsString += '   '
+        }
+
+        const level = merchantFilters[i].enabled
+          ? (merchantFilters[i].merchantLevel !== 0
+            ? merchantFilters[i].merchantLevel
+            : this.translate('caption.yes', language))
+          : this.translate('caption.no', language)
+
+        merchantsAsString += `${this.translate('caption.merchant_' + merchantFilters[i].merchant, language)} ${level}`
       }
 
-      const level = merchantFilters[i].enabled
-        ? (merchantFilters[i].merchantLevel !== 0
-          ? merchantFilters[i].merchantLevel
-          : this.translate('caption.yes', language))
-        : this.translate('caption.no', language)
-
-      merchantsAsString += `${this.translate('caption.merchant_' + merchantFilters[i].merchant, language)} ${level}`
+      buildsAsString += `\n\n\n\n${merchantsAsString}`
     }
-
-    buildsAsString += `\n\n\n\n${merchantsAsString}`
 
     buildsAsString += `\n\n${this.translate('caption.createdWith', language)} ${this.translate('caption.totovBuilder', language)}`
 

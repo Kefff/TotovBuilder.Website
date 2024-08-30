@@ -82,22 +82,27 @@ export class InventoryItemService {
    * Converts an inventory item to a markdown text.
    * @param inventorySlot - Inventory item to convert.
    * @param language - Language.
+   * @param includePrices - Indicates whether prices are included.
    * @param itemInSameSlotInPreset - Preset item that is place in the same slot of a preset. If not null, this means that inventoryItem has been placed in the content or mods of a parent item that is a preset. When inventoryItem and itemInSameSlotInPreset are the same, this means that the price of inventoryItem must be ignored because its part of a preset.
    * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
    */
-  public async getAsMarkdownString(inventoryItem: IInventoryItem, language: string, itemInSameSlotInPreset?: IInventoryItem, indentationLevel = 0, canBeLooted = true): Promise<string> {
+  public async getAsMarkdownString(inventoryItem: IInventoryItem, language: string, includePrices: boolean, itemInSameSlotInPreset?: IInventoryItem, indentationLevel = 0, canBeLooted = true): Promise<string> {
     let inventoryItemAsString = ''
 
     const itemService = Services.get(ItemService)
     const mainCurrency = itemService.getMainCurrency()
     const item = await itemService.getItem(inventoryItem.itemId)
+    const hasPrice = includePrices
+      && canBeLooted
+      && !inventoryItem.ignorePrice
+      && inventoryItem.itemId !== itemInSameSlotInPreset?.itemId
 
     if (inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
       const itemCountAsString = inventoryItem.quantity > 1 ? `${inventoryItem.quantity} x ` : ''
       inventoryItemAsString += `${itemCountAsString}**${item.name}**`
     }
 
-    if (canBeLooted && !inventoryItem.ignorePrice && inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
+    if (hasPrice) {
       const price = await this.getPrice(inventoryItem, itemInSameSlotInPreset, canBeLooted)
 
       if (price.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset) {
@@ -151,7 +156,7 @@ export class InventoryItemService {
         }
 
         const modSlotInPreset = preset?.modSlots.find(ms => ms.modSlotName === modSlot.modSlotName)
-        const modSlotItemAsString = await this.getAsMarkdownString(modSlot.item, language, modSlotInPreset?.item, indentationLevel)
+        const modSlotItemAsString = await this.getAsMarkdownString(modSlot.item, language, includePrices, modSlotInPreset?.item, indentationLevel)
 
         if (modSlotItemAsString !== '') {
           const modSlotName = this.translate('caption.modSlot_' + modSlot.modSlotName, language)
@@ -168,7 +173,7 @@ export class InventoryItemService {
       for (let i = 0; i < inventoryItem.content.length; i++) {
         const containedItem = inventoryItem.content[i]
         const containedItemInPreset = preset?.content[i]
-        const containedItemAsString = await this.getAsMarkdownString(containedItem, language, containedItemInPreset, indentationLevel)
+        const containedItemAsString = await this.getAsMarkdownString(containedItem, language, includePrices, containedItemInPreset, indentationLevel)
 
         if (containedItemAsString !== '') {
           inventoryItemAsString += `\n${indentation}${containedItemAsString}`
@@ -183,22 +188,27 @@ export class InventoryItemService {
    * Converts an inventory item to a text.
    * @param inventorySlot - Inventory item to convert.
    * @param language - Language.
+   * @param includePrices - Indicates whether prices are included.
    * @param itemInSameSlotInPreset - Preset item that is place in the same slot of a preset. If not null, this means that inventoryItem has been placed in the content or mods of a parent item that is a preset. When inventoryItem and itemInSameSlotInPreset are the same, this means that the price of inventoryItem must be ignored because its part of a preset.
    * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
    */
-  public async getAsString(inventoryItem: IInventoryItem, language: string, itemInSameSlotInPreset?: IInventoryItem, indentationLevel = 0, canBeLooted = true): Promise<string> {
+  public async getAsString(inventoryItem: IInventoryItem, language: string, includePrices: boolean, itemInSameSlotInPreset?: IInventoryItem, indentationLevel = 0, canBeLooted = true): Promise<string> {
     const itemService = Services.get(ItemService)
 
     let inventoryItemAsString = ''
     const mainCurrency = itemService.getMainCurrency()
     const item = await itemService.getItem(inventoryItem.itemId)
+    const hasPrice = includePrices
+      && canBeLooted
+      && !inventoryItem.ignorePrice
+      && inventoryItem.itemId !== itemInSameSlotInPreset?.itemId
 
     if (inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
       const itemCountAsString = inventoryItem.quantity > 1 ? `${inventoryItem.quantity} x ` : ''
       inventoryItemAsString += `${itemCountAsString}${item.name}`
     }
 
-    if (canBeLooted && !inventoryItem.ignorePrice && inventoryItem.itemId !== itemInSameSlotInPreset?.itemId) {
+    if (hasPrice) {
       const price = await this.getPrice(inventoryItem, itemInSameSlotInPreset, canBeLooted)
 
       if (price.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset) {
@@ -248,7 +258,7 @@ export class InventoryItemService {
         }
 
         const modSlotInPreset = preset?.modSlots.find(ms => ms.modSlotName === modSlot.modSlotName)
-        const modSlotItemAsString = await this.getAsString(modSlot.item, language, modSlotInPreset?.item, indentationLevel)
+        const modSlotItemAsString = await this.getAsString(modSlot.item, language, includePrices, modSlotInPreset?.item, indentationLevel)
 
         if (modSlotItemAsString !== '') {
           const modSlotName = this.translate('caption.modSlot_' + modSlot.modSlotName, language)
@@ -260,7 +270,7 @@ export class InventoryItemService {
       for (let i = 0; i < inventoryItem.content.length; i++) {
         const containedItem = inventoryItem.content[i]
         const containedItemInPreset = preset?.content[i]
-        const containedItemAsString = await this.getAsString(containedItem, language, containedItemInPreset, indentationLevel)
+        const containedItemAsString = await this.getAsString(containedItem, language, includePrices, containedItemInPreset, indentationLevel)
 
         if (containedItemAsString !== '') {
           inventoryItemAsString += `\n${indentation}${containedItemAsString}`

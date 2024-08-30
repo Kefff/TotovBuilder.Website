@@ -564,10 +564,30 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.getAsMarkdownString(inventoryItem, 'fr')
+      const result = await service.getAsMarkdownString(inventoryItem, 'fr', true)
 
       // Assert
       expect(result).toBe(expected)
+    })
+
+    it('should ignore prices', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(GlobalFilterService)
+
+      const service = new InventoryItemService()
+
+      // Act
+      const result = await service.getAsMarkdownString(inventoryItem, 'fr', false)
+
+      // Assert
+      expect(result).toBe(`**WARTECH Berkut BB-102 backpack (A-TACS FG)**  
+ **RPK-16 5.45x39 light machine gun Default**  
+  [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**  
+ 50 x **9x19mm Green Tracer**  `)
     })
 
     it.each([
@@ -592,7 +612,8 @@ describe('InventoryItemService', () => {
           modSlots: [],
           quantity: 1
         },
-        language)
+        language,
+        true)
 
       // Assert
       expect(result).toBe(expected)
@@ -609,7 +630,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.getAsMarkdownString(inventoryItem, 'fr')
+      const result = await service.getAsMarkdownString(inventoryItem, 'fr', true)
 
       // Assert
       expect(result).toBe(`**Unknown item "5ca20d5986f774331e7c9602"**   💵 Pas de marchand  
@@ -954,10 +975,30 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.getAsString(inventoryItem, 'fr')
+      const result = await service.getAsString(inventoryItem, 'fr', true)
 
       // Assert
       expect(result).toBe(expected)
+    })
+
+    it('should ignore prices', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(GlobalFilterService)
+
+      const service = new InventoryItemService()
+
+      // Act
+      const result = await service.getAsString(inventoryItem, 'fr', false)
+
+      // Assert
+      expect(result).toBe(`WARTECH Berkut BB-102 backpack (A-TACS FG)
+ RPK-16 5.45x39 light machine gun Default
+  [Chargeur] RPK-16 5.45x39 95-round drum magazine
+ 50 x 9x19mm Green Tracer`)
     })
 
     it.each([
@@ -982,7 +1023,8 @@ describe('InventoryItemService', () => {
           modSlots: [],
           quantity: 1
         },
-        language)
+        language,
+        true)
 
       // Assert
       expect(result).toBe(expected)
@@ -999,7 +1041,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.getAsString(inventoryItem, 'fr')
+      const result = await service.getAsString(inventoryItem, 'fr', true)
 
       // Assert
       expect(result).toBe(`Unknown item "5ca20d5986f774331e7c9602"   Pas de marchand

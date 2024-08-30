@@ -127,7 +127,7 @@ describe('InventorySlotPropertiesService', () => {
       const service = new InventorySlotPropertiesService()
 
       // Act
-      const result = await service.getAsMarkdownString(inventorySlot, 'fr')
+      const result = await service.getAsMarkdownString(inventorySlot, 'fr', true)
 
       // Assert
       expect(result).toBe(expected)
@@ -146,7 +146,8 @@ describe('InventorySlotPropertiesService', () => {
           items: [undefined, undefined, undefined, undefined],
           typeId: 'pockets'
         },
-        'fr')
+        'fr',
+        true)
 
       // Assert
       expect(result).toBe('')
@@ -260,7 +261,7 @@ describe('InventorySlotPropertiesService', () => {
       const service = new InventorySlotPropertiesService()
 
       // Act
-      const result = await service.getAsString(inventorySlot, 'fr')
+      const result = await service.getAsString(inventorySlot, 'fr', true)
 
       // Assert
       expect(result).toBe(expected)
@@ -279,7 +280,8 @@ describe('InventorySlotPropertiesService', () => {
           items: [undefined, undefined, undefined, undefined],
           typeId: 'pockets'
         },
-        'fr')
+        'fr',
+        true)
 
       // Assert
       expect(result).toBe('')

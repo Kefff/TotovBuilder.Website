@@ -687,7 +687,7 @@ describe('BuildPropertiesService', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.getAsMarkdownString([build], language)
+      const result = await service.getAsMarkdownString([build], language, true)
 
       // Assert
       expect(result).toBe(expected)
@@ -776,7 +776,7 @@ describe('BuildPropertiesService', () => {
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.getAsMarkdownString([build1, build2], 'fr')
+      const result = await buildPropertiesService.getAsMarkdownString([build1, build2], 'fr', true)
 
       // Assert
       expect(result).toBe(`# Build 1
@@ -808,6 +808,59 @@ describe('BuildPropertiesService', () => {
 Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
 Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣  
+
+*Créé avec [Totov Builder](http://localhost:3000)*`)
+    })
+
+    it('should ignore prices', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventorySlotService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(ReductionService)
+
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.getAsMarkdownString([build1], 'fr', false)
+
+      // Assert
+      expect(result).toBe(`# Build 1
+
+*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU)*
+
+↕️ Recul vertical **76**   ↔️ Recul horizontal **226**   ✋ Ergonomie **34** (**-9,5%**)  
+🛡️ Classe d'armure **4**   🏃 Vitesse **-6%**   🔄 Vitesse de rotation **-9%**  
+⚓ Poids **24,153 kg**  
+
+[*En bandouillère*] **RPK-16 5.45x39 light machine gun Default**  
+ [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**  
+  95 x **5.45x39mm US gs**  
+
+[*Pare-balles*] **6B13 assault armor (Flora) Default**  
+
+[*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**  
+ [*Équipement*] **LShZ-2DTM face shield**  
+
+[*Sac à dos*] **WARTECH Berkut BB-102 backpack (A-TACS FG)**  
+ **Iskra ration pack**  
+ **Bottle of water (0.6L)**  
+
+[*Poches*] **Morphine injector**  
+[*Poches*] **Vaseline balm**  
+[*Poches*] **RGD-5 hand grenade**  
+[*Poches*] 60 x **5.45x39mm US gs**  
+
+[*Lunettes*] **Crossbow tactical glasses**  
+
+[*Masque*] **Cold Fear infrared balaclava**  
 
 *Créé avec [Totov Builder](http://localhost:3000)*`)
     })
@@ -869,7 +922,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.getAsMarkdownString([build], 'fr')
+      const result = await buildPropertiesService.getAsMarkdownString([build], 'fr', true)
 
       // Assert
       expect(result).toBe(`# Build
@@ -1044,7 +1097,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.getAsString([build], language)
+      const result = await service.getAsString([build], language, true)
 
       // Assert
       expect(result).toBe(expected)
@@ -1133,7 +1186,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.getAsString([build1, build2], 'fr')
+      const result = await buildPropertiesService.getAsString([build1, build2], 'fr', true)
 
       // Assert
       expect(result).toBe(`Build 1
@@ -1167,6 +1220,60 @@ Marchands configurés:
 Marché Oui   Jaeger 4   Le Mécano 4
 Peacekeeper 4   Prapor 4   Ragman 4
 Ref 4   Skier 4   La Toubib 4
+
+Créé avec Totov Builder`)
+    })
+
+    it('should ignore prices', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventorySlotService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(ReductionService)
+
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.getAsString([build1], 'fr', false)
+
+      // Assert
+      expect(result).toBe(`Build 1
+
+Recul vertical 76   Recul horizontal 226   Ergonomie 34 (-9,5%)
+Classe d'armure 4   Vitesse -6%   Vitesse de rotation -9%
+Poids 24,153 kg
+
+[En bandouillère] RPK-16 5.45x39 light machine gun Default
+ [Chargeur] RPK-16 5.45x39 95-round drum magazine
+  95 x 5.45x39mm US gs
+
+[Pare-balles] 6B13 assault armor (Flora) Default
+
+[Couvre-chef] BNTI LShZ-2DTM helmet (Black)
+ [Équipement] LShZ-2DTM face shield
+
+[Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)
+ Iskra ration pack
+ Bottle of water (0.6L)
+
+[Poches] Morphine injector
+[Poches] Vaseline balm
+[Poches] RGD-5 hand grenade
+[Poches] 60 x 5.45x39mm US gs
+
+[Lunettes] Crossbow tactical glasses
+
+[Masque] Cold Fear infrared balaclava
+
+Version interactive avec statistiques complètes:
+http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU
 
 Créé avec Totov Builder`)
     })
@@ -1213,7 +1320,7 @@ Créé avec Totov Builder`)
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.getAsString([build], 'fr')
+      const result = await buildPropertiesService.getAsString([build], 'fr', true)
 
       // Assert
       expect(result).toBe(`Build
