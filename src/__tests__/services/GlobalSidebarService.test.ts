@@ -60,11 +60,11 @@ describe('GlobalSideBarService', () => {
       const service = new GlobalSidebarService()
 
       // Act
-      service.display({ displayedComponentType: 'BuildShareSideBar' })
+      service.display({ displayedComponentType: 'BuildsShareSideBar' })
       service.display({ displayedComponentType: 'BuildSidebar' })
       service.display({ displayedComponentType: 'BuildsExportSidebar' })
       service.display({ displayedComponentType: 'BuildsListSidebar' })
-      service.executeOnCloseActions('BuildShareSideBar')
+      service.executeOnCloseActions('BuildsShareSideBar')
       service.executeOnCloseActions('BuildSidebar')
       service.executeOnCloseActions('BuildsExportSidebar')
 

@@ -1,6 +1,7 @@
 /* eslint-disable no-irregular-whitespace */
 import { describe, expect, it } from 'vitest'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { BuildsToTextType } from '../../models/utils/BuildsToTextType'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import { IErgonomics } from '../../models/utils/IErgonomics'
 import { IInventoryItemPrice } from '../../models/utils/IInventoryItemPrice'
@@ -230,7 +231,7 @@ describe('InventoryItemService', () => {
     })
   })
 
-  describe('getMarkdownAsString()', () => {
+  describe('toText() (markdown)', () => {
     it.each([
       [
         {
@@ -553,7 +554,7 @@ describe('InventoryItemService', () => {
         },
         '**Vaseline balm**  '
       ]
-    ])('should convert an inventory item to a markdown string', async (inventoryItem: IInventoryItem, expected: string) => {
+    ])('should convert an inventory item to a markdown text', async (inventoryItem: IInventoryItem, expected: string) => {
       // Arrange
       useItemServiceMock()
       usePresetServiceMock()
@@ -564,7 +565,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.getAsMarkdownString(inventoryItem, 'fr', true)
+      const result = await service.toText(inventoryItem, BuildsToTextType.markdown, 'fr', true)
 
       // Assert
       expect(result).toBe(expected)
@@ -581,7 +582,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.getAsMarkdownString(inventoryItem, 'fr', false)
+      const result = await service.toText(inventoryItem, BuildsToTextType.markdown, 'fr', false)
 
       // Assert
       expect(result).toBe(`**WARTECH Berkut BB-102 backpack (A-TACS FG)**  
@@ -604,7 +605,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.getAsMarkdownString(
+      const result = await service.toText(
         {
           content: [],
           ignorePrice: false,
@@ -612,6 +613,7 @@ describe('InventoryItemService', () => {
           modSlots: [],
           quantity: 1
         },
+        BuildsToTextType.markdown,
         language,
         true)
 
@@ -630,7 +632,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.getAsMarkdownString(inventoryItem, 'fr', true)
+      const result = await service.toText(inventoryItem, BuildsToTextType.markdown, 'fr', true)
 
       // Assert
       expect(result).toBe(`**Unknown item "5ca20d5986f774331e7c9602"**   💵 Pas de marchand  
@@ -641,7 +643,7 @@ describe('InventoryItemService', () => {
     })
   })
 
-  describe('getAsString()', () => {
+  describe('toText() (simple text)', () => {
     it.each([
       [
         {
@@ -889,9 +891,9 @@ describe('InventoryItemService', () => {
           quantity: 1
         },
         `Beretta M9A3 9x19 pistol Default   Peacekeeper 1 107$ (= 15 337₽)
- [Canon] 
+ [Canon]
   [Bouche] SIG Sauer SRD9 9x19 sound suppressor   Peacekeeper 2 242$ (= 34 606₽)
- [Chargeur] 
+ [Chargeur]
   17 x 9x19mm Green Tracer   Le Mécano 1 1 241₽
  [Dispositif tactique] SureFire X400 Ultra tactical flashlight with laser   Peacekeeper 2 95$ (= 13 552₽)`
       ],
@@ -964,7 +966,7 @@ describe('InventoryItemService', () => {
         },
         'Vaseline balm'
       ]
-    ])('should convert an inventory item to a string', async (inventoryItem: IInventoryItem, expected: string) => {
+    ])('should convert an inventory item to a text', async (inventoryItem: IInventoryItem, expected: string) => {
       // Arrange
       useItemServiceMock()
       usePresetServiceMock()
@@ -975,7 +977,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.getAsString(inventoryItem, 'fr', true)
+      const result = await service.toText(inventoryItem, BuildsToTextType.simpleText, 'fr', true)
 
       // Assert
       expect(result).toBe(expected)
@@ -992,7 +994,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.getAsString(inventoryItem, 'fr', false)
+      const result = await service.toText(inventoryItem, BuildsToTextType.simpleText, 'fr', false)
 
       // Assert
       expect(result).toBe(`WARTECH Berkut BB-102 backpack (A-TACS FG)
@@ -1015,7 +1017,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.getAsString(
+      const result = await service.toText(
         {
           content: [],
           ignorePrice: false,
@@ -1023,6 +1025,7 @@ describe('InventoryItemService', () => {
           modSlots: [],
           quantity: 1
         },
+        BuildsToTextType.simpleText,
         language,
         true)
 
@@ -1041,7 +1044,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.getAsString(inventoryItem, 'fr', true)
+      const result = await service.toText(inventoryItem, BuildsToTextType.simpleText, 'fr', true)
 
       // Assert
       expect(result).toBe(`Unknown item "5ca20d5986f774331e7c9602"   Pas de marchand

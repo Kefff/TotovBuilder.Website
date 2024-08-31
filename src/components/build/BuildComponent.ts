@@ -94,7 +94,7 @@ export default defineComponent({
         style: () => 'outlined'
       },
       {
-        action: displayBuildShareSideBar,
+        action: displayBuildsShareSideBar,
         caption: () => vueI18n.t('caption.share'),
         icon: () => 'share-alt',
         isDisabled: () => isLoading.value,
@@ -359,10 +359,10 @@ export default defineComponent({
     /**
      * Displays the share build sidebar.
      */
-    function displayBuildShareSideBar() {
+    function displayBuildsShareSideBar() {
       _globalSidebarService.display({
         displayedComponentParameters: build.value,
-        displayedComponentType: 'BuildShareSideBar'
+        displayedComponentType: 'BuildsShareSideBar'
       })
     }
 

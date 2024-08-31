@@ -2,7 +2,7 @@
   <div class="sidebar-option">
     <Button
       class="build-sidebar-button"
-      @click="displayBuildShareSideBar()"
+      @click="displayBuildsShareSideBar()"
     >
       <font-awesome-icon
         icon="share-alt"
@@ -130,10 +130,10 @@ function deleteBuild() {
 /**
  * Displays the share build sidebar.
  */
-function displayBuildShareSideBar() {
+function displayBuildsShareSideBar() {
   _globalSidebarService.display({
     displayedComponentParameters: props.parameters,
-    displayedComponentType: 'BuildShareSideBar'
+    displayedComponentType: 'BuildsShareSideBar'
   })
 }
 

@@ -1,6 +1,7 @@
 /* eslint-disable no-irregular-whitespace */
 import { describe, expect, it } from 'vitest'
 import { IInventorySlot } from '../../models/build/IInventorySlot'
+import { BuildsToTextType } from '../../models/utils/BuildsToTextType'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { IRecoil } from '../../models/utils/IRecoil'
@@ -20,7 +21,7 @@ import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('InventorySlotPropertiesService', () => {
-  describe('getAsMarkdownString()', () => {
+  describe('toText() (markdown)', () => {
     it.each([
       [
         inventorySlot1,
@@ -114,7 +115,7 @@ describe('InventorySlotPropertiesService', () => {
         } as IInventorySlot,
         ''
       ]
-    ])('should convert an inventory slot to a markdown string', async (inventorySlot: IInventorySlot, expected: string) => {
+    ])('should convert an inventory slot to a markdown text', async (inventorySlot: IInventorySlot, expected: string) => {
       // Arrange
       useItemServiceMock()
       usePresetServiceMock()
@@ -127,7 +128,7 @@ describe('InventorySlotPropertiesService', () => {
       const service = new InventorySlotPropertiesService()
 
       // Act
-      const result = await service.getAsMarkdownString(inventorySlot, 'fr', true)
+      const result = await service.toText(inventorySlot, BuildsToTextType.markdown, 'fr', true)
 
       // Assert
       expect(result).toBe(expected)
@@ -141,11 +142,12 @@ describe('InventorySlotPropertiesService', () => {
       const service = new InventorySlotPropertiesService()
 
       // Act
-      const result = await service.getAsMarkdownString(
+      const result = await service.toText(
         {
           items: [undefined, undefined, undefined, undefined],
           typeId: 'pockets'
         },
+        BuildsToTextType.markdown,
         'fr',
         true)
 
@@ -154,7 +156,7 @@ describe('InventorySlotPropertiesService', () => {
     })
   })
 
-  describe('getAsString()', () => {
+  describe('toText() (simple text)', () => {
     it.each([
       [
         inventorySlot1,
@@ -248,7 +250,7 @@ describe('InventorySlotPropertiesService', () => {
         } as IInventorySlot,
         ''
       ]
-    ])('should convert an inventory slot to a string', async (inventorySlot: IInventorySlot, expected: string) => {
+    ])('should convert an inventory slot to a text', async (inventorySlot: IInventorySlot, expected: string) => {
       // Arrange
       useItemServiceMock()
       usePresetServiceMock()
@@ -261,7 +263,7 @@ describe('InventorySlotPropertiesService', () => {
       const service = new InventorySlotPropertiesService()
 
       // Act
-      const result = await service.getAsString(inventorySlot, 'fr', true)
+      const result = await service.toText(inventorySlot, BuildsToTextType.simpleText, 'fr', true)
 
       // Assert
       expect(result).toBe(expected)
@@ -275,11 +277,12 @@ describe('InventorySlotPropertiesService', () => {
       const service = new InventorySlotPropertiesService()
 
       // Act
-      const result = await service.getAsString(
+      const result = await service.toText(
         {
           items: [undefined, undefined, undefined, undefined],
           typeId: 'pockets'
         },
+        BuildsToTextType.simpleText,
         'fr',
         true)
 

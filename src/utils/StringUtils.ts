@@ -1,3 +1,4 @@
+import { BuildsToTextType } from '../models/utils/BuildsToTextType'
 
 /**
  * Represents an utility class for manipulating strings.
@@ -62,6 +63,20 @@ export default class StringUtils {
     }
 
     return 0
+  }
+
+  /**
+   * Gets a stat emoji when the type is `markdown`.
+   * @param type - Type of text being constructed.
+   * @param icon - Icon to display.
+   * @returns Icon text.
+   */
+  public static getTextStatEmoji(type: BuildsToTextType, icon: string): string {
+    if (type === BuildsToTextType.simpleText) {
+      return ''
+    }
+
+    return `${icon} `
   }
 
   /**

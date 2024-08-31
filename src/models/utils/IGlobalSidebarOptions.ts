@@ -48,7 +48,7 @@ export type GeneralOptionsSidebarParameters = IGeneralOptionsGroup[]
 export type GlobalSidebarComponent =
   'BuildsExportSidebar'
   | 'BuildsImportSidebar'
-  | 'BuildShareSideBar'
+  | 'BuildsShareSideBar'
   | 'BuildSidebar'
   | 'BuildsListSidebar'
   | 'ChangelogSidebar'
@@ -64,9 +64,9 @@ export type GlobalSidebarComponent =
  */
 export type GlobalSidebarDisplayedComponentParameters =
   BuildsExportSidebarParameters
-  | BuildShareSideBarParameters
   | BuildSidebarParameters
   | BuildsListSidebarParameters
+  | BuildsShareSideBarParameters
   | GeneralOptionsSidebarParameters
   | ShoppingListSidebarParameters
   | StatsSidebarParameters
@@ -78,9 +78,13 @@ export type GlobalSidebarDisplayedComponentParameters =
 export type BuildsExportSidebarParameters = IBuildSummary[]
 
 /**
- * Share build sidebar parameters.
+ * Share builds sidebar parameters.
+ * Using buildsToShare immediatly display them in the share screen while using buildSummaries will display them in a BuildsList for the user to select the ones to share.
  */
-export type BuildShareSideBarParameters = IBuild
+export type BuildsShareSideBarParameters = {
+  buildsToShare?: IBuild[],
+  buildSummaries?: IBuildSummary[]
+}
 
 /**
  * Shopping list sidebar parameters.

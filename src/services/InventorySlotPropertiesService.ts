@@ -1,5 +1,6 @@
 /* eslint-disable no-irregular-whitespace */ // Special character used to force markdown to take into account spaces
 import { IInventorySlot } from '../models/build/IInventorySlot'
+import { BuildsToTextType } from '../models/utils/BuildsToTextType'
 import { IArmorModifiers } from '../models/utils/IArmorModifiers'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { IInventorySlotSummary } from '../models/utils/IInventorySlotSummary'
@@ -16,66 +17,6 @@ import Services from './repository/Services'
  * Represents a service responsible for managing properties of an inventory slot.
  */
 export class InventorySlotPropertiesService {
-  /**
-  * Converts an inventory slot to a markdown text.
-  * @param inventorySlot - Inventory slot to convert.
-  * @param language - Language.
-  * @param includePrices - Indicates whether prices are included.
-  */
-  public async getAsMarkdownString(inventorySlot: IInventorySlot, language: string, includePrices: boolean): Promise<string> {
-    let inventorySlotAsString = ''
-    const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
-    const inventoryItemService = Services.get(InventoryItemService)
-
-    for (const inventoryItem of inventorySlot.items) {
-      if (inventoryItem == null) {
-        continue
-      }
-
-      const itemAsString = await inventoryItemService.getAsMarkdownString(inventoryItem, language, includePrices, undefined, undefined, inventorySlotType.canBeLooted)
-
-      if (itemAsString !== '') {
-        if (inventorySlotAsString.length > 0) {
-          inventorySlotAsString += '\n'
-        }
-
-        inventorySlotAsString += `[*${this.translate('caption.slotType' + StringUtils.toUpperFirst(inventorySlotType.id), language)}*] ${itemAsString}`
-      }
-    }
-
-    return inventorySlotAsString
-  }
-
-  /**
-   * Converts an inventory slot to a text.
-   * @param inventorySlot - Inventory slot to convert.
-   * @param language - Language.
-   * @param includePrices - Indicates whether prices are included.
-   */
-  public async getAsString(inventorySlot: IInventorySlot, language: string, includePrices: boolean): Promise<string> {
-    let inventorySlotAsString = ''
-    const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
-    const inventoryItemService = Services.get(InventoryItemService)
-
-    for (const inventoryItem of inventorySlot.items) {
-      if (inventoryItem == null) {
-        continue
-      }
-
-      const itemAsString = await inventoryItemService.getAsString(inventoryItem, language, includePrices, undefined, undefined, inventorySlotType.canBeLooted)
-
-      if (itemAsString !== '') {
-        if (inventorySlotAsString.length > 0) {
-          inventorySlotAsString += '\n'
-        }
-
-        inventorySlotAsString += `[${this.translate('caption.slotType' + StringUtils.toUpperFirst(inventorySlotType.id), language)}] ${itemAsString}`
-      }
-    }
-
-    return inventorySlotAsString
-  }
-
   /**
    * Gets an inventory slot summary.
    * @param inventorySlot - Inventory slot.
@@ -121,6 +62,40 @@ export class InventorySlotPropertiesService {
     summary.weight = await this.getWeight(inventorySlot)
 
     return summary
+  }
+
+  /**
+   * Converts an inventory slot to a text.
+   * @param inventorySlot - Inventory slot to convert.
+   * @param type - Type of text.
+   * @param language - Language of the text.
+   * @param includePrices - Indicates whether prices should be included in the text.
+   */
+  public async toText(inventorySlot: IInventorySlot, type: BuildsToTextType, language: string, includePrices: boolean
+  ): Promise<string> {
+    const italicToken = type === BuildsToTextType.markdown ? '*' : ''
+
+    let inventorySlotAsString = ''
+    const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
+    const inventoryItemService = Services.get(InventoryItemService)
+
+    for (const inventoryItem of inventorySlot.items) {
+      if (inventoryItem == null) {
+        continue
+      }
+
+      const itemAsString = await inventoryItemService.toText(inventoryItem, type, language, includePrices, undefined, undefined, inventorySlotType.canBeLooted)
+
+      if (itemAsString !== '') {
+        if (inventorySlotAsString.length > 0) {
+          inventorySlotAsString += '\n'
+        }
+
+        inventorySlotAsString += `[${italicToken}${this.translate('caption.slotType' + StringUtils.toUpperFirst(inventorySlotType.id), language)}${italicToken}] ${itemAsString}`
+      }
+    }
+
+    return inventorySlotAsString
   }
 
   /**

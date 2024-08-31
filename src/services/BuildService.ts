@@ -219,8 +219,8 @@ export class BuildService {
   }
 
   /**
-   * Converts a build to an encoded URL that can be shared.
-   * Displays an error notification when the URL cannot be created.
+   * Converts builds to encoded URLs that can be shared.
+   * Displays an error notification when an URL cannot be created.
    * @param build - Build.
    * @returns Encoded URL.
    */

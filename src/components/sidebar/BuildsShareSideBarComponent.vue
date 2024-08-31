@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="shareLink != null"
+    v-if="shareLinks != null"
     class="sidebar-option"
   >
     <div class="share-build-sidebar-version">
@@ -9,7 +9,7 @@
       </div>
       <div class="share-build-sidebar-link">
         <InputTextField
-          :value="shareLink"
+          :value="shareLinks"
           :caption="$t('caption.link')"
           caption-mode="placeholder"
           :read-only="true"
@@ -24,7 +24,7 @@
         </Button>
       </div>
       <div
-        v-if="shareLink != null"
+        v-if="shareLinks != null"
         class="sidebar-option-description"
       >
         <div class="sidebar-option-icon">
@@ -38,7 +38,7 @@
   </div>
   <div class="sidebar-title" />
   <div
-    v-if="buildAsText != null"
+    v-if="buildsAsText != null"
     class="sidebar-option"
   >
     <div class="share-build-sidebar-version">
@@ -49,7 +49,7 @@
         <LanguageSelector
           v-model:language="language"
           class="share-build-sidebar-text-options-language-selector"
-          @update:language="getBuildAsText()"
+          @update:language="getBuildsAsText()"
         />
         <Button @click="copyText()">
           <font-awesome-icon
@@ -60,7 +60,7 @@
         </Button>
       </div>
       <TextArea
-        v-model="buildAsText"
+        v-model="buildsAsText"
         class="share-build-sidebar-text"
         rows="7"
         auto-resize
@@ -80,7 +80,9 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { BuildShareSideBarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { IBuild } from '../../models/build/IBuild'
+import { IBuildSummary } from '../../models/utils/IBuildSummary'
+import { BuildsShareSideBarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import vueI18n from '../../plugins/vueI18n'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
@@ -90,31 +92,34 @@ import Services from '../../services/repository/Services'
 import InputTextField from '../InputTextFieldComponent.vue'
 import LanguageSelector from '../LanguageSelectorComponent.vue'
 
-const props = defineProps<{ parameters: BuildShareSideBarParameters }>()
+const props = defineProps<{ parameters: BuildsShareSideBarParameters }>()
 
 const _buildService = Services.get(BuildService)
 const _buildPropertiesService = Services.get(BuildPropertiesService)
 const _logService = Services.get(LogService)
 const _notificationService = Services.get(NotificationService)
 
-const buildAsText = ref<string>()
-const language = ref<string>(vueI18n.locale.value)
-const shareLink = ref<string>()
+let buildsToShare: IBuild[] = []
 
-onMounted(() => {
-  getShareLink()
-  getBuildAsText()
-})
+const buildsAsText = ref<string>()
+const availableBuildSummaries = ref<IBuildSummary[]>([])
+const includePrices = ref(false)
+const language = ref<string>(vueI18n.locale.value)
+const shareLinks = ref<string>()
+const selectedBuildSummaries = ref<IBuildSummary[]>([])
+
+
+onMounted(() => initialize())
 
 /**
  * Copies the share link to the clipboard.
  */
 function copyLink() {
-  if (shareLink.value == null) {
+  if (shareLinks.value == null) {
     return
   }
 
-  navigator.clipboard.writeText(shareLink.value)
+  navigator.clipboard.writeText(shareLinks.value)
     .then(() => {
       _notificationService.notify(NotificationType.information, vueI18n.t('message.shareLinkCopied'))
     })
@@ -128,11 +133,11 @@ function copyLink() {
  * Copies the build text to the clipboard.
  */
 function copyText() {
-  if (buildAsText.value == null) {
+  if (buildsAsText.value == null) {
     return
   }
 
-  navigator.clipboard.writeText(buildAsText.value)
+  navigator.clipboard.writeText(buildsAsText.value)
     .then(() => {
       _notificationService.notify(NotificationType.information, vueI18n.t('message.buildTextCopied'))
     })
@@ -145,15 +150,25 @@ function copyText() {
 /**
  * Gets a URL to share the build.
  */
-async function getShareLink() {
-  shareLink.value = await _buildService.toSharableURL(props.parameters)
+async function getShareLinks() {
+  shareLinks.value = await _buildService.toSharableURL(buildsToShare)
 }
 
 /**
  * Gets the build as a text.
  */
-async function getBuildAsText() {
-  buildAsText.value = await _buildPropertiesService.getAsString(props.parameters, language.value)
+async function getBuildsAsText() {
+  buildsAsText.value = await _buildPropertiesService.toText(buildsToShare, language.value, includePrices.value)
+}
+
+function initialize() {
+  availableBuildSummaries.value = props.parameters.buildSummaries ?? []
+  buildsToShare = props.parameters.buildsToShare ?? []
+
+  if (buildsToShare.length > 0) {
+    getShareLinks()
+    getBuildsAsText()
+  }
 }
 
 </script>

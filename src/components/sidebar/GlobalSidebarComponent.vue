@@ -51,14 +51,14 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { BuildShareSideBarParameters, BuildSidebarParameters, GlobalSidebarComponent, IGlobalSidebarOptions, ShoppingListSidebarParameters, StatsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { BuildSidebarParameters, BuildsShareSideBarParameters, GlobalSidebarComponent, IGlobalSidebarOptions, ShoppingListSidebarParameters, StatsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 import BuildsExportSidebar from './BuildsExportSidebarComponent.vue'
-import BuildShareSideBar from './BuildShareSideBarComponent.vue'
 import BuildSidebarComponent from './BuildSidebarComponent.vue'
 import BuildsImportSidebar from './BuildsImportSidebarComponent.vue'
 import BuildsListSidebar from './BuildsListSidebarComponent.vue'
+import BuildsShareSideBar from './BuildsShareSideBarComponent.vue'
 import ChangelogSidebar from './ChangelogSidebarComponent.vue'
 import GeneralOptionsSidebar from './GeneralOptionsSidebarComponent.vue'
 import MerchantItemsOptionsSidebar from './MerchantItemsOptionsSidebarComponent.vue'
@@ -140,12 +140,12 @@ function getDisplayedComponent(displayedComponentType: GlobalSidebarComponent) {
       title.value = 'caption.exportBuilds'
 
       return BuildsExportSidebar
-    case 'BuildShareSideBar':
+    case 'BuildsShareSideBar':
       icon.value = 'share-alt'
-      subtitle.value = (options.value.displayedComponentParameters as BuildShareSideBarParameters).name
+      subtitle.value = (options.value.displayedComponentParameters as BuildsShareSideBarParameters).name
       title.value = 'caption.share'
 
-      return BuildShareSideBar
+      return BuildsShareSideBar
     case 'BuildSidebar':
       icon.value = 'ellipsis-h'
       subtitle.value = (options.value.displayedComponentParameters as BuildSidebarParameters).name
