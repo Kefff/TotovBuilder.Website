@@ -1,8 +1,8 @@
 /* eslint-disable no-irregular-whitespace */
 import { describe, expect, it } from 'vitest'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { BuildsToTextType } from '../../models/utils/BuildsToTextType'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
+import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
 import { IErgonomics } from '../../models/utils/IErgonomics'
 import { IInventoryItemPrice } from '../../models/utils/IInventoryItemPrice'
 import { IInventoryItemRecoil } from '../../models/utils/IInventoryItemRecoil'
@@ -565,7 +565,14 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(inventoryItem, BuildsToTextType.markdown, 'fr', true)
+      const result = await service.toText(
+        inventoryItem,
+        {
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
 
       // Assert
       expect(result).toBe(expected)
@@ -582,7 +589,14 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(inventoryItem, BuildsToTextType.markdown, 'fr', false)
+      const result = await service.toText(
+        inventoryItem,
+        {
+          includePrices: false,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
 
       // Assert
       expect(result).toBe(`**WARTECH Berkut BB-102 backpack (A-TACS FG)**  
@@ -613,9 +627,12 @@ describe('InventoryItemService', () => {
           modSlots: [],
           quantity: 1
         },
-        BuildsToTextType.markdown,
-        language,
-        true)
+        {
+          includePrices: true,
+          language,
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
 
       // Assert
       expect(result).toBe(expected)
@@ -632,7 +649,14 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(inventoryItem, BuildsToTextType.markdown, 'fr', true)
+      const result = await service.toText(
+        inventoryItem,
+        {
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
 
       // Assert
       expect(result).toBe(`**Unknown item "5ca20d5986f774331e7c9602"**   💵 Pas de marchand  
@@ -977,7 +1001,14 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(inventoryItem, BuildsToTextType.simpleText, 'fr', true)
+      const result = await service.toText(
+        inventoryItem,
+        {
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
 
       // Assert
       expect(result).toBe(expected)
@@ -994,7 +1025,14 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(inventoryItem, BuildsToTextType.simpleText, 'fr', false)
+      const result = await service.toText(
+        inventoryItem,
+        {
+          includePrices: false,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
 
       // Assert
       expect(result).toBe(`WARTECH Berkut BB-102 backpack (A-TACS FG)
@@ -1025,9 +1063,12 @@ describe('InventoryItemService', () => {
           modSlots: [],
           quantity: 1
         },
-        BuildsToTextType.simpleText,
-        language,
-        true)
+        {
+          includePrices: true,
+          language,
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
 
       // Assert
       expect(result).toBe(expected)
@@ -1044,7 +1085,14 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(inventoryItem, BuildsToTextType.simpleText, 'fr', true)
+      const result = await service.toText(
+        inventoryItem,
+        {
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
 
       // Assert
       expect(result).toBe(`Unknown item "5ca20d5986f774331e7c9602"   Pas de marchand

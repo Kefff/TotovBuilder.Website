@@ -1,8 +1,8 @@
 /* eslint-disable no-irregular-whitespace */
 import { describe, expect, it } from 'vitest'
 import { IInventorySlot } from '../../models/build/IInventorySlot'
-import { BuildsToTextType } from '../../models/utils/BuildsToTextType'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
+import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { IRecoil } from '../../models/utils/IRecoil'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
@@ -128,7 +128,14 @@ describe('InventorySlotPropertiesService', () => {
       const service = new InventorySlotPropertiesService()
 
       // Act
-      const result = await service.toText(inventorySlot, BuildsToTextType.markdown, 'fr', true)
+      const result = await service.toText(
+        inventorySlot,
+        {
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
 
       // Assert
       expect(result).toBe(expected)
@@ -147,9 +154,12 @@ describe('InventorySlotPropertiesService', () => {
           items: [undefined, undefined, undefined, undefined],
           typeId: 'pockets'
         },
-        BuildsToTextType.markdown,
-        'fr',
-        true)
+        {
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
 
       // Assert
       expect(result).toBe('')
@@ -263,7 +273,14 @@ describe('InventorySlotPropertiesService', () => {
       const service = new InventorySlotPropertiesService()
 
       // Act
-      const result = await service.toText(inventorySlot, BuildsToTextType.simpleText, 'fr', true)
+      const result = await service.toText(
+        inventorySlot,
+        {
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
 
       // Assert
       expect(result).toBe(expected)
@@ -282,9 +299,12 @@ describe('InventorySlotPropertiesService', () => {
           items: [undefined, undefined, undefined, undefined],
           typeId: 'pockets'
         },
-        BuildsToTextType.simpleText,
-        'fr',
-        true)
+        {
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
 
       // Assert
       expect(result).toBe('')

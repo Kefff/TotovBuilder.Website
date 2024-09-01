@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
-import { BuildsToTextType } from '../../models/utils/BuildsToTextType'
+import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { IShoppingListMerchant } from '../../models/utils/IShoppingListMerchant'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
@@ -688,7 +688,14 @@ describe('BuildPropertiesService', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.toText([build], BuildsToTextType.markdown, language, true)
+      const result = await service.toText(
+        [build],
+        {
+          includePrices: true,
+          language,
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
 
       // Assert
       expect(result).toBe(expected)
@@ -777,7 +784,14 @@ describe('BuildPropertiesService', () => {
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.toText([build1, build2], BuildsToTextType.markdown, 'fr', true)
+      const result = await buildPropertiesService.toText(
+        [build1, build2],
+        {
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
 
       // Assert
       expect(result).toBe(`# Build 1
@@ -830,7 +844,14 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.toText([build1], BuildsToTextType.markdown, 'fr', false)
+      const result = await service.toText(
+        [build1],
+        {
+          includePrices: false,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
 
       // Assert
       expect(result).toBe(`# Build 1
@@ -923,7 +944,14 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.toText([build], BuildsToTextType.markdown, 'fr', true)
+      const result = await buildPropertiesService.toText(
+        [build],
+        {
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
 
       // Assert
       expect(result).toBe(`# Build
@@ -937,6 +965,32 @@ Marché ✅   Le Mécano 2️⃣   Prapor 4️⃣
 Ref ❌   Skier 1️⃣   La Toubib 3️⃣  
 
 *Créé avec [Totov Builder](http://localhost:3000)*`)
+    })
+
+    it('should only include the link', async () => {
+      // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ReductionService)
+
+      const buildPropertiesService = new BuildPropertiesService()
+
+      // Act
+      const result = await buildPropertiesService.toText(
+        [build1, build2],
+        {
+          includePrices: true,
+          language: 'fr',
+          linkOnly: true,
+          type: BuildsToTextType.markdown
+        })
+
+      // Assert
+      expect(result).toBe(`[Build 1](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU)
+[Build 2](http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv)`)
     })
   })
 
@@ -1098,7 +1152,14 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.toText([build], BuildsToTextType.simpleText, language, true)
+      const result = await service.toText(
+        [build],
+        {
+          includePrices: true,
+          language,
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
 
       // Assert
       expect(result).toBe(expected)
@@ -1187,7 +1248,14 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.toText([build1, build2], BuildsToTextType.simpleText, 'fr', true)
+      const result = await buildPropertiesService.toText(
+        [build1, build2],
+        {
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
 
       // Assert
       expect(result).toBe(`Build 1
@@ -1242,7 +1310,14 @@ Créé avec Totov Builder`)
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.toText([build1], BuildsToTextType.simpleText, 'fr', false)
+      const result = await service.toText(
+        [build1],
+        {
+          includePrices: false,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
 
       // Assert
       expect(result).toBe(`Build 1
@@ -1336,7 +1411,14 @@ Créé avec Totov Builder`)
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.toText([build], BuildsToTextType.simpleText, 'fr', true)
+      const result = await buildPropertiesService.toText(
+        [build],
+        {
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
 
       // Assert
       expect(result).toBe(`Build
@@ -1351,6 +1433,39 @@ Marché Oui   Le Mécano 2   Prapor 4
 Ref Non   Skier 1   La Toubib 3
 
 Créé avec Totov Builder`)
+    })
+
+    it('should only include the link', async () => {
+      // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ReductionService)
+
+      const buildPropertiesService = new BuildPropertiesService()
+
+      // Act
+      const result = await buildPropertiesService.toText(
+        [build1, build2],
+        {
+          includePrices: true,
+          language: 'fr',
+          linkOnly: true,
+          type: BuildsToTextType.simpleText
+        })
+
+      // Assert
+      expect(result).toBe(`Build 1
+http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU
+
+
+
+Build 2
+http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv`)
     })
   })
 

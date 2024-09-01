@@ -1,4 +1,4 @@
-import { BuildsToTextType } from '../models/utils/BuildsToTextType'
+import { BuildsToTextType } from '../models/utils/IBuildsToTextOptions'
 
 /**
  * Represents an utility class for manipulating strings.

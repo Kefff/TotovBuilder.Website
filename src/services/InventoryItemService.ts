@@ -10,8 +10,8 @@ import { IPrice } from '../models/item/IPrice'
 import { IRangedWeapon } from '../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../models/item/IRangedWeaponMod'
 import { IWearable } from '../models/item/IWearable'
-import { BuildsToTextType } from '../models/utils/BuildsToTextType'
 import { IArmorModifiers } from '../models/utils/IArmorModifiers'
+import { BuildsToTextType, IBuildsToTextOptions } from '../models/utils/IBuildsToTextOptions'
 import { IErgonomics } from '../models/utils/IErgonomics'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
 import { IInventoryItemPrice } from '../models/utils/IInventoryItemPrice'
@@ -641,23 +641,21 @@ export class InventoryItemService {
   /**
    * Converts an inventory item to a text.
    * @param inventorySlot - Inventory item to convert.
-   * @param type - Type of text.
-   * @param language - Language of the text.
-   * @param includePrices - Indicates whether prices should be included in the text.
+   * @param options - Options.
    * @param itemInSameSlotInPreset - Preset item that is place in the same slot of a preset. If not null, this means that inventoryItem has been placed in the content or mods of a parent item that is a preset. When inventoryItem and itemInSameSlotInPreset are the same, this means that the price of inventoryItem must be ignored because its part of a preset.
    * @param canBeLooted - Indicates wether the item can be looted. If it is not the case, the price of the item is ignored (but the price of its content is still taken into consideration).
    */
-  public async toText(inventoryItem: IInventoryItem, type: BuildsToTextType, language: string, includePrices: boolean, itemInSameSlotInPreset?: IInventoryItem, indentationLevel = 0, canBeLooted = true): Promise<string> {
-    const boldToken = type === BuildsToTextType.markdown ? '**' : ''
-    const italicToken = type === BuildsToTextType.markdown ? '*' : ''
-    const lineEnd = type === BuildsToTextType.markdown ? '  ' : ''
+  public async toText(inventoryItem: IInventoryItem, options: IBuildsToTextOptions, itemInSameSlotInPreset?: IInventoryItem, indentationLevel = 0, canBeLooted = true): Promise<string> {
+    const boldToken = options.type === BuildsToTextType.markdown ? '**' : ''
+    const italicToken = options.type === BuildsToTextType.markdown ? '*' : ''
+    const lineEnd = options.type === BuildsToTextType.markdown ? '  ' : ''
 
     const itemService = Services.get(ItemService)
 
     let inventoryItemAsString = ''
     const mainCurrency = itemService.getMainCurrency()
     const item = await itemService.getItem(inventoryItem.itemId)
-    const hasPrice = includePrices
+    const hasPrice = options.includePrices
       && canBeLooted
       && !inventoryItem.ignorePrice
       && inventoryItem.itemId !== itemInSameSlotInPreset?.itemId
@@ -672,24 +670,24 @@ export class InventoryItemService {
 
       if (price.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset) {
         if (price.missingPrice && price.unitPrice.valueInMainCurrency === 0) {
-          inventoryItemAsString += `   ${StringUtils.getTextStatEmoji(type, '💵')}${this.translate('message.noMerchant', language)}`
+          inventoryItemAsString += `   ${StringUtils.getTextStatEmoji(options.type, '💵')}${this.translate('message.noMerchant', options.language)}`
         } else {
-          inventoryItemAsString += `   ${StringUtils.getTextStatEmoji(type, '💵')}${this.translate('caption.merchant_' + price.unitPrice.merchant, language)}`
+          inventoryItemAsString += `   ${StringUtils.getTextStatEmoji(options.type, '💵')}${this.translate('caption.merchant_' + price.unitPrice.merchant, options.language)}`
 
           if (price.unitPrice.merchant !== 'flea-market') {
             inventoryItemAsString += ` ${price.unitPrice.merchantLevel}`
           }
 
           if (price.unitPrice.currencyName === 'barter') {
-            inventoryItemAsString += ` (${italicToken}${this.translate('caption.barter', language).toLocaleLowerCase()}${italicToken}) ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, language)}${mainCurrency.symbol}${boldToken}`
+            inventoryItemAsString += ` (${italicToken}${this.translate('caption.barter', options.language).toLocaleLowerCase()}${italicToken}) ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, options.language)}${mainCurrency.symbol}${boldToken}`
           } else {
-            inventoryItemAsString += ` ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.value, language)}`
+            inventoryItemAsString += ` ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.value, options.language)}`
 
             if (price.price.currencyName === mainCurrency.name) {
               inventoryItemAsString += `${mainCurrency.symbol}${boldToken}`
             } else {
               const priceCurrency = itemService.getCurrency(price.price.currencyName)
-              inventoryItemAsString += `${priceCurrency.symbol}${boldToken} (= ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, language)}${mainCurrency.symbol}${boldToken})`
+              inventoryItemAsString += `${priceCurrency.symbol}${boldToken} (= ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.price, price.price.valueInMainCurrency, options.language)}${mainCurrency.symbol}${boldToken})`
             }
           }
         }
@@ -721,10 +719,10 @@ export class InventoryItemService {
         }
 
         const modSlotInPreset = preset?.modSlots.find(ms => ms.modSlotName === modSlot.modSlotName)
-        const modSlotItemAsString = await this.toText(modSlot.item, type, language, includePrices, modSlotInPreset?.item, indentationLevel)
+        const modSlotItemAsString = await this.toText(modSlot.item, options, modSlotInPreset?.item, indentationLevel)
 
         if (modSlotItemAsString !== '') {
-          const modSlotName = this.translate('caption.modSlot_' + modSlot.modSlotName, language)
+          const modSlotName = this.translate('caption.modSlot_' + modSlot.modSlotName, options.language)
 
           if (modSlotItemAsString.startsWith('\n')) {
             inventoryItemAsString += `\n${indentation}[${italicToken}${modSlotName}${italicToken}]${lineEnd}${modSlotItemAsString}`
@@ -738,7 +736,7 @@ export class InventoryItemService {
       for (let i = 0; i < inventoryItem.content.length; i++) {
         const containedItem = inventoryItem.content[i]
         const containedItemInPreset = preset?.content[i]
-        const containedItemAsString = await this.toText(containedItem, type, language, includePrices, containedItemInPreset, indentationLevel)
+        const containedItemAsString = await this.toText(containedItem, options, containedItemInPreset, indentationLevel)
 
         if (containedItemAsString !== '') {
           inventoryItemAsString += `\n${indentation}${containedItemAsString}`

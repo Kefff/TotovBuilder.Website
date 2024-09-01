@@ -1,7 +1,7 @@
 /* eslint-disable no-irregular-whitespace */ // Special character used to force markdown to take into account spaces
 import { IInventorySlot } from '../models/build/IInventorySlot'
-import { BuildsToTextType } from '../models/utils/BuildsToTextType'
 import { IArmorModifiers } from '../models/utils/IArmorModifiers'
+import { BuildsToTextType, IBuildsToTextOptions } from '../models/utils/IBuildsToTextOptions'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import { IInventorySlotSummary } from '../models/utils/IInventorySlotSummary'
 import { IRecoil } from '../models/utils/IRecoil'
@@ -67,13 +67,10 @@ export class InventorySlotPropertiesService {
   /**
    * Converts an inventory slot to a text.
    * @param inventorySlot - Inventory slot to convert.
-   * @param type - Type of text.
-   * @param language - Language of the text.
-   * @param includePrices - Indicates whether prices should be included in the text.
+   * @param options - Options.
    */
-  public async toText(inventorySlot: IInventorySlot, type: BuildsToTextType, language: string, includePrices: boolean
-  ): Promise<string> {
-    const italicToken = type === BuildsToTextType.markdown ? '*' : ''
+  public async toText(inventorySlot: IInventorySlot, options: IBuildsToTextOptions): Promise<string> {
+    const italicToken = options.type === BuildsToTextType.markdown ? '*' : ''
 
     let inventorySlotAsString = ''
     const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
@@ -84,14 +81,14 @@ export class InventorySlotPropertiesService {
         continue
       }
 
-      const itemAsString = await inventoryItemService.toText(inventoryItem, type, language, includePrices, undefined, undefined, inventorySlotType.canBeLooted)
+      const itemAsString = await inventoryItemService.toText(inventoryItem, options, undefined, undefined, inventorySlotType.canBeLooted)
 
       if (itemAsString !== '') {
         if (inventorySlotAsString.length > 0) {
           inventorySlotAsString += '\n'
         }
 
-        inventorySlotAsString += `[${italicToken}${this.translate('caption.slotType' + StringUtils.toUpperFirst(inventorySlotType.id), language)}${italicToken}] ${itemAsString}`
+        inventorySlotAsString += `[${italicToken}${this.translate('caption.slotType' + StringUtils.toUpperFirst(inventorySlotType.id), options.language)}${italicToken}] ${itemAsString}`
       }
     }
 

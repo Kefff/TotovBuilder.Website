@@ -81,6 +81,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
+import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildsShareSideBarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import vueI18n from '../../plugins/vueI18n'
@@ -107,6 +108,7 @@ const includePrices = ref(false)
 const language = ref<string>(vueI18n.locale.value)
 const shareLinks = ref<string>()
 const selectedBuildSummaries = ref<IBuildSummary[]>([])
+const textType = ref<BuildsToTextType>()
 
 
 onMounted(() => initialize())
@@ -158,9 +160,12 @@ async function getShareLinks() {
  * Gets the build as a text.
  */
 async function getBuildsAsText() {
-  buildsAsText.value = await _buildPropertiesService.toText(buildsToShare, language.value, includePrices.value)
+  buildsAsText.value = await _buildPropertiesService.toText(buildsToShare, textType.value, language.value, includePrices.value)
 }
 
+/**
+ * Initializes the component.
+ */
 function initialize() {
   availableBuildSummaries.value = props.parameters.buildSummaries ?? []
   buildsToShare = props.parameters.buildsToShare ?? []

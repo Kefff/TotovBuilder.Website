@@ -219,9 +219,9 @@ export class BuildService {
   }
 
   /**
-   * Converts builds to encoded URLs that can be shared.
+   * Converts a build to encoded URLs that can be shared.
    * Displays an error notification when an URL cannot be created.
-   * @param build - Build.
+   * @param builds - Build.
    * @returns Encoded URL.
    */
   public async toSharableURL(build: IBuild): Promise<string | undefined> {
