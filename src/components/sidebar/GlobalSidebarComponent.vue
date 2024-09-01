@@ -142,7 +142,7 @@ function getDisplayedComponent(displayedComponentType: GlobalSidebarComponent) {
       return BuildsExportSidebar
     case 'BuildsShareSideBar':
       icon.value = 'share-alt'
-      subtitle.value = (options.value.displayedComponentParameters as BuildsShareSideBarParameters).name
+      subtitle.value = getBuildsShareSideBarSubtitle(options.value.displayedComponentParameters as BuildsShareSideBarParameters)
       title.value = 'caption.share'
 
       return BuildsShareSideBar
@@ -202,6 +202,17 @@ function getDisplayedComponent(displayedComponentType: GlobalSidebarComponent) {
     default:
       return undefined
   }
+}
+
+/**
+ * Gets the subtitle for a builds share sidebar.
+ */
+function getBuildsShareSideBarSubtitle(parameters: BuildsShareSideBarParameters): string | undefined {
+  if (parameters.buildToShare != null) {
+    return parameters.buildToShare.name
+  }
+
+  return undefined
 }
 </script>
 

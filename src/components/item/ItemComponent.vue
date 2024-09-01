@@ -17,7 +17,6 @@
           :virtual-scroller-options="{ orientation: 'vertical', itemSize: optionHeight }"
           class="item-dropdown"
           data-key="id"
-          option-label="caption"
           @before-show="setOptions()"
           @change="onItemChanged()"
           @show="onDropdownOpen()"

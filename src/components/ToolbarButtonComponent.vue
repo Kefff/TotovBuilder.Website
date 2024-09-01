@@ -2,7 +2,7 @@
   <Tooltip
     v-show="button.isVisible?.() ?? true"
     :apply-hover-style="false"
-    :tooltip="$t(tooltip)"
+    :tooltip="tooltip"
     :position="button.tooltipPosition?.()"
   >
     <Button

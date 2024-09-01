@@ -21,6 +21,11 @@ export interface IToolbarButton {
   caption: () => string
 
   /**
+   * Indicates whether a separation is displayed after the button in the toolbar sidebar.
+   */
+  followedBySeparation?: boolean
+
+  /**
    * Method for getting the icon name.
    */
   icon: () => string

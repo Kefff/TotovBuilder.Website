@@ -1,5 +1,5 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons'
+import { faDiscord, faGithub, faRedditAlien } from '@fortawesome/free-brands-svg-icons'
 import {
   faAngleDown,
   faAngleRight,
@@ -50,6 +50,7 @@ import {
   faHeartBroken,
   faIdCardAlt,
   faInfoCircle,
+  faItalic,
   faLanguage,
   faList,
   faLock,
@@ -147,6 +148,7 @@ export function useFontAwesome(app: App<Element>): void {
     faIdCardAlt,
     faInfoCircle,
     faInfoCircle,
+    faItalic,
     faLanguage,
     faList,
     faLock,
@@ -156,6 +158,7 @@ export function useFontAwesome(app: App<Element>): void {
     faPlus,
     faPlusSquare,
     faPuzzlePiece,
+    faRedditAlien,
     faRubleSign,
     faSave,
     faSearch,

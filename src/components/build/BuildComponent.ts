@@ -56,6 +56,7 @@ export default defineComponent({
         action: goToBuilds,
         canBeMovedToSidebar: () => false,
         caption: () => vueI18n.t('caption.backToBuilds'),
+        followedBySeparation: true,
         icon: () => 'arrow-left',
         isDisabled: () => isEditing.value,
         isVisible: () => !isEditing.value,
@@ -361,7 +362,9 @@ export default defineComponent({
      */
     function displayBuildsShareSideBar() {
       _globalSidebarService.display({
-        displayedComponentParameters: build.value,
+        displayedComponentParameters: {
+          buildToShare: build.value
+        },
         displayedComponentType: 'BuildsShareSideBar'
       })
     }

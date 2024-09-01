@@ -82,7 +82,7 @@ export type BuildsExportSidebarParameters = IBuildSummary[]
  * Using buildsToShare immediatly display them in the share screen while using buildSummaries will display them in a BuildsList for the user to select the ones to share.
  */
 export type BuildsShareSideBarParameters = {
-  buildsToShare?: IBuild[],
+  buildToShare?: IBuild,
   buildSummaries?: IBuildSummary[]
 }
 

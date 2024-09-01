@@ -4,47 +4,59 @@
     :key="button.name"
     class="sidebar-option"
   >
-    <Button
-      :disabled="button.isDisabled?.() ?? false"
-      :outlined="button.style?.() === 'outlined'"
-      :severity="button.variant?.()"
-      class="toolbar-sidebar-button"
-      :class="{
-        'button-discreet': button.style?.() === 'discreet',
-        'p-button-text': button.style?.() === 'discreet'
-      }"
-      @click="() => executeAction(button.action)"
-    >
-      <font-awesome-icon
-        :icon="button.icon()"
-        class="icon-before-text"
-      />
-      <span>{{ button.caption() }}</span>
-    </Button>
+    <div class="toolbar-sidebar-buttons">
+      <Button
+        :disabled="button.isDisabled?.() ?? false"
+        :outlined="button.style?.() === 'outlined'"
+        :severity="button.variant?.()"
+        class="toolbar-sidebar-button"
+        :class="{
+          'button-discreet': button.style?.() === 'discreet',
+          'p-button-text': button.style?.() === 'discreet'
+        }"
+        @click="() => executeAction(button.action)"
+      >
+        <font-awesome-icon
+          :icon="button.icon()"
+          class="icon-before-text"
+        />
+        <span>{{ button.caption() }}</span>
+      </Button>
+      <hr
+        v-if="button.followedBySeparation"
+        class="toolbar-sidebar-separation"
+      >
+    </div>
   </div>
-  <div class="sidebar-title" />
+  <hr class="toolbar-sidebar-separation">
   <div
     v-for="button of rightButtons"
     :key="button.name"
     class="sidebar-option"
   >
-    <Button
-      :disabled="button.isDisabled?.() ?? false"
-      :outlined="button.style?.() === 'outlined'"
-      :severity="button.variant?.()"
-      class="toolbar-sidebar-button"
-      :class="{
-        'button-discreet': button.style?.() === 'discreet',
-        'p-button-text': button.style?.() === 'discreet'
-      }"
-      @click="() => executeAction(button.action)"
-    >
-      <font-awesome-icon
-        :icon="button.icon()"
-        class="icon-before-text"
-      />
-      <span>{{ button.caption() }}</span>
-    </Button>
+    <div class="toolbar-sidebar-buttons">
+      <Button
+        :disabled="button.isDisabled?.() ?? false"
+        :outlined="button.style?.() === 'outlined'"
+        :severity="button.variant?.()"
+        class="toolbar-sidebar-button"
+        :class="{
+          'button-discreet': button.style?.() === 'discreet',
+          'p-button-text': button.style?.() === 'discreet'
+        }"
+        @click="() => executeAction(button.action)"
+      >
+        <font-awesome-icon
+          :icon="button.icon()"
+          class="icon-before-text"
+        />
+        <span>{{ button.caption() }}</span>
+      </Button>
+      <hr
+        v-if="button.followedBySeparation"
+        class="toolbar-sidebar-separation"
+      >
+    </div>
   </div>
 </template>
 
@@ -97,5 +109,14 @@ function executeAction(action: () => void) {
   display: flex;
   justify-content: center;
   width: 100%;
+}
+
+.toolbar-sidebar-buttons {
+  width: 100%;
+}
+
+.toolbar-sidebar-separation {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 </style>

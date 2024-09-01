@@ -132,7 +132,9 @@ function deleteBuild() {
  */
 function displayBuildsShareSideBar() {
   _globalSidebarService.display({
-    displayedComponentParameters: props.parameters,
+    displayedComponentParameters: {
+      buildToShare: props.parameters
+    },
     displayedComponentType: 'BuildsShareSideBar'
   })
 }

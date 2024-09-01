@@ -1,71 +1,98 @@
 <template>
   <div
-    v-if="shareLinks != null"
-    class="sidebar-option"
+    v-if="buildsToShare.length === 0"
+    class="sidebar-option builds-share-sidebar-selection"
   >
-    <div class="share-build-sidebar-version">
-      <div class="share-build-sidebar-version-caption">
-        {{ $t('caption.interactiveVersion') }}
-      </div>
-      <div class="share-build-sidebar-link">
-        <InputTextField
-          :value="shareLinks"
-          :caption="$t('caption.link')"
-          caption-mode="placeholder"
-          :read-only="true"
-          class="share-build-sidebar-link-input"
-        />
-        <Button @click="copyLink()">
-          <font-awesome-icon
-            icon="copy"
-            class="icon-before-text"
-          />
-          <span>{{ $t('caption.copyElement') }}</span>
-        </Button>
-      </div>
-      <div
-        v-if="shareLinks != null"
-        class="sidebar-option-description"
-      >
-        <div class="sidebar-option-icon">
-          <font-awesome-icon icon="info-circle" />
-        </div>
-        <span>
-          {{ $t('message.shareBuildExplanation') }}
-        </span>
-      </div>
-    </div>
-  </div>
-  <div class="sidebar-title" />
-  <div
-    v-if="buildsAsText != null"
-    class="sidebar-option"
-  >
-    <div class="share-build-sidebar-version">
-      <div class="share-build-sidebar-version-caption">
-        {{ $t('caption.textVersion') }}
-      </div>
-      <div class="share-build-sidebar-text-options">
-        <LanguageSelector
-          v-model:language="language"
-          class="share-build-sidebar-text-options-language-selector"
-          @update:language="getBuildsAsText()"
-        />
-        <Button @click="copyText()">
-          <font-awesome-icon
-            icon="copy"
-            class="icon-before-text"
-          />
-          <span>{{ $t('caption.copyElement') }}</span>
-        </Button>
-      </div>
-      <TextArea
-        v-model="buildsAsText"
-        class="share-build-sidebar-text"
-        rows="7"
-        auto-resize
+    <div>
+      <Toolbar
+        ref="buildsExportToolbar"
+        :buttons="toolbarButtons"
+        style="margin-top: 1px;"
+      />
+      <BuildsList
+        v-model:selected-builds="selectedBuilds"
+        :build-summaries="availableBuilds"
+        :element-to-stick-to="toolbarContainer"
+        :show-not-exported="false"
+        mode="export"
       />
     </div>
+  </div>
+  <div v-else>
+    <div class="sidebar-option builds-share-sidebar-line">
+      <span>{{ $t('caption.format') }}</span>
+      <Dropdown
+        v-model="typeOption"
+        :options="typeOptions"
+        data-key="caption"
+        class="builds-share-sidebar-type"
+        @update:model-value="getText()"
+      >
+        <template #option="slotProps">
+          <div class="builds-share-sidebar-option">
+            <div class="builds-share-sidebar-option-icon">
+              <font-awesome-icon
+                :class="slotProps.option.iconCssClass"
+                :icon="slotProps.option.icon"
+              />
+            </div>
+            <span>{{ $t(slotProps.option.caption) }}</span>
+          </div>
+        </template>
+        <template #value="slotProps">
+          <div
+            v-if="slotProps.value != null"
+            class="builds-share-sidebar-option"
+          >
+            <div class="builds-share-sidebar-option-icon">
+              <font-awesome-icon
+                :class="slotProps.value.iconCssClass"
+                :icon="slotProps.value.icon"
+              />
+            </div>
+            <span>{{ $t(slotProps.value.caption) }}</span>
+          </div>
+        </template>
+      </Dropdown>
+    </div>
+    <div
+      v-if="typeOption != null"
+      class="sidebar-option builds-share-sidebar-line"
+    >
+      <span>{{ $t('caption.language') }}</span>
+      <LanguageSelector
+        v-model:language="language"
+        class="builds-share-sidebar-language-selector"
+        @update:language="getText()"
+      />
+    </div>
+    <Loading v-if="isLoading" />
+    <div
+      v-if="!isLoading && typeOption != null"
+      class="sidebar-option"
+    >
+      <Button @click="copyText()">
+        <font-awesome-icon
+          icon="copy"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.copyElement') }}</span>
+      </Button>
+    </div>
+    <div
+      v-if="!isLoading && typeOption != null"
+      class="sidebar-option"
+    >
+      <TextArea
+        v-if="typeOption != null"
+        v-model="text"
+        class="builds-share-sidebar-text"
+        rows="18"
+      />
+    </div>
+    <span v-if="!isLoading && typeOption != null">
+      {{ lengthCaption }}
+    </span>
   </div>
 </template>
 
@@ -79,19 +106,23 @@
 
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
+import { IBuildsShareTypeOption } from '../../models/utils/IBuildsShareTypeOption'
 import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildsShareSideBarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { IToolbarButton } from '../../models/utils/IToolbarButton'
 import vueI18n from '../../plugins/vueI18n'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
 import { LogService } from '../../services/LogService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import Services from '../../services/repository/Services'
-import InputTextField from '../InputTextFieldComponent.vue'
+import BuildsList from '../BuildsListComponent.vue'
 import LanguageSelector from '../LanguageSelectorComponent.vue'
+import Loading from '../LoadingComponent.vue'
+import Toolbar from '../ToolbarComponent.vue'
 
 const props = defineProps<{ parameters: BuildsShareSideBarParameters }>()
 
@@ -100,82 +131,138 @@ const _buildPropertiesService = Services.get(BuildPropertiesService)
 const _logService = Services.get(LogService)
 const _notificationService = Services.get(NotificationService)
 
-let buildsToShare: IBuild[] = []
-
-const buildsAsText = ref<string>()
-const availableBuildSummaries = ref<IBuildSummary[]>([])
+const typeOptions: IBuildsShareTypeOption[] = [
+  {
+    caption: 'caption.redditMarkdown',
+    icon: ['fab', 'reddit-alien'],
+    iconCssClass: 'builds-share-sidebar-option-reddit-icon',
+    type: BuildsToTextType.markdown
+  },
+  {
+    caption: 'caption.discordMarkdown',
+    icon: ['fab', 'discord'],
+    iconCssClass: 'builds-share-sidebar-option-discord-icon',
+    type: BuildsToTextType.markdown
+  },
+  {
+    caption: 'caption.simpleText',
+    icon: 'italic',
+    type: BuildsToTextType.simpleText
+  }
+]
+const toolbarButtons: IToolbarButton[] = [
+  {
+    action: selectBuildsToShare,
+    canBeMovedToSidebar: () => false,
+    caption: () => `${vueI18n.t('caption.share')}` + (selectedBuilds.value.length > 1 ? ` (${selectedBuilds.value.length})` : ''),
+    icon: () => 'download',
+    isDisabled: () => selectedBuilds.value?.length == 0,
+    name: 'share',
+    showCaption: () => 'always',
+    variant: () => 'success'
+  },
+  {
+    action: toggleSelection,
+    canBeMovedToSidebar: () => false,
+    caption: () => allSelected.value ? vueI18n.t('caption.deselectAll') : vueI18n.t('caption.selectAll'),
+    icon: () => allSelected.value ? 'folder-minus' : 'folder-plus',
+    isVisible: () => availableBuilds.value.length > 1,
+    name: 'toggleSelection',
+    style: () => 'outlined'
+  }
+]
+const availableBuilds = ref<IBuildSummary[]>([])
+const buildsExportToolbar = ref()
+const buildsToShare = ref<IBuild[]>([])
 const includePrices = ref(false)
+const isLoading = ref(false)
 const language = ref<string>(vueI18n.locale.value)
-const shareLinks = ref<string>()
-const selectedBuildSummaries = ref<IBuildSummary[]>([])
-const textType = ref<BuildsToTextType>()
+const linkOnly = ref(false)
+const selectedBuilds = ref<IBuildSummary[]>([])
+const text = ref<string>()
+const typeOption = ref<IBuildsShareTypeOption>()
 
+const allSelected = computed(() => selectedBuilds.value.length === availableBuilds.value.length)
+const lengthCaption = computed(() => `${vueI18n.t('caption.length')}: ${text.value?.length ?? 0} ${vueI18n.t('caption.characters').toLocaleLowerCase()}`)
+const toolbarContainer = computed(() => buildsExportToolbar.value?.container)
 
 onMounted(() => initialize())
 
 /**
- * Copies the share link to the clipboard.
- */
-function copyLink() {
-  if (shareLinks.value == null) {
-    return
-  }
-
-  navigator.clipboard.writeText(shareLinks.value)
-    .then(() => {
-      _notificationService.notify(NotificationType.information, vueI18n.t('message.shareLinkCopied'))
-    })
-    .catch(() => {
-      _logService.logError('message.shareLinkCopyError')
-      _notificationService.notify(NotificationType.error, vueI18n.t('message.shareLinkCopyError'))
-    })
-}
-
-/**
- * Copies the build text to the clipboard.
+ * Copies the text to the clipboard.
  */
 function copyText() {
-  if (buildsAsText.value == null) {
+  if (text.value == null) {
     return
   }
 
-  navigator.clipboard.writeText(buildsAsText.value)
+  navigator.clipboard.writeText(text.value)
     .then(() => {
-      _notificationService.notify(NotificationType.information, vueI18n.t('message.buildTextCopied'))
+      _notificationService.notify(NotificationType.information, vueI18n.t('message.copied'))
     })
     .catch(() => {
-      _logService.logError('message.shareLinkCopyError')
-      _notificationService.notify(NotificationType.error, vueI18n.t('message.buildTextCopyError'))
+      _logService.logError('message.copyError')
+      _notificationService.notify(NotificationType.error, vueI18n.t('message.copyError'))
     })
 }
 
 /**
- * Gets a URL to share the build.
+ * Gets the text.
  */
-async function getShareLinks() {
-  shareLinks.value = await _buildService.toSharableURL(buildsToShare)
-}
+async function getText() {
+  isLoading.value = true
 
-/**
- * Gets the build as a text.
- */
-async function getBuildsAsText() {
-  buildsAsText.value = await _buildPropertiesService.toText(buildsToShare, textType.value, language.value, includePrices.value)
+  text.value = await _buildPropertiesService.toText(
+    buildsToShare.value,
+    {
+      includePrices: includePrices.value,
+      language: language.value,
+      linkOnly: linkOnly.value,
+      type: typeOption.value!.type
+    })
+
+  isLoading.value = false
 }
 
 /**
  * Initializes the component.
  */
 function initialize() {
-  availableBuildSummaries.value = props.parameters.buildSummaries ?? []
-  buildsToShare = props.parameters.buildsToShare ?? []
+  availableBuilds.value = props.parameters.buildSummaries ?? []
+  buildsToShare.value = props.parameters.buildToShare != null ? [props.parameters.buildToShare] : []
 
-  if (buildsToShare.length > 0) {
-    getShareLinks()
-    getBuildsAsText()
+  if (buildsToShare.value.length > 0 && typeOption.value != null) {
+    getText()
   }
 }
 
+/**
+ * Selects the builds to share.
+ */
+function selectBuildsToShare() {
+  const builds: IBuild[] = []
+
+  for (const selectedBuild of selectedBuilds.value) {
+    const build = _buildService.get(selectedBuild.id)
+
+    if (build != null) {
+      builds.push(build)
+    }
+  }
+
+  buildsToShare.value = builds
+}
+
+/**
+ * Toggles the selection.
+ */
+function toggleSelection() {
+  if (allSelected.value) {
+    selectedBuilds.value = []
+  } else {
+    selectedBuilds.value = availableBuilds.value
+  }
+}
 </script>
 
 
@@ -191,68 +278,59 @@ function initialize() {
 @import '../../css/icon.css';
 @import '../../css/sidebar.css';
 
-.share-build-sidebar-link {
-  display: flex;
-  gap: 0.5rem;
-  width: 100%;
+.builds-share-sidebar-language-selector {
+  max-width: 20.75rem;
 }
 
-.share-build-sidebar-link-input {
-  max-width: 20rem;
-  min-width: 3.25rem;
-  width: 100%;
+.builds-share-sidebar-line {
+  gap: 1rem;
 }
 
-.share-build-sidebar-name {
+.builds-share-sidebar-name {
   margin-left: 2.5rem;
 }
 
-.share-build-sidebar-text {
-  min-width: 20rem;
-  min-height: 8.25rem;
+.builds-share-sidebar-option {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
   height: 100%;
+  padding: 0.5rem;
 }
 
-.share-build-sidebar-text-options {
+.builds-share-sidebar-option-discord-icon {
+  color: #5562ea
+}
+
+.builds-share-sidebar-option-icon {
+  align-items: center;
   display: flex;
-  gap: 0.5rem;
-  width: 100%
+  justify-content: center;
+  width: 2rem;
+  font-size: 1.5rem;
 }
 
-.share-build-sidebar-text-options-language-selector {
-  max-width: 20rem;
-  width: 100%;
+.builds-share-sidebar-option-reddit-icon {
+  color: #ff4500;
+  font-size: 2rem;
 }
 
-.share-build-sidebar-version {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
+.builds-share-sidebar-selection {
+  max-width: 40rem;
 }
 
-.share-build-sidebar-version-caption {
-  font-size: 1.25rem;
+.builds-share-sidebar-text {
+  min-width: 100%;
+  width: 100vw;
+}
+
+.builds-share-sidebar-type {
+  height: 2.75rem;
+  width: 20.725rem;
 }
 
 /* Smartphone in portrait */
-@media only screen and (max-width: 480px) {
-  .share-build-sidebar-link > .p-button > .icon-before-text {
-    margin-right: 0;
-  }
-
-  .share-build-sidebar-link > .p-button > span {
-    display: none;
-  }
-
-  .share-build-sidebar-text-options > .p-button > .icon-before-text {
-    margin-right: 0;
-  }
-
-  .share-build-sidebar-text-options > .p-button > span {
-    display: none;
-  }
-}
+@media only screen and (max-width: 480px) {}
 
 /* Smartphone in landscape */
 @media only screen and (min-width: 481px) and (max-width: 767px) {}
@@ -265,4 +343,10 @@ function initialize() {
 
 /* PC */
 @media only screen and (min-width: 1300px) {}
+</style>
+
+<style unscoped>
+.builds-share-sidebar-type > .p-dropdown-label {
+  padding: 0;
+}
 </style>

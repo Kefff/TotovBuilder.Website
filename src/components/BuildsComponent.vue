@@ -91,6 +91,15 @@ const toolbarButtons: IToolbarButton[] = [
     variant: () => 'success'
   },
   {
+    action: displayShareSidebar,
+    caption: () => vueI18n.t('caption.shareBuilds'),
+    icon: () => 'share-alt',
+    isDisabled: () => isLoading.value || !canImportExport.value || buildSummaries.value.length === 0,
+    name: 'share',
+    showCaption: () => 'never',
+    style: () => 'discreet'
+  },
+  {
     action: displayExportSidebar,
     caption: () => vueI18n.t('caption.exportBuilds'),
     icon: () => 'download',
@@ -187,8 +196,8 @@ function checkBuildsNotExported() {
 function displayExportSidebar() {
   if (canImportExport.value) {
     _globalSidebarService.display({
-      displayedComponentType: 'BuildsExportSidebar',
-      displayedComponentParameters: buildSummaries.value
+      displayedComponentParameters: buildSummaries.value,
+      displayedComponentType: 'BuildsExportSidebar'
     })
   }
 }
@@ -199,14 +208,14 @@ function displayExportSidebar() {
 function displayImportSidebar() {
   if (canImportExport.value) {
     _globalSidebarService.display({
-      displayedComponentType: 'BuildsImportSidebar',
-      displayedComponentParameters: buildSummaries.value
+      displayedComponentParameters: buildSummaries.value,
+      displayedComponentType: 'BuildsImportSidebar'
     })
   }
 }
 
 /**
- * Displays the general options.
+ * Displays the general options sidebar.
  */
 function displayGeneralOptions() {
   Services.get(GlobalSidebarService).display({
@@ -215,11 +224,23 @@ function displayGeneralOptions() {
 }
 
 /**
- * Displays the merchant items options.
+ * Displays the merchant items options sidebar.
  */
 function displayMerchantItemsOptions() {
   Services.get(GlobalSidebarService).display({
     displayedComponentType: 'MerchantItemsOptionsSidebar'
+  })
+}
+
+/**
+ * Displays the builds share sidebar options.
+ */
+function displayShareSidebar() {
+  Services.get(GlobalSidebarService).display({
+    displayedComponentParameters: {
+      buildSummaries: buildSummaries.value
+    },
+    displayedComponentType: 'BuildsShareSideBar'
   })
 }
 
