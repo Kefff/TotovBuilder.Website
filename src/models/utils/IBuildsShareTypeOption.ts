@@ -1,4 +1,3 @@
-import { BuildsToTextType } from './IBuildsToTextOptions'
 
 /**
  * Provides the functionalities of builds share type options.
@@ -22,5 +21,5 @@ export interface IBuildsShareTypeOption {
   /**
    * Type.
    */
-  type: BuildsToTextType
+  type: 'discordMarkdown' | 'redditMarkdown' | 'simpleText'
 }

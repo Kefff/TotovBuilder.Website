@@ -97,15 +97,19 @@ function getAvailableLanguages() {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  gap: 0.5rem;
   height: 100%;
 }
 
 .language-selector-item-flag {
-  margin-right: 0.5rem;
   width: 1.5rem;
 }
 
 .language-selector-option {
-  padding: 1rem
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  height: 2.5rem;
+  padding: 0.3rem;
 }
 </style>

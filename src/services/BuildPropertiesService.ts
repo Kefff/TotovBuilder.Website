@@ -275,10 +275,11 @@ export class BuildPropertiesService {
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
 
     let buildsAsString = ''
+    const includeLink = options.linkOnly || options.includeLink
     const mainCurrency = itemService.getMainCurrency()
 
     for (const build of builds) {
-      const sharableUrlResult = await buildService.toSharableURL(build)
+      const sharableUrlResult = includeLink ? await buildService.toSharableURL(build) : undefined
 
       if (options.linkOnly) {
         if (options.type === BuildsToTextType.markdown) {
@@ -426,12 +427,10 @@ ${sharableUrlResult}`
         buildAsString += `\n\n${inventorySlotsAsString}`
       }
 
-      if (options.type === BuildsToTextType.simpleText) {
+      if (options.type === BuildsToTextType.simpleText && sharableUrlResult != null) {
         // Build link
-        if (sharableUrlResult != null) {
-          buildAsString += `\n\n${this.translate('caption.interactiveVersionWithFullStats', options.language)}
+        buildAsString += `\n\n${this.translate('caption.interactiveVersionWithFullStats', options.language)}
 ${sharableUrlResult}`
-        }
       }
 
       if (buildsAsString !== '') {

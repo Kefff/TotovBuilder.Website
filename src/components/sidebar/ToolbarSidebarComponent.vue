@@ -12,7 +12,7 @@
         class="toolbar-sidebar-button"
         :class="{
           'button-discreet': button.style?.() === 'discreet',
-          'p-button-text': button.style?.() === 'discreet'
+          'p-button-text': button.style?.() != null
         }"
         @click="() => executeAction(button.action)"
       >
@@ -42,7 +42,7 @@
         class="toolbar-sidebar-button"
         :class="{
           'button-discreet': button.style?.() === 'discreet',
-          'p-button-text': button.style?.() === 'discreet'
+          'p-button-text': button.style?.() != null
         }"
         @click="() => executeAction(button.action)"
       >

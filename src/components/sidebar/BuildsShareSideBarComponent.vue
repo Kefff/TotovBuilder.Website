@@ -1,98 +1,210 @@
 <template>
-  <div
-    v-if="buildsToShare.length === 0"
-    class="sidebar-option builds-share-sidebar-selection"
-  >
-    <div>
-      <Toolbar
-        ref="buildsExportToolbar"
-        :buttons="toolbarButtons"
-        style="margin-top: 1px;"
-      />
-      <BuildsList
-        v-model:selected-builds="selectedBuilds"
-        :build-summaries="availableBuilds"
-        :element-to-stick-to="toolbarContainer"
-        :show-not-exported="false"
-        mode="export"
-      />
-    </div>
-  </div>
-  <div v-else>
-    <div class="sidebar-option builds-share-sidebar-line">
-      <span>{{ $t('caption.format') }}</span>
-      <Dropdown
-        v-model="typeOption"
-        :options="typeOptions"
-        data-key="caption"
-        class="builds-share-sidebar-type"
-        @update:model-value="getText()"
-      >
-        <template #option="slotProps">
-          <div class="builds-share-sidebar-option">
-            <div class="builds-share-sidebar-option-icon">
-              <font-awesome-icon
-                :class="slotProps.option.iconCssClass"
-                :icon="slotProps.option.icon"
-              />
-            </div>
-            <span>{{ $t(slotProps.option.caption) }}</span>
-          </div>
-        </template>
-        <template #value="slotProps">
-          <div
-            v-if="slotProps.value != null"
-            class="builds-share-sidebar-option"
-          >
-            <div class="builds-share-sidebar-option-icon">
-              <font-awesome-icon
-                :class="slotProps.value.iconCssClass"
-                :icon="slotProps.value.icon"
-              />
-            </div>
-            <span>{{ $t(slotProps.value.caption) }}</span>
-          </div>
-        </template>
-      </Dropdown>
-    </div>
+  <div class="builds-share-sidebar">
     <div
-      v-if="typeOption != null"
-      class="sidebar-option builds-share-sidebar-line"
+      v-if="buildsToShare.length === 0"
+      class="sidebar-option builds-share-sidebar-selection"
     >
-      <span>{{ $t('caption.language') }}</span>
-      <LanguageSelector
-        v-model:language="language"
-        class="builds-share-sidebar-language-selector"
-        @update:language="getText()"
-      />
-    </div>
-    <Loading v-if="isLoading" />
-    <div
-      v-if="!isLoading && typeOption != null"
-      class="sidebar-option"
-    >
-      <Button @click="copyText()">
-        <font-awesome-icon
-          icon="copy"
-          class="icon-before-text"
+      <div>
+        <Toolbar
+          ref="buildsExportToolbar"
+          :buttons="toolbarButtons"
+          style="margin-top: 1px;"
         />
-        <span>{{ $t('caption.copyElement') }}</span>
-      </Button>
+        <BuildsList
+          v-model:selected-builds="selectedBuilds"
+          :build-summaries="availableBuilds"
+          :element-to-stick-to="toolbarContainer"
+          :show-not-exported="false"
+          mode="export"
+        />
+      </div>
     </div>
-    <div
-      v-if="!isLoading && typeOption != null"
-      class="sidebar-option"
-    >
-      <TextArea
-        v-if="typeOption != null"
-        v-model="text"
-        class="builds-share-sidebar-text"
-        rows="18"
-      />
+    <div v-else>
+      <div class="sidebar-option builds-share-sidebar-options">
+        <div
+          v-if="(parameters.buildSummaries?.length ?? 0) > 0"
+          class="builds-share-sidebar-option"
+        >
+          <Button
+            class="p-button-text button-discreet builds-share-sidebar-back-button"
+            @click="goBackToBuildsSelection()"
+          >
+            <font-awesome-icon
+              icon="arrow-left"
+              class="icon-before-text"
+            />
+            <span>{{ $t('caption.backToBuildsSelection') }}</span>
+          </Button>
+        </div>
+        <div class="builds-share-sidebar-option">
+          <Dropdown
+            v-model="typeOption"
+            :options="typeOptions"
+            data-key="caption"
+            :placeholder="$t('caption.selectFormat')"
+            class="builds-share-sidebar-type"
+            @update:model-value="getText()"
+          >
+            <template #option="slotProps">
+              <div class="builds-share-sidebar-type-option">
+                <div class="builds-share-sidebar-type-option-icon">
+                  <font-awesome-icon
+                    :class="slotProps.option.iconCssClass"
+                    :icon="slotProps.option.icon"
+                  />
+                </div>
+                <span>{{ $t(slotProps.option.caption) }}</span>
+              </div>
+            </template>
+            <template #value="slotProps">
+              <div class="builds-share-sidebar-value">
+                <div
+                  v-if="slotProps.value != null"
+                  class="builds-share-sidebar-type-option-icon"
+                >
+                  <font-awesome-icon
+                    :class="slotProps.value.iconCssClass"
+                    :icon="slotProps.value.icon"
+                  />
+                </div>
+                <span v-if="slotProps.value != null">{{ $t(slotProps.value.caption) }}</span>
+                <span v-else>{{ $t('caption.selectFormat') }}</span>
+              </div>
+            </template>
+          </Dropdown>
+        </div>
+        <div
+          v-if="typeOption != null && shareExplanation != null"
+          class="sidebar-option-description builds-share-sidebar-option-explanation"
+        >
+          <div class="sidebar-option-icon">
+            <font-awesome-icon icon="info-circle" />
+          </div>
+          <span class="">
+            {{ $t(shareExplanation) }}
+          </span>
+        </div>
+        <div class="builds-share-sidebar-option">
+          <LanguageSelector
+            v-if="typeOption != null"
+            v-model:language="language"
+            class="builds-share-sidebar-option-long"
+            @update:language="getText()"
+          />
+        </div>
+        <div
+          v-if="typeOption != null"
+          class="builds-share-sidebar-option"
+        >
+          <Checkbox
+            v-model="linkOnly"
+            :binary="true"
+            @change="getText()"
+          />
+          <div
+            class="builds-share-sidebar-checkbox-caption"
+            :class="{
+              'builds-share-sidebar-checkbox-caption-disabled': !linkOnly
+            }"
+            @click="() => {
+              linkOnly = !linkOnly
+              getText()
+            }"
+          >
+            {{ $t('caption.linkOnly') }}
+          </div>
+        </div>
+        <div
+          v-if="typeOption != null && !linkOnly"
+          class="builds-share-sidebar-option"
+        >
+          <Checkbox
+            v-model="includeLink"
+            :binary="true"
+            @change="getText()"
+          />
+          <div
+            class="builds-share-sidebar-checkbox-caption"
+            :class="{
+              'builds-share-sidebar-checkbox-caption-disabled': !includeLink
+            }"
+            @click="() => {
+              includeLink = !includeLink
+              getText()
+            }"
+          >
+            {{ $t('caption.includeLinkToInteractiveVersion') }}
+          </div>
+        </div>
+        <div
+          v-if="typeOption != null && !linkOnly && includeLink"
+          class="sidebar-option-description builds-share-sidebar-option-explanation"
+        >
+          <div class="sidebar-option-icon">
+            <font-awesome-icon icon="info-circle" />
+          </div>
+          <span class="">
+            {{ $t('message.includeLinkToInteractiveVersionExplanation') }}
+          </span>
+        </div>
+        <div
+          v-if="typeOption != null && !linkOnly"
+          class="builds-share-sidebar-option"
+        >
+          <Checkbox
+            v-model="includePrices"
+            :binary="true"
+            @change="getText()"
+          />
+          <div
+            class="builds-share-sidebar-checkbox-caption"
+            :class="{
+              'builds-share-sidebar-checkbox-caption-disabled': !includePrices
+            }"
+            @click="() => {
+              includePrices = !includePrices
+              getText()
+            }"
+          >
+            {{ $t('caption.includePrices') }}
+          </div>
+        </div>
+        <div class="builds-share-sidebar-option builds-share-sidebar-copy-button">
+          <Button
+            v-if="!isLoading && typeOption != null"
+            @click="copyText()"
+          >
+            <font-awesome-icon
+              icon="copy"
+              class="icon-before-text"
+            />
+            <span>{{ $t('caption.copyElement') }}</span>
+          </Button>
+          <span
+            v-if="!isLoading && typeOption != null"
+            class="builds-share-sidebar-text-length"
+          >
+            {{ lengthCaption }}
+          </span>
+        </div>
+      </div>
+      <div
+        v-if="isLoading"
+        class="builds-share-sidebar-option builds-share-sidebar-loading"
+      >
+        <Loading />
+      </div>
+      <div
+        v-if="!isLoading && typeOption != null"
+        class="builds-share-sidebar-option builds-share-sidebar-text"
+      >
+        <TextArea
+          v-if="typeOption != null"
+          v-model="text"
+          rows="20"
+        />
+      </div>
     </div>
-    <span v-if="!isLoading && typeOption != null">
-      {{ lengthCaption }}
-    </span>
   </div>
 </template>
 
@@ -135,19 +247,19 @@ const typeOptions: IBuildsShareTypeOption[] = [
   {
     caption: 'caption.redditMarkdown',
     icon: ['fab', 'reddit-alien'],
-    iconCssClass: 'builds-share-sidebar-option-reddit-icon',
-    type: BuildsToTextType.markdown
+    iconCssClass: 'builds-share-sidebar-type-option-reddit-icon',
+    type: 'redditMarkdown'
   },
   {
     caption: 'caption.discordMarkdown',
     icon: ['fab', 'discord'],
-    iconCssClass: 'builds-share-sidebar-option-discord-icon',
-    type: BuildsToTextType.markdown
+    iconCssClass: 'builds-share-sidebar-type-option-discord-icon',
+    type: 'discordMarkdown'
   },
   {
     caption: 'caption.simpleText',
     icon: 'italic',
-    type: BuildsToTextType.simpleText
+    type: 'simpleText'
   }
 ]
 const toolbarButtons: IToolbarButton[] = [
@@ -174,7 +286,8 @@ const toolbarButtons: IToolbarButton[] = [
 const availableBuilds = ref<IBuildSummary[]>([])
 const buildsExportToolbar = ref()
 const buildsToShare = ref<IBuild[]>([])
-const includePrices = ref(false)
+const includeLink = ref(true)
+const includePrices = ref(true)
 const isLoading = ref(false)
 const language = ref<string>(vueI18n.locale.value)
 const linkOnly = ref(false)
@@ -183,7 +296,28 @@ const text = ref<string>()
 const typeOption = ref<IBuildsShareTypeOption>()
 
 const allSelected = computed(() => selectedBuilds.value.length === availableBuilds.value.length)
-const lengthCaption = computed(() => `${vueI18n.t('caption.length')}: ${text.value?.length ?? 0} ${vueI18n.t('caption.characters').toLocaleLowerCase()}`)
+const buildsToTextType = computed(() => {
+  switch (typeOption.value?.type) {
+    case 'discordMarkdown':
+    case 'redditMarkdown':
+      return BuildsToTextType.markdown
+    case 'simpleText':
+      return BuildsToTextType.simpleText
+    default:
+      return undefined
+  }
+})
+const lengthCaption = computed(() => `${vueI18n.t('caption.length')}: ${text.value?.length.toLocaleString() ?? 0} ${vueI18n.t('caption.characters').toLocaleLowerCase()}`)
+const shareExplanation = computed(() => {
+  switch (typeOption.value?.type) {
+    case 'discordMarkdown':
+      return 'message.discordMarkdownExplanation'
+    case 'redditMarkdown':
+      return 'message.redditMarkdownExplanation'
+    default:
+      return undefined
+  }
+})
 const toolbarContainer = computed(() => buildsExportToolbar.value?.container)
 
 onMounted(() => initialize())
@@ -215,13 +349,21 @@ async function getText() {
   text.value = await _buildPropertiesService.toText(
     buildsToShare.value,
     {
+      includeLink: includeLink.value,
       includePrices: includePrices.value,
       language: language.value,
       linkOnly: linkOnly.value,
-      type: typeOption.value!.type
+      type: buildsToTextType.value!
     })
 
   isLoading.value = false
+}
+
+/**
+ * Displays the builds selection screen.
+ */
+function goBackToBuildsSelection() {
+  buildsToShare.value = []
 }
 
 /**
@@ -275,15 +417,40 @@ function toggleSelection() {
 
 
 <style scoped>
+@import '../../css/button.css';
 @import '../../css/icon.css';
 @import '../../css/sidebar.css';
 
-.builds-share-sidebar-language-selector {
-  max-width: 20.75rem;
+.builds-share-sidebar {
+  max-width: 100%;
+  min-width: 100%;
+  width: 100vw;
 }
 
-.builds-share-sidebar-line {
-  gap: 1rem;
+.builds-share-sidebar-back-button {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.builds-share-sidebar-checkbox-caption {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  height: 2.5rem;
+}
+
+.builds-share-sidebar-checkbox-caption-disabled {
+  opacity: 50%;
+}
+
+.builds-share-sidebar-copy-button {
+  margin-top: 2.5rem;
+}
+
+.builds-share-sidebar-loading {
+  margin-top: 2.5rem;
 }
 
 .builds-share-sidebar-name {
@@ -293,26 +460,20 @@ function toggleSelection() {
 .builds-share-sidebar-option {
   align-items: center;
   display: flex;
-  gap: 0.5rem;
-  height: 100%;
-  padding: 0.5rem;
+  gap: 1rem;
+  width: 100%;
 }
 
-.builds-share-sidebar-option-discord-icon {
-  color: #5562ea
-}
-
-.builds-share-sidebar-option-icon {
-  align-items: center;
+.builds-share-sidebar-options {
+  align-items: flex-start;
   display: flex;
-  justify-content: center;
-  width: 2rem;
-  font-size: 1.5rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 50%;
 }
 
-.builds-share-sidebar-option-reddit-icon {
-  color: #ff4500;
-  font-size: 2rem;
+.builds-share-sidebar-option-explanation {
+  grid-column: span 2;
 }
 
 .builds-share-sidebar-selection {
@@ -320,23 +481,76 @@ function toggleSelection() {
 }
 
 .builds-share-sidebar-text {
-  min-width: 100%;
-  width: 100vw;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.builds-share-sidebar-text > textarea {
+  width: 100%;
+}
+
+.builds-share-sidebar-text-length {
+  color: var(--util-color7);
+  font-size: 0.85rem;
 }
 
 .builds-share-sidebar-type {
   height: 2.75rem;
-  width: 20.725rem;
+  width: 100%;
+}
+
+.builds-share-sidebar-type-option {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  height: 2.5rem;
+  padding: 0.25rem;
+}
+
+.builds-share-sidebar-type-option-discord-icon {
+  color: #5562ea
+}
+
+.builds-share-sidebar-type-option-icon {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 2rem;
+  font-size: 1.25rem;
+}
+
+.builds-share-sidebar-type-option-reddit-icon {
+  color: #ff4500;
+  font-size: 1.75rem;
+}
+
+.builds-share-sidebar-value {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  height: 100%;
 }
 
 /* Smartphone in portrait */
-@media only screen and (max-width: 480px) {}
+@media only screen and (max-width: 480px) {
+  .builds-share-sidebar-options {
+    width: 100%;
+  }
+}
 
 /* Smartphone in landscape */
-@media only screen and (min-width: 481px) and (max-width: 767px) {}
+@media only screen and (min-width: 481px) and (max-width: 767px) {
+  .builds-share-sidebar-options {
+    width: 75%;
+  }
+}
 
 /* Tablet in portrait */
-@media only screen and (min-width: 768px) and (max-width: 991px) {}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .builds-share-sidebar-options {
+    width: 100%;
+  }
+}
 
 /* Tablet in landscape */
 @media only screen and (min-width: 992px) and (max-width: 1299px) {}

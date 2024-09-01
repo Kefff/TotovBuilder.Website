@@ -88,7 +88,7 @@ export default class StatsUtils {
    * Gets a value display value in the standard format associated with the type of the value.
    * @param type - Type of value to display.
    * @param value - Value to display.
-   * * @param language - Language in which the value must be localized. By default, take the language of the browser.
+   * @param language - Language in which the value must be localized. By default, take the language of the browser.
    * @returns Display value in the standard format associated with the type of value.
    */
   public static getStandardDisplayValue(type: DisplayValueType, value: number, language: string | undefined = navigator.language): string {

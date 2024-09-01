@@ -3,9 +3,9 @@
  */
 export interface IBuildsToTextOptions {
   /**
-   * Indicates whether only the link of the build should be included.
+   * Indicates whether the link should be included.
    */
-  linkOnly: boolean,
+  includeLink: boolean,
 
   /**
    * Indicates whether prices should be included.
@@ -16,6 +16,11 @@ export interface IBuildsToTextOptions {
    * Language.
    */
   language: string,
+
+  /**
+   * Indicates whether only the link of the build should be included.
+   */
+  linkOnly: boolean,
 
   /**
    * Type of expected text.
