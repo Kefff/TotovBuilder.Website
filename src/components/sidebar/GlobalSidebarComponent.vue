@@ -229,6 +229,7 @@ function getBuildsShareSideBarSubtitle(parameters: BuildsShareSideBarParameters)
 @import '../../css/sidebar.css';
 
 .global-sidebar-content {
+  margin-top: 1rem;
   max-width: calc(50vw - 1rem - 1rem);
 }
 

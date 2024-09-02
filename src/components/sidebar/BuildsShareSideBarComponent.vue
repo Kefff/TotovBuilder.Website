@@ -1,5 +1,8 @@
 <template>
-  <div class="builds-share-sidebar">
+  <div
+    class="builds-share-sidebar"
+    :class="{ 'builds-share-sidebar-large': buildsToShare.length > 0 }"
+  >
     <div
       v-if="buildsToShare.length === 0"
       class="sidebar-option builds-share-sidebar-selection"
@@ -21,21 +24,6 @@
     </div>
     <div v-else>
       <div class="sidebar-option builds-share-sidebar-options">
-        <div
-          v-if="(parameters.buildSummaries?.length ?? 0) > 0"
-          class="builds-share-sidebar-option"
-        >
-          <Button
-            class="p-button-text button-discreet builds-share-sidebar-back-button"
-            @click="goBackToBuildsSelection()"
-          >
-            <font-awesome-icon
-              icon="arrow-left"
-              class="icon-before-text"
-            />
-            <span>{{ $t('caption.backToBuildsSelection') }}</span>
-          </Button>
-        </div>
         <div class="builds-share-sidebar-option">
           <Dropdown
             v-model="typeOption"
@@ -360,13 +348,6 @@ async function getText() {
 }
 
 /**
- * Displays the builds selection screen.
- */
-function goBackToBuildsSelection() {
-  buildsToShare.value = []
-}
-
-/**
  * Initializes the component.
  */
 function initialize() {
@@ -424,14 +405,10 @@ function toggleSelection() {
 .builds-share-sidebar {
   max-width: 100%;
   min-width: 100%;
-  width: 100vw;
 }
 
-.builds-share-sidebar-back-button {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  width: 100%;
+.builds-share-sidebar-large {
+  width: 100vw;
 }
 
 .builds-share-sidebar-checkbox-caption {
