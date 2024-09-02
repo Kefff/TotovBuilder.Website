@@ -691,6 +691,7 @@ describe('BuildPropertiesService', () => {
       const result = await service.toText(
         [build],
         {
+          includeLink: true,
           includePrices: true,
           language,
           linkOnly: false,
@@ -787,6 +788,7 @@ describe('BuildPropertiesService', () => {
       const result = await buildPropertiesService.toText(
         [build1, build2],
         {
+          includeLink: true,
           includePrices: true,
           language: 'fr',
           linkOnly: false,
@@ -847,6 +849,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       const result = await service.toText(
         [build1],
         {
+          includeLink: true,
           includePrices: false,
           language: 'fr',
           linkOnly: false,
@@ -947,6 +950,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       const result = await buildPropertiesService.toText(
         [build],
         {
+          includeLink: true,
           includePrices: true,
           language: 'fr',
           linkOnly: false,
@@ -967,7 +971,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
 *Créé avec [Totov Builder](http://localhost:3000)*`)
     })
 
-    it('should only include the link', async () => {
+    it('should only include links', async () => {
       // Arrange
       useItemServiceMock()
       useTarkovValuesServiceMock()
@@ -982,6 +986,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       const result = await buildPropertiesService.toText(
         [build1, build2],
         {
+          includeLink: true,
           includePrices: true,
           language: 'fr',
           linkOnly: true,
@@ -991,6 +996,98 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       // Assert
       expect(result).toBe(`[Build 1](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU)
 [Build 2](http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv)`)
+    })
+
+    it('should not include links', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventorySlotService)
+      Services.configure(ReductionService)
+
+      const buildPropertiesService = new BuildPropertiesService()
+
+      // Act
+      const result = await buildPropertiesService.toText(
+        [build1, build2],
+        {
+          includeLink: false,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
+
+      // Assert
+      expect(result).toBe(`# Build 1
+
+↕️ Recul vertical **76**   ↔️ Recul horizontal **226**   ✋ Ergonomie **34** (**-9,5%**)  
+🛡️ Classe d'armure **4**   🏃 Vitesse **-6%**   🔄 Vitesse de rotation **-9%**  
+💵 Prix **366 019₽**   ⚓ Poids **24,153 kg**  
+
+[*En bandouillère*] **RPK-16 5.45x39 light machine gun Default**   💵 Marché **43 345₽**  
+ [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*échange*) **24 218₽**  
+  95 x **5.45x39mm US gs**   💵 Prapor 1 **9 120₽**  
+
+[*Pare-balles*] **6B13 assault armor (Flora) Default**   💵 Ragman 2 **64 269₽**  
+
+[*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**   💵 Marché **63 493₽**  
+ [*Équipement*] **LShZ-2DTM face shield**   💵 Ragman 3 (*échange*) **29 805₽**  
+
+[*Sac à dos*] **WARTECH Berkut BB-102 backpack (A-TACS FG)**   💵 Ragman 2 **24 509₽**  
+ **Iskra ration pack**   💵 Jaeger 2 **24 392₽**  
+ **Bottle of water (0.6L)**   💵 La Toubib 1 (*échange*) **11 473₽**  
+
+[*Poches*] **Morphine injector**   💵 Marché **17 421₽**  
+[*Poches*] **Vaseline balm**   💵 Marché **27 714₽**  
+[*Poches*] **RGD-5 hand grenade**   💵 Prapor 3 **11 822₽**  
+[*Poches*] 60 x **5.45x39mm US gs**   💵 Prapor 1 **5 760₽**  
+
+[*Lunettes*] **Crossbow tactical glasses**   💵 Ragman 2 **3 885₽**  
+
+[*Masque*] **Cold Fear infrared balaclava**   💵 Ragman 2 **4 793₽**  
+
+
+
+# Build 2
+
+↕️ Recul vertical **368**   ↔️ Recul horizontal **255**   ✋ Ergonomie **52** (**-3%**)  
+🛡️ Classe d'armure **4**   🏃 Vitesse **-3%**   🔄 Vitesse de rotation **-1%**  
+💵 Prix **444$** et **184 252₽** (= **247 747₽**)   ⚓ Poids **8,936 kg**  
+
+[*Holster*] **Beretta M9A3 9x19 pistol Default**   💵 Peacekeeper 1 **107$** (= **15 337₽**)  
+ [*Canon*]  
+  [*Bouche*] **SIG Sauer SRD9 9x19 sound suppressor**   💵 Peacekeeper 2 **242$** (= **34 606₽**)  
+ [*Chargeur*]  
+  17 x **9x19mm Green Tracer**   💵 Le Mécano 1 **1 241₽**  
+ [*Dispositif tactique*] **SureFire X400 Ultra tactical flashlight with laser**   💵 Peacekeeper 2 **95$** (= **13 552₽**)  
+
+[*Gilet tactique*] **Shellback Tactical Banshee plate carrier (A-TACS AU)**   💵 Marché **33 950₽**  
+ [*Plaque frontale*] **Monoclete level III PE ballistic plate**   💵 Peacekeeper 3 (*échange*) **31 503₽**  
+ [*Plaque dorsale*] **Monoclete level III PE ballistic plate**   💵 Peacekeeper 3 (*échange*) **31 503₽**  
+ **Salewa first aid kit**   💵 La Toubib 1 (*échange*) **21 923₽**  
+
+[*Dispositif audio*] **Walker's Razor Digital headset**   💵 Marché **64 132₽**  
+
+[*Pochette*] **Secure container Alpha**  
+
+[*Fourreau*] **6Kh5 Bayonet**  
+
+
+
+*Marchands configurés*  
+Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
+Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
+Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣  
+
+*Créé avec [Totov Builder](http://localhost:3000)*`)
     })
   })
 
@@ -1155,6 +1252,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       const result = await service.toText(
         [build],
         {
+          includeLink: true,
           includePrices: true,
           language,
           linkOnly: false,
@@ -1251,6 +1349,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       const result = await buildPropertiesService.toText(
         [build1, build2],
         {
+          includeLink: true,
           includePrices: true,
           language: 'fr',
           linkOnly: false,
@@ -1313,6 +1412,7 @@ Créé avec Totov Builder`)
       const result = await service.toText(
         [build1],
         {
+          includeLink: true,
           includePrices: false,
           language: 'fr',
           linkOnly: false,
@@ -1414,6 +1514,7 @@ Créé avec Totov Builder`)
       const result = await buildPropertiesService.toText(
         [build],
         {
+          includeLink: true,
           includePrices: true,
           language: 'fr',
           linkOnly: false,
@@ -1435,7 +1536,7 @@ Ref Non   Skier 1   La Toubib 3
 Créé avec Totov Builder`)
     })
 
-    it('should only include the link', async () => {
+    it('should only include links', async () => {
       // Arrange
       useItemServiceMock()
       useTarkovValuesServiceMock()
@@ -1452,6 +1553,7 @@ Créé avec Totov Builder`)
       const result = await buildPropertiesService.toText(
         [build1, build2],
         {
+          includeLink: true,
           includePrices: true,
           language: 'fr',
           linkOnly: true,
@@ -1466,6 +1568,98 @@ http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9G
 
 Build 2
 http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv`)
+    })
+
+    it('should not include links', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventorySlotService)
+      Services.configure(ReductionService)
+
+      const buildPropertiesService = new BuildPropertiesService()
+
+      // Act
+      const result = await buildPropertiesService.toText(
+        [build1, build2],
+        {
+          includeLink: false,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
+
+      // Assert
+      expect(result).toBe(`Build 1
+
+Recul vertical 76   Recul horizontal 226   Ergonomie 34 (-9,5%)
+Classe d'armure 4   Vitesse -6%   Vitesse de rotation -9%
+Prix 366 019₽   Poids 24,153 kg
+
+[En bandouillère] RPK-16 5.45x39 light machine gun Default   Marché 43 345₽
+ [Chargeur] RPK-16 5.45x39 95-round drum magazine   Prapor 3 (échange) 24 218₽
+  95 x 5.45x39mm US gs   Prapor 1 9 120₽
+
+[Pare-balles] 6B13 assault armor (Flora) Default   Ragman 2 64 269₽
+
+[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   Marché 63 493₽
+ [Équipement] LShZ-2DTM face shield   Ragman 3 (échange) 29 805₽
+
+[Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)   Ragman 2 24 509₽
+ Iskra ration pack   Jaeger 2 24 392₽
+ Bottle of water (0.6L)   La Toubib 1 (échange) 11 473₽
+
+[Poches] Morphine injector   Marché 17 421₽
+[Poches] Vaseline balm   Marché 27 714₽
+[Poches] RGD-5 hand grenade   Prapor 3 11 822₽
+[Poches] 60 x 5.45x39mm US gs   Prapor 1 5 760₽
+
+[Lunettes] Crossbow tactical glasses   Ragman 2 3 885₽
+
+[Masque] Cold Fear infrared balaclava   Ragman 2 4 793₽
+
+
+
+Build 2
+
+Recul vertical 368   Recul horizontal 255   Ergonomie 52 (-3%)
+Classe d'armure 4   Vitesse -3%   Vitesse de rotation -1%
+Prix 444$ et 184 252₽ (= 247 747₽)   Poids 8,936 kg
+
+[Holster] Beretta M9A3 9x19 pistol Default   Peacekeeper 1 107$ (= 15 337₽)
+ [Canon]
+  [Bouche] SIG Sauer SRD9 9x19 sound suppressor   Peacekeeper 2 242$ (= 34 606₽)
+ [Chargeur]
+  17 x 9x19mm Green Tracer   Le Mécano 1 1 241₽
+ [Dispositif tactique] SureFire X400 Ultra tactical flashlight with laser   Peacekeeper 2 95$ (= 13 552₽)
+
+[Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU)   Marché 33 950₽
+ [Plaque frontale] Monoclete level III PE ballistic plate   Peacekeeper 3 (échange) 31 503₽
+ [Plaque dorsale] Monoclete level III PE ballistic plate   Peacekeeper 3 (échange) 31 503₽
+ Salewa first aid kit   La Toubib 1 (échange) 21 923₽
+
+[Dispositif audio] Walker's Razor Digital headset   Marché 64 132₽
+
+[Pochette] Secure container Alpha
+
+[Fourreau] 6Kh5 Bayonet
+
+
+
+Marchands configurés
+Marché Oui   Jaeger 4   Le Mécano 4
+Peacekeeper 4   Prapor 4   Ragman 4
+Ref 4   Skier 4   La Toubib 4
+
+Créé avec Totov Builder`)
     })
   })
 
