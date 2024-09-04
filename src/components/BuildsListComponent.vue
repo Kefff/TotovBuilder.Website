@@ -168,7 +168,7 @@ watch(
   () => filterAndSortBuildSummaries())
 
 watch(
-  () => modelFilterAndSortingData.value.filter,
+  () => modelFilterAndSortingData.value,
   () => filterAndSortBuildSummaries())
 
 /**
@@ -228,27 +228,16 @@ async function filterBuildSummaries(buildSummariesToFilter: IBuildSummary[]): Pr
  * Applies the filter and sort, and saves the sort.
  * @param updatedParameters - Filter and sort data updated by the side bar.
  */
-async function onFilterAndSortSidebarClose(updatedParameters?: GlobalSidebarDisplayedComponentParameters) {
+function onFilterAndSortSidebarClose(updatedParameters?: GlobalSidebarDisplayedComponentParameters) {
   const updatedFilterAndSortingData = updatedParameters as BuildFilterAndSortingData
   const hasSortChange =
     updatedFilterAndSortingData.property !== modelFilterAndSortingData.value.property
     || updatedFilterAndSortingData.order !== modelFilterAndSortingData.value.order
   const hasFilterChange = updatedFilterAndSortingData.filter !== modelFilterAndSortingData.value.filter
 
-  if (!hasSortChange && !hasFilterChange) {
-    return
+  if (hasSortChange || hasFilterChange) {
+    modelFilterAndSortingData.value = updatedFilterAndSortingData
   }
-
-  let buildSummariesToFilter = [...(hasFilterChange ? props.buildSummaries : buildSummariesInternal.value)]
-
-  if (hasFilterChange) {
-    buildSummariesToFilter = await filterBuildSummaries(buildSummariesToFilter)
-  }
-
-  buildSummariesToFilter = await sortBuildSummaries(buildSummariesToFilter)
-  buildSummariesInternal.value = buildSummariesToFilter
-
-  modelFilterAndSortingData.value = updatedFilterAndSortingData
 }
 
 /**
