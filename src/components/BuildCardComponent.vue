@@ -459,7 +459,8 @@ function setItemsListElementHasScroll() {
   align-items: center;
   display: flex;
   font-size: 1.25rem;
-  gap: 0.5rem
+  gap: 0.5rem;
+  white-space: preserve;
 }
 
 .build-card-title > div {

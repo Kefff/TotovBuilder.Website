@@ -134,6 +134,7 @@
   justify-content: center;
   min-height: 2.75rem;
   text-align: center;
+  white-space: preserve;
 }
 
 .build-title-in-toolbar {

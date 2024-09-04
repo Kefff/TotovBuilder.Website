@@ -456,15 +456,15 @@ describe('getSummary()', () => {
       [
         build1,
         {
-          horizontalRecoil: 226.44,
-          verticalRecoil: 76.16
+          horizontalRecoil: 216.24,
+          verticalRecoil: 65.96000000000001
         } as IRecoil
       ],
       [
         build2,
         {
-          horizontalRecoil: 254.8,
-          verticalRecoil: 367.64
+          horizontalRecoil: 249.34,
+          verticalRecoil: 362.18
         } as IRecoil
       ],
       [

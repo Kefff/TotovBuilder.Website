@@ -131,6 +131,7 @@ describe('InventorySlotPropertiesService', () => {
       const result = await service.toText(
         inventorySlot,
         {
+          includeLink: true,
           includePrices: true,
           language: 'fr',
           linkOnly: false,
@@ -155,6 +156,7 @@ describe('InventorySlotPropertiesService', () => {
           typeId: 'pockets'
         },
         {
+          includeLink: true,
           includePrices: true,
           language: 'fr',
           linkOnly: false,
@@ -276,6 +278,7 @@ describe('InventorySlotPropertiesService', () => {
       const result = await service.toText(
         inventorySlot,
         {
+          includeLink: true,
           includePrices: true,
           language: 'fr',
           linkOnly: false,
@@ -300,6 +303,7 @@ describe('InventorySlotPropertiesService', () => {
           typeId: 'pockets'
         },
         {
+          includeLink: true,
           includePrices: true,
           language: 'fr',
           linkOnly: false,
@@ -762,8 +766,8 @@ describe('InventorySlotPropertiesService', () => {
         [
           inventorySlot2,
           {
-            horizontalRecoil: 226.44,
-            verticalRecoil: 76.16
+            horizontalRecoil: 216.24,
+            verticalRecoil: 65.96000000000001
           } as IRecoil
         ],
         [

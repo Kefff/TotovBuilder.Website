@@ -568,6 +568,7 @@ describe('InventoryItemService', () => {
       const result = await service.toText(
         inventoryItem,
         {
+          includeLink: true,
           includePrices: true,
           language: 'fr',
           linkOnly: false,
@@ -592,6 +593,7 @@ describe('InventoryItemService', () => {
       const result = await service.toText(
         inventoryItem,
         {
+          includeLink: true,
           includePrices: false,
           language: 'fr',
           linkOnly: false,
@@ -628,6 +630,7 @@ describe('InventoryItemService', () => {
           quantity: 1
         },
         {
+          includeLink: true,
           includePrices: true,
           language,
           linkOnly: false,
@@ -652,6 +655,7 @@ describe('InventoryItemService', () => {
       const result = await service.toText(
         inventoryItem,
         {
+          includeLink: true,
           includePrices: true,
           language: 'fr',
           linkOnly: false,
@@ -1004,6 +1008,7 @@ describe('InventoryItemService', () => {
       const result = await service.toText(
         inventoryItem,
         {
+          includeLink: true,
           includePrices: true,
           language: 'fr',
           linkOnly: false,
@@ -1028,6 +1033,7 @@ describe('InventoryItemService', () => {
       const result = await service.toText(
         inventoryItem,
         {
+          includeLink: true,
           includePrices: false,
           language: 'fr',
           linkOnly: false,
@@ -1064,6 +1070,7 @@ describe('InventoryItemService', () => {
           quantity: 1
         },
         {
+          includeLink: true,
           includePrices: true,
           language,
           linkOnly: false,
@@ -1088,6 +1095,7 @@ describe('InventoryItemService', () => {
       const result = await service.toText(
         inventoryItem,
         {
+          includeLink: true,
           includePrices: true,
           language: 'fr',
           linkOnly: false,
@@ -3089,9 +3097,9 @@ describe('InventoryItemService', () => {
         } as IInventoryItem,
         {
           horizontalRecoil: 280,
-          horizontalRecoilWithMods: 254.8,
+          horizontalRecoilWithMods: 249.34,
           verticalRecoil: 404,
-          verticalRecoilWithMods: 367.64
+          verticalRecoilWithMods: 362.18
         } as IInventoryItemRecoil
       ],
       [
@@ -3115,9 +3123,9 @@ describe('InventoryItemService', () => {
         } as IInventoryItem,
         {
           horizontalRecoil: 333,
-          horizontalRecoilWithMods: 333,
+          horizontalRecoilWithMods: 318,
           verticalRecoil: 112,
-          verticalRecoilWithMods: 112
+          verticalRecoilWithMods: 97
         } as IInventoryItemRecoil
       ],
       [
@@ -3206,9 +3214,9 @@ describe('InventoryItemService', () => {
         } as IInventoryItem,
         {
           horizontalRecoil: 650,
-          horizontalRecoilWithMods: 650,
+          horizontalRecoilWithMods: 765,
           verticalRecoil: 442,
-          verticalRecoilWithMods: 442
+          verticalRecoilWithMods: 557
         } as IInventoryItemRecoil
       ]
     ])('should get the recoil of an inventory item', async (inventoryItem: IInventoryItem, expected: IInventoryItemRecoil) => {

@@ -393,8 +393,8 @@ export class InventoryItemService {
     }
 
     // Applying to the weapon recoil the recoil modifier percentages of its mods
-    recoil.horizontalRecoilWithMods = recoil.horizontalRecoil + (recoil.horizontalRecoil * modsRecoilModifierPercentages)
-    recoil.verticalRecoilWithMods = recoil.verticalRecoil + (recoil.verticalRecoil * modsRecoilModifierPercentages)
+    recoil.horizontalRecoilWithMods += recoil.horizontalRecoilWithMods * modsRecoilModifierPercentages
+    recoil.verticalRecoilWithMods += recoil.verticalRecoilWithMods * modsRecoilModifierPercentages
 
     return recoil
   }
