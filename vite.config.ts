@@ -38,14 +38,18 @@ export default defineConfig({
   test: {
     coverage: {
       exclude: [
-        '**/scripts/**',
-        'src/__tests__/**',
-        'src/components/**',
+        '**/*.d.ts',
+        'dist/*',
+        'scripts/*',
+        'src/__tests__/*',
+        'src/components/*',
         'src/main.ts',
-        'src/models/**',
-        'src/plugins/**',
+        'src/models/*',
+        'src/polyfill.ts',
+        'src/plugins/*',
         'src/services/FileService.ts', // Requires access to the file system
-        'src/servicesConfiguration.ts'
+        'src/servicesConfiguration.ts',
+        'vite.config.ts'
       ]
     },
     environment: 'happy-dom', // Required for browser components like "document" to be accessible during tests
