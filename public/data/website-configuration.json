@@ -2,6 +2,7 @@
   "allowCookiesStorageKey": "allow_cookies",
   "bugReportUrl": "https://discord.gg/qAtpHHbGUu",
   "buildSharingUrl": "s/",
+  "buildsFilterStorageKey": "builds_filter",
   "buildsSortFieldStorageKey": "builds_sort_field",
   "buildsSortOrderStorageKey": "builds_sort_order",
   "buildStorageKeyPrefix": "build_",
@@ -29,6 +30,6 @@
   "notificationSuccessDuration": 5,
   "notificationWarningDuration": 10,
   "postUpdatePeriod": false,
-  "version": "1.8.1",
+  "version": "2.0.0",
   "versionStorageKey": "version"
 }

@@ -182,11 +182,11 @@
     {{ $t('caption.modifiers') }}
   </div>
   <div
-    v-if="ammunition.recoilModifierPercentage !== 0 || ammunition.accuracyModifierPercentage !== 0"
+    v-if="ammunition.recoilModifier !== 0 || ammunition.accuracyModifierPercentage !== 0"
     class="stats-line"
   >
     <div
-      v-if="ammunition.recoilModifierPercentage !== 0"
+      v-if="ammunition.recoilModifier !== 0"
       class="stats-entry"
     >
       <div class="stats-caption">
@@ -197,8 +197,8 @@
         <span>{{ $t('caption.recoil') }} :</span>
       </div>
       <div class="stats-value">
-        <span :class="StatsUtils.getValueColorClass(ammunition.recoilModifierPercentage, true)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, ammunition.recoilModifierPercentage) }}
+        <span :class="StatsUtils.getValueColorClass(ammunition.recoilModifier, true)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifier, ammunition.recoilModifier) }}
         </span>
       </div>
     </div>
@@ -309,7 +309,7 @@ const hasModifiers = computed(() =>
   || ammunition.value.durabilityBurnModifierPercentage !== 0
   || ammunition.value.heavyBleedingChance !== 0
   || ammunition.value.lightBleedingChance !== 0
-  || ammunition.value.recoilModifierPercentage !== 0)
+  || ammunition.value.recoilModifier !== 0)
 
 /**
  * Gets the tooltip for an armor penetration.

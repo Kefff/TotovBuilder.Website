@@ -318,7 +318,7 @@ export class ReductionService {
     const lightBleedingChance = reducedItem['l'] as number ?? 0
     const penetrationPower = reducedItem['pp'] as number ?? 0
     const projectiles = reducedItem['p'] as number ?? 1
-    const recoilModifierPercentage = reducedItem['r'] as number ?? 0
+    const recoilModifier = reducedItem['r'] as number ?? 0
     const subsonic = reducedItem['su'] != null
     const tracer = reducedItem['t'] != null
     const velocity = reducedItem['v'] as number
@@ -337,7 +337,7 @@ export class ReductionService {
       lightBleedingChance,
       penetrationPower,
       projectiles,
-      recoilModifierPercentage,
+      recoilModifier,
       subsonic,
       tracer,
       velocity

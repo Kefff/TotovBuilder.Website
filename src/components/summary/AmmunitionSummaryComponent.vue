@@ -74,18 +74,18 @@
     </div>
   </div>
   <div
-    v-if="ammunition.recoilModifierPercentage !== 0 || showEmptyEntries"
+    v-if="ammunition.recoilModifier !== 0 || showEmptyEntries"
     class="option-entry"
   >
     <div class="option-value">
-      <div v-if="ammunition.recoilModifierPercentage !== 0">
+      <div v-if="ammunition.recoilModifier !== 0">
         <Tooltip :tooltip="$t('caption.recoil')">
           <font-awesome-icon
             icon="arrows-alt"
             class="icon-before-text"
           />
-          <span :class="StatsUtils.getValueColorClass(ammunition.recoilModifierPercentage, true)">
-            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, ammunition.recoilModifierPercentage) }}
+          <span :class="StatsUtils.getValueColorClass(ammunition.recoilModifier, true)">
+            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifier, ammunition.recoilModifier) }}
           </span>
         </Tooltip>
       </div>

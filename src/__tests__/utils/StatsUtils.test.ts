@@ -19,6 +19,7 @@ describe('StringUtils.getStandardDisplayValue()', () => {
     [DisplayValueType.movementSpeedModifierPercentage, '+123,456.8%'],
     [DisplayValueType.price, '1,235'],
     [DisplayValueType.recoil, '1,235'],
+    [DisplayValueType.recoilModifier, '+1,234.6'],
     [DisplayValueType.recoilModifierPercentage, '+123,456.8%'],
     [DisplayValueType.turningSpeedModifierPercentage, '+123,456.8%'],
     [DisplayValueType.weight, '1,234.568 kg'],

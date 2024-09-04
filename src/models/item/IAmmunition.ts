@@ -66,9 +66,9 @@ export interface IAmmunition extends IItem {
   projectiles: number
 
   /**
-   * Modifier added to the weapon recoil in percentage.
+   * Modifier added to the weapon recoil.
    */
-  recoilModifierPercentage: number
+  recoilModifier: number
 
   /**
    * Indicates whether the ammunition is subsonic or not.

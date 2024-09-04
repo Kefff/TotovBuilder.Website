@@ -373,9 +373,12 @@ export class InventoryItemService {
       verticalRecoilWithMods: rangedWeapon.verticalRecoil
     }
 
-    // Getting the chambered or in magazine ammunition recoil modifier percentage
-    // TODO : Display the ammunition modifier next to the weapon recoil instead of including it in the calculation
-    const chamberedAmmunitionRecoilModifierPercentage = await this.getChamberedAmmunitionRecoilModifierPercentage(inventoryItem.modSlots) ?? 0
+    // Getting the chambered or in magazine ammunition recoil modifier
+    const chamberedAmmunitionRecoilModifier = await this.getChamberedAmmunitionRecoilModifier(inventoryItem.modSlots) ?? 0
+
+    // Applying the chambered ammunition recoil modifier
+    recoil.horizontalRecoilWithMods += chamberedAmmunitionRecoilModifier
+    recoil.verticalRecoilWithMods += chamberedAmmunitionRecoilModifier
 
     // Getting the recoil modifier percentage for each mods
     let modsRecoilModifierPercentages = 0
@@ -391,9 +394,7 @@ export class InventoryItemService {
 
     // Applying to the weapon recoil the recoil modifier percentages of its mods
     recoil.horizontalRecoilWithMods = recoil.horizontalRecoil + (recoil.horizontalRecoil * modsRecoilModifierPercentages)
-    // recoil.horizontalRecoilWithMods = recoil.horizontalRecoilWithMods * (1 + chamberedAmmunitionRecoilModifierPercentage)
     recoil.verticalRecoilWithMods = recoil.verticalRecoil + (recoil.verticalRecoil * modsRecoilModifierPercentages)
-    // recoil.verticalRecoilWithMods = recoil.verticalRecoilWithMods * (1 + chamberedAmmunitionRecoilModifierPercentage)
 
     return recoil
   }
@@ -748,12 +749,11 @@ export class InventoryItemService {
   }
 
   /**
-   * Gets the recoil modifier percentage of the chambered ammunition (or contained in the magazine when not having a chamber)
-   * of a ranged weapon.
+   * Gets the recoil modifier of the ammunition contained in the magazine of a ranged weapon.
    * @param modSlots - Mod slots.
-   * @returns Recoil modifier percentage.
+   * @returns Recoil modifier.
    */
-  private async getChamberedAmmunitionRecoilModifierPercentage(modSlots: IInventoryModSlot[]): Promise<number> {
+  private async getChamberedAmmunitionRecoilModifier(modSlots: IInventoryModSlot[]): Promise<number> {
     let ammunitionId: string | undefined
 
     for (const modSlot of modSlots) {
@@ -781,7 +781,7 @@ export class InventoryItemService {
     const item = await Services.get(ItemService).getItem(ammunitionId)
     const ammunition = item as IAmmunition
 
-    return ammunition.recoilModifierPercentage
+    return ammunition.recoilModifier
   }
 
   /**

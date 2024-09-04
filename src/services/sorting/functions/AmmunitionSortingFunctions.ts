@@ -25,8 +25,8 @@ export const AmmunitionSortingFunctions: ISortingFunctionList<IItem> = {
     comparisonFunction: compareByItemNumber,
     comparisonValueObtentionFunction: i => Promise.resolve((i as IAmmunition).penetrationPower)
   },
-  recoilModifierPercentage: {
+  recoilModifier: {
     comparisonFunction: compareByItemNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve((i as IAmmunition).recoilModifierPercentage)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IAmmunition).recoilModifier)
   }
 }

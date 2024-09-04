@@ -11,7 +11,7 @@ describe('comparisonFunction()', () => {
     ['fleshDamage'],
     ['fragmentationChance'],
     ['penetrationPower'],
-    ['recoilModifierPercentage']
+    ['recoilModifier']
   ])('should sort by %s', async (property: string) => {
     // Arrange
     const item1 = {
@@ -19,7 +19,7 @@ describe('comparisonFunction()', () => {
       fleshDamage: 2,
       penetrationPower: 2,
       fragmentationChance: 2,
-      recoilModifierPercentage: 2,
+      recoilModifier: 2,
       accuracyModifierPercentage: 2
     } as IAmmunition
 
@@ -28,7 +28,7 @@ describe('comparisonFunction()', () => {
       fleshDamage: 1,
       penetrationPower: 1,
       fragmentationChance: 1,
-      recoilModifierPercentage: 1,
+      recoilModifier: 1,
       accuracyModifierPercentage: 1
     } as IAmmunition
 

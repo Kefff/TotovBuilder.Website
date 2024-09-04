@@ -41,7 +41,7 @@
         v-model:sorting-data="modelSortingData"
         caption-resource="caption.recoil"
         icon="arrows-alt"
-        property="recoilModifierPercentage"
+        property="recoilModifier"
         :sorting-functions="AmmunitionSortingFunctions"
       />
     </div>

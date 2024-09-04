@@ -1,12 +1,13 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const fileSystem = require('fs')
+import { rmSync } from 'fs'
 
 console.log('Start : Deleting files that should not be deployed')
 
-const elementsToDelete = ['dist/data'] // This folder contains data used by the application when launching 'npm run dev'
+const elementsToDelete = [
+  'dist/data' // This folder contains data used by the application when launching 'npm run dev'
+]
 
 for (const elementToDelete of elementsToDelete) {
-  fileSystem.rmSync(elementToDelete, { recursive: true, force: true })
+  rmSync(elementToDelete, { recursive: true, force: true })
   console.log(`${elementToDelete} deleted`)
 }
 

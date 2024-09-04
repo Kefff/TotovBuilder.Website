@@ -24,7 +24,7 @@
       "mainCurrency": false,
       "name": "EUR",
       "sortOrder": 1,
-      "symbol": "€"
+      "symbol": "\u20AC"
     },
     {
       "iconName": "dollar-sign",
@@ -40,7 +40,7 @@
       "mainCurrency": true,
       "name": "RUB",
       "sortOrder": 3,
-      "symbol": "₽"
+      "symbol": "\u20BD"
     }
   ],
   "heavyEncumbermentWeight": 65,
@@ -92,12 +92,6 @@
       "maxLevel": 4,
       "minLevel": 1,
       "name": "jaeger",
-      "showInFilter": true
-    },
-    {
-      "maxLevel": 4,
-      "minLevel": 1,
-      "name": "ref",
       "showInFilter": true
     },
     {
