@@ -57,7 +57,7 @@
       </template>
     </Toolbar>
     <Sticky
-      v-model:isStickied="isBuildSummaryStickied"
+      v-model:is-stickied="isBuildSummaryStickied"
       align="center"
       :element-to-stick-to="toolbarContainer"
       class="build-summary-container"

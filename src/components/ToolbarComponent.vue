@@ -1,8 +1,8 @@
 <template>
   <Sticky
     ref="stickyElement"
-    v-model:isInGlobalSidebar="isInGlobalSidebar"
-    v-model:isStickied="isStickied"
+    v-model:is-in-global-sidebar="isInGlobalSidebar"
+    v-model:is-stickied="isStickied"
     class="toolbar-container"
     width="fill"
   >
@@ -150,8 +150,7 @@ function setButtonsAreHidden() {
 @import '../css/icon.css';
 
 .toolbar {
-  backdrop-filter: blur(10px);
-  background-color: rgba(18, 18, 18, 0.85);
+  background-color: var(--surface-50);
   border-color: var(--primary-color6);
   border-radius: 6px;
   border-style: solid;

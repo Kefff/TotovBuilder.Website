@@ -85,7 +85,7 @@
       </div>
       <SelectedItemFunctionalities
         v-if="inventoryItemInternal != null && item != null"
-        v-model:selectedTab="selectedTab"
+        v-model:selected-tab="selectedTab"
         :can-be-looted="canBeLooted"
         :can-have-content="itemIsContainer"
         :can-have-mods="itemIsModdable && !isBaseItem"

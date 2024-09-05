@@ -68,10 +68,7 @@
 
 .build-summary {
   align-items: center;
-  /* Same blur as the toolbar */
-  backdrop-filter: blur(10px);
-  /* Same color as the toolbar */
-  background-color: rgba(18, 18, 18, 0.85);
+  background-color: var(--surface-50);
   border-color: var(--primary-color6);
   border-radius: 6px;
   border-style: solid;

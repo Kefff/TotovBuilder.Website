@@ -273,7 +273,6 @@ function setLanguage() {
 <style>
 body {
   background-color: var(--surface-transparent-0);
-  backdrop-filter: blur(2px);
   /* Required for the #app to be able to use height:100% */
   display: flex;
   font-size: 1rem;
@@ -295,7 +294,6 @@ h1 {
 html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  background-color: var(--surface-0);
   background-image: url('../../assets/images/Background.webp');
   background-position: center;
   background-repeat: no-repeat;
