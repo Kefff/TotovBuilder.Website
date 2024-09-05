@@ -5,6 +5,7 @@
       <InputTextField
         ref="buildsListSidebarFilterInput"
         v-model:value="filter"
+        :autofocus="true"
         class="builds-list-sidebar-value"
         type="text"
         @keydown="onFilterKeyDown"
@@ -87,7 +88,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import BuildFilterAndSortingData from '../../models/utils/BuildFilterAndSortingData'
 import { BuildsListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { SortingOrder } from '../../models/utils/SortingOrder'
@@ -104,7 +105,6 @@ const modelParameters = defineModel<BuildsListSidebarParameters>('parameters', {
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _sortingService = Services.get(SortingService)
 
-const buildsListSidebarFilterInput = ref()
 const sortableProperties = ref<string[]>([])
 
 const filter = computed({
@@ -131,8 +131,6 @@ const sortOrder = computed({
 
 onMounted(() => {
   sortableProperties.value = getSortableProperties()
-
-  setFocusOnFilterInput()
 })
 
 /**
@@ -194,14 +192,6 @@ function onFilterKeyDown(event: KeyboardEvent) {
 function reset() {
   modelParameters.value = new BuildFilterAndSortingData()
   _globalSidebarService.close('BuildsListSidebar')
-}
-
-/**
- * Sets the focus on the filter input.
- */
-function setFocusOnFilterInput() {
-  const input = buildsListSidebarFilterInput.value.$el.querySelector('input') as HTMLInputElement
-  nextTick(() => input?.select()) // nextTick required for the focus to work
 }
 </script>
 

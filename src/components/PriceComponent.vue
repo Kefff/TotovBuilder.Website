@@ -166,7 +166,7 @@
 
 
 <script setup lang="ts">
-import { computed, inject, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, inject, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 import { IItem } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
@@ -214,7 +214,7 @@ const _mainCurrency = _itemService.getMainCurrency()
 const barterItemPrices = ref<IInventoryItemPrice[]>([])
 const barterItems = ref<IItem[]>([])
 const initialized = ref(false)
-const priceDetailPanel = ref()
+const priceDetailPanel = useTemplateRef('priceDetailPanel')
 
 const canShowDetails = computed(() => props.showDetails
   && (props.price.merchant !== ''
@@ -355,7 +355,7 @@ function togglePriceDetails(event: Event) {
     return
   }
 
-  priceDetailPanel.value.toggle(event)
+  priceDetailPanel.value?.toggle(event)
   event.stopPropagation()
 }
 </script>

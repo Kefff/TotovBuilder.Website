@@ -419,6 +419,9 @@ export default defineComponent({
 
     /**
      * Scrolls the dropdown to the selected item.
+     *
+     * This is to workaround for an issye where the PrimeVue scrolling to the selected element breaks
+     * because we focus the filter input.
      */
     function scrollToItemInDropdown() {
       if (item.value == null) {

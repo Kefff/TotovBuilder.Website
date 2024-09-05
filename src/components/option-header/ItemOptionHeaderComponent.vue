@@ -2,12 +2,12 @@
   <div class="option-line item-option-header">
     <div class="option-entry">
       <div class="option-caption">
-        <InputText
-          ref="filterInput"
-          v-model="filterInternal"
+        <InputTextField
+          v-model:value="filterInternal"
+          :autofocus="true"
+          :caption="$t('caption.search')"
+          caption-mode="placeholder"
           class="item-option-header-filter-input"
-          :placeholder="$t('caption.search')"
-          type="text"
         />
         <OptionHeaderSortButton
           v-model:sorting-data="modelSortingData"
@@ -59,10 +59,11 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
 import SortingData from '../../models/utils/SortingData'
 import { ItemSortingFunctions } from '../../services/sorting/functions/ItemSortingFunctions'
+import InputTextField from '../InputTextFieldComponent.vue'
 import OptionHeaderSortButton from './OptionHeaderSortButtonComponent.vue'
 
 const modelFilter = defineModel<string>('filter', { required: true })
@@ -79,19 +80,10 @@ withDefaults(
 const _filterDelay = 500 // Milliseconds passed without typing before emitting the filter update
 let _filterLastEdit = new Date()
 
-const filterInput = ref()
 
 const filterInternal = computed({
   get: () => modelFilter.value,
   set: (value: string) => onFilterChanged(value)
-})
-
-onMounted(() => {
-  // Focus the filter input to be able to type the name of the item.
-  // This conflicts with the PrimeVue as it prevents the automatic scrolling to the selected item.
-  // However this is not a problem because the PrimeVue behavior is not always working
-  // and a workaround has been made.
-  filterInput.value.$el.select()
 })
 
 /**

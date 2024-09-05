@@ -79,7 +79,7 @@
 
 
 <script setup lang="ts">
-import { computed, inject, ref } from 'vue'
+import { computed, inject, useTemplateRef } from 'vue'
 import { ICurrency } from '../models/configuration/ICurrency'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import vueI18n from '../plugins/vueI18n'
@@ -103,7 +103,7 @@ const props = withDefaults(
 const _isTouchScreen = inject<boolean>('isTouchScreen')
 let _mainCurrency: ICurrency | undefined
 
-const inventoryPriceDetailPanel = ref()
+const inventoryPriceDetailPanel = useTemplateRef('inventoryPriceDetailPanel')
 
 const canShowDetails = computed(() => props.inventoryPrice.priceByCurrency.some(ip => ip.currencyName !== mainCurrency.value?.name))
 const mainCurrency = computed(() => {
@@ -132,7 +132,7 @@ function toggleInventoryPriceDetails(event: Event) {
     return
   }
 
-  inventoryPriceDetailPanel.value.toggle(event)
+  inventoryPriceDetailPanel.value?.toggle(event)
   event.stopPropagation()
 }
 </script>

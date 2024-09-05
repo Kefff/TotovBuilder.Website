@@ -38,7 +38,7 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
@@ -137,7 +137,7 @@ const toolbarButtons: IToolbarButton[] = [
   }
 ]
 
-const buildsToolbar = ref()
+const buildsToolbar = useTemplateRef('buildsToolbar')
 const buildSummaries = ref<IBuildSummary[]>([])
 const filterAndSortingData = ref<BuildFilterAndSortingData>(new BuildFilterAndSortingData())
 const hasImported = ref(false)

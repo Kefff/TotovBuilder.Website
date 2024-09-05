@@ -126,7 +126,7 @@ const modelFilterAndSortingData = defineModel<BuildFilterAndSortingData>('filter
 const props = withDefaults(
   defineProps<{
     buildSummaries: IBuildSummary[],
-    elementToStickTo?: HTMLElement,
+    elementToStickTo?: HTMLElement | null,
     isLoading?: boolean,
     mode?: 'default' | 'export' | 'import',
     showNotExported: boolean,

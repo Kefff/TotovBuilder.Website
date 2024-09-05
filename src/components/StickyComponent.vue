@@ -18,7 +18,7 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 
 const modelIsInGlobalSidebar = defineModel<boolean>('isInGlobalSidebar', { required: false, default: false })
 const modelIsStickied = defineModel<boolean>('isStickied', { required: false, default: false })
@@ -26,7 +26,7 @@ const modelIsStickied = defineModel<boolean>('isStickied', { required: false, de
 const props = withDefaults(
   defineProps<{
     align?: 'left' | 'center' | 'right',
-    elementToStickTo?: HTMLElement,
+    elementToStickTo?: HTMLElement | null,
     offset?: string,
     width?: 'fit' | 'fill'
   }>(),
@@ -40,7 +40,7 @@ const props = withDefaults(
 const elementToStickToRectangle = ref<DOMRect>()
 const scrollableParentElement = ref<HTMLElement>()
 const scrollableParentElementRectangle = ref<DOMRect>()
-const stickyElement = ref<HTMLElement>()
+const stickyElement = useTemplateRef('stickyElement')
 const stickyElementRectangle = ref<DOMRect>()
 
 const leftMargin = computed(() => props.align !== 'left')

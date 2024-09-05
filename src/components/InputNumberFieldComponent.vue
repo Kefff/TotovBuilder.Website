@@ -2,17 +2,18 @@
   <div :class="'p-field input-number-field input-number-field-required-message-' + requiredMessagePosition">
     <label v-if="!captionAsPlaceholder">{{ caption }}</label>
     <InputNumber
+      ref="input"
       v-model="modelValue"
-      button-layout="horizontal"
       :class="invalid ? 'p-invalid' : ''"
-      decrement-button-icon="pi pi-minus"
       :disabled="readOnly"
-      increment-button-icon="pi pi-plus"
-      :min="min"
       :max="max"
+      :min="min"
       :placeholder="captionAsPlaceholder ? caption : undefined"
-      show-buttons
       :step="1"
+      button-layout="horizontal"
+      decrement-button-icon="pi pi-minus"
+      increment-button-icon="pi pi-plus"
+      show-buttons
     />
     <div
       v-if="invalid"
@@ -33,12 +34,13 @@
 
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, onMounted, useTemplateRef } from 'vue'
 
 const modelValue = defineModel<number>('value')
 
 const props = withDefaults(
   defineProps<{
+    autofocus?: boolean,
     caption?: string,
     captionMode: 'caption' | 'placeholder',
     max?: number,
@@ -48,6 +50,7 @@ const props = withDefaults(
     requiredMessagePosition?: 'bottom' | 'right'
   }>(),
   {
+    autofocus: false,
     caption: '',
     captionMode: 'caption',
     max: undefined,
@@ -57,8 +60,18 @@ const props = withDefaults(
     requiredMessagePosition: 'bottom'
   })
 
+const input = useTemplateRef('input')
+
 const captionAsPlaceholder = computed(() => props.captionMode === 'placeholder')
 const invalid = computed(() => props.required && modelValue.value == null)
+
+onMounted(() => {
+  if (props.autofocus) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const element = (input.value as any)?.$refs.input.$el // Cast as any needed otherwise $input is considered to not exist while it does
+    nextTick(() => element.select()) // nextTick required for the focus to work in sidebars
+  }
+})
 </script>
 
 

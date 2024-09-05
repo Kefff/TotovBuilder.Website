@@ -26,7 +26,7 @@ import InventorySlot from '../InventorySlotComponent.vue'
 import Loading from '../LoadingComponent.vue'
 import NotificationButton from '../NotificationButtonComponent.vue'
 import Sticky from '../StickyComponent.vue'
-import Toolbar from '../ToolbarComponent.vue'
+import ToolbarComponent from '../ToolbarComponent.vue'
 
 export default defineComponent({
   components: {
@@ -35,8 +35,8 @@ export default defineComponent({
     InventorySlot,
     Loading,
     NotificationButton,
-    Toolbar,
-    Sticky
+    Sticky,
+    ToolbarComponent
   },
   setup: () => {
     const route = useRoute()
@@ -598,6 +598,7 @@ export default defineComponent({
     }
 
     return {
+      _inventorySlotPathPrefix,
       build,
       buildToolbar,
       cancelDelete,
@@ -628,9 +629,8 @@ export default defineComponent({
       hasSummaryVerticalRecoil,
       hasSummaryWearableModifiers,
       hasSummaryWeight,
-      isBuildSummaryStickied,
       invalid,
-      inventorySlotPathPrefix: _inventorySlotPathPrefix,
+      isBuildSummaryStickied,
       isEditing,
       isEmpty,
       isLoading,

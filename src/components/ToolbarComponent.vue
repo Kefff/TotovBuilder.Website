@@ -49,7 +49,7 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
 import vueI18n from '../plugins/vueI18n'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
@@ -77,7 +77,7 @@ const hideButtonsWidth = 991
 const areButtonsHidden = ref(false)
 const isInGlobalSidebar = ref(false)
 const isStickied = ref(false)
-const stickyElement = ref()
+const stickyElement = useTemplateRef('stickyElement')
 
 const leftDisplayedButtons = computed(() =>
   areButtonsHidden.value

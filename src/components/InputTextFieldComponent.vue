@@ -2,6 +2,7 @@
   <div :class="'p-field field input-text-field input-text-field-required-message-' + requiredMessagePosition">
     <label v-if="!captionAsPlaceholder">{{ caption }}</label>
     <InputText
+      ref="input"
       v-model="modelValue"
       :class="inputClasses"
       :disabled="disabled"
@@ -27,12 +28,13 @@
 
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, onMounted, useTemplateRef } from 'vue'
 
 const modelValue = defineModel<string>('value')
 
 const props = withDefaults(
   defineProps<{
+    autofocus?: boolean,
     caption?: string,
     captionMode?: 'caption' | 'placeholder',
     centered?: boolean,
@@ -42,6 +44,7 @@ const props = withDefaults(
     requiredMessagePosition?: 'bottom' | 'right'
   }>(),
   {
+    autofocus: false,
     caption: '',
     captionMode: 'caption',
     centered: false,
@@ -51,12 +54,22 @@ const props = withDefaults(
     requiredMessagePosition: 'bottom'
   })
 
+const input = useTemplateRef('input')
+
 const captionAsPlaceholder = computed(() => props.captionMode === 'placeholder')
 const inputClasses = computed(() => ({
   'input-text-field-centered': props.centered,
   'p-invalid': invalid.value
 }))
 const invalid = computed(() => props.required && (modelValue.value == null || modelValue.value === ''))
+
+onMounted(() => {
+  if (props.autofocus) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const element = (input.value as any)?.$el // Cast as any needed otherwise $el is considered to not exist while it does
+    nextTick(() => element.select()) // nextTick required for the focus to work in sidebars
+  }
+})
 </script>
 
 

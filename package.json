@@ -18,7 +18,8 @@
     "unhead": "^1.10.4",
     "vue": "^3.5.1",
     "vue-i18n": "^9.13.1",
-    "vue-router": "^4.4.3"
+    "vue-router": "^4.4.3",
+    "vue-tsc": "^2.1.6"
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.7",
@@ -45,8 +46,8 @@
   },
   "name": "totov-builder",
   "scripts": {
-    "build-production": "vite build --mode production && node scripts/postbuild.js",
-    "build-test": "vite build --mode test && node scripts/postbuild.js",
+    "build-production": "npm run type-check && vite build --mode production && node scripts/postbuild.js",
+    "build-test": "npm run type-check && vite build --mode test && node scripts/postbuild.js",
     "dev": "vite",
     "lint": "eslint ./src/**",
     "serve": "vite preview",
@@ -59,7 +60,7 @@
     "test-watch": "vitest watch",
     "test": "vitest run",
     "tsc": "npm run type-check",
-    "type-check": "tsc --noEmit"
+    "type-check": "vue-tsc --noEmit && tsc --noEmit"
   },
   "type": "module",
   "version": "0.0.0"

@@ -206,7 +206,7 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, useTemplateRef } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildsShareTypeOption } from '../../models/utils/IBuildsShareTypeOption'
 import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
@@ -272,7 +272,7 @@ const toolbarButtons: IToolbarButton[] = [
   }
 ]
 const availableBuilds = ref<IBuildSummary[]>([])
-const buildsExportToolbar = ref()
+const buildsExportToolbar = useTemplateRef('buildsExportToolbar')
 const buildsToShare = ref<IBuild[]>([])
 const includeLink = ref(true)
 const includePrices = ref(true)

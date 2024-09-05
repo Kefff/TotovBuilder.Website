@@ -23,7 +23,7 @@
         />
       </Tooltip>
     </div>
-    <Toolbar
+    <ToolbarComponent
       ref="buildToolbar"
       :buttons="toolbarButtons"
     >
@@ -55,7 +55,7 @@
       <template #right>
         <NotificationButton />
       </template>
-    </Toolbar>
+    </ToolbarComponent>
     <Sticky
       v-model:is-stickied="isBuildSummaryStickied"
       align="center"
@@ -222,7 +222,7 @@
         :key="`${path}/${inventorySlot.typeId}`"
         v-model:collapsed="collapseStatuses[index]"
         :inventory-slot="build.inventorySlots[index]"
-        :path="`${path}/${inventorySlotPathPrefix}${inventorySlot.typeId}`"
+        :path="`${path}/${_inventorySlotPathPrefix}${inventorySlot.typeId}`"
         @update:inventory-slot="onInventorySlotChanged(index, $event)"
       />
     </div>

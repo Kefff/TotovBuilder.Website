@@ -29,7 +29,7 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildsExportSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
@@ -70,7 +70,7 @@ const toolbarButtons: IToolbarButton[] = [
   }
 ]
 
-const buildsExportToolbar = ref()
+const buildsExportToolbar = useTemplateRef('buildsExportToolbar')
 const selectedBuilds = ref<IBuildSummary[]>([])
 
 const allSelected = computed(() => selectedBuilds.value.length === modelParameters.value.length)

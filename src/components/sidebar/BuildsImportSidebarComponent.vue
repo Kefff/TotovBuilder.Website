@@ -80,7 +80,7 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { IToolbarButton } from '../../models/utils/IToolbarButton'
@@ -123,7 +123,7 @@ const toolbarButtons: IToolbarButton[] = [
 const acceptedFileExtension = _websiteConfigurationService.configuration.exportFileExtension
 const availableBuilds = ref<IBuild[]>([])
 const availableBuildSummaries = ref<IBuildSummary[]>([])
-const buildsImportToolbar = ref()
+const buildsImportToolbar = useTemplateRef('buildsImportToolbar')
 const importInput = ref<HTMLInputElement>()
 const isFileSelected = ref(false)
 const selectedBuilds = ref<IBuildSummary[]>([])

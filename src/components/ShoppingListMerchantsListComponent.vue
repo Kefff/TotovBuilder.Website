@@ -42,7 +42,7 @@
 
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IShoppingListMerchant } from '../models/utils/IShoppingListMerchant'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
@@ -54,7 +54,7 @@ const props = defineProps<{ shoppingList: IShoppingListItem[] }>()
 const _buildPropertiesService = Services.get(BuildPropertiesService)
 
 const merchants = ref<IShoppingListMerchant[]>([])
-const merchantsListElement = ref<HTMLDivElement>()
+const merchantsListElement = useTemplateRef('merchantsListElement')
 const merchantsListElementHasLeftScroll = ref(false)
 const merchantsListElementHasRightScroll = ref(false)
 
