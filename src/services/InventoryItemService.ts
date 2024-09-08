@@ -467,8 +467,16 @@ export class InventoryItemService {
       unitPriceIgnoreStatus = IgnoredUnitPrice.manuallyIgnored
     }
 
-    if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored
-      || unitPriceIgnoreStatus === IgnoredUnitPrice.manuallyIgnored) {
+    if (unitPriceIgnoreStatus === IgnoredUnitPrice.inPreset
+      || unitPriceIgnoreStatus === IgnoredUnitPrice.notLootable) {
+      shoppingListItemsToAdd.push({
+        ignorePrice: unitPriceIgnoreStatus,
+        inventorySlotId: inventorySlotId,
+        item,
+        missingPrice: false,
+        quantity: inventoryItem.quantity
+      })
+    } else {
       let unitPrice: IPrice
       const price = await this.getPrice(inventoryItem)
 
@@ -503,7 +511,7 @@ export class InventoryItemService {
       }
 
       shoppingListItemsToAdd.push({
-        ignorePrice: inventoryItem.ignorePrice,
+        ignorePrice: unitPriceIgnoreStatus,
         inventorySlotId: inventorySlotId,
         item,
         missingPrice: price.missingPrice,
@@ -554,8 +562,12 @@ export class InventoryItemService {
         shoppingList.push(shoppingListItemToAdd)
       } else {
         shoppingList[shoppingListItemIndex].quantity += shoppingListItemToAdd.quantity
-        shoppingList[shoppingListItemIndex].price.value += shoppingListItemToAdd.unitPrice.value * shoppingListItemToAdd.quantity
-        shoppingList[shoppingListItemIndex].price.valueInMainCurrency += shoppingListItemToAdd.unitPrice.valueInMainCurrency * shoppingListItemToAdd.quantity
+
+        if (shoppingList[shoppingListItemIndex].price != null
+          && shoppingListItemToAdd.unitPrice != null) {
+          shoppingList[shoppingListItemIndex].price.value += shoppingListItemToAdd.unitPrice.value * shoppingListItemToAdd.quantity
+          shoppingList[shoppingListItemIndex].price.valueInMainCurrency += shoppingListItemToAdd.unitPrice.valueInMainCurrency * shoppingListItemToAdd.quantity
+        }
       }
     }
 

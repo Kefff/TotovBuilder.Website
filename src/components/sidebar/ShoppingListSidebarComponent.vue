@@ -2,10 +2,10 @@
   <div class="sidebar-option">
     <div class="shopping-list-sidebar">
       <div class="shopping-list-sidebar-merchants">
-        <ShoppingListMerchantsList :shopping-list="parameters.shoppingList" />
+        <ShoppingListMerchantsList :shopping-list="shoppingListItems" />
       </div>
       <div
-        v-for="(shoppingListItem, index) of parameters.shoppingList"
+        v-for="(shoppingListItem, index) of shoppingListItems"
         :key="index"
         class="shopping-list-sidebar-item"
         :class="shoppingListItem.inventorySlotId != null ? 'shopping-list-sidebar-item-of-inventory-slot' : ''"
@@ -18,9 +18,9 @@
         </div>
         <PriceDetailItem
           :can-show-item-stats="true"
-          :ignore-price-status="shoppingListItem.ignorePrice ? IgnoredUnitPrice.manuallyIgnored : IgnoredUnitPrice.notIgnored"
+          :ignore-price-status="shoppingListItem.ignorePrice"
           :item="shoppingListItem.item"
-          :missing="shoppingListItem.missingPrice && shoppingListItem.unitPrice.merchant === ''"
+          :missing="shoppingListItem.missingPrice"
           :price="shoppingListItem.price"
           :quantity="shoppingListItem.quantity"
           :unit-price="shoppingListItem.unitPrice"
@@ -40,13 +40,16 @@
 
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { ShoppingListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import StringUtils from '../../utils/StringUtils'
 import PriceDetailItem from '../PriceDetailItemComponent.vue'
 import ShoppingListMerchantsList from '../ShoppingListMerchantsListComponent.vue'
 
-defineProps<{ parameters: ShoppingListSidebarParameters }>()
+const props = defineProps<{ parameters: ShoppingListSidebarParameters }>()
+
+const shoppingListItems = computed(() => props.parameters.shoppingList.filter(shl => shl.ignorePrice === IgnoredUnitPrice.notIgnored || shl.ignorePrice === IgnoredUnitPrice.manuallyIgnored))
 </script>
 
 

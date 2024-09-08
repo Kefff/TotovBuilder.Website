@@ -490,12 +490,12 @@ export default defineComponent({
           const sharableString = route.params['sharedBuild'] as string
 
           await getSharedBuild(sharableString)
-          setSummary()
           expandAll()
         } else {
           build.value = _buildComponentService.getBuild(route.params['id'] as string)
         }
 
+        setSummary()
         isLoading.value = false
       }, 1)
     }

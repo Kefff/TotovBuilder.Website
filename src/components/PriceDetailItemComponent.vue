@@ -18,7 +18,7 @@
         {{ item.name }}
       </span>
     </div>
-    <div>
+    <div v-if="price != null && unitPrice != null">
       <Price
         :ignore-price-status="ignorePriceStatus"
         :missing="missing"
@@ -64,14 +64,16 @@ const props = withDefaults(
     ignorePriceStatus?: IgnoredUnitPrice
     item: IItem,
     missing?: boolean,
-    price: IPrice,
+    price?: IPrice,
     quantity: number,
-    unitPrice: IPrice
+    unitPrice?: IPrice
   }>(),
   {
     canShowItemStats: false,
     ignorePriceStatus: IgnoredUnitPrice.notIgnored,
-    missing: false
+    missing: false,
+    price: undefined,
+    unitPrice: undefined
   })
 
 /**

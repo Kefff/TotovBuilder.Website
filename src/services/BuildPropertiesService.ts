@@ -172,13 +172,13 @@ export class BuildPropertiesService {
     const merchants: IShoppingListMerchant[] = []
 
     for (const item of shoppingList) {
-      if (item.price.merchant === '') {
+      if (item.price == null) {
         // Happens when an item only has barters that have items with a missing price
         // This allows to display the barter to the user and to display the missing price icon on the barter items instead of the item itself
         continue
       }
 
-      const merchant = merchants.find(m => m.name === item.price.merchant)
+      const merchant = merchants.find(m => m.name === item.price!.merchant)
 
       if (merchant == null) {
         merchants.push({
@@ -686,8 +686,12 @@ ${sharableUrlResult}`
             shoppingList.push(inventoryItemShoppingListItemToAdd)
           } else {
             shoppingList[inventoryItemShoppingListItemIndex].quantity += inventoryItemShoppingListItemToAdd.quantity
-            shoppingList[inventoryItemShoppingListItemIndex].price.value += inventoryItemShoppingListItemToAdd.unitPrice.value * inventoryItemShoppingListItemToAdd.quantity
-            shoppingList[inventoryItemShoppingListItemIndex].price.valueInMainCurrency += inventoryItemShoppingListItemToAdd.unitPrice.valueInMainCurrency * inventoryItemShoppingListItemToAdd.quantity
+
+            if (shoppingList[inventoryItemShoppingListItemIndex].price != null
+              && inventoryItemShoppingListItemToAdd.unitPrice != null) {
+              shoppingList[inventoryItemShoppingListItemIndex].price.value += inventoryItemShoppingListItemToAdd.unitPrice.value * inventoryItemShoppingListItemToAdd.quantity
+              shoppingList[inventoryItemShoppingListItemIndex].price.valueInMainCurrency += inventoryItemShoppingListItemToAdd.unitPrice.valueInMainCurrency * inventoryItemShoppingListItemToAdd.quantity
+            }
 
             if (shoppingList[inventoryItemShoppingListItemIndex].inventorySlotId == undefined
               && inventoryItemShoppingListItemToAdd.inventorySlotId != null) {

@@ -1,5 +1,6 @@
 import { IItem } from '../item/IItem'
 import { IPrice } from '../item/IPrice'
+import { IgnoredUnitPrice } from '../utils/IgnoredUnitPrice'
 
 
 /**
@@ -9,12 +10,12 @@ export interface IShoppingListItem {
   /**
    * Indicates whether the price of the item is ignored.
    */
-  ignorePrice: boolean
+  ignorePrice: IgnoredUnitPrice
 
   /**
    * ID of the inventory slot in which the item is placed.
    */
-  inventorySlotId: string | undefined
+  inventorySlotId?: string
 
   /**
    * Item.
@@ -29,7 +30,7 @@ export interface IShoppingListItem {
   /**
    * Price.
    */
-  price: IPrice
+  price?: IPrice
 
   /**
    * Quantity.
@@ -39,5 +40,5 @@ export interface IShoppingListItem {
   /**
    * Unit price.
    */
-  unitPrice: IPrice
+  unitPrice?: IPrice
 }
