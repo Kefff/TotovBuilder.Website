@@ -50,22 +50,23 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
 import { BuildSidebarParameters, BuildsShareSideBarParameters, GlobalSidebarComponent, IGlobalSidebarOptions, ShoppingListSidebarParameters, StatsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
-import BuildsExportSidebar from './BuildsExportSidebarComponent.vue'
-import BuildSidebarComponent from './BuildSidebarComponent.vue'
-import BuildsImportSidebar from './BuildsImportSidebarComponent.vue'
-import BuildsListSidebar from './BuildsListSidebarComponent.vue'
-import BuildsShareSideBar from './BuildsShareSideBarComponent.vue'
-import ChangelogSidebar from './ChangelogSidebarComponent.vue'
-import GeneralOptionsSidebar from './GeneralOptionsSidebarComponent.vue'
-import MerchantItemsOptionsSidebar from './MerchantItemsOptionsSidebarComponent.vue'
-import NotificationsSidebar from './NotificationsSidebarComponent.vue'
-import ShoppingListSidebar from './ShoppingListSidebarComponent.vue'
-import StatsSidebar from './StatsSidebarComponent.vue'
-import ToolbarSidebar from './ToolbarSidebarComponent.vue'
+
+const BuildsExportSidebar = defineAsyncComponent(() => import('./BuildsExportSidebarComponent.vue'))
+const BuildSidebar = defineAsyncComponent(() => import('./BuildSidebarComponent.vue'))
+const BuildsImportSidebar = defineAsyncComponent(() => import('./BuildsImportSidebarComponent.vue'))
+const BuildsListSidebar = defineAsyncComponent(() => import('./BuildsListSidebarComponent.vue'))
+const BuildsShareSideBar = defineAsyncComponent(() => import('./BuildsShareSideBarComponent.vue'))
+const ChangelogSidebar = defineAsyncComponent(() => import('./ChangelogSidebarComponent.vue'))
+const GeneralOptionsSidebar = defineAsyncComponent(() => import('./GeneralOptionsSidebarComponent.vue'))
+const MerchantItemsOptionsSidebar = defineAsyncComponent(() => import('./MerchantItemsOptionsSidebarComponent.vue'))
+const NotificationsSidebar = defineAsyncComponent(() => import('./NotificationsSidebarComponent.vue'))
+const ShoppingListSidebar = defineAsyncComponent(() => import('./ShoppingListSidebarComponent.vue'))
+const StatsSidebar = defineAsyncComponent(() => import('./StatsSidebarComponent.vue'))
+const ToolbarSidebar = defineAsyncComponent(() => import('./ToolbarSidebarComponent.vue'))
 
 const props = defineProps<{
   level: number
@@ -151,7 +152,7 @@ function getDisplayedComponent(displayedComponentType: GlobalSidebarComponent) {
       subtitle.value = (options.value.displayedComponentParameters as BuildSidebarParameters).name
       title.value = 'caption.actions'
 
-      return BuildSidebarComponent
+      return BuildSidebar
     case 'BuildsImportSidebar':
       icon.value = 'file-upload'
       title.value = 'caption.importBuilds'

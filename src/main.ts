@@ -1,15 +1,13 @@
 import { createHead } from 'unhead'
-import { createApp } from 'vue'
+import { createApp, defineAsyncComponent } from 'vue'
 import App from './components/AppComponent.vue'
-import Tooltip from './components/TooltipComponent.vue'
-import Item from './components/item/ItemComponent.vue'
 import { useApplicationInsights } from './plugins/applicationInsights'
 import { useFontAwesome } from './plugins/fontAwesome'
 import { usePrimeVue } from './plugins/primeVue'
 import { useI18n } from './plugins/vueI18n'
 import { useRouter } from './plugins/vueRouter'
 import { polyfill } from './polyfill'
-import { configureServices } from './servicesConfiguration'
+import { initializeServices } from './servicesConfiguration'
 
 useApplicationInsights()
 
@@ -17,7 +15,7 @@ useApplicationInsights()
 polyfill()
 
 // Services
-configureServices()
+initializeServices()
 
 // App
 const app = createApp(App)
@@ -30,8 +28,12 @@ usePrimeVue(app)
 useRouter(app)
 
 // Global components
-app.component('Item', Item) // To be able to call itself
-app.component('Tooltip', Tooltip) // To be able to call itself
+app.component(
+  'Item', // To be able to call itself
+  defineAsyncComponent(() => import('./components/item/ItemComponent.vue')))
+app.component(
+  'Tooltip', // To be able to call itself
+  defineAsyncComponent(() => import('./components/TooltipComponent.vue')))
 
 // Start
 app.mount('#app')

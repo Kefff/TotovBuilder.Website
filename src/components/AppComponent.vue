@@ -141,7 +141,7 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, provide, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, provide, ref } from 'vue'
 import Images from '../images'
 import vueI18n from '../plugins/vueI18n'
 import { GeneralOptionsService } from '../services/GeneralOptionsService'
@@ -154,10 +154,14 @@ import Services from '../services/repository/Services'
 import LanguageUtils from '../utils/LanguageUtils'
 import LoadingError from './LoadingErrorComponent.vue'
 import Notification from './NotificationComponent.vue'
-import GlobalSidebar from './sidebar/GlobalSidebarComponent.vue'
+
+const GlobalSidebar = defineAsyncComponent(() =>
+  import('./sidebar/GlobalSidebarComponent.vue')
+)
 
 const _versionService = Services.get(VersionService)
 const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
 
 const _isTouchScreen = matchMedia('(hover: none)').matches
 
@@ -240,15 +244,15 @@ async function onWebsiteConfigurationServiceInitialized() {
 
   Services.get(GeneralOptionsService).getAllowCookiesIndicator() // Used to trigger the allow cookie check and display a notification
 
+  if (_websiteConfigurationService.configuration.postUpdatePeriod) {
+    Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.postUpdatePeriod'), 0)
+  }
+
   await _versionService.getVersion().then(v => version.value = v)
   hasNewVersion.value = await _versionService.checkHasNewVersion()
 
   if (hasNewVersion.value) {
     displayNewVersionNotification()
-  }
-
-  if (_websiteConfigurationService.configuration.postUpdatePeriod) {
-    Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.postUpdatePeriod'), 0)
   }
 }
 
@@ -269,62 +273,6 @@ function setLanguage() {
 
 
 
-
-<style>
-body {
-  background-color: var(--surface-transparent-0);
-  /* Required for the #app to be able to use height:100% */
-  display: flex;
-  font-size: 1rem;
-  height: 100%;
-  margin: 0;
-  overflow: hidden;
-  width: 100%;
-}
-
-h1 {
-  font-size: 3rem;
-  margin: 0;
-  /* Required for Chrome, otherwise letters are overlapping */
-  letter-spacing: 2px;
-  /* Required for Chrome and Firefox to have the same behaviour */
-  line-height: 3rem;
-}
-
-html {
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  background-image: url('../../assets/images/Background.webp');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  box-sizing: border-box;
-  color: var(--text-color);
-  font-family: var(--font-main);
-  font-size: 14px;
-  height: 100%;
-  letter-spacing: 0.25px;
-  /* Required otherwise the right Sidebar breaks the layout while its open animation plays */
-  position: fixed;
-  scrollbar-color: var(--primary-color3) rgba(0, 0, 0, 0);
-  width: 100%;
-}
-
-html * {
-  scrollbar-width: thin;
-}
-
-#app {
-  display: flex;
-  justify-content: center;
-  overflow: auto;
-  width: 100%;
-}
-
-.p-button {
-  min-width: initial !important;
-}
-</style>
 
 <style scoped>
 @import '../css/link.css';
@@ -436,5 +384,61 @@ html * {
 .app-title-prapor {
   height: 4.5rem;
   width: 4.5rem;
+}
+</style>
+
+<style>
+body {
+  background-color: var(--surface-transparent-0);
+  /* Required for the #app to be able to use height:100% */
+  display: flex;
+  font-size: 1rem;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+h1 {
+  font-size: 3rem;
+  margin: 0;
+  /* Required for Chrome, otherwise letters are overlapping */
+  letter-spacing: 2px;
+  /* Required for Chrome and Firefox to have the same behaviour */
+  line-height: 3rem;
+}
+
+html {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  background-image: url('../../assets/images/Background.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-sizing: border-box;
+  color: var(--text-color);
+  font-family: var(--font-main);
+  font-size: 14px;
+  height: 100%;
+  letter-spacing: 0.25px;
+  /* Required otherwise the right Sidebar breaks the layout while its open animation plays */
+  position: fixed;
+  scrollbar-color: var(--primary-color3) rgba(0, 0, 0, 0);
+  width: 100%;
+}
+
+html * {
+  scrollbar-width: thin;
+}
+
+#app {
+  display: flex;
+  justify-content: center;
+  overflow: auto;
+  width: 100%;
+}
+
+.p-button {
+  min-width: initial !important;
 }
 </style>

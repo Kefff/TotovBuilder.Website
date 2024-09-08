@@ -16,7 +16,7 @@
           />
         </Tooltip>
         <Tooltip
-          v-if="mode === 'default'"
+          v-if="showActionsButton"
           :tooltip="$t('caption.actions')"
           :apply-hover-style="false"
         >
@@ -168,13 +168,13 @@
           @click="modelIsSelected = !modelIsSelected"
         >
           <font-awesome-icon
-            v-if="selectionButtonIcon != null"
-            :icon="selectionButtonIcon"
+            :icon="selectionButtonIconInternal"
             class="icon-before-text"
           />
-          <span>{{ $t(selectionButtonCaption) }}</span>
+          <span>{{ $t(selectionButtonCaptionInternal) }}</span>
         </Button>
         <Button
+          v-if="showShoppingList"
           :disabled="buildSummary.shoppingList.length === 0"
           class="shopping-list-button"
           outlined
@@ -217,11 +217,17 @@ const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
 const props = withDefaults(
   defineProps<{
     buildSummary: IBuildSummary,
-    mode?: 'default' | 'export' | 'import',
-    showNotExported: boolean
+    selectionButtonCaption?: string,
+    selectionButtonIcon?: string,
+    showActionsButton?: boolean,
+    showNotExported: boolean,
+    showShoppingList?: boolean
   }>(),
   {
-    mode: 'default'
+    selectionButtonCaption: undefined,
+    selectionButtonIcon: undefined,
+    showActionsButton: true,
+    showShoppingList: true
   })
 
 const _buildService = Services.get(BuildService)
@@ -241,18 +247,18 @@ const notExportedTooltip = computed(() => {
 
   return tooltip
 })
-const selectionButtonCaption = computed(() => {
-  if (props.mode === 'default') {
-    return 'caption.edit'
+const selectionButtonCaptionInternal = computed(() => {
+  if (props.selectionButtonCaption != null) {
+    return props.selectionButtonCaption
   } else if (modelIsSelected.value) {
     return 'caption.deselect'
   } else {
     return 'caption.select'
   }
 })
-const selectionButtonIcon = computed(() => {
-  if (props.mode === 'default') {
-    return 'edit'
+const selectionButtonIconInternal = computed(() => {
+  if (props.selectionButtonIcon != null) {
+    return props.selectionButtonIcon
   } else if (modelIsSelected.value) {
     return 'times'
   } else {

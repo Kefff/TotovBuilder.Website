@@ -1,10 +1,11 @@
-import { App } from 'vue'
+import { App, defineAsyncComponent } from 'vue'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import BuildComponent from '../components/build/BuildComponent.vue'
-import Builds from '../components/BuildsComponent.vue'
 import Welcome from '../components/WelcomeComponent.vue'
 import LanguageUtils from '../utils/LanguageUtils'
 import applicationInsights from './applicationInsights'
+
+const Build = defineAsyncComponent(() => import('../components/build/BuildComponent.vue'))
+const Builds = defineAsyncComponent(() => import('../components/BuildsComponent.vue'))
 
 const routes: RouteRecordRaw[] = [
   {
@@ -45,7 +46,7 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
-    component: BuildComponent,
+    component: Build,
     name: 'NewBuild',
     path: '/build',
     beforeEnter: (to, from) => {
@@ -57,7 +58,7 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
-    component: BuildComponent,
+    component: Build,
     name: 'Build',
     path: '/build/:id',
     beforeEnter: (to, from) => {
@@ -69,7 +70,7 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
-    component: BuildComponent,
+    component: Build,
     name: 'SharedBuild',
     path: '/s/:sharedBuild',
     beforeEnter: (to, from) => {

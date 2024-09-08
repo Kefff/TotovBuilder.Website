@@ -1,6 +1,6 @@
 <template>
   <Sticky
-    v-if="buildSummaries.length > 0"
+    v-if="showChips && buildSummaries.length > 0"
     :element-to-stick-to="elementToStickTo"
     align="left"
   >
@@ -76,15 +76,18 @@
   <div
     v-if="!isLoading && buildSummariesInternal.length > 0"
     class="builds-list-cards"
-    :class="mode !== 'default' ? 'builds-list-cards-import-export' : ''"
+    :class="cardsListClass"
   >
     <BuildCard
       v-for="buildSummary of buildSummariesInternal"
       :key="buildSummary.id"
       :build-summary="buildSummary"
-      :mode="mode"
       :is-selected="checkIsSelected(buildSummary)"
+      :selection-button-caption="selectionButtonCaption"
+      :selection-button-icon="selectionButtonIcon"
+      :show-actions-button="showActionsButton"
       :show-not-exported="showNotExported"
+      :show-shopping-list="showShoppingList"
       @update:is-selected="updateSelectedBuilds(buildSummary, $event)"
     />
   </div>
@@ -127,14 +130,25 @@ const props = withDefaults(
   defineProps<{
     buildSummaries: IBuildSummary[],
     elementToStickTo?: HTMLElement | null,
+    gridMaxColumns?: number,
     isLoading?: boolean,
-    mode?: 'default' | 'export' | 'import',
-    showNotExported: boolean,
+    selectionButtonCaption?: string,
+    selectionButtonIcon?: string,
+    showActionsButton?: boolean,
+    showChips?: boolean
+    showNotExported?: boolean,
+    showShoppingList?: boolean
   }>(),
   {
     elementToStickTo: undefined,
+    gridMaxColumns: 4,
     isLoading: false,
-    mode: 'default'
+    selectionButtonCaption: undefined,
+    selectionButtonIcon: undefined,
+    showActionsButton: undefined,
+    showChips: true,
+    showNotExported: true,
+    showShoppingList: undefined
   })
 
 const _buildPropertiesService = Services.get(BuildPropertiesService)
@@ -143,6 +157,7 @@ const _sortingService = Services.get(SortingService)
 
 const buildSummariesInternal = ref<IBuildSummary[]>([])
 
+const cardsListClass = computed(() => `builds-list-cards${props.gridMaxColumns}`)
 const sortButtonTooltip = computed(() => vueI18n.t(
   'caption.sortedBy',
   {
@@ -319,11 +334,22 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean) 
 .builds-list-cards {
   display: grid;
   grid-gap: 1rem;
-  grid-template-columns: repeat(4, 1fr);
 }
 
-.builds-list-cards-import-export {
-  grid-template-columns: 1fr !important;
+.builds-list-cards1 {
+  grid-template-columns: 1fr;
+}
+
+.builds-list-cards2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.builds-list-cards3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.builds-list-cards4 {
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .builds-list-chip {
@@ -402,35 +428,59 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean) 
 
 /* Smartphone in portrait */
 @media only screen and (max-width: 480px) {
-  .builds-list-cards {
+  .builds-list-cards2 {
+    grid-template-columns: 1fr;
+  }
+
+  .builds-list-cards3 {
+    grid-template-columns: 1fr;
+  }
+
+  .builds-list-cards4 {
     grid-template-columns: 1fr;
   }
 }
 
 /* Smartphone in landscape */
 @media only screen and (min-width: 481px) and (max-width: 767px) {
-  .builds-list-cards {
+  .builds-list-cards2 {
+    grid-template-columns: 1fr;
+  }
+
+  .builds-list-cards3 {
+    grid-template-columns: 1fr;
+  }
+
+  .builds-list-cards4 {
     grid-template-columns: 1fr;
   }
 }
 
 /* Tablet in portrait */
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-  .builds-list-cards {
+  .builds-list-cards3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .builds-list-cards4 {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 /* Tablet in landscape */
 @media only screen and (min-width: 992px) and (max-width: 1299px) {
-  .builds-list-cards {
+  .builds-list-cards3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .builds-list-cards4 {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 /* PC */
 @media only screen and (min-width: 1300px) and (max-width: 1799px) {
-  .builds-list-cards {
+  .builds-list-cards4 {
     grid-template-columns: repeat(3, 1fr);
   }
 }

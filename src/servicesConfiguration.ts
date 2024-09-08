@@ -1,73 +1,13 @@
-import { BuildPropertiesService } from './services/BuildPropertiesService'
-import { BuildService } from './services/BuildService'
-import { ExportService } from './services/ExportService'
-import { FetchService } from './services/FetchService'
-import { FileService } from './services/FileService'
-import { GeneralOptionsService } from './services/GeneralOptionsService'
-import { GlobalFilterService } from './services/GlobalFilterService'
-import { GlobalSidebarService } from './services/GlobalSidebarService'
-import { ImportService } from './services/ImportService'
-import { InventoryItemService } from './services/InventoryItemService'
-import { InventorySlotPropertiesService } from './services/InventorySlotPropertiesService'
-import { InventorySlotService } from './services/InventorySlotService'
-import { ItemFetcherService } from './services/ItemFetcherService'
-import { ItemPropertiesService } from './services/ItemPropertiesService'
 import { ItemService } from './services/ItemService'
-import { LogService } from './services/LogService'
-import { NotificationService } from './services/NotificationService'
-import { PresetService } from './services/PresetService'
-import { ReductionService } from './services/ReductionService'
 import { TarkovValuesService } from './services/TarkovValuesService'
-import { VersionService } from './services/VersionService'
 import { WebsiteConfigurationService } from './services/WebsiteConfigurationService'
-import { CompatibilityService } from './services/compatibility/CompatibilityService'
-import { BuildComponentService } from './services/components/BuildComponentService'
-import { InventorySlotComponentService } from './services/components/InventorySlotComponentService'
-import { ItemContentComponentService } from './services/components/ItemContentComponentService'
-import { ModSlotComponentService } from './services/components/ModSlotComponentService'
 import { ServiceInitializationState } from './services/repository/ServiceInitializationState'
 import Services from './services/repository/Services'
-import { SortingService } from './services/sorting/SortingService'
 
 /**
- * Configures all the services used in the application.
+ * Initializes the first services required by the application.
  */
-export function configureServices() {
-  Services.configure(BuildPropertiesService)
-  Services.configure(BuildService)
-  Services.configure(CompatibilityService)
-  Services.configure(ExportService)
-  Services.configure(FetchService)
-  Services.configure(FileService)
-  Services.configure(GeneralOptionsService)
-  Services.configure(GlobalFilterService)
-  Services.configure(ImportService)
-  Services.configure(InventoryItemService)
-  Services.configure(InventorySlotPropertiesService)
-  Services.configure(InventorySlotService)
-  Services.configure(ItemFetcherService)
-  Services.configure(ItemPropertiesService)
-  Services.configure(ItemService)
-  Services.configure(LogService)
-  Services.configure(NotificationService)
-  Services.configure(PresetService)
-  Services.configure(ReductionService)
-  Services.configure(SortingService)
-  Services.configure(TarkovValuesService)
-  Services.configure(VersionService)
-  Services.configure(WebsiteConfigurationService)
-
-  // Components
-  Services.configure(BuildComponentService)
-  Services.configure(GlobalSidebarService)
-  Services.configure(InventorySlotComponentService)
-  Services.configure(ItemContentComponentService)
-  Services.configure(ModSlotComponentService)
-
-  initialize()
-}
-
-async function initialize() {
+export async function initializeServices() {
   // Initialization of immediatly required values
   const websiteConfigurationService = Services.get(WebsiteConfigurationService)
   const websiteConfigurationServiceInitialized = await websiteConfigurationService.initialize()

@@ -21,9 +21,10 @@
       :build-summaries="buildSummaries"
       :element-to-stick-to="toolbarContainer"
       :is-loading="isLoading"
-      :show-not-exported="true"
+      selection-button-caption="caption.edit"
+      selection-button-icon="edit"
       @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
-      @update:selected-builds="onBuildClick"
+      @update:selected-builds="onBuildSelected"
     />
   </div>
 </template>
@@ -79,6 +80,17 @@ const _sortingService = Services.get(SortingService)
 
 let _builds: IBuild[] = []
 const toolbarButtons: IToolbarButton[] = [
+  {
+    action: goToHome,
+    canBeMovedToSidebar: () => false,
+    caption: () => vueI18n.t('caption.backToHome'),
+    followedBySeparation: true,
+    icon: () => 'arrow-left',
+    name: 'backToHome',
+    showCaption: () => 'never',
+    style: () => 'discreet',
+    tooltipPosition: () => 'right'
+  },
   {
     action: openNewBuild,
     canBeMovedToSidebar: () => false,
@@ -282,13 +294,20 @@ function getFilterAndSortingData() {
 }
 
 /**
- * Reacts to the click on a build.
+ * Redirects to the welcome page.
+ */
+function goToHome() {
+  router.push({ name: 'Welcome' })
+}
+
+/**
+ * Reacts to a build being selected.
  *
- * Opens a the build on which the user clicks.
+ * Opens a the build the user has selected.
  * @param selectedBuilds - Selected builds.
  */
-function onBuildClick(selectedBuilds: IBuildSummary[]) {
-  if (selectedBuilds.length === 1) {
+function onBuildSelected(selectedBuilds: IBuildSummary[]) {
+  if (selectedBuilds.length > 0) {
     openBuild(selectedBuilds[0].id)
   }
 }

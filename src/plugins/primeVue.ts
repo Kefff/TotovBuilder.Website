@@ -1,52 +1,30 @@
-import { App } from 'vue'
-
-import PrimeVue from 'primevue/config'
-
-import Button from 'primevue/button'
-import Card from 'primevue/card'
-import Checkbox from 'primevue/checkbox'
-import Chip from 'primevue/chip'
-import Column from 'primevue/column'
-import DataTable from 'primevue/datatable'
-import Dialog from 'primevue/dialog'
-import Dropdown from 'primevue/dropdown'
-import InputNumber from 'primevue/inputnumber'
-import InputText from 'primevue/inputtext'
-import Message from 'primevue/message'
-import OverlayPanel from 'primevue/overlaypanel'
-import Panel from 'primevue/panel'
-import Sidebar from 'primevue/sidebar'
-import TabPanel from 'primevue/tabpanel'
-import TabView from 'primevue/tabview'
-import Textarea from 'primevue/textarea'
-
-import Tooltip from 'primevue/tooltip'
-
 import 'primeicons/primeicons.css'
+import PrimeVue from 'primevue/config'
 import 'primevue/resources/primevue.min.css'
+import Tooltip from 'primevue/tooltip'
+import { App, defineAsyncComponent } from 'vue'
 import '../css/theme.css'
-
 
 export function usePrimeVue(app: App<Element>): void {
   app.use(PrimeVue)
 
-  app.component('Button', Button)
-  app.component('Card', Card)
-  app.component('Checkbox', Checkbox)
-  app.component('Chip', Chip)
-  app.component('Column', Column)
-  app.component('DataTable', DataTable)
-  app.component('Dialog', Dialog)
-  app.component('Dropdown', Dropdown)
-  app.component('InputNumber', InputNumber)
-  app.component('InputText', InputText)
-  app.component('Message', Message)
-  app.component('OverlayPanel', OverlayPanel)
-  app.component('Panel', Panel)
-  app.component('Sidebar', Sidebar)
-  app.component('TabPanel', TabPanel)
-  app.component('TabView', TabView)
-  app.component('TextArea', Textarea)
+  app.component('Button', defineAsyncComponent(() => import('primevue/button')))
+  app.component('Card', defineAsyncComponent(() => import('primevue/card')))
+  app.component('Checkbox', defineAsyncComponent(() => import('primevue/checkbox')))
+  app.component('Chip', defineAsyncComponent(() => import('primevue/chip')))
+  app.component('Column', defineAsyncComponent(() => import('primevue/column')))
+  app.component('DataTable', defineAsyncComponent(() => import('primevue/datatable')))
+  app.component('Dialog', defineAsyncComponent(() => import('primevue/dialog')))
+  app.component('Dropdown', defineAsyncComponent(() => import('primevue/dropdown')))
+  app.component('InputNumber', defineAsyncComponent(() => import('primevue/inputnumber')))
+  app.component('InputText', defineAsyncComponent(() => import('primevue/inputtext')))
+  app.component('Message', defineAsyncComponent(() => import('primevue/message')))
+  app.component('OverlayPanel', defineAsyncComponent(() => import('primevue/overlaypanel')))
+  app.component('Panel', defineAsyncComponent(() => import('primevue/panel')))
+  app.component('Sidebar', defineAsyncComponent(() => import('primevue/sidebar')))
+  app.component('TabPanel', defineAsyncComponent(() => import('primevue/tabpanel')))
+  app.component('TabView', defineAsyncComponent(() => import('primevue/tabview')))
+  app.component('TextArea', defineAsyncComponent(() => import('primevue/textarea')))
 
   app.directive('tooltip', Tooltip)
 }

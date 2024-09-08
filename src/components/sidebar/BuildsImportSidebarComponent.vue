@@ -23,7 +23,7 @@
           v-model:selected-builds="selectedBuilds"
           :build-summaries="availableBuildSummaries"
           :element-to-stick-to="toolbarContainer"
-          :show-not-exported="true"
+          :grid-max-columns="1"
           mode="export"
         >
           <template #toolbarContent>
