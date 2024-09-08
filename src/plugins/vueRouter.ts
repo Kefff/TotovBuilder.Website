@@ -1,11 +1,11 @@
-import { App, defineAsyncComponent } from 'vue'
+import { App } from 'vue'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Welcome from '../components/WelcomeComponent.vue'
 import LanguageUtils from '../utils/LanguageUtils'
 import applicationInsights from './applicationInsights'
 
-const Build = defineAsyncComponent(() => import('../components/build/BuildComponent.vue'))
-const Builds = defineAsyncComponent(() => import('../components/BuildsComponent.vue'))
+const Build = () => import('../components/build/BuildComponent.vue')
+const Builds = () => import('../components/BuildsComponent.vue')
 
 const routes: RouteRecordRaw[] = [
   {
@@ -59,11 +59,11 @@ const routes: RouteRecordRaw[] = [
   },
   {
     component: Build,
-    name: 'Build',
-    path: '/build/:id',
+    name: 'CopyBuild',
+    path: '/copy/:id',
     beforeEnter: (to, from) => {
       applicationInsights.trackPageView({
-        name: 'Build',
+        name: 'CopyBuild',
         refUri: from.path,
         uri: to.path
       })
@@ -71,11 +71,23 @@ const routes: RouteRecordRaw[] = [
   },
   {
     component: Build,
-    name: 'SharedBuild',
+    name: 'ShareBuild',
     path: '/s/:sharedBuild',
     beforeEnter: (to, from) => {
       applicationInsights.trackPageView({
         name: 'SharedBuild',
+        refUri: from.path,
+        uri: to.path
+      })
+    }
+  },
+  {
+    component: Build,
+    name: 'Build',
+    path: '/build/:id',
+    beforeEnter: (to, from) => {
+      applicationInsights.trackPageView({
+        name: 'CopyBuild',
         refUri: from.path,
         uri: to.path
       })

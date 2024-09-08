@@ -8,7 +8,10 @@
             class="app-title-prapor"
           >
         </Tooltip>
-        <h1>
+        <h1
+          class="app-title-text"
+          @click="goToHome"
+        >
           <div class="app-title-part1">
             TOTOV
           </div>
@@ -142,6 +145,7 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, provide, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import Images from '../images'
 import vueI18n from '../plugins/vueI18n'
 import { GeneralOptionsService } from '../services/GeneralOptionsService'
@@ -159,6 +163,7 @@ const GlobalSidebar = defineAsyncComponent(() =>
   import('./sidebar/GlobalSidebarComponent.vue')
 )
 
+const _router = useRouter()
 const _versionService = Services.get(VersionService)
 const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
@@ -231,6 +236,13 @@ function displayNewVersionNotification() {
       }
     ],
     true)
+}
+
+/**
+ * Redirects to the welcome page.
+ */
+function goToHome() {
+  _router.push({ name: 'Welcome' })
 }
 
 /**
@@ -384,6 +396,10 @@ function setLanguage() {
 .app-title-prapor {
   height: 4.5rem;
   width: 4.5rem;
+}
+
+.app-title-text {
+  cursor: pointer;
 }
 </style>
 

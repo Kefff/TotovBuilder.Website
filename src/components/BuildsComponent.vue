@@ -67,7 +67,6 @@ import BuildsList from './BuildsListComponent.vue'
 import NotificationButton from './NotificationButtonComponent.vue'
 import Toolbar from './ToolbarComponent.vue'
 
-const router = useRouter()
 
 const _buildService = Services.get(BuildService)
 const _buildPropertiesService = Services.get(BuildPropertiesService)
@@ -76,6 +75,7 @@ const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _importService = Services.get(ImportService)
 const _itemService = Services.get(ItemService)
+const _router = useRouter()
 const _sortingService = Services.get(SortingService)
 
 let _builds: IBuild[] = []
@@ -297,7 +297,7 @@ function getFilterAndSortingData() {
  * Redirects to the welcome page.
  */
 function goToHome() {
-  router.push({ name: 'Welcome' })
+  _router.push({ name: 'Welcome' })
 }
 
 /**
@@ -332,7 +332,7 @@ function onFilterAndSortingDataChanged() {
 function onItemServicesInitialized() {
   getBuilds().then(() => {
     if (_builds.length === 0) {
-      router.push({ name: 'Welcome' })
+      _router.push({ name: 'Welcome' })
 
       return
     }
@@ -355,14 +355,14 @@ function onMerchantFilterChanged() {
  * @param id - ID of the build.
  */
 function openBuild(id: string) {
-  router.push({ name: 'Build', params: { id } })
+  _router.push({ name: 'Build', params: { id } })
 }
 
 /**
  * Opens a new build.
  */
 function openNewBuild() {
-  router.push({ name: 'NewBuild' })
+  _router.push({ name: 'NewBuild' })
 }
 </script>
 

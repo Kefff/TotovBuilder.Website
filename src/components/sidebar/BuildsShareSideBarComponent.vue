@@ -19,7 +19,6 @@
           :element-to-stick-to="toolbarContainer"
           :grid-max-columns="1"
           :show-not-exported="false"
-          mode="export"
         />
       </div>
     </div>

@@ -222,7 +222,7 @@
         :key="`${path}/${inventorySlot.typeId}`"
         v-model:collapsed="collapseStatuses[index]"
         :inventory-slot="build.inventorySlots[index]"
-        :path="`${path}/${_inventorySlotPathPrefix}${inventorySlot.typeId}`"
+        :path="`${path}/${inventorySlotPathPrefix}${inventorySlot.typeId}`"
         @update:inventory-slot="onInventorySlotChanged(index, $event)"
       />
     </div>

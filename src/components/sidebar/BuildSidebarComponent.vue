@@ -15,6 +15,19 @@
     <Button
       class="build-sidebar-button"
       outlined
+      @click="copyBuild()"
+    >
+      <font-awesome-icon
+        icon="copy"
+        class="icon-before-text"
+      />
+      <span>{{ $t('caption.copyBuild') }}</span>
+    </Button>
+  </div>
+  <div class="sidebar-option">
+    <Button
+      class="build-sidebar-button"
+      outlined
       @click="exportBuild()"
     >
       <font-awesome-icon
@@ -97,6 +110,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { BuildSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { BuildService } from '../../services/BuildService'
 import { ExportService } from '../../services/ExportService'
@@ -108,6 +122,7 @@ const props = defineProps<{ parameters: BuildSidebarParameters }>()
 const _buildService = Services.get(BuildService)
 const _exportService = Services.get(ExportService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
+const _router = useRouter()
 
 const isDeleting = ref(false)
 
@@ -125,6 +140,14 @@ function confirmDeletion() {
   _buildService.delete(props.parameters.id)
 
   isDeleting.value = false
+  _globalSidebarService.close('BuildSidebar')
+}
+
+/**
+ * Creates a copy of the build.
+ */
+function copyBuild() {
+  _router.push({ name: 'CopyBuild', params: { id: props.parameters.id } })
   _globalSidebarService.close('BuildSidebar')
 }
 

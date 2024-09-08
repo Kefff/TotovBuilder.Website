@@ -51,7 +51,7 @@ export default defineComponent({
 
     const _inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
     let _originalBuild: IBuild
-    const toolbarButtons: IToolbarButton[] = [
+    const _toolbarButtons: IToolbarButton[] = [
       {
         action: goToBuilds,
         canBeMovedToSidebar: () => false,
@@ -434,11 +434,7 @@ export default defineComponent({
      * Gets a shared build from an encoded string that can be shared in a URL.
      * @param sharableString - Encoded string that can be shared in a URL.
      */
-    async function getSharedBuild(sharableString?: string) {
-      if (sharableString == null) {
-        return
-      }
-
+    async function getSharedBuild(sharableString: string) {
       const sharedBuild = await Services.get(BuildService).fromSharableString(sharableString)
 
       if (sharedBuild == null) {
@@ -486,18 +482,21 @@ export default defineComponent({
     function onItemServiceInitialized() {
       isLoading.value = true
 
-      setTimeout(() => { // Did not find another solution to make the loading animation appear when opening a build from the builds list (nextTick does not work)
-        build.value = _buildComponentService.getBuild(route.params['id'] as string)
-        getSharedBuild(route.params['sharedBuild'] as string)
-          .then(() => {
-            build.value.inventorySlots.forEach(() => {
-              collapseStatuses.value.push(false) // All inventory slots expanded by default
-            })
+      setTimeout(async () => { // Did not find another solution to make the loading animation appear when opening a build from the builds list (nextTick does not work)
+        if (route.name === 'CopyBuild') {
+          build.value = _buildComponentService.getBuild(route.params['id'] as string)
+          copy()
+        } else if (route.name === 'ShareBuild') {
+          const sharableString = route.params['sharedBuild'] as string
 
-            isLoading.value = false
-            setSummary()
-          })
-          .finally(() => isLoading.value = false)
+          await getSharedBuild(sharableString)
+          setSummary()
+          expandAll()
+        } else {
+          build.value = _buildComponentService.getBuild(route.params['id'] as string)
+        }
+
+        isLoading.value = false
       }, 1)
     }
 
@@ -598,7 +597,6 @@ export default defineComponent({
     }
 
     return {
-      _inventorySlotPathPrefix,
       build,
       buildToolbar,
       cancelDelete,
@@ -630,6 +628,7 @@ export default defineComponent({
       hasSummaryWearableModifiers,
       hasSummaryWeight,
       invalid,
+      inventorySlotPathPrefix: _inventorySlotPathPrefix,
       isBuildSummaryStickied,
       isEditing,
       isEmpty,
@@ -644,7 +643,7 @@ export default defineComponent({
       startEdit,
       StatsUtils,
       summary,
-      toolbarButtons,
+      toolbarButtons: _toolbarButtons,
       toolbarContainer
     }
   }

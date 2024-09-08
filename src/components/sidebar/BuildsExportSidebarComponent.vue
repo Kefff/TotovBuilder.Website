@@ -12,7 +12,8 @@
           :build-summaries="parameters"
           :element-to-stick-to="toolbarContainer"
           :grid-max-columns="1"
-          mode="export"
+          :show-actions-button="false"
+          :show-not-exported="false"
         />
       </div>
     </div>

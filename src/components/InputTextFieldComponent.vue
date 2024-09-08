@@ -67,7 +67,10 @@ onMounted(() => {
   if (props.autofocus) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const element = (input.value as any)?.$el // Cast as any needed otherwise $el is considered to not exist while it does
-    nextTick(() => element.select()) // nextTick required for the focus to work in sidebars
+
+    if (element != null) {
+      nextTick(() => element.select()) // nextTick required for the focus to work in sidebars
+    }
   }
 })
 </script>
