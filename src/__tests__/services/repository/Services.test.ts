@@ -1,6 +1,7 @@
 import { instance, mock } from 'ts-mockito'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import Services from '../../../services/repository/Services'
+import { WebsiteConfigurationService } from '../../../services/WebsiteConfigurationService'
 
 beforeEach(() => {
   Services.services = []
@@ -57,6 +58,14 @@ describe('configure', () => {
 
 describe('get', () => {
   it('should get a configured service', () => {
+    // Act
+    const service = Services.get(WebsiteConfigurationService)
+
+    // Assert
+    expect(service).toBeInstanceOf(WebsiteConfigurationService)
+  })
+
+  it('should configure a service when it is not yet configured', () => {
     // Arrange
     Services.configure(TestService1)
 
@@ -65,14 +74,6 @@ describe('get', () => {
 
     // Assert
     expect(service).toBeInstanceOf(TestService1)
-  })
-
-  it('should throw when the service not configured.', () => {
-    // Act
-    const test = () => Services.get(TestService1)
-
-    // Assert
-    expect(test).toThrowError('Service "TestService1" not configured.')
   })
 })
 

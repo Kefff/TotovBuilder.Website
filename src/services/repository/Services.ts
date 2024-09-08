@@ -51,13 +51,9 @@ class ServicesRepository {
     let registeredService = this.services.find((s) => s.name === type.name)
 
     if (registeredService == null) {
-      // TODO : METTRE UN LOG INDIQUANT QUE LA CONFIGURATION DU SERVICE STANDARD EST EN COURS
+      console.log(vueI18n.t('message.configuringService', { name: type.name }))
       this.configure(type)
-      registeredService = this.services.find((s) => s.name === type.name)
-
-      if (registeredService == null) {
-        throw vueI18n.t('message.serviceNotConfigured', { name: type.name })
-      }
+      registeredService = this.services.find((s) => s.name === type.name)!
     }
 
     return this.getInstance(registeredService)
