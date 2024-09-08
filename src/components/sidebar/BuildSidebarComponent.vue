@@ -35,7 +35,6 @@
   <div class="sidebar-title" />
   <div class="sidebar-option">
     <Button
-      v-if="!isDeleting"
       class="build-sidebar-button"
       severity="danger"
       outlined
@@ -47,35 +46,44 @@
       />
       <span>{{ $t('caption.delete') }}</span>
     </Button>
-    <div
-      v-else
-      class="build-sidebar-deletetion-confirmation"
-    >
-      <div>{{ $t('message.confirmDeleteBuild', { name: parameters.name }) }}</div>
-      <Button
-        class="build-sidebar-button"
-        outlined
-        @click="cancelDeletion()"
-      >
-        <font-awesome-icon
-          icon="undo"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.cancel') }}</span>
-      </Button>
-      <Button
-        class="build-sidebar-button"
-        severity="danger"
-        @click="confirmDeletion()"
-      >
-        <font-awesome-icon
-          icon="trash"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.delete') }}</span>
-      </Button>
-    </div>
   </div>
+
+  <!-- Deletion confirmation dialog -->
+  <Dialog
+    v-model:visible="isDeleting"
+    :closable="false"
+    :modal="true"
+    :draggable="false"
+  >
+    <div>
+      <span>{{ $t('message.confirmDeleteBuild', { name: parameters.name }) }}</span>
+    </div>
+    <template #footer>
+      <div class="build-sidebar-deletion-confirmation-buttons">
+        <Button
+          :label="$t('caption.delete')"
+          severity="danger"
+          @click="confirmDeletion()"
+        >
+          <font-awesome-icon
+            icon="trash"
+            class="icon-before-text"
+          />
+          <span>{{ $t('caption.delete') }}</span>
+        </Button>
+        <Button
+          outlined
+          @click="cancelDeletion()"
+        >
+          <font-awesome-icon
+            icon="undo"
+            class="icon-before-text"
+          />
+          <span>{{ $t('caption.cancel') }}</span>
+        </Button>
+      </div>
+    </template>
+  </Dialog>
 </template>
 
 
@@ -168,10 +176,11 @@ function exportBuild() {
   width: 100%;
 }
 
-.build-sidebar-deletetion-confirmation {
+.build-sidebar-deletion-confirmation-buttons {
+  align-items: center;
   display: flex;
-  flex-direction: column;
   gap: 0.5rem;
+  justify-content: center;
   width: 100%;
 }
 
