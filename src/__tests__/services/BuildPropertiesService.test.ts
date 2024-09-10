@@ -6,6 +6,7 @@ import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
+import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { IShoppingListMerchant } from '../../models/utils/IShoppingListMerchant'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
@@ -500,7 +501,7 @@ describe('BuildPropertiesService', () => {
         name: 'Meta',
         shoppingList: [
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: rpk16Default,
             missingPrice: false,
@@ -509,7 +510,7 @@ describe('BuildPropertiesService', () => {
             unitPrice: rpk16DefaultPrices[0]
           } as IShoppingListItem,
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: salewa,
             missingPrice: false,
@@ -1688,7 +1689,7 @@ Créé avec Totov Builder`)
       // Act
       const merchants = services.getShoppingListMerchants([
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: undefined,
           item: ak12PistolGrip,
           missingPrice: false,
@@ -1715,7 +1716,7 @@ Créé avec Totov Builder`)
           }
         },
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: undefined,
           item: salewa,
           missingPrice: false,
@@ -1750,7 +1751,7 @@ Créé avec Totov Builder`)
           }
         },
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: 'onSling',
           item: rpk16Default,
           missingPrice: false,
@@ -1777,7 +1778,7 @@ Créé avec Totov Builder`)
           }
         },
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: 'tacticalRig',
           item: scavVest,
           missingPrice: false,
@@ -1804,41 +1805,13 @@ Créé avec Totov Builder`)
           }
         },
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notLootable,
           inventorySlotId: undefined,
           item: bayonet6Kh5,
           missingPrice: false,
-          price: {
-            barterItems: [
-              {
-                itemId: ammo545bp.id,
-                quantity: 60
-              }
-            ],
-            currencyName: 'barter',
-            itemId: bayonet6Kh5.id,
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          },
+          price: undefined,
           quantity: 1,
-          unitPrice: {
-            barterItems: [
-              {
-                itemId: ammo545bp.id,
-                quantity: 60
-              }
-            ],
-            currencyName: 'barter',
-            itemId: bayonet6Kh5.id,
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 0,
-            valueInMainCurrency: 0
-          }
+          unitPrice: undefined
         }
       ])
 

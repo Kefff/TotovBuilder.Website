@@ -1,6 +1,7 @@
 import { anything, instance, mock, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
+import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
 import { FileService } from '../../services/FileService'
@@ -288,7 +289,7 @@ describe('ImportService', () => {
           },
           shoppingList: [
             {
-              ignorePrice: false,
+              ignorePrice: IgnoredUnitPrice.notIgnored,
               inventorySlotId: 'backpack',
               item: berkut,
               missingPrice: false,
@@ -313,6 +314,91 @@ describe('ImportService', () => {
                 value: 24509,
                 valueInMainCurrency: 24509
               }
+            },
+            {
+              ignorePrice: 'notLootable',
+              inventorySlotId: 'pouch',
+              item: {
+                capacity: 4,
+                categoryId: 'securedContainer',
+                conflictingItemIds: [],
+                iconLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-icon.webp',
+                id: '544a11ac4bdc2d470e8b456a',
+                imageLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-image.webp',
+                marketLink: 'https://tarkov.dev/item/secure-container-alpha',
+                maxStackableAmount: 1,
+                name: 'Secure container Alpha',
+                prices: [
+                  {
+                    barterItems: [],
+                    currencyName: 'USD',
+                    itemId: '544a11ac4bdc2d470e8b456a',
+                    merchant: 'peacekeeper',
+                    merchantLevel: 2,
+                    quest: undefined,
+                    value: 7158,
+                    valueInMainCurrency: 1023660
+                  }
+                ],
+                shortName: 'Alpha',
+                weight: 0.6,
+                wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Secure_container_Alpha'
+              },
+              missingPrice: false,
+              quantity: 1
+            },
+            {
+              ignorePrice: 'notLootable',
+              inventorySlotId: 'scabbard',
+              item: {
+                categoryId: 'meleeWeapon',
+                chopDamage: 24,
+                conflictingItemIds: [],
+                hitRadius: 0.4,
+                iconLink: 'https://assets.tarkov.dev/5bffdc370db834001d23eca8-icon.webp',
+                id: '5bffdc370db834001d23eca8',
+                imageLink: 'https://assets.tarkov.dev/5bffdc370db834001d23eca8-image.webp',
+                marketLink: 'https://tarkov.dev/item/6kh5-bayonet',
+                maxStackableAmount: 1,
+                name: '6Kh5 Bayonet',
+                prices: [
+                  {
+                    barterItems: [],
+                    currencyName: 'RUB',
+                    itemId: '5bffdc370db834001d23eca8',
+                    merchant: 'flea-market',
+                    merchantLevel: 0,
+                    quest: undefined,
+                    value: 24924,
+                    valueInMainCurrency: 24924
+                  },
+                  {
+                    barterItems: [
+                      {
+                        itemId: '590c595c86f7747884343ad7',
+                        quantity: 1
+                      },
+                      {
+                        itemId: '5c0fa877d174af02a012e1cf',
+                        quantity: 2
+                      }
+                    ],
+                    currencyName: 'barter',
+                    itemId: '5bffdc370db834001d23eca8',
+                    merchant: 'prapor',
+                    merchantLevel: 2,
+                    quest: undefined,
+                    value: 0,
+                    valueInMainCurrency: 0
+                  }
+                ],
+                shortName: '6Kh5',
+                stabDamage: 31,
+                weight: 0.223,
+                wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6Kh5_Bayonet'
+              },
+              missingPrice: false,
+              quantity: 1
             }
           ],
           wearableModifiers: {
@@ -353,7 +439,7 @@ describe('ImportService', () => {
           },
           shoppingList: [
             {
-              ignorePrice: false,
+              ignorePrice: IgnoredUnitPrice.notIgnored,
               inventorySlotId: 'pockets',
               item: rgd5,
               missingPrice: false,
@@ -378,6 +464,91 @@ describe('ImportService', () => {
                 value: 11822,
                 valueInMainCurrency: 11822
               }
+            },
+            {
+              ignorePrice: 'notLootable',
+              inventorySlotId: 'pouch',
+              item: {
+                capacity: 4,
+                categoryId: 'securedContainer',
+                conflictingItemIds: [],
+                iconLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-icon.webp',
+                id: '544a11ac4bdc2d470e8b456a',
+                imageLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-image.webp',
+                marketLink: 'https://tarkov.dev/item/secure-container-alpha',
+                maxStackableAmount: 1,
+                name: 'Secure container Alpha',
+                prices: [
+                  {
+                    barterItems: [],
+                    currencyName: 'USD',
+                    itemId: '544a11ac4bdc2d470e8b456a',
+                    merchant: 'peacekeeper',
+                    merchantLevel: 2,
+                    quest: undefined,
+                    value: 7158,
+                    valueInMainCurrency: 1023660
+                  }
+                ],
+                shortName: 'Alpha',
+                weight: 0.6,
+                wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Secure_container_Alpha'
+              },
+              missingPrice: false,
+              quantity: 1
+            },
+            {
+              ignorePrice: 'notLootable',
+              inventorySlotId: 'scabbard',
+              item: {
+                categoryId: 'meleeWeapon',
+                chopDamage: 24,
+                conflictingItemIds: [],
+                hitRadius: 0.4,
+                iconLink: 'https://assets.tarkov.dev/5bffdc370db834001d23eca8-icon.webp',
+                id: '5bffdc370db834001d23eca8',
+                imageLink: 'https://assets.tarkov.dev/5bffdc370db834001d23eca8-image.webp',
+                marketLink: 'https://tarkov.dev/item/6kh5-bayonet',
+                maxStackableAmount: 1,
+                name: '6Kh5 Bayonet',
+                prices: [
+                  {
+                    barterItems: [],
+                    currencyName: 'RUB',
+                    itemId: '5bffdc370db834001d23eca8',
+                    merchant: 'flea-market',
+                    merchantLevel: 0,
+                    quest: undefined,
+                    value: 24924,
+                    valueInMainCurrency: 24924
+                  },
+                  {
+                    barterItems: [
+                      {
+                        itemId: '590c595c86f7747884343ad7',
+                        quantity: 1
+                      },
+                      {
+                        itemId: '5c0fa877d174af02a012e1cf',
+                        quantity: 2
+                      }
+                    ],
+                    currencyName: 'barter',
+                    itemId: '5bffdc370db834001d23eca8',
+                    merchant: 'prapor',
+                    merchantLevel: 2,
+                    quest: undefined,
+                    value: 0,
+                    valueInMainCurrency: 0
+                  }
+                ],
+                shortName: '6Kh5',
+                stabDamage: 31,
+                weight: 0.223,
+                wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6Kh5_Bayonet'
+              },
+              missingPrice: false,
+              quantity: 1
             }
           ],
           wearableModifiers: {

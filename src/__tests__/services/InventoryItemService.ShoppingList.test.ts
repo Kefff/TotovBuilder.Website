@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
+import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { PresetService } from '../../services/PresetService'
@@ -19,7 +20,7 @@ describe('getShoppingList', () => {
       build1.inventorySlots[0].items[0]!,
       [
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: undefined,
           item: {
             ...rpk16Default,
@@ -49,7 +50,7 @@ describe('getShoppingList', () => {
           }
         },
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: undefined,
           item: {
             ...rpk16Drum,
@@ -89,7 +90,7 @@ describe('getShoppingList', () => {
           }
         },
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: undefined,
           item: {
             ...alkali,
@@ -119,7 +120,7 @@ describe('getShoppingList', () => {
           }
         },
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: undefined,
           item: {
             ...ammo545us,
@@ -154,7 +155,7 @@ describe('getShoppingList', () => {
       build1.inventorySlots[7].items[0]!,
       [
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: undefined,
           item: {
             ...berkut,
@@ -184,7 +185,7 @@ describe('getShoppingList', () => {
           }
         },
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: undefined,
           item: {
             ...iskra,
@@ -224,7 +225,7 @@ describe('getShoppingList', () => {
           }
         },
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: undefined,
           item: {
             ...syringe,
@@ -254,7 +255,7 @@ describe('getShoppingList', () => {
           }
         },
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: undefined,
           item: {
             ...water,
@@ -294,7 +295,7 @@ describe('getShoppingList', () => {
           }
         },
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: undefined,
           item: {
             ...h2o2,
@@ -362,7 +363,7 @@ describe('getShoppingList', () => {
       } as IInventoryItem,
       [
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: undefined,
           item: {
             ...berkut,
@@ -392,7 +393,7 @@ describe('getShoppingList', () => {
           }
         },
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: undefined,
           item: {
             ...rpk16Drum,
@@ -432,7 +433,7 @@ describe('getShoppingList', () => {
           }
         },
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: undefined,
           item: {
             ...alkali,
@@ -462,7 +463,7 @@ describe('getShoppingList', () => {
           }
         },
         {
-          ignorePrice: false,
+          ignorePrice: IgnoredUnitPrice.notIgnored,
           inventorySlotId: undefined,
           item: {
             ...rpk16RsBase,
@@ -552,7 +553,7 @@ describe('getShoppingList', () => {
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
-        ignorePrice: false,
+        ignorePrice: IgnoredUnitPrice.notIgnored,
         inventorySlotId: 'onSling',
         item: {
           ...rpk16Default,
@@ -616,7 +617,7 @@ describe('getShoppingList', () => {
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
-        ignorePrice: true,
+        ignorePrice: IgnoredUnitPrice.manuallyIgnored,
         inventorySlotId: undefined,
         item: {
           capacity: 4,
@@ -645,30 +646,10 @@ describe('getShoppingList', () => {
           wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Secure_container_Alpha'
         },
         missingPrice: false,
-        price: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '544a11ac4bdc2d470e8b456a',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        },
-        quantity: 1,
-        unitPrice: {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: '544a11ac4bdc2d470e8b456a',
-          merchant: '',
-          merchantLevel: 0,
-          quest: undefined,
-          value: 0,
-          valueInMainCurrency: 0
-        }
+        quantity: 1
       },
       {
-        ignorePrice: false,
+        ignorePrice: IgnoredUnitPrice.notIgnored,
         inventorySlotId: undefined,
         item: {
           ...ammo9mmGT,
@@ -700,7 +681,7 @@ describe('getShoppingList', () => {
     ] as IShoppingListItem[])
   })
 
-  it('should ignore items cannot be looted', async () => {
+  it('should include items that cannot be looted', async () => {
     // Arrange
     useItemServiceMock()
     usePresetServiceMock()
@@ -732,7 +713,39 @@ describe('getShoppingList', () => {
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
-        ignorePrice: false,
+        ignorePrice: 'notLootable',
+        inventorySlotId: undefined,
+        item: {
+          capacity: 4,
+          categoryId: 'securedContainer',
+          conflictingItemIds: [],
+          iconLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-icon.webp',
+          id: '544a11ac4bdc2d470e8b456a',
+          imageLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-image.webp',
+          marketLink: 'https://tarkov.dev/item/secure-container-alpha',
+          maxStackableAmount: 1,
+          name: 'Secure container Alpha',
+          prices: [
+            {
+              barterItems: [],
+              currencyName: 'USD',
+              itemId: '544a11ac4bdc2d470e8b456a',
+              merchant: 'peacekeeper',
+              merchantLevel: 2,
+              quest: undefined,
+              value: 7158,
+              valueInMainCurrency: 1023660
+            }
+          ],
+          shortName: 'Alpha',
+          weight: 0.6,
+          wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Secure_container_Alpha'
+        },
+        missingPrice: false,
+        quantity: 1
+      },
+      {
+        ignorePrice: IgnoredUnitPrice.notIgnored,
         inventorySlotId: undefined,
         item: {
           ...ammo9mmGT,
@@ -788,7 +801,7 @@ describe('getShoppingList', () => {
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
-        ignorePrice: false,
+        ignorePrice: IgnoredUnitPrice.notIgnored,
         inventorySlotId: undefined,
         item: {
           categoryId: 'notFound',
@@ -854,7 +867,7 @@ describe('getShoppingList', () => {
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
-        ignorePrice: false,
+        ignorePrice: IgnoredUnitPrice.notIgnored,
         inventorySlotId: undefined,
         item: ammo545bp,
         missingPrice: true,

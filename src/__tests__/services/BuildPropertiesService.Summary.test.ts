@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
+import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { IRecoil } from '../../models/utils/IRecoil'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
@@ -14,7 +15,7 @@ import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
 import { build1, build2 } from '../__data__/buildMocks'
-import { alkali, ammo545bp, ammo545us, ammo9mmGT, armor6b13FlDefault, banshee, berkut, cf, crossbow, ewr, h2o2, iskra, lshZ2dtm, lshZ2dtmFs, m9a3Default, monocletePe, morphine, paca, pass, plexiglass, razor, rgd5, rpk16, rpk16Default, rpk16Drum, salewa, scavVest, srd9, vaseline, water, x400 } from '../__data__/itemMocks'
+import { alkali, alpha, ammo545bp, ammo545us, ammo9mmGT, armor6b13FlDefault, banshee, bayonet6Kh5, berkut, cf, crossbow, ewr, h2o2, iskra, lshZ2dtm, lshZ2dtmFs, m9a3Default, monocletePe, morphine, paca, pass, plexiglass, razor, rgd5, rpk16, rpk16Default, rpk16Drum, salewa, scavVest, srd9, vaseline, water, x400 } from '../__data__/itemMocks'
 import { alkaliPrices, ammo545usPrices, ammo9mmGTPrices, armor6b13FlDefaultPrices, bansheePrices, berkutPrices, cfPrices, crossbowPrices, ewrPrices, h2o2Prices, iskraPrices, lshZ2dtmFsPrices, lshZ2dtmPrices, m9a3DefaultPrices, monocletePePrices, morphinePrices, passPrices, plexiglassPrices, razorPrices, rgd5Prices, rpk16DefaultPrices, rpk16DrumPrices, salewaPrices, srd9Prices, vaselinePrices, waterPrices, x400Prices } from '../__data__/priceMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
@@ -568,7 +569,7 @@ describe('getSummary()', () => {
         build1,
         [
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: 'onSling',
             item: {
               ...rpk16Default,
@@ -598,7 +599,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: {
               ...rpk16Drum,
@@ -638,7 +639,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: {
               ...alkali,
@@ -668,7 +669,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: 'pockets',
             item: {
               ...ammo545us,
@@ -698,7 +699,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: 'bodyArmor',
             item: {
               ...armor6b13FlDefault,
@@ -736,7 +737,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: 'headwear',
             item: {
               ...lshZ2dtm,
@@ -766,7 +767,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: {
               ...lshZ2dtmFs,
@@ -806,7 +807,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: {
               ...plexiglass,
@@ -836,7 +837,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: 'backpack',
             item: {
               ...berkut,
@@ -866,7 +867,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: {
               ...iskra,
@@ -904,7 +905,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: {
               ...water,
@@ -944,7 +945,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: {
               ...h2o2,
@@ -974,7 +975,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: 'pockets',
             item: {
               ...morphine,
@@ -1004,7 +1005,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: 'pockets',
             item: {
               ...vaseline,
@@ -1034,7 +1035,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: 'pockets',
             item: {
               ...rgd5,
@@ -1064,7 +1065,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: 'eyewear',
             item: {
               ...crossbow,
@@ -1094,7 +1095,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: 'faceCover',
             item: {
               ...cf,
@@ -1129,7 +1130,7 @@ describe('getSummary()', () => {
         build2,
         [
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: 'holster',
             item: {
               ...m9a3Default,
@@ -1159,7 +1160,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: {
               ...srd9,
@@ -1189,7 +1190,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: {
               ...ammo9mmGT,
@@ -1219,7 +1220,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: {
               ...x400,
@@ -1249,7 +1250,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: 'tacticalRig',
             item: {
               ...banshee,
@@ -1279,7 +1280,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: {
               ...monocletePe,
@@ -1319,7 +1320,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: {
               ...pass,
@@ -1349,7 +1350,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: {
               ...salewa,
@@ -1389,7 +1390,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: undefined,
             item: {
               ...ewr,
@@ -1419,7 +1420,7 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: false,
+            ignorePrice: IgnoredUnitPrice.notIgnored,
             inventorySlotId: 'earpiece',
             item: {
               ...razor,
@@ -1447,6 +1448,20 @@ describe('getSummary()', () => {
               value: 64132,
               valueInMainCurrency: 64132
             }
+          },
+          {
+            ignorePrice: 'notLootable',
+            inventorySlotId: 'pouch',
+            item: alpha,
+            missingPrice: false,
+            quantity: 1
+          },
+          {
+            ignorePrice: 'notLootable',
+            inventorySlotId: 'scabbard',
+            item: bayonet6Kh5,
+            missingPrice: false,
+            quantity: 1
           }
         ] as IShoppingListItem[]
       ],

@@ -467,8 +467,9 @@ export class InventoryItemService {
       unitPriceIgnoreStatus = IgnoredUnitPrice.manuallyIgnored
     }
 
-    if (unitPriceIgnoreStatus === IgnoredUnitPrice.inPreset
-      || unitPriceIgnoreStatus === IgnoredUnitPrice.notLootable) {
+    if (unitPriceIgnoreStatus === IgnoredUnitPrice.notLootable
+      || unitPriceIgnoreStatus === IgnoredUnitPrice.manuallyIgnored
+    ) {
       shoppingListItemsToAdd.push({
         ignorePrice: unitPriceIgnoreStatus,
         inventorySlotId: inventorySlotId,
@@ -476,7 +477,7 @@ export class InventoryItemService {
         missingPrice: false,
         quantity: inventoryItem.quantity
       })
-    } else {
+    } else if (unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored) {
       let unitPrice: IPrice
       const price = await this.getPrice(inventoryItem)
 
