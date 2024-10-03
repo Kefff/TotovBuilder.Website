@@ -15,7 +15,7 @@ import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
 import { build1, build2 } from '../__data__/buildMocks'
-import { alkali, alpha, ammo545bp, ammo545us, ammo9mmGT, armor6b13FlDefault, banshee, bayonet6Kh5, berkut, cf, crossbow, ewr, h2o2, iskra, lshZ2dtm, lshZ2dtmFs, m9a3Default, monocletePe, morphine, paca, pass, plexiglass, razor, rgd5, rpk16, rpk16Default, rpk16Drum, salewa, scavVest, srd9, vaseline, water, x400 } from '../__data__/itemMocks'
+import { alkali, alpha, ammo545bp, ammo545us, ammo9mmGT, armor6b13FlDefault, banshee, bayonet6Kh5, berkut, cf, crossbow, ewr, h2o2, iskra, lshZ2dtm, lshZ2dtmFs, m9a3Default, monocletePe, morphine, paca, pass, plate6b33Back, plate6b33Front, plexiglass, razor, rgd5, rpk16, rpk16Default, rpk16Drum, salewa, scavVest, srd9, vaseline, water, x400 } from '../__data__/itemMocks'
 import { alkaliPrices, ammo545usPrices, ammo9mmGTPrices, armor6b13FlDefaultPrices, bansheePrices, berkutPrices, cfPrices, crossbowPrices, ewrPrices, h2o2Prices, iskraPrices, lshZ2dtmFsPrices, lshZ2dtmPrices, m9a3DefaultPrices, monocletePePrices, morphinePrices, passPrices, plexiglassPrices, razorPrices, rgd5Prices, rpk16DefaultPrices, rpk16DrumPrices, salewaPrices, srd9Prices, vaselinePrices, waterPrices, x400Prices } from '../__data__/priceMocks'
 import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
@@ -28,8 +28,8 @@ describe('getSummary()', () => {
       [
         build1,
         {
-          armorClass: 4,
-          durability: 50
+          armorClass: plate6b33Front.armorClass,
+          durability: armor6b13FlDefault.durability + plate6b33Front.durability + plate6b33Back.durability
         } as IArmorModifiers
       ],
       [
@@ -55,15 +55,15 @@ describe('getSummary()', () => {
           lastWebsiteVersion: undefined
         },
         {
-          armorClass: 2,
-          durability: 0
+          armorClass: paca.armorClass,
+          durability: paca.durability
         } as IArmorModifiers
       ],
       [
         build2,
         {
-          armorClass: 4,
-          durability: 40
+          armorClass: monocletePe.armorClass,
+          durability: banshee.durability + monocletePe.durability + monocletePe.durability
         } as IArmorModifiers
       ],
       [

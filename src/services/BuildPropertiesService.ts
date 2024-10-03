@@ -47,7 +47,7 @@ export class BuildPropertiesService {
     const item = await itemService.getItem(vestSlot.items[0].itemId)
     const vest = item as IVest
 
-    if (vest.armorClass > 0) {
+    if (vest.armorClass > 0 || vest.armoredAreas.length > 0) {
       Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.cannotAddBodyArmor'))
 
       return false
@@ -100,7 +100,8 @@ export class BuildPropertiesService {
     const item = await itemService.getItem(vestId)
     const vest = item as IVest
 
-    if (!Services.get(ItemPropertiesService).isVest(item) || vest.armorClass === 0) {
+    if (!Services.get(ItemPropertiesService).isVest(item)
+      || (vest.armorClass === 0 && vest.armoredAreas.length === 0)) {
       return true
     }
 

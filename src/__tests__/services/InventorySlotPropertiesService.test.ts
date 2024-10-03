@@ -361,7 +361,7 @@ describe('InventorySlotPropertiesService', () => {
           } as IInventorySlot,
           {
             armorClass: cultLocust.armorClass,
-            durability: cultLocust.durability
+            durability: armor6b13FlDefault.durability + cultLocust.durability + plate6b33Back.durability
           } as IArmorModifiers
         ],
         [
@@ -378,8 +378,8 @@ describe('InventorySlotPropertiesService', () => {
             typeId: 'bodyArmor'
           } as IInventorySlot,
           {
-            armorClass: 2,
-            durability: 0
+            armorClass: paca.armorClass,
+            durability: paca.durability
           } as IArmorModifiers
         ],
         [
@@ -418,7 +418,7 @@ describe('InventorySlotPropertiesService', () => {
           } as IInventorySlot,
           {
             armorClass: cultLocust.armorClass,
-            durability: cultLocust.durability
+            durability: bansheeDefault.durability + cultLocust.durability + monocletePe.durability
           } as IArmorModifiers
         ],
         [

@@ -35,10 +35,11 @@ import Services from './repository/Services'
 export class InventoryItemService {
   /**
    * Gets the armor class of an inventory item.
-   * When the inventory item has a front plate slot, it return the armor class and durability of the contained armor plate.
-   * Other whise it returns the armor class and durability of the armor or vest.
+   * When the inventory item has a front plate slot, it return the armor class of the contained armor plate.
+   * Otherwise it returns the armor class of the armor or vest.
+   * When the inventory item has armor plates, it returns the sum of the item and armor plates durability.
    * @param inventoryItem - Inventory item.
-   * @returns Front plate armor class.
+   * @returns Armor modifiers.
    */
   public async getArmorModifiers(inventoryItem: IInventoryItem): Promise<IArmorModifiers> {
     const itemService = Services.get(ItemService)
@@ -53,30 +54,33 @@ export class InventoryItemService {
       }
     }
 
-    const frontPlateModSlot = inventoryItem.modSlots.find(m => m.modSlotName === 'front_plate')
+    const armor = item as IArmor
+    let armorClass = armor.armorClass
+    let durability = armor.durability
+    const armorPlateModSlots = inventoryItem.modSlots.filter(m => m.modSlotName.endsWith('_plate'))
 
-    if (frontPlateModSlot != null) {
-      if (frontPlateModSlot.item == null) {
-        return {
-          armorClass: 0,
-          durability: 0
-        }
+    for (const armorPlateModSlot of armorPlateModSlots) {
+      if (armorPlateModSlot.item == null) {
+        continue
       }
 
-      const frontPlate = await itemService.getItem(frontPlateModSlot.item.itemId) as IArmorMod
-      const isArmorMod = itemPropertiesService.isArmorMod(frontPlate)
+      const armorPlate = await itemService.getItem(armorPlateModSlot.item.itemId) as IArmorMod
+      const isArmorMod = itemPropertiesService.isArmorMod(armorPlate)
 
-      return {
-        armorClass: isArmorMod ? frontPlate.armorClass : 0,
-        durability: isArmorMod ? frontPlate.durability : 0
+      if (!isArmorMod) {
+        continue
       }
+
+      if (armorPlateModSlot.modSlotName === 'front_plate') {
+        armorClass = armorPlate.armorClass
+      }
+
+      durability += armorPlate.durability
     }
 
-    const armor = item as IArmor
-
     return {
-      armorClass: armor.armorClass,
-      durability: armor.durability
+      armorClass,
+      durability
     }
   }
 

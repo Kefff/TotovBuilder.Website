@@ -27,7 +27,6 @@ describe('parseReducedItem', () => {
       {
         accuracyModifierPercentage: 0,
         armorDamagePercentage: 0,
-        armorPenetrations: [0, 0, 0, 0, 0, 0],
         blinding: true,
         caliber: 'unknown',
         categoryId: 'ammunition',
@@ -43,6 +42,7 @@ describe('parseReducedItem', () => {
         marketLink: 'https://tarkov.dev/item/unknown',
         maxStackableAmount: 60,
         name: 'Unknown',
+        penetratedArmorLevel: 0,
         penetrationPower: 0,
         prices: [],
         projectiles: 2,
@@ -58,17 +58,10 @@ describe('parseReducedItem', () => {
     [
       {
         'ad': 0.33,
-        'ap': [
-          6,
-          5,
-          1,
-          0,
-          0,
-          0
-        ],
+        'pa': 1,
         'ca': 'Caliber545x39',
         'd': -0.2,
-        'f': 63,
+        'f': 65,
         'fr': 0.1,
         'pp': 17,
         'r': -15,
@@ -91,14 +84,7 @@ describe('parseReducedItem', () => {
       {
         'ac': -0.05,
         'ad': 0.33,
-        'ap': [
-          6,
-          3,
-          1,
-          0,
-          0,
-          0
-        ],
+        'pa': 1,
         'ca': 'Caliber9x19PARA',
         'd': 0.15,
         'f': 58,

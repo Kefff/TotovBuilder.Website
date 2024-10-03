@@ -108,22 +108,12 @@ describe('get()', () => {
       merchantFilters: [
         {
           enabled: true,
-          merchant: 'prapor',
-          merchantLevel: 3
+          merchant: 'flea-market',
+          merchantLevel: 0
         },
         {
-          enabled: true,
-          merchant: 'therapist',
-          merchantLevel: 3
-        },
-        {
-          enabled: true,
-          merchant: 'skier',
-          merchantLevel: 3
-        },
-        {
-          enabled: true,
-          merchant: 'peacekeeper',
+          enabled: false,
+          merchant: 'jaeger',
           merchantLevel: 3
         },
         {
@@ -133,12 +123,17 @@ describe('get()', () => {
         },
         {
           enabled: true,
-          merchant: 'ragman',
+          merchant: 'peacekeeper',
           merchantLevel: 3
         },
         {
-          enabled: false,
-          merchant: 'jaeger',
+          enabled: true,
+          merchant: 'prapor',
+          merchantLevel: 3
+        },
+        {
+          enabled: true,
+          merchant: 'ragman',
           merchantLevel: 3
         },
         {
@@ -148,8 +143,13 @@ describe('get()', () => {
         },
         {
           enabled: true,
-          merchant: 'flea-market',
-          merchantLevel: 0
+          merchant: 'skier',
+          merchantLevel: 3
+        },
+        {
+          enabled: true,
+          merchant: 'therapist',
+          merchantLevel: 3
         }
       ]
     } as IGlobalFilter)
@@ -181,22 +181,12 @@ describe('get()', () => {
       merchantFilters: [
         {
           enabled: true,
-          merchant: 'prapor',
-          merchantLevel: 4
+          merchant: 'flea-market',
+          merchantLevel: 0
         },
         {
           enabled: true,
-          merchant: 'therapist',
-          merchantLevel: 4
-        },
-        {
-          enabled: true,
-          merchant: 'skier',
-          merchantLevel: 4
-        },
-        {
-          enabled: true,
-          merchant: 'peacekeeper',
+          merchant: 'jaeger',
           merchantLevel: 4
         },
         {
@@ -206,12 +196,17 @@ describe('get()', () => {
         },
         {
           enabled: true,
-          merchant: 'ragman',
+          merchant: 'peacekeeper',
           merchantLevel: 4
         },
         {
           enabled: true,
-          merchant: 'jaeger',
+          merchant: 'prapor',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'ragman',
           merchantLevel: 4
         },
         {
@@ -221,8 +216,13 @@ describe('get()', () => {
         },
         {
           enabled: true,
-          merchant: 'flea-market',
-          merchantLevel: 0
+          merchant: 'skier',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'therapist',
+          merchantLevel: 4
         }
       ]
     } as IGlobalFilter)
@@ -605,23 +605,13 @@ describe('save', () => {
       ],
       merchantFilters: [
         {
-          enabled: true,
-          merchant: 'prapor',
-          merchantLevel: 1
+          enabled: false,
+          merchant: 'flea-market',
+          merchantLevel: 0
         },
         {
-          enabled: true,
-          merchant: 'therapist',
-          merchantLevel: 3
-        },
-        {
-          enabled: true,
-          merchant: 'skier',
-          merchantLevel: 3
-        },
-        {
-          enabled: true,
-          merchant: 'peacekeeper',
+          enabled: false,
+          merchant: 'jaeger',
           merchantLevel: 3
         },
         {
@@ -631,12 +621,17 @@ describe('save', () => {
         },
         {
           enabled: true,
-          merchant: 'ragman',
+          merchant: 'peacekeeper',
           merchantLevel: 3
         },
         {
-          enabled: false,
-          merchant: 'jaeger',
+          enabled: true,
+          merchant: 'prapor',
+          merchantLevel: 1
+        },
+        {
+          enabled: true,
+          merchant: 'ragman',
           merchantLevel: 3
         },
         {
@@ -645,9 +640,14 @@ describe('save', () => {
           merchantLevel: 3
         },
         {
-          enabled: false,
-          merchant: 'flea-market',
-          merchantLevel: 0
+          enabled: true,
+          merchant: 'skier',
+          merchantLevel: 3
+        },
+        {
+          enabled: true,
+          merchant: 'therapist',
+          merchantLevel: 3
         }
       ]
     } as IGlobalFilter)
@@ -720,23 +720,13 @@ describe('saveMerchantFilters()', () => {
     expect(localStorage.setItem).toHaveBeenCalled()
     expect(updatedGlobalFilter.merchantFilters).toStrictEqual([
       {
-        enabled: true,
-        merchant: 'prapor',
-        merchantLevel: 1
+        enabled: false,
+        merchant: 'flea-market',
+        merchantLevel: 0
       },
       {
-        enabled: true,
-        merchant: 'therapist',
-        merchantLevel: 3
-      },
-      {
-        enabled: true,
-        merchant: 'skier',
-        merchantLevel: 3
-      },
-      {
-        enabled: true,
-        merchant: 'peacekeeper',
+        enabled: false,
+        merchant: 'jaeger',
         merchantLevel: 3
       },
       {
@@ -746,12 +736,17 @@ describe('saveMerchantFilters()', () => {
       },
       {
         enabled: true,
-        merchant: 'ragman',
+        merchant: 'peacekeeper',
         merchantLevel: 3
       },
       {
-        enabled: false,
-        merchant: 'jaeger',
+        enabled: true,
+        merchant: 'prapor',
+        merchantLevel: 1
+      },
+      {
+        enabled: true,
+        merchant: 'ragman',
         merchantLevel: 3
       },
       {
@@ -760,9 +755,14 @@ describe('saveMerchantFilters()', () => {
         merchantLevel: 3
       },
       {
-        enabled: false,
-        merchant: 'flea-market',
-        merchantLevel: 0
+        enabled: true,
+        merchant: 'skier',
+        merchantLevel: 3
+      },
+      {
+        enabled: true,
+        merchant: 'therapist',
+        merchantLevel: 3
       }
     ] as IMerchantFilter[])
   })

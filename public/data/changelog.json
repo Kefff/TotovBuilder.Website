@@ -1,7 +1,7 @@
 [
   {
     "changes": [],
-    "date": "2024-04-27T00:00:00+00:00",
+    "date": "2024-04-27T02:00:00+02:00",
     "version": "2.0.0"
   },
   {
@@ -39,7 +39,7 @@
         "text": "Correction des \u00E9changes qui n\u0027\u00E9taient pas pris en compte lors de la d\u00E9termination du prix des objets."
       }
     ],
-    "date": "2024-04-27T00:00:00+00:00",
+    "date": "2024-04-27T02:00:00+02:00",
     "version": "1.8.0"
   },
   {
@@ -53,7 +53,7 @@
         "text": "Mise \u00E0 jour des \u00E9quipement existant pour remplacer les objets ayant de l\u0027armure par leur nouvelle pr\u00E9configuration par d\u00E9faut. Les anciens objets correspondent maintenant aux objets sans leurs plaques d\u0027armure."
       }
     ],
-    "date": "2024-01-02T00:00:00+00:00",
+    "date": "2024-01-02T01:00:00+01:00",
     "version": "1.7.1"
   },
   {
@@ -67,7 +67,7 @@
         "text": "Refonte de la partie serveur du site web pour am\u00E9liorer les temps de chargement."
       }
     ],
-    "date": "2024-01-01T00:00:00+00:00",
+    "date": "2024-01-01T01:00:00+01:00",
     "version": "1.7.0"
   },
   {
@@ -113,7 +113,7 @@
         "text": "Am\u00E9liorations et correction de divers \u00E9l\u00E9ments de l\u0027interface utilisateur."
       }
     ],
-    "date": "2023-08-15T00:00:00+00:00",
+    "date": "2023-08-15T02:00:00+02:00",
     "version": "1.6.5"
   }
 ]

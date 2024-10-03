@@ -88,7 +88,7 @@ describe('fetchItems()', () => {
 
     // Assert
     expect(items).not.toBeUndefined()
-    expect(items!.length).toBe(3512)
+    expect(items!.length).toBe(3804)
 
     for (const itemMock of ItemMocks) {
       const fetchedItem = items!.find(i => i.id === itemMock.id)
@@ -218,7 +218,7 @@ describe('fetchPresets()', () => {
 
     // Assert
     expect(presets).not.toBeUndefined()
-    expect(presets!.length).toBe(309)
+    expect(presets!.length).toBe(381)
 
     for (const presetMock of PresetMocks) {
       const fetchedItem = presets!.find(i => i.itemId === presetMock.itemId)

@@ -15,11 +15,6 @@ export interface IAmmunition extends IItem {
   armorDamagePercentage: number
 
   /**
-   * List of the penetration efficiencies by armor class.
-   */
-  armorPenetrations: number[]
-
-  /**
    * Indicates whether the ammunitions can blind opponents.
    */
   blinding: boolean
@@ -53,6 +48,11 @@ export interface IAmmunition extends IItem {
    * Percentage of chance to inflict a light bleeding when hitting flesh.
    */
   lightBleedingChance: number
+
+  /**
+   * Armor level a bullet can easily penetrate.
+   */
+  penetratedArmorLevel: number
 
   /**
    * Armor penetration power.

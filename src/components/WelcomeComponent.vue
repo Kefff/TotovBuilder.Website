@@ -383,6 +383,7 @@ function openNewBuild() {
   flex-direction: column;
   height: 100%;
   margin-top: 3rem;
+  max-width: 80rem;
 }
 
 .welcome-loading {

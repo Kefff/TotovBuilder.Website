@@ -47,45 +47,15 @@
   "lightEncumbermentWeight": 26,
   "merchants": [
     {
-      "maxLevel": 4,
-      "minLevel": 1,
-      "name": "prapor",
-      "showInFilter": true
-    },
-    {
-      "maxLevel": 4,
-      "minLevel": 1,
-      "name": "therapist",
-      "showInFilter": true
-    },
-    {
-      "maxLevel": 4,
-      "minLevel": 1,
-      "name": "skier",
-      "showInFilter": true
-    },
-    {
       "maxLevel": 1,
       "minLevel": 1,
       "name": "fence",
       "showInFilter": false
     },
     {
-      "maxLevel": 4,
-      "minLevel": 1,
-      "name": "peacekeeper",
-      "showInFilter": true
-    },
-    {
-      "maxLevel": 4,
-      "minLevel": 1,
-      "name": "mechanic",
-      "showInFilter": true
-    },
-    {
-      "maxLevel": 4,
-      "minLevel": 1,
-      "name": "ragman",
+      "maxLevel": 0,
+      "minLevel": 0,
+      "name": "flea-market",
       "showInFilter": true
     },
     {
@@ -97,13 +67,43 @@
     {
       "maxLevel": 4,
       "minLevel": 1,
+      "name": "mechanic",
+      "showInFilter": true
+    },
+    {
+      "maxLevel": 4,
+      "minLevel": 1,
+      "name": "peacekeeper",
+      "showInFilter": true
+    },
+    {
+      "maxLevel": 4,
+      "minLevel": 1,
+      "name": "prapor",
+      "showInFilter": true
+    },
+    {
+      "maxLevel": 4,
+      "minLevel": 1,
+      "name": "ragman",
+      "showInFilter": true
+    },
+    {
+      "maxLevel": 4,
+      "minLevel": 1,
       "name": "ref",
       "showInFilter": true
     },
     {
-      "maxLevel": 0,
-      "minLevel": 0,
-      "name": "flea-market",
+      "maxLevel": 4,
+      "minLevel": 1,
+      "name": "skier",
+      "showInFilter": true
+    },
+    {
+      "maxLevel": 4,
+      "minLevel": 1,
+      "name": "therapist",
       "showInFilter": true
     }
   ],

@@ -55,7 +55,7 @@ describe('InventoryItemService', () => {
         } as IInventoryItem,
         {
           armorClass: cultLocust.armorClass,
-          durability: cultLocust.durability
+          durability: armor6b13FlDefault.durability + cultLocust.durability + plate6b33Back.durability
         } as IArmorModifiers
       ],
       [
@@ -89,7 +89,7 @@ describe('InventoryItemService', () => {
         } as IInventoryItem,
         {
           armorClass: cultLocust.armorClass,
-          durability: cultLocust.durability
+          durability: bansheeDefault.durability + cultLocust.durability + monocletePe.durability
         } as IArmorModifiers
       ],
       [
@@ -116,8 +116,8 @@ describe('InventoryItemService', () => {
           quantity: 1
         } as IInventoryItem,
         {
-          armorClass: 0,
-          durability: 0
+          armorClass: armor6b13FlDefault.armorClass,
+          durability: armor6b13FlDefault.durability + plate6b33Back.durability
         } as IArmorModifiers
       ],
       [
@@ -129,8 +129,8 @@ describe('InventoryItemService', () => {
           quantity: 1
         } as IInventoryItem,
         {
-          armorClass: 2,
-          durability: 0
+          armorClass: paca.armorClass,
+          durability: paca.durability
         } as IArmorModifiers
       ],
       [
@@ -142,8 +142,8 @@ describe('InventoryItemService', () => {
           quantity: 1
         } as IInventoryItem,
         {
-          armorClass: 0,
-          durability: 0
+          armorClass: scavVest.armorClass,
+          durability: scavVest.durability
         } as IArmorModifiers
       ],
       [
@@ -159,7 +159,7 @@ describe('InventoryItemService', () => {
           durability: 0
         } as IArmorModifiers
       ]
-    ])('should get the armor class of the front armor plate of the inventory item', async (inventoryItem: IInventoryItem, expected: IArmorModifiers) => {
+    ])('should get the armor class of the front armor plate (when present) and the sum of armor and plates durability of the inventory item', async (inventoryItem: IInventoryItem, expected: IArmorModifiers) => {
       // Arrange
       useItemServiceMock()
       Services.configure(ItemPropertiesService)
@@ -203,7 +203,7 @@ describe('InventoryItemService', () => {
       // Assert
       expect(armorClassResult).toStrictEqual({
         armorClass: 0,
-        durability: 0
+        durability: 72
       })
     })
 
@@ -3213,10 +3213,10 @@ describe('InventoryItemService', () => {
           'quantity': 1
         } as IInventoryItem,
         {
-          horizontalRecoil: 650,
-          horizontalRecoilWithMods: 765,
-          verticalRecoil: 442,
-          verticalRecoilWithMods: 557
+          horizontalRecoil: 486,
+          horizontalRecoilWithMods: 601,
+          verticalRecoil: 364,
+          verticalRecoilWithMods: 479
         } as IInventoryItemRecoil
       ]
     ])('should get the recoil of an inventory item', async (inventoryItem: IInventoryItem, expected: IInventoryItemRecoil) => {

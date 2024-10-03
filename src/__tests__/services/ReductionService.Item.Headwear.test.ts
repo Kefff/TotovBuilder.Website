@@ -17,6 +17,7 @@ describe('parseReducedItem', () => {
         ],
         'h': 1,
         'de': 'High',
+        'd': 99,
         'e': -0.03,
         'ma': 'Combined',
         'mo': [

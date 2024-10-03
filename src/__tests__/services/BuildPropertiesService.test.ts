@@ -53,27 +53,6 @@ describe('BuildPropertiesService', () => {
                 {
                   content: [],
                   ignorePrice: false,
-                  itemId: 'invalid',
-                  modSlots: [],
-                  quantity: 1
-                }
-              ] as (IInventoryItem | undefined)[]
-            }
-          ]
-        } as IBuild,
-        true,
-        undefined
-      ],
-      [
-        {
-          id: '',
-          inventorySlots: [
-            {
-              typeId: 'tacticalRig',
-              items: [
-                {
-                  content: [],
-                  ignorePrice: false,
                   itemId: scavVest.id,
                   modSlots: [],
                   quantity: 1
@@ -884,7 +863,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 [*Poches*] **RGD-5 hand grenade**  
 [*Poches*] 60 x **5.45x39mm US gs**  
 
-[*Lunettes*] **Crossbow tactical glasses**  
+[*Lunettes*] **ESS Crossbow tactical glasses**  
 
 [*Masque*] **Cold Fear infrared balaclava**  
 
@@ -1051,7 +1030,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
 [*Poches*] **RGD-5 hand grenade**   💵 Prapor 3 **11 822₽**  
 [*Poches*] 60 x **5.45x39mm US gs**   💵 Prapor 1 **5 760₽**  
 
-[*Lunettes*] **Crossbow tactical glasses**   💵 Ragman 2 **3 885₽**  
+[*Lunettes*] **ESS Crossbow tactical glasses**   💵 Ragman 2 **3 885₽**  
 
 [*Masque*] **Cold Fear infrared balaclava**   💵 Ragman 2 **4 793₽**  
 
@@ -1445,7 +1424,7 @@ Poids 24,153 kg
 [Poches] RGD-5 hand grenade
 [Poches] 60 x 5.45x39mm US gs
 
-[Lunettes] Crossbow tactical glasses
+[Lunettes] ESS Crossbow tactical glasses
 
 [Masque] Cold Fear infrared balaclava
 
@@ -1623,7 +1602,7 @@ Prix 366 019₽   Poids 24,153 kg
 [Poches] RGD-5 hand grenade   Prapor 3 11 822₽
 [Poches] 60 x 5.45x39mm US gs   Prapor 1 5 760₽
 
-[Lunettes] Crossbow tactical glasses   Ragman 2 3 885₽
+[Lunettes] ESS Crossbow tactical glasses   Ragman 2 3 885₽
 
 [Masque] Cold Fear infrared balaclava   Ragman 2 4 793₽
 
@@ -1862,7 +1841,7 @@ const expectedMarkdownString1En = `# Build 1
 [*Pockets*] **RGD-5 hand grenade**   💵 Prapor 3 **11,822₽**  
 [*Pockets*] 60 x **5.45x39mm US gs**   💵 Prapor 1 **5,760₽**  
 
-[*Eyewear*] **Crossbow tactical glasses**   💵 Ragman 2 **3,885₽**  
+[*Eyewear*] **ESS Crossbow tactical glasses**   💵 Ragman 2 **3,885₽**  
 
 [*Face cover*] **Cold Fear infrared balaclava**   💵 Ragman 2 **4,793₽**  
 
@@ -1901,7 +1880,7 @@ const expectedMarkdownString1Fr = `# Build 1
 [*Poches*] **RGD-5 hand grenade**   💵 Prapor 3 **11 822₽**  
 [*Poches*] 60 x **5.45x39mm US gs**   💵 Prapor 1 **5 760₽**  
 
-[*Lunettes*] **Crossbow tactical glasses**   💵 Ragman 2 **3 885₽**  
+[*Lunettes*] **ESS Crossbow tactical glasses**   💵 Ragman 2 **3 885₽**  
 
 [*Masque*] **Cold Fear infrared balaclava**   💵 Ragman 2 **4 793₽**  
 
@@ -2050,7 +2029,7 @@ Price 366,019₽   Weight 24.153 kg
 [Pockets] RGD-5 hand grenade   Prapor 3 11,822₽
 [Pockets] 60 x 5.45x39mm US gs   Prapor 1 5,760₽
 
-[Eyewear] Crossbow tactical glasses   Ragman 2 3,885₽
+[Eyewear] ESS Crossbow tactical glasses   Ragman 2 3,885₽
 
 [Face cover] Cold Fear infrared balaclava   Ragman 2 4,793₽
 
@@ -2090,7 +2069,7 @@ Prix 366 019₽   Poids 24,153 kg
 [Poches] RGD-5 hand grenade   Prapor 3 11 822₽
 [Poches] 60 x 5.45x39mm US gs   Prapor 1 5 760₽
 
-[Lunettes] Crossbow tactical glasses   Ragman 2 3 885₽
+[Lunettes] ESS Crossbow tactical glasses   Ragman 2 3 885₽
 
 [Masque] Cold Fear infrared balaclava   Ragman 2 4 793₽
 

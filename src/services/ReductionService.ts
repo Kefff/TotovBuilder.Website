@@ -308,7 +308,6 @@ export class ReductionService {
   private parseReducedAmmunition(reducedItem: Record<string, unknown>, baseItemProperties: IItem): IAmmunition {
     const accuracyModifierPercentage = reducedItem['ac'] as number ?? 0
     const armorDamagePercentage = reducedItem['ad'] as number ?? 0
-    const armorPenetrations = reducedItem['ap'] as number[] ?? [0, 0, 0, 0, 0, 0]
     const blinding = reducedItem['b'] != null
     const caliber = reducedItem['ca'] as string
     const durabilityBurnModifierPercentage = reducedItem['d'] as number ?? 0
@@ -316,6 +315,7 @@ export class ReductionService {
     const fragmentationChance = reducedItem['fr'] as number ?? 0
     const heavyBleedingChance = reducedItem['h'] as number ?? 0
     const lightBleedingChance = reducedItem['l'] as number ?? 0
+    const penetratedArmorLevel = reducedItem['pa'] as number ?? 0
     const penetrationPower = reducedItem['pp'] as number ?? 0
     const projectiles = reducedItem['p'] as number ?? 1
     const recoilModifier = reducedItem['r'] as number ?? 0
@@ -327,7 +327,6 @@ export class ReductionService {
       ...baseItemProperties,
       accuracyModifierPercentage,
       armorDamagePercentage,
-      armorPenetrations,
       blinding,
       caliber,
       durabilityBurnModifierPercentage,
@@ -335,6 +334,7 @@ export class ReductionService {
       fragmentationChance,
       heavyBleedingChance,
       lightBleedingChance,
+      penetratedArmorLevel,
       penetrationPower,
       projectiles,
       recoilModifier,
