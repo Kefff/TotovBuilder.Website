@@ -1,13 +1,4 @@
 {
-  "armorPenetrationEfficiencies": [
-    "\u003E 20",
-    "13 - 20",
-    "9 - 13",
-    "5 - 9",
-    "3 - 5",
-    "1 - 3",
-    "\u003C 1"
-  ],
   "chestHp": 85,
   "currencies": [
     {

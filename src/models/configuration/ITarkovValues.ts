@@ -7,11 +7,6 @@ import { IRicochetChance } from './IRicochetChance'
  */
 export interface ITarkovValues {
   /**
-   * Armor penetration efficiencies.
-   */
-  armorPenetrationEfficiencies: string[]
-
-  /**
    * Player character chest HP.
    */
   chestHp: number

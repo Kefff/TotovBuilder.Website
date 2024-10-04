@@ -118,20 +118,32 @@
         </span>
       </div>
     </div>
-  </div>
-  <div class="stats-line">
-    <div class="stats-entry">
+    <div
+      v-if="ammunition.penetratedArmorLevel > 0"
+      class="stats-entry"
+    >
       <div class="stats-caption">
         <font-awesome-icon
-          icon="bolt"
+          icon="award"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.penetrationPower') }} :</span>
+        <span>{{ $t('caption.armorPenetration') }} :</span>
       </div>
       <div class="stats-value">
-        {{ ammunition.penetrationPower }}
+        <Tooltip
+          :tooltip="$t('caption.armorClassPenetration', { class: ammunition.penetratedArmorLevel })"
+          class="ammunition-stats-penetrated-armor"
+        >
+          <font-awesome-icon
+            icon="award"
+            :class="`icon-before-text armor-penetration${ammunition.penetratedArmorLevel}`"
+          />
+          <span>{{ ammunition.penetratedArmorLevel }}</span>
+        </Tooltip>
       </div>
     </div>
+  </div>
+  <div class="stats-line">
     <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
@@ -144,34 +156,16 @@
         <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorDamagePercentage, ammunition.armorDamagePercentage) }}</span>
       </div>
     </div>
-  </div>
-  <div
-    v-if="ammunition.armorPenetrations.length > 0"
-    class="stats-line"
-  >
     <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
-          icon="award"
+          icon="bolt"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.armorPenetration') }} :</span>
+        <span>{{ $t('caption.penetrationPower') }} :</span>
       </div>
-      <div class="ammunition-stats-penetrated-armor-list">
-        <Tooltip
-          v-for="c of ammunition.armorPenetrations.length"
-          :key="c"
-          :tooltip="getArmorPenetrationTooltip(c, ammunition.armorPenetrations[c - 1])"
-          class="ammunition-stats-penetrated-armor"
-        >
-          <font-awesome-icon
-            icon="award"
-            :class="'ammunition-stats-penetrated-armor-icon armor-penetration' + ammunition.armorPenetrations[c - 1]"
-          />
-          <div class="ammunition-stats-penetrated-armor-class">
-            {{ c }}
-          </div>
-        </Tooltip>
+      <div class="stats-value">
+        {{ ammunition.penetrationPower }}
       </div>
     </div>
   </div>
@@ -293,7 +287,6 @@ import { IAmmunition } from '../../models/item/IAmmunition'
 import { IItem } from '../../models/item/IItem'
 import { TarkovValuesService } from '../../services/TarkovValuesService'
 import Services from '../../services/repository/Services'
-import { ArmorUtils } from '../../utils/ArmorUtils'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import StringUtils from '../../utils/StringUtils'
 import CustomIcon from '../CustomIconComponent.vue'
@@ -310,16 +303,6 @@ const hasModifiers = computed(() =>
   || ammunition.value.heavyBleedingChance !== 0
   || ammunition.value.lightBleedingChance !== 0
   || ammunition.value.recoilModifier !== 0)
-
-/**
- * Gets the tooltip for an armor penetration.
- * @param armorClass - Armor class penetrated.
- * @param penetration - Penetration value.
- * @returns Tooltip.
- */
-function getArmorPenetrationTooltip(armorClass: number, penetration: number): string {
-  return ArmorUtils.getArmorPenetrationTooltip(armorClass, penetration)
-}
 </script>
 
 
@@ -349,14 +332,5 @@ function getArmorPenetrationTooltip(armorClass: number, penetration: number): st
 
 .ammunition-stats-penetrated-armor:last-child {
   margin-right: 0;
-}
-
-.ammunition-stats-penetrated-armor-class {
-  font-size: 0.75rem;
-}
-
-.ammunition-stats-penetrated-armor-list {
-  align-items: center;
-  display: flex;
 }
 </style>
