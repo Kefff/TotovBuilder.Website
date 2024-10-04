@@ -43,19 +43,21 @@ export class SortingService {
       return sortingData
     }
 
+    const updatedSortingData = { ...sortingData }
+
     if (order != null) {
-      sortingData.order = order
+      updatedSortingData.order = order
     } else {
-      sortingData.order = sortingData.property === property ? -sortingData.order : SortingOrder.asc
+      updatedSortingData.order = updatedSortingData.property === property ? -sortingData.order : SortingOrder.asc
     }
 
-    sortingData.property = property
-    sortingData.sortingFunction.comparisonFunction = (element1: T, element1Value: string | number, element2: T, element2Value: string | number) => {
-      return sortingFunction.comparisonFunction(element1, element1Value, element2, element2Value) * sortingData.order
+    updatedSortingData.property = property
+    updatedSortingData.sortingFunction.comparisonFunction = (element1: T, element1Value: string | number, element2: T, element2Value: string | number) => {
+      return sortingFunction.comparisonFunction(element1, element1Value, element2, element2Value) * updatedSortingData.order
     }
-    sortingData.sortingFunction.comparisonValueObtentionFunction = sortingFunction.comparisonValueObtentionFunction
+    updatedSortingData.sortingFunction.comparisonValueObtentionFunction = sortingFunction.comparisonValueObtentionFunction
 
-    return sortingData
+    return updatedSortingData
   }
 
   /**

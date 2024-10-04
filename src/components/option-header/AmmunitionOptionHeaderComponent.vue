@@ -14,9 +14,9 @@
     <div class="option-value">
       <OptionHeaderSortButton
         v-model:sorting-data="modelSortingData"
-        caption-resource="caption.penetrationPower"
-        icon="bolt"
-        property="penetrationPower"
+        caption-resource="caption.armorPenetration"
+        icon="award"
+        property="penetratedArmorLevel"
         :sorting-functions="AmmunitionSortingFunctions"
       />
     </div>
@@ -25,9 +25,9 @@
     <div class="option-value">
       <OptionHeaderSortButton
         v-model:sorting-data="modelSortingData"
-        caption-resource="caption.armorPenetration"
-        icon="award"
-        property="penetratedArmorLevel"
+        caption-resource="caption.penetrationPower"
+        icon="bolt"
+        property="penetrationPower"
         :sorting-functions="AmmunitionSortingFunctions"
       />
     </div>
@@ -62,6 +62,7 @@
         icon="bullseye"
         property="accuracyModifierPercentage"
         :sorting-functions="AmmunitionSortingFunctions"
+        @update:sorting-data="() => console.log('connard')"
       />
     </div>
   </div>

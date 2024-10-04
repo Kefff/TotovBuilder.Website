@@ -30,18 +30,8 @@
   </div>
   <div class="option-entry">
     <div class="option-value">
-      <Tooltip :tooltip="$t('caption.penetrationPower')">
-        <font-awesome-icon
-          icon="bolt"
-          class="icon-before-text"
-        />
-        <span>{{ ammunition.penetrationPower }}</span>
-      </Tooltip>
-    </div>
-  </div>
-  <div class="option-entry">
-    <div class="option-value">
       <Tooltip
+        v-if="ammunition.penetratedArmorLevel > 0"
         :tooltip="$t('caption.armorClassPenetration', { class: ammunition.penetratedArmorLevel })"
         class="ammunition-summary-penetrated-armor"
       >
@@ -50,6 +40,17 @@
           :class="`icon-before-text armor-penetration${ammunition.penetratedArmorLevel}`"
         />
         <span>{{ ammunition.penetratedArmorLevel }}</span>
+      </Tooltip>
+    </div>
+  </div>
+  <div class="option-entry">
+    <div class="option-value">
+      <Tooltip :tooltip="$t('caption.penetrationPower')">
+        <font-awesome-icon
+          icon="bolt"
+          class="icon-before-text"
+        />
+        <span>{{ ammunition.penetrationPower }}</span>
       </Tooltip>
     </div>
   </div>
@@ -133,8 +134,10 @@ const props = withDefaults(
     showEmptyEntries: true
   })
 
+const _chestHp = Services.get(TarkovValuesService).values.chestHp
+
 const ammunition = computed(() => props.item as IAmmunition)
-const canOneshot = computed(() => ammunition.value.fleshDamage >= Services.get(TarkovValuesService).values.chestHp)
+const canOneshot = computed(() => ammunition.value.fleshDamage >= _chestHp)
 </script>
 
 

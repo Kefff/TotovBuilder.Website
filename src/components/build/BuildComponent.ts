@@ -143,6 +143,7 @@ export default defineComponent({
         isVisible: () => !isEditing.value,
         name: 'delete',
         position: () => 'left',
+        showCaption: () => 'never',
         style: () => 'outlined',
         variant: () => 'danger'
       },

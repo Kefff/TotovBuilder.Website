@@ -295,8 +295,10 @@ const props = defineProps<{
   item: IItem
 }>()
 
+const _chestHp = Services.get(TarkovValuesService).values.chestHp
+
 const ammunition = computed(() => props.item as IAmmunition)
-const canOneshot = computed(() => ammunition.value.fleshDamage >= Services.get(TarkovValuesService).values.chestHp)
+const canOneshot = computed(() => ammunition.value.fleshDamage >= _chestHp)
 const hasModifiers = computed(() =>
   ammunition.value.accuracyModifierPercentage !== 0
   || ammunition.value.durabilityBurnModifierPercentage !== 0

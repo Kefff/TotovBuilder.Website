@@ -1,6 +1,6 @@
 <template>
   <ItemOptionHeader
-    v-model:sortingData="modelSortingData"
+    v-model:sorting-data="modelSortingData"
     v-model:filter="modelFilter"
     :use-longest-header-width="useLongestHeaderWidth"
   >
