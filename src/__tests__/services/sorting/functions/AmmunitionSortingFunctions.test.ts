@@ -10,6 +10,7 @@ describe('comparisonFunction()', () => {
     ['accuracyModifierPercentage'],
     ['fleshDamage'],
     ['fragmentationChance'],
+    ['penetratedArmorLevel'],
     ['penetrationPower'],
     ['recoilModifier']
   ])('should sort by %s', async (property: string) => {
@@ -17,6 +18,7 @@ describe('comparisonFunction()', () => {
     const item1 = {
       categoryId: 'cat',
       fleshDamage: 2,
+      penetratedArmorLevel: 2,
       penetrationPower: 2,
       fragmentationChance: 2,
       recoilModifier: 2,
@@ -26,6 +28,7 @@ describe('comparisonFunction()', () => {
     const item2 = {
       categoryId: 'cat',
       fleshDamage: 1,
+      penetratedArmorLevel: 1,
       penetrationPower: 1,
       fragmentationChance: 1,
       recoilModifier: 1,

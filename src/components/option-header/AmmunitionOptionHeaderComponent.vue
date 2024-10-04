@@ -22,7 +22,15 @@
     </div>
   </div>
   <div class="option-entry">
-    <div class="ammunition-option-header-armor-penetration-placeholder" />
+    <div class="option-value">
+      <OptionHeaderSortButton
+        v-model:sorting-data="modelSortingData"
+        caption-resource="caption.armorPenetration"
+        icon="award"
+        property="penetratedArmorLevel"
+        :sorting-functions="AmmunitionSortingFunctions"
+      />
+    </div>
   </div>
   <div class="option-entry">
     <div class="option-value">
@@ -88,9 +96,4 @@ const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { requir
 
 <style scoped>
 @import '../../css/option.css';
-
-.ammunition-option-header-armor-penetration-placeholder {
-  width: 10.25rem;
-  /* 6 penetrated armor of 1rem + 5 margins of 0.25rem + 6 armor classes of 0.5rem */
-}
 </style>

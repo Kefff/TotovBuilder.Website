@@ -21,6 +21,10 @@ export const AmmunitionSortingFunctions: ISortingFunctionList<IItem> = {
     comparisonFunction: compareByItemNumber,
     comparisonValueObtentionFunction: i => Promise.resolve((i as IAmmunition).fragmentationChance)
   },
+  penetratedArmorLevel: {
+    comparisonFunction: compareByItemNumber,
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IAmmunition).penetrationPower) // Since the penetratedArmorLevel is calculated from the penetrationPower, we can sort by penetrationPower which is more precise
+  },
   penetrationPower: {
     comparisonFunction: compareByItemNumber,
     comparisonValueObtentionFunction: i => Promise.resolve((i as IAmmunition).penetrationPower)

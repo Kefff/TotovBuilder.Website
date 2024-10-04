@@ -40,20 +40,16 @@
     </div>
   </div>
   <div class="option-entry">
-    <div class="ammunition-summary-penetrated-armor-list">
+    <div class="option-value">
       <Tooltip
-        v-for="c of ammunition.armorPenetrations.length"
-        :key="c"
-        :tooltip="getArmorPenetrationTooltip(c, ammunition.armorPenetrations[c - 1])"
+        :tooltip="$t('caption.armorClassPenetration', { class: ammunition.penetratedArmorLevel })"
         class="ammunition-summary-penetrated-armor"
       >
         <font-awesome-icon
           icon="award"
-          :class="'ammunition-summary-penetrated-armor-icon armor-penetration' + ammunition.armorPenetrations[c - 1]"
+          :class="`icon-before-text armor-penetration${ammunition.penetratedArmorLevel}`"
         />
-        <div class="ammunition-summary-penetrated-armor-class">
-          {{ c }}
-        </div>
+        <span>{{ ammunition.penetratedArmorLevel }}</span>
       </Tooltip>
     </div>
   </div>
@@ -126,7 +122,6 @@ import { IAmmunition } from '../../models/item/IAmmunition'
 import { IItem } from '../../models/item/IItem'
 import { TarkovValuesService } from '../../services/TarkovValuesService'
 import Services from '../../services/repository/Services'
-import { ArmorUtils } from '../../utils/ArmorUtils'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 
 const props = withDefaults(
@@ -140,16 +135,6 @@ const props = withDefaults(
 
 const ammunition = computed(() => props.item as IAmmunition)
 const canOneshot = computed(() => ammunition.value.fleshDamage >= Services.get(TarkovValuesService).values.chestHp)
-
-/**
- * Gets the tooltip for an armor penetration.
- * @param armorClass - Armor class penetrated.
- * @param penetration - Penetration value.
- * @returns Tooltip.
- */
-function getArmorPenetrationTooltip(armorClass: number, penetration: number) {
-  return ArmorUtils.getArmorPenetrationTooltip(armorClass, penetration)
-}
 </script>
 
 
@@ -186,21 +171,6 @@ function getArmorPenetrationTooltip(armorClass: number, penetration: number) {
 
 .ammunition-summary-penetrated-armor:last-child {
   margin-right: 0;
-}
-
-.ammunition-summary-penetrated-armor-class {
-  font-size: 0.75rem;
-}
-
-.ammunition-summary-penetrated-armor-icon {
-  width: 1rem;
-}
-
-.ammunition-summary-penetrated-armor-list {
-  align-items: center;
-  display: flex;
-  width: 10.25rem;
-  /* 6 penetrated armor of 1rem + 5 margins of 0.25rem + 6 armor classes of 0.5rem */
 }
 
 .ammunition-summary-oneshot {
