@@ -157,6 +157,28 @@
             {{ $t('caption.includePrices') }}
           </div>
         </div>
+        <div
+          v-if="typeOption != null && !linkOnly"
+          class="builds-share-sidebar-option"
+        >
+          <Checkbox
+            v-model="includeEmojis"
+            :binary="true"
+            @change="getText()"
+          />
+          <div
+            class="builds-share-sidebar-checkbox-caption"
+            :class="{
+              'builds-share-sidebar-checkbox-caption-disabled': !includeEmojis
+            }"
+            @click="() => {
+              includeEmojis = !includeEmojis
+              getText()
+            }"
+          >
+            {{ $t('caption.includeEmojis') }}
+          </div>
+        </div>
         <div class="builds-share-sidebar-option builds-share-sidebar-copy-button">
           <Button
             v-if="!isLoading && typeOption != null"
@@ -274,6 +296,7 @@ const toolbarButtons: IToolbarButton[] = [
 const availableBuilds = ref<IBuildSummary[]>([])
 const buildsExportToolbar = useTemplateRef('buildsExportToolbar')
 const buildsToShare = ref<IBuild[]>([])
+const includeEmojis = ref(true)
 const includeLink = ref(true)
 const includePrices = ref(true)
 const isLoading = ref(false)
@@ -337,6 +360,7 @@ async function getText() {
   text.value = await _buildPropertiesService.toText(
     buildsToShare.value,
     {
+      includeEmojis: includeEmojis.value,
       includeLink: includeLink.value,
       includePrices: includePrices.value,
       language: language.value,

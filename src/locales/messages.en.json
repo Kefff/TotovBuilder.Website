@@ -144,6 +144,7 @@
     "ignorePrice": "Ignore price",
     "import": "Load",
     "importBuilds": "Load builds from a file",
+    "includeEmojis": "Include emojis",
     "includeLinkToInteractiveVersion": "Include link to interactive version",
     "includePrice": "Include price",
     "includePrices": "Include prices",

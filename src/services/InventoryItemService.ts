@@ -688,9 +688,9 @@ export class InventoryItemService {
 
       if (price.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset) {
         if (price.missingPrice && price.unitPrice.valueInMainCurrency === 0) {
-          inventoryItemAsString += `   ${StringUtils.getTextStatEmoji(options.type, '💵')}${this.translate('message.noMerchant', options.language)}`
+          inventoryItemAsString += `   ${StringUtils.getTextStatEmoji(options, '💵')}${this.translate('message.noMerchant', options.language)}`
         } else {
-          inventoryItemAsString += `   ${StringUtils.getTextStatEmoji(options.type, '💵')}${this.translate('caption.merchant_' + price.unitPrice.merchant, options.language)}`
+          inventoryItemAsString += `   ${StringUtils.getTextStatEmoji(options, '💵')}${this.translate('caption.merchant_' + price.unitPrice.merchant, options.language)}`
 
           if (price.unitPrice.merchant !== 'flea-market') {
             inventoryItemAsString += ` ${price.unitPrice.merchantLevel}`

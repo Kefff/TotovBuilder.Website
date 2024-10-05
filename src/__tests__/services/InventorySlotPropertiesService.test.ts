@@ -131,6 +131,7 @@ describe('InventorySlotPropertiesService', () => {
       const result = await service.toText(
         inventorySlot,
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language: 'fr',
@@ -140,6 +141,35 @@ describe('InventorySlotPropertiesService', () => {
 
       // Assert
       expect(result).toBe(expected)
+    })
+
+    it('should not include emojis', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotService)
+
+      const service = new InventorySlotPropertiesService()
+
+      // Act
+      const result = await service.toText(
+        inventorySlot1,
+        {
+          includeEmojis: false,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
+
+      // Assert
+      expect(result).toBe(`[*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**   Marché **63 493₽**  
+ [*Équipement*] **LShZ-2DTM face shield**   Ragman 3 (*échange*) **29 805₽**  `)
     })
 
     it('should ignore undefined items in an inventory slot', async () => {
@@ -156,6 +186,7 @@ describe('InventorySlotPropertiesService', () => {
           typeId: 'pockets'
         },
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language: 'fr',
@@ -172,15 +203,15 @@ describe('InventorySlotPropertiesService', () => {
     it.each([
       [
         inventorySlot1,
-        `[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   Marché 63 493₽
- [Équipement] LShZ-2DTM face shield   Ragman 3 (échange) 29 805₽`
+        `[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   💵 Marché 63 493₽
+ [Équipement] LShZ-2DTM face shield   💵 Ragman 3 (échange) 29 805₽`
       ],
       [
         inventorySlot2,
-        `[En bandouillère] RPK-16 5.45x39 light machine gun Default   Marché 43 345₽
- [Chargeur] RPK-16 5.45x39 95-round drum magazine   Prapor 3 (échange) 24 218₽
-  95 x 5.45x39mm US gs   Prapor 1 9 120₽
- 5.45x39mm US gs   Prapor 1 96₽`
+        `[En bandouillère] RPK-16 5.45x39 light machine gun Default   💵 Marché 43 345₽
+ [Chargeur] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
+  95 x 5.45x39mm US gs   💵 Prapor 1 9 120₽
+ 5.45x39mm US gs   💵 Prapor 1 96₽`
       ],
       [
         {
@@ -203,10 +234,10 @@ describe('InventorySlotPropertiesService', () => {
             }
           ]
         },
-        `[Poches] MS2000 Marker   Ragman 1 95€ (= 15 105₽)
-[Poches] ELCAN SpecterDR 1x/4x scope   Peacekeeper 3 279$ (= 39 886₽)
-[Poches] SIG Sauer SRD9 9x19 sound suppressor   Peacekeeper 2 242$ (= 34 606₽)
-[Poches] 60 x 5.45x39mm BP gs   Pas de marchand
+        `[Poches] MS2000 Marker   💵 Ragman 1 95€ (= 15 105₽)
+[Poches] ELCAN SpecterDR 1x/4x scope   💵 Peacekeeper 3 279$ (= 39 886₽)
+[Poches] SIG Sauer SRD9 9x19 sound suppressor   💵 Peacekeeper 2 242$ (= 34 606₽)
+[Poches] 60 x 5.45x39mm BP gs   💵 Pas de marchand
 [Poches] Vaseline balm`
       ],
       [
@@ -251,9 +282,9 @@ describe('InventorySlotPropertiesService', () => {
             }
           ]
         } as IInventorySlot,
-        `[Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU) Default   Ragman 3 (échange) 59 790₽
- [Plaque dorsale] 6B13 custom ballistic plates (Back)   Marché 43 868₽
- MS2000 Marker   Ragman 1 95€ (= 15 105₽)`
+        `[Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU) Default   💵 Ragman 3 (échange) 59 790₽
+ [Plaque dorsale] 6B13 custom ballistic plates (Back)   💵 Marché 43 868₽
+ MS2000 Marker   💵 Ragman 1 95€ (= 15 105₽)`
       ],
       [
         {
@@ -278,6 +309,7 @@ describe('InventorySlotPropertiesService', () => {
       const result = await service.toText(
         inventorySlot,
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language: 'fr',
@@ -287,6 +319,35 @@ describe('InventorySlotPropertiesService', () => {
 
       // Assert
       expect(result).toBe(expected)
+    })
+
+    it('should not include emojis', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotService)
+
+      const service = new InventorySlotPropertiesService()
+
+      // Act
+      const result = await service.toText(
+        inventorySlot1,
+        {
+          includeEmojis: false,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
+
+      // Assert
+      expect(result).toBe(`[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   Marché 63 493₽
+ [Équipement] LShZ-2DTM face shield   Ragman 3 (échange) 29 805₽`)
     })
 
     it('should ignore undefined items in an inventory slot', async () => {
@@ -303,6 +364,7 @@ describe('InventorySlotPropertiesService', () => {
           typeId: 'pockets'
         },
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language: 'fr',

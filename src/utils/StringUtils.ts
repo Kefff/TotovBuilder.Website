@@ -1,4 +1,4 @@
-import { BuildsToTextType } from '../models/utils/IBuildsToTextOptions'
+import { IBuildsToTextOptions } from '../models/utils/IBuildsToTextOptions'
 
 /**
  * Represents an utility class for manipulating strings.
@@ -67,12 +67,12 @@ export default class StringUtils {
 
   /**
    * Gets a stat emoji when the type is `markdown`.
-   * @param type - Type of text being constructed.
+   * @param options - Options.
    * @param icon - Icon to display.
    * @returns Icon text.
    */
-  public static getTextStatEmoji(type: BuildsToTextType, icon: string): string {
-    if (type === BuildsToTextType.simpleText) {
+  public static getTextStatEmoji(options: IBuildsToTextOptions, icon: string): string {
+    if (!options.includeEmojis) {
       return ''
     }
 

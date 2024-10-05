@@ -3,6 +3,11 @@
  */
 export interface IBuildsToTextOptions {
   /**
+   * Indicates whether emojis should be included.
+   */
+  includeEmojis: boolean
+
+  /**
    * Indicates whether the link should be included.
    */
   includeLink: boolean,

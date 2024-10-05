@@ -671,6 +671,7 @@ describe('BuildPropertiesService', () => {
       const result = await service.toText(
         [build],
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language,
@@ -768,6 +769,7 @@ describe('BuildPropertiesService', () => {
       const result = await buildPropertiesService.toText(
         [build1, build2],
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language: 'fr',
@@ -809,6 +811,76 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 *Créé avec [Totov Builder](http://localhost:3000)*`)
     })
 
+    it('should ignore emojis', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventorySlotService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(ReductionService)
+
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.toText(
+        [
+          {
+            id: 'buildWithWeaponOnBackOnly',
+            inventorySlots: [
+              {
+                items: [
+                  {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: rpk16Default.id,
+                    modSlots: [],
+                    quantity: 1
+                  }
+                ],
+                typeId: 'onBack'
+              }
+            ],
+            lastExported: undefined,
+            lastUpdated: undefined,
+            lastWebsiteVersion: undefined,
+            name: 'Build with weapon on back only'
+          } as IBuild
+        ],
+        {
+          includeEmojis: false,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
+
+      // Assert
+      expect(result).toBe(`# Build with weapon on back only
+
+*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17Rk0UiykRW0ApjpaFQ6TR_AWFoFNHfz758PAigkjDNzljvK7CyqK5Q3NR5CNalmBcKYWWwRr_692wAA)*
+
+Recul vertical **112**   Recul horizontal **333**   Ergonomie **45**  
+Prix **43 345₽**   Poids **1,500 kg**  
+
+[*Dans le dos*] **RPK-16 5.45x39 light machine gun Default**   Marché **43 345₽**  
+
+
+
+*Marchands configurés*  
+Marché Oui   Jaeger 4   Le Mécano 4  
+Peacekeeper 4   Prapor 4   Ragman 4  
+Ref 4   Skier 4   La Toubib 4  
+
+*Créé avec [Totov Builder](http://localhost:3000)*`)
+    })
+
     it('should ignore prices', async () => {
       // Arrange
       useItemServiceMock()
@@ -829,6 +901,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       const result = await service.toText(
         [build1],
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: false,
           language: 'fr',
@@ -930,6 +1003,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       const result = await buildPropertiesService.toText(
         [build],
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language: 'fr',
@@ -966,6 +1040,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       const result = await buildPropertiesService.toText(
         [build1, build2],
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language: 'fr',
@@ -998,6 +1073,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       const result = await buildPropertiesService.toText(
         [build1, build2],
         {
+          includeEmojis: true,
           includeLink: false,
           includePrices: true,
           language: 'fr',
@@ -1232,6 +1308,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       const result = await service.toText(
         [build],
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language,
@@ -1329,6 +1406,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       const result = await buildPropertiesService.toText(
         [build1, build2],
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language: 'fr',
@@ -1339,14 +1417,14 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       // Assert
       expect(result).toBe(`Build 1
 
-Ergonomie -2%
+✋ Ergonomie -2%
 
-Prix 95€ et 20 701₽ (= 35 806₽)   Poids 2,360 kg
+💵 Prix 95€ et 20 701₽ (= 35 806₽)   ⚓ Poids 2,360 kg
 
-[Poches] RGD-5 hand grenade   Prapor 3 11 822₽
-[Poches] MS2000 Marker   Ragman 1 95€ (= 15 105₽)
+[Poches] RGD-5 hand grenade   💵 Prapor 3 11 822₽
+[Poches] MS2000 Marker   💵 Ragman 1 95€ (= 15 105₽)
 
-[Couvre-chef] Kolpak-1S riot helmet   Ragman 1 8 879₽
+[Couvre-chef] Kolpak-1S riot helmet   💵 Ragman 1 8 879₽
 
 Version interactive avec statistiques complètes
 http://localhost:3000/s/XQAAAAJ_AAAAAAAAAABBKEnKciJ9Ha4afmksn3ID9gJ5PAcWvYvzduA6qCQ2iyxE_CSen9_XpufSHSHL8RJDDjOD4mYmwzzDzmcTT-fkYBTyehet34mLudzTvi5EDfQCawD5zgMXn__9qMg4z5LrVAzkyhkulsb266vl0hhN-Df_7WGwAA
@@ -1355,12 +1433,83 @@ http://localhost:3000/s/XQAAAAJ_AAAAAAAAAABBKEnKciJ9Ha4afmksn3ID9gJ5PAcWvYvzduA6
 
 Build 2
 
-Prix 1 825₽   Poids 0,150 kg
+💵 Prix 1 825₽   ⚓ Poids 0,150 kg
 
-[Poches] 25 x 9x19mm Green Tracer   Le Mécano 1 1 825₽
+[Poches] 25 x 9x19mm Green Tracer   💵 Le Mécano 1 1 825₽
 
 Version interactive avec statistiques complètes
 http://localhost:3000/s/XQAAAAI7AAAAAAAAAABBKEnKciJ9Ha4afmlhjXH78TJ5PAcWvYvzduA6soV_78fsVnl_BZRLWWGOMdaAD74_p_rPIryYaIhPJc_2yv__6hmgAA
+
+
+
+Marchands configurés
+Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
+Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
+
+Créé avec Totov Builder`)
+    })
+
+    it('should ignore emojis', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(InventorySlotService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(ReductionService)
+
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.toText(
+        [
+          {
+            id: 'buildWithWeaponOnBackOnly',
+            inventorySlots: [
+              {
+                items: [
+                  {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: rpk16Default.id,
+                    modSlots: [],
+                    quantity: 1
+                  }
+                ],
+                typeId: 'onBack'
+              }
+            ],
+            lastExported: undefined,
+            lastUpdated: undefined,
+            lastWebsiteVersion: undefined,
+            name: 'Build with weapon on back only'
+          } as IBuild
+        ],
+        {
+          includeEmojis: false,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
+
+      // Assert
+      expect(result).toBe(`Build with weapon on back only
+
+Recul vertical 112   Recul horizontal 333   Ergonomie 45
+Prix 43 345₽   Poids 1,500 kg
+
+[Dans le dos] RPK-16 5.45x39 light machine gun Default   Marché 43 345₽
+
+Version interactive avec statistiques complètes
+http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17Rk0UiykRW0ApjpaFQ6TR_AWFoFNHfz758PAigkjDNzljvK7CyqK5Q3NR5CNalmBcKYWWwRr_692wAA
 
 
 
@@ -1392,6 +1541,7 @@ Créé avec Totov Builder`)
       const result = await service.toText(
         [build1],
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: false,
           language: 'fr',
@@ -1402,9 +1552,9 @@ Créé avec Totov Builder`)
       // Assert
       expect(result).toBe(`Build 1
 
-Recul vertical 66   Recul horizontal 216   Ergonomie 34 (-9,5%)
-Classe d'armure 4   Vitesse -6%   Vitesse de rotation -9%
-Poids 24,153 kg
+↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-9,5%)
+🛡️ Classe d'armure 4   🏃 Vitesse -6%   🔄 Vitesse de rotation -9%
+⚓ Poids 24,153 kg
 
 [En bandouillère] RPK-16 5.45x39 light machine gun Default
  [Chargeur] RPK-16 5.45x39 95-round drum magazine
@@ -1494,6 +1644,7 @@ Créé avec Totov Builder`)
       const result = await buildPropertiesService.toText(
         [build],
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language: 'fr',
@@ -1510,8 +1661,8 @@ http://localhost:3000/s/XQAAAAIMAAAAAAAAAABBKEnKUiJ9Ha4atWFNg2Pf___404AA
 
 
 Marchands configurés
-Marché Oui   Le Mécano 2   Prapor 4
-Ref Non   Skier 1   La Toubib 3
+Marché ✅   Le Mécano 2️⃣   Prapor 4️⃣
+Ref ❌   Skier 1️⃣   La Toubib 3️⃣
 
 Créé avec Totov Builder`)
     })
@@ -1533,6 +1684,7 @@ Créé avec Totov Builder`)
       const result = await buildPropertiesService.toText(
         [build1, build2],
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language: 'fr',
@@ -1570,6 +1722,7 @@ http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzs
       const result = await buildPropertiesService.toText(
         [build1, build2],
         {
+          includeEmojis: true,
           includeLink: false,
           includePrices: true,
           language: 'fr',
@@ -1580,53 +1733,53 @@ http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzs
       // Assert
       expect(result).toBe(`Build 1
 
-Recul vertical 66   Recul horizontal 216   Ergonomie 34 (-9,5%)
-Classe d'armure 4   Vitesse -6%   Vitesse de rotation -9%
-Prix 366 019₽   Poids 24,153 kg
+↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-9,5%)
+🛡️ Classe d'armure 4   🏃 Vitesse -6%   🔄 Vitesse de rotation -9%
+💵 Prix 366 019₽   ⚓ Poids 24,153 kg
 
-[En bandouillère] RPK-16 5.45x39 light machine gun Default   Marché 43 345₽
- [Chargeur] RPK-16 5.45x39 95-round drum magazine   Prapor 3 (échange) 24 218₽
-  95 x 5.45x39mm US gs   Prapor 1 9 120₽
+[En bandouillère] RPK-16 5.45x39 light machine gun Default   💵 Marché 43 345₽
+ [Chargeur] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
+  95 x 5.45x39mm US gs   💵 Prapor 1 9 120₽
 
-[Pare-balles] 6B13 assault armor (Flora) Default   Ragman 2 64 269₽
+[Pare-balles] 6B13 assault armor (Flora) Default   💵 Ragman 2 64 269₽
 
-[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   Marché 63 493₽
- [Équipement] LShZ-2DTM face shield   Ragman 3 (échange) 29 805₽
+[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   💵 Marché 63 493₽
+ [Équipement] LShZ-2DTM face shield   💵 Ragman 3 (échange) 29 805₽
 
-[Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)   Ragman 2 24 509₽
- Iskra ration pack   Jaeger 2 24 392₽
- Bottle of water (0.6L)   La Toubib 1 (échange) 11 473₽
+[Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)   💵 Ragman 2 24 509₽
+ Iskra ration pack   💵 Jaeger 2 24 392₽
+ Bottle of water (0.6L)   💵 La Toubib 1 (échange) 11 473₽
 
-[Poches] Morphine injector   Marché 17 421₽
-[Poches] Vaseline balm   Marché 27 714₽
-[Poches] RGD-5 hand grenade   Prapor 3 11 822₽
-[Poches] 60 x 5.45x39mm US gs   Prapor 1 5 760₽
+[Poches] Morphine injector   💵 Marché 17 421₽
+[Poches] Vaseline balm   💵 Marché 27 714₽
+[Poches] RGD-5 hand grenade   💵 Prapor 3 11 822₽
+[Poches] 60 x 5.45x39mm US gs   💵 Prapor 1 5 760₽
 
-[Lunettes] ESS Crossbow tactical glasses   Ragman 2 3 885₽
+[Lunettes] ESS Crossbow tactical glasses   💵 Ragman 2 3 885₽
 
-[Masque] Cold Fear infrared balaclava   Ragman 2 4 793₽
+[Masque] Cold Fear infrared balaclava   💵 Ragman 2 4 793₽
 
 
 
 Build 2
 
-Recul vertical 362   Recul horizontal 249   Ergonomie 52 (-3%)
-Classe d'armure 4   Vitesse -3%   Vitesse de rotation -1%
-Prix 444$ et 184 252₽ (= 247 747₽)   Poids 8,936 kg
+↕️ Recul vertical 362   ↔️ Recul horizontal 249   ✋ Ergonomie 52 (-3%)
+🛡️ Classe d'armure 4   🏃 Vitesse -3%   🔄 Vitesse de rotation -1%
+💵 Prix 444$ et 184 252₽ (= 247 747₽)   ⚓ Poids 8,936 kg
 
-[Holster] Beretta M9A3 9x19 pistol Default   Peacekeeper 1 107$ (= 15 337₽)
+[Holster] Beretta M9A3 9x19 pistol Default   💵 Peacekeeper 1 107$ (= 15 337₽)
  [Canon]
-  [Bouche] SIG Sauer SRD9 9x19 sound suppressor   Peacekeeper 2 242$ (= 34 606₽)
+  [Bouche] SIG Sauer SRD9 9x19 sound suppressor   💵 Peacekeeper 2 242$ (= 34 606₽)
  [Chargeur]
-  17 x 9x19mm Green Tracer   Le Mécano 1 1 241₽
- [Dispositif tactique] SureFire X400 Ultra tactical flashlight with laser   Peacekeeper 2 95$ (= 13 552₽)
+  17 x 9x19mm Green Tracer   💵 Le Mécano 1 1 241₽
+ [Dispositif tactique] SureFire X400 Ultra tactical flashlight with laser   💵 Peacekeeper 2 95$ (= 13 552₽)
 
-[Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU)   Marché 33 950₽
- [Plaque frontale] Monoclete level III PE ballistic plate   Peacekeeper 3 (échange) 31 503₽
- [Plaque dorsale] Monoclete level III PE ballistic plate   Peacekeeper 3 (échange) 31 503₽
- Salewa first aid kit   La Toubib 1 (échange) 21 923₽
+[Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU)   💵 Marché 33 950₽
+ [Plaque frontale] Monoclete level III PE ballistic plate   💵 Peacekeeper 3 (échange) 31 503₽
+ [Plaque dorsale] Monoclete level III PE ballistic plate   💵 Peacekeeper 3 (échange) 31 503₽
+ Salewa first aid kit   💵 La Toubib 1 (échange) 21 923₽
 
-[Dispositif audio] Walker's Razor Digital headset   Marché 64 132₽
+[Dispositif audio] Walker's Razor Digital headset   💵 Marché 64 132₽
 
 [Pochette] Secure container Alpha
 
@@ -1635,9 +1788,9 @@ Prix 444$ et 184 252₽ (= 247 747₽)   Poids 8,936 kg
 
 
 Marchands configurés
-Marché Oui   Jaeger 4   Le Mécano 4
-Peacekeeper 4   Prapor 4   Ragman 4
-Ref 4   Skier 4   La Toubib 4
+Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
+Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
 Créé avec Totov Builder`)
     })
@@ -2007,31 +2160,31 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
 const expectedString1En = `Build 1
 
-Vertical recoil 66   Horizontal recoil 216   Ergonomics 34 (-9.5%)
-Armor class 4   Speed -6%   Turning speed -9%
-Price 366,019₽   Weight 24.153 kg
+↕️ Vertical recoil 66   ↔️ Horizontal recoil 216   ✋ Ergonomics 34 (-9.5%)
+🛡️ Armor class 4   🏃 Speed -6%   🔄 Turning speed -9%
+💵 Price 366,019₽   ⚓ Weight 24.153 kg
 
-[On sling] RPK-16 5.45x39 light machine gun Default   Flea market 43,345₽
- [Magazine] RPK-16 5.45x39 95-round drum magazine   Prapor 3 (barter) 24,218₽
-  95 x 5.45x39mm US gs   Prapor 1 9,120₽
+[On sling] RPK-16 5.45x39 light machine gun Default   💵 Flea market 43,345₽
+ [Magazine] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (barter) 24,218₽
+  95 x 5.45x39mm US gs   💵 Prapor 1 9,120₽
 
-[Body armor] 6B13 assault armor (Flora) Default   Ragman 2 64,269₽
+[Body armor] 6B13 assault armor (Flora) Default   💵 Ragman 2 64,269₽
 
-[Headwear] BNTI LShZ-2DTM helmet (Black)   Flea market 63,493₽
- [Equipment] LShZ-2DTM face shield   Ragman 3 (barter) 29,805₽
+[Headwear] BNTI LShZ-2DTM helmet (Black)   💵 Flea market 63,493₽
+ [Equipment] LShZ-2DTM face shield   💵 Ragman 3 (barter) 29,805₽
 
-[Backpack] WARTECH Berkut BB-102 backpack (A-TACS FG)   Ragman 2 24,509₽
- Iskra ration pack   Jaeger 2 24,392₽
- Bottle of water (0.6L)   Therapist 1 (barter) 11,473₽
+[Backpack] WARTECH Berkut BB-102 backpack (A-TACS FG)   💵 Ragman 2 24,509₽
+ Iskra ration pack   💵 Jaeger 2 24,392₽
+ Bottle of water (0.6L)   💵 Therapist 1 (barter) 11,473₽
 
-[Pockets] Morphine injector   Flea market 17,421₽
-[Pockets] Vaseline balm   Flea market 27,714₽
-[Pockets] RGD-5 hand grenade   Prapor 3 11,822₽
-[Pockets] 60 x 5.45x39mm US gs   Prapor 1 5,760₽
+[Pockets] Morphine injector   💵 Flea market 17,421₽
+[Pockets] Vaseline balm   💵 Flea market 27,714₽
+[Pockets] RGD-5 hand grenade   💵 Prapor 3 11,822₽
+[Pockets] 60 x 5.45x39mm US gs   💵 Prapor 1 5,760₽
 
-[Eyewear] ESS Crossbow tactical glasses   Ragman 2 3,885₽
+[Eyewear] ESS Crossbow tactical glasses   💵 Ragman 2 3,885₽
 
-[Face cover] Cold Fear infrared balaclava   Ragman 2 4,793₽
+[Face cover] Cold Fear infrared balaclava   💵 Ragman 2 4,793₽
 
 Interactive version with full statistics
 http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU
@@ -2039,39 +2192,39 @@ http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9G
 
 
 Configured merchants
-Flea market Yes   Jaeger 4   Mechanic 4
-Peacekeeper 4   Prapor 4   Ragman 4
-Ref 4   Skier 4   Therapist 4
+Flea market ✅   Jaeger 4️⃣   Mechanic 4️⃣
+Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
+Ref 4️⃣   Skier 4️⃣   Therapist 4️⃣
 
 Created with Totov Builder`
 
 const expectedString1Fr = `Build 1
 
-Recul vertical 66   Recul horizontal 216   Ergonomie 34 (-9,5%)
-Classe d'armure 4   Vitesse -6%   Vitesse de rotation -9%
-Prix 366 019₽   Poids 24,153 kg
+↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-9,5%)
+🛡️ Classe d'armure 4   🏃 Vitesse -6%   🔄 Vitesse de rotation -9%
+💵 Prix 366 019₽   ⚓ Poids 24,153 kg
 
-[En bandouillère] RPK-16 5.45x39 light machine gun Default   Marché 43 345₽
- [Chargeur] RPK-16 5.45x39 95-round drum magazine   Prapor 3 (échange) 24 218₽
-  95 x 5.45x39mm US gs   Prapor 1 9 120₽
+[En bandouillère] RPK-16 5.45x39 light machine gun Default   💵 Marché 43 345₽
+ [Chargeur] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
+  95 x 5.45x39mm US gs   💵 Prapor 1 9 120₽
 
-[Pare-balles] 6B13 assault armor (Flora) Default   Ragman 2 64 269₽
+[Pare-balles] 6B13 assault armor (Flora) Default   💵 Ragman 2 64 269₽
 
-[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   Marché 63 493₽
- [Équipement] LShZ-2DTM face shield   Ragman 3 (échange) 29 805₽
+[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   💵 Marché 63 493₽
+ [Équipement] LShZ-2DTM face shield   💵 Ragman 3 (échange) 29 805₽
 
-[Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)   Ragman 2 24 509₽
- Iskra ration pack   Jaeger 2 24 392₽
- Bottle of water (0.6L)   La Toubib 1 (échange) 11 473₽
+[Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)   💵 Ragman 2 24 509₽
+ Iskra ration pack   💵 Jaeger 2 24 392₽
+ Bottle of water (0.6L)   💵 La Toubib 1 (échange) 11 473₽
 
-[Poches] Morphine injector   Marché 17 421₽
-[Poches] Vaseline balm   Marché 27 714₽
-[Poches] RGD-5 hand grenade   Prapor 3 11 822₽
-[Poches] 60 x 5.45x39mm US gs   Prapor 1 5 760₽
+[Poches] Morphine injector   💵 Marché 17 421₽
+[Poches] Vaseline balm   💵 Marché 27 714₽
+[Poches] RGD-5 hand grenade   💵 Prapor 3 11 822₽
+[Poches] 60 x 5.45x39mm US gs   💵 Prapor 1 5 760₽
 
-[Lunettes] ESS Crossbow tactical glasses   Ragman 2 3 885₽
+[Lunettes] ESS Crossbow tactical glasses   💵 Ragman 2 3 885₽
 
-[Masque] Cold Fear infrared balaclava   Ragman 2 4 793₽
+[Masque] Cold Fear infrared balaclava   💵 Ragman 2 4 793₽
 
 Version interactive avec statistiques complètes
 http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU
@@ -2079,31 +2232,31 @@ http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9G
 
 
 Marchands configurés
-Marché Oui   Jaeger 4   Le Mécano 4
-Peacekeeper 4   Prapor 4   Ragman 4
-Ref 4   Skier 4   La Toubib 4
+Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
+Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
 Créé avec Totov Builder`
 
 const expectedString2 = `Build 2
 
-Recul vertical 362   Recul horizontal 249   Ergonomie 52 (-3%)
-Classe d'armure 4   Vitesse -3%   Vitesse de rotation -1%
-Prix 444$ et 184 252₽ (= 247 747₽)   Poids 8,936 kg
+↕️ Recul vertical 362   ↔️ Recul horizontal 249   ✋ Ergonomie 52 (-3%)
+🛡️ Classe d'armure 4   🏃 Vitesse -3%   🔄 Vitesse de rotation -1%
+💵 Prix 444$ et 184 252₽ (= 247 747₽)   ⚓ Poids 8,936 kg
 
-[Holster] Beretta M9A3 9x19 pistol Default   Peacekeeper 1 107$ (= 15 337₽)
+[Holster] Beretta M9A3 9x19 pistol Default   💵 Peacekeeper 1 107$ (= 15 337₽)
  [Canon]
-  [Bouche] SIG Sauer SRD9 9x19 sound suppressor   Peacekeeper 2 242$ (= 34 606₽)
+  [Bouche] SIG Sauer SRD9 9x19 sound suppressor   💵 Peacekeeper 2 242$ (= 34 606₽)
  [Chargeur]
-  17 x 9x19mm Green Tracer   Le Mécano 1 1 241₽
- [Dispositif tactique] SureFire X400 Ultra tactical flashlight with laser   Peacekeeper 2 95$ (= 13 552₽)
+  17 x 9x19mm Green Tracer   💵 Le Mécano 1 1 241₽
+ [Dispositif tactique] SureFire X400 Ultra tactical flashlight with laser   💵 Peacekeeper 2 95$ (= 13 552₽)
 
-[Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU)   Marché 33 950₽
- [Plaque frontale] Monoclete level III PE ballistic plate   Peacekeeper 3 (échange) 31 503₽
- [Plaque dorsale] Monoclete level III PE ballistic plate   Peacekeeper 3 (échange) 31 503₽
- Salewa first aid kit   La Toubib 1 (échange) 21 923₽
+[Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU)   💵 Marché 33 950₽
+ [Plaque frontale] Monoclete level III PE ballistic plate   💵 Peacekeeper 3 (échange) 31 503₽
+ [Plaque dorsale] Monoclete level III PE ballistic plate   💵 Peacekeeper 3 (échange) 31 503₽
+ Salewa first aid kit   💵 La Toubib 1 (échange) 21 923₽
 
-[Dispositif audio] Walker's Razor Digital headset   Marché 64 132₽
+[Dispositif audio] Walker's Razor Digital headset   💵 Marché 64 132₽
 
 [Pochette] Secure container Alpha
 
@@ -2115,19 +2268,19 @@ http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzs
 
 
 Marchands configurés
-Marché Oui   Jaeger 4   Le Mécano 4
-Peacekeeper 4   Prapor 4   Ragman 4
-Ref 4   Skier 4   La Toubib 4
+Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
+Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
 Créé avec Totov Builder`
 
 const expectedString3 = `Build with armor only
 
-Ergonomie -2,5%
-Classe d'armure 4   Vitesse -6%   Vitesse de rotation -1%
-Prix 64 269₽   Poids 10,600 kg
+✋ Ergonomie -2,5%
+🛡️ Classe d'armure 4   🏃 Vitesse -6%   🔄 Vitesse de rotation -1%
+💵 Prix 64 269₽   ⚓ Poids 10,600 kg
 
-[Pare-balles] 6B13 assault armor (Flora) Default   Ragman 2 64 269₽
+[Pare-balles] 6B13 assault armor (Flora) Default   💵 Ragman 2 64 269₽
 
 Version interactive avec statistiques complètes
 http://localhost:3000/s/XQAAAAKkAAAAAAAAAABBKEnLUiJ9Ha4afnegDxWD05WKxGsZJsgWhKhOKNccaw3ZYUhII89YeYBEADewHwT4SGNj7DB88SCLjMqubc8aJnAxII091CJSM4SdhD3Qa9S2y0Vz5NwKfe7JWo68FWPa4TwknuMgjK_pWAhF3oXl3tBC8fxmQ6DU1JvAQhu_xIOgBiIycu6J3DYNVgf20v_7OcoA
@@ -2135,21 +2288,21 @@ http://localhost:3000/s/XQAAAAKkAAAAAAAAAABBKEnLUiJ9Ha4afnegDxWD05WKxGsZJsgWhKhO
 
 
 Marchands configurés
-Marché Oui   Jaeger 4   Le Mécano 4
-Peacekeeper 4   Prapor 4   Ragman 4
-Ref 4   Skier 4   La Toubib 4
+Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
+Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
 Créé avec Totov Builder`
 
 const expectedString4 = `Build with backpack only and every currency
 
-Ergonomie -3%
-Vitesse -2%   Vitesse de rotation -1%
-Prix 95€, 157$ et 67 446₽ (= 104 936₽)   Poids 1,307 kg
+✋ Ergonomie -3%
+🏃 Vitesse -2%   🔄 Vitesse de rotation -1%
+💵 Prix 95€, 157$ et 67 446₽ (= 104 936₽)   ⚓ Poids 1,307 kg
 
-[Sac à dos] Oakley Mechanism heavy duty backpack (Black)   Ragman 2 67 446₽
- MS2000 Marker   Ragman 1 95€ (= 15 105₽)
- AR-15 B5 Systems Precision stock   Peacekeeper 4 157$ (= 22 385₽)
+[Sac à dos] Oakley Mechanism heavy duty backpack (Black)   💵 Ragman 2 67 446₽
+ MS2000 Marker   💵 Ragman 1 95€ (= 15 105₽)
+ AR-15 B5 Systems Precision stock   💵 Peacekeeper 4 157$ (= 22 385₽)
 
 Version interactive avec statistiques complètes
 http://localhost:3000/s/XQAAAAKZAAAAAAAAAABBKEnNkWPZwxLGD5AbqDRCABlUfHwjFlOcCKJCZtnY_G5Iw3yl8ARRMk-8vspnH0kfziAl5_AEWuLGxK4m_HrE19pZnFe2Mnv-2lo_MvFl_2QXgBgRDw5_ZiTl1OB6KjSSCgtwlxM5CvykrSWukYlKP_xOWFPMroTf86mmjAF-y9Dp-SQibkX8Ap5A
@@ -2157,18 +2310,18 @@ http://localhost:3000/s/XQAAAAKZAAAAAAAAAABBKEnNkWPZwxLGD5AbqDRCABlUfHwjFlOcCKJC
 
 
 Marchands configurés
-Marché Oui   Jaeger 4   Le Mécano 4
-Peacekeeper 4   Prapor 4   Ragman 4
-Ref 4   Skier 4   La Toubib 4
+Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
+Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
 Créé avec Totov Builder`
 
 const expectedString5 = `Build with weapon on back only
 
-Recul vertical 112   Recul horizontal 333   Ergonomie 45
-Prix 43 345₽   Poids 1,500 kg
+↕️ Recul vertical 112   ↔️ Recul horizontal 333   ✋ Ergonomie 45
+💵 Prix 43 345₽   ⚓ Poids 1,500 kg
 
-[Dans le dos] RPK-16 5.45x39 light machine gun Default   Marché 43 345₽
+[Dans le dos] RPK-16 5.45x39 light machine gun Default   💵 Marché 43 345₽
 
 Version interactive avec statistiques complètes
 http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17Rk0UiykRW0ApjpaFQ6TR_AWFoFNHfz758PAigkjDNzljvK7CyqK5Q3NR5CNalmBcKYWWwRr_692wAA
@@ -2176,17 +2329,17 @@ http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17
 
 
 Marchands configurés
-Marché Oui   Jaeger 4   Le Mécano 4
-Peacekeeper 4   Prapor 4   Ragman 4
-Ref 4   Skier 4   La Toubib 4
+Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
+Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
 Créé avec Totov Builder`
 
 const expectedString6 = `Build with missing price
 
-Poids 0,600 kg
+⚓ Poids 0,600 kg
 
-[Poches] 60 x 5.45x39mm BP gs   Pas de marchand
+[Poches] 60 x 5.45x39mm BP gs   💵 Pas de marchand
 
 Version interactive avec statistiques complètes
 http://localhost:3000/s/XQAAAAJMAAAAAAAAAABBKEnLgiJ9Ha4afnegDxWD1AyOSjT9n_TYdhCtEy9EU1vXI1gHKo_6AMbgo9kFz-nmBlk3iys6khYTodWFDluyJb2ICHD2ow222Wddpp99A___y7mAAA
@@ -2194,8 +2347,8 @@ http://localhost:3000/s/XQAAAAJMAAAAAAAAAABBKEnLgiJ9Ha4afnegDxWD1AyOSjT9n_TYdhCt
 
 
 Marchands configurés
-Marché Oui   Jaeger 4   Le Mécano 4
-Peacekeeper 4   Prapor 4   Ragman 4
-Ref 4   Skier 4   La Toubib 4
+Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
+Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
 Créé avec Totov Builder`

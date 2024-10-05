@@ -323,8 +323,8 @@ ${sharableUrlResult}`
 
       if (hasRecoil || hasErgonomics || hasErgonomicsModifierPercentage) {
         if (hasRecoil) {
-          statsAsString += `${StringUtils.getTextStatEmoji(options.type, '↕️')}${this.translate('caption.verticalRecoil', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.verticalRecoil, options.language)}${boldToken}`
-          statsAsString += `   ${StringUtils.getTextStatEmoji(options.type, '↔️')}${this.translate('caption.horizontalRecoil', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.horizontalRecoil, options.language)}${boldToken}`
+          statsAsString += `${StringUtils.getTextStatEmoji(options, '↕️')}${this.translate('caption.verticalRecoil', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.verticalRecoil, options.language)}${boldToken}`
+          statsAsString += `   ${StringUtils.getTextStatEmoji(options, '↔️')}${this.translate('caption.horizontalRecoil', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.horizontalRecoil, options.language)}${boldToken}`
         }
 
         if (hasErgonomics) {
@@ -332,14 +332,14 @@ ${sharableUrlResult}`
             statsAsString += '   '
           }
 
-          statsAsString += `${StringUtils.getTextStatEmoji(options.type, '✋')}${this.translate('caption.ergonomics', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, buildSummary.ergonomics, options.language)}${boldToken}`
+          statsAsString += `${StringUtils.getTextStatEmoji(options, '✋')}${this.translate('caption.ergonomics', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, buildSummary.ergonomics, options.language)}${boldToken}`
         }
 
         if (hasErgonomicsModifierPercentage) {
           if (hasErgonomics) {
             statsAsString += ` (${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, options.language)}${boldToken})`
           } else {
-            statsAsString += `${StringUtils.getTextStatEmoji(options.type, '✋')}${this.translate('caption.ergonomics', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, options.language)}${boldToken}`
+            statsAsString += `${StringUtils.getTextStatEmoji(options, '✋')}${this.translate('caption.ergonomics', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, options.language)}${boldToken}`
           }
         }
 
@@ -349,7 +349,7 @@ ${sharableUrlResult}`
       // Armor stats
       if (hasArmor || hasMovementSpeedModifierPercentage || hasTurningSpeedModifierPercentage) {
         if (hasArmor) {
-          statsAsString += `${StringUtils.getTextStatEmoji(options.type, '🛡️')}${this.translate('caption.armorClass', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, buildSummary.armorModifiers.armorClass, options.language)}${boldToken}`
+          statsAsString += `${StringUtils.getTextStatEmoji(options, '🛡️')}${this.translate('caption.armorClass', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, buildSummary.armorModifiers.armorClass, options.language)}${boldToken}`
         }
 
         if (hasMovementSpeedModifierPercentage) {
@@ -357,7 +357,7 @@ ${sharableUrlResult}`
             statsAsString += '   '
           }
 
-          statsAsString += `${StringUtils.getTextStatEmoji(options.type, '🏃')}${this.translate('caption.speed', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedModifierPercentage, options.language)}${boldToken}`
+          statsAsString += `${StringUtils.getTextStatEmoji(options, '🏃')}${this.translate('caption.speed', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedModifierPercentage, options.language)}${boldToken}`
         }
 
         if (hasMovementSpeedModifierPercentage) {
@@ -365,7 +365,7 @@ ${sharableUrlResult}`
             statsAsString += '   '
           }
 
-          statsAsString += `${StringUtils.getTextStatEmoji(options.type, '🔄')}${this.translate('caption.turningSpeed', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage, options.language)}${boldToken}`
+          statsAsString += `${StringUtils.getTextStatEmoji(options, '🔄')}${this.translate('caption.turningSpeed', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage, options.language)}${boldToken}`
         }
 
         statsAsString += `${lineEnd}\n`
@@ -374,7 +374,7 @@ ${sharableUrlResult}`
       // Price / weight
       if (hasPrice || hasWeight) {
         if (hasPrice) {
-          statsAsString += `${StringUtils.getTextStatEmoji(options.type, '💵')}${this.translate('caption.price', options.language)} `
+          statsAsString += `${StringUtils.getTextStatEmoji(options, '💵')}${this.translate('caption.price', options.language)} `
 
           for (let i = 0; i < buildSummary.price.priceByCurrency.length; i++) {
             if (buildSummary.price.priceByCurrency.length > 1
@@ -399,7 +399,7 @@ ${sharableUrlResult}`
             statsAsString += '   '
           }
 
-          statsAsString += `${StringUtils.getTextStatEmoji(options.type, '⚓')}${this.translate('caption.weight', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight, options.language)}${boldToken}`
+          statsAsString += `${StringUtils.getTextStatEmoji(options, '⚓')}${this.translate('caption.weight', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight, options.language)}${boldToken}`
         }
 
         statsAsString += lineEnd
@@ -459,7 +459,7 @@ ${sharableUrlResult}`
           merchantsAsString += '   '
         }
 
-        merchantsAsString += `${this.translate('caption.merchant_' + merchantFilters[i].merchant, options.language)} ${this.getTextMerchantLevel(options.type, options.language, merchantFilters[i].enabled, merchantFilters[i].merchantLevel)}`
+        merchantsAsString += `${this.translate('caption.merchant_' + merchantFilters[i].merchant, options.language)} ${this.getTextMerchantLevel(options, options.language, merchantFilters[i].enabled, merchantFilters[i].merchantLevel)}`
       }
 
       buildsAsString += `\n\n\n\n${merchantsAsString}${lineEnd}`
@@ -578,31 +578,31 @@ ${sharableUrlResult}`
 
   /**
    * Gets the merchant level to display in a text representing a build.
-   * @param type - Type of text being constructed.
+   * @param options - Options.
    * @param language - Language.
    * @param enabled - Indicates whether the merchant is enable.
    * @param level - Merchant level.
    * @returns Merchant level.
    */
-  private getTextMerchantLevel(type: BuildsToTextType, language: string, enabled: boolean, level: number): string {
+  private getTextMerchantLevel(options: IBuildsToTextOptions, language: string, enabled: boolean, level: number): string {
     if (enabled) {
       if (level === 0) {
-        return type === BuildsToTextType.markdown ? '✅' : this.translate('caption.yes', language)
+        return options.includeEmojis ? '✅' : this.translate('caption.yes', language)
       }
 
       switch (level) {
         case 1:
-          return type === BuildsToTextType.markdown ? '1️⃣' : '1'
+          return options.includeEmojis ? '1️⃣' : '1'
         case 2:
-          return type === BuildsToTextType.markdown ? '2️⃣' : '2'
+          return options.includeEmojis ? '2️⃣' : '2'
         case 3:
-          return type === BuildsToTextType.markdown ? '3️⃣' : '3'
+          return options.includeEmojis ? '3️⃣' : '3'
         case 4:
-          return type === BuildsToTextType.markdown ? '4️⃣' : '4'
+          return options.includeEmojis ? '4️⃣' : '4'
       }
     }
 
-    return type === BuildsToTextType.markdown ? '❌' : this.translate('caption.no', language)
+    return options.includeEmojis ? '❌' : this.translate('caption.no', language)
   }
 
   /**

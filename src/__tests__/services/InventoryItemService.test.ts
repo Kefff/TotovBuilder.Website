@@ -568,6 +568,7 @@ describe('InventoryItemService', () => {
       const result = await service.toText(
         inventoryItem,
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language: 'fr',
@@ -593,6 +594,7 @@ describe('InventoryItemService', () => {
       const result = await service.toText(
         inventoryItem,
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: false,
           language: 'fr',
@@ -630,6 +632,7 @@ describe('InventoryItemService', () => {
           quantity: 1
         },
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language,
@@ -655,6 +658,7 @@ describe('InventoryItemService', () => {
       const result = await service.toText(
         inventoryItem,
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language: 'fr',
@@ -668,6 +672,35 @@ describe('InventoryItemService', () => {
   [*Poignée-pistolet*] **Unknown item "5beec8ea0db834001a6f9dbf"**   💵 Pas de marchand  
   [*Chargeur*] **Unknown item "5bed625c0db834001c062946"**   💵 Pas de marchand  
  50 x **Unknown item "5c3df7d588a4501f290594e5"**   💵 Pas de marchand  `)
+    })
+
+    it('should ignore emojis', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(GlobalFilterService)
+
+      const service = new InventoryItemService()
+
+      // Act
+      const result = await service.toText(
+        inventoryItem,
+        {
+          includeEmojis: false,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
+
+      // Assert
+      expect(result).toBe(`**WARTECH Berkut BB-102 backpack (A-TACS FG)**   Ragman 2 **24 509₽**  
+ **RPK-16 5.45x39 light machine gun Default**   Marché **43 345₽**  
+  [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**   Prapor 3 (*échange*) **24 218₽**  
+ 50 x **9x19mm Green Tracer**   Le Mécano 1 **3 650₽**  `)
     })
   })
 
@@ -815,9 +848,9 @@ describe('InventoryItemService', () => {
           ],
           quantity: 1
         },
-        `RPK-16 5.45x39 light machine gun Default   Marché 43 345₽
- [Chargeur] RPK-16 5.45x39 95-round drum magazine   Prapor 3 (échange) 24 218₽
-  95 x 5.45x39mm US gs   Prapor 1 9 120₽`
+        `RPK-16 5.45x39 light machine gun Default   💵 Marché 43 345₽
+ [Chargeur] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
+  95 x 5.45x39mm US gs   💵 Prapor 1 9 120₽`
       ],
       [
         {
@@ -918,12 +951,12 @@ describe('InventoryItemService', () => {
           ],
           quantity: 1
         },
-        `Beretta M9A3 9x19 pistol Default   Peacekeeper 1 107$ (= 15 337₽)
+        `Beretta M9A3 9x19 pistol Default   💵 Peacekeeper 1 107$ (= 15 337₽)
  [Canon]
-  [Bouche] SIG Sauer SRD9 9x19 sound suppressor   Peacekeeper 2 242$ (= 34 606₽)
+  [Bouche] SIG Sauer SRD9 9x19 sound suppressor   💵 Peacekeeper 2 242$ (= 34 606₽)
  [Chargeur]
-  17 x 9x19mm Green Tracer   Le Mécano 1 1 241₽
- [Dispositif tactique] SureFire X400 Ultra tactical flashlight with laser   Peacekeeper 2 95$ (= 13 552₽)`
+  17 x 9x19mm Green Tracer   💵 Le Mécano 1 1 241₽
+ [Dispositif tactique] SureFire X400 Ultra tactical flashlight with laser   💵 Peacekeeper 2 95$ (= 13 552₽)`
       ],
       [
         {
@@ -970,9 +1003,9 @@ describe('InventoryItemService', () => {
           ],
           quantity: 1
         },
-        `Shellback Tactical Banshee plate carrier (A-TACS AU) Default   Ragman 3 (échange) 59 790₽
- [Plaque dorsale] 6B13 custom ballistic plates (Back)   Marché 43 868₽
- MS2000 Marker   Ragman 1 95€ (= 15 105₽)`
+        `Shellback Tactical Banshee plate carrier (A-TACS AU) Default   💵 Ragman 3 (échange) 59 790₽
+ [Plaque dorsale] 6B13 custom ballistic plates (Back)   💵 Marché 43 868₽
+ MS2000 Marker   💵 Ragman 1 95€ (= 15 105₽)`
       ],
       [
         {
@@ -982,7 +1015,7 @@ describe('InventoryItemService', () => {
           modSlots: [],
           quantity: 60
         },
-        '60 x 5.45x39mm BP gs   Pas de marchand'
+        '60 x 5.45x39mm BP gs   💵 Pas de marchand'
       ],
       [
         {
@@ -1008,6 +1041,7 @@ describe('InventoryItemService', () => {
       const result = await service.toText(
         inventoryItem,
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language: 'fr',
@@ -1033,6 +1067,7 @@ describe('InventoryItemService', () => {
       const result = await service.toText(
         inventoryItem,
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: false,
           language: 'fr',
@@ -1048,8 +1083,8 @@ describe('InventoryItemService', () => {
     })
 
     it.each([
-      ['en', 'Video cassette with the Cyborg Killer movie   Flea market 37,867₽'],
-      ['fr', 'Video cassette with the Cyborg Killer movie   Marché 37 867₽']
+      ['en', 'Video cassette with the Cyborg Killer movie   💵 Flea market 37,867₽'],
+      ['fr', 'Video cassette with the Cyborg Killer movie   💵 Marché 37 867₽']
     ])('should format prices according to the language', async (language: string, expected: string) => {
       // Arrange
       useItemServiceMock()
@@ -1070,6 +1105,7 @@ describe('InventoryItemService', () => {
           quantity: 1
         },
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language,
@@ -1095,6 +1131,7 @@ describe('InventoryItemService', () => {
       const result = await service.toText(
         inventoryItem,
         {
+          includeEmojis: true,
           includeLink: true,
           includePrices: true,
           language: 'fr',
@@ -1103,11 +1140,40 @@ describe('InventoryItemService', () => {
         })
 
       // Assert
-      expect(result).toBe(`Unknown item "5ca20d5986f774331e7c9602"   Pas de marchand
- Unknown item "5c0d1ec986f77439512a1a72"   Pas de marchand
-  [Poignée-pistolet] Unknown item "5beec8ea0db834001a6f9dbf"   Pas de marchand
-  [Chargeur] Unknown item "5bed625c0db834001c062946"   Pas de marchand
- 50 x Unknown item "5c3df7d588a4501f290594e5"   Pas de marchand`)
+      expect(result).toBe(`Unknown item "5ca20d5986f774331e7c9602"   💵 Pas de marchand
+ Unknown item "5c0d1ec986f77439512a1a72"   💵 Pas de marchand
+  [Poignée-pistolet] Unknown item "5beec8ea0db834001a6f9dbf"   💵 Pas de marchand
+  [Chargeur] Unknown item "5bed625c0db834001c062946"   💵 Pas de marchand
+ 50 x Unknown item "5c3df7d588a4501f290594e5"   💵 Pas de marchand`)
+    })
+
+    it('should ignore emojis', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(GlobalFilterService)
+
+      const service = new InventoryItemService()
+
+      // Act
+      const result = await service.toText(
+        inventoryItem,
+        {
+          includeEmojis: false,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
+
+      // Assert
+      expect(result).toBe(`WARTECH Berkut BB-102 backpack (A-TACS FG)   Ragman 2 24 509₽
+ RPK-16 5.45x39 light machine gun Default   Marché 43 345₽
+  [Chargeur] RPK-16 5.45x39 95-round drum magazine   Prapor 3 (échange) 24 218₽
+ 50 x 9x19mm Green Tracer   Le Mécano 1 3 650₽`)
     })
   })
 
