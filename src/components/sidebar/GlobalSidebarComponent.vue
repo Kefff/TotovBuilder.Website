@@ -103,33 +103,6 @@ onUnmounted(() => {
 })
 
 /**
- * Reacts to the global sidebar being closed.
- *
- * Executes the close action if defined and closes the global sidebar.
- * @param displayedComponentType- Type of component displayed in the global sidebar to close.
- */
-function onGlobalSidebarClose(displayedComponentType: GlobalSidebarComponent) {
-  if (displayedComponentType === options.value.displayedComponentType) {
-    Services.get(GlobalSidebarService).executeOnCloseActions(displayedComponentType, options.value.displayedComponentParameters)
-    visibleInternal.value = false
-  }
-}
-
-/**
- * Reacts to the global sidebar being opened.
- *
- * Sets the component to display and opens the global sidebar.
- * @param openingOptions - Opening options.
- * @param level - Level of the sidebar to open.
- */
-function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: number) {
-  if (level === props.level) {
-    visible.value = true
-    options.value = openingOptions
-  }
-}
-
-/**
  * Sets the component to display.
  */
 function getDisplayedComponent(displayedComponentType: GlobalSidebarComponent) {
@@ -214,6 +187,33 @@ function getBuildsShareSideBarSubtitle(parameters: BuildsShareSideBarParameters)
   }
 
   return undefined
+}
+
+/**
+ * Reacts to the global sidebar being closed.
+ *
+ * Executes the close action if defined and closes the global sidebar.
+ * @param displayedComponentType- Type of component displayed in the global sidebar to close.
+ */
+function onGlobalSidebarClose(displayedComponentType: GlobalSidebarComponent) {
+  if (displayedComponentType === options.value.displayedComponentType) {
+    Services.get(GlobalSidebarService).executeOnCloseActions(displayedComponentType, options.value.displayedComponentParameters)
+    visibleInternal.value = false
+  }
+}
+
+/**
+ * Reacts to the global sidebar being opened.
+ *
+ * Sets the component to display and opens the global sidebar.
+ * @param openingOptions - Opening options.
+ * @param level - Level of the sidebar to open.
+ */
+function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: number) {
+  if (level === props.level) {
+    visible.value = true
+    options.value = openingOptions
+  }
 }
 </script>
 

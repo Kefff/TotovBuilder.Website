@@ -105,7 +105,7 @@ const router = createRouter({
   routes
 })
 
-export function useRouter(app: App<Element>): void {
+export function useVueRouter(app: App<Element>): void {
   app.use(router)
 }
 

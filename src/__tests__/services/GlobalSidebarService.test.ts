@@ -1,8 +1,20 @@
-import { describe, expect, it } from 'vitest'
+import { instance, mock } from 'ts-mockito'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { Router } from 'vue-router'
 import { GlobalSidebarComponent, IGlobalSidebarOptions } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 
 describe('GlobalSideBarService', () => {
+  beforeEach(() => {
+    vi.mock('vue-router', () => {
+      const routerMock = mock<Router>()
+
+      return {
+        useRouter: () => instance(routerMock)
+      }
+    })
+  })
+
   describe('close()', () => {
     it('should emit the close global sidebar event', () => {
       // Arrange

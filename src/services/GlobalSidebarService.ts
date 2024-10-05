@@ -1,4 +1,5 @@
 import { TinyEmitter } from 'tiny-emitter'
+import { useRouter } from 'vue-router'
 import { GlobalSidebarComponent, GlobalSidebarDisplayedComponentParameters, IGlobalSidebarOptions } from '../models/utils/IGlobalSidebarOptions'
 
 /**
@@ -11,11 +12,6 @@ export class GlobalSidebarService {
   public static closeGlobalSidebarEvent = 'closeGlobalSidebar'
 
   /**
-   * Level of last sidebar displayed.
-   */
-  private currentLevel = 0
-
-  /**
    * Name of the event fired to ask a global sidebar to open.
    */
   public static openGlobalSidebarEvent = 'openGlobalSidebar'
@@ -26,9 +22,22 @@ export class GlobalSidebarService {
   public emitter = new TinyEmitter()
 
   /**
+   * List of displayed sidebars.
+   */
+  private displayedSidebar: GlobalSidebarComponent[] = []
+
+  /**
    * Actions to execute when a global sidebar is closed.
    */
   private onCloseActions: { type: GlobalSidebarComponent, action: (updatedParameters?: GlobalSidebarDisplayedComponentParameters) => void | Promise<void> }[] = []
+
+  /**
+   * Initializes a new instance of the GlobalSidebarService class.
+   */
+  constructor() {
+    const router = useRouter()
+    router.beforeEach(() => this.onRouteChange())
+  }
 
   /**
    * Closes a global sidebar.
@@ -43,17 +52,17 @@ export class GlobalSidebarService {
    * @param options - Options.
    */
   public display(options: IGlobalSidebarOptions) {
-    if (this.currentLevel === 3) {
+    if (this.displayedSidebar.length === 3) {
       return
     }
 
-    this.currentLevel++
+    this.displayedSidebar.push(options.displayedComponentType)
 
     if (options.onCloseAction != null) {
       this.registerOnCloseAction(options.displayedComponentType, options.onCloseAction)
     }
 
-    this.emitter.emit(GlobalSidebarService.openGlobalSidebarEvent, options, this.currentLevel)
+    this.emitter.emit(GlobalSidebarService.openGlobalSidebarEvent, options, this.displayedSidebar.length)
   }
 
   /**
@@ -61,14 +70,13 @@ export class GlobalSidebarService {
    * @param displayedComponentType - Type of component displayed in the closed sidebar.
    */
   public async executeOnCloseActions(displayedComponentType: GlobalSidebarComponent, updatedParameters?: GlobalSidebarDisplayedComponentParameters) {
-    this.currentLevel--
-
     for (const onCloseAction of this.onCloseActions) {
       if (onCloseAction.type === displayedComponentType) {
         await onCloseAction.action(updatedParameters)
       }
     }
 
+    this.displayedSidebar = this.displayedSidebar.filter(ds => ds !== displayedComponentType)
     this.onCloseActions = this.onCloseActions.filter(a => a.type !== displayedComponentType)
   }
 
@@ -77,7 +85,7 @@ export class GlobalSidebarService {
    * @returns true when a global sidebar is opened; otherwise false.
    */
   public isDisplayed() {
-    return this.currentLevel > 0
+    return this.displayedSidebar.length > 0
   }
 
   /**
@@ -88,4 +96,21 @@ export class GlobalSidebarService {
   public registerOnCloseAction(displayedComponentType: GlobalSidebarComponent, action: (updatedParameters?: GlobalSidebarDisplayedComponentParameters) => void | Promise<void>) {
     this.onCloseActions.push({ action, type: displayedComponentType })
   }
+
+  /**
+   * Reacts to a route being changed.
+   *
+   * When a sidebar is open, cancels the navigation and closes the sidebar.
+   */
+  /* v8 ignore start */ // Justification : could not find a way to mock VueRouter and be able to call this code
+  private onRouteChange(): boolean {
+    if (this.isDisplayed()) {
+      this.close(this.displayedSidebar[this.displayedSidebar.length - 1])
+
+      return false
+    }
+
+    return true
+  }
+  /* v8 ignore stop */
 }

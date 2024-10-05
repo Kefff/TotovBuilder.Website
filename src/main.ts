@@ -5,7 +5,7 @@ import { useApplicationInsights } from './plugins/applicationInsights'
 import { useFontAwesome } from './plugins/fontAwesome'
 import { usePrimeVue } from './plugins/primeVue'
 import { useI18n } from './plugins/vueI18n'
-import { useRouter } from './plugins/vueRouter'
+import { useVueRouter } from './plugins/vueRouter'
 import { polyfill } from './polyfill'
 import { initializeServices } from './servicesConfiguration'
 
@@ -25,7 +25,7 @@ createHead()
 useFontAwesome(app)
 useI18n(app)
 usePrimeVue(app)
-useRouter(app)
+useVueRouter(app)
 
 // Global components
 app.component(

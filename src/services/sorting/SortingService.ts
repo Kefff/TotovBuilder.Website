@@ -43,7 +43,7 @@ export class SortingService {
       return sortingData
     }
 
-    const updatedSortingData = { ...sortingData }
+    const updatedSortingData = { ...sortingData } // To avoid mutating models which prevents them to be updated and trigger sorting
 
     if (order != null) {
       updatedSortingData.order = order
