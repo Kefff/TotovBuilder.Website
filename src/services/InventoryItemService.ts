@@ -519,7 +519,7 @@ export class InventoryItemService {
         ignorePrice: unitPriceIgnoreStatus,
         inventorySlotId: inventorySlotId,
         item,
-        missingPrice: price.missingPrice,
+        missingPrice: price.missingPrice && price.unitPrice.barterItems.length === 0 && price.unitPrice.valueInMainCurrency === 0,
         quantity: inventoryItem.quantity,
         price: {
           barterItems: unitPrice.barterItems,
