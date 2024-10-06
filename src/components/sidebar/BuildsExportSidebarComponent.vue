@@ -13,7 +13,7 @@
           :element-to-stick-to="toolbarContainer"
           :grid-max-columns="1"
           :show-actions-button="false"
-          :show-not-exported="false"
+          :show-not-exported="true"
         />
       </div>
     </div>

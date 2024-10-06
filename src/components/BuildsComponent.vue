@@ -197,7 +197,24 @@ function checkBuildsNotExported() {
   const exportWarningShowed = sessionStorage.getItem(exportWarningShowedKey)
 
   if (hasBuildsNotExported.value && exportWarningShowed == null) {
-    Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.buildsNotExported'))
+    Services.get(NotificationService).notify(
+      NotificationType.warning,
+      vueI18n.t('message.buildsNotExported'),
+      0,
+      [
+        {
+          action: () => Services.get(GlobalSidebarService).display({
+            displayedComponentType: 'BuildsExportSidebar',
+            displayedComponentParameters: buildSummaries.value
+          }),
+          caption: vueI18n.t('caption.exportBuilds'),
+          icon: 'download',
+          name: 'exportBuilds',
+          type: NotificationType.success
+        }
+      ],
+      true
+    )
     sessionStorage.setItem(exportWarningShowedKey, '')
   }
 }

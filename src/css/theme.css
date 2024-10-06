@@ -5598,6 +5598,11 @@
   transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
 }
 
+.p-message.p-component > .p-message-wrapper > .p-message-close.p-link {
+  margin-left: 0.5rem;
+  /* Adds the same margin as the one à the right of the message icon */
+}
+
 .p-message .p-message-close:hover {
   background: var(--util-color5);
 }
@@ -5678,6 +5683,8 @@
   height: 1.5rem;
   margin-right: 0.5rem;
   width: 1.5rem;
+  min-width: 1.5rem;
+  /* Avoids the icon to be very small on mobile */
 }
 
 .p-toast {

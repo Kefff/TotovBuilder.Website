@@ -25,6 +25,7 @@
           >
             <font-awesome-icon
               v-if="button.icon != null"
+              class="icon-before-text"
               :icon="button.icon"
             />
             <span class="notification-buttons-text">{{ button.caption }}</span>
@@ -119,6 +120,8 @@ function getSeverity(button: INotificationButton) {
 
 
 <style scoped>
+@import '../css/icon.css';
+
 .notification {
   align-items: flex-end;
   bottom: 0;
