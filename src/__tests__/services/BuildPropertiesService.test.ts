@@ -1798,9 +1798,9 @@ Créé avec Totov Builder`)
 
   describe('getNotExportedTooltip()', () => {
     it.each([
-      [undefined, undefined, 'Build not saved to a file. It will be lost if you clear your browser data.'],
-      [new Date(1), undefined, 'Build not saved to a file. It will be lost if you clear your browser data.'],
-      [new Date(2), new Date(1), 'Changes from the 01/01/1970 01:00:00 have not been saved to a file. They will be lost if you clear your browser data. Last file save on 01/01/1970 01:00:00.']
+      [undefined, undefined, 'Build not saved to a file. It can be lost if you clear your browser data.'],
+      [new Date(1), undefined, 'Build not saved to a file. It can be lost if you clear your browser data.'],
+      [new Date(2), new Date(1), 'Changes from the 01/01/1970 01:00:00 have not been saved to a file. They can be lost if you clear your browser data. Last file save on 01/01/1970 01:00:00.']
     ])('should get the tooltip for not exported builds', (lastUpdated: Date | undefined, lastExported: Date | undefined, expected: string) => {
       // Arrange
       const service = new BuildPropertiesService()

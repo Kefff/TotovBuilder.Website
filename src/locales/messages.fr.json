@@ -359,11 +359,12 @@
     "welcomeConfigureMerchants": "Configurer marchands",
     "welcomeLastBuilds": "Mes derniers équipements",
     "welcomeShowBuilds": "Tous mes équipements",
-    "welcomeWarning1": "Attention si vous naviguez en mode privé / incognito !",
-    "welcomeWarning2": "Vous devez utiliser la fonctionnalité",
-    "welcomeWarning3": "afin de sauvegarder vos équipement sur votre disque avant de fermer votre navigateur.",
-    "welcomeWarning4": "Autrement, ils seront perdus!",
-    "welcomeWarning5": "Vous devez aussi utilisez la fonctionnalité",
-    "welcomeWarning6": "pour les charger manuellement à chaque fois que vous vous connectez au site."
+    "welcomeInformation1": "A propros de la sauvegarde des équipements",
+    "welcomeInformation2": "sauvegarde les équipements dans le navigateur web.",
+    "welcomeInformation3": "Si vous effacer les données du navigateur ou fermez une fenêtre en mode incognito, ",
+    "welcomeInformation4": "les équipements seront perdus",
+    "welcomeInformation5": "Vous pouvez ",
+    "welcomeInformation6": " et ",
+    "welcomeInformation7": " pour éviter cela."
   }
 }

@@ -108,22 +108,38 @@
           @update:selected-builds="onBuildSelected"
         />
       </div>
-      <div class="welcome-warning">
-        <h3 class="welcome-warning-title">
+      <div class="welcome-information">
+        <h3 class="welcome-information-title">
           <font-awesome-icon
             icon="exclamation-triangle"
-            class="welcome-warning-icon"
+            class="welcome-information-icon"
           />
-          {{ $t('message.welcomeWarning1') }}
+          <span>{{ $t('message.welcomeInformation1') }}</span>
         </h3>
-        <p class="welcome-warning-text">
-          {{ $t('message.welcomeWarning2') }} <span><font-awesome-icon icon="download" /> {{ $t('caption.exportBuilds') }}</span> {{ $t('message.welcomeWarning3') }}
+        <p class="welcome-information-text">
+          <span>Totov </span>
+          <span class="welcome-information-lost">Builder </span>
+          <span>{{ $t('message.welcomeInformation2') }}</span>
         </p>
-        <p class="welcome-warning-lost">
-          {{ $t('message.welcomeWarning4') }}
+        <p class="welcome-information-text">
+          <span>{{ $t('message.welcomeInformation3') }}</span>
+          <span class="welcome-information-lost">
+            {{ $t('message.welcomeInformation4') }}
+          </span>
+          <span>.</span>
         </p>
-        <p class="welcome-warning-text">
-          {{ $t('message.welcomeWarning5') }} <span><font-awesome-icon icon="file-upload" /> {{ $t('caption.importBuilds') }}</span> {{ $t('message.welcomeWarning6') }}
+        <p class="welcome-information-text">
+          <span>{{ $t('message.welcomeInformation5') }}</span>
+          <span class="welcome-information-functionality">
+            <font-awesome-icon icon="download" />
+            {{ $t('caption.exportBuilds') }}
+          </span>
+          <span>{{ $t('message.welcomeInformation6') }}</span>
+          <span class="welcome-information-functionality">
+            <font-awesome-icon icon="file-upload" />
+            {{ $t('caption.importBuilds') }}
+          </span>
+          <span>{{ $t('message.welcomeInformation7') }}</span>
         </p>
       </div>
     </div>
@@ -391,39 +407,40 @@ function openNewBuild() {
   margin-top: 3rem;
 }
 
-.welcome-warning {
+.welcome-information {
   margin-top: 9rem;
   margin-bottom: auto;
   padding-bottom: 6rem;
 }
 
-.welcome-warning > p {
+.welcome-information > p {
   align-items: center;
   display: flex;
   flex-direction: row;
 }
 
-.welcome-warning-icon {
+.welcome-information-icon {
   margin-right: 0.5rem;
 }
 
-.welcome-warning-lost {
+.welcome-information-lost {
   color: var(--error-color);
 }
 
-.welcome-warning-text {
+.welcome-information-text {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  white-space: preserve;
 }
 
-.welcome-warning-text > span {
+.welcome-information-functionality {
   color: var(--primary-color);
   margin-left: 0.25rem;
   margin-right: 0.25rem;
 }
 
-.welcome-warning-title {
+.welcome-information-title {
   align-items: center;
   color: var(--warning-color);
   display: flex;

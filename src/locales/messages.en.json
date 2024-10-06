@@ -448,14 +448,15 @@
     "welcome4": "Prices are regularly updated in order for you to know exactly how much rubles you loose each time you die !",
     "welcomeBack": "Welcome back !",
     "welcomeConfigureMerchants": "Configure merchants",
+    "welcomeInformation1": "Information about saving builds",
+    "welcomeInformation2": "saves builds in the web browser.",
+    "welcomeInformation3": "If you clear your browser data or close an incognito mode window, ",
+    "welcomeInformation4": "builds will be lost",
+    "welcomeInformation5": "You can ",
+    "welcomeInformation6": " and ",
+    "welcomeInformation7": " to avoid this.",
     "welcomeLastBuilds": "My last builds",
-    "welcomeShowBuilds": "All my builds",
-    "welcomeWarning1": "Beware if you are browsing in private / incognito mode !",
-    "welcomeWarning2": "You need to use the",
-    "welcomeWarning3": "feature in order to save your builds on your disk before closing your browser.",
-    "welcomeWarning4": "They will otherwise be lost!",
-    "welcomeWarning5": "You also need to use the",
-    "welcomeWarning6": "feature to manually load them each time you connect to the website."
+    "welcomeShowBuilds": "All my builds"
   },
   "test": {
     "logger1": "This is a message.",
