@@ -1,40 +1,10 @@
-<template>
-  <Tooltip
-    :apply-hover-style="false"
-    :tooltip="$t('caption.notifications')"
-    position="left"
-  >
-    <Button
-      :disabled="notifications.length === 0"
-      class="p-button-text p-button-sm button-discreet notification-button"
-      @click="onClick()"
-    >
-      <font-awesome-icon icon="bell" />
-      <div
-        v-if="newNotificationCount > 0"
-        class="notification-button-count"
-      >
-        <div>{{ newNotificationCount }}</div>
-      </div>
-    </Button>
-  </Tooltip>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { INotification } from '../models/utils/INotification'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { NotificationService } from '../services/NotificationService'
 import Services from '../services/repository/Services'
+import Tooltip from './TooltipComponent.vue'
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _notificationService = Services.get(NotificationService)
@@ -83,6 +53,37 @@ function onNotificationCountChanged() {
   newNotificationCount.value = _notificationService.newNotificationCount
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <Tooltip
+    :apply-hover-style="false"
+    :tooltip="$t('caption.notifications')"
+    position="left"
+  >
+    <Button
+      :disabled="notifications.length === 0"
+      class="p-button-text p-button-sm button-discreet notification-button"
+      @click="onClick()"
+    >
+      <font-awesome-icon icon="bell" />
+      <div
+        v-if="newNotificationCount > 0"
+        class="notification-button-count"
+      >
+        <div>{{ newNotificationCount }}</div>
+      </div>
+    </Button>
+  </Tooltip>
+</template>
 
 
 

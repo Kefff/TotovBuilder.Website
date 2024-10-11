@@ -1,3 +1,31 @@
+<script setup lang="ts">
+import Images from '../images'
+import StringUtils from '../utils/StringUtils'
+
+withDefaults(
+  defineProps<{
+    isBarter?: boolean,
+    merchant: string,
+    merchantLevel: number,
+    requiresQuest?: boolean,
+    showTooltip?: boolean
+  }>(),
+  {
+    isBarter: false,
+    requiresQuest: false,
+    showTooltip: true
+  })
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="merchant-icon">
     <img :src="Images[StringUtils.toCamelCase(merchant)]">
@@ -21,34 +49,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import Images from '../images'
-import StringUtils from '../utils/StringUtils'
-
-withDefaults(
-  defineProps<{
-    isBarter?: boolean,
-    merchant: string,
-    merchantLevel: number,
-    requiresQuest?: boolean,
-    showTooltip?: boolean
-  }>(),
-  {
-    isBarter: false,
-    requiresQuest: false,
-    showTooltip: true
-  })
-</script>
 
 
 

@@ -1,3 +1,31 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import Images from '../../images'
+import { IItem } from '../../models/item/IItem'
+import { IRangedWeapon } from '../../models/item/IRangedWeapon'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import StringUtils from '../../utils/StringUtils'
+import CustomIcon from '../CustomIconComponent.vue'
+
+const props = defineProps<{
+  item: IItem
+}>()
+
+const ergonomics = computed(() => rangedWeapon.value.presetRangedWeaponModifiers?.ergonomics ?? rangedWeapon.value.ergonomics)
+const horizontalRecoil = computed(() => rangedWeapon.value.presetRangedWeaponModifiers?.horizontalRecoil ?? rangedWeapon.value.horizontalRecoil)
+const rangedWeapon = computed(() => props.item as IRangedWeapon)
+const verticalRecoil = computed(() => rangedWeapon.value.presetRangedWeaponModifiers?.verticalRecoil ?? rangedWeapon.value.verticalRecoil)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="stats-category">
     {{ $t('caption.rangedWeapon') }}
@@ -69,34 +97,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import Images from '../../images'
-import { IItem } from '../../models/item/IItem'
-import { IRangedWeapon } from '../../models/item/IRangedWeapon'
-import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
-import StringUtils from '../../utils/StringUtils'
-import CustomIcon from '../CustomIconComponent.vue'
-
-const props = defineProps<{
-  item: IItem
-}>()
-
-const ergonomics = computed(() => rangedWeapon.value.presetRangedWeaponModifiers?.ergonomics ?? rangedWeapon.value.ergonomics)
-const horizontalRecoil = computed(() => rangedWeapon.value.presetRangedWeaponModifiers?.horizontalRecoil ?? rangedWeapon.value.horizontalRecoil)
-const rangedWeapon = computed(() => props.item as IRangedWeapon)
-const verticalRecoil = computed(() => rangedWeapon.value.presetRangedWeaponModifiers?.verticalRecoil ?? rangedWeapon.value.verticalRecoil)
-</script>
 
 
 

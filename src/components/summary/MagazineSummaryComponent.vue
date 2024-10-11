@@ -1,3 +1,33 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IItem } from '../../models/item/IItem'
+import { IMagazine } from '../../models/item/IMagazine'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import Tooltip from '../TooltipComponent.vue'
+import ContainerSummary from './ContainerSummaryComponent.vue'
+
+const props = withDefaults(
+  defineProps<{
+    item: IItem,
+    showEmptyEntries?: boolean
+  }>(),
+  {
+    showEmptyEntries: true
+  })
+
+const ergonomicsModifier = computed(() => magazine.value.presetErgonomicsModifier ?? magazine.value.ergonomicsModifier)
+const magazine = computed(() => props.item as IMagazine)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <ContainerSummary :item="magazine" />
   <div
@@ -55,35 +85,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { IItem } from '../../models/item/IItem'
-import { IMagazine } from '../../models/item/IMagazine'
-import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
-import ContainerSummary from './ContainerSummaryComponent.vue'
-
-const props = withDefaults(
-  defineProps<{
-    item: IItem,
-    showEmptyEntries?: boolean
-  }>(),
-  {
-    showEmptyEntries: true
-  })
-
-const ergonomicsModifier = computed(() => magazine.value.presetErgonomicsModifier ?? magazine.value.ergonomicsModifier)
-const magazine = computed(() => props.item as IMagazine)
-</script>
 
 
 

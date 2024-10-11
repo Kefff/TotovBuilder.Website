@@ -1,3 +1,72 @@
+<script setup lang="ts">
+import { computed, inject, useTemplateRef } from 'vue'
+import { ICurrency } from '../models/configuration/ICurrency'
+import { IInventoryPrice } from '../models/utils/IInventoryPrice'
+import vueI18n from '../plugins/vueI18n'
+import { ItemService } from '../services/ItemService'
+import Services from '../services/repository/Services'
+import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
+import Price from './PriceComponent.vue'
+import Tooltip from './TooltipComponent.vue'
+
+const props = withDefaults(
+  defineProps<{
+    customTooltip?: string,
+    inventoryPrice: IInventoryPrice,
+    isBuild: boolean,
+    showEmptyMissingPriceSpot?: boolean
+  }>(),
+  {
+    customTooltip: undefined,
+    showMissingPriceSpot: false
+  })
+
+const _isTouchScreen = inject<boolean>('isTouchScreen')
+let _mainCurrency: ICurrency | undefined
+
+const inventoryPriceDetailPanel = useTemplateRef('inventoryPriceDetailPanel')
+
+const canShowDetails = computed(() => props.inventoryPrice.priceByCurrency.some(ip => ip.currencyName !== mainCurrency.value?.name))
+const mainCurrency = computed(() => {
+  if (_mainCurrency == null) {
+    _mainCurrency = Services.get(ItemService).getMainCurrency()
+  }
+
+  return _mainCurrency
+})
+const priceInMainCurrency = computed(() => props.inventoryPrice.priceByCurrency.reduce((total, priceInCurrency) => total + priceInCurrency.valueInMainCurrency, 0))
+const tooltip = computed(() => {
+  let value: string = props.customTooltip ?? vueI18n.t('caption.price')
+
+  if (canShowDetails.value && !_isTouchScreen) {
+    value += ` ${vueI18n.t('caption.clickForDetails')}`
+  }
+
+  return value
+})
+
+/**
+ * Toggles the details of the inventory price.
+ */
+function toggleInventoryPriceDetails(event: Event) {
+  if (!canShowDetails.value) {
+    return
+  }
+
+  inventoryPriceDetailPanel.value?.toggle(event)
+  event.stopPropagation()
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="inventory-price">
     <Tooltip :tooltip="tooltip">
@@ -68,74 +137,6 @@
     </div>
   </OverlayPanel>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed, inject, useTemplateRef } from 'vue'
-import { ICurrency } from '../models/configuration/ICurrency'
-import { IInventoryPrice } from '../models/utils/IInventoryPrice'
-import vueI18n from '../plugins/vueI18n'
-import { ItemService } from '../services/ItemService'
-import Services from '../services/repository/Services'
-import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
-import Price from './PriceComponent.vue'
-
-const props = withDefaults(
-  defineProps<{
-    customTooltip?: string,
-    inventoryPrice: IInventoryPrice,
-    isBuild: boolean,
-    showEmptyMissingPriceSpot?: boolean
-  }>(),
-  {
-    customTooltip: undefined,
-    showMissingPriceSpot: false
-  })
-
-const _isTouchScreen = inject<boolean>('isTouchScreen')
-let _mainCurrency: ICurrency | undefined
-
-const inventoryPriceDetailPanel = useTemplateRef('inventoryPriceDetailPanel')
-
-const canShowDetails = computed(() => props.inventoryPrice.priceByCurrency.some(ip => ip.currencyName !== mainCurrency.value?.name))
-const mainCurrency = computed(() => {
-  if (_mainCurrency == null) {
-    _mainCurrency = Services.get(ItemService).getMainCurrency()
-  }
-
-  return _mainCurrency
-})
-const priceInMainCurrency = computed(() => props.inventoryPrice.priceByCurrency.reduce((total, priceInCurrency) => total + priceInCurrency.valueInMainCurrency, 0))
-const tooltip = computed(() => {
-  let value: string = props.customTooltip ?? vueI18n.t('caption.price')
-
-  if (canShowDetails.value && !_isTouchScreen) {
-    value += ` ${vueI18n.t('caption.clickForDetails')}`
-  }
-
-  return value
-})
-
-/**
- * Toggles the details of the inventory price.
- */
-function toggleInventoryPriceDetails(event: Event) {
-  if (!canShowDetails.value) {
-    return
-  }
-
-  inventoryPriceDetailPanel.value?.toggle(event)
-  event.stopPropagation()
-}
-</script>
 
 
 

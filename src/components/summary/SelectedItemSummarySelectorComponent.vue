@@ -1,113 +1,3 @@
-<template>
-  <SelectedItemSummary
-    v-if="selectedItem != null"
-    :can-be-looted="canBeLooted"
-    :include-mods-and-content="includeModsAndContent"
-    :inventory-item-in-same-slot-in-preset="inventoryItemInSameSlotInPreset"
-    :inventory-item="inventoryItem"
-    :is-base-item="isBaseItem"
-    :show-price="showPrice"
-    :show-weight="showWeight"
-  >
-    <AmmunitionSummary
-      v-if="specializedComponent === AmmunitionSummary"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <ArmorModSummary
-      v-if="specializedComponent === ArmorModSummary"
-      :armor-modifiers-override="selectedItemArmorModifiers"
-      :item="selectedItem"
-      :show-empty-entries="false"
-      :wearable-modifiers-override="selectedItemWearableModifiers"
-    />
-    <ArmorSummary
-      v-if="specializedComponent === ArmorSummary"
-      :armor-modifiers-override="selectedItemArmorModifiers"
-      :include-mods-and-content="includeModsAndContent"
-      :item="selectedItem"
-      :show-empty-entries="false"
-      :wearable-modifiers-override="selectedItemWearableModifiers"
-    />
-    <BackpackSummary
-      v-if="specializedComponent === BackpackSummary"
-      :item="selectedItem"
-      :show-empty-entries="false"
-      :wearable-modifiers-override="selectedItemWearableModifiers"
-    />
-    <ContainerSummary
-      v-if="specializedComponent === ContainerSummary"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <EyewearSummary
-      v-if="specializedComponent === EyewearSummary"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <GrenadeSummary
-      v-if="specializedComponent === GrenadeSummary"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <HeadwearSummary
-      v-if="specializedComponent === HeadwearSummary"
-      :armor-modifiers-override="selectedItemArmorModifiers"
-      :include-mods-and-content="includeModsAndContent"
-      :is-base-item="isBaseItem"
-      :item="selectedItem"
-      :show-empty-entries="false"
-      :wearable-modifiers-override="selectedItemWearableModifiers"
-    />
-    <MagazineSummary
-      v-if="specializedComponent === MagazineSummary"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <MeleeWeaponSummary
-      v-if="specializedComponent === MeleeWeaponSummary"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <ModSummary
-      v-if="specializedComponent === ModSummary"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <RangedWeaponModSummary
-      v-if="specializedComponent === RangedWeaponModSummary"
-      :item="selectedItem"
-      :show-empty-entries="false"
-    />
-    <RangedWeaponSummary
-      v-if="specializedComponent === RangedWeaponSummary"
-      :include-mods-and-content="includeModsAndContent"
-      :is-base-item="isBaseItem"
-      :item="selectedItem"
-      :ranged-weapons-modifiers-override="selectedItemRangedWeaponModifiers"
-      :show-empty-entries="false"
-    />
-    <VestSummary
-      v-if="specializedComponent === VestSummary"
-      :armor-modifiers-override="selectedItemArmorModifiers"
-      :include-mods-and-content="includeModsAndContent"
-      :is-base-item="isBaseItem"
-      :item="selectedItem"
-      :show-empty-entries="false"
-      :wearable-modifiers-override="selectedItemWearableModifiers"
-    />
-  </SelectedItemSummary>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
@@ -269,6 +159,116 @@ async function setWearableModifiers() {
   }
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <SelectedItemSummary
+    v-if="selectedItem != null"
+    :can-be-looted="canBeLooted"
+    :include-mods-and-content="includeModsAndContent"
+    :inventory-item-in-same-slot-in-preset="inventoryItemInSameSlotInPreset"
+    :inventory-item="inventoryItem"
+    :is-base-item="isBaseItem"
+    :show-price="showPrice"
+    :show-weight="showWeight"
+  >
+    <AmmunitionSummary
+      v-if="specializedComponent === AmmunitionSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+    />
+    <ArmorModSummary
+      v-if="specializedComponent === ArmorModSummary"
+      :armor-modifiers-override="selectedItemArmorModifiers"
+      :item="selectedItem"
+      :show-empty-entries="false"
+      :wearable-modifiers-override="selectedItemWearableModifiers"
+    />
+    <ArmorSummary
+      v-if="specializedComponent === ArmorSummary"
+      :armor-modifiers-override="selectedItemArmorModifiers"
+      :include-mods-and-content="includeModsAndContent"
+      :item="selectedItem"
+      :show-empty-entries="false"
+      :wearable-modifiers-override="selectedItemWearableModifiers"
+    />
+    <BackpackSummary
+      v-if="specializedComponent === BackpackSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+      :wearable-modifiers-override="selectedItemWearableModifiers"
+    />
+    <ContainerSummary
+      v-if="specializedComponent === ContainerSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+    />
+    <EyewearSummary
+      v-if="specializedComponent === EyewearSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+    />
+    <GrenadeSummary
+      v-if="specializedComponent === GrenadeSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+    />
+    <HeadwearSummary
+      v-if="specializedComponent === HeadwearSummary"
+      :armor-modifiers-override="selectedItemArmorModifiers"
+      :include-mods-and-content="includeModsAndContent"
+      :is-base-item="isBaseItem"
+      :item="selectedItem"
+      :show-empty-entries="false"
+      :wearable-modifiers-override="selectedItemWearableModifiers"
+    />
+    <MagazineSummary
+      v-if="specializedComponent === MagazineSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+    />
+    <MeleeWeaponSummary
+      v-if="specializedComponent === MeleeWeaponSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+    />
+    <ModSummary
+      v-if="specializedComponent === ModSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+    />
+    <RangedWeaponModSummary
+      v-if="specializedComponent === RangedWeaponModSummary"
+      :item="selectedItem"
+      :show-empty-entries="false"
+    />
+    <RangedWeaponSummary
+      v-if="specializedComponent === RangedWeaponSummary"
+      :include-mods-and-content="includeModsAndContent"
+      :is-base-item="isBaseItem"
+      :item="selectedItem"
+      :ranged-weapons-modifiers-override="selectedItemRangedWeaponModifiers"
+      :show-empty-entries="false"
+    />
+    <VestSummary
+      v-if="specializedComponent === VestSummary"
+      :armor-modifiers-override="selectedItemArmorModifiers"
+      :include-mods-and-content="includeModsAndContent"
+      :is-base-item="isBaseItem"
+      :item="selectedItem"
+      :show-empty-entries="false"
+      :wearable-modifiers-override="selectedItemWearableModifiers"
+    />
+  </SelectedItemSummary>
+</template>
 
 
 

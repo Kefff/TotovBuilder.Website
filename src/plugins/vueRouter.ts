@@ -4,7 +4,7 @@ import Welcome from '../components/WelcomeComponent.vue'
 import LanguageUtils from '../utils/LanguageUtils'
 import applicationInsights from './applicationInsights'
 
-const Build = () => import('../components/build/BuildComponent.vue')
+const Build = () => import('../components/BuildComponent.vue')
 const Builds = () => import('../components/BuildsComponent.vue')
 
 const routes: RouteRecordRaw[] = [

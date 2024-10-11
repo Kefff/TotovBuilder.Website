@@ -1,3 +1,30 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IItem } from '../../models/item/IItem'
+import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+
+const props = defineProps<{
+  item: IItem
+}>()
+
+const ergonomicsModifier = computed(() => rangedWeaponMod.value.presetErgonomicsModifier ?? rangedWeaponMod.value.ergonomicsModifier)
+const hasModifiers = computed(() =>
+  rangedWeaponMod.value.accuracyModifierPercentage !== 0
+  || ergonomicsModifier.value !== 0
+  || rangedWeaponMod.value.recoilModifierPercentage !== 0)
+const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div
     v-if="hasModifiers"
@@ -56,33 +83,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { IItem } from '../../models/item/IItem'
-import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
-import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
-
-const props = defineProps<{
-  item: IItem
-}>()
-
-const ergonomicsModifier = computed(() => rangedWeaponMod.value.presetErgonomicsModifier ?? rangedWeaponMod.value.ergonomicsModifier)
-const hasModifiers = computed(() =>
-  rangedWeaponMod.value.accuracyModifierPercentage !== 0
-  || ergonomicsModifier.value !== 0
-  || rangedWeaponMod.value.recoilModifierPercentage !== 0)
-const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
-</script>
 
 
 

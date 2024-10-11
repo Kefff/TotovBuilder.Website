@@ -1,97 +1,3 @@
-<template>
-  <div class="selected-item-summary">
-    <div class="option-line">
-      <slot />
-      <div class="selected-item-summary-right">
-        <div class="selected-item-summary-right-base">
-          <div class="selected-item-summary-right-price">
-            <div
-              v-if="includeModsAndContent"
-              class="selected-item-summary-right-with-mods"
-            >
-              <InventoryPrice
-                :custom-tooltip="$t('caption.price') + $t('caption.withModsAndContent')"
-                :inventory-price="selectedItemInventoryPrice"
-                :is-build="false"
-                :show-empty-missing-price-spot="true"
-              />
-            </div>
-            <Price
-              v-if="showPrice"
-              :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
-              :missing="showSelectedItemMissingPrice"
-              :price="selectedItemPrice.price"
-            />
-            <div
-              v-if="showUnitPrice"
-              class="selected-item-summary-right-per-unit-price selected-item-summary-right-per-unit"
-            >
-              <Price
-                :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
-                :price="selectedItemPrice.unitPrice"
-                :show-merchant-icon="false"
-                :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
-              />
-            </div>
-          </div>
-          <div class="selected-item-summary-right-weight">
-            <div
-              v-if="includeModsAndContent && selectedItemWeight.weight > 0"
-              class="selected-item-summary-right-with-mods"
-            >
-              <Tooltip
-                :tooltip="$t('caption.weight') + $t('caption.withModsAndContent')"
-                position="left"
-              >
-                <font-awesome-icon
-                  icon="weight-hanging"
-                  class="icon-before-text"
-                />
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weightWithContent) }}</span>
-              </Tooltip>
-            </div>
-            <div
-              v-if="(!includeModsAndContent || showWeight) && selectedItemWeight.weight > 0"
-              class="selected-item-summary-right-weight-base"
-            >
-              <Tooltip :tooltip="$t('caption.weight')">
-                <font-awesome-icon
-                  icon="weight-hanging"
-                  class="icon-before-text"
-                />
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weight) }}</span>
-              </Tooltip>
-            </div>
-            <div
-              v-if="showUnitWeight"
-              class="selected-item-summary-right-weight selected-item-summary-right-per-unit"
-            >
-              <div>
-                <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
-                  <font-awesome-icon
-                    icon="weight-hanging"
-                    class="icon-before-text"
-                  />
-                  <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
-                </Tooltip>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
@@ -105,6 +11,7 @@ import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import InventoryPrice from '../InventoryPriceComponent.vue'
 import Price from '../PriceComponent.vue'
+import Tooltip from '../TooltipComponent.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -223,6 +130,100 @@ async function setWeight() {
   selectedItemWeight.value = await _inventoryItemService.getWeight(props.inventoryItem)
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="selected-item-summary">
+    <div class="option-line">
+      <slot />
+      <div class="selected-item-summary-right">
+        <div class="selected-item-summary-right-base">
+          <div class="selected-item-summary-right-price">
+            <div
+              v-if="includeModsAndContent"
+              class="selected-item-summary-right-with-mods"
+            >
+              <InventoryPrice
+                :custom-tooltip="$t('caption.price') + $t('caption.withModsAndContent')"
+                :inventory-price="selectedItemInventoryPrice"
+                :is-build="false"
+                :show-empty-missing-price-spot="true"
+              />
+            </div>
+            <Price
+              v-if="showPrice"
+              :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
+              :missing="showSelectedItemMissingPrice"
+              :price="selectedItemPrice.price"
+            />
+            <div
+              v-if="showUnitPrice"
+              class="selected-item-summary-right-per-unit-price selected-item-summary-right-per-unit"
+            >
+              <Price
+                :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
+                :price="selectedItemPrice.unitPrice"
+                :show-merchant-icon="false"
+                :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
+              />
+            </div>
+          </div>
+          <div class="selected-item-summary-right-weight">
+            <div
+              v-if="includeModsAndContent && selectedItemWeight.weight > 0"
+              class="selected-item-summary-right-with-mods"
+            >
+              <Tooltip
+                :tooltip="$t('caption.weight') + $t('caption.withModsAndContent')"
+                position="left"
+              >
+                <font-awesome-icon
+                  icon="weight-hanging"
+                  class="icon-before-text"
+                />
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weightWithContent) }}</span>
+              </Tooltip>
+            </div>
+            <div
+              v-if="(!includeModsAndContent || showWeight) && selectedItemWeight.weight > 0"
+              class="selected-item-summary-right-weight-base"
+            >
+              <Tooltip :tooltip="$t('caption.weight')">
+                <font-awesome-icon
+                  icon="weight-hanging"
+                  class="icon-before-text"
+                />
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weight) }}</span>
+              </Tooltip>
+            </div>
+            <div
+              v-if="showUnitWeight"
+              class="selected-item-summary-right-weight selected-item-summary-right-per-unit"
+            >
+              <div>
+                <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
+                  <font-awesome-icon
+                    icon="weight-hanging"
+                    class="icon-before-text"
+                  />
+                  <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
+                </Tooltip>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 
 

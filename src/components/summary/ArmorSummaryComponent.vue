@@ -1,3 +1,59 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IArmor } from '../../models/item/IArmor'
+import { IItem } from '../../models/item/IItem'
+import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
+import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
+import vueI18n from '../../plugins/vueI18n'
+import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import Services from '../../services/repository/Services'
+import Tooltip from '../TooltipComponent.vue'
+import WearableSummary from './WearableSummaryComponent.vue'
+
+const props = withDefaults(
+  defineProps<{
+    armorModifiersOverride?: IArmorModifiers
+    includeModsAndContent?: boolean,
+    isBaseItem?: boolean,
+    item: IItem,
+    showEmptyEntries?: boolean,
+    wearableModifiersOverride?: IWearableModifiers
+  }>(),
+  {
+    armorModifiersOverride: undefined,
+    includeModsAndContent: false,
+    isBaseItem: false,
+    showEmptyEntries: true,
+    wearableModifiersOverride: undefined
+  })
+
+const _itemPropertiesService = Services.get(ItemPropertiesService)
+
+const armor = computed(() => props.item as IArmor)
+const armorClass = computed(() => props.armorModifiersOverride?.armorClass ?? armor.value.presetArmorModifiers?.armorClass ?? armor.value.armorClass)
+const boldCssClass = computed(() => props.includeModsAndContent ? 'armor-summary-bold' : '')
+const durability = computed(() => props.armorModifiersOverride?.durability ?? armor.value.presetArmorModifiers?.durability ?? armor.value.durability)
+const isHeadwear = computed(() => _itemPropertiesService.isHeadwear(props.item))
+const tooltipSuffix = computed(() => {
+  if (!props.includeModsAndContent) {
+    return ''
+  } else if (props.includeModsAndContent && isHeadwear) {
+    return vueI18n.t('caption.withMods')
+  } else {
+    return vueI18n.t('caption.frontPlate')
+  }
+})
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div
     v-if="(!isBaseItem && armorClass > 0) || showEmptyEntries"
@@ -40,61 +96,6 @@
     :wearable-modifiers-override="wearableModifiersOverride"
   />
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { IArmor } from '../../models/item/IArmor'
-import { IItem } from '../../models/item/IItem'
-import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
-import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
-import vueI18n from '../../plugins/vueI18n'
-import { ItemPropertiesService } from '../../services/ItemPropertiesService'
-import Services from '../../services/repository/Services'
-import WearableSummary from './WearableSummaryComponent.vue'
-
-const props = withDefaults(
-  defineProps<{
-    armorModifiersOverride?: IArmorModifiers
-    includeModsAndContent?: boolean,
-    isBaseItem?: boolean,
-    item: IItem,
-    showEmptyEntries?: boolean,
-    wearableModifiersOverride?: IWearableModifiers
-  }>(),
-  {
-    armorModifiersOverride: undefined,
-    includeModsAndContent: false,
-    isBaseItem: false,
-    showEmptyEntries: true,
-    wearableModifiersOverride: undefined
-  })
-
-const _itemPropertiesService = Services.get(ItemPropertiesService)
-
-const armor = computed(() => props.item as IArmor)
-const armorClass = computed(() => props.armorModifiersOverride?.armorClass ?? armor.value.presetArmorModifiers?.armorClass ?? armor.value.armorClass)
-const boldCssClass = computed(() => props.includeModsAndContent ? 'armor-summary-bold' : '')
-const durability = computed(() => props.armorModifiersOverride?.durability ?? armor.value.presetArmorModifiers?.durability ?? armor.value.durability)
-const isHeadwear = computed(() => _itemPropertiesService.isHeadwear(props.item))
-const tooltipSuffix = computed(() => {
-  if (!props.includeModsAndContent) {
-    return ''
-  } else if (props.includeModsAndContent && isHeadwear) {
-    return vueI18n.t('caption.withMods')
-  } else {
-    return vueI18n.t('caption.frontPlate')
-  }
-})
-</script>
 
 
 

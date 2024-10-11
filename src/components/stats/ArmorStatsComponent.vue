@@ -1,3 +1,32 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IArmor } from '../../models/item/IArmor'
+import { IItem } from '../../models/item/IItem'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import WearableStats from './WearableStatsComponent.vue'
+
+const props =
+  defineProps<{
+    item: IItem,
+    showModifiers?: boolean,
+  }>()
+
+const armor = computed(() => props.item as IArmor)
+const armorClass = computed(() => armor.value.presetArmorModifiers?.armorClass ?? armor.value.armorClass)
+const durability = computed(() => armor.value.presetArmorModifiers?.durability ?? armor.value.durability)
+const hasModifiers = computed(() => armor.value.blindnessProtectionPercentage !== 0)
+const wearableModifiers = computed(() => armor.value.presetWearableModifiers ?? undefined)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div
     v-if="armorClass > 0"
@@ -99,35 +128,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { IArmor } from '../../models/item/IArmor'
-import { IItem } from '../../models/item/IItem'
-import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
-import WearableStats from './WearableStatsComponent.vue'
-
-const props =
-  defineProps<{
-    item: IItem,
-    showModifiers?: boolean,
-  }>()
-
-const armor = computed(() => props.item as IArmor)
-const armorClass = computed(() => armor.value.presetArmorModifiers?.armorClass ?? armor.value.armorClass)
-const durability = computed(() => armor.value.presetArmorModifiers?.durability ?? armor.value.durability)
-const hasModifiers = computed(() => armor.value.blindnessProtectionPercentage !== 0)
-const wearableModifiers = computed(() => armor.value.presetWearableModifiers ?? undefined)
-</script>
 
 
 

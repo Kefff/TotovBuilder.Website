@@ -1,160 +1,3 @@
-<template>
-  <div class="welcome">
-    <div>
-      <h2>Totov <span class="welcome-builder">Builder</span>{{ $t('message.welcome1') }}</h2>
-      <p>{{ $t('message.welcome2') }}</p>
-      <p>{{ $t('message.welcome3') }}</p>
-      <p>{{ $t('message.welcome4') }}</p>
-    </div>
-    <div
-      v-if="isLoading"
-      class="welcome-loading"
-    >
-      <Loading />
-    </div>
-    <div
-      v-else
-      class="welcome-content"
-    >
-      <h3 v-if="hasBuilds">
-        {{ $t('message.welcomeBack') }}
-      </h3>
-      <div
-        v-if="!isLoading"
-        class="welcome-actions"
-      >
-        <div class="welcome-action">
-          <Button
-            class="welcome-button"
-            severity="success"
-            @click="openNewBuild()"
-          >
-            <font-awesome-icon
-              icon="plus"
-              class="icon-before-text"
-            />
-            <span>{{ $t('caption.createNewBuild') }}</span>
-          </Button>
-        </div>
-        <div
-          v-if="hasBuilds"
-          class="welcome-action"
-        >
-          <Button
-            class="welcome-button"
-            @click="displayBuilds()"
-          >
-            <font-awesome-icon
-              icon="list"
-              class="icon-before-text"
-            />
-            <span>{{ $t('message.welcomeShowBuilds') }}</span>
-          </Button>
-        </div>
-        <div
-          v-if="!hasBuilds"
-          class="welcome-action"
-        >
-          <Button
-            class="welcome-button"
-            @click="displayImportSidebar()"
-          >
-            <font-awesome-icon
-              icon="file-upload"
-              class="icon-before-text"
-            />
-            <span>{{ $t('caption.importBuilds') }}</span>
-          </Button>
-        </div>
-        <div class="welcome-action">
-          <Button
-            class="welcome-button"
-            outlined
-            @click="displayMerchantItemsOptions()"
-          >
-            <font-awesome-icon
-              icon="user-tag"
-              class="icon-before-text"
-            />
-            <span>{{ $t('message.welcomeConfigureMerchants') }}</span>
-          </Button>
-        </div>
-        <div class="welcome-action">
-          <Button
-            class="welcome-button"
-            outlined
-            @click="displayGeneralOptions()"
-          >
-            <img
-              class="icon-before-text"
-              :src="Images['language' + StringUtils.toUpperFirst(vueI18n.locale.value)]"
-            >
-            <span>{{ $t('caption.language') }}</span>
-          </Button>
-        </div>
-      </div>
-      <div
-        v-if="hasBuilds"
-        class="welcome-build-summaries"
-      >
-        <h3>{{ $t('message.welcomeLastBuilds') }}</h3>
-        <BuildsList
-          :build-summaries="lastBuildSummaries"
-          :grid-max-columns="3"
-          :show-chips="false"
-          :show-not-exported="false"
-          selection-button-caption="caption.edit"
-          selection-button-icon="edit"
-          @update:selected-builds="onBuildSelected"
-        />
-      </div>
-      <div class="welcome-information">
-        <h3 class="welcome-information-title">
-          <font-awesome-icon
-            icon="exclamation-triangle"
-            class="welcome-information-icon"
-          />
-          <span>{{ $t('message.welcomeInformation1') }}</span>
-        </h3>
-        <p class="welcome-information-text">
-          <span>Totov </span>
-          <span class="welcome-information-lost">Builder </span>
-          <span>{{ $t('message.welcomeInformation2') }}</span>
-        </p>
-        <p class="welcome-information-text">
-          <span>{{ $t('message.welcomeInformation3') }}</span>
-          <span class="welcome-information-lost">
-            {{ $t('message.welcomeInformation4') }}
-          </span>
-          <span>.</span>
-        </p>
-        <p class="welcome-information-text">
-          <span>{{ $t('message.welcomeInformation5') }}</span>
-          <span class="welcome-information-functionality">
-            <font-awesome-icon icon="download" />
-            {{ $t('caption.exportBuilds') }}
-          </span>
-          <span>{{ $t('message.welcomeInformation6') }}</span>
-          <span class="welcome-information-functionality">
-            <font-awesome-icon icon="file-upload" />
-            {{ $t('caption.importBuilds') }}
-          </span>
-          <span>{{ $t('message.welcomeInformation7') }}</span>
-        </p>
-      </div>
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
 import Images from '../images'
@@ -327,6 +170,163 @@ function openNewBuild() {
   router.push({ name: 'NewBuild' })
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="welcome">
+    <div>
+      <h2>Totov <span class="welcome-builder">Builder</span>{{ $t('message.welcome1') }}</h2>
+      <p>{{ $t('message.welcome2') }}</p>
+      <p>{{ $t('message.welcome3') }}</p>
+      <p>{{ $t('message.welcome4') }}</p>
+    </div>
+    <div
+      v-if="isLoading"
+      class="welcome-loading"
+    >
+      <Loading />
+    </div>
+    <div
+      v-else
+      class="welcome-content"
+    >
+      <h3 v-if="hasBuilds">
+        {{ $t('message.welcomeBack') }}
+      </h3>
+      <div
+        v-if="!isLoading"
+        class="welcome-actions"
+      >
+        <div class="welcome-action">
+          <Button
+            class="welcome-button"
+            severity="success"
+            @click="openNewBuild()"
+          >
+            <font-awesome-icon
+              icon="plus"
+              class="icon-before-text"
+            />
+            <span>{{ $t('caption.createNewBuild') }}</span>
+          </Button>
+        </div>
+        <div
+          v-if="hasBuilds"
+          class="welcome-action"
+        >
+          <Button
+            class="welcome-button"
+            @click="displayBuilds()"
+          >
+            <font-awesome-icon
+              icon="list"
+              class="icon-before-text"
+            />
+            <span>{{ $t('message.welcomeShowBuilds') }}</span>
+          </Button>
+        </div>
+        <div
+          v-if="!hasBuilds"
+          class="welcome-action"
+        >
+          <Button
+            class="welcome-button"
+            @click="displayImportSidebar()"
+          >
+            <font-awesome-icon
+              icon="file-upload"
+              class="icon-before-text"
+            />
+            <span>{{ $t('caption.importBuilds') }}</span>
+          </Button>
+        </div>
+        <div class="welcome-action">
+          <Button
+            class="welcome-button"
+            outlined
+            @click="displayMerchantItemsOptions()"
+          >
+            <font-awesome-icon
+              icon="user-tag"
+              class="icon-before-text"
+            />
+            <span>{{ $t('message.welcomeConfigureMerchants') }}</span>
+          </Button>
+        </div>
+        <div class="welcome-action">
+          <Button
+            class="welcome-button"
+            outlined
+            @click="displayGeneralOptions()"
+          >
+            <img
+              class="icon-before-text"
+              :src="Images['language' + StringUtils.toUpperFirst(vueI18n.locale.value)]"
+            >
+            <span>{{ $t('caption.language') }}</span>
+          </Button>
+        </div>
+      </div>
+      <div
+        v-if="hasBuilds"
+        class="welcome-build-summaries"
+      >
+        <h3>{{ $t('message.welcomeLastBuilds') }}</h3>
+        <BuildsList
+          :build-summaries="lastBuildSummaries"
+          :grid-max-columns="3"
+          :show-chips="false"
+          :show-not-exported="false"
+          selection-button-caption="caption.edit"
+          selection-button-icon="edit"
+          @update:selected-builds="onBuildSelected"
+        />
+      </div>
+      <div class="welcome-information">
+        <h3 class="welcome-information-title">
+          <font-awesome-icon
+            icon="exclamation-triangle"
+            class="welcome-information-icon"
+          />
+          <span>{{ $t('message.welcomeInformation1') }}</span>
+        </h3>
+        <p class="welcome-information-text">
+          <span>Totov </span>
+          <span class="welcome-information-lost">Builder </span>
+          <span>{{ $t('message.welcomeInformation2') }}</span>
+        </p>
+        <p class="welcome-information-text">
+          <span>{{ $t('message.welcomeInformation3') }}</span>
+          <span class="welcome-information-lost">
+            {{ $t('message.welcomeInformation4') }}
+          </span>
+          <span>.</span>
+        </p>
+        <p class="welcome-information-text">
+          <span>{{ $t('message.welcomeInformation5') }}</span>
+          <span class="welcome-information-functionality">
+            <font-awesome-icon icon="download" />
+            {{ $t('caption.exportBuilds') }}
+          </span>
+          <span>{{ $t('message.welcomeInformation6') }}</span>
+          <span class="welcome-information-functionality">
+            <font-awesome-icon icon="file-upload" />
+            {{ $t('caption.importBuilds') }}
+          </span>
+          <span>{{ $t('message.welcomeInformation7') }}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</template>
 
 
 

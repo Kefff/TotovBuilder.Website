@@ -1,3 +1,24 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IGrenade } from '../../models/item/IGrenade'
+import { IItem } from '../../models/item/IItem'
+
+const props = defineProps<{
+  item: IItem
+}>()
+
+const grenade = computed(() => props.item as IGrenade)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="stats-category">
     {{ $t('caption.grenade') }}
@@ -48,27 +69,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { IGrenade } from '../../models/item/IGrenade'
-import { IItem } from '../../models/item/IItem'
-
-const props = defineProps<{
-  item: IItem
-}>()
-
-const grenade = computed(() => props.item as IGrenade)
-</script>
 
 
 

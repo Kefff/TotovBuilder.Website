@@ -1,26 +1,3 @@
-<template>
-  <div class="option-entry">
-    <div class="option-value">
-      <OptionHeaderSortButton
-        v-model:sorting-data="modelSortingData"
-        caption-resource="caption.capacity"
-        icon="box-open"
-        property="capacity"
-        :sorting-functions="sortingFunctions"
-      />
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
@@ -41,6 +18,29 @@ const props = withDefaults(
 
 const sortingFunctions = computed(() => props.sortingFunctionsOverride ?? ContainerSortingFunctions)
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="option-entry">
+    <div class="option-value">
+      <OptionHeaderSortButton
+        v-model:sorting-data="modelSortingData"
+        caption-resource="caption.capacity"
+        icon="box-open"
+        property="capacity"
+        :sorting-functions="sortingFunctions"
+      />
+    </div>
+  </div>
+</template>
 
 
 

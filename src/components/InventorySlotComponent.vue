@@ -1,65 +1,3 @@
-<template>
-  <div
-    v-if="isDisplayed"
-    class="inventory-slot"
-  >
-    <Panel v-model:collapsed="modelCollapsed">
-      <template #header>
-        <div
-          class="inventory-slot-header"
-          @click="modelCollapsed = !modelCollapsed"
-        >
-          <div class="inventory-slot-title">
-            <font-awesome-icon
-              v-if="inventorySlotType.icon != null"
-              :icon="inventorySlotType.icon"
-              class="inventory-slot-icon"
-            />
-            <img
-              v-else-if="inventorySlotType.customIcon != null"
-              :src="Images[StringUtils.toCamelCase(inventorySlotType.customIcon)]"
-              class="inventory-slot-custom-icon"
-            >
-            <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelInventorySlot.typeId)) }}</span>
-          </div>
-          <div class="inventory-slot-collapse-icon">
-            <font-awesome-icon
-              v-if="modelCollapsed"
-              icon="angle-right"
-              class="collapsable-icon-collapsed"
-            />
-            <font-awesome-icon
-              v-else
-              icon="angle-right"
-              class="collapsable-icon-deployed"
-            />
-          </div>
-        </div>
-      </template>
-      <InventorySlotItem
-        v-for="(inventoryItem, index) of modelInventorySlot.items"
-        :key="`${path}_${index}`"
-        :accepted-items-category-id="acceptedItemsCategoryId"
-        :accepted-items="acceptedItems"
-        :can-be-looted="inventorySlotType.canBeLooted"
-        :inventory-item="modelInventorySlot.items[index]"
-        :inventory-slot-type-id="modelInventorySlot.typeId"
-        :path="`${path}_${index}`"
-        @update:inventory-item="onItemChanged(index, $event)"
-      />
-    </Panel>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, inject, onMounted, onUnmounted, Ref, ref } from 'vue'
 import Images from '../images'
@@ -128,6 +66,68 @@ async function setAcceptedItems() {
   acceptedItems.value = await Services.get(ItemService).getItemsOfCategories(inventorySlotType.value.acceptedItemCategories, true)
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div
+    v-if="isDisplayed"
+    class="inventory-slot"
+  >
+    <Panel v-model:collapsed="modelCollapsed">
+      <template #header>
+        <div
+          class="inventory-slot-header"
+          @click="modelCollapsed = !modelCollapsed"
+        >
+          <div class="inventory-slot-title">
+            <font-awesome-icon
+              v-if="inventorySlotType.icon != null"
+              :icon="inventorySlotType.icon"
+              class="inventory-slot-icon"
+            />
+            <img
+              v-else-if="inventorySlotType.customIcon != null"
+              :src="Images[StringUtils.toCamelCase(inventorySlotType.customIcon)]"
+              class="inventory-slot-custom-icon"
+            >
+            <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelInventorySlot.typeId)) }}</span>
+          </div>
+          <div class="inventory-slot-collapse-icon">
+            <font-awesome-icon
+              v-if="modelCollapsed"
+              icon="angle-right"
+              class="collapsable-icon-collapsed"
+            />
+            <font-awesome-icon
+              v-else
+              icon="angle-right"
+              class="collapsable-icon-deployed"
+            />
+          </div>
+        </div>
+      </template>
+      <InventorySlotItem
+        v-for="(inventoryItem, index) of modelInventorySlot.items"
+        :key="`${path}_${index}`"
+        :accepted-items-category-id="acceptedItemsCategoryId"
+        :accepted-items="acceptedItems"
+        :can-be-looted="inventorySlotType.canBeLooted"
+        :inventory-item="modelInventorySlot.items[index]"
+        :inventory-slot-type-id="modelInventorySlot.typeId"
+        :path="`${path}_${index}`"
+        @update:inventory-item="onItemChanged(index, $event)"
+      />
+    </Panel>
+  </div>
+</template>
 
 
 

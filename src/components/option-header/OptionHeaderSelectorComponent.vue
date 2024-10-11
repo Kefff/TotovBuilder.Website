@@ -1,26 +1,3 @@
-<template>
-  <ItemOptionHeader
-    v-model:sorting-data="modelSortingData"
-    v-model:filter="modelFilter"
-    :use-longest-header-width="useLongestHeaderWidth"
-  >
-    <component
-      :is="specializedComponent"
-      v-if="specializedComponent != null"
-      v-model:sorting-data="modelSortingData"
-    />
-  </ItemOptionHeader>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
@@ -111,3 +88,26 @@ function getSpecializedComponent(categoryId?: string) {
   }
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <ItemOptionHeader
+    v-model:sorting-data="modelSortingData"
+    v-model:filter="modelFilter"
+    :use-longest-header-width="useLongestHeaderWidth"
+  >
+    <component
+      :is="specializedComponent"
+      v-if="specializedComponent != null"
+      v-model:sorting-data="modelSortingData"
+    />
+  </ItemOptionHeader>
+</template>

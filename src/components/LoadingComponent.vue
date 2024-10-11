@@ -1,3 +1,28 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+
+const props = withDefaults(
+  defineProps<{
+    scale?: number
+  }>(),
+  {
+    scale: 1
+  })
+
+const containerStyle = computed(() => `height: ${80 * props.scale}px; width: ${80 * props.scale}px`)
+const loadingIconStyle = computed(() => `scale: ${props.scale}`)
+
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="loading">
     <div
@@ -25,31 +50,6 @@
     <div />
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-
-const props = withDefaults(
-  defineProps<{
-    scale?: number
-  }>(),
-  {
-    scale: 1
-  })
-
-const containerStyle = computed(() => `height: ${80 * props.scale}px; width: ${80 * props.scale}px`)
-const loadingIconStyle = computed(() => `scale: ${props.scale}`)
-
-</script>
 
 
 

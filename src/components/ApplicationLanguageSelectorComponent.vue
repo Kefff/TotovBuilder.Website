@@ -1,26 +1,3 @@
-<template>
-  <div class="application-language-selector">
-    <div class="application-language-selector-icon">
-      <font-awesome-icon icon="language" />
-    </div>
-    <span class="application-language-selector-caption">{{ $t('caption.language') }}</span>
-    <LanguageSelector
-      v-model:language="currentLanguage"
-      class="application-language-selector-dropdown"
-      @update:language="setLanguage()"
-    />
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import vueI18n from '../plugins/vueI18n'
@@ -36,6 +13,29 @@ function setLanguage() {
   LanguageUtils.setLanguage(currentLanguage.value)
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="application-language-selector">
+    <div class="application-language-selector-icon">
+      <font-awesome-icon icon="language" />
+    </div>
+    <span class="application-language-selector-caption">{{ $t('caption.language') }}</span>
+    <LanguageSelector
+      v-model:language="currentLanguage"
+      class="application-language-selector-dropdown"
+      @update:language="setLanguage()"
+    />
+  </div>
+</template>
 
 
 

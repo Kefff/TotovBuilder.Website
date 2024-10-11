@@ -1,3 +1,32 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import Images from '../../images'
+import { IItem } from '../../models/item/IItem'
+import { IMeleeWeapon } from '../../models/item/IMeleeWeapon'
+import CustomIcon from '../CustomIconComponent.vue'
+import Tooltip from '../TooltipComponent.vue'
+
+const props = withDefaults(
+  defineProps<{
+    item: IItem,
+    showEmptyEntries?: boolean
+  }>(),
+  {
+    showEmptyEntries: true
+  })
+
+const meleeWeapon = computed(() => props.item as IMeleeWeapon)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="option-entry">
     <div class="option-value">
@@ -35,34 +64,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import Images from '../../images'
-import { IItem } from '../../models/item/IItem'
-import { IMeleeWeapon } from '../../models/item/IMeleeWeapon'
-import CustomIcon from '../CustomIconComponent.vue'
-
-const props = withDefaults(
-  defineProps<{
-    item: IItem,
-    showEmptyEntries?: boolean
-  }>(),
-  {
-    showEmptyEntries: true
-  })
-
-const meleeWeapon = computed(() => props.item as IMeleeWeapon)
-</script>
 
 
 

@@ -1,3 +1,32 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IItem } from '../../models/item/IItem'
+import { IMod } from '../../models/item/IMod'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import Tooltip from '../TooltipComponent.vue'
+
+const props = withDefaults(
+  defineProps<{
+    item: IItem,
+    showEmptyEntries?: boolean
+  }>(),
+  {
+    showEmptyEntries: true
+  })
+
+const ergonomicsModifier = computed(() => mod.value.presetErgonomicsModifier ?? mod.value.ergonomicsModifier)
+const mod = computed(() => props.item as IMod)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div
     v-if="ergonomicsModifier !== 0 || showEmptyEntries"
@@ -18,34 +47,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { IItem } from '../../models/item/IItem'
-import { IMod } from '../../models/item/IMod'
-import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
-
-const props = withDefaults(
-  defineProps<{
-    item: IItem,
-    showEmptyEntries?: boolean
-  }>(),
-  {
-    showEmptyEntries: true
-  })
-
-const ergonomicsModifier = computed(() => mod.value.presetErgonomicsModifier ?? mod.value.ergonomicsModifier)
-const mod = computed(() => props.item as IMod)
-</script>
 
 
 

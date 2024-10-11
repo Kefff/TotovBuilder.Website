@@ -1,23 +1,3 @@
-<template>
-  <ContainerOptionHeader
-    v-model:sorting-data="modelSortingData"
-    :sorting-functions-override="BackpackSortingFunctions"
-  />
-  <WearableOptionHeader
-    v-model:sorting-data="modelSortingData"
-    :sorting-functions-override="BackpackSortingFunctions"
-  />
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { IItem } from '../../models/item/IItem'
 import SortingData from '../../models/utils/SortingData'
@@ -37,6 +17,13 @@ const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { requir
 
 
 
-<style scoped>
-@import '../../css/option.css';
-</style>
+<template>
+  <ContainerOptionHeader
+    v-model:sorting-data="modelSortingData"
+    :sorting-functions-override="BackpackSortingFunctions"
+  />
+  <WearableOptionHeader
+    v-model:sorting-data="modelSortingData"
+    :sorting-functions-override="BackpackSortingFunctions"
+  />
+</template>

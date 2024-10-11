@@ -1,26 +1,3 @@
-<template>
-  <ContainerSummary
-    v-if="!isBaseItem"
-    :item="vest"
-  />
-  <ArmorSummary
-    :armor-modifiers-override="armorModifiers"
-    :include-mods-and-content="includeModsAndContent"
-    :item="vest"
-    :show-empty-entries="showEmptyEntries"
-    :wearable-modifiers-override="wearableModifiers"
-  />
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
@@ -51,3 +28,26 @@ const armorModifiers = computed(() => props.armorModifiersOverride ?? vest.value
 const vest = computed(() => props.item as IVest)
 const wearableModifiers = computed(() => props.wearableModifiersOverride ?? vest.value.presetWearableModifiers)
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <ContainerSummary
+    v-if="!isBaseItem"
+    :item="vest"
+  />
+  <ArmorSummary
+    :armor-modifiers-override="armorModifiers"
+    :include-mods-and-content="includeModsAndContent"
+    :item="vest"
+    :show-empty-entries="showEmptyEntries"
+    :wearable-modifiers-override="wearableModifiers"
+  />
+</template>

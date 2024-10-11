@@ -1,16 +1,3 @@
-<template>
-  <ArmorStats :item="headwear" />
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IHeadwear } from '../../models/item/IHeadwear'
@@ -33,6 +20,6 @@ const headwear = computed(() => props.item as IHeadwear)
 
 
 
-<style scoped>
-@import '../../css/stats.css';
-</style>
+<template>
+  <ArmorStats :item="headwear" />
+</template>

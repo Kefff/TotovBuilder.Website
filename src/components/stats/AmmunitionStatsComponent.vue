@@ -1,3 +1,39 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import Images from '../../images'
+import { IAmmunition } from '../../models/item/IAmmunition'
+import { IItem } from '../../models/item/IItem'
+import { TarkovValuesService } from '../../services/TarkovValuesService'
+import Services from '../../services/repository/Services'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import StringUtils from '../../utils/StringUtils'
+import CustomIcon from '../CustomIconComponent.vue'
+
+const props = defineProps<{
+  item: IItem
+}>()
+
+const _chestHp = Services.get(TarkovValuesService).values.chestHp
+
+const ammunition = computed(() => props.item as IAmmunition)
+const canOneshot = computed(() => ammunition.value.fleshDamage >= _chestHp)
+const hasModifiers = computed(() =>
+  ammunition.value.accuracyModifierPercentage !== 0
+  || ammunition.value.durabilityBurnModifierPercentage !== 0
+  || ammunition.value.heavyBleedingChance !== 0
+  || ammunition.value.lightBleedingChance !== 0
+  || ammunition.value.recoilModifier !== 0)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="stats-category">
     {{ $t('caption.ammunition') }}
@@ -270,42 +306,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import Images from '../../images'
-import { IAmmunition } from '../../models/item/IAmmunition'
-import { IItem } from '../../models/item/IItem'
-import { TarkovValuesService } from '../../services/TarkovValuesService'
-import Services from '../../services/repository/Services'
-import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
-import StringUtils from '../../utils/StringUtils'
-import CustomIcon from '../CustomIconComponent.vue'
-
-const props = defineProps<{
-  item: IItem
-}>()
-
-const _chestHp = Services.get(TarkovValuesService).values.chestHp
-
-const ammunition = computed(() => props.item as IAmmunition)
-const canOneshot = computed(() => ammunition.value.fleshDamage >= _chestHp)
-const hasModifiers = computed(() =>
-  ammunition.value.accuracyModifierPercentage !== 0
-  || ammunition.value.durabilityBurnModifierPercentage !== 0
-  || ammunition.value.heavyBleedingChance !== 0
-  || ammunition.value.lightBleedingChance !== 0
-  || ammunition.value.recoilModifier !== 0)
-</script>
 
 
 

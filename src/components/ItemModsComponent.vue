@@ -1,25 +1,3 @@
-<template>
-  <div v-if="!isInitializing">
-    <ModSlot
-      v-for="modSlot of modSlots"
-      :key="`${path}/${PathUtils.modSlotPrefix}${modSlot.name}`"
-      :inventory-item="findInventoryItemOfModSlot(modSlot.name)"
-      :mod-slot="modSlot"
-      :path="`${path}/${PathUtils.modSlotPrefix}${modSlot.name}`"
-      @update:inventory-item="onItemChanged(modSlot.name, $event)"
-    />
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
@@ -96,3 +74,25 @@ function onItemChanged(modSlotName: string, newInventoryItem: IInventoryItem | u
   modelInventoryModSlots.value = newInventoryModSlots
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div v-if="!isInitializing">
+    <ModSlot
+      v-for="modSlot of modSlots"
+      :key="`${path}/${PathUtils.modSlotPrefix}${modSlot.name}`"
+      :inventory-item="findInventoryItemOfModSlot(modSlot.name)"
+      :mod-slot="modSlot"
+      :path="`${path}/${PathUtils.modSlotPrefix}${modSlot.name}`"
+      @update:inventory-item="onItemChanged(modSlot.name, $event)"
+    />
+  </div>
+</template>

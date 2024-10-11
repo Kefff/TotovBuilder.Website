@@ -1,39 +1,7 @@
-<template>
-  <Tooltip
-    v-show="button.isVisible?.() ?? true"
-    :apply-hover-style="false"
-    :tooltip="tooltip"
-    :position="button.tooltipPosition?.()"
-  >
-    <Button
-      :class="buttonClasses"
-      :disabled="button.isDisabled?.() ?? false"
-      :outlined="outlined"
-      :severity="button.variant?.()"
-      class="p-button-sm toolbar-button"
-      @click="button.action"
-    >
-      <font-awesome-icon :icon="button.icon()" />
-      <span
-        v-show="showCaptionInternal === 'always' || showCaptionInternal === 'auto'"
-        :class="captionClasses"
-      >{{ button.caption() }}</span>
-    </Button>
-  </Tooltip>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
+import Tooltip from './TooltipComponent.vue'
 
 const props = defineProps<{ button: IToolbarButton }>()
 
@@ -85,6 +53,39 @@ function setCaptionsAreHidden() {
   areCaptionsHidden.value = window.matchMedia(`only screen and (max-width: ${hideCaptionsWidth}px)`).matches
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <Tooltip
+    v-show="button.isVisible?.() ?? true"
+    :apply-hover-style="false"
+    :tooltip="tooltip"
+    :position="button.tooltipPosition?.()"
+  >
+    <Button
+      :class="buttonClasses"
+      :disabled="button.isDisabled?.() ?? false"
+      :outlined="outlined"
+      :severity="button.variant?.()"
+      class="p-button-sm toolbar-button"
+      @click="button.action"
+    >
+      <font-awesome-icon :icon="button.icon()" />
+      <span
+        v-show="showCaptionInternal === 'always' || showCaptionInternal === 'auto'"
+        :class="captionClasses"
+      >{{ button.caption() }}</span>
+    </Button>
+  </Tooltip>
+</template>
 
 
 

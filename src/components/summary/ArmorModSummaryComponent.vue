@@ -1,21 +1,3 @@
-<template>
-  <ArmorSummary
-    :armor-modifiers-override="armorModifiers"
-    :item="armorMod"
-    :show-empty-entries="showEmptyEntries"
-    :wearable-modifiers-override="wearableModifiers"
-  />
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IArmorMod } from '../../models/item/IArmorMod'
@@ -51,6 +33,11 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? armo
 
 
 
-<style scoped>
-@import '../../css/option.css';
-</style>
+<template>
+  <ArmorSummary
+    :armor-modifiers-override="armorModifiers"
+    :item="armorMod"
+    :show-empty-entries="showEmptyEntries"
+    :wearable-modifiers-override="wearableModifiers"
+  />
+</template>

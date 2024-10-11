@@ -1,54 +1,3 @@
-<template>
-  <Sidebar
-    v-model:visible="visible"
-    :modal="true"
-    position="left"
-    style="width: auto;"
-  >
-    <template #header>
-      <div class="global-sidebar-header">
-        <div
-          v-if="icon != null"
-          class="global-sidebar-icon sidebar-title-icon"
-        >
-          <font-awesome-icon :icon="icon" />
-        </div>
-        <div class="global-sidebar-title">
-          <div
-            v-if="title == null"
-            class="global-sidebar-spacer"
-          />
-          <div
-            v-else
-            class="sidebar-title"
-          >
-            <span>{{ $t(title) }}</span>
-          </div>
-          <div v-if="subtitle != null">
-            {{ subtitle }}
-          </div>
-        </div>
-      </div>
-    </template>
-    <div class="global-sidebar-content">
-      <component
-        :is="displayedComponent"
-        v-if="displayedComponent != null"
-        v-model:parameters="options.displayedComponentParameters"
-      />
-    </div>
-  </sidebar>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
 import { BuildSidebarParameters, BuildsShareSideBarParameters, GlobalSidebarComponent, IGlobalSidebarOptions, ShoppingListSidebarParameters, StatsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
@@ -216,6 +165,57 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: numbe
   }
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <Sidebar
+    v-model:visible="visible"
+    :modal="true"
+    position="left"
+    style="width: auto;"
+  >
+    <template #header>
+      <div class="global-sidebar-header">
+        <div
+          v-if="icon != null"
+          class="global-sidebar-icon sidebar-title-icon"
+        >
+          <font-awesome-icon :icon="icon" />
+        </div>
+        <div class="global-sidebar-title">
+          <div
+            v-if="title == null"
+            class="global-sidebar-spacer"
+          />
+          <div
+            v-else
+            class="sidebar-title"
+          >
+            <span>{{ $t(title) }}</span>
+          </div>
+          <div v-if="subtitle != null">
+            {{ subtitle }}
+          </div>
+        </div>
+      </div>
+    </template>
+    <div class="global-sidebar-content">
+      <component
+        :is="displayedComponent"
+        v-if="displayedComponent != null"
+        v-model:parameters="options.displayedComponentParameters"
+      />
+    </div>
+  </sidebar>
+</template>
 
 
 

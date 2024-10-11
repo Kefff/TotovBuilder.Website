@@ -1,3 +1,26 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import Images from '../../images'
+import { IItem } from '../../models/item/IItem'
+import { IMeleeWeapon } from '../../models/item/IMeleeWeapon'
+import CustomIcon from '../CustomIconComponent.vue'
+
+const props = defineProps<{
+  item: IItem
+}>()
+
+const meleeWeapon = computed(() => props.item as IMeleeWeapon)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="stats-category">
     {{ $t('caption.meleeWeapon') }}
@@ -43,29 +66,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import Images from '../../images'
-import { IItem } from '../../models/item/IItem'
-import { IMeleeWeapon } from '../../models/item/IMeleeWeapon'
-import CustomIcon from '../CustomIconComponent.vue'
-
-const props = defineProps<{
-  item: IItem
-}>()
-
-const meleeWeapon = computed(() => props.item as IMeleeWeapon)
-</script>
 
 
 

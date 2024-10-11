@@ -1,50 +1,3 @@
-<template>
-  <div class="notification">
-    <Message
-      v-for="notification of notifications"
-      :key="notification.id"
-      :closable="notification.closable"
-      :life="notification.toastDuration"
-      :severity="notification.type"
-      :sticky="false"
-    >
-      <div class="notification-text">
-        {{ notification.message }}
-      </div>
-      <div class="notification-buttons">
-        <div
-          class="notification-buttons-grid"
-          :style="getButtonsGridTemplaceCss(notification)"
-        >
-          <Button
-            v-for="button of notification.buttons"
-            :key="button.name"
-            :severity="getSeverity(button)"
-            :class="button.type == null ? 'p-button-text button-discreet' : ''"
-            @click="executeButtonAction(notification, button)"
-          >
-            <font-awesome-icon
-              v-if="button.icon != null"
-              class="icon-before-text"
-              :icon="button.icon"
-            />
-            <span class="notification-buttons-text">{{ button.caption }}</span>
-          </Button>
-        </div>
-      </div>
-    </Message>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { INotification } from '../models/utils/INotification'
@@ -109,6 +62,53 @@ function getSeverity(button: INotificationButton) {
   }
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="notification">
+    <Message
+      v-for="notification of notifications"
+      :key="notification.id"
+      :closable="notification.closable"
+      :life="notification.toastDuration"
+      :severity="notification.type"
+      :sticky="false"
+    >
+      <div class="notification-text">
+        {{ notification.message }}
+      </div>
+      <div class="notification-buttons">
+        <div
+          class="notification-buttons-grid"
+          :style="getButtonsGridTemplaceCss(notification)"
+        >
+          <Button
+            v-for="button of notification.buttons"
+            :key="button.name"
+            :severity="getSeverity(button)"
+            :class="button.type == null ? 'p-button-text button-discreet' : ''"
+            @click="executeButtonAction(notification, button)"
+          >
+            <font-awesome-icon
+              v-if="button.icon != null"
+              class="icon-before-text"
+              :icon="button.icon"
+            />
+            <span class="notification-buttons-text">{{ button.caption }}</span>
+          </Button>
+        </div>
+      </div>
+    </Message>
+  </div>
+</template>
 
 
 

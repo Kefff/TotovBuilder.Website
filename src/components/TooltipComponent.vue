@@ -1,25 +1,3 @@
-<template>
-  <span
-    v-if="tooltip != null"
-    v-tooltip:[directiveArguments]="tooltip"
-    :class="applyHoverStyle ? 'tooltip' : ''"
-    :tabindex="_isTouchScreen ? 9999 : undefined"
-    @click="onClick($event)"
-  >
-    <slot />
-  </span>
-  <slot v-else />
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, inject } from 'vue'
 import { DirectiveArguments } from '../models/utils/TooltipDirectiveArguments'
@@ -58,6 +36,28 @@ function onClick(event: MouseEvent) {
   emits('click', event)
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <span
+    v-if="tooltip != null"
+    v-tooltip:[directiveArguments]="tooltip"
+    :class="applyHoverStyle ? 'tooltip' : ''"
+    :tabindex="_isTouchScreen ? 9999 : undefined"
+    @click="onClick($event)"
+  >
+    <slot />
+  </span>
+  <slot v-else />
+</template>
 
 
 

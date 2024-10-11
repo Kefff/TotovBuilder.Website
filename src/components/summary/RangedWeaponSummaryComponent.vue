@@ -1,3 +1,45 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import Images from '../../images'
+import { IItem } from '../../models/item/IItem'
+import { IRangedWeapon } from '../../models/item/IRangedWeapon'
+import { IRangedWeaponModifiers } from '../../models/utils/IRangedWeaponModifiers'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import StringUtils from '../../utils/StringUtils'
+import CustomIcon from '../CustomIconComponent.vue'
+import Tooltip from '../TooltipComponent.vue'
+
+const props = withDefaults(
+  defineProps<{
+    includeModsAndContent?: boolean,
+    item: IItem,
+    isBaseItem?: boolean,
+    rangedWeaponsModifiersOverride?: IRangedWeaponModifiers,
+    showEmptyEntries?: boolean
+  }>(),
+  {
+    includeModsAndContent: false,
+    isBaseItem: false,
+    rangedWeaponsModifiersOverride: undefined,
+    showEmptyEntries: true
+  })
+
+const boldCssClass = computed(() => props.includeModsAndContent ? 'ranged-weapon-summary-bold' : '')
+const ergonomics = computed(() => props.rangedWeaponsModifiersOverride?.ergonomics ?? rangedWeapon.value.presetRangedWeaponModifiers?.ergonomics ?? rangedWeapon.value.ergonomics)
+const horizontalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.horizontalRecoil ?? rangedWeapon.value.presetRangedWeaponModifiers?.horizontalRecoil ?? rangedWeapon.value.horizontalRecoil)
+const rangedWeapon = computed(() => props.item as IRangedWeapon)
+const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.verticalRecoil ?? rangedWeapon.value.presetRangedWeaponModifiers?.verticalRecoil ?? rangedWeapon.value.verticalRecoil)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="option-entry">
     <div
@@ -76,47 +118,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import Images from '../../images'
-import { IItem } from '../../models/item/IItem'
-import { IRangedWeapon } from '../../models/item/IRangedWeapon'
-import { IRangedWeaponModifiers } from '../../models/utils/IRangedWeaponModifiers'
-import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
-import StringUtils from '../../utils/StringUtils'
-import CustomIcon from '../CustomIconComponent.vue'
-
-const props = withDefaults(
-  defineProps<{
-    includeModsAndContent?: boolean,
-    item: IItem,
-    isBaseItem?: boolean,
-    rangedWeaponsModifiersOverride?: IRangedWeaponModifiers,
-    showEmptyEntries?: boolean
-  }>(),
-  {
-    includeModsAndContent: false,
-    isBaseItem: false,
-    rangedWeaponsModifiersOverride: undefined,
-    showEmptyEntries: true
-  })
-
-const boldCssClass = computed(() => props.includeModsAndContent ? 'ranged-weapon-summary-bold' : '')
-const ergonomics = computed(() => props.rangedWeaponsModifiersOverride?.ergonomics ?? rangedWeapon.value.presetRangedWeaponModifiers?.ergonomics ?? rangedWeapon.value.ergonomics)
-const horizontalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.horizontalRecoil ?? rangedWeapon.value.presetRangedWeaponModifiers?.horizontalRecoil ?? rangedWeapon.value.horizontalRecoil)
-const rangedWeapon = computed(() => props.item as IRangedWeapon)
-const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.verticalRecoil ?? rangedWeapon.value.presetRangedWeaponModifiers?.verticalRecoil ?? rangedWeapon.value.verticalRecoil)
-</script>
 
 
 

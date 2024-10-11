@@ -1,5 +1,5 @@
 import { createHead } from 'unhead'
-import { createApp, defineAsyncComponent } from 'vue'
+import { createApp } from 'vue'
 import App from './components/AppComponent.vue'
 import { useApplicationInsights } from './plugins/applicationInsights'
 import { useFontAwesome } from './plugins/fontAwesome'
@@ -26,14 +26,6 @@ useFontAwesome(app)
 useI18n(app)
 usePrimeVue(app)
 useVueRouter(app)
-
-// Global components
-app.component(
-  'Item', // To be able to call itself
-  defineAsyncComponent(() => import('./components/item/ItemComponent.vue')))
-app.component(
-  'Tooltip', // To be able to call itself
-  defineAsyncComponent(() => import('./components/TooltipComponent.vue')))
 
 // Start
 app.mount('#app')

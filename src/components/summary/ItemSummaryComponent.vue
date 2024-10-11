@@ -1,39 +1,3 @@
-<template>
-  <div class="option-line">
-    <div class="option-entry">
-      <div class="option-caption">
-        {{ item.name }}
-      </div>
-    </div>
-    <div class="option-entry">
-      <div class="option-value-long">
-        <Price
-          v-if="itemUnitPrice != null"
-          :price="itemUnitPrice"
-        />
-      </div>
-    </div>
-    <div class="option-entry">
-      <div class="option-value">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, item.weight) }}
-      </div>
-    </div>
-    <slot />
-    <div class="option-entry item-summary-icon">
-      <ItemIcon :item="item" />
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import { IItem } from '../../models/item/IItem'
@@ -65,6 +29,42 @@ async function initialize() {
   itemUnitPrice.value = itemPrice.unitPrice
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="option-line">
+    <div class="option-entry">
+      <div class="option-caption">
+        {{ item.name }}
+      </div>
+    </div>
+    <div class="option-entry">
+      <div class="option-value-long">
+        <Price
+          v-if="itemUnitPrice != null"
+          :price="itemUnitPrice"
+        />
+      </div>
+    </div>
+    <div class="option-entry">
+      <div class="option-value">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, item.weight) }}
+      </div>
+    </div>
+    <slot />
+    <div class="option-entry item-summary-icon">
+      <ItemIcon :item="item" />
+    </div>
+  </div>
+</template>
 
 
 

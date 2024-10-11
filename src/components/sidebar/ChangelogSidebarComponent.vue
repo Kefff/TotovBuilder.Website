@@ -1,44 +1,3 @@
-<template>
-  <div class="sidebar-option">
-    <Loading v-show="isLoading" />
-    <div v-if="!isLoading">
-      <div
-        v-for="changelog of changelogs"
-        :key="changelog.version"
-        class="changelog-element"
-      >
-        <div class="changelog-title">
-          <span>{{ $t('caption.changelogTitle', { date: changelog.date.toLocaleDateString(), version: changelog.version }) }}</span>
-          <span
-            v-if="changelog.isNew"
-            class="changelog-new"
-          >
-            {{ $t('caption.new') }}
-          </span>
-        </div>
-        <ul>
-          <li
-            v-for="(change, index) of changelog.changes"
-            :key="index"
-            class="changelog-change"
-          >
-            {{ change.text }}
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { IChangelogEntry } from '../../models/configuration/IChangelogEntry'
@@ -72,6 +31,47 @@ async function loadChangelog() {
   changelogs.value = fetchedChangelogs
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="sidebar-option">
+    <Loading v-show="isLoading" />
+    <div v-if="!isLoading">
+      <div
+        v-for="changelog of changelogs"
+        :key="changelog.version"
+        class="changelog-element"
+      >
+        <div class="changelog-title">
+          <span>{{ $t('caption.changelogTitle', { date: changelog.date.toLocaleDateString(), version: changelog.version }) }}</span>
+          <span
+            v-if="changelog.isNew"
+            class="changelog-new"
+          >
+            {{ $t('caption.new') }}
+          </span>
+        </div>
+        <ul>
+          <li
+            v-for="(change, index) of changelog.changes"
+            :key="index"
+            class="changelog-change"
+          >
+            {{ change.text }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
 
 
 

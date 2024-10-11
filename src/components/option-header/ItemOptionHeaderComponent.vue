@@ -1,63 +1,3 @@
-<template>
-  <div class="option-line item-option-header">
-    <div class="option-entry">
-      <div class="option-caption">
-        <InputTextField
-          v-model:value="filterInternal"
-          :autofocus="true"
-          :caption="$t('caption.search')"
-          caption-mode="placeholder"
-          class="item-option-header-filter-input"
-        />
-        <OptionHeaderSortButton
-          v-model:sorting-data="modelSortingData"
-          caption-resource="caption.name"
-          icon="font"
-          property="name"
-          :sorting-functions="ItemSortingFunctions"
-        />
-      </div>
-    </div>
-    <div class="option-entry">
-      <div class="option-value-long">
-        <OptionHeaderSortButton
-          v-model:sorting-data="modelSortingData"
-          caption-resource="caption.price"
-          icon="coins"
-          property="price"
-          :sorting-functions="ItemSortingFunctions"
-        />
-      </div>
-    </div>
-    <div class="option-entry">
-      <div class="option-value">
-        <OptionHeaderSortButton
-          v-model:sorting-data="modelSortingData"
-          caption-resource="caption.weight"
-          icon="weight-hanging"
-          property="weight"
-          :sorting-functions="ItemSortingFunctions"
-        />
-      </div>
-    </div>
-    <slot />
-    <div
-      v-if="useLongestHeaderWidth"
-      class="item-option-header-longest-header-width-placeholder"
-    />
-    <div class="item-option-header-icon-placeholder" />
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
@@ -112,6 +52,66 @@ function onFilterChanged(filterValue: string) {
     .catch(() => undefined)
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="option-line item-option-header">
+    <div class="option-entry">
+      <div class="option-caption">
+        <InputTextField
+          v-model:value="filterInternal"
+          :autofocus="true"
+          :caption="$t('caption.search')"
+          caption-mode="placeholder"
+          class="item-option-header-filter-input"
+        />
+        <OptionHeaderSortButton
+          v-model:sorting-data="modelSortingData"
+          caption-resource="caption.name"
+          icon="font"
+          property="name"
+          :sorting-functions="ItemSortingFunctions"
+        />
+      </div>
+    </div>
+    <div class="option-entry">
+      <div class="option-value-long">
+        <OptionHeaderSortButton
+          v-model:sorting-data="modelSortingData"
+          caption-resource="caption.price"
+          icon="coins"
+          property="price"
+          :sorting-functions="ItemSortingFunctions"
+        />
+      </div>
+    </div>
+    <div class="option-entry">
+      <div class="option-value">
+        <OptionHeaderSortButton
+          v-model:sorting-data="modelSortingData"
+          caption-resource="caption.weight"
+          icon="weight-hanging"
+          property="weight"
+          :sorting-functions="ItemSortingFunctions"
+        />
+      </div>
+    </div>
+    <slot />
+    <div
+      v-if="useLongestHeaderWidth"
+      class="item-option-header-longest-header-width-placeholder"
+    />
+    <div class="item-option-header-icon-placeholder" />
+  </div>
+</template>
 
 
 

@@ -1,43 +1,3 @@
-<template>
-  <div class="builds">
-    <div class="builds-title builds-title-outside-toolbar">
-      {{ $t('caption.buildsList') }}
-    </div>
-    <Toolbar
-      ref="buildsToolbar"
-      :buttons="toolbarButtons"
-    >
-      <template #center>
-        <div class="builds-title builds-title-in-toolbar">
-          {{ $t('caption.buildsList') }}
-        </div>
-      </template>
-      <template #right>
-        <NotificationButton />
-      </template>
-    </Toolbar>
-    <BuildsList
-      v-model:filter-and-sorting-data="filterAndSortingData"
-      :build-summaries="buildSummaries"
-      :element-to-stick-to="toolbarContainer"
-      :is-loading="isLoading"
-      selection-button-caption="caption.edit"
-      selection-button-icon="edit"
-      @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
-      @update:selected-builds="onBuildSelected"
-    />
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
@@ -382,6 +342,46 @@ function openNewBuild() {
   _router.push({ name: 'NewBuild' })
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="builds">
+    <div class="builds-title builds-title-outside-toolbar">
+      {{ $t('caption.buildsList') }}
+    </div>
+    <Toolbar
+      ref="buildsToolbar"
+      :buttons="toolbarButtons"
+    >
+      <template #center>
+        <div class="builds-title builds-title-in-toolbar">
+          {{ $t('caption.buildsList') }}
+        </div>
+      </template>
+      <template #right>
+        <NotificationButton />
+      </template>
+    </Toolbar>
+    <BuildsList
+      v-model:filter-and-sorting-data="filterAndSortingData"
+      :build-summaries="buildSummaries"
+      :element-to-stick-to="toolbarContainer"
+      :is-loading="isLoading"
+      selection-button-caption="caption.edit"
+      selection-button-icon="edit"
+      @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
+      @update:selected-builds="onBuildSelected"
+    />
+  </div>
+</template>
 
 
 

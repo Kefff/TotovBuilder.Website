@@ -1,37 +1,3 @@
-<template>
-  <div class="item-content-indent">
-    <Item
-      v-for="(containedItem, index) of modelInventoryItems"
-      :key="`${path}/${index}_${modelInventoryItems.length}`"
-      :accepted-items-category-id="categoryId"
-      :accepted-items="acceptedItems"
-      :force-quantity-to-max-selectable-amount="isMagazine"
-      :inventory-item="modelInventoryItems[index]"
-      :max-stackable-amount="maximumQuantity"
-      :path="`${path}/${PathUtils.contentPrefix}${index}_${modelInventoryItems.length}/${itemPathPrefix}${containedItem.itemId}`"
-      @update:inventory-item="onItemChanged(index, $event)"
-    />
-    <Item
-      v-if="isEditing && canAddItem"
-      v-model:inventory-item="itemToAdd"
-      :accepted-items="acceptedItems"
-      :accepted-items-category-id="categoryId"
-      :max-stackable-amount="maximumQuantity"
-      :path="`${path}/new`"
-      @update:inventory-item="onItemAdded($event)"
-    />
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { Ref, computed, inject, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
@@ -42,7 +8,7 @@ import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import { ItemContentComponentService } from '../services/components/ItemContentComponentService'
 import Services from '../services/repository/Services'
 import { PathUtils } from '../utils/PathUtils'
-import Item from './item/ItemComponent.vue'
+import Item from './ItemComponent.vue'
 
 const modelInventoryItems = defineModel<IInventoryItem[]>('inventoryItems', { required: true })
 
@@ -143,6 +109,40 @@ function setCategoryId() {
   categoryId.value = Services.get(ItemContentComponentService).getAcceptedItemsCategoryId(props.containerItem.categoryId)
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="item-content-indent">
+    <Item
+      v-for="(containedItem, index) of modelInventoryItems"
+      :key="`${path}/${index}_${modelInventoryItems.length}`"
+      :accepted-items-category-id="categoryId"
+      :accepted-items="acceptedItems"
+      :force-quantity-to-max-selectable-amount="isMagazine"
+      :inventory-item="modelInventoryItems[index]"
+      :max-stackable-amount="maximumQuantity"
+      :path="`${path}/${PathUtils.contentPrefix}${index}_${modelInventoryItems.length}/${itemPathPrefix}${containedItem.itemId}`"
+      @update:inventory-item="onItemChanged(index, $event)"
+    />
+    <Item
+      v-if="isEditing && canAddItem"
+      v-model:inventory-item="itemToAdd"
+      :accepted-items="acceptedItems"
+      :accepted-items-category-id="categoryId"
+      :max-stackable-amount="maximumQuantity"
+      :path="`${path}/new`"
+      @update:inventory-item="onItemAdded($event)"
+    />
+  </div>
+</template>
 
 
 

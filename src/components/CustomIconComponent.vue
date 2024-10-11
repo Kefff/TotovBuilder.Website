@@ -1,3 +1,21 @@
+<script setup lang="ts">
+type Position = 'after' | 'before'
+
+defineProps<{
+  icon: string,
+  position: Position
+}>()
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="custom-icon">
     <img
@@ -13,25 +31,6 @@
     >
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-
-type Position = 'after' | 'before'
-
-defineProps<{
-  icon: string,
-  position: Position
-}>()
-</script>
 
 
 

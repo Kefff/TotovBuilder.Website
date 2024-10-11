@@ -1,38 +1,3 @@
-<template>
-  <div
-    v-if="isEditing || modelInventoryItem != null"
-    class="mod-slot"
-  >
-    <div class="mod-slot-slot-name">
-      {{ $t('caption.modSlot_' + (modSlot.name.startsWith('chamber') ? 'chamber' : modSlot.name)) }}
-      <Tooltip :tooltip="$t('caption.requiredMod')">
-        <span
-          v-if="modSlot.required"
-          :class="modelInventoryItem != null ? 'mod-slot-required-ok' : 'mod-slot-required-nok'"
-        >
-          *
-        </span>
-      </Tooltip>
-    </div>
-    <Item
-      v-model:inventory-item="modelInventoryItem"
-      :accepted-items="acceptedItems"
-      :accepted-items-category-id="acceptedItemsCategoryId"
-      :path="`${path}/${PathUtils.itemPrefix}${modelInventoryItem?.itemId ?? 'empty'}`"
-      :max-stackable-amount="modSlot.maxStackableAmount"
-    />
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { Ref, inject, onMounted, onUnmounted, ref } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
@@ -43,6 +8,8 @@ import { ItemService } from '../services/ItemService'
 import { ModSlotComponentService } from '../services/components/ModSlotComponentService'
 import Services from '../services/repository/Services'
 import { PathUtils } from '../utils/PathUtils'
+import Item from './ItemComponent.vue'
+import Tooltip from './TooltipComponent.vue'
 
 const modelInventoryItem = defineModel<IInventoryItem>('inventoryItem')
 
@@ -74,6 +41,41 @@ async function setAcceptedItems() {
   acceptedItemsCategoryId.value = _modSlotComponentService.getAcceptedItemsCategoryId(acceptedItems.value)
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div
+    v-if="isEditing || modelInventoryItem != null"
+    class="mod-slot"
+  >
+    <div class="mod-slot-slot-name">
+      {{ $t('caption.modSlot_' + (modSlot.name.startsWith('chamber') ? 'chamber' : modSlot.name)) }}
+      <Tooltip :tooltip="$t('caption.requiredMod')">
+        <span
+          v-if="modSlot.required"
+          :class="modelInventoryItem != null ? 'mod-slot-required-ok' : 'mod-slot-required-nok'"
+        >
+          *
+        </span>
+      </Tooltip>
+    </div>
+    <Item
+      v-model:inventory-item="modelInventoryItem"
+      :accepted-items="acceptedItems"
+      :accepted-items-category-id="acceptedItemsCategoryId"
+      :path="`${path}/${PathUtils.itemPrefix}${modelInventoryItem?.itemId ?? 'empty'}`"
+      :max-stackable-amount="modSlot.maxStackableAmount"
+    />
+  </div>
+</template>
 
 
 

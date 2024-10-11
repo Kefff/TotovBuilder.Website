@@ -1,17 +1,3 @@
-<template>
-  <ContainerStats :item="vest" />
-  <ArmorStats :item="vest" />
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
@@ -35,6 +21,7 @@ const vest = computed(() => props.item as IVest)
 
 
 
-<style scoped>
-@import '../../css/stats.css';
-</style>
+<template>
+  <ContainerStats :item="vest" />
+  <ArmorStats :item="vest" />
+</template>

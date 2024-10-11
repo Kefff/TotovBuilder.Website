@@ -1,3 +1,32 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IItem } from '../../models/item/IItem'
+import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import Tooltip from '../TooltipComponent.vue'
+
+const props = withDefaults(
+  defineProps<{
+    item: IItem,
+    showEmptyEntries?: boolean
+  }>(),
+  {
+    showEmptyEntries: true
+  })
+
+const ergonomicsModifier = computed(() => rangedWeaponMod.value.presetErgonomicsModifier ?? rangedWeaponMod.value.ergonomicsModifier)
+const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div
     v-if="ergonomicsModifier !== 0 || showEmptyEntries"
@@ -54,34 +83,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { IItem } from '../../models/item/IItem'
-import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
-import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
-
-const props = withDefaults(
-  defineProps<{
-    item: IItem,
-    showEmptyEntries?: boolean
-  }>(),
-  {
-    showEmptyEntries: true
-  })
-
-const ergonomicsModifier = computed(() => rangedWeaponMod.value.presetErgonomicsModifier ?? rangedWeaponMod.value.ergonomicsModifier)
-const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
-</script>
 
 
 

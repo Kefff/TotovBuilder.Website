@@ -1,37 +1,3 @@
-<template>
-  <div class="options-header-sort-button">
-    <Tooltip :tooltip="$t('caption.sortBy', { property: StringUtils.toLowerFirst($t(captionResource)) })">
-      <div
-        class="options-header-sort-button-group"
-        @click="sortBy(property)"
-      >
-        <div :class="'options-header-sort-button-sort-arrow ' + sortingDirectionClass + ' ' + (sortingData.property === property ? 'options-header-sort-button-sort-arrow-visible' : '')">
-          <font-awesome-icon icon="angle-down" />
-        </div>
-        <font-awesome-icon
-          v-if="icon != null"
-          :icon="icon"
-          class="options-header-sort-button-icon"
-        />
-        <CustomIcon
-          v-else-if="customIcon != null"
-          :icon="Images[StringUtils.toCamelCase(customIcon)]"
-          position="after"
-        />
-      </div>
-    </Tooltip>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import Images from '../../images'
@@ -43,6 +9,7 @@ import { SortingService } from '../../services/sorting/SortingService'
 import ISortingFunctionList from '../../services/sorting/functions/ISortingFunctionList'
 import StringUtils from '../../utils/StringUtils'
 import CustomIcon from '../CustomIconComponent.vue'
+import Tooltip from '../TooltipComponent.vue'
 
 const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { required: true })
 
@@ -72,6 +39,40 @@ function sortBy(property: string) {
   modelSortingData.value = sortingData
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="options-header-sort-button">
+    <Tooltip :tooltip="$t('caption.sortBy', { property: StringUtils.toLowerFirst($t(captionResource)) })">
+      <div
+        class="options-header-sort-button-group"
+        @click="sortBy(property)"
+      >
+        <div :class="'options-header-sort-button-sort-arrow ' + sortingDirectionClass + ' ' + (sortingData.property === property ? 'options-header-sort-button-sort-arrow-visible' : '')">
+          <font-awesome-icon icon="angle-down" />
+        </div>
+        <font-awesome-icon
+          v-if="icon != null"
+          :icon="icon"
+          class="options-header-sort-button-icon"
+        />
+        <CustomIcon
+          v-else-if="customIcon != null"
+          :icon="Images[StringUtils.toCamelCase(customIcon)]"
+          position="after"
+        />
+      </div>
+    </Tooltip>
+  </div>
+</template>
 
 
 

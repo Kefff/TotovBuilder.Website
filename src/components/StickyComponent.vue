@@ -1,22 +1,3 @@
-<template>
-  <div
-    ref="stickyElement"
-    class="sticky"
-    :style="stickyElementStyle"
-  >
-    <slot />
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 
@@ -105,6 +86,25 @@ function onScroll() {
   modelIsStickied.value = stickyElementRectangle.value.y == (elementToStickToRectangle.value?.bottom ?? scrollableParentElementRectangle.value.y)
 }
 </script>
+
+
+
+
+
+
+
+
+
+<template>
+  <div
+    ref="stickyElement"
+    class="sticky"
+    :style="stickyElementStyle"
+  >
+    <slot />
+  </div>
+</template>
+
 
 
 

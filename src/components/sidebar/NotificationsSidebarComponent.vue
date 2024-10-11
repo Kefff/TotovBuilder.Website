@@ -1,51 +1,3 @@
-<template>
-  <div class="sidebar-option">
-    <div class="notifications">
-      <div
-        v-show="notifications.length > 0"
-        class="notifications-dismiss-all"
-      >
-        <a
-          class="link"
-          @click="clearNotifications()"
-        >{{ $t('caption.dismissAll') }}</a>
-      </div>
-      <div v-if="notifications.length === 0">
-        {{ $t('caption.noNotifications') }}
-      </div>
-      <div
-        v-for="notification of notifications"
-        :key="notification.id"
-        class="notifications-item"
-      >
-        <div class="notifications-item-type-icon">
-          <font-awesome-icon
-            :icon="getNotificationIcon(notification.type)"
-            :class="'notifications-item-type-icon-' + notification.type"
-          />
-        </div>
-        <div class="notifications-item-text">
-          {{ notification.date.toLocaleTimeString() + ' : ' + notification.message }}
-        </div>
-        <font-awesome-icon
-          icon="times"
-          class="notifications-item-delete-icon"
-          @click="clearNotifications(notification.id)"
-        />
-      </div>
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { INotification } from '../../models/utils/INotification'
@@ -114,6 +66,54 @@ function onNotificationAdded() {
   notifications.value = _notificationService.getNotifications()
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="sidebar-option">
+    <div class="notifications">
+      <div
+        v-show="notifications.length > 0"
+        class="notifications-dismiss-all"
+      >
+        <a
+          class="link"
+          @click="clearNotifications()"
+        >{{ $t('caption.dismissAll') }}</a>
+      </div>
+      <div v-if="notifications.length === 0">
+        {{ $t('caption.noNotifications') }}
+      </div>
+      <div
+        v-for="notification of notifications"
+        :key="notification.id"
+        class="notifications-item"
+      >
+        <div class="notifications-item-type-icon">
+          <font-awesome-icon
+            :icon="getNotificationIcon(notification.type)"
+            :class="'notifications-item-type-icon-' + notification.type"
+          />
+        </div>
+        <div class="notifications-item-text">
+          {{ notification.date.toLocaleTimeString() + ' : ' + notification.message }}
+        </div>
+        <font-awesome-icon
+          icon="times"
+          class="notifications-item-delete-icon"
+          @click="clearNotifications(notification.id)"
+        />
+      </div>
+    </div>
+  </div>
+</template>
 
 
 

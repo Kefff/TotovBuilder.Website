@@ -1,38 +1,3 @@
-<template>
-  <div :class="'p-field input-number-field input-number-field-required-message-' + requiredMessagePosition">
-    <label v-if="!captionAsPlaceholder">{{ caption }}</label>
-    <InputNumber
-      ref="input"
-      v-model="modelValue"
-      :class="invalid ? 'p-invalid' : ''"
-      :disabled="readOnly"
-      :max="max"
-      :min="min"
-      :placeholder="captionAsPlaceholder ? caption : undefined"
-      :step="1"
-      button-layout="horizontal"
-      decrement-button-icon="pi pi-minus"
-      increment-button-icon="pi pi-plus"
-      show-buttons
-    />
-    <div
-      v-if="invalid"
-      class="'p-error"
-    >
-      {{ $t('message.requiredField', { caption }) }}
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, nextTick, onMounted, useTemplateRef } from 'vue'
 
@@ -76,6 +41,41 @@ onMounted(() => {
   }
 })
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div :class="'p-field input-number-field input-number-field-required-message-' + requiredMessagePosition">
+    <label v-if="!captionAsPlaceholder">{{ caption }}</label>
+    <InputNumber
+      ref="input"
+      v-model="modelValue"
+      :class="invalid ? 'p-invalid' : ''"
+      :disabled="readOnly"
+      :max="max"
+      :min="min"
+      :placeholder="captionAsPlaceholder ? caption : undefined"
+      :step="1"
+      button-layout="horizontal"
+      decrement-button-icon="pi pi-minus"
+      increment-button-icon="pi pi-plus"
+      show-buttons
+    />
+    <div
+      v-if="invalid"
+      class="'p-error"
+    >
+      {{ $t('message.requiredField', { caption }) }}
+    </div>
+  </div>
+</template>
 
 
 

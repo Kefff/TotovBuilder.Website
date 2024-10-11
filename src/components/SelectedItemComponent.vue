@@ -1,3 +1,25 @@
+<script setup lang="ts">
+import { IItem } from '../models/item/IItem'
+import ItemIcon from './ItemIconComponent.vue'
+
+withDefaults(
+  defineProps<{
+    item?: IItem
+  }>(),
+  {
+    item: undefined
+  })
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div>
     <div
@@ -21,28 +43,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { IItem } from '../models/item/IItem'
-import ItemIcon from './ItemIconComponent.vue'
-
-withDefaults(
-  defineProps<{
-    item?: IItem
-  }>(),
-  {
-    item: undefined
-  })
-</script>
 
 
 

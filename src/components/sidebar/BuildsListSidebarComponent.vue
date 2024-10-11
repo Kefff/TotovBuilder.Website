@@ -1,92 +1,3 @@
-<template>
-  <div class="sidebar-option">
-    <div class="builds-list-sidebar-group">
-      <span class="builds-list-sidebar-caption">{{ $t('caption.filter') }}</span>
-      <InputTextField
-        ref="buildsListSidebarFilterInput"
-        v-model:value="filter"
-        :autofocus="true"
-        class="builds-list-sidebar-value"
-        type="text"
-        @keydown="onFilterKeyDown"
-      />
-    </div>
-  </div>
-  <div class="sidebar-option builds-list-sidebar-filter-explanation">
-    <div class="sidebar-option-icon">
-      <font-awesome-icon icon="info-circle" />
-    </div>
-    <span>{{ $t('message.buildsListFilterExplanation') }}</span>
-  </div>
-  <div class="sidebar-title">
-    <div class="sidebar-title-icon">
-      <font-awesome-icon :icon="getSortOrderIcon(modelParameters.order)" />
-    </div>
-    <span>{{ $t('caption.sort') }}</span>
-  </div>
-  <div class="sidebar-option">
-    <div class="builds-list-sidebar-group">
-      <span class="builds-list-sidebar-caption">{{ $t('caption.sortBy') }}</span>
-      <Dropdown
-        v-model="sortField"
-        :options="sortableProperties"
-        class="builds-list-sidebar-value"
-      >
-        <template #option="slotProps">
-          <div class="builds-list-sidebar-option">
-            {{ $t(`caption.${slotProps.option}`) }}
-          </div>
-        </template>
-        <template #value="slotProps">
-          <div class="builds-list-sidebar-value-value">
-            <span>{{ $t(`caption.${slotProps.value}`) }}</span>
-          </div>
-        </template>
-      </Dropdown>
-      <span class="builds-list-sidebar-caption">{{ $t('caption.order') }}</span>
-      <Dropdown
-        v-model="sortOrder"
-        :options="[SortingOrder.asc, SortingOrder.desc]"
-        class="builds-list-sidebar-value"
-      >
-        <template #option="slotProps">
-          <div class="builds-list-sidebar-option">
-            <font-awesome-icon
-              :icon="getSortOrderIcon(slotProps.option)"
-              class="icon-before-text"
-            />
-            <span>{{ getSortOrderCaption(slotProps.option) }}</span>
-          </div>
-        </template>
-        <template #value="slotProps">
-          <div class="builds-list-sidebar-value-value">
-            <font-awesome-icon
-              :icon="getSortOrderIcon(slotProps.value)"
-              class="icon-before-text"
-            />
-            <span>{{ getSortOrderCaption(slotProps.value) }}</span>
-          </div>
-        </template>
-      </Dropdown>
-    </div>
-  </div>
-  <div class="sidebar-title" />
-  <div class="sidebar-option">
-    <Button
-      class="builds-list-sidebar-reset-button"
-      severity="danger"
-      outlined
-      @click="reset()"
-    >
-      <font-awesome-icon
-        icon="undo"
-        class="icon-before-text"
-      />
-      <span>{{ $t('caption.resetFilterAndSort') }}</span>
-    </Button>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import BuildFilterAndSortingData from '../../models/utils/BuildFilterAndSortingData'
@@ -194,6 +105,113 @@ function reset() {
   _globalSidebarService.close('BuildsListSidebar')
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="sidebar-option">
+    <div class="builds-list-sidebar-group">
+      <span class="builds-list-sidebar-caption">{{ $t('caption.filter') }}</span>
+      <InputTextField
+        ref="buildsListSidebarFilterInput"
+        v-model:value="filter"
+        :autofocus="true"
+        class="builds-list-sidebar-value"
+        type="text"
+        @keydown="onFilterKeyDown"
+      />
+    </div>
+  </div>
+  <div class="sidebar-option builds-list-sidebar-filter-explanation">
+    <div class="sidebar-option-icon">
+      <font-awesome-icon icon="info-circle" />
+    </div>
+    <span>{{ $t('message.buildsListFilterExplanation') }}</span>
+  </div>
+  <div class="sidebar-title">
+    <div class="sidebar-title-icon">
+      <font-awesome-icon :icon="getSortOrderIcon(modelParameters.order)" />
+    </div>
+    <span>{{ $t('caption.sort') }}</span>
+  </div>
+  <div class="sidebar-option">
+    <div class="builds-list-sidebar-group">
+      <span class="builds-list-sidebar-caption">{{ $t('caption.sortBy') }}</span>
+      <Dropdown
+        v-model="sortField"
+        :options="sortableProperties"
+        class="builds-list-sidebar-value"
+      >
+        <template #option="slotProps">
+          <div class="builds-list-sidebar-option">
+            {{ $t(`caption.${slotProps.option}`) }}
+          </div>
+        </template>
+        <template #value="slotProps">
+          <div class="builds-list-sidebar-value-value">
+            <span>{{ $t(`caption.${slotProps.value}`) }}</span>
+          </div>
+        </template>
+      </Dropdown>
+      <span class="builds-list-sidebar-caption">{{ $t('caption.order') }}</span>
+      <Dropdown
+        v-model="sortOrder"
+        :options="[SortingOrder.asc, SortingOrder.desc]"
+        class="builds-list-sidebar-value"
+      >
+        <template #option="slotProps">
+          <div class="builds-list-sidebar-option">
+            <font-awesome-icon
+              :icon="getSortOrderIcon(slotProps.option)"
+              class="icon-before-text"
+            />
+            <span>{{ getSortOrderCaption(slotProps.option) }}</span>
+          </div>
+        </template>
+        <template #value="slotProps">
+          <div class="builds-list-sidebar-value-value">
+            <font-awesome-icon
+              :icon="getSortOrderIcon(slotProps.value)"
+              class="icon-before-text"
+            />
+            <span>{{ getSortOrderCaption(slotProps.value) }}</span>
+          </div>
+        </template>
+      </Dropdown>
+    </div>
+  </div>
+  <div class="sidebar-title" />
+  <div class="sidebar-option">
+    <Button
+      class="builds-list-sidebar-reset-button"
+      severity="danger"
+      outlined
+      @click="reset()"
+    >
+      <font-awesome-icon
+        icon="undo"
+        class="icon-before-text"
+      />
+      <span>{{ $t('caption.resetFilterAndSort') }}</span>
+    </Button>
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
 
 <style scoped>
 @import '../../css/icon.css';

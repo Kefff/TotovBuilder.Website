@@ -1,87 +1,3 @@
-<template>
-  <div class="stats-category">
-    {{ $t('caption.pricesAndWeight') }}
-  </div>
-  <div class="stats-line">
-    <div
-      v-for="(price, index) of prices"
-      :key="index"
-      class="stats-entry"
-    >
-      <div class="stats-caption">
-        <font-awesome-icon
-          icon="coins"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.merchant_' + price.merchant) + (price.merchantLevel > 0 ? ' ' + $t('caption.level').toLocaleLowerCase() + ' ' + price.merchantLevel : '') }} :</span>
-      </div>
-      <div class="stats-value">
-        <Price
-          :price="price"
-          :use-merchant-filter="false"
-        />
-      </div>
-    </div>
-  </div>
-  <div class="stats-line">
-    <div class="stats-entry">
-      <div class="stats-caption">
-        <font-awesome-icon
-          icon="weight-hanging"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.weight') }} :</span>
-      </div>
-      <div class="stats-value">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, item.weight) }}
-      </div>
-    </div>
-  </div>
-  <slot />
-  <div class="stats-category">
-    {{ $t('caption.links') }}
-  </div>
-  <div class="stats-line">
-    <div class="stats-entry">
-      <div class="stats-caption">
-        <font-awesome-icon
-          icon="globe"
-          class="icon-before-text"
-        />
-        <span
-          class="link"
-          @click="openMarket()"
-        >
-          Tarkov.dev
-        </span>
-      </div>
-    </div>
-    <div class="stats-entry">
-      <div class="stats-caption">
-        <font-awesome-icon
-          icon="globe"
-          class="icon-before-text"
-        />
-        <span
-          class="link"
-          @click="openWiki()"
-        >
-          Wiki
-        </span>
-      </div>
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { IItem } from '../../models/item/IItem'
@@ -158,6 +74,90 @@ async function setPrices() {
 }
 
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="stats-category">
+    {{ $t('caption.pricesAndWeight') }}
+  </div>
+  <div class="stats-line">
+    <div
+      v-for="(price, index) of prices"
+      :key="index"
+      class="stats-entry"
+    >
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="coins"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.merchant_' + price.merchant) + (price.merchantLevel > 0 ? ' ' + $t('caption.level').toLocaleLowerCase() + ' ' + price.merchantLevel : '') }} :</span>
+      </div>
+      <div class="stats-value">
+        <Price
+          :price="price"
+          :use-merchant-filter="false"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="stats-line">
+    <div class="stats-entry">
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="weight-hanging"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.weight') }} :</span>
+      </div>
+      <div class="stats-value">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, item.weight) }}
+      </div>
+    </div>
+  </div>
+  <slot />
+  <div class="stats-category">
+    {{ $t('caption.links') }}
+  </div>
+  <div class="stats-line">
+    <div class="stats-entry">
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="globe"
+          class="icon-before-text"
+        />
+        <span
+          class="link"
+          @click="openMarket()"
+        >
+          Tarkov.dev
+        </span>
+      </div>
+    </div>
+    <div class="stats-entry">
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="globe"
+          class="icon-before-text"
+        />
+        <span
+          class="link"
+          @click="openWiki()"
+        >
+          Wiki
+        </span>
+      </div>
+    </div>
+  </div>
+</template>
 
 
 

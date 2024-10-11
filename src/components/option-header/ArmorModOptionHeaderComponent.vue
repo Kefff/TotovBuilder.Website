@@ -1,20 +1,3 @@
-<template>
-  <ArmorOptionHeader
-    v-model:sorting-data="modelSortingData"
-    :sorting-functions-override="ArmorModSortingFunctions"
-  />
-</template>
-
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { IItem } from '../../models/item/IItem'
 import SortingData from '../../models/utils/SortingData'
@@ -33,6 +16,9 @@ const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { requir
 
 
 
-<style scoped>
-@import '../../css/option.css';
-</style>
+<template>
+  <ArmorOptionHeader
+    v-model:sorting-data="modelSortingData"
+    :sorting-functions-override="ArmorModSortingFunctions"
+  />
+</template>

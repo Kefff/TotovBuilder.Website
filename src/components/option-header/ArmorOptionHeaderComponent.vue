@@ -1,3 +1,34 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IItem } from '../../models/item/IItem'
+import SortingData from '../../models/utils/SortingData'
+import { ArmorSortingFunctions } from '../../services/sorting/functions/ArmorSortingFunctions'
+import ISortingFunctionList from '../../services/sorting/functions/ISortingFunctionList'
+import OptionHeaderSortButton from './OptionHeaderSortButtonComponent.vue'
+import WearableOptionHeader from './WearableOptionHeaderComponent.vue'
+
+const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { required: true })
+
+const props = withDefaults(
+  defineProps<{
+    sortingFunctionsOverride?: ISortingFunctionList<IItem>
+  }>(),
+  {
+    sortingFunctionsOverride: undefined
+  })
+
+const sortingFunctions = computed(() => props.sortingFunctionsOverride ?? ArmorSortingFunctions)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="option-entry">
     <div class="option-value">
@@ -26,37 +57,6 @@
     :sorting-functions-override="sortingFunctions"
   />
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { IItem } from '../../models/item/IItem'
-import SortingData from '../../models/utils/SortingData'
-import { ArmorSortingFunctions } from '../../services/sorting/functions/ArmorSortingFunctions'
-import ISortingFunctionList from '../../services/sorting/functions/ISortingFunctionList'
-import OptionHeaderSortButton from './OptionHeaderSortButtonComponent.vue'
-import WearableOptionHeader from './WearableOptionHeaderComponent.vue'
-
-const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { required: true })
-
-const props = withDefaults(
-  defineProps<{
-    sortingFunctionsOverride?: ISortingFunctionList<IItem>
-  }>(),
-  {
-    sortingFunctionsOverride: undefined
-  })
-
-const sortingFunctions = computed(() => props.sortingFunctionsOverride ?? ArmorSortingFunctions)
-</script>
 
 
 

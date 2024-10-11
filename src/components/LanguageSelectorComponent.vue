@@ -1,40 +1,3 @@
-<template>
-  <Dropdown
-    v-model="modelLanguage"
-    :options="languages"
-    :placeholder="$t('caption.language')"
-    class="language-selector"
-  >
-    <template #option="slotProps">
-      <div class="language-selector-item language-selector-option">
-        <img
-          class="language-selector-item-flag"
-          :src="Images['language' + StringUtils.toUpperFirst(slotProps.option)]"
-        >
-        <span>{{ $t('caption.language_' + slotProps.option) }}</span>
-      </div>
-    </template>
-    <template #value="slotProps">
-      <div class="language-selector-item">
-        <img
-          class="language-selector-item-flag"
-          :src="Images['language' + StringUtils.toUpperFirst(slotProps.value)]"
-        >
-        <span>{{ $t('caption.language_' + slotProps.value) }}</span>
-      </div>
-    </template>
-  </Dropdown>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import Images from '../images'
@@ -64,6 +27,43 @@ function getAvailableLanguages() {
   languages.value = newLanguages
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <Dropdown
+    v-model="modelLanguage"
+    :options="languages"
+    :placeholder="$t('caption.language')"
+    class="language-selector"
+  >
+    <template #option="slotProps">
+      <div class="language-selector-item language-selector-option">
+        <img
+          class="language-selector-item-flag"
+          :src="Images['language' + StringUtils.toUpperFirst(slotProps.option)]"
+        >
+        <span>{{ $t('caption.language_' + slotProps.option) }}</span>
+      </div>
+    </template>
+    <template #value="slotProps">
+      <div class="language-selector-item">
+        <img
+          class="language-selector-item-flag"
+          :src="Images['language' + StringUtils.toUpperFirst(slotProps.value)]"
+        >
+        <span>{{ $t('caption.language_' + slotProps.value) }}</span>
+      </div>
+    </template>
+  </Dropdown>
+</template>
 
 
 

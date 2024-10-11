@@ -1,3 +1,83 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { BuildSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { BuildService } from '../../services/BuildService'
+import { ExportService } from '../../services/ExportService'
+import { GlobalSidebarService } from '../../services/GlobalSidebarService'
+import Services from '../../services/repository/Services'
+
+const props = defineProps<{ parameters: BuildSidebarParameters }>()
+
+const _buildService = Services.get(BuildService)
+const _exportService = Services.get(ExportService)
+const _globalSidebarService = Services.get(GlobalSidebarService)
+const _router = useRouter()
+
+const isDeleting = ref(false)
+
+/**
+ * Cancels the build deletion.
+ */
+function cancelDeletion() {
+  isDeleting.value = false
+}
+
+/**
+ * Confirms the build deletion.
+ */
+function confirmDeletion() {
+  _buildService.delete(props.parameters.id)
+
+  isDeleting.value = false
+  _globalSidebarService.close('BuildSidebar')
+}
+
+/**
+ * Creates a copy of the build.
+ */
+function copyBuild() {
+  _router.push({ name: 'CopyBuild', params: { id: props.parameters.id } })
+  _globalSidebarService.close('BuildSidebar')
+}
+
+/**
+ * Starts the build deletion process.
+ */
+function deleteBuild() {
+  isDeleting.value = true
+}
+
+/**
+ * Displays the share build sidebar.
+ */
+function displayBuildsShareSideBar() {
+  _globalSidebarService.display({
+    displayedComponentParameters: {
+      buildToShare: props.parameters
+    },
+    displayedComponentType: 'BuildsShareSideBar'
+  })
+}
+
+/**
+ * Export the build to a file.
+ */
+function exportBuild() {
+  _exportService.export([props.parameters])
+  _globalSidebarService.close('BuildSidebar')
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="sidebar-option">
     <Button
@@ -98,86 +178,6 @@
     </template>
   </Dialog>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { BuildSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
-import { BuildService } from '../../services/BuildService'
-import { ExportService } from '../../services/ExportService'
-import { GlobalSidebarService } from '../../services/GlobalSidebarService'
-import Services from '../../services/repository/Services'
-
-const props = defineProps<{ parameters: BuildSidebarParameters }>()
-
-const _buildService = Services.get(BuildService)
-const _exportService = Services.get(ExportService)
-const _globalSidebarService = Services.get(GlobalSidebarService)
-const _router = useRouter()
-
-const isDeleting = ref(false)
-
-/**
- * Cancels the build deletion.
- */
-function cancelDeletion() {
-  isDeleting.value = false
-}
-
-/**
- * Confirms the build deletion.
- */
-function confirmDeletion() {
-  _buildService.delete(props.parameters.id)
-
-  isDeleting.value = false
-  _globalSidebarService.close('BuildSidebar')
-}
-
-/**
- * Creates a copy of the build.
- */
-function copyBuild() {
-  _router.push({ name: 'CopyBuild', params: { id: props.parameters.id } })
-  _globalSidebarService.close('BuildSidebar')
-}
-
-/**
- * Starts the build deletion process.
- */
-function deleteBuild() {
-  isDeleting.value = true
-}
-
-/**
- * Displays the share build sidebar.
- */
-function displayBuildsShareSideBar() {
-  _globalSidebarService.display({
-    displayedComponentParameters: {
-      buildToShare: props.parameters
-    },
-    displayedComponentType: 'BuildsShareSideBar'
-  })
-}
-
-/**
- * Export the build to a file.
- */
-function exportBuild() {
-  _exportService.export([props.parameters])
-  _globalSidebarService.close('BuildSidebar')
-}
-</script>
 
 
 

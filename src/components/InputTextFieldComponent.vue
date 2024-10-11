@@ -1,32 +1,3 @@
-<template>
-  <div :class="'p-field field input-text-field input-text-field-required-message-' + requiredMessagePosition">
-    <label v-if="!captionAsPlaceholder">{{ caption }}</label>
-    <InputText
-      ref="input"
-      v-model="modelValue"
-      :class="inputClasses"
-      :disabled="disabled"
-      :placeholder="captionAsPlaceholder ? caption : undefined"
-      :readonly="readOnly"
-    />
-    <div
-      v-if="invalid"
-      class="p-error"
-    >
-      {{ $t('message.requiredField', { caption }) }}
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, nextTick, onMounted, useTemplateRef } from 'vue'
 
@@ -74,6 +45,35 @@ onMounted(() => {
   }
 })
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div :class="'p-field field input-text-field input-text-field-required-message-' + requiredMessagePosition">
+    <label v-if="!captionAsPlaceholder">{{ caption }}</label>
+    <InputText
+      ref="input"
+      v-model="modelValue"
+      :class="inputClasses"
+      :disabled="disabled"
+      :placeholder="captionAsPlaceholder ? caption : undefined"
+      :readonly="readOnly"
+    />
+    <div
+      v-if="invalid"
+      class="p-error"
+    >
+      {{ $t('message.requiredField', { caption }) }}
+    </div>
+  </div>
+</template>
 
 
 

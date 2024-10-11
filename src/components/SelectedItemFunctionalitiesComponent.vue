@@ -1,3 +1,75 @@
+<script setup lang="ts">
+import { Ref, inject, watch } from 'vue'
+import { IItem } from '../models/item/IItem'
+import { SelectableTab } from '../models/utils/SelectableTab'
+import { GlobalSidebarService } from '../services/GlobalSidebarService'
+import Services from '../services/repository/Services'
+import Tooltip from './TooltipComponent.vue'
+
+const modelIgnorePrice = defineModel<boolean>('ignorePrice')
+const modelSelectedTab = defineModel<SelectableTab>('selectedTab')
+
+const props = withDefaults(
+  defineProps<{
+    canBeLooted: boolean,
+    canHaveContent: boolean,
+    canHaveMods: boolean,
+    canIgnorePrice: boolean,
+    contentCount?: number,
+    ignorePrice: boolean,
+    item: IItem,
+    modsCount?: number
+  }>(),
+  {
+    contentCount: 0,
+    modsCount: 0
+  })
+
+const isEditing = inject<Ref<boolean>>('isEditing')
+
+watch(() => props.canHaveContent, () => {
+  if (!props.canHaveContent && modelSelectedTab.value === SelectableTab.content) {
+    modelSelectedTab.value = props.canHaveMods ? SelectableTab.mods : SelectableTab.hidden
+  }
+})
+
+watch(() => props.canHaveMods, () => {
+  if (!props.canHaveMods && modelSelectedTab.value === SelectableTab.mods) {
+    modelSelectedTab.value = props.canHaveContent ? SelectableTab.content : SelectableTab.hidden
+  }
+})
+
+/**
+ * Reacts to the click on the "Show details" button.
+ *
+ * Opens the stats sidebar.
+ */
+function onShowDetailsClick() {
+  Services.get(GlobalSidebarService).display({
+    displayedComponentType: 'StatsSidebar',
+    displayedComponentParameters: props.item
+  })
+}
+
+/**
+ * Sets the selected tab.
+ * If the same tab as the current selected tab, tabs are hidden.
+ * @param newValue - New selected tab.
+ */
+function setSelectedTab(newValue: SelectableTab) {
+  modelSelectedTab.value = modelSelectedTab.value !== newValue ? newValue : SelectableTab.hidden
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="selected-item-functionalities">
     <div v-if="canHaveContent">
@@ -67,77 +139,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { Ref, inject, watch } from 'vue'
-import { IItem } from '../models/item/IItem'
-import { SelectableTab } from '../models/utils/SelectableTab'
-import { GlobalSidebarService } from '../services/GlobalSidebarService'
-import Services from '../services/repository/Services'
-
-const modelIgnorePrice = defineModel<boolean>('ignorePrice')
-const modelSelectedTab = defineModel<SelectableTab>('selectedTab')
-
-const props = withDefaults(
-  defineProps<{
-    canBeLooted: boolean,
-    canHaveContent: boolean,
-    canHaveMods: boolean,
-    canIgnorePrice: boolean,
-    contentCount?: number,
-    ignorePrice: boolean,
-    item: IItem,
-    modsCount?: number
-  }>(),
-  {
-    contentCount: 0,
-    modsCount: 0
-  })
-
-const isEditing = inject<Ref<boolean>>('isEditing')
-
-watch(() => props.canHaveContent, () => {
-  if (!props.canHaveContent && modelSelectedTab.value === SelectableTab.content) {
-    modelSelectedTab.value = props.canHaveMods ? SelectableTab.mods : SelectableTab.hidden
-  }
-})
-
-watch(() => props.canHaveMods, () => {
-  if (!props.canHaveMods && modelSelectedTab.value === SelectableTab.mods) {
-    modelSelectedTab.value = props.canHaveContent ? SelectableTab.content : SelectableTab.hidden
-  }
-})
-
-/**
- * Reacts to the click on the "Show details" button.
- *
- * Opens the stats sidebar.
- */
-function onShowDetailsClick() {
-  Services.get(GlobalSidebarService).display({
-    displayedComponentType: 'StatsSidebar',
-    displayedComponentParameters: props.item
-  })
-}
-
-/**
- * Sets the selected tab.
- * If the same tab as the current selected tab, tabs are hidden.
- * @param newValue - New selected tab.
- */
-function setSelectedTab(newValue: SelectableTab) {
-  modelSelectedTab.value = modelSelectedTab.value !== newValue ? newValue : SelectableTab.hidden
-}
-</script>
 
 
 

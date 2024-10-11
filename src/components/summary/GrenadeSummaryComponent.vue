@@ -1,3 +1,30 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IGrenade } from '../../models/item/IGrenade'
+import { IItem } from '../../models/item/IItem'
+import Tooltip from '../TooltipComponent.vue'
+
+const props = withDefaults(
+  defineProps<{
+    item: IItem,
+    showEmptyEntries?: boolean
+  }>(),
+  {
+    showEmptyEntries: true
+  })
+
+const grenade = computed(() => props.item as IGrenade)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div
     v-if="grenade.fragmentsAmount > 0 || showEmptyEntries"
@@ -44,32 +71,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { IGrenade } from '../../models/item/IGrenade'
-import { IItem } from '../../models/item/IItem'
-
-const props = withDefaults(
-  defineProps<{
-    item: IItem,
-    showEmptyEntries?: boolean
-  }>(),
-  {
-    showEmptyEntries: true
-  })
-
-const grenade = computed(() => props.item as IGrenade)
-</script>
 
 
 

@@ -1,16 +1,3 @@
-<template>
-  <ArmorStats :item="armorMod" />
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IArmorMod } from '../../models/item/IArmorMod'
@@ -23,3 +10,16 @@ const props = defineProps<{
 
 const armorMod = computed(() => props.item as IArmorMod)
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <ArmorStats :item="armorMod" />
+</template>

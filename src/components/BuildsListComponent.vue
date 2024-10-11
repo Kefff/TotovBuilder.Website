@@ -1,113 +1,3 @@
-<template>
-  <Sticky
-    v-if="showChips && buildSummaries.length > 0"
-    :element-to-stick-to="elementToStickTo"
-    align="left"
-  >
-    <div class="builds-list-chips">
-      <Chip
-        class="builds-list-chip"
-        @click="showFilterAndSortSidebar()"
-      >
-        <Tooltip
-          :tooltip="sortButtonTooltip"
-          position="right"
-        >
-          <div class="builds-list-chip-group">
-            <div class="builds-list-chip-icon">
-              <font-awesome-icon :icon="sortChipIcon" />
-            </div>
-            <span>{{ $t(`caption.${modelFilterAndSortingData.property}`) }}</span>
-          </div>
-        </Tooltip>
-      </Chip>
-      <Chip
-        v-if="modelFilterAndSortingData.filter == ''"
-        class="builds-list-chip"
-        @click="showFilterAndSortSidebar()"
-      >
-        <Tooltip :tooltip="$t('caption.addFilter')">
-          <div class="builds-list-chip-group">
-            <div class="builds-list-chip-icon">
-              <font-awesome-icon icon="filter" />
-            </div>
-            <span>{{ $t('caption.filter') }}</span>
-            <div class="builds-list-chip-icon-button builds-list-chip-icon-button-add-filter">
-              <font-awesome-icon icon="plus" />
-            </div>
-          </div>
-        </Tooltip>
-      </Chip>
-      <Chip
-        v-else
-        class="builds-list-chip"
-      >
-        <Tooltip
-          :tooltip="$t('caption.filteredWith', { filter: modelFilterAndSortingData.filter })"
-          style="overflow: hidden;"
-        >
-          <div
-            class="builds-list-chip-group"
-            @click="showFilterAndSortSidebar()"
-          >
-            <div class="builds-list-chip-icon">
-              <font-awesome-icon icon="filter" />
-            </div>
-            <span>{{ modelFilterAndSortingData.filter }}</span>
-          </div>
-        </Tooltip>
-        <Tooltip :tooltip="$t('caption.removeFilter')">
-          <div
-            class="builds-list-chip-icon-button builds-list-chip-icon-button-remove-filter"
-            @click="removeFilter()"
-          >
-            <font-awesome-icon icon="times" />
-          </div>
-        </Tooltip>
-      </Chip>
-    </div>
-  </Sticky>
-  <div
-    v-if="isLoading"
-    class="builds-list-loading"
-  >
-    <Loading />
-  </div>
-  <div
-    v-if="!isLoading && buildSummariesInternal.length > 0"
-    class="builds-list-cards"
-    :class="cardsListClass"
-  >
-    <BuildCard
-      v-for="buildSummary of buildSummariesInternal"
-      :key="buildSummary.id"
-      :build-summary="buildSummary"
-      :is-selected="checkIsSelected(buildSummary)"
-      :selection-button-caption="selectionButtonCaption"
-      :selection-button-icon="selectionButtonIcon"
-      :show-actions-button="showActionsButton"
-      :show-not-exported="showNotExported"
-      :show-shopping-list="showShoppingList"
-      @update:is-selected="updateSelectedBuilds(buildSummary, $event)"
-    />
-  </div>
-  <div
-    v-else-if="!isLoading"
-    class="builds-list-no-results-message"
-  >
-    {{ $t('message.noBuildsFound') }}
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
@@ -122,6 +12,7 @@ import { SortingService } from '../services/sorting/SortingService'
 import BuildCard from './BuildCardComponent.vue'
 import Loading from './LoadingComponent.vue'
 import Sticky from './StickyComponent.vue'
+import Tooltip from './TooltipComponent.vue'
 
 const modelSelectedBuilds = defineModel<IBuildSummary[]>('selectedBuilds', { required: false, default: [] })
 const modelFilterAndSortingData = defineModel<BuildFilterAndSortingData>('filterAndSortingData', { required: false, default: new BuildFilterAndSortingData() })
@@ -328,6 +219,116 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean) 
 
 
 
+<template>
+  <Sticky
+    v-if="showChips && buildSummaries.length > 0"
+    :element-to-stick-to="elementToStickTo"
+    align="left"
+  >
+    <div class="builds-list-chips">
+      <Chip
+        class="builds-list-chip"
+        @click="showFilterAndSortSidebar()"
+      >
+        <Tooltip
+          :tooltip="sortButtonTooltip"
+          position="right"
+        >
+          <div class="builds-list-chip-group">
+            <div class="builds-list-chip-icon">
+              <font-awesome-icon :icon="sortChipIcon" />
+            </div>
+            <span>{{ $t(`caption.${modelFilterAndSortingData.property}`) }}</span>
+          </div>
+        </Tooltip>
+      </Chip>
+      <Chip
+        v-if="modelFilterAndSortingData.filter == ''"
+        class="builds-list-chip"
+        @click="showFilterAndSortSidebar()"
+      >
+        <Tooltip :tooltip="$t('caption.addFilter')">
+          <div class="builds-list-chip-group">
+            <div class="builds-list-chip-icon">
+              <font-awesome-icon icon="filter" />
+            </div>
+            <span>{{ $t('caption.filter') }}</span>
+            <div class="builds-list-chip-icon-button builds-list-chip-icon-button-add-filter">
+              <font-awesome-icon icon="plus" />
+            </div>
+          </div>
+        </Tooltip>
+      </Chip>
+      <Chip
+        v-else
+        class="builds-list-chip"
+      >
+        <Tooltip
+          :tooltip="$t('caption.filteredWith', { filter: modelFilterAndSortingData.filter })"
+          style="overflow: hidden;"
+        >
+          <div
+            class="builds-list-chip-group"
+            @click="showFilterAndSortSidebar()"
+          >
+            <div class="builds-list-chip-icon">
+              <font-awesome-icon icon="filter" />
+            </div>
+            <span>{{ modelFilterAndSortingData.filter }}</span>
+          </div>
+        </Tooltip>
+        <Tooltip :tooltip="$t('caption.removeFilter')">
+          <div
+            class="builds-list-chip-icon-button builds-list-chip-icon-button-remove-filter"
+            @click="removeFilter()"
+          >
+            <font-awesome-icon icon="times" />
+          </div>
+        </Tooltip>
+      </Chip>
+    </div>
+  </Sticky>
+  <div
+    v-if="isLoading"
+    class="builds-list-loading"
+  >
+    <Loading />
+  </div>
+  <div
+    v-if="!isLoading && buildSummariesInternal.length > 0"
+    class="builds-list-cards"
+    :class="cardsListClass"
+  >
+    <BuildCard
+      v-for="buildSummary of buildSummariesInternal"
+      :key="buildSummary.id"
+      :build-summary="buildSummary"
+      :is-selected="checkIsSelected(buildSummary)"
+      :selection-button-caption="selectionButtonCaption"
+      :selection-button-icon="selectionButtonIcon"
+      :show-actions-button="showActionsButton"
+      :show-not-exported="showNotExported"
+      :show-shopping-list="showShoppingList"
+      @update:is-selected="updateSelectedBuilds(buildSummary, $event)"
+    />
+  </div>
+  <div
+    v-else-if="!isLoading"
+    class="builds-list-no-results-message"
+  >
+    {{ $t('message.noBuildsFound') }}
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+
 <style scoped>
 @import '../css/icon.css';
 
@@ -484,6 +485,4 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean) 
     grid-template-columns: repeat(3, 1fr);
   }
 }
-
-@media only screen and (min-width: 1600px) {}
 </style>

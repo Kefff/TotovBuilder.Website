@@ -1,3 +1,46 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import Images from '../../images'
+import { IHeadwear } from '../../models/item/IHeadwear'
+import { IItem } from '../../models/item/IItem'
+import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
+import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
+import CustomIcon from '../CustomIconComponent.vue'
+import Tooltip from '../TooltipComponent.vue'
+import ArmorSummary from './ArmorSummaryComponent.vue'
+
+const props = withDefaults(
+  defineProps<{
+    armorModifiersOverride?: IArmorModifiers,
+    includeModsAndContent?: boolean,
+    isBaseItem?: boolean,
+    item: IItem,
+    showEmptyEntries?: boolean,
+    wearableModifiersOverride?: IWearableModifiers
+  }>(),
+  {
+    armorModifiersOverride: undefined,
+    isBaseItem: false,
+    includeModsAndContent: false,
+    showEmptyEntries: true,
+    wearableModifiersOverride: undefined
+  })
+
+const armorModifiers = computed(() => props.armorModifiersOverride ?? headwear.value.presetArmorModifiers)
+const hasRicochetChance = computed(() => headwear.value.ricochetChance !== '')
+const headwear = computed(() => props.item as IHeadwear)
+const wearableModifiers = computed(() => props.wearableModifiersOverride ?? headwear.value.presetWearableModifiers)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <ArmorSummary
     :armor-modifiers-override="armorModifiers"
@@ -25,48 +68,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import Images from '../../images'
-import { IHeadwear } from '../../models/item/IHeadwear'
-import { IItem } from '../../models/item/IItem'
-import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
-import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
-import CustomIcon from '../CustomIconComponent.vue'
-import ArmorSummary from './ArmorSummaryComponent.vue'
-
-const props = withDefaults(
-  defineProps<{
-    armorModifiersOverride?: IArmorModifiers,
-    includeModsAndContent?: boolean,
-    isBaseItem?: boolean,
-    item: IItem,
-    showEmptyEntries?: boolean,
-    wearableModifiersOverride?: IWearableModifiers
-  }>(),
-  {
-    armorModifiersOverride: undefined,
-    isBaseItem: false,
-    includeModsAndContent: false,
-    showEmptyEntries: true,
-    wearableModifiersOverride: undefined
-  })
-
-const armorModifiers = computed(() => props.armorModifiersOverride ?? headwear.value.presetArmorModifiers)
-const hasRicochetChance = computed(() => headwear.value.ricochetChance !== '')
-const headwear = computed(() => props.item as IHeadwear)
-const wearableModifiers = computed(() => props.wearableModifiersOverride ?? headwear.value.presetWearableModifiers)
-</script>
 
 
 

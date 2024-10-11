@@ -1,85 +1,3 @@
-<template>
-  <div class="builds-import-sidebar">
-    <div class="sidebar-option">
-      <div
-        v-if="!isFileSelected"
-        class="builds-import-sidebar-button"
-      >
-        <Button @click="displayFileSelectionPopup()">
-          <font-awesome-icon
-            icon="file-upload"
-            class="icon-before-text"
-          />
-          <span>{{ ` ${$t('caption.selectFile')}` }}</span>
-        </Button>
-      </div>
-      <div v-else>
-        <Toolbar
-          ref="buildsImportToolbar"
-          :buttons="toolbarButtons"
-          style="margin-top: 1px;"
-        />
-        <BuildsList
-          v-model:selected-builds="selectedBuilds"
-          :build-summaries="availableBuildSummaries"
-          :element-to-stick-to="toolbarContainer"
-          :grid-max-columns="1"
-          :show-actions-button="false"
-          :show-not-exported="false"
-        >
-          <template #toolbarContent>
-            <Button
-              :disabled="selectedBuilds?.length == 0"
-              severity="success"
-              @click="importBuilds()"
-            >
-              <font-awesome-icon
-                icon="file-upload"
-                class="icon-before-text"
-              />
-              <span>{{ ` ${$t('caption.import')}` }}</span>
-              <span
-                v-show="selectedBuilds.length > 1"
-                style="margin-left: 0.25rem;"
-              >{{ `(${selectedBuilds.length})` }}</span>
-            </Button>
-            <Button
-              v-if="availableBuildSummaries.length > 1"
-              outlined
-              @click="toggleSelection()"
-            >
-              <font-awesome-icon
-                icon="list"
-                class="icon-before-text"
-              />
-              <span v-if="allSelected">{{ $t('caption.deselectAll') }}</span>
-              <span v-else>{{ $t('caption.selectAll') }}</span>
-            </Button>
-          </template>
-        </BuildsList>
-      </div>
-    </div>
-  </div>
-
-  <!-- Hidden input for import file selection -->
-  <input
-    ref="importInput"
-    class="builds-import-sidebar-hidden-input"
-    type="file"
-    :accept="acceptedFileExtension"
-    @change="readBuilds()"
-  >
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
@@ -199,6 +117,88 @@ function toggleSelection() {
   }
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="builds-import-sidebar">
+    <div class="sidebar-option">
+      <div
+        v-if="!isFileSelected"
+        class="builds-import-sidebar-button"
+      >
+        <Button @click="displayFileSelectionPopup()">
+          <font-awesome-icon
+            icon="file-upload"
+            class="icon-before-text"
+          />
+          <span>{{ ` ${$t('caption.selectFile')}` }}</span>
+        </Button>
+      </div>
+      <div v-else>
+        <Toolbar
+          ref="buildsImportToolbar"
+          :buttons="toolbarButtons"
+          style="margin-top: 1px;"
+        />
+        <BuildsList
+          v-model:selected-builds="selectedBuilds"
+          :build-summaries="availableBuildSummaries"
+          :element-to-stick-to="toolbarContainer"
+          :grid-max-columns="1"
+          :show-actions-button="false"
+          :show-not-exported="false"
+        >
+          <template #toolbarContent>
+            <Button
+              :disabled="selectedBuilds?.length == 0"
+              severity="success"
+              @click="importBuilds()"
+            >
+              <font-awesome-icon
+                icon="file-upload"
+                class="icon-before-text"
+              />
+              <span>{{ ` ${$t('caption.import')}` }}</span>
+              <span
+                v-show="selectedBuilds.length > 1"
+                style="margin-left: 0.25rem;"
+              >{{ `(${selectedBuilds.length})` }}</span>
+            </Button>
+            <Button
+              v-if="availableBuildSummaries.length > 1"
+              outlined
+              @click="toggleSelection()"
+            >
+              <font-awesome-icon
+                icon="list"
+                class="icon-before-text"
+              />
+              <span v-if="allSelected">{{ $t('caption.deselectAll') }}</span>
+              <span v-else>{{ $t('caption.selectAll') }}</span>
+            </Button>
+          </template>
+        </BuildsList>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden input for import file selection -->
+  <input
+    ref="importInput"
+    class="builds-import-sidebar-hidden-input"
+    type="file"
+    :accept="acceptedFileExtension"
+    @change="readBuilds()"
+  >
+</template>
 
 
 

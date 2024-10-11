@@ -1,34 +1,3 @@
-<template>
-  <div class="sidebar-option">
-    <div class="stats-sidebar">
-      <div>
-        <div class="stats-sidebar-image">
-          <img
-            v-if="parameters.imageLink != null"
-            :src="parameters.imageLink"
-          >
-        </div>
-        <ItemStats :item="parameters">
-          <component
-            :is="specializedComponent"
-            v-if="specializedComponent != null"
-            :item="parameters"
-          />
-        </ItemStats>
-      </div>
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { StatsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
@@ -108,6 +77,37 @@ function getSpecializedComponent(itemCategoryId?: string) {
   }
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="sidebar-option">
+    <div class="stats-sidebar">
+      <div>
+        <div class="stats-sidebar-image">
+          <img
+            v-if="parameters.imageLink != null"
+            :src="parameters.imageLink"
+          >
+        </div>
+        <ItemStats :item="parameters">
+          <component
+            :is="specializedComponent"
+            v-if="specializedComponent != null"
+            :item="parameters"
+          />
+        </ItemStats>
+      </div>
+    </div>
+  </div>
+</template>
 
 
 

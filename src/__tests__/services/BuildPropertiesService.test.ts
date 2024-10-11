@@ -825,6 +825,40 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       Services.configure(ItemPropertiesService)
       Services.configure(ReductionService)
 
+      const globalFilterService = Services.get(GlobalFilterService)
+      globalFilterService.saveMerchantFilters([
+        {
+          enabled: true,
+          merchant: 'prapor',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'mechanic',
+          merchantLevel: 2
+        },
+        {
+          enabled: true,
+          merchant: 'flea-market',
+          merchantLevel: 0
+        },
+        {
+          enabled: true,
+          merchant: 'therapist',
+          merchantLevel: 3
+        },
+        {
+          enabled: true,
+          merchant: 'skier',
+          merchantLevel: 1
+        },
+        {
+          enabled: false,
+          merchant: 'ref',
+          merchantLevel: 4
+        }
+      ])
+
       const service = new BuildPropertiesService()
 
       // Act
@@ -874,9 +908,8 @@ Prix **43 345₽**   Poids **1,500 kg**
 
 
 *Marchands configurés*  
-Marché Oui   Jaeger 4   Le Mécano 4  
-Peacekeeper 4   Prapor 4   Ragman 4  
-Ref 4   Skier 4   La Toubib 4  
+Marché Oui   Le Mécano 2   Prapor 4  
+Ref Non   Skier 1   La Toubib 3  
 
 *Créé avec [Totov Builder](http://localhost:3000)*`)
     })

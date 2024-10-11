@@ -1,3 +1,51 @@
+<script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
+import { IItem } from '../../models/item/IItem'
+import { IMagazine } from '../../models/item/IMagazine'
+import { ItemService } from '../../services/ItemService'
+import Services from '../../services/repository/Services'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import ItemIcon from '../ItemIconComponent.vue'
+import ContainerStats from './ContainerStatsComponent.vue'
+
+const props = defineProps<{
+  item: IItem
+}>()
+
+const acceptedAmmunition = ref<IItem[]>([])
+
+const ergonomicsModifier = computed(() => magazine.value.presetErgonomicsModifier ?? magazine.value.ergonomicsModifier)
+const hasModifiers = computed(() =>
+  ergonomicsModifier.value !== 0
+  || magazine.value.loadSpeedModifierPercentage !== 0
+  || magazine.value.checkSpeedModifierPercentage !== 0)
+const magazine = computed(() => props.item as IMagazine)
+
+onMounted(() => getAcceptedAmmunition())
+
+/**
+ * Gets the captions of the accepted ammunition.
+ */
+async function getAcceptedAmmunition() {
+  const itemService = Services.get(ItemService)
+  acceptedAmmunition.value = []
+
+  for (const acceptedAmmunitionId of magazine.value.acceptedAmmunitionIds) {
+    const ammunition = await itemService.getItem(acceptedAmmunitionId)
+    acceptedAmmunition.value.push(ammunition)
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <ContainerStats :item="magazine" />
   <div
@@ -81,54 +129,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-import { IItem } from '../../models/item/IItem'
-import { IMagazine } from '../../models/item/IMagazine'
-import { ItemService } from '../../services/ItemService'
-import Services from '../../services/repository/Services'
-import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
-import ItemIcon from '../ItemIconComponent.vue'
-import ContainerStats from './ContainerStatsComponent.vue'
-
-const props = defineProps<{
-  item: IItem
-}>()
-
-const acceptedAmmunition = ref<IItem[]>([])
-
-const ergonomicsModifier = computed(() => magazine.value.presetErgonomicsModifier ?? magazine.value.ergonomicsModifier)
-const hasModifiers = computed(() =>
-  ergonomicsModifier.value !== 0
-  || magazine.value.loadSpeedModifierPercentage !== 0
-  || magazine.value.checkSpeedModifierPercentage !== 0)
-const magazine = computed(() => props.item as IMagazine)
-
-onMounted(() => getAcceptedAmmunition())
-
-/**
- * Gets the captions of the accepted ammunition.
- */
-async function getAcceptedAmmunition() {
-  const itemService = Services.get(ItemService)
-  acceptedAmmunition.value = []
-
-  for (const acceptedAmmunitionId of magazine.value.acceptedAmmunitionIds) {
-    const ammunition = await itemService.getItem(acceptedAmmunitionId)
-    acceptedAmmunition.value.push(ammunition)
-  }
-}
-</script>
 
 
 

@@ -1,21 +1,3 @@
-<template>
-  <ContainerSummary :item="backpack" />
-  <WearableSummary
-    :item="backpack"
-    :show-empty-entries="showEmptyEntries"
-    :wearable-modifiers-override="wearableModifiers"
-  />
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IBackpack } from '../../models/item/IBackpack'
@@ -38,3 +20,21 @@ const props = withDefaults(
 const backpack = computed(() => props.item as IBackpack)
 const wearableModifiers = computed(() => props.wearableModifiersOverride ?? backpack.value.presetWearableModifiers)
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <ContainerSummary :item="backpack" />
+  <WearableSummary
+    :item="backpack"
+    :show-empty-entries="showEmptyEntries"
+    :wearable-modifiers-override="wearableModifiers"
+  />
+</template>

@@ -1,3 +1,162 @@
+<script setup lang="ts">
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { IItem } from '../models/item/IItem'
+import { IBuildSummary } from '../models/utils/IBuildSummary'
+import { BuildPropertiesService } from '../services/BuildPropertiesService'
+import { BuildService } from '../services/BuildService'
+import { GlobalSidebarService } from '../services/GlobalSidebarService'
+import Services from '../services/repository/Services'
+import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
+import InventoryPrice from './InventoryPriceComponent.vue'
+import ItemIcon from './ItemIconComponent.vue'
+import Tooltip from './TooltipComponent.vue'
+
+const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
+
+const props = withDefaults(
+  defineProps<{
+    buildSummary: IBuildSummary,
+    selectionButtonCaption?: string,
+    selectionButtonIcon?: string,
+    showActionsButton?: boolean,
+    showNotExported: boolean,
+    showShoppingList?: boolean
+  }>(),
+  {
+    selectionButtonCaption: undefined,
+    selectionButtonIcon: undefined,
+    showActionsButton: true,
+    showShoppingList: true
+  })
+
+const _buildService = Services.get(BuildService)
+const _globalSidebarService = Services.get(GlobalSidebarService)
+
+const itemsListElement = ref<HTMLDivElement>()
+const itemsListElementHasLeftScroll = ref(false)
+const itemsListElementHasRightScroll = ref(false)
+
+const itemsInInventorySlots = computed(() => props.buildSummary.shoppingList.filter(sli => sli.inventorySlotId != null))
+const notExportedTooltip = computed(() => {
+  if (props.buildSummary.exported) {
+    return ''
+  }
+
+  const tooltip = Services.get(BuildPropertiesService).getNotExportedTooltip(props.buildSummary.lastUpdated, props.buildSummary.lastExported)
+
+  return tooltip
+})
+const selectionButtonCaptionInternal = computed(() => {
+  if (props.selectionButtonCaption != null) {
+    return props.selectionButtonCaption
+  } else if (modelIsSelected.value) {
+    return 'caption.deselect'
+  } else {
+    return 'caption.select'
+  }
+})
+const selectionButtonIconInternal = computed(() => {
+  if (props.selectionButtonIcon != null) {
+    return props.selectionButtonIcon
+  } else if (modelIsSelected.value) {
+    return 'times'
+  } else {
+    return 'check'
+  }
+})
+
+onMounted(() => {
+  window.addEventListener('resize', onResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', onResize)
+})
+
+watch(() => itemsListElement.value?.scrollWidth, () => {
+  setItemsListElementHasScroll()
+})
+
+/**
+ * Displays the actions for the specified build.
+ */
+function displayActions() {
+  const build = _buildService.get(props.buildSummary.id)
+
+  if (build != null) {
+    _globalSidebarService.display({
+      displayedComponentType: 'BuildSidebar',
+      displayedComponentParameters: build
+    })
+  }
+}
+
+/**
+ * Displays the shopping list for the specified build.
+ */
+function displayShoppingList() {
+  _globalSidebarService.display({
+    displayedComponentType: 'ShoppingListSidebar',
+    displayedComponentParameters: {
+      buildName: props.buildSummary.name,
+      shoppingList: props.buildSummary.shoppingList
+    }
+  })
+}
+
+/**
+ * Displays the stats of an item.
+ * @param item - Item.
+ */
+function displayStats(item: IItem) {
+  _globalSidebarService.display({
+    displayedComponentType: 'StatsSidebar',
+    displayedComponentParameters: item
+  })
+}
+
+/**
+ * React to the horizontal scroll in the merchants list.
+ *
+ * Updates the values indicating whether left or right scroll are possible.
+ */
+function onItemsListScroll() {
+  setItemsListElementHasScroll()
+}
+
+/**
+ * Reacts to the window being resized.
+ *
+ * Sets a value indicating whether the items list is scrollable.
+ */
+function onResize() {
+  setItemsListElementHasScroll()
+}
+
+/**
+ * Checks whether the items list element has left and right scroll and sets a value indicating it.
+ */
+function setItemsListElementHasScroll() {
+  if (itemsListElement.value != null) {
+    itemsListElementHasLeftScroll.value = itemsListElement.value.scrollLeft !== 0
+    itemsListElementHasRightScroll.value = itemsListElement.value.scrollLeft + itemsListElement.value.clientWidth < itemsListElement.value.scrollWidth
+  } else {
+    itemsListElementHasLeftScroll.value = false
+    itemsListElementHasRightScroll.value = false
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
 <template>
   <Card
     class="build-card"
@@ -190,163 +349,6 @@
     </template>
   </Card>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { IItem } from '../models/item/IItem'
-import { IBuildSummary } from '../models/utils/IBuildSummary'
-import { BuildPropertiesService } from '../services/BuildPropertiesService'
-import { BuildService } from '../services/BuildService'
-import { GlobalSidebarService } from '../services/GlobalSidebarService'
-import Services from '../services/repository/Services'
-import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
-import InventoryPrice from './InventoryPriceComponent.vue'
-import ItemIcon from './ItemIconComponent.vue'
-
-const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
-
-const props = withDefaults(
-  defineProps<{
-    buildSummary: IBuildSummary,
-    selectionButtonCaption?: string,
-    selectionButtonIcon?: string,
-    showActionsButton?: boolean,
-    showNotExported: boolean,
-    showShoppingList?: boolean
-  }>(),
-  {
-    selectionButtonCaption: undefined,
-    selectionButtonIcon: undefined,
-    showActionsButton: true,
-    showShoppingList: true
-  })
-
-const _buildService = Services.get(BuildService)
-const _globalSidebarService = Services.get(GlobalSidebarService)
-
-const itemsListElement = ref<HTMLDivElement>()
-const itemsListElementHasLeftScroll = ref(false)
-const itemsListElementHasRightScroll = ref(false)
-
-const itemsInInventorySlots = computed(() => props.buildSummary.shoppingList.filter(sli => sli.inventorySlotId != null))
-const notExportedTooltip = computed(() => {
-  if (props.buildSummary.exported) {
-    return ''
-  }
-
-  const tooltip = Services.get(BuildPropertiesService).getNotExportedTooltip(props.buildSummary.lastUpdated, props.buildSummary.lastExported)
-
-  return tooltip
-})
-const selectionButtonCaptionInternal = computed(() => {
-  if (props.selectionButtonCaption != null) {
-    return props.selectionButtonCaption
-  } else if (modelIsSelected.value) {
-    return 'caption.deselect'
-  } else {
-    return 'caption.select'
-  }
-})
-const selectionButtonIconInternal = computed(() => {
-  if (props.selectionButtonIcon != null) {
-    return props.selectionButtonIcon
-  } else if (modelIsSelected.value) {
-    return 'times'
-  } else {
-    return 'check'
-  }
-})
-
-onMounted(() => {
-  window.addEventListener('resize', onResize)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', onResize)
-})
-
-watch(() => itemsListElement.value?.scrollWidth, () => {
-  setItemsListElementHasScroll()
-})
-
-/**
- * Displays the actions for the specified build.
- */
-function displayActions() {
-  const build = _buildService.get(props.buildSummary.id)
-
-  if (build != null) {
-    _globalSidebarService.display({
-      displayedComponentType: 'BuildSidebar',
-      displayedComponentParameters: build
-    })
-  }
-}
-
-/**
- * Displays the shopping list for the specified build.
- */
-function displayShoppingList() {
-  _globalSidebarService.display({
-    displayedComponentType: 'ShoppingListSidebar',
-    displayedComponentParameters: {
-      buildName: props.buildSummary.name,
-      shoppingList: props.buildSummary.shoppingList
-    }
-  })
-}
-
-/**
- * Displays the stats of an item.
- * @param item - Item.
- */
-function displayStats(item: IItem) {
-  _globalSidebarService.display({
-    displayedComponentType: 'StatsSidebar',
-    displayedComponentParameters: item
-  })
-}
-
-/**
- * React to the horizontal scroll in the merchants list.
- *
- * Updates the values indicating whether left or right scroll are possible.
- */
-function onItemsListScroll() {
-  setItemsListElementHasScroll()
-}
-
-/**
- * Reacts to the window being resized.
- *
- * Sets a value indicating whether the items list is scrollable.
- */
-function onResize() {
-  setItemsListElementHasScroll()
-}
-
-/**
- * Checks whether the items list element has left and right scroll and sets a value indicating it.
- */
-function setItemsListElementHasScroll() {
-  if (itemsListElement.value != null) {
-    itemsListElementHasLeftScroll.value = itemsListElement.value.scrollLeft !== 0
-    itemsListElementHasRightScroll.value = itemsListElement.value.scrollLeft + itemsListElement.value.clientWidth < itemsListElement.value.scrollWidth
-  } else {
-    itemsListElementHasLeftScroll.value = false
-    itemsListElementHasRightScroll.value = false
-  }
-}
-</script>
 
 
 

@@ -1,3 +1,21 @@
+<script setup lang="ts">
+import { IItem } from '../../models/item/IItem'
+import SortingData from '../../models/utils/SortingData'
+import { AmmunitionSortingFunctions } from '../../services/sorting/functions/AmmunitionSortingFunctions'
+import OptionHeaderSortButton from './OptionHeaderSortButtonComponent.vue'
+
+const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { required: true })
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="option-entry">
     <div class="option-value">
@@ -67,24 +85,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { IItem } from '../../models/item/IItem'
-import SortingData from '../../models/utils/SortingData'
-import { AmmunitionSortingFunctions } from '../../services/sorting/functions/AmmunitionSortingFunctions'
-import OptionHeaderSortButton from './OptionHeaderSortButtonComponent.vue'
-
-const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { required: true })
-</script>
 
 
 

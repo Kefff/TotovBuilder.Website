@@ -1,3 +1,197 @@
+<script setup lang="ts">
+import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import { IBuild } from '../../models/build/IBuild'
+import { IBuildsShareTypeOption } from '../../models/utils/IBuildsShareTypeOption'
+import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
+import { IBuildSummary } from '../../models/utils/IBuildSummary'
+import { BuildsShareSideBarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { IToolbarButton } from '../../models/utils/IToolbarButton'
+import vueI18n from '../../plugins/vueI18n'
+import { BuildPropertiesService } from '../../services/BuildPropertiesService'
+import { BuildService } from '../../services/BuildService'
+import { LogService } from '../../services/LogService'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
+import Services from '../../services/repository/Services'
+import BuildsList from '../BuildsListComponent.vue'
+import LanguageSelector from '../LanguageSelectorComponent.vue'
+import Loading from '../LoadingComponent.vue'
+import Toolbar from '../ToolbarComponent.vue'
+
+const props = defineProps<{ parameters: BuildsShareSideBarParameters }>()
+
+const _buildService = Services.get(BuildService)
+const _buildPropertiesService = Services.get(BuildPropertiesService)
+const _logService = Services.get(LogService)
+const _notificationService = Services.get(NotificationService)
+
+const typeOptions: IBuildsShareTypeOption[] = [
+  {
+    caption: 'caption.redditMarkdown',
+    icon: ['fab', 'reddit-alien'],
+    iconCssClass: 'builds-share-sidebar-type-option-reddit-icon',
+    type: 'redditMarkdown'
+  },
+  {
+    caption: 'caption.discordMarkdown',
+    icon: ['fab', 'discord'],
+    iconCssClass: 'builds-share-sidebar-type-option-discord-icon',
+    type: 'discordMarkdown'
+  },
+  {
+    caption: 'caption.simpleText',
+    icon: 'italic',
+    type: 'simpleText'
+  }
+]
+const toolbarButtons: IToolbarButton[] = [
+  {
+    action: selectBuildsToShare,
+    canBeMovedToSidebar: () => false,
+    caption: () => `${vueI18n.t('caption.share')}` + (selectedBuilds.value.length > 1 ? ` (${selectedBuilds.value.length})` : ''),
+    icon: () => 'download',
+    isDisabled: () => selectedBuilds.value?.length == 0,
+    name: 'share',
+    showCaption: () => 'always',
+    variant: () => 'success'
+  },
+  {
+    action: toggleSelection,
+    canBeMovedToSidebar: () => false,
+    caption: () => allSelected.value ? vueI18n.t('caption.deselectAll') : vueI18n.t('caption.selectAll'),
+    icon: () => allSelected.value ? 'folder-minus' : 'folder-plus',
+    isVisible: () => availableBuilds.value.length > 1,
+    name: 'toggleSelection',
+    style: () => 'outlined'
+  }
+]
+const availableBuilds = ref<IBuildSummary[]>([])
+const buildsExportToolbar = useTemplateRef('buildsExportToolbar')
+const buildsToShare = ref<IBuild[]>([])
+const includeEmojis = ref(true)
+const includeLink = ref(true)
+const includePrices = ref(true)
+const isLoading = ref(false)
+const language = ref<string>(vueI18n.locale.value)
+const linkOnly = ref(false)
+const selectedBuilds = ref<IBuildSummary[]>([])
+const text = ref<string>()
+const typeOption = ref<IBuildsShareTypeOption>()
+
+const allSelected = computed(() => selectedBuilds.value.length === availableBuilds.value.length)
+const buildsToTextType = computed(() => {
+  switch (typeOption.value?.type) {
+    case 'discordMarkdown':
+    case 'redditMarkdown':
+      return BuildsToTextType.markdown
+    case 'simpleText':
+      return BuildsToTextType.simpleText
+    default:
+      return undefined
+  }
+})
+const lengthCaption = computed(() => `${vueI18n.t('caption.length')}: ${text.value?.length.toLocaleString() ?? 0} ${vueI18n.t('caption.characters').toLocaleLowerCase()}`)
+const shareExplanation = computed(() => {
+  switch (typeOption.value?.type) {
+    case 'discordMarkdown':
+      return 'message.discordMarkdownExplanation'
+    case 'redditMarkdown':
+      return 'message.redditMarkdownExplanation'
+    default:
+      return undefined
+  }
+})
+const toolbarContainer = computed(() => buildsExportToolbar.value?.container)
+
+onMounted(() => initialize())
+
+/**
+ * Copies the text to the clipboard.
+ */
+function copyText() {
+  if (text.value == null) {
+    return
+  }
+
+  navigator.clipboard.writeText(text.value)
+    .then(() => {
+      _notificationService.notify(NotificationType.information, vueI18n.t('message.copied'))
+    })
+    .catch(() => {
+      _logService.logError('message.copyError')
+      _notificationService.notify(NotificationType.error, vueI18n.t('message.copyError'))
+    })
+}
+
+/**
+ * Gets the text.
+ */
+async function getText() {
+  isLoading.value = true
+
+  text.value = await _buildPropertiesService.toText(
+    buildsToShare.value,
+    {
+      includeEmojis: includeEmojis.value,
+      includeLink: includeLink.value,
+      includePrices: includePrices.value,
+      language: language.value,
+      linkOnly: linkOnly.value,
+      type: buildsToTextType.value!
+    })
+
+  isLoading.value = false
+}
+
+/**
+ * Initializes the component.
+ */
+function initialize() {
+  availableBuilds.value = props.parameters.buildSummaries ?? []
+  buildsToShare.value = props.parameters.buildToShare != null ? [props.parameters.buildToShare] : []
+
+  if (buildsToShare.value.length > 0 && typeOption.value != null) {
+    getText()
+  }
+}
+
+/**
+ * Selects the builds to share.
+ */
+function selectBuildsToShare() {
+  const builds: IBuild[] = []
+
+  for (const selectedBuild of selectedBuilds.value) {
+    const build = _buildService.get(selectedBuild.id)
+
+    if (build != null) {
+      builds.push(build)
+    }
+  }
+
+  buildsToShare.value = builds
+}
+
+/**
+ * Toggles the selection.
+ */
+function toggleSelection() {
+  if (allSelected.value) {
+    selectedBuilds.value = []
+  } else {
+    selectedBuilds.value = availableBuilds.value
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div
     class="builds-share-sidebar"
@@ -217,200 +411,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed, onMounted, ref, useTemplateRef } from 'vue'
-import { IBuild } from '../../models/build/IBuild'
-import { IBuildsShareTypeOption } from '../../models/utils/IBuildsShareTypeOption'
-import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
-import { IBuildSummary } from '../../models/utils/IBuildSummary'
-import { BuildsShareSideBarParameters } from '../../models/utils/IGlobalSidebarOptions'
-import { IToolbarButton } from '../../models/utils/IToolbarButton'
-import vueI18n from '../../plugins/vueI18n'
-import { BuildPropertiesService } from '../../services/BuildPropertiesService'
-import { BuildService } from '../../services/BuildService'
-import { LogService } from '../../services/LogService'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
-import Services from '../../services/repository/Services'
-import BuildsList from '../BuildsListComponent.vue'
-import LanguageSelector from '../LanguageSelectorComponent.vue'
-import Loading from '../LoadingComponent.vue'
-import Toolbar from '../ToolbarComponent.vue'
-
-const props = defineProps<{ parameters: BuildsShareSideBarParameters }>()
-
-const _buildService = Services.get(BuildService)
-const _buildPropertiesService = Services.get(BuildPropertiesService)
-const _logService = Services.get(LogService)
-const _notificationService = Services.get(NotificationService)
-
-const typeOptions: IBuildsShareTypeOption[] = [
-  {
-    caption: 'caption.redditMarkdown',
-    icon: ['fab', 'reddit-alien'],
-    iconCssClass: 'builds-share-sidebar-type-option-reddit-icon',
-    type: 'redditMarkdown'
-  },
-  {
-    caption: 'caption.discordMarkdown',
-    icon: ['fab', 'discord'],
-    iconCssClass: 'builds-share-sidebar-type-option-discord-icon',
-    type: 'discordMarkdown'
-  },
-  {
-    caption: 'caption.simpleText',
-    icon: 'italic',
-    type: 'simpleText'
-  }
-]
-const toolbarButtons: IToolbarButton[] = [
-  {
-    action: selectBuildsToShare,
-    canBeMovedToSidebar: () => false,
-    caption: () => `${vueI18n.t('caption.share')}` + (selectedBuilds.value.length > 1 ? ` (${selectedBuilds.value.length})` : ''),
-    icon: () => 'download',
-    isDisabled: () => selectedBuilds.value?.length == 0,
-    name: 'share',
-    showCaption: () => 'always',
-    variant: () => 'success'
-  },
-  {
-    action: toggleSelection,
-    canBeMovedToSidebar: () => false,
-    caption: () => allSelected.value ? vueI18n.t('caption.deselectAll') : vueI18n.t('caption.selectAll'),
-    icon: () => allSelected.value ? 'folder-minus' : 'folder-plus',
-    isVisible: () => availableBuilds.value.length > 1,
-    name: 'toggleSelection',
-    style: () => 'outlined'
-  }
-]
-const availableBuilds = ref<IBuildSummary[]>([])
-const buildsExportToolbar = useTemplateRef('buildsExportToolbar')
-const buildsToShare = ref<IBuild[]>([])
-const includeEmojis = ref(true)
-const includeLink = ref(true)
-const includePrices = ref(true)
-const isLoading = ref(false)
-const language = ref<string>(vueI18n.locale.value)
-const linkOnly = ref(false)
-const selectedBuilds = ref<IBuildSummary[]>([])
-const text = ref<string>()
-const typeOption = ref<IBuildsShareTypeOption>()
-
-const allSelected = computed(() => selectedBuilds.value.length === availableBuilds.value.length)
-const buildsToTextType = computed(() => {
-  switch (typeOption.value?.type) {
-    case 'discordMarkdown':
-    case 'redditMarkdown':
-      return BuildsToTextType.markdown
-    case 'simpleText':
-      return BuildsToTextType.simpleText
-    default:
-      return undefined
-  }
-})
-const lengthCaption = computed(() => `${vueI18n.t('caption.length')}: ${text.value?.length.toLocaleString() ?? 0} ${vueI18n.t('caption.characters').toLocaleLowerCase()}`)
-const shareExplanation = computed(() => {
-  switch (typeOption.value?.type) {
-    case 'discordMarkdown':
-      return 'message.discordMarkdownExplanation'
-    case 'redditMarkdown':
-      return 'message.redditMarkdownExplanation'
-    default:
-      return undefined
-  }
-})
-const toolbarContainer = computed(() => buildsExportToolbar.value?.container)
-
-onMounted(() => initialize())
-
-/**
- * Copies the text to the clipboard.
- */
-function copyText() {
-  if (text.value == null) {
-    return
-  }
-
-  navigator.clipboard.writeText(text.value)
-    .then(() => {
-      _notificationService.notify(NotificationType.information, vueI18n.t('message.copied'))
-    })
-    .catch(() => {
-      _logService.logError('message.copyError')
-      _notificationService.notify(NotificationType.error, vueI18n.t('message.copyError'))
-    })
-}
-
-/**
- * Gets the text.
- */
-async function getText() {
-  isLoading.value = true
-
-  text.value = await _buildPropertiesService.toText(
-    buildsToShare.value,
-    {
-      includeEmojis: includeEmojis.value,
-      includeLink: includeLink.value,
-      includePrices: includePrices.value,
-      language: language.value,
-      linkOnly: linkOnly.value,
-      type: buildsToTextType.value!
-    })
-
-  isLoading.value = false
-}
-
-/**
- * Initializes the component.
- */
-function initialize() {
-  availableBuilds.value = props.parameters.buildSummaries ?? []
-  buildsToShare.value = props.parameters.buildToShare != null ? [props.parameters.buildToShare] : []
-
-  if (buildsToShare.value.length > 0 && typeOption.value != null) {
-    getText()
-  }
-}
-
-/**
- * Selects the builds to share.
- */
-function selectBuildsToShare() {
-  const builds: IBuild[] = []
-
-  for (const selectedBuild of selectedBuilds.value) {
-    const build = _buildService.get(selectedBuild.id)
-
-    if (build != null) {
-      builds.push(build)
-    }
-  }
-
-  buildsToShare.value = builds
-}
-
-/**
- * Toggles the selection.
- */
-function toggleSelection() {
-  if (allSelected.value) {
-    selectedBuilds.value = []
-  } else {
-    selectedBuilds.value = availableBuilds.value
-  }
-}
-</script>
 
 
 

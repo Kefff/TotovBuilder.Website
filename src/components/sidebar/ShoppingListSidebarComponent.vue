@@ -1,3 +1,25 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { ShoppingListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
+import StringUtils from '../../utils/StringUtils'
+import PriceDetailItem from '../PriceDetailItemComponent.vue'
+import ShoppingListMerchantsList from '../ShoppingListMerchantsListComponent.vue'
+
+const props = defineProps<{ parameters: ShoppingListSidebarParameters }>()
+
+const shoppingListItems = computed(() => props.parameters.shoppingList.filter(shl => shl.ignorePrice === IgnoredUnitPrice.notIgnored || shl.ignorePrice === IgnoredUnitPrice.manuallyIgnored))
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="sidebar-option">
     <div class="shopping-list-sidebar">
@@ -29,28 +51,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { ShoppingListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
-import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
-import StringUtils from '../../utils/StringUtils'
-import PriceDetailItem from '../PriceDetailItemComponent.vue'
-import ShoppingListMerchantsList from '../ShoppingListMerchantsListComponent.vue'
-
-const props = defineProps<{ parameters: ShoppingListSidebarParameters }>()
-
-const shoppingListItems = computed(() => props.parameters.shoppingList.filter(shl => shl.ignorePrice === IgnoredUnitPrice.notIgnored || shl.ignorePrice === IgnoredUnitPrice.manuallyIgnored))
-</script>
 
 
 

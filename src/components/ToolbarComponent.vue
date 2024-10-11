@@ -1,53 +1,3 @@
-<template>
-  <Sticky
-    ref="stickyElement"
-    v-model:is-in-global-sidebar="isInGlobalSidebar"
-    v-model:is-stickied="isStickied"
-    class="toolbar-container"
-    width="fill"
-  >
-    <div
-      class="toolbar"
-      :class="stickiedClasses"
-    >
-      <div class="toolbar-line">
-        <div class="toolbar-line-left">
-          <ToolbarButton
-            v-if="hiddenButtons.length > 0"
-            :button="displayToolbarSidebarButton"
-          />
-          <ToolbarButton
-            v-for="button of leftDisplayedButtons"
-            :key="button.name"
-            :button="button"
-          />
-          <slot name="left" />
-        </div>
-        <div class="toolbar-line-center">
-          <slot name="center" />
-        </div>
-        <div class="toolbar-line-right">
-          <ToolbarButton
-            v-for="button of rightDisplayedButtons"
-            :key="button.name"
-            :button="button"
-          />
-          <slot name="right" />
-        </div>
-      </div>
-    </div>
-  </Sticky>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
@@ -136,6 +86,56 @@ function setButtonsAreHidden() {
 </script>
 
 
+
+
+
+
+
+
+
+
+
+
+<template>
+  <Sticky
+    ref="stickyElement"
+    v-model:is-in-global-sidebar="isInGlobalSidebar"
+    v-model:is-stickied="isStickied"
+    class="toolbar-container"
+    width="fill"
+  >
+    <div
+      class="toolbar"
+      :class="stickiedClasses"
+    >
+      <div class="toolbar-line">
+        <div class="toolbar-line-left">
+          <ToolbarButton
+            v-if="hiddenButtons.length > 0"
+            :button="displayToolbarSidebarButton"
+          />
+          <ToolbarButton
+            v-for="button of leftDisplayedButtons"
+            :key="button.name"
+            :button="button"
+          />
+          <slot name="left" />
+        </div>
+        <div class="toolbar-line-center">
+          <slot name="center" />
+        </div>
+        <div class="toolbar-line-right">
+          <ToolbarButton
+            v-for="button of rightDisplayedButtons"
+            :key="button.name"
+            :button="button"
+          />
+          <slot name="right" />
+        </div>
+      </div>
+    </div>
+  </Sticky>
+</template>
 
 
 

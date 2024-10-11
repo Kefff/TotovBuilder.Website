@@ -1,27 +1,3 @@
-<template>
-  <div class="item-icon">
-    <img
-      v-if="iconUrl != null"
-      :src="iconUrl"
-    >
-    <div
-      v-if="quantity != null && quantity > 1"
-      class="item-icon-quantity"
-    >
-      {{ quantity }}
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IItem } from '../models/item/IItem'
@@ -47,6 +23,30 @@ const iconUrl = computed(() => {
   }
 })
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="item-icon">
+    <img
+      v-if="iconUrl != null"
+      :src="iconUrl"
+    >
+    <div
+      v-if="quantity != null && quantity > 1"
+      class="item-icon-quantity"
+    >
+      {{ quantity }}
+    </div>
+  </div>
+</template>
 
 
 

@@ -1,24 +1,3 @@
-<template>
-  <Item
-    :accepted-items-category-id="acceptedItemsCategoryId"
-    :accepted-items="acceptedItems"
-    :can-be-looted="canBeLooted"
-    :inventory-item="modelInventoryItem"
-    :is-main-inventory-slot-item="true"
-    :path="`${path}/${PathUtils.itemPrefix}${modelInventoryItem?.itemId ?? 'empty'}`"
-    @update:inventory-item="onItemChanged($event)"
-  />
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
@@ -26,7 +5,7 @@ import { IItem } from '../models/item/IItem'
 import { InventorySlotComponentService } from '../services/components/InventorySlotComponentService'
 import Services from '../services/repository/Services'
 import { PathUtils } from '../utils/PathUtils'
-import Item from './item/ItemComponent.vue'
+import Item from './ItemComponent.vue'
 
 const modelInventoryItem = defineModel<IInventoryItem>('inventoryItem')
 
@@ -85,4 +64,14 @@ function setOldInventoryItem() {
 
 
 
-<style scoped></style>
+<template>
+  <Item
+    :accepted-items-category-id="acceptedItemsCategoryId"
+    :accepted-items="acceptedItems"
+    :can-be-looted="canBeLooted"
+    :inventory-item="modelInventoryItem"
+    :is-main-inventory-slot-item="true"
+    :path="`${path}/${PathUtils.itemPrefix}${modelInventoryItem?.itemId ?? 'empty'}`"
+    @update:inventory-item="onItemChanged($event)"
+  />
+</template>

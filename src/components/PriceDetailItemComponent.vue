@@ -1,54 +1,3 @@
-<template>
-  <div class="price-detail-item">
-    <div
-      class="price-detail-item-icon"
-      :class="canShowItemStats ? 'price-detail-item-clickable' : ''"
-      @click="displayItemStats(item)"
-    >
-      <ItemIcon
-        :item="item"
-        :quantity="quantity"
-      />
-    </div>
-    <div class="price-detail-item-name">
-      <span
-        :class="canShowItemStats ? 'price-detail-item-clickable' : ''"
-        @click="displayItemStats(item)"
-      >
-        {{ item.name }}
-      </span>
-    </div>
-    <div v-if="price != null && unitPrice != null">
-      <Price
-        :ignore-price-status="ignorePriceStatus"
-        :missing="missing"
-        :price="price"
-      />
-      <div
-        v-if="quantity > 1"
-        class="price-detail-item-price-per-unit"
-      >
-        <Price
-          :ignore-price-status="ignorePriceStatus"
-          :missing="missing"
-          :price="unitPrice"
-          :show-merchant-icon="false"
-          :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
-        />
-      </div>
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { IItem } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
@@ -92,6 +41,57 @@ function displayItemStats(item: IItem) {
   })
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="price-detail-item">
+    <div
+      class="price-detail-item-icon"
+      :class="canShowItemStats ? 'price-detail-item-clickable' : ''"
+      @click="displayItemStats(item)"
+    >
+      <ItemIcon
+        :item="item"
+        :quantity="quantity"
+      />
+    </div>
+    <div class="price-detail-item-name">
+      <span
+        :class="canShowItemStats ? 'price-detail-item-clickable' : ''"
+        @click="displayItemStats(item)"
+      >
+        {{ item.name }}
+      </span>
+    </div>
+    <div v-if="price != null && unitPrice != null">
+      <Price
+        :ignore-price-status="ignorePriceStatus"
+        :missing="missing"
+        :price="price"
+      />
+      <div
+        v-if="quantity > 1"
+        class="price-detail-item-price-per-unit"
+      >
+        <Price
+          :ignore-price-status="ignorePriceStatus"
+          :missing="missing"
+          :price="unitPrice"
+          :show-merchant-icon="false"
+          :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
+        />
+      </div>
+    </div>
+  </div>
+</template>
 
 
 

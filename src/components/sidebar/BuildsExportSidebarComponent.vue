@@ -1,34 +1,3 @@
-<template>
-  <div class="builds-export-sidebar">
-    <div class="sidebar-option">
-      <div>
-        <Toolbar
-          ref="buildsExportToolbar"
-          :buttons="toolbarButtons"
-          style="margin-top: 1px;"
-        />
-        <BuildsList
-          v-model:selected-builds="selectedBuilds"
-          :build-summaries="parameters"
-          :element-to-stick-to="toolbarContainer"
-          :grid-max-columns="1"
-          :show-actions-button="false"
-          :show-not-exported="true"
-        />
-      </div>
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
@@ -125,6 +94,37 @@ function toggleSelection() {
   }
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="builds-export-sidebar">
+    <div class="sidebar-option">
+      <div>
+        <Toolbar
+          ref="buildsExportToolbar"
+          :buttons="toolbarButtons"
+          style="margin-top: 1px;"
+        />
+        <BuildsList
+          v-model:selected-builds="selectedBuilds"
+          :build-summaries="parameters"
+          :element-to-stick-to="toolbarContainer"
+          :grid-max-columns="1"
+          :show-actions-button="false"
+          :show-not-exported="true"
+        />
+      </div>
+    </div>
+  </div>
+</template>
 
 
 

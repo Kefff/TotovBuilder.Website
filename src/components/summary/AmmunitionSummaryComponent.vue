@@ -1,3 +1,36 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IAmmunition } from '../../models/item/IAmmunition'
+import { IItem } from '../../models/item/IItem'
+import { TarkovValuesService } from '../../services/TarkovValuesService'
+import Services from '../../services/repository/Services'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import Tooltip from '../TooltipComponent.vue'
+
+const props = withDefaults(
+  defineProps<{
+    item: IItem,
+    showEmptyEntries?: boolean
+  }>(),
+  {
+    showEmptyEntries: true
+  })
+
+const _chestHp = Services.get(TarkovValuesService).values.chestHp
+
+const ammunition = computed(() => props.item as IAmmunition)
+const canOneshot = computed(() => ammunition.value.fleshDamage >= _chestHp)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="option-entry">
     <div class="option-value">
@@ -107,38 +140,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { IAmmunition } from '../../models/item/IAmmunition'
-import { IItem } from '../../models/item/IItem'
-import { TarkovValuesService } from '../../services/TarkovValuesService'
-import Services from '../../services/repository/Services'
-import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
-
-const props = withDefaults(
-  defineProps<{
-    item: IItem,
-    showEmptyEntries?: boolean
-  }>(),
-  {
-    showEmptyEntries: true
-  })
-
-const _chestHp = Services.get(TarkovValuesService).values.chestHp
-
-const ammunition = computed(() => props.item as IAmmunition)
-const canOneshot = computed(() => ammunition.value.fleshDamage >= _chestHp)
-</script>
 
 
 

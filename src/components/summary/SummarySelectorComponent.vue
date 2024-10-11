@@ -1,25 +1,3 @@
-<template>
-  <ItemSummary
-    v-if="item != null"
-    :item="item"
-  >
-    <component
-      :is="specializedComponent"
-      v-if="specializedComponent != null"
-      :item="item"
-    />
-  </ItemSummary>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
@@ -106,3 +84,25 @@ function getSpecializedComponent(itemCategoryId: string) {
   }
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <ItemSummary
+    v-if="item != null"
+    :item="item"
+  >
+    <component
+      :is="specializedComponent"
+      v-if="specializedComponent != null"
+      :item="item"
+    />
+  </ItemSummary>
+</template>

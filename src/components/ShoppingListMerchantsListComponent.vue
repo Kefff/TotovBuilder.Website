@@ -1,46 +1,3 @@
-<template>
-  <div class="shopping-list-merchants-list-container">
-    <div
-      class="shopping-list-merchants-list-left-scroll-indicator"
-      :style="merchantsListElementHasLeftScroll ? 'display: initial' : 'display: none'"
-    />
-    <div
-      v-if="merchants.length > 0"
-      ref="merchantsListElement"
-      class="shopping-list-merchants-list"
-      @scroll="onMerchantsListScroll"
-    >
-      <div>
-        <div
-          v-for="merchant of merchants"
-          :key="merchant.name"
-        >
-          <Tooltip :tooltip="$t('caption.merchant_' + merchant.name) + (merchant.level !== 0 ? ` ${$t('caption.level').toLowerCase()} ${merchant.level}` : '')">
-            <MerchantIcon
-              :merchant="merchant.name"
-              :merchant-level="merchant.level"
-              :show-tooltip="true"
-            />
-          </Tooltip>
-        </div>
-      </div>
-    </div>
-    <div
-      class="shopping-list-merchants-list-right-scroll-indicator"
-      :style="merchantsListElementHasRightScroll ? 'display: initial' : 'display: none'"
-    />
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
@@ -48,6 +5,7 @@ import { IShoppingListMerchant } from '../models/utils/IShoppingListMerchant'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import Services from '../services/repository/Services'
 import MerchantIcon from './MerchantIconComponent.vue'
+import Tooltip from './TooltipComponent.vue'
 
 const props = defineProps<{ shoppingList: IShoppingListItem[] }>()
 
@@ -112,6 +70,49 @@ function setMerchantsListElementHasScroll() {
   }
 }
 </script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="shopping-list-merchants-list-container">
+    <div
+      class="shopping-list-merchants-list-left-scroll-indicator"
+      :style="merchantsListElementHasLeftScroll ? 'display: initial' : 'display: none'"
+    />
+    <div
+      v-if="merchants.length > 0"
+      ref="merchantsListElement"
+      class="shopping-list-merchants-list"
+      @scroll="onMerchantsListScroll"
+    >
+      <div>
+        <div
+          v-for="merchant of merchants"
+          :key="merchant.name"
+        >
+          <Tooltip :tooltip="$t('caption.merchant_' + merchant.name) + (merchant.level !== 0 ? ` ${$t('caption.level').toLowerCase()} ${merchant.level}` : '')">
+            <MerchantIcon
+              :merchant="merchant.name"
+              :merchant-level="merchant.level"
+              :show-tooltip="true"
+            />
+          </Tooltip>
+        </div>
+      </div>
+    </div>
+    <div
+      class="shopping-list-merchants-list-right-scroll-indicator"
+      :style="merchantsListElementHasRightScroll ? 'display: initial' : 'display: none'"
+    />
+  </div>
+</template>
 
 
 
