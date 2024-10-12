@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
+import { computed, inject, onMounted, onUnmounted, Ref, ref, useTemplateRef, watch } from 'vue'
 import { IItem } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
@@ -42,7 +42,7 @@ const props = withDefaults(
 const _globalFilterService = Services.get(GlobalFilterService)
 const _itemService = Services.get(ItemService)
 
-const _isTouchScreen = inject<boolean>('isTouchScreen')
+const _isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
 const _mainCurrency = _itemService.getMainCurrency()
 
 const barterItemPrices = ref<IInventoryItemPrice[]>([])
@@ -81,7 +81,7 @@ const priceTooltip = computed(() => {
     tooltip += ` ${props.tooltipSuffix}`
   }
 
-  if (canShowDetails.value && !_isTouchScreen) {
+  if (canShowDetails.value && !_isTouchScreen?.value) {
     tooltip += ` ${vueI18n.t('caption.clickForDetails')}`
   }
 

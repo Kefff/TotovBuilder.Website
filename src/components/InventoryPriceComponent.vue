@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, useTemplateRef } from 'vue'
+import { computed, inject, Ref, useTemplateRef } from 'vue'
 import { ICurrency } from '../models/configuration/ICurrency'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import vueI18n from '../plugins/vueI18n'
@@ -21,7 +21,7 @@ const props = withDefaults(
     showMissingPriceSpot: false
   })
 
-const _isTouchScreen = inject<boolean>('isTouchScreen')
+const _isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
 let _mainCurrency: ICurrency | undefined
 
 const inventoryPriceDetailPanel = useTemplateRef('inventoryPriceDetailPanel')
@@ -38,7 +38,7 @@ const priceInMainCurrency = computed(() => props.inventoryPrice.priceByCurrency.
 const tooltip = computed(() => {
   let value: string = props.customTooltip ?? vueI18n.t('caption.price')
 
-  if (canShowDetails.value && !_isTouchScreen) {
+  if (canShowDetails.value && !_isTouchScreen?.value) {
     value += ` ${vueI18n.t('caption.clickForDetails')}`
   }
 

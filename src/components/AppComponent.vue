@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useBreakpoints, useMediaQuery } from '@vueuse/core'
 import { computed, defineAsyncComponent, onMounted, provide, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Images from '../images'
@@ -19,12 +20,18 @@ const GlobalSidebar = defineAsyncComponent(() =>
   import('./sidebar/GlobalSidebarComponent.vue')
 )
 
-const _router = useRouter()
 const _versionService = Services.get(VersionService)
 const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
-
-const _isTouchScreen = matchMedia('(hover: none)').matches
+const _breakPoints = useBreakpoints({
+  smartphonePortrait: 0,
+  smartphoneLandscape: 481,
+  tabletPortrait: 768,
+  tabletLandscape: 992,
+  pc: 1300
+})
+const _isTouchScreen = useMediaQuery('(hover: none)') // cf. https://stackoverflow.com/a/63666289
+const _router = useRouter()
 
 const bugReportUrl = ref<string>()
 const contactAddress = ref<string>()
@@ -52,7 +59,8 @@ const isSanta = computed(() => {
   return date.getTime() >= santaMinDate && date.getTime() <= santaMaxDate
 })
 
-provide('isTouchScreen', _isTouchScreen) // cf. https://stackoverflow.com/a/63666289
+provide('isTouchScreen', _isTouchScreen)
+provide('screenWidth', _breakPoints.active())
 
 onMounted(() => {
   if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
