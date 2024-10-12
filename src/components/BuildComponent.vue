@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useBreakpoints } from '@vueuse/core'
 import { computed, nextTick, onMounted, onUnmounted, provide, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
@@ -20,6 +21,7 @@ import { ItemService } from '../services/ItemService'
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
 import { PathUtils } from '../utils/PathUtils'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 import InputTextField from './InputTextFieldComponent.vue'
 import InventorySlot from './InventorySlotComponent.vue'
 import Loading from './LoadingComponent.vue'
@@ -166,7 +168,14 @@ const build = ref<IBuild>({
 })
 const buildToolbar = ref()
 const collapseStatuses = ref<boolean[]>([])
-const deleting = ref(false)
+const confirmationDialogCancelButtonAction = ref<() => void | Promise<void>>()
+const confirmationDialogCancelButtonCaption = ref<string>()
+const confirmationDialogCancelButtonOutlined = ref(false)
+const confirmationDialogConfirmButtonAction = ref<() => void | Promise<void>>()
+const confirmationDialogConfirmButtonCaption = ref<string>()
+const confirmationDialogConfirmButtonOutlined = ref(false)
+const confirmationDialogIsDisplayed = ref(false)
+const confirmationDialogMessage = ref<string>()
 const isEditing = ref(false)
 const generalOptionsSidebarVisible = ref(false)
 const isLoading = ref(true)
@@ -199,12 +208,15 @@ const summary = ref<IBuildSummary>({
   weight: 0
 })
 
+const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const invalid = computed(() => build.value.name === '')
 const isEmpty = computed(() => !build.value.inventorySlots.some(is => is.items.some(i => i != null)))
 const isNewBuild = computed(() => build.value.id === '')
 const notExportedTooltip = computed(() => !summary.value.exported ? _buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
 const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
 const toolbarContainer = computed(() => buildToolbar.value?.container)
+
+const isStandardSummaryDisplayed = breakpoints.greaterOrEqual('tabletLandscape')
 
 provide('isEditing', isEditing)
 
@@ -245,15 +257,8 @@ onUnmounted(() => {
 watch(() => route.params, onItemServiceInitialized)
 
 /**
-     * Cancels the deletion process.
-     */
-function cancelDelete() {
-  deleting.value = false
-}
-
-/**
-     * Cancels modifications and stops edit mode.
-     */
+ * Cancels modifications and stops edit mode.
+ */
 function cancelEdit() {
   isEditing.value = false
 
@@ -266,15 +271,8 @@ function cancelEdit() {
 }
 
 /**
-     * Confirms the deletion.
-     */
-function confirmDelete() {
-  remove()
-}
-
-/**
-     * Collapses all the inventory slots.
-     */
+ * Collapses all the inventory slots.
+ */
 function collapseAll() {
   generalOptionsSidebarVisible.value = false
 
@@ -286,8 +284,8 @@ function collapseAll() {
 }
 
 /**
-     * Creates a copy of the current build.
-     */
+ * Creates a copy of the current build.
+ */
 function copy() {
   if (isEditing.value) {
     return
@@ -299,8 +297,8 @@ function copy() {
 }
 
 /**
-     * Displays the general options.
-     */
+ * Displays the general options.
+ */
 function displayGeneralOptions() {
   _globalSidebarService.display({
     displayedComponentType: 'GeneralOptionsSidebar',
@@ -332,8 +330,8 @@ function displayGeneralOptions() {
 }
 
 /**
-     * Displays the share build sidebar.
-     */
+ * Displays the share build sidebar.
+ */
 function displayBuildsShareSideBar() {
   _globalSidebarService.display({
     displayedComponentParameters: {
@@ -344,8 +342,44 @@ function displayBuildsShareSideBar() {
 }
 
 /**
-     * Displays the merchant items options.
-     */
+ * Displays a confirmation dialog.
+ * @param message - Message to display in the dialog.
+ * @param confirmButtonCaption - Confirm button caption.
+ * @param confirmButtonAction - Confirm button action.
+ * @param confirmationButtonOutlined - Indicates whether the confirmation button is outlined.
+ * @param cancelButtonCaption - Cancel button caption.
+ * @param cancelButtonAction - Cancel button action.
+ * @param cancelButtonOutlined - Indicates whether the cancel button is outlined.
+ */
+function displayConfirmationDialog(
+  message: string,
+  confirmButtonCaption: string,
+  confirmButtonAction: () => void | Promise<void>,
+  confirmationButtonOutlined: boolean,
+  cancelButtonCaption: string,
+  cancelButtonAction: () => void | Promise<void>,
+  cancelButtonOutlined: boolean) {
+  confirmationDialogCancelButtonAction.value = async () => {
+    await cancelButtonAction()
+    confirmationDialogIsDisplayed.value = false
+  }
+  confirmationDialogCancelButtonCaption.value = cancelButtonCaption
+  confirmationDialogCancelButtonOutlined.value = cancelButtonOutlined
+
+  confirmationDialogConfirmButtonAction.value = async () => {
+    await confirmButtonAction()
+    confirmationDialogIsDisplayed.value = false
+  }
+  confirmationDialogConfirmButtonCaption.value = confirmButtonCaption
+  confirmationDialogConfirmButtonOutlined.value = confirmationButtonOutlined
+
+  confirmationDialogMessage.value = message
+  confirmationDialogIsDisplayed.value = true
+}
+
+/**
+ * Displays the merchant items options.
+ */
 function displayMerchantItemsOptions() {
   _globalSidebarService.display({
     displayedComponentType: 'MerchantItemsOptionsSidebar'
@@ -353,8 +387,8 @@ function displayMerchantItemsOptions() {
 }
 
 /**
-     * Displays the shopping list.
-     */
+ * Displays the shopping list.
+ */
 function displayShoppingList() {
   _globalSidebarService.display({
     displayedComponentParameters: {
@@ -366,8 +400,8 @@ function displayShoppingList() {
 }
 
 /**
-     * Expands all the inventory slots.
-     */
+ * Expands all the inventory slots.
+ */
 function expandAll() {
   generalOptionsSidebarVisible.value = false
 
@@ -379,8 +413,8 @@ function expandAll() {
 }
 
 /**
-     * Expands the inventory slots containing an item.
-     */
+ * Expands the inventory slots containing an item.
+ */
 function expandWithItem() {
   generalOptionsSidebarVisible.value = false
 
@@ -394,8 +428,8 @@ function expandWithItem() {
 }
 
 /**
-     * Exports the build.
-     */
+ * Exports the build.
+ */
 async function exportBuild() {
   if (isEditing.value || isNewBuild.value) {
     return
@@ -405,9 +439,9 @@ async function exportBuild() {
 }
 
 /**
-     * Gets a shared build from an encoded string that can be shared in a URL.
-     * @param sharableString - Encoded string that can be shared in a URL.
-     */
+ * Gets a shared build from an encoded string that can be shared in a URL.
+ * @param sharableString - Encoded string that can be shared in a URL.
+ */
 async function getSharedBuild(sharableString: string) {
   const sharedBuild = await Services.get(BuildService).fromSharableString(sharableString)
 
@@ -421,27 +455,27 @@ async function getSharedBuild(sharableString: string) {
 }
 
 /**
-     * Redirects to the builds page.
-     */
+ * Redirects to the builds page.
+ */
 function goToBuilds() {
   router.push({ name: 'Builds' })
 }
 
 /**
-     * Reacts to an armor compatibility check request.
-     *
-     * Checks whether an armor can be added to the build or not.
-     * @param request - Compatibility request.
-     */
+ * Reacts to an armor compatibility check request.
+ *
+ * Checks whether an armor can be added to the build or not.
+ * @param request - Compatibility request.
+ */
 function onArmorCompatibilityRequest(request: CompatibilityRequest) {
   request.setResult(_buildPropertiesService.canAddArmor(build.value))
 }
 
 /**
-     * Reacts to an inventory item being changed.
-     *
-     * Signals to the build one of its inventory slots has changed.
-     */
+ * Reacts to an inventory item being changed.
+ *
+ * Signals to the build one of its inventory slots has changed.
+ */
 function onInventorySlotChanged(index: number, newInventorySlot: IInventorySlot) {
   build.value.inventorySlots[index] = newInventorySlot
 
@@ -449,10 +483,10 @@ function onInventorySlotChanged(index: number, newInventorySlot: IInventorySlot)
 }
 
 /**
-     * Reacts to the item service being initialized.
-     *
-     * Initializes the build.
-     */
+ * Reacts to the item service being initialized.
+ *
+ * Initializes the build.
+ */
 function onItemServiceInitialized() {
   isLoading.value = true
 
@@ -475,9 +509,9 @@ function onItemServiceInitialized() {
 }
 
 /**
-     * Reacts to a keyboard event.
-     * @param event - Keyboard event.
-     */
+ * Reacts to a keyboard event.
+ * @param event - Keyboard event.
+ */
 async function onKeyDown(event: KeyboardEvent) {
   if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
     event.preventDefault() // Prevents the browser save action to be triggered
@@ -490,44 +524,44 @@ async function onKeyDown(event: KeyboardEvent) {
 }
 
 /**
-     * Reacts to the merchant filter being changed.
-     *
-     * Updates the build summary price to reflect the change in merchant filters.
-     */
+ * Reacts to the merchant filter being changed.
+ *
+ * Updates the build summary price to reflect the change in merchant filters.
+ */
 function onMerchantFilterChanged() {
   setSummary()
 }
 
 /**
-     * Reacts to a mod compatibility check request.
-     *
-     * Checks if a mod can be added to the selected item.
-     * @param request - Compatibility request that must be resolved.
-     */
+ * Reacts to a mod compatibility check request.
+ *
+ * Checks if a mod can be added to the selected item.
+ * @param request - Compatibility request that must be resolved.
+ */
 function onModCompatibilityRequest(request: CompatibilityRequest) {
   request.setResult(_buildPropertiesService.canAddMod(build.value, request.itemId, request.path))
 }
 
 /**
-     * Reacts to a tactical rig compatibility check request.
-     *
-     * Checks whether a tactical rig can be added to the build or not.
-     * @param request - Compatibility request.
-     */
+ * Reacts to a tactical rig compatibility check request.
+ *
+ * Checks whether a tactical rig can be added to the build or not.
+ * @param request - Compatibility request.
+ */
 function onTacticalRigCompatibilityRequest(request: CompatibilityRequest) {
   request.setResult(_buildPropertiesService.canAddVest(build.value, request.itemId))
 }
 
 /**
-     * Deletes the build.
-     */
+ * Deletes the build.
+ */
 function remove() {
   _buildComponentService.deleteBuild(router, build.value)
 }
 
 /**
-     * Saves the build.
-     */
+ * Saves the build.
+ */
 async function save() {
   isLoading.value = true
   await _buildComponentService.saveBuild(router, build.value)
@@ -539,8 +573,8 @@ async function save() {
 }
 
 /**
-     * Sets the values of the summary of the content of the build.
-     */
+ * Sets the values of the summary of the content of the build.
+ */
 async function setSummary() {
   if (build.value == null) {
     return
@@ -550,15 +584,22 @@ async function setSummary() {
 }
 
 /**
-     * Displays the deletion confirmation dialog.
-     */
+ * Displays the deletion confirmation dialog.
+ */
 function startDelete() {
-  deleting.value = true
+  displayConfirmationDialog(
+    vueI18n.t('message.confirmDeleteBuild', { name: build.value.name }),
+    vueI18n.t('caption.delete'),
+    remove,
+    false,
+    vueI18n.t('caption.cancel'),
+    () => { },
+    true)
 }
 
 /**
-     * Starts the edit mode.
-     */
+ * Starts the edit mode.
+ */
 function startEdit() {
   isEditing.value = true
 
@@ -639,10 +680,18 @@ function startEdit() {
       </template>
     </Toolbar>
     <BuildSummary
+      v-if="isStandardSummaryDisplayed"
+      class="build-build-summary build-standard-build-summary "
       :element-to-stick-to="toolbarContainer"
       :is-loading="isLoading"
       :summary="summary"
     />
+    <div
+      v-else
+      class="build-build-summary"
+    >
+      hello
+    </div>
 
     <!-- Inventory slots -->
     <div
@@ -692,36 +741,40 @@ function startEdit() {
 
   <!-- Deletion confirmation dialog -->
   <Dialog
-    v-model:visible="deleting"
+    v-model:visible="confirmationDialogIsDisplayed"
     :closable="false"
     :modal="true"
     :draggable="false"
   >
     <div>
-      <span>{{ $t('message.confirmDeleteBuild', { name: build.name }) }}</span>
+      <span>{{ confirmationDialogMessage }}</span>
     </div>
     <template #footer>
       <div class="build-deletion-confirmation-buttons">
         <Button
-          :label="$t('caption.delete')"
           severity="danger"
-          @click="confirmDelete()"
+          :outlined="confirmationDialogConfirmButtonOutlined"
+          @click="confirmationDialogConfirmButtonAction"
         >
           <font-awesome-icon
             icon="trash"
             class="icon-before-text"
           />
-          <span>{{ $t('caption.delete') }}</span>
+          <span>
+            {{ confirmationDialogConfirmButtonCaption }}
+          </span>
         </Button>
         <Button
-          outlined
-          @click="cancelDelete()"
+          :outlined="confirmationDialogCancelButtonOutlined"
+          @click="confirmationDialogCancelButtonAction"
         >
           <font-awesome-icon
             icon="undo"
             class="icon-before-text"
           />
-          <span>{{ $t('caption.cancel') }}</span>
+          <span>
+            {{ confirmationDialogCancelButtonCaption }}
+          </span>
         </Button>
       </div>
     </template>
@@ -750,16 +803,23 @@ function startEdit() {
   width: 100%;
 }
 
+.build-build-summary {
+  margin-bottom: 1rem;
+}
+
 .build-caliber-icon {
   width: 1.5rem !important;
 }
 
 .build-deletion-confirmation-buttons {
-  align-items: center;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
+}
+
+.build-deletion-confirmation-buttons > button {
+  display: flex;
   justify-content: center;
-  width: 100%;
 }
 
 .build-empty-message {
@@ -804,6 +864,10 @@ function startEdit() {
 .build-not-exported {
   color: var(--warning-color);
   margin-left: 0.5rem;
+}
+
+.build-standard-build-summary {
+  margin-top: 1rem;
 }
 
 .build-title {

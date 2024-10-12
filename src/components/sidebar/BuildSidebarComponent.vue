@@ -200,11 +200,14 @@ function exportBuild() {
 }
 
 .build-sidebar-deletion-confirmation-buttons {
-  align-items: center;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
+}
+
+.build-sidebar-deletion-confirmation-buttons > button {
+  display: flex;
   justify-content: center;
-  width: 100%;
 }
 
 .build-sidebar-name {

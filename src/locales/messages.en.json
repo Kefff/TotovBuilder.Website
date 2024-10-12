@@ -376,7 +376,7 @@
     "changelogLoadingError": "Something went wrong while loading the changelog.\nWait a bit and before trying to open it again.",
     "changelogNotFetched": "No changelog could be fetched.",
     "configuringService": "Configuring service \"{name}\".",
-    "confirmDeleteBuild": "Do you really want to delete \"{name}\" ?",
+    "confirmDeleteBuild": "Do you really want to delete build \"{name}\" ?",
     "cookiesExplanation": "Totov Builder uses cookies to anonymously detect errors that may occur during your visit.\nAccepting cookies is not necessary but helps to improve the website.",
     "copied": "Copied to clipboard.",
     "copyError": "Error while copying to clipboard.",

@@ -20,10 +20,10 @@ const props = withDefaults(
     tooltip: undefined
   })
 
-const _isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
+const isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
 
 // cf. https://github.com/primefaces/primevue/issues/2255#issuecomment-1073903453
-const directiveArguments = computed(() => new DirectiveArguments(props.position, _isTouchScreen?.value ? 'focus' : undefined))
+const directiveArguments = computed(() => new DirectiveArguments(props.position, isTouchScreen?.value ? 'focus' : undefined))
 
 /**
  * Reacts to the click on the element the tooltip is attached to.
@@ -51,7 +51,7 @@ function onClick(event: MouseEvent) {
     v-if="tooltip != null"
     v-tooltip:[directiveArguments]="tooltip"
     :class="{ 'tooltip': applyHoverStyle }"
-    :tabindex="_isTouchScreen ? 9999 : undefined"
+    :tabindex="isTouchScreen ? 9999 : undefined"
     @click="onClick($event)"
   >
     <slot />

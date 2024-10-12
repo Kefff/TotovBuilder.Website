@@ -324,7 +324,7 @@
     "cannotAddTacticalRig": "Impossible de sélectionner un gilet tactique avec armure car un pare-balles a déjà été ajouté.",
     "cannotShareBuildTooLarge": "Impossible de partager par lien l'équipement \"{name}\" car il est trop volumineux. Vous pouvez quand même le partager en utilisant le bouton \"Sauvegarder des équipements dans un fichier\" pour le sauvegarder sous forme d'un fichier qui pourra être importé par une autre personne.",
     "changelogLoadingError": "Quelque chose s'est mal passé lors du chargement de la liste des changements.\nAttendez un peu avant de réessayer de l'afficher.",
-    "confirmDeleteBuild": "Voules-vous vraiment supprimer \"{name}\" ?",
+    "confirmDeleteBuild": "Voules-vous vraiment supprimer l'équipement \"{name}\" ?",
     "cookiesExplanation": "Totov Builder utilise des cookies pour détecter de manière anonyme des erreurs qui pourraient se produire durant votre visite.\nAccepter les cookies n'est pas nécessaire mais aide à l'amélioration du site web.",
     "copied": "Copié dans le presse-papier.",
     "copyError": "Erreur lors de la copie dans le presse-papier",
@@ -357,14 +357,14 @@
     "welcome4": "Les prix sont régulièrement mis à jour pour vous permettre de savoir exactement combien de roubles vous perdez à chaque mort !",
     "welcomeBack": "Bon retour parmi nous !",
     "welcomeConfigureMerchants": "Configurer marchands",
-    "welcomeLastBuilds": "Mes derniers équipements",
-    "welcomeShowBuilds": "Tous mes équipements",
     "welcomeInformation1": "A propros de la sauvegarde des équipements",
     "welcomeInformation2": "sauvegarde les équipements dans le navigateur web.",
     "welcomeInformation3": "Si vous effacer les données du navigateur ou fermez une fenêtre en mode incognito, ",
     "welcomeInformation4": "les équipements seront perdus",
     "welcomeInformation5": "Vous pouvez ",
     "welcomeInformation6": " et ",
-    "welcomeInformation7": " pour éviter cela."
+    "welcomeInformation7": " pour éviter cela.",
+    "welcomeLastBuilds": "Mes derniers équipements",
+    "welcomeShowBuilds": "Tous mes équipements"
   }
 }

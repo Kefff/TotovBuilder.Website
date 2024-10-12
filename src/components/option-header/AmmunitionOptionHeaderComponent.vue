@@ -80,7 +80,6 @@ const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { requir
         icon="bullseye"
         property="accuracyModifierPercentage"
         :sorting-functions="AmmunitionSortingFunctions"
-        @update:sorting-data="() => console.log('connard')"
       />
     </div>
   </div>

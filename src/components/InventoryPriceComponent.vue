@@ -21,10 +21,10 @@ const props = withDefaults(
     showMissingPriceSpot: false
   })
 
-const _isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
 let _mainCurrency: ICurrency | undefined
 
 const inventoryPriceDetailPanel = useTemplateRef('inventoryPriceDetailPanel')
+const isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
 
 const canShowDetails = computed(() => props.inventoryPrice.priceByCurrency.some(ip => ip.currencyName !== mainCurrency.value?.name))
 const mainCurrency = computed(() => {
@@ -38,7 +38,7 @@ const priceInMainCurrency = computed(() => props.inventoryPrice.priceByCurrency.
 const tooltip = computed(() => {
   let value: string = props.customTooltip ?? vueI18n.t('caption.price')
 
-  if (canShowDetails.value && !_isTouchScreen?.value) {
+  if (canShowDetails.value && !isTouchScreen?.value) {
     value += ` ${vueI18n.t('caption.clickForDetails')}`
   }
 

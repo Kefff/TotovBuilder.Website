@@ -42,12 +42,12 @@ const props = withDefaults(
 const _globalFilterService = Services.get(GlobalFilterService)
 const _itemService = Services.get(ItemService)
 
-const _isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
 const _mainCurrency = _itemService.getMainCurrency()
 
 const barterItemPrices = ref<IInventoryItemPrice[]>([])
 const barterItems = ref<IItem[]>([])
 const initialized = ref(false)
+const isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
 const priceDetailPanel = useTemplateRef('priceDetailPanel')
 
 const canShowDetails = computed(() => props.showDetails
@@ -81,7 +81,7 @@ const priceTooltip = computed(() => {
     tooltip += ` ${props.tooltipSuffix}`
   }
 
-  if (canShowDetails.value && !_isTouchScreen?.value) {
+  if (canShowDetails.value && !isTouchScreen?.value) {
     tooltip += ` ${vueI18n.t('caption.clickForDetails')}`
   }
 

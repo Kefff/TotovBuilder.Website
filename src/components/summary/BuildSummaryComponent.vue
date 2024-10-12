@@ -42,8 +42,8 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
 <template>
   <Sticky
     v-model:is-stickied="isBuildSummaryStickied"
-    align="center"
     :element-to-stick-to="elementToStickTo"
+    align="center"
     class="build-summary-container"
   >
     <div
@@ -196,7 +196,6 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
 
 .build-summary-container {
   margin-bottom: 1rem;
-  margin-top: 1rem;
 }
 
 .build-summary-group {
