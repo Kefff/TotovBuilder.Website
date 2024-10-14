@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBreakpoints } from '@vueuse/core'
-import { computed, nextTick, onMounted, onUnmounted, provide, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, provide, ref, useTemplateRef, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
 import { IInventorySlot } from '../models/build/IInventorySlot'
@@ -26,6 +26,7 @@ import InputTextField from './InputTextFieldComponent.vue'
 import InventorySlot from './InventorySlotComponent.vue'
 import Loading from './LoadingComponent.vue'
 import NotificationButton from './NotificationButtonComponent.vue'
+import Sticky from './StickyComponent.vue'
 import BuildSummary from './summary/BuildSummaryComponent.vue'
 import Toolbar from './ToolbarComponent.vue'
 import Tooltip from './TooltipComponent.vue'
@@ -166,7 +167,7 @@ const build = ref<IBuild>({
   lastWebsiteVersion: undefined,
   name: ''
 })
-const buildToolbar = ref()
+const buildToolbar = useTemplateRef('buildToolbar')
 const collapseStatuses = ref<boolean[]>([])
 const confirmationDialogCancelButtonAction = ref<() => void | Promise<void>>()
 const confirmationDialogCancelButtonCaption = ref<string>()
@@ -176,8 +177,9 @@ const confirmationDialogConfirmButtonCaption = ref<string>()
 const confirmationDialogConfirmButtonOutlined = ref(false)
 const confirmationDialogIsDisplayed = ref(false)
 const confirmationDialogMessage = ref<string>()
-const isEditing = ref(false)
 const generalOptionsSidebarVisible = ref(false)
+const isBuildSummaryStickied = ref(false)
+const isEditing = ref(false)
 const isLoading = ref(true)
 const summary = ref<IBuildSummary>({
   armorModifiers: {
@@ -216,7 +218,7 @@ const notExportedTooltip = computed(() => !summary.value.exported ? _buildProper
 const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
 const toolbarContainer = computed(() => buildToolbar.value?.container)
 
-const isStandardSummaryDisplayed = breakpoints.greaterOrEqual('tabletLandscape')
+const isCompactMode = breakpoints.smaller('tabletLandscape')
 
 provide('isEditing', isEditing)
 
@@ -623,7 +625,10 @@ function startEdit() {
 
 <template>
   <div class="build">
-    <div class="build-title build-title-outside-toolbar">
+    <div
+      v-if="isCompactMode"
+      class="build-title build-title-outside-toolbar"
+    >
       <div v-show="!isEditing">
         {{ build.name }}
       </div>
@@ -646,12 +651,22 @@ function startEdit() {
         />
       </Tooltip>
     </div>
+    <BuildSummary
+      v-if="isCompactMode"
+      :is-compact-mode="true"
+      :is-loading="isLoading"
+      :summary="summary"
+      class="build-comptact-summary"
+    />
     <Toolbar
       ref="buildToolbar"
       :buttons="_toolbarButtons"
     >
       <template #center>
-        <div class="build-title build-title-in-toolbar">
+        <div
+          v-if="!isCompactMode"
+          class="build-title build-title-in-toolbar"
+        >
           <div v-show="!isEditing">
             {{ build.name }}
           </div>
@@ -678,20 +693,31 @@ function startEdit() {
       <template #right>
         <NotificationButton />
       </template>
+      <template #under>
+        <div
+          v-if="!isLoading && isCompactMode"
+          class="build-summary-popup-button-container"
+        >
+          <div class="build-summary-popup-button">
+            <font-awesome-icon icon="chevron-down" />
+          </div>
+        </div>
+      </template>
     </Toolbar>
-    <BuildSummary
-      v-if="isStandardSummaryDisplayed"
-      class="build-build-summary build-standard-build-summary "
+    <Sticky
+      v-if="!isCompactMode"
+      v-model:is-stickied="isBuildSummaryStickied"
       :element-to-stick-to="toolbarContainer"
-      :is-loading="isLoading"
-      :summary="summary"
-    />
-    <div
-      v-else
-      class="build-build-summary"
+      align="center"
+      class="build-summary-container"
     >
-      hello
-    </div>
+      <BuildSummary
+        :is-compact-mode="false"
+        :is-loading="isLoading"
+        :is-stickied="isBuildSummaryStickied"
+        :summary="summary"
+      />
+    </Sticky>
 
     <!-- Inventory slots -->
     <div
@@ -803,12 +829,12 @@ function startEdit() {
   width: 100%;
 }
 
-.build-build-summary {
-  margin-bottom: 1rem;
-}
-
 .build-caliber-icon {
   width: 1.5rem !important;
+}
+
+.build-comptact-summary {
+  margin-bottom: 1rem;
 }
 
 .build-deletion-confirmation-buttons {
@@ -866,8 +892,34 @@ function startEdit() {
   margin-left: 0.5rem;
 }
 
-.build-standard-build-summary {
+.build-summary-container {
+  margin-bottom: 1rem;
   margin-top: 1rem;
+}
+
+.build-summary-popup-button {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: var(--primary-color6);
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  background-color: var(--primary-color);
+  display: flex;
+  justify-content: center;
+  width: 5rem;
+}
+
+.build-summary-popup-button:hover {
+  background-color: var(--primary-color2);
+  cursor: pointer;
+}
+
+.build-summary-popup-button-container {
+  display: flex;
+  height: 1rem;
+  justify-content: center;
+  margin-bottom: 0.15rem;
+  width: 100%;
 }
 
 .build-title {
@@ -894,40 +946,5 @@ function startEdit() {
   flex-direction: row;
   flex-wrap: nowrap;
   margin-left: auto;
-}
-
-/* Smartphone in portrait */
-@media only screen and (max-width: 480px) {
-  .build-title-in-toolbar {
-    display: none;
-  }
-}
-
-/* Smartphone in landscape */
-@media only screen and (min-width: 481px) and (max-width: 767px) {
-  .build-title-in-toolbar {
-    display: none;
-  }
-}
-
-/* Tablet in portrait */
-@media only screen and (min-width: 768px) and (max-width: 991px) {
-  .build-title-outside-toolbar {
-    display: none;
-  }
-}
-
-/* Tablet in landscape */
-@media only screen and (min-width: 992px) and (max-width: 1299px) {
-  .build-title-outside-toolbar {
-    display: none;
-  }
-}
-
-/* PC */
-@media only screen and (min-width: 1300px) {
-  .build-title-outside-toolbar {
-    display: none;
-  }
 }
 </style>

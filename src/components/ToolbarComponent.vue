@@ -134,6 +134,9 @@ function setButtonsAreHidden() {
         </div>
       </div>
     </div>
+    <div>
+      <slot name="under" />
+    </div>
   </Sticky>
 </template>
 
@@ -160,6 +163,8 @@ function setButtonsAreHidden() {
 }
 
 .toolbar-container {
+  display: flex;
+  flex-direction: column;
   width: 100%;
 }
 

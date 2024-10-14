@@ -117,6 +117,7 @@ function onScroll() {
 <style scoped>
 .sticky {
   display: flex;
+  max-width: 100%;
   position: sticky;
   z-index: 1;
 }
