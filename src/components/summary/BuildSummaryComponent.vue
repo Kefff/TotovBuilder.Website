@@ -44,8 +44,11 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
 <template>
   <div
     v-show="!isLoading"
-    class="build-summary"
-    :class="{ 'build-summary-stickied': isStickied }"
+    :class="{
+      'build-summary': !isCompactMode,
+      'build-summary-compact': isCompactMode,
+      'build-summary-stickied': isStickied
+    }"
   >
     <div
       v-if="hasSummaryStats"
@@ -104,6 +107,19 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
           class="icon-before-text"
         />
         <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, summary.armorModifiers.armorClass) }}</span>
+      </Tooltip>
+      <Tooltip
+        v-if="!hasSummaryErgonomics && hasSummaryErgonomicsModifierPercentage"
+        :tooltip="$t('caption.ergonomicsModifierPercentage')"
+        class="build-summary-value"
+      >
+        <font-awesome-icon
+          icon="hand-paper"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsModifierPercentage)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsModifierPercentage) }}
+        </span>
       </Tooltip>
       <Tooltip
         v-if="hasSummaryMovementSpeedModifierPercentage"
@@ -196,6 +212,25 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
   padding: 0.5rem;
 }
 
+.build-summary .icon-before-text {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.build-summary-compact {
+  align-items: center;
+  display: grid;
+  font-weight: bold;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  max-width: 100%;
+  padding: 0.5rem;
+}
+
+.build-summary-icon {
+  margin-left: 0.25rem;
+}
+
 .build-summary-container {
   margin-bottom: 1rem;
 }
@@ -204,19 +239,10 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
   align-items: center;
   display: flex;
   flex-direction: row;
-}
-
-.build-summary-group:nth-child(2) {
   justify-content: center;
 }
 
-.build-summary-group:nth-child(3) {
-  justify-content: right;
-}
 
-.build-summary-icon {
-  margin-left: 0.25rem;
-}
 
 .build-summary-stickied {
   border-top-left-radius: 0;
@@ -230,11 +256,6 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
   flex-wrap: nowrap;
   margin-right: 1rem;
   white-space: nowrap;
-}
-
-.build-summary-value .icon-before-text {
-  height: 1.5rem;
-  width: 1.5rem;
 }
 
 .build-summary-value:last-child {

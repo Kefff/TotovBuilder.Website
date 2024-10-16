@@ -133,6 +133,7 @@ function setButtonsAreHidden() {
           <slot name="right" />
         </div>
       </div>
+      <slot name="bottom" />
     </div>
     <div>
       <slot name="under" />

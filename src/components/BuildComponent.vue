@@ -625,39 +625,6 @@ function startEdit() {
 
 <template>
   <div class="build">
-    <div
-      v-if="isCompactMode"
-      class="build-title build-title-outside-toolbar"
-    >
-      <div v-show="!isEditing">
-        {{ build.name }}
-      </div>
-      <InputTextField
-        v-show="!isLoading && isEditing"
-        v-model:value="build.name"
-        :caption="$t('caption.name')"
-        :centered="true"
-        :required="true"
-        caption-mode="placeholder"
-        class="build-name"
-      />
-      <Tooltip
-        v-if="!isLoading && !summary.exported && !isNewBuild"
-        :tooltip="notExportedTooltip"
-      >
-        <font-awesome-icon
-          icon="exclamation-triangle"
-          class="build-not-exported"
-        />
-      </Tooltip>
-    </div>
-    <BuildSummary
-      v-if="isCompactMode"
-      :is-compact-mode="true"
-      :is-loading="isLoading"
-      :summary="summary"
-      class="build-comptact-summary"
-    />
     <Toolbar
       ref="buildToolbar"
       :buttons="_toolbarButtons"
@@ -665,7 +632,7 @@ function startEdit() {
       <template #center>
         <div
           v-if="!isCompactMode"
-          class="build-title build-title-in-toolbar"
+          class="build-title"
         >
           <div v-show="!isEditing">
             {{ build.name }}
@@ -693,13 +660,51 @@ function startEdit() {
       <template #right>
         <NotificationButton />
       </template>
+      <template #bottom>
+        <div
+          v-if="isCompactMode"
+          class="build-title build-title-compact"
+        >
+          <div v-show="!isEditing">
+            {{ build.name }}
+          </div>
+          <InputTextField
+            v-show="!isLoading && isEditing"
+            v-model:value="build.name"
+            :caption="$t('caption.name')"
+            :centered="true"
+            :required="true"
+            caption-mode="placeholder"
+            class="build-name"
+          />
+          <Tooltip
+            v-if="!isLoading && !summary.exported && !isNewBuild"
+            :tooltip="notExportedTooltip"
+          >
+            <font-awesome-icon
+              icon="exclamation-triangle"
+              class="build-not-exported"
+            />
+          </Tooltip>
+        </div>
+        <BuildSummary
+          v-if="isCompactMode"
+          :is-compact-mode="true"
+          :is-loading="isLoading"
+          :summary="summary"
+        />
+      </template>
       <template #under>
         <div
           v-if="!isLoading && isCompactMode"
           class="build-summary-popup-button-container"
         >
           <div class="build-summary-popup-button">
-            <font-awesome-icon icon="chevron-down" />
+            <font-awesome-icon
+              icon="clipboard-list"
+              class="icon-before-text"
+            />
+            <font-awesome-icon icon="chevron-up" />
           </div>
         </div>
       </template>
@@ -833,10 +838,6 @@ function startEdit() {
   width: 1.5rem !important;
 }
 
-.build-comptact-summary {
-  margin-bottom: 1rem;
-}
-
 .build-deletion-confirmation-buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -898,14 +899,17 @@ function startEdit() {
 }
 
 .build-summary-popup-button {
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
+  align-items: center;
+  background-color: var(--primary-color);
   border-bottom-color: var(--primary-color6);
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
-  background-color: var(--primary-color);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
   display: flex;
+  height: 1.25rem;
   justify-content: center;
+  position: absolute;
   width: 5rem;
 }
 
@@ -916,9 +920,9 @@ function startEdit() {
 
 .build-summary-popup-button-container {
   display: flex;
-  height: 1rem;
   justify-content: center;
-  margin-bottom: 0.15rem;
+  margin-bottom: 1rem;
+  position: relative;
   width: 100%;
 }
 
@@ -932,12 +936,9 @@ function startEdit() {
   white-space: preserve;
 }
 
-.build-title-in-toolbar {
-  height: 100%;
-}
-
-.build-title-outside-toolbar {
-  margin-bottom: 1rem;
+.build-title {
+  font-size: 1rem;
+  margin-top: 0.5rem;
 }
 
 .build-toolbar-right {
