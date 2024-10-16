@@ -11,7 +11,7 @@ const props = defineProps<{ buttons: IToolbarButton[] }>()
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
-const displayToolbarSidebarButton: IToolbarButton = {
+const _displayToolbarSidebarButton: IToolbarButton = {
   action: displayToolbarSideBar,
   caption: () => vueI18n.t('caption.menu'),
   icon: () => 'bars',
@@ -22,12 +22,7 @@ const displayToolbarSidebarButton: IToolbarButton = {
   style: () => 'discreet',
   tooltipPosition: () => 'left'
 }
-const hideButtonsWidth = 991
-
-const areButtonsHidden = ref(false)
-const isInGlobalSidebar = ref(false)
-const isStickied = ref(false)
-const stickyElement = useTemplateRef('stickyElement')
+const _hideButtonsWidth = 991
 
 const leftDisplayedButtons = computed(() =>
   areButtonsHidden.value
@@ -43,6 +38,11 @@ const stickiedClasses = computed(() => ({
   'toolbar-stickied-sidebar': isStickied.value && isInGlobalSidebar.value
 }))
 const toolbarContainer = computed(() => stickyElement.value?.container)
+
+const areButtonsHidden = ref(false)
+const isInGlobalSidebar = ref(false)
+const isStickied = ref(false)
+const stickyElement = useTemplateRef('stickyElement')
 
 // Exposing the main div to be able to use it as a reference to stick other elements to it.
 // This must be the whole computed and not just its value; otherwise the parent component does not receive the value.
@@ -81,7 +81,7 @@ function onResize() {
  * Set a value indicating whether the media query trigger for hiding buttons is reached.
  */
 function setButtonsAreHidden() {
-  areButtonsHidden.value = window.matchMedia(`only screen and (max-width: ${hideButtonsWidth}px)`).matches
+  areButtonsHidden.value = window.matchMedia(`only screen and (max-width: ${_hideButtonsWidth}px)`).matches
 }
 </script>
 
@@ -112,7 +112,7 @@ function setButtonsAreHidden() {
         <div class="toolbar-line-left">
           <ToolbarButton
             v-if="hiddenButtons.length > 0"
-            :button="displayToolbarSidebarButton"
+            :button="_displayToolbarSidebarButton"
           />
           <ToolbarButton
             v-for="button of leftDisplayedButtons"
@@ -198,9 +198,9 @@ function setButtonsAreHidden() {
 }
 
 .toolbar-stickied {
-  border-top-style: none;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+  border-top-style: none;
 }
 
 .toolbar-stickied-sidebar {

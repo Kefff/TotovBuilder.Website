@@ -159,6 +159,14 @@ const _toolbarButtons: IToolbarButton[] = [
   }
 ]
 
+const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
+const invalid = computed(() => build.value.name === '')
+const isEmpty = computed(() => !build.value.inventorySlots.some(is => is.items.some(i => i != null)))
+const isNewBuild = computed(() => build.value.id === '')
+const notExportedTooltip = computed(() => !summary.value.exported ? _buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
+const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
+const toolbarContainer = computed(() => buildToolbar.value?.container)
+
 const build = ref<IBuild>({
   id: route.params['id'] as string ?? '',
   inventorySlots: [],
@@ -179,6 +187,8 @@ const confirmationDialogIsDisplayed = ref(false)
 const confirmationDialogMessage = ref<string>()
 const generalOptionsSidebarVisible = ref(false)
 const isBuildSummaryStickied = ref(false)
+const isCompactMode = breakpoints.smaller('tabletLandscape')
+const isCompactBuildSummaryExpanded = ref(isCompactMode.value)
 const isEditing = ref(false)
 const isLoading = ref(true)
 const summary = ref<IBuildSummary>({
@@ -209,16 +219,6 @@ const summary = ref<IBuildSummary>({
   },
   weight: 0
 })
-
-const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
-const invalid = computed(() => build.value.name === '')
-const isEmpty = computed(() => !build.value.inventorySlots.some(is => is.items.some(i => i != null)))
-const isNewBuild = computed(() => build.value.id === '')
-const notExportedTooltip = computed(() => !summary.value.exported ? _buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
-const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
-const toolbarContainer = computed(() => buildToolbar.value?.container)
-
-const isCompactMode = breakpoints.smaller('tabletLandscape')
 
 provide('isEditing', isEditing)
 
@@ -612,6 +612,13 @@ function startEdit() {
     _originalBuild = originalBuildResult
   }
 }
+
+/**
+ * Toggles the visibility of the compact build summary.
+ */
+function toggleCompactBuildSummary() {
+  isCompactBuildSummaryExpanded.value = !isCompactBuildSummaryExpanded.value
+}
 </script>
 
 
@@ -661,50 +668,54 @@ function startEdit() {
         <NotificationButton />
       </template>
       <template #bottom>
-        <div
-          v-if="isCompactMode"
-          class="build-title build-title-compact"
-        >
-          <div v-show="!isEditing">
-            {{ build.name }}
-          </div>
-          <InputTextField
-            v-show="!isLoading && isEditing"
-            v-model:value="build.name"
-            :caption="$t('caption.name')"
-            :centered="true"
-            :required="true"
-            caption-mode="placeholder"
-            class="build-name"
-          />
-          <Tooltip
-            v-if="!isLoading && !summary.exported && !isNewBuild"
-            :tooltip="notExportedTooltip"
-          >
-            <font-awesome-icon
-              icon="exclamation-triangle"
-              class="build-not-exported"
+        <div v-if="isCompactMode && isCompactBuildSummaryExpanded">
+          <div class="build-title build-title-compact">
+            <div v-show="!isEditing">
+              {{ build.name }}
+            </div>
+            <InputTextField
+              v-show="!isLoading && isEditing"
+              v-model:value="build.name"
+              :caption="$t('caption.name')"
+              :centered="true"
+              :required="true"
+              caption-mode="placeholder"
+              class="build-name"
             />
-          </Tooltip>
+            <Tooltip
+              v-if="!isLoading && !summary.exported && !isNewBuild"
+              :tooltip="notExportedTooltip"
+            >
+              <font-awesome-icon
+                icon="exclamation-triangle"
+                class="build-not-exported"
+              />
+            </Tooltip>
+          </div>
+          <BuildSummary
+            v-if="isCompactMode"
+            :is-compact-mode="true"
+            :is-loading="isLoading"
+            :summary="summary"
+          />
         </div>
-        <BuildSummary
-          v-if="isCompactMode"
-          :is-compact-mode="true"
-          :is-loading="isLoading"
-          :summary="summary"
-        />
       </template>
       <template #under>
         <div
           v-if="!isLoading && isCompactMode"
           class="build-summary-popup-button-container"
+          @click="toggleCompactBuildSummary"
         >
           <div class="build-summary-popup-button">
             <font-awesome-icon
+              v-if="!isCompactBuildSummaryExpanded"
               icon="clipboard-list"
               class="icon-before-text"
             />
-            <font-awesome-icon icon="chevron-up" />
+            <font-awesome-icon
+              v-if="isCompactBuildSummaryExpanded"
+              icon="chevron-up"
+            />
           </div>
         </div>
       </template>
@@ -901,15 +912,20 @@ function startEdit() {
 .build-summary-popup-button {
   align-items: center;
   background-color: var(--primary-color);
-  border-bottom-color: var(--primary-color6);
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
-  border-bottom-style: solid;
   border-bottom-width: 1px;
+  border-color: var(--primary-color6);
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-top-width: 0;
+  border-style: solid;
   display: flex;
   height: 1.25rem;
   justify-content: center;
   position: absolute;
+  top: -1px;
+  /* To merge its border with the toolbar border */
   width: 5rem;
 }
 
@@ -936,7 +952,7 @@ function startEdit() {
   white-space: preserve;
 }
 
-.build-title {
+.build-title-compact {
   font-size: 1rem;
   margin-top: 0.5rem;
 }

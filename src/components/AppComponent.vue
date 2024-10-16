@@ -25,14 +25,6 @@ const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
 const _router = useRouter()
 
-const bugReportUrl = ref<string>()
-const contactAddress = ref<string>()
-const discordUrl = ref<string>()
-const githubUrl = ref<string>()
-const hasNewVersion = ref(false)
-const loading = ref(true)
-const version = ref('1.0.0')
-
 const copyrightYear = computed(() => {
   const year = new Date().getFullYear()
   let text = '2021'
@@ -51,6 +43,14 @@ const isSanta = computed(() => {
   return date.getTime() >= santaMinDate && date.getTime() <= santaMaxDate
 })
 const isTouchScreen = useMediaQuery('(hover: none)') // cf. https://stackoverflow.com/a/63666289
+
+const bugReportUrl = ref<string>()
+const contactAddress = ref<string>()
+const discordUrl = ref<string>()
+const githubUrl = ref<string>()
+const hasNewVersion = ref(false)
+const loading = ref(true)
+const version = ref('1.0.0')
 
 provide('isTouchScreen', isTouchScreen)
 

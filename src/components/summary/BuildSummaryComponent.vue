@@ -222,7 +222,7 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
   display: grid;
   font-weight: bold;
   gap: 1rem;
-  grid-template-columns: 1fr;
+  grid-template-columns: auto auto auto auto;
   max-width: 100%;
   padding: 0.5rem;
 }
@@ -242,8 +242,6 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
   justify-content: center;
 }
 
-
-
 .build-summary-stickied {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -261,4 +259,27 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
 .build-summary-value:last-child {
   margin-right: 0;
 }
+
+/* Smartphone in portrait */
+@media only screen and (max-width: 480px) {
+  .build-summary-compact {
+    grid-template-columns: auto;
+  }
+}
+
+/* Smartphone in landscape */
+@media only screen and (min-width: 481px) and (max-width: 767px) {
+  .build-summary-compact {
+    grid-template-columns: auto auto;
+  }
+}
+
+/* Tablet in portrait */
+@media only screen and (min-width: 768px) and (max-width: 991px) {}
+
+/* Tablet in landscape */
+@media only screen and (min-width: 992px) and (max-width: 1299px) {}
+
+/* PC */
+@media only screen and (min-width: 1300px) {}
 </style>
