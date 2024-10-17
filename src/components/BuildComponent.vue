@@ -528,6 +528,20 @@ async function onKeyDown(event: KeyboardEvent) {
 }
 
 /**
+ * Reacts to a change of the toolbar sticky status.
+ *
+ * Toogles the compact build summary.
+ * @param isStickied - Indicates whether the toolbar is stickied.
+ */
+function onToolbarIsStickiedChanged(isStickied: boolean) {
+  if ((isCompactBuildSummaryExpanded.value && isStickied)
+    || (!isCompactBuildSummaryExpanded.value && !isStickied)
+  ) {
+    toggleCompactBuildSummary()
+  }
+}
+
+/**
  * Reacts to the merchant filter being changed.
  *
  * Updates the build summary price to reflect the change in merchant filters.
@@ -643,6 +657,7 @@ async function toggleCompactBuildSummary() {
     <Toolbar
       ref="buildToolbar"
       :buttons="_toolbarButtons"
+      @is-sticky="onToolbarIsStickiedChanged($event)"
     >
       <template #center>
         <div

@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
 import vueI18n from '../plugins/vueI18n'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
 import Sticky from './StickyComponent.vue'
 import ToolbarButton from './ToolbarButtonComponent.vue'
+
+const emits = defineEmits<{
+  isSticky: [value: boolean]
+}>()
 
 const props = defineProps<{ buttons: IToolbarButton[] }>()
 
@@ -53,6 +57,8 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', onResize)
 })
+
+watch(() => isStickied.value, () => emits('isSticky', isStickied.value))
 
 /**
  * Displays the toolbar sidebar.
