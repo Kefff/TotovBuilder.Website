@@ -33,10 +33,6 @@ const rightDisplayedButtons = computed(() =>
     ? props.buttons.filter(b => (b.position?.() ?? 'left') === 'right' && !(b.canBeMovedToSidebar?.() ?? true))
     : props.buttons.filter(b => (b.position?.() ?? 'left') === 'right'))
 const hiddenButtons = computed(() => areButtonsHidden.value ? props.buttons.filter(b => (b.canBeMovedToSidebar?.() ?? true)) : [])
-const stickiedClasses = computed(() => ({
-  'toolbar-stickied': isStickied.value && !isInGlobalSidebar.value,
-  'toolbar-stickied-sidebar': isStickied.value && isInGlobalSidebar.value
-}))
 const toolbarContainer = computed(() => stickyElement.value?.container)
 
 const areButtonsHidden = ref(false)
@@ -106,7 +102,10 @@ function setButtonsAreHidden() {
   >
     <div
       class="toolbar"
-      :class="stickiedClasses"
+      :class="{
+        'toolbar-stickied': isStickied && !isInGlobalSidebar,
+        'toolbar-stickied-sidebar': isStickied && isInGlobalSidebar
+      }"
     >
       <div class="toolbar-line">
         <div class="toolbar-line-left">

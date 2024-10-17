@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useElementBounding } from '@vueuse/core'
 import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 
 const modelIsInGlobalSidebar = defineModel<boolean>('isInGlobalSidebar', { required: false, default: false })
@@ -18,20 +19,20 @@ const props = withDefaults(
     width: 'fit'
   })
 
-const elementToStickToRectangle = ref<DOMRect>()
-const scrollableParentElement = ref<HTMLElement>()
-const scrollableParentElementRectangle = ref<DOMRect>()
-const stickyElement = useTemplateRef('stickyElement')
-const stickyElementRectangle = ref<DOMRect>()
-
 const leftMargin = computed(() => props.align !== 'left')
 const rightMargin = computed(() => props.align !== 'right')
 const stickyElementStyle = computed(() => ({
   'margin-left': leftMargin.value ? 'auto' : '',
   'margin-right': rightMargin.value ? 'auto' : '',
-  'top': `calc(${(elementToStickToRectangle.value?.bottom ?? 0) - (elementToStickToRectangle.value?.y ?? 0)}px + ${props.offset})`,
+  'top': `calc(${(elementToStickToBoundingBox?.bottom.value ?? 0) - (elementToStickToBoundingBox?.y.value ?? 0)}px + ${props.offset})`,
   'width': props.width === 'fit' ? 'fit-content' : '100%'
 }))
+
+const elementToStickToBoundingBox = props.elementToStickTo != null ? useElementBounding(props.elementToStickTo) : null
+const scrollableParentElement = ref<HTMLElement>()
+const scrollableParentElementBoundingBox = scrollableParentElement.value != null ? useElementBounding(scrollableParentElement) : null
+const stickyElement = useTemplateRef('stickyElement')
+const stickyElementBoundingBox = useElementBounding(stickyElement)
 
 // Exposing the main div to be able to use it as a reference to stick other elements to it.
 // This must be the whole ref and not just its value; otherwise the parent component does not receive the value.
@@ -79,11 +80,7 @@ function getScrollableParentElement(parentElement: HTMLElement | undefined | nul
  * Gets the bounding client rectangle for the scrollable parent element and the sticky div.
  */
 function onScroll() {
-  elementToStickToRectangle.value = props.elementToStickTo?.getBoundingClientRect()
-  scrollableParentElementRectangle.value = scrollableParentElement.value!.getBoundingClientRect()
-  stickyElementRectangle.value = stickyElement.value!.getBoundingClientRect()
-
-  modelIsStickied.value = stickyElementRectangle.value.y == (elementToStickToRectangle.value?.bottom ?? scrollableParentElementRectangle.value.y)
+  modelIsStickied.value = stickyElementBoundingBox.y.value === (elementToStickToBoundingBox?.bottom.value ?? scrollableParentElementBoundingBox?.y.value ?? 0)
 }
 </script>
 

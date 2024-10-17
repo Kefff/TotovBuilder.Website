@@ -176,6 +176,8 @@ const build = ref<IBuild>({
   name: ''
 })
 const buildToolbar = useTemplateRef('buildToolbar')
+const compactBuildSummary = useTemplateRef('compactBuildSummary')
+const compactBuildSummaryHeight = ref<string>()
 const collapseStatuses = ref<boolean[]>([])
 const confirmationDialogCancelButtonAction = ref<() => void | Promise<void>>()
 const confirmationDialogCancelButtonCaption = ref<string>()
@@ -616,7 +618,13 @@ function startEdit() {
 /**
  * Toggles the visibility of the compact build summary.
  */
-function toggleCompactBuildSummary() {
+async function toggleCompactBuildSummary() {
+  if (isCompactBuildSummaryExpanded.value) {
+    const compactBuildSummaryBoundingRectangle = compactBuildSummary.value?.getBoundingClientRect()
+    compactBuildSummaryHeight.value = `${compactBuildSummaryBoundingRectangle!.height}px` /* https://stackoverflow.com/a/72698222 */
+    await nextTick() /* nextTick required here otherwise the collapse animation does not play the first time */
+  }
+
   isCompactBuildSummaryExpanded.value = !isCompactBuildSummaryExpanded.value
 }
 </script>
@@ -668,37 +676,41 @@ function toggleCompactBuildSummary() {
         <NotificationButton />
       </template>
       <template #bottom>
-        <div v-if="isCompactMode && isCompactBuildSummaryExpanded">
-          <div class="build-title build-title-compact">
-            <div v-show="!isEditing">
-              {{ build.name }}
-            </div>
-            <InputTextField
-              v-show="!isLoading && isEditing"
-              v-model:value="build.name"
-              :caption="$t('caption.name')"
-              :centered="true"
-              :required="true"
-              caption-mode="placeholder"
-              class="build-name"
-            />
-            <Tooltip
-              v-if="!isLoading && !summary.exported && !isNewBuild"
-              :tooltip="notExportedTooltip"
-            >
-              <font-awesome-icon
-                icon="exclamation-triangle"
-                class="build-not-exported"
+        <Transition name="build-compact-summary-expand">
+          <div
+            v-if="!isLoading && isCompactMode && isCompactBuildSummaryExpanded"
+            ref="compactBuildSummary"
+          >
+            <div class="build-title build-title-compact">
+              <div v-show="!isEditing">
+                {{ build.name }}
+              </div>
+              <InputTextField
+                v-show="!isLoading && isEditing"
+                v-model:value="build.name"
+                :caption="$t('caption.name')"
+                :centered="true"
+                :required="true"
+                caption-mode="placeholder"
+                class="build-name"
               />
-            </Tooltip>
+              <Tooltip
+                v-if="!isLoading && !summary.exported && !isNewBuild"
+                :tooltip="notExportedTooltip"
+              >
+                <font-awesome-icon
+                  icon="exclamation-triangle"
+                  class="build-not-exported"
+                />
+              </Tooltip>
+            </div>
+            <BuildSummary
+              :is-compact-mode="true"
+              :is-loading="isLoading"
+              :summary="summary"
+            />
           </div>
-          <BuildSummary
-            v-if="isCompactMode"
-            :is-compact-mode="true"
-            :is-loading="isLoading"
-            :summary="summary"
-          />
-        </div>
+        </Transition>
       </template>
       <template #under>
         <div
@@ -963,5 +975,22 @@ function toggleCompactBuildSummary() {
   flex-direction: row;
   flex-wrap: nowrap;
   margin-left: auto;
+}
+
+.build-compact-summary-expand-enter-from,
+.build-compact-summary-expand-leave-to {
+  height: 0;
+}
+
+.build-compact-summary-expand-enter-to,
+.build-compact-summary-expand-leave-from {
+  height: v-bind(compactBuildSummaryHeight);
+  /* https://stackoverflow.com/a/72698222 */
+}
+
+.build-compact-summary-expand-enter-active,
+.build-compact-summary-expand-leave-active {
+  transition: all 0.5s ease;
+  overflow: hidden;
 }
 </style>
