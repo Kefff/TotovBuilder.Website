@@ -77,56 +77,55 @@ async function setAcceptedItems() {
 
 
 <template>
-  <div
+  <Panel
     v-if="isDisplayed"
+    v-model:collapsed="modelCollapsed"
     class="inventory-slot"
   >
-    <Panel v-model:collapsed="modelCollapsed">
-      <template #header>
-        <div
-          class="inventory-slot-header"
-          @click="modelCollapsed = !modelCollapsed"
-        >
-          <div class="inventory-slot-title">
-            <font-awesome-icon
-              v-if="inventorySlotType.icon != null"
-              :icon="inventorySlotType.icon"
-              class="inventory-slot-icon"
-            />
-            <img
-              v-else-if="inventorySlotType.customIcon != null"
-              :src="Images[StringUtils.toCamelCase(inventorySlotType.customIcon)]"
-              class="inventory-slot-custom-icon"
-            >
-            <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelInventorySlot.typeId)) }}</span>
-          </div>
-          <div class="inventory-slot-collapse-icon">
-            <font-awesome-icon
-              v-if="modelCollapsed"
-              icon="angle-right"
-              class="collapsable-icon-collapsed"
-            />
-            <font-awesome-icon
-              v-else
-              icon="angle-right"
-              class="collapsable-icon-deployed"
-            />
-          </div>
+    <template #header>
+      <div
+        class="inventory-slot-header"
+        @click="modelCollapsed = !modelCollapsed"
+      >
+        <div class="inventory-slot-title">
+          <font-awesome-icon
+            v-if="inventorySlotType.icon != null"
+            :icon="inventorySlotType.icon"
+            class="inventory-slot-icon"
+          />
+          <img
+            v-else-if="inventorySlotType.customIcon != null"
+            :src="Images[StringUtils.toCamelCase(inventorySlotType.customIcon)]"
+            class="inventory-slot-custom-icon"
+          >
+          <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelInventorySlot.typeId)) }}</span>
         </div>
-      </template>
-      <InventorySlotItem
-        v-for="(inventoryItem, index) of modelInventorySlot.items"
-        :key="`${path}_${index}`"
-        :accepted-items-category-id="acceptedItemsCategoryId"
-        :accepted-items="acceptedItems"
-        :can-be-looted="inventorySlotType.canBeLooted"
-        :inventory-item="modelInventorySlot.items[index]"
-        :inventory-slot-type-id="modelInventorySlot.typeId"
-        :path="`${path}_${index}`"
-        @update:inventory-item="onItemChanged(index, $event)"
-      />
-    </Panel>
-  </div>
+        <div class="inventory-slot-collapse-icon">
+          <font-awesome-icon
+            v-if="modelCollapsed"
+            icon="angle-right"
+            class="collapsable-icon-collapsed"
+          />
+          <font-awesome-icon
+            v-else
+            icon="angle-right"
+            class="collapsable-icon-deployed"
+          />
+        </div>
+      </div>
+    </template>
+    <InventorySlotItem
+      v-for="(inventoryItem, index) of modelInventorySlot.items"
+      :key="`${path}_${index}`"
+      :accepted-items-category-id="acceptedItemsCategoryId"
+      :accepted-items="acceptedItems"
+      :can-be-looted="inventorySlotType.canBeLooted"
+      :inventory-item="modelInventorySlot.items[index]"
+      :inventory-slot-type-id="modelInventorySlot.typeId"
+      :path="`${path}_${index}`"
+      @update:inventory-item="onItemChanged(index, $event)"
+    />
+  </Panel>
 </template>
 
 
@@ -192,11 +191,11 @@ async function setAcceptedItems() {
 </style>
 
 <style>
-.inventory-slot > .p-panel > .p-panel-header {
+.inventory-slot.p-panel > .p-panel-header {
   background-color: var(--surface-transparent-0) !important;
 }
 
-.inventory-slot > .p-panel .p-panel-content {
+.inventory-slot.p-panel .p-panel-content {
   background-color: var(--surface-transparent-0);
 }
 </style>
