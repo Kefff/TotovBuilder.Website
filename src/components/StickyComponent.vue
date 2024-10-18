@@ -24,13 +24,13 @@ const rightMargin = computed(() => props.align !== 'right')
 const stickyElementStyle = computed(() => ({
   'margin-left': leftMargin.value ? 'auto' : '',
   'margin-right': rightMargin.value ? 'auto' : '',
-  'top': `calc(${(elementToStickToBoundingBox?.bottom.value ?? 0) - (elementToStickToBoundingBox?.y.value ?? 0)}px + ${props.offset})`,
+  'top': `calc(${(elementToStickToBoundingBox.value?.bottom ?? 0) - (elementToStickToBoundingBox.value?.y ?? 0)}px + ${props.offset})`,
   'width': props.width === 'fit' ? 'fit-content' : '100%'
 }))
 
-const elementToStickToBoundingBox = props.elementToStickTo != null ? useElementBounding(props.elementToStickTo) : null
+const elementToStickToBoundingBox = ref<DOMRect>()
 const scrollableParentElement = ref<HTMLElement>()
-const scrollableParentElementBoundingBox = scrollableParentElement.value != null ? useElementBounding(scrollableParentElement) : null
+const scrollableParentElementBoundingBox = ref<DOMRect>()
 const stickyElement = useTemplateRef('stickyElement')
 const stickyElementBoundingBox = useElementBounding(stickyElement)
 
@@ -80,7 +80,15 @@ function getScrollableParentElement(parentElement: HTMLElement | undefined | nul
  * Gets the bounding client rectangle for the scrollable parent element and the sticky div.
  */
 function onScroll() {
-  modelIsStickied.value = stickyElementBoundingBox.y.value === (elementToStickToBoundingBox?.bottom.value ?? scrollableParentElementBoundingBox?.y.value ?? 0)
+  if (props.elementToStickTo != null) {
+    elementToStickToBoundingBox.value = props.elementToStickTo.getBoundingClientRect()
+    modelIsStickied.value = stickyElementBoundingBox.y.value === elementToStickToBoundingBox.value.bottom
+  } else if (scrollableParentElement.value != null) {
+    scrollableParentElementBoundingBox.value = scrollableParentElement.value.getBoundingClientRect()
+    modelIsStickied.value = stickyElementBoundingBox.y.value === scrollableParentElementBoundingBox.value.y
+  } else {
+    modelIsStickied.value = stickyElementBoundingBox.y.value === 0
+  }
 }
 </script>
 

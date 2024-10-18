@@ -42,6 +42,7 @@ const _globalSidebarService = Services.get(GlobalSidebarService)
 const _itemService = Services.get(ItemService)
 
 const _inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
+let _isCompactSummaryExpanding = false
 let _originalBuild: IBuild
 const _toolbarButtons: IToolbarButton[] = [
   {
@@ -534,6 +535,10 @@ async function onKeyDown(event: KeyboardEvent) {
  * @param isStickied - Indicates whether the toolbar is stickied.
  */
 function onToolbarIsStickiedChanged(isStickied: boolean) {
+  if (!isCompactMode.value) {
+    return
+  }
+
   if ((isCompactBuildSummaryExpanded.value && isStickied)
     || (!isCompactBuildSummaryExpanded.value && !isStickied)
   ) {
@@ -633,13 +638,21 @@ function startEdit() {
  * Toggles the visibility of the compact build summary.
  */
 async function toggleCompactBuildSummary() {
+  if (_isCompactSummaryExpanding) {
+    return
+  }
+  _isCompactSummaryExpanding = true
+
   if (isCompactBuildSummaryExpanded.value) {
+
     const compactBuildSummaryBoundingRectangle = compactBuildSummary.value?.getBoundingClientRect()
     compactBuildSummaryHeight.value = `${compactBuildSummaryBoundingRectangle!.height}px` /* https://stackoverflow.com/a/72698222 */
-    await nextTick() /* nextTick required here otherwise the collapse animation does not play the first time */
+
+    await nextTick() // nextTick required here otherwise the collapse animation does not play the first time
   }
 
   isCompactBuildSummaryExpanded.value = !isCompactBuildSummaryExpanded.value
+  setTimeout(() => _isCompactSummaryExpanding = false, 1000) // Blocks toggleCompactBuildSummary from behind called during the animation to avoid weird behaviors
 }
 </script>
 
@@ -691,9 +704,12 @@ async function toggleCompactBuildSummary() {
         <NotificationButton />
       </template>
       <template #bottom>
-        <Transition name="build-compact-summary-expand">
+        <Transition
+          v-if="!isLoading && isCompactMode"
+          name="build-compact-summary-expand"
+        >
           <div
-            v-if="!isLoading && isCompactMode && isCompactBuildSummaryExpanded"
+            v-show="isCompactBuildSummaryExpanded"
             ref="compactBuildSummary"
           >
             <div class="build-title build-title-compact">
@@ -710,7 +726,7 @@ async function toggleCompactBuildSummary() {
                 class="build-name"
               />
               <Tooltip
-                v-if="!isLoading && !summary.exported && !isNewBuild"
+                v-if="!summary.exported && !isNewBuild"
                 :tooltip="notExportedTooltip"
               >
                 <font-awesome-icon
