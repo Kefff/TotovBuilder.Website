@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { IAmmunition } from '../../models/item/IAmmunition'
 import { IItem } from '../../models/item/IItem'
+import vueI18n from '../../plugins/vueI18n'
 import { TarkovValuesService } from '../../services/TarkovValuesService'
 import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
@@ -19,7 +20,12 @@ const props = withDefaults(
 const _chestHp = Services.get(TarkovValuesService).values.chestHp
 
 const ammunition = computed(() => props.item as IAmmunition)
-const canOneshot = computed(() => ammunition.value.fleshDamage >= _chestHp)
+const canOneshot = computed(() => totalFleshDamage.value >= _chestHp)
+const totalFleshDamage = computed(() => ammunition.value.fleshDamage * ammunition.value.projectiles)
+const tooltip = computed(() =>
+  `${vueI18n.t('caption.fleshDamage')}${ammunition.value.projectiles > 1
+    ? ` (${vueI18n.t('caption.total').toLocaleLowerCase()} : ${totalFleshDamage.value})`
+    : ''}`)
 </script>
 
 
@@ -36,7 +42,7 @@ const canOneshot = computed(() => ammunition.value.fleshDamage >= _chestHp)
     <div class="option-value">
       <div class="ammunition-summary-flesh-damage-group">
         <Tooltip
-          :tooltip="$t('caption.fleshDamage')"
+          :tooltip="tooltip"
           class="ammunition-summary-flesh-damage"
         >
           <div class="flesh-damage">
@@ -45,7 +51,7 @@ const canOneshot = computed(() => ammunition.value.fleshDamage >= _chestHp)
               class="icon-before-text flesh-damage-color"
             />
           </div>
-          <span>{{ ammunition.fleshDamage }}</span>
+          <span>{{ ammunition.projectiles > 1 ? `${ammunition.projectiles} x ` : '' }} {{ ammunition.fleshDamage }}</span>
         </Tooltip>
         <div
           v-if="canOneshot"

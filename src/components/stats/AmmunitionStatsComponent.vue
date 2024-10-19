@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import Images from '../../images'
 import { IAmmunition } from '../../models/item/IAmmunition'
 import { IItem } from '../../models/item/IItem'
+import vueI18n from '../../plugins/vueI18n'
 import { TarkovValuesService } from '../../services/TarkovValuesService'
 import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
@@ -16,13 +17,18 @@ const props = defineProps<{
 const _chestHp = Services.get(TarkovValuesService).values.chestHp
 
 const ammunition = computed(() => props.item as IAmmunition)
-const canOneshot = computed(() => ammunition.value.fleshDamage >= _chestHp)
+const canOneshot = computed(() => totalFleshDamage.value >= _chestHp)
 const hasModifiers = computed(() =>
   ammunition.value.accuracyModifierPercentage !== 0
   || ammunition.value.durabilityBurnModifierPercentage !== 0
   || ammunition.value.heavyBleedingChance !== 0
   || ammunition.value.lightBleedingChance !== 0
   || ammunition.value.recoilModifier !== 0)
+const totalFleshDamage = computed(() => ammunition.value.fleshDamage * ammunition.value.projectiles)
+const fleshDamageText = computed(() =>
+  ammunition.value.projectiles > 1
+    ? `${ammunition.value.projectiles} x ${ammunition.value.fleshDamage} (${vueI18n.t('caption.total').toLocaleLowerCase()} : ${totalFleshDamage.value})`
+    : ammunition.value.fleshDamage)
 </script>
 
 
@@ -150,7 +156,7 @@ const hasModifiers = computed(() =>
           <font-awesome-icon icon="skull" />
         </Tooltip>
         <span>
-          {{ ammunition.fleshDamage }}
+          {{ fleshDamageText }}
         </span>
       </div>
     </div>

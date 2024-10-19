@@ -16,23 +16,25 @@ describe('comparisonFunction()', () => {
   ])('should sort by %s', async (property: string) => {
     // Arrange
     const item1 = {
+      accuracyModifierPercentage: 2,
       categoryId: 'cat',
-      fleshDamage: 2,
+      fleshDamage: 1,
+      fragmentationChance: 2,
       penetratedArmorLevel: 2,
       penetrationPower: 2,
-      fragmentationChance: 2,
-      recoilModifier: 2,
-      accuracyModifierPercentage: 2
+      projectiles: 2,
+      recoilModifier: 2
     } as IAmmunition
 
     const item2 = {
+      accuracyModifierPercentage: 1,
       categoryId: 'cat',
       fleshDamage: 1,
+      fragmentationChance: 1,
       penetratedArmorLevel: 1,
       penetrationPower: 1,
-      fragmentationChance: 1,
-      recoilModifier: 1,
-      accuracyModifierPercentage: 1
+      projectiles: 1,
+      recoilModifier: 1
     } as IAmmunition
 
     let sortingData: SortingData<IItem> | undefined = new SortingData()

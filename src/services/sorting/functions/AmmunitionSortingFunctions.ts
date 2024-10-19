@@ -15,7 +15,7 @@ export const AmmunitionSortingFunctions: ISortingFunctionList<IItem> = {
   },
   fleshDamage: {
     comparisonFunction: compareByItemNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve((i as IAmmunition).fleshDamage)
+    comparisonValueObtentionFunction: i => Promise.resolve((i as IAmmunition).fleshDamage * (i as IAmmunition).projectiles)
   },
   fragmentationChance: {
     comparisonFunction: compareByItemNumber,
