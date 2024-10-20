@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
+import { useMediaQuery } from '@vueuse/core'
+import { computed, ref, useTemplateRef, watch } from 'vue'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
 import vueI18n from '../plugins/vueI18n'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
@@ -39,7 +40,7 @@ const rightDisplayedButtons = computed(() =>
 const hiddenButtons = computed(() => areButtonsHidden.value ? props.buttons.filter(b => (b.canBeMovedToSidebar?.() ?? true)) : [])
 const toolbarContainer = computed(() => stickyElement.value?.container)
 
-const areButtonsHidden = ref(false)
+const areButtonsHidden = useMediaQuery(`only screen and (max-width: ${_hideButtonsWidth}px)`)
 const isInGlobalSidebar = ref(false)
 const isStickied = ref(false)
 const stickyElement = useTemplateRef('stickyElement')
@@ -47,16 +48,6 @@ const stickyElement = useTemplateRef('stickyElement')
 // Exposing the main div to be able to use it as a reference to stick other elements to it.
 // This must be the whole computed and not just its value; otherwise the parent component does not receive the value.
 defineExpose({ container: toolbarContainer })
-
-onMounted(() => {
-  setButtonsAreHidden()
-
-  window.addEventListener('resize', onResize)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', onResize)
-})
 
 watch(() => isStickied.value, () => emits('isStickied', isStickied.value))
 
@@ -68,22 +59,6 @@ function displayToolbarSideBar() {
     displayedComponentParameters: props.buttons,
     displayedComponentType: 'ToolbarSidebar'
   })
-}
-
-/**
- * Reacts to the window being resized.
- *
- * Sets a value indicating whether toolbar buttons should be hidden.
- */
-function onResize() {
-  setButtonsAreHidden()
-}
-
-/**
- * Set a value indicating whether the media query trigger for hiding buttons is reached.
- */
-function setButtonsAreHidden() {
-  areButtonsHidden.value = window.matchMedia(`only screen and (max-width: ${_hideButtonsWidth}px)`).matches
 }
 </script>
 

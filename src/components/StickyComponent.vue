@@ -22,13 +22,24 @@ const props = withDefaults(
 const stickyElementStyle = computed(() => ({
   'margin-left': props.align !== 'left' ? 'auto' : '',
   'margin-right': props.align !== 'right' ? 'auto' : '',
-  // The following line generates a warning "onMounted is called when there is no active component instance to be associated with"
-  'top': `calc(${elementToStickToBoundingRectangle.value.bottom.value - elementToStickToBoundingRectangle.value.y.value}px + ${props.offset})`,
+  'top': `calc(${(elementToStickToBoundingRectangle.value?.bottom.value ?? 0) - (elementToStickToBoundingRectangle.value?.y.value ?? 0)}px + ${props.offset})`,
   'width': props.width === 'fit' ? 'fit-content' : '100%'
 }))
 
-const elementToStickToBoundingRectangle = computed(() => useElementBounding(props.elementToStickTo)) // Computed used here otherwise the bounding rectangle is not set when mounting. Also allows to change the element to stick to on the fly.
-const scrollableParentElementBoundingRectangle = computed(() => useElementBounding(scrollableParentElement.value)) // Computed used here otherwise the bounding rectangle is not set when mounting
+const elementToStickToBoundingRectangle = computed(() => {
+  if (props.elementToStickTo != null) {
+    return useElementBounding(props.elementToStickTo)
+  }
+
+  return null
+})
+const scrollableParentElementBoundingRectangle = computed(() => {
+  if (scrollableParentElement.value != null) {
+    return useElementBounding(scrollableParentElement.value)
+  }
+
+  return null
+})
 
 const scrollableParentElement = ref<HTMLElement>()
 const stickyElement = useTemplateRef('stickyElement')
@@ -73,9 +84,9 @@ function getScrollableParentElement(parentElement: HTMLElement | undefined | nul
  * Sets whether the sticky element is stickied.
  */
 function setIsStickied() {
-  if (props.elementToStickTo != null) {
+  if (elementToStickToBoundingRectangle.value != null) {
     modelIsStickied.value = stickyElementBoundingBox.y.value === elementToStickToBoundingRectangle.value.bottom.value
-  } else if (scrollableParentElement.value != null) {
+  } else if (scrollableParentElementBoundingRectangle.value != null) {
     modelIsStickied.value = stickyElementBoundingBox.y.value === scrollableParentElementBoundingRectangle.value.y.value
   } else {
     modelIsStickied.value = stickyElementBoundingBox.y.value === 0

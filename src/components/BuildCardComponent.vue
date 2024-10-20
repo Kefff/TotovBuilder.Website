@@ -33,6 +33,7 @@ const props = withDefaults(
 const _buildService = Services.get(BuildService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
+const hasItemListElementScroll = computed(() => (itemsListElement.value?.scrollWidth ?? 0) > (itemsListElement.value?.clientWidth ?? 0))
 const itemsInInventorySlots = computed(() => props.buildSummary.shoppingList.filter(sli => sli.inventorySlotId != null))
 const notExportedTooltip = computed(() => {
   if (props.buildSummary.exported) {
@@ -151,7 +152,7 @@ function displayStats(item: IItem) {
       <div class="build-card-items-container">
         <div
           class="build-card-items-left-scroll-indicator"
-          :style="!itemListElementScroll.arrivedState.left ? 'display: initial' : 'display: none'"
+          :style="hasItemListElementScroll && !itemListElementScroll.arrivedState.left ? 'display: initial' : 'display: none'"
         />
         <div
           v-if="itemsInInventorySlots.length > 0"
@@ -177,7 +178,7 @@ function displayStats(item: IItem) {
         </div>
         <div
           class="build-card-items-right-scroll-indicator"
-          :style="!itemListElementScroll.arrivedState.right ? 'display: initial' : 'display: none'"
+          :style="hasItemListElementScroll && !itemListElementScroll.arrivedState.right ? 'display: initial' : 'display: none'"
         />
       </div>
       <div class="build-card-stats">

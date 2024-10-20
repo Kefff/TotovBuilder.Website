@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
+import { useScroll } from '@vueuse/core'
+import { computed, onMounted, ref, useTemplateRef, watch } from 'vue'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IShoppingListMerchant } from '../models/utils/IShoppingListMerchant'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
@@ -11,24 +12,13 @@ const props = defineProps<{ shoppingList: IShoppingListItem[] }>()
 
 const _buildPropertiesService = Services.get(BuildPropertiesService)
 
+const hasMerchantsListElementScroll = computed(() => (merchantsListElement.value?.scrollWidth ?? 0) > (merchantsListElement.value?.clientWidth ?? 0))
+
 const merchants = ref<IShoppingListMerchant[]>([])
 const merchantsListElement = useTemplateRef('merchantsListElement')
-const merchantsListElementHasLeftScroll = ref(false)
-const merchantsListElementHasRightScroll = ref(false)
+const merchantsListElementScroll = useScroll(merchantsListElement)
 
-onMounted(() => {
-  window.addEventListener('resize', onResize)
-
-  setRequiredMerchants()
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', onResize)
-})
-
-watch(() => merchantsListElement.value?.scrollWidth, () => {
-  setMerchantsListElementHasScroll()
-})
+onMounted(() => setRequiredMerchants())
 
 watch(() => props.shoppingList, () => setRequiredMerchants())
 
@@ -37,37 +27,6 @@ watch(() => props.shoppingList, () => setRequiredMerchants())
  */
 function setRequiredMerchants() {
   merchants.value = _buildPropertiesService.getShoppingListMerchants(props.shoppingList)
-}
-
-/**
- * React to the horizontal scroll in the merchants list.
- *
- * Updates the values indicating whether left or right scroll are possible.
- */
-function onMerchantsListScroll() {
-  setMerchantsListElementHasScroll()
-}
-
-/**
- * Reacts to the window being resized.
- *
- * Sets a value indicating whether the merdhant list is scrollable.
- */
-function onResize() {
-  setMerchantsListElementHasScroll()
-}
-
-/**
- * Checks whether the merchants list element has left and right scroll and sets a value indicating it.
- */
-function setMerchantsListElementHasScroll() {
-  if (merchantsListElement.value != null) {
-    merchantsListElementHasLeftScroll.value = merchantsListElement.value.scrollLeft !== 0
-    merchantsListElementHasRightScroll.value = merchantsListElement.value.scrollLeft + merchantsListElement.value.clientWidth < merchantsListElement.value.scrollWidth
-  } else {
-    merchantsListElementHasLeftScroll.value = false
-    merchantsListElementHasRightScroll.value = false
-  }
 }
 </script>
 
@@ -81,16 +40,17 @@ function setMerchantsListElementHasScroll() {
 
 
 <template>
-  <div class="shopping-list-merchants-list-container">
+  <div
+    v-if="merchants.length > 0"
+    class="shopping-list-merchants-list-container"
+  >
     <div
       class="shopping-list-merchants-list-left-scroll-indicator"
-      :style="merchantsListElementHasLeftScroll ? 'display: initial' : 'display: none'"
+      :style="hasMerchantsListElementScroll && !merchantsListElementScroll.arrivedState.left ? 'display: initial' : 'display: none'"
     />
     <div
-      v-if="merchants.length > 0"
       ref="merchantsListElement"
       class="shopping-list-merchants-list"
-      @scroll="onMerchantsListScroll"
     >
       <div>
         <div
@@ -109,7 +69,7 @@ function setMerchantsListElementHasScroll() {
     </div>
     <div
       class="shopping-list-merchants-list-right-scroll-indicator"
-      :style="merchantsListElementHasRightScroll ? 'display: initial' : 'display: none'"
+      :style="hasMerchantsListElementScroll && !merchantsListElementScroll.arrivedState.right ? 'display: initial' : 'display: none'"
     />
   </div>
 </template>
@@ -138,6 +98,7 @@ function setMerchantsListElementHasScroll() {
 .shopping-list-merchants-list-container {
   padding-top: 0.5rem;
   position: relative;
+  width: 100%;
 }
 
 .shopping-list-merchants-list-left-scroll-indicator {
