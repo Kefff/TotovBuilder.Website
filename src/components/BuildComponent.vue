@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useBreakpoints } from '@vueuse/core'
+import { useBreakpoints, useEventListener } from '@vueuse/core'
 import { computed, nextTick, onMounted, onUnmounted, provide, ref, useTemplateRef, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
@@ -41,6 +41,8 @@ const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _itemService = Services.get(ItemService)
 
+const _compactBuildSummaryExpansionAnimationLenght = 500
+const _compactBuildSummaryExpansionAnimationLenghtCss = `${_compactBuildSummaryExpansionAnimationLenght}ms`
 const _inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
 let _isCompactSummaryExpanding = false
 let _originalBuild: IBuild
@@ -223,11 +225,11 @@ const summary = ref<IBuildSummary>({
   weight: 0
 })
 
+useEventListener(document, 'keydown', onKeyDown)
+
 provide('isEditing', isEditing)
 
 onMounted(() => {
-  addEventListener('keydown', (e) => onKeyDown(e))
-
   _compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
   _compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
   _compatibilityService.emitter.on(CompatibilityRequestType.mod, onModCompatibilityRequest)
@@ -255,8 +257,6 @@ onUnmounted(() => {
   _compatibilityService.emitter.off(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
   _compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-
-  removeEventListener('keydown', (e) => onKeyDown(e))
 })
 
 watch(() => route.params, onItemServiceInitialized)
@@ -652,7 +652,7 @@ async function toggleCompactBuildSummary() {
   }
 
   isCompactBuildSummaryExpanded.value = !isCompactBuildSummaryExpanded.value
-  setTimeout(() => _isCompactSummaryExpanding = false, 1000) // Blocks toggleCompactBuildSummary from behind called during the animation to avoid weird behaviors
+  setTimeout(() => _isCompactSummaryExpanding = false, _compactBuildSummaryExpansionAnimationLenght) // Prevents toggleCompactBuildSummary from being called during the animation to avoid weird behaviors
 }
 </script>
 
@@ -670,7 +670,7 @@ async function toggleCompactBuildSummary() {
     <Toolbar
       ref="buildToolbar"
       :buttons="_toolbarButtons"
-      @is-sticky="onToolbarIsStickiedChanged($event)"
+      @is-stickied="onToolbarIsStickiedChanged($event)"
     >
       <template #center>
         <div
@@ -1021,7 +1021,7 @@ async function toggleCompactBuildSummary() {
 
 .build-compact-summary-expand-enter-active,
 .build-compact-summary-expand-leave-active {
-  transition: all 0.5s ease;
+  transition: all v-bind(_compactBuildSummaryExpansionAnimationLenghtCss) ease;
   overflow: hidden;
 }
 </style>

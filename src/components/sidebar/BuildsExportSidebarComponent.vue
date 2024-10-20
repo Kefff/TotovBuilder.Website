@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
+import { useEventListener } from '@vueuse/core'
+import { computed, ref, useTemplateRef } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildsExportSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
@@ -40,19 +41,13 @@ const toolbarButtons: IToolbarButton[] = [
   }
 ]
 
-const buildsExportToolbar = useTemplateRef('buildsExportToolbar')
-const selectedBuilds = ref<IBuildSummary[]>([])
-
 const allSelected = computed(() => selectedBuilds.value.length === modelParameters.value.length)
 const toolbarContainer = computed(() => buildsExportToolbar.value?.container)
 
-onMounted(() => {
-  addEventListener('keydown', (e) => onKeyDown(e))
-})
+const buildsExportToolbar = useTemplateRef('buildsExportToolbar')
+const selectedBuilds = ref<IBuildSummary[]>([])
 
-onUnmounted(() => {
-  removeEventListener('keydown', (e) => onKeyDown(e))
-})
+useEventListener(document, 'keydown', onKeyDown)
 
 /**
  * Exports the selected builds.

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useElementBounding } from '@vueuse/core'
-import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
+import { computed, onMounted, ref, useTemplateRef, watch } from 'vue'
 
 const modelIsInGlobalSidebar = defineModel<boolean>('isInGlobalSidebar', { required: false, default: false })
 const modelIsStickied = defineModel<boolean>('isStickied', { required: false, default: false })
@@ -19,18 +19,18 @@ const props = withDefaults(
     width: 'fit'
   })
 
-const leftMargin = computed(() => props.align !== 'left')
-const rightMargin = computed(() => props.align !== 'right')
 const stickyElementStyle = computed(() => ({
-  'margin-left': leftMargin.value ? 'auto' : '',
-  'margin-right': rightMargin.value ? 'auto' : '',
-  'top': `calc(${(elementToStickToBoundingBox.value?.bottom ?? 0) - (elementToStickToBoundingBox.value?.y ?? 0)}px + ${props.offset})`,
+  'margin-left': props.align !== 'left' ? 'auto' : '',
+  'margin-right': props.align !== 'right' ? 'auto' : '',
+  // The following line generates a warning "onMounted is called when there is no active component instance to be associated with"
+  'top': `calc(${elementToStickToBoundingRectangle.value.bottom.value - elementToStickToBoundingRectangle.value.y.value}px + ${props.offset})`,
   'width': props.width === 'fit' ? 'fit-content' : '100%'
 }))
 
-const elementToStickToBoundingBox = ref<DOMRect>()
+const elementToStickToBoundingRectangle = computed(() => useElementBounding(props.elementToStickTo)) // Computed used here otherwise the bounding rectangle is not set when mounting. Also allows to change the element to stick to on the fly.
+const scrollableParentElementBoundingRectangle = computed(() => useElementBounding(scrollableParentElement.value)) // Computed used here otherwise the bounding rectangle is not set when mounting
+
 const scrollableParentElement = ref<HTMLElement>()
-const scrollableParentElementBoundingBox = ref<DOMRect>()
 const stickyElement = useTemplateRef('stickyElement')
 const stickyElementBoundingBox = useElementBounding(stickyElement)
 
@@ -38,16 +38,11 @@ const stickyElementBoundingBox = useElementBounding(stickyElement)
 // This must be the whole ref and not just its value; otherwise the parent component does not receive the value.
 defineExpose({ container: stickyElement })
 
-onMounted(() => {
-  getScrollableParentElement(stickyElement.value)
-  scrollableParentElement.value?.addEventListener('scroll', onScroll)
+onMounted(() => getScrollableParentElement(stickyElement.value))
 
-  onScroll()
-})
-
-onUnmounted(() => {
-  scrollableParentElement.value?.removeEventListener('scroll', onScroll)
-})
+watch(
+  () => stickyElementBoundingBox.y.value,
+  () => setIsStickied())
 
 /**
  * Gets the parent element that can be scrolled.
@@ -75,17 +70,13 @@ function getScrollableParentElement(parentElement: HTMLElement | undefined | nul
 }
 
 /**
- * Reacts to the content being scrolled.
- *
- * Gets the bounding client rectangle for the scrollable parent element and the sticky div.
+ * Sets whether the sticky element is stickied.
  */
-function onScroll() {
+function setIsStickied() {
   if (props.elementToStickTo != null) {
-    elementToStickToBoundingBox.value = props.elementToStickTo.getBoundingClientRect()
-    modelIsStickied.value = stickyElementBoundingBox.y.value === elementToStickToBoundingBox.value.bottom
+    modelIsStickied.value = stickyElementBoundingBox.y.value === elementToStickToBoundingRectangle.value.bottom.value
   } else if (scrollableParentElement.value != null) {
-    scrollableParentElementBoundingBox.value = scrollableParentElement.value.getBoundingClientRect()
-    modelIsStickied.value = stickyElementBoundingBox.y.value === scrollableParentElementBoundingBox.value.y
+    modelIsStickied.value = stickyElementBoundingBox.y.value === scrollableParentElementBoundingRectangle.value.y.value
   } else {
     modelIsStickied.value = stickyElementBoundingBox.y.value === 0
   }

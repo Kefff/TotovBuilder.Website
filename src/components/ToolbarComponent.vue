@@ -8,7 +8,7 @@ import Sticky from './StickyComponent.vue'
 import ToolbarButton from './ToolbarButtonComponent.vue'
 
 const emits = defineEmits<{
-  isSticky: [value: boolean]
+  isStickied: [value: boolean]
 }>()
 
 const props = defineProps<{ buttons: IToolbarButton[] }>()
@@ -58,7 +58,7 @@ onUnmounted(() => {
   window.removeEventListener('resize', onResize)
 })
 
-watch(() => isStickied.value, () => emits('isSticky', isStickied.value))
+watch(() => isStickied.value, () => emits('isStickied', isStickied.value))
 
 /**
  * Displays the toolbar sidebar.

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { useScroll } from '@vueuse/core'
+import { computed, ref } from 'vue'
 import { IItem } from '../models/item/IItem'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
@@ -32,10 +33,6 @@ const props = withDefaults(
 const _buildService = Services.get(BuildService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
-const itemsListElement = ref<HTMLDivElement>()
-const itemsListElementHasLeftScroll = ref(false)
-const itemsListElementHasRightScroll = ref(false)
-
 const itemsInInventorySlots = computed(() => props.buildSummary.shoppingList.filter(sli => sli.inventorySlotId != null))
 const notExportedTooltip = computed(() => {
   if (props.buildSummary.exported) {
@@ -65,17 +62,8 @@ const selectionButtonIconInternal = computed(() => {
   }
 })
 
-onMounted(() => {
-  window.addEventListener('resize', onResize)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', onResize)
-})
-
-watch(() => itemsListElement.value?.scrollWidth, () => {
-  setItemsListElementHasScroll()
-})
+const itemsListElement = ref<HTMLDivElement>()
+const itemListElementScroll = useScroll(itemsListElement)
 
 /**
  * Displays the actions for the specified build.
@@ -115,36 +103,6 @@ function displayStats(item: IItem) {
   })
 }
 
-/**
- * React to the horizontal scroll in the merchants list.
- *
- * Updates the values indicating whether left or right scroll are possible.
- */
-function onItemsListScroll() {
-  setItemsListElementHasScroll()
-}
-
-/**
- * Reacts to the window being resized.
- *
- * Sets a value indicating whether the items list is scrollable.
- */
-function onResize() {
-  setItemsListElementHasScroll()
-}
-
-/**
- * Checks whether the items list element has left and right scroll and sets a value indicating it.
- */
-function setItemsListElementHasScroll() {
-  if (itemsListElement.value != null) {
-    itemsListElementHasLeftScroll.value = itemsListElement.value.scrollLeft !== 0
-    itemsListElementHasRightScroll.value = itemsListElement.value.scrollLeft + itemsListElement.value.clientWidth < itemsListElement.value.scrollWidth
-  } else {
-    itemsListElementHasLeftScroll.value = false
-    itemsListElementHasRightScroll.value = false
-  }
-}
 </script>
 
 
@@ -193,13 +151,12 @@ function setItemsListElementHasScroll() {
       <div class="build-card-items-container">
         <div
           class="build-card-items-left-scroll-indicator"
-          :style="itemsListElementHasLeftScroll ? 'display: initial' : 'display: none'"
+          :style="!itemListElementScroll.arrivedState.left ? 'display: initial' : 'display: none'"
         />
         <div
           v-if="itemsInInventorySlots.length > 0"
           ref="itemsListElement"
           class="build-card-items"
-          @scroll="onItemsListScroll"
         >
           <div
             v-for="itemInInventorySlot of itemsInInventorySlots"
@@ -220,7 +177,7 @@ function setItemsListElementHasScroll() {
         </div>
         <div
           class="build-card-items-right-scroll-indicator"
-          :style="itemsListElementHasRightScroll ? 'display: initial' : 'display: none'"
+          :style="!itemListElementScroll.arrivedState.right ? 'display: initial' : 'display: none'"
         />
       </div>
       <div class="build-card-stats">

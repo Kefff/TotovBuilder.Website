@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
+import { useEventListener } from '@vueuse/core'
+import { computed, ref, useTemplateRef } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { IToolbarButton } from '../../models/utils/IToolbarButton'
@@ -39,6 +40,9 @@ const toolbarButtons: IToolbarButton[] = [
   }
 ]
 
+const allSelected = computed(() => selectedBuilds.value.length === availableBuildSummaries.value.length)
+const toolbarContainer = computed(() => buildsImportToolbar.value?.container)
+
 const acceptedFileExtension = _websiteConfigurationService.configuration.exportFileExtension
 const availableBuilds = ref<IBuild[]>([])
 const availableBuildSummaries = ref<IBuildSummary[]>([])
@@ -47,16 +51,7 @@ const importInput = ref<HTMLInputElement>()
 const isFileSelected = ref(false)
 const selectedBuilds = ref<IBuildSummary[]>([])
 
-const allSelected = computed(() => selectedBuilds.value.length === availableBuildSummaries.value.length)
-const toolbarContainer = computed(() => buildsImportToolbar.value?.container)
-
-onMounted(() => {
-  addEventListener('keydown', (e) => onKeyDown(e))
-})
-
-onUnmounted(() => {
-  removeEventListener('keydown', (e) => onKeyDown(e))
-})
+useEventListener(document, 'keydown', onKeyDown)
 
 /**
  * Displays the file selection popup.

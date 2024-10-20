@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { useEventListener } from '@vueuse/core'
+import { computed, onMounted, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlobalSidebarOptions'
@@ -46,8 +47,6 @@ const _buildPropertiesService = Services.get(BuildPropertiesService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _sortingService = Services.get(SortingService)
 
-const buildSummariesInternal = ref<IBuildSummary[]>([])
-
 const cardsListClass = computed(() => `builds-list-cards${props.gridMaxColumns}`)
 const sortButtonTooltip = computed(() => vueI18n.t(
   'caption.sortedBy',
@@ -59,14 +58,12 @@ const sortButtonTooltip = computed(() => vueI18n.t(
   }))
 const sortChipIcon = computed(() => modelFilterAndSortingData.value.order === SortingOrder.asc ? 'sort-amount-down-alt' : 'sort-amount-up')
 
+const buildSummariesInternal = ref<IBuildSummary[]>([])
+
+useEventListener(document, 'keydown', onKeyDown)
+
 onMounted(() => {
-  addEventListener('keydown', (e) => onKeyDown(e))
-
   filterAndSortBuildSummaries()
-})
-
-onUnmounted(() => {
-  removeEventListener('keydown', (e) => onKeyDown(e))
 })
 
 watch(
