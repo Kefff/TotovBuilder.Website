@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { StatsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
@@ -26,8 +27,8 @@ const specializedComponent = computed(() => getSpecializedComponent(props.parame
 /**
  * Sets the type of specialized options header component to display.
  */
-function getSpecializedComponent(itemCategoryId?: string) {
-  if (itemCategoryId == null || itemCategoryId === 'other') {
+function getSpecializedComponent(itemCategoryId?: ItemCategoryId) {
+  if (itemCategoryId == null || itemCategoryId === ItemCategoryId.other) {
     return undefined
   }
 

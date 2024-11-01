@@ -3,7 +3,7 @@ import { computed, inject, onMounted, ref, Ref, watch } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IContainer } from '../models/item/IContainer'
-import { IItem } from '../models/item/IItem'
+import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { IMagazine } from '../models/item/IMagazine'
 import { IModdable } from '../models/item/IModdable'
 import { SelectableTab } from '../models/utils/SelectableTab'
@@ -32,7 +32,7 @@ const modelInventoryItem = defineModel<IInventoryItem>('inventoryItem')
 const props = withDefaults(
   defineProps<{
     acceptedItems: IItem[],
-    acceptedItemsCategoryId?: string,
+    acceptedItemsCategoryId?: ItemCategoryId,
     canBeLooted?: boolean,
     forceQuantityToMaxSelectableAmount?: boolean,
     inventoryItem?: IInventoryItem,
@@ -406,9 +406,9 @@ function setSelectedTab() {
   if (item.value?.id != null) {
     // When an item is not found, but has mods or content, we consider it is moddable / a container in order to be able to display its possible child items
     itemIsModdable.value = _itemPropertiesService.canBeModded(item.value)
-      || (item.value.categoryId === 'notFound' && (props.inventoryItem?.modSlots.length ?? 0) > 0)
+      || (item.value.categoryId === ItemCategoryId.notFound && (props.inventoryItem?.modSlots.length ?? 0) > 0)
     itemIsContainer.value = _itemPropertiesService.canContain(item.value)
-      || (item.value.categoryId === 'notFound' && (props.inventoryItem?.content.length ?? 0) > 0)
+      || (item.value.categoryId === ItemCategoryId.notFound && (props.inventoryItem?.content.length ?? 0) > 0)
 
     if (selectedTab.value === SelectableTab.hidden) {
       if (itemIsContainer.value) {

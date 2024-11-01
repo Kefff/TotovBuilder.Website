@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
+import { ItemCategoryId } from '../models/item/IItem'
 import { IModSlot } from '../models/item/IModSlot'
 import { IModdable } from '../models/item/IModdable'
 import { PathUtils } from '../utils/PathUtils'
@@ -29,7 +30,7 @@ function initialize() {
 
   modSlots.value = props.moddableItem.modSlots
 
-  if (props.moddableItem.categoryId === 'notFound') {
+  if (props.moddableItem.categoryId === ItemCategoryId.notFound) {
     // When an item in a build is not found, we assume it is moddable in order to be able
     // to display its possible mods.
     // We create a fake list of mod slots for it.

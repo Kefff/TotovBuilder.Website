@@ -2,6 +2,7 @@ import { anything, instance, mock, spy, verify, when } from 'ts-mockito'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { InventorySlotTypeId } from '../../models/build/InventorySlotTypes'
 import { BuildService } from '../../services/BuildService'
 import { LogService } from '../../services/LogService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
@@ -84,63 +85,63 @@ describe('create()', () => {
       inventorySlots: [
         {
           items: [undefined],
-          typeId: 'onSling'
+          typeId: InventorySlotTypeId.onSling
         },
         {
           items: [undefined],
-          typeId: 'onBack'
+          typeId: InventorySlotTypeId.onBack
         },
         {
           items: [undefined],
-          typeId: 'holster'
+          typeId: InventorySlotTypeId.holster
         },
         {
           items: [undefined],
-          typeId: 'bodyArmor'
+          typeId: InventorySlotTypeId.bodyArmor
         },
         {
           items: [undefined],
-          typeId: 'tacticalRig'
+          typeId: InventorySlotTypeId.tacticalRig
         },
         {
           items: [undefined],
-          typeId: 'headwear'
+          typeId: InventorySlotTypeId.headwear
         },
         {
           items: [undefined],
-          typeId: 'earpiece'
+          typeId: InventorySlotTypeId.earpiece
         },
         {
           items: [undefined],
-          typeId: 'backpack'
+          typeId: InventorySlotTypeId.backpack
         },
         {
           items: [undefined, undefined, undefined, undefined],
-          typeId: 'pockets'
+          typeId: InventorySlotTypeId.pockets
         },
         {
           items: [undefined],
-          typeId: 'eyewear'
+          typeId: InventorySlotTypeId.eyewear
         },
         {
           items: [undefined],
-          typeId: 'faceCover'
+          typeId: InventorySlotTypeId.faceCover
         },
         {
           items: [pouchDefaultItem],
-          typeId: 'pouch'
+          typeId: InventorySlotTypeId.pouch
         },
         {
           items: [scabbardDefaultItem],
-          typeId: 'scabbard'
+          typeId: InventorySlotTypeId.scabbard
         },
         {
           items: [undefined],
-          typeId: 'armband'
+          typeId: InventorySlotTypeId.armband
         },
         {
           items: [undefined, undefined, undefined],
-          typeId: 'special'
+          typeId: InventorySlotTypeId.special
         }
       ],
       lastExported: undefined,
@@ -488,27 +489,27 @@ const newBuild: IBuild = {
   inventorySlots: [
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'onBack'
+      typeId: InventorySlotTypeId.onBack
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'backpack'
+      typeId: InventorySlotTypeId.backpack
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'bodyArmor'
+      typeId: InventorySlotTypeId.bodyArmor
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'earpiece'
+      typeId: InventorySlotTypeId.earpiece
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'eyewear'
+      typeId: InventorySlotTypeId.eyewear
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'faceCover'
+      typeId: InventorySlotTypeId.faceCover
     },
     {
       items: [
@@ -531,31 +532,31 @@ const newBuild: IBuild = {
           quantity: 1
         }
       ],
-      typeId: 'headwear'
+      typeId: InventorySlotTypeId.headwear
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'holster'
+      typeId: InventorySlotTypeId.holster
     },
     {
       items: Array<IInventoryItem>(4),
-      typeId: 'pockets'
+      typeId: InventorySlotTypeId.pockets
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'pouch'
+      typeId: InventorySlotTypeId.pouch
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'scabbard'
+      typeId: InventorySlotTypeId.scabbard
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'onSling'
+      typeId: InventorySlotTypeId.onSling
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'tacticalRig'
+      typeId: InventorySlotTypeId.tacticalRig
     }
   ],
   lastExported: undefined,

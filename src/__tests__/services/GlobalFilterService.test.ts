@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { IItem } from '../../models/item/IItem'
+import { IItem, ItemCategoryId } from '../../models/item/IItem'
 import { IPrice } from '../../models/item/IPrice'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 import { IItemExclusionFilter } from '../../models/utils/IItemExclusionFilter'
@@ -329,7 +329,7 @@ describe('getMatchingPrices()', () => {
       }
     ])
     const item: IItem = {
-      categoryId: '',
+      categoryId: ItemCategoryId.other,
       conflictingItemIds: [],
       iconLink: '',
       id: '',
@@ -504,7 +504,7 @@ describe('isMatchingFilter()', () => {
     ])
 
     const item: IItem = {
-      categoryId: '',
+      categoryId: ItemCategoryId.other,
       conflictingItemIds: [],
       iconLink: '',
       id: '',

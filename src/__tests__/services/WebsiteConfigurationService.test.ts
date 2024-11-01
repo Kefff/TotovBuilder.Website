@@ -44,7 +44,6 @@ describe('initialize', () => {
 
     // Assert
     expect(result).toBe(false)
-    expect(service.configuration.buildSharingUrl).toBe('')
     verify(logServiceMock.logException('message.websiteConfigurationNotFetched'))
   })
 })

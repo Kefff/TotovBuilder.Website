@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IBackpack } from '../../models/item/IBackpack'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
@@ -24,7 +25,7 @@ describe('parseReducedItem', () => {
       },
       {
         capacity: 35,
-        categoryId: 'backpack',
+        categoryId: ItemCategoryId.backpack,
         conflictingItemIds: [],
         ergonomicsModifierPercentage: -0.07,
         iconLink: 'https://assets.tarkov.dev/5ab8ebf186f7742d8b372e80-icon.webp',
@@ -56,7 +57,7 @@ describe('parseReducedItem', () => {
       },
       {
         capacity: 0,
-        categoryId: 'backpack',
+        categoryId: ItemCategoryId.backpack,
         conflictingItemIds: [],
         ergonomicsModifierPercentage: 0,
         iconLink: 'https://assets.tarkov.dev/5ab8f04f86f774585f4237d8-icon.webp',

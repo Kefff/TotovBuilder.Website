@@ -1,7 +1,7 @@
 import { anything, instance, mock, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IInventoryItem } from '../../../../models/build/IInventoryItem'
-import { IItem } from '../../../../models/item/IItem'
+import { IItem, ItemCategoryId } from '../../../../models/item/IItem'
 import { IPrice } from '../../../../models/item/IPrice'
 import { IInventoryItemPrice } from '../../../../models/utils/IInventoryItemPrice'
 import { IgnoredUnitPrice } from '../../../../models/utils/IgnoredUnitPrice'
@@ -15,43 +15,43 @@ import { ItemSortingFunctions } from '../../../../services/sorting/functions/Ite
 describe('comparisonFunction()', () => {
   it.each([
     [
-      { id: 'i1', name: 'a', categoryId: 'cat1', prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
-      { id: 'i2', name: 'a', categoryId: 'cat2', prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
+      { id: 'i1', name: 'a', categoryId: 'cat1' as unknown as ItemCategoryId, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
+      { id: 'i2', name: 'a', categoryId: 'cat2' as unknown as ItemCategoryId, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
       -1
     ],
     [
-      { id: 'i1', name: 'a', categoryId: 'cat2', prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
-      { id: 'i2', name: 'a', categoryId: 'cat1', prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
+      { id: 'i1', name: 'a', categoryId: 'cat2' as unknown as ItemCategoryId, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
+      { id: 'i2', name: 'a', categoryId: 'cat1' as unknown as ItemCategoryId, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
       1
     ],
     [
-      { id: 'i1', name: 'a', categoryId: 'cat1', prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
-      { id: 'i2', name: 'a', categoryId: 'cat1', prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 2, valueInMainCurrency: 2 }] } as unknown as IItem,
+      { id: 'i1', name: 'a', categoryId: ItemCategoryId.other, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
+      { id: 'i2', name: 'a', categoryId: ItemCategoryId.other, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 2, valueInMainCurrency: 2 }] } as unknown as IItem,
       -1
     ],
     [
-      { id: 'i1', name: 'a', categoryId: 'cat1', prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 2, valueInMainCurrency: 2 }] } as unknown as IItem,
-      { id: 'i2', name: 'a', categoryId: 'cat1', prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
+      { id: 'i1', name: 'a', categoryId: ItemCategoryId.other, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 2, valueInMainCurrency: 2 }] } as unknown as IItem,
+      { id: 'i2', name: 'a', categoryId: ItemCategoryId.other, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
       1
     ],
     [
-      { id: 'i1', name: 'a', categoryId: 'cat1', prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
-      { id: 'i2', name: 'a', categoryId: 'cat1', prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
+      { id: 'i1', name: 'a', categoryId: ItemCategoryId.other, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
+      { id: 'i2', name: 'a', categoryId: ItemCategoryId.other, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
       0
     ],
     [
-      { id: 'i1', name: 'a', categoryId: 'cat1', prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
-      { id: 'i2', name: 'b', categoryId: 'cat1', prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
+      { id: 'i1', name: 'a', categoryId: ItemCategoryId.other, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
+      { id: 'i2', name: 'b', categoryId: ItemCategoryId.other, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
       -1
     ],
     [
-      { id: 'i1', name: 'b', categoryId: 'cat1', prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
-      { id: 'i2', name: 'a', categoryId: 'cat1', prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
+      { id: 'i1', name: 'b', categoryId: ItemCategoryId.other, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
+      { id: 'i2', name: 'a', categoryId: ItemCategoryId.other, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
       1
     ],
     [
-      { id: 'i1', name: 'b', categoryId: 'cat1', prices: [] as IPrice[] } as IItem,
-      { id: 'i2', name: 'a', categoryId: 'cat1', prices: [] as IPrice[] } as IItem,
+      { id: 'i1', name: 'b', categoryId: ItemCategoryId.other, prices: [] as IPrice[] } as IItem,
+      { id: 'i2', name: 'a', categoryId: ItemCategoryId.other, prices: [] as IPrice[] } as IItem,
       1
     ]
   ])('should sort by category, price and name', async (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
@@ -81,8 +81,8 @@ describe('comparisonFunction()', () => {
 
   it('should sort by category and price even when the price is not found', async () => {
     // Arrange
-    const item1 = { id: 'i1', name: 'a', categoryId: 'cat1', prices: [{ currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as IItem
-    const item2 = { id: 'i2', name: 'a', categoryId: 'cat1', prices: [{ currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 2, valueInMainCurrency: 2 }] } as IItem
+    const item1 = { id: 'i1', name: 'a', categoryId: ItemCategoryId.other, prices: [{ currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as IItem
+    const item2 = { id: 'i2', name: 'a', categoryId: ItemCategoryId.other, prices: [{ currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 2, valueInMainCurrency: 2 }] } as IItem
 
     const inventoryItemService = mock<InventoryItemService>()
     when(inventoryItemService.getPrice(anything())).thenResolve({
@@ -131,17 +131,17 @@ describe('comparisonFunction()', () => {
   it('should sort by category', async () => {
     // Arrange
     const item1 = {
-      categoryId: 'cat2',
+      categoryId: 'cat2' as unknown as ItemCategoryId,
       name: 'a'
     } as IItem
 
     const item2 = {
-      categoryId: 'cat1',
+      categoryId: 'cat1' as unknown as ItemCategoryId,
       name: 'a'
     } as IItem
 
     const item3 = {
-      categoryId: 'cat1',
+      categoryId: 'cat1' as unknown as ItemCategoryId,
       name: 'b'
     } as IItem
 
@@ -159,17 +159,17 @@ describe('comparisonFunction()', () => {
   it('should sort by category and name', async () => {
     // Arrange
     const item1 = {
-      categoryId: 'cat2',
+      categoryId: 'cat2' as unknown as ItemCategoryId,
       name: 'a'
     } as IItem
 
     const item2 = {
-      categoryId: 'cat1',
+      categoryId: 'cat1' as unknown as ItemCategoryId,
       name: 'a'
     } as IItem
 
     const item3 = {
-      categoryId: 'cat1',
+      categoryId: 'cat1' as unknown as ItemCategoryId,
       name: 'b'
     } as IItem
 
@@ -187,19 +187,19 @@ describe('comparisonFunction()', () => {
   it('should sort by category and weight', async () => {
     // Arrange
     const item1 = {
-      categoryId: 'cat2',
+      categoryId: 'cat2' as unknown as ItemCategoryId,
       name: 'a',
       weight: 2
     } as IItem
 
     const item2 = {
-      categoryId: 'cat1',
+      categoryId: 'cat1' as unknown as ItemCategoryId,
       name: 'a',
       weight: 3
     } as IItem
 
     const item3 = {
-      categoryId: 'cat1',
+      categoryId: 'cat1' as unknown as ItemCategoryId,
       name: 'b',
       weight: 1
     } as IItem
@@ -220,12 +220,12 @@ describe('defaultSortingFunction', () => {
   it('should sort by name', async () => {
     // Arrange
     const item1 = {
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.other,
       name: 'b'
     } as IItem
 
     const item2 = {
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.other,
       name: 'a'
     } as IItem
 

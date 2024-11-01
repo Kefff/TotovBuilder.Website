@@ -1,12 +1,15 @@
-import { IItem } from '../../../models/item/IItem'
+import { ItemCategoryId } from '../../../models/item/IItem'
 import { ContainerSortingFunctions } from './ContainerSortingFunctions'
-import ISortingFunctionList from './ISortingFunctionList'
+import { IItemSortingFunctionList } from './ISortingFunctionList'
 import { WearableSortingFunctions } from './WearableSortingFunctions'
 
 /**
  * Functions for sorting backpacks.
  */
-export const BackpackSortingFunctions: ISortingFunctionList<IItem> = {
-  ...ContainerSortingFunctions,
-  ...WearableSortingFunctions
+export const BackpackSortingFunctions: IItemSortingFunctionList = {
+  functions: {
+    ...ContainerSortingFunctions.functions,
+    ...WearableSortingFunctions.functions
+  },
+  itemCategoryIds: [ItemCategoryId.backpack]
 }

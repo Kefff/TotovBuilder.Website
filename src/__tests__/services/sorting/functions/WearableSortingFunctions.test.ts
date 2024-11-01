@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { IBackpack } from '../../../../models/item/IBackpack'
-import { IItem } from '../../../../models/item/IItem'
+import { ItemCategoryId } from '../../../../models/item/IItem'
+import { IWearable } from '../../../../models/item/IWearable'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { WearableSortingFunctions } from '../../../../services/sorting/functions/WearableSortingFunctions'
@@ -13,20 +14,20 @@ describe('comparisonFunction()', () => {
   ])('should sort by %s', async (property: string) => {
     // Arrange
     const item1 = {
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.backpack,
       ergonomicsModifierPercentage: 2,
       movementSpeedModifierPercentage: 2,
       turningSpeedModifierPercentage: 2
     } as IBackpack
 
     const item2 = {
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.backpack,
       ergonomicsModifierPercentage: 1,
       movementSpeedModifierPercentage: 1,
       turningSpeedModifierPercentage: 1
     } as IBackpack
 
-    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    let sortingData: SortingData<IWearable> | undefined = new SortingData()
     const sortingService = new SortingService()
     sortingData = sortingService.setSortingProperty(sortingData, WearableSortingFunctions, property)
 

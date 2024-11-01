@@ -1,4 +1,5 @@
 import { IBuild } from '../../models/build/IBuild'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IMigration } from '../../models/utils/IMigration'
 import { ItemService } from '../../services/ItemService'
 import Services from '../../services/repository/Services'
@@ -27,7 +28,7 @@ export class Migration171 implements IMigration {
 
         const item = await itemService.getItem(inventoryItem.itemId)
 
-        if (item.categoryId === 'notFound') {
+        if (item.categoryId === ItemCategoryId.notFound) {
           success = false
         }
 

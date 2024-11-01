@@ -1,6 +1,5 @@
 import { instance, mock, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
-import ItemCategoriesMock from '../../../public/data/item-categories.json'
 import { FetchService } from '../../services/FetchService'
 import { ItemFetcherService } from '../../services/ItemFetcherService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
@@ -16,62 +15,6 @@ import ReducedPriceMocks from '../__data__/reduced-prices.json'
 import WebsiteConfigurationMock from '../__data__/websiteConfigurationMock'
 import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
-
-describe('fetchItemCategories()', () => {
-  it('should fetch item categories', async () => {
-    // Arrange
-    useFetchServiceMock(ItemCategoriesMock)
-    useWebsiteConfigurationServiceMock()
-
-    const fetcher = new ItemFetcherService()
-
-    // Act
-    const itemCategories = await fetcher.fetchItemCategories()
-
-    // Assert
-    expect(itemCategories).not.toBeUndefined()
-    expect(itemCategories!).toStrictEqual(ItemCategoriesMock)
-  })
-
-  it('should return undefined and log exception when item categories are not found', async () => {
-    // Arrange
-    useFetchServiceMock([])
-    useWebsiteConfigurationServiceMock()
-
-    const logServiceMock = mock<LogService>()
-    Services.configure(LogService, undefined, instance(logServiceMock))
-
-    const fetcher = new ItemFetcherService()
-
-    // Act
-    const itemCategories = await fetcher.fetchItemCategories()
-
-    // Assert
-    expect(itemCategories).toBeUndefined()
-    verify(logServiceMock.logException('message.itemCategoriesNotFetched')).once()
-  })
-
-  it('should return undefined and log exception when an error occurs requesting item categories', async () => {
-    // Arrange
-    useWebsiteConfigurationServiceMock()
-
-    const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointItemCategories)).thenResolve(undefined)
-    Services.configure(FetchService, undefined, instance(fetchServiceMock))
-
-    const logServiceMock = mock<LogService>()
-    Services.configure(LogService, undefined, instance(logServiceMock))
-
-    const fetcher = new ItemFetcherService()
-
-    // Act
-    const itemCategories = await fetcher.fetchItemCategories()
-
-    // Assert
-    expect(itemCategories).toBeUndefined()
-    verify(logServiceMock.logException('message.itemCategoriesNotFetched')).once()
-  })
-})
 
 describe('fetchItems()', () => {
   it('should fetch all items', async () => {

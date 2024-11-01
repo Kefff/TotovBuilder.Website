@@ -1,16 +1,65 @@
-import { IItem } from '../../models/item/IItem'
+import { IItem, ItemCategoryId } from '../../models/item/IItem'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import SortingData from '../../models/utils/SortingData'
 import { SortingOrder } from '../../models/utils/SortingOrder'
 import StringUtils from '../../utils/StringUtils'
 import { LogService } from '../LogService'
 import Services from '../repository/Services'
-import ISortingFunctionList from './functions/ISortingFunctionList'
+import { AmmunitionSortingFunctions } from './functions/AmmunitionSortingFunctions'
+import { ArmorModSortingFunctions } from './functions/ArmorModSortingFunctions'
+import { ArmorSortingFunctions } from './functions/ArmorSortingFunctions'
+import { BackpackSortingFunctions } from './functions/BackpackSortingFunctions'
+import { ContainerSortingFunctions } from './functions/ContainerSortingFunctions'
+import { EyewearSortingFunctions } from './functions/EyewearSortingFunctions'
+import { GrenadeSortingFunctions } from './functions/GrenadeSortingFunctions'
+import { HeadwearSortingFunctions } from './functions/HeadwearSortingFunctions'
+import { IItemSortingFunctionList, ISortingFunctionList } from './functions/ISortingFunctionList'
+import { ItemSortingFunctions } from './functions/ItemSortingFunctions'
+import { MagazineSortingFunctions } from './functions/MagazineSortingFunctions'
+import { MeleeWeaponSortingFunctions } from './functions/MeleeWeaponSortingFunctions'
+import { ModSortingFunctions } from './functions/ModSortingFunctions'
+import { RangedWeaponModSortingFunctions } from './functions/RangedWeaponModSortingFunctions'
+import { RangedWeaponSortingFunctions } from './functions/RangedWeaponSortingFunctions'
+import { VestSortingFunctions } from './functions/VestSortingFunctions'
+import { WearableSortingFunctions } from './functions/WearableSortingFunctions'
 
 /**
  * Represents a service responsible for sorting elements.
  */
 export class SortingService {
+  /**
+   * Gets the sorting functions for sorting the specified category of item.
+   * @param itemCategoryId - Item category. When not set, basic item sorting functions are returned.
+   * @returns Sorting functions.
+   */
+  public getSortingFunctionsFromItemType(itemCategoryId: ItemCategoryId | undefined = undefined): IItemSortingFunctionList {
+    if (itemCategoryId == null) {
+      return ItemSortingFunctions
+    }
+
+    const sortingFunctions = [
+      AmmunitionSortingFunctions,
+      ArmorModSortingFunctions,
+      ArmorSortingFunctions,
+      BackpackSortingFunctions,
+      ContainerSortingFunctions,
+      EyewearSortingFunctions,
+      GrenadeSortingFunctions,
+      HeadwearSortingFunctions,
+      ItemSortingFunctions,
+      MagazineSortingFunctions,
+      MeleeWeaponSortingFunctions,
+      ModSortingFunctions,
+      RangedWeaponModSortingFunctions,
+      RangedWeaponSortingFunctions,
+      VestSortingFunctions,
+      WearableSortingFunctions
+    ]
+    const sortingFunctionsForItemType = sortingFunctions.find(sf => sf.itemCategoryIds.includes(itemCategoryId))
+
+    return sortingFunctionsForItemType as IItemSortingFunctionList
+  }
+
   /**
    * Sorts a collection of items according to sorting data.
    * Allows the use of asynchronous comparison functions.
@@ -35,7 +84,7 @@ export class SortingService {
     sortingFunctions: ISortingFunctionList<T>,
     property: string,
     order?: SortingOrder): SortingData<T> {
-    const sortingFunction = sortingFunctions[property]
+    const sortingFunction = sortingFunctions.functions[property]
 
     if (sortingFunction == null) {
       Services.get(LogService).logError('message.sortingFunctionNotFound', { property: property })
@@ -89,7 +138,7 @@ export function compareByElementName(element1: Record<string, unknown>, element2
  * @returns Comparison value.
  */
 export function compareByItemCategory(item1: IItem, item2: IItem): number {
-  return StringUtils.compare(item1.categoryId, item2.categoryId)
+  return StringUtils.compare(item1.categoryId.toString(), item2.categoryId.toString())
 }
 
 /**

@@ -3,6 +3,7 @@ import { anything, instance, mock, verify } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { InventorySlotTypeId } from '../../models/build/InventorySlotTypes'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
@@ -13,7 +14,6 @@ import { BuildService } from '../../services/BuildService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
-import { InventorySlotService } from '../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { PresetService } from '../../services/PresetService'
@@ -510,6 +510,175 @@ describe('BuildPropertiesService', () => {
     })
   })
 
+  describe('getNotExportedTooltip()', () => {
+    it.each([
+      [undefined, undefined, 'Build not saved to a file. It can be lost if you clear your browser data.'],
+      [new Date(1), undefined, 'Build not saved to a file. It can be lost if you clear your browser data.'],
+      [new Date(2), new Date(1), 'Changes from the 01/01/1970 01:00:00 have not been saved to a file. They can be lost if you clear your browser data. Last file save on 01/01/1970 01:00:00.']
+    ])('should get the tooltip for not exported builds', (lastUpdated: Date | undefined, lastExported: Date | undefined, expected: string) => {
+      // Arrange
+      const service = new BuildPropertiesService()
+
+      // Act
+      const tooltip = service.getNotExportedTooltip(lastUpdated, lastExported)
+
+      // Assert
+      expect(tooltip).toBe(expected)
+    })
+  })
+
+  describe('getShoppingListMerchants()', () => {
+    it('should get the merchants and their maximum level from a shopping list', () => {
+      // Arrange
+      const services = new BuildPropertiesService()
+
+      // Act
+      const merchants = services.getShoppingListMerchants([
+        {
+          ignorePrice: IgnoredUnitPrice.notIgnored,
+          inventorySlotId: undefined,
+          item: ak12PistolGrip,
+          missingPrice: false,
+          price: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: ak12PistolGrip.id,
+            merchant: 'prapor',
+            merchantLevel: 2,
+            quest: undefined,
+            value: 2163,
+            valueInMainCurrency: 2163
+          },
+          quantity: 1,
+          unitPrice: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: ak12PistolGrip.id,
+            merchant: 'prapor',
+            merchantLevel: 2,
+            quest: undefined,
+            value: 2163,
+            valueInMainCurrency: 2163
+          }
+        },
+        {
+          ignorePrice: IgnoredUnitPrice.notIgnored,
+          inventorySlotId: undefined,
+          item: salewa,
+          missingPrice: false,
+          price: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: salewa.id,
+            merchant: 'therapist',
+            merchantLevel: 2,
+            quest: {
+              id: '596760e186f7741e11214d58',
+              name: 'Postman Pat - Part 2',
+              wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Postman_Pat_-_Part_2'
+            },
+            value: 37061,
+            valueInMainCurrency: 37061
+          },
+          quantity: 1,
+          unitPrice: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: salewa.id,
+            merchant: 'therapist',
+            merchantLevel: 2,
+            quest: {
+              id: '596760e186f7741e11214d58',
+              name: 'Postman Pat - Part 2',
+              wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Postman_Pat_-_Part_2'
+            },
+            value: 37061,
+            valueInMainCurrency: 37061
+          }
+        },
+        {
+          ignorePrice: IgnoredUnitPrice.notIgnored,
+          inventorySlotId: 'onSling',
+          item: rpk16Default,
+          missingPrice: false,
+          price: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: rpk16Default.id,
+            merchant: 'prapor',
+            merchantLevel: 4,
+            quest: undefined,
+            value: 69734,
+            valueInMainCurrency: 69734
+          },
+          quantity: 1,
+          unitPrice: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: rpk16Default.id,
+            merchant: 'prapor',
+            merchantLevel: 4,
+            quest: undefined,
+            value: 69734,
+            valueInMainCurrency: 69734
+          }
+        },
+        {
+          ignorePrice: IgnoredUnitPrice.notIgnored,
+          inventorySlotId: 'tacticalRig',
+          item: scavVest,
+          missingPrice: false,
+          price: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: scavVest.id,
+            merchant: 'flea-market',
+            merchantLevel: 0,
+            quest: undefined,
+            value: 33447,
+            valueInMainCurrency: 33447
+          },
+          quantity: 1,
+          unitPrice: {
+            barterItems: [],
+            currencyName: 'RUB',
+            itemId: scavVest.id,
+            merchant: 'flea-market',
+            merchantLevel: 0,
+            quest: undefined,
+            value: 33447,
+            valueInMainCurrency: 33447
+          }
+        },
+        {
+          ignorePrice: IgnoredUnitPrice.notLootable,
+          inventorySlotId: undefined,
+          item: bayonet6Kh5,
+          missingPrice: false,
+          price: undefined,
+          quantity: 1,
+          unitPrice: undefined
+        }
+      ])
+
+      // Assert
+      expect(merchants).toStrictEqual([
+        {
+          level: 0,
+          name: 'flea-market'
+        },
+        {
+          level: 4,
+          name: 'prapor'
+        },
+        {
+          level: 2,
+          name: 'therapist'
+        }
+      ] as IShoppingListMerchant[])
+    })
+  })
+
   describe('toText() (markdown)', () => {
     it.each([
       [build1, 'fr', expectedMarkdownString1Fr],
@@ -640,7 +809,7 @@ describe('BuildPropertiesService', () => {
                   quantity: 60
                 }
               ],
-              typeId: 'pockets'
+              typeId: InventorySlotTypeId.pockets
             }
           ],
           lastExported: undefined,
@@ -661,7 +830,6 @@ describe('BuildPropertiesService', () => {
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(ReductionService)
 
@@ -692,7 +860,6 @@ describe('BuildPropertiesService', () => {
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(PresetService)
       Services.configure(ReductionService)
@@ -719,7 +886,7 @@ describe('BuildPropertiesService', () => {
               undefined,
               undefined
             ],
-            typeId: 'pockets'
+            typeId: InventorySlotTypeId.pockets
           },
           {
             items: [
@@ -731,7 +898,7 @@ describe('BuildPropertiesService', () => {
                 quantity: 1
               }
             ],
-            typeId: 'headwear'
+            typeId: InventorySlotTypeId.headwear
           }
         ],
         lastExported: undefined,
@@ -754,7 +921,7 @@ describe('BuildPropertiesService', () => {
               },
               undefined
             ],
-            typeId: 'pockets'
+            typeId: InventorySlotTypeId.pockets
           }
         ],
         lastExported: undefined,
@@ -821,7 +988,6 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(ReductionService)
 
@@ -924,7 +1090,6 @@ Ref Non   Skier 1   La Toubib 3
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(ReductionService)
 
@@ -1097,7 +1262,6 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       Services.configure(ItemPropertiesService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ReductionService)
 
       const buildPropertiesService = new BuildPropertiesService()
@@ -1310,7 +1474,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
                   quantity: 60
                 }
               ],
-              typeId: 'pockets'
+              typeId: InventorySlotTypeId.pockets
             }
           ],
           lastExported: undefined,
@@ -1331,7 +1495,6 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(ReductionService)
 
@@ -1362,7 +1525,6 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(PresetService)
       Services.configure(ReductionService)
@@ -1389,7 +1551,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
               undefined,
               undefined
             ],
-            typeId: 'pockets'
+            typeId: InventorySlotTypeId.pockets
           },
           {
             items: [
@@ -1401,7 +1563,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
                 quantity: 1
               }
             ],
-            typeId: 'headwear'
+            typeId: InventorySlotTypeId.headwear
           }
         ],
         lastExported: undefined,
@@ -1424,7 +1586,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
               },
               undefined
             ],
-            typeId: 'pockets'
+            typeId: InventorySlotTypeId.pockets
           }
         ],
         lastExported: undefined,
@@ -1493,7 +1655,6 @@ Créé avec Totov Builder`)
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(ReductionService)
 
@@ -1564,7 +1725,6 @@ Créé avec Totov Builder`)
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(ReductionService)
 
@@ -1746,7 +1906,6 @@ http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzs
       Services.configure(ItemPropertiesService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ReductionService)
 
       const buildPropertiesService = new BuildPropertiesService()
@@ -1826,175 +1985,6 @@ Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
 Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
 Créé avec Totov Builder`)
-    })
-  })
-
-  describe('getNotExportedTooltip()', () => {
-    it.each([
-      [undefined, undefined, 'Build not saved to a file. It can be lost if you clear your browser data.'],
-      [new Date(1), undefined, 'Build not saved to a file. It can be lost if you clear your browser data.'],
-      [new Date(2), new Date(1), 'Changes from the 01/01/1970 01:00:00 have not been saved to a file. They can be lost if you clear your browser data. Last file save on 01/01/1970 01:00:00.']
-    ])('should get the tooltip for not exported builds', (lastUpdated: Date | undefined, lastExported: Date | undefined, expected: string) => {
-      // Arrange
-      const service = new BuildPropertiesService()
-
-      // Act
-      const tooltip = service.getNotExportedTooltip(lastUpdated, lastExported)
-
-      // Assert
-      expect(tooltip).toBe(expected)
-    })
-  })
-
-  describe('getShoppingListMerchants()', () => {
-    it('should get the merchants and their maximum level from a shopping list', () => {
-      // Arrange
-      const services = new BuildPropertiesService()
-
-      // Act
-      const merchants = services.getShoppingListMerchants([
-        {
-          ignorePrice: IgnoredUnitPrice.notIgnored,
-          inventorySlotId: undefined,
-          item: ak12PistolGrip,
-          missingPrice: false,
-          price: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: ak12PistolGrip.id,
-            merchant: 'prapor',
-            merchantLevel: 2,
-            quest: undefined,
-            value: 2163,
-            valueInMainCurrency: 2163
-          },
-          quantity: 1,
-          unitPrice: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: ak12PistolGrip.id,
-            merchant: 'prapor',
-            merchantLevel: 2,
-            quest: undefined,
-            value: 2163,
-            valueInMainCurrency: 2163
-          }
-        },
-        {
-          ignorePrice: IgnoredUnitPrice.notIgnored,
-          inventorySlotId: undefined,
-          item: salewa,
-          missingPrice: false,
-          price: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: salewa.id,
-            merchant: 'therapist',
-            merchantLevel: 2,
-            quest: {
-              id: '596760e186f7741e11214d58',
-              name: 'Postman Pat - Part 2',
-              wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Postman_Pat_-_Part_2'
-            },
-            value: 37061,
-            valueInMainCurrency: 37061
-          },
-          quantity: 1,
-          unitPrice: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: salewa.id,
-            merchant: 'therapist',
-            merchantLevel: 2,
-            quest: {
-              id: '596760e186f7741e11214d58',
-              name: 'Postman Pat - Part 2',
-              wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Postman_Pat_-_Part_2'
-            },
-            value: 37061,
-            valueInMainCurrency: 37061
-          }
-        },
-        {
-          ignorePrice: IgnoredUnitPrice.notIgnored,
-          inventorySlotId: 'onSling',
-          item: rpk16Default,
-          missingPrice: false,
-          price: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: rpk16Default.id,
-            merchant: 'prapor',
-            merchantLevel: 4,
-            quest: undefined,
-            value: 69734,
-            valueInMainCurrency: 69734
-          },
-          quantity: 1,
-          unitPrice: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: rpk16Default.id,
-            merchant: 'prapor',
-            merchantLevel: 4,
-            quest: undefined,
-            value: 69734,
-            valueInMainCurrency: 69734
-          }
-        },
-        {
-          ignorePrice: IgnoredUnitPrice.notIgnored,
-          inventorySlotId: 'tacticalRig',
-          item: scavVest,
-          missingPrice: false,
-          price: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: scavVest.id,
-            merchant: 'flea-market',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 33447,
-            valueInMainCurrency: 33447
-          },
-          quantity: 1,
-          unitPrice: {
-            barterItems: [],
-            currencyName: 'RUB',
-            itemId: scavVest.id,
-            merchant: 'flea-market',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 33447,
-            valueInMainCurrency: 33447
-          }
-        },
-        {
-          ignorePrice: IgnoredUnitPrice.notLootable,
-          inventorySlotId: undefined,
-          item: bayonet6Kh5,
-          missingPrice: false,
-          price: undefined,
-          quantity: 1,
-          unitPrice: undefined
-        }
-      ])
-
-      // Assert
-      expect(merchants).toStrictEqual([
-        {
-          level: 0,
-          name: 'flea-market'
-        },
-        {
-          level: 4,
-          name: 'prapor'
-        },
-        {
-          level: 2,
-          name: 'therapist'
-        }
-      ] as IShoppingListMerchant[])
     })
   })
 })

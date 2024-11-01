@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IHeadwear } from '../../../../models/item/IHeadwear'
-import { IItem } from '../../../../models/item/IItem'
+import { ItemCategoryId } from '../../../../models/item/IItem'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { HeadwearSortingFunctions } from '../../../../services/sorting/functions/HeadwearSortingFunctions'
@@ -8,47 +8,47 @@ import { HeadwearSortingFunctions } from '../../../../services/sorting/functions
 describe('comparisonFunction()', () => {
   it.each([
     [
-      { categoryId: 'cat1', ricochetChance: 'Low', name: 'a' } as IHeadwear,
-      { categoryId: 'cat2', ricochetChance: 'Low', name: 'a' } as IHeadwear,
+      { categoryId: 'cat1' as unknown as ItemCategoryId, ricochetChance: 'Low', name: 'a' } as IHeadwear,
+      { categoryId: 'cat2' as unknown as ItemCategoryId, ricochetChance: 'Low', name: 'a' } as IHeadwear,
       -1
     ],
     [
-      { categoryId: 'cat2', ricochetChance: 'Low', name: 'a' } as IHeadwear,
-      { categoryId: 'cat1', ricochetChance: 'Low', name: 'a' } as IHeadwear,
+      { categoryId: 'cat2' as unknown as ItemCategoryId, ricochetChance: 'Low', name: 'a' } as IHeadwear,
+      { categoryId: 'cat1' as unknown as ItemCategoryId, ricochetChance: 'Low', name: 'a' } as IHeadwear,
       1
     ],
     [
-      { categoryId: 'cat1', ricochetChance: 'Low', name: 'a' } as IHeadwear,
-      { categoryId: 'cat1', ricochetChance: 'High', name: 'a' } as IHeadwear,
+      { categoryId: ItemCategoryId.headwear, ricochetChance: 'Low', name: 'a' } as IHeadwear,
+      { categoryId: ItemCategoryId.headwear, ricochetChance: 'High', name: 'a' } as IHeadwear,
       -2
     ],
     [
-      { categoryId: 'cat1', ricochetChance: 'High', name: 'a' } as IHeadwear,
-      { categoryId: 'cat1', ricochetChance: 'Low', name: 'a' } as IHeadwear,
+      { categoryId: ItemCategoryId.headwear, ricochetChance: 'High', name: 'a' } as IHeadwear,
+      { categoryId: ItemCategoryId.headwear, ricochetChance: 'Low', name: 'a' } as IHeadwear,
       2
     ],
     [
-      { categoryId: 'cat1', ricochetChance: 'Low', name: 'a' } as IHeadwear,
-      { categoryId: 'cat1', ricochetChance: 'Low', name: 'b' } as IHeadwear,
+      { categoryId: ItemCategoryId.headwear, ricochetChance: 'Low', name: 'a' } as IHeadwear,
+      { categoryId: ItemCategoryId.headwear, ricochetChance: 'Low', name: 'b' } as IHeadwear,
       -1
     ],
     [
-      { categoryId: 'cat1', ricochetChance: 'Low', name: 'b' } as IHeadwear,
-      { categoryId: 'cat1', ricochetChance: 'Low', name: 'a' } as IHeadwear,
+      { categoryId: ItemCategoryId.headwear, ricochetChance: 'Low', name: 'b' } as IHeadwear,
+      { categoryId: ItemCategoryId.headwear, ricochetChance: 'Low', name: 'a' } as IHeadwear,
       1
     ],
     [
-      { categoryId: 'cat1', ricochetChance: '', name: 'a' } as IHeadwear,
-      { categoryId: 'cat1', ricochetChance: '', name: 'a' } as IHeadwear,
+      { categoryId: ItemCategoryId.headwear, ricochetChance: '', name: 'a' } as IHeadwear,
+      { categoryId: ItemCategoryId.headwear, ricochetChance: '', name: 'a' } as IHeadwear,
       0
     ]
   ])('should compare by category, ricochet chance and name', async (headwear1: IHeadwear, headwear2: IHeadwear, expected: number) => {
     // Arrange
-    const propertyValue1 = await HeadwearSortingFunctions['ricochetChance'].comparisonValueObtentionFunction(headwear1)
-    const propertyValue2 = await HeadwearSortingFunctions['ricochetChance'].comparisonValueObtentionFunction(headwear2)
+    const propertyValue1 = await HeadwearSortingFunctions.functions['ricochetChance'].comparisonValueObtentionFunction(headwear1)
+    const propertyValue2 = await HeadwearSortingFunctions.functions['ricochetChance'].comparisonValueObtentionFunction(headwear2)
 
     // Act
-    const sortingValue = HeadwearSortingFunctions['ricochetChance'].comparisonFunction(headwear1, propertyValue1, headwear2, propertyValue2)
+    const sortingValue = HeadwearSortingFunctions.functions['ricochetChance'].comparisonFunction(headwear1, propertyValue1, headwear2, propertyValue2)
 
     // Assert
     expect(sortingValue).toBe(expected)
@@ -71,11 +71,11 @@ describe('comparisonFunction()', () => {
     // Arrange
     const item1 = {
       armorClass: 2,
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.headwear,
       durability: 2,
       ergonomicsModifierPercentage: 2,
       movementSpeedModifierPercentage: 2,
-      name: 'cat',
+      name: 'name',
       presetWearableModifiers: isPreset
         ? {
           ergonomicsModifierPercentageWithMods: 20,
@@ -89,11 +89,11 @@ describe('comparisonFunction()', () => {
 
     const item2 = {
       armorClass: 1,
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.headwear,
       durability: 1,
       ergonomicsModifierPercentage: 1,
       movementSpeedModifierPercentage: 1,
-      name: 'cat',
+      name: 'name',
       presetWearableModifiers: isPreset
         ? {
           ergonomicsModifierPercentageWithMods: 10,
@@ -105,7 +105,7 @@ describe('comparisonFunction()', () => {
       turningSpeedModifierPercentage: 1
     } as IHeadwear
 
-    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    let sortingData: SortingData<IHeadwear> | undefined = new SortingData()
     const sortingService = new SortingService()
     sortingData = sortingService.setSortingProperty(sortingData, HeadwearSortingFunctions, property)
 

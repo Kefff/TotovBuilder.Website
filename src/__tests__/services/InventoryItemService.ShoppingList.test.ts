@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
@@ -621,7 +622,7 @@ describe('getShoppingList', () => {
         inventorySlotId: undefined,
         item: {
           capacity: 4,
-          categoryId: 'securedContainer',
+          categoryId: ItemCategoryId.securedContainer,
           conflictingItemIds: [],
           iconLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-icon.webp',
           id: '544a11ac4bdc2d470e8b456a',
@@ -713,11 +714,11 @@ describe('getShoppingList', () => {
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
-        ignorePrice: 'notLootable',
+        ignorePrice: IgnoredUnitPrice.notLootable,
         inventorySlotId: undefined,
         item: {
           capacity: 4,
-          categoryId: 'securedContainer',
+          categoryId: ItemCategoryId.securedContainer,
           conflictingItemIds: [],
           iconLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-icon.webp',
           id: '544a11ac4bdc2d470e8b456a',
@@ -804,7 +805,7 @@ describe('getShoppingList', () => {
         ignorePrice: IgnoredUnitPrice.notIgnored,
         inventorySlotId: undefined,
         item: {
-          categoryId: 'notFound',
+          categoryId: ItemCategoryId.notFound,
           conflictingItemIds: [],
           iconLink: '/assets/images/unknown_item.webp',
           id: 'invalid',

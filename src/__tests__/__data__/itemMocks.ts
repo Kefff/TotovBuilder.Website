@@ -6,7 +6,7 @@ import { IContainer } from '../../models/item/IContainer'
 import { IEyewear } from '../../models/item/IEyewear'
 import { IGrenade } from '../../models/item/IGrenade'
 import { IHeadwear } from '../../models/item/IHeadwear'
-import { IItem } from '../../models/item/IItem'
+import { IItem, ItemCategoryId } from '../../models/item/IItem'
 import { IMagazine } from '../../models/item/IMagazine'
 import { IMeleeWeapon } from '../../models/item/IMeleeWeapon'
 import { IMod } from '../../models/item/IMod'
@@ -62,7 +62,7 @@ export const ak12bt: IRangedWeaponMod = {
   presetRecoilModifierPercentage: undefined,
   prices: [],
   recoilModifierPercentage: -0.03,
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   iconLink: 'https://assets.tarkov.dev/649ec87d8007560a9001ab36-icon.webp',
   id: '649ec87d8007560a9001ab36',
   imageLink: 'https://assets.tarkov.dev/649ec87d8007560a9001ab36-image.webp',
@@ -74,7 +74,7 @@ export const ak12bt: IRangedWeaponMod = {
 }
 
 export const ak12PistolGrip: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5beec8ea0db834001a6f9dbf-icon.webp',
   id: '5beec8ea0db834001a6f9dbf',
@@ -97,7 +97,7 @@ export const ak12PistolGrip: IRangedWeaponMod = {
 }
 
 export const ak12Stock: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5beec8c20db834001d2c465c-icon.webp',
   id: '5beec8c20db834001d2c465c',
@@ -120,7 +120,7 @@ export const ak12Stock: IRangedWeaponMod = {
 }
 
 export const alkali: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/59faf98186f774067b6be103-icon.webp',
   id: '59faf98186f774067b6be103',
@@ -135,7 +135,7 @@ export const alkali: IItem = {
 }
 
 export const alpha: IContainer = {
-  categoryId: 'securedContainer',
+  categoryId: ItemCategoryId.securedContainer,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-icon.webp',
   id: '544a11ac4bdc2d470e8b456a',
@@ -162,7 +162,7 @@ export const ammo1270Magnum: IAmmunition = {
   projectiles: 8,
   recoilModifier: 115,
   velocity: 385,
-  categoryId: 'ammunition',
+  categoryId: ItemCategoryId.ammunition,
   iconLink: 'https://assets.tarkov.dev/5d6e6806a4b936088465b17e-icon.webp',
   id: '5d6e6806a4b936088465b17e',
   imageLink: 'https://assets.tarkov.dev/5d6e6806a4b936088465b17e-image.webp',
@@ -182,7 +182,7 @@ export const ammo1270Magnum: IAmmunition = {
 }
 
 export const ammo545bp: IAmmunition = {
-  categoryId: 'ammunition',
+  categoryId: ItemCategoryId.ammunition,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/56dfef82d2720bbd668b4567-icon.webp',
   id: '56dfef82d2720bbd668b4567',
@@ -231,7 +231,7 @@ export const ammo545us: IAmmunition = {
   recoilModifier: -15,
   subsonic: true,
   velocity: 303,
-  categoryId: 'ammunition',
+  categoryId: ItemCategoryId.ammunition,
   iconLink: 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-icon.webp',
   id: '56dff4ecd2720b5f5a8b4568',
   imageLink: 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-image.webp',
@@ -244,7 +244,7 @@ export const ammo545us: IAmmunition = {
 }
 
 export const ammo9mmGT: IAmmunition = {
-  categoryId: 'ammunition',
+  categoryId: ItemCategoryId.ammunition,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5c3df7d588a4501f290594e5-icon.webp',
   id: '5c3df7d588a4501f290594e5',
@@ -275,7 +275,7 @@ export const ammo9mmGT: IAmmunition = {
 }
 
 export const aquamari: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5c0fa877d174af02a012e1cf-icon.webp',
   id: '5c0fa877d174af02a012e1cf',
@@ -290,7 +290,7 @@ export const aquamari: IItem = {
 }
 
 export const armbandBlue: IItem = {
-  categoryId: 'armband',
+  categoryId: ItemCategoryId.armband,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5b3f3af486f774679e752c1f-icon.webp',
   id: '5b3f3af486f774679e752c1f',
@@ -306,7 +306,7 @@ export const armbandBlue: IItem = {
 
 export const armor6b13Fl: IArmor = {
   blindnessProtectionPercentage: 0,
-  categoryId: 'armor',
+  categoryId: ItemCategoryId.armor,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5c0e51be86f774598e797894-icon.webp',
   id: '5c0e51be86f774598e797894',
@@ -414,7 +414,7 @@ export const armor6b13Fl: IArmor = {
 
 export const armor6b13FlDefault: IArmor = {
   blindnessProtectionPercentage: 0,
-  categoryId: 'armor',
+  categoryId: ItemCategoryId.armor,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5c0e51be86f774598e797894-icon.webp',
   id: '65765f39526e320fbe0357b1',
@@ -631,7 +631,7 @@ export const banshee: IVest = {
   movementSpeedModifierPercentage: -0.01,
   turningSpeedModifierPercentage: -0.01,
   capacity: 16,
-  categoryId: 'vest',
+  categoryId: ItemCategoryId.vest,
   iconLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-icon.webp',
   id: '639343fce101f4caa40a4ef3',
   imageLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-image.webp',
@@ -757,7 +757,7 @@ export const bansheeDefault: IVest = {
   movementSpeedModifierPercentage: -0.01,
   turningSpeedModifierPercentage: -0.01,
   capacity: 16,
-  categoryId: 'vest',
+  categoryId: ItemCategoryId.vest,
   iconLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-icon.webp',
   id: '657661ad234b9f6e050a42a2',
   imageLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-image.webp',
@@ -773,7 +773,7 @@ export const bansheeDefault: IVest = {
 }
 
 export const bayonet6Kh5: IMeleeWeapon = {
-  categoryId: 'meleeWeapon',
+  categoryId: ItemCategoryId.meleeWeapon,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5bffdc370db834001d23eca8-icon.webp',
   id: '5bffdc370db834001d23eca8',
@@ -791,7 +791,7 @@ export const bayonet6Kh5: IMeleeWeapon = {
 }
 
 export const berkut: IBackpack = {
-  categoryId: 'backpack',
+  categoryId: ItemCategoryId.backpack,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-icon.webp',
   id: '5ca20d5986f774331e7c9602',
@@ -811,7 +811,7 @@ export const berkut: IBackpack = {
 }
 
 export const capacitors: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5c06782b86f77426df5407d2-icon.webp',
   id: '5c06782b86f77426df5407d2',
@@ -826,7 +826,7 @@ export const capacitors: IItem = {
 }
 
 export const cf: IItem = {
-  categoryId: 'faceCover',
+  categoryId: ItemCategoryId.faceCover,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5ab8f39486f7745cd93a1cca-icon.webp',
   id: '5ab8f39486f7745cd93a1cca',
@@ -845,7 +845,7 @@ export const crossbow: IEyewear = {
   armoredAreas: [],
   baseItemId: undefined,
   blindnessProtectionPercentage: 0.3,
-  categoryId: 'eyewear',
+  categoryId: ItemCategoryId.eyewear,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   durability: 0,
@@ -888,7 +888,7 @@ export const cultLocust: IArmorMod = {
   material: 'Titan',
   movementSpeedModifierPercentage: -0.015,
   turningSpeedModifierPercentage: -0.01,
-  categoryId: 'armorMod',
+  categoryId: ItemCategoryId.armorMod,
   iconLink: 'https://assets.tarkov.dev/656fa8d700d62bcd2e024084-icon.webp',
   id: '656fa8d700d62bcd2e024084',
   imageLink: 'https://assets.tarkov.dev/656fa8d700d62bcd2e024084-image.webp',
@@ -919,7 +919,7 @@ export const ekp802dt: IRangedWeaponMod = {
   presetRecoilModifierPercentage: undefined,
   prices: [],
   recoilModifierPercentage: 0,
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [
     '5827272a24597748c74bdeea'
   ],
@@ -934,7 +934,7 @@ export const ekp802dt: IRangedWeaponMod = {
 }
 
 export const erBayonet: IMeleeWeapon = {
-  categoryId: 'meleeWeapon',
+  categoryId: ItemCategoryId.meleeWeapon,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/54491bb74bdc2d09088b4567-icon.webp',
   id: '54491bb74bdc2d09088b4567',
@@ -952,7 +952,7 @@ export const erBayonet: IMeleeWeapon = {
 }
 
 export const esLamp: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/590a3cd386f77436f20848cb-icon.webp',
   id: '590a3cd386f77436f20848cb',
@@ -967,7 +967,7 @@ export const esLamp: IItem = {
 }
 
 export const eur: IItem = {
-  categoryId: 'currency',
+  categoryId: ItemCategoryId.currency,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/569668774bdc2da2298b4568-icon.webp',
   id: '569668774bdc2da2298b4568',
@@ -982,7 +982,7 @@ export const eur: IItem = {
 }
 
 export const ewr: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/60098b1705871270cd5352a1-icon.webp',
   id: '60098b1705871270cd5352a1',
@@ -997,7 +997,7 @@ export const ewr: IItem = {
 }
 
 export const filter: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/590c595c86f7747884343ad7-icon.webp',
   id: '590c595c86f7747884343ad7',
@@ -1012,7 +1012,7 @@ export const filter: IItem = {
 }
 
 export const h2o2: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/59e361e886f774176c10a2a5-icon.webp',
   id: '59e361e886f774176c10a2a5',
@@ -1027,7 +1027,7 @@ export const h2o2: IItem = {
 }
 
 export const halfMask: IItem = {
-  categoryId: 'faceCover',
+  categoryId: ItemCategoryId.faceCover,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/572b7fa524597762b747ce82-icon.webp',
   id: '572b7fa524597762b747ce82',
@@ -1042,7 +1042,7 @@ export const halfMask: IItem = {
 }
 
 export const iskra: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/590c5d4b86f774784e1b9c45-icon.webp',
   id: '590c5d4b86f774784e1b9c45',
@@ -1089,7 +1089,7 @@ export const k1s: IHeadwear = {
   prices: [],
   ricochetChance: 'Low',
   turningSpeedModifierPercentage: -0.02,
-  categoryId: 'headwear',
+  categoryId: ItemCategoryId.headwear,
   iconLink: 'https://assets.tarkov.dev/59e7711e86f7746cae05fbe1-icon.webp',
   id: '59e7711e86f7746cae05fbe1',
   imageLink: 'https://assets.tarkov.dev/59e7711e86f7746cae05fbe1-image.webp',
@@ -1121,7 +1121,7 @@ export const k1sVisor: IArmorMod = {
   presetWearableModifiers: undefined,
   prices: [],
   turningSpeedModifierPercentage: 0,
-  categoryId: 'armorMod',
+  categoryId: ItemCategoryId.armorMod,
   iconLink: 'https://assets.tarkov.dev/5ac4c50d5acfc40019262e87-icon.webp',
   id: '5ac4c50d5acfc40019262e87',
   imageLink: 'https://assets.tarkov.dev/5ac4c50d5acfc40019262e87-image.webp',
@@ -1134,7 +1134,7 @@ export const k1sVisor: IArmorMod = {
 
 export const lshZ2dtm: IHeadwear = {
   blindnessProtectionPercentage: 0,
-  categoryId: 'headwear',
+  categoryId: ItemCategoryId.headwear,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5d6d3716a4b9361bc8618872-icon.webp',
   id: '5d6d3716a4b9361bc8618872',
@@ -1209,7 +1209,7 @@ export const lshZ2dtm: IHeadwear = {
 }
 
 export const lshZ2dtmFs: IArmorMod = {
-  categoryId: 'armorMod',
+  categoryId: ItemCategoryId.armorMod,
   conflictingItemIds: [
     '5c0696830db834001d23f5da',
     '5c066e3a0db834001b7353f0',
@@ -1247,7 +1247,7 @@ export const lshZ2dtmFs: IArmorMod = {
 }
 
 export const m9a3: IRangedWeapon = {
-  categoryId: 'secondaryWeapon',
+  categoryId: ItemCategoryId.secondaryWeapon,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5cadc190ae921500103bb3b6-icon.webp',
   id: '5cadc190ae921500103bb3b6',
@@ -1327,7 +1327,7 @@ export const m9a3: IRangedWeapon = {
 }
 
 export const m9a3Default: IRangedWeapon = {
-  categoryId: 'secondaryWeapon',
+  categoryId: ItemCategoryId.secondaryWeapon,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5d3f0bc986f7743cb332abdc-icon.webp',
   id: '5d3f0bc986f7743cb332abdc',
@@ -1407,7 +1407,7 @@ export const m9a3Default: IRangedWeapon = {
 }
 
 export const m9a3Fs: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5cadd919ae921500126a77f3-icon.webp',
   id: '5cadd919ae921500126a77f3',
@@ -1430,7 +1430,7 @@ export const m9a3Fs: IRangedWeaponMod = {
 }
 
 export const m9a3Magazine: IMagazine = {
-  categoryId: 'magazine',
+  categoryId: ItemCategoryId.magazine,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5cadc2e0ae9215051e1c21e7-icon.webp',
   id: '5cadc2e0ae9215051e1c21e7',
@@ -1465,7 +1465,7 @@ export const m9a3Magazine: IMagazine = {
 }
 
 export const m9a3Rs: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5cadd940ae9215051e1c2316-icon.webp',
   id: '5cadd940ae9215051e1c2316',
@@ -1488,7 +1488,7 @@ export const m9a3Rs: IRangedWeaponMod = {
 }
 
 export const m9a3SideGrip: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5cadc431ae921500113bb8d5-icon.webp',
   id: '5cadc431ae921500113bb8d5',
@@ -1511,7 +1511,7 @@ export const m9a3SideGrip: IRangedWeaponMod = {
 }
 
 export const m9a3Slide: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5cadc55cae921500103bb3be-icon.webp',
   id: '5cadc55cae921500103bb3be',
@@ -1552,7 +1552,7 @@ export const m9a3Slide: IRangedWeaponMod = {
 }
 
 export const m9a3Thr: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5cadc1c6ae9215000f2775a4-icon.webp',
   id: '5cadc1c6ae9215000f2775a4',
@@ -1588,7 +1588,7 @@ export const m9a3Thr: IRangedWeaponMod = {
 }
 
 export const m9a3Cap: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5cadc390ae921500126a77f1-icon.webp',
   id: '5cadc390ae921500126a77f1',
@@ -1612,7 +1612,7 @@ export const m9a3Cap: IRangedWeaponMod = {
 
 export const mechanism: IBackpack = {
   capacity: 32,
-  categoryId: 'backpack',
+  categoryId: ItemCategoryId.backpack,
   conflictingItemIds: [],
   ergonomicsModifierPercentage: -0.03,
   iconLink: 'https://assets.tarkov.dev/5d5d940f86f7742797262046-icon.webp',
@@ -1644,7 +1644,7 @@ export const monocletePe: IArmorMod = {
   ergonomicsModifierPercentage: -0.01,
   material: 'UHMWPE',
   movementSpeedModifierPercentage: -0.01,
-  categoryId: 'armorMod',
+  categoryId: ItemCategoryId.armorMod,
   iconLink: 'https://assets.tarkov.dev/656fad8c498d1b7e3e071da0-icon.webp',
   id: '656fad8c498d1b7e3e071da0',
   imageLink: 'https://assets.tarkov.dev/656fad8c498d1b7e3e071da0-image.webp',
@@ -1662,7 +1662,7 @@ export const monocletePe: IArmorMod = {
 }
 
 export const morphine: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/544fb3f34bdc2d03748b456a-icon.webp',
   id: '544fb3f34bdc2d03748b456a',
@@ -1676,8 +1676,8 @@ export const morphine: IItem = {
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Morphine_injector'
 }
 
-export const ms2000 = {
-  categoryId: 'special',
+export const ms2000: IItem = {
+  categoryId: ItemCategoryId.special,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5991b51486f77447b112d44f-icon.webp',
   id: '5991b51486f77447b112d44f',
@@ -1736,7 +1736,7 @@ export const mts25512: IRangedWeapon = {
     }
   ],
   verticalRecoil: 364,
-  categoryId: 'mainWeapon',
+  categoryId: ItemCategoryId.mainWeapon,
   iconLink: 'https://assets.tarkov.dev/60db29ce99594040e04c4a27-icon.webp',
   id: '60db29ce99594040e04c4a27',
   imageLink: 'https://assets.tarkov.dev/60db29ce99594040e04c4a27-image.webp',
@@ -1804,7 +1804,7 @@ export const mts25512Default: IRangedWeapon = {
   presetRangedWeaponModifiers: undefined,
   prices: [],
   verticalRecoil: 364,
-  categoryId: 'mainWeapon',
+  categoryId: ItemCategoryId.mainWeapon,
   iconLink: 'https://assets.tarkov.dev/6198e2ddef80673cae5d1c87-icon.webp',
   id: '6198e2ddef80673cae5d1c87',
   imageLink: 'https://assets.tarkov.dev/6198e2ddef80673cae5d1c87-image.webp',
@@ -1845,7 +1845,7 @@ export const mts25512755mmRib: IRangedWeaponMod = {
   presetRecoilModifierPercentage: undefined,
   prices: [],
   recoilModifierPercentage: -0.1,
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   iconLink: 'https://assets.tarkov.dev/612368f58b401f4f51239b33-icon.webp',
   id: '612368f58b401f4f51239b33',
   imageLink: 'https://assets.tarkov.dev/612368f58b401f4f51239b33-image.webp',
@@ -1859,7 +1859,7 @@ export const mts25512755mmRib: IRangedWeaponMod = {
 export const mts25512beech: IRangedWeaponMod = {
   ergonomicsModifier: 9,
   recoilModifierPercentage: -0.02,
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   iconLink: 'https://assets.tarkov.dev/6123649463849f3d843da7c4-icon.webp',
   id: '6123649463849f3d843da7c4',
   imageLink: 'https://assets.tarkov.dev/6123649463849f3d843da7c4-image.webp',
@@ -1891,7 +1891,7 @@ export const mts25512choke: IRangedWeaponMod = {
   presetRecoilModifierPercentage: undefined,
   prices: [],
   recoilModifierPercentage: -0.01,
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   iconLink: 'https://assets.tarkov.dev/619d36da53b4d42ee724fae4-icon.webp',
   id: '619d36da53b4d42ee724fae4',
   imageLink: 'https://assets.tarkov.dev/619d36da53b4d42ee724fae4-image.webp',
@@ -2055,7 +2055,7 @@ export const mts25512cyl: IMagazine = {
   ],
   presetErgonomicsModifier: undefined,
   prices: [],
-  categoryId: 'magazine',
+  categoryId: ItemCategoryId.magazine,
   iconLink: 'https://assets.tarkov.dev/60dc519adf4c47305f6d410d-icon.webp',
   id: '60dc519adf4c47305f6d410d',
   imageLink: 'https://assets.tarkov.dev/60dc519adf4c47305f6d410d-image.webp',
@@ -2069,7 +2069,7 @@ export const mts25512cyl: IMagazine = {
 export const mts25512wood: IRangedWeaponMod = {
   ergonomicsModifier: 3,
   recoilModifierPercentage: -0.23,
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   iconLink: 'https://assets.tarkov.dev/612781056f3d944a17348d60-icon.webp',
   id: '612781056f3d944a17348d60',
   imageLink: 'https://assets.tarkov.dev/612781056f3d944a17348d60-image.webp',
@@ -2113,7 +2113,7 @@ export const nf30mm: IMod = {
   ],
   presetErgonomicsModifier: undefined,
   prices: [],
-  categoryId: 'mod',
+  categoryId: ItemCategoryId.mod,
   iconLink: 'https://assets.tarkov.dev/5b3b99265acfc4704b4a1afb-icon.webp',
   id: '5b3b99265acfc4704b4a1afb',
   imageLink: 'https://assets.tarkov.dev/5b3b99265acfc4704b4a1afb-image.webp',
@@ -2191,7 +2191,7 @@ export const opSksDefault: IRangedWeapon = {
   presetRangedWeaponModifiers: undefined,
   prices: [],
   verticalRecoil: 155,
-  categoryId: 'mainWeapon',
+  categoryId: ItemCategoryId.mainWeapon,
   iconLink: 'https://assets.tarkov.dev/59dcdbb386f77417b03f350d-icon.webp',
   id: '59dcdbb386f77417b03f350d',
   imageLink: 'https://assets.tarkov.dev/59dcdbb386f77417b03f350d-image.webp',
@@ -2233,7 +2233,7 @@ export const opSksDt: IMod = {
   ],
   presetErgonomicsModifier: undefined,
   prices: [],
-  categoryId: 'mod',
+  categoryId: ItemCategoryId.mod,
   iconLink: 'https://assets.tarkov.dev/587e08ee245977446b4410cf-icon.webp',
   id: '587e08ee245977446b4410cf',
   imageLink: 'https://assets.tarkov.dev/587e08ee245977446b4410cf-image.webp',
@@ -2258,7 +2258,7 @@ export const paca: IArmor = {
   ergonomicsModifierPercentage: -0.01,
   material: 'Aramid',
   movementSpeedModifierPercentage: -0.01,
-  categoryId: 'armor',
+  categoryId: ItemCategoryId.armor,
   iconLink: 'https://assets.tarkov.dev/5648a7494bdc2d9d488b4583-icon.webp',
   id: '5648a7494bdc2d9d488b4583',
   imageLink: 'https://assets.tarkov.dev/5648a7494bdc2d9d488b4583-image.webp',
@@ -2280,7 +2280,7 @@ export const paca: IArmor = {
 }
 
 export const paid: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/59e3596386f774176c10a2a2-icon.webp',
   id: '59e3596386f774176c10a2a2',
@@ -2295,7 +2295,7 @@ export const paid: IItem = {
 }
 
 export const pass: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/62a09cb7a04c0c5c6e0a84f8-icon.webp',
   id: '62a09cb7a04c0c5c6e0a84f8',
@@ -2310,7 +2310,7 @@ export const pass: IItem = {
 }
 
 export const plate6b33Back: IArmorMod = {
-  categoryId: 'armorMod',
+  categoryId: ItemCategoryId.armorMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/656efd66034e8e01c407f35c-icon.webp',
   id: '656efd66034e8e01c407f35c',
@@ -2340,7 +2340,7 @@ export const plate6b33Back: IArmorMod = {
 }
 
 export const plate6b33Front: IArmorMod = {
-  categoryId: 'armorMod',
+  categoryId: ItemCategoryId.armorMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/656f603f94b480b8a500c0d6-icon.webp',
   id: '656f603f94b480b8a500c0d6',
@@ -2370,7 +2370,7 @@ export const plate6b33Front: IArmorMod = {
 }
 
 export const plexiglass: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/59e366c186f7741778269d85-icon.webp',
   id: '59e366c186f7741778269d85',
@@ -2396,7 +2396,7 @@ export const precision: IRangedWeaponMod = {
   presetRecoilModifierPercentage: undefined,
   prices: [],
   recoilModifierPercentage: -0.24,
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   iconLink: 'https://assets.tarkov.dev/5fc2369685fd526b824a5713-icon.webp',
   id: '5fc2369685fd526b824a5713',
   imageLink: 'https://assets.tarkov.dev/5fc2369685fd526b824a5713-image.webp',
@@ -2427,7 +2427,7 @@ export const pso1: IRangedWeaponMod = {
   presetRecoilModifierPercentage: undefined,
   prices: [],
   recoilModifierPercentage: 0,
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [
     '5827272a24597748c74bdeea',
     '58272b392459774b4c7b3ccd',
@@ -2448,7 +2448,7 @@ export const pso1: IRangedWeaponMod = {
 }
 
 export const razor: IItem = {
-  categoryId: 'headphones',
+  categoryId: ItemCategoryId.headphones,
   conflictingItemIds: [
     '5a16b9fffcdbcb0176308b34',
     '66b5f6a28ca68c6461709ed8',
@@ -2473,7 +2473,7 @@ export const razor: IItem = {
 }
 
 export const rgd5: IGrenade = {
-  categoryId: 'grenade',
+  categoryId: ItemCategoryId.grenade,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5448be9a4bdc2dfd2f8b456a-icon.webp',
   id: '5448be9a4bdc2dfd2f8b456a',
@@ -2493,7 +2493,7 @@ export const rgd5: IGrenade = {
 }
 
 export const rooster: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5bc9bc53d4351e00367fbcee-icon.webp',
   id: '5bc9bc53d4351e00367fbcee',
@@ -2508,7 +2508,7 @@ export const rooster: IItem = {
 }
 
 export const rpk16: IRangedWeapon = {
-  categoryId: 'mainWeapon',
+  categoryId: ItemCategoryId.mainWeapon,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5beed0f50db834001c062b12-icon.webp',
   id: '5beed0f50db834001c062b12',
@@ -2632,7 +2632,7 @@ export const rpk16: IRangedWeapon = {
 }
 
 export const rpk16Default: IRangedWeapon = {
-  categoryId: 'mainWeapon',
+  categoryId: ItemCategoryId.mainWeapon,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5c0d1ec986f77439512a1a72-icon.webp',
   id: '5c0d1ec986f77439512a1a72',
@@ -2756,7 +2756,7 @@ export const rpk16Default: IRangedWeapon = {
 }
 
 export const rpk1615inch: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5beec1bd0db834001e6006f3-icon.webp',
   id: '5beec1bd0db834001e6006f3',
@@ -2796,7 +2796,7 @@ export const rpk1615inch: IRangedWeaponMod = {
 }
 
 export const rpk16Drum: IMagazine = {
-  categoryId: 'magazine',
+  categoryId: ItemCategoryId.magazine,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5bed625c0db834001c062946-icon.webp',
   id: '5bed625c0db834001c062946',
@@ -2835,7 +2835,7 @@ export const rpk16Drum: IMagazine = {
 }
 
 export const rpk16DustCover: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5beec91a0db834001961942d-icon.webp',
   id: '5beec91a0db834001961942d',
@@ -2940,7 +2940,7 @@ export const rpk16DustCover: IRangedWeaponMod = {
 }
 
 export const rpk16Handguard: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5beec3e30db8340019619424-icon.webp',
   id: '5beec3e30db8340019619424',
@@ -3065,7 +3065,7 @@ export const rpk16Handguard: IRangedWeaponMod = {
 }
 
 export const rpk16MuzzleBreak: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5beec3420db834001b095429-icon.webp',
   id: '5beec3420db834001b095429',
@@ -3088,7 +3088,7 @@ export const rpk16MuzzleBreak: IRangedWeaponMod = {
 }
 
 export const rpk16Rail: IMod = {
-  categoryId: 'mod',
+  categoryId: ItemCategoryId.mod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5beecbb80db834001d2c465e-icon.webp',
   id: '5beecbb80db834001d2c465e',
@@ -3137,7 +3137,7 @@ export const rpk16Rail: IMod = {
 }
 
 export const rpk16Rs: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5bf3f59f0db834001a6fa060-icon.webp',
   id: '5bf3f59f0db834001a6fa060',
@@ -3160,7 +3160,7 @@ export const rpk16Rs: IRangedWeaponMod = {
 }
 
 export const rpk16RsBase: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [
     '5b3b99265acfc4704b4a1afb'
   ],
@@ -3199,7 +3199,7 @@ export const rpk16RsBase: IRangedWeaponMod = {
 }
 
 export const rpk16Tube: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5beec8b20db834001961942a-icon.webp',
   id: '5beec8b20db834001961942a',
@@ -3256,7 +3256,7 @@ export const rpk16Tube: IRangedWeaponMod = {
 }
 
 export const rub: IItem = {
-  categoryId: 'currency',
+  categoryId: ItemCategoryId.currency,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5449016a4bdc2d6f028b456f-icon.webp',
   id: '5449016a4bdc2d6f028b456f',
@@ -3271,7 +3271,7 @@ export const rub: IItem = {
 }
 
 export const salewa: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/544fb45d4bdc2dee738b4568-icon.webp',
   id: '544fb45d4bdc2dee738b4568',
@@ -3287,7 +3287,7 @@ export const salewa: IItem = {
 
 export const scavVest: IVest = {
   blindnessProtectionPercentage: 0,
-  categoryId: 'vest',
+  categoryId: ItemCategoryId.vest,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/572b7adb24597762ae139821-icon.webp',
   id: '572b7adb24597762ae139821',
@@ -3315,7 +3315,7 @@ export const scavVest: IVest = {
 }
 
 export const slickers: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/544fb6cc4bdc2d34748b456e-icon.webp',
   id: '544fb6cc4bdc2d34748b456e',
@@ -3348,7 +3348,7 @@ export const specterDr: IRangedWeaponMod = {
   presetRecoilModifierPercentage: undefined,
   prices: [],
   recoilModifierPercentage: 0,
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   iconLink: 'https://assets.tarkov.dev/57ac965c24597706be5f975c-icon.webp',
   id: '57ac965c24597706be5f975c',
   imageLink: 'https://assets.tarkov.dev/57ac965c24597706be5f975c-image.webp',
@@ -3360,7 +3360,7 @@ export const specterDr: IRangedWeaponMod = {
 }
 
 export const srd9: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5c6165902e22160010261b28-icon.webp',
   id: '5c6165902e22160010261b28',
@@ -3383,7 +3383,7 @@ export const srd9: IRangedWeaponMod = {
 }
 
 export const syringe: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5d1b3f2d86f774253763b735-icon.webp',
   id: '5d1b3f2d86f774253763b735',
@@ -3398,7 +3398,7 @@ export const syringe: IItem = {
 }
 
 export const usd: IItem = {
-  categoryId: 'currency',
+  categoryId: ItemCategoryId.currency,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5696686a4bdc2da3298b456a-icon.webp',
   id: '5696686a4bdc2da3298b456a',
@@ -3413,7 +3413,7 @@ export const usd: IItem = {
 }
 
 export const vaseline: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5755383e24597772cb798966-icon.webp',
   id: '5755383e24597772cb798966',
@@ -3428,7 +3428,7 @@ export const vaseline: IItem = {
 }
 
 export const vhs: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/62a09e974f842e1bd12da3f0-icon.webp',
   id: '62a09e974f842e1bd12da3f0',
@@ -3443,7 +3443,7 @@ export const vhs: IItem = {
 }
 
 export const vita: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/57513fcc24597720a31c09a6-icon.webp',
   id: '57513fcc24597720a31c09a6',
@@ -3458,7 +3458,7 @@ export const vita: IItem = {
 }
 
 export const water: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5448fee04bdc2dbc018b4567-icon.webp',
   id: '5448fee04bdc2dbc018b4567',
@@ -3473,7 +3473,7 @@ export const water: IItem = {
 }
 
 export const wParts: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5d1c819a86f774771b0acd6c-icon.webp',
   id: '5d1c819a86f774771b0acd6c',
@@ -3488,7 +3488,7 @@ export const wParts: IItem = {
 }
 
 export const x400: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/56def37dd2720bec348b456a-icon.webp',
   id: '56def37dd2720bec348b456a',

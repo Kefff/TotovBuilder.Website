@@ -1,8 +1,8 @@
-import InventorySlotTypes from '../data/inventory-slot-types.json'
 import { IBuild } from '../models/build/IBuild'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { IInventorySlot } from '../models/build/IInventorySlot'
+import InventorySlotTypes, { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IQuest } from '../models/configuration/IQuest'
 import { IAmmunition } from '../models/item/IAmmunition'
 import { IArmor } from '../models/item/IArmor'
@@ -13,7 +13,7 @@ import { IContainer } from '../models/item/IContainer'
 import { IEyewear } from '../models/item/IEyewear'
 import { IGrenade } from '../models/item/IGrenade'
 import { IHeadwear } from '../models/item/IHeadwear'
-import { IItem } from '../models/item/IItem'
+import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { IMagazine } from '../models/item/IMagazine'
 import { IMeleeWeapon } from '../models/item/IMeleeWeapon'
 import { IMod } from '../models/item/IMod'
@@ -741,7 +741,7 @@ export class ReductionService {
 
     return {
       items: inventoryItems,
-      typeId
+      typeId: InventorySlotTypeId[typeId as keyof typeof InventorySlotTypeId]
     }
   }
 
@@ -765,7 +765,7 @@ export class ReductionService {
     const wikiLink = reducedItem['wi'] as string
 
     return {
-      categoryId,
+      categoryId: ItemCategoryId[categoryId as keyof typeof ItemCategoryId],
       conflictingItemIds,
       iconLink,
       id,

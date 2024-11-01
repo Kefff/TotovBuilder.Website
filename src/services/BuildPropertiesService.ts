@@ -21,7 +21,6 @@ import { BuildService } from './BuildService'
 import { GlobalFilterService } from './GlobalFilterService'
 import { InventoryItemService } from './InventoryItemService'
 import { InventorySlotPropertiesService } from './InventorySlotPropertiesService'
-import { InventorySlotService } from './InventorySlotService'
 import { ItemPropertiesService } from './ItemPropertiesService'
 import { ItemService } from './ItemService'
 import { NotificationService, NotificationType } from './NotificationService'
@@ -577,35 +576,6 @@ ${sharableUrlResult}`
   }
 
   /**
-   * Gets the merchant level to display in a text representing a build.
-   * @param options - Options.
-   * @param language - Language.
-   * @param enabled - Indicates whether the merchant is enable.
-   * @param level - Merchant level.
-   * @returns Merchant level.
-   */
-  private getTextMerchantLevel(options: IBuildsToTextOptions, language: string, enabled: boolean, level: number): string {
-    if (enabled) {
-      if (level === 0) {
-        return options.includeEmojis ? '✅' : this.translate('caption.yes', language)
-      }
-
-      switch (level) {
-        case 1:
-          return options.includeEmojis ? '1️⃣' : '1'
-        case 2:
-          return options.includeEmojis ? '2️⃣' : '2'
-        case 3:
-          return options.includeEmojis ? '3️⃣' : '3'
-        case 4:
-          return options.includeEmojis ? '4️⃣' : '4'
-      }
-    }
-
-    return options.includeEmojis ? '❌' : this.translate('caption.no', language)
-  }
-
-  /**
    * Gets the price of a build.
    * @param inventorySlotSummaries - Inventory slot summaries.
    * @returns Price.
@@ -667,7 +637,7 @@ ${sharableUrlResult}`
     const shoppingList: IShoppingListItem[] = []
 
     for (const inventorySlot of build.inventorySlots) {
-      const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
+      const inventorySlotType = Services.get(InventorySlotPropertiesService).getType(inventorySlot.typeId)
 
       for (const item of inventorySlot.items) {
         if (item == null) {
@@ -704,6 +674,35 @@ ${sharableUrlResult}`
     }
 
     return shoppingList
+  }
+
+  /**
+   * Gets the merchant level to display in a text representing a build.
+   * @param options - Options.
+   * @param language - Language.
+   * @param enabled - Indicates whether the merchant is enable.
+   * @param level - Merchant level.
+   * @returns Merchant level.
+   */
+  private getTextMerchantLevel(options: IBuildsToTextOptions, language: string, enabled: boolean, level: number): string {
+    if (enabled) {
+      if (level === 0) {
+        return options.includeEmojis ? '✅' : this.translate('caption.yes', language)
+      }
+
+      switch (level) {
+        case 1:
+          return options.includeEmojis ? '1️⃣' : '1'
+        case 2:
+          return options.includeEmojis ? '2️⃣' : '2'
+        case 3:
+          return options.includeEmojis ? '3️⃣' : '3'
+        case 4:
+          return options.includeEmojis ? '4️⃣' : '4'
+      }
+    }
+
+    return options.includeEmojis ? '❌' : this.translate('caption.no', language)
   }
 
   /**

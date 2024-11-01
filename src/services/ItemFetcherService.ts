@@ -19,33 +19,6 @@ export class ItemFetcherService {
   }
 
   /**
-   * Fetches all item categories.
-   * @returns Item categories.
-   */
-  public async fetchItemCategories(): Promise<string[] | undefined> {
-    const fetchService = Services.get(FetchService)
-    const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointItemCategories
-
-    if (this.isDebug) {
-      Services.get(LogService).logInformation('message.fetchingItemCategories', { date: new Date().toISOString() })
-    }
-
-    const itemCategories = await fetchService.get<string[]>(endpoint)
-
-    if (itemCategories == null || itemCategories.length === 0) {
-      Services.get(LogService).logException('message.itemCategoriesNotFetched')
-
-      return undefined
-    }
-
-    if (this.isDebug) {
-      Services.get(LogService).logInformation('message.itemCategoriesFetched', { date: new Date().toISOString() })
-    }
-
-    return itemCategories
-  }
-
-  /**
    * Fetches all items.
    * @returns Items.
    */

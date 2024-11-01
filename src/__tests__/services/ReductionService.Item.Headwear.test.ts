@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IHeadwear } from '../../models/item/IHeadwear'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
@@ -82,7 +83,7 @@ describe('parseReducedItem', () => {
         baseItemId: undefined,
         blindnessProtectionPercentage: 0,
         blocksHeadphones: false,
-        categoryId: 'headwear',
+        categoryId: ItemCategoryId.headwear,
         conflictingItemIds: [],
         deafening: 'None',
         defaultPresetId: undefined,

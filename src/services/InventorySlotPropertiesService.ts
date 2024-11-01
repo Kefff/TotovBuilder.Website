@@ -1,5 +1,7 @@
 /* eslint-disable no-irregular-whitespace */ // Special character used to force markdown to take into account spaces
 import { IInventorySlot } from '../models/build/IInventorySlot'
+import { IInventorySlotType } from '../models/build/IInventorySlotType'
+import InventorySlotTypes, { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IArmorModifiers } from '../models/utils/IArmorModifiers'
 import { BuildsToTextType, IBuildsToTextOptions } from '../models/utils/IBuildsToTextOptions'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
@@ -10,7 +12,6 @@ import vueI18n from '../plugins/vueI18n'
 import { PriceUtils } from '../utils/PriceUtils'
 import StringUtils from '../utils/StringUtils'
 import { InventoryItemService } from './InventoryItemService'
-import { InventorySlotService } from './InventorySlotService'
 import Services from './repository/Services'
 
 /**
@@ -42,7 +43,7 @@ export class InventorySlotPropertiesService {
         acceptedItemCategories: [],
         canBeLooted: false,
         displayOrder: 0,
-        id: '',
+        id: InventorySlotTypeId.armband,
         itemSlotsAmount: 0
       },
       wearableModifiers: {
@@ -53,7 +54,7 @@ export class InventorySlotPropertiesService {
       weight: 0
     }
 
-    summary.type = Services.get(InventorySlotService).getType(inventorySlot.typeId)
+    summary.type = Services.get(InventorySlotPropertiesService).getType(inventorySlot.typeId)
     summary.armorModifiers = await this.getArmorModifiers(inventorySlot)
     summary.ergonomics = await this.getErgonomics(inventorySlot)
     summary.price = await this.getPrice(inventorySlot, summary.type.canBeLooted)
@@ -65,6 +66,22 @@ export class InventorySlotPropertiesService {
   }
 
   /**
+   * Gets an inventory slot type.
+   * @param id - ID of the slot type.
+   * @returns Inventory slot type.
+   * @throws When the inventory stop type is not found.
+   */
+  public getType(id: InventorySlotTypeId): IInventorySlotType {
+    const slotType = InventorySlotTypes.find((ist) => ist.id === id)
+
+    if (slotType == null) {
+      throw new Error(vueI18n.t('message.inventorySlotTypeNotFound', { id }))
+    }
+
+    return slotType
+  }
+
+  /**
    * Converts an inventory slot to a text.
    * @param inventorySlot - Inventory slot to convert.
    * @param options - Options.
@@ -73,7 +90,7 @@ export class InventorySlotPropertiesService {
     const italicToken = options.type === BuildsToTextType.markdown ? '*' : ''
 
     let inventorySlotAsString = ''
-    const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
+    const inventorySlotType = Services.get(InventorySlotPropertiesService).getType(inventorySlot.typeId)
     const inventoryItemService = Services.get(InventoryItemService)
 
     for (const inventoryItem of inventorySlot.items) {

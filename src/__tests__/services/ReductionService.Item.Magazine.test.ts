@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IMagazine } from '../../models/item/IMagazine'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ReductionService } from '../../services/ReductionService'
@@ -40,7 +41,7 @@ describe('parseReducedItem', () => {
         ],
         baseItemId: undefined,
         capacity: 7,
-        categoryId: 'magazine',
+        categoryId: ItemCategoryId.magazine,
         checkSpeedModifierPercentage: -0.2,
         conflictingItemIds: [],
         defaultPresetId: undefined,
@@ -161,7 +162,7 @@ describe('parseReducedItem', () => {
         ],
         baseItemId: undefined,
         capacity: 0,
-        categoryId: 'magazine',
+        categoryId: ItemCategoryId.magazine,
         checkSpeedModifierPercentage: 0,
         conflictingItemIds: [],
         defaultPresetId: undefined,

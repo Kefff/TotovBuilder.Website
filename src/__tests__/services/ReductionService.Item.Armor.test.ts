@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IArmor } from '../../models/item/IArmor'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
@@ -28,7 +29,7 @@ describe('parseReducedItem', () => {
         durability: 0,
         ergonomicsModifierPercentage: 0,
         material: '',
-        categoryId: 'armor',
+        categoryId: ItemCategoryId.armor,
         iconLink: 'https://assets.tarkov.dev/unknown-icon.jpg',
         id: 'unknown',
         imageLink: 'https://assets.tarkov.dev/unknown-image.jpg',
@@ -184,7 +185,7 @@ describe('parseReducedItem', () => {
           'StomachGroin'
         ],
         blindnessProtectionPercentage: 0,
-        categoryId: 'armor',
+        categoryId: ItemCategoryId.armor,
         baseItemId: undefined,
         conflictingItemIds: [],
         defaultPresetId: '65766adc234b9f6e050a431a',
@@ -436,7 +437,7 @@ describe('parseReducedItem', () => {
           'StomachGroin'
         ],
         blindnessProtectionPercentage: 0,
-        categoryId: 'armor',
+        categoryId: ItemCategoryId.armor,
         baseItemId: '545cdb794bdc2d3a198b456a',
         conflictingItemIds: [],
         defaultPresetId: undefined,

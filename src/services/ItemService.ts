@@ -1,7 +1,7 @@
 import { TinyEmitter } from 'tiny-emitter'
 import Images from '../images'
 import { ICurrency } from '../models/configuration/ICurrency'
-import { IItem } from '../models/item/IItem'
+import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
 import vueI18n from '../plugins/vueI18n'
 import { GlobalFilterService } from './GlobalFilterService'
@@ -45,19 +45,6 @@ export class ItemService {
    * Indicates whether data that is fetched only once and never expire has been cached or not.
    */
   private hasStaticDataCached = false
-
-  /**
-   * Fetched item categories.
-   */
-  private get itemCategories(): string[] {
-    if (this._itemCategories == null) {
-      // This should never happen, data should have been loaded or a error message should have been displayed
-      throw new Error(vueI18n.t('message.itemCategoriesNotFetched'))
-    }
-
-    return this._itemCategories
-  }
-  private _itemCategories: string[] | undefined
 
   /**
    * Fetched items.
@@ -110,6 +97,15 @@ export class ItemService {
   }
 
   /**
+   * Gets all items.
+   */
+  public async getAll(): Promise<IItem[]> {
+    await this.initialize()
+
+    return this.items
+  }
+
+  /**
    * Gets currency.
    * @param name - Name of the currency.
    * @returns Currency.
@@ -135,16 +131,6 @@ export class ItemService {
     const items = await this.getItems([id], false)
 
     return items[0]
-  }
-
-  /**
-   * Gets item categories.
-   * @returns Item categories.
-   */
-  public async getItemCategories(): Promise<string[]> {
-    await this.initialize()
-
-    return this.itemCategories
   }
 
   /**
@@ -185,7 +171,7 @@ export class ItemService {
    * @returns Items belonging to the categories.
    * @throws When no item is found while the global filter is not used.
    */
-  public async getItemsOfCategories(categoryIds: string[], useGlobalFilter = false): Promise<IItem[]> {
+  public async getItemsOfCategories(categoryIds: ItemCategoryId[], useGlobalFilter = false): Promise<IItem[]> {
     await this.initialize()
 
     let items: IItem[]
@@ -223,9 +209,9 @@ export class ItemService {
    * @param id - ID of the item that is not found.
    * @returns Not found item.
    */
-  public static getNotFoundItem(id: string) {
+  public static getNotFoundItem(id: string): IItem {
     return {
-      categoryId: 'notFound',
+      categoryId: ItemCategoryId.notFound,
       conflictingItemIds: [],
       iconLink: Images.unknownItem,
       id,
@@ -265,22 +251,6 @@ export class ItemService {
     if (!this.hasValidCache() && this._initializationState !== ServiceInitializationState.error) {
       await this.fetchPrices()
     }
-  }
-
-  /**
-   * Fetches item categories.
-   * @returns true when item categories have correctly been fetched; otherwise false.
-   */
-  private async fetchItemCategories(): Promise<boolean> {
-    const itemCategories = await Services.get(ItemFetcherService).fetchItemCategories()
-
-    if (itemCategories == undefined) {
-      return false
-    }
-
-    this._itemCategories = itemCategories
-
-    return true
   }
 
   /**
@@ -393,12 +363,6 @@ export class ItemService {
     const presetsService = Services.get(PresetService)
 
     this.isFetchingStaticData = true
-
-    const itemCategoriesFetchSuccess = await this.fetchItemCategories()
-
-    if (!itemCategoriesFetchSuccess) {
-      return false
-    }
 
     const fetchResults: boolean[] = []
     await Promise.allSettled([

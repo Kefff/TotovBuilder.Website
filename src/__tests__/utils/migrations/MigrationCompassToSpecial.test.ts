@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../../models/build/IBuild'
+import { InventorySlotTypeId } from '../../../models/build/InventorySlotTypes'
 import { MigrationCompassToSpecial } from '../../../utils/migrations/MigrationCompassToSpecial'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
@@ -22,7 +23,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
               quantity: 1
             }
           ],
-          typeId: 'compass'
+          typeId: 'compass' as InventorySlotTypeId
         }
       ],
       lastExported: new Date(1),

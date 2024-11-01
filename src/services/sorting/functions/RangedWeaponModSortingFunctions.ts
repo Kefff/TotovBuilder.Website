@@ -1,20 +1,23 @@
-import { IItem } from '../../../models/item/IItem'
+import { ItemCategoryId } from '../../../models/item/IItem'
 import { IRangedWeaponMod } from '../../../models/item/IRangedWeaponMod'
 import { compareByItemNumber } from '../SortingService'
-import ISortingFunctionList from './ISortingFunctionList'
+import { IItemSortingFunctionList } from './ISortingFunctionList'
 import { ModSortingFunctions } from './ModSortingFunctions'
 
 /**
  * Functions for sorting ranged weapon mods.
  */
-export const RangedWeaponModSortingFunctions: ISortingFunctionList<IItem> = {
-  ...ModSortingFunctions,
-  accuracyModifierPercentage: {
-    comparisonFunction: compareByItemNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve((i as IRangedWeaponMod).accuracyModifierPercentage)
+export const RangedWeaponModSortingFunctions: IItemSortingFunctionList = {
+  functions: {
+    ...ModSortingFunctions.functions,
+    accuracyModifierPercentage: {
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionFunction: i => Promise.resolve((i as IRangedWeaponMod).accuracyModifierPercentage)
+    },
+    recoilModifierPercentage: {
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionFunction: i => Promise.resolve((i as IRangedWeaponMod).recoilModifierPercentage)
+    }
   },
-  recoilModifierPercentage: {
-    comparisonFunction: compareByItemNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve((i as IRangedWeaponMod).recoilModifierPercentage)
-  }
+  itemCategoryIds: [ItemCategoryId.rangedWeaponMod]
 }

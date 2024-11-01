@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ReductionService } from '../../services/ReductionService'
@@ -24,7 +25,7 @@ describe('parseReducedItem', () => {
       {
         accuracyModifierPercentage: -0.01,
         baseItemId: undefined,
-        categoryId: 'rangedWeaponMod',
+        categoryId: ItemCategoryId.rangedWeaponMod,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         ergonomicsModifier: -5,
@@ -70,7 +71,7 @@ describe('parseReducedItem', () => {
       {
         accuracyModifierPercentage: 0,
         baseItemId: undefined,
-        categoryId: 'rangedWeaponMod',
+        categoryId: ItemCategoryId.rangedWeaponMod,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         ergonomicsModifier: 0,

@@ -1,7 +1,7 @@
 import MockDate from 'mockdate'
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
-import ItemCategoryMocks from '../../../public/data/item-categories.json'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { ItemFetcherService } from '../../services/ItemFetcherService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
@@ -150,7 +150,6 @@ describe('getItem()', () => {
 
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(ItemCategoryMocks)
     when(itemFetcherServiceMock.fetchItems()).thenResolve(undefined)
     when(itemFetcherServiceMock.fetchPrices()).thenResolve(PriceMocks)
     when(itemFetcherServiceMock.fetchPresets()).thenResolve(undefined)
@@ -163,48 +162,6 @@ describe('getItem()', () => {
 
     // Assert
     await expect(act).rejects.toThrowError('No item could be fetched.')
-  })
-})
-
-describe('getItemCategories()', () => {
-  it('should get item categories', async () => {
-    // Arrange
-    useGlobalFilterServiceMock()
-    useItemFetcherServiceMock()
-    usePresetServiceMock()
-    useTarkovValuesServiceMock()
-    useWebsiteConfigurationServiceMock()
-
-    const itemService = new ItemService()
-
-    // Act
-    const itemCategories = await itemService.getItemCategories()
-
-    // Assert
-    expect(itemCategories).toStrictEqual(ItemCategoryMocks)
-  })
-
-  it('should throw when accessing item categories after fetching failed', async () => {
-    // Arrange
-    useGlobalFilterServiceMock()
-    usePresetServiceMock()
-    useTarkovValuesServiceMock()
-    useWebsiteConfigurationServiceMock()
-
-    const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(undefined)
-    when(itemFetcherServiceMock.fetchItems()).thenResolve(ItemMocks)
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(PresetMocks)
-    when(itemFetcherServiceMock.fetchPrices()).thenResolve(PriceMocks)
-    Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
-
-    const itemService = new ItemService()
-
-    // Act
-    const act = () => itemService.getItemCategories()
-
-    // Assert
-    await expect(act).rejects.toThrowError('No item category could be fetched.')
   })
 })
 
@@ -314,7 +271,6 @@ describe('getItems()', () => {
     Services.configure(NotificationService)
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(ItemCategoryMocks)
     when(itemFetcherServiceMock.fetchItems()).thenResolve(undefined)
     when(itemFetcherServiceMock.fetchPrices()).thenResolve(PriceMocks)
     when(itemFetcherServiceMock.fetchPresets()).thenResolve(undefined)
@@ -345,7 +301,7 @@ describe('getItemsOfCategories()', () => {
     const itemService = new ItemService()
 
     // Act
-    const items = await itemService.getItemsOfCategories(['armband', 'securedContainer'])
+    const items = await itemService.getItemsOfCategories([ItemCategoryId.armband, ItemCategoryId.securedContainer])
 
     // Assert
     expect(items.map((i) => i.id).sort()).toStrictEqual([
@@ -378,7 +334,7 @@ describe('getItemsOfCategories()', () => {
       }
     ])
 
-    const items = await itemService.getItemsOfCategories(['mainWeapon', 'secondaryWeapon', 'vest'], true)
+    const items = await itemService.getItemsOfCategories([ItemCategoryId.mainWeapon, ItemCategoryId.secondaryWeapon, ItemCategoryId.vest], true)
 
     // Assert
     expect(items.map((i) => i.id).sort()).toStrictEqual([
@@ -402,7 +358,7 @@ describe('getItemsOfCategories()', () => {
     const itemService = new ItemService()
 
     // Act
-    const items = await itemService.getItemsOfCategories(['invalid, invalid2'])
+    const items = await itemService.getItemsOfCategories(['invalid' as unknown as ItemCategoryId, 'invalid2' as unknown as ItemCategoryId])
 
     // Assert
     expect(items.length).toBe(0)
@@ -422,7 +378,7 @@ describe('getItemsOfCategories()', () => {
     const itemService = new ItemService()
 
     // Act
-    const items = await itemService.getItemsOfCategories(['invalid1', 'invalid2'], false)
+    const items = await itemService.getItemsOfCategories(['invalid1' as unknown as ItemCategoryId, 'invalid2' as unknown as ItemCategoryId], false)
 
     // Assert
     expect(items.length).toBe(0)
@@ -570,7 +526,6 @@ describe('initialize', () => {
     useWebsiteConfigurationServiceMock()
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItemCategories()).thenResolve(ItemCategoryMocks)
     when(itemFetcherServiceMock.fetchItems()).thenResolve(ItemMocks)
     when(itemFetcherServiceMock.fetchPresets()).thenResolve(PresetMocks)
     when(itemFetcherServiceMock.fetchPrices()).thenResolve(undefined)

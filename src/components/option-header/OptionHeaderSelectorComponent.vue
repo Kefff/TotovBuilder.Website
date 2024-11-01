@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { IItem } from '../../models/item/IItem'
+import { IItem, ItemCategoryId } from '../../models/item/IItem'
 import SortingData from '../../models/utils/SortingData'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
@@ -25,7 +25,7 @@ const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { requir
 
 const props = withDefaults(
   defineProps<{
-    categoryId?: string
+    categoryId?: ItemCategoryId
   }>(),
   {
     categoryId: undefined
@@ -37,8 +37,8 @@ const useLongestHeaderWidth = computed(() => props.categoryId == null)
 /**
  * Sets the type of specialized options header component to display.
  */
-function getSpecializedComponent(categoryId?: string) {
-  if (categoryId == null || categoryId === 'other') {
+function getSpecializedComponent(categoryId?: ItemCategoryId) {
+  if (categoryId == null || categoryId === ItemCategoryId.other) {
     return undefined
   }
 

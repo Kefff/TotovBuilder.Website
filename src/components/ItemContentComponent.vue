@@ -2,7 +2,7 @@
 import { Ref, computed, inject, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IContainer } from '../models/item/IContainer'
-import { IItem } from '../models/item/IItem'
+import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import { ItemContentComponentService } from '../services/components/ItemContentComponentService'
@@ -21,7 +21,7 @@ const _globalFilterService = Services.get(GlobalFilterService)
 const _itemPropertiesService = Services.get(ItemPropertiesService)
 
 const acceptedItems = ref<IItem[]>([])
-const categoryId = ref<string | undefined>(undefined)
+const categoryId = ref<ItemCategoryId | undefined>(undefined)
 const isEditing = inject<Ref<boolean>>('isEditing')
 const itemPathPrefix = PathUtils.itemPrefix
 const itemToAdd = ref<IInventoryItem>()

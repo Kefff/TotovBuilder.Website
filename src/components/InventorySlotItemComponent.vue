@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
-import { IItem } from '../models/item/IItem'
+import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { InventorySlotComponentService } from '../services/components/InventorySlotComponentService'
 import Services from '../services/repository/Services'
 import { PathUtils } from '../utils/PathUtils'
@@ -12,7 +12,7 @@ const modelInventoryItem = defineModel<IInventoryItem>('inventoryItem')
 const props = withDefaults(
   defineProps<{
     acceptedItems: IItem[],
-    acceptedItemsCategoryId?: string,
+    acceptedItemsCategoryId?: ItemCategoryId,
     canBeLooted: boolean,
     inventorySlotTypeId: string,
     path: string

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IVest } from '../../models/item/IVest'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ReductionService } from '../../services/ReductionService'
@@ -45,7 +46,7 @@ describe('parseReducedItem', () => {
         baseItemId: undefined,
         blindnessProtectionPercentage: 0,
         capacity: 12,
-        categoryId: 'vest',
+        categoryId: ItemCategoryId.vest,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         durability: 0,
@@ -163,7 +164,7 @@ describe('parseReducedItem', () => {
         baseItemId: undefined,
         blindnessProtectionPercentage: 0,
         capacity: 18,
-        categoryId: 'vest',
+        categoryId: ItemCategoryId.vest,
         conflictingItemIds: [],
         defaultPresetId: '65766527303700411c0242a6',
         durability: 0,
@@ -349,7 +350,7 @@ describe('parseReducedItem', () => {
         baseItemId: '5b44cad286f77402a54ae7e5',
         blindnessProtectionPercentage: 0,
         capacity: 18,
-        categoryId: 'vest',
+        categoryId: ItemCategoryId.vest,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         durability: 0,
@@ -459,7 +460,7 @@ describe('parseReducedItem', () => {
         baseItemId: undefined,
         blindnessProtectionPercentage: 0,
         capacity: 6,
-        categoryId: 'vest',
+        categoryId: ItemCategoryId.vest,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         durability: 0,

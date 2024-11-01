@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Ref, inject, onMounted, onUnmounted, ref } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
-import { IItem } from '../models/item/IItem'
+import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { IModSlot } from '../models/item/IModSlot'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { ItemService } from '../services/ItemService'
@@ -22,7 +22,7 @@ const props = defineProps<{
 }>()
 
 const acceptedItems = ref<IItem[]>([])
-const acceptedItemsCategoryId = ref<string | undefined>(undefined)
+const acceptedItemsCategoryId = ref<ItemCategoryId | undefined>(undefined)
 const isEditing = inject<Ref<boolean>>('isEditing')
 
 onMounted(() => {

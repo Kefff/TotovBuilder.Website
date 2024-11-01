@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { IItem } from '../../models/item/IItem'
+import { IItem, ItemCategoryId } from '../../models/item/IItem'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
 import AmmunitionSummary from './AmmunitionSummaryComponent.vue'
@@ -33,8 +33,8 @@ const specializedComponent = computed(() => getSpecializedComponent(props.item.c
 /**
  * Sets the type of specialized options header component to display.
  */
-function getSpecializedComponent(itemCategoryId: string) {
-  if (itemCategoryId === 'other') {
+function getSpecializedComponent(itemCategoryId: ItemCategoryId) {
+  if (itemCategoryId === ItemCategoryId.other) {
     return undefined
   }
 

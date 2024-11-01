@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
 import SortingData from '../../models/utils/SortingData'
-import ISortingFunctionList from '../../services/sorting/functions/ISortingFunctionList'
+import { IItemSortingFunctionList } from '../../services/sorting/functions/ISortingFunctionList'
 import { WearableSortingFunctions } from '../../services/sorting/functions/WearableSortingFunctions'
 import OptionHeaderSortButton from './OptionHeaderSortButtonComponent.vue'
 
@@ -10,7 +10,7 @@ const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { requir
 
 const props = withDefaults(
   defineProps<{
-    sortingFunctionsOverride?: ISortingFunctionList<IItem>
+    sortingFunctionsOverride?: IItemSortingFunctionList
   }>(),
   {
     sortingFunctionsOverride: undefined

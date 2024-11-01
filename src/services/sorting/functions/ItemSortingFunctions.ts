@@ -1,28 +1,38 @@
-import { IItem } from '../../../models/item/IItem'
+import { IItem, ItemCategoryId } from '../../../models/item/IItem'
 import { InventoryItemService } from '../../InventoryItemService'
 import Services from '../../repository/Services'
-import { compareByItemNumber, compareByItemString, compareByString } from '../SortingService'
-import ISortingFunctionList from './ISortingFunctionList'
+import { compareByItemNumber, compareByItemString } from '../SortingService'
+import { IItemSortingFunctionList } from './ISortingFunctionList'
 
 /**
  * Functions for sorting items.
  */
-export const ItemSortingFunctions: ISortingFunctionList<IItem> = {
-  categoryId: {
-    comparisonFunction: (i1, i1v, i2, i2v) => compareByString(i1 as unknown as Record<string, unknown>, i1v, i2 as unknown as Record<string, unknown>, i2v),
-    comparisonValueObtentionFunction: i => Promise.resolve(i.categoryId)
-  },
-  name: {
-    comparisonFunction: compareByItemString,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.name)
-  },
-  price: {
-    comparisonFunction: compareByItemNumber,
-    comparisonValueObtentionFunction: async i => await getPrice(i)
-  },
-  weight: {
-    comparisonFunction: compareByItemNumber,
-    comparisonValueObtentionFunction: i => Promise.resolve(i.weight)
+export const ItemSortingFunctions: IItemSortingFunctionList = {
+  itemCategoryIds: [
+    ItemCategoryId.armband,
+    ItemCategoryId.currency,
+    ItemCategoryId.faceCover,
+    ItemCategoryId.headphones,
+    ItemCategoryId.other,
+    ItemCategoryId.special
+  ],
+  functions: {
+    categoryId: {
+      comparisonFunction: (i1, i1v, i2, i2v) => compareByItemString(i1, i1v, i2, i2v),
+      comparisonValueObtentionFunction: i => Promise.resolve(i.categoryId)
+    },
+    name: {
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemString(i1, iv1, i2, iv2),
+      comparisonValueObtentionFunction: i => Promise.resolve(i.name)
+    },
+    price: {
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionFunction: async i => await getPrice(i)
+    },
+    weight: {
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionFunction: i => Promise.resolve(i.weight)
+    }
   }
 }
 

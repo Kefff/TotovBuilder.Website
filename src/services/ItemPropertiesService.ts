@@ -1,6 +1,6 @@
 import { IArmor } from '../models/item/IArmor'
 import { IContainer } from '../models/item/IContainer'
-import { IItem } from '../models/item/IItem'
+import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { IModdable } from '../models/item/IModdable'
 import StringUtils from '../utils/StringUtils'
 
@@ -69,10 +69,10 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is ammunition; otherwise false.
    */
-  public isAmmunition(value: IItem | string): boolean {
+  public isAmmunition(value: IItem | ItemCategoryId): boolean {
     const categoryId = this.getCategoryId(value)
 
-    return categoryId === 'ammunition'
+    return categoryId === ItemCategoryId.ammunition
   }
 
   /**
@@ -80,10 +80,10 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is an armor; otherwise false.
    */
-  public isArmor(value: IItem | string): boolean {
+  public isArmor(value: IItem | ItemCategoryId): boolean {
     const categoryId = this.getCategoryId(value)
 
-    return categoryId === 'armor'
+    return categoryId === ItemCategoryId.armor
   }
 
   /**
@@ -91,10 +91,10 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is an armor mod; otherwise false.
    */
-  public isArmorMod(value: IItem | string): boolean {
+  public isArmorMod(value: IItem | ItemCategoryId): boolean {
     const categoryId = this.getCategoryId(value)
 
-    return categoryId === 'armorMod'
+    return categoryId === ItemCategoryId.armorMod
   }
 
   /**
@@ -102,10 +102,10 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is a backpack; otherwise false.
    */
-  public isBackpack(value: IItem | string): boolean {
+  public isBackpack(value: IItem | ItemCategoryId): boolean {
     const categoryId = this.getCategoryId(value)
 
-    return categoryId === 'backpack'
+    return categoryId === ItemCategoryId.backpack
   }
 
   /**
@@ -113,10 +113,10 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is a container; otherwise false.
    */
-  public isContainer(value: IItem | string): boolean {
+  public isContainer(value: IItem | ItemCategoryId): boolean {
     const categoryId = this.getCategoryId(value)
 
-    return categoryId === 'securedContainer' || categoryId === 'container'
+    return categoryId === ItemCategoryId.securedContainer || categoryId === ItemCategoryId.container
   }
 
   /**
@@ -124,10 +124,10 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is eyewear; otherwise false.
    */
-  public isEyewear(value: IItem | string): boolean {
+  public isEyewear(value: IItem | ItemCategoryId): boolean {
     const categoryId = this.getCategoryId(value)
 
-    return categoryId === 'eyewear'
+    return categoryId === ItemCategoryId.eyewear
   }
 
   /**
@@ -135,10 +135,10 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is a grenade; otherwise false.
    */
-  public isGrenade(value: IItem | string): boolean {
+  public isGrenade(value: IItem | ItemCategoryId): boolean {
     const categoryId = this.getCategoryId(value)
 
-    return categoryId === 'grenade'
+    return categoryId === ItemCategoryId.grenade
   }
 
   /**
@@ -146,10 +146,10 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is headwear; otherwise false.
    */
-  public isHeadwear(value: IItem | string): boolean {
+  public isHeadwear(value: IItem | ItemCategoryId): boolean {
     const categoryId = this.getCategoryId(value)
 
-    return categoryId === 'headwear'
+    return categoryId === ItemCategoryId.headwear
   }
 
   /**
@@ -157,10 +157,10 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is a magazine; otherwise false.
    */
-  public isMagazine(value: IItem | string): boolean {
+  public isMagazine(value: IItem | ItemCategoryId): boolean {
     const categoryId = this.getCategoryId(value)
 
-    return categoryId === 'magazine'
+    return categoryId === ItemCategoryId.magazine
   }
 
   /**
@@ -168,10 +168,10 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is a melee weapon; otherwise false.
    */
-  public isMeleeWeapon(value: IItem | string): boolean {
+  public isMeleeWeapon(value: IItem | ItemCategoryId): boolean {
     const categoryId = this.getCategoryId(value)
 
-    return categoryId === 'meleeWeapon'
+    return categoryId === ItemCategoryId.meleeWeapon
   }
 
   /**
@@ -179,10 +179,10 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is a mod; otherwise false.
    */
-  public isMod(value: IItem | string): boolean {
+  public isMod(value: IItem | ItemCategoryId): boolean {
     const categoryId = this.getCategoryId(value)
 
-    return categoryId === 'mod'
+    return categoryId === ItemCategoryId.mod
   }
 
   /**
@@ -190,7 +190,7 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is moddable; otherwise false.
    */
-  public isModdable(value: IItem | string): boolean {
+  public isModdable(value: IItem | ItemCategoryId): boolean {
     return this.isArmor(value)
       || this.isArmorMod(value)
       || this.isHeadwear(value)
@@ -206,10 +206,10 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is a ranged weapon; otherwise false.
    */
-  public isRangedWeapon(value: IItem | string): boolean {
+  public isRangedWeapon(value: IItem | ItemCategoryId): boolean {
     const categoryId = this.getCategoryId(value)
 
-    return categoryId === 'mainWeapon' || categoryId === 'secondaryWeapon'
+    return categoryId === ItemCategoryId.mainWeapon || categoryId === ItemCategoryId.secondaryWeapon
   }
 
   /**
@@ -217,10 +217,10 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is a ranged weapon mod; otherwise false.
    */
-  public isRangedWeaponMod(value: IItem | string): boolean {
+  public isRangedWeaponMod(value: IItem | ItemCategoryId): boolean {
     const categoryId = this.getCategoryId(value)
 
-    return categoryId === 'rangedWeaponMod'
+    return categoryId === ItemCategoryId.rangedWeaponMod
   }
 
   /**
@@ -228,10 +228,10 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is a vest; otherwise false.
    */
-  public isVest(value: IItem | string): boolean {
+  public isVest(value: IItem | ItemCategoryId): boolean {
     const categoryId = this.getCategoryId(value)
 
-    return categoryId === 'vest'
+    return categoryId === ItemCategoryId.vest
   }
 
   /**
@@ -239,7 +239,7 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns true if the item is wearable; otherwise false.
    */
-  public isWearable(value: IItem | string): boolean {
+  public isWearable(value: IItem | ItemCategoryId): boolean {
     return this.isArmor(value) || this.isArmorMod(value) || this.isBackpack(value) || this.isHeadwear(value) || this.isVest(value)
   }
 
@@ -248,11 +248,11 @@ export class ItemPropertiesService {
    * @param value - Item or category ID.
    * @returns Category ID.
    */
-  private getCategoryId(value: IItem | string): string {
-    if (typeof value === 'string') {
-      return value
-    } else {
+  private getCategoryId(value: IItem | ItemCategoryId): ItemCategoryId {
+    if (typeof value === 'object') {
       return value.categoryId
+    } else {
+      return value
     }
   }
 }

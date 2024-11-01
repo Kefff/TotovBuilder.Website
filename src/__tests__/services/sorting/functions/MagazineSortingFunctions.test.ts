@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { IItem } from '../../../../models/item/IItem'
+import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IMagazine } from '../../../../models/item/IMagazine'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
@@ -16,7 +16,7 @@ describe('comparisonFunction()', () => {
   ])('should sort by %s', async (property: string, isPreset: boolean) => {
     // Arrange
     const item1 = {
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.magazine,
       checkSpeedModifierPercentage: 2,
       ergonomicsModifier: 2,
       presetErgonomicsModifier: isPreset ? 2 : undefined,
@@ -24,14 +24,14 @@ describe('comparisonFunction()', () => {
     } as IMagazine
 
     const item2 = {
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.magazine,
       checkSpeedModifierPercentage: 1,
       ergonomicsModifier: 1,
       presetErgonomicsModifier: isPreset ? 1 : undefined,
       loadSpeedModifierPercentage: 1
     } as IMagazine
 
-    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    let sortingData: SortingData<IMagazine> | undefined = new SortingData()
     const sortingService = new SortingService()
     sortingData = sortingService.setSortingProperty(sortingData, MagazineSortingFunctions, property)
 

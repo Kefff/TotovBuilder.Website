@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IGrenade } from '../../../../models/item/IGrenade'
-import { IItem } from '../../../../models/item/IItem'
+import { ItemCategoryId } from '../../../../models/item/IItem'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { GrenadeSortingFunctions } from '../../../../services/sorting/functions/GrenadeSortingFunctions'
@@ -13,20 +13,20 @@ describe('comparisonFunction()', () => {
   ])('should sort by %s', async (property: string) => {
     // Arrange
     const item1 = {
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.grenade,
       explosionDelay: 2,
       maximumExplosionRange: 2,
       fragmentsAmount: 2
     } as IGrenade
 
     const item2 = {
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.grenade,
       explosionDelay: 1,
       maximumExplosionRange: 1,
       fragmentsAmount: 1
     } as IGrenade
 
-    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    let sortingData: SortingData<IGrenade> | undefined = new SortingData()
     const sortingService = new SortingService()
     sortingData = sortingService.setSortingProperty(sortingData, GrenadeSortingFunctions, property)
 

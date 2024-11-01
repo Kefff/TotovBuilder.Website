@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IBackpack } from '../../../../models/item/IBackpack'
-import { IItem } from '../../../../models/item/IItem'
+import { ItemCategoryId } from '../../../../models/item/IItem'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { BackpackSortingFunctions } from '../../../../services/sorting/functions/BackpackSortingFunctions'
@@ -16,7 +16,7 @@ describe('comparisonFunction()', () => {
     // Arrange
     const item1 = {
       capacity: 2,
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.backpack,
       ergonomicsModifierPercentage: 2,
       movementSpeedModifierPercentage: 2,
       turningSpeedModifierPercentage: 2
@@ -24,13 +24,13 @@ describe('comparisonFunction()', () => {
 
     const item2 = {
       capacity: 1,
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.backpack,
       ergonomicsModifierPercentage: 1,
       movementSpeedModifierPercentage: 1,
       turningSpeedModifierPercentage: 1
     } as IBackpack
 
-    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    let sortingData: SortingData<IBackpack> | undefined = new SortingData()
     const sortingService = new SortingService()
     sortingData = sortingService.setSortingProperty(sortingData, BackpackSortingFunctions, property)
 

@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, onUnmounted, Ref, ref } from 'vue'
-import Images from '../images'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventorySlot } from '../models/build/IInventorySlot'
-import { IItem } from '../models/item/IItem'
+import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { GlobalFilterService } from '../services/GlobalFilterService'
-import { InventorySlotService } from '../services/InventorySlotService'
+import { InventorySlotPropertiesService } from '../services/InventorySlotPropertiesService'
 import { ItemService } from '../services/ItemService'
 import Services from '../services/repository/Services'
 import StringUtils from '../utils/StringUtils'
@@ -17,13 +16,13 @@ const modelInventorySlot = defineModel<IInventorySlot>('inventorySlot', { requir
 defineProps<{ path: string }>()
 
 const _globalFilterService = Services.get(GlobalFilterService)
-const _inventorySlotService = Services.get(InventorySlotService)
+const _inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
 
-const acceptedItemsCategoryId = ref<string>()
+const acceptedItemsCategoryId = ref<ItemCategoryId>()
 const acceptedItems = ref<IItem[]>([])
 const isEditing = inject<Ref<boolean>>('isEditing')
 
-const inventorySlotType = computed(() => _inventorySlotService.getType(modelInventorySlot.value.typeId))
+const inventorySlotType = computed(() => _inventorySlotPropertiesService.getType(modelInventorySlot.value.typeId))
 const isDisplayed = computed(() => isEditing?.value || modelInventorySlot.value.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
 
 onMounted(() => {
@@ -95,7 +94,7 @@ async function setAcceptedItems() {
           />
           <img
             v-else-if="inventorySlotType.customIcon != null"
-            :src="Images[StringUtils.toCamelCase(inventorySlotType.customIcon)]"
+            :src="inventorySlotType.customIcon"
             class="inventory-slot-custom-icon"
           >
           <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelInventorySlot.typeId)) }}</span>

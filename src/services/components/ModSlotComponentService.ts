@@ -1,4 +1,4 @@
-import { IItem } from '../../models/item/IItem'
+import { IItem, ItemCategoryId } from '../../models/item/IItem'
 
 /**
  * Represents a service responsible for managing a ModSlotComponent.
@@ -9,8 +9,8 @@ export class ModSlotComponentService {
    * @param items - Items.
    * @returns Accepted items category ID or undefined when multiple item types are accepted.
    */
-  public getAcceptedItemsCategoryId(items: IItem[]): string | undefined {
-    const categoryIds: string[] = []
+  public getAcceptedItemsCategoryId(items: IItem[]): ItemCategoryId | undefined {
+    const categoryIds: ItemCategoryId[] = []
 
     for (const acceptedItemCategory of items.map((ai) => ai.categoryId)) {
       if (categoryIds.findIndex((ci) => ci === acceptedItemCategory) < 0) {

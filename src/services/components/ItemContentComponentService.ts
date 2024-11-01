@@ -1,4 +1,4 @@
-import { IItem } from '../../models/item/IItem'
+import { IItem, ItemCategoryId } from '../../models/item/IItem'
 import { IMagazine } from '../../models/item/IMagazine'
 import { ItemService } from '../ItemService'
 import Services from '../repository/Services'
@@ -17,7 +17,7 @@ export class ItemContentComponentService {
     const item = await Services.get(ItemService).getItem(itemId)
 
     switch (item.categoryId) {
-      case 'magazine': {
+      case ItemCategoryId.magazine: {
         acceptedItems = await this.getMagazineAcceptedItems(item)
         break
       }
@@ -34,10 +34,10 @@ export class ItemContentComponentService {
    * @param itemCategoryId - Parent item category ID.
    * @returns Accepted items category ID or undefined when all items are accepted.
    */
-  public getAcceptedItemsCategoryId(itemCategoryId: string): string | undefined {
+  public getAcceptedItemsCategoryId(itemCategoryId: ItemCategoryId): ItemCategoryId | undefined {
     switch (itemCategoryId) {
-      case 'magazine': {
-        return 'ammunition'
+      case ItemCategoryId.magazine: {
+        return ItemCategoryId.ammunition
       }
       default: {
         return undefined
@@ -47,12 +47,12 @@ export class ItemContentComponentService {
 
   /**
    * Gets the accepted items for an item.
+   * This corresponds to all item categories.
    * @returns Accepted items.
    */
   private async getItemAcceptedItems(): Promise<IItem[]> {
     const itemService = Services.get(ItemService)
-    const itemCategories = await itemService.getItemCategories()
-    const items = await itemService.getItemsOfCategories(itemCategories, true)
+    const items = await itemService.getItemsOfCategories(Object.values(ItemCategoryId) as ItemCategoryId[], true)
 
     return items
   }

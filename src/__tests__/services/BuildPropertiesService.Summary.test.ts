@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
+import { InventorySlotTypeId } from '../../models/build/InventorySlotTypes'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
@@ -10,7 +11,6 @@ import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
-import { InventorySlotService } from '../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
@@ -47,7 +47,7 @@ describe('getSummary()', () => {
                   quantity: 1
                 }
               ],
-              typeId: 'bodyArmor'
+              typeId: InventorySlotTypeId.bodyArmor
             }
           ],
           lastExported: undefined,
@@ -73,11 +73,11 @@ describe('getSummary()', () => {
           inventorySlots: [
             {
               items: [undefined],
-              typeId: 'bodyArmor'
+              typeId: InventorySlotTypeId.bodyArmor
             },
             {
               items: [undefined],
-              typeId: 'tacticalRig'
+              typeId: InventorySlotTypeId.tacticalRig
             }
           ],
           lastExported: undefined,
@@ -96,7 +96,7 @@ describe('getSummary()', () => {
           inventorySlots: [
             {
               items: [undefined],
-              typeId: 'bodyArmor'
+              typeId: InventorySlotTypeId.bodyArmor
             },
             {
               items: [
@@ -108,7 +108,7 @@ describe('getSummary()', () => {
                   quantity: 1
                 }
               ],
-              typeId: 'tacticalRig'
+              typeId: InventorySlotTypeId.tacticalRig
             }
           ],
           lastExported: undefined,
@@ -127,11 +127,11 @@ describe('getSummary()', () => {
           inventorySlots: [
             {
               items: [undefined],
-              typeId: 'bodyArmor'
+              typeId: InventorySlotTypeId.bodyArmor
             },
             {
               items: [undefined],
-              typeId: 'tacticalRig'
+              typeId: InventorySlotTypeId.tacticalRig
             }
           ],
           lastExported: undefined,
@@ -152,7 +152,6 @@ describe('getSummary()', () => {
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
 
       const service = new BuildPropertiesService()
@@ -173,7 +172,6 @@ describe('getSummary()', () => {
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
 
       const service = new BuildPropertiesService()
@@ -205,7 +203,7 @@ describe('getSummary()', () => {
           id: 'build3',
           inventorySlots: [
             {
-              typeId: 'onBack',
+              typeId: InventorySlotTypeId.onBack,
               items: [
                 {
                   content: [],
@@ -233,7 +231,6 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
         Services.configure(PresetService)
@@ -255,15 +252,15 @@ describe('getSummary()', () => {
           id: 'EmptyBuild',
           inventorySlots: [
             {
-              typeId: 'onSling',
+              typeId: InventorySlotTypeId.onSling,
               items: []
             },
             {
-              typeId: 'onBack',
+              typeId: InventorySlotTypeId.onBack,
               items: [undefined]
             },
             {
-              typeId: 'holster',
+              typeId: InventorySlotTypeId.holster,
               items: [null]
             }
           ]
@@ -284,7 +281,6 @@ describe('getSummary()', () => {
       useItemServiceMock()
       Services.configure(InventoryItemService)
       Services.configure(ItemPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(InventorySlotPropertiesService)
       const service = new BuildPropertiesService()
 
@@ -371,7 +367,6 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
 
@@ -393,7 +388,6 @@ describe('getSummary()', () => {
       useWebsiteConfigurationServiceMock()
       Services.configure(InventorySlotPropertiesService)
       Services.configure(InventoryItemService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(GlobalFilterService)
 
@@ -420,7 +414,7 @@ describe('getSummary()', () => {
                 quantity: 1
               }
             ],
-            typeId: 'backpack'
+            typeId: InventorySlotTypeId.backpack
           }
         ],
         lastExported: undefined,
@@ -474,15 +468,15 @@ describe('getSummary()', () => {
           id: 'EmptyBuild',
           inventorySlots: [
             {
-              typeId: 'onSling',
+              typeId: InventorySlotTypeId.onSling,
               items: []
             },
             {
-              typeId: 'onBack',
+              typeId: InventorySlotTypeId.onBack,
               items: [undefined]
             },
             {
-              typeId: 'holster',
+              typeId: InventorySlotTypeId.holster,
               items: [null]
             }
           ]
@@ -502,7 +496,6 @@ describe('getSummary()', () => {
         Services.configure(GlobalFilterService)
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(PresetService)
 
@@ -523,7 +516,6 @@ describe('getSummary()', () => {
       useWebsiteConfigurationServiceMock()
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(GlobalFilterService)
       Services.configure(PresetService)
@@ -545,7 +537,7 @@ describe('getSummary()', () => {
                   quantity: 1
                 }
               ],
-              typeId: 'onSling'
+              typeId: InventorySlotTypeId.onSling
             }
           ],
           lastExported: undefined,
@@ -1450,14 +1442,14 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: 'notLootable',
+            ignorePrice: IgnoredUnitPrice.notLootable,
             inventorySlotId: 'pouch',
             item: alpha,
             missingPrice: false,
             quantity: 1
           },
           {
-            ignorePrice: 'notLootable',
+            ignorePrice: IgnoredUnitPrice.notLootable,
             inventorySlotId: 'scabbard',
             item: bayonet6Kh5,
             missingPrice: false,
@@ -1486,7 +1478,6 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
 
@@ -1508,7 +1499,6 @@ describe('getSummary()', () => {
       useWebsiteConfigurationServiceMock()
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(GlobalFilterService)
 
@@ -1520,11 +1510,11 @@ describe('getSummary()', () => {
         id: 'build',
         inventorySlots: [
           {
-            typeId: 'invalid',
+            typeId: 'invalid' as InventorySlotTypeId,
             items: []
           },
           {
-            typeId: 'backpack',
+            typeId: InventorySlotTypeId.backpack,
             items: [
               {
                 content: [],
@@ -1562,15 +1552,15 @@ describe('getSummary()', () => {
           id: 'EmptyBuild',
           inventorySlots: [
             {
-              typeId: 'onSling',
+              typeId: InventorySlotTypeId.onSling,
               items: []
             },
             {
-              typeId: 'onBack',
+              typeId: InventorySlotTypeId.onBack,
               items: [undefined]
             },
             {
-              typeId: 'holster',
+              typeId: InventorySlotTypeId.holster,
               items: [null]
             }
           ]
@@ -1586,7 +1576,6 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
         Services.configure(PresetService)
@@ -1644,7 +1633,6 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
         Services.configure(PresetService)

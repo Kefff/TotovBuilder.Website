@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { IItem } from '../../../../models/item/IItem'
+import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IMeleeWeapon } from '../../../../models/item/IMeleeWeapon'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
@@ -13,20 +13,20 @@ describe('comparisonFunction()', () => {
   ])('should sort by %s', async (property: string) => {
     // Arrange
     const item1 = {
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.meleeWeapon,
       stabDamage: 2,
       chopDamage: 2,
       hitRadius: 2
     } as IMeleeWeapon
 
     const item2 = {
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.meleeWeapon,
       stabDamage: 1,
       chopDamage: 1,
       hitRadius: 1
     } as IMeleeWeapon
 
-    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    let sortingData: SortingData<IMeleeWeapon> | undefined = new SortingData()
     const sortingService = new SortingService()
     sortingData = sortingService.setSortingProperty(sortingData, MeleeWeaponSortingFunctions, property)
 

@@ -6,7 +6,7 @@ import SortingData from '../../models/utils/SortingData'
 import { SortingOrder } from '../../models/utils/SortingOrder'
 import Services from '../../services/repository/Services'
 import { SortingService } from '../../services/sorting/SortingService'
-import ISortingFunctionList from '../../services/sorting/functions/ISortingFunctionList'
+import { IItemSortingFunctionList } from '../../services/sorting/functions/ISortingFunctionList'
 import StringUtils from '../../utils/StringUtils'
 import CustomIcon from '../CustomIconComponent.vue'
 import Tooltip from '../TooltipComponent.vue'
@@ -19,7 +19,7 @@ const props = withDefaults(
     customIcon?: string,
     icon?: string,
     property: string,
-    sortingFunctions: ISortingFunctionList<IItem>
+    sortingFunctions: IItemSortingFunctionList
   }>(),
   {
     customIcon: undefined,

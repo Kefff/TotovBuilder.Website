@@ -1,5 +1,6 @@
 import { App } from 'vue'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import ItemsComponent from '../components/ItemsComponent.vue'
 import Welcome from '../components/WelcomeComponent.vue'
 import LanguageUtils from '../utils/LanguageUtils'
 import applicationInsights from './applicationInsights'
@@ -88,6 +89,18 @@ const routes: RouteRecordRaw[] = [
     beforeEnter: (to, from) => {
       applicationInsights.trackPageView({
         name: 'CopyBuild',
+        refUri: from.path,
+        uri: to.path
+      })
+    }
+  },
+  {
+    component: ItemsComponent,
+    name: 'Items',
+    path: '/items',
+    beforeEnter: (to, from) => {
+      applicationInsights.trackPageView({
+        name: 'Items',
         refUri: from.path,
         uri: to.path
       })

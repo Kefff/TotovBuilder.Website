@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
-import { IItem } from '../../models/item/IItem'
+import { IItem, ItemCategoryId } from '../../models/item/IItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import { IRangedWeaponModifiers } from '../../models/utils/IRangedWeaponModifiers'
 import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
@@ -55,8 +55,8 @@ const specializedComponent = computed(() => getSpecializedComponent(props.select
 /**
  * Sets the type of specialized options header component to display.
  */
-function getSpecializedComponent(itemCategoryId?: string) {
-  if (itemCategoryId == null || itemCategoryId === 'other') {
+function getSpecializedComponent(itemCategoryId?: ItemCategoryId) {
+  if (itemCategoryId == null || itemCategoryId === ItemCategoryId.other) {
     return undefined
   }
 

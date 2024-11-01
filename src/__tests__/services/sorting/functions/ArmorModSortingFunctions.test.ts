@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IArmorMod } from '../../../../models/item/IArmorMod'
-import { IItem } from '../../../../models/item/IItem'
+import { ItemCategoryId } from '../../../../models/item/IItem'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ArmorModSortingFunctions } from '../../../../services/sorting/functions/ArmorModSortingFunctions'
@@ -21,7 +21,7 @@ describe('comparisonFunction()', () => {
     // Arrange
     const item1 = {
       armorClass: 2,
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.armorMod,
       durability: 2,
       ergonomicsModifierPercentage: 2,
       movementSpeedModifierPercentage: 2,
@@ -37,7 +37,7 @@ describe('comparisonFunction()', () => {
 
     const item2 = {
       armorClass: 1,
-      categoryId: 'cat',
+      categoryId: ItemCategoryId.armorMod,
       durability: 1,
       ergonomicsModifierPercentage: 1,
       movementSpeedModifierPercentage: 1,
@@ -51,7 +51,7 @@ describe('comparisonFunction()', () => {
       turningSpeedModifierPercentage: 1
     } as IArmorMod
 
-    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    let sortingData: SortingData<IArmorMod> | undefined = new SortingData()
     const sortingService = new SortingService()
     sortingData = sortingService.setSortingProperty(sortingData, ArmorModSortingFunctions, property)
 

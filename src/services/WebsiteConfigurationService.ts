@@ -1,5 +1,6 @@
 import { TinyEmitter } from 'tiny-emitter'
 import { IWebsiteConfiguration } from '../models/configuration/IWebsiteConfiguration'
+import baseConfiguration from '../websiteConfiguration'
 import { FetchService } from './FetchService'
 import { LogService } from './LogService'
 import { ServiceInitializationState } from './repository/ServiceInitializationState'
@@ -20,40 +21,7 @@ export class WebsiteConfigurationService {
   public get configuration(): IWebsiteConfiguration {
     return this._configuration
   }
-  private _configuration: IWebsiteConfiguration = { // Base configuration to be able to fetch the real full configuration
-    allowCookiesStorageKey: 'allow_cookies',
-    bugReportUrl: import.meta.env.VITE_DISCORD_URL,
-    buildSharingUrl: '',
-    buildsFilterStorageKey: 'builds_filter_field',
-    buildsSortFieldStorageKey: 'builds_sort_field',
-    buildsSortOrderStorageKey: 'builds_sort_order',
-    buildStorageKeyPrefix: 'build_',
-    cacheDuration: 3600,
-    contactAddress: import.meta.env.VITE_CONTACT_ADDRESS,
-    discordUrl: import.meta.env.VITE_BUG_REPORT_URL,
-    endpointChangelog: '',
-    endpointItemCategories: '',
-    endpointItems: '',
-    endpointPresets: '',
-    endpointPrices: '',
-    endpointTarkovValues: '',
-    exportFileExtension: '',
-    exportFileNamePrefix: '',
-    exportWarningShowedStorageKey: '',
-    fetchMaxTries: 6,
-    fetchTimeout: 9,
-    fetchWaitTimeBetweenRetries: 1,
-    githubUrl: '',
-    globalFilterStorageKey: 'global_filter',
-    languageStorageKey: 'language',
-    notificationErrorDuration: 10,
-    notificationInformationDuration: 5,
-    notificationSuccessDuration: 5,
-    notificationWarningDuration: 10,
-    postUpdatePeriod: false,
-    version: '',
-    versionStorageKey: ''
-  }
+  private _configuration = baseConfiguration // Base configuration to be able to fetch the real full configuration
 
   /**
    * Event emitter used to initialization state change.
@@ -82,7 +50,7 @@ export class WebsiteConfigurationService {
       return false
     }
 
-    this._configuration = websiteConfiguration
+    this._configuration = { ...this._configuration, ...websiteConfiguration }
 
     return true
   }
@@ -99,7 +67,7 @@ export class WebsiteConfigurationService {
       Services.get(LogService).logInformation('message.fetchingWebsiteConfiguration', { date: new Date().toISOString() })
     }
 
-    const websiteConfiguration = await fetchService.get<IWebsiteConfiguration>('/' + import.meta.env.VITE_WEBSITE_CONFIGURATION_ENDPOINT as string)
+    const websiteConfiguration = await fetchService.get<IWebsiteConfiguration>('/' + this._configuration.endpointWebsiteConfiguration)
 
     if (websiteConfiguration == null) {
       Services.get(LogService).logException('message.websiteConfigurationNotFetched')

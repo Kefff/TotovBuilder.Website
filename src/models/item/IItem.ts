@@ -7,7 +7,7 @@ export interface IItem {
   /**
    * ID of the category of the item.
    */
-  categoryId: string
+  categoryId: ItemCategoryId
 
   /**
    * IDs of conflicting items.
@@ -63,4 +63,33 @@ export interface IItem {
    * Link to the item wiki page.
    */
   wikiLink: string
+}
+
+/**
+ * Item categories.
+ */
+export enum ItemCategoryId {
+  'ammunition',
+  'armband',
+  'armor',
+  'armorMod',
+  'backpack',
+  'container',
+  'currency',
+  'eyewear',
+  'faceCover',
+  'grenade',
+  'headphones',
+  'headwear',
+  'magazine',
+  'mainWeapon',
+  'meleeWeapon',
+  'mod',
+  'notFound',
+  'other',
+  'rangedWeaponMod',
+  'secondaryWeapon',
+  'securedContainer',
+  'special',
+  'vest'
 }

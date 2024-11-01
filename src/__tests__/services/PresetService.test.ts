@@ -5,6 +5,7 @@ import { IInventoryModSlot } from '../../models/build/IInventoryModSlot'
 import { IArmor } from '../../models/item/IArmor'
 import { IArmorMod } from '../../models/item/IArmorMod'
 import { IHeadwear } from '../../models/item/IHeadwear'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IMod } from '../../models/item/IMod'
 import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
@@ -443,7 +444,7 @@ describe('updatePresetProperties', () => {
           armoredAreas: ['TopOfTheHead'],
           baseItemId: undefined,
           blindnessProtectionPercentage: 0,
-          categoryId: 'armorMod',
+          categoryId: ItemCategoryId.armorMod,
           conflictingItemIds: [],
           defaultPresetId: 'presetArmorMod',
           durability: 10,
@@ -478,7 +479,7 @@ describe('updatePresetProperties', () => {
           armoredAreas: ['TopOfTheHead'],
           baseItemId: 'baseArmorMod',
           blindnessProtectionPercentage: 0,
-          categoryId: 'armorMod',
+          categoryId: ItemCategoryId.armorMod,
           conflictingItemIds: [],
           defaultPresetId: undefined,
           durability: 10,
@@ -513,7 +514,7 @@ describe('updatePresetProperties', () => {
           armoredAreas: ['Eyes'],
           baseItemId: undefined,
           blindnessProtectionPercentage: 0,
-          categoryId: 'armorMod',
+          categoryId: ItemCategoryId.armorMod,
           conflictingItemIds: [],
           defaultPresetId: undefined,
           durability: 20,
@@ -597,7 +598,7 @@ describe('updatePresetProperties', () => {
           baseItemId: undefined,
           blindnessProtectionPercentage: 0,
           blocksHeadphones: false,
-          categoryId: 'headwear',
+          categoryId: ItemCategoryId.headwear,
           conflictingItemIds: [],
           deafening: 'None',
           defaultPresetId: 'presetHeadwear',
@@ -634,7 +635,7 @@ describe('updatePresetProperties', () => {
           baseItemId: 'baseHeadwear',
           blindnessProtectionPercentage: 0,
           blocksHeadphones: false,
-          categoryId: 'armorMod',
+          categoryId: ItemCategoryId.armorMod,
           conflictingItemIds: [],
           defaultPresetId: undefined,
           deafening: 'None',
@@ -670,7 +671,7 @@ describe('updatePresetProperties', () => {
           armoredAreas: ['Eyes'],
           baseItemId: undefined,
           blindnessProtectionPercentage: 0,
-          categoryId: 'armorMod',
+          categoryId: ItemCategoryId.armorMod,
           conflictingItemIds: [],
           defaultPresetId: undefined,
           durability: 20,
@@ -750,7 +751,7 @@ describe('updatePresetProperties', () => {
       [
         {
           baseItemId: undefined,
-          categoryId: 'mod',
+          categoryId: ItemCategoryId.mod,
           conflictingItemIds: [],
           defaultPresetId: 'presetMod',
           ergonomicsModifier: 5,
@@ -776,7 +777,7 @@ describe('updatePresetProperties', () => {
         } as IMod,
         {
           baseItemId: 'baseMod',
-          categoryId: 'mod',
+          categoryId: ItemCategoryId.mod,
           conflictingItemIds: [],
           defaultPresetId: undefined,
           ergonomicsModifier: 5,
@@ -802,7 +803,7 @@ describe('updatePresetProperties', () => {
         } as IMod,
         {
           baseItemId: undefined,
-          categoryId: 'mod',
+          categoryId: ItemCategoryId.mod,
           conflictingItemIds: [],
           defaultPresetId: undefined,
           ergonomicsModifier: 10,
@@ -900,7 +901,7 @@ describe('updatePresetProperties', () => {
         {
           accuracyModifierPercentage: 0.04,
           baseItemId: undefined,
-          categoryId: 'rangedWeaponMod',
+          categoryId: ItemCategoryId.rangedWeaponMod,
           conflictingItemIds: [],
           defaultPresetId: 'presetRangedWeaponMod',
           ergonomicsModifier: 5,
@@ -929,7 +930,7 @@ describe('updatePresetProperties', () => {
         {
           accuracyModifierPercentage: 0.04,
           baseItemId: 'baseRangedWeaponMod',
-          categoryId: 'rangedWeaponMod',
+          categoryId: ItemCategoryId.rangedWeaponMod,
           conflictingItemIds: [],
           defaultPresetId: undefined,
           ergonomicsModifier: 5,
@@ -958,7 +959,7 @@ describe('updatePresetProperties', () => {
         {
           accuracyModifierPercentage: 0.03,
           baseItemId: undefined,
-          categoryId: 'rangedWeaponMod',
+          categoryId: ItemCategoryId.rangedWeaponMod,
           conflictingItemIds: [],
           defaultPresetId: undefined,
           ergonomicsModifier: 10,
@@ -1059,7 +1060,7 @@ describe('updatePresetProperties', () => {
       [
         {
           baseItemId: undefined,
-          categoryId: 'mod',
+          categoryId: ItemCategoryId.mod,
           conflictingItemIds: [],
           defaultPresetId: undefined,
           ergonomicsModifier: 5,
@@ -1085,7 +1086,7 @@ describe('updatePresetProperties', () => {
         } as IMod,
         {
           baseItemId: undefined,
-          categoryId: 'mod',
+          categoryId: ItemCategoryId.mod,
           conflictingItemIds: [],
           defaultPresetId: undefined,
           ergonomicsModifier: 10,
@@ -1133,7 +1134,7 @@ describe('updatePresetProperties', () => {
       [
         {
           baseItemId: undefined,
-          categoryId: 'mod',
+          categoryId: ItemCategoryId.mod,
           conflictingItemIds: [],
           defaultPresetId: 'presetMod',
           ergonomicsModifier: 5,
@@ -1159,7 +1160,7 @@ describe('updatePresetProperties', () => {
         } as IMod,
         {
           baseItemId: 'baseMod',
-          categoryId: 'mod',
+          categoryId: ItemCategoryId.mod,
           conflictingItemIds: [],
           defaultPresetId: undefined,
           ergonomicsModifier: 5,
@@ -1185,7 +1186,7 @@ describe('updatePresetProperties', () => {
         } as IMod,
         {
           baseItemId: undefined,
-          categoryId: 'mod',
+          categoryId: ItemCategoryId.mod,
           conflictingItemIds: [],
           defaultPresetId: undefined,
           ergonomicsModifier: 10,

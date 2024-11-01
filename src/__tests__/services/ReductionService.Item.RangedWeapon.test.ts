@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ReductionService } from '../../services/ReductionService'
@@ -33,7 +34,7 @@ describe('parseReducedItem', () => {
       {
         baseItemId: '57dc2fa62459775949412633',
         caliber: 'Caliber545x39',
-        categoryId: 'mainWeapon',
+        categoryId: ItemCategoryId.mainWeapon,
         conflictingItemIds: [],
         defaultPresetId: '584147732459775a2b6d9f12',
         ergonomics: 44,
@@ -171,7 +172,7 @@ describe('parseReducedItem', () => {
       {
         baseItemId: undefined,
         caliber: 'Caliber545x39',
-        categoryId: 'mainWeapon',
+        categoryId: ItemCategoryId.mainWeapon,
         conflictingItemIds: [],
         defaultPresetId: '584147732459775a2b6d9f12',
         ergonomics: 44,
@@ -317,7 +318,7 @@ describe('parseReducedItem', () => {
       {
         baseItemId: undefined,
         caliber: 'Caliber26x75',
-        categoryId: 'mainWeapon',
+        categoryId: ItemCategoryId.mainWeapon,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         ergonomics: 51,

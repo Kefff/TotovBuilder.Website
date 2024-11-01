@@ -1,6 +1,8 @@
 import { anything, instance, mock, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
+import { InventorySlotTypeId } from '../../models/build/InventorySlotTypes'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
@@ -9,7 +11,6 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { ImportService } from '../../services/ImportService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
-import { InventorySlotService } from '../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { LogService } from '../../services/LogService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
@@ -45,7 +46,6 @@ describe('ImportService', () => {
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
 
       const fileMock = mock<File>()
@@ -290,7 +290,7 @@ describe('ImportService', () => {
           shoppingList: [
             {
               ignorePrice: IgnoredUnitPrice.notIgnored,
-              inventorySlotId: 'backpack',
+              inventorySlotId: InventorySlotTypeId.backpack,
               item: berkut,
               missingPrice: false,
               price: {
@@ -316,11 +316,11 @@ describe('ImportService', () => {
               }
             },
             {
-              ignorePrice: 'notLootable',
-              inventorySlotId: 'pouch',
+              ignorePrice: IgnoredUnitPrice.notLootable,
+              inventorySlotId: InventorySlotTypeId.pouch,
               item: {
                 capacity: 4,
-                categoryId: 'securedContainer',
+                categoryId: ItemCategoryId.securedContainer,
                 conflictingItemIds: [],
                 iconLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-icon.webp',
                 id: '544a11ac4bdc2d470e8b456a',
@@ -348,10 +348,10 @@ describe('ImportService', () => {
               quantity: 1
             },
             {
-              ignorePrice: 'notLootable',
-              inventorySlotId: 'scabbard',
+              ignorePrice: IgnoredUnitPrice.notLootable,
+              inventorySlotId: InventorySlotTypeId.scabbard,
               item: {
-                categoryId: 'meleeWeapon',
+                categoryId: ItemCategoryId.meleeWeapon,
                 chopDamage: 24,
                 conflictingItemIds: [],
                 hitRadius: 0.4,
@@ -440,7 +440,7 @@ describe('ImportService', () => {
           shoppingList: [
             {
               ignorePrice: IgnoredUnitPrice.notIgnored,
-              inventorySlotId: 'pockets',
+              inventorySlotId: InventorySlotTypeId.pockets,
               item: rgd5,
               missingPrice: false,
               price: {
@@ -466,11 +466,11 @@ describe('ImportService', () => {
               }
             },
             {
-              ignorePrice: 'notLootable',
-              inventorySlotId: 'pouch',
+              ignorePrice: IgnoredUnitPrice.notLootable,
+              inventorySlotId: InventorySlotTypeId.pouch,
               item: {
                 capacity: 4,
-                categoryId: 'securedContainer',
+                categoryId: ItemCategoryId.securedContainer,
                 conflictingItemIds: [],
                 iconLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-icon.webp',
                 id: '544a11ac4bdc2d470e8b456a',
@@ -498,10 +498,10 @@ describe('ImportService', () => {
               quantity: 1
             },
             {
-              ignorePrice: 'notLootable',
-              inventorySlotId: 'scabbard',
+              ignorePrice: IgnoredUnitPrice.notLootable,
+              inventorySlotId: InventorySlotTypeId.scabbard,
               item: {
-                categoryId: 'meleeWeapon',
+                categoryId: ItemCategoryId.meleeWeapon,
                 chopDamage: 24,
                 conflictingItemIds: [],
                 hitRadius: 0.4,
