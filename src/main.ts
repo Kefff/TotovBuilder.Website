@@ -7,7 +7,7 @@ import { usePrimeVue } from './plugins/primeVue'
 import { useI18n } from './plugins/vueI18n'
 import { useVueRouter } from './plugins/vueRouter'
 import { polyfill } from './polyfill'
-import { initializeServices } from './servicesConfiguration'
+import { initializeServicesAsync } from './servicesConfiguration'
 
 useApplicationInsights()
 
@@ -15,7 +15,7 @@ useApplicationInsights()
 polyfill()
 
 // Services
-void initializeServices()
+void initializeServicesAsync()
 
 // App
 const app = createApp(App)

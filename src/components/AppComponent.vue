@@ -56,10 +56,10 @@ provide('isTouchScreen', isTouchScreen)
 
 onMounted(() => {
   if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
-    _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
+    _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitializedAsync)
     loading.value = true
   } else {
-    onWebsiteConfigurationServiceInitialized()
+    onWebsiteConfigurationServiceInitializedAsync()
   }
 
   setLanguage()
@@ -104,7 +104,7 @@ function goToHome(): void {
 /**
  * Reacts to the website configuration service being initialized.
  */
-async function onWebsiteConfigurationServiceInitialized(): Promise<void> {
+async function onWebsiteConfigurationServiceInitializedAsync(): Promise<void> {
   bugReportUrl.value = _websiteConfigurationService.configuration.bugReportUrl
   contactAddress.value = _websiteConfigurationService.configuration.contactAddress
   discordUrl.value = _websiteConfigurationService.configuration.discordUrl
@@ -116,8 +116,8 @@ async function onWebsiteConfigurationServiceInitialized(): Promise<void> {
     Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.postUpdatePeriod'), 0)
   }
 
-  await _versionService.getVersion().then(v => version.value = v)
-  hasNewVersion.value = await _versionService.checkHasNewVersion()
+  await _versionService.getVersionAsync().then(v => version.value = v)
+  hasNewVersion.value = await _versionService.checkHasNewVersionAsync()
 
   if (hasNewVersion.value) {
     displayNewVersionNotification()

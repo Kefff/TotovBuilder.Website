@@ -21,7 +21,7 @@ const _globalSidebarService = Services.get(GlobalSidebarService)
 
 const toolbarButtons: IToolbarButton[] = [
   {
-    action: exportBuilds,
+    action: exportBuildsAsync,
     canBeMovedToSidebar: () => false,
     caption: () => `${vueI18n.t('caption.save')}` + (selectedBuilds.value.length > 1 ? ` (${selectedBuilds.value.length})` : ''),
     icon: () => 'download',
@@ -52,7 +52,7 @@ useEventListener(document, 'keydown', onKeyDown)
 /**
  * Exports the selected builds.
  */
-async function exportBuilds(): Promise<void> {
+async function exportBuildsAsync(): Promise<void> {
   const buildsToExport: IBuild[] = []
 
   for (const buildToExportId of selectedBuilds.value) {
@@ -63,7 +63,7 @@ async function exportBuilds(): Promise<void> {
     }
   }
 
-  await _exportService.export(buildsToExport)
+  await _exportService.exportAsync(buildsToExport)
   _globalSidebarService.close('BuildsExportSidebar')
 }
 

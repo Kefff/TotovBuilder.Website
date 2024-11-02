@@ -92,15 +92,15 @@ export class ItemService {
   /**
    * Initializes a new instance of the ItemService class.
    */
-  constructor() {
+  public constructor() {
     Services.get(GlobalFilterService).emitter.on(GlobalFilterService.changeEvent, () => this.updateFilteredItems())
   }
 
   /**
    * Gets all items.
    */
-  public async getAll(): Promise<IItem[]> {
-    await this.initialize()
+  public async getAllAsync(): Promise<IItem[]> {
+    await this.initializeAsync()
 
     return this.items
   }
@@ -127,8 +127,8 @@ export class ItemService {
    * @returns Item.
    * @throws When the item is not found.
    */
-  public async getItem(id: string): Promise<IItem> {
-    const items = await this.getItems([id], false)
+  public async getItemAsync(id: string): Promise<IItem> {
+    const items = await this.getItemsAsync([id], false)
 
     return items[0]
   }
@@ -140,8 +140,8 @@ export class ItemService {
    * @returns Items.
    * @throws When no item is found while the global filter is not used.
    */
-  public async getItems(ids: string[], useGlobalFilter: boolean): Promise<IItem[]> {
-    await this.initialize()
+  public async getItemsAsync(ids: string[], useGlobalFilter: boolean): Promise<IItem[]> {
+    await this.initializeAsync()
 
     let items: IItem[] = []
 
@@ -171,8 +171,8 @@ export class ItemService {
    * @returns Items belonging to the categories.
    * @throws When no item is found while the global filter is not used.
    */
-  public async getItemsOfCategories(categoryIds: ItemCategoryId[], useGlobalFilter = false): Promise<IItem[]> {
-    await this.initialize()
+  public async getItemsOfCategoriesAsync(categoryIds: ItemCategoryId[], useGlobalFilter = false): Promise<IItem[]> {
+    await this.initializeAsync()
 
     let items: IItem[]
 
@@ -229,7 +229,7 @@ export class ItemService {
   /**
    * Initializes the data used by the service.
    */
-  public async initialize(): Promise<void> {
+  public async initializeAsync(): Promise<void> {
     if (Services.get(WebsiteConfigurationService).initializationState === ServiceInitializationState.error) {
       this._initializationState = ServiceInitializationState.error
 
@@ -237,7 +237,7 @@ export class ItemService {
     }
 
     if (!this.hasStaticDataCached) {
-      const staticDataFetched = await this.fetchStaticData()
+      const staticDataFetched = await this.fetchStaticDataAsync()
 
       if (staticDataFetched) {
         this._initializationState = ServiceInitializationState.initialized
@@ -249,7 +249,7 @@ export class ItemService {
     }
 
     if (!this.hasValidCache() && this._initializationState !== ServiceInitializationState.error) {
-      await this.fetchPrices()
+      await this.fetchPricesAsync()
     }
   }
 
@@ -257,8 +257,8 @@ export class ItemService {
    * Fetches items.
    * @returns true when items have correctly been fetched; otherwise false.
    */
-  private async fetchItems(): Promise<boolean> {
-    const items = await Services.get(ItemFetcherService).fetchItems()
+  private async fetchItemsAsync(): Promise<boolean> {
+    const items = await Services.get(ItemFetcherService).fetchItemsAsync()
 
     if (items == undefined) {
       return false
@@ -274,9 +274,9 @@ export class ItemService {
    * If prices are already being fetched, waits for the operation to end before returning.
    * This should in theory never happen since fetchPrices() is only called in initialize() which executes nothing when another initialization is already being performed.
    */
-  private async fetchPrices(): Promise<void> {
+  private async fetchPricesAsync(): Promise<void> {
     if (!this.isFetchingPrices) {
-      this.pricesFetchingPromise = this.startPricesFetching()
+      this.pricesFetchingPromise = this.startPricesFetchingAsync()
     }
 
     await this.pricesFetchingPromise
@@ -288,9 +288,9 @@ export class ItemService {
    * This should in theory never happen since fetchStaticData() is only called in initialize() which executes nothing when another initialization is already being performed.
    * @returns true when all static data has been fetched; otherwise false.
    */
-  private async fetchStaticData(): Promise<boolean> {
+  private async fetchStaticDataAsync(): Promise<boolean> {
     if (!this.isFetchingStaticData) {
-      this.staticDataFetchingPromise = this.startStaticDataFetching()
+      this.staticDataFetchingPromise = this.startStaticDataFetchingAsync()
     }
 
     const staticDataFetched = await this.staticDataFetchingPromise
@@ -333,10 +333,10 @@ export class ItemService {
   /**
    * Starts prices fetching.
    */
-  private async startPricesFetching(): Promise<void> {
+  private async startPricesFetchingAsync(): Promise<void> {
     this.isFetchingPrices = true
 
-    const prices = await Services.get(ItemFetcherService).fetchPrices()
+    const prices = await Services.get(ItemFetcherService).fetchPricesAsync()
 
     if (prices == undefined) {
       Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.pricesLoadingError'))
@@ -359,15 +359,15 @@ export class ItemService {
    * Starts static data fetching.
    * @returns true when fetching has succeeded, otherwise false.
    */
-  private async startStaticDataFetching(): Promise<boolean> {
+  private async startStaticDataFetchingAsync(): Promise<boolean> {
     const presetsService = Services.get(PresetService)
 
     this.isFetchingStaticData = true
 
     const fetchResults: boolean[] = []
     await Promise.allSettled([
-      this.fetchItems().then(r => fetchResults.push(r)),
-      presetsService.fetchPresets().then(r => fetchResults.push(r))
+      this.fetchItemsAsync().then(r => fetchResults.push(r)),
+      presetsService.fetchPresetsAsync().then(r => fetchResults.push(r))
     ])
 
     this.hasStaticDataCached = true
@@ -375,7 +375,7 @@ export class ItemService {
     const allFetched = fetchResults.every(r => r)
 
     if (allFetched) {
-      await presetsService.updatePresetProperties(this.items)
+      await presetsService.updatePresetPropertiesAsync(this.items)
     }
 
     this.isFetchingStaticData = false

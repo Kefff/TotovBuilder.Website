@@ -14,12 +14,12 @@ const props = defineProps<{
 
 const itemUnitPrice = ref<IPrice>()
 
-onMounted(() => initialize())
+onMounted(() => initializeAsync())
 
-watch(() => props.item, () => initialize())
+watch(() => props.item, () => initializeAsync())
 
-async function initialize(): Promise<void> {
-  const itemPrice = await Services.get(InventoryItemService).getPrice({
+async function initializeAsync(): Promise<void> {
+  const itemPrice = await Services.get(InventoryItemService).getPriceAsync({
     content: [],
     ignorePrice: false,
     itemId: props.item.id,

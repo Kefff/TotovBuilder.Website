@@ -16,7 +16,7 @@ const _inventoryItemService = Services.get(InventoryItemService)
 const prices = ref<IPrice[]>([])
 
 onMounted(() => {
-  setPrices()
+  setPricesAsync()
 })
 
 /**
@@ -36,7 +36,7 @@ function openWiki(): void {
 /**
  * Sets the prices to display.
  */
-async function setPrices(): Promise<void> {
+async function setPricesAsync(): Promise<void> {
   // Using an intermidiate variable here because directly adding prices to prices.value and then sorting them mixes up
   // barters displayed in the price detail popups
   const pricesToDisplay: IPrice[] = []
@@ -50,7 +50,7 @@ async function setPrices(): Promise<void> {
       let barterPrice = 0
 
       for (const barterItem of priceToAdd.barterItems) {
-        const barterItemPrice = await _inventoryItemService.getPrice(
+        const barterItemPrice = await _inventoryItemService.getPriceAsync(
           {
             content: [],
             ignorePrice: false,

@@ -122,9 +122,9 @@ const toolbarContainer = computed(() => buildsToolbar.value?.container)
 
 onMounted(() => {
   _buildService.emitter.on(BuildService.deletedEvent, onItemServicesInitialized)
-  _exportService.emitter.on(ExportService.buildsExportedEvent, getBuilds)
+  _exportService.emitter.on(ExportService.buildsExportedEvent, getBuildsAsync)
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-  _importService.emitter.on(ImportService.buildsImportedEvent, getBuilds)
+  _importService.emitter.on(ImportService.buildsImportedEvent, getBuildsAsync)
 
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
     _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServicesInitialized)
@@ -137,15 +137,15 @@ onMounted(() => {
 
 onUnmounted(() => {
   _buildService.emitter.off(BuildService.deletedEvent, onItemServicesInitialized)
-  _exportService.emitter.off(ExportService.buildsExportedEvent, getBuilds)
+  _exportService.emitter.off(ExportService.buildsExportedEvent, getBuildsAsync)
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-  _importService.emitter.off(ImportService.buildsImportedEvent, getBuilds)
+  _importService.emitter.off(ImportService.buildsImportedEvent, getBuildsAsync)
 })
 
 watch(() => hasImported.value, () => {
   // Updating the list of builds after import
   if (hasImported.value) {
-    getBuilds()
+    getBuildsAsync()
     hasImported.value = false
   }
 })
@@ -237,7 +237,7 @@ function displayShareSidebar(): void {
 /**
  * Gets the builds.
  */
-async function getBuilds(): Promise<void> {
+async function getBuildsAsync(): Promise<void> {
   isLoading.value = true
 
   const execute = new Promise<void>(resolve => {
@@ -246,7 +246,7 @@ async function getBuilds(): Promise<void> {
       _builds = _buildService.getAll()
 
       for (const build of _builds) {
-        const summary = await _buildPropertiesService.getSummary(build)
+        const summary = await _buildPropertiesService.getSummaryAsync(build)
         summaries.push(summary)
       }
 
@@ -305,7 +305,7 @@ function onFilterAndSortingDataChanged(): void {
  * Updates the selected item price to reflect the change in merchant filters.
  */
 function onItemServicesInitialized(): void {
-  getBuilds().then(() => {
+  getBuildsAsync().then(() => {
     if (_builds.length === 0) {
       _router.push({ name: 'Welcome' })
 
@@ -322,7 +322,7 @@ function onItemServicesInitialized(): void {
  * Gets builds and ends loading.
  */
 function onMerchantFilterChanged(): void {
-  getBuilds()
+  getBuildsAsync()
 }
 
 /**

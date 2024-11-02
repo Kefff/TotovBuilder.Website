@@ -64,7 +64,7 @@ function displayBuildsShareSideBar(): void {
  * Export the build to a file.
  */
 function exportBuild(): void {
-  _exportService.export([props.parameters])
+  _exportService.exportAsync([props.parameters])
   _globalSidebarService.close('BuildSidebar')
 }
 </script>

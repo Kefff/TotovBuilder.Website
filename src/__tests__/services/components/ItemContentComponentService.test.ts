@@ -5,7 +5,7 @@ import { ammo545bp, ammo9mmGT, berkut, m9a3Magazine, ms2000, rgd5 } from '../../
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 
 describe('ItemContentComponentService', () => {
-  describe('getAcceptedItems()', () => {
+  describe('getAcceptedItemsAsync()', () => {
     it.each([
       [
         berkut.id,
@@ -45,7 +45,7 @@ describe('ItemContentComponentService', () => {
       const itemContentService = new ItemContentComponentService()
 
       // Act
-      const items = await itemContentService.getAcceptedItems(itemId)
+      const items = await itemContentService.getAcceptedItemsAsync(itemId)
 
       // Assert
       expect(items).toStrictEqual(expectedItemIds)
@@ -69,7 +69,7 @@ describe('ItemContentComponentService', () => {
       const itemContentService = new ItemContentComponentService()
 
       // Act
-      const items = await itemContentService.getAcceptedItems('invalid')
+      const items = await itemContentService.getAcceptedItemsAsync('invalid')
 
       // Assert
       expect(items).toStrictEqual([

@@ -13,7 +13,7 @@ export const ModSortingFunctions: IItemSortingFunctionList = {
     ...ItemSortingFunctions.functions,
     ergonomicsModifier: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IMod).ergonomicsModifier)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IMod).ergonomicsModifier)
     }
   },
   itemCategoryIds: [ItemCategoryId.mod]

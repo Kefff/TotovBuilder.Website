@@ -30,7 +30,7 @@ export class ImportService {
    * @param file - File.
    * @returns Builds contained in the file.
    */
-  public async getBuildsFromFile(file: File | undefined): Promise<IBuildsImportResult | undefined> {
+  public async getBuildsFromFileAsync(file: File | undefined): Promise<IBuildsImportResult | undefined> {
     if (file == null) {
       Services.get(LogService).logError('message.invalidBuildFile')
       Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.importError'))
@@ -55,8 +55,8 @@ export class ImportService {
     const buildSummaries: IBuildSummary[] = []
 
     for (const build of builds) {
-      await versionsService.executeBuildMigrations(build) // Executing migrations on the build in case it is obsolete
-      const summary = await buildPropertiesService.getSummary(build)
+      await versionsService.executeBuildMigrationsAsync(build) // Executing migrations on the build in case it is obsolete
+      const summary = await buildPropertiesService.getSummaryAsync(build)
 
       buildSummaries.push(summary)
     }
@@ -71,11 +71,11 @@ export class ImportService {
    * Imports builds.
    * @param builds - Builds to import.
    */
-  public async import(builds: IBuild[]): Promise<void> {
+  public async importAsync(builds: IBuild[]): Promise<void> {
     const buildService = Services.get(BuildService)
 
     for (const build of builds) {
-      await buildService.add(build)
+      await buildService.addAsync(build)
     }
 
     this.emitter.emit(ImportService.buildsImportedEvent)

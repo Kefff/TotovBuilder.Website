@@ -28,7 +28,7 @@ const isDisplayed = computed(() => isEditing?.value || modelInventorySlot.value.
 onMounted(() => {
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-  setAcceptedItems()
+  setAcceptedItemsAsync()
 })
 
 onUnmounted(() => {
@@ -41,7 +41,7 @@ onUnmounted(() => {
  * Updates accepted items to reflect changes in merchant filters.
  */
 function onMerchantFilterChanged(): void {
-  setAcceptedItems()
+  setAcceptedItemsAsync()
 }
 
 /**
@@ -58,11 +58,11 @@ function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefin
 /**
  * Sets the accepted items selectable by the user.
  */
-async function setAcceptedItems(): Promise<void> {
+async function setAcceptedItemsAsync(): Promise<void> {
   acceptedItemsCategoryId.value = inventorySlotType.value.acceptedItemCategories.length === 1
     ? inventorySlotType.value.acceptedItemCategories[0]
     : undefined
-  acceptedItems.value = await Services.get(ItemService).getItemsOfCategories(inventorySlotType.value.acceptedItemCategories, true)
+  acceptedItems.value = await Services.get(ItemService).getItemsOfCategoriesAsync(inventorySlotType.value.acceptedItemCategories, true)
 }
 </script>
 

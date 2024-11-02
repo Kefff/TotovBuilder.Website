@@ -9,7 +9,7 @@ import Services from '../../services/repository/Services'
 import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('initialize', () => {
+describe('initializeAsync', () => {
   it('should fetch the values related to Tarkov gameplay', async () => {
     // Arrange
     useFetchServiceMock(TarkovValuesMock)
@@ -18,7 +18,7 @@ describe('initialize', () => {
     const service = new TarkovValuesService()
 
     // Act
-    const result = await service.initialize()
+    const result = await service.initializeAsync()
 
     // Assert
     expect(result).toBe(true)
@@ -30,7 +30,7 @@ describe('initialize', () => {
     useWebsiteConfigurationServiceMock()
 
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get(anyString())).thenResolve(undefined)
+    when(fetchServiceMock.getAsync(anyString())).thenResolve(undefined)
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const logServiceMock = mock<LogService>()
@@ -39,7 +39,7 @@ describe('initialize', () => {
     const service = new TarkovValuesService()
 
     // Act
-    const result = await service.initialize()
+    const result = await service.initializeAsync()
 
     // Assert
     expect(result).toBe(false)

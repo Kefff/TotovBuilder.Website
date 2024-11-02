@@ -43,8 +43,8 @@ export class WebsiteConfigurationService {
   /**
    * Initializes the data used by the service.
    */
-  public async initialize(): Promise<boolean> {
-    const websiteConfiguration = await this.fetchWebsiteConfiguration()
+  public async initializeAsync(): Promise<boolean> {
+    const websiteConfiguration = await this.fetchWebsiteConfigurationAsync()
 
     if (websiteConfiguration == null) {
       return false
@@ -59,7 +59,7 @@ export class WebsiteConfigurationService {
    * Fetches the website configuration.
    * @returns Website configuration.
    */
-  private async fetchWebsiteConfiguration(): Promise<IWebsiteConfiguration | undefined> {
+  private async fetchWebsiteConfigurationAsync(): Promise<IWebsiteConfiguration | undefined> {
     const isDebug = import.meta.env.VITE_DEBUG === 'true'
     const fetchService = Services.get(FetchService)
 
@@ -67,7 +67,7 @@ export class WebsiteConfigurationService {
       Services.get(LogService).logInformation('message.fetchingWebsiteConfiguration', { date: new Date().toISOString() })
     }
 
-    const websiteConfiguration = await fetchService.get<IWebsiteConfiguration>('/' + this._configuration.endpointWebsiteConfiguration)
+    const websiteConfiguration = await fetchService.getAsync<IWebsiteConfiguration>('/' + this._configuration.endpointWebsiteConfiguration)
 
     if (websiteConfiguration == null) {
       Services.get(LogService).logException('message.websiteConfigurationNotFetched')

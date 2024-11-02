@@ -63,16 +63,16 @@ const buildSummariesInternal = ref<IBuildSummary[]>([])
 useEventListener(document, 'keydown', onKeyDown)
 
 onMounted(() => {
-  filterAndSortBuildSummaries()
+  filterAndSortBuildSummariesAsync()
 })
 
 watch(
   () => props.buildSummaries,
-  () => filterAndSortBuildSummaries())
+  () => filterAndSortBuildSummariesAsync())
 
 watch(
   () => modelFilterAndSortingData.value,
-  () => filterAndSortBuildSummaries())
+  () => filterAndSortBuildSummariesAsync())
 
 /**
  * Indicates whether a build is selected.
@@ -88,10 +88,10 @@ function checkIsSelected(buildSummary: IBuildSummary): boolean {
 /**
  * Filters and sorts build summaries.
  */
-async function filterAndSortBuildSummaries(): Promise<void> {
+async function filterAndSortBuildSummariesAsync(): Promise<void> {
   let buildSummariesToFilter = [...props.buildSummaries]
-  buildSummariesToFilter = await filterBuildSummaries(buildSummariesToFilter)
-  buildSummariesToFilter = await sortBuildSummaries(buildSummariesToFilter)
+  buildSummariesToFilter = await filterBuildSummariesAsync(buildSummariesToFilter)
+  buildSummariesToFilter = await sortBuildSummariesAsync(buildSummariesToFilter)
 
   buildSummariesInternal.value = buildSummariesToFilter
 }
@@ -100,7 +100,7 @@ async function filterAndSortBuildSummaries(): Promise<void> {
  * Filters build summaries.
  * @param buildSummariesToFilter - Build summaries to filter.
  */
-async function filterBuildSummaries(buildSummariesToFilter: IBuildSummary[]): Promise<IBuildSummary[]> {
+async function filterBuildSummariesAsync(buildSummariesToFilter: IBuildSummary[]): Promise<IBuildSummary[]> {
   if (modelFilterAndSortingData.value.filter === '') {
     return buildSummariesToFilter
   }
@@ -184,8 +184,8 @@ function showFilterAndSortSidebar(): void {
  * Sorts build summaries.
  * @param buildSummariesToSort - Build summaries to sort.
  */
-async function sortBuildSummaries(buildSummariesToSort: IBuildSummary[]): Promise<IBuildSummary[]> {
-  buildSummariesToSort = await _sortingService.sort(buildSummariesToSort, modelFilterAndSortingData.value)
+async function sortBuildSummariesAsync(buildSummariesToSort: IBuildSummary[]): Promise<IBuildSummary[]> {
+  buildSummariesToSort = await _sortingService.sortAsync(buildSummariesToSort, modelFilterAndSortingData.value)
 
   return buildSummariesToSort
 }

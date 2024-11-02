@@ -93,19 +93,19 @@ const showPriceInMainCurrency = computed(() => !isBarter.value && currency.value
 onMounted(() => {
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-  initialize()
+  initializeAsync()
 })
 
 onUnmounted(() => {
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
 
-watch(() => props.price, () => initialize())
+watch(() => props.price, () => initializeAsync())
 
 /**
  * Gets barter items.
  */
-async function getBarterItems(): Promise<void> {
+async function getBarterItemsAsync(): Promise<void> {
   barterItems.value = []
 
   if (!isBarter.value) {
@@ -115,7 +115,7 @@ async function getBarterItems(): Promise<void> {
   const itemService = Services.get(ItemService)
 
   for (const barterItem of props.price.barterItems) {
-    const item = await itemService.getItem(barterItem.itemId)
+    const item = await itemService.getItemAsync(barterItem.itemId)
     barterItems.value.push(item)
   }
 }
@@ -123,7 +123,7 @@ async function getBarterItems(): Promise<void> {
 /**
  * Gets barter item prices.
  */
-async function getBarterItemPrices(): Promise<void> {
+async function getBarterItemPricesAsync(): Promise<void> {
   barterItemPrices.value = []
 
   if (!isBarter.value) {
@@ -133,7 +133,7 @@ async function getBarterItemPrices(): Promise<void> {
   const inventoryItemService = Services.get(InventoryItemService)
 
   for (const barterItem of props.price.barterItems) {
-    const barterItemPrice = await inventoryItemService.getPrice(
+    const barterItemPrice = await inventoryItemService.getPriceAsync(
       {
         content: [],
         ignorePrice: false,
@@ -151,14 +151,14 @@ async function getBarterItemPrices(): Promise<void> {
 /**
  * Initializes the price.
  */
-async function initialize(): Promise<void> {
+async function initializeAsync(): Promise<void> {
   initialized.value = false
 
   barterItems.value = []
   barterItemPrices.value = []
 
-  await getBarterItems()
-  await getBarterItemPrices()
+  await getBarterItemsAsync()
+  await getBarterItemPricesAsync()
 
   initialized.value = true
 }
@@ -178,7 +178,7 @@ function onClick(event: MouseEvent): void {
  * Updates the selected item price to reflect the change in merchant filters.
  */
 function onMerchantFilterChanged(): void {
-  getBarterItemPrices()
+  getBarterItemPricesAsync()
 }
 
 /**

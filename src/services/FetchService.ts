@@ -14,13 +14,13 @@ export class FetchService {
    * @param parameters - Parameters to pass in the endpoint address.
    * @returns Response data.
    */
-  public async get<TResult>(endpoint: string, ...parameters: IRequestParameter[]): Promise<TResult | undefined> {
+  public async getAsync<TResult>(endpoint: string, ...parameters: IRequestParameter[]): Promise<TResult | undefined> {
     const maxTries = Services.get(WebsiteConfigurationService).configuration.fetchMaxTries
     let tries = 0
     let lastResult: TResult | undefined
 
     do {
-      lastResult = await this.executeGet<TResult>(endpoint, parameters)
+      lastResult = await this.executeGetAsync<TResult>(endpoint, parameters)
 
       if (lastResult != null) {
         break
@@ -43,7 +43,7 @@ export class FetchService {
    * @param parameters - Parameters to pass in the endpoint address.
    * @returns Response data.
    */
-  private async executeGet<TResult>(endpoint: string, parameters: IRequestParameter[]): Promise<TResult | undefined> {
+  private async executeGetAsync<TResult>(endpoint: string, parameters: IRequestParameter[]): Promise<TResult | undefined> {
     const logService = Services.get(LogService)
 
     endpoint += this.getParametersString(parameters)

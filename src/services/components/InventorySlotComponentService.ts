@@ -14,7 +14,7 @@ export class InventorySlotComponentService {
    * @param path - Path.
    * @returns True if the item is compatible with the build; otherwise False.
    */
-  public async checkCompatibility(inventorySlotTypeId: string, item: IInventoryItem | undefined, path: string): Promise<boolean> {
+  public async checkCompatibilityAsync(inventorySlotTypeId: string, item: IInventoryItem | undefined, path: string): Promise<boolean> {
     if (item == null) {
       return true
     }

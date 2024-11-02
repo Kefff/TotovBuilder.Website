@@ -11,7 +11,7 @@ export const EyewearSortingFunctions: IItemSortingFunctionList = {
     ...ItemSortingFunctions.functions,
     blindnessProtectionPercentage: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IEyewear).blindnessProtectionPercentage)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IEyewear).blindnessProtectionPercentage)
     }
   },
   itemCategoryIds: [ItemCategoryId.eyewear]

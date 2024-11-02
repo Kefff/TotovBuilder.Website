@@ -86,8 +86,8 @@ const showUnitWeight = computed(() => selectedItemWeight.value.unitWeight !== se
 onMounted(() => {
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-  setPrice()
-  setWeight()
+  setPriceAsync()
+  setWeightAsync()
 })
 
 onUnmounted(() => {
@@ -100,11 +100,11 @@ watch(() => [
   props.inventoryItem.quantity,
   props.inventoryItemInSameSlotInPreset?.itemId
 ], () => {
-  setPrice()
+  setPriceAsync()
 })
 
 watch(() => [props.inventoryItem.itemId, props.inventoryItem.quantity], () => {
-  setWeight()
+  setWeightAsync()
 })
 
 /**
@@ -113,21 +113,21 @@ watch(() => [props.inventoryItem.itemId, props.inventoryItem.quantity], () => {
  * Updates the selected item price to reflect the change in merchant filters.
  */
 function onMerchantFilterChanged(): void {
-  setPrice()
+  setPriceAsync()
 }
 
 /**
  * Sets the price of the inventory item.
  */
-async function setPrice(): Promise<void> {
-  selectedItemPrice.value = await _inventoryItemService.getPrice(props.inventoryItem, props.inventoryItemInSameSlotInPreset, props.canBeLooted)
+async function setPriceAsync(): Promise<void> {
+  selectedItemPrice.value = await _inventoryItemService.getPriceAsync(props.inventoryItem, props.inventoryItemInSameSlotInPreset, props.canBeLooted)
 }
 
 /**
  * Sets the weight of the inventory items.
  */
-async function setWeight(): Promise<void> {
-  selectedItemWeight.value = await _inventoryItemService.getWeight(props.inventoryItem)
+async function setWeightAsync(): Promise<void> {
+  selectedItemWeight.value = await _inventoryItemService.getWeightAsync(props.inventoryItem)
 }
 </script>
 

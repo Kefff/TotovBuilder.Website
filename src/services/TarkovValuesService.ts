@@ -25,8 +25,8 @@ export class TarkovValuesService {
   /**
    * Initializes the data used by the service.
    */
-  public async initialize(): Promise<boolean> {
-    const fetchedValues = await this.fetchTarkovValues()
+  public async initializeAsync(): Promise<boolean> {
+    const fetchedValues = await this.fetchTarkovValuesAsync()
 
     if (fetchedValues == undefined) {
       return false
@@ -41,7 +41,7 @@ export class TarkovValuesService {
    * Fetches the Tarkov values.
    * @returns Tarkov values.
    */
-  private async fetchTarkovValues(): Promise<ITarkovValues | undefined> {
+  private async fetchTarkovValuesAsync(): Promise<ITarkovValues | undefined> {
     const isDebug = import.meta.env.VITE_DEBUG === 'true'
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointTarkovValues
@@ -50,7 +50,7 @@ export class TarkovValuesService {
       Services.get(LogService).logInformation('message.fetchingTarkovValues', { date: new Date().toISOString() })
     }
 
-    const tarkovValues = await fetchService.get<ITarkovValues>(endpoint)
+    const tarkovValues = await fetchService.getAsync<ITarkovValues>(endpoint)
 
     if (tarkovValues == null) {
       Services.get(LogService).logException('message.tarkovValuesNotFetched')

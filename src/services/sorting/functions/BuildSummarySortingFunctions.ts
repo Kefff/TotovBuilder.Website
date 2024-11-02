@@ -12,7 +12,7 @@ export const BuildSummarySortingFunctions: IBuildSortingFunctionList = {
         bs1v,
         bs2 as unknown as Record<string, unknown>,
         bs2v),
-      comparisonValueObtentionFunction: bs => Promise.resolve(bs.armorModifiers.armorClass)
+      comparisonValueObtentionPromise: bs => Promise.resolve(bs.armorModifiers.armorClass)
     },
     ergonomics: {
       comparisonFunction: (bs1, bs1v, bs2, bs2v) => compareByNumber(
@@ -20,7 +20,7 @@ export const BuildSummarySortingFunctions: IBuildSortingFunctionList = {
         bs1v,
         bs2 as unknown as Record<string, unknown>,
         bs2v),
-      comparisonValueObtentionFunction: bs => Promise.resolve(bs.ergonomics)
+      comparisonValueObtentionPromise: bs => Promise.resolve(bs.ergonomics)
     },
     name: {
       comparisonFunction: (bs1, bs1v, bs2, bs2v) => compareByString(
@@ -28,7 +28,7 @@ export const BuildSummarySortingFunctions: IBuildSortingFunctionList = {
         bs1v,
         bs2 as unknown as Record<string, unknown>,
         bs2v),
-      comparisonValueObtentionFunction: bs => Promise.resolve(bs.name)
+      comparisonValueObtentionPromise: bs => Promise.resolve(bs.name)
     },
     price: {
       comparisonFunction: (bs1, bs1v, bs2, bs2v) => compareByNumber(
@@ -36,7 +36,7 @@ export const BuildSummarySortingFunctions: IBuildSortingFunctionList = {
         bs1v,
         bs2 as unknown as Record<string, unknown>,
         bs2v),
-      comparisonValueObtentionFunction: bs => Promise.resolve(bs.price.priceInMainCurrency)
+      comparisonValueObtentionPromise: bs => Promise.resolve(bs.price.priceInMainCurrency)
     },
     recoil: {
       comparisonFunction: (bs1, bs1v, bs2) => {
@@ -48,7 +48,7 @@ export const BuildSummarySortingFunctions: IBuildSortingFunctionList = {
 
         return comparisonResult
       },
-      comparisonValueObtentionFunction: () => Promise.resolve(0)
+      comparisonValueObtentionPromise: () => Promise.resolve(0)
     },
     weight: {
       comparisonFunction: (bs1, bs1v, bs2, bs2v) => compareByNumber(
@@ -56,7 +56,7 @@ export const BuildSummarySortingFunctions: IBuildSortingFunctionList = {
         bs1v,
         bs2 as unknown as Record<string, unknown>,
         bs2v),
-      comparisonValueObtentionFunction: bs => Promise.resolve(bs.weight)
+      comparisonValueObtentionPromise: bs => Promise.resolve(bs.weight)
     }
   }
 }

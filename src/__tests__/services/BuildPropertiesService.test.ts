@@ -28,7 +28,7 @@ import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('BuildPropertiesService', () => {
-  describe('canAddArmor()', () => {
+  describe('canAddArmorAsync()', () => {
     it.each([
       [
         {
@@ -97,7 +97,7 @@ describe('BuildPropertiesService', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const result = await service.canAddArmor(build)
+        const result = await service.canAddArmorAsync(build)
 
         // Assert
         expect(result).toBe(expectedResult)
@@ -111,7 +111,7 @@ describe('BuildPropertiesService', () => {
     )
   })
 
-  describe('canAddMod()', () => {
+  describe('canAddModAsync()', () => {
     it.each([
       [
         {
@@ -321,7 +321,7 @@ describe('BuildPropertiesService', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const result = await service.canAddMod(build, modId, modSlotPath)
+        const result = await service.canAddModAsync(build, modId, modSlotPath)
 
         // Assert
         expect(result).toEqual(expectedResult)
@@ -341,7 +341,7 @@ describe('BuildPropertiesService', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const act = service.canAddMod(
+      const act = service.canAddModAsync(
         {
           id: '123456789',
           inventorySlots: [],
@@ -358,7 +358,7 @@ describe('BuildPropertiesService', () => {
     })
   })
 
-  describe('canAddVest()', () => {
+  describe('canAddVestAsync()', () => {
     it.each([
       [
         {
@@ -453,7 +453,7 @@ describe('BuildPropertiesService', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const result = await service.canAddVest(build, vestId)
+        const result = await service.canAddVestAsync(build, vestId)
 
         // Assert
         expect(result).toEqual(expectedResult)
@@ -679,7 +679,7 @@ describe('BuildPropertiesService', () => {
     })
   })
 
-  describe('toText() (markdown)', () => {
+  describe('toTextAsync() (markdown)', () => {
     it.each([
       [build1, 'fr', expectedMarkdownString1Fr],
       [build1, 'en', expectedMarkdownString1En],
@@ -836,7 +836,7 @@ describe('BuildPropertiesService', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         [build],
         {
           includeEmojis: true,
@@ -933,7 +933,7 @@ describe('BuildPropertiesService', () => {
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.toText(
+      const result = await buildPropertiesService.toTextAsync(
         [build1, build2],
         {
           includeEmojis: true,
@@ -1028,7 +1028,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         [
           {
             id: 'buildWithWeaponOnBackOnly',
@@ -1096,7 +1096,7 @@ Ref Non   Skier 1   La Toubib 3
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         [build1],
         {
           includeEmojis: true,
@@ -1198,7 +1198,7 @@ Ref Non   Skier 1   La Toubib 3
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.toText(
+      const result = await buildPropertiesService.toTextAsync(
         [build],
         {
           includeEmojis: true,
@@ -1235,7 +1235,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.toText(
+      const result = await buildPropertiesService.toTextAsync(
         [build1, build2],
         {
           includeEmojis: true,
@@ -1267,7 +1267,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.toText(
+      const result = await buildPropertiesService.toTextAsync(
         [build1, build2],
         {
           includeEmojis: true,
@@ -1344,7 +1344,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
     })
   })
 
-  describe('toText() (simple text)', () => {
+  describe('toTextAsync() (simple text)', () => {
     it.each([
       [build1, 'fr', expectedString1Fr],
       [build1, 'en', expectedString1En],
@@ -1501,7 +1501,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         [build],
         {
           includeEmojis: true,
@@ -1598,7 +1598,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.toText(
+      const result = await buildPropertiesService.toTextAsync(
         [build1, build2],
         {
           includeEmojis: true,
@@ -1661,7 +1661,7 @@ Créé avec Totov Builder`)
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         [
           {
             id: 'buildWithWeaponOnBackOnly',
@@ -1731,7 +1731,7 @@ Créé avec Totov Builder`)
       const service = new BuildPropertiesService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         [build1],
         {
           includeEmojis: true,
@@ -1834,7 +1834,7 @@ Créé avec Totov Builder`)
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.toText(
+      const result = await buildPropertiesService.toTextAsync(
         [build],
         {
           includeEmojis: true,
@@ -1874,7 +1874,7 @@ Créé avec Totov Builder`)
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.toText(
+      const result = await buildPropertiesService.toTextAsync(
         [build1, build2],
         {
           includeEmojis: true,
@@ -1911,7 +1911,7 @@ http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzs
       const buildPropertiesService = new BuildPropertiesService()
 
       // Act
-      const result = await buildPropertiesService.toText(
+      const result = await buildPropertiesService.toTextAsync(
         [build1, build2],
         {
           includeEmojis: true,

@@ -15,7 +15,7 @@ import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('getShoppingList', () => {
+describe('getShoppingListAsync', () => {
   it.each([
     [
       build1.inventorySlots[0].items[0]!,
@@ -524,7 +524,7 @@ describe('getShoppingList', () => {
     ])
 
     // Act
-    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
+    const shoppingListResult = await inventoryItemService.getShoppingListAsync(inventoryItem)
 
     // Assert
     expect(shoppingListResult).toStrictEqual(expected)
@@ -549,7 +549,7 @@ describe('getShoppingList', () => {
     }
 
     // Act
-    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem, true, undefined, 'onSling')
+    const shoppingListResult = await inventoryItemService.getShoppingListAsync(inventoryItem, true, undefined, 'onSling')
 
     // Assert
     expect(shoppingListResult).toStrictEqual([
@@ -613,7 +613,7 @@ describe('getShoppingList', () => {
     }
 
     // Act
-    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
+    const shoppingListResult = await inventoryItemService.getShoppingListAsync(inventoryItem)
 
     // Assert
     expect(shoppingListResult).toStrictEqual([
@@ -709,7 +709,7 @@ describe('getShoppingList', () => {
     }
 
     // Act
-    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem, false)
+    const shoppingListResult = await inventoryItemService.getShoppingListAsync(inventoryItem, false)
 
     // Assert
     expect(shoppingListResult).toStrictEqual([
@@ -797,7 +797,7 @@ describe('getShoppingList', () => {
     }
 
     // Act
-    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
+    const shoppingListResult = await inventoryItemService.getShoppingListAsync(inventoryItem)
 
     // Assert
     expect(shoppingListResult).toStrictEqual([
@@ -863,7 +863,7 @@ describe('getShoppingList', () => {
     }
 
     // Act
-    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
+    const shoppingListResult = await inventoryItemService.getShoppingListAsync(inventoryItem)
 
     // Assert
     expect(shoppingListResult).toStrictEqual([

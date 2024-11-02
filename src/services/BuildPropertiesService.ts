@@ -35,7 +35,7 @@ export class BuildPropertiesService {
    * Displays a warnng notification when it is the case.
    * @param build - Build.
    */
-  public async canAddArmor(build: IBuild): Promise<boolean> {
+  public async canAddArmorAsync(build: IBuild): Promise<boolean> {
     const itemService = Services.get(ItemService)
     const vestSlot = build.inventorySlots.find((is) => is.typeId === 'tacticalRig')!
 
@@ -43,7 +43,7 @@ export class BuildPropertiesService {
       return true
     }
 
-    const item = await itemService.getItem(vestSlot.items[0].itemId)
+    const item = await itemService.getItemAsync(vestSlot.items[0].itemId)
     const vest = item as IVest
 
     if (vest.armorClass > 0 || vest.armoredAreas.length > 0) {
@@ -62,14 +62,14 @@ export class BuildPropertiesService {
    * @param modId - ID of the mod to be added.
    * @param path - Path to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
    */
-  public async canAddMod(build: IBuild, modId: string, path: string): Promise<boolean> {
+  public async canAddModAsync(build: IBuild, modId: string, path: string): Promise<boolean> {
     const itemService = Services.get(ItemService)
-    const mod = await itemService.getItem(modId)
+    const mod = await itemService.getItemAsync(modId)
 
     const firstItemPath = path.slice(0, path.indexOf('/' + PathUtils.modSlotPrefix))
     const inventoryItem = PathUtils.getInventoryItemFromPath(build, firstItemPath)
     const changedModSlotPath = path.slice(0, path.indexOf('/' + PathUtils.itemPrefix))
-    const conflicts = await this.getConflictingItems(inventoryItem, changedModSlotPath)
+    const conflicts = await this.getConflictingItemsAsync(inventoryItem, changedModSlotPath)
 
     for (const conflict of conflicts) {
       if (conflict.path.startsWith(path) // Ignoring the mod (and its children mods) in the same slot that the mod being added because it is being replaced
@@ -79,7 +79,7 @@ export class BuildPropertiesService {
         continue
       }
 
-      const conflictingItem = await itemService.getItem(conflict.itemId)
+      const conflictingItem = await itemService.getItemAsync(conflict.itemId)
       Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.cannotAddMod', { modName: mod.name, conflictingItemName: conflictingItem.name }))
 
       return false
@@ -94,9 +94,9 @@ export class BuildPropertiesService {
    * @param build - Build.
    * @param vestId - Vest ID.
    */
-  public async canAddVest(build: IBuild, vestId: string): Promise<boolean> {
+  public async canAddVestAsync(build: IBuild, vestId: string): Promise<boolean> {
     const itemService = Services.get(ItemService)
-    const item = await itemService.getItem(vestId)
+    const item = await itemService.getItemAsync(vestId)
     const vest = item as IVest
 
     if (!Services.get(ItemPropertiesService).isVest(item)
@@ -202,7 +202,7 @@ export class BuildPropertiesService {
    * @param build - Build.
    * @returns Build summary.
    */
-  public async getSummary(build: IBuild): Promise<IBuildSummary> {
+  public async getSummaryAsync(build: IBuild): Promise<IBuildSummary> {
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
 
     const lastExported = build.lastExported ?? new Date(1900, 1, 1)
@@ -239,7 +239,7 @@ export class BuildPropertiesService {
     const inventorySlotSummaries: IInventorySlotSummary[] = []
 
     for (const inventorySlot of build.inventorySlots) {
-      const inventorySlotSummary = await inventorySlotPropertiesService.getSummary(inventorySlot)
+      const inventorySlotSummary = await inventorySlotPropertiesService.getSummaryAsync(inventorySlot)
       inventorySlotSummaries.push(inventorySlotSummary)
     }
 
@@ -254,7 +254,7 @@ export class BuildPropertiesService {
     summary.recoil = this.getRecoil(inventorySlotSummaries)
     summary.weight = this.getWeight(inventorySlotSummaries)
 
-    summary.shoppingList = await this.getShoppingList(build)
+    summary.shoppingList = await this.getShoppingListAsync(build)
 
     return summary
   }
@@ -265,7 +265,7 @@ export class BuildPropertiesService {
    * @param options - Options.
    * @returns Text.
    */
-  public async toText(builds: IBuild[], options: IBuildsToTextOptions): Promise<string> {
+  public async toTextAsync(builds: IBuild[], options: IBuildsToTextOptions): Promise<string> {
     const boldToken = options.type === BuildsToTextType.markdown ? '**' : ''
     const italicToken = options.type === BuildsToTextType.markdown ? '*' : ''
     const lineEnd = options.type === BuildsToTextType.markdown ? '  ' : ''
@@ -279,7 +279,7 @@ export class BuildPropertiesService {
     const mainCurrency = itemService.getMainCurrency()
 
     for (const build of builds) {
-      const sharableUrlResult = includeLink ? await buildService.toSharableURL(build) : undefined
+      const sharableUrlResult = includeLink ? await buildService.toSharableUrlAsync(build) : undefined
 
       if (options.linkOnly) {
         if (options.type === BuildsToTextType.markdown) {
@@ -301,7 +301,7 @@ ${sharableUrlResult}`
       }
 
       let buildAsString = `${options.type === BuildsToTextType.markdown ? '# ' : ''}${build.name}`
-      const buildSummary = await this.getSummary(build)
+      const buildSummary = await this.getSummaryAsync(build)
 
       if (options.type === BuildsToTextType.markdown && sharableUrlResult != null) {
         // Build link
@@ -412,7 +412,7 @@ ${sharableUrlResult}`
       let inventorySlotsAsString = ''
 
       for (const inventorySlot of build.inventorySlots) {
-        const inventorySlotAsString = await inventorySlotPropertiesService.toText(inventorySlot, options)
+        const inventorySlotAsString = await inventorySlotPropertiesService.toTextAsync(inventorySlot, options)
 
         if (inventorySlotAsString !== '') {
           if (inventorySlotsAsString !== '') {
@@ -502,14 +502,14 @@ ${sharableUrlResult}`
    * @param modSlotPath - "Path" to the mod slot the inventory item is in.
    * @returns Conflicting items.
    */
-  private async getConflictingItems(
+  private async getConflictingItemsAsync(
     inventoryItem: IInventoryItem,
     modSlotPath: string
   ): Promise<IConflictingItem[]> {
     const itemService = Services.get(ItemService)
 
     const conflictingItems: IConflictingItem[] = []
-    const item = await itemService.getItem(inventoryItem.itemId)
+    const item = await itemService.getItemAsync(inventoryItem.itemId)
 
     if (item.conflictingItemIds.length > 0) {
       for (const conflictingItemId of item.conflictingItemIds) {
@@ -529,7 +529,7 @@ ${sharableUrlResult}`
 
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.item != null) {
-        const modConflictingItemIds = await this.getConflictingItems(
+        const modConflictingItemIds = await this.getConflictingItemsAsync(
           modSlot.item,
           modSlotPath + '/' + PathUtils.itemPrefix + inventoryItem.itemId + '/' + PathUtils.modSlotPrefix + modSlot.modSlotName
         )
@@ -632,7 +632,7 @@ ${sharableUrlResult}`
    * @param build - Build.
    * @returns Shopping list items.
    */
-  private async getShoppingList(build: IBuild): Promise<IShoppingListItem[]> {
+  private async getShoppingListAsync(build: IBuild): Promise<IShoppingListItem[]> {
     const inventoryItemService = Services.get(InventoryItemService)
     const shoppingList: IShoppingListItem[] = []
 
@@ -644,7 +644,7 @@ ${sharableUrlResult}`
           continue
         }
 
-        const inventoryItemShoppingList = await inventoryItemService.getShoppingList(item, inventorySlotType.canBeLooted, undefined, inventorySlotType.id)
+        const inventoryItemShoppingList = await inventoryItemService.getShoppingListAsync(item, inventorySlotType.canBeLooted, undefined, inventorySlotType.id)
 
         // Regrouping similar items
         for (const inventoryItemShoppingListItemToAdd of inventoryItemShoppingList) {

@@ -31,7 +31,7 @@ beforeEach(() => {
 })
 
 
-describe('add()', () => {
+describe('addAsync()', () => {
   it('should add a build', async () => {
     // Arrange
     useItemServiceMock()
@@ -41,7 +41,7 @@ describe('add()', () => {
     const service = new BuildService()
 
     // Act
-    const id = await service.add(newBuild)
+    const id = await service.addAsync(newBuild)
     const build = service.get(id)
 
     // Assert
@@ -180,7 +180,7 @@ describe('delete()', () => {
   })
 })
 
-describe('fromSharableString()', () => {
+describe('fromSharableStringAsync()', () => {
   it.each(
     [
       [
@@ -212,21 +212,21 @@ describe('fromSharableString()', () => {
     Migrations.splice(0)
     Migrations.push(
       {
-        migrateBuild: (build: IBuild) => {
+        migrateBuildPromise: (build: IBuild) => {
           build.name = `${build.name}|1.5.0`
           return Promise.resolve(true)
         },
-        migrateBuildUnrelatedData: () => {
+        migrateBuildUnrelatedDataPromise: () => {
           return Promise.resolve(true)
         },
         version: '1.5.0'
       },
       {
-        migrateBuild: (build: IBuild) => {
+        migrateBuildPromise: (build: IBuild) => {
           build.name = `${build.name}|1.6.0`
           return Promise.resolve(true)
         },
-        migrateBuildUnrelatedData: () => {
+        migrateBuildUnrelatedDataPromise: () => {
           return Promise.resolve(true)
         },
         version: '1.6.0'
@@ -235,7 +235,7 @@ describe('fromSharableString()', () => {
     const service = Services.get(BuildService)
 
     // Act
-    const build = await service.fromSharableString(sharableString)
+    const build = await service.fromSharableStringAsync(sharableString)
 
     // Assert
     expect(build).toEqual(expected)
@@ -252,7 +252,7 @@ describe('fromSharableString()', () => {
     const sharableString = 'corrupted'
 
     // Act
-    const build = await service.fromSharableString(sharableString)
+    const build = await service.fromSharableStringAsync(sharableString)
 
     // Assert
     expect(build).toBeUndefined()
@@ -272,7 +272,7 @@ describe('fromSharableString()', () => {
     const sharableString = 'XQAAAAIEAQAAAAAAAABAqEppJBKy3f2nWA1_4C5z8-v7-QmsFsh3-Xw5A4r6cKv_m0sfj0O9x9XIb5ScojjRsy4huWDxzBSG1zyaOOej9yI6eVsg6yXMNsehKkbkF4IxN4W52Wr0SPOgjzuUFCVV1O-07KKY5H2MxwF8NvWFSy9VOl89axpWIZlA4rMaW8zwrHUAdC7epHLneT1sKyazlWteJ--ZEOyd3csaogRVGPNtylBhm8wqX_KVr5aLtkpJU-9ba2mmXnpWUf_-OHdA'
 
     // Act
-    const build = await service.fromSharableString(sharableString)
+    const build = await service.fromSharableStringAsync(sharableString)
 
     // Assert
     expect(build).toBeUndefined()
@@ -292,8 +292,8 @@ describe('fromSharableString()', () => {
     Migrations.splice(0)
     Migrations.push(
       {
-        migrateBuild: () => Promise.resolve(false),
-        migrateBuildUnrelatedData: () => Promise.resolve(true),
+        migrateBuildPromise: () => Promise.resolve(false),
+        migrateBuildUnrelatedDataPromise: () => Promise.resolve(true),
         version: '1.6.0'
       })
 
@@ -301,7 +301,7 @@ describe('fromSharableString()', () => {
     const sharableString = 'XQAAAAJ5BAAAAAAAAABAqEppdBKy3f2nWA1_4C5z8-v7-PB2PnO4T0FRqHCrunbQ824T11fLD0MMgpKzuGdnO-8eB5yHCYkn0JYO3VCC50O9MYgvuOr49cS5mtaJVptsaMiETu4-0oYouMfztK97JVyQiamvJHdA2W5i9dVVx7tG6R4CkXyLtwbAxz74UOVoRKsDpGU0H7BJshLAPue1edTU7OnozNCY5jfRvLYt8y_qwxB6Ol-uaqk4oI3cEDW9c94UKDSU8MVdPtA8P481abbFxOaLOXrDXvokQOpIV5t3nPBsd3EC-zc0p0C9miVd4PO9JJAGoS7c05hy5VxDyKAAC_MgjRgha9avVCb8UKrza2hWTiJRezgEmnBOip-6n2xY2JgD5E0KtCWg0w0jiA1gzqKs9AEfWiBesVfFcFto3Ni7YYqaWLjb4oeFTpI1UOaA89s8PwxYkFlBErCbjBXKPYcNIOvqAU-p4NTO7X_3tMRPbzSZNVIcDu7Mq0zGn5IndeMyy-2aZulriecUtbL17JaE86mPQfaNe3DjKO0CmnqWf_LOvEAEPEHPimdpWCw8njwoqZF5uvGDsonEHU43POFgSVhXRB4cjppaxhKYb7XcJZDvNk1mZ-_SvOAtS70IE59cHGM7xBF_I74CpodKJstWTusp-qM_gDRAbpcqQm-ysqFXE9suINiKo0MmvEEcZSBU-iXFYHs-ezSDx9XYyn_suJkHXkgDkf4b0GzNnWPTrhWN-t4yTreDObhrm5M82k3njxXsKz_6__1B5U0'
 
     // Act
-    const build = await service.fromSharableString(sharableString)
+    const build = await service.fromSharableStringAsync(sharableString)
 
     // Assert
     expect(build).not.toBeUndefined()
@@ -380,7 +380,7 @@ describe('getAll()', () => {
   })
 })
 
-describe('toSharableURL()', () => {
+describe('toSharableUrlAsync()', () => {
   it.each([
     [
       build1,
@@ -408,7 +408,7 @@ describe('toSharableURL()', () => {
     const service = new BuildService()
 
     // Act
-    const sharableString = await service.toSharableURL(build)
+    const sharableString = await service.toSharableUrlAsync(build)
 
     // Assert
     expect(sharableString).toBe(`localhost:3000/s/${expectedSharableString}`)
@@ -427,7 +427,7 @@ describe('toSharableURL()', () => {
     const service = new BuildService()
 
     // Act
-    const sharableStringResult = await service.toSharableURL(build1)
+    const sharableStringResult = await service.toSharableUrlAsync(build1)
 
     // Assert
     expect(sharableStringResult).toBeUndefined()
@@ -435,7 +435,7 @@ describe('toSharableURL()', () => {
   })
 })
 
-describe('update()', () => {
+describe('updateAsync()', () => {
   it('should update a build', async () => {
     // Arrange
     useItemServiceMock()
@@ -448,7 +448,7 @@ describe('update()', () => {
     build.name = 'New name'
 
     // Act / Assert
-    await service.update(build)
+    await service.updateAsync(build)
 
     const updatedBuild = service.get(build1.id)
     expect(updatedBuild).not.toBeUndefined()
@@ -475,7 +475,7 @@ describe('update()', () => {
     const service = new BuildService()
 
     // Act / Assert
-    await service.update(build)
+    await service.updateAsync(build)
     verify(logServiceMock.logError('message.buildToUpdateNotFound', { id: build.id }))
 
     const updatedBuild = service.get(build.id)

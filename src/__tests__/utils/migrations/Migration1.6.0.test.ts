@@ -74,8 +74,8 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
     const migration = new Migration160()
 
     // Act
-    const result1 = await migration.migrateBuildUnrelatedData()
-    const result2 = await migration.migrateBuild(obsoleteBuild)
+    const result1 = await migration.migrateBuildUnrelatedDataPromise()
+    const result2 = await migration.migrateBuildPromise(obsoleteBuild)
 
     // Assert
     expect(result1).toBe(true)
@@ -209,7 +209,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
     const migration = new Migration160()
 
     // Act
-    const result = await migration.migrateBuild(obsoleteBuild)
+    const result = await migration.migrateBuildPromise(obsoleteBuild)
 
     // Assert
     expect(result).toBe(false)

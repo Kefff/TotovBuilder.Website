@@ -57,7 +57,7 @@ describe('comparisonFunction()', () => {
   ])('should sort by category, price and name', async (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
     // Arrange
     const inventoryItemService = mock<InventoryItemService>()
-    when(inventoryItemService.getPrice(anything())).thenCall((inventoryItem: IInventoryItem) => {
+    when(inventoryItemService.getPriceAsync(anything())).thenCall((inventoryItem: IInventoryItem) => {
       return inventoryItem.itemId === item1.id
         ? { unitPrice: item1.prices[0] ?? { valueInMainCurrency: 0 } } as IInventoryItemPrice
         : { unitPrice: item2.prices[0] ?? { valueInMainCurrency: 0 } } as IInventoryItemPrice
@@ -69,8 +69,8 @@ describe('comparisonFunction()', () => {
 
     // Act
     sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'price')
-    const value1 = await sortingData!.sortingFunction.comparisonValueObtentionFunction(item1)
-    const value2 = await sortingData!.sortingFunction.comparisonValueObtentionFunction(item2)
+    const value1 = await sortingData!.sortingFunction.comparisonValueObtentionPromise(item1)
+    const value2 = await sortingData!.sortingFunction.comparisonValueObtentionPromise(item2)
     const result = sortingData!.sortingFunction.comparisonFunction(item1, value1, item2, value2)
 
     // Assert
@@ -85,7 +85,7 @@ describe('comparisonFunction()', () => {
     const item2 = { id: 'i2', name: 'a', categoryId: ItemCategoryId.other, prices: [{ currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 2, valueInMainCurrency: 2 }] } as IItem
 
     const inventoryItemService = mock<InventoryItemService>()
-    when(inventoryItemService.getPrice(anything())).thenResolve({
+    when(inventoryItemService.getPriceAsync(anything())).thenResolve({
       missingPrice: false,
       price: {
         barterItems: [],
@@ -118,8 +118,8 @@ describe('comparisonFunction()', () => {
 
     // Act
     sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'price')
-    const value1 = await sortingData!.sortingFunction.comparisonValueObtentionFunction(item1)
-    const value2 = await sortingData!.sortingFunction.comparisonValueObtentionFunction(item2)
+    const value1 = await sortingData!.sortingFunction.comparisonValueObtentionPromise(item1)
+    const value2 = await sortingData!.sortingFunction.comparisonValueObtentionPromise(item2)
     const result = sortingData!.sortingFunction.comparisonFunction(item1, value1, item2, value2)
 
     // Assert
@@ -150,7 +150,7 @@ describe('comparisonFunction()', () => {
     sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'categoryId')
 
     // Act
-    const sortedItems = await sortingService.sort([item1, item2, item3], sortingData!)
+    const sortedItems = await sortingService.sortAsync([item1, item2, item3], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item3, item1])
@@ -178,7 +178,7 @@ describe('comparisonFunction()', () => {
     sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'name')
 
     // Act
-    const sortedItems = await sortingService.sort([item1, item2, item3], sortingData!)
+    const sortedItems = await sortingService.sortAsync([item1, item2, item3], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item1, item3, item2]) // By default it is already sorted by name, so here we expected items to be sorted in a descending way
@@ -209,7 +209,7 @@ describe('comparisonFunction()', () => {
     sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'weight')
 
     // Act
-    const sortedItems = await sortingService.sort([item1, item2, item3], sortingData!)
+    const sortedItems = await sortingService.sortAsync([item1, item2, item3], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item3, item2, item1])
@@ -230,8 +230,8 @@ describe('defaultSortingFunction', () => {
     } as IItem
 
     const sortingData = new SortingData()
-    const comparisonValue1 = await sortingData.sortingFunction.comparisonValueObtentionFunction(item1)
-    const comparisonValue2 = await sortingData.sortingFunction.comparisonValueObtentionFunction(item2)
+    const comparisonValue1 = await sortingData.sortingFunction.comparisonValueObtentionPromise(item1)
+    const comparisonValue2 = await sortingData.sortingFunction.comparisonValueObtentionPromise(item2)
 
     // Act
     const result = sortingData.sortingFunction.comparisonFunction(item1, comparisonValue1, item2, comparisonValue2)

@@ -548,7 +548,7 @@ describe('isMatchingFilter()', () => {
 
     service.save(globalFilter)
 
-    const item = (await Services.get(ItemService).getItem(itemId))
+    const item = await Services.get(ItemService).getItemAsync(itemId)
 
     // Act
     const result = service.isMatchingFilter(item)

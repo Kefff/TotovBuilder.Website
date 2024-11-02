@@ -25,7 +25,7 @@ import { useItemServiceMock } from '../__mocks__/ItemServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('fetchPresets()', () => {
+describe('fetchPresetsAsync()', () => {
   it('should fetch presets', async () => {
     // Arrange
     useItemServiceMock()
@@ -33,13 +33,13 @@ describe('fetchPresets()', () => {
     useWebsiteConfigurationServiceMock()
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(PresetMocks)
+    when(itemFetcherServiceMock.fetchPresetsAsync()).thenResolve(PresetMocks)
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     const presetService = new PresetService()
 
     // Act
-    const result = await presetService.fetchPresets()
+    const result = await presetService.fetchPresetsAsync()
     const preset = presetService.getPreset(rpk16Default.id)
 
     // Assert
@@ -53,13 +53,13 @@ describe('fetchPresets()', () => {
     useWebsiteConfigurationServiceMock()
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(undefined)
+    when(itemFetcherServiceMock.fetchPresetsAsync()).thenResolve(undefined)
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
 
     // Act
     const presetService = new PresetService()
-    const result = await presetService.fetchPresets()
+    const result = await presetService.fetchPresetsAsync()
 
     // Assert
     expect(result).toBe(false)
@@ -83,7 +83,7 @@ describe('getPreset()', () => {
     useWebsiteConfigurationServiceMock()
 
     const service = new PresetService()
-    await service.fetchPresets()
+    await service.fetchPresetsAsync()
 
     // Act
     const preset = service.getPreset(id)
@@ -158,7 +158,7 @@ describe('getPresetModSlotContainingItem', () => {
     useItemFetcherServiceMock()
 
     const service = new PresetService()
-    await service.fetchPresets()
+    await service.fetchPresetsAsync()
 
     // Act
     const result = await service.getPresetModSlotContainingItem(item.itemId, path)
@@ -202,7 +202,7 @@ describe('getPresetModSlotContainingItem', () => {
       ])
 
     const service = new PresetService()
-    await service.fetchPresets()
+    await service.fetchPresetsAsync()
 
     // Act
     const result = await service.getPresetModSlotContainingItem(
@@ -236,7 +236,7 @@ describe('getPresetModSlotContainingItem', () => {
     useItemFetcherServiceMock()
 
     const service = new PresetService()
-    await service.fetchPresets()
+    await service.fetchPresetsAsync()
 
     const item = {
       content: [],
@@ -260,7 +260,7 @@ describe('getPresetModSlotContainingItem', () => {
     useItemFetcherServiceMock()
 
     const service = new PresetService()
-    await service.fetchPresets()
+    await service.fetchPresetsAsync()
 
     const item = {
       content: [],
@@ -303,7 +303,7 @@ describe('getPresetModSlotContainingItem', () => {
     )
 
     const service = new PresetService()
-    await service.fetchPresets()
+    await service.fetchPresetsAsync()
 
     const item = {
       content: [],
@@ -355,7 +355,7 @@ describe('getPresetModSlotContainingItem', () => {
       ])
 
     const service = new PresetService()
-    await service.fetchPresets()
+    await service.fetchPresetsAsync()
 
     const item: IInventoryItem = {
       content: [],
@@ -394,7 +394,7 @@ describe('isPreset()', () => {
       const presetService = new PresetService()
       Services.configure(PresetService, undefined, presetService)
 
-      const item = await Services.get(ItemService).getItem(itemId)
+      const item = await Services.get(ItemService).getItemAsync(itemId)
 
       // Act
       const result = presetService.isPreset(item)
@@ -405,7 +405,7 @@ describe('isPreset()', () => {
   )
 })
 
-describe('updatePresetProperties', () => {
+describe('updatePresetPropertiesAsync', () => {
   it('should update the properties of an armor', async () => {
     // Arrange
     useItemFetcherServiceMock()
@@ -416,13 +416,13 @@ describe('updatePresetProperties', () => {
     Services.configure(ItemPropertiesService)
 
     const presetService = new PresetService()
-    await presetService.fetchPresets()
+    await presetService.fetchPresetsAsync()
 
-    const item = await Services.get(ItemService).getItem(armor6b13FlDefault.id)
+    const item = await Services.get(ItemService).getItemAsync(armor6b13FlDefault.id)
     const armor = item as IArmor
 
     // Act
-    await presetService.updatePresetProperties([armor])
+    await presetService.updatePresetPropertiesAsync([armor])
 
     // Assert
     expect(armor.presetWearableModifiers).toStrictEqual({
@@ -541,7 +541,7 @@ describe('updatePresetProperties', () => {
       undefined)
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(
+    when(itemFetcherServiceMock.fetchPresetsAsync()).thenResolve(
       [
         {
           content: [],
@@ -568,13 +568,13 @@ describe('updatePresetProperties', () => {
     Services.configure(ItemPropertiesService)
 
     const presetService = new PresetService()
-    await presetService.fetchPresets()
+    await presetService.fetchPresetsAsync()
 
-    const item = await Services.get(ItemService).getItem('presetArmorMod')
+    const item = await Services.get(ItemService).getItemAsync('presetArmorMod')
     const armorMod = item as IArmorMod
 
     // Act
-    await presetService.updatePresetProperties([armorMod])
+    await presetService.updatePresetPropertiesAsync([armorMod])
 
     // Assert
     expect(armorMod.ergonomicsModifierPercentage).toBe(0.05)
@@ -698,7 +698,7 @@ describe('updatePresetProperties', () => {
       undefined)
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(
+    when(itemFetcherServiceMock.fetchPresetsAsync()).thenResolve(
       [
         {
           content: [],
@@ -725,13 +725,13 @@ describe('updatePresetProperties', () => {
     Services.configure(ItemPropertiesService)
 
     const presetService = new PresetService()
-    await presetService.fetchPresets()
+    await presetService.fetchPresetsAsync()
 
-    const item = await Services.get(ItemService).getItem('presetHeadwear')
+    const item = await Services.get(ItemService).getItemAsync('presetHeadwear')
     const headwear = item as IHeadwear
 
     // Act
-    await presetService.updatePresetProperties([headwear])
+    await presetService.updatePresetPropertiesAsync([headwear])
 
     // Assert
     expect(headwear.ergonomicsModifierPercentage).toBe(0.05)
@@ -824,7 +824,7 @@ describe('updatePresetProperties', () => {
       undefined)
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(
+    when(itemFetcherServiceMock.fetchPresetsAsync()).thenResolve(
       [
         {
           content: [],
@@ -851,13 +851,13 @@ describe('updatePresetProperties', () => {
     Services.configure(ItemPropertiesService)
 
     const presetService = new PresetService()
-    await presetService.fetchPresets()
+    await presetService.fetchPresetsAsync()
 
-    const item = await Services.get(ItemService).getItem('presetMod')
+    const item = await Services.get(ItemService).getItemAsync('presetMod')
     const mod = item as IMod
 
     // Act
-    await presetService.updatePresetProperties([mod])
+    await presetService.updatePresetPropertiesAsync([mod])
 
     // Assert
     expect(mod.ergonomicsModifier).toBe(5)
@@ -874,13 +874,13 @@ describe('updatePresetProperties', () => {
     Services.configure(ItemPropertiesService)
 
     const presetService = new PresetService()
-    await presetService.fetchPresets()
+    await presetService.fetchPresetsAsync()
 
-    const item = await Services.get(ItemService).getItem(rpk16Default.id)
+    const item = await Services.get(ItemService).getItemAsync(rpk16Default.id)
     const rangedWeapon = item as IRangedWeapon
 
     // Act
-    await presetService.updatePresetProperties([rangedWeapon])
+    await presetService.updatePresetPropertiesAsync([rangedWeapon])
 
     // Assert
     expect(rangedWeapon.ergonomics).toBe(45)
@@ -982,7 +982,7 @@ describe('updatePresetProperties', () => {
       undefined)
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(
+    when(itemFetcherServiceMock.fetchPresetsAsync()).thenResolve(
       [
         {
           content: [],
@@ -1009,13 +1009,13 @@ describe('updatePresetProperties', () => {
     Services.configure(ItemPropertiesService)
 
     const presetService = new PresetService()
-    await presetService.fetchPresets()
+    await presetService.fetchPresetsAsync()
 
-    const item = await Services.get(ItemService).getItem('presetRangedWeaponMod')
+    const item = await Services.get(ItemService).getItemAsync('presetRangedWeaponMod')
     const rangedWeaponMod = item as IRangedWeaponMod
 
     // Act
-    await presetService.updatePresetProperties([rangedWeaponMod])
+    await presetService.updatePresetPropertiesAsync([rangedWeaponMod])
 
     // Assert
     expect(rangedWeaponMod.accuracyModifierPercentage).toBe(0.04)
@@ -1035,13 +1035,13 @@ describe('updatePresetProperties', () => {
     Services.configure(ItemPropertiesService)
 
     const presetService = new PresetService()
-    await presetService.fetchPresets()
+    await presetService.fetchPresetsAsync()
 
-    const item = await Services.get(ItemService).getItem(bansheeDefault.id)
+    const item = await Services.get(ItemService).getItemAsync(bansheeDefault.id)
     const armor = item as IArmor
 
     // Act
-    await presetService.updatePresetProperties([armor])
+    await presetService.updatePresetPropertiesAsync([armor])
 
     // Assert
     expect(armor.presetWearableModifiers).toStrictEqual({
@@ -1107,18 +1107,18 @@ describe('updatePresetProperties', () => {
       undefined)
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve([] as IInventoryItem[])
+    when(itemFetcherServiceMock.fetchPresetsAsync()).thenResolve([] as IInventoryItem[])
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     Services.configure(InventoryItemService)
     Services.configure(ItemPropertiesService)
 
     const presetService = new PresetService()
-    const item = await Services.get(ItemService).getItem('nonPresetMod')
+    const item = await Services.get(ItemService).getItemAsync('nonPresetMod')
     const mod = item as IMod
 
     // Act
-    await presetService.updatePresetProperties([mod])
+    await presetService.updatePresetPropertiesAsync([mod])
 
     // Assert
     expect(mod.ergonomicsModifier).toBe(5)
@@ -1207,7 +1207,7 @@ describe('updatePresetProperties', () => {
       undefined)
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve([])
+    when(itemFetcherServiceMock.fetchPresetsAsync()).thenResolve([])
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     Services.configure(InventoryItemService)
@@ -1217,11 +1217,11 @@ describe('updatePresetProperties', () => {
     Services.configure(LogService, undefined, instance(logServiceMock))
 
     const presetService = new PresetService()
-    const item = await Services.get(ItemService).getItem('presetMod')
+    const item = await Services.get(ItemService).getItemAsync('presetMod')
     const mod = item as IMod
 
     // Act
-    await presetService.updatePresetProperties([mod])
+    await presetService.updatePresetPropertiesAsync([mod])
 
     // Assert
     expect(mod.ergonomicsModifier).toBe(5)

@@ -21,17 +21,17 @@ const hasModifiers = computed(() =>
   || magazine.value.checkSpeedModifierPercentage !== 0)
 const magazine = computed(() => props.item as IMagazine)
 
-onMounted(() => getAcceptedAmmunition())
+onMounted(() => getAcceptedAmmunitionAsync())
 
 /**
  * Gets the captions of the accepted ammunition.
  */
-async function getAcceptedAmmunition(): Promise<void> {
+async function getAcceptedAmmunitionAsync(): Promise<void> {
   const itemService = Services.get(ItemService)
   acceptedAmmunition.value = []
 
   for (const acceptedAmmunitionId of magazine.value.acceptedAmmunitionIds) {
-    const ammunition = await itemService.getItem(acceptedAmmunitionId)
+    const ammunition = await itemService.getItemAsync(acceptedAmmunitionId)
     acceptedAmmunition.value.push(ammunition)
   }
 }

@@ -19,19 +19,19 @@ export const ItemSortingFunctions: IItemSortingFunctionList = {
   functions: {
     categoryId: {
       comparisonFunction: (i1, i1v, i2, i2v) => compareByItemString(i1, i1v, i2, i2v),
-      comparisonValueObtentionFunction: i => Promise.resolve(i.categoryId)
+      comparisonValueObtentionPromise: i => Promise.resolve(i.categoryId)
     },
     name: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemString(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve(i.name)
+      comparisonValueObtentionPromise: i => Promise.resolve(i.name)
     },
     price: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: async i => await getPrice(i)
+      comparisonValueObtentionPromise: async i => await getPriceAsync(i)
     },
     weight: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve(i.weight)
+      comparisonValueObtentionPromise: i => Promise.resolve(i.weight)
     }
   }
 }
@@ -41,9 +41,9 @@ export const ItemSortingFunctions: IItemSortingFunctionList = {
  * @param item - Item.
  * @returns Price.
  */
-async function getPrice(item: IItem): Promise<number> {
+async function getPriceAsync(item: IItem): Promise<number> {
   const inventoryItemService = Services.get(InventoryItemService)
-  const price = await inventoryItemService.getPrice({
+  const price = await inventoryItemService.getPriceAsync({
     content: [],
     ignorePrice: false,
     itemId: item.id,

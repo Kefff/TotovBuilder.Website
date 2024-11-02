@@ -15,11 +15,11 @@ export const MagazineSortingFunctions: IItemSortingFunctionList = {
     ...ModSortingFunctions.functions,
     checkSpeedModifierPercentage: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IMagazine).checkSpeedModifierPercentage)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IMagazine).checkSpeedModifierPercentage)
     },
     loadSpeedModifierPercentage: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IMagazine).loadSpeedModifierPercentage)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IMagazine).loadSpeedModifierPercentage)
     }
   },
   itemCategoryIds: [ItemCategoryId.magazine]

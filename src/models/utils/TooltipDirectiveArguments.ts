@@ -5,14 +5,14 @@ export class DirectiveArguments {
   /**
    * Event that triggers the tooltip. If undefined, the tooltip is displayed when hovering the element.
    */
-  event: 'focus' | undefined
+  public event: 'focus' | undefined
 
   /**
    * Position of the tooltip.
    */
-  position: 'bottom' | 'left' | 'right' | 'top'
+  public position: 'bottom' | 'left' | 'right' | 'top'
 
-  constructor(position: 'bottom' | 'left' | 'right' | 'top', event: 'focus' | undefined) {
+  public constructor(position: 'bottom' | 'left' | 'right' | 'top', event: 'focus' | undefined) {
     this.event = event
     this.position = position
   }

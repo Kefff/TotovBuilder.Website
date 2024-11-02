@@ -26,18 +26,18 @@ const acceptedItemsCategoryId = ref<ItemCategoryId | undefined>(undefined)
 const isEditing = inject<Ref<boolean>>('isEditing')
 
 onMounted(() => {
-  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, setAcceptedItems)
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, setAcceptedItemsAsync)
 
-  setAcceptedItems()
+  setAcceptedItemsAsync()
 })
 
-onUnmounted(() => _globalFilterService.emitter.off(GlobalFilterService.changeEvent, setAcceptedItems))
+onUnmounted(() => _globalFilterService.emitter.off(GlobalFilterService.changeEvent, setAcceptedItemsAsync))
 
 /**
  * Gets the category IDs and the accepted items to pass to the Item component.
  */
-async function setAcceptedItems(): Promise<void> {
-  acceptedItems.value = await Services.get(ItemService).getItems(props.modSlot.compatibleItemIds, true)
+async function setAcceptedItemsAsync(): Promise<void> {
+  acceptedItems.value = await Services.get(ItemService).getItemsAsync(props.modSlot.compatibleItemIds, true)
   acceptedItemsCategoryId.value = _modSlotComponentService.getAcceptedItemsCategoryId(acceptedItems.value)
 }
 </script>

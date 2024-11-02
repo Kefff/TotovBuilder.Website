@@ -36,8 +36,8 @@ onMounted(() => {
  * Signals to the parent inventory slot the inventory item has changed if the new item can be selected;
  * otherwise puts back the old item.
  */
-async function onItemChanged(newInventoryItem?: IInventoryItem): Promise<void> {
-  const canSelect = await _inventorySlotComponentService.checkCompatibility(props.inventorySlotTypeId, newInventoryItem, props.path)
+async function onItemChangedAsync(newInventoryItem?: IInventoryItem): Promise<void> {
+  const canSelect = await _inventorySlotComponentService.checkCompatibilityAsync(props.inventorySlotTypeId, newInventoryItem, props.path)
 
   if (canSelect) {
     modelInventoryItem.value = newInventoryItem
@@ -72,6 +72,6 @@ function setOldInventoryItem(): void {
     :inventory-item="modelInventoryItem"
     :is-main-inventory-slot-item="true"
     :path="`${path}/${PathUtils.itemPrefix}${modelInventoryItem?.itemId ?? 'empty'}`"
-    @update:inventory-item="onItemChanged($event)"
+    @update:inventory-item="onItemChangedAsync($event)"
   />
 </template>

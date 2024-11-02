@@ -34,7 +34,7 @@ export class GlobalSidebarService {
   /**
    * Initializes a new instance of the GlobalSidebarService class.
    */
-  constructor() {
+  public constructor() {
     const router = useRouter()
     router.beforeEach(() => this.onRouteChange())
   }
@@ -69,7 +69,7 @@ export class GlobalSidebarService {
    * Executes the actions registered to be executed when a sidebar is closed.
    * @param displayedComponentType - Type of component displayed in the closed sidebar.
    */
-  public async executeOnCloseActions(displayedComponentType: GlobalSidebarComponent, updatedParameters?: GlobalSidebarDisplayedComponentParameters): Promise<void> {
+  public async executeOnCloseActionsAsync(displayedComponentType: GlobalSidebarComponent, updatedParameters?: GlobalSidebarDisplayedComponentParameters): Promise<void> {
     for (const onCloseAction of this.onCloseActions) {
       if (onCloseAction.type === displayedComponentType) {
         await onCloseAction.action(updatedParameters)

@@ -20,5 +20,5 @@ export interface ISortingFunction<T extends IBuildSummary | IItem> {
    * Therefore the sorting service needs to asynchronously get values before sorting them.
    * @param element - Element from which the value is gotten.
    */
-  comparisonValueObtentionFunction: (element: T) => Promise<number | string>
+  comparisonValueObtentionPromise: (element: T) => Promise<number | string>
 }

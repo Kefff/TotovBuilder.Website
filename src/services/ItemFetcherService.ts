@@ -22,7 +22,7 @@ export class ItemFetcherService {
    * Fetches all items.
    * @returns Items.
    */
-  public async fetchItems(): Promise<IItem[] | undefined> {
+  public async fetchItemsAsync(): Promise<IItem[] | undefined> {
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointItems
 
@@ -30,7 +30,7 @@ export class ItemFetcherService {
       Services.get(LogService).logInformation('message.fetchingItems', { date: new Date().toISOString() })
     }
 
-    const reducedItems = await fetchService.get<Record<string, unknown>[]>(endpoint)
+    const reducedItems = await fetchService.getAsync<Record<string, unknown>[]>(endpoint)
 
     if (reducedItems == null || reducedItems.length === 0) {
       Services.get(LogService).logException('message.itemsNotFetched')
@@ -57,7 +57,7 @@ export class ItemFetcherService {
    * Fetches all prices.
    * @returns Prices.
    */
-  public async fetchPrices(): Promise<IPrice[] | undefined> {
+  public async fetchPricesAsync(): Promise<IPrice[] | undefined> {
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointPrices
 
@@ -65,7 +65,7 @@ export class ItemFetcherService {
       Services.get(LogService).logInformation('message.fetchingPrices', { date: new Date().toISOString() })
     }
 
-    const reducedPrices = await fetchService.get<Record<string, unknown>[]>(endpoint)
+    const reducedPrices = await fetchService.getAsync<Record<string, unknown>[]>(endpoint)
 
     if (reducedPrices == null || reducedPrices.length === 0) {
       Services.get(LogService).logException('message.pricesNotFetched')
@@ -92,7 +92,7 @@ export class ItemFetcherService {
    * Fetches all presets.
    * @returns Presets.
    */
-  public async fetchPresets(): Promise<IInventoryItem[] | undefined> {
+  public async fetchPresetsAsync(): Promise<IInventoryItem[] | undefined> {
     const fetchService = Services.get(FetchService)
     const endpoint = '/' + Services.get(WebsiteConfigurationService).configuration.endpointPresets
 
@@ -100,7 +100,7 @@ export class ItemFetcherService {
       Services.get(LogService).logInformation('message.fetchingPresets', { date: new Date().toISOString() })
     }
 
-    const reducedPresets = await fetchService.get<Record<string, unknown>[]>(endpoint)
+    const reducedPresets = await fetchService.getAsync<Record<string, unknown>[]>(endpoint)
 
     if (reducedPresets == null || reducedPresets.length === 0) {
       Services.get(LogService).logException('message.presetsNotFetched')

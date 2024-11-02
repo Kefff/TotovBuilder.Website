@@ -23,7 +23,7 @@ import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('ImportService', () => {
-  describe('getBuildsFromFile', () => {
+  describe('getBuildsFromFileAsync', () => {
     it('should read builds from a file and execute migrations on them', async () => {
       // Arrange
       useItemServiceMock()
@@ -39,7 +39,7 @@ describe('ImportService', () => {
       Services.configure(LogService, undefined, instance(logServiceMock))
 
       const versionServiceMock = mock<VersionService>()
-      when(versionServiceMock.executeBuildMigrations(anything())).thenResolve(true)
+      when(versionServiceMock.executeBuildMigrationsAsync(anything())).thenResolve(true)
       Services.configure(VersionService, undefined, instance(versionServiceMock))
 
       Services.configure(BuildPropertiesService)
@@ -53,7 +53,7 @@ describe('ImportService', () => {
       const service = new ImportService()
 
       // Act
-      const result = await service.getBuildsFromFile(instance(fileMock))
+      const result = await service.getBuildsFromFileAsync(instance(fileMock))
 
       // Assert
       expect(result).not.toBeUndefined()
@@ -559,7 +559,7 @@ describe('ImportService', () => {
           weight: 1.133
         }
       ])
-      verify(versionServiceMock.executeBuildMigrations(anything())).twice()
+      verify(versionServiceMock.executeBuildMigrationsAsync(anything())).twice()
     })
 
     it('should log an error and notify when the file is null', async () => {
@@ -575,7 +575,7 @@ describe('ImportService', () => {
       const service = new ImportService()
 
       // Act
-      const result = await service.getBuildsFromFile(undefined)
+      const result = await service.getBuildsFromFileAsync(undefined)
 
       // Assert
       expect(result).toBe(undefined)
@@ -598,7 +598,7 @@ describe('ImportService', () => {
       const service = new ImportService()
 
       // Act
-      const result = await service.getBuildsFromFile(instance(fileMock))
+      const result = await service.getBuildsFromFileAsync(instance(fileMock))
 
       // Assert
       expect(result).toBe(undefined)
@@ -627,7 +627,7 @@ describe('ImportService', () => {
       const service = new ImportService()
 
       // Act
-      const result = await service.getBuildsFromFile(instance(fileMock))
+      const result = await service.getBuildsFromFileAsync(instance(fileMock))
 
       // Assert
       expect(result).toBe(undefined)
@@ -636,7 +636,7 @@ describe('ImportService', () => {
     })
   })
 
-  describe('import()', () => {
+  describe('importAsync()', () => {
     it('should import builds', async () => {
       // Arrange
       let imported = false
@@ -660,7 +660,7 @@ describe('ImportService', () => {
       ]
 
       const buildServiceMock = mock<BuildService>()
-      when(buildServiceMock.add(anything())).thenCall((build: IBuild) => {
+      when(buildServiceMock.addAsync(anything())).thenCall((build: IBuild) => {
         importedBuilds.push(build)
         return ''
       })
@@ -677,7 +677,7 @@ describe('ImportService', () => {
       })
 
       // Act
-      await importService.import(builds)
+      await importService.importAsync(builds)
 
       // Assert
       expect(imported).toBe(true)

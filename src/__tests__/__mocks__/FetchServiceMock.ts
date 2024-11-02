@@ -4,7 +4,7 @@ import Services from '../../services/repository/Services'
 
 export function useFetchServiceMock<T>(data: T): void {
   const fetchServiceMock = mock<FetchService>()
-  when(fetchServiceMock.get<T>(anyString())).thenResolve(data)
+  when(fetchServiceMock.getAsync<T>(anyString())).thenResolve(data)
 
   Services.configure(FetchService, undefined, instance(fetchServiceMock))
 }

@@ -44,8 +44,8 @@ describe('comparisonFunction()', () => {
     ]
   ])('should compare by category, ricochet chance and name', async (headwear1: IHeadwear, headwear2: IHeadwear, expected: number) => {
     // Arrange
-    const propertyValue1 = await HeadwearSortingFunctions.functions['ricochetChance'].comparisonValueObtentionFunction(headwear1)
-    const propertyValue2 = await HeadwearSortingFunctions.functions['ricochetChance'].comparisonValueObtentionFunction(headwear2)
+    const propertyValue1 = await HeadwearSortingFunctions.functions['ricochetChance'].comparisonValueObtentionPromise(headwear1)
+    const propertyValue2 = await HeadwearSortingFunctions.functions['ricochetChance'].comparisonValueObtentionPromise(headwear2)
 
     // Act
     const sortingValue = HeadwearSortingFunctions.functions['ricochetChance'].comparisonFunction(headwear1, propertyValue1, headwear2, propertyValue2)
@@ -110,7 +110,7 @@ describe('comparisonFunction()', () => {
     sortingData = sortingService.setSortingProperty(sortingData, HeadwearSortingFunctions, property)
 
     // Act
-    const sortedItems = await sortingService.sort([item1, item2], sortingData!)
+    const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item1])

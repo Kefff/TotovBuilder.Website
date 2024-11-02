@@ -10,9 +10,9 @@ import { PriceMocks } from '../__data__/priceMocks'
 
 export function useItemFetcherServiceMock(customItemList?: IItem[], customPresetsList?: IInventoryItem[], customPricesList?: IPrice[]): void {
   const itemFetcherServiceMock = mock<ItemFetcherService>()
-  when(itemFetcherServiceMock.fetchItems()).thenResolve(customItemList ?? ItemMocks)
-  when(itemFetcherServiceMock.fetchPresets()).thenResolve(customPresetsList ?? PresetMocks)
-  when(itemFetcherServiceMock.fetchPrices()).thenResolve(customPricesList ?? PriceMocks)
+  when(itemFetcherServiceMock.fetchItemsAsync()).thenResolve(customItemList ?? ItemMocks)
+  when(itemFetcherServiceMock.fetchPresetsAsync()).thenResolve(customPresetsList ?? PresetMocks)
+  when(itemFetcherServiceMock.fetchPricesAsync()).thenResolve(customPricesList ?? PriceMocks)
 
   Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 }

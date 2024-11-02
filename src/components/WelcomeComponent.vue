@@ -39,9 +39,9 @@ onMounted(() => {
   _buildService.emitter.on(BuildService.deletedEvent, onBuildDeleted)
 
   if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
-    _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
+    _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitializedAsync)
   } else {
-    onWebsiteConfigurationServiceInitialized()
+    onWebsiteConfigurationServiceInitializedAsync()
   }
 })
 
@@ -87,7 +87,7 @@ function displayMerchantItemsOptions(): void {
 /**
  * Gets the last builds edited by the user.
  */
-async function getLastBuildSummariess(): Promise<void> {
+async function getLastBuildSummariesAsync(): Promise<void> {
   const allBuilds = await new Promise<IBuild[]>((resolve) => {
     const builds = _buildService
       .getAll()
@@ -110,7 +110,7 @@ async function getLastBuildSummariess(): Promise<void> {
   const buildSummaries: IBuildSummary[] = []
 
   for (const lastBuild of lastBuilds) {
-    const lastBuildSummary = await _buildPropertiesService.getSummary(lastBuild)
+    const lastBuildSummary = await _buildPropertiesService.getSummaryAsync(lastBuild)
     buildSummaries.push(lastBuildSummary)
   }
 
@@ -130,7 +130,7 @@ function goToBuilds(): void {
  * Updates the last builds list.
  */
 function onBuildDeleted(): void {
-  getLastBuildSummariess()
+  getLastBuildSummariesAsync()
 }
 
 /**
@@ -146,12 +146,12 @@ function onBuildSelected(selectedBuilds: IBuildSummary[]): void {
 }
 
 /**
- * Racts to the website configuration service being iniialized.
+ * Reacts to the website configuration service being iniialized.
  *
  * Gets builds and ends loading.
  */
-async function onWebsiteConfigurationServiceInitialized(): Promise<void> {
-  await getLastBuildSummariess()
+async function onWebsiteConfigurationServiceInitializedAsync(): Promise<void> {
+  await getLastBuildSummariesAsync()
   isLoading.value = false
 }
 

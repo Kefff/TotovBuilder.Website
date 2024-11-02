@@ -8,11 +8,11 @@ import Services from '../../services/repository/Services'
  * Represents a migration updates obsolete builds to use the default preset item instead of the base item for their armored items.
  */
 export class Migration171 implements IMigration {
-  public migrateBuild = this.executeBuildMigration
-  public migrateBuildUnrelatedData = (): Promise<boolean> => Promise.resolve(true)
+  public migrateBuildPromise = this.executeBuildMigrationAsync
+  public migrateBuildUnrelatedDataPromise = (): Promise<boolean> => Promise.resolve(true)
   public version = '1.7.1'
 
-  private async executeBuildMigration(build: IBuild): Promise<boolean> {
+  private async executeBuildMigrationAsync(build: IBuild): Promise<boolean> {
     const itemService = Services.get(ItemService)
     let success = true
 
@@ -26,13 +26,13 @@ export class Migration171 implements IMigration {
           continue
         }
 
-        const item = await itemService.getItem(inventoryItem.itemId)
+        const item = await itemService.getItemAsync(inventoryItem.itemId)
 
         if (item.categoryId === ItemCategoryId.notFound) {
           success = false
         }
 
-        const itemsOfCategory = await itemService.getItemsOfCategories([item.categoryId], false)
+        const itemsOfCategory = await itemService.getItemsOfCategoriesAsync([item.categoryId], false)
         const preset = itemsOfCategory.filter(v => v.name === item.name + ' Default')[0]
 
         if (preset == null) {

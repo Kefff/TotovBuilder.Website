@@ -7,10 +7,10 @@ import Services from './services/repository/Services'
 /**
  * Initializes the first services required by the application.
  */
-export async function initializeServices(): Promise<void> {
+export async function initializeServicesAsync(): Promise<void> {
   // Initialization of immediatly required values
   const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-  const websiteConfigurationServiceInitialized = await websiteConfigurationService.initialize()
+  const websiteConfigurationServiceInitialized = await websiteConfigurationService.initializeAsync()
 
   if (!websiteConfigurationServiceInitialized) {
     websiteConfigurationService.initializationState = ServiceInitializationState.error
@@ -18,7 +18,7 @@ export async function initializeServices(): Promise<void> {
     return
   }
 
-  const tarkovValuesServiceInitialized = await Services.get(TarkovValuesService).initialize()
+  const tarkovValuesServiceInitialized = await Services.get(TarkovValuesService).initializeAsync()
 
   if (!tarkovValuesServiceInitialized) {
     websiteConfigurationService.initializationState = ServiceInitializationState.error
@@ -29,5 +29,5 @@ export async function initializeServices(): Promise<void> {
   websiteConfigurationService.initializationState = ServiceInitializationState.initialized
 
   // Initialization of values that are not immediatly required and take time to load
-  await Services.get(ItemService).initialize()
+  await Services.get(ItemService).initializeAsync()
 }

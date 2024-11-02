@@ -84,7 +84,7 @@ describe('comparisonFunction()', () => {
     sortingData = sortingService.setSortingProperty(sortingData, BuildSummarySortingFunctions, property, SortingOrder.asc)
 
     // Act
-    const sortedItems = await sortingService.sort([buildSummary1, buildSummary2, buildSummary3, buildSummary4], sortingData!)
+    const sortedItems = await sortingService.sortAsync([buildSummary1, buildSummary2, buildSummary3, buildSummary4], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([buildSummary4, buildSummary3, buildSummary2, buildSummary1])

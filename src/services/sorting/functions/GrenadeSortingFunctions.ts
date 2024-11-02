@@ -12,15 +12,15 @@ export const GrenadeSortingFunctions: IItemSortingFunctionList = {
     ...ItemSortingFunctions.functions,
     explosionDelay: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IGrenade).explosionDelay)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IGrenade).explosionDelay)
     },
     fragmentsAmount: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IGrenade).fragmentsAmount)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IGrenade).fragmentsAmount)
     },
     maximumExplosionRange: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IGrenade).maximumExplosionRange)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IGrenade).maximumExplosionRange)
     }
   },
   itemCategoryIds: [ItemCategoryId.grenade]

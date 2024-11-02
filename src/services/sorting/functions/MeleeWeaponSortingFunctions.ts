@@ -12,15 +12,15 @@ export const MeleeWeaponSortingFunctions: IItemSortingFunctionList = {
     ...ItemSortingFunctions.functions,
     chopDamage: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IMeleeWeapon).chopDamage)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IMeleeWeapon).chopDamage)
     },
     hitRadius: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IMeleeWeapon).hitRadius)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IMeleeWeapon).hitRadius)
     },
     stabDamage: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IMeleeWeapon).stabDamage)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IMeleeWeapon).stabDamage)
     }
   },
   itemCategoryIds: [ItemCategoryId.meleeWeapon]

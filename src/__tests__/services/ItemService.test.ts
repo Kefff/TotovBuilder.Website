@@ -37,7 +37,7 @@ describe('constructor', () => {
     Services.configure(ItemService, undefined, itemService) // Registering the tested service because the GlobalFilterService uses it
 
     // Act / Assert
-    await itemService.initialize()
+    await itemService.initializeAsync()
 
     const globalFilterService = Services.get(GlobalFilterService)
     globalFilterService.saveMerchantFilters([
@@ -48,7 +48,7 @@ describe('constructor', () => {
       }
     ])
 
-    let items = await itemService.getItems([ak12bt.id], true)
+    let items = await itemService.getItemsAsync([ak12bt.id], true)
     expect(items.length).toBe(1)
     expect(items[0]).toStrictEqual(ak12bt)
 
@@ -58,7 +58,7 @@ describe('constructor', () => {
       merchantLevel: 4
     }])
 
-    items = await itemService.getItems([ak12bt.id], true)
+    items = await itemService.getItemsAsync([ak12bt.id], true)
     expect(items.length).toBe(0)
   })
 })
@@ -96,7 +96,7 @@ describe('getCurrency()', () => {
   })
 })
 
-describe('getItem()', () => {
+describe('getItemAsync()', () => {
   it('should get an item from the cache', async () => {
     // Arrange
     useGlobalFilterServiceMock()
@@ -108,7 +108,7 @@ describe('getItem()', () => {
     const itemService = new ItemService()
 
     // Act
-    const item = await itemService.getItem(rpk16Default.id)
+    const item = await itemService.getItemAsync(rpk16Default.id)
 
     // Assert
     expect(item).toStrictEqual({
@@ -131,7 +131,7 @@ describe('getItem()', () => {
     const itemService = new ItemService()
 
     // Act
-    const item = await itemService.getItem('invalid')
+    const item = await itemService.getItemAsync('invalid')
 
     // Assert
     const expected = ItemService.getNotFoundItem('invalid')
@@ -151,22 +151,22 @@ describe('getItem()', () => {
 
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItems()).thenResolve(undefined)
-    when(itemFetcherServiceMock.fetchPrices()).thenResolve(PriceMocks)
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(undefined)
+    when(itemFetcherServiceMock.fetchItemsAsync()).thenResolve(undefined)
+    when(itemFetcherServiceMock.fetchPricesAsync()).thenResolve(PriceMocks)
+    when(itemFetcherServiceMock.fetchPresetsAsync()).thenResolve(undefined)
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     const itemService = new ItemService()
 
     // Act
-    const act = (): Promise<IItem> => itemService.getItem(rpk16Default.id)
+    const act = (): Promise<IItem> => itemService.getItemAsync(rpk16Default.id)
 
     // Assert
     await expect(act).rejects.toThrowError('No item could be fetched.')
   })
 })
 
-describe('getItems()', () => {
+describe('getItemsAsync()', () => {
   it('should get items from the cache', async () => {
     // Arrange
     useGlobalFilterServiceMock()
@@ -178,7 +178,7 @@ describe('getItems()', () => {
     const itemService = new ItemService()
 
     // Act
-    const items = await itemService.getItems([rpk16Default.id, nf30mm.id], false)
+    const items = await itemService.getItemsAsync([rpk16Default.id, nf30mm.id], false)
 
     // Assert
     expect(items).toStrictEqual(
@@ -208,7 +208,7 @@ describe('getItems()', () => {
     Services.configure(ItemService, undefined, itemService) // Registering the tested service because the GlobalFilterService uses it
 
     // Act
-    await itemService.initialize()
+    await itemService.initializeAsync()
 
     const globalFitlerService = Services.get(GlobalFilterService)
     globalFitlerService.saveMerchantFilters([
@@ -224,7 +224,7 @@ describe('getItems()', () => {
       }
     ])
 
-    const items = await itemService.getItems([
+    const items = await itemService.getItemsAsync([
       pso1.id, // Prapor 1
       nf30mm.id, // Jaeger 3 (excluded)
       ak12PistolGrip.id, // Prapor 2 (excluded)
@@ -254,7 +254,7 @@ describe('getItems()', () => {
     const itemService = new ItemService()
 
     // Act
-    const items = await itemService.getItems(['invalid1', nf30mm.id, 'invalid2'], false)
+    const items = await itemService.getItemsAsync(['invalid1', nf30mm.id, 'invalid2'], false)
 
     // Assert
     const expected1 = ItemService.getNotFoundItem('invalid1')
@@ -272,9 +272,9 @@ describe('getItems()', () => {
     Services.configure(NotificationService)
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItems()).thenResolve(undefined)
-    when(itemFetcherServiceMock.fetchPrices()).thenResolve(PriceMocks)
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(undefined)
+    when(itemFetcherServiceMock.fetchItemsAsync()).thenResolve(undefined)
+    when(itemFetcherServiceMock.fetchPricesAsync()).thenResolve(PriceMocks)
+    when(itemFetcherServiceMock.fetchPresetsAsync()).thenResolve(undefined)
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     const logServiceMock = mock<LogService>()
@@ -283,14 +283,14 @@ describe('getItems()', () => {
     const itemService = new ItemService()
 
     // Act
-    const act = (): Promise<IItem[]> => itemService.getItems([rpk16Default.id], false)
+    const act = (): Promise<IItem[]> => itemService.getItemsAsync([rpk16Default.id], false)
 
     // Assert
     await expect(act).rejects.toThrowError('No item could be fetched.')
   })
 })
 
-describe('getItemsOfCategories()', () => {
+describe('getItemsOfCategoriesAsync()', () => {
   it('should get the items belonging to the categories', async () => {
     // Arrange
     useGlobalFilterServiceMock()
@@ -302,7 +302,7 @@ describe('getItemsOfCategories()', () => {
     const itemService = new ItemService()
 
     // Act
-    const items = await itemService.getItemsOfCategories([ItemCategoryId.armband, ItemCategoryId.securedContainer])
+    const items = await itemService.getItemsOfCategoriesAsync([ItemCategoryId.armband, ItemCategoryId.securedContainer])
 
     // Assert
     expect(items.map((i) => i.id).sort()).toStrictEqual([
@@ -324,7 +324,7 @@ describe('getItemsOfCategories()', () => {
     Services.configure(ItemService, undefined, itemService) // Registering the tested service because the GlobalFilterService uses it
 
     // Act
-    await itemService.initialize()
+    await itemService.initializeAsync()
 
     const globalFitlerService = Services.get(GlobalFilterService)
     globalFitlerService.saveMerchantFilters([
@@ -335,7 +335,7 @@ describe('getItemsOfCategories()', () => {
       }
     ])
 
-    const items = await itemService.getItemsOfCategories([ItemCategoryId.mainWeapon, ItemCategoryId.secondaryWeapon, ItemCategoryId.vest], true)
+    const items = await itemService.getItemsOfCategoriesAsync([ItemCategoryId.mainWeapon, ItemCategoryId.secondaryWeapon, ItemCategoryId.vest], true)
 
     // Assert
     expect(items.map((i) => i.id).sort()).toStrictEqual([
@@ -359,7 +359,7 @@ describe('getItemsOfCategories()', () => {
     const itemService = new ItemService()
 
     // Act
-    const items = await itemService.getItemsOfCategories(['invalid' as unknown as ItemCategoryId, 'invalid2' as unknown as ItemCategoryId])
+    const items = await itemService.getItemsOfCategoriesAsync(['invalid' as unknown as ItemCategoryId, 'invalid2' as unknown as ItemCategoryId])
 
     // Assert
     expect(items.length).toBe(0)
@@ -379,7 +379,7 @@ describe('getItemsOfCategories()', () => {
     const itemService = new ItemService()
 
     // Act
-    const items = await itemService.getItemsOfCategories(['invalid1' as unknown as ItemCategoryId, 'invalid2' as unknown as ItemCategoryId], false)
+    const items = await itemService.getItemsOfCategoriesAsync(['invalid1' as unknown as ItemCategoryId, 'invalid2' as unknown as ItemCategoryId], false)
 
     // Assert
     expect(items.length).toBe(0)
@@ -424,7 +424,7 @@ describe('getMainCurrency()', () => {
   })
 })
 
-describe('initialize', () => {
+describe('initializeAsync', () => {
   it('should fetch presets, update preset items properties, set its initialization state as initialized and emit an initialization finished event', async () => {
     // Arrange
     useGlobalFilterServiceMock()
@@ -438,11 +438,11 @@ describe('initialize', () => {
     const itemService = new ItemService()
 
     // Act
-    await itemService.initialize()
+    await itemService.initializeAsync()
 
     // Assert
-    verify(presetServiceSpy.fetchPresets()).once()
-    verify(presetServiceSpy.updatePresetProperties(anything())).once()
+    verify(presetServiceSpy.fetchPresetsAsync()).once()
+    verify(presetServiceSpy.updatePresetPropertiesAsync(anything())).once()
   })
 
   it('should update the prices of all the items if the cache has expired', async () => {
@@ -463,13 +463,13 @@ describe('initialize', () => {
     const itemService = new ItemService()
 
     // Act
-    await itemService.initialize()
+    await itemService.initializeAsync()
     MockDate.set(date2)
-    await itemService.initialize()
+    await itemService.initializeAsync()
 
     // Assert
-    verify(itemFetcherServiceSpy.fetchItems()).once()
-    verify(itemFetcherServiceSpy.fetchPrices()).twice()
+    verify(itemFetcherServiceSpy.fetchItemsAsync()).once()
+    verify(itemFetcherServiceSpy.fetchPricesAsync()).twice()
 
     MockDate.reset()
   })
@@ -487,12 +487,12 @@ describe('initialize', () => {
     const itemService = new ItemService()
 
     // Act
-    await itemService.initialize()
-    await itemService.initialize()
+    await itemService.initializeAsync()
+    await itemService.initializeAsync()
 
     // Assert
-    verify(itemFetcherServiceSpy.fetchItems()).once()
-    verify(itemFetcherServiceSpy.fetchPrices()).once()
+    verify(itemFetcherServiceSpy.fetchItemsAsync()).once()
+    verify(itemFetcherServiceSpy.fetchPricesAsync()).once()
   })
 
   it('should do nothing when services failed to initialize', async () => {
@@ -509,12 +509,12 @@ describe('initialize', () => {
     const itemService = new ItemService()
 
     // Act
-    await itemService.initialize()
+    await itemService.initializeAsync()
 
     // Assert
-    verify(itemFetcherServiceSpy.fetchItems()).never()
-    verify(itemFetcherServiceSpy.fetchPrices()).never()
-    verify(itemFetcherServiceSpy.fetchPresets()).never()
+    verify(itemFetcherServiceSpy.fetchItemsAsync()).never()
+    verify(itemFetcherServiceSpy.fetchPricesAsync()).never()
+    verify(itemFetcherServiceSpy.fetchPresetsAsync()).never()
     expect(itemService.initializationState).toBe(ServiceInitializationState.error)
   })
 
@@ -527,9 +527,9 @@ describe('initialize', () => {
     useWebsiteConfigurationServiceMock()
 
     const itemFetcherServiceMock = mock<ItemFetcherService>()
-    when(itemFetcherServiceMock.fetchItems()).thenResolve(ItemMocks)
-    when(itemFetcherServiceMock.fetchPresets()).thenResolve(PresetMocks)
-    when(itemFetcherServiceMock.fetchPrices()).thenResolve(undefined)
+    when(itemFetcherServiceMock.fetchItemsAsync()).thenResolve(ItemMocks)
+    when(itemFetcherServiceMock.fetchPresetsAsync()).thenResolve(PresetMocks)
+    when(itemFetcherServiceMock.fetchPricesAsync()).thenResolve(undefined)
     Services.configure(ItemFetcherService, undefined, instance(itemFetcherServiceMock))
 
     const notificationServiceMock = mock<NotificationService>()
@@ -538,7 +538,7 @@ describe('initialize', () => {
     const itemService = new ItemService()
 
     // Act
-    await itemService.initialize()
+    await itemService.initializeAsync()
 
     // Assert
     verify(notificationServiceMock.notify(NotificationType.error, 'Something went wrong while updating prices.\nTry waiting a bit and reloading the page.')).once()

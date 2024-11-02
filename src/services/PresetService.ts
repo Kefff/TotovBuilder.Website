@@ -25,8 +25,8 @@ export class PresetService {
   /**
    * Fetches presets.
    */
-  public async fetchPresets(): Promise<boolean> {
-    const presets = await Services.get(ItemFetcherService).fetchPresets()
+  public async fetchPresetsAsync(): Promise<boolean> {
+    const presets = await Services.get(ItemFetcherService).fetchPresetsAsync()
 
     if (presets == undefined) {
       return false
@@ -122,7 +122,7 @@ export class PresetService {
   /**
    * Updates the properties of a preset in a list of items.
    */
-  public async updatePresetProperties(items: IItem[]): Promise<void> {
+  public async updatePresetPropertiesAsync(items: IItem[]): Promise<void> {
     const itemPropertiesService = Services.get(ItemPropertiesService)
     const inventoryItemService = Services.get(InventoryItemService)
 
@@ -139,15 +139,15 @@ export class PresetService {
       }
 
       if (itemPropertiesService.canHaveArmor(presetItem)) {
-        const armorModifiers = await inventoryItemService.getArmorModifiers(presetInventoryItem)
-        const wearableModifiers = await inventoryItemService.getWearableModifiers(presetInventoryItem)
+        const armorModifiers = await inventoryItemService.getArmorModifiersAsync(presetInventoryItem)
+        const wearableModifiers = await inventoryItemService.getWearableModifiersAsync(presetInventoryItem)
 
         const armorPreset = presetItem as IArmor
         armorPreset.presetArmorModifiers = armorModifiers
         armorPreset.presetWearableModifiers = wearableModifiers
       } else if (itemPropertiesService.isRangedWeapon(presetItem)) {
-        const ergonomics = await inventoryItemService.getErgonomics(presetInventoryItem)
-        const recoil = await inventoryItemService.getRecoil(presetInventoryItem)
+        const ergonomics = await inventoryItemService.getErgonomicsAsync(presetInventoryItem)
+        const recoil = await inventoryItemService.getRecoilAsync(presetInventoryItem)
 
         const rangedWeaponPreset = presetItem as IRangedWeapon
         rangedWeaponPreset.presetRangedWeaponModifiers = {
@@ -156,14 +156,14 @@ export class PresetService {
           verticalRecoil: recoil.verticalRecoilWithMods
         }
       } else if (itemPropertiesService.isRangedWeaponMod(presetItem)) {
-        const ergonomics = await inventoryItemService.getErgonomics(presetInventoryItem)
-        const recoildModifierPercentage = await inventoryItemService.getRecoilModifierPercentage(presetInventoryItem)
+        const ergonomics = await inventoryItemService.getErgonomicsAsync(presetInventoryItem)
+        const recoildModifierPercentage = await inventoryItemService.getRecoilModifierPercentageAsync(presetInventoryItem)
 
         const rangedWeaponModPreset = presetItem as IRangedWeaponMod
         rangedWeaponModPreset.presetErgonomicsModifier = ergonomics.ergonomicsWithMods
         rangedWeaponModPreset.presetRecoilModifierPercentage = recoildModifierPercentage.recoilModifierPercentageWithMods
       } else {
-        const ergonomics = await inventoryItemService.getErgonomics(presetInventoryItem)
+        const ergonomics = await inventoryItemService.getErgonomicsAsync(presetInventoryItem)
 
         const modPreset = presetItem as IMod
         modPreset.presetErgonomicsModifier = ergonomics.ergonomicsWithMods

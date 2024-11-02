@@ -22,7 +22,7 @@ import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('InventoryItemService', () => {
-  describe('getArmorModifiers()', () => {
+  describe('getArmorModifiersAsync()', () => {
     it.each([
       [
         {
@@ -167,7 +167,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const armorModifiers = await service.getArmorModifiers(inventoryItem)
+      const armorModifiers = await service.getArmorModifiersAsync(inventoryItem)
 
       // Assert
       expect(armorModifiers).toStrictEqual(expected)
@@ -181,7 +181,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const armorClassResult = await service.getArmorModifiers({
+      const armorClassResult = await service.getArmorModifiersAsync({
         content: [],
         ignorePrice: false,
         itemId: bansheeDefault.id,
@@ -215,7 +215,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const armorClassResult = await service.getArmorModifiers({
+      const armorClassResult = await service.getArmorModifiersAsync({
         content: [],
         ignorePrice: false,
         itemId: 'invalid',
@@ -231,7 +231,7 @@ describe('InventoryItemService', () => {
     })
   })
 
-  describe('toText() (markdown)', () => {
+  describe('toTextAsync() (markdown)', () => {
     it.each([
       [
         {
@@ -565,7 +565,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         inventoryItem,
         {
           includeEmojis: true,
@@ -591,7 +591,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         inventoryItem,
         {
           includeEmojis: true,
@@ -623,7 +623,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         {
           content: [],
           ignorePrice: false,
@@ -655,7 +655,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         inventoryItem,
         {
           includeEmojis: true,
@@ -685,7 +685,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         inventoryItem,
         {
           includeEmojis: false,
@@ -704,7 +704,7 @@ describe('InventoryItemService', () => {
     })
   })
 
-  describe('toText() (simple text)', () => {
+  describe('toTextAsync() (simple text)', () => {
     it.each([
       [
         {
@@ -1038,7 +1038,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         inventoryItem,
         {
           includeEmojis: true,
@@ -1064,7 +1064,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         inventoryItem,
         {
           includeEmojis: true,
@@ -1096,7 +1096,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         {
           content: [],
           ignorePrice: false,
@@ -1128,7 +1128,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         inventoryItem,
         {
           includeEmojis: true,
@@ -1158,7 +1158,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         inventoryItem,
         {
           includeEmojis: false,
@@ -1177,7 +1177,7 @@ describe('InventoryItemService', () => {
     })
   })
 
-  describe('getErgonomics()', () => {
+  describe('getErgonomicsAsync()', () => {
     it.each([
       [
         {
@@ -1244,7 +1244,7 @@ describe('InventoryItemService', () => {
         const service = new InventoryItemService()
 
         // Act
-        const ergonomics = await service.getErgonomics(inventoryItem)
+        const ergonomics = await service.getErgonomicsAsync(inventoryItem)
 
         // Assert
         expect(ergonomics).toStrictEqual(expected)
@@ -1275,7 +1275,7 @@ describe('InventoryItemService', () => {
         const service = new InventoryItemService()
 
         // Act
-        const ergonomics = await service.getErgonomics(inventoryItem)
+        const ergonomics = await service.getErgonomicsAsync(inventoryItem)
 
         // Assert
         expect(ergonomics).toStrictEqual(expected)
@@ -1283,7 +1283,7 @@ describe('InventoryItemService', () => {
     )
   })
 
-  describe('getPrice()', () => {
+  describe('getPriceAsync()', () => {
     it.each([
       [
         inventoryItem,
@@ -1465,7 +1465,7 @@ describe('InventoryItemService', () => {
         const service = new InventoryItemService()
 
         // Act
-        const price = await service.getPrice(inventoryItem, undefined, canBeLooted)
+        const price = await service.getPriceAsync(inventoryItem, undefined, canBeLooted)
 
         // Assert
         expect(price).toStrictEqual(expected)
@@ -1562,7 +1562,7 @@ describe('InventoryItemService', () => {
       }
 
       // Act
-      const price = await service.getPrice(inventoryItem, undefined, false)
+      const price = await service.getPriceAsync(inventoryItem, undefined, false)
 
       // Assert
       expect(price).toStrictEqual(expected)
@@ -1651,7 +1651,7 @@ describe('InventoryItemService', () => {
       }
 
       // Act
-      const price = await service.getPrice(inventoryItem, undefined, false)
+      const price = await service.getPriceAsync(inventoryItem, undefined, false)
 
       // Assert
       expect(price).toStrictEqual(expected)
@@ -1729,7 +1729,7 @@ describe('InventoryItemService', () => {
       }
 
       // Act
-      const price = await service.getPrice(inventoryItem, undefined, true)
+      const price = await service.getPriceAsync(inventoryItem, undefined, true)
 
       // Assert
       expect(price).toStrictEqual(expected)
@@ -2134,7 +2134,7 @@ describe('InventoryItemService', () => {
         const service = new InventoryItemService()
 
         // Act
-        const price = await service.getPrice(inventoryItem, undefined, true)
+        const price = await service.getPriceAsync(inventoryItem, undefined, true)
 
         // Assert
         expect(price).toStrictEqual(expected)
@@ -2170,7 +2170,7 @@ describe('InventoryItemService', () => {
       ])
 
       // Act
-      const priceResult = await inventoryItemService.getPrice({
+      const priceResult = await inventoryItemService.getPriceAsync({
         content: [],
         ignorePrice: false,
         itemId: iskra.id,
@@ -2388,7 +2388,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const price = await service.getPrice(inventoryItem, undefined, true)
+      const price = await service.getPriceAsync(inventoryItem, undefined, true)
 
       // Assert
       expect(price).toStrictEqual(expected)
@@ -2501,7 +2501,7 @@ describe('InventoryItemService', () => {
       }
 
       // Act
-      const price = await service.getPrice(inventoryItem)
+      const price = await service.getPriceAsync(inventoryItem)
 
       // Assert
       const expected: IInventoryItemPrice = {
@@ -2630,7 +2630,7 @@ describe('InventoryItemService', () => {
       }
 
       // Act
-      const price = await service.getPrice(inventoryItem)
+      const price = await service.getPriceAsync(inventoryItem)
 
       // Assert
       const expected: IInventoryItemPrice = {
@@ -2728,7 +2728,7 @@ describe('InventoryItemService', () => {
       }
 
       // Act
-      const price = await service.getPrice(inventoryItem)
+      const price = await service.getPriceAsync(inventoryItem)
 
       // Assert
       const expected: IInventoryItemPrice = {
@@ -2893,7 +2893,7 @@ describe('InventoryItemService', () => {
         const service = new InventoryItemService()
 
         // Act
-        const price = await service.getPrice(inventoryItem)
+        const price = await service.getPriceAsync(inventoryItem)
 
         // Assert
         expect(price).toStrictEqual(expected)
@@ -2939,7 +2939,7 @@ describe('InventoryItemService', () => {
       }
 
       // Act
-      const price = await service.getPrice(inventoryItem)
+      const price = await service.getPriceAsync(inventoryItem)
 
       // Assert
       const expected: IInventoryItemPrice = {
@@ -3023,14 +3023,14 @@ describe('InventoryItemService', () => {
       }
 
       // Act
-      const price = await inventoryItemService.getPrice(inventoryItem, undefined, true, false)
+      const price = await inventoryItemService.getPriceAsync(inventoryItem, undefined, true, false)
 
       // Assert
       expect(price.unitPrice.valueInMainCurrency).toBe(29400)
     })
   })
 
-  describe('getRecoil()', () => {
+  describe('getRecoilAsync()', () => {
     it.each([
       [
         {
@@ -3292,7 +3292,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const recoil = await service.getRecoil(inventoryItem)
+      const recoil = await service.getRecoilAsync(inventoryItem)
 
       // Assert
       expect(recoil).toStrictEqual({
@@ -3380,14 +3380,14 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const recoil = await service.getRecoil(inventoryItem)
+      const recoil = await service.getRecoilAsync(inventoryItem)
 
       // Assert
       expect(recoil).toStrictEqual(expected)
     })
   })
 
-  describe('getRecoilModifierPercentage()', () => {
+  describe('getRecoilModifierPercentageAsync()', () => {
     it.each([
       [
         {
@@ -3478,7 +3478,7 @@ describe('InventoryItemService', () => {
       const service = new InventoryItemService()
 
       // Act
-      const recoilModifierPercentage = await service.getRecoilModifierPercentage(inventoryItem)
+      const recoilModifierPercentage = await service.getRecoilModifierPercentageAsync(inventoryItem)
 
       // Assert
       expect(recoilModifierPercentage).toStrictEqual(expected)
@@ -3525,7 +3525,7 @@ describe('InventoryItemService', () => {
         const service = new InventoryItemService()
 
         // Act
-        const recoilModifierPercentage = await service.getRecoilModifierPercentage(
+        const recoilModifierPercentage = await service.getRecoilModifierPercentageAsync(
           inventoryItem
         )
 
@@ -3535,7 +3535,7 @@ describe('InventoryItemService', () => {
     )
   })
 
-  describe('getWearableModifiers()', () => {
+  describe('getWearableModifiersAsync()', () => {
     it.each([
       [
         {
@@ -3654,7 +3654,7 @@ describe('InventoryItemService', () => {
         const service = new InventoryItemService()
 
         // Act
-        const wearableModifiers = await service.getWearableModifiers(
+        const wearableModifiers = await service.getWearableModifiersAsync(
           inventoryItem
         )
 
@@ -3706,7 +3706,7 @@ describe('InventoryItemService', () => {
         const service = new InventoryItemService()
 
         // Act
-        const ergonomicsModifierPercentage = await service.getWearableModifiers(inventoryItem)
+        const ergonomicsModifierPercentage = await service.getWearableModifiersAsync(inventoryItem)
 
         // Assert
         expect(ergonomicsModifierPercentage).toStrictEqual(expected)
@@ -3714,7 +3714,7 @@ describe('InventoryItemService', () => {
     )
   })
 
-  describe('getWeight()', () => {
+  describe('getWeightAsync()', () => {
     it.each([
       [
         inventoryItem,
@@ -3781,7 +3781,7 @@ describe('InventoryItemService', () => {
         const service = new InventoryItemService()
 
         // Act
-        const weight = await service.getWeight(inventoryItem)
+        const weight = await service.getWeightAsync(inventoryItem)
 
         // Assert
         expect(weight).toStrictEqual(expected)
@@ -3821,7 +3821,7 @@ describe('InventoryItemService', () => {
         const service = new InventoryItemService()
 
         // Act
-        const weight = await service.getWeight(inventoryItem)
+        const weight = await service.getWeightAsync(inventoryItem)
 
         // Assert
         expect(weight).toStrictEqual(expected)

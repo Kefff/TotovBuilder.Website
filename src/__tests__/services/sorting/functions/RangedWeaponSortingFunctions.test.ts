@@ -52,7 +52,7 @@ describe('comparisonFunction()', () => {
     sortingData = sortingService.setSortingProperty(sortingData, RangedWeaponSortingFunctions, property)
 
     // Act
-    const sortedItems = await sortingService.sort([item1, item2], sortingData!)
+    const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([item2, item1])

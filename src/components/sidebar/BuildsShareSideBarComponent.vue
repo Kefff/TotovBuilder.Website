@@ -125,10 +125,10 @@ function copyText(): void {
 /**
  * Gets the text.
  */
-async function getText(): Promise<void> {
+async function getTextAsync(): Promise<void> {
   isLoading.value = true
 
-  text.value = await _buildPropertiesService.toText(
+  text.value = await _buildPropertiesService.toTextAsync(
     buildsToShare.value,
     {
       includeEmojis: includeEmojis.value,
@@ -150,7 +150,7 @@ function initialize(): void {
   buildsToShare.value = props.parameters.buildToShare != null ? [props.parameters.buildToShare] : []
 
   if (buildsToShare.value.length > 0 && typeOption.value != null) {
-    getText()
+    getTextAsync()
   }
 }
 
@@ -225,7 +225,7 @@ function toggleSelection(): void {
             data-key="caption"
             :placeholder="$t('caption.selectFormat')"
             class="builds-share-sidebar-type"
-            @update:model-value="getText()"
+            @update:model-value="getTextAsync()"
           >
             <template #option="slotProps">
               <div class="builds-share-sidebar-type-option">
@@ -271,7 +271,7 @@ function toggleSelection(): void {
             v-if="typeOption != null"
             v-model:language="language"
             class="builds-share-sidebar-option-long"
-            @update:language="getText()"
+            @update:language="getTextAsync()"
           />
         </div>
         <div
@@ -281,7 +281,7 @@ function toggleSelection(): void {
           <Checkbox
             v-model="linkOnly"
             :binary="true"
-            @change="getText()"
+            @change="getTextAsync()"
           />
           <div
             class="builds-share-sidebar-checkbox-caption"
@@ -290,7 +290,7 @@ function toggleSelection(): void {
             }"
             @click="() => {
               linkOnly = !linkOnly
-              getText()
+              getTextAsync()
             }"
           >
             {{ $t('caption.linkOnly') }}
@@ -303,7 +303,7 @@ function toggleSelection(): void {
           <Checkbox
             v-model="includeLink"
             :binary="true"
-            @change="getText()"
+            @change="getTextAsync()"
           />
           <div
             class="builds-share-sidebar-checkbox-caption"
@@ -312,7 +312,7 @@ function toggleSelection(): void {
             }"
             @click="() => {
               includeLink = !includeLink
-              getText()
+              getTextAsync()
             }"
           >
             {{ $t('caption.includeLinkToInteractiveVersion') }}
@@ -336,7 +336,7 @@ function toggleSelection(): void {
           <Checkbox
             v-model="includePrices"
             :binary="true"
-            @change="getText()"
+            @change="getTextAsync()"
           />
           <div
             class="builds-share-sidebar-checkbox-caption"
@@ -345,7 +345,7 @@ function toggleSelection(): void {
             }"
             @click="() => {
               includePrices = !includePrices
-              getText()
+              getTextAsync()
             }"
           >
             {{ $t('caption.includePrices') }}
@@ -358,7 +358,7 @@ function toggleSelection(): void {
           <Checkbox
             v-model="includeEmojis"
             :binary="true"
-            @change="getText()"
+            @change="getTextAsync()"
           />
           <div
             class="builds-share-sidebar-checkbox-caption"
@@ -367,7 +367,7 @@ function toggleSelection(): void {
             }"
             @click="() => {
               includeEmojis = !includeEmojis
-              getText()
+              getTextAsync()
             }"
           >
             {{ $t('caption.includeEmojis') }}

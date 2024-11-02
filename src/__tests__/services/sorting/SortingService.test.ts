@@ -77,11 +77,11 @@ describe('SortingService', () => {
             comparisonFunction: () => {
               return 1
             },
-            comparisonValueObtentionFunction: i => Promise.resolve(i.name)
+            comparisonValueObtentionPromise: i => Promise.resolve(i.name)
           },
           price: {
             comparisonFunction: () => 2,
-            comparisonValueObtentionFunction: i => Promise.resolve(i.prices[0].valueInMainCurrency)
+            comparisonValueObtentionPromise: i => Promise.resolve(i.prices[0].valueInMainCurrency)
           }
         },
         itemCategoryIds: [ItemCategoryId.other]
@@ -123,7 +123,7 @@ describe('SortingService', () => {
     })
   })
 
-  describe('sort()', () => {
+  describe('sortAsync()', () => {
     it('should sort an array or build summaries', async () => {
       // Arrange
       let sortingData: SortingData<IBuildSummary> | undefined = new SortingData()
@@ -131,7 +131,7 @@ describe('SortingService', () => {
         functions: {
           ergonomics: {
             comparisonFunction: (bs1, bs1v, bs2, bs2v) => compareByNumber(bs1 as unknown as Record<string, unknown>, bs1v, bs2 as unknown as Record<string, unknown>, bs2v),
-            comparisonValueObtentionFunction: bs => Promise.resolve(bs.ergonomics)
+            comparisonValueObtentionPromise: bs => Promise.resolve(bs.ergonomics)
           }
         }
       }
@@ -146,7 +146,7 @@ describe('SortingService', () => {
 
       // Act
       sortingData = sortingService.setSortingProperty(sortingData, sortingFunctions, 'ergonomics')
-      const result = await sortingService.sort(buildSummaries, sortingData!)
+      const result = await sortingService.sortAsync(buildSummaries, sortingData!)
 
       // Assert
       expect(result).toStrictEqual([
@@ -165,7 +165,7 @@ describe('SortingService', () => {
         functions: {
           shortName: {
             comparisonFunction: (i1, iv1, i2, iv2) => compareByItemString(i1, iv1, i2, iv2),
-            comparisonValueObtentionFunction: i => Promise.resolve(i.shortName)
+            comparisonValueObtentionPromise: i => Promise.resolve(i.shortName)
           }
         },
         itemCategoryIds: [ItemCategoryId.other]
@@ -181,7 +181,7 @@ describe('SortingService', () => {
 
       // Act
       sortingData = sortingService.setSortingProperty(sortingData, sortingFunctions, 'shortName')
-      const result = await sortingService.sort(items, sortingData!)
+      const result = await sortingService.sortAsync(items, sortingData!)
 
       // Assert
       expect(result).toStrictEqual([

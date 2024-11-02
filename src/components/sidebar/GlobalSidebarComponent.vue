@@ -148,7 +148,7 @@ function getBuildsShareSideBarSubtitle(parameters: BuildsShareSideBarParameters)
  */
 function onGlobalSidebarClose(displayedComponentType: GlobalSidebarComponent): void {
   if (displayedComponentType === options.value.displayedComponentType) {
-    Services.get(GlobalSidebarService).executeOnCloseActions(displayedComponentType, options.value.displayedComponentParameters)
+    Services.get(GlobalSidebarService).executeOnCloseActionsAsync(displayedComponentType, options.value.displayedComponentParameters)
     visibleInternal.value = false
   }
 }

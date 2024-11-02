@@ -12,23 +12,23 @@ export const HeadwearSortingFunctions: IItemSortingFunctionList = {
     ...ArmorSortingFunctions.functions,
     ergonomicsModifierPercentage: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve(
+      comparisonValueObtentionPromise: i => Promise.resolve(
         (i as IHeadwear).presetWearableModifiers?.ergonomicsModifierPercentage
         ?? (i as IHeadwear).ergonomicsModifierPercentage)
     },
     movementSpeedModifierPercentage: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((
+      comparisonValueObtentionPromise: i => Promise.resolve((
         i as IHeadwear).presetWearableModifiers?.movementSpeedModifierPercentage
         ?? (i as IHeadwear).movementSpeedModifierPercentage)
     },
     ricochetChance: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve(ricochetChances[(i as IHeadwear).ricochetChance])
+      comparisonValueObtentionPromise: i => Promise.resolve(ricochetChances[(i as IHeadwear).ricochetChance])
     },
     turningSpeedModifierPercentage: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve(
+      comparisonValueObtentionPromise: i => Promise.resolve(
         (i as IHeadwear).presetWearableModifiers?.turningSpeedModifierPercentage
         ?? (i as IHeadwear).turningSpeedModifierPercentage)
     }

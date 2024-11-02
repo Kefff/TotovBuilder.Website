@@ -13,9 +13,9 @@ import { PriceMocks } from '../__data__/priceMocks'
 export function useItemServiceMock(hasMainCurrency = true, customItemList?: IItem[], customPricesList?: IPrice[]): void {
   const itemServiceMock = mock<ItemService>()
   when(itemServiceMock.getCurrency(anyString())).thenCall(currencyName => getCurrency(currencyName))
-  when(itemServiceMock.getItem(anyString())).thenCall((id: string) => getItem(id, customItemList, customPricesList))
-  when(itemServiceMock.getItems(anything(), anything())).thenCall((ids: string[]) => getItems(ids, customItemList))
-  when(itemServiceMock.getItemsOfCategories(anything(), anything())).thenCall((categoryIds: ItemCategoryId[]) => getItemsOfCategories(categoryIds, customItemList))
+  when(itemServiceMock.getItemAsync(anyString())).thenCall((id: string) => getItem(id, customItemList, customPricesList))
+  when(itemServiceMock.getItemsAsync(anything(), anything())).thenCall((ids: string[]) => getItems(ids, customItemList))
+  when(itemServiceMock.getItemsOfCategoriesAsync(anything(), anything())).thenCall((categoryIds: ItemCategoryId[]) => getItemsOfCategories(categoryIds, customItemList))
   when(itemServiceMock.getMainCurrency()).thenCall(() => getMainCurrency(hasMainCurrency))
 
   Services.configure(ItemService, undefined, instance(itemServiceMock))

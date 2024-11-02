@@ -12,17 +12,17 @@ export class ItemContentComponentService {
    * @param itemId - Item ID.
    * @returns Accepted items.
    */
-  public async getAcceptedItems(itemId: string): Promise<IItem[]> {
+  public async getAcceptedItemsAsync(itemId: string): Promise<IItem[]> {
     let acceptedItems: IItem[] = []
-    const item = await Services.get(ItemService).getItem(itemId)
+    const item = await Services.get(ItemService).getItemAsync(itemId)
 
     switch (item.categoryId) {
       case ItemCategoryId.magazine: {
-        acceptedItems = await this.getMagazineAcceptedItems(item)
+        acceptedItems = await this.getMagazineAcceptedItemsAsync(item)
         break
       }
       default: {
-        acceptedItems = await this.getItemAcceptedItems()
+        acceptedItems = await this.getItemAcceptedItemsAsync()
       }
     }
 
@@ -50,9 +50,9 @@ export class ItemContentComponentService {
    * This corresponds to all item categories.
    * @returns Accepted items.
    */
-  private async getItemAcceptedItems(): Promise<IItem[]> {
+  private async getItemAcceptedItemsAsync(): Promise<IItem[]> {
     const itemService = Services.get(ItemService)
-    const items = await itemService.getItemsOfCategories(Object.values(ItemCategoryId) as ItemCategoryId[], true)
+    const items = await itemService.getItemsOfCategoriesAsync(Object.values(ItemCategoryId) as ItemCategoryId[], true)
 
     return items
   }
@@ -62,8 +62,8 @@ export class ItemContentComponentService {
    * @param magazine - Magazine.
    * @returns Accepted items.
    */
-  private async getMagazineAcceptedItems(magazine: IItem): Promise<IItem[]> {
-    const items = await Services.get(ItemService).getItems((magazine as IMagazine).acceptedAmmunitionIds, true)
+  private async getMagazineAcceptedItemsAsync(magazine: IItem): Promise<IItem[]> {
+    const items = await Services.get(ItemService).getItemsAsync((magazine as IMagazine).acceptedAmmunitionIds, true)
 
     return items
   }

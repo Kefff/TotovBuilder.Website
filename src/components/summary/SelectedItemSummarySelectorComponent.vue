@@ -68,19 +68,19 @@ function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedCo
     return AmmunitionSummary
   }
   else if (itemPropertiesService.isArmor(itemCategoryId)) {
-    setArmorModifiers()
-    setWearableModifiers()
+    setArmorModifiersAsync()
+    setWearableModifiersAsync()
 
     return ArmorSummary
   }
   else if (itemPropertiesService.isArmorMod(itemCategoryId)) {
-    setArmorModifiers()
-    setWearableModifiers()
+    setArmorModifiersAsync()
+    setWearableModifiersAsync()
 
     return ArmorModSummary
   }
   else if (itemPropertiesService.isBackpack(itemCategoryId)) {
-    setWearableModifiers()
+    setWearableModifiersAsync()
 
     return BackpackSummary
   }
@@ -94,8 +94,8 @@ function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedCo
     return GrenadeSummary
   }
   else if (itemPropertiesService.isHeadwear(itemCategoryId)) {
-    setArmorModifiers()
-    setWearableModifiers()
+    setArmorModifiersAsync()
+    setWearableModifiersAsync()
 
     return HeadwearSummary
   }
@@ -109,7 +109,7 @@ function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedCo
     return ModSummary
   }
   else if (itemPropertiesService.isRangedWeapon(itemCategoryId)) {
-    setRangedWeaponModifiers()
+    setRangedWeaponModifiersAsync()
 
     return RangedWeaponSummary
   }
@@ -117,8 +117,8 @@ function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedCo
     return RangedWeaponModSummary
   }
   else if (itemPropertiesService.isVest(itemCategoryId)) {
-    setArmorModifiers()
-    setWearableModifiers()
+    setArmorModifiersAsync()
+    setWearableModifiersAsync()
 
     return VestSummary
   }
@@ -128,17 +128,17 @@ function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedCo
  * Sets the modifiers for armors.
  * We display the base stats of presets because the full stats are displayed in the inventory slot.
  */
-async function setArmorModifiers(): Promise<void> {
-  selectedItemArmorModifiers.value = await _inventoryItemService.getArmorModifiers(props.inventoryItem)
+async function setArmorModifiersAsync(): Promise<void> {
+  selectedItemArmorModifiers.value = await _inventoryItemService.getArmorModifiersAsync(props.inventoryItem)
 }
 
 /**
  * Sets the modifiers for ranged weapons.
  * We display the base stats of presets because the full stats are displayed in the inventory slot.
  */
-async function setRangedWeaponModifiers(): Promise<void> {
-  const ergonomics = await _inventoryItemService.getErgonomics(props.inventoryItem)
-  const recoil = await _inventoryItemService.getRecoil(props.inventoryItem)
+async function setRangedWeaponModifiersAsync(): Promise<void> {
+  const ergonomics = await _inventoryItemService.getErgonomicsAsync(props.inventoryItem)
+  const recoil = await _inventoryItemService.getRecoilAsync(props.inventoryItem)
 
   selectedItemRangedWeaponModifiers.value = {
     ergonomics: ergonomics.ergonomicsWithMods,
@@ -151,8 +151,8 @@ async function setRangedWeaponModifiers(): Promise<void> {
  * Sets the modifiers for wearable items.
  * We display the base stats of presets because the full stats are displayed in the inventory slot.
  */
-async function setWearableModifiers(): Promise<void> {
-  const wearableModifiers = await _inventoryItemService.getWearableModifiers(props.inventoryItem)
+async function setWearableModifiersAsync(): Promise<void> {
+  const wearableModifiers = await _inventoryItemService.getWearableModifiersAsync(props.inventoryItem)
 
   selectedItemWearableModifiers.value = {
     ergonomicsModifierPercentage: wearableModifiers.ergonomicsModifierPercentage,

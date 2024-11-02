@@ -6,10 +6,10 @@ import { PresetMocks } from '../__data__/presetMocks'
 
 export function usePresetServiceMock(customPresetsList?: IInventoryItem[]): void {
   const presetServiceMock = mock<PresetService>()
-  when(presetServiceMock.fetchPresets()).thenResolve(true)
+  when(presetServiceMock.fetchPresetsAsync()).thenResolve(true)
   when(presetServiceMock.getPreset(anyString())).thenCall((id: string) => getPreset(id, customPresetsList))
   when(presetServiceMock.isPreset(anyString())).thenCall((id: string) => getPreset(id) != null)
-  when(presetServiceMock.updatePresetProperties(anything())).thenResolve()
+  when(presetServiceMock.updatePresetPropertiesAsync(anything())).thenResolve()
 
   Services.configure(PresetService, undefined, instance(presetServiceMock))
 }

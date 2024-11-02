@@ -13,7 +13,7 @@ export const ContainerSortingFunctions: IItemSortingFunctionList = {
     ...ItemSortingFunctions.functions,
     capacity: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IContainer).capacity)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IContainer).capacity)
     }
   }
 }

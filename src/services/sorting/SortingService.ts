@@ -66,8 +66,8 @@ export class SortingService {
    * @param elements - Collection of items.
    * @param sortingData - Sorting data.
    */
-  public async sort<T extends IBuildSummary | IItem>(elements: T[], sortingData: SortingData<T>): Promise<T[]> {
-    const elementWithSortingValue = await Promise.all(elements.map(e => this.getElementAndSortingValue(e, sortingData)))
+  public async sortAsync<T extends IBuildSummary | IItem>(elements: T[], sortingData: SortingData<T>): Promise<T[]> {
+    const elementWithSortingValue = await Promise.all(elements.map(e => this.getElementAndSortingValueAsync(e, sortingData)))
     elementWithSortingValue.sort((ewsv1, ewsv2) => sortingData.sortingFunction.comparisonFunction(ewsv1.element, ewsv1.value, ewsv2.element, ewsv2.value))
     const result = elementWithSortingValue.map(ewsv => ewsv.element)
 
@@ -104,7 +104,7 @@ export class SortingService {
     updatedSortingData.sortingFunction.comparisonFunction = (element1: T, element1Value: string | number, element2: T, element2Value: string | number): number => {
       return sortingFunction.comparisonFunction(element1, element1Value, element2, element2Value) * updatedSortingData.order
     }
-    updatedSortingData.sortingFunction.comparisonValueObtentionFunction = sortingFunction.comparisonValueObtentionFunction
+    updatedSortingData.sortingFunction.comparisonValueObtentionPromise = sortingFunction.comparisonValueObtentionPromise
 
     return updatedSortingData
   }
@@ -114,8 +114,8 @@ export class SortingService {
    * @param element - Element.
    * @returns Element and its sorting value.
    */
-  private async getElementAndSortingValue<T extends IBuildSummary | IItem>(element: T, sortingData: SortingData<T>): Promise<{ element: T, value: number | string }> {
-    const value = await sortingData.sortingFunction.comparisonValueObtentionFunction(element)
+  private async getElementAndSortingValueAsync<T extends IBuildSummary | IItem>(element: T, sortingData: SortingData<T>): Promise<{ element: T, value: number | string }> {
+    const value = await sortingData.sortingFunction.comparisonValueObtentionPromise(element)
 
     return { element, value }
   }

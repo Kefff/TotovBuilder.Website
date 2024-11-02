@@ -10,7 +10,7 @@ import WebsiteConfigurationMock from '../__data__/websiteConfigurationMock'
 import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('initialize', () => {
+describe('initializeAsync', () => {
   it('should fetch the website configuration', async () => {
     // Arrange
     useFetchServiceMock(WebsiteConfigurationMock)
@@ -18,7 +18,7 @@ describe('initialize', () => {
     const service = new WebsiteConfigurationService()
 
     // Act
-    const result = await service.initialize()
+    const result = await service.initializeAsync()
 
     // Assert
     expect(result).toBe(true)
@@ -31,7 +31,7 @@ describe('initialize', () => {
     Services.configure(NotificationService)
 
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get(anyString())).thenResolve(undefined)
+    when(fetchServiceMock.getAsync(anyString())).thenResolve(undefined)
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const logServiceMock = mock<LogService>()
@@ -40,7 +40,7 @@ describe('initialize', () => {
     const service = new WebsiteConfigurationService()
 
     // Act
-    const result = await service.initialize()
+    const result = await service.initializeAsync()
 
     // Assert
     expect(result).toBe(false)

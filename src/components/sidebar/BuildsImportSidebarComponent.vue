@@ -20,7 +20,7 @@ const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
 const toolbarButtons: IToolbarButton[] = [
   {
-    action: importBuilds,
+    action: importBuildsAsync,
     canBeMovedToSidebar: () => false,
     caption: () => `${vueI18n.t('caption.import')}` + (selectedBuilds.value.length > 1 ? ` (${selectedBuilds.value.length})` : ''),
     icon: () => 'file-upload',
@@ -63,9 +63,9 @@ function displayFileSelectionPopup(): void {
 /**
  * Imports the selected builds.
  */
-async function importBuilds(): Promise<void> {
+async function importBuildsAsync(): Promise<void> {
   const buildsToImport = availableBuilds.value.filter(ab => selectedBuilds.value.some(sb => sb.id === ab.id))
-  await _importService.import(buildsToImport)
+  await _importService.importAsync(buildsToImport)
   _globalSidebarService.close('BuildsImportSidebar')
 }
 
@@ -83,7 +83,7 @@ function onKeyDown(event: KeyboardEvent): void {
 /**
  * Read builds from the imported file.
  */
-async function readBuilds(): Promise<void> {
+async function readBuildsAsync(): Promise<void> {
   availableBuilds.value = []
   availableBuildSummaries.value = []
 
@@ -92,7 +92,7 @@ async function readBuilds(): Promise<void> {
   }
 
   const buildFile = importInput.value!.files?.[0]
-  const buildsImportResult = await _importService.getBuildsFromFile(buildFile)
+  const buildsImportResult = await _importService.getBuildsFromFileAsync(buildFile)
 
   if (buildsImportResult != null) {
     availableBuilds.value = buildsImportResult.builds
@@ -155,7 +155,7 @@ function toggleSelection(): void {
             <Button
               :disabled="selectedBuilds?.length == 0"
               severity="success"
-              @click="importBuilds()"
+              @click="importBuildsAsync()"
             >
               <font-awesome-icon
                 icon="file-upload"
@@ -191,7 +191,7 @@ function toggleSelection(): void {
     class="builds-import-sidebar-hidden-input"
     type="file"
     :accept="acceptedFileExtension"
-    @change="readBuilds()"
+    @change="readBuildsAsync()"
   >
 </template>
 

@@ -11,15 +11,15 @@ const changelogs = ref<IChangelogEntry[]>([])
 const isLoading = ref(true)
 
 onMounted(() => {
-  loadChangelog()
+  loadChangelogAsync()
 })
 
 /**
  * Loads the changelog.
  */
-async function loadChangelog(): Promise<void> {
+async function loadChangelogAsync(): Promise<void> {
   isLoading.value = true
-  const fetchedChangelogs = await Services.get(VersionService).getChangelog()
+  const fetchedChangelogs = await Services.get(VersionService).getChangelogAsync()
   isLoading.value = false
 
   if (fetchedChangelogs == null) {

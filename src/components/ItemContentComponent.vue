@@ -47,7 +47,7 @@ watch(() => props.containerItem.id, () => initialize())
  */
 function initialize(): void {
   setCategoryId()
-  setAcceptedItems()
+  setAcceptedItemsAsync()
 }
 
 /**
@@ -92,14 +92,14 @@ function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefin
  * Updates the accepted items to reflect the change in merchant filters.
  */
 function onMerchantFilterChanged(): void {
-  setAcceptedItems()
+  setAcceptedItemsAsync()
 }
 
 /**
  * Sets the accepted items for the item to add.
  */
-async function setAcceptedItems(): Promise<void> {
-  acceptedItems.value = await Services.get(ItemContentComponentService).getAcceptedItems(props.containerItem.id)
+async function setAcceptedItemsAsync(): Promise<void> {
+  acceptedItems.value = await Services.get(ItemContentComponentService).getAcceptedItemsAsync(props.containerItem.id)
 }
 
 /**

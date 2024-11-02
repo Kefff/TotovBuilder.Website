@@ -31,12 +31,12 @@ export class BuildService {
    * @param build - Build to add.
    * @returns Build ID.
    */
-  public async add(build: IBuild): Promise<string> {
+  public async addAsync(build: IBuild): Promise<string> {
     if (build.id === '') {
       build.id = Guid.create().toString()
     }
 
-    build.lastWebsiteVersion = await Services.get(VersionService).getVersion()
+    build.lastWebsiteVersion = await Services.get(VersionService).getVersionAsync()
 
     const storageKey = this.getKey(build.id)
     localStorage.setItem(storageKey, JSON.stringify(build))
@@ -110,7 +110,7 @@ export class BuildService {
    * @param sharableString - Encoded string that can be shared in a URL.
    * @returns Build.
    */
-  public async fromSharableString(sharableString: string): Promise<IBuild | undefined> {
+  public async fromSharableStringAsync(sharableString: string): Promise<IBuild | undefined> {
     const codec = jsonUrl('lzma')
     let reducedBuild: Record<string, unknown>
 
@@ -132,7 +132,7 @@ export class BuildService {
       return undefined
     }
 
-    await Services.get(VersionService).executeBuildMigrations(build) // Executing migrations on the build in case it is obsolete
+    await Services.get(VersionService).executeBuildMigrationsAsync(build) // Executing migrations on the build in case it is obsolete
 
     return build
   }
@@ -224,7 +224,7 @@ export class BuildService {
    * @param builds - Build.
    * @returns Encoded URL.
    */
-  public async toSharableURL(build: IBuild): Promise<string | undefined> {
+  public async toSharableUrlAsync(build: IBuild): Promise<string | undefined> {
     // Reducing the size of the build
     const reducedBuild = Services.get(ReductionService).reduceBuild(build)
 
@@ -251,9 +251,9 @@ export class BuildService {
    * @param id - ID of the build to update.
    * @param build - Updated version of the build.
    */
-  public async update(build: IBuild): Promise<void> {
+  public async updateAsync(build: IBuild): Promise<void> {
     build.lastUpdated = new Date()
-    build.lastWebsiteVersion = await Services.get(VersionService).getVersion()
+    build.lastWebsiteVersion = await Services.get(VersionService).getVersionAsync()
 
     const storageKey = this.getKey(build.id)
 
@@ -269,7 +269,7 @@ export class BuildService {
 
     Services.get(LogService).logError('message.buildToUpdateNotFound', { id: build.id })
 
-    await this.add(build)
+    await this.addAsync(build)
   }
 
   /**

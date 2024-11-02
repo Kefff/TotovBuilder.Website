@@ -9,7 +9,7 @@ import { PathUtils } from '../../../utils/PathUtils'
 import { armor6b13FlDefault, berkut, scavVest } from '../../__data__/itemMocks'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('checkCompatibility', () => {
+describe('checkCompatibilityAsync', () => {
   it.each([
     ['bodyArmor', { itemId: armor6b13FlDefault.id } as IInventoryItem, true],
     ['bodyArmor', { itemId: armor6b13FlDefault.id } as IInventoryItem, false],
@@ -29,7 +29,7 @@ describe('checkCompatibility', () => {
     const inventorySlotComponentService = new InventorySlotComponentService()
 
     // Act
-    const result = await inventorySlotComponentService.checkCompatibility(inventorySlotTypeId, item, PathUtils.buildPrefix + '123456789/' + PathUtils.inventorySlotPrefix + inventorySlotTypeId)
+    const result = await inventorySlotComponentService.checkCompatibilityAsync(inventorySlotTypeId, item, PathUtils.buildPrefix + '123456789/' + PathUtils.inventorySlotPrefix + inventorySlotTypeId)
 
     // Assert
     expect(result).toBe(expected)

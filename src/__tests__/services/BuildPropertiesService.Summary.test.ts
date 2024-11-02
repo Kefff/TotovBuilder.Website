@@ -23,7 +23,7 @@ import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('getSummary()', () => {
+describe('getSummaryAsync()', () => {
   describe('Armor modifiers', () => {
     it.each([
       [
@@ -158,7 +158,7 @@ describe('getSummary()', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const summary = await service.getSummary(build)
+      const summary = await service.getSummaryAsync(build)
 
       // Assert
       expect(summary.armorModifiers).toStrictEqual(expected)
@@ -178,7 +178,7 @@ describe('getSummary()', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const summary = await service.getSummary({
+      const summary = await service.getSummaryAsync({
         id: 'build1',
         name: 'Build 1',
         inventorySlots: [],
@@ -239,7 +239,7 @@ describe('getSummary()', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.ergonomics).toBe(expected)
@@ -286,7 +286,7 @@ describe('getSummary()', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const summary = await service.getSummary(build)
+      const summary = await service.getSummaryAsync(build)
 
       // Assert
       expect(summary.ergonomics).toBe(0)
@@ -374,7 +374,7 @@ describe('getSummary()', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.price).toStrictEqual(expected)
@@ -425,7 +425,7 @@ describe('getSummary()', () => {
       }
 
       // Act
-      const summary = await service.getSummary(build)
+      const summary = await service.getSummaryAsync(build)
 
       // Assert
       expect(summary.price).toStrictEqual({
@@ -503,7 +503,7 @@ describe('getSummary()', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.recoil).toStrictEqual(expected)
@@ -524,7 +524,7 @@ describe('getSummary()', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const summary = await service.getSummary(
+      const summary = await service.getSummaryAsync(
         {
           id: 'build1',
           inventorySlots: [
@@ -1485,7 +1485,7 @@ describe('getSummary()', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.shoppingList).toStrictEqual(expected)
@@ -1506,7 +1506,7 @@ describe('getSummary()', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const act = (): Promise<IBuildSummary> => service.getSummary({
+      const act = (): Promise<IBuildSummary> => service.getSummaryAsync({
         name: 'Build',
         id: 'build',
         inventorySlots: [
@@ -1584,7 +1584,7 @@ describe('getSummary()', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.weight).toBe(expected)
@@ -1641,7 +1641,7 @@ describe('getSummary()', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.wearableModifiers).toStrictEqual(expected)

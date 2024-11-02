@@ -36,6 +36,7 @@
   "root": true,
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "error",
+    "@typescript-eslint/explicit-member-accessibility": "error",
     "@typescript-eslint/indent": [
       "warn",
       2
@@ -44,6 +45,33 @@
     "comma-dangle": [
       "warn",
       "never"
+    ],
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "FunctionDeclaration[async=false][id.name=/Async$/]",
+        "message": "Function ending in 'Async' must be declared async"
+      },
+      {
+        "selector": "FunctionDeclaration[async=true][id.name!=/Async$/]",
+        "message": "Async function name must end in 'Async'"
+      },
+      {
+        "selector": "MethodDefinition[value.async=false][key.name=/Async$/]",
+        "message": "Method ending in 'Async' must be declared async"
+      },
+      {
+        "selector": "MethodDefinition[value.async=true][key.name!=/Async$/]",
+        "message": "Async method name must end in 'Async'"
+      },
+      {
+        "selector": "Property[value.type=/FunctionExpression$/][value.async=true][key.name!=/Promise$/]",
+        "message": "Promise property name must end in 'Promise'"
+      },
+      {
+        "selector": "VariableDeclarator[init.type=/FunctionExpression$/][init.async=true][id.name!=/Promise$/]",
+        "message": "Promise variable name must end in 'Promise'"
+      }
     ],
     "no-trailing-spaces": 1,
     "quotes": [

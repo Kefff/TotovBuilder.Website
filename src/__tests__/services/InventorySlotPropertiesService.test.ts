@@ -23,7 +23,7 @@ import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('InventorySlotPropertiesService', () => {
-  describe('getSummary()', () => {
+  describe('getSummaryAsync()', () => {
     describe('Armor modifiers', () => {
       it.each([
         [
@@ -190,7 +190,7 @@ describe('InventorySlotPropertiesService', () => {
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary(inventorySlot)
+        const summary = await service.getSummaryAsync(inventorySlot)
 
         // Assert
         expect(summary.armorModifiers).toStrictEqual(expected)
@@ -209,7 +209,7 @@ describe('InventorySlotPropertiesService', () => {
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary({
+        const summary = await service.getSummaryAsync({
           items: [
             {
               content: [],
@@ -255,7 +255,7 @@ describe('InventorySlotPropertiesService', () => {
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary(inventorySlot)
+        const summary = await service.getSummaryAsync(inventorySlot)
 
         // Assert
         expect(summary.ergonomics).toBe(expected)
@@ -274,7 +274,7 @@ describe('InventorySlotPropertiesService', () => {
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary({
+        const summary = await service.getSummaryAsync({
           items: [
             {
               content: [],
@@ -385,7 +385,7 @@ describe('InventorySlotPropertiesService', () => {
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary(inventorySlot)
+        const summary = await service.getSummaryAsync(inventorySlot)
 
         // Assert
         expect(summary.price).toStrictEqual(expected)
@@ -417,7 +417,7 @@ describe('InventorySlotPropertiesService', () => {
         }
 
         // Act
-        const summary = await service.getSummary(inventorySlot)
+        const summary = await service.getSummaryAsync(inventorySlot)
 
         // Assert
         expect(summary.price).toStrictEqual({
@@ -439,7 +439,7 @@ describe('InventorySlotPropertiesService', () => {
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary(
+        const summary = await service.getSummaryAsync(
           {
             items: [
               {
@@ -501,7 +501,7 @@ describe('InventorySlotPropertiesService', () => {
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary(inventorySlot)
+        const summary = await service.getSummaryAsync(inventorySlot)
 
         // Assert
         expect(summary.recoil).toStrictEqual(expected)
@@ -520,7 +520,7 @@ describe('InventorySlotPropertiesService', () => {
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary({
+        const summary = await service.getSummaryAsync({
           items: [
             {
               content: [],
@@ -591,7 +591,7 @@ describe('InventorySlotPropertiesService', () => {
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary(inventorySlot)
+        const summary = await service.getSummaryAsync(inventorySlot)
 
         // Assert
         expect(summary.wearableModifiers).toStrictEqual(expected)
@@ -610,7 +610,7 @@ describe('InventorySlotPropertiesService', () => {
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary({
+        const summary = await service.getSummaryAsync({
           items: [
             {
               content: [],
@@ -662,7 +662,7 @@ describe('InventorySlotPropertiesService', () => {
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary(inventorySlot)
+        const summary = await service.getSummaryAsync(inventorySlot)
 
         // Assert
         expect(summary.weight).toBe(expected)
@@ -681,7 +681,7 @@ describe('InventorySlotPropertiesService', () => {
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary({
+        const summary = await service.getSummaryAsync({
           items: [
             {
               content: [],
@@ -755,7 +755,7 @@ describe('InventorySlotPropertiesService', () => {
     })
   })
 
-  describe('toText() (markdown)', () => {
+  describe('toTextAsync() (markdown)', () => {
     it.each([
       [
         inventorySlot1,
@@ -861,7 +861,7 @@ describe('InventorySlotPropertiesService', () => {
       const service = new InventorySlotPropertiesService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         inventorySlot,
         {
           includeEmojis: true,
@@ -888,7 +888,7 @@ describe('InventorySlotPropertiesService', () => {
       const service = new InventorySlotPropertiesService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         inventorySlot1,
         {
           includeEmojis: false,
@@ -911,7 +911,7 @@ describe('InventorySlotPropertiesService', () => {
       const service = new InventorySlotPropertiesService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         {
           items: [undefined, undefined, undefined, undefined],
           typeId: InventorySlotTypeId.pockets
@@ -930,7 +930,7 @@ describe('InventorySlotPropertiesService', () => {
     })
   })
 
-  describe('toText() (simple text)', () => {
+  describe('toTextAsync() (simple text)', () => {
     it.each([
       [
         inventorySlot1,
@@ -1036,7 +1036,7 @@ describe('InventorySlotPropertiesService', () => {
       const service = new InventorySlotPropertiesService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         inventorySlot,
         {
           includeEmojis: true,
@@ -1063,7 +1063,7 @@ describe('InventorySlotPropertiesService', () => {
       const service = new InventorySlotPropertiesService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         inventorySlot1,
         {
           includeEmojis: false,
@@ -1086,7 +1086,7 @@ describe('InventorySlotPropertiesService', () => {
       const service = new InventorySlotPropertiesService()
 
       // Act
-      const result = await service.toText(
+      const result = await service.toTextAsync(
         {
           items: [undefined, undefined, undefined, undefined],
           typeId: InventorySlotTypeId.pockets

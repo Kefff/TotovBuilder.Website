@@ -12,27 +12,27 @@ export const AmmunitionSortingFunctions: IItemSortingFunctionList = {
     ...ItemSortingFunctions.functions,
     accuracyModifierPercentage: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IAmmunition).accuracyModifierPercentage)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IAmmunition).accuracyModifierPercentage)
     },
     fleshDamage: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IAmmunition).fleshDamage * (i as IAmmunition).projectiles)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IAmmunition).fleshDamage * (i as IAmmunition).projectiles)
     },
     fragmentationChance: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IAmmunition).fragmentationChance)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IAmmunition).fragmentationChance)
     },
     penetratedArmorLevel: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IAmmunition).penetrationPower) // Since the penetratedArmorLevel is calculated from the penetrationPower, we can sort by penetrationPower which is more precise
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IAmmunition).penetrationPower) // Since the penetratedArmorLevel is calculated from the penetrationPower, we can sort by penetrationPower which is more precise
     },
     penetrationPower: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IAmmunition).penetrationPower)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IAmmunition).penetrationPower)
     },
     recoilModifier: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionFunction: i => Promise.resolve((i as IAmmunition).recoilModifier)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IAmmunition).recoilModifier)
     }
   },
   itemCategoryIds: [ItemCategoryId.ammunition]

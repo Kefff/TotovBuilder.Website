@@ -71,7 +71,7 @@ const _toolbarButtons: IToolbarButton[] = [
     showCaption: () => 'always'
   },
   {
-    action: save,
+    action: saveAsync,
     canBeMovedToSidebar: () => false,
     caption: () => vueI18n.t('caption.save'),
     icon: () => 'save',
@@ -100,7 +100,7 @@ const _toolbarButtons: IToolbarButton[] = [
     style: () => 'discreet'
   },
   {
-    action: exportBuild,
+    action: exportBuildAsync,
     caption: () => vueI18n.t('caption.export'),
     icon: () => 'download',
     isDisabled: () => isLoading.value,
@@ -225,7 +225,7 @@ const summary = ref<IBuildSummary>({
   weight: 0
 })
 
-useEventListener(document, 'keydown', onKeyDown)
+useEventListener(document, 'keydown', onKeyDownAsync)
 
 provide('isEditing', isEditing)
 
@@ -273,7 +273,7 @@ function cancelEdit(): void {
     goToBuilds()
   } else {
     build.value = _originalBuild
-    setSummary()
+    setSummaryAsync()
   }
 }
 
@@ -437,20 +437,20 @@ function expandWithItem(): void {
 /**
  * Exports the build.
  */
-async function exportBuild(): Promise<void> {
+async function exportBuildAsync(): Promise<void> {
   if (isEditing.value || isNewBuild.value) {
     return
   }
 
-  await Services.get(ExportService).export([build.value])
+  await Services.get(ExportService).exportAsync([build.value])
 }
 
 /**
  * Gets a shared build from an encoded string that can be shared in a URL.
  * @param sharableString - Encoded string that can be shared in a URL.
  */
-async function getSharedBuild(sharableString: string): Promise<void> {
-  const sharedBuild = await Services.get(BuildService).fromSharableString(sharableString)
+async function getSharedBuildAsync(sharableString: string): Promise<void> {
+  const sharedBuild = await Services.get(BuildService).fromSharableStringAsync(sharableString)
 
   if (sharedBuild == null) {
     goToBuilds()
@@ -475,7 +475,7 @@ function goToBuilds(): void {
  * @param request - Compatibility request.
  */
 function onArmorCompatibilityRequest(request: CompatibilityRequest): void {
-  request.setResult(_buildPropertiesService.canAddArmor(build.value))
+  request.setResult(_buildPropertiesService.canAddArmorAsync(build.value))
 }
 
 /**
@@ -486,7 +486,7 @@ function onArmorCompatibilityRequest(request: CompatibilityRequest): void {
 function onInventorySlotChanged(index: number, newInventorySlot: IInventorySlot): void {
   build.value.inventorySlots[index] = newInventorySlot
 
-  setSummary()
+  setSummaryAsync()
 }
 
 /**
@@ -504,13 +504,13 @@ function onItemServiceInitialized(): void {
     } else if (route.name === 'ShareBuild') {
       const sharableString = route.params['sharedBuild'] as string
 
-      await getSharedBuild(sharableString)
+      await getSharedBuildAsync(sharableString)
       expandAll()
     } else {
       build.value = _buildComponentService.getBuild(route.params['id'] as string)
     }
 
-    setSummary()
+    setSummaryAsync()
     isLoading.value = false
   }, 1)
 }
@@ -519,12 +519,12 @@ function onItemServiceInitialized(): void {
  * Reacts to a keyboard event.
  * @param event - Keyboard event.
  */
-async function onKeyDown(event: KeyboardEvent): Promise<void> {
+async function onKeyDownAsync(event: KeyboardEvent): Promise<void> {
   if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
     event.preventDefault() // Prevents the browser save action to be triggered
 
     if (isEditing.value && !invalid.value) {
-      await save()
+      await saveAsync()
       startEdit() // After saving with the shortcut, we stay in edit mode unlike when using the button
     }
   }
@@ -544,7 +544,7 @@ function onToolbarIsStickiedChanged(isStickied: boolean): void {
   if ((isCompactBuildSummaryExpanded.value && isStickied)
     || (!isCompactBuildSummaryExpanded.value && !isStickied)
   ) {
-    toggleCompactBuildSummary()
+    toggleCompactBuildSummaryAsync()
   }
 }
 
@@ -554,7 +554,7 @@ function onToolbarIsStickiedChanged(isStickied: boolean): void {
  * Updates the build summary price to reflect the change in merchant filters.
  */
 function onMerchantFilterChanged(): void {
-  setSummary()
+  setSummaryAsync()
 }
 
 /**
@@ -564,7 +564,7 @@ function onMerchantFilterChanged(): void {
  * @param request - Compatibility request that must be resolved.
  */
 function onModCompatibilityRequest(request: CompatibilityRequest): void {
-  request.setResult(_buildPropertiesService.canAddMod(build.value, request.itemId, request.path))
+  request.setResult(_buildPropertiesService.canAddModAsync(build.value, request.itemId, request.path))
 }
 
 /**
@@ -574,7 +574,7 @@ function onModCompatibilityRequest(request: CompatibilityRequest): void {
  * @param request - Compatibility request.
  */
 function onTacticalRigCompatibilityRequest(request: CompatibilityRequest): void {
-  request.setResult(_buildPropertiesService.canAddVest(build.value, request.itemId))
+  request.setResult(_buildPropertiesService.canAddVestAsync(build.value, request.itemId))
 }
 
 /**
@@ -587,9 +587,9 @@ function remove(): void {
 /**
  * Saves the build.
  */
-async function save(): Promise<void> {
+async function saveAsync(): Promise<void> {
   isLoading.value = true
-  await _buildComponentService.saveBuild(router, build.value)
+  await _buildComponentService.saveBuildAsync(router, build.value)
 
   nextTick(() => {
     isLoading.value = false
@@ -600,12 +600,12 @@ async function save(): Promise<void> {
 /**
  * Sets the values of the summary of the content of the build.
  */
-async function setSummary(): Promise<void> {
+async function setSummaryAsync(): Promise<void> {
   if (build.value == null) {
     return
   }
 
-  summary.value = await _buildPropertiesService.getSummary(build.value)
+  summary.value = await _buildPropertiesService.getSummaryAsync(build.value)
 }
 
 /**
@@ -639,7 +639,7 @@ function startEdit(): void {
 /**
  * Toggles the visibility of the compact build summary.
  */
-async function toggleCompactBuildSummary(): Promise<void> {
+async function toggleCompactBuildSummaryAsync(): Promise<void> {
   if (_isCompactSummaryExpanding) {
     return
   }
@@ -749,7 +749,7 @@ async function toggleCompactBuildSummary(): Promise<void> {
         <div
           v-if="!isLoading && isCompactMode"
           class="build-summary-popup-button-container"
-          @click="toggleCompactBuildSummary"
+          @click="toggleCompactBuildSummaryAsync"
         >
           <div class="build-summary-popup-button">
             <font-awesome-icon

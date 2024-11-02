@@ -92,7 +92,7 @@ watch(
   () => neetToSetOptions.value = true)
 watch(
   () => props.inventoryItem?.itemId,
-  () => initializeItem())
+  () => initializeItemAsync())
 watch(
   () => props.inventoryItem?.quantity,
   () => quantity.value = props.inventoryItem?.quantity ?? 0)
@@ -101,13 +101,13 @@ watch(
   () => setSelectedTab())
 
 onMounted(() => {
-  initializeItem()
+  initializeItemAsync()
 })
 
 /**
-     * Initializes the item based on the inventory item passed to the component.
-     */
-async function initializeItem(): Promise<void> {
+ * Initializes the item based on the inventory item passed to the component.
+ */
+async function initializeItemAsync(): Promise<void> {
   if (props.inventoryItem == null) {
     quantity.value = 0
     item.value = undefined
@@ -119,17 +119,17 @@ async function initializeItem(): Promise<void> {
     return
   }
 
-  item.value = await _itemService.getItem(props.inventoryItem.itemId)
+  item.value = await _itemService.getItemAsync(props.inventoryItem.itemId)
   quantity.value = props.inventoryItem.quantity
   presetModSlotContainingItem.value = _presetService.getPresetModSlotContainingItem(item.value.id, props.path)
   setBaseItem(item.value)
 }
 
 /**
-     * Reacts to the inventory item content being changed.
-     *
-     * Updates the inventory item based on the contained items.
-     */
+ * Reacts to the inventory item content being changed.
+ *
+ * Updates the inventory item based on the contained items.
+ */
 function onContentChanged(newContent: IInventoryItem[]): void {
   if (modelInventoryItem.value == null) {
     return
@@ -145,10 +145,10 @@ function onContentChanged(newContent: IInventoryItem[]): void {
 }
 
 /**
-     * Reacts to the items selection dropdown being opened.
-     *
-     * Scrolls to the item in the item dropdown.
-     */
+ * Reacts to the items selection dropdown being opened.
+ *
+ * Scrolls to the item in the item dropdown.
+ */
 function onDropdownOpen(): void {
   if (item.value == null) {
     return
@@ -167,21 +167,21 @@ function onDropdownOpen(): void {
 }
 
 /**
-     * Reacts to the item selection filter being changed.
-     *
-     * Filters the options items.
-     */
+ * Reacts to the item selection filter being changed.
+ *
+ * Filters the options items.
+ */
 function onFilterOptions(newValue: string): void {
   optionsFilter.value = newValue
   neetToSetOptions.value = true
-  setOptions()
+  setOptionsAsync()
 }
 
 /**
-     * Reacts to the click on the item ignore price button.
-     *
-     * Updates the inventory item based on the fact that the price is ignored or not.
-     */
+ * Reacts to the click on the item ignore price button.
+ *
+ * Updates the inventory item based on the fact that the price is ignored or not.
+ */
 function onIgnorePriceChanged(newIgnorePrice: boolean): void {
   if (modelInventoryItem.value == null) {
     return
@@ -197,11 +197,11 @@ function onIgnorePriceChanged(newIgnorePrice: boolean): void {
 }
 
 /**
-     * Reacts to the selected item being changed.
-     *
-     * Updates the inventory item based on the selected item.
-     */
-async function onItemChanged(): Promise<void> {
+ * Reacts to the selected item being changed.
+ *
+ * Updates the inventory item based on the selected item.
+ */
+async function onItemChangedAsync(): Promise<void> {
   if (item.value?.id === modelInventoryItem.value?.itemId) {
     return
   }
@@ -228,10 +228,10 @@ async function onItemChanged(): Promise<void> {
 }
 
 /**
-     * Reacts to the inventory item mods being changed.
-     *
-     * Updates the inventory item based on the mods.
-     */
+ * Reacts to the inventory item mods being changed.
+ *
+ * Updates the inventory item based on the mods.
+ */
 function onModsChanged(newModsSlots: IInventoryModSlot[]): void {
   if (modelInventoryItem.value == null) {
     return
@@ -247,10 +247,10 @@ function onModsChanged(newModsSlots: IInventoryModSlot[]): void {
 }
 
 /**
-     * Reacts to the item quantity being changed.
-     *
-     * Updates the inventory item based on the quantity.
-     */
+ * Reacts to the item quantity being changed.
+ *
+ * Updates the inventory item based on the quantity.
+ */
 function onQuantityChanged(newQuantity: number): void {
   if (modelInventoryItem.value == null) {
     return
@@ -266,16 +266,16 @@ function onQuantityChanged(newQuantity: number): void {
 }
 
 /**
-     * Reacts to the click on an item selection sort button.
-     *
-     * Sorts the options items.
-     */
-async function onSortOptions(newSortingData: SortingData<IItem>): Promise<void> {
+ * Reacts to the click on an item selection sort button.
+ *
+ * Sorts the options items.
+ */
+async function onSortOptionsAsync(newSortingData: SortingData<IItem>): Promise<void> {
   loadingOptions.value = true
 
   optionsSortingData.value = newSortingData
   const currentOptions = [...options.value] // Creating a new array because options.value can be updated while this function is being executed
-  options.value = await Services.get(SortingService).sort(currentOptions, optionsSortingData.value)
+  options.value = await Services.get(SortingService).sortAsync(currentOptions, optionsSortingData.value)
 
   loadingOptions.value = false
 
@@ -283,22 +283,22 @@ async function onSortOptions(newSortingData: SortingData<IItem>): Promise<void> 
 }
 
 /**
-     * Removes the selected item.
-     * @param event - Click event.
-     */
-async function removeItem(event: MouseEvent): Promise<void> {
+ * Removes the selected item.
+ * @param event - Click event.
+ */
+async function removeItemAsync(event: MouseEvent): Promise<void> {
   event.stopPropagation()
 
   item.value = undefined
-  await onItemChanged()
+  await onItemChangedAsync()
 }
 
 /**
-     * Sets the base item.
-     * This can correspond to the base item if the selected item is a preset.
-     * This can also correspond to the item itselft if it is the base item of a preset.
-     * @param item - Item from which we search the base item.
-     */
+ * Sets the base item.
+ * This can correspond to the base item if the selected item is a preset.
+ * This can also correspond to the item itselft if it is the base item of a preset.
+ * @param item - Item from which we search the base item.
+ */
 function setBaseItem(item: IItem): void {
   if (_itemPropertiesService.isModdable(item) && !props.isBaseItem) {
     const moddable = item as IModdable
@@ -344,9 +344,9 @@ function setBaseItem(item: IItem): void {
 }
 
 /**
-     * Sets the options selectable in the drop down input based on the current filter and sorting.
-     */
-async function setOptions(): Promise<void> {
+ * Sets the options selectable in the drop down input based on the current filter and sorting.
+ */
+async function setOptionsAsync(): Promise<void> {
   if (!neetToSetOptions.value) {
     return
   }
@@ -376,17 +376,17 @@ async function setOptions(): Promise<void> {
     options.value = filteredOptions
   }
 
-  onSortOptions(optionsSortingData.value)
+  onSortOptionsAsync(optionsSortingData.value)
 
   loadingOptions.value = false
 }
 
 /**
-     * Scrolls the dropdown to the selected item.
-     *
-     * This is to workaround for an issye where the PrimeVue scrolling to the selected element breaks
-     * because we focus the filter input.
-     */
+ * Scrolls the dropdown to the selected item.
+ *
+ * This is to workaround for an issye where the PrimeVue scrolling to the selected element breaks
+ * because we focus the filter input.
+ */
 function scrollToItemInDropdown(): void {
   if (item.value == null) {
     return
@@ -400,8 +400,8 @@ function scrollToItemInDropdown(): void {
 }
 
 /**
-     * Sets the selected tab based on the type of selected item.
-     */
+ * Sets the selected tab based on the type of selected item.
+ */
 function setSelectedTab(): void {
   if (item.value?.id != null) {
     // When an item is not found, but has mods or content, we consider it is moddable / a container in order to be able to display its possible child items
@@ -427,13 +427,13 @@ function setSelectedTab(): void {
 }
 
 /**
-     * Updates the inventory item based on a new selected item if it is compatible; otherwise puts back the previous selected item.
-     * @param newItem - New selected item.
-     * @param compatibilityCheckResult - Indicates whether the new selected item is compatible or not.
-     */
+ * Updates the inventory item based on a new selected item if it is compatible; otherwise puts back the previous selected item.
+ * @param newItem - New selected item.
+ * @param compatibilityCheckResult - Indicates whether the new selected item is compatible or not.
+ */
 function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean): void {
   if (!compatibilityCheckResult) {
-    initializeItem() // Putting back the previous selected item when the new item is incomptatible
+    initializeItemAsync() // Putting back the previous selected item when the new item is incomptatible
   } else {
     quantity.value = maxSelectableQuantity.value
     const ignorePrice = modelInventoryItem.value?.ignorePrice ?? false
@@ -517,15 +517,15 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           :virtual-scroller-options="{ orientation: 'vertical', itemSize: optionHeight }"
           class="item-dropdown"
           data-key="id"
-          @before-show="setOptions()"
-          @change="onItemChanged()"
+          @before-show="setOptionsAsync()"
+          @change="onItemChangedAsync()"
           @show="onDropdownOpen()"
         >
           <template #clearicon>
             <Tooltip :tooltip="$t('caption.clearItem')">
               <div
                 class="item-clear-button"
-                @click="removeItem"
+                @click="removeItemAsync"
               >
                 <font-awesome-icon icon="times" />
               </div>
@@ -549,7 +549,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
               :filter="optionsFilter"
               :sorting-data="optionsSortingData"
               @update:filter="onFilterOptions($event)"
-              @update:sorting-data="onSortOptions($event)"
+              @update:sorting-data="onSortOptionsAsync($event)"
             />
           </template>
           <template #option="slotProps">
