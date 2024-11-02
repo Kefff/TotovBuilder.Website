@@ -15,7 +15,7 @@ useApplicationInsights()
 polyfill()
 
 // Services
-initializeServices()
+void initializeServices()
 
 // App
 const app = createApp(App)

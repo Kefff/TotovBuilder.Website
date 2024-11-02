@@ -29,5 +29,5 @@ export async function initializeServices() {
   websiteConfigurationService.initializationState = ServiceInitializationState.initialized
 
   // Initialization of values that are not immediatly required and take time to load
-  Services.get(ItemService).initialize()
+  await Services.get(ItemService).initialize()
 }

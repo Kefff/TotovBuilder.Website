@@ -49,7 +49,7 @@ describe('GlobalSideBarService', () => {
       expect(globalSidebarToOpenOptions).toStrictEqual(options)
     })
 
-    it('should register a close action', () => {
+    it('should register a close action', async () => {
       // Arrange
       let executed = false
       const service = new GlobalSidebarService()
@@ -61,13 +61,13 @@ describe('GlobalSideBarService', () => {
           executed = true
         }
       })
-      service.executeOnCloseActions('GeneralOptionsSidebar')
+      await service.executeOnCloseActions('GeneralOptionsSidebar')
 
       // Assert
       expect(executed).toBe(true)
     })
 
-    it('should do nothing when the maximum level is already reached', () => {
+    it('should do nothing when the maximum level is already reached', async () => {
       // Arrange
       const service = new GlobalSidebarService()
 
@@ -76,9 +76,9 @@ describe('GlobalSideBarService', () => {
       service.display({ displayedComponentType: 'BuildSidebar' })
       service.display({ displayedComponentType: 'BuildsExportSidebar' })
       service.display({ displayedComponentType: 'BuildsListSidebar' })
-      service.executeOnCloseActions('BuildsShareSideBar')
-      service.executeOnCloseActions('BuildSidebar')
-      service.executeOnCloseActions('BuildsExportSidebar')
+      await service.executeOnCloseActions('BuildsShareSideBar')
+      await service.executeOnCloseActions('BuildSidebar')
+      await service.executeOnCloseActions('BuildsExportSidebar')
 
       // Assert
       const isDisplayed = service.isDisplayed()
@@ -119,7 +119,7 @@ describe('GlobalSideBarService', () => {
   })
 
   describe('isDisplayed()', () => {
-    it('should indicate when a sidebar is displayed', () => {
+    it('should indicate when a sidebar is displayed', async () => {
       // Arrange
       const service = new GlobalSidebarService()
 
@@ -137,14 +137,14 @@ describe('GlobalSideBarService', () => {
       expect(result).toBe(true)
 
       // Act
-      service.executeOnCloseActions('BuildsListSidebar')
+      await service.executeOnCloseActions('BuildsListSidebar')
       result = service.isDisplayed()
 
       // Assert
       expect(result).toBe(true)
 
       // Act
-      service.executeOnCloseActions('ChangelogSidebar')
+      await service.executeOnCloseActions('ChangelogSidebar')
       result = service.isDisplayed()
 
       // Assert

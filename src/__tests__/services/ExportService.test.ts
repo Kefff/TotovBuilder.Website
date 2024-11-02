@@ -1,6 +1,5 @@
-import { describe } from 'node:test'
 import { anything, instance, mock, verify, when } from 'ts-mockito'
-import { expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { BuildService } from '../../services/BuildService'
 import { ExportService } from '../../services/ExportService'
 import { FileService } from '../../services/FileService'
@@ -46,7 +45,7 @@ describe('ExportService', () => {
       verify(notificationServiceMock.notify(NotificationType.success, 'Builds file saved.'))
     })
 
-    it('should do nothing when the file save fails', () => {
+    it('should do nothing when the file save fails', async () => {
       // Arrange
       let exported = false
 
@@ -62,7 +61,7 @@ describe('ExportService', () => {
       })
 
       // Act
-      service.export([build1])
+      await service.export([build1])
 
       // Assert
       expect(exported).toBe(false)

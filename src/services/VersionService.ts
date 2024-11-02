@@ -232,7 +232,7 @@ export class VersionService {
         continue
       }
 
-      buidService.update(build)
+      await buidService.update(build)
     }
 
     if (buildUnrelatedMigrationsResult && buildsMigrationsResult) {

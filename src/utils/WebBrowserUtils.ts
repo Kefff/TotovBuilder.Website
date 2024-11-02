@@ -1,4 +1,3 @@
-
 /**
  * Represents an utility class for manipulating the web browser.
  */

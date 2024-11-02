@@ -61,7 +61,7 @@
     "test-watch": "vitest watch",
     "test": "vitest run",
     "tsc": "npm run type-check",
-    "type-check": "vue-tsc --noEmit && tsc --noEmit"
+    "type-check": "vue-tsc && tsc"
   },
   "type": "module",
   "version": "0.0.0"

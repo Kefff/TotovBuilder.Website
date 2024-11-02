@@ -21,7 +21,7 @@ export class BuildComponentService {
 
     buildService.delete(build.id)
     notificationService.notify(NotificationType.information, vueI18n.t('message.buildDeleted', { name: buildName }))
-    router.push({ name: 'Builds' })
+    void router.push({ name: 'Builds' })
   }
 
   /**
@@ -58,7 +58,7 @@ export class BuildComponentService {
     if (build.id === '') {
       // New build
       const newBuildId = await buildService.add(build)
-      router.push({ name: 'Build', params: { id: newBuildId } })
+      void router.push({ name: 'Build', params: { id: newBuildId } })
     } else {
       // Update
       await buildService.update(build)

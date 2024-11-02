@@ -132,7 +132,7 @@ export class BuildService {
       return undefined
     }
 
-    Services.get(VersionService).executeBuildMigrations(build) // Executing migrations on the build in case it is obsolete
+    await Services.get(VersionService).executeBuildMigrations(build) // Executing migrations on the build in case it is obsolete
 
     return build
   }
@@ -269,7 +269,7 @@ export class BuildService {
 
     Services.get(LogService).logError('message.buildToUpdateNotFound', { id: build.id })
 
-    this.add(build)
+    await this.add(build)
   }
 
   /**
