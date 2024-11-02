@@ -112,21 +112,21 @@ watch(() => [props.inventoryItem.itemId, props.inventoryItem.quantity], () => {
  *
  * Updates the selected item price to reflect the change in merchant filters.
  */
-function onMerchantFilterChanged() {
+function onMerchantFilterChanged(): void {
   setPrice()
 }
 
 /**
  * Sets the price of the inventory item.
  */
-async function setPrice() {
+async function setPrice(): Promise<void> {
   selectedItemPrice.value = await _inventoryItemService.getPrice(props.inventoryItem, props.inventoryItemInSameSlotInPreset, props.canBeLooted)
 }
 
 /**
  * Sets the weight of the inventory items.
  */
-async function setWeight() {
+async function setWeight(): Promise<void> {
   selectedItemWeight.value = await _inventoryItemService.getWeight(props.inventoryItem)
 }
 </script>

@@ -17,6 +17,8 @@ const ShoppingListSidebar = defineAsyncComponent(() => import('./ShoppingListSid
 const StatsSidebar = defineAsyncComponent(() => import('./StatsSidebarComponent.vue'))
 const ToolbarSidebar = defineAsyncComponent(() => import('./ToolbarSidebarComponent.vue'))
 
+type DisplayedComponent = typeof BuildsExportSidebar | typeof BuildsShareSideBar | typeof BuildSidebar | typeof BuildsImportSidebar | typeof BuildsListSidebar | typeof ChangelogSidebar | typeof GeneralOptionsSidebar | typeof MerchantItemsOptionsSidebar | typeof NotificationsSidebar | typeof ShoppingListSidebar | typeof StatsSidebar | typeof ToolbarSidebar | undefined
+
 const props = defineProps<{
   level: number
 }>()
@@ -54,7 +56,7 @@ onUnmounted(() => {
 /**
  * Sets the component to display.
  */
-function getDisplayedComponent(displayedComponentType: GlobalSidebarComponent) {
+function getDisplayedComponent(displayedComponentType: GlobalSidebarComponent): DisplayedComponent {
   subtitle.value = undefined
 
   switch (displayedComponentType) {
@@ -144,7 +146,7 @@ function getBuildsShareSideBarSubtitle(parameters: BuildsShareSideBarParameters)
  * Executes the close action if defined and closes the global sidebar.
  * @param displayedComponentType- Type of component displayed in the global sidebar to close.
  */
-function onGlobalSidebarClose(displayedComponentType: GlobalSidebarComponent) {
+function onGlobalSidebarClose(displayedComponentType: GlobalSidebarComponent): void {
   if (displayedComponentType === options.value.displayedComponentType) {
     Services.get(GlobalSidebarService).executeOnCloseActions(displayedComponentType, options.value.displayedComponentParameters)
     visibleInternal.value = false
@@ -158,7 +160,7 @@ function onGlobalSidebarClose(displayedComponentType: GlobalSidebarComponent) {
  * @param openingOptions - Opening options.
  * @param level - Level of the sidebar to open.
  */
-function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: number) {
+function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: number): void {
   if (level === props.level) {
     visible.value = true
     options.value = openingOptions

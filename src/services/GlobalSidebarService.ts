@@ -43,7 +43,7 @@ export class GlobalSidebarService {
    * Closes a global sidebar.
    * @param displayedComponentType- Type of component displayed in the global sidebar to close.
    */
-  public close(displayedComponentType: GlobalSidebarComponent) {
+  public close(displayedComponentType: GlobalSidebarComponent): void {
     this.emitter.emit(GlobalSidebarService.closeGlobalSidebarEvent, displayedComponentType)
   }
 
@@ -51,7 +51,7 @@ export class GlobalSidebarService {
    * Displays a global sidebar.
    * @param options - Options.
    */
-  public display(options: IGlobalSidebarOptions) {
+  public display(options: IGlobalSidebarOptions): void {
     if (this.displayedSidebar.length === 3) {
       return
     }
@@ -69,7 +69,7 @@ export class GlobalSidebarService {
    * Executes the actions registered to be executed when a sidebar is closed.
    * @param displayedComponentType - Type of component displayed in the closed sidebar.
    */
-  public async executeOnCloseActions(displayedComponentType: GlobalSidebarComponent, updatedParameters?: GlobalSidebarDisplayedComponentParameters) {
+  public async executeOnCloseActions(displayedComponentType: GlobalSidebarComponent, updatedParameters?: GlobalSidebarDisplayedComponentParameters): Promise<void> {
     for (const onCloseAction of this.onCloseActions) {
       if (onCloseAction.type === displayedComponentType) {
         await onCloseAction.action(updatedParameters)
@@ -84,7 +84,7 @@ export class GlobalSidebarService {
    * Indicates whether a global sidebar is opened.
    * @returns true when a global sidebar is opened; otherwise false.
    */
-  public isDisplayed() {
+  public isDisplayed(): boolean {
     return this.displayedSidebar.length > 0
   }
 
@@ -93,7 +93,7 @@ export class GlobalSidebarService {
    * @param displayedComponentType - Type of component displayed in the closed sidebar.
    * @param action - Action.
    */
-  public registerOnCloseAction(displayedComponentType: GlobalSidebarComponent, action: (updatedParameters?: GlobalSidebarDisplayedComponentParameters) => void | Promise<void>) {
+  public registerOnCloseAction(displayedComponentType: GlobalSidebarComponent, action: (updatedParameters?: GlobalSidebarDisplayedComponentParameters) => void | Promise<void>): void {
     this.onCloseActions.push({ action, type: displayedComponentType })
   }
 

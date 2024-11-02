@@ -88,7 +88,7 @@ function checkIsSelected(buildSummary: IBuildSummary): boolean {
 /**
  * Filters and sorts build summaries.
  */
-async function filterAndSortBuildSummaries() {
+async function filterAndSortBuildSummaries(): Promise<void> {
   let buildSummariesToFilter = [...props.buildSummaries]
   buildSummariesToFilter = await filterBuildSummaries(buildSummariesToFilter)
   buildSummariesToFilter = await sortBuildSummaries(buildSummariesToFilter)
@@ -131,7 +131,7 @@ async function filterBuildSummaries(buildSummariesToFilter: IBuildSummary[]): Pr
  * Applies the filter and sort, and saves the sort.
  * @param updatedParameters - Filter and sort data updated by the side bar.
  */
-function onFilterAndSortSidebarClose(updatedParameters?: GlobalSidebarDisplayedComponentParameters) {
+function onFilterAndSortSidebarClose(updatedParameters?: GlobalSidebarDisplayedComponentParameters): void {
   const updatedFilterAndSortingData = updatedParameters as BuildFilterAndSortingData
   const hasSortChange =
     updatedFilterAndSortingData.property !== modelFilterAndSortingData.value.property
@@ -147,7 +147,7 @@ function onFilterAndSortSidebarClose(updatedParameters?: GlobalSidebarDisplayedC
  * Reacts to a keyboard event.
  * @param event - Keyboard event.
  */
-function onKeyDown(event: KeyboardEvent) {
+function onKeyDown(event: KeyboardEvent): void {
   if (event.key === 'f'
     && (event.ctrlKey
       || event.metaKey)) {
@@ -162,7 +162,7 @@ function onKeyDown(event: KeyboardEvent) {
 /**
  * Removes the filter.
  */
-function removeFilter() {
+function removeFilter(): void {
   modelFilterAndSortingData.value = {
     ...modelFilterAndSortingData.value,
     filter: ''
@@ -172,7 +172,7 @@ function removeFilter() {
 /**
  * Opens the filter and sort sidebar.
  */
-function showFilterAndSortSidebar() {
+function showFilterAndSortSidebar(): void {
   _globalSidebarService.display({
     displayedComponentType: 'BuildsListSidebar',
     displayedComponentParameters: { ...modelFilterAndSortingData.value },
@@ -195,7 +195,7 @@ async function sortBuildSummaries(buildSummariesToSort: IBuildSummary[]): Promis
  * @param buildSummary - Build.
  * @param isSelected - Indicates whetehr the build is selected.
  */
-function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean) {
+function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean): void {
   if (isSelected) {
     modelSelectedBuilds.value = [
       ...modelSelectedBuilds.value,

@@ -7,7 +7,7 @@ import Services from './services/repository/Services'
 /**
  * Initializes the first services required by the application.
  */
-export async function initializeServices() {
+export async function initializeServices(): Promise<void> {
   // Initialization of immediatly required values
   const websiteConfigurationService = Services.get(WebsiteConfigurationService)
   const websiteConfigurationServiceInitialized = await websiteConfigurationService.initialize()

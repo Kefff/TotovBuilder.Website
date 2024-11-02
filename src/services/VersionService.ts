@@ -282,7 +282,7 @@ export class VersionService {
    * @param version - Version.
    * @returns true when the version is newer than the last visit version; otherwise false.
    */
-  private isNew(version: string) {
+  private isNew(version: string): boolean {
     const isNew =
       this.lastVisitVersion != null
       && this.compareVersions(version, this.lastVisitVersion) > 0

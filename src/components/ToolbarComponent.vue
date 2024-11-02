@@ -54,7 +54,7 @@ watch(() => isStickied.value, () => emits('isStickied', isStickied.value))
 /**
  * Displays the toolbar sidebar.
  */
-function displayToolbarSideBar() {
+function displayToolbarSideBar(): void {
   _globalSidebarService.display({
     displayedComponentParameters: props.buttons,
     displayedComponentType: 'ToolbarSidebar'

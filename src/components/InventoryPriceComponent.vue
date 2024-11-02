@@ -48,7 +48,7 @@ const tooltip = computed(() => {
 /**
  * Toggles the details of the inventory price.
  */
-function toggleInventoryPriceDetails(event: Event) {
+function toggleInventoryPriceDetails(event: Event): void {
   if (!canShowDetails.value) {
     return
   }

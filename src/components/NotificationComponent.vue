@@ -26,7 +26,7 @@ onUnmounted(() => {
  * @param notification - Notification linked to the button.
  * @param button - Notification button.
  */
-function executeButtonAction(notification: INotification, button: INotificationButton) {
+function executeButtonAction(notification: INotification, button: INotificationButton): void {
   if (button.action != null) {
     button.action()
   }
@@ -51,14 +51,14 @@ function getButtonsGridTemplaceCss(toastNotification: INotification): string {
  * Gets the severity for a notification button.
  * @param button - Notification button.
  */
-function getSeverity(button: INotificationButton) {
+function getSeverity(button: INotificationButton): string {
   switch (button.type) {
     case NotificationType.error:
       return 'danger'
     case NotificationType.warning:
       return 'warning'
     default:
-      return button.type
+      return button.type as string
   }
 }
 </script>

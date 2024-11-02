@@ -26,7 +26,7 @@ onMounted(() => {
 /**
  * Saves the global filter and closes the side bar.
  */
-function save() {
+function save(): void {
   if (hasChanged.value) {
     _globalFilterService.save(globalFilter.value)
     hasChanged.value = false

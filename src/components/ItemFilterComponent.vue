@@ -8,7 +8,7 @@ const modelItemExclusionFilters = defineModel<IItemExclusionFilter[]>('itemExclu
  *
  * Updates the filter.
  */
-function onItemExclusionFilterChanged(index: number, enabled: boolean) {
+function onItemExclusionFilterChanged(index: number, enabled: boolean): void {
   const newItemExclusionFilters = [...modelItemExclusionFilters.value]
   newItemExclusionFilters[index].enabled = enabled
 

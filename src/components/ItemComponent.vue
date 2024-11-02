@@ -107,7 +107,7 @@ onMounted(() => {
 /**
      * Initializes the item based on the inventory item passed to the component.
      */
-async function initializeItem() {
+async function initializeItem(): Promise<void> {
   if (props.inventoryItem == null) {
     quantity.value = 0
     item.value = undefined
@@ -130,7 +130,7 @@ async function initializeItem() {
      *
      * Updates the inventory item based on the contained items.
      */
-function onContentChanged(newContent: IInventoryItem[]) {
+function onContentChanged(newContent: IInventoryItem[]): void {
   if (modelInventoryItem.value == null) {
     return
   }
@@ -149,7 +149,7 @@ function onContentChanged(newContent: IInventoryItem[]) {
      *
      * Scrolls to the item in the item dropdown.
      */
-function onDropdownOpen() {
+function onDropdownOpen(): void {
   if (item.value == null) {
     return
   }
@@ -171,7 +171,7 @@ function onDropdownOpen() {
      *
      * Filters the options items.
      */
-function onFilterOptions(newValue: string) {
+function onFilterOptions(newValue: string): void {
   optionsFilter.value = newValue
   neetToSetOptions.value = true
   setOptions()
@@ -182,7 +182,7 @@ function onFilterOptions(newValue: string) {
      *
      * Updates the inventory item based on the fact that the price is ignored or not.
      */
-function onIgnorePriceChanged(newIgnorePrice: boolean) {
+function onIgnorePriceChanged(newIgnorePrice: boolean): void {
   if (modelInventoryItem.value == null) {
     return
   }
@@ -201,7 +201,7 @@ function onIgnorePriceChanged(newIgnorePrice: boolean) {
      *
      * Updates the inventory item based on the selected item.
      */
-async function onItemChanged() {
+async function onItemChanged(): Promise<void> {
   if (item.value?.id === modelInventoryItem.value?.itemId) {
     return
   }
@@ -232,7 +232,7 @@ async function onItemChanged() {
      *
      * Updates the inventory item based on the mods.
      */
-function onModsChanged(newModsSlots: IInventoryModSlot[]) {
+function onModsChanged(newModsSlots: IInventoryModSlot[]): void {
   if (modelInventoryItem.value == null) {
     return
   }
@@ -251,7 +251,7 @@ function onModsChanged(newModsSlots: IInventoryModSlot[]) {
      *
      * Updates the inventory item based on the quantity.
      */
-function onQuantityChanged(newQuantity: number) {
+function onQuantityChanged(newQuantity: number): void {
   if (modelInventoryItem.value == null) {
     return
   }
@@ -270,7 +270,7 @@ function onQuantityChanged(newQuantity: number) {
      *
      * Sorts the options items.
      */
-async function onSortOptions(newSortingData: SortingData<IItem>) {
+async function onSortOptions(newSortingData: SortingData<IItem>): Promise<void> {
   loadingOptions.value = true
 
   optionsSortingData.value = newSortingData
@@ -286,7 +286,7 @@ async function onSortOptions(newSortingData: SortingData<IItem>) {
      * Removes the selected item.
      * @param event - Click event.
      */
-async function removeItem(event: MouseEvent) {
+async function removeItem(event: MouseEvent): Promise<void> {
   event.stopPropagation()
 
   item.value = undefined
@@ -299,7 +299,7 @@ async function removeItem(event: MouseEvent) {
      * This can also correspond to the item itselft if it is the base item of a preset.
      * @param item - Item from which we search the base item.
      */
-function setBaseItem(item: IItem) {
+function setBaseItem(item: IItem): void {
   if (_itemPropertiesService.isModdable(item) && !props.isBaseItem) {
     const moddable = item as IModdable
     let baseItemId = moddable.defaultPresetId == null ? moddable.baseItemId : moddable.id
@@ -346,7 +346,7 @@ function setBaseItem(item: IItem) {
 /**
      * Sets the options selectable in the drop down input based on the current filter and sorting.
      */
-async function setOptions() {
+async function setOptions(): Promise<void> {
   if (!neetToSetOptions.value) {
     return
   }
@@ -387,7 +387,7 @@ async function setOptions() {
      * This is to workaround for an issye where the PrimeVue scrolling to the selected element breaks
      * because we focus the filter input.
      */
-function scrollToItemInDropdown() {
+function scrollToItemInDropdown(): void {
   if (item.value == null) {
     return
   }
@@ -402,7 +402,7 @@ function scrollToItemInDropdown() {
 /**
      * Sets the selected tab based on the type of selected item.
      */
-function setSelectedTab() {
+function setSelectedTab(): void {
   if (item.value?.id != null) {
     // When an item is not found, but has mods or content, we consider it is moddable / a container in order to be able to display its possible child items
     itemIsModdable.value = _itemPropertiesService.canBeModded(item.value)
@@ -431,7 +431,7 @@ function setSelectedTab() {
      * @param newItem - New selected item.
      * @param compatibilityCheckResult - Indicates whether the new selected item is compatible or not.
      */
-function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean) {
+function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean): void {
   if (!compatibilityCheckResult) {
     initializeItem() // Putting back the previous selected item when the new item is incomptatible
   } else {

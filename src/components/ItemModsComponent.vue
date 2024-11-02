@@ -25,7 +25,7 @@ watch(() => props.moddableItem.id, () => initialize())
 /**
  * Gets the mod slots of the parent item and adds them to the list of inventory mod slots received.
  */
-function initialize() {
+function initialize(): void {
   isInitializing.value = true
 
   modSlots.value = props.moddableItem.modSlots
@@ -59,7 +59,7 @@ function findInventoryItemOfModSlot(modSlotName: string): IInventoryItem | undef
  *
  * Signals to the parent item a mod slot item has changed.
  */
-function onItemChanged(modSlotName: string, newInventoryItem: IInventoryItem | undefined) {
+function onItemChanged(modSlotName: string, newInventoryItem: IInventoryItem | undefined): void {
   const newInventoryModSlots = [...modelInventoryModSlots.value]
   const newInventoryModSlot = newInventoryModSlots.find(ms => ms.modSlotName === modSlotName)
 

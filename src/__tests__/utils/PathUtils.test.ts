@@ -286,7 +286,7 @@ describe('getInventoryItemFromPath()', () => {
     ]
   ])('should throw when the path is invalid', (build: IBuild, path: string, expected: string) => {
     // Act
-    const act = () => PathUtils.getInventoryItemFromPath(build, path)
+    const act = (): IInventoryItem => PathUtils.getInventoryItemFromPath(build, path)
 
     // Assert
     expect(act).toThrowError(expected)

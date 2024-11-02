@@ -91,7 +91,7 @@ function getSortableProperties(): string[] {
  * Reacts to a keyboard event in the filter input.
  * @param event - Keyboard event.
  */
-function onFilterKeyDown(event: KeyboardEvent) {
+function onFilterKeyDown(event: KeyboardEvent): void {
   if (event.key === 'Enter') {
     _globalSidebarService.close('BuildsListSidebar')
   }
@@ -100,7 +100,7 @@ function onFilterKeyDown(event: KeyboardEvent) {
 /**
  * Resets the filter an sort.
  */
-function reset() {
+function reset(): void {
   modelParameters.value = new BuildFilterAndSortingData()
   _globalSidebarService.close('BuildsListSidebar')
 }

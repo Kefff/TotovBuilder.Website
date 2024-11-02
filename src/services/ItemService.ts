@@ -274,7 +274,7 @@ export class ItemService {
    * If prices are already being fetched, waits for the operation to end before returning.
    * This should in theory never happen since fetchPrices() is only called in initialize() which executes nothing when another initialization is already being performed.
    */
-  private async fetchPrices() {
+  private async fetchPrices(): Promise<void> {
     if (!this.isFetchingPrices) {
       this.pricesFetchingPromise = this.startPricesFetching()
     }
@@ -304,7 +304,7 @@ export class ItemService {
    * @param items - List of items in which the items must be found.
    * @returns Found items.
    */
-  private findItems(ids: string[], items: IItem[]) {
+  private findItems(ids: string[], items: IItem[]): IItem[] {
     const foundItems: IItem[] = []
 
     for (const id of ids) {
@@ -386,7 +386,7 @@ export class ItemService {
   /**
    * Updates the value of the currencies.
    */
-  private updateCurrencyValues() {
+  private updateCurrencyValues(): void {
     const tarkovValuesService = Services.get(TarkovValuesService)
 
     for (const currency of tarkovValuesService.values.currencies) {
@@ -408,7 +408,7 @@ export class ItemService {
   /**
    * Updates the filtered items by applying the global filter to the items.
    */
-  private updateFilteredItems() {
+  private updateFilteredItems(): void {
     this.filteredItems = this.items.filter(i => Services.get(GlobalFilterService).isMatchingFilter(i))
   }
 
@@ -416,7 +416,7 @@ export class ItemService {
    * Updates items prices.
    * @param prices - Fetched prices.
    */
-  private updateItemsPrices(prices: IPrice[]) {
+  private updateItemsPrices(prices: IPrice[]): void {
     for (const item of this.items) {
       const itemPrices = prices.filter(p => p.itemId === item.id)
 
@@ -434,7 +434,7 @@ export class ItemService {
   /**
    * Updates item prices in main currency.
    */
-  private updatePricesInMainCurrency() {
+  private updatePricesInMainCurrency(): void {
     for (const item of this.items) {
       for (const price of item.prices.filter(p => p.currencyName !== 'barter')) {
         const currency = this.getCurrency(price.currencyName)

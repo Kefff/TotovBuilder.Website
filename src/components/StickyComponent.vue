@@ -60,7 +60,7 @@ watch(
  * It can either be the "p-sidebar-content" div of a global sidebar or the "app" div.
  * @param parentElement - Parent element.
  */
-function getScrollableParentElement(parentElement: HTMLElement | undefined | null) {
+function getScrollableParentElement(parentElement: HTMLElement | undefined | null): void {
   if (parentElement == null) {
     return
   }
@@ -83,7 +83,7 @@ function getScrollableParentElement(parentElement: HTMLElement | undefined | nul
 /**
  * Sets whether the sticky element is stickied.
  */
-function setIsStickied() {
+function setIsStickied(): void {
   if (elementToStickToBoundingRectangle.value != null) {
     modelIsStickied.value = stickyElementBoundingBox.y.value === elementToStickToBoundingRectangle.value.bottom.value
   } else if (scrollableParentElementBoundingRectangle.value != null) {

@@ -69,7 +69,7 @@ const itemListElementScroll = useScroll(itemsListElement)
 /**
  * Displays the actions for the specified build.
  */
-function displayActions() {
+function displayActions(): void {
   const build = _buildService.get(props.buildSummary.id)
 
   if (build != null) {
@@ -83,7 +83,7 @@ function displayActions() {
 /**
  * Displays the shopping list for the specified build.
  */
-function displayShoppingList() {
+function displayShoppingList(): void {
   _globalSidebarService.display({
     displayedComponentType: 'ShoppingListSidebar',
     displayedComponentParameters: {
@@ -97,7 +97,7 @@ function displayShoppingList() {
  * Displays the stats of an item.
  * @param item - Item.
  */
-function displayStats(item: IItem) {
+function displayStats(item: IItem): void {
   _globalSidebarService.display({
     displayedComponentType: 'StatsSidebar',
     displayedComponentParameters: item

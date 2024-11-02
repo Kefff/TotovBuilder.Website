@@ -153,7 +153,7 @@ watch(() => hasImported.value, () => {
 /**
  * Checks whether builds have not been exported. Displays a warning if that is the case.
  */
-function checkBuildsNotExported() {
+function checkBuildsNotExported(): void {
   const exportWarningShowedKey = _websiteConfigurationService.configuration.exportWarningShowedStorageKey
   const exportWarningShowed = sessionStorage.getItem(exportWarningShowedKey)
 
@@ -164,7 +164,7 @@ function checkBuildsNotExported() {
       0,
       [
         {
-          action: () => _globalSidebarService.display({
+          action: (): void => _globalSidebarService.display({
             displayedComponentType: 'BuildsExportSidebar',
             displayedComponentParameters: buildSummaries.value
           }),
@@ -183,7 +183,7 @@ function checkBuildsNotExported() {
 /**
  * Displays the build export sidebar.
  */
-function displayExportSidebar() {
+function displayExportSidebar(): void {
   if (canImportExport.value) {
     _globalSidebarService.display({
       displayedComponentParameters: buildSummaries.value,
@@ -195,7 +195,7 @@ function displayExportSidebar() {
 /**
  * Displays the build import sidebar.
  */
-function displayImportSidebar() {
+function displayImportSidebar(): void {
   if (canImportExport.value) {
     _globalSidebarService.display({
       displayedComponentParameters: buildSummaries.value,
@@ -207,7 +207,7 @@ function displayImportSidebar() {
 /**
  * Displays the general options sidebar.
  */
-function displayGeneralOptions() {
+function displayGeneralOptions(): void {
   _globalSidebarService.display({
     displayedComponentType: 'GeneralOptionsSidebar'
   })
@@ -216,7 +216,7 @@ function displayGeneralOptions() {
 /**
  * Displays the merchant items options sidebar.
  */
-function displayMerchantItemsOptions() {
+function displayMerchantItemsOptions(): void {
   _globalSidebarService.display({
     displayedComponentType: 'MerchantItemsOptionsSidebar'
   })
@@ -225,7 +225,7 @@ function displayMerchantItemsOptions() {
 /**
  * Displays the builds share sidebar options.
  */
-function displayShareSidebar() {
+function displayShareSidebar(): void {
   _globalSidebarService.display({
     displayedComponentParameters: {
       buildSummaries: buildSummaries.value
@@ -237,7 +237,7 @@ function displayShareSidebar() {
 /**
  * Gets the builds.
  */
-async function getBuilds() {
+async function getBuilds(): Promise<void> {
   isLoading.value = true
 
   const execute = new Promise<void>(resolve => {
@@ -262,7 +262,7 @@ async function getBuilds() {
 /**
  * Gets the filter and sorting data.
  */
-function getFilterAndSortingData() {
+function getFilterAndSortingData(): void {
   filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsFilterStorageKey) ?? ''
   const property = localStorage.getItem(_websiteConfigurationService.configuration.buildsSortFieldStorageKey) ?? 'name'
   const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey) ?? SortingOrder.asc)
@@ -272,7 +272,7 @@ function getFilterAndSortingData() {
 /**
  * Redirects to the welcome page.
  */
-function goToHome() {
+function goToHome(): void {
   _router.push({ name: 'Welcome' })
 }
 
@@ -282,7 +282,7 @@ function goToHome() {
  * Opens the build the user has selected.
  * @param selectedBuilds - Selected builds.
  */
-function onBuildSelected(selectedBuilds: IBuildSummary[]) {
+function onBuildSelected(selectedBuilds: IBuildSummary[]): void {
   if (selectedBuilds.length > 0) {
     openBuild(selectedBuilds[0].id)
   }
@@ -293,7 +293,7 @@ function onBuildSelected(selectedBuilds: IBuildSummary[]) {
  *
  * Saves filter and sorting data.
  */
-function onFilterAndSortingDataChanged() {
+function onFilterAndSortingDataChanged(): void {
   sessionStorage.setItem(_websiteConfigurationService.configuration.buildsFilterStorageKey, filterAndSortingData.value.filter)
   localStorage.setItem(_websiteConfigurationService.configuration.buildsSortFieldStorageKey, filterAndSortingData.value.property)
   localStorage.setItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey, filterAndSortingData.value.order.toString())
@@ -304,7 +304,7 @@ function onFilterAndSortingDataChanged() {
  *
  * Updates the selected item price to reflect the change in merchant filters.
  */
-function onItemServicesInitialized() {
+function onItemServicesInitialized(): void {
   getBuilds().then(() => {
     if (_builds.length === 0) {
       _router.push({ name: 'Welcome' })
@@ -321,7 +321,7 @@ function onItemServicesInitialized() {
  *
  * Gets builds and ends loading.
  */
-function onMerchantFilterChanged() {
+function onMerchantFilterChanged(): void {
   getBuilds()
 }
 
@@ -329,14 +329,14 @@ function onMerchantFilterChanged() {
  * Opens a build.
  * @param id - ID of the build.
  */
-function openBuild(id: string) {
+function openBuild(id: string): void {
   _router.push({ name: 'Build', params: { id } })
 }
 
 /**
  * Opens a new build.
  */
-function openNewBuild() {
+function openNewBuild(): void {
   _router.push({ name: 'NewBuild' })
 }
 </script>

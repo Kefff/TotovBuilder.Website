@@ -24,6 +24,8 @@ import RangedWeaponSummary from '../summary/RangedWeaponSummaryComponent.vue'
 import SelectedItemSummary from '../summary/SelectedItemSummaryComponent.vue'
 import VestSummary from '../summary/VestSummaryComponent.vue'
 
+type SpecializedComponent = typeof AmmunitionSummary | typeof ArmorModSummary | typeof ArmorSummary | typeof BackpackSummary | typeof ContainerSummary | typeof EyewearSummary | typeof GrenadeSummary | typeof HeadwearSummary | typeof MagazineSummary | typeof MeleeWeaponSummary | typeof ModSummary | typeof RangedWeaponModSummary | typeof RangedWeaponSummary | typeof SelectedItemSummary | typeof VestSummary | undefined
+
 const props = withDefaults(
   defineProps<{
     canBeLooted?: boolean,
@@ -55,7 +57,7 @@ const specializedComponent = computed(() => getSpecializedComponent(props.select
 /**
  * Sets the type of specialized options header component to display.
  */
-function getSpecializedComponent(itemCategoryId?: ItemCategoryId) {
+function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedComponent {
   if (itemCategoryId == null || itemCategoryId === ItemCategoryId.other) {
     return undefined
   }
@@ -126,7 +128,7 @@ function getSpecializedComponent(itemCategoryId?: ItemCategoryId) {
  * Sets the modifiers for armors.
  * We display the base stats of presets because the full stats are displayed in the inventory slot.
  */
-async function setArmorModifiers() {
+async function setArmorModifiers(): Promise<void> {
   selectedItemArmorModifiers.value = await _inventoryItemService.getArmorModifiers(props.inventoryItem)
 }
 
@@ -134,7 +136,7 @@ async function setArmorModifiers() {
  * Sets the modifiers for ranged weapons.
  * We display the base stats of presets because the full stats are displayed in the inventory slot.
  */
-async function setRangedWeaponModifiers() {
+async function setRangedWeaponModifiers(): Promise<void> {
   const ergonomics = await _inventoryItemService.getErgonomics(props.inventoryItem)
   const recoil = await _inventoryItemService.getRecoil(props.inventoryItem)
 
@@ -149,7 +151,7 @@ async function setRangedWeaponModifiers() {
  * Sets the modifiers for wearable items.
  * We display the base stats of presets because the full stats are displayed in the inventory slot.
  */
-async function setWearableModifiers() {
+async function setWearableModifiers(): Promise<void> {
   const wearableModifiers = await _inventoryItemService.getWearableModifiers(props.inventoryItem)
 
   selectedItemWearableModifiers.value = {

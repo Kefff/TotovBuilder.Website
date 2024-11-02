@@ -107,7 +107,7 @@ onMounted(() => initialize())
 /**
  * Copies the text to the clipboard.
  */
-function copyText() {
+function copyText(): void {
   if (text.value == null) {
     return
   }
@@ -125,7 +125,7 @@ function copyText() {
 /**
  * Gets the text.
  */
-async function getText() {
+async function getText(): Promise<void> {
   isLoading.value = true
 
   text.value = await _buildPropertiesService.toText(
@@ -145,7 +145,7 @@ async function getText() {
 /**
  * Initializes the component.
  */
-function initialize() {
+function initialize(): void {
   availableBuilds.value = props.parameters.buildSummaries ?? []
   buildsToShare.value = props.parameters.buildToShare != null ? [props.parameters.buildToShare] : []
 
@@ -157,7 +157,7 @@ function initialize() {
 /**
  * Selects the builds to share.
  */
-function selectBuildsToShare() {
+function selectBuildsToShare(): void {
   const builds: IBuild[] = []
 
   for (const selectedBuild of selectedBuilds.value) {
@@ -174,7 +174,7 @@ function selectBuildsToShare() {
 /**
  * Toggles the selection.
  */
-function toggleSelection() {
+function toggleSelection(): void {
   if (allSelected.value) {
     selectedBuilds.value = []
   } else {

@@ -104,8 +104,10 @@ export class FetchService {
    * @param responseData - Response data.
    * @returns true when the response data is considered empty; otherwise false.
    */
-  private isEmptyResponseData(responseData: string) {
-    return responseData.length === 0 || responseData === '""' || responseData === '{}' || responseData === '[]'
+  private isEmptyResponseData(responseData: string): boolean {
+    const result = responseData.length === 0 || responseData === '""' || responseData === '{}' || responseData === '[]'
+
+    return result
   }
 
   /**

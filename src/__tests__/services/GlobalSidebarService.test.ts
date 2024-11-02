@@ -10,7 +10,7 @@ describe('GlobalSideBarService', () => {
       const routerMock = mock<Router>()
 
       return {
-        useRouter: () => instance(routerMock)
+        useRouter: (): Router => instance(routerMock)
       }
     })
   })
@@ -93,14 +93,14 @@ describe('GlobalSideBarService', () => {
       let action2ExecutionCount = 0
       let action3ExecutionCount = 0
 
-      const action1 = () => { action1ExecutionCount++ }
-      const action2 = () => {
+      const action1 = (): void => { action1ExecutionCount++ }
+      const action2 = (): Promise<void> => {
         return new Promise<void>(resolve => {
           action2ExecutionCount++
           resolve()
         })
       }
-      const action3 = () => { action3ExecutionCount++ }
+      const action3 = (): void => { action3ExecutionCount++ }
       const service = new GlobalSidebarService()
 
       // Act

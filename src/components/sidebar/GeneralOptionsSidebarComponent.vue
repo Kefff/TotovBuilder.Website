@@ -21,7 +21,7 @@ onMounted(() => {
 /**
  * Gets the CSS classes to apply to an option.
  */
-function getAdditionalOptionCssClasses(option: IGeneralOption) {
+function getAdditionalOptionCssClasses(option: IGeneralOption): string {
   let classes = 'sidebar-option'
 
   if (option.enabled != null && !option.enabled()) {
@@ -38,7 +38,7 @@ function getAdditionalOptionCssClasses(option: IGeneralOption) {
  *
  * Sets the allow cookie indicator.
  */
-function onAllowCookiesChanged() {
+function onAllowCookiesChanged(): void {
   Services.get(GeneralOptionsService).setAllowCookiesIndicator(allowCookies.value)
 }
 
@@ -46,7 +46,7 @@ function onAllowCookiesChanged() {
  * Toggles a the allow cookes indicator.
  * @param filter - Filter.
  */
-function toggleAllowCookies() {
+function toggleAllowCookies(): void {
   allowCookies.value = !allowCookies.value
   onAllowCookiesChanged()
 }

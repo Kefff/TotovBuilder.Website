@@ -20,6 +20,8 @@ import RangedWeaponModOptionHeader from './RangedWeaponModOptionHeaderComponent.
 import RangedWeaponOptionHeader from './RangedWeaponOptionHeaderComponent.vue'
 import VestOptionHeader from './VestOptionHeaderComponent.vue'
 
+type SpecializedComponent = typeof AmmunitionOptionHeader | typeof ArmorModOptionHeader | typeof ArmorOptionHeader | typeof BackpackOptionHeader | typeof ContainerOptionHeader | typeof EyewearOptionHeader | typeof GrenadeOptionHeader | typeof HeadwearOptionHeader | typeof ItemOptionHeader | typeof MagazineOptionHeader | typeof MeleeWeaponOptionHeader | typeof ModOptionHeader | typeof RangedWeaponModOptionHeader | typeof RangedWeaponOptionHeader | typeof VestOptionHeader | undefined
+
 const modelFilter = defineModel<string>('filter', { required: true })
 const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { required: true })
 
@@ -37,7 +39,7 @@ const useLongestHeaderWidth = computed(() => props.categoryId == null)
 /**
  * Sets the type of specialized options header component to display.
  */
-function getSpecializedComponent(categoryId?: ItemCategoryId) {
+function getSpecializedComponent(categoryId?: ItemCategoryId): SpecializedComponent {
   if (categoryId == null || categoryId === ItemCategoryId.other) {
     return undefined
   }

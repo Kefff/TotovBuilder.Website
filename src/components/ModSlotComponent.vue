@@ -36,7 +36,7 @@ onUnmounted(() => _globalFilterService.emitter.off(GlobalFilterService.changeEve
 /**
  * Gets the category IDs and the accepted items to pass to the Item component.
  */
-async function setAcceptedItems() {
+async function setAcceptedItems(): Promise<void> {
   acceptedItems.value = await Services.get(ItemService).getItems(props.modSlot.compatibleItemIds, true)
   acceptedItemsCategoryId.value = _modSlotComponentService.getAcceptedItemsCategoryId(acceptedItems.value)
 }

@@ -1,6 +1,7 @@
 /* eslint-disable no-irregular-whitespace */
 import { describe, expect, it } from 'vitest'
 import { IInventorySlot } from '../../models/build/IInventorySlot'
+import { IInventorySlotType } from '../../models/build/IInventorySlotType'
 import { InventorySlotTypeId } from '../../models/build/InventorySlotTypes'
 import { ItemCategoryId } from '../../models/item/IItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
@@ -747,7 +748,7 @@ describe('InventorySlotPropertiesService', () => {
       const service = new InventorySlotPropertiesService()
 
       // Act
-      const act = () => service.getType('invalid' as InventorySlotTypeId)
+      const act = (): IInventorySlotType => service.getType('invalid' as InventorySlotTypeId)
 
       // Assert
       expect(act).toThrowError('Inventory slot type "invalid" not found.')

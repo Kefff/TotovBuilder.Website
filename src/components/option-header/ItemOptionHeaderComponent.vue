@@ -31,7 +31,7 @@ const filterInternal = computed({
  *
  * Emits to the parent component the filter to use to filter options.
  */
-function onFilterChanged(filterValue: string) {
+function onFilterChanged(filterValue: string): void {
   _filterLastEdit = new Date()
 
   // Creating a promise that will check after a delay if the filter has changed.

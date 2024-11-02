@@ -14,7 +14,7 @@ const rightButtons = computed(() => modelParameters.value.filter(b => (b.positio
 /**
  * Execute a button action and closes the sidebar.
  */
-function executeAction(action: () => void) {
+function executeAction(action: () => void): void {
   action()
   _globalSidebarService.close('ToolbarSidebar')
 }

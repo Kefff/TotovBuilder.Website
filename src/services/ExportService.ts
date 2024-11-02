@@ -26,7 +26,7 @@ export class ExportService {
    * Displays a notification indicating whether export has succeeded.
    * @param builds - Builds.
    */
-  public async export(builds: IBuild[]) {
+  public async export(builds: IBuild[]): Promise<void> {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
     const json = JSON.stringify(builds)

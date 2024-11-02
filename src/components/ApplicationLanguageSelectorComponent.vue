@@ -9,7 +9,7 @@ const currentLanguage = ref(vueI18n.locale.value)
 /**
  * Sets the language.
  */
-function setLanguage() {
+function setLanguage(): void {
   LanguageUtils.setLanguage(currentLanguage.value)
 }
 </script>

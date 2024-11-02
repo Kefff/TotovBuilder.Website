@@ -25,7 +25,7 @@ onUnmounted(() => {
 /**
  * Clears all notifications.
  */
-function clearNotifications(id?: string) {
+function clearNotifications(id?: string): void {
   if (id == null) {
     _notificationService.clearNotifications()
   } else {
@@ -44,7 +44,7 @@ function clearNotifications(id?: string) {
  * @param type - Notification type.
  * @returns Icon.
  */
-function getNotificationIcon(type: NotificationType) {
+function getNotificationIcon(type: NotificationType): string {
   switch (type) {
     case NotificationType.error:
       return 'exclamation-circle'
@@ -62,7 +62,7 @@ function getNotificationIcon(type: NotificationType) {
  *
  * Updates the new notifications count.
  */
-function onNotificationAdded() {
+function onNotificationAdded(): void {
   notifications.value = _notificationService.getNotifications()
 }
 </script>

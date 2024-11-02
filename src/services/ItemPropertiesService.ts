@@ -42,7 +42,7 @@ export class ItemPropertiesService {
    * @param filter - Filter.
    * @returns true when the item matches the filter; otherwise false.
    */
-  public checkMatchesFilter(itemToCheck: IItem, filter: string) {
+  public checkMatchesFilter(itemToCheck: IItem, filter: string): boolean {
     const filterWords = filter.split(' ')
     let contains = StringUtils.containsAll(itemToCheck.shortName, filterWords)
 

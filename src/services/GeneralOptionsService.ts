@@ -36,14 +36,14 @@ export class GeneralOptionsService {
         0,
         [
           {
-            action: () => /* c8 ignore next */ this.setAllowCookiesIndicator(true),
+            action: (): void => /* c8 ignore next */ this.setAllowCookiesIndicator(true),
             caption: vueI18n.t('caption.allowCookies'),
             icon: undefined,
             name: 'allow',
             type: NotificationType.success
           },
           {
-            action: () => /* c8 ignore next */ this.setAllowCookiesIndicator(false),
+            action: (): void => /* c8 ignore next */ this.setAllowCookiesIndicator(false),
             caption: vueI18n.t('caption.rejectCookies'),
             icon: undefined,
             name: 'deny',
@@ -67,7 +67,7 @@ export class GeneralOptionsService {
   /**
    * Sets cookie usage.
    */
-  private setCookieUsage(allowCookies: boolean) {
+  private setCookieUsage(allowCookies: boolean): void {
     if (!allowCookies) {
       applicationInsights.getCookieMgr().del('ai_session')
       applicationInsights.getCookieMgr().del('ai_user')

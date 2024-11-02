@@ -25,7 +25,7 @@ watch(() => props.shoppingList, () => setRequiredMerchants())
 /**
  * Sets the required merchants from the shopping list.
  */
-function setRequiredMerchants() {
+function setRequiredMerchants(): void {
   merchants.value = _buildPropertiesService.getShoppingListMerchants(props.shoppingList)
 }
 </script>

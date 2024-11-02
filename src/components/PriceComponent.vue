@@ -105,7 +105,7 @@ watch(() => props.price, () => initialize())
 /**
  * Gets barter items.
  */
-async function getBarterItems() {
+async function getBarterItems(): Promise<void> {
   barterItems.value = []
 
   if (!isBarter.value) {
@@ -123,7 +123,7 @@ async function getBarterItems() {
 /**
  * Gets barter item prices.
  */
-async function getBarterItemPrices() {
+async function getBarterItemPrices(): Promise<void> {
   barterItemPrices.value = []
 
   if (!isBarter.value) {
@@ -151,7 +151,7 @@ async function getBarterItemPrices() {
 /**
  * Initializes the price.
  */
-async function initialize() {
+async function initialize(): Promise<void> {
   initialized.value = false
 
   barterItems.value = []
@@ -168,7 +168,7 @@ async function initialize() {
  *
  * Prevents the item selection dropdown to close when clicking inside of the price detail popup of one of the dropdown items.
  */
-function onClick(event: MouseEvent) {
+function onClick(event: MouseEvent): void {
   event.stopPropagation()
 }
 
@@ -177,14 +177,14 @@ function onClick(event: MouseEvent) {
  *
  * Updates the selected item price to reflect the change in merchant filters.
  */
-function onMerchantFilterChanged() {
+function onMerchantFilterChanged(): void {
   getBarterItemPrices()
 }
 
 /**
  * Toggles the details of the price.
  */
-function togglePriceDetails(event: Event) {
+function togglePriceDetails(event: Event): void {
   if (!canShowDetails.value) {
     return
   }

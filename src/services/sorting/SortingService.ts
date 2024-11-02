@@ -101,7 +101,7 @@ export class SortingService {
     }
 
     updatedSortingData.property = property
-    updatedSortingData.sortingFunction.comparisonFunction = (element1: T, element1Value: string | number, element2: T, element2Value: string | number) => {
+    updatedSortingData.sortingFunction.comparisonFunction = (element1: T, element1Value: string | number, element2: T, element2Value: string | number): number => {
       return sortingFunction.comparisonFunction(element1, element1Value, element2, element2Value) * updatedSortingData.order
     }
     updatedSortingData.sortingFunction.comparisonValueObtentionFunction = sortingFunction.comparisonValueObtentionFunction

@@ -35,6 +35,7 @@
   ],
   "root": true,
   "rules": {
+    "@typescript-eslint/explicit-function-return-type": "error",
     "@typescript-eslint/indent": [
       "warn",
       2

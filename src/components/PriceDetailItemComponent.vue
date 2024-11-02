@@ -29,7 +29,7 @@ const props = withDefaults(
  * Displays the stats of an item.
  * @param item - Item.
  */
-function displayItemStats(item: IItem) {
+function displayItemStats(item: IItem): void {
   if (!props.canShowItemStats) {
     return
   }

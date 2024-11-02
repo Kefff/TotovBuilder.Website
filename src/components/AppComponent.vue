@@ -68,7 +68,7 @@ onMounted(() => {
 /**
  * Displays the changelog.
  */
-function displayChangelog() {
+function displayChangelog(): void {
   Services.get(GlobalSidebarService).display({
     displayedComponentType: 'ChangelogSidebar'
   })
@@ -77,14 +77,14 @@ function displayChangelog() {
 /**
  * Displays the new version notification.
  */
-function displayNewVersionNotification() {
+function displayNewVersionNotification(): void {
   Services.get(NotificationService).notify(
     NotificationType.information,
     vueI18n.t('message.newVersion', { newVersion: version.value }),
     0,
     [
       {
-        action: () => displayChangelog(),
+        action: (): void => displayChangelog(),
         caption: vueI18n.t('caption.seeChanges'),
         icon: undefined,
         name: 'seeChanges',
@@ -97,14 +97,14 @@ function displayNewVersionNotification() {
 /**
  * Redirects to the welcome page.
  */
-function goToHome() {
+function goToHome(): void {
   _router.push({ name: 'Welcome' })
 }
 
 /**
  * Reacts to the website configuration service being initialized.
  */
-async function onWebsiteConfigurationServiceInitialized() {
+async function onWebsiteConfigurationServiceInitialized(): Promise<void> {
   bugReportUrl.value = _websiteConfigurationService.configuration.bugReportUrl
   contactAddress.value = _websiteConfigurationService.configuration.contactAddress
   discordUrl.value = _websiteConfigurationService.configuration.discordUrl
@@ -127,7 +127,7 @@ async function onWebsiteConfigurationServiceInitialized() {
 /**
  * Sets the language.
  */
-function setLanguage() {
+function setLanguage(): void {
   const language = localStorage.getItem(Services.get(WebsiteConfigurationService).configuration.languageStorageKey) ?? 'en'
   LanguageUtils.setLanguage(language)
 }

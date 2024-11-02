@@ -19,6 +19,8 @@ import RangedWeaponModSummary from './RangedWeaponModSummaryComponent.vue'
 import RangedWeaponSummary from './RangedWeaponSummaryComponent.vue'
 import VestSummary from './VestSummaryComponent.vue'
 
+type SpecializedComponent = typeof AmmunitionSummary | typeof ArmorModSummary | typeof ArmorSummary | typeof BackpackSummary | typeof ContainerSummary | typeof EyewearSummary | typeof GrenadeSummary | typeof HeadwearSummary | typeof ItemSummary | typeof MagazineSummary | typeof MeleeWeaponSummary | typeof ModSummary | typeof RangedWeaponModSummary | typeof RangedWeaponSummary | typeof VestSummary | undefined
+
 const props = withDefaults(
   defineProps<{
     item: IItem,
@@ -30,10 +32,11 @@ const props = withDefaults(
 
 const specializedComponent = computed(() => getSpecializedComponent(props.item.categoryId))
 
+
 /**
  * Sets the type of specialized options header component to display.
  */
-function getSpecializedComponent(itemCategoryId: ItemCategoryId) {
+function getSpecializedComponent(itemCategoryId: ItemCategoryId): SpecializedComponent {
   if (itemCategoryId === ItemCategoryId.other) {
     return undefined
   }

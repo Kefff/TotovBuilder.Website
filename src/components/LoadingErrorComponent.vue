@@ -33,7 +33,7 @@ onMounted(() => {
  *
  * Checks whether an item loading error has occured and signals it to the parent component.
  */
-function onItemServiceInitialized() {
+function onItemServiceInitialized(): void {
   hasItemError.value = _itemService.initializationState === ServiceInitializationState.error
 }
 
@@ -42,21 +42,21 @@ function onItemServiceInitialized() {
  *
  * Checks whether a website configuration loading error has occured and signals it to the parent component.
  */
-function onWebsiteConfigurationServiceInitialized() {
+function onWebsiteConfigurationServiceInitialized(): void {
   hasWebsiteConfigurationError.value = _websiteConfigurationService.initializationState === ServiceInitializationState.error
 }
 
 /**
  * Reloads the page.
  */
-function reload() {
+function reload(): void {
   location.reload()
 }
 
 /**
  * Opens the report a bug link.
  */
-function signal() {
+function signal(): void {
   const url = Services.get(WebsiteConfigurationService).configuration.bugReportUrl
   window.open(url)
 }

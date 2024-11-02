@@ -45,7 +45,7 @@ watch(() => props.containerItem.id, () => initialize())
 /**
  * Initializes the component.
  */
-function initialize() {
+function initialize(): void {
   setCategoryId()
   setAcceptedItems()
 }
@@ -55,7 +55,7 @@ function initialize() {
  *
  * Adds the item to the content of the inventory item and signals the parent item that its content has changed.
  */
-function onItemAdded(newInventoryItem: IInventoryItem) {
+function onItemAdded(newInventoryItem: IInventoryItem): void {
   modelInventoryItems.value = [
     ...modelInventoryItems.value,
     newInventoryItem
@@ -74,7 +74,7 @@ function onItemAdded(newInventoryItem: IInventoryItem) {
  * @param index - Index of the changed contained item in the inventory item content list.
  * @param newInventoryItem - Updated contained item.
  */
-function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefined) {
+function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefined): void {
   const newInventoryItems = [...modelInventoryItems.value]
 
   if (newInventoryItem == null) {
@@ -91,21 +91,21 @@ function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefin
  *
  * Updates the accepted items to reflect the change in merchant filters.
  */
-function onMerchantFilterChanged() {
+function onMerchantFilterChanged(): void {
   setAcceptedItems()
 }
 
 /**
  * Sets the accepted items for the item to add.
  */
-async function setAcceptedItems() {
+async function setAcceptedItems(): Promise<void> {
   acceptedItems.value = await Services.get(ItemContentComponentService).getAcceptedItems(props.containerItem.id)
 }
 
 /**
  * Gets the category IDs used for determining the available sort buttons in the item selection dropdown.
  */
-function setCategoryId() {
+function setCategoryId(): void {
   categoryId.value = Services.get(ItemContentComponentService).getAcceptedItemsCategoryId(props.containerItem.categoryId)
 }
 </script>

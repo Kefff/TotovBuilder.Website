@@ -31,7 +31,7 @@ onUnmounted(() => {
  * Displays the notification sidebar.
  * @param event - Event.
  */
-function onClick(event?: MouseEvent) {
+function onClick(event?: MouseEvent): void {
   // Stopping the event propagation, otherwise, when we click on the badge showing the number of notifications,
   // the method is called one time for the badge and another time for the button
   event?.stopPropagation()
@@ -48,7 +48,7 @@ function onClick(event?: MouseEvent) {
  *
  * Updates the new notifications count.
  */
-function onNotificationCountChanged() {
+function onNotificationCountChanged(): void {
   notifications.value = _notificationService.getNotifications()
   newNotificationCount.value = _notificationService.newNotificationCount
 }

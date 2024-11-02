@@ -22,21 +22,21 @@ onMounted(() => {
 /**
  * Opens a new tab displaying the item in Tarkov.dev.
  */
-function openMarket() {
+function openMarket(): void {
   window.open(props.item.marketLink, '_blank')
 }
 
 /**
  * Opens a new tab displaying the item in the Wiki.
  */
-function openWiki() {
+function openWiki(): void {
   window.open(props.item.wikiLink, '_blank')
 }
 
 /**
  * Sets the prices to display.
  */
-async function setPrices() {
+async function setPrices(): Promise<void> {
   // Using an intermidiate variable here because directly adding prices to prices.value and then sorting them mixes up
   // barters displayed in the price detail popups
   const pricesToDisplay: IPrice[] = []

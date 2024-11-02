@@ -56,14 +56,14 @@ useEventListener(document, 'keydown', onKeyDown)
 /**
  * Displays the file selection popup.
  */
-function displayFileSelectionPopup() {
+function displayFileSelectionPopup(): void {
   importInput.value!.click()
 }
 
 /**
  * Imports the selected builds.
  */
-async function importBuilds() {
+async function importBuilds(): Promise<void> {
   const buildsToImport = availableBuilds.value.filter(ab => selectedBuilds.value.some(sb => sb.id === ab.id))
   await _importService.import(buildsToImport)
   _globalSidebarService.close('BuildsImportSidebar')
@@ -73,7 +73,7 @@ async function importBuilds() {
  * Reacts to a keyboard event.
  * @param event - Keyboard event.
  */
-function onKeyDown(event: KeyboardEvent) {
+function onKeyDown(event: KeyboardEvent): void {
   if (event.key === 'a' && (event.ctrlKey || event.metaKey)) {
     event.preventDefault() // Prevents the browser action from being triggered
     selectedBuilds.value = availableBuildSummaries.value
@@ -83,7 +83,7 @@ function onKeyDown(event: KeyboardEvent) {
 /**
  * Read builds from the imported file.
  */
-async function readBuilds() {
+async function readBuilds(): Promise<void> {
   availableBuilds.value = []
   availableBuildSummaries.value = []
 
@@ -104,7 +104,7 @@ async function readBuilds() {
 /**
  * Toggles the selection.
  */
-function toggleSelection() {
+function toggleSelection(): void {
   if (allSelected.value) {
     selectedBuilds.value = []
   } else {

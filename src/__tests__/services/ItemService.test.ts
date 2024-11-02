@@ -1,7 +1,8 @@
 import MockDate from 'mockdate'
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
-import { ItemCategoryId } from '../../models/item/IItem'
+import { ICurrency } from '../../models/configuration/ICurrency'
+import { IItem, ItemCategoryId } from '../../models/item/IItem'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { ItemFetcherService } from '../../services/ItemFetcherService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
@@ -88,7 +89,7 @@ describe('getCurrency()', () => {
     const itemService = new ItemService()
 
     // Act
-    const act = () => itemService.getCurrency('invalid')
+    const act = (): ICurrency => itemService.getCurrency('invalid')
 
     // Assert
     expect(act).toThrowError('Currency "invalid" not found')
@@ -158,7 +159,7 @@ describe('getItem()', () => {
     const itemService = new ItemService()
 
     // Act
-    const act = () => itemService.getItem(rpk16Default.id)
+    const act = (): Promise<IItem> => itemService.getItem(rpk16Default.id)
 
     // Assert
     await expect(act).rejects.toThrowError('No item could be fetched.')
@@ -282,7 +283,7 @@ describe('getItems()', () => {
     const itemService = new ItemService()
 
     // Act
-    const act = () => itemService.getItems([rpk16Default.id], false)
+    const act = (): Promise<IItem[]> => itemService.getItems([rpk16Default.id], false)
 
     // Assert
     await expect(act).rejects.toThrowError('No item could be fetched.')
@@ -413,7 +414,7 @@ describe('getMainCurrency()', () => {
     const itemService = new ItemService()
 
     // Act
-    const act = () => itemService.getMainCurrency()
+    const act = (): ICurrency => itemService.getMainCurrency()
 
     // Assert
     expect(act).toThrowError('Main currency not found.')

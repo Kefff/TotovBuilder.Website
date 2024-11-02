@@ -17,7 +17,7 @@ onMounted(() => {
 /**
  * Loads the changelog.
  */
-async function loadChangelog() {
+async function loadChangelog(): Promise<void> {
   isLoading.value = true
   const fetchedChangelogs = await Services.get(VersionService).getChangelog()
   isLoading.value = false

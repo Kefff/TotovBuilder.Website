@@ -1,6 +1,7 @@
 import { anyString, instance, mock, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import TarkovValuesMock from '../../../public/data/tarkov-values.json'
+import { ITarkovValues } from '../../models/configuration/ITarkovValues'
 import { FetchService } from '../../services/FetchService'
 import { LogService } from '../../services/LogService'
 import { TarkovValuesService } from '../../services/TarkovValuesService'
@@ -54,7 +55,7 @@ describe('values getter', () => {
     const service = new TarkovValuesService()
 
     // Act
-    const act = () => service.values
+    const act = (): ITarkovValues => service.values
 
     // Assert
     expect(act).toThrowError('No Tarkov value could be fetched.')

@@ -40,7 +40,7 @@ function hasLevels(merchantName: string): boolean {
  *
  * Updates the filter.
  */
-function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel: number) {
+function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel: number): void {
   const newMerchantFilters: IMerchantFilter[] = [...merchantFiltersInternal.value]
   newMerchantFilters[index].enabled = enabled
   newMerchantFilters[index].merchantLevel = merchantLevel

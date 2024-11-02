@@ -26,7 +26,7 @@ onMounted(() => getAcceptedAmmunition())
 /**
  * Gets the captions of the accepted ammunition.
  */
-async function getAcceptedAmmunition() {
+async function getAcceptedAmmunition(): Promise<void> {
   const itemService = Services.get(ItemService)
   acceptedAmmunition.value = []
 

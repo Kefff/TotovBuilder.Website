@@ -53,14 +53,14 @@ onUnmounted(() => {
 /**
  * Displays the list of builds.
  */
-function displayBuilds() {
+function displayBuilds(): void {
   router.push({ name: 'Builds' })
 }
 
 /**
  * Displays the general options.
  */
-function displayGeneralOptions() {
+function displayGeneralOptions(): void {
   _globalSidebarService.display({
     displayedComponentType: 'GeneralOptionsSidebar'
   })
@@ -69,7 +69,7 @@ function displayGeneralOptions() {
 /**
  * Displays the build import sidebar.
  */
-function displayImportSidebar() {
+function displayImportSidebar(): void {
   _globalSidebarService.display({
     displayedComponentType: 'BuildsImportSidebar'
   })
@@ -78,7 +78,7 @@ function displayImportSidebar() {
 /**
  * Displays the merchant items options.
  */
-function displayMerchantItemsOptions() {
+function displayMerchantItemsOptions(): void {
   _globalSidebarService.display({
     displayedComponentType: 'MerchantItemsOptionsSidebar'
   })
@@ -87,7 +87,7 @@ function displayMerchantItemsOptions() {
 /**
  * Gets the last builds edited by the user.
  */
-async function getLastBuildSummariess() {
+async function getLastBuildSummariess(): Promise<void> {
   const allBuilds = await new Promise<IBuild[]>((resolve) => {
     const builds = _buildService
       .getAll()
@@ -120,7 +120,7 @@ async function getLastBuildSummariess() {
 /**
  * Navigates to the builds list.
  */
-function goToBuilds() {
+function goToBuilds(): void {
   router.push({ name: 'Builds' })
 }
 
@@ -129,7 +129,7 @@ function goToBuilds() {
  *
  * Updates the last builds list.
  */
-function onBuildDeleted() {
+function onBuildDeleted(): void {
   getLastBuildSummariess()
 }
 
@@ -139,7 +139,7 @@ function onBuildDeleted() {
  * Opens a the build the user has selected.
  * @param selectedBuilds - Selected builds.
  */
-function onBuildSelected(selectedBuilds: IBuildSummary[]) {
+function onBuildSelected(selectedBuilds: IBuildSummary[]): void {
   if (selectedBuilds.length > 0) {
     openBuild(selectedBuilds[0].id)
   }
@@ -150,7 +150,7 @@ function onBuildSelected(selectedBuilds: IBuildSummary[]) {
  *
  * Gets builds and ends loading.
  */
-async function onWebsiteConfigurationServiceInitialized() {
+async function onWebsiteConfigurationServiceInitialized(): Promise<void> {
   await getLastBuildSummariess()
   isLoading.value = false
 }
@@ -159,14 +159,14 @@ async function onWebsiteConfigurationServiceInitialized() {
  * Opens a build.
  * @param id - ID of the build.
  */
-function openBuild(id: string) {
+function openBuild(id: string): void {
   router.push({ name: 'Build', params: { id } })
 }
 
 /**
  * Opens a new build.
  */
-function openNewBuild() {
+function openNewBuild(): void {
   router.push({ name: 'NewBuild' })
 }
 </script>

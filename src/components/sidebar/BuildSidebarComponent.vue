@@ -19,14 +19,14 @@ const isDeleting = ref(false)
 /**
  * Cancels the build deletion.
  */
-function cancelDeletion() {
+function cancelDeletion(): void {
   isDeleting.value = false
 }
 
 /**
  * Confirms the build deletion.
  */
-function confirmDeletion() {
+function confirmDeletion(): void {
   _buildService.delete(props.parameters.id)
 
   isDeleting.value = false
@@ -36,7 +36,7 @@ function confirmDeletion() {
 /**
  * Creates a copy of the build.
  */
-function copyBuild() {
+function copyBuild(): void {
   _router.push({ name: 'CopyBuild', params: { id: props.parameters.id } })
   _globalSidebarService.close('BuildSidebar')
 }
@@ -44,14 +44,14 @@ function copyBuild() {
 /**
  * Starts the build deletion process.
  */
-function deleteBuild() {
+function deleteBuild(): void {
   isDeleting.value = true
 }
 
 /**
  * Displays the share build sidebar.
  */
-function displayBuildsShareSideBar() {
+function displayBuildsShareSideBar(): void {
   _globalSidebarService.display({
     displayedComponentParameters: {
       buildToShare: props.parameters
@@ -63,7 +63,7 @@ function displayBuildsShareSideBar() {
 /**
  * Export the build to a file.
  */
-function exportBuild() {
+function exportBuild(): void {
   _exportService.export([props.parameters])
   _globalSidebarService.close('BuildSidebar')
 }

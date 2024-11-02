@@ -5,7 +5,13 @@ export default class WebBrowserUtils {
   /**
    * Gets the breakpoints used by CSS media queries.
    */
-  public static get breakpoints() {
+  public static get breakpoints(): {
+    smartphonePortrait: number,
+    smartphoneLandscape: number,
+    tabletPortrait: number,
+    tabletLandscape: number,
+    pc: number
+  } {
     return {
       smartphonePortrait: 0,
       smartphoneLandscape: 481,

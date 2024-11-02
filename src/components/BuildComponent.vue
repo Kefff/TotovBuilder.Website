@@ -244,11 +244,13 @@ onMounted(() => {
   }
 
   window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
-  window.onbeforeunload = function () {
+  window.onbeforeunload = (): string | undefined => {
     if (isEditing.value) {
       // Confirmation message before closing a tab or the browser
       return ''
     }
+
+    return undefined
   }
 })
 
@@ -264,7 +266,7 @@ watch(() => route.params, onItemServiceInitialized)
 /**
  * Cancels modifications and stops edit mode.
  */
-function cancelEdit() {
+function cancelEdit(): void {
   isEditing.value = false
 
   if (isNewBuild.value) {
@@ -278,7 +280,7 @@ function cancelEdit() {
 /**
  * Collapses all the inventory slots.
  */
-function collapseAll() {
+function collapseAll(): void {
   generalOptionsSidebarVisible.value = false
 
   for (let i = 0; i < collapseStatuses.value.length; i++) {
@@ -291,7 +293,7 @@ function collapseAll() {
 /**
  * Creates a copy of the current build.
  */
-function copy() {
+function copy(): void {
   if (isEditing.value) {
     return
   }
@@ -304,7 +306,7 @@ function copy() {
 /**
  * Displays the general options.
  */
-function displayGeneralOptions() {
+function displayGeneralOptions(): void {
   _globalSidebarService.display({
     displayedComponentType: 'GeneralOptionsSidebar',
     displayedComponentParameters: [
@@ -337,7 +339,7 @@ function displayGeneralOptions() {
 /**
  * Displays the share build sidebar.
  */
-function displayBuildsShareSideBar() {
+function displayBuildsShareSideBar(): void {
   _globalSidebarService.display({
     displayedComponentParameters: {
       buildToShare: build.value
@@ -363,15 +365,15 @@ function displayConfirmationDialog(
   confirmationButtonOutlined: boolean,
   cancelButtonCaption: string,
   cancelButtonAction: () => void | Promise<void>,
-  cancelButtonOutlined: boolean) {
-  confirmationDialogCancelButtonAction.value = async () => {
+  cancelButtonOutlined: boolean): void {
+  confirmationDialogCancelButtonAction.value = async (): Promise<void> => {
     await cancelButtonAction()
     confirmationDialogIsDisplayed.value = false
   }
   confirmationDialogCancelButtonCaption.value = cancelButtonCaption
   confirmationDialogCancelButtonOutlined.value = cancelButtonOutlined
 
-  confirmationDialogConfirmButtonAction.value = async () => {
+  confirmationDialogConfirmButtonAction.value = async (): Promise<void> => {
     await confirmButtonAction()
     confirmationDialogIsDisplayed.value = false
   }
@@ -385,7 +387,7 @@ function displayConfirmationDialog(
 /**
  * Displays the merchant items options.
  */
-function displayMerchantItemsOptions() {
+function displayMerchantItemsOptions(): void {
   _globalSidebarService.display({
     displayedComponentType: 'MerchantItemsOptionsSidebar'
   })
@@ -394,7 +396,7 @@ function displayMerchantItemsOptions() {
 /**
  * Displays the shopping list.
  */
-function displayShoppingList() {
+function displayShoppingList(): void {
   _globalSidebarService.display({
     displayedComponentParameters: {
       buildName: summary.value.name,
@@ -407,7 +409,7 @@ function displayShoppingList() {
 /**
  * Expands all the inventory slots.
  */
-function expandAll() {
+function expandAll(): void {
   generalOptionsSidebarVisible.value = false
 
   for (let i = 0; i < collapseStatuses.value.length; i++) {
@@ -420,7 +422,7 @@ function expandAll() {
 /**
  * Expands the inventory slots containing an item.
  */
-function expandWithItem() {
+function expandWithItem(): void {
   generalOptionsSidebarVisible.value = false
 
   for (let i = 0; i < collapseStatuses.value.length; i++) {
@@ -435,7 +437,7 @@ function expandWithItem() {
 /**
  * Exports the build.
  */
-async function exportBuild() {
+async function exportBuild(): Promise<void> {
   if (isEditing.value || isNewBuild.value) {
     return
   }
@@ -447,7 +449,7 @@ async function exportBuild() {
  * Gets a shared build from an encoded string that can be shared in a URL.
  * @param sharableString - Encoded string that can be shared in a URL.
  */
-async function getSharedBuild(sharableString: string) {
+async function getSharedBuild(sharableString: string): Promise<void> {
   const sharedBuild = await Services.get(BuildService).fromSharableString(sharableString)
 
   if (sharedBuild == null) {
@@ -462,7 +464,7 @@ async function getSharedBuild(sharableString: string) {
 /**
  * Redirects to the builds page.
  */
-function goToBuilds() {
+function goToBuilds(): void {
   router.push({ name: 'Builds' })
 }
 
@@ -472,7 +474,7 @@ function goToBuilds() {
  * Checks whether an armor can be added to the build or not.
  * @param request - Compatibility request.
  */
-function onArmorCompatibilityRequest(request: CompatibilityRequest) {
+function onArmorCompatibilityRequest(request: CompatibilityRequest): void {
   request.setResult(_buildPropertiesService.canAddArmor(build.value))
 }
 
@@ -481,7 +483,7 @@ function onArmorCompatibilityRequest(request: CompatibilityRequest) {
  *
  * Signals to the build one of its inventory slots has changed.
  */
-function onInventorySlotChanged(index: number, newInventorySlot: IInventorySlot) {
+function onInventorySlotChanged(index: number, newInventorySlot: IInventorySlot): void {
   build.value.inventorySlots[index] = newInventorySlot
 
   setSummary()
@@ -492,7 +494,7 @@ function onInventorySlotChanged(index: number, newInventorySlot: IInventorySlot)
  *
  * Initializes the build.
  */
-function onItemServiceInitialized() {
+function onItemServiceInitialized(): void {
   isLoading.value = true
 
   setTimeout(async () => { // Did not find another solution to make the loading animation appear when opening a build from the builds list (nextTick does not work)
@@ -517,7 +519,7 @@ function onItemServiceInitialized() {
  * Reacts to a keyboard event.
  * @param event - Keyboard event.
  */
-async function onKeyDown(event: KeyboardEvent) {
+async function onKeyDown(event: KeyboardEvent): Promise<void> {
   if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
     event.preventDefault() // Prevents the browser save action to be triggered
 
@@ -534,7 +536,7 @@ async function onKeyDown(event: KeyboardEvent) {
  * Toogles the compact build summary.
  * @param isStickied - Indicates whether the toolbar is stickied.
  */
-function onToolbarIsStickiedChanged(isStickied: boolean) {
+function onToolbarIsStickiedChanged(isStickied: boolean): void {
   if (!isCompactMode.value) {
     return
   }
@@ -551,7 +553,7 @@ function onToolbarIsStickiedChanged(isStickied: boolean) {
  *
  * Updates the build summary price to reflect the change in merchant filters.
  */
-function onMerchantFilterChanged() {
+function onMerchantFilterChanged(): void {
   setSummary()
 }
 
@@ -561,7 +563,7 @@ function onMerchantFilterChanged() {
  * Checks if a mod can be added to the selected item.
  * @param request - Compatibility request that must be resolved.
  */
-function onModCompatibilityRequest(request: CompatibilityRequest) {
+function onModCompatibilityRequest(request: CompatibilityRequest): void {
   request.setResult(_buildPropertiesService.canAddMod(build.value, request.itemId, request.path))
 }
 
@@ -571,21 +573,21 @@ function onModCompatibilityRequest(request: CompatibilityRequest) {
  * Checks whether a tactical rig can be added to the build or not.
  * @param request - Compatibility request.
  */
-function onTacticalRigCompatibilityRequest(request: CompatibilityRequest) {
+function onTacticalRigCompatibilityRequest(request: CompatibilityRequest): void {
   request.setResult(_buildPropertiesService.canAddVest(build.value, request.itemId))
 }
 
 /**
  * Deletes the build.
  */
-function remove() {
+function remove(): void {
   _buildComponentService.deleteBuild(router, build.value)
 }
 
 /**
  * Saves the build.
  */
-async function save() {
+async function save(): Promise<void> {
   isLoading.value = true
   await _buildComponentService.saveBuild(router, build.value)
 
@@ -598,7 +600,7 @@ async function save() {
 /**
  * Sets the values of the summary of the content of the build.
  */
-async function setSummary() {
+async function setSummary(): Promise<void> {
   if (build.value == null) {
     return
   }
@@ -609,7 +611,7 @@ async function setSummary() {
 /**
  * Displays the deletion confirmation dialog.
  */
-function startDelete() {
+function startDelete(): void {
   displayConfirmationDialog(
     vueI18n.t('message.confirmDeleteBuild', { name: build.value.name }),
     vueI18n.t('caption.delete'),
@@ -623,7 +625,7 @@ function startDelete() {
 /**
  * Starts the edit mode.
  */
-function startEdit() {
+function startEdit(): void {
   isEditing.value = true
 
   // Creating a copy without reference of the build in its original state
@@ -637,7 +639,7 @@ function startEdit() {
 /**
  * Toggles the visibility of the compact build summary.
  */
-async function toggleCompactBuildSummary() {
+async function toggleCompactBuildSummary(): Promise<void> {
   if (_isCompactSummaryExpanding) {
     return
   }

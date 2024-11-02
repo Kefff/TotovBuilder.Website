@@ -18,7 +18,7 @@ onMounted(() => initialize())
 
 watch(() => props.item, () => initialize())
 
-async function initialize() {
+async function initialize(): Promise<void> {
   const itemPrice = await Services.get(InventoryItemService).getPrice({
     content: [],
     ignorePrice: false,

@@ -20,7 +20,7 @@ export class Migration181 implements IMigration {
     return Promise.resolve(true)
   }
 
-  private removeChamber(inventoryItem?: IInventoryItem) {
+  private removeChamber(inventoryItem?: IInventoryItem): void {
     if (inventoryItem == null) {
       return
     }

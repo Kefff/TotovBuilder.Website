@@ -40,7 +40,7 @@ onUnmounted(() => {
  *
  * Updates accepted items to reflect changes in merchant filters.
  */
-function onMerchantFilterChanged() {
+function onMerchantFilterChanged(): void {
   setAcceptedItems()
 }
 
@@ -49,7 +49,7 @@ function onMerchantFilterChanged() {
  *
  * Signals to the build one of its inventory slots has changed.
  */
-function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefined) {
+function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefined): void {
   const newInventorySlot = { ...modelInventorySlot.value }
   newInventorySlot.items[index] = newInventoryItem
   modelInventorySlot.value = newInventorySlot
@@ -58,7 +58,7 @@ function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefin
 /**
  * Sets the accepted items selectable by the user.
  */
-async function setAcceptedItems() {
+async function setAcceptedItems(): Promise<void> {
   acceptedItemsCategoryId.value = inventorySlotType.value.acceptedItemCategories.length === 1
     ? inventorySlotType.value.acceptedItemCategories[0]
     : undefined

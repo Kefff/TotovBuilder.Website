@@ -52,7 +52,7 @@ useEventListener(document, 'keydown', onKeyDown)
 /**
  * Exports the selected builds.
  */
-async function exportBuilds() {
+async function exportBuilds(): Promise<void> {
   const buildsToExport: IBuild[] = []
 
   for (const buildToExportId of selectedBuilds.value) {
@@ -71,7 +71,7 @@ async function exportBuilds() {
  * Reacts to a keyboard event.
  * @param event - Keyboard event.
  */
-function onKeyDown(event: KeyboardEvent) {
+function onKeyDown(event: KeyboardEvent): void {
   if (event.key === 'a' && (event.ctrlKey || event.metaKey)) {
     event.preventDefault() // Prevents the browser action from being triggered
     selectedBuilds.value = modelParameters.value
@@ -81,7 +81,7 @@ function onKeyDown(event: KeyboardEvent) {
 /**
  * Toggles the selection.
  */
-function toggleSelection() {
+function toggleSelection(): void {
   if (allSelected.value) {
     selectedBuilds.value = []
   } else {

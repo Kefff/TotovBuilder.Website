@@ -3,6 +3,7 @@ import { IBuild } from '../../models/build/IBuild'
 import { InventorySlotTypeId } from '../../models/build/InventorySlotTypes'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
+import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { IRecoil } from '../../models/utils/IRecoil'
@@ -1505,7 +1506,7 @@ describe('getSummary()', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const act = () => service.getSummary({
+      const act = (): Promise<IBuildSummary> => service.getSummary({
         name: 'Build',
         id: 'build',
         inventorySlots: [

@@ -251,7 +251,7 @@ export class BuildService {
    * @param id - ID of the build to update.
    * @param build - Updated version of the build.
    */
-  public async update(build: IBuild) {
+  public async update(build: IBuild): Promise<void> {
     build.lastUpdated = new Date()
     build.lastWebsiteVersion = await Services.get(VersionService).getVersion()
 

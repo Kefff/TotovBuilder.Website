@@ -44,7 +44,7 @@ watch(() => props.canHaveMods, () => {
  *
  * Opens the stats sidebar.
  */
-function onShowDetailsClick() {
+function onShowDetailsClick(): void {
   Services.get(GlobalSidebarService).display({
     displayedComponentType: 'StatsSidebar',
     displayedComponentParameters: props.item
@@ -56,7 +56,7 @@ function onShowDetailsClick() {
  * If the same tab as the current selected tab, tabs are hidden.
  * @param newValue - New selected tab.
  */
-function setSelectedTab(newValue: SelectableTab) {
+function setSelectedTab(newValue: SelectableTab): void {
   modelSelectedTab.value = modelSelectedTab.value !== newValue ? newValue : SelectableTab.hidden
 }
 </script>

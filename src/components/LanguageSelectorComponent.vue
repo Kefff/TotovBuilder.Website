@@ -17,7 +17,7 @@ watch(() => modelLanguage.value, () => getAvailableLanguages())
 /**
  * Gets available languages.
  */
-function getAvailableLanguages() {
+function getAvailableLanguages(): void {
   const newLanguages: string[] = []
 
   for (const language of vueI18n.availableLocales.filter(l => l !== modelLanguage.value)) {

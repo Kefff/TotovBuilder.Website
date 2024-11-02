@@ -28,7 +28,7 @@ const directiveArguments = computed(() => new DirectiveArguments(props.position,
 /**
  * Reacts to the click on the element the tooltip is attached to.
  */
-function onClick(event: MouseEvent) {
+function onClick(event: MouseEvent): void {
   if (props.stopClickPropagation) {
     event.stopPropagation()
   }

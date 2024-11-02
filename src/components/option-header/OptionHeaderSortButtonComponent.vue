@@ -34,7 +34,7 @@ const sortingDirectionClass = computed(() => modelSortingData.value.order === So
  * Signals to the parent options header that sorting data has changed.
  * @param property - Property.
  */
-function sortBy(property: string) {
+function sortBy(property: string): void {
   const sortingData = Services.get(SortingService).setSortingProperty(modelSortingData.value, props.sortingFunctions, property)
   modelSortingData.value = sortingData
 }

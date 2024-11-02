@@ -161,9 +161,13 @@ export class GlobalFilterService {
    */
   private exclude(itemExclusionFilterName: string, item: IItem): boolean {
     if (itemExclusionFilterName === GlobalFilterService.excludeItemsWithoutMerchantFilterName) {
-      return this.excludeItemWithoutMerchant(item)
+      const result = this.excludeItemWithoutMerchant(item)
+
+      return result
     } else if (itemExclusionFilterName === GlobalFilterService.excludePresetBaseItemsFilterName) {
-      return this.excludePresetBaseItem(item)
+      const result = this.excludePresetBaseItem(item)
+
+      return result
     } /* c8 ignore start */ else {
       return false
     } /* c8 ignore stop */
@@ -174,7 +178,7 @@ export class GlobalFilterService {
    * @param item - Item.
    * @returns true when the item is excluded; otherwise false.
    */
-  private excludeItemWithoutMerchant(item: IItem) {
+  private excludeItemWithoutMerchant(item: IItem): boolean {
     const isExcluded = item.prices.length === 0 && Services.get(ItemService).hasPrices
 
     return isExcluded
@@ -185,7 +189,7 @@ export class GlobalFilterService {
    * @param item - Item.
    * @returns true when the item is excluded; otherwise false.
    */
-  private excludePresetBaseItem(item: IItem) {
+  private excludePresetBaseItem(item: IItem): boolean {
     const canBeModded = Services.get(ItemPropertiesService).canBeModded(item)
     const hasNoBaseItemId = (item as IModdable).baseItemId == null
     const hasDefaultPresetId = (item as IModdable).defaultPresetId != null

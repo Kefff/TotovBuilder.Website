@@ -20,6 +20,8 @@ import RangedWeaponModStats from '../stats/RangedWeaponModStatsComponent.vue'
 import RangedWeaponStats from '../stats/RangedWeaponStatsComponent.vue'
 import VestStats from '../stats/VestStatsComponent.vue'
 
+type SpecializedComponent = typeof AmmunitionStats | typeof ArmorModStats | typeof ArmorStats | typeof BackpackStats | typeof ContainerStats | typeof EyewearStats | typeof GrenadeStats | typeof HeadwearStats | typeof ItemStats | typeof MagazineStats | typeof MeleeWeaponStats | typeof ModStats | typeof RangedWeaponModStats | typeof RangedWeaponStats | typeof VestStats | undefined
+
 const props = defineProps<{ parameters: StatsSidebarParameters }>()
 
 const specializedComponent = computed(() => getSpecializedComponent(props.parameters.categoryId))
@@ -27,7 +29,7 @@ const specializedComponent = computed(() => getSpecializedComponent(props.parame
 /**
  * Sets the type of specialized options header component to display.
  */
-function getSpecializedComponent(itemCategoryId?: ItemCategoryId) {
+function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedComponent {
   if (itemCategoryId == null || itemCategoryId === ItemCategoryId.other) {
     return undefined
   }
