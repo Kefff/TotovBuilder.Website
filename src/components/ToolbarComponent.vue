@@ -8,11 +8,11 @@ import Services from '../services/repository/Services'
 import Sticky from './StickyComponent.vue'
 import ToolbarButton from './ToolbarButtonComponent.vue'
 
+const props = defineProps<{ buttons: IToolbarButton[] }>()
+
 const emits = defineEmits<{
   isStickied: [value: boolean]
 }>()
-
-const props = defineProps<{ buttons: IToolbarButton[] }>()
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 

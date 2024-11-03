@@ -4,6 +4,7 @@ import { IItem } from '../item/IItem'
 import BuildFilterAndSortingData from './BuildFilterAndSortingData'
 import { IBuildSummary } from './IBuildSummary'
 import { IGeneralOptionsGroup } from './IGeneralOptionsGroup'
+import ItemFilterAndSortingData from './ItemFilterAndSortingData'
 import { IToolbarButton } from './IToolbarButton'
 
 /**
@@ -43,6 +44,11 @@ export type BuildsListSidebarParameters = BuildFilterAndSortingData
 export type GeneralOptionsSidebarParameters = IGeneralOptionsGroup[]
 
 /**
+ * Items  list sidebar parameters.
+ */
+export type ItemsListSidebarParameters = ItemFilterAndSortingData
+
+/**
  * Components allowed to be displayed in a global sidebar.
  */
 export type GlobalSidebarComponent =
@@ -53,6 +59,7 @@ export type GlobalSidebarComponent =
   | 'BuildsListSidebar'
   | 'ChangelogSidebar'
   | 'GeneralOptionsSidebar'
+  | 'ItemsListSidebar'
   | 'MerchantItemsOptionsSidebar'
   | 'NotificationsSidebar'
   | 'ShoppingListSidebar'
@@ -68,6 +75,7 @@ export type GlobalSidebarDisplayedComponentParameters =
   | BuildsListSidebarParameters
   | BuildsShareSideBarParameters
   | GeneralOptionsSidebarParameters
+  | ItemsListSidebarParameters
   | ShoppingListSidebarParameters
   | StatsSidebarParameters
   | ToolbarSidebarParameters

@@ -25,22 +25,24 @@ const stickyElementStyle = computed(() => ({
   'top': `calc(${(elementToStickToBoundingRectangle.value?.bottom.value ?? 0) - (elementToStickToBoundingRectangle.value?.y.value ?? 0)}px + ${props.offset})`,
   'width': props.width === 'fit' ? 'fit-content' : '100%'
 }))
-
 const elementToStickToBoundingRectangle = computed(() => {
-  if (props.elementToStickTo != null) {
+  // We use mounted to delay the calculation of stickyElementStyle, otherwise there is a warning in the console
+  if (mounted.value && props.elementToStickTo != null) {
     return useElementBounding(props.elementToStickTo)
   }
 
-  return null
+  return undefined
 })
 const scrollableParentElementBoundingRectangle = computed(() => {
-  if (scrollableParentElement.value != null) {
+  // We use mounted to delay the calculation of stickyElementStyle, otherwise there is a warning in the console
+  if (mounted.value && scrollableParentElement.value != null) {
     return useElementBounding(scrollableParentElement.value)
   }
 
-  return null
+  return undefined
 })
 
+const mounted = ref(false)
 const scrollableParentElement = ref<HTMLElement>()
 const stickyElement = useTemplateRef('stickyElement')
 const stickyElementBoundingBox = useElementBounding(stickyElement)
@@ -49,7 +51,10 @@ const stickyElementBoundingBox = useElementBounding(stickyElement)
 // This must be the whole ref and not just its value; otherwise the parent component does not receive the value.
 defineExpose({ container: stickyElement })
 
-onMounted(() => getScrollableParentElement(stickyElement.value))
+onMounted(() => {
+  getScrollableParentElement(stickyElement.value)
+  mounted.value = true
+})
 
 watch(
   () => stickyElementBoundingBox.y.value,

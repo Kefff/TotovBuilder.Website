@@ -318,7 +318,7 @@
     "buildSaved": "Equipement \"{name}\" sauvegardé.",
     "buildsExported": "Fichier d'équipements enregistré.",
     "buildsImported": "Equipements importés",
-    "buildsListFilterExplanation": "Le filtre recherche le texte dans les noms d'équipement ainsi que les objets qu'ils contiennent.",
+    "buildsListFilterExplanation": "Le filtre recherche le texte dans le nom des équipements ainsi que des objets qu'ils contiennent.",
     "buildsNotExported": "Les équipements avec un symbole d'avertissement peuvent être perdus si vous effacez les données du navigateur.\nSauvegardez-les vers un fichier pour éviter cela.",
     "buildWithMissingPrice": "Cet équipement contient un objet qui n'est vendu par aucun des marchands paramétrés.\nLe prix de l'équipement peut donc ne pas refléter la réalité.",
     "cannotAddBodyArmor": "Impossible de sélectionner un pare-balles car un gilet tactique avec armure a déjà été ajouté.",

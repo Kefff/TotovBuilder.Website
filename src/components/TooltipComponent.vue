@@ -2,10 +2,6 @@
 import { computed, inject, Ref } from 'vue'
 import { DirectiveArguments } from '../models/utils/TooltipDirectiveArguments'
 
-const emits = defineEmits<{
-  click: [event: MouseEvent]
-}>()
-
 const props = withDefaults(
   defineProps<{
     applyHoverStyle?: boolean,
@@ -19,6 +15,10 @@ const props = withDefaults(
     stopClickPropagation: false,
     tooltip: undefined
   })
+
+const emits = defineEmits<{
+  click: [event: MouseEvent]
+}>()
 
 const isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
 

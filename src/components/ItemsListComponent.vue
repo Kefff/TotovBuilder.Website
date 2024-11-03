@@ -1,0 +1,171 @@
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue'
+import { IItem } from '../models/item/IItem'
+import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlobalSidebarOptions'
+import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
+import { ItemPropertiesService } from '../services/ItemPropertiesService'
+import Services from '../services/repository/Services'
+import { SortingService } from '../services/sorting/SortingService'
+import FilterChips from './FilterChipsComponent.vue'
+import ItemCardSelector from './item-card/ItemCardSelectorComponent.vue'
+import Loading from './LoadingComponent.vue'
+
+const modelFilterAndSortingData = defineModel<ItemFilterAndSortingData>('filterAndSortingData', { required: false, default: new ItemFilterAndSortingData() })
+
+const props = withDefaults(
+  defineProps<{
+    elementToStickTo?: HTMLElement | null,
+    gridMaxColumns?: number,
+    isLoading?: boolean,
+    items: IItem[],
+    showChips?: boolean
+  }>(),
+  {
+    elementToStickTo: undefined,
+    gridMaxColumns: 4,
+    isLoading: false,
+    showChips: true
+  })
+
+const _itemPropertiesService = Services.get(ItemPropertiesService)
+const _sortingService = Services.get(SortingService)
+
+const cardsListClass = computed(() => `items-list-cards${props.gridMaxColumns}`)
+
+const itemsInternal = ref<IItem[]>([])
+
+onMounted(() => {
+  filterAndSortItemsAsync()
+})
+
+watch(
+  () => props.items,
+  () => filterAndSortItemsAsync())
+
+watch(
+  () => modelFilterAndSortingData.value,
+  () => filterAndSortItemsAsync())
+
+/**
+ * Filters and sorts items.
+ */
+async function filterAndSortItemsAsync(): Promise<void> {
+  let itemsToFilter = [...props.items]
+  itemsToFilter = await filterItemsAsync(itemsToFilter)
+  itemsToFilter = await sortItemsAsync(itemsToFilter)
+
+  itemsInternal.value = itemsToFilter.slice(0, 50)
+}
+
+/**
+ * Filters build summaries.
+ * @param itemsToFilter - Build summaries to filter.
+ */
+async function filterItemsAsync(itemsToFilter: IItem[]): Promise<IItem[]> {
+  if (modelFilterAndSortingData.value.filter === '') {
+    return itemsToFilter
+  }
+
+  const filteredBuildSummaries: IItem[] = []
+  const promises: Promise<void>[] = []
+
+  for (const itemToFilter of itemsToFilter) {
+    promises.push(new Promise(resolve => {
+      const matchesFilter = _itemPropertiesService.checkMatchesFilter(itemToFilter, modelFilterAndSortingData.value.filter)
+
+      if (matchesFilter) {
+        filteredBuildSummaries.push(itemToFilter)
+      }
+
+      resolve()
+    }))
+  }
+
+  await Promise.allSettled(promises)
+
+  return filteredBuildSummaries
+}
+
+/**
+ * React to the filter an sort sidebar being closed.
+ *
+ * Applies the filter and sort, and saves the sort.
+ * @param updatedParameters - Filter and sort data updated by the side bar.
+ */
+function onFilterAndSortChanged(updatedParameters?: GlobalSidebarDisplayedComponentParameters): void {
+  const updatedFilterAndSortingData = updatedParameters as ItemFilterAndSortingData
+  const hasSortChange =
+    updatedFilterAndSortingData.property !== modelFilterAndSortingData.value.property
+    || updatedFilterAndSortingData.order !== modelFilterAndSortingData.value.order
+  const hasFilterChange = updatedFilterAndSortingData.filter !== modelFilterAndSortingData.value.filter
+
+  if (hasSortChange || hasFilterChange) {
+    modelFilterAndSortingData.value = updatedFilterAndSortingData
+  }
+}
+
+/**
+ * Sorts items.
+ * @param itemsToSort - Items to sort.
+ */
+async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
+  itemsToSort = await _sortingService.sortAsync(itemsToSort, modelFilterAndSortingData.value)
+
+  return itemsToSort
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+<template>
+  <div
+    v-if="isLoading"
+    class="items-list-loading"
+  >
+    <Loading />
+  </div>
+  <div v-else>
+    <FilterChips
+      v-model:filter-and-sorting-data="modelFilterAndSortingData"
+      filter-sidebar-component="ItemsListSidebar"
+      :element-to-stick-to="elementToStickTo"
+      @filter-and-sort-changed="onFilterAndSortChanged"
+    />
+    <div
+      v-if="itemsInternal.length > 0"
+      class="items-list-cards"
+      :class="cardsListClass"
+    >
+      <ItemCardSelector
+        v-for="item of itemsInternal"
+        :key="item.id"
+        :item="item"
+        :show-details-button="true"
+      />
+    </div>
+    <div
+      v-else
+      class="items-list-no-results-message"
+    >
+      {{ $t('message.noItemsFound') }}
+    </div>
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+
+<style></style>

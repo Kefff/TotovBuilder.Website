@@ -27,6 +27,11 @@ export interface ITarkovValues {
   lightEncumbermentWeight: number
 
   /**
+   * Maximum level an armor can have.
+   */
+  maxArmorLevel: number
+
+  /**
    * Merchants.
    */
   merchants: IMerchant[]

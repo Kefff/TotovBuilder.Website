@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import { useEventListener } from '@vueuse/core'
 import { computed, onMounted, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlobalSidebarOptions'
-import { SortingOrder } from '../models/utils/SortingOrder'
-import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
-import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
 import BuildCard from './BuildCardComponent.vue'
+import FilterChips from './FilterChipsComponent.vue'
 import Loading from './LoadingComponent.vue'
-import Sticky from './StickyComponent.vue'
-import Tooltip from './TooltipComponent.vue'
 
 const modelSelectedBuilds = defineModel<IBuildSummary[]>('selectedBuilds', { required: false, default: [] })
 const modelFilterAndSortingData = defineModel<BuildFilterAndSortingData>('filterAndSortingData', { required: false, default: new BuildFilterAndSortingData() })
@@ -44,23 +39,11 @@ const props = withDefaults(
   })
 
 const _buildPropertiesService = Services.get(BuildPropertiesService)
-const _globalSidebarService = Services.get(GlobalSidebarService)
 const _sortingService = Services.get(SortingService)
 
 const cardsListClass = computed(() => `builds-list-cards${props.gridMaxColumns}`)
-const sortButtonTooltip = computed(() => vueI18n.t(
-  'caption.sortedBy',
-  {
-    property: vueI18n.t(`caption.${modelFilterAndSortingData.value.property}`).toLocaleLowerCase(),
-    order: modelFilterAndSortingData.value.order === SortingOrder.asc
-      ? vueI18n.t('caption.ascendant').toLocaleLowerCase()
-      : vueI18n.t('caption.descendant').toLocaleLowerCase()
-  }))
-const sortChipIcon = computed(() => modelFilterAndSortingData.value.order === SortingOrder.asc ? 'sort-amount-down-alt' : 'sort-amount-up')
 
 const buildSummariesInternal = ref<IBuildSummary[]>([])
-
-useEventListener(document, 'keydown', onKeyDown)
 
 onMounted(() => {
   filterAndSortBuildSummariesAsync()
@@ -126,12 +109,12 @@ async function filterBuildSummariesAsync(buildSummariesToFilter: IBuildSummary[]
 }
 
 /**
- * React to the filter an sort sidebar being closed.
+ * React to the filter an sort having changed.
  *
  * Applies the filter and sort, and saves the sort.
  * @param updatedParameters - Filter and sort data updated by the side bar.
  */
-function onFilterAndSortSidebarClose(updatedParameters?: GlobalSidebarDisplayedComponentParameters): void {
+function onFilterAndSortChanged(updatedParameters?: GlobalSidebarDisplayedComponentParameters): void {
   const updatedFilterAndSortingData = updatedParameters as BuildFilterAndSortingData
   const hasSortChange =
     updatedFilterAndSortingData.property !== modelFilterAndSortingData.value.property
@@ -141,43 +124,6 @@ function onFilterAndSortSidebarClose(updatedParameters?: GlobalSidebarDisplayedC
   if (hasSortChange || hasFilterChange) {
     modelFilterAndSortingData.value = updatedFilterAndSortingData
   }
-}
-
-/**
- * Reacts to a keyboard event.
- * @param event - Keyboard event.
- */
-function onKeyDown(event: KeyboardEvent): void {
-  if (event.key === 'f'
-    && (event.ctrlKey
-      || event.metaKey)) {
-
-    if (!_globalSidebarService.isDisplayed()) {
-      event.preventDefault() // Prevents the browser save action to be triggered
-      showFilterAndSortSidebar()
-    }
-  }
-}
-
-/**
- * Removes the filter.
- */
-function removeFilter(): void {
-  modelFilterAndSortingData.value = {
-    ...modelFilterAndSortingData.value,
-    filter: ''
-  }
-}
-
-/**
- * Opens the filter and sort sidebar.
- */
-function showFilterAndSortSidebar(): void {
-  _globalSidebarService.display({
-    displayedComponentType: 'BuildsListSidebar',
-    displayedComponentParameters: { ...modelFilterAndSortingData.value },
-    onCloseAction: onFilterAndSortSidebarClose
-  })
 }
 
 /**
@@ -193,7 +139,7 @@ async function sortBuildSummariesAsync(buildSummariesToSort: IBuildSummary[]): P
 /**
  * Updates the list of selected build IDs.
  * @param buildSummary - Build.
- * @param isSelected - Indicates whetehr the build is selected.
+ * @param isSelected - Indicates whether the build is selected.
  */
 function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean): void {
   if (isSelected) {
@@ -217,103 +163,46 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
 
 
 <template>
-  <Sticky
-    v-if="showChips && buildSummaries.length > 0"
-    :element-to-stick-to="elementToStickTo"
-    align="left"
-  >
-    <div class="builds-list-chips">
-      <Chip
-        class="builds-list-chip"
-        @click="showFilterAndSortSidebar()"
-      >
-        <Tooltip
-          :tooltip="sortButtonTooltip"
-          position="right"
-        >
-          <div class="builds-list-chip-group">
-            <div class="builds-list-chip-icon">
-              <font-awesome-icon :icon="sortChipIcon" />
-            </div>
-            <span>{{ $t(`caption.${modelFilterAndSortingData.property}`) }}</span>
-          </div>
-        </Tooltip>
-      </Chip>
-      <Chip
-        v-if="modelFilterAndSortingData.filter == ''"
-        class="builds-list-chip"
-        @click="showFilterAndSortSidebar()"
-      >
-        <Tooltip :tooltip="$t('caption.addFilter')">
-          <div class="builds-list-chip-group">
-            <div class="builds-list-chip-icon">
-              <font-awesome-icon icon="filter" />
-            </div>
-            <span>{{ $t('caption.filter') }}</span>
-            <div class="builds-list-chip-icon-button builds-list-chip-icon-button-add-filter">
-              <font-awesome-icon icon="plus" />
-            </div>
-          </div>
-        </Tooltip>
-      </Chip>
-      <Chip
-        v-else
-        class="builds-list-chip"
-      >
-        <Tooltip
-          :tooltip="$t('caption.filteredWith', { filter: modelFilterAndSortingData.filter })"
-          style="overflow: hidden;"
-        >
-          <div
-            class="builds-list-chip-group"
-            @click="showFilterAndSortSidebar()"
-          >
-            <div class="builds-list-chip-icon">
-              <font-awesome-icon icon="filter" />
-            </div>
-            <span>{{ modelFilterAndSortingData.filter }}</span>
-          </div>
-        </Tooltip>
-        <Tooltip :tooltip="$t('caption.removeFilter')">
-          <div
-            class="builds-list-chip-icon-button builds-list-chip-icon-button-remove-filter"
-            @click="removeFilter()"
-          >
-            <font-awesome-icon icon="times" />
-          </div>
-        </Tooltip>
-      </Chip>
-    </div>
-  </Sticky>
   <div
     v-if="isLoading"
     class="builds-list-loading"
   >
     <Loading />
   </div>
-  <div
-    v-if="!isLoading && buildSummariesInternal.length > 0"
-    class="builds-list-cards"
-    :class="cardsListClass"
-  >
-    <BuildCard
-      v-for="buildSummary of buildSummariesInternal"
-      :key="buildSummary.id"
-      :build-summary="buildSummary"
-      :is-selected="checkIsSelected(buildSummary)"
-      :selection-button-caption="selectionButtonCaption"
-      :selection-button-icon="selectionButtonIcon"
-      :show-actions-button="showActionsButton"
-      :show-not-exported="showNotExported"
-      :show-shopping-list="showShoppingList"
-      @update:is-selected="updateSelectedBuilds(buildSummary, $event)"
-    />
-  </div>
-  <div
-    v-else-if="!isLoading"
-    class="builds-list-no-results-message"
-  >
-    {{ $t('message.noBuildsFound') }}
+  <div v-else>
+    <div v-if="buildSummaries.length > 0">
+      <FilterChips
+        v-if="showChips"
+        v-model:filter-and-sorting-data="modelFilterAndSortingData"
+        filter-sidebar-component="BuildsListSidebar"
+        :element-to-stick-to="elementToStickTo"
+        @filter-and-sort-changed="onFilterAndSortChanged"
+      />
+      <div
+        v-if="buildSummariesInternal.length > 0"
+        class="builds-list-cards"
+        :class="cardsListClass"
+      >
+        <BuildCard
+          v-for="buildSummary of buildSummariesInternal"
+          :key="buildSummary.id"
+          :build-summary="buildSummary"
+          :is-selected="checkIsSelected(buildSummary)"
+          :selection-button-caption="selectionButtonCaption"
+          :selection-button-icon="selectionButtonIcon"
+          :show-actions-button="showActionsButton"
+          :show-not-exported="showNotExported"
+          :show-shopping-list="showShoppingList"
+          @update:is-selected="updateSelectedBuilds(buildSummary, $event)"
+        />
+      </div>
+    </div>
+    <div
+      v-else
+      class="builds-list-no-results-message"
+    >
+      {{ $t('message.noBuildsFound') }}
+    </div>
   </div>
 </template>
 
@@ -348,66 +237,6 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
 
 .builds-list-cards4 {
   grid-template-columns: repeat(4, 1fr);
-}
-
-.builds-list-chip {
-  background-color: var(--surface-300);
-  border-style: solid;
-  border-width: 1px;
-  border-color: var(--primary-color);
-  cursor: pointer;
-  padding-bottom: 0.5rem;
-  padding-top: 0.5rem;
-  overflow: hidden;
-}
-
-.builds-list-chip-group {
-  align-items: center;
-  display: flex;
-}
-
-.builds-list-chip-group > span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.builds-list-chip-icon {
-  margin-right: 0.5rem;
-}
-
-.builds-list-chip-icon-button {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  padding-left: 1rem;
-}
-
-.builds-list-chip-icon-button:hover {
-  cursor: pointer;
-}
-
-.builds-list-chip-icon-button-add-filter {
-  color: var(--success-color);
-}
-
-.builds-list-chip-icon-button-remove-filter {
-  color: var(--error-color);
-}
-
-.builds-list-chips {
-  align-items: center;
-  display: grid;
-  grid-gap: 0.5rem;
-  grid-template-columns: auto auto;
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.builds-list-chips-container {
-  margin-bottom: 0.5rem;
-  margin-right: auto;
-  display: flex;
 }
 
 .builds-list-loading {

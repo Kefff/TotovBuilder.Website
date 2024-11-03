@@ -355,7 +355,7 @@
     "buildSaved": "Build \"{name}\" saved.",
     "buildsExported": "Builds file saved.",
     "buildsImported": "Builds imported",
-    "buildsListFilterExplanation": "The filter searches the text in build names as well as the items they contain.",
+    "buildsListFilterExplanation": "The filter searches the text in the name of the builds as well as the name of the items they contain.",
     "buildsNotExported": "Builds with a warning sign can be lost if you clear your browser data.\nSave them to a file to avoid this.",
     "buildToUpdateNotFound": "Build \"{id}\" not found, saving a new record for it.",
     "buildWithMissingPrice": "This build contains an item that is not sold by any of the configured merchants.\nThe price of the build may therefore not reflect reality.",
