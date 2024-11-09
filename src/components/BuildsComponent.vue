@@ -132,7 +132,7 @@ onMounted(() => {
     onItemServicesInitialized()
   }
 
-  getFilterAndSortingData()
+  getInitialFilterAndSortingData()
 })
 
 onUnmounted(() => {
@@ -260,9 +260,9 @@ async function getBuildsAsync(): Promise<void> {
 }
 
 /**
- * Gets the filter and sorting data.
+ * Gets the initial filter and sorting data applied to builds.
  */
-function getFilterAndSortingData(): void {
+function getInitialFilterAndSortingData(): void {
   filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsFilterStorageKey) ?? ''
   const property = localStorage.getItem(_websiteConfigurationService.configuration.buildsSortFieldStorageKey) ?? 'name'
   const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey) ?? SortingOrder.asc)

@@ -25,6 +25,7 @@ export function usePrimeVue(app: App<Element>): void {
   app.component('TabPanel', defineAsyncComponent(() => import('primevue/tabpanel')))
   app.component('TabView', defineAsyncComponent(() => import('primevue/tabview')))
   app.component('TextArea', defineAsyncComponent(() => import('primevue/textarea')))
+  app.component('VirtualScroller', defineAsyncComponent(() => import('primevue/virtualscroller')))
 
   app.directive('tooltip', Tooltip)
 }

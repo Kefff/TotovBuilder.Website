@@ -10,14 +10,16 @@ export default class WebBrowserUtils {
     smartphoneLandscape: number,
     tabletPortrait: number,
     tabletLandscape: number,
-    pc: number
+    pc: number,
+    pcLarge: number
   } {
     return {
       smartphonePortrait: 0,
       smartphoneLandscape: 481,
       tabletPortrait: 768,
       tabletLandscape: 992,
-      pc: 1300
+      pc: 1300,
+      pcLarge: 1800
     }
   }
 }
