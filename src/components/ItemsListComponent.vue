@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useBreakpoints } from '@vueuse/core'
 import { computed, onMounted, ref, watch } from 'vue'
 import { IItem } from '../models/item/IItem'
 import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlobalSidebarOptions'
@@ -6,7 +7,9 @@ import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 import FilterChips from './FilterChipsComponent.vue'
+import InfiniteScroller from './InfiniteScrollerComponent.vue'
 import ItemCardSelector from './item-card/ItemCardSelectorComponent.vue'
 import Loading from './LoadingComponent.vue'
 
@@ -30,9 +33,25 @@ const props = withDefaults(
 const _itemPropertiesService = Services.get(ItemPropertiesService)
 const _sortingService = Services.get(SortingService)
 
-const cardsListClass = computed(() => `items-list-cards${props.gridMaxColumns}`)
+const itemsPerLine = computed(() => {
+  let columns = 4
 
+  if (oneItemPerLine.value) {
+    columns = 1
+  } else if (twoItemsPerLine.value) {
+    columns = 2
+  } else if (threeItemsPerLine.value) {
+    columns = 3
+  }
+
+  return props.gridMaxColumns >= columns ? columns : props.gridMaxColumns
+})
+
+const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const itemsInternal = ref<IItem[]>([])
+const oneItemPerLine = breakpoints.smaller('tabletLandscape')
+const twoItemsPerLine = breakpoints.smaller('pc')
+const threeItemsPerLine = breakpoints.smaller('pcLarge')
 
 onMounted(() => {
   filterAndSortItemsAsync()
@@ -54,7 +73,7 @@ async function filterAndSortItemsAsync(): Promise<void> {
   itemsToFilter = await filterItemsAsync(itemsToFilter)
   itemsToFilter = await sortItemsAsync(itemsToFilter)
 
-  itemsInternal.value = itemsToFilter.slice(0, 50)
+  itemsInternal.value = itemsToFilter
 }
 
 /**
@@ -66,7 +85,7 @@ async function filterItemsAsync(itemsToFilter: IItem[]): Promise<IItem[]> {
     return itemsToFilter
   }
 
-  const filteredBuildSummaries: IItem[] = []
+  const filtereditemsummaries: IItem[] = []
   const promises: Promise<void>[] = []
 
   for (const itemToFilter of itemsToFilter) {
@@ -74,7 +93,7 @@ async function filterItemsAsync(itemsToFilter: IItem[]): Promise<IItem[]> {
       const matchesFilter = _itemPropertiesService.checkMatchesFilter(itemToFilter, modelFilterAndSortingData.value.filter)
 
       if (matchesFilter) {
-        filteredBuildSummaries.push(itemToFilter)
+        filtereditemsummaries.push(itemToFilter)
       }
 
       resolve()
@@ -83,7 +102,7 @@ async function filterItemsAsync(itemsToFilter: IItem[]): Promise<IItem[]> {
 
   await Promise.allSettled(promises)
 
-  return filteredBuildSummaries
+  return filtereditemsummaries
 }
 
 /**
@@ -132,23 +151,30 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
     <Loading />
   </div>
   <div v-else>
-    <FilterChips
-      v-model:filter-and-sorting-data="modelFilterAndSortingData"
-      filter-sidebar-component="ItemsListSidebar"
-      :element-to-stick-to="elementToStickTo"
-      @filter-and-sort-changed="onFilterAndSortChanged"
-    />
     <div
-      v-if="itemsInternal.length > 0"
-      class="items-list-cards"
-      :class="cardsListClass"
+      v-if="items.length > 0"
+      class="items-list"
     >
-      <ItemCardSelector
-        v-for="item of itemsInternal"
-        :key="item.id"
-        :item="item"
-        :show-details-button="true"
+      <FilterChips
+        v-model:filter-and-sorting-data="modelFilterAndSortingData"
+        filter-sidebar-component="ItemsListSidebar"
+        :element-to-stick-to="elementToStickTo"
+        @filter-and-sort-changed="onFilterAndSortChanged"
       />
+      <InfiniteScroller
+        v-if="items.length > 0"
+        :element-height="50"
+        :elements-per-line="itemsPerLine"
+        :elements="itemsInternal"
+        :get-key-function="i => (i as IItem).id"
+      >
+        <template #element="{ element }">
+          <ItemCardSelector
+            :item="<IItem>element"
+            :show-details-button="true"
+          />
+        </template>
+      </InfiniteScroller>
     </div>
     <div
       v-else
@@ -168,4 +194,27 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
 
 
 
-<style></style>
+<style>
+@import '../css/icon.css';
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.items-list-loading {
+  margin-bottom: auto;
+  margin-top: auto;
+  padding-top: 3rem;
+}
+
+.items-list-no-results-message {
+  margin-bottom: auto;
+  margin-top: auto;
+  padding-top: 3rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+</style>

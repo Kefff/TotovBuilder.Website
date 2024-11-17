@@ -32,7 +32,7 @@ export class SortingService {
    * @param itemCategoryId - Item category. When not set, basic item sorting functions are returned.
    * @returns Sorting functions.
    */
-  public getSortingFunctionsFromItemType(itemCategoryId: ItemCategoryId | undefined = undefined): IItemSortingFunctionList {
+  public getSortingFunctionsFromItemCategory(itemCategoryId: ItemCategoryId | undefined = undefined): IItemSortingFunctionList {
     if (itemCategoryId == null) {
       return ItemSortingFunctions
     }

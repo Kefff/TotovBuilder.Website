@@ -31,7 +31,7 @@ function executeAction(action: () => void): void {
 
 <template>
   <div
-    v-for="button of leftButtons"
+    v-for="(button, index) of leftButtons"
     :key="button.name"
     class="sidebar-option"
   >
@@ -54,7 +54,7 @@ function executeAction(action: () => void): void {
         <span>{{ button.caption() }}</span>
       </Button>
       <hr
-        v-if="button.followedBySeparation"
+        v-if="button.followedBySeparation && index < leftButtons.length - 1"
         class="toolbar-sidebar-separation"
       >
     </div>

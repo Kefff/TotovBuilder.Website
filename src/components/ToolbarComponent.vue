@@ -79,7 +79,6 @@ function displayToolbarSideBar(): void {
     v-model:is-in-global-sidebar="isInGlobalSidebar"
     v-model:is-stickied="isStickied"
     class="toolbar-container"
-    width="fill"
   >
     <div
       class="toolbar"

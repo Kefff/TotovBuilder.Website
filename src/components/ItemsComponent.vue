@@ -68,7 +68,7 @@ onMounted(() => {
     onItemServicesInitialized()
   }
 
-  getFilterAndSortingData()
+  getInitialFilterAndSortingData()
 })
 
 /**
@@ -90,9 +90,9 @@ function displayMerchantItemsOptions(): void {
 }
 
 /**
- * Gets the filter and sorting data.
+ * Gets the initial filter and sorting data applied to builds.
  */
-function getFilterAndSortingData(): void {
+function getInitialFilterAndSortingData(): void {
   filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.itemsFilterStorageKey) ?? ''
 
   const category = localStorage.getItem(_websiteConfigurationService.configuration.itemsSortCategoryStorageKey)
@@ -100,7 +100,7 @@ function getFilterAndSortingData(): void {
   const property = localStorage.getItem(_websiteConfigurationService.configuration.itemsSortFieldStorageKey) ?? 'name'
   const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.itemsSortOrderStorageKey) ?? SortingOrder.asc)
 
-  const sortingFunctions = _sortingService.getSortingFunctionsFromItemType(categoryId)
+  const sortingFunctions = _sortingService.getSortingFunctionsFromItemCategory(categoryId)
   _sortingService.setSortingProperty(filterAndSortingData.value, sortingFunctions, property, order)
 }
 
@@ -199,6 +199,7 @@ function onItemServicesInitialized(): void {
       :is-loading="isLoading"
       selection-button-caption="caption.edit"
       selection-button-icon="edit"
+      class="items-list"
       @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
       @update:selected-items="onItemSelected"
     />
@@ -220,6 +221,10 @@ function onItemServicesInitialized(): void {
   flex-direction: column;
   height: 100%;
   width: 100%;
+}
+
+.items-list {
+  height: 100%;
 }
 
 .items-title {

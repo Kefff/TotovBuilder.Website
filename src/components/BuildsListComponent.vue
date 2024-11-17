@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useBreakpoints } from '@vueuse/core'
 import { computed, onMounted, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
@@ -6,8 +7,10 @@ import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlob
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 import BuildCard from './BuildCardComponent.vue'
 import FilterChips from './FilterChipsComponent.vue'
+import InfiniteScroller from './InfiniteScrollerComponent.vue'
 import Loading from './LoadingComponent.vue'
 
 const modelSelectedBuilds = defineModel<IBuildSummary[]>('selectedBuilds', { required: false, default: [] })
@@ -41,9 +44,25 @@ const props = withDefaults(
 const _buildPropertiesService = Services.get(BuildPropertiesService)
 const _sortingService = Services.get(SortingService)
 
-const cardsListClass = computed(() => `builds-list-cards${props.gridMaxColumns}`)
+const buildsPerLine = computed(() => {
+  let columns = 4
 
+  if (oneBuildPerLine.value) {
+    columns = 1
+  } else if (twoBuildsPerLine.value) {
+    columns = 2
+  } else if (threeBuildsPerLine.value) {
+    columns = 3
+  }
+
+  return props.gridMaxColumns >= columns ? columns : props.gridMaxColumns
+})
+
+const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const buildSummariesInternal = ref<IBuildSummary[]>([])
+const oneBuildPerLine = breakpoints.smaller('tabletLandscape')
+const twoBuildsPerLine = breakpoints.smaller('pc')
+const threeBuildsPerLine = breakpoints.smaller('pcLarge')
 
 onMounted(() => {
   filterAndSortBuildSummariesAsync()
@@ -169,7 +188,10 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
   >
     <Loading />
   </div>
-  <div v-else>
+  <div
+    v-else
+    class="builds-list"
+  >
     <div v-if="buildSummaries.length > 0">
       <FilterChips
         v-if="showChips"
@@ -178,24 +200,25 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
         :element-to-stick-to="elementToStickTo"
         @filter-and-sort-changed="onFilterAndSortChanged"
       />
-      <div
-        v-if="buildSummariesInternal.length > 0"
-        class="builds-list-cards"
-        :class="cardsListClass"
+      <InfiniteScroller
+        :element-height="200"
+        :elements-per-line="buildsPerLine"
+        :elements="buildSummariesInternal"
+        :get-key-function="i => (i as IBuildSummary).id"
       >
-        <BuildCard
-          v-for="buildSummary of buildSummariesInternal"
-          :key="buildSummary.id"
-          :build-summary="buildSummary"
-          :is-selected="checkIsSelected(buildSummary)"
-          :selection-button-caption="selectionButtonCaption"
-          :selection-button-icon="selectionButtonIcon"
-          :show-actions-button="showActionsButton"
-          :show-not-exported="showNotExported"
-          :show-shopping-list="showShoppingList"
-          @update:is-selected="updateSelectedBuilds(buildSummary, $event)"
-        />
-      </div>
+        <template #element="{ element }">
+          <BuildCard
+            :build-summary="<IBuildSummary>element"
+            :is-selected="checkIsSelected(<IBuildSummary>element)"
+            :selection-button-caption="selectionButtonCaption"
+            :selection-button-icon="selectionButtonIcon"
+            :show-actions-button="showActionsButton"
+            :show-not-exported="showNotExported"
+            :show-shopping-list="showShoppingList"
+            @update:is-selected="updateSelectedBuilds(<IBuildSummary>element, $event)"
+          />
+        </template>
+      </InfiniteScroller>
     </div>
     <div
       v-else
@@ -218,31 +241,23 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
 <style scoped>
 @import '../css/icon.css';
 
-.builds-list-cards {
-  display: grid;
-  grid-gap: 1rem;
+.builds-list {
+  height: 100%;
+  width: 100%;
 }
 
-.builds-list-cards1 {
-  grid-template-columns: 1fr;
-}
-
-.builds-list-cards2 {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.builds-list-cards3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.builds-list-cards4 {
-  grid-template-columns: repeat(4, 1fr);
+.builds-list > div {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
 }
 
 .builds-list-loading {
   margin-bottom: auto;
   margin-top: auto;
   padding-top: 3rem;
+  /* Because the is a 3rem padding above the app-footer */
 }
 
 .builds-list-no-results-message {
@@ -251,64 +266,5 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
   padding-top: 3rem;
   font-size: 1.5rem;
   text-align: center;
-}
-
-/* Smartphone in portrait */
-@media only screen and (max-width: 480px) {
-  .builds-list-cards2 {
-    grid-template-columns: 1fr;
-  }
-
-  .builds-list-cards3 {
-    grid-template-columns: 1fr;
-  }
-
-  .builds-list-cards4 {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Smartphone in landscape */
-@media only screen and (min-width: 481px) and (max-width: 767px) {
-  .builds-list-cards2 {
-    grid-template-columns: 1fr;
-  }
-
-  .builds-list-cards3 {
-    grid-template-columns: 1fr;
-  }
-
-  .builds-list-cards4 {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Tablet in portrait */
-@media only screen and (min-width: 768px) and (max-width: 991px) {
-  .builds-list-cards3 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .builds-list-cards4 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Tablet in landscape */
-@media only screen and (min-width: 992px) and (max-width: 1299px) {
-  .builds-list-cards3 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .builds-list-cards4 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* PC */
-@media only screen and (min-width: 1300px) and (max-width: 1799px) {
-  .builds-list-cards4 {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 </style>

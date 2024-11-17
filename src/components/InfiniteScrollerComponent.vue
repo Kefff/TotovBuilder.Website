@@ -1,53 +1,92 @@
 <script setup lang="ts">
-import { useElementBounding } from '@vueuse/core'
-import { computed, useTemplateRef } from 'vue'
+import { VirtualScrollerLazyEvent } from 'primevue/virtualscroller'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    elementsPerLine: number,
-    getKeyFunction: (item: unknown) => string,
-    items: unknown[],
-    minLinesAmount?: number
+    elementsPerLine?: number,
+    getKeyFunction: (element: unknown) => string,
+    elements: unknown[],
+    elementHeight: number,
+    maxLinesAmount?: number
   }>(),
   {
-    minLinesAmount: 1
+    elementsPerLine: 1,
+    maxLinesAmount: undefined
   })
 
-let _lastLineHeight: number = 0
-
-const groupedItems = computed<unknown[]>(() => {
+const groupedElements = computed<unknown[][]>(() => {
   const groups: unknown[][] = []
 
-  for (let i = 0; i < props.items.length; i += props.elementsPerLine) {
-    const group = props.items.slice(i, i + props.elementsPerLine)
+  for (let i = 0; i < props.elements.length; i += props.elementsPerLine) {
+    const group = props.elements.slice(i, i + props.elementsPerLine)
     groups.push(group)
   }
 
   return groups
 })
-const lineHeight = computed(() => {
-  if (lineBoundingBox.height.value > _lastLineHeight) {
-    _lastLineHeight = lineBoundingBox.height.value
+const gridTemplateColumns = computed(() => `repeat(${props.elementsPerLine}, 1fr)`)
+const lineHeight = computed(() => `${props.elementHeight}px`)
+const maxHeight = computed(() => {
+  if (props.maxLinesAmount == null) {
+    return '100%'
   }
 
-  return _lastLineHeight
-})
-const minHeight = computed(() => {
-  let height = lineHeight.value * minLinesAmountInternal.value
-
-  if (height === 0) {
-    // We need to have a height greater than 0 otherwise no line is displayed and we cannot
-    // calculate the height of a line
-    height = 1
-  }
+  let height = props.maxLinesAmount * props.elementHeight
 
   return `${height}px`
 })
-const minLinesAmountInternal = computed(() => props.minLinesAmount > groupedItems.value.length ? groupedItems.value.length : props.minLinesAmount)
-const gridTemplateColumns = computed(() => `repeat(${props.elementsPerLine}, 1fr)`)
+const minHeight = computed(() => {
+  let height = props.elementHeight
 
-const line = useTemplateRef('line')
-const lineBoundingBox = useElementBounding(line)
+  return `${height}px`
+})
+
+const displayedElementGroups = ref<unknown[][]>([])
+const isInitialized = ref(false)
+const isLoading = ref(false)
+
+watch(() => props.elements, () => initializeDisplayedElements())
+
+onMounted(() => initializeDisplayedElements())
+
+/**
+ * Initializes the list of displayed elements.
+ */
+function initializeDisplayedElements(): void {
+  isInitialized.value = false
+  displayedElementGroups.value = Array.from({ length: groupedElements.value.length })
+
+  nextTick(() => isInitialized.value = true)
+}
+
+/**
+ * Reacts to a lazy load event of the virtual scroller.
+ *
+ * Adds to the list of displayed items the items corresponding to the lazy loadingevent.
+ */
+function onLazyLoad(event: VirtualScrollerLazyEvent): void {
+  let first = event.first
+  let last = event.last
+
+  if (event.last > groupedElements.value.length) {
+    last = groupedElements.value.length - 1
+  }
+
+  isLoading.value = true
+
+  const nextLines = groupedElements.value.slice(first, last + 1)
+  const take = last - first
+  let newDisplayedElementGroups = [...displayedElementGroups.value]
+
+  for (let i = 0; i < take; i++) {
+    newDisplayedElementGroups[first + i] = nextLines[i]
+  }
+
+  displayedElementGroups.value = newDisplayedElementGroups
+
+  isLoading.value = false
+}
 </script>
 
 
@@ -61,20 +100,28 @@ const lineBoundingBox = useElementBounding(line)
 
 <template>
   <VirtualScroller
-    :items="groupedItems"
-    :item-size="lineHeight"
-    :style="`height: 100%; min-height: ${minHeight}; width: 100%;`"
+    v-if="isInitialized"
+    :item-size="elementHeight"
+    :items="displayedElementGroups"
+    :lazy="true"
+    :loading="isLoading"
+    :show-loader="true"
+    :style="{
+      'height': '100%',
+      'max-height': maxHeight,
+      'min-height': minHeight,
+      'overflow-x': 'hidden',
+      'width': '100%'
+    }"
+    @lazy-load="onLazyLoad"
   >
     <template #item="{ item }">
-      <div
-        ref="line"
-        class="infinite-scroller-line"
-      >
+      <div class="infinite-scroller-line">
         <slot
-          v-for="itemOfGroup of item"
-          :key="getKeyFunction(itemOfGroup)"
+          v-for="element of item"
+          :key="getKeyFunction(element)"
           name="element"
-          :element="itemOfGroup"
+          :element="element"
         />
       </div>
     </template>
@@ -91,11 +138,23 @@ const lineBoundingBox = useElementBounding(line)
 
 
 <style>
+.infinite-scroller {
+  display: flex;
+  flex-direction: column;
+  max-height: v-bind(maxHeight);
+  min-height: v-bind(minHeight);
+  overflow-x: hidden;
+  width: 100%;
+}
+
 .infinite-scroller-line {
   display: grid;
-  grid-template-columns: v-bind(gridTemplateColumns);
   gap: 1rem;
+  grid-template-columns: v-bind(gridTemplateColumns);
+  height: v-bind(lineHeight);
   margin-top: 1rem;
+  overflow: hidden;
+  width: 100%;
 }
 
 .infinite-scroller-line:first-child {

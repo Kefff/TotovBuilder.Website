@@ -16,7 +16,7 @@ const props = withDefaults(
     align: 'left',
     elementToStickTo: undefined,
     offset: '0px',
-    width: 'fit'
+    width: 'fill'
   })
 
 const stickyElementStyle = computed(() => ({
@@ -52,8 +52,9 @@ const stickyElementBoundingBox = useElementBounding(stickyElement)
 defineExpose({ container: stickyElement })
 
 onMounted(() => {
-  getScrollableParentElement(stickyElement.value)
   mounted.value = true
+  getScrollableParentElement(stickyElement.value)
+  setIsStickied()
 })
 
 watch(
@@ -62,7 +63,7 @@ watch(
 
 /**
  * Gets the parent element that can be scrolled.
- * It can either be the "p-sidebar-content" div of a global sidebar or the "app" div.
+ * It can either be the `p-sidebar-content` div of a global sidebar or the `app` div.
  * @param parentElement - Parent element.
  */
 function getScrollableParentElement(parentElement: HTMLElement | undefined | null): void {
