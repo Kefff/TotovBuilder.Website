@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useElementBounding } from '@vueuse/core'
 import { computed, onMounted, ref, useTemplateRef, watch } from 'vue'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 
 const modelIsInGlobalSidebar = defineModel<boolean>('isInGlobalSidebar', { required: false, default: false })
 const modelIsStickied = defineModel<boolean>('isStickied', { required: false, default: false })
@@ -53,7 +54,7 @@ defineExpose({ container: stickyElement })
 
 onMounted(() => {
   mounted.value = true
-  getScrollableParentElement(stickyElement.value)
+  getScrollableParentElement()
   setIsStickied()
 })
 
@@ -64,26 +65,14 @@ watch(
 /**
  * Gets the parent element that can be scrolled.
  * It can either be the `p-sidebar-content` div of a global sidebar or the `app` div.
- * @param parentElement - Parent element.
  */
-function getScrollableParentElement(parentElement: HTMLElement | undefined | null): void {
-  if (parentElement == null) {
-    return
+function getScrollableParentElement(): void {
+  const result = WebBrowserUtils.getScrollableParentElement(stickyElement.value)
+
+  if (result != null) {
+    scrollableParentElement.value = result.scrollableParentElement
+    modelIsInGlobalSidebar.value = result.isInGlobalSidebar
   }
-
-  if (parentElement.classList.contains('p-sidebar-content')) {
-    scrollableParentElement.value = parentElement
-    modelIsInGlobalSidebar.value = true
-
-    return
-  } else if (parentElement.id === 'app') {
-    scrollableParentElement.value = parentElement
-    modelIsInGlobalSidebar.value = false
-
-    return
-  }
-
-  getScrollableParentElement(parentElement.parentElement)
 }
 
 /**

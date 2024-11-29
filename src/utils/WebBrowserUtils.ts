@@ -22,4 +22,31 @@ export default class WebBrowserUtils {
       pcLarge: 1800
     }
   }
+
+  /**
+ * Gets the parent element that can be scrolled.
+ * It can either be the `p-sidebar-content` div of a global sidebar or the `app` div.
+ * @param parentElement - Parent element.
+ */
+  public static getScrollableParentElement(parentElement: HTMLElement | undefined | null): { isInGlobalSidebar: boolean, scrollableParentElement: HTMLElement } | undefined {
+    if (parentElement == null) {
+      return undefined
+    }
+
+    if (parentElement.classList.contains('p-sidebar-content')) {
+      return {
+        scrollableParentElement: parentElement,
+        isInGlobalSidebar: true
+      }
+    } else if (parentElement.id === 'app') {
+      return {
+        scrollableParentElement: parentElement,
+        isInGlobalSidebar: false
+      }
+    }
+
+    const result = this.getScrollableParentElement(parentElement.parentElement)
+
+    return result
+  }
 }

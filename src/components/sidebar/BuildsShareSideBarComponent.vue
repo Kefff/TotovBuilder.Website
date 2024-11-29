@@ -65,7 +65,7 @@ const toolbarButtons: IToolbarButton[] = [
   }
 ]
 const availableBuilds = ref<IBuildSummary[]>([])
-const buildsExportToolbar = useTemplateRef('buildsExportToolbar')
+const buildsShareToolbar = useTemplateRef('buildsShareToolbar')
 const buildsToShare = ref<IBuild[]>([])
 const includeEmojis = ref(true)
 const includeLink = ref(true)
@@ -75,11 +75,11 @@ const language = ref<string>(vueI18n.locale.value)
 const linkOnly = ref(false)
 const selectedBuilds = ref<IBuildSummary[]>([])
 const text = ref<string>()
-const typeOption = ref<IBuildsShareTypeOption>()
+const typeOption = ref<IBuildsShareTypeOption>(typeOptions[0])
 
 const allSelected = computed(() => selectedBuilds.value.length === availableBuilds.value.length)
 const buildsToTextType = computed(() => {
-  switch (typeOption.value?.type) {
+  switch (typeOption.value.type) {
     case 'discordMarkdown':
     case 'redditMarkdown':
       return BuildsToTextType.markdown
@@ -91,7 +91,7 @@ const buildsToTextType = computed(() => {
 })
 const lengthCaption = computed(() => `${vueI18n.t('caption.length')}: ${text.value?.length.toLocaleString() ?? 0} ${vueI18n.t('caption.characters').toLocaleLowerCase()}`)
 const shareExplanation = computed(() => {
-  switch (typeOption.value?.type) {
+  switch (typeOption.value.type) {
     case 'discordMarkdown':
       return 'message.discordMarkdownExplanation'
     case 'redditMarkdown':
@@ -100,7 +100,7 @@ const shareExplanation = computed(() => {
       return undefined
   }
 })
-const toolbarContainer = computed(() => buildsExportToolbar.value?.container)
+const toolbarContainer = computed(() => buildsShareToolbar.value?.container)
 
 onMounted(() => initialize())
 
@@ -201,20 +201,19 @@ function toggleSelection(): void {
       v-if="buildsToShare.length === 0"
       class="sidebar-option builds-share-sidebar-selection"
     >
-      <div>
-        <Toolbar
-          ref="buildsExportToolbar"
-          :buttons="toolbarButtons"
-          style="margin-top: 1px;"
-        />
-        <BuildsList
-          v-model:selected-builds="selectedBuilds"
-          :build-summaries="availableBuilds"
-          :element-to-stick-to="toolbarContainer"
-          :grid-max-columns="1"
-          :show-not-exported="false"
-        />
-      </div>
+      <Toolbar
+        ref="buildsShareToolbar"
+        :buttons="toolbarButtons"
+        style="margin-top: 1px;"
+      />
+      <BuildsList
+        v-model:selected-builds="selectedBuilds"
+        :build-summaries="availableBuilds"
+        :element-to-stick-to="toolbarContainer"
+        :infinite-scrolling="true"
+        :max-elements-per-line="1"
+        :show-not-exported="false"
+      />
     </div>
     <div v-else>
       <div class="sidebar-option builds-share-sidebar-options">
@@ -429,10 +428,15 @@ function toggleSelection(): void {
 .builds-share-sidebar {
   max-width: 100%;
   min-width: 100%;
+  height: 100%;
 }
 
 .builds-share-sidebar-large {
   width: 100vw;
+}
+
+.builds-share-sidebar-large > div {
+  height: 100%;
 }
 
 .builds-share-sidebar-checkbox-caption {
@@ -478,6 +482,9 @@ function toggleSelection(): void {
 }
 
 .builds-share-sidebar-selection {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   max-width: 40rem;
 }
 

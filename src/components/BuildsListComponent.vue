@@ -12,6 +12,7 @@ import BuildCard from './BuildCardComponent.vue'
 import FilterChips from './FilterChipsComponent.vue'
 import InfiniteScroller from './InfiniteScrollerComponent.vue'
 import Loading from './LoadingComponent.vue'
+import Paginator from './PaginatorComponent.vue'
 
 const modelSelectedBuilds = defineModel<IBuildSummary[]>('selectedBuilds', { required: false, default: [] })
 const modelFilterAndSortingData = defineModel<BuildFilterAndSortingData>('filterAndSortingData', { required: false, default: new BuildFilterAndSortingData() })
@@ -20,7 +21,8 @@ const props = withDefaults(
   defineProps<{
     buildSummaries: IBuildSummary[],
     elementToStickTo?: HTMLElement | null,
-    gridMaxColumns?: number,
+    maxElementsPerLine?: number,
+    infiniteScrolling?: boolean,
     isLoading?: boolean,
     selectionButtonCaption?: string,
     selectionButtonIcon?: string,
@@ -31,7 +33,8 @@ const props = withDefaults(
   }>(),
   {
     elementToStickTo: undefined,
-    gridMaxColumns: 4,
+    maxElementsPerLine: 4,
+    infiniteScrolling: false,
     isLoading: false,
     selectionButtonCaption: undefined,
     selectionButtonIcon: undefined,
@@ -45,24 +48,35 @@ const _buildPropertiesService = Services.get(BuildPropertiesService)
 const _sortingService = Services.get(SortingService)
 
 const buildsPerLine = computed(() => {
-  let columns = 4
+  let elementsPerLine = 4
 
-  if (oneBuildPerLine.value) {
-    columns = 1
-  } else if (twoBuildsPerLine.value) {
-    columns = 2
-  } else if (threeBuildsPerLine.value) {
-    columns = 3
+  if (isSizeTabletPortaitOrSmaller.value) {
+    elementsPerLine = 1
+  } else if (isSizeTablet.value) {
+    elementsPerLine = 2
+  } else if (isSizePc.value) {
+    elementsPerLine = 3
   }
 
-  return props.gridMaxColumns >= columns ? columns : props.gridMaxColumns
+  return props.maxElementsPerLine >= elementsPerLine ? elementsPerLine : props.maxElementsPerLine
+})
+const linesPerPage = computed(() => {
+  let lines = 3
+
+  if (isSizeTabletPortaitOrSmaller.value) {
+    lines = 10
+  } else if (isSizeTablet.value) {
+    lines = 10
+  }
+
+  return lines
 })
 
 const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const buildSummariesInternal = ref<IBuildSummary[]>([])
-const oneBuildPerLine = breakpoints.smaller('tabletLandscape')
-const twoBuildsPerLine = breakpoints.smaller('pc')
-const threeBuildsPerLine = breakpoints.smaller('pcLarge')
+const isSizeTabletPortaitOrSmaller = breakpoints.smaller('tabletLandscape')
+const isSizeTablet = breakpoints.smaller('pc')
+const isSizePc = breakpoints.smaller('pcLarge')
 
 onMounted(() => {
   filterAndSortBuildSummariesAsync()
@@ -201,7 +215,8 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
         @filter-and-sort-changed="onFilterAndSortChanged"
       />
       <InfiniteScroller
-        :element-height="200"
+        v-if="infiniteScrolling"
+        :element-height="280"
         :elements-per-line="buildsPerLine"
         :elements="buildSummariesInternal"
         :get-key-function="i => (i as IBuildSummary).id"
@@ -219,6 +234,26 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
           />
         </template>
       </InfiniteScroller>
+      <Paginator
+        v-else
+        :elements-per-line="buildsPerLine"
+        :elements="buildSummariesInternal"
+        :get-key-function="b => (b as IBuildSummary).id"
+        :lines-per-page="linesPerPage"
+      >
+        <template #element="{ element }">
+          <BuildCard
+            :build-summary="<IBuildSummary>element"
+            :is-selected="checkIsSelected(<IBuildSummary>element)"
+            :selection-button-caption="selectionButtonCaption"
+            :selection-button-icon="selectionButtonIcon"
+            :show-actions-button="showActionsButton"
+            :show-not-exported="showNotExported"
+            :show-shopping-list="showShoppingList"
+            @update:is-selected="updateSelectedBuilds(<IBuildSummary>element, $event)"
+          />
+        </template>
+      </Paginator>
     </div>
     <div
       v-else

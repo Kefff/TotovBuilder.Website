@@ -232,7 +232,7 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: numbe
 @import '../../css/sidebar.css';
 
 .global-sidebar-content {
-  margin-top: 1rem;
+  height: 100%;
   max-width: calc(50vw - 1rem - 1rem);
 }
 

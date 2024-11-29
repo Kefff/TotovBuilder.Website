@@ -282,7 +282,7 @@ function openNewBuild(): void {
         <h3>{{ $t('message.welcomeLastBuilds') }}</h3>
         <BuildsList
           :build-summaries="lastBuildSummaries"
-          :grid-max-columns="3"
+          :max-elements-per-line="_lastBuildAmount"
           :show-chips="false"
           :show-not-exported="false"
           selection-button-caption="caption.edit"

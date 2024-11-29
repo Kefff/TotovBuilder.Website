@@ -429,7 +429,7 @@
     "pricesFetched": "{date} Prices fetched with success.",
     "pricesLoadingError": "Something went wrong while updating prices.\nTry waiting a bit and reloading the page.",
     "pricesNotFetched": "No price could be fetched.",
-    "redditMarkdownExplanation": "Formatted for Reddit.\nMake sure to switch your post / comment to \"Markdown Editor\" mode before pasting. You can switch back to the \"Rich Text Editor\" mode afterwards.",
+    "redditMarkdownExplanation": "Formatted for Reddit.\nMake sure to switch your post / comment to \"Markdown Editor\" mode before pasting.\nYou can switch back to the \"Rich Text Editor\" mode afterwards.",
     "requiredField": "{caption} is required.",
     "resultCannotReadValueError": "Cannot read \"value\" property of an error result.",
     "resultUndefinedValue": "Undefined result value.",
@@ -458,7 +458,7 @@
     "welcomeInformation6": " and ",
     "welcomeInformation7": " to avoid this.",
     "welcomeLastBuilds": "My last builds",
-    "welcomeShowBuilds": "All my builds"
+    "welcomeShowBuilds": "My builds"
   },
   "test": {
     "logger1": "This is a message.",

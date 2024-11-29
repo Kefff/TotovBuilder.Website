@@ -15,6 +15,7 @@ const props = withDefaults(
     maxLinesAmount: undefined
   })
 
+const gridTemplateColumns = computed(() => `repeat(${props.elementsPerLine}, 1fr)`)
 const groupedElements = computed<unknown[][]>(() => {
   const groups: unknown[][] = []
 
@@ -25,7 +26,6 @@ const groupedElements = computed<unknown[][]>(() => {
 
   return groups
 })
-const gridTemplateColumns = computed(() => `repeat(${props.elementsPerLine}, 1fr)`)
 const lineHeight = computed(() => `${props.elementHeight}px`)
 const maxHeight = computed(() => {
   if (props.maxLinesAmount == null) {
@@ -36,11 +36,7 @@ const maxHeight = computed(() => {
 
   return `${height}px`
 })
-const minHeight = computed(() => {
-  let height = props.elementHeight
-
-  return `${height}px`
-})
+const minHeight = computed(() => `${props.elementHeight}px`)
 
 const displayedElementGroups = ref<unknown[][]>([])
 const isInitialized = ref(false)
@@ -106,13 +102,7 @@ function onLazyLoad(event: VirtualScrollerLazyEvent): void {
     :lazy="true"
     :loading="isLoading"
     :show-loader="true"
-    :style="{
-      'height': '100%',
-      'max-height': maxHeight,
-      'min-height': minHeight,
-      'overflow-x': 'hidden',
-      'width': '100%'
-    }"
+    class="infinite-scroller"
     @lazy-load="onLazyLoad"
   >
     <template #item="{ item }">
@@ -139,12 +129,10 @@ function onLazyLoad(event: VirtualScrollerLazyEvent): void {
 
 <style>
 .infinite-scroller {
-  display: flex;
-  flex-direction: column;
-  max-height: v-bind(maxHeight);
-  min-height: v-bind(minHeight);
-  overflow-x: hidden;
-  width: 100%;
+  height: 100% !important;
+  max-height: v-bind(maxHeight) !important;
+  min-height: v-bind(minHeight) !important;
+  width: 100% !important;
 }
 
 .infinite-scroller-line {

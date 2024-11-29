@@ -329,12 +329,13 @@ function displayStats(item: IItem): void {
 
 .build-card {
   background-color: var(--surface-transparent-0);
-  overflow: hidden;
-  width: 100%;
   border-color: var(--primary-color6);
+  border-radius: 6px;
   border-style: solid;
   border-width: 1px;
-  border-radius: 6px;
+  height: 20rem;
+  overflow: hidden;
+  width: 100%;
 }
 
 .build-card-buttons {

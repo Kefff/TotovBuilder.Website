@@ -348,7 +348,7 @@
     "noMerchant": "Pas de marchand",
     "postUpdatePeriod": "Comme nous sommes dans une période d'après mise à jour de Tarkov, les objets et prix peuvent ne pas être à jour.\nIls sont en train d'être progressivement mis à jour par l'équipe de Tarkov.dev.",
     "pricesLoadingError": "Quelque chose s'est mal passé lors de la mise à jour des prix.\nEssayez d'attendre un peu et de recharger la page.",
-    "redditMarkdownExplanation": "Formatté pour Reddit.\nAssurez-vous de passer en votre post / commentaire en mode \"Markdown Editor\" avant de coller. Vous pouvez ensuite revenir au mode \"Rich Text Editor\".",
+    "redditMarkdownExplanation": "Formatté pour Reddit.\nAssurez-vous de passer en votre post / commentaire en mode \"Markdown Editor\" avant de coller.\nVous pouvez ensuite revenir au mode \"Rich Text Editor\".",
     "requiredField": "{caption} est obligatoire.",
     "shareBuildExplanation": "Ce lien permet à une autre personne d'obtenir une copie de cet équipement.\nLa personne pourra le modifier et enregistrer sa propre version.",
     "sharedBuildMigrationErrorNotification": "Erreur lors de la mise à jour de l'équipement vers la version \"{newVersion}\".",
@@ -367,6 +367,6 @@
     "welcomeInformation6": " et ",
     "welcomeInformation7": " pour éviter cela.",
     "welcomeLastBuilds": "Mes derniers équipements",
-    "welcomeShowBuilds": "Tous mes équipements"
+    "welcomeShowBuilds": "Mes équipements"
   }
 }

@@ -30,7 +30,6 @@ const _globalSidebarService = Services.get(GlobalSidebarService)
 
 useEventListener(document, 'keydown', onKeyDown)
 
-// eslint-disable-next-line no-undef
 const sortButtonTooltip = computed(() => vueI18n.t(
   'caption.sortedBy',
   {

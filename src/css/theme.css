@@ -5596,6 +5596,7 @@
   border-radius: 50%;
   background: transparent;
   transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  flex-shrink: 0;
 }
 
 .p-message.p-component > .p-message-wrapper > .p-message-close.p-link {

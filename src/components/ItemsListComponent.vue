@@ -12,20 +12,23 @@ import FilterChips from './FilterChipsComponent.vue'
 import InfiniteScroller from './InfiniteScrollerComponent.vue'
 import ItemCardSelector from './item-card/ItemCardSelectorComponent.vue'
 import Loading from './LoadingComponent.vue'
+import Paginator from './PaginatorComponent.vue'
 
 const modelFilterAndSortingData = defineModel<ItemFilterAndSortingData>('filterAndSortingData', { required: false, default: new ItemFilterAndSortingData() })
 
 const props = withDefaults(
   defineProps<{
     elementToStickTo?: HTMLElement | null,
-    gridMaxColumns?: number,
+    maxElementsPerLine?: number,
+    infiniteScrolling?: boolean,
     isLoading?: boolean,
     items: IItem[],
     showChips?: boolean
   }>(),
   {
     elementToStickTo: undefined,
-    gridMaxColumns: 4,
+    maxElementsPerLine: 4,
+    infiniteScrolling: false,
     isLoading: false,
     showChips: true
   })
@@ -44,7 +47,7 @@ const itemsPerLine = computed(() => {
     columns = 3
   }
 
-  return props.gridMaxColumns >= columns ? columns : props.gridMaxColumns
+  return props.maxElementsPerLine >= columns ? columns : props.maxElementsPerLine
 })
 
 const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
@@ -162,7 +165,7 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
         @filter-and-sort-changed="onFilterAndSortChanged"
       />
       <InfiniteScroller
-        v-if="items.length > 0"
+        v-if="items.length > 0 && infiniteScrolling"
         :element-height="50"
         :elements-per-line="itemsPerLine"
         :elements="itemsInternal"
@@ -175,6 +178,20 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
           />
         </template>
       </InfiniteScroller>
+      <Paginator
+        v-else-if="items.length > 0 && !infiniteScrolling"
+        :elements-per-line="itemsPerLine"
+        :elements="itemsInternal"
+        :get-key-function="i => (i as IItem).id"
+        :lines-per-page="10"
+      >
+        <template #element="{ element }">
+          <ItemCardSelector
+            :item="<IItem>element"
+            :show-details-button="true"
+          />
+        </template>
+      </Paginator>
     </div>
     <div
       v-else

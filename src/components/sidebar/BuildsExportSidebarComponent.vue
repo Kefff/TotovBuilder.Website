@@ -101,22 +101,21 @@ function toggleSelection(): void {
 
 <template>
   <div class="builds-export-sidebar">
-    <div class="sidebar-option">
-      <div>
-        <Toolbar
-          ref="buildsExportToolbar"
-          :buttons="toolbarButtons"
-          style="margin-top: 1px;"
-        />
-        <BuildsList
-          v-model:selected-builds="selectedBuilds"
-          :build-summaries="parameters"
-          :element-to-stick-to="toolbarContainer"
-          :grid-max-columns="1"
-          :show-actions-button="false"
-          :show-not-exported="true"
-        />
-      </div>
+    <div class="sidebar-option builds-export-sidebar-selection">
+      <Toolbar
+        ref="buildsExportToolbar"
+        :buttons="toolbarButtons"
+        style="margin-top: 1px;"
+      />
+      <BuildsList
+        v-model:selected-builds="selectedBuilds"
+        :build-summaries="parameters"
+        :element-to-stick-to="toolbarContainer"
+        :infinite-scrolling="true"
+        :max-elements-per-line="1"
+        :show-actions-button="false"
+        :show-not-exported="true"
+      />
     </div>
   </div>
 </template>
@@ -135,6 +134,13 @@ function toggleSelection(): void {
 @import '../../css/sidebar.css';
 
 .builds-export-sidebar {
+  height: 100%;
   max-width: 40rem;
+}
+
+.builds-export-sidebar-selection {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 </style>

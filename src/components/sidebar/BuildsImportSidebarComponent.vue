@@ -124,7 +124,7 @@ function toggleSelection(): void {
 
 <template>
   <div class="builds-import-sidebar">
-    <div class="sidebar-option">
+    <div class="sidebar-option builds-import-sidebar-selection">
       <div
         v-if="!isFileSelected"
         class="builds-import-sidebar-button"
@@ -137,7 +137,10 @@ function toggleSelection(): void {
           <span>{{ ` ${$t('caption.selectFile')}` }}</span>
         </Button>
       </div>
-      <div v-else>
+      <div
+        v-else
+        class="builds-import-sidebar-list"
+      >
         <Toolbar
           ref="buildsImportToolbar"
           :buttons="toolbarButtons"
@@ -147,7 +150,8 @@ function toggleSelection(): void {
           v-model:selected-builds="selectedBuilds"
           :build-summaries="availableBuildSummaries"
           :element-to-stick-to="toolbarContainer"
-          :grid-max-columns="1"
+          :infinite-scrolling="true"
+          :max-elements-per-line="1"
           :show-actions-button="false"
           :show-not-exported="false"
         >
@@ -209,17 +213,32 @@ function toggleSelection(): void {
 @import '../../css/sidebar.css';
 
 .builds-import-sidebar {
+  height: 100%;
   max-width: 40rem;
 }
 
 .builds-import-sidebar-button {
   align-items: center;
   display: flex;
+  height: 100%;
   justify-content: center;
   width: 100%;
 }
 
 .builds-import-sidebar-hidden-input {
   display: none;
+}
+
+.builds-import-sidebar-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.builds-import-sidebar-selection {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 </style>

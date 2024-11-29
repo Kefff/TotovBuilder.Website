@@ -32,7 +32,7 @@ const groupedElements = computed<unknown[][]>(() => {
 
   return groups
 })
-const hasMultiplePages = computed(() => props.elements.length > props.elementsPerLine)
+const hasMultiplePages = computed(() => props.elements.length > (props.elementsPerLine * props.linesPerPage))
 
 const currentPage = ref(0)
 
