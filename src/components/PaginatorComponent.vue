@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PageState } from 'primevue/paginator'
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -41,6 +41,11 @@ const currentPage = ref(0)
  */
 function onPageChange(state: PageState): void {
   currentPage.value = state.page
+
+  nextTick(() => {
+    const firstLine = document.getElementsByClassName('paginator-line')[0]
+    firstLine.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  })
 }
 </script>
 
