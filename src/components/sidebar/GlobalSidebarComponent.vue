@@ -232,8 +232,11 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: numbe
 @import '../../css/sidebar.css';
 
 .global-sidebar-content {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   max-width: calc(50vw - 1rem - 1rem);
+  overflow-y: scroll;
 }
 
 .global-sidebar-icon {

@@ -505,7 +505,9 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   >
     <div
       class="item-selection"
-      :class="(item != null && isMainInventorySlotItem) ? 'item-selection-main' : ''"
+      :class="{
+        'item-selection-main': item != null && isMainInventorySlotItem
+      }"
     >
       <div class="item-selection-dropdown">
         <Dropdown

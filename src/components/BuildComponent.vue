@@ -950,6 +950,8 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
 }
 
 .build-summary-container {
+  display: flex;
+  justify-content: center;
   margin-bottom: 1rem;
   margin-top: 1rem;
 }

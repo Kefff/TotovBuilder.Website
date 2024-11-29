@@ -231,10 +231,6 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
   margin-left: 0.25rem;
 }
 
-.build-summary-container {
-  margin-bottom: 1rem;
-}
-
 .build-summary-group {
   align-items: center;
   display: flex;
