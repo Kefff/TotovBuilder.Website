@@ -993,7 +993,7 @@
 
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
   margin: 0;
-  /*padding: 1rem 1rem; Disabled to be able to customize the padding by setting it in the templace for items */
+  padding: 1rem 1rem;
   border: 0 none;
   color: var(--text-color);
   background: transparent;

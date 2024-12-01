@@ -753,18 +753,11 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-selection-dropdown > .p-dropdown > .p-dropdown-label {
-  padding-bottom: 0;
-  padding-left: 0;
-  padding-right: 0;
-  padding-top: 0;
+  padding: 0rem
 }
 
 .item-selection-dropdown > .p-dropdown > .p-dropdown-label > span > div {
   height: 100%;
-}
-
-.item-selection-dropdown > .p-dropdown.p-dropdown-clearable .p-dropdown-label {
-  padding-right: 0;
 }
 
 .p-dropdown-panel > .p-dropdown-items-wrapper > .p-virtualscroller > .p-dropdown-items > .p-dropdown-item {

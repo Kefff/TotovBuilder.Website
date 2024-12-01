@@ -80,6 +80,8 @@ function onPageChange(state: PageState): void {
     <Paginator
       :rows="linesPerPage"
       :total-records="groupedElements.length"
+      :page-link-size="5"
+      template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink JumpToPageDropdown"
       @page="onPageChange"
     />
   </div>
@@ -128,5 +130,22 @@ function onPageChange(state: PageState): void {
 
 .paginator-pages > nav {
   width: 100%;
+}
+
+.paginator-pages nav .p-paginator {
+  padding: 0.25rem
+}
+
+.paginator-pages nav .p-paginator .p-paginator-page-options {
+  align-items: center;
+  border-color: var(--primary-color6);
+  display: flex;
+  height: 2rem;
+}
+
+.paginator-pages nav .p-paginator .p-paginator-page-options .p-dropdown-label {
+  color: var(--util-color7);
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 </style>

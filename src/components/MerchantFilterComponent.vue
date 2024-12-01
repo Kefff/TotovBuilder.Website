@@ -101,11 +101,6 @@ function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel:
             :placeholder="$t('caption.level')"
             @update:model-value="onMerchantFilterChanged(index, merchantFilter.enabled, $event)"
           >
-            <template #option="slotProps">
-              <div class="merchant-filter-level-option">
-                {{ slotProps.option }}
-              </div>
-            </template>
             <template #value="slotProps">
               <div class="merchant-filter-level-value">
                 {{ slotProps.value }}
@@ -150,11 +145,6 @@ function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel:
 
 .merchant-filter-merchant {
   cursor: pointer;
-}
-
-.merchant-filter-level-option {
-  padding: 1rem;
-  padding-left: 1.25rem;
 }
 
 .merchant-filter-level-value {

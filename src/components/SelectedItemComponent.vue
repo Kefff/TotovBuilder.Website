@@ -21,26 +21,24 @@ withDefaults(
 
 
 <template>
-  <div>
-    <div
-      v-if="item != null"
-      class="selected-item"
-    >
-      <ItemIcon :item="item" />
-      <div class="selected-item-name">
-        {{ item.name }}
-      </div>
+  <div
+    v-if="item != null"
+    class="selected-item"
+  >
+    <ItemIcon :item="item" />
+    <div class="selected-item-name">
+      {{ item.name }}
     </div>
-    <div
-      v-else
-      class="selected-item-placeholder"
-    >
-      <font-awesome-icon
-        icon="plus"
-        class="selected-item-placeholder-icon"
-      />
-      <span class="selected-item-placeholder-text">{{ $t('caption.selectItem') }}</span>
-    </div>
+  </div>
+  <div
+    v-else
+    class="selected-item-placeholder"
+  >
+    <font-awesome-icon
+      icon="plus"
+      class="selected-item-placeholder-icon"
+    />
+    <span class="selected-item-placeholder-text">{{ $t('caption.selectItem') }}</span>
   </div>
 </template>
 
@@ -69,8 +67,8 @@ withDefaults(
 .selected-item-placeholder {
   align-items: center;
   display: flex;
-  height: 3.25rem;
-  margin-left: 1.25rem;
+  height: 100%;
+  padding-left: 1rem;
 }
 
 .selected-item-placeholder-icon {
@@ -79,7 +77,7 @@ withDefaults(
 
 .selected-item-placeholder-text {
   color: var(--util-color7);
-  margin-left: 1.5rem;
+  margin-left: 1rem;
 }
 </style>
 

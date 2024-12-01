@@ -515,7 +515,6 @@ function toggleSelection(): void {
   display: flex;
   gap: 0.5rem;
   height: 2.5rem;
-  padding: 0.25rem;
 }
 
 .builds-share-sidebar-type-option-discord-icon {
@@ -568,10 +567,4 @@ function toggleSelection(): void {
 
 /* PC */
 @media only screen and (min-width: 1300px) {}
-</style>
-
-<style unscoped>
-.builds-share-sidebar-type > .p-dropdown-label {
-  padding: 0;
-}
 </style>

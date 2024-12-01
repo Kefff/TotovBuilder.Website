@@ -150,9 +150,7 @@ function reset(): void {
         class="builds-list-sidebar-value"
       >
         <template #option="slotProps">
-          <div class="builds-list-sidebar-option">
-            {{ $t(`caption.${slotProps.option}`) }}
-          </div>
+          {{ $t(`caption.${slotProps.option}`) }}
         </template>
         <template #value="slotProps">
           <div class="builds-list-sidebar-value-value">
@@ -167,13 +165,11 @@ function reset(): void {
         class="builds-list-sidebar-value"
       >
         <template #option="slotProps">
-          <div class="builds-list-sidebar-option">
-            <font-awesome-icon
-              :icon="getSortOrderIcon(slotProps.option)"
-              class="icon-before-text"
-            />
-            <span>{{ getSortOrderCaption(slotProps.option) }}</span>
-          </div>
+          <font-awesome-icon
+            :icon="getSortOrderIcon(slotProps.option)"
+            class="icon-before-text"
+          />
+          <span>{{ getSortOrderCaption(slotProps.option) }}</span>
         </template>
         <template #value="slotProps">
           <div class="builds-list-sidebar-value-value">
@@ -216,10 +212,6 @@ function reset(): void {
 <style scoped>
 @import '../../css/icon.css';
 @import '../../css/sidebar.css';
-
-.builds-list-sidebar-option {
-  padding: 1rem;
-}
 
 .builds-list-sidebar-caption {
   margin-right: auto;

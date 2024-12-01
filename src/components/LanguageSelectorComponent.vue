@@ -110,6 +110,5 @@ function getAvailableLanguages(): void {
   display: flex;
   gap: 0.5rem;
   height: 2.5rem;
-  padding: 0.3rem;
 }
 </style>
