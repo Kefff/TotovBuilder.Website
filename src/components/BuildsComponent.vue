@@ -391,9 +391,6 @@ function openNewBuild(): void {
 
 
 <style scoped>
-@import '../css/button.css';
-@import '../css/icon.css';
-
 .builds {
   display: flex;
   flex-direction: column;

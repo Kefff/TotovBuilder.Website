@@ -79,9 +79,6 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? head
 
 
 <style scoped>
-@import '../../css/icon.css';
-@import '../../css/option.css';
-
 .headwear-summary-bold {
   font-style: italic;
   font-weight: bold;

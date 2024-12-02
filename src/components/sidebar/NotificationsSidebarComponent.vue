@@ -125,9 +125,6 @@ function onNotificationAdded(): void {
 
 
 <style scoped>
-@import '../../css/link.css';
-@import '../../css/sidebar.css';
-
 .notifications {
   max-height: 31.25rem;
   max-width: 31.25rem;

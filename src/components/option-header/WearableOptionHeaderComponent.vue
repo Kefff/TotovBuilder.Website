@@ -63,16 +63,3 @@ const sortingFunctions = computed(() => props.sortingFunctionsOverride ?? Wearab
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/option.css';
-</style>

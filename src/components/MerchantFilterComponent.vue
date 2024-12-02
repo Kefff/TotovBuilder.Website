@@ -123,8 +123,6 @@ function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel:
 
 
 <style scoped>
-@import '../css/sidebar.css';
-
 .merchant-filter {
   align-items: center;
   display: grid;

@@ -85,18 +85,3 @@ const magazine = computed(() => props.item as IMagazine)
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/icon.css';
-@import '../../css/option.css';
-@import '../../css/stats.css';
-</style>

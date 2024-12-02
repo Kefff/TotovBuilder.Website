@@ -139,9 +139,6 @@ const wearableModifiers = computed(() => armor.value.presetWearableModifiers ?? 
 
 
 <style scoped>
-@import '../../css/icon.css';
-@import '../../css/stats.css';
-
 .armor-stats-durability {
   color: var(--error-color);
 }

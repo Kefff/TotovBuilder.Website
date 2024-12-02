@@ -69,17 +69,3 @@ const grenade = computed(() => props.item as IGrenade)
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/icon.css';
-@import '../../css/stats.css';
-</style>

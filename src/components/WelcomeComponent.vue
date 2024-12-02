@@ -338,8 +338,6 @@ function openNewBuild(): void {
 
 
 <style scoped>
-@import '../css/icon.css';
-
 .welcome {
   display: flex;
   flex-direction: column;

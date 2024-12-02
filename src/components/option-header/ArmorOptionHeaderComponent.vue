@@ -57,16 +57,3 @@ const sortingFunctions = computed(() => props.sortingFunctionsOverride ?? ArmorS
     :sorting-functions-override="sortingFunctions"
   />
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/option.css';
-</style>

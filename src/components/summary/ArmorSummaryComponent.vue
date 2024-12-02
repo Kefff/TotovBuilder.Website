@@ -107,10 +107,6 @@ const tooltipSuffix = computed(() => {
 
 
 <style scoped>
-@import '../../css/icon.css';
-@import '../../css/option.css';
-@import '../../css/stats.css';
-
 .armor-summary-bold {
   font-style: italic;
   font-weight: bold;

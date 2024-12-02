@@ -878,11 +878,6 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
 
 
 <style scoped>
-@import '../css/button.css';
-@import '../css/icon.css';
-@import '../css/stats.css';
-@import '../css/sidebar.css';
-
 .build {
   display: flex;
   flex-direction: column;

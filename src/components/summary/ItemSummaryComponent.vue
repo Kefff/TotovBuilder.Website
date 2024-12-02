@@ -76,8 +76,6 @@ async function initializeAsync(): Promise<void> {
 
 
 <style scoped>
-@import '../../css/option.css';
-
 .item-summary-icon {
   display: flex;
   width: 100%;

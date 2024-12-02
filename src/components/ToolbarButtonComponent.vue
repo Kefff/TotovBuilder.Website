@@ -70,8 +70,6 @@ const tooltip = computed(() =>
 
 
 <style scoped>
-@import '../css/button.css';
-
 .toolbar-button {
   height: 2.75rem;
   min-width: 2.75rem !important;

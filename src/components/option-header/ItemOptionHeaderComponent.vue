@@ -123,8 +123,6 @@ function onFilterChanged(filterValue: string): void {
 
 
 <style scoped>
-@import '../../css/option.css';
-
 .item-option-header {
   border-bottom-color: var(--util-color);
   border-bottom-style: solid;

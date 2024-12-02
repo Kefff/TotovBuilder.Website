@@ -130,8 +130,6 @@ function displayToolbarSideBar(): void {
 
 
 <style>
-@import '../css/icon.css';
-
 .toolbar {
   background-color: var(--surface-50);
   border-color: var(--primary-color6);

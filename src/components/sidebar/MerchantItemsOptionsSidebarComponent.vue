@@ -63,16 +63,3 @@ function save(): void {
     />
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/sidebar.css';
-</style>

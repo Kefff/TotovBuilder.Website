@@ -1,0 +1,54 @@
+.card {
+  background-color: var(--surface-transparent-0) !important;
+  border-color: var(--primary-color6);
+  border-radius: 6px !important;
+  border-style: solid;
+  border-width: 1px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.card > .p-card-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card > .p-card-body > .p-card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+}
+
+.card-buttons {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.card-buttons > button {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.card-line {
+  align-items: center;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 0.5rem;
+  height: 1.25rem;
+}
+
+.card-line:first-child {
+  margin-top: 0;
+}
+
+.card-selected {
+  background-color: var(--primary-color6)
+}

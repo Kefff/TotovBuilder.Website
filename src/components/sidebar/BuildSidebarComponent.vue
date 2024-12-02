@@ -189,9 +189,6 @@ function exportBuild(): void {
 
 
 <style scoped>
-@import '../../css/icon.css';
-@import '../../css/sidebar.css';
-
 .build-sidebar-button {
   align-items: center;
   display: flex;

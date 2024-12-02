@@ -209,9 +209,6 @@ function toggleSelection(): void {
 
 
 <style scoped>
-@import '../../css/icon.css';
-@import '../../css/sidebar.css';
-
 .builds-import-sidebar {
   height: 100%;
   max-width: 40rem;

@@ -122,8 +122,6 @@ function signal(): void {
 
 
 <style scoped>
-@import '../css/icon.css';
-
 .loading-error-button {
   justify-content: center;
   margin-left: auto;

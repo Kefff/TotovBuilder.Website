@@ -41,16 +41,3 @@ const sortingFunctions = computed(() => props.sortingFunctionsOverride ?? Contai
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/option.css';
-</style>

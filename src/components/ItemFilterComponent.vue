@@ -61,8 +61,6 @@ function onItemExclusionFilterChanged(index: number, enabled: boolean): void {
 
 
 <style scoped>
-@import '../css/sidebar.css';
-
 .item-filter {
   align-items: center;
   display: flex;

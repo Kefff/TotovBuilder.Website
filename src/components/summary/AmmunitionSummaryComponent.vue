@@ -157,12 +157,6 @@ const tooltip = computed(() =>
 
 
 <style scoped>
-@import '../../css/armor-penetration.css';
-@import '../../css/flesh-damage.css';
-@import '../../css/icon.css';
-@import '../../css/option.css';
-@import '../../css/stats.css';
-
 .ammunition-summary-flesh-damage {
   align-items: center;
   display: flex;

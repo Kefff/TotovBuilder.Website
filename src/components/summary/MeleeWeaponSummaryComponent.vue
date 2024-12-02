@@ -64,17 +64,3 @@ const meleeWeapon = computed(() => props.item as IMeleeWeapon)
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/icon.css';
-@import '../../css/option.css';
-</style>

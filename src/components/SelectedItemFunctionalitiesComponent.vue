@@ -150,9 +150,6 @@ function setSelectedTab(newValue: SelectableTab): void {
 
 
 <style scoped>
-@import '../css/button.css';
-@import '../css/icon.css';
-
 .selected-item-functionalities {
   align-items: center;
   display: flex;

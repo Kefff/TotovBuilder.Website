@@ -158,18 +158,3 @@ async function setPricesAsync(): Promise<void> {
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/icon.css';
-@import '../../css/link.css';
-@import '../../css/stats.css';
-</style>

@@ -94,17 +94,3 @@ const wearable = computed(() => props.item as IWearable)
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/icon.css';
-@import '../../css/stats.css';
-</style>

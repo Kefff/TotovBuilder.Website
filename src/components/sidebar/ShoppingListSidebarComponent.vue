@@ -62,8 +62,6 @@ const shoppingListItems = computed(() => props.parameters.shoppingList.filter(sh
 
 
 <style scoped>
-@import '../../css/sidebar.css';
-
 .shopping-list-sidebar {
   width: 100%;
 }

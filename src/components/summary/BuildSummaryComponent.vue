@@ -193,9 +193,6 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
 
 
 <style scoped>
-@import '../../css/icon.css';
-@import '../../css/stats.css';
-
 .build-summary {
   align-items: center;
   background-color: var(--surface-50);
@@ -205,7 +202,6 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
   border-width: 1px;
   display: grid;
   font-size: 1.5rem;
-  font-weight: bold;
   gap: 3rem;
   grid-template-columns: auto auto auto auto;
   max-width: 100%;

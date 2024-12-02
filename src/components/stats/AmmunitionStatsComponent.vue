@@ -323,11 +323,6 @@ const fleshDamageText = computed(() =>
 
 
 <style scoped>
-@import '../../css/armor-penetration.css';
-@import '../../css/flesh-damage.css';
-@import '../../css/icon.css';
-@import '../../css/stats.css';
-
 .ammunition-stats-oneshot {
   margin-right: 0.5rem
 }

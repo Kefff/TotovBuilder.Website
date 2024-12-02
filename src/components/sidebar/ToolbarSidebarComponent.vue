@@ -101,9 +101,6 @@ function executeAction(action: () => void): void {
 
 
 <style scoped>
-@import '../../css/button.css';
-@import '../../css/sidebar.css';
-
 .toolbar-sidebar-button {
   align-items: center;
   display: flex;

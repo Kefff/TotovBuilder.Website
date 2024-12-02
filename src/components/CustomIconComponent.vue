@@ -42,8 +42,6 @@ defineProps<{
 
 
 <style scoped>
-@import '../css/icon.css';
-
 .custom-icon {
   align-items: center;
   display: grid;

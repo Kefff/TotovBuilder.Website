@@ -84,8 +84,6 @@ function sortBy(property: string): void {
 
 
 <style scoped>
-@import '../../css/icon.css';
-
 .options-header-sort-button {
   align-items: center;
   display: flex;

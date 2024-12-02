@@ -405,6 +405,18 @@ function setLanguage(): void {
 </style>
 
 <style>
+@import '../css/armor-penetration.css';
+@import '../css/button.css';
+@import '../css/card.css';
+@import '../css/collapsable.css';
+@import '../css/currency.css';
+@import '../css/flesh-damage.css';
+@import '../css/icon.css';
+@import '../css/link.css';
+@import '../css/option.css';
+@import '../css/sidebar.css';
+@import '../css/stats.css';
+
 body {
   background-color: var(--surface-transparent-0);
   /* Required for the #app to be able to use height:100% */

@@ -120,8 +120,6 @@ function getSeverity(button: INotificationButton): string {
 
 
 <style scoped>
-@import '../css/icon.css';
-
 .notification {
   align-items: flex-end;
   bottom: 0;

@@ -167,8 +167,6 @@ function showFilterAndSortSidebar(): void {
 
 
 <style>
-@import '../css/icon.css';
-
 .filter-chip {
   background-color: var(--surface-300);
   border-style: solid;

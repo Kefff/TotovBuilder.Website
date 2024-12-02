@@ -371,11 +371,6 @@ function togglePriceDetails(event: Event): void {
 
 
 <style scoped>
-@import '../css/button.css';
-@import '../css/currency.css';
-@import '../css/icon.css';
-@import '../css/link.css';
-
 .price {
   align-items: center;
   display: flex;

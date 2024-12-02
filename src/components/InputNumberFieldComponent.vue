@@ -52,7 +52,7 @@ onMounted(() => {
 
 
 <template>
-  <div :class="'p-field input-number-field input-number-field-required-message-' + requiredMessagePosition">
+  <div :class="`input-number-field input-number-field-required-message-${requiredMessagePosition}`">
     <label v-if="!captionAsPlaceholder">{{ caption }}</label>
     <InputNumber
       ref="input"
@@ -70,7 +70,7 @@ onMounted(() => {
     />
     <div
       v-if="invalid"
-      class="'p-error"
+      class="p-error"
     >
       {{ $t('message.requiredField', { caption }) }}
     </div>
@@ -115,7 +115,7 @@ onMounted(() => {
 
 <style>
 .input-number-field .p-inputnumber {
-  height: 2.75rem;
+  height: 3.5rem;
 }
 
 .input-number-field input {

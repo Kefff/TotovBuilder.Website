@@ -84,8 +84,6 @@ const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { requir
 
 
 <style scoped>
-@import '../../css/option.css';
-
 .fire-rate {
   width: 6rem;
 }

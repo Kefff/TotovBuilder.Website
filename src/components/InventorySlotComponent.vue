@@ -137,9 +137,6 @@ async function setAcceptedItemsAsync(): Promise<void> {
 
 
 <style scoped>
-@import '../css/collapsable.css';
-@import '../css/icon.css';
-
 .inventory-slot {
   border-color: var(--primary-color6);
   border-radius: 6px;

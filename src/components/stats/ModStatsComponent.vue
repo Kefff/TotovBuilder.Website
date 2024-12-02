@@ -47,17 +47,3 @@ const mod = computed(() => props.item as IMod)
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/icon.css';
-@import '../../css/stats.css';
-</style>

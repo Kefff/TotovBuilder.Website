@@ -122,9 +122,6 @@ function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedCo
 
 
 <style scoped>
-@import '../../css/sidebar.css';
-@import '../../css/stats.css';
-
 .stats-sidebar {
   display: flex;
   flex-direction: column;

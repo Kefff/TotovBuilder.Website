@@ -216,7 +216,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
       />
       <InfiniteScroller
         v-if="infiniteScrolling"
-        :element-height="280"
+        :element-height="253"
         :elements-per-line="buildsPerLine"
         :elements="buildSummariesInternal"
         :get-key-function="i => (i as IBuildSummary).id"
@@ -274,8 +274,6 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
 
 
 <style scoped>
-@import '../css/icon.css';
-
 .builds-list {
   height: 100%;
   width: 100%;

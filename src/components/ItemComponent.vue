@@ -719,6 +719,10 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   flex-direction: row;
 }
 
+.item-selection-dropdown {
+  height: 3.5rem;
+}
+
 .item-selection-main {
   background-color: var(--primary-color6);
   border-radius: 6px;

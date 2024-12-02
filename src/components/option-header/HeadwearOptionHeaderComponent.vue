@@ -34,16 +34,3 @@ const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { requir
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/option.css';
-</style>

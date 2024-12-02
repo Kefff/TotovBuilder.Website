@@ -235,9 +235,6 @@ async function setWeightAsync(): Promise<void> {
 
 
 <style scoped>
-@import '../../css/icon.css';
-@import '../../css/option.css';
-
 .selected-item-summary {
   align-items: center;
   display: flex;

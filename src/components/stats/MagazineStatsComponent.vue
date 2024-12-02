@@ -140,9 +140,6 @@ async function getAcceptedAmmunitionAsync(): Promise<void> {
 
 
 <style scoped>
-@import '../../css/icon.css';
-@import '../../css/stats.css';
-
 .magazine-stats-ammunition {
   height: unset;
 }

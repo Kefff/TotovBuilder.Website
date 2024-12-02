@@ -148,10 +148,6 @@ function toggleInventoryPriceDetails(event: Event): void {
 
 
 <style scoped>
-@import '../css/button.css';
-@import '../css/currency.css';
-@import '../css/icon.css';
-
 .inventory-price {
   align-items: center;
   display: flex;
@@ -194,7 +190,6 @@ function toggleInventoryPriceDetails(event: Event): void {
 .inventory-price-list {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   justify-content: end;
 }
 

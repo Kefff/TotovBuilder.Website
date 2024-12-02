@@ -56,7 +56,7 @@ onMounted(() => {
 
 
 <template>
-  <div :class="'p-field field input-text-field input-text-field-required-message-' + requiredMessagePosition">
+  <div :class="`p-field field input-text-field input-text-field-required-message-${requiredMessagePosition}`">
     <label v-if="!captionAsPlaceholder">{{ caption }}</label>
     <InputText
       ref="input"
@@ -86,8 +86,8 @@ onMounted(() => {
 
 <style scoped>
 .input-text-field-required-message-bottom {
-  font-size: 0.85rem;
   display: block;
+  font-size: 0.85rem;
 }
 
 .input-text-field-required-message-right {

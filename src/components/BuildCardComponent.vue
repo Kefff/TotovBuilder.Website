@@ -118,8 +118,8 @@ function displayStats(item: IItem): void {
 
 <template>
   <Card
-    class="build-card"
-    :class="modelIsSelected ? 'build-card-selected ' : ''"
+    class="card build-card"
+    :class="{ 'card-selected': modelIsSelected }"
   >
     <template #title>
       <div class="build-card-title">
@@ -129,7 +129,7 @@ function displayStats(item: IItem): void {
           :tooltip="notExportedTooltip"
         >
           <font-awesome-icon
-            class="buil-card-not-exported"
+            class="build-card-not-exported"
             icon="exclamation-triangle"
           />
         </Tooltip>
@@ -181,7 +181,7 @@ function displayStats(item: IItem): void {
           :style="hasItemListElementScroll && !itemListElementScroll.arrivedState.right ? 'display: initial' : 'display: none'"
         />
       </div>
-      <div class="build-card-stats">
+      <div class="card-line">
         <div v-if="buildSummary.recoil.verticalRecoil !== 0">
           <Tooltip :tooltip="$t('caption.verticalRecoil')">
             <font-awesome-icon
@@ -224,7 +224,7 @@ function displayStats(item: IItem): void {
           </span>
         </div>
       </div>
-      <div class="build-card-stats">
+      <div class="card-line">
         <div v-if="buildSummary.armorModifiers.armorClass > 0">
           <Tooltip :tooltip="$t('caption.armorClass')">
             <font-awesome-icon
@@ -257,7 +257,7 @@ function displayStats(item: IItem): void {
           </Tooltip>
         </div>
       </div>
-      <div class="build-card-stats">
+      <div class="card-line">
         <div
           v-if="buildSummary.price.priceInMainCurrency > 0"
           class="build-card-price"
@@ -279,7 +279,7 @@ function displayStats(item: IItem): void {
           </Tooltip>
         </div>
       </div>
-      <div class="build-card-buttons">
+      <div class="card-buttons">
         <Button
           :outlined="modelIsSelected"
           @click="modelIsSelected = !modelIsSelected"
@@ -318,58 +318,20 @@ function displayStats(item: IItem): void {
 
 
 <style scoped>
-@import '../css/icon.css';
-@import '../css/stats.css';
-
-.builds-list {
-  display: grid;
-  grid-gap: 1rem;
-  grid-template-columns: repeat(3, 1fr);
-}
-
 .build-card {
-  background-color: var(--surface-transparent-0);
-  border-color: var(--primary-color6);
-  border-radius: 6px;
-  border-style: solid;
-  border-width: 1px;
-  height: 20rem;
-  overflow: hidden;
-  width: 100%;
-}
-
-.build-card-buttons {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  margin-top: auto;
-  padding-top: 1rem;
-}
-
-.build-card-buttons > button {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  width: 50%;
-}
-
-.build-card-buttons-edit {
-  align-items: center;
-  display: flex;
-  justify-content: center;
+  height: 18rem;
 }
 
 .build-card-items {
   display: flex;
   flex-direction: row;
   gap: 0.25rem;
+  padding-bottom: 0.25rem;
   overflow-x: auto;
-  padding-bottom: 0.5rem;
   width: 100%;
 }
 
 .build-card-items-container {
-  padding-top: 0.5rem;
   position: relative;
 }
 
@@ -401,31 +363,16 @@ function displayStats(item: IItem): void {
   top: 0;
 }
 
-.build-card-merchants {
-  margin-top: 0.5rem;
-}
-
 .build-card-price {
   display: flex;
   grid-column: span 2;
-}
-
-.build-card-selected {
-  background-color: var(--primary-color6)
-}
-
-.build-card-stats {
-  align-items: center;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: 0.5rem;
-  min-height: 1.25rem;
 }
 
 .build-card-title {
   align-items: center;
   display: flex;
   font-size: 1.25rem;
+  font-weight: normal;
   gap: 0.5rem;
   white-space: preserve;
 }
@@ -434,25 +381,8 @@ function displayStats(item: IItem): void {
   margin-right: auto;
 }
 
-.buil-card-not-exported {
+.build-card-not-exported {
   color: var(--warning-color);
   margin-left: 0.5rem;
-}
-</style>
-
-
-
-<style>
-.build-card > .p-card-body {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.build-card > .p-card-body > .p-card-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 0;
 }
 </style>

@@ -83,9 +83,6 @@ async function loadChangelogAsync(): Promise<void> {
 
 
 <style scoped>
-@import '../../css/link.css';
-@import '../../css/sidebar.css';
-
 .changelog-change {
   margin-top: 1rem;
   margin-bottom: 0.5rem;

@@ -422,10 +422,6 @@ function toggleSelection(): void {
 
 
 <style scoped>
-@import '../../css/button.css';
-@import '../../css/icon.css';
-@import '../../css/sidebar.css';
-
 .builds-share-sidebar {
   max-width: 100%;
   min-width: 100%;

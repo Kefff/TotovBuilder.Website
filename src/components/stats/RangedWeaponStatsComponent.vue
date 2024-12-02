@@ -97,17 +97,3 @@ const verticalRecoil = computed(() => rangedWeapon.value.presetRangedWeaponModif
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/icon.css';
-@import '../../css/stats.css';
-</style>

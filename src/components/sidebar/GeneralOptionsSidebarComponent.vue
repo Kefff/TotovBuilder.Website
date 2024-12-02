@@ -164,10 +164,6 @@ function toggleAllowCookies(): void {
 
 
 <style scoped>
-@import '../../css/button.css';
-@import '../../css/icon.css';
-@import '../../css/sidebar.css';
-
 .general-options-addition-group {
   margin-top: 3rem;
 }

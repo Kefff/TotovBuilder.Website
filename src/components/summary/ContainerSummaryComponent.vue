@@ -38,17 +38,3 @@ const container = computed(() => props.item as IContainer)
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/icon.css';
-@import '../../css/option.css';
-</style>

@@ -11,13 +11,14 @@ const BuildsListSidebar = defineAsyncComponent(() => import('./BuildsListSidebar
 const BuildsShareSideBar = defineAsyncComponent(() => import('./BuildsShareSideBarComponent.vue'))
 const ChangelogSidebar = defineAsyncComponent(() => import('./ChangelogSidebarComponent.vue'))
 const GeneralOptionsSidebar = defineAsyncComponent(() => import('./GeneralOptionsSidebarComponent.vue'))
+const ItemsListSidebar = defineAsyncComponent(() => import('./ItemsListSidebarComponent.vue'))
 const MerchantItemsOptionsSidebar = defineAsyncComponent(() => import('./MerchantItemsOptionsSidebarComponent.vue'))
 const NotificationsSidebar = defineAsyncComponent(() => import('./NotificationsSidebarComponent.vue'))
 const ShoppingListSidebar = defineAsyncComponent(() => import('./ShoppingListSidebarComponent.vue'))
 const StatsSidebar = defineAsyncComponent(() => import('./StatsSidebarComponent.vue'))
 const ToolbarSidebar = defineAsyncComponent(() => import('./ToolbarSidebarComponent.vue'))
 
-type DisplayedComponent = typeof BuildsExportSidebar | typeof BuildsShareSideBar | typeof BuildSidebar | typeof BuildsImportSidebar | typeof BuildsListSidebar | typeof ChangelogSidebar | typeof GeneralOptionsSidebar | typeof MerchantItemsOptionsSidebar | typeof NotificationsSidebar | typeof ShoppingListSidebar | typeof StatsSidebar | typeof ToolbarSidebar | undefined
+type DisplayedComponent = typeof BuildsExportSidebar | typeof BuildsShareSideBar | typeof BuildSidebar | typeof BuildsImportSidebar | typeof BuildsListSidebar | typeof ChangelogSidebar | typeof GeneralOptionsSidebar | typeof ItemsListSidebar | typeof MerchantItemsOptionsSidebar | typeof NotificationsSidebar | typeof ShoppingListSidebar | typeof StatsSidebar | typeof ToolbarSidebar | undefined
 
 const props = defineProps<{
   level: number
@@ -97,6 +98,11 @@ function getDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
       title.value = 'caption.displayOptions'
 
       return GeneralOptionsSidebar
+    case 'ItemsListSidebar':
+      icon.value = 'filter'
+      title.value = 'caption.filter'
+
+      return ItemsListSidebar
     case 'MerchantItemsOptionsSidebar':
       icon.value = 'user-tag'
       title.value = 'caption.merchants'
@@ -229,8 +235,6 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: numbe
 
 
 <style scoped>
-@import '../../css/sidebar.css';
-
 .global-sidebar-content {
   display: flex;
   flex-direction: column;

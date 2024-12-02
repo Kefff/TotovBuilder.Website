@@ -95,8 +95,6 @@ function onNotificationCountChanged(): void {
 
 
 <style scoped>
-@import '../css/button.css';
-
 .notification-button {
   position: relative;
 }

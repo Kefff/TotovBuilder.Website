@@ -212,8 +212,6 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
 
 
 <style>
-@import '../css/icon.css';
-
 .items-list {
   display: flex;
   flex-direction: column;
