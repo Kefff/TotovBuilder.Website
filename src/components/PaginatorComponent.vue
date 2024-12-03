@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useBreakpoints } from '@vueuse/core'
 import { PageState } from 'primevue/paginator'
 import { computed, nextTick, ref } from 'vue'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 
 const props = withDefaults(
   defineProps<{
@@ -14,6 +16,7 @@ const props = withDefaults(
     linesPerPage: 1
   })
 
+const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const displayedLines = computed<unknown[][]>(() => {
   const start = currentPage.value * props.linesPerPage
   let end = start + props.linesPerPage
@@ -33,6 +36,8 @@ const groupedElements = computed<unknown[][]>(() => {
   return groups
 })
 const hasMultiplePages = computed(() => props.elements.length > (props.elementsPerLine * props.linesPerPage))
+const isCompactMode = breakpoints.smaller('smartphoneLandscape')
+const pageLinksCount = computed(() => isCompactMode.value ? 3 : 5)
 
 const currentPage = ref(0)
 
@@ -80,7 +85,7 @@ function onPageChange(state: PageState): void {
     <Paginator
       :rows="linesPerPage"
       :total-records="groupedElements.length"
-      :page-link-size="5"
+      :page-link-size="pageLinksCount"
       template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink JumpToPageDropdown"
       @page="onPageChange"
     />
