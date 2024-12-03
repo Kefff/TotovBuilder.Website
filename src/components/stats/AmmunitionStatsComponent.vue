@@ -103,7 +103,10 @@ const fleshDamageText = computed(() =>
       class="stats-entry"
     >
       <div class="stats-caption">
-        <div class="icon-before-text" />
+        <font-awesome-icon
+          icon="deaf"
+          class="icon-before-text"
+        />
         <span class="stats-value-positive">{{ $t('caption.subsonic') }}</span>
       </div>
     </div>
@@ -117,7 +120,10 @@ const fleshDamageText = computed(() =>
       class="stats-entry"
     >
       <div class="stats-caption">
-        <div class="icon-before-text" />
+        <font-awesome-icon
+          icon="eye"
+          class="icon-before-text"
+        />
         <span class="stats-value-negative">{{ $t('caption.tracer') }}</span>
       </div>
     </div>
@@ -126,7 +132,10 @@ const fleshDamageText = computed(() =>
       class="stats-entry"
     >
       <div class="stats-caption">
-        <div class="icon-before-text" />
+        <font-awesome-icon
+          icon="dizzy"
+          class="icon-before-text"
+        />
         <span class="stats-value-positive">{{ $t('caption.blinding') }}</span>
       </div>
     </div>
@@ -189,18 +198,6 @@ const fleshDamageText = computed(() =>
     <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
-          icon="shield-virus"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.armorDamage') }} :</span>
-      </div>
-      <div class="stats-value">
-        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorDamagePercentage, ammunition.armorDamagePercentage) }}</span>
-      </div>
-    </div>
-    <div class="stats-entry">
-      <div class="stats-caption">
-        <font-awesome-icon
           icon="bolt"
           class="icon-before-text"
         />
@@ -208,6 +205,18 @@ const fleshDamageText = computed(() =>
       </div>
       <div class="stats-value">
         {{ ammunition.penetrationPower }}
+      </div>
+    </div>
+    <div class="stats-entry">
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="shield-virus"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.armorDamage') }} :</span>
+      </div>
+      <div class="stats-value">
+        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorDamagePercentage, ammunition.armorDamagePercentage) }}</span>
       </div>
     </div>
   </div>
@@ -257,6 +266,26 @@ const fleshDamageText = computed(() =>
     </div>
   </div>
   <div
+    v-if="ammunition.durabilityBurnModifierPercentage !== 0"
+    class="stats-line"
+  >
+    <div
+      v-if="ammunition.durabilityBurnModifierPercentage !== 0"
+      class="stats-entry"
+    >
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="fire"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.durabilityBurn') }} :</span>
+      </div>
+      <div :class="'stats-value ' + StatsUtils.getValueColorClass(ammunition.durabilityBurnModifierPercentage, true)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.durabilityBurnModifierPercentage, ammunition.durabilityBurnModifierPercentage) }}
+      </div>
+    </div>
+  </div>
+  <div
     v-if="ammunition.heavyBleedingChance !== 0 || ammunition.lightBleedingChance !== 0"
     class="stats-line"
   >
@@ -288,26 +317,6 @@ const fleshDamageText = computed(() =>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(ammunition.lightBleedingChance)">
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.bleedingChanceModifier, ammunition.lightBleedingChance) }}
-      </div>
-    </div>
-  </div>
-  <div
-    v-if="ammunition.durabilityBurnModifierPercentage !== 0"
-    class="stats-line"
-  >
-    <div
-      v-if="ammunition.durabilityBurnModifierPercentage !== 0"
-      class="stats-entry"
-    >
-      <div class="stats-caption">
-        <font-awesome-icon
-          icon="fire"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.durabilityBurn') }} :</span>
-      </div>
-      <div :class="'stats-value ' + StatsUtils.getValueColorClass(ammunition.durabilityBurnModifierPercentage, true)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.durabilityBurnModifierPercentage, ammunition.durabilityBurnModifierPercentage) }}
       </div>
     </div>
   </div>
