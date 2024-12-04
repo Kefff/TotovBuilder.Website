@@ -97,16 +97,13 @@ function displayStats(): void {
       <div class="card-line item-card-price-line">
         <div
           v-if="itemUnitPrice != null && itemUnitPrice.valueInMainCurrency > 0"
-          class="item-card-stat"
+          class="item-card-long"
         >
-          <Price
-            v-if="itemUnitPrice != null"
-            :price="itemUnitPrice"
-          />
+          <Price :price="itemUnitPrice" />
         </div>
         <div
           v-if="item.weight != 0"
-          class="item-card-stat"
+          class="item-card-long"
         >
           <Tooltip :tooltip="$t('caption.weight')">
             <font-awesome-icon
@@ -150,21 +147,21 @@ function displayStats(): void {
   height: v-bind(height);
 }
 
+.item-card-long {
+  display: flex;
+  grid-column: span 2;
+}
+
 .item-card-price-line {
   height: 2rem;
   margin-top: 0.15rem;
-}
-
-.item-card-stat {
-  display: flex;
-  grid-column: span 2;
 }
 
 .item-card-title {
   align-items: center;
   cursor: pointer;
   display: flex;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: normal;
   gap: 0.5rem;
   white-space: preserve;

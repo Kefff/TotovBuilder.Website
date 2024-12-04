@@ -76,6 +76,7 @@ const tooltipSuffix = computed(() => {
       />
       <span>{{ durability }}</span>
     </Tooltip>
+    <slot />
   </div>
   <WearableItemCard
     :include-mods-and-content="includeModsAndContent"

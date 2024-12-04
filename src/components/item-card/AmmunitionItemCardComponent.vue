@@ -33,8 +33,8 @@ const tooltip = computed(() =>
 <template>
   <div class="card-line">
     <div
+      v-if="ammunition.fleshDamage > 0"
       class="ammunition-item-card-flesh-damage-group"
-      :class="{ 'ammunition-item-card-long-stat': ammunition.penetratedArmorLevel == 0 }"
     >
       <Tooltip
         :tooltip="tooltip"
@@ -46,7 +46,14 @@ const tooltip = computed(() =>
             class="icon-before-text flesh-damage-color"
           />
         </div>
-        <span>{{ ammunition.projectiles > 1 ? `${ammunition.projectiles} x ` : '' }}{{ ammunition.fleshDamage }}</span>
+        <span v-if="ammunition.projectiles > 1">
+          {{ ammunition.projectiles }}
+        </span>
+        <span
+          v-if="ammunition.projectiles > 1"
+          class="ammunition-item-card-multiply"
+        >x</span>
+        <span>{{ ammunition.fleshDamage }}</span>
       </Tooltip>
       <div
         v-if="canOneshot"
@@ -60,13 +67,6 @@ const tooltip = computed(() =>
         </Tooltip>
       </div>
     </div>
-    <Tooltip :tooltip="$t('caption.penetrationPower')">
-      <font-awesome-icon
-        icon="bolt"
-        class="icon-before-text"
-      />
-      <span>{{ ammunition.penetrationPower }}</span>
-    </Tooltip>
     <Tooltip
       v-if="ammunition.penetratedArmorLevel > 0"
       :tooltip="$t('caption.armorClassPenetration', { class: ammunition.penetratedArmorLevel })"
@@ -76,6 +76,16 @@ const tooltip = computed(() =>
         :class="`icon-before-text armor-penetration${ammunition.penetratedArmorLevel}`"
       />
       <span>{{ ammunition.penetratedArmorLevel }}</span>
+    </Tooltip>
+    <Tooltip
+      v-if="ammunition.penetrationPower > 0"
+      :tooltip="$t('caption.penetrationPower')"
+    >
+      <font-awesome-icon
+        icon="bolt"
+        class="icon-before-text"
+      />
+      <span>{{ ammunition.penetrationPower }}</span>
     </Tooltip>
     <div class="ammunition-item-card-attributes">
       <Tooltip
@@ -170,7 +180,6 @@ const tooltip = computed(() =>
 .ammunition-item-card-attributes {
   display: flex;
   gap: 0.5rem;
-  justify-content: center;
   width: 100%;
 }
 
@@ -184,8 +193,10 @@ const tooltip = computed(() =>
   position: relative;
 }
 
-.ammunition-item-card-long-stat {
-  grid-column: span 2;
+.ammunition-item-card-multiply {
+  font-size: 0.75rem;
+  margin-left: 0.125rem;
+  margin-right: 0.125rem;
 }
 
 .ammunition-item-card-oneshot {

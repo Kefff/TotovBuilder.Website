@@ -49,6 +49,11 @@
   margin-top: 0;
 }
 
+.card-line-remover.card-line {
+  display: unset;
+  margin-top: 0;
+}
+
 .card-selected {
   background-color: var(--primary-color6)
 }

@@ -1,0 +1,36 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IEyewear } from '../../models/item/IEyewear'
+import { IItem } from '../../models/item/IItem'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import Tooltip from '../TooltipComponent.vue'
+
+const props = defineProps<{ item: IItem }>()
+
+const eyewear = computed(() => props.item as IEyewear)
+</script>
+
+
+
+
+
+
+
+
+
+<template>
+  <div class="card-line">
+    <Tooltip
+      v-if="eyewear.blindnessProtectionPercentage !== 0"
+      :tooltip="$t('caption.blindnessProtection')"
+    >
+      <font-awesome-icon
+        icon="low-vision"
+        class="icon-before-text"
+      />
+      <span :class="StatsUtils.getValueColorClass(eyewear.blindnessProtectionPercentage)">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.blindnessProtectionPercentage, eyewear.blindnessProtectionPercentage) }}
+      </span>
+    </Tooltip>
+  </div>
+</template>
