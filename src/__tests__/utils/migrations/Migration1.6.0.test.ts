@@ -163,6 +163,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
           modSlots: [],
           name: 'Item without default preset id',
           presetRangedWeaponModifiers: undefined,
+          presetWeight: undefined,
           prices: [],
           shortName: 'IWDPI',
           verticalRecoil: 0,

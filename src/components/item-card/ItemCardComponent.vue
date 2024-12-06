@@ -36,6 +36,7 @@ const selectionButtonIconInternal = computed(() => {
     return 'check'
   }
 })
+const weight = computed(() => props.item.presetWeight ?? props.item.weight)
 
 const itemUnitPrice = ref<IPrice>()
 
@@ -111,7 +112,7 @@ function displayStats(): void {
               class="icon-before-text"
             />
             <span>
-              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, item.weight) }}
+              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, weight) }}
             </span>
           </Tooltip>
         </div>

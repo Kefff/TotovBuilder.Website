@@ -30,6 +30,7 @@ describe('parseReducedItem', () => {
         marketLink: 'https://tarkov.dev/item/simple-wallet',
         maxStackableAmount: 1,
         name: 'Simple wallet',
+        presetWeight: undefined,
         prices: [],
         shortName: 'Wallet',
         weight: 0.23,
@@ -59,6 +60,7 @@ describe('parseReducedItem', () => {
         maxStackableAmount: 1,
         name: 'Empty container',
         prices: [],
+        presetWeight: undefined,
         shortName: 'Empty',
         weight: 0.23,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Empty_container'

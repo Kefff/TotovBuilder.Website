@@ -100,6 +100,7 @@ describe('parseReducedItem', () => {
         name: 'Kotton beanie',
         presetArmorModifiers: undefined,
         presetWearableModifiers: undefined,
+        presetWeight: undefined,
         prices: [],
         ricochetChance: '',
         shortName: 'Kotton',

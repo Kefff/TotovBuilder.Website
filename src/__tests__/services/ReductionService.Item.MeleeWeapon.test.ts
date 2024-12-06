@@ -34,6 +34,7 @@ describe('parseReducedItem', () => {
         maxStackableAmount: 1,
         marketLink: 'https://tarkov.dev/item/uvsr-taiga-1-survival-machete',
         name: 'UVSR Taiga-1 survival machete',
+        presetWeight: undefined,
         prices: [],
         shortName: 'Taiga-1',
         weight: 0.64,

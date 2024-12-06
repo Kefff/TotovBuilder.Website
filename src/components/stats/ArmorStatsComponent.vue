@@ -15,7 +15,6 @@ const armor = computed(() => props.item as IArmor)
 const armorClass = computed(() => armor.value.presetArmorModifiers?.armorClass ?? armor.value.armorClass)
 const durability = computed(() => armor.value.presetArmorModifiers?.durability ?? armor.value.durability)
 const hasModifiers = computed(() => armor.value.blindnessProtectionPercentage !== 0)
-const wearableModifiers = computed(() => armor.value.presetWearableModifiers ?? undefined)
 </script>
 
 
@@ -81,7 +80,6 @@ const wearableModifiers = computed(() => armor.value.presetWearableModifiers ?? 
   <WearableStats
     :item="armor"
     :show-modifiers-category="hasModifiers"
-    :wearable-modifiers-override="wearableModifiers"
   />
   <div
     v-if="armor.blindnessProtectionPercentage !== 0"

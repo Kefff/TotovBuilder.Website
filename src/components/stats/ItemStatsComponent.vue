@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { IItem } from '../../models/item/IItem'
 import { IPrice } from '../../models/item/IPrice'
 import { InventoryItemService } from '../../services/InventoryItemService'
@@ -12,6 +12,8 @@ const props = defineProps<{
 }>()
 
 const _inventoryItemService = Services.get(InventoryItemService)
+
+const weight = computed(() => props.item?.presetWeight ?? props.item.weight)
 
 const prices = ref<IPrice[]>([])
 
@@ -119,7 +121,7 @@ async function setPricesAsync(): Promise<void> {
         <span>{{ $t('caption.weight') }} :</span>
       </div>
       <div class="stats-value">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, item.weight) }}
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, weight) }}
       </div>
     </div>
   </div>

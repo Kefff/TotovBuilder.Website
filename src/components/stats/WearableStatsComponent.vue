@@ -2,28 +2,25 @@
 import { computed } from 'vue'
 import { IItem } from '../../models/item/IItem'
 import { IWearable } from '../../models/item/IWearable'
-import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 
 const props = withDefaults(
   defineProps<{
     item: IItem,
-    showModifiersCategory?: boolean,
-    wearableModifiersOverride?: IWearableModifiers
+    showModifiersCategory?: boolean
   }>(),
   {
-    showModifiersCategory: false,
-    wearableModifiersOverride: undefined
+    showModifiersCategory: false
   })
 
 const displayModifiersCategory = computed(() => props.showModifiersCategory || hasModifiers.value)
-const ergonomicsModifierPercentage = computed(() => props.wearableModifiersOverride?.ergonomicsModifierPercentage ?? wearable.value.ergonomicsModifierPercentage)
+const ergonomicsModifierPercentage = computed(() => wearable.value.presetWearableModifiers?.ergonomicsModifierPercentage ?? wearable.value.ergonomicsModifierPercentage)
 const hasModifiers = computed(() =>
   ergonomicsModifierPercentage.value !== 0
   || movementSpeedModifierPercentage.value !== 0
   || turningSpeedModifierPercentage.value !== 0)
-const movementSpeedModifierPercentage = computed(() => props.wearableModifiersOverride?.movementSpeedModifierPercentage ?? wearable.value.movementSpeedModifierPercentage)
-const turningSpeedModifierPercentage = computed(() => props.wearableModifiersOverride?.turningSpeedModifierPercentage ?? wearable.value.turningSpeedModifierPercentage)
+const movementSpeedModifierPercentage = computed(() => wearable.value.presetWearableModifiers?.movementSpeedModifierPercentage ?? wearable.value.movementSpeedModifierPercentage)
+const turningSpeedModifierPercentage = computed(() => wearable.value.presetWearableModifiers?.turningSpeedModifierPercentage ?? wearable.value.turningSpeedModifierPercentage)
 const wearable = computed(() => props.item as IWearable)
 </script>
 

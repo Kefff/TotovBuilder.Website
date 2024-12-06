@@ -773,6 +773,7 @@ export class ReductionService {
       marketLink,
       maxStackableAmount,
       name,
+      presetWeight: undefined,
       prices,
       shortName,
       weight,

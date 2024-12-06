@@ -45,6 +45,7 @@ describe('parseReducedItem', () => {
         name: 'Unknown',
         penetratedArmorLevel: 0,
         penetrationPower: 0,
+        presetWeight: undefined,
         prices: [],
         projectiles: 2,
         recoilModifier: 0,

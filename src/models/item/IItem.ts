@@ -45,6 +45,12 @@ export interface IItem {
   name: string
 
   /**
+   * Weight of the whole preset.
+   * Undefined if the item is not a preset.
+   */
+  presetWeight: number | undefined
+
+  /**
    * Prices.
    */
   prices: IPrice[],

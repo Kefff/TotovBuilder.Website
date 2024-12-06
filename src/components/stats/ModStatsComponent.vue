@@ -10,7 +10,6 @@ const props = defineProps<{
 
 const ergonomicsModifier = computed(() => mod.value.presetErgonomicsModifier ?? mod.value.ergonomicsModifier)
 const mod = computed(() => props.item as IMod)
-
 </script>
 
 

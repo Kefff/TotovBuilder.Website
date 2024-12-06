@@ -43,6 +43,7 @@ describe('parseReducedItem', () => {
         name: 'NPP KlASS Condor glasses',
         presetArmorModifiers: undefined,
         presetWearableModifiers: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: 'Condor',
         turningSpeedModifierPercentage: 0,

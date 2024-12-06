@@ -26,9 +26,10 @@ describe('parseReducedItem', () => {
         imageLink: 'https://assets.tarkov.dev/569668774bdc2da2298b4568-image.jpg',
         marketLink: 'https://tarkov.dev/item/euros',
         maxStackableAmount: 50000,
-        shortName: 'EUR',
         name: 'Euros',
+        presetWeight: undefined,
         prices: [],
+        shortName: 'EUR',
         weight: 0,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Euros'
       } as IItem
@@ -57,8 +58,9 @@ describe('parseReducedItem', () => {
         marketLink: 'https://tarkov.dev/item/peltor-comtac-4-hybrid-headset',
         maxStackableAmount: 1,
         name: 'Peltor ComTac 4 Hybrid headset',
-        shortName: 'ComTac 4',
         prices: [],
+        presetWeight: undefined,
+        shortName: 'ComTac 4',
         weight: 0.6,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Peltor_ComTac_4_Hybrid_headset'
       } as IItem
@@ -83,6 +85,7 @@ describe('parseReducedItem', () => {
         marketLink: 'https://tarkov.dev/item/terragroup-labs-keycard-blue',
         maxStackableAmount: 1,
         name: 'TerraGroup Labs keycard (Blue)',
+        presetWeight: undefined,
         prices: [],
         shortName: 'Blue',
         weight: 0.01,

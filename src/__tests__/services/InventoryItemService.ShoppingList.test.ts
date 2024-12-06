@@ -630,6 +630,7 @@ describe('getShoppingListAsync', () => {
           marketLink: 'https://tarkov.dev/item/secure-container-alpha',
           maxStackableAmount: 1,
           name: 'Secure container Alpha',
+          presetWeight: undefined,
           prices: [
             {
               barterItems: [],
@@ -726,6 +727,7 @@ describe('getShoppingListAsync', () => {
           marketLink: 'https://tarkov.dev/item/secure-container-alpha',
           maxStackableAmount: 1,
           name: 'Secure container Alpha',
+          presetWeight: undefined,
           prices: [
             {
               barterItems: [],
@@ -813,6 +815,7 @@ describe('getShoppingListAsync', () => {
           marketLink: '',
           maxStackableAmount: 1,
           name: 'Unknown item "invalid"',
+          presetWeight: undefined,
           prices: [],
           shortName: '',
           weight: 0,

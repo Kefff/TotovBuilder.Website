@@ -168,6 +168,9 @@ export class PresetService {
         const modPreset = presetItem as IMod
         modPreset.presetErgonomicsModifier = ergonomics.ergonomicsWithMods
       }
+
+      const weight = await inventoryItemService.getWeightAsync(presetInventoryItem)
+      presetItem.presetWeight = weight.weightWithContent
     }
 
     if (notFoundPresetIds.length > 0) {

@@ -174,7 +174,7 @@ describe('delete()', () => {
 
     // Assert
     expect(service.getAll().length).toBe(1)
-    expect(build).toBe(undefined)
+    expect(build).toBeUndefined()
     verify(notificationServiceMock.notify(NotificationType.information, 'Build "Build 2" deleted.')).once()
     verify(notificationServiceMock.notify(NotificationType.error, 'Build "build_2" not found. It may have been deleted.')).once()
   })
@@ -359,7 +359,7 @@ describe('get()', () => {
     const build = service.get('not_parsable')
 
     // Assert
-    expect(build).toBe(undefined)
+    expect(build).toBeUndefined()
     verify(notificationServiceMock.notify(NotificationType.error, 'Error loading build "not_parsable".\nIt seems to be corrupted.')).once()
   })
 })

@@ -219,6 +219,7 @@ export class ItemService {
       marketLink: '',
       maxStackableAmount: 1,
       name: vueI18n.t('caption.notFoundItem', { id }),
+      presetWeight: undefined,
       prices: [],
       shortName: '',
       weight: 0,

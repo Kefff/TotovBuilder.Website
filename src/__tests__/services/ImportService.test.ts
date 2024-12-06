@@ -578,7 +578,7 @@ describe('ImportService', () => {
       const result = await service.getBuildsFromFileAsync(undefined)
 
       // Assert
-      expect(result).toBe(undefined)
+      expect(result).toBeUndefined()
       verify(logServiceMock.logError('message.invalidBuildFile'))
       verify(notificationServiceMock.notify(NotificationType.error, 'Error while importing builds.'))
     })
@@ -601,7 +601,7 @@ describe('ImportService', () => {
       const result = await service.getBuildsFromFileAsync(instance(fileMock))
 
       // Assert
-      expect(result).toBe(undefined)
+      expect(result).toBeUndefined()
     })
 
     it.each([
@@ -630,7 +630,7 @@ describe('ImportService', () => {
       const result = await service.getBuildsFromFileAsync(instance(fileMock))
 
       // Assert
-      expect(result).toBe(undefined)
+      expect(result).toBeUndefined()
       verify(logServiceMock.logError('Error while importing builds.'))
       verify(notificationServiceMock.notify(NotificationType.error, 'Error while importing builds.'))
     })
