@@ -10,12 +10,12 @@ describe('comparisonFunction()', () => {
     [
       { categoryId: 'cat1' as unknown as ItemCategoryId, ricochetChance: 'Low', name: 'a' } as IHeadwear,
       { categoryId: 'cat2' as unknown as ItemCategoryId, ricochetChance: 'Low', name: 'a' } as IHeadwear,
-      -1
+      0
     ],
     [
       { categoryId: 'cat2' as unknown as ItemCategoryId, ricochetChance: 'Low', name: 'a' } as IHeadwear,
       { categoryId: 'cat1' as unknown as ItemCategoryId, ricochetChance: 'Low', name: 'a' } as IHeadwear,
-      1
+      0
     ],
     [
       { categoryId: ItemCategoryId.headwear, ricochetChance: 'Low', name: 'a' } as IHeadwear,
@@ -42,7 +42,7 @@ describe('comparisonFunction()', () => {
       { categoryId: ItemCategoryId.headwear, ricochetChance: '', name: 'a' } as IHeadwear,
       0
     ]
-  ])('should compare by category, ricochet chance and name', async (headwear1: IHeadwear, headwear2: IHeadwear, expected: number) => {
+  ])('should compare by ricochet chance and name', async (headwear1: IHeadwear, headwear2: IHeadwear, expected: number) => {
     // Arrange
     const propertyValue1 = await HeadwearSortingFunctions.functions['ricochetChance'].comparisonValueObtentionPromise(headwear1)
     const propertyValue2 = await HeadwearSortingFunctions.functions['ricochetChance'].comparisonValueObtentionPromise(headwear2)

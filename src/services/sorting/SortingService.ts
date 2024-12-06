@@ -138,11 +138,13 @@ export function compareByElementName(element1: Record<string, unknown>, element2
  * @returns Comparison value.
  */
 export function compareByItemCategory(item1: IItem, item2: IItem): number {
-  return StringUtils.compare(item1.categoryId.toString(), item2.categoryId.toString())
+  const comparisonValue = compareByString(item1 as unknown as Record<string, unknown>, item1.categoryId, item2 as unknown as Record<string, unknown>, item2.categoryId)
+
+  return comparisonValue
 }
 
 /**
- * Compares items by category, a property of type number and name.
+ * Compares items by a property of type number and name.
  * @param item1 - First item.
  * @param item1Value - Number value obtained from the first item used to compare.
  * @param item2 - Second item.
@@ -150,17 +152,13 @@ export function compareByItemCategory(item1: IItem, item2: IItem): number {
  * @returns Comparison value.
  */
 export function compareByItemNumber(item1: IItem, item1Value: string | number, item2: IItem, item2Value: string | number): number {
-  let comparisonValue = compareByItemCategory(item1, item2)
-
-  if (comparisonValue === 0) {
-    comparisonValue = compareByNumber(item1 as unknown as Record<string, unknown>, item1Value, item2 as unknown as Record<string, unknown>, item2Value)
-  }
+  const comparisonValue = compareByNumber(item1 as unknown as Record<string, unknown>, item1Value, item2 as unknown as Record<string, unknown>, item2Value)
 
   return comparisonValue
 }
 
 /**
- * Compares items by category, a property of type string and name.
+ * Compares items by a property of type string and name.
  * @param item1 - First item.
  * @param item1Value - String value obtained from the first item used to compare.
  * @param item2 - Second item.
@@ -168,11 +166,7 @@ export function compareByItemNumber(item1: IItem, item1Value: string | number, i
  * @returns Comparison value.
  */
 export function compareByItemString(item1: IItem, item1Value: string | number, item2: IItem, item2Value: string | number): number {
-  /*let comparisonValue = compareByItemCategory(item1, item2)
-
-  if (comparisonValue === 0) {*/
   const comparisonValue = compareByString(item1 as unknown as Record<string, unknown>, item1Value, item2 as unknown as Record<string, unknown>, item2Value)
-  /*}*/
 
   return comparisonValue
 }

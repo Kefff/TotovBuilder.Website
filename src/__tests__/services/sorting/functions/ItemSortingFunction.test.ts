@@ -17,12 +17,12 @@ describe('comparisonFunction()', () => {
     [
       { id: 'i1', name: 'a', categoryId: 'cat1' as unknown as ItemCategoryId, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
       { id: 'i2', name: 'a', categoryId: 'cat2' as unknown as ItemCategoryId, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
-      -1
+      0
     ],
     [
       { id: 'i1', name: 'a', categoryId: 'cat2' as unknown as ItemCategoryId, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
       { id: 'i2', name: 'a', categoryId: 'cat1' as unknown as ItemCategoryId, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
-      1
+      0
     ],
     [
       { id: 'i1', name: 'a', categoryId: ItemCategoryId.other, prices: [{ barterItems: [], currencyName: 'RUB', merchant: 'prapor', merchantLevel: 1, value: 1, valueInMainCurrency: 1 }] } as unknown as IItem,
@@ -156,7 +156,7 @@ describe('comparisonFunction()', () => {
     expect(sortedItems).toStrictEqual([item2, item3, item1])
   })
 
-  it('should sort by category and name', async () => {
+  it('should sort by name', async () => {
     // Arrange
     const item1 = {
       categoryId: 'cat2' as unknown as ItemCategoryId,
@@ -165,12 +165,12 @@ describe('comparisonFunction()', () => {
 
     const item2 = {
       categoryId: 'cat1' as unknown as ItemCategoryId,
-      name: 'a'
+      name: 'b'
     } as IItem
 
     const item3 = {
       categoryId: 'cat1' as unknown as ItemCategoryId,
-      name: 'b'
+      name: 'a'
     } as IItem
 
     let sortingData: SortingData<IItem> | undefined = new SortingData()
@@ -181,10 +181,10 @@ describe('comparisonFunction()', () => {
     const sortedItems = await sortingService.sortAsync([item1, item2, item3], sortingData!)
 
     // Assert
-    expect(sortedItems).toStrictEqual([item1, item3, item2]) // By default it is already sorted by name, so here we expected items to be sorted in a descending way
+    expect(sortedItems).toStrictEqual([item2, item1, item3]) // By default it is already sorted by name, so here we expected items to be sorted in a descending way
   })
 
-  it('should sort by category and weight', async () => {
+  it('should sort by weight', async () => {
     // Arrange
     const item1 = {
       categoryId: 'cat2' as unknown as ItemCategoryId,
@@ -212,7 +212,7 @@ describe('comparisonFunction()', () => {
     const sortedItems = await sortingService.sortAsync([item1, item2, item3], sortingData!)
 
     // Assert
-    expect(sortedItems).toStrictEqual([item3, item2, item1])
+    expect(sortedItems).toStrictEqual([item3, item1, item2])
   })
 })
 
