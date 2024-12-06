@@ -33,34 +33,6 @@ const verticalRecoil = computed(() => rangedWeapon.value.presetRangedWeaponModif
   <div class="stats-line">
     <div class="stats-entry">
       <div class="stats-caption">
-        <CustomIcon
-          :icon="Images.caliber"
-          position="before"
-        >
-          <span>{{ $t('caption.caliber') }} :</span>
-        </CustomIcon>
-      </div>
-      <div class="stats-value">
-        {{ $t('caption.' + StringUtils.toLowerFirst(rangedWeapon.caliber)) }}
-      </div>
-    </div>
-    <div class="stats-entry">
-      <div class="stats-caption">
-        <CustomIcon
-          :icon="Images.fireRate"
-          position="before"
-        >
-          <span>{{ $t('caption.fireRate') }} :</span>
-        </CustomIcon>
-      </div>
-      <div class="stats-value">
-        {{ $t('caption.fireRateValue', { fireRate: rangedWeapon.fireRate }) }}
-      </div>
-    </div>
-  </div>
-  <div class="stats-line">
-    <div class="stats-entry">
-      <div class="stats-caption">
         <font-awesome-icon
           icon="arrows-alt-v"
           class="icon-before-text"
@@ -93,6 +65,34 @@ const verticalRecoil = computed(() => rangedWeapon.value.presetRangedWeaponModif
       </div>
       <div class="stats-value">
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, ergonomics) }}
+      </div>
+    </div>
+  </div>
+  <div class="stats-line">
+    <div class="stats-entry">
+      <div class="stats-caption">
+        <CustomIcon
+          :icon="Images.fireRate"
+          position="before"
+        >
+          <span>{{ $t('caption.fireRate') }} :</span>
+        </CustomIcon>
+      </div>
+      <div class="stats-value">
+        {{ $t('caption.fireRateValue', { fireRate: rangedWeapon.fireRate }) }}
+      </div>
+    </div>
+    <div class="stats-entry">
+      <div class="stats-caption">
+        <CustomIcon
+          :icon="Images.caliber"
+          position="before"
+        >
+          <span>{{ $t('caption.caliber') }} :</span>
+        </CustomIcon>
+      </div>
+      <div class="stats-value">
+        {{ $t('caption.' + StringUtils.toLowerFirst(rangedWeapon.caliber)) }}
       </div>
     </div>
   </div>

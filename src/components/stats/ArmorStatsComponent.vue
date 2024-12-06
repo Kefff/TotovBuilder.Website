@@ -76,6 +76,7 @@ const hasModifiers = computed(() => armor.value.blindnessProtectionPercentage !=
         {{ $t('caption.material' + armor.material) }}
       </div>
     </div>
+    <slot />
   </div>
   <WearableStats
     :item="armor"

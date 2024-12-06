@@ -168,11 +168,11 @@ export function compareByItemNumber(item1: IItem, item1Value: string | number, i
  * @returns Comparison value.
  */
 export function compareByItemString(item1: IItem, item1Value: string | number, item2: IItem, item2Value: string | number): number {
-  let comparisonValue = compareByItemCategory(item1, item2)
+  /*let comparisonValue = compareByItemCategory(item1, item2)
 
-  if (comparisonValue === 0) {
-    comparisonValue = compareByString(item1 as unknown as Record<string, unknown>, item1Value, item2 as unknown as Record<string, unknown>, item2Value)
-  }
+  if (comparisonValue === 0) {*/
+  const comparisonValue = compareByString(item1 as unknown as Record<string, unknown>, item1Value, item2 as unknown as Record<string, unknown>, item2Value)
+  /*}*/
 
   return comparisonValue
 }

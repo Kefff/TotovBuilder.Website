@@ -72,7 +72,10 @@ const fleshDamageText = computed(() =>
         {{ ammunition.projectiles }}
       </div>
     </div>
-    <div class="stats-entry">
+    <div
+      v-if="ammunition.fragmentationChance > 0"
+      class="stats-entry"
+    >
       <div class="stats-caption">
         <font-awesome-icon
           icon="viruses"
@@ -195,7 +198,10 @@ const fleshDamageText = computed(() =>
     </div>
   </div>
   <div class="stats-line">
-    <div class="stats-entry">
+    <div
+      v-if="ammunition.penetrationPower > 0"
+      class="stats-entry"
+    >
       <div class="stats-caption">
         <font-awesome-icon
           icon="bolt"
