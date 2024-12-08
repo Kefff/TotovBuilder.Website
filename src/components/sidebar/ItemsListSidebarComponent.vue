@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemsListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
@@ -27,21 +27,6 @@ const category = computed<ItemCategoryId | undefined>({
     }
   }
 })
-const categories = computed(() => {
-  let categoriesAndCaption: { category: ItemCategoryId, caption: string }[] = []
-
-  for (const rawCategory of Object.values(ItemCategoryId)) {
-    if (rawCategory === ItemCategoryId.notFound) {
-      continue
-    }
-
-    categoriesAndCaption.push({ category: rawCategory, caption: vueI18n.t(`caption.category${StringUtils.toUpperFirst(rawCategory)}`) })
-  }
-
-  categoriesAndCaption = categoriesAndCaption.sort((c1, c2) => c1.caption.localeCompare(c2.caption))
-
-  return categoriesAndCaption
-})
 const filter = computed({
   get: () => modelParameters.value.filter,
   set: (value: string) => {
@@ -50,6 +35,20 @@ const filter = computed({
       filter: value
     }
   }
+})
+const sortableProperties = computed(() => {
+  let propertyNames: string[] = []
+  const sortingFunctions = _sortingService.getSortingFunctionsFromItemCategory(category.value)
+
+  for (const propertyName of Object.keys(sortingFunctions.functions)) {
+    propertyNames.push(propertyName)
+  }
+
+  propertyNames = propertyNames.sort((p1, p2) => StringUtils.compare(
+    vueI18n.t(`caption.${p1}`),
+    vueI18n.t(`caption.${p2}`)))
+
+  return propertyNames
 })
 const sortField = computed({
   get: () => modelParameters.value.property,
@@ -64,9 +63,19 @@ const sortOrder = computed({
   }
 })
 
-const sortableProperties = ref<string[]>([])
+const _categories = getCategories()
 
-onMounted(() => sortableProperties.value = getSortableProperties())
+/**
+ * Gets item categories.
+ */
+function getCategories(): ItemCategoryId[] {
+  let categories: ItemCategoryId[] = Object.values(ItemCategoryId).filter(c => c !== ItemCategoryId.notFound)
+  categories = categories.sort((c1, c2) => StringUtils.compare(
+    vueI18n.t(`caption.category${StringUtils.toUpperFirst(c1)}`),
+    vueI18n.t(`caption.category${StringUtils.toUpperFirst(c2)}`)))
+
+  return categories
+}
 
 /**
  * Gets the caption for a sort order.
@@ -92,23 +101,6 @@ function getSortOrderIcon(sortOrder: SortingOrder): string {
   } else {
     return 'sort-amount-up'
   }
-}
-
-/**
- * Gets sortable properties.
- */
-function getSortableProperties(): string[] {
-  const properties = [
-    'armorClass',
-    'ergonomics',
-    'name',
-    'price',
-    'recoil',
-    'weight'
-  ]
-  properties.sort((a, b) => StringUtils.compare(vueI18n.t(a), vueI18n.t(b)))
-
-  return properties
 }
 
 /**
@@ -147,11 +139,12 @@ function reset(): void {
         <Dropdown
           v-model="category"
           :disabled="modelParameters.isCategoryReadOnly"
-          :options="categories"
+          :options="_categories"
           class="items-list-sidebar-value items-list-sidebar-category-dropdown"
-          option-label="caption"
-          option-value="category"
         >
+          <template #option="slotProps">
+            <span>{{ $t(`caption.category${StringUtils.toUpperFirst(slotProps.option)}`) }}</span>
+          </template>
           <template #value="slotProps">
             <div
               v-if="slotProps.value != null"

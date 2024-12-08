@@ -95,7 +95,7 @@ function displayStats(): void {
       </div>
     </template>
     <template #content>
-      <div class="card-line item-card-price-line">
+      <div class="card-line card-line4 item-card-price-line">
         <div
           v-if="itemUnitPrice != null && itemUnitPrice.valueInMainCurrency > 0"
           class="item-card-long"

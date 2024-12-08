@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { INotification } from '../../models/utils/INotification'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
+import StringUtils from '../../utils/StringUtils'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('NotificationService', () => {
@@ -111,7 +112,7 @@ describe('NotificationService', () => {
       // Assert
       expect(hasBeenCalled).toBe(true)
       expect(service.newNotificationCount).toBe(6)
-      expect(notifications.sort((n1, n2) => n1.message.localeCompare(n2.message))).toMatchObject( // toMatchObject used to avoid comparing date and id properties that are different each test
+      expect(notifications.sort((n1, n2) => StringUtils.compare(n1.message, n2.message))).toMatchObject( // toMatchObject used to avoid comparing date and id properties that are different each test
         [
           {
             buttons: [],
