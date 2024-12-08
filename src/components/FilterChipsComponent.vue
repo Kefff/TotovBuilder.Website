@@ -51,6 +51,24 @@ const filterCaption = computed(() => {
 
   return caption
 })
+const filterTooltip = computed(() => {
+  const itemFilterAndSortingData = modelFilterAndSortingData.value as ItemFilterAndSortingData
+  let tooltip = ''
+
+  if (itemFilterAndSortingData?.categoryId != null) {
+    tooltip += vueI18n.t('caption.filteredWith1', { category: vueI18n.t(`caption.category${StringUtils.toUpperFirst(itemFilterAndSortingData.categoryId)}`) })
+  }
+
+  if (modelFilterAndSortingData.value.filter != null) {
+    if (tooltip !== '') {
+      tooltip += '\n'
+    }
+
+    tooltip += vueI18n.t('caption.filteredWith2', { filter: modelFilterAndSortingData.value.filter })
+  }
+
+  return tooltip !== '' ? tooltip : undefined
+})
 const sortButtonTooltip = computed(() => vueI18n.t(
   'caption.sortedBy',
   {
@@ -143,7 +161,7 @@ function showFilterAndSortSidebar(): void {
         class="filter-chip"
       >
         <Tooltip
-          :tooltip="$t('caption.filteredWith', { filter: modelFilterAndSortingData.filter })"
+          :tooltip="filterTooltip"
           style="overflow: hidden;"
         >
           <div

@@ -18,12 +18,12 @@ const props = withDefaults(
 
 const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const displayedLines = computed<unknown[][]>(() => {
-  const start = currentPage.value * props.linesPerPage
-  let end = start + props.linesPerPage
-  const lines = groupedElements.value.slice(start, end)
+  let last = first.value + props.linesPerPage
+  const lines = groupedElements.value.slice(first.value, last)
 
   return lines
 })
+const first = computed(() => currentPage.value * props.linesPerPage)
 const gridTemplateColumns = computed(() => `repeat(${props.elementsPerLine}, 1fr)`)
 const groupedElements = computed<unknown[][]>(() => {
   const groups: unknown[][] = []
@@ -49,6 +49,7 @@ watch(() => props.elements, () => currentPage.value = 0)
 function onPageChange(state: PageState): void {
   currentPage.value = state.page
 
+  // Scrolling to the first element of the page
   nextTick(() => {
     const firstLine = document.getElementsByClassName('paginator-line')[0]
     firstLine.scrollIntoView({ behavior: 'smooth', block: 'center' })
@@ -85,7 +86,7 @@ function onPageChange(state: PageState): void {
     class="paginator-pages"
   >
     <Paginator
-      v-model:first="currentPage"
+      v-model:first="first"
       :rows="linesPerPage"
       :total-records="groupedElements.length"
       :page-link-size="pageLinksCount"
