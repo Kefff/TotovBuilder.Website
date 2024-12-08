@@ -22,15 +22,13 @@ const props = withDefaults(
     maxElementsPerLine?: number,
     infiniteScrolling?: boolean,
     isLoading?: boolean,
-    items: IItem[],
-    showChips?: boolean
+    items: IItem[]
   }>(),
   {
     elementToStickTo: undefined,
     maxElementsPerLine: 4,
     infiniteScrolling: false,
-    isLoading: false,
-    showChips: true
+    isLoading: false
   })
 
 const _itemPropertiesService = Services.get(ItemPropertiesService)
@@ -84,7 +82,8 @@ async function filterAndSortItemsAsync(): Promise<void> {
  * @param itemsToFilter - Build summaries to filter.
  */
 async function filterItemsAsync(itemsToFilter: IItem[]): Promise<IItem[]> {
-  if (modelFilterAndSortingData.value.filter === '') {
+  if (modelFilterAndSortingData.value.categoryId == null
+    && modelFilterAndSortingData.value.filter == null) {
     return itemsToFilter
   }
 
@@ -93,10 +92,18 @@ async function filterItemsAsync(itemsToFilter: IItem[]): Promise<IItem[]> {
 
   for (const itemToFilter of itemsToFilter) {
     promises.push(new Promise(resolve => {
-      const matchesFilter = _itemPropertiesService.checkMatchesFilter(itemToFilter, modelFilterAndSortingData.value.filter)
+      const isInCategory = modelFilterAndSortingData.value.categoryId == null
+        ? true
+        : itemToFilter.categoryId === modelFilterAndSortingData.value.categoryId
 
-      if (matchesFilter) {
-        filtereditemsummaries.push(itemToFilter)
+      if (isInCategory) {
+        const matchesFilter = modelFilterAndSortingData.value.filter == null
+          ? true
+          : _itemPropertiesService.checkMatchesFilter(itemToFilter, modelFilterAndSortingData.value.filter)
+
+        if (matchesFilter) {
+          filtereditemsummaries.push(itemToFilter)
+        }
       }
 
       resolve()
@@ -116,12 +123,13 @@ async function filterItemsAsync(itemsToFilter: IItem[]): Promise<IItem[]> {
  */
 function onFilterAndSortChanged(updatedParameters?: GlobalSidebarDisplayedComponentParameters): void {
   const updatedFilterAndSortingData = updatedParameters as ItemFilterAndSortingData
+  const hasCategoryChanged = updatedFilterAndSortingData.categoryId !== modelFilterAndSortingData.value.categoryId
   const hasSortChange =
     updatedFilterAndSortingData.property !== modelFilterAndSortingData.value.property
     || updatedFilterAndSortingData.order !== modelFilterAndSortingData.value.order
   const hasFilterChange = updatedFilterAndSortingData.filter !== modelFilterAndSortingData.value.filter
 
-  if (hasSortChange || hasFilterChange) {
+  if (hasCategoryChanged || hasSortChange || hasFilterChange) {
     modelFilterAndSortingData.value = updatedFilterAndSortingData
   }
 }
@@ -153,46 +161,45 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
   >
     <Loading />
   </div>
-  <div v-else>
-    <div
+  <div
+    v-else
+    class="items-list"
+  >
+    <FilterChips
       v-if="items.length > 0"
-      class="items-list"
+      v-model:filter-and-sorting-data="modelFilterAndSortingData"
+      filter-sidebar-component="ItemsListSidebar"
+      :element-to-stick-to="elementToStickTo"
+      @filter-and-sort-changed="onFilterAndSortChanged"
+    />
+    <InfiniteScroller
+      v-if="itemsInternal.length > 0 && infiniteScrolling"
+      :element-height="50"
+      :elements-per-line="itemsPerLine"
+      :elements="itemsInternal"
+      :get-key-function="i => (i as IItem).id"
     >
-      <FilterChips
-        v-model:filter-and-sorting-data="modelFilterAndSortingData"
-        filter-sidebar-component="ItemsListSidebar"
-        :element-to-stick-to="elementToStickTo"
-        @filter-and-sort-changed="onFilterAndSortChanged"
-      />
-      <InfiniteScroller
-        v-if="items.length > 0 && infiniteScrolling"
-        :element-height="50"
-        :elements-per-line="itemsPerLine"
-        :elements="itemsInternal"
-        :get-key-function="i => (i as IItem).id"
-      >
-        <template #element="{ element }">
-          <ItemCardSelector
-            :item="<IItem>element"
-            :show-details-button="true"
-          />
-        </template>
-      </InfiniteScroller>
-      <Paginator
-        v-else-if="items.length > 0 && !infiniteScrolling"
-        :elements-per-line="itemsPerLine"
-        :elements="itemsInternal"
-        :get-key-function="i => (i as IItem).id"
-        :lines-per-page="10"
-      >
-        <template #element="{ element }">
-          <ItemCardSelector
-            :item="<IItem>element"
-            :show-details-button="true"
-          />
-        </template>
-      </Paginator>
-    </div>
+      <template #element="{ element }">
+        <ItemCardSelector
+          :item="<IItem>element"
+          :show-details-button="true"
+        />
+      </template>
+    </InfiniteScroller>
+    <Paginator
+      v-else-if="itemsInternal.length > 0 && !infiniteScrolling"
+      :elements-per-line="itemsPerLine"
+      :elements="itemsInternal"
+      :get-key-function="i => (i as IItem).id"
+      :lines-per-page="10"
+    >
+      <template #element="{ element }">
+        <ItemCardSelector
+          :item="<IItem>element"
+          :show-details-button="true"
+        />
+      </template>
+    </Paginator>
     <div
       v-else
       class="items-list-no-results-message"
@@ -226,10 +233,10 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
 }
 
 .items-list-no-results-message {
+  font-size: 1.5rem;
   margin-bottom: auto;
   margin-top: auto;
   padding-top: 3rem;
-  font-size: 1.5rem;
   text-align: center;
 }
 </style>

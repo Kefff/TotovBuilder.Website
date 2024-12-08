@@ -524,7 +524,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           @show="onDropdownOpen()"
         >
           <template #clearicon>
-            <Tooltip :tooltip="$t('caption.clearItem')">
+            <Tooltip :tooltip="$t('caption.clear')">
               <div
                 class="item-clear-button"
                 @click="removeItemAsync"
@@ -757,7 +757,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-selection-dropdown > .p-dropdown > .p-dropdown-label {
-  padding: 0rem
+  padding: 0;
 }
 
 .item-selection-dropdown > .p-dropdown > .p-dropdown-label > span > div {

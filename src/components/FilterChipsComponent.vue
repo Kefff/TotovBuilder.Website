@@ -8,6 +8,7 @@ import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
+import StringUtils from '../utils/StringUtils'
 import Sticky from './StickyComponent.vue'
 import Tooltip from './TooltipComponent.vue'
 
@@ -30,6 +31,26 @@ const _globalSidebarService = Services.get(GlobalSidebarService)
 
 useEventListener(document, 'keydown', onKeyDown)
 
+
+const categoryFilterCaption = computed(() => {
+  let caption: string | undefined = undefined
+  const itemFilterAndSortingData = modelFilterAndSortingData.value as ItemFilterAndSortingData
+
+  if (itemFilterAndSortingData?.categoryId != null) {
+    caption = vueI18n.t(`caption.category${StringUtils.toUpperFirst(itemFilterAndSortingData.categoryId)}`)
+  }
+
+  return caption
+})
+const filterCaption = computed(() => {
+  let caption: string | undefined = undefined
+
+  if (modelFilterAndSortingData.value.filter != null) {
+    caption = modelFilterAndSortingData.value.filter
+  }
+
+  return caption
+})
 const sortButtonTooltip = computed(() => vueI18n.t(
   'caption.sortedBy',
   {
@@ -53,16 +74,6 @@ function onKeyDown(event: KeyboardEvent): void {
       event.preventDefault() // Prevents the browser save action to be triggered
       showFilterAndSortSidebar()
     }
-  }
-}
-
-/**
- * Removes the filter.
- */
-function removeFilter(): void {
-  modelFilterAndSortingData.value = {
-    ...modelFilterAndSortingData.value,
-    filter: ''
   }
 }
 
@@ -100,6 +111,7 @@ function showFilterAndSortSidebar(): void {
         <Tooltip
           :tooltip="sortButtonTooltip"
           position="right"
+          style="width: 100%;"
         >
           <div class="filter-chip-group">
             <div class="filter-chip-icon">
@@ -110,7 +122,7 @@ function showFilterAndSortSidebar(): void {
         </Tooltip>
       </Chip>
       <Chip
-        v-if="modelFilterAndSortingData.filter == ''"
+        v-if="categoryFilterCaption == null && filterCaption == null"
         class="filter-chip"
         @click="showFilterAndSortSidebar()"
       >
@@ -141,15 +153,10 @@ function showFilterAndSortSidebar(): void {
             <div class="filter-chip-icon">
               <font-awesome-icon icon="filter" />
             </div>
-            <span>{{ modelFilterAndSortingData.filter }}</span>
-          </div>
-        </Tooltip>
-        <Tooltip :tooltip="$t('caption.removeFilter')">
-          <div
-            class="filter-chip-icon-button filter-chip-icon-button-remove-filter"
-            @click="removeFilter()"
-          >
-            <font-awesome-icon icon="times" />
+            <div class="filter-chip-caption-multiline">
+              <span>{{ categoryFilterCaption }}</span>
+              <span>{{ filterCaption }}</span>
+            </div>
           </div>
         </Tooltip>
       </Chip>
@@ -166,16 +173,31 @@ function showFilterAndSortSidebar(): void {
 
 
 
-<style>
+<style scoped>
 .filter-chip {
   background-color: var(--surface-300);
+  border-color: var(--primary-color);
   border-style: solid;
   border-width: 1px;
-  border-color: var(--primary-color);
   cursor: pointer;
+  height: 100%;
+  overflow: hidden;
   padding-bottom: 0.5rem;
   padding-top: 0.5rem;
+}
+
+.filter-chip-caption-multiline {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
   overflow: hidden;
+}
+
+.filter-chip-caption-multiline > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .filter-chip-group {

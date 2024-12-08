@@ -10,6 +10,7 @@ import { BuildSummarySortingFunctions } from '../../services/sorting/functions/B
 import { SortingService } from '../../services/sorting/SortingService'
 import StringUtils from '../../utils/StringUtils'
 import InputTextField from '../InputTextFieldComponent.vue'
+import Tooltip from '../TooltipComponent.vue'
 
 const modelParameters = defineModel<BuildsListSidebarParameters>('parameters', { required: true })
 
@@ -119,14 +120,27 @@ function reset(): void {
   <div class="sidebar-option">
     <div class="builds-list-sidebar-group">
       <span class="builds-list-sidebar-caption">{{ $t('caption.filter') }}</span>
-      <InputTextField
-        ref="buildsListSidebarFilterInput"
-        v-model:value="filter"
-        :autofocus="true"
-        class="builds-list-sidebar-value"
-        type="text"
-        @keydown="onFilterKeyDown"
-      />
+      <div class="builds-list-sidebar-field">
+        <InputTextField
+          ref="buildsListSidebarFilterInput"
+          v-model:value="filter"
+          :autofocus="true"
+          class="builds-list-sidebar-value"
+          type="text"
+          @keydown="onFilterKeyDown"
+        />
+        <Tooltip
+          v-if="filter != null"
+          :tooltip="$t('caption.clear')"
+        >
+          <div
+            class="builds-list-sidebar-clear-button"
+            @click="filter = undefined"
+          >
+            <font-awesome-icon icon="times" />
+          </div>
+        </Tooltip>
+      </div>
     </div>
   </div>
   <div class="sidebar-option builds-list-sidebar-filter-explanation">
@@ -214,6 +228,23 @@ function reset(): void {
   margin-right: auto;
 }
 
+.builds-list-sidebar-clear-button {
+  align-items: center;
+  color: var(--error-color);
+  cursor: pointer;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  width: 2.375rem;
+}
+
+.builds-list-sidebar-field {
+  align-items: center;
+  display: flex;
+  max-width: 15rem;
+  width: 100%;
+}
+
 .builds-list-sidebar-filter-explanation {
   color: var(--util-color7);
   margin-top: 0;
@@ -230,6 +261,7 @@ function reset(): void {
   display: grid;
   gap: 1rem;
   grid-template-columns: 1fr 2fr;
+  width: 100%;
 }
 
 .builds-list-sidebar-reset-button {
@@ -240,7 +272,8 @@ function reset(): void {
 }
 
 .builds-list-sidebar-value {
-  width: 15rem;
+  overflow: hidden;
+  width: 100%;
 }
 
 .builds-list-sidebar-value-value {

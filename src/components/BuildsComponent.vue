@@ -263,7 +263,7 @@ async function getBuildsAsync(): Promise<void> {
  * Gets the initial filter and sorting data applied to builds.
  */
 function getInitialFilterAndSortingData(): void {
-  filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsFilterStorageKey) ?? ''
+  filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsFilterStorageKey) ?? undefined
   const property = localStorage.getItem(_websiteConfigurationService.configuration.buildsSortFieldStorageKey) ?? 'name'
   const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey) ?? SortingOrder.asc)
   _sortingService.setSortingProperty(filterAndSortingData.value, BuildSummarySortingFunctions, property, order)
@@ -294,7 +294,13 @@ function onBuildSelected(selectedBuilds: IBuildSummary[]): void {
  * Saves filter and sorting data.
  */
 function onFilterAndSortingDataChanged(): void {
-  sessionStorage.setItem(_websiteConfigurationService.configuration.buildsFilterStorageKey, filterAndSortingData.value.filter)
+  if (filterAndSortingData.value.filter == null) {
+    sessionStorage.removeItem(_websiteConfigurationService.configuration.buildsFilterStorageKey)
+  }
+  else {
+    sessionStorage.setItem(_websiteConfigurationService.configuration.buildsFilterStorageKey, filterAndSortingData.value.filter)
+  }
+
   localStorage.setItem(_websiteConfigurationService.configuration.buildsSortFieldStorageKey, filterAndSortingData.value.property)
   localStorage.setItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey, filterAndSortingData.value.order.toString())
 }

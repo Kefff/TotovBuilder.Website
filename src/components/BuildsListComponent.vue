@@ -117,7 +117,7 @@ async function filterAndSortBuildSummariesAsync(): Promise<void> {
  * @param buildSummariesToFilter - Build summaries to filter.
  */
 async function filterBuildSummariesAsync(buildSummariesToFilter: IBuildSummary[]): Promise<IBuildSummary[]> {
-  if (modelFilterAndSortingData.value.filter === '') {
+  if (modelFilterAndSortingData.value.filter == null) {
     return buildSummariesToFilter
   }
 
@@ -206,55 +206,53 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
     v-else
     class="builds-list"
   >
-    <div v-if="buildSummaries.length > 0">
-      <FilterChips
-        v-if="showChips"
-        v-model:filter-and-sorting-data="modelFilterAndSortingData"
-        filter-sidebar-component="BuildsListSidebar"
-        :element-to-stick-to="elementToStickTo"
-        @filter-and-sort-changed="onFilterAndSortChanged"
-      />
-      <InfiniteScroller
-        v-if="infiniteScrolling"
-        :element-height="253"
-        :elements-per-line="buildsPerLine"
-        :elements="buildSummariesInternal"
-        :get-key-function="i => (i as IBuildSummary).id"
-      >
-        <template #element="{ element }">
-          <BuildCard
-            :build-summary="<IBuildSummary>element"
-            :is-selected="checkIsSelected(<IBuildSummary>element)"
-            :selection-button-caption="selectionButtonCaption"
-            :selection-button-icon="selectionButtonIcon"
-            :show-actions-button="showActionsButton"
-            :show-not-exported="showNotExported"
-            :show-shopping-list="showShoppingList"
-            @update:is-selected="updateSelectedBuilds(<IBuildSummary>element, $event)"
-          />
-        </template>
-      </InfiniteScroller>
-      <Paginator
-        v-else
-        :elements-per-line="buildsPerLine"
-        :elements="buildSummariesInternal"
-        :get-key-function="b => (b as IBuildSummary).id"
-        :lines-per-page="linesPerPage"
-      >
-        <template #element="{ element }">
-          <BuildCard
-            :build-summary="<IBuildSummary>element"
-            :is-selected="checkIsSelected(<IBuildSummary>element)"
-            :selection-button-caption="selectionButtonCaption"
-            :selection-button-icon="selectionButtonIcon"
-            :show-actions-button="showActionsButton"
-            :show-not-exported="showNotExported"
-            :show-shopping-list="showShoppingList"
-            @update:is-selected="updateSelectedBuilds(<IBuildSummary>element, $event)"
-          />
-        </template>
-      </Paginator>
-    </div>
+    <FilterChips
+      v-if="buildSummaries.length > 0 && showChips"
+      v-model:filter-and-sorting-data="modelFilterAndSortingData"
+      filter-sidebar-component="BuildsListSidebar"
+      :element-to-stick-to="elementToStickTo"
+      @filter-and-sort-changed="onFilterAndSortChanged"
+    />
+    <InfiniteScroller
+      v-if="buildSummariesInternal.length > 0 && infiniteScrolling"
+      :element-height="253"
+      :elements-per-line="buildsPerLine"
+      :elements="buildSummariesInternal"
+      :get-key-function="i => (i as IBuildSummary).id"
+    >
+      <template #element="{ element }">
+        <BuildCard
+          :build-summary="<IBuildSummary>element"
+          :is-selected="checkIsSelected(<IBuildSummary>element)"
+          :selection-button-caption="selectionButtonCaption"
+          :selection-button-icon="selectionButtonIcon"
+          :show-actions-button="showActionsButton"
+          :show-not-exported="showNotExported"
+          :show-shopping-list="showShoppingList"
+          @update:is-selected="updateSelectedBuilds(<IBuildSummary>element, $event)"
+        />
+      </template>
+    </InfiniteScroller>
+    <Paginator
+      v-else-if="buildSummariesInternal.length > 0 && !infiniteScrolling"
+      :elements-per-line="buildsPerLine"
+      :elements="buildSummariesInternal"
+      :get-key-function="b => (b as IBuildSummary).id"
+      :lines-per-page="linesPerPage"
+    >
+      <template #element="{ element }">
+        <BuildCard
+          :build-summary="<IBuildSummary>element"
+          :is-selected="checkIsSelected(<IBuildSummary>element)"
+          :selection-button-caption="selectionButtonCaption"
+          :selection-button-icon="selectionButtonIcon"
+          :show-actions-button="showActionsButton"
+          :show-not-exported="showNotExported"
+          :show-shopping-list="showShoppingList"
+          @update:is-selected="updateSelectedBuilds(<IBuildSummary>element, $event)"
+        />
+      </template>
+    </Paginator>
     <div
       v-else
       class="builds-list-no-results-message"
@@ -275,11 +273,6 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
 
 <style scoped>
 .builds-list {
-  height: 100%;
-  width: 100%;
-}
-
-.builds-list > div {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -294,10 +287,10 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
 }
 
 .builds-list-no-results-message {
+  font-size: 1.5rem;
   margin-bottom: auto;
   margin-top: auto;
   padding-top: 3rem;
-  font-size: 1.5rem;
   text-align: center;
 }
 </style>

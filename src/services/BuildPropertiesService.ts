@@ -120,8 +120,8 @@ export class BuildPropertiesService {
  * @param buildSummaryToCheck - Build summary that must be checked against the filter.
  * @param filter - Filter.
  */
-  public checkMatchesFilter(buildSummaryToCheck: IBuildSummary, filter: string): boolean {
-    const filterWords = filter.split(' ')
+  public checkMatchesFilter(buildSummaryToCheck: IBuildSummary, filter: string | undefined | null): boolean {
+    const filterWords = filter == null ? [] : filter.split(' ')
 
     for (const filterWord of filterWords) {
       if (StringUtils.contains(buildSummaryToCheck.name, filterWord)) {

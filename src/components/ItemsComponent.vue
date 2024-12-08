@@ -95,8 +95,8 @@ function displayMerchantItemsOptions(): void {
 function getInitialFilterAndSortingData(): void {
   filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.itemsFilterStorageKey) ?? ''
 
-  const category = localStorage.getItem(_websiteConfigurationService.configuration.itemsSortCategoryStorageKey)
-  const categoryId = category != null ? ItemCategoryId[category as keyof typeof ItemCategoryId] : ItemCategoryId.other
+  const savedCategoryId = localStorage.getItem(_websiteConfigurationService.configuration.itemsFilterAndSortCategoryStorageKey)
+  const categoryId = savedCategoryId != null ? ItemCategoryId[savedCategoryId as keyof typeof ItemCategoryId] : undefined
   const property = localStorage.getItem(_websiteConfigurationService.configuration.itemsSortFieldStorageKey) ?? 'name'
   const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.itemsSortOrderStorageKey) ?? SortingOrder.asc)
 
@@ -134,8 +134,18 @@ function goToHome(): void {
  * Saves filter and sorting data.
  */
 function onFilterAndSortingDataChanged(): void {
-  sessionStorage.setItem(_websiteConfigurationService.configuration.itemsFilterStorageKey, filterAndSortingData.value.filter)
-  localStorage.setItem(_websiteConfigurationService.configuration.itemsSortCategoryStorageKey, filterAndSortingData.value.category)
+  if (filterAndSortingData.value.categoryId == null) {
+    sessionStorage.removeItem(_websiteConfigurationService.configuration.itemsFilterAndSortCategoryStorageKey)
+  } else {
+    sessionStorage.setItem(_websiteConfigurationService.configuration.itemsFilterAndSortCategoryStorageKey, filterAndSortingData.value.categoryId)
+  }
+
+  if (filterAndSortingData.value.filter == null) {
+    sessionStorage.removeItem(_websiteConfigurationService.configuration.itemsFilterStorageKey)
+  } else {
+    sessionStorage.setItem(_websiteConfigurationService.configuration.itemsFilterStorageKey, filterAndSortingData.value.filter)
+  }
+
   localStorage.setItem(_websiteConfigurationService.configuration.itemsSortFieldStorageKey, filterAndSortingData.value.property)
   localStorage.setItem(_websiteConfigurationService.configuration.itemsSortOrderStorageKey, filterAndSortingData.value.order.toString())
 }

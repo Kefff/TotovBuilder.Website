@@ -13,7 +13,6 @@ import { ServiceInitializationState } from '../services/repository/ServiceInitia
 import Services from '../services/repository/Services'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import StringUtils from '../utils/StringUtils'
-// import BuildsList from './BuildsListComponent.vue'
 import Loading from './LoadingComponent.vue'
 
 const BuildsList = defineAsyncComponent(() =>

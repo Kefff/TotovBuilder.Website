@@ -8,5 +8,5 @@ export default class BuildFilterAndSortingData extends SortingData<IBuildSummary
   /**
    * Filter.
    */
-  public filter = ''
+  public filter?: string
 }

@@ -1,4 +1,4 @@
-import { IItem } from '../item/IItem'
+import { IItem, ItemCategoryId } from '../item/IItem'
 import SortingData from './SortingData'
 
 /**
@@ -8,10 +8,15 @@ export default class ItemFilterAndSortingData extends SortingData<IItem> {
   /**
    * Category of item being sorted.
    */
-  public category = ''
+  public categoryId?: ItemCategoryId
 
   /**
    * Filter.
    */
-  public filter = ''
+  public filter?: string
+
+  /**
+   * Indicates whether the category should not be editable in the filter sidebar.
+   */
+  public isCategoryReadOnly = false
 }

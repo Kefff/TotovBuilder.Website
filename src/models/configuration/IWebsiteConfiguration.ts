@@ -128,9 +128,9 @@ export interface IWebsiteConfiguration {
   itemsFilterStorageKey: string
 
   /**
-   * Storage key for the current item category of item being sorted.
+   * Storage key for the current item category filter and sort order.
    */
-  itemsSortCategoryStorageKey: string
+  itemsFilterAndSortCategoryStorageKey: string
 
   /**
    * Storage key for the current item sorting colum.

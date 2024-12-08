@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBreakpoints } from '@vueuse/core'
 import { PageState } from 'primevue/paginator'
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 
 const props = withDefaults(
@@ -40,6 +40,8 @@ const isCompactMode = breakpoints.smaller('smartphoneLandscape')
 const pageLinksCount = computed(() => isCompactMode.value ? 3 : 5)
 
 const currentPage = ref(0)
+
+watch(() => props.elements, () => currentPage.value = 0)
 
 /**
  * Reacts to the paginator current page being changed.
@@ -83,6 +85,7 @@ function onPageChange(state: PageState): void {
     class="paginator-pages"
   >
     <Paginator
+      v-model:first="currentPage"
       :rows="linesPerPage"
       :total-records="groupedElements.length"
       :page-link-size="pageLinksCount"

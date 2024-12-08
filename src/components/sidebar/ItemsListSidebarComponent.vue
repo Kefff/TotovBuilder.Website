@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemsListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import { SortingOrder } from '../../models/utils/SortingOrder'
@@ -10,14 +11,37 @@ import { ItemSortingFunctions } from '../../services/sorting/functions/ItemSorti
 import { SortingService } from '../../services/sorting/SortingService'
 import StringUtils from '../../utils/StringUtils'
 import InputTextField from '../InputTextFieldComponent.vue'
+import Tooltip from '../TooltipComponent.vue'
 
 const modelParameters = defineModel<ItemsListSidebarParameters>('parameters', { required: true })
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _sortingService = Services.get(SortingService)
 
-const sortableProperties = ref<string[]>([])
+const category = computed<ItemCategoryId | undefined>({
+  get: () => modelParameters.value.categoryId,
+  set: (value: ItemCategoryId | undefined) => {
+    modelParameters.value = {
+      ...modelParameters.value,
+      categoryId: value
+    }
+  }
+})
+const categories = computed(() => {
+  let categoriesAndCaption: { category: ItemCategoryId, caption: string }[] = []
 
+  for (const rawCategory of Object.values(ItemCategoryId)) {
+    if (rawCategory === ItemCategoryId.notFound) {
+      continue
+    }
+
+    categoriesAndCaption.push({ category: rawCategory, caption: vueI18n.t(`caption.category${StringUtils.toUpperFirst(rawCategory)}`) })
+  }
+
+  categoriesAndCaption = categoriesAndCaption.sort((c1, c2) => c1.caption.localeCompare(c2.caption))
+
+  return categoriesAndCaption
+})
 const filter = computed({
   get: () => modelParameters.value.filter,
   set: (value: string) => {
@@ -40,9 +64,9 @@ const sortOrder = computed({
   }
 })
 
-onMounted(() => {
-  sortableProperties.value = getSortableProperties()
-})
+const sortableProperties = ref<string[]>([])
+
+onMounted(() => sortableProperties.value = getSortableProperties())
 
 /**
  * Gets the caption for a sort order.
@@ -118,15 +142,65 @@ function reset(): void {
 <template>
   <div class="sidebar-option">
     <div class="items-list-sidebar-group">
+      <span class="items-list-sidebar-caption">{{ $t('caption.category') }}</span>
+      <div class="items-list-sidebar-field">
+        <Dropdown
+          v-model="category"
+          :disabled="modelParameters.isCategoryReadOnly"
+          :options="categories"
+          class="items-list-sidebar-value items-list-sidebar-category-dropdown"
+          option-label="caption"
+          option-value="category"
+        >
+          <template #value="slotProps">
+            <div
+              v-if="slotProps.value != null"
+              class="items-list-sidebar-category-value"
+            >
+              <span>
+                {{ $t(`caption.category${StringUtils.toUpperFirst(slotProps.value)}`) }}
+              </span>
+            </div>
+          </template>
+        </Dropdown>
+        <div>
+          <Tooltip
+            v-if="category != null && !modelParameters.isCategoryReadOnly"
+            :tooltip="$t('caption.clear')"
+          >
+            <div
+              class="items-list-sidebar-clear-button"
+              @click="category = undefined"
+            >
+              <font-awesome-icon icon="times" />
+            </div>
+          </Tooltip>
+        </div>
+      </div>
       <span class="items-list-sidebar-caption">{{ $t('caption.filter') }}</span>
-      <InputTextField
-        ref="itemsListSidebarFilterInput"
-        v-model:value="filter"
-        :autofocus="true"
-        class="items-list-sidebar-value"
-        type="text"
-        @keydown="onFilterKeyDown"
-      />
+      <div class="items-list-sidebar-field">
+        <InputTextField
+          ref="itemsListSidebarFilterInput"
+          v-model:value="filter"
+          :autofocus="true"
+          class="items-list-sidebar-value"
+          type="text"
+          @keydown="onFilterKeyDown"
+        />
+        <div>
+          <Tooltip
+            v-if="filter != null"
+            :tooltip="$t('caption.clear')"
+          >
+            <div
+              class="items-list-sidebar-clear-button"
+              @click="filter = undefined"
+            >
+              <font-awesome-icon icon="times" />
+            </div>
+          </Tooltip>
+        </div>
+      </div>
     </div>
   </div>
   <div class="sidebar-title">
@@ -207,7 +281,36 @@ function reset(): void {
 
 <style scoped>
 .items-list-sidebar-caption {
-  margin-right: auto;
+  width: 100%;
+}
+
+.items-list-sidebar-clear-button {
+  align-items: center;
+  color: var(--error-color);
+  cursor: pointer;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  width: 2.375rem;
+}
+
+.items-list-sidebar-category-value {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  padding: 0.25rem;
+}
+
+.items-list-sidebar-category-value > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.items-list-sidebar-field {
+  align-items: center;
+  display: flex;
+  max-width: 15rem;
+  width: 100%;
 }
 
 .items-list-sidebar-filter-explanation > span {
@@ -221,6 +324,7 @@ function reset(): void {
   display: grid;
   gap: 1rem;
   grid-template-columns: 1fr 2fr;
+  width: 100%;
 }
 
 .items-list-sidebar-reset-button {
@@ -231,12 +335,19 @@ function reset(): void {
 }
 
 .items-list-sidebar-value {
-  width: 15rem;
+  overflow: hidden;
+  width: 100%;
 }
 
 .items-list-sidebar-value-value {
   align-items: center;
   display: flex;
   height: 100%;
+}
+</style>
+
+<style>
+.items-list-sidebar-category-dropdown.p-dropdown > .p-dropdown-label {
+  padding: 0;
 }
 </style>
