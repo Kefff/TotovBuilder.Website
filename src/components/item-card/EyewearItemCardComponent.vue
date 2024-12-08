@@ -19,7 +19,7 @@ const eyewear = computed(() => props.item as IEyewear)
 
 
 <template>
-  <div class="card-line">
+  <div class="card-line card-line4">
     <Tooltip
       v-if="eyewear.blindnessProtectionPercentage !== 0"
       :tooltip="$t('caption.blindnessProtection')"

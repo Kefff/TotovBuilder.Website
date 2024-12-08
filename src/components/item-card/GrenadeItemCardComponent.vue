@@ -19,7 +19,7 @@ const grenade = computed(() => props.item as IGrenade)
 
 
 <template>
-  <div class="card-line">
+  <div class="card-line card-line4">
     <Tooltip
       v-if="grenade.fragmentsAmount > 0"
       :tooltip="$t('caption.fragmentsAmount')"

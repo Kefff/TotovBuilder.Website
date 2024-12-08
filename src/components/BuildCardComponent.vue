@@ -181,7 +181,7 @@ function displayStats(item: IItem): void {
           :style="hasItemListElementScroll && !itemListElementScroll.arrivedState.right ? 'display: initial' : 'display: none'"
         />
       </div>
-      <div class="card-line">
+      <div class="card-line card-line3">
         <div v-if="buildSummary.recoil.verticalRecoil !== 0">
           <Tooltip :tooltip="$t('caption.verticalRecoil')">
             <font-awesome-icon
@@ -224,7 +224,7 @@ function displayStats(item: IItem): void {
           </span>
         </div>
       </div>
-      <div class="card-line">
+      <div class="card-line card-line3">
         <div v-if="buildSummary.armorModifiers.armorClass > 0">
           <Tooltip :tooltip="$t('caption.armorClass')">
             <font-awesome-icon
@@ -257,7 +257,7 @@ function displayStats(item: IItem): void {
           </Tooltip>
         </div>
       </div>
-      <div class="card-line">
+      <div class="card-line card-line3">
         <div
           v-if="buildSummary.price.priceInMainCurrency > 0"
           class="build-card-price"

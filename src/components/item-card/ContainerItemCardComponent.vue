@@ -19,7 +19,7 @@ const container = computed(() => props.item as IContainer)
 
 
 <template>
-  <div class="card-line">
+  <div class="card-line card-line4">
     <Tooltip :tooltip="$t('caption.capacity')">
       <font-awesome-icon
         icon="box-open"

@@ -21,7 +21,7 @@ const meleeWeapon = computed(() => props.item as IMeleeWeapon)
 
 
 <template>
-  <div class="card-line">
+  <div class="card-line card-line4">
     <Tooltip :tooltip="$t('caption.chopDamage')">
       <CustomIcon
         :icon="Images.chop"

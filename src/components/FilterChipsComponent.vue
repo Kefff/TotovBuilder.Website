@@ -190,6 +190,7 @@ function showFilterAndSortSidebar(): void {
   display: flex;
   flex-direction: column;
   font-size: 0.85rem;
+  justify-content: center;
   overflow: hidden;
 }
 

@@ -23,7 +23,7 @@ const magazine = computed(() => props.item as IMagazine)
 
 <template>
   <ContainerItemCard :item="magazine" />
-  <div class="card-line">
+  <div class="card-line card-line4">
     <Tooltip
       v-if="ergonomicsModifier !== 0"
       :tooltip="$t('caption.ergonomics')"

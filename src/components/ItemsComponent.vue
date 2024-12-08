@@ -93,7 +93,7 @@ function displayMerchantItemsOptions(): void {
  * Gets the initial filter and sorting data applied to builds.
  */
 function getInitialFilterAndSortingData(): void {
-  filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.itemsFilterStorageKey) ?? ''
+  filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.itemsFilterStorageKey) ?? undefined
 
   const savedCategoryId = localStorage.getItem(_websiteConfigurationService.configuration.itemsFilterAndSortCategoryStorageKey)
   const categoryId = savedCategoryId != null ? ItemCategoryId[savedCategoryId as keyof typeof ItemCategoryId] : undefined

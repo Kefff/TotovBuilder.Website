@@ -31,7 +31,7 @@ const tooltip = computed(() =>
 
 
 <template>
-  <div class="card-line">
+  <div class="card-line card-line4">
     <div
       v-if="ammunition.fleshDamage > 0"
       class="ammunition-item-card-flesh-damage-group"
@@ -117,7 +117,7 @@ const tooltip = computed(() =>
       </Tooltip>
     </div>
   </div>
-  <div class="card-line">
+  <div class="card-line card-line4">
     <Tooltip
       v-if="ammunition.fragmentationChance !== 0"
       :tooltip="$t('caption.fragmentationChance')"

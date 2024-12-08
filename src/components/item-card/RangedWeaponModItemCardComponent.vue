@@ -21,7 +21,7 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
 
 
 <template>
-  <div class="card-line">
+  <div class="card-line card-line4">
     <Tooltip
       v-if="ergonomicsModifier !== 0"
       :tooltip="$t('caption.ergonomics')"

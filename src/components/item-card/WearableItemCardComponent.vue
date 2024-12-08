@@ -34,7 +34,7 @@ const wearable = computed(() => props.item as IWearable)
 
 
 <template>
-  <div class="card-line">
+  <div class="card-line card-line4">
     <Tooltip
       v-if="ergonomicsModifierPercentage !== 0"
       :class="boldCssClass"

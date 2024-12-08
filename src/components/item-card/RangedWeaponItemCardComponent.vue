@@ -39,7 +39,7 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
 
 
 <template>
-  <div class="card-line">
+  <div class="card-line card-line4">
     <Tooltip
       :class="boldCssClass"
       :tooltip="$t('caption.verticalRecoil') + (includeModsAndContent ? $t('caption.withMods') : '')"
@@ -71,7 +71,7 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
       <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, ergonomics) }}</span>
     </Tooltip>
   </div>
-  <div class="card-line">
+  <div class="card-line card-line4">
     <Tooltip
       v-if="!isBaseItem"
       :tooltip="$t('caption.fireRate')"

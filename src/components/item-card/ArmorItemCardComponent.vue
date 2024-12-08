@@ -53,7 +53,7 @@ const tooltipSuffix = computed(() => {
 
 
 <template>
-  <div class="card-line">
+  <div class="card-line card-line4">
     <Tooltip
       v-if="!isBaseItem && armorClass > 0"
       :class="boldCssClass"

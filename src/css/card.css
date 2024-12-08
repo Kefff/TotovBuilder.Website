@@ -40,13 +40,20 @@
   align-items: center;
   display: grid;
   gap: 0.5rem;
-  grid-template-columns: repeat(4, 1fr);
   margin-top: 0.5rem;
   height: 1.25rem;
 }
 
 .card-line:first-child {
   margin-top: 0;
+}
+
+.card-line3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.card-line4 {
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .card-line-remover.card-line {
