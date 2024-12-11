@@ -103,14 +103,23 @@ function onMerchantFilterChanged(): void {
     :class="{ 'card-selected': modelIsSelected }"
   >
     <template #title>
-      <div>
-        <div
-          class="item-card-title"
-          @click="displayStats"
-        >
-          <ItemIcon :item="item" />
-          <div>{{ item.name }}</div>
+      <div class="item-card-title">
+        <ItemIcon :item="item" />
+        <div class="item-card-title-caption">
+          {{ item.name }}
         </div>
+        <Tooltip
+          :tooltip="$t('caption.statistics')"
+          :apply-hover-style="false"
+        >
+          <Button
+            class="p-button-sm"
+            outlined
+            @click="displayStats()"
+          >
+            <font-awesome-icon icon="clipboard-list" />
+          </Button>
+        </Tooltip>
       </div>
     </template>
     <template #content>
@@ -179,11 +188,15 @@ function onMerchantFilterChanged(): void {
 
 .item-card-title {
   align-items: center;
-  cursor: pointer;
   display: flex;
   font-size: 1rem;
   font-weight: normal;
   gap: 0.5rem;
   white-space: preserve;
+}
+
+.item-card-title-caption {
+  width: 100%;
+  ;
 }
 </style>
