@@ -26,12 +26,21 @@ const acceptedItemsCategoryId = ref<ItemCategoryId | undefined>(undefined)
 const isEditing = inject<Ref<boolean>>('isEditing')
 
 onMounted(() => {
-  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, setAcceptedItemsAsync)
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
   setAcceptedItemsAsync()
 })
 
-onUnmounted(() => _globalFilterService.emitter.off(GlobalFilterService.changeEvent, setAcceptedItemsAsync))
+onUnmounted(() => _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged))
+
+/**
+ * Reacts to the merchant filter being changed.
+ *
+ * Updates the accepted items to reflect the change in merchant filters.
+ */
+function onMerchantFilterChanged(): void {
+  setAcceptedItemsAsync()
+}
 
 /**
  * Gets the category IDs and the accepted items to pass to the Item component.

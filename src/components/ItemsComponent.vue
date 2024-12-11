@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { IItem, ItemCategoryId } from '../models/item/IItem'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
+import { GlobalFilterService } from '../services/GlobalFilterService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ItemService } from '../services/ItemService'
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
@@ -16,6 +17,7 @@ import ItemsList from './ItemsListComponent.vue'
 import NotificationButton from './NotificationButtonComponent.vue'
 import Toolbar from './ToolbarComponent.vue'
 
+const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _itemService = Services.get(ItemService)
 const _sortingService = Services.get(SortingService)
@@ -62,6 +64,8 @@ const itemsToolbar = useTemplateRef('itemsToolbar')
 const toolbarContainer = computed(() => itemsToolbar.value?.container)
 
 onMounted(() => {
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
     _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServicesInitialized)
   } else {
@@ -69,6 +73,10 @@ onMounted(() => {
   }
 
   getInitialFilterAndSortingData()
+})
+
+onUnmounted(() => {
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
 
 /**
@@ -112,7 +120,7 @@ async function getItemsAsync(): Promise<void> {
 
   const execute = new Promise<void>(resolve => {
     setTimeout(async () => { // Did not find another solution to make the loading animation appear when opening the items list from the welcome page (nextTick does not work)
-      items.value = await _itemService.getAllAsync()
+      items.value = [...await _itemService.getAllAsync()] // New array required here for ItemsList to detect a change and force sorting
 
       isLoading.value = false
       resolve()
@@ -171,6 +179,15 @@ function onItemSelected(selectedItems: IItem[]): void {
  * Updates the selected item price to reflect the change in merchant filters.
  */
 function onItemServicesInitialized(): void {
+  getItemsAsync()
+}
+
+/**
+ * Reacts to the merchant filter being changed.
+ *
+ * Sorts items.
+ */
+function onMerchantFilterChanged(): void {
   getItemsAsync()
 }
 </script>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IItem } from '../../models/item/IItem'
 import { IPrice } from '../../models/item/IPrice'
+import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import Services from '../../services/repository/Services'
@@ -24,6 +25,7 @@ const props = withDefaults(
   })
 
 const _inventoryItemService = Services.get(InventoryItemService)
+const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
 const height = computed(() => `${props.selectable ? 13.5 : 11.5}rem`)
@@ -40,14 +42,32 @@ const weight = computed(() => props.item.presetWeight ?? props.item.weight)
 
 const itemUnitPrice = ref<IPrice>()
 
-onMounted(() => getItemPriceAsync())
+onMounted(() => {
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
-watch(() => props.item, () => getItemPriceAsync())
+  getPriceAsync()
+})
+
+onUnmounted(() => {
+  _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+})
+
+watch(() => props.item, () => getPriceAsync())
+
+/**
+ * Displays the statistics of the item.
+ */
+function displayStats(): void {
+  _globalSidebarService.display({
+    displayedComponentType: 'StatsSidebar',
+    displayedComponentParameters: props.item
+  })
+}
 
 /**
  * Gets the price of the item.
  */
-async function getItemPriceAsync(): Promise<void> {
+async function getPriceAsync(): Promise<void> {
   const itemPrice = await _inventoryItemService.getPriceAsync({
     content: [],
     ignorePrice: false,
@@ -59,13 +79,12 @@ async function getItemPriceAsync(): Promise<void> {
 }
 
 /**
- * Displays the statistics of the item.
+ * Reacts to the merchant filter being changed.
+ *
+ * Updates the item price to reflect the change in merchant filters.
  */
-function displayStats(): void {
-  _globalSidebarService.display({
-    displayedComponentType: 'StatsSidebar',
-    displayedComponentParameters: props.item
-  })
+function onMerchantFilterChanged(): void {
+  getPriceAsync()
 }
 </script>
 

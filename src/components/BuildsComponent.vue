@@ -326,7 +326,7 @@ function onItemServicesInitialized(): void {
 /**
  * Reacts to the merchant filter being changed.
  *
- * Gets builds and ends loading.
+ * Gets builds.
  */
 function onMerchantFilterChanged(): void {
   getBuildsAsync()
