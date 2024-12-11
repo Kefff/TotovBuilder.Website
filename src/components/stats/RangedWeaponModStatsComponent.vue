@@ -45,7 +45,7 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
           icon="hand-paper"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.ergonomics') }} :</span>
+        <span>{{ $t('caption.ergonomicsModifier') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsModifier)">
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
@@ -60,7 +60,7 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
           icon="arrows-alt"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.recoil') }} :</span>
+        <span>{{ $t('caption.recoilModifierPercentage') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(rangedWeaponMod.recoilModifierPercentage, true)">
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifierPercentage, rangedWeaponMod.recoilModifierPercentage) }}
@@ -75,7 +75,7 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
           icon="bullseye"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.accuracy') }} :</span>
+        <span>{{ $t('caption.accuracyModifierPercentage') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(rangedWeaponMod.accuracyModifierPercentage)">
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, rangedWeaponMod.accuracyModifierPercentage) }}

@@ -32,7 +32,7 @@ const eyewear = computed(() => props.item as IEyewear)
   >
     <div class="option-value">
       <div v-if="eyewear.blindnessProtectionPercentage !== 0">
-        <Tooltip :tooltip="$t('caption.blindnessProtection')">
+        <Tooltip :tooltip="$t('caption.blindnessProtectionPercentage')">
           <font-awesome-icon
             icon="low-vision"
             class="icon-before-text"

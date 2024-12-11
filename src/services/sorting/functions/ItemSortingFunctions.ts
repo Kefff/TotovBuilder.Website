@@ -31,7 +31,7 @@ export const ItemSortingFunctions: IItemSortingFunctionList = {
     },
     weight: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve(i.weight)
+      comparisonValueObtentionPromise: i => Promise.resolve(i.presetWeight ?? i.weight)
     }
   }
 }

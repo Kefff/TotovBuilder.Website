@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemsListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
@@ -7,6 +7,7 @@ import { SortingOrder } from '../../models/utils/SortingOrder'
 import vueI18n from '../../plugins/vueI18n'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
+import { IItemSortingFunctionList } from '../../services/sorting/functions/ISortingFunctionList'
 import { ItemSortingFunctions } from '../../services/sorting/functions/ItemSortingFunctions'
 import { SortingService } from '../../services/sorting/SortingService'
 import StringUtils from '../../utils/StringUtils'
@@ -18,9 +19,12 @@ const modelParameters = defineModel<ItemsListSidebarParameters>('parameters', { 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _sortingService = Services.get(SortingService)
 
+const _categories = getCategories()
+
 const category = computed<ItemCategoryId | undefined>({
   get: () => modelParameters.value.categoryId,
   set: (value: ItemCategoryId | undefined) => {
+    getSortingFunctions(value)
     modelParameters.value = {
       ...modelParameters.value,
       categoryId: value
@@ -38,32 +42,37 @@ const filter = computed({
 })
 const sortableProperties = computed(() => {
   let propertyNames: string[] = []
-  const sortingFunctions = _sortingService.getSortingFunctionsFromItemCategory(category.value)
 
-  for (const propertyName of Object.keys(sortingFunctions.functions)) {
-    propertyNames.push(propertyName)
+  if (sortingFunctions.value != null) {
+    for (const propertyName of Object.keys(sortingFunctions.value.functions)) {
+      propertyNames.push(propertyName)
+    }
+
+    propertyNames = propertyNames.sort((p1, p2) => StringUtils.compare(
+      vueI18n.t(`caption.${p1}`),
+      vueI18n.t(`caption.${p2}`)))
   }
-
-  propertyNames = propertyNames.sort((p1, p2) => StringUtils.compare(
-    vueI18n.t(`caption.${p1}`),
-    vueI18n.t(`caption.${p2}`)))
 
   return propertyNames
 })
 const sortField = computed({
   get: () => modelParameters.value.property,
   set: (value: string) => {
-    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, ItemSortingFunctions, value, sortOrder.value) as ItemFilterAndSortingData
+    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, sortingFunctions.value, value, sortOrder.value) as ItemFilterAndSortingData
   }
 })
 const sortOrder = computed({
   get: () => modelParameters.value.order,
   set: (value: SortingOrder) => {
-    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, ItemSortingFunctions, modelParameters.value.property, value) as ItemFilterAndSortingData
+    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, sortingFunctions.value, modelParameters.value.property, value) as ItemFilterAndSortingData
   }
 })
 
-const _categories = getCategories()
+const sortingFunctions = ref<IItemSortingFunctionList>(ItemSortingFunctions)
+
+onMounted(() => {
+  getSortingFunctions(category.value)
+})
 
 /**
  * Gets item categories.
@@ -75,6 +84,18 @@ function getCategories(): ItemCategoryId[] {
     vueI18n.t(`caption.category${StringUtils.toUpperFirst(c2)}`)))
 
   return categories
+}
+
+/**
+ * Gets sorting function associated with a category.
+ * @param categoryId - Category ID.
+ */
+function getSortingFunctions(categoryId: ItemCategoryId | undefined): void {
+  sortingFunctions.value = _sortingService.getSortingFunctionsFromItemCategory(categoryId)
+
+  if (sortingFunctions.value.functions[sortField.value] == null) {
+    nextTick(() => sortField.value = 'name') // nextTick needed otherwise the sort field dropdown does not update the displayed value
+  }
 }
 
 /**
@@ -284,7 +305,8 @@ function reset(): void {
   display: flex;
   height: 100%;
   justify-content: center;
-  width: 2.375rem;
+  margin-left: 0.5rem;
+  width: 1rem;
 }
 
 .items-list-sidebar-category-value {

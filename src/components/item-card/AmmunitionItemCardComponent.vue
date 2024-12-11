@@ -130,7 +130,7 @@ const tooltip = computed(() =>
     </Tooltip>
     <Tooltip
       v-if="ammunition.recoilModifier !== 0"
-      :tooltip="$t('caption.recoil')"
+      :tooltip="$t('caption.recoilModifier')"
     >
       <font-awesome-icon
         icon="arrows-alt"
@@ -142,7 +142,7 @@ const tooltip = computed(() =>
     </Tooltip>
     <Tooltip
       v-if="ammunition.accuracyModifierPercentage !== 0"
-      :tooltip="$t('caption.accuracy')"
+      :tooltip="$t('caption.accuracyModifierPercentage')"
     >
       <font-awesome-icon
         icon="bullseye"

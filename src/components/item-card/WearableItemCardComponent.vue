@@ -38,7 +38,7 @@ const wearable = computed(() => props.item as IWearable)
     <Tooltip
       v-if="ergonomicsModifierPercentage !== 0"
       :class="boldCssClass"
-      :tooltip="$t('caption.ergonomics') + (includeModsAndContent ? $t('caption.withMods') : '')"
+      :tooltip="$t('caption.ergonomicsModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
       <font-awesome-icon
         icon="hand-paper"
@@ -51,7 +51,7 @@ const wearable = computed(() => props.item as IWearable)
     <Tooltip
       v-if="movementSpeedModifierPercentage !== 0"
       :class="boldCssClass"
-      :tooltip="$t('caption.movementSpeed') + (includeModsAndContent ? $t('caption.withMods') : '')"
+      :tooltip="$t('caption.movementSpeedModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
       <font-awesome-icon
         icon="walking"
@@ -64,7 +64,7 @@ const wearable = computed(() => props.item as IWearable)
     <Tooltip
       v-if="turningSpeedModifierPercentage !== 0"
       :class="boldCssClass"
-      :tooltip="$t('caption.turningSpeed') + (includeModsAndContent ? $t('caption.withMods') : '')"
+      :tooltip="$t('caption.turningSpeedModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
       <font-awesome-icon
         icon="undo"

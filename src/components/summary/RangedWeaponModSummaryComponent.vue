@@ -34,7 +34,7 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
   >
     <div class="option-value">
       <div v-if="ergonomicsModifier !== 0">
-        <Tooltip :tooltip="$t('caption.ergonomics')">
+        <Tooltip :tooltip="$t('caption.ergonomicsModifier')">
           <font-awesome-icon
             icon="hand-paper"
             class="icon-before-text"
@@ -52,7 +52,7 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
   >
     <div class="option-value">
       <div v-if="rangedWeaponMod.recoilModifierPercentage !== 0">
-        <Tooltip :tooltip="$t('caption.recoil')">
+        <Tooltip :tooltip="$t('caption.recoilModifierPercentage')">
           <font-awesome-icon
             icon="arrows-alt"
             class="icon-before-text"
@@ -70,7 +70,7 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
   >
     <div class="option-value">
       <div v-if="rangedWeaponMod.accuracyModifierPercentage !== 0">
-        <Tooltip :tooltip="$t('caption.accuracy')">
+        <Tooltip :tooltip="$t('caption.accuracyModifierPercentage')">
           <font-awesome-icon
             icon="bullseye"
             class="icon-before-text"

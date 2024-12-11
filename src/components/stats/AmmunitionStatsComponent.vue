@@ -245,7 +245,7 @@ const fleshDamageText = computed(() =>
           icon="arrows-alt"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.recoil') }} :</span>
+        <span>{{ $t('caption.recoilModifier') }} :</span>
       </div>
       <div class="stats-value">
         <span :class="StatsUtils.getValueColorClass(ammunition.recoilModifier, true)">
@@ -262,7 +262,7 @@ const fleshDamageText = computed(() =>
           icon="bullseye"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.accuracy') }} :</span>
+        <span>{{ $t('caption.accuracyModifierPercentage') }} :</span>
       </div>
       <div class="stats-value">
         <span :class="StatsUtils.getValueColorClass(ammunition.accuracyModifierPercentage)">

@@ -235,7 +235,8 @@ function reset(): void {
   display: flex;
   height: 100%;
   justify-content: center;
-  width: 2.375rem;
+  margin-left: 0.5rem;
+  width: 1rem;
 }
 
 .builds-list-sidebar-field {

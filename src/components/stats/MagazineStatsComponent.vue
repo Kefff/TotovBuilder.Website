@@ -67,7 +67,7 @@ async function getAcceptedAmmunitionAsync(): Promise<void> {
           icon="hand-paper"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.ergonomics') }} :</span>
+        <span>{{ $t('caption.ergonomicsModifier') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsModifier)">
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
@@ -82,7 +82,7 @@ async function getAcceptedAmmunitionAsync(): Promise<void> {
           icon="sync-alt"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.loadSpeed') }} :</span>
+        <span>{{ $t('caption.loadSpeedModifierPercentage') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(magazine.loadSpeedModifierPercentage, true)">
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.loadSpeedModifierPercentage, magazine.loadSpeedModifierPercentage) }}
@@ -97,7 +97,7 @@ async function getAcceptedAmmunitionAsync(): Promise<void> {
           icon="eye"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.checkSpeed') }} :</span>
+        <span>{{ $t('caption.checkSpeedModifierPercentage') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(magazine.checkSpeedModifierPercentage, true)">
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.checkSpeedModifierPercentage, magazine.checkSpeedModifierPercentage) }}

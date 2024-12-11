@@ -338,7 +338,7 @@ ${sharableUrlResult}`
           if (hasErgonomics) {
             statsAsString += ` (${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, options.language)}${boldToken})`
           } else {
-            statsAsString += `${StringUtils.getTextStatEmoji(options, '✋')}${this.translate('caption.ergonomics', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, options.language)}${boldToken}`
+            statsAsString += `${StringUtils.getTextStatEmoji(options, '✋')}${this.translate('caption.ergonomicsModifierPercentage', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, options.language)}${boldToken}`
           }
         }
 
@@ -364,7 +364,7 @@ ${sharableUrlResult}`
             statsAsString += '   '
           }
 
-          statsAsString += `${StringUtils.getTextStatEmoji(options, '🔄')}${this.translate('caption.turningSpeed', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage, options.language)}${boldToken}`
+          statsAsString += `${StringUtils.getTextStatEmoji(options, '🔄')}${this.translate('caption.turningSpeedModifierPercentage', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage, options.language)}${boldToken}`
         }
 
         statsAsString += `${lineEnd}\n`

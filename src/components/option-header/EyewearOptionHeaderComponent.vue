@@ -21,7 +21,7 @@ const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { requir
     <div class="option-value">
       <OptionHeaderSortButton
         v-model:sorting-data="modelSortingData"
-        caption-resource="caption.blindnessProtection"
+        caption-resource="caption.blindnessProtectionPercentage"
         icon="low-vision"
         property="blindnessProtectionPercentage"
         :sorting-functions="EyewearSortingFunctions"

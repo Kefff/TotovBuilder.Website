@@ -26,7 +26,7 @@ const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { requir
     <div class="option-value">
       <OptionHeaderSortButton
         v-model:sorting-data="modelSortingData"
-        caption-resource="caption.loadSpeed"
+        caption-resource="caption.loadSpeedModifierPercentage"
         icon="sync-alt"
         property="loadSpeedModifierPercentage"
         :sorting-functions="MagazineSortingFunctions"
@@ -37,7 +37,7 @@ const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { requir
     <div class="option-value">
       <OptionHeaderSortButton
         v-model:sorting-data="modelSortingData"
-        caption-resource="caption.checkSpeed"
+        caption-resource="caption.checkSpeedModifierPercentage"
         icon="eye"
         property="checkSpeedModifierPercentage"
         :sorting-functions="MagazineSortingFunctions"

@@ -60,11 +60,11 @@ const grenade = computed(() => props.item as IGrenade)
           icon="dot-circle"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.explosionRadius') }} :</span>
+        <span>{{ $t('caption.explosionRange') }} :</span>
       </div>
       <div class="stats-value">
-        <span v-if="grenade.minimumExplosionRange !== grenade.maximumExplosionRange">{{ $t('caption.explosionRadiusValue', { min: grenade.minimumExplosionRange, max: grenade.maximumExplosionRange }) }}</span>
-        <span v-else>{{ $t('caption.explosionRadiusSingleValue', { radius: grenade.maximumExplosionRange }) }}</span>
+        <span v-if="grenade.minimumExplosionRange !== grenade.maximumExplosionRange">{{ $t('caption.explosionRangeValue', { min: grenade.minimumExplosionRange, max: grenade.maximumExplosionRange }) }}</span>
+        <span v-else>{{ $t('caption.explosionRangeSingleValue', { range: grenade.maximumExplosionRange }) }}</span>
       </div>
     </div>
   </div>

@@ -24,7 +24,7 @@ const mod = computed(() => props.item as IMod)
   <div class="card-line card-line4">
     <Tooltip
       v-if="ergonomicsModifier !== 0"
-      :tooltip="$t('caption.ergonomics')"
+      :tooltip="$t('caption.ergonomicsModifier')"
     >
       <font-awesome-icon
         icon="hand-paper"

@@ -263,10 +263,11 @@ async function getBuildsAsync(): Promise<void> {
  * Gets the initial filter and sorting data applied to builds.
  */
 function getInitialFilterAndSortingData(): void {
-  filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsFilterStorageKey) ?? undefined
   const property = localStorage.getItem(_websiteConfigurationService.configuration.buildsSortFieldStorageKey) ?? 'name'
   const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey) ?? SortingOrder.asc)
-  _sortingService.setSortingProperty(filterAndSortingData.value, BuildSummarySortingFunctions, property, order)
+
+  filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsFilterStorageKey) ?? undefined
+  filterAndSortingData.value = _sortingService.setSortingProperty(filterAndSortingData.value, BuildSummarySortingFunctions, property, order)
 }
 
 /**

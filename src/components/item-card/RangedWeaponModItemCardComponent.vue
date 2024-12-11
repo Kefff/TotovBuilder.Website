@@ -24,7 +24,7 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
   <div class="card-line card-line4">
     <Tooltip
       v-if="ergonomicsModifier !== 0"
-      :tooltip="$t('caption.ergonomics')"
+      :tooltip="$t('caption.ergonomicsModifier')"
     >
       <font-awesome-icon
         icon="hand-paper"
@@ -36,7 +36,7 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
     </Tooltip>
     <Tooltip
       v-if="rangedWeaponMod.recoilModifierPercentage !== 0"
-      :tooltip="$t('caption.recoil')"
+      :tooltip="$t('caption.recoilModifierPercentage')"
     >
       <font-awesome-icon
         icon="arrows-alt"
@@ -48,7 +48,7 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
     </Tooltip>
     <Tooltip
       v-if="rangedWeaponMod.accuracyModifierPercentage !== 0"
-      :tooltip="$t('caption.accuracy')"
+      :tooltip="$t('caption.accuracyModifierPercentage')"
     >
       <font-awesome-icon
         icon="bullseye"

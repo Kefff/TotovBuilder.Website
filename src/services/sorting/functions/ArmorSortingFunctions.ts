@@ -12,11 +12,11 @@ export const ArmorSortingFunctions: IItemSortingFunctionList = {
     ...WearableSortingFunctions.functions,
     armorClass: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IArmor).armorClass)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IArmor).presetArmorModifiers?.armorClass ?? (i as IArmor).armorClass)
     },
     durability: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IArmor).durability)
+      comparisonValueObtentionPromise: i => Promise.resolve((i as IArmor).presetArmorModifiers?.durability ?? (i as IArmor).durability)
     }
   },
   itemCategoryIds: [ItemCategoryId.armor]

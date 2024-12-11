@@ -16,7 +16,9 @@ export const RangedWeaponModSortingFunctions: IItemSortingFunctionList = {
     },
     recoilModifierPercentage: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IRangedWeaponMod).recoilModifierPercentage)
+      comparisonValueObtentionPromise: i => Promise.resolve(
+        (i as IRangedWeaponMod).presetRecoilModifierPercentage
+        ?? (i as IRangedWeaponMod).recoilModifierPercentage)
     }
   },
   itemCategoryIds: [ItemCategoryId.rangedWeaponMod]

@@ -53,7 +53,7 @@ const wearable = computed(() => props.item as IWearable)
           icon="hand-paper"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.ergonomics') }} :</span>
+        <span>{{ $t('caption.ergonomicsModifierPercentage') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsModifierPercentage)">
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, ergonomicsModifierPercentage) }}
@@ -68,7 +68,7 @@ const wearable = computed(() => props.item as IWearable)
           icon="walking"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.movementSpeed') }} :</span>
+        <span>{{ $t('caption.movementSpeedModifierPercentage') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(movementSpeedModifierPercentage)">
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, movementSpeedModifierPercentage) }}
@@ -83,7 +83,7 @@ const wearable = computed(() => props.item as IWearable)
           icon="undo"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.turningSpeed') }} :</span>
+        <span>{{ $t('caption.turningSpeedModifierPercentage') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(turningSpeedModifierPercentage)">
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, turningSpeedModifierPercentage) }}

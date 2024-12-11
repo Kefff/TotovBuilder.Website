@@ -38,7 +38,7 @@ const mod = computed(() => props.item as IMod)
           icon="hand-paper"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.ergonomics') }} :</span>
+        <span>{{ $t('caption.ergonomicsModifier') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(ergonomicsModifier)">
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}

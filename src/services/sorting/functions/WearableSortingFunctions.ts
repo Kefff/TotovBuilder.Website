@@ -11,15 +11,21 @@ export const WearableSortingFunctions: IItemSortingFunctionList = {
     ...ItemSortingFunctions.functions,
     ergonomicsModifierPercentage: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IWearable).ergonomicsModifierPercentage)
+      comparisonValueObtentionPromise: i => Promise.resolve(
+        (i as IWearable).presetWearableModifiers?.ergonomicsModifierPercentage
+        ?? (i as IWearable).ergonomicsModifierPercentage)
     },
     movementSpeedModifierPercentage: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IWearable).movementSpeedModifierPercentage)
+      comparisonValueObtentionPromise: i => Promise.resolve(
+        (i as IWearable).presetWearableModifiers?.movementSpeedModifierPercentage
+        ?? (i as IWearable).movementSpeedModifierPercentage)
     },
     turningSpeedModifierPercentage: {
       comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IWearable).turningSpeedModifierPercentage)
+      comparisonValueObtentionPromise: i => Promise.resolve(
+        (i as IWearable).presetWearableModifiers?.turningSpeedModifierPercentage
+        ?? (i as IWearable).turningSpeedModifierPercentage)
     }
   },
   itemCategoryIds: []

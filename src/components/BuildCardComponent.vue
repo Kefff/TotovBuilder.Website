@@ -201,7 +201,7 @@ function displayStats(item: IItem): void {
           </Tooltip>
         </div>
         <div v-if="buildSummary.ergonomics !== 0">
-          <Tooltip :tooltip="$t('caption.ergonomics')">
+          <Tooltip :tooltip="$t('caption.ergonomicsModifierPercentage')">
             <font-awesome-icon
               icon="hand-paper"
               class="icon-before-text"
@@ -235,7 +235,7 @@ function displayStats(item: IItem): void {
           </Tooltip>
         </div>
         <div v-if="buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0">
-          <Tooltip :tooltip="$t('caption.movementSpeed')">
+          <Tooltip :tooltip="$t('caption.movementSpeedModifierPercentage')">
             <font-awesome-icon
               icon="walking"
               class="icon-before-text"
@@ -246,7 +246,7 @@ function displayStats(item: IItem): void {
           </Tooltip>
         </div>
         <div v-if="buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0">
-          <Tooltip :tooltip="$t('caption.turningSpeed')">
+          <Tooltip :tooltip="$t('caption.turningSpeedModifierPercentage')">
             <font-awesome-icon
               icon="undo"
               class="icon-before-text"

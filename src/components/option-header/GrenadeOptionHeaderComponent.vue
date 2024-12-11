@@ -43,7 +43,7 @@ const modelSortingData = defineModel<SortingData<IItem>>('sortingData', { requir
     <div class="option-value">
       <OptionHeaderSortButton
         v-model:sorting-data="modelSortingData"
-        caption-resource="caption.explosionRadius"
+        caption-resource="caption.explosionRange"
         icon="dot-circle"
         property="maximumExplosionRange"
         :sorting-functions="GrenadeSortingFunctions"

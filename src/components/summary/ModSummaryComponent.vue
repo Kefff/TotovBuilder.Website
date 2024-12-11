@@ -34,7 +34,7 @@ const mod = computed(() => props.item as IMod)
   >
     <div class="option-value">
       <div v-if="ergonomicsModifier !== 0">
-        <Tooltip :tooltip="$t('caption.ergonomics')">
+        <Tooltip :tooltip="$t('caption.ergonomicsModifier')">
           <font-awesome-icon
             icon="hand-paper"
             class="icon-before-text"
