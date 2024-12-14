@@ -106,7 +106,7 @@ function onMerchantFilterChanged(): void {
       <div class="item-card-title">
         <ItemIcon :item="item" />
         <div class="item-card-title-caption">
-          {{ item.name }}
+          <span>{{ item.name }}</span>
         </div>
         <Tooltip
           :tooltip="$t('caption.statistics')"
@@ -196,7 +196,9 @@ function onMerchantFilterChanged(): void {
 }
 
 .item-card-title-caption {
+  max-height: 3.75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
   width: 100%;
-  ;
 }
 </style>

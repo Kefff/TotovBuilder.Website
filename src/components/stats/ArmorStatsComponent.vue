@@ -92,7 +92,7 @@ const hasModifiers = computed(() => armor.value.blindnessProtectionPercentage !=
           icon="low-vision"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.blindnessProtectblindnessProtectionPercentageion') }} :</span>
+        <span>{{ $t('caption.blindnessProtectionPercentage') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(armor.blindnessProtectionPercentage)">
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.blindnessProtectionPercentage, armor.blindnessProtectionPercentage) }}

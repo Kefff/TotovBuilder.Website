@@ -91,23 +91,21 @@ function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedCo
 
 
 <template>
-  <div class="sidebar-option">
-    <div class="stats-sidebar">
-      <div>
-        <div class="stats-sidebar-image">
-          <img
-            v-if="parameters.imageLink != null"
-            :src="parameters.imageLink"
-          >
-        </div>
-        <ItemStats :item="parameters">
-          <component
-            :is="specializedComponent"
-            v-if="specializedComponent != null"
-            :item="parameters"
-          />
-        </ItemStats>
+  <div class="stats-sidebar">
+    <div>
+      <div class="stats-sidebar-image">
+        <img
+          v-if="parameters.imageLink != null"
+          :src="parameters.imageLink"
+        >
       </div>
+      <ItemStats :item="parameters">
+        <component
+          :is="specializedComponent"
+          v-if="specializedComponent != null"
+          :item="parameters"
+        />
+      </ItemStats>
     </div>
   </div>
 </template>
@@ -125,6 +123,7 @@ function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedCo
 .stats-sidebar {
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .stats-sidebar-image {

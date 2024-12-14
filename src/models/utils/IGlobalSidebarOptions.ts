@@ -12,14 +12,14 @@ import { IToolbarButton } from './IToolbarButton'
  */
 export interface IGlobalSidebarOptions {
   /**
-   * Name of the component to display in the global sidebar.
-   */
-  displayedComponentType: GlobalSidebarComponent
-
-  /**
    * Parameters to pass as props to the component to display in the global sidebar.
    */
   displayedComponentParameters?: GlobalSidebarDisplayedComponentParameters
+
+  /**
+   * Name of the component to display in the global sidebar.
+   */
+  displayedComponentType: GlobalSidebarComponent
 
   /**
    * Action to execute when the sidebar is closed.

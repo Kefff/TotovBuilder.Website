@@ -77,17 +77,17 @@ function onNotificationAdded(): void {
 
 
 <template>
-  <div class="sidebar-option">
-    <div class="notifications">
-      <div
-        v-show="notifications.length > 0"
-        class="notifications-dismiss-all"
-      >
-        <a
-          class="link"
-          @click="clearNotifications()"
-        >{{ $t('caption.dismissAll') }}</a>
-      </div>
+  <div class="notifications">
+    <div
+      v-show="notifications.length > 0"
+      class="notifications-dismiss-all"
+    >
+      <a
+        class="link"
+        @click="clearNotifications()"
+      >{{ $t('caption.dismissAll') }}</a>
+    </div>
+    <div class="notifications-list">
       <div v-if="notifications.length === 0">
         {{ $t('caption.noNotifications') }}
       </div>
@@ -126,13 +126,20 @@ function onNotificationAdded(): void {
 
 <style scoped>
 .notifications {
-  max-height: 31.25rem;
   max-width: 31.25rem;
-  overflow: auto;
+}
+
+.notifications-list {
+  height: 100%;
+  overflow-y: auto;
 }
 
 .notifications-dismiss-all {
+  background-color: var(--surface-f);
+  position: sticky;
   text-align: right;
+  padding-bottom: 1rem;
+  top: 0;
 }
 
 .notifications-item {

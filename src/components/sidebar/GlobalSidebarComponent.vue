@@ -236,11 +236,11 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: numbe
 
 <style scoped>
 .global-sidebar-content {
-  display: flex;
-  flex-direction: column;
   height: 100%;
-  max-width: calc(50vw - 1rem - 1rem);
-  overflow-y: scroll;
+  max-width: calc(50vw - 1rem);
+  /* -1rem for the left padding of the side bar */
+  overflow: auto;
+  padding-right: 1rem;
 }
 
 .global-sidebar-icon {
@@ -263,14 +263,16 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: numbe
 /* Smartphone in portrait */
 @media only screen and (max-width: 480px) {
   .global-sidebar-content {
-    max-width: calc(100vw - 1rem - 1rem);
+    max-width: calc(100vw - 1rem);
+    /* -1rem for the left padding of the side bar */
   }
 }
 
 /* Smartphone in landscape */
 @media only screen and (min-width: 481px) and (max-width: 767px) {
   .global-sidebar-content {
-    max-width: calc(100vw - 1rem - 1rem);
+    max-width: calc(100vw - 1rem);
+    /* -1rem for the left padding of the side bar */
   }
 }
 
@@ -285,11 +287,16 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: numbe
 </style>
 
 <style>
-.p-sidebar-header {
+.p-sidebar > .p-sidebar-header {
   margin-bottom: 0.5rem;
 }
 
-.p-sidebar-header-content {
+.p-sidebar > .p-sidebar-header > .p-sidebar-header-content {
   width: 100%;
+}
+
+.p-sidebar > .p-sidebar-content {
+  padding-right: 0;
+  /* Right padding managed by the .global-sidebar-content to avoir having the vertical scrollbar above the content */
 }
 </style>

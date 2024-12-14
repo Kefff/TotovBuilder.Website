@@ -426,7 +426,6 @@ function toggleSelection(): void {
   max-width: 100%;
   min-width: 100%;
   height: 100%;
-  overflow-y: scroll;
 }
 
 .builds-share-sidebar-large {
@@ -435,7 +434,6 @@ function toggleSelection(): void {
 
 .builds-share-sidebar-large > div {
   height: 100%;
-  overflow-y: scroll;
 }
 
 .builds-share-sidebar-checkbox-caption {
