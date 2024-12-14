@@ -21,33 +21,31 @@ const shoppingListItems = computed(() => props.parameters.shoppingList.filter(sh
 
 
 <template>
-  <div class="sidebar-option">
-    <div class="shopping-list-sidebar">
-      <div class="shopping-list-sidebar-merchants">
-        <ShoppingListMerchantsList :shopping-list="shoppingListItems" />
-      </div>
+  <div class="shopping-list-sidebar">
+    <div class="shopping-list-sidebar-merchants">
+      <ShoppingListMerchantsList :shopping-list="shoppingListItems" />
+    </div>
+    <div
+      v-for="(shoppingListItem, index) of shoppingListItems"
+      :key="index"
+      class="shopping-list-sidebar-item"
+      :class="shoppingListItem.inventorySlotId != null ? 'shopping-list-sidebar-item-of-inventory-slot' : ''"
+    >
       <div
-        v-for="(shoppingListItem, index) of shoppingListItems"
-        :key="index"
-        class="shopping-list-sidebar-item"
-        :class="shoppingListItem.inventorySlotId != null ? 'shopping-list-sidebar-item-of-inventory-slot' : ''"
+        v-if="shoppingListItem.inventorySlotId != null"
+        class="shopping-list-sidebar-inventory-slot-name"
       >
-        <div
-          v-if="shoppingListItem.inventorySlotId != null"
-          class="shopping-list-sidebar-inventory-slot-name"
-        >
-          {{ $t(`caption.slotType${StringUtils.toUpperFirst(shoppingListItem.inventorySlotId)}`) }}
-        </div>
-        <PriceDetailItem
-          :can-show-item-stats="true"
-          :ignore-price-status="shoppingListItem.ignorePrice"
-          :item="shoppingListItem.item"
-          :missing="shoppingListItem.missingPrice"
-          :price="shoppingListItem.price"
-          :quantity="shoppingListItem.quantity"
-          :unit-price="shoppingListItem.unitPrice"
-        />
+        {{ $t(`caption.slotType${StringUtils.toUpperFirst(shoppingListItem.inventorySlotId)}`) }}
       </div>
+      <PriceDetailItem
+        :can-show-item-stats="true"
+        :ignore-price-status="shoppingListItem.ignorePrice"
+        :item="shoppingListItem.item"
+        :missing="shoppingListItem.missingPrice"
+        :price="shoppingListItem.price"
+        :quantity="shoppingListItem.quantity"
+        :unit-price="shoppingListItem.unitPrice"
+      />
     </div>
   </div>
 </template>

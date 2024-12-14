@@ -200,7 +200,7 @@ function toggleSelection(): void {
   >
     <div
       v-if="buildsToShare.length === 0"
-      class="sidebar-option builds-share-sidebar-selection"
+      class="builds-share-sidebar-selection"
     >
       <Toolbar
         ref="buildsShareToolbar"
@@ -217,7 +217,7 @@ function toggleSelection(): void {
       />
     </div>
     <div v-else>
-      <div class="sidebar-option builds-share-sidebar-options">
+      <div class="builds-share-sidebar-options">
         <div class="builds-share-sidebar-option">
           <Dropdown
             v-model="typeOption"

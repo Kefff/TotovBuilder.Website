@@ -124,7 +124,7 @@ function toggleSelection(): void {
 
 <template>
   <div class="builds-import-sidebar">
-    <div class="sidebar-option builds-import-sidebar-selection">
+    <div class="builds-import-sidebar-selection">
       <div
         v-if="!isFileSelected"
         class="builds-import-sidebar-button"

@@ -101,7 +101,7 @@ function toggleSelection(): void {
 
 <template>
   <div class="builds-export-sidebar">
-    <div class="sidebar-option builds-export-sidebar-selection">
+    <div class="builds-export-sidebar-selection">
       <Toolbar
         ref="buildsExportToolbar"
         :buttons="toolbarButtons"
