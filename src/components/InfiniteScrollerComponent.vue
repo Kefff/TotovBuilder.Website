@@ -53,7 +53,10 @@ function initializeDisplayedElements(): void {
   isInitialized.value = false
   displayedElementGroups.value = Array.from({ length: groupedElements.value.length })
 
-  nextTick(() => isInitialized.value = true)
+  nextTick(() => {
+    isInitialized.value = true
+    scrollToFirstLine()
+  })
 }
 
 /**
@@ -82,6 +85,17 @@ function onLazyLoad(event: VirtualScrollerLazyEvent): void {
   displayedElementGroups.value = newDisplayedElementGroups
 
   isLoading.value = false
+}
+
+/**
+ * Scrolls to the first line.
+ */
+function scrollToFirstLine(): void {
+  const firstLine = document.getElementsByClassName('infinite-scroller-line')[0]
+
+  if (firstLine != null) {
+    firstLine.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
 }
 </script>
 

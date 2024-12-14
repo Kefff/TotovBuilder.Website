@@ -41,18 +41,29 @@ const pageLinksCount = computed(() => isCompactMode.value ? 3 : 5)
 
 const currentPage = ref(0)
 
-watch(() => props.elements, () => currentPage.value = 0)
+watch(() => props.elements, () => {
+  currentPage.value = 0
+  scrollToFirstLine()
+})
 
 /**
  * Reacts to the paginator current page being changed.
  */
 function onPageChange(state: PageState): void {
   currentPage.value = state.page
+  scrollToFirstLine()
+}
 
-  // Scrolling to the first element of the page
+/**
+ * Scrolls to the first line.
+ */
+function scrollToFirstLine(): void {
   nextTick(() => {
     const firstLine = document.getElementsByClassName('paginator-line')[0]
-    firstLine.scrollIntoView({ behavior: 'smooth', block: 'center' })
+
+    if (firstLine != null) {
+      firstLine.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
   })
 }
 </script>
