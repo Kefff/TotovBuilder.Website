@@ -103,9 +103,9 @@ function onMerchantFilterChanged(): void {
     :class="{ 'card-selected': modelIsSelected }"
   >
     <template #title>
-      <div class="item-card-title">
+      <div class="item-card-header">
         <ItemIcon :item="item" />
-        <div class="item-card-title-caption">
+        <div class="item-card-title">
           <span>{{ item.name }}</span>
         </div>
         <Tooltip
@@ -123,18 +123,20 @@ function onMerchantFilterChanged(): void {
       </div>
     </template>
     <template #content>
-      <div class="card-line card-line4 item-card-price-line">
-        <div
-          v-if="itemUnitPrice != null && itemUnitPrice.valueInMainCurrency > 0"
-          class="item-card-long"
-        >
-          <Price :price="itemUnitPrice" />
-        </div>
-        <div
-          v-if="item.weight != 0"
-          class="item-card-long"
-        >
-          <Tooltip :tooltip="$t('caption.weight')">
+      <div class="item-card-lines">
+        <slot />
+        <div class="card-line card-line4 item-card-price-line">
+          <div
+            v-if="itemUnitPrice != null && itemUnitPrice.valueInMainCurrency > 0"
+            class="item-card-long"
+          >
+            <Price :price="itemUnitPrice" />
+          </div>
+          <Tooltip
+            v-if="item.weight != 0"
+            :tooltip="$t('caption.weight')"
+            class="item-card-long card-value"
+          >
             <font-awesome-icon
               icon="weight-hanging"
               class="icon-before-text"
@@ -144,19 +146,18 @@ function onMerchantFilterChanged(): void {
             </span>
           </Tooltip>
         </div>
-      </div>
-      <slot />
-      <div
-        v-if="selectable"
-        class="card-buttons"
-      >
-        <Button @click="modelIsSelected = !modelIsSelected">
-          <font-awesome-icon
-            :icon="selectionButtonIconInternal"
-            class="icon-before-text"
-          />
-          <span>{{ $t('caption.select') }}</span>
-        </Button>
+        <div
+          v-if="selectable"
+          class="card-buttons"
+        >
+          <Button @click="modelIsSelected = !modelIsSelected">
+            <font-awesome-icon
+              :icon="selectionButtonIconInternal"
+              class="icon-before-text"
+            />
+            <span>{{ $t('caption.select') }}</span>
+          </Button>
+        </div>
       </div>
     </template>
   </Card>
@@ -176,6 +177,13 @@ function onMerchantFilterChanged(): void {
   height: v-bind(height);
 }
 
+.item-card-lines {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-end;
+}
+
 .item-card-long {
   display: flex;
   grid-column: span 2;
@@ -183,10 +191,9 @@ function onMerchantFilterChanged(): void {
 
 .item-card-price-line {
   height: 2rem;
-  margin-top: 0.15rem;
 }
 
-.item-card-title {
+.item-card-header {
   align-items: center;
   display: flex;
   font-size: 1rem;
@@ -195,10 +202,9 @@ function onMerchantFilterChanged(): void {
   white-space: preserve;
 }
 
-.item-card-title-caption {
+.item-card-title {
   max-height: 3.75rem;
   overflow: hidden;
-  text-overflow: ellipsis;
   width: 100%;
 }
 </style>

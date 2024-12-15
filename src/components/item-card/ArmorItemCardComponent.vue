@@ -56,6 +56,7 @@ const tooltipSuffix = computed(() => {
   <div class="card-line card-line4">
     <Tooltip
       v-if="!isBaseItem && armorClass > 0"
+      class="card-value"
       :class="boldCssClass"
       :tooltip="$t('caption.armorClass') + tooltipSuffix"
     >
@@ -67,6 +68,7 @@ const tooltipSuffix = computed(() => {
     </Tooltip>
     <Tooltip
       v-if="!isBaseItem && durability > 0"
+      class="card-value"
       :class="boldCssClass"
       :tooltip="$t('caption.durability') + tooltipSuffix"
     >

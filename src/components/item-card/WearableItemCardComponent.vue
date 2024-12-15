@@ -37,6 +37,7 @@ const wearable = computed(() => props.item as IWearable)
   <div class="card-line card-line4">
     <Tooltip
       v-if="ergonomicsModifierPercentage !== 0"
+      class="card-value"
       :class="boldCssClass"
       :tooltip="$t('caption.ergonomicsModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
@@ -50,6 +51,7 @@ const wearable = computed(() => props.item as IWearable)
     </Tooltip>
     <Tooltip
       v-if="movementSpeedModifierPercentage !== 0"
+      class="card-value"
       :class="boldCssClass"
       :tooltip="$t('caption.movementSpeedModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
@@ -63,6 +65,7 @@ const wearable = computed(() => props.item as IWearable)
     </Tooltip>
     <Tooltip
       v-if="turningSpeedModifierPercentage !== 0"
+      class="card-value"
       :class="boldCssClass"
       :tooltip="$t('caption.turningSpeedModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >

@@ -23,6 +23,7 @@ const grenade = computed(() => props.item as IGrenade)
     <Tooltip
       v-if="grenade.fragmentsAmount > 0"
       :tooltip="$t('caption.fragmentsAmount')"
+      class="card-value"
     >
       <font-awesome-icon
         icon="viruses"
@@ -30,7 +31,10 @@ const grenade = computed(() => props.item as IGrenade)
       />
       <span>{{ grenade.fragmentsAmount }}</span>
     </Tooltip>
-    <Tooltip :tooltip="$t('caption.explosionDelay')">
+    <Tooltip
+      :tooltip="$t('caption.explosionDelay')"
+      class="card-value"
+    >
       <font-awesome-icon
         icon="stopwatch"
         class="icon-before-text"
@@ -41,6 +45,7 @@ const grenade = computed(() => props.item as IGrenade)
       <Tooltip
         v-if="grenade.maximumExplosionRange > 0"
         :tooltip="$t('caption.explosionRange')"
+        class="card-value"
       >
         <font-awesome-icon
           icon="dot-circle"
@@ -64,7 +69,6 @@ const grenade = computed(() => props.item as IGrenade)
 
 <style scoped>
 .grenade-item-card-long {
-  display: flex;
   grid-column: span 2;
 }
 </style>

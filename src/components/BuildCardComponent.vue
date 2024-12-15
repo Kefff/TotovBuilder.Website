@@ -122,8 +122,12 @@ function displayStats(item: IItem): void {
     :class="{ 'card-selected': modelIsSelected }"
   >
     <template #title>
-      <div class="build-card-title">
-        <div>{{ buildSummary.name }}</div>
+      <div class="build-card-header">
+        <div class="build-card-title">
+          <Tooltip :tooltip="buildSummary.name">
+            <span>{{ buildSummary.name }}</span>
+          </Tooltip>
+        </div>
         <Tooltip
           v-if="showNotExported && !buildSummary.exported"
           :tooltip="notExportedTooltip"
@@ -181,27 +185,41 @@ function displayStats(item: IItem): void {
           :style="hasItemListElementScroll && !itemListElementScroll.arrivedState.right ? 'display: initial' : 'display: none'"
         />
       </div>
-      <div class="card-line card-line3">
-        <div v-if="buildSummary.recoil.verticalRecoil !== 0">
-          <Tooltip :tooltip="$t('caption.verticalRecoil')">
+      <div class="build-card-lines">
+        <div
+          v-if="buildSummary.recoil.verticalRecoil !== 0
+            && buildSummary.recoil.horizontalRecoil !== 0
+            && (buildSummary.ergonomics !== 0
+              || buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0)"
+          class="card-line card-line3"
+        >
+          <Tooltip
+            v-if="buildSummary.recoil.verticalRecoil !== 0"
+            :tooltip="$t('caption.verticalRecoil')"
+            class="card-value"
+          >
             <font-awesome-icon
               icon="arrows-alt-v"
               class="icon-before-text"
             />
             <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.verticalRecoil) }}</span>
-          </tooltip>
-        </div>
-        <div v-if="buildSummary.recoil.horizontalRecoil !== 0">
-          <Tooltip :tooltip="$t('caption.horizontalRecoil')">
+          </Tooltip>
+          <Tooltip
+            v-if="buildSummary.recoil.horizontalRecoil !== 0"
+            :tooltip="$t('caption.horizontalRecoil')"
+            class="card-value"
+          >
             <font-awesome-icon
               icon="arrows-alt-h"
               class="icon-before-text"
             />
             <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.horizontalRecoil) }}</span>
           </Tooltip>
-        </div>
-        <div v-if="buildSummary.ergonomics !== 0">
-          <Tooltip :tooltip="$t('caption.ergonomicsModifierPercentage')">
+          <Tooltip
+            v-if="buildSummary.ergonomics !== 0"
+            :tooltip="$t('caption.ergonomicsModifierPercentage')"
+            class="card-value"
+          >
             <font-awesome-icon
               icon="hand-paper"
               class="icon-before-text"
@@ -213,29 +231,42 @@ function displayStats(item: IItem): void {
               </span>)
             </span>
           </Tooltip>
+          <Tooltip
+            v-else-if="buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0"
+            :tooltip="$t('caption.ergonomicsModifierPercentage')"
+            class="card-value"
+          >
+            <font-awesome-icon
+              icon="hand-paper"
+              class="icon-before-text"
+            />
+            <span :class="StatsUtils.getValueColorClass(buildSummary.wearableModifiers.ergonomicsModifierPercentage)">
+              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage) }}
+            </span>
+          </Tooltip>
         </div>
-        <div v-else-if="buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0">
-          <font-awesome-icon
-            icon="hand-paper"
-            class="icon-before-text"
-          />
-          <span :class="StatsUtils.getValueColorClass(buildSummary.wearableModifiers.ergonomicsModifierPercentage)">
-            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage) }}
-          </span>
-        </div>
-      </div>
-      <div class="card-line card-line3">
-        <div v-if="buildSummary.armorModifiers.armorClass > 0">
-          <Tooltip :tooltip="$t('caption.armorClass')">
+        <div
+          v-if="buildSummary.armorModifiers.armorClass > 0
+            && buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
+            && buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0"
+          class="card-line card-line3"
+        >
+          <Tooltip
+            v-if="buildSummary.armorModifiers.armorClass > 0"
+            :tooltip="$t('caption.armorClass')"
+            class="card-value"
+          >
             <font-awesome-icon
               icon="award"
               class="icon-before-text"
             />
             <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, buildSummary.armorModifiers.armorClass) }}</span>
           </Tooltip>
-        </div>
-        <div v-if="buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0">
-          <Tooltip :tooltip="$t('caption.movementSpeedModifierPercentage')">
+          <Tooltip
+            v-if="buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0"
+            :tooltip="$t('caption.movementSpeedModifierPercentage')"
+            class="card-value"
+          >
             <font-awesome-icon
               icon="walking"
               class="icon-before-text"
@@ -244,9 +275,11 @@ function displayStats(item: IItem): void {
               {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedModifierPercentage) }}
             </span>
           </Tooltip>
-        </div>
-        <div v-if="buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0">
-          <Tooltip :tooltip="$t('caption.turningSpeedModifierPercentage')">
+          <Tooltip
+            v-if="buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0"
+            :tooltip="$t('caption.turningSpeedModifierPercentage')"
+            class="card-value"
+          >
             <font-awesome-icon
               icon="undo"
               class="icon-before-text"
@@ -256,19 +289,25 @@ function displayStats(item: IItem): void {
             </span>
           </Tooltip>
         </div>
-      </div>
-      <div class="card-line card-line3">
         <div
-          v-if="buildSummary.price.priceInMainCurrency > 0"
-          class="build-card-price"
+          v-if="buildSummary.price.priceInMainCurrency > 0
+            && buildSummary.weight != 0"
+          class="card-line card-line3"
         >
-          <InventoryPrice
-            :inventory-price="buildSummary.price"
-            :is-build="true"
-          />
-        </div>
-        <div v-if="buildSummary.weight != 0">
-          <Tooltip :tooltip="$t('caption.weight')">
+          <div
+            v-if="buildSummary.price.priceInMainCurrency > 0"
+            class="build-card-price"
+          >
+            <InventoryPrice
+              :inventory-price="buildSummary.price"
+              :is-build="true"
+            />
+          </div>
+          <Tooltip
+            v-if="buildSummary.weight != 0"
+            :tooltip="$t('caption.weight')"
+            class="card-value"
+          >
             <font-awesome-icon
               icon="weight-hanging"
               class="icon-before-text"
@@ -322,6 +361,12 @@ function displayStats(item: IItem): void {
   height: 18rem;
 }
 
+.build-card-header {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+}
+
 .build-card-items {
   display: flex;
   flex-direction: row;
@@ -363,22 +408,24 @@ function displayStats(item: IItem): void {
   top: 0;
 }
 
+.build-card-lines {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-end;
+}
+
 .build-card-price {
   display: flex;
   grid-column: span 2;
 }
 
 .build-card-title {
-  align-items: center;
-  display: flex;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: normal;
-  gap: 0.5rem;
-  white-space: preserve;
-}
-
-.build-card-title > div {
-  margin-right: auto;
+  overflow: hidden;
+  width: 100%;
+  max-height: 2.25rem;
 }
 
 .build-card-not-exported {

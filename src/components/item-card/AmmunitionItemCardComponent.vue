@@ -34,7 +34,7 @@ const tooltip = computed(() =>
   <div class="card-line card-line4">
     <div
       v-if="ammunition.fleshDamage > 0"
-      class="ammunition-item-card-flesh-damage-group"
+      class="ammunition-item-card-flesh-damage-group card-value"
     >
       <Tooltip
         :tooltip="tooltip"

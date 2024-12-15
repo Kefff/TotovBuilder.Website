@@ -42,6 +42,7 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
   <div class="card-line card-line4">
     <Tooltip
       :class="boldCssClass"
+      class="card-value"
       :tooltip="$t('caption.verticalRecoil') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
       <font-awesome-icon
@@ -52,6 +53,7 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
     </Tooltip>
     <Tooltip
       :class="boldCssClass"
+      class="card-value"
       :tooltip="$t('caption.horizontalRecoil') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
       <font-awesome-icon
@@ -62,6 +64,7 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
     </Tooltip>
     <Tooltip
       :class="boldCssClass"
+      class="card-value"
       :tooltip="$t('caption.ergonomics') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
       <font-awesome-icon
@@ -75,6 +78,7 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
     <Tooltip
       v-if="!isBaseItem"
       :tooltip="$t('caption.fireRate')"
+      class="card-value"
     >
       <CustomIcon
         :icon="Images.fireRate"
@@ -88,7 +92,7 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
     <Tooltip
       v-if="!isBaseItem"
       :tooltip="$t('caption.caliber')"
-      class="ranged-weapon-item-card-long"
+      class="ranged-weapon-item-card-long card-value"
     >
       <CustomIcon
         :icon="Images.caliber"

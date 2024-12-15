@@ -51,7 +51,7 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? head
     <Tooltip
       v-if="!isBaseItem && hasRicochetChance"
       :tooltip="$t('caption.ricochetChance')"
-      class="headwear-item-card-long"
+      class="headwear-item-card-long card-value"
       :class="boldCssClass"
     >
       <CustomIcon
@@ -80,7 +80,6 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? head
 }
 
 .headwear-item-card-long {
-  display: flex;
   grid-column: span 2;
 }
 </style>

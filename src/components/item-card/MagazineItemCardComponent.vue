@@ -27,6 +27,7 @@ const magazine = computed(() => props.item as IMagazine)
     <Tooltip
       v-if="ergonomicsModifier !== 0"
       :tooltip="$t('caption.ergonomicsModifier')"
+      class="card-value"
     >
       <font-awesome-icon
         icon="hand-paper"
@@ -39,6 +40,7 @@ const magazine = computed(() => props.item as IMagazine)
     <Tooltip
       v-if="magazine.loadSpeedModifierPercentage !== 0"
       :tooltip="$t('caption.loadSpeedModifierPercentage')"
+      class="card-value"
     >
       <font-awesome-icon
         icon="sync-alt"
@@ -51,6 +53,7 @@ const magazine = computed(() => props.item as IMagazine)
     <Tooltip
       v-if="magazine.checkSpeedModifierPercentage !== 0"
       :tooltip="$t('caption.checkSpeedModifierPercentage')"
+      class="card-value"
     >
       <font-awesome-icon
         icon="eye"

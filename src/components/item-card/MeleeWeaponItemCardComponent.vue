@@ -38,7 +38,10 @@ const meleeWeapon = computed(() => props.item as IMeleeWeapon)
         <span>{{ meleeWeapon.stabDamage }}</span>
       </CustomIcon>
     </Tooltip>
-    <Tooltip :tooltip="$t('caption.hitRadius')">
+    <Tooltip
+      :tooltip="$t('caption.hitRadius')"
+      class="melee-weapon-item-card-long card-value"
+    >
       <font-awesome-icon
         icon="dot-circle"
         class="icon-before-text"
@@ -47,3 +50,17 @@ const meleeWeapon = computed(() => props.item as IMeleeWeapon)
     </Tooltip>
   </div>
 </template>
+
+
+
+
+
+
+
+
+
+<style scoped>
+.melee-weapon-item-card-long {
+  grid-column: span 2;
+}
+</style>
