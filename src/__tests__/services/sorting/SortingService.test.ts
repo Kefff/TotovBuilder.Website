@@ -7,7 +7,22 @@ import { SortingOrder } from '../../../models/utils/SortingOrder'
 import { LogService } from '../../../services/LogService'
 import Services from '../../../services/repository/Services'
 import { SortingService, compareByElementName, compareByItemCategory, compareByItemNumber, compareByItemString, compareByNumber } from '../../../services/sorting/SortingService'
+import { AmmunitionSortingFunctions } from '../../../services/sorting/functions/AmmunitionSortingFunctions'
+import { ArmorModSortingFunctions } from '../../../services/sorting/functions/ArmorModSortingFunctions'
+import { ArmorSortingFunctions } from '../../../services/sorting/functions/ArmorSortingFunctions'
+import { BackpackSortingFunctions } from '../../../services/sorting/functions/BackpackSortingFunctions'
+import { ContainerSortingFunctions } from '../../../services/sorting/functions/ContainerSortingFunctions'
+import { EyewearSortingFunctions } from '../../../services/sorting/functions/EyewearSortingFunctions'
+import { GrenadeSortingFunctions } from '../../../services/sorting/functions/GrenadeSortingFunctions'
+import { HeadwearSortingFunctions } from '../../../services/sorting/functions/HeadwearSortingFunctions'
 import { IBuildSortingFunctionList, IItemSortingFunctionList } from '../../../services/sorting/functions/ISortingFunctionList'
+import { ItemSortingFunctions } from '../../../services/sorting/functions/ItemSortingFunctions'
+import { MagazineSortingFunctions } from '../../../services/sorting/functions/MagazineSortingFunctions'
+import { MeleeWeaponSortingFunctions } from '../../../services/sorting/functions/MeleeWeaponSortingFunctions'
+import { ModSortingFunctions } from '../../../services/sorting/functions/ModSortingFunctions'
+import { RangedWeaponModSortingFunctions } from '../../../services/sorting/functions/RangedWeaponModSortingFunctions'
+import { RangedWeaponSortingFunctions } from '../../../services/sorting/functions/RangedWeaponSortingFunctions'
+import { VestSortingFunctions } from '../../../services/sorting/functions/VestSortingFunctions'
 
 describe('SortingService', () => {
   describe('compareByElementName()', () => {
@@ -75,6 +90,44 @@ describe('SortingService', () => {
 
       // Assert
       expect(sortingValue).toBe(expectedComparisonValue)
+    })
+  })
+
+  describe('getSortingFunctionsFromItemCategory()', () => {
+    it.each([
+      [undefined, ItemSortingFunctions],
+      [ItemCategoryId.ammunition, AmmunitionSortingFunctions],
+      [ItemCategoryId.armband, ItemSortingFunctions],
+      [ItemCategoryId.armor, ArmorSortingFunctions],
+      [ItemCategoryId.armorMod, ArmorModSortingFunctions],
+      [ItemCategoryId.backpack, BackpackSortingFunctions],
+      [ItemCategoryId.container, ContainerSortingFunctions],
+      [ItemCategoryId.currency, ItemSortingFunctions],
+      [ItemCategoryId.eyewear, EyewearSortingFunctions],
+      [ItemCategoryId.faceCover, ItemSortingFunctions],
+      [ItemCategoryId.grenade, GrenadeSortingFunctions],
+      [ItemCategoryId.headphones, ItemSortingFunctions],
+      [ItemCategoryId.headwear, HeadwearSortingFunctions],
+      [ItemCategoryId.magazine, MagazineSortingFunctions],
+      [ItemCategoryId.mainWeapon, RangedWeaponSortingFunctions],
+      [ItemCategoryId.meleeWeapon, MeleeWeaponSortingFunctions],
+      [ItemCategoryId.mod, ModSortingFunctions],
+      [ItemCategoryId.notFound, ItemSortingFunctions],
+      [ItemCategoryId.other, ItemSortingFunctions],
+      [ItemCategoryId.rangedWeaponMod, RangedWeaponModSortingFunctions],
+      [ItemCategoryId.secondaryWeapon, RangedWeaponSortingFunctions],
+      [ItemCategoryId.securedContainer, ContainerSortingFunctions],
+      [ItemCategoryId.special, ItemSortingFunctions],
+      [ItemCategoryId.vest, VestSortingFunctions]
+    ])('should get the sorting functions of an item category (%s)', (itemCategoryId: ItemCategoryId | undefined, expected: IItemSortingFunctionList) => {
+      // Arrange
+      const service = new SortingService()
+
+      // Act
+      const sortingFunctions = service.getSortingFunctionsFromItemCategory(itemCategoryId)
+
+      // Assert
+      expect(sortingFunctions).toStrictEqual(expected)
     })
   })
 

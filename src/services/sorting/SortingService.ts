@@ -55,13 +55,13 @@ export class SortingService {
       VestSortingFunctions,
       WearableSortingFunctions
     ]
-    let sortingFunctionsForItemType = sortingFunctions.find(sf => sf.itemCategoryIds.includes(itemCategoryId))
+    let sortingFunctionsForCategory = sortingFunctions.find(sf => sf.itemCategoryIds.includes(itemCategoryId))
 
-    if (sortingFunctionsForItemType == null) {
-      sortingFunctionsForItemType = ItemSortingFunctions
+    if (sortingFunctionsForCategory == null) {
+      sortingFunctionsForCategory = ItemSortingFunctions
     }
 
-    return sortingFunctionsForItemType as IItemSortingFunctionList
+    return sortingFunctionsForCategory as IItemSortingFunctionList
   }
 
   /**

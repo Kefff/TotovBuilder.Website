@@ -14,9 +14,13 @@ describe('comparisonFunction()', () => {
     // Arrange
     const item1 = {
       categoryId: ItemCategoryId.armor,
-      armorClass: 2,
-      durability: 2,
-      ergonomicsModifierPercentage: 2
+      armorClass: 1,
+      durability: 1,
+      ergonomicsModifierPercentage: 2,
+      presetArmorModifiers: {
+        armorClass: 2,
+        durability: 2
+      }
     } as IArmor
 
     const item2 = {

@@ -469,12 +469,15 @@ describe('BuildPropertiesService', () => {
 
   describe('checkMatchesFilter()', () => {
     it.each([
+      [null, true],
+      [undefined, true],
+      ['', true],
       ['invalid', false],
       ['meta', true],
       ['kedr meta', false],
       ['rpk meta', true],
       ['rpk meta first aid kit', true]
-    ])('should check whether a build summary matches a filter', (filter: string, expected: boolean) => {
+    ])('should check whether a build summary matches a filter', (filter: string | undefined | null, expected: boolean) => {
       // Arrange
       const buildSummary = {
         name: 'Meta',
