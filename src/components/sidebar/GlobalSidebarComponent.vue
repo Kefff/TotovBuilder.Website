@@ -239,6 +239,8 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: numbe
   height: 100%;
   max-width: calc(50vw - 1rem);
   /* -1rem for the left padding of the side bar */
+  min-width: calc(480px - 1rem);
+  /* -1rem for the left padding of the side bar */
   overflow: auto;
   padding-right: 1rem;
 }
@@ -264,6 +266,9 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: numbe
 @media only screen and (max-width: 480px) {
   .global-sidebar-content {
     max-width: calc(100vw - 1rem);
+    /* -1rem for the left padding of the side bar */
+    min-width: unset;
+    width: calc(100vw - 1rem);
     /* -1rem for the left padding of the side bar */
   }
 }
