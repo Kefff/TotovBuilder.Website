@@ -267,9 +267,9 @@ function setLanguage(): void {
   </div>
 
   <!-- Global sidebars -->
-  <GlobalSidebar :level="1" />
-  <GlobalSidebar :level="2" />
-  <GlobalSidebar :level="3" />
+  <GlobalSidebar :identifier="GlobalSidebarService.GlobalSidebarIdentifiers[0]" />
+  <GlobalSidebar :identifier="GlobalSidebarService.GlobalSidebarIdentifiers[1]" />
+  <GlobalSidebar :identifier="GlobalSidebarService.GlobalSidebarIdentifiers[2]" />
 
   <!-- Loading error -->
   <LoadingError />

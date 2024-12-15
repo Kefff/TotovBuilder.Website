@@ -21,7 +21,7 @@ const ToolbarSidebar = defineAsyncComponent(() => import('./ToolbarSidebarCompon
 type DisplayedComponent = typeof BuildsExportSidebar | typeof BuildsShareSideBar | typeof BuildSidebar | typeof BuildsImportSidebar | typeof BuildsListSidebar | typeof ChangelogSidebar | typeof GeneralOptionsSidebar | typeof ItemsListSidebar | typeof MerchantItemsOptionsSidebar | typeof NotificationsSidebar | typeof ShoppingListSidebar | typeof StatsSidebar | typeof ToolbarSidebar | undefined
 
 const props = defineProps<{
-  level: number
+  identifier: number
 }>()
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
@@ -164,10 +164,10 @@ function onGlobalSidebarClose(displayedComponentType: GlobalSidebarComponent): v
  *
  * Sets the component to display and opens the global sidebar.
  * @param openingOptions - Opening options.
- * @param level - Level of the sidebar to open.
+ * @param identifier - Identifier of the sidebar to open.
  */
-function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, level: number): void {
-  if (level === props.level) {
+function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, identifier: number): void {
+  if (identifier === props.identifier) {
     visible.value = true
     options.value = openingOptions
   }
