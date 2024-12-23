@@ -87,6 +87,14 @@ onMounted(() => {
 
 
 <style scoped>
+.input-number-field {
+  height: 2.75rem;
+}
+
+.input-number-field > span {
+  height: 100%;
+}
+
 .input-number-field-required-message-bottom {
   font-size: 0.85rem;
   display: block;
@@ -96,10 +104,10 @@ onMounted(() => {
   align-items: center;
   display: flex;
   font-size: 0.85rem;
+  gap: 0.5rem
 }
 
 .input-number-field-required-message-right > span {
-  margin-left: 0.5rem;
   width: 100%;
 }
 </style>

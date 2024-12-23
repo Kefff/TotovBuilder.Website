@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { inject, onMounted, Ref, ref, watch } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { ItemCategoryId } from '../models/item/IItem'
@@ -15,6 +15,7 @@ const props = defineProps<{
   path: string
 }>()
 
+const isEditing = inject<Ref<boolean>>('isEditing')
 const isInitializing = ref(true)
 const modSlots = ref<IModSlot[]>(props.moddableItem.modSlots)
 
@@ -86,7 +87,10 @@ function onItemChanged(modSlotName: string, newInventoryItem: IInventoryItem | u
 
 
 <template>
-  <div v-if="!isInitializing">
+  <div
+    v-if="!isInitializing && (modSlots.length > 0 || isEditing)"
+    class="item-mods"
+  >
     <ModSlot
       v-for="modSlot of modSlots"
       :key="`${path}/${PathUtils.modSlotPrefix}${modSlot.name}`"
@@ -97,3 +101,18 @@ function onItemChanged(modSlotName: string, newInventoryItem: IInventoryItem | u
     />
   </div>
 </template>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+.item-mods {
+  margin-bottom: 1rem;
+}
+</style>

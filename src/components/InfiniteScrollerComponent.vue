@@ -141,7 +141,7 @@ function scrollToFirstLine(): void {
 
 
 
-<style>
+<style scoped>
 .infinite-scroller {
   height: 100% !important;
   max-height: v-bind(maxHeight) !important;

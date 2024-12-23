@@ -25,9 +25,7 @@ const _inventorySlotComponentService = Services.get(InventorySlotComponentServic
 
 let _oldInventoryItem: IInventoryItem | undefined = undefined
 
-onMounted(() => {
-  setOldInventoryItem()
-})
+onMounted(() => setOldInventoryItem())
 
 /**
  * Reacts to an inventory item being changed.

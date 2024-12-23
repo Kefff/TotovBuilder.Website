@@ -120,7 +120,10 @@ function setCategoryId(): void {
 
 
 <template>
-  <div class="item-content-indent">
+  <div
+    v-if="modelInventoryItems.length > 0 || isEditing"
+    class="item-content-indent"
+  >
     <Item
       v-for="(containedItem, index) of modelInventoryItems"
       :key="`${path}/${index}_${modelInventoryItems.length}`"
@@ -157,5 +160,6 @@ function setCategoryId(): void {
 .item-content-indent {
   margin-left: 3.25rem;
   margin-top: 0.5rem;
+  margin-bottom: 1rem;
 }
 </style>

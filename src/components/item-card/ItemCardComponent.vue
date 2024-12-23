@@ -10,17 +10,18 @@ import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import ItemIcon from '../ItemIconComponent.vue'
 import Price from '../PriceComponent.vue'
 import Tooltip from '../TooltipComponent.vue'
+import ItemCardSelector from './ItemCardSelectorComponent.vue'
 
 const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
 
 const props = withDefaults(
   defineProps<{
+    isSelectable?: boolean,
     item: IItem,
-    selectable?: boolean,
     selectionButtonIcon?: string
   }>(),
   {
-    selectable: false,
+    isSelectable: false,
     selectionButtonIcon: undefined
   })
 
@@ -28,7 +29,8 @@ const _inventoryItemService = Services.get(InventoryItemService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
-const height = computed(() => `${props.selectable ? 13.5 : 11.5}rem`)
+
+const height = computed(() => `${props.isSelectable ? 15 : 11.5}rem`)
 const selectionButtonIconInternal = computed(() => {
   if (props.selectionButtonIcon != null) {
     return props.selectionButtonIcon
@@ -124,7 +126,9 @@ function onMerchantFilterChanged(): void {
     </template>
     <template #content>
       <div class="item-card-lines">
-        <slot />
+        <!-- Specialized stats -->
+        <ItemCardSelector :item="item" />
+        <!-- Price and weight -->
         <div class="card-line card-line4 item-card-price-line">
           <div
             v-if="itemUnitPrice != null && itemUnitPrice.valueInMainCurrency > 0"
@@ -147,7 +151,7 @@ function onMerchantFilterChanged(): void {
           </Tooltip>
         </div>
         <div
-          v-if="selectable"
+          v-if="isSelectable"
           class="card-buttons"
         >
           <Button @click="modelIsSelected = !modelIsSelected">
@@ -199,12 +203,19 @@ function onMerchantFilterChanged(): void {
   font-size: 1rem;
   font-weight: normal;
   gap: 0.5rem;
+  height: 3.75rem;
   white-space: preserve;
 }
 
 .item-card-title {
-  max-height: 3.75rem;
-  overflow: hidden;
+  align-items: center;
+  display: flex;
+  height: 100%;
   width: 100%;
+  overflow: auto;
+}
+
+.item-card-title > span {
+  max-height: 100%;
 }
 </style>

@@ -85,6 +85,16 @@ onMounted(() => {
 
 
 <style scoped>
+.input-text-field input {
+  height: 2.75rem;
+  padding: 0.25rem;
+  width: 100%;
+}
+
+.input-text-field-centered {
+  text-align: center;
+}
+
 .input-text-field-required-message-bottom {
   display: block;
   font-size: 0.85rem;
@@ -94,22 +104,10 @@ onMounted(() => {
   align-items: center;
   display: flex;
   font-size: 0.85rem;
+  gap: 0.5rem;
 }
 
 .input-text-field-required-message-right > span {
-  margin-left: 0.5rem;
   width: 100%;
-}
-</style>
-
-<style>
-.input-text-field input {
-  height: 2.75rem;
-  padding: 0.25rem;
-  width: 100%;
-}
-
-.input-text-field-centered {
-  text-align: center;
 }
 </style>

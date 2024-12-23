@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { IBuildSummary } from '../../models/utils/IBuildSummary'
-import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
-import InventoryPrice from '../InventoryPriceComponent.vue'
-import Tooltip from '../TooltipComponent.vue'
+import { IBuildSummary } from '../models/utils/IBuildSummary'
+import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
+import InventoryPrice from './InventoryPriceComponent.vue'
+import Tooltip from './TooltipComponent.vue'
 
 const props = withDefaults(
   defineProps<{

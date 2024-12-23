@@ -17,15 +17,11 @@ import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
 import { PathUtils } from '../utils/PathUtils'
 import InputNumberField from './InputNumberFieldComponent.vue'
+import SelectedItemItemCardSelector from './item-card/SelectedItemItemCardSelectorComponent.vue'
 import ItemContent from './ItemContentComponent.vue'
+import ItemIcon from './ItemIconComponent.vue'
 import ItemMods from './ItemModsComponent.vue'
-import Loading from './LoadingComponent.vue'
-import OptionHeaderSelector from './option-header/OptionHeaderSelectorComponent.vue'
-import SelectedItem from './SelectedItemComponent.vue'
 import SelectedItemFunctionalities from './SelectedItemFunctionalitiesComponent.vue'
-import SelectedItemSummarySelector from './summary/SelectedItemSummarySelectorComponent.vue'
-import SummarySelector from './summary/SummarySelectorComponent.vue'
-import Tooltip from './TooltipComponent.vue'
 
 const modelInventoryItem = defineModel<IInventoryItem>('inventoryItem')
 
@@ -384,7 +380,7 @@ async function setOptionsAsync(): Promise<void> {
 /**
  * Scrolls the dropdown to the selected item.
  *
- * This is to workaround for an issue where the PrimeVue scrolling to the selected element breaks
+ * This is a workaround for an issue where the PrimeVue scrolling to the selected element breaks
  * because we focus the filter input.
  */
 function scrollToItemInDropdown(): void {
@@ -499,11 +495,8 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 
 
 <template>
-  <div
-    v-if="modelInventoryItem != null || isEditing"
-    class="item"
-  >
-    <div
+  <div v-if="modelInventoryItem != null || isEditing">
+    <!-- <div
       class="item-selection"
       :class="{
         'item-selection-main': item != null && isMainInventorySlotItem
@@ -533,7 +526,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
               </div>
             </Tooltip>
           </template>
-          <template #empty>
+<template #empty>
             <div class="item-dropdown-empty">
               <Loading
                 v-if="loadingOptions"
@@ -545,7 +538,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
               <div />
             </div>
           </template>
-          <template #header>
+<template #header>
             <OptionHeaderSelector
               :category-id="acceptedItemsCategoryId"
               :filter="optionsFilter"
@@ -554,12 +547,12 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
               @update:sorting-data="onSortOptionsAsync($event)"
             />
           </template>
-          <template #option="slotProps">
+<template #option="slotProps">
             <div class="item-dropdown-option">
               <SummarySelector :item="slotProps.option" />
             </div>
           </template>
-          <template #value="slotProps">
+<template #value="slotProps">
             <Tooltip
               :apply-hover-style="false"
               :tooltip="item?.name"
@@ -567,52 +560,61 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
               <SelectedItem v-model:item="slotProps.value" />
             </Tooltip>
           </template>
-        </Dropdown>
-      </div>
-      <div
-        v-if="item != null && maxSelectableQuantity > 1"
-        class="item-quantity"
-      >
-        <InputNumberField
-          v-model:value="quantity"
-          :caption="$t('caption.quantity')"
-          :max="maxSelectableQuantity"
-          :min="1"
-          :read-only="!isEditing || forceQuantityToMaxSelectableAmount"
-          :required="true"
-          caption-mode="placeholder"
-          required-message-position="right"
-          @update:value="onQuantityChanged($event)"
-        />
-      </div>
-      <SelectedItemFunctionalities
-        v-if="modelInventoryItem != null && item != null"
-        v-model:selected-tab="selectedTab"
-        :can-be-looted="canBeLooted"
-        :can-have-content="itemIsContainer"
-        :can-have-mods="itemIsModdable && !isBaseItem"
-        :can-ignore-price="canIgnorePrice"
-        :content-count="contentCount"
-        :ignore-price="modelInventoryItem.ignorePrice"
+</Dropdown>
+</div>
+<div v-if="item != null && maxSelectableQuantity > 1" class="item-quantity">
+  <InputNumberField v-model:value="quantity" :caption="$t('caption.quantity')" :max="maxSelectableQuantity" :min="1" :read-only="!isEditing || forceQuantityToMaxSelectableAmount" :required="true" caption-mode="placeholder" required-message-position="right" @update:value="onQuantityChanged($event)" />
+</div>
+<SelectedItemFunctionalities v-if="modelInventoryItem != null && item != null" v-model:selected-tab="selectedTab" :can-be-looted="canBeLooted" :can-have-content="itemIsContainer" :can-have-mods="itemIsModdable && !isBaseItem" :can-ignore-price="canIgnorePrice" :content-count="contentCount" :ignore-price="modelInventoryItem.ignorePrice" :item="item" :mods-count="modsCount" @update:ignore-price="onIgnorePriceChanged($event)" />
+<SelectedItemSummarySelector v-if="modelInventoryItem != null && item != null" :can-be-looted="canBeLooted" :include-mods-and-content="includeModsAndContentInSummary" :inventory-item-in-same-slot-in-preset="presetModSlotContainingItem?.item" :inventory-item="modelInventoryItem" :is-base-item="isBaseItem" :selected-item="item" :show-price="showPrice" :show-weight="showWeight" />
+</div> -->
+    <div class="item-header">
+      <ItemIcon
+        v-if="item != null"
         :item="item"
-        :mods-count="modsCount"
-        @update:ignore-price="onIgnorePriceChanged($event)"
       />
-      <SelectedItemSummarySelector
-        v-if="modelInventoryItem != null && item != null"
-        :can-be-looted="canBeLooted"
-        :include-mods-and-content="includeModsAndContentInSummary"
-        :inventory-item-in-same-slot-in-preset="presetModSlotContainingItem?.item"
-        :inventory-item="modelInventoryItem"
-        :is-base-item="isBaseItem"
-        :selected-item="item"
-        :show-price="showPrice"
-        :show-weight="showWeight"
-      />
+      <div
+        v-if="item != null"
+        class="item-header-title"
+      >
+        <span>{{ item.name }}</span>
+      </div>
     </div>
+    <SelectedItemFunctionalities
+      v-if="modelInventoryItem != null && item != null"
+      v-model:selected-tab="selectedTab"
+      :can-be-looted="canBeLooted"
+      :can-have-content="itemIsContainer"
+      :can-have-mods="itemIsModdable && !isBaseItem"
+      :can-ignore-price="canIgnorePrice"
+      :content-count="contentCount"
+      :ignore-price="modelInventoryItem.ignorePrice"
+      :item="item"
+      :mods-count="modsCount"
+      @update:ignore-price="onIgnorePriceChanged($event)"
+    />
+    <SelectedItemItemCardSelector
+      v-if="modelInventoryItem != null && item != null"
+      :inventory-item="modelInventoryItem"
+      :selected-item="item"
+    />
+    <InputNumberField
+      v-if="item != null && maxSelectableQuantity > 1"
+      v-model:value="quantity"
+      :caption="$t('caption.quantity')"
+      :max="maxSelectableQuantity"
+      :min="1"
+      :read-only="!isEditing || forceQuantityToMaxSelectableAmount"
+      :required="true"
+      caption-mode="placeholder"
+      class="item-quantity"
+      required-message-position="right"
+      @update:value="onQuantityChanged($event)"
+    />
+    <!-- Mods an content -->
     <div
       v-if="modelInventoryItem != null && item != null && !itemChanging && !isBaseItem"
-      :class="(item != null && isMainInventorySlotItem) ? 'item-content-and-mods-main' : ''"
+      :class="{ 'item-content-and-mods-main': item != null && isMainInventorySlotItem }"
     >
       <div v-if="itemIsModdable">
         <div
@@ -663,14 +665,6 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 
 
 <style scoped>
-.item {
-  margin-bottom: 0.5rem;
-}
-
-.item:last-child {
-  margin-bottom: 0;
-}
-
 .item-base-item {
   margin-left: 3.125rem;
   margin-top: 0.25rem;
@@ -680,91 +674,34 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   margin-bottom: 0.25rem;
 }
 
-.item-clear-button {
-  align-items: center;
-  color: var(--error-color);
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  width: 2.375rem;
-}
-
 .item-content-and-mods-main {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
 
-.item-dropdown {
-  width: 25rem;
-}
-
-.item-dropdown-empty {
+.item-header {
   align-items: center;
   display: flex;
-  height: 4rem;
-  justify-content: center;
+  font-size: 1rem;
+  font-weight: normal;
+  gap: 0.5rem;
+  height: 3.75rem;
+  white-space: preserve;
 }
 
-.item-dropdown-option {
+.item-header-title {
   align-items: center;
   display: flex;
-  height: 4rem;
-  /* Matches the 60px set in the virtual scroller options */
-  margin-left: 1rem;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
 }
 
-.item-selection {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-}
-
-.item-selection-dropdown {
-  height: 3.5rem;
-}
-
-.item-selection-main {
-  background-color: var(--primary-color6);
-  border-radius: 6px;
-  padding: 0.5rem;
+.item-header-title > span {
+  max-height: 100%;
 }
 
 .item-quantity {
   width: 11rem;
-}
-</style>
-
-<style>
-.item-selection-dropdown > .p-dropdown {
-  height: 3.5rem;
-}
-
-.item-selection-dropdown .placeholder {
-  padding: 1rem;
-}
-
-.item-selection-dropdown > .p-disabled {
-  opacity: 1;
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.item-selection-dropdown .p-disabled .selected-item .item-icon {
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.item-selection-dropdown > .p-disabled > .p-dropdown-trigger {
-  opacity: 0.38;
-}
-
-.item-selection-dropdown > .p-dropdown > .p-dropdown-label {
-  padding: 0;
-}
-
-.item-selection-dropdown > .p-dropdown > .p-dropdown-label > span > div {
-  height: 100%;
-}
-
-.p-dropdown-panel > .p-dropdown-items-wrapper > .p-virtualscroller > .p-dropdown-items > .p-dropdown-item {
-  padding: 0;
 }
 </style>

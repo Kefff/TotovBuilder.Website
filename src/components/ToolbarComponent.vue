@@ -129,7 +129,7 @@ function displayToolbarSideBar(): void {
 
 
 
-<style>
+<style scoped>
 .toolbar {
   background-color: var(--surface-50);
   border-color: var(--primary-color6);
@@ -152,12 +152,6 @@ function displayToolbarSideBar(): void {
   gap: 0.5rem;
   font-size: 2rem;
   width: 100%;
-}
-
-.toolbar-line button {
-  align-items: center;
-  display: flex;
-  justify-content: center;
 }
 
 .toolbar-line-left {

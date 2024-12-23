@@ -8,23 +8,23 @@ import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
-import AmmunitionSummary from '../summary/AmmunitionSummaryComponent.vue'
-import ArmorModSummary from '../summary/ArmorModSummaryComponent.vue'
-import ArmorSummary from '../summary/ArmorSummaryComponent.vue'
-import BackpackSummary from '../summary/BackpackSummaryComponent.vue'
-import ContainerSummary from '../summary/ContainerSummaryComponent.vue'
-import EyewearSummary from '../summary/EyewearSummaryComponent.vue'
-import GrenadeSummary from '../summary/GrenadeSummaryComponent.vue'
-import HeadwearSummary from '../summary/HeadwearSummaryComponent.vue'
-import MagazineSummary from '../summary/MagazineSummaryComponent.vue'
-import MeleeWeaponSummary from '../summary/MeleeWeaponSummaryComponent.vue'
-import ModSummary from '../summary/ModSummaryComponent.vue'
-import RangedWeaponModSummary from '../summary/RangedWeaponModSummaryComponent.vue'
-import RangedWeaponSummary from '../summary/RangedWeaponSummaryComponent.vue'
-import SelectedItemSummary from '../summary/SelectedItemSummaryComponent.vue'
-import VestSummary from '../summary/VestSummaryComponent.vue'
+import AmmunitionItemCard from './AmmunitionItemCardComponent.vue'
+import ArmorItemCard from './ArmorItemCardComponent.vue'
+import ArmorModItemCard from './ArmorModItemCardComponent.vue'
+import BackpackItemCard from './BackpackItemCardComponent.vue'
+import ContainerItemCard from './ContainerItemCardComponent.vue'
+import EyewearItemCard from './EyewearItemCardComponent.vue'
+import GrenadeItemCard from './GrenadeItemCardComponent.vue'
+import HeadwearItemCard from './HeadwearItemCardComponent.vue'
+import MagazineItemCard from './MagazineItemCardComponent.vue'
+import MeleeWeaponItemCard from './MeleeWeaponItemCardComponent.vue'
+import ModItemCard from './ModItemCardComponent.vue'
+import RangedWeaponItemCard from './RangedWeaponItemCardComponent.vue'
+import RangedWeaponModItemCard from './RangedWeaponModItemCardComponent.vue'
+import SelectedItemItemCard from './SelectedItemItemCardComponent.vue'
+import VestItemCard from './VestItemCardComponent.vue'
 
-type SpecializedComponent = typeof AmmunitionSummary | typeof ArmorModSummary | typeof ArmorSummary | typeof BackpackSummary | typeof ContainerSummary | typeof EyewearSummary | typeof GrenadeSummary | typeof HeadwearSummary | typeof MagazineSummary | typeof MeleeWeaponSummary | typeof ModSummary | typeof RangedWeaponModSummary | typeof RangedWeaponSummary | typeof SelectedItemSummary | typeof VestSummary | undefined
+type SpecializedComponent = typeof AmmunitionItemCard | typeof ArmorItemCard | typeof ArmorModItemCard | typeof BackpackItemCard | typeof ContainerItemCard | typeof EyewearItemCard | typeof GrenadeItemCard | typeof HeadwearItemCard | typeof MagazineItemCard | typeof MeleeWeaponItemCard | typeof ModItemCard | typeof RangedWeaponItemCard | typeof RangedWeaponModItemCard | typeof SelectedItemItemCard | typeof VestItemCard | undefined
 
 const props = withDefaults(
   defineProps<{
@@ -65,62 +65,62 @@ function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedCo
   const itemPropertiesService = Services.get(ItemPropertiesService)
 
   if (itemPropertiesService.isAmmunition(itemCategoryId)) {
-    return AmmunitionSummary
+    return AmmunitionItemCard
   }
   else if (itemPropertiesService.isArmor(itemCategoryId)) {
     setArmorModifiersAsync()
     setWearableModifiersAsync()
 
-    return ArmorSummary
+    return ArmorItemCard
   }
   else if (itemPropertiesService.isArmorMod(itemCategoryId)) {
     setArmorModifiersAsync()
     setWearableModifiersAsync()
 
-    return ArmorModSummary
+    return ArmorModItemCard
   }
   else if (itemPropertiesService.isBackpack(itemCategoryId)) {
     setWearableModifiersAsync()
 
-    return BackpackSummary
+    return BackpackItemCard
   }
   else if (itemPropertiesService.isContainer(itemCategoryId)) {
-    return ContainerSummary
+    return ContainerItemCard
   }
   else if (itemPropertiesService.isEyewear(itemCategoryId)) {
-    return EyewearSummary
+    return EyewearItemCard
   }
   else if (itemPropertiesService.isGrenade(itemCategoryId)) {
-    return GrenadeSummary
+    return GrenadeItemCard
   }
   else if (itemPropertiesService.isHeadwear(itemCategoryId)) {
     setArmorModifiersAsync()
     setWearableModifiersAsync()
 
-    return HeadwearSummary
+    return HeadwearItemCard
   }
   else if (itemPropertiesService.isMagazine(itemCategoryId)) {
-    return MagazineSummary
+    return MagazineItemCard
   }
   else if (itemPropertiesService.isMeleeWeapon(itemCategoryId)) {
-    return MeleeWeaponSummary
+    return MeleeWeaponItemCard
   }
   else if (itemPropertiesService.isMod(itemCategoryId)) {
-    return ModSummary
+    return ModItemCard
   }
   else if (itemPropertiesService.isRangedWeapon(itemCategoryId)) {
     setRangedWeaponModifiersAsync()
 
-    return RangedWeaponSummary
+    return RangedWeaponItemCard
   }
   else if (itemPropertiesService.isRangedWeaponMod(itemCategoryId)) {
-    return RangedWeaponModSummary
+    return RangedWeaponModItemCard
   }
   else if (itemPropertiesService.isVest(itemCategoryId)) {
     setArmorModifiersAsync()
     setWearableModifiersAsync()
 
-    return VestSummary
+    return VestItemCard
   }
 }
 
@@ -172,7 +172,7 @@ async function setWearableModifiersAsync(): Promise<void> {
 
 
 <template>
-  <SelectedItemSummary
+  <SelectedItemItemCard
     v-if="selectedItem != null"
     :can-be-looted="canBeLooted"
     :include-mods-and-content="includeModsAndContent"
@@ -182,111 +182,78 @@ async function setWearableModifiersAsync(): Promise<void> {
     :show-price="showPrice"
     :show-weight="showWeight"
   >
-    <AmmunitionSummary
-      v-if="specializedComponent === AmmunitionSummary"
+    <AmmunitionItemCard
+      v-if="specializedComponent === AmmunitionItemCard"
       :item="selectedItem"
-      :show-empty-entries="false"
     />
-    <ArmorModSummary
-      v-if="specializedComponent === ArmorModSummary"
+    <ArmorModItemCard
+      v-if="specializedComponent === ArmorModItemCard"
       :armor-modifiers-override="selectedItemArmorModifiers"
       :item="selectedItem"
-      :show-empty-entries="false"
       :wearable-modifiers-override="selectedItemWearableModifiers"
     />
-    <ArmorSummary
-      v-if="specializedComponent === ArmorSummary"
+    <ArmorItemCard
+      v-if="specializedComponent === ArmorItemCard"
       :armor-modifiers-override="selectedItemArmorModifiers"
       :include-mods-and-content="includeModsAndContent"
       :item="selectedItem"
-      :show-empty-entries="false"
       :wearable-modifiers-override="selectedItemWearableModifiers"
     />
-    <BackpackSummary
-      v-if="specializedComponent === BackpackSummary"
+    <BackpackItemCard
+      v-if="specializedComponent === BackpackItemCard"
       :item="selectedItem"
-      :show-empty-entries="false"
       :wearable-modifiers-override="selectedItemWearableModifiers"
     />
-    <ContainerSummary
-      v-if="specializedComponent === ContainerSummary"
+    <ContainerItemCard
+      v-if="specializedComponent === ContainerItemCard"
       :item="selectedItem"
-      :show-empty-entries="false"
     />
-    <EyewearSummary
-      v-if="specializedComponent === EyewearSummary"
+    <EyewearItemCard
+      v-if="specializedComponent === EyewearItemCard"
       :item="selectedItem"
-      :show-empty-entries="false"
     />
-    <GrenadeSummary
-      v-if="specializedComponent === GrenadeSummary"
+    <GrenadeItemCard
+      v-if="specializedComponent === GrenadeItemCard"
       :item="selectedItem"
-      :show-empty-entries="false"
     />
-    <HeadwearSummary
-      v-if="specializedComponent === HeadwearSummary"
+    <HeadwearItemCard
+      v-if="specializedComponent === HeadwearItemCard"
       :armor-modifiers-override="selectedItemArmorModifiers"
       :include-mods-and-content="includeModsAndContent"
       :is-base-item="isBaseItem"
       :item="selectedItem"
-      :show-empty-entries="false"
       :wearable-modifiers-override="selectedItemWearableModifiers"
     />
-    <MagazineSummary
-      v-if="specializedComponent === MagazineSummary"
+    <MagazineItemCard
+      v-if="specializedComponent === MagazineItemCard"
       :item="selectedItem"
-      :show-empty-entries="false"
     />
-    <MeleeWeaponSummary
-      v-if="specializedComponent === MeleeWeaponSummary"
+    <MeleeWeaponItemCard
+      v-if="specializedComponent === MeleeWeaponItemCard"
       :item="selectedItem"
-      :show-empty-entries="false"
     />
-    <ModSummary
-      v-if="specializedComponent === ModSummary"
+    <ModItemCard
+      v-if="specializedComponent === ModItemCard"
       :item="selectedItem"
-      :show-empty-entries="false"
     />
-    <RangedWeaponModSummary
-      v-if="specializedComponent === RangedWeaponModSummary"
+    <RangedWeaponModItemCard
+      v-if="specializedComponent === RangedWeaponModItemCard"
       :item="selectedItem"
-      :show-empty-entries="false"
     />
-    <RangedWeaponSummary
-      v-if="specializedComponent === RangedWeaponSummary"
+    <RangedWeaponItemCard
+      v-if="specializedComponent === RangedWeaponItemCard"
       :include-mods-and-content="includeModsAndContent"
       :is-base-item="isBaseItem"
       :item="selectedItem"
       :ranged-weapons-modifiers-override="selectedItemRangedWeaponModifiers"
-      :show-empty-entries="false"
     />
-    <VestSummary
-      v-if="specializedComponent === VestSummary"
+    <VestItemCard
+      v-if="specializedComponent === VestItemCard"
       :armor-modifiers-override="selectedItemArmorModifiers"
       :include-mods-and-content="includeModsAndContent"
       :is-base-item="isBaseItem"
       :item="selectedItem"
-      :show-empty-entries="false"
       :wearable-modifiers-override="selectedItemWearableModifiers"
     />
-  </SelectedItemSummary>
+  </SelectedItemItemCard>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style>
-.selected-item-summary .option-value {
-  width: unset !important;
-}
-
-.selected-item-summary .option-value-long {
-  width: unset !important;
-}
-</style>

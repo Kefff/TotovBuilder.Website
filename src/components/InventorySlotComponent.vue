@@ -142,11 +142,6 @@ async function setAcceptedItemsAsync(): Promise<void> {
   border-radius: 6px;
   border-style: solid;
   border-width: 1px;
-  margin-bottom: 1rem;
-}
-
-.inventory-slot:last-child {
-  margin-bottom: 0;
 }
 
 .inventory-slot-caption {
@@ -161,7 +156,6 @@ async function setAcceptedItemsAsync(): Promise<void> {
 
 .inventory-slot-custom-icon {
   width: 1.75rem;
-  margin-left: 1rem;
 }
 
 .inventory-slot-header {
@@ -175,7 +169,6 @@ async function setAcceptedItemsAsync(): Promise<void> {
 
 .inventory-slot-icon {
   font-size: 1.75rem;
-  margin-left: 1rem;
   margin-right: 0.5rem;
 }
 
@@ -193,5 +186,6 @@ async function setAcceptedItemsAsync(): Promise<void> {
 
 .inventory-slot.p-panel .p-panel-content {
   background-color: var(--surface-transparent-0);
+  padding: 0;
 }
 </style>

@@ -87,6 +87,7 @@ async function setPricesAsync(): Promise<void> {
 
 
 <template>
+  <!-- Prices and weight -->
   <div class="stats-category">
     {{ $t('caption.pricesAndWeight') }}
   </div>
@@ -125,7 +126,7 @@ async function setPricesAsync(): Promise<void> {
       </div>
     </div>
   </div>
-  <slot />
+  <!-- Links -->
   <div class="stats-category">
     {{ $t('caption.links') }}
   </div>

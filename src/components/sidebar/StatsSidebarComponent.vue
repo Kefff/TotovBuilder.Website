@@ -99,13 +99,13 @@ function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedCo
           :src="parameters.imageLink"
         >
       </div>
-      <ItemStats :item="parameters">
-        <component
-          :is="specializedComponent"
-          v-if="specializedComponent != null"
-          :item="parameters"
-        />
-      </ItemStats>
+      <!-- Specialized stats -->
+      <component
+        :is="specializedComponent"
+        v-if="specializedComponent != null"
+        :item="parameters"
+      />
+      <ItemStats :item="parameters" />
     </div>
   </div>
 </template>

@@ -153,9 +153,7 @@ function setSelectedTab(newValue: SelectableTab): void {
 .selected-item-functionalities {
   align-items: center;
   display: flex;
-  flex-direction: row;
   flex-wrap: nowrap;
-  margin-right: 4rem;
   position: relative;
 }
 
@@ -163,23 +161,16 @@ function setSelectedTab(newValue: SelectableTab): void {
   background-color: var(--primary-color);
   border-radius: 1rem;
   color: var(--text-color);
-  flex-shrink: 0;
   font-size: 0.8rem;
   height: 1rem;
   position: absolute;
   text-align: center;
-  transform: translate(0.875rem, 1.25rem);
+  transform: translate(0.75rem, 1.25rem);
   width: 1rem;
 }
 
 .selected-item-functionalities > div {
   display: flex;
   justify-content: center;
-  margin-left: 0.125rem;
-  width: 3rem;
-}
-
-.selected-item-functionalities > div:first-child {
-  margin-left: 0;
 }
 </style>

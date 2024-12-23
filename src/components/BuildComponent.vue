@@ -22,12 +22,12 @@ import { ServiceInitializationState } from '../services/repository/ServiceInitia
 import Services from '../services/repository/Services'
 import { PathUtils } from '../utils/PathUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
+import BuildSummary from './BuildSummaryComponent.vue'
 import InputTextField from './InputTextFieldComponent.vue'
 import InventorySlot from './InventorySlotComponent.vue'
 import Loading from './LoadingComponent.vue'
 import NotificationButton from './NotificationButtonComponent.vue'
 import Sticky from './StickyComponent.vue'
-import BuildSummary from './summary/BuildSummaryComponent.vue'
 import Toolbar from './ToolbarComponent.vue'
 import Tooltip from './TooltipComponent.vue'
 
@@ -672,6 +672,7 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
     <Toolbar
       ref="buildToolbar"
       :buttons="_toolbarButtons"
+      class="build-toolbar"
       @is-stickied="onToolbarIsStickiedChanged($event)"
     >
       <template #center>
@@ -926,6 +927,9 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
 }
 
 .build-inventory-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   width: 100%;
 }
 
@@ -948,7 +952,7 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .build-summary-popup-button {
@@ -999,12 +1003,8 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
   margin-top: 0.5rem;
 }
 
-.build-toolbar-right {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  margin-left: auto;
+.build-toolbar {
+  margin-bottom: 0.5rem;
 }
 
 .build-compact-summary-expand-enter-from,

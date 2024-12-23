@@ -141,60 +141,62 @@ async function setWeightAsync(): Promise<void> {
 
 
 <template>
-  <div class="selected-item-summary">
-    <div class="option-line">
-      <slot />
-      <div class="selected-item-summary-right">
-        <div class="selected-item-summary-right-base">
-          <div class="selected-item-summary-right-price">
-            <div
-              v-if="includeModsAndContent"
-              class="selected-item-summary-right-with-mods"
-            >
-              <InventoryPrice
-                :custom-tooltip="$t('caption.price') + $t('caption.withModsAndContent')"
-                :inventory-price="selectedItemInventoryPrice"
-                :is-build="false"
-                :show-empty-missing-price-spot="true"
-              />
-            </div>
+  <div class="selected-item-item-card">
+    <slot />
+    <div class="selected-item-item-card-right">
+      <div class="selected-item-item-card-right-base">
+        <div class="selected-item-item-card-right-price">
+          <div
+            v-if="includeModsAndContent"
+            class="selected-item-item-card-right-with-mods"
+          >
+            <InventoryPrice
+              :custom-tooltip="$t('caption.price') + $t('caption.withModsAndContent')"
+              :inventory-price="selectedItemInventoryPrice"
+              :is-build="false"
+              :show-empty-missing-price-spot="true"
+            />
+          </div>
+          <div style="height: 2rem;">
             <Price
               v-if="showPrice"
               :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
               :missing="showSelectedItemMissingPrice"
               :price="selectedItemPrice.price"
             />
-            <div
-              v-if="showUnitPrice"
-              class="selected-item-summary-right-per-unit-price selected-item-summary-right-per-unit"
-            >
-              <Price
-                :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
-                :price="selectedItemPrice.unitPrice"
-                :show-merchant-icon="false"
-                :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
-              />
-            </div>
           </div>
-          <div class="selected-item-summary-right-weight">
-            <div
-              v-if="includeModsAndContent && selectedItemWeight.weight > 0"
-              class="selected-item-summary-right-with-mods"
+          <div
+            v-if="showUnitPrice"
+            class="selected-item-item-card-right-per-unit-price selected-item-item-card-right-per-unit"
+          >
+            <Price
+              :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
+              :price="selectedItemPrice.unitPrice"
+              :show-merchant-icon="false"
+              :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
+            />
+          </div>
+        </div>
+        <div class="selected-item-item-card-right-weight">
+          <div
+            v-if="includeModsAndContent && selectedItemWeight.weight > 0"
+            class="selected-item-item-card-right-with-mods"
+          >
+            <Tooltip
+              :tooltip="$t('caption.weight') + $t('caption.withModsAndContent')"
+              position="left"
             >
-              <Tooltip
-                :tooltip="$t('caption.weight') + $t('caption.withModsAndContent')"
-                position="left"
-              >
-                <font-awesome-icon
-                  icon="weight-hanging"
-                  class="icon-before-text"
-                />
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weightWithContent) }}</span>
-              </Tooltip>
-            </div>
+              <font-awesome-icon
+                icon="weight-hanging"
+                class="icon-before-text"
+              />
+              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weightWithContent) }}</span>
+            </Tooltip>
+          </div>
+          <div style="height: 2rem;">
             <div
               v-if="(!includeModsAndContent || showWeight) && selectedItemWeight.weight > 0"
-              class="selected-item-summary-right-weight-base"
+              class="selected-item-item-card-right-weight-base"
             >
               <Tooltip :tooltip="$t('caption.weight')">
                 <font-awesome-icon
@@ -204,19 +206,19 @@ async function setWeightAsync(): Promise<void> {
                 <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weight) }}</span>
               </Tooltip>
             </div>
-            <div
-              v-if="showUnitWeight"
-              class="selected-item-summary-right-weight selected-item-summary-right-per-unit"
-            >
-              <div>
-                <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
-                  <font-awesome-icon
-                    icon="weight-hanging"
-                    class="icon-before-text"
-                  />
-                  <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
-                </Tooltip>
-              </div>
+          </div>
+          <div
+            v-if="showUnitWeight"
+            class="selected-item-item-card-right-weight selected-item-item-card-right-per-unit"
+          >
+            <div>
+              <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
+                <font-awesome-icon
+                  icon="weight-hanging"
+                  class="icon-before-text"
+                />
+                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
+              </Tooltip>
             </div>
           </div>
         </div>
@@ -235,26 +237,26 @@ async function setWeightAsync(): Promise<void> {
 
 
 <style scoped>
-.selected-item-summary {
+.selected-item-item-card {
   align-items: center;
   display: flex;
   flex-grow: 1;
 }
 
-.selected-item-summary-right {
+.selected-item-item-card-right {
   align-items: end;
   display: flex;
   flex-direction: column;
   margin-left: auto;
 }
 
-.selected-item-summary-right-base {
+.selected-item-item-card-right-base {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
 }
 
-.selected-item-summary-right-per-unit {
+.selected-item-item-card-right-per-unit {
   display: flex;
   flex-direction: row;
   font-size: 0.85rem;
@@ -262,11 +264,11 @@ async function setWeightAsync(): Promise<void> {
   margin-right: 0.15rem;
 }
 
-.selected-item-summary-right-per-unit-price {
+.selected-item-item-card-right-per-unit-price {
   margin-right: 3.15rem;
 }
 
-.selected-item-summary-right-price {
+.selected-item-item-card-right-price {
   align-items: end;
   display: flex;
   flex-direction: column;
@@ -274,7 +276,7 @@ async function setWeightAsync(): Promise<void> {
   justify-content: center;
 }
 
-.selected-item-summary-right-weight {
+.selected-item-item-card-right-weight {
   align-items: end;
   display: flex;
   flex-direction: column;
@@ -284,13 +286,13 @@ async function setWeightAsync(): Promise<void> {
   width: 7rem;
 }
 
-.selected-item-summary-right-weight-base {
+.selected-item-item-card-right-weight-base {
   align-items: center;
   display: flex;
   height: 2rem;
 }
 
-.selected-item-summary-right-with-mods {
+.selected-item-item-card-right-with-mods {
   font-style: italic;
   font-weight: bold;
 }

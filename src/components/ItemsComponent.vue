@@ -221,12 +221,13 @@ function onMerchantFilterChanged(): void {
     </Toolbar>
     <ItemsList
       v-model:filter-and-sorting-data="filterAndSortingData"
-      :items="items"
       :element-to-stick-to="toolbarContainer"
+      :has-selection="false"
       :is-loading="isLoading"
+      :items="items"
+      class="items-list"
       selection-button-caption="caption.edit"
       selection-button-icon="edit"
-      class="items-list"
       @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
       @update:selected-items="onItemSelected"
     />

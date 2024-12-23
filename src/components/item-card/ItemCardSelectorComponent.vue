@@ -24,10 +24,10 @@ type SpecializedComponent = typeof AmmunitionItemCard | typeof ArmorItemCard | t
 const props = withDefaults(
   defineProps<{
     item: IItem,
-    showDetailsButton?: boolean
+    isSelectable?: boolean
   }>(),
   {
-    showDetailsButton: false
+    isSelectable: false
   })
 
 const specializedComponent = computed(() => getSpecializedComponent(props.item.categoryId))
@@ -97,15 +97,9 @@ function getSpecializedComponent(itemCategoryId: ItemCategoryId): SpecializedCom
 
 
 <template>
-  <ItemCard
-    v-if="item != null"
-    :is-selected="false"
+  <component
+    :is="specializedComponent"
+    v-if="specializedComponent != null"
     :item="item"
-  >
-    <component
-      :is="specializedComponent"
-      v-if="specializedComponent != null"
-      :item="item"
-    />
-  </ItemCard>
+  />
 </template>

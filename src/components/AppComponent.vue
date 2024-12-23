@@ -404,6 +404,15 @@ function setLanguage(): void {
 }
 </style>
 
+
+
+
+
+
+
+
+
+
 <style>
 @import '../css/armor-penetration.css';
 @import '../css/button.css';

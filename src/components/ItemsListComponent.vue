@@ -10,7 +10,7 @@ import { SortingService } from '../services/sorting/SortingService'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import FilterChips from './FilterChipsComponent.vue'
 import InfiniteScroller from './InfiniteScrollerComponent.vue'
-import ItemCardSelector from './item-card/ItemCardSelectorComponent.vue'
+import ItemCard from './item-card/ItemCardComponent.vue'
 import Loading from './LoadingComponent.vue'
 import Paginator from './PaginatorComponent.vue'
 
@@ -19,16 +19,18 @@ const modelFilterAndSortingData = defineModel<ItemFilterAndSortingData>('filterA
 const props = withDefaults(
   defineProps<{
     elementToStickTo?: HTMLElement | null,
-    maxElementsPerLine?: number,
+    hasSelection?: boolean,
     infiniteScrolling?: boolean,
     isLoading?: boolean,
-    items: IItem[]
+    items: IItem[],
+    maxElementsPerLine?: number,
   }>(),
   {
     elementToStickTo: undefined,
-    maxElementsPerLine: 4,
+    hasSelection: false,
     infiniteScrolling: false,
-    isLoading: false
+    isLoading: false,
+    maxElementsPerLine: 4
   })
 
 const _itemPropertiesService = Services.get(ItemPropertiesService)
@@ -174,15 +176,16 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
     />
     <InfiniteScroller
       v-if="itemsInternal.length > 0 && infiniteScrolling"
-      :element-height="50"
+      :element-height="hasSelection ? 210 : 161"
       :elements-per-line="itemsPerLine"
       :elements="itemsInternal"
       :get-key-function="i => (i as IItem).id"
     >
       <template #element="{ element }">
-        <ItemCardSelector
+        <ItemCard
           :item="<IItem>element"
-          :show-details-button="true"
+          :is-selected="false"
+          :is-selectable="hasSelection"
         />
       </template>
     </InfiniteScroller>
@@ -194,9 +197,10 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
       :lines-per-page="10"
     >
       <template #element="{ element }">
-        <ItemCardSelector
+        <ItemCard
           :item="<IItem>element"
-          :show-details-button="true"
+          :is-selected="false"
+          :is-selectable="hasSelection"
         />
       </template>
     </Paginator>

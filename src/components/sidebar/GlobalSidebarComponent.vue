@@ -291,6 +291,15 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, identifier: 
 @media only screen and (min-width: 1300px) {}
 </style>
 
+
+
+
+
+
+
+
+
+
 <style>
 .p-sidebar > .p-sidebar-header {
   margin-bottom: 0.5rem;
