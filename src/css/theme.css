@@ -2078,7 +2078,8 @@
 
 .p-button.p-button-sm {
   font-size: 0.875rem;
-  padding: 0.62475rem 0.875rem;
+  /* padding: 0.62475rem 0.875rem; */
+  padding: 0.5rem;
 }
 
 .p-button.p-button-sm .p-button-icon {

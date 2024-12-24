@@ -10,6 +10,7 @@ import { SelectableTab } from '../models/utils/SelectableTab'
 import SortingData from '../models/utils/SortingData'
 import { CompatibilityRequestType } from '../services/compatibility/CompatibilityRequestType'
 import { CompatibilityService } from '../services/compatibility/CompatibilityService'
+import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import { ItemService } from '../services/ItemService'
 import { PresetService } from '../services/PresetService'
@@ -22,6 +23,7 @@ import ItemContent from './ItemContentComponent.vue'
 import ItemIcon from './ItemIconComponent.vue'
 import ItemMods from './ItemModsComponent.vue'
 import SelectedItemFunctionalities from './SelectedItemFunctionalitiesComponent.vue'
+import Tooltip from './TooltipComponent.vue'
 
 const modelInventoryItem = defineModel<IInventoryItem>('inventoryItem')
 
@@ -48,6 +50,7 @@ const props = withDefaults(
   })
 
 const _compatibilityService = Services.get(CompatibilityService)
+const _globalSidebarService = Services.get(GlobalSidebarService)
 const _itemPropertiesService = Services.get(ItemPropertiesService)
 const _itemService = Services.get(ItemService)
 const _presetService = Services.get(PresetService)
@@ -290,6 +293,24 @@ async function removeItemAsync(event: MouseEvent): Promise<void> {
 }
 
 /**
+ * Scrolls the dropdown to the selected item.
+ *
+ * This is a workaround for an issue where the PrimeVue scrolling to the selected element breaks
+ * because we focus the filter input.
+ */
+function scrollToItemInDropdown(): void {
+  if (item.value == null) {
+    return
+  }
+
+  const itemPosition = options.value.findIndex(o => o.id === item.value!.id)
+  const itemXPositionInDropdown = itemPosition * optionHeight.value
+
+  const virtualScrollerElement = document.querySelector('.p-virtualscroller')
+  virtualScrollerElement?.scrollTo({ behavior: 'smooth', top: itemXPositionInDropdown })
+}
+
+/**
  * Sets the base item.
  * This can correspond to the base item if the selected item is a preset.
  * This can also correspond to the item itselft if it is the base item of a preset.
@@ -378,24 +399,6 @@ async function setOptionsAsync(): Promise<void> {
 }
 
 /**
- * Scrolls the dropdown to the selected item.
- *
- * This is a workaround for an issue where the PrimeVue scrolling to the selected element breaks
- * because we focus the filter input.
- */
-function scrollToItemInDropdown(): void {
-  if (item.value == null) {
-    return
-  }
-
-  const itemPosition = options.value.findIndex(o => o.id === item.value!.id)
-  const itemXPositionInDropdown = itemPosition * optionHeight.value
-
-  const virtualScrollerElement = document.querySelector('.p-virtualscroller')
-  virtualScrollerElement?.scrollTo({ behavior: 'smooth', top: itemXPositionInDropdown })
-}
-
-/**
  * Sets the selected tab based on the type of selected item.
  */
 function setSelectedTab(): void {
@@ -420,6 +423,16 @@ function setSelectedTab(): void {
     itemIsContainer.value = false
     selectedTab.value = SelectableTab.hidden
   }
+}
+
+/**
+ * Displays the statistics of the item.
+ */
+function showDetails(): void {
+  _globalSidebarService.display({
+    displayedComponentType: 'StatsSidebar',
+    displayedComponentParameters: item.value
+  })
 }
 
 /**
@@ -580,6 +593,18 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
         >
           <span>{{ item.name }}</span>
         </div>
+        <Tooltip
+          :tooltip="$t('caption.showDetails')"
+          :apply-hover-style="false"
+        >
+          <Button
+            class="p-button-sm"
+            outlined
+            @click="showDetails()"
+          >
+            <font-awesome-icon icon="clipboard-list" />
+          </Button>
+        </Tooltip>
       </div>
       <InputNumberField
         v-if="item != null && maxSelectableQuantity > 1"
@@ -597,6 +622,8 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
       <SelectedItemItemCardSelector
         v-if="modelInventoryItem != null && item != null"
         :can-be-looted="canBeLooted"
+        :can-ignore-price="canIgnorePrice"
+        :ignore-price="modelInventoryItem.ignorePrice"
         :include-mods-and-content="includeModsAndContentInSummary"
         :inventory-item-in-same-slot-in-preset="presetModSlotContainingItem?.item"
         :inventory-item="modelInventoryItem"
@@ -604,6 +631,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
         :selected-item="item"
         :show-price="showPrice"
         :show-weight="showWeight"
+        @update:ignore-price="onIgnorePriceChanged($event)"
       />
     </div>
     <SelectedItemFunctionalities
@@ -621,43 +649,47 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
     />
     <!-- Mods an content -->
     <div
-      v-if="(itemIsModdable || itemIsContainer) && modelInventoryItem != null && !itemChanging && !isBaseItem"
-      class="item-mods-and-content"
+      v-if="modelInventoryItem != null
+        && !itemChanging
+        && !isBaseItem
+        && itemIsModdable && baseItem != null"
+      v-show="selectedTab === SelectableTab.mods"
     >
-      <div
-        v-if="itemIsModdable && baseItem != null"
-        v-show="selectedTab === SelectableTab.mods"
-      >
-        <span>
-          {{ $t('caption.baseItem') }}
-        </span>
-        <ItemComponent
-          :accepted-items="[]"
-          :can-be-looted="showBaseItemPrice"
-          :inventory-item="baseItem"
-          :is-base-item="true"
-          :path="path"
-        />
-      </div>
-      <ItemMods
-        v-if="itemIsModdable"
-        v-show="selectedTab === SelectableTab.mods"
-        :inventory-mod-slots="modelInventoryItem.modSlots"
-        :moddable-item="(item as IModdable)"
+      <span>
+        {{ $t('caption.baseItem') }}
+      </span>
+      <ItemComponent
+        :accepted-items="[]"
+        :can-be-looted="showBaseItemPrice"
+        :inventory-item="baseItem"
+        :is-base-item="true"
         :path="path"
-        @update:inventory-mod-slots="onModsChanged($event)"
       />
-      <div
-        v-if="itemIsContainer"
-        v-show="selectedTab === SelectableTab.content"
-      >
-        <ItemContent
-          :inventory-items="modelInventoryItem.content"
-          :container-item="(item as IContainer)"
-          :path="path"
-          @update:inventory-items="onContentChanged($event)"
-        />
-      </div>
+    </div>
+    <ItemMods
+      v-if="itemIsModdable
+        && modelInventoryItem != null
+        && !itemChanging
+        && !isBaseItem"
+      v-show="selectedTab === SelectableTab.mods && (modsCount > 0 || isEditing)"
+      :inventory-mod-slots="modelInventoryItem.modSlots"
+      :moddable-item="(item as IModdable)"
+      :path="path"
+      @update:inventory-mod-slots="onModsChanged($event)"
+    />
+    <div
+      v-if="itemIsContainer
+        && modelInventoryItem != null
+        && !itemChanging
+        && !isBaseItem"
+      v-show="selectedTab === SelectableTab.content && (contentCount > 0 || isEditing)"
+    >
+      <ItemContent
+        :inventory-items="modelInventoryItem.content"
+        :container-item="(item as IContainer)"
+        :path="path"
+        @update:inventory-items="onContentChanged($event)"
+      />
     </div>
   </div>
 </template>
@@ -695,26 +727,11 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-main {
-  background-color: var(--primary-color6);
+  /* background-color: var(--primary-color6); */
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   padding: 0.25rem;
-}
-
-.item-mods-and-content {
-  border-left-color: var(--primary-color6);
-  border-left-style: solid;
-  border-left-width: 2px;
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-  padding-left: 0.25rem;
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
-  /* border-top-color: var(--primary-color6);
-  border-top-style: solid;
-  border-top-width: 1px; */
-  margin-left: 0.25rem
 }
 
 .item-quantity {

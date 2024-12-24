@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, inject, onMounted, onUnmounted, Ref, ref, watch } from 'vue'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IInventoryItemPrice } from '../../models/utils/IInventoryItemPrice'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
@@ -13,28 +13,23 @@ import InventoryPrice from '../InventoryPriceComponent.vue'
 import Price from '../PriceComponent.vue'
 import Tooltip from '../TooltipComponent.vue'
 
-const props = withDefaults(
-  defineProps<{
-    canBeLooted?: boolean
-    includeModsAndContent?: boolean
-    inventoryItem: IInventoryItem,
-    inventoryItemInSameSlotInPreset?: IInventoryItem,
-    isBaseItem?: boolean,
-    showPrice?: boolean,
-    showWeight?: boolean
-  }>(),
-  {
-    canBeLooted: true,
-    includeModsAndContent: false,
-    inventoryItemInSameSlotInPreset: undefined,
-    isBaseItem: false,
-    showPrice: true,
-    showWeight: true
-  })
+const modelIgnorePrice = defineModel<boolean>('ignorePrice')
+
+const props = defineProps<{
+  canBeLooted: boolean
+  canIgnorePrice: boolean,
+  includeModsAndContent: boolean
+  inventoryItem: IInventoryItem,
+  inventoryItemInSameSlotInPreset: IInventoryItem | undefined,
+  isBaseItem: boolean,
+  showPrice: boolean,
+  showWeight: boolean
+}>()
 
 const _globalFilterService = Services.get(GlobalFilterService)
 const _inventoryItemService = Services.get(InventoryItemService)
 
+const isEditing = inject<Ref<boolean>>('isEditing')
 const selectedItemPrice = ref<IInventoryItemPrice>({
   missingPrice: false,
   price: {
@@ -66,16 +61,16 @@ const selectedItemWeight = ref<IWeight>({
   weightWithContent: 0,
   unitWeight: 0
 })
-const selectedItemInventoryPrice = computed<IInventoryPrice>(() => ({
-  missingPrice: hasMissingPrice.value,
-  priceByCurrency: selectedItemPrice.value.pricesWithContent,
-  priceInMainCurrency: selectedItemPrice.value.priceWithContentInMainCurrency
-}))
 
 const hasMissingPrice = computed(() =>
   selectedItemPrice.value.missingPrice
   && !props.inventoryItem.ignorePrice
   && selectedItemPrice.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored)
+const selectedItemInventoryPrice = computed<IInventoryPrice>(() => ({
+  missingPrice: hasMissingPrice.value,
+  priceByCurrency: selectedItemPrice.value.pricesWithContent,
+  priceInMainCurrency: selectedItemPrice.value.priceWithContentInMainCurrency
+}))
 const showSelectedItemMissingPrice = computed(() =>
   hasMissingPrice.value
   && !props.includeModsAndContent
@@ -165,6 +160,21 @@ async function setWeightAsync(): Promise<void> {
             :missing="showSelectedItemMissingPrice"
             :price="selectedItemPrice.price"
           />
+          <div v-if="isEditing && canBeLooted && canIgnorePrice">
+            <Tooltip
+              :tooltip="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
+              :apply-hover-style="false"
+            >
+              <Button
+                class="p-button-sm"
+                outlined
+                :severity="!modelIgnorePrice ? 'danger' : 'primary'"
+                @click="modelIgnorePrice = !modelIgnorePrice"
+              >
+                <font-awesome-icon :icon="!modelIgnorePrice ? 'ban' : 'ruble-sign'" />
+              </Button>
+            </Tooltip>
+          </div>
         </div>
         <div
           v-if="showUnitPrice"

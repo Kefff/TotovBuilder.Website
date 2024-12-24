@@ -71,7 +71,7 @@ function onNotificationCountChanged(): void {
   >
     <Button
       :disabled="notifications.length === 0"
-      class="p-button-text p-button-sm button-discreet notification-button"
+      class="p-button-text button-discreet notification-button"
       @click="onClick()"
     >
       <font-awesome-icon icon="bell" />

@@ -26,25 +26,19 @@ import VestItemCard from './VestItemCardComponent.vue'
 
 type SpecializedComponent = typeof AmmunitionItemCard | typeof ArmorItemCard | typeof ArmorModItemCard | typeof BackpackItemCard | typeof ContainerItemCard | typeof EyewearItemCard | typeof GrenadeItemCard | typeof HeadwearItemCard | typeof MagazineItemCard | typeof MeleeWeaponItemCard | typeof ModItemCard | typeof RangedWeaponItemCard | typeof RangedWeaponModItemCard | typeof SelectedItemItemCard | typeof VestItemCard | undefined
 
-const props = withDefaults(
-  defineProps<{
-    canBeLooted?: boolean,
-    includeModsAndContent?: boolean
-    inventoryItem: IInventoryItem,
-    inventoryItemInSameSlotInPreset?: IInventoryItem
-    isBaseItem?: boolean,
-    selectedItem: IItem,
-    showPrice?: boolean,
-    showWeight?: boolean
-  }>(),
-  {
-    canBeLooted: true,
-    includeModsAndContent: false,
-    inventoryItemInSameSlotInPreset: undefined,
-    isBaseItem: false,
-    showPrice: true,
-    showWeight: true
-  })
+const modelIgnorePrice = defineModel<boolean>('ignorePrice')
+
+const props = defineProps<{
+  canBeLooted: boolean,
+  canIgnorePrice: boolean,
+  includeModsAndContent: boolean
+  inventoryItem: IInventoryItem,
+  inventoryItemInSameSlotInPreset: IInventoryItem | undefined
+  isBaseItem: boolean,
+  selectedItem: IItem,
+  showPrice: boolean,
+  showWeight: boolean
+}>()
 
 const _inventoryItemService = Services.get(InventoryItemService)
 
@@ -174,7 +168,9 @@ async function setWearableModifiersAsync(): Promise<void> {
 <template>
   <SelectedItemItemCard
     v-if="selectedItem != null"
+    v-model:ignore-price="modelIgnorePrice"
     :can-be-looted="canBeLooted"
+    :can-ignore-price="canIgnorePrice"
     :include-mods-and-content="includeModsAndContent"
     :inventory-item-in-same-slot-in-preset="inventoryItemInSameSlotInPreset"
     :inventory-item="inventoryItem"

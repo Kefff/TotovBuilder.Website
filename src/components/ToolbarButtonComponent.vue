@@ -48,7 +48,7 @@ const tooltip = computed(() =>
       :disabled="button.isDisabled?.() ?? false"
       :outlined="outlined"
       :severity="button.variant?.()"
-      class="p-button-sm toolbar-button"
+      class="toolbar-button"
       @click="button.action"
     >
       <font-awesome-icon :icon="button.icon()" />

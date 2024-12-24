@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { Ref, inject, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { IItem } from '../models/item/IItem'
 import { SelectableTab } from '../models/utils/SelectableTab'
-import { GlobalSidebarService } from '../services/GlobalSidebarService'
-import Services from '../services/repository/Services'
+import vueI18n from '../plugins/vueI18n'
 import Tooltip from './TooltipComponent.vue'
 
-const modelIgnorePrice = defineModel<boolean>('ignorePrice')
 const modelSelectedTab = defineModel<SelectableTab>('selectedTab')
 
 const props = withDefaults(
@@ -16,7 +14,6 @@ const props = withDefaults(
     canHaveMods: boolean,
     canIgnorePrice: boolean,
     contentCount?: number,
-    ignorePrice: boolean,
     item: IItem,
     modsCount?: number
   }>(),
@@ -25,7 +22,12 @@ const props = withDefaults(
     modsCount: 0
   })
 
-const isEditing = inject<Ref<boolean>>('isEditing')
+const contentButtonCaption = computed(() => modelSelectedTab.value !== SelectableTab.mods
+  ? vueI18n.t('caption.showContent')
+  : vueI18n.t('caption.hideContent'))
+const modsButtonCaption = computed(() => modelSelectedTab.value !== SelectableTab.mods
+  ? vueI18n.t('caption.showMods')
+  : vueI18n.t('caption.hideMods'))
 
 watch(() => props.canHaveContent, () => {
   if (!props.canHaveContent && modelSelectedTab.value === SelectableTab.content) {
@@ -38,18 +40,6 @@ watch(() => props.canHaveMods, () => {
     modelSelectedTab.value = props.canHaveContent ? SelectableTab.content : SelectableTab.hidden
   }
 })
-
-/**
- * Reacts to the click on the "Show details" button.
- *
- * Opens the stats sidebar.
- */
-function onShowDetailsClick(): void {
-  Services.get(GlobalSidebarService).display({
-    displayedComponentType: 'StatsSidebar',
-    displayedComponentParameters: props.item
-  })
-}
 
 /**
  * Sets the selected tab.
@@ -74,66 +64,41 @@ function setSelectedTab(newValue: SelectableTab): void {
   <div class="selected-item-functionalities">
     <div v-if="canHaveContent">
       <Tooltip
-        :tooltip="$t(modelSelectedTab !== SelectableTab.content ? 'caption.showContent' : 'caption.hideContent')"
+        :tooltip="contentButtonCaption"
         :apply-hover-style="false"
       >
         <Button
-          :class="'p-button-text p-button-sm' + (modelSelectedTab !== SelectableTab.content ? ' button-discreet' : '')"
+          :class="{
+            'selected-item-functionalities-button-active': modelSelectedTab === SelectableTab.content,
+            'button-discreet': modelSelectedTab !== SelectableTab.content
+          }"
+          class="p-button-text p-button-sm"
           @click="setSelectedTab(SelectableTab.content)"
         >
           <font-awesome-icon icon="box-open" />
+          <span class="selected-item-functionalities-button-caption">
+            {{ $t('caption.content') }}{{ contentCount > 0 ? ` (${contentCount})` : '' }}
+          </span>
         </Button>
       </Tooltip>
-      <div
-        v-if="contentCount > 0"
-        class="selected-item-functionalities-count-chip"
-      >
-        {{ contentCount }}
-      </div>
     </div>
     <div v-if="canHaveMods">
       <Tooltip
-        :tooltip="$t(modelSelectedTab !== SelectableTab.mods ? 'caption.showMods' : 'caption.hideMods')"
+        :tooltip="modsButtonCaption"
         :apply-hover-style="false"
       >
         <Button
-          :class="'p-button-text p-button-sm' + (modelSelectedTab !== SelectableTab.mods ? ' button-discreet' : '')"
+          :class="{
+            'selected-item-functionalities-button-active': modelSelectedTab === SelectableTab.mods,
+            'button-discreet': modelSelectedTab !== SelectableTab.mods
+          }"
+          class="p-button-text p-button-sm"
           @click="setSelectedTab(SelectableTab.mods)"
         >
           <font-awesome-icon icon="puzzle-piece" />
-        </Button>
-      </Tooltip>
-      <div
-        v-if="modsCount > 0"
-        class="selected-item-functionalities-count-chip"
-      >
-        {{ modsCount }}
-      </div>
-    </div>
-    <div>
-      <Tooltip
-        :tooltip="$t('caption.showDetails')"
-        :apply-hover-style="false"
-      >
-        <Button
-          class="p-button-text p-button-sm button-discreet"
-          @click="onShowDetailsClick()"
-        >
-          <font-awesome-icon icon="clipboard-list" />
-        </Button>
-      </Tooltip>
-    </div>
-    <div v-if="isEditing && canBeLooted && canIgnorePrice">
-      <Tooltip
-        :tooltip="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
-        :apply-hover-style="false"
-      >
-        <Button
-          :class="'p-button-text p-button-sm' + (!ignorePrice ? ' button-discreet button-discreet-danger' : '')"
-          severity="danger"
-          @click="modelIgnorePrice = !modelIgnorePrice"
-        >
-          <font-awesome-icon icon="ban" />
+          <span class="selected-item-functionalities-button-caption">
+            {{ $t('caption.mods') }}{{ modsCount > 0 ? ` (${modsCount})` : '' }}
+          </span>
         </Button>
       </Tooltip>
     </div>
@@ -154,23 +119,19 @@ function setSelectedTab(newValue: SelectableTab): void {
   align-items: center;
   display: flex;
   flex-wrap: nowrap;
-  position: relative;
-}
-
-.selected-item-functionalities-count-chip {
-  background-color: var(--primary-color);
-  border-radius: 1rem;
-  color: var(--text-color);
-  font-size: 0.8rem;
-  height: 1rem;
-  position: absolute;
-  text-align: center;
-  transform: translate(0.75rem, 1.25rem);
-  width: 1rem;
 }
 
 .selected-item-functionalities > div {
   display: flex;
   justify-content: center;
+}
+
+.selected-item-functionalities-button-active {
+  background-color: var(--primary-color6);
+  color: var(--text-color);
+}
+
+.selected-item-functionalities-button-caption {
+  margin-left: 0.25rem;
 }
 </style>
