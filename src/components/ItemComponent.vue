@@ -568,17 +568,43 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 <SelectedItemFunctionalities v-if="modelInventoryItem != null && item != null" v-model:selected-tab="selectedTab" :can-be-looted="canBeLooted" :can-have-content="itemIsContainer" :can-have-mods="itemIsModdable && !isBaseItem" :can-ignore-price="canIgnorePrice" :content-count="contentCount" :ignore-price="modelInventoryItem.ignorePrice" :item="item" :mods-count="modsCount" @update:ignore-price="onIgnorePriceChanged($event)" />
 <SelectedItemSummarySelector v-if="modelInventoryItem != null && item != null" :can-be-looted="canBeLooted" :include-mods-and-content="includeModsAndContentInSummary" :inventory-item-in-same-slot-in-preset="presetModSlotContainingItem?.item" :inventory-item="modelInventoryItem" :is-base-item="isBaseItem" :selected-item="item" :show-price="showPrice" :show-weight="showWeight" />
 </div> -->
-    <div class="item-header">
-      <ItemIcon
-        v-if="item != null"
-        :item="item"
-      />
-      <div
-        v-if="item != null"
-        class="item-header-title"
-      >
-        <span>{{ item.name }}</span>
+    <div :class="{ 'item-main': item != null && isMainInventorySlotItem }">
+      <div class="item-header">
+        <ItemIcon
+          v-if="item != null"
+          :item="item"
+        />
+        <div
+          v-if="item != null"
+          class="item-header-title"
+        >
+          <span>{{ item.name }}</span>
+        </div>
       </div>
+      <InputNumberField
+        v-if="item != null && maxSelectableQuantity > 1"
+        v-model:value="quantity"
+        :caption="$t('caption.quantity')"
+        :max="maxSelectableQuantity"
+        :min="1"
+        :read-only="!isEditing || forceQuantityToMaxSelectableAmount"
+        :required="true"
+        caption-mode="placeholder"
+        class="item-quantity"
+        required-message-position="right"
+        @update:value="onQuantityChanged($event)"
+      />
+      <SelectedItemItemCardSelector
+        v-if="modelInventoryItem != null && item != null"
+        :can-be-looted="canBeLooted"
+        :include-mods-and-content="includeModsAndContentInSummary"
+        :inventory-item-in-same-slot-in-preset="presetModSlotContainingItem?.item"
+        :inventory-item="modelInventoryItem"
+        :is-base-item="isBaseItem"
+        :selected-item="item"
+        :show-price="showPrice"
+        :show-weight="showWeight"
+      />
     </div>
     <SelectedItemFunctionalities
       v-if="modelInventoryItem != null && item != null"
@@ -593,63 +619,44 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
       :mods-count="modsCount"
       @update:ignore-price="onIgnorePriceChanged($event)"
     />
-    <SelectedItemItemCardSelector
-      v-if="modelInventoryItem != null && item != null"
-      :inventory-item="modelInventoryItem"
-      :selected-item="item"
-    />
-    <InputNumberField
-      v-if="item != null && maxSelectableQuantity > 1"
-      v-model:value="quantity"
-      :caption="$t('caption.quantity')"
-      :max="maxSelectableQuantity"
-      :min="1"
-      :read-only="!isEditing || forceQuantityToMaxSelectableAmount"
-      :required="true"
-      caption-mode="placeholder"
-      class="item-quantity"
-      required-message-position="right"
-      @update:value="onQuantityChanged($event)"
-    />
     <!-- Mods an content -->
     <div
-      v-if="modelInventoryItem != null && item != null && !itemChanging && !isBaseItem"
-      :class="{ 'item-content-and-mods-main': item != null && isMainInventorySlotItem }"
+      v-if="(itemIsModdable || itemIsContainer) && modelInventoryItem != null && !itemChanging && !isBaseItem"
+      class="item-mods-and-content"
     >
-      <div v-if="itemIsModdable">
-        <div
-          v-if="baseItem != null"
-          v-show="selectedTab === SelectableTab.mods"
-          class="item-base-item"
-        >
-          <div class="item-base-item-name">
-            {{ $t('caption.baseItem') }}
-          </div>
-          <ItemComponent
-            :accepted-items="[]"
-            :can-be-looted="showBaseItemPrice"
-            :inventory-item="baseItem"
-            :is-base-item="true"
-            :path="path"
-          />
-        </div>
-        <ItemMods
-          v-show="selectedTab === SelectableTab.mods"
-          :inventory-mod-slots="modelInventoryItem.modSlots"
-          :moddable-item="(item as IModdable)"
+      <div
+        v-if="itemIsModdable && baseItem != null"
+        v-show="selectedTab === SelectableTab.mods"
+      >
+        <span>
+          {{ $t('caption.baseItem') }}
+        </span>
+        <ItemComponent
+          :accepted-items="[]"
+          :can-be-looted="showBaseItemPrice"
+          :inventory-item="baseItem"
+          :is-base-item="true"
           :path="path"
-          @update:inventory-mod-slots="onModsChanged($event)"
         />
       </div>
-      <div v-if="itemIsContainer">
-        <div v-show="selectedTab === SelectableTab.content">
-          <ItemContent
-            :inventory-items="modelInventoryItem.content"
-            :container-item="(item as IContainer)"
-            :path="path"
-            @update:inventory-items="onContentChanged($event)"
-          />
-        </div>
+      <ItemMods
+        v-if="itemIsModdable"
+        v-show="selectedTab === SelectableTab.mods"
+        :inventory-mod-slots="modelInventoryItem.modSlots"
+        :moddable-item="(item as IModdable)"
+        :path="path"
+        @update:inventory-mod-slots="onModsChanged($event)"
+      />
+      <div
+        v-if="itemIsContainer"
+        v-show="selectedTab === SelectableTab.content"
+      >
+        <ItemContent
+          :inventory-items="modelInventoryItem.content"
+          :container-item="(item as IContainer)"
+          :path="path"
+          @update:inventory-items="onContentChanged($event)"
+        />
       </div>
     </div>
   </div>
@@ -665,20 +672,6 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 
 
 <style scoped>
-.item-base-item {
-  margin-left: 3.125rem;
-  margin-top: 0.25rem;
-}
-
-.item-base-item-name {
-  margin-bottom: 0.25rem;
-}
-
-.item-content-and-mods-main {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-
 .item-header {
   align-items: center;
   display: flex;
@@ -701,7 +694,30 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   max-height: 100%;
 }
 
+.item-main {
+  background-color: var(--primary-color6);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.25rem;
+}
+
+.item-mods-and-content {
+  border-left-color: var(--primary-color6);
+  border-left-style: solid;
+  border-left-width: 2px;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  padding-left: 0.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  /* border-top-color: var(--primary-color6);
+  border-top-style: solid;
+  border-top-width: 1px; */
+  margin-left: 0.25rem
+}
+
 .item-quantity {
-  width: 11rem;
+  width: 100%;
 }
 </style>

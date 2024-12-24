@@ -113,17 +113,19 @@ async function setAcceptedItemsAsync(): Promise<void> {
         </div>
       </div>
     </template>
-    <InventorySlotItem
-      v-for="(inventoryItem, index) of modelInventorySlot.items"
-      :key="`${path}_${index}`"
-      :accepted-items-category-id="acceptedItemsCategoryId"
-      :accepted-items="acceptedItems"
-      :can-be-looted="inventorySlotType.canBeLooted"
-      :inventory-item="modelInventorySlot.items[index]"
-      :inventory-slot-type-id="modelInventorySlot.typeId"
-      :path="`${path}_${index}`"
-      @update:inventory-item="onItemChanged(index, $event)"
-    />
+    <div class="inventory-slot-items">
+      <InventorySlotItem
+        v-for="(inventoryItem, index) of modelInventorySlot.items"
+        :key="`${path}_${index}`"
+        :accepted-items-category-id="acceptedItemsCategoryId"
+        :accepted-items="acceptedItems"
+        :can-be-looted="inventorySlotType.canBeLooted"
+        :inventory-item="modelInventorySlot.items[index]"
+        :inventory-slot-type-id="modelInventorySlot.typeId"
+        :path="`${path}_${index}`"
+        @update:inventory-item="onItemChanged(index, $event)"
+      />
+    </div>
   </Panel>
 </template>
 
@@ -170,6 +172,12 @@ async function setAcceptedItemsAsync(): Promise<void> {
 .inventory-slot-icon {
   font-size: 1.75rem;
   margin-right: 0.5rem;
+}
+
+.inventory-slot-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .inventory-slot-title {

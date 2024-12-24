@@ -149,36 +149,41 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
       </Tooltip>
     </div>
     <div
-      v-if="hasSummaryPrice"
+      v-if="hasSummaryPrice && hasSummaryWeight"
       class="build-summary-group"
     >
       <div
         v-if="hasSummaryPrice"
-        class="build-summary-value"
+        class="build-summary-group"
       >
-        <InventoryPrice
-          v-if="
-            !isLoading"
-          :inventory-price="summary.price"
-          :is-build="true"
-        />
+        <div
+          v-if="hasSummaryPrice"
+          class="build-summary-value"
+        >
+          <InventoryPrice
+            v-if="
+              !isLoading"
+            :inventory-price="summary.price"
+            :is-build="true"
+          />
+        </div>
       </div>
-    </div>
-    <div
-      v-if="hasSummaryWeight"
-      class="build-summary-group"
-    >
-      <Tooltip
+      <div
         v-if="hasSummaryWeight"
-        :tooltip="$t('caption.weight')"
-        class="build-summary-value"
+        class="build-summary-group"
       >
-        <font-awesome-icon
-          icon="weight-hanging"
-          class="icon-before-text"
-        />
-        <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
-      </Tooltip>
+        <Tooltip
+          v-if="hasSummaryWeight"
+          :tooltip="$t('caption.weight')"
+          class="build-summary-value"
+        >
+          <font-awesome-icon
+            icon="weight-hanging"
+            class="icon-before-text"
+          />
+          <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
+        </Tooltip>
+      </div>
     </div>
   </div>
 </template>
@@ -231,6 +236,8 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
   align-items: center;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
   justify-content: center;
 }
 
@@ -244,12 +251,7 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
   align-items: center;
   display: flex;
   flex-wrap: nowrap;
-  margin-right: 1rem;
   white-space: nowrap;
-}
-
-.build-summary-value:last-child {
-  margin-right: 0;
 }
 
 /* Smartphone in portrait */

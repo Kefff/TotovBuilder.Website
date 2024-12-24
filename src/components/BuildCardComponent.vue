@@ -185,7 +185,7 @@ function displayStats(item: IItem): void {
           :style="hasItemListElementScroll && !itemListElementScroll.arrivedState.right ? 'display: initial' : 'display: none'"
         />
       </div>
-      <div class="build-card-lines">
+      <div class="card-lines">
         <div
           v-if="buildSummary.recoil.verticalRecoil !== 0
             && buildSummary.recoil.horizontalRecoil !== 0
@@ -406,13 +406,6 @@ function displayStats(item: IItem): void {
   position: absolute;
   right: -0.5rem;
   top: 0;
-}
-
-.build-card-lines {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: flex-end;
 }
 
 .build-card-price {

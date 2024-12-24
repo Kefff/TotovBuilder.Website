@@ -57,16 +57,6 @@ onUnmounted(() => {
 watch(() => props.item, () => getPriceAsync())
 
 /**
- * Displays the statistics of the item.
- */
-function displayStats(): void {
-  _globalSidebarService.display({
-    displayedComponentType: 'StatsSidebar',
-    displayedComponentParameters: props.item
-  })
-}
-
-/**
  * Gets the price of the item.
  */
 async function getPriceAsync(): Promise<void> {
@@ -87,6 +77,16 @@ async function getPriceAsync(): Promise<void> {
  */
 function onMerchantFilterChanged(): void {
   getPriceAsync()
+}
+
+/**
+ * Displays the statistics of the item.
+ */
+function showDetails(): void {
+  _globalSidebarService.display({
+    displayedComponentType: 'StatsSidebar',
+    displayedComponentParameters: props.item
+  })
 }
 </script>
 
@@ -111,13 +111,13 @@ function onMerchantFilterChanged(): void {
           <span>{{ item.name }}</span>
         </div>
         <Tooltip
-          :tooltip="$t('caption.statistics')"
+          :tooltip="$t('caption.showDetails')"
           :apply-hover-style="false"
         >
           <Button
             class="p-button-sm"
             outlined
-            @click="displayStats()"
+            @click="showDetails()"
           >
             <font-awesome-icon icon="clipboard-list" />
           </Button>
@@ -125,7 +125,7 @@ function onMerchantFilterChanged(): void {
       </div>
     </template>
     <template #content>
-      <div class="item-card-lines">
+      <div class="card-lines">
         <!-- Specialized stats -->
         <ItemCardSelector :item="item" />
         <!-- Price and weight -->
@@ -179,13 +179,6 @@ function onMerchantFilterChanged(): void {
 <style scoped>
 .item-card {
   height: v-bind(height);
-}
-
-.item-card-lines {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: flex-end;
 }
 
 .item-card-long {

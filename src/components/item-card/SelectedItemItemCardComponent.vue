@@ -141,85 +141,85 @@ async function setWeightAsync(): Promise<void> {
 
 
 <template>
-  <div class="selected-item-item-card">
+  <div class="card-lines">
+    <!-- Specialized stats -->
     <slot />
-    <div class="selected-item-item-card-right">
-      <div class="selected-item-item-card-right-base">
-        <div class="selected-item-item-card-right-price">
-          <div
-            v-if="includeModsAndContent"
-            class="selected-item-item-card-right-with-mods"
-          >
-            <InventoryPrice
-              :custom-tooltip="$t('caption.price') + $t('caption.withModsAndContent')"
-              :inventory-price="selectedItemInventoryPrice"
-              :is-build="false"
-              :show-empty-missing-price-spot="true"
-            />
-          </div>
-          <div style="height: 2rem;">
-            <Price
-              v-if="showPrice"
-              :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
-              :missing="showSelectedItemMissingPrice"
-              :price="selectedItemPrice.price"
-            />
-          </div>
-          <div
-            v-if="showUnitPrice"
-            class="selected-item-item-card-right-per-unit-price selected-item-item-card-right-per-unit"
-          >
-            <Price
-              :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
-              :price="selectedItemPrice.unitPrice"
-              :show-merchant-icon="false"
-              :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
-            />
-          </div>
+    <!-- Price -->
+    <div class="card-line card-line4 selected-item-item-card-prices-and-weight">
+      <div class="selected-item-item-card-prices">
+        <div
+          v-if="includeModsAndContent"
+          class="selected-item-item-card-with-mods"
+        >
+          <InventoryPrice
+            :custom-tooltip="$t('caption.price') + $t('caption.withModsAndContent')"
+            :inventory-price="selectedItemInventoryPrice"
+            :is-build="false"
+            :show-empty-missing-price-spot="true"
+          />
         </div>
-        <div class="selected-item-item-card-right-weight">
-          <div
-            v-if="includeModsAndContent && selectedItemWeight.weight > 0"
-            class="selected-item-item-card-right-with-mods"
+        <div class="selected-item-item-card-price">
+          <Price
+            v-if="showPrice"
+            :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
+            :missing="showSelectedItemMissingPrice"
+            :price="selectedItemPrice.price"
+          />
+        </div>
+        <div
+          v-if="showUnitPrice"
+          class="selected-item-item-card-per-unit"
+        >
+          <Price
+            :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
+            :price="selectedItemPrice.unitPrice"
+            :show-merchant-icon="false"
+            :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
+          />
+        </div>
+      </div>
+      <!-- Weight -->
+      <div class="selected-item-item-card-weights">
+        <div
+          v-if="includeModsAndContent"
+          class="selected-item-item-card-with-mods"
+        >
+          <Tooltip
+            v-if="selectedItemWeight.weight > 0"
+            :tooltip="$t('caption.weight') + $t('caption.withModsAndContent')"
+            position="left"
           >
-            <Tooltip
-              :tooltip="$t('caption.weight') + $t('caption.withModsAndContent')"
-              position="left"
-            >
+            <font-awesome-icon
+              icon="weight-hanging"
+              class="icon-before-text"
+            />
+            <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weightWithContent) }}</span>
+          </Tooltip>
+        </div>
+        <div
+          v-if="(!includeModsAndContent || showWeight) && selectedItemWeight.weight > 0"
+          class="selected-item-item-card-weight"
+        >
+          <Tooltip :tooltip="$t('caption.weight')">
+            <font-awesome-icon
+              icon="weight-hanging"
+              class="icon-before-text"
+            />
+            <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weight) }}</span>
+          </Tooltip>
+        </div>
+        <div
+          v-if="showUnitWeight"
+          class="selected-item-item-card-weight selected-item-item-card-per-unit"
+        >
+          <div>
+            <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
               <font-awesome-icon
                 icon="weight-hanging"
                 class="icon-before-text"
               />
-              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weightWithContent) }}</span>
+              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
             </Tooltip>
-          </div>
-          <div style="height: 2rem;">
-            <div
-              v-if="(!includeModsAndContent || showWeight) && selectedItemWeight.weight > 0"
-              class="selected-item-item-card-right-weight-base"
-            >
-              <Tooltip :tooltip="$t('caption.weight')">
-                <font-awesome-icon
-                  icon="weight-hanging"
-                  class="icon-before-text"
-                />
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weight) }}</span>
-              </Tooltip>
-            </div>
-          </div>
-          <div
-            v-if="showUnitWeight"
-            class="selected-item-item-card-right-weight selected-item-item-card-right-per-unit"
-          >
-            <div>
-              <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
-                <font-awesome-icon
-                  icon="weight-hanging"
-                  class="icon-before-text"
-                />
-                <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
-              </Tooltip>
-            </div>
           </div>
         </div>
       </div>
@@ -237,63 +237,52 @@ async function setWeightAsync(): Promise<void> {
 
 
 <style scoped>
-.selected-item-item-card {
+.selected-item-item-card-per-unit {
   align-items: center;
-  display: flex;
-  flex-grow: 1;
-}
-
-.selected-item-item-card-right {
-  align-items: end;
-  display: flex;
-  flex-direction: column;
-  margin-left: auto;
-}
-
-.selected-item-item-card-right-base {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-}
-
-.selected-item-item-card-right-per-unit {
   display: flex;
   flex-direction: row;
   font-size: 0.85rem;
   font-style: italic;
-  margin-right: 0.15rem;
+  height: 100%;
 }
 
-.selected-item-item-card-right-per-unit-price {
-  margin-right: 3.15rem;
-}
-
-.selected-item-item-card-right-price {
-  align-items: end;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  justify-content: center;
-}
-
-.selected-item-item-card-right-weight {
-  align-items: end;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  justify-content: center;
-  margin-left: 1.7rem;
-  width: 7rem;
-}
-
-.selected-item-item-card-right-weight-base {
+.selected-item-item-card-price {
   align-items: center;
   display: flex;
-  height: 2rem;
+  height: 100%;
 }
 
-.selected-item-item-card-right-with-mods {
+.selected-item-item-card-prices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  grid-column: span 2;
+  height: 100%;
+}
+
+.selected-item-item-card-prices-and-weight {
+  height: unset;
+  /* To override card-line which has a set height */
+}
+
+.selected-item-item-card-weights {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  grid-column: span 2;
+  height: 100%;
+}
+
+.selected-item-item-card-weight {
+  align-items: center;
+  display: flex;
+  height: 100%;
+}
+
+.selected-item-item-card-with-mods {
+  display: flex;
   font-style: italic;
   font-weight: bold;
+  height: 1.25rem;
 }
 </style>
