@@ -20,6 +20,7 @@ import { PathUtils } from '../utils/PathUtils'
 import InputNumberField from './InputNumberFieldComponent.vue'
 import SelectedItemItemCardSelector from './item-card/SelectedItemItemCardSelectorComponent.vue'
 import ItemContent from './ItemContentComponent.vue'
+import ItemHierarchyIndicator from './ItemHierarchyIndicatorComponent.vue'
 import ItemIcon from './ItemIconComponent.vue'
 import ItemMods from './ItemModsComponent.vue'
 import SelectedItemFunctionalities from './SelectedItemFunctionalitiesComponent.vue'
@@ -648,48 +649,65 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
       @update:ignore-price="onIgnorePriceChanged($event)"
     />
     <!-- Mods an content -->
-    <div
-      v-if="modelInventoryItem != null
-        && !itemChanging
-        && !isBaseItem
-        && itemIsModdable && baseItem != null"
-      v-show="selectedTab === SelectableTab.mods"
-    >
-      <span>
-        {{ $t('caption.baseItem') }}
-      </span>
-      <ItemComponent
-        :accepted-items="[]"
-        :can-be-looted="showBaseItemPrice"
-        :inventory-item="baseItem"
-        :is-base-item="true"
+    <div>
+      <div
+        v-if="modelInventoryItem != null
+          && !itemChanging
+          && !isBaseItem
+          && itemIsModdable && baseItem != null"
+        v-show="selectedTab === SelectableTab.mods"
+        class="item-content-and-mods-base-item"
+      >
+        <ItemHierarchyIndicator
+          :inventory-items="[baseItem]"
+          :index="0"
+          mode="baseItem"
+        />
+        <div
+          v-if="modelInventoryItem != null
+            && !itemChanging
+            && !isBaseItem
+            && itemIsModdable && baseItem != null"
+          v-show="selectedTab === SelectableTab.mods"
+          class="item-content-and-mods-base-item-mods"
+        >
+          <span>
+            {{ $t('caption.baseItem') }}
+          </span>
+          <ItemComponent
+            :accepted-items="[]"
+            :can-be-looted="showBaseItemPrice"
+            :inventory-item="baseItem"
+            :is-base-item="true"
+            :path="path"
+          />
+        </div>
+      </div>
+      <ItemMods
+        v-if="itemIsModdable
+          && modelInventoryItem != null
+          && !itemChanging
+          && !isBaseItem"
+        v-show="selectedTab === SelectableTab.mods && (modsCount > 0 || isEditing)"
+        :inventory-mod-slots="modelInventoryItem.modSlots"
+        :moddable-item="(item as IModdable)"
         :path="path"
+        @update:inventory-mod-slots="onModsChanged($event)"
       />
-    </div>
-    <ItemMods
-      v-if="itemIsModdable
-        && modelInventoryItem != null
-        && !itemChanging
-        && !isBaseItem"
-      v-show="selectedTab === SelectableTab.mods && (modsCount > 0 || isEditing)"
-      :inventory-mod-slots="modelInventoryItem.modSlots"
-      :moddable-item="(item as IModdable)"
-      :path="path"
-      @update:inventory-mod-slots="onModsChanged($event)"
-    />
-    <div
-      v-if="itemIsContainer
-        && modelInventoryItem != null
-        && !itemChanging
-        && !isBaseItem"
-      v-show="selectedTab === SelectableTab.content && (contentCount > 0 || isEditing)"
-    >
-      <ItemContent
-        :inventory-items="modelInventoryItem.content"
-        :container-item="(item as IContainer)"
-        :path="path"
-        @update:inventory-items="onContentChanged($event)"
-      />
+      <div
+        v-if="itemIsContainer
+          && modelInventoryItem != null
+          && !itemChanging
+          && !isBaseItem"
+        v-show="selectedTab === SelectableTab.content && (contentCount > 0 || isEditing)"
+      >
+        <ItemContent
+          :inventory-items="modelInventoryItem.content"
+          :container-item="(item as IContainer)"
+          :path="path"
+          @update:inventory-items="onContentChanged($event)"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -704,6 +722,14 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 
 
 <style scoped>
+.item-content-and-mods-base-item {
+  display: flex;
+}
+
+.item-content-and-mods-base-item-mods {
+  padding-top: 0.25rem;
+}
+
 .item-header {
   align-items: center;
   display: flex;

@@ -14,7 +14,6 @@ const props = withDefaults(
     customTooltip?: string,
     inventoryPrice: IInventoryPrice,
     isBuild: boolean,
-    showEmptyMissingPriceSpot?: boolean
   }>(),
   {
     customTooltip: undefined,
@@ -91,7 +90,7 @@ function toggleInventoryPriceDetails(event: Event): void {
       </div>
     </Tooltip>
     <div
-      v-if="inventoryPrice.missingPrice || showEmptyMissingPriceSpot"
+      v-if="inventoryPrice.missingPrice"
       class="inventory-price-icon"
     >
       <div

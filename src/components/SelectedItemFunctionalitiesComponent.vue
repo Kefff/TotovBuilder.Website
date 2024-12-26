@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue'
+import { computed, inject, Ref, watch } from 'vue'
 import { IItem } from '../models/item/IItem'
 import { SelectableTab } from '../models/utils/SelectableTab'
 import vueI18n from '../plugins/vueI18n'
@@ -21,6 +21,8 @@ const props = withDefaults(
     contentCount: 0,
     modsCount: 0
   })
+
+const isEditing = inject<Ref<boolean>>('isEditing')
 
 const contentButtonCaption = computed(() => modelSelectedTab.value !== SelectableTab.mods
   ? vueI18n.t('caption.showContent')
@@ -62,7 +64,7 @@ function setSelectedTab(newValue: SelectableTab): void {
 
 <template>
   <div class="selected-item-functionalities">
-    <div v-if="canHaveContent">
+    <div v-if="canHaveContent && (contentCount > 0 || isEditing)">
       <Tooltip
         :tooltip="contentButtonCaption"
         :apply-hover-style="false"
@@ -82,7 +84,7 @@ function setSelectedTab(newValue: SelectableTab): void {
         </Button>
       </Tooltip>
     </div>
-    <div v-if="canHaveMods">
+    <div v-if="canHaveMods && (modsCount > 0 || isEditing)">
       <Tooltip
         :tooltip="modsButtonCaption"
         :apply-hover-style="false"

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { inject, onMounted, Ref, ref, watch } from 'vue'
+import { computed, inject, onMounted, Ref, ref, watch } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
 import { ItemCategoryId } from '../models/item/IItem'
 import { IModSlot } from '../models/item/IModSlot'
 import { IModdable } from '../models/item/IModdable'
 import { PathUtils } from '../utils/PathUtils'
+import ItemHierarchyIndicator from './ItemHierarchyIndicatorComponent.vue'
 import ModSlot from './ModSlotComponent.vue'
 
 const modelInventoryModSlots = defineModel<IInventoryModSlot[]>('inventoryModSlots', { required: true })
@@ -18,6 +19,17 @@ const props = defineProps<{
 const isEditing = inject<Ref<boolean>>('isEditing')
 const isInitializing = ref(true)
 const modSlots = ref<IModSlot[]>(props.moddableItem.modSlots)
+
+const inventoryItems = computed(() => {
+  const inventoryItems = []
+
+  for (const modSlot of modSlots.value) {
+    const inventoryItem = modelInventoryModSlots.value.find(ims => ims.modSlotName === modSlot.name)?.item
+    inventoryItems.push(inventoryItem)
+  }
+
+  return inventoryItems
+})
 
 onMounted(() => initialize())
 
@@ -46,13 +58,6 @@ function initialize(): void {
   }
 
   isInitializing.value = false
-}
-
-/**
- * Find the inventory item corresponding to a mod slot if it exists in the inventory mod slot list.
- */
-function findInventoryItemOfModSlot(modSlotName: string): IInventoryItem | undefined {
-  return modelInventoryModSlots.value.find(ims => ims.modSlotName === modSlotName)?.item
 }
 
 /**
@@ -87,18 +92,24 @@ function onItemChanged(modSlotName: string, newInventoryItem: IInventoryItem | u
 
 
 <template>
-  <div
-    v-if="!isInitializing && (modSlots.length > 0 || isEditing)"
-    class="item-mods"
-  >
-    <ModSlot
-      v-for="modSlot of modSlots"
+  <div v-if="!isInitializing && (modSlots.length > 0 || isEditing)">
+    <div
+      v-for="(modSlot, index) of modSlots"
       :key="`${path}/${PathUtils.modSlotPrefix}${modSlot.name}`"
-      :inventory-item="findInventoryItemOfModSlot(modSlot.name)"
-      :mod-slot="modSlot"
-      :path="`${path}/${PathUtils.modSlotPrefix}${modSlot.name}`"
-      @update:inventory-item="onItemChanged(modSlot.name, $event)"
-    />
+      class="item-mods-mod"
+    >
+      <ItemHierarchyIndicator
+        :inventory-items="inventoryItems"
+        :index="index"
+        mode="mods"
+      />
+      <ModSlot
+        :inventory-item="inventoryItems[index]"
+        :mod-slot="modSlot"
+        :path="`${path}/${PathUtils.modSlotPrefix}${modSlot.name}`"
+        @update:inventory-item="onItemChanged(modSlot.name, $event)"
+      />
+    </div>
   </div>
 </template>
 
@@ -110,9 +121,8 @@ function onItemChanged(modSlotName: string, newInventoryItem: IInventoryItem | u
 
 
 
-
 <style scoped>
-.item-mods {
-  margin-bottom: 1rem;
+.item-mods-mod {
+  display: flex;
 }
 </style>

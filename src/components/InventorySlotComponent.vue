@@ -189,7 +189,7 @@ async function setAcceptedItemsAsync(): Promise<void> {
 
 <style>
 .inventory-slot.p-panel > .p-panel-header {
-  background-color: var(--surface-transparent-0) !important;
+  background-color: var(--surface-transparent-0);
 }
 
 .inventory-slot.p-panel .p-panel-content {

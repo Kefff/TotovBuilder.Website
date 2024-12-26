@@ -9,6 +9,7 @@ import { ItemContentComponentService } from '../services/components/ItemContentC
 import Services from '../services/repository/Services'
 import { PathUtils } from '../utils/PathUtils'
 import Item from './ItemComponent.vue'
+import ItemHierarchyIndicator from './ItemHierarchyIndicatorComponent.vue'
 
 const modelInventoryItems = defineModel<IInventoryItem[]>('inventoryItems', { required: true })
 
@@ -120,21 +121,27 @@ function setCategoryId(): void {
 
 
 <template>
-  <div
-    v-if="modelInventoryItems.length > 0 || isEditing"
-    class="item-content-indent"
-  >
-    <Item
+  <div v-if="modelInventoryItems.length > 0 || isEditing">
+    <div
       v-for="(containedItem, index) of modelInventoryItems"
       :key="`${path}/${index}_${modelInventoryItems.length}`"
-      :accepted-items-category-id="categoryId"
-      :accepted-items="acceptedItems"
-      :force-quantity-to-max-selectable-amount="isMagazine"
-      :inventory-item="modelInventoryItems[index]"
-      :max-stackable-amount="maximumQuantity"
-      :path="`${path}/${PathUtils.contentPrefix}${index}_${modelInventoryItems.length}/${itemPathPrefix}${containedItem.itemId}`"
-      @update:inventory-item="onItemChanged(index, $event)"
-    />
+      class="item-content-content"
+    >
+      <ItemHierarchyIndicator
+        :inventory-items="inventoryItems"
+        :index="index"
+        mode="content"
+      />
+      <Item
+        :accepted-items-category-id="categoryId"
+        :accepted-items="acceptedItems"
+        :force-quantity-to-max-selectable-amount="isMagazine"
+        :inventory-item="modelInventoryItems[index]"
+        :max-stackable-amount="maximumQuantity"
+        :path="`${path}/${PathUtils.contentPrefix}${index}_${modelInventoryItems.length}/${itemPathPrefix}${containedItem.itemId}`"
+        @update:inventory-item="onItemChanged(index, $event)"
+      />
+    </div>
     <Item
       v-if="isEditing && canAddItem"
       v-model:inventory-item="itemToAdd"
@@ -155,11 +162,8 @@ function setCategoryId(): void {
 
 
 
-
-<style scoped>
-.item-content-indent {
-  margin-left: 3.25rem;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
+<style>
+.item-content-content {
+  display: flex;
 }
 </style>

@@ -150,7 +150,6 @@ async function setWeightAsync(): Promise<void> {
             :custom-tooltip="$t('caption.price') + $t('caption.withModsAndContent')"
             :inventory-price="selectedItemInventoryPrice"
             :is-build="false"
-            :show-empty-missing-price-spot="true"
           />
         </div>
         <div class="selected-item-item-card-price">
@@ -260,6 +259,7 @@ async function setWeightAsync(): Promise<void> {
   align-items: center;
   display: flex;
   height: 100%;
+  min-height: 2rem;
 }
 
 .selected-item-item-card-prices {
@@ -293,6 +293,21 @@ async function setWeightAsync(): Promise<void> {
   display: flex;
   font-style: italic;
   font-weight: bold;
-  height: 1.25rem;
+  min-height: 1.25rem;
+}
+</style>
+
+
+
+
+
+
+
+
+
+<style>
+.selected-item-item-card-with-mods > .inventory-price .inventory-price-list {
+  flex-wrap: wrap;
+  /* Allows the price of items with content / mods in multiple currencies to wrap */
 }
 </style>
