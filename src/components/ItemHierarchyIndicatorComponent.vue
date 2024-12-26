@@ -34,7 +34,7 @@ const lastHierarchyInventoryItemIndex = computed(() => {
 
   return lastIndex
 })
-const upperHeight = computed(() => `${props.mode === 'content' ? '0.5' : '1.9'}rem`)
+const upperHeight = computed(() => `${props.mode === 'content' ? '0.5' : '2.75'}rem`)
 </script>
 
 

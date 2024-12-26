@@ -97,7 +97,7 @@ async function setAcceptedItemsAsync(): Promise<void> {
 
 <style scoped>
 .mod-slot {
-  padding-top: 0.25rem;
+  padding-top: 1rem;
 }
 
 .mod-slot-required-ok {

@@ -727,7 +727,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-content-and-mods-base-item-mods {
-  padding-top: 0.25rem;
+  padding-top: 1rem;
 }
 
 .item-header {
@@ -753,11 +753,9 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-main {
-  /* background-color: var(--primary-color6); */
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 0.25rem;
 }
 
 .item-quantity {
