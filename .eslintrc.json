@@ -19,7 +19,16 @@
         "project": true
       },
       "rules": {
-        "@typescript-eslint/no-floating-promises": "error"
+        "@typescript-eslint/no-floating-promises": "error",
+        "@typescript-eslint/strict-boolean-expressions": [
+          "error",
+          {
+            "allowNullableBoolean": true,
+            "allowString": false,
+            "allowNumber": false,
+            "allowNullableObject": false
+          }
+        ]
       }
     }
   ],
@@ -45,6 +54,12 @@
     "comma-dangle": [
       "warn",
       "never"
+    ],
+    "no-implicit-coercion": [
+      "error",
+      {
+        "boolean": false
+      }
     ],
     "no-restricted-syntax": [
       "error",

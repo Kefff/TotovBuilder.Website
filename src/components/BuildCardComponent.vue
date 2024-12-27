@@ -294,15 +294,6 @@ function displayStats(item: IItem): void {
             && buildSummary.weight != 0"
           class="card-line card-line3"
         >
-          <div
-            v-if="buildSummary.price.priceInMainCurrency > 0"
-            class="build-card-price"
-          >
-            <InventoryPrice
-              :inventory-price="buildSummary.price"
-              :is-build="true"
-            />
-          </div>
           <Tooltip
             v-if="buildSummary.weight != 0"
             :tooltip="$t('caption.weight')"
@@ -316,6 +307,15 @@ function displayStats(item: IItem): void {
               {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight) }}
             </span>
           </Tooltip>
+          <div
+            v-if="buildSummary.price.priceInMainCurrency > 0"
+            class="build-card-price"
+          >
+            <InventoryPrice
+              :inventory-price="buildSummary.price"
+              :is-build="true"
+            />
+          </div>
         </div>
       </div>
       <div class="card-buttons">

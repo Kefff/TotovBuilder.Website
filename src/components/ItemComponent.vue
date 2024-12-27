@@ -595,6 +595,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           <span>{{ item.name }}</span>
         </div>
         <Tooltip
+          v-if="item != null"
           :tooltip="$t('caption.showDetails')"
           :apply-hover-style="false"
         >
@@ -671,7 +672,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           v-show="selectedTab === SelectableTab.mods"
           class="item-content-and-mods-base-item-mods"
         >
-          <span>
+          <span class="item-content-and-mods-base-item-mods-name">
             {{ $t('caption.baseItem') }}
           </span>
           <ItemComponent
@@ -727,7 +728,11 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-content-and-mods-base-item-mods {
-  padding-top: 1rem;
+  margin-top: 0.5rem;
+}
+
+.item-content-and-mods-base-item-mods-name {
+  font-weight: bold;
 }
 
 .item-header {

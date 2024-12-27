@@ -17,6 +17,8 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "strict": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
     "target": "es2019",
     "types": [
       "vite/client",

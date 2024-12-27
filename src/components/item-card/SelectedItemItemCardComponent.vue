@@ -139,54 +139,7 @@ async function setWeightAsync(): Promise<void> {
   <div class="card-lines">
     <!-- Specialized stats -->
     <slot />
-    <!-- Price -->
     <div class="card-line card-line4 selected-item-item-card-prices-and-weight">
-      <div class="selected-item-item-card-prices">
-        <div
-          v-if="includeModsAndContent"
-          class="selected-item-item-card-with-mods"
-        >
-          <InventoryPrice
-            :custom-tooltip="$t('caption.price') + $t('caption.withModsAndContent')"
-            :inventory-price="selectedItemInventoryPrice"
-            :is-build="false"
-          />
-        </div>
-        <div class="selected-item-item-card-price">
-          <Price
-            v-if="showPrice"
-            :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
-            :missing="showSelectedItemMissingPrice"
-            :price="selectedItemPrice.price"
-          />
-          <div v-if="isEditing && canBeLooted && canIgnorePrice">
-            <Tooltip
-              :tooltip="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
-              :apply-hover-style="false"
-            >
-              <Button
-                class="p-button-sm"
-                outlined
-                :severity="!modelIgnorePrice ? 'danger' : 'primary'"
-                @click="modelIgnorePrice = !modelIgnorePrice"
-              >
-                <font-awesome-icon :icon="!modelIgnorePrice ? 'ban' : 'ruble-sign'" />
-              </Button>
-            </Tooltip>
-          </div>
-        </div>
-        <div
-          v-if="showUnitPrice"
-          class="selected-item-item-card-per-unit"
-        >
-          <Price
-            :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
-            :price="selectedItemPrice.unitPrice"
-            :show-merchant-icon="false"
-            :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
-          />
-        </div>
-      </div>
       <!-- Weight -->
       <div class="selected-item-item-card-weights">
         <div
@@ -232,6 +185,55 @@ async function setWeightAsync(): Promise<void> {
           </div>
         </div>
       </div>
+      <!-- Price -->
+      <div class="selected-item-item-card-prices">
+        <div
+          v-if="includeModsAndContent"
+          class="selected-item-item-card-with-mods"
+        >
+          <InventoryPrice
+            :custom-tooltip="$t('caption.price') + $t('caption.withModsAndContent')"
+            :inventory-price="selectedItemInventoryPrice"
+            :is-build="false"
+          />
+        </div>
+        <div
+          v-if="showPrice"
+          class="selected-item-item-card-price"
+        >
+          <Price
+            :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
+            :missing="showSelectedItemMissingPrice"
+            :price="selectedItemPrice.price"
+          />
+          <div v-if="isEditing && canBeLooted && canIgnorePrice">
+            <Tooltip
+              :tooltip="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
+              :apply-hover-style="false"
+            >
+              <Button
+                class="p-button-sm"
+                outlined
+                :severity="!modelIgnorePrice ? 'danger' : 'primary'"
+                @click="modelIgnorePrice = !modelIgnorePrice"
+              >
+                <font-awesome-icon :icon="!modelIgnorePrice ? 'ban' : 'ruble-sign'" />
+              </Button>
+            </Tooltip>
+          </div>
+        </div>
+        <div
+          v-if="showUnitPrice"
+          class="selected-item-item-card-per-unit"
+        >
+          <Price
+            :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
+            :price="selectedItemPrice.unitPrice"
+            :show-merchant-icon="false"
+            :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -258,6 +260,7 @@ async function setWeightAsync(): Promise<void> {
 .selected-item-item-card-price {
   align-items: center;
   display: flex;
+  gap: 0.25rem;
   height: 100%;
   min-height: 2rem;
 }

@@ -149,40 +149,35 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
       </Tooltip>
     </div>
     <div
-      v-if="hasSummaryPrice && hasSummaryWeight"
+      v-if="hasSummaryWeight"
+      class="build-summary-group"
+    >
+      <Tooltip
+        v-if="hasSummaryWeight"
+        :tooltip="$t('caption.weight')"
+        class="build-summary-value"
+      >
+        <font-awesome-icon
+          icon="weight-hanging"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
+      </Tooltip>
+    </div>
+    <div
+      v-if="hasSummaryPrice"
       class="build-summary-group"
     >
       <div
         v-if="hasSummaryPrice"
-        class="build-summary-group"
+        class="build-summary-value"
       >
-        <div
-          v-if="hasSummaryPrice"
-          class="build-summary-value"
-        >
-          <InventoryPrice
-            v-if="
-              !isLoading"
-            :inventory-price="summary.price"
-            :is-build="true"
-          />
-        </div>
-      </div>
-      <div
-        v-if="hasSummaryWeight"
-        class="build-summary-group"
-      >
-        <Tooltip
-          v-if="hasSummaryWeight"
-          :tooltip="$t('caption.weight')"
-          class="build-summary-value"
-        >
-          <font-awesome-icon
-            icon="weight-hanging"
-            class="icon-before-text"
-          />
-          <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
-        </Tooltip>
+        <InventoryPrice
+          v-if="
+            !isLoading"
+          :inventory-price="summary.price"
+          :is-build="true"
+        />
       </div>
     </div>
   </div>

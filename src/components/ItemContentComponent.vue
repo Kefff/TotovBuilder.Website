@@ -125,12 +125,12 @@ function setCategoryId(): void {
     <div
       v-for="(containedItem, index) of modelInventoryItems"
       :key="`${path}/${index}_${modelInventoryItems.length}`"
-      class="item-content-content"
+      class="item-content-content-item-group"
     >
       <ItemHierarchyIndicator
         :inventory-items="inventoryItems"
         :index="index"
-        mode="content"
+        :mode="props.containerItem.categoryId === ItemCategoryId.magazine ? 'magazineContent' : 'content'"
       />
       <Item
         :accepted-items-category-id="categoryId"
@@ -139,18 +139,28 @@ function setCategoryId(): void {
         :inventory-item="modelInventoryItems[index]"
         :max-stackable-amount="maximumQuantity"
         :path="`${path}/${PathUtils.contentPrefix}${index}_${modelInventoryItems.length}/${itemPathPrefix}${containedItem.itemId}`"
+        class="item-content-content-item"
         @update:inventory-item="onItemChanged(index, $event)"
       />
     </div>
-    <Item
+    <div
       v-if="isEditing && canAddItem"
-      v-model:inventory-item="itemToAdd"
-      :accepted-items="acceptedItems"
-      :accepted-items-category-id="categoryId"
-      :max-stackable-amount="maximumQuantity"
-      :path="`${path}/new`"
-      @update:inventory-item="onItemAdded($event)"
-    />
+      class="item-content-content-item-group"
+    >
+      <ItemHierarchyIndicator
+        :inventory-items="[itemToAdd]"
+        :index="0"
+        mode="addContent"
+      />
+      <Item
+        v-model:inventory-item="itemToAdd"
+        :accepted-items="acceptedItems"
+        :accepted-items-category-id="categoryId"
+        :max-stackable-amount="maximumQuantity"
+        :path="`${path}/new`"
+        @update:inventory-item="onItemAdded($event)"
+      />
+    </div>
   </div>
 </template>
 
@@ -162,8 +172,16 @@ function setCategoryId(): void {
 
 
 
-<style>
-.item-content-content {
+<style scoped>
+.item-content-content-item {
+  margin-top: 2rem;
+}
+
+.item-content-content-item-group {
   display: flex;
+}
+
+.item-content-content-item-group:first-child > .item-content-content-item {
+  margin-top: 0.5rem;
 }
 </style>

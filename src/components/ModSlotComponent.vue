@@ -66,7 +66,9 @@ async function setAcceptedItemsAsync(): Promise<void> {
     class="mod-slot"
   >
     <div>
-      {{ $t('caption.modSlot_' + (modSlot.name.startsWith('chamber') ? 'chamber' : modSlot.name)) }}
+      <span class="mod-slot-name">
+        {{ $t('caption.modSlot_' + (modSlot.name.startsWith('chamber') ? 'chamber' : modSlot.name)) }}
+      </span>
       <Tooltip :tooltip="$t('caption.requiredMod')">
         <span
           v-if="modSlot.required"
@@ -97,7 +99,11 @@ async function setAcceptedItemsAsync(): Promise<void> {
 
 <style scoped>
 .mod-slot {
-  padding-top: 1rem;
+  margin-top: 2rem;
+}
+
+.mod-slot-name {
+  font-weight: bold;
 }
 
 .mod-slot-required-ok {

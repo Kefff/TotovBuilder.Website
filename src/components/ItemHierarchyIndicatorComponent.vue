@@ -5,7 +5,7 @@ import { IInventoryItem } from '../models/build/IInventoryItem'
 const props = defineProps<{
   inventoryItems: (IInventoryItem | undefined)[],
   index: number
-  mode: 'baseItem' | 'content' | 'mods',
+  mode: 'addContent' | 'baseItem' | 'content' | 'magazineContent' | 'mods',
 }>()
 
 const _bottomTopOffset = '12px'
@@ -16,7 +16,10 @@ const isEditing = inject<Ref<boolean>>('isEditing')
 const bottomHeight = computed(() => `calc(100% - ${upperHeight.value} - ${_middleHeight} + ${_bottomTopOffset})`)
 const bottomTop = computed(() => `calc(${upperHeight.value} + ${_middleHeight} - ${_bottomTopOffset})`)
 const displayBottomPart = computed(() => {
-  const result = props.index !== lastHierarchyInventoryItemIndex.value || props.mode === 'baseItem'
+  const result =
+    props.index !== lastHierarchyInventoryItemIndex.value
+    || props.mode === 'baseItem'
+    || (props.mode === 'content' && isEditing?.value)
 
   return result
 })
@@ -34,7 +37,18 @@ const lastHierarchyInventoryItemIndex = computed(() => {
 
   return lastIndex
 })
-const upperHeight = computed(() => `${props.mode === 'content' ? '0.5' : '2.75'}rem`)
+const upperHeight = computed(() => {
+  if (props.mode === 'baseItem') {
+    return '2.15rem'
+  } else if (props.mode === 'mods') {
+    return '3.5rem'
+  } else if ((props.mode === 'content' || props.mode === 'magazineContent')
+    && props.index === 0) {
+    return '0.85rem'
+  } else {
+    return '2.5rem'
+  }
+})
 </script>
 
 
@@ -48,13 +62,13 @@ const upperHeight = computed(() => `${props.mode === 'content' ? '0.5' : '2.75'}
 
 <template>
   <div
-    v-if="isVisible"
+    v-show="isVisible"
     class="item-hierarchy-indicator"
   >
     <div class="item-hierarchy-indicator-upper" />
     <div class="item-hierarchy-indicator-middle" />
     <div
-      v-if="displayBottomPart"
+      v-show="displayBottomPart"
       class="item-hierarchy-indicator-bottom"
     />
   </div>
