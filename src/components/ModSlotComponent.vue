@@ -49,6 +49,10 @@ watch(() => props.path, () => getModSlotBreadcrumb())
  * Gets the breadcrum to display in front of the name of the mod slot.
  */
 function getModSlotBreadcrumb(): void {
+  if (!isCompactMode.value) {
+    return
+  }
+
   let modSlotNames = PathUtils.getPathModSlotNames(props.path)
   modSlotNames = modSlotNames.map(msn => vueI18n.t(`caption.modSlot_${msn.startsWith('chamber') ? 'chamber' : msn}`))
   breadcrumbTooltip.value = modSlotNames.join(' - ')
@@ -65,8 +69,8 @@ function getModSlotBreadcrumb(): void {
 
   let bc = ''
 
-  if (isCompactMode.value && modSlotNames.length > 2) {
-    modSlotNames = modSlotNames.slice(-2)
+  if (modSlotNames.length >= 2) {
+    modSlotNames = modSlotNames.slice(-1)
     bc += '. . . '
   }
 
@@ -105,11 +109,13 @@ async function setAcceptedItemsAsync(): Promise<void> {
   <div
     v-if="isEditing || modelInventoryItem != null"
     class="mod-slot"
-    :class="{ 'mod-slot-compact': isCompactMode }"
   >
     <div class="mod-slot-header">
       <Tooltip :tooltip="breadcrumbTooltip">
-        <span class="mod-slot-breadcrumb">
+        <span
+          v-if="breadcrumb != null"
+          class="mod-slot-breadcrumb"
+        >
           {{ breadcrumb }}
         </span>
         <span class="mod-slot-name">
@@ -146,21 +152,12 @@ async function setAcceptedItemsAsync(): Promise<void> {
 
 <style scoped>
 .mod-slot {
-  margin-top: 1rem;
   width: 100%;
 }
 
 .mod-slot-breadcrumb {
   font-size: 0.875rem;
   font-style: italic;
-}
-
-.mod-slot-compact {
-  border-top-color: var(--surface-500);
-  border-top-style: solid;
-  border-top-width: 1px;
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
 }
 
 .mod-slot-header {

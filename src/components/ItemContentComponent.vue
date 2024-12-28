@@ -150,6 +150,7 @@ function setCategoryId(): void {
     <div
       v-if="isEditing && canAddItem"
       class="item-content-content-item"
+      :class="{ 'item-content-content-item-compact': isCompactMode && isEditing }"
     >
       <ItemHierarchyIndicator
         :inventory-items="[itemToAdd]"
@@ -188,6 +189,7 @@ function setCategoryId(): void {
   border-top-style: solid;
   border-top-width: 1px;
   margin-top: 0.5rem;
+  padding-top: 0.5rem;
 }
 
 .item-content-content-item-compact:first-child {
@@ -207,10 +209,10 @@ function setCategoryId(): void {
 
 <style>
 .item-content-content-item > .item {
-  padding-top: 1rem;
+  margin-top: 0.5rem;
 }
 
-.item-content-content-item:first-child > .item {
-  padding-top: 0.5rem;
+.item-content-content-item-compact > .item {
+  margin-top: 0;
 }
 </style>

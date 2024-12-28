@@ -249,7 +249,6 @@ async function setWearableModifiersAsync(): Promise<void> {
     />
     <RangedWeaponItemCard
       v-if="specializedComponent === RangedWeaponItemCard"
-      :display-empty-lines="false"
       :include-mods-and-content="includeModsAndContent"
       :is-base-item="isBaseItem"
       :item="selectedItem"

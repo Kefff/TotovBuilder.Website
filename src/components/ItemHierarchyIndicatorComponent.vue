@@ -41,15 +41,10 @@ const lastHierarchyInventoryItemIndex = computed(() => {
   return lastIndex
 })
 const upperHeight = computed(() => {
-  if (props.mode === 'baseItem') {
-    return '2rem'
-  } else if (props.mode === 'mods') {
-    return '2.75rem'
-  } else if ((props.mode === 'content' || props.mode === 'magazineContent')
-    && props.index === 0) {
-    return '0.75rem'
+  if (props.mode === 'baseItem' || props.mode === 'mods') {
+    return '2.25rem'
   } else {
-    return '1.25rem'
+    return '0.75rem'
   }
 })
 </script>
