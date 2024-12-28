@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useBreakpoints } from '@vueuse/core'
 import { computed, inject, onMounted, Ref, ref, watch } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
@@ -7,7 +6,6 @@ import { ItemCategoryId } from '../models/item/IItem'
 import { IModSlot } from '../models/item/IModSlot'
 import { IModdable } from '../models/item/IModdable'
 import { PathUtils } from '../utils/PathUtils'
-import WebBrowserUtils from '../utils/WebBrowserUtils'
 import ItemHierarchyIndicator from './ItemHierarchyIndicatorComponent.vue'
 import ModSlot from './ModSlotComponent.vue'
 
@@ -18,12 +16,10 @@ const props = defineProps<{
   path: string
 }>()
 
-const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const isEditing = inject<Ref<boolean>>('isEditing')
 const isInitializing = ref(true)
 const modSlots = ref<IModSlot[]>(props.moddableItem.modSlots)
 
-const isCompactMode = breakpoints.smaller('tabletLandscape')
 const inventoryItems = computed(() => {
   const inventoryItems = []
 
@@ -101,7 +97,6 @@ function onItemChanged(modSlotName: string, newInventoryItem: IInventoryItem | u
       v-for="(modSlot, index) of modSlots"
       :key="`${path}/${PathUtils.modSlotPrefix}${modSlot.name}`"
       class="item-mods-mod"
-      :class="{ 'item-mods-mod-compact': isCompactMode && (inventoryItems[index] != null || isEditing) }"
     >
       <ItemHierarchyIndicator
         :inventory-items="inventoryItems"
@@ -130,19 +125,6 @@ function onItemChanged(modSlotName: string, newInventoryItem: IInventoryItem | u
 .item-mods-mod {
   display: flex;
 }
-
-.item-mods-mod-compact {
-  border-top-color: var(--surface-500);
-  border-top-style: solid;
-  border-top-width: 1px;
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
-}
-
-.item-mods-mod-compact:first-child {
-  border-top-style: none;
-  margin-top: 0;
-}
 </style>
 
 
@@ -153,13 +135,8 @@ function onItemChanged(modSlotName: string, newInventoryItem: IInventoryItem | u
 
 
 
-
 <style>
-.item-mods-mod > .mod-slot {
+.item-mods-mod:first-child > .mod-slot {
   margin-top: 0.5rem;
-}
-
-.item-mods-mod-compact > .mod-slot {
-  margin-top: 0;
 }
 </style>

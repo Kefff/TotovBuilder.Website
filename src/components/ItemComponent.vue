@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useBreakpoints } from '@vueuse/core'
 import { computed, inject, onMounted, ref, Ref, watch } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventoryModSlot } from '../models/build/IInventoryModSlot'
@@ -18,7 +17,6 @@ import { PresetService } from '../services/PresetService'
 import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
 import { PathUtils } from '../utils/PathUtils'
-import WebBrowserUtils from '../utils/WebBrowserUtils'
 import InputNumberField from './InputNumberFieldComponent.vue'
 import SelectedItemItemCardSelector from './item-card/SelectedItemItemCardSelectorComponent.vue'
 import ItemContent from './ItemContentComponent.vue'
@@ -59,7 +57,6 @@ const _itemService = Services.get(ItemService)
 const _presetService = Services.get(PresetService)
 
 const baseItem = ref<IInventoryItem | undefined>()
-const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const isEditing = inject<Ref<boolean>>('isEditing')
 const item = ref<IItem | undefined>()
 const itemChanging = ref(false)
@@ -86,7 +83,6 @@ const includeModsAndContentInSummary = computed(() =>
     && !props.isBaseItem)
   || (itemIsContainer.value
     && props.isMainInventorySlotItem))
-const isCompactMode = breakpoints.smaller('tabletLandscape')
 const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.value?.maxStackableAmount ?? 1)
 const modsCount = computed(() => modelInventoryItem.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
 const optionHeight = computed(() => Number.parseInt(window.getComputedStyle(document.documentElement).fontSize.replace('px', '')) * 4)
@@ -666,7 +662,6 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           && itemIsModdable && baseItem != null"
         v-show="selectedTab === SelectableTab.mods"
         class="item-content-and-mods-base-item"
-        :class="{ 'item-content-and-mods-base-item-compact': isCompactMode }"
       >
         <ItemHierarchyIndicator
           :inventory-items="[baseItem]"
@@ -740,15 +735,8 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   display: flex;
 }
 
-.item-content-and-mods-base-item-compact {
-  border-bottom-color: var(--surface-500);
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  padding-bottom: 0.5rem;
-}
-
 .item-content-and-mods-base-item-mods {
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   margin-top: 0.5rem;
   width: 100%;
 }

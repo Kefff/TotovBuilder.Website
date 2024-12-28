@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useBreakpoints } from '@vueuse/core'
 import { Ref, computed, inject, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IContainer } from '../models/item/IContainer'
@@ -9,7 +8,6 @@ import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import { ItemContentComponentService } from '../services/components/ItemContentComponentService'
 import Services from '../services/repository/Services'
 import { PathUtils } from '../utils/PathUtils'
-import WebBrowserUtils from '../utils/WebBrowserUtils'
 import Item from './ItemComponent.vue'
 import ItemHierarchyIndicator from './ItemHierarchyIndicatorComponent.vue'
 
@@ -24,14 +22,12 @@ const _globalFilterService = Services.get(GlobalFilterService)
 const _itemPropertiesService = Services.get(ItemPropertiesService)
 
 const acceptedItems = ref<IItem[]>([])
-const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const categoryId = ref<ItemCategoryId | undefined>(undefined)
 const isEditing = inject<Ref<boolean>>('isEditing')
 const itemPathPrefix = PathUtils.itemPrefix
 const itemToAdd = ref<IInventoryItem>()
 
 const canAddItem = computed(() => !isMagazine.value || modelInventoryItems.value.length === 0)
-const isCompactMode = breakpoints.smaller('tabletLandscape')
 const isMagazine = computed(() => _itemPropertiesService.isMagazine(props.containerItem))
 const maximumQuantity = computed(() => isMagazine.value ? props.containerItem.capacity : undefined)
 
@@ -130,7 +126,6 @@ function setCategoryId(): void {
       v-for="(containedItem, index) of modelInventoryItems"
       :key="`${path}/${index}_${modelInventoryItems.length}`"
       class="item-content-content-item"
-      :class="{ 'item-content-content-item-compact': isCompactMode }"
     >
       <ItemHierarchyIndicator
         :inventory-items="inventoryItems"
@@ -150,7 +145,6 @@ function setCategoryId(): void {
     <div
       v-if="isEditing && canAddItem"
       class="item-content-content-item"
-      :class="{ 'item-content-content-item-compact': isCompactMode && isEditing }"
     >
       <ItemHierarchyIndicator
         :inventory-items="[itemToAdd]"
@@ -183,19 +177,6 @@ function setCategoryId(): void {
   display: flex;
   width: 100%;
 }
-
-.item-content-content-item-compact {
-  border-top-color: var(--surface-500);
-  border-top-style: solid;
-  border-top-width: 1px;
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
-}
-
-.item-content-content-item-compact:first-child {
-  border-top: none;
-  margin-top: 0;
-}
 </style>
 
 
@@ -209,10 +190,10 @@ function setCategoryId(): void {
 
 <style>
 .item-content-content-item > .item {
-  margin-top: 0.5rem;
+  margin-top: 1.5rem;
 }
 
-.item-content-content-item-compact > .item {
-  margin-top: 0;
+.item-content-content-item:first-child > .item {
+  margin-top: 0.5rem;
 }
 </style>

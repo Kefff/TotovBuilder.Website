@@ -288,6 +288,7 @@ async function setWeightAsync(): Promise<void> {
   align-items: center;
   display: flex;
   height: 100%;
+  text-wrap: nowrap;
 }
 
 .selected-item-item-card-with-mods {

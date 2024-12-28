@@ -25,6 +25,7 @@ const displayBottomPart = computed(() => {
 
   return result
 })
+const indicatorWidth = computed(() => isCompactMode.value ? '0.75rem' : '1.75rem')
 const isCompactMode = breakpoints.smaller('tabletLandscape')
 const isVisible = computed(() => props.inventoryItems[props.index] != null || isEditing?.value)
 const lastHierarchyInventoryItemIndex = computed(() => {
@@ -41,10 +42,18 @@ const lastHierarchyInventoryItemIndex = computed(() => {
   return lastIndex
 })
 const upperHeight = computed(() => {
-  if (props.mode === 'baseItem' || props.mode === 'mods') {
+  if (props.mode === 'baseItem'
+    || (props.mode === 'mods' && props.index === 0)
+  ) {
     return '2.25rem'
-  } else {
+  } else if (props.mode === 'mods') {
+    return '3.25rem'
+  } else if (props.index === 0
+    && (props.mode === 'content'
+      || props.mode === 'magazineContent')) {
     return '0.75rem'
+  } else {
+    return '1.75rem'
   }
 })
 </script>
@@ -60,7 +69,7 @@ const upperHeight = computed(() => {
 
 <template>
   <div
-    v-show="isVisible && !isCompactMode"
+    v-show="isVisible"
     class="item-hierarchy-indicator"
   >
     <div class="item-hierarchy-indicator-upper" />
@@ -86,7 +95,7 @@ const upperHeight = computed(() => {
   flex-direction: column;
   flex-shrink: 0;
   position: relative;
-  width: 1.75rem;
+  width: v-bind(indicatorWidth);
 }
 
 .item-hierarchy-indicator-bottom {
