@@ -19,7 +19,17 @@ const grenade = computed(() => props.item as IGrenade)
 
 
 <template>
-  <div class="card-line card-line4">
+  <div class="card-line card-line3">
+    <Tooltip
+      :tooltip="$t('caption.explosionDelay')"
+      class="card-value"
+    >
+      <font-awesome-icon
+        icon="stopwatch"
+        class="icon-before-text"
+      />
+      <span>{{ $t('caption.explosionDelayValue', { delay: grenade.explosionDelay }) }}</span>
+    </Tooltip>
     <Tooltip
       v-if="grenade.fragmentsAmount > 0"
       :tooltip="$t('caption.fragmentsAmount')"
@@ -32,43 +42,16 @@ const grenade = computed(() => props.item as IGrenade)
       <span>{{ grenade.fragmentsAmount }}</span>
     </Tooltip>
     <Tooltip
-      :tooltip="$t('caption.explosionDelay')"
+      v-if="grenade.maximumExplosionRange > 0"
+      :tooltip="$t('caption.explosionRange')"
       class="card-value"
     >
       <font-awesome-icon
-        icon="stopwatch"
+        icon="dot-circle"
         class="icon-before-text"
       />
-      <span>{{ $t('caption.explosionDelayValue', { delay: grenade.explosionDelay }) }}</span>
+      <span v-if="grenade.minimumExplosionRange !== grenade.maximumExplosionRange">{{ $t('caption.explosionRangeValue', { min: grenade.minimumExplosionRange, max: grenade.maximumExplosionRange }) }}</span>
+      <span v-else>{{ $t('caption.explosionRangeSingleValue', { range: grenade.maximumExplosionRange }) }}</span>
     </Tooltip>
-    <div class="grenade-item-card-long">
-      <Tooltip
-        v-if="grenade.maximumExplosionRange > 0"
-        :tooltip="$t('caption.explosionRange')"
-        class="card-value"
-      >
-        <font-awesome-icon
-          icon="dot-circle"
-          class="icon-before-text"
-        />
-        <span v-if="grenade.minimumExplosionRange !== grenade.maximumExplosionRange">{{ $t('caption.explosionRangeValue', { min: grenade.minimumExplosionRange, max: grenade.maximumExplosionRange }) }}</span>
-        <span v-else>{{ $t('caption.explosionRangeSingleValue', { range: grenade.maximumExplosionRange }) }}</span>
-      </Tooltip>
-    </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-.grenade-item-card-long {
-  grid-column: span 2;
-}
-</style>

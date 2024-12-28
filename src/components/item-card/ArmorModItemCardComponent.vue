@@ -9,11 +9,13 @@ import ArmorItemCard from './ArmorItemCardComponent.vue'
 const props = withDefaults(
   defineProps<{
     armorModifiersOverride?: IArmorModifiers,
+    displayEmptyLines: boolean,
     item: IItem,
     wearableModifiersOverride?: IWearableModifiers
   }>(),
   {
     armorModifiersOverride: undefined,
+    displayEmptyLines: true,
     wearableModifiersOverride: undefined
   })
 
@@ -34,6 +36,7 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? armo
 <template>
   <ArmorItemCard
     :armor-modifiers-override="armorModifiers"
+    :display-empty-lines="displayEmptyLines"
     :item="armorMod"
     :wearable-modifiers-override="wearableModifiers"
   />

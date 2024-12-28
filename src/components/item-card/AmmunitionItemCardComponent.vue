@@ -8,7 +8,14 @@ import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import Tooltip from '../TooltipComponent.vue'
 
-const props = defineProps<{ item: IItem }>()
+const props = withDefaults(
+  defineProps<{
+    displayEmptyLines: boolean,
+    item: IItem
+  }>(),
+  {
+    displayEmptyLines: true
+  })
 
 const _chestHp = Services.get(TarkovValuesService).values.chestHp
 
@@ -31,7 +38,16 @@ const tooltip = computed(() =>
 
 
 <template>
-  <div class="card-line card-line4">
+  <div
+    v-if="displayEmptyLines
+      || ammunition.fleshDamage > 0
+      || ammunition.penetratedArmorLevel > 0
+      || ammunition.penetrationPower > 0
+      || ammunition.subsonic
+      || ammunition.tracer
+      || ammunition.blinding"
+    class="card-line card-line4"
+  >
     <div
       v-if="ammunition.fleshDamage > 0"
       class="ammunition-item-card-flesh-damage-group card-value"
@@ -117,9 +133,16 @@ const tooltip = computed(() =>
       </Tooltip>
     </div>
   </div>
-  <div class="card-line card-line4">
+  <div
+    v-if="displayEmptyLines
+      || ammunition.fragmentationChance > 0
+      || ammunition.recoilModifier !== 0
+      || ammunition.accuracyModifierPercentage !== 0
+      || ammunition.durabilityBurnModifierPercentage !== 0"
+    class="card-line card-line4"
+  >
     <Tooltip
-      v-if="ammunition.fragmentationChance !== 0"
+      v-if="ammunition.fragmentationChance > 0"
       :tooltip="$t('caption.fragmentationChance')"
     >
       <font-awesome-icon

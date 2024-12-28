@@ -676,9 +676,9 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           v-show="selectedTab === SelectableTab.mods"
           class="item-content-and-mods-base-item-mods"
         >
-          <span class="item-content-and-mods-base-item-mods-name">
+          <div class="item-content-and-mods-base-item-mods-name">
             {{ $t('caption.baseItem') }}
-          </span>
+          </div>
           <ItemComponent
             :accepted-items="[]"
             :can-be-looted="showBaseItemPrice"
@@ -742,6 +742,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 
 .item-content-and-mods-base-item-mods-name {
   font-weight: bold;
+  margin-bottom: 0.25rem;
 }
 
 .item-header {

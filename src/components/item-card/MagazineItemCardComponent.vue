@@ -6,7 +6,14 @@ import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import Tooltip from '../TooltipComponent.vue'
 import ContainerItemCard from './ContainerItemCardComponent.vue'
 
-const props = defineProps<{ item: IItem }>()
+const props = withDefaults(
+  defineProps<{
+    displayEmptyLines: boolean,
+    item: IItem
+  }>(),
+  {
+    displayEmptyLines: true
+  })
 
 const ergonomicsModifier = computed(() => magazine.value.presetErgonomicsModifier ?? magazine.value.ergonomicsModifier)
 const magazine = computed(() => props.item as IMagazine)
@@ -23,7 +30,13 @@ const magazine = computed(() => props.item as IMagazine)
 
 <template>
   <ContainerItemCard :item="magazine" />
-  <div class="card-line card-line4">
+  <div
+    v-if="displayEmptyLines
+      || ergonomicsModifier !== 0
+      || magazine.loadSpeedModifierPercentage !== 0
+      || magazine.checkSpeedModifierPercentage !== 0"
+    class="card-line card-line3"
+  >
     <Tooltip
       v-if="ergonomicsModifier !== 0"
       :tooltip="$t('caption.ergonomicsModifier')"

@@ -8,10 +8,12 @@ import WearableItemCard from './WearableItemCardComponent.vue'
 
 const props = withDefaults(
   defineProps<{
+    displayEmptyLines: boolean,
     item: IItem,
     wearableModifiersOverride?: IWearableModifiers
   }>(),
   {
+    displayEmptyLines: true,
     wearableModifiersOverride: undefined
   })
 
@@ -31,6 +33,7 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? back
 <template>
   <ContainerItemCard :item="backpack" />
   <WearableItemCard
+    :display-empty-lines="displayEmptyLines"
     :item="backpack"
     :wearable-modifiers-override="wearableModifiers"
   />

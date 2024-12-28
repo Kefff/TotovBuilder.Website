@@ -8,11 +8,13 @@ import Tooltip from '../TooltipComponent.vue'
 
 const props = withDefaults(
   defineProps<{
+    displayEmptyLines: boolean,
     includeModsAndContent?: boolean,
     item: IItem,
     wearableModifiersOverride?: IWearableModifiers
   }>(),
   {
+    displayEmptyLines: true,
     includeModsAndContent: false,
     wearableModifiersOverride: undefined
   })
@@ -34,7 +36,13 @@ const wearable = computed(() => props.item as IWearable)
 
 
 <template>
-  <div class="card-line card-line4">
+  <div
+    v-if="displayEmptyLines
+      || ergonomicsModifierPercentage !== 0
+      || movementSpeedModifierPercentage !== 0
+      || turningSpeedModifierPercentage !== 0"
+    class="card-line card-line3"
+  >
     <Tooltip
       v-if="ergonomicsModifierPercentage !== 0"
       class="card-value"

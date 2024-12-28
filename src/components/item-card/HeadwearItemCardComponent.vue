@@ -12,6 +12,7 @@ import ArmorItemCard from './ArmorItemCardComponent.vue'
 const props = withDefaults(
   defineProps<{
     armorModifiersOverride?: IArmorModifiers,
+    displayEmptyLines: boolean,
     includeModsAndContent?: boolean,
     isBaseItem?: boolean,
     item: IItem,
@@ -19,6 +20,7 @@ const props = withDefaults(
   }>(),
   {
     armorModifiersOverride: undefined,
+    displayEmptyLines: true,
     isBaseItem: false,
     includeModsAndContent: false,
     wearableModifiersOverride: undefined
@@ -43,6 +45,7 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? head
 <template>
   <ArmorItemCard
     :armor-modifiers-override="armorModifiers"
+    :display-empty-lines="displayEmptyLines"
     :include-mods-and-content="includeModsAndContent"
     :is-base-item="isBaseItem"
     :item="headwear"
@@ -51,7 +54,7 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? head
     <Tooltip
       v-if="!isBaseItem && hasRicochetChance"
       :tooltip="$t('caption.ricochetChance')"
-      class="headwear-item-card-long card-value"
+      class="card-value"
       :class="boldCssClass"
     >
       <CustomIcon
@@ -77,9 +80,5 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? head
 .headwear-item-card-bold {
   font-style: italic;
   font-weight: bold;
-}
-
-.headwear-item-card-long {
-  grid-column: span 2;
 }
 </style>

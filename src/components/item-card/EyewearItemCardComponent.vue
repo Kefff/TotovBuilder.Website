@@ -5,7 +5,14 @@ import { IItem } from '../../models/item/IItem'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import Tooltip from '../TooltipComponent.vue'
 
-const props = defineProps<{ item: IItem }>()
+const props = withDefaults(
+  defineProps<{
+    displayEmptyLines: boolean,
+    item: IItem
+  }>(),
+  {
+    displayEmptyLines: true
+  })
 
 const eyewear = computed(() => props.item as IEyewear)
 </script>
@@ -19,7 +26,11 @@ const eyewear = computed(() => props.item as IEyewear)
 
 
 <template>
-  <div class="card-line card-line4">
+  <div
+    v-if="displayEmptyLines
+      || eyewear.blindnessProtectionPercentage !== 0"
+    class="card-line card-line4"
+  >
     <Tooltip
       v-if="eyewear.blindnessProtectionPercentage !== 0"
       :tooltip="$t('caption.blindnessProtectionPercentage')"

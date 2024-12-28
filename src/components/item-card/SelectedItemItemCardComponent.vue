@@ -262,7 +262,6 @@ async function setWeightAsync(): Promise<void> {
   display: flex;
   gap: 0.25rem;
   height: 100%;
-  min-height: 2rem;
 }
 
 .selected-item-item-card-prices {
@@ -275,7 +274,7 @@ async function setWeightAsync(): Promise<void> {
 
 .selected-item-item-card-prices-and-weight {
   height: unset;
-  /* To override card-line which has a set height */
+  /* To override card-line which has a set height which conflicts with the merchant icon that is bigger */
 }
 
 .selected-item-item-card-weights {

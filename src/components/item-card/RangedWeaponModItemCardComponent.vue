@@ -5,7 +5,14 @@ import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import Tooltip from '../TooltipComponent.vue'
 
-const props = defineProps<{ item: IItem }>()
+const props = withDefaults(
+  defineProps<{
+    displayEmptyLines: boolean,
+    item: IItem
+  }>(),
+  {
+    displayEmptyLines: true
+  })
 
 const ergonomicsModifier = computed(() => rangedWeaponMod.value.presetErgonomicsModifier ?? rangedWeaponMod.value.ergonomicsModifier)
 const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
@@ -21,7 +28,13 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
 
 
 <template>
-  <div class="card-line card-line4">
+  <div
+    v-if="displayEmptyLines
+      || ergonomicsModifier !== 0
+      || rangedWeaponMod.recoilModifierPercentage !== 0
+      || rangedWeaponMod.accuracyModifierPercentage !== 0"
+    class="card-line card-line3"
+  >
     <Tooltip
       v-if="ergonomicsModifier !== 0"
       :tooltip="$t('caption.ergonomicsModifier')"

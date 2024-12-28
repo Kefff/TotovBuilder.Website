@@ -10,6 +10,7 @@ import ContainerItemCard from './ContainerItemCardComponent.vue'
 const props = withDefaults(
   defineProps<{
     armorModifiersOverride?: IArmorModifiers,
+    displayEmptyLines: boolean,
     includeModsAndContent?: boolean,
     isBaseItem?: boolean,
     item: IItem,
@@ -17,6 +18,7 @@ const props = withDefaults(
   }>(),
   {
     armorModifiersOverride: undefined,
+    displayEmptyLines: true,
     includeModsAndContent: false,
     isBaseItem: false,
     wearableModifiersOverride: undefined
@@ -39,6 +41,7 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? vest
 <template>
   <ArmorItemCard
     :armor-modifiers-override="armorModifiers"
+    :display-empty-lines="displayEmptyLines"
     :include-mods-and-content="includeModsAndContent"
     :item="vest"
     :wearable-modifiers-override="wearableModifiers"

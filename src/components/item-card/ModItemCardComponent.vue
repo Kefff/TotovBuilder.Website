@@ -5,7 +5,14 @@ import { IMod } from '../../models/item/IMod'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import Tooltip from '../TooltipComponent.vue'
 
-const props = defineProps<{ item: IItem }>()
+const props = withDefaults(
+  defineProps<{
+    displayEmptyLines: boolean,
+    item: IItem
+  }>(),
+  {
+    displayEmptyLines: true
+  })
 
 const ergonomicsModifier = computed(() => mod.value.presetErgonomicsModifier ?? mod.value.ergonomicsModifier)
 const mod = computed(() => props.item as IMod)
@@ -21,7 +28,11 @@ const mod = computed(() => props.item as IMod)
 
 
 <template>
-  <div class="card-line card-line4">
+  <div
+    v-if="displayEmptyLines
+      || ergonomicsModifier !== 0"
+    class="card-line card-line4"
+  >
     <Tooltip
       v-if="ergonomicsModifier !== 0"
       :tooltip="$t('caption.ergonomicsModifier')"

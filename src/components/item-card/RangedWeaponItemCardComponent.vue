@@ -39,7 +39,7 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
 
 
 <template>
-  <div class="card-line card-line4">
+  <div class="card-line card-line3">
     <Tooltip
       :class="boldCssClass"
       class="card-value"

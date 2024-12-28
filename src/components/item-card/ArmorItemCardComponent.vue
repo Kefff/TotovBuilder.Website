@@ -13,6 +13,7 @@ import WearableItemCard from './WearableItemCardComponent.vue'
 const props = withDefaults(
   defineProps<{
     armorModifiersOverride?: IArmorModifiers
+    displayEmptyLines: boolean,
     includeModsAndContent?: boolean,
     isBaseItem?: boolean,
     item: IItem,
@@ -20,6 +21,7 @@ const props = withDefaults(
   }>(),
   {
     armorModifiersOverride: undefined,
+    displayEmptyLines: true,
     includeModsAndContent: false,
     isBaseItem: false,
     wearableModifiersOverride: undefined
@@ -53,19 +55,13 @@ const tooltipSuffix = computed(() => {
 
 
 <template>
-  <div class="card-line card-line4">
-    <Tooltip
-      v-if="!isBaseItem && armorClass > 0"
-      class="card-value"
-      :class="boldCssClass"
-      :tooltip="$t('caption.armorClass') + tooltipSuffix"
-    >
-      <font-awesome-icon
-        icon="award"
-        class="icon-before-text"
-      />
-      <span>{{ armorClass }}</span>
-    </Tooltip>
+  <div
+    v-if="displayEmptyLines
+      || (!isBaseItem && armorClass > 0)
+      || (!isBaseItem && durability > 0)"
+    class="card-line card-line3"
+  >
+    <slot />
     <Tooltip
       v-if="!isBaseItem && durability > 0"
       class="card-value"
@@ -78,9 +74,21 @@ const tooltipSuffix = computed(() => {
       />
       <span>{{ durability }}</span>
     </Tooltip>
-    <slot />
+    <Tooltip
+      v-if="!isBaseItem && armorClass > 0"
+      class="card-value"
+      :class="boldCssClass"
+      :tooltip="$t('caption.armorClass') + tooltipSuffix"
+    >
+      <font-awesome-icon
+        icon="award"
+        class="icon-before-text"
+      />
+      <span>{{ armorClass }}</span>
+    </Tooltip>
   </div>
   <WearableItemCard
+    :display-empty-lines="displayEmptyLines"
     :include-mods-and-content="includeModsAndContent"
     :item="armor"
     :wearable-modifiers-override="wearableModifiersOverride"
