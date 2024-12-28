@@ -411,9 +411,9 @@ function setSelectedTab(): void {
       || (item.value.categoryId === ItemCategoryId.notFound && (props.inventoryItem?.content.length ?? 0) > 0)
 
     if (selectedTab.value === SelectableTab.hidden) {
-      if (itemIsContainer.value) {
+      if (itemIsContainer.value && contentCount.value > 0) {
         selectedTab.value = SelectableTab.content
-      } else if (itemIsModdable.value) {
+      } else if (itemIsModdable.value && modsCount.value > 0) {
         selectedTab.value = SelectableTab.mods
       } else {
         selectedTab.value = SelectableTab.hidden

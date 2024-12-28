@@ -24,12 +24,19 @@ const props = withDefaults(
 
 const isEditing = inject<Ref<boolean>>('isEditing')
 
-const contentButtonCaption = computed(() => modelSelectedTab.value !== SelectableTab.mods
+const contentButtonCaption = computed(() => modelSelectedTab.value !== SelectableTab.content
   ? vueI18n.t('caption.showContent')
   : vueI18n.t('caption.hideContent'))
 const modsButtonCaption = computed(() => modelSelectedTab.value !== SelectableTab.mods
   ? vueI18n.t('caption.showMods')
   : vueI18n.t('caption.hideMods'))
+const modsButtonOrder = computed(() => {
+  if (modelSelectedTab.value === SelectableTab.mods) {
+    return '0'
+  }
+
+  return '2'
+})
 
 watch(() => props.canHaveContent, () => {
   if (!props.canHaveContent && modelSelectedTab.value === SelectableTab.content) {
@@ -68,7 +75,10 @@ function setSelectedTab(newValue: SelectableTab): void {
       || (canHaveMods && (modsCount > 0 || isEditing))"
     class="selected-item-functionalities"
   >
-    <div v-show="canHaveContent && (contentCount > 0 || isEditing)">
+    <div
+      v-show="canHaveContent && (contentCount > 0 || isEditing)"
+      class="selected-item-button-content"
+    >
       <Tooltip
         :tooltip="contentButtonCaption"
         :apply-hover-style="false"
@@ -76,9 +86,11 @@ function setSelectedTab(newValue: SelectableTab): void {
         <Button
           :class="{
             'selected-item-functionalities-button-active': modelSelectedTab === SelectableTab.content,
+            'button-discreet': modelSelectedTab !== SelectableTab.content,
+            'p-button-text': modelSelectedTab !== SelectableTab.content
           }"
           class="p-button-sm"
-          outlined
+          :outlined="modelSelectedTab === SelectableTab.content"
           @click="setSelectedTab(SelectableTab.content)"
         >
           <font-awesome-icon icon="box-open" />
@@ -88,7 +100,10 @@ function setSelectedTab(newValue: SelectableTab): void {
         </Button>
       </Tooltip>
     </div>
-    <div v-show="canHaveMods && (modsCount > 0 || isEditing)">
+    <div
+      v-show="canHaveMods && (modsCount > 0 || isEditing)"
+      class="selected-item-button-mods"
+    >
       <Tooltip
         :tooltip="modsButtonCaption"
         :apply-hover-style="false"
@@ -96,9 +111,11 @@ function setSelectedTab(newValue: SelectableTab): void {
         <Button
           :class="{
             'selected-item-functionalities-button-active': modelSelectedTab === SelectableTab.mods,
+            'button-discreet': modelSelectedTab !== SelectableTab.mods,
+            'p-button-text': modelSelectedTab !== SelectableTab.mods
           }"
           class="p-button-sm"
-          outlined
+          :outlined="modelSelectedTab === SelectableTab.mods"
           @click="setSelectedTab(SelectableTab.mods)"
         >
           <font-awesome-icon icon="puzzle-piece" />
@@ -121,10 +138,18 @@ function setSelectedTab(newValue: SelectableTab): void {
 
 
 <style scoped>
+.selected-item-button-content {
+  order: 1;
+}
+
+.selected-item-button-mods {
+  order: v-bind(modsButtonOrder);
+}
+
 .selected-item-functionalities {
   align-items: center;
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   margin-top: 0.5rem;
 }
 
@@ -134,7 +159,7 @@ function setSelectedTab(newValue: SelectableTab): void {
 }
 
 .selected-item-functionalities-button-active {
-  background-color: var(--primary-color6);
+  background-color: var(--primary-color8);
 }
 
 .selected-item-functionalities-button-caption {
