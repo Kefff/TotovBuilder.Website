@@ -75,6 +75,13 @@ function displayImportSidebar(): void {
 }
 
 /**
+ * Displays the items list.
+ */
+function displayItems(): void {
+  router.push({ name: 'Items' })
+}
+
+/**
  * Displays the merchant items options.
  */
 function displayMerchantItemsOptions(): void {
@@ -251,13 +258,26 @@ function openNewBuild(): void {
           <Button
             class="welcome-button"
             outlined
+            @click="displayItems()"
+          >
+            <font-awesome-icon
+              icon="clipboard-list"
+              class="icon-before-text"
+            />
+            <span>{{ $t('caption.itemsList') }}</span>
+          </Button>
+        </div>
+        <div class="welcome-action">
+          <Button
+            class="welcome-button"
+            outlined
             @click="displayMerchantItemsOptions()"
           >
             <font-awesome-icon
               icon="user-tag"
               class="icon-before-text"
             />
-            <span>{{ $t('message.welcomeConfigureMerchants') }}</span>
+            <span>{{ $t('caption.welcomeConfigureMerchants') }}</span>
           </Button>
         </div>
         <div class="welcome-action">
@@ -364,7 +384,7 @@ function openNewBuild(): void {
 }
 
 .welcome-action {
-  width: 17.5rem;
+  width: 15rem;
 }
 
 .welcome-actions {

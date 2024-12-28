@@ -331,6 +331,7 @@
     "velocity": "Vitesse",
     "verticalRecoil": "Recul vertical",
     "weight": "Poids",
+    "welcomeConfigureMerchants": "Configurer marchands",
     "withMods": " avec mods",
     "withModsAndContent": " avec mods & contenu",
     "yes": "Oui"
@@ -388,7 +389,6 @@
     "welcome3": "Disposez en un clin d'oeil du recul, de l'ergonomie, du poids et du prix de vos équipements.",
     "welcome4": "Les prix sont régulièrement mis à jour pour vous permettre de savoir exactement combien de roubles vous perdez à chaque mort !",
     "welcomeBack": "Bon retour parmi nous !",
-    "welcomeConfigureMerchants": "Configurer marchands",
     "welcomeInformation1": "A propros de la sauvegarde des équipements",
     "welcomeInformation2": "sauvegarde les équipements dans le navigateur web.",
     "welcomeInformation3": "Si vous effacer les données du navigateur ou fermez une fenêtre en mode incognito, ",

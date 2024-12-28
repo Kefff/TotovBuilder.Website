@@ -366,6 +366,7 @@
     "velocity": "Velocity",
     "verticalRecoil": "Vertical recoil",
     "weight": "Weight",
+    "welcomeConfigureMerchants": "Configure merchants",
     "withMods": " with mods",
     "withModsAndContent": " with mods & content",
     "yes": "Yes"
@@ -479,7 +480,6 @@
     "welcome3": "See at a glance the recoil, ergonomics, weight and cost of your weapons and builds.",
     "welcome4": "Prices are regularly updated in order for you to know exactly how much rubles you loose each time you die !",
     "welcomeBack": "Welcome back !",
-    "welcomeConfigureMerchants": "Configure merchants",
     "welcomeInformation1": "Information about saving builds",
     "welcomeInformation2": "saves builds in the web browser.",
     "welcomeInformation3": "If you clear your browser data or close an incognito mode window, ",

@@ -52,7 +52,7 @@ function save(): void {
   </div>
   <div class="sidebar-title">
     <div class="sidebar-title-icon">
-      <font-awesome-icon icon="shopping-basket" />
+      <font-awesome-icon icon="clipboard-list" />
     </div>
     <span>{{ $t('caption.items') }}</span>
   </div>
