@@ -76,7 +76,7 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
   </div>
   <div
     v-if="!isBaseItem"
-    class="card-line card-line4"
+    class="card-line card-line3"
   >
     <Tooltip
       :tooltip="$t('caption.fireRate')"
@@ -124,7 +124,7 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
 }
 
 .ranged-weapon-item-card-long {
-  grid-column: span 3;
+  grid-column: span 2;
 }
 
 .ranged-weapon-item-card-no-wrap {

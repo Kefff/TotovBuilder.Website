@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useBreakpoints } from '@vueuse/core'
 import { computed, inject, Ref } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 
 const props = defineProps<{
   inventoryItems: (IInventoryItem | undefined)[],
@@ -11,18 +13,19 @@ const props = defineProps<{
 const _bottomTopOffset = '12px'
 const _middleHeight = '1.5625rem'
 
+const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const isEditing = inject<Ref<boolean>>('isEditing')
 
 const bottomHeight = computed(() => `calc(100% - ${upperHeight.value} - ${_middleHeight} + ${_bottomTopOffset})`)
 const bottomTop = computed(() => `calc(${upperHeight.value} + ${_middleHeight} - ${_bottomTopOffset})`)
 const displayBottomPart = computed(() => {
-  const result =
-    props.index !== lastHierarchyInventoryItemIndex.value
+  const result = props.index !== lastHierarchyInventoryItemIndex.value
     || props.mode === 'baseItem'
     || (props.mode === 'content' && isEditing?.value)
 
   return result
 })
+const isCompactMode = breakpoints.smaller('tabletLandscape')
 const isVisible = computed(() => props.inventoryItems[props.index] != null || isEditing?.value)
 const lastHierarchyInventoryItemIndex = computed(() => {
   let lastIndex = 0
@@ -39,14 +42,14 @@ const lastHierarchyInventoryItemIndex = computed(() => {
 })
 const upperHeight = computed(() => {
   if (props.mode === 'baseItem') {
-    return '2.15rem'
+    return '2rem'
   } else if (props.mode === 'mods') {
-    return '3.5rem'
+    return '2.5rem'
   } else if ((props.mode === 'content' || props.mode === 'magazineContent')
     && props.index === 0) {
-    return '0.85rem'
+    return '0.75rem'
   } else {
-    return '2.5rem'
+    return '1.25rem'
   }
 })
 </script>
@@ -62,7 +65,7 @@ const upperHeight = computed(() => {
 
 <template>
   <div
-    v-show="isVisible"
+    v-show="isVisible && !isCompactMode"
     class="item-hierarchy-indicator"
   >
     <div class="item-hierarchy-indicator-upper" />
@@ -86,8 +89,9 @@ const upperHeight = computed(() => {
 .item-hierarchy-indicator {
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
   position: relative;
-  width: 3.125rem;
+  width: 1.75rem;
 }
 
 .item-hierarchy-indicator-bottom {

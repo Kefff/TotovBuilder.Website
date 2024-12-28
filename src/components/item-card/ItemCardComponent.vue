@@ -128,18 +128,12 @@ function showDetails(): void {
       <div class="card-lines">
         <!-- Specialized stats -->
         <ItemCardSelector :item="item" />
-        <!-- Price and weight -->
-        <div class="card-line card-line4 item-card-price-line">
-          <div
-            v-if="itemUnitPrice != null && itemUnitPrice.valueInMainCurrency > 0"
-            class="item-card-long"
-          >
-            <Price :price="itemUnitPrice" />
-          </div>
+        <!-- Weight and price -->
+        <div class="card-line card-line3 item-card-weight-and-price-line">
           <Tooltip
             v-if="item.weight != 0"
             :tooltip="$t('caption.weight')"
-            class="item-card-long card-value"
+            class="card-value"
           >
             <font-awesome-icon
               icon="weight-hanging"
@@ -149,6 +143,12 @@ function showDetails(): void {
               {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, weight) }}
             </span>
           </Tooltip>
+          <div
+            v-if="itemUnitPrice != null && itemUnitPrice.valueInMainCurrency > 0"
+            class="item-card-price"
+          >
+            <Price :price="itemUnitPrice" />
+          </div>
         </div>
         <div
           v-if="isSelectable"
@@ -181,13 +181,9 @@ function showDetails(): void {
   height: v-bind(height);
 }
 
-.item-card-long {
+.item-card-price {
   display: flex;
   grid-column: span 2;
-}
-
-.item-card-price-line {
-  height: 2rem;
 }
 
 .item-card-header {
@@ -210,5 +206,9 @@ function showDetails(): void {
 
 .item-card-title > span {
   max-height: 100%;
+}
+
+.item-card-weight-and-price-line {
+  height: 2rem;
 }
 </style>

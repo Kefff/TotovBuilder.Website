@@ -89,22 +89,14 @@ function toggleInventoryPriceDetails(event: Event): void {
         </div>
       </div>
     </Tooltip>
-    <div
+    <Tooltip
       v-if="inventoryPrice.missingPrice"
-      class="inventory-price-icon"
+      class="inventory-price-missing-price-icon"
+      :tooltip="isBuild ? $t('message.buildWithMissingPrice') : $t('message.itemWithModsAndContentAndMissingPrice')"
+      position="right"
     >
-      <div
-        v-if="inventoryPrice.missingPrice"
-        class="inventory-price-missing-price-icon"
-      >
-        <Tooltip
-          :tooltip="isBuild ? $t('message.buildWithMissingPrice') : $t('message.itemWithModsAndContentAndMissingPrice')"
-          position="right"
-        >
-          <font-awesome-icon icon="exclamation-triangle" />
-        </Tooltip>
-      </div>
-    </div>
+      <font-awesome-icon icon="exclamation-triangle" />
+    </Tooltip>
   </div>
 
   <!-- Price details -->
@@ -177,13 +169,9 @@ function toggleInventoryPriceDetails(event: Event): void {
   margin-left: 0.25rem;
 }
 
-.inventory-price-icon {
-  align-items: center;
-  display: flex;
-  justify-content: center;
+.inventory-price-missing-price-icon {
   margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  width: 2rem;
+  color: var(--error-color);
 }
 
 .inventory-price-list {
@@ -198,15 +186,6 @@ function toggleInventoryPriceDetails(event: Event): void {
 
 .inventory-price-list-price:first-child {
   margin-left: 0;
-}
-
-.inventory-price-missing-price-icon {
-  align-items: center;
-  color: var(--error-color);
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
 }
 
 .inventory-price-with-details {

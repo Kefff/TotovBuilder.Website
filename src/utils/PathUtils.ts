@@ -39,6 +39,24 @@ export class PathUtils {
   }
 
   /**
+   * Gets the mod slot names present in a path.
+   * @param path - Path.
+   */
+  public static getPathModSlotNames(path: string): string[] {
+    const modSlotNames: string[] = []
+    const regex = new RegExp(/mod:([a-z0-9_]+)\/?/g)
+    const matches = path.matchAll(regex)
+
+    if (matches != null) {
+      for (const match of matches) {
+        modSlotNames.push(match[1])
+      }
+    }
+
+    return modSlotNames
+  }
+
+  /**
    * Gets an inventory item by recursively searching into an inventory item while going through a path.
    * @param currentInventoryItem - Current inventory item.
    * @param path - Path.
@@ -87,7 +105,7 @@ export class PathUtils {
   }
 
   /**
-   * Gets the inventory item of a slot of a build base on a path.
+   * Gets the inventory item of a slot of a build from on a path.
    * @param build - Build.
    * @param path - Path.
    * @returns Inventory item.

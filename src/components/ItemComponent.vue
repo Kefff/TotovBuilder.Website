@@ -509,7 +509,10 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 
 
 <template>
-  <div v-if="modelInventoryItem != null || isEditing">
+  <div
+    v-if="modelInventoryItem != null || isEditing"
+    class="item"
+  >
     <!-- <div
       class="item-selection"
       :class="{
@@ -587,6 +590,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
         <ItemIcon
           v-if="item != null"
           :item="item"
+          :quantity="quantity"
         />
         <div
           v-if="item != null"
@@ -609,12 +613,12 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
         </Tooltip>
       </div>
       <InputNumberField
-        v-if="item != null && maxSelectableQuantity > 1"
+        v-if="item != null && maxSelectableQuantity > 1 && !forceQuantityToMaxSelectableAmount"
+        v-show="isEditing"
         v-model:value="quantity"
         :caption="$t('caption.quantity')"
         :max="maxSelectableQuantity"
         :min="1"
-        :read-only="!isEditing || forceQuantityToMaxSelectableAmount"
         :required="true"
         caption-mode="placeholder"
         class="item-quantity"
@@ -723,12 +727,17 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 
 
 <style scoped>
+.item {
+  width: 100%;
+}
+
 .item-content-and-mods-base-item {
   display: flex;
 }
 
 .item-content-and-mods-base-item-mods {
   margin-top: 0.5rem;
+  width: 100%;
 }
 
 .item-content-and-mods-base-item-mods-name {
@@ -741,7 +750,8 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   font-size: 1rem;
   font-weight: normal;
   gap: 0.5rem;
-  height: 3.75rem;
+  max-height: 3.75rem;
+  padding-bottom: 0.5rem;
   white-space: preserve;
 }
 
@@ -758,12 +768,13 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-main {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  background-color: var(--primary-color6);
+  border-radius: 6px;
+  padding: 0.25rem
 }
 
 .item-quantity {
+  margin-bottom: 0.5rem;
   width: 100%;
 }
 </style>

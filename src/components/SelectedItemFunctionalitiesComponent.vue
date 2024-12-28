@@ -63,8 +63,12 @@ function setSelectedTab(newValue: SelectableTab): void {
 
 
 <template>
-  <div class="selected-item-functionalities">
-    <div v-if="canHaveContent && (contentCount > 0 || isEditing)">
+  <div
+    v-show="(canHaveContent && (contentCount > 0 || isEditing))
+      || (canHaveMods && (modsCount > 0 || isEditing))"
+    class="selected-item-functionalities"
+  >
+    <div v-show="canHaveContent && (contentCount > 0 || isEditing)">
       <Tooltip
         :tooltip="contentButtonCaption"
         :apply-hover-style="false"
@@ -72,9 +76,9 @@ function setSelectedTab(newValue: SelectableTab): void {
         <Button
           :class="{
             'selected-item-functionalities-button-active': modelSelectedTab === SelectableTab.content,
-            'button-discreet': modelSelectedTab !== SelectableTab.content
           }"
-          class="p-button-text p-button-sm"
+          class="p-button-sm"
+          outlined
           @click="setSelectedTab(SelectableTab.content)"
         >
           <font-awesome-icon icon="box-open" />
@@ -84,7 +88,7 @@ function setSelectedTab(newValue: SelectableTab): void {
         </Button>
       </Tooltip>
     </div>
-    <div v-if="canHaveMods && (modsCount > 0 || isEditing)">
+    <div v-show="canHaveMods && (modsCount > 0 || isEditing)">
       <Tooltip
         :tooltip="modsButtonCaption"
         :apply-hover-style="false"
@@ -92,9 +96,9 @@ function setSelectedTab(newValue: SelectableTab): void {
         <Button
           :class="{
             'selected-item-functionalities-button-active': modelSelectedTab === SelectableTab.mods,
-            'button-discreet': modelSelectedTab !== SelectableTab.mods
           }"
-          class="p-button-text p-button-sm"
+          class="p-button-sm"
+          outlined
           @click="setSelectedTab(SelectableTab.mods)"
         >
           <font-awesome-icon icon="puzzle-piece" />
@@ -120,7 +124,8 @@ function setSelectedTab(newValue: SelectableTab): void {
 .selected-item-functionalities {
   align-items: center;
   display: flex;
-  flex-wrap: nowrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
 }
 
 .selected-item-functionalities > div {
@@ -130,7 +135,6 @@ function setSelectedTab(newValue: SelectableTab): void {
 
 .selected-item-functionalities-button-active {
   background-color: var(--primary-color6);
-  color: var(--text-color);
 }
 
 .selected-item-functionalities-button-caption {

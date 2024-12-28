@@ -139,7 +139,7 @@ async function setWeightAsync(): Promise<void> {
   <div class="card-lines">
     <!-- Specialized stats -->
     <slot />
-    <div class="card-line card-line4 selected-item-item-card-prices-and-weight">
+    <div class="card-line card-line3 selected-item-item-card-prices-and-weight">
       <!-- Weight -->
       <div class="selected-item-item-card-weights">
         <div
@@ -282,7 +282,6 @@ async function setWeightAsync(): Promise<void> {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  grid-column: span 2;
   height: 100%;
 }
 
@@ -297,20 +296,5 @@ async function setWeightAsync(): Promise<void> {
   font-style: italic;
   font-weight: bold;
   min-height: 1.25rem;
-}
-</style>
-
-
-
-
-
-
-
-
-
-<style>
-.selected-item-item-card-with-mods > .inventory-price .inventory-price-list {
-  flex-wrap: wrap;
-  /* Allows the price of items with content / mods in multiple currencies to wrap */
 }
 </style>

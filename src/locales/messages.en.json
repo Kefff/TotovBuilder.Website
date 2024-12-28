@@ -307,6 +307,7 @@
     "quantity": "Quantity",
     "quest": "Quest",
     "rangedWeapon": "Ranged weapon",
+    "recoil": "Recoil",
     "recoilModifier": "Recoil",
     "recoilModifierPercentage": "Recoil",
     "redditMarkdown": "Reddit (markdown)",

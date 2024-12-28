@@ -324,7 +324,6 @@ function reset(): void {
 .items-list-sidebar-field {
   align-items: center;
   display: flex;
-  max-width: 15rem;
   width: 100%;
 }
 
