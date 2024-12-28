@@ -541,9 +541,8 @@ function onToolbarIsStickiedChanged(isStickied: boolean): void {
     return
   }
 
-  if ((isCompactBuildSummaryExpanded.value && isStickied)
-    || (!isCompactBuildSummaryExpanded.value && !isStickied)
-  ) {
+  if (isCompactBuildSummaryExpanded.value
+    && isStickied) {
     toggleCompactBuildSummaryAsync()
   }
 }
@@ -643,10 +642,10 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
   if (_isCompactSummaryExpanding) {
     return
   }
+
   _isCompactSummaryExpanding = true
 
   if (isCompactBuildSummaryExpanded.value) {
-
     const compactBuildSummaryBoundingRectangle = compactBuildSummary.value?.getBoundingClientRect()
     compactBuildSummaryHeight.value = `${compactBuildSummaryBoundingRectangle!.height}px` /* https://stackoverflow.com/a/72698222 */
 

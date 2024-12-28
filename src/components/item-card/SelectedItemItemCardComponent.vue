@@ -179,6 +179,7 @@ async function setWeightAsync(): Promise<void> {
               <font-awesome-icon
                 icon="weight-hanging"
                 class="icon-before-text"
+                style="margin-left: 0.1rem"
               />
               <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
             </Tooltip>
