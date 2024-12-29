@@ -87,9 +87,23 @@ async function setPricesAsync(): Promise<void> {
 
 
 <template>
-  <!-- Prices and weight -->
+  <!-- Weight and prices -->
   <div class="stats-category">
-    {{ $t('caption.pricesAndWeight') }}
+    {{ $t('caption.weightAndPrices') }}
+  </div>
+  <div class="stats-line">
+    <div class="stats-entry">
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="weight-hanging"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.weight') }} :</span>
+      </div>
+      <div class="stats-value">
+        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, weight) }}
+      </div>
+    </div>
   </div>
   <div class="stats-line">
     <div
@@ -109,20 +123,6 @@ async function setPricesAsync(): Promise<void> {
           :price="price"
           :use-merchant-filter="false"
         />
-      </div>
-    </div>
-  </div>
-  <div class="stats-line">
-    <div class="stats-entry">
-      <div class="stats-caption">
-        <font-awesome-icon
-          icon="weight-hanging"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.weight') }} :</span>
-      </div>
-      <div class="stats-value">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, weight) }}
       </div>
     </div>
   </div>

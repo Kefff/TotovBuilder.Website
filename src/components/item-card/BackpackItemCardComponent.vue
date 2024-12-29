@@ -8,7 +8,7 @@ import WearableItemCard from './WearableItemCardComponent.vue'
 
 const props = withDefaults(
   defineProps<{
-    displayEmptyLines: boolean,
+    displayEmptyLines?: boolean,
     item: IItem,
     wearableModifiersOverride?: IWearableModifiers
   }>(),

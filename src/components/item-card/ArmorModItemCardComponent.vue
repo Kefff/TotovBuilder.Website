@@ -9,7 +9,7 @@ import ArmorItemCard from './ArmorItemCardComponent.vue'
 const props = withDefaults(
   defineProps<{
     armorModifiersOverride?: IArmorModifiers,
-    displayEmptyLines: boolean,
+    displayEmptyLines?: boolean,
     item: IItem,
     wearableModifiersOverride?: IWearableModifiers
   }>(),

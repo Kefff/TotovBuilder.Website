@@ -34,21 +34,9 @@ const hasModifiers = computed(() => armor.value.blindnessProtectionPercentage !=
     {{ $t('caption.armor') }}
   </div>
   <div
-    v-if="armorClass > 0"
+    v-if="armorClass > 0 || durability > 0"
     class="stats-line"
   >
-    <div class="stats-entry">
-      <div class="stats-caption">
-        <font-awesome-icon
-          icon="award"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.armorClass') }} :</span>
-      </div>
-      <div class="stats-value">
-        {{ armorClass }}
-      </div>
-    </div>
     <div
       v-if="durability > 0"
       class="stats-entry"
@@ -62,6 +50,21 @@ const hasModifiers = computed(() => armor.value.blindnessProtectionPercentage !=
       </div>
       <div class="stats-value">
         {{ durability }}
+      </div>
+    </div>
+    <div
+      v-if="armorClass > 0"
+      class="stats-entry"
+    >
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="award"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.armorClass') }} :</span>
+      </div>
+      <div class="stats-value">
+        {{ armorClass }}
       </div>
     </div>
     <div class="stats-entry">

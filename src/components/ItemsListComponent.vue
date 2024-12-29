@@ -30,31 +30,43 @@ const props = withDefaults(
     hasSelection: false,
     infiniteScrolling: false,
     isLoading: false,
-    maxElementsPerLine: 4
+    maxElementsPerLine: 5
   })
 
 const _itemPropertiesService = Services.get(ItemPropertiesService)
 const _sortingService = Services.get(SortingService)
 
 const itemsPerLine = computed(() => {
-  let columns = 4
+  let columns = 5
 
-  if (oneItemPerLine.value) {
+  if (isSizeSmartphonePortrait.value) {
     columns = 1
-  } else if (twoItemsPerLine.value) {
+  } else if (isSizeTabletPortaitOrSmaller.value) {
     columns = 2
-  } else if (threeItemsPerLine.value) {
+  } else if (isSizeTabletOrSmaller.value) {
     columns = 3
+  } else if (isSizePcOrSmaller.value) {
+    columns = 4
   }
 
   return props.maxElementsPerLine >= columns ? columns : props.maxElementsPerLine
 })
-
 const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
+const linesPerPage = computed(() => {
+  let lines = 5
+
+  if (isSizeTabletOrSmaller.value) {
+    lines = 10
+  }
+
+  return lines
+})
+const isSizeSmartphonePortrait = breakpoints.smaller('smartphoneLandscape')
+const isSizeTabletPortaitOrSmaller = breakpoints.smaller('tabletLandscape')
+const isSizeTabletOrSmaller = breakpoints.smaller('pc')
+const isSizePcOrSmaller = breakpoints.smaller('pcLarge')
+
 const itemsInternal = ref<IItem[]>([])
-const oneItemPerLine = breakpoints.smaller('tabletLandscape')
-const twoItemsPerLine = breakpoints.smaller('pc')
-const threeItemsPerLine = breakpoints.smaller('pcLarge')
 
 onMounted(() => {
   filterAndSortItemsAsync()
@@ -194,7 +206,7 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
       :elements-per-line="itemsPerLine"
       :elements="itemsInternal"
       :get-key-function="i => (i as IItem).id"
-      :lines-per-page="10"
+      :lines-per-page="linesPerPage"
     >
       <template #element="{ element }">
         <ItemCard

@@ -9,6 +9,7 @@ import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import StringUtils from '../../utils/StringUtils'
 import CustomIcon from '../CustomIconComponent.vue'
+import Tooltip from '../TooltipComponent.vue'
 
 const props = defineProps<{
   item: IItem

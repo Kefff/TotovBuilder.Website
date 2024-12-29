@@ -47,36 +47,34 @@ const props = withDefaults(
 const _buildPropertiesService = Services.get(BuildPropertiesService)
 const _sortingService = Services.get(SortingService)
 
+const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const buildsPerLine = computed(() => {
   let elementsPerLine = 4
 
   if (isSizeTabletPortaitOrSmaller.value) {
     elementsPerLine = 1
-  } else if (isSizeTablet.value) {
+  } else if (isSizeTabletLandscapeOrSmaller.value) {
     elementsPerLine = 2
-  } else if (isSizePc.value) {
+  } else if (isSizePcOrSmaller.value) {
     elementsPerLine = 3
   }
 
   return props.maxElementsPerLine >= elementsPerLine ? elementsPerLine : props.maxElementsPerLine
 })
+const isSizeTabletPortaitOrSmaller = breakpoints.smaller('tabletLandscape')
+const isSizeTabletLandscapeOrSmaller = breakpoints.smaller('pc')
+const isSizePcOrSmaller = breakpoints.smaller('pcLarge')
 const linesPerPage = computed(() => {
   let lines = 3
 
-  if (isSizeTabletPortaitOrSmaller.value) {
-    lines = 10
-  } else if (isSizeTablet.value) {
+  if (isSizeTabletLandscapeOrSmaller.value) {
     lines = 10
   }
 
   return lines
 })
 
-const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const buildSummariesInternal = ref<IBuildSummary[]>([])
-const isSizeTabletPortaitOrSmaller = breakpoints.smaller('tabletLandscape')
-const isSizeTablet = breakpoints.smaller('pc')
-const isSizePc = breakpoints.smaller('pcLarge')
 
 onMounted(() => {
   filterAndSortBuildSummariesAsync()

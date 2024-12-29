@@ -8,7 +8,7 @@ import Tooltip from '../TooltipComponent.vue'
 
 const props = withDefaults(
   defineProps<{
-    displayEmptyLines: boolean,
+    displayEmptyLines?: boolean,
     includeModsAndContent?: boolean,
     item: IItem,
     wearableModifiersOverride?: IWearableModifiers

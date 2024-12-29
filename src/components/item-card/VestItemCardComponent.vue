@@ -10,7 +10,7 @@ import ContainerItemCard from './ContainerItemCardComponent.vue'
 const props = withDefaults(
   defineProps<{
     armorModifiersOverride?: IArmorModifiers,
-    displayEmptyLines: boolean,
+    displayEmptyLines?: boolean,
     includeModsAndContent?: boolean,
     isBaseItem?: boolean,
     item: IItem,

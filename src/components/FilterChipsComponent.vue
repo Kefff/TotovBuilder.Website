@@ -159,15 +159,13 @@ function showFilterAndSortSidebar(): void {
       <Chip
         v-else
         class="filter-chip"
+        @click="showFilterAndSortSidebar()"
       >
         <Tooltip
           :tooltip="filterTooltip"
           style="overflow: hidden;"
         >
-          <div
-            class="filter-chip-group"
-            @click="showFilterAndSortSidebar()"
-          >
+          <div class="filter-chip-group">
             <div class="filter-chip-icon">
               <font-awesome-icon icon="filter" />
             </div>
