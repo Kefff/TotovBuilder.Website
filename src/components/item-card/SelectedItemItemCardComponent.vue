@@ -207,21 +207,19 @@ async function setWeightAsync(): Promise<void> {
             :missing="showSelectedItemMissingPrice"
             :price="selectedItemPrice.price"
           />
-          <div v-if="isEditing && canBeLooted && canIgnorePrice">
-            <Tooltip
-              :tooltip="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
-              :apply-hover-style="false"
+          <Tooltip
+            v-if="isEditing && canBeLooted && canIgnorePrice"
+            :tooltip="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
+            :apply-hover-style="false"
+          >
+            <Button
+              class="p-button-sm"
+              outlined
+              @click="modelIgnorePrice = !modelIgnorePrice"
             >
-              <Button
-                class="p-button-sm"
-                outlined
-                :severity="!modelIgnorePrice ? 'danger' : 'primary'"
-                @click="modelIgnorePrice = !modelIgnorePrice"
-              >
-                <font-awesome-icon :icon="!modelIgnorePrice ? 'ban' : 'ruble-sign'" />
-              </Button>
-            </Tooltip>
-          </div>
+              <font-awesome-icon :icon="!modelIgnorePrice ? 'ban' : 'ruble-sign'" />
+            </Button>
+          </Tooltip>
         </div>
         <div
           v-if="showUnitPrice"
@@ -290,6 +288,11 @@ async function setWeightAsync(): Promise<void> {
   display: flex;
   height: 100%;
   text-wrap: nowrap;
+}
+
+.selected-item-item-card-weight > span {
+  align-items: center;
+  display: flex;
 }
 
 .selected-item-item-card-with-mods {

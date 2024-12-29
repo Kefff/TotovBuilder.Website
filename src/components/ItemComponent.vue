@@ -76,13 +76,21 @@ const showWeight = ref(true)
 
 const canIgnorePrice = computed(() => presetModSlotContainingItem.value?.item?.itemId !== item.value?.id)
 const contentCount = computed(() => modelInventoryItem.value?.content.length ?? 0)
-const dropdownPanelHeight = computed(() => Math.min(options.value.length === 0 ? 1 : options.value.length, 5) * 4 + 'rem') // Shows 5 items or less
 const includeModsAndContentInSummary = computed(() =>
   (itemIsModdable.value
     && baseItem.value != null
     && !props.isBaseItem)
   || (itemIsContainer.value
     && props.isMainInventorySlotItem))
+const itemHeaderGridTemplateColumns = computed(() => {
+  if (isEditing?.value && props.isBaseItem) {
+    return 'auto 1fr auto auto'
+  } else if (isEditing?.value) {
+    return '1fr auto auto'
+  }
+
+  return 'auto 1fr auto'
+})
 const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.value?.maxStackableAmount ?? 1)
 const modsCount = computed(() => modelInventoryItem.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
 const optionHeight = computed(() => Number.parseInt(window.getComputedStyle(document.documentElement).fontSize.replace('px', '')) * 4)
@@ -164,17 +172,6 @@ function onDropdownOpen(): void {
   // while avoiding having white space displayed in the dropdown panel.
   // Hence this hack.
   scrollToItemInDropdown()
-}
-
-/**
- * Reacts to the item selection filter being changed.
- *
- * Filters the options items.
- */
-function onFilterOptions(newValue: string): void {
-  optionsFilter.value = newValue
-  neetToSetOptions.value = true
-  setOptionsAsync()
 }
 
 /**
@@ -588,29 +585,87 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
     <div :class="{ 'item-main': item != null && isMainInventorySlotItem }">
       <div class="item-header">
         <ItemIcon
-          v-if="item != null"
+          v-if="item != null && (!isEditing || isBaseItem)"
           :item="item"
           :quantity="quantity"
         />
         <div
-          v-if="item != null"
+          v-if="item != null && (!isEditing || isBaseItem)"
           class="item-header-title"
         >
           <span>{{ item.name }}</span>
         </div>
-        <Tooltip
-          v-if="item != null"
-          :tooltip="$t('caption.showDetails')"
-          :apply-hover-style="false"
+        <Dropdown
+          v-else-if="isEditing && !isBaseItem"
+          v-model="item"
+          class="item-header-dropdown"
+          @show="onDropdownOpen()"
         >
-          <Button
-            class="p-button-sm"
-            outlined
-            @click="showDetails()"
+          <template #clearicon>
+            <Tooltip :tooltip="$t('caption.clear')">
+              <div
+                class="item-header-clear-button"
+                @click="removeItemAsync"
+              >
+                <font-awesome-icon icon="times" />
+              </div>
+            </Tooltip>
+          </template>
+          <template #value>
+            <Tooltip
+              :apply-hover-style="false"
+              :tooltip="item?.name"
+            >
+              <div class="item-header-dropdown-value">
+                <ItemIcon
+                  v-if="item != null"
+                  :item="item"
+                  :quantity="quantity"
+                />
+                <div class="item-header-title">
+                  {{ item?.name }}
+                </div>
+              </div>
+            </Tooltip>
+          </template>
+        </Dropdown>
+        <div
+          v-if="isEditing"
+          style="min-width: 1.75rem;"
+        >
+          <Tooltip
+            v-if="isEditing && item != null && !isBaseItem"
+            :apply-hover-style="false"
+            :tooltip="$t('caption.clear')"
           >
-            <font-awesome-icon icon="clipboard-list" />
-          </Button>
-        </Tooltip>
+            <Button
+              class="p-button-sm"
+              outlined
+              severity="danger"
+              @click="removeItemAsync"
+            >
+              <font-awesome-icon icon="times" />
+            </Button>
+          </Tooltip>
+        </div>
+        <div
+          v-if="item != null || isEditing"
+          style="min-width: 1.75rem;"
+        >
+          <Tooltip
+            v-if="item != null"
+            :apply-hover-style="false"
+            :tooltip="$t('caption.showDetails')"
+          >
+            <Button
+              class="p-button-sm"
+              outlined
+              @click="showDetails()"
+            >
+              <font-awesome-icon icon="clipboard-list" />
+            </Button>
+          </Tooltip>
+        </div>
       </div>
       <InputNumberField
         v-if="item != null && maxSelectableQuantity > 1 && !forceQuantityToMaxSelectableAmount"
@@ -748,17 +803,39 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 
 .item-header {
   align-items: center;
+  display: grid;
+  gap: 0.25rem;
+  grid-template-columns: v-bind(itemHeaderGridTemplateColumns);
+  height: 4.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.item-header-dropdown {
+  height: 100%;
+  width: 100%;
+}
+
+.item-header-dropdown-name {
+  margin-left: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 100%;
+  text-align: center;
+}
+
+.item-header-dropdown-value {
+  align-items: center;
   display: flex;
-  font-size: 1rem;
-  font-weight: normal;
-  gap: 0.5rem;
-  padding-bottom: 0.5rem;
-  white-space: preserve;
+  gap: 0.25rem;
+  height: 100%;
 }
 
 .item-header-title {
+  font-size: 1rem;
+  font-weight: normal;
   max-height: 3.75rem;
   overflow: auto;
+  white-space: preserve;
   width: 100%;
 }
 
@@ -771,5 +848,24 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 .item-quantity {
   margin-bottom: 0.5rem;
   width: 100%;
+}
+</style>
+
+
+
+
+
+
+
+
+
+<style>
+.item-header > .item-header-dropdown.p-dropdown .p-dropdown-trigger {
+  width: unset;
+  margin-right: 0.21rem;
+}
+
+.item-header > .item-header-dropdown.p-dropdown:not(.p-disabled):hover {
+  border-color: var(--primary-color);
 }
 </style>
