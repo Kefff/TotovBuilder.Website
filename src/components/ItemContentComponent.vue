@@ -157,7 +157,6 @@ function setCategoryId(): void {
         :accepted-items-category-id="categoryId"
         :max-stackable-amount="maximumQuantity"
         :path="`${path}/new`"
-        class="item-content-content-item"
         @update:inventory-item="onItemAdded($event)"
       />
     </div>

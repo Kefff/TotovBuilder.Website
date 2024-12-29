@@ -622,9 +622,20 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
                   :item="item"
                   :quantity="quantity"
                 />
-                <div class="item-header-title">
+                <div
+                  v-if="item != null"
+                  class="item-header-title"
+                >
                   {{ item?.name }}
                 </div>
+                <font-awesome-icon
+                  v-if="item == null"
+                  icon="plus"
+                  class="item-header-dropdown-value-placeholder-icon"
+                />
+                <span v-if="item == null">
+                  {{ $t('caption.selectItem') }}
+                </span>
               </div>
             </Tooltip>
           </template>
@@ -828,6 +839,10 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   display: flex;
   gap: 0.25rem;
   height: 100%;
+}
+
+.item-header-dropdown-value-placeholder-icon {
+  color: var(--success-color);
 }
 
 .item-header-title {
