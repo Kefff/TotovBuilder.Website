@@ -59,7 +59,7 @@
 .card-lines {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.25rem;
   height: 100%;
   justify-content: flex-end;
 }

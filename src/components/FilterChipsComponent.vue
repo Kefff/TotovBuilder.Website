@@ -31,7 +31,6 @@ const _globalSidebarService = Services.get(GlobalSidebarService)
 
 useEventListener(document, 'keydown', onKeyDown)
 
-
 const categoryFilterCaption = computed(() => {
   let caption: string | undefined = undefined
   const itemFilterAndSortingData = modelFilterAndSortingData.value as ItemFilterAndSortingData

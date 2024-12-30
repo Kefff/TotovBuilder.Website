@@ -88,6 +88,17 @@ watch(
   () => filterAndSortItemsAsync())
 
 /**
+ * Indicates whether an item is selected.
+ * @param item - Item.
+ * @returns true when the build is selected; otherwise false.
+ */
+function checkIsSelected(item: IItem): boolean {
+  const isSelected = modelSelectedItems.value.some(sbi => sbi.id === item.id)
+
+  return isSelected
+}
+
+/**
  * Filters and sorts items.
  */
 async function filterAndSortItemsAsync(): Promise<void> {
@@ -215,7 +226,7 @@ function onSelectedItemsChanged(item: IItem, isSelected: boolean): void {
     />
     <InfiniteScroller
       v-if="itemsInternal.length > 0 && infiniteScrolling"
-      :element-height="selectionOptions.isEnabled ? 217 : 161"
+      :element-height="selectionOptions.isEnabled ? 207 : 156"
       :elements-per-line="itemsPerLine"
       :elements="itemsInternal"
       :get-key-function="i => (i as IItem).id"
@@ -223,7 +234,7 @@ function onSelectedItemsChanged(item: IItem, isSelected: boolean): void {
       <template #element="{ element }">
         <ItemCard
           :item="<IItem>element"
-          :is-selected="false"
+          :is-selected="checkIsSelected(<IItem>element)"
           :selection-options="selectionOptions"
           @update:is-selected="onSelectedItemsChanged(<IItem>element, $event)"
         />
@@ -239,7 +250,7 @@ function onSelectedItemsChanged(item: IItem, isSelected: boolean): void {
       <template #element="{ element }">
         <ItemCard
           :item="<IItem>element"
-          :is-selected="false"
+          :is-selected="checkIsSelected(<IItem>element)"
           :selection-options="selectionOptions"
           @update:is-selected="onSelectedItemsChanged(<IItem>element, $event)"
         />

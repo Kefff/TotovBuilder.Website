@@ -151,7 +151,7 @@ function setSelectedTab(newValue: SelectableTab): void {
   align-items: center;
   display: flex;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .selected-item-functionalities > div {

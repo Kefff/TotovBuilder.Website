@@ -45,13 +45,14 @@ const upperHeight = computed(() => {
   if (props.mode === 'baseItem'
     || (props.mode === 'mods' && props.index === 0)
   ) {
-    return '2.75rem'
+    return '2.5rem'
   } else if (props.mode === 'mods') {
-    return '3.75rem'
-  } else if (props.index === 0
-    && (props.mode === 'content'
-      || props.mode === 'magazineContent')) {
-    return '1.25rem'
+    return '3.5rem'
+  } else if (props.mode === 'addContent'
+    || (props.index === 0
+      && (props.mode === 'content'
+        || props.mode === 'magazineContent'))) {
+    return '1rem'
   } else {
     return '2.25rem'
   }

@@ -221,7 +221,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
     />
     <InfiniteScroller
       v-if="buildSummariesInternal.length > 0 && infiniteScrolling"
-      :element-height="239"
+      :element-height="235"
       :elements-per-line="buildsPerLine"
       :elements="buildSummariesInternal"
       :get-key-function="i => (i as IBuildSummary).id"

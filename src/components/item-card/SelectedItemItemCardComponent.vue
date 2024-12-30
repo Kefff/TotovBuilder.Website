@@ -248,7 +248,7 @@ async function setWeightAsync(): Promise<void> {
 
 <style scoped>
 .selected-item-item-card {
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .selected-item-item-card-per-unit {

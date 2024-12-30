@@ -362,7 +362,7 @@ function displayStats(item: IItem): void {
 
 <style scoped>
 .build-card {
-  height: 17rem;
+  height: 16.875rem;
 }
 
 .build-card-header {

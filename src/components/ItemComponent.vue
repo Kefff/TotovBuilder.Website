@@ -686,7 +686,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   display: grid;
   gap: 0.25rem;
   grid-template-columns: v-bind(itemHeaderGridTemplateColumns);
-  height: 4.4rem;
+  height: 3.9rem;
 }
 
 .item-header-dropdown {
@@ -722,7 +722,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 .item-header-title {
   font-size: 1rem;
   font-weight: normal;
-  max-height: 3.75rem;
+  max-height: 3.25rem;
   overflow: auto;
   white-space: preserve;
   width: 100%;
@@ -732,7 +732,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 .item-main {
   background-color: var(--primary-color6);
   border-radius: 6px;
-  padding: 0.25rem
+  padding: 0.5rem
 }
 
 .item-quantity {

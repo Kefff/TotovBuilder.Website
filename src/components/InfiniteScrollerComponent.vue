@@ -151,10 +151,9 @@ function scrollToFirstLine(): void {
 
 .infinite-scroller-line {
   display: grid;
-  gap: 1rem;
   grid-template-columns: v-bind(gridTemplateColumns);
   height: v-bind(lineHeight);
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   overflow: hidden;
   width: 100%;
 }
