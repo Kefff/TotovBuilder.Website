@@ -3,6 +3,7 @@ import { useBreakpoints } from '@vueuse/core'
 import { computed, onMounted, ref, watch } from 'vue'
 import { IItem } from '../models/item/IItem'
 import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlobalSidebarOptions'
+import { IListSelectionOptions } from '../models/utils/IListSelectionOptions'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import Services from '../services/repository/Services'
@@ -14,23 +15,29 @@ import ItemCard from './item-card/ItemCardComponent.vue'
 import Loading from './LoadingComponent.vue'
 import Paginator from './PaginatorComponent.vue'
 
+const modelSelectedItems = defineModel<IItem[]>('selectedItems', { required: false, default: [] })
 const modelFilterAndSortingData = defineModel<ItemFilterAndSortingData>('filterAndSortingData', { required: false, default: new ItemFilterAndSortingData() })
 
 const props = withDefaults(
   defineProps<{
     elementToStickTo?: HTMLElement | null,
-    hasSelection?: boolean,
     infiniteScrolling?: boolean,
     isLoading?: boolean,
     items: IItem[],
     maxElementsPerLine?: number,
+    selectionOptions?: IListSelectionOptions,
   }>(),
   {
     elementToStickTo: undefined,
-    hasSelection: false,
     infiniteScrolling: false,
     isLoading: false,
-    maxElementsPerLine: 5
+    maxElementsPerLine: 5,
+    selectionOptions: () => <IListSelectionOptions>{
+      canUnselect: true,
+      isEnabled: false,
+      selectionButtonCaption: undefined,
+      selectionButtonIcon: undefined
+    }
   })
 
 const _itemPropertiesService = Services.get(ItemPropertiesService)
@@ -157,6 +164,26 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
 
   return itemsToSort
 }
+
+/**
+ * Updates the list of selected items.
+ * @param item - Item.
+ * @param isSelected - Indicates whether the item is selected.
+ */
+function onSelectedItemsChanged(item: IItem, isSelected: boolean): void {
+  if (isSelected) {
+    if (props.selectionOptions.isMultiSelection) {
+      modelSelectedItems.value = [
+        ...modelSelectedItems.value,
+        item
+      ]
+    } else {
+      modelSelectedItems.value = [item]
+    }
+  } else {
+    modelSelectedItems.value = modelSelectedItems.value.filter(i => i.id !== item.id)
+  }
+}
 </script>
 
 
@@ -188,7 +215,7 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
     />
     <InfiniteScroller
       v-if="itemsInternal.length > 0 && infiniteScrolling"
-      :element-height="hasSelection ? 210 : 161"
+      :element-height="selectionOptions.isEnabled ? 217 : 161"
       :elements-per-line="itemsPerLine"
       :elements="itemsInternal"
       :get-key-function="i => (i as IItem).id"
@@ -197,7 +224,8 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
         <ItemCard
           :item="<IItem>element"
           :is-selected="false"
-          :is-selectable="hasSelection"
+          :selection-options="selectionOptions"
+          @update:is-selected="onSelectedItemsChanged(<IItem>element, $event)"
         />
       </template>
     </InfiniteScroller>
@@ -212,7 +240,8 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
         <ItemCard
           :item="<IItem>element"
           :is-selected="false"
-          :is-selectable="hasSelection"
+          :selection-options="selectionOptions"
+          @update:is-selected="onSelectedItemsChanged(<IItem>element, $event)"
         />
       </template>
     </Paginator>

@@ -3,6 +3,7 @@ import { useScroll } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { IItem } from '../models/item/IItem'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
+import { IListSelectionOptions } from '../models/utils/IListSelectionOptions'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import { BuildService } from '../services/BuildService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
@@ -17,15 +18,12 @@ const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
 const props = withDefaults(
   defineProps<{
     buildSummary: IBuildSummary,
-    selectionButtonCaption?: string,
-    selectionButtonIcon?: string,
+    selectionOptions: IListSelectionOptions,
     showActionsButton?: boolean,
     showNotExported: boolean,
     showShoppingList?: boolean
   }>(),
   {
-    selectionButtonCaption: undefined,
-    selectionButtonIcon: undefined,
     showActionsButton: true,
     showShoppingList: true
   })
@@ -45,8 +43,8 @@ const notExportedTooltip = computed(() => {
   return tooltip
 })
 const selectionButtonCaptionInternal = computed(() => {
-  if (props.selectionButtonCaption != null) {
-    return props.selectionButtonCaption
+  if (props.selectionOptions.selectionButtonCaption != null) {
+    return props.selectionOptions.selectionButtonCaption
   } else if (modelIsSelected.value) {
     return 'caption.deselect'
   } else {
@@ -54,8 +52,8 @@ const selectionButtonCaptionInternal = computed(() => {
   }
 })
 const selectionButtonIconInternal = computed(() => {
-  if (props.selectionButtonIcon != null) {
-    return props.selectionButtonIcon
+  if (props.selectionOptions.selectionButtonIcon != null) {
+    return props.selectionOptions.selectionButtonIcon
   } else if (modelIsSelected.value) {
     return 'times'
   } else {
@@ -318,8 +316,14 @@ function displayStats(item: IItem): void {
           </div>
         </div>
       </div>
-      <div class="card-buttons">
+      <div
+        v-if="!modelIsSelected
+          || selectionOptions.canUnselect
+          || showShoppingList"
+        class="card-buttons"
+      >
         <Button
+          v-if="!modelIsSelected || selectionOptions.canUnselect"
           :outlined="modelIsSelected"
           @click="modelIsSelected = !modelIsSelected"
         >

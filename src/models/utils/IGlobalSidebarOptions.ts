@@ -59,6 +59,7 @@ export type GlobalSidebarComponent =
   | 'BuildsListSidebar'
   | 'ChangelogSidebar'
   | 'GeneralOptionsSidebar'
+  | 'ItemSelectionSidebar'
   | 'ItemsListSidebar'
   | 'MerchantItemsOptionsSidebar'
   | 'NotificationsSidebar'
@@ -75,6 +76,7 @@ export type GlobalSidebarDisplayedComponentParameters =
   | BuildsListSidebarParameters
   | BuildsShareSideBarParameters
   | GeneralOptionsSidebarParameters
+  | ItemSelectionSidebarParameters
   | ItemsListSidebarParameters
   | ShoppingListSidebarParameters
   | StatsSidebarParameters
@@ -92,6 +94,15 @@ export type BuildsExportSidebarParameters = IBuildSummary[]
 export type BuildsShareSideBarParameters = {
   buildToShare?: IBuild,
   buildSummaries?: IBuildSummary[]
+}
+
+/**
+ * Item selection sidebar parameters.
+ */
+export type ItemSelectionSidebarParameters = {
+  filterAndSortingData: ItemFilterAndSortingData | undefined,
+  selectedItems: IItem[],
+  selectableItems: IItem[],
 }
 
 /**

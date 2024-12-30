@@ -13,6 +13,7 @@ const props = withDefaults(
     canHaveContent: boolean,
     canHaveMods: boolean,
     canIgnorePrice: boolean,
+    containsBaseItem: boolean,
     contentCount?: number,
     item: IItem,
     modsCount?: number
@@ -72,7 +73,7 @@ function setSelectedTab(newValue: SelectableTab): void {
 <template>
   <div
     v-show="(canHaveContent && (contentCount > 0 || isEditing))
-      || (canHaveMods && (modsCount > 0 || isEditing))"
+      || (canHaveMods && (modsCount > 0 || containsBaseItem || isEditing))"
     class="selected-item-functionalities"
   >
     <div
@@ -101,7 +102,7 @@ function setSelectedTab(newValue: SelectableTab): void {
       </Tooltip>
     </div>
     <div
-      v-show="canHaveMods && (modsCount > 0 || isEditing)"
+      v-show="canHaveMods && (modsCount > 0 || containsBaseItem || isEditing)"
       class="selected-item-button-mods"
     >
       <Tooltip

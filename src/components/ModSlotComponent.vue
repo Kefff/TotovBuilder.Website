@@ -106,11 +106,6 @@ async function setAcceptedItemsAsync(): Promise<void> {
   width: 100%;
 }
 
-.mod-slot-breadcrumb {
-  font-size: 0.875rem;
-  font-style: italic;
-}
-
 .mod-slot-header {
   align-items: center;
   display: flex;

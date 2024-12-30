@@ -2,6 +2,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IItem } from '../../models/item/IItem'
 import { IPrice } from '../../models/item/IPrice'
+import { IListSelectionOptions } from '../../models/utils/IListSelectionOptions'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { InventoryItemService } from '../../services/InventoryItemService'
@@ -14,26 +15,28 @@ import ItemCardSelector from './ItemCardSelectorComponent.vue'
 
 const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
 
-const props = withDefaults(
-  defineProps<{
-    isSelectable?: boolean,
-    item: IItem,
-    selectionButtonIcon?: string
-  }>(),
-  {
-    isSelectable: false,
-    selectionButtonIcon: undefined
-  })
+const props = defineProps<{
+  item: IItem,
+  selectionOptions: IListSelectionOptions
+}>()
 
 const _inventoryItemService = Services.get(InventoryItemService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
-
-const height = computed(() => `${props.isSelectable ? 15 : 11.5}rem`)
+const height = computed(() => `${props.selectionOptions.isEnabled ? 15.5 : 11.5}rem`)
+const selectionButtonCaptionInternal = computed(() => {
+  if (props.selectionOptions.selectionButtonCaption != null) {
+    return props.selectionOptions.selectionButtonCaption
+  } else if (modelIsSelected.value) {
+    return 'caption.deselect'
+  } else {
+    return 'caption.select'
+  }
+})
 const selectionButtonIconInternal = computed(() => {
-  if (props.selectionButtonIcon != null) {
-    return props.selectionButtonIcon
+  if (props.selectionOptions.selectionButtonIcon != null) {
+    return props.selectionOptions.selectionButtonIcon
   } else if (modelIsSelected.value) {
     return 'times'
   } else {
@@ -151,15 +154,18 @@ function showDetails(): void {
           </div>
         </div>
         <div
-          v-if="isSelectable"
+          v-if="selectionOptions.isEnabled"
           class="card-buttons"
         >
-          <Button @click="modelIsSelected = !modelIsSelected">
+          <Button
+            :outlined="modelIsSelected || selectionOptions.canUnselect"
+            @click="modelIsSelected = !modelIsSelected"
+          >
             <font-awesome-icon
               :icon="selectionButtonIconInternal"
               class="icon-before-text"
             />
-            <span>{{ $t('caption.select') }}</span>
+            <span>{{ $t(selectionButtonCaptionInternal) }}</span>
           </Button>
         </div>
       </div>

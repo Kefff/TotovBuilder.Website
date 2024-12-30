@@ -136,7 +136,7 @@ async function setWeightAsync(): Promise<void> {
 
 
 <template>
-  <div class="card-lines">
+  <div class="card-lines selected-item-item-card">
     <!-- Specialized stats -->
     <slot />
     <div class="card-line card-line3 selected-item-item-card-prices-and-weight">
@@ -247,6 +247,10 @@ async function setWeightAsync(): Promise<void> {
 
 
 <style scoped>
+.selected-item-item-card {
+  margin-top: 0.5rem;
+}
+
 .selected-item-item-card-per-unit {
   align-items: center;
   display: flex;

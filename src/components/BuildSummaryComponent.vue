@@ -43,6 +43,11 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
 
 <template>
   <div
+    v-if="hasSummaryStats
+      || hasSummaryArmor
+      || hasSummaryWearableModifiers
+      || hasSummaryWeight
+      || hasSummaryPrice"
     v-show="!isLoading"
     :class="{
       'build-summary': !isCompactMode,

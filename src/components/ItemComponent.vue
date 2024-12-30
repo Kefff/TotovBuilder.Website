@@ -6,8 +6,9 @@ import { IContainer } from '../models/item/IContainer'
 import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { IMagazine } from '../models/item/IMagazine'
 import { IModdable } from '../models/item/IModdable'
+import { ItemSelectionSidebarParameters } from '../models/utils/IGlobalSidebarOptions'
+import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 import { SelectableTab } from '../models/utils/SelectableTab'
-import SortingData from '../models/utils/SortingData'
 import { CompatibilityRequestType } from '../services/compatibility/CompatibilityRequestType'
 import { CompatibilityService } from '../services/compatibility/CompatibilityService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
@@ -15,7 +16,6 @@ import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import { ItemService } from '../services/ItemService'
 import { PresetService } from '../services/PresetService'
 import Services from '../services/repository/Services'
-import { SortingService } from '../services/sorting/SortingService'
 import { PathUtils } from '../utils/PathUtils'
 import InputNumberField from './InputNumberFieldComponent.vue'
 import SelectedItemItemCardSelector from './item-card/SelectedItemItemCardSelectorComponent.vue'
@@ -62,11 +62,7 @@ const item = ref<IItem | undefined>()
 const itemChanging = ref(false)
 const itemIsContainer = ref(false)
 const itemIsModdable = ref(false)
-const loadingOptions = ref(false)
-const neetToSetOptions = ref(true)
-const options = ref<IItem[]>([])
-const optionsFilter = ref('')
-const optionsSortingData = ref(new SortingData<IItem>())
+const lastSelectionFilterAndSortingData = ref<ItemFilterAndSortingData>()
 const presetModSlotContainingItem = ref<IInventoryModSlot>()
 const quantity = ref(props.inventoryItem?.quantity ?? 1)
 const selectedTab = ref(SelectableTab.hidden)
@@ -76,6 +72,7 @@ const showWeight = ref(true)
 
 const canIgnorePrice = computed(() => presetModSlotContainingItem.value?.item?.itemId !== item.value?.id)
 const contentCount = computed(() => modelInventoryItem.value?.content.length ?? 0)
+const hasOnlyBaseItem = computed(() => itemIsModdable.value && (props.inventoryItem?.modSlots ?? []).every(ms => ms.item == null))
 const includeModsAndContentInSummary = computed(() =>
   (itemIsModdable.value
     && baseItem.value != null
@@ -93,11 +90,7 @@ const itemHeaderGridTemplateColumns = computed(() => {
 })
 const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.value?.maxStackableAmount ?? 1)
 const modsCount = computed(() => modelInventoryItem.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
-const optionHeight = computed(() => Number.parseInt(window.getComputedStyle(document.documentElement).fontSize.replace('px', '')) * 4)
 
-watch(
-  () => props.acceptedItems,
-  () => neetToSetOptions.value = true)
 watch(
   () => props.inventoryItem?.itemId,
   () => initializeItemAsync())
@@ -108,9 +101,7 @@ watch(
   () => item.value?.id,
   () => setSelectedTab())
 
-onMounted(() => {
-  initializeItemAsync()
-})
+onMounted(() => initializeItemAsync())
 
 /**
  * Initializes the item based on the inventory item passed to the component.
@@ -150,28 +141,6 @@ function onContentChanged(newContent: IInventoryItem[]): void {
     modSlots: modelInventoryItem.value.modSlots,
     quantity: modelInventoryItem.value.quantity
   }
-}
-
-/**
- * Reacts to the items selection dropdown being opened.
- *
- * Scrolls to the item in the item dropdown.
- */
-function onDropdownOpen(): void {
-  if (item.value == null) {
-    return
-  }
-
-  // Hack for scrolling to the selected item when opening an item dropdown.
-  // Needed because PrimeVue VirtualScroller automatically loads 12 items when opening.
-  // Those 12 items a considered visible, therefore no scroll happens.
-  // However, since we only display 5 elements, we cannot see element 6 to 12.
-  // If the selected item is the 13th or higher, then the PrimeVue correctly scrolls to the item.
-  // The PrimeVue behaviour can be "controled" by playing with the options height and the dropdown panel height
-  // but I could not find a good combination of values for reducing the number of loaded elements
-  // while avoiding having white space displayed in the dropdown panel.
-  // Hence this hack.
-  scrollToItemInDropdown()
 }
 
 /**
@@ -263,20 +232,38 @@ function onQuantityChanged(newQuantity: number): void {
 }
 
 /**
- * Reacts to the click on an item selection sort button.
+ * Reacts to the item selection input being clicked.
  *
- * Sorts the options items.
+ * Opens the item selection sidebar.
  */
-async function onSortOptionsAsync(newSortingData: SortingData<IItem>): Promise<void> {
-  loadingOptions.value = true
+function onSelectionInputClick(): void {
+  let filterAndSortingData = lastSelectionFilterAndSortingData.value
 
-  optionsSortingData.value = newSortingData
-  const currentOptions = [...options.value] // Creating a new array because options.value can be updated while this function is being executed
-  options.value = await Services.get(SortingService).sortAsync(currentOptions, optionsSortingData.value)
+  if (filterAndSortingData == null) {
+    filterAndSortingData = new ItemFilterAndSortingData()
+  }
 
-  loadingOptions.value = false
+  filterAndSortingData.categoryId = props.acceptedItemsCategoryId
+  filterAndSortingData.isCategoryReadOnly = props.acceptedItemsCategoryId != null
 
-  scrollToItemInDropdown()
+  _globalSidebarService.display({
+    displayedComponentType: 'ItemSelectionSidebar',
+    displayedComponentParameters: {
+      selectedItems: item.value != null ? [item.value] : [],
+      selectableItems: props.acceptedItems,
+      filterAndSortingData
+    },
+    onCloseAction: (updatedParameters) => {
+      const up = updatedParameters as ItemSelectionSidebarParameters
+      lastSelectionFilterAndSortingData.value = up.filterAndSortingData
+      const selectedItem: IItem | undefined = up.selectedItems[0]
+
+      if (item.value?.id !== selectedItem?.id) {
+        item.value = selectedItem
+        onItemChangedAsync()
+      }
+    }
+  })
 }
 
 /**
@@ -288,24 +275,6 @@ async function removeItemAsync(event: MouseEvent): Promise<void> {
 
   item.value = undefined
   await onItemChangedAsync()
-}
-
-/**
- * Scrolls the dropdown to the selected item.
- *
- * This is a workaround for an issue where the PrimeVue scrolling to the selected element breaks
- * because we focus the filter input.
- */
-function scrollToItemInDropdown(): void {
-  if (item.value == null) {
-    return
-  }
-
-  const itemPosition = options.value.findIndex(o => o.id === item.value!.id)
-  const itemXPositionInDropdown = itemPosition * optionHeight.value
-
-  const virtualScrollerElement = document.querySelector('.p-virtualscroller')
-  virtualScrollerElement?.scrollTo({ behavior: 'smooth', top: itemXPositionInDropdown })
 }
 
 /**
@@ -359,44 +328,6 @@ function setBaseItem(item: IItem): void {
 }
 
 /**
- * Sets the options selectable in the drop down input based on the current filter and sorting.
- */
-async function setOptionsAsync(): Promise<void> {
-  if (!neetToSetOptions.value) {
-    return
-  }
-
-  neetToSetOptions.value = false
-  loadingOptions.value = true
-
-  if (optionsFilter.value === '') {
-    options.value = [...props.acceptedItems]
-  } else {
-    const filteredOptions: IItem[] = []
-    const promises: Promise<void>[] = []
-
-    for (const acceptedItem of props.acceptedItems) {
-      promises.push(new Promise(resolve => {
-        const matchesFilter = _itemPropertiesService.checkMatchesFilter(acceptedItem, optionsFilter.value)
-
-        if (matchesFilter) {
-          filteredOptions.push(acceptedItem)
-        }
-
-        resolve()
-      }))
-    }
-
-    await Promise.allSettled(promises)
-    options.value = filteredOptions
-  }
-
-  onSortOptionsAsync(optionsSortingData.value)
-
-  loadingOptions.value = false
-}
-
-/**
  * Sets the selected tab based on the type of selected item.
  */
 function setSelectedTab(): void {
@@ -408,9 +339,9 @@ function setSelectedTab(): void {
       || (item.value.categoryId === ItemCategoryId.notFound && (props.inventoryItem?.content.length ?? 0) > 0)
 
     if (selectedTab.value === SelectableTab.hidden) {
-      if (itemIsContainer.value && contentCount.value > 0) {
+      if (itemIsContainer.value && (contentCount.value > 0 || !itemIsModdable.value)) {
         selectedTab.value = SelectableTab.content
-      } else if (itemIsModdable.value && modsCount.value > 0) {
+      } else if (itemIsModdable.value) {
         selectedTab.value = SelectableTab.mods
       } else {
         selectedTab.value = SelectableTab.hidden
@@ -510,78 +441,6 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
     v-if="modelInventoryItem != null || isEditing"
     class="item"
   >
-    <!-- <div
-      class="item-selection"
-      :class="{
-        'item-selection-main': item != null && isMainInventorySlotItem
-      }"
-    >
-      <div class="item-selection-dropdown">
-        <Dropdown
-          v-model="item"
-          :disabled="!isEditing || isBaseItem"
-          :options="options"
-          :scroll-height="dropdownPanelHeight"
-          :show-clear="isEditing && !isBaseItem"
-          :virtual-scroller-options="{ orientation: 'vertical', itemSize: optionHeight }"
-          class="item-dropdown"
-          data-key="id"
-          @before-show="setOptionsAsync()"
-          @change="onItemChangedAsync()"
-          @show="onDropdownOpen()"
-        >
-          <template #clearicon>
-            <Tooltip :tooltip="$t('caption.clear')">
-              <div
-                class="item-clear-button"
-                @click="removeItemAsync"
-              >
-                <font-awesome-icon icon="times" />
-              </div>
-            </Tooltip>
-          </template>
-<template #empty>
-            <div class="item-dropdown-empty">
-              <Loading
-                v-if="loadingOptions"
-                :scale="0.5"
-              />
-              <span v-else>
-                {{ $t('message.noItemsFound') }}
-              </span>
-              <div />
-            </div>
-          </template>
-<template #header>
-            <OptionHeaderSelector
-              :category-id="acceptedItemsCategoryId"
-              :filter="optionsFilter"
-              :sorting-data="optionsSortingData"
-              @update:filter="onFilterOptions($event)"
-              @update:sorting-data="onSortOptionsAsync($event)"
-            />
-          </template>
-<template #option="slotProps">
-            <div class="item-dropdown-option">
-              <SummarySelector :item="slotProps.option" />
-            </div>
-          </template>
-<template #value="slotProps">
-            <Tooltip
-              :apply-hover-style="false"
-              :tooltip="item?.name"
-            >
-              <SelectedItem v-model:item="slotProps.value" />
-            </Tooltip>
-          </template>
-</Dropdown>
-</div>
-<div v-if="item != null && maxSelectableQuantity > 1" class="item-quantity">
-  <InputNumberField v-model:value="quantity" :caption="$t('caption.quantity')" :max="maxSelectableQuantity" :min="1" :read-only="!isEditing || forceQuantityToMaxSelectableAmount" :required="true" caption-mode="placeholder" required-message-position="right" @update:value="onQuantityChanged($event)" />
-</div>
-<SelectedItemFunctionalities v-if="modelInventoryItem != null && item != null" v-model:selected-tab="selectedTab" :can-be-looted="canBeLooted" :can-have-content="itemIsContainer" :can-have-mods="itemIsModdable && !isBaseItem" :can-ignore-price="canIgnorePrice" :content-count="contentCount" :ignore-price="modelInventoryItem.ignorePrice" :item="item" :mods-count="modsCount" @update:ignore-price="onIgnorePriceChanged($event)" />
-<SelectedItemSummarySelector v-if="modelInventoryItem != null && item != null" :can-be-looted="canBeLooted" :include-mods-and-content="includeModsAndContentInSummary" :inventory-item-in-same-slot-in-preset="presetModSlotContainingItem?.item" :inventory-item="modelInventoryItem" :is-base-item="isBaseItem" :selected-item="item" :show-price="showPrice" :show-weight="showWeight" />
-</div> -->
     <div :class="{ 'item-main': item != null && isMainInventorySlotItem }">
       <div class="item-header">
         <ItemIcon
@@ -599,8 +458,12 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           v-else-if="isEditing && !isBaseItem"
           v-model="item"
           class="item-header-dropdown"
-          @show="onDropdownOpen()"
+          @click="onSelectionInputClick"
         >
+          <template #empty>
+            <!-- Display nothing when the dropdown is opened because we open the sidebar instead -->
+            <div />
+          </template>
           <template #clearicon>
             <Tooltip :tooltip="$t('caption.clear')">
               <div
@@ -633,7 +496,10 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
                   icon="plus"
                   class="item-header-dropdown-value-placeholder-icon"
                 />
-                <span v-if="item == null">
+                <span
+                  v-if="item == null"
+                  class="item-header-dropdown-value-placeholder-text"
+                >
                   {{ $t('caption.selectItem') }}
                 </span>
               </div>
@@ -711,8 +577,9 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
       v-model:selected-tab="selectedTab"
       :can-be-looted="canBeLooted"
       :can-have-content="itemIsContainer"
-      :can-have-mods="itemIsModdable && !isBaseItem"
+      :can-have-mods="itemIsModdable && !isBaseItem && (!hasOnlyBaseItem || (isEditing ?? false))"
       :can-ignore-price="canIgnorePrice"
+      :contains-base-item="baseItem != null"
       :content-count="contentCount"
       :ignore-price="modelInventoryItem.ignorePrice"
       :item="item"
@@ -725,7 +592,9 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
         v-if="modelInventoryItem != null
           && !itemChanging
           && !isBaseItem
-          && itemIsModdable && baseItem != null"
+          && itemIsModdable
+          && baseItem != null
+          && (!hasOnlyBaseItem || isEditing)"
         v-show="selectedTab === SelectableTab.mods"
         class="item-content-and-mods-base-item"
       >
@@ -818,7 +687,6 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   gap: 0.25rem;
   grid-template-columns: v-bind(itemHeaderGridTemplateColumns);
   height: 4.4rem;
-  margin-bottom: 0.5rem;
 }
 
 .item-header-dropdown {
@@ -845,6 +713,12 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   color: var(--success-color);
 }
 
+.item-header-dropdown-value-placeholder-text {
+  overflow: auto;
+  white-space: preserve;
+  word-break: break-word;
+}
+
 .item-header-title {
   font-size: 1rem;
   font-weight: normal;
@@ -852,6 +726,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   overflow: auto;
   white-space: preserve;
   width: 100%;
+  word-break: break-word;
 }
 
 .item-main {
@@ -861,7 +736,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-quantity {
-  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
   width: 100%;
 }
 </style>

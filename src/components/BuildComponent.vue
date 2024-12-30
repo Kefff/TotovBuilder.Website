@@ -755,7 +755,6 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
             <font-awesome-icon
               v-if="!isCompactBuildSummaryExpanded"
               icon="clipboard-list"
-              class="icon-before-text"
             />
             <font-awesome-icon
               v-if="isCompactBuildSummaryExpanded"

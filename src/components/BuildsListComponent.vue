@@ -4,6 +4,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlobalSidebarOptions'
+import { IListSelectionOptions } from '../models/utils/IListSelectionOptions'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
@@ -21,11 +22,10 @@ const props = withDefaults(
   defineProps<{
     buildSummaries: IBuildSummary[],
     elementToStickTo?: HTMLElement | null,
-    maxElementsPerLine?: number,
     infiniteScrolling?: boolean,
     isLoading?: boolean,
-    selectionButtonCaption?: string,
-    selectionButtonIcon?: string,
+    maxElementsPerLine?: number,
+    selectionOptions?: IListSelectionOptions,
     showActionsButton?: boolean,
     showChips?: boolean
     showNotExported?: boolean,
@@ -33,11 +33,15 @@ const props = withDefaults(
   }>(),
   {
     elementToStickTo: undefined,
-    maxElementsPerLine: 4,
     infiniteScrolling: false,
     isLoading: false,
-    selectionButtonCaption: undefined,
-    selectionButtonIcon: undefined,
+    maxElementsPerLine: 4,
+    selectionOptions: () => <IListSelectionOptions>{
+      canUnselect: true,
+      isEnabled: false,
+      selectionButtonCaption: undefined,
+      selectionButtonIcon: undefined
+    },
     showActionsButton: undefined,
     showChips: true,
     showNotExported: true,
@@ -168,18 +172,22 @@ async function sortBuildSummariesAsync(buildSummariesToSort: IBuildSummary[]): P
 }
 
 /**
- * Updates the list of selected build IDs.
+ * Updates the list of selected builds.
  * @param buildSummary - Build.
  * @param isSelected - Indicates whether the build is selected.
  */
 function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean): void {
   if (isSelected) {
-    modelSelectedBuilds.value = [
-      ...modelSelectedBuilds.value,
-      buildSummary
-    ]
+    if (props.selectionOptions.isMultiSelection) {
+      modelSelectedBuilds.value = [
+        ...modelSelectedBuilds.value,
+        buildSummary
+      ]
+    } else {
+      modelSelectedBuilds.value = [buildSummary]
+    }
   } else {
-    modelSelectedBuilds.value = modelSelectedBuilds.value.filter(sbi => sbi.id !== buildSummary.id)
+    modelSelectedBuilds.value = modelSelectedBuilds.value.filter(bs => bs.id !== buildSummary.id)
   }
 }
 </script>
@@ -222,8 +230,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
         <BuildCard
           :build-summary="<IBuildSummary>element"
           :is-selected="checkIsSelected(<IBuildSummary>element)"
-          :selection-button-caption="selectionButtonCaption"
-          :selection-button-icon="selectionButtonIcon"
+          :selection-options="selectionOptions"
           :show-actions-button="showActionsButton"
           :show-not-exported="showNotExported"
           :show-shopping-list="showShoppingList"
@@ -242,8 +249,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
         <BuildCard
           :build-summary="<IBuildSummary>element"
           :is-selected="checkIsSelected(<IBuildSummary>element)"
-          :selection-button-caption="selectionButtonCaption"
-          :selection-button-icon="selectionButtonIcon"
+          :selection-options="selectionOptions"
           :show-actions-button="showActionsButton"
           :show-not-exported="showNotExported"
           :show-shopping-list="showShoppingList"
