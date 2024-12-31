@@ -43,6 +43,7 @@ const props = withDefaults(
 const _itemPropertiesService = Services.get(ItemPropertiesService)
 const _sortingService = Services.get(SortingService)
 
+const firstSelectedItemIndex = computed(() => itemsInternal.value.findIndex(i => i.id === modelSelectedItems.value[0]?.id))
 const itemsPerLine = computed(() => {
   let columns = 5
 
@@ -230,6 +231,7 @@ function onSelectedItemsChanged(item: IItem, isSelected: boolean): void {
       :elements-per-line="itemsPerLine"
       :elements="itemsInternal"
       :get-key-function="i => (i as IItem).id"
+      :scroll-to-index="firstSelectedItemIndex"
     >
       <template #element="{ element }">
         <ItemCard
@@ -246,6 +248,7 @@ function onSelectedItemsChanged(item: IItem, isSelected: boolean): void {
       :elements="itemsInternal"
       :get-key-function="i => (i as IItem).id"
       :lines-per-page="linesPerPage"
+      :scroll-to-index="firstSelectedItemIndex"
     >
       <template #element="{ element }">
         <ItemCard

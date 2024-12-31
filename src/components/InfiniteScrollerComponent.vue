@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { VirtualScrollerLazyEvent } from 'primevue/virtualscroller'
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import VirtualScroller, { VirtualScrollerLazyEvent } from 'primevue/virtualscroller'
+import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -8,12 +8,15 @@ const props = withDefaults(
     getKeyFunction: (element: unknown) => string,
     elements: unknown[],
     elementHeight: number,
-    maxLinesAmount?: number
+    maxLinesAmount?: number,
+    scrollToIndex?: number
   }>(),
   {
     elementsPerLine: 1,
-    maxLinesAmount: undefined
+    maxLinesAmount: undefined,
+    scrollToIndex: undefined
   })
+
 
 const gridTemplateColumns = computed(() => `repeat(${props.elementsPerLine}, 1fr)`)
 const groupedElements = computed<unknown[][]>(() => {
@@ -41,6 +44,7 @@ const minHeight = computed(() => `${props.elementHeight}px`)
 const displayedElementGroups = ref<unknown[][]>([])
 const isInitialized = ref(false)
 const isLoading = ref(false)
+const virtualScroller = useTemplateRef<VirtualScroller>('virtualScroller')
 
 watch(() => props.elements, () => initializeDisplayedElements())
 
@@ -55,14 +59,14 @@ function initializeDisplayedElements(): void {
 
   nextTick(() => {
     isInitialized.value = true
-    scrollToFirstLine()
+    setTimeout(() => scrollToElement(props.scrollToIndex), 1) // Needed otherwise the scroll does not trigger
   })
 }
 
 /**
  * Reacts to a lazy load event of the virtual scroller.
  *
- * Adds to the list of displayed items the items corresponding to the lazy loadingevent.
+ * Adds to the list of displayed items the items corresponding to the lazy loading event.
  */
 function onLazyLoad(event: VirtualScrollerLazyEvent): void {
   let first = event.first
@@ -88,14 +92,16 @@ function onLazyLoad(event: VirtualScrollerLazyEvent): void {
 }
 
 /**
- * Scrolls to the first line.
+ * Scrolls to an element.
+ * @param elementIndex - Index of the element to scroll to. First element when undefined.
  */
-function scrollToFirstLine(): void {
-  const firstLine = document.getElementsByClassName('infinite-scroller-line')[0]
-
-  if (firstLine != null) {
-    firstLine.scrollIntoView({ behavior: 'smooth', block: 'center' })
+function scrollToElement(elementIndex?: number): void {
+  if (elementIndex == null || elementIndex < 0) {
+    elementIndex = 0
   }
+
+  const lineIndex = Math.floor(elementIndex / props.elementsPerLine)
+  virtualScroller.value?.scrollToIndex(lineIndex, 'smooth')
 }
 </script>
 
@@ -111,6 +117,7 @@ function scrollToFirstLine(): void {
 <template>
   <VirtualScroller
     v-if="isInitialized"
+    ref="virtualScroller"
     :item-size="elementHeight"
     :items="displayedElementGroups"
     :lazy="true"
