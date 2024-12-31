@@ -90,7 +90,7 @@ export class BuildPropertiesService {
 
   /**
    * Checks if a build contains an armor preventing the usage of an armored vest.
-   * Displays a warnng notification when it is the case.
+   * Displays a warning notification when it is the case.
    * @param build - Build.
    * @param vestId - Vest ID.
    */

@@ -441,7 +441,10 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
     v-if="modelInventoryItem != null || isEditing"
     class="item"
   >
-    <div :class="{ 'item-main': item != null && isMainInventorySlotItem }">
+    <div :class="{
+      'item-main': item != null && isMainInventorySlotItem,
+      'item-padding': item == null || !isMainInventorySlotItem
+    }">
       <div class="item-header">
         <ItemIcon
           v-if="item != null && (!isEditing || isBaseItem)"
@@ -584,10 +587,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
         @update:ignore-price="onIgnorePriceChanged($event)"
       />
     </div>
-    <div
-      v-if="modelInventoryItem != null"
-      :class="{ 'item-main-padding': isMainInventorySlotItem }"
-    >
+    <div v-if="modelInventoryItem != null">
       <SelectedItemFunctionalities
         v-if="item != null"
         v-model:selected-tab="selectedTab"
@@ -745,7 +745,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   padding: 0.5rem
 }
 
-.item-main-padding {
+.item-padding {
   padding-right: 0.5rem;
 }
 
