@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBreakpoints } from '@vueuse/core'
 import { PageState } from 'primevue/paginator'
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 
 const props = withDefaults(
@@ -9,11 +9,13 @@ const props = withDefaults(
     elementsPerLine?: number,
     getKeyFunction: (element: unknown) => string,
     elements: unknown[],
-    linesPerPage?: number
+    linesPerPage?: number,
+    scrollToIndex?: number
   }>(),
   {
     elementsPerLine: 1,
-    linesPerPage: 1
+    linesPerPage: 1,
+    scrollToIndex: undefined
   })
 
 const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
@@ -43,26 +45,44 @@ const currentPage = ref(0)
 
 watch(() => props.elements, () => {
   currentPage.value = 0
-  scrollToFirstLine()
+  scrollToElement(props.scrollToIndex)
 })
+
+onMounted(() => scrollToElement(props.scrollToIndex))
 
 /**
  * Reacts to the paginator current page being changed.
  */
 function onPageChange(state: PageState): void {
   currentPage.value = state.page
-  scrollToFirstLine()
+  scrollToElement()
 }
 
 /**
- * Scrolls to the first line.
+ * Changes the page if necessary and scrolls to an element.
+ * @param elementIndex - Index of the element to scroll to. First element of the current page when undefined.
  */
-function scrollToFirstLine(): void {
-  nextTick(() => {
-    const firstLine = document.getElementsByClassName('paginator-line')[0]
+function scrollToElement(elementIndex?: number): void {
+  let lineIndex: number
+  const elementsPerPage = props.elementsPerLine * props.linesPerPage
 
-    if (firstLine != null) {
-      firstLine.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  if (elementIndex == null || elementIndex < 0) {
+    lineIndex = 0
+  } else {
+    const page = Math.floor(elementIndex / elementsPerPage)
+    const indexInPage = elementIndex - (page * elementsPerPage)
+    lineIndex = Math.floor(indexInPage / props.elementsPerLine)
+
+    if (page !== currentPage.value) {
+      currentPage.value = page
+    }
+  }
+
+  nextTick(() => { // Required for the scroll to triggered after initialization / changing page
+    const line = document.getElementsByClassName('paginator-line')[lineIndex]
+
+    if (line != null) {
+      line.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
   })
 }

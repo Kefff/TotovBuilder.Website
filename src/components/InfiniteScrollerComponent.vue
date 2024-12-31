@@ -56,11 +56,9 @@ onMounted(() => initializeDisplayedElements())
 function initializeDisplayedElements(): void {
   isInitialized.value = false
   displayedElementGroups.value = Array.from({ length: groupedElements.value.length })
+  isInitialized.value = true
 
-  nextTick(() => {
-    isInitialized.value = true
-    setTimeout(() => scrollToElement(props.scrollToIndex), 1) // Needed otherwise the scroll does not trigger
-  })
+  scrollToElement(props.scrollToIndex)
 }
 
 /**
@@ -96,12 +94,14 @@ function onLazyLoad(event: VirtualScrollerLazyEvent): void {
  * @param elementIndex - Index of the element to scroll to. First element when undefined.
  */
 function scrollToElement(elementIndex?: number): void {
-  if (elementIndex == null || elementIndex < 0) {
-    elementIndex = 0
-  }
+  nextTick(() => { // Required for the scroll to triggered after initialization
+    if (elementIndex == null || elementIndex < 0) {
+      elementIndex = 0
+    }
 
-  const lineIndex = Math.floor(elementIndex / props.elementsPerLine)
-  virtualScroller.value?.scrollToIndex(lineIndex, 'smooth')
+    const lineIndex = Math.floor(elementIndex / props.elementsPerLine)
+    virtualScroller.value?.scrollToIndex(lineIndex, 'smooth')
+  })
 }
 </script>
 
