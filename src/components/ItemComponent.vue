@@ -544,19 +544,31 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           </Tooltip>
         </div>
       </div>
-      <InputNumberField
+      <div
         v-if="item != null && maxSelectableQuantity > 1 && !forceQuantityToMaxSelectableAmount"
-        v-show="isEditing"
-        v-model:value="quantity"
-        :caption="$t('caption.quantity')"
-        :max="maxSelectableQuantity"
-        :min="1"
-        :required="true"
-        caption-mode="placeholder"
-        class="item-quantity"
-        required-message-position="right"
-        @update:value="onQuantityChanged($event)"
-      />
+        class="item-header item-quantity"
+      >
+        <InputNumberField
+          v-show="isEditing"
+          v-model:value="quantity"
+          :caption="$t('caption.quantity')"
+          :max="maxSelectableQuantity"
+          :min="1"
+          :required="true"
+          caption-mode="placeholder"
+          required-message-position="right"
+          @update:value="onQuantityChanged($event)"
+        />
+        <!-- Fake button divs to have the same alignment as the selection input -->
+        <div
+          v-if="isEditing"
+          class="item-header-button"
+        />
+        <div
+          v-if="item != null || isEditing"
+          class="item-header-button"
+        />
+      </div>
       <SelectedItemItemCardSelector
         v-if="modelInventoryItem != null && item != null"
         :can-be-looted="canBeLooted"
@@ -738,8 +750,8 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-quantity {
+  height: unset;
   margin-top: 0.5rem;
-  width: 100%;
 }
 </style>
 
