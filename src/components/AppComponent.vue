@@ -422,7 +422,6 @@ function setLanguage(): void {
 @import '../css/flesh-damage.css';
 @import '../css/icon.css';
 @import '../css/link.css';
-@import '../css/option.css';
 @import '../css/sidebar.css';
 @import '../css/stats.css';
 
