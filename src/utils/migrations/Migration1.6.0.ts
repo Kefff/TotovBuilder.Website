@@ -1,4 +1,5 @@
 import { IBuild } from '../../models/build/IBuild'
+import { InventorySlotTypeId } from '../../models/build/InventorySlotTypes'
 import { ItemCategoryId } from '../../models/item/IItem'
 import { IRangedWeapon } from '../../models/item/IRangedWeapon'
 import { IMigration } from '../../models/utils/IMigration'
@@ -18,7 +19,9 @@ export class Migration160 implements IMigration {
     let success = true
 
     for (const inventorySlot of build.inventorySlots) {
-      if (inventorySlot.typeId !== 'onSling' && inventorySlot.typeId !== 'onBack' && inventorySlot.typeId !== 'holster') {
+      if (inventorySlot.typeId !== InventorySlotTypeId.onSling
+        && inventorySlot.typeId !== InventorySlotTypeId.onBack
+        && inventorySlot.typeId !== InventorySlotTypeId.holster) {
         continue
       }
 

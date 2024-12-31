@@ -7,8 +7,9 @@ import { GlobalFilterService } from '../services/GlobalFilterService'
 import { InventorySlotPropertiesService } from '../services/InventorySlotPropertiesService'
 import { ItemService } from '../services/ItemService'
 import Services from '../services/repository/Services'
+import { PathUtils } from '../utils/PathUtils'
 import StringUtils from '../utils/StringUtils'
-import InventorySlotItem from './InventorySlotItemComponent.vue'
+import Item from './ItemComponent.vue'
 
 const modelCollapsed = defineModel<boolean>('collapsed')
 const modelInventorySlot = defineModel<IInventorySlot>('inventorySlot', { required: true })
@@ -114,15 +115,15 @@ async function setAcceptedItemsAsync(): Promise<void> {
       </div>
     </template>
     <div class="inventory-slot-items">
-      <InventorySlotItem
+      <Item
         v-for="(inventoryItem, index) of modelInventorySlot.items"
         :key="`${path}_${index}`"
         :accepted-items-category-id="acceptedItemsCategoryId"
         :accepted-items="acceptedItems"
         :can-be-looted="inventorySlotType.canBeLooted"
         :inventory-item="modelInventorySlot.items[index]"
-        :inventory-slot-type-id="modelInventorySlot.typeId"
-        :path="`${path}_${index}`"
+        :is-main-inventory-slot-item="true"
+        :path="`${path}_${index}/${PathUtils.itemPrefix}${inventoryItem?.itemId ?? 'empty'}`"
         @update:inventory-item="onItemChanged(index, $event)"
       />
     </div>

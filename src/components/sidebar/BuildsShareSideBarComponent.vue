@@ -213,6 +213,11 @@ function toggleSelection(): void {
         :element-to-stick-to="toolbarContainer"
         :infinite-scrolling="true"
         :max-elements-per-line="1"
+        :selection-options="{
+          canUnselect: true,
+          isEnabled: true,
+          isMultiSelection: true
+        }"
         :show-not-exported="false"
       />
     </div>

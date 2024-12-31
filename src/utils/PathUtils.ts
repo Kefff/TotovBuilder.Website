@@ -1,5 +1,6 @@
 import { IBuild } from '../models/build/IBuild'
 import { IInventoryItem } from '../models/build/IInventoryItem'
+import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import vueI18n from '../plugins/vueI18n'
 
 /**
@@ -14,6 +15,19 @@ export class PathUtils {
   public static newBuild = 'new-build'
 
   /**
+   * Checks if the path is a path to an armor in an armor inventory slot.
+   * @param path - Path.
+   * @returns true when the path is a path to an armor in an armor inventory slot; otherwise false.
+   */
+  public static checkIsArmorInventorySlotPath(path: string): boolean {
+    const isArmorPath = path.includes(`${PathUtils.inventorySlotPrefix}${InventorySlotTypeId.bodyArmor}`)
+    const contentSlotIndex = path.lastIndexOf(PathUtils.contentPrefix)
+    const modSlotIndex = path.lastIndexOf(PathUtils.modSlotPrefix)
+
+    return isArmorPath && contentSlotIndex < 0 && modSlotIndex < 0
+  }
+
+  /**
    * Checks if the path is a path to a mod slot.
    * @param path - Path.
    * @returns true when the path is a path to a mod slot; otherwise false.
@@ -23,6 +37,19 @@ export class PathUtils {
     const lastContentSlotIndex = path.lastIndexOf(PathUtils.contentPrefix)
 
     return lastModSlotIndex >= 0 && lastModSlotIndex > lastContentSlotIndex
+  }
+
+  /**
+   * Checks if the path is a path to a vest in a vest inventory slot.
+   * @param path - Path.
+   * @returns true when the path is a path to a vest in a vest inventory slot; otherwise false.
+   */
+  public static checkIsVestInventorySlotPath(path: string): boolean {
+    const isVestPath = path.includes(`${PathUtils.inventorySlotPrefix}${InventorySlotTypeId.tacticalRig}`)
+    const contentSlotIndex = path.lastIndexOf(PathUtils.contentPrefix)
+    const modSlotIndex = path.lastIndexOf(PathUtils.modSlotPrefix)
+
+    return isVestPath && contentSlotIndex < 0 && modSlotIndex < 0
   }
 
   /**

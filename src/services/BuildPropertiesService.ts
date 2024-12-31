@@ -1,6 +1,7 @@
 /* eslint-disable no-irregular-whitespace */ // Special character used to force markdown to take into account spaces
 import { IBuild } from '../models/build/IBuild'
 import { IInventoryItem } from '../models/build/IInventoryItem'
+import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IConflictingItem } from '../models/configuration/IConflictingItem'
 import { IVest } from '../models/item/IVest'
@@ -32,12 +33,20 @@ import Services from './repository/Services'
 export class BuildPropertiesService {
   /**
    * Checks if a build contains an armored vest preventing the usage of an armor.
-   * Displays a warnng notification when it is the case.
+   * Displays a warning notification when it is the case.
    * @param build - Build.
+   * @param path - Path to the armor being added.
    */
-  public async canAddArmorAsync(build: IBuild): Promise<boolean> {
+  public async canAddArmorAsync(build: IBuild, path: string): Promise<boolean> {
+    const isArmorPath = PathUtils.checkIsArmorInventorySlotPath(path)
+
+    if (!isArmorPath) {
+      // When the armor is added in the content of another item we do not need to check it
+      return true
+    }
+
     const itemService = Services.get(ItemService)
-    const vestSlot = build.inventorySlots.find((is) => is.typeId === 'tacticalRig')!
+    const vestSlot = build.inventorySlots.find((is) => is.typeId === InventorySlotTypeId.tacticalRig)!
 
     if (vestSlot.items[0] == null) {
       return true
@@ -63,6 +72,13 @@ export class BuildPropertiesService {
    * @param path - Path to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
    */
   public async canAddModAsync(build: IBuild, modId: string, path: string): Promise<boolean> {
+    const isModSlotPath = PathUtils.checkIsModSlotPath(path)
+
+    if (!isModSlotPath) {
+      // When the mod is added in the content of another item we do not need to check it
+      return true
+    }
+
     const itemService = Services.get(ItemService)
     const mod = await itemService.getItemAsync(modId)
 
@@ -92,9 +108,16 @@ export class BuildPropertiesService {
    * Checks if a build contains an armor preventing the usage of an armored vest.
    * Displays a warning notification when it is the case.
    * @param build - Build.
-   * @param vestId - Vest ID.
+   * @param path - Path to the vest being added.
    */
-  public async canAddVestAsync(build: IBuild, vestId: string): Promise<boolean> {
+  public async canAddVestAsync(build: IBuild, vestId: string, path: string): Promise<boolean> {
+    const isVestPath = PathUtils.checkIsVestInventorySlotPath(path)
+
+    if (!isVestPath) {
+      // When the vest is added in the content of another item we do not need to check it
+      return true
+    }
+
     const itemService = Services.get(ItemService)
     const item = await itemService.getItemAsync(vestId)
     const vest = item as IVest
@@ -104,7 +127,7 @@ export class BuildPropertiesService {
       return true
     }
 
-    const bodyArmorInventorySlot = build.inventorySlots.find((is) => is.typeId === 'bodyArmor')
+    const bodyArmorInventorySlot = build.inventorySlots.find((is) => is.typeId === InventorySlotTypeId.bodyArmor)
 
     if (bodyArmorInventorySlot?.items[0] != null) {
       Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.cannotAddTacticalRig'))
@@ -481,13 +504,13 @@ ${sharableUrlResult}`
    * @param inventorySlotSummaries - Inventory slot summaries.
    */
   private getArmorModifiers(inventorySlotSummaries: IInventorySlotSummary[]): IArmorModifiers {
-    const armorSlotSummary = inventorySlotSummaries.find(iss => iss.type.id === 'bodyArmor')
+    const armorSlotSummary = inventorySlotSummaries.find(iss => iss.type.id === InventorySlotTypeId.bodyArmor)
 
     if (armorSlotSummary != null && armorSlotSummary.armorModifiers.armorClass !== 0) {
       return armorSlotSummary.armorModifiers
     }
 
-    const vestSlot = inventorySlotSummaries.find(iss => iss.type.id === 'tacticalRig')
+    const vestSlot = inventorySlotSummaries.find(iss => iss.type.id === InventorySlotTypeId.tacticalRig)
 
     return vestSlot?.armorModifiers ?? {
       armorClass: 0,
@@ -558,19 +581,19 @@ ${sharableUrlResult}`
    * @returns Main ranged weapon inventory slot summary.
    */
   private getMainRangedWeaponSummary(inventoryItemSummaries: IInventorySlotSummary[]): IInventorySlotSummary | undefined {
-    let mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === 'onSling')
+    let mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === InventorySlotTypeId.onSling)
 
     if (mainRangedWeaponSummary != null && mainRangedWeaponSummary.recoil.verticalRecoil > 0) {
       return mainRangedWeaponSummary
     }
 
-    mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === 'onBack')
+    mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === InventorySlotTypeId.onBack)
 
     if (mainRangedWeaponSummary != null && mainRangedWeaponSummary.recoil.verticalRecoil > 0) {
       return mainRangedWeaponSummary
     }
 
-    mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === 'holster')
+    mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === InventorySlotTypeId.holster)
 
     return mainRangedWeaponSummary
   }

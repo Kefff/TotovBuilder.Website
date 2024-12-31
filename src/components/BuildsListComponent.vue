@@ -39,6 +39,7 @@ const props = withDefaults(
     selectionOptions: () => <IListSelectionOptions>{
       canUnselect: true,
       isEnabled: false,
+      isMultiSelection: false,
       selectionButtonCaption: undefined,
       selectionButtonIcon: undefined
     },

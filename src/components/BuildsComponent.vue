@@ -380,8 +380,13 @@ function openNewBuild(): void {
       :build-summaries="buildSummaries"
       :element-to-stick-to="toolbarContainer"
       :is-loading="isLoading"
-      selection-button-caption="caption.edit"
-      selection-button-icon="edit"
+      :selection-options="{
+        canUnselect: true,
+        isEnabled: true,
+        isMultiSelection: false,
+        selectionButtonCaption: 'caption.edit',
+        selectionButtonIcon: 'edit'
+      }"
       @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
       @update:selected-builds="onBuildSelected"
     />

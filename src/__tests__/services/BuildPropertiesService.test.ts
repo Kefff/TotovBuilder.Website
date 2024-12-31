@@ -97,7 +97,7 @@ describe('BuildPropertiesService', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const result = await service.canAddArmorAsync(build)
+        const result = await service.canAddArmorAsync(build, 'build:12345/slot:bodyArmor_0/item:65765f39526e320fbe0357b1')
 
         // Assert
         expect(result).toBe(expectedResult)
@@ -109,6 +109,19 @@ describe('BuildPropertiesService', () => {
         }
       }
     )
+
+    it('should return true when the item is not being added in an armor inventory slot', async () => {
+      // Arrange
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.canAddArmorAsync(
+        {} as IBuild,
+        'build:9639041e-d685-46fe-b813-41030475d755/slot:backpack_0/item:544a5cde4bdc2d39388b456b/content:0_1/item:657123216d197c216005b354')
+
+      // Assert
+      expect(result).toBe(true)
+    })
   })
 
   describe('canAddModAsync()', () => {
@@ -334,6 +347,20 @@ describe('BuildPropertiesService', () => {
       }
     )
 
+    it('should return true when the item is not being added in a mod slot', async () => {
+      // Arrange
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.canAddModAsync(
+        {} as IBuild,
+        '5beec8ea0db834001a6f9dbf',
+        'build:9639041e-d685-46fe-b813-41030475d755/slot:backpack_0/item:544a5cde4bdc2d39388b456b/content:0_1/item:5beec8ea0db834001a6f9dbf')
+
+      // Assert
+      expect(result).toBe(true)
+    })
+
     it('should throw when a build has no inventory slot', async () => {
       // Arrange
       useItemServiceMock()
@@ -351,7 +378,7 @@ describe('BuildPropertiesService', () => {
           name: 'build1'
         } as IBuild,
         rpk16Rail.id,
-        `build:123456789/slot:onSling_0/item:${rpk16Default.id}`)
+        `build:123456789/slot:onSling_0/item:${rpk16Default.id}/mod:mod_pistol_grip/item:${ak12PistolGrip.id}`)
 
       // Assert
       await expect(act).rejects.toThrowError('Cannot find inventory slot "onSling".')
@@ -453,7 +480,7 @@ describe('BuildPropertiesService', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const result = await service.canAddVestAsync(build, vestId)
+        const result = await service.canAddVestAsync(build, vestId, `build:12345/slot:tacticalRig_0/item:${vestId}`)
 
         // Assert
         expect(result).toEqual(expectedResult)
@@ -465,6 +492,20 @@ describe('BuildPropertiesService', () => {
         }
       }
     )
+
+    it('should return true when the item is not being added in a vest inventory slot', async () => {
+      // Arrange
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.canAddVestAsync(
+        {} as IBuild,
+        '572b7adb24597762ae139821',
+        'build:9639041e-d685-46fe-b813-41030475d755/slot:backpack_0/item:544a5cde4bdc2d39388b456b/content:0_1/item:572b7adb24597762ae139821')
+
+      // Assert
+      expect(result).toBe(true)
+    })
   })
 
   describe('checkMatchesFilter()', () => {
@@ -954,7 +995,7 @@ describe('BuildPropertiesService', () => {
 
 ✋ Ergonomie **-2%**  
   
-💵 Prix **95€** et **20 701₽** (= **35 806₽**)   ⚓ Poids **2,360 kg**  
+💵 Prix **20 701₽** et **95€** (= **35 806₽**)   ⚓ Poids **2,360 kg**  
 
 [*Poches*] **RGD-5 hand grenade**   💵 Prapor 3 **11 822₽**  
 [*Poches*] **MS2000 Marker**   💵 Ragman 1 **95€** (= **15 105₽**)  
@@ -1316,7 +1357,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
 
 ↕️ Recul vertical **362**   ↔️ Recul horizontal **249**   ✋ Ergonomie **52** (**-3%**)  
 🛡️ Classe d'armure **4**   🏃 Vitesse **-3%**   🔄 Vitesse de rotation **-1%**  
-💵 Prix **444$** et **184 252₽** (= **247 747₽**)   ⚓ Poids **8,936 kg**  
+💵 Prix **184 252₽** et **444$** (= **247 747₽**)   ⚓ Poids **8,936 kg**  
 
 [*Holster*] **Beretta M9A3 9x19 pistol Default**   💵 Peacekeeper 1 **107$** (= **15 337₽**)  
  [*Canon*]  
@@ -1617,7 +1658,7 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
 ✋ Ergonomie -2%
 
-💵 Prix 95€ et 20 701₽ (= 35 806₽)   ⚓ Poids 2,360 kg
+💵 Prix 20 701₽ et 95€ (= 35 806₽)   ⚓ Poids 2,360 kg
 
 [Poches] RGD-5 hand grenade   💵 Prapor 3 11 822₽
 [Poches] MS2000 Marker   💵 Ragman 1 95€ (= 15 105₽)
@@ -1960,7 +2001,7 @@ Build 2
 
 ↕️ Recul vertical 362   ↔️ Recul horizontal 249   ✋ Ergonomie 52 (-3%)
 🛡️ Classe d'armure 4   🏃 Vitesse -3%   🔄 Vitesse de rotation -1%
-💵 Prix 444$ et 184 252₽ (= 247 747₽)   ⚓ Poids 8,936 kg
+💵 Prix 184 252₽ et 444$ (= 247 747₽)   ⚓ Poids 8,936 kg
 
 [Holster] Beretta M9A3 9x19 pistol Default   💵 Peacekeeper 1 107$ (= 15 337₽)
  [Canon]
@@ -2078,7 +2119,7 @@ const expectedMarkdownString2 = `# Build 2
 
 ↕️ Recul vertical **362**   ↔️ Recul horizontal **249**   ✋ Ergonomie **52** (**-3%**)  
 🛡️ Classe d'armure **4**   🏃 Vitesse **-3%**   🔄 Vitesse de rotation **-1%**  
-💵 Prix **444$** et **184 252₽** (= **247 747₽**)   ⚓ Poids **8,936 kg**  
+💵 Prix **184 252₽** et **444$** (= **247 747₽**)   ⚓ Poids **8,936 kg**  
 
 [*Holster*] **Beretta M9A3 9x19 pistol Default**   💵 Peacekeeper 1 **107$** (= **15 337₽**)  
  [*Canon*]  
@@ -2132,7 +2173,7 @@ const expectedMarkdownString4 = `# Build with backpack only and every currency
 
 ✋ Ergonomie **-3%**  
 🏃 Vitesse **-2%**   🔄 Vitesse de rotation **-1%**  
-💵 Prix **95€**, **157$** et **67 446₽** (= **104 936₽**)   ⚓ Poids **1,307 kg**  
+💵 Prix **67 446₽**, **95€** et **157$** (= **104 936₽**)   ⚓ Poids **1,307 kg**  
 
 [*Sac à dos*] **Oakley Mechanism heavy duty backpack (Black)**   💵 Ragman 2 **67 446₽**  
  **MS2000 Marker**   💵 Ragman 1 **95€** (= **15 105₽**)  
@@ -2268,7 +2309,7 @@ const expectedString2 = `Build 2
 
 ↕️ Recul vertical 362   ↔️ Recul horizontal 249   ✋ Ergonomie 52 (-3%)
 🛡️ Classe d'armure 4   🏃 Vitesse -3%   🔄 Vitesse de rotation -1%
-💵 Prix 444$ et 184 252₽ (= 247 747₽)   ⚓ Poids 8,936 kg
+💵 Prix 184 252₽ et 444$ (= 247 747₽)   ⚓ Poids 8,936 kg
 
 [Holster] Beretta M9A3 9x19 pistol Default   💵 Peacekeeper 1 107$ (= 15 337₽)
  [Canon]
@@ -2324,7 +2365,7 @@ const expectedString4 = `Build with backpack only and every currency
 
 ✋ Ergonomie -3%
 🏃 Vitesse -2%   🔄 Vitesse de rotation -1%
-💵 Prix 95€, 157$ et 67 446₽ (= 104 936₽)   ⚓ Poids 1,307 kg
+💵 Prix 67 446₽, 95€ et 157$ (= 104 936₽)   ⚓ Poids 1,307 kg
 
 [Sac à dos] Oakley Mechanism heavy duty backpack (Black)   💵 Ragman 2 67 446₽
  MS2000 Marker   💵 Ragman 1 95€ (= 15 105₽)

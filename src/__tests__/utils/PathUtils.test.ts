@@ -4,6 +4,21 @@ import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { PathUtils } from '../../utils/PathUtils'
 
 describe('PathUtils', () => {
+  describe('checkIsArmorInventorySlotPath()', () => {
+    it.each([
+      ['build:12345/slot:bodyArmor_0/item:65765f39526e320fbe0357b1', true],
+      ['build:12345/slot:onSling_0/item:57dc2fa62459775949412633', false],
+      ['build:12345/slot:bodyArmor_0/item:65765f39526e320fbe0357b1/mod:mod_front_plate/item:656fa8d700d62bcd2e024084', false],
+      ['build:12345/slot:bodyArmor_0/item:65765f39526e320fbe0357b1/content:1_10/item:5672c92d4bdc2d180f8b4567', false]
+    ])('should check whether a path is a mod slot path', (path: string, expected: boolean) => {
+      // Act
+      const isArmorPath = PathUtils.checkIsArmorInventorySlotPath(path)
+
+      // Assert
+      expect(isArmorPath).toBe(expected)
+    })
+  })
+
   describe('checkIsModSlotPath()', () => {
     it.each([
       ['build:12345/slot:onSling_0/item:57dc2fa62459775949412633/mod:mod_magazine/item:564ca9df4bdc2d35148b4569', true],
@@ -17,6 +32,21 @@ describe('PathUtils', () => {
 
       // Assert
       expect(isModSlotPath).toBe(expected)
+    })
+  })
+
+  describe('checkIsVestInventorySlotPath()', () => {
+    it.each([
+      ['build:12345/slot:tacticalRig_0/item:639343fce101f4caa40a4ef3', true],
+      ['build:12345/slot:onSling_0/item:57dc2fa62459775949412633', false],
+      ['build:12345/slot:tacticalRig_0/item:639343fce101f4caa40a4ef3/mod:mod_front_plate/item:656fa8d700d62bcd2e024084', false],
+      ['build:12345/slot:tacticalRig_0/item:639343fce101f4caa40a4ef3/content:1_10/item:5672c92d4bdc2d180f8b4567', false]
+    ])('should check whether a path is a mod slot path', (path: string, expected: boolean) => {
+      // Act
+      const isVestPath = PathUtils.checkIsVestInventorySlotPath(path)
+
+      // Assert
+      expect(isVestPath).toBe(expected)
     })
   })
 

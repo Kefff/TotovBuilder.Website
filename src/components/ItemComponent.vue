@@ -16,7 +16,6 @@ import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import { ItemService } from '../services/ItemService'
 import { PresetService } from '../services/PresetService'
 import Services from '../services/repository/Services'
-import { PathUtils } from '../utils/PathUtils'
 import InputNumberField from './InputNumberFieldComponent.vue'
 import SelectedItemItemCardSelector from './item-card/SelectedItemItemCardSelectorComponent.vue'
 import ItemContent from './ItemContentComponent.vue'
@@ -182,15 +181,18 @@ async function onItemChangedAsync(): Promise<void> {
   itemChanging.value = true
   presetModSlotContainingItem.value = _presetService.getPresetModSlotContainingItem(item.value.id, props.path)
 
-  if (_itemPropertiesService.isModdable(item.value) && PathUtils.checkIsModSlotPath(props.path)) {
-    // Checking the compatibility if the selected item is a mod and we are in mod slot
-    const path = props.path.slice(0, props.path.lastIndexOf('/' + PathUtils.itemPrefix))
-    const compatibilityResult = await _compatibilityService.checkCompatibility(CompatibilityRequestType.mod, item.value.id, path)
+  let compatibilityResult = true
 
-    updateInventoryItem(item.value, compatibilityResult)
-  } else {
-    updateInventoryItem(item.value, true)
+  // Checking the compatibility of the selected item depending where the item is being added
+  if (_itemPropertiesService.isArmor(item.value)) {
+    compatibilityResult = await _compatibilityService.checkCompatibility(CompatibilityRequestType.armor, item.value.id, props.path)
+  } else if (_itemPropertiesService.isVest(item.value)) {
+    compatibilityResult = await _compatibilityService.checkCompatibility(CompatibilityRequestType.tacticalRig, item.value.id, props.path)
+  } else if (_itemPropertiesService.isModdable(item.value)) {
+    compatibilityResult = await _compatibilityService.checkCompatibility(CompatibilityRequestType.mod, item.value.id, props.path)
   }
+
+  updateInventoryItem(item.value, compatibilityResult)
 }
 
 /**

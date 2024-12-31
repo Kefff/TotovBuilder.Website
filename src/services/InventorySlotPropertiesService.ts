@@ -118,9 +118,9 @@ export class InventorySlotPropertiesService {
    */
   private async getArmorModifiersAsync(inventorySlot: IInventorySlot): Promise<IArmorModifiers> {
     if (inventorySlot.items[0] == null
-      || (inventorySlot.typeId !== 'bodyArmor'
-        && inventorySlot.typeId !== 'headwear'
-        && inventorySlot.typeId !== 'tacticalRig')) {
+      || (inventorySlot.typeId !== InventorySlotTypeId.bodyArmor
+        && inventorySlot.typeId !== InventorySlotTypeId.headwear
+        && inventorySlot.typeId !== InventorySlotTypeId.tacticalRig)) {
       return {
         armorClass: 0,
         durability: 0
@@ -139,7 +139,9 @@ export class InventorySlotPropertiesService {
    */
   private async getErgonomicsAsync(inventorySlot: IInventorySlot): Promise<number> {
     if (inventorySlot.items[0] == null
-      || (inventorySlot.typeId !== 'holster' && inventorySlot.typeId !== 'onBack' && inventorySlot.typeId !== 'onSling')) {
+      || (inventorySlot.typeId !== InventorySlotTypeId.holster
+        && inventorySlot.typeId !== InventorySlotTypeId.onBack
+        && inventorySlot.typeId !== InventorySlotTypeId.onSling)) {
       return 0
     }
 
@@ -199,7 +201,9 @@ export class InventorySlotPropertiesService {
    */
   private async getRecoilAsync(inventorySlot: IInventorySlot): Promise<IRecoil> {
     if (inventorySlot.items[0] == null
-      || (inventorySlot.typeId !== 'holster' && inventorySlot.typeId !== 'onBack' && inventorySlot.typeId !== 'onSling')) {
+      || (inventorySlot.typeId !== InventorySlotTypeId.holster
+        && inventorySlot.typeId !== InventorySlotTypeId.onBack
+        && inventorySlot.typeId !== InventorySlotTypeId.onSling)) {
       return {
         horizontalRecoil: 0,
         verticalRecoil: 0
@@ -227,10 +231,10 @@ export class InventorySlotPropertiesService {
       turningSpeedModifierPercentage: 0
     }
 
-    if (inventorySlot.typeId !== 'backpack'
-      && inventorySlot.typeId !== 'bodyArmor'
-      && inventorySlot.typeId !== 'headwear'
-      && inventorySlot.typeId !== 'tacticalRig') {
+    if (inventorySlot.typeId !== InventorySlotTypeId.backpack
+      && inventorySlot.typeId !== InventorySlotTypeId.bodyArmor
+      && inventorySlot.typeId !== InventorySlotTypeId.headwear
+      && inventorySlot.typeId !== InventorySlotTypeId.tacticalRig) {
       return inventorySlotWearableModifiers
     }
 

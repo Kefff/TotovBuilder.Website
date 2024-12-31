@@ -302,10 +302,15 @@ function openNewBuild(): void {
         <BuildsList
           :build-summaries="lastBuildSummaries"
           :max-elements-per-line="_lastBuildAmount"
+          :selection-options="{
+            canUnselect: true,
+            isEnabled: true,
+            isMultiSelection: false,
+            selectionButtonCaption: 'caption.edit',
+            selectionButtonIcon: 'edit'
+          }"
           :show-chips="false"
           :show-not-exported="false"
-          selection-button-caption="caption.edit"
-          selection-button-icon="edit"
           @update:selected-builds="onBuildSelected"
         />
       </div>

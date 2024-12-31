@@ -226,8 +226,6 @@ function onMerchantFilterChanged(): void {
       :is-loading="isLoading"
       :items="items"
       class="items-list"
-      selection-button-caption="caption.edit"
-      selection-button-icon="edit"
       @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
       @update:selected-items="onItemSelected"
     />

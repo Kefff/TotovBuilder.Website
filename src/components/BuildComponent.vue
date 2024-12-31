@@ -475,7 +475,7 @@ function goToBuilds(): void {
  * @param request - Compatibility request.
  */
 function onArmorCompatibilityRequest(request: CompatibilityRequest): void {
-  request.setResult(_buildPropertiesService.canAddArmorAsync(build.value))
+  request.setResult(_buildPropertiesService.canAddArmorAsync(build.value, request.path))
 }
 
 /**
@@ -573,7 +573,7 @@ function onModCompatibilityRequest(request: CompatibilityRequest): void {
  * @param request - Compatibility request.
  */
 function onTacticalRigCompatibilityRequest(request: CompatibilityRequest): void {
-  request.setResult(_buildPropertiesService.canAddVestAsync(build.value, request.itemId))
+  request.setResult(_buildPropertiesService.canAddVestAsync(build.value, request.itemId, request.path))
 }
 
 /**

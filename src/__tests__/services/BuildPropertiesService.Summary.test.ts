@@ -322,16 +322,6 @@ describe('getSummaryAsync()', () => {
           priceByCurrency: [
             {
               barterItems: [],
-              currencyName: 'USD',
-              itemId: '',
-              merchant: '',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 444,
-              valueInMainCurrency: 63495
-            },
-            {
-              barterItems: [],
               currencyName: 'RUB',
               itemId: '',
               merchant: '',
@@ -339,6 +329,16 @@ describe('getSummaryAsync()', () => {
               quest: undefined,
               value: 184252,
               valueInMainCurrency: 184252
+            },
+            {
+              barterItems: [],
+              currencyName: 'USD',
+              itemId: '',
+              merchant: '',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 444,
+              valueInMainCurrency: 63495
             }
           ]
         } as IInventoryPrice

@@ -1419,16 +1419,6 @@ describe('InventoryItemService', () => {
           pricesWithContent: [
             {
               barterItems: [],
-              currencyName: 'USD',
-              itemId: '',
-              merchant: '',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 279,
-              valueInMainCurrency: 39886
-            },
-            {
-              barterItems: [],
               currencyName: 'RUB',
               itemId: '',
               merchant: '',
@@ -1436,6 +1426,16 @@ describe('InventoryItemService', () => {
               quest: undefined,
               value: 51193,
               valueInMainCurrency: 51193
+            },
+            {
+              barterItems: [],
+              currencyName: 'USD',
+              itemId: '',
+              merchant: '',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 279,
+              valueInMainCurrency: 39886
             }
           ],
           priceWithContentInMainCurrency: 91079,
@@ -1849,16 +1849,6 @@ describe('InventoryItemService', () => {
           pricesWithContent: [
             {
               barterItems: [],
-              currencyName: 'USD',
-              itemId: '',
-              merchant: '',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 157,
-              valueInMainCurrency: 22385
-            },
-            {
-              barterItems: [],
               currencyName: 'RUB',
               itemId: '',
               merchant: '',
@@ -1866,6 +1856,16 @@ describe('InventoryItemService', () => {
               quest: undefined,
               value: 43345,
               valueInMainCurrency: 43345
+            },
+            {
+              barterItems: [],
+              currencyName: 'USD',
+              itemId: '',
+              merchant: '',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 157,
+              valueInMainCurrency: 22385
             }
           ],
           priceWithContentInMainCurrency: 65730,
@@ -2003,16 +2003,6 @@ describe('InventoryItemService', () => {
           pricesWithContent: [
             {
               barterItems: [],
-              currencyName: 'USD',
-              itemId: '',
-              merchant: '',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 157,
-              valueInMainCurrency: 22385
-            },
-            {
-              barterItems: [],
               currencyName: 'RUB',
               itemId: '',
               merchant: '',
@@ -2020,6 +2010,16 @@ describe('InventoryItemService', () => {
               quest: undefined,
               value: 67854,
               valueInMainCurrency: 67854
+            },
+            {
+              barterItems: [],
+              currencyName: 'USD',
+              itemId: '',
+              merchant: '',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 157,
+              valueInMainCurrency: 22385
             }
           ],
           priceWithContentInMainCurrency: 90239,
@@ -2532,16 +2532,6 @@ describe('InventoryItemService', () => {
         pricesWithContent: [
           {
             barterItems: [],
-            currencyName: 'USD',
-            itemId: '',
-            merchant: '',
-            merchantLevel: 0,
-            quest: undefined,
-            value: 500,
-            valueInMainCurrency: 50000
-          },
-          {
-            barterItems: [],
             currencyName: 'RUB',
             itemId: '',
             merchant: '',
@@ -2549,6 +2539,16 @@ describe('InventoryItemService', () => {
             quest: undefined,
             value: 61200,
             valueInMainCurrency: 61200
+          },
+          {
+            barterItems: [],
+            currencyName: 'USD',
+            itemId: '',
+            merchant: '',
+            merchantLevel: 0,
+            quest: undefined,
+            value: 500,
+            valueInMainCurrency: 50000
           }
         ],
         priceWithContentInMainCurrency: 111200,
