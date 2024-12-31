@@ -177,19 +177,19 @@ function reset(): void {
             </div>
           </template>
         </Dropdown>
-        <div>
-          <Tooltip
-            v-if="category != null && !modelParameters.isCategoryReadOnly"
-            :tooltip="$t('caption.clear')"
+        <Tooltip
+          v-if="category != null && !modelParameters.isCategoryReadOnly"
+          :tooltip="$t('caption.clear')"
+        >
+          <Button
+            class="p-button-sm"
+            outlined
+            severity="danger"
+            @click="category = undefined"
           >
-            <div
-              class="items-list-sidebar-clear-button"
-              @click="category = undefined"
-            >
-              <font-awesome-icon icon="times" />
-            </div>
-          </Tooltip>
-        </div>
+            <font-awesome-icon icon="times" />
+          </Button>
+        </Tooltip>
       </div>
       <span class="items-list-sidebar-caption">{{ $t('caption.filter') }}</span>
       <div class="items-list-sidebar-field">
@@ -201,19 +201,19 @@ function reset(): void {
           type="text"
           @keydown="onFilterKeyDown"
         />
-        <div>
-          <Tooltip
-            v-if="filter != null"
-            :tooltip="$t('caption.clear')"
+        <Tooltip
+          v-if="filter != null"
+          :tooltip="$t('caption.clear')"
+        >
+          <Button
+            class="p-button-sm"
+            outlined
+            severity="danger"
+            @click="filter = undefined"
           >
-            <div
-              class="items-list-sidebar-clear-button"
-              @click="filter = undefined"
-            >
-              <font-awesome-icon icon="times" />
-            </div>
-          </Tooltip>
-        </div>
+            <font-awesome-icon icon="times" />
+          </Button>
+        </Tooltip>
       </div>
     </div>
   </div>
@@ -241,30 +241,41 @@ function reset(): void {
         </template>
       </Dropdown>
       <span class="items-list-sidebar-caption">{{ $t('caption.order') }}</span>
-      <Dropdown
-        v-model="sortOrder"
-        :options="[SortingOrder.asc, SortingOrder.desc]"
-        class="items-list-sidebar-value"
-      >
-        <template #option="slotProps">
-          <div class="items-list-sidebar-option">
-            <font-awesome-icon
-              :icon="getSortOrderIcon(slotProps.option)"
-              class="icon-before-text"
-            />
-            <span>{{ getSortOrderCaption(slotProps.option) }}</span>
-          </div>
-        </template>
-        <template #value="slotProps">
-          <div class="items-list-sidebar-value-value">
-            <font-awesome-icon
-              :icon="getSortOrderIcon(slotProps.value)"
-              class="icon-before-text"
-            />
-            <span>{{ getSortOrderCaption(slotProps.value) }}</span>
-          </div>
-        </template>
-      </Dropdown>
+      <div class="items-list-sidebar-field">
+        <Dropdown
+          v-model="sortOrder"
+          :options="[SortingOrder.asc, SortingOrder.desc]"
+          class="items-list-sidebar-value"
+        >
+          <template #option="slotProps">
+            <div class="items-list-sidebar-option">
+              <font-awesome-icon
+                :icon="getSortOrderIcon(slotProps.option)"
+                class="icon-before-text"
+              />
+              <span>{{ getSortOrderCaption(slotProps.option) }}</span>
+            </div>
+          </template>
+          <template #value="slotProps">
+            <div class="items-list-sidebar-value-value">
+              <font-awesome-icon
+                :icon="getSortOrderIcon(slotProps.value)"
+                class="icon-before-text"
+              />
+              <span>{{ getSortOrderCaption(slotProps.value) }}</span>
+            </div>
+          </template>
+        </Dropdown>
+        <Tooltip :tooltip="$t('caption.switchSortOrder')">
+          <Button
+            class="p-button-sm"
+            outlined
+            @click="sortOrder = -sortOrder"
+          >
+            <font-awesome-icon icon="exchange-alt" />
+          </Button>
+        </Tooltip>
+      </div>
     </div>
   </div>
   <div class="sidebar-title" />
@@ -298,17 +309,6 @@ function reset(): void {
   width: 100%;
 }
 
-.items-list-sidebar-clear-button {
-  align-items: center;
-  color: var(--error-color);
-  cursor: pointer;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  margin-left: 0.5rem;
-  width: 1rem;
-}
-
 .items-list-sidebar-category-value {
   align-items: center;
   display: flex;
@@ -324,6 +324,7 @@ function reset(): void {
 .items-list-sidebar-field {
   align-items: center;
   display: flex;
+  gap: 0.5rem;
   width: 100%;
 }
 

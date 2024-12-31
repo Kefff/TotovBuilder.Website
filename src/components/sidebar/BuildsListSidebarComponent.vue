@@ -133,12 +133,14 @@ function reset(): void {
           v-if="filter != null"
           :tooltip="$t('caption.clear')"
         >
-          <div
-            class="builds-list-sidebar-clear-button"
+          <Button
+            class="p-button-sm"
+            outlined
+            severity="danger"
             @click="filter = undefined"
           >
             <font-awesome-icon icon="times" />
-          </div>
+          </Button>
         </Tooltip>
       </div>
     </div>
@@ -173,28 +175,39 @@ function reset(): void {
         </template>
       </Dropdown>
       <span class="builds-list-sidebar-caption">{{ $t('caption.order') }}</span>
-      <Dropdown
-        v-model="sortOrder"
-        :options="[SortingOrder.asc, SortingOrder.desc]"
-        class="builds-list-sidebar-value"
-      >
-        <template #option="slotProps">
-          <font-awesome-icon
-            :icon="getSortOrderIcon(slotProps.option)"
-            class="icon-before-text"
-          />
-          <span>{{ getSortOrderCaption(slotProps.option) }}</span>
-        </template>
-        <template #value="slotProps">
-          <div class="builds-list-sidebar-value-value">
+      <div class="builds-list-sidebar-field">
+        <Dropdown
+          v-model="sortOrder"
+          :options="[SortingOrder.asc, SortingOrder.desc]"
+          class="builds-list-sidebar-value"
+        >
+          <template #option="slotProps">
             <font-awesome-icon
-              :icon="getSortOrderIcon(slotProps.value)"
+              :icon="getSortOrderIcon(slotProps.option)"
               class="icon-before-text"
             />
-            <span>{{ getSortOrderCaption(slotProps.value) }}</span>
-          </div>
-        </template>
-      </Dropdown>
+            <span>{{ getSortOrderCaption(slotProps.option) }}</span>
+          </template>
+          <template #value="slotProps">
+            <div class="builds-list-sidebar-value-value">
+              <font-awesome-icon
+                :icon="getSortOrderIcon(slotProps.value)"
+                class="icon-before-text"
+              />
+              <span>{{ getSortOrderCaption(slotProps.value) }}</span>
+            </div>
+          </template>
+        </Dropdown>
+        <Tooltip :tooltip="$t('caption.switchSortOrder')">
+          <Button
+            class="p-button-sm"
+            outlined
+            @click="sortOrder = -sortOrder"
+          >
+            <font-awesome-icon icon="exchange-alt" />
+          </Button>
+        </Tooltip>
+      </div>
     </div>
   </div>
   <div class="sidebar-title" />
@@ -228,20 +241,10 @@ function reset(): void {
   margin-right: auto;
 }
 
-.builds-list-sidebar-clear-button {
-  align-items: center;
-  color: var(--error-color);
-  cursor: pointer;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  margin-left: 0.5rem;
-  width: 1rem;
-}
-
 .builds-list-sidebar-field {
   align-items: center;
   display: flex;
+  gap: 0.5rem;
   width: 100%;
 }
 
