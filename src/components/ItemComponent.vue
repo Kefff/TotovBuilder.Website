@@ -508,7 +508,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
         </Dropdown>
         <div
           v-if="isEditing"
-          style="min-width: 1.75rem;"
+          class="item-header-button"
         >
           <Tooltip
             v-if="isEditing && item != null && !isBaseItem"
@@ -527,7 +527,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
         </div>
         <div
           v-if="item != null || isEditing"
-          style="min-width: 1.75rem;"
+          class="item-header-button"
         >
           <Tooltip
             v-if="item != null"
@@ -572,81 +572,74 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
         @update:ignore-price="onIgnorePriceChanged($event)"
       />
     </div>
-    <SelectedItemFunctionalities
-      v-if="modelInventoryItem != null && item != null"
-      v-model:selected-tab="selectedTab"
-      :can-be-looted="canBeLooted"
-      :can-have-content="itemIsContainer"
-      :can-have-mods="itemIsModdable && !isBaseItem && (!hasOnlyBaseItem || (isEditing ?? false))"
-      :can-ignore-price="canIgnorePrice"
-      :contains-base-item="baseItem != null"
-      :content-count="contentCount"
-      :ignore-price="modelInventoryItem.ignorePrice"
-      :item="item"
-      :mods-count="modsCount"
-      @update:ignore-price="onIgnorePriceChanged($event)"
-    />
-    <!-- Mods an content -->
-    <div>
-      <div
-        v-if="modelInventoryItem != null
-          && !itemChanging
-          && !isBaseItem
-          && itemIsModdable
-          && baseItem != null
-          && (!hasOnlyBaseItem || isEditing)"
-        v-show="selectedTab === SelectableTab.mods"
-        class="item-content-and-mods-base-item"
-      >
-        <ItemHierarchyIndicator
-          :inventory-items="[baseItem]"
-          :index="0"
-          mode="baseItem"
+    <div
+      v-if="modelInventoryItem != null"
+      :class="{ 'item-main-padding': isMainInventorySlotItem }"
+    >
+      <SelectedItemFunctionalities
+        v-if="item != null"
+        v-model:selected-tab="selectedTab"
+        :can-be-looted="canBeLooted"
+        :can-have-content="itemIsContainer"
+        :can-have-mods="itemIsModdable && !isBaseItem && (!hasOnlyBaseItem || (isEditing ?? false))"
+        :can-ignore-price="canIgnorePrice"
+        :contains-base-item="baseItem != null"
+        :content-count="contentCount"
+        :ignore-price="modelInventoryItem.ignorePrice"
+        :item="item"
+        :mods-count="modsCount"
+        @update:ignore-price="onIgnorePriceChanged($event)"
+      />
+      <!-- Mods an content -->
+      <div v-if="!isBaseItem && !itemChanging">
+        <div
+          v-if="itemIsModdable
+            && baseItem != null
+            && (!hasOnlyBaseItem || isEditing)"
+          v-show="selectedTab === SelectableTab.mods"
+          class="item-content-and-mods-base-item"
+        >
+          <ItemHierarchyIndicator
+            :inventory-items="[baseItem]"
+            :index="0"
+            mode="baseItem"
+          />
+          <div
+            v-if="itemIsModdable"
+            v-show="selectedTab === SelectableTab.mods"
+            class="item-content-and-mods-base-item-mods"
+          >
+            <div class="item-content-and-mods-base-item-mods-name">
+              {{ $t('caption.baseItem') }}
+            </div>
+            <ItemComponent
+              :accepted-items="[]"
+              :can-be-looted="showBaseItemPrice"
+              :inventory-item="baseItem"
+              :is-base-item="true"
+              :path="path"
+            />
+          </div>
+        </div>
+        <ItemMods
+          v-if="itemIsModdable"
+          v-show="selectedTab === SelectableTab.mods && (modsCount > 0 || isEditing)"
+          :inventory-mod-slots="modelInventoryItem.modSlots"
+          :moddable-item="(item as IModdable)"
+          :path="path"
+          @update:inventory-mod-slots="onModsChanged($event)"
         />
         <div
-          v-if="modelInventoryItem != null
-            && !itemChanging
-            && !isBaseItem
-            && itemIsModdable && baseItem != null"
-          v-show="selectedTab === SelectableTab.mods"
-          class="item-content-and-mods-base-item-mods"
+          v-if="itemIsContainer"
+          v-show="selectedTab === SelectableTab.content && (contentCount > 0 || isEditing)"
         >
-          <div class="item-content-and-mods-base-item-mods-name">
-            {{ $t('caption.baseItem') }}
-          </div>
-          <ItemComponent
-            :accepted-items="[]"
-            :can-be-looted="showBaseItemPrice"
-            :inventory-item="baseItem"
-            :is-base-item="true"
+          <ItemContent
+            :inventory-items="modelInventoryItem.content"
+            :container-item="(item as IContainer)"
             :path="path"
+            @update:inventory-items="onContentChanged($event)"
           />
         </div>
-      </div>
-      <ItemMods
-        v-if="itemIsModdable
-          && modelInventoryItem != null
-          && !itemChanging
-          && !isBaseItem"
-        v-show="selectedTab === SelectableTab.mods && (modsCount > 0 || isEditing)"
-        :inventory-mod-slots="modelInventoryItem.modSlots"
-        :moddable-item="(item as IModdable)"
-        :path="path"
-        @update:inventory-mod-slots="onModsChanged($event)"
-      />
-      <div
-        v-if="itemIsContainer
-          && modelInventoryItem != null
-          && !itemChanging
-          && !isBaseItem"
-        v-show="selectedTab === SelectableTab.content && (contentCount > 0 || isEditing)"
-      >
-        <ItemContent
-          :inventory-items="modelInventoryItem.content"
-          :container-item="(item as IContainer)"
-          :path="path"
-          @update:inventory-items="onContentChanged($event)"
-        />
       </div>
     </div>
   </div>
@@ -687,6 +680,11 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   gap: 0.25rem;
   grid-template-columns: v-bind(itemHeaderGridTemplateColumns);
   height: 3.9rem;
+}
+
+.item-header-button {
+  display: flex;
+  min-width: 1.75rem;
 }
 
 .item-header-dropdown {
@@ -733,6 +731,10 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   background-color: var(--primary-color6);
   border-radius: 6px;
   padding: 0.5rem
+}
+
+.item-main-padding {
+  padding-right: 0.5rem;
 }
 
 .item-quantity {

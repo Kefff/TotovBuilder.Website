@@ -178,8 +178,8 @@ async function setAcceptedItemsAsync(): Promise<void> {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
   padding-bottom: 1rem;
 }
 
