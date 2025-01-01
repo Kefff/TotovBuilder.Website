@@ -101,8 +101,8 @@ export type BuildsShareSideBarParameters = {
  */
 export type ItemSelectionSidebarParameters = {
   filterAndSortingData: ItemFilterAndSortingData | undefined,
+  getSelectableItemsFunction: (forceItemsListUpdate: boolean) => Promise<IItem[]>,
   selectedItems: IItem[],
-  selectableItems: IItem[],
 }
 
 /**

@@ -33,9 +33,9 @@ function onSelectedItemsChanged(): void {
       v-model:filter-and-sorting-data="parameters.filterAndSortingData"
       v-model:selected-items="parameters.selectedItems"
       :can-unselect="false"
+      :get-items-function="parameters.getSelectableItemsFunction"
       :has-selection="true"
       :infinite-scrolling="true"
-      :items="parameters.selectableItems"
       :max-elements-per-line="1"
       :mono-selection="true"
       :selection-options="{

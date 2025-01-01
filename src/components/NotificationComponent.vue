@@ -10,15 +10,11 @@ const _notificationService = Services.get(NotificationService)
 const notifications = ref<INotification[]>([])
 
 onMounted(() => {
-  _notificationService.emitter.on(_notificationService.addedEventName, (notification: INotification) => {
-    notifications.value.push(notification)
-  })
+  _notificationService.emitter.on(_notificationService.addedEventName, onNewNotification)
 })
 
 onUnmounted(() => {
-  _notificationService.emitter.off(_notificationService.addedEventName, (notification: INotification) => {
-    notifications.value.push(notification)
-  })
+  _notificationService.emitter.off(_notificationService.addedEventName, onNewNotification)
 })
 
 /**
@@ -60,6 +56,15 @@ function getSeverity(button: INotificationButton): string {
     default:
       return button.type as string
   }
+}
+
+/**
+ * Reacts to the a new notification.
+ *
+ * Adds the new notification to the notifications list.
+ */
+function onNewNotification(notification: INotification): void {
+  notifications.value.push(notification)
 }
 </script>
 

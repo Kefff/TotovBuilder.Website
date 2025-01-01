@@ -41,13 +41,8 @@ const props = defineProps<{
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
-const icon = ref<string>()
-const options = ref<IGlobalSidebarOptions>({} as IGlobalSidebarOptions)
-const title = ref<string>()
-const subtitle = ref<string>()
-const visibleInternal = ref(false)
+let _displayedComponent: DisplayedComponent | undefined
 
-const displayedComponent = computed(() => getDisplayedComponent(options.value?.displayedComponentType))
 const visible = computed({
   get: () => visibleInternal.value,
   set: (value: boolean) => {
@@ -59,6 +54,12 @@ const visible = computed({
   }
 })
 
+const icon = ref<string>()
+const options = ref<IGlobalSidebarOptions>({} as IGlobalSidebarOptions)
+const title = ref<string>()
+const subtitle = ref<string>()
+const visibleInternal = ref(false)
+
 onMounted(() => {
   _globalSidebarService.emitter.on(GlobalSidebarService.closeGlobalSidebarEvent, onGlobalSidebarClose)
   _globalSidebarService.emitter.on(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
@@ -68,92 +69,6 @@ onUnmounted(() => {
   _globalSidebarService.emitter.off(GlobalSidebarService.closeGlobalSidebarEvent, onGlobalSidebarClose)
   _globalSidebarService.emitter.off(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
 })
-
-/**
- * Sets the component to display.
- */
-function getDisplayedComponent(displayedComponentType: GlobalSidebarComponent): DisplayedComponent {
-  subtitle.value = undefined
-
-  switch (displayedComponentType) {
-    case 'BuildsExportSidebar':
-      icon.value = 'download'
-      title.value = 'caption.exportBuilds'
-
-      return BuildsExportSidebar
-    case 'BuildsShareSideBar':
-      icon.value = 'share-alt'
-      subtitle.value = getBuildsShareSideBarSubtitle(options.value.displayedComponentParameters as BuildsShareSideBarParameters)
-      title.value = 'caption.share'
-
-      return BuildsShareSideBar
-    case 'BuildSidebar':
-      icon.value = 'ellipsis-h'
-      subtitle.value = (options.value.displayedComponentParameters as BuildSidebarParameters).name
-      title.value = 'caption.actions'
-
-      return BuildSidebar
-    case 'BuildsImportSidebar':
-      icon.value = 'file-upload'
-      title.value = 'caption.importBuilds'
-
-      return BuildsImportSidebar
-    case 'BuildsListSidebar':
-      icon.value = 'filter'
-      title.value = 'caption.filter'
-
-      return BuildsListSidebar
-    case 'ChangelogSidebar':
-      icon.value = 'clipboard-list'
-      title.value = 'caption.changelog'
-
-      return ChangelogSidebar
-    case 'GeneralOptionsSidebar':
-      icon.value = 'tv'
-      title.value = 'caption.displayOptions'
-
-      return GeneralOptionsSidebar
-    case 'ItemSelectionSidebar':
-      icon.value = 'filter'
-      title.value = 'caption.selectItem'
-
-      return ItemSelectionSidebar
-    case 'ItemsListSidebar':
-      icon.value = 'filter'
-      title.value = 'caption.filter'
-
-      return ItemsListSidebar
-    case 'MerchantItemsOptionsSidebar':
-      icon.value = 'user-tag'
-      title.value = 'caption.merchants'
-
-      return MerchantItemsOptionsSidebar
-    case 'NotificationsSidebar':
-      icon.value = 'bell'
-      title.value = 'caption.notifications'
-
-      return NotificationsSidebar
-    case 'ShoppingListSidebar':
-      icon.value = 'shopping-cart'
-      subtitle.value = (options.value.displayedComponentParameters as ShoppingListSidebarParameters).buildName
-      title.value = 'caption.shoppingList'
-
-      return ShoppingListSidebar
-    case 'StatsSidebar':
-      icon.value = 'clipboard-list'
-      subtitle.value = (options.value.displayedComponentParameters as StatsSidebarParameters).name
-      title.value = 'caption.itemDetails'
-
-      return StatsSidebar
-    case 'ToolbarSidebar':
-      icon.value = 'bars'
-      title.value = 'caption.menu'
-
-      return ToolbarSidebar
-    default:
-      return undefined
-  }
-}
 
 /**
  * Gets the subtitle for a builds share sidebar.
@@ -174,8 +89,9 @@ function getBuildsShareSideBarSubtitle(parameters: BuildsShareSideBarParameters)
  */
 function onGlobalSidebarClose(displayedComponentType: GlobalSidebarComponent): void {
   if (displayedComponentType === options.value.displayedComponentType) {
-    Services.get(GlobalSidebarService).executeOnCloseActionsAsync(displayedComponentType, options.value.displayedComponentParameters)
+    _globalSidebarService.executeOnCloseActionsAsync(displayedComponentType, options.value.displayedComponentParameters)
     visibleInternal.value = false
+    _displayedComponent = undefined // Unmounting the displayed component
   }
 }
 
@@ -190,6 +106,94 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, identifier: 
   if (identifier === props.identifier) {
     visible.value = true
     options.value = openingOptions
+    setDisplayedComponent(options.value.displayedComponentType)
+  }
+}
+
+/**
+ * Sets the component to display.
+ */
+function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): void {
+  subtitle.value = undefined
+
+  switch (displayedComponentType) {
+    case 'BuildsExportSidebar':
+      icon.value = 'download'
+      title.value = 'caption.exportBuilds'
+      _displayedComponent = BuildsExportSidebar
+      break
+    case 'BuildsShareSideBar':
+      icon.value = 'share-alt'
+      subtitle.value = getBuildsShareSideBarSubtitle(options.value.displayedComponentParameters as BuildsShareSideBarParameters)
+      title.value = 'caption.share'
+      _displayedComponent = BuildsShareSideBar
+      break
+    case 'BuildSidebar':
+      icon.value = 'ellipsis-h'
+      subtitle.value = (options.value.displayedComponentParameters as BuildSidebarParameters).name
+      title.value = 'caption.actions'
+      _displayedComponent = BuildSidebar
+      break
+    case 'BuildsImportSidebar':
+      icon.value = 'file-upload'
+      title.value = 'caption.importBuilds'
+      _displayedComponent = BuildsImportSidebar
+      break
+    case 'BuildsListSidebar':
+      icon.value = 'filter'
+      title.value = 'caption.filter'
+      _displayedComponent = BuildsListSidebar
+      break
+    case 'ChangelogSidebar':
+      icon.value = 'clipboard-list'
+      title.value = 'caption.changelog'
+      _displayedComponent = ChangelogSidebar
+      break
+    case 'GeneralOptionsSidebar':
+      icon.value = 'tv'
+      title.value = 'caption.displayOptions'
+      _displayedComponent = GeneralOptionsSidebar
+      break
+    case 'ItemSelectionSidebar':
+      icon.value = 'filter'
+      title.value = 'caption.selectItem'
+      _displayedComponent = ItemSelectionSidebar
+      break
+    case 'ItemsListSidebar':
+      icon.value = 'filter'
+      title.value = 'caption.filter'
+      _displayedComponent = ItemsListSidebar
+      break
+    case 'MerchantItemsOptionsSidebar':
+      icon.value = 'user-tag'
+      title.value = 'caption.merchants'
+      _displayedComponent = MerchantItemsOptionsSidebar
+      break
+    case 'NotificationsSidebar':
+      icon.value = 'bell'
+      title.value = 'caption.notifications'
+      _displayedComponent = NotificationsSidebar
+      break
+    case 'ShoppingListSidebar':
+      icon.value = 'shopping-cart'
+      subtitle.value = (options.value.displayedComponentParameters as ShoppingListSidebarParameters).buildName
+      title.value = 'caption.shoppingList'
+      _displayedComponent = ShoppingListSidebar
+      break
+    case 'StatsSidebar':
+      icon.value = 'clipboard-list'
+      subtitle.value = (options.value.displayedComponentParameters as StatsSidebarParameters).name
+      title.value = 'caption.itemDetails'
+      _displayedComponent = StatsSidebar
+      break
+    case 'ToolbarSidebar':
+      icon.value = 'bars'
+      title.value = 'caption.menu'
+      _displayedComponent = ToolbarSidebar
+      break
+    default:
+      _displayedComponent = undefined
+      break
   }
 }
 </script>
@@ -237,8 +241,8 @@ function onGlobalSidebarOpen(openingOptions: IGlobalSidebarOptions, identifier: 
     </template>
     <div class="global-sidebar-content">
       <component
-        :is="displayedComponent"
-        v-if="displayedComponent != null"
+        :is="_displayedComponent"
+        v-if="_displayedComponent != null"
         v-model:parameters="options.displayedComponentParameters"
       />
     </div>

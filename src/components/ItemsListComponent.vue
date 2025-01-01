@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useBreakpoints } from '@vueuse/core'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IItem } from '../models/item/IItem'
 import { IListSelectionOptions } from '../models/utils/IListSelectionOptions'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
+import { GlobalFilterService } from '../services/GlobalFilterService'
 import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
@@ -20,9 +21,9 @@ const modelFilterAndSortingData = defineModel<ItemFilterAndSortingData>('filterA
 const props = withDefaults(
   defineProps<{
     elementToStickTo?: HTMLElement | null,
+    getItemsFunction: (forceItemsListUpdate: boolean) => Promise<IItem[]>,
     infiniteScrolling?: boolean,
     isLoading?: boolean,
-    items: IItem[],
     maxElementsPerLine?: number,
     selectionOptions?: IListSelectionOptions,
   }>(),
@@ -40,10 +41,11 @@ const props = withDefaults(
     }
   })
 
+const _globalFilterService = Services.get(GlobalFilterService)
 const _itemPropertiesService = Services.get(ItemPropertiesService)
 const _sortingService = Services.get(SortingService)
 
-const firstSelectedItemIndex = computed(() => itemsInternal.value.findIndex(i => i.id === modelSelectedItems.value[0]?.id))
+const firstSelectedItemIndex = computed(() => filteredAnSortedItems.value.findIndex(i => i.id === modelSelectedItems.value[0]?.id))
 const itemsPerLine = computed(() => {
   let columns = 5
 
@@ -74,19 +76,24 @@ const isSizeTabletPortaitOrSmaller = breakpoints.smaller('tabletLandscape')
 const isSizeTabletOrSmaller = breakpoints.smaller('pc')
 const isSizePcOrSmaller = breakpoints.smaller('pcLarge')
 
-const itemsInternal = ref<IItem[]>([])
+const items = ref<IItem[]>([])
+const filteredAnSortedItems = ref<IItem[]>([])
 
 onMounted(() => {
-  filterAndSortItemsAsync()
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+
+  filterAndSortItemsAsync(false)
 })
 
+onUnmounted(() => _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged))
+
 watch(
-  () => props.items,
-  () => filterAndSortItemsAsync())
+  () => props.getItemsFunction,
+  () => filterAndSortItemsAsync(false))
 
 watch(
   () => modelFilterAndSortingData.value,
-  () => filterAndSortItemsAsync())
+  () => filterAndSortItemsAsync(false))
 
 /**
  * Indicates whether an item is selected.
@@ -102,12 +109,13 @@ function checkIsSelected(item: IItem): boolean {
 /**
  * Filters and sorts items.
  */
-async function filterAndSortItemsAsync(): Promise<void> {
-  let itemsToFilter = [...props.items]
-  itemsToFilter = await filterItemsAsync(itemsToFilter)
-  itemsToFilter = await sortItemsAsync(itemsToFilter)
+async function filterAndSortItemsAsync(forceItemsListUpdate: boolean): Promise<void> {
+  items.value = await props.getItemsFunction(forceItemsListUpdate)
+  let itemsToFilterAndSort = [...items.value]
+  itemsToFilterAndSort = await filterItemsAsync(itemsToFilterAndSort)
+  itemsToFilterAndSort = await sortItemsAsync(itemsToFilterAndSort)
 
-  itemsInternal.value = itemsToFilter
+  filteredAnSortedItems.value = itemsToFilterAndSort
 }
 
 /**
@@ -146,6 +154,15 @@ async function filterItemsAsync(itemsToFilter: IItem[]): Promise<IItem[]> {
   await Promise.allSettled(promises)
 
   return filtereditemsummaries
+}
+
+/**
+ * Reacts to the merchant filter changing.
+ *
+ * Updates the items list and reapplies the filter and sort.
+ */
+function onMerchantFilterChanged(): void {
+  filterAndSortItemsAsync(true)
 }
 
 /**
@@ -206,10 +223,10 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
       filter-sidebar-component="ItemsListSidebar"
     />
     <InfiniteScroller
-      v-if="itemsInternal.length > 0 && infiniteScrolling"
+      v-if="filteredAnSortedItems.length > 0 && infiniteScrolling"
       :element-height="selectionOptions.isEnabled ? 207 : 156"
       :elements-per-line="itemsPerLine"
-      :elements="itemsInternal"
+      :elements="filteredAnSortedItems"
       :get-key-function="i => (i as IItem).id"
       :scroll-to-index="firstSelectedItemIndex"
     >
@@ -223,9 +240,9 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
       </template>
     </InfiniteScroller>
     <Paginator
-      v-else-if="itemsInternal.length > 0 && !infiniteScrolling"
+      v-else-if="filteredAnSortedItems.length > 0 && !infiniteScrolling"
       :elements-per-line="itemsPerLine"
-      :elements="itemsInternal"
+      :elements="filteredAnSortedItems"
       :get-key-function="i => (i as IItem).id"
       :lines-per-page="linesPerPage"
       :scroll-to-index="firstSelectedItemIndex"

@@ -19,7 +19,10 @@ const props = defineProps<{
 }>()
 
 const _globalFilterService = Services.get(GlobalFilterService)
+const _itemContentComponentService = Services.get(ItemContentComponentService)
 const _itemPropertiesService = Services.get(ItemPropertiesService)
+
+let _acceptedItemsNeedsUpdated = true
 
 const acceptedItems = ref<IItem[]>([])
 const categoryId = ref<ItemCategoryId | undefined>(undefined)
@@ -37,9 +40,8 @@ onMounted(() => {
   initialize()
 })
 
-onUnmounted(() => {
-  _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-})
+onUnmounted(() => _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged))
+
 
 watch(() => props.containerItem.id, () => initialize())
 
@@ -47,8 +49,8 @@ watch(() => props.containerItem.id, () => initialize())
  * Initializes the component.
  */
 function initialize(): void {
-  setCategoryId()
-  setAcceptedItemsAsync()
+  // Gets the category IDs used to determine the available filters for the item selection sidebar.
+  categoryId.value = _itemContentComponentService.getAcceptedItemsCategoryId(props.containerItem.categoryId)
 }
 
 /**
@@ -62,8 +64,7 @@ function onItemAdded(newInventoryItem: IInventoryItem): void {
     newInventoryItem
   ]
 
-  nextTick(() => {
-    // nextTick required for the reset of itemToAdd to take effect in the Item component
+  nextTick(() => { // nextTick required for the reset of itemToAdd to take effect in the Item component
     itemToAdd.value = undefined
   })
 }
@@ -88,26 +89,31 @@ function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefin
 }
 
 /**
- * Reacts to the merchant filter being changed.
+ * Gets the items the user can select as content of the item.
+ * @param forceItemsListUpdate - Indicates whether the cached list of accepted items must be updated.
+ * `getAcceptedItemsAsync` is designed to be executed by the `ItemsListComponent`, notably, when the
+ * merchants filter changes and the component is displayed.
+ * In theory, the merchant filter change event should update `_acceptedItemsNeedsUpdated` and it
+ * should be sufficient to indicate that le cached list must be updated.
+ * But since we cannot know whether `_acceptedItemsNeedsUpdated` has been updated by the event
+ * before `getAcceptedItemsAsync` is called, we need to make sure `getAcceptedItemsAsync`
+ * will update the cached item list thanks to this parameter.
+ */
+async function getAcceptedItemsAsync(forceItemsListUpdate: boolean): Promise<IItem[]> {
+  if (_acceptedItemsNeedsUpdated || forceItemsListUpdate) {
+    acceptedItems.value = await _itemContentComponentService.getAcceptedItemsAsync(props.containerItem.id)
+  }
+
+  return acceptedItems.value
+}
+
+/**
+ * Reacts to the merchant filter changing.
  *
- * Updates the accepted items to reflect the change in merchant filters.
+ * Indicates the accepted items list needs to be updated.
  */
 function onMerchantFilterChanged(): void {
-  setAcceptedItemsAsync()
-}
-
-/**
- * Sets the accepted items for the item to add.
- */
-async function setAcceptedItemsAsync(): Promise<void> {
-  acceptedItems.value = await Services.get(ItemContentComponentService).getAcceptedItemsAsync(props.containerItem.id)
-}
-
-/**
- * Gets the category IDs used for determining the available sort buttons in the item selection dropdown.
- */
-function setCategoryId(): void {
-  categoryId.value = Services.get(ItemContentComponentService).getAcceptedItemsCategoryId(props.containerItem.categoryId)
+  _acceptedItemsNeedsUpdated = true
 }
 </script>
 
@@ -134,8 +140,8 @@ function setCategoryId(): void {
       />
       <Item
         :accepted-items-category-id="categoryId"
-        :accepted-items="acceptedItems"
         :force-quantity-to-max-selectable-amount="isMagazine"
+        :get-accepted-items-function="getAcceptedItemsAsync"
         :inventory-item="modelInventoryItems[index]"
         :max-stackable-amount="maximumQuantity"
         :path="`${path}/${PathUtils.contentPrefix}${index}_${modelInventoryItems.length}/${itemPathPrefix}${containedItem.itemId}`"
@@ -153,8 +159,8 @@ function setCategoryId(): void {
       />
       <Item
         v-model:inventory-item="itemToAdd"
-        :accepted-items="acceptedItems"
         :accepted-items-category-id="categoryId"
+        :get-accepted-items-function="getAcceptedItemsAsync"
         :max-stackable-amount="maximumQuantity"
         :path="`${path}/new`"
         @update:inventory-item="onItemAdded($event)"

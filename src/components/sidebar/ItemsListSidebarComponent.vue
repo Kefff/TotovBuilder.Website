@@ -70,9 +70,16 @@ const sortOrder = computed({
 
 const sortingFunctions = ref<IItemSortingFunctionList>(ItemSortingFunctions)
 
-onMounted(() => {
-  getSortingFunctions(category.value)
-})
+onMounted(() => getSortingFunctions(category.value))
+
+/**
+ * Displays the merchants sidebar.
+ */
+function displayMerchants(): void {
+  _globalSidebarService.display({
+    displayedComponentType: 'MerchantItemsOptionsSidebar'
+  })
+}
 
 /**
  * Gets item categories.
@@ -157,6 +164,24 @@ function reset(): void {
 
 
 <template>
+  <div class="sidebar-option">
+    <div class="items-list-sidebar-group">
+      <span class="items-list-sidebar-caption">{{ $t('caption.merchants') }}</span>
+      <div class="items-list-sidebar-field">
+        <Button
+          class="items-list-sidebar-long-button"
+          outlined
+          @click="displayMerchants()"
+        >
+          <font-awesome-icon
+            icon="user-tag"
+            class="icon-before-text"
+          />
+          <span>{{ $t('caption.merchantItemsOptions') }}</span>
+        </Button>
+      </div>
+    </div>
+  </div>
   <div class="sidebar-option">
     <div class="items-list-sidebar-group">
       <span class="items-list-sidebar-caption">{{ $t('caption.category') }}</span>
@@ -285,7 +310,7 @@ function reset(): void {
   <div class="sidebar-title" />
   <div class="sidebar-option">
     <Button
-      class="items-list-sidebar-reset-button"
+      class="items-list-sidebar-long-button"
       severity="danger"
       outlined
       @click="reset()"
@@ -346,7 +371,7 @@ function reset(): void {
   width: 100%;
 }
 
-.items-list-sidebar-reset-button {
+.items-list-sidebar-long-button {
   align-items: center;
   display: flex;
   justify-content: center;

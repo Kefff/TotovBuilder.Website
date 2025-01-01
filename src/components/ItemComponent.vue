@@ -29,10 +29,10 @@ const modelInventoryItem = defineModel<IInventoryItem>('inventoryItem')
 
 const props = withDefaults(
   defineProps<{
-    acceptedItems: IItem[],
     acceptedItemsCategoryId?: ItemCategoryId,
     canBeLooted?: boolean,
     forceQuantityToMaxSelectableAmount?: boolean,
+    getAcceptedItemsFunction: (forceItemsListUpdate: boolean) => Promise<IItem[]>,
     inventoryItem?: IInventoryItem,
     isBaseItem?: boolean,
     isMainInventorySlotItem?: boolean,
@@ -101,6 +101,14 @@ watch(
   () => setSelectedTab())
 
 onMounted(() => initializeItemAsync())
+
+/**
+ * Gets the accepted items for the base item selection side bar.
+ */
+function getAcceptedItemsForBaseItem(): Promise<IItem[]> {
+  // The base item cannot be updated so we return an empty list
+  return Promise.resolve([])
+}
 
 /**
  * Initializes the item based on the inventory item passed to the component.
@@ -251,9 +259,9 @@ function onSelectionInputClick(): void {
   _globalSidebarService.display({
     displayedComponentType: 'ItemSelectionSidebar',
     displayedComponentParameters: {
-      selectedItems: item.value != null ? [item.value] : [],
-      selectableItems: props.acceptedItems,
-      filterAndSortingData
+      filterAndSortingData,
+      getSelectableItemsFunction: props.getAcceptedItemsFunction,
+      selectedItems: item.value != null ? [item.value] : []
     },
     onCloseAction: (updatedParameters) => {
       const up = updatedParameters as ItemSelectionSidebarParameters
@@ -624,7 +632,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
               {{ $t('caption.baseItem') }}
             </div>
             <ItemComponent
-              :accepted-items="[]"
+              :get-accepted-items-function="getAcceptedItemsForBaseItem"
               :can-be-looted="showBaseItemPrice"
               :inventory-item="baseItem"
               :is-base-item="true"
