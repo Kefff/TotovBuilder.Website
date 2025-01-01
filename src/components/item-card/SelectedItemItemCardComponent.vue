@@ -149,7 +149,6 @@ async function setWeightAsync(): Promise<void> {
           <Tooltip
             v-if="selectedItemWeight.weight > 0"
             :tooltip="$t('caption.weight') + $t('caption.withModsAndContent')"
-            position="left"
           >
             <font-awesome-icon
               icon="weight-hanging"

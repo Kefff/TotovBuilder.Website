@@ -67,7 +67,6 @@ function onNotificationCountChanged(): void {
   <Tooltip
     :apply-hover-style="false"
     :tooltip="$t('caption.notifications')"
-    position="left"
   >
     <Button
       :disabled="notifications.length === 0"

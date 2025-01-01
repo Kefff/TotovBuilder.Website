@@ -93,7 +93,6 @@ function toggleInventoryPriceDetails(event: Event): void {
       v-if="inventoryPrice.missingPrice"
       class="inventory-price-missing-price-icon"
       :tooltip="isBuild ? $t('message.buildWithMissingPrice') : $t('message.itemWithModsAndContentAndMissingPrice')"
-      position="right"
     >
       <font-awesome-icon icon="exclamation-triangle" />
     </Tooltip>

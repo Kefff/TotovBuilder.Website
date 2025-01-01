@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { useEventListener } from '@vueuse/core'
 import { computed } from 'vue'
-import { IItem } from '../models/item/IItem'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
-import { IBuildSummary } from '../models/utils/IBuildSummary'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
-import { ISortingFunction } from '../services/sorting/functions/ISortingFunction'
 import { SortingService } from '../services/sorting/SortingService'
 import StringUtils from '../utils/StringUtils'
 import Sticky from './StickyComponent.vue'
@@ -31,6 +28,12 @@ const _sortingService = Services.get(SortingService)
 
 useEventListener(document, 'keydown', onKeyDown)
 
+const canRemoveCategoryIdFilter = computed(() => isItemFilterAndSortingData.value
+  && (modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId != null
+  && !(modelFilterAndSortingData.value as ItemFilterAndSortingData).isCategoryReadOnly)
+const canRemoveFilter = computed(() =>
+  modelFilterAndSortingData.value.filter != null
+  || canRemoveCategoryIdFilter.value)
 const categoryFilterCaption = computed(() => {
   let caption: string | undefined = undefined
   const itemFilterAndSortingData = modelFilterAndSortingData.value as ItemFilterAndSortingData
@@ -68,6 +71,7 @@ const filterTooltip = computed(() => {
 
   return tooltip !== '' ? tooltip : undefined
 })
+const isItemFilterAndSortingData = computed(() => (modelFilterAndSortingData.value as unknown as Record<string, unknown>)['isCategoryReadOnly'] != null)
 const sortButtonTooltip = computed(() => vueI18n.t(
   'caption.sortedBy',
   {
@@ -111,6 +115,19 @@ function showFilterAndSortSidebar(focusFilter: boolean): void {
   })
 }
 
+function removeFilter(): void {
+  const updatedFilterAndSortingData = {
+    ...modelFilterAndSortingData.value,
+    filter: undefined
+  }
+
+  if (canRemoveCategoryIdFilter.value) {
+    (updatedFilterAndSortingData as ItemFilterAndSortingData).categoryId = undefined
+  }
+
+  modelFilterAndSortingData.value = updatedFilterAndSortingData
+}
+
 /**
  * Switches the sort order.
  */
@@ -118,22 +135,15 @@ function switchSortOrder(): void {
   const isItemFilterAndSortingData = (modelFilterAndSortingData.value as unknown as Record<string, unknown>)['isCategoryReadOnly'] != null
 
   if (isItemFilterAndSortingData) {
-    const itemFilterAndSortingData = { ...modelFilterAndSortingData.value } as ItemFilterAndSortingData
-    const sortingFunctions: Record<string, ISortingFunction<IItem>> = {}
-    sortingFunctions[itemFilterAndSortingData.property] = { ...itemFilterAndSortingData.currentSortingFunction }
     modelFilterAndSortingData.value = _sortingService.setSortingProperty(
-      itemFilterAndSortingData,
-      itemFilterAndSortingData.property,
-      -itemFilterAndSortingData.order
-    ) as ItemFilterAndSortingData
+      modelFilterAndSortingData.value as ItemFilterAndSortingData,
+      modelFilterAndSortingData.value.property,
+      -modelFilterAndSortingData.value.order) as ItemFilterAndSortingData
   } else {
-    const buildFilterAndSortingData = { ...modelFilterAndSortingData.value } as BuildFilterAndSortingData
-    const sortingFunctions: Record<string, ISortingFunction<IBuildSummary>> = {}
-    sortingFunctions[buildFilterAndSortingData.property] = { ...buildFilterAndSortingData.currentSortingFunction }
     modelFilterAndSortingData.value = _sortingService.setSortingProperty(
-      buildFilterAndSortingData,
-      buildFilterAndSortingData.property,
-      -buildFilterAndSortingData.order)
+      modelFilterAndSortingData.value as BuildFilterAndSortingData,
+      modelFilterAndSortingData.value.property,
+      -modelFilterAndSortingData.value.order)
   }
 }
 </script>
@@ -153,18 +163,19 @@ function switchSortOrder(): void {
     align="left"
   >
     <div class="filter-chips">
-      <Chip class="filter-chip">
-        <div
-          class="filter-chip-icon"
-          @click="switchSortOrder"
-        >
-          <font-awesome-icon :icon="sortChipIcon" />
+      <Chip class="filter-chip filter-chip-content">
+        <div class="filter-chip-icon-button-left">
+          <Tooltip
+            :tooltip="$t('caption.switchSortOrder')"
+            class="filter-chip-icon"
+            @click="switchSortOrder"
+          >
+            <font-awesome-icon :icon="sortChipIcon" />
+          </Tooltip>
         </div>
         <Tooltip
           :tooltip="sortButtonTooltip"
           class="filter-chip-text"
-          position="right"
-          style="width: 100%;"
         >
           <span @click="showFilterAndSortSidebar(false)">
             {{ $t(`caption.${modelFilterAndSortingData.property}`) }}
@@ -176,36 +187,57 @@ function switchSortOrder(): void {
         class="filter-chip"
         @click="showFilterAndSortSidebar(true)"
       >
-        <Tooltip :tooltip="$t('caption.addFilter')">
-          <div class="filter-chip-group">
-            <div class="filter-chip-icon">
-              <font-awesome-icon icon="filter" />
-            </div>
-            <span>{{ $t('caption.filter') }}</span>
-            <div class="filter-chip-icon-button filter-chip-icon-button-add-filter">
-              <font-awesome-icon icon="plus" />
-            </div>
+        <Tooltip
+          :tooltip="$t('caption.addFilter')"
+          class="filter-chip-content"
+        >
+          <div
+            class="filter-chip-icon"
+            style="color: var(--success-color);"
+          >
+            <font-awesome-icon icon="plus" />
           </div>
+          <span
+            class="filter-chip-text"
+            style="padding-left: 0;"
+          >
+            {{ $t('caption.filter') }}
+          </span>
         </Tooltip>
       </Chip>
       <Chip
         v-else
-        class="filter-chip"
-        @click="showFilterAndSortSidebar(true)"
+        class="filter-chip filter-chip-content"
       >
-        <div class="filter-chip-icon">
-          <font-awesome-icon icon="filter" />
-        </div>
         <Tooltip
           :tooltip="filterTooltip"
-          class="filter-chip-text"
-          style="overflow: hidden;"
+          class="filter-chip-content"
+          @click="showFilterAndSortSidebar(true)"
         >
-          <div class="filter-chip-caption-multiline">
+          <div class="filter-chip-icon">
+            <font-awesome-icon icon="filter" />
+          </div>
+          <div
+            class="filter-chip-text"
+            style="padding-left: 0;"
+          >
             <span>{{ categoryFilterCaption }}</span>
             <span>{{ filterCaption }}</span>
           </div>
         </Tooltip>
+        <div
+          v-show="canRemoveFilter"
+          class="filter-chip-icon-button-right"
+        >
+          <Tooltip
+            :tooltip="$t('caption.removeFilter')"
+            style="color: var(--error-color);"
+            class="filter-chip-icon"
+            @click="removeFilter"
+          >
+            <font-awesome-icon icon="times" />
+          </Tooltip>
+        </div>
       </Chip>
     </div>
   </Sticky>
@@ -226,13 +258,20 @@ function switchSortOrder(): void {
   border-color: var(--primary-color);
   border-style: solid;
   border-width: 1px;
-  cursor: pointer;
-  display: flex;
-  flex-wrap: nowrap;
-  font-size: 0.85rem;
-  height: 100%;
   overflow: hidden;
-  padding: 0.5rem;
+  padding: 0rem;
+}
+
+.filter-chip:hover {
+  cursor: pointer;
+}
+
+.filter-chip-content {
+  align-items: center;
+  display: grid;
+  grid-template-columns: auto auto;
+  height: 100%;
+  width: 100%;
 }
 
 .filter-chip-caption-multiline {
@@ -250,33 +289,46 @@ function switchSortOrder(): void {
 }
 
 .filter-chip-icon {
-  padding-right: 0.5rem;
-}
-
-.filter-chip-icon-button {
   align-items: center;
   display: flex;
+  height: 100%;
+  padding: 0.5rem;
+}
+
+.filter-chip-icon-button-left {
+  align-items: center;
+  border-right-color: var(--primary-color6);
+  border-right-style: solid;
+  border-right-width: 1px;
+  display: flex;
+  height: 100%;
   justify-content: center;
-  padding-left: 1rem;
 }
 
-.filter-chip-icon-button:hover {
-  cursor: pointer;
-}
-
-.filter-chip-icon-button-add-filter {
-  color: var(--success-color);
-}
-
-.filter-chip-icon-button-remove-filter {
-  color: var(--error-color);
+.filter-chip-icon-button-right {
+  align-items: center;
+  border-left-color: var(--primary-color6);
+  border-left-style: solid;
+  border-left-width: 1px;
+  display: flex;
+  height: 100%;
+  justify-content: center;
 }
 
 .filter-chip-text {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.filter-chip-text > span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 100%;
 }
 
 .filter-chips {
