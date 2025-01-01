@@ -56,9 +56,11 @@ onMounted(() => initializeDisplayedElements())
 function initializeDisplayedElements(): void {
   isInitialized.value = false
   displayedElementGroups.value = Array.from({ length: groupedElements.value.length })
-  isInitialized.value = true
 
-  scrollToElement(props.scrollToIndex)
+  nextTick(() => { // Required to force a reset of displayedElementGroups.value, otherwise the items to display may not load
+    isInitialized.value = true
+    scrollToElement(props.scrollToIndex)
+  })
 }
 
 /**

@@ -2,7 +2,6 @@
 import { useBreakpoints } from '@vueuse/core'
 import { computed, onMounted, ref, watch } from 'vue'
 import { IItem } from '../models/item/IItem'
-import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlobalSidebarOptions'
 import { IListSelectionOptions } from '../models/utils/IListSelectionOptions'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 import { ItemPropertiesService } from '../services/ItemPropertiesService'
@@ -150,35 +149,6 @@ async function filterItemsAsync(itemsToFilter: IItem[]): Promise<IItem[]> {
 }
 
 /**
- * React to the filter an sort sidebar being closed.
- *
- * Applies the filter and sort, and saves the sort.
- * @param updatedParameters - Filter and sort data updated by the side bar.
- */
-function onFilterAndSortChanged(updatedParameters?: GlobalSidebarDisplayedComponentParameters): void {
-  const updatedFilterAndSortingData = updatedParameters as ItemFilterAndSortingData
-  const hasCategoryChanged = updatedFilterAndSortingData.categoryId !== modelFilterAndSortingData.value.categoryId
-  const hasSortChange =
-    updatedFilterAndSortingData.property !== modelFilterAndSortingData.value.property
-    || updatedFilterAndSortingData.order !== modelFilterAndSortingData.value.order
-  const hasFilterChange = updatedFilterAndSortingData.filter !== modelFilterAndSortingData.value.filter
-
-  if (hasCategoryChanged || hasSortChange || hasFilterChange) {
-    modelFilterAndSortingData.value = updatedFilterAndSortingData
-  }
-}
-
-/**
- * Sorts items.
- * @param itemsToSort - Items to sort.
- */
-async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
-  itemsToSort = await _sortingService.sortAsync(itemsToSort, modelFilterAndSortingData.value)
-
-  return itemsToSort
-}
-
-/**
  * Updates the list of selected items.
  * @param item - Item.
  * @param isSelected - Indicates whether the item is selected.
@@ -196,6 +166,16 @@ function onSelectedItemsChanged(item: IItem, isSelected: boolean): void {
   } else {
     modelSelectedItems.value = modelSelectedItems.value.filter(i => i.id !== item.id)
   }
+}
+
+/**
+ * Sorts items.
+ * @param itemsToSort - Items to sort.
+ */
+async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
+  itemsToSort = await _sortingService.sortAsync(itemsToSort, modelFilterAndSortingData.value)
+
+  return itemsToSort
 }
 </script>
 
@@ -222,9 +202,8 @@ function onSelectedItemsChanged(item: IItem, isSelected: boolean): void {
     <FilterChips
       v-if="items.length > 0"
       v-model:filter-and-sorting-data="modelFilterAndSortingData"
-      filter-sidebar-component="ItemsListSidebar"
       :element-to-stick-to="elementToStickTo"
-      @filter-and-sort-changed="onFilterAndSortChanged"
+      filter-sidebar-component="ItemsListSidebar"
     />
     <InfiniteScroller
       v-if="itemsInternal.length > 0 && infiniteScrolling"

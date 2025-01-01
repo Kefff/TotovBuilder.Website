@@ -3,7 +3,7 @@ import { IAmmunition } from '../../../../models/item/IAmmunition'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { AmmunitionSortingFunctions } from '../../../../services/sorting/functions/AmmunitionSortingFunctions'
+import { AmmunitionSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([
@@ -37,9 +37,9 @@ describe('comparisonFunction()', () => {
       recoilModifier: 1
     } as IAmmunition
 
-    let sortingData: SortingData<IAmmunition> | undefined = new SortingData()
+    let sortingData: SortingData<IAmmunition> | undefined = new SortingData(AmmunitionSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, AmmunitionSortingFunctions, property)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

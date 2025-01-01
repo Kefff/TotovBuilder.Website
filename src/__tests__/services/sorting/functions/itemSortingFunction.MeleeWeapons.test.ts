@@ -3,7 +3,7 @@ import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IMeleeWeapon } from '../../../../models/item/IMeleeWeapon'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { MeleeWeaponSortingFunctions } from '../../../../services/sorting/functions/MeleeWeaponSortingFunctions'
+import { MeleeWeaponSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([
@@ -26,9 +26,9 @@ describe('comparisonFunction()', () => {
       hitRadius: 1
     } as IMeleeWeapon
 
-    let sortingData: SortingData<IMeleeWeapon> | undefined = new SortingData()
+    let sortingData: SortingData<IMeleeWeapon> | undefined = new SortingData(MeleeWeaponSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, MeleeWeaponSortingFunctions, property)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

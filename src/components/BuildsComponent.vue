@@ -22,7 +22,6 @@ import { WebsiteConfigurationService } from '../services/WebsiteConfigurationSer
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
-import { BuildSummarySortingFunctions } from '../services/sorting/functions/BuildSummarySortingFunctions'
 import BuildsList from './BuildsListComponent.vue'
 import NotificationButton from './NotificationButtonComponent.vue'
 import Toolbar from './ToolbarComponent.vue'
@@ -267,7 +266,7 @@ function getInitialFilterAndSortingData(): void {
   const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey) ?? SortingOrder.asc)
 
   filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsFilterStorageKey) ?? undefined
-  filterAndSortingData.value = _sortingService.setSortingProperty(filterAndSortingData.value, BuildSummarySortingFunctions, property, order)
+  filterAndSortingData.value = _sortingService.setSortingProperty(filterAndSortingData.value, property, order)
 }
 
 /**

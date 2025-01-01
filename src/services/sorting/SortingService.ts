@@ -5,23 +5,8 @@ import { SortingOrder } from '../../models/utils/SortingOrder'
 import StringUtils from '../../utils/StringUtils'
 import { LogService } from '../LogService'
 import Services from '../repository/Services'
-import { AmmunitionSortingFunctions } from './functions/AmmunitionSortingFunctions'
-import { ArmorModSortingFunctions } from './functions/ArmorModSortingFunctions'
-import { ArmorSortingFunctions } from './functions/ArmorSortingFunctions'
-import { BackpackSortingFunctions } from './functions/BackpackSortingFunctions'
-import { ContainerSortingFunctions } from './functions/ContainerSortingFunctions'
-import { EyewearSortingFunctions } from './functions/EyewearSortingFunctions'
-import { GrenadeSortingFunctions } from './functions/GrenadeSortingFunctions'
-import { HeadwearSortingFunctions } from './functions/HeadwearSortingFunctions'
-import { IItemSortingFunctionList, ISortingFunctionList } from './functions/ISortingFunctionList'
-import { ItemSortingFunctions } from './functions/ItemSortingFunctions'
-import { MagazineSortingFunctions } from './functions/MagazineSortingFunctions'
-import { MeleeWeaponSortingFunctions } from './functions/MeleeWeaponSortingFunctions'
-import { ModSortingFunctions } from './functions/ModSortingFunctions'
-import { RangedWeaponModSortingFunctions } from './functions/RangedWeaponModSortingFunctions'
-import { RangedWeaponSortingFunctions } from './functions/RangedWeaponSortingFunctions'
-import { VestSortingFunctions } from './functions/VestSortingFunctions'
-import { WearableSortingFunctions } from './functions/WearableSortingFunctions'
+import { IItemSortingFunctionList } from './functions/ISortingFunctionList'
+import { AmmunitionSortingFunctions, ArmorModSortingFunctions, ArmorSortingFunctions, BackpackSortingFunctions, ContainerSortingFunctions, EyewearSortingFunctions, GrenadeSortingFunctions, HeadwearSortingFunctions, ItemSortingFunctions, MagazineSortingFunctions, MeleeWeaponSortingFunctions, ModSortingFunctions, RangedWeaponModSortingFunctions, RangedWeaponSortingFunctions, VestSortingFunctions, WearableSortingFunctions } from './functions/itemSortingFunctions'
 
 /**
  * Represents a service responsible for sorting elements.
@@ -71,9 +56,9 @@ export class SortingService {
    * @param sortingData - Sorting data.
    */
   public async sortAsync<T extends IBuildSummary | IItem>(elements: T[], sortingData: SortingData<T>): Promise<T[]> {
-    const elementWithSortingValue = await Promise.all(elements.map(e => this.getElementAndSortingValueAsync(e, sortingData)))
-    elementWithSortingValue.sort((ewsv1, ewsv2) => sortingData.sortingFunction.comparisonFunction(ewsv1.element, ewsv1.value, ewsv2.element, ewsv2.value))
-    const result = elementWithSortingValue.map(ewsv => ewsv.element)
+    const elementsWithSortingValue = await Promise.all(elements.map(e => this.getElementAndSortingValueAsync(e, sortingData)))
+    elementsWithSortingValue.sort((ewsv1, ewsv2) => sortingData.currentSortingFunction.comparisonFunction(ewsv1.element, ewsv1.value, ewsv2.element, ewsv2.value))
+    const result = elementsWithSortingValue.map(ewsv => ewsv.element)
 
     return result
   }
@@ -85,10 +70,9 @@ export class SortingService {
    */
   public setSortingProperty<T extends IBuildSummary | IItem>(
     sortingData: SortingData<T>,
-    sortingFunctions: ISortingFunctionList<T>,
     property: string,
     order?: SortingOrder): SortingData<T> {
-    const sortingFunction = sortingFunctions.functions[property]
+    const sortingFunction = sortingData.sortingFunctions.functions[property]
 
     if (sortingFunction == null) {
       Services.get(LogService).logError('message.sortingFunctionNotFound', { property: property })
@@ -105,10 +89,10 @@ export class SortingService {
     }
 
     updatedSortingData.property = property
-    updatedSortingData.sortingFunction.comparisonFunction = (element1: T, element1Value: string | number, element2: T, element2Value: string | number): number => {
+    updatedSortingData.currentSortingFunction.comparisonFunction = (element1: T, element1Value: string | number, element2: T, element2Value: string | number): number => {
       return sortingFunction.comparisonFunction(element1, element1Value, element2, element2Value) * updatedSortingData.order
     }
-    updatedSortingData.sortingFunction.comparisonValueObtentionPromise = sortingFunction.comparisonValueObtentionPromise
+    updatedSortingData.currentSortingFunction.comparisonValueObtentionPromise = sortingFunction.comparisonValueObtentionPromise
 
     return updatedSortingData
   }
@@ -119,7 +103,7 @@ export class SortingService {
    * @returns Element and its sorting value.
    */
   private async getElementAndSortingValueAsync<T extends IBuildSummary | IItem>(element: T, sortingData: SortingData<T>): Promise<{ element: T, value: number | string }> {
-    const value = await sortingData.sortingFunction.comparisonValueObtentionPromise(element)
+    const value = await sortingData.currentSortingFunction.comparisonValueObtentionPromise(element)
 
     return { element, value }
   }

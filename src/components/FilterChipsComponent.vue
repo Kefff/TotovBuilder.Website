@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { useEventListener } from '@vueuse/core'
 import { computed } from 'vue'
+import { IItem } from '../models/item/IItem'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
-import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlobalSidebarOptions'
+import { IBuildSummary } from '../models/utils/IBuildSummary'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
+import { ISortingFunction } from '../services/sorting/functions/ISortingFunction'
+import { SortingService } from '../services/sorting/SortingService'
 import StringUtils from '../utils/StringUtils'
 import Sticky from './StickyComponent.vue'
 import Tooltip from './TooltipComponent.vue'
@@ -23,11 +26,8 @@ const props = withDefaults(
     elementToStickTo: undefined
   })
 
-const emits = defineEmits<{
-  filterAndSortChanged: [filter: GlobalSidebarDisplayedComponentParameters | undefined]
-}>()
-
 const _globalSidebarService = Services.get(GlobalSidebarService)
+const _sortingService = Services.get(SortingService)
 
 useEventListener(document, 'keydown', onKeyDown)
 
@@ -89,20 +89,52 @@ function onKeyDown(event: KeyboardEvent): void {
 
     if (!_globalSidebarService.isDisplayed()) {
       event.preventDefault() // Prevents the browser save action to be triggered
-      showFilterAndSortSidebar()
+      showFilterAndSortSidebar(true)
     }
   }
 }
 
 /**
  * Opens the filter and sort sidebar.
+ * @param focusFilter - Indicates whether the filter field should be focused.
  */
-function showFilterAndSortSidebar(): void {
+function showFilterAndSortSidebar(focusFilter: boolean): void {
   _globalSidebarService.display({
     displayedComponentType: props.filterSidebarComponent,
-    displayedComponentParameters: { ...modelFilterAndSortingData.value },
-    onCloseAction: (updatedParameters) => emits('filterAndSortChanged', updatedParameters)
+    displayedComponentParameters: {
+      ...modelFilterAndSortingData.value,
+      focusFilter
+    },
+    onCloseAction: (updatedParameters) => {
+      modelFilterAndSortingData.value = <BuildFilterAndSortingData | ItemFilterAndSortingData>updatedParameters
+    }
   })
+}
+
+/**
+ * Switches the sort order.
+ */
+function switchSortOrder(): void {
+  const isItemFilterAndSortingData = (modelFilterAndSortingData.value as unknown as Record<string, unknown>)['isCategoryReadOnly'] != null
+
+  if (isItemFilterAndSortingData) {
+    const itemFilterAndSortingData = { ...modelFilterAndSortingData.value } as ItemFilterAndSortingData
+    const sortingFunctions: Record<string, ISortingFunction<IItem>> = {}
+    sortingFunctions[itemFilterAndSortingData.property] = { ...itemFilterAndSortingData.currentSortingFunction }
+    modelFilterAndSortingData.value = _sortingService.setSortingProperty(
+      itemFilterAndSortingData,
+      itemFilterAndSortingData.property,
+      -itemFilterAndSortingData.order
+    ) as ItemFilterAndSortingData
+  } else {
+    const buildFilterAndSortingData = { ...modelFilterAndSortingData.value } as BuildFilterAndSortingData
+    const sortingFunctions: Record<string, ISortingFunction<IBuildSummary>> = {}
+    sortingFunctions[buildFilterAndSortingData.property] = { ...buildFilterAndSortingData.currentSortingFunction }
+    modelFilterAndSortingData.value = _sortingService.setSortingProperty(
+      buildFilterAndSortingData,
+      buildFilterAndSortingData.property,
+      -buildFilterAndSortingData.order)
+  }
 }
 </script>
 
@@ -121,27 +153,28 @@ function showFilterAndSortSidebar(): void {
     align="left"
   >
     <div class="filter-chips">
-      <Chip
-        class="filter-chip"
-        @click="showFilterAndSortSidebar()"
-      >
+      <Chip class="filter-chip">
+        <div
+          class="filter-chip-icon"
+          @click="switchSortOrder"
+        >
+          <font-awesome-icon :icon="sortChipIcon" />
+        </div>
         <Tooltip
           :tooltip="sortButtonTooltip"
+          class="filter-chip-text"
           position="right"
           style="width: 100%;"
         >
-          <div class="filter-chip-group">
-            <div class="filter-chip-icon">
-              <font-awesome-icon :icon="sortChipIcon" />
-            </div>
-            <span>{{ $t(`caption.${modelFilterAndSortingData.property}`) }}</span>
-          </div>
+          <span @click="showFilterAndSortSidebar(false)">
+            {{ $t(`caption.${modelFilterAndSortingData.property}`) }}
+          </span>
         </Tooltip>
       </Chip>
       <Chip
         v-if="categoryFilterCaption == null && filterCaption == null"
         class="filter-chip"
-        @click="showFilterAndSortSidebar()"
+        @click="showFilterAndSortSidebar(true)"
       >
         <Tooltip :tooltip="$t('caption.addFilter')">
           <div class="filter-chip-group">
@@ -158,20 +191,19 @@ function showFilterAndSortSidebar(): void {
       <Chip
         v-else
         class="filter-chip"
-        @click="showFilterAndSortSidebar()"
+        @click="showFilterAndSortSidebar(true)"
       >
+        <div class="filter-chip-icon">
+          <font-awesome-icon icon="filter" />
+        </div>
         <Tooltip
           :tooltip="filterTooltip"
+          class="filter-chip-text"
           style="overflow: hidden;"
         >
-          <div class="filter-chip-group">
-            <div class="filter-chip-icon">
-              <font-awesome-icon icon="filter" />
-            </div>
-            <div class="filter-chip-caption-multiline">
-              <span>{{ categoryFilterCaption }}</span>
-              <span>{{ filterCaption }}</span>
-            </div>
+          <div class="filter-chip-caption-multiline">
+            <span>{{ categoryFilterCaption }}</span>
+            <span>{{ filterCaption }}</span>
           </div>
         </Tooltip>
       </Chip>
@@ -195,16 +227,17 @@ function showFilterAndSortSidebar(): void {
   border-style: solid;
   border-width: 1px;
   cursor: pointer;
+  display: flex;
+  flex-wrap: nowrap;
+  font-size: 0.85rem;
   height: 100%;
   overflow: hidden;
-  padding-bottom: 0.5rem;
-  padding-top: 0.5rem;
+  padding: 0.5rem;
 }
 
 .filter-chip-caption-multiline {
   display: flex;
   flex-direction: column;
-  font-size: 0.85rem;
   justify-content: center;
   overflow: hidden;
 }
@@ -216,19 +249,8 @@ function showFilterAndSortSidebar(): void {
   width: 100%;
 }
 
-.filter-chip-group {
-  align-items: center;
-  display: flex;
-}
-
-.filter-chip-group > span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .filter-chip-icon {
-  margin-right: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .filter-chip-icon-button {
@@ -248,6 +270,13 @@ function showFilterAndSortSidebar(): void {
 
 .filter-chip-icon-button-remove-filter {
   color: var(--error-color);
+}
+
+.filter-chip-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .filter-chips {

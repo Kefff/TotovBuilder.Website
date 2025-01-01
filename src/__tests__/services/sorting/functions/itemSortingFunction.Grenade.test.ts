@@ -3,7 +3,7 @@ import { IGrenade } from '../../../../models/item/IGrenade'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { GrenadeSortingFunctions } from '../../../../services/sorting/functions/GrenadeSortingFunctions'
+import { GrenadeSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([
@@ -26,9 +26,9 @@ describe('comparisonFunction()', () => {
       fragmentsAmount: 1
     } as IGrenade
 
-    let sortingData: SortingData<IGrenade> | undefined = new SortingData()
+    let sortingData: SortingData<IGrenade> | undefined = new SortingData(GrenadeSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, GrenadeSortingFunctions, property)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

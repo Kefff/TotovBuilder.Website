@@ -6,7 +6,6 @@ import { SortingOrder } from '../../models/utils/SortingOrder'
 import vueI18n from '../../plugins/vueI18n'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
-import { BuildSummarySortingFunctions } from '../../services/sorting/functions/BuildSummarySortingFunctions'
 import { SortingService } from '../../services/sorting/SortingService'
 import StringUtils from '../../utils/StringUtils'
 import InputTextField from '../InputTextFieldComponent.vue'
@@ -31,13 +30,13 @@ const filter = computed({
 const sortField = computed({
   get: () => modelParameters.value.property,
   set: (value: string) => {
-    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, BuildSummarySortingFunctions, value, sortOrder.value) as BuildFilterAndSortingData
+    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, value, sortOrder.value) as BuildFilterAndSortingData
   }
 })
 const sortOrder = computed({
   get: () => modelParameters.value.order,
   set: (value: SortingOrder) => {
-    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, BuildSummarySortingFunctions, modelParameters.value.property, value) as BuildFilterAndSortingData
+    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, modelParameters.value.property, value) as BuildFilterAndSortingData
   }
 })
 
@@ -124,7 +123,7 @@ function reset(): void {
         <InputTextField
           ref="buildsListSidebarFilterInput"
           v-model:value="filter"
-          :autofocus="true"
+          :autofocus="parameters.focusFilter"
           class="builds-list-sidebar-value"
           type="text"
           @keydown="onFilterKeyDown"

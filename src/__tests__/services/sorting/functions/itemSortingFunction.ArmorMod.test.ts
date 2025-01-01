@@ -3,7 +3,7 @@ import { IArmorMod } from '../../../../models/item/IArmorMod'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { ArmorModSortingFunctions } from '../../../../services/sorting/functions/ArmorModSortingFunctions'
+import { ArmorModSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([
@@ -51,9 +51,9 @@ describe('comparisonFunction()', () => {
       turningSpeedModifierPercentage: 1
     } as IArmorMod
 
-    let sortingData: SortingData<IArmorMod> | undefined = new SortingData()
+    let sortingData: SortingData<IArmorMod> | undefined = new SortingData(ArmorModSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, ArmorModSortingFunctions, property)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

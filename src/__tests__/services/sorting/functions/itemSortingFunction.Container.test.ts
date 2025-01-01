@@ -3,7 +3,7 @@ import { IContainer } from '../../../../models/item/IContainer'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { ContainerSortingFunctions } from '../../../../services/sorting/functions/ContainerSortingFunctions'
+import { ContainerSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([['capacity']])('should sort by %s', async (property: string) => {
@@ -18,9 +18,9 @@ describe('comparisonFunction()', () => {
       capacity: 1
     } as IContainer
 
-    let sortingData: SortingData<IContainer> | undefined = new SortingData()
+    let sortingData: SortingData<IContainer> | undefined = new SortingData(ContainerSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, ContainerSortingFunctions, property)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

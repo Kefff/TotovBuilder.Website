@@ -20,6 +20,7 @@ const GlobalSidebar = defineAsyncComponent(() =>
   import('./sidebar/GlobalSidebarComponent.vue')
 )
 
+const _globalSidebarService = Services.get(GlobalSidebarService)
 const _versionService = Services.get(VersionService)
 const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
@@ -69,7 +70,7 @@ onMounted(() => {
  * Displays the changelog.
  */
 function displayChangelog(): void {
-  Services.get(GlobalSidebarService).display({
+  _globalSidebarService.display({
     displayedComponentType: 'ChangelogSidebar'
   })
 }

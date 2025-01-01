@@ -3,7 +3,7 @@ import { IEyewear } from '../../../../models/item/IEyewear'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { EyewearSortingFunctions } from '../../../../services/sorting/functions/EyewearSortingFunctions'
+import { EyewearSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([['blindnessProtectionPercentage']])('should sort by %s', async (property: string) => {
@@ -18,9 +18,9 @@ describe('comparisonFunction()', () => {
       blindnessProtectionPercentage: 1
     } as IEyewear
 
-    let sortingData: SortingData<IEyewear> | undefined = new SortingData()
+    let sortingData: SortingData<IEyewear> | undefined = new SortingData(EyewearSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, EyewearSortingFunctions, property)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

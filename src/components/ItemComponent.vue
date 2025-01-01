@@ -443,10 +443,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
     v-if="modelInventoryItem != null || isEditing"
     class="item"
   >
-    <div :class="{
-      'item-main': item != null && isMainInventorySlotItem,
-      'item-padding': item == null || !isMainInventorySlotItem
-    }">
+    <div :class="{ 'item-main': item != null && isMainInventorySlotItem, 'item-padding': item == null || !isMainInventorySlotItem }">
       <div class="item-header">
         <ItemIcon
           v-if="item != null && (!isEditing || isBaseItem)"

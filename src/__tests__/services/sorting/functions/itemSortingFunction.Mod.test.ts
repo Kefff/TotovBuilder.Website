@@ -3,7 +3,7 @@ import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IMod } from '../../../../models/item/IMod'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { ModSortingFunctions } from '../../../../services/sorting/functions/ModSortingFunctions'
+import { ModSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([
@@ -23,9 +23,9 @@ describe('comparisonFunction()', () => {
       presetErgonomicsModifier: isPreset ? 1 : undefined
     } as IMod
 
-    let sortingData: SortingData<IMod> | undefined = new SortingData()
+    let sortingData: SortingData<IMod> | undefined = new SortingData(ModSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, ModSortingFunctions, property)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

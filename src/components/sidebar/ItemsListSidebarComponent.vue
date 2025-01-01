@@ -8,7 +8,7 @@ import vueI18n from '../../plugins/vueI18n'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 import { IItemSortingFunctionList } from '../../services/sorting/functions/ISortingFunctionList'
-import { ItemSortingFunctions } from '../../services/sorting/functions/ItemSortingFunctions'
+import { ItemSortingFunctions } from '../../services/sorting/functions/itemSortingFunctions'
 import { SortingService } from '../../services/sorting/SortingService'
 import StringUtils from '../../utils/StringUtils'
 import InputTextField from '../InputTextFieldComponent.vue'
@@ -58,13 +58,13 @@ const sortableProperties = computed(() => {
 const sortField = computed({
   get: () => modelParameters.value.property,
   set: (value: string) => {
-    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, sortingFunctions.value, value, sortOrder.value) as ItemFilterAndSortingData
+    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, value, sortOrder.value) as ItemFilterAndSortingData
   }
 })
 const sortOrder = computed({
   get: () => modelParameters.value.order,
   set: (value: SortingOrder) => {
-    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, sortingFunctions.value, modelParameters.value.property, value) as ItemFilterAndSortingData
+    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, modelParameters.value.property, value) as ItemFilterAndSortingData
   }
 })
 
@@ -92,6 +92,7 @@ function getCategories(): ItemCategoryId[] {
  */
 function getSortingFunctions(categoryId: ItemCategoryId | undefined): void {
   sortingFunctions.value = _sortingService.getSortingFunctionsFromItemCategory(categoryId)
+  modelParameters.value.sortingFunctions = sortingFunctions.value // Needs to be updated because we create modelParameters with the default generic item sorting functions
 
   if (sortingFunctions.value.functions[sortField.value] == null) {
     nextTick(() => sortField.value = 'name') // nextTick needed otherwise the sort field dropdown does not update the displayed value
@@ -138,7 +139,10 @@ function onFilterKeyDown(event: KeyboardEvent): void {
  * Resets the filter an sort.
  */
 function reset(): void {
-  modelParameters.value = new ItemFilterAndSortingData()
+  const sortingFunctions = modelParameters.value.sortingFunctions
+  const resettedSortingData = new ItemFilterAndSortingData()
+  resettedSortingData.sortingFunctions = sortingFunctions
+  modelParameters.value = resettedSortingData
   _globalSidebarService.close('ItemsListSidebar')
 }
 </script>
@@ -196,7 +200,7 @@ function reset(): void {
         <InputTextField
           ref="itemsListSidebarFilterInput"
           v-model:value="filter"
-          :autofocus="true"
+          :autofocus="parameters.focusFilter"
           class="items-list-sidebar-value"
           type="text"
           @keydown="onFilterKeyDown"

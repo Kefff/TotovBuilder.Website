@@ -3,7 +3,6 @@ import { useBreakpoints } from '@vueuse/core'
 import { computed, onMounted, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
-import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlobalSidebarOptions'
 import { IListSelectionOptions } from '../models/utils/IListSelectionOptions'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import Services from '../services/repository/Services'
@@ -145,24 +144,6 @@ async function filterBuildSummariesAsync(buildSummariesToFilter: IBuildSummary[]
 }
 
 /**
- * React to the filter an sort having changed.
- *
- * Applies the filter and sort, and saves the sort.
- * @param updatedParameters - Filter and sort data updated by the side bar.
- */
-function onFilterAndSortChanged(updatedParameters?: GlobalSidebarDisplayedComponentParameters): void {
-  const updatedFilterAndSortingData = updatedParameters as BuildFilterAndSortingData
-  const hasSortChange =
-    updatedFilterAndSortingData.property !== modelFilterAndSortingData.value.property
-    || updatedFilterAndSortingData.order !== modelFilterAndSortingData.value.order
-  const hasFilterChange = updatedFilterAndSortingData.filter !== modelFilterAndSortingData.value.filter
-
-  if (hasSortChange || hasFilterChange) {
-    modelFilterAndSortingData.value = updatedFilterAndSortingData
-  }
-}
-
-/**
  * Sorts build summaries.
  * @param buildSummariesToSort - Build summaries to sort.
  */
@@ -216,9 +197,8 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
     <FilterChips
       v-if="buildSummaries.length > 0 && showChips"
       v-model:filter-and-sorting-data="modelFilterAndSortingData"
-      filter-sidebar-component="BuildsListSidebar"
       :element-to-stick-to="elementToStickTo"
-      @filter-and-sort-changed="onFilterAndSortChanged"
+      filter-sidebar-component="BuildsListSidebar"
     />
     <InfiniteScroller
       v-if="buildSummariesInternal.length > 0 && infiniteScrolling"

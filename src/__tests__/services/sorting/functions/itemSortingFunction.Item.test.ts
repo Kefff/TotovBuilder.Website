@@ -10,7 +10,7 @@ import { SortingOrder } from '../../../../models/utils/SortingOrder'
 import { InventoryItemService } from '../../../../services/InventoryItemService'
 import Services from '../../../../services/repository/Services'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { ItemSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunctions'
+import { ItemSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([
@@ -64,14 +64,14 @@ describe('comparisonFunction()', () => {
     })
     Services.configure(InventoryItemService, undefined, instance(inventoryItemService))
 
-    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    let sortingData: SortingData<IItem> | undefined = new SortingData(ItemSortingFunctions)
     const sortingService = new SortingService()
 
     // Act
-    sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'price')
-    const value1 = await sortingData!.sortingFunction.comparisonValueObtentionPromise(item1)
-    const value2 = await sortingData!.sortingFunction.comparisonValueObtentionPromise(item2)
-    const result = sortingData!.sortingFunction.comparisonFunction(item1, value1, item2, value2)
+    sortingData = sortingService.setSortingProperty(sortingData, 'price')
+    const value1 = await sortingData!.currentSortingFunction.comparisonValueObtentionPromise(item1)
+    const value2 = await sortingData!.currentSortingFunction.comparisonValueObtentionPromise(item2)
+    const result = sortingData!.currentSortingFunction.comparisonFunction(item1, value1, item2, value2)
 
     // Assert
     expect(sortingData!.property).toBe('price')
@@ -113,14 +113,14 @@ describe('comparisonFunction()', () => {
     })
     Services.configure(InventoryItemService, undefined, instance(inventoryItemService))
 
-    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    let sortingData: SortingData<IItem> | undefined = new SortingData(ItemSortingFunctions)
     const sortingService = new SortingService()
 
     // Act
-    sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'price')
-    const value1 = await sortingData!.sortingFunction.comparisonValueObtentionPromise(item1)
-    const value2 = await sortingData!.sortingFunction.comparisonValueObtentionPromise(item2)
-    const result = sortingData!.sortingFunction.comparisonFunction(item1, value1, item2, value2)
+    sortingData = sortingService.setSortingProperty(sortingData, 'price')
+    const value1 = await sortingData!.currentSortingFunction.comparisonValueObtentionPromise(item1)
+    const value2 = await sortingData!.currentSortingFunction.comparisonValueObtentionPromise(item2)
+    const result = sortingData!.currentSortingFunction.comparisonFunction(item1, value1, item2, value2)
 
     // Assert
     expect(sortingData!.property).toBe('price')
@@ -145,9 +145,9 @@ describe('comparisonFunction()', () => {
       name: 'b'
     } as IItem
 
-    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    let sortingData: SortingData<IItem> | undefined = new SortingData(ItemSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'categoryId')
+    sortingData = sortingService.setSortingProperty(sortingData, 'categoryId')
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2, item3], sortingData!)
@@ -173,9 +173,9 @@ describe('comparisonFunction()', () => {
       name: 'a'
     } as IItem
 
-    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    let sortingData: SortingData<IItem> | undefined = new SortingData(ItemSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'name')
+    sortingData = sortingService.setSortingProperty(sortingData, 'name')
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2, item3], sortingData!)
@@ -204,9 +204,9 @@ describe('comparisonFunction()', () => {
       weight: 1
     } as IItem
 
-    let sortingData: SortingData<IItem> | undefined = new SortingData()
+    let sortingData: SortingData<IItem> | undefined = new SortingData(ItemSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, ItemSortingFunctions, 'weight')
+    sortingData = sortingService.setSortingProperty(sortingData, 'weight')
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2, item3], sortingData!)
@@ -229,12 +229,12 @@ describe('defaultSortingFunction', () => {
       name: 'a'
     } as IItem
 
-    const sortingData = new SortingData()
-    const comparisonValue1 = await sortingData.sortingFunction.comparisonValueObtentionPromise(item1)
-    const comparisonValue2 = await sortingData.sortingFunction.comparisonValueObtentionPromise(item2)
+    const sortingData = new SortingData(ItemSortingFunctions)
+    const comparisonValue1 = await sortingData.currentSortingFunction.comparisonValueObtentionPromise(item1)
+    const comparisonValue2 = await sortingData.currentSortingFunction.comparisonValueObtentionPromise(item2)
 
     // Act
-    const result = sortingData.sortingFunction.comparisonFunction(item1, comparisonValue1, item2, comparisonValue2)
+    const result = sortingData.currentSortingFunction.comparisonFunction(item1, comparisonValue1, item2, comparisonValue2)
 
     // Assert
     expect(result).toStrictEqual(1)

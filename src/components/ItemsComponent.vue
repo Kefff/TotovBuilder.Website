@@ -105,11 +105,11 @@ function getInitialFilterAndSortingData(): void {
   const categoryId = savedCategoryId != null ? ItemCategoryId[savedCategoryId as keyof typeof ItemCategoryId] : undefined
   const property = localStorage.getItem(_websiteConfigurationService.configuration.itemsSortFieldStorageKey) ?? 'name'
   const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.itemsSortOrderStorageKey) ?? SortingOrder.asc)
-  const sortingFunctions = _sortingService.getSortingFunctionsFromItemCategory(categoryId)
 
   filterAndSortingData.value.categoryId = categoryId
   filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.itemsFilterStorageKey) ?? undefined
-  filterAndSortingData.value = _sortingService.setSortingProperty(filterAndSortingData.value, sortingFunctions, property, order) as ItemFilterAndSortingData
+  filterAndSortingData.value.sortingFunctions = _sortingService.getSortingFunctionsFromItemCategory(categoryId)
+  filterAndSortingData.value = _sortingService.setSortingProperty(filterAndSortingData.value, property, order) as ItemFilterAndSortingData
 }
 
 /**

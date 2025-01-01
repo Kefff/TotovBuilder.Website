@@ -3,7 +3,7 @@ import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IMagazine } from '../../../../models/item/IMagazine'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { MagazineSortingFunctions } from '../../../../services/sorting/functions/MagazineSortingFunctions'
+import { MagazineSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([
@@ -31,9 +31,9 @@ describe('comparisonFunction()', () => {
       loadSpeedModifierPercentage: 1
     } as IMagazine
 
-    let sortingData: SortingData<IMagazine> | undefined = new SortingData()
+    let sortingData: SortingData<IMagazine> | undefined = new SortingData(MagazineSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, MagazineSortingFunctions, property)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

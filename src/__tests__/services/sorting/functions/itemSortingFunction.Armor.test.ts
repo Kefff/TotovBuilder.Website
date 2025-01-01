@@ -1,37 +1,38 @@
 import { describe, expect, it } from 'vitest'
+import { IArmor } from '../../../../models/item/IArmor'
 import { ItemCategoryId } from '../../../../models/item/IItem'
-import { IVest } from '../../../../models/item/IVest'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { VestSortingFunctions } from '../../../../services/sorting/functions/VestSortingFunctions'
+import { ArmorSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([
     ['armorClass'],
-    ['capacity'],
     ['durability'],
     ['ergonomicsModifierPercentage']
   ])('should sort by %s', async (property: string) => {
     // Arrange
     const item1 = {
-      categoryId: ItemCategoryId.vest,
-      armorClass: 2,
-      durability: 2,
-      ergonomicsModifierPercentage: 2,
-      capacity: 2
-    } as IVest
-
-    const item2 = {
-      categoryId: ItemCategoryId.vest,
+      categoryId: ItemCategoryId.armor,
       armorClass: 1,
       durability: 1,
-      ergonomicsModifierPercentage: 1,
-      capacity: 1
-    } as IVest
+      ergonomicsModifierPercentage: 2,
+      presetArmorModifiers: {
+        armorClass: 2,
+        durability: 2
+      }
+    } as IArmor
 
-    let sortingData: SortingData<IVest> | undefined = new SortingData()
+    const item2 = {
+      categoryId: ItemCategoryId.armor,
+      armorClass: 1,
+      durability: 1,
+      ergonomicsModifierPercentage: 1
+    } as IArmor
+
+    let sortingData: SortingData<IArmor> | undefined = new SortingData(ArmorSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, VestSortingFunctions, property)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

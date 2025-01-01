@@ -3,7 +3,7 @@ import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IRangedWeaponMod } from '../../../../models/item/IRangedWeaponMod'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { RangedWeaponModSortingFunctions } from '../../../../services/sorting/functions/RangedWeaponModSortingFunctions'
+import { RangedWeaponModSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([
@@ -31,9 +31,9 @@ describe('comparisonFunction()', () => {
       recoilModifierPercentage: 1
     } as IRangedWeaponMod
 
-    let sortingData: SortingData<IRangedWeaponMod> | undefined = new SortingData()
+    let sortingData: SortingData<IRangedWeaponMod> | undefined = new SortingData(RangedWeaponModSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, RangedWeaponModSortingFunctions, property)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

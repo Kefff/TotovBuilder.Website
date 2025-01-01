@@ -3,7 +3,7 @@ import { IHeadwear } from '../../../../models/item/IHeadwear'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import SortingData from '../../../../models/utils/SortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { HeadwearSortingFunctions } from '../../../../services/sorting/functions/HeadwearSortingFunctions'
+import { HeadwearSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([
@@ -105,9 +105,9 @@ describe('comparisonFunction()', () => {
       turningSpeedModifierPercentage: 1
     } as IHeadwear
 
-    let sortingData: SortingData<IHeadwear> | undefined = new SortingData()
+    let sortingData: SortingData<IHeadwear> | undefined = new SortingData(HeadwearSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, HeadwearSortingFunctions, property)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)
