@@ -22,9 +22,6 @@ const _itemService = Services.get(ItemService)
 
 let _acceptedItemsNeedsUpdated = true
 
-const acceptedItemsCategoryId = computed(() => inventorySlotType.value.acceptedItemCategories.length === 1
-  ? inventorySlotType.value.acceptedItemCategories[0]
-  : undefined)
 const inventorySlotType = computed(() => _inventorySlotPropertiesService.getType(modelInventorySlot.value.typeId))
 const isDisplayed = computed(() => isEditing?.value || modelInventorySlot.value.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
 
@@ -127,8 +124,8 @@ function onMerchantFilterChanged(): void {
       <Item
         v-for="(inventoryItem, index) of modelInventorySlot.items"
         :key="`${path}_${index}`"
-        :accepted-items-category-id="acceptedItemsCategoryId"
         :can-be-looted="inventorySlotType.canBeLooted"
+        :force-accepted-items-category-id-from-accepted-items-list="true"
         :get-accepted-items-function="getAcceptedItemsAsync"
         :inventory-item="modelInventorySlot.items[index]"
         :is-main-inventory-slot-item="true"

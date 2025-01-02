@@ -139,7 +139,7 @@ function onMerchantFilterChanged(): void {
         :mode="props.containerItem.categoryId === ItemCategoryId.magazine ? 'magazineContent' : 'content'"
       />
       <Item
-        :accepted-items-category-id="categoryId"
+        :force-accepted-items-category-id-from-accepted-items-list="categoryId != null"
         :force-quantity-to-max-selectable-amount="isMagazine"
         :get-accepted-items-function="getAcceptedItemsAsync"
         :inventory-item="modelInventoryItems[index]"
@@ -159,7 +159,7 @@ function onMerchantFilterChanged(): void {
       />
       <Item
         v-model:inventory-item="itemToAdd"
-        :accepted-items-category-id="categoryId"
+        :force-accepted-items-category-id-from-accepted-items-list="categoryId != null"
         :get-accepted-items-function="getAcceptedItemsAsync"
         :max-stackable-amount="maximumQuantity"
         :path="`${path}/new`"

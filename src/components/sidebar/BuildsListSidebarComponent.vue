@@ -45,6 +45,15 @@ onMounted(() => {
 })
 
 /**
+ * Displays the merchants sidebar.
+ */
+function displayMerchants(): void {
+  _globalSidebarService.display({
+    displayedComponentType: 'MerchantItemsOptionsSidebar'
+  })
+}
+
+/**
  * Gets the caption for a sort order.
  * @param sortOrder - Sort order.
  * @returns - Caption.
@@ -116,6 +125,24 @@ function reset(): void {
 
 
 <template>
+  <div class="sidebar-option">
+    <div class="builds-list-sidebar-group">
+      <span class="builds-list-sidebar-caption">{{ $t('caption.merchants') }}</span>
+      <div class="builds-list-sidebar-field">
+        <Button
+          class="builds-list-sidebar-long-button"
+          outlined
+          @click="displayMerchants()"
+        >
+          <font-awesome-icon
+            icon="user-tag"
+            class="icon-before-text"
+          />
+          <span>{{ $t('caption.merchantItemsOptions') }}</span>
+        </Button>
+      </div>
+    </div>
+  </div>
   <div class="sidebar-option">
     <div class="builds-list-sidebar-group">
       <span class="builds-list-sidebar-caption">{{ $t('caption.filter') }}</span>
@@ -212,7 +239,7 @@ function reset(): void {
   <div class="sidebar-title" />
   <div class="sidebar-option">
     <Button
-      class="builds-list-sidebar-reset-button"
+      class="builds-list-sidebar-long-button"
       severity="danger"
       outlined
       @click="reset()"
@@ -266,7 +293,7 @@ function reset(): void {
   width: 100%;
 }
 
-.builds-list-sidebar-reset-button {
+.builds-list-sidebar-long-button {
   align-items: center;
   display: flex;
   justify-content: center;

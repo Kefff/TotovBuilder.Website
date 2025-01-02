@@ -29,8 +29,8 @@ const modelInventoryItem = defineModel<IInventoryItem>('inventoryItem')
 
 const props = withDefaults(
   defineProps<{
-    acceptedItemsCategoryId?: ItemCategoryId,
     canBeLooted?: boolean,
+    forceAcceptedItemsCategoryIdFromAcceptedItemsList?: boolean,
     forceQuantityToMaxSelectableAmount?: boolean,
     getAcceptedItemsFunction: (forceItemsListUpdate: boolean) => Promise<IItem[]>,
     inventoryItem?: IInventoryItem,
@@ -40,8 +40,8 @@ const props = withDefaults(
     path: string
   }>(),
   {
-    acceptedItemsCategoryId: undefined,
     canBeLooted: true,
+    forceAcceptedItemsCategoryIdFromAcceptedItemsList: false,
     forceQuantityToMaxSelectableAmount: false,
     inventoryItem: undefined,
     isBaseItem: false,
@@ -253,8 +253,7 @@ function onSelectionInputClick(): void {
     filterAndSortingData = new ItemFilterAndSortingData()
   }
 
-  filterAndSortingData.categoryId = props.acceptedItemsCategoryId
-  filterAndSortingData.isCategoryReadOnly = props.acceptedItemsCategoryId != null
+  filterAndSortingData.isCategoryIdForcedFromItemsList = props.forceAcceptedItemsCategoryIdFromAcceptedItemsList
 
   _globalSidebarService.display({
     displayedComponentType: 'ItemSelectionSidebar',

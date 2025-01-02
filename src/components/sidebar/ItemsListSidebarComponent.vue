@@ -188,7 +188,7 @@ function reset(): void {
       <div class="items-list-sidebar-field">
         <Dropdown
           v-model="category"
-          :disabled="modelParameters.isCategoryReadOnly"
+          :disabled="modelParameters.isCategoryIdForcedFromItemsList"
           :options="_categories"
           class="items-list-sidebar-value items-list-sidebar-category-dropdown"
         >
@@ -207,7 +207,7 @@ function reset(): void {
           </template>
         </Dropdown>
         <Tooltip
-          v-if="category != null && !modelParameters.isCategoryReadOnly"
+          v-if="category != null && !modelParameters.isCategoryIdForcedFromItemsList"
           :tooltip="$t('caption.clear')"
         >
           <Button

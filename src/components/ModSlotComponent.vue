@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Ref, computed, inject, onMounted, onUnmounted, ref } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
-import { IItem, ItemCategoryId } from '../models/item/IItem'
+import { IItem } from '../models/item/IItem'
 import { IModSlot } from '../models/item/IModSlot'
 import vueI18n from '../plugins/vueI18n'
 import { GlobalFilterService } from '../services/GlobalFilterService'
@@ -24,7 +24,6 @@ const _itemService = Services.get(ItemService)
 let _acceptedItemsNeedsUpdated = true
 
 const acceptedItems = ref<IItem[]>([])
-const acceptedItemsCategoryId = ref<ItemCategoryId | undefined>(undefined)
 const isEditing = inject<Ref<boolean>>('isEditing')
 
 const modSlotName = computed(() => vueI18n.t(`caption.modSlot_${props.modSlot.name.startsWith('chamber') ? 'chamber' : props.modSlot.name}`))
@@ -47,8 +46,6 @@ onUnmounted(() => _globalFilterService.emitter.off(GlobalFilterService.changeEve
 async function getAcceptedItemsAsync(forceItemsListUpdate: boolean): Promise<IItem[]> {
   if (_acceptedItemsNeedsUpdated || forceItemsListUpdate) {
     acceptedItems.value = await _itemService.getItemsAsync(props.modSlot.compatibleItemIds, true)
-    // TODO : VOIR COMMENT GERER LE acceptedItemsCategoryId QUI PERMET DE METTRE EN LECTURE SEULE LA CATEGORIE DANS LES FILTRES DES MODSSLOTS
-    //acceptedItemsCategoryId.value = _modSlotComponentService.getAcceptedItemsCategoryId(acceptedItems.value)
     _acceptedItemsNeedsUpdated = false
   }
 
@@ -94,7 +91,7 @@ function onMerchantFilterChanged(): void {
     </div>
     <Item
       v-model:inventory-item="modelInventoryItem"
-      :accepted-items-category-id="acceptedItemsCategoryId"
+      :force-accepted-items-category-id-from-accepted-items-list="true"
       :get-accepted-items-function="getAcceptedItemsAsync"
       :max-stackable-amount="modSlot.maxStackableAmount"
       :path="`${path}/${PathUtils.itemPrefix}${modelInventoryItem?.itemId ?? 'empty'}`"

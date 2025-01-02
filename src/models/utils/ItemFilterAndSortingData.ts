@@ -29,7 +29,8 @@ export default class ItemFilterAndSortingData extends SortingData<IItem> {
   public focusFilter?: boolean
 
   /**
-   * Indicates whether the category should not be editable in the filter sidebar.
+   * Indicates whether the category should not be editable in the filter sidebar and its value
+   * should automatically be deduced from the items list.
    */
-  public isCategoryReadOnly = false
+  public isCategoryIdForcedFromItemsList = false
 }

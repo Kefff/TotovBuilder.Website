@@ -65,7 +65,7 @@
 }
 
 .card-selected {
-  background-color: var(--primary-color6)
+  background-color: var(--primary-color6) !important;
 }
 
 .card-value {

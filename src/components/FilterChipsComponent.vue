@@ -30,7 +30,7 @@ useEventListener(document, 'keydown', onKeyDown)
 
 const canRemoveCategoryIdFilter = computed(() => isItemFilterAndSortingData.value
   && (modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId != null
-  && !(modelFilterAndSortingData.value as ItemFilterAndSortingData).isCategoryReadOnly)
+  && !(modelFilterAndSortingData.value as ItemFilterAndSortingData).isCategoryIdForcedFromItemsList)
 const canRemoveFilter = computed(() =>
   modelFilterAndSortingData.value.filter != null
   || canRemoveCategoryIdFilter.value)
@@ -110,7 +110,24 @@ function showFilterAndSortSidebar(focusFilter: boolean): void {
       focusFilter
     },
     onCloseAction: (updatedParameters) => {
-      modelFilterAndSortingData.value = <BuildFilterAndSortingData | ItemFilterAndSortingData>updatedParameters
+      if (props.filterSidebarComponent === 'BuildsListSidebar') {
+        const updatedBuildFilterAndSortingData = updatedParameters as BuildFilterAndSortingData
+
+        if (updatedBuildFilterAndSortingData.filter !== modelFilterAndSortingData.value.filter
+          || updatedBuildFilterAndSortingData.order !== modelFilterAndSortingData.value.order
+          || updatedBuildFilterAndSortingData.property !== modelFilterAndSortingData.value.property) {
+          modelFilterAndSortingData.value = updatedBuildFilterAndSortingData
+        }
+      } else {
+        const updatedItemFilterAndSortingData = updatedParameters as ItemFilterAndSortingData
+
+        if (updatedItemFilterAndSortingData.categoryId !== (modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId
+          || updatedItemFilterAndSortingData.filter !== modelFilterAndSortingData.value.filter
+          || updatedItemFilterAndSortingData.order !== modelFilterAndSortingData.value.order
+          || updatedItemFilterAndSortingData.property !== modelFilterAndSortingData.value.property) {
+          modelFilterAndSortingData.value = updatedItemFilterAndSortingData
+        }
+      }
     }
   })
 }

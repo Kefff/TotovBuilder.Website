@@ -111,6 +111,13 @@ function checkIsSelected(item: IItem): boolean {
  */
 async function filterAndSortItemsAsync(forceItemsListUpdate: boolean): Promise<void> {
   items.value = await props.getItemsFunction(forceItemsListUpdate)
+
+  if (items.value.length > 0
+    && modelFilterAndSortingData.value.isCategoryIdForcedFromItemsList
+    && items.value.every(i => i.categoryId === items.value[0].categoryId)) {
+    modelFilterAndSortingData.value.categoryId = items.value[0].categoryId
+  }
+
   let itemsToFilterAndSort = [...items.value]
   itemsToFilterAndSort = await filterItemsAsync(itemsToFilterAndSort)
   itemsToFilterAndSort = await sortItemsAsync(itemsToFilterAndSort)
@@ -217,7 +224,6 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
     class="items-list"
   >
     <FilterChips
-      v-if="items.length > 0"
       v-model:filter-and-sorting-data="modelFilterAndSortingData"
       :element-to-stick-to="elementToStickTo"
       filter-sidebar-component="ItemsListSidebar"

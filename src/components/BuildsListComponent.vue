@@ -195,7 +195,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
     class="builds-list"
   >
     <FilterChips
-      v-if="buildSummaries.length > 0 && showChips"
+      v-if="showChips"
       v-model:filter-and-sorting-data="modelFilterAndSortingData"
       :element-to-stick-to="elementToStickTo"
       filter-sidebar-component="BuildsListSidebar"
