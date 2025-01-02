@@ -125,7 +125,6 @@ function onMerchantFilterChanged(): void {
         v-for="(inventoryItem, index) of modelInventorySlot.items"
         :key="`${path}_${index}`"
         :can-be-looted="inventorySlotType.canBeLooted"
-        :force-accepted-items-category-id-from-accepted-items-list="true"
         :get-accepted-items-function="getAcceptedItemsAsync"
         :inventory-item="modelInventorySlot.items[index]"
         :is-main-inventory-slot-item="true"

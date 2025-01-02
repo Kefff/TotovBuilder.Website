@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { watchDebounced } from '@vueuse/core'
 import { computed, nextTick, onMounted, ref } from 'vue'
 import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemsListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
@@ -19,41 +20,47 @@ const modelParameters = defineModel<ItemsListSidebarParameters>('parameters', { 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _sortingService = Services.get(SortingService)
 
-const _categories = getCategories()
+const availableCategories = computed(() => {
+  let categories = modelParameters.value.availableItemCategories.map(cid => ({
+    categoryId: cid,
+    caption: vueI18n.t(`caption.category${StringUtils.toUpperFirst(cid)}`)
+  }))
+  categories.sort((c1, c2) => StringUtils.compare(c1.caption, c2.caption))
 
+  return categories
+})
 const category = computed<ItemCategoryId | undefined>({
   get: () => modelParameters.value.categoryId,
   set: (value: ItemCategoryId | undefined) => {
     getSortingFunctions(value)
-    modelParameters.value = {
-      ...modelParameters.value,
-      categoryId: value
-    }
+    const updatedItemFilterAndSortingData = new ItemFilterAndSortingData(modelParameters.value)
+    updatedItemFilterAndSortingData.categoryId = value
+    modelParameters.value = updatedItemFilterAndSortingData
   }
 })
 const filter = computed({
   get: () => modelParameters.value.filter,
-  set: (value: string) => {
-    modelParameters.value = {
-      ...modelParameters.value,
-      filter: value
-    }
+  set: (value: string | undefined) => {
+    const updatedItemFilterAndSortingData = new ItemFilterAndSortingData(modelParameters.value)
+    updatedItemFilterAndSortingData.filter = value
+    modelParameters.value = updatedItemFilterAndSortingData
   }
 })
 const sortableProperties = computed(() => {
-  let propertyNames: string[] = []
+  let properties: { name: string, caption: string }[] = []
 
   if (sortingFunctions.value != null) {
     for (const propertyName of Object.keys(sortingFunctions.value.functions)) {
-      propertyNames.push(propertyName)
+      properties.push({
+        name: propertyName,
+        caption: `caption.${propertyName}`
+      })
     }
 
-    propertyNames = propertyNames.sort((p1, p2) => StringUtils.compare(
-      vueI18n.t(`caption.${p1}`),
-      vueI18n.t(`caption.${p2}`)))
+    properties.sort((p1, p2) => StringUtils.compare(p1.caption, p2.caption))
   }
 
-  return propertyNames
+  return properties
 })
 const sortField = computed({
   get: () => modelParameters.value.property,
@@ -68,9 +75,15 @@ const sortOrder = computed({
   }
 })
 
+const filterInternal = ref(modelParameters.value.filter)
 const sortingFunctions = ref<IItemSortingFunctionList>(ItemSortingFunctions)
 
 onMounted(() => getSortingFunctions(category.value))
+
+watchDebounced(
+  filterInternal,
+  () => filter.value = filterInternal.value,
+  { debounce: 250 }) // Applies the filter only 250ms after the last letter is typed
 
 /**
  * Displays the merchants sidebar.
@@ -79,18 +92,6 @@ function displayMerchants(): void {
   _globalSidebarService.display({
     displayedComponentType: 'MerchantItemsOptionsSidebar'
   })
-}
-
-/**
- * Gets item categories.
- */
-function getCategories(): ItemCategoryId[] {
-  let categories: ItemCategoryId[] = Object.values(ItemCategoryId).filter(c => c !== ItemCategoryId.notFound)
-  categories = categories.sort((c1, c2) => StringUtils.compare(
-    vueI18n.t(`caption.category${StringUtils.toUpperFirst(c1)}`),
-    vueI18n.t(`caption.category${StringUtils.toUpperFirst(c2)}`)))
-
-  return categories
 }
 
 /**
@@ -138,6 +139,7 @@ function getSortOrderIcon(sortOrder: SortingOrder): string {
  */
 function onFilterKeyDown(event: KeyboardEvent): void {
   if (event.key === 'Enter') {
+    filter.value = filterInternal.value
     _globalSidebarService.close('ItemsListSidebar')
   }
 }
@@ -166,7 +168,9 @@ function reset(): void {
 <template>
   <div class="sidebar-option">
     <div class="items-list-sidebar-group">
-      <span class="items-list-sidebar-caption">{{ $t('caption.merchants') }}</span>
+      <span>
+        {{ $t('caption.merchants') }}
+      </span>
       <div class="items-list-sidebar-field">
         <Button
           class="items-list-sidebar-long-button"
@@ -184,30 +188,21 @@ function reset(): void {
   </div>
   <div class="sidebar-option">
     <div class="items-list-sidebar-group">
-      <span class="items-list-sidebar-caption">{{ $t('caption.category') }}</span>
+      <span>
+        {{ $t('caption.category') }}
+      </span>
       <div class="items-list-sidebar-field">
         <Dropdown
           v-model="category"
-          :disabled="modelParameters.isCategoryIdForcedFromItemsList"
-          :options="_categories"
+          :disabled="modelParameters.isCategoryIdReadOnly"
+          :filter-fields="['caption']"
+          :option-label="o => $t(`caption.category${StringUtils.toUpperFirst(o.categoryId)}`)"
+          :options="availableCategories"
           class="items-list-sidebar-value items-list-sidebar-category-dropdown"
-        >
-          <template #option="slotProps">
-            <span>{{ $t(`caption.category${StringUtils.toUpperFirst(slotProps.option)}`) }}</span>
-          </template>
-          <template #value="slotProps">
-            <div
-              v-if="slotProps.value != null"
-              class="items-list-sidebar-category-value"
-            >
-              <span>
-                {{ $t(`caption.category${StringUtils.toUpperFirst(slotProps.value)}`) }}
-              </span>
-            </div>
-          </template>
-        </Dropdown>
+          option-value="categoryId"
+        />
         <Tooltip
-          v-if="category != null && !modelParameters.isCategoryIdForcedFromItemsList"
+          v-if="category != null && !modelParameters.isCategoryIdReadOnly"
           :tooltip="$t('caption.clear')"
         >
           <Button
@@ -220,11 +215,17 @@ function reset(): void {
           </Button>
         </Tooltip>
       </div>
-      <span class="items-list-sidebar-caption">{{ $t('caption.filter') }}</span>
+    </div>
+  </div>
+  <div class="sidebar-option">
+    <div class="items-list-sidebar-group">
+      <span>
+        {{ $t('caption.filter') }}
+      </span>
       <div class="items-list-sidebar-field">
         <InputTextField
           ref="itemsListSidebarFilterInput"
-          v-model:value="filter"
+          v-model:value="filterInternal"
           :autofocus="parameters.focusFilter"
           class="items-list-sidebar-value"
           type="text"
@@ -238,7 +239,7 @@ function reset(): void {
             class="p-button-sm"
             outlined
             severity="danger"
-            @click="filter = undefined"
+            @click="filterInternal = undefined"
           >
             <font-awesome-icon icon="times" />
           </Button>
@@ -254,22 +255,24 @@ function reset(): void {
   </div>
   <div class="sidebar-option">
     <div class="items-list-sidebar-group">
-      <span class="items-list-sidebar-caption">{{ $t('caption.sortBy') }}</span>
+      <span>
+        {{ $t('caption.sortBy') }}
+      </span>
       <Dropdown
         v-model="sortField"
+        :filter-fields="['caption']"
+        :option-label="o => $t(`caption.${o.name}`)"
         :options="sortableProperties"
         class="items-list-sidebar-value"
-      >
-        <template #option="slotProps">
-          {{ $t(`caption.${slotProps.option}`) }}
-        </template>
-        <template #value="slotProps">
-          <div class="items-list-sidebar-value-value">
-            <span>{{ $t(`caption.${slotProps.value}`) }}</span>
-          </div>
-        </template>
-      </Dropdown>
-      <span class="items-list-sidebar-caption">{{ $t('caption.order') }}</span>
+        option-value="name"
+      />
+    </div>
+  </div>
+  <div class="sidebar-option">
+    <div class="items-list-sidebar-group">
+      <span>
+        {{ $t('caption.order') }}
+      </span>
       <div class="items-list-sidebar-field">
         <Dropdown
           v-model="sortOrder"
@@ -286,13 +289,11 @@ function reset(): void {
             </div>
           </template>
           <template #value="slotProps">
-            <div class="items-list-sidebar-value-value">
-              <font-awesome-icon
-                :icon="getSortOrderIcon(slotProps.value)"
-                class="icon-before-text"
-              />
-              <span>{{ getSortOrderCaption(slotProps.value) }}</span>
-            </div>
+            <font-awesome-icon
+              :icon="getSortOrderIcon(slotProps.value)"
+              class="icon-before-text"
+            />
+            <span>{{ getSortOrderCaption(slotProps.value) }}</span>
           </template>
         </Dropdown>
         <Tooltip :tooltip="$t('caption.switchSortOrder')">
@@ -334,26 +335,11 @@ function reset(): void {
 
 
 <style scoped>
-.items-list-sidebar-caption {
-  width: 100%;
-}
-
-.items-list-sidebar-category-value {
-  align-items: center;
-  display: flex;
-  height: 100%;
-  padding: 0.25rem;
-}
-
-.items-list-sidebar-category-value > span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .items-list-sidebar-field {
   align-items: center;
   display: flex;
   gap: 0.5rem;
+  overflow-x: hidden;
   width: 100%;
 }
 
@@ -379,28 +365,14 @@ function reset(): void {
 }
 
 .items-list-sidebar-value {
-  overflow: hidden;
+  align-items: center;
+  display: flex;
+  overflow-x: hidden;
   width: 100%;
 }
 
-.items-list-sidebar-value-value {
-  align-items: center;
-  display: flex;
-  height: 100%;
-}
-</style>
-
-
-
-
-
-
-
-
-
-
-<style>
-.items-list-sidebar-category-dropdown.p-dropdown > .p-dropdown-label {
-  padding: 0;
+.items-list-sidebar-value > span {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 </style>

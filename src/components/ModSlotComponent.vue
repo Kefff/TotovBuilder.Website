@@ -91,7 +91,6 @@ function onMerchantFilterChanged(): void {
     </div>
     <Item
       v-model:inventory-item="modelInventoryItem"
-      :force-accepted-items-category-id-from-accepted-items-list="true"
       :get-accepted-items-function="getAcceptedItemsAsync"
       :max-stackable-amount="modSlot.maxStackableAmount"
       :path="`${path}/${PathUtils.itemPrefix}${modelInventoryItem?.itemId ?? 'empty'}`"

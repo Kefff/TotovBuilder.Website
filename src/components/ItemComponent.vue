@@ -30,7 +30,6 @@ const modelInventoryItem = defineModel<IInventoryItem>('inventoryItem')
 const props = withDefaults(
   defineProps<{
     canBeLooted?: boolean,
-    forceAcceptedItemsCategoryIdFromAcceptedItemsList?: boolean,
     forceQuantityToMaxSelectableAmount?: boolean,
     getAcceptedItemsFunction: (forceItemsListUpdate: boolean) => Promise<IItem[]>,
     inventoryItem?: IInventoryItem,
@@ -41,7 +40,6 @@ const props = withDefaults(
   }>(),
   {
     canBeLooted: true,
-    forceAcceptedItemsCategoryIdFromAcceptedItemsList: false,
     forceQuantityToMaxSelectableAmount: false,
     inventoryItem: undefined,
     isBaseItem: false,
@@ -252,8 +250,6 @@ function onSelectionInputClick(): void {
   if (filterAndSortingData == null) {
     filterAndSortingData = new ItemFilterAndSortingData()
   }
-
-  filterAndSortingData.isCategoryIdForcedFromItemsList = props.forceAcceptedItemsCategoryIdFromAcceptedItemsList
 
   _globalSidebarService.display({
     displayedComponentType: 'ItemSelectionSidebar',
@@ -773,9 +769,5 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 .item-header > .item-header-dropdown.p-dropdown .p-dropdown-trigger {
   width: unset;
   margin-right: 0.21rem;
-}
-
-.item-header > .item-header-dropdown.p-dropdown:not(.p-disabled):hover {
-  border-color: var(--primary-color);
 }
 </style>

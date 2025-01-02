@@ -7,14 +7,27 @@ import SortingData from './SortingData'
  */
 export default class ItemFilterAndSortingData extends SortingData<IItem> {
   /**
-     * Initializes a new instance of the SortingData class.
-     */
-  public constructor() {
-    super(ItemSortingFunctions)
+   * Initializes a new instance of the SortingData class.
+   * @param itemFilterAndSortingDataToCopy - Item filter and sorting data to copy.
+   */
+  public constructor(itemFilterAndSortingDataToCopy?: ItemFilterAndSortingData) {
+    super(ItemSortingFunctions, itemFilterAndSortingDataToCopy)
+
+    if (itemFilterAndSortingDataToCopy != null) {
+      this.availableItemCategories = itemFilterAndSortingDataToCopy.availableItemCategories
+      this.categoryId = itemFilterAndSortingDataToCopy.categoryId
+      this.filter = itemFilterAndSortingDataToCopy.filter
+      this.focusFilter = itemFilterAndSortingDataToCopy.focusFilter
+    }
   }
 
   /**
-   * Category of item being sorted.
+   * List of category IDs that can be selected for filtering.
+   */
+  public availableItemCategories: ItemCategoryId[] = []
+
+  /**
+   * Category for filtering items.
    */
   public categoryId?: ItemCategoryId
 
@@ -29,8 +42,10 @@ export default class ItemFilterAndSortingData extends SortingData<IItem> {
   public focusFilter?: boolean
 
   /**
-   * Indicates whether the category should not be editable in the filter sidebar and its value
-   * should automatically be deduced from the items list.
+   * Indicates whether the filter category fied is read only.
+   * This is the case when only one category is available for selection.
    */
-  public isCategoryIdForcedFromItemsList = false
+  public get isCategoryIdReadOnly(): boolean {
+    return this.availableItemCategories.length === 1
+  }
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBreakpoints } from '@vueuse/core'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { IItem } from '../models/item/IItem'
+import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { IListSelectionOptions } from '../models/utils/IListSelectionOptions'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 import { GlobalFilterService } from '../services/GlobalFilterService'
@@ -111,10 +111,9 @@ function checkIsSelected(item: IItem): boolean {
  */
 async function filterAndSortItemsAsync(forceItemsListUpdate: boolean): Promise<void> {
   items.value = await props.getItemsFunction(forceItemsListUpdate)
+  modelFilterAndSortingData.value.availableItemCategories = getAvailableItemCategoryIdsFromItems(items.value)
 
-  if (items.value.length > 0
-    && modelFilterAndSortingData.value.isCategoryIdForcedFromItemsList
-    && items.value.every(i => i.categoryId === items.value[0].categoryId)) {
+  if (modelFilterAndSortingData.value.availableItemCategories.length === 1) {
     modelFilterAndSortingData.value.categoryId = items.value[0].categoryId
   }
 
@@ -161,6 +160,19 @@ async function filterItemsAsync(itemsToFilter: IItem[]): Promise<IItem[]> {
   await Promise.allSettled(promises)
 
   return filtereditemsummaries
+}
+
+/**
+ * Gets the list of available item category IDs from the comple list of items.
+ */
+function getAvailableItemCategoryIdsFromItems(items: IItem[]): ItemCategoryId[] {
+  let categoryIds: ItemCategoryId[] = []
+
+  if (items.length > 0) {
+    categoryIds = Array.from(new Set(items.map(i => i.categoryId))) // Set removes duplicates
+  }
+
+  return categoryIds
 }
 
 /**

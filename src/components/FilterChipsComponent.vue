@@ -2,6 +2,7 @@
 import { useEventListener } from '@vueuse/core'
 import { computed } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
+import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlobalSidebarOptions'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
@@ -30,7 +31,7 @@ useEventListener(document, 'keydown', onKeyDown)
 
 const canRemoveCategoryIdFilter = computed(() => isItemFilterAndSortingData.value
   && (modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId != null
-  && !(modelFilterAndSortingData.value as ItemFilterAndSortingData).isCategoryIdForcedFromItemsList)
+  && !(modelFilterAndSortingData.value as ItemFilterAndSortingData).isCategoryIdReadOnly)
 const canRemoveFilter = computed(() =>
   modelFilterAndSortingData.value.filter != null
   || canRemoveCategoryIdFilter.value)
@@ -83,6 +84,49 @@ const sortButtonTooltip = computed(() => vueI18n.t(
 const sortChipIcon = computed(() => modelFilterAndSortingData.value.order === SortingOrder.asc ? 'sort-amount-down-alt' : 'sort-amount-up')
 
 /**
+ * Checks whether filter and sorting data are different from the current ones.
+ * @param updatedFilterAndSortingData - Filter and sorting data to check.
+ */
+function checkIsFilterAndSortingDataChanged(updatedFilterAndSortingData: GlobalSidebarDisplayedComponentParameters | undefined): boolean {
+  if (props.filterSidebarComponent === 'BuildsListSidebar') {
+    const updatedBuildFilterAndSortingData = updatedFilterAndSortingData as BuildFilterAndSortingData
+
+    if (updatedBuildFilterAndSortingData.filter !== modelFilterAndSortingData.value.filter
+      || updatedBuildFilterAndSortingData.order !== modelFilterAndSortingData.value.order
+      || updatedBuildFilterAndSortingData.property !== modelFilterAndSortingData.value.property) {
+      return true
+    }
+  } else {
+    const updatedItemFilterAndSortingData = updatedFilterAndSortingData as ItemFilterAndSortingData
+
+    if (updatedItemFilterAndSortingData.categoryId !== (modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId
+      || updatedItemFilterAndSortingData.filter !== modelFilterAndSortingData.value.filter
+      || updatedItemFilterAndSortingData.order !== modelFilterAndSortingData.value.order
+      || updatedItemFilterAndSortingData.property !== modelFilterAndSortingData.value.property) {
+      return true
+    }
+  }
+
+  return false
+}
+
+/**
+ * Creates a copy of filter and sorting data.
+ * @param filterAndSortingToCopy - Filter and sorting data to copy.
+ */
+function copyFilterAndSortingData(filterAndSortingToCopy: BuildFilterAndSortingData | ItemFilterAndSortingData): BuildFilterAndSortingData | ItemFilterAndSortingData {
+  let copy: BuildFilterAndSortingData | ItemFilterAndSortingData
+
+  if (props.filterSidebarComponent === 'BuildsListSidebar') {
+    copy = new BuildFilterAndSortingData(filterAndSortingToCopy as BuildFilterAndSortingData)
+  } else {
+    copy = new BuildFilterAndSortingData(filterAndSortingToCopy as BuildFilterAndSortingData)
+  }
+
+  return copy
+}
+
+/**
  * Reacts to a keyboard event.
  * @param event - Keyboard event.
  */
@@ -103,40 +147,26 @@ function onKeyDown(event: KeyboardEvent): void {
  * @param focusFilter - Indicates whether the filter field should be focused.
  */
 function showFilterAndSortSidebar(focusFilter: boolean): void {
+  modelFilterAndSortingData.value.focusFilter = focusFilter
   _globalSidebarService.display({
     displayedComponentType: props.filterSidebarComponent,
-    displayedComponentParameters: {
-      ...modelFilterAndSortingData.value,
-      focusFilter
-    },
+    displayedComponentParameters: modelFilterAndSortingData.value,
     onCloseAction: (updatedParameters) => {
-      if (props.filterSidebarComponent === 'BuildsListSidebar') {
-        const updatedBuildFilterAndSortingData = updatedParameters as BuildFilterAndSortingData
+      const hasChanged = checkIsFilterAndSortingDataChanged(updatedParameters)
 
-        if (updatedBuildFilterAndSortingData.filter !== modelFilterAndSortingData.value.filter
-          || updatedBuildFilterAndSortingData.order !== modelFilterAndSortingData.value.order
-          || updatedBuildFilterAndSortingData.property !== modelFilterAndSortingData.value.property) {
-          modelFilterAndSortingData.value = updatedBuildFilterAndSortingData
-        }
-      } else {
-        const updatedItemFilterAndSortingData = updatedParameters as ItemFilterAndSortingData
-
-        if (updatedItemFilterAndSortingData.categoryId !== (modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId
-          || updatedItemFilterAndSortingData.filter !== modelFilterAndSortingData.value.filter
-          || updatedItemFilterAndSortingData.order !== modelFilterAndSortingData.value.order
-          || updatedItemFilterAndSortingData.property !== modelFilterAndSortingData.value.property) {
-          modelFilterAndSortingData.value = updatedItemFilterAndSortingData
-        }
+      if (hasChanged) {
+        modelFilterAndSortingData.value = updatedParameters as BuildFilterAndSortingData | ItemFilterAndSortingData
       }
     }
   })
 }
 
+/**
+ * Removes the current filter.
+ */
 function removeFilter(): void {
-  const updatedFilterAndSortingData = {
-    ...modelFilterAndSortingData.value,
-    filter: undefined
-  }
+  const updatedFilterAndSortingData = copyFilterAndSortingData(modelFilterAndSortingData.value)
+  updatedFilterAndSortingData.filter = undefined
 
   if (canRemoveCategoryIdFilter.value) {
     (updatedFilterAndSortingData as ItemFilterAndSortingData).categoryId = undefined

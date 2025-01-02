@@ -100,7 +100,8 @@ const upperHeight = computed(() => {
 }
 
 .item-hierarchy-indicator-bottom {
-  border-color: var(--surface-500);
+  border-color: #143a58;
+  /* Same as --primary-color6 but without transparency to avoid color mixing where the different parts of the indicator overlap */
   border-left-style: solid;
   border-width: 1px;
   height: v-bind(bottomHeight);
@@ -111,7 +112,8 @@ const upperHeight = computed(() => {
 }
 
 .item-hierarchy-indicator-middle {
-  border-color: var(--surface-500);
+  border-color: #143a58;
+  /* Same as --primary-color6 but without transparency to avoid color mixing where the different parts of the indicator overlap */
   border-bottom-left-radius: 12px;
   border-bottom-style: solid;
   border-left-style: solid;
@@ -123,7 +125,8 @@ const upperHeight = computed(() => {
 }
 
 .item-hierarchy-indicator-upper {
-  border-color: var(--surface-500);
+  border-color: #143a58;
+  /* Same as --primary-color6 but without transparency to avoid color mixing where the different parts of the indicator overlap */
   border-left-style: solid;
   border-width: 1px;
   flex-shrink: 0;

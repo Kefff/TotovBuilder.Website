@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { watchDebounced } from '@vueuse/core'
+import { computed, ref } from 'vue'
 import BuildFilterAndSortingData from '../../models/utils/BuildFilterAndSortingData'
 import { BuildsListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { SortingOrder } from '../../models/utils/SortingOrder'
 import vueI18n from '../../plugins/vueI18n'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
+import { BuildSummarySortingFunctions } from '../../services/sorting/functions/BuildSummarySortingFunctions'
 import { SortingService } from '../../services/sorting/SortingService'
 import StringUtils from '../../utils/StringUtils'
 import InputTextField from '../InputTextFieldComponent.vue'
@@ -16,16 +18,27 @@ const modelParameters = defineModel<BuildsListSidebarParameters>('parameters', {
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _sortingService = Services.get(SortingService)
 
-const sortableProperties = ref<string[]>([])
-
 const filter = computed({
   get: () => modelParameters.value.filter,
-  set: (value: string) => {
-    modelParameters.value = {
-      ...modelParameters.value,
-      filter: value
-    }
+  set: (value: string | undefined) => {
+    const updatedBuildFilterAndSortingData = new BuildFilterAndSortingData(modelParameters.value)
+    updatedBuildFilterAndSortingData.filter = value
+    modelParameters.value = updatedBuildFilterAndSortingData
   }
+})
+const sortableProperties = computed(() => {
+  let properties: { name: string, caption: string }[] = []
+
+  for (const propertyName of Object.keys(BuildSummarySortingFunctions.functions)) {
+    properties.push({
+      name: propertyName,
+      caption: `caption.${propertyName}`
+    })
+
+    properties.sort((p1, p2) => StringUtils.compare(p1.caption, p2.caption))
+  }
+
+  return properties
 })
 const sortField = computed({
   get: () => modelParameters.value.property,
@@ -40,9 +53,12 @@ const sortOrder = computed({
   }
 })
 
-onMounted(() => {
-  sortableProperties.value = getSortableProperties()
-})
+const filterInternal = ref(modelParameters.value.filter)
+
+watchDebounced(
+  filterInternal,
+  () => filter.value = filterInternal.value,
+  { debounce: 250 }) // Applies the filter only 250ms after the last letter is typed
 
 /**
  * Displays the merchants sidebar.
@@ -80,28 +96,12 @@ function getSortOrderIcon(sortOrder: SortingOrder): string {
 }
 
 /**
- * Gets sortable properties.
- */
-function getSortableProperties(): string[] {
-  const properties = [
-    'armorClass',
-    'ergonomics',
-    'name',
-    'price',
-    'recoil',
-    'weight'
-  ]
-  properties.sort((a, b) => StringUtils.compare(vueI18n.t(a), vueI18n.t(b)))
-
-  return properties
-}
-
-/**
  * Reacts to a keyboard event in the filter input.
  * @param event - Keyboard event.
  */
 function onFilterKeyDown(event: KeyboardEvent): void {
   if (event.key === 'Enter') {
+    filter.value = filterInternal.value
     _globalSidebarService.close('BuildsListSidebar')
   }
 }
@@ -110,7 +110,10 @@ function onFilterKeyDown(event: KeyboardEvent): void {
  * Resets the filter an sort.
  */
 function reset(): void {
-  modelParameters.value = new BuildFilterAndSortingData()
+  const sortingFunctions = modelParameters.value.sortingFunctions
+  const resettedSortingData = new BuildFilterAndSortingData()
+  resettedSortingData.sortingFunctions = sortingFunctions
+  modelParameters.value = resettedSortingData
   _globalSidebarService.close('BuildsListSidebar')
 }
 </script>
@@ -127,7 +130,9 @@ function reset(): void {
 <template>
   <div class="sidebar-option">
     <div class="builds-list-sidebar-group">
-      <span class="builds-list-sidebar-caption">{{ $t('caption.merchants') }}</span>
+      <span>
+        {{ $t('caption.merchants') }}
+      </span>
       <div class="builds-list-sidebar-field">
         <Button
           class="builds-list-sidebar-long-button"
@@ -145,11 +150,13 @@ function reset(): void {
   </div>
   <div class="sidebar-option">
     <div class="builds-list-sidebar-group">
-      <span class="builds-list-sidebar-caption">{{ $t('caption.filter') }}</span>
+      <span>
+        {{ $t('caption.filter') }}
+      </span>
       <div class="builds-list-sidebar-field">
         <InputTextField
           ref="buildsListSidebarFilterInput"
-          v-model:value="filter"
+          v-model:value="filterInternal"
           :autofocus="parameters.focusFilter"
           class="builds-list-sidebar-value"
           type="text"
@@ -163,7 +170,7 @@ function reset(): void {
             class="p-button-sm"
             outlined
             severity="danger"
-            @click="filter = undefined"
+            @click="filterInternal = undefined"
           >
             <font-awesome-icon icon="times" />
           </Button>
@@ -185,22 +192,24 @@ function reset(): void {
   </div>
   <div class="sidebar-option">
     <div class="builds-list-sidebar-group">
-      <span class="builds-list-sidebar-caption">{{ $t('caption.sortBy') }}</span>
+      <span>
+        {{ $t('caption.sortBy') }}
+      </span>
       <Dropdown
         v-model="sortField"
+        :filter-fields="['caption']"
+        :option-label="o => $t(`caption.${o.name}`)"
         :options="sortableProperties"
         class="builds-list-sidebar-value"
-      >
-        <template #option="slotProps">
-          {{ $t(`caption.${slotProps.option}`) }}
-        </template>
-        <template #value="slotProps">
-          <div class="builds-list-sidebar-value-value">
-            <span>{{ $t(`caption.${slotProps.value}`) }}</span>
-          </div>
-        </template>
-      </Dropdown>
-      <span class="builds-list-sidebar-caption">{{ $t('caption.order') }}</span>
+        option-value="name"
+      />
+    </div>
+  </div>
+  <div class="sidebar-option">
+    <div class="builds-list-sidebar-group">
+      <span>
+        {{ $t('caption.order') }}
+      </span>
       <div class="builds-list-sidebar-field">
         <Dropdown
           v-model="sortOrder"
@@ -215,13 +224,11 @@ function reset(): void {
             <span>{{ getSortOrderCaption(slotProps.option) }}</span>
           </template>
           <template #value="slotProps">
-            <div class="builds-list-sidebar-value-value">
-              <font-awesome-icon
-                :icon="getSortOrderIcon(slotProps.value)"
-                class="icon-before-text"
-              />
-              <span>{{ getSortOrderCaption(slotProps.value) }}</span>
-            </div>
+            <font-awesome-icon
+              :icon="getSortOrderIcon(slotProps.value)"
+              class="icon-before-text"
+            />
+            <span>{{ getSortOrderCaption(slotProps.value) }}</span>
           </template>
         </Dropdown>
         <Tooltip :tooltip="$t('caption.switchSortOrder')">
@@ -263,14 +270,11 @@ function reset(): void {
 
 
 <style scoped>
-.builds-list-sidebar-caption {
-  margin-right: auto;
-}
-
 .builds-list-sidebar-field {
   align-items: center;
   display: flex;
   gap: 0.5rem;
+  overflow-x: hidden;
   width: 100%;
 }
 
@@ -301,13 +305,14 @@ function reset(): void {
 }
 
 .builds-list-sidebar-value {
-  overflow: hidden;
+  align-items: center;
+  display: flex;
+  overflow-x: hidden;
   width: 100%;
 }
 
-.builds-list-sidebar-value-value {
-  align-items: center;
-  display: flex;
-  height: 100%;
+.builds-list-sidebar-value > span {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 </style>

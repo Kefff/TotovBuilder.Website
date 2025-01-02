@@ -12,9 +12,16 @@ export default class SortingData<T extends IBuildSummary | IItem> {
   /**
    * Initializes a new instance of the SortingData class.
    * @param sortingFunctions - Available sorting functions.
+   * @param filterAndSortingDataToCopy - Sorting data to copy.
    */
-  public constructor(sortingFunctions: ISortingFunctionList<T>) {
+  public constructor(sortingFunctions: ISortingFunctionList<T>, filterAndSortingDataToCopy?: SortingData<T>) {
     this.sortingFunctions = sortingFunctions
+
+    if (filterAndSortingDataToCopy != null) {
+      this.currentSortingFunction = filterAndSortingDataToCopy.currentSortingFunction
+      this.order = filterAndSortingDataToCopy.order
+      this.property = filterAndSortingDataToCopy.property
+    }
   }
 
   /**

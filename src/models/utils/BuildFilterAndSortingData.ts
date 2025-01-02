@@ -8,9 +8,15 @@ import SortingData from './SortingData'
 export default class BuildFilterAndSortingData extends SortingData<IBuildSummary> {
   /**
    * Initializes a new instance of the SortingData class.
+   * @param buildFilterAndSortingDataToCopy - Build filter and sorting data to copy.
    */
-  public constructor() {
-    super(BuildSummarySortingFunctions)
+  public constructor(buildFilterAndSortingDataToCopy?: BuildFilterAndSortingData) {
+    super(BuildSummarySortingFunctions, buildFilterAndSortingDataToCopy)
+
+    if (buildFilterAndSortingDataToCopy != null) {
+      this.filter = buildFilterAndSortingDataToCopy.filter
+      this.focusFilter = buildFilterAndSortingDataToCopy.focusFilter
+    }
   }
 
   /**
