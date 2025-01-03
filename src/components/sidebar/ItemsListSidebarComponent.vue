@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { watchDebounced } from '@vueuse/core'
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemsListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
@@ -80,10 +80,17 @@ const sortingFunctions = ref<IItemSortingFunctionList>(ItemSortingFunctions)
 
 onMounted(() => getSortingFunctions(category.value))
 
+watch(
+  () => modelParameters.value.filter,
+  () => filterInternal.value = modelParameters.value.filter)
+
 watchDebounced(
+  // Applies the filter only 100ms after the last letter is typed
+  // Short debounce because if the user clicks outside of the sidebar quickly after typing,
+  // the sidebar is closed without having the time to update the filter
   filterInternal,
   () => filter.value = filterInternal.value,
-  { debounce: 250 }) // Applies the filter only 250ms after the last letter is typed
+  { debounce: 100 })
 
 /**
  * Displays the merchants sidebar.
@@ -228,7 +235,6 @@ function reset(): void {
           v-model:value="filterInternal"
           :autofocus="parameters.focusFilter"
           class="items-list-sidebar-value"
-          type="text"
           @keydown="onFilterKeyDown"
         />
         <Tooltip

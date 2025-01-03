@@ -105,7 +105,7 @@ async function setPricesAsync(): Promise<void> {
       </div>
     </div>
   </div>
-  <div class="stats-line">
+  <div class="stats-line item-stats-price">
     <div
       v-for="(price, index) of prices"
       :key="index"
@@ -161,3 +161,18 @@ async function setPricesAsync(): Promise<void> {
     </div>
   </div>
 </template>
+
+
+
+
+
+
+
+
+
+
+<style scoped>
+.item-stats-price {
+  grid-row-gap: 0.5rem;
+}
+</style>

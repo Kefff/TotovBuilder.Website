@@ -201,7 +201,7 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
 .build-summary {
   align-items: center;
   background-color: var(--surface-50);
-  border-color: var(--primary-color6);
+  border-color: var(--primary-color3);
   border-radius: 6px;
   border-style: solid;
   border-width: 1px;

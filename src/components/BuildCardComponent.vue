@@ -390,7 +390,7 @@ function displayStats(item: IItem): void {
 
 .build-card-items-left-scroll-indicator {
   border-bottom-left-radius: 3px;
-  border-left-color: var(--primary-color);
+  border-left-color: var(--primary-color3);
   border-left-style: solid;
   border-left-width: 3px;
   border-top-left-radius: 3px;

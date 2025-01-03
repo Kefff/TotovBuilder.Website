@@ -959,7 +959,7 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
   border-bottom-width: 1px;
-  border-color: var(--primary-color6);
+  border-color: var(--primary-color3);
   border-left-width: 1px;
   border-right-width: 1px;
   border-top-width: 0;

@@ -132,7 +132,7 @@ function displayToolbarSideBar(): void {
 <style scoped>
 .toolbar {
   background-color: var(--surface-50);
-  border-color: var(--primary-color6);
+  border-color: var(--primary-color3);
   border-radius: 6px;
   border-style: solid;
   border-width: 1px;
