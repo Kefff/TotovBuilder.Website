@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { IArmorMod } from '../../../../models/item/IArmorMod'
 import { ItemCategoryId } from '../../../../models/item/IItem'
-import SortingData from '../../../../models/utils/SortingData'
+import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { ArmorModSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
@@ -51,7 +51,7 @@ describe('comparisonFunction()', () => {
       turningSpeedModifierPercentage: 1
     } as IArmorMod
 
-    let sortingData: SortingData<IArmorMod> | undefined = new SortingData(ArmorModSortingFunctions)
+    let sortingData: FilterAndSortingData<IArmorMod> | undefined = new FilterAndSortingData(ArmorModSortingFunctions)
     const sortingService = new SortingService()
     sortingService.setSortingProperty(sortingData, property)
 

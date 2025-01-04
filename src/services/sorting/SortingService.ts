@@ -1,6 +1,6 @@
 import { IItem, ItemCategoryId } from '../../models/item/IItem'
+import FilterAndSortingData from '../../models/utils/FilterAndSortingData'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
-import SortingData from '../../models/utils/SortingData'
 import { SortingOrder } from '../../models/utils/SortingOrder'
 import StringUtils from '../../utils/StringUtils'
 import { LogService } from '../LogService'
@@ -49,7 +49,7 @@ export class SortingService {
     return sortingFunctionsForCategory as IItemSortingFunctionList
   }
 
-  public async sortAsync<TElement extends IBuildSummary | IItem>(elements: TElement[], sortingData: SortingData<TElement>): Promise<TElement[]> {
+  public async sortAsync<TElement extends IBuildSummary | IItem>(elements: TElement[], sortingData: FilterAndSortingData<TElement>): Promise<TElement[]> {
     const elementsWithSortingValue = await Promise.all(elements.map(e => this.getElementAndSortingValueAsync(e, sortingData)))
     elementsWithSortingValue.sort((ewsv1, ewsv2) => sortingData.currentSortingFunction.comparisonFunction(ewsv1.element, ewsv1.value, ewsv2.element, ewsv2.value) * sortingData.order)
     const result = elementsWithSortingValue.map(ewsv => ewsv.element)
@@ -63,9 +63,9 @@ export class SortingService {
    * @param property - Property.
    * @param order - Order.
    */
-  public setSortingProperty(sortingData: SortingData<IBuildSummary>, property: string, order?: SortingOrder): void
-  public setSortingProperty(sortingData: SortingData<IItem>, property: string, order?: SortingOrder): void
-  public setSortingProperty<T extends IBuildSummary | IItem>(sortingData: SortingData<T>, property: string, order?: SortingOrder): void {
+  public setSortingProperty(sortingData: FilterAndSortingData<IBuildSummary>, property: string, order?: SortingOrder): void
+  public setSortingProperty(sortingData: FilterAndSortingData<IItem>, property: string, order?: SortingOrder): void
+  public setSortingProperty<T extends IBuildSummary | IItem>(sortingData: FilterAndSortingData<T>, property: string, order?: SortingOrder): void {
     const sortingFunction = sortingData.sortingFunctions.functions[property]
 
     if (sortingFunction == null) {
@@ -91,7 +91,7 @@ export class SortingService {
    * @param element - Element.
    * @returns Element and its sorting value.
    */
-  private async getElementAndSortingValueAsync<TElement extends IBuildSummary | IItem, TSortingData extends SortingData<IBuildSummary> | SortingData<IItem>>(element: TElement, sortingData: TSortingData): Promise<{ element: TElement, value: number | string }> {
+  private async getElementAndSortingValueAsync<TElement extends IBuildSummary | IItem, TSortingData extends FilterAndSortingData<IBuildSummary> | FilterAndSortingData<IItem>>(element: TElement, sortingData: TSortingData): Promise<{ element: TElement, value: number | string }> {
     const value = await sortingData.currentSortingFunction.comparisonValueObtentionPromise(element)
 
     return { element, value }

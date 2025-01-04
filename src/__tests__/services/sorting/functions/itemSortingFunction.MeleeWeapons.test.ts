@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IMeleeWeapon } from '../../../../models/item/IMeleeWeapon'
-import SortingData from '../../../../models/utils/SortingData'
+import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { MeleeWeaponSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
@@ -26,7 +26,7 @@ describe('comparisonFunction()', () => {
       hitRadius: 1
     } as IMeleeWeapon
 
-    let sortingData: SortingData<IMeleeWeapon> | undefined = new SortingData(MeleeWeaponSortingFunctions)
+    let sortingData: FilterAndSortingData<IMeleeWeapon> | undefined = new FilterAndSortingData(MeleeWeaponSortingFunctions)
     const sortingService = new SortingService()
     sortingService.setSortingProperty(sortingData, property)
 

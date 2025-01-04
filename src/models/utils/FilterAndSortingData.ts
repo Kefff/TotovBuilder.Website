@@ -6,15 +6,15 @@ import { IBuildSummary } from './IBuildSummary'
 import { SortingOrder } from './SortingOrder'
 
 /**
- * Represents sorting data for items.
+ * Represents data for filtering and sorting elements.
  */
-export default class SortingData<T extends IBuildSummary | IItem> {
+export default class FilterAndSortingData<T extends IBuildSummary | IItem> {
   /**
    * Initializes a new instance of the SortingData class.
    * @param sortingFunctions - Available sorting functions.
    * @param filterAndSortingDataToCopy - Sorting data to copy.
    */
-  public constructor(sortingFunctions: ISortingFunctionList, filterAndSortingDataToCopy?: SortingData<T>) {
+  public constructor(sortingFunctions: ISortingFunctionList, filterAndSortingDataToCopy?: FilterAndSortingData<T>) {
     this._sortingFunctions = sortingFunctions
     this.setSortableProperties(sortingFunctions)
     this.currentSortingFunction = sortingFunctions.functions[this.property]

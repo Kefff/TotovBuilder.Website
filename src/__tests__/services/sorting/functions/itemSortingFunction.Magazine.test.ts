@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IMagazine } from '../../../../models/item/IMagazine'
-import SortingData from '../../../../models/utils/SortingData'
+import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { MagazineSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
@@ -31,7 +31,7 @@ describe('comparisonFunction()', () => {
       loadSpeedModifierPercentage: 1
     } as IMagazine
 
-    let sortingData: SortingData<IMagazine> | undefined = new SortingData(MagazineSortingFunctions)
+    let sortingData: FilterAndSortingData<IMagazine> | undefined = new FilterAndSortingData(MagazineSortingFunctions)
     const sortingService = new SortingService()
     sortingService.setSortingProperty(sortingData, property)
 

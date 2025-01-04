@@ -2,12 +2,12 @@ import Services from '../../services/repository/Services'
 import { ItemSortingFunctions } from '../../services/sorting/functions/itemSortingFunctions'
 import { SortingService } from '../../services/sorting/SortingService'
 import { IItem, ItemCategoryId } from '../item/IItem'
-import SortingData from './SortingData'
+import FilterAndSortingData from './FilterAndSortingData'
 
 /**
  * Represents the functionalities of data for filtering and sorting the items and builds list.
  */
-export default class ItemFilterAndSortingData extends SortingData<IItem> {
+export default class ItemFilterAndSortingData extends FilterAndSortingData<IItem> {
   /**
    * Initializes a new instance of the SortingData class.
    * @param itemFilterAndSortingDataToCopy - Item filter and sorting data to copy.

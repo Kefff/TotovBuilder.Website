@@ -3,9 +3,9 @@ import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vu
 import { useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
+import FilterAndSortingData from '../models/utils/FilterAndSortingData'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
-import SortingData from '../models/utils/SortingData'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
@@ -267,7 +267,7 @@ function getInitialFilterAndSortingData(): void {
   const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey) ?? SortingOrder.asc)
 
   filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsFilterStorageKey) ?? undefined
-  _sortingService.setSortingProperty(filterAndSortingData.value as SortingData<IBuildSummary>, property, order)
+  _sortingService.setSortingProperty(filterAndSortingData.value as FilterAndSortingData<IBuildSummary>, property, order)
 }
 
 /**

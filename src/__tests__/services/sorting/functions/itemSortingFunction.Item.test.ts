@@ -3,9 +3,9 @@ import { describe, expect, it } from 'vitest'
 import { IInventoryItem } from '../../../../models/build/IInventoryItem'
 import { IItem, ItemCategoryId } from '../../../../models/item/IItem'
 import { IPrice } from '../../../../models/item/IPrice'
+import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { IInventoryItemPrice } from '../../../../models/utils/IInventoryItemPrice'
 import { IgnoredUnitPrice } from '../../../../models/utils/IgnoredUnitPrice'
-import SortingData from '../../../../models/utils/SortingData'
 import { SortingOrder } from '../../../../models/utils/SortingOrder'
 import { InventoryItemService } from '../../../../services/InventoryItemService'
 import Services from '../../../../services/repository/Services'
@@ -64,7 +64,7 @@ describe('comparisonFunction()', () => {
     })
     Services.configure(InventoryItemService, undefined, instance(inventoryItemService))
 
-    const sortingData: SortingData<IItem> | undefined = new SortingData(ItemSortingFunctions)
+    const sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingData(ItemSortingFunctions)
     const sortingService = new SortingService()
 
     // Act
@@ -113,7 +113,7 @@ describe('comparisonFunction()', () => {
     })
     Services.configure(InventoryItemService, undefined, instance(inventoryItemService))
 
-    const sortingData: SortingData<IItem> | undefined = new SortingData(ItemSortingFunctions)
+    const sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingData(ItemSortingFunctions)
     const sortingService = new SortingService()
 
     // Act
@@ -145,7 +145,7 @@ describe('comparisonFunction()', () => {
       name: 'b'
     } as IItem
 
-    const sortingData: SortingData<IItem> | undefined = new SortingData(ItemSortingFunctions)
+    const sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingData(ItemSortingFunctions)
     const sortingService = new SortingService()
     sortingService.setSortingProperty(sortingData, 'categoryId')
 
@@ -173,7 +173,7 @@ describe('comparisonFunction()', () => {
       name: 'a'
     } as IItem
 
-    const sortingData: SortingData<IItem> | undefined = new SortingData(ItemSortingFunctions)
+    const sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingData(ItemSortingFunctions)
     const sortingService = new SortingService()
     sortingService.setSortingProperty(sortingData, 'name')
 
@@ -204,7 +204,7 @@ describe('comparisonFunction()', () => {
       weight: 1
     } as IItem
 
-    const sortingData: SortingData<IItem> | undefined = new SortingData(ItemSortingFunctions)
+    const sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingData(ItemSortingFunctions)
     const sortingService = new SortingService()
     sortingService.setSortingProperty(sortingData, 'weight')
 
@@ -229,7 +229,7 @@ describe('defaultSortingFunction', () => {
       name: 'a'
     } as IItem
 
-    const sortingData = new SortingData(ItemSortingFunctions)
+    const sortingData = new FilterAndSortingData(ItemSortingFunctions)
     const comparisonValue1 = await sortingData.currentSortingFunction.comparisonValueObtentionPromise(item1)
     const comparisonValue2 = await sortingData.currentSortingFunction.comparisonValueObtentionPromise(item2)
 
