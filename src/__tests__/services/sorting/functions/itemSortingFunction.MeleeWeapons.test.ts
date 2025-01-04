@@ -28,7 +28,7 @@ describe('comparisonFunction()', () => {
 
     let sortingData: SortingData<IMeleeWeapon> | undefined = new SortingData(MeleeWeaponSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, property)
+    sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

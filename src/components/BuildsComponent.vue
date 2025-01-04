@@ -5,6 +5,7 @@ import { IBuild } from '../models/build/IBuild'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
+import SortingData from '../models/utils/SortingData'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
@@ -111,7 +112,7 @@ const _toolbarButtons: IToolbarButton[] = [
 
 const buildsToolbar = useTemplateRef('buildsToolbar')
 const buildSummaries = ref<IBuildSummary[]>([])
-const filterAndSortingData = ref<BuildFilterAndSortingData>(new BuildFilterAndSortingData())
+const filterAndSortingData = ref(new BuildFilterAndSortingData())
 const hasImported = ref(false)
 const isLoading = ref(true)
 
@@ -266,7 +267,7 @@ function getInitialFilterAndSortingData(): void {
   const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey) ?? SortingOrder.asc)
 
   filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsFilterStorageKey) ?? undefined
-  filterAndSortingData.value = _sortingService.setSortingProperty(filterAndSortingData.value, property, order)
+  _sortingService.setSortingProperty(filterAndSortingData.value as SortingData<IBuildSummary>, property, order)
 }
 
 /**
@@ -375,7 +376,7 @@ function openNewBuild(): void {
       </template>
     </Toolbar>
     <BuildsList
-      v-model:filter-and-sorting-data="filterAndSortingData"
+      v-model:filter-and-sorting-data="filterAndSortingData as BuildFilterAndSortingData"
       :build-summaries="buildSummaries"
       :element-to-stick-to="toolbarContainer"
       :is-loading="isLoading"

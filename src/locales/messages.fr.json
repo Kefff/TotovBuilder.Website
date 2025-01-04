@@ -323,7 +323,7 @@
     "stabDamage": "Dégâts d'estoc",
     "statistics": "Statistiques",
     "subsonic": "Subsonique",
-    "switchSortOrder": "Inverser ordre de tri",
+    "switchSortOrder": "Inverser ordre de tri (actuel : {currentSortOrder})",
     "total": "Total",
     "totovBuilder": "Totov Builder",
     "tracer": "Traçante",

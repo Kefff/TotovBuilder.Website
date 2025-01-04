@@ -1,4 +1,6 @@
+import Services from '../../services/repository/Services'
 import { ItemSortingFunctions } from '../../services/sorting/functions/itemSortingFunctions'
+import { SortingService } from '../../services/sorting/SortingService'
 import { IItem, ItemCategoryId } from '../item/IItem'
 import SortingData from './SortingData'
 
@@ -16,8 +18,6 @@ export default class ItemFilterAndSortingData extends SortingData<IItem> {
     if (itemFilterAndSortingDataToCopy != null) {
       this.availableItemCategories = itemFilterAndSortingDataToCopy.availableItemCategories
       this.categoryId = itemFilterAndSortingDataToCopy.categoryId
-      this.filter = itemFilterAndSortingDataToCopy.filter
-      this.focusFilter = itemFilterAndSortingDataToCopy.focusFilter
     }
   }
 
@@ -29,17 +29,14 @@ export default class ItemFilterAndSortingData extends SortingData<IItem> {
   /**
    * Category for filtering items.
    */
-  public categoryId?: ItemCategoryId
-
-  /**
-   * Filter.
-   */
-  public filter?: string
-
-  /**
-   * Indicates whether the filter field should be focused.
-   */
-  public focusFilter?: boolean
+  public get categoryId(): ItemCategoryId | undefined {
+    return this._categoryId
+  }
+  public set categoryId(value: ItemCategoryId | undefined) {
+    this._categoryId = value
+    this.setSortingFunctions()
+  }
+  private _categoryId: ItemCategoryId | undefined
 
   /**
    * Indicates whether the filter category fied is read only.
@@ -47,5 +44,16 @@ export default class ItemFilterAndSortingData extends SortingData<IItem> {
    */
   public get isCategoryIdReadOnly(): boolean {
     return this.availableItemCategories.length === 1
+  }
+
+  /**
+   * Sets the sorting function based on the item category ID.
+   */
+  private setSortingFunctions(): void {
+    this.sortingFunctions = Services.get(SortingService).getSortingFunctionsFromItemCategory(this.categoryId)
+
+    if (this.sortingFunctions.functions[this.property] == null) {
+      this.property = 'name'
+    }
   }
 }

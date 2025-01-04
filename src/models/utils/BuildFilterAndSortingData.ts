@@ -12,20 +12,5 @@ export default class BuildFilterAndSortingData extends SortingData<IBuildSummary
    */
   public constructor(buildFilterAndSortingDataToCopy?: BuildFilterAndSortingData) {
     super(BuildSummarySortingFunctions, buildFilterAndSortingDataToCopy)
-
-    if (buildFilterAndSortingDataToCopy != null) {
-      this.filter = buildFilterAndSortingDataToCopy.filter
-      this.focusFilter = buildFilterAndSortingDataToCopy.focusFilter
-    }
   }
-
-  /**
-   * Filter.
-   */
-  public filter?: string
-
-  /**
-   * Indicates whether the filter field should be focused.
-   */
-  public focusFilter?: boolean
 }

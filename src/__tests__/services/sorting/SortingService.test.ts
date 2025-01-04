@@ -6,7 +6,7 @@ import SortingData from '../../../models/utils/SortingData'
 import { SortingOrder } from '../../../models/utils/SortingOrder'
 import { LogService } from '../../../services/LogService'
 import Services from '../../../services/repository/Services'
-import { SortingService, compareByElementName, compareByItemCategory, compareByItemNumber, compareByItemString, compareByNumber } from '../../../services/sorting/SortingService'
+import { SortingService, compareByElementName, compareByNumber, compareByString } from '../../../services/sorting/SortingService'
 import { IBuildSortingFunctionList, IItemSortingFunctionList } from '../../../services/sorting/functions/ISortingFunctionList'
 import { AmmunitionSortingFunctions, ArmorModSortingFunctions, ArmorSortingFunctions, BackpackSortingFunctions, ContainerSortingFunctions, EyewearSortingFunctions, GrenadeSortingFunctions, HeadwearSortingFunctions, ItemSortingFunctions, MagazineSortingFunctions, MeleeWeaponSortingFunctions, ModSortingFunctions, RangedWeaponModSortingFunctions, RangedWeaponSortingFunctions, VestSortingFunctions } from '../../../services/sorting/functions/itemSortingFunctions'
 
@@ -24,58 +24,6 @@ describe('SortingService', () => {
 
       // Assert
       expect(result).toBe(expectedComparisonValue)
-    })
-  })
-
-  describe('compareByItemCategory()', () => {
-    it.each([
-      [{ categoryId: 'cat1', name: 'a' } as unknown as IItem, { categoryId: 'cat2', name: 'a' } as unknown as IItem, -1],
-      [{ categoryId: 'cat2', name: 'a' } as unknown as IItem, { categoryId: 'cat1', name: 'a' } as unknown as IItem, 1],
-      [{ categoryId: 'cat1', name: 'a' } as unknown as IItem, { categoryId: 'cat1', name: 'a' } as unknown as IItem, 0],
-      [{ categoryId: 'cat1', name: 'a' } as unknown as IItem, { categoryId: 'cat1', name: 'b' } as unknown as IItem, -1],
-      [{ categoryId: 'cat1', name: 'b' } as unknown as IItem, { categoryId: 'cat1', name: 'a' } as unknown as IItem, 1]
-    ])('should compare a string property and name', (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
-      // Act
-      const sortingValue = compareByItemCategory(item1, item2)
-
-      // Assert
-      expect(sortingValue).toBe(expectedComparisonValue)
-    })
-  })
-
-  describe('compareByItemNumber()', () => {
-    it.each([
-      [{ name: 'a', categoryId: 'cat1', weight: 1 } as unknown as IItem, { name: 'a', categoryId: 'cat2', weight: 1 } as unknown as IItem, 0],
-      [{ name: 'a', categoryId: 'cat2', weight: 1 } as unknown as IItem, { name: 'a', categoryId: 'cat1', weight: 1 } as unknown as IItem, 0],
-      [{ name: 'a', categoryId: 'cat1', weight: 1 } as unknown as IItem, { name: 'a', categoryId: 'cat1', weight: 2 } as unknown as IItem, -1],
-      [{ name: 'a', categoryId: 'cat1', weight: 2 } as unknown as IItem, { name: 'a', categoryId: 'cat1', weight: 1 } as unknown as IItem, 1],
-      [{ name: 'a', categoryId: 'cat1', weight: 1 } as unknown as IItem, { name: 'a', categoryId: 'cat1', weight: 1 } as unknown as IItem, 0],
-      [{ name: 'a', categoryId: 'cat1', weight: 1 } as unknown as IItem, { name: 'b', categoryId: 'cat1', weight: 1 } as unknown as IItem, -1],
-      [{ name: 'b', categoryId: 'cat1', weight: 1 } as unknown as IItem, { name: 'a', categoryId: 'cat1', weight: 1 } as unknown as IItem, 1]
-    ])('should compare a number property and caption', (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
-      // Act
-      const sortingValue = compareByItemNumber(item1, item1.weight, item2, item2.weight)
-
-      // Assert
-      expect(sortingValue).toBe(expectedComparisonValue)
-    })
-  })
-
-  describe('compareByItemString()', () => {
-    it.each([
-      [{ name: 'a', categoryId: 'cat1', shortName: 'a' } as unknown as IItem, { name: 'a', categoryId: 'cat2', shortName: 'a' } as unknown as IItem, 0],
-      [{ name: 'a', categoryId: 'cat2', shortName: 'a' } as unknown as IItem, { name: 'a', categoryId: 'cat1', shortName: 'a' } as unknown as IItem, 0],
-      [{ name: 'a', categoryId: 'cat1', shortName: 'a' } as unknown as IItem, { name: 'a', categoryId: 'cat1', shortName: 'b' } as unknown as IItem, -1],
-      [{ name: 'a', categoryId: 'cat1', shortName: 'b' } as unknown as IItem, { name: 'a', categoryId: 'cat1', shortName: 'a' } as unknown as IItem, 1],
-      [{ name: 'a', categoryId: 'cat1', shortName: 'a' } as unknown as IItem, { name: 'a', categoryId: 'cat1', shortName: 'a' } as unknown as IItem, 0],
-      [{ name: 'a', categoryId: 'cat1', shortName: 'a' } as unknown as IItem, { name: 'b', categoryId: 'cat1', shortName: 'a' } as unknown as IItem, -1],
-      [{ name: 'b', categoryId: 'cat1', shortName: 'a' } as unknown as IItem, { name: 'a', categoryId: 'cat1', shortName: 'a' } as unknown as IItem, 1]
-    ])('should compare a string property and name', (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
-      // Act
-      const sortingValue = compareByItemString(item1, item1.shortName, item2, item2.shortName)
-
-      // Assert
-      expect(sortingValue).toBe(expectedComparisonValue)
     })
   })
 
@@ -135,17 +83,17 @@ describe('SortingService', () => {
           },
           price: {
             comparisonFunction: () => 2,
-            comparisonValueObtentionPromise: i => Promise.resolve(i.prices[0].valueInMainCurrency)
+            comparisonValueObtentionPromise: i => Promise.resolve((i as IItem).prices[0].valueInMainCurrency)
           }
         },
         itemCategoryIds: [ItemCategoryId.other]
       }
-      let sortingData: SortingData<IItem> | undefined = new SortingData(sortingFunctions)
+      const sortingData: SortingData<IItem> | undefined = new SortingData(sortingFunctions)
       const sortService = new SortingService()
 
       // Act
-      sortingData = sortService.setSortingProperty(sortingData, property, sortingOrder)
-      const comparison = sortingData!.currentSortingFunction.comparisonFunction({} as unknown as IItem, 0, {} as unknown as IItem, 0)
+      sortService.setSortingProperty(sortingData, property, sortingOrder)
+      const comparison = sortingData.currentSortingFunction.comparisonFunction({} as unknown as IItem, 0, {} as unknown as IItem, 0) * sortingData.order
 
       // Assert
       expect(sortingData!.property).toBe(property)
@@ -159,7 +107,7 @@ describe('SortingService', () => {
         functions: {},
         itemCategoryIds: [ItemCategoryId.other]
       }
-      let sortingData: SortingData<IItem> | undefined = new SortingData(sortingFunctions)
+      const sortingData: SortingData<IItem> | undefined = new SortingData(sortingFunctions)
       sortingData.property = 'name'
       sortingData.order = SortingOrder.desc
 
@@ -169,7 +117,7 @@ describe('SortingService', () => {
       Services.configure(LogService, undefined, instance(logServiceMock))
 
       // Act
-      sortingData = sortService.setSortingProperty(sortingData, 'invalid')
+      sortService.setSortingProperty(sortingData, 'invalid')
 
       // Assert
       expect(sortingData.property).toBe('name')
@@ -184,12 +132,12 @@ describe('SortingService', () => {
       const sortingFunctions: IBuildSortingFunctionList = {
         functions: {
           ergonomics: {
-            comparisonFunction: (bs1, bs1v, bs2, bs2v) => compareByNumber(bs1 as unknown as Record<string, unknown>, bs1v, bs2 as unknown as Record<string, unknown>, bs2v),
-            comparisonValueObtentionPromise: bs => Promise.resolve(bs.ergonomics)
+            comparisonFunction: (bs1, bs1v, bs2, bs2v) => compareByNumber(bs1, bs1v, bs2, bs2v),
+            comparisonValueObtentionPromise: bs => Promise.resolve((bs as IBuildSummary).ergonomics)
           }
         }
       }
-      let sortingData: SortingData<IBuildSummary> | undefined = new SortingData(sortingFunctions)
+      const sortingData: SortingData<IBuildSummary> | undefined = new SortingData(sortingFunctions)
       const buildSummaries = [
         { ergonomics: 10, name: 'e' } as IBuildSummary,
         { ergonomics: 20, name: 'f' } as IBuildSummary,
@@ -200,7 +148,7 @@ describe('SortingService', () => {
       const sortingService = new SortingService()
 
       // Act
-      sortingData = sortingService.setSortingProperty(sortingData, 'ergonomics')
+      sortingService.setSortingProperty(sortingData, 'ergonomics')
       const result = await sortingService.sortAsync(buildSummaries, sortingData!)
 
       // Assert
@@ -218,13 +166,13 @@ describe('SortingService', () => {
       const sortingFunctions: IItemSortingFunctionList = {
         functions: {
           shortName: {
-            comparisonFunction: (i1, iv1, i2, iv2) => compareByItemString(i1, iv1, i2, iv2),
-            comparisonValueObtentionPromise: i => Promise.resolve(i.shortName)
+            comparisonFunction: (i1, iv1, i2, iv2) => compareByString(i1, iv1, i2, iv2),
+            comparisonValueObtentionPromise: i => Promise.resolve((i as IItem).shortName)
           }
         },
         itemCategoryIds: [ItemCategoryId.other]
       }
-      let sortingData: SortingData<IItem> | undefined = new SortingData(sortingFunctions)
+      const sortingData: SortingData<IItem> | undefined = new SortingData(sortingFunctions)
       const items = [
         { categoryId: 'cat1', shortName: 'e', name: 'e' } as unknown as IItem,
         { categoryId: 'cat2', shortName: 'f', name: 'f2' } as unknown as IItem,
@@ -235,7 +183,7 @@ describe('SortingService', () => {
       const sortingService = new SortingService()
 
       // Act
-      sortingData = sortingService.setSortingProperty(sortingData, 'shortName')
+      sortingService.setSortingProperty(sortingData, 'shortName')
       const result = await sortingService.sortAsync(items, sortingData)
 
       // Assert

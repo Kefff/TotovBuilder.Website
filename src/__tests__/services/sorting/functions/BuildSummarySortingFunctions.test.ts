@@ -81,7 +81,7 @@ describe('comparisonFunction()', () => {
 
     let sortingData: SortingData<IBuildSummary> | undefined = new SortingData(BuildSummarySortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, property, SortingOrder.asc)
+    sortingService.setSortingProperty(sortingData, property, SortingOrder.asc)
 
     // Act
     const sortedItems = await sortingService.sortAsync([buildSummary1, buildSummary2, buildSummary3, buildSummary4], sortingData!)

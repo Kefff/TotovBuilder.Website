@@ -25,7 +25,7 @@ describe('comparisonFunction()', () => {
 
     let sortingData: SortingData<IMod> | undefined = new SortingData(ModSortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, property)
+    sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

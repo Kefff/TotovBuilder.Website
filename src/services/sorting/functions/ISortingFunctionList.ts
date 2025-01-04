@@ -1,17 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { IItem, ItemCategoryId } from '../../../models/item/IItem'
-import { IBuildSummary } from '../../../models/utils/IBuildSummary'
+import { ItemCategoryId } from '../../../models/item/IItem'
 import { ISortingFunction } from './ISortingFunction'
 
 /**
  * Provides the functionalities of a build sorting function list.
  */
-export interface IBuildSortingFunctionList extends ISortingFunctionList<IBuildSummary> { }
+export interface IBuildSortingFunctionList extends ISortingFunctionList { }
 
 /**
  * Provides the functionalities of an item sorting function list.
  */
-export interface IItemSortingFunctionList extends ISortingFunctionList<IItem> {
+export interface IItemSortingFunctionList extends ISortingFunctionList {
   /**
    * Categories of item that can be sorted using the functions.
    */
@@ -21,9 +20,9 @@ export interface IItemSortingFunctionList extends ISortingFunctionList<IItem> {
 /**
  * Provides the functionalities of an element sorting function list.
  */
-export interface ISortingFunctionList<T extends IBuildSummary | IItem> {
+export interface ISortingFunctionList {
   /**
    * Sorting functions.
    */
-  functions: { [property: string]: ISortingFunction<T> }
+  functions: { [property: string]: ISortingFunction }
 }

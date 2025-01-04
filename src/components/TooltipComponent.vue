@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, Ref } from 'vue'
-import { DirectiveArguments } from '../models/utils/TooltipDirectiveArguments'
+import { DirectiveArguments } from '../models/utils/UI/TooltipDirectiveArguments'
 
 const props = withDefaults(
   defineProps<{

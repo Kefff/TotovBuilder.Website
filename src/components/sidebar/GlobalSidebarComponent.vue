@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
-import { BuildSidebarParameters, BuildsShareSideBarParameters, GlobalSidebarComponent, IGlobalSidebarOptions, ShoppingListSidebarParameters, StatsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { BuildSidebarParameters, BuildsShareSideBarParameters, GlobalSidebarComponent, GlobalSidebarDisplayedComponentParameters, IGlobalSidebarOptions, ShoppingListSidebarParameters, StatsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 
@@ -89,7 +89,7 @@ function getBuildsShareSideBarSubtitle(parameters: BuildsShareSideBarParameters)
  */
 function onGlobalSidebarClose(displayedComponentType: GlobalSidebarComponent): void {
   if (displayedComponentType === options.value.displayedComponentType) {
-    _globalSidebarService.executeOnCloseActionsAsync(displayedComponentType, options.value.displayedComponentParameters)
+    _globalSidebarService.executeOnCloseActionsAsync(displayedComponentType, options.value.displayedComponentParameters as GlobalSidebarDisplayedComponentParameters)
     visibleInternal.value = false
     _displayedComponent = undefined // Unmounting the displayed component
   }
@@ -243,7 +243,7 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
       <component
         :is="_displayedComponent"
         v-if="_displayedComponent != null"
-        v-model:parameters="options.displayedComponentParameters"
+        v-model:parameters="options.displayedComponentParameters as GlobalSidebarDisplayedComponentParameters"
       />
     </div>
   </sidebar>

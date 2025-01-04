@@ -50,8 +50,12 @@ const categoryFilterCaption = computed(() => {
 })
 const filterCaption = computed(() => modelFilterAndSortingData.value.filter)
 const filterTooltip = computed(() => {
-  const itemFilterAndSortingData = modelFilterAndSortingData.value as ItemFilterAndSortingData
-  const hasCategory = itemFilterAndSortingData.categoryId != null
+  let hasCategory = false
+
+  if (isItemFilterAndSortingData.value) {
+    hasCategory = (modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId != null
+  }
+
   const hasFilter = modelFilterAndSortingData.value.filter != null && modelFilterAndSortingData.value.filter !== ''
 
   if (!hasCategory && !hasFilter) {
@@ -61,7 +65,7 @@ const filterTooltip = computed(() => {
   let tooltip = ''
 
   if (hasCategory) {
-    tooltip += vueI18n.t('caption.filteredWith1', { category: vueI18n.t(`caption.category${StringUtils.toUpperFirst(itemFilterAndSortingData.categoryId!)}`) })
+    tooltip += vueI18n.t('caption.filteredWith1', { category: vueI18n.t(`caption.category${StringUtils.toUpperFirst((modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId!)}`) })
   }
 
   if (hasFilter) {
@@ -74,7 +78,25 @@ const filterTooltip = computed(() => {
 
   return tooltip
 })
-const isItemFilterAndSortingData = computed(() => Object.keys(modelFilterAndSortingData.value).some(k => k === 'categoryId'))
+const isItemFilterAndSortingData = computed(() => Object.keys(modelFilterAndSortingData.value).some(k => k === '_categoryId'))
+const property = computed({
+  get: () => modelFilterAndSortingData.value.property,
+  set: (value: string) => {
+    if (isItemFilterAndSortingData.value) {
+      _sortingService.setSortingProperty(
+        modelFilterAndSortingData.value as ItemFilterAndSortingData,
+        value,
+        modelFilterAndSortingData.value.order)
+      modelFilterAndSortingData.value = copyFilterAndSortingData(modelFilterAndSortingData.value)
+    } else {
+      _sortingService.setSortingProperty(
+        modelFilterAndSortingData.value as BuildFilterAndSortingData,
+        value,
+        modelFilterAndSortingData.value.order)
+      modelFilterAndSortingData.value = copyFilterAndSortingData(modelFilterAndSortingData.value)
+    }
+  }
+})
 const sortButtonTooltip = computed(() => vueI18n.t(
   'caption.sortedBy',
   {
@@ -84,6 +106,13 @@ const sortButtonTooltip = computed(() => vueI18n.t(
       : vueI18n.t('caption.descendant').toLocaleLowerCase()
   }))
 const sortChipIcon = computed(() => modelFilterAndSortingData.value.order === SortingOrder.asc ? 'sort-amount-down-alt' : 'sort-amount-up')
+const switchSortOrderButtonTooltip = computed(() => vueI18n.t(
+  'caption.switchSortOrder',
+  {
+    currentSortOrder: modelFilterAndSortingData.value.order === SortingOrder.asc
+      ? vueI18n.t('caption.ascendant').toLocaleLowerCase()
+      : vueI18n.t('caption.descendant').toLocaleLowerCase()
+  }))
 
 const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const isCompactMode = breakpoints.smaller('tabletPortrait')
@@ -103,9 +132,8 @@ watchDebounced(
  * Applies the quick filter.
  */
 function applyQuickFilter(): void {
-  const updatedFilterAndSortingData = copyFilterAndSortingData(modelFilterAndSortingData.value)
-  updatedFilterAndSortingData.filter = filterInternal.value
-  modelFilterAndSortingData.value = updatedFilterAndSortingData
+  modelFilterAndSortingData.value.filter = filterInternal.value
+  modelFilterAndSortingData.value = copyFilterAndSortingData(modelFilterAndSortingData.value)
 }
 
 /**
@@ -136,10 +164,10 @@ function checkIsFilterAndSortingDataChanged(updatedFilterAndSortingData: GlobalS
 function copyFilterAndSortingData(filterAndSortingToCopy: BuildFilterAndSortingData | ItemFilterAndSortingData): BuildFilterAndSortingData | ItemFilterAndSortingData {
   let copy: BuildFilterAndSortingData | ItemFilterAndSortingData
 
-  if (props.filterSidebarComponent === 'BuildsListSidebar') {
-    copy = new BuildFilterAndSortingData(filterAndSortingToCopy as BuildFilterAndSortingData)
-  } else {
+  if (isItemFilterAndSortingData.value) {
     copy = new ItemFilterAndSortingData(filterAndSortingToCopy as ItemFilterAndSortingData)
+  } else {
+    copy = new BuildFilterAndSortingData(filterAndSortingToCopy as BuildFilterAndSortingData)
   }
 
   return copy
@@ -162,6 +190,19 @@ function onKeyDown(event: KeyboardEvent): void {
 }
 
 /**
+ * Removes the current filter.
+ */
+function removeFilter(): void {
+  modelFilterAndSortingData.value.filter = undefined
+
+  if (canRemoveCategoryIdFilter.value) {
+    (modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId = undefined
+  }
+
+  modelFilterAndSortingData.value = copyFilterAndSortingData(modelFilterAndSortingData.value)
+}
+
+/**
  * Opens the filter and sort sidebar.
  * @param focusFilter - Indicates whether the filter field should be focused.
  */
@@ -181,36 +222,14 @@ function showFilterAndSortSidebar(focusFilter: boolean): void {
 }
 
 /**
- * Removes the current filter.
- */
-function removeFilter(): void {
-  const updatedFilterAndSortingData = copyFilterAndSortingData(modelFilterAndSortingData.value)
-  updatedFilterAndSortingData.filter = undefined
-
-  if (canRemoveCategoryIdFilter.value) {
-    (updatedFilterAndSortingData as ItemFilterAndSortingData).categoryId = undefined
-  }
-
-  modelFilterAndSortingData.value = updatedFilterAndSortingData
-}
-
-/**
  * Switches the sort order.
  */
 function switchSortOrder(): void {
-  const isItemFilterAndSortingData = (modelFilterAndSortingData.value as unknown as Record<string, unknown>)['isCategoryReadOnly'] != null
-
-  if (isItemFilterAndSortingData) {
-    modelFilterAndSortingData.value = _sortingService.setSortingProperty(
-      modelFilterAndSortingData.value as ItemFilterAndSortingData,
-      modelFilterAndSortingData.value.property,
-      -modelFilterAndSortingData.value.order) as ItemFilterAndSortingData
-  } else {
-    modelFilterAndSortingData.value = _sortingService.setSortingProperty(
-      modelFilterAndSortingData.value as BuildFilterAndSortingData,
-      modelFilterAndSortingData.value.property,
-      -modelFilterAndSortingData.value.order)
-  }
+  _sortingService.setSortingProperty(
+    modelFilterAndSortingData.value,
+    modelFilterAndSortingData.value.property,
+    -modelFilterAndSortingData.value.order)
+  modelFilterAndSortingData.value = copyFilterAndSortingData(modelFilterAndSortingData.value)
 }
 </script>
 
@@ -233,7 +252,7 @@ function switchSortOrder(): void {
       <Chip class="filter-chip filter-chip-content">
         <div class="filter-chip-icon-button-left">
           <Tooltip
-            :tooltip="$t('caption.switchSortOrder')"
+            :tooltip="switchSortOrderButtonTooltip"
             class="filter-chip-icon"
             @click="switchSortOrder"
           >
@@ -241,6 +260,7 @@ function switchSortOrder(): void {
           </Tooltip>
         </div>
         <Tooltip
+          v-if="isCompactMode"
           :tooltip="sortButtonTooltip"
           class="filter-chip-text"
         >
@@ -248,6 +268,16 @@ function switchSortOrder(): void {
             {{ $t(`caption.${modelFilterAndSortingData.property}`) }}
           </span>
         </Tooltip>
+        <Dropdown
+          v-else
+          v-model="property"
+          :filter-fields="['caption']"
+          :option-label="o => $t(`caption.${o.name}`)"
+          :options="modelFilterAndSortingData.sortableProperties"
+          class="filter-chip-quick-filter-input"
+          style="margin-left: 0.5rem"
+          option-value="name"
+        />
       </Chip>
       <!-- Add filter chip -->
       <Chip
@@ -303,10 +333,20 @@ function switchSortOrder(): void {
           @click="showFilterAndSortSidebar(true)"
         >
           <Tooltip
-            class="filter-chip-content"
+            class="filter-chip-content filter-chip-icon-button-left"
             :tooltip="filterTooltip"
           >
-            <div class="filter-chip-icon">
+            <div
+              v-if="categoryFilterCaption == null && filterCaption == null"
+              class="filter-chip-icon"
+              style="color: var(--success-color);"
+            >
+              <font-awesome-icon icon="plus" />
+            </div>
+            <div
+              v-else
+              class="filter-chip-icon"
+            >
               <font-awesome-icon icon="filter" />
             </div>
           </Tooltip>
@@ -387,7 +427,10 @@ function switchSortOrder(): void {
   align-items: center;
   display: flex;
   height: 100%;
-  padding: 0.5rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
 }
 
 .filter-chip-icon-button-left {
@@ -412,15 +455,17 @@ function switchSortOrder(): void {
 
 .filter-chip-quick-filter > .filter-chip-text {
   padding-bottom: 0.25rem;
-  padding-left: 0;
+  padding-left: 0.5rem;
   padding-top: 0.25rem;
 }
 
 .filter-chip-quick-filter-input {
   align-items: center;
   display: flex;
-  margin: 0.5rem;
-  margin-left: 0;
+  margin-bottom: 0.25rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .filter-chip-quick-filter-input-with-category {
@@ -434,7 +479,7 @@ function switchSortOrder(): void {
   height: 100%;
   justify-content: center;
   overflow: hidden;
-  padding: 0.5rem;
+  padding: 0.25rem;
   width: 100%;
 }
 
@@ -469,7 +514,8 @@ function switchSortOrder(): void {
 
 
 <style>
-.filter-chip-quick-filter-input > .input-text-field > input {
+.filter-chip-quick-filter-input > .input-text-field > input,
+.filter-chip-quick-filter-input.p-dropdown {
   height: 1.75rem;
 }
 </style>

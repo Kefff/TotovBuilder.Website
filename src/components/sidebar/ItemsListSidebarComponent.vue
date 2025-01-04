@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { watchDebounced } from '@vueuse/core'
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemsListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
@@ -8,8 +8,6 @@ import { SortingOrder } from '../../models/utils/SortingOrder'
 import vueI18n from '../../plugins/vueI18n'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
-import { IItemSortingFunctionList } from '../../services/sorting/functions/ISortingFunctionList'
-import { ItemSortingFunctions } from '../../services/sorting/functions/itemSortingFunctions'
 import { SortingService } from '../../services/sorting/SortingService'
 import StringUtils from '../../utils/StringUtils'
 import InputTextField from '../InputTextFieldComponent.vue'
@@ -29,10 +27,9 @@ const availableCategories = computed(() => {
 
   return categories
 })
-const category = computed<ItemCategoryId | undefined>({
+const categoryId = computed<ItemCategoryId | undefined>({
   get: () => modelParameters.value.categoryId,
   set: (value: ItemCategoryId | undefined) => {
-    getSortingFunctions(value)
     const updatedItemFilterAndSortingData = new ItemFilterAndSortingData(modelParameters.value)
     updatedItemFilterAndSortingData.categoryId = value
     modelParameters.value = updatedItemFilterAndSortingData
@@ -46,39 +43,22 @@ const filter = computed({
     modelParameters.value = updatedItemFilterAndSortingData
   }
 })
-const sortableProperties = computed(() => {
-  let properties: { name: string, caption: string }[] = []
-
-  if (sortingFunctions.value != null) {
-    for (const propertyName of Object.keys(sortingFunctions.value.functions)) {
-      properties.push({
-        name: propertyName,
-        caption: `caption.${propertyName}`
-      })
-    }
-
-    properties.sort((p1, p2) => StringUtils.compare(p1.caption, p2.caption))
-  }
-
-  return properties
-})
-const sortField = computed({
-  get: () => modelParameters.value.property,
-  set: (value: string) => {
-    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, value, sortOrder.value) as ItemFilterAndSortingData
-  }
-})
-const sortOrder = computed({
+const order = computed({
   get: () => modelParameters.value.order,
   set: (value: SortingOrder) => {
-    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, modelParameters.value.property, value) as ItemFilterAndSortingData
+    _sortingService.setSortingProperty(modelParameters.value, modelParameters.value.property, value)
+    modelParameters.value = new ItemFilterAndSortingData(modelParameters.value)
+  }
+})
+const property = computed({
+  get: () => modelParameters.value.property,
+  set: (value: string) => {
+    _sortingService.setSortingProperty(modelParameters.value, value, order.value)
+    modelParameters.value = new ItemFilterAndSortingData(modelParameters.value)
   }
 })
 
 const filterInternal = ref(modelParameters.value.filter)
-const sortingFunctions = ref<IItemSortingFunctionList>(ItemSortingFunctions)
-
-onMounted(() => getSortingFunctions(category.value))
 
 watch(
   () => modelParameters.value.filter,
@@ -99,19 +79,6 @@ function displayMerchants(): void {
   _globalSidebarService.display({
     displayedComponentType: 'MerchantItemsOptionsSidebar'
   })
-}
-
-/**
- * Gets sorting function associated with a category.
- * @param categoryId - Category ID.
- */
-function getSortingFunctions(categoryId: ItemCategoryId | undefined): void {
-  sortingFunctions.value = _sortingService.getSortingFunctionsFromItemCategory(categoryId)
-  modelParameters.value.sortingFunctions = sortingFunctions.value // Needs to be updated because we create modelParameters with the default generic item sorting functions
-
-  if (sortingFunctions.value.functions[sortField.value] == null) {
-    nextTick(() => sortField.value = 'name') // nextTick needed otherwise the sort field dropdown does not update the displayed value
-  }
 }
 
 /**
@@ -155,10 +122,7 @@ function onFilterKeyDown(event: KeyboardEvent): void {
  * Resets the filter an sort.
  */
 function reset(): void {
-  const sortingFunctions = modelParameters.value.sortingFunctions
-  const resettedSortingData = new ItemFilterAndSortingData()
-  resettedSortingData.sortingFunctions = sortingFunctions
-  modelParameters.value = resettedSortingData
+  modelParameters.value = new ItemFilterAndSortingData()
   _globalSidebarService.close('ItemsListSidebar')
 }
 </script>
@@ -200,7 +164,7 @@ function reset(): void {
       </span>
       <div class="items-list-sidebar-field">
         <Dropdown
-          v-model="category"
+          v-model="categoryId"
           :disabled="modelParameters.isCategoryIdReadOnly"
           :filter-fields="['caption']"
           :option-label="o => $t(`caption.category${StringUtils.toUpperFirst(o.categoryId)}`)"
@@ -209,14 +173,14 @@ function reset(): void {
           option-value="categoryId"
         />
         <Tooltip
-          v-if="category != null && !modelParameters.isCategoryIdReadOnly"
+          v-if="categoryId != null && !modelParameters.isCategoryIdReadOnly"
           :tooltip="$t('caption.clear')"
         >
           <Button
             class="p-button-sm"
             outlined
             severity="danger"
-            @click="category = undefined"
+            @click="categoryId = undefined"
           >
             <font-awesome-icon icon="times" />
           </Button>
@@ -265,10 +229,10 @@ function reset(): void {
         {{ $t('caption.sortBy') }}
       </span>
       <Dropdown
-        v-model="sortField"
+        v-model="property"
         :filter-fields="['caption']"
         :option-label="o => $t(`caption.${o.name}`)"
-        :options="sortableProperties"
+        :options="parameters.sortableProperties"
         class="items-list-sidebar-value"
         option-value="name"
       />
@@ -281,7 +245,7 @@ function reset(): void {
       </span>
       <div class="items-list-sidebar-field">
         <Dropdown
-          v-model="sortOrder"
+          v-model="order"
           :options="[SortingOrder.asc, SortingOrder.desc]"
           class="items-list-sidebar-value"
         >
@@ -306,7 +270,7 @@ function reset(): void {
           <Button
             class="p-button-sm"
             outlined
-            @click="sortOrder = -sortOrder"
+            @click="order = -order"
           >
             <font-awesome-icon icon="exchange-alt" />
           </Button>

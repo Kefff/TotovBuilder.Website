@@ -358,7 +358,7 @@
     "stabDamage": "Stab damage",
     "statistics": "Statistics",
     "subsonic": "Subsonic",
-    "switchSortOrder": "Switch sort order",
+    "switchSortOrder": "Switch sort order (current: {currentSortOrder})",
     "total": "Total",
     "totovBuilder": "Totov Builder",
     "tracer": "Tracer",

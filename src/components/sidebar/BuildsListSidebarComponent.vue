@@ -7,9 +7,7 @@ import { SortingOrder } from '../../models/utils/SortingOrder'
 import vueI18n from '../../plugins/vueI18n'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
-import { BuildSummarySortingFunctions } from '../../services/sorting/functions/BuildSummarySortingFunctions'
 import { SortingService } from '../../services/sorting/SortingService'
-import StringUtils from '../../utils/StringUtils'
 import InputTextField from '../InputTextFieldComponent.vue'
 import Tooltip from '../TooltipComponent.vue'
 
@@ -26,30 +24,18 @@ const filter = computed({
     modelParameters.value = updatedBuildFilterAndSortingData
   }
 })
-const sortableProperties = computed(() => {
-  let properties: { name: string, caption: string }[] = []
-
-  for (const propertyName of Object.keys(BuildSummarySortingFunctions.functions)) {
-    properties.push({
-      name: propertyName,
-      caption: `caption.${propertyName}`
-    })
-
-    properties.sort((p1, p2) => StringUtils.compare(p1.caption, p2.caption))
-  }
-
-  return properties
-})
-const sortField = computed({
-  get: () => modelParameters.value.property,
-  set: (value: string) => {
-    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, value, sortOrder.value) as BuildFilterAndSortingData
-  }
-})
-const sortOrder = computed({
+const order = computed({
   get: () => modelParameters.value.order,
   set: (value: SortingOrder) => {
-    modelParameters.value = _sortingService.setSortingProperty(modelParameters.value, modelParameters.value.property, value) as BuildFilterAndSortingData
+    _sortingService.setSortingProperty(modelParameters.value, modelParameters.value.property, value)
+    modelParameters.value = new BuildFilterAndSortingData(modelParameters.value)
+  }
+})
+const property = computed({
+  get: () => modelParameters.value.property,
+  set: (value: string) => {
+    _sortingService.setSortingProperty(modelParameters.value, value, order.value)
+    modelParameters.value = new BuildFilterAndSortingData(modelParameters.value)
   }
 })
 
@@ -117,10 +103,7 @@ function onFilterKeyDown(event: KeyboardEvent): void {
  * Resets the filter an sort.
  */
 function reset(): void {
-  const sortingFunctions = modelParameters.value.sortingFunctions
-  const resettedSortingData = new BuildFilterAndSortingData()
-  resettedSortingData.sortingFunctions = sortingFunctions
-  modelParameters.value = resettedSortingData
+  modelParameters.value = new BuildFilterAndSortingData()
   _globalSidebarService.close('BuildsListSidebar')
 }
 </script>
@@ -202,10 +185,10 @@ function reset(): void {
         {{ $t('caption.sortBy') }}
       </span>
       <Dropdown
-        v-model="sortField"
+        v-model="property"
         :filter-fields="['caption']"
         :option-label="o => $t(`caption.${o.name}`)"
-        :options="sortableProperties"
+        :options="parameters.sortableProperties"
         class="builds-list-sidebar-value"
         option-value="name"
       />
@@ -218,7 +201,7 @@ function reset(): void {
       </span>
       <div class="builds-list-sidebar-field">
         <Dropdown
-          v-model="sortOrder"
+          v-model="order"
           :options="[SortingOrder.asc, SortingOrder.desc]"
           class="builds-list-sidebar-value"
         >
@@ -241,7 +224,7 @@ function reset(): void {
           <Button
             class="p-button-sm"
             outlined
-            @click="sortOrder = -sortOrder"
+            @click="order = -order"
           >
             <font-awesome-icon icon="exchange-alt" />
           </Button>

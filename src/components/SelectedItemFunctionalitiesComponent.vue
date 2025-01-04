@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, Ref, watch } from 'vue'
 import { IItem } from '../models/item/IItem'
-import { SelectableTab } from '../models/utils/SelectableTab'
+import { SelectableTab } from '../models/utils/UI/SelectableTab'
 import vueI18n from '../plugins/vueI18n'
 import Tooltip from './TooltipComponent.vue'
 

@@ -13,7 +13,7 @@ import { IRangedWeaponMod } from '../../../models/item/IRangedWeaponMod'
 import { IWearable } from '../../../models/item/IWearable'
 import { InventoryItemService } from '../../InventoryItemService'
 import Services from '../../repository/Services'
-import { compareByItemNumber, compareByItemString } from '../SortingService'
+import { compareByNumber, compareByString } from '../SortingService'
 import { IItemSortingFunctionList } from './ISortingFunctionList'
 
 /**
@@ -30,20 +30,20 @@ export const ItemSortingFunctions: IItemSortingFunctionList = {
   ],
   functions: {
     categoryId: {
-      comparisonFunction: (i1, i1v, i2, i2v) => compareByItemString(i1, i1v, i2, i2v),
-      comparisonValueObtentionPromise: i => Promise.resolve(i.categoryId)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByString(i1 as IItem, iv1, i2 as IItem, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IItem).categoryId)
     },
     name: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemString(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve(i.name)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByString(i1 as IItem, iv1, i2 as IItem, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve(i.name)
     },
     price: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: async i => await getPriceAsync(i)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: async (i) => await getPriceAsync(i as IItem)
     },
     weight: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve(i.presetWeight ?? i.weight)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IItem).presetWeight ?? i.weight)
     }
   }
 }
@@ -52,28 +52,28 @@ export const AmmunitionSortingFunctions: IItemSortingFunctionList = {
   functions: {
     ...ItemSortingFunctions.functions,
     accuracyModifierPercentage: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IAmmunition).accuracyModifierPercentage)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IAmmunition).accuracyModifierPercentage)
     },
     fleshDamage: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IAmmunition).fleshDamage * (i as IAmmunition).projectiles)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IAmmunition).fleshDamage * (i as IAmmunition).projectiles)
     },
     fragmentationChance: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IAmmunition).fragmentationChance)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IAmmunition).fragmentationChance)
     },
     penetratedArmorLevel: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IAmmunition).penetrationPower) // Since the penetratedArmorLevel is calculated from the penetrationPower, we can sort by penetrationPower which is more precise
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IAmmunition).penetrationPower) // Since the penetratedArmorLevel is calculated from the penetrationPower, we can sort by penetrationPower which is more precise
     },
     penetrationPower: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IAmmunition).penetrationPower)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IAmmunition).penetrationPower)
     },
     recoilModifier: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IAmmunition).recoilModifier)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IAmmunition).recoilModifier)
     }
   },
   itemCategoryIds: [ItemCategoryId.ammunition]
@@ -84,8 +84,8 @@ export const ContainerSortingFunctions: IItemSortingFunctionList = {
   functions: {
     ...ItemSortingFunctions.functions,
     capacity: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IContainer).capacity)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IContainer).capacity)
     }
   }
 }
@@ -94,8 +94,8 @@ export const ModSortingFunctions: IItemSortingFunctionList = {
   functions: {
     ...ItemSortingFunctions.functions,
     ergonomicsModifier: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve(
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve(
         (i as IMod).presetErgonomicsModifier
         ?? (i as IMod).ergonomicsModifier)
     }
@@ -107,20 +107,20 @@ export const WearableSortingFunctions: IItemSortingFunctionList = {
   functions: {
     ...ItemSortingFunctions.functions,
     ergonomicsModifierPercentage: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve(
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve(
         (i as IWearable).presetWearableModifiers?.ergonomicsModifierPercentage
         ?? (i as IWearable).ergonomicsModifierPercentage)
     },
     movementSpeedModifierPercentage: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve(
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve(
         (i as IWearable).presetWearableModifiers?.movementSpeedModifierPercentage
         ?? (i as IWearable).movementSpeedModifierPercentage)
     },
     turningSpeedModifierPercentage: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve(
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve(
         (i as IWearable).presetWearableModifiers?.turningSpeedModifierPercentage
         ?? (i as IWearable).turningSpeedModifierPercentage)
     }
@@ -132,12 +132,12 @@ export const ArmorSortingFunctions: IItemSortingFunctionList = {
   functions: {
     ...WearableSortingFunctions.functions,
     armorClass: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IArmor).presetArmorModifiers?.armorClass ?? (i as IArmor).armorClass)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IArmor).presetArmorModifiers?.armorClass ?? (i as IArmor).armorClass)
     },
     durability: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IArmor).presetArmorModifiers?.durability ?? (i as IArmor).durability)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IArmor).presetArmorModifiers?.durability ?? (i as IArmor).durability)
     }
   },
   itemCategoryIds: [ItemCategoryId.armor]
@@ -162,8 +162,8 @@ export const EyewearSortingFunctions: IItemSortingFunctionList = {
   functions: {
     ...ItemSortingFunctions.functions,
     blindnessProtectionPercentage: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IEyewear).blindnessProtectionPercentage)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IEyewear).blindnessProtectionPercentage)
     }
   },
   itemCategoryIds: [ItemCategoryId.eyewear]
@@ -173,16 +173,16 @@ export const GrenadeSortingFunctions: IItemSortingFunctionList = {
   functions: {
     ...ItemSortingFunctions.functions,
     explosionDelay: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IGrenade).explosionDelay)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IGrenade).explosionDelay)
     },
     fragmentsAmount: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IGrenade).fragmentsAmount)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IGrenade).fragmentsAmount)
     },
     maximumExplosionRange: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IGrenade).maximumExplosionRange)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IGrenade).maximumExplosionRange)
     }
   },
   itemCategoryIds: [ItemCategoryId.grenade]
@@ -192,8 +192,8 @@ export const HeadwearSortingFunctions: IItemSortingFunctionList = {
   functions: {
     ...ArmorSortingFunctions.functions,
     ricochetChance: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve(ricochetChances[(i as IHeadwear).ricochetChance])
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve(ricochetChances[(i as IHeadwear).ricochetChance])
     }
   },
   itemCategoryIds: [ItemCategoryId.headwear]
@@ -211,12 +211,12 @@ export const MagazineSortingFunctions: IItemSortingFunctionList = {
     ...ContainerSortingFunctions.functions,
     ...ModSortingFunctions.functions,
     checkSpeedModifierPercentage: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IMagazine).checkSpeedModifierPercentage)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IMagazine).checkSpeedModifierPercentage)
     },
     loadSpeedModifierPercentage: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IMagazine).loadSpeedModifierPercentage)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IMagazine).loadSpeedModifierPercentage)
     }
   },
   itemCategoryIds: [ItemCategoryId.magazine]
@@ -226,16 +226,16 @@ export const MeleeWeaponSortingFunctions: IItemSortingFunctionList = {
   functions: {
     ...ItemSortingFunctions.functions,
     chopDamage: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IMeleeWeapon).chopDamage)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IMeleeWeapon).chopDamage)
     },
     hitRadius: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IMeleeWeapon).hitRadius)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IMeleeWeapon).hitRadius)
     },
     stabDamage: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IMeleeWeapon).stabDamage)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IMeleeWeapon).stabDamage)
     }
   },
   itemCategoryIds: [ItemCategoryId.meleeWeapon]
@@ -245,12 +245,12 @@ export const RangedWeaponModSortingFunctions: IItemSortingFunctionList = {
   functions: {
     ...ModSortingFunctions.functions,
     accuracyModifierPercentage: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IRangedWeaponMod).accuracyModifierPercentage)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IRangedWeaponMod).accuracyModifierPercentage)
     },
     recoilModifierPercentage: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve(
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve(
         (i as IRangedWeaponMod).presetRecoilModifierPercentage
         ?? (i as IRangedWeaponMod).recoilModifierPercentage)
     }
@@ -262,28 +262,28 @@ export const RangedWeaponSortingFunctions: IItemSortingFunctionList = {
   functions: {
     ...ItemSortingFunctions.functions,
     caliber: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemString(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IRangedWeapon).caliber)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByString(i1 as IItem, iv1, i2 as IItem, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IRangedWeapon).caliber)
     },
     ergonomics: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve(
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve(
         (i as IRangedWeapon).presetRangedWeaponModifiers?.ergonomics
         ?? (i as IRangedWeapon).ergonomics)
     },
     fireRate: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve((i as IRangedWeapon).fireRate)
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve((i as IRangedWeapon).fireRate)
     },
     horizontalRecoil: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve(
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve(
         (i as IRangedWeapon).presetRangedWeaponModifiers?.horizontalRecoil
         ?? (i as IRangedWeapon).horizontalRecoil)
     },
     verticalRecoil: {
-      comparisonFunction: (i1, iv1, i2, iv2) => compareByItemNumber(i1, iv1, i2, iv2),
-      comparisonValueObtentionPromise: i => Promise.resolve(
+      comparisonFunction: (i1, iv1, i2, iv2) => compareByNumber(i1, iv1, i2, iv2),
+      comparisonValueObtentionPromise: (i) => Promise.resolve(
         (i as IRangedWeapon).presetRangedWeaponModifiers?.verticalRecoil
         ?? (i as IRangedWeapon).verticalRecoil)
     }
