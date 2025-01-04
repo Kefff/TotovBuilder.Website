@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { IItem } from '../models/item/IItem'
 import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import Services from '../services/repository/Services'
+import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 
 const itemPropertiesService = Services.get(ItemPropertiesService)
 
@@ -43,7 +44,7 @@ const iconUrl = computed(() => {
       v-if="quantity != null && quantity > 1"
       class="item-icon-quantity"
     >
-      {{ quantity }}
+      {{ StatsUtils.getStandardDisplayValue(DisplayValueType.quantity, quantity) }}
     </div>
   </div>
 </template>

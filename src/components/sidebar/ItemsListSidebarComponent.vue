@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { watchDebounced } from '@vueuse/core'
-import { computed, ref, watch } from 'vue'
+import { computed, inject, Ref, ref, watch } from 'vue'
 import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemsListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
@@ -59,6 +59,7 @@ const property = computed({
 })
 
 const filterInternal = ref(modelParameters.value.filter)
+const isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
 
 watch(
   () => modelParameters.value.filter,
@@ -197,7 +198,7 @@ function reset(): void {
         <InputTextField
           ref="itemsListSidebarFilterInput"
           v-model:value="filterInternal"
-          :autofocus="parameters.focusFilter"
+          :autofocus="!isTouchScreen"
           class="items-list-sidebar-value"
           @keydown="onFilterKeyDown"
         />

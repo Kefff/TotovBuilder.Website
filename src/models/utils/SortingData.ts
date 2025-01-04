@@ -22,7 +22,6 @@ export default class SortingData<T extends IBuildSummary | IItem> {
     if (filterAndSortingDataToCopy != null) {
       this.currentSortingFunction = filterAndSortingDataToCopy.currentSortingFunction
       this.filter = filterAndSortingDataToCopy.filter
-      this.focusFilter = filterAndSortingDataToCopy.focusFilter
       this.order = filterAndSortingDataToCopy.order
       this.property = filterAndSortingDataToCopy.property
     }
@@ -37,11 +36,6 @@ export default class SortingData<T extends IBuildSummary | IItem> {
    * Filter.
    */
   public filter?: string
-
-  /**
-   * Indicates whether the filter field should be focused.
-   */
-  public focusFilter?: boolean
 
   /**
    * Sorting order.

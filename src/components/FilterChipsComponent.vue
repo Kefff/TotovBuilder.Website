@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBreakpoints, useEventListener, watchDebounced } from '@vueuse/core'
-import { computed, ref, watch } from 'vue'
+import { computed, inject, Ref, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlobalSidebarOptions'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
@@ -116,6 +116,7 @@ const switchSortOrderButtonTooltip = computed(() => vueI18n.t(
 
 const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const isCompactMode = breakpoints.smaller('tabletPortrait')
+const isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
 const filterInternal = ref(modelFilterAndSortingData.value.filter)
 
 watch(
@@ -178,14 +179,13 @@ function copyFilterAndSortingData(filterAndSortingToCopy: BuildFilterAndSortingD
  * @param event - Keyboard event.
  */
 function onKeyDown(event: KeyboardEvent): void {
-  if (event.key === 'f'
-    && (event.ctrlKey
-      || event.metaKey)) {
+  const isGlobalSidebarDisplayed = _globalSidebarService.isDisplayed()
 
-    if (!_globalSidebarService.isDisplayed()) {
-      event.preventDefault() // Prevents the browser save action to be triggered
-      showFilterAndSortSidebar(true)
-    }
+  if (event.key === 'f'
+    && (event.ctrlKey || event.metaKey)
+    && !isGlobalSidebarDisplayed) {
+    event.preventDefault() // Prevents the browser save action to be triggered
+    showFilterAndSortSidebar()
   }
 }
 
@@ -204,10 +204,8 @@ function removeFilter(): void {
 
 /**
  * Opens the filter and sort sidebar.
- * @param focusFilter - Indicates whether the filter field should be focused.
  */
-function showFilterAndSortSidebar(focusFilter: boolean): void {
-  modelFilterAndSortingData.value.focusFilter = focusFilter
+function showFilterAndSortSidebar(): void {
   _globalSidebarService.display({
     displayedComponentType: props.filterSidebarComponent,
     displayedComponentParameters: modelFilterAndSortingData.value,
@@ -264,7 +262,7 @@ function switchSortOrder(): void {
           :tooltip="sortButtonTooltip"
           class="filter-chip-text"
         >
-          <span @click="showFilterAndSortSidebar(false)">
+          <span @click="showFilterAndSortSidebar">
             {{ $t(`caption.${modelFilterAndSortingData.property}`) }}
           </span>
         </Tooltip>
@@ -283,7 +281,7 @@ function switchSortOrder(): void {
       <Chip
         v-if="isCompactMode && categoryFilterCaption == null && filterCaption == null"
         class="filter-chip"
-        @click="showFilterAndSortSidebar(true)"
+        @click="showFilterAndSortSidebar"
       >
         <Tooltip
           :tooltip="$t('caption.addFilter')"
@@ -313,7 +311,7 @@ function switchSortOrder(): void {
           v-if="isCompactMode"
           :tooltip="filterTooltip"
           class="filter-chip-content"
-          @click="showFilterAndSortSidebar(true)"
+          @click="showFilterAndSortSidebar"
         >
           <div class="filter-chip-icon">
             <font-awesome-icon icon="filter" />
@@ -330,7 +328,7 @@ function switchSortOrder(): void {
         <div
           v-else
           class="filter-chip-content"
-          @click="showFilterAndSortSidebar(true)"
+          @click="showFilterAndSortSidebar"
         >
           <Tooltip
             class="filter-chip-content filter-chip-icon-button-left"
@@ -367,6 +365,7 @@ function switchSortOrder(): void {
             >
               <InputTextField
                 v-model:value="filterInternal"
+                :autofocus="!isTouchScreen"
                 :caption="$t('caption.addFilter')"
                 caption-mode="placeholder"
               />
