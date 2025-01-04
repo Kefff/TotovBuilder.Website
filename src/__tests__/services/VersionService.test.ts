@@ -21,7 +21,7 @@ beforeEach(() => {
   Migrations.splice(0)
 })
 
-describe('checkHasNewVersion()', () => {
+describe('checkHasNewVersionAsync()', () => {
   it.each([
     [false, false],
     [true, true]
@@ -39,7 +39,7 @@ describe('checkHasNewVersion()', () => {
     const service = new VersionService()
 
     // Act
-    const hasNewVersion = await service.checkHasNewVersion()
+    const hasNewVersion = await service.checkHasNewVersionAsync()
 
     // Assert
     expect(hasNewVersion).toBe(expected)
@@ -95,7 +95,7 @@ describe('compareVersions()', () => {
   })
 })
 
-describe('executeBuildMigrations()', () => {
+describe('executeBuildMigrationsAsync()', () => {
   it('should execute build migrations in the correct order', async () => {
     // Arrange
     useFetchServiceMock(ChangelogMock)
@@ -104,7 +104,7 @@ describe('executeBuildMigrations()', () => {
     Services.configure(BuildService)
 
     const service = new VersionService()
-    await service.initialize() // Initializing without migrations to be able to execute them afterwards
+    await service.initializeAsync() // Initializing without migrations to be able to execute them afterwards
 
     const migrationResults: string[] = []
     const builds: IBuild[] = [
@@ -132,48 +132,48 @@ describe('executeBuildMigrations()', () => {
 
     Migrations.push(
       {
-        migrateBuild: (build: IBuild) => {
+        migrateBuildPromise: (build: IBuild) => {
           build.name = build.name + '|' + '1.6.0'
           migrationResults.push('b1.6.0')
           return Promise.resolve(true)
         },
-        migrateBuildUnrelatedData: () => {
+        migrateBuildUnrelatedDataPromise: () => {
           migrationResults.push('bud1.6.0')
           return Promise.resolve(true)
         },
         version: '1.6.0'
       },
       {
-        migrateBuild: (build: IBuild) => {
+        migrateBuildPromise: (build: IBuild) => {
           build.name = build.name + '|' + '1.4.0'
           migrationResults.push('b1.4.0')
           return Promise.resolve(true)
         },
-        migrateBuildUnrelatedData: () => {
+        migrateBuildUnrelatedDataPromise: () => {
           migrationResults.push('bud1.4.0')
           return Promise.resolve(true)
         },
         version: '1.4.0'
       },
       {
-        migrateBuild: (build: IBuild) => {
+        migrateBuildPromise: (build: IBuild) => {
           build.name = build.name + '|' + '1.5.0'
           migrationResults.push('b1.5.0')
           return Promise.resolve(true)
         },
-        migrateBuildUnrelatedData: () => {
+        migrateBuildUnrelatedDataPromise: () => {
           migrationResults.push('bud1.5.0')
           return Promise.resolve(true)
         },
         version: '1.5.0'
       },
       {
-        migrateBuild: (build: IBuild) => {
+        migrateBuildPromise: (build: IBuild) => {
           build.name = build.name + '|' + '1.3.0'
           migrationResults.push('b1.3.0')
           return Promise.resolve(true)
         },
-        migrateBuildUnrelatedData: () => {
+        migrateBuildUnrelatedDataPromise: () => {
           migrationResults.push('bud1.3.0')
           return Promise.resolve(true)
         },
@@ -183,7 +183,7 @@ describe('executeBuildMigrations()', () => {
 
     // Act
     for (const build of builds) {
-      await service.executeBuildMigrations(build)
+      await service.executeBuildMigrationsAsync(build)
     }
 
     // Assert
@@ -232,12 +232,12 @@ describe('executeBuildMigrations()', () => {
     const notificationServiceSpy = spy(Services.get(NotificationService))
 
     const service = new VersionService()
-    await service.initialize()
+    await service.initializeAsync()
 
     Migrations.push(
       {
-        migrateBuild: () => Promise.resolve(false),
-        migrateBuildUnrelatedData: () => Promise.resolve(true),
+        migrateBuildPromise: () => Promise.resolve(false),
+        migrateBuildUnrelatedDataPromise: () => Promise.resolve(true),
         version: '1.6.0'
       })
 
@@ -248,7 +248,7 @@ describe('executeBuildMigrations()', () => {
     } as IBuild
 
     // Act
-    const result = await service.executeBuildMigrations(build)
+    const result = await service.executeBuildMigrationsAsync(build)
 
     // Assert
     expect(result).toBe(false)
@@ -256,7 +256,7 @@ describe('executeBuildMigrations()', () => {
   })
 })
 
-describe('getChangelog()', () => {
+describe('getChangelogAsync()', () => {
   it.each([
     [
       '1.1.0',
@@ -471,7 +471,7 @@ describe('getChangelog()', () => {
     const service = new VersionService()
 
     // Act
-    const changelog = await service.getChangelog()
+    const changelog = await service.getChangelogAsync()
 
     // Assert
     expect(changelog).toStrictEqual(expectedChangelogs)
@@ -483,7 +483,7 @@ describe('getChangelog()', () => {
     Services.configure(BuildService)
 
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get(anything())).thenResolve(undefined)
+    when(fetchServiceMock.getAsync(anything())).thenResolve(undefined)
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const logServiceMock = mock<LogService>()
@@ -495,7 +495,7 @@ describe('getChangelog()', () => {
     const service = new VersionService()
 
     // Act
-    const changelog = await service.getChangelog()
+    const changelog = await service.getChangelogAsync()
 
     // Assert
     expect(changelog).toStrictEqual([])
@@ -514,11 +514,11 @@ describe('getChangelog()', () => {
     const service = new VersionService()
 
     // Act
-    await service.getChangelog()
-    await service.getChangelog()
+    await service.getChangelogAsync()
+    await service.getChangelogAsync()
 
     // Assert
-    verify(fetchSpy.get(anyString())).once()
+    verify(fetchSpy.getAsync(anyString())).once()
   })
 
   it('should not fetch the changelog while it is already being fetched', async () => {
@@ -532,16 +532,16 @@ describe('getChangelog()', () => {
     const service = new VersionService()
 
     // Act
-    const promise = service.getChangelog()
-    await service.getChangelog()
+    const promise = service.getChangelogAsync()
+    await service.getChangelogAsync()
     await promise
 
     // Assert
-    verify(fetchSpy.get(anyString())).once()
+    verify(fetchSpy.getAsync(anyString())).once()
   })
 })
 
-describe('getVersion()', () => {
+describe('getVersionAsync()', () => {
   it('should wait for the initialization to end', async () => {
     // Arrange
     useFetchServiceMock(ChangelogMock)
@@ -551,7 +551,7 @@ describe('getVersion()', () => {
     const service = new VersionService()
 
     // Act
-    const currentVersion = await service.getVersion()
+    const currentVersion = await service.getVersionAsync()
 
     // Assert
     expect(currentVersion).toBe('1.6.0')
@@ -590,9 +590,9 @@ describe('initialize()', () => {
     const websiteConfiguration = Services.get(WebsiteConfigurationService).configuration
 
     // Act
-    await service.initialize()
-    const version = await service.getVersion()
-    const hasNewVersion = await service.checkHasNewVersion()
+    await service.initializeAsync()
+    const version = await service.getVersionAsync()
+    const hasNewVersion = await service.checkHasNewVersionAsync()
     const savedVersion = localStorage.getItem(websiteConfiguration.versionStorageKey)
 
     // Assert
@@ -624,33 +624,33 @@ describe('initialize()', () => {
     localStorage.setItem(WebsiteConfigurationMock.versionStorageKey, '1.4.0')
     Migrations.push(
       {
-        migrateBuild: () => {
+        migrateBuildPromise: () => {
           migrationResults.push('b1.6.0')
           return Promise.resolve(true)
         },
-        migrateBuildUnrelatedData: () => {
+        migrateBuildUnrelatedDataPromise: () => {
           migrationResults.push('bud1.6.0')
           return Promise.resolve(true)
         },
         version: '1.6.0'
       },
       {
-        migrateBuild: () => {
+        migrateBuildPromise: () => {
           migrationResults.push('b1.4.0')
           return Promise.resolve(true)
         },
-        migrateBuildUnrelatedData: () => {
+        migrateBuildUnrelatedDataPromise: () => {
           migrationResults.push('bud1.4.0')
           return Promise.resolve(true)
         },
         version: '1.4.0'
       },
       {
-        migrateBuild: () => {
+        migrateBuildPromise: () => {
           migrationResults.push('b1.5.0')
           return Promise.resolve(true)
         },
-        migrateBuildUnrelatedData: () => {
+        migrateBuildUnrelatedDataPromise: () => {
           migrationResults.push('bud1.5.0')
           return Promise.resolve(true)
         },
@@ -662,7 +662,7 @@ describe('initialize()', () => {
     const websiteConfiguration = Services.get(WebsiteConfigurationService).configuration
 
     // Act
-    await service.initialize()
+    await service.initializeAsync()
     const savedVersion = localStorage.getItem(websiteConfiguration.versionStorageKey)
 
     // Assert
@@ -678,8 +678,8 @@ describe('initialize()', () => {
     localStorage.setItem(WebsiteConfigurationMock.versionStorageKey, '1.5.0')
     Migrations.push(
       {
-        migrateBuild: () => Promise.resolve(true),
-        migrateBuildUnrelatedData: () => Promise.resolve(false),
+        migrateBuildPromise: () => Promise.resolve(true),
+        migrateBuildUnrelatedDataPromise: () => Promise.resolve(false),
         version: '1.6.0'
       }
     )
@@ -687,8 +687,8 @@ describe('initialize()', () => {
     const service = new VersionService()
 
     // Act
-    await service.initialize()
-    const version = await service.getVersion()
+    await service.initializeAsync()
+    const version = await service.getVersionAsync()
     const savedVersion = localStorage.getItem('version')
 
     // Assert
@@ -716,8 +716,8 @@ describe('initialize()', () => {
     localStorage.setItem(WebsiteConfigurationMock.versionStorageKey, '1.5.0')
     Migrations.push(
       {
-        migrateBuild: () => Promise.resolve(false),
-        migrateBuildUnrelatedData: () => Promise.resolve(true),
+        migrateBuildPromise: () => Promise.resolve(false),
+        migrateBuildUnrelatedDataPromise: () => Promise.resolve(true),
         version: '1.6.0'
       }
     )
@@ -725,8 +725,8 @@ describe('initialize()', () => {
     const service = new VersionService()
 
     // Act
-    await service.initialize()
-    const version = await service.getVersion()
+    await service.initializeAsync()
+    const version = await service.getVersionAsync()
     const savedVersion = localStorage.getItem(WebsiteConfigurationMock.versionStorageKey)
 
     // Assert
@@ -744,8 +744,8 @@ describe('initialize()', () => {
     const service = new VersionService()
 
     // Act
-    await service.initialize()
-    await service.initialize()
+    await service.initializeAsync()
+    await service.initializeAsync()
 
     // Nothing to assert here, we just cover the case where return immediatly when already initialized in the initialize() method
   })
@@ -759,8 +759,8 @@ describe('initialize()', () => {
     const service = new VersionService()
 
     // Act
-    const promise = service.initialize()
-    await service.initialize()
+    const promise = service.initializeAsync()
+    await service.initializeAsync()
     await promise
 
     // Nothing to assert here, we just cover the case where we await the previous initialization call to end before returning in the initialize() method

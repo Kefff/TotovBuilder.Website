@@ -1,3 +1,82 @@
+<script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue'
+import { INotification } from '../models/utils/INotification'
+import { INotificationButton } from '../models/utils/INotificationButton'
+import { NotificationService, NotificationType } from '../services/NotificationService'
+import Services from '../services/repository/Services'
+
+const _notificationService = Services.get(NotificationService)
+
+const notifications = ref<INotification[]>([])
+
+onMounted(() => {
+  _notificationService.emitter.on(_notificationService.addedEventName, onNewNotification)
+})
+
+onUnmounted(() => {
+  _notificationService.emitter.off(_notificationService.addedEventName, onNewNotification)
+})
+
+/**
+ * Executes the action linked to a notification button.
+ * @param notification - Notification linked to the button.
+ * @param button - Notification button.
+ */
+function executeButtonAction(notification: INotification, button: INotificationButton): void {
+  if (button.action != null) {
+    button.action()
+  }
+
+  const notificationIndex = notifications.value.indexOf(notification)
+  notifications.value.splice(notificationIndex, 1)
+}
+
+/**
+ * Gets buttons grid templace CSS for a toast notification.
+ * @param toastNotification - Toast notification.
+ * @returns Buttons grid templace CSS.
+ */
+function getButtonsGridTemplaceCss(toastNotification: INotification): string {
+  let buttonsGridTemplaceCss = 'grid-template-columns:'
+  toastNotification.buttons.forEach(() => buttonsGridTemplaceCss += ' 1fr')
+
+  return buttonsGridTemplaceCss
+}
+
+/**
+ * Gets the severity for a notification button.
+ * @param button - Notification button.
+ */
+function getSeverity(button: INotificationButton): string {
+  switch (button.type) {
+    case NotificationType.error:
+      return 'danger'
+    case NotificationType.warning:
+      return 'warning'
+    default:
+      return button.type as string
+  }
+}
+
+/**
+ * Reacts to the a new notification.
+ *
+ * Adds the new notification to the notifications list.
+ */
+function onNewNotification(notification: INotification): void {
+  notifications.value.push(notification)
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="notification">
     <Message
@@ -45,83 +124,7 @@
 
 
 
-<script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
-import { INotification } from '../models/utils/INotification'
-import { INotificationButton } from '../models/utils/INotificationButton'
-import { NotificationService, NotificationType } from '../services/NotificationService'
-import Services from '../services/repository/Services'
-
-const _notificationService = Services.get(NotificationService)
-
-const notifications = ref<INotification[]>([])
-
-onMounted(() => {
-  _notificationService.emitter.on(_notificationService.addedEventName, (notification: INotification) => {
-    notifications.value.push(notification)
-  })
-})
-
-onUnmounted(() => {
-  _notificationService.emitter.off(_notificationService.addedEventName, (notification: INotification) => {
-    notifications.value.push(notification)
-  })
-})
-
-/**
- * Executes the action linked to a notification button.
- * @param notification - Notification linked to the button.
- * @param button - Notification button.
- */
-function executeButtonAction(notification: INotification, button: INotificationButton) {
-  if (button.action != null) {
-    button.action()
-  }
-
-  const notificationIndex = notifications.value.indexOf(notification)
-  notifications.value.splice(notificationIndex, 1)
-}
-
-/**
- * Gets buttons grid templace CSS for a toast notification.
- * @param toastNotification - Toast notification.
- * @returns Buttons grid templace CSS.
- */
-function getButtonsGridTemplaceCss(toastNotification: INotification): string {
-  let buttonsGridTemplaceCss = 'grid-template-columns:'
-  toastNotification.buttons.forEach(() => buttonsGridTemplaceCss += ' 1fr')
-
-  return buttonsGridTemplaceCss
-}
-
-/**
- * Gets the severity for a notification button.
- * @param button - Notification button.
- */
-function getSeverity(button: INotificationButton) {
-  switch (button.type) {
-    case NotificationType.error:
-      return 'danger'
-    case NotificationType.warning:
-      return 'warning'
-    default:
-      return button.type
-  }
-}
-</script>
-
-
-
-
-
-
-
-
-
-
 <style scoped>
-@import '../css/icon.css';
-
 .notification {
   align-items: flex-end;
   bottom: 0;

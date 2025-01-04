@@ -1,17 +1,3 @@
-<template>
-  <ContainerStats :item="backpack" />
-  <WearableStats :item="backpack" />
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IBackpack } from '../../models/item/IBackpack'
@@ -35,6 +21,7 @@ const backpack = computed(() => props.item as IBackpack)
 
 
 
-<style scoped>
-@import '../../css/stats.css';
-</style>
+<template>
+  <ContainerStats :item="backpack" />
+  <WearableStats :item="backpack" />
+</template>

@@ -1,3 +1,208 @@
+<script setup lang="ts">
+import { computed, inject, onMounted, onUnmounted, Ref, ref, useTemplateRef, watch } from 'vue'
+import { IItem } from '../models/item/IItem'
+import { IPrice } from '../models/item/IPrice'
+import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
+import { IInventoryItemPrice } from '../models/utils/IInventoryItemPrice'
+import vueI18n from '../plugins/vueI18n'
+import { GlobalFilterService } from '../services/GlobalFilterService'
+import { InventoryItemService } from '../services/InventoryItemService'
+import { ItemService } from '../services/ItemService'
+import Services from '../services/repository/Services'
+import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
+import MerchantIcon from './MerchantIconComponent.vue'
+import PriceDetailItem from './PriceDetailItemComponent.vue'
+import Tooltip from './TooltipComponent.vue'
+
+const props = withDefaults(
+  defineProps<{
+    applyHoverStyle?: boolean,
+    customTooltip?: string,
+    ignorePriceStatus?: IgnoredUnitPrice
+    missing?: boolean,
+    price: IPrice,
+    showDetails?: boolean,
+    showMerchantIcon?: boolean,
+    showTooltip?: boolean,
+    tooltipSuffix?: string,
+    useMerchantFilter?: boolean
+  }>(),
+  {
+    applyHoverStyle: true,
+    customTooltip: undefined,
+    ignorePriceStatus: IgnoredUnitPrice.notIgnored,
+    missing: false,
+    showDetails: true,
+    showMerchantIcon: true,
+    showTooltip: true,
+    tooltipSuffix: undefined,
+    useMerchantFilter: true
+  })
+
+const _globalFilterService = Services.get(GlobalFilterService)
+const _itemService = Services.get(ItemService)
+
+const _mainCurrency = _itemService.getMainCurrency()
+
+const barterItemPrices = ref<IInventoryItemPrice[]>([])
+const barterItems = ref<IItem[]>([])
+const initialized = ref(false)
+const isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
+const priceDetailPanel = useTemplateRef('priceDetailPanel')
+
+const canShowDetails = computed(() => props.showDetails
+  && (props.price.merchant !== ''
+    || showPriceInMainCurrency.value
+    || props.price.quest != null
+    || isBarter.value
+    || props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored
+    || props.missing))
+const canShowIcon = computed(() => props.showMerchantIcon
+  && (props.price.merchant !== ''
+    || props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored
+    || props.missing))
+const currency = computed(() => _itemService.getCurrency(props.price.currencyName))
+const displayedCurrency = computed(() => isBarter.value ? _mainCurrency : currency.value)
+const displayedPrice = computed(() => {
+  const value = isBarter.value ? props.price.valueInMainCurrency : props.price.value
+  const displayedValue = StatsUtils.getStandardDisplayValue(DisplayValueType.price, value)
+
+  return displayedValue
+})
+const isBarter = computed(() => props.price.currencyName === 'barter')
+const priceTooltip = computed(() => {
+  if (!props.showTooltip) {
+    return undefined
+  }
+
+  let tooltip = props.customTooltip ?? vueI18n.t('caption.price')
+
+  if (props.tooltipSuffix != null) {
+    tooltip += ` ${props.tooltipSuffix}`
+  }
+
+  if (canShowDetails.value && !isTouchScreen?.value) {
+    tooltip += ` ${vueI18n.t('caption.clickForDetails')}`
+  }
+
+  return tooltip
+})
+const showPrice = computed(() => initialized.value && (props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored || props.ignorePriceStatus === IgnoredUnitPrice.notIgnored))
+const showPriceInMainCurrency = computed(() => !isBarter.value && currency.value.name !== _mainCurrency.name)
+
+onMounted(() => {
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+
+  initializeAsync()
+})
+
+onUnmounted(() => {
+  _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+})
+
+watch(() => props.price, () => initializeAsync())
+
+/**
+ * Gets barter items.
+ */
+async function getBarterItemsAsync(): Promise<void> {
+  barterItems.value = []
+
+  if (!isBarter.value) {
+    return
+  }
+
+  const itemService = Services.get(ItemService)
+
+  for (const barterItem of props.price.barterItems) {
+    const item = await itemService.getItemAsync(barterItem.itemId)
+    barterItems.value.push(item)
+  }
+}
+
+/**
+ * Gets barter item prices.
+ */
+async function getBarterItemPricesAsync(): Promise<void> {
+  barterItemPrices.value = []
+
+  if (!isBarter.value) {
+    return
+  }
+
+  const inventoryItemService = Services.get(InventoryItemService)
+
+  for (const barterItem of props.price.barterItems) {
+    const barterItemPrice = await inventoryItemService.getPriceAsync(
+      {
+        content: [],
+        ignorePrice: false,
+        itemId: barterItem.itemId,
+        modSlots: [],
+        quantity: barterItem.quantity
+      },
+      undefined,
+      true,
+      props.useMerchantFilter)
+    barterItemPrices.value.push(barterItemPrice)
+  }
+}
+
+/**
+ * Initializes the price.
+ */
+async function initializeAsync(): Promise<void> {
+  initialized.value = false
+
+  barterItems.value = []
+  barterItemPrices.value = []
+
+  await getBarterItemsAsync()
+  await getBarterItemPricesAsync()
+
+  initialized.value = true
+}
+
+/**
+ * Reacts to the click inside the price detail overlay.
+ *
+ * Prevents the item selection dropdown to close when clicking inside of the price detail popup of one of the dropdown items.
+ */
+function onClick(event: MouseEvent): void {
+  event.stopPropagation()
+}
+
+/**
+ * Reacts to the merchant filter being changed.
+ *
+ * Updates the selected item price to reflect the change in merchant filters.
+ */
+function onMerchantFilterChanged(): void {
+  getBarterItemPricesAsync()
+}
+
+/**
+ * Toggles the details of the price.
+ */
+function togglePriceDetails(event: Event): void {
+  if (!canShowDetails.value) {
+    return
+  }
+
+  priceDetailPanel.value?.toggle(event)
+  event.stopPropagation()
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div
     v-if="showPrice"
@@ -165,216 +370,7 @@
 
 
 
-<script setup lang="ts">
-import { computed, inject, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
-import { IItem } from '../models/item/IItem'
-import { IPrice } from '../models/item/IPrice'
-import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
-import { IInventoryItemPrice } from '../models/utils/IInventoryItemPrice'
-import vueI18n from '../plugins/vueI18n'
-import { GlobalFilterService } from '../services/GlobalFilterService'
-import { InventoryItemService } from '../services/InventoryItemService'
-import { ItemService } from '../services/ItemService'
-import Services from '../services/repository/Services'
-import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
-import MerchantIcon from './MerchantIconComponent.vue'
-import PriceDetailItem from './PriceDetailItemComponent.vue'
-
-const props = withDefaults(
-  defineProps<{
-    applyHoverStyle?: boolean,
-    customTooltip?: string,
-    ignorePriceStatus?: IgnoredUnitPrice
-    missing?: boolean,
-    price: IPrice,
-    showDetails?: boolean,
-    showMerchantIcon?: boolean,
-    showTooltip?: boolean,
-    tooltipSuffix?: string,
-    useMerchantFilter?: boolean
-  }>(),
-  {
-    applyHoverStyle: true,
-    customTooltip: undefined,
-    ignorePriceStatus: IgnoredUnitPrice.notIgnored,
-    missing: false,
-    showDetails: true,
-    showMerchantIcon: true,
-    showTooltip: true,
-    tooltipSuffix: undefined,
-    useMerchantFilter: true
-  })
-
-const _globalFilterService = Services.get(GlobalFilterService)
-const _itemService = Services.get(ItemService)
-
-const _isTouchScreen = inject<boolean>('isTouchScreen')
-const _mainCurrency = _itemService.getMainCurrency()
-
-const barterItemPrices = ref<IInventoryItemPrice[]>([])
-const barterItems = ref<IItem[]>([])
-const initialized = ref(false)
-const priceDetailPanel = useTemplateRef('priceDetailPanel')
-
-const canShowDetails = computed(() => props.showDetails
-  && (props.price.merchant !== ''
-    || showPriceInMainCurrency.value
-    || props.price.quest != null
-    || isBarter.value
-    || props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored
-    || props.missing))
-const canShowIcon = computed(() => props.showMerchantIcon
-  && (props.price.merchant !== ''
-    || props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored
-    || props.missing))
-const currency = computed(() => _itemService.getCurrency(props.price.currencyName))
-const displayedCurrency = computed(() => isBarter.value ? _mainCurrency : currency.value)
-const displayedPrice = computed(() => {
-  const value = isBarter.value ? props.price.valueInMainCurrency : props.price.value
-  const displayedValue = StatsUtils.getStandardDisplayValue(DisplayValueType.price, value)
-
-  return displayedValue
-})
-const isBarter = computed(() => props.price.currencyName === 'barter')
-const priceTooltip = computed(() => {
-  if (!props.showTooltip) {
-    return undefined
-  }
-
-  let tooltip = props.customTooltip ?? vueI18n.t('caption.price')
-
-  if (props.tooltipSuffix != null) {
-    tooltip += ` ${props.tooltipSuffix}`
-  }
-
-  if (canShowDetails.value && !_isTouchScreen) {
-    tooltip += ` ${vueI18n.t('caption.clickForDetails')}`
-  }
-
-  return tooltip
-})
-const showPrice = computed(() => initialized.value && (props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored || props.ignorePriceStatus === IgnoredUnitPrice.notIgnored))
-const showPriceInMainCurrency = computed(() => !isBarter.value && currency.value.name !== _mainCurrency.name)
-
-onMounted(() => {
-  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-
-  initialize()
-})
-
-onUnmounted(() => {
-  _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-})
-
-watch(() => props.price, () => initialize())
-
-/**
- * Gets barter items.
- */
-async function getBarterItems() {
-  barterItems.value = []
-
-  if (!isBarter.value) {
-    return
-  }
-
-  const itemService = Services.get(ItemService)
-
-  for (const barterItem of props.price.barterItems) {
-    const item = await itemService.getItem(barterItem.itemId)
-    barterItems.value.push(item)
-  }
-}
-
-/**
- * Gets barter item prices.
- */
-async function getBarterItemPrices() {
-  barterItemPrices.value = []
-
-  if (!isBarter.value) {
-    return
-  }
-
-  const inventoryItemService = Services.get(InventoryItemService)
-
-  for (const barterItem of props.price.barterItems) {
-    const barterItemPrice = await inventoryItemService.getPrice(
-      {
-        content: [],
-        ignorePrice: false,
-        itemId: barterItem.itemId,
-        modSlots: [],
-        quantity: barterItem.quantity
-      },
-      undefined,
-      true,
-      props.useMerchantFilter)
-    barterItemPrices.value.push(barterItemPrice)
-  }
-}
-
-/**
- * Initializes the price.
- */
-async function initialize() {
-  initialized.value = false
-
-  barterItems.value = []
-  barterItemPrices.value = []
-
-  await getBarterItems()
-  await getBarterItemPrices()
-
-  initialized.value = true
-}
-
-/**
- * Reacts to the click inside the price detail overlay.
- *
- * Prevents the item selection dropdown to close when clicking inside of the price detail popup of one of the dropdown items.
- */
-function onClick(event: MouseEvent) {
-  event.stopPropagation()
-}
-
-/**
- * Reacts to the merchant filter being changed.
- *
- * Updates the selected item price to reflect the change in merchant filters.
- */
-function onMerchantFilterChanged() {
-  getBarterItemPrices()
-}
-
-/**
- * Toggles the details of the price.
- */
-function togglePriceDetails(event: Event) {
-  if (!canShowDetails.value) {
-    return
-  }
-
-  priceDetailPanel.value?.toggle(event)
-  event.stopPropagation()
-}
-</script>
-
-
-
-
-
-
-
-
-
-
 <style scoped>
-@import '../css/button.css';
-@import '../css/currency.css';
-@import '../css/icon.css';
-@import '../css/link.css';
-
 .price {
   align-items: center;
   display: flex;

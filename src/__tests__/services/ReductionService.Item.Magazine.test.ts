@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IMagazine } from '../../models/item/IMagazine'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ReductionService } from '../../services/ReductionService'
@@ -40,7 +41,7 @@ describe('parseReducedItem', () => {
         ],
         baseItemId: undefined,
         capacity: 7,
-        categoryId: 'magazine',
+        categoryId: ItemCategoryId.magazine,
         checkSpeedModifierPercentage: -0.2,
         conflictingItemIds: [],
         defaultPresetId: undefined,
@@ -55,6 +56,7 @@ describe('parseReducedItem', () => {
         modSlots: [],
         name: 'M1911A1 .45 ACP 7-round magazine',
         presetErgonomicsModifier: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: '1911',
         weight: 0.16,
@@ -161,7 +163,7 @@ describe('parseReducedItem', () => {
         ],
         baseItemId: undefined,
         capacity: 0,
-        categoryId: 'magazine',
+        categoryId: ItemCategoryId.magazine,
         checkSpeedModifierPercentage: 0,
         conflictingItemIds: [],
         defaultPresetId: undefined,
@@ -255,6 +257,7 @@ describe('parseReducedItem', () => {
         ],
         name: 'M32A1 40mm cylinder',
         presetErgonomicsModifier: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: 'MSGL',
         weight: 0.8,

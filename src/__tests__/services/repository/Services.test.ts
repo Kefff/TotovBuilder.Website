@@ -91,7 +91,7 @@ describe('getByName', () => {
 
   it('should throw when the service is not configured', () => {
     // Act
-    const test = () => Services.getByName<TestService1>('TestService')
+    const test = (): TestService1 => Services.getByName<TestService1>('TestService')
 
     // Assert
     expect(test).toThrowError('Service "TestService" not configured.')

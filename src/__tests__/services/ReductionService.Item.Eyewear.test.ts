@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IEyewear } from '../../models/item/IEyewear'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
@@ -26,7 +27,7 @@ describe('parseReducedItem', () => {
         armoredAreas: [],
         baseItemId: undefined,
         blindnessProtectionPercentage: 0.1,
-        categoryId: 'eyewear',
+        categoryId: ItemCategoryId.eyewear,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         durability: 0,
@@ -42,6 +43,7 @@ describe('parseReducedItem', () => {
         name: 'NPP KlASS Condor glasses',
         presetArmorModifiers: undefined,
         presetWearableModifiers: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: 'Condor',
         turningSpeedModifierPercentage: 0,

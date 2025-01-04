@@ -21,7 +21,7 @@ beforeEach(() => {
   fetchMock.resetMocks()
 })
 
-describe('get()', () => {
+describe('getAsync()', () => {
   it('should send a request and get a response', async () => {
     // Arrange
     const response = `[
@@ -63,7 +63,7 @@ describe('get()', () => {
     fetchMock.mockOnceIf(endpoint, response, { status: 200 })
 
     // Act
-    const result = await new FetchService().get(endpoint)
+    const result = await new FetchService().getAsync(endpoint)
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
@@ -121,7 +121,7 @@ describe('get()', () => {
     fetchMock.mockOnceIf('localhost:3000/method?id=590c392f86f77444754deb29', response, { status: 200 })
 
     // Act
-    const result = await new FetchService().get('localhost:3000/method', { name: 'id', value: '590c392f86f77444754deb29' })
+    const result = await new FetchService().getAsync('localhost:3000/method', { name: 'id', value: '590c392f86f77444754deb29' })
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
@@ -154,7 +154,7 @@ describe('get()', () => {
       .mockResponse(successResponse, { status: 200 })
 
     // Act
-    const result = await new FetchService().get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
+    const result = await new FetchService().getAsync('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
 
     // Assert
     expect(result).toStrictEqual({ success: 'Access granted' })
@@ -174,7 +174,7 @@ describe('get()', () => {
     fetchMock.mockOnceIf('localhost:3000/' + endpoint, '', { status: 200 })
 
     // Act
-    const result = await new FetchService().get(endpoint)
+    const result = await new FetchService().getAsync(endpoint)
 
     // Assert
     expect(fetchMock.mock.calls.length).toBe(1)
@@ -202,7 +202,7 @@ describe('get()', () => {
     fetchMock.doMock(response, { status: 401 })
 
     // Act
-    const result = await new FetchService().get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
+    const result = await new FetchService().getAsync('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
 
     // Assert
     expect(result).toBeUndefined()
@@ -230,7 +230,7 @@ describe('get()', () => {
     const service = new FetchService()
 
     // Act
-    const result = await service.get('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
+    const result = await service.getAsync('item', { name: 'uid', value: 'f0fa8457-6638-4ad2-b7e8-4708033d8f39' })
 
     // Assert
     expect(result).toBeUndefined()

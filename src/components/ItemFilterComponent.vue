@@ -1,3 +1,30 @@
+<script setup lang="ts">
+import { IItemExclusionFilter } from '../models/utils/IItemExclusionFilter'
+
+const modelItemExclusionFilters = defineModel<IItemExclusionFilter[]>('itemExclusionFilters', { required: true })
+
+/**
+ * Reacts to an item exclusion filter being changed.
+ *
+ * Updates the filter.
+ */
+function onItemExclusionFilterChanged(index: number, enabled: boolean): void {
+  const newItemExclusionFilters = [...modelItemExclusionFilters.value]
+  newItemExclusionFilters[index].enabled = enabled
+
+  modelItemExclusionFilters.value = newItemExclusionFilters
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div>
     <div
@@ -33,36 +60,7 @@
 
 
 
-<script setup lang="ts">
-import { IItemExclusionFilter } from '../models/utils/IItemExclusionFilter'
-
-const modelItemExclusionFilters = defineModel<IItemExclusionFilter[]>('itemExclusionFilters', { required: true })
-
-/**
- * Reacts to an item exclusion filter being changed.
- *
- * Updates the filter.
- */
-function onItemExclusionFilterChanged(index: number, enabled: boolean) {
-  const newItemExclusionFilters = [...modelItemExclusionFilters.value]
-  newItemExclusionFilters[index].enabled = enabled
-
-  modelItemExclusionFilters.value = newItemExclusionFilters
-}
-</script>
-
-
-
-
-
-
-
-
-
-
 <style scoped>
-@import '../css/sidebar.css';
-
 .item-filter {
   align-items: center;
   display: flex;

@@ -1,3 +1,21 @@
+<script setup lang="ts">
+type Position = 'after' | 'before'
+
+defineProps<{
+  icon: string,
+  position: Position
+}>()
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="custom-icon">
     <img
@@ -23,28 +41,7 @@
 
 
 
-<script setup lang="ts">
-
-type Position = 'after' | 'before'
-
-defineProps<{
-  icon: string,
-  position: Position
-}>()
-</script>
-
-
-
-
-
-
-
-
-
-
 <style scoped>
-@import '../css/icon.css';
-
 .custom-icon {
   align-items: center;
   display: grid;

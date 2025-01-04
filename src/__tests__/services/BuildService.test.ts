@@ -2,6 +2,7 @@ import { anything, instance, mock, spy, verify, when } from 'ts-mockito'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { InventorySlotTypeId } from '../../models/build/InventorySlotTypes'
 import { BuildService } from '../../services/BuildService'
 import { LogService } from '../../services/LogService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
@@ -30,7 +31,7 @@ beforeEach(() => {
 })
 
 
-describe('add()', () => {
+describe('addAsync()', () => {
   it('should add a build', async () => {
     // Arrange
     useItemServiceMock()
@@ -40,7 +41,7 @@ describe('add()', () => {
     const service = new BuildService()
 
     // Act
-    const id = await service.add(newBuild)
+    const id = await service.addAsync(newBuild)
     const build = service.get(id)
 
     // Assert
@@ -84,63 +85,63 @@ describe('create()', () => {
       inventorySlots: [
         {
           items: [undefined],
-          typeId: 'onSling'
+          typeId: InventorySlotTypeId.onSling
         },
         {
           items: [undefined],
-          typeId: 'onBack'
+          typeId: InventorySlotTypeId.onBack
         },
         {
           items: [undefined],
-          typeId: 'holster'
+          typeId: InventorySlotTypeId.holster
         },
         {
           items: [undefined],
-          typeId: 'bodyArmor'
+          typeId: InventorySlotTypeId.bodyArmor
         },
         {
           items: [undefined],
-          typeId: 'tacticalRig'
+          typeId: InventorySlotTypeId.tacticalRig
         },
         {
           items: [undefined],
-          typeId: 'headwear'
+          typeId: InventorySlotTypeId.headwear
         },
         {
           items: [undefined],
-          typeId: 'earpiece'
+          typeId: InventorySlotTypeId.earpiece
         },
         {
           items: [undefined],
-          typeId: 'backpack'
+          typeId: InventorySlotTypeId.backpack
         },
         {
           items: [undefined, undefined, undefined, undefined],
-          typeId: 'pockets'
+          typeId: InventorySlotTypeId.pockets
         },
         {
           items: [undefined],
-          typeId: 'eyewear'
+          typeId: InventorySlotTypeId.eyewear
         },
         {
           items: [undefined],
-          typeId: 'faceCover'
+          typeId: InventorySlotTypeId.faceCover
         },
         {
           items: [pouchDefaultItem],
-          typeId: 'pouch'
+          typeId: InventorySlotTypeId.pouch
         },
         {
           items: [scabbardDefaultItem],
-          typeId: 'scabbard'
+          typeId: InventorySlotTypeId.scabbard
         },
         {
           items: [undefined],
-          typeId: 'armband'
+          typeId: InventorySlotTypeId.armband
         },
         {
           items: [undefined, undefined, undefined],
-          typeId: 'special'
+          typeId: InventorySlotTypeId.special
         }
       ],
       lastExported: undefined,
@@ -173,13 +174,13 @@ describe('delete()', () => {
 
     // Assert
     expect(service.getAll().length).toBe(1)
-    expect(build).toBe(undefined)
+    expect(build).toBeUndefined()
     verify(notificationServiceMock.notify(NotificationType.information, 'Build "Build 2" deleted.')).once()
     verify(notificationServiceMock.notify(NotificationType.error, 'Build "build_2" not found. It may have been deleted.')).once()
   })
 })
 
-describe('fromSharableString()', () => {
+describe('fromSharableStringAsync()', () => {
   it.each(
     [
       [
@@ -211,21 +212,21 @@ describe('fromSharableString()', () => {
     Migrations.splice(0)
     Migrations.push(
       {
-        migrateBuild: (build: IBuild) => {
+        migrateBuildPromise: (build: IBuild) => {
           build.name = `${build.name}|1.5.0`
           return Promise.resolve(true)
         },
-        migrateBuildUnrelatedData: () => {
+        migrateBuildUnrelatedDataPromise: () => {
           return Promise.resolve(true)
         },
         version: '1.5.0'
       },
       {
-        migrateBuild: (build: IBuild) => {
+        migrateBuildPromise: (build: IBuild) => {
           build.name = `${build.name}|1.6.0`
           return Promise.resolve(true)
         },
-        migrateBuildUnrelatedData: () => {
+        migrateBuildUnrelatedDataPromise: () => {
           return Promise.resolve(true)
         },
         version: '1.6.0'
@@ -234,7 +235,7 @@ describe('fromSharableString()', () => {
     const service = Services.get(BuildService)
 
     // Act
-    const build = await service.fromSharableString(sharableString)
+    const build = await service.fromSharableStringAsync(sharableString)
 
     // Assert
     expect(build).toEqual(expected)
@@ -251,7 +252,7 @@ describe('fromSharableString()', () => {
     const sharableString = 'corrupted'
 
     // Act
-    const build = await service.fromSharableString(sharableString)
+    const build = await service.fromSharableStringAsync(sharableString)
 
     // Assert
     expect(build).toBeUndefined()
@@ -271,7 +272,7 @@ describe('fromSharableString()', () => {
     const sharableString = 'XQAAAAIEAQAAAAAAAABAqEppJBKy3f2nWA1_4C5z8-v7-QmsFsh3-Xw5A4r6cKv_m0sfj0O9x9XIb5ScojjRsy4huWDxzBSG1zyaOOej9yI6eVsg6yXMNsehKkbkF4IxN4W52Wr0SPOgjzuUFCVV1O-07KKY5H2MxwF8NvWFSy9VOl89axpWIZlA4rMaW8zwrHUAdC7epHLneT1sKyazlWteJ--ZEOyd3csaogRVGPNtylBhm8wqX_KVr5aLtkpJU-9ba2mmXnpWUf_-OHdA'
 
     // Act
-    const build = await service.fromSharableString(sharableString)
+    const build = await service.fromSharableStringAsync(sharableString)
 
     // Assert
     expect(build).toBeUndefined()
@@ -291,8 +292,8 @@ describe('fromSharableString()', () => {
     Migrations.splice(0)
     Migrations.push(
       {
-        migrateBuild: () => Promise.resolve(false),
-        migrateBuildUnrelatedData: () => Promise.resolve(true),
+        migrateBuildPromise: () => Promise.resolve(false),
+        migrateBuildUnrelatedDataPromise: () => Promise.resolve(true),
         version: '1.6.0'
       })
 
@@ -300,7 +301,7 @@ describe('fromSharableString()', () => {
     const sharableString = 'XQAAAAJ5BAAAAAAAAABAqEppdBKy3f2nWA1_4C5z8-v7-PB2PnO4T0FRqHCrunbQ824T11fLD0MMgpKzuGdnO-8eB5yHCYkn0JYO3VCC50O9MYgvuOr49cS5mtaJVptsaMiETu4-0oYouMfztK97JVyQiamvJHdA2W5i9dVVx7tG6R4CkXyLtwbAxz74UOVoRKsDpGU0H7BJshLAPue1edTU7OnozNCY5jfRvLYt8y_qwxB6Ol-uaqk4oI3cEDW9c94UKDSU8MVdPtA8P481abbFxOaLOXrDXvokQOpIV5t3nPBsd3EC-zc0p0C9miVd4PO9JJAGoS7c05hy5VxDyKAAC_MgjRgha9avVCb8UKrza2hWTiJRezgEmnBOip-6n2xY2JgD5E0KtCWg0w0jiA1gzqKs9AEfWiBesVfFcFto3Ni7YYqaWLjb4oeFTpI1UOaA89s8PwxYkFlBErCbjBXKPYcNIOvqAU-p4NTO7X_3tMRPbzSZNVIcDu7Mq0zGn5IndeMyy-2aZulriecUtbL17JaE86mPQfaNe3DjKO0CmnqWf_LOvEAEPEHPimdpWCw8njwoqZF5uvGDsonEHU43POFgSVhXRB4cjppaxhKYb7XcJZDvNk1mZ-_SvOAtS70IE59cHGM7xBF_I74CpodKJstWTusp-qM_gDRAbpcqQm-ysqFXE9suINiKo0MmvEEcZSBU-iXFYHs-ezSDx9XYyn_suJkHXkgDkf4b0GzNnWPTrhWN-t4yTreDObhrm5M82k3njxXsKz_6__1B5U0'
 
     // Act
-    const build = await service.fromSharableString(sharableString)
+    const build = await service.fromSharableStringAsync(sharableString)
 
     // Assert
     expect(build).not.toBeUndefined()
@@ -358,7 +359,7 @@ describe('get()', () => {
     const build = service.get('not_parsable')
 
     // Assert
-    expect(build).toBe(undefined)
+    expect(build).toBeUndefined()
     verify(notificationServiceMock.notify(NotificationType.error, 'Error loading build "not_parsable".\nIt seems to be corrupted.')).once()
   })
 })
@@ -379,7 +380,7 @@ describe('getAll()', () => {
   })
 })
 
-describe('toSharableURL()', () => {
+describe('toSharableUrlAsync()', () => {
   it.each([
     [
       build1,
@@ -407,7 +408,7 @@ describe('toSharableURL()', () => {
     const service = new BuildService()
 
     // Act
-    const sharableString = await service.toSharableURL(build)
+    const sharableString = await service.toSharableUrlAsync(build)
 
     // Assert
     expect(sharableString).toBe(`localhost:3000/s/${expectedSharableString}`)
@@ -426,7 +427,7 @@ describe('toSharableURL()', () => {
     const service = new BuildService()
 
     // Act
-    const sharableStringResult = await service.toSharableURL(build1)
+    const sharableStringResult = await service.toSharableUrlAsync(build1)
 
     // Assert
     expect(sharableStringResult).toBeUndefined()
@@ -434,7 +435,7 @@ describe('toSharableURL()', () => {
   })
 })
 
-describe('update()', () => {
+describe('updateAsync()', () => {
   it('should update a build', async () => {
     // Arrange
     useItemServiceMock()
@@ -447,7 +448,7 @@ describe('update()', () => {
     build.name = 'New name'
 
     // Act / Assert
-    await service.update(build)
+    await service.updateAsync(build)
 
     const updatedBuild = service.get(build1.id)
     expect(updatedBuild).not.toBeUndefined()
@@ -474,7 +475,7 @@ describe('update()', () => {
     const service = new BuildService()
 
     // Act / Assert
-    await service.update(build)
+    await service.updateAsync(build)
     verify(logServiceMock.logError('message.buildToUpdateNotFound', { id: build.id }))
 
     const updatedBuild = service.get(build.id)
@@ -488,27 +489,27 @@ const newBuild: IBuild = {
   inventorySlots: [
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'onBack'
+      typeId: InventorySlotTypeId.onBack
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'backpack'
+      typeId: InventorySlotTypeId.backpack
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'bodyArmor'
+      typeId: InventorySlotTypeId.bodyArmor
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'earpiece'
+      typeId: InventorySlotTypeId.earpiece
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'eyewear'
+      typeId: InventorySlotTypeId.eyewear
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'faceCover'
+      typeId: InventorySlotTypeId.faceCover
     },
     {
       items: [
@@ -531,31 +532,31 @@ const newBuild: IBuild = {
           quantity: 1
         }
       ],
-      typeId: 'headwear'
+      typeId: InventorySlotTypeId.headwear
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'holster'
+      typeId: InventorySlotTypeId.holster
     },
     {
       items: Array<IInventoryItem>(4),
-      typeId: 'pockets'
+      typeId: InventorySlotTypeId.pockets
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'pouch'
+      typeId: InventorySlotTypeId.pouch
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'scabbard'
+      typeId: InventorySlotTypeId.scabbard
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'onSling'
+      typeId: InventorySlotTypeId.onSling
     },
     {
       items: Array<IInventoryItem>(1),
-      typeId: 'tacticalRig'
+      typeId: InventorySlotTypeId.tacticalRig
     }
   ],
   lastExported: undefined,

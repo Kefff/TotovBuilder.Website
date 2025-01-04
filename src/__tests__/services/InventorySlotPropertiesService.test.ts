@@ -1,6 +1,9 @@
 /* eslint-disable no-irregular-whitespace */
 import { describe, expect, it } from 'vitest'
 import { IInventorySlot } from '../../models/build/IInventorySlot'
+import { IInventorySlotType } from '../../models/build/IInventorySlotType'
+import { InventorySlotTypeId } from '../../models/build/InventorySlotTypes'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
 import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
@@ -9,7 +12,6 @@ import { IWearableModifiers } from '../../models/utils/IWearableModifiers'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
-import { InventorySlotService } from '../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
@@ -21,363 +23,7 @@ import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('InventorySlotPropertiesService', () => {
-  describe('toText() (markdown)', () => {
-    it.each([
-      [
-        inventorySlot1,
-        `[*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**   💵 Marché **63 493₽**  
- [*Équipement*] **LShZ-2DTM face shield**   💵 Ragman 3 (*échange*) **29 805₽**  `
-      ],
-      [
-        inventorySlot2,
-        `[*En bandouillère*] **RPK-16 5.45x39 light machine gun Default**   💵 Marché **43 345₽**  
- [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*échange*) **24 218₽**  
-  95 x **5.45x39mm US gs**   💵 Prapor 1 **9 120₽**  
- **5.45x39mm US gs**   💵 Prapor 1 **96₽**  `
-      ],
-      [
-        {
-          typeId: 'pockets',
-          items: [
-            ...inventorySlot3.items,
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: ammo545bp.id,
-              modSlots: [],
-              quantity: 60
-            },
-            {
-              content: [],
-              ignorePrice: true,
-              itemId: vaseline.id,
-              modSlots: [],
-              quantity: 1
-            }
-          ]
-        },
-        `[*Poches*] **MS2000 Marker**   💵 Ragman 1 **95€** (= **15 105₽**)  
-[*Poches*] **ELCAN SpecterDR 1x/4x scope**   💵 Peacekeeper 3 **279$** (= **39 886₽**)  
-[*Poches*] **SIG Sauer SRD9 9x19 sound suppressor**   💵 Peacekeeper 2 **242$** (= **34 606₽**)  
-[*Poches*] 60 x **5.45x39mm BP gs**   💵 Pas de marchand  
-[*Poches*] **Vaseline balm**  `
-      ],
-      [
-        {
-          typeId: 'tacticalRig',
-          items: [
-            {
-              content: [
-                {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: ms2000.id,
-                  modSlots: [],
-                  quantity: 1
-                }
-              ],
-              ignorePrice: false,
-              itemId: bansheeDefault.id,
-              modSlots: [
-                {
-                  item: {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: monocletePe.id,
-                    modSlots: [],
-                    quantity: 1
-                  },
-                  modSlotName: 'front_plate'
-                },
-                {
-                  item: {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: plate6b33Back.id,
-                    modSlots: [],
-                    quantity: 1
-                  },
-                  modSlotName: 'back_plate'
-                }
-              ],
-              quantity: 1
-            }
-          ]
-        } as IInventorySlot,
-        `[*Gilet tactique*] **Shellback Tactical Banshee plate carrier (A-TACS AU) Default**   💵 Ragman 3 (*échange*) **59 790₽**  
- [*Plaque dorsale*] **6B13 custom ballistic plates (Back)**   💵 Marché **43 868₽**  
- **MS2000 Marker**   💵 Ragman 1 **95€** (= **15 105₽**)  `
-      ],
-      [
-        {
-          items: [undefined, undefined, undefined, undefined],
-          typeId: 'pockets'
-        } as IInventorySlot,
-        ''
-      ]
-    ])('should convert an inventory slot to a markdown text', async (inventorySlot: IInventorySlot, expected: string) => {
-      // Arrange
-      useItemServiceMock()
-      usePresetServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(GlobalFilterService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotService)
-
-      const service = new InventorySlotPropertiesService()
-
-      // Act
-      const result = await service.toText(
-        inventorySlot,
-        {
-          includeEmojis: true,
-          includeLink: true,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.markdown
-        })
-
-      // Assert
-      expect(result).toBe(expected)
-    })
-
-    it('should not include emojis', async () => {
-      // Arrange
-      useItemServiceMock()
-      usePresetServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(GlobalFilterService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotService)
-
-      const service = new InventorySlotPropertiesService()
-
-      // Act
-      const result = await service.toText(
-        inventorySlot1,
-        {
-          includeEmojis: false,
-          includeLink: true,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.markdown
-        })
-
-      // Assert
-      expect(result).toBe(`[*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**   Marché **63 493₽**  
- [*Équipement*] **LShZ-2DTM face shield**   Ragman 3 (*échange*) **29 805₽**  `)
-    })
-
-    it('should ignore undefined items in an inventory slot', async () => {
-      // Arrange
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotService)
-
-      const service = new InventorySlotPropertiesService()
-
-      // Act
-      const result = await service.toText(
-        {
-          items: [undefined, undefined, undefined, undefined],
-          typeId: 'pockets'
-        },
-        {
-          includeEmojis: true,
-          includeLink: true,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.markdown
-        })
-
-      // Assert
-      expect(result).toBe('')
-    })
-  })
-
-  describe('toText() (simple text)', () => {
-    it.each([
-      [
-        inventorySlot1,
-        `[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   💵 Marché 63 493₽
- [Équipement] LShZ-2DTM face shield   💵 Ragman 3 (échange) 29 805₽`
-      ],
-      [
-        inventorySlot2,
-        `[En bandouillère] RPK-16 5.45x39 light machine gun Default   💵 Marché 43 345₽
- [Chargeur] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
-  95 x 5.45x39mm US gs   💵 Prapor 1 9 120₽
- 5.45x39mm US gs   💵 Prapor 1 96₽`
-      ],
-      [
-        {
-          typeId: 'pockets',
-          items: [
-            ...inventorySlot3.items,
-            {
-              content: [],
-              ignorePrice: false,
-              itemId: ammo545bp.id,
-              modSlots: [],
-              quantity: 60
-            },
-            {
-              content: [],
-              ignorePrice: true,
-              itemId: vaseline.id,
-              modSlots: [],
-              quantity: 1
-            }
-          ]
-        },
-        `[Poches] MS2000 Marker   💵 Ragman 1 95€ (= 15 105₽)
-[Poches] ELCAN SpecterDR 1x/4x scope   💵 Peacekeeper 3 279$ (= 39 886₽)
-[Poches] SIG Sauer SRD9 9x19 sound suppressor   💵 Peacekeeper 2 242$ (= 34 606₽)
-[Poches] 60 x 5.45x39mm BP gs   💵 Pas de marchand
-[Poches] Vaseline balm`
-      ],
-      [
-        {
-          typeId: 'tacticalRig',
-          items: [
-            {
-              content: [
-                {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: ms2000.id,
-                  modSlots: [],
-                  quantity: 1
-                }
-              ],
-              ignorePrice: false,
-              itemId: bansheeDefault.id,
-              modSlots: [
-                {
-                  item: {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: monocletePe.id,
-                    modSlots: [],
-                    quantity: 1
-                  },
-                  modSlotName: 'front_plate'
-                },
-                {
-                  item: {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: plate6b33Back.id,
-                    modSlots: [],
-                    quantity: 1
-                  },
-                  modSlotName: 'back_plate'
-                }
-              ],
-              quantity: 1
-            }
-          ]
-        } as IInventorySlot,
-        `[Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU) Default   💵 Ragman 3 (échange) 59 790₽
- [Plaque dorsale] 6B13 custom ballistic plates (Back)   💵 Marché 43 868₽
- MS2000 Marker   💵 Ragman 1 95€ (= 15 105₽)`
-      ],
-      [
-        {
-          items: [undefined, undefined, undefined, undefined],
-          typeId: 'pockets'
-        } as IInventorySlot,
-        ''
-      ]
-    ])('should convert an inventory slot to a text', async (inventorySlot: IInventorySlot, expected: string) => {
-      // Arrange
-      useItemServiceMock()
-      usePresetServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(GlobalFilterService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotService)
-
-      const service = new InventorySlotPropertiesService()
-
-      // Act
-      const result = await service.toText(
-        inventorySlot,
-        {
-          includeEmojis: true,
-          includeLink: true,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.simpleText
-        })
-
-      // Assert
-      expect(result).toBe(expected)
-    })
-
-    it('should not include emojis', async () => {
-      // Arrange
-      useItemServiceMock()
-      usePresetServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(GlobalFilterService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotService)
-
-      const service = new InventorySlotPropertiesService()
-
-      // Act
-      const result = await service.toText(
-        inventorySlot1,
-        {
-          includeEmojis: false,
-          includeLink: true,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.simpleText
-        })
-
-      // Assert
-      expect(result).toBe(`[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   Marché 63 493₽
- [Équipement] LShZ-2DTM face shield   Ragman 3 (échange) 29 805₽`)
-    })
-
-    it('should ignore undefined items in an inventory slot', async () => {
-      // Arrange
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotService)
-
-      const service = new InventorySlotPropertiesService()
-
-      // Act
-      const result = await service.toText(
-        {
-          items: [undefined, undefined, undefined, undefined],
-          typeId: 'pockets'
-        },
-        {
-          includeEmojis: true,
-          includeLink: true,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.simpleText
-        })
-
-      // Assert
-      expect(result).toBe('')
-    })
-  })
-
-  describe('getSummary()', () => {
+  describe('getSummaryAsync()', () => {
     describe('Armor modifiers', () => {
       it.each([
         [
@@ -419,7 +65,7 @@ describe('InventorySlotPropertiesService', () => {
                 quantity: 1
               }
             ],
-            typeId: 'bodyArmor'
+            typeId: InventorySlotTypeId.bodyArmor
           } as IInventorySlot,
           {
             armorClass: cultLocust.armorClass,
@@ -437,7 +83,7 @@ describe('InventorySlotPropertiesService', () => {
                 quantity: 1
               }
             ],
-            typeId: 'bodyArmor'
+            typeId: InventorySlotTypeId.bodyArmor
           } as IInventorySlot,
           {
             armorClass: paca.armorClass,
@@ -476,7 +122,7 @@ describe('InventorySlotPropertiesService', () => {
                 quantity: 1
               }
             ],
-            typeId: 'tacticalRig'
+            typeId: InventorySlotTypeId.tacticalRig
           } as IInventorySlot,
           {
             armorClass: cultLocust.armorClass,
@@ -494,7 +140,7 @@ describe('InventorySlotPropertiesService', () => {
                 quantity: 1
               }
             ],
-            typeId: 'tacticalRig'
+            typeId: InventorySlotTypeId.tacticalRig
           } as IInventorySlot,
           {
             armorClass: 0,
@@ -512,7 +158,7 @@ describe('InventorySlotPropertiesService', () => {
                 quantity: 1
               }
             ],
-            typeId: 'armband'
+            typeId: InventorySlotTypeId.armband
           } as IInventorySlot,
           {
             armorClass: 0,
@@ -524,7 +170,7 @@ describe('InventorySlotPropertiesService', () => {
             items: [
               undefined
             ],
-            typeId: 'bodyArmor'
+            typeId: InventorySlotTypeId.bodyArmor
           } as IInventorySlot,
           {
             armorClass: 0,
@@ -539,13 +185,12 @@ describe('InventorySlotPropertiesService', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(GlobalFilterService)
         Services.configure(InventoryItemService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
 
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary(inventorySlot)
+        const summary = await service.getSummaryAsync(inventorySlot)
 
         // Assert
         expect(summary.armorModifiers).toStrictEqual(expected)
@@ -559,13 +204,12 @@ describe('InventorySlotPropertiesService', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(GlobalFilterService)
         Services.configure(InventoryItemService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
 
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary({
+        const summary = await service.getSummaryAsync({
           items: [
             {
               content: [],
@@ -575,7 +219,7 @@ describe('InventorySlotPropertiesService', () => {
               quantity: 1
             }
           ],
-          typeId: 'bodyArmor'
+          typeId: InventorySlotTypeId.bodyArmor
         })
 
         // Assert
@@ -593,7 +237,7 @@ describe('InventorySlotPropertiesService', () => {
         [inventorySlot1, 0],
         [
           {
-            typeId: 'onSling',
+            typeId: InventorySlotTypeId.onSling,
             items: []
           } as IInventorySlot,
           0
@@ -606,13 +250,12 @@ describe('InventorySlotPropertiesService', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(GlobalFilterService)
         Services.configure(InventoryItemService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
 
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary(inventorySlot)
+        const summary = await service.getSummaryAsync(inventorySlot)
 
         // Assert
         expect(summary.ergonomics).toBe(expected)
@@ -626,13 +269,12 @@ describe('InventorySlotPropertiesService', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(GlobalFilterService)
         Services.configure(InventoryItemService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
 
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary({
+        const summary = await service.getSummaryAsync({
           items: [
             {
               content: [],
@@ -642,7 +284,7 @@ describe('InventorySlotPropertiesService', () => {
               quantity: 1
             }
           ],
-          typeId: 'onSling'
+          typeId: InventorySlotTypeId.onSling
         })
 
         // Assert
@@ -722,7 +364,7 @@ describe('InventorySlotPropertiesService', () => {
         [
           {
             items: [undefined],
-            typeId: 'pockets'
+            typeId: InventorySlotTypeId.pockets
           },
           {
             missingPrice: false,
@@ -738,13 +380,12 @@ describe('InventorySlotPropertiesService', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(GlobalFilterService)
         Services.configure(InventoryItemService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
 
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary(inventorySlot)
+        const summary = await service.getSummaryAsync(inventorySlot)
 
         // Assert
         expect(summary.price).toStrictEqual(expected)
@@ -758,7 +399,6 @@ describe('InventorySlotPropertiesService', () => {
         useTarkovValuesServiceMock()
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
-        Services.configure(InventorySlotService)
         Services.configure(GlobalFilterService)
 
         const service = new InventorySlotPropertiesService()
@@ -773,11 +413,11 @@ describe('InventorySlotPropertiesService', () => {
               quantity: 1
             }
           ],
-          typeId: 'pockets'
+          typeId: InventorySlotTypeId.pockets
         }
 
         // Act
-        const summary = await service.getSummary(inventorySlot)
+        const summary = await service.getSummaryAsync(inventorySlot)
 
         // Assert
         expect(summary.price).toStrictEqual({
@@ -794,13 +434,12 @@ describe('InventorySlotPropertiesService', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(GlobalFilterService)
         Services.configure(InventoryItemService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(PresetService)
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary(
+        const summary = await service.getSummaryAsync(
           {
             items: [
               {
@@ -811,7 +450,7 @@ describe('InventorySlotPropertiesService', () => {
                 quantity: 1
               }
             ],
-            typeId: 'bodyArmor'
+            typeId: InventorySlotTypeId.bodyArmor
           })
 
         // Assert
@@ -841,7 +480,7 @@ describe('InventorySlotPropertiesService', () => {
         ],
         [
           {
-            typeId: 'onSling',
+            typeId: InventorySlotTypeId.onSling,
             items: []
           } as IInventorySlot,
           {
@@ -857,13 +496,12 @@ describe('InventorySlotPropertiesService', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(GlobalFilterService)
         Services.configure(InventoryItemService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
 
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary(inventorySlot)
+        const summary = await service.getSummaryAsync(inventorySlot)
 
         // Assert
         expect(summary.recoil).toStrictEqual(expected)
@@ -877,13 +515,12 @@ describe('InventorySlotPropertiesService', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(GlobalFilterService)
         Services.configure(InventoryItemService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
 
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary({
+        const summary = await service.getSummaryAsync({
           items: [
             {
               content: [],
@@ -893,7 +530,7 @@ describe('InventorySlotPropertiesService', () => {
               quantity: 1
             }
           ],
-          typeId: 'onSling'
+          typeId: InventorySlotTypeId.onSling
         })
 
         // Assert
@@ -933,7 +570,7 @@ describe('InventorySlotPropertiesService', () => {
         [
           {
             items: [undefined],
-            typeId: 'headwear'
+            typeId: InventorySlotTypeId.headwear
           },
           {
             ergonomicsModifierPercentage: 0,
@@ -949,13 +586,12 @@ describe('InventorySlotPropertiesService', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(GlobalFilterService)
         Services.configure(InventoryItemService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
 
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary(inventorySlot)
+        const summary = await service.getSummaryAsync(inventorySlot)
 
         // Assert
         expect(summary.wearableModifiers).toStrictEqual(expected)
@@ -969,13 +605,12 @@ describe('InventorySlotPropertiesService', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(GlobalFilterService)
         Services.configure(InventoryItemService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
 
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary({
+        const summary = await service.getSummaryAsync({
           items: [
             {
               content: [],
@@ -985,7 +620,7 @@ describe('InventorySlotPropertiesService', () => {
               quantity: 1
             }
           ],
-          typeId: 'bodyArmor'
+          typeId: InventorySlotTypeId.bodyArmor
         })
 
         // Assert
@@ -1010,7 +645,7 @@ describe('InventorySlotPropertiesService', () => {
         [
           {
             items: [undefined],
-            typeId: 'pockets'
+            typeId: InventorySlotTypeId.pockets
           },
           0
         ]
@@ -1022,13 +657,12 @@ describe('InventorySlotPropertiesService', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(GlobalFilterService)
         Services.configure(InventoryItemService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
 
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary(inventorySlot)
+        const summary = await service.getSummaryAsync(inventorySlot)
 
         // Assert
         expect(summary.weight).toBe(expected)
@@ -1042,13 +676,12 @@ describe('InventorySlotPropertiesService', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(GlobalFilterService)
         Services.configure(InventoryItemService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
 
         const service = new InventorySlotPropertiesService()
 
         // Act
-        const summary = await service.getSummary({
+        const summary = await service.getSummaryAsync({
           items: [
             {
               content: [],
@@ -1058,12 +691,417 @@ describe('InventorySlotPropertiesService', () => {
               quantity: 1
             }
           ],
-          typeId: 'bodyArmor'
+          typeId: InventorySlotTypeId.bodyArmor
         })
 
         // Assert
         expect(summary.weight).toBe(0)
       })
+    })
+  })
+
+  describe('getType()', () => {
+    it('should get an inventory slot type', () => {
+      // Arrange
+      useItemServiceMock()
+      const service = new InventorySlotPropertiesService()
+
+      // Act
+      const slotTypeResult = service.getType(InventorySlotTypeId.pockets)
+
+      // Assert
+      expect(slotTypeResult).toStrictEqual({
+        acceptedItemCategories: [
+          ItemCategoryId.ammunition,
+          ItemCategoryId.armband,
+          ItemCategoryId.armor,
+          ItemCategoryId.armorMod,
+          ItemCategoryId.backpack,
+          ItemCategoryId.container,
+          ItemCategoryId.currency,
+          ItemCategoryId.eyewear,
+          ItemCategoryId.faceCover,
+          ItemCategoryId.grenade,
+          ItemCategoryId.headphones,
+          ItemCategoryId.headwear,
+          ItemCategoryId.magazine,
+          ItemCategoryId.mainWeapon,
+          ItemCategoryId.meleeWeapon,
+          ItemCategoryId.mod,
+          ItemCategoryId.other,
+          ItemCategoryId.rangedWeaponMod,
+          ItemCategoryId.secondaryWeapon,
+          ItemCategoryId.securedContainer,
+          ItemCategoryId.special,
+          ItemCategoryId.vest
+        ],
+        canBeLooted: true,
+        displayOrder: 9,
+        icon: 'th-large',
+        id: 'pockets',
+        itemSlotsAmount: 4
+      })
+    })
+
+    it('should throw if an inventory slot type is not found', () => {
+      // Arrange
+      const service = new InventorySlotPropertiesService()
+
+      // Act
+      const act = (): IInventorySlotType => service.getType('invalid' as InventorySlotTypeId)
+
+      // Assert
+      expect(act).toThrowError('Inventory slot type "invalid" not found.')
+    })
+  })
+
+  describe('toTextAsync() (markdown)', () => {
+    it.each([
+      [
+        inventorySlot1,
+        `[*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**   💵 Marché **63 493₽**  
+ [*Équipement*] **LShZ-2DTM face shield**   💵 Ragman 3 (*échange*) **29 805₽**  `
+      ],
+      [
+        inventorySlot2,
+        `[*En bandouillère*] **RPK-16 5.45x39 light machine gun Default**   💵 Marché **43 345₽**  
+ [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*échange*) **24 218₽**  
+  95 x **5.45x39mm US gs**   💵 Prapor 1 **9 120₽**  
+ **5.45x39mm US gs**   💵 Prapor 1 **96₽**  `
+      ],
+      [
+        {
+          typeId: InventorySlotTypeId.pockets,
+          items: [
+            ...inventorySlot3.items,
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: ammo545bp.id,
+              modSlots: [],
+              quantity: 60
+            },
+            {
+              content: [],
+              ignorePrice: true,
+              itemId: vaseline.id,
+              modSlots: [],
+              quantity: 1
+            }
+          ]
+        },
+        `[*Poches*] **MS2000 Marker**   💵 Ragman 1 **95€** (= **15 105₽**)  
+[*Poches*] **ELCAN SpecterDR 1x/4x scope**   💵 Peacekeeper 3 **279$** (= **39 886₽**)  
+[*Poches*] **SIG Sauer SRD9 9x19 sound suppressor**   💵 Peacekeeper 2 **242$** (= **34 606₽**)  
+[*Poches*] 60 x **5.45x39mm BP gs**   💵 Pas de marchand  
+[*Poches*] **Vaseline balm**  `
+      ],
+      [
+        {
+          typeId: InventorySlotTypeId.tacticalRig,
+          items: [
+            {
+              content: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: ms2000.id,
+                  modSlots: [],
+                  quantity: 1
+                }
+              ],
+              ignorePrice: false,
+              itemId: bansheeDefault.id,
+              modSlots: [
+                {
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: monocletePe.id,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  modSlotName: 'front_plate'
+                },
+                {
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: plate6b33Back.id,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  modSlotName: 'back_plate'
+                }
+              ],
+              quantity: 1
+            }
+          ]
+        } as IInventorySlot,
+        `[*Gilet tactique*] **Shellback Tactical Banshee plate carrier (A-TACS AU) Default**   💵 Ragman 3 (*échange*) **59 790₽**  
+ [*Plaque dorsale*] **6B13 custom ballistic plates (Back)**   💵 Marché **43 868₽**  
+ **MS2000 Marker**   💵 Ragman 1 **95€** (= **15 105₽**)  `
+      ],
+      [
+        {
+          items: [undefined, undefined, undefined, undefined],
+          typeId: InventorySlotTypeId.pockets
+        } as IInventorySlot,
+        ''
+      ]
+    ])('should convert an inventory slot to a markdown text', async (inventorySlot: IInventorySlot, expected: string) => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+
+      const service = new InventorySlotPropertiesService()
+
+      // Act
+      const result = await service.toTextAsync(
+        inventorySlot,
+        {
+          includeEmojis: true,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
+
+      // Assert
+      expect(result).toBe(expected)
+    })
+
+    it('should not include emojis', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+
+      const service = new InventorySlotPropertiesService()
+
+      // Act
+      const result = await service.toTextAsync(
+        inventorySlot1,
+        {
+          includeEmojis: false,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
+
+      // Assert
+      expect(result).toBe(`[*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**   Marché **63 493₽**  
+ [*Équipement*] **LShZ-2DTM face shield**   Ragman 3 (*échange*) **29 805₽**  `)
+    })
+
+    it('should ignore undefined items in an inventory slot', async () => {
+      // Arrange
+      Services.configure(InventoryItemService)
+
+      const service = new InventorySlotPropertiesService()
+
+      // Act
+      const result = await service.toTextAsync(
+        {
+          items: [undefined, undefined, undefined, undefined],
+          typeId: InventorySlotTypeId.pockets
+        },
+        {
+          includeEmojis: true,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
+
+      // Assert
+      expect(result).toBe('')
+    })
+  })
+
+  describe('toTextAsync() (simple text)', () => {
+    it.each([
+      [
+        inventorySlot1,
+        `[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   💵 Marché 63 493₽
+ [Équipement] LShZ-2DTM face shield   💵 Ragman 3 (échange) 29 805₽`
+      ],
+      [
+        inventorySlot2,
+        `[En bandouillère] RPK-16 5.45x39 light machine gun Default   💵 Marché 43 345₽
+ [Chargeur] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
+  95 x 5.45x39mm US gs   💵 Prapor 1 9 120₽
+ 5.45x39mm US gs   💵 Prapor 1 96₽`
+      ],
+      [
+        {
+          typeId: InventorySlotTypeId.pockets,
+          items: [
+            ...inventorySlot3.items,
+            {
+              content: [],
+              ignorePrice: false,
+              itemId: ammo545bp.id,
+              modSlots: [],
+              quantity: 60
+            },
+            {
+              content: [],
+              ignorePrice: true,
+              itemId: vaseline.id,
+              modSlots: [],
+              quantity: 1
+            }
+          ]
+        },
+        `[Poches] MS2000 Marker   💵 Ragman 1 95€ (= 15 105₽)
+[Poches] ELCAN SpecterDR 1x/4x scope   💵 Peacekeeper 3 279$ (= 39 886₽)
+[Poches] SIG Sauer SRD9 9x19 sound suppressor   💵 Peacekeeper 2 242$ (= 34 606₽)
+[Poches] 60 x 5.45x39mm BP gs   💵 Pas de marchand
+[Poches] Vaseline balm`
+      ],
+      [
+        {
+          typeId: InventorySlotTypeId.tacticalRig,
+          items: [
+            {
+              content: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: ms2000.id,
+                  modSlots: [],
+                  quantity: 1
+                }
+              ],
+              ignorePrice: false,
+              itemId: bansheeDefault.id,
+              modSlots: [
+                {
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: monocletePe.id,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  modSlotName: 'front_plate'
+                },
+                {
+                  item: {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: plate6b33Back.id,
+                    modSlots: [],
+                    quantity: 1
+                  },
+                  modSlotName: 'back_plate'
+                }
+              ],
+              quantity: 1
+            }
+          ]
+        } as IInventorySlot,
+        `[Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU) Default   💵 Ragman 3 (échange) 59 790₽
+ [Plaque dorsale] 6B13 custom ballistic plates (Back)   💵 Marché 43 868₽
+ MS2000 Marker   💵 Ragman 1 95€ (= 15 105₽)`
+      ],
+      [
+        {
+          items: [undefined, undefined, undefined, undefined],
+          typeId: InventorySlotTypeId.pockets
+        } as IInventorySlot,
+        ''
+      ]
+    ])('should convert an inventory slot to a text', async (inventorySlot: IInventorySlot, expected: string) => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+
+      const service = new InventorySlotPropertiesService()
+
+      // Act
+      const result = await service.toTextAsync(
+        inventorySlot,
+        {
+          includeEmojis: true,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
+
+      // Assert
+      expect(result).toBe(expected)
+    })
+
+    it('should not include emojis', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+
+      const service = new InventorySlotPropertiesService()
+
+      // Act
+      const result = await service.toTextAsync(
+        inventorySlot1,
+        {
+          includeEmojis: false,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
+
+      // Assert
+      expect(result).toBe(`[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   Marché 63 493₽
+ [Équipement] LShZ-2DTM face shield   Ragman 3 (échange) 29 805₽`)
+    })
+
+    it('should ignore undefined items in an inventory slot', async () => {
+      // Arrange
+      Services.configure(InventoryItemService)
+
+      const service = new InventorySlotPropertiesService()
+
+      // Act
+      const result = await service.toTextAsync(
+        {
+          items: [undefined, undefined, undefined, undefined],
+          typeId: InventorySlotTypeId.pockets
+        },
+        {
+          includeEmojis: true,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
+
+      // Assert
+      expect(result).toBe('')
     })
   })
 })
@@ -1091,7 +1129,7 @@ const inventorySlot1: IInventorySlot = {
       quantity: 1
     }
   ],
-  typeId: 'headwear'
+  typeId: InventorySlotTypeId.headwear
 }
 
 const inventorySlot2: IInventorySlot = {
@@ -1246,11 +1284,11 @@ const inventorySlot2: IInventorySlot = {
       quantity: 1
     }
   ],
-  typeId: 'onSling'
+  typeId: InventorySlotTypeId.onSling
 }
 
 const inventorySlot3: IInventorySlot = {
-  typeId: 'pockets',
+  typeId: InventorySlotTypeId.pockets,
   items: [
     {
       content: [],
@@ -1277,7 +1315,7 @@ const inventorySlot3: IInventorySlot = {
 }
 
 const inventorySlot4: IInventorySlot = {
-  typeId: 'tacticalRig',
+  typeId: InventorySlotTypeId.tacticalRig,
   items: [
     {
       content: [

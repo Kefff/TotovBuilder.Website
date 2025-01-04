@@ -1,7 +1,7 @@
 import { TinyEmitter } from 'tiny-emitter'
 import Images from '../images'
 import { ICurrency } from '../models/configuration/ICurrency'
-import { IItem } from '../models/item/IItem'
+import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
 import vueI18n from '../plugins/vueI18n'
 import { GlobalFilterService } from './GlobalFilterService'
@@ -45,19 +45,6 @@ export class ItemService {
    * Indicates whether data that is fetched only once and never expire has been cached or not.
    */
   private hasStaticDataCached = false
-
-  /**
-   * Fetched item categories.
-   */
-  private get itemCategories(): string[] {
-    if (this._itemCategories == null) {
-      // This should never happen, data should have been loaded or a error message should have been displayed
-      throw new Error(vueI18n.t('message.itemCategoriesNotFetched'))
-    }
-
-    return this._itemCategories
-  }
-  private _itemCategories: string[] | undefined
 
   /**
    * Fetched items.
@@ -105,8 +92,17 @@ export class ItemService {
   /**
    * Initializes a new instance of the ItemService class.
    */
-  constructor() {
+  public constructor() {
     Services.get(GlobalFilterService).emitter.on(GlobalFilterService.changeEvent, () => this.updateFilteredItems())
+  }
+
+  /**
+   * Gets all items.
+   */
+  public async getAllAsync(): Promise<IItem[]> {
+    await this.initializeAsync()
+
+    return this.items
   }
 
   /**
@@ -131,20 +127,10 @@ export class ItemService {
    * @returns Item.
    * @throws When the item is not found.
    */
-  public async getItem(id: string): Promise<IItem> {
-    const items = await this.getItems([id], false)
+  public async getItemAsync(id: string): Promise<IItem> {
+    const items = await this.getItemsAsync([id], false)
 
     return items[0]
-  }
-
-  /**
-   * Gets item categories.
-   * @returns Item categories.
-   */
-  public async getItemCategories(): Promise<string[]> {
-    await this.initialize()
-
-    return this.itemCategories
   }
 
   /**
@@ -154,8 +140,8 @@ export class ItemService {
    * @returns Items.
    * @throws When no item is found while the global filter is not used.
    */
-  public async getItems(ids: string[], useGlobalFilter: boolean): Promise<IItem[]> {
-    await this.initialize()
+  public async getItemsAsync(ids: string[], useGlobalFilter: boolean): Promise<IItem[]> {
+    await this.initializeAsync()
 
     let items: IItem[] = []
 
@@ -185,8 +171,8 @@ export class ItemService {
    * @returns Items belonging to the categories.
    * @throws When no item is found while the global filter is not used.
    */
-  public async getItemsOfCategories(categoryIds: string[], useGlobalFilter = false): Promise<IItem[]> {
-    await this.initialize()
+  public async getItemsOfCategoriesAsync(categoryIds: ItemCategoryId[], useGlobalFilter = false): Promise<IItem[]> {
+    await this.initializeAsync()
 
     let items: IItem[]
 
@@ -223,9 +209,9 @@ export class ItemService {
    * @param id - ID of the item that is not found.
    * @returns Not found item.
    */
-  public static getNotFoundItem(id: string) {
+  public static getNotFoundItem(id: string): IItem {
     return {
-      categoryId: 'notFound',
+      categoryId: ItemCategoryId.notFound,
       conflictingItemIds: [],
       iconLink: Images.unknownItem,
       id,
@@ -233,6 +219,7 @@ export class ItemService {
       marketLink: '',
       maxStackableAmount: 1,
       name: vueI18n.t('caption.notFoundItem', { id }),
+      presetWeight: undefined,
       prices: [],
       shortName: '',
       weight: 0,
@@ -243,7 +230,7 @@ export class ItemService {
   /**
    * Initializes the data used by the service.
    */
-  public async initialize(): Promise<void> {
+  public async initializeAsync(): Promise<void> {
     if (Services.get(WebsiteConfigurationService).initializationState === ServiceInitializationState.error) {
       this._initializationState = ServiceInitializationState.error
 
@@ -251,7 +238,7 @@ export class ItemService {
     }
 
     if (!this.hasStaticDataCached) {
-      const staticDataFetched = await this.fetchStaticData()
+      const staticDataFetched = await this.fetchStaticDataAsync()
 
       if (staticDataFetched) {
         this._initializationState = ServiceInitializationState.initialized
@@ -263,32 +250,16 @@ export class ItemService {
     }
 
     if (!this.hasValidCache() && this._initializationState !== ServiceInitializationState.error) {
-      await this.fetchPrices()
+      await this.fetchPricesAsync()
     }
-  }
-
-  /**
-   * Fetches item categories.
-   * @returns true when item categories have correctly been fetched; otherwise false.
-   */
-  private async fetchItemCategories(): Promise<boolean> {
-    const itemCategories = await Services.get(ItemFetcherService).fetchItemCategories()
-
-    if (itemCategories == undefined) {
-      return false
-    }
-
-    this._itemCategories = itemCategories
-
-    return true
   }
 
   /**
    * Fetches items.
    * @returns true when items have correctly been fetched; otherwise false.
    */
-  private async fetchItems(): Promise<boolean> {
-    const items = await Services.get(ItemFetcherService).fetchItems()
+  private async fetchItemsAsync(): Promise<boolean> {
+    const items = await Services.get(ItemFetcherService).fetchItemsAsync()
 
     if (items == undefined) {
       return false
@@ -304,9 +275,9 @@ export class ItemService {
    * If prices are already being fetched, waits for the operation to end before returning.
    * This should in theory never happen since fetchPrices() is only called in initialize() which executes nothing when another initialization is already being performed.
    */
-  private async fetchPrices() {
+  private async fetchPricesAsync(): Promise<void> {
     if (!this.isFetchingPrices) {
-      this.pricesFetchingPromise = this.startPricesFetching()
+      this.pricesFetchingPromise = this.startPricesFetchingAsync()
     }
 
     await this.pricesFetchingPromise
@@ -318,9 +289,9 @@ export class ItemService {
    * This should in theory never happen since fetchStaticData() is only called in initialize() which executes nothing when another initialization is already being performed.
    * @returns true when all static data has been fetched; otherwise false.
    */
-  private async fetchStaticData(): Promise<boolean> {
+  private async fetchStaticDataAsync(): Promise<boolean> {
     if (!this.isFetchingStaticData) {
-      this.staticDataFetchingPromise = this.startStaticDataFetching()
+      this.staticDataFetchingPromise = this.startStaticDataFetchingAsync()
     }
 
     const staticDataFetched = await this.staticDataFetchingPromise
@@ -334,7 +305,7 @@ export class ItemService {
    * @param items - List of items in which the items must be found.
    * @returns Found items.
    */
-  private findItems(ids: string[], items: IItem[]) {
+  private findItems(ids: string[], items: IItem[]): IItem[] {
     const foundItems: IItem[] = []
 
     for (const id of ids) {
@@ -363,10 +334,10 @@ export class ItemService {
   /**
    * Starts prices fetching.
    */
-  private async startPricesFetching(): Promise<void> {
+  private async startPricesFetchingAsync(): Promise<void> {
     this.isFetchingPrices = true
 
-    const prices = await Services.get(ItemFetcherService).fetchPrices()
+    const prices = await Services.get(ItemFetcherService).fetchPricesAsync()
 
     if (prices == undefined) {
       Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.pricesLoadingError'))
@@ -389,21 +360,15 @@ export class ItemService {
    * Starts static data fetching.
    * @returns true when fetching has succeeded, otherwise false.
    */
-  private async startStaticDataFetching(): Promise<boolean> {
+  private async startStaticDataFetchingAsync(): Promise<boolean> {
     const presetsService = Services.get(PresetService)
 
     this.isFetchingStaticData = true
 
-    const itemCategoriesFetchSuccess = await this.fetchItemCategories()
-
-    if (!itemCategoriesFetchSuccess) {
-      return false
-    }
-
     const fetchResults: boolean[] = []
     await Promise.allSettled([
-      this.fetchItems().then(r => fetchResults.push(r)),
-      presetsService.fetchPresets().then(r => fetchResults.push(r))
+      this.fetchItemsAsync().then(r => fetchResults.push(r)),
+      presetsService.fetchPresetsAsync().then(r => fetchResults.push(r))
     ])
 
     this.hasStaticDataCached = true
@@ -411,7 +376,7 @@ export class ItemService {
     const allFetched = fetchResults.every(r => r)
 
     if (allFetched) {
-      await presetsService.updatePresetProperties(this.items)
+      await presetsService.updatePresetPropertiesAsync(this.items)
     }
 
     this.isFetchingStaticData = false
@@ -422,7 +387,7 @@ export class ItemService {
   /**
    * Updates the value of the currencies.
    */
-  private updateCurrencyValues() {
+  private updateCurrencyValues(): void {
     const tarkovValuesService = Services.get(TarkovValuesService)
 
     for (const currency of tarkovValuesService.values.currencies) {
@@ -444,7 +409,7 @@ export class ItemService {
   /**
    * Updates the filtered items by applying the global filter to the items.
    */
-  private updateFilteredItems() {
+  private updateFilteredItems(): void {
     this.filteredItems = this.items.filter(i => Services.get(GlobalFilterService).isMatchingFilter(i))
   }
 
@@ -452,7 +417,7 @@ export class ItemService {
    * Updates items prices.
    * @param prices - Fetched prices.
    */
-  private updateItemsPrices(prices: IPrice[]) {
+  private updateItemsPrices(prices: IPrice[]): void {
     for (const item of this.items) {
       const itemPrices = prices.filter(p => p.itemId === item.id)
 
@@ -470,7 +435,7 @@ export class ItemService {
   /**
    * Updates item prices in main currency.
    */
-  private updatePricesInMainCurrency() {
+  private updatePricesInMainCurrency(): void {
     for (const item of this.items) {
       for (const price of item.prices.filter(p => p.currencyName !== 'barter')) {
         const currency = this.getCurrency(price.currencyName)

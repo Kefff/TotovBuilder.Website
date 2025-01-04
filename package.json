@@ -8,6 +8,7 @@
     "@intlify/unplugin-vue-i18n": "^4.0.0",
     "@microsoft/applicationinsights-web": "^3.3.2",
     "@unhead/schema": "^1.10.4",
+    "@vueuse/core": "^11.1.0",
     "file-saver": "^2.0.5",
     "guid-typescript": "^1.0.9",
     "json-url": "^3.1.0",
@@ -60,7 +61,7 @@
     "test-watch": "vitest watch",
     "test": "vitest run",
     "tsc": "npm run type-check",
-    "type-check": "vue-tsc --noEmit && tsc --noEmit"
+    "type-check": "vue-tsc && tsc"
   },
   "type": "module",
   "version": "0.0.0"

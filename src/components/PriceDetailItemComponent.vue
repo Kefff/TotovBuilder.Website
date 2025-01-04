@@ -1,3 +1,56 @@
+<script setup lang="ts">
+import { IItem } from '../models/item/IItem'
+import { IPrice } from '../models/item/IPrice'
+import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
+import { GlobalSidebarService } from '../services/GlobalSidebarService'
+import Services from '../services/repository/Services'
+import ItemIcon from './ItemIconComponent.vue'
+import Price from './PriceComponent.vue'
+
+const props = withDefaults(
+  defineProps<{
+    canShowItemStats?: boolean,
+    ignorePriceStatus?: IgnoredUnitPrice
+    item: IItem,
+    missing?: boolean,
+    price?: IPrice,
+    quantity: number,
+    unitPrice?: IPrice
+  }>(),
+  {
+    canShowItemStats: false,
+    ignorePriceStatus: IgnoredUnitPrice.notIgnored,
+    missing: false,
+    price: undefined,
+    unitPrice: undefined
+  })
+
+/**
+ * Displays the stats of an item.
+ * @param item - Item.
+ */
+function displayItemStats(item: IItem): void {
+  if (!props.canShowItemStats) {
+    return
+  }
+
+  const globalSidebarService = Services.get(GlobalSidebarService)
+  globalSidebarService.display({
+    displayedComponentType: 'StatsSidebar',
+    displayedComponentParameters: item
+  })
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="price-detail-item">
     <div
@@ -39,59 +92,6 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { IItem } from '../models/item/IItem'
-import { IPrice } from '../models/item/IPrice'
-import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
-import { GlobalSidebarService } from '../services/GlobalSidebarService'
-import Services from '../services/repository/Services'
-import ItemIcon from './ItemIconComponent.vue'
-import Price from './PriceComponent.vue'
-
-const props = withDefaults(
-  defineProps<{
-    canShowItemStats?: boolean,
-    ignorePriceStatus?: IgnoredUnitPrice
-    item: IItem,
-    missing?: boolean,
-    price?: IPrice,
-    quantity: number,
-    unitPrice?: IPrice
-  }>(),
-  {
-    canShowItemStats: false,
-    ignorePriceStatus: IgnoredUnitPrice.notIgnored,
-    missing: false,
-    price: undefined,
-    unitPrice: undefined
-  })
-
-/**
- * Displays the stats of an item.
- * @param item - Item.
- */
-function displayItemStats(item: IItem) {
-  if (!props.canShowItemStats) {
-    return
-  }
-
-  const globalSidebarService = Services.get(GlobalSidebarService)
-  globalSidebarService.display({
-    displayedComponentType: 'StatsSidebar',
-    displayedComponentParameters: item
-  })
-}
-</script>
 
 
 

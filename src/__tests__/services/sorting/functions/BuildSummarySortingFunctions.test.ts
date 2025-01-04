@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
+import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { IBuildSummary } from '../../../../models/utils/IBuildSummary'
-import SortingData from '../../../../models/utils/SortingData'
 import { SortingOrder } from '../../../../models/utils/SortingOrder'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { BuildSummarySortingFunctions } from '../../../../services/sorting/functions/BuildSummarySortingFunctions'
@@ -79,12 +79,12 @@ describe('comparisonFunction()', () => {
       weight: 1
     } as IBuildSummary
 
-    let sortingData: SortingData<IBuildSummary> | undefined = new SortingData()
+    let sortingData: FilterAndSortingData<IBuildSummary> | undefined = new FilterAndSortingData(BuildSummarySortingFunctions)
     const sortingService = new SortingService()
-    sortingData = sortingService.setSortingProperty(sortingData, BuildSummarySortingFunctions, property, SortingOrder.asc)
+    sortingService.setSortingProperty(sortingData, property, SortingOrder.asc)
 
     // Act
-    const sortedItems = await sortingService.sort([buildSummary1, buildSummary2, buildSummary3, buildSummary4], sortingData!)
+    const sortedItems = await sortingService.sortAsync([buildSummary1, buildSummary2, buildSummary3, buildSummary4], sortingData!)
 
     // Assert
     expect(sortedItems).toStrictEqual([buildSummary4, buildSummary3, buildSummary2, buildSummary1])

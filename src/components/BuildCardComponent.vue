@@ -1,17 +1,137 @@
+<script setup lang="ts">
+import { useScroll } from '@vueuse/core'
+import { computed, ref } from 'vue'
+import { IItem } from '../models/item/IItem'
+import { IBuildSummary } from '../models/utils/IBuildSummary'
+import { IListSelectionOptions } from '../models/utils/IListSelectionOptions'
+import { BuildPropertiesService } from '../services/BuildPropertiesService'
+import { BuildService } from '../services/BuildService'
+import { GlobalSidebarService } from '../services/GlobalSidebarService'
+import Services from '../services/repository/Services'
+import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
+import InventoryPrice from './InventoryPriceComponent.vue'
+import ItemIcon from './ItemIconComponent.vue'
+import Tooltip from './TooltipComponent.vue'
+
+const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
+
+const props = withDefaults(
+  defineProps<{
+    buildSummary: IBuildSummary,
+    selectionOptions: IListSelectionOptions,
+    showActionsButton?: boolean,
+    showNotExported: boolean,
+    showShoppingList?: boolean
+  }>(),
+  {
+    showActionsButton: true,
+    showShoppingList: true
+  })
+
+const _buildService = Services.get(BuildService)
+const _globalSidebarService = Services.get(GlobalSidebarService)
+
+const hasItemListElementScroll = computed(() => (itemsListElement.value?.scrollWidth ?? 0) > (itemsListElement.value?.clientWidth ?? 0))
+const itemsInInventorySlots = computed(() => props.buildSummary.shoppingList.filter(sli => sli.inventorySlotId != null))
+const notExportedTooltip = computed(() => {
+  if (props.buildSummary.exported) {
+    return ''
+  }
+
+  const tooltip = Services.get(BuildPropertiesService).getNotExportedTooltip(props.buildSummary.lastUpdated, props.buildSummary.lastExported)
+
+  return tooltip
+})
+const selectionButtonCaptionInternal = computed(() => {
+  if (props.selectionOptions.selectionButtonCaption != null) {
+    return props.selectionOptions.selectionButtonCaption
+  } else if (modelIsSelected.value) {
+    return 'caption.deselect'
+  } else {
+    return 'caption.select'
+  }
+})
+const selectionButtonIconInternal = computed(() => {
+  if (props.selectionOptions.selectionButtonIcon != null) {
+    return props.selectionOptions.selectionButtonIcon
+  } else if (modelIsSelected.value) {
+    return 'times'
+  } else {
+    return 'check'
+  }
+})
+
+const itemsListElement = ref<HTMLDivElement>()
+const itemListElementScroll = useScroll(itemsListElement)
+
+/**
+ * Displays the actions for the specified build.
+ */
+function displayActions(): void {
+  const build = _buildService.get(props.buildSummary.id)
+
+  if (build != null) {
+    _globalSidebarService.display({
+      displayedComponentType: 'BuildSidebar',
+      displayedComponentParameters: build
+    })
+  }
+}
+
+/**
+ * Displays the shopping list for the specified build.
+ */
+function displayShoppingList(): void {
+  _globalSidebarService.display({
+    displayedComponentType: 'ShoppingListSidebar',
+    displayedComponentParameters: {
+      buildName: props.buildSummary.name,
+      shoppingList: props.buildSummary.shoppingList
+    }
+  })
+}
+
+/**
+ * Displays the stats of an item.
+ * @param item - Item.
+ */
+function displayStats(item: IItem): void {
+  _globalSidebarService.display({
+    displayedComponentType: 'StatsSidebar',
+    displayedComponentParameters: item
+  })
+}
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
 <template>
   <Card
-    class="build-card"
-    :class="modelIsSelected ? 'build-card-selected ' : ''"
+    class="card build-card"
+    :class="{ 'card-selected': modelIsSelected }"
   >
     <template #title>
-      <div class="build-card-title">
-        <div>{{ buildSummary.name }}</div>
+      <div class="build-card-header">
+        <div class="build-card-title">
+          <Tooltip :tooltip="buildSummary.name">
+            <span>{{ buildSummary.name }}</span>
+          </Tooltip>
+        </div>
         <Tooltip
           v-if="showNotExported && !buildSummary.exported"
           :tooltip="notExportedTooltip"
         >
           <font-awesome-icon
-            class="buil-card-not-exported"
+            class="build-card-not-exported"
             icon="exclamation-triangle"
           />
         </Tooltip>
@@ -34,13 +154,12 @@
       <div class="build-card-items-container">
         <div
           class="build-card-items-left-scroll-indicator"
-          :style="itemsListElementHasLeftScroll ? 'display: initial' : 'display: none'"
+          :style="hasItemListElementScroll && !itemListElementScroll.arrivedState.left ? 'display: initial' : 'display: none'"
         />
         <div
           v-if="itemsInInventorySlots.length > 0"
           ref="itemsListElement"
           class="build-card-items"
-          @scroll="onItemsListScroll"
         >
           <div
             v-for="itemInInventorySlot of itemsInInventorySlots"
@@ -61,30 +180,44 @@
         </div>
         <div
           class="build-card-items-right-scroll-indicator"
-          :style="itemsListElementHasRightScroll ? 'display: initial' : 'display: none'"
+          :style="hasItemListElementScroll && !itemListElementScroll.arrivedState.right ? 'display: initial' : 'display: none'"
         />
       </div>
-      <div class="build-card-stats">
-        <div v-if="buildSummary.recoil.verticalRecoil !== 0">
-          <Tooltip :tooltip="$t('caption.verticalRecoil')">
+      <div class="card-lines">
+        <div
+          v-if="buildSummary.recoil.verticalRecoil !== 0
+            && buildSummary.recoil.horizontalRecoil !== 0
+            && (buildSummary.ergonomics !== 0
+              || buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0)"
+          class="card-line card-line3"
+        >
+          <Tooltip
+            v-if="buildSummary.recoil.verticalRecoil !== 0"
+            :tooltip="$t('caption.verticalRecoil')"
+            class="card-value"
+          >
             <font-awesome-icon
               icon="arrows-alt-v"
               class="icon-before-text"
             />
             <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.verticalRecoil) }}</span>
-          </tooltip>
-        </div>
-        <div v-if="buildSummary.recoil.horizontalRecoil !== 0">
-          <Tooltip :tooltip="$t('caption.horizontalRecoil')">
+          </Tooltip>
+          <Tooltip
+            v-if="buildSummary.recoil.horizontalRecoil !== 0"
+            :tooltip="$t('caption.horizontalRecoil')"
+            class="card-value"
+          >
             <font-awesome-icon
               icon="arrows-alt-h"
               class="icon-before-text"
             />
             <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.horizontalRecoil) }}</span>
           </Tooltip>
-        </div>
-        <div v-if="buildSummary.ergonomics !== 0">
-          <Tooltip :tooltip="$t('caption.ergonomics')">
+          <Tooltip
+            v-if="buildSummary.ergonomics !== 0"
+            :tooltip="$t('caption.ergonomicsModifierPercentage')"
+            class="card-value"
+          >
             <font-awesome-icon
               icon="hand-paper"
               class="icon-before-text"
@@ -96,29 +229,42 @@
               </span>)
             </span>
           </Tooltip>
+          <Tooltip
+            v-else-if="buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0"
+            :tooltip="$t('caption.ergonomicsModifierPercentage')"
+            class="card-value"
+          >
+            <font-awesome-icon
+              icon="hand-paper"
+              class="icon-before-text"
+            />
+            <span :class="StatsUtils.getValueColorClass(buildSummary.wearableModifiers.ergonomicsModifierPercentage)">
+              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage) }}
+            </span>
+          </Tooltip>
         </div>
-        <div v-else-if="buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0">
-          <font-awesome-icon
-            icon="hand-paper"
-            class="icon-before-text"
-          />
-          <span :class="StatsUtils.getValueColorClass(buildSummary.wearableModifiers.ergonomicsModifierPercentage)">
-            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage) }}
-          </span>
-        </div>
-      </div>
-      <div class="build-card-stats">
-        <div v-if="buildSummary.armorModifiers.armorClass > 0">
-          <Tooltip :tooltip="$t('caption.armorClass')">
+        <div
+          v-if="buildSummary.armorModifiers.armorClass > 0
+            && buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0
+            && buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0"
+          class="card-line card-line3"
+        >
+          <Tooltip
+            v-if="buildSummary.armorModifiers.armorClass > 0"
+            :tooltip="$t('caption.armorClass')"
+            class="card-value"
+          >
             <font-awesome-icon
               icon="award"
               class="icon-before-text"
             />
             <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, buildSummary.armorModifiers.armorClass) }}</span>
           </Tooltip>
-        </div>
-        <div v-if="buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0">
-          <Tooltip :tooltip="$t('caption.movementSpeed')">
+          <Tooltip
+            v-if="buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0"
+            :tooltip="$t('caption.movementSpeedModifierPercentage')"
+            class="card-value"
+          >
             <font-awesome-icon
               icon="walking"
               class="icon-before-text"
@@ -127,9 +273,11 @@
               {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedModifierPercentage) }}
             </span>
           </Tooltip>
-        </div>
-        <div v-if="buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0">
-          <Tooltip :tooltip="$t('caption.turningSpeed')">
+          <Tooltip
+            v-if="buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0"
+            :tooltip="$t('caption.turningSpeedModifierPercentage')"
+            class="card-value"
+          >
             <font-awesome-icon
               icon="undo"
               class="icon-before-text"
@@ -139,19 +287,16 @@
             </span>
           </Tooltip>
         </div>
-      </div>
-      <div class="build-card-stats">
         <div
-          v-if="buildSummary.price.priceInMainCurrency > 0"
-          class="build-card-price"
+          v-if="buildSummary.price.priceInMainCurrency > 0
+            && buildSummary.weight != 0"
+          class="card-line card-line3"
         >
-          <InventoryPrice
-            :inventory-price="buildSummary.price"
-            :is-build="true"
-          />
-        </div>
-        <div v-if="buildSummary.weight != 0">
-          <Tooltip :tooltip="$t('caption.weight')">
+          <Tooltip
+            v-if="buildSummary.weight != 0"
+            :tooltip="$t('caption.weight')"
+            class="card-value"
+          >
             <font-awesome-icon
               icon="weight-hanging"
               class="icon-before-text"
@@ -160,10 +305,25 @@
               {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight) }}
             </span>
           </Tooltip>
+          <div
+            v-if="buildSummary.price.priceInMainCurrency > 0"
+            class="build-card-price"
+          >
+            <InventoryPrice
+              :inventory-price="buildSummary.price"
+              :is-build="true"
+            />
+          </div>
         </div>
       </div>
-      <div class="build-card-buttons">
+      <div
+        v-if="!modelIsSelected
+          || selectionOptions.canUnselect
+          || showShoppingList"
+        class="card-buttons"
+      >
         <Button
+          v-if="!modelIsSelected || selectionOptions.canUnselect"
           :outlined="modelIsSelected"
           @click="modelIsSelected = !modelIsSelected"
         >
@@ -200,215 +360,27 @@
 
 
 
-<script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { IItem } from '../models/item/IItem'
-import { IBuildSummary } from '../models/utils/IBuildSummary'
-import { BuildPropertiesService } from '../services/BuildPropertiesService'
-import { BuildService } from '../services/BuildService'
-import { GlobalSidebarService } from '../services/GlobalSidebarService'
-import Services from '../services/repository/Services'
-import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
-import InventoryPrice from './InventoryPriceComponent.vue'
-import ItemIcon from './ItemIconComponent.vue'
-
-const modelIsSelected = defineModel<boolean>('isSelected', { required: true })
-
-const props = withDefaults(
-  defineProps<{
-    buildSummary: IBuildSummary,
-    selectionButtonCaption?: string,
-    selectionButtonIcon?: string,
-    showActionsButton?: boolean,
-    showNotExported: boolean,
-    showShoppingList?: boolean
-  }>(),
-  {
-    selectionButtonCaption: undefined,
-    selectionButtonIcon: undefined,
-    showActionsButton: true,
-    showShoppingList: true
-  })
-
-const _buildService = Services.get(BuildService)
-const _globalSidebarService = Services.get(GlobalSidebarService)
-
-const itemsListElement = ref<HTMLDivElement>()
-const itemsListElementHasLeftScroll = ref(false)
-const itemsListElementHasRightScroll = ref(false)
-
-const itemsInInventorySlots = computed(() => props.buildSummary.shoppingList.filter(sli => sli.inventorySlotId != null))
-const notExportedTooltip = computed(() => {
-  if (props.buildSummary.exported) {
-    return ''
-  }
-
-  const tooltip = Services.get(BuildPropertiesService).getNotExportedTooltip(props.buildSummary.lastUpdated, props.buildSummary.lastExported)
-
-  return tooltip
-})
-const selectionButtonCaptionInternal = computed(() => {
-  if (props.selectionButtonCaption != null) {
-    return props.selectionButtonCaption
-  } else if (modelIsSelected.value) {
-    return 'caption.deselect'
-  } else {
-    return 'caption.select'
-  }
-})
-const selectionButtonIconInternal = computed(() => {
-  if (props.selectionButtonIcon != null) {
-    return props.selectionButtonIcon
-  } else if (modelIsSelected.value) {
-    return 'times'
-  } else {
-    return 'check'
-  }
-})
-
-onMounted(() => {
-  window.addEventListener('resize', onResize)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', onResize)
-})
-
-watch(() => itemsListElement.value?.scrollWidth, () => {
-  setItemsListElementHasScroll()
-})
-
-/**
- * Displays the actions for the specified build.
- */
-function displayActions() {
-  const build = _buildService.get(props.buildSummary.id)
-
-  if (build != null) {
-    _globalSidebarService.display({
-      displayedComponentType: 'BuildSidebar',
-      displayedComponentParameters: build
-    })
-  }
-}
-
-/**
- * Displays the shopping list for the specified build.
- */
-function displayShoppingList() {
-  _globalSidebarService.display({
-    displayedComponentType: 'ShoppingListSidebar',
-    displayedComponentParameters: {
-      buildName: props.buildSummary.name,
-      shoppingList: props.buildSummary.shoppingList
-    }
-  })
-}
-
-/**
- * Displays the stats of an item.
- * @param item - Item.
- */
-function displayStats(item: IItem) {
-  _globalSidebarService.display({
-    displayedComponentType: 'StatsSidebar',
-    displayedComponentParameters: item
-  })
-}
-
-/**
- * React to the horizontal scroll in the merchants list.
- *
- * Updates the values indicating whether left or right scroll are possible.
- */
-function onItemsListScroll() {
-  setItemsListElementHasScroll()
-}
-
-/**
- * Reacts to the window being resized.
- *
- * Sets a value indicating whether the items list is scrollable.
- */
-function onResize() {
-  setItemsListElementHasScroll()
-}
-
-/**
- * Checks whether the items list element has left and right scroll and sets a value indicating it.
- */
-function setItemsListElementHasScroll() {
-  if (itemsListElement.value != null) {
-    itemsListElementHasLeftScroll.value = itemsListElement.value.scrollLeft !== 0
-    itemsListElementHasRightScroll.value = itemsListElement.value.scrollLeft + itemsListElement.value.clientWidth < itemsListElement.value.scrollWidth
-  } else {
-    itemsListElementHasLeftScroll.value = false
-    itemsListElementHasRightScroll.value = false
-  }
-}
-</script>
-
-
-
-
-
-
-
-
-
-
 <style scoped>
-@import '../css/icon.css';
-@import '../css/stats.css';
-
-.builds-list {
-  display: grid;
-  grid-gap: 1rem;
-  grid-template-columns: repeat(3, 1fr);
-}
-
 .build-card {
-  background-color: var(--surface-transparent-0);
-  overflow: hidden;
-  width: 100%;
-  border-color: var(--primary-color6);
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 6px;
+  height: 16.875rem;
 }
 
-.build-card-buttons {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  margin-top: auto;
-  padding-top: 1rem;
-}
-
-.build-card-buttons > button {
+.build-card-header {
   align-items: center;
   display: flex;
-  justify-content: center;
-  width: 50%;
-}
-
-.build-card-buttons-edit {
-  align-items: center;
-  display: flex;
-  justify-content: center;
+  gap: 0.5rem;
 }
 
 .build-card-items {
   display: flex;
   flex-direction: row;
   gap: 0.25rem;
+  padding-bottom: 0.25rem;
   overflow-x: auto;
-  padding-bottom: 0.5rem;
   width: 100%;
 }
 
 .build-card-items-container {
-  padding-top: 0.5rem;
   position: relative;
 }
 
@@ -418,7 +390,7 @@ function setItemsListElementHasScroll() {
 
 .build-card-items-left-scroll-indicator {
   border-bottom-left-radius: 3px;
-  border-left-color: var(--primary-color);
+  border-left-color: var(--primary-color3);
   border-left-style: solid;
   border-left-width: 3px;
   border-top-left-radius: 3px;
@@ -440,58 +412,21 @@ function setItemsListElementHasScroll() {
   top: 0;
 }
 
-.build-card-merchants {
-  margin-top: 0.5rem;
-}
-
 .build-card-price {
   display: flex;
   grid-column: span 2;
 }
 
-.build-card-selected {
-  background-color: var(--primary-color6)
-}
-
-.build-card-stats {
-  align-items: center;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: 0.5rem;
-  min-height: 1.25rem;
-}
-
 .build-card-title {
-  align-items: center;
-  display: flex;
-  font-size: 1.25rem;
-  gap: 0.5rem;
-  white-space: preserve;
+  font-size: 1rem;
+  font-weight: normal;
+  overflow: hidden;
+  width: 100%;
+  max-height: 2.25rem;
 }
 
-.build-card-title > div {
-  margin-right: auto;
-}
-
-.buil-card-not-exported {
+.build-card-not-exported {
   color: var(--warning-color);
   margin-left: 0.5rem;
-}
-</style>
-
-
-
-<style>
-.build-card > .p-card-body {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.build-card > .p-card-body > .p-card-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 0;
 }
 </style>

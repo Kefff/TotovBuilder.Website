@@ -1,32 +1,3 @@
-<template>
-  <div :class="'p-field field input-text-field input-text-field-required-message-' + requiredMessagePosition">
-    <label v-if="!captionAsPlaceholder">{{ caption }}</label>
-    <InputText
-      ref="input"
-      v-model="modelValue"
-      :class="inputClasses"
-      :disabled="disabled"
-      :placeholder="captionAsPlaceholder ? caption : undefined"
-      :readonly="readOnly"
-    />
-    <div
-      v-if="invalid"
-      class="p-error"
-    >
-      {{ $t('message.requiredField', { caption }) }}
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, nextTick, onMounted, useTemplateRef } from 'vue'
 
@@ -84,25 +55,36 @@ onMounted(() => {
 
 
 
+<template>
+  <div :class="`p-field field input-text-field input-text-field-required-message-${requiredMessagePosition}`">
+    <label v-if="!captionAsPlaceholder">{{ caption }}</label>
+    <InputText
+      ref="input"
+      v-model="modelValue"
+      :class="inputClasses"
+      :disabled="disabled"
+      :placeholder="captionAsPlaceholder ? caption : undefined"
+      :readonly="readOnly"
+    />
+    <div
+      v-if="invalid"
+      class="p-error"
+    >
+      {{ $t('message.requiredField', { caption }) }}
+    </div>
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+
 <style scoped>
-.input-text-field-required-message-bottom {
-  font-size: 0.85rem;
-  display: block;
-}
-
-.input-text-field-required-message-right {
-  align-items: center;
-  display: flex;
-  font-size: 0.85rem;
-}
-
-.input-text-field-required-message-right > span {
-  margin-left: 0.5rem;
-  width: 100%;
-}
-</style>
-
-<style>
 .input-text-field input {
   height: 2.75rem;
   padding: 0.25rem;
@@ -111,5 +93,21 @@ onMounted(() => {
 
 .input-text-field-centered {
   text-align: center;
+}
+
+.input-text-field-required-message-bottom {
+  display: block;
+  font-size: 0.85rem;
+}
+
+.input-text-field-required-message-right {
+  align-items: center;
+  display: flex;
+  font-size: 0.85rem;
+  gap: 0.5rem;
+}
+
+.input-text-field-required-message-right > span {
+  width: 100%;
 }
 </style>

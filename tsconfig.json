@@ -12,10 +12,13 @@
     ],
     "module": "esnext",
     "moduleResolution": "node",
+    "noEmit": true,
     "resolveJsonModule": true,
     "sourceMap": true,
     "skipLibCheck": true,
     "strict": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
     "target": "es2019",
     "types": [
       "vite/client",
@@ -23,9 +26,11 @@
     ]
   },
   "include": [
-    "declarations.d.ts",
-    "src/**/*.ts",
     "src/**/*.d.ts",
-    "src/**/*.vue"
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "src/declarations.d.ts",
+    "src/shims-vue.d.ts",
+    "vite.config.ts"
   ]
 }

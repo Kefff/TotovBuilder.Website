@@ -1,6 +1,8 @@
 import { anything, instance, mock, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
+import { InventorySlotTypeId } from '../../models/build/InventorySlotTypes'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
@@ -9,7 +11,6 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { ImportService } from '../../services/ImportService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
-import { InventorySlotService } from '../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { LogService } from '../../services/LogService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
@@ -22,7 +23,7 @@ import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('ImportService', () => {
-  describe('getBuildsFromFile', () => {
+  describe('getBuildsFromFileAsync', () => {
     it('should read builds from a file and execute migrations on them', async () => {
       // Arrange
       useItemServiceMock()
@@ -38,14 +39,13 @@ describe('ImportService', () => {
       Services.configure(LogService, undefined, instance(logServiceMock))
 
       const versionServiceMock = mock<VersionService>()
-      when(versionServiceMock.executeBuildMigrations(anything())).thenResolve(true)
+      when(versionServiceMock.executeBuildMigrationsAsync(anything())).thenResolve(true)
       Services.configure(VersionService, undefined, instance(versionServiceMock))
 
       Services.configure(BuildPropertiesService)
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
 
       const fileMock = mock<File>()
@@ -53,7 +53,7 @@ describe('ImportService', () => {
       const service = new ImportService()
 
       // Act
-      const result = await service.getBuildsFromFile(instance(fileMock))
+      const result = await service.getBuildsFromFileAsync(instance(fileMock))
 
       // Assert
       expect(result).not.toBeUndefined()
@@ -290,7 +290,7 @@ describe('ImportService', () => {
           shoppingList: [
             {
               ignorePrice: IgnoredUnitPrice.notIgnored,
-              inventorySlotId: 'backpack',
+              inventorySlotId: InventorySlotTypeId.backpack,
               item: berkut,
               missingPrice: false,
               price: {
@@ -316,11 +316,11 @@ describe('ImportService', () => {
               }
             },
             {
-              ignorePrice: 'notLootable',
-              inventorySlotId: 'pouch',
+              ignorePrice: IgnoredUnitPrice.notLootable,
+              inventorySlotId: InventorySlotTypeId.pouch,
               item: {
                 capacity: 4,
-                categoryId: 'securedContainer',
+                categoryId: ItemCategoryId.securedContainer,
                 conflictingItemIds: [],
                 iconLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-icon.webp',
                 id: '544a11ac4bdc2d470e8b456a',
@@ -348,10 +348,10 @@ describe('ImportService', () => {
               quantity: 1
             },
             {
-              ignorePrice: 'notLootable',
-              inventorySlotId: 'scabbard',
+              ignorePrice: IgnoredUnitPrice.notLootable,
+              inventorySlotId: InventorySlotTypeId.scabbard,
               item: {
-                categoryId: 'meleeWeapon',
+                categoryId: ItemCategoryId.meleeWeapon,
                 chopDamage: 24,
                 conflictingItemIds: [],
                 hitRadius: 0.4,
@@ -440,7 +440,7 @@ describe('ImportService', () => {
           shoppingList: [
             {
               ignorePrice: IgnoredUnitPrice.notIgnored,
-              inventorySlotId: 'pockets',
+              inventorySlotId: InventorySlotTypeId.pockets,
               item: rgd5,
               missingPrice: false,
               price: {
@@ -466,11 +466,11 @@ describe('ImportService', () => {
               }
             },
             {
-              ignorePrice: 'notLootable',
-              inventorySlotId: 'pouch',
+              ignorePrice: IgnoredUnitPrice.notLootable,
+              inventorySlotId: InventorySlotTypeId.pouch,
               item: {
                 capacity: 4,
-                categoryId: 'securedContainer',
+                categoryId: ItemCategoryId.securedContainer,
                 conflictingItemIds: [],
                 iconLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-icon.webp',
                 id: '544a11ac4bdc2d470e8b456a',
@@ -498,10 +498,10 @@ describe('ImportService', () => {
               quantity: 1
             },
             {
-              ignorePrice: 'notLootable',
-              inventorySlotId: 'scabbard',
+              ignorePrice: IgnoredUnitPrice.notLootable,
+              inventorySlotId: InventorySlotTypeId.scabbard,
               item: {
-                categoryId: 'meleeWeapon',
+                categoryId: ItemCategoryId.meleeWeapon,
                 chopDamage: 24,
                 conflictingItemIds: [],
                 hitRadius: 0.4,
@@ -559,7 +559,7 @@ describe('ImportService', () => {
           weight: 1.133
         }
       ])
-      verify(versionServiceMock.executeBuildMigrations(anything())).twice()
+      verify(versionServiceMock.executeBuildMigrationsAsync(anything())).twice()
     })
 
     it('should log an error and notify when the file is null', async () => {
@@ -575,10 +575,10 @@ describe('ImportService', () => {
       const service = new ImportService()
 
       // Act
-      const result = await service.getBuildsFromFile(undefined)
+      const result = await service.getBuildsFromFileAsync(undefined)
 
       // Assert
-      expect(result).toBe(undefined)
+      expect(result).toBeUndefined()
       verify(logServiceMock.logError('message.invalidBuildFile'))
       verify(notificationServiceMock.notify(NotificationType.error, 'Error while importing builds.'))
     })
@@ -598,10 +598,10 @@ describe('ImportService', () => {
       const service = new ImportService()
 
       // Act
-      const result = await service.getBuildsFromFile(instance(fileMock))
+      const result = await service.getBuildsFromFileAsync(instance(fileMock))
 
       // Assert
-      expect(result).toBe(undefined)
+      expect(result).toBeUndefined()
     })
 
     it.each([
@@ -627,16 +627,16 @@ describe('ImportService', () => {
       const service = new ImportService()
 
       // Act
-      const result = await service.getBuildsFromFile(instance(fileMock))
+      const result = await service.getBuildsFromFileAsync(instance(fileMock))
 
       // Assert
-      expect(result).toBe(undefined)
+      expect(result).toBeUndefined()
       verify(logServiceMock.logError('Error while importing builds.'))
       verify(notificationServiceMock.notify(NotificationType.error, 'Error while importing builds.'))
     })
   })
 
-  describe('import()', () => {
+  describe('importAsync()', () => {
     it('should import builds', async () => {
       // Arrange
       let imported = false
@@ -660,7 +660,7 @@ describe('ImportService', () => {
       ]
 
       const buildServiceMock = mock<BuildService>()
-      when(buildServiceMock.add(anything())).thenCall((build: IBuild) => {
+      when(buildServiceMock.addAsync(anything())).thenCall((build: IBuild) => {
         importedBuilds.push(build)
         return ''
       })
@@ -677,7 +677,7 @@ describe('ImportService', () => {
       })
 
       // Act
-      await importService.import(builds)
+      await importService.importAsync(builds)
 
       // Assert
       expect(imported).toBe(true)

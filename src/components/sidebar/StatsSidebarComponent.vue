@@ -1,36 +1,6 @@
-<template>
-  <div class="sidebar-option">
-    <div class="stats-sidebar">
-      <div>
-        <div class="stats-sidebar-image">
-          <img
-            v-if="parameters.imageLink != null"
-            :src="parameters.imageLink"
-          >
-        </div>
-        <ItemStats :item="parameters">
-          <component
-            :is="specializedComponent"
-            v-if="specializedComponent != null"
-            :item="parameters"
-          />
-        </ItemStats>
-      </div>
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { StatsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import Services from '../../services/repository/Services'
@@ -50,6 +20,8 @@ import RangedWeaponModStats from '../stats/RangedWeaponModStatsComponent.vue'
 import RangedWeaponStats from '../stats/RangedWeaponStatsComponent.vue'
 import VestStats from '../stats/VestStatsComponent.vue'
 
+type SpecializedComponent = typeof AmmunitionStats | typeof ArmorModStats | typeof ArmorStats | typeof BackpackStats | typeof ContainerStats | typeof EyewearStats | typeof GrenadeStats | typeof HeadwearStats | typeof ItemStats | typeof MagazineStats | typeof MeleeWeaponStats | typeof ModStats | typeof RangedWeaponModStats | typeof RangedWeaponStats | typeof VestStats | undefined
+
 const props = defineProps<{ parameters: StatsSidebarParameters }>()
 
 const specializedComponent = computed(() => getSpecializedComponent(props.parameters.categoryId))
@@ -57,8 +29,8 @@ const specializedComponent = computed(() => getSpecializedComponent(props.parame
 /**
  * Sets the type of specialized options header component to display.
  */
-function getSpecializedComponent(itemCategoryId?: string) {
-  if (itemCategoryId == null || itemCategoryId === 'other') {
+function getSpecializedComponent(itemCategoryId?: ItemCategoryId): SpecializedComponent {
+  if (itemCategoryId == null || itemCategoryId === ItemCategoryId.other) {
     return undefined
   }
 
@@ -118,13 +90,40 @@ function getSpecializedComponent(itemCategoryId?: string) {
 
 
 
-<style scoped>
-@import '../../css/sidebar.css';
-@import '../../css/stats.css';
+<template>
+  <div class="stats-sidebar">
+    <div>
+      <div class="stats-sidebar-image">
+        <img
+          v-if="parameters.imageLink != null"
+          :src="parameters.imageLink"
+        >
+      </div>
+      <!-- Specialized stats -->
+      <component
+        :is="specializedComponent"
+        v-if="specializedComponent != null"
+        :item="parameters"
+      />
+      <ItemStats :item="parameters" />
+    </div>
+  </div>
+</template>
 
+
+
+
+
+
+
+
+
+
+<style scoped>
 .stats-sidebar {
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .stats-sidebar-image {

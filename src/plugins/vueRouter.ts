@@ -1,18 +1,19 @@
-import { App } from 'vue'
+import { App, defineAsyncComponent } from 'vue'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import ItemsComponent from '../components/ItemsComponent.vue'
 import Welcome from '../components/WelcomeComponent.vue'
 import LanguageUtils from '../utils/LanguageUtils'
 import applicationInsights from './applicationInsights'
 
-const Build = () => import('../components/build/BuildComponent.vue')
-const Builds = () => import('../components/BuildsComponent.vue')
+const Build = defineAsyncComponent(() => import('../components/BuildComponent.vue'))
+const Builds = defineAsyncComponent(() => import('../components/BuildsComponent.vue'))
 
 const routes: RouteRecordRaw[] = [
   {
     component: Welcome,
     name: 'Welcome',
     path: '/',
-    beforeEnter: (to, from) => {
+    beforeEnter: (to, from): void => {
       const language = LanguageUtils.getLanguage()
       LanguageUtils.setLanguage(language)
 
@@ -27,7 +28,7 @@ const routes: RouteRecordRaw[] = [
     component: Welcome,
     name: 'WelcomeWithLanguage',
     path: '/:language',
-    beforeEnter: (to, from, next) => {
+    beforeEnter: (to, from, next): void => {
       const language = to.params.language as string
       LanguageUtils.setLanguage(language)
       next()
@@ -37,7 +38,7 @@ const routes: RouteRecordRaw[] = [
     component: Builds,
     name: 'Builds',
     path: '/builds',
-    beforeEnter: (to, from) => {
+    beforeEnter: (to, from): void => {
       applicationInsights.trackPageView({
         name: 'Builds',
         refUri: from.path,
@@ -49,7 +50,7 @@ const routes: RouteRecordRaw[] = [
     component: Build,
     name: 'NewBuild',
     path: '/build',
-    beforeEnter: (to, from) => {
+    beforeEnter: (to, from): void => {
       applicationInsights.trackPageView({
         name: 'NewBuild',
         refUri: from.path,
@@ -61,7 +62,7 @@ const routes: RouteRecordRaw[] = [
     component: Build,
     name: 'CopyBuild',
     path: '/copy/:id',
-    beforeEnter: (to, from) => {
+    beforeEnter: (to, from): void => {
       applicationInsights.trackPageView({
         name: 'CopyBuild',
         refUri: from.path,
@@ -73,7 +74,7 @@ const routes: RouteRecordRaw[] = [
     component: Build,
     name: 'ShareBuild',
     path: '/s/:sharedBuild',
-    beforeEnter: (to, from) => {
+    beforeEnter: (to, from): void => {
       applicationInsights.trackPageView({
         name: 'SharedBuild',
         refUri: from.path,
@@ -85,9 +86,21 @@ const routes: RouteRecordRaw[] = [
     component: Build,
     name: 'Build',
     path: '/build/:id',
-    beforeEnter: (to, from) => {
+    beforeEnter: (to, from): void => {
       applicationInsights.trackPageView({
         name: 'CopyBuild',
+        refUri: from.path,
+        uri: to.path
+      })
+    }
+  },
+  {
+    component: ItemsComponent,
+    name: 'Items',
+    path: '/items',
+    beforeEnter: (to, from): void => {
+      applicationInsights.trackPageView({
+        name: 'Items',
         refUri: from.path,
         uri: to.path
       })

@@ -911,10 +911,12 @@
   transition: background-color 0.2s, border-color 0.2s, color 0.2s,
     box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
   border-radius: 4px;
+  border-color: var(--primary-color6);
 }
 
 .p-dropdown:not(.p-disabled):hover {
-  border-color: var(--util-color7);
+  /*border-color: var(--util-color7);*/
+  border-color: var(--primary-color);
 }
 
 .p-dropdown:not(.p-disabled).p-focus {
@@ -993,7 +995,7 @@
 
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
   margin: 0;
-  /*padding: 1rem 1rem; Disabled to be able to customize the padding by setting it in the templace for items */
+  padding: 1rem 1rem;
   border: 0 none;
   color: var(--text-color);
   background: transparent;
@@ -1308,10 +1310,12 @@
     box-shadow 0.2s, background-size 0.2s cubic-bezier(0.64, 0.09, 0.08, 1);
   appearance: none;
   border-radius: 4px;
+  border-color: var(--primary-color6);
 }
 
 .p-inputtext:enabled:hover {
-  border-color: var(--util-color7);
+  /*border-color: var(--util-color7);*/
+  border-color: var(--primary-color);
 }
 
 .p-inputtext:enabled:focus {
@@ -2078,7 +2082,8 @@
 
 .p-button.p-button-sm {
   font-size: 0.875rem;
-  padding: 0.62475rem 0.875rem;
+  /* padding: 0.62475rem 0.875rem; */
+  padding: 0.5rem;
 }
 
 .p-button.p-button-sm .p-button-icon {
@@ -3365,12 +3370,12 @@
 }
 
 .p-paginator {
-  background: var(--surface-a);
+  background: var(--surface-transparent-0);
   color: var(--text-color);
-  border: solid #404040;
-  border-width: 0;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border: solid;
+  border-color: var(--primary-color6);
+  border-radius: 6px;
+  border-width: 1px;
 }
 
 .p-paginator .p-paginator-first,
@@ -3380,8 +3385,8 @@
   background-color: transparent;
   border: 0 none;
   color: var(--util-color7);
-  min-width: 3rem;
-  height: 3rem;
+  min-width: 2rem;
+  height: 2rem;
   margin: 0.143rem;
   transition: none;
   border-radius: 50%;
@@ -3394,16 +3399,6 @@
   background: var(--util-color2);
   border-color: transparent;
   color: var(--util-color7);
-}
-
-.p-paginator .p-paginator-first {
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-
-.p-paginator .p-paginator-last {
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
 }
 
 .p-paginator .p-dropdown {
@@ -3429,8 +3424,8 @@
   background-color: transparent;
   border: 0 none;
   color: var(--util-color7);
-  min-width: 3rem;
-  height: 3rem;
+  min-width: 2rem;
+  height: 2rem;
   margin: 0.143rem;
   transition: none;
   border-radius: 50%;
@@ -5596,6 +5591,7 @@
   border-radius: 50%;
   background: transparent;
   transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  flex-shrink: 0;
 }
 
 .p-message.p-component > .p-message-wrapper > .p-message-close.p-link {

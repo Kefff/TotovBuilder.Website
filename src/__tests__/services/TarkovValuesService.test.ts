@@ -1,6 +1,7 @@
 import { anyString, instance, mock, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import TarkovValuesMock from '../../../public/data/tarkov-values.json'
+import { ITarkovValues } from '../../models/configuration/ITarkovValues'
 import { FetchService } from '../../services/FetchService'
 import { LogService } from '../../services/LogService'
 import { TarkovValuesService } from '../../services/TarkovValuesService'
@@ -8,7 +9,7 @@ import Services from '../../services/repository/Services'
 import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('initialize', () => {
+describe('initializeAsync', () => {
   it('should fetch the values related to Tarkov gameplay', async () => {
     // Arrange
     useFetchServiceMock(TarkovValuesMock)
@@ -17,7 +18,7 @@ describe('initialize', () => {
     const service = new TarkovValuesService()
 
     // Act
-    const result = await service.initialize()
+    const result = await service.initializeAsync()
 
     // Assert
     expect(result).toBe(true)
@@ -29,7 +30,7 @@ describe('initialize', () => {
     useWebsiteConfigurationServiceMock()
 
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get(anyString())).thenResolve(undefined)
+    when(fetchServiceMock.getAsync(anyString())).thenResolve(undefined)
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const logServiceMock = mock<LogService>()
@@ -38,7 +39,7 @@ describe('initialize', () => {
     const service = new TarkovValuesService()
 
     // Act
-    const result = await service.initialize()
+    const result = await service.initializeAsync()
 
     // Assert
     expect(result).toBe(false)
@@ -54,7 +55,7 @@ describe('values getter', () => {
     const service = new TarkovValuesService()
 
     // Act
-    const act = () => service.values
+    const act = (): ITarkovValues => service.values
 
     // Assert
     expect(act).toThrowError('No Tarkov value could be fetched.')

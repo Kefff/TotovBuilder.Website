@@ -1,6 +1,7 @@
 /* eslint-disable no-irregular-whitespace */ // Special character used to force markdown to take into account spaces
 import { IBuild } from '../models/build/IBuild'
 import { IInventoryItem } from '../models/build/IInventoryItem'
+import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { IConflictingItem } from '../models/configuration/IConflictingItem'
 import { IVest } from '../models/item/IVest'
@@ -21,7 +22,6 @@ import { BuildService } from './BuildService'
 import { GlobalFilterService } from './GlobalFilterService'
 import { InventoryItemService } from './InventoryItemService'
 import { InventorySlotPropertiesService } from './InventorySlotPropertiesService'
-import { InventorySlotService } from './InventorySlotService'
 import { ItemPropertiesService } from './ItemPropertiesService'
 import { ItemService } from './ItemService'
 import { NotificationService, NotificationType } from './NotificationService'
@@ -33,18 +33,26 @@ import Services from './repository/Services'
 export class BuildPropertiesService {
   /**
    * Checks if a build contains an armored vest preventing the usage of an armor.
-   * Displays a warnng notification when it is the case.
+   * Displays a warning notification when it is the case.
    * @param build - Build.
+   * @param path - Path to the armor being added.
    */
-  public async canAddArmor(build: IBuild): Promise<boolean> {
+  public async canAddArmorAsync(build: IBuild, path: string): Promise<boolean> {
+    const isArmorPath = PathUtils.checkIsArmorInventorySlotPath(path)
+
+    if (!isArmorPath) {
+      // When the armor is added in the content of another item we do not need to check it
+      return true
+    }
+
     const itemService = Services.get(ItemService)
-    const vestSlot = build.inventorySlots.find((is) => is.typeId === 'tacticalRig')!
+    const vestSlot = build.inventorySlots.find((is) => is.typeId === InventorySlotTypeId.tacticalRig)!
 
     if (vestSlot.items[0] == null) {
       return true
     }
 
-    const item = await itemService.getItem(vestSlot.items[0].itemId)
+    const item = await itemService.getItemAsync(vestSlot.items[0].itemId)
     const vest = item as IVest
 
     if (vest.armorClass > 0 || vest.armoredAreas.length > 0) {
@@ -63,14 +71,21 @@ export class BuildPropertiesService {
    * @param modId - ID of the mod to be added.
    * @param path - Path to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
    */
-  public async canAddMod(build: IBuild, modId: string, path: string): Promise<boolean> {
+  public async canAddModAsync(build: IBuild, modId: string, path: string): Promise<boolean> {
+    const isModSlotPath = PathUtils.checkIsModSlotPath(path)
+
+    if (!isModSlotPath) {
+      // When the mod is added in the content of another item we do not need to check it
+      return true
+    }
+
     const itemService = Services.get(ItemService)
-    const mod = await itemService.getItem(modId)
+    const mod = await itemService.getItemAsync(modId)
 
     const firstItemPath = path.slice(0, path.indexOf('/' + PathUtils.modSlotPrefix))
     const inventoryItem = PathUtils.getInventoryItemFromPath(build, firstItemPath)
     const changedModSlotPath = path.slice(0, path.indexOf('/' + PathUtils.itemPrefix))
-    const conflicts = await this.getConflictingItems(inventoryItem, changedModSlotPath)
+    const conflicts = await this.getConflictingItemsAsync(inventoryItem, changedModSlotPath)
 
     for (const conflict of conflicts) {
       if (conflict.path.startsWith(path) // Ignoring the mod (and its children mods) in the same slot that the mod being added because it is being replaced
@@ -80,7 +95,7 @@ export class BuildPropertiesService {
         continue
       }
 
-      const conflictingItem = await itemService.getItem(conflict.itemId)
+      const conflictingItem = await itemService.getItemAsync(conflict.itemId)
       Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.cannotAddMod', { modName: mod.name, conflictingItemName: conflictingItem.name }))
 
       return false
@@ -91,13 +106,20 @@ export class BuildPropertiesService {
 
   /**
    * Checks if a build contains an armor preventing the usage of an armored vest.
-   * Displays a warnng notification when it is the case.
+   * Displays a warning notification when it is the case.
    * @param build - Build.
-   * @param vestId - Vest ID.
+   * @param path - Path to the vest being added.
    */
-  public async canAddVest(build: IBuild, vestId: string): Promise<boolean> {
+  public async canAddVestAsync(build: IBuild, vestId: string, path: string): Promise<boolean> {
+    const isVestPath = PathUtils.checkIsVestInventorySlotPath(path)
+
+    if (!isVestPath) {
+      // When the vest is added in the content of another item we do not need to check it
+      return true
+    }
+
     const itemService = Services.get(ItemService)
-    const item = await itemService.getItem(vestId)
+    const item = await itemService.getItemAsync(vestId)
     const vest = item as IVest
 
     if (!Services.get(ItemPropertiesService).isVest(item)
@@ -105,7 +127,7 @@ export class BuildPropertiesService {
       return true
     }
 
-    const bodyArmorInventorySlot = build.inventorySlots.find((is) => is.typeId === 'bodyArmor')
+    const bodyArmorInventorySlot = build.inventorySlots.find((is) => is.typeId === InventorySlotTypeId.bodyArmor)
 
     if (bodyArmorInventorySlot?.items[0] != null) {
       Services.get(NotificationService).notify(NotificationType.warning, vueI18n.t('message.cannotAddTacticalRig'))
@@ -121,8 +143,8 @@ export class BuildPropertiesService {
  * @param buildSummaryToCheck - Build summary that must be checked against the filter.
  * @param filter - Filter.
  */
-  public checkMatchesFilter(buildSummaryToCheck: IBuildSummary, filter: string): boolean {
-    const filterWords = filter.split(' ')
+  public checkMatchesFilter(buildSummaryToCheck: IBuildSummary, filter: string | undefined | null): boolean {
+    const filterWords = filter == null ? [] : filter.split(' ')
 
     for (const filterWord of filterWords) {
       if (StringUtils.contains(buildSummaryToCheck.name, filterWord)) {
@@ -173,7 +195,7 @@ export class BuildPropertiesService {
     const merchants: IShoppingListMerchant[] = []
 
     for (const item of shoppingList) {
-      if (item.price == null) {
+      if (item.price == null || item.price.valueInMainCurrency === 0) {
         // Happens when an item only has barters that have items with a missing price
         // This allows to display the barter to the user and to display the missing price icon on the barter items instead of the item itself
         continue
@@ -203,7 +225,7 @@ export class BuildPropertiesService {
    * @param build - Build.
    * @returns Build summary.
    */
-  public async getSummary(build: IBuild): Promise<IBuildSummary> {
+  public async getSummaryAsync(build: IBuild): Promise<IBuildSummary> {
     const inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
 
     const lastExported = build.lastExported ?? new Date(1900, 1, 1)
@@ -240,7 +262,7 @@ export class BuildPropertiesService {
     const inventorySlotSummaries: IInventorySlotSummary[] = []
 
     for (const inventorySlot of build.inventorySlots) {
-      const inventorySlotSummary = await inventorySlotPropertiesService.getSummary(inventorySlot)
+      const inventorySlotSummary = await inventorySlotPropertiesService.getSummaryAsync(inventorySlot)
       inventorySlotSummaries.push(inventorySlotSummary)
     }
 
@@ -255,7 +277,7 @@ export class BuildPropertiesService {
     summary.recoil = this.getRecoil(inventorySlotSummaries)
     summary.weight = this.getWeight(inventorySlotSummaries)
 
-    summary.shoppingList = await this.getShoppingList(build)
+    summary.shoppingList = await this.getShoppingListAsync(build)
 
     return summary
   }
@@ -266,7 +288,7 @@ export class BuildPropertiesService {
    * @param options - Options.
    * @returns Text.
    */
-  public async toText(builds: IBuild[], options: IBuildsToTextOptions): Promise<string> {
+  public async toTextAsync(builds: IBuild[], options: IBuildsToTextOptions): Promise<string> {
     const boldToken = options.type === BuildsToTextType.markdown ? '**' : ''
     const italicToken = options.type === BuildsToTextType.markdown ? '*' : ''
     const lineEnd = options.type === BuildsToTextType.markdown ? '  ' : ''
@@ -280,7 +302,7 @@ export class BuildPropertiesService {
     const mainCurrency = itemService.getMainCurrency()
 
     for (const build of builds) {
-      const sharableUrlResult = includeLink ? await buildService.toSharableURL(build) : undefined
+      const sharableUrlResult = includeLink ? await buildService.toSharableUrlAsync(build) : undefined
 
       if (options.linkOnly) {
         if (options.type === BuildsToTextType.markdown) {
@@ -302,7 +324,7 @@ ${sharableUrlResult}`
       }
 
       let buildAsString = `${options.type === BuildsToTextType.markdown ? '# ' : ''}${build.name}`
-      const buildSummary = await this.getSummary(build)
+      const buildSummary = await this.getSummaryAsync(build)
 
       if (options.type === BuildsToTextType.markdown && sharableUrlResult != null) {
         // Build link
@@ -339,7 +361,7 @@ ${sharableUrlResult}`
           if (hasErgonomics) {
             statsAsString += ` (${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, options.language)}${boldToken})`
           } else {
-            statsAsString += `${StringUtils.getTextStatEmoji(options, '✋')}${this.translate('caption.ergonomics', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, options.language)}${boldToken}`
+            statsAsString += `${StringUtils.getTextStatEmoji(options, '✋')}${this.translate('caption.ergonomicsModifierPercentage', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage, options.language)}${boldToken}`
           }
         }
 
@@ -365,7 +387,7 @@ ${sharableUrlResult}`
             statsAsString += '   '
           }
 
-          statsAsString += `${StringUtils.getTextStatEmoji(options, '🔄')}${this.translate('caption.turningSpeed', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage, options.language)}${boldToken}`
+          statsAsString += `${StringUtils.getTextStatEmoji(options, '🔄')}${this.translate('caption.turningSpeedModifierPercentage', options.language)} ${boldToken}${StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage, options.language)}${boldToken}`
         }
 
         statsAsString += `${lineEnd}\n`
@@ -413,7 +435,7 @@ ${sharableUrlResult}`
       let inventorySlotsAsString = ''
 
       for (const inventorySlot of build.inventorySlots) {
-        const inventorySlotAsString = await inventorySlotPropertiesService.toText(inventorySlot, options)
+        const inventorySlotAsString = await inventorySlotPropertiesService.toTextAsync(inventorySlot, options)
 
         if (inventorySlotAsString !== '') {
           if (inventorySlotsAsString !== '') {
@@ -482,13 +504,13 @@ ${sharableUrlResult}`
    * @param inventorySlotSummaries - Inventory slot summaries.
    */
   private getArmorModifiers(inventorySlotSummaries: IInventorySlotSummary[]): IArmorModifiers {
-    const armorSlotSummary = inventorySlotSummaries.find(iss => iss.type.id === 'bodyArmor')
+    const armorSlotSummary = inventorySlotSummaries.find(iss => iss.type.id === InventorySlotTypeId.bodyArmor)
 
     if (armorSlotSummary != null && armorSlotSummary.armorModifiers.armorClass !== 0) {
       return armorSlotSummary.armorModifiers
     }
 
-    const vestSlot = inventorySlotSummaries.find(iss => iss.type.id === 'tacticalRig')
+    const vestSlot = inventorySlotSummaries.find(iss => iss.type.id === InventorySlotTypeId.tacticalRig)
 
     return vestSlot?.armorModifiers ?? {
       armorClass: 0,
@@ -503,14 +525,14 @@ ${sharableUrlResult}`
    * @param modSlotPath - "Path" to the mod slot the inventory item is in.
    * @returns Conflicting items.
    */
-  private async getConflictingItems(
+  private async getConflictingItemsAsync(
     inventoryItem: IInventoryItem,
     modSlotPath: string
   ): Promise<IConflictingItem[]> {
     const itemService = Services.get(ItemService)
 
     const conflictingItems: IConflictingItem[] = []
-    const item = await itemService.getItem(inventoryItem.itemId)
+    const item = await itemService.getItemAsync(inventoryItem.itemId)
 
     if (item.conflictingItemIds.length > 0) {
       for (const conflictingItemId of item.conflictingItemIds) {
@@ -530,7 +552,7 @@ ${sharableUrlResult}`
 
     for (const modSlot of inventoryItem.modSlots) {
       if (modSlot.item != null) {
-        const modConflictingItemIds = await this.getConflictingItems(
+        const modConflictingItemIds = await this.getConflictingItemsAsync(
           modSlot.item,
           modSlotPath + '/' + PathUtils.itemPrefix + inventoryItem.itemId + '/' + PathUtils.modSlotPrefix + modSlot.modSlotName
         )
@@ -559,50 +581,21 @@ ${sharableUrlResult}`
    * @returns Main ranged weapon inventory slot summary.
    */
   private getMainRangedWeaponSummary(inventoryItemSummaries: IInventorySlotSummary[]): IInventorySlotSummary | undefined {
-    let mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === 'onSling')
+    let mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === InventorySlotTypeId.onSling)
 
     if (mainRangedWeaponSummary != null && mainRangedWeaponSummary.recoil.verticalRecoil > 0) {
       return mainRangedWeaponSummary
     }
 
-    mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === 'onBack')
+    mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === InventorySlotTypeId.onBack)
 
     if (mainRangedWeaponSummary != null && mainRangedWeaponSummary.recoil.verticalRecoil > 0) {
       return mainRangedWeaponSummary
     }
 
-    mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === 'holster')
+    mainRangedWeaponSummary = inventoryItemSummaries.find(iss => iss.type.id === InventorySlotTypeId.holster)
 
     return mainRangedWeaponSummary
-  }
-
-  /**
-   * Gets the merchant level to display in a text representing a build.
-   * @param options - Options.
-   * @param language - Language.
-   * @param enabled - Indicates whether the merchant is enable.
-   * @param level - Merchant level.
-   * @returns Merchant level.
-   */
-  private getTextMerchantLevel(options: IBuildsToTextOptions, language: string, enabled: boolean, level: number): string {
-    if (enabled) {
-      if (level === 0) {
-        return options.includeEmojis ? '✅' : this.translate('caption.yes', language)
-      }
-
-      switch (level) {
-        case 1:
-          return options.includeEmojis ? '1️⃣' : '1'
-        case 2:
-          return options.includeEmojis ? '2️⃣' : '2'
-        case 3:
-          return options.includeEmojis ? '3️⃣' : '3'
-        case 4:
-          return options.includeEmojis ? '4️⃣' : '4'
-      }
-    }
-
-    return options.includeEmojis ? '❌' : this.translate('caption.no', language)
   }
 
   /**
@@ -662,19 +655,19 @@ ${sharableUrlResult}`
    * @param build - Build.
    * @returns Shopping list items.
    */
-  private async getShoppingList(build: IBuild): Promise<IShoppingListItem[]> {
+  private async getShoppingListAsync(build: IBuild): Promise<IShoppingListItem[]> {
     const inventoryItemService = Services.get(InventoryItemService)
     const shoppingList: IShoppingListItem[] = []
 
     for (const inventorySlot of build.inventorySlots) {
-      const inventorySlotType = Services.get(InventorySlotService).getType(inventorySlot.typeId)
+      const inventorySlotType = Services.get(InventorySlotPropertiesService).getType(inventorySlot.typeId)
 
       for (const item of inventorySlot.items) {
         if (item == null) {
           continue
         }
 
-        const inventoryItemShoppingList = await inventoryItemService.getShoppingList(item, inventorySlotType.canBeLooted, undefined, inventorySlotType.id)
+        const inventoryItemShoppingList = await inventoryItemService.getShoppingListAsync(item, inventorySlotType.canBeLooted, undefined, inventorySlotType.id)
 
         // Regrouping similar items
         for (const inventoryItemShoppingListItemToAdd of inventoryItemShoppingList) {
@@ -704,6 +697,35 @@ ${sharableUrlResult}`
     }
 
     return shoppingList
+  }
+
+  /**
+   * Gets the merchant level to display in a text representing a build.
+   * @param options - Options.
+   * @param language - Language.
+   * @param enabled - Indicates whether the merchant is enable.
+   * @param level - Merchant level.
+   * @returns Merchant level.
+   */
+  private getTextMerchantLevel(options: IBuildsToTextOptions, language: string, enabled: boolean, level: number): string {
+    if (enabled) {
+      if (level === 0) {
+        return options.includeEmojis ? '✅' : this.translate('caption.yes', language)
+      }
+
+      switch (level) {
+        case 1:
+          return options.includeEmojis ? '1️⃣' : '1'
+        case 2:
+          return options.includeEmojis ? '2️⃣' : '2'
+        case 3:
+          return options.includeEmojis ? '3️⃣' : '3'
+        case 4:
+          return options.includeEmojis ? '4️⃣' : '4'
+      }
+    }
+
+    return options.includeEmojis ? '❌' : this.translate('caption.no', language)
   }
 
   /**

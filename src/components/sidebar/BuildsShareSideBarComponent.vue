@@ -1,232 +1,3 @@
-<template>
-  <div
-    class="builds-share-sidebar"
-    :class="{ 'builds-share-sidebar-large': buildsToShare.length > 0 }"
-  >
-    <div
-      v-if="buildsToShare.length === 0"
-      class="sidebar-option builds-share-sidebar-selection"
-    >
-      <div>
-        <Toolbar
-          ref="buildsExportToolbar"
-          :buttons="toolbarButtons"
-          style="margin-top: 1px;"
-        />
-        <BuildsList
-          v-model:selected-builds="selectedBuilds"
-          :build-summaries="availableBuilds"
-          :element-to-stick-to="toolbarContainer"
-          :grid-max-columns="1"
-          :show-not-exported="false"
-        />
-      </div>
-    </div>
-    <div v-else>
-      <div class="sidebar-option builds-share-sidebar-options">
-        <div class="builds-share-sidebar-option">
-          <Dropdown
-            v-model="typeOption"
-            :options="typeOptions"
-            data-key="caption"
-            :placeholder="$t('caption.selectFormat')"
-            class="builds-share-sidebar-type"
-            @update:model-value="getText()"
-          >
-            <template #option="slotProps">
-              <div class="builds-share-sidebar-type-option">
-                <div class="builds-share-sidebar-type-option-icon">
-                  <font-awesome-icon
-                    :class="slotProps.option.iconCssClass"
-                    :icon="slotProps.option.icon"
-                  />
-                </div>
-                <span>{{ $t(slotProps.option.caption) }}</span>
-              </div>
-            </template>
-            <template #value="slotProps">
-              <div class="builds-share-sidebar-value">
-                <div
-                  v-if="slotProps.value != null"
-                  class="builds-share-sidebar-type-option-icon"
-                >
-                  <font-awesome-icon
-                    :class="slotProps.value.iconCssClass"
-                    :icon="slotProps.value.icon"
-                  />
-                </div>
-                <span v-if="slotProps.value != null">{{ $t(slotProps.value.caption) }}</span>
-                <span v-else>{{ $t('caption.selectFormat') }}</span>
-              </div>
-            </template>
-          </Dropdown>
-        </div>
-        <div
-          v-if="typeOption != null && shareExplanation != null"
-          class="sidebar-option-description builds-share-sidebar-option-explanation"
-        >
-          <div class="sidebar-option-icon">
-            <font-awesome-icon icon="info-circle" />
-          </div>
-          <span class="">
-            {{ $t(shareExplanation) }}
-          </span>
-        </div>
-        <div class="builds-share-sidebar-option">
-          <LanguageSelector
-            v-if="typeOption != null"
-            v-model:language="language"
-            class="builds-share-sidebar-option-long"
-            @update:language="getText()"
-          />
-        </div>
-        <div
-          v-if="typeOption != null"
-          class="builds-share-sidebar-option"
-        >
-          <Checkbox
-            v-model="linkOnly"
-            :binary="true"
-            @change="getText()"
-          />
-          <div
-            class="builds-share-sidebar-checkbox-caption"
-            :class="{
-              'builds-share-sidebar-checkbox-caption-disabled': !linkOnly
-            }"
-            @click="() => {
-              linkOnly = !linkOnly
-              getText()
-            }"
-          >
-            {{ $t('caption.linkOnly') }}
-          </div>
-        </div>
-        <div
-          v-if="typeOption != null && !linkOnly"
-          class="builds-share-sidebar-option"
-        >
-          <Checkbox
-            v-model="includeLink"
-            :binary="true"
-            @change="getText()"
-          />
-          <div
-            class="builds-share-sidebar-checkbox-caption"
-            :class="{
-              'builds-share-sidebar-checkbox-caption-disabled': !includeLink
-            }"
-            @click="() => {
-              includeLink = !includeLink
-              getText()
-            }"
-          >
-            {{ $t('caption.includeLinkToInteractiveVersion') }}
-          </div>
-        </div>
-        <div
-          v-if="typeOption != null && !linkOnly && includeLink"
-          class="sidebar-option-description builds-share-sidebar-option-explanation"
-        >
-          <div class="sidebar-option-icon">
-            <font-awesome-icon icon="info-circle" />
-          </div>
-          <span class="">
-            {{ $t('message.includeLinkToInteractiveVersionExplanation') }}
-          </span>
-        </div>
-        <div
-          v-if="typeOption != null && !linkOnly"
-          class="builds-share-sidebar-option"
-        >
-          <Checkbox
-            v-model="includePrices"
-            :binary="true"
-            @change="getText()"
-          />
-          <div
-            class="builds-share-sidebar-checkbox-caption"
-            :class="{
-              'builds-share-sidebar-checkbox-caption-disabled': !includePrices
-            }"
-            @click="() => {
-              includePrices = !includePrices
-              getText()
-            }"
-          >
-            {{ $t('caption.includePrices') }}
-          </div>
-        </div>
-        <div
-          v-if="typeOption != null && !linkOnly"
-          class="builds-share-sidebar-option"
-        >
-          <Checkbox
-            v-model="includeEmojis"
-            :binary="true"
-            @change="getText()"
-          />
-          <div
-            class="builds-share-sidebar-checkbox-caption"
-            :class="{
-              'builds-share-sidebar-checkbox-caption-disabled': !includeEmojis
-            }"
-            @click="() => {
-              includeEmojis = !includeEmojis
-              getText()
-            }"
-          >
-            {{ $t('caption.includeEmojis') }}
-          </div>
-        </div>
-        <div class="builds-share-sidebar-option builds-share-sidebar-copy-button">
-          <Button
-            v-if="!isLoading && typeOption != null"
-            @click="copyText()"
-          >
-            <font-awesome-icon
-              icon="copy"
-              class="icon-before-text"
-            />
-            <span>{{ $t('caption.copyElement') }}</span>
-          </Button>
-          <span
-            v-if="!isLoading && typeOption != null"
-            class="builds-share-sidebar-text-length"
-          >
-            {{ lengthCaption }}
-          </span>
-        </div>
-      </div>
-      <div
-        v-if="isLoading"
-        class="builds-share-sidebar-option builds-share-sidebar-loading"
-      >
-        <Loading />
-      </div>
-      <div
-        v-if="!isLoading && typeOption != null"
-        class="builds-share-sidebar-option builds-share-sidebar-text"
-      >
-        <TextArea
-          v-if="typeOption != null"
-          v-model="text"
-          rows="20"
-        />
-      </div>
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, onMounted, ref, useTemplateRef } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
@@ -294,7 +65,7 @@ const toolbarButtons: IToolbarButton[] = [
   }
 ]
 const availableBuilds = ref<IBuildSummary[]>([])
-const buildsExportToolbar = useTemplateRef('buildsExportToolbar')
+const buildsShareToolbar = useTemplateRef('buildsShareToolbar')
 const buildsToShare = ref<IBuild[]>([])
 const includeEmojis = ref(true)
 const includeLink = ref(true)
@@ -304,11 +75,11 @@ const language = ref<string>(vueI18n.locale.value)
 const linkOnly = ref(false)
 const selectedBuilds = ref<IBuildSummary[]>([])
 const text = ref<string>()
-const typeOption = ref<IBuildsShareTypeOption>()
+const typeOption = ref<IBuildsShareTypeOption>(typeOptions[0])
 
 const allSelected = computed(() => selectedBuilds.value.length === availableBuilds.value.length)
 const buildsToTextType = computed(() => {
-  switch (typeOption.value?.type) {
+  switch (typeOption.value.type) {
     case 'discordMarkdown':
     case 'redditMarkdown':
       return BuildsToTextType.markdown
@@ -320,7 +91,7 @@ const buildsToTextType = computed(() => {
 })
 const lengthCaption = computed(() => `${vueI18n.t('caption.length')}: ${text.value?.length.toLocaleString() ?? 0} ${vueI18n.t('caption.characters').toLocaleLowerCase()}`)
 const shareExplanation = computed(() => {
-  switch (typeOption.value?.type) {
+  switch (typeOption.value.type) {
     case 'discordMarkdown':
       return 'message.discordMarkdownExplanation'
     case 'redditMarkdown':
@@ -329,14 +100,14 @@ const shareExplanation = computed(() => {
       return undefined
   }
 })
-const toolbarContainer = computed(() => buildsExportToolbar.value?.container)
+const toolbarContainer = computed(() => buildsShareToolbar.value?.container)
 
 onMounted(() => initialize())
 
 /**
  * Copies the text to the clipboard.
  */
-function copyText() {
+function copyText(): void {
   if (text.value == null) {
     return
   }
@@ -354,10 +125,10 @@ function copyText() {
 /**
  * Gets the text.
  */
-async function getText() {
+async function getTextAsync(): Promise<void> {
   isLoading.value = true
 
-  text.value = await _buildPropertiesService.toText(
+  text.value = await _buildPropertiesService.toTextAsync(
     buildsToShare.value,
     {
       includeEmojis: includeEmojis.value,
@@ -374,19 +145,19 @@ async function getText() {
 /**
  * Initializes the component.
  */
-function initialize() {
+function initialize(): void {
   availableBuilds.value = props.parameters.buildSummaries ?? []
   buildsToShare.value = props.parameters.buildToShare != null ? [props.parameters.buildToShare] : []
 
   if (buildsToShare.value.length > 0 && typeOption.value != null) {
-    getText()
+    getTextAsync()
   }
 }
 
 /**
  * Selects the builds to share.
  */
-function selectBuildsToShare() {
+function selectBuildsToShare(): void {
   const builds: IBuild[] = []
 
   for (const selectedBuild of selectedBuilds.value) {
@@ -398,12 +169,13 @@ function selectBuildsToShare() {
   }
 
   buildsToShare.value = builds
+  getTextAsync()
 }
 
 /**
  * Toggles the selection.
  */
-function toggleSelection() {
+function toggleSelection(): void {
   if (allSelected.value) {
     selectedBuilds.value = []
   } else {
@@ -421,18 +193,252 @@ function toggleSelection() {
 
 
 
-<style scoped>
-@import '../../css/button.css';
-@import '../../css/icon.css';
-@import '../../css/sidebar.css';
+<template>
+  <div
+    class="builds-share-sidebar"
+    :class="{ 'builds-share-sidebar-large': buildsToShare.length > 0 }"
+  >
+    <div
+      v-if="buildsToShare.length === 0"
+      class="builds-share-sidebar-selection"
+    >
+      <Toolbar
+        ref="buildsShareToolbar"
+        :buttons="toolbarButtons"
+        style="margin-top: 1px;"
+      />
+      <BuildsList
+        v-model:selected-builds="selectedBuilds"
+        :build-summaries="availableBuilds"
+        :element-to-stick-to="toolbarContainer"
+        :infinite-scrolling="true"
+        :max-elements-per-line="1"
+        :selection-options="{
+          canUnselect: true,
+          isEnabled: true,
+          isMultiSelection: true
+        }"
+        :show-not-exported="false"
+      />
+    </div>
+    <div v-else>
+      <div class="builds-share-sidebar-options">
+        <div class="builds-share-sidebar-option">
+          <Dropdown
+            v-model="typeOption"
+            :options="typeOptions"
+            data-key="caption"
+            :placeholder="$t('caption.selectFormat')"
+            class="builds-share-sidebar-type"
+            @update:model-value="getTextAsync()"
+          >
+            <template #option="slotProps">
+              <div class="builds-share-sidebar-type-option">
+                <div class="builds-share-sidebar-type-option-icon">
+                  <font-awesome-icon
+                    :class="slotProps.option.iconCssClass"
+                    :icon="slotProps.option.icon"
+                  />
+                </div>
+                <span>{{ $t(slotProps.option.caption) }}</span>
+              </div>
+            </template>
+            <template #value="slotProps">
+              <div class="builds-share-sidebar-value">
+                <div
+                  v-if="slotProps.value != null"
+                  class="builds-share-sidebar-type-option-icon"
+                >
+                  <font-awesome-icon
+                    :class="slotProps.value.iconCssClass"
+                    :icon="slotProps.value.icon"
+                  />
+                </div>
+                <span v-if="slotProps.value != null">{{ $t(slotProps.value.caption) }}</span>
+                <span v-else>{{ $t('caption.selectFormat') }}</span>
+              </div>
+            </template>
+          </Dropdown>
+        </div>
+        <div
+          v-if="typeOption != null && shareExplanation != null"
+          class="sidebar-option-description builds-share-sidebar-option-explanation"
+        >
+          <div class="sidebar-option-icon">
+            <font-awesome-icon icon="info-circle" />
+          </div>
+          <span class="">
+            {{ $t(shareExplanation) }}
+          </span>
+        </div>
+        <div class="builds-share-sidebar-option">
+          <LanguageSelector
+            v-if="typeOption != null"
+            v-model:language="language"
+            class="builds-share-sidebar-option-long"
+            @update:language="getTextAsync()"
+          />
+        </div>
+        <div
+          v-if="typeOption != null"
+          class="builds-share-sidebar-option"
+        >
+          <Checkbox
+            v-model="linkOnly"
+            :binary="true"
+            @change="getTextAsync()"
+          />
+          <div
+            class="builds-share-sidebar-checkbox-caption"
+            :class="{
+              'builds-share-sidebar-checkbox-caption-disabled': !linkOnly
+            }"
+            @click="() => {
+              linkOnly = !linkOnly
+              getTextAsync()
+            }"
+          >
+            {{ $t('caption.linkOnly') }}
+          </div>
+        </div>
+        <div
+          v-if="typeOption != null && !linkOnly"
+          class="builds-share-sidebar-option"
+        >
+          <Checkbox
+            v-model="includeLink"
+            :binary="true"
+            @change="getTextAsync()"
+          />
+          <div
+            class="builds-share-sidebar-checkbox-caption"
+            :class="{
+              'builds-share-sidebar-checkbox-caption-disabled': !includeLink
+            }"
+            @click="() => {
+              includeLink = !includeLink
+              getTextAsync()
+            }"
+          >
+            {{ $t('caption.includeLinkToInteractiveVersion') }}
+          </div>
+        </div>
+        <div
+          v-if="typeOption != null && !linkOnly && includeLink"
+          class="sidebar-option-description builds-share-sidebar-option-explanation"
+        >
+          <div class="sidebar-option-icon">
+            <font-awesome-icon icon="info-circle" />
+          </div>
+          <span class="">
+            {{ $t('message.includeLinkToInteractiveVersionExplanation') }}
+          </span>
+        </div>
+        <div
+          v-if="typeOption != null && !linkOnly"
+          class="builds-share-sidebar-option"
+        >
+          <Checkbox
+            v-model="includePrices"
+            :binary="true"
+            @change="getTextAsync()"
+          />
+          <div
+            class="builds-share-sidebar-checkbox-caption"
+            :class="{
+              'builds-share-sidebar-checkbox-caption-disabled': !includePrices
+            }"
+            @click="() => {
+              includePrices = !includePrices
+              getTextAsync()
+            }"
+          >
+            {{ $t('caption.includePrices') }}
+          </div>
+        </div>
+        <div
+          v-if="typeOption != null && !linkOnly"
+          class="builds-share-sidebar-option"
+        >
+          <Checkbox
+            v-model="includeEmojis"
+            :binary="true"
+            @change="getTextAsync()"
+          />
+          <div
+            class="builds-share-sidebar-checkbox-caption"
+            :class="{
+              'builds-share-sidebar-checkbox-caption-disabled': !includeEmojis
+            }"
+            @click="() => {
+              includeEmojis = !includeEmojis
+              getTextAsync()
+            }"
+          >
+            {{ $t('caption.includeEmojis') }}
+          </div>
+        </div>
+        <div class="builds-share-sidebar-option builds-share-sidebar-copy-button">
+          <Button
+            v-if="!isLoading && typeOption != null"
+            @click="copyText()"
+          >
+            <font-awesome-icon
+              icon="copy"
+              class="icon-before-text"
+            />
+            <span>{{ $t('caption.copyElement') }}</span>
+          </Button>
+          <span
+            v-if="!isLoading && typeOption != null"
+            class="builds-share-sidebar-text-length"
+          >
+            {{ lengthCaption }}
+          </span>
+        </div>
+      </div>
+      <div
+        v-if="isLoading"
+        class="builds-share-sidebar-option builds-share-sidebar-loading"
+      >
+        <Loading />
+      </div>
+      <div
+        v-if="!isLoading && typeOption != null"
+        class="builds-share-sidebar-option builds-share-sidebar-text"
+      >
+        <TextArea
+          v-if="typeOption != null"
+          v-model="text"
+          rows="20"
+        />
+      </div>
+    </div>
+  </div>
+</template>
 
+
+
+
+
+
+
+
+
+
+<style scoped>
 .builds-share-sidebar {
   max-width: 100%;
   min-width: 100%;
+  height: 100%;
 }
 
 .builds-share-sidebar-large {
   width: 100vw;
+}
+
+.builds-share-sidebar-large > div {
+  height: 100%;
 }
 
 .builds-share-sidebar-checkbox-caption {
@@ -478,6 +484,9 @@ function toggleSelection() {
 }
 
 .builds-share-sidebar-selection {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   max-width: 40rem;
 }
 
@@ -505,7 +514,6 @@ function toggleSelection() {
   display: flex;
   gap: 0.5rem;
   height: 2.5rem;
-  padding: 0.25rem;
 }
 
 .builds-share-sidebar-type-option-discord-icon {
@@ -558,10 +566,4 @@ function toggleSelection() {
 
 /* PC */
 @media only screen and (min-width: 1300px) {}
-</style>
-
-<style unscoped>
-.builds-share-sidebar-type > .p-dropdown-label {
-  padding: 0;
-}
 </style>

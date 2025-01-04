@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { ReductionService } from '../../services/ReductionService'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IMeleeWeapon } from '../../models/item/IMeleeWeapon'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
@@ -25,7 +26,7 @@ describe('parseReducedItem', () => {
         chopDamage: 30,
         hitRadius: 0.5,
         stabDamage: 50,
-        categoryId: 'meleeWeapon',
+        categoryId: ItemCategoryId.meleeWeapon,
         conflictingItemIds: [],
         iconLink: 'https://assets.tarkov.dev/601948682627df266209af05-icon.webp',
         id: '601948682627df266209af05',
@@ -33,6 +34,7 @@ describe('parseReducedItem', () => {
         maxStackableAmount: 1,
         marketLink: 'https://tarkov.dev/item/uvsr-taiga-1-survival-machete',
         name: 'UVSR Taiga-1 survival machete',
+        presetWeight: undefined,
         prices: [],
         shortName: 'Taiga-1',
         weight: 0.64,

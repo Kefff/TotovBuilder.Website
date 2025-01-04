@@ -1,3 +1,28 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import vueI18n from '../plugins/vueI18n'
+import LanguageUtils from '../utils/LanguageUtils'
+import LanguageSelector from './LanguageSelectorComponent.vue'
+
+const currentLanguage = ref(vueI18n.locale.value)
+
+/**
+ * Sets the language.
+ */
+function setLanguage(): void {
+  LanguageUtils.setLanguage(currentLanguage.value)
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="application-language-selector">
     <div class="application-language-selector-icon">
@@ -11,31 +36,6 @@
     />
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { ref } from 'vue'
-import vueI18n from '../plugins/vueI18n'
-import LanguageUtils from '../utils/LanguageUtils'
-import LanguageSelector from './LanguageSelectorComponent.vue'
-
-const currentLanguage = ref(vueI18n.locale.value)
-
-/**
- * Sets the language.
- */
-function setLanguage() {
-  LanguageUtils.setLanguage(currentLanguage.value)
-}
-</script>
 
 
 

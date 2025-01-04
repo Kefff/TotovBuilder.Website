@@ -58,11 +58,6 @@ export interface IWebsiteConfiguration {
   endpointChangelog: string
 
   /**
-   * Item categories endpoint.
-   */
-  endpointItemCategories: string
-
-  /**
    * Items endpoint.
    */
   endpointItems: string
@@ -81,6 +76,11 @@ export interface IWebsiteConfiguration {
    * Tarkov values endpoint.
    */
   endpointTarkovValues: string
+
+  /**
+   * Website configuration endpoint.
+   */
+  endpointWebsiteConfiguration: string
 
   /**
    * Export file extension.
@@ -121,6 +121,26 @@ export interface IWebsiteConfiguration {
    * Storage key for the current global filter.
    */
   globalFilterStorageKey: string
+
+  /**
+   * Storage key for the current item filter.
+   */
+  itemsFilterStorageKey: string
+
+  /**
+   * Storage key for the current item category filter and sort order.
+   */
+  itemsFilterAndSortCategoryStorageKey: string
+
+  /**
+   * Storage key for the current item sorting colum.
+   */
+  itemsSortFieldStorageKey: string
+
+  /**
+   * Storage key for the current item sort order.
+   */
+  itemsSortOrderStorageKey: string
 
   /**
    * Storage key for the current language.

@@ -1,3 +1,63 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import Images from '../images'
+import { IMerchantFilter } from '../models/utils/IMerchantFilter'
+import { GlobalFilterService } from '../services/GlobalFilterService'
+import Services from '../services/repository/Services'
+import StringUtils from '../utils/StringUtils'
+import Tooltip from './TooltipComponent.vue'
+
+const modelMerchantFilters = defineModel<IMerchantFilter[]>('merchantFilters', { required: true })
+
+const _globalFilterService = Services.get(GlobalFilterService)
+
+const merchantFiltersInternal = computed(() => [...modelMerchantFilters.value].sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant)))
+
+/**
+ * Gets the level options for a merchant.
+ * @param merchantName - Merchant name.
+ * @returns Level options.
+ */
+function getMerchantLevels(merchantName: string): number[] {
+  const levels = _globalFilterService.getMerchantLevels(merchantName)
+
+  return levels
+}
+
+/**
+ * Indicates whether a merchant has levels.
+ * @param merchantName - Merchant name.
+ * @returns true when the merchant has levels; otherwise false.
+ */
+function hasLevels(merchantName: string): boolean {
+  const result = _globalFilterService.hasLevels(merchantName)
+
+  return result
+}
+
+/**
+ * Reacts to the merchant filter being changed.
+ *
+ * Updates the filter.
+ */
+function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel: number): void {
+  const newMerchantFilters: IMerchantFilter[] = [...merchantFiltersInternal.value]
+  newMerchantFilters[index].enabled = enabled
+  newMerchantFilters[index].merchantLevel = merchantLevel
+
+  modelMerchantFilters.value = newMerchantFilters
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div>
     <div
@@ -41,11 +101,6 @@
             :placeholder="$t('caption.level')"
             @update:model-value="onMerchantFilterChanged(index, merchantFilter.enabled, $event)"
           >
-            <template #option="slotProps">
-              <div class="merchant-filter-level-option">
-                {{ slotProps.option }}
-              </div>
-            </template>
             <template #value="slotProps">
               <div class="merchant-filter-level-value">
                 {{ slotProps.value }}
@@ -67,69 +122,7 @@
 
 
 
-<script setup lang="ts">
-import { computed } from 'vue'
-import Images from '../images'
-import { IMerchantFilter } from '../models/utils/IMerchantFilter'
-import { GlobalFilterService } from '../services/GlobalFilterService'
-import Services from '../services/repository/Services'
-import StringUtils from '../utils/StringUtils'
-
-const modelMerchantFilters = defineModel<IMerchantFilter[]>('merchantFilters', { required: true })
-
-const _globalFilterService = Services.get(GlobalFilterService)
-
-const merchantFiltersInternal = computed(() => [...modelMerchantFilters.value].sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant)))
-
-/**
- * Gets the level options for a merchant.
- * @param merchantName - Merchant name.
- * @returns Level options.
- */
-function getMerchantLevels(merchantName: string): number[] {
-  const levels = _globalFilterService.getMerchantLevels(merchantName)
-
-  return levels
-}
-
-/**
- * Indicates whether a merchant has levels.
- * @param merchantName - Merchant name.
- * @returns true when the merchant has levels; otherwise false.
- */
-function hasLevels(merchantName: string): boolean {
-  const result = _globalFilterService.hasLevels(merchantName)
-
-  return result
-}
-
-/**
- * Reacts to the merchant filter being changed.
- *
- * Updates the filter.
- */
-function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel: number) {
-  const newMerchantFilters: IMerchantFilter[] = [...merchantFiltersInternal.value]
-  newMerchantFilters[index].enabled = enabled
-  newMerchantFilters[index].merchantLevel = merchantLevel
-
-  modelMerchantFilters.value = newMerchantFilters
-}
-</script>
-
-
-
-
-
-
-
-
-
-
 <style scoped>
-@import '../css/sidebar.css';
-
-
 .merchant-filter {
   align-items: center;
   display: grid;
@@ -150,11 +143,6 @@ function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel:
 
 .merchant-filter-merchant {
   cursor: pointer;
-}
-
-.merchant-filter-level-option {
-  padding: 1rem;
-  padding-left: 1.25rem;
 }
 
 .merchant-filter-level-value {

@@ -99,6 +99,7 @@ export default class StatsUtils {
       case DisplayValueType.armorClass:
       case DisplayValueType.ergonomics:
       case DisplayValueType.price:
+      case DisplayValueType.quantity:
       case DisplayValueType.recoil:
         displayValue = StatsUtils.getDisplayValue(value, false, 0, undefined, language)
         break
@@ -177,6 +178,7 @@ export enum DisplayValueType {
   ergonomics,
   ergonomicsModifier,
   price,
+  quantity,
   recoil,
   recoilModifier,
   weight,

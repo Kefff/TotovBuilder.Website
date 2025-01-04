@@ -7,7 +7,7 @@ export interface IItem {
   /**
    * ID of the category of the item.
    */
-  categoryId: string
+  categoryId: ItemCategoryId
 
   /**
    * IDs of conflicting items.
@@ -45,6 +45,12 @@ export interface IItem {
   name: string
 
   /**
+   * Weight of the whole preset.
+   * Undefined if the item is not a preset.
+   */
+  presetWeight: number | undefined
+
+  /**
    * Prices.
    */
   prices: IPrice[],
@@ -63,4 +69,33 @@ export interface IItem {
    * Link to the item wiki page.
    */
   wikiLink: string
+}
+
+/**
+ * Item categories.
+ */
+export enum ItemCategoryId {
+  ammunition = 'ammunition',
+  armband = 'armband',
+  armor = 'armor',
+  armorMod = 'armorMod',
+  backpack = 'backpack',
+  container = 'container',
+  currency = 'currency',
+  eyewear = 'eyewear',
+  faceCover = 'faceCover',
+  grenade = 'grenade',
+  headphones = 'headphones',
+  headwear = 'headwear',
+  magazine = 'magazine',
+  mainWeapon = 'mainWeapon',
+  meleeWeapon = 'meleeWeapon',
+  mod = 'mod',
+  notFound = 'notFound',
+  other = 'other',
+  rangedWeaponMod = 'rangedWeaponMod',
+  secondaryWeapon = 'secondaryWeapon',
+  securedContainer = 'securedContainer',
+  special = 'special',
+  vest = 'vest'
 }

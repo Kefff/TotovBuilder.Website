@@ -3,6 +3,7 @@ import { anything, instance, mock, verify } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
+import { InventorySlotTypeId } from '../../models/build/InventorySlotTypes'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
@@ -13,7 +14,6 @@ import { BuildService } from '../../services/BuildService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
-import { InventorySlotService } from '../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { NotificationService, NotificationType } from '../../services/NotificationService'
 import { PresetService } from '../../services/PresetService'
@@ -28,7 +28,7 @@ import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('BuildPropertiesService', () => {
-  describe('canAddArmor()', () => {
+  describe('canAddArmorAsync()', () => {
     it.each([
       [
         {
@@ -97,7 +97,7 @@ describe('BuildPropertiesService', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const result = await service.canAddArmor(build)
+        const result = await service.canAddArmorAsync(build, 'build:12345/slot:bodyArmor_0/item:65765f39526e320fbe0357b1')
 
         // Assert
         expect(result).toBe(expectedResult)
@@ -109,9 +109,22 @@ describe('BuildPropertiesService', () => {
         }
       }
     )
+
+    it('should return true when the item is not being added in an armor inventory slot', async () => {
+      // Arrange
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.canAddArmorAsync(
+        {} as IBuild,
+        'build:9639041e-d685-46fe-b813-41030475d755/slot:backpack_0/item:544a5cde4bdc2d39388b456b/content:0_1/item:657123216d197c216005b354')
+
+      // Assert
+      expect(result).toBe(true)
+    })
   })
 
-  describe('canAddMod()', () => {
+  describe('canAddModAsync()', () => {
     it.each([
       [
         {
@@ -321,7 +334,7 @@ describe('BuildPropertiesService', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const result = await service.canAddMod(build, modId, modSlotPath)
+        const result = await service.canAddModAsync(build, modId, modSlotPath)
 
         // Assert
         expect(result).toEqual(expectedResult)
@@ -334,6 +347,20 @@ describe('BuildPropertiesService', () => {
       }
     )
 
+    it('should return true when the item is not being added in a mod slot', async () => {
+      // Arrange
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.canAddModAsync(
+        {} as IBuild,
+        '5beec8ea0db834001a6f9dbf',
+        'build:9639041e-d685-46fe-b813-41030475d755/slot:backpack_0/item:544a5cde4bdc2d39388b456b/content:0_1/item:5beec8ea0db834001a6f9dbf')
+
+      // Assert
+      expect(result).toBe(true)
+    })
+
     it('should throw when a build has no inventory slot', async () => {
       // Arrange
       useItemServiceMock()
@@ -341,7 +368,7 @@ describe('BuildPropertiesService', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const act = service.canAddMod(
+      const act = service.canAddModAsync(
         {
           id: '123456789',
           inventorySlots: [],
@@ -351,14 +378,14 @@ describe('BuildPropertiesService', () => {
           name: 'build1'
         } as IBuild,
         rpk16Rail.id,
-        `build:123456789/slot:onSling_0/item:${rpk16Default.id}`)
+        `build:123456789/slot:onSling_0/item:${rpk16Default.id}/mod:mod_pistol_grip/item:${ak12PistolGrip.id}`)
 
       // Assert
       await expect(act).rejects.toThrowError('Cannot find inventory slot "onSling".')
     })
   })
 
-  describe('canAddVest()', () => {
+  describe('canAddVestAsync()', () => {
     it.each([
       [
         {
@@ -453,7 +480,7 @@ describe('BuildPropertiesService', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const result = await service.canAddVest(build, vestId)
+        const result = await service.canAddVestAsync(build, vestId, `build:12345/slot:tacticalRig_0/item:${vestId}`)
 
         // Assert
         expect(result).toEqual(expectedResult)
@@ -465,16 +492,33 @@ describe('BuildPropertiesService', () => {
         }
       }
     )
+
+    it('should return true when the item is not being added in a vest inventory slot', async () => {
+      // Arrange
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.canAddVestAsync(
+        {} as IBuild,
+        '572b7adb24597762ae139821',
+        'build:9639041e-d685-46fe-b813-41030475d755/slot:backpack_0/item:544a5cde4bdc2d39388b456b/content:0_1/item:572b7adb24597762ae139821')
+
+      // Assert
+      expect(result).toBe(true)
+    })
   })
 
   describe('checkMatchesFilter()', () => {
     it.each([
+      [null, true],
+      [undefined, true],
+      ['', true],
       ['invalid', false],
       ['meta', true],
       ['kedr meta', false],
       ['rpk meta', true],
       ['rpk meta first aid kit', true]
-    ])('should check whether a build summary matches a filter', (filter: string, expected: boolean) => {
+    ])('should check whether a build summary matches a filter', (filter: string | undefined | null, expected: boolean) => {
       // Arrange
       const buildSummary = {
         name: 'Meta',
@@ -507,1292 +551,6 @@ describe('BuildPropertiesService', () => {
 
       // Assert
       expect(result).toBe(expected)
-    })
-  })
-
-  describe('toText() (markdown)', () => {
-    it.each([
-      [build1, 'fr', expectedMarkdownString1Fr],
-      [build1, 'en', expectedMarkdownString1En],
-      [build2, 'fr', expectedMarkdownString2],
-      [
-        {
-          id: 'buildWithArmorOnly',
-          inventorySlots: [
-            {
-              items: [
-                {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: armor6b13FlDefault.id,
-                  modSlots: [
-                    {
-                      item: {
-                        content: [],
-                        ignorePrice: false,
-                        itemId: plate6b33Front.id,
-                        modSlots: [],
-                        quantity: 1
-                      },
-                      modSlotName: 'front_plate'
-                    },
-                    {
-                      item: {
-                        content: [],
-                        ignorePrice: false,
-                        itemId: plate6b33Back.id,
-                        modSlots: [],
-                        quantity: 1
-                      },
-                      modSlotName: 'back_plate'
-                    }
-                  ],
-                  quantity: 1
-                }
-              ],
-              typeId: 'bodyArmor'
-            }
-          ],
-          lastExported: undefined,
-          lastUpdated: undefined,
-          lastWebsiteVersion: undefined,
-          name: 'Build with armor only'
-        } as IBuild,
-        'fr',
-        expectedMarkdownString3
-      ],
-      [
-        {
-          id: 'buildWithBackpackOnly',
-          inventorySlots: [
-            {
-              items: [
-                {
-                  content: [
-                    {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: ms2000.id,
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: precision.id,
-                      modSlots: [],
-                      quantity: 1
-                    }
-                  ],
-                  ignorePrice: false,
-                  itemId: mechanism.id,
-                  modSlots: [],
-                  quantity: 1
-                }
-              ],
-              typeId: 'backpack'
-            }
-          ],
-          lastExported: undefined,
-          lastUpdated: undefined,
-          lastWebsiteVersion: undefined,
-          name: 'Build with backpack only and every currency'
-        } as IBuild,
-        'fr',
-        expectedMarkdownString4
-      ],
-      [
-        {
-          id: 'buildWithWeaponOnBackOnly',
-          inventorySlots: [
-            {
-              items: [
-                {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: rpk16Default.id,
-                  modSlots: [],
-                  quantity: 1
-                }
-              ],
-              typeId: 'onBack'
-            }
-          ],
-          lastExported: undefined,
-          lastUpdated: undefined,
-          lastWebsiteVersion: undefined,
-          name: 'Build with weapon on back only'
-        } as IBuild,
-        'fr',
-        expectedMarkdownString5
-      ],
-      [
-        {
-          id: 'buildWithMissingPrice',
-          inventorySlots: [
-            {
-              items: [
-                {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: ammo545bp.id,
-                  modSlots: [],
-                  quantity: 60
-                }
-              ],
-              typeId: 'pockets'
-            }
-          ],
-          lastExported: undefined,
-          lastUpdated: undefined,
-          lastWebsiteVersion: undefined,
-          name: 'Build with missing price'
-        } as IBuild,
-        'fr',
-        expectedMarkdownString6
-      ]
-    ])('should convert a build to a markdown text', async (build: IBuild, language: string, expected: string) => {
-      // Arrange
-      useItemServiceMock()
-      usePresetServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(BuildService)
-      Services.configure(GlobalFilterService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
-      Services.configure(ItemPropertiesService)
-      Services.configure(ReductionService)
-
-      const service = new BuildPropertiesService()
-
-      // Act
-      const result = await service.toText(
-        [build],
-        {
-          includeEmojis: true,
-          includeLink: true,
-          includePrices: true,
-          language,
-          linkOnly: false,
-          type: BuildsToTextType.markdown
-        })
-
-      // Assert
-      expect(result).toBe(expected)
-    })
-
-    it('should convert builds to a markdown text', async () => {
-      // Arrange
-      useItemServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(BuildService)
-      Services.configure(GlobalFilterService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
-      Services.configure(ItemPropertiesService)
-      Services.configure(PresetService)
-      Services.configure(ReductionService)
-
-      const build1: IBuild = {
-        id: 'build1',
-        inventorySlots: [
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: rgd5.id,
-                modSlots: [],
-                quantity: 1
-              },
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: ms2000.id,
-                modSlots: [],
-                quantity: 1
-              },
-              undefined,
-              undefined
-            ],
-            typeId: 'pockets'
-          },
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: k1s.id,
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'headwear'
-          }
-        ],
-        lastExported: undefined,
-        lastUpdated: undefined,
-        lastWebsiteVersion: undefined,
-        name: 'Build 1'
-      }
-
-      const build2: IBuild = {
-        id: 'build2',
-        inventorySlots: [
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: ammo9mmGT.id,
-                modSlots: [],
-                quantity: 25
-              },
-              undefined
-            ],
-            typeId: 'pockets'
-          }
-        ],
-        lastExported: undefined,
-        lastUpdated: undefined,
-        lastWebsiteVersion: undefined,
-        name: 'Build 2'
-      }
-
-      const buildPropertiesService = new BuildPropertiesService()
-
-      // Act
-      const result = await buildPropertiesService.toText(
-        [build1, build2],
-        {
-          includeEmojis: true,
-          includeLink: true,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.markdown
-        })
-
-      // Assert
-      expect(result).toBe(`# Build 1
-
-*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAJ_AAAAAAAAAABBKEnKciJ9Ha4afmksn3ID9gJ5PAcWvYvzduA6qCQ2iyxE_CSen9_XpufSHSHL8RJDDjOD4mYmwzzDzmcTT-fkYBTyehet34mLudzTvi5EDfQCawD5zgMXn__9qMg4z5LrVAzkyhkulsb266vl0hhN-Df_7WGwAA)*
-
-✋ Ergonomie **-2%**  
-  
-💵 Prix **95€** et **20 701₽** (= **35 806₽**)   ⚓ Poids **2,360 kg**  
-
-[*Poches*] **RGD-5 hand grenade**   💵 Prapor 3 **11 822₽**  
-[*Poches*] **MS2000 Marker**   💵 Ragman 1 **95€** (= **15 105₽**)  
-
-[*Couvre-chef*] **Kolpak-1S riot helmet**   💵 Ragman 1 **8 879₽**  
-
-
-
-# Build 2
-
-*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAI7AAAAAAAAAABBKEnKciJ9Ha4afmlhjXH78TJ5PAcWvYvzduA6soV_78fsVnl_BZRLWWGOMdaAD74_p_rPIryYaIhPJc_2yv__6hmgAA)*
-
-💵 Prix **1 825₽**   ⚓ Poids **0,150 kg**  
-
-[*Poches*] 25 x **9x19mm Green Tracer**   💵 Le Mécano 1 **1 825₽**  
-
-
-
-*Marchands configurés*  
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
-Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
-Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣  
-
-*Créé avec [Totov Builder](http://localhost:3000)*`)
-    })
-
-    it('should ignore emojis', async () => {
-      // Arrange
-      useItemServiceMock()
-      usePresetServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(BuildService)
-      Services.configure(GlobalFilterService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
-      Services.configure(ItemPropertiesService)
-      Services.configure(ReductionService)
-
-      const service = new BuildPropertiesService()
-
-      // Act
-      const result = await service.toText(
-        [
-          {
-            id: 'buildWithWeaponOnBackOnly',
-            inventorySlots: [
-              {
-                items: [
-                  {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: rpk16Default.id,
-                    modSlots: [],
-                    quantity: 1
-                  }
-                ],
-                typeId: 'onBack'
-              }
-            ],
-            lastExported: undefined,
-            lastUpdated: undefined,
-            lastWebsiteVersion: undefined,
-            name: 'Build with weapon on back only'
-          } as IBuild
-        ],
-        {
-          includeEmojis: false,
-          includeLink: true,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.markdown
-        })
-
-      // Assert
-      expect(result).toBe(`# Build with weapon on back only
-
-*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17Rk0UiykRW0ApjpaFQ6TR_AWFoFNHfz758PAigkjDNzljvK7CyqK5Q3NR5CNalmBcKYWWwRr_692wAA)*
-
-Recul vertical **112**   Recul horizontal **333**   Ergonomie **45**  
-Prix **43 345₽**   Poids **1,500 kg**  
-
-[*Dans le dos*] **RPK-16 5.45x39 light machine gun Default**   Marché **43 345₽**  
-
-
-
-*Marchands configurés*  
-Marché Oui   Jaeger 4   Le Mécano 4  
-Peacekeeper 4   Prapor 4   Ragman 4  
-Ref 4   Skier 4   La Toubib 4  
-
-*Créé avec [Totov Builder](http://localhost:3000)*`)
-    })
-
-    it('should ignore prices', async () => {
-      // Arrange
-      useItemServiceMock()
-      usePresetServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(BuildService)
-      Services.configure(GlobalFilterService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
-      Services.configure(ItemPropertiesService)
-      Services.configure(ReductionService)
-
-      const service = new BuildPropertiesService()
-
-      // Act
-      const result = await service.toText(
-        [build1],
-        {
-          includeEmojis: true,
-          includeLink: true,
-          includePrices: false,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.markdown
-        })
-
-      // Assert
-      expect(result).toBe(`# Build 1
-
-*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU)*
-
-↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **34** (**-9,5%**)  
-🛡️ Classe d'armure **4**   🏃 Vitesse **-6%**   🔄 Vitesse de rotation **-9%**  
-⚓ Poids **24,153 kg**  
-
-[*En bandouillère*] **RPK-16 5.45x39 light machine gun Default**  
- [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**  
-  95 x **5.45x39mm US gs**  
-
-[*Pare-balles*] **6B13 assault armor (Flora) Default**  
-
-[*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**  
- [*Équipement*] **LShZ-2DTM face shield**  
-
-[*Sac à dos*] **WARTECH Berkut BB-102 backpack (A-TACS FG)**  
- **Iskra ration pack**  
- **Bottle of water (0.6L)**  
-
-[*Poches*] **Morphine injector**  
-[*Poches*] **Vaseline balm**  
-[*Poches*] **RGD-5 hand grenade**  
-[*Poches*] 60 x **5.45x39mm US gs**  
-
-[*Lunettes*] **ESS Crossbow tactical glasses**  
-
-[*Masque*] **Cold Fear infrared balaclava**  
-
-*Créé avec [Totov Builder](http://localhost:3000)*`)
-    })
-
-    it('should include the configured merchants', async () => {
-      // Arrange
-      useItemServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(BuildService)
-      Services.configure(GlobalFilterService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(ReductionService)
-
-      const build: IBuild = {
-        id: 'build',
-        inventorySlots: [],
-        lastExported: undefined,
-        lastUpdated: undefined,
-        lastWebsiteVersion: undefined,
-        name: 'Build'
-      }
-
-      const globalFilterService = Services.get(GlobalFilterService)
-      globalFilterService.saveMerchantFilters([
-        {
-          enabled: true,
-          merchant: 'prapor',
-          merchantLevel: 4
-        },
-        {
-          enabled: true,
-          merchant: 'mechanic',
-          merchantLevel: 2
-        },
-        {
-          enabled: true,
-          merchant: 'flea-market',
-          merchantLevel: 0
-        },
-        {
-          enabled: true,
-          merchant: 'therapist',
-          merchantLevel: 3
-        },
-        {
-          enabled: true,
-          merchant: 'skier',
-          merchantLevel: 1
-        },
-        {
-          enabled: false,
-          merchant: 'ref',
-          merchantLevel: 4
-        }
-      ])
-
-      const buildPropertiesService = new BuildPropertiesService()
-
-      // Act
-      const result = await buildPropertiesService.toText(
-        [build],
-        {
-          includeEmojis: true,
-          includeLink: true,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.markdown
-        })
-
-      // Assert
-      expect(result).toBe(`# Build
-
-*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAIMAAAAAAAAAABBKEnKUiJ9Ha4atWFNg2Pf___404AA)*
-
-
-
-*Marchands configurés*  
-Marché ✅   Le Mécano 2️⃣   Prapor 4️⃣  
-Ref ❌   Skier 1️⃣   La Toubib 3️⃣  
-
-*Créé avec [Totov Builder](http://localhost:3000)*`)
-    })
-
-    it('should only include links', async () => {
-      // Arrange
-      useItemServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(BuildService)
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(ReductionService)
-
-      const buildPropertiesService = new BuildPropertiesService()
-
-      // Act
-      const result = await buildPropertiesService.toText(
-        [build1, build2],
-        {
-          includeEmojis: true,
-          includeLink: true,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: true,
-          type: BuildsToTextType.markdown
-        })
-
-      // Assert
-      expect(result).toBe(`[Build 1](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU)
-[Build 2](http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv)`)
-    })
-
-    it('should not include links', async () => {
-      // Arrange
-      useItemServiceMock()
-      usePresetServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(BuildService)
-      Services.configure(GlobalFilterService)
-      Services.configure(ItemPropertiesService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
-      Services.configure(ReductionService)
-
-      const buildPropertiesService = new BuildPropertiesService()
-
-      // Act
-      const result = await buildPropertiesService.toText(
-        [build1, build2],
-        {
-          includeEmojis: true,
-          includeLink: false,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.markdown
-        })
-
-      // Assert
-      expect(result).toBe(`# Build 1
-
-↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **34** (**-9,5%**)  
-🛡️ Classe d'armure **4**   🏃 Vitesse **-6%**   🔄 Vitesse de rotation **-9%**  
-💵 Prix **366 019₽**   ⚓ Poids **24,153 kg**  
-
-[*En bandouillère*] **RPK-16 5.45x39 light machine gun Default**   💵 Marché **43 345₽**  
- [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*échange*) **24 218₽**  
-  95 x **5.45x39mm US gs**   💵 Prapor 1 **9 120₽**  
-
-[*Pare-balles*] **6B13 assault armor (Flora) Default**   💵 Ragman 2 **64 269₽**  
-
-[*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**   💵 Marché **63 493₽**  
- [*Équipement*] **LShZ-2DTM face shield**   💵 Ragman 3 (*échange*) **29 805₽**  
-
-[*Sac à dos*] **WARTECH Berkut BB-102 backpack (A-TACS FG)**   💵 Ragman 2 **24 509₽**  
- **Iskra ration pack**   💵 Jaeger 2 **24 392₽**  
- **Bottle of water (0.6L)**   💵 La Toubib 1 (*échange*) **11 473₽**  
-
-[*Poches*] **Morphine injector**   💵 Marché **17 421₽**  
-[*Poches*] **Vaseline balm**   💵 Marché **27 714₽**  
-[*Poches*] **RGD-5 hand grenade**   💵 Prapor 3 **11 822₽**  
-[*Poches*] 60 x **5.45x39mm US gs**   💵 Prapor 1 **5 760₽**  
-
-[*Lunettes*] **ESS Crossbow tactical glasses**   💵 Ragman 2 **3 885₽**  
-
-[*Masque*] **Cold Fear infrared balaclava**   💵 Ragman 2 **4 793₽**  
-
-
-
-# Build 2
-
-↕️ Recul vertical **362**   ↔️ Recul horizontal **249**   ✋ Ergonomie **52** (**-3%**)  
-🛡️ Classe d'armure **4**   🏃 Vitesse **-3%**   🔄 Vitesse de rotation **-1%**  
-💵 Prix **444$** et **184 252₽** (= **247 747₽**)   ⚓ Poids **8,936 kg**  
-
-[*Holster*] **Beretta M9A3 9x19 pistol Default**   💵 Peacekeeper 1 **107$** (= **15 337₽**)  
- [*Canon*]  
-  [*Bouche*] **SIG Sauer SRD9 9x19 sound suppressor**   💵 Peacekeeper 2 **242$** (= **34 606₽**)  
- [*Chargeur*]  
-  17 x **9x19mm Green Tracer**   💵 Le Mécano 1 **1 241₽**  
- [*Dispositif tactique*] **SureFire X400 Ultra tactical flashlight with laser**   💵 Peacekeeper 2 **95$** (= **13 552₽**)  
-
-[*Gilet tactique*] **Shellback Tactical Banshee plate carrier (A-TACS AU)**   💵 Marché **33 950₽**  
- [*Plaque frontale*] **Monoclete level III PE ballistic plate**   💵 Peacekeeper 3 (*échange*) **31 503₽**  
- [*Plaque dorsale*] **Monoclete level III PE ballistic plate**   💵 Peacekeeper 3 (*échange*) **31 503₽**  
- **Salewa first aid kit**   💵 La Toubib 1 (*échange*) **21 923₽**  
-
-[*Dispositif audio*] **Walker's Razor Digital headset**   💵 Marché **64 132₽**  
-
-[*Pochette*] **Secure container Alpha**  
-
-[*Fourreau*] **6Kh5 Bayonet**  
-
-
-
-*Marchands configurés*  
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
-Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
-Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣  
-
-*Créé avec [Totov Builder](http://localhost:3000)*`)
-    })
-  })
-
-  describe('toText() (simple text)', () => {
-    it.each([
-      [build1, 'fr', expectedString1Fr],
-      [build1, 'en', expectedString1En],
-      [build2, 'fr', expectedString2],
-      [
-        {
-          id: 'buildWithArmorOnly',
-          inventorySlots: [
-            {
-              items: [
-                {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: armor6b13FlDefault.id,
-                  modSlots: [
-                    {
-                      item: {
-                        content: [],
-                        ignorePrice: false,
-                        itemId: plate6b33Front.id,
-                        modSlots: [],
-                        quantity: 1
-                      },
-                      modSlotName: 'front_plate'
-                    },
-                    {
-                      item: {
-                        content: [],
-                        ignorePrice: false,
-                        itemId: plate6b33Back.id,
-                        modSlots: [],
-                        quantity: 1
-                      },
-                      modSlotName: 'back_plate'
-                    }
-                  ],
-                  quantity: 1
-                }
-              ],
-              typeId: 'bodyArmor'
-            }
-          ],
-          lastExported: undefined,
-          lastUpdated: undefined,
-          lastWebsiteVersion: undefined,
-          name: 'Build with armor only'
-        } as IBuild,
-        'fr',
-        expectedString3
-      ],
-      [
-        {
-          id: 'buildWithBackpackOnly',
-          inventorySlots: [
-            {
-              items: [
-                {
-                  content: [
-                    {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: ms2000.id,
-                      modSlots: [],
-                      quantity: 1
-                    },
-                    {
-                      content: [],
-                      ignorePrice: false,
-                      itemId: precision.id,
-                      modSlots: [],
-                      quantity: 1
-                    }
-                  ],
-                  ignorePrice: false,
-                  itemId: mechanism.id,
-                  modSlots: [],
-                  quantity: 1
-                }
-              ],
-              typeId: 'backpack'
-            }
-          ],
-          lastExported: undefined,
-          lastUpdated: undefined,
-          lastWebsiteVersion: undefined,
-          name: 'Build with backpack only and every currency'
-        } as IBuild,
-        'fr',
-        expectedString4
-      ],
-      [
-        {
-          id: 'buildWithWeaponOnBackOnly',
-          inventorySlots: [
-            {
-              items: [
-                {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: rpk16Default.id,
-                  modSlots: [],
-                  quantity: 1
-                }
-              ],
-              typeId: 'onBack'
-            }
-          ],
-          lastExported: undefined,
-          lastUpdated: undefined,
-          lastWebsiteVersion: undefined,
-          name: 'Build with weapon on back only'
-        } as IBuild,
-        'fr',
-        expectedString5
-      ],
-      [
-        {
-          id: 'buildWithMissingPrice',
-          inventorySlots: [
-            {
-              items: [
-                {
-                  content: [],
-                  ignorePrice: false,
-                  itemId: ammo545bp.id,
-                  modSlots: [],
-                  quantity: 60
-                }
-              ],
-              typeId: 'pockets'
-            }
-          ],
-          lastExported: undefined,
-          lastUpdated: undefined,
-          lastWebsiteVersion: undefined,
-          name: 'Build with missing price'
-        } as IBuild,
-        'fr',
-        expectedString6
-      ]
-    ])('should convert a build to a text', async (build: IBuild, language: string, expected: string) => {
-      // Arrange
-      useItemServiceMock()
-      usePresetServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(BuildService)
-      Services.configure(GlobalFilterService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
-      Services.configure(ItemPropertiesService)
-      Services.configure(ReductionService)
-
-      const service = new BuildPropertiesService()
-
-      // Act
-      const result = await service.toText(
-        [build],
-        {
-          includeEmojis: true,
-          includeLink: true,
-          includePrices: true,
-          language,
-          linkOnly: false,
-          type: BuildsToTextType.simpleText
-        })
-
-      // Assert
-      expect(result).toBe(expected)
-    })
-
-    it('should convert builds to a text', async () => {
-      // Arrange
-      useItemServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(BuildService)
-      Services.configure(GlobalFilterService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
-      Services.configure(ItemPropertiesService)
-      Services.configure(PresetService)
-      Services.configure(ReductionService)
-
-      const build1: IBuild = {
-        id: 'build1',
-        inventorySlots: [
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: rgd5.id,
-                modSlots: [],
-                quantity: 1
-              },
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: ms2000.id,
-                modSlots: [],
-                quantity: 1
-              },
-              undefined,
-              undefined
-            ],
-            typeId: 'pockets'
-          },
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: k1s.id,
-                modSlots: [],
-                quantity: 1
-              }
-            ],
-            typeId: 'headwear'
-          }
-        ],
-        lastExported: undefined,
-        lastUpdated: undefined,
-        lastWebsiteVersion: undefined,
-        name: 'Build 1'
-      }
-
-      const build2: IBuild = {
-        id: 'build2',
-        inventorySlots: [
-          {
-            items: [
-              {
-                content: [],
-                ignorePrice: false,
-                itemId: ammo9mmGT.id,
-                modSlots: [],
-                quantity: 25
-              },
-              undefined
-            ],
-            typeId: 'pockets'
-          }
-        ],
-        lastExported: undefined,
-        lastUpdated: undefined,
-        lastWebsiteVersion: undefined,
-        name: 'Build 2'
-      }
-
-      const buildPropertiesService = new BuildPropertiesService()
-
-      // Act
-      const result = await buildPropertiesService.toText(
-        [build1, build2],
-        {
-          includeEmojis: true,
-          includeLink: true,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.simpleText
-        })
-
-      // Assert
-      expect(result).toBe(`Build 1
-
-✋ Ergonomie -2%
-
-💵 Prix 95€ et 20 701₽ (= 35 806₽)   ⚓ Poids 2,360 kg
-
-[Poches] RGD-5 hand grenade   💵 Prapor 3 11 822₽
-[Poches] MS2000 Marker   💵 Ragman 1 95€ (= 15 105₽)
-
-[Couvre-chef] Kolpak-1S riot helmet   💵 Ragman 1 8 879₽
-
-Version interactive avec statistiques complètes
-http://localhost:3000/s/XQAAAAJ_AAAAAAAAAABBKEnKciJ9Ha4afmksn3ID9gJ5PAcWvYvzduA6qCQ2iyxE_CSen9_XpufSHSHL8RJDDjOD4mYmwzzDzmcTT-fkYBTyehet34mLudzTvi5EDfQCawD5zgMXn__9qMg4z5LrVAzkyhkulsb266vl0hhN-Df_7WGwAA
-
-
-
-Build 2
-
-💵 Prix 1 825₽   ⚓ Poids 0,150 kg
-
-[Poches] 25 x 9x19mm Green Tracer   💵 Le Mécano 1 1 825₽
-
-Version interactive avec statistiques complètes
-http://localhost:3000/s/XQAAAAI7AAAAAAAAAABBKEnKciJ9Ha4afmlhjXH78TJ5PAcWvYvzduA6soV_78fsVnl_BZRLWWGOMdaAD74_p_rPIryYaIhPJc_2yv__6hmgAA
-
-
-
-Marchands configurés
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
-Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
-Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
-
-Créé avec Totov Builder`)
-    })
-
-    it('should ignore emojis', async () => {
-      // Arrange
-      useItemServiceMock()
-      usePresetServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(BuildService)
-      Services.configure(GlobalFilterService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
-      Services.configure(ItemPropertiesService)
-      Services.configure(ReductionService)
-
-      const service = new BuildPropertiesService()
-
-      // Act
-      const result = await service.toText(
-        [
-          {
-            id: 'buildWithWeaponOnBackOnly',
-            inventorySlots: [
-              {
-                items: [
-                  {
-                    content: [],
-                    ignorePrice: false,
-                    itemId: rpk16Default.id,
-                    modSlots: [],
-                    quantity: 1
-                  }
-                ],
-                typeId: 'onBack'
-              }
-            ],
-            lastExported: undefined,
-            lastUpdated: undefined,
-            lastWebsiteVersion: undefined,
-            name: 'Build with weapon on back only'
-          } as IBuild
-        ],
-        {
-          includeEmojis: false,
-          includeLink: true,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.simpleText
-        })
-
-      // Assert
-      expect(result).toBe(`Build with weapon on back only
-
-Recul vertical 112   Recul horizontal 333   Ergonomie 45
-Prix 43 345₽   Poids 1,500 kg
-
-[Dans le dos] RPK-16 5.45x39 light machine gun Default   Marché 43 345₽
-
-Version interactive avec statistiques complètes
-http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17Rk0UiykRW0ApjpaFQ6TR_AWFoFNHfz758PAigkjDNzljvK7CyqK5Q3NR5CNalmBcKYWWwRr_692wAA
-
-
-
-Marchands configurés
-Marché Oui   Jaeger 4   Le Mécano 4
-Peacekeeper 4   Prapor 4   Ragman 4
-Ref 4   Skier 4   La Toubib 4
-
-Créé avec Totov Builder`)
-    })
-
-    it('should ignore prices', async () => {
-      // Arrange
-      useItemServiceMock()
-      usePresetServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(BuildService)
-      Services.configure(GlobalFilterService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
-      Services.configure(ItemPropertiesService)
-      Services.configure(ReductionService)
-
-      const service = new BuildPropertiesService()
-
-      // Act
-      const result = await service.toText(
-        [build1],
-        {
-          includeEmojis: true,
-          includeLink: true,
-          includePrices: false,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.simpleText
-        })
-
-      // Assert
-      expect(result).toBe(`Build 1
-
-↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-9,5%)
-🛡️ Classe d'armure 4   🏃 Vitesse -6%   🔄 Vitesse de rotation -9%
-⚓ Poids 24,153 kg
-
-[En bandouillère] RPK-16 5.45x39 light machine gun Default
- [Chargeur] RPK-16 5.45x39 95-round drum magazine
-  95 x 5.45x39mm US gs
-
-[Pare-balles] 6B13 assault armor (Flora) Default
-
-[Couvre-chef] BNTI LShZ-2DTM helmet (Black)
- [Équipement] LShZ-2DTM face shield
-
-[Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)
- Iskra ration pack
- Bottle of water (0.6L)
-
-[Poches] Morphine injector
-[Poches] Vaseline balm
-[Poches] RGD-5 hand grenade
-[Poches] 60 x 5.45x39mm US gs
-
-[Lunettes] ESS Crossbow tactical glasses
-
-[Masque] Cold Fear infrared balaclava
-
-Version interactive avec statistiques complètes
-http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU
-
-Créé avec Totov Builder`)
-    })
-
-    it('should include the configured merchants', async () => {
-      // Arrange
-      useItemServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(BuildService)
-      Services.configure(GlobalFilterService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(ReductionService)
-
-      const build: IBuild = {
-        id: 'build',
-        inventorySlots: [],
-        lastExported: undefined,
-        lastUpdated: undefined,
-        lastWebsiteVersion: undefined,
-        name: 'Build'
-      }
-
-      const globalFilterService = Services.get(GlobalFilterService)
-      globalFilterService.saveMerchantFilters([
-        {
-          enabled: true,
-          merchant: 'prapor',
-          merchantLevel: 4
-        },
-        {
-          enabled: true,
-          merchant: 'mechanic',
-          merchantLevel: 2
-        },
-        {
-          enabled: true,
-          merchant: 'flea-market',
-          merchantLevel: 0
-        },
-        {
-          enabled: true,
-          merchant: 'therapist',
-          merchantLevel: 3
-        },
-        {
-          enabled: true,
-          merchant: 'skier',
-          merchantLevel: 1
-        },
-        {
-          enabled: false,
-          merchant: 'ref',
-          merchantLevel: 4
-        }
-      ])
-
-      const buildPropertiesService = new BuildPropertiesService()
-
-      // Act
-      const result = await buildPropertiesService.toText(
-        [build],
-        {
-          includeEmojis: true,
-          includeLink: true,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.simpleText
-        })
-
-      // Assert
-      expect(result).toBe(`Build
-
-Version interactive avec statistiques complètes
-http://localhost:3000/s/XQAAAAIMAAAAAAAAAABBKEnKUiJ9Ha4atWFNg2Pf___404AA
-
-
-
-Marchands configurés
-Marché ✅   Le Mécano 2️⃣   Prapor 4️⃣
-Ref ❌   Skier 1️⃣   La Toubib 3️⃣
-
-Créé avec Totov Builder`)
-    })
-
-    it('should only include links', async () => {
-      // Arrange
-      useItemServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(BuildService)
-      Services.configure(GlobalFilterService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(ReductionService)
-
-      const buildPropertiesService = new BuildPropertiesService()
-
-      // Act
-      const result = await buildPropertiesService.toText(
-        [build1, build2],
-        {
-          includeEmojis: true,
-          includeLink: true,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: true,
-          type: BuildsToTextType.simpleText
-        })
-
-      // Assert
-      expect(result).toBe(`Build 1
-http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU
-
-
-
-Build 2
-http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv`)
-    })
-
-    it('should not include links', async () => {
-      // Arrange
-      useItemServiceMock()
-      usePresetServiceMock()
-      useTarkovValuesServiceMock()
-      useWebsiteConfigurationServiceMock()
-      Services.configure(BuildService)
-      Services.configure(GlobalFilterService)
-      Services.configure(ItemPropertiesService)
-      Services.configure(InventoryItemService)
-      Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
-      Services.configure(ReductionService)
-
-      const buildPropertiesService = new BuildPropertiesService()
-
-      // Act
-      const result = await buildPropertiesService.toText(
-        [build1, build2],
-        {
-          includeEmojis: true,
-          includeLink: false,
-          includePrices: true,
-          language: 'fr',
-          linkOnly: false,
-          type: BuildsToTextType.simpleText
-        })
-
-      // Assert
-      expect(result).toBe(`Build 1
-
-↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-9,5%)
-🛡️ Classe d'armure 4   🏃 Vitesse -6%   🔄 Vitesse de rotation -9%
-💵 Prix 366 019₽   ⚓ Poids 24,153 kg
-
-[En bandouillère] RPK-16 5.45x39 light machine gun Default   💵 Marché 43 345₽
- [Chargeur] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
-  95 x 5.45x39mm US gs   💵 Prapor 1 9 120₽
-
-[Pare-balles] 6B13 assault armor (Flora) Default   💵 Ragman 2 64 269₽
-
-[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   💵 Marché 63 493₽
- [Équipement] LShZ-2DTM face shield   💵 Ragman 3 (échange) 29 805₽
-
-[Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)   💵 Ragman 2 24 509₽
- Iskra ration pack   💵 Jaeger 2 24 392₽
- Bottle of water (0.6L)   💵 La Toubib 1 (échange) 11 473₽
-
-[Poches] Morphine injector   💵 Marché 17 421₽
-[Poches] Vaseline balm   💵 Marché 27 714₽
-[Poches] RGD-5 hand grenade   💵 Prapor 3 11 822₽
-[Poches] 60 x 5.45x39mm US gs   💵 Prapor 1 5 760₽
-
-[Lunettes] ESS Crossbow tactical glasses   💵 Ragman 2 3 885₽
-
-[Masque] Cold Fear infrared balaclava   💵 Ragman 2 4 793₽
-
-
-
-Build 2
-
-↕️ Recul vertical 362   ↔️ Recul horizontal 249   ✋ Ergonomie 52 (-3%)
-🛡️ Classe d'armure 4   🏃 Vitesse -3%   🔄 Vitesse de rotation -1%
-💵 Prix 444$ et 184 252₽ (= 247 747₽)   ⚓ Poids 8,936 kg
-
-[Holster] Beretta M9A3 9x19 pistol Default   💵 Peacekeeper 1 107$ (= 15 337₽)
- [Canon]
-  [Bouche] SIG Sauer SRD9 9x19 sound suppressor   💵 Peacekeeper 2 242$ (= 34 606₽)
- [Chargeur]
-  17 x 9x19mm Green Tracer   💵 Le Mécano 1 1 241₽
- [Dispositif tactique] SureFire X400 Ultra tactical flashlight with laser   💵 Peacekeeper 2 95$ (= 13 552₽)
-
-[Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU)   💵 Marché 33 950₽
- [Plaque frontale] Monoclete level III PE ballistic plate   💵 Peacekeeper 3 (échange) 31 503₽
- [Plaque dorsale] Monoclete level III PE ballistic plate   💵 Peacekeeper 3 (échange) 31 503₽
- Salewa first aid kit   💵 La Toubib 1 (échange) 21 923₽
-
-[Dispositif audio] Walker's Razor Digital headset   💵 Marché 64 132₽
-
-[Pochette] Secure container Alpha
-
-[Fourreau] 6Kh5 Bayonet
-
-
-
-Marchands configurés
-Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
-Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
-Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
-
-Créé avec Totov Builder`)
     })
   })
 
@@ -1964,6 +722,1315 @@ Créé avec Totov Builder`)
       ] as IShoppingListMerchant[])
     })
   })
+
+  describe('toTextAsync() (markdown)', () => {
+    it.each([
+      [build1, 'fr', expectedMarkdownString1Fr],
+      [build1, 'en', expectedMarkdownString1En],
+      [build2, 'fr', expectedMarkdownString2],
+      [
+        {
+          id: 'buildWithArmorOnly',
+          inventorySlots: [
+            {
+              items: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: armor6b13FlDefault.id,
+                  modSlots: [
+                    {
+                      item: {
+                        content: [],
+                        ignorePrice: false,
+                        itemId: plate6b33Front.id,
+                        modSlots: [],
+                        quantity: 1
+                      },
+                      modSlotName: 'front_plate'
+                    },
+                    {
+                      item: {
+                        content: [],
+                        ignorePrice: false,
+                        itemId: plate6b33Back.id,
+                        modSlots: [],
+                        quantity: 1
+                      },
+                      modSlotName: 'back_plate'
+                    }
+                  ],
+                  quantity: 1
+                }
+              ],
+              typeId: 'bodyArmor'
+            }
+          ],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined,
+          name: 'Build with armor only'
+        } as IBuild,
+        'fr',
+        expectedMarkdownString3
+      ],
+      [
+        {
+          id: 'buildWithBackpackOnly',
+          inventorySlots: [
+            {
+              items: [
+                {
+                  content: [
+                    {
+                      content: [],
+                      ignorePrice: false,
+                      itemId: ms2000.id,
+                      modSlots: [],
+                      quantity: 1
+                    },
+                    {
+                      content: [],
+                      ignorePrice: false,
+                      itemId: precision.id,
+                      modSlots: [],
+                      quantity: 1
+                    }
+                  ],
+                  ignorePrice: false,
+                  itemId: mechanism.id,
+                  modSlots: [],
+                  quantity: 1
+                }
+              ],
+              typeId: 'backpack'
+            }
+          ],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined,
+          name: 'Build with backpack only and every currency'
+        } as IBuild,
+        'fr',
+        expectedMarkdownString4
+      ],
+      [
+        {
+          id: 'buildWithWeaponOnBackOnly',
+          inventorySlots: [
+            {
+              items: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: rpk16Default.id,
+                  modSlots: [],
+                  quantity: 1
+                }
+              ],
+              typeId: 'onBack'
+            }
+          ],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined,
+          name: 'Build with weapon on back only'
+        } as IBuild,
+        'fr',
+        expectedMarkdownString5
+      ],
+      [
+        {
+          id: 'buildWithMissingPrice',
+          inventorySlots: [
+            {
+              items: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: ammo545bp.id,
+                  modSlots: [],
+                  quantity: 60
+                }
+              ],
+              typeId: InventorySlotTypeId.pockets
+            }
+          ],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined,
+          name: 'Build with missing price'
+        } as IBuild,
+        'fr',
+        expectedMarkdownString6
+      ]
+    ])('should convert a build to a markdown text', async (build: IBuild, language: string, expected: string) => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(ReductionService)
+
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.toTextAsync(
+        [build],
+        {
+          includeEmojis: true,
+          includeLink: true,
+          includePrices: true,
+          language,
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
+
+      // Assert
+      expect(result).toBe(expected)
+    })
+
+    it('should convert builds to a markdown text', async () => {
+      // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(PresetService)
+      Services.configure(ReductionService)
+
+      const build1: IBuild = {
+        id: 'build1',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: rgd5.id,
+                modSlots: [],
+                quantity: 1
+              },
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: ms2000.id,
+                modSlots: [],
+                quantity: 1
+              },
+              undefined,
+              undefined
+            ],
+            typeId: InventorySlotTypeId.pockets
+          },
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: k1s.id,
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: InventorySlotTypeId.headwear
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build 1'
+      }
+
+      const build2: IBuild = {
+        id: 'build2',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: ammo9mmGT.id,
+                modSlots: [],
+                quantity: 25
+              },
+              undefined
+            ],
+            typeId: InventorySlotTypeId.pockets
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build 2'
+      }
+
+      const buildPropertiesService = new BuildPropertiesService()
+
+      // Act
+      const result = await buildPropertiesService.toTextAsync(
+        [build1, build2],
+        {
+          includeEmojis: true,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
+
+      // Assert
+      expect(result).toBe(`# Build 1
+
+*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAJ_AAAAAAAAAABBKEnKciJ9Ha4afmksn3ID9gJ5PAcWvYvzduA6qCQ2iyxE_CSen9_XpufSHSHL8RJDDjOD4mYmwzzDzmcTT-fkYBTyehet34mLudzTvi5EDfQCawD5zgMXn__9qMg4z5LrVAzkyhkulsb266vl0hhN-Df_7WGwAA)*
+
+✋ Ergonomie **-2%**  
+  
+💵 Prix **20 701₽** et **95€** (= **35 806₽**)   ⚓ Poids **2,360 kg**  
+
+[*Poches*] **RGD-5 hand grenade**   💵 Prapor 3 **11 822₽**  
+[*Poches*] **MS2000 Marker**   💵 Ragman 1 **95€** (= **15 105₽**)  
+
+[*Couvre-chef*] **Kolpak-1S riot helmet**   💵 Ragman 1 **8 879₽**  
+
+
+
+# Build 2
+
+*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAI7AAAAAAAAAABBKEnKciJ9Ha4afmlhjXH78TJ5PAcWvYvzduA6soV_78fsVnl_BZRLWWGOMdaAD74_p_rPIryYaIhPJc_2yv__6hmgAA)*
+
+💵 Prix **1 825₽**   ⚓ Poids **0,150 kg**  
+
+[*Poches*] 25 x **9x19mm Green Tracer**   💵 Le Mécano 1 **1 825₽**  
+
+
+
+*Marchands configurés*  
+Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
+Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
+Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣  
+
+*Créé avec [Totov Builder](http://localhost:3000)*`)
+    })
+
+    it('should ignore emojis', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(ReductionService)
+
+      const globalFilterService = Services.get(GlobalFilterService)
+      globalFilterService.saveMerchantFilters([
+        {
+          enabled: true,
+          merchant: 'prapor',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'mechanic',
+          merchantLevel: 2
+        },
+        {
+          enabled: true,
+          merchant: 'flea-market',
+          merchantLevel: 0
+        },
+        {
+          enabled: true,
+          merchant: 'therapist',
+          merchantLevel: 3
+        },
+        {
+          enabled: true,
+          merchant: 'skier',
+          merchantLevel: 1
+        },
+        {
+          enabled: false,
+          merchant: 'ref',
+          merchantLevel: 4
+        }
+      ])
+
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.toTextAsync(
+        [
+          {
+            id: 'buildWithWeaponOnBackOnly',
+            inventorySlots: [
+              {
+                items: [
+                  {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: rpk16Default.id,
+                    modSlots: [],
+                    quantity: 1
+                  }
+                ],
+                typeId: 'onBack'
+              }
+            ],
+            lastExported: undefined,
+            lastUpdated: undefined,
+            lastWebsiteVersion: undefined,
+            name: 'Build with weapon on back only'
+          } as IBuild
+        ],
+        {
+          includeEmojis: false,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
+
+      // Assert
+      expect(result).toBe(`# Build with weapon on back only
+
+*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17Rk0UiykRW0ApjpaFQ6TR_AWFoFNHfz758PAigkjDNzljvK7CyqK5Q3NR5CNalmBcKYWWwRr_692wAA)*
+
+Recul vertical **112**   Recul horizontal **333**   Ergonomie **45**  
+Prix **43 345₽**   Poids **1,500 kg**  
+
+[*Dans le dos*] **RPK-16 5.45x39 light machine gun Default**   Marché **43 345₽**  
+
+
+
+*Marchands configurés*  
+Marché Oui   Le Mécano 2   Prapor 4  
+Ref Non   Skier 1   La Toubib 3  
+
+*Créé avec [Totov Builder](http://localhost:3000)*`)
+    })
+
+    it('should ignore prices', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(ReductionService)
+
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.toTextAsync(
+        [build1],
+        {
+          includeEmojis: true,
+          includeLink: true,
+          includePrices: false,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
+
+      // Assert
+      expect(result).toBe(`# Build 1
+
+*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU)*
+
+↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **34** (**-9,5%**)  
+🛡️ Classe d'armure **4**   🏃 Vitesse **-6%**   🔄 Vitesse de rotation **-9%**  
+⚓ Poids **24,153 kg**  
+
+[*En bandouillère*] **RPK-16 5.45x39 light machine gun Default**  
+ [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**  
+  95 x **5.45x39mm US gs**  
+
+[*Pare-balles*] **6B13 assault armor (Flora) Default**  
+
+[*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**  
+ [*Équipement*] **LShZ-2DTM face shield**  
+
+[*Sac à dos*] **WARTECH Berkut BB-102 backpack (A-TACS FG)**  
+ **Iskra ration pack**  
+ **Bottle of water (0.6L)**  
+
+[*Poches*] **Morphine injector**  
+[*Poches*] **Vaseline balm**  
+[*Poches*] **RGD-5 hand grenade**  
+[*Poches*] 60 x **5.45x39mm US gs**  
+
+[*Lunettes*] **ESS Crossbow tactical glasses**  
+
+[*Masque*] **Cold Fear infrared balaclava**  
+
+*Créé avec [Totov Builder](http://localhost:3000)*`)
+    })
+
+    it('should include the configured merchants', async () => {
+      // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ReductionService)
+
+      const build: IBuild = {
+        id: 'build',
+        inventorySlots: [],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build'
+      }
+
+      const globalFilterService = Services.get(GlobalFilterService)
+      globalFilterService.saveMerchantFilters([
+        {
+          enabled: true,
+          merchant: 'prapor',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'mechanic',
+          merchantLevel: 2
+        },
+        {
+          enabled: true,
+          merchant: 'flea-market',
+          merchantLevel: 0
+        },
+        {
+          enabled: true,
+          merchant: 'therapist',
+          merchantLevel: 3
+        },
+        {
+          enabled: true,
+          merchant: 'skier',
+          merchantLevel: 1
+        },
+        {
+          enabled: false,
+          merchant: 'ref',
+          merchantLevel: 4
+        }
+      ])
+
+      const buildPropertiesService = new BuildPropertiesService()
+
+      // Act
+      const result = await buildPropertiesService.toTextAsync(
+        [build],
+        {
+          includeEmojis: true,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
+
+      // Assert
+      expect(result).toBe(`# Build
+
+*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAIMAAAAAAAAAABBKEnKUiJ9Ha4atWFNg2Pf___404AA)*
+
+
+
+*Marchands configurés*  
+Marché ✅   Le Mécano 2️⃣   Prapor 4️⃣  
+Ref ❌   Skier 1️⃣   La Toubib 3️⃣  
+
+*Créé avec [Totov Builder](http://localhost:3000)*`)
+    })
+
+    it('should only include links', async () => {
+      // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ReductionService)
+
+      const buildPropertiesService = new BuildPropertiesService()
+
+      // Act
+      const result = await buildPropertiesService.toTextAsync(
+        [build1, build2],
+        {
+          includeEmojis: true,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: true,
+          type: BuildsToTextType.markdown
+        })
+
+      // Assert
+      expect(result).toBe(`[Build 1](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU)
+[Build 2](http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv)`)
+    })
+
+    it('should not include links', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ReductionService)
+
+      const buildPropertiesService = new BuildPropertiesService()
+
+      // Act
+      const result = await buildPropertiesService.toTextAsync(
+        [build1, build2],
+        {
+          includeEmojis: true,
+          includeLink: false,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.markdown
+        })
+
+      // Assert
+      expect(result).toBe(`# Build 1
+
+↕️ Recul vertical **66**   ↔️ Recul horizontal **216**   ✋ Ergonomie **34** (**-9,5%**)  
+🛡️ Classe d'armure **4**   🏃 Vitesse **-6%**   🔄 Vitesse de rotation **-9%**  
+💵 Prix **366 019₽**   ⚓ Poids **24,153 kg**  
+
+[*En bandouillère*] **RPK-16 5.45x39 light machine gun Default**   💵 Marché **43 345₽**  
+ [*Chargeur*] **RPK-16 5.45x39 95-round drum magazine**   💵 Prapor 3 (*échange*) **24 218₽**  
+  95 x **5.45x39mm US gs**   💵 Prapor 1 **9 120₽**  
+
+[*Pare-balles*] **6B13 assault armor (Flora) Default**   💵 Ragman 2 **64 269₽**  
+
+[*Couvre-chef*] **BNTI LShZ-2DTM helmet (Black)**   💵 Marché **63 493₽**  
+ [*Équipement*] **LShZ-2DTM face shield**   💵 Ragman 3 (*échange*) **29 805₽**  
+
+[*Sac à dos*] **WARTECH Berkut BB-102 backpack (A-TACS FG)**   💵 Ragman 2 **24 509₽**  
+ **Iskra ration pack**   💵 Jaeger 2 **24 392₽**  
+ **Bottle of water (0.6L)**   💵 La Toubib 1 (*échange*) **11 473₽**  
+
+[*Poches*] **Morphine injector**   💵 Marché **17 421₽**  
+[*Poches*] **Vaseline balm**   💵 Marché **27 714₽**  
+[*Poches*] **RGD-5 hand grenade**   💵 Prapor 3 **11 822₽**  
+[*Poches*] 60 x **5.45x39mm US gs**   💵 Prapor 1 **5 760₽**  
+
+[*Lunettes*] **ESS Crossbow tactical glasses**   💵 Ragman 2 **3 885₽**  
+
+[*Masque*] **Cold Fear infrared balaclava**   💵 Ragman 2 **4 793₽**  
+
+
+
+# Build 2
+
+↕️ Recul vertical **362**   ↔️ Recul horizontal **249**   ✋ Ergonomie **52** (**-3%**)  
+🛡️ Classe d'armure **4**   🏃 Vitesse **-3%**   🔄 Vitesse de rotation **-1%**  
+💵 Prix **184 252₽** et **444$** (= **247 747₽**)   ⚓ Poids **8,936 kg**  
+
+[*Holster*] **Beretta M9A3 9x19 pistol Default**   💵 Peacekeeper 1 **107$** (= **15 337₽**)  
+ [*Canon*]  
+  [*Bouche*] **SIG Sauer SRD9 9x19 sound suppressor**   💵 Peacekeeper 2 **242$** (= **34 606₽**)  
+ [*Chargeur*]  
+  17 x **9x19mm Green Tracer**   💵 Le Mécano 1 **1 241₽**  
+ [*Dispositif tactique*] **SureFire X400 Ultra tactical flashlight with laser**   💵 Peacekeeper 2 **95$** (= **13 552₽**)  
+
+[*Gilet tactique*] **Shellback Tactical Banshee plate carrier (A-TACS AU)**   💵 Marché **33 950₽**  
+ [*Plaque frontale*] **Monoclete level III PE ballistic plate**   💵 Peacekeeper 3 (*échange*) **31 503₽**  
+ [*Plaque dorsale*] **Monoclete level III PE ballistic plate**   💵 Peacekeeper 3 (*échange*) **31 503₽**  
+ **Salewa first aid kit**   💵 La Toubib 1 (*échange*) **21 923₽**  
+
+[*Dispositif audio*] **Walker's Razor Digital headset**   💵 Marché **64 132₽**  
+
+[*Pochette*] **Secure container Alpha**  
+
+[*Fourreau*] **6Kh5 Bayonet**  
+
+
+
+*Marchands configurés*  
+Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣  
+Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣  
+Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣  
+
+*Créé avec [Totov Builder](http://localhost:3000)*`)
+    })
+  })
+
+  describe('toTextAsync() (simple text)', () => {
+    it.each([
+      [build1, 'fr', expectedString1Fr],
+      [build1, 'en', expectedString1En],
+      [build2, 'fr', expectedString2],
+      [
+        {
+          id: 'buildWithArmorOnly',
+          inventorySlots: [
+            {
+              items: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: armor6b13FlDefault.id,
+                  modSlots: [
+                    {
+                      item: {
+                        content: [],
+                        ignorePrice: false,
+                        itemId: plate6b33Front.id,
+                        modSlots: [],
+                        quantity: 1
+                      },
+                      modSlotName: 'front_plate'
+                    },
+                    {
+                      item: {
+                        content: [],
+                        ignorePrice: false,
+                        itemId: plate6b33Back.id,
+                        modSlots: [],
+                        quantity: 1
+                      },
+                      modSlotName: 'back_plate'
+                    }
+                  ],
+                  quantity: 1
+                }
+              ],
+              typeId: 'bodyArmor'
+            }
+          ],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined,
+          name: 'Build with armor only'
+        } as IBuild,
+        'fr',
+        expectedString3
+      ],
+      [
+        {
+          id: 'buildWithBackpackOnly',
+          inventorySlots: [
+            {
+              items: [
+                {
+                  content: [
+                    {
+                      content: [],
+                      ignorePrice: false,
+                      itemId: ms2000.id,
+                      modSlots: [],
+                      quantity: 1
+                    },
+                    {
+                      content: [],
+                      ignorePrice: false,
+                      itemId: precision.id,
+                      modSlots: [],
+                      quantity: 1
+                    }
+                  ],
+                  ignorePrice: false,
+                  itemId: mechanism.id,
+                  modSlots: [],
+                  quantity: 1
+                }
+              ],
+              typeId: 'backpack'
+            }
+          ],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined,
+          name: 'Build with backpack only and every currency'
+        } as IBuild,
+        'fr',
+        expectedString4
+      ],
+      [
+        {
+          id: 'buildWithWeaponOnBackOnly',
+          inventorySlots: [
+            {
+              items: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: rpk16Default.id,
+                  modSlots: [],
+                  quantity: 1
+                }
+              ],
+              typeId: 'onBack'
+            }
+          ],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined,
+          name: 'Build with weapon on back only'
+        } as IBuild,
+        'fr',
+        expectedString5
+      ],
+      [
+        {
+          id: 'buildWithMissingPrice',
+          inventorySlots: [
+            {
+              items: [
+                {
+                  content: [],
+                  ignorePrice: false,
+                  itemId: ammo545bp.id,
+                  modSlots: [],
+                  quantity: 60
+                }
+              ],
+              typeId: InventorySlotTypeId.pockets
+            }
+          ],
+          lastExported: undefined,
+          lastUpdated: undefined,
+          lastWebsiteVersion: undefined,
+          name: 'Build with missing price'
+        } as IBuild,
+        'fr',
+        expectedString6
+      ]
+    ])('should convert a build to a text', async (build: IBuild, language: string, expected: string) => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(ReductionService)
+
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.toTextAsync(
+        [build],
+        {
+          includeEmojis: true,
+          includeLink: true,
+          includePrices: true,
+          language,
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
+
+      // Assert
+      expect(result).toBe(expected)
+    })
+
+    it('should convert builds to a text', async () => {
+      // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(PresetService)
+      Services.configure(ReductionService)
+
+      const build1: IBuild = {
+        id: 'build1',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: rgd5.id,
+                modSlots: [],
+                quantity: 1
+              },
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: ms2000.id,
+                modSlots: [],
+                quantity: 1
+              },
+              undefined,
+              undefined
+            ],
+            typeId: InventorySlotTypeId.pockets
+          },
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: k1s.id,
+                modSlots: [],
+                quantity: 1
+              }
+            ],
+            typeId: InventorySlotTypeId.headwear
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build 1'
+      }
+
+      const build2: IBuild = {
+        id: 'build2',
+        inventorySlots: [
+          {
+            items: [
+              {
+                content: [],
+                ignorePrice: false,
+                itemId: ammo9mmGT.id,
+                modSlots: [],
+                quantity: 25
+              },
+              undefined
+            ],
+            typeId: InventorySlotTypeId.pockets
+          }
+        ],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build 2'
+      }
+
+      const buildPropertiesService = new BuildPropertiesService()
+
+      // Act
+      const result = await buildPropertiesService.toTextAsync(
+        [build1, build2],
+        {
+          includeEmojis: true,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
+
+      // Assert
+      expect(result).toBe(`Build 1
+
+✋ Ergonomie -2%
+
+💵 Prix 20 701₽ et 95€ (= 35 806₽)   ⚓ Poids 2,360 kg
+
+[Poches] RGD-5 hand grenade   💵 Prapor 3 11 822₽
+[Poches] MS2000 Marker   💵 Ragman 1 95€ (= 15 105₽)
+
+[Couvre-chef] Kolpak-1S riot helmet   💵 Ragman 1 8 879₽
+
+Version interactive avec statistiques complètes
+http://localhost:3000/s/XQAAAAJ_AAAAAAAAAABBKEnKciJ9Ha4afmksn3ID9gJ5PAcWvYvzduA6qCQ2iyxE_CSen9_XpufSHSHL8RJDDjOD4mYmwzzDzmcTT-fkYBTyehet34mLudzTvi5EDfQCawD5zgMXn__9qMg4z5LrVAzkyhkulsb266vl0hhN-Df_7WGwAA
+
+
+
+Build 2
+
+💵 Prix 1 825₽   ⚓ Poids 0,150 kg
+
+[Poches] 25 x 9x19mm Green Tracer   💵 Le Mécano 1 1 825₽
+
+Version interactive avec statistiques complètes
+http://localhost:3000/s/XQAAAAI7AAAAAAAAAABBKEnKciJ9Ha4afmlhjXH78TJ5PAcWvYvzduA6soV_78fsVnl_BZRLWWGOMdaAD74_p_rPIryYaIhPJc_2yv__6hmgAA
+
+
+
+Marchands configurés
+Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
+Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
+
+Créé avec Totov Builder`)
+    })
+
+    it('should ignore emojis', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(ReductionService)
+
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.toTextAsync(
+        [
+          {
+            id: 'buildWithWeaponOnBackOnly',
+            inventorySlots: [
+              {
+                items: [
+                  {
+                    content: [],
+                    ignorePrice: false,
+                    itemId: rpk16Default.id,
+                    modSlots: [],
+                    quantity: 1
+                  }
+                ],
+                typeId: 'onBack'
+              }
+            ],
+            lastExported: undefined,
+            lastUpdated: undefined,
+            lastWebsiteVersion: undefined,
+            name: 'Build with weapon on back only'
+          } as IBuild
+        ],
+        {
+          includeEmojis: false,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
+
+      // Assert
+      expect(result).toBe(`Build with weapon on back only
+
+Recul vertical 112   Recul horizontal 333   Ergonomie 45
+Prix 43 345₽   Poids 1,500 kg
+
+[Dans le dos] RPK-16 5.45x39 light machine gun Default   Marché 43 345₽
+
+Version interactive avec statistiques complètes
+http://localhost:3000/s/XQAAAAJOAAAAAAAAAABBKEnL4iJ9Ha4afnegDxWQTLsQzwkpgEEZ5P17Rk0UiykRW0ApjpaFQ6TR_AWFoFNHfz758PAigkjDNzljvK7CyqK5Q3NR5CNalmBcKYWWwRr_692wAA
+
+
+
+Marchands configurés
+Marché Oui   Jaeger 4   Le Mécano 4
+Peacekeeper 4   Prapor 4   Ragman 4
+Ref 4   Skier 4   La Toubib 4
+
+Créé avec Totov Builder`)
+    })
+
+    it('should ignore prices', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(ReductionService)
+
+      const service = new BuildPropertiesService()
+
+      // Act
+      const result = await service.toTextAsync(
+        [build1],
+        {
+          includeEmojis: true,
+          includeLink: true,
+          includePrices: false,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
+
+      // Assert
+      expect(result).toBe(`Build 1
+
+↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-9,5%)
+🛡️ Classe d'armure 4   🏃 Vitesse -6%   🔄 Vitesse de rotation -9%
+⚓ Poids 24,153 kg
+
+[En bandouillère] RPK-16 5.45x39 light machine gun Default
+ [Chargeur] RPK-16 5.45x39 95-round drum magazine
+  95 x 5.45x39mm US gs
+
+[Pare-balles] 6B13 assault armor (Flora) Default
+
+[Couvre-chef] BNTI LShZ-2DTM helmet (Black)
+ [Équipement] LShZ-2DTM face shield
+
+[Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)
+ Iskra ration pack
+ Bottle of water (0.6L)
+
+[Poches] Morphine injector
+[Poches] Vaseline balm
+[Poches] RGD-5 hand grenade
+[Poches] 60 x 5.45x39mm US gs
+
+[Lunettes] ESS Crossbow tactical glasses
+
+[Masque] Cold Fear infrared balaclava
+
+Version interactive avec statistiques complètes
+http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU
+
+Créé avec Totov Builder`)
+    })
+
+    it('should include the configured merchants', async () => {
+      // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ReductionService)
+
+      const build: IBuild = {
+        id: 'build',
+        inventorySlots: [],
+        lastExported: undefined,
+        lastUpdated: undefined,
+        lastWebsiteVersion: undefined,
+        name: 'Build'
+      }
+
+      const globalFilterService = Services.get(GlobalFilterService)
+      globalFilterService.saveMerchantFilters([
+        {
+          enabled: true,
+          merchant: 'prapor',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'mechanic',
+          merchantLevel: 2
+        },
+        {
+          enabled: true,
+          merchant: 'flea-market',
+          merchantLevel: 0
+        },
+        {
+          enabled: true,
+          merchant: 'therapist',
+          merchantLevel: 3
+        },
+        {
+          enabled: true,
+          merchant: 'skier',
+          merchantLevel: 1
+        },
+        {
+          enabled: false,
+          merchant: 'ref',
+          merchantLevel: 4
+        }
+      ])
+
+      const buildPropertiesService = new BuildPropertiesService()
+
+      // Act
+      const result = await buildPropertiesService.toTextAsync(
+        [build],
+        {
+          includeEmojis: true,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
+
+      // Assert
+      expect(result).toBe(`Build
+
+Version interactive avec statistiques complètes
+http://localhost:3000/s/XQAAAAIMAAAAAAAAAABBKEnKUiJ9Ha4atWFNg2Pf___404AA
+
+
+
+Marchands configurés
+Marché ✅   Le Mécano 2️⃣   Prapor 4️⃣
+Ref ❌   Skier 1️⃣   La Toubib 3️⃣
+
+Créé avec Totov Builder`)
+    })
+
+    it('should only include links', async () => {
+      // Arrange
+      useItemServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ReductionService)
+
+      const buildPropertiesService = new BuildPropertiesService()
+
+      // Act
+      const result = await buildPropertiesService.toTextAsync(
+        [build1, build2],
+        {
+          includeEmojis: true,
+          includeLink: true,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: true,
+          type: BuildsToTextType.simpleText
+        })
+
+      // Assert
+      expect(result).toBe(`Build 1
+http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU
+
+
+
+Build 2
+http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv`)
+    })
+
+    it('should not include links', async () => {
+      // Arrange
+      useItemServiceMock()
+      usePresetServiceMock()
+      useTarkovValuesServiceMock()
+      useWebsiteConfigurationServiceMock()
+      Services.configure(BuildService)
+      Services.configure(GlobalFilterService)
+      Services.configure(ItemPropertiesService)
+      Services.configure(InventoryItemService)
+      Services.configure(InventorySlotPropertiesService)
+      Services.configure(ReductionService)
+
+      const buildPropertiesService = new BuildPropertiesService()
+
+      // Act
+      const result = await buildPropertiesService.toTextAsync(
+        [build1, build2],
+        {
+          includeEmojis: true,
+          includeLink: false,
+          includePrices: true,
+          language: 'fr',
+          linkOnly: false,
+          type: BuildsToTextType.simpleText
+        })
+
+      // Assert
+      expect(result).toBe(`Build 1
+
+↕️ Recul vertical 66   ↔️ Recul horizontal 216   ✋ Ergonomie 34 (-9,5%)
+🛡️ Classe d'armure 4   🏃 Vitesse -6%   🔄 Vitesse de rotation -9%
+💵 Prix 366 019₽   ⚓ Poids 24,153 kg
+
+[En bandouillère] RPK-16 5.45x39 light machine gun Default   💵 Marché 43 345₽
+ [Chargeur] RPK-16 5.45x39 95-round drum magazine   💵 Prapor 3 (échange) 24 218₽
+  95 x 5.45x39mm US gs   💵 Prapor 1 9 120₽
+
+[Pare-balles] 6B13 assault armor (Flora) Default   💵 Ragman 2 64 269₽
+
+[Couvre-chef] BNTI LShZ-2DTM helmet (Black)   💵 Marché 63 493₽
+ [Équipement] LShZ-2DTM face shield   💵 Ragman 3 (échange) 29 805₽
+
+[Sac à dos] WARTECH Berkut BB-102 backpack (A-TACS FG)   💵 Ragman 2 24 509₽
+ Iskra ration pack   💵 Jaeger 2 24 392₽
+ Bottle of water (0.6L)   💵 La Toubib 1 (échange) 11 473₽
+
+[Poches] Morphine injector   💵 Marché 17 421₽
+[Poches] Vaseline balm   💵 Marché 27 714₽
+[Poches] RGD-5 hand grenade   💵 Prapor 3 11 822₽
+[Poches] 60 x 5.45x39mm US gs   💵 Prapor 1 5 760₽
+
+[Lunettes] ESS Crossbow tactical glasses   💵 Ragman 2 3 885₽
+
+[Masque] Cold Fear infrared balaclava   💵 Ragman 2 4 793₽
+
+
+
+Build 2
+
+↕️ Recul vertical 362   ↔️ Recul horizontal 249   ✋ Ergonomie 52 (-3%)
+🛡️ Classe d'armure 4   🏃 Vitesse -3%   🔄 Vitesse de rotation -1%
+💵 Prix 184 252₽ et 444$ (= 247 747₽)   ⚓ Poids 8,936 kg
+
+[Holster] Beretta M9A3 9x19 pistol Default   💵 Peacekeeper 1 107$ (= 15 337₽)
+ [Canon]
+  [Bouche] SIG Sauer SRD9 9x19 sound suppressor   💵 Peacekeeper 2 242$ (= 34 606₽)
+ [Chargeur]
+  17 x 9x19mm Green Tracer   💵 Le Mécano 1 1 241₽
+ [Dispositif tactique] SureFire X400 Ultra tactical flashlight with laser   💵 Peacekeeper 2 95$ (= 13 552₽)
+
+[Gilet tactique] Shellback Tactical Banshee plate carrier (A-TACS AU)   💵 Marché 33 950₽
+ [Plaque frontale] Monoclete level III PE ballistic plate   💵 Peacekeeper 3 (échange) 31 503₽
+ [Plaque dorsale] Monoclete level III PE ballistic plate   💵 Peacekeeper 3 (échange) 31 503₽
+ Salewa first aid kit   💵 La Toubib 1 (échange) 21 923₽
+
+[Dispositif audio] Walker's Razor Digital headset   💵 Marché 64 132₽
+
+[Pochette] Secure container Alpha
+
+[Fourreau] 6Kh5 Bayonet
+
+
+
+Marchands configurés
+Marché ✅   Jaeger 4️⃣   Le Mécano 4️⃣
+Peacekeeper 4️⃣   Prapor 4️⃣   Ragman 4️⃣
+Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
+
+Créé avec Totov Builder`)
+    })
+  })
 })
 
 
@@ -2052,7 +2119,7 @@ const expectedMarkdownString2 = `# Build 2
 
 ↕️ Recul vertical **362**   ↔️ Recul horizontal **249**   ✋ Ergonomie **52** (**-3%**)  
 🛡️ Classe d'armure **4**   🏃 Vitesse **-3%**   🔄 Vitesse de rotation **-1%**  
-💵 Prix **444$** et **184 252₽** (= **247 747₽**)   ⚓ Poids **8,936 kg**  
+💵 Prix **184 252₽** et **444$** (= **247 747₽**)   ⚓ Poids **8,936 kg**  
 
 [*Holster*] **Beretta M9A3 9x19 pistol Default**   💵 Peacekeeper 1 **107$** (= **15 337₽**)  
  [*Canon*]  
@@ -2106,7 +2173,7 @@ const expectedMarkdownString4 = `# Build with backpack only and every currency
 
 ✋ Ergonomie **-3%**  
 🏃 Vitesse **-2%**   🔄 Vitesse de rotation **-1%**  
-💵 Prix **95€**, **157$** et **67 446₽** (= **104 936₽**)   ⚓ Poids **1,307 kg**  
+💵 Prix **67 446₽**, **95€** et **157$** (= **104 936₽**)   ⚓ Poids **1,307 kg**  
 
 [*Sac à dos*] **Oakley Mechanism heavy duty backpack (Black)**   💵 Ragman 2 **67 446₽**  
  **MS2000 Marker**   💵 Ragman 1 **95€** (= **15 105₽**)  
@@ -2242,7 +2309,7 @@ const expectedString2 = `Build 2
 
 ↕️ Recul vertical 362   ↔️ Recul horizontal 249   ✋ Ergonomie 52 (-3%)
 🛡️ Classe d'armure 4   🏃 Vitesse -3%   🔄 Vitesse de rotation -1%
-💵 Prix 444$ et 184 252₽ (= 247 747₽)   ⚓ Poids 8,936 kg
+💵 Prix 184 252₽ et 444$ (= 247 747₽)   ⚓ Poids 8,936 kg
 
 [Holster] Beretta M9A3 9x19 pistol Default   💵 Peacekeeper 1 107$ (= 15 337₽)
  [Canon]
@@ -2298,7 +2365,7 @@ const expectedString4 = `Build with backpack only and every currency
 
 ✋ Ergonomie -3%
 🏃 Vitesse -2%   🔄 Vitesse de rotation -1%
-💵 Prix 95€, 157$ et 67 446₽ (= 104 936₽)   ⚓ Poids 1,307 kg
+💵 Prix 67 446₽, 95€ et 157$ (= 104 936₽)   ⚓ Poids 1,307 kg
 
 [Sac à dos] Oakley Mechanism heavy duty backpack (Black)   💵 Ragman 2 67 446₽
  MS2000 Marker   💵 Ragman 1 95€ (= 15 105₽)

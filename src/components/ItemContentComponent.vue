@@ -1,48 +1,15 @@
-<template>
-  <div class="item-content-indent">
-    <Item
-      v-for="(containedItem, index) of modelInventoryItems"
-      :key="`${path}/${index}_${modelInventoryItems.length}`"
-      :accepted-items-category-id="categoryId"
-      :accepted-items="acceptedItems"
-      :force-quantity-to-max-selectable-amount="isMagazine"
-      :inventory-item="modelInventoryItems[index]"
-      :max-stackable-amount="maximumQuantity"
-      :path="`${path}/${PathUtils.contentPrefix}${index}_${modelInventoryItems.length}/${itemPathPrefix}${containedItem.itemId}`"
-      @update:inventory-item="onItemChanged(index, $event)"
-    />
-    <Item
-      v-if="isEditing && canAddItem"
-      v-model:inventory-item="itemToAdd"
-      :accepted-items="acceptedItems"
-      :accepted-items-category-id="categoryId"
-      :max-stackable-amount="maximumQuantity"
-      :path="`${path}/new`"
-      @update:inventory-item="onItemAdded($event)"
-    />
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { Ref, computed, inject, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IContainer } from '../models/item/IContainer'
-import { IItem } from '../models/item/IItem'
+import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import { ItemContentComponentService } from '../services/components/ItemContentComponentService'
 import Services from '../services/repository/Services'
 import { PathUtils } from '../utils/PathUtils'
-import Item from './item/ItemComponent.vue'
+import Item from './ItemComponent.vue'
+import ItemHierarchyIndicator from './ItemHierarchyIndicatorComponent.vue'
 
 const modelInventoryItems = defineModel<IInventoryItem[]>('inventoryItems', { required: true })
 
@@ -52,10 +19,13 @@ const props = defineProps<{
 }>()
 
 const _globalFilterService = Services.get(GlobalFilterService)
+const _itemContentComponentService = Services.get(ItemContentComponentService)
 const _itemPropertiesService = Services.get(ItemPropertiesService)
 
+let _acceptedItemsNeedsUpdated = true
+
 const acceptedItems = ref<IItem[]>([])
-const categoryId = ref<string | undefined>(undefined)
+const categoryId = ref<ItemCategoryId | undefined>(undefined)
 const isEditing = inject<Ref<boolean>>('isEditing')
 const itemPathPrefix = PathUtils.itemPrefix
 const itemToAdd = ref<IInventoryItem>()
@@ -70,18 +40,17 @@ onMounted(() => {
   initialize()
 })
 
-onUnmounted(() => {
-  _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-})
+onUnmounted(() => _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged))
+
 
 watch(() => props.containerItem.id, () => initialize())
 
 /**
  * Initializes the component.
  */
-function initialize() {
-  setCategoryId()
-  setAcceptedItems()
+function initialize(): void {
+  // Gets the category IDs used to determine the available filters for the item selection sidebar.
+  categoryId.value = _itemContentComponentService.getAcceptedItemsCategoryId(props.containerItem.categoryId)
 }
 
 /**
@@ -89,14 +58,13 @@ function initialize() {
  *
  * Adds the item to the content of the inventory item and signals the parent item that its content has changed.
  */
-function onItemAdded(newInventoryItem: IInventoryItem) {
+function onItemAdded(newInventoryItem: IInventoryItem): void {
   modelInventoryItems.value = [
     ...modelInventoryItems.value,
     newInventoryItem
   ]
 
-  nextTick(() => {
-    // nextTick required for the reset of itemToAdd to take effect in the Item component
+  nextTick(() => { // nextTick required for the reset of itemToAdd to take effect in the Item component
     itemToAdd.value = undefined
   })
 }
@@ -108,7 +76,7 @@ function onItemAdded(newInventoryItem: IInventoryItem) {
  * @param index - Index of the changed contained item in the inventory item content list.
  * @param newInventoryItem - Updated contained item.
  */
-function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefined) {
+function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefined): void {
   const newInventoryItems = [...modelInventoryItems.value]
 
   if (newInventoryItem == null) {
@@ -121,26 +89,31 @@ function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefin
 }
 
 /**
- * Reacts to the merchant filter being changed.
+ * Gets the items the user can select as content of the item.
+ * @param forceItemsListUpdate - Indicates whether the cached list of accepted items must be updated.
+ * `getAcceptedItemsAsync` is designed to be executed by the `ItemsListComponent`, notably, when the
+ * merchants filter changes and the component is displayed.
+ * In theory, the merchant filter change event should update `_acceptedItemsNeedsUpdated` and it
+ * should be sufficient to indicate that le cached list must be updated.
+ * But since we cannot know whether `_acceptedItemsNeedsUpdated` has been updated by the event
+ * before `getAcceptedItemsAsync` is called, we need to make sure `getAcceptedItemsAsync`
+ * will update the cached item list thanks to this parameter.
+ */
+async function getAcceptedItemsAsync(forceItemsListUpdate: boolean): Promise<IItem[]> {
+  if (_acceptedItemsNeedsUpdated || forceItemsListUpdate) {
+    acceptedItems.value = await _itemContentComponentService.getAcceptedItemsAsync(props.containerItem.id)
+  }
+
+  return acceptedItems.value
+}
+
+/**
+ * Reacts to the merchant filter changing.
  *
- * Updates the accepted items to reflect the change in merchant filters.
+ * Indicates the accepted items list needs to be updated.
  */
-function onMerchantFilterChanged() {
-  setAcceptedItems()
-}
-
-/**
- * Sets the accepted items for the item to add.
- */
-async function setAcceptedItems() {
-  acceptedItems.value = await Services.get(ItemContentComponentService).getAcceptedItems(props.containerItem.id)
-}
-
-/**
- * Gets the category IDs used for determining the available sort buttons in the item selection dropdown.
- */
-function setCategoryId() {
-  categoryId.value = Services.get(ItemContentComponentService).getAcceptedItemsCategoryId(props.containerItem.categoryId)
+function onMerchantFilterChanged(): void {
+  _acceptedItemsNeedsUpdated = true
 }
 </script>
 
@@ -153,9 +126,79 @@ function setCategoryId() {
 
 
 
+<template>
+  <div v-if="modelInventoryItems.length > 0 || isEditing">
+    <div
+      v-for="(containedItem, index) of modelInventoryItems"
+      :key="`${path}/${index}_${modelInventoryItems.length}`"
+      class="item-content-content-item"
+    >
+      <ItemHierarchyIndicator
+        :inventory-items="inventoryItems"
+        :index="index"
+        :mode="props.containerItem.categoryId === ItemCategoryId.magazine ? 'magazineContent' : 'content'"
+      />
+      <Item
+        :force-accepted-items-category-id-from-accepted-items-list="categoryId != null"
+        :force-quantity-to-max-selectable-amount="isMagazine"
+        :get-accepted-items-function="getAcceptedItemsAsync"
+        :inventory-item="modelInventoryItems[index]"
+        :max-stackable-amount="maximumQuantity"
+        :path="`${path}/${PathUtils.contentPrefix}${index}_${modelInventoryItems.length}/${itemPathPrefix}${containedItem.itemId}`"
+        @update:inventory-item="onItemChanged(index, $event)"
+      />
+    </div>
+    <div
+      v-if="isEditing && canAddItem"
+      class="item-content-content-item"
+    >
+      <ItemHierarchyIndicator
+        :inventory-items="[itemToAdd]"
+        :index="0"
+        mode="addContent"
+      />
+      <Item
+        v-model:inventory-item="itemToAdd"
+        :force-accepted-items-category-id-from-accepted-items-list="categoryId != null"
+        :get-accepted-items-function="getAcceptedItemsAsync"
+        :max-stackable-amount="maximumQuantity"
+        :path="`${path}/new`"
+        @update:inventory-item="onItemAdded($event)"
+      />
+    </div>
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
 <style scoped>
-.item-content-indent {
-  margin-left: 3.25rem;
+.item-content-content-item {
+  display: flex;
+  width: 100%;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+<style>
+.item-content-content-item > .item {
+  margin-top: 1.5rem;
+}
+
+.item-content-content-item:first-child > .item {
   margin-top: 0.5rem;
 }
 </style>

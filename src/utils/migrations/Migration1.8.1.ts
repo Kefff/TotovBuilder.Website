@@ -6,8 +6,8 @@ import { IMigration } from '../../models/utils/IMigration'
  * Represents a migration updates obsolete builds that contain weapons with a chamber.
  */
 export class Migration181 implements IMigration {
-  public migrateBuild = this.executeBuildMigration
-  public migrateBuildUnrelatedData = (): Promise<boolean> => Promise.resolve(true)
+  public migrateBuildPromise = this.executeBuildMigration
+  public migrateBuildUnrelatedDataPromise = (): Promise<boolean> => Promise.resolve(true)
   public version = '1.8.1'
 
   private executeBuildMigration(build: IBuild): Promise<boolean> {
@@ -20,7 +20,7 @@ export class Migration181 implements IMigration {
     return Promise.resolve(true)
   }
 
-  private removeChamber(inventoryItem?: IInventoryItem) {
+  private removeChamber(inventoryItem?: IInventoryItem): void {
     if (inventoryItem == null) {
       return
     }

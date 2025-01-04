@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { ReductionService } from '../../services/ReductionService'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IMod } from '../../models/item/IMod'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
@@ -21,7 +22,7 @@ describe('parseReducedItem', () => {
       },
       {
         baseItemId: undefined,
-        categoryId: 'mod',
+        categoryId: ItemCategoryId.mod,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         ergonomicsModifier: -2,
@@ -33,6 +34,7 @@ describe('parseReducedItem', () => {
         modSlots: [],
         name: 'Armytek Predator Pro v3 XHP35 HI flashlight',
         presetErgonomicsModifier: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: 'XHP35',
         weight: 0.12,
@@ -79,7 +81,7 @@ describe('parseReducedItem', () => {
       },
       {
         baseItemId: undefined,
-        categoryId: 'mod',
+        categoryId: ItemCategoryId.mod,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         ergonomicsModifier: 0,
@@ -118,6 +120,7 @@ describe('parseReducedItem', () => {
         ],
         name: 'MPX GEN1 handguard 2 inch rail',
         presetErgonomicsModifier: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: 'MPX 2"',
         weight: 0.07,

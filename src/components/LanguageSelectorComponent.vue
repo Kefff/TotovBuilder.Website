@@ -1,3 +1,42 @@
+<script setup lang="ts">
+import { onMounted, ref, watch } from 'vue'
+import Images from '../images'
+import vueI18n from '../plugins/vueI18n'
+import StringUtils from '../utils/StringUtils'
+
+const modelLanguage = defineModel<string>('language', { required: true })
+
+const languages = ref<string[]>([])
+
+onMounted(() => {
+  getAvailableLanguages()
+})
+
+watch(() => modelLanguage.value, () => getAvailableLanguages())
+
+/**
+ * Gets available languages.
+ */
+function getAvailableLanguages(): void {
+  const newLanguages: string[] = []
+
+  for (const language of vueI18n.availableLocales.filter(l => l !== modelLanguage.value)) {
+    newLanguages.push(language)
+  }
+
+  languages.value = newLanguages
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <Dropdown
     v-model="modelLanguage"
@@ -25,45 +64,6 @@
     </template>
   </Dropdown>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
-import Images from '../images'
-import vueI18n from '../plugins/vueI18n'
-import StringUtils from '../utils/StringUtils'
-
-const modelLanguage = defineModel<string>('language', { required: true })
-
-const languages = ref<string[]>([])
-
-onMounted(() => {
-  getAvailableLanguages()
-})
-
-watch(() => modelLanguage.value, () => getAvailableLanguages())
-
-/**
- * Gets available languages.
- */
-function getAvailableLanguages() {
-  const newLanguages: string[] = []
-
-  for (const language of vueI18n.availableLocales.filter(l => l !== modelLanguage.value)) {
-    newLanguages.push(language)
-  }
-
-  languages.value = newLanguages
-}
-</script>
 
 
 
@@ -110,6 +110,5 @@ function getAvailableLanguages() {
   display: flex;
   gap: 0.5rem;
   height: 2.5rem;
-  padding: 0.3rem;
 }
 </style>

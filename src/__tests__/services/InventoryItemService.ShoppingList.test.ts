@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { IInventoryItem } from '../../models/build/IInventoryItem'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
@@ -14,7 +15,7 @@ import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('getShoppingList', () => {
+describe('getShoppingListAsync', () => {
   it.each([
     [
       build1.inventorySlots[0].items[0]!,
@@ -523,7 +524,7 @@ describe('getShoppingList', () => {
     ])
 
     // Act
-    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
+    const shoppingListResult = await inventoryItemService.getShoppingListAsync(inventoryItem)
 
     // Assert
     expect(shoppingListResult).toStrictEqual(expected)
@@ -548,7 +549,7 @@ describe('getShoppingList', () => {
     }
 
     // Act
-    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem, true, undefined, 'onSling')
+    const shoppingListResult = await inventoryItemService.getShoppingListAsync(inventoryItem, true, undefined, 'onSling')
 
     // Assert
     expect(shoppingListResult).toStrictEqual([
@@ -612,7 +613,7 @@ describe('getShoppingList', () => {
     }
 
     // Act
-    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
+    const shoppingListResult = await inventoryItemService.getShoppingListAsync(inventoryItem)
 
     // Assert
     expect(shoppingListResult).toStrictEqual([
@@ -621,7 +622,7 @@ describe('getShoppingList', () => {
         inventorySlotId: undefined,
         item: {
           capacity: 4,
-          categoryId: 'securedContainer',
+          categoryId: ItemCategoryId.securedContainer,
           conflictingItemIds: [],
           iconLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-icon.webp',
           id: '544a11ac4bdc2d470e8b456a',
@@ -629,6 +630,7 @@ describe('getShoppingList', () => {
           marketLink: 'https://tarkov.dev/item/secure-container-alpha',
           maxStackableAmount: 1,
           name: 'Secure container Alpha',
+          presetWeight: undefined,
           prices: [
             {
               barterItems: [],
@@ -708,16 +710,16 @@ describe('getShoppingList', () => {
     }
 
     // Act
-    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem, false)
+    const shoppingListResult = await inventoryItemService.getShoppingListAsync(inventoryItem, false)
 
     // Assert
     expect(shoppingListResult).toStrictEqual([
       {
-        ignorePrice: 'notLootable',
+        ignorePrice: IgnoredUnitPrice.notLootable,
         inventorySlotId: undefined,
         item: {
           capacity: 4,
-          categoryId: 'securedContainer',
+          categoryId: ItemCategoryId.securedContainer,
           conflictingItemIds: [],
           iconLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-icon.webp',
           id: '544a11ac4bdc2d470e8b456a',
@@ -725,6 +727,7 @@ describe('getShoppingList', () => {
           marketLink: 'https://tarkov.dev/item/secure-container-alpha',
           maxStackableAmount: 1,
           name: 'Secure container Alpha',
+          presetWeight: undefined,
           prices: [
             {
               barterItems: [],
@@ -796,7 +799,7 @@ describe('getShoppingList', () => {
     }
 
     // Act
-    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
+    const shoppingListResult = await inventoryItemService.getShoppingListAsync(inventoryItem)
 
     // Assert
     expect(shoppingListResult).toStrictEqual([
@@ -804,7 +807,7 @@ describe('getShoppingList', () => {
         ignorePrice: IgnoredUnitPrice.notIgnored,
         inventorySlotId: undefined,
         item: {
-          categoryId: 'notFound',
+          categoryId: ItemCategoryId.notFound,
           conflictingItemIds: [],
           iconLink: '/assets/images/unknown_item.webp',
           id: 'invalid',
@@ -812,6 +815,7 @@ describe('getShoppingList', () => {
           marketLink: '',
           maxStackableAmount: 1,
           name: 'Unknown item "invalid"',
+          presetWeight: undefined,
           prices: [],
           shortName: '',
           weight: 0,
@@ -862,7 +866,7 @@ describe('getShoppingList', () => {
     }
 
     // Act
-    const shoppingListResult = await inventoryItemService.getShoppingList(inventoryItem)
+    const shoppingListResult = await inventoryItemService.getShoppingListAsync(inventoryItem)
 
     // Assert
     expect(shoppingListResult).toStrictEqual([

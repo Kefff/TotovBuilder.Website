@@ -21,7 +21,7 @@ export class BuildComponentService {
 
     buildService.delete(build.id)
     notificationService.notify(NotificationType.information, vueI18n.t('message.buildDeleted', { name: buildName }))
-    router.push({ name: 'Builds' })
+    void router.push({ name: 'Builds' })
   }
 
   /**
@@ -51,17 +51,17 @@ export class BuildComponentService {
    * @param router - Router used to redirect to the creation of a new build when the build corresponding to the ID is not found.
    * @param build - Build to save.
    */
-  public async saveBuild(router: Router, build: IBuild): Promise<void> {
+  public async saveBuildAsync(router: Router, build: IBuild): Promise<void> {
     const buildService = Services.get(BuildService)
     const notificationService = Services.get(NotificationService)
 
     if (build.id === '') {
       // New build
-      const newBuildId = await buildService.add(build)
-      router.push({ name: 'Build', params: { id: newBuildId } })
+      const newBuildId = await buildService.addAsync(build)
+      void router.push({ name: 'Build', params: { id: newBuildId } })
     } else {
       // Update
-      await buildService.update(build)
+      await buildService.updateAsync(build)
     }
 
     notificationService.notify(NotificationType.success, vueI18n.t('message.buildSaved', { name: build.name }))

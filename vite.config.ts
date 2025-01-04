@@ -44,7 +44,7 @@ export default defineConfig({
         'src/__tests__/*',
         'src/components/*',
         'src/main.ts',
-        'src/models/*',
+        'src/models/utils/UI/*',
         'src/polyfill.ts',
         'src/plugins/*',
         'src/services/FileService.ts', // Requires access to the file system

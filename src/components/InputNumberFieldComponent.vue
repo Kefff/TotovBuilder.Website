@@ -1,38 +1,3 @@
-<template>
-  <div :class="'p-field input-number-field input-number-field-required-message-' + requiredMessagePosition">
-    <label v-if="!captionAsPlaceholder">{{ caption }}</label>
-    <InputNumber
-      ref="input"
-      v-model="modelValue"
-      :class="invalid ? 'p-invalid' : ''"
-      :disabled="readOnly"
-      :max="max"
-      :min="min"
-      :placeholder="captionAsPlaceholder ? caption : undefined"
-      :step="1"
-      button-layout="horizontal"
-      decrement-button-icon="pi pi-minus"
-      increment-button-icon="pi pi-plus"
-      show-buttons
-    />
-    <div
-      v-if="invalid"
-      class="'p-error"
-    >
-      {{ $t('message.requiredField', { caption }) }}
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, nextTick, onMounted, useTemplateRef } from 'vue'
 
@@ -86,7 +51,50 @@ onMounted(() => {
 
 
 
+<template>
+  <div :class="`input-number-field input-number-field-required-message-${requiredMessagePosition}`">
+    <label v-if="!captionAsPlaceholder">{{ caption }}</label>
+    <InputNumber
+      ref="input"
+      v-model="modelValue"
+      :class="invalid ? 'p-invalid' : ''"
+      :disabled="readOnly"
+      :max="max"
+      :min="min"
+      :placeholder="captionAsPlaceholder ? caption : undefined"
+      :step="1"
+      button-layout="horizontal"
+      decrement-button-icon="pi pi-minus"
+      increment-button-icon="pi pi-plus"
+      show-buttons
+    />
+    <div
+      v-if="invalid"
+      class="p-error"
+    >
+      {{ $t('message.requiredField', { caption }) }}
+    </div>
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+
 <style scoped>
+.input-number-field {
+  height: 2.75rem;
+}
+
+.input-number-field > span {
+  height: 100%;
+}
+
 .input-number-field-required-message-bottom {
   font-size: 0.85rem;
   display: block;
@@ -96,10 +104,10 @@ onMounted(() => {
   align-items: center;
   display: flex;
   font-size: 0.85rem;
+  gap: 0.5rem
 }
 
 .input-number-field-required-message-right > span {
-  margin-left: 0.5rem;
   width: 100%;
 }
 </style>
@@ -115,7 +123,7 @@ onMounted(() => {
 
 <style>
 .input-number-field .p-inputnumber {
-  height: 2.75rem;
+  height: 3.5rem;
 }
 
 .input-number-field input {

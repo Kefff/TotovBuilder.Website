@@ -4,6 +4,7 @@ import { IItem } from '../item/IItem'
 import BuildFilterAndSortingData from './BuildFilterAndSortingData'
 import { IBuildSummary } from './IBuildSummary'
 import { IGeneralOptionsGroup } from './IGeneralOptionsGroup'
+import ItemFilterAndSortingData from './ItemFilterAndSortingData'
 import { IToolbarButton } from './IToolbarButton'
 
 /**
@@ -11,14 +12,14 @@ import { IToolbarButton } from './IToolbarButton'
  */
 export interface IGlobalSidebarOptions {
   /**
-   * Name of the component to display in the global sidebar.
-   */
-  displayedComponentType: GlobalSidebarComponent
-
-  /**
    * Parameters to pass as props to the component to display in the global sidebar.
    */
   displayedComponentParameters?: GlobalSidebarDisplayedComponentParameters
+
+  /**
+   * Name of the component to display in the global sidebar.
+   */
+  displayedComponentType: GlobalSidebarComponent
 
   /**
    * Action to execute when the sidebar is closed.
@@ -43,6 +44,11 @@ export type BuildsListSidebarParameters = BuildFilterAndSortingData
 export type GeneralOptionsSidebarParameters = IGeneralOptionsGroup[]
 
 /**
+ * Items  list sidebar parameters.
+ */
+export type ItemsListSidebarParameters = ItemFilterAndSortingData
+
+/**
  * Components allowed to be displayed in a global sidebar.
  */
 export type GlobalSidebarComponent =
@@ -53,6 +59,8 @@ export type GlobalSidebarComponent =
   | 'BuildsListSidebar'
   | 'ChangelogSidebar'
   | 'GeneralOptionsSidebar'
+  | 'ItemSelectionSidebar'
+  | 'ItemsListSidebar'
   | 'MerchantItemsOptionsSidebar'
   | 'NotificationsSidebar'
   | 'ShoppingListSidebar'
@@ -68,6 +76,8 @@ export type GlobalSidebarDisplayedComponentParameters =
   | BuildsListSidebarParameters
   | BuildsShareSideBarParameters
   | GeneralOptionsSidebarParameters
+  | ItemSelectionSidebarParameters
+  | ItemsListSidebarParameters
   | ShoppingListSidebarParameters
   | StatsSidebarParameters
   | ToolbarSidebarParameters
@@ -84,6 +94,15 @@ export type BuildsExportSidebarParameters = IBuildSummary[]
 export type BuildsShareSideBarParameters = {
   buildToShare?: IBuild,
   buildSummaries?: IBuildSummary[]
+}
+
+/**
+ * Item selection sidebar parameters.
+ */
+export type ItemSelectionSidebarParameters = {
+  filterAndSortingData: ItemFilterAndSortingData | undefined,
+  getSelectableItemsFunction: (forceItemsListUpdate: boolean) => Promise<IItem[]>,
+  selectedItems: IItem[],
 }
 
 /**

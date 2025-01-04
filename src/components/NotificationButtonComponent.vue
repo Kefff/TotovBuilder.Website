@@ -1,40 +1,10 @@
-<template>
-  <Tooltip
-    :apply-hover-style="false"
-    :tooltip="$t('caption.notifications')"
-    position="left"
-  >
-    <Button
-      :disabled="notifications.length === 0"
-      class="p-button-text p-button-sm button-discreet notification-button"
-      @click="onClick()"
-    >
-      <font-awesome-icon icon="bell" />
-      <div
-        v-if="newNotificationCount > 0"
-        class="notification-button-count"
-      >
-        <div>{{ newNotificationCount }}</div>
-      </div>
-    </Button>
-  </Tooltip>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { INotification } from '../models/utils/INotification'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { NotificationService } from '../services/NotificationService'
 import Services from '../services/repository/Services'
+import Tooltip from './TooltipComponent.vue'
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _notificationService = Services.get(NotificationService)
@@ -61,7 +31,7 @@ onUnmounted(() => {
  * Displays the notification sidebar.
  * @param event - Event.
  */
-function onClick(event?: MouseEvent) {
+function onClick(event?: MouseEvent): void {
   // Stopping the event propagation, otherwise, when we click on the badge showing the number of notifications,
   // the method is called one time for the badge and another time for the button
   event?.stopPropagation()
@@ -78,7 +48,7 @@ function onClick(event?: MouseEvent) {
  *
  * Updates the new notifications count.
  */
-function onNotificationCountChanged() {
+function onNotificationCountChanged(): void {
   notifications.value = _notificationService.getNotifications()
   newNotificationCount.value = _notificationService.newNotificationCount
 }
@@ -93,9 +63,37 @@ function onNotificationCountChanged() {
 
 
 
-<style scoped>
-@import '../css/button.css';
+<template>
+  <Tooltip
+    :apply-hover-style="false"
+    :tooltip="$t('caption.notifications')"
+  >
+    <Button
+      :disabled="notifications.length === 0"
+      class="p-button-text button-discreet notification-button"
+      @click="onClick()"
+    >
+      <font-awesome-icon icon="bell" />
+      <div
+        v-if="newNotificationCount > 0"
+        class="notification-button-count"
+      >
+        <div>{{ newNotificationCount }}</div>
+      </div>
+    </Button>
+  </Tooltip>
+</template>
 
+
+
+
+
+
+
+
+
+
+<style scoped>
 .notification-button {
   position: relative;
 }

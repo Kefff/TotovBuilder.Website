@@ -1,6 +1,5 @@
 import { instance, mock, verify, when } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
-import ItemCategoriesMock from '../../../public/data/item-categories.json'
 import { FetchService } from '../../services/FetchService'
 import { ItemFetcherService } from '../../services/ItemFetcherService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
@@ -17,63 +16,7 @@ import WebsiteConfigurationMock from '../__data__/websiteConfigurationMock'
 import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('fetchItemCategories()', () => {
-  it('should fetch item categories', async () => {
-    // Arrange
-    useFetchServiceMock(ItemCategoriesMock)
-    useWebsiteConfigurationServiceMock()
-
-    const fetcher = new ItemFetcherService()
-
-    // Act
-    const itemCategories = await fetcher.fetchItemCategories()
-
-    // Assert
-    expect(itemCategories).not.toBeUndefined()
-    expect(itemCategories!).toStrictEqual(ItemCategoriesMock)
-  })
-
-  it('should return undefined and log exception when item categories are not found', async () => {
-    // Arrange
-    useFetchServiceMock([])
-    useWebsiteConfigurationServiceMock()
-
-    const logServiceMock = mock<LogService>()
-    Services.configure(LogService, undefined, instance(logServiceMock))
-
-    const fetcher = new ItemFetcherService()
-
-    // Act
-    const itemCategories = await fetcher.fetchItemCategories()
-
-    // Assert
-    expect(itemCategories).toBeUndefined()
-    verify(logServiceMock.logException('message.itemCategoriesNotFetched')).once()
-  })
-
-  it('should return undefined and log exception when an error occurs requesting item categories', async () => {
-    // Arrange
-    useWebsiteConfigurationServiceMock()
-
-    const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointItemCategories)).thenResolve(undefined)
-    Services.configure(FetchService, undefined, instance(fetchServiceMock))
-
-    const logServiceMock = mock<LogService>()
-    Services.configure(LogService, undefined, instance(logServiceMock))
-
-    const fetcher = new ItemFetcherService()
-
-    // Act
-    const itemCategories = await fetcher.fetchItemCategories()
-
-    // Assert
-    expect(itemCategories).toBeUndefined()
-    verify(logServiceMock.logException('message.itemCategoriesNotFetched')).once()
-  })
-})
-
-describe('fetchItems()', () => {
+describe('fetchItemsAsync()', () => {
   it('should fetch all items', async () => {
     // Arrange
     useFetchServiceMock(ReducedItemMocks)
@@ -84,7 +27,7 @@ describe('fetchItems()', () => {
     const fetcher = new ItemFetcherService()
 
     // Act
-    const items = await fetcher.fetchItems()
+    const items = await fetcher.fetchItemsAsync()
 
     // Assert
     expect(items).not.toBeUndefined()
@@ -107,7 +50,7 @@ describe('fetchItems()', () => {
     const fetcher = new ItemFetcherService()
 
     // Act
-    const items = await fetcher.fetchItems()
+    const items = await fetcher.fetchItemsAsync()
 
     // Assert
     expect(items).toBeUndefined()
@@ -119,7 +62,7 @@ describe('fetchItems()', () => {
     useWebsiteConfigurationServiceMock()
 
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointItems)).thenResolve(undefined)
+    when(fetchServiceMock.getAsync('/' + WebsiteConfigurationMock.endpointItems)).thenResolve(undefined)
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const logServiceMock = mock<LogService>()
@@ -128,7 +71,7 @@ describe('fetchItems()', () => {
     const fetcher = new ItemFetcherService()
 
     // Act
-    const items = await fetcher.fetchItems()
+    const items = await fetcher.fetchItemsAsync()
 
     // Assert
     expect(items).toBeUndefined()
@@ -136,7 +79,7 @@ describe('fetchItems()', () => {
   })
 })
 
-describe('fetchPrices()', () => {
+describe('fetchPricesAsync()', () => {
   it('should fetch all prices', async () => {
     // Arrange
     useFetchServiceMock(ReducedPriceMocks)
@@ -146,7 +89,7 @@ describe('fetchPrices()', () => {
     const fetcher = new ItemFetcherService()
 
     // Act
-    const prices = await fetcher.fetchPrices()
+    const prices = await fetcher.fetchPricesAsync()
 
     // Assert
     expect(prices).not.toBeUndefined()
@@ -175,7 +118,7 @@ describe('fetchPrices()', () => {
     const fetcher = new ItemFetcherService()
 
     // Act
-    const prices = await fetcher.fetchPrices()
+    const prices = await fetcher.fetchPricesAsync()
 
     // Assert
     expect(prices).toBeUndefined()
@@ -187,7 +130,7 @@ describe('fetchPrices()', () => {
     useWebsiteConfigurationServiceMock()
 
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointPrices)).thenResolve(undefined)
+    when(fetchServiceMock.getAsync('/' + WebsiteConfigurationMock.endpointPrices)).thenResolve(undefined)
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const logServiceMock = mock<LogService>()
@@ -196,7 +139,7 @@ describe('fetchPrices()', () => {
     const fetcher = new ItemFetcherService()
 
     // Act
-    const prices = await fetcher.fetchPrices()
+    const prices = await fetcher.fetchPricesAsync()
 
     // Assert
     expect(prices).toBeUndefined()
@@ -204,7 +147,7 @@ describe('fetchPrices()', () => {
   })
 })
 
-describe('fetchPresets()', () => {
+describe('fetchPresetsAsync()', () => {
   it('should fetch all presets', async () => {
     // Arrange
     useFetchServiceMock(ReducedPresetMocks)
@@ -214,7 +157,7 @@ describe('fetchPresets()', () => {
     const fetcher = new ItemFetcherService()
 
     // Act
-    const presets = await fetcher.fetchPresets()
+    const presets = await fetcher.fetchPresetsAsync()
 
     // Assert
     expect(presets).not.toBeUndefined()
@@ -237,7 +180,7 @@ describe('fetchPresets()', () => {
     const fetcher = new ItemFetcherService()
 
     // Act
-    const presets = await fetcher.fetchPresets()
+    const presets = await fetcher.fetchPresetsAsync()
 
     // Assert
     expect(presets).toBeUndefined()
@@ -249,7 +192,7 @@ describe('fetchPresets()', () => {
     useWebsiteConfigurationServiceMock()
 
     const fetchServiceMock = mock<FetchService>()
-    when(fetchServiceMock.get('/' + WebsiteConfigurationMock.endpointPresets)).thenResolve(undefined)
+    when(fetchServiceMock.getAsync('/' + WebsiteConfigurationMock.endpointPresets)).thenResolve(undefined)
     Services.configure(FetchService, undefined, instance(fetchServiceMock))
 
     const logServiceMock = mock<LogService>()
@@ -258,7 +201,7 @@ describe('fetchPresets()', () => {
     const fetcher = new ItemFetcherService()
 
     // Act
-    const presets = await fetcher.fetchPresets()
+    const presets = await fetcher.fetchPresetsAsync()
 
     // Assert
     expect(presets).toBeUndefined()

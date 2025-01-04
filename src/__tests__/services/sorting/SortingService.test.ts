@@ -1,13 +1,14 @@
 import { anything, instance, mock, verify } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
-import { IItem } from '../../../models/item/IItem'
+import { IItem, ItemCategoryId } from '../../../models/item/IItem'
+import FilterAndSortingData from '../../../models/utils/FilterAndSortingData'
 import { IBuildSummary } from '../../../models/utils/IBuildSummary'
-import SortingData from '../../../models/utils/SortingData'
 import { SortingOrder } from '../../../models/utils/SortingOrder'
 import { LogService } from '../../../services/LogService'
 import Services from '../../../services/repository/Services'
-import { SortingService, compareByElementName, compareByItemNumber, compareByItemString, compareByNumber } from '../../../services/sorting/SortingService'
-import ISortingFunctionList from '../../../services/sorting/functions/ISortingFunctionList'
+import { SortingService, compareByElementName, compareByNumber, compareByString } from '../../../services/sorting/SortingService'
+import { IBuildSortingFunctionList, IItemSortingFunctionList } from '../../../services/sorting/functions/ISortingFunctionList'
+import { AmmunitionSortingFunctions, ArmorModSortingFunctions, ArmorSortingFunctions, BackpackSortingFunctions, ContainerSortingFunctions, EyewearSortingFunctions, GrenadeSortingFunctions, HeadwearSortingFunctions, ItemSortingFunctions, MagazineSortingFunctions, MeleeWeaponSortingFunctions, ModSortingFunctions, RangedWeaponModSortingFunctions, RangedWeaponSortingFunctions, VestSortingFunctions } from '../../../services/sorting/functions/itemSortingFunctions'
 
 describe('SortingService', () => {
   describe('compareByElementName()', () => {
@@ -26,39 +27,41 @@ describe('SortingService', () => {
     })
   })
 
-  describe('compareByItemNumber()', () => {
+  describe('getSortingFunctionsFromItemCategory()', () => {
     it.each([
-      [{ name: 'a', categoryId: 'cat1', weight: 1 } as IItem, { name: 'a', categoryId: 'cat2', weight: 1 } as IItem, -1],
-      [{ name: 'a', categoryId: 'cat2', weight: 1 } as IItem, { name: 'a', categoryId: 'cat1', weight: 1 } as IItem, 1],
-      [{ name: 'a', categoryId: 'cat1', weight: 1 } as IItem, { name: 'a', categoryId: 'cat1', weight: 2 } as IItem, -1],
-      [{ name: 'a', categoryId: 'cat1', weight: 2 } as IItem, { name: 'a', categoryId: 'cat1', weight: 1 } as IItem, 1],
-      [{ name: 'a', categoryId: 'cat1', weight: 1 } as IItem, { name: 'a', categoryId: 'cat1', weight: 1 } as IItem, 0],
-      [{ name: 'a', categoryId: 'cat1', weight: 1 } as IItem, { name: 'b', categoryId: 'cat1', weight: 1 } as IItem, -1],
-      [{ name: 'b', categoryId: 'cat1', weight: 1 } as IItem, { name: 'a', categoryId: 'cat1', weight: 1 } as IItem, 1]
-    ])('should compare by category, a number property and caption', (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
+      [undefined, ItemSortingFunctions],
+      [ItemCategoryId.ammunition, AmmunitionSortingFunctions],
+      [ItemCategoryId.armband, ItemSortingFunctions],
+      [ItemCategoryId.armor, ArmorSortingFunctions],
+      [ItemCategoryId.armorMod, ArmorModSortingFunctions],
+      [ItemCategoryId.backpack, BackpackSortingFunctions],
+      [ItemCategoryId.container, ContainerSortingFunctions],
+      [ItemCategoryId.currency, ItemSortingFunctions],
+      [ItemCategoryId.eyewear, EyewearSortingFunctions],
+      [ItemCategoryId.faceCover, ItemSortingFunctions],
+      [ItemCategoryId.grenade, GrenadeSortingFunctions],
+      [ItemCategoryId.headphones, ItemSortingFunctions],
+      [ItemCategoryId.headwear, HeadwearSortingFunctions],
+      [ItemCategoryId.magazine, MagazineSortingFunctions],
+      [ItemCategoryId.mainWeapon, RangedWeaponSortingFunctions],
+      [ItemCategoryId.meleeWeapon, MeleeWeaponSortingFunctions],
+      [ItemCategoryId.mod, ModSortingFunctions],
+      [ItemCategoryId.notFound, ItemSortingFunctions],
+      [ItemCategoryId.other, ItemSortingFunctions],
+      [ItemCategoryId.rangedWeaponMod, RangedWeaponModSortingFunctions],
+      [ItemCategoryId.secondaryWeapon, RangedWeaponSortingFunctions],
+      [ItemCategoryId.securedContainer, ContainerSortingFunctions],
+      [ItemCategoryId.special, ItemSortingFunctions],
+      [ItemCategoryId.vest, VestSortingFunctions]
+    ])('should get the sorting functions of an item category (%s)', (itemCategoryId: ItemCategoryId | undefined, expected: IItemSortingFunctionList) => {
+      // Arrange
+      const service = new SortingService()
+
       // Act
-      const sortingValue = compareByItemNumber(item1, item1.weight, item2, item2.weight)
+      const sortingFunctions = service.getSortingFunctionsFromItemCategory(itemCategoryId)
 
       // Assert
-      expect(sortingValue).toBe(expectedComparisonValue)
-    })
-  })
-
-  describe('compareByItemString()', () => {
-    it.each([
-      [{ name: 'a', categoryId: 'cat1', shortName: 'a' } as IItem, { name: 'a', categoryId: 'cat2', shortName: 'a' } as IItem, -1],
-      [{ name: 'a', categoryId: 'cat2', shortName: 'a' } as IItem, { name: 'a', categoryId: 'cat1', shortName: 'a' } as IItem, 1],
-      [{ name: 'a', categoryId: 'cat1', shortName: 'a' } as IItem, { name: 'a', categoryId: 'cat1', shortName: 'b' } as IItem, -1],
-      [{ name: 'a', categoryId: 'cat1', shortName: 'b' } as IItem, { name: 'a', categoryId: 'cat1', shortName: 'a' } as IItem, 1],
-      [{ name: 'a', categoryId: 'cat1', shortName: 'a' } as IItem, { name: 'a', categoryId: 'cat1', shortName: 'a' } as IItem, 0],
-      [{ name: 'a', categoryId: 'cat1', shortName: 'a' } as IItem, { name: 'b', categoryId: 'cat1', shortName: 'a' } as IItem, -1],
-      [{ name: 'b', categoryId: 'cat1', shortName: 'a' } as IItem, { name: 'a', categoryId: 'cat1', shortName: 'a' } as IItem, 1]
-    ])('should compare by category, a string property and name', (item1: IItem, item2: IItem, expectedComparisonValue: number) => {
-      // Act
-      const sortingValue = compareByItemString(item1, item1.shortName, item2, item2.shortName)
-
-      // Assert
-      expect(sortingValue).toBe(expectedComparisonValue)
+      expect(sortingFunctions).toStrictEqual(expected)
     })
   })
 
@@ -70,24 +73,27 @@ describe('SortingService', () => {
       ['price', SortingOrder.desc, SortingOrder.desc, -2]
     ])('should set the sorting property and get the comparison function', (property: string, sortingOrder: SortingOrder | undefined, expectedSortingOrder: SortingOrder, expectedComparisonResult: number) => {
       // Arrange
-      let sortingData: SortingData<IItem> | undefined = new SortingData()
-      const sortingFunctions: ISortingFunctionList<IItem> = {
-        name: {
-          comparisonFunction: () => {
-            return 1
+      const sortingFunctions: IItemSortingFunctionList = {
+        functions: {
+          name: {
+            comparisonFunction: () => {
+              return 1
+            },
+            comparisonValueObtentionPromise: i => Promise.resolve(i.name)
           },
-          comparisonValueObtentionFunction: i => Promise.resolve(i.name)
+          price: {
+            comparisonFunction: () => 2,
+            comparisonValueObtentionPromise: i => Promise.resolve((i as IItem).prices[0].valueInMainCurrency)
+          }
         },
-        price: {
-          comparisonFunction: () => 2,
-          comparisonValueObtentionFunction: i => Promise.resolve(i.prices[0].valueInMainCurrency)
-        }
+        itemCategoryIds: [ItemCategoryId.other]
       }
+      const sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingData(sortingFunctions)
       const sortService = new SortingService()
 
       // Act
-      sortingData = sortService.setSortingProperty(sortingData, sortingFunctions, property, sortingOrder)
-      const comparison = sortingData!.sortingFunction.comparisonFunction({} as IItem, 0, {} as IItem, 0)
+      sortService.setSortingProperty(sortingData, property, sortingOrder)
+      const comparison = sortingData.currentSortingFunction.comparisonFunction({} as unknown as IItem, 0, {} as unknown as IItem, 0) * sortingData.order
 
       // Assert
       expect(sortingData!.property).toBe(property)
@@ -97,18 +103,21 @@ describe('SortingService', () => {
 
     it('should return original sorting data when no comparison function is configured for the property', () => {
       // Arrange
-      let sortingData: SortingData<IItem> | undefined = new SortingData()
+      const sortingFunctions: IItemSortingFunctionList = {
+        functions: {},
+        itemCategoryIds: [ItemCategoryId.other]
+      }
+      const sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingData(sortingFunctions)
       sortingData.property = 'name'
       sortingData.order = SortingOrder.desc
 
-      const sortingFunctions: ISortingFunctionList<IItem> = {}
       const sortService = new SortingService()
 
       const logServiceMock = mock<LogService>()
       Services.configure(LogService, undefined, instance(logServiceMock))
 
       // Act
-      sortingData = sortService.setSortingProperty(sortingData, sortingFunctions, 'invalid')
+      sortService.setSortingProperty(sortingData, 'invalid')
 
       // Assert
       expect(sortingData.property).toBe('name')
@@ -117,16 +126,18 @@ describe('SortingService', () => {
     })
   })
 
-  describe('sort()', () => {
+  describe('sortAsync()', () => {
     it('should sort an array or build summaries', async () => {
       // Arrange
-      let sortingData: SortingData<IBuildSummary> | undefined = new SortingData()
-      const sortingFunctions: ISortingFunctionList<IBuildSummary> = {
-        ergonomics: {
-          comparisonFunction: (bs1, bs1v, bs2, bs2v) => compareByNumber(bs1 as unknown as Record<string, unknown>, bs1v, bs2 as unknown as Record<string, unknown>, bs2v),
-          comparisonValueObtentionFunction: bs => Promise.resolve(bs.ergonomics)
+      const sortingFunctions: IBuildSortingFunctionList = {
+        functions: {
+          ergonomics: {
+            comparisonFunction: (bs1, bs1v, bs2, bs2v) => compareByNumber(bs1, bs1v, bs2, bs2v),
+            comparisonValueObtentionPromise: bs => Promise.resolve((bs as IBuildSummary).ergonomics)
+          }
         }
       }
+      const sortingData: FilterAndSortingData<IBuildSummary> | undefined = new FilterAndSortingData(sortingFunctions)
       const buildSummaries = [
         { ergonomics: 10, name: 'e' } as IBuildSummary,
         { ergonomics: 20, name: 'f' } as IBuildSummary,
@@ -137,8 +148,8 @@ describe('SortingService', () => {
       const sortingService = new SortingService()
 
       // Act
-      sortingData = sortingService.setSortingProperty(sortingData, sortingFunctions, 'ergonomics')
-      const result = await sortingService.sort(buildSummaries, sortingData!)
+      sortingService.setSortingProperty(sortingData, 'ergonomics')
+      const result = await sortingService.sortAsync(buildSummaries, sortingData!)
 
       // Assert
       expect(result).toStrictEqual([
@@ -150,35 +161,38 @@ describe('SortingService', () => {
       ])
     })
 
-    it('should sort an array or items', async () => {
+    it('should sort an array of items', async () => {
       // Arrange
-      let sortingData: SortingData<IItem> | undefined = new SortingData()
-      const sortingFunctions: ISortingFunctionList<IItem> = {
-        shortName: {
-          comparisonFunction: compareByItemString,
-          comparisonValueObtentionFunction: i => Promise.resolve(i.shortName)
-        }
+      const sortingFunctions: IItemSortingFunctionList = {
+        functions: {
+          shortName: {
+            comparisonFunction: (i1, iv1, i2, iv2) => compareByString(i1, iv1, i2, iv2),
+            comparisonValueObtentionPromise: i => Promise.resolve((i as IItem).shortName)
+          }
+        },
+        itemCategoryIds: [ItemCategoryId.other]
       }
+      const sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingData(sortingFunctions)
       const items = [
-        { categoryId: 'cat1', shortName: 'e' } as IItem,
-        { categoryId: 'cat2', shortName: 'f' } as IItem,
-        { categoryId: 'cat1', shortName: 'b' } as IItem,
-        { categoryId: 'cat1', shortName: 'f' } as IItem,
-        { categoryId: 'cat1', shortName: 'i' } as IItem
+        { categoryId: 'cat1', shortName: 'e', name: 'e' } as unknown as IItem,
+        { categoryId: 'cat2', shortName: 'f', name: 'f2' } as unknown as IItem,
+        { categoryId: 'cat1', shortName: 'b', name: 'b' } as unknown as IItem,
+        { categoryId: 'cat1', shortName: 'f', name: 'f1' } as unknown as IItem,
+        { categoryId: 'cat1', shortName: 'i', name: 'i' } as unknown as IItem
       ]
       const sortingService = new SortingService()
 
       // Act
-      sortingData = sortingService.setSortingProperty(sortingData, sortingFunctions, 'shortName')
-      const result = await sortingService.sort(items, sortingData!)
+      sortingService.setSortingProperty(sortingData, 'shortName')
+      const result = await sortingService.sortAsync(items, sortingData)
 
       // Assert
       expect(result).toStrictEqual([
-        { categoryId: 'cat1', shortName: 'b' } as IItem,
-        { categoryId: 'cat1', shortName: 'e' } as IItem,
-        { categoryId: 'cat1', shortName: 'f' } as IItem,
-        { categoryId: 'cat1', shortName: 'i' } as IItem,
-        { categoryId: 'cat2', shortName: 'f' } as IItem
+        { categoryId: 'cat1', shortName: 'b', name: 'b' } as unknown as IItem,
+        { categoryId: 'cat1', shortName: 'e', name: 'e' } as unknown as IItem,
+        { categoryId: 'cat1', shortName: 'f', name: 'f1' } as unknown as IItem,
+        { categoryId: 'cat2', shortName: 'f', name: 'f2' } as unknown as IItem,
+        { categoryId: 'cat1', shortName: 'i', name: 'i' } as unknown as IItem
       ])
     })
   })

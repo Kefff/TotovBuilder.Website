@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { IItem } from '../../models/item/IItem'
+import { IItem, ItemCategoryId } from '../../models/item/IItem'
 import { IPrice } from '../../models/item/IPrice'
 import { IGlobalFilter } from '../../models/utils/IGlobalFilter'
 import { IItemExclusionFilter } from '../../models/utils/IItemExclusionFilter'
@@ -329,7 +329,7 @@ describe('getMatchingPrices()', () => {
       }
     ])
     const item: IItem = {
-      categoryId: '',
+      categoryId: ItemCategoryId.other,
       conflictingItemIds: [],
       iconLink: '',
       id: '',
@@ -337,6 +337,7 @@ describe('getMatchingPrices()', () => {
       marketLink: '',
       maxStackableAmount: 1,
       name: '',
+      presetWeight: undefined,
       prices,
       shortName: '',
       weight: 0,
@@ -504,7 +505,7 @@ describe('isMatchingFilter()', () => {
     ])
 
     const item: IItem = {
-      categoryId: '',
+      categoryId: ItemCategoryId.other,
       conflictingItemIds: [],
       iconLink: '',
       id: '',
@@ -512,6 +513,7 @@ describe('isMatchingFilter()', () => {
       marketLink: '',
       maxStackableAmount: 1,
       name: '',
+      presetWeight: undefined,
       prices,
       shortName: '',
       weight: 0,
@@ -548,7 +550,7 @@ describe('isMatchingFilter()', () => {
 
     service.save(globalFilter)
 
-    const item = (await Services.get(ItemService).getItem(itemId))
+    const item = await Services.get(ItemService).getItemAsync(itemId)
 
     // Act
     const result = service.isMatchingFilter(item)

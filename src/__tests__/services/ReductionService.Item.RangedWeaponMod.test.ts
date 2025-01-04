@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { IRangedWeaponMod } from '../../models/item/IRangedWeaponMod'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ReductionService } from '../../services/ReductionService'
@@ -24,7 +25,7 @@ describe('parseReducedItem', () => {
       {
         accuracyModifierPercentage: -0.01,
         baseItemId: undefined,
-        categoryId: 'rangedWeaponMod',
+        categoryId: ItemCategoryId.rangedWeaponMod,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         ergonomicsModifier: -5,
@@ -37,6 +38,7 @@ describe('parseReducedItem', () => {
         name: 'MPX-SD 9x19 integrated sound suppressor',
         presetErgonomicsModifier: undefined,
         presetRecoilModifierPercentage: undefined,
+        presetWeight: undefined,
         prices: [],
         recoilModifierPercentage: -0.15,
         shortName: 'MPX-SD',
@@ -70,7 +72,7 @@ describe('parseReducedItem', () => {
       {
         accuracyModifierPercentage: 0,
         baseItemId: undefined,
-        categoryId: 'rangedWeaponMod',
+        categoryId: ItemCategoryId.rangedWeaponMod,
         conflictingItemIds: [],
         defaultPresetId: undefined,
         ergonomicsModifier: 0,
@@ -95,6 +97,7 @@ describe('parseReducedItem', () => {
         name: 'AKS-74U gas tube (6P26 Sb.1-2)',
         presetErgonomicsModifier: undefined,
         presetRecoilModifierPercentage: undefined,
+        presetWeight: undefined,
         prices: [],
         recoilModifierPercentage: 0,
         shortName: '6P26 Sb.1-2',

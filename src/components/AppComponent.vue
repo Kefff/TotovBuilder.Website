@@ -1,3 +1,148 @@
+<script setup lang="ts">
+import { useMediaQuery } from '@vueuse/core'
+import { computed, defineAsyncComponent, onMounted, provide, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import Images from '../images'
+import vueI18n from '../plugins/vueI18n'
+import { GeneralOptionsService } from '../services/GeneralOptionsService'
+import { GlobalSidebarService } from '../services/GlobalSidebarService'
+import { NotificationService, NotificationType } from '../services/NotificationService'
+import { VersionService } from '../services/VersionService'
+import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
+import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
+import Services from '../services/repository/Services'
+import LanguageUtils from '../utils/LanguageUtils'
+import LoadingError from './LoadingErrorComponent.vue'
+import Notification from './NotificationComponent.vue'
+import Tooltip from './TooltipComponent.vue'
+
+const GlobalSidebar = defineAsyncComponent(() =>
+  import('./sidebar/GlobalSidebarComponent.vue')
+)
+
+const _globalSidebarService = Services.get(GlobalSidebarService)
+const _versionService = Services.get(VersionService)
+const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
+const _router = useRouter()
+
+const copyrightYear = computed(() => {
+  const year = new Date().getFullYear()
+  let text = '2021'
+
+  if (year > 2021) {
+    text += '-' + year
+  }
+
+  return text
+})
+const isSanta = computed(() => {
+  const date = new Date()
+  const santaMinDate = new Date(date.getFullYear(), 11, 21).getTime()
+  const santaMaxDate = new Date(date.getFullYear(), 11, 29, 23, 59, 59).getTime()
+
+  return date.getTime() >= santaMinDate && date.getTime() <= santaMaxDate
+})
+const isTouchScreen = useMediaQuery('(hover: none)') // cf. https://stackoverflow.com/a/63666289
+
+const bugReportUrl = ref<string>()
+const contactAddress = ref<string>()
+const discordUrl = ref<string>()
+const githubUrl = ref<string>()
+const hasNewVersion = ref(false)
+const loading = ref(true)
+const version = ref('1.0.0')
+
+provide('isTouchScreen', isTouchScreen)
+
+onMounted(() => {
+  if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
+    _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitializedAsync)
+    loading.value = true
+  } else {
+    onWebsiteConfigurationServiceInitializedAsync()
+  }
+
+  setLanguage()
+})
+
+/**
+ * Displays the changelog.
+ */
+function displayChangelog(): void {
+  _globalSidebarService.display({
+    displayedComponentType: 'ChangelogSidebar'
+  })
+}
+
+/**
+ * Displays the new version notification.
+ */
+function displayNewVersionNotification(): void {
+  Services.get(NotificationService).notify(
+    NotificationType.information,
+    vueI18n.t('message.newVersion', { newVersion: version.value }),
+    0,
+    [
+      {
+        action: (): void => displayChangelog(),
+        caption: vueI18n.t('caption.seeChanges'),
+        icon: undefined,
+        name: 'seeChanges',
+        type: NotificationType.success
+      }
+    ],
+    true)
+}
+
+/**
+ * Redirects to the welcome page.
+ */
+function goToHome(): void {
+  _router.push({ name: 'Welcome' })
+}
+
+/**
+ * Reacts to the website configuration service being initialized.
+ */
+async function onWebsiteConfigurationServiceInitializedAsync(): Promise<void> {
+  bugReportUrl.value = _websiteConfigurationService.configuration.bugReportUrl
+  contactAddress.value = _websiteConfigurationService.configuration.contactAddress
+  discordUrl.value = _websiteConfigurationService.configuration.discordUrl
+  githubUrl.value = _websiteConfigurationService.configuration.githubUrl
+
+  Services.get(GeneralOptionsService).getAllowCookiesIndicator() // Used to trigger the allow cookie check and display a notification
+
+  if (_websiteConfigurationService.configuration.postUpdatePeriod) {
+    Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.postUpdatePeriod'), 0)
+  }
+
+  await _versionService.getVersionAsync().then(v => version.value = v)
+  hasNewVersion.value = await _versionService.checkHasNewVersionAsync()
+
+  if (hasNewVersion.value) {
+    displayNewVersionNotification()
+  }
+}
+
+/**
+ * Sets the language.
+ */
+function setLanguage(): void {
+  const language = localStorage.getItem(Services.get(WebsiteConfigurationService).configuration.languageStorageKey) ?? 'en'
+  LanguageUtils.setLanguage(language)
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="app-container">
     <div class="app-title">
@@ -123,9 +268,9 @@
   </div>
 
   <!-- Global sidebars -->
-  <GlobalSidebar :level="1" />
-  <GlobalSidebar :level="2" />
-  <GlobalSidebar :level="3" />
+  <GlobalSidebar :identifier="GlobalSidebarService.GlobalSidebarIdentifiers[0]" />
+  <GlobalSidebar :identifier="GlobalSidebarService.GlobalSidebarIdentifiers[1]" />
+  <GlobalSidebar :identifier="GlobalSidebarService.GlobalSidebarIdentifiers[2]" />
 
   <!-- Loading error -->
   <LoadingError />
@@ -133,149 +278,6 @@
   <!-- Notification -->
   <Notification />
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, provide, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import Images from '../images'
-import vueI18n from '../plugins/vueI18n'
-import { GeneralOptionsService } from '../services/GeneralOptionsService'
-import { GlobalSidebarService } from '../services/GlobalSidebarService'
-import { NotificationService, NotificationType } from '../services/NotificationService'
-import { VersionService } from '../services/VersionService'
-import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
-import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
-import Services from '../services/repository/Services'
-import LanguageUtils from '../utils/LanguageUtils'
-import LoadingError from './LoadingErrorComponent.vue'
-import Notification from './NotificationComponent.vue'
-
-const GlobalSidebar = defineAsyncComponent(() =>
-  import('./sidebar/GlobalSidebarComponent.vue')
-)
-
-const _router = useRouter()
-const _versionService = Services.get(VersionService)
-const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
-
-
-const _isTouchScreen = matchMedia('(hover: none)').matches
-
-const bugReportUrl = ref<string>()
-const contactAddress = ref<string>()
-const discordUrl = ref<string>()
-const githubUrl = ref<string>()
-const hasNewVersion = ref(false)
-const loading = ref(true)
-const version = ref('1.0.0')
-
-const copyrightYear = computed(() => {
-  const year = new Date().getFullYear()
-  let text = '2021'
-
-  if (year > 2021) {
-    text += '-' + year
-  }
-
-  return text
-})
-const isSanta = computed(() => {
-  const date = new Date()
-  const santaMinDate = new Date(date.getFullYear(), 11, 21).getTime()
-  const santaMaxDate = new Date(date.getFullYear(), 11, 29, 23, 59, 59).getTime()
-
-  return date.getTime() >= santaMinDate && date.getTime() <= santaMaxDate
-})
-
-provide('isTouchScreen', _isTouchScreen) // cf. https://stackoverflow.com/a/63666289
-
-onMounted(() => {
-  if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
-    _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
-    loading.value = true
-  } else {
-    onWebsiteConfigurationServiceInitialized()
-  }
-
-  setLanguage()
-})
-
-/**
- * Displays the changelog.
- */
-function displayChangelog() {
-  Services.get(GlobalSidebarService).display({
-    displayedComponentType: 'ChangelogSidebar'
-  })
-}
-
-/**
- * Displays the new version notification.
- */
-function displayNewVersionNotification() {
-  Services.get(NotificationService).notify(
-    NotificationType.information,
-    vueI18n.t('message.newVersion', { newVersion: version.value }),
-    0,
-    [
-      {
-        action: () => displayChangelog(),
-        caption: vueI18n.t('caption.seeChanges'),
-        icon: undefined,
-        name: 'seeChanges',
-        type: NotificationType.success
-      }
-    ],
-    true)
-}
-
-/**
- * Redirects to the welcome page.
- */
-function goToHome() {
-  _router.push({ name: 'Welcome' })
-}
-
-/**
- * Reacts to the website configuration service being initialized.
- */
-async function onWebsiteConfigurationServiceInitialized() {
-  bugReportUrl.value = _websiteConfigurationService.configuration.bugReportUrl
-  contactAddress.value = _websiteConfigurationService.configuration.contactAddress
-  discordUrl.value = _websiteConfigurationService.configuration.discordUrl
-  githubUrl.value = _websiteConfigurationService.configuration.githubUrl
-
-  Services.get(GeneralOptionsService).getAllowCookiesIndicator() // Used to trigger the allow cookie check and display a notification
-
-  if (_websiteConfigurationService.configuration.postUpdatePeriod) {
-    Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.postUpdatePeriod'), 0)
-  }
-
-  await _versionService.getVersion().then(v => version.value = v)
-  hasNewVersion.value = await _versionService.checkHasNewVersion()
-
-  if (hasNewVersion.value) {
-    displayNewVersionNotification()
-  }
-}
-
-/**
- * Sets the language.
- */
-function setLanguage() {
-  const language = localStorage.getItem(Services.get(WebsiteConfigurationService).configuration.languageStorageKey) ?? 'en'
-  LanguageUtils.setLanguage(language)
-}
-</script>
 
 
 
@@ -403,7 +405,27 @@ function setLanguage() {
 }
 </style>
 
+
+
+
+
+
+
+
+
+
 <style>
+@import '../css/armor-penetration.css';
+@import '../css/button.css';
+@import '../css/card.css';
+@import '../css/collapsable.css';
+@import '../css/currency.css';
+@import '../css/flesh-damage.css';
+@import '../css/icon.css';
+@import '../css/link.css';
+@import '../css/sidebar.css';
+@import '../css/stats.css';
+
 body {
   background-color: var(--surface-transparent-0);
   /* Required for the #app to be able to use height:100% */

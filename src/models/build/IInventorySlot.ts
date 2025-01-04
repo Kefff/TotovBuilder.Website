@@ -1,4 +1,5 @@
 import { IInventoryItem } from './IInventoryItem'
+import { InventorySlotTypeId } from './InventorySlotTypes'
 
 /**
  * Provides the functionalities of an inventory slot.
@@ -13,5 +14,5 @@ export interface IInventorySlot {
   /**
    * ID of the type of the slot.
    */
-  typeId: string
+  typeId: InventorySlotTypeId
 }

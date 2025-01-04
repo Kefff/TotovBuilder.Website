@@ -26,7 +26,7 @@ export class ExportService {
    * Displays a notification indicating whether export has succeeded.
    * @param builds - Builds.
    */
-  public async export(builds: IBuild[]) {
+  public async exportAsync(builds: IBuild[]): Promise<void> {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
     const json = JSON.stringify(builds)
@@ -46,7 +46,7 @@ export class ExportService {
 
     for (const build of builds) {
       build.lastExported = new Date()
-      await buildService.update(build)
+      await buildService.updateAsync(build)
     }
 
     this.emitter.emit(ExportService.buildsExportedEvent)

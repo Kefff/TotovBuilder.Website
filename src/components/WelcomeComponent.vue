@@ -1,3 +1,191 @@
+<script setup lang="ts">
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
+import Images from '../images'
+import { IBuild } from '../models/build/IBuild'
+import { IBuildSummary } from '../models/utils/IBuildSummary'
+import vueI18n from '../plugins/vueI18n'
+import router from '../plugins/vueRouter'
+import { BuildPropertiesService } from '../services/BuildPropertiesService'
+import { BuildService } from '../services/BuildService'
+import { GlobalSidebarService } from '../services/GlobalSidebarService'
+import { ImportService } from '../services/ImportService'
+import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
+import Services from '../services/repository/Services'
+import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
+import StringUtils from '../utils/StringUtils'
+import Loading from './LoadingComponent.vue'
+
+const BuildsList = defineAsyncComponent(() =>
+  import('./BuildsListComponent.vue')
+)
+
+const _buildService = Services.get(BuildService)
+const _buildPropertiesService = Services.get(BuildPropertiesService)
+const _globalSidebarService = Services.get(GlobalSidebarService)
+const _importService = Services.get(ImportService)
+const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
+const _lastBuildAmount = 3
+
+const isLoading = ref(true)
+const lastBuildSummaries = ref<IBuildSummary[]>([])
+
+const hasBuilds = computed(() => lastBuildSummaries.value.length > 0)
+
+
+onMounted(() => {
+  _importService.emitter.on(ImportService.buildsImportedEvent, goToBuilds)
+  _buildService.emitter.on(BuildService.deletedEvent, onBuildDeleted)
+
+  if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
+    _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitializedAsync)
+  } else {
+    onWebsiteConfigurationServiceInitializedAsync()
+  }
+})
+
+onUnmounted(() => {
+  _buildService.emitter.off(BuildService.deletedEvent, onBuildDeleted)
+  _importService.emitter.off(ImportService.buildsImportedEvent, goToBuilds)
+})
+
+/**
+ * Displays the list of builds.
+ */
+function displayBuilds(): void {
+  router.push({ name: 'Builds' })
+}
+
+/**
+ * Displays the general options.
+ */
+function displayGeneralOptions(): void {
+  _globalSidebarService.display({
+    displayedComponentType: 'GeneralOptionsSidebar'
+  })
+}
+
+/**
+ * Displays the build import sidebar.
+ */
+function displayImportSidebar(): void {
+  _globalSidebarService.display({
+    displayedComponentType: 'BuildsImportSidebar'
+  })
+}
+
+/**
+ * Displays the items list.
+ */
+function displayItems(): void {
+  router.push({ name: 'Items' })
+}
+
+/**
+ * Displays the merchant items options.
+ */
+function displayMerchantItemsOptions(): void {
+  _globalSidebarService.display({
+    displayedComponentType: 'MerchantItemsOptionsSidebar'
+  })
+}
+
+/**
+ * Gets the last builds edited by the user.
+ */
+async function getLastBuildSummariesAsync(): Promise<void> {
+  const allBuilds = await new Promise<IBuild[]>((resolve) => {
+    const builds = _buildService
+      .getAll()
+      .sort((build1: IBuild, build2: IBuild) => {
+        const build1LastUpdatedDate = build1.lastUpdated ?? new Date()
+        const build2LastUpdatedDate = build2.lastUpdated ?? new Date()
+
+        if (build1LastUpdatedDate > build2LastUpdatedDate) {
+          return 1
+        } else if (build1LastUpdatedDate < build2LastUpdatedDate) {
+          return -1
+        } else {
+          return 0
+        }
+      })
+    resolve(builds)
+  })
+  const lastBuilds = allBuilds.slice(-_lastBuildAmount)
+
+  const buildSummaries: IBuildSummary[] = []
+
+  for (const lastBuild of lastBuilds) {
+    const lastBuildSummary = await _buildPropertiesService.getSummaryAsync(lastBuild)
+    buildSummaries.push(lastBuildSummary)
+  }
+
+  lastBuildSummaries.value = buildSummaries
+}
+
+/**
+ * Navigates to the builds list.
+ */
+function goToBuilds(): void {
+  router.push({ name: 'Builds' })
+}
+
+/**
+ * Reacts to a build being deleted.
+ *
+ * Updates the last builds list.
+ */
+function onBuildDeleted(): void {
+  getLastBuildSummariesAsync()
+}
+
+/**
+ * Reacts to a build being selected.
+ *
+ * Opens a the build the user has selected.
+ * @param selectedBuilds - Selected builds.
+ */
+function onBuildSelected(selectedBuilds: IBuildSummary[]): void {
+  if (selectedBuilds.length > 0) {
+    openBuild(selectedBuilds[0].id)
+  }
+}
+
+/**
+ * Reacts to the website configuration service being iniialized.
+ *
+ * Gets builds and ends loading.
+ */
+async function onWebsiteConfigurationServiceInitializedAsync(): Promise<void> {
+  await getLastBuildSummariesAsync()
+  isLoading.value = false
+}
+
+/**
+ * Opens a build.
+ * @param id - ID of the build.
+ */
+function openBuild(id: string): void {
+  router.push({ name: 'Build', params: { id } })
+}
+
+/**
+ * Opens a new build.
+ */
+function openNewBuild(): void {
+  router.push({ name: 'NewBuild' })
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="welcome">
     <div>
@@ -70,13 +258,26 @@
           <Button
             class="welcome-button"
             outlined
+            @click="displayItems()"
+          >
+            <font-awesome-icon
+              icon="clipboard-list"
+              class="icon-before-text"
+            />
+            <span>{{ $t('caption.itemsList') }}</span>
+          </Button>
+        </div>
+        <div class="welcome-action">
+          <Button
+            class="welcome-button"
+            outlined
             @click="displayMerchantItemsOptions()"
           >
             <font-awesome-icon
               icon="user-tag"
               class="icon-before-text"
             />
-            <span>{{ $t('message.welcomeConfigureMerchants') }}</span>
+            <span>{{ $t('caption.welcomeConfigureMerchants') }}</span>
           </Button>
         </div>
         <div class="welcome-action">
@@ -100,11 +301,16 @@
         <h3>{{ $t('message.welcomeLastBuilds') }}</h3>
         <BuildsList
           :build-summaries="lastBuildSummaries"
-          :grid-max-columns="3"
+          :max-elements-per-line="_lastBuildAmount"
+          :selection-options="{
+            canUnselect: true,
+            isEnabled: true,
+            isMultiSelection: false,
+            selectionButtonCaption: 'caption.edit',
+            selectionButtonIcon: 'edit'
+          }"
           :show-chips="false"
           :show-not-exported="false"
-          selection-button-caption="caption.edit"
-          selection-button-icon="edit"
           @update:selected-builds="onBuildSelected"
         />
       </div>
@@ -155,191 +361,7 @@
 
 
 
-<script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
-import Images from '../images'
-import { IBuild } from '../models/build/IBuild'
-import { IBuildSummary } from '../models/utils/IBuildSummary'
-import vueI18n from '../plugins/vueI18n'
-import router from '../plugins/vueRouter'
-import { BuildPropertiesService } from '../services/BuildPropertiesService'
-import { BuildService } from '../services/BuildService'
-import { GlobalSidebarService } from '../services/GlobalSidebarService'
-import { ImportService } from '../services/ImportService'
-import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
-import Services from '../services/repository/Services'
-import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
-import StringUtils from '../utils/StringUtils'
-// import BuildsList from './BuildsListComponent.vue'
-import Loading from './LoadingComponent.vue'
-
-const BuildsList = defineAsyncComponent(() =>
-  import('./BuildsListComponent.vue')
-)
-
-const _buildService = Services.get(BuildService)
-const _buildPropertiesService = Services.get(BuildPropertiesService)
-const _globalSidebarService = Services.get(GlobalSidebarService)
-const _importService = Services.get(ImportService)
-const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
-
-const _lastBuildAmount = 3
-
-const isLoading = ref(true)
-const lastBuildSummaries = ref<IBuildSummary[]>([])
-
-const hasBuilds = computed(() => lastBuildSummaries.value.length > 0)
-
-
-onMounted(() => {
-  _importService.emitter.on(ImportService.buildsImportedEvent, goToBuilds)
-  _buildService.emitter.on(BuildService.deletedEvent, onBuildDeleted)
-
-  if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
-    _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
-  } else {
-    onWebsiteConfigurationServiceInitialized()
-  }
-})
-
-onUnmounted(() => {
-  _buildService.emitter.off(BuildService.deletedEvent, onBuildDeleted)
-  _importService.emitter.off(ImportService.buildsImportedEvent, goToBuilds)
-})
-
-/**
- * Displays the list of builds.
- */
-function displayBuilds() {
-  router.push({ name: 'Builds' })
-}
-
-/**
- * Displays the general options.
- */
-function displayGeneralOptions() {
-  _globalSidebarService.display({
-    displayedComponentType: 'GeneralOptionsSidebar'
-  })
-}
-
-/**
- * Displays the build import sidebar.
- */
-function displayImportSidebar() {
-  _globalSidebarService.display({
-    displayedComponentType: 'BuildsImportSidebar'
-  })
-}
-
-/**
- * Displays the merchant items options.
- */
-function displayMerchantItemsOptions() {
-  _globalSidebarService.display({
-    displayedComponentType: 'MerchantItemsOptionsSidebar'
-  })
-}
-
-/**
- * Gets the last builds edited by the user.
- */
-async function getLastBuildSummariess() {
-  const allBuilds = await new Promise<IBuild[]>((resolve) => {
-    const builds = _buildService
-      .getAll()
-      .sort((build1: IBuild, build2: IBuild) => {
-        const build1LastUpdatedDate = build1.lastUpdated ?? new Date()
-        const build2LastUpdatedDate = build2.lastUpdated ?? new Date()
-
-        if (build1LastUpdatedDate > build2LastUpdatedDate) {
-          return 1
-        } else if (build1LastUpdatedDate < build2LastUpdatedDate) {
-          return -1
-        } else {
-          return 0
-        }
-      })
-    resolve(builds)
-  })
-  const lastBuilds = allBuilds.slice(-_lastBuildAmount)
-
-  const buildSummaries: IBuildSummary[] = []
-
-  for (const lastBuild of lastBuilds) {
-    const lastBuildSummary = await _buildPropertiesService.getSummary(lastBuild)
-    buildSummaries.push(lastBuildSummary)
-  }
-
-  lastBuildSummaries.value = buildSummaries
-}
-
-/**
- * Navigates to the builds list.
- */
-function goToBuilds() {
-  router.push({ name: 'Builds' })
-}
-
-/**
- * Reacts to a build being deleted.
- *
- * Updates the last builds list.
- */
-function onBuildDeleted() {
-  getLastBuildSummariess()
-}
-
-/**
- * Reacts to a build being selected.
- *
- * Opens a the build the user has selected.
- * @param selectedBuilds - Selected builds.
- */
-function onBuildSelected(selectedBuilds: IBuildSummary[]) {
-  if (selectedBuilds.length > 0) {
-    openBuild(selectedBuilds[0].id)
-  }
-}
-
-/**
- * Racts to the website configuration service being iniialized.
- *
- * Gets builds and ends loading.
- */
-async function onWebsiteConfigurationServiceInitialized() {
-  await getLastBuildSummariess()
-  isLoading.value = false
-}
-
-/**
- * Opens a build.
- * @param id - ID of the build.
- */
-function openBuild(id: string) {
-  router.push({ name: 'Build', params: { id } })
-}
-
-/**
- * Opens a new build.
- */
-function openNewBuild() {
-  router.push({ name: 'NewBuild' })
-}
-</script>
-
-
-
-
-
-
-
-
-
-
 <style scoped>
-@import '../css/icon.css';
-
 .welcome {
   display: flex;
   flex-direction: column;
@@ -367,7 +389,7 @@ function openNewBuild() {
 }
 
 .welcome-action {
-  width: 17.5rem;
+  width: 15rem;
 }
 
 .welcome-actions {
@@ -448,6 +470,15 @@ function openNewBuild() {
   flex-wrap: nowrap;
 }
 </style>
+
+
+
+
+
+
+
+
+
 
 <style>
 .welcome-action .p-button-outlined {

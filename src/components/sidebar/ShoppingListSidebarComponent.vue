@@ -1,44 +1,3 @@
-<template>
-  <div class="sidebar-option">
-    <div class="shopping-list-sidebar">
-      <div class="shopping-list-sidebar-merchants">
-        <ShoppingListMerchantsList :shopping-list="shoppingListItems" />
-      </div>
-      <div
-        v-for="(shoppingListItem, index) of shoppingListItems"
-        :key="index"
-        class="shopping-list-sidebar-item"
-        :class="shoppingListItem.inventorySlotId != null ? 'shopping-list-sidebar-item-of-inventory-slot' : ''"
-      >
-        <div
-          v-if="shoppingListItem.inventorySlotId != null"
-          class="shopping-list-sidebar-inventory-slot-name"
-        >
-          {{ $t(`caption.slotType${StringUtils.toUpperFirst(shoppingListItem.inventorySlotId)}`) }}
-        </div>
-        <PriceDetailItem
-          :can-show-item-stats="true"
-          :ignore-price-status="shoppingListItem.ignorePrice"
-          :item="shoppingListItem.item"
-          :missing="shoppingListItem.missingPrice"
-          :price="shoppingListItem.price"
-          :quantity="shoppingListItem.quantity"
-          :unit-price="shoppingListItem.unitPrice"
-        />
-      </div>
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { ShoppingListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
@@ -61,9 +20,46 @@ const shoppingListItems = computed(() => props.parameters.shoppingList.filter(sh
 
 
 
-<style scoped>
-@import '../../css/sidebar.css';
+<template>
+  <div class="shopping-list-sidebar">
+    <div class="shopping-list-sidebar-merchants">
+      <ShoppingListMerchantsList :shopping-list="shoppingListItems" />
+    </div>
+    <div
+      v-for="(shoppingListItem, index) of shoppingListItems"
+      :key="index"
+      class="shopping-list-sidebar-item"
+      :class="shoppingListItem.inventorySlotId != null ? 'shopping-list-sidebar-item-of-inventory-slot' : ''"
+    >
+      <div
+        v-if="shoppingListItem.inventorySlotId != null"
+        class="shopping-list-sidebar-inventory-slot-name"
+      >
+        {{ $t(`caption.slotType${StringUtils.toUpperFirst(shoppingListItem.inventorySlotId)}`) }}
+      </div>
+      <PriceDetailItem
+        :can-show-item-stats="true"
+        :ignore-price-status="shoppingListItem.ignorePrice"
+        :item="shoppingListItem.item"
+        :missing="shoppingListItem.missingPrice"
+        :price="shoppingListItem.price"
+        :quantity="shoppingListItem.quantity"
+        :unit-price="shoppingListItem.unitPrice"
+      />
+    </div>
+  </div>
+</template>
 
+
+
+
+
+
+
+
+
+
+<style scoped>
 .shopping-list-sidebar {
   width: 100%;
 }
@@ -79,6 +75,7 @@ const shoppingListItems = computed(() => props.parameters.shoppingList.filter(sh
 }
 
 .shopping-list-sidebar-inventory-slot-name {
+  font-weight: bold;
   margin-bottom: 0.25rem;
 }
 

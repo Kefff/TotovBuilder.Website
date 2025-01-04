@@ -7,6 +7,11 @@ import { GlobalSidebarComponent, GlobalSidebarDisplayedComponentParameters, IGlo
  */
 export class GlobalSidebarService {
   /**
+   * Values that uniquely identify the global sidebars that can be opened.
+   */
+  public static GlobalSidebarIdentifiers: number[] = [1, 2, 3]
+
+  /**
    * Name of the event fired to ask a global sidebar to close.
    */
   public static closeGlobalSidebarEvent = 'closeGlobalSidebar'
@@ -24,7 +29,7 @@ export class GlobalSidebarService {
   /**
    * List of displayed sidebars.
    */
-  private displayedSidebar: GlobalSidebarComponent[] = []
+  private displayedSidebar: { identifier: number, type?: GlobalSidebarComponent }[] = []
 
   /**
    * Actions to execute when a global sidebar is closed.
@@ -34,7 +39,7 @@ export class GlobalSidebarService {
   /**
    * Initializes a new instance of the GlobalSidebarService class.
    */
-  constructor() {
+  public constructor() {
     const router = useRouter()
     router.beforeEach(() => this.onRouteChange())
   }
@@ -43,7 +48,7 @@ export class GlobalSidebarService {
    * Closes a global sidebar.
    * @param displayedComponentType- Type of component displayed in the global sidebar to close.
    */
-  public close(displayedComponentType: GlobalSidebarComponent) {
+  public close(displayedComponentType: GlobalSidebarComponent): void {
     this.emitter.emit(GlobalSidebarService.closeGlobalSidebarEvent, displayedComponentType)
   }
 
@@ -51,32 +56,34 @@ export class GlobalSidebarService {
    * Displays a global sidebar.
    * @param options - Options.
    */
-  public display(options: IGlobalSidebarOptions) {
-    if (this.displayedSidebar.length === 3) {
+  public display(options: IGlobalSidebarOptions): void {
+    const availableSidebarIdentifier = this.getAvailableSidebarIdentifier()
+
+    if (availableSidebarIdentifier == null) {
       return
     }
 
-    this.displayedSidebar.push(options.displayedComponentType)
+    this.displayedSidebar.push({ identifier: availableSidebarIdentifier, type: options.displayedComponentType })
 
     if (options.onCloseAction != null) {
       this.registerOnCloseAction(options.displayedComponentType, options.onCloseAction)
     }
 
-    this.emitter.emit(GlobalSidebarService.openGlobalSidebarEvent, options, this.displayedSidebar.length)
+    this.emitter.emit(GlobalSidebarService.openGlobalSidebarEvent, options, availableSidebarIdentifier)
   }
 
   /**
    * Executes the actions registered to be executed when a sidebar is closed.
    * @param displayedComponentType - Type of component displayed in the closed sidebar.
    */
-  public async executeOnCloseActions(displayedComponentType: GlobalSidebarComponent, updatedParameters?: GlobalSidebarDisplayedComponentParameters) {
+  public async executeOnCloseActionsAsync(displayedComponentType: GlobalSidebarComponent, updatedParameters?: GlobalSidebarDisplayedComponentParameters): Promise<void> {
     for (const onCloseAction of this.onCloseActions) {
       if (onCloseAction.type === displayedComponentType) {
         await onCloseAction.action(updatedParameters)
       }
     }
 
-    this.displayedSidebar = this.displayedSidebar.filter(ds => ds !== displayedComponentType)
+    this.displayedSidebar = this.displayedSidebar.filter(ds => ds.type !== displayedComponentType)
     this.onCloseActions = this.onCloseActions.filter(a => a.type !== displayedComponentType)
   }
 
@@ -84,7 +91,7 @@ export class GlobalSidebarService {
    * Indicates whether a global sidebar is opened.
    * @returns true when a global sidebar is opened; otherwise false.
    */
-  public isDisplayed() {
+  public isDisplayed(): boolean {
     return this.displayedSidebar.length > 0
   }
 
@@ -93,19 +100,30 @@ export class GlobalSidebarService {
    * @param displayedComponentType - Type of component displayed in the closed sidebar.
    * @param action - Action.
    */
-  public registerOnCloseAction(displayedComponentType: GlobalSidebarComponent, action: (updatedParameters?: GlobalSidebarDisplayedComponentParameters) => void | Promise<void>) {
+  public registerOnCloseAction(displayedComponentType: GlobalSidebarComponent, action: (updatedParameters?: GlobalSidebarDisplayedComponentParameters) => void | Promise<void>): void {
     this.onCloseActions.push({ action, type: displayedComponentType })
+  }
+
+  /**
+   * Gets the identifier of the first global sidebar that is not displayed.
+   */
+  private getAvailableSidebarIdentifier(): number | undefined {
+    for (const identifier of GlobalSidebarService.GlobalSidebarIdentifiers) {
+      if (this.displayedSidebar.find(ds => ds.identifier === identifier) == null) {
+        return identifier
+      }
+    }
   }
 
   /**
    * Reacts to a route being changed.
    *
-   * When a sidebar is open, cancels the navigation and closes the sidebar.
+   * When one or more sidebars are open, cancels the navigation and closes the last sidebar.
    */
   /* v8 ignore start */ // Justification : could not find a way to mock VueRouter and be able to call this code
   private onRouteChange(): boolean {
     if (this.isDisplayed()) {
-      this.close(this.displayedSidebar[this.displayedSidebar.length - 1])
+      this.close(this.displayedSidebar[this.displayedSidebar.length - 1].type!)
 
       return false
     }

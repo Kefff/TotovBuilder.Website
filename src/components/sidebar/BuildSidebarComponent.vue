@@ -1,3 +1,83 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { BuildSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { BuildService } from '../../services/BuildService'
+import { ExportService } from '../../services/ExportService'
+import { GlobalSidebarService } from '../../services/GlobalSidebarService'
+import Services from '../../services/repository/Services'
+
+const props = defineProps<{ parameters: BuildSidebarParameters }>()
+
+const _buildService = Services.get(BuildService)
+const _exportService = Services.get(ExportService)
+const _globalSidebarService = Services.get(GlobalSidebarService)
+const _router = useRouter()
+
+const isDeleting = ref(false)
+
+/**
+ * Cancels the build deletion.
+ */
+function cancelDeletion(): void {
+  isDeleting.value = false
+}
+
+/**
+ * Confirms the build deletion.
+ */
+function confirmDeletion(): void {
+  _buildService.delete(props.parameters.id)
+
+  isDeleting.value = false
+  _globalSidebarService.close('BuildSidebar')
+}
+
+/**
+ * Creates a copy of the build.
+ */
+function copyBuild(): void {
+  _router.push({ name: 'CopyBuild', params: { id: props.parameters.id } })
+  _globalSidebarService.close('BuildSidebar')
+}
+
+/**
+ * Starts the build deletion process.
+ */
+function deleteBuild(): void {
+  isDeleting.value = true
+}
+
+/**
+ * Displays the share build sidebar.
+ */
+function displayBuildsShareSideBar(): void {
+  _globalSidebarService.display({
+    displayedComponentParameters: {
+      buildToShare: props.parameters
+    },
+    displayedComponentType: 'BuildsShareSideBar'
+  })
+}
+
+/**
+ * Export the build to a file.
+ */
+function exportBuild(): void {
+  _exportService.exportAsync([props.parameters])
+  _globalSidebarService.close('BuildSidebar')
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="sidebar-option">
     <Button
@@ -108,90 +188,7 @@
 
 
 
-<script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { BuildSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
-import { BuildService } from '../../services/BuildService'
-import { ExportService } from '../../services/ExportService'
-import { GlobalSidebarService } from '../../services/GlobalSidebarService'
-import Services from '../../services/repository/Services'
-
-const props = defineProps<{ parameters: BuildSidebarParameters }>()
-
-const _buildService = Services.get(BuildService)
-const _exportService = Services.get(ExportService)
-const _globalSidebarService = Services.get(GlobalSidebarService)
-const _router = useRouter()
-
-const isDeleting = ref(false)
-
-/**
- * Cancels the build deletion.
- */
-function cancelDeletion() {
-  isDeleting.value = false
-}
-
-/**
- * Confirms the build deletion.
- */
-function confirmDeletion() {
-  _buildService.delete(props.parameters.id)
-
-  isDeleting.value = false
-  _globalSidebarService.close('BuildSidebar')
-}
-
-/**
- * Creates a copy of the build.
- */
-function copyBuild() {
-  _router.push({ name: 'CopyBuild', params: { id: props.parameters.id } })
-  _globalSidebarService.close('BuildSidebar')
-}
-
-/**
- * Starts the build deletion process.
- */
-function deleteBuild() {
-  isDeleting.value = true
-}
-
-/**
- * Displays the share build sidebar.
- */
-function displayBuildsShareSideBar() {
-  _globalSidebarService.display({
-    displayedComponentParameters: {
-      buildToShare: props.parameters
-    },
-    displayedComponentType: 'BuildsShareSideBar'
-  })
-}
-
-/**
- * Export the build to a file.
- */
-function exportBuild() {
-  _exportService.export([props.parameters])
-  _globalSidebarService.close('BuildSidebar')
-}
-</script>
-
-
-
-
-
-
-
-
-
-
 <style scoped>
-@import '../../css/icon.css';
-@import '../../css/sidebar.css';
-
 .build-sidebar-button {
   align-items: center;
   display: flex;
@@ -200,11 +197,14 @@ function exportBuild() {
 }
 
 .build-sidebar-deletion-confirmation-buttons {
-  align-items: center;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
+}
+
+.build-sidebar-deletion-confirmation-buttons > button {
+  display: flex;
   justify-content: center;
-  width: 100%;
 }
 
 .build-sidebar-name {

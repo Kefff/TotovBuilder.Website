@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { ReductionService } from '../../services/ReductionService'
 import { IContainer } from '../../models/item/IContainer'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
@@ -21,7 +22,7 @@ describe('parseReducedItem', () => {
       },
       {
         capacity: 4,
-        categoryId: 'container',
+        categoryId: ItemCategoryId.container,
         conflictingItemIds: [],
         iconLink: 'https://assets.tarkov.dev/5783c43d2459774bbe137486-icon.jpg',
         id: '5783c43d2459774bbe137486',
@@ -29,6 +30,7 @@ describe('parseReducedItem', () => {
         marketLink: 'https://tarkov.dev/item/simple-wallet',
         maxStackableAmount: 1,
         name: 'Simple wallet',
+        presetWeight: undefined,
         prices: [],
         shortName: 'Wallet',
         weight: 0.23,
@@ -49,7 +51,7 @@ describe('parseReducedItem', () => {
       },
       {
         capacity: 0,
-        categoryId: 'container',
+        categoryId: ItemCategoryId.container,
         conflictingItemIds: [],
         iconLink: 'https://assets.tarkov.dev/empty-container-icon.jpg',
         id: 'empty-container',
@@ -58,6 +60,7 @@ describe('parseReducedItem', () => {
         maxStackableAmount: 1,
         name: 'Empty container',
         prices: [],
+        presetWeight: undefined,
         shortName: 'Empty',
         weight: 0.23,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Empty_container'

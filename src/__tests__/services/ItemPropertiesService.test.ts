@@ -4,7 +4,7 @@ import { IArmorMod } from '../../models/item/IArmorMod'
 import { IBackpack } from '../../models/item/IBackpack'
 import { IContainer } from '../../models/item/IContainer'
 import { IHeadwear } from '../../models/item/IHeadwear'
-import { IItem } from '../../models/item/IItem'
+import { IItem, ItemCategoryId } from '../../models/item/IItem'
 import { IMagazine } from '../../models/item/IMagazine'
 import { IModSlot } from '../../models/item/IModSlot'
 import { IModdable } from '../../models/item/IModdable'
@@ -15,11 +15,11 @@ import { rpk16 } from '../__data__/itemMocks'
 describe('canBeModded()', () => {
   it.each([
     [
-      { id: '12345', categoryId: 'armorMod', modSlots: [{ id: 'trigger' } as unknown as IModSlot] } as IModdable,
+      { id: '12345', categoryId: ItemCategoryId.armorMod, modSlots: [{ id: 'trigger' } as unknown as IModSlot] } as IModdable,
       true
     ],
-    [{ id: '12345', categoryId: 'mainWeapon', modSlots: [] as IModSlot[] } as IModdable, false],
-    [{ id: '12345', categoryId: 'other' } as IItem, false]
+    [{ id: '12345', categoryId: ItemCategoryId.mainWeapon, modSlots: [] as IModSlot[] } as IModdable, false],
+    [{ id: '12345', categoryId: ItemCategoryId.other } as IItem, false]
   ])(
     'should determine if an item is an armor',
     (item: IItem, expected: boolean) => {
@@ -37,15 +37,15 @@ describe('canBeModded()', () => {
 
 describe('canContain()', () => {
   it.each([
-    [{ id: '12345', categoryId: 'backpack', capacity: 18 } as IBackpack, true],
-    [{ id: '12345', categoryId: 'container', capacity: 60 } as IContainer, true],
-    [{ id: '12345', categoryId: 'magazine', capacity: 30 } as IMagazine, true],
-    [{ id: '12345', categoryId: 'vest', capacity: 12 } as IVest, true],
-    [{ id: '12345', categoryId: 'backpack', capacity: 0 } as IBackpack, false],
-    [{ id: '12345', categoryId: 'container', capacity: 0 } as IContainer, false],
-    [{ id: '12345', categoryId: 'magazine', capacity: 0 } as IMagazine, false],
-    [{ id: '12345', categoryId: 'vest', capacity: 0 } as IVest, false],
-    [{ id: '12345', categoryId: 'other' } as IItem, false]
+    [{ id: '12345', categoryId: ItemCategoryId.backpack, capacity: 18 } as IBackpack, true],
+    [{ id: '12345', categoryId: ItemCategoryId.container, capacity: 60 } as IContainer, true],
+    [{ id: '12345', categoryId: ItemCategoryId.magazine, capacity: 30 } as IMagazine, true],
+    [{ id: '12345', categoryId: ItemCategoryId.vest, capacity: 12 } as IVest, true],
+    [{ id: '12345', categoryId: ItemCategoryId.backpack, capacity: 0 } as IBackpack, false],
+    [{ id: '12345', categoryId: ItemCategoryId.container, capacity: 0 } as IContainer, false],
+    [{ id: '12345', categoryId: ItemCategoryId.magazine, capacity: 0 } as IMagazine, false],
+    [{ id: '12345', categoryId: ItemCategoryId.vest, capacity: 0 } as IVest, false],
+    [{ id: '12345', categoryId: ItemCategoryId.other } as IItem, false]
   ])(
     'should determine if an item is a container',
     (item: IItem, expected: boolean) => {
@@ -63,15 +63,15 @@ describe('canContain()', () => {
 
 describe('canHaveArmor()', () => {
   it.each([
-    [{ id: '12345', categoryId: 'armor', armorClass: 6 } as IArmor, true],
-    [{ id: '12345', categoryId: 'armor', armorClass: 0 } as IArmor, true],
-    [{ id: '12345', categoryId: 'armorMod', armorClass: 3, ergonomicsModifierPercentage: 1, modSlots: [] as IModSlot[] } as IArmorMod, true],
-    [{ id: '12345', categoryId: 'armorMod', armorClass: 0, ergonomicsModifierPercentage: 1, modSlots: [] as IModSlot[] } as IArmorMod, true],
-    [{ id: '12345', categoryId: 'headwear', armorClass: 2, blocksHeadphones: true, modSlots: [] as IModSlot[] } as IHeadwear, true],
-    [{ id: '12345', categoryId: 'headwear', armorClass: 0, blocksHeadphones: true, modSlots: [] as IModSlot[] } as IHeadwear, true],
-    [{ id: '12345', categoryId: 'vest', armorClass: 4, capacity: 10 } as IVest, true],
-    [{ id: '12345', categoryId: 'vest', armorClass: 0, capacity: 10 } as IVest, true],
-    [{ id: '12345', categoryId: 'other' } as IItem, false]
+    [{ id: '12345', categoryId: ItemCategoryId.armor, armorClass: 6 } as IArmor, true],
+    [{ id: '12345', categoryId: ItemCategoryId.armor, armorClass: 0 } as IArmor, true],
+    [{ id: '12345', categoryId: ItemCategoryId.armorMod, armorClass: 3, ergonomicsModifierPercentage: 1, modSlots: [] as IModSlot[] } as IArmorMod, true],
+    [{ id: '12345', categoryId: ItemCategoryId.armorMod, armorClass: 0, ergonomicsModifierPercentage: 1, modSlots: [] as IModSlot[] } as IArmorMod, true],
+    [{ id: '12345', categoryId: ItemCategoryId.headwear, armorClass: 2, blocksHeadphones: true, modSlots: [] as IModSlot[] } as IHeadwear, true],
+    [{ id: '12345', categoryId: ItemCategoryId.headwear, armorClass: 0, blocksHeadphones: true, modSlots: [] as IModSlot[] } as IHeadwear, true],
+    [{ id: '12345', categoryId: ItemCategoryId.vest, armorClass: 4, capacity: 10 } as IVest, true],
+    [{ id: '12345', categoryId: ItemCategoryId.vest, armorClass: 0, capacity: 10 } as IVest, true],
+    [{ id: '12345', categoryId: ItemCategoryId.other } as IItem, false]
   ])(
     'should determine if an item is an armor',
     (item: IItem, expected: boolean) => {
@@ -106,15 +106,15 @@ describe('checkMatchesFilter', () => {
 
 describe('hasArmor()', () => {
   it.each([
-    [{ id: '12345', categoryId: 'armor', armorClass: 6 } as IArmor, true],
-    [{ id: '12345', categoryId: 'armor', armorClass: 0 } as IArmor, false],
-    [{ id: '12345', categoryId: 'armorMod', armorClass: 3, ergonomicsModifierPercentage: 1, modSlots: [] as IModSlot[] } as IArmorMod, true],
-    [{ id: '12345', categoryId: 'armorMod', armorClass: 0, ergonomicsModifierPercentage: 1, modSlots: [] as IModSlot[] } as IArmorMod, false],
-    [{ id: '12345', categoryId: 'headwear', armorClass: 2, blocksHeadphones: true, modSlots: [] as IModSlot[] } as IHeadwear, true],
-    [{ id: '12345', categoryId: 'headwear', armorClass: 0, blocksHeadphones: true, modSlots: [] as IModSlot[] } as IHeadwear, false],
-    [{ id: '12345', categoryId: 'vest', armorClass: 4, capacity: 10 } as IVest, true],
-    [{ id: '12345', categoryId: 'vest', armorClass: 0, capacity: 10 } as IVest, false],
-    [{ id: '12345', categoryId: 'other' } as IItem, false]
+    [{ id: '12345', categoryId: ItemCategoryId.armor, armorClass: 6 } as IArmor, true],
+    [{ id: '12345', categoryId: ItemCategoryId.armor, armorClass: 0 } as IArmor, false],
+    [{ id: '12345', categoryId: ItemCategoryId.armorMod, armorClass: 3, ergonomicsModifierPercentage: 1, modSlots: [] as IModSlot[] } as IArmorMod, true],
+    [{ id: '12345', categoryId: ItemCategoryId.armorMod, armorClass: 0, ergonomicsModifierPercentage: 1, modSlots: [] as IModSlot[] } as IArmorMod, false],
+    [{ id: '12345', categoryId: ItemCategoryId.headwear, armorClass: 2, blocksHeadphones: true, modSlots: [] as IModSlot[] } as IHeadwear, true],
+    [{ id: '12345', categoryId: ItemCategoryId.headwear, armorClass: 0, blocksHeadphones: true, modSlots: [] as IModSlot[] } as IHeadwear, false],
+    [{ id: '12345', categoryId: ItemCategoryId.vest, armorClass: 4, capacity: 10 } as IVest, true],
+    [{ id: '12345', categoryId: ItemCategoryId.vest, armorClass: 0, capacity: 10 } as IVest, false],
+    [{ id: '12345', categoryId: ItemCategoryId.other } as IItem, false]
   ])(
     'should determine if an item is an armor',
     (item: IItem, expected: boolean) => {
@@ -132,31 +132,31 @@ describe('hasArmor()', () => {
 
 describe('isAmmunition()', () => {
   it.each([
-    ['ammunition', true],
-    ['armband', false],
-    ['armor', false],
-    ['armorMod', false],
-    ['backpack', false],
-    ['container', false],
-    ['currency', false],
-    ['eyewear', false],
-    ['faceCover', false],
-    ['grenade', false],
-    ['headphones', false],
-    ['headwear', false],
-    ['magazine', false],
-    ['mainWeapon', false],
-    ['meleeWeapon', false],
-    ['mod', false],
-    ['other', false],
-    ['rangedWeaponMod', false],
-    ['secondaryWeapon', false],
-    ['securedContainer', false],
-    ['special', false],
-    ['vest', false]
+    [ItemCategoryId.ammunition, true],
+    [ItemCategoryId.armband, false],
+    [ItemCategoryId.armor, false],
+    [ItemCategoryId.armorMod, false],
+    [ItemCategoryId.backpack, false],
+    [ItemCategoryId.container, false],
+    [ItemCategoryId.currency, false],
+    [ItemCategoryId.eyewear, false],
+    [ItemCategoryId.faceCover, false],
+    [ItemCategoryId.grenade, false],
+    [ItemCategoryId.headphones, false],
+    [ItemCategoryId.headwear, false],
+    [ItemCategoryId.magazine, false],
+    [ItemCategoryId.mainWeapon, false],
+    [ItemCategoryId.meleeWeapon, false],
+    [ItemCategoryId.mod, false],
+    [ItemCategoryId.other, false],
+    [ItemCategoryId.rangedWeaponMod, false],
+    [ItemCategoryId.secondaryWeapon, false],
+    [ItemCategoryId.securedContainer, false],
+    [ItemCategoryId.special, false],
+    [ItemCategoryId.vest, false]
   ])(
     'should determine if an item is ammunition',
-    (categoryId: string, expected: boolean) => {
+    (categoryId: ItemCategoryId, expected: boolean) => {
       // Arrange
       const itemPropertiesService = new ItemPropertiesService()
 
@@ -173,31 +173,31 @@ describe('isAmmunition()', () => {
 
 describe('isArmor()', () => {
   it.each([
-    ['ammunition', false],
-    ['armband', false],
-    ['armor', true],
-    ['armorMod', false],
-    ['backpack', false],
-    ['container', false],
-    ['currency', false],
-    ['eyewear', false],
-    ['faceCover', false],
-    ['grenade', false],
-    ['headphones', false],
-    ['headwear', false],
-    ['magazine', false],
-    ['mainWeapon', false],
-    ['meleeWeapon', false],
-    ['mod', false],
-    ['other', false],
-    ['rangedWeaponMod', false],
-    ['secondaryWeapon', false],
-    ['securedContainer', false],
-    ['special', false],
-    ['vest', false]
+    [ItemCategoryId.ammunition, false],
+    [ItemCategoryId.armband, false],
+    [ItemCategoryId.armor, true],
+    [ItemCategoryId.armorMod, false],
+    [ItemCategoryId.backpack, false],
+    [ItemCategoryId.container, false],
+    [ItemCategoryId.currency, false],
+    [ItemCategoryId.eyewear, false],
+    [ItemCategoryId.faceCover, false],
+    [ItemCategoryId.grenade, false],
+    [ItemCategoryId.headphones, false],
+    [ItemCategoryId.headwear, false],
+    [ItemCategoryId.magazine, false],
+    [ItemCategoryId.mainWeapon, false],
+    [ItemCategoryId.meleeWeapon, false],
+    [ItemCategoryId.mod, false],
+    [ItemCategoryId.other, false],
+    [ItemCategoryId.rangedWeaponMod, false],
+    [ItemCategoryId.secondaryWeapon, false],
+    [ItemCategoryId.securedContainer, false],
+    [ItemCategoryId.special, false],
+    [ItemCategoryId.vest, false]
   ])(
     'should determine if an item is an armor',
-    (categoryId: string, expected: boolean) => {
+    (categoryId: ItemCategoryId, expected: boolean) => {
       // Arrange
       const itemPropertiesService = new ItemPropertiesService()
 
@@ -214,31 +214,31 @@ describe('isArmor()', () => {
 
 describe('isArmorMod()', () => {
   it.each([
-    ['ammunition', false],
-    ['armband', false],
-    ['armor', false],
-    ['armorMod', true],
-    ['backpack', false],
-    ['container', false],
-    ['currency', false],
-    ['eyewear', false],
-    ['faceCover', false],
-    ['grenade', false],
-    ['headphones', false],
-    ['headwear', false],
-    ['magazine', false],
-    ['mainWeapon', false],
-    ['meleeWeapon', false],
-    ['mod', false],
-    ['other', false],
-    ['rangedWeaponMod', false],
-    ['secondaryWeapon', false],
-    ['securedContainer', false],
-    ['special', false],
-    ['vest', false]
+    [ItemCategoryId.ammunition, false],
+    [ItemCategoryId.armband, false],
+    [ItemCategoryId.armor, false],
+    [ItemCategoryId.armorMod, true],
+    [ItemCategoryId.backpack, false],
+    [ItemCategoryId.container, false],
+    [ItemCategoryId.currency, false],
+    [ItemCategoryId.eyewear, false],
+    [ItemCategoryId.faceCover, false],
+    [ItemCategoryId.grenade, false],
+    [ItemCategoryId.headphones, false],
+    [ItemCategoryId.headwear, false],
+    [ItemCategoryId.magazine, false],
+    [ItemCategoryId.mainWeapon, false],
+    [ItemCategoryId.meleeWeapon, false],
+    [ItemCategoryId.mod, false],
+    [ItemCategoryId.other, false],
+    [ItemCategoryId.rangedWeaponMod, false],
+    [ItemCategoryId.secondaryWeapon, false],
+    [ItemCategoryId.securedContainer, false],
+    [ItemCategoryId.special, false],
+    [ItemCategoryId.vest, false]
   ])(
     'should determine if an item is an armor mod',
-    (categoryId: string, expected: boolean) => {
+    (categoryId: ItemCategoryId, expected: boolean) => {
       // Arrange
       const itemPropertiesService = new ItemPropertiesService()
 
@@ -255,31 +255,31 @@ describe('isArmorMod()', () => {
 
 describe('isContainer()', () => {
   it.each([
-    ['ammunition', false],
-    ['armband', false],
-    ['armor', false],
-    ['armorMod', false],
-    ['backpack', false],
-    ['container', true],
-    ['currency', false],
-    ['eyewear', false],
-    ['faceCover', false],
-    ['grenade', false],
-    ['headphones', false],
-    ['headwear', false],
-    ['magazine', false],
-    ['mainWeapon', false],
-    ['meleeWeapon', false],
-    ['mod', false],
-    ['other', false],
-    ['rangedWeaponMod', false],
-    ['secondaryWeapon', false],
-    ['securedContainer', true],
-    ['special', false],
-    ['vest', false]
+    [ItemCategoryId.ammunition, false],
+    [ItemCategoryId.armband, false],
+    [ItemCategoryId.armor, false],
+    [ItemCategoryId.armorMod, false],
+    [ItemCategoryId.backpack, false],
+    [ItemCategoryId.container, true],
+    [ItemCategoryId.currency, false],
+    [ItemCategoryId.eyewear, false],
+    [ItemCategoryId.faceCover, false],
+    [ItemCategoryId.grenade, false],
+    [ItemCategoryId.headphones, false],
+    [ItemCategoryId.headwear, false],
+    [ItemCategoryId.magazine, false],
+    [ItemCategoryId.mainWeapon, false],
+    [ItemCategoryId.meleeWeapon, false],
+    [ItemCategoryId.mod, false],
+    [ItemCategoryId.other, false],
+    [ItemCategoryId.rangedWeaponMod, false],
+    [ItemCategoryId.secondaryWeapon, false],
+    [ItemCategoryId.securedContainer, true],
+    [ItemCategoryId.special, false],
+    [ItemCategoryId.vest, false]
   ])(
     'should determine if an item is a container',
-    (categoryId: string, expected: boolean) => {
+    (categoryId: ItemCategoryId, expected: boolean) => {
       // Arrange
       const itemPropertiesService = new ItemPropertiesService()
 
@@ -296,31 +296,31 @@ describe('isContainer()', () => {
 
 describe('isEyewear()', () => {
   it.each([
-    ['ammunition', false],
-    ['armband', false],
-    ['armor', false],
-    ['armorMod', false],
-    ['backpack', false],
-    ['container', false],
-    ['currency', false],
-    ['eyewear', true],
-    ['faceCover', false],
-    ['grenade', false],
-    ['headphones', false],
-    ['headwear', false],
-    ['magazine', false],
-    ['mainWeapon', false],
-    ['meleeWeapon', false],
-    ['mod', false],
-    ['other', false],
-    ['rangedWeaponMod', false],
-    ['secondaryWeapon', false],
-    ['securedContainer', false],
-    ['special', false],
-    ['vest', false]
+    [ItemCategoryId.ammunition, false],
+    [ItemCategoryId.armband, false],
+    [ItemCategoryId.armor, false],
+    [ItemCategoryId.armorMod, false],
+    [ItemCategoryId.backpack, false],
+    [ItemCategoryId.container, false],
+    [ItemCategoryId.currency, false],
+    [ItemCategoryId.eyewear, true],
+    [ItemCategoryId.faceCover, false],
+    [ItemCategoryId.grenade, false],
+    [ItemCategoryId.headphones, false],
+    [ItemCategoryId.headwear, false],
+    [ItemCategoryId.magazine, false],
+    [ItemCategoryId.mainWeapon, false],
+    [ItemCategoryId.meleeWeapon, false],
+    [ItemCategoryId.mod, false],
+    [ItemCategoryId.other, false],
+    [ItemCategoryId.rangedWeaponMod, false],
+    [ItemCategoryId.secondaryWeapon, false],
+    [ItemCategoryId.securedContainer, false],
+    [ItemCategoryId.special, false],
+    [ItemCategoryId.vest, false]
   ])(
     'should determine if an item is eyewear',
-    (categoryId: string, expected: boolean) => {
+    (categoryId: ItemCategoryId, expected: boolean) => {
       // Arrange
       const itemPropertiesService = new ItemPropertiesService()
 
@@ -337,31 +337,31 @@ describe('isEyewear()', () => {
 
 describe('isGrenade()', () => {
   it.each([
-    ['ammunition', false],
-    ['armband', false],
-    ['armor', false],
-    ['armorMod', false],
-    ['backpack', false],
-    ['container', false],
-    ['currency', false],
-    ['eyewear', false],
-    ['faceCover', false],
-    ['grenade', true],
-    ['headphones', false],
-    ['headwear', false],
-    ['magazine', false],
-    ['mainWeapon', false],
-    ['meleeWeapon', false],
-    ['mod', false],
-    ['other', false],
-    ['rangedWeaponMod', false],
-    ['secondaryWeapon', false],
-    ['securedContainer', false],
-    ['special', false],
-    ['vest', false]
+    [ItemCategoryId.ammunition, false],
+    [ItemCategoryId.armband, false],
+    [ItemCategoryId.armor, false],
+    [ItemCategoryId.armorMod, false],
+    [ItemCategoryId.backpack, false],
+    [ItemCategoryId.container, false],
+    [ItemCategoryId.currency, false],
+    [ItemCategoryId.eyewear, false],
+    [ItemCategoryId.faceCover, false],
+    [ItemCategoryId.grenade, true],
+    [ItemCategoryId.headphones, false],
+    [ItemCategoryId.headwear, false],
+    [ItemCategoryId.magazine, false],
+    [ItemCategoryId.mainWeapon, false],
+    [ItemCategoryId.meleeWeapon, false],
+    [ItemCategoryId.mod, false],
+    [ItemCategoryId.other, false],
+    [ItemCategoryId.rangedWeaponMod, false],
+    [ItemCategoryId.secondaryWeapon, false],
+    [ItemCategoryId.securedContainer, false],
+    [ItemCategoryId.special, false],
+    [ItemCategoryId.vest, false]
   ])(
     'should determine if an item is a grenade',
-    (categoryId: string, expected: boolean) => {
+    (categoryId: ItemCategoryId, expected: boolean) => {
       // Arrange
       const itemPropertiesService = new ItemPropertiesService()
 
@@ -378,31 +378,31 @@ describe('isGrenade()', () => {
 
 describe('isHeadwear()', () => {
   it.each([
-    ['ammunition', false],
-    ['armband', false],
-    ['armor', false],
-    ['armorMod', false],
-    ['backpack', false],
-    ['container', false],
-    ['currency', false],
-    ['eyewear', false],
-    ['faceCover', false],
-    ['grenade', false],
-    ['headphones', false],
-    ['headwear', true],
-    ['magazine', false],
-    ['mainWeapon', false],
-    ['meleeWeapon', false],
-    ['mod', false],
-    ['other', false],
-    ['rangedWeaponMod', false],
-    ['secondaryWeapon', false],
-    ['securedContainer', false],
-    ['special', false],
-    ['vest', false]
+    [ItemCategoryId.ammunition, false],
+    [ItemCategoryId.armband, false],
+    [ItemCategoryId.armor, false],
+    [ItemCategoryId.armorMod, false],
+    [ItemCategoryId.backpack, false],
+    [ItemCategoryId.container, false],
+    [ItemCategoryId.currency, false],
+    [ItemCategoryId.eyewear, false],
+    [ItemCategoryId.faceCover, false],
+    [ItemCategoryId.grenade, false],
+    [ItemCategoryId.headphones, false],
+    [ItemCategoryId.headwear, true],
+    [ItemCategoryId.magazine, false],
+    [ItemCategoryId.mainWeapon, false],
+    [ItemCategoryId.meleeWeapon, false],
+    [ItemCategoryId.mod, false],
+    [ItemCategoryId.other, false],
+    [ItemCategoryId.rangedWeaponMod, false],
+    [ItemCategoryId.secondaryWeapon, false],
+    [ItemCategoryId.securedContainer, false],
+    [ItemCategoryId.special, false],
+    [ItemCategoryId.vest, false]
   ])(
     'should determine if an item is headwear',
-    (categoryId: string, expected: boolean) => {
+    (categoryId: ItemCategoryId, expected: boolean) => {
       // Arrange
       const itemPropertiesService = new ItemPropertiesService()
 
@@ -419,31 +419,31 @@ describe('isHeadwear()', () => {
 
 describe('isMagazine()', () => {
   it.each([
-    ['ammunition', false],
-    ['armband', false],
-    ['armor', false],
-    ['armorMod', false],
-    ['backpack', false],
-    ['container', false],
-    ['currency', false],
-    ['eyewear', false],
-    ['faceCover', false],
-    ['grenade', false],
-    ['headphones', false],
-    ['headwear', false],
-    ['magazine', true],
-    ['mainWeapon', false],
-    ['meleeWeapon', false],
-    ['mod', false],
-    ['other', false],
-    ['rangedWeaponMod', false],
-    ['secondaryWeapon', false],
-    ['securedContainer', false],
-    ['special', false],
-    ['vest', false]
+    [ItemCategoryId.ammunition, false],
+    [ItemCategoryId.armband, false],
+    [ItemCategoryId.armor, false],
+    [ItemCategoryId.armorMod, false],
+    [ItemCategoryId.backpack, false],
+    [ItemCategoryId.container, false],
+    [ItemCategoryId.currency, false],
+    [ItemCategoryId.eyewear, false],
+    [ItemCategoryId.faceCover, false],
+    [ItemCategoryId.grenade, false],
+    [ItemCategoryId.headphones, false],
+    [ItemCategoryId.headwear, false],
+    [ItemCategoryId.magazine, true],
+    [ItemCategoryId.mainWeapon, false],
+    [ItemCategoryId.meleeWeapon, false],
+    [ItemCategoryId.mod, false],
+    [ItemCategoryId.other, false],
+    [ItemCategoryId.rangedWeaponMod, false],
+    [ItemCategoryId.secondaryWeapon, false],
+    [ItemCategoryId.securedContainer, false],
+    [ItemCategoryId.special, false],
+    [ItemCategoryId.vest, false]
   ])(
     'should determine if an item is a magazine',
-    (categoryId: string, expected: boolean) => {
+    (categoryId: ItemCategoryId, expected: boolean) => {
       // Arrange
       const itemPropertiesService = new ItemPropertiesService()
 
@@ -460,31 +460,31 @@ describe('isMagazine()', () => {
 
 describe('isMeleeWeapon()', () => {
   it.each([
-    ['ammunition', false],
-    ['armband', false],
-    ['armor', false],
-    ['armorMod', false],
-    ['backpack', false],
-    ['container', false],
-    ['currency', false],
-    ['eyewear', false],
-    ['faceCover', false],
-    ['grenade', false],
-    ['headphones', false],
-    ['headwear', false],
-    ['magazine', false],
-    ['mainWeapon', false],
-    ['meleeWeapon', true],
-    ['mod', false],
-    ['other', false],
-    ['rangedWeaponMod', false],
-    ['secondaryWeapon', false],
-    ['securedContainer', false],
-    ['special', false],
-    ['vest', false]
+    [ItemCategoryId.ammunition, false],
+    [ItemCategoryId.armband, false],
+    [ItemCategoryId.armor, false],
+    [ItemCategoryId.armorMod, false],
+    [ItemCategoryId.backpack, false],
+    [ItemCategoryId.container, false],
+    [ItemCategoryId.currency, false],
+    [ItemCategoryId.eyewear, false],
+    [ItemCategoryId.faceCover, false],
+    [ItemCategoryId.grenade, false],
+    [ItemCategoryId.headphones, false],
+    [ItemCategoryId.headwear, false],
+    [ItemCategoryId.magazine, false],
+    [ItemCategoryId.mainWeapon, false],
+    [ItemCategoryId.meleeWeapon, true],
+    [ItemCategoryId.mod, false],
+    [ItemCategoryId.other, false],
+    [ItemCategoryId.rangedWeaponMod, false],
+    [ItemCategoryId.secondaryWeapon, false],
+    [ItemCategoryId.securedContainer, false],
+    [ItemCategoryId.special, false],
+    [ItemCategoryId.vest, false]
   ])(
     'should determine if an item is a melee weapon',
-    (categoryId: string, expected: boolean) => {
+    (categoryId: ItemCategoryId, expected: boolean) => {
       // Arrange
       const itemPropertiesService = new ItemPropertiesService()
 
@@ -501,31 +501,31 @@ describe('isMeleeWeapon()', () => {
 
 describe('isMod()', () => {
   it.each([
-    ['ammunition', false],
-    ['armband', false],
-    ['armor', false],
-    ['armorMod', false],
-    ['backpack', false],
-    ['container', false],
-    ['currency', false],
-    ['eyewear', false],
-    ['faceCover', false],
-    ['grenade', false],
-    ['headphones', false],
-    ['headwear', false],
-    ['magazine', false],
-    ['mainWeapon', false],
-    ['meleeWeapon', false],
-    ['mod', true],
-    ['other', false],
-    ['rangedWeaponMod', false],
-    ['secondaryWeapon', false],
-    ['securedContainer', false],
-    ['special', false],
-    ['vest', false]
+    [ItemCategoryId.ammunition, false],
+    [ItemCategoryId.armband, false],
+    [ItemCategoryId.armor, false],
+    [ItemCategoryId.armorMod, false],
+    [ItemCategoryId.backpack, false],
+    [ItemCategoryId.container, false],
+    [ItemCategoryId.currency, false],
+    [ItemCategoryId.eyewear, false],
+    [ItemCategoryId.faceCover, false],
+    [ItemCategoryId.grenade, false],
+    [ItemCategoryId.headphones, false],
+    [ItemCategoryId.headwear, false],
+    [ItemCategoryId.magazine, false],
+    [ItemCategoryId.mainWeapon, false],
+    [ItemCategoryId.meleeWeapon, false],
+    [ItemCategoryId.mod, true],
+    [ItemCategoryId.other, false],
+    [ItemCategoryId.rangedWeaponMod, false],
+    [ItemCategoryId.secondaryWeapon, false],
+    [ItemCategoryId.securedContainer, false],
+    [ItemCategoryId.special, false],
+    [ItemCategoryId.vest, false]
   ])(
     'should determine if an item is a mod',
-    (categoryId: string, expected: boolean) => {
+    (categoryId: ItemCategoryId, expected: boolean) => {
       // Arrange
       const itemPropertiesService = new ItemPropertiesService()
 
@@ -542,31 +542,31 @@ describe('isMod()', () => {
 
 describe('isModdable()', () => {
   it.each([
-    ['ammunition', false],
-    ['armband', false],
-    ['armor', true],
-    ['armorMod', true],
-    ['backpack', false],
-    ['container', false],
-    ['currency', false],
-    ['eyewear', false],
-    ['faceCover', false],
-    ['grenade', false],
-    ['headphones', false],
-    ['headwear', true],
-    ['magazine', true],
-    ['mainWeapon', true],
-    ['meleeWeapon', false],
-    ['mod', true],
-    ['other', false],
-    ['rangedWeaponMod', true],
-    ['secondaryWeapon', true],
-    ['securedContainer', false],
-    ['special', false],
-    ['vest', true]
+    [ItemCategoryId.ammunition, false],
+    [ItemCategoryId.armband, false],
+    [ItemCategoryId.armor, true],
+    [ItemCategoryId.armorMod, true],
+    [ItemCategoryId.backpack, false],
+    [ItemCategoryId.container, false],
+    [ItemCategoryId.currency, false],
+    [ItemCategoryId.eyewear, false],
+    [ItemCategoryId.faceCover, false],
+    [ItemCategoryId.grenade, false],
+    [ItemCategoryId.headphones, false],
+    [ItemCategoryId.headwear, true],
+    [ItemCategoryId.magazine, true],
+    [ItemCategoryId.mainWeapon, true],
+    [ItemCategoryId.meleeWeapon, false],
+    [ItemCategoryId.mod, true],
+    [ItemCategoryId.other, false],
+    [ItemCategoryId.rangedWeaponMod, true],
+    [ItemCategoryId.secondaryWeapon, true],
+    [ItemCategoryId.securedContainer, false],
+    [ItemCategoryId.special, false],
+    [ItemCategoryId.vest, true]
   ])(
     'should determine if an item is moddable',
-    (categoryId: string, expected: boolean) => {
+    (categoryId: ItemCategoryId, expected: boolean) => {
       // Arrange
       const itemPropertiesService = new ItemPropertiesService()
 
@@ -583,31 +583,31 @@ describe('isModdable()', () => {
 
 describe('isRangedWeapon()', () => {
   it.each([
-    ['ammunition', false],
-    ['armband', false],
-    ['armor', false],
-    ['armorMod', false],
-    ['backpack', false],
-    ['container', false],
-    ['currency', false],
-    ['eyewear', false],
-    ['faceCover', false],
-    ['grenade', false],
-    ['headphones', false],
-    ['headwear', false],
-    ['magazine', false],
-    ['mainWeapon', true],
-    ['meleeWeapon', false],
-    ['mod', false],
-    ['other', false],
-    ['rangedWeaponMod', false],
-    ['secondaryWeapon', true],
-    ['securedContainer', false],
-    ['special', false],
-    ['vest', false]
+    [ItemCategoryId.ammunition, false],
+    [ItemCategoryId.armband, false],
+    [ItemCategoryId.armor, false],
+    [ItemCategoryId.armorMod, false],
+    [ItemCategoryId.backpack, false],
+    [ItemCategoryId.container, false],
+    [ItemCategoryId.currency, false],
+    [ItemCategoryId.eyewear, false],
+    [ItemCategoryId.faceCover, false],
+    [ItemCategoryId.grenade, false],
+    [ItemCategoryId.headphones, false],
+    [ItemCategoryId.headwear, false],
+    [ItemCategoryId.magazine, false],
+    [ItemCategoryId.mainWeapon, true],
+    [ItemCategoryId.meleeWeapon, false],
+    [ItemCategoryId.mod, false],
+    [ItemCategoryId.other, false],
+    [ItemCategoryId.rangedWeaponMod, false],
+    [ItemCategoryId.secondaryWeapon, true],
+    [ItemCategoryId.securedContainer, false],
+    [ItemCategoryId.special, false],
+    [ItemCategoryId.vest, false]
   ])(
     'should determine if an item is a ranged weapon',
-    (categoryId: string, expected: boolean) => {
+    (categoryId: ItemCategoryId, expected: boolean) => {
       // Arrange
       const itemPropertiesService = new ItemPropertiesService()
 
@@ -624,31 +624,31 @@ describe('isRangedWeapon()', () => {
 
 describe('isRangedWeaponMod()', () => {
   it.each([
-    ['ammunition', false],
-    ['armband', false],
-    ['armor', false],
-    ['armorMod', false],
-    ['backpack', false],
-    ['container', false],
-    ['currency', false],
-    ['eyewear', false],
-    ['faceCover', false],
-    ['grenade', false],
-    ['headphones', false],
-    ['headwear', false],
-    ['magazine', false],
-    ['mainWeapon', false],
-    ['meleeWeapon', false],
-    ['mod', false],
-    ['other', false],
-    ['rangedWeaponMod', true],
-    ['secondaryWeapon', false],
-    ['securedContainer', false],
-    ['special', false],
-    ['vest', false]
+    [ItemCategoryId.ammunition, false],
+    [ItemCategoryId.armband, false],
+    [ItemCategoryId.armor, false],
+    [ItemCategoryId.armorMod, false],
+    [ItemCategoryId.backpack, false],
+    [ItemCategoryId.container, false],
+    [ItemCategoryId.currency, false],
+    [ItemCategoryId.eyewear, false],
+    [ItemCategoryId.faceCover, false],
+    [ItemCategoryId.grenade, false],
+    [ItemCategoryId.headphones, false],
+    [ItemCategoryId.headwear, false],
+    [ItemCategoryId.magazine, false],
+    [ItemCategoryId.mainWeapon, false],
+    [ItemCategoryId.meleeWeapon, false],
+    [ItemCategoryId.mod, false],
+    [ItemCategoryId.other, false],
+    [ItemCategoryId.rangedWeaponMod, true],
+    [ItemCategoryId.secondaryWeapon, false],
+    [ItemCategoryId.securedContainer, false],
+    [ItemCategoryId.special, false],
+    [ItemCategoryId.vest, false]
   ])(
     'should determine if an item is a ranged weapon',
-    (categoryId: string, expected: boolean) => {
+    (categoryId: ItemCategoryId, expected: boolean) => {
       // Arrange
       const itemPropertiesService = new ItemPropertiesService()
 
@@ -665,31 +665,31 @@ describe('isRangedWeaponMod()', () => {
 
 describe('isVest()', () => {
   it.each([
-    ['ammunition', false],
-    ['armband', false],
-    ['armor', false],
-    ['armorMod', false],
-    ['backpack', false],
-    ['container', false],
-    ['currency', false],
-    ['eyewear', false],
-    ['faceCover', false],
-    ['grenade', false],
-    ['headphones', false],
-    ['headwear', false],
-    ['magazine', false],
-    ['mainWeapon', false],
-    ['meleeWeapon', false],
-    ['mod', false],
-    ['other', false],
-    ['rangedWeaponMod', false],
-    ['secondaryWeapon', false],
-    ['securedContainer', false],
-    ['special', false],
-    ['vest', true]
+    [ItemCategoryId.ammunition, false],
+    [ItemCategoryId.armband, false],
+    [ItemCategoryId.armor, false],
+    [ItemCategoryId.armorMod, false],
+    [ItemCategoryId.backpack, false],
+    [ItemCategoryId.container, false],
+    [ItemCategoryId.currency, false],
+    [ItemCategoryId.eyewear, false],
+    [ItemCategoryId.faceCover, false],
+    [ItemCategoryId.grenade, false],
+    [ItemCategoryId.headphones, false],
+    [ItemCategoryId.headwear, false],
+    [ItemCategoryId.magazine, false],
+    [ItemCategoryId.mainWeapon, false],
+    [ItemCategoryId.meleeWeapon, false],
+    [ItemCategoryId.mod, false],
+    [ItemCategoryId.other, false],
+    [ItemCategoryId.rangedWeaponMod, false],
+    [ItemCategoryId.secondaryWeapon, false],
+    [ItemCategoryId.securedContainer, false],
+    [ItemCategoryId.special, false],
+    [ItemCategoryId.vest, true]
   ])(
     'should determine if an item is a ranged weapon',
-    (categoryId: string, expected: boolean) => {
+    (categoryId: ItemCategoryId, expected: boolean) => {
       // Arrange
       const itemPropertiesService = new ItemPropertiesService()
 
@@ -706,31 +706,31 @@ describe('isVest()', () => {
 
 describe('isWearable()', () => {
   it.each([
-    ['ammunition', false],
-    ['armband', false],
-    ['armor', true],
-    ['armorMod', true],
-    ['backpack', true],
-    ['container', false],
-    ['currency', false],
-    ['eyewear', false],
-    ['faceCover', false],
-    ['grenade', false],
-    ['headphones', false],
-    ['headwear', true],
-    ['magazine', false],
-    ['mainWeapon', false],
-    ['meleeWeapon', false],
-    ['mod', false],
-    ['other', false],
-    ['rangedWeaponMod', false],
-    ['secondaryWeapon', false],
-    ['securedContainer', false],
-    ['special', false],
-    ['vest', true]
+    [ItemCategoryId.ammunition, false],
+    [ItemCategoryId.armband, false],
+    [ItemCategoryId.armor, true],
+    [ItemCategoryId.armorMod, true],
+    [ItemCategoryId.backpack, true],
+    [ItemCategoryId.container, false],
+    [ItemCategoryId.currency, false],
+    [ItemCategoryId.eyewear, false],
+    [ItemCategoryId.faceCover, false],
+    [ItemCategoryId.grenade, false],
+    [ItemCategoryId.headphones, false],
+    [ItemCategoryId.headwear, true],
+    [ItemCategoryId.magazine, false],
+    [ItemCategoryId.mainWeapon, false],
+    [ItemCategoryId.meleeWeapon, false],
+    [ItemCategoryId.mod, false],
+    [ItemCategoryId.other, false],
+    [ItemCategoryId.rangedWeaponMod, false],
+    [ItemCategoryId.secondaryWeapon, false],
+    [ItemCategoryId.securedContainer, false],
+    [ItemCategoryId.special, false],
+    [ItemCategoryId.vest, true]
   ])(
     'should determine if an item is a ranged weapon',
-    (categoryId: string, expected: boolean) => {
+    (categoryId: ItemCategoryId, expected: boolean) => {
       // Arrange
       const itemPropertiesService = new ItemPropertiesService()
 

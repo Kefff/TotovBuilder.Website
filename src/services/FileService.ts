@@ -16,7 +16,7 @@ export class FileService {
   public readFile(file: File): Promise<string | undefined> {
     const fileReadingPromise = new Promise<string | undefined>(resolve => {
       const fileReader = new FileReader()
-      fileReader.onloadend = () => {
+      fileReader.onloadend = (): void => {
         const fileContent = this.readFileContent(fileReader)
         resolve(fileContent)
       }

@@ -1,3 +1,31 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IArmor } from '../../models/item/IArmor'
+import { IItem } from '../../models/item/IItem'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import WearableStats from './WearableStatsComponent.vue'
+
+const props =
+  defineProps<{
+    item: IItem,
+    showModifiers?: boolean,
+  }>()
+
+const armor = computed(() => props.item as IArmor)
+const armorClass = computed(() => armor.value.presetArmorModifiers?.armorClass ?? armor.value.armorClass)
+const durability = computed(() => armor.value.presetArmorModifiers?.durability ?? armor.value.durability)
+const hasModifiers = computed(() => armor.value.blindnessProtectionPercentage !== 0)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div
     v-if="armorClass > 0"
@@ -6,21 +34,9 @@
     {{ $t('caption.armor') }}
   </div>
   <div
-    v-if="armorClass > 0"
+    v-if="armorClass > 0 || durability > 0"
     class="stats-line"
   >
-    <div class="stats-entry">
-      <div class="stats-caption">
-        <font-awesome-icon
-          icon="award"
-          class="icon-before-text"
-        />
-        <span>{{ $t('caption.armorClass') }} :</span>
-      </div>
-      <div class="stats-value">
-        {{ armorClass }}
-      </div>
-    </div>
     <div
       v-if="durability > 0"
       class="stats-entry"
@@ -36,6 +52,21 @@
         {{ durability }}
       </div>
     </div>
+    <div
+      v-if="armorClass > 0"
+      class="stats-entry"
+    >
+      <div class="stats-caption">
+        <font-awesome-icon
+          icon="award"
+          class="icon-before-text"
+        />
+        <span>{{ $t('caption.armorClass') }} :</span>
+      </div>
+      <div class="stats-value">
+        {{ armorClass }}
+      </div>
+    </div>
     <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
@@ -48,11 +79,11 @@
         {{ $t('caption.material' + armor.material) }}
       </div>
     </div>
+    <slot />
   </div>
   <WearableStats
     :item="armor"
     :show-modifiers-category="hasModifiers"
-    :wearable-modifiers-override="wearableModifiers"
   />
   <div
     v-if="armor.blindnessProtectionPercentage !== 0"
@@ -64,7 +95,7 @@
           icon="low-vision"
           class="icon-before-text"
         />
-        <span>{{ $t('caption.blindnessProtection') }} :</span>
+        <span>{{ $t('caption.blindnessProtectionPercentage') }} :</span>
       </div>
       <div :class="'stats-value ' + StatsUtils.getValueColorClass(armor.blindnessProtectionPercentage)">
         {{ StatsUtils.getStandardDisplayValue(DisplayValueType.blindnessProtectionPercentage, armor.blindnessProtectionPercentage) }}
@@ -109,39 +140,7 @@
 
 
 
-<script setup lang="ts">
-import { computed } from 'vue'
-import { IArmor } from '../../models/item/IArmor'
-import { IItem } from '../../models/item/IItem'
-import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
-import WearableStats from './WearableStatsComponent.vue'
-
-const props =
-  defineProps<{
-    item: IItem,
-    showModifiers?: boolean,
-  }>()
-
-const armor = computed(() => props.item as IArmor)
-const armorClass = computed(() => armor.value.presetArmorModifiers?.armorClass ?? armor.value.armorClass)
-const durability = computed(() => armor.value.presetArmorModifiers?.durability ?? armor.value.durability)
-const hasModifiers = computed(() => armor.value.blindnessProtectionPercentage !== 0)
-const wearableModifiers = computed(() => armor.value.presetWearableModifiers ?? undefined)
-</script>
-
-
-
-
-
-
-
-
-
-
 <style scoped>
-@import '../../css/icon.css';
-@import '../../css/stats.css';
-
 .armor-stats-durability {
   color: var(--error-color);
 }

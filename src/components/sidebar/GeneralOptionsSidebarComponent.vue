@@ -1,3 +1,66 @@
+<script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
+import { IGeneralOption } from '../../models/utils/IGeneralOption'
+import { GeneralOptionsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { GeneralOptionsService } from '../../services/GeneralOptionsService'
+import Services from '../../services/repository/Services'
+import ApplicationLanguageSelector from '../ApplicationLanguageSelectorComponent.vue'
+
+const props = defineProps<{ parameters?: GeneralOptionsSidebarParameters }>()
+
+const allowCookies = ref(true)
+
+const additionalDisplayOptions = computed(() => props.parameters?.filter(og => og.name === 'display-options').flatMap(og => og.options) ?? [])
+const additionalGeneralOptions = computed(() => props.parameters?.filter(og => og.name === 'general-options').flatMap(og => og.options) ?? [])
+const additionalOptionGroups = computed(() => props.parameters?.filter(og => og.name !== 'display-options' && og.name !== 'general-options') ?? [])
+
+onMounted(() => {
+  allowCookies.value = Services.get(GeneralOptionsService).getAllowCookiesIndicator()
+})
+
+/**
+ * Gets the CSS classes to apply to an option.
+ */
+function getAdditionalOptionCssClasses(option: IGeneralOption): string {
+  let classes = 'sidebar-option'
+
+  if (option.enabled != null && !option.enabled()) {
+    classes += ' sidebar-option-disabled sidebar-option-prevent-click'
+  } else {
+    classes += ' sidebar-option-clickable'
+  }
+
+  return classes
+}
+
+/**
+ * Reacts to the allow cookies option being changed.
+ *
+ * Sets the allow cookie indicator.
+ */
+function onAllowCookiesChanged(): void {
+  Services.get(GeneralOptionsService).setAllowCookiesIndicator(allowCookies.value)
+}
+
+/**
+ * Toggles a the allow cookes indicator.
+ * @param filter - Filter.
+ */
+function toggleAllowCookies(): void {
+  allowCookies.value = !allowCookies.value
+  onAllowCookiesChanged()
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <!-- Display options -->
   <div class="sidebar-option">
@@ -100,74 +163,7 @@
 
 
 
-<script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-import { IGeneralOption } from '../../models/utils/IGeneralOption'
-import { GeneralOptionsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
-import { GeneralOptionsService } from '../../services/GeneralOptionsService'
-import Services from '../../services/repository/Services'
-import ApplicationLanguageSelector from '../ApplicationLanguageSelectorComponent.vue'
-
-const props = defineProps<{ parameters?: GeneralOptionsSidebarParameters }>()
-
-const allowCookies = ref(true)
-
-const additionalDisplayOptions = computed(() => props.parameters?.filter(og => og.name === 'display-options').flatMap(og => og.options) ?? [])
-const additionalGeneralOptions = computed(() => props.parameters?.filter(og => og.name === 'general-options').flatMap(og => og.options) ?? [])
-const additionalOptionGroups = computed(() => props.parameters?.filter(og => og.name !== 'display-options' && og.name !== 'general-options') ?? [])
-
-onMounted(() => {
-  allowCookies.value = Services.get(GeneralOptionsService).getAllowCookiesIndicator()
-})
-
-/**
- * Gets the CSS classes to apply to an option.
- */
-function getAdditionalOptionCssClasses(option: IGeneralOption) {
-  let classes = 'sidebar-option'
-
-  if (option.enabled != null && !option.enabled()) {
-    classes += ' sidebar-option-disabled sidebar-option-prevent-click'
-  } else {
-    classes += ' sidebar-option-clickable'
-  }
-
-  return classes
-}
-
-/**
- * Reacts to the allow cookies option being changed.
- *
- * Sets the allow cookie indicator.
- */
-function onAllowCookiesChanged() {
-  Services.get(GeneralOptionsService).setAllowCookiesIndicator(allowCookies.value)
-}
-
-/**
- * Toggles a the allow cookes indicator.
- * @param filter - Filter.
- */
-function toggleAllowCookies() {
-  allowCookies.value = !allowCookies.value
-  onAllowCookiesChanged()
-}
-</script>
-
-
-
-
-
-
-
-
-
-
 <style scoped>
-@import '../../css/button.css';
-@import '../../css/icon.css';
-@import '../../css/sidebar.css';
-
 .general-options-addition-group {
   margin-top: 3rem;
 }

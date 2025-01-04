@@ -1,3 +1,76 @@
+<script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
+import Images from '../images'
+import { ItemService } from '../services/ItemService'
+import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
+import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
+import Services from '../services/repository/Services'
+
+const _itemService = Services.get(ItemService)
+const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
+
+const hasItemError = ref(false)
+const hasWebsiteConfigurationError = ref(false)
+
+const hasLoadingError = computed(() => hasItemError.value || hasWebsiteConfigurationError.value)
+
+onMounted(() => {
+  if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
+    _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
+  } else {
+    onWebsiteConfigurationServiceInitialized()
+  }
+
+  if (_itemService.initializationState === ServiceInitializationState.initializing) {
+    _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitialized)
+  } else {
+    onItemServiceInitialized()
+  }
+})
+
+/**
+ * Reacts to the item service being initialized.
+ *
+ * Checks whether an item loading error has occured and signals it to the parent component.
+ */
+function onItemServiceInitialized(): void {
+  hasItemError.value = _itemService.initializationState === ServiceInitializationState.error
+}
+
+/**
+ * Reacts to the website configuration service being initialized.
+ *
+ * Checks whether a website configuration loading error has occured and signals it to the parent component.
+ */
+function onWebsiteConfigurationServiceInitialized(): void {
+  hasWebsiteConfigurationError.value = _websiteConfigurationService.initializationState === ServiceInitializationState.error
+}
+
+/**
+ * Reloads the page.
+ */
+function reload(): void {
+  location.reload()
+}
+
+/**
+ * Opens the report a bug link.
+ */
+function signal(): void {
+  const url = Services.get(WebsiteConfigurationService).configuration.bugReportUrl
+  window.open(url)
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <Dialog
     v-if="hasLoadingError"
@@ -48,82 +121,7 @@
 
 
 
-<script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-import Images from '../images'
-import { ItemService } from '../services/ItemService'
-import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
-import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
-import Services from '../services/repository/Services'
-
-const _itemService = Services.get(ItemService)
-const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
-
-const hasItemError = ref(false)
-const hasWebsiteConfigurationError = ref(false)
-
-const hasLoadingError = computed(() => hasItemError.value || hasWebsiteConfigurationError.value)
-
-onMounted(() => {
-  if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
-    _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
-  } else {
-    onWebsiteConfigurationServiceInitialized()
-  }
-
-  if (_itemService.initializationState === ServiceInitializationState.initializing) {
-    _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitialized)
-  } else {
-    onItemServiceInitialized()
-  }
-})
-
-/**
- * Reacts to the item service being initialized.
- *
- * Checks whether an item loading error has occured and signals it to the parent component.
- */
-function onItemServiceInitialized() {
-  hasItemError.value = _itemService.initializationState === ServiceInitializationState.error
-}
-
-/**
- * Reacts to the website configuration service being initialized.
- *
- * Checks whether a website configuration loading error has occured and signals it to the parent component.
- */
-function onWebsiteConfigurationServiceInitialized() {
-  hasWebsiteConfigurationError.value = _websiteConfigurationService.initializationState === ServiceInitializationState.error
-}
-
-/**
- * Reloads the page.
- */
-function reload() {
-  location.reload()
-}
-
-/**
- * Opens the report a bug link.
- */
-function signal() {
-  const url = Services.get(WebsiteConfigurationService).configuration.bugReportUrl
-  window.open(url)
-}
-</script>
-
-
-
-
-
-
-
-
-
-
 <style scoped>
-@import '../css/icon.css';
-
 .loading-error-button {
   justify-content: center;
   margin-left: auto;

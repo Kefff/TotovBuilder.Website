@@ -72,6 +72,16 @@ describe('sortByCurrency()', () => {
         },
         {
           barterItems: [],
+          currencyName: 'RUB',
+          itemId: rub.id,
+          merchant: 'prapor',
+          merchantLevel: 1,
+          quest: undefined,
+          value: 10000,
+          valueInMainCurrency: 10000
+        },
+        {
+          barterItems: [],
           currencyName: 'EUR',
           itemId: eur.id,
           merchant: 'mechanic',
@@ -89,16 +99,6 @@ describe('sortByCurrency()', () => {
           quest: undefined,
           value: 10,
           valueInMainCurrency: 1200
-        },
-        {
-          barterItems: [],
-          currencyName: 'RUB',
-          itemId: rub.id,
-          merchant: 'prapor',
-          merchantLevel: 1,
-          quest: undefined,
-          value: 10000,
-          valueInMainCurrency: 10000
         }
       ]
     ],

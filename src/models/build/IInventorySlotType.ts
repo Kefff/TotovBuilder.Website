@@ -1,3 +1,6 @@
+import { ItemCategoryId } from '../item/IItem'
+import { InventorySlotTypeId } from './InventorySlotTypes'
+
 /**
  * Provides the functionalities of an inventory slot type.
  */
@@ -5,7 +8,7 @@ export interface IInventorySlotType {
   /**
    * Categories of item can be used in the slot.
    */
-  acceptedItemCategories: string[]
+  acceptedItemCategories: ItemCategoryId[]
 
   /**
    * Indicated wether the items contained in the inventory slot can be looted or not.
@@ -32,7 +35,7 @@ export interface IInventorySlotType {
   /**
    * ID.
    */
-  id: string
+  id: InventorySlotTypeId
 
   /**
    * Icon.

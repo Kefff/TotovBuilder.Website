@@ -1,48 +1,9 @@
-<template>
-  <div class="builds">
-    <div class="builds-title builds-title-outside-toolbar">
-      {{ $t('caption.buildsList') }}
-    </div>
-    <Toolbar
-      ref="buildsToolbar"
-      :buttons="toolbarButtons"
-    >
-      <template #center>
-        <div class="builds-title builds-title-in-toolbar">
-          {{ $t('caption.buildsList') }}
-        </div>
-      </template>
-      <template #right>
-        <NotificationButton />
-      </template>
-    </Toolbar>
-    <BuildsList
-      v-model:filter-and-sorting-data="filterAndSortingData"
-      :build-summaries="buildSummaries"
-      :element-to-stick-to="toolbarContainer"
-      :is-loading="isLoading"
-      selection-button-caption="caption.edit"
-      selection-button-icon="edit"
-      @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
-      @update:selected-builds="onBuildSelected"
-    />
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
+import FilterAndSortingData from '../models/utils/FilterAndSortingData'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
 import { SortingOrder } from '../models/utils/SortingOrder'
@@ -62,11 +23,9 @@ import { WebsiteConfigurationService } from '../services/WebsiteConfigurationSer
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
-import { BuildSummarySortingFunctions } from '../services/sorting/functions/BuildSummarySortingFunctions'
 import BuildsList from './BuildsListComponent.vue'
 import NotificationButton from './NotificationButtonComponent.vue'
 import Toolbar from './ToolbarComponent.vue'
-
 
 const _buildService = Services.get(BuildService)
 const _buildPropertiesService = Services.get(BuildPropertiesService)
@@ -75,11 +34,13 @@ const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _importService = Services.get(ImportService)
 const _itemService = Services.get(ItemService)
-const _router = useRouter()
+const _notificationService = Services.get(NotificationService)
 const _sortingService = Services.get(SortingService)
+const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
 let _builds: IBuild[] = []
-const toolbarButtons: IToolbarButton[] = [
+const _router = useRouter()
+const _toolbarButtons: IToolbarButton[] = [
   {
     action: goToHome,
     canBeMovedToSidebar: () => false,
@@ -151,7 +112,7 @@ const toolbarButtons: IToolbarButton[] = [
 
 const buildsToolbar = useTemplateRef('buildsToolbar')
 const buildSummaries = ref<IBuildSummary[]>([])
-const filterAndSortingData = ref<BuildFilterAndSortingData>(new BuildFilterAndSortingData())
+const filterAndSortingData = ref(new BuildFilterAndSortingData())
 const hasImported = ref(false)
 const isLoading = ref(true)
 
@@ -161,9 +122,9 @@ const toolbarContainer = computed(() => buildsToolbar.value?.container)
 
 onMounted(() => {
   _buildService.emitter.on(BuildService.deletedEvent, onItemServicesInitialized)
-  _exportService.emitter.on(ExportService.buildsExportedEvent, getBuilds)
+  _exportService.emitter.on(ExportService.buildsExportedEvent, getBuildsAsync)
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-  _importService.emitter.on(ImportService.buildsImportedEvent, getBuilds)
+  _importService.emitter.on(ImportService.buildsImportedEvent, getBuildsAsync)
 
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
     _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServicesInitialized)
@@ -171,20 +132,20 @@ onMounted(() => {
     onItemServicesInitialized()
   }
 
-  getFilterAndSortingData()
+  getInitialFilterAndSortingData()
 })
 
 onUnmounted(() => {
   _buildService.emitter.off(BuildService.deletedEvent, onItemServicesInitialized)
-  _exportService.emitter.off(ExportService.buildsExportedEvent, getBuilds)
+  _exportService.emitter.off(ExportService.buildsExportedEvent, getBuildsAsync)
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-  _importService.emitter.off(ImportService.buildsImportedEvent, getBuilds)
+  _importService.emitter.off(ImportService.buildsImportedEvent, getBuildsAsync)
 })
 
 watch(() => hasImported.value, () => {
   // Updating the list of builds after import
   if (hasImported.value) {
-    getBuilds()
+    getBuildsAsync()
     hasImported.value = false
   }
 })
@@ -192,18 +153,18 @@ watch(() => hasImported.value, () => {
 /**
  * Checks whether builds have not been exported. Displays a warning if that is the case.
  */
-function checkBuildsNotExported() {
-  const exportWarningShowedKey = Services.get(WebsiteConfigurationService).configuration.exportWarningShowedStorageKey
+function checkBuildsNotExported(): void {
+  const exportWarningShowedKey = _websiteConfigurationService.configuration.exportWarningShowedStorageKey
   const exportWarningShowed = sessionStorage.getItem(exportWarningShowedKey)
 
   if (hasBuildsNotExported.value && exportWarningShowed == null) {
-    Services.get(NotificationService).notify(
+    _notificationService.notify(
       NotificationType.warning,
       vueI18n.t('message.buildsNotExported'),
       0,
       [
         {
-          action: () => Services.get(GlobalSidebarService).display({
+          action: (): void => _globalSidebarService.display({
             displayedComponentType: 'BuildsExportSidebar',
             displayedComponentParameters: buildSummaries.value
           }),
@@ -222,7 +183,7 @@ function checkBuildsNotExported() {
 /**
  * Displays the build export sidebar.
  */
-function displayExportSidebar() {
+function displayExportSidebar(): void {
   if (canImportExport.value) {
     _globalSidebarService.display({
       displayedComponentParameters: buildSummaries.value,
@@ -234,7 +195,7 @@ function displayExportSidebar() {
 /**
  * Displays the build import sidebar.
  */
-function displayImportSidebar() {
+function displayImportSidebar(): void {
   if (canImportExport.value) {
     _globalSidebarService.display({
       displayedComponentParameters: buildSummaries.value,
@@ -246,8 +207,8 @@ function displayImportSidebar() {
 /**
  * Displays the general options sidebar.
  */
-function displayGeneralOptions() {
-  Services.get(GlobalSidebarService).display({
+function displayGeneralOptions(): void {
+  _globalSidebarService.display({
     displayedComponentType: 'GeneralOptionsSidebar'
   })
 }
@@ -255,8 +216,8 @@ function displayGeneralOptions() {
 /**
  * Displays the merchant items options sidebar.
  */
-function displayMerchantItemsOptions() {
-  Services.get(GlobalSidebarService).display({
+function displayMerchantItemsOptions(): void {
+  _globalSidebarService.display({
     displayedComponentType: 'MerchantItemsOptionsSidebar'
   })
 }
@@ -264,8 +225,8 @@ function displayMerchantItemsOptions() {
 /**
  * Displays the builds share sidebar options.
  */
-function displayShareSidebar() {
-  Services.get(GlobalSidebarService).display({
+function displayShareSidebar(): void {
+  _globalSidebarService.display({
     displayedComponentParameters: {
       buildSummaries: buildSummaries.value
     },
@@ -276,7 +237,7 @@ function displayShareSidebar() {
 /**
  * Gets the builds.
  */
-async function getBuilds() {
+async function getBuildsAsync(): Promise<void> {
   isLoading.value = true
 
   const execute = new Promise<void>(resolve => {
@@ -285,7 +246,7 @@ async function getBuilds() {
       _builds = _buildService.getAll()
 
       for (const build of _builds) {
-        const summary = await _buildPropertiesService.getSummary(build)
+        const summary = await _buildPropertiesService.getSummaryAsync(build)
         summaries.push(summary)
       }
 
@@ -299,31 +260,30 @@ async function getBuilds() {
 }
 
 /**
- * Gets the sorting data.
+ * Gets the initial filter and sorting data applied to builds.
  */
-function getFilterAndSortingData() {
-  const websiteConfigurationService = Services.get(WebsiteConfigurationService)
+function getInitialFilterAndSortingData(): void {
+  const property = localStorage.getItem(_websiteConfigurationService.configuration.buildsSortFieldStorageKey) ?? 'name'
+  const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey) ?? SortingOrder.asc)
 
-  filterAndSortingData.value.filter = sessionStorage.getItem(websiteConfigurationService.configuration.buildsFilterStorageKey) ?? ''
-  const property = localStorage.getItem(websiteConfigurationService.configuration.buildsSortFieldStorageKey) ?? 'name'
-  const order = Number(localStorage.getItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey) ?? SortingOrder.asc)
-  _sortingService.setSortingProperty(filterAndSortingData.value, BuildSummarySortingFunctions, property, order)
+  filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.buildsFilterStorageKey) ?? undefined
+  _sortingService.setSortingProperty(filterAndSortingData.value as FilterAndSortingData<IBuildSummary>, property, order)
 }
 
 /**
  * Redirects to the welcome page.
  */
-function goToHome() {
+function goToHome(): void {
   _router.push({ name: 'Welcome' })
 }
 
 /**
  * Reacts to a build being selected.
  *
- * Opens a the build the user has selected.
+ * Opens the build the user has selected.
  * @param selectedBuilds - Selected builds.
  */
-function onBuildSelected(selectedBuilds: IBuildSummary[]) {
+function onBuildSelected(selectedBuilds: IBuildSummary[]): void {
   if (selectedBuilds.length > 0) {
     openBuild(selectedBuilds[0].id)
   }
@@ -334,11 +294,16 @@ function onBuildSelected(selectedBuilds: IBuildSummary[]) {
  *
  * Saves filter and sorting data.
  */
-function onFilterAndSortingDataChanged() {
-  const websiteConfigurationService = Services.get(WebsiteConfigurationService)
-  sessionStorage.setItem(websiteConfigurationService.configuration.buildsFilterStorageKey, filterAndSortingData.value.filter)
-  localStorage.setItem(websiteConfigurationService.configuration.buildsSortFieldStorageKey, filterAndSortingData.value.property)
-  localStorage.setItem(websiteConfigurationService.configuration.buildsSortOrderStorageKey, filterAndSortingData.value.order.toString())
+function onFilterAndSortingDataChanged(): void {
+  if (filterAndSortingData.value.filter == null) {
+    sessionStorage.removeItem(_websiteConfigurationService.configuration.buildsFilterStorageKey)
+  }
+  else {
+    sessionStorage.setItem(_websiteConfigurationService.configuration.buildsFilterStorageKey, filterAndSortingData.value.filter)
+  }
+
+  localStorage.setItem(_websiteConfigurationService.configuration.buildsSortFieldStorageKey, filterAndSortingData.value.property)
+  localStorage.setItem(_websiteConfigurationService.configuration.buildsSortOrderStorageKey, filterAndSortingData.value.order.toString())
 }
 
 /**
@@ -346,8 +311,8 @@ function onFilterAndSortingDataChanged() {
  *
  * Updates the selected item price to reflect the change in merchant filters.
  */
-function onItemServicesInitialized() {
-  getBuilds().then(() => {
+function onItemServicesInitialized(): void {
+  getBuildsAsync().then(() => {
     if (_builds.length === 0) {
       _router.push({ name: 'Welcome' })
 
@@ -361,24 +326,24 @@ function onItemServicesInitialized() {
 /**
  * Reacts to the merchant filter being changed.
  *
- * Gets builds and ends loading.
+ * Gets builds.
  */
-function onMerchantFilterChanged() {
-  getBuilds()
+function onMerchantFilterChanged(): void {
+  getBuildsAsync()
 }
 
 /**
  * Opens a build.
  * @param id - ID of the build.
  */
-function openBuild(id: string) {
+function openBuild(id: string): void {
   _router.push({ name: 'Build', params: { id } })
 }
 
 /**
  * Opens a new build.
  */
-function openNewBuild() {
+function openNewBuild(): void {
   _router.push({ name: 'NewBuild' })
 }
 </script>
@@ -392,10 +357,52 @@ function openNewBuild() {
 
 
 
-<style scoped>
-@import '../css/button.css';
-@import '../css/icon.css';
+<template>
+  <div class="builds">
+    <div class="builds-title builds-title-outside-toolbar">
+      {{ $t('caption.buildsList') }}
+    </div>
+    <Toolbar
+      ref="buildsToolbar"
+      :buttons="_toolbarButtons"
+    >
+      <template #center>
+        <div class="builds-title builds-title-in-toolbar">
+          {{ $t('caption.buildsList') }}
+        </div>
+      </template>
+      <template #right>
+        <NotificationButton />
+      </template>
+    </Toolbar>
+    <BuildsList
+      v-model:filter-and-sorting-data="filterAndSortingData as BuildFilterAndSortingData"
+      :build-summaries="buildSummaries"
+      :element-to-stick-to="toolbarContainer"
+      :is-loading="isLoading"
+      :selection-options="{
+        canUnselect: true,
+        isEnabled: true,
+        isMultiSelection: false,
+        selectionButtonCaption: 'caption.edit',
+        selectionButtonIcon: 'edit'
+      }"
+      @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
+      @update:selected-builds="onBuildSelected"
+    />
+  </div>
+</template>
 
+
+
+
+
+
+
+
+
+
+<style scoped>
 .builds {
   display: flex;
   flex-direction: column;

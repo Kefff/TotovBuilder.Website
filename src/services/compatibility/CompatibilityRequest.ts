@@ -11,8 +11,8 @@ export class CompatibilityRequest {
    * @param requestType - Request type.
    * @param path - When checking the compatibility of a mod, path to the mod slot the mod is being added in. Used to ignore conflicts with the mod being replaced in this slot.
    */
-  constructor(public requestType: CompatibilityRequestType, public itemId: string, public path: string) {
-    this._result = new Promise(resolve => this.setResult = async (value: Promise<boolean>) => resolve(await value))
+  public constructor(public requestType: CompatibilityRequestType, public itemId: string, public path: string) {
+    this._result = new Promise(resolve => this.setResult = async (value: Promise<boolean>): Promise<void> => resolve(await value))
   }
 
   /**

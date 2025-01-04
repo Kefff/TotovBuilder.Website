@@ -21,10 +21,12 @@ export function usePrimeVue(app: App<Element>): void {
   app.component('Message', defineAsyncComponent(() => import('primevue/message')))
   app.component('OverlayPanel', defineAsyncComponent(() => import('primevue/overlaypanel')))
   app.component('Panel', defineAsyncComponent(() => import('primevue/panel')))
+  app.component('Paginator', defineAsyncComponent(() => import('primevue/paginator')))
   app.component('Sidebar', defineAsyncComponent(() => import('primevue/sidebar')))
   app.component('TabPanel', defineAsyncComponent(() => import('primevue/tabpanel')))
   app.component('TabView', defineAsyncComponent(() => import('primevue/tabview')))
   app.component('TextArea', defineAsyncComponent(() => import('primevue/textarea')))
+  app.component('VirtualScroller', defineAsyncComponent(() => import('primevue/virtualscroller')))
 
   app.directive('tooltip', Tooltip)
 }

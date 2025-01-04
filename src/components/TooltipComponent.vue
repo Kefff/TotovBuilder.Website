@@ -1,32 +1,6 @@
-<template>
-  <span
-    v-if="tooltip != null"
-    v-tooltip:[directiveArguments]="tooltip"
-    :class="applyHoverStyle ? 'tooltip' : ''"
-    :tabindex="_isTouchScreen ? 9999 : undefined"
-    @click="onClick($event)"
-  >
-    <slot />
-  </span>
-  <slot v-else />
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
-import { computed, inject } from 'vue'
-import { DirectiveArguments } from '../models/utils/TooltipDirectiveArguments'
-
-const emits = defineEmits<{
-  click: [event: MouseEvent]
-}>()
+import { computed, inject, Ref } from 'vue'
+import { DirectiveArguments } from '../models/utils/UI/TooltipDirectiveArguments'
 
 const props = withDefaults(
   defineProps<{
@@ -42,15 +16,19 @@ const props = withDefaults(
     tooltip: undefined
   })
 
-const _isTouchScreen = inject<boolean>('isTouchScreen')
+const emits = defineEmits<{
+  click: [event: MouseEvent]
+}>()
+
+const isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
 
 // cf. https://github.com/primefaces/primevue/issues/2255#issuecomment-1073903453
-const directiveArguments = computed(() => new DirectiveArguments(props.position, _isTouchScreen ? 'focus' : undefined))
+const directiveArguments = computed(() => new DirectiveArguments(props.position, isTouchScreen?.value ? 'focus' : undefined))
 
 /**
  * Reacts to the click on the element the tooltip is attached to.
  */
-function onClick(event: MouseEvent) {
+function onClick(event: MouseEvent): void {
   if (props.stopClickPropagation) {
     event.stopPropagation()
   }
@@ -68,11 +46,42 @@ function onClick(event: MouseEvent) {
 
 
 
+<template>
+  <span
+    v-if="tooltip != null"
+    v-tooltip:[directiveArguments]="tooltip"
+    :class="{ 'tooltip': applyHoverStyle }"
+    :tabindex="isTouchScreen ? 9999 : undefined"
+    @click="onClick($event)"
+  >
+    <slot />
+  </span>
+  <slot v-else />
+</template>
+
+
+
+
+
+
+
+
+
+
 <style scoped>
 .tooltip:hover {
   opacity: 50%;
 }
 </style>
+
+
+
+
+
+
+
+
+
 
 <style>
 .p-tooltip {

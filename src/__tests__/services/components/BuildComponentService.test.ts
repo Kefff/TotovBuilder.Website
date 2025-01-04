@@ -102,7 +102,7 @@ describe('getBuild()', () => {
   })
 })
 
-describe('saveBuild()', () => {
+describe('saveBuildAsync()', () => {
   it('should add a new build', async () => {
     // Arrange
     const buildServiceMock = mock<BuildService>()
@@ -125,10 +125,10 @@ describe('saveBuild()', () => {
     const buildComponentService = new BuildComponentService()
 
     // Act
-    await buildComponentService.saveBuild(instance(routerMock), build)
+    await buildComponentService.saveBuildAsync(instance(routerMock), build)
 
     // Assert
-    verify(buildServiceMock.add(build)).once()
+    verify(buildServiceMock.addAsync(build)).once()
     verify(notificationServiceMock.notify(NotificationType.success, anyString())).once()
     verify(routerMock.push(anything())).once()
   })
@@ -154,10 +154,10 @@ describe('saveBuild()', () => {
     }
 
     // Act
-    await buildComponentService.saveBuild(instance(routerMock), build)
+    await buildComponentService.saveBuildAsync(instance(routerMock), build)
 
     // Assert
-    verify(buildServiceMock.update(build)).once()
+    verify(buildServiceMock.updateAsync(build)).once()
     verify(notificationServiceMock.notify(NotificationType.success, anyString())).once()
     verify(routerMock.push(anything())).never()
   })

@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../models/build/IBuild'
+import { InventorySlotTypeId } from '../../models/build/InventorySlotTypes'
 import { IShoppingListItem } from '../../models/build/IShoppingListItem'
 import { IArmorModifiers } from '../../models/utils/IArmorModifiers'
+import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { IgnoredUnitPrice } from '../../models/utils/IgnoredUnitPrice'
 import { IInventoryPrice } from '../../models/utils/IInventoryPrice'
 import { IRecoil } from '../../models/utils/IRecoil'
@@ -10,7 +12,6 @@ import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import { InventorySlotPropertiesService } from '../../services/InventorySlotPropertiesService'
-import { InventorySlotService } from '../../services/InventorySlotService'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { PresetService } from '../../services/PresetService'
 import Services from '../../services/repository/Services'
@@ -22,7 +23,7 @@ import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('getSummary()', () => {
+describe('getSummaryAsync()', () => {
   describe('Armor modifiers', () => {
     it.each([
       [
@@ -47,7 +48,7 @@ describe('getSummary()', () => {
                   quantity: 1
                 }
               ],
-              typeId: 'bodyArmor'
+              typeId: InventorySlotTypeId.bodyArmor
             }
           ],
           lastExported: undefined,
@@ -73,11 +74,11 @@ describe('getSummary()', () => {
           inventorySlots: [
             {
               items: [undefined],
-              typeId: 'bodyArmor'
+              typeId: InventorySlotTypeId.bodyArmor
             },
             {
               items: [undefined],
-              typeId: 'tacticalRig'
+              typeId: InventorySlotTypeId.tacticalRig
             }
           ],
           lastExported: undefined,
@@ -96,7 +97,7 @@ describe('getSummary()', () => {
           inventorySlots: [
             {
               items: [undefined],
-              typeId: 'bodyArmor'
+              typeId: InventorySlotTypeId.bodyArmor
             },
             {
               items: [
@@ -108,7 +109,7 @@ describe('getSummary()', () => {
                   quantity: 1
                 }
               ],
-              typeId: 'tacticalRig'
+              typeId: InventorySlotTypeId.tacticalRig
             }
           ],
           lastExported: undefined,
@@ -127,11 +128,11 @@ describe('getSummary()', () => {
           inventorySlots: [
             {
               items: [undefined],
-              typeId: 'bodyArmor'
+              typeId: InventorySlotTypeId.bodyArmor
             },
             {
               items: [undefined],
-              typeId: 'tacticalRig'
+              typeId: InventorySlotTypeId.tacticalRig
             }
           ],
           lastExported: undefined,
@@ -152,13 +153,12 @@ describe('getSummary()', () => {
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
 
       const service = new BuildPropertiesService()
 
       // Act
-      const summary = await service.getSummary(build)
+      const summary = await service.getSummaryAsync(build)
 
       // Assert
       expect(summary.armorModifiers).toStrictEqual(expected)
@@ -173,13 +173,12 @@ describe('getSummary()', () => {
       Services.configure(GlobalFilterService)
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
 
       const service = new BuildPropertiesService()
 
       // Act
-      const summary = await service.getSummary({
+      const summary = await service.getSummaryAsync({
         id: 'build1',
         name: 'Build 1',
         inventorySlots: [],
@@ -205,7 +204,7 @@ describe('getSummary()', () => {
           id: 'build3',
           inventorySlots: [
             {
-              typeId: 'onBack',
+              typeId: InventorySlotTypeId.onBack,
               items: [
                 {
                   content: [],
@@ -233,7 +232,6 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
         Services.configure(PresetService)
@@ -241,7 +239,7 @@ describe('getSummary()', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.ergonomics).toBe(expected)
@@ -255,15 +253,15 @@ describe('getSummary()', () => {
           id: 'EmptyBuild',
           inventorySlots: [
             {
-              typeId: 'onSling',
+              typeId: InventorySlotTypeId.onSling,
               items: []
             },
             {
-              typeId: 'onBack',
+              typeId: InventorySlotTypeId.onBack,
               items: [undefined]
             },
             {
-              typeId: 'holster',
+              typeId: InventorySlotTypeId.holster,
               items: [null]
             }
           ]
@@ -284,12 +282,11 @@ describe('getSummary()', () => {
       useItemServiceMock()
       Services.configure(InventoryItemService)
       Services.configure(ItemPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(InventorySlotPropertiesService)
       const service = new BuildPropertiesService()
 
       // Act
-      const summary = await service.getSummary(build)
+      const summary = await service.getSummaryAsync(build)
 
       // Assert
       expect(summary.ergonomics).toBe(0)
@@ -325,16 +322,6 @@ describe('getSummary()', () => {
           priceByCurrency: [
             {
               barterItems: [],
-              currencyName: 'USD',
-              itemId: '',
-              merchant: '',
-              merchantLevel: 0,
-              quest: undefined,
-              value: 444,
-              valueInMainCurrency: 63495
-            },
-            {
-              barterItems: [],
               currencyName: 'RUB',
               itemId: '',
               merchant: '',
@@ -342,6 +329,16 @@ describe('getSummary()', () => {
               quest: undefined,
               value: 184252,
               valueInMainCurrency: 184252
+            },
+            {
+              barterItems: [],
+              currencyName: 'USD',
+              itemId: '',
+              merchant: '',
+              merchantLevel: 0,
+              quest: undefined,
+              value: 444,
+              valueInMainCurrency: 63495
             }
           ]
         } as IInventoryPrice
@@ -371,14 +368,13 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
 
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.price).toStrictEqual(expected)
@@ -393,7 +389,6 @@ describe('getSummary()', () => {
       useWebsiteConfigurationServiceMock()
       Services.configure(InventorySlotPropertiesService)
       Services.configure(InventoryItemService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(GlobalFilterService)
 
@@ -420,7 +415,7 @@ describe('getSummary()', () => {
                 quantity: 1
               }
             ],
-            typeId: 'backpack'
+            typeId: InventorySlotTypeId.backpack
           }
         ],
         lastExported: undefined,
@@ -430,7 +425,7 @@ describe('getSummary()', () => {
       }
 
       // Act
-      const summary = await service.getSummary(build)
+      const summary = await service.getSummaryAsync(build)
 
       // Assert
       expect(summary.price).toStrictEqual({
@@ -474,15 +469,15 @@ describe('getSummary()', () => {
           id: 'EmptyBuild',
           inventorySlots: [
             {
-              typeId: 'onSling',
+              typeId: InventorySlotTypeId.onSling,
               items: []
             },
             {
-              typeId: 'onBack',
+              typeId: InventorySlotTypeId.onBack,
               items: [undefined]
             },
             {
-              typeId: 'holster',
+              typeId: InventorySlotTypeId.holster,
               items: [null]
             }
           ]
@@ -502,14 +497,13 @@ describe('getSummary()', () => {
         Services.configure(GlobalFilterService)
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(PresetService)
 
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.recoil).toStrictEqual(expected)
@@ -523,7 +517,6 @@ describe('getSummary()', () => {
       useWebsiteConfigurationServiceMock()
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(GlobalFilterService)
       Services.configure(PresetService)
@@ -531,7 +524,7 @@ describe('getSummary()', () => {
       const service = new BuildPropertiesService()
 
       // Act
-      const summary = await service.getSummary(
+      const summary = await service.getSummaryAsync(
         {
           id: 'build1',
           inventorySlots: [
@@ -545,7 +538,7 @@ describe('getSummary()', () => {
                   quantity: 1
                 }
               ],
-              typeId: 'onSling'
+              typeId: InventorySlotTypeId.onSling
             }
           ],
           lastExported: undefined,
@@ -1450,14 +1443,14 @@ describe('getSummary()', () => {
             }
           },
           {
-            ignorePrice: 'notLootable',
+            ignorePrice: IgnoredUnitPrice.notLootable,
             inventorySlotId: 'pouch',
             item: alpha,
             missingPrice: false,
             quantity: 1
           },
           {
-            ignorePrice: 'notLootable',
+            ignorePrice: IgnoredUnitPrice.notLootable,
             inventorySlotId: 'scabbard',
             item: bayonet6Kh5,
             missingPrice: false,
@@ -1486,14 +1479,13 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
 
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.shoppingList).toStrictEqual(expected)
@@ -1508,23 +1500,22 @@ describe('getSummary()', () => {
       useWebsiteConfigurationServiceMock()
       Services.configure(InventoryItemService)
       Services.configure(InventorySlotPropertiesService)
-      Services.configure(InventorySlotService)
       Services.configure(ItemPropertiesService)
       Services.configure(GlobalFilterService)
 
       const service = new BuildPropertiesService()
 
       // Act
-      const act = () => service.getSummary({
+      const act = (): Promise<IBuildSummary> => service.getSummaryAsync({
         name: 'Build',
         id: 'build',
         inventorySlots: [
           {
-            typeId: 'invalid',
+            typeId: 'invalid' as InventorySlotTypeId,
             items: []
           },
           {
-            typeId: 'backpack',
+            typeId: InventorySlotTypeId.backpack,
             items: [
               {
                 content: [],
@@ -1562,15 +1553,15 @@ describe('getSummary()', () => {
           id: 'EmptyBuild',
           inventorySlots: [
             {
-              typeId: 'onSling',
+              typeId: InventorySlotTypeId.onSling,
               items: []
             },
             {
-              typeId: 'onBack',
+              typeId: InventorySlotTypeId.onBack,
               items: [undefined]
             },
             {
-              typeId: 'holster',
+              typeId: InventorySlotTypeId.holster,
               items: [null]
             }
           ]
@@ -1586,7 +1577,6 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
         Services.configure(PresetService)
@@ -1594,7 +1584,7 @@ describe('getSummary()', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.weight).toBe(expected)
@@ -1644,7 +1634,6 @@ describe('getSummary()', () => {
         useWebsiteConfigurationServiceMock()
         Services.configure(InventoryItemService)
         Services.configure(InventorySlotPropertiesService)
-        Services.configure(InventorySlotService)
         Services.configure(ItemPropertiesService)
         Services.configure(GlobalFilterService)
         Services.configure(PresetService)
@@ -1652,7 +1641,7 @@ describe('getSummary()', () => {
         const service = new BuildPropertiesService()
 
         // Act
-        const summary = await service.getSummary(build)
+        const summary = await service.getSummaryAsync(build)
 
         // Assert
         expect(summary.wearableModifiers).toStrictEqual(expected)

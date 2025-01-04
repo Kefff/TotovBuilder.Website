@@ -1,3 +1,71 @@
+<script setup lang="ts">
+import { computed, inject, Ref, useTemplateRef } from 'vue'
+import { ICurrency } from '../models/configuration/ICurrency'
+import { IInventoryPrice } from '../models/utils/IInventoryPrice'
+import vueI18n from '../plugins/vueI18n'
+import { ItemService } from '../services/ItemService'
+import Services from '../services/repository/Services'
+import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
+import Price from './PriceComponent.vue'
+import Tooltip from './TooltipComponent.vue'
+
+const props = withDefaults(
+  defineProps<{
+    customTooltip?: string,
+    inventoryPrice: IInventoryPrice,
+    isBuild: boolean,
+  }>(),
+  {
+    customTooltip: undefined,
+    showMissingPriceSpot: false
+  })
+
+let _mainCurrency: ICurrency | undefined
+
+const inventoryPriceDetailPanel = useTemplateRef('inventoryPriceDetailPanel')
+const isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
+
+const canShowDetails = computed(() => props.inventoryPrice.priceByCurrency.some(ip => ip.currencyName !== mainCurrency.value?.name))
+const mainCurrency = computed(() => {
+  if (_mainCurrency == null) {
+    _mainCurrency = Services.get(ItemService).getMainCurrency()
+  }
+
+  return _mainCurrency
+})
+const priceInMainCurrency = computed(() => props.inventoryPrice.priceByCurrency.reduce((total, priceInCurrency) => total + priceInCurrency.valueInMainCurrency, 0))
+const tooltip = computed(() => {
+  let value: string = props.customTooltip ?? vueI18n.t('caption.price')
+
+  if (canShowDetails.value && !isTouchScreen?.value) {
+    value += ` ${vueI18n.t('caption.clickForDetails')}`
+  }
+
+  return value
+})
+
+/**
+ * Toggles the details of the inventory price.
+ */
+function toggleInventoryPriceDetails(event: Event): void {
+  if (!canShowDetails.value) {
+    return
+  }
+
+  inventoryPriceDetailPanel.value?.toggle(event)
+  event.stopPropagation()
+}
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="inventory-price">
     <Tooltip :tooltip="tooltip">
@@ -21,22 +89,13 @@
         </div>
       </div>
     </Tooltip>
-    <div
-      v-if="inventoryPrice.missingPrice || showEmptyMissingPriceSpot"
-      class="inventory-price-icon"
+    <Tooltip
+      v-if="inventoryPrice.missingPrice"
+      class="inventory-price-missing-price-icon"
+      :tooltip="isBuild ? $t('message.buildWithMissingPrice') : $t('message.itemWithModsAndContentAndMissingPrice')"
     >
-      <div
-        v-if="inventoryPrice.missingPrice"
-        class="inventory-price-missing-price-icon"
-      >
-        <Tooltip
-          :tooltip="isBuild ? $t('message.buildWithMissingPrice') : $t('message.itemWithModsAndContentAndMissingPrice')"
-          position="right"
-        >
-          <font-awesome-icon icon="exclamation-triangle" />
-        </Tooltip>
-      </div>
-    </div>
+      <font-awesome-icon icon="exclamation-triangle" />
+    </Tooltip>
   </div>
 
   <!-- Price details -->
@@ -78,79 +137,7 @@
 
 
 
-<script setup lang="ts">
-import { computed, inject, useTemplateRef } from 'vue'
-import { ICurrency } from '../models/configuration/ICurrency'
-import { IInventoryPrice } from '../models/utils/IInventoryPrice'
-import vueI18n from '../plugins/vueI18n'
-import { ItemService } from '../services/ItemService'
-import Services from '../services/repository/Services'
-import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
-import Price from './PriceComponent.vue'
-
-const props = withDefaults(
-  defineProps<{
-    customTooltip?: string,
-    inventoryPrice: IInventoryPrice,
-    isBuild: boolean,
-    showEmptyMissingPriceSpot?: boolean
-  }>(),
-  {
-    customTooltip: undefined,
-    showMissingPriceSpot: false
-  })
-
-const _isTouchScreen = inject<boolean>('isTouchScreen')
-let _mainCurrency: ICurrency | undefined
-
-const inventoryPriceDetailPanel = useTemplateRef('inventoryPriceDetailPanel')
-
-const canShowDetails = computed(() => props.inventoryPrice.priceByCurrency.some(ip => ip.currencyName !== mainCurrency.value?.name))
-const mainCurrency = computed(() => {
-  if (_mainCurrency == null) {
-    _mainCurrency = Services.get(ItemService).getMainCurrency()
-  }
-
-  return _mainCurrency
-})
-const priceInMainCurrency = computed(() => props.inventoryPrice.priceByCurrency.reduce((total, priceInCurrency) => total + priceInCurrency.valueInMainCurrency, 0))
-const tooltip = computed(() => {
-  let value: string = props.customTooltip ?? vueI18n.t('caption.price')
-
-  if (canShowDetails.value && !_isTouchScreen) {
-    value += ` ${vueI18n.t('caption.clickForDetails')}`
-  }
-
-  return value
-})
-
-/**
- * Toggles the details of the inventory price.
- */
-function toggleInventoryPriceDetails(event: Event) {
-  if (!canShowDetails.value) {
-    return
-  }
-
-  inventoryPriceDetailPanel.value?.toggle(event)
-  event.stopPropagation()
-}
-</script>
-
-
-
-
-
-
-
-
-
-
 <style scoped>
-@import '../css/button.css';
-@import '../css/currency.css';
-@import '../css/icon.css';
-
 .inventory-price {
   align-items: center;
   display: flex;
@@ -181,19 +168,14 @@ function toggleInventoryPriceDetails(event: Event) {
   margin-left: 0.25rem;
 }
 
-.inventory-price-icon {
-  align-items: center;
-  display: flex;
-  justify-content: center;
+.inventory-price-missing-price-icon {
   margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  width: 2rem;
+  color: var(--error-color);
 }
 
 .inventory-price-list {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   justify-content: end;
 }
 
@@ -203,15 +185,6 @@ function toggleInventoryPriceDetails(event: Event) {
 
 .inventory-price-list-price:first-child {
   margin-left: 0;
-}
-
-.inventory-price-missing-price-icon {
-  align-items: center;
-  color: var(--error-color);
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
 }
 
 .inventory-price-with-details {

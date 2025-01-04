@@ -1,34 +1,34 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import Images from '../../images'
+import { IItem } from '../../models/item/IItem'
+import { IRangedWeapon } from '../../models/item/IRangedWeapon'
+import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import StringUtils from '../../utils/StringUtils'
+import CustomIcon from '../CustomIconComponent.vue'
+
+const props = defineProps<{
+  item: IItem
+}>()
+
+const ergonomics = computed(() => rangedWeapon.value.presetRangedWeaponModifiers?.ergonomics ?? rangedWeapon.value.ergonomics)
+const horizontalRecoil = computed(() => rangedWeapon.value.presetRangedWeaponModifiers?.horizontalRecoil ?? rangedWeapon.value.horizontalRecoil)
+const rangedWeapon = computed(() => props.item as IRangedWeapon)
+const verticalRecoil = computed(() => rangedWeapon.value.presetRangedWeaponModifiers?.verticalRecoil ?? rangedWeapon.value.verticalRecoil)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div class="stats-category">
     {{ $t('caption.rangedWeapon') }}
-  </div>
-  <div class="stats-line">
-    <div class="stats-entry">
-      <div class="stats-caption">
-        <CustomIcon
-          :icon="Images.caliber"
-          position="before"
-        >
-          <span>{{ $t('caption.caliber') }} :</span>
-        </CustomIcon>
-      </div>
-      <div class="stats-value">
-        {{ $t('caption.' + StringUtils.toLowerFirst(rangedWeapon.caliber)) }}
-      </div>
-    </div>
-    <div class="stats-entry">
-      <div class="stats-caption">
-        <CustomIcon
-          :icon="Images.fireRate"
-          position="before"
-        >
-          <span>{{ $t('caption.fireRate') }} :</span>
-        </CustomIcon>
-      </div>
-      <div class="stats-value">
-        {{ $t('caption.fireRateValue', { fireRate: rangedWeapon.fireRate }) }}
-      </div>
-    </div>
   </div>
   <div class="stats-line">
     <div class="stats-entry">
@@ -68,46 +68,32 @@
       </div>
     </div>
   </div>
+  <div class="stats-line">
+    <div class="stats-entry">
+      <div class="stats-caption">
+        <CustomIcon
+          :icon="Images.fireRate"
+          position="before"
+        >
+          <span>{{ $t('caption.fireRate') }} :</span>
+        </CustomIcon>
+      </div>
+      <div class="stats-value">
+        {{ $t('caption.fireRateValue', { fireRate: rangedWeapon.fireRate }) }}
+      </div>
+    </div>
+    <div class="stats-entry">
+      <div class="stats-caption">
+        <CustomIcon
+          :icon="Images.caliber"
+          position="before"
+        >
+          <span>{{ $t('caption.caliber') }} :</span>
+        </CustomIcon>
+      </div>
+      <div class="stats-value">
+        {{ $t('caption.' + StringUtils.toLowerFirst(rangedWeapon.caliber)) }}
+      </div>
+    </div>
+  </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import Images from '../../images'
-import { IItem } from '../../models/item/IItem'
-import { IRangedWeapon } from '../../models/item/IRangedWeapon'
-import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
-import StringUtils from '../../utils/StringUtils'
-import CustomIcon from '../CustomIconComponent.vue'
-
-const props = defineProps<{
-  item: IItem
-}>()
-
-const ergonomics = computed(() => rangedWeapon.value.presetRangedWeaponModifiers?.ergonomics ?? rangedWeapon.value.ergonomics)
-const horizontalRecoil = computed(() => rangedWeapon.value.presetRangedWeaponModifiers?.horizontalRecoil ?? rangedWeapon.value.horizontalRecoil)
-const rangedWeapon = computed(() => props.item as IRangedWeapon)
-const verticalRecoil = computed(() => rangedWeapon.value.presetRangedWeaponModifiers?.verticalRecoil ?? rangedWeapon.value.verticalRecoil)
-</script>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/icon.css';
-@import '../../css/stats.css';
-</style>

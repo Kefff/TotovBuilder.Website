@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IBuild } from '../../../models/build/IBuild'
+import { ItemCategoryId } from '../../../models/item/IItem'
 import { IRangedWeapon } from '../../../models/item/IRangedWeapon'
 import { Migration160 } from '../../../utils/migrations/Migration1.6.0'
 import { berkut, m9a3, m9a3Default, rpk16, rpk16Default } from '../../__data__/itemMocks'
@@ -73,8 +74,8 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
     const migration = new Migration160()
 
     // Act
-    const result1 = await migration.migrateBuildUnrelatedData()
-    const result2 = await migration.migrateBuild(obsoleteBuild)
+    const result1 = await migration.migrateBuildUnrelatedDataPromise()
+    const result2 = await migration.migrateBuildPromise(obsoleteBuild)
 
     // Assert
     expect(result1).toBe(true)
@@ -146,7 +147,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
         {
           baseItemId: undefined,
           caliber: '',
-          categoryId: 'mainWeapon',
+          categoryId: ItemCategoryId.mainWeapon,
           conflictingItemIds: [],
           defaultPresetId: undefined,
           ergonomics: 0,
@@ -162,6 +163,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
           modSlots: [],
           name: 'Item without default preset id',
           presetRangedWeaponModifiers: undefined,
+          presetWeight: undefined,
           prices: [],
           shortName: 'IWDPI',
           verticalRecoil: 0,
@@ -208,7 +210,7 @@ describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
     const migration = new Migration160()
 
     // Act
-    const result = await migration.migrateBuild(obsoleteBuild)
+    const result = await migration.migrateBuildPromise(obsoleteBuild)
 
     // Assert
     expect(result).toBe(false)

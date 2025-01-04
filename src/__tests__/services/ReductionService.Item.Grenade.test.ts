@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { ReductionService } from '../../services/ReductionService'
 import { IGrenade } from '../../models/item/IGrenade'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
@@ -24,7 +25,7 @@ describe('parseReducedItem', () => {
         'wi': 'https://escapefromtarkov.fandom.com/wiki/VOG-17_Khattabka_improvised_hand_grenade'
       },
       {
-        categoryId: 'grenade',
+        categoryId: ItemCategoryId.grenade,
         conflictingItemIds: [],
         explosionDelay: 3,
         fragmentsAmount: 100,
@@ -36,6 +37,7 @@ describe('parseReducedItem', () => {
         marketLink: 'https://tarkov.dev/item/vog-17-khattabka-improvised-hand-grenade',
         maxStackableAmount: 1,
         name: 'VOG-17 Khattabka improvised hand grenade',
+        presetWeight: undefined,
         prices: [],
         shortName: 'VOG-17',
         type: 'Grenade',
@@ -58,7 +60,7 @@ describe('parseReducedItem', () => {
         'wi': 'https://escapefromtarkov.fandom.com/wiki/RDG-2B_smoke_grenade'
       },
       {
-        categoryId: 'grenade',
+        categoryId: ItemCategoryId.grenade,
         conflictingItemIds: [],
         explosionDelay: 3.5,
         fragmentsAmount: 0,
@@ -70,6 +72,7 @@ describe('parseReducedItem', () => {
         maxStackableAmount: 1,
         minimumExplosionRange: 0,
         name: 'RDG-2B smoke grenade',
+        presetWeight: undefined,
         prices: [],
         shortName: 'RDG-2B',
         type: 'Smoke',

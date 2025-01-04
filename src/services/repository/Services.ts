@@ -16,7 +16,7 @@ class ServicesRepository {
    * @param name - Custom identifier in case the type name cannot be used (for example when multiple services can be configured for the same role depending on a configuration).
    * @param instance - Instance to return when the service is requested. Mostly used for mocks while unit testing.
    */
-  public configure<T>(type: new () => T, name?: string, instance?: T) {
+  public configure<T>(type: new () => T, name?: string, instance?: T): void {
     const serviceName = name ?? type.name
     const index = this.services.findIndex((s) => s.name === serviceName)
 
@@ -79,7 +79,7 @@ class ServicesRepository {
    * @param registeredService - Service registration.
    * @returns Service instance.
    */
-  private getInstance<T>(registeredService: IRegisteredService) {
+  private getInstance<T>(registeredService: IRegisteredService): T {
     if (registeredService.instance == null) {
       registeredService.instance = new registeredService.type()
     }

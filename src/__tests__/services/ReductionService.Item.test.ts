@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { ReductionService } from '../../services/ReductionService'
-import { IItem } from '../../models/item/IItem'
-import Services from '../../services/repository/Services'
+import { IItem, ItemCategoryId } from '../../models/item/IItem'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
+import { ReductionService } from '../../services/ReductionService'
+import Services from '../../services/repository/Services'
 
 describe('parseReducedItem', () => {
   it.each([
@@ -19,16 +19,17 @@ describe('parseReducedItem', () => {
         'wi': 'https://escapefromtarkov.fandom.com/wiki/Euros'
       },
       {
-        categoryId: 'currency',
+        categoryId: ItemCategoryId.currency,
         conflictingItemIds: [],
         iconLink: 'https://assets.tarkov.dev/569668774bdc2da2298b4568-icon.jpg',
         id: '569668774bdc2da2298b4568',
         imageLink: 'https://assets.tarkov.dev/569668774bdc2da2298b4568-image.jpg',
         marketLink: 'https://tarkov.dev/item/euros',
         maxStackableAmount: 50000,
-        shortName: 'EUR',
         name: 'Euros',
+        presetWeight: undefined,
         prices: [],
+        shortName: 'EUR',
         weight: 0,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Euros'
       } as IItem
@@ -49,7 +50,7 @@ describe('parseReducedItem', () => {
         'wi': 'https://escapefromtarkov.fandom.com/wiki/Peltor_ComTac_4_Hybrid_headset'
       },
       {
-        categoryId: 'headphones',
+        categoryId: ItemCategoryId.headphones,
         conflictingItemIds: ['5aa7e276e5b5b000171d0647'],
         iconLink: 'https://assets.tarkov.dev/628e4e576d783146b124c64d-icon.jpg',
         id: '628e4e576d783146b124c64d',
@@ -57,8 +58,9 @@ describe('parseReducedItem', () => {
         marketLink: 'https://tarkov.dev/item/peltor-comtac-4-hybrid-headset',
         maxStackableAmount: 1,
         name: 'Peltor ComTac 4 Hybrid headset',
-        shortName: 'ComTac 4',
         prices: [],
+        presetWeight: undefined,
+        shortName: 'ComTac 4',
         weight: 0.6,
         wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Peltor_ComTac_4_Hybrid_headset'
       } as IItem
@@ -75,7 +77,7 @@ describe('parseReducedItem', () => {
         'wi': 'https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_keycard_(Blue)'
       },
       {
-        categoryId: 'other',
+        categoryId: ItemCategoryId.other,
         conflictingItemIds: [],
         iconLink: 'https://assets.tarkov.dev/5c1d0c5f86f7744bb2683cf0-icon.jpg',
         id: '5c1d0c5f86f7744bb2683cf0',
@@ -83,6 +85,7 @@ describe('parseReducedItem', () => {
         marketLink: 'https://tarkov.dev/item/terragroup-labs-keycard-blue',
         maxStackableAmount: 1,
         name: 'TerraGroup Labs keycard (Blue)',
+        presetWeight: undefined,
         prices: [],
         shortName: 'Blue',
         weight: 0.01,

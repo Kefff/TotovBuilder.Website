@@ -6,7 +6,7 @@ import { IContainer } from '../../models/item/IContainer'
 import { IEyewear } from '../../models/item/IEyewear'
 import { IGrenade } from '../../models/item/IGrenade'
 import { IHeadwear } from '../../models/item/IHeadwear'
-import { IItem } from '../../models/item/IItem'
+import { IItem, ItemCategoryId } from '../../models/item/IItem'
 import { IMagazine } from '../../models/item/IMagazine'
 import { IMeleeWeapon } from '../../models/item/IMeleeWeapon'
 import { IMod } from '../../models/item/IMod'
@@ -17,9 +17,14 @@ import { IVest } from '../../models/item/IVest'
 export const ak12bt: IRangedWeaponMod = {
   accuracyModifierPercentage: 0,
   baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   ergonomicsModifier: 0,
+  iconLink: 'https://assets.tarkov.dev/649ec87d8007560a9001ab36-icon.webp',
+  id: '649ec87d8007560a9001ab36',
+  imageLink: 'https://assets.tarkov.dev/649ec87d8007560a9001ab36-image.webp',
+  marketLink: 'https://tarkov.dev/item/ak-12-buffer-tube',
   maxStackableAmount: 1,
   modSlots: [
     {
@@ -58,69 +63,67 @@ export const ak12bt: IRangedWeaponMod = {
       required: false
     }
   ],
+  name: 'AK-12 buffer tube',
   presetErgonomicsModifier: undefined,
   presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   prices: [],
   recoilModifierPercentage: -0.03,
-  categoryId: 'rangedWeaponMod',
-  iconLink: 'https://assets.tarkov.dev/649ec87d8007560a9001ab36-icon.webp',
-  id: '649ec87d8007560a9001ab36',
-  imageLink: 'https://assets.tarkov.dev/649ec87d8007560a9001ab36-image.webp',
-  marketLink: 'https://tarkov.dev/item/ak-12-buffer-tube',
-  name: 'AK-12 buffer tube',
   shortName: 'AK-12 BT',
   weight: 0.142,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/AK-12_buffer_tube'
 }
 
 export const ak12PistolGrip: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: 7,
   iconLink: 'https://assets.tarkov.dev/5beec8ea0db834001a6f9dbf-icon.webp',
   id: '5beec8ea0db834001a6f9dbf',
   imageLink: 'https://assets.tarkov.dev/5beec8ea0db834001a6f9dbf-image.webp',
   marketLink: 'https://tarkov.dev/item/ak-12-pistol-grip',
   maxStackableAmount: 1,
+  modSlots: [],
   name: 'AK-12 pistol grip',
+  presetErgonomicsModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   prices: [],
+  recoilModifierPercentage: 0,
   shortName: 'AK-12',
   weight: 0.05,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/AK-12_pistol_grip',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [],
-  ergonomicsModifier: 7,
-  presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
-  presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: 0
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/AK-12_pistol_grip'
 }
 
 export const ak12Stock: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: 3,
   iconLink: 'https://assets.tarkov.dev/5beec8c20db834001d2c465c-icon.webp',
   id: '5beec8c20db834001d2c465c',
   imageLink: 'https://assets.tarkov.dev/5beec8c20db834001d2c465c-image.webp',
   marketLink: 'https://tarkov.dev/item/ak-12-stock',
   maxStackableAmount: 1,
+  modSlots: [],
   name: 'AK-12 stock',
+  presetErgonomicsModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   prices: [],
+  recoilModifierPercentage: -0.21,
   shortName: 'AK-12',
   weight: 0.148,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/AK-12_stock',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [],
-  ergonomicsModifier: 3,
-  presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
-  presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: -0.21
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/AK-12_stock'
 }
 
 export const alkali: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/59faf98186f774067b6be103-icon.webp',
   id: '59faf98186f774067b6be103',
@@ -128,6 +131,7 @@ export const alkali: IItem = {
   marketLink: 'https://tarkov.dev/item/alkaline-cleaner-for-heat-exchangers',
   maxStackableAmount: 1,
   name: 'Alkaline cleaner for heat exchangers',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Alkali',
   weight: 1,
@@ -135,7 +139,8 @@ export const alkali: IItem = {
 }
 
 export const alpha: IContainer = {
-  categoryId: 'securedContainer',
+  capacity: 4,
+  categoryId: ItemCategoryId.securedContainer,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/544a11ac4bdc2d470e8b456a-icon.webp',
   id: '544a11ac4bdc2d470e8b456a',
@@ -143,139 +148,143 @@ export const alpha: IContainer = {
   marketLink: 'https://tarkov.dev/item/secure-container-alpha',
   maxStackableAmount: 1,
   name: 'Secure container Alpha',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Alpha',
   weight: 0.6,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Secure_container_Alpha',
-  capacity: 4
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Secure_container_Alpha'
 }
 
 export const ammo1270Magnum: IAmmunition = {
   accuracyModifierPercentage: -0.15,
   armorDamagePercentage: 0.26,
+  blinding: false,
   caliber: 'Caliber12g',
+  categoryId: ItemCategoryId.ammunition,
+  conflictingItemIds: [],
+  durabilityBurnModifierPercentage: 0,
   fleshDamage: 50,
+  fragmentationChance: 0,
   heavyBleedingChance: 0.1,
-  lightBleedingChance: 0.2,
-  penetratedArmorLevel: 0,
-  penetrationPower: 2,
-  projectiles: 8,
-  recoilModifier: 115,
-  velocity: 385,
-  categoryId: 'ammunition',
   iconLink: 'https://assets.tarkov.dev/5d6e6806a4b936088465b17e-icon.webp',
   id: '5d6e6806a4b936088465b17e',
   imageLink: 'https://assets.tarkov.dev/5d6e6806a4b936088465b17e-image.webp',
-  maxStackableAmount: 20,
+  lightBleedingChance: 0.2,
   marketLink: 'https://tarkov.dev/item/1270-85mm-magnum-buckshot',
+  maxStackableAmount: 20,
   name: '12/70 8.5mm Magnum buckshot',
+  penetratedArmorLevel: 0,
+  penetrationPower: 2,
+  presetWeight: undefined,
+  prices: [],
+  projectiles: 8,
+  recoilModifier: 115,
   shortName: 'Magnum',
-  weight: 0.059,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/12/70_8.5mm_Magnum_buckshot',
-  blinding: false,
-  durabilityBurnModifierPercentage: 0,
-  fragmentationChance: 0,
   subsonic: false,
   tracer: false,
-  conflictingItemIds: [],
-  prices: []
+  velocity: 385,
+  weight: 0.059,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/12/70_8.5mm_Magnum_buckshot'
 }
 
 export const ammo545bp: IAmmunition = {
-  categoryId: 'ammunition',
-  conflictingItemIds: [],
-  iconLink: 'https://assets.tarkov.dev/56dfef82d2720bbd668b4567-icon.webp',
-  id: '56dfef82d2720bbd668b4567',
-  imageLink: 'https://assets.tarkov.dev/56dfef82d2720bbd668b4567-image.webp',
-  marketLink: 'https://tarkov.dev/item/545x39mm-bp-gs',
-  maxStackableAmount: 60,
-  name: '5.45x39mm BP gs',
-  prices: [],
-  shortName: 'BP',
-  weight: 0.01,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/5.45x39mm_BP_gs',
   accuracyModifierPercentage: -0.03,
   armorDamagePercentage: 0.46,
   blinding: false,
   caliber: 'Caliber545x39',
+  categoryId: ItemCategoryId.ammunition,
+  conflictingItemIds: [],
   durabilityBurnModifierPercentage: 0.35,
   fleshDamage: 48,
   fragmentationChance: 0.16,
   heavyBleedingChance: 0,
+  iconLink: 'https://assets.tarkov.dev/56dfef82d2720bbd668b4567-icon.webp',
+  id: '56dfef82d2720bbd668b4567',
+  imageLink: 'https://assets.tarkov.dev/56dfef82d2720bbd668b4567-image.webp',
   lightBleedingChance: 0,
+  marketLink: 'https://tarkov.dev/item/545x39mm-bp-gs',
+  maxStackableAmount: 60,
+  name: '5.45x39mm BP gs',
   penetratedArmorLevel: 4,
   penetrationPower: 45,
+  presetWeight: undefined,
+  prices: [],
   projectiles: 1,
   recoilModifier: 7,
+  shortName: 'BP',
   subsonic: false,
   tracer: false,
-  velocity: 890
+  velocity: 890,
+  weight: 0.01,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/5.45x39mm_BP_gs'
 }
 
 export const ammo545us: IAmmunition = {
+  accuracyModifierPercentage: 0,
   armorDamagePercentage: 0.33,
   blinding: false,
   caliber: 'Caliber545x39',
+  categoryId: ItemCategoryId.ammunition,
   conflictingItemIds: [],
   durabilityBurnModifierPercentage: -0.2,
   fleshDamage: 65,
   fragmentationChance: 0.1,
   heavyBleedingChance: 0,
-  lightBleedingChance: 0,
-  maxStackableAmount: 60,
-  prices: [],
-  projectiles: 1,
-  tracer: false,
-  penetratedArmorLevel: 1,
-  penetrationPower: 17,
-  recoilModifier: -15,
-  subsonic: true,
-  velocity: 303,
-  categoryId: 'ammunition',
   iconLink: 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-icon.webp',
   id: '56dff4ecd2720b5f5a8b4568',
   imageLink: 'https://assets.tarkov.dev/56dff4ecd2720b5f5a8b4568-image.webp',
-  accuracyModifierPercentage: 0,
+  lightBleedingChance: 0,
   marketLink: 'https://tarkov.dev/item/545x39mm-us-gs',
+  maxStackableAmount: 60,
   name: '5.45x39mm US gs',
+  penetratedArmorLevel: 1,
+  penetrationPower: 17,
+  presetWeight: undefined,
+  prices: [],
+  projectiles: 1,
+  recoilModifier: -15,
   shortName: 'US',
+  subsonic: true,
+  tracer: false,
+  velocity: 303,
   weight: 0.01,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/5.45x39mm_US_gs'
 }
 
 export const ammo9mmGT: IAmmunition = {
-  categoryId: 'ammunition',
-  conflictingItemIds: [],
-  iconLink: 'https://assets.tarkov.dev/5c3df7d588a4501f290594e5-icon.webp',
-  id: '5c3df7d588a4501f290594e5',
-  imageLink: 'https://assets.tarkov.dev/5c3df7d588a4501f290594e5-image.webp',
-  marketLink: 'https://tarkov.dev/item/9x19mm-green-tracer',
-  maxStackableAmount: 50,
-  name: '9x19mm Green Tracer',
-  prices: [],
-  shortName: 'GT',
-  weight: 0.006,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/9x19mm_Green_Tracer',
   accuracyModifierPercentage: -0.05,
   armorDamagePercentage: 0.33,
   blinding: false,
   caliber: 'Caliber9x19PARA',
+  categoryId: ItemCategoryId.ammunition,
+  conflictingItemIds: [],
   durabilityBurnModifierPercentage: 0.15,
   fleshDamage: 58,
   fragmentationChance: 0.15,
   heavyBleedingChance: 0,
+  iconLink: 'https://assets.tarkov.dev/5c3df7d588a4501f290594e5-icon.webp',
+  id: '5c3df7d588a4501f290594e5',
+  imageLink: 'https://assets.tarkov.dev/5c3df7d588a4501f290594e5-image.webp',
   lightBleedingChance: 0,
+  marketLink: 'https://tarkov.dev/item/9x19mm-green-tracer',
+  maxStackableAmount: 50,
+  name: '9x19mm Green Tracer',
   penetratedArmorLevel: 1,
   penetrationPower: 14,
+  presetWeight: undefined,
+  prices: [],
   projectiles: 1,
   recoilModifier: -6,
+  shortName: 'GT',
   subsonic: false,
   tracer: true,
-  velocity: 365
+  velocity: 365,
+  weight: 0.006,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/9x19mm_Green_Tracer'
 }
 
 export const aquamari: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5c0fa877d174af02a012e1cf-icon.webp',
   id: '5c0fa877d174af02a012e1cf',
@@ -283,6 +292,7 @@ export const aquamari: IItem = {
   marketLink: 'https://tarkov.dev/item/aquamari-water-bottle-with-filter',
   maxStackableAmount: 1,
   name: 'Aquamari water bottle with filter',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Aquamari',
   weight: 0.6,
@@ -290,7 +300,7 @@ export const aquamari: IItem = {
 }
 
 export const armbandBlue: IItem = {
-  categoryId: 'armband',
+  categoryId: ItemCategoryId.armband,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5b3f3af486f774679e752c1f-icon.webp',
   id: '5b3f3af486f774679e752c1f',
@@ -298,6 +308,7 @@ export const armbandBlue: IItem = {
   marketLink: 'https://tarkov.dev/item/armband-blue',
   maxStackableAmount: 1,
   name: 'Armband (Blue)',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Armband',
   weight: 0.05,
@@ -305,21 +316,33 @@ export const armbandBlue: IItem = {
 }
 
 export const armor6b13Fl: IArmor = {
+  armorClass: 0,
+  armoredAreas: [
+    'FRPLATE',
+    'BCKPLATE',
+    'Thorax',
+    'Stomach',
+    'ThoraxUpperBack',
+    'StomachLowerBack',
+    'StomachLeftSide',
+    'StomachRightSide',
+    'HeadThroat',
+    'HeadNeck',
+    'StomachGroin'
+  ],
+  baseItemId: undefined,
   blindnessProtectionPercentage: 0,
-  categoryId: 'armor',
+  categoryId: ItemCategoryId.armor,
   conflictingItemIds: [],
+  defaultPresetId: '65765f39526e320fbe0357b1',
+  durability: 108,
+  ergonomicsModifierPercentage: -0.01,
   iconLink: 'https://assets.tarkov.dev/5c0e51be86f774598e797894-icon.webp',
   id: '5c0e51be86f774598e797894',
   imageLink: 'https://assets.tarkov.dev/5c0e51be86f774598e797894-image.webp',
   marketLink: 'https://tarkov.dev/item/6b13-assault-armor-flora',
+  material: 'Aramid',
   maxStackableAmount: 1,
-  name: '6B13 assault armor (Flora)',
-  prices: [],
-  shortName: '6B13 FL',
-  weight: 2.8,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6B13_assault_armor',
-  baseItemId: undefined,
-  defaultPresetId: '65765f39526e320fbe0357b1',
   modSlots: [
     {
       compatibleItemIds: [
@@ -389,11 +412,19 @@ export const armor6b13Fl: IArmor = {
       required: false
     }
   ],
-  ergonomicsModifierPercentage: -0.01,
   movementSpeedModifierPercentage: -0.01,
+  name: '6B13 assault armor (Flora)',
   presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
+  presetWeight: undefined,
+  prices: [],
+  shortName: '6B13 FL',
   turningSpeedModifierPercentage: 0,
+  weight: 2.8,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6B13_assault_armor'
+}
+
+export const armor6b13FlDefault: IArmor = {
   armorClass: 0,
   armoredAreas: [
     'FRPLATE',
@@ -408,26 +439,19 @@ export const armor6b13Fl: IArmor = {
     'HeadNeck',
     'StomachGroin'
   ],
-  durability: 108,
-  material: 'Aramid'
-}
-
-export const armor6b13FlDefault: IArmor = {
+  baseItemId: '5c0e51be86f774598e797894',
   blindnessProtectionPercentage: 0,
-  categoryId: 'armor',
+  categoryId: ItemCategoryId.armor,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  durability: 108,
+  ergonomicsModifierPercentage: -0.01,
   iconLink: 'https://assets.tarkov.dev/5c0e51be86f774598e797894-icon.webp',
   id: '65765f39526e320fbe0357b1',
   imageLink: 'https://assets.tarkov.dev/5c0e51be86f774598e797894-image.webp',
   marketLink: 'https://tarkov.dev/item/6b13-assault-armor-flora-default',
+  material: 'Aramid',
   maxStackableAmount: 1,
-  name: '6B13 assault armor (Flora) Default',
-  prices: [],
-  shortName: '6B13 FL Default',
-  weight: 2.8,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6B13_assault_armor',
-  baseItemId: '5c0e51be86f774598e797894',
-  defaultPresetId: undefined,
   modSlots: [
     {
       compatibleItemIds: [
@@ -497,32 +521,20 @@ export const armor6b13FlDefault: IArmor = {
       required: false
     }
   ],
-  ergonomicsModifierPercentage: -0.01,
   movementSpeedModifierPercentage: -0.01,
+  name: '6B13 assault armor (Flora) Default',
   presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
+  presetWeight: undefined,
+  prices: [],
+  shortName: '6B13 FL Default',
   turningSpeedModifierPercentage: 0,
-  armorClass: 0,
-  armoredAreas: [
-    'FRPLATE',
-    'BCKPLATE',
-    'Thorax',
-    'Stomach',
-    'ThoraxUpperBack',
-    'StomachLowerBack',
-    'StomachLeftSide',
-    'StomachRightSide',
-    'HeadThroat',
-    'HeadNeck',
-    'StomachGroin'
-  ],
-  durability: 108,
-  material: 'Aramid'
+  weight: 2.8,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6B13_assault_armor'
 }
 
 export const banshee: IVest = {
-  armorClass: 0,
-  armoredAreas: [
+  armorClass: 0, armoredAreas: [
     'FRPLATE',
     'BCKPLATE',
     'LPLATE',
@@ -532,11 +544,18 @@ export const banshee: IVest = {
   ],
   baseItemId: undefined,
   blindnessProtectionPercentage: 0,
+  capacity: 16,
+  categoryId: ItemCategoryId.vest,
   conflictingItemIds: [],
   defaultPresetId: '657661ad234b9f6e050a42a2',
   durability: 72,
   ergonomicsModifierPercentage: -0.01,
+  iconLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-icon.webp',
+  id: '639343fce101f4caa40a4ef3',
+  imageLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-image.webp',
+  marketLink: 'https://tarkov.dev/item/shellback-tactical-banshee-plate-carrier-a-tacs-au',
   material: 'Aramid',
+  maxStackableAmount: 1,
   modSlots: [
     {
       compatibleItemIds: [
@@ -629,19 +648,13 @@ export const banshee: IVest = {
     }
   ],
   movementSpeedModifierPercentage: -0.01,
-  turningSpeedModifierPercentage: -0.01,
-  capacity: 16,
-  categoryId: 'vest',
-  iconLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-icon.webp',
-  id: '639343fce101f4caa40a4ef3',
-  imageLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-image.webp',
-  marketLink: 'https://tarkov.dev/item/shellback-tactical-banshee-plate-carrier-a-tacs-au',
-  maxStackableAmount: 1,
   name: 'Shellback Tactical Banshee plate carrier (A-TACS AU)',
   presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
+  presetWeight: undefined,
   prices: [],
   shortName: 'Banshee',
+  turningSpeedModifierPercentage: -0.01,
   weight: 3.08,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Shellback_Tactical_Banshee_plate_carrier_(A-TACS_AU)'
 }
@@ -658,11 +671,18 @@ export const bansheeDefault: IVest = {
   ],
   baseItemId: '639343fce101f4caa40a4ef3',
   blindnessProtectionPercentage: 0,
+  capacity: 16,
+  categoryId: ItemCategoryId.vest,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   durability: 72,
   ergonomicsModifierPercentage: -0.01,
+  iconLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-icon.webp',
+  id: '657661ad234b9f6e050a42a2',
+  imageLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-image.webp',
+  marketLink: 'https://tarkov.dev/item/shellback-tactical-banshee-plate-carrier-a-tacs-au-default',
   material: 'Aramid',
+  maxStackableAmount: 1,
   modSlots: [
     {
       compatibleItemIds: [
@@ -755,63 +775,59 @@ export const bansheeDefault: IVest = {
     }
   ],
   movementSpeedModifierPercentage: -0.01,
-  turningSpeedModifierPercentage: -0.01,
-  capacity: 16,
-  categoryId: 'vest',
-  iconLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-icon.webp',
-  id: '657661ad234b9f6e050a42a2',
-  imageLink: 'https://assets.tarkov.dev/639343fce101f4caa40a4ef3-image.webp',
-  marketLink: 'https://tarkov.dev/item/shellback-tactical-banshee-plate-carrier-a-tacs-au-default',
-  maxStackableAmount: 1,
   name: 'Shellback Tactical Banshee plate carrier (A-TACS AU) Default',
   presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
+  presetWeight: undefined,
   prices: [],
   shortName: 'Banshee Default',
+  turningSpeedModifierPercentage: -0.01,
   weight: 3.08,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Shellback_Tactical_Banshee_plate_carrier_(A-TACS_AU)'
 }
 
 export const bayonet6Kh5: IMeleeWeapon = {
-  categoryId: 'meleeWeapon',
+  categoryId: ItemCategoryId.meleeWeapon,
+  chopDamage: 24,
   conflictingItemIds: [],
+  hitRadius: 0.4,
   iconLink: 'https://assets.tarkov.dev/5bffdc370db834001d23eca8-icon.webp',
   id: '5bffdc370db834001d23eca8',
   imageLink: 'https://assets.tarkov.dev/5bffdc370db834001d23eca8-image.webp',
   marketLink: 'https://tarkov.dev/item/6kh5-bayonet',
   maxStackableAmount: 1,
   name: '6Kh5 Bayonet',
+  presetWeight: undefined,
   prices: [],
   shortName: '6Kh5',
+  stabDamage: 31,
   weight: 0.223,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6Kh5_Bayonet',
-  chopDamage: 24,
-  hitRadius: 0.4,
-  stabDamage: 31
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6Kh5_Bayonet'
 }
 
 export const berkut: IBackpack = {
-  categoryId: 'backpack',
+  capacity: 20,
+  categoryId: ItemCategoryId.backpack,
   conflictingItemIds: [],
+  ergonomicsModifierPercentage: -0.02,
   iconLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-icon.webp',
   id: '5ca20d5986f774331e7c9602',
   imageLink: 'https://assets.tarkov.dev/5ca20d5986f774331e7c9602-image.webp',
   marketLink: 'https://tarkov.dev/item/wartech-berkut-bb-102-backpack-a-tacs-fg',
   maxStackableAmount: 1,
+  movementSpeedModifierPercentage: 0,
   name: 'WARTECH Berkut BB-102 backpack (A-TACS FG)',
+  presetWearableModifiers: undefined,
+  presetWeight: undefined,
   prices: [],
   shortName: 'Berkut',
+  turningSpeedModifierPercentage: 0,
   weight: 1,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/WARTECH_Berkut_BB-102_backpack_(A-TACS_FG)',
-  capacity: 20,
-  ergonomicsModifierPercentage: -0.02,
-  movementSpeedModifierPercentage: 0,
-  presetWearableModifiers: undefined,
-  turningSpeedModifierPercentage: 0
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/WARTECH_Berkut_BB-102_backpack_(A-TACS_FG)'
 }
 
 export const capacitors: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5c06782b86f77426df5407d2-icon.webp',
   id: '5c06782b86f77426df5407d2',
@@ -819,6 +835,7 @@ export const capacitors: IItem = {
   marketLink: 'https://tarkov.dev/item/capacitors',
   maxStackableAmount: 1,
   name: 'Capacitors',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Caps',
   weight: 0.1,
@@ -826,7 +843,7 @@ export const capacitors: IItem = {
 }
 
 export const cf: IItem = {
-  categoryId: 'faceCover',
+  categoryId: ItemCategoryId.faceCover,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5ab8f39486f7745cd93a1cca-icon.webp',
   id: '5ab8f39486f7745cd93a1cca',
@@ -834,6 +851,7 @@ export const cf: IItem = {
   marketLink: 'https://tarkov.dev/item/cold-fear-infrared-balaclava',
   maxStackableAmount: 1,
   name: 'Cold Fear infrared balaclava',
+  presetWeight: undefined,
   prices: [],
   shortName: 'CF',
   weight: 0.1,
@@ -845,7 +863,7 @@ export const crossbow: IEyewear = {
   armoredAreas: [],
   baseItemId: undefined,
   blindnessProtectionPercentage: 0.3,
-  categoryId: 'eyewear',
+  categoryId: ItemCategoryId.eyewear,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   durability: 0,
@@ -861,6 +879,7 @@ export const crossbow: IEyewear = {
   name: 'ESS Crossbow tactical glasses',
   presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
+  presetWeight: undefined,
   prices: [],
   shortName: 'Crossbow',
   turningSpeedModifierPercentage: 0,
@@ -876,25 +895,26 @@ export const cultLocust: IArmorMod = {
   ],
   baseItemId: undefined,
   blindnessProtectionPercentage: 0,
+  categoryId: ItemCategoryId.armorMod,
   conflictingItemIds: [],
   defaultPresetId: undefined,
-  maxStackableAmount: 1,
-  modSlots: [],
-  presetArmorModifiers: undefined,
-  presetWearableModifiers: undefined,
-  prices: [],
   durability: 60,
   ergonomicsModifierPercentage: -0.01,
-  material: 'Titan',
-  movementSpeedModifierPercentage: -0.015,
-  turningSpeedModifierPercentage: -0.01,
-  categoryId: 'armorMod',
   iconLink: 'https://assets.tarkov.dev/656fa8d700d62bcd2e024084-icon.webp',
   id: '656fa8d700d62bcd2e024084',
   imageLink: 'https://assets.tarkov.dev/656fa8d700d62bcd2e024084-image.webp',
   marketLink: 'https://tarkov.dev/item/cult-locust-ballistic-plate',
+  material: 'Titan',
+  maxStackableAmount: 1,
+  modSlots: [],
+  movementSpeedModifierPercentage: -0.015,
   name: 'Cult Locust ballistic plate',
+  presetArmorModifiers: undefined,
+  presetWearableModifiers: undefined,
+  presetWeight: undefined,
+  prices: [],
   shortName: 'Cult Locust',
+  turningSpeedModifierPercentage: -0.01,
   weight: 2.56,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Cult_Locust_ballistic_plate'
 }
@@ -902,9 +922,18 @@ export const cultLocust: IArmorMod = {
 export const ekp802dt: IRangedWeaponMod = {
   accuracyModifierPercentage: 0,
   baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
+  conflictingItemIds: [
+    '5827272a24597748c74bdeea'
+  ],
   defaultPresetId: undefined,
   ergonomicsModifier: -3,
+  iconLink: 'https://assets.tarkov.dev/5947db3f86f77447880cf76f-icon.webp',
+  id: '5947db3f86f77447880cf76f',
+  imageLink: 'https://assets.tarkov.dev/5947db3f86f77447880cf76f-image.webp',
+  marketLink: 'https://tarkov.dev/item/axion-kobra-ekp-8-02-reflex-sight-dovetail',
   maxStackableAmount: 1,
+  name: 'Axion Kobra EKP-8-02 reflex sight (Dovetail)',
   modSlots: [
     {
       compatibleItemIds: [
@@ -917,42 +946,35 @@ export const ekp802dt: IRangedWeaponMod = {
   ],
   presetErgonomicsModifier: undefined,
   presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   prices: [],
   recoilModifierPercentage: 0,
-  categoryId: 'rangedWeaponMod',
-  conflictingItemIds: [
-    '5827272a24597748c74bdeea'
-  ],
-  iconLink: 'https://assets.tarkov.dev/5947db3f86f77447880cf76f-icon.webp',
-  id: '5947db3f86f77447880cf76f',
-  imageLink: 'https://assets.tarkov.dev/5947db3f86f77447880cf76f-image.webp',
-  marketLink: 'https://tarkov.dev/item/axion-kobra-ekp-8-02-reflex-sight-dovetail',
-  name: 'Axion Kobra EKP-8-02 reflex sight (Dovetail)',
   shortName: 'EKP-8-02 DT',
   weight: 0.273,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Axion_Kobra_EKP-8-02_reflex_sight_(Dovetail)'
 }
 
 export const erBayonet: IMeleeWeapon = {
-  categoryId: 'meleeWeapon',
+  categoryId: ItemCategoryId.meleeWeapon,
+  chopDamage: 25,
   conflictingItemIds: [],
+  hitRadius: 0.4,
   iconLink: 'https://assets.tarkov.dev/54491bb74bdc2d09088b4567-icon.webp',
   id: '54491bb74bdc2d09088b4567',
   imageLink: 'https://assets.tarkov.dev/54491bb74bdc2d09088b4567-image.webp',
   marketLink: 'https://tarkov.dev/item/er-fulcrum-bayonet',
   maxStackableAmount: 1,
   name: 'ER FULCRUM BAYONET',
+  presetWeight: undefined,
   prices: [],
   shortName: 'ER BAYONET',
+  stabDamage: 27,
   weight: 0.45,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/ER_FULCRUM_BAYONET',
-  chopDamage: 25,
-  hitRadius: 0.4,
-  stabDamage: 27
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/ER_FULCRUM_BAYONET'
 }
 
 export const esLamp: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/590a3cd386f77436f20848cb-icon.webp',
   id: '590a3cd386f77436f20848cb',
@@ -960,6 +982,7 @@ export const esLamp: IItem = {
   marketLink: 'https://tarkov.dev/item/energy-saving-lamp',
   maxStackableAmount: 1,
   name: 'Energy-saving lamp',
+  presetWeight: undefined,
   prices: [],
   shortName: 'ES Lamp',
   weight: 0.2,
@@ -967,14 +990,15 @@ export const esLamp: IItem = {
 }
 
 export const eur: IItem = {
-  categoryId: 'currency',
+  categoryId: ItemCategoryId.currency,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/569668774bdc2da2298b4568-icon.webp',
   id: '569668774bdc2da2298b4568',
   imageLink: 'https://assets.tarkov.dev/569668774bdc2da2298b4568-image.webp',
-  maxStackableAmount: 50000,
   marketLink: 'https://tarkov.dev/item/euros',
+  maxStackableAmount: 50000,
   name: 'Euros',
+  presetWeight: undefined,
   prices: [],
   shortName: 'EUR',
   weight: 0,
@@ -982,7 +1006,7 @@ export const eur: IItem = {
 }
 
 export const ewr: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/60098b1705871270cd5352a1-icon.webp',
   id: '60098b1705871270cd5352a1',
@@ -990,6 +1014,7 @@ export const ewr: IItem = {
   marketLink: 'https://tarkov.dev/item/emergency-water-ration',
   maxStackableAmount: 1,
   name: 'Emergency Water Ration',
+  presetWeight: undefined,
   prices: [],
   shortName: 'EWR',
   weight: 0.128,
@@ -997,7 +1022,7 @@ export const ewr: IItem = {
 }
 
 export const filter: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/590c595c86f7747884343ad7-icon.webp',
   id: '590c595c86f7747884343ad7',
@@ -1005,6 +1030,7 @@ export const filter: IItem = {
   marketLink: 'https://tarkov.dev/item/gas-mask-air-filter',
   maxStackableAmount: 1,
   name: 'Gas mask air filter',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Filter',
   weight: 0.5,
@@ -1012,7 +1038,7 @@ export const filter: IItem = {
 }
 
 export const h2o2: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/59e361e886f774176c10a2a5-icon.webp',
   id: '59e361e886f774176c10a2a5',
@@ -1020,6 +1046,7 @@ export const h2o2: IItem = {
   marketLink: 'https://tarkov.dev/item/bottle-of-hydrogen-peroxide',
   maxStackableAmount: 1,
   name: 'Bottle of hydrogen peroxide',
+  presetWeight: undefined,
   prices: [],
   shortName: 'H2O2',
   weight: 0.1,
@@ -1027,7 +1054,7 @@ export const h2o2: IItem = {
 }
 
 export const halfMask: IItem = {
-  categoryId: 'faceCover',
+  categoryId: ItemCategoryId.faceCover,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/572b7fa524597762b747ce82-icon.webp',
   id: '572b7fa524597762b747ce82',
@@ -1035,6 +1062,7 @@ export const halfMask: IItem = {
   marketLink: 'https://tarkov.dev/item/lower-half-mask',
   maxStackableAmount: 1,
   name: 'Lower half-mask',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Half-mask',
   weight: 0.1,
@@ -1042,7 +1070,7 @@ export const halfMask: IItem = {
 }
 
 export const iskra: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/590c5d4b86f774784e1b9c45-icon.webp',
   id: '590c5d4b86f774784e1b9c45',
@@ -1050,6 +1078,7 @@ export const iskra: IItem = {
   marketLink: 'https://tarkov.dev/item/iskra-ration-pack',
   maxStackableAmount: 1,
   name: 'Iskra ration pack',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Iskra',
   weight: 1.75,
@@ -1066,11 +1095,16 @@ export const k1s: IHeadwear = {
   baseItemId: undefined,
   blindnessProtectionPercentage: 0,
   blocksHeadphones: true,
+  categoryId: ItemCategoryId.headwear,
   conflictingItemIds: [],
-  defaultPresetId: undefined,
   deafening: 'High',
+  defaultPresetId: undefined,
   durability: 45,
   ergonomicsModifierPercentage: -0.02,
+  iconLink: 'https://assets.tarkov.dev/59e7711e86f7746cae05fbe1-icon.webp',
+  id: '59e7711e86f7746cae05fbe1',
+  imageLink: 'https://assets.tarkov.dev/59e7711e86f7746cae05fbe1-image.webp',
+  marketLink: 'https://tarkov.dev/item/kolpak-1s-riot-helmet',
   material: 'Aramid',
   maxStackableAmount: 1,
   modSlots: [
@@ -1084,18 +1118,14 @@ export const k1s: IHeadwear = {
     }
   ],
   movementSpeedModifierPercentage: 0,
+  name: 'Kolpak-1S riot helmet',
   presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
+  presetWeight: undefined,
   prices: [],
   ricochetChance: 'Low',
-  turningSpeedModifierPercentage: -0.02,
-  categoryId: 'headwear',
-  iconLink: 'https://assets.tarkov.dev/59e7711e86f7746cae05fbe1-icon.webp',
-  id: '59e7711e86f7746cae05fbe1',
-  imageLink: 'https://assets.tarkov.dev/59e7711e86f7746cae05fbe1-image.webp',
-  marketLink: 'https://tarkov.dev/item/kolpak-1s-riot-helmet',
-  name: 'Kolpak-1S riot helmet',
   shortName: 'K-1S',
+  turningSpeedModifierPercentage: -0.02,
   weight: 1.9,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Kolpak-1S_riot_helmet'
 }
@@ -1109,45 +1139,52 @@ export const k1sVisor: IArmorMod = {
   ],
   baseItemId: undefined,
   blindnessProtectionPercentage: 0.15,
+  categoryId: ItemCategoryId.armorMod,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   durability: 30,
   ergonomicsModifierPercentage: 0,
-  material: 'Glass',
-  maxStackableAmount: 1,
-  modSlots: [],
-  movementSpeedModifierPercentage: 0,
-  presetArmorModifiers: undefined,
-  presetWearableModifiers: undefined,
-  prices: [],
-  turningSpeedModifierPercentage: 0,
-  categoryId: 'armorMod',
   iconLink: 'https://assets.tarkov.dev/5ac4c50d5acfc40019262e87-icon.webp',
   id: '5ac4c50d5acfc40019262e87',
   imageLink: 'https://assets.tarkov.dev/5ac4c50d5acfc40019262e87-image.webp',
   marketLink: 'https://tarkov.dev/item/kolpak-1s-face-shield',
+  material: 'Glass',
+  maxStackableAmount: 1,
+  modSlots: [],
+  movementSpeedModifierPercentage: 0,
   name: 'Kolpak-1S face shield',
+  presetArmorModifiers: undefined,
+  presetWearableModifiers: undefined,
+  presetWeight: undefined,
+  prices: [],
   shortName: 'K-1S',
+  turningSpeedModifierPercentage: 0,
   weight: 1,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Kolpak-1S_face_shield'
 }
 
 export const lshZ2dtm: IHeadwear = {
+  armorClass: 4,
+  armoredAreas: [
+    'HeadTopOfTheHead',
+    'HeadNape',
+    'HeadEars'
+  ],
+  baseItemId: undefined,
   blindnessProtectionPercentage: 0,
-  categoryId: 'headwear',
+  blocksHeadphones: true,
+  categoryId: ItemCategoryId.headwear,
   conflictingItemIds: [],
+  deafening: 'High',
+  defaultPresetId: undefined,
+  durability: 99,
+  ergonomicsModifierPercentage: -0.03,
   iconLink: 'https://assets.tarkov.dev/5d6d3716a4b9361bc8618872-icon.webp',
   id: '5d6d3716a4b9361bc8618872',
   imageLink: 'https://assets.tarkov.dev/5d6d3716a4b9361bc8618872-image.webp',
   marketLink: 'https://tarkov.dev/item/bnti-lshz-2dtm-helmet-black',
+  material: 'Combined',
   maxStackableAmount: 1,
-  name: 'BNTI LShZ-2DTM helmet (Black)',
-  prices: [],
-  shortName: 'LShZ-2DTM',
-  weight: 3.4,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/BNTI_LShZ-2DTM_helmet_(Black)',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
   modSlots: [
     {
       compatibleItemIds: [
@@ -1190,26 +1227,29 @@ export const lshZ2dtm: IHeadwear = {
       required: false
     }
   ],
-  ergonomicsModifierPercentage: -0.03,
   movementSpeedModifierPercentage: 0,
+  name: 'BNTI LShZ-2DTM helmet (Black)',
   presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
+  presetWeight: undefined,
+  prices: [],
+  ricochetChance: 'High',
+  shortName: 'LShZ-2DTM',
   turningSpeedModifierPercentage: -0.03,
-  armorClass: 4,
-  armoredAreas: [
-    'HeadTopOfTheHead',
-    'HeadNape',
-    'HeadEars'
-  ],
-  durability: 99,
-  material: 'Combined',
-  blocksHeadphones: true,
-  deafening: 'High',
-  ricochetChance: 'High'
+  weight: 3.4,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/BNTI_LShZ-2DTM_helmet_(Black)'
 }
 
 export const lshZ2dtmFs: IArmorMod = {
-  categoryId: 'armorMod',
+  armorClass: 4,
+  armoredAreas: [
+    'HeadFace',
+    'HeadEyes',
+    'HeadJaws'
+  ],
+  baseItemId: undefined,
+  blindnessProtectionPercentage: 0.1,
+  categoryId: ItemCategoryId.armorMod,
   conflictingItemIds: [
     '5c0696830db834001d23f5da',
     '5c066e3a0db834001b7353f0',
@@ -1217,50 +1257,46 @@ export const lshZ2dtmFs: IArmorMod = {
     '57235b6f24597759bf5a30f1',
     '5c110624d174af029e69734c'
   ],
+  defaultPresetId: undefined,
+  durability: 50,
+  ergonomicsModifierPercentage: -0.02,
   iconLink: 'https://assets.tarkov.dev/5d6d3829a4b9361bc8618943-icon.webp',
   id: '5d6d3829a4b9361bc8618943',
   imageLink: 'https://assets.tarkov.dev/5d6d3829a4b9361bc8618943-image.webp',
   marketLink: 'https://tarkov.dev/item/lshz-2dtm-face-shield',
+  material: 'Glass',
   maxStackableAmount: 1,
-  name: 'LShZ-2DTM face shield',
-  prices: [],
-  shortName: '2DTM FS',
-  weight: 1,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/LShZ-2DTM_face_shield',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
   modSlots: [],
-  ergonomicsModifierPercentage: -0.02,
   movementSpeedModifierPercentage: 0,
+  name: 'LShZ-2DTM face shield',
   presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
+  presetWeight: undefined,
+  prices: [],
+  shortName: '2DTM FS',
   turningSpeedModifierPercentage: -0.05,
-  armorClass: 4,
-  armoredAreas: [
-    'HeadFace',
-    'HeadEyes',
-    'HeadJaws'
-  ],
-  durability: 50,
-  material: 'Glass',
-  blindnessProtectionPercentage: 0.1
+  weight: 1,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/LShZ-2DTM_face_shield'
 }
 
 export const m9a3: IRangedWeapon = {
-  categoryId: 'secondaryWeapon',
+  baseItemId: undefined,
+  caliber: 'Caliber9x19PARA',
+  categoryId: ItemCategoryId.secondaryWeapon,
   conflictingItemIds: [],
+  defaultPresetId: '5d3f0bc986f7743cb332abdc',
+  ergonomics: 70,
+  fireModes: [
+    'SingleFire'
+  ],
+  fireRate: 30,
+  horizontalRecoil: 280,
   iconLink: 'https://assets.tarkov.dev/5cadc190ae921500103bb3b6-icon.webp',
   id: '5cadc190ae921500103bb3b6',
   imageLink: 'https://assets.tarkov.dev/5cadc190ae921500103bb3b6-image.webp',
   marketLink: 'https://tarkov.dev/item/beretta-m9a3-9x19-pistol',
   maxStackableAmount: 1,
-  name: 'Beretta M9A3 9x19 pistol',
-  prices: [],
-  shortName: 'M9A3',
-  weight: 0.231,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Beretta_M9A3_9x19_pistol',
-  baseItemId: undefined,
-  defaultPresetId: '5d3f0bc986f7743cb332abdc',
+  minuteOfAngle: undefined,
   modSlots: [
     {
       compatibleItemIds: [
@@ -1314,33 +1350,34 @@ export const m9a3: IRangedWeapon = {
       required: false
     }
   ],
+  name: 'Beretta M9A3 9x19 pistol',
+  presetRangedWeaponModifiers: undefined,
+  presetWeight: undefined,
+  prices: [],
+  shortName: 'M9A3',
+  verticalRecoil: 404,
+  weight: 0.231,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Beretta_M9A3_9x19_pistol'
+}
+
+export const m9a3Default: IRangedWeapon = {
+  baseItemId: '5cadc190ae921500103bb3b6',
   caliber: 'Caliber9x19PARA',
+  categoryId: ItemCategoryId.secondaryWeapon,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
   ergonomics: 70,
   fireModes: [
     'SingleFire'
   ],
   fireRate: 30,
   horizontalRecoil: 280,
-  minuteOfAngle: undefined,
-  presetRangedWeaponModifiers: undefined,
-  verticalRecoil: 404
-}
-
-export const m9a3Default: IRangedWeapon = {
-  categoryId: 'secondaryWeapon',
-  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5d3f0bc986f7743cb332abdc-icon.webp',
   id: '5d3f0bc986f7743cb332abdc',
   imageLink: 'https://assets.tarkov.dev/5d3f0bc986f7743cb332abdc-image.webp',
   marketLink: 'https://tarkov.dev/item/beretta-m9a3-9x19-pistol-default',
   maxStackableAmount: 1,
-  name: 'Beretta M9A3 9x19 pistol Default',
-  prices: [],
-  shortName: 'M9A3 Default',
-  weight: 0.231,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Beretta_M9A3_9x19_pistol',
-  baseItemId: '5cadc190ae921500103bb3b6',
-  defaultPresetId: undefined,
+  minuteOfAngle: 9.97,
   modSlots: [
     {
       compatibleItemIds: [
@@ -1394,60 +1431,41 @@ export const m9a3Default: IRangedWeapon = {
       required: false
     }
   ],
-  caliber: 'Caliber9x19PARA',
-  ergonomics: 70,
-  fireModes: [
-    'SingleFire'
-  ],
-  fireRate: 30,
-  horizontalRecoil: 280,
-  minuteOfAngle: 9.97,
+  name: 'Beretta M9A3 9x19 pistol Default',
   presetRangedWeaponModifiers: undefined,
-  verticalRecoil: 404
+  presetWeight: undefined,
+  prices: [],
+  shortName: 'M9A3 Default',
+  verticalRecoil: 404,
+  weight: 0.231,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Beretta_M9A3_9x19_pistol'
 }
 
 export const m9a3Fs: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: 0,
   iconLink: 'https://assets.tarkov.dev/5cadd919ae921500126a77f3-icon.webp',
   id: '5cadd919ae921500126a77f3',
   imageLink: 'https://assets.tarkov.dev/5cadd919ae921500126a77f3-image.webp',
   marketLink: 'https://tarkov.dev/item/m9a3-front-sight',
   maxStackableAmount: 1,
+  modSlots: [],
   name: 'M9A3 front sight',
+  presetErgonomicsModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   prices: [],
+  recoilModifierPercentage: 0,
   shortName: 'M9A3 FS',
   weight: 0.007,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_front_sight',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [],
-  ergonomicsModifier: 0,
-  presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
-  presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: 0
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_front_sight'
 }
 
 export const m9a3Magazine: IMagazine = {
-  categoryId: 'magazine',
-  conflictingItemIds: [],
-  iconLink: 'https://assets.tarkov.dev/5cadc2e0ae9215051e1c21e7-icon.webp',
-  id: '5cadc2e0ae9215051e1c21e7',
-  imageLink: 'https://assets.tarkov.dev/5cadc2e0ae9215051e1c21e7-image.webp',
-  marketLink: 'https://tarkov.dev/item/m9a3-9x19-17-round-magazine',
-  maxStackableAmount: 1,
-  name: 'M9A3 9x19 17-round magazine',
-  prices: [],
-  shortName: 'M9A3',
-  weight: 0.082,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_9x19_17-round_magazine',
-  capacity: 17,
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [],
-  ergonomicsModifier: -1,
-  presetErgonomicsModifier: undefined,
   acceptedAmmunitionIds: [
     '5efb0da7a29a85116f6ea05f',
     '5c3df7d588a4501f290594e5',
@@ -1459,72 +1477,90 @@ export const m9a3Magazine: IMagazine = {
     '5c0d56a986f774449d5de529',
     '64b7bbb74b75259c590fa897'
   ],
+  baseItemId: undefined,
+  capacity: 17,
+  categoryId: ItemCategoryId.magazine,
   checkSpeedModifierPercentage: 0,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -1,
+  iconLink: 'https://assets.tarkov.dev/5cadc2e0ae9215051e1c21e7-icon.webp',
+  id: '5cadc2e0ae9215051e1c21e7',
+  imageLink: 'https://assets.tarkov.dev/5cadc2e0ae9215051e1c21e7-image.webp',
   loadSpeedModifierPercentage: 0,
-  malfunctionPercentage: 0.01
+  malfunctionPercentage: 0.01,
+  marketLink: 'https://tarkov.dev/item/m9a3-9x19-17-round-magazine',
+  maxStackableAmount: 1,
+  modSlots: [],
+  name: 'M9A3 9x19 17-round magazine',
+  presetErgonomicsModifier: undefined,
+  presetWeight: undefined,
+  prices: [],
+  shortName: 'M9A3',
+  weight: 0.082,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_9x19_17-round_magazine'
 }
 
 export const m9a3Rs: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: 0,
   iconLink: 'https://assets.tarkov.dev/5cadd940ae9215051e1c2316-icon.webp',
   id: '5cadd940ae9215051e1c2316',
   imageLink: 'https://assets.tarkov.dev/5cadd940ae9215051e1c2316-image.webp',
   marketLink: 'https://tarkov.dev/item/m9a3-rear-sight',
   maxStackableAmount: 1,
+  modSlots: [],
   name: 'M9A3 rear sight',
+  presetErgonomicsModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   prices: [],
+  recoilModifierPercentage: 0,
   shortName: 'M9A3 RS',
   weight: 0.008,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_rear_sight',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [],
-  ergonomicsModifier: 0,
-  presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
-  presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: 0
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_rear_sight'
 }
 
 export const m9a3SideGrip: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: 4,
   iconLink: 'https://assets.tarkov.dev/5cadc431ae921500113bb8d5-icon.webp',
   id: '5cadc431ae921500113bb8d5',
   imageLink: 'https://assets.tarkov.dev/5cadc431ae921500113bb8d5-image.webp',
   marketLink: 'https://tarkov.dev/item/m9a3-polymer-side-grips',
   maxStackableAmount: 1,
+  modSlots: [],
   name: 'M9A3 polymer side grips',
+  presetErgonomicsModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   prices: [],
+  recoilModifierPercentage: 0,
   shortName: 'M9A3',
   weight: 0.09,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_polymer_side_grips',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [],
-  ergonomicsModifier: 4,
-  presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
-  presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: 0
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_polymer_side_grips'
 }
 
 export const m9a3Slide: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: 1,
   iconLink: 'https://assets.tarkov.dev/5cadc55cae921500103bb3be-icon.webp',
   id: '5cadc55cae921500103bb3be',
   imageLink: 'https://assets.tarkov.dev/5cadc55cae921500103bb3be-image.webp',
   marketLink: 'https://tarkov.dev/item/m9a3-pistol-slide',
   maxStackableAmount: 1,
-  name: 'M9A3 pistol slide',
-  prices: [],
-  shortName: 'M9A3',
-  weight: 0.19,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_pistol_slide',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
   modSlots: [
     {
       compatibleItemIds: [
@@ -1544,28 +1580,29 @@ export const m9a3Slide: IRangedWeaponMod = {
       required: false
     }
   ],
-  ergonomicsModifier: 1,
+  name: 'M9A3 pistol slide',
   presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
   presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: 0
+  presetWeight: undefined,
+  prices: [],
+  recoilModifierPercentage: 0,
+  shortName: 'M9A3',
+  weight: 0.19,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_pistol_slide'
 }
 
 export const m9a3Thr: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -4,
   iconLink: 'https://assets.tarkov.dev/5cadc1c6ae9215000f2775a4-icon.webp',
   id: '5cadc1c6ae9215000f2775a4',
   imageLink: 'https://assets.tarkov.dev/5cadc1c6ae9215000f2775a4-image.webp',
   marketLink: 'https://tarkov.dev/item/m9a3-9x19-threaded-barrel',
   maxStackableAmount: 1,
-  name: 'M9A3 9x19 threaded barrel',
-  prices: [],
-  shortName: 'M9A3 thr.',
-  weight: 0.2,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_9x19_threaded_barrel',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
   modSlots: [
     {
       compatibleItemIds: [
@@ -1580,39 +1617,44 @@ export const m9a3Thr: IRangedWeaponMod = {
       required: false
     }
   ],
-  ergonomicsModifier: -4,
+  name: 'M9A3 9x19 threaded barrel',
   presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
   presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: -0.03
+  presetWeight: undefined,
+  prices: [],
+  recoilModifierPercentage: -0.03,
+  shortName: 'M9A3 thr.',
+  weight: 0.2,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_9x19_threaded_barrel'
 }
 
 export const m9a3Cap: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: 1,
   iconLink: 'https://assets.tarkov.dev/5cadc390ae921500126a77f1-icon.webp',
   id: '5cadc390ae921500126a77f1',
   imageLink: 'https://assets.tarkov.dev/5cadc390ae921500126a77f1-image.webp',
   marketLink: 'https://tarkov.dev/item/m9a3-thread-protection-cap',
   maxStackableAmount: 1,
+  modSlots: [],
   name: 'M9A3 thread protection cap',
+  presetErgonomicsModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   prices: [],
+  recoilModifierPercentage: 0,
   shortName: 'M9A3 cap',
   weight: 0.01,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_thread_protection_cap',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [],
-  ergonomicsModifier: 1,
-  presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
-  presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: 0
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/M9A3_thread_protection_cap'
 }
 
 export const mechanism: IBackpack = {
   capacity: 32,
-  categoryId: 'backpack',
+  categoryId: ItemCategoryId.backpack,
   conflictingItemIds: [],
   ergonomicsModifierPercentage: -0.03,
   iconLink: 'https://assets.tarkov.dev/5d5d940f86f7742797262046-icon.webp',
@@ -1623,6 +1665,7 @@ export const mechanism: IBackpack = {
   movementSpeedModifierPercentage: -0.02,
   name: 'Oakley Mechanism heavy duty backpack (Black)',
   presetWearableModifiers: undefined,
+  presetWeight: undefined,
   prices: [],
   shortName: 'Mechanism',
   turningSpeedModifierPercentage: -0.01,
@@ -1638,23 +1681,24 @@ export const monocletePe: IArmorMod = {
   ],
   baseItemId: undefined,
   blindnessProtectionPercentage: 0,
+  categoryId: ItemCategoryId.armorMod,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   durability: 40,
   ergonomicsModifierPercentage: -0.01,
-  material: 'UHMWPE',
-  movementSpeedModifierPercentage: -0.01,
-  categoryId: 'armorMod',
   iconLink: 'https://assets.tarkov.dev/656fad8c498d1b7e3e071da0-icon.webp',
   id: '656fad8c498d1b7e3e071da0',
   imageLink: 'https://assets.tarkov.dev/656fad8c498d1b7e3e071da0-image.webp',
   marketLink: 'https://tarkov.dev/item/monoclete-level-iii-pe-ballistic-plate',
+  material: 'UHMWPE',
   maxStackableAmount: 1,
   modSlots: [],
+  movementSpeedModifierPercentage: -0.01,
+  name: 'Monoclete level III PE ballistic plate',
   presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
+  presetWeight: undefined,
   prices: [],
-  name: 'Monoclete level III PE ballistic plate',
   shortName: 'Monoclete PE',
   turningSpeedModifierPercentage: 0,
   weight: 1.35,
@@ -1662,7 +1706,7 @@ export const monocletePe: IArmorMod = {
 }
 
 export const morphine: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/544fb3f34bdc2d03748b456a-icon.webp',
   id: '544fb3f34bdc2d03748b456a',
@@ -1670,14 +1714,15 @@ export const morphine: IItem = {
   marketLink: 'https://tarkov.dev/item/morphine-injector',
   maxStackableAmount: 1,
   name: 'Morphine injector',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Morphine',
   weight: 0.05,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Morphine_injector'
 }
 
-export const ms2000 = {
-  categoryId: 'special',
+export const ms2000: IItem = {
+  categoryId: ItemCategoryId.special,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5991b51486f77447b112d44f-icon.webp',
   id: '5991b51486f77447b112d44f',
@@ -1685,6 +1730,7 @@ export const ms2000 = {
   marketLink: 'https://tarkov.dev/item/ms2000-marker',
   maxStackableAmount: 1,
   name: 'MS2000 Marker',
+  presetWeight: undefined,
   prices: [],
   shortName: 'MS2000',
   weight: 0.15,
@@ -1692,7 +1738,10 @@ export const ms2000 = {
 }
 
 export const mts25512: IRangedWeapon = {
+  baseItemId: undefined,
   caliber: 'Caliber12g',
+  categoryId: ItemCategoryId.mainWeapon,
+  conflictingItemIds: [],
   defaultPresetId: '6198e2ddef80673cae5d1c87',
   ergonomics: 50,
   fireModes: [
@@ -1701,6 +1750,12 @@ export const mts25512: IRangedWeapon = {
   ],
   fireRate: 30,
   horizontalRecoil: 486,
+  iconLink: 'https://assets.tarkov.dev/60db29ce99594040e04c4a27-icon.webp',
+  id: '60db29ce99594040e04c4a27',
+  imageLink: 'https://assets.tarkov.dev/60db29ce99594040e04c4a27-image.webp',
+  marketLink: 'https://tarkov.dev/item/mts-255-12-12ga-shotgun',
+  maxStackableAmount: 1,
+  minuteOfAngle: undefined,
   modSlots: [
     {
       compatibleItemIds: [
@@ -1735,27 +1790,20 @@ export const mts25512: IRangedWeapon = {
       required: false
     }
   ],
-  verticalRecoil: 364,
-  categoryId: 'mainWeapon',
-  iconLink: 'https://assets.tarkov.dev/60db29ce99594040e04c4a27-icon.webp',
-  id: '60db29ce99594040e04c4a27',
-  imageLink: 'https://assets.tarkov.dev/60db29ce99594040e04c4a27-image.webp',
-  marketLink: 'https://tarkov.dev/item/mts-255-12-12ga-shotgun',
   name: 'MTs-255-12 12ga shotgun',
-  shortName: 'MTs-255-12',
-  weight: 1.1,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_12ga_shotgun',
-  minuteOfAngle: undefined,
   presetRangedWeaponModifiers: undefined,
-  baseItemId: undefined,
-  conflictingItemIds: [],
-  maxStackableAmount: 1,
-  prices: []
+  presetWeight: undefined,
+  prices: [],
+  shortName: 'MTs-255-12',
+  verticalRecoil: 364,
+  weight: 1.1,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_12ga_shotgun'
 }
 
 export const mts25512Default: IRangedWeapon = {
   baseItemId: '60db29ce99594040e04c4a27',
   caliber: 'Caliber12g',
+  categoryId: ItemCategoryId.mainWeapon,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   ergonomics: 50,
@@ -1765,6 +1813,10 @@ export const mts25512Default: IRangedWeapon = {
   ],
   fireRate: 30,
   horizontalRecoil: 486,
+  iconLink: 'https://assets.tarkov.dev/6198e2ddef80673cae5d1c87-icon.webp',
+  id: '6198e2ddef80673cae5d1c87',
+  imageLink: 'https://assets.tarkov.dev/6198e2ddef80673cae5d1c87-image.webp',
+  marketLink: 'https://tarkov.dev/item/mts-255-12-12ga-shotgun-default',
   maxStackableAmount: 1,
   minuteOfAngle: 26.13,
   modSlots: [
@@ -1801,16 +1853,12 @@ export const mts25512Default: IRangedWeapon = {
       required: false
     }
   ],
-  presetRangedWeaponModifiers: undefined,
-  prices: [],
-  verticalRecoil: 364,
-  categoryId: 'mainWeapon',
-  iconLink: 'https://assets.tarkov.dev/6198e2ddef80673cae5d1c87-icon.webp',
-  id: '6198e2ddef80673cae5d1c87',
-  imageLink: 'https://assets.tarkov.dev/6198e2ddef80673cae5d1c87-image.webp',
-  marketLink: 'https://tarkov.dev/item/mts-255-12-12ga-shotgun-default',
   name: 'MTs-255-12 12ga shotgun Default',
+  presetRangedWeaponModifiers: undefined,
+  presetWeight: undefined,
+  prices: [],
   shortName: 'MTs-255-12 Default',
+  verticalRecoil: 364,
   weight: 1.1,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_12ga_shotgun'
 }
@@ -1818,9 +1866,14 @@ export const mts25512Default: IRangedWeapon = {
 export const mts25512755mmRib: IRangedWeaponMod = {
   accuracyModifierPercentage: 0,
   baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   ergonomicsModifier: -18,
+  iconLink: 'https://assets.tarkov.dev/612368f58b401f4f51239b33-icon.webp',
+  id: '612368f58b401f4f51239b33',
+  imageLink: 'https://assets.tarkov.dev/612368f58b401f4f51239b33-image.webp',
+  marketLink: 'https://tarkov.dev/item/mts-255-12-12ga-755mm-barrel-with-rib',
   maxStackableAmount: 1,
   modSlots: [
     {
@@ -1841,62 +1894,60 @@ export const mts25512755mmRib: IRangedWeaponMod = {
       required: false
     }
   ],
+  name: 'MTs-255-12 12ga 755mm barrel with rib',
   presetErgonomicsModifier: undefined,
   presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   prices: [],
   recoilModifierPercentage: -0.1,
-  categoryId: 'rangedWeaponMod',
-  iconLink: 'https://assets.tarkov.dev/612368f58b401f4f51239b33-icon.webp',
-  id: '612368f58b401f4f51239b33',
-  imageLink: 'https://assets.tarkov.dev/612368f58b401f4f51239b33-image.webp',
-  marketLink: 'https://tarkov.dev/item/mts-255-12-12ga-755mm-barrel-with-rib',
-  name: 'MTs-255-12 12ga 755mm barrel with rib',
   shortName: 'MTs-255 755mm rib',
   weight: 1.55,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_12ga_755mm_barrel_with_rib'
 }
 
 export const mts25512beech: IRangedWeaponMod = {
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
   ergonomicsModifier: 9,
-  recoilModifierPercentage: -0.02,
-  categoryId: 'rangedWeaponMod',
   iconLink: 'https://assets.tarkov.dev/6123649463849f3d843da7c4-icon.webp',
   id: '6123649463849f3d843da7c4',
   imageLink: 'https://assets.tarkov.dev/6123649463849f3d843da7c4-image.webp',
   marketLink: 'https://tarkov.dev/item/mts-255-12-beechwood-forestock',
+  maxStackableAmount: 1,
+  modSlots: [],
   name: 'MTs-255-12 beechwood forestock',
+  presetErgonomicsModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
+  prices: [],
+  recoilModifierPercentage: -0.02,
   shortName: 'MTs-255 beech',
   weight: 0.8,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_beechwood_forestock',
-  accuracyModifierPercentage: 0,
-  presetRecoilModifierPercentage: undefined,
-  presetErgonomicsModifier: undefined,
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [],
-  conflictingItemIds: [],
-  maxStackableAmount: 1,
-  prices: []
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_beechwood_forestock'
 }
 
 export const mts25512choke: IRangedWeaponMod = {
   accuracyModifierPercentage: 0.03,
   baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   ergonomicsModifier: 0,
-  maxStackableAmount: 1,
-  modSlots: [],
-  presetErgonomicsModifier: undefined,
-  presetRecoilModifierPercentage: undefined,
-  prices: [],
-  recoilModifierPercentage: -0.01,
-  categoryId: 'rangedWeaponMod',
   iconLink: 'https://assets.tarkov.dev/619d36da53b4d42ee724fae4-icon.webp',
   id: '619d36da53b4d42ee724fae4',
   imageLink: 'https://assets.tarkov.dev/619d36da53b4d42ee724fae4-image.webp',
   marketLink: 'https://tarkov.dev/item/mts-255-12-12ga-choke',
+  maxStackableAmount: 1,
+  modSlots: [],
   name: 'MTs-255-12 12ga choke',
+  presetErgonomicsModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
+  prices: [],
+  recoilModifierPercentage: -0.01,
   shortName: 'MTs choke',
   weight: 0.1,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_12ga_choke'
@@ -1924,12 +1975,17 @@ export const mts25512cyl: IMagazine = {
   ],
   baseItemId: undefined,
   capacity: 5,
+  categoryId: ItemCategoryId.magazine,
   checkSpeedModifierPercentage: 0,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   ergonomicsModifier: -2,
+  iconLink: 'https://assets.tarkov.dev/60dc519adf4c47305f6d410d-icon.webp',
+  id: '60dc519adf4c47305f6d410d',
+  imageLink: 'https://assets.tarkov.dev/60dc519adf4c47305f6d410d-image.webp',
   loadSpeedModifierPercentage: 0,
   malfunctionPercentage: 0,
+  marketLink: 'https://tarkov.dev/item/mts-255-12-12ga-cylinder',
   maxStackableAmount: 1,
   modSlots: [
     {
@@ -2053,47 +2109,49 @@ export const mts25512cyl: IMagazine = {
       required: false
     }
   ],
-  presetErgonomicsModifier: undefined,
-  prices: [],
-  categoryId: 'magazine',
-  iconLink: 'https://assets.tarkov.dev/60dc519adf4c47305f6d410d-icon.webp',
-  id: '60dc519adf4c47305f6d410d',
-  imageLink: 'https://assets.tarkov.dev/60dc519adf4c47305f6d410d-image.webp',
-  marketLink: 'https://tarkov.dev/item/mts-255-12-12ga-cylinder',
   name: 'MTs-255-12 12ga cylinder',
+  presetErgonomicsModifier: undefined,
+  presetWeight: undefined,
+  prices: [],
   shortName: '255 cyl.',
   weight: 0.25,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_12ga_cylinder'
 }
 
 export const mts25512wood: IRangedWeaponMod = {
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
   ergonomicsModifier: 3,
-  recoilModifierPercentage: -0.23,
-  categoryId: 'rangedWeaponMod',
   iconLink: 'https://assets.tarkov.dev/612781056f3d944a17348d60-icon.webp',
   id: '612781056f3d944a17348d60',
   imageLink: 'https://assets.tarkov.dev/612781056f3d944a17348d60-image.webp',
   marketLink: 'https://tarkov.dev/item/mts-255-12-wooden-stock',
+  maxStackableAmount: 1,
+  modSlots: [],
   name: 'MTs-255-12 wooden stock',
+  presetErgonomicsModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
+  prices: [],
+  recoilModifierPercentage: -0.23,
   shortName: 'MTs-255 wood',
   weight: 0.45,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_wooden_stock',
-  accuracyModifierPercentage: 0,
-  presetRecoilModifierPercentage: undefined,
-  presetErgonomicsModifier: undefined,
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [],
-  conflictingItemIds: [],
-  maxStackableAmount: 1,
-  prices: []
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/MTs-255-12_wooden_stock'
 }
 
 export const nf30mm: IMod = {
   baseItemId: undefined,
+  categoryId: ItemCategoryId.mod,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   ergonomicsModifier: -1,
+  iconLink: 'https://assets.tarkov.dev/5b3b99265acfc4704b4a1afb-icon.webp',
+  id: '5b3b99265acfc4704b4a1afb',
+  imageLink: 'https://assets.tarkov.dev/5b3b99265acfc4704b4a1afb-image.webp',
+  marketLink: 'https://tarkov.dev/item/nightforce-magmount-30mm-ring-scope-mount',
   maxStackableAmount: 1,
   modSlots: [
     {
@@ -2111,14 +2169,10 @@ export const nf30mm: IMod = {
       required: false
     }
   ],
-  presetErgonomicsModifier: undefined,
-  prices: [],
-  categoryId: 'mod',
-  iconLink: 'https://assets.tarkov.dev/5b3b99265acfc4704b4a1afb-icon.webp',
-  id: '5b3b99265acfc4704b4a1afb',
-  imageLink: 'https://assets.tarkov.dev/5b3b99265acfc4704b4a1afb-image.webp',
-  marketLink: 'https://tarkov.dev/item/nightforce-magmount-30mm-ring-scope-mount',
   name: 'Nightforce Magmount 30mm ring scope mount',
+  presetErgonomicsModifier: undefined,
+  presetWeight: undefined,
+  prices: [],
   shortName: 'NF 30mm',
   weight: 0.19,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Nightforce_Magmount_30mm_ring_scope_mount'
@@ -2127,12 +2181,17 @@ export const nf30mm: IMod = {
 export const opSksDefault: IRangedWeapon = {
   baseItemId: '587e02ff24597743df3deaeb',
   caliber: 'Caliber762x39',
+  categoryId: ItemCategoryId.mainWeapon,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   ergonomics: 40,
   fireModes: ['SingleFire'],
   fireRate: 40,
   horizontalRecoil: 360,
+  iconLink: 'https://assets.tarkov.dev/59dcdbb386f77417b03f350d-icon.webp',
+  id: '59dcdbb386f77417b03f350d',
+  imageLink: 'https://assets.tarkov.dev/59dcdbb386f77417b03f350d-image.webp',
+  marketLink: 'https://tarkov.dev/item/molot-arms-simonov-op-sks-762x39-carbine-default',
   maxStackableAmount: 1,
   minuteOfAngle: 4.13,
   modSlots: [
@@ -2188,25 +2247,26 @@ export const opSksDefault: IRangedWeapon = {
       required: false
     }
   ],
-  presetRangedWeaponModifiers: undefined,
-  prices: [],
-  verticalRecoil: 155,
-  categoryId: 'mainWeapon',
-  iconLink: 'https://assets.tarkov.dev/59dcdbb386f77417b03f350d-icon.webp',
-  id: '59dcdbb386f77417b03f350d',
-  imageLink: 'https://assets.tarkov.dev/59dcdbb386f77417b03f350d-image.webp',
-  marketLink: 'https://tarkov.dev/item/molot-arms-simonov-op-sks-762x39-carbine-default',
   name: 'Molot Arms Simonov OP-SKS 7.62x39 carbine Default',
+  presetRangedWeaponModifiers: undefined,
+  presetWeight: undefined,
+  prices: [],
   shortName: 'OP-SKS Default',
+  verticalRecoil: 155,
   weight: 0.82,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Molot_Arms_Simonov_OP-SKS_7.62x39_carbine'
 }
 
 export const opSksDt: IMod = {
   baseItemId: undefined,
+  categoryId: ItemCategoryId.mod,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   ergonomicsModifier: -1,
+  iconLink: 'https://assets.tarkov.dev/587e08ee245977446b4410cf-icon.webp',
+  id: '587e08ee245977446b4410cf',
+  imageLink: 'https://assets.tarkov.dev/587e08ee245977446b4410cf-image.webp',
+  marketLink: 'https://tarkov.dev/item/op-sks-dovetail-mount',
   maxStackableAmount: 1,
   modSlots: [
     {
@@ -2231,14 +2291,10 @@ export const opSksDt: IMod = {
       required: false
     }
   ],
-  presetErgonomicsModifier: undefined,
-  prices: [],
-  categoryId: 'mod',
-  iconLink: 'https://assets.tarkov.dev/587e08ee245977446b4410cf-icon.webp',
-  id: '587e08ee245977446b4410cf',
-  imageLink: 'https://assets.tarkov.dev/587e08ee245977446b4410cf-image.webp',
-  marketLink: 'https://tarkov.dev/item/op-sks-dovetail-mount',
   name: 'OP-SKS dovetail mount',
+  presetErgonomicsModifier: undefined,
+  presetWeight: undefined,
+  prices: [],
   shortName: 'OPSKS DT',
   weight: 0.02,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/OP-SKS_dovetail_mount'
@@ -2254,33 +2310,34 @@ export const paca: IArmor = {
     'StomachLeftSide',
     'StomachRightSide'
   ],
+  baseItemId: undefined,
   blindnessProtectionPercentage: 0,
+  categoryId: ItemCategoryId.armor,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  durability: 100,
   ergonomicsModifierPercentage: -0.01,
-  material: 'Aramid',
-  movementSpeedModifierPercentage: -0.01,
-  categoryId: 'armor',
   iconLink: 'https://assets.tarkov.dev/5648a7494bdc2d9d488b4583-icon.webp',
   id: '5648a7494bdc2d9d488b4583',
   imageLink: 'https://assets.tarkov.dev/5648a7494bdc2d9d488b4583-image.webp',
   marketLink: 'https://tarkov.dev/item/paca-soft-armor',
-  name: 'PACA Soft Armor',
-  shortName: 'PACA',
-  weight: 3.5,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/PACA_Soft_Armor',
-  durability: 100,
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [],
-  conflictingItemIds: [],
+  material: 'Aramid',
   maxStackableAmount: 1,
-  prices: [],
+  modSlots: [],
+  movementSpeedModifierPercentage: -0.01,
+  name: 'PACA Soft Armor',
   presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
-  turningSpeedModifierPercentage: 0
+  presetWeight: undefined,
+  prices: [],
+  shortName: 'PACA',
+  turningSpeedModifierPercentage: 0,
+  weight: 3.5,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/PACA_Soft_Armor'
 }
 
 export const paid: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/59e3596386f774176c10a2a2-icon.webp',
   id: '59e3596386f774176c10a2a2',
@@ -2288,6 +2345,7 @@ export const paid: IItem = {
   marketLink: 'https://tarkov.dev/item/paid-antiroach-spray',
   maxStackableAmount: 1,
   name: 'PAID AntiRoach spray',
+  presetWeight: undefined,
   prices: [],
   shortName: 'PAID',
   weight: 0.5,
@@ -2295,7 +2353,7 @@ export const paid: IItem = {
 }
 
 export const pass: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/62a09cb7a04c0c5c6e0a84f8-icon.webp',
   id: '62a09cb7a04c0c5c6e0a84f8',
@@ -2303,6 +2361,7 @@ export const pass: IItem = {
   marketLink: 'https://tarkov.dev/item/press-pass-issued-for-noiceguy',
   maxStackableAmount: 1,
   name: 'Press pass (issued for NoiceGuy)',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Pass',
   weight: 0.12,
@@ -2310,67 +2369,69 @@ export const pass: IItem = {
 }
 
 export const plate6b33Back: IArmorMod = {
-  categoryId: 'armorMod',
+  armoredAreas: [
+    'BCKPLATE'
+  ],
+  armorClass: 4,
+  baseItemId: undefined,
+  blindnessProtectionPercentage: 0,
+  categoryId: ItemCategoryId.armorMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  durability: 45,
+  ergonomicsModifierPercentage: -0.005,
   iconLink: 'https://assets.tarkov.dev/656efd66034e8e01c407f35c-icon.webp',
   id: '656efd66034e8e01c407f35c',
   imageLink: 'https://assets.tarkov.dev/656efd66034e8e01c407f35c-image.webp',
   marketLink: 'https://tarkov.dev/item/6b13-custom-ballistic-plates-back',
+  material: 'ArmoredSteel',
   maxStackableAmount: 1,
-  name: '6B13 custom ballistic plates (Back)',
-  prices: [],
-  shortName: '6B13 Back',
-  weight: 4.1,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6B13_custom_ballistic_plates_(Back)',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
   modSlots: [],
-  ergonomicsModifierPercentage: -0.005,
   movementSpeedModifierPercentage: -0.025,
+  name: '6B13 custom ballistic plates (Back)',
   presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
+  presetWeight: undefined,
+  prices: [],
+  shortName: '6B13 Back',
   turningSpeedModifierPercentage: 0,
-  armorClass: 4,
-  armoredAreas: [
-    'BCKPLATE'
-  ],
-  durability: 45,
-  material: 'ArmoredSteel',
-  blindnessProtectionPercentage: 0
+  weight: 4.1,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6B13_custom_ballistic_plates_(Back)'
 }
 
 export const plate6b33Front: IArmorMod = {
-  categoryId: 'armorMod',
+  armoredAreas: [
+    'FRPLATE'
+  ],
+  armorClass: 4,
+  baseItemId: undefined,
+  blindnessProtectionPercentage: 0,
+  categoryId: ItemCategoryId.armorMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  durability: 50,
+  ergonomicsModifierPercentage: -0.01,
   iconLink: 'https://assets.tarkov.dev/656f603f94b480b8a500c0d6-icon.webp',
   id: '656f603f94b480b8a500c0d6',
   imageLink: 'https://assets.tarkov.dev/656f603f94b480b8a500c0d6-image.webp',
   marketLink: 'https://tarkov.dev/item/6b33-ballistic-plate-front',
+  material: 'ArmoredSteel',
   maxStackableAmount: 1,
-  name: '6B33 ballistic plate (Front)',
-  prices: [],
-  shortName: '6B33 Front',
-  weight: 3.7,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6B33_ballistic_plate_(Front)',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
   modSlots: [],
-  ergonomicsModifierPercentage: -0.01,
   movementSpeedModifierPercentage: -0.025,
+  name: '6B33 ballistic plate (Front)',
   presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
+  presetWeight: undefined,
+  prices: [],
+  shortName: '6B33 Front',
   turningSpeedModifierPercentage: -0.01,
-  armorClass: 4,
-  armoredAreas: [
-    'FRPLATE'
-  ],
-  durability: 50,
-  material: 'ArmoredSteel',
-  blindnessProtectionPercentage: 0
+  weight: 3.7,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/6B33_ballistic_plate_(Front)'
 }
 
 export const plexiglass: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/59e366c186f7741778269d85-icon.webp',
   id: '59e366c186f7741778269d85',
@@ -2378,6 +2439,7 @@ export const plexiglass: IItem = {
   marketLink: 'https://tarkov.dev/item/piece-of-plexiglass',
   maxStackableAmount: 1,
   name: 'Piece of plexiglass',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Plexiglass',
   weight: 0.7,
@@ -2387,21 +2449,22 @@ export const plexiglass: IItem = {
 export const precision: IRangedWeaponMod = {
   accuracyModifierPercentage: 0,
   baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   ergonomicsModifier: 1,
-  maxStackableAmount: 1,
-  modSlots: [],
-  presetErgonomicsModifier: undefined,
-  presetRecoilModifierPercentage: undefined,
-  prices: [],
-  recoilModifierPercentage: -0.24,
-  categoryId: 'rangedWeaponMod',
   iconLink: 'https://assets.tarkov.dev/5fc2369685fd526b824a5713-icon.webp',
   id: '5fc2369685fd526b824a5713',
   imageLink: 'https://assets.tarkov.dev/5fc2369685fd526b824a5713-image.webp',
   marketLink: 'https://tarkov.dev/item/ar-15-b5-systems-precision-stock',
+  maxStackableAmount: 1,
+  modSlots: [],
   name: 'AR-15 B5 Systems Precision stock',
+  presetErgonomicsModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
+  prices: [],
+  recoilModifierPercentage: -0.24,
   shortName: 'Precision',
   weight: 0.16,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/AR-15_B5_Systems_Precision_stock'
@@ -2410,8 +2473,22 @@ export const precision: IRangedWeaponMod = {
 export const pso1: IRangedWeaponMod = {
   accuracyModifierPercentage: 0,
   baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
+  conflictingItemIds: [
+    '5827272a24597748c74bdeea',
+    '58272b392459774b4c7b3ccd',
+    '6113d6c3290d254f5e6b27db',
+    '57486e672459770abd687134',
+    '5947db3f86f77447880cf76f',
+    '57acb6222459771ec34b5cb0',
+    '591ee00d86f774592f7b841e'
+  ],
   defaultPresetId: undefined,
   ergonomicsModifier: -7,
+  iconLink: 'https://assets.tarkov.dev/5c82342f2e221644f31c060e-icon.webp',
+  id: '5c82342f2e221644f31c060e',
+  imageLink: 'https://assets.tarkov.dev/5c82342f2e221644f31c060e-image.webp',
+  marketLink: 'https://tarkov.dev/item/belomo-pso-1-4x24-scope',
   maxStackableAmount: 1,
   modSlots: [
     {
@@ -2423,32 +2500,19 @@ export const pso1: IRangedWeaponMod = {
       required: false
     }
   ],
+  name: 'BelOMO PSO-1 4x24 scope',
   presetErgonomicsModifier: undefined,
   presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   prices: [],
   recoilModifierPercentage: 0,
-  categoryId: 'rangedWeaponMod',
-  conflictingItemIds: [
-    '5827272a24597748c74bdeea',
-    '58272b392459774b4c7b3ccd',
-    '6113d6c3290d254f5e6b27db',
-    '57486e672459770abd687134',
-    '5947db3f86f77447880cf76f',
-    '57acb6222459771ec34b5cb0',
-    '591ee00d86f774592f7b841e'
-  ],
-  iconLink: 'https://assets.tarkov.dev/5c82342f2e221644f31c060e-icon.webp',
-  id: '5c82342f2e221644f31c060e',
-  imageLink: 'https://assets.tarkov.dev/5c82342f2e221644f31c060e-image.webp',
-  marketLink: 'https://tarkov.dev/item/belomo-pso-1-4x24-scope',
-  name: 'BelOMO PSO-1 4x24 scope',
   shortName: 'PSO-1',
   weight: 0.6,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/BelOMO_PSO-1_4x24_scope'
 }
 
 export const razor: IItem = {
-  categoryId: 'headphones',
+  categoryId: ItemCategoryId.headphones,
   conflictingItemIds: [
     '5a16b9fffcdbcb0176308b34',
     '66b5f6a28ca68c6461709ed8',
@@ -2466,6 +2530,7 @@ export const razor: IItem = {
   marketLink: 'https://tarkov.dev/item/walkers-razor-digital-headset',
   maxStackableAmount: 1,
   name: 'Walker\'s Razor Digital headset',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Razor',
   weight: 0.43,
@@ -2473,27 +2538,28 @@ export const razor: IItem = {
 }
 
 export const rgd5: IGrenade = {
-  categoryId: 'grenade',
+  categoryId: ItemCategoryId.grenade,
   conflictingItemIds: [],
+  explosionDelay: 3.5,
+  fragmentsAmount: 70,
   iconLink: 'https://assets.tarkov.dev/5448be9a4bdc2dfd2f8b456a-icon.webp',
   id: '5448be9a4bdc2dfd2f8b456a',
   imageLink: 'https://assets.tarkov.dev/5448be9a4bdc2dfd2f8b456a-image.webp',
   marketLink: 'https://tarkov.dev/item/rgd-5-hand-grenade',
+  maximumExplosionRange: 7,
   maxStackableAmount: 1,
+  minimumExplosionRange: 3,
   name: 'RGD-5 hand grenade',
+  presetWeight: undefined,
   prices: [],
   shortName: 'RGD-5',
+  type: 'Grenade',
   weight: 0.31,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RGD-5_hand_grenade',
-  explosionDelay: 3.5,
-  fragmentsAmount: 70,
-  maximumExplosionRange: 7,
-  minimumExplosionRange: 3,
-  type: 'Grenade'
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RGD-5_hand_grenade'
 }
 
 export const rooster: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5bc9bc53d4351e00367fbcee-icon.webp',
   id: '5bc9bc53d4351e00367fbcee',
@@ -2501,6 +2567,7 @@ export const rooster: IItem = {
   marketLink: 'https://tarkov.dev/item/golden-rooster-figurine',
   maxStackableAmount: 1,
   name: 'Golden rooster figurine',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Rooster',
   weight: 3.8,
@@ -2508,20 +2575,24 @@ export const rooster: IItem = {
 }
 
 export const rpk16: IRangedWeapon = {
-  categoryId: 'mainWeapon',
+  baseItemId: undefined,
+  caliber: 'Caliber545x39',
+  categoryId: ItemCategoryId.mainWeapon,
   conflictingItemIds: [],
+  defaultPresetId: '5c0d1ec986f77439512a1a72',
+  ergonomics: 45,
+  fireModes: [
+    'SingleFire',
+    'FullAuto'
+  ],
+  fireRate: 650,
+  horizontalRecoil: 333,
   iconLink: 'https://assets.tarkov.dev/5beed0f50db834001c062b12-icon.webp',
   id: '5beed0f50db834001c062b12',
   imageLink: 'https://assets.tarkov.dev/5beed0f50db834001c062b12-image.webp',
   marketLink: 'https://tarkov.dev/item/rpk-16-545x39-light-machine-gun',
   maxStackableAmount: 1,
-  name: 'RPK-16 5.45x39 light machine gun',
-  prices: [],
-  shortName: 'RPK-16',
-  weight: 1.5,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_light_machine_gun',
-  baseItemId: undefined,
-  defaultPresetId: '5c0d1ec986f77439512a1a72',
+  minuteOfAngle: undefined,
   modSlots: [
     {
       compatibleItemIds: [
@@ -2618,7 +2689,22 @@ export const rpk16: IRangedWeapon = {
       required: false
     }
   ],
+  name: 'RPK-16 5.45x39 light machine gun',
+  presetRangedWeaponModifiers: undefined,
+  presetWeight: undefined,
+  prices: [],
+  shortName: 'RPK-16',
+  verticalRecoil: 112,
+  weight: 1.5,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_light_machine_gun'
+}
+
+export const rpk16Default: IRangedWeapon = {
+  baseItemId: '5beed0f50db834001c062b12',
   caliber: 'Caliber545x39',
+  categoryId: ItemCategoryId.mainWeapon,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
   ergonomics: 45,
   fireModes: [
     'SingleFire',
@@ -2626,26 +2712,12 @@ export const rpk16: IRangedWeapon = {
   ],
   fireRate: 650,
   horizontalRecoil: 333,
-  minuteOfAngle: undefined,
-  presetRangedWeaponModifiers: undefined,
-  verticalRecoil: 112
-}
-
-export const rpk16Default: IRangedWeapon = {
-  categoryId: 'mainWeapon',
-  conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5c0d1ec986f77439512a1a72-icon.webp',
   id: '5c0d1ec986f77439512a1a72',
   imageLink: 'https://assets.tarkov.dev/5c0d1ec986f77439512a1a72-image.webp',
   marketLink: 'https://tarkov.dev/item/rpk-16-545x39-light-machine-gun-default',
   maxStackableAmount: 1,
-  name: 'RPK-16 5.45x39 light machine gun Default',
-  prices: [],
-  shortName: 'RPK-16 Default',
-  weight: 1.5,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_light_machine_gun',
-  baseItemId: '5beed0f50db834001c062b12',
-  defaultPresetId: undefined,
+  minuteOfAngle: 3.03,
   modSlots: [
     {
       compatibleItemIds: [
@@ -2742,34 +2814,28 @@ export const rpk16Default: IRangedWeapon = {
       required: false
     }
   ],
-  caliber: 'Caliber545x39',
-  ergonomics: 45,
-  fireModes: [
-    'SingleFire',
-    'FullAuto'
-  ],
-  fireRate: 650,
-  horizontalRecoil: 333,
-  minuteOfAngle: 3.03,
+  name: 'RPK-16 5.45x39 light machine gun Default',
   presetRangedWeaponModifiers: undefined,
-  verticalRecoil: 112
+  presetWeight: undefined,
+  prices: [],
+  shortName: 'RPK-16 Default',
+  verticalRecoil: 112,
+  weight: 1.5,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_light_machine_gun'
 }
 
 export const rpk1615inch: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -2,
   iconLink: 'https://assets.tarkov.dev/5beec1bd0db834001e6006f3-icon.webp',
   id: '5beec1bd0db834001e6006f3',
   imageLink: 'https://assets.tarkov.dev/5beec1bd0db834001e6006f3-image.webp',
   marketLink: 'https://tarkov.dev/item/rpk-16-545x39-15-inch-barrel',
   maxStackableAmount: 1,
-  name: 'RPK-16 5.45x39 15 inch barrel',
-  prices: [],
-  shortName: 'RPK-16 15"',
-  weight: 0.54,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_15_inch_barrel',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
   modSlots: [
     {
       compatibleItemIds: [
@@ -2788,32 +2854,18 @@ export const rpk1615inch: IRangedWeaponMod = {
       required: false
     }
   ],
-  ergonomicsModifier: -2,
+  name: 'RPK-16 5.45x39 15 inch barrel',
   presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
   presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: -0.03
+  presetWeight: undefined,
+  prices: [],
+  recoilModifierPercentage: -0.03,
+  shortName: 'RPK-16 15"',
+  weight: 0.54,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_15_inch_barrel'
 }
 
 export const rpk16Drum: IMagazine = {
-  categoryId: 'magazine',
-  conflictingItemIds: [],
-  iconLink: 'https://assets.tarkov.dev/5bed625c0db834001c062946-icon.webp',
-  id: '5bed625c0db834001c062946',
-  imageLink: 'https://assets.tarkov.dev/5bed625c0db834001c062946-image.webp',
-  marketLink: 'https://tarkov.dev/item/rpk-16-545x39-95-round-drum-magazine',
-  maxStackableAmount: 1,
-  name: 'RPK-16 5.45x39 95-round drum magazine',
-  prices: [],
-  shortName: 'RPK-16 drum',
-  weight: 0.68,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_95-round_drum_magazine',
-  capacity: 95,
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [],
-  ergonomicsModifier: -24,
-  presetErgonomicsModifier: undefined,
   acceptedAmmunitionIds: [
     '5c0d5e4486f77478390952fe',
     '61962b617c6c7b169525f168',
@@ -2829,26 +2881,42 @@ export const rpk16Drum: IMagazine = {
     '56dff4a2d2720bbd668b456a',
     '56dff4ecd2720b5f5a8b4568'
   ],
+  baseItemId: undefined,
+  capacity: 95,
+  categoryId: ItemCategoryId.magazine,
   checkSpeedModifierPercentage: 0.25,
+  conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -24,
+  iconLink: 'https://assets.tarkov.dev/5bed625c0db834001c062946-icon.webp',
+  id: '5bed625c0db834001c062946',
+  imageLink: 'https://assets.tarkov.dev/5bed625c0db834001c062946-image.webp',
   loadSpeedModifierPercentage: 0.9,
-  malfunctionPercentage: 0.394
+  malfunctionPercentage: 0.394,
+  marketLink: 'https://tarkov.dev/item/rpk-16-545x39-95-round-drum-magazine',
+  maxStackableAmount: 1,
+  modSlots: [],
+  name: 'RPK-16 5.45x39 95-round drum magazine',
+  presetErgonomicsModifier: undefined,
+  presetWeight: undefined,
+  prices: [],
+  shortName: 'RPK-16 drum',
+  weight: 0.68,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_95-round_drum_magazine'
 }
 
 export const rpk16DustCover: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: 4,
   iconLink: 'https://assets.tarkov.dev/5beec91a0db834001961942d-icon.webp',
   id: '5beec91a0db834001961942d',
   imageLink: 'https://assets.tarkov.dev/5beec91a0db834001961942d-image.webp',
   marketLink: 'https://tarkov.dev/item/rpk-16-dust-cover',
   maxStackableAmount: 1,
-  name: 'RPK-16 dust cover',
-  prices: [],
-  shortName: 'RPK-16',
-  weight: 0.215,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_dust_cover',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
   modSlots: [
     {
       compatibleItemIds: [
@@ -2932,28 +3000,29 @@ export const rpk16DustCover: IRangedWeaponMod = {
       required: false
     }
   ],
-  ergonomicsModifier: 4,
+  name: 'RPK-16 dust cover',
   presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
   presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: 0
+  presetWeight: undefined,
+  prices: [],
+  recoilModifierPercentage: 0,
+  shortName: 'RPK-16',
+  weight: 0.215,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_dust_cover'
 }
 
 export const rpk16Handguard: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: 6,
   iconLink: 'https://assets.tarkov.dev/5beec3e30db8340019619424-icon.webp',
   id: '5beec3e30db8340019619424',
   imageLink: 'https://assets.tarkov.dev/5beec3e30db8340019619424-image.webp',
   marketLink: 'https://tarkov.dev/item/rpk-16-handguard',
   maxStackableAmount: 1,
-  name: 'RPK-16 handguard',
-  prices: [],
-  shortName: 'RPK-16',
-  weight: 0.167,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_handguard',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
   modSlots: [
     {
       compatibleItemIds: [
@@ -3057,51 +3126,52 @@ export const rpk16Handguard: IRangedWeaponMod = {
       required: false
     }
   ],
-  ergonomicsModifier: 6,
+  name: 'RPK-16 handguard',
   presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
   presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: -0.01
+  presetWeight: undefined,
+  prices: [],
+  recoilModifierPercentage: -0.01,
+  shortName: 'RPK-16',
+  weight: 0.167,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_handguard'
 }
 
 export const rpk16MuzzleBreak: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -1,
   iconLink: 'https://assets.tarkov.dev/5beec3420db834001b095429-icon.webp',
   id: '5beec3420db834001b095429',
   imageLink: 'https://assets.tarkov.dev/5beec3420db834001b095429-image.webp',
   marketLink: 'https://tarkov.dev/item/rpk-16-545x39-muzzle-brake-compensator',
   maxStackableAmount: 1,
+  modSlots: [],
   name: 'RPK-16 5.45x39 muzzle brake-compensator',
+  presetErgonomicsModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   prices: [],
+  recoilModifierPercentage: -0.06,
   shortName: 'RPK-16',
   weight: 0.09,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_muzzle_brake-compensator',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [],
-  ergonomicsModifier: -1,
-  presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
-  presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: -0.06
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_5.45x39_muzzle_brake-compensator'
 }
 
 export const rpk16Rail: IMod = {
-  categoryId: 'mod',
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.mod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: 0,
   iconLink: 'https://assets.tarkov.dev/5beecbb80db834001d2c465e-icon.webp',
   id: '5beecbb80db834001d2c465e',
   imageLink: 'https://assets.tarkov.dev/5beecbb80db834001d2c465e-image.webp',
   marketLink: 'https://tarkov.dev/item/rpk-16-handguard-rail',
   maxStackableAmount: 1,
-  name: 'RPK-16 handguard rail',
-  prices: [],
-  shortName: 'RPK-16 rail',
-  weight: 0.045,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_handguard_rail',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
   modSlots: [
     {
       compatibleItemIds: [
@@ -3132,50 +3202,53 @@ export const rpk16Rail: IMod = {
       required: false
     }
   ],
-  ergonomicsModifier: 0,
-  presetErgonomicsModifier: undefined
+  name: 'RPK-16 handguard rail',
+  presetErgonomicsModifier: undefined,
+  presetWeight: undefined,
+  prices: [],
+  shortName: 'RPK-16 rail',
+  weight: 0.045,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_handguard_rail'
 }
 
 export const rpk16Rs: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: 0,
   iconLink: 'https://assets.tarkov.dev/5bf3f59f0db834001a6fa060-icon.webp',
   id: '5bf3f59f0db834001a6fa060',
   imageLink: 'https://assets.tarkov.dev/5bf3f59f0db834001a6fa060-image.webp',
   marketLink: 'https://tarkov.dev/item/rpk-16-rear-sight',
   maxStackableAmount: 1,
+  modSlots: [],
   name: 'RPK-16 rear sight',
+  presetErgonomicsModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   prices: [],
+  recoilModifierPercentage: 0,
   shortName: 'RPK-16 RS',
   weight: 0.025,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_rear_sight',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [],
-  ergonomicsModifier: 0,
-  presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
-  presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: 0
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_rear_sight'
 }
 
 export const rpk16RsBase: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [
     '5b3b99265acfc4704b4a1afb'
   ],
+  defaultPresetId: undefined,
+  ergonomicsModifier: 0,
   iconLink: 'https://assets.tarkov.dev/5beec9450db83400970084fd-icon.webp',
   id: '5beec9450db83400970084fd',
   imageLink: 'https://assets.tarkov.dev/5beec9450db83400970084fd-image.webp',
   marketLink: 'https://tarkov.dev/item/rpk-16-rear-sight-base',
   maxStackableAmount: 1,
-  name: 'RPK-16 rear sight base',
-  prices: [],
-  shortName: 'RPK16 RS base',
-  weight: 0.05,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_rear_sight_base',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
   modSlots: [
     {
       compatibleItemIds: [
@@ -3191,15 +3264,19 @@ export const rpk16RsBase: IRangedWeaponMod = {
       required: false
     }
   ],
-  ergonomicsModifier: 0,
+  name: 'RPK-16 rear sight base',
   presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
   presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: 0
+  presetWeight: undefined,
+  prices: [],
+  recoilModifierPercentage: 0,
+  shortName: 'RPK16 RS base',
+  weight: 0.05,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/RPK-16_rear_sight_base'
 }
 
 export const rpk16Tube: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5beec8b20db834001961942a-icon.webp',
   id: '5beec8b20db834001961942a',
@@ -3252,18 +3329,20 @@ export const rpk16Tube: IRangedWeaponMod = {
   presetErgonomicsModifier: undefined,
   accuracyModifierPercentage: 0,
   presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   recoilModifierPercentage: -0.01
 }
 
 export const rub: IItem = {
-  categoryId: 'currency',
+  categoryId: ItemCategoryId.currency,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5449016a4bdc2d6f028b456f-icon.webp',
   id: '5449016a4bdc2d6f028b456f',
   imageLink: 'https://assets.tarkov.dev/5449016a4bdc2d6f028b456f-image.webp',
-  maxStackableAmount: 500000,
   marketLink: 'https://tarkov.dev/item/roubles',
+  maxStackableAmount: 500000,
   name: 'Roubles',
+  presetWeight: undefined,
   prices: [],
   shortName: 'RUB',
   weight: 0,
@@ -3271,7 +3350,7 @@ export const rub: IItem = {
 }
 
 export const salewa: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/544fb45d4bdc2dee738b4568-icon.webp',
   id: '544fb45d4bdc2dee738b4568',
@@ -3279,6 +3358,7 @@ export const salewa: IItem = {
   marketLink: 'https://tarkov.dev/item/salewa-first-aid-kit',
   maxStackableAmount: 1,
   name: 'Salewa first aid kit',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Salewa',
   weight: 0.6,
@@ -3286,36 +3366,37 @@ export const salewa: IItem = {
 }
 
 export const scavVest: IVest = {
+  armorClass: 0,
+  armoredAreas: [],
+  baseItemId: undefined,
   blindnessProtectionPercentage: 0,
-  categoryId: 'vest',
+  capacity: 6,
+  categoryId: ItemCategoryId.vest,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  durability: 0,
+  ergonomicsModifierPercentage: 0,
   iconLink: 'https://assets.tarkov.dev/572b7adb24597762ae139821-icon.webp',
   id: '572b7adb24597762ae139821',
   imageLink: 'https://assets.tarkov.dev/572b7adb24597762ae139821-image.webp',
   marketLink: 'https://tarkov.dev/item/scav-vest',
+  material: '',
   maxStackableAmount: 1,
-  name: 'Scav Vest',
-  prices: [],
-  shortName: 'Scav Vest',
-  weight: 0.4,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Scav_Vest',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
   modSlots: [],
-  ergonomicsModifierPercentage: 0,
   movementSpeedModifierPercentage: 0,
+  name: 'Scav Vest',
   presetArmorModifiers: undefined,
   presetWearableModifiers: undefined,
+  presetWeight: undefined,
+  prices: [],
+  shortName: 'Scav Vest',
   turningSpeedModifierPercentage: 0,
-  armorClass: 0,
-  armoredAreas: [],
-  durability: 0,
-  material: '',
-  capacity: 6
+  weight: 0.4,
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/Scav_Vest'
 }
 
 export const slickers: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/544fb6cc4bdc2d34748b456e-icon.webp',
   id: '544fb6cc4bdc2d34748b456e',
@@ -3323,6 +3404,7 @@ export const slickers: IItem = {
   marketLink: 'https://tarkov.dev/item/slickers-chocolate-bar',
   maxStackableAmount: 1,
   name: 'Slickers chocolate bar',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Slickers',
   weight: 0.048,
@@ -3332,9 +3414,14 @@ export const slickers: IItem = {
 export const specterDr: IRangedWeaponMod = {
   accuracyModifierPercentage: 0,
   baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
   defaultPresetId: undefined,
   ergonomicsModifier: -4,
+  iconLink: 'https://assets.tarkov.dev/57ac965c24597706be5f975c-icon.webp',
+  id: '57ac965c24597706be5f975c',
+  imageLink: 'https://assets.tarkov.dev/57ac965c24597706be5f975c-image.webp',
+  marketLink: 'https://tarkov.dev/item/elcan-specterdr-1x4x-scope',
   maxStackableAmount: 1,
   modSlots: [
     {
@@ -3344,46 +3431,43 @@ export const specterDr: IRangedWeaponMod = {
       required: false
     }
   ],
+  name: 'ELCAN SpecterDR 1x/4x scope',
   presetErgonomicsModifier: undefined,
   presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   prices: [],
   recoilModifierPercentage: 0,
-  categoryId: 'rangedWeaponMod',
-  iconLink: 'https://assets.tarkov.dev/57ac965c24597706be5f975c-icon.webp',
-  id: '57ac965c24597706be5f975c',
-  imageLink: 'https://assets.tarkov.dev/57ac965c24597706be5f975c-image.webp',
-  marketLink: 'https://tarkov.dev/item/elcan-specterdr-1x4x-scope',
-  name: 'ELCAN SpecterDR 1x/4x scope',
   shortName: 'SpecterDR',
   weight: 0.64,
   wikiLink: 'https://escapefromtarkov.fandom.com/wiki/ELCAN_SpecterDR_1x/4x_scope'
 }
 
 export const srd9: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -15,
   iconLink: 'https://assets.tarkov.dev/5c6165902e22160010261b28-icon.webp',
   id: '5c6165902e22160010261b28',
   imageLink: 'https://assets.tarkov.dev/5c6165902e22160010261b28-image.webp',
   marketLink: 'https://tarkov.dev/item/sig-sauer-srd9-9x19-sound-suppressor',
   maxStackableAmount: 1,
+  modSlots: [],
   name: 'SIG Sauer SRD9 9x19 sound suppressor',
+  presetErgonomicsModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   prices: [],
+  recoilModifierPercentage: -0.06,
   shortName: 'SRD9',
   weight: 0.255,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/SIG_Sauer_SRD9_9x19_sound_suppressor',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [],
-  ergonomicsModifier: -15,
-  presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
-  presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: -0.06
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/SIG_Sauer_SRD9_9x19_sound_suppressor'
 }
 
 export const syringe: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5d1b3f2d86f774253763b735-icon.webp',
   id: '5d1b3f2d86f774253763b735',
@@ -3391,6 +3475,7 @@ export const syringe: IItem = {
   marketLink: 'https://tarkov.dev/item/disposable-syringe',
   maxStackableAmount: 1,
   name: 'Disposable syringe',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Syringe',
   weight: 0.06,
@@ -3398,14 +3483,15 @@ export const syringe: IItem = {
 }
 
 export const usd: IItem = {
-  categoryId: 'currency',
+  categoryId: ItemCategoryId.currency,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5696686a4bdc2da3298b456a-icon.webp',
   id: '5696686a4bdc2da3298b456a',
   imageLink: 'https://assets.tarkov.dev/5696686a4bdc2da3298b456a-image.webp',
-  maxStackableAmount: 50000,
   marketLink: 'https://tarkov.dev/item/dollars',
+  maxStackableAmount: 50000,
   name: 'Dollars',
+  presetWeight: undefined,
   prices: [],
   shortName: 'USD',
   weight: 0,
@@ -3413,7 +3499,7 @@ export const usd: IItem = {
 }
 
 export const vaseline: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5755383e24597772cb798966-icon.webp',
   id: '5755383e24597772cb798966',
@@ -3421,6 +3507,7 @@ export const vaseline: IItem = {
   marketLink: 'https://tarkov.dev/item/vaseline-balm',
   maxStackableAmount: 1,
   name: 'Vaseline balm',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Vaseline',
   weight: 0.016,
@@ -3428,7 +3515,7 @@ export const vaseline: IItem = {
 }
 
 export const vhs: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/62a09e974f842e1bd12da3f0-icon.webp',
   id: '62a09e974f842e1bd12da3f0',
@@ -3436,6 +3523,7 @@ export const vhs: IItem = {
   marketLink: 'https://tarkov.dev/item/video-cassette-with-the-cyborg-killer-movie',
   maxStackableAmount: 1,
   name: 'Video cassette with the Cyborg Killer movie',
+  presetWeight: undefined,
   prices: [],
   shortName: 'VHS',
   weight: 0.15,
@@ -3443,7 +3531,7 @@ export const vhs: IItem = {
 }
 
 export const vita: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/57513fcc24597720a31c09a6-icon.webp',
   id: '57513fcc24597720a31c09a6',
@@ -3451,6 +3539,7 @@ export const vita: IItem = {
   marketLink: 'https://tarkov.dev/item/pack-of-vita-juice',
   maxStackableAmount: 1,
   name: 'Pack of Vita juice',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Vita',
   weight: 1,
@@ -3458,7 +3547,7 @@ export const vita: IItem = {
 }
 
 export const water: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5448fee04bdc2dbc018b4567-icon.webp',
   id: '5448fee04bdc2dbc018b4567',
@@ -3466,6 +3555,7 @@ export const water: IItem = {
   marketLink: 'https://tarkov.dev/item/bottle-of-water-06l',
   maxStackableAmount: 1,
   name: 'Bottle of water (0.6L)',
+  presetWeight: undefined,
   prices: [],
   shortName: 'Water',
   weight: 0.65,
@@ -3473,7 +3563,7 @@ export const water: IItem = {
 }
 
 export const wParts: IItem = {
-  categoryId: 'other',
+  categoryId: ItemCategoryId.other,
   conflictingItemIds: [],
   iconLink: 'https://assets.tarkov.dev/5d1c819a86f774771b0acd6c-icon.webp',
   id: '5d1c819a86f774771b0acd6c',
@@ -3481,6 +3571,7 @@ export const wParts: IItem = {
   marketLink: 'https://tarkov.dev/item/weapon-parts',
   maxStackableAmount: 1,
   name: 'Weapon parts',
+  presetWeight: undefined,
   prices: [],
   shortName: 'WParts',
   weight: 0.56,
@@ -3488,26 +3579,27 @@ export const wParts: IItem = {
 }
 
 export const x400: IRangedWeaponMod = {
-  categoryId: 'rangedWeaponMod',
+  accuracyModifierPercentage: 0,
+  baseItemId: undefined,
+  categoryId: ItemCategoryId.rangedWeaponMod,
   conflictingItemIds: [],
+  defaultPresetId: undefined,
+  ergonomicsModifier: -1,
   iconLink: 'https://assets.tarkov.dev/56def37dd2720bec348b456a-icon.webp',
   id: '56def37dd2720bec348b456a',
   imageLink: 'https://assets.tarkov.dev/56def37dd2720bec348b456a-image.webp',
   marketLink: 'https://tarkov.dev/item/surefire-x400-ultra-tactical-flashlight-with-laser',
   maxStackableAmount: 1,
+  modSlots: [],
   name: 'SureFire X400 Ultra tactical flashlight with laser',
+  presetErgonomicsModifier: undefined,
+  presetRecoilModifierPercentage: undefined,
+  presetWeight: undefined,
   prices: [],
+  recoilModifierPercentage: 0,
   shortName: 'X400U',
   weight: 0.138,
-  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/SureFire_X400_Ultra_tactical_flashlight_with_laser',
-  baseItemId: undefined,
-  defaultPresetId: undefined,
-  modSlots: [],
-  ergonomicsModifier: -1,
-  presetErgonomicsModifier: undefined,
-  accuracyModifierPercentage: 0,
-  presetRecoilModifierPercentage: undefined,
-  recoilModifierPercentage: 0
+  wikiLink: 'https://escapefromtarkov.fandom.com/wiki/SureFire_X400_Ultra_tactical_flashlight_with_laser'
 }
 
 

@@ -1,32 +1,9 @@
-<template>
-  <div class="item-icon">
-    <img
-      v-if="iconUrl != null"
-      :src="iconUrl"
-    >
-    <div
-      v-if="quantity != null && quantity > 1"
-      class="item-icon-quantity"
-    >
-      {{ quantity }}
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { IItem } from '../models/item/IItem'
 import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import Services from '../services/repository/Services'
+import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
 
 const itemPropertiesService = Services.get(ItemPropertiesService)
 
@@ -57,6 +34,30 @@ const iconUrl = computed(() => {
 
 
 
+<template>
+  <div class="item-icon">
+    <img
+      v-if="iconUrl != null"
+      :src="iconUrl"
+    >
+    <div
+      v-if="quantity != null && quantity > 1"
+      class="item-icon-quantity"
+    >
+      {{ StatsUtils.getStandardDisplayValue(DisplayValueType.quantity, quantity) }}
+    </div>
+  </div>
+</template>
+
+
+
+
+
+
+
+
+
+
 <style scoped>
 .item-icon {
   align-items: center;
@@ -65,7 +66,6 @@ const iconUrl = computed(() => {
   flex-direction: row;
   flex-shrink: 0;
   flex-wrap: nowrap;
-  height: 100%;
   overflow: hidden;
   position: relative;
   width: fit-content;
@@ -76,7 +76,7 @@ const iconUrl = computed(() => {
   clip-path: inset(1px 1px 1px 1px);
   max-height: 3.25rem;
   max-width: 4.75rem;
-  min-width: 3.25rem;
+  min-width: 3.125rem;
   /* Zooming on the image to fill the cropped pixels */
   transform: scale(1.05);
 }
@@ -92,6 +92,5 @@ const iconUrl = computed(() => {
     -1px 1px 0 black,
     1px -1px 0 black,
     -1px -1px 0 black;
-  width: 2rem;
 }
 </style>

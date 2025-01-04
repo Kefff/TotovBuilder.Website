@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IAmmunition } from '../../models/item/IAmmunition'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
@@ -29,7 +30,7 @@ describe('parseReducedItem', () => {
         armorDamagePercentage: 0,
         blinding: true,
         caliber: 'unknown',
-        categoryId: 'ammunition',
+        categoryId: ItemCategoryId.ammunition,
         conflictingItemIds: [],
         durabilityBurnModifierPercentage: 0,
         fleshDamage: 0,
@@ -44,6 +45,7 @@ describe('parseReducedItem', () => {
         name: 'Unknown',
         penetratedArmorLevel: 0,
         penetrationPower: 0,
+        presetWeight: undefined,
         prices: [],
         projectiles: 2,
         recoilModifier: 0,

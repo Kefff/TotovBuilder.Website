@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { IArmorMod } from '../../models/item/IArmorMod'
+import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemPropertiesService } from '../../services/ItemPropertiesService'
 import { ReductionService } from '../../services/ReductionService'
 import Services from '../../services/repository/Services'
@@ -60,7 +61,7 @@ describe('parseReducedItem', () => {
           '5c0e66e2d174af02a96252f4',
           '5e00cdd986f7747473332240'
         ],
-        categoryId: 'armorMod',
+        categoryId: ItemCategoryId.armorMod,
         defaultPresetId: undefined,
         durability: 40,
         ergonomicsModifierPercentage: -0.05,
@@ -85,6 +86,7 @@ describe('parseReducedItem', () => {
         name: 'Diamond Age Bastion helmet armor plate',
         presetArmorModifiers: undefined,
         presetWearableModifiers: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: 'Bastion plate',
         turningSpeedModifierPercentage: -0.06,
@@ -135,7 +137,7 @@ describe('parseReducedItem', () => {
         ],
         baseItemId: undefined,
         blindnessProtectionPercentage: 0.1,
-        categoryId: 'armorMod',
+        categoryId: ItemCategoryId.armorMod,
         conflictingItemIds: [
           '5c0e66e2d174af02a96252f4',
           '5c0696830db834001d23f5da',
@@ -161,6 +163,7 @@ describe('parseReducedItem', () => {
         name: 'Ops-Core FAST multi-hit ballistic face shield',
         presetArmorModifiers: undefined,
         presetWearableModifiers: undefined,
+        presetWeight: undefined,
         prices: [],
         shortName: 'FAST FS',
         turningSpeedModifierPercentage: -0.08,

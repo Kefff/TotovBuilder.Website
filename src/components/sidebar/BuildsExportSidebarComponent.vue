@@ -1,36 +1,6 @@
-<template>
-  <div class="builds-export-sidebar">
-    <div class="sidebar-option">
-      <div>
-        <Toolbar
-          ref="buildsExportToolbar"
-          :buttons="toolbarButtons"
-          style="margin-top: 1px;"
-        />
-        <BuildsList
-          v-model:selected-builds="selectedBuilds"
-          :build-summaries="parameters"
-          :element-to-stick-to="toolbarContainer"
-          :grid-max-columns="1"
-          :show-actions-button="false"
-          :show-not-exported="true"
-        />
-      </div>
-    </div>
-  </div>
-</template>
-
-
-
-
-
-
-
-
-
-
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
+import { useEventListener } from '@vueuse/core'
+import { computed, ref, useTemplateRef } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildsExportSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
@@ -51,7 +21,7 @@ const _globalSidebarService = Services.get(GlobalSidebarService)
 
 const toolbarButtons: IToolbarButton[] = [
   {
-    action: exportBuilds,
+    action: exportBuildsAsync,
     canBeMovedToSidebar: () => false,
     caption: () => `${vueI18n.t('caption.save')}` + (selectedBuilds.value.length > 1 ? ` (${selectedBuilds.value.length})` : ''),
     icon: () => 'download',
@@ -71,24 +41,18 @@ const toolbarButtons: IToolbarButton[] = [
   }
 ]
 
-const buildsExportToolbar = useTemplateRef('buildsExportToolbar')
-const selectedBuilds = ref<IBuildSummary[]>([])
-
 const allSelected = computed(() => selectedBuilds.value.length === modelParameters.value.length)
 const toolbarContainer = computed(() => buildsExportToolbar.value?.container)
 
-onMounted(() => {
-  addEventListener('keydown', (e) => onKeyDown(e))
-})
+const buildsExportToolbar = useTemplateRef('buildsExportToolbar')
+const selectedBuilds = ref<IBuildSummary[]>([])
 
-onUnmounted(() => {
-  removeEventListener('keydown', (e) => onKeyDown(e))
-})
+useEventListener(document, 'keydown', onKeyDown)
 
 /**
  * Exports the selected builds.
  */
-async function exportBuilds() {
+async function exportBuildsAsync(): Promise<void> {
   const buildsToExport: IBuild[] = []
 
   for (const buildToExportId of selectedBuilds.value) {
@@ -99,7 +63,7 @@ async function exportBuilds() {
     }
   }
 
-  await _exportService.export(buildsToExport)
+  await _exportService.exportAsync(buildsToExport)
   _globalSidebarService.close('BuildsExportSidebar')
 }
 
@@ -107,7 +71,7 @@ async function exportBuilds() {
  * Reacts to a keyboard event.
  * @param event - Keyboard event.
  */
-function onKeyDown(event: KeyboardEvent) {
+function onKeyDown(event: KeyboardEvent): void {
   if (event.key === 'a' && (event.ctrlKey || event.metaKey)) {
     event.preventDefault() // Prevents the browser action from being triggered
     selectedBuilds.value = modelParameters.value
@@ -117,7 +81,7 @@ function onKeyDown(event: KeyboardEvent) {
 /**
  * Toggles the selection.
  */
-function toggleSelection() {
+function toggleSelection(): void {
   if (allSelected.value) {
     selectedBuilds.value = []
   } else {
@@ -135,11 +99,50 @@ function toggleSelection() {
 
 
 
-<style scoped>
-@import '../../css/icon.css';
-@import '../../css/sidebar.css';
+<template>
+  <div class="builds-export-sidebar">
+    <div class="builds-export-sidebar-selection">
+      <Toolbar
+        ref="buildsExportToolbar"
+        :buttons="toolbarButtons"
+        style="margin-top: 1px;"
+      />
+      <BuildsList
+        v-model:selected-builds="selectedBuilds"
+        :build-summaries="parameters"
+        :element-to-stick-to="toolbarContainer"
+        :infinite-scrolling="true"
+        :max-elements-per-line="1"
+        :selection-options="{
+          canUnselect: true,
+          isEnabled: true,
+          isMultiSelection: true
+        }"
+        :show-actions-button="false"
+        :show-not-exported="true"
+      />
+    </div>
+  </div>
+</template>
 
+
+
+
+
+
+
+
+
+
+<style scoped>
 .builds-export-sidebar {
+  height: 100%;
   max-width: 40rem;
+}
+
+.builds-export-sidebar-selection {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 </style>

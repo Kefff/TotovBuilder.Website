@@ -1,3 +1,41 @@
+<script setup lang="ts">
+import { useBreakpoints } from '@vueuse/core'
+import { computed } from 'vue'
+import { IToolbarButton } from '../models/utils/IToolbarButton'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
+import Tooltip from './TooltipComponent.vue'
+
+const props = defineProps<{ button: IToolbarButton }>()
+const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
+const buttonClasses = computed(() => ({
+  'button-discreet-danger': props.button.style?.() === 'discreet' && props.button.variant?.() === 'danger',
+  'button-discreet': props.button.style?.() === 'discreet',
+  'p-button-text': props.button.style?.() === 'discreet'
+}))
+const captionClasses = computed(() => ({
+  'toolbar-button-tooltip': showCaptionInternal.value === 'always' || showCaptionInternal.value === 'auto',
+  'toolbar-button-hiddable-tooltip': showCaptionInternal.value === 'auto'
+}))
+const areCaptionsHidden = computed(() => breakpoints.smaller('pc'))
+const outlined = computed(() => props.button.style?.() === 'outlined')
+const showCaptionInternal = computed(() => props.button.showCaption?.() ?? 'auto')
+const tooltip = computed(() =>
+  showCaptionInternal.value === 'never'
+    || (showCaptionInternal.value === 'auto'
+      && areCaptionsHidden.value)
+    ? props.button.caption()
+    : '')
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <Tooltip
     v-show="button.isVisible?.() ?? true"
@@ -10,7 +48,7 @@
       :disabled="button.isDisabled?.() ?? false"
       :outlined="outlined"
       :severity="button.variant?.()"
-      class="p-button-sm toolbar-button"
+      class="toolbar-button"
       @click="button.action"
     >
       <font-awesome-icon :icon="button.icon()" />
@@ -31,73 +69,7 @@
 
 
 
-<script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { IToolbarButton } from '../models/utils/IToolbarButton'
-
-const props = defineProps<{ button: IToolbarButton }>()
-
-const hideCaptionsWidth = 1299
-
-const areCaptionsHidden = ref(false)
-
-const buttonClasses = computed(() => ({
-  'button-discreet-danger': props.button.style?.() === 'discreet' && props.button.variant?.() === 'danger',
-  'button-discreet': props.button.style?.() === 'discreet',
-  'p-button-text': props.button.style?.() === 'discreet'
-}))
-const captionClasses = computed(() => ({
-  'toolbar-button-tooltip': showCaptionInternal.value === 'always' || showCaptionInternal.value === 'auto',
-  'toolbar-button-hiddable-tooltip': showCaptionInternal.value === 'auto'
-}))
-const outlined = computed(() => props.button.style?.() === 'outlined')
-const showCaptionInternal = computed(() => props.button.showCaption?.() ?? 'auto')
-const tooltip = computed(() =>
-  showCaptionInternal.value === 'never'
-    || (showCaptionInternal.value === 'auto'
-      && areCaptionsHidden.value)
-    ? props.button.caption()
-    : '')
-
-onMounted(() => {
-  setCaptionsAreHidden()
-
-  window.addEventListener('resize', onResize)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('resize', onResize)
-})
-
-/**
- * Reacts to the window being resized.
- *
- * Sets a value indicating whether toolbar button captions should be hidden.
- */
-function onResize() {
-  setCaptionsAreHidden()
-}
-
-/**
- * Set a value indicating whether the media query trigger for hiding captions is reached.
- */
-function setCaptionsAreHidden() {
-  areCaptionsHidden.value = window.matchMedia(`only screen and (max-width: ${hideCaptionsWidth}px)`).matches
-}
-</script>
-
-
-
-
-
-
-
-
-
-
 <style scoped>
-@import '../css/button.css';
-
 .toolbar-button {
   height: 2.75rem;
   min-width: 2.75rem !important;

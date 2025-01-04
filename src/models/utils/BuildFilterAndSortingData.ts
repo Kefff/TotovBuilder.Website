@@ -1,12 +1,16 @@
+import { BuildSummarySortingFunctions } from '../../services/sorting/functions/BuildSummarySortingFunctions'
+import FilterAndSortingData from './FilterAndSortingData'
 import { IBuildSummary } from './IBuildSummary'
-import SortingData from './SortingData'
 
 /**
- * Represents the functionalities of data for filtering and sorting the builds list.
+ * Represents the functionalities of data for filtering and sorting the items and builds list.
  */
-export default class BuildFilterAndSortingData extends SortingData<IBuildSummary> {
+export default class BuildFilterAndSortingData extends FilterAndSortingData<IBuildSummary> {
   /**
-   * Filter.
+   * Initializes a new instance of the SortingData class.
+   * @param buildFilterAndSortingDataToCopy - Build filter and sorting data to copy.
    */
-  public filter = ''
+  public constructor(buildFilterAndSortingDataToCopy?: BuildFilterAndSortingData) {
+    super(BuildSummarySortingFunctions, buildFilterAndSortingDataToCopy)
+  }
 }

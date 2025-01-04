@@ -1,3 +1,24 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { IContainer } from '../../models/item/IContainer'
+import { IItem } from '../../models/item/IItem'
+
+const props = defineProps<{
+  item: IItem
+}>()
+
+const container = computed(() => props.item as IContainer)
+</script>
+
+
+
+
+
+
+
+
+
+
 <template>
   <div
     v-if="container.capacity > 0"
@@ -23,38 +44,3 @@
     </div>
   </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { IContainer } from '../../models/item/IContainer'
-import { IItem } from '../../models/item/IItem'
-
-const props = defineProps<{
-  item: IItem
-}>()
-
-const container = computed(() => props.item as IContainer)
-</script>
-
-
-
-
-
-
-
-
-
-
-<style scoped>
-@import '../../css/icon.css';
-@import '../../css/stats.css';
-</style>
