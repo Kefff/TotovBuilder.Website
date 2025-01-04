@@ -141,13 +141,17 @@ async function setWeightAsync(): Promise<void> {
     <slot />
     <div class="card-line card-line3 selected-item-item-card-prices-and-weight">
       <!-- Weight -->
-      <div class="selected-item-item-card-weights">
+      <div
+        v-if="(includeModsAndContent && selectedItemWeight.weightWithContent > 0)
+          || (showWeight && selectedItemWeight.weight > 0)"
+        class="selected-item-item-card-weights"
+      >
         <div
           v-if="includeModsAndContent"
           class="selected-item-item-card-with-mods"
         >
           <Tooltip
-            v-if="selectedItemWeight.weight > 0"
+            v-if="selectedItemWeight.weightWithContent > 0"
             :tooltip="$t('caption.weight') + $t('caption.withModsAndContent')"
           >
             <font-awesome-icon

@@ -455,7 +455,7 @@ function switchSortOrder(): void {
 
 .filter-chip-quick-filter > .filter-chip-text {
   padding-bottom: 0.25rem;
-  padding-left: 0.5rem;
+  padding-left: 0.75rem;
   padding-top: 0.25rem;
 }
 

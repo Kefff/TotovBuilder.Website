@@ -91,6 +91,5 @@ const iconUrl = computed(() => {
     -1px 1px 0 black,
     1px -1px 0 black,
     -1px -1px 0 black;
-  width: 2rem;
 }
 </style>
