@@ -147,7 +147,7 @@ function showDetails(): void {
             </span>
           </Tooltip>
           <div
-            v-if="itemUnitPrice != null && itemUnitPrice.valueInMainCurrency > 0"
+            v-if="(itemUnitPrice != null && itemUnitPrice.valueInMainCurrency > 0) || itemUnitPrice?.currencyName === 'barter'"
             class="item-card-price"
           >
             <Price :price="itemUnitPrice" />
