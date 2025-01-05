@@ -684,7 +684,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-content-and-mods-base-item-mods-name {
-  font-weight: bold;
+  font-weight: bolder;
   margin-bottom: 0.25rem;
 }
 

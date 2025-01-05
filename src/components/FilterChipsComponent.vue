@@ -78,7 +78,7 @@ const filterTooltip = computed(() => {
 
   return tooltip
 })
-const isItemFilterAndSortingData = computed(() => Object.keys(modelFilterAndSortingData.value).some(k => k === '_categoryId'))
+const isItemFilterAndSortingData = computed(() => Object.keys(modelFilterAndSortingData.value).some(k => k === 'availableItemCategories'))
 const property = computed({
   get: () => modelFilterAndSortingData.value.property,
   set: (value: string) => {

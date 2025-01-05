@@ -121,7 +121,7 @@ function onMerchantFilterChanged(): void {
 }
 
 .mod-slot-name {
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 .mod-slot-required-ok {
