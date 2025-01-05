@@ -3,7 +3,7 @@ import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IMagazine } from '../../../../models/item/IMagazine'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { MagazineSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
+import { MagazineSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([

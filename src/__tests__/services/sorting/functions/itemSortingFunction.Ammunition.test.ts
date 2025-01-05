@@ -3,7 +3,7 @@ import { IAmmunition } from '../../../../models/item/IAmmunition'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { AmmunitionSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
+import { AmmunitionSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([

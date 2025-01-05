@@ -10,7 +10,7 @@ import { SortingOrder } from '../../../../models/utils/SortingOrder'
 import { InventoryItemService } from '../../../../services/InventoryItemService'
 import Services from '../../../../services/repository/Services'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { ItemSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
+import { ItemSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([

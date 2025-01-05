@@ -3,7 +3,7 @@ import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IMeleeWeapon } from '../../../../models/item/IMeleeWeapon'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { MeleeWeaponSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
+import { MeleeWeaponSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([

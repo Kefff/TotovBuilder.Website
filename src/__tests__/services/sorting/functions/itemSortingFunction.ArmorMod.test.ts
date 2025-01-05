@@ -3,7 +3,7 @@ import { IArmorMod } from '../../../../models/item/IArmorMod'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { ArmorModSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
+import { ArmorModSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([

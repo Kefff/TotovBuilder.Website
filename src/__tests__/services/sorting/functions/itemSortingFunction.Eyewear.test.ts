@@ -3,7 +3,7 @@ import { IEyewear } from '../../../../models/item/IEyewear'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { EyewearSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
+import { EyewearSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([['blindnessProtectionPercentage']])('should sort by %s', async (property: string) => {

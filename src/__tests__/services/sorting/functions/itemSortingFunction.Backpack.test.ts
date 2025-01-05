@@ -3,7 +3,7 @@ import { IBackpack } from '../../../../models/item/IBackpack'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { BackpackSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
+import { BackpackSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([
