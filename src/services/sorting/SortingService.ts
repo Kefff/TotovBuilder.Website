@@ -6,7 +6,24 @@ import StringUtils from '../../utils/StringUtils'
 import { LogService } from '../LogService'
 import Services from '../repository/Services'
 import { IItemSortingFunctionList } from './functions/ISortingFunctionList'
-import { AmmunitionSortingFunctions, ArmorModSortingFunctions, ArmorSortingFunctions, BackpackSortingFunctions, ContainerSortingFunctions, EyewearSortingFunctions, GrenadeSortingFunctions, HeadwearSortingFunctions, ItemSortingFunctions, MagazineSortingFunctions, MeleeWeaponSortingFunctions, ModSortingFunctions, RangedWeaponModSortingFunctions, RangedWeaponSortingFunctions, VestSortingFunctions, WearableSortingFunctions } from './functions/ItemSortingFunctions'
+import {
+  AmmunitionSortingFunctions,
+  ArmorModSortingFunctions,
+  ArmorSortingFunctions,
+  BackpackSortingFunctions,
+  ContainerSortingFunctions,
+  EyewearSortingFunctions,
+  GrenadeSortingFunctions,
+  HeadwearSortingFunctions,
+  ItemSortingFunctions,
+  MagazineSortingFunctions,
+  MeleeWeaponSortingFunctions,
+  ModSortingFunctions,
+  RangedWeaponModSortingFunctions,
+  RangedWeaponSortingFunctions,
+  VestSortingFunctions,
+  WearableSortingFunctions
+} from './functions/itemSortingFunctions'
 
 /**
  * Represents a service responsible for sorting elements.

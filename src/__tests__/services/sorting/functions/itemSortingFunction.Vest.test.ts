@@ -3,7 +3,7 @@ import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IVest } from '../../../../models/item/IVest'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { VestSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunctions'
+import { VestSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([

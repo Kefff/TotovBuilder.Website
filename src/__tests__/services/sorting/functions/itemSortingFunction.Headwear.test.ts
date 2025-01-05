@@ -3,7 +3,7 @@ import { IHeadwear } from '../../../../models/item/IHeadwear'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { HeadwearSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunctions'
+import { HeadwearSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([

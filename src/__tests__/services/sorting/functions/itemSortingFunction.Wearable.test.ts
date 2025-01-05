@@ -4,7 +4,7 @@ import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IWearable } from '../../../../models/item/IWearable'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { WearableSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunctions'
+import { WearableSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([

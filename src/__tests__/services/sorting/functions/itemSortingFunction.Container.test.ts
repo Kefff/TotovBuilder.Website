@@ -3,7 +3,7 @@ import { IContainer } from '../../../../models/item/IContainer'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { ContainerSortingFunctions } from '../../../../services/sorting/functions/ItemSortingFunctions'
+import { ContainerSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([['capacity']])('should sort by %s', async (property: string) => {

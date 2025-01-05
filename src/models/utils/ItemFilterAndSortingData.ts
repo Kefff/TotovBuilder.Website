@@ -1,5 +1,5 @@
 import Services from '../../services/repository/Services'
-import { ItemSortingFunctions } from '../../services/sorting/functions/ItemSortingFunctions'
+import { ItemSortingFunctions } from '../../services/sorting/functions/itemSortingFunctions'
 import { SortingService } from '../../services/sorting/SortingService'
 import { IItem, ItemCategoryId } from '../item/IItem'
 import FilterAndSortingData from './FilterAndSortingData'
