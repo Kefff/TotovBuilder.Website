@@ -2,7 +2,7 @@ import Services from '../../services/repository/Services'
 import { ItemSortingFunctions } from '../../services/sorting/functions/itemSortingFunctions'
 import { SortingService } from '../../services/sorting/SortingService'
 import { IItem, ItemCategoryId } from '../item/IItem'
-import FilterAndSortingData from './FilterAndSortingData'
+import FilterAndSortingData, { FilterAndSortingDataType } from './FilterAndSortingData'
 
 /**
  * Represents the functionalities of data for filtering and sorting the items and builds list.
@@ -45,6 +45,9 @@ export default class ItemFilterAndSortingData extends FilterAndSortingData<IItem
   public get isCategoryIdReadOnly(): boolean {
     return this.availableItemCategories.length === 1
   }
+
+  /** {@inheritDoc FilterAndSortingData."type"} */
+  public type: FilterAndSortingDataType = FilterAndSortingDataType.item
 
   /**
    * Sets the sorting function based on the item category ID.

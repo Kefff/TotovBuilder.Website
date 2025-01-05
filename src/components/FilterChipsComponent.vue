@@ -2,6 +2,7 @@
 import { useBreakpoints, useEventListener, watchDebounced } from '@vueuse/core'
 import { computed, inject, Ref, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
+import { FilterAndSortingDataType } from '../models/utils/FilterAndSortingData'
 import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlobalSidebarOptions'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 import { SortingOrder } from '../models/utils/SortingOrder'
@@ -31,7 +32,7 @@ const _sortingService = Services.get(SortingService)
 
 useEventListener(document, 'keydown', onKeyDown)
 
-const canRemoveCategoryIdFilter = computed(() => isItemFilterAndSortingData.value
+const canRemoveCategoryIdFilter = computed(() => modelFilterAndSortingData.value.type === FilterAndSortingDataType.item
   && (modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId != null
   && !(modelFilterAndSortingData.value as ItemFilterAndSortingData).isCategoryIdReadOnly)
 const canRemoveFilter = computed(() =>
@@ -52,7 +53,7 @@ const filterCaption = computed(() => modelFilterAndSortingData.value.filter)
 const filterTooltip = computed(() => {
   let hasCategory = false
 
-  if (isItemFilterAndSortingData.value) {
+  if (modelFilterAndSortingData.value.type === FilterAndSortingDataType.item) {
     hasCategory = (modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId != null
   }
 
@@ -78,11 +79,10 @@ const filterTooltip = computed(() => {
 
   return tooltip
 })
-const isItemFilterAndSortingData = computed(() => Object.keys(modelFilterAndSortingData.value).some(k => k === 'availableItemCategories'))
 const property = computed({
   get: () => modelFilterAndSortingData.value.property,
   set: (value: string) => {
-    if (isItemFilterAndSortingData.value) {
+    if (modelFilterAndSortingData.value.type === FilterAndSortingDataType.item) {
       _sortingService.setSortingProperty(
         modelFilterAndSortingData.value as ItemFilterAndSortingData,
         value,
@@ -150,7 +150,7 @@ function checkIsFilterAndSortingDataChanged(updatedFilterAndSortingData: GlobalS
     return true
   }
 
-  if (isItemFilterAndSortingData.value
+  if (modelFilterAndSortingData.value.type === FilterAndSortingDataType.item
     && (updatedFilterAndSortingData as ItemFilterAndSortingData).categoryId !== (modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId) {
     return true
   }
@@ -165,7 +165,7 @@ function checkIsFilterAndSortingDataChanged(updatedFilterAndSortingData: GlobalS
 function copyFilterAndSortingData(filterAndSortingToCopy: BuildFilterAndSortingData | ItemFilterAndSortingData): BuildFilterAndSortingData | ItemFilterAndSortingData {
   let copy: BuildFilterAndSortingData | ItemFilterAndSortingData
 
-  if (isItemFilterAndSortingData.value) {
+  if (modelFilterAndSortingData.value.type === FilterAndSortingDataType.item) {
     copy = new ItemFilterAndSortingData(filterAndSortingToCopy as ItemFilterAndSortingData)
   } else {
     copy = new BuildFilterAndSortingData(filterAndSortingToCopy as BuildFilterAndSortingData)

@@ -1,5 +1,5 @@
 import { BuildSummarySortingFunctions } from '../../services/sorting/functions/BuildSummarySortingFunctions'
-import FilterAndSortingData from './FilterAndSortingData'
+import FilterAndSortingData, { FilterAndSortingDataType } from './FilterAndSortingData'
 import { IBuildSummary } from './IBuildSummary'
 
 /**
@@ -13,4 +13,7 @@ export default class BuildFilterAndSortingData extends FilterAndSortingData<IBui
   public constructor(buildFilterAndSortingDataToCopy?: BuildFilterAndSortingData) {
     super(BuildSummarySortingFunctions, buildFilterAndSortingDataToCopy)
   }
+
+  /** {@inheritDoc FilterAndSortingData."type"} */
+  public type: FilterAndSortingDataType = FilterAndSortingDataType.build
 }

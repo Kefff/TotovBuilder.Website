@@ -8,7 +8,7 @@ import { SortingOrder } from './SortingOrder'
 /**
  * Represents data for filtering and sorting elements.
  */
-export default class FilterAndSortingData<T extends IBuildSummary | IItem> {
+export default abstract class FilterAndSortingData<T extends IBuildSummary | IItem> {
   /**
    * Initializes a new instance of the SortingData class.
    * @param sortingFunctions - Available sorting functions.
@@ -53,6 +53,11 @@ export default class FilterAndSortingData<T extends IBuildSummary | IItem> {
   public sortableProperties: { name: string, caption: string }[] = []
 
   /**
+   * Type of filter and sorting data.
+   */
+  public abstract type: FilterAndSortingDataType
+
+  /**
    * List of available sorting functions.
    */
   public get sortingFunctions(): ISortingFunctionList {
@@ -83,4 +88,12 @@ export default class FilterAndSortingData<T extends IBuildSummary | IItem> {
     properties.sort((p1, p2) => StringUtils.compare(p1.caption, p2.caption))
     this.sortableProperties = properties
   }
+}
+
+/**
+ * Types of filter and sorting data.
+ */
+export enum FilterAndSortingDataType {
+  'build',
+  'item'
 }
