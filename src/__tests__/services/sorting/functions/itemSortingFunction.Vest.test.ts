@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IVest } from '../../../../models/item/IVest'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
+import ItemFilterAndSortingData from '../../../../models/utils/ItemFilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { VestSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
@@ -29,7 +30,7 @@ describe('comparisonFunction()', () => {
       capacity: 1
     } as IVest
 
-    let sortingData: FilterAndSortingData<IVest> | undefined = new FilterAndSortingData(VestSortingFunctions)
+    const sortingData: FilterAndSortingData<IVest> | undefined = new ItemFilterAndSortingData(VestSortingFunctions)
     const sortingService = new SortingService()
     sortingService.setSortingProperty(sortingData, property)
 

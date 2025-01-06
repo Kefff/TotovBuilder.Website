@@ -1,9 +1,6 @@
 import { TinyEmitter } from 'tiny-emitter'
 import { IBuild } from '../models/build/IBuild'
-import { IBuildsImportResult } from '../models/utils/IBuildsImportResult'
-import { IBuildSummary } from '../models/utils/IBuildSummary'
 import vueI18n from '../plugins/vueI18n'
-import { BuildPropertiesService } from './BuildPropertiesService'
 import { BuildService } from './BuildService'
 import { FileService } from './FileService'
 import { LogService } from './LogService'
@@ -30,7 +27,7 @@ export class ImportService {
    * @param file - File.
    * @returns Builds contained in the file.
    */
-  public async getBuildsFromFileAsync(file: File | undefined): Promise<IBuildsImportResult | undefined> {
+  public async getBuildsFromFileAsync(file: File | undefined): Promise<IBuild[] | undefined> {
     if (file == null) {
       Services.get(LogService).logError('message.invalidBuildFile')
       Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.importError'))
@@ -50,21 +47,13 @@ export class ImportService {
       return undefined
     }
 
-    const buildPropertiesService = Services.get(BuildPropertiesService)
-    const versionsService = Services.get(VersionService)
-    const buildSummaries: IBuildSummary[] = []
+    const versionService = Services.get(VersionService)
 
     for (const build of builds) {
-      await versionsService.executeBuildMigrationsAsync(build) // Executing migrations on the build in case it is obsolete
-      const summary = await buildPropertiesService.getSummaryAsync(build)
-
-      buildSummaries.push(summary)
+      await versionService.executeBuildMigrationsAsync(build)
     }
 
-    return {
-      builds,
-      buildSummaries
-    }
+    return builds
   }
 
   /**

@@ -1,5 +1,5 @@
 import Services from '../../services/repository/Services'
-import { ItemSortingFunctions } from '../../services/sorting/functions/itemSortingFunctions'
+import { ISortingFunctionList } from '../../services/sorting/functions/ISortingFunctionList'
 import { SortingService } from '../../services/sorting/SortingService'
 import { IItem, ItemCategoryId } from '../item/IItem'
 import FilterAndSortingData, { FilterAndSortingDataType } from './FilterAndSortingData'
@@ -12,8 +12,8 @@ export default class ItemFilterAndSortingData extends FilterAndSortingData<IItem
    * Initializes a new instance of the SortingData class.
    * @param itemFilterAndSortingDataToCopy - Item filter and sorting data to copy.
    */
-  public constructor(itemFilterAndSortingDataToCopy?: ItemFilterAndSortingData) {
-    super(ItemSortingFunctions, itemFilterAndSortingDataToCopy)
+  public constructor(sortingFunctions: ISortingFunctionList, itemFilterAndSortingDataToCopy?: ItemFilterAndSortingData) {
+    super(sortingFunctions, itemFilterAndSortingDataToCopy)
 
     if (itemFilterAndSortingDataToCopy != null) {
       this.availableItemCategories = itemFilterAndSortingDataToCopy.availableItemCategories

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { IItem, ItemCategoryId } from '../models/item/IItem'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
@@ -9,6 +9,7 @@ import vueI18n from '../plugins/vueI18n'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ItemService } from '../services/ItemService'
 import Services from '../services/repository/Services'
+import { ItemSortingFunctions } from '../services/sorting/functions/itemSortingFunctions'
 import { SortingService } from '../services/sorting/SortingService'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
 import ItemsList from './ItemsListComponent.vue'
@@ -53,16 +54,13 @@ const _toolbarButtons: IToolbarButton[] = [
   }
 ]
 
-const filterAndSortingData = ref(new ItemFilterAndSortingData())
+const filterAndSortingData = ref(new ItemFilterAndSortingData(ItemSortingFunctions))
 const isLoading = ref(true)
-const items = ref<IItem[]>([])
 const itemsToolbar = useTemplateRef('itemsToolbar')
 
 const toolbarContainer = computed(() => itemsToolbar.value?.container)
 
-onMounted(() => {
-  getInitialFilterAndSortingData()
-})
+onMounted(() => getInitialFilterAndSortingData())
 
 /**
  * Displays the general options sidebar.
@@ -101,8 +99,10 @@ function getInitialFilterAndSortingData(): void {
  */
 async function getItemsAsync(): Promise<IItem[]> {
   isLoading.value = true
+
   const items = await _itemService.getAllAsync()
-  isLoading.value = false
+
+  nextTick(() => isLoading.value = false)
 
   return items
 }
@@ -184,8 +184,7 @@ function onItemSelected(selectedItems: IItem[]): void {
       :element-to-stick-to="toolbarContainer"
       :get-items-function="getItemsAsync"
       :has-selection="false"
-      :is-loading="isLoading"
-      :items="items"
+      :update-items-list-when-merchant-filter-changes="false"
       class="items-list"
       @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
       @update:selected-items="onItemSelected"

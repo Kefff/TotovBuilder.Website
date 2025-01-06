@@ -2,7 +2,6 @@
 import { useEventListener } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
-import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildsExportSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { IToolbarButton } from '../../models/utils/IToolbarButton'
 import vueI18n from '../../plugins/vueI18n'
@@ -19,13 +18,13 @@ const _buildService = Services.get(BuildService)
 const _exportService = Services.get(ExportService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
-const toolbarButtons: IToolbarButton[] = [
+const _toolbarButtons: IToolbarButton[] = [
   {
     action: exportBuildsAsync,
     canBeMovedToSidebar: () => false,
     caption: () => `${vueI18n.t('caption.save')}` + (selectedBuilds.value.length > 1 ? ` (${selectedBuilds.value.length})` : ''),
     icon: () => 'download',
-    isDisabled: () => selectedBuilds.value?.length == 0,
+    isDisabled: () => selectedBuilds.value?.length === 0,
     name: 'export',
     showCaption: () => 'always',
     variant: () => 'success'
@@ -35,19 +34,21 @@ const toolbarButtons: IToolbarButton[] = [
     canBeMovedToSidebar: () => false,
     caption: () => allSelected.value ? vueI18n.t('caption.deselectAll') : vueI18n.t('caption.selectAll'),
     icon: () => allSelected.value ? 'folder-minus' : 'folder-plus',
-    isVisible: () => modelParameters.value.length > 1,
+    isVisible: () => isToggleSelectionVisible.value,
     name: 'toggleSelection',
     style: () => 'outlined'
   }
 ]
 
-const allSelected = computed(() => selectedBuilds.value.length === modelParameters.value.length)
-const toolbarContainer = computed(() => buildsExportToolbar.value?.container)
-
-const buildsExportToolbar = useTemplateRef('buildsExportToolbar')
-const selectedBuilds = ref<IBuildSummary[]>([])
-
 useEventListener(document, 'keydown', onKeyDown)
+
+const builds = ref<IBuild[]>([])
+const buildsExportToolbar = useTemplateRef('buildsExportToolbar')
+const selectedBuilds = ref<IBuild[]>([])
+
+const allSelected = computed(() => selectedBuilds.value.length === builds.value.length)
+const isToggleSelectionVisible = computed(() => builds.value.length > 1)
+const toolbarContainer = computed(() => buildsExportToolbar.value?.container)
 
 /**
  * Exports the selected builds.
@@ -68,13 +69,24 @@ async function exportBuildsAsync(): Promise<void> {
 }
 
 /**
+ * Gets the builds to export.
+ */
+function getBuildsToExport(): IBuild[] {
+  builds.value = modelParameters.value.getBuildsToExportFunction()
+
+  return builds.value
+}
+
+/**
  * Reacts to a keyboard event.
  * @param event - Keyboard event.
  */
 function onKeyDown(event: KeyboardEvent): void {
-  if (event.key === 'a' && (event.ctrlKey || event.metaKey)) {
+  if (event.key === 'a'
+    && (event.ctrlKey
+      || event.metaKey)) {
     event.preventDefault() // Prevents the browser action from being triggered
-    selectedBuilds.value = modelParameters.value
+    selectedBuilds.value = builds.value
   }
 }
 
@@ -85,7 +97,7 @@ function toggleSelection(): void {
   if (allSelected.value) {
     selectedBuilds.value = []
   } else {
-    selectedBuilds.value = modelParameters.value
+    selectedBuilds.value = builds.value
   }
 }
 </script>
@@ -104,12 +116,12 @@ function toggleSelection(): void {
     <div class="builds-export-sidebar-selection">
       <Toolbar
         ref="buildsExportToolbar"
-        :buttons="toolbarButtons"
+        :buttons="_toolbarButtons"
         style="margin-top: 1px;"
       />
       <BuildsList
         v-model:selected-builds="selectedBuilds"
-        :build-summaries="parameters"
+        :get-builds-function="getBuildsToExport"
         :element-to-stick-to="toolbarContainer"
         :infinite-scrolling="true"
         :max-elements-per-line="1"

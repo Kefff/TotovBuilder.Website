@@ -2,7 +2,6 @@
 import { useEventListener } from '@vueuse/core'
 import { computed, ref, useTemplateRef } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
-import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { IToolbarButton } from '../../models/utils/IToolbarButton'
 import vueI18n from '../../plugins/vueI18n'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
@@ -18,13 +17,14 @@ const _globalSidebarService = Services.get(GlobalSidebarService)
 const _importService = Services.get(ImportService)
 const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
-const toolbarButtons: IToolbarButton[] = [
+const _acceptedFileExtension = _websiteConfigurationService.configuration.exportFileExtension
+const _toolbarButtons: IToolbarButton[] = [
   {
     action: importBuildsAsync,
     canBeMovedToSidebar: () => false,
     caption: () => `${vueI18n.t('caption.import')}` + (selectedBuilds.value.length > 1 ? ` (${selectedBuilds.value.length})` : ''),
     icon: () => 'file-upload',
-    isDisabled: () => selectedBuilds.value?.length == 0,
+    isDisabled: () => selectedBuilds.value?.length === 0,
     name: 'import',
     showCaption: () => 'always',
     variant: () => 'success'
@@ -34,24 +34,23 @@ const toolbarButtons: IToolbarButton[] = [
     canBeMovedToSidebar: () => false,
     caption: () => allSelected.value ? vueI18n.t('caption.deselectAll') : vueI18n.t('caption.selectAll'),
     icon: () => allSelected.value ? 'folder-minus' : 'folder-plus',
-    isVisible: () => availableBuildSummaries.value.length > 1,
+    isVisible: () => isToggleSelectionVisible.value,
     name: 'toggleSelection',
     style: () => 'outlined'
   }
 ]
 
-const allSelected = computed(() => selectedBuilds.value.length === availableBuildSummaries.value.length)
-const toolbarContainer = computed(() => buildsImportToolbar.value?.container)
+useEventListener(document, 'keydown', onKeyDown)
 
-const acceptedFileExtension = _websiteConfigurationService.configuration.exportFileExtension
-const availableBuilds = ref<IBuild[]>([])
-const availableBuildSummaries = ref<IBuildSummary[]>([])
+const builds = ref<IBuild[]>([])
 const buildsImportToolbar = useTemplateRef('buildsImportToolbar')
 const importInput = ref<HTMLInputElement>()
 const isFileSelected = ref(false)
-const selectedBuilds = ref<IBuildSummary[]>([])
+const selectedBuilds = ref<IBuild[]>([])
 
-useEventListener(document, 'keydown', onKeyDown)
+const allSelected = computed(() => selectedBuilds.value.length === builds.value.length)
+const isToggleSelectionVisible = computed(() => builds.value.length > 1)
+const toolbarContainer = computed(() => buildsImportToolbar.value?.container)
 
 /**
  * Displays the file selection popup.
@@ -64,7 +63,7 @@ function displayFileSelectionPopup(): void {
  * Imports the selected builds.
  */
 async function importBuildsAsync(): Promise<void> {
-  const buildsToImport = availableBuilds.value.filter(ab => selectedBuilds.value.some(sb => sb.id === ab.id))
+  const buildsToImport = builds.value.filter(ab => selectedBuilds.value.some(sb => sb.id === ab.id))
   await _importService.importAsync(buildsToImport)
   _globalSidebarService.close('BuildsImportSidebar')
 }
@@ -74,9 +73,11 @@ async function importBuildsAsync(): Promise<void> {
  * @param event - Keyboard event.
  */
 function onKeyDown(event: KeyboardEvent): void {
-  if (event.key === 'a' && (event.ctrlKey || event.metaKey)) {
+  if (event.key === 'a'
+    && (event.ctrlKey
+      || event.metaKey)) {
     event.preventDefault() // Prevents the browser action from being triggered
-    selectedBuilds.value = availableBuildSummaries.value
+    selectedBuilds.value = builds.value
   }
 }
 
@@ -84,19 +85,17 @@ function onKeyDown(event: KeyboardEvent): void {
  * Read builds from the imported file.
  */
 async function readBuildsAsync(): Promise<void> {
-  availableBuilds.value = []
-  availableBuildSummaries.value = []
+  builds.value = []
 
   if (importInput.value!.files?.length === 0) {
     return
   }
 
   const buildFile = importInput.value!.files?.[0]
-  const buildsImportResult = await _importService.getBuildsFromFileAsync(buildFile)
+  const buildsToImport = await _importService.getBuildsFromFileAsync(buildFile)
 
-  if (buildsImportResult != null) {
-    availableBuilds.value = buildsImportResult.builds
-    availableBuildSummaries.value = buildsImportResult.buildSummaries
+  if (buildsToImport != null) {
+    builds.value = buildsToImport
     isFileSelected.value = true
   }
 }
@@ -108,7 +107,7 @@ function toggleSelection(): void {
   if (allSelected.value) {
     selectedBuilds.value = []
   } else {
-    selectedBuilds.value = availableBuildSummaries.value
+    selectedBuilds.value = builds.value
   }
 }
 </script>
@@ -143,13 +142,13 @@ function toggleSelection(): void {
       >
         <Toolbar
           ref="buildsImportToolbar"
-          :buttons="toolbarButtons"
+          :buttons="_toolbarButtons"
           style="margin-top: 1px;"
         />
         <BuildsList
           v-model:selected-builds="selectedBuilds"
-          :build-summaries="availableBuildSummaries"
           :element-to-stick-to="toolbarContainer"
+          :get-builds-function="() => builds"
           :infinite-scrolling="true"
           :max-elements-per-line="1"
           :selection-options="{
@@ -177,7 +176,7 @@ function toggleSelection(): void {
               >{{ `(${selectedBuilds.length})` }}</span>
             </Button>
             <Button
-              v-if="availableBuildSummaries.length > 1"
+              v-if="builds.length > 1"
               outlined
               @click="toggleSelection()"
             >
@@ -199,7 +198,7 @@ function toggleSelection(): void {
     ref="importInput"
     class="builds-import-sidebar-hidden-input"
     type="file"
-    :accept="acceptedFileExtension"
+    :accept="_acceptedFileExtension"
     @change="readBuildsAsync()"
   >
 </template>

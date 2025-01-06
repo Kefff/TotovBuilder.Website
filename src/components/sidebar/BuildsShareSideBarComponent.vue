@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import { useEventListener } from '@vueuse/core'
+import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue'
 import { IBuild } from '../../models/build/IBuild'
 import { IBuildsShareTypeOption } from '../../models/utils/IBuildsShareTypeOption'
 import { BuildsToTextType } from '../../models/utils/IBuildsToTextOptions'
-import { IBuildSummary } from '../../models/utils/IBuildSummary'
 import { BuildsShareSideBarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { IToolbarButton } from '../../models/utils/IToolbarButton'
 import vueI18n from '../../plugins/vueI18n'
@@ -24,7 +24,28 @@ const _buildPropertiesService = Services.get(BuildPropertiesService)
 const _logService = Services.get(LogService)
 const _notificationService = Services.get(NotificationService)
 
-const typeOptions: IBuildsShareTypeOption[] = [
+const _toolbarButtons: IToolbarButton[] = [
+  {
+    action: selectBuildsToShare,
+    canBeMovedToSidebar: () => false,
+    caption: () => `${vueI18n.t('caption.share')}` + (selectedBuilds.value.length > 1 ? ` (${selectedBuilds.value.length})` : ''),
+    icon: () => 'download',
+    isDisabled: () => selectedBuilds.value?.length === 0,
+    name: 'share',
+    showCaption: () => 'always',
+    variant: () => 'success'
+  },
+  {
+    action: toggleSelection,
+    canBeMovedToSidebar: () => false,
+    caption: () => allSelected.value ? vueI18n.t('caption.deselectAll') : vueI18n.t('caption.selectAll'),
+    icon: () => allSelected.value ? 'folder-minus' : 'folder-plus',
+    isVisible: () => isToggleSelectionVisible.value,
+    name: 'toggleSelection',
+    style: () => 'outlined'
+  }
+]
+const _typeOptions: IBuildsShareTypeOption[] = [
   {
     caption: 'caption.redditMarkdown',
     icon: ['fab', 'reddit-alien'],
@@ -43,41 +64,24 @@ const typeOptions: IBuildsShareTypeOption[] = [
     type: 'simpleText'
   }
 ]
-const toolbarButtons: IToolbarButton[] = [
-  {
-    action: selectBuildsToShare,
-    canBeMovedToSidebar: () => false,
-    caption: () => `${vueI18n.t('caption.share')}` + (selectedBuilds.value.length > 1 ? ` (${selectedBuilds.value.length})` : ''),
-    icon: () => 'download',
-    isDisabled: () => selectedBuilds.value?.length == 0,
-    name: 'share',
-    showCaption: () => 'always',
-    variant: () => 'success'
-  },
-  {
-    action: toggleSelection,
-    canBeMovedToSidebar: () => false,
-    caption: () => allSelected.value ? vueI18n.t('caption.deselectAll') : vueI18n.t('caption.selectAll'),
-    icon: () => allSelected.value ? 'folder-minus' : 'folder-plus',
-    isVisible: () => availableBuilds.value.length > 1,
-    name: 'toggleSelection',
-    style: () => 'outlined'
-  }
-]
-const availableBuilds = ref<IBuildSummary[]>([])
+
+useEventListener(document, 'keydown', onKeyDown)
+
+const builds = ref<IBuild[]>([])
 const buildsShareToolbar = useTemplateRef('buildsShareToolbar')
 const buildsToShare = ref<IBuild[]>([])
 const includeEmojis = ref(true)
 const includeLink = ref(true)
 const includePrices = ref(true)
-const isLoading = ref(false)
+const isGenerating = ref(false)
+const isLoading = ref(true)
 const language = ref<string>(vueI18n.locale.value)
 const linkOnly = ref(false)
-const selectedBuilds = ref<IBuildSummary[]>([])
+const selectedBuilds = ref<IBuild[]>([])
 const text = ref<string>()
-const typeOption = ref<IBuildsShareTypeOption>(typeOptions[0])
+const typeOption = ref<IBuildsShareTypeOption>(_typeOptions[0])
 
-const allSelected = computed(() => selectedBuilds.value.length === availableBuilds.value.length)
+const allSelected = computed(() => selectedBuilds.value.length === builds.value.length)
 const buildsToTextType = computed(() => {
   switch (typeOption.value.type) {
     case 'discordMarkdown':
@@ -89,6 +93,7 @@ const buildsToTextType = computed(() => {
       return undefined
   }
 })
+const isToggleSelectionVisible = computed(() => builds.value.length > 1)
 const lengthCaption = computed(() => `${vueI18n.t('caption.length')}: ${text.value?.length.toLocaleString() ?? 0} ${vueI18n.t('caption.characters').toLocaleLowerCase()}`)
 const shareExplanation = computed(() => {
   switch (typeOption.value.type) {
@@ -123,10 +128,19 @@ function copyText(): void {
 }
 
 /**
+ * Gets the builds to share.
+ */
+function getBuildsToShare(): IBuild[] {
+  builds.value = props.parameters.getBuildsToShareFunction!()
+
+  return builds.value
+}
+
+/**
  * Gets the text.
  */
 async function getTextAsync(): Promise<void> {
-  isLoading.value = true
+  isGenerating.value = true
 
   text.value = await _buildPropertiesService.toTextAsync(
     buildsToShare.value,
@@ -139,18 +153,34 @@ async function getTextAsync(): Promise<void> {
       type: buildsToTextType.value!
     })
 
-  isLoading.value = false
+  nextTick(() => isGenerating.value = false)
 }
 
 /**
  * Initializes the component.
  */
 function initialize(): void {
-  availableBuilds.value = props.parameters.buildSummaries ?? []
-  buildsToShare.value = props.parameters.buildToShare != null ? [props.parameters.buildToShare] : []
+  isLoading.value = true
 
-  if (buildsToShare.value.length > 0 && typeOption.value != null) {
+  if (props.parameters.buildToShare != null) {
+    buildsToShare.value = [props.parameters.buildToShare]
     getTextAsync()
+  }
+
+  nextTick(() => isLoading.value = false)
+}
+
+/**
+ * Reacts to a keyboard event.
+ * @param event - Keyboard event.
+ */
+function onKeyDown(event: KeyboardEvent): void {
+  if (buildsToShare.value.length === 0
+    && event.key === 'a'
+    && (event.ctrlKey
+      || event.metaKey)) {
+    event.preventDefault() // Prevents the browser action from being triggered
+    selectedBuilds.value = builds.value
   }
 }
 
@@ -179,7 +209,7 @@ function toggleSelection(): void {
   if (allSelected.value) {
     selectedBuilds.value = []
   } else {
-    selectedBuilds.value = availableBuilds.value
+    selectedBuilds.value = builds.value
   }
 }
 </script>
@@ -198,18 +228,19 @@ function toggleSelection(): void {
     class="builds-share-sidebar"
     :class="{ 'builds-share-sidebar-large': buildsToShare.length > 0 }"
   >
+    <Loading v-if="isLoading" />
     <div
-      v-if="buildsToShare.length === 0"
+      v-else-if="!isLoading && buildsToShare.length === 0"
       class="builds-share-sidebar-selection"
     >
       <Toolbar
         ref="buildsShareToolbar"
-        :buttons="toolbarButtons"
+        :buttons="_toolbarButtons"
         style="margin-top: 1px;"
       />
       <BuildsList
         v-model:selected-builds="selectedBuilds"
-        :build-summaries="availableBuilds"
+        :get-builds-function="getBuildsToShare"
         :element-to-stick-to="toolbarContainer"
         :infinite-scrolling="true"
         :max-elements-per-line="1"
@@ -218,15 +249,16 @@ function toggleSelection(): void {
           isEnabled: true,
           isMultiSelection: true
         }"
-        :show-not-exported="false"
+        :show-actions-button="false"
+        :show-not-exported="true"
       />
     </div>
-    <div v-else>
+    <div v-else-if="!isLoading">
       <div class="builds-share-sidebar-options">
         <div class="builds-share-sidebar-option">
           <Dropdown
             v-model="typeOption"
-            :options="typeOptions"
+            :options="_typeOptions"
             data-key="caption"
             :placeholder="$t('caption.selectFormat')"
             class="builds-share-sidebar-type"
@@ -380,7 +412,7 @@ function toggleSelection(): void {
         </div>
         <div class="builds-share-sidebar-option builds-share-sidebar-copy-button">
           <Button
-            v-if="!isLoading && typeOption != null"
+            v-if="!isGenerating && typeOption != null"
             @click="copyText()"
           >
             <font-awesome-icon
@@ -390,7 +422,7 @@ function toggleSelection(): void {
             <span>{{ $t('caption.copyElement') }}</span>
           </Button>
           <span
-            v-if="!isLoading && typeOption != null"
+            v-if="!isGenerating && typeOption != null"
             class="builds-share-sidebar-text-length"
           >
             {{ lengthCaption }}
@@ -398,13 +430,13 @@ function toggleSelection(): void {
         </div>
       </div>
       <div
-        v-if="isLoading"
+        v-if="isGenerating"
         class="builds-share-sidebar-option builds-share-sidebar-loading"
       >
         <Loading />
       </div>
       <div
-        v-if="!isLoading && typeOption != null"
+        v-if="!isGenerating && typeOption != null"
         class="builds-share-sidebar-option builds-share-sidebar-text"
       >
         <TextArea

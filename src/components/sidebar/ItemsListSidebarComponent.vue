@@ -8,6 +8,7 @@ import { SortingOrder } from '../../models/utils/SortingOrder'
 import vueI18n from '../../plugins/vueI18n'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
+import { ItemSortingFunctions } from '../../services/sorting/functions/itemSortingFunctions'
 import { SortingService } from '../../services/sorting/SortingService'
 import StringUtils from '../../utils/StringUtils'
 import InputTextField from '../InputTextFieldComponent.vue'
@@ -30,7 +31,7 @@ const availableCategories = computed(() => {
 const categoryId = computed<ItemCategoryId | undefined>({
   get: () => modelParameters.value.categoryId,
   set: (value: ItemCategoryId | undefined) => {
-    const updatedItemFilterAndSortingData = new ItemFilterAndSortingData(modelParameters.value)
+    const updatedItemFilterAndSortingData = new ItemFilterAndSortingData(modelParameters.value.sortingFunctions, modelParameters.value)
     updatedItemFilterAndSortingData.categoryId = value
     modelParameters.value = updatedItemFilterAndSortingData
   }
@@ -38,7 +39,7 @@ const categoryId = computed<ItemCategoryId | undefined>({
 const filter = computed({
   get: () => modelParameters.value.filter,
   set: (value: string | undefined) => {
-    const updatedItemFilterAndSortingData = new ItemFilterAndSortingData(modelParameters.value)
+    const updatedItemFilterAndSortingData = new ItemFilterAndSortingData(modelParameters.value.sortingFunctions, modelParameters.value)
     updatedItemFilterAndSortingData.filter = value
     modelParameters.value = updatedItemFilterAndSortingData
   }
@@ -47,14 +48,14 @@ const order = computed({
   get: () => modelParameters.value.order,
   set: (value: SortingOrder) => {
     _sortingService.setSortingProperty(modelParameters.value, modelParameters.value.property, value)
-    modelParameters.value = new ItemFilterAndSortingData(modelParameters.value)
+    modelParameters.value = new ItemFilterAndSortingData(modelParameters.value.sortingFunctions, modelParameters.value)
   }
 })
 const property = computed({
   get: () => modelParameters.value.property,
   set: (value: string) => {
     _sortingService.setSortingProperty(modelParameters.value, value, order.value)
-    modelParameters.value = new ItemFilterAndSortingData(modelParameters.value)
+    modelParameters.value = new ItemFilterAndSortingData(modelParameters.value.sortingFunctions, modelParameters.value)
   }
 })
 
@@ -123,7 +124,7 @@ function onFilterKeyDown(event: KeyboardEvent): void {
  * Resets the filter an sort.
  */
 function reset(): void {
-  modelParameters.value = new ItemFilterAndSortingData()
+  modelParameters.value = new ItemFilterAndSortingData(ItemSortingFunctions)
   _globalSidebarService.close('ItemsListSidebar')
 }
 </script>

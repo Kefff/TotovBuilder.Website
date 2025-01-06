@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IRangedWeaponMod } from '../../../../models/item/IRangedWeaponMod'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
+import ItemFilterAndSortingData from '../../../../models/utils/ItemFilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { RangedWeaponModSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
@@ -31,7 +32,7 @@ describe('comparisonFunction()', () => {
       recoilModifierPercentage: 1
     } as IRangedWeaponMod
 
-    let sortingData: FilterAndSortingData<IRangedWeaponMod> | undefined = new FilterAndSortingData(RangedWeaponModSortingFunctions)
+    const sortingData: FilterAndSortingData<IRangedWeaponMod> | undefined = new ItemFilterAndSortingData(RangedWeaponModSortingFunctions)
     const sortingService = new SortingService()
     sortingService.setSortingProperty(sortingData, property)
 

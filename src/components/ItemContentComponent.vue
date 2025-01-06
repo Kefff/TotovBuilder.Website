@@ -90,17 +90,9 @@ function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefin
 
 /**
  * Gets the items the user can select as content of the item.
- * @param forceItemsListUpdate - Indicates whether the cached list of accepted items must be updated.
- * `getAcceptedItemsAsync` is designed to be executed by the `ItemsListComponent`, notably, when the
- * merchants filter changes and the component is displayed.
- * In theory, the merchant filter change event should update `_acceptedItemsNeedsUpdated` and it
- * should be sufficient to indicate that le cached list must be updated.
- * But since we cannot know whether `_acceptedItemsNeedsUpdated` has been updated by the event
- * before `getAcceptedItemsAsync` is called, we need to make sure `getAcceptedItemsAsync`
- * will update the cached item list thanks to this parameter.
  */
-async function getAcceptedItemsAsync(forceItemsListUpdate: boolean): Promise<IItem[]> {
-  if (_acceptedItemsNeedsUpdated || forceItemsListUpdate) {
+async function getAcceptedItemsAsync(): Promise<IItem[]> {
+  if (_acceptedItemsNeedsUpdated) {
     acceptedItems.value = await _itemContentComponentService.getAcceptedItemsAsync(props.containerItem.id)
   }
 

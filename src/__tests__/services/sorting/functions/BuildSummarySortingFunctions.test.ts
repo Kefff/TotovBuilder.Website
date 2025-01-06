@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
+import BuildFilterAndSortingData from '../../../../models/utils/BuildFilterAndSortingData'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
 import { IBuildSummary } from '../../../../models/utils/IBuildSummary'
 import { SortingOrder } from '../../../../models/utils/SortingOrder'
 import { SortingService } from '../../../../services/sorting/SortingService'
-import { BuildSummarySortingFunctions } from '../../../../services/sorting/functions/BuildSummarySortingFunctions'
 
 describe('comparisonFunction()', () => {
   it.each([
@@ -79,7 +79,7 @@ describe('comparisonFunction()', () => {
       weight: 1
     } as IBuildSummary
 
-    let sortingData: FilterAndSortingData<IBuildSummary> | undefined = new FilterAndSortingData(BuildSummarySortingFunctions)
+    const sortingData: FilterAndSortingData<IBuildSummary> | undefined = new BuildFilterAndSortingData()
     const sortingService = new SortingService()
     sortingService.setSortingProperty(sortingData, property, SortingOrder.asc)
 

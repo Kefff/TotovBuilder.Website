@@ -2,7 +2,6 @@ import { IBuild } from '../build/IBuild'
 import { IShoppingListItem } from '../build/IShoppingListItem'
 import { IItem } from '../item/IItem'
 import BuildFilterAndSortingData from './BuildFilterAndSortingData'
-import { IBuildSummary } from './IBuildSummary'
 import { IGeneralOptionsGroup } from './IGeneralOptionsGroup'
 import ItemFilterAndSortingData from './ItemFilterAndSortingData'
 import { IToolbarButton } from './IToolbarButton'
@@ -85,23 +84,44 @@ export type GlobalSidebarDisplayedComponentParameters =
 /**
  * Builds export sidebar parameters.
  */
-export type BuildsExportSidebarParameters = IBuildSummary[]
+export type BuildsExportSidebarParameters = {
+  /**
+   * Function for getting the builds the user can export.
+   */
+  getBuildsToExportFunction: () => IBuild[],
+}
 
 /**
  * Share builds sidebar parameters.
- * Using buildsToShare immediatly display them in the share screen while using buildSummaries will display them in a BuildsList for the user to select the ones to share.
  */
 export type BuildsShareSideBarParameters = {
-  buildToShare?: IBuild,
-  buildSummaries?: IBuildSummary[]
+  /**
+   * Build to share sharing directly from a build (no selection screen).
+   */
+  buildToShare?: IBuild
+  /**
+   * Function for getting the builds the user can share from a selection screen.
+   */
+  getBuildsToShareFunction?: () => IBuild[]
 }
 
 /**
  * Item selection sidebar parameters.
  */
 export type ItemSelectionSidebarParameters = {
+  /**
+   * Data for filtering and sorting the items the user can select.
+   */
   filterAndSortingData: ItemFilterAndSortingData | undefined,
-  getSelectableItemsFunction: (forceItemsListUpdate: boolean) => Promise<IItem[]>,
+
+  /**
+   * Function for getting the items the user can select.
+   */
+  getSelectableItemsFunction: () => Promise<IItem[]>,
+
+  /**
+   * Items that appear as selected when the sidebar is displayed.
+   */
   selectedItems: IItem[],
 }
 
@@ -109,7 +129,14 @@ export type ItemSelectionSidebarParameters = {
  * Shopping list sidebar parameters.
  */
 export type ShoppingListSidebarParameters = {
+  /**
+   * Name of the build for which the shopping list is displayed.
+   */
   buildName: string,
+
+  /**
+   * Shopping list.
+   */
   shoppingList: IShoppingListItem[]
 }
 

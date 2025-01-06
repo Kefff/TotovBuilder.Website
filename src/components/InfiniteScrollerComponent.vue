@@ -4,6 +4,7 @@ import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 
 const props = withDefaults(
   defineProps<{
+    autoScrollToFirstElement?: boolean,
     elementsPerLine?: number,
     getKeyFunction: (element: unknown) => string,
     elements: unknown[],
@@ -12,6 +13,7 @@ const props = withDefaults(
     scrollToIndex?: number
   }>(),
   {
+    autoScrollToFirstElement: true,
     elementsPerLine: 1,
     maxLinesAmount: undefined,
     scrollToIndex: undefined
@@ -88,7 +90,7 @@ function onLazyLoad(event: VirtualScrollerLazyEvent): void {
 
   displayedElementGroups.value = newDisplayedElementGroups
 
-  isLoading.value = false
+  nextTick(() => isLoading.value = false)
 }
 
 /**
@@ -96,6 +98,10 @@ function onLazyLoad(event: VirtualScrollerLazyEvent): void {
  * @param elementIndex - Index of the element to scroll to. First element when undefined.
  */
 function scrollToElement(elementIndex?: number): void {
+  if (elementIndex == null && !props.autoScrollToFirstElement) {
+    return
+  }
+
   nextTick(() => { // Required for the scroll to triggered after initialization
     if (elementIndex == null || elementIndex < 0) {
       elementIndex = 0

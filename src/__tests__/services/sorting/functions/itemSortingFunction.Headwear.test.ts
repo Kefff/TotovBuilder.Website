@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { IHeadwear } from '../../../../models/item/IHeadwear'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
+import ItemFilterAndSortingData from '../../../../models/utils/ItemFilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { HeadwearSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
@@ -105,7 +106,7 @@ describe('comparisonFunction()', () => {
       turningSpeedModifierPercentage: 1
     } as IHeadwear
 
-    let sortingData: FilterAndSortingData<IHeadwear> | undefined = new FilterAndSortingData(HeadwearSortingFunctions)
+    const sortingData: FilterAndSortingData<IHeadwear> | undefined = new ItemFilterAndSortingData(HeadwearSortingFunctions)
     const sortingService = new SortingService()
     sortingService.setSortingProperty(sortingData, property)
 

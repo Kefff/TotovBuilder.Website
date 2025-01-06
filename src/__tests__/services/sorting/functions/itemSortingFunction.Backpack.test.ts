@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { IBackpack } from '../../../../models/item/IBackpack'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
+import ItemFilterAndSortingData from '../../../../models/utils/ItemFilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { BackpackSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
@@ -30,7 +31,7 @@ describe('comparisonFunction()', () => {
       turningSpeedModifierPercentage: 1
     } as IBackpack
 
-    let sortingData: FilterAndSortingData<IBackpack> | undefined = new FilterAndSortingData(BackpackSortingFunctions)
+    const sortingData: FilterAndSortingData<IBackpack> | undefined = new ItemFilterAndSortingData(BackpackSortingFunctions)
     const sortingService = new SortingService()
     sortingService.setSortingProperty(sortingData, property)
 

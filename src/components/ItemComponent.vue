@@ -16,6 +16,7 @@ import { ItemPropertiesService } from '../services/ItemPropertiesService'
 import { ItemService } from '../services/ItemService'
 import { PresetService } from '../services/PresetService'
 import Services from '../services/repository/Services'
+import { ItemSortingFunctions } from '../services/sorting/functions/itemSortingFunctions'
 import InputNumberField from './InputNumberFieldComponent.vue'
 import SelectedItemItemCardSelector from './item-card/SelectedItemItemCardSelectorComponent.vue'
 import ItemContent from './ItemContentComponent.vue'
@@ -31,7 +32,7 @@ const props = withDefaults(
   defineProps<{
     canBeLooted?: boolean,
     forceQuantityToMaxSelectableAmount?: boolean,
-    getAcceptedItemsFunction: (forceItemsListUpdate: boolean) => Promise<IItem[]>,
+    getAcceptedItemsFunction: () => Promise<IItem[]>,
     inventoryItem?: IInventoryItem,
     isBaseItem?: boolean,
     isMainInventorySlotItem?: boolean,
@@ -248,7 +249,7 @@ function onSelectionInputClick(): void {
   let filterAndSortingData = lastSelectionFilterAndSortingData.value
 
   if (filterAndSortingData == null) {
-    filterAndSortingData = new ItemFilterAndSortingData()
+    filterAndSortingData = new ItemFilterAndSortingData(ItemSortingFunctions)
   }
 
   _globalSidebarService.display({

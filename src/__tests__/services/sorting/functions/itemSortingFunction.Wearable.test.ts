@@ -3,6 +3,7 @@ import { IBackpack } from '../../../../models/item/IBackpack'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import { IWearable } from '../../../../models/item/IWearable'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
+import ItemFilterAndSortingData from '../../../../models/utils/ItemFilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { WearableSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
@@ -27,7 +28,7 @@ describe('comparisonFunction()', () => {
       turningSpeedModifierPercentage: 1
     } as IBackpack
 
-    const sortingData: FilterAndSortingData<IWearable> | undefined = new FilterAndSortingData(WearableSortingFunctions)
+    const sortingData: FilterAndSortingData<IWearable> | undefined = new ItemFilterAndSortingData(WearableSortingFunctions)
     const sortingService = new SortingService()
     sortingService.setSortingProperty(sortingData, property)
 

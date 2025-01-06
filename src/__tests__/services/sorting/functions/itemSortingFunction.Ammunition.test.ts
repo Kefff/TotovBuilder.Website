@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { IAmmunition } from '../../../../models/item/IAmmunition'
 import { ItemCategoryId } from '../../../../models/item/IItem'
 import FilterAndSortingData from '../../../../models/utils/FilterAndSortingData'
+import ItemFilterAndSortingData from '../../../../models/utils/ItemFilterAndSortingData'
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { AmmunitionSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
@@ -37,7 +38,7 @@ describe('comparisonFunction()', () => {
       recoilModifier: 1
     } as IAmmunition
 
-    const sortingData: FilterAndSortingData<IAmmunition> | undefined = new FilterAndSortingData(AmmunitionSortingFunctions)
+    const sortingData: FilterAndSortingData<IAmmunition> | undefined = new ItemFilterAndSortingData(AmmunitionSortingFunctions)
     const sortingService = new SortingService()
     sortingService.setSortingProperty(sortingData, property)
 

@@ -238,9 +238,9 @@ onMounted(() => {
   isEditing.value = isNewBuild.value
 
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
-    _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitialized)
+    _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServiceInitializedAsync)
   } else {
-    onItemServiceInitialized()
+    onItemServiceInitializedAsync()
   }
 
   window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
@@ -261,7 +261,7 @@ onUnmounted(() => {
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 })
 
-watch(() => route.params, onItemServiceInitialized)
+watch(() => route.params, onItemServiceInitializedAsync)
 
 /**
  * Cancels modifications and stops edit mode.
@@ -494,25 +494,26 @@ function onInventorySlotChanged(index: number, newInventorySlot: IInventorySlot)
  *
  * Initializes the build.
  */
-function onItemServiceInitialized(): void {
+async function onItemServiceInitializedAsync(): Promise<void> {
   isLoading.value = true
 
-  setTimeout(async () => { // Did not find another solution to make the loading animation appear when opening a build from the builds list (nextTick does not work)
-    if (route.name === 'CopyBuild') {
-      build.value = _buildComponentService.getBuild(route.params['id'] as string)
-      copy()
-    } else if (route.name === 'ShareBuild') {
-      const sharableString = route.params['sharedBuild'] as string
+  // setTimeout(async () => { // Did not find another solution to make the loading animation appear when opening a build from the builds list (nextTick does not work)
+  if (route.name === 'CopyBuild') {
+    build.value = _buildComponentService.getBuild(route.params['id'] as string)
+    copy()
+  } else if (route.name === 'ShareBuild') {
+    const sharableString = route.params['sharedBuild'] as string
 
-      await getSharedBuildAsync(sharableString)
-      expandAll()
-    } else {
-      build.value = _buildComponentService.getBuild(route.params['id'] as string)
-    }
+    await getSharedBuildAsync(sharableString)
+    expandAll()
+  } else {
+    build.value = _buildComponentService.getBuild(route.params['id'] as string)
+  }
 
-    setSummaryAsync()
-    isLoading.value = false
-  }, 1)
+  setSummaryAsync()
+
+  nextTick(() => isLoading.value = false)
+  // }, 1)
 }
 
 /**

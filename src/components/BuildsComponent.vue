@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
@@ -8,19 +8,16 @@ import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
-import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import { BuildService } from '../services/BuildService'
 import { ExportService } from '../services/ExportService'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ImportService } from '../services/ImportService'
-import { ItemService } from '../services/ItemService'
 import {
   NotificationService,
   NotificationType
 } from '../services/NotificationService'
 import { WebsiteConfigurationService } from '../services/WebsiteConfigurationService'
-import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
 import BuildsList from './BuildsListComponent.vue'
@@ -28,17 +25,14 @@ import NotificationButton from './NotificationButtonComponent.vue'
 import Toolbar from './ToolbarComponent.vue'
 
 const _buildService = Services.get(BuildService)
-const _buildPropertiesService = Services.get(BuildPropertiesService)
 const _exportService = Services.get(ExportService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _importService = Services.get(ImportService)
-const _itemService = Services.get(ItemService)
 const _notificationService = Services.get(NotificationService)
 const _sortingService = Services.get(SortingService)
 const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
-let _builds: IBuild[] = []
 const _router = useRouter()
 const _toolbarButtons: IToolbarButton[] = [
   {
@@ -67,7 +61,7 @@ const _toolbarButtons: IToolbarButton[] = [
     action: displayShareSidebar,
     caption: () => vueI18n.t('caption.shareBuilds'),
     icon: () => 'share-alt',
-    isDisabled: () => isLoading.value || !canImportExport.value || buildSummaries.value.length === 0,
+    isDisabled: () => isLoading.value || !hasBuilds.value,
     name: 'share',
     showCaption: () => 'never',
     style: () => 'discreet'
@@ -76,7 +70,7 @@ const _toolbarButtons: IToolbarButton[] = [
     action: displayExportSidebar,
     caption: () => vueI18n.t('caption.exportBuilds'),
     icon: () => 'download',
-    isDisabled: () => isLoading.value || !canImportExport.value,
+    isDisabled: () => isLoading.value || !hasBuilds.value,
     name: 'export',
     showCaption: () => 'never',
     style: () => 'discreet'
@@ -85,7 +79,7 @@ const _toolbarButtons: IToolbarButton[] = [
     action: displayImportSidebar,
     caption: () => vueI18n.t('caption.importBuilds'),
     icon: () => 'file-upload',
-    isDisabled: () => isLoading.value || !canImportExport.value,
+    isDisabled: () => isLoading.value,
     name: 'import',
     showCaption: () => 'never',
     style: () => 'discreet'
@@ -110,98 +104,77 @@ const _toolbarButtons: IToolbarButton[] = [
   }
 ]
 
-const buildsToolbar = useTemplateRef('buildsToolbar')
-const buildSummaries = ref<IBuildSummary[]>([])
-const filterAndSortingData = ref(new BuildFilterAndSortingData())
-const hasImported = ref(false)
-const isLoading = ref(true)
-
-const canImportExport = computed(() => !isLoading.value && buildSummaries.value.length > 0)
-const hasBuildsNotExported = computed(() => _builds.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date())))
 const toolbarContainer = computed(() => buildsToolbar.value?.container)
 
-onMounted(() => {
-  _buildService.emitter.on(BuildService.deletedEvent, onItemServicesInitialized)
-  _exportService.emitter.on(ExportService.buildsExportedEvent, getBuildsAsync)
-  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-  _importService.emitter.on(ImportService.buildsImportedEvent, getBuildsAsync)
+const buildsToolbar = useTemplateRef('buildsToolbar')
+const filterAndSortingData = ref(new BuildFilterAndSortingData())
+const isLoading = ref(true)
+const hasBuilds = ref(false)
 
-  if (_itemService.initializationState === ServiceInitializationState.initializing) {
-    _itemService.emitter.once(ItemService.initializationFinishedEvent, onItemServicesInitialized)
-  } else {
-    onItemServicesInitialized()
-  }
+onMounted(() => {
+  _exportService.emitter.on(ExportService.buildsExportedEvent, getBuilds)
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  _importService.emitter.on(ImportService.buildsImportedEvent, getBuilds)
 
   getInitialFilterAndSortingData()
 })
 
 onUnmounted(() => {
-  _buildService.emitter.off(BuildService.deletedEvent, onItemServicesInitialized)
-  _exportService.emitter.off(ExportService.buildsExportedEvent, getBuildsAsync)
+  _exportService.emitter.off(ExportService.buildsExportedEvent, getBuilds)
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
-  _importService.emitter.off(ImportService.buildsImportedEvent, getBuildsAsync)
-})
-
-watch(() => hasImported.value, () => {
-  // Updating the list of builds after import
-  if (hasImported.value) {
-    getBuildsAsync()
-    hasImported.value = false
-  }
+  _importService.emitter.off(ImportService.buildsImportedEvent, getBuilds)
 })
 
 /**
  * Checks whether builds have not been exported. Displays a warning if that is the case.
  */
-function checkBuildsNotExported(): void {
+function checkBuildsNotExported(buildSummaries: IBuild[]): void {
   const exportWarningShowedKey = _websiteConfigurationService.configuration.exportWarningShowedStorageKey
   const exportWarningShowed = sessionStorage.getItem(exportWarningShowedKey)
 
-  if (hasBuildsNotExported.value && exportWarningShowed == null) {
-    _notificationService.notify(
-      NotificationType.warning,
-      vueI18n.t('message.buildsNotExported'),
-      0,
-      [
-        {
-          action: (): void => _globalSidebarService.display({
-            displayedComponentType: 'BuildsExportSidebar',
-            displayedComponentParameters: buildSummaries.value
-          }),
-          caption: vueI18n.t('caption.exportBuilds'),
-          icon: 'download',
-          name: 'exportBuilds',
-          type: NotificationType.success
-        }
-      ],
-      true
-    )
-    sessionStorage.setItem(exportWarningShowedKey, '')
+  const hasBuildsNotExported = buildSummaries.some(b => b.lastExported == null || b.lastExported < (b.lastUpdated ?? new Date()))
+
+  if (!hasBuildsNotExported || exportWarningShowed != null) {
+    return
   }
+
+  _notificationService.notify(
+    NotificationType.warning,
+    vueI18n.t('message.buildsNotExported'),
+    0,
+    [
+      {
+        action: displayExportSidebar,
+        caption: vueI18n.t('caption.exportBuilds'),
+        icon: 'download',
+        name: 'exportBuilds',
+        type: NotificationType.success
+      }
+    ],
+    true
+  )
+  sessionStorage.setItem(exportWarningShowedKey, '')
 }
 
 /**
  * Displays the build export sidebar.
  */
 function displayExportSidebar(): void {
-  if (canImportExport.value) {
-    _globalSidebarService.display({
-      displayedComponentParameters: buildSummaries.value,
-      displayedComponentType: 'BuildsExportSidebar'
-    })
-  }
+  _globalSidebarService.display({
+    displayedComponentParameters: {
+      getBuildsToExportFunction: getBuilds
+    },
+    displayedComponentType: 'BuildsExportSidebar'
+  })
 }
 
 /**
  * Displays the build import sidebar.
  */
 function displayImportSidebar(): void {
-  if (canImportExport.value) {
-    _globalSidebarService.display({
-      displayedComponentParameters: buildSummaries.value,
-      displayedComponentType: 'BuildsImportSidebar'
-    })
-  }
+  _globalSidebarService.display({
+    displayedComponentType: 'BuildsImportSidebar'
+  })
 }
 
 /**
@@ -228,7 +201,7 @@ function displayMerchantItemsOptions(): void {
 function displayShareSidebar(): void {
   _globalSidebarService.display({
     displayedComponentParameters: {
-      buildSummaries: buildSummaries.value
+      getBuildsToShareFunction: getBuilds
     },
     displayedComponentType: 'BuildsShareSideBar'
   })
@@ -237,26 +210,23 @@ function displayShareSidebar(): void {
 /**
  * Gets the builds.
  */
-async function getBuildsAsync(): Promise<void> {
+function getBuilds(): IBuild[] {
   isLoading.value = true
 
-  const execute = new Promise<void>(resolve => {
-    setTimeout(async () => { // Did not find another solution to make the loading animation appear when opening the builds list from the welcome page (nextTick does not work)
-      const summaries: IBuildSummary[] = []
-      _builds = _buildService.getAll()
+  const builds = _buildService.getAll()
+  hasBuilds.value = builds.length > 0
 
-      for (const build of _builds) {
-        const summary = await _buildPropertiesService.getSummaryAsync(build)
-        summaries.push(summary)
-      }
+  if (!hasBuilds.value) {
+    _router.push({ name: 'Welcome' })
 
-      buildSummaries.value = summaries
-      isLoading.value = false
+    return []
+  }
 
-      resolve()
-    }, 1)
-  })
-  await execute
+  checkBuildsNotExported(builds)
+
+  nextTick(() => isLoading.value = false)
+
+  return builds
 }
 
 /**
@@ -283,7 +253,7 @@ function goToHome(): void {
  * Opens the build the user has selected.
  * @param selectedBuilds - Selected builds.
  */
-function onBuildSelected(selectedBuilds: IBuildSummary[]): void {
+function onBuildSelected(selectedBuilds: IBuild[]): void {
   if (selectedBuilds.length > 0) {
     openBuild(selectedBuilds[0].id)
   }
@@ -307,29 +277,12 @@ function onFilterAndSortingDataChanged(): void {
 }
 
 /**
- * Reacts to the item service being initialized.
- *
- * Updates the selected item price to reflect the change in merchant filters.
- */
-function onItemServicesInitialized(): void {
-  getBuildsAsync().then(() => {
-    if (_builds.length === 0) {
-      _router.push({ name: 'Welcome' })
-
-      return
-    }
-
-    checkBuildsNotExported()
-  })
-}
-
-/**
  * Reacts to the merchant filter being changed.
  *
  * Gets builds.
  */
 function onMerchantFilterChanged(): void {
-  getBuildsAsync()
+  getBuilds()
 }
 
 /**
@@ -377,9 +330,8 @@ function openNewBuild(): void {
     </Toolbar>
     <BuildsList
       v-model:filter-and-sorting-data="filterAndSortingData as BuildFilterAndSortingData"
-      :build-summaries="buildSummaries"
       :element-to-stick-to="toolbarContainer"
-      :is-loading="isLoading"
+      :get-builds-function="getBuilds"
       :selection-options="{
         canUnselect: true,
         isEnabled: true,

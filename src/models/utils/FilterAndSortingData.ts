@@ -17,7 +17,6 @@ export default abstract class FilterAndSortingData<T extends IBuildSummary | IIt
   public constructor(sortingFunctions: ISortingFunctionList, filterAndSortingDataToCopy?: FilterAndSortingData<T>) {
     this._sortingFunctions = sortingFunctions
     this.setSortableProperties(sortingFunctions)
-    this.currentSortingFunction = sortingFunctions.functions[this.property]
 
     if (filterAndSortingDataToCopy != null) {
       this.currentSortingFunction = filterAndSortingDataToCopy.currentSortingFunction
@@ -25,6 +24,8 @@ export default abstract class FilterAndSortingData<T extends IBuildSummary | IIt
       this.order = filterAndSortingDataToCopy.order
       this.property = filterAndSortingDataToCopy.property
     }
+
+    this.currentSortingFunction = sortingFunctions.functions[this.property]
   }
 
   /**

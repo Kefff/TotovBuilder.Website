@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import { IChangelogEntry } from '../../models/configuration/IChangelogEntry'
 import { VersionService } from '../../services/VersionService'
 import Services from '../../services/repository/Services'
@@ -10,17 +10,17 @@ defineProps<{ parameters: undefined }>()
 const changelogs = ref<IChangelogEntry[]>([])
 const isLoading = ref(true)
 
-onMounted(() => {
-  loadChangelogAsync()
-})
+onMounted(() => loadChangelogAsync())
 
 /**
  * Loads the changelog.
  */
 async function loadChangelogAsync(): Promise<void> {
   isLoading.value = true
+
   const fetchedChangelogs = await Services.get(VersionService).getChangelogAsync()
-  isLoading.value = false
+
+  nextTick(() => isLoading.value = false)
 
   if (fetchedChangelogs == null) {
     // TODO: AFFICHER UNE ERREUR QUAND LES CHANGELOGS NE SONT PAS CHARGES

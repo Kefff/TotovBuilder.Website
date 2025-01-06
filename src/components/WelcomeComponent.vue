@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
+import { defineAsyncComponent, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import Images from '../images'
 import { IBuild } from '../models/build/IBuild'
-import { IBuildSummary } from '../models/utils/IBuildSummary'
 import vueI18n from '../plugins/vueI18n'
 import router from '../plugins/vueRouter'
-import { BuildPropertiesService } from '../services/BuildPropertiesService'
 import { BuildService } from '../services/BuildService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import { ImportService } from '../services/ImportService'
@@ -20,32 +18,28 @@ const BuildsList = defineAsyncComponent(() =>
 )
 
 const _buildService = Services.get(BuildService)
-const _buildPropertiesService = Services.get(BuildPropertiesService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _importService = Services.get(ImportService)
 const _websiteConfigurationService = Services.get(WebsiteConfigurationService)
 
-const _lastBuildAmount = 3
+const _lastBuildsCount = 3
 
-const isLoading = ref(true)
-const lastBuildSummaries = ref<IBuildSummary[]>([])
-
-const hasBuilds = computed(() => lastBuildSummaries.value.length > 0)
+const hasBuilds = ref(false)
+const isLoadingWebsite = ref(true)
+const isLoadingLastBuilds = ref(true)
 
 
 onMounted(() => {
   _importService.emitter.on(ImportService.buildsImportedEvent, goToBuilds)
-  _buildService.emitter.on(BuildService.deletedEvent, onBuildDeleted)
 
   if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {
-    _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitializedAsync)
+    _websiteConfigurationService.emitter.once(WebsiteConfigurationService.initializationFinishedEvent, onWebsiteConfigurationServiceInitialized)
   } else {
-    onWebsiteConfigurationServiceInitializedAsync()
+    onWebsiteConfigurationServiceInitialized()
   }
 })
 
 onUnmounted(() => {
-  _buildService.emitter.off(BuildService.deletedEvent, onBuildDeleted)
   _importService.emitter.off(ImportService.buildsImportedEvent, goToBuilds)
 })
 
@@ -93,34 +87,29 @@ function displayMerchantItemsOptions(): void {
 /**
  * Gets the last builds edited by the user.
  */
-async function getLastBuildSummariesAsync(): Promise<void> {
-  const allBuilds = await new Promise<IBuild[]>((resolve) => {
-    const builds = _buildService
-      .getAll()
-      .sort((build1: IBuild, build2: IBuild) => {
-        const build1LastUpdatedDate = build1.lastUpdated ?? new Date()
-        const build2LastUpdatedDate = build2.lastUpdated ?? new Date()
+function getLastBuilds(): IBuild[] {
+  isLoadingLastBuilds.value = true
 
-        if (build1LastUpdatedDate > build2LastUpdatedDate) {
-          return 1
-        } else if (build1LastUpdatedDate < build2LastUpdatedDate) {
-          return -1
-        } else {
-          return 0
-        }
-      })
-    resolve(builds)
-  })
-  const lastBuilds = allBuilds.slice(-_lastBuildAmount)
+  const builds = _buildService
+    .getAll()
+    .sort((build1: IBuild, build2: IBuild) => {
+      const build1LastUpdatedDate = build1.lastUpdated ?? new Date()
+      const build2LastUpdatedDate = build2.lastUpdated ?? new Date()
 
-  const buildSummaries: IBuildSummary[] = []
+      if (build1LastUpdatedDate > build2LastUpdatedDate) {
+        return 1
+      } else if (build1LastUpdatedDate < build2LastUpdatedDate) {
+        return -1
+      } else {
+        return 0
+      }
+    })
+    .slice(-_lastBuildsCount)
+  hasBuilds.value = builds.length > 0
 
-  for (const lastBuild of lastBuilds) {
-    const lastBuildSummary = await _buildPropertiesService.getSummaryAsync(lastBuild)
-    buildSummaries.push(lastBuildSummary)
-  }
+  nextTick(() => isLoadingLastBuilds.value = false)
 
-  lastBuildSummaries.value = buildSummaries
+  return builds
 }
 
 /**
@@ -131,34 +120,24 @@ function goToBuilds(): void {
 }
 
 /**
- * Reacts to a build being deleted.
- *
- * Updates the last builds list.
- */
-function onBuildDeleted(): void {
-  getLastBuildSummariesAsync()
-}
-
-/**
  * Reacts to a build being selected.
  *
  * Opens a the build the user has selected.
  * @param selectedBuilds - Selected builds.
  */
-function onBuildSelected(selectedBuilds: IBuildSummary[]): void {
+function onBuildSelected(selectedBuilds: IBuild[]): void {
   if (selectedBuilds.length > 0) {
     openBuild(selectedBuilds[0].id)
   }
 }
 
 /**
- * Reacts to the website configuration service being iniialized.
+ * Reacts to the website configuration service being initialized.
  *
- * Gets builds and ends loading.
+ * Ends loading.
  */
-async function onWebsiteConfigurationServiceInitializedAsync(): Promise<void> {
-  await getLastBuildSummariesAsync()
-  isLoading.value = false
+function onWebsiteConfigurationServiceInitialized(): void {
+  nextTick(() => isLoadingWebsite.value = false)
 }
 
 /**
@@ -195,22 +174,20 @@ function openNewBuild(): void {
       <p>{{ $t('message.welcome4') }}</p>
     </div>
     <div
-      v-if="isLoading"
+      v-if="isLoadingWebsite"
       class="welcome-loading"
     >
       <Loading />
     </div>
     <div
       v-else
+      v-show="!isLoadingLastBuilds"
       class="welcome-content"
     >
       <h3 v-if="hasBuilds">
         {{ $t('message.welcomeBack') }}
       </h3>
-      <div
-        v-if="!isLoading"
-        class="welcome-actions"
-      >
+      <div class="welcome-actions">
         <div class="welcome-action">
           <Button
             class="welcome-button"
@@ -240,7 +217,7 @@ function openNewBuild(): void {
           </Button>
         </div>
         <div
-          v-if="!hasBuilds"
+          v-else
           class="welcome-action"
         >
           <Button
@@ -295,13 +272,14 @@ function openNewBuild(): void {
         </div>
       </div>
       <div
-        v-if="hasBuilds"
+        v-show="hasBuilds"
         class="welcome-build-summaries"
       >
         <h3>{{ $t('message.welcomeLastBuilds') }}</h3>
         <BuildsList
-          :build-summaries="lastBuildSummaries"
-          :max-elements-per-line="_lastBuildAmount"
+          :auto-scroll-to-first-element="false"
+          :get-builds-function="getLastBuilds"
+          :max-elements-per-line="_lastBuildsCount"
           :selection-options="{
             canUnselect: true,
             isEnabled: true,

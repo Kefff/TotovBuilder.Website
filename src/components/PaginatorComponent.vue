@@ -6,6 +6,7 @@ import WebBrowserUtils from '../utils/WebBrowserUtils'
 
 const props = withDefaults(
   defineProps<{
+    autoScrollToFirstElementOfPage?: boolean,
     elementsPerLine?: number,
     getKeyFunction: (element: unknown) => string,
     elements: unknown[],
@@ -13,6 +14,7 @@ const props = withDefaults(
     scrollToIndex?: number
   }>(),
   {
+    autoScrollToFirstElementOfPage: true,
     elementsPerLine: 1,
     linesPerPage: 1,
     scrollToIndex: undefined
@@ -63,6 +65,10 @@ function onPageChange(state: PageState): void {
  * @param elementIndex - Index of the element to scroll to. First element of the current page when undefined.
  */
 function scrollToElement(elementIndex?: number): void {
+  if (elementIndex == null && !props.autoScrollToFirstElementOfPage) {
+    return
+  }
+
   let lineIndex: number
   const elementsPerPage = props.elementsPerLine * props.linesPerPage
 

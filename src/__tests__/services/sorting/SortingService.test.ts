@@ -1,7 +1,7 @@
 import { anything, instance, mock, verify } from 'ts-mockito'
 import { describe, expect, it } from 'vitest'
 import { IItem, ItemCategoryId } from '../../../models/item/IItem'
-import FilterAndSortingData from '../../../models/utils/FilterAndSortingData'
+import FilterAndSortingData, { FilterAndSortingDataType } from '../../../models/utils/FilterAndSortingData'
 import { IBuildSummary } from '../../../models/utils/IBuildSummary'
 import { SortingOrder } from '../../../models/utils/SortingOrder'
 import { LogService } from '../../../services/LogService'
@@ -88,7 +88,7 @@ describe('SortingService', () => {
         },
         itemCategoryIds: [ItemCategoryId.other]
       }
-      const sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingData(sortingFunctions)
+      const sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingDataImplementation(sortingFunctions)
       const sortService = new SortingService()
 
       // Act
@@ -107,7 +107,7 @@ describe('SortingService', () => {
         functions: {},
         itemCategoryIds: [ItemCategoryId.other]
       }
-      const sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingData(sortingFunctions)
+      const sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingDataImplementation(sortingFunctions)
       sortingData.property = 'name'
       sortingData.order = SortingOrder.desc
 
@@ -137,7 +137,7 @@ describe('SortingService', () => {
           }
         }
       }
-      const sortingData: FilterAndSortingData<IBuildSummary> | undefined = new FilterAndSortingData(sortingFunctions)
+      const sortingData: FilterAndSortingData<IBuildSummary> | undefined = new FilterAndSortingDataImplementation(sortingFunctions)
       const buildSummaries = [
         { ergonomics: 10, name: 'e' } as IBuildSummary,
         { ergonomics: 20, name: 'f' } as IBuildSummary,
@@ -172,7 +172,7 @@ describe('SortingService', () => {
         },
         itemCategoryIds: [ItemCategoryId.other]
       }
-      const sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingData(sortingFunctions)
+      const sortingData: FilterAndSortingData<IItem> | undefined = new FilterAndSortingDataImplementation(sortingFunctions)
       const items = [
         { categoryId: 'cat1', shortName: 'e', name: 'e' } as unknown as IItem,
         { categoryId: 'cat2', shortName: 'f', name: 'f2' } as unknown as IItem,
@@ -197,3 +197,8 @@ describe('SortingService', () => {
     })
   })
 })
+
+class FilterAndSortingDataImplementation extends FilterAndSortingData<IItem> {
+  public type: FilterAndSortingDataType = FilterAndSortingDataType.item
+
+}

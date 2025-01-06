@@ -166,7 +166,7 @@ function copyFilterAndSortingData(filterAndSortingToCopy: BuildFilterAndSortingD
   let copy: BuildFilterAndSortingData | ItemFilterAndSortingData
 
   if (modelFilterAndSortingData.value.type === FilterAndSortingDataType.item) {
-    copy = new ItemFilterAndSortingData(filterAndSortingToCopy as ItemFilterAndSortingData)
+    copy = new ItemFilterAndSortingData(filterAndSortingToCopy.sortingFunctions, filterAndSortingToCopy as ItemFilterAndSortingData)
   } else {
     copy = new BuildFilterAndSortingData(filterAndSortingToCopy as BuildFilterAndSortingData)
   }
@@ -360,7 +360,10 @@ function switchSortOrder(): void {
             </Tooltip>
             <div
               class="filter-chip-quick-filter-input"
-              :class="{ 'filter-chip-quick-filter-input-with-category': categoryFilterCaption != null }"
+              :class="{
+                'filter-chip-quick-filter-input-with-category': categoryFilterCaption != null,
+                'filter-chip-quick-filter-input-with-remove-button': canRemoveFilter
+              }"
               @click="$event => $event.stopPropagation()"
             >
               <InputTextField
@@ -463,13 +466,17 @@ function switchSortOrder(): void {
   display: flex;
   margin-bottom: 0.25rem;
   margin-left: 0.5rem;
-  margin-right: 0.5rem;
+  margin-right: 0.75rem;
   margin-top: 0.25rem;
 }
 
 .filter-chip-quick-filter-input-with-category {
   margin-bottom: 0.25rem;
   margin-top: 0;
+}
+
+.filter-chip-quick-filter-input-with-remove-button {
+  margin-right: 0.5rem;
 }
 
 .filter-chip-text {
