@@ -30,9 +30,9 @@ describe('comparisonFunction()', () => {
       capacity: 1
     } as IVest
 
-    const sortingData: FilterAndSortingData<IVest> | undefined = new ItemFilterAndSortingData(VestSortingFunctions)
     const sortingService = new SortingService()
-    sortingService.setSortingProperty(sortingData, property)
+    let sortingData: FilterAndSortingData<IVest> | undefined = new ItemFilterAndSortingData(VestSortingFunctions)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

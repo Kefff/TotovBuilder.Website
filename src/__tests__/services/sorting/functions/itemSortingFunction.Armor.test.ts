@@ -31,9 +31,9 @@ describe('comparisonFunction()', () => {
       ergonomicsModifierPercentage: 1
     } as IArmor
 
-    const sortingData: FilterAndSortingData<IArmor> | undefined = new ItemFilterAndSortingData(ArmorSortingFunctions)
     const sortingService = new SortingService()
-    sortingService.setSortingProperty(sortingData, property)
+    let sortingData: FilterAndSortingData<IArmor> | undefined = new ItemFilterAndSortingData(ArmorSortingFunctions)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

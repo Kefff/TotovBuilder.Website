@@ -24,9 +24,9 @@ describe('comparisonFunction()', () => {
       presetErgonomicsModifier: isPreset ? 1 : undefined
     } as IMod
 
-    const sortingData: FilterAndSortingData<IMod> | undefined = new ItemFilterAndSortingData(ModSortingFunctions)
     const sortingService = new SortingService()
-    sortingService.setSortingProperty(sortingData, property)
+    let sortingData: FilterAndSortingData<IMod> | undefined = new ItemFilterAndSortingData(ModSortingFunctions)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

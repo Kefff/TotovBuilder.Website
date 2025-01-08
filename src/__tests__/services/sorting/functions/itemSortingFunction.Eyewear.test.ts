@@ -19,9 +19,9 @@ describe('comparisonFunction()', () => {
       blindnessProtectionPercentage: 1
     } as IEyewear
 
-    const sortingData: FilterAndSortingData<IEyewear> | undefined = new ItemFilterAndSortingData(EyewearSortingFunctions)
     const sortingService = new SortingService()
-    sortingService.setSortingProperty(sortingData, property)
+    let sortingData: FilterAndSortingData<IEyewear> | undefined = new ItemFilterAndSortingData(EyewearSortingFunctions)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

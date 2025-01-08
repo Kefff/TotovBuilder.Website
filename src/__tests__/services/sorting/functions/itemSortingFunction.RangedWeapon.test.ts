@@ -48,9 +48,9 @@ describe('comparisonFunction()', () => {
       verticalRecoil: 1
     } as IRangedWeapon
 
-    const sortingData: FilterAndSortingData<IRangedWeapon> | undefined = new ItemFilterAndSortingData(RangedWeaponSortingFunctions)
     const sortingService = new SortingService()
-    sortingService.setSortingProperty(sortingData, property)
+    let sortingData: FilterAndSortingData<IRangedWeapon> | undefined = new ItemFilterAndSortingData(RangedWeaponSortingFunctions)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

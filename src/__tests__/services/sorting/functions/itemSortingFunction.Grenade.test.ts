@@ -27,9 +27,9 @@ describe('comparisonFunction()', () => {
       fragmentsAmount: 1
     } as IGrenade
 
-    const sortingData: FilterAndSortingData<IGrenade> | undefined = new ItemFilterAndSortingData(GrenadeSortingFunctions)
     const sortingService = new SortingService()
-    sortingService.setSortingProperty(sortingData, property)
+    let sortingData: FilterAndSortingData<IGrenade> | undefined = new ItemFilterAndSortingData(GrenadeSortingFunctions)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

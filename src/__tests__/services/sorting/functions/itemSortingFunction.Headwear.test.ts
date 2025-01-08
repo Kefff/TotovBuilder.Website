@@ -106,9 +106,9 @@ describe('comparisonFunction()', () => {
       turningSpeedModifierPercentage: 1
     } as IHeadwear
 
-    const sortingData: FilterAndSortingData<IHeadwear> | undefined = new ItemFilterAndSortingData(HeadwearSortingFunctions)
     const sortingService = new SortingService()
-    sortingService.setSortingProperty(sortingData, property)
+    let sortingData: FilterAndSortingData<IHeadwear> | undefined = new ItemFilterAndSortingData(HeadwearSortingFunctions)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

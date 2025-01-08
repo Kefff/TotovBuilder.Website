@@ -79,9 +79,9 @@ describe('comparisonFunction()', () => {
       weight: 1
     } as IBuildSummary
 
-    const sortingData: FilterAndSortingData<IBuildSummary> | undefined = new BuildFilterAndSortingData()
     const sortingService = new SortingService()
-    sortingService.setSortingProperty(sortingData, property, SortingOrder.asc)
+    let sortingData: FilterAndSortingData<IBuildSummary> | undefined = new BuildFilterAndSortingData()
+    sortingData = sortingService.setSortingProperty(sortingData, property, SortingOrder.asc)
 
     // Act
     const sortedItems = await sortingService.sortAsync([buildSummary1, buildSummary2, buildSummary3, buildSummary4], sortingData!)

@@ -36,7 +36,7 @@ export default abstract class FilterAndSortingData<T extends IBuildSummary | IIt
   /**
    * Filter.
    */
-  public filter?: string
+  public filter: string | undefined = undefined
 
   /**
    * Sorting order.
@@ -65,9 +65,6 @@ export default abstract class FilterAndSortingData<T extends IBuildSummary | IIt
     return this._sortingFunctions
   }
   protected set sortingFunctions(value) {
-    if (value == null) {
-      throw new Error('connard')
-    }
     this._sortingFunctions = value
     this.setSortableProperties(value)
   }

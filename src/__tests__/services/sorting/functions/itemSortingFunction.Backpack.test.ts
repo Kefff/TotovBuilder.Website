@@ -31,9 +31,9 @@ describe('comparisonFunction()', () => {
       turningSpeedModifierPercentage: 1
     } as IBackpack
 
-    const sortingData: FilterAndSortingData<IBackpack> | undefined = new ItemFilterAndSortingData(BackpackSortingFunctions)
     const sortingService = new SortingService()
-    sortingService.setSortingProperty(sortingData, property)
+    let sortingData: FilterAndSortingData<IBackpack> | undefined = new ItemFilterAndSortingData(BackpackSortingFunctions)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

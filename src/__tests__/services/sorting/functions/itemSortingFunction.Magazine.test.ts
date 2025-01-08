@@ -32,9 +32,9 @@ describe('comparisonFunction()', () => {
       loadSpeedModifierPercentage: 1
     } as IMagazine
 
-    const sortingData: FilterAndSortingData<IMagazine> | undefined = new ItemFilterAndSortingData(MagazineSortingFunctions)
     const sortingService = new SortingService()
-    sortingService.setSortingProperty(sortingData, property)
+    let sortingData: FilterAndSortingData<IMagazine> | undefined = new ItemFilterAndSortingData(MagazineSortingFunctions)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

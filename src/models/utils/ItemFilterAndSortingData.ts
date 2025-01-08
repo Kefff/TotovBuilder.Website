@@ -36,14 +36,14 @@ export default class ItemFilterAndSortingData extends FilterAndSortingData<IItem
     this._categoryId = value
     this.setSortingFunctions()
   }
-  private _categoryId: ItemCategoryId | undefined
+  private _categoryId: ItemCategoryId | undefined = undefined
 
   /**
    * Indicates whether the filter category fied is read only.
    * This is the case when only one category is available for selection.
    */
   public get isCategoryIdReadOnly(): boolean {
-    return this.availableItemCategories.length === 1
+    return this.availableItemCategories.length <= 1
   }
 
   /** {@inheritDoc FilterAndSortingData."type"} */

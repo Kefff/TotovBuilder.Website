@@ -28,9 +28,9 @@ describe('comparisonFunction()', () => {
       turningSpeedModifierPercentage: 1
     } as IBackpack
 
-    const sortingData: FilterAndSortingData<IWearable> | undefined = new ItemFilterAndSortingData(WearableSortingFunctions)
     const sortingService = new SortingService()
-    sortingService.setSortingProperty(sortingData, property)
+    let sortingData: FilterAndSortingData<IWearable> | undefined = new ItemFilterAndSortingData(WearableSortingFunctions)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

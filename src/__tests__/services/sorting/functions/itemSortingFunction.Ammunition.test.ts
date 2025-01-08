@@ -38,9 +38,9 @@ describe('comparisonFunction()', () => {
       recoilModifier: 1
     } as IAmmunition
 
-    const sortingData: FilterAndSortingData<IAmmunition> | undefined = new ItemFilterAndSortingData(AmmunitionSortingFunctions)
     const sortingService = new SortingService()
-    sortingService.setSortingProperty(sortingData, property)
+    let sortingData: FilterAndSortingData<IAmmunition> | undefined = new ItemFilterAndSortingData(AmmunitionSortingFunctions)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

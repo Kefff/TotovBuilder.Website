@@ -19,9 +19,9 @@ describe('comparisonFunction()', () => {
       capacity: 1
     } as IContainer
 
-    const sortingData: FilterAndSortingData<IContainer> | undefined = new ItemFilterAndSortingData(ContainerSortingFunctions)
     const sortingService = new SortingService()
-    sortingService.setSortingProperty(sortingData, property)
+    let sortingData: FilterAndSortingData<IContainer> | undefined = new ItemFilterAndSortingData(ContainerSortingFunctions)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

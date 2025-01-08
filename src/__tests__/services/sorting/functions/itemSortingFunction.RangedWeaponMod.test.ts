@@ -32,9 +32,9 @@ describe('comparisonFunction()', () => {
       recoilModifierPercentage: 1
     } as IRangedWeaponMod
 
-    const sortingData: FilterAndSortingData<IRangedWeaponMod> | undefined = new ItemFilterAndSortingData(RangedWeaponModSortingFunctions)
     const sortingService = new SortingService()
-    sortingService.setSortingProperty(sortingData, property)
+    let sortingData: FilterAndSortingData<IRangedWeaponMod> | undefined = new ItemFilterAndSortingData(RangedWeaponModSortingFunctions)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)

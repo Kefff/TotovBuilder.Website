@@ -52,9 +52,9 @@ describe('comparisonFunction()', () => {
       turningSpeedModifierPercentage: 1
     } as IArmorMod
 
-    const sortingData: FilterAndSortingData<IArmorMod> | undefined = new ItemFilterAndSortingData(ArmorModSortingFunctions)
     const sortingService = new SortingService()
-    sortingService.setSortingProperty(sortingData, property)
+    let sortingData: FilterAndSortingData<IArmorMod> | undefined = new ItemFilterAndSortingData(ArmorModSortingFunctions)
+    sortingData = sortingService.setSortingProperty(sortingData, property)
 
     // Act
     const sortedItems = await sortingService.sortAsync([item1, item2], sortingData!)
