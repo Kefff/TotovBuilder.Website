@@ -91,6 +91,7 @@ const linesPerPage = computed(() => {
 })
 
 const filteredAndSortedBuildSummaries = ref<IBuildSummary[]>([])
+const isInitialized = ref(false)
 const isLoading = ref(true)
 
 onMounted(() => {
@@ -100,9 +101,13 @@ onMounted(() => {
 
   // Getting the builds once items have been fully initialized
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
-    _itemService.emitter.once(ItemService.initializationFinishedEvent, () => filterAndSortBuildsAsync(true))
+    _itemService.emitter.once(ItemService.initializationFinishedEvent, () => {
+      filterAndSortBuildsAsync(true)
+      isInitialized.value = true
+    })
   } else {
     filterAndSortBuildsAsync(true)
+    isInitialized.value = true
   }
 })
 
@@ -114,7 +119,7 @@ onUnmounted(() => {
 
 watch(
   () => modelFilterAndSortingData.value,
-  () => filterAndSortBuildsAsync(false))
+  (value: BuildFilterAndSortingData, oldValue: BuildFilterAndSortingData) => filterAndSortBuildsAsync(value.filter !== oldValue.filter))
 
 /**
  * Indicates whether a build is selected.
@@ -258,7 +263,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
 
 <template>
   <div
-    v-if="isLoading"
+    v-if="isLoading || !isInitialized"
     class="builds-list-loading"
   >
     <Loading />

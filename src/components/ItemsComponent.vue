@@ -89,9 +89,10 @@ function getInitialFilterAndSortingData(): void {
   const property = localStorage.getItem(_websiteConfigurationService.configuration.itemsSortFieldStorageKey) ?? 'name'
   const order = Number(localStorage.getItem(_websiteConfigurationService.configuration.itemsSortOrderStorageKey) ?? SortingOrder.asc)
 
-  filterAndSortingData.value.categoryId = categoryId
-  filterAndSortingData.value.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.itemsFilterStorageKey) ?? undefined
-  _sortingService.setSortingProperty(filterAndSortingData.value as ItemFilterAndSortingData, property, order)
+  const fasd = _sortingService.setSortingProperty(filterAndSortingData.value as ItemFilterAndSortingData, property, order)
+  fasd.categoryId = categoryId
+  fasd.filter = sessionStorage.getItem(_websiteConfigurationService.configuration.itemsFilterStorageKey) ?? undefined
+  filterAndSortingData.value = fasd
 }
 
 /**

@@ -83,17 +83,16 @@ const property = computed({
   get: () => modelFilterAndSortingData.value.property,
   set: (value: string) => {
     if (modelFilterAndSortingData.value.type === FilterAndSortingDataType.item) {
-      _sortingService.setSortingProperty(
-        modelFilterAndSortingData.value as ItemFilterAndSortingData,
-        value,
-        modelFilterAndSortingData.value.order)
-      modelFilterAndSortingData.value = copyFilterAndSortingData(modelFilterAndSortingData.value)
+      modelFilterAndSortingData.value =
+        _sortingService.setSortingProperty(
+          modelFilterAndSortingData.value as ItemFilterAndSortingData,
+          value,
+          modelFilterAndSortingData.value.order)
     } else {
-      _sortingService.setSortingProperty(
+      modelFilterAndSortingData.value = _sortingService.setSortingProperty(
         modelFilterAndSortingData.value as BuildFilterAndSortingData,
         value,
         modelFilterAndSortingData.value.order)
-      modelFilterAndSortingData.value = copyFilterAndSortingData(modelFilterAndSortingData.value)
     }
   }
 })
@@ -133,8 +132,9 @@ watchDebounced(
  * Applies the quick filter.
  */
 function applyQuickFilter(): void {
-  modelFilterAndSortingData.value.filter = filterInternal.value
-  modelFilterAndSortingData.value = copyFilterAndSortingData(modelFilterAndSortingData.value)
+  const filterAndSortingData = _sortingService.copyFilterAndSortingData(modelFilterAndSortingData.value)
+  filterAndSortingData.filter = filterInternal.value
+  modelFilterAndSortingData.value = filterAndSortingData
 }
 
 /**
@@ -159,22 +159,6 @@ function checkIsFilterAndSortingDataChanged(updatedFilterAndSortingData: GlobalS
 }
 
 /**
- * Creates a copy of filter and sorting data.
- * @param filterAndSortingToCopy - Filter and sorting data to copy.
- */
-function copyFilterAndSortingData(filterAndSortingToCopy: BuildFilterAndSortingData | ItemFilterAndSortingData): BuildFilterAndSortingData | ItemFilterAndSortingData {
-  let copy: BuildFilterAndSortingData | ItemFilterAndSortingData
-
-  if (modelFilterAndSortingData.value.type === FilterAndSortingDataType.item) {
-    copy = new ItemFilterAndSortingData(filterAndSortingToCopy.sortingFunctions, filterAndSortingToCopy as ItemFilterAndSortingData)
-  } else {
-    copy = new BuildFilterAndSortingData(filterAndSortingToCopy as BuildFilterAndSortingData)
-  }
-
-  return copy
-}
-
-/**
  * Reacts to a keyboard event.
  * @param event - Keyboard event.
  */
@@ -193,13 +177,14 @@ function onKeyDown(event: KeyboardEvent): void {
  * Removes the current filter.
  */
 function removeFilter(): void {
-  modelFilterAndSortingData.value.filter = undefined
+  const filterAndSortingData = _sortingService.copyFilterAndSortingData(modelFilterAndSortingData.value)
+  filterAndSortingData.filter = undefined
 
   if (canRemoveCategoryIdFilter.value) {
-    (modelFilterAndSortingData.value as ItemFilterAndSortingData).categoryId = undefined
+    (filterAndSortingData as ItemFilterAndSortingData).categoryId = undefined
   }
 
-  modelFilterAndSortingData.value = copyFilterAndSortingData(modelFilterAndSortingData.value)
+  modelFilterAndSortingData.value = filterAndSortingData
 }
 
 /**
@@ -223,11 +208,10 @@ function showFilterAndSortSidebar(): void {
  * Switches the sort order.
  */
 function switchSortOrder(): void {
-  _sortingService.setSortingProperty(
+  modelFilterAndSortingData.value = _sortingService.setSortingProperty(
     modelFilterAndSortingData.value,
     modelFilterAndSortingData.value.property,
     -modelFilterAndSortingData.value.order)
-  modelFilterAndSortingData.value = copyFilterAndSortingData(modelFilterAndSortingData.value)
 }
 </script>
 

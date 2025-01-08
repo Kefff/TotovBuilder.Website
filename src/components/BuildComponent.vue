@@ -243,7 +243,6 @@ onMounted(() => {
     onItemServiceInitializedAsync()
   }
 
-  window.scrollTo(0, 0) // Scrolling to the top in case we were at the bottom of the page in the previous screen
   window.onbeforeunload = (): string | undefined => {
     if (isEditing.value) {
       // Confirmation message before closing a tab or the browser
@@ -294,13 +293,15 @@ function collapseAll(): void {
  * Creates a copy of the current build.
  */
 function copy(): void {
-  if (isEditing.value) {
-    return
-  }
-
   build.value.id = ''
   build.value.name = build.value.name + ' - ' + vueI18n.t('caption.copy')
   startEdit()
+
+  // Scrolling to the top in case we were at the bottom of the page
+  document.getElementById('app')!.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
 }
 
 /**
@@ -497,7 +498,6 @@ function onInventorySlotChanged(index: number, newInventorySlot: IInventorySlot)
 async function onItemServiceInitializedAsync(): Promise<void> {
   isLoading.value = true
 
-  // setTimeout(async () => { // Did not find another solution to make the loading animation appear when opening a build from the builds list (nextTick does not work)
   if (route.name === 'CopyBuild') {
     build.value = _buildComponentService.getBuild(route.params['id'] as string)
     copy()
@@ -513,7 +513,6 @@ async function onItemServiceInitializedAsync(): Promise<void> {
   setSummaryAsync()
 
   nextTick(() => isLoading.value = false)
-  // }, 1)
 }
 
 /**
@@ -812,7 +811,7 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
       </div>
     </div>
     <div
-      v-else-if="!isLoading"
+      v-show="!isLoading"
       class="build-inventory-slots"
     >
       <InventorySlot

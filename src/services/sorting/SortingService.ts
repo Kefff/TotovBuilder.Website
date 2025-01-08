@@ -1,6 +1,8 @@
 import { IItem, ItemCategoryId } from '../../models/item/IItem'
-import FilterAndSortingData from '../../models/utils/FilterAndSortingData'
+import BuildFilterAndSortingData from '../../models/utils/BuildFilterAndSortingData'
+import FilterAndSortingData, { FilterAndSortingDataType } from '../../models/utils/FilterAndSortingData'
 import { IBuildSummary } from '../../models/utils/IBuildSummary'
+import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
 import { SortingOrder } from '../../models/utils/SortingOrder'
 import StringUtils from '../../utils/StringUtils'
 import { LogService } from '../LogService'
@@ -29,6 +31,20 @@ import {
  * Represents a service responsible for sorting elements.
  */
 export class SortingService {
+  /**
+   * Creates a copy of filter and sorting data.
+   * @param filterAndSortingDataToCopy - Filter and sorting data to copy.
+   */
+  public copyFilterAndSortingData<T extends BuildFilterAndSortingData>(filterAndSortingDataToCopy: T): T
+  public copyFilterAndSortingData<T extends ItemFilterAndSortingData>(filterAndSortingDataToCopy: T): T
+  public copyFilterAndSortingData(filterAndSortingDataToCopy: BuildFilterAndSortingData | ItemFilterAndSortingData): BuildFilterAndSortingData | ItemFilterAndSortingData {
+    if (filterAndSortingDataToCopy.type === FilterAndSortingDataType.build) {
+      return new BuildFilterAndSortingData(filterAndSortingDataToCopy)
+    } else {
+      return new ItemFilterAndSortingData(filterAndSortingDataToCopy.sortingFunctions, filterAndSortingDataToCopy as ItemFilterAndSortingData)
+    }
+  }
+
   /**
    * Gets the sorting functions for sorting the specified category of item.
    * @param itemCategoryId - Item category. When not set, basic item sorting functions are returned.
@@ -66,41 +82,50 @@ export class SortingService {
     return sortingFunctionsForCategory as IItemSortingFunctionList
   }
 
-  public async sortAsync<TElement extends IBuildSummary | IItem>(elements: TElement[], sortingData: FilterAndSortingData<TElement>): Promise<TElement[]> {
-    const elementsWithSortingValue = await Promise.all(elements.map(e => this.getElementAndSortingValueAsync(e, sortingData)))
-    elementsWithSortingValue.sort((ewsv1, ewsv2) => sortingData.currentSortingFunction.comparisonFunction(ewsv1.element, ewsv1.value, ewsv2.element, ewsv2.value) * sortingData.order)
-    const result = elementsWithSortingValue.map(ewsv => ewsv.element)
-
-    return result
-  }
-
   /**
    * Updates sorting data by setting the sorting property, the new sorting order and the associated comparison function.
    * @param sortingData - Sorting data to update.
    * @param property - Property.
    * @param order - Order.
    */
-  public setSortingProperty(sortingData: FilterAndSortingData<IBuildSummary>, property: string, order?: SortingOrder): void
-  public setSortingProperty(sortingData: FilterAndSortingData<IItem>, property: string, order?: SortingOrder): void
-  public setSortingProperty<T extends IBuildSummary | IItem>(sortingData: FilterAndSortingData<T>, property: string, order?: SortingOrder): void {
-    const sortingFunction = sortingData.sortingFunctions.functions[property]
+  public setSortingProperty<T extends FilterAndSortingData<IBuildSummary>>(sortingData: T, property: string, order?: SortingOrder): T
+  public setSortingProperty<T extends FilterAndSortingData<IItem>>(sortingData: T, property: string, order?: SortingOrder): T
+  public setSortingProperty(filterAndSortingData: FilterAndSortingData<IBuildSummary | IItem>, property: string, order?: SortingOrder): FilterAndSortingData<IBuildSummary | IItem> {
+    const sortingFunction = filterAndSortingData.sortingFunctions.functions[property]
 
     if (sortingFunction == null) {
       Services.get(LogService).logError('message.sortingFunctionNotFound', { property: property })
 
-      return
+      return filterAndSortingData
     }
 
-    sortingData.currentSortingFunction = sortingFunction
+    const updatedSortingData = this.copyFilterAndSortingData(filterAndSortingData)
+    updatedSortingData.currentSortingFunction = sortingFunction
 
     if (order != null) {
-      sortingData.order = order
+      updatedSortingData.order = order
     } else {
-      sortingData.order = sortingData.property === property ? -sortingData.order : SortingOrder.asc
+      updatedSortingData.order = updatedSortingData.property === property ? -updatedSortingData.order : SortingOrder.asc
     }
 
-    sortingData.property = property
-    sortingData.currentSortingFunction.comparisonValueObtentionPromise = sortingFunction.comparisonValueObtentionPromise
+    updatedSortingData.property = property
+    updatedSortingData.currentSortingFunction.comparisonValueObtentionPromise = sortingFunction.comparisonValueObtentionPromise
+
+    return updatedSortingData
+  }
+
+  /**
+   * Sorts elements base on sorting data.
+   * @param elements - Elements to sort.
+   * @param sortingData - Sorting data.
+   * @returns Sorted elements.
+   */
+  public async sortAsync<TElement extends IBuildSummary | IItem>(elements: TElement[], sortingData: FilterAndSortingData<TElement>): Promise<TElement[]> {
+    const elementsWithSortingValue = await Promise.all(elements.map(e => this.getElementAndSortingValueAsync(e, sortingData)))
+    elementsWithSortingValue.sort((ewsv1, ewsv2) => sortingData.currentSortingFunction.comparisonFunction(ewsv1.element, ewsv1.value, ewsv2.element, ewsv2.value) * sortingData.order)
+    const result = elementsWithSortingValue.map(ewsv => ewsv.element)
+
+    return result
   }
 
   /**

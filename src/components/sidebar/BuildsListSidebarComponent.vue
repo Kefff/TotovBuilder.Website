@@ -27,15 +27,15 @@ const filter = computed({
 const order = computed({
   get: () => modelParameters.value.order,
   set: (value: SortingOrder) => {
-    _sortingService.setSortingProperty(modelParameters.value, modelParameters.value.property, value)
-    modelParameters.value = new BuildFilterAndSortingData(modelParameters.value)
+    const filterAndSortingData = _sortingService.setSortingProperty(modelParameters.value, modelParameters.value.property, value)
+    modelParameters.value = filterAndSortingData
   }
 })
 const property = computed({
   get: () => modelParameters.value.property,
   set: (value: string) => {
-    _sortingService.setSortingProperty(modelParameters.value, value, order.value)
-    modelParameters.value = new BuildFilterAndSortingData(modelParameters.value)
+    const filterAndSortingData = _sortingService.setSortingProperty(modelParameters.value, value, order.value)
+    modelParameters.value = filterAndSortingData
   }
 })
 

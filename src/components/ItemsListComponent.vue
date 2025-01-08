@@ -83,24 +83,31 @@ const isSizeTabletOrSmaller = breakpoints.smaller('pc')
 const isSizePcOrSmaller = breakpoints.smaller('pcLarge')
 
 const filteredAnSortedItems = ref<IItem[]>([])
+const isInitialed = ref(false)
 const isLoading = ref(true)
 
 onMounted(() => {
-  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, filterAndSortItemsAsync)
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
 
   // Getting the items once they have been fully initialized
   if (_itemService.initializationState === ServiceInitializationState.initializing) {
-    _itemService.emitter.once(ItemService.initializationFinishedEvent, filterAndSortItemsAsync)
+    _itemService.emitter.once(ItemService.initializationFinishedEvent, () => {
+      filterAndSortItemsAsync(true)
+      isInitialed.value = true
+    })
   } else {
-    filterAndSortItemsAsync()
+    filterAndSortItemsAsync(true)
+    isInitialed.value = true
   }
 })
 
-onUnmounted(() => _globalFilterService.emitter.off(GlobalFilterService.changeEvent, filterAndSortItemsAsync))
+onUnmounted(() => _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged))
 
 watch(
   () => modelFilterAndSortingData.value,
-  () => filterAndSortItemsAsync())
+  (value: ItemFilterAndSortingData, oldValue: ItemFilterAndSortingData) => {
+    filterAndSortItemsAsync(value.categoryId != oldValue.categoryId || value.filter !== oldValue.filter)
+  })
 
 /**
  * Indicates whether an item is selected.
@@ -115,19 +122,30 @@ function checkIsSelected(item: IItem): boolean {
 
 /**
  * Filters and sorts items.
+ * @param hasFilterChanged - Indicates whether the filter has changed.
  */
-async function filterAndSortItemsAsync(): Promise<void> {
-  if (!props.updateItemsListWhenMerchantFilterChanges && filteredAnSortedItems.value.length > 0) {
-    return
-  }
-
+async function filterAndSortItemsAsync(itemsListNeedsUpdate: boolean): Promise<void> {
   isLoading.value = true
+  let itemsToFilterAndSort
 
-  let itemsToFilterAndSort = await props.getItemsFunction()
-  modelFilterAndSortingData.value.availableItemCategories = getAvailableItemCategoryIdsFromItems(itemsToFilterAndSort)
+  if (itemsListNeedsUpdate) {
+    itemsToFilterAndSort = await props.getItemsFunction()
 
-  if (modelFilterAndSortingData.value.availableItemCategories.length === 1) {
-    modelFilterAndSortingData.value.categoryId = modelFilterAndSortingData.value.availableItemCategories[0]
+    const filterAndSortingData = _sortingService.copyFilterAndSortingData(modelFilterAndSortingData.value)
+    filterAndSortingData.availableItemCategories = getAvailableItemCategoryIdsFromItems(itemsToFilterAndSort)
+
+    if (filterAndSortingData.availableItemCategories.length === 1) {
+      filterAndSortingData.categoryId = modelFilterAndSortingData.value.availableItemCategories[0]
+    }
+
+    filteredAnSortedItems.value = itemsToFilterAndSort
+    modelFilterAndSortingData.value = filterAndSortingData
+
+    // We return here because we update filter and sorting data, which will call again filterAndSortItemsAsync.
+    // The second time it is called, itemsListNeedsUpdate will be false and items will only be filtered and sorted
+    return
+  } else {
+    itemsToFilterAndSort = filteredAnSortedItems.value
   }
 
   itemsToFilterAndSort = await filterItemsAsync(itemsToFilterAndSort)
@@ -189,6 +207,15 @@ function getAvailableItemCategoryIdsFromItems(items: IItem[]): ItemCategoryId[] 
 }
 
 /**
+ * Reacts to a the merchant filter changing.
+ *
+ * Filters and sorts them.
+ */
+function onMerchantFilterChanged(): void {
+  filterAndSortItemsAsync(props.updateItemsListWhenMerchantFilterChanges)
+}
+
+/**
  * Updates the list of selected items.
  * @param item - Item.
  * @param isSelected - Indicates whether the item is selected.
@@ -230,7 +257,7 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
 
 <template>
   <div
-    v-if="isLoading"
+    v-if="isLoading || !isInitialed"
     class="items-list-loading"
   >
     <Loading />
