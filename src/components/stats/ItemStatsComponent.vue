@@ -88,10 +88,16 @@ async function setPricesAsync(): Promise<void> {
 
 <template>
   <!-- Weight and prices -->
-  <div class="stats-category">
+  <div
+    v-if="weight > 0 || prices.length > 0"
+    class="stats-category"
+  >
     {{ $t('caption.weightAndPrices') }}
   </div>
-  <div class="stats-line">
+  <div
+    v-if="weight > 0"
+    class="stats-line"
+  >
     <div class="stats-entry">
       <div class="stats-caption">
         <font-awesome-icon
@@ -105,7 +111,10 @@ async function setPricesAsync(): Promise<void> {
       </div>
     </div>
   </div>
-  <div class="stats-line item-stats-price">
+  <div
+    v-if="prices.length > 0"
+    class="stats-line item-stats-price"
+  >
     <div
       v-for="(price, index) of prices"
       :key="index"
@@ -127,11 +136,20 @@ async function setPricesAsync(): Promise<void> {
     </div>
   </div>
   <!-- Links -->
-  <div class="stats-category">
+  <div
+    v-if="item.marketLink != null || item.wikiLink != null"
+    class="stats-category"
+  >
     {{ $t('caption.links') }}
   </div>
-  <div class="stats-line">
-    <div class="stats-entry">
+  <div
+    v-if="item.marketLink != null || item.wikiLink != null"
+    class="stats-line"
+  >
+    <div
+      v-if="item.marketLink != null"
+      class="stats-entry"
+    >
       <div class="stats-caption">
         <font-awesome-icon
           icon="globe"
@@ -145,7 +163,10 @@ async function setPricesAsync(): Promise<void> {
         </span>
       </div>
     </div>
-    <div class="stats-entry">
+    <div
+      v-if="item.wikiLink != null"
+      class="stats-entry"
+    >
       <div class="stats-caption">
         <font-awesome-icon
           icon="globe"
