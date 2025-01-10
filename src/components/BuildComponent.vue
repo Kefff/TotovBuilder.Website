@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBreakpoints, useEventListener } from '@vueuse/core'
 import { computed, nextTick, onMounted, onUnmounted, provide, ref, useTemplateRef, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { NavigationGuardNext, RouteLocationNormalizedGeneric, RouteLocationNormalizedLoadedGeneric, useRoute, useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
@@ -46,6 +46,7 @@ const _compactBuildSummaryExpansionAnimationLenghtCss = `${_compactBuildSummaryE
 const _inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
 let _isCompactSummaryExpanding = false
 let _originalBuild: IBuild
+let _unregisterSaveBeforeLeaveNavigationGuardFunction: (() => void) | undefined = undefined
 const _toolbarButtons: IToolbarButton[] = [
   {
     action: goToBuilds,
@@ -179,17 +180,19 @@ const build = ref<IBuild>({
   name: ''
 })
 const buildToolbar = useTemplateRef('buildToolbar')
+const collapseStatuses = ref<boolean[]>([])
 const compactBuildSummary = useTemplateRef('compactBuildSummary')
 const compactBuildSummaryHeight = ref<string>()
-const collapseStatuses = ref<boolean[]>([])
-const confirmationDialogCancelButtonAction = ref<() => void | Promise<void>>()
-const confirmationDialogCancelButtonCaption = ref<string>()
-const confirmationDialogCancelButtonOutlined = ref(false)
-const confirmationDialogConfirmButtonAction = ref<() => void | Promise<void>>()
-const confirmationDialogConfirmButtonCaption = ref<string>()
-const confirmationDialogConfirmButtonOutlined = ref(false)
 const confirmationDialogIsDisplayed = ref(false)
+const confirmationDialogMainButtonAction = ref<() => void | Promise<void>>()
+const confirmationDialogMainButtonCaption = ref<string>()
+const confirmationDialogMainButtonIcon = ref<string>()
+const confirmationDialogMainButtonSeverity = ref<string>()
 const confirmationDialogMessage = ref<string>()
+const confirmationDialogSecondaryButtonAction = ref<() => void | Promise<void>>()
+const confirmationDialogSecondaryButtonCaption = ref<string>()
+const confirmationDialogSecondaryButtonIcon = ref<string>()
+const confirmationDialogSecondaryButtonSeverity = ref<string>()
 const generalOptionsSidebarVisible = ref(false)
 const isBuildSummaryStickied = ref(false)
 const isCompactMode = breakpoints.smaller('tabletLandscape')
@@ -234,6 +237,7 @@ onMounted(() => {
   _compatibilityService.emitter.on(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
   _compatibilityService.emitter.on(CompatibilityRequestType.mod, onModCompatibilityRequest)
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  addNavigationGuards()
 
   isEditing.value = isNewBuild.value
 
@@ -242,15 +246,6 @@ onMounted(() => {
   } else {
     onItemServiceInitializedAsync()
   }
-
-  window.onbeforeunload = (): string | undefined => {
-    if (isEditing.value) {
-      // Confirmation message before closing a tab or the browser
-      return ''
-    }
-
-    return undefined
-  }
 })
 
 onUnmounted(() => {
@@ -258,9 +253,53 @@ onUnmounted(() => {
   _compatibilityService.emitter.off(CompatibilityRequestType.tacticalRig, onTacticalRigCompatibilityRequest)
   _compatibilityService.emitter.off(CompatibilityRequestType.mod, onModCompatibilityRequest)
   _globalFilterService.emitter.off(GlobalFilterService.changeEvent, onMerchantFilterChanged)
+  removeNavigationGuards()
 })
 
 watch(() => route.params, onItemServiceInitializedAsync)
+
+/**
+ * Adds navigation guards to avoid leaving the build screen without saving.
+ */
+function addNavigationGuards(): void {
+  // Guard for saving before changing page
+  _unregisterSaveBeforeLeaveNavigationGuardFunction = router.beforeEach(
+    async (to: RouteLocationNormalizedGeneric, from: RouteLocationNormalizedLoadedGeneric, next: NavigationGuardNext) => {
+      const isBuildScreen = from.name === 'Build'
+        || from.name === 'CopyBuild'
+        || from.name === 'NewBuild'
+        || from.name === 'ShareBuild'
+      if (isBuildScreen
+        && isEditing.value) {
+        //const confirmationDialogResult = confirm(vueI18n.t('message.confirmLeaveBuildWithoutSaving'))
+        const action = new Promise<void>((resolve) => {
+          displayConfirmationDialog({
+            mainButtonAction: () => {
+              next(false)
+              resolve()
+            },
+            mainButtonCaption: vueI18n.t('caption.stay'),
+            mainButtonIcon: 'undo',
+            mainButtonSeverity: 'success',
+            message: vueI18n.t('message.confirmLeaveBuildWithoutSaving'),
+            secondaryButtonAction: () => {
+              next()
+              resolve()
+            },
+            secondaryButtonCaption: vueI18n.t('caption.leave'),
+            secondaryButtonIcon: 'walking',
+            secondaryButtonSeverity: 'danger'
+          })
+        })
+        await action
+      }
+
+      return next()
+    })
+
+  // Guard for being able to cancel tab or browser closing when editing
+  window.addEventListener('beforeunload', onTabOrBrowserClosing)
+}
 
 /**
  * Cancels modifications and stops edit mode.
@@ -359,29 +398,36 @@ function displayBuildsShareSideBar(): void {
  * @param cancelButtonAction - Cancel button action.
  * @param cancelButtonOutlined - Indicates whether the cancel button is outlined.
  */
-function displayConfirmationDialog(
+function displayConfirmationDialog(options: {
   message: string,
-  confirmButtonCaption: string,
-  confirmButtonAction: () => void | Promise<void>,
-  confirmationButtonOutlined: boolean,
-  cancelButtonCaption: string,
-  cancelButtonAction: () => void | Promise<void>,
-  cancelButtonOutlined: boolean): void {
-  confirmationDialogCancelButtonAction.value = async (): Promise<void> => {
-    await cancelButtonAction()
+  mainButtonCaption: string,
+  mainButtonSeverity: string | undefined,
+  mainButtonIcon: string,
+  mainButtonAction: () => void | Promise<void>,
+  secondaryButtonCaption: string,
+  secondaryButtonSeverity: string | undefined,
+  secondaryButtonIcon: string,
+  secondaryButtonAction?: () => void | Promise<void>,
+}): void {
+  confirmationDialogSecondaryButtonAction.value = async (): Promise<void> => {
+    if (options.secondaryButtonAction != null) {
+      await options.secondaryButtonAction()
+    }
     confirmationDialogIsDisplayed.value = false
   }
-  confirmationDialogCancelButtonCaption.value = cancelButtonCaption
-  confirmationDialogCancelButtonOutlined.value = cancelButtonOutlined
+  confirmationDialogSecondaryButtonCaption.value = options.secondaryButtonCaption
+  confirmationDialogSecondaryButtonIcon.value = options.secondaryButtonIcon
+  confirmationDialogSecondaryButtonSeverity.value = options.secondaryButtonSeverity
 
-  confirmationDialogConfirmButtonAction.value = async (): Promise<void> => {
-    await confirmButtonAction()
+  confirmationDialogMainButtonAction.value = async (): Promise<void> => {
+    await options.mainButtonAction()
     confirmationDialogIsDisplayed.value = false
   }
-  confirmationDialogConfirmButtonCaption.value = confirmButtonCaption
-  confirmationDialogConfirmButtonOutlined.value = confirmationButtonOutlined
+  confirmationDialogMainButtonCaption.value = options.mainButtonCaption
+  confirmationDialogMainButtonIcon.value = options.mainButtonIcon
+  confirmationDialogMainButtonSeverity.value = options.mainButtonSeverity
 
-  confirmationDialogMessage.value = message
+  confirmationDialogMessage.value = options.message
   confirmationDialogIsDisplayed.value = true
 }
 
@@ -531,6 +577,23 @@ async function onKeyDownAsync(event: KeyboardEvent): Promise<void> {
 }
 
 /**
+ * Reacts to the tab or browser being closed.
+ *
+ * Displays a confirmation message to be able to cancel the closing when the build is in edit mode.
+ */
+function onTabOrBrowserClosing(event: BeforeUnloadEvent): string | undefined {
+  if (isEditing.value) {
+    event.preventDefault()
+    const confirmationMessage = 'Voulez-vous vraiment quitter ? Les modifications non sauvegardées seront perdues.'
+    event.returnValue = confirmationMessage
+
+    return confirmationMessage
+  }
+
+  return undefined
+}
+
+/**
  * Reacts to a change of the toolbar sticky status.
  *
  * Toogles the compact build summary.
@@ -584,6 +647,14 @@ function remove(): void {
 }
 
 /**
+ * Removes navigation guards.
+ */
+function removeNavigationGuards(): void {
+  _unregisterSaveBeforeLeaveNavigationGuardFunction?.()
+  window.removeEventListener('beforeunload', onTabOrBrowserClosing)
+}
+
+/**
  * Saves the build.
  */
 async function saveAsync(): Promise<void> {
@@ -611,14 +682,16 @@ async function setSummaryAsync(): Promise<void> {
  * Displays the deletion confirmation dialog.
  */
 function startDelete(): void {
-  displayConfirmationDialog(
-    vueI18n.t('message.confirmDeleteBuild', { name: build.value.name }),
-    vueI18n.t('caption.delete'),
-    remove,
-    false,
-    vueI18n.t('caption.cancel'),
-    () => { },
-    true)
+  displayConfirmationDialog({
+    mainButtonAction: remove,
+    mainButtonCaption: vueI18n.t('caption.delete'),
+    mainButtonIcon: 'trash',
+    mainButtonSeverity: 'danger',
+    message: vueI18n.t('message.confirmDeleteBuild', { name: build.value.name }),
+    secondaryButtonCaption: vueI18n.t('caption.cancel'),
+    secondaryButtonIcon: 'undo',
+    secondaryButtonSeverity: ''
+  })
 }
 
 /**
@@ -833,33 +906,33 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
     :draggable="false"
   >
     <div>
-      <span>{{ confirmationDialogMessage }}</span>
+      <span class="build-confirmation-message">{{ confirmationDialogMessage }}</span>
     </div>
     <template #footer>
-      <div class="build-deletion-confirmation-buttons">
+      <div class="build-confirmation-buttons">
         <Button
-          severity="danger"
-          :outlined="confirmationDialogConfirmButtonOutlined"
-          @click="confirmationDialogConfirmButtonAction"
+          :severity="confirmationDialogMainButtonSeverity"
+          @click="confirmationDialogMainButtonAction"
         >
           <font-awesome-icon
-            icon="trash"
+            :icon="confirmationDialogMainButtonIcon"
             class="icon-before-text"
           />
           <span>
-            {{ confirmationDialogConfirmButtonCaption }}
+            {{ confirmationDialogMainButtonCaption }}
           </span>
         </Button>
         <Button
-          :outlined="confirmationDialogCancelButtonOutlined"
-          @click="confirmationDialogCancelButtonAction"
+          :severity="confirmationDialogSecondaryButtonSeverity"
+          outlined
+          @click="confirmationDialogSecondaryButtonAction"
         >
           <font-awesome-icon
-            icon="undo"
+            :icon="confirmationDialogSecondaryButtonIcon"
             class="icon-before-text"
           />
           <span>
-            {{ confirmationDialogCancelButtonCaption }}
+            {{ confirmationDialogSecondaryButtonCaption }}
           </span>
         </Button>
       </div>
@@ -888,15 +961,19 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
   width: 1.5rem !important;
 }
 
-.build-deletion-confirmation-buttons {
+.build-confirmation-buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
 }
 
-.build-deletion-confirmation-buttons > button {
+.build-confirmation-buttons > button {
   display: flex;
   justify-content: center;
+}
+
+.build-confirmation-message {
+  white-space: preserve;
 }
 
 .build-empty-message {
