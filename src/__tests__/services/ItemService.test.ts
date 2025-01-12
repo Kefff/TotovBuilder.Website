@@ -75,12 +75,27 @@ describe('ItemService', () => {
   })
 
   describe('getAllItemsAsync', () => {
-    it('should get all items from cache', async () => {
-      useGlobalFilterServiceMock()
+    it.each([
+      [true],
+      [false]
+    ])('should get all items matching the global filter (%s)', async (includeItemsWithoutMatchingPrice: boolean) => {
       useItemFetcherServiceMock()
       usePresetServiceMock()
       useTarkovValuesServiceMock()
       useWebsiteConfigurationServiceMock()
+
+      const globalFilterService = Services.get(GlobalFilterService)
+      globalFilterService.save({
+        excludeItemsWithoutMatchingPrice: !includeItemsWithoutMatchingPrice,
+        excludePresetBaseItems: false,
+        merchantFilters: [
+          {
+            enabled: true,
+            merchant: 'prapor',
+            merchantLevel: 1
+          }
+        ]
+      })
 
       const itemService = new ItemService()
 
@@ -88,7 +103,10 @@ describe('ItemService', () => {
       const items = await itemService.getAllAsync()
 
       // Assert
-      expect(items).toStrictEqual(ItemMocks)
+      const expected = includeItemsWithoutMatchingPrice
+        ? ItemMocks
+        : ItemMocks.filter(i => i.prices.some(p => p.merchant === 'prapor' && p.merchantLevel === 1))
+      expect(items).toStrictEqual(expected)
     })
   })
 

@@ -50,9 +50,9 @@ function save(): void {
   >
     <div class="sidebar-option-icon">
       <Checkbox
+        v-model="globalFilter.excludeItemsWithoutMatchingPrice"
         :binary="true"
         :false-value="true"
-        :model-value="globalFilter.excludeItemsWithoutMatchingPrice"
         :true-value="false"
         @update:model-value="() => hasChanged = true"
       />
@@ -81,9 +81,9 @@ function save(): void {
   >
     <div class="sidebar-option-icon">
       <Checkbox
+        v-model="globalFilter.excludePresetBaseItems"
         :binary="true"
         :false-value="true"
-        :model-value="globalFilter.excludePresetBaseItems"
         :true-value="false"
         @update:model-value="() => hasChanged = true"
       />

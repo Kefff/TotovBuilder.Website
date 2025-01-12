@@ -185,7 +185,6 @@ function onItemSelected(selectedItems: IItem[]): void {
       :element-to-stick-to="toolbarContainer"
       :get-items-function="getItemsAsync"
       :has-selection="false"
-      :update-items-list-when-merchant-filter-changes="false"
       class="items-list"
       @update:filter-and-sorting-data="onFilterAndSortingDataChanged"
       @update:selected-items="onItemSelected"

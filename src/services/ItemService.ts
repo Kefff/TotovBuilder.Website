@@ -101,8 +101,9 @@ export class ItemService {
    */
   public async getAllAsync(): Promise<IItem[]> {
     await this.initializeAsync()
+    const items = await this.getItemsAsync([...this.items.map(i => i.id)], true)
 
-    return this.items
+    return items
   }
 
   /**

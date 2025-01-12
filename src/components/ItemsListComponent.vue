@@ -28,8 +28,7 @@ const props = withDefaults(
     getItemsFunction: () => Promise<IItem[]>,
     infiniteScrolling?: boolean,
     maxElementsPerLine?: number,
-    selectionOptions?: IListSelectionOptions,
-    updateItemsListWhenMerchantFilterChanges?: boolean
+    selectionOptions?: IListSelectionOptions
   }>(),
   {
     autoScrollToFirstElement: true,
@@ -42,8 +41,7 @@ const props = withDefaults(
       isMultiSelection: false,
       selectionButtonCaption: undefined,
       selectionButtonIcon: undefined
-    },
-    updateItemsListWhenMerchantFilterChanges: true
+    }
   })
 
 const _globalFilterService = Services.get(GlobalFilterService)
@@ -212,7 +210,7 @@ function getAvailableItemCategoryIdsFromItems(items: IItem[]): ItemCategoryId[] 
  * Filters and sorts them.
  */
 function onMerchantFilterChanged(): void {
-  filterAndSortItemsAsync(props.updateItemsListWhenMerchantFilterChanges)
+  filterAndSortItemsAsync(true)
 }
 
 /**
