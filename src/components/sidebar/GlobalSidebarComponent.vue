@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
-import { BuildSidebarParameters, BuildsShareSideBarParameters, GlobalSidebarComponent, GlobalSidebarDisplayedComponentParameters, IGlobalSidebarOptions, ShoppingListSidebarParameters, StatsSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
+import { BuildSidebarParameters, BuildsShareSideBarParameters, GlobalSidebarComponent, GlobalSidebarDisplayedComponentParameters, IGlobalSidebarOptions, ShoppingListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 
@@ -166,7 +166,7 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
       break
     case 'MerchantItemsOptionsSidebar':
       icon.value = 'user-tag'
-      title.value = 'caption.merchants'
+      title.value = 'caption.items'
       _displayedComponent = MerchantItemsOptionsSidebar
       break
     case 'NotificationsSidebar':
@@ -182,7 +182,6 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
       break
     case 'StatsSidebar':
       icon.value = 'clipboard-list'
-      subtitle.value = (options.value.displayedComponentParameters as StatsSidebarParameters).name
       title.value = 'caption.itemDetails'
       _displayedComponent = StatsSidebar
       break

@@ -2151,23 +2151,27 @@ describe('InventoryItemService', () => {
       const inventoryItemService = new InventoryItemService()
 
       const globalFilterService = Services.get(GlobalFilterService)
-      globalFilterService.saveMerchantFilters([
-        {
-          enabled: false,
-          merchant: 'jaeger',
-          merchantLevel: 1
-        },
-        {
-          enabled: true,
-          merchant: 'therapist',
-          merchantLevel: 1
-        },
-        {
-          enabled: true,
-          merchant: 'flea-market',
-          merchantLevel: 0
-        }
-      ])
+      globalFilterService.save({
+        excludeItemsWithoutMatchingPrice: true,
+        excludePresetBaseItems: true,
+        merchantFilters: [
+          {
+            enabled: false,
+            merchant: 'jaeger',
+            merchantLevel: 1
+          },
+          {
+            enabled: true,
+            merchant: 'therapist',
+            merchantLevel: 1
+          },
+          {
+            enabled: true,
+            merchant: 'flea-market',
+            merchantLevel: 0
+          }
+        ]
+      })
 
       // Act
       const priceResult = await inventoryItemService.getPriceAsync({
@@ -3006,13 +3010,17 @@ describe('InventoryItemService', () => {
 
       const inventoryItemService = new InventoryItemService()
       const globalFilterService = Services.get(GlobalFilterService)
-      globalFilterService.saveMerchantFilters([
-        {
-          enabled: true,
-          merchant: 'mechanic',
-          merchantLevel: 1
-        }
-      ])
+      globalFilterService.save({
+        excludeItemsWithoutMatchingPrice: true,
+        excludePresetBaseItems: true,
+        merchantFilters: [
+          {
+            enabled: true,
+            merchant: 'mechanic',
+            merchantLevel: 1
+          }
+        ]
+      })
 
       const inventoryItem: IInventoryItem = {
         content: [],

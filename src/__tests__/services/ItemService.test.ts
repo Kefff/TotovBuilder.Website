@@ -41,23 +41,33 @@ describe('ItemService', () => {
       await itemService.initializeAsync()
 
       const globalFilterService = Services.get(GlobalFilterService)
-      globalFilterService.saveMerchantFilters([
-        {
-          enabled: true,
-          merchant: 'prapor',
-          merchantLevel: 4
-        }
-      ])
+      globalFilterService.save({
+        excludeItemsWithoutMatchingPrice: true,
+        excludePresetBaseItems: true,
+        merchantFilters: [
+          {
+            enabled: true,
+            merchant: 'prapor',
+            merchantLevel: 4
+          }
+        ]
+      })
 
       let items = await itemService.getItemsAsync([ak12bt.id], true)
       expect(items.length).toBe(1)
       expect(items[0]).toStrictEqual(ak12bt)
 
-      globalFilterService.saveMerchantFilters([{
-        enabled: false,
-        merchant: 'prapor',
-        merchantLevel: 4
-      }])
+      globalFilterService.save({
+        excludeItemsWithoutMatchingPrice: true,
+        excludePresetBaseItems: true,
+        merchantFilters: [
+          {
+            enabled: false,
+            merchant: 'prapor',
+            merchantLevel: 4
+          }
+        ]
+      })
 
       items = await itemService.getItemsAsync([ak12bt.id], true)
       expect(items.length).toBe(0)
@@ -229,18 +239,22 @@ describe('ItemService', () => {
       await itemService.initializeAsync()
 
       const globalFitlerService = Services.get(GlobalFilterService)
-      globalFitlerService.saveMerchantFilters([
-        {
-          enabled: true,
-          merchant: 'prapor',
-          merchantLevel: 1
-        },
-        {
-          enabled: true,
-          merchant: 'peacekeeper',
-          merchantLevel: 1
-        }
-      ])
+      globalFitlerService.save({
+        excludeItemsWithoutMatchingPrice: true,
+        excludePresetBaseItems: true,
+        merchantFilters: [
+          {
+            enabled: true,
+            merchant: 'prapor',
+            merchantLevel: 1
+          },
+          {
+            enabled: true,
+            merchant: 'peacekeeper',
+            merchantLevel: 1
+          }
+        ]
+      })
 
       const items = await itemService.getItemsAsync([
         pso1.id, // Prapor 1
@@ -345,13 +359,17 @@ describe('ItemService', () => {
       await itemService.initializeAsync()
 
       const globalFitlerService = Services.get(GlobalFilterService)
-      globalFitlerService.saveMerchantFilters([
-        {
-          enabled: true,
-          merchant: 'jaeger',
-          merchantLevel: 1
-        }
-      ])
+      globalFitlerService.save({
+        excludeItemsWithoutMatchingPrice: true,
+        excludePresetBaseItems: true,
+        merchantFilters: [
+          {
+            enabled: true,
+            merchant: 'jaeger',
+            merchantLevel: 1
+          }
+        ]
+      })
 
       const items = await itemService.getItemsOfCategoriesAsync([ItemCategoryId.mainWeapon, ItemCategoryId.secondaryWeapon, ItemCategoryId.vest], true)
 

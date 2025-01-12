@@ -505,23 +505,27 @@ describe('getShoppingListAsync', () => {
 
     const inventoryItemService = new InventoryItemService()
     const globalFilterService = Services.get(GlobalFilterService)
-    globalFilterService.saveMerchantFilters([
-      {
-        enabled: true,
-        merchant: 'flea-market',
-        merchantLevel: 0
-      },
-      {
-        enabled: true,
-        merchant: 'prapor',
-        merchantLevel: 4
-      },
-      {
-        enabled: true,
-        merchant: 'therapist',
-        merchantLevel: 1
-      }
-    ])
+    globalFilterService.save({
+      excludeItemsWithoutMatchingPrice: true,
+      excludePresetBaseItems: true,
+      merchantFilters: [
+        {
+          enabled: true,
+          merchant: 'flea-market',
+          merchantLevel: 0
+        },
+        {
+          enabled: true,
+          merchant: 'prapor',
+          merchantLevel: 4
+        },
+        {
+          enabled: true,
+          merchant: 'therapist',
+          merchantLevel: 1
+        }
+      ]
+    })
 
     // Act
     const shoppingListResult = await inventoryItemService.getShoppingListAsync(inventoryItem)

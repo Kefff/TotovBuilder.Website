@@ -1036,38 +1036,42 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
       Services.configure(ReductionService)
 
       const globalFilterService = Services.get(GlobalFilterService)
-      globalFilterService.saveMerchantFilters([
-        {
-          enabled: true,
-          merchant: 'prapor',
-          merchantLevel: 4
-        },
-        {
-          enabled: true,
-          merchant: 'mechanic',
-          merchantLevel: 2
-        },
-        {
-          enabled: true,
-          merchant: 'flea-market',
-          merchantLevel: 0
-        },
-        {
-          enabled: true,
-          merchant: 'therapist',
-          merchantLevel: 3
-        },
-        {
-          enabled: true,
-          merchant: 'skier',
-          merchantLevel: 1
-        },
-        {
-          enabled: false,
-          merchant: 'ref',
-          merchantLevel: 4
-        }
-      ])
+      globalFilterService.save({
+        excludeItemsWithoutMatchingPrice: true,
+        excludePresetBaseItems: true,
+        merchantFilters: [
+          {
+            enabled: true,
+            merchant: 'prapor',
+            merchantLevel: 4
+          },
+          {
+            enabled: true,
+            merchant: 'mechanic',
+            merchantLevel: 2
+          },
+          {
+            enabled: true,
+            merchant: 'flea-market',
+            merchantLevel: 0
+          },
+          {
+            enabled: true,
+            merchant: 'therapist',
+            merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'skier',
+            merchantLevel: 1
+          },
+          {
+            enabled: false,
+            merchant: 'ref',
+            merchantLevel: 4
+          }
+        ]
+      })
 
       const service = new BuildPropertiesService()
 
@@ -1206,38 +1210,42 @@ Ref Non   Skier 1   La Toubib 3
       }
 
       const globalFilterService = Services.get(GlobalFilterService)
-      globalFilterService.saveMerchantFilters([
-        {
-          enabled: true,
-          merchant: 'prapor',
-          merchantLevel: 4
-        },
-        {
-          enabled: true,
-          merchant: 'mechanic',
-          merchantLevel: 2
-        },
-        {
-          enabled: true,
-          merchant: 'flea-market',
-          merchantLevel: 0
-        },
-        {
-          enabled: true,
-          merchant: 'therapist',
-          merchantLevel: 3
-        },
-        {
-          enabled: true,
-          merchant: 'skier',
-          merchantLevel: 1
-        },
-        {
-          enabled: false,
-          merchant: 'ref',
-          merchantLevel: 4
-        }
-      ])
+      globalFilterService.save({
+        excludeItemsWithoutMatchingPrice: true,
+        excludePresetBaseItems: true,
+        merchantFilters: [
+          {
+            enabled: true,
+            merchant: 'prapor',
+            merchantLevel: 4
+          },
+          {
+            enabled: true,
+            merchant: 'mechanic',
+            merchantLevel: 2
+          },
+          {
+            enabled: true,
+            merchant: 'flea-market',
+            merchantLevel: 0
+          },
+          {
+            enabled: true,
+            merchant: 'therapist',
+            merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'skier',
+            merchantLevel: 1
+          },
+          {
+            enabled: false,
+            merchant: 'ref',
+            merchantLevel: 4
+          }
+        ]
+      })
 
       const buildPropertiesService = new BuildPropertiesService()
 
@@ -1842,38 +1850,42 @@ Créé avec Totov Builder`)
       }
 
       const globalFilterService = Services.get(GlobalFilterService)
-      globalFilterService.saveMerchantFilters([
-        {
-          enabled: true,
-          merchant: 'prapor',
-          merchantLevel: 4
-        },
-        {
-          enabled: true,
-          merchant: 'mechanic',
-          merchantLevel: 2
-        },
-        {
-          enabled: true,
-          merchant: 'flea-market',
-          merchantLevel: 0
-        },
-        {
-          enabled: true,
-          merchant: 'therapist',
-          merchantLevel: 3
-        },
-        {
-          enabled: true,
-          merchant: 'skier',
-          merchantLevel: 1
-        },
-        {
-          enabled: false,
-          merchant: 'ref',
-          merchantLevel: 4
-        }
-      ])
+      globalFilterService.save({
+        excludeItemsWithoutMatchingPrice: true,
+        excludePresetBaseItems: true,
+        merchantFilters: [
+          {
+            enabled: true,
+            merchant: 'prapor',
+            merchantLevel: 4
+          },
+          {
+            enabled: true,
+            merchant: 'mechanic',
+            merchantLevel: 2
+          },
+          {
+            enabled: true,
+            merchant: 'flea-market',
+            merchantLevel: 0
+          },
+          {
+            enabled: true,
+            merchant: 'therapist',
+            merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'skier',
+            merchantLevel: 1
+          },
+          {
+            enabled: false,
+            merchant: 'ref',
+            merchantLevel: 4
+          }
+        ]
+      })
 
       const buildPropertiesService = new BuildPropertiesService()
 

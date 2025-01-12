@@ -129,17 +129,17 @@
   --surface-e: var(--surface-a);
   --surface-f: #262626;
 
-  --surface-transparent-0: rgba(18, 18, 18, 0.66);
-  --surface-transparent-50: rgba(24, 24, 24, 0.66);
-  --surface-transparent-100: rgba(30, 30, 30, 0.66);
-  --surface-transparent-200: rgba(36, 36, 36, 0.66);
-  --surface-transparent-300: rgba(42, 42, 42, 0.66);
-  --surface-transparent-400: rgba(48, 48, 48, 0.66);
-  --surface-transparent-500: rgba(54, 54, 54, 0.66);
-  --surface-transparent-600: rgba(59, 59, 59, 0.66);
-  --surface-transparent-700: rgba(65, 65, 65, 0.66);
-  --surface-transparent-800: rgba(71, 71, 71, 0.66);
-  --surface-transparent-900: rgba(77, 77, 77, 0.66);
+  --surface-transparent-0: rgba(18, 18, 18, 0.75);
+  --surface-transparent-50: rgba(24, 24, 24, 0.75);
+  --surface-transparent-100: rgba(30, 30, 30, 0.75);
+  --surface-transparent-200: rgba(36, 36, 36, 0.75);
+  --surface-transparent-300: rgba(42, 42, 42, 0.75);
+  --surface-transparent-400: rgba(48, 48, 48, 0.75);
+  --surface-transparent-500: rgba(54, 54, 54, 0.75);
+  --surface-transparent-600: rgba(59, 59, 59, 0.75);
+  --surface-transparent-700: rgba(65, 65, 65, 0.75);
+  --surface-transparent-800: rgba(71, 71, 71, 0.75);
+  --surface-transparent-900: rgba(77, 77, 77, 0.75);
 
   /* Font */
   --font-main: 'Escape From Tarkov', sans-serif;
