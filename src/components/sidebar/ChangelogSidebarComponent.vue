@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { nextTick, onMounted, ref } from 'vue'
 import { IChangelogEntry } from '../../models/configuration/IChangelogEntry'
+import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import { VersionService } from '../../services/VersionService'
 import Services from '../../services/repository/Services'
 import Loading from '../LoadingComponent.vue'
 
 defineProps<{ parameters: undefined }>()
+
+const _globalSidebarService = Services.get(GlobalSidebarService)
 
 const changelogs = ref<IChangelogEntry[]>([])
 const isLoading = ref(true)
@@ -19,16 +22,13 @@ async function loadChangelogAsync(): Promise<void> {
   isLoading.value = true
 
   const fetchedChangelogs = await Services.get(VersionService).getChangelogAsync()
-
   nextTick(() => isLoading.value = false)
 
-  if (fetchedChangelogs == null) {
-    // TODO: AFFICHER UNE ERREUR QUAND LES CHANGELOGS NE SONT PAS CHARGES
-
-    return
+  if (fetchedChangelogs.length > 0) {
+    changelogs.value = fetchedChangelogs
+  } else {
+    _globalSidebarService.close('ChangelogSidebar')
   }
-
-  changelogs.value = fetchedChangelogs
 }
 </script>
 
@@ -42,9 +42,12 @@ async function loadChangelogAsync(): Promise<void> {
 
 
 <template>
-  <div class="sidebar-option">
-    <Loading v-show="isLoading" />
-    <div v-if="!isLoading">
+  <Loading v-if="isLoading" />
+  <div
+    v-else
+    class="sidebar-option"
+  >
+    <div>
       <div
         v-for="changelog of changelogs"
         :key="changelog.version"

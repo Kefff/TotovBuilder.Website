@@ -134,7 +134,7 @@ export class VersionService {
    * Displays a notification when no changelog could be fetched.
    * @returns Changelog.
    */
-  public async getChangelogAsync(): Promise<IChangelogEntry[] | undefined> {
+  public async getChangelogAsync(): Promise<IChangelogEntry[]> {
     await this.initializeAsync()
 
     if (!this.changelogFetched) {
