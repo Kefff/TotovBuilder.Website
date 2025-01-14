@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import Images from '../images'
 import { IMerchantFilter } from '../models/utils/IMerchantFilter'
 import { GlobalFilterService } from '../services/GlobalFilterService'
@@ -10,8 +9,6 @@ import Tooltip from './TooltipComponent.vue'
 const modelMerchantFilters = defineModel<IMerchantFilter[]>('merchantFilters', { required: true })
 
 const _globalFilterService = Services.get(GlobalFilterService)
-
-const merchantFiltersInternal = computed(() => [...modelMerchantFilters.value].sort((m1, m2) => StringUtils.compare(m1.merchant, m2.merchant)))
 
 /**
  * Gets the level options for a merchant.
@@ -41,7 +38,7 @@ function hasLevels(merchantName: string): boolean {
  * Updates the filter.
  */
 function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel: number): void {
-  const newMerchantFilters: IMerchantFilter[] = [...merchantFiltersInternal.value]
+  const newMerchantFilters: IMerchantFilter[] = [...modelMerchantFilters.value]
   newMerchantFilters[index].enabled = enabled
   newMerchantFilters[index].merchantLevel = merchantLevel
 
@@ -61,7 +58,7 @@ function onMerchantFilterChanged(index: number, enabled: boolean, merchantLevel:
 <template>
   <div>
     <div
-      v-for="(merchantFilter, index) of merchantFiltersInternal"
+      v-for="(merchantFilter, index) of modelMerchantFilters"
       :key="merchantFilter.merchant"
       class="merchant-filter"
     >

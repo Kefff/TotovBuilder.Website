@@ -100,7 +100,7 @@ function save(): void {
   </div>
   <div class="sidebar-title">
     <div class="sidebar-title-icon">
-      <font-awesome-icon icon="clipboard-list" />
+      <font-awesome-icon icon="user-tag" />
     </div>
     <span>{{ $t('caption.merchants') }}</span>
   </div>

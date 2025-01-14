@@ -153,7 +153,7 @@ function setLanguage(): void {
             class="app-title-prapor"
           >
         </Tooltip>
-        <h1
+        <div
           class="app-title-text"
           @click="goToHome"
         >
@@ -163,7 +163,7 @@ function setLanguage(): void {
           <div class="app-title-part2">
             BUILDER
           </div>
-        </h1>
+        </div>
       </div>
     </div>
     <div class="app-content">
@@ -402,6 +402,12 @@ function setLanguage(): void {
 
 .app-title-text {
   cursor: pointer;
+  font-size: 2.75rem;
+  margin: 0;
+  /* Required for Chrome, otherwise letters are overlapping */
+  letter-spacing: 2px;
+  /* Required for Chrome and Firefox to have the same behaviour */
+  line-height: 3rem;
 }
 </style>
 
@@ -435,15 +441,6 @@ body {
   margin: 0;
   overflow: hidden;
   width: 100%;
-}
-
-h1 {
-  font-size: 3rem;
-  margin: 0;
-  /* Required for Chrome, otherwise letters are overlapping */
-  letter-spacing: 2px;
-  /* Required for Chrome and Firefox to have the same behaviour */
-  line-height: 3rem;
 }
 
 html {

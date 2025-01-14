@@ -173,19 +173,24 @@ export class GlobalFilterService {
 
     // Initializing merchant filters
     const tarkovValuesService = Services.get(TarkovValuesService)
+    const merchants = tarkovValuesService.values.merchants.filter(m => m.showInFilter).sort((m1, m2) => m1.order - m2.order)
+    const orderedMerchantFilters: IMerchantFilter[] = []
 
-    for (const merchant of tarkovValuesService.values.merchants.filter(m => m.showInFilter)) {
-      const savedMerchantFilter = savedFilter.merchantFilters.find(sf => sf.merchant === merchant.name)
+    for (const merchant of merchants) {
+      let merchantFilter = savedFilter.merchantFilters.find(sf => sf.merchant === merchant.name)
 
-      if (savedMerchantFilter == null) {
-        savedFilter.merchantFilters.push({
+      if (merchantFilter == null) {
+        merchantFilter = {
           enabled: true,
           merchantLevel: merchant.maxLevel,
           merchant: merchant.name
-        })
+        }
       }
+
+      orderedMerchantFilters.push(merchantFilter)
     }
 
+    savedFilter.merchantFilters = orderedMerchantFilters
     this.filter = savedFilter
 
     this.isInitialized = true

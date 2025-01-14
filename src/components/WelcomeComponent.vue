@@ -168,7 +168,7 @@ function openNewBuild(): void {
 <template>
   <div class="welcome">
     <div>
-      <h2>Totov <span class="welcome-builder">Builder</span>{{ $t('message.welcome1') }}</h2>
+      <h1>Totov <span class="welcome-builder">Builder</span>{{ $t('message.welcome1') }}</h1>
       <p>{{ $t('message.welcome2') }}</p>
       <p>{{ $t('message.welcome3') }}</p>
       <p>{{ $t('message.welcome4') }}</p>
@@ -346,9 +346,11 @@ function openNewBuild(): void {
   height: 100%;
 }
 
-.welcome h2 {
+.welcome h1 {
   margin-bottom: 0.5rem;
   margin-top: 0;
+  font-size: 1.5rem;
+  line-height: normal;
 }
 
 .welcome h3 {

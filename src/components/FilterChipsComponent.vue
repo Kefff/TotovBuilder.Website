@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import { useBreakpoints, useEventListener, watchDebounced } from '@vueuse/core'
-import { computed, inject, Ref, ref, watch } from 'vue'
+import { computed, inject, onMounted, onUnmounted, Ref, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { FilterAndSortingDataType } from '../models/utils/FilterAndSortingData'
+import { IGlobalFilter } from '../models/utils/IGlobalFilter'
 import { GlobalSidebarDisplayedComponentParameters } from '../models/utils/IGlobalSidebarOptions'
 import ItemFilterAndSortingData from '../models/utils/ItemFilterAndSortingData'
 import { SortingOrder } from '../models/utils/SortingOrder'
 import vueI18n from '../plugins/vueI18n'
+import { GlobalFilterService } from '../services/GlobalFilterService'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
 import { SortingService } from '../services/sorting/SortingService'
 import StringUtils from '../utils/StringUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import InputTextField from './InputTextFieldComponent.vue'
+import MerchantIcon from './MerchantIconComponent.vue'
 import Sticky from './StickyComponent.vue'
 import Tooltip from './TooltipComponent.vue'
 
@@ -27,6 +30,7 @@ const props = withDefaults(
     elementToStickTo: undefined
   })
 
+const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _sortingService = Services.get(SortingService)
 
@@ -48,6 +52,11 @@ const categoryFilterCaption = computed(() => {
   }
 
   return caption
+})
+const enabledMerchants = computed(() => {
+  const merchants = globalFilter.value?.merchantFilters.filter(mf => mf.enabled) ?? []
+
+  return merchants
 })
 const filterCaption = computed(() => modelFilterAndSortingData.value.filter)
 const filterTooltip = computed(() => {
@@ -75,6 +84,43 @@ const filterTooltip = computed(() => {
     }
 
     tooltip += vueI18n.t('caption.filteredWith2', { filter: modelFilterAndSortingData.value.filter })
+  }
+
+  return tooltip
+})
+const merchantsTooltip = computed(() => {
+  let tooltip = vueI18n.t('caption.merchantItemsOptions')
+
+  if (globalFilter.value == null) {
+    return tooltip
+  }
+
+  if (!globalFilter.value.excludeItemsWithoutMatchingPrice) {
+    tooltip += `\n\n${vueI18n.t('caption.merchantItemsOptions_showItemsWithoutMatchingPrice')}`
+  }
+
+  if (!globalFilter.value.excludePresetBaseItems) {
+    if (tooltip.length > 0) {
+      tooltip += '\n\n'
+    }
+
+    tooltip += vueI18n.t('caption.merchantItemsOptions_showPresetBaseItems')
+  }
+
+  if (enabledMerchants.value.length > 0) {
+    if (tooltip.length > 0) {
+      tooltip += '\n\n'
+    }
+
+    tooltip += `${vueI18n.t('caption.merchants')} :`
+
+    for (const merchant of enabledMerchants.value) {
+      tooltip += `\n${vueI18n.t('caption.merchant_' + merchant.merchant)}`
+
+      if (merchant.merchantLevel > 0) {
+        tooltip += ` ${vueI18n.t('caption.level')} ${merchant.merchantLevel}`
+      }
+    }
   }
 
   return tooltip
@@ -117,6 +163,7 @@ const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const isCompactMode = breakpoints.smaller('tabletPortrait')
 const isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
 const filterInternal = ref(modelFilterAndSortingData.value.filter)
+const globalFilter = ref<IGlobalFilter>()
 
 watch(
   () => modelFilterAndSortingData.value.filter,
@@ -127,6 +174,16 @@ watchDebounced(
   filterInternal,
   () => applyQuickFilter(),
   { debounce: 500 })
+
+onMounted(() => {
+  _globalFilterService.emitter.on(GlobalFilterService.changeEvent, getGlobalFilter)
+
+  getGlobalFilter()
+})
+
+onUnmounted(() => {
+  _globalFilterService.emitter.off(GlobalFilterService.changeEvent, getGlobalFilter)
+})
 
 /**
  * Applies the quick filter.
@@ -156,6 +213,13 @@ function checkIsFilterAndSortingDataChanged(updatedFilterAndSortingData: GlobalS
   }
 
   return false
+}
+
+/**
+ * Gets the global filter.
+ */
+function getGlobalFilter(): void {
+  globalFilter.value = _globalFilterService.get()
 }
 
 /**
@@ -205,6 +269,15 @@ function showFilterAndSortSidebar(): void {
 }
 
 /**
+ * Opens the global filter sidebar.
+ */
+function showGlobalFilterSidebar(): void {
+  _globalSidebarService.display({
+    displayedComponentType: 'MerchantItemsOptionsSidebar'
+  })
+}
+
+/**
  * Switches the sort order.
  */
 function switchSortOrder(): void {
@@ -250,16 +323,50 @@ function switchSortOrder(): void {
             {{ $t(`caption.${modelFilterAndSortingData.property}`) }}
           </span>
         </Tooltip>
-        <Dropdown
+        <div
           v-else
-          v-model="property"
-          :filter-fields="['caption']"
-          :option-label="o => $t(`caption.${o.name}`)"
-          :options="modelFilterAndSortingData.sortableProperties"
-          class="filter-chip-quick-filter-input"
-          style="margin-left: 0.5rem"
-          option-value="name"
-        />
+          class="filter-chip-sort"
+          @click="showFilterAndSortSidebar"
+        >
+          <Dropdown
+            v-model="property"
+            :filter-fields="['caption']"
+            :option-label="o => $t(`caption.${o.name}`)"
+            :options="modelFilterAndSortingData.sortableProperties"
+            class="filter-chip-quick-filter-input"
+            option-value="name"
+            @click="($event: MouseEvent) => $event.stopPropagation()"
+          />
+        </div>
+      </Chip>
+      <!-- Merchants chip -->
+      <Chip class="filter-chip filter-chip-content">
+        <Tooltip
+          :tooltip="merchantsTooltip"
+          class="filter-chip-merchants"
+          @click="showGlobalFilterSidebar"
+        >
+          <div class="filter-chip-icon">
+            <font-awesome-icon icon="user-tag" />
+          </div>
+          <div
+            v-if="isCompactMode && enabledMerchants.length > 0"
+            class="filter-chip-merchants-count"
+          >
+            {{ enabledMerchants.length }}
+          </div>
+          <div
+            v-if="!isCompactMode"
+            class="filter-chip-merchants-list"
+          >
+            <MerchantIcon
+              v-for="merchant of enabledMerchants"
+              :key="merchant.merchant"
+              :merchant="merchant.merchant"
+              :merchant-level="merchant.merchantLevel"
+            />
+          </div>
+        </Tooltip>
       </Chip>
       <!-- Add filter chip -->
       <Chip
@@ -439,6 +546,28 @@ function switchSortOrder(): void {
   justify-content: center;
 }
 
+.filter-chip-merchants {
+  align-items: center;
+  display: flex;
+}
+
+.filter-chip-merchants-count {
+  align-items: center;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  margin-right: 0.325rem;
+  width: 1.25rem;
+}
+
+.filter-chip-merchants-list {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  margin-right: 1rem;
+}
+
 .filter-chip-quick-filter > .filter-chip-text {
   padding-bottom: 0.25rem;
   padding-left: 0.75rem;
@@ -463,6 +592,12 @@ function switchSortOrder(): void {
   margin-right: 0.5rem;
 }
 
+.filter-chip-sort {
+  align-items: center;
+  display: flex;
+  height: 100%;
+}
+
 .filter-chip-text {
   display: flex;
   flex-direction: column;
@@ -483,7 +618,7 @@ function switchSortOrder(): void {
   align-items: center;
   display: grid;
   grid-gap: 0.5rem;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto auto;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
 }
@@ -507,5 +642,18 @@ function switchSortOrder(): void {
 .filter-chip-quick-filter-input > .input-text-field > input,
 .filter-chip-quick-filter-input.p-dropdown {
   height: 1.75rem;
+}
+
+.filter-chips .p-chip img {
+  /* Chips overrides MerchantIcon image */
+  border-radius: 3px;
+  height: 1.85rem;
+  margin-left: unset;
+  margin-right: unset;
+  width: 2rem;
+}
+
+.filter-chip-merchants-list > .merchant-icon > .merchant-icon-level {
+  transform: translate(1.5rem, 0.5rem);
 }
 </style>

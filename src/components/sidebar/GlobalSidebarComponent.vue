@@ -165,7 +165,7 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
       _displayedComponent = ItemsListSidebar
       break
     case 'MerchantItemsOptionsSidebar':
-      icon.value = 'user-tag'
+      icon.value = 'clipboard-list'
       title.value = 'caption.items'
       _displayedComponent = MerchantItemsOptionsSidebar
       break

@@ -11,10 +11,16 @@ export interface IMerchant {
    * Minimum level.
    */
   minLevel: number
+
   /**
    * Name.
    */
   name: string
+
+  /**
+   * Order of appearance.
+   */
+  order: number
 
   /**
    * Indicates whether the merchant is showed in the merchants filter.

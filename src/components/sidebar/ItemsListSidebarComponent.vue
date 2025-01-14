@@ -75,15 +75,6 @@ watchDebounced(
   { debounce: 100 })
 
 /**
- * Displays the merchants sidebar.
- */
-function displayMerchants(): void {
-  _globalSidebarService.display({
-    displayedComponentType: 'MerchantItemsOptionsSidebar'
-  })
-}
-
-/**
  * Gets the caption for a sort order.
  * @param sortOrder - Sort order.
  * @returns - Caption.
@@ -139,26 +130,6 @@ function reset(): void {
 
 
 <template>
-  <div class="sidebar-option">
-    <div class="items-list-sidebar-group">
-      <span>
-        {{ $t('caption.merchants') }}
-      </span>
-      <div class="items-list-sidebar-field">
-        <Button
-          class="items-list-sidebar-long-button"
-          outlined
-          @click="displayMerchants()"
-        >
-          <font-awesome-icon
-            icon="user-tag"
-            class="icon-before-text"
-          />
-          <span>{{ $t('caption.merchantItemsOptions') }}</span>
-        </Button>
-      </div>
-    </div>
-  </div>
   <div class="sidebar-option">
     <div class="items-list-sidebar-group">
       <span>
