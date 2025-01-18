@@ -169,10 +169,14 @@ async function setWeightAsync(): Promise<void> {
           </Tooltip>
         </div>
         <div
-          v-if="(!includeModsAndContent || showWeight) && selectedItemWeight.weight > 0"
+          v-if="includeModsAndContent || showWeight"
           class="selected-item-item-card-weight"
         >
-          <Tooltip :tooltip="$t('caption.weight')">
+          <!-- When mods and content are included, we alway want to display this div for alignment purpose, even if no weight is displayed inside -->
+          <Tooltip
+            v-if="showWeight && selectedItemWeight.weight > 0"
+            :tooltip="$t('caption.weight')"
+          >
             <font-awesome-icon
               icon="weight-hanging"
               class="icon-before-text"
