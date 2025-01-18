@@ -169,14 +169,10 @@ async function setWeightAsync(): Promise<void> {
           </Tooltip>
         </div>
         <div
-          v-if="includeModsAndContent || showWeight"
+          v-if="(!includeModsAndContent || showWeight) && selectedItemWeight.weight > 0"
           class="selected-item-item-card-weight"
         >
-          <!-- When mods and content are included, we alway want to display this div for alignment purpose, even if no weight is displayed inside -->
-          <Tooltip
-            v-if="showWeight && selectedItemWeight.weight > 0"
-            :tooltip="$t('caption.weight')"
-          >
+          <Tooltip :tooltip="$t('caption.weight')">
             <font-awesome-icon
               icon="weight-hanging"
               class="icon-before-text"
@@ -264,9 +260,22 @@ async function setWeightAsync(): Promise<void> {
   flex-direction: row;
 }
 
+.selected-item-item-card > .selected-item-item-card-prices-and-weight {
+  height: 4rem;
+}
+
+.selected-item-item-card.selected-item-item-card-compact > .selected-item-item-card-prices-and-weight {
+  height: 3.5rem;
+}
+
+.selected-item-item-card.selected-item-item-card-compact > .selected-item-item-card-prices-and-weight .selected-item-item-card-with-mods {
+  height: 1.5rem;
+}
+
 .selected-item-item-card-compact {
   align-items: unset;
   flex-direction: column;
+  gap: unset;
 }
 
 .selected-item-item-card-per-unit {
@@ -282,7 +291,6 @@ async function setWeightAsync(): Promise<void> {
   align-items: center;
   display: flex;
   gap: 0.25rem;
-  height: 2rem;
 }
 
 .selected-item-item-card-prices {
@@ -292,21 +300,18 @@ async function setWeightAsync(): Promise<void> {
   justify-content: center;
 }
 
-.selected-item-item-card-prices-and-weight {
-  height: 4rem !important;
-}
-
 .selected-item-item-card-weight {
   align-items: center;
   display: flex;
-  height: 2rem;
+  height: 100%;
   text-wrap: nowrap;
 }
 
 .selected-item-item-card-weights {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  height: 100%;
 }
 
 .selected-item-item-card-weights span {
@@ -318,9 +323,9 @@ async function setWeightAsync(): Promise<void> {
 .selected-item-item-card-with-mods {
   align-items: center;
   display: flex;
+  flex-shrink: 0;
   font-style: italic;
   font-weight: bold;
-  min-height: 1.25rem;
   height: 2rem;
 }
 </style>
@@ -337,5 +342,10 @@ async function setWeightAsync(): Promise<void> {
 <style>
 .selected-item-item-card .card-line {
   gap: 1.5rem;
+  height: 2rem;
+}
+
+.selected-item-item-card.selected-item-item-card-compact .card-line {
+  height: 1.5rem;
 }
 </style>

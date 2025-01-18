@@ -718,6 +718,10 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   width: 100%;
 }
 
+.item-header-container.item-header-container-compact {
+  gap: 0.25rem;
+}
+
 .item-header-container-compact {
   align-items: unset;
   flex-direction: column;
