@@ -228,10 +228,7 @@ function togglePriceDetails(event: Event): void {
           />
           <span>{{ displayedPrice }}</span>
         </div>
-        <div
-          v-if="canShowIcon"
-          class="price-icon"
-        >
+        <div v-if="canShowIcon">
           <div
             v-if="ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored"
             class="price-ignored-icon"
@@ -400,6 +397,7 @@ function togglePriceDetails(event: Event): void {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  gap: 0.25rem;
   white-space: nowrap;
 }
 
@@ -479,11 +477,6 @@ function togglePriceDetails(event: Event): void {
 
 .price-details-quest-name {
   margin-right: 0.25rem;
-}
-
-.price-icon {
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
 }
 
 .price-quest-icon {

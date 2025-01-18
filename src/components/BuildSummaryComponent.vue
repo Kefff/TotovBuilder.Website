@@ -221,7 +221,7 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
 .build-summary-compact {
   align-items: center;
   display: grid;
-  font-weight: bold;
+  font-weight: bolder;
   gap: 1rem;
   grid-template-columns: auto auto auto auto;
   max-width: 100%;

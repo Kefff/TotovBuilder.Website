@@ -129,8 +129,6 @@ function showDetails(): void {
     </template>
     <template #content>
       <div class="card-lines">
-        <!-- Specialized stats -->
-        <ItemCardSelector :item="item" />
         <!-- Weight and price -->
         <div class="card-line card-line3 item-card-weight-and-price-line">
           <Tooltip
@@ -153,6 +151,8 @@ function showDetails(): void {
             <Price :price="itemUnitPrice" />
           </div>
         </div>
+        <!-- Specialized stats -->
+        <ItemCardSelector :item="item" />
         <div
           v-if="selectionOptions.isEnabled"
           class="card-buttons"

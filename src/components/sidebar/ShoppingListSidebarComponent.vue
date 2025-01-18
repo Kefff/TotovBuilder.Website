@@ -75,7 +75,7 @@ const shoppingListItems = computed(() => props.parameters.shoppingList.filter(sh
 }
 
 .shopping-list-sidebar-inventory-slot-name {
-  font-weight: bold;
+  font-weight: bolder;
   margin-bottom: 0.25rem;
 }
 

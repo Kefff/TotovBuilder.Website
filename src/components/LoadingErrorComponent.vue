@@ -140,7 +140,7 @@ function signal(): void {
   align-items: center;
   color: var(--error-color);
   display: flex;
-  font-weight: bold;
+  font-weight: bolder;
   justify-content: center;
   flex-direction: row;
   flex-wrap: nowrap;

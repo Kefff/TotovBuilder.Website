@@ -79,6 +79,6 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? head
 <style scoped>
 .headwear-item-card-bold {
   font-style: italic;
-  font-weight: bold;
+  font-weight: bolder;
 }
 </style>

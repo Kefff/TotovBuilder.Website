@@ -779,7 +779,6 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 
 .item-quantity {
   height: unset;
-  margin-top: 0.5rem;
 }
 </style>
 

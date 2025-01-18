@@ -46,10 +46,11 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? vest
     :item="vest"
     :wearable-modifiers-override="wearableModifiers"
   >
-    <ContainerItemCard
-      v-if="!isBaseItem"
-      class="card-line-remover"
-      :item="vest"
-    />
+    <template #slot>
+      <ContainerItemCard
+        v-if="!isBaseItem"
+        :item="vest"
+      />
+    </template>
   </ArmorItemCard>
 </template>

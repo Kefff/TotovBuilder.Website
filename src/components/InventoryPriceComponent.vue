@@ -145,6 +145,7 @@ function toggleInventoryPriceDetails(event: Event): void {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: end;
+  gap: 0.25rem;
 }
 
 .inventory-price-details {
@@ -170,8 +171,9 @@ function toggleInventoryPriceDetails(event: Event): void {
 }
 
 .inventory-price-missing-price-icon {
-  margin-left: 0.5rem;
   color: var(--error-color);
+  width: 2rem;
+  text-align: center;
 }
 
 .inventory-price-list {

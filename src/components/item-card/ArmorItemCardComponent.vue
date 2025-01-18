@@ -58,7 +58,8 @@ const tooltipSuffix = computed(() => {
   <div
     v-if="displayEmptyLines
       || (!isBaseItem && armorClass > 0)
-      || (!isBaseItem && durability > 0)"
+      || (!isBaseItem && durability > 0)
+      || $slots.slot != null"
     class="card-line card-line3"
   >
     <Tooltip
@@ -85,7 +86,7 @@ const tooltipSuffix = computed(() => {
       />
       <span>{{ armorClass }}</span>
     </Tooltip>
-    <slot />
+    <slot name="slot" />
   </div>
   <WearableItemCard
     :display-empty-lines="displayEmptyLines"
@@ -107,7 +108,7 @@ const tooltipSuffix = computed(() => {
 <style scoped>
 .armor-item-card-bold {
   font-style: italic;
-  font-weight: bold;
+  font-weight: bolder;
 }
 
 .armor-item-card-durability {

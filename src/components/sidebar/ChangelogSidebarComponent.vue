@@ -110,7 +110,7 @@ async function loadChangelogAsync(): Promise<void> {
 }
 
 .changelog-title {
-  font-weight: bold;
+  font-weight: bolder;
   letter-spacing: 1px;
 }
 </style>

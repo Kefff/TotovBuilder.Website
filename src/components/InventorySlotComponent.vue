@@ -163,7 +163,7 @@ function onMerchantFilterChanged(): void {
   cursor: pointer;
   display: flex;
   font-size: 1.35rem;
-  font-weight: bold;
+  font-weight: bolder;
   width: 100%;
 }
 

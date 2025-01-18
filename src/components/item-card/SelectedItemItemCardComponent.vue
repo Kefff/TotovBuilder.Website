@@ -142,10 +142,7 @@ async function setWeightAsync(): Promise<void> {
     class="card-lines selected-item-item-card"
     :class="{ 'selected-item-item-card-compact': isCompactMode }"
   >
-    <!-- Specialized stats -->
-    <div>
-      <slot />
-    </div>
+    <!-- Weights and prices -->
     <div class="card-line card-line3 selected-item-item-card-prices-and-weight">
       <!-- Weight -->
       <div
@@ -182,7 +179,7 @@ async function setWeightAsync(): Promise<void> {
         </div>
         <div
           v-if="showUnitWeight"
-          class="selected-item-item-card-per-unit"
+          class="selected-item-item-card-per-unit card-line"
         >
           <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
             <font-awesome-icon
@@ -195,7 +192,11 @@ async function setWeightAsync(): Promise<void> {
         </div>
       </div>
       <!-- Price -->
-      <div class="selected-item-item-card-prices">
+      <div
+        v-if="((includeModsAndContent && selectedItemPrice.priceWithContentInMainCurrency !== selectedItemPrice.unitPrice.valueInMainCurrency))
+          || showPrice"
+        class="selected-item-item-card-prices"
+      >
         <div
           v-if="includeModsAndContent && selectedItemPrice.priceWithContentInMainCurrency !== selectedItemPrice.unitPrice.valueInMainCurrency"
           class="selected-item-item-card-with-mods"
@@ -230,10 +231,11 @@ async function setWeightAsync(): Promise<void> {
           </Tooltip>
         </div>
         <div
-          v-if="showUnitPrice"
+          v-if="inventoryItem.quantity > 1"
           class="selected-item-item-card-per-unit"
         >
           <Price
+            v-if="showUnitPrice"
             :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
             :price="selectedItemPrice.unitPrice"
             :show-merchant-icon="false"
@@ -241,6 +243,10 @@ async function setWeightAsync(): Promise<void> {
           />
         </div>
       </div>
+    </div>
+    <!-- Specialized stats -->
+    <div>
+      <slot />
     </div>
   </div>
 </template>
@@ -258,18 +264,11 @@ async function setWeightAsync(): Promise<void> {
 .selected-item-item-card {
   align-items: center;
   flex-direction: row;
+  gap: 1.5rem;
 }
 
 .selected-item-item-card > .selected-item-item-card-prices-and-weight {
-  height: 4rem;
-}
-
-.selected-item-item-card.selected-item-item-card-compact > .selected-item-item-card-prices-and-weight {
-  height: 3.5rem;
-}
-
-.selected-item-item-card.selected-item-item-card-compact > .selected-item-item-card-prices-and-weight .selected-item-item-card-with-mods {
-  height: 1.5rem;
+  height: 100%;
 }
 
 .selected-item-item-card-compact {
@@ -278,10 +277,15 @@ async function setWeightAsync(): Promise<void> {
   gap: unset;
 }
 
-.selected-item-item-card-per-unit {
+.selected-item-item-card-compact .selected-item-item-card-per-unit {
   align-items: center;
   display: flex;
   flex-direction: row;
+}
+
+.selected-item-item-card-per-unit {
+  align-items: center;
+  display: flex;
   font-size: 0.85rem;
   font-style: italic;
   height: 2rem;
@@ -290,7 +294,7 @@ async function setWeightAsync(): Promise<void> {
 .selected-item-item-card-price {
   align-items: center;
   display: flex;
-  gap: 0.25rem;
+  gap: 0.75rem;
 }
 
 .selected-item-item-card-prices {
@@ -303,7 +307,7 @@ async function setWeightAsync(): Promise<void> {
 .selected-item-item-card-weight {
   align-items: center;
   display: flex;
-  height: 100%;
+  height: 2rem;
   text-wrap: nowrap;
 }
 
@@ -325,7 +329,7 @@ async function setWeightAsync(): Promise<void> {
   display: flex;
   flex-shrink: 0;
   font-style: italic;
-  font-weight: bold;
+  font-weight: bolder;
   height: 2rem;
 }
 </style>
@@ -347,5 +351,16 @@ async function setWeightAsync(): Promise<void> {
 
 .selected-item-item-card.selected-item-item-card-compact .card-line {
   height: 1.5rem;
+}
+
+.selected-item-item-card.selected-item-item-card-compact .card-line.selected-item-item-card-prices-and-weight {
+  height: unset;
+}
+
+
+
+.selected-item-item-card-compact .selected-item-item-card-prices > .selected-item-item-card-with-mods,
+.selected-item-item-card-compact .selected-item-item-card-prices > .selected-item-item-card-price {
+  justify-content: unset;
 }
 </style>
