@@ -78,7 +78,7 @@ const modsCount = computed(() => modelInventoryItem.value?.modSlots.filter(ms =>
 
 const baseItem = ref<IInventoryItem | undefined>()
 const isEditing = inject<Ref<boolean>>('isEditing')
-const { isTabletLandscapeOrLarger: isLargeMode } = WebBrowserUtils.getScreenSize()
+const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
 const item = ref<IItem | undefined>()
 const itemChanging = ref(false)
 const itemIsContainer = ref(false)
@@ -449,7 +449,14 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
     v-if="modelInventoryItem != null || isEditing"
     class="item"
   >
-    <div :class="{ 'item-large-mode': isLargeMode, 'item-main': item != null && isMainInventorySlotItem, 'item-padding': item == null || !isMainInventorySlotItem }">
+    <div
+      class="item-header-container"
+      :class="{
+        'item-header-container-compact': isCompactMode,
+        'item-main': item != null && isMainInventorySlotItem,
+        'item-padding': item == null || !isMainInventorySlotItem
+      }"
+    >
       <div class="item-header">
         <ItemIcon
           v-if="item != null && (!isEditing || isBaseItem)"
@@ -704,6 +711,18 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   min-width: 1.75rem;
 }
 
+.item-header-container {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.item-header-container-compact {
+  align-items: unset;
+  flex-direction: column;
+}
+
 .item-header-dropdown {
   height: 100%;
   width: 100%;
@@ -742,13 +761,6 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   white-space: preserve;
   width: 100%;
   word-break: break-word;
-}
-
-.item-large-mode {
-  align-items: center;
-  display: flex;
-  gap: 1rem;
-  width: 100%;
 }
 
 .item-main {

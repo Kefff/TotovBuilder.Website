@@ -47,11 +47,7 @@ const showUnitPrice = computed(() => selectedItemPrice.value.price.valueInMainCu
 const showUnitWeight = computed(() => selectedItemWeight.value.unitWeight !== selectedItemWeight.value.weight)
 
 const isEditing = inject<Ref<boolean>>('isEditing')
-const {
-  isPc,
-  isPcLarge,
-  isTabletLandscape
-} = WebBrowserUtils.getScreenSize()
+const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
 const selectedItemPrice = ref<IInventoryItemPrice>({
   missingPrice: false,
   price: {
@@ -144,7 +140,7 @@ async function setWeightAsync(): Promise<void> {
 <template>
   <div
     class="card-lines selected-item-item-card"
-    :class="{ 'selected-item-item-card-pc': isTabletLandscape || isPc || isPcLarge }"
+    :class="{ 'selected-item-item-card-compact': isCompactMode }"
   >
     <!-- Specialized stats -->
     <div>
@@ -259,9 +255,14 @@ async function setWeightAsync(): Promise<void> {
 
 
 <style scoped>
-.selected-item-item-card-pc {
+.selected-item-item-card {
   align-items: center;
   flex-direction: row;
+}
+
+.selected-item-item-card-compact {
+  align-items: unset;
+  flex-direction: column;
 }
 
 .selected-item-item-card-per-unit {
@@ -291,12 +292,6 @@ async function setWeightAsync(): Promise<void> {
   height: 4rem !important;
 }
 
-.selected-item-item-card-weights {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 .selected-item-item-card-weight {
   align-items: center;
   display: flex;
@@ -304,9 +299,16 @@ async function setWeightAsync(): Promise<void> {
   text-wrap: nowrap;
 }
 
-.selected-item-item-card-weight > span {
+.selected-item-item-card-weights {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.selected-item-item-card-weights span {
   align-items: center;
   display: flex;
+  white-space: nowrap;
 }
 
 .selected-item-item-card-with-mods {
@@ -319,8 +321,17 @@ async function setWeightAsync(): Promise<void> {
 }
 </style>
 
+
+
+
+
+
+
+
+
+
 <style>
-.selected-item-item-card-pc .card-line {
+.selected-item-item-card .card-line {
   gap: 1.5rem;
 }
 </style>
