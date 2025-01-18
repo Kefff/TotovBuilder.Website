@@ -8,7 +8,7 @@ export default class StringUtils {
    * Indicates whether a string contains another string without casing.
    * @param container - String that should contain the other string.
    * @param searchedString - String that should be contained in the string.
-   * @returns True if the string is contained in the other string; otherwise false.
+   * @returns `true` if the string is contained in the other string; otherwise `false`.
    */
   public static contains(container: string, searchedString: string): boolean {
     return container.toUpperCase().includes(searchedString.toUpperCase())
@@ -18,7 +18,7 @@ export default class StringUtils {
    * Indicates whether a string contains other strings without casing.
    * @param container - String that should contain the other strings.
    * @param searchedStrings - Strings that should be contained in the string.
-   * @returns True if all the strings are contained in the string; otherwise false.
+   * @returns `true` if all the strings are contained in the string; otherwise `false`.
    */
   public static containsAll(container: string, searchedStrings: string[]): boolean {
     const results: boolean[] = []
@@ -34,7 +34,7 @@ export default class StringUtils {
    * Indicates whether a string contains one of several strings without casing.
    * @param container - String that should contain the other strings.
    * @param searchedStrings - Strings that should be contained in the string.
-   * @returns True if any of the strings are contained in the string; otherwise false.
+   * @returns `true` if any of the strings are contained in the string; otherwise `false`.
    */
   public static containsAny(container: string, searchedStrings: string[]): boolean {
     for (const searchedString of searchedStrings) {

@@ -17,6 +17,7 @@ import { ItemService } from '../services/ItemService'
 import { PresetService } from '../services/PresetService'
 import Services from '../services/repository/Services'
 import { ItemSortingFunctions } from '../services/sorting/functions/itemSortingFunctions'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 import InputNumberField from './InputNumberFieldComponent.vue'
 import SelectedItemItemCardSelector from './item-card/SelectedItemItemCardSelectorComponent.vue'
 import ItemContent from './ItemContentComponent.vue'
@@ -54,20 +55,6 @@ const _itemPropertiesService = Services.get(ItemPropertiesService)
 const _itemService = Services.get(ItemService)
 const _presetService = Services.get(PresetService)
 
-const baseItem = ref<IInventoryItem | undefined>()
-const isEditing = inject<Ref<boolean>>('isEditing')
-const item = ref<IItem | undefined>()
-const itemChanging = ref(false)
-const itemIsContainer = ref(false)
-const itemIsModdable = ref(false)
-const lastSelectionFilterAndSortingData = ref<ItemFilterAndSortingData>()
-const presetModSlotContainingItem = ref<IInventoryModSlot>()
-const quantity = ref(props.inventoryItem?.quantity ?? 1)
-const selectedTab = ref(SelectableTab.hidden)
-const showBaseItemPrice = ref(false)
-const showPrice = ref(true)
-const showWeight = ref(true)
-
 const canIgnorePrice = computed(() => presetModSlotContainingItem.value?.item?.itemId !== item.value?.id)
 const contentCount = computed(() => modelInventoryItem.value?.content.length ?? 0)
 const hasOnlyBaseItem = computed(() => itemIsModdable.value && (props.inventoryItem?.modSlots ?? []).every(ms => ms.item == null))
@@ -88,6 +75,21 @@ const itemHeaderGridTemplateColumns = computed(() => {
 })
 const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.value?.maxStackableAmount ?? 1)
 const modsCount = computed(() => modelInventoryItem.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
+
+const baseItem = ref<IInventoryItem | undefined>()
+const isEditing = inject<Ref<boolean>>('isEditing')
+const { isTabletLandscapeOrLarger: isLargeMode } = WebBrowserUtils.getScreenSize()
+const item = ref<IItem | undefined>()
+const itemChanging = ref(false)
+const itemIsContainer = ref(false)
+const itemIsModdable = ref(false)
+const lastSelectionFilterAndSortingData = ref<ItemFilterAndSortingData>()
+const presetModSlotContainingItem = ref<IInventoryModSlot>()
+const quantity = ref(props.inventoryItem?.quantity ?? 1)
+const selectedTab = ref(SelectableTab.hidden)
+const showBaseItemPrice = ref(false)
+const showPrice = ref(true)
+const showWeight = ref(true)
 
 watch(
   () => props.inventoryItem?.itemId,
@@ -447,7 +449,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
     v-if="modelInventoryItem != null || isEditing"
     class="item"
   >
-    <div :class="{ 'item-main': item != null && isMainInventorySlotItem, 'item-padding': item == null || !isMainInventorySlotItem }">
+    <div :class="{ 'item-large-mode': isLargeMode, 'item-main': item != null && isMainInventorySlotItem, 'item-padding': item == null || !isMainInventorySlotItem }">
       <div class="item-header">
         <ItemIcon
           v-if="item != null && (!isEditing || isBaseItem)"
@@ -742,8 +744,15 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   word-break: break-word;
 }
 
+.item-large-mode {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
 .item-main {
-  background-color: var(--primary-color6);
+  background-color: var(--primary-color8);
   border-radius: 6px;
   padding: 0.5rem
 }

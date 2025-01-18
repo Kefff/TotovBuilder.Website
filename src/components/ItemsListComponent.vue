@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useBreakpoints } from '@vueuse/core'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IItem, ItemCategoryId } from '../models/item/IItem'
 import { IListSelectionOptions } from '../models/utils/IListSelectionOptions'
@@ -53,36 +52,37 @@ const firstSelectedItemIndex = computed(() => filteredAnSortedItems.value.findIn
 const itemsPerLine = computed(() => {
   let columns = 5
 
-  if (isSizeSmartphonePortrait.value) {
+  if (isSmartphonePortrait.value) {
     columns = 1
-  } else if (isSizeTabletPortaitOrSmaller.value) {
+  } else if (isTabletPortraitOrSmaller.value) {
     columns = 2
-  } else if (isSizeTabletOrSmaller.value) {
+  } else if (isTabletLandscapeOrSmaller.value) {
     columns = 3
-  } else if (isSizePcOrSmaller.value) {
+  } else if (isPcOrSmaller.value) {
     columns = 4
   }
 
   return props.maxElementsPerLine >= columns ? columns : props.maxElementsPerLine
 })
-const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const linesPerPage = computed(() => {
   let lines = 5
 
-  if (isSizeTabletOrSmaller.value) {
+  if (isTabletLandscapeOrSmaller.value) {
     lines = 10
   }
 
   return lines
 })
-const isSizeSmartphonePortrait = breakpoints.smaller('smartphoneLandscape')
-const isSizeTabletPortaitOrSmaller = breakpoints.smaller('tabletLandscape')
-const isSizeTabletOrSmaller = breakpoints.smaller('pc')
-const isSizePcOrSmaller = breakpoints.smaller('pcLarge')
 
 const filteredAnSortedItems = ref<IItem[]>([])
 const isInitialed = ref(false)
 const isLoading = ref(true)
+const {
+  isSmartphonePortrait,
+  isTabletPortraitOrSmaller,
+  isTabletLandscapeOrSmaller,
+  isPcOrSmaller
+} = WebBrowserUtils.getScreenSize()
 
 onMounted(() => {
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
@@ -110,7 +110,7 @@ watch(
 /**
  * Indicates whether an item is selected.
  * @param item - Item.
- * @returns true when the build is selected; otherwise false.
+ * @returns `true` when the build is selected; otherwise `false`.
  */
 function checkIsSelected(item: IItem): boolean {
   const isSelected = modelSelectedItems.value.some(sbi => sbi.id === item.id)

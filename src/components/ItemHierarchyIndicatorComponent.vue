@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useBreakpoints } from '@vueuse/core'
 import { computed, inject, Ref } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
@@ -13,7 +12,6 @@ const props = defineProps<{
 const _bottomTopOffset = '12px'
 const _middleHeight = '1.5625rem'
 
-const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const isEditing = inject<Ref<boolean>>('isEditing')
 
 const bottomHeight = computed(() => `calc(100% - ${upperHeight.value} - ${_middleHeight} + ${_bottomTopOffset})`)
@@ -26,7 +24,6 @@ const displayBottomPart = computed(() => {
   return result
 })
 const indicatorWidth = computed(() => isCompactMode.value ? '0.75rem' : '1.75rem')
-const isCompactMode = breakpoints.smaller('tabletLandscape')
 const isVisible = computed(() => props.inventoryItems[props.index] != null || isEditing?.value)
 const lastHierarchyInventoryItemIndex = computed(() => {
   let lastIndex = 0
@@ -57,6 +54,8 @@ const upperHeight = computed(() => {
     return '2.25rem'
   }
 })
+
+const { isSmartphonePortrait: isCompactMode } = WebBrowserUtils.getScreenSize()
 </script>
 
 

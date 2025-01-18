@@ -89,7 +89,7 @@ export class GlobalSidebarService {
 
   /**
    * Indicates whether a global sidebar is opened.
-   * @returns true when a global sidebar is opened; otherwise false.
+   * @returns `true` when a global sidebar is opened; otherwise `false`.
    */
   public isDisplayed(): boolean {
     return this.displayedSidebar.length > 0

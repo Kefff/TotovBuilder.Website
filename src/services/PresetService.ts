@@ -109,7 +109,7 @@ export class PresetService {
   /**
    * Indicates whether an item is a preset or not.
    * @param item - Item.
-   * @returns true if the item is a preset; otherwise false.
+   * @returns `true` if the item is a preset; otherwise `false`.
    */
   public isPreset(item: IItem): boolean {
     if (Services.get(ItemPropertiesService).isModdable(item)) {

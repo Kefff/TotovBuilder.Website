@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, onUnmounted, Ref, ref, useTemplateRef, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
 import { IItem } from '../models/item/IItem'
 import { IPrice } from '../models/item/IPrice'
 import { IgnoredUnitPrice } from '../models/utils/IgnoredUnitPrice'
@@ -10,6 +10,7 @@ import { InventoryItemService } from '../services/InventoryItemService'
 import { ItemService } from '../services/ItemService'
 import Services from '../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 import MerchantIcon from './MerchantIconComponent.vue'
 import PriceDetailItem from './PriceDetailItemComponent.vue'
 import Tooltip from './TooltipComponent.vue'
@@ -43,12 +44,6 @@ const _globalFilterService = Services.get(GlobalFilterService)
 const _itemService = Services.get(ItemService)
 
 const _mainCurrency = _itemService.getMainCurrency()
-
-const barterItemPrices = ref<IInventoryItemPrice[]>([])
-const barterItems = ref<IItem[]>([])
-const initialized = ref(false)
-const isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
-const priceDetailPanel = useTemplateRef('priceDetailPanel')
 
 const canShowDetails = computed(() => props.showDetails
   && (props.price.merchant !== ''
@@ -89,6 +84,12 @@ const priceTooltip = computed(() => {
 })
 const showPrice = computed(() => initialized.value && (props.ignorePriceStatus === IgnoredUnitPrice.manuallyIgnored || props.ignorePriceStatus === IgnoredUnitPrice.notIgnored))
 const showPriceInMainCurrency = computed(() => !isBarter.value && currency.value.name !== _mainCurrency.name)
+
+const barterItemPrices = ref<IInventoryItemPrice[]>([])
+const barterItems = ref<IItem[]>([])
+const initialized = ref(false)
+const isTouchScreen = WebBrowserUtils.isTouchScreen()
+const priceDetailPanel = useTemplateRef('priceDetailPanel')
 
 onMounted(() => {
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)

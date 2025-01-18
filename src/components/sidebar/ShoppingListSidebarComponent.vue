@@ -90,7 +90,7 @@ const shoppingListItems = computed(() => props.parameters.shoppingList.filter(sh
 }
 
 .shopping-list-sidebar-item-of-inventory-slot {
-  background-color: var(--primary-color6);
+  background-color: var(--primary-color8);
   border-radius: 6px;
   padding-bottom: 0.5rem;
   padding-top: 0.5rem;

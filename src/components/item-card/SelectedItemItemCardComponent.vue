@@ -9,6 +9,7 @@ import { GlobalFilterService } from '../../services/GlobalFilterService'
 import { InventoryItemService } from '../../services/InventoryItemService'
 import Services from '../../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
+import WebBrowserUtils from '../../utils/WebBrowserUtils'
 import InventoryPrice from '../InventoryPriceComponent.vue'
 import Price from '../PriceComponent.vue'
 import Tooltip from '../TooltipComponent.vue'
@@ -29,7 +30,28 @@ const props = defineProps<{
 const _globalFilterService = Services.get(GlobalFilterService)
 const _inventoryItemService = Services.get(InventoryItemService)
 
+const hasMissingPrice = computed(() =>
+  selectedItemPrice.value.missingPrice
+  && !props.inventoryItem.ignorePrice
+  && selectedItemPrice.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored)
+const selectedItemInventoryPrice = computed<IInventoryPrice>(() => ({
+  missingPrice: hasMissingPrice.value,
+  priceByCurrency: selectedItemPrice.value.pricesWithContent,
+  priceInMainCurrency: selectedItemPrice.value.priceWithContentInMainCurrency
+}))
+const showSelectedItemMissingPrice = computed(() =>
+  hasMissingPrice.value
+  && !props.includeModsAndContent
+  && selectedItemPrice.value.unitPrice.valueInMainCurrency === 0) // We do not show the missing price icon on items that contain an item with a missing price
+const showUnitPrice = computed(() => selectedItemPrice.value.price.valueInMainCurrency !== selectedItemPrice.value.unitPrice.valueInMainCurrency)
+const showUnitWeight = computed(() => selectedItemWeight.value.unitWeight !== selectedItemWeight.value.weight)
+
 const isEditing = inject<Ref<boolean>>('isEditing')
+const {
+  isPc,
+  isPcLarge,
+  isTabletLandscape
+} = WebBrowserUtils.getScreenSize()
 const selectedItemPrice = ref<IInventoryItemPrice>({
   missingPrice: false,
   price: {
@@ -61,22 +83,6 @@ const selectedItemWeight = ref<IWeight>({
   weightWithContent: 0,
   unitWeight: 0
 })
-
-const hasMissingPrice = computed(() =>
-  selectedItemPrice.value.missingPrice
-  && !props.inventoryItem.ignorePrice
-  && selectedItemPrice.value.unitPriceIgnoreStatus === IgnoredUnitPrice.notIgnored)
-const selectedItemInventoryPrice = computed<IInventoryPrice>(() => ({
-  missingPrice: hasMissingPrice.value,
-  priceByCurrency: selectedItemPrice.value.pricesWithContent,
-  priceInMainCurrency: selectedItemPrice.value.priceWithContentInMainCurrency
-}))
-const showSelectedItemMissingPrice = computed(() =>
-  hasMissingPrice.value
-  && !props.includeModsAndContent
-  && selectedItemPrice.value.unitPrice.valueInMainCurrency === 0) // We do not show the missing price icon on items that contain an item with a missing price
-const showUnitPrice = computed(() => selectedItemPrice.value.price.valueInMainCurrency !== selectedItemPrice.value.unitPrice.valueInMainCurrency)
-const showUnitWeight = computed(() => selectedItemWeight.value.unitWeight !== selectedItemWeight.value.weight)
 
 onMounted(() => {
   _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged)
@@ -136,9 +142,14 @@ async function setWeightAsync(): Promise<void> {
 
 
 <template>
-  <div class="card-lines selected-item-item-card">
+  <div
+    class="card-lines selected-item-item-card"
+    :class="{ 'selected-item-item-card-pc': isTabletLandscape || isPc || isPcLarge }"
+  >
     <!-- Specialized stats -->
-    <slot />
+    <div>
+      <slot />
+    </div>
     <div class="card-line card-line3 selected-item-item-card-prices-and-weight">
       <!-- Weight -->
       <div
@@ -147,7 +158,7 @@ async function setWeightAsync(): Promise<void> {
         class="selected-item-item-card-weights"
       >
         <div
-          v-if="includeModsAndContent"
+          v-if="includeModsAndContent && selectedItemWeight.weightWithContent !== selectedItemWeight.unitWeight"
           class="selected-item-item-card-with-mods"
         >
           <Tooltip
@@ -175,24 +186,22 @@ async function setWeightAsync(): Promise<void> {
         </div>
         <div
           v-if="showUnitWeight"
-          class="selected-item-item-card-weight selected-item-item-card-per-unit"
+          class="selected-item-item-card-per-unit"
         >
-          <div>
-            <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
-              <font-awesome-icon
-                icon="weight-hanging"
-                class="icon-before-text"
-                style="margin-left: 0.1rem"
-              />
-              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
-            </Tooltip>
-          </div>
+          <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
+            <font-awesome-icon
+              icon="weight-hanging"
+              class="icon-before-text"
+              style="margin-left: 0.1rem"
+            />
+            <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
+          </Tooltip>
         </div>
       </div>
       <!-- Price -->
       <div class="selected-item-item-card-prices">
         <div
-          v-if="includeModsAndContent"
+          v-if="includeModsAndContent && selectedItemPrice.priceWithContentInMainCurrency !== selectedItemPrice.unitPrice.valueInMainCurrency"
           class="selected-item-item-card-with-mods"
         >
           <InventoryPrice
@@ -250,8 +259,9 @@ async function setWeightAsync(): Promise<void> {
 
 
 <style scoped>
-.selected-item-item-card {
-  margin-top: 0.25rem;
+.selected-item-item-card-pc {
+  align-items: center;
+  flex-direction: row;
 }
 
 .selected-item-item-card-per-unit {
@@ -260,40 +270,37 @@ async function setWeightAsync(): Promise<void> {
   flex-direction: row;
   font-size: 0.85rem;
   font-style: italic;
-  height: 100%;
+  height: 2rem;
 }
 
 .selected-item-item-card-price {
   align-items: center;
   display: flex;
   gap: 0.25rem;
-  height: 100%;
+  height: 2rem;
 }
 
 .selected-item-item-card-prices {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
   grid-column: span 2;
-  height: 100%;
+  justify-content: center;
 }
 
 .selected-item-item-card-prices-and-weight {
-  height: unset;
-  /* To override card-line which has a set height which conflicts with the merchant icon that is bigger */
+  height: 4rem !important;
 }
 
 .selected-item-item-card-weights {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  height: 100%;
+  justify-content: center;
 }
 
 .selected-item-item-card-weight {
   align-items: center;
   display: flex;
-  height: 100%;
+  height: 2rem;
   text-wrap: nowrap;
 }
 
@@ -303,9 +310,17 @@ async function setWeightAsync(): Promise<void> {
 }
 
 .selected-item-item-card-with-mods {
+  align-items: center;
   display: flex;
   font-style: italic;
   font-weight: bold;
   min-height: 1.25rem;
+  height: 2rem;
+}
+</style>
+
+<style>
+.selected-item-item-card-pc .card-line {
+  gap: 1.5rem;
 }
 </style>

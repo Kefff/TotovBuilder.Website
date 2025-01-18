@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useBreakpoints } from '@vueuse/core'
 import { PageState } from 'primevue/paginator'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
@@ -20,7 +19,6 @@ const props = withDefaults(
     scrollToIndex: undefined
   })
 
-const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const displayedLines = computed<unknown[][]>(() => {
   let last = first.value + props.linesPerPage
   const lines = groupedElements.value.slice(first.value, last)
@@ -40,7 +38,7 @@ const groupedElements = computed<unknown[][]>(() => {
   return groups
 })
 const hasMultiplePages = computed(() => props.elements.length > (props.elementsPerLine * props.linesPerPage))
-const isCompactMode = breakpoints.smaller('smartphoneLandscape')
+const { isSmartphonePortrait: isCompactMode } = WebBrowserUtils.getScreenSize()
 const pageLinksCount = computed(() => isCompactMode.value ? 3 : 5)
 
 const currentPage = ref(0)

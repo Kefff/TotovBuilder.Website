@@ -17,7 +17,7 @@ export class PathUtils {
   /**
    * Checks if the path is a path to an armor in an armor inventory slot.
    * @param path - Path.
-   * @returns true when the path is a path to an armor in an armor inventory slot; otherwise false.
+   * @returns `true` when the path is a path to an armor in an armor inventory slot; otherwise `false`.
    */
   public static checkIsArmorInventorySlotPath(path: string): boolean {
     const isArmorPath = path.includes(`${PathUtils.inventorySlotPrefix}${InventorySlotTypeId.bodyArmor}`)
@@ -30,7 +30,7 @@ export class PathUtils {
   /**
    * Checks if the path is a path to a mod slot.
    * @param path - Path.
-   * @returns true when the path is a path to a mod slot; otherwise false.
+   * @returns `true` when the path is a path to a mod slot; otherwise `false`.
    */
   public static checkIsModSlotPath(path: string): boolean {
     const lastModSlotIndex = path.lastIndexOf(PathUtils.modSlotPrefix)
@@ -42,7 +42,7 @@ export class PathUtils {
   /**
    * Checks if the path is a path to a vest in a vest inventory slot.
    * @param path - Path.
-   * @returns true when the path is a path to a vest in a vest inventory slot; otherwise false.
+   * @returns `true` when the path is a path to a vest in a vest inventory slot; otherwise `false`.
    */
   public static checkIsVestInventorySlotPath(path: string): boolean {
     const isVestPath = path.includes(`${PathUtils.inventorySlotPrefix}${InventorySlotTypeId.tacticalRig}`)

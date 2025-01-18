@@ -257,7 +257,7 @@ export class ItemService {
 
   /**
    * Fetches items.
-   * @returns true when items have correctly been fetched; otherwise false.
+   * @returns `true` when items have correctly been fetched; otherwise `false`.
    */
   private async fetchItemsAsync(): Promise<boolean> {
     const items = await Services.get(ItemFetcherService).fetchItemsAsync()
@@ -288,7 +288,7 @@ export class ItemService {
    * Fetches static data.
    * If static data is already being fetched, waits for the operation to end before returning.
    * This should in theory never happen since fetchStaticData() is only called in initialize() which executes nothing when another initialization is already being performed.
-   * @returns true when all static data has been fetched; otherwise false.
+   * @returns `true` when all static data has been fetched; otherwise `false`.
    */
   private async fetchStaticDataAsync(): Promise<boolean> {
     if (!this.isFetchingStaticData) {
@@ -359,7 +359,7 @@ export class ItemService {
 
   /**
    * Starts static data fetching.
-   * @returns true when fetching has succeeded, otherwise false.
+   * @returns `true` when fetching has succeeded, otherwise false.
    */
   private async startStaticDataFetchingAsync(): Promise<boolean> {
     const presetsService = Services.get(PresetService)

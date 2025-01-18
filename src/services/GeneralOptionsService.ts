@@ -15,7 +15,7 @@ export class GeneralOptionsService {
 
   /**
    * Gets the allow cookies indicator.
-   * @returns true if no cookie
+   * @returns `true` if no cookie
    */
   public getAllowCookiesIndicator(): boolean {
     const websiteConfigurationService = Services.get(WebsiteConfigurationService)

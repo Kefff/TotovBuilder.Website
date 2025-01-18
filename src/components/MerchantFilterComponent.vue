@@ -24,7 +24,7 @@ function getMerchantLevels(merchantName: string): number[] {
 /**
  * Indicates whether a merchant has levels.
  * @param merchantName - Merchant name.
- * @returns true when the merchant has levels; otherwise false.
+ * @returns `true` when the merchant has levels; otherwise `false`.
  */
 function hasLevels(merchantName: string): boolean {
   const result = _globalFilterService.hasLevels(merchantName)

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useBreakpoints } from '@vueuse/core'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { IBuild } from '../models/build/IBuild'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
@@ -63,27 +62,28 @@ const _sortingService = Services.get(SortingService)
 
 let _builds: IBuild[] = []
 
-const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const buildsPerLine = computed(() => {
   let elementsPerLine = 4
 
-  if (isSizeTabletPortaitOrSmaller.value) {
+  if (isTabletPortraitOrSmaller.value) {
     elementsPerLine = 1
-  } else if (isSizeTabletLandscapeOrSmaller.value) {
+  } else if (isTabletLandscapeOrSmaller.value) {
     elementsPerLine = 2
-  } else if (isSizePcOrSmaller.value) {
+  } else if (isPcOrSmaller.value) {
     elementsPerLine = 3
   }
 
   return props.maxElementsPerLine >= elementsPerLine ? elementsPerLine : props.maxElementsPerLine
 })
-const isSizeTabletPortaitOrSmaller = breakpoints.smaller('tabletLandscape')
-const isSizeTabletLandscapeOrSmaller = breakpoints.smaller('pc')
-const isSizePcOrSmaller = breakpoints.smaller('pcLarge')
+const {
+  isTabletPortraitOrSmaller,
+  isTabletLandscapeOrSmaller,
+  isPcOrSmaller
+} = WebBrowserUtils.getScreenSize()
 const linesPerPage = computed(() => {
   let lines = 3
 
-  if (isSizeTabletLandscapeOrSmaller.value) {
+  if (isTabletLandscapeOrSmaller.value) {
     lines = 10
   }
 
@@ -124,7 +124,7 @@ watch(
 /**
  * Indicates whether a build is selected.
  * @param build - Build.
- * @returns true when the build is selected; otherwise false.
+ * @returns `true` when the build is selected; otherwise `false`.
  */
 function checkIsSelected(build: IBuildSummary): boolean {
   const isSelected = modelSelectedBuilds.value.some(sbi => sbi.id === build.id)

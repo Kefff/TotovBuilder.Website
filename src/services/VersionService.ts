@@ -105,7 +105,7 @@ export class VersionService {
   /**
    * Executes migrations required to update a build since the last connection to the website.
    * @param build - Build to update.
-   * @returns true when all the required migrations have successfuly been executed; otherwise false.
+   * @returns `true` when all the required migrations have successfuly been executed; otherwise `false`.
    */
   public async executeBuildMigrationsAsync(build: IBuild): Promise<boolean> {
     let success = true
@@ -186,7 +186,7 @@ export class VersionService {
 
   /**
    * Executes migrations required to update data not related to builds since the last connection to the website.
-   * @returns true when the migrations have successfully been executed; otherwise false.
+   * @returns `true` when the migrations have successfully been executed; otherwise `false`.
    */
   private async executeBuildUnrelatedMigrationsAsync(): Promise<boolean> {
     const migrationsToExecute = this.getMigrationsToExecute(this.lastVisitVersion)
@@ -280,7 +280,7 @@ export class VersionService {
   /**
    * Indicates whether a version is newer than the last visit version.
    * @param version - Version.
-   * @returns true when the version is newer than the last visit version; otherwise false.
+   * @returns `true` when the version is newer than the last visit version; otherwise `false`.
    */
   private isNew(version: string): boolean {
     const isNew =

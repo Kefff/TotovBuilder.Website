@@ -102,7 +102,7 @@ export class FetchService {
   /**
    * Indicates whether a response data is considered empty.
    * @param responseData - Response data.
-   * @returns true when the response data is considered empty; otherwise false.
+   * @returns `true` when the response data is considered empty; otherwise `false`.
    */
   private isEmptyResponseData(responseData: string): boolean {
     const result = responseData.length === 0 || responseData === '""' || responseData === '{}' || responseData === '[]'

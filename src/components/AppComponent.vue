@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useMediaQuery } from '@vueuse/core'
-import { computed, defineAsyncComponent, onMounted, provide, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Images from '../images'
 import vueI18n from '../plugins/vueI18n'
@@ -43,7 +42,6 @@ const isSanta = computed(() => {
 
   return date.getTime() >= santaMinDate && date.getTime() <= santaMaxDate
 })
-const isTouchScreen = useMediaQuery('(hover: none)') // cf. https://stackoverflow.com/a/63666289
 
 const bugReportUrl = ref<string>()
 const contactAddress = ref<string>()
@@ -52,8 +50,6 @@ const githubUrl = ref<string>()
 const hasNewVersion = ref(false)
 const loading = ref(true)
 const version = ref('1.0.0')
-
-provide('isTouchScreen', isTouchScreen)
 
 onMounted(() => {
   if (_websiteConfigurationService.initializationState === ServiceInitializationState.initializing) {

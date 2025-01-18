@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useBreakpoints, useEventListener } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
 import { computed, nextTick, onMounted, onUnmounted, provide, ref, useTemplateRef, watch } from 'vue'
 import { NavigationGuardNext, RouteLocationNormalizedGeneric, RouteLocationNormalizedLoadedGeneric, useRoute, useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
@@ -163,7 +163,6 @@ const _toolbarButtons: IToolbarButton[] = [
   }
 ]
 
-const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 const invalid = computed(() => build.value.name === '')
 const isEmpty = computed(() => !build.value.inventorySlots.some(is => is.items.some(i => i != null)))
 const isNewBuild = computed(() => build.value.id === '')
@@ -195,7 +194,7 @@ const confirmationDialogSecondaryButtonIcon = ref<string>()
 const confirmationDialogSecondaryButtonSeverity = ref<string>()
 const generalOptionsSidebarVisible = ref(false)
 const isBuildSummaryStickied = ref(false)
-const isCompactMode = breakpoints.smaller('tabletLandscape')
+const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
 const isCompactBuildSummaryExpanded = ref(isCompactMode.value)
 const isEditing = ref(false)
 const isLoading = ref(true)

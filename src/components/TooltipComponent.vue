@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, inject, Ref } from 'vue'
+import { computed } from 'vue'
 import { DirectiveArguments } from '../models/utils/UI/TooltipDirectiveArguments'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 
 const props = withDefaults(
   defineProps<{
@@ -20,10 +21,14 @@ const emits = defineEmits<{
   click: [event: MouseEvent]
 }>()
 
-const isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
 
-// cf. https://github.com/primefaces/primevue/issues/2255#issuecomment-1073903453
-const directiveArguments = computed(() => new DirectiveArguments(props.position, isTouchScreen?.value ? 'focus' : undefined))
+const directiveArguments = computed(() =>
+  // cf. https://github.com/primefaces/primevue/issues/2255#issuecomment-1073903453
+  new DirectiveArguments(props.position, isTouchScreen?.value
+    ? 'focus'
+    : undefined))
+
+const isTouchScreen = WebBrowserUtils.isTouchScreen()
 
 /**
  * Reacts to the click on the element the tooltip is attached to.

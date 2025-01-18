@@ -9,7 +9,7 @@ export interface IGeneralOption {
 
   /**
    * Function indicating whether the option is enabled.
-   * @returns true when the option is enabled; otherwise false.
+   * @returns `true` when the option is enabled; otherwise `false`.
    */
   enabled?: () => boolean
 

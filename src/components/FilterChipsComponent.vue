@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useBreakpoints, useEventListener, watchDebounced } from '@vueuse/core'
-import { computed, inject, onMounted, onUnmounted, Ref, ref, watch } from 'vue'
+import { useEventListener, watchDebounced } from '@vueuse/core'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { FilterAndSortingDataType } from '../models/utils/FilterAndSortingData'
 import { IGlobalFilter } from '../models/utils/IGlobalFilter'
@@ -159,11 +159,10 @@ const switchSortOrderButtonTooltip = computed(() => vueI18n.t(
       : vueI18n.t('caption.descendant').toLocaleLowerCase()
   }))
 
-const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
-const isCompactMode = breakpoints.smaller('tabletPortrait')
-const isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
 const filterInternal = ref(modelFilterAndSortingData.value.filter)
 const globalFilter = ref<IGlobalFilter>()
+const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
+const isTouchScreen = WebBrowserUtils.isTouchScreen()
 
 watch(
   () => modelFilterAndSortingData.value.filter,

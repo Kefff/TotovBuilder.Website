@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, inject, Ref, useTemplateRef } from 'vue'
+import { computed, useTemplateRef } from 'vue'
 import { ICurrency } from '../models/configuration/ICurrency'
 import { IInventoryPrice } from '../models/utils/IInventoryPrice'
 import vueI18n from '../plugins/vueI18n'
 import { ItemService } from '../services/ItemService'
 import Services from '../services/repository/Services'
 import StatsUtils, { DisplayValueType } from '../utils/StatsUtils'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 import Price from './PriceComponent.vue'
 import Tooltip from './TooltipComponent.vue'
 
@@ -21,9 +22,6 @@ const props = withDefaults(
   })
 
 let _mainCurrency: ICurrency | undefined
-
-const inventoryPriceDetailPanel = useTemplateRef('inventoryPriceDetailPanel')
-const isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
 
 const canShowDetails = computed(() => props.inventoryPrice.priceByCurrency.some(ip => ip.currencyName !== mainCurrency.value?.name))
 const mainCurrency = computed(() => {
@@ -43,6 +41,9 @@ const tooltip = computed(() => {
 
   return value
 })
+
+const inventoryPriceDetailPanel = useTemplateRef('inventoryPriceDetailPanel')
+const isTouchScreen = WebBrowserUtils.isTouchScreen()
 
 /**
  * Toggles the details of the inventory price.

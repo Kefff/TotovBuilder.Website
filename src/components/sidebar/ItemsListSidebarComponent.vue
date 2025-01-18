@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { watchDebounced } from '@vueuse/core'
-import { computed, inject, Ref, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { ItemCategoryId } from '../../models/item/IItem'
 import { ItemsListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import ItemFilterAndSortingData from '../../models/utils/ItemFilterAndSortingData'
@@ -11,6 +11,7 @@ import Services from '../../services/repository/Services'
 import { ItemSortingFunctions } from '../../services/sorting/functions/itemSortingFunctions'
 import { SortingService } from '../../services/sorting/SortingService'
 import StringUtils from '../../utils/StringUtils'
+import WebBrowserUtils from '../../utils/WebBrowserUtils'
 import InputTextField from '../InputTextFieldComponent.vue'
 import Tooltip from '../TooltipComponent.vue'
 
@@ -60,7 +61,7 @@ const property = computed({
 })
 
 const filterInternal = ref(modelParameters.value.filter)
-const isTouchScreen = inject<Ref<boolean>>('isTouchScreen')
+const isTouchScreen = WebBrowserUtils.isTouchScreen()
 
 watch(
   () => modelParameters.value.filter,

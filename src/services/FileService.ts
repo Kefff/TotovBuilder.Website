@@ -31,7 +31,7 @@ export class FileService {
    * @param fileName - File name.
    * @param content - File content.
    * @param contentType - File content type. "text/json" by default.
-   * @returns - true when the file has been saved successfully; otherwise false.
+   * @returns - `true` when the file has been saved successfully; otherwise `false`.
    */
   public writeFile(fileName: string, content: string, contentType: string = 'text/json;charset=utf-8'): boolean {
     try {

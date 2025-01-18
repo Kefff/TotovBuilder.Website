@@ -83,7 +83,7 @@ export class GlobalFilterService {
   /**
    * Indicates whether a merchant has multiple levels or not.
    * @param merchantName - Merchant name.
-   * @returns true if the merchant has levels ; otherwise false.
+   * @returns `true` if the merchant has levels ; otherwise `false`.
    */
   public hasLevels(merchantName: string): boolean {
     const merchant = Services.get(TarkovValuesService).values.merchants.find(m => m.name === merchantName)
@@ -96,7 +96,7 @@ export class GlobalFilterService {
    * Indicates whether an item is not excluded and has prices that match the merchant filters.
    * Also filters out items that have no prices.
    * @param item - Item.
-   * @returns true when the item has prices that match the merchant filters; otherwise false.
+   * @returns `true` when the item has prices that match the merchant filters; otherwise `false`.
    */
   public isMatchingFilter(item: IItem): boolean {
     this.initialize()
@@ -130,7 +130,7 @@ export class GlobalFilterService {
   /**
    * Excludes an item which is the base item of a preset.
    * @param item - Item.
-   * @returns true when the item is excluded; otherwise false.
+   * @returns `true` when the item is excluded; otherwise `false`.
    */
   private excludePresetBaseItem(item: IItem): boolean {
     const canBeModded = Services.get(ItemPropertiesService).canBeModded(item)
@@ -200,7 +200,7 @@ export class GlobalFilterService {
    * Indicates whether a price matches the merchant filters.
    * @param merchantFilters - Merchant filters.
    * @param price - Price.
-   * @returns true when price matches the filters; otherwise false.
+   * @returns `true` when price matches the filters; otherwise `false`.
    */
   private isPriceMatchingFilter(merchantFilters: IMerchantFilter[], price: IPrice): boolean {
     const result = merchantFilters.some(mf =>

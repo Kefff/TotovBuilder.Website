@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { useBreakpoints } from '@vueuse/core'
 import { computed } from 'vue'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import Tooltip from './TooltipComponent.vue'
 
 const props = defineProps<{ button: IToolbarButton }>()
-const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
+
 const buttonClasses = computed(() => ({
   'button-discreet-danger': props.button.style?.() === 'discreet' && props.button.variant?.() === 'danger',
   'button-discreet': props.button.style?.() === 'discreet',
@@ -16,15 +15,16 @@ const captionClasses = computed(() => ({
   'toolbar-button-tooltip': showCaptionInternal.value === 'always' || showCaptionInternal.value === 'auto',
   'toolbar-button-hiddable-tooltip': showCaptionInternal.value === 'auto'
 }))
-const areCaptionsHidden = computed(() => breakpoints.smaller('pc'))
 const outlined = computed(() => props.button.style?.() === 'outlined')
 const showCaptionInternal = computed(() => props.button.showCaption?.() ?? 'auto')
 const tooltip = computed(() =>
   showCaptionInternal.value === 'never'
     || (showCaptionInternal.value === 'auto'
-      && areCaptionsHidden.value)
+      && isCaptionHidden.value)
     ? props.button.caption()
     : '')
+
+const { isTabletLandscapeOrSmaller: isCaptionHidden } = WebBrowserUtils.getScreenSize()
 </script>
 
 
