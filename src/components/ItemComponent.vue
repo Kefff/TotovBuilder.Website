@@ -472,147 +472,151 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
         'item-padding': item == null || !isMainInventorySlotItem
       }"
     >
-      <div class="item-header">
-        <ItemIcon
-          v-if="item != null && (!isEditing || isBaseItem)"
-          :item="item"
-          :quantity="quantity"
-        />
-        <div
-          v-if="item != null && (!isEditing || isBaseItem)"
-          class="item-header-title"
-        >
-          <span>{{ item.name }}</span>
-        </div>
-        <Dropdown
-          v-else-if="isEditing && !isBaseItem"
-          v-model="item"
-          class="item-header-dropdown"
-          @click="onSelectionInputClick"
-        >
-          <template #empty>
-            <!-- Display nothing when the dropdown is opened because we open the sidebar instead -->
-            <div />
-          </template>
-          <template #clearicon>
-            <Tooltip :tooltip="$t('caption.clear')">
-              <div
-                class="item-header-clear-button"
+      <div>
+        <div class="item-header">
+          <ItemIcon
+            v-if="item != null && (!isEditing || isBaseItem)"
+            :item="item"
+            :quantity="quantity"
+          />
+          <div
+            v-if="item != null && (!isEditing || isBaseItem)"
+            class="item-header-title"
+          >
+            <span>{{ item.name }}</span>
+          </div>
+          <Dropdown
+            v-else-if="isEditing && !isBaseItem"
+            v-model="item"
+            class="item-header-dropdown"
+            @click="onSelectionInputClick"
+          >
+            <template #empty>
+              <!-- Display nothing when the dropdown is opened because we open the sidebar instead -->
+              <div />
+            </template>
+            <template #clearicon>
+              <Tooltip :tooltip="$t('caption.clear')">
+                <div
+                  class="item-header-clear-button"
+                  @click="removeItemAsync"
+                >
+                  <font-awesome-icon icon="times" />
+                </div>
+              </Tooltip>
+            </template>
+            <template #value>
+              <Tooltip
+                :apply-hover-style="false"
+                :tooltip="item?.name"
+              >
+                <div class="item-header-dropdown-value">
+                  <ItemIcon
+                    v-if="item != null"
+                    :item="item"
+                    :quantity="quantity"
+                  />
+                  <div
+                    v-if="item != null"
+                    class="item-header-title"
+                  >
+                    {{ item?.name }}
+                  </div>
+                  <font-awesome-icon
+                    v-if="item == null"
+                    icon="plus"
+                    class="item-header-dropdown-value-placeholder-icon"
+                  />
+                  <span
+                    v-if="item == null"
+                    class="item-header-dropdown-value-placeholder-text"
+                  >
+                    {{ $t('caption.selectItem') }}
+                  </span>
+                </div>
+              </Tooltip>
+            </template>
+          </Dropdown>
+          <div
+            v-if="isEditing"
+            class="item-header-button"
+          >
+            <Tooltip
+              v-if="isEditing && item != null && !isBaseItem"
+              :apply-hover-style="false"
+              :tooltip="$t('caption.clear')"
+            >
+              <Button
+                class="p-button-sm"
+                outlined
+                severity="danger"
                 @click="removeItemAsync"
               >
                 <font-awesome-icon icon="times" />
-              </div>
+              </Button>
             </Tooltip>
-          </template>
-          <template #value>
+          </div>
+          <div
+            v-if="item != null || isEditing"
+            class="item-header-button"
+          >
             <Tooltip
+              v-if="item != null"
               :apply-hover-style="false"
-              :tooltip="item?.name"
+              :tooltip="$t('caption.showDetails')"
             >
-              <div class="item-header-dropdown-value">
-                <ItemIcon
-                  v-if="item != null"
-                  :item="item"
-                  :quantity="quantity"
-                />
-                <div
-                  v-if="item != null"
-                  class="item-header-title"
-                >
-                  {{ item?.name }}
-                </div>
-                <font-awesome-icon
-                  v-if="item == null"
-                  icon="plus"
-                  class="item-header-dropdown-value-placeholder-icon"
-                />
-                <span
-                  v-if="item == null"
-                  class="item-header-dropdown-value-placeholder-text"
-                >
-                  {{ $t('caption.selectItem') }}
-                </span>
-              </div>
+              <Button
+                class="p-button-sm"
+                outlined
+                @click="showDetails()"
+              >
+                <font-awesome-icon icon="clipboard-list" />
+              </Button>
             </Tooltip>
-          </template>
-        </Dropdown>
-        <div
-          v-if="isEditing"
-          class="item-header-button"
-        >
-          <Tooltip
-            v-if="isEditing && item != null && !isBaseItem"
-            :apply-hover-style="false"
-            :tooltip="$t('caption.clear')"
-          >
-            <Button
-              class="p-button-sm"
-              outlined
-              severity="danger"
-              @click="removeItemAsync"
-            >
-              <font-awesome-icon icon="times" />
-            </Button>
-          </Tooltip>
+          </div>
         </div>
-        <div
-          v-if="item != null || isEditing"
-          class="item-header-button"
-        >
-          <Tooltip
-            v-if="item != null"
-            :apply-hover-style="false"
-            :tooltip="$t('caption.showDetails')"
-          >
-            <Button
-              class="p-button-sm"
-              outlined
-              @click="showDetails()"
-            >
-              <font-awesome-icon icon="clipboard-list" />
-            </Button>
-          </Tooltip>
-        </div>
-      </div>
-      <div
-        v-if="item != null && maxSelectableQuantity > 1 && !forceQuantityToMaxSelectableAmount"
-        class="item-header item-quantity"
-      >
-        <InputNumberField
-          v-show="isEditing"
-          v-model:value="quantity"
-          :caption="$t('caption.quantity')"
-          :max="maxSelectableQuantity"
-          :min="1"
-          :required="true"
-          caption-mode="placeholder"
-          required-message-position="right"
-          @update:value="onQuantityChanged($event)"
-        />
-        <!-- Fake button divs to have the same alignment as the selection input -->
-        <div
-          v-if="isEditing"
-          class="item-header-button"
-        />
-        <div
-          v-if="item != null || isEditing"
-          class="item-header-button"
+        <SelectedItemItemCardSelector
+          v-if="modelInventoryItem != null && item != null"
+          :can-be-looted="canBeLooted"
+          :can-ignore-price="canIgnorePrice"
+          :ignore-price="modelInventoryItem.ignorePrice"
+          :include-mods-and-content="includeModsAndContentInSummary"
+          :inventory-item-in-same-slot-in-preset="presetModSlotContainingItem?.item"
+          :inventory-item="modelInventoryItem"
+          :is-base-item="isBaseItem"
+          :selected-item="item"
+          :show-price="showPrice"
+          :show-weight="showWeight"
+          @update:ignore-price="onIgnorePriceChanged($event)"
         />
       </div>
-      <SelectedItemItemCardSelector
-        v-if="modelInventoryItem != null && item != null"
-        :can-be-looted="canBeLooted"
-        :can-ignore-price="canIgnorePrice"
-        :ignore-price="modelInventoryItem.ignorePrice"
-        :include-mods-and-content="includeModsAndContentInSummary"
-        :inventory-item-in-same-slot-in-preset="presetModSlotContainingItem?.item"
-        :inventory-item="modelInventoryItem"
-        :is-base-item="isBaseItem"
-        :selected-item="item"
-        :show-price="showPrice"
-        :show-weight="showWeight"
-        @update:ignore-price="onIgnorePriceChanged($event)"
-      />
+      <div>
+        <div
+          v-if="item != null && maxSelectableQuantity > 1 && !forceQuantityToMaxSelectableAmount"
+          class="item-quantity"
+        >
+          <InputNumberField
+            v-show="isEditing"
+            v-model:value="quantity"
+            :caption="$t('caption.quantity')"
+            :max="maxSelectableQuantity"
+            :min="1"
+            :required="true"
+            caption-mode="placeholder"
+            required-message-position="right"
+            @update:value="onQuantityChanged($event)"
+          />
+          <!-- Fake button divs to have the same alignment as the selection input -->
+          <div
+            v-if="isEditing"
+            class="item-header-button"
+          />
+          <div
+            v-if="item != null || isEditing"
+            class="item-header-button"
+          />
+        </div>
+      </div>
     </div>
     <div v-if="modelInventoryItem != null">
       <SelectedItemFunctionalities
@@ -724,18 +728,29 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 
 .item-header-button {
   display: flex;
-  min-width: 1.75rem;
+  flex-shrink: 0;
+  width: 1.75rem;
 }
 
 .item-header-container {
-  align-items: center;
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: center;
   width: 100%;
 }
 
-.item-header-container.item-header-container-compact {
+.item-header-container > div:first-child {
+  align-items: center;
+  display: flex;
+  gap: 1rem
+}
+
+.item-header-container.item-header-container-compact > div {
+  align-items: flex-start;
+  flex-direction: column;
   gap: 0.25rem;
+  justify-content: unset;
 }
 
 .item-header-container-compact {
@@ -749,11 +764,11 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-header-dropdown-name {
+  height: 100%;
   margin-left: 0.25rem;
   overflow: hidden;
-  text-overflow: ellipsis;
-  height: 100%;
   text-align: center;
+  text-overflow: ellipsis;
 }
 
 .item-header-dropdown-value {
@@ -768,6 +783,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-header-dropdown-value-placeholder-text {
+  color: var(--util-color7);
   overflow: auto;
   white-space: preserve;
   word-break: break-word;
@@ -794,7 +810,14 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-quantity {
+  display: flex;
+  gap: 0.25rem;
   height: unset;
+  width: v-bind(itemHeaderWidth);
+}
+
+.item-quantity > .input-number-field {
+  width: 100%;
 }
 </style>
 
@@ -808,7 +831,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 
 <style>
 .item-header > .item-header-dropdown.p-dropdown .p-dropdown-trigger {
-  width: unset;
   margin-right: 0.21rem;
+  width: unset;
 }
 </style>

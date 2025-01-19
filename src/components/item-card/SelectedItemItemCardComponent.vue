@@ -146,8 +146,11 @@ async function setWeightAsync(): Promise<void> {
     <div class="card-line card-line3 selected-item-item-card-prices-and-weight">
       <!-- Price -->
       <div
-        v-if="((includeModsAndContent && selectedItemPrice.priceWithContentInMainCurrency !== selectedItemPrice.unitPrice.valueInMainCurrency))
-          || showPrice"
+        v-if="((selectedItemPrice.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset
+          && selectedItemPrice.unitPriceIgnoreStatus !== IgnoredUnitPrice.notLootable)
+          || !isCompactMode)
+          && ((includeModsAndContent && selectedItemPrice.priceWithContentInMainCurrency !== selectedItemPrice.unitPrice.valueInMainCurrency)
+            || showPrice)"
         class="selected-item-item-card-prices"
       >
         <div
@@ -187,7 +190,7 @@ async function setWeightAsync(): Promise<void> {
           v-if="!selectedItemPrice.missingPrice
             && selectedItemPrice.unitPriceIgnoreStatus !== IgnoredUnitPrice.manuallyIgnored
             && inventoryItem.quantity > 1"
-          class="selected-item-item-card-per-unit"
+          class="selected-item-item-card-per-unit card-line"
         >
           <Price
             v-if="showUnitPrice"
@@ -279,6 +282,10 @@ async function setWeightAsync(): Promise<void> {
   gap: unset;
 }
 
+.selected-item-item-card-compact > .selected-item-item-card-prices-and-weight {
+  order: -1;
+}
+
 .selected-item-item-card-compact .selected-item-item-card-per-unit {
   align-items: center;
   display: flex;
@@ -297,6 +304,7 @@ async function setWeightAsync(): Promise<void> {
   align-items: center;
   display: flex;
   gap: 0.75rem;
+  height: 2rem;
 }
 
 .selected-item-item-card-prices {
@@ -317,8 +325,8 @@ async function setWeightAsync(): Promise<void> {
 .selected-item-item-card-weights {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   height: 100%;
+  justify-content: flex-start;
 }
 
 .selected-item-item-card-weights span {
@@ -359,8 +367,6 @@ async function setWeightAsync(): Promise<void> {
 .selected-item-item-card.selected-item-item-card-compact .card-line.selected-item-item-card-prices-and-weight {
   height: unset;
 }
-
-
 
 .selected-item-item-card-compact .selected-item-item-card-prices > .selected-item-item-card-with-mods,
 .selected-item-item-card-compact .selected-item-item-card-prices > .selected-item-item-card-price {
