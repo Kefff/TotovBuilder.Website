@@ -350,4 +350,31 @@ describe('PathUtils', () => {
       expect(result).toStrictEqual(expected)
     })
   })
+
+  describe('getPathLevel()', () => {
+    it.each([
+      [
+        'build:12345/slot:onSling_0/item:584147732459775a2b6d9f12/mod:mod_reciever/item:57dc334d245977597164366f/mod:mod_mount_000/item:57ffb0062459777a045af529/mod:mod_scope/item:584984812459776a704a82a6',
+        3
+      ],
+      [
+        'build:12345/slot:holster_0/item:5b439b1f86f7744fd8059cbe/mod:mod_magazine/item:5a718f958dc32e00094b97e7/content:0_1/item:5efb0da7a29a85116f6ea05f',
+        2
+      ],
+      [
+        'build:12345/slot:tacticalRig_0/item:5ab8dab586f77441cd04f2a2/content:0_8/item:5b7d37845acfc400170e2f87/content:0_1/item:58dd3ad986f77403051cba8f',
+        2
+      ],
+      [
+        'build:12345/slot:onSling_0/item:5b439b5686f77428bd137424/base-item:/item:5b0bbe4e5acfc40dc528a72d',
+        1
+      ]
+    ])('should get the level of imbrication of the path of an item', (path: string, expected: number) => {
+      // Act
+      const level = PathUtils.getPathLevel(path)
+
+      // Assert
+      expect(level).toBe(expected)
+    })
+  })
 })

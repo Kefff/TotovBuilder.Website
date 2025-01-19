@@ -17,6 +17,7 @@ import { ItemService } from '../services/ItemService'
 import { PresetService } from '../services/PresetService'
 import Services from '../services/repository/Services'
 import { ItemSortingFunctions } from '../services/sorting/functions/itemSortingFunctions'
+import { PathUtils } from '../utils/PathUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import InputNumberField from './InputNumberFieldComponent.vue'
 import SelectedItemItemCardSelector from './item-card/SelectedItemItemCardSelectorComponent.vue'
@@ -72,6 +73,20 @@ const itemHeaderGridTemplateColumns = computed(() => {
   }
 
   return 'auto 1fr auto'
+})
+const imbricationLevel = computed(() => PathUtils.getPathLevel(props.path))
+const itemHeaderWidth = computed(() => {
+  if (isCompactMode.value) {
+    return '100%'
+  } else {
+    let width = 30 - imbricationLevel.value * 1.75
+
+    if (props.isMainInventorySlotItem) {
+      width -= 0.5
+    }
+
+    return `${width}rem`
+  }
 })
 const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.value?.maxStackableAmount ?? 1)
 const modsCount = computed(() => modelInventoryItem.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
@@ -641,7 +656,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
               :can-be-looted="showBaseItemPrice"
               :inventory-item="baseItem"
               :is-base-item="true"
-              :path="path"
+              :path="`${path}/${PathUtils.baseItemPrefix}/${PathUtils.itemPrefix}${baseItem.itemId}`"
             />
           </div>
         </div>
@@ -704,6 +719,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   gap: 0.25rem;
   grid-template-columns: v-bind(itemHeaderGridTemplateColumns);
   height: 3.9rem;
+  width: v-bind(itemHeaderWidth);
 }
 
 .item-header-button {

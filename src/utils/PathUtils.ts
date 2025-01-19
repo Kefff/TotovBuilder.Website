@@ -7,6 +7,7 @@ import vueI18n from '../plugins/vueI18n'
  * Represents an utility class for managing build paths.
  */
 export class PathUtils {
+  public static baseItemPrefix = 'base-item:'
   public static buildPrefix = 'build:'
   public static contentPrefix = 'content:'
   public static itemPrefix = 'item:'
@@ -63,6 +64,24 @@ export class PathUtils {
     const inventoryItem = this.getInventoryItem(inventorySlotItem, path, 3)
 
     return inventoryItem
+  }
+
+  /**
+   * Gets the level of imbrication of the path of an item.
+   * @param path - Path of an item.
+   * @returns Level of imbrication.
+   */
+  public static getPathLevel(path: string): number {
+    const itemPrefixString = `/${PathUtils.itemPrefix}`
+    let itemOccurences = 0
+    let index = path.indexOf(itemPrefixString)
+
+    while (index !== -1) {
+      itemOccurences++
+      index = path.indexOf(itemPrefixString, index + itemPrefixString.length)
+    }
+
+    return itemOccurences - 1
   }
 
   /**

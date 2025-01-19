@@ -144,6 +144,60 @@ async function setWeightAsync(): Promise<void> {
   >
     <!-- Weights and prices -->
     <div class="card-line card-line3 selected-item-item-card-prices-and-weight">
+      <!-- Price -->
+      <div
+        v-if="((includeModsAndContent && selectedItemPrice.priceWithContentInMainCurrency !== selectedItemPrice.unitPrice.valueInMainCurrency))
+          || showPrice"
+        class="selected-item-item-card-prices"
+      >
+        <div
+          v-if="includeModsAndContent && selectedItemPrice.priceWithContentInMainCurrency !== selectedItemPrice.unitPrice.valueInMainCurrency"
+          class="selected-item-item-card-with-mods"
+        >
+          <InventoryPrice
+            :custom-tooltip="$t('caption.price') + $t('caption.withModsAndContent')"
+            :inventory-price="selectedItemInventoryPrice"
+            :is-build="false"
+          />
+        </div>
+        <div
+          v-if="showPrice"
+          class="selected-item-item-card-price"
+        >
+          <Price
+            :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
+            :missing="showSelectedItemMissingPrice"
+            :price="selectedItemPrice.price"
+          />
+          <Tooltip
+            v-if="isEditing && canBeLooted && canIgnorePrice"
+            :tooltip="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
+            :apply-hover-style="false"
+          >
+            <Button
+              class="p-button-sm"
+              outlined
+              @click="modelIgnorePrice = !modelIgnorePrice"
+            >
+              <font-awesome-icon :icon="!modelIgnorePrice ? 'ban' : 'ruble-sign'" />
+            </Button>
+          </Tooltip>
+        </div>
+        <div
+          v-if="!selectedItemPrice.missingPrice
+            && selectedItemPrice.unitPriceIgnoreStatus !== IgnoredUnitPrice.manuallyIgnored
+            && inventoryItem.quantity > 1"
+          class="selected-item-item-card-per-unit"
+        >
+          <Price
+            v-if="showUnitPrice"
+            :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
+            :price="selectedItemPrice.unitPrice"
+            :show-merchant-icon="false"
+            :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
+          />
+        </div>
+      </div>
       <!-- Weight -->
       <div
         v-if="(includeModsAndContent && selectedItemWeight.weightWithContent > 0)
@@ -189,58 +243,6 @@ async function setWeightAsync(): Promise<void> {
             />
             <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
           </Tooltip>
-        </div>
-      </div>
-      <!-- Price -->
-      <div
-        v-if="((includeModsAndContent && selectedItemPrice.priceWithContentInMainCurrency !== selectedItemPrice.unitPrice.valueInMainCurrency))
-          || showPrice"
-        class="selected-item-item-card-prices"
-      >
-        <div
-          v-if="includeModsAndContent && selectedItemPrice.priceWithContentInMainCurrency !== selectedItemPrice.unitPrice.valueInMainCurrency"
-          class="selected-item-item-card-with-mods"
-        >
-          <InventoryPrice
-            :custom-tooltip="$t('caption.price') + $t('caption.withModsAndContent')"
-            :inventory-price="selectedItemInventoryPrice"
-            :is-build="false"
-          />
-        </div>
-        <div
-          v-if="showPrice"
-          class="selected-item-item-card-price"
-        >
-          <Price
-            :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
-            :missing="showSelectedItemMissingPrice"
-            :price="selectedItemPrice.price"
-          />
-          <Tooltip
-            v-if="isEditing && canBeLooted && canIgnorePrice"
-            :tooltip="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
-            :apply-hover-style="false"
-          >
-            <Button
-              class="p-button-sm"
-              outlined
-              @click="modelIgnorePrice = !modelIgnorePrice"
-            >
-              <font-awesome-icon :icon="!modelIgnorePrice ? 'ban' : 'ruble-sign'" />
-            </Button>
-          </Tooltip>
-        </div>
-        <div
-          v-if="inventoryItem.quantity > 1"
-          class="selected-item-item-card-per-unit"
-        >
-          <Price
-            v-if="showUnitPrice"
-            :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
-            :price="selectedItemPrice.unitPrice"
-            :show-merchant-icon="false"
-            :tooltip-suffix="' (' + $t('caption.perUnit') + ')'"
-          />
         </div>
       </div>
     </div>
@@ -302,6 +304,7 @@ async function setWeightAsync(): Promise<void> {
   flex-direction: column;
   grid-column: span 2;
   justify-content: center;
+  width: 12.5rem;
 }
 
 .selected-item-item-card-weight {
