@@ -1,19 +1,16 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { DirectiveArguments } from '../models/utils/UI/TooltipDirectiveArguments'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     applyHoverStyle?: boolean,
-    position?: 'bottom' | 'left' | 'right' | 'top',
-    stopClickPropagation?: boolean,
+    disabledOnMobile?: boolean,
     tooltip?: string
   }>(),
   {
     applyHoverStyle: true,
-    position: 'top',
-    stopClickPropagation: false,
+    disabledOnMobile: false,
     tooltip: undefined
   })
 
@@ -21,12 +18,10 @@ const emits = defineEmits<{
   click: [event: MouseEvent]
 }>()
 
-
-const directiveArguments = computed(() =>
-  // cf. https://github.com/primefaces/primevue/issues/2255#issuecomment-1073903453
-  new DirectiveArguments(props.position, isTouchScreen?.value
-    ? 'focus'
-    : undefined))
+const trigger = computed(() =>
+  isTouchScreen.value
+    ? 'click'
+    : 'hover')
 
 const isTouchScreen = WebBrowserUtils.isTouchScreen()
 
@@ -34,10 +29,6 @@ const isTouchScreen = WebBrowserUtils.isTouchScreen()
  * Reacts to the click on the element the tooltip is attached to.
  */
 function onClick(event: MouseEvent): void {
-  if (props.stopClickPropagation) {
-    event.stopPropagation()
-  }
-
   emits('click', event)
 }
 </script>
@@ -52,15 +43,20 @@ function onClick(event: MouseEvent): void {
 
 
 <template>
-  <span
+  <VTooltip
     v-if="tooltip != null"
-    v-tooltip:[directiveArguments]="tooltip"
+    :auto-hide="true"
     :class="{ 'tooltip': applyHoverStyle }"
-    :tabindex="isTouchScreen ? 9999 : undefined"
-    @click="onClick($event)"
+    :triggers="[trigger]"
+    @click="onClick"
   >
     <slot />
-  </span>
+    <template #popper>
+      <span class="tooltip-popper">
+        {{ tooltip }}
+      </span>
+    </template>
+  </VTooltip>
   <slot v-else />
 </template>
 
@@ -77,6 +73,10 @@ function onClick(event: MouseEvent): void {
 .tooltip:hover {
   opacity: 50%;
 }
+
+.tooltip-popper {
+  white-space: preserve;
+}
 </style>
 
 
@@ -89,7 +89,15 @@ function onClick(event: MouseEvent): void {
 
 
 <style>
-.p-tooltip {
-  z-index: 999;
+.v-popper--theme-tooltip .v-popper__inner {
+  background-color: var(--surface-100) !important;
+  border-color: var(--primary-color);
+  border-style: solid;
+  border-width: 1px;
+  font-size: 0.85rem;
+}
+
+.v-popper--theme-tooltip .v-popper__arrow-outer {
+  border-color: var(--primary-color) !important;
 }
 </style>

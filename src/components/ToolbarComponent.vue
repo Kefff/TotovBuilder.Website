@@ -24,8 +24,7 @@ const _displayToolbarSidebarButton: IToolbarButton = {
   canBeMovedToSidebar: () => false,
   isVisible: () => areButtonsHidden.value,
   showCaption: () => 'never',
-  style: () => 'discreet',
-  tooltipPosition: () => 'left'
+  style: () => 'discreet'
 }
 const _hideButtonsWidth = 991
 

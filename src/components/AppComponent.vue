@@ -285,8 +285,6 @@ function setLanguage(): void {
 
 
 <style scoped>
-@import '../css/link.css';
-
 .app-container {
   display: flex;
   flex-direction: column;

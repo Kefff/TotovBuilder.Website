@@ -35,7 +35,7 @@ const priceInMainCurrency = computed(() => props.inventoryPrice.priceByCurrency.
 const tooltip = computed(() => {
   let value: string = props.customTooltip ?? vueI18n.t('caption.price')
 
-  if (canShowDetails.value && !isTouchScreen?.value) {
+  if (canShowDetails.value && !isTouchScreen.value) {
     value += ` ${vueI18n.t('caption.clickForDetails')}`
   }
 

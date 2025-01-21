@@ -31,8 +31,7 @@ const _toolbarButtons: IToolbarButton[] = [
     icon: () => 'arrow-left',
     name: 'backToHome',
     showCaption: () => 'never',
-    style: () => 'discreet',
-    tooltipPosition: () => 'right'
+    style: () => 'discreet'
   },
   {
     action: displayMerchantItemsOptions,

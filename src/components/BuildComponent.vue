@@ -58,8 +58,7 @@ const _toolbarButtons: IToolbarButton[] = [
     isVisible: () => !isEditing.value,
     name: 'backToBuilds',
     showCaption: () => 'never',
-    style: () => 'discreet',
-    tooltipPosition: () => 'right'
+    style: () => 'discreet'
   },
   {
     action: startEdit,

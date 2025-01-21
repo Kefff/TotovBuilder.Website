@@ -10,6 +10,7 @@
     "@unhead/schema": "^1.10.4",
     "@vueuse/core": "^11.1.0",
     "file-saver": "^2.0.5",
+    "floating-vue": "^5.2.2",
     "guid-typescript": "^1.0.9",
     "json-url": "^3.1.0",
     "primeicons": "^7.0.0",

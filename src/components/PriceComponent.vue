@@ -76,7 +76,7 @@ const priceTooltip = computed(() => {
     tooltip += ` ${props.tooltipSuffix}`
   }
 
-  if (canShowDetails.value && !isTouchScreen?.value) {
+  if (canShowDetails.value && !isTouchScreen.value) {
     tooltip += ` ${vueI18n.t('caption.clickForDetails')}`
   }
 
@@ -212,7 +212,7 @@ function togglePriceDetails(event: Event): void {
     <Tooltip
       :apply-hover-style="applyHoverStyle"
       :tooltip="priceTooltip"
-      @click="(e: MouseEvent) => togglePriceDetails(e)"
+      @click="togglePriceDetails"
     >
       <div
         class="price-value-and-icon"

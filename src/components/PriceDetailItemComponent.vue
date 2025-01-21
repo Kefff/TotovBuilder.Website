@@ -126,6 +126,7 @@ function displayItemStats(item: IItem): void {
 
 .price-detail-item-price-per-unit {
   font-style: italic;
-  margin-right: 3rem;
+  margin-right: 2.375rem;
+  font-size: 0.85rem;
 }
 </style>

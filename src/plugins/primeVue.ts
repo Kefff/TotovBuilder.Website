@@ -1,7 +1,6 @@
 import 'primeicons/primeicons.css'
 import PrimeVue from 'primevue/config'
 import 'primevue/resources/primevue.min.css'
-import Tooltip from 'primevue/tooltip'
 import { App, defineAsyncComponent } from 'vue'
 import '../css/theme.css'
 
@@ -27,6 +26,4 @@ export function usePrimeVue(app: App<Element>): void {
   app.component('TabView', defineAsyncComponent(() => import('primevue/tabview')))
   app.component('TextArea', defineAsyncComponent(() => import('primevue/textarea')))
   app.component('VirtualScroller', defineAsyncComponent(() => import('primevue/virtualscroller')))
-
-  app.directive('tooltip', Tooltip)
 }

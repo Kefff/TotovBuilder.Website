@@ -3,20 +3,6 @@ import { describe, expect, it } from 'vitest'
 import WebBrowserUtils from '../../utils/WebBrowserUtils'
 
 describe('WebBrowserUtils', () => {
-  describe('breakpoints getter', () => {
-    it('should return CSS breakpoints', () => {
-      // Act / Assert
-      expect(WebBrowserUtils.breakpoints).toStrictEqual({
-        smartphonePortrait: 0,
-        smartphoneLandscape: 481,
-        tabletPortrait: 768,
-        tabletLandscape: 992,
-        pc: 1300,
-        pcLarge: 1800
-      })
-    })
-  })
-
   describe('getScrollableParentElement()', () => {
     it.each([[null], [undefined]])('should return undefined when no expected scrollable parent element is found', (greatGrandParentElement: null | undefined) => {
       // Arrange

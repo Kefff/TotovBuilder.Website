@@ -43,8 +43,7 @@ const _toolbarButtons: IToolbarButton[] = [
     icon: () => 'arrow-left',
     name: 'backToHome',
     showCaption: () => 'never',
-    style: () => 'discreet',
-    tooltipPosition: () => 'right'
+    style: () => 'discreet'
   },
   {
     action: openNewBuild,
@@ -54,7 +53,6 @@ const _toolbarButtons: IToolbarButton[] = [
     isDisabled: () => isLoading.value,
     name: 'newBuild',
     showCaption: () => 'always',
-    tooltipPosition: () => 'right',
     variant: () => 'success'
   },
   {

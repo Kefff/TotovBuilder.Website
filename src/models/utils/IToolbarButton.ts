@@ -66,12 +66,6 @@ export interface IToolbarButton {
   style?: () => 'discreet' | 'outlined'
 
   /**
-   * Method for getting the tooltip position.
-   * 'top' by default.
-   */
-  tooltipPosition?: () => 'bottom' | 'left' | 'right' | 'top'
-
-  /**
    * Method for getting the variant.
    * Primary variant is used by default.
    */
