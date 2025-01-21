@@ -4,7 +4,7 @@ import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     applyHoverStyle?: boolean,
     disabledOnMobile?: boolean,
@@ -31,11 +31,15 @@ const isTouchScreen = WebBrowserUtils.isTouchScreen()
 const shown = ref(false)
 
 onMounted(() => {
-  _globalSidebarService.emitter.on(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
+  if (isTouchScreen.value) {
+    _globalSidebarService.emitter.on(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
+  }
 })
 
 onUnmounted(() => {
-  _globalSidebarService.emitter.off(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
+  if (isTouchScreen.value) {
+    _globalSidebarService.emitter.off(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
+  }
 })
 
 /**
@@ -45,8 +49,16 @@ function onClick(event: MouseEvent): void {
   emits('click', event)
 }
 
+/**
+ * Reacts to a sidebar being opened.
+ *
+ * Hides the tooltip
+ */
 function onGlobalSidebarOpen(): void {
-  shown.value = false
+  if (props.tooltip != null) {
+    // Adding a small timeout before hidding the tooltip in case is was not yet visible when the sidebar is opened
+    setTimeout(() => shown.value = false, 50)
+  }
 }
 </script>
 
@@ -66,9 +78,11 @@ function onGlobalSidebarOpen(): void {
     :auto-hide="true"
     :class="{ 'tooltip': applyHoverStyle }"
     :triggers="[trigger]"
+    :delay="0"
     @click="onClick"
   >
     <slot />
+
     <template #popper>
       <span class="tooltip-popper">
         {{ tooltip }}
