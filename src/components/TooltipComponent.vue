@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { GlobalSidebarService } from '../services/GlobalSidebarService'
+import Services from '../services/repository/Services'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 
 withDefaults(
@@ -18,18 +20,33 @@ const emits = defineEmits<{
   click: [event: MouseEvent]
 }>()
 
+const _globalSidebarService = Services.get(GlobalSidebarService)
+
 const trigger = computed(() =>
   isTouchScreen.value
     ? 'click'
     : 'hover')
 
 const isTouchScreen = WebBrowserUtils.isTouchScreen()
+const shown = ref(false)
+
+onMounted(() => {
+  _globalSidebarService.emitter.on(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
+})
+
+onUnmounted(() => {
+  _globalSidebarService.emitter.off(GlobalSidebarService.openGlobalSidebarEvent, onGlobalSidebarOpen)
+})
 
 /**
  * Reacts to the click on the element the tooltip is attached to.
  */
 function onClick(event: MouseEvent): void {
   emits('click', event)
+}
+
+function onGlobalSidebarOpen(): void {
+  shown.value = false
 }
 </script>
 
@@ -45,6 +62,7 @@ function onClick(event: MouseEvent): void {
 <template>
   <VTooltip
     v-if="tooltip != null"
+    v-model:shown="shown"
     :auto-hide="true"
     :class="{ 'tooltip': applyHoverStyle }"
     :triggers="[trigger]"
