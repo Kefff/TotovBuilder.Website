@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, onUnmounted, Ref, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import { IItem } from '../models/item/IItem'
@@ -11,7 +11,6 @@ import { PathUtils } from '../utils/PathUtils'
 import StringUtils from '../utils/StringUtils'
 import Item from './ItemComponent.vue'
 
-const modelCollapsed = defineModel<boolean>('collapsed')
 const modelInventorySlot = defineModel<IInventorySlot>('inventorySlot', { required: true })
 
 defineProps<{ path: string }>()
@@ -23,10 +22,8 @@ const _itemService = Services.get(ItemService)
 let _acceptedItemsNeedsUpdated = true
 
 const inventorySlotType = computed(() => _inventorySlotPropertiesService.getType(modelInventorySlot.value.typeId))
-const isDisplayed = computed(() => isEditing?.value || modelInventorySlot.value.items.some((i) => i != null)) // Displayed only when in edit mode or when it contains at least one item
 
 const acceptedItems = ref<IItem[]>([])
-const isEditing = inject<Ref<boolean>>('isEditing')
 
 onMounted(() => _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged))
 
@@ -75,16 +72,9 @@ function onMerchantFilterChanged(): void {
 
 
 <template>
-  <Panel
-    v-if="isDisplayed"
-    v-model:collapsed="modelCollapsed"
-    class="inventory-slot"
-  >
+  <Panel class="inventory-slot">
     <template #header>
-      <div
-        class="inventory-slot-header"
-        @click="modelCollapsed = !modelCollapsed"
-      >
+      <div class="inventory-slot-header">
         <div class="inventory-slot-title">
           <font-awesome-icon
             v-if="inventorySlotType.icon != null"
@@ -97,18 +87,6 @@ function onMerchantFilterChanged(): void {
             class="inventory-slot-custom-icon"
           >
           <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelInventorySlot.typeId)) }}</span>
-        </div>
-        <div class="inventory-slot-collapse-icon">
-          <font-awesome-icon
-            v-if="modelCollapsed"
-            icon="angle-right"
-            class="collapsable-icon-collapsed"
-          />
-          <font-awesome-icon
-            v-else
-            icon="angle-right"
-            class="collapsable-icon-deployed"
-          />
         </div>
       </div>
     </template>
@@ -146,12 +124,6 @@ function onMerchantFilterChanged(): void {
 
 .inventory-slot-caption {
   margin-left: 0.5rem;
-}
-
-.inventory-slot-collapse-icon {
-  align-items: center;
-  display: flex;
-  margin-left: auto
 }
 
 .inventory-slot-custom-icon {

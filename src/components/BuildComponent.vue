@@ -3,9 +3,7 @@ import { useEventListener } from '@vueuse/core'
 import { computed, nextTick, onMounted, onUnmounted, provide, ref, useTemplateRef, watch } from 'vue'
 import { NavigationGuardNext, RouteLocationNormalizedGeneric, RouteLocationNormalizedLoadedGeneric, useRoute, useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
-import { IInventorySlot } from '../models/build/IInventorySlot'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
-import { IGeneralOptionsGroup } from '../models/utils/IGeneralOptionsGroup'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
 import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
@@ -24,7 +22,7 @@ import { PathUtils } from '../utils/PathUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import BuildSummary from './BuildSummaryComponent.vue'
 import InputTextField from './InputTextFieldComponent.vue'
-import InventorySlot from './InventorySlotComponent.vue'
+import InventorySlots from './InventorySlotsComponent.vue'
 import Loading from './LoadingComponent.vue'
 import NotificationButton from './NotificationButtonComponent.vue'
 import Sticky from './StickyComponent.vue'
@@ -43,7 +41,6 @@ const _itemService = Services.get(ItemService)
 
 const _compactBuildSummaryExpansionAnimationLenght = 500
 const _compactBuildSummaryExpansionAnimationLenghtCss = `${_compactBuildSummaryExpansionAnimationLenght}ms`
-const _inventorySlotPathPrefix = PathUtils.inventorySlotPrefix
 let _isCompactSummaryExpanding = false
 let _originalBuild: IBuild
 let _unregisterSaveBeforeLeaveNavigationGuardFunction: (() => void) | undefined = undefined
@@ -178,7 +175,6 @@ const build = ref<IBuild>({
   name: ''
 })
 const buildToolbar = useTemplateRef('buildToolbar')
-const collapseStatuses = ref<boolean[]>([])
 const compactBuildSummary = useTemplateRef('compactBuildSummary')
 const compactBuildSummaryHeight = ref<string>()
 const confirmationDialogIsDisplayed = ref(false)
@@ -191,7 +187,6 @@ const confirmationDialogSecondaryButtonAction = ref<() => void | Promise<void>>(
 const confirmationDialogSecondaryButtonCaption = ref<string>()
 const confirmationDialogSecondaryButtonIcon = ref<string>()
 const confirmationDialogSecondaryButtonSeverity = ref<string>()
-const generalOptionsSidebarVisible = ref(false)
 const isBuildSummaryStickied = ref(false)
 const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
 const isCompactBuildSummaryExpanded = ref(isCompactMode.value)
@@ -314,19 +309,6 @@ function cancelEdit(): void {
 }
 
 /**
- * Collapses all the inventory slots.
- */
-function collapseAll(): void {
-  generalOptionsSidebarVisible.value = false
-
-  for (let i = 0; i < collapseStatuses.value.length; i++) {
-    collapseStatuses.value[i] = true
-  }
-
-  _globalSidebarService.close('GeneralOptionsSidebar')
-}
-
-/**
  * Creates a copy of the current build.
  */
 function copy(): void {
@@ -345,33 +327,7 @@ function copy(): void {
  * Displays the general options.
  */
 function displayGeneralOptions(): void {
-  _globalSidebarService.display({
-    displayedComponentType: 'GeneralOptionsSidebar',
-    displayedComponentParameters: [
-      {
-        caption: 'caption.displayOptions',
-        icon: '',
-        name: 'display-options',
-        options: [
-          {
-            caption: 'caption.collapseAll',
-            icon: 'minus-square',
-            onClick: collapseAll
-          },
-          {
-            caption: 'caption.expandWithItem',
-            icon: 'search-plus',
-            onClick: expandWithItem
-          },
-          {
-            caption: 'caption.expandAll',
-            icon: 'plus-square',
-            onClick: expandAll
-          }
-        ]
-      }
-    ] as IGeneralOptionsGroup[]
-  })
+  _globalSidebarService.display({ displayedComponentType: 'GeneralOptionsSidebar' })
 }
 
 /**
@@ -451,33 +407,6 @@ function displayShoppingList(): void {
   })
 }
 
-/**
- * Expands all the inventory slots.
- */
-function expandAll(): void {
-  generalOptionsSidebarVisible.value = false
-
-  for (let i = 0; i < collapseStatuses.value.length; i++) {
-    collapseStatuses.value[i] = false
-  }
-
-  _globalSidebarService.close('GeneralOptionsSidebar')
-}
-
-/**
- * Expands the inventory slots containing an item.
- */
-function expandWithItem(): void {
-  generalOptionsSidebarVisible.value = false
-
-  for (let i = 0; i < collapseStatuses.value.length; i++) {
-    if (build.value.inventorySlots[i].items.filter(i => i != null).length > 0) {
-      collapseStatuses.value[i] = false
-    }
-  }
-
-  _globalSidebarService.close('GeneralOptionsSidebar')
-}
 
 /**
  * Exports the build.
@@ -528,9 +457,7 @@ function onArmorCompatibilityRequest(request: CompatibilityRequest): void {
  *
  * Signals to the build one of its inventory slots has changed.
  */
-function onInventorySlotChanged(index: number, newInventorySlot: IInventorySlot): void {
-  build.value.inventorySlots[index] = newInventorySlot
-
+function onInventorySlotChanged(): void {
   setSummaryAsync()
 }
 
@@ -549,7 +476,6 @@ async function onItemServiceInitializedAsync(): Promise<void> {
     const sharableString = route.params['sharedBuild'] as string
 
     await getSharedBuildAsync(sharableString)
-    expandAll()
   } else {
     build.value = _buildComponentService.getBuild(route.params['id'] as string)
   }
@@ -885,13 +811,10 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
       v-show="!isLoading"
       class="build-inventory-slots"
     >
-      <InventorySlot
-        v-for="(inventorySlot, index) of build.inventorySlots"
-        :key="`${path}/${inventorySlot.typeId}`"
-        v-model:collapsed="collapseStatuses[index]"
-        :inventory-slot="build.inventorySlots[index]"
-        :path="`${path}/${_inventorySlotPathPrefix}${inventorySlot.typeId}`"
-        @update:inventory-slot="onInventorySlotChanged(index, $event)"
+      <InventorySlots
+        v-model:inventory-slots="build.inventorySlots"
+        :path="path"
+        @update:inventory-slots="onInventorySlotChanged"
       />
     </div>
   </div>

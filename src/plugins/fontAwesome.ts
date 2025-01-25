@@ -1,8 +1,6 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faDiscord, faGithub, faRedditAlien } from '@fortawesome/free-brands-svg-icons'
 import {
-  faAngleDown,
-  faAngleRight,
   faArrowLeft,
   faArrowRight,
   faArrowsAlt,
@@ -99,8 +97,6 @@ import { App } from 'vue'
 
 export function useFontAwesome(app: App<Element>): void {
   library.add(
-    faAngleDown,
-    faAngleRight,
     faArrowLeft,
     faArrowRight,
     faArrowsAlt,
