@@ -31,7 +31,6 @@ const _itemPropertiesService = Services.get(ItemPropertiesService)
 
 const armor = computed(() => props.item as IArmor)
 const armorClass = computed(() => props.armorModifiersOverride?.armorClass ?? armor.value.presetArmorModifiers?.armorClass ?? armor.value.armorClass)
-const boldCssClass = computed(() => props.includeModsAndContent ? 'armor-item-card-bold' : '')
 const durability = computed(() => props.armorModifiersOverride?.durability ?? armor.value.presetArmorModifiers?.durability ?? armor.value.durability)
 const isHeadwear = computed(() => _itemPropertiesService.isHeadwear(props.item))
 const tooltipSuffix = computed(() => {
@@ -60,12 +59,12 @@ const tooltipSuffix = computed(() => {
       || (!isBaseItem && armorClass > 0)
       || (!isBaseItem && durability > 0)
       || $slots.slot != null"
-    class="card-line card-line3"
+    class="card-line card-line4"
   >
     <Tooltip
       v-if="!isBaseItem && durability > 0"
       class="card-value"
-      :class="boldCssClass"
+      :class="{ 'armor-item-card-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.durability') + tooltipSuffix"
     >
       <font-awesome-icon
@@ -77,7 +76,7 @@ const tooltipSuffix = computed(() => {
     <Tooltip
       v-if="!isBaseItem && armorClass > 0"
       class="card-value"
-      :class="boldCssClass"
+      :class="{ 'armor-item-card-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.armorClass') + tooltipSuffix"
     >
       <font-awesome-icon

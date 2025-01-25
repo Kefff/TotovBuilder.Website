@@ -35,7 +35,7 @@ const magazine = computed(() => props.item as IMagazine)
       || ergonomicsModifier !== 0
       || magazine.loadSpeedModifierPercentage !== 0
       || magazine.checkSpeedModifierPercentage !== 0"
-    class="card-line card-line3"
+    class="card-line card-line4"
   >
     <Tooltip
       v-if="ergonomicsModifier !== 0"

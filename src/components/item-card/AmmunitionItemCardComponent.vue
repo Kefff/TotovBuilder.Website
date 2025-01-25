@@ -54,7 +54,7 @@ const tooltip = computed(() =>
     >
       <Tooltip
         :tooltip="tooltip"
-        class="ammunition-item-card-flesh-damage"
+        class="card-value ammunition-item-card-flesh-damage"
       >
         <div class="flesh-damage">
           <font-awesome-icon
@@ -75,7 +75,10 @@ const tooltip = computed(() =>
         v-if="canOneshot"
         class="flesh-damage-oneshot"
       >
-        <Tooltip :tooltip="$t('caption.canOneshot')">
+        <Tooltip
+          :tooltip="$t('caption.canOneshot')"
+          class="card-value"
+        >
           <font-awesome-icon
             icon="skull"
             class="flesh-damage-oneshot-icon"
@@ -85,6 +88,7 @@ const tooltip = computed(() =>
     </div>
     <Tooltip
       v-if="ammunition.penetratedArmorLevel > 0"
+      class="card-value"
       :tooltip="$t('caption.armorClassPenetration', { class: ammunition.penetratedArmorLevel })"
     >
       <font-awesome-icon
@@ -95,6 +99,7 @@ const tooltip = computed(() =>
     </Tooltip>
     <Tooltip
       v-if="ammunition.penetrationPower > 0"
+      class="card-value"
       :tooltip="$t('caption.penetrationPower')"
     >
       <font-awesome-icon
@@ -106,6 +111,7 @@ const tooltip = computed(() =>
     <div class="ammunition-item-card-attributes">
       <Tooltip
         v-if="ammunition.subsonic"
+        class="card-value"
         :tooltip="$t('caption.subsonic')"
       >
         <font-awesome-icon
@@ -115,6 +121,7 @@ const tooltip = computed(() =>
       </Tooltip>
       <Tooltip
         v-if="ammunition.tracer"
+        class="card-value"
         :tooltip="$t('caption.tracer')"
       >
         <font-awesome-icon
@@ -124,6 +131,7 @@ const tooltip = computed(() =>
       </Tooltip>
       <Tooltip
         v-if="ammunition.blinding"
+        class="card-value"
         :tooltip="$t('caption.blinding')"
       >
         <font-awesome-icon
@@ -143,6 +151,7 @@ const tooltip = computed(() =>
   >
     <Tooltip
       v-if="ammunition.fragmentationChance > 0"
+      class="card-value"
       :tooltip="$t('caption.fragmentationChance')"
     >
       <font-awesome-icon
@@ -153,6 +162,7 @@ const tooltip = computed(() =>
     </Tooltip>
     <Tooltip
       v-if="ammunition.recoilModifier !== 0"
+      class="card-value"
       :tooltip="$t('caption.recoilModifier')"
     >
       <font-awesome-icon
@@ -165,6 +175,7 @@ const tooltip = computed(() =>
     </Tooltip>
     <Tooltip
       v-if="ammunition.accuracyModifierPercentage !== 0"
+      class="card-value"
       :tooltip="$t('caption.accuracyModifierPercentage')"
     >
       <font-awesome-icon
@@ -177,6 +188,7 @@ const tooltip = computed(() =>
     </Tooltip>
     <Tooltip
       v-if="ammunition.durabilityBurnModifierPercentage !== 0"
+      class="card-value"
       :tooltip="$t('caption.durabilityBurn')"
     >
       <font-awesome-icon

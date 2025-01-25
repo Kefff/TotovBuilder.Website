@@ -66,5 +66,6 @@
 }
 
 .card-value {
+  text-wrap: nowrap;
   white-space: nowrap;
 }

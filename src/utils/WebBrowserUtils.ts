@@ -6,9 +6,30 @@ import { computed, ComputedRef, Ref } from 'vue'
  */
 export default class WebBrowserUtils {
   /**
-     * Gets reactive screen properties.
-     * @returns Reactive screen properties.
-     */
+   * Gets the breakpoints used by CSS media queries.
+   */
+  public static get breakpoints(): {
+    smartphonePortrait: number,
+    smartphoneLandscape: number,
+    tabletPortrait: number,
+    tabletLandscape: number,
+    pc: number,
+    pcLarge: number
+  } {
+    return {
+      smartphonePortrait: 0,
+      smartphoneLandscape: 481,
+      tabletPortrait: 768,
+      tabletLandscape: 992,
+      pc: 1300,
+      pcLarge: 1800
+    }
+  }
+
+  /**
+   * Gets reactive screen properties.
+   * @returns Reactive screen properties.
+   */
   public static getScreenSize(): {
     isPc: ComputedRef<boolean>,
     isPcLarge: ComputedRef<boolean>,
@@ -101,26 +122,5 @@ export default class WebBrowserUtils {
     const result = this.getScrollableParentElement(parentElement.parentElement)
 
     return result
-  }
-
-  /**
-   * Gets the breakpoints used by CSS media queries.
-   */
-  private static get breakpoints(): {
-    smartphonePortrait: number,
-    smartphoneLandscape: number,
-    tabletPortrait: number,
-    tabletLandscape: number,
-    pc: number,
-    pcLarge: number
-  } {
-    return {
-      smartphonePortrait: 0,
-      smartphoneLandscape: 481,
-      tabletPortrait: 768,
-      tabletLandscape: 992,
-      pc: 1300,
-      pcLarge: 1800
-    }
   }
 }

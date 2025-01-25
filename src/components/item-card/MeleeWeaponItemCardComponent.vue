@@ -21,8 +21,11 @@ const meleeWeapon = computed(() => props.item as IMeleeWeapon)
 
 
 <template>
-  <div class="card-line card-line3">
-    <Tooltip :tooltip="$t('caption.chopDamage')">
+  <div class="card-line card-line4">
+    <Tooltip
+      :tooltip="$t('caption.chopDamage')"
+      class="card-value"
+    >
       <CustomIcon
         :icon="Images.chop"
         position="before"
@@ -30,7 +33,10 @@ const meleeWeapon = computed(() => props.item as IMeleeWeapon)
         <span>{{ meleeWeapon.chopDamage }}</span>
       </CustomIcon>
     </Tooltip>
-    <Tooltip :tooltip="$t('caption.stabDamage')">
+    <Tooltip
+      :tooltip="$t('caption.stabDamage')"
+      class="card-value"
+    >
       <CustomIcon
         :icon="Images.stab"
         position="before"

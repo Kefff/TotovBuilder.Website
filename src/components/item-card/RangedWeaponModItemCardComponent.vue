@@ -33,7 +33,7 @@ const rangedWeaponMod = computed(() => props.item as IRangedWeaponMod)
       || ergonomicsModifier !== 0
       || rangedWeaponMod.recoilModifierPercentage !== 0
       || rangedWeaponMod.accuracyModifierPercentage !== 0"
-    class="card-line card-line3"
+    class="card-line card-line4"
   >
     <Tooltip
       v-if="ergonomicsModifier !== 0"

@@ -130,7 +130,7 @@ function showDetails(): void {
     <template #content>
       <div class="card-lines">
         <!-- Weight and price -->
-        <div class="card-line card-line3 item-card-weight-and-price-line">
+        <div class="card-line card-line4 item-card-weight-and-price-line">
           <Tooltip
             v-if="item.weight != 0"
             :tooltip="$t('caption.weight')"
@@ -189,7 +189,7 @@ function showDetails(): void {
 
 .item-card-price {
   display: flex;
-  grid-column: span 2;
+  grid-column: span 3;
 }
 
 .item-card-header {

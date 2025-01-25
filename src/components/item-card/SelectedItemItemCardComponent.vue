@@ -143,7 +143,7 @@ async function setWeightAsync(): Promise<void> {
     :class="{ 'selected-item-item-card-compact': isCompactMode }"
   >
     <!-- Weights and prices -->
-    <div class="card-line card-line3 selected-item-item-card-prices-and-weight">
+    <div class="card-line card-line4 selected-item-item-card-prices-and-weight">
       <!-- Price -->
       <div
         v-if="((selectedItemPrice.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset
@@ -176,6 +176,7 @@ async function setWeightAsync(): Promise<void> {
             v-if="isEditing && canBeLooted && canIgnorePrice"
             :tooltip="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
             :apply-hover-style="false"
+            class="card-value"
           >
             <Button
               class="p-button-sm"
@@ -214,6 +215,7 @@ async function setWeightAsync(): Promise<void> {
           <Tooltip
             v-if="selectedItemWeight.weightWithContent > 0"
             :tooltip="$t('caption.weight') + $t('caption.withModsAndContent')"
+            class="card-value selected-item-item-card-weight"
           >
             <font-awesome-icon
               icon="weight-hanging"
@@ -226,7 +228,11 @@ async function setWeightAsync(): Promise<void> {
           v-if="(!includeModsAndContent || showWeight) && selectedItemWeight.weight > 0"
           class="selected-item-item-card-weight"
         >
-          <Tooltip :tooltip="$t('caption.weight')">
+          <Tooltip
+            v-if="(!includeModsAndContent || showWeight) && selectedItemWeight.weight > 0"
+            :tooltip="$t('caption.weight')"
+            class="card-value selected-item-item-card-weight"
+          >
             <font-awesome-icon
               icon="weight-hanging"
               class="icon-before-text"
@@ -238,7 +244,10 @@ async function setWeightAsync(): Promise<void> {
           v-if="showUnitWeight"
           class="selected-item-item-card-per-unit card-line"
         >
-          <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
+          <Tooltip
+            :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'"
+            class="card-value selected-item-item-card-weight"
+          >
             <font-awesome-icon
               icon="weight-hanging"
               class="icon-before-text"
@@ -319,7 +328,6 @@ async function setWeightAsync(): Promise<void> {
   align-items: center;
   display: flex;
   height: 2rem;
-  text-wrap: nowrap;
 }
 
 .selected-item-item-card-weights {
@@ -332,7 +340,6 @@ async function setWeightAsync(): Promise<void> {
 .selected-item-item-card-weights span {
   align-items: center;
   display: flex;
-  white-space: nowrap;
 }
 
 .selected-item-item-card-with-mods {

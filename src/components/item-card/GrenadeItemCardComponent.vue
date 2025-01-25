@@ -19,7 +19,7 @@ const grenade = computed(() => props.item as IGrenade)
 
 
 <template>
-  <div class="card-line card-line3">
+  <div class="card-line card-line4">
     <Tooltip
       :tooltip="$t('caption.explosionDelay')"
       class="card-value"

@@ -27,7 +27,6 @@ const props = withDefaults(
   })
 
 const armorModifiers = computed(() => props.armorModifiersOverride ?? headwear.value.presetArmorModifiers)
-const boldCssClass = computed(() => props.includeModsAndContent ? 'headwear-item-card-bold' : '')
 const hasRicochetChance = computed(() => headwear.value.ricochetChance !== '')
 const headwear = computed(() => props.item as IHeadwear)
 const wearableModifiers = computed(() => props.wearableModifiersOverride ?? headwear.value.presetWearableModifiers)
@@ -55,7 +54,7 @@ const wearableModifiers = computed(() => props.wearableModifiersOverride ?? head
       v-if="!isBaseItem && hasRicochetChance"
       :tooltip="$t('caption.ricochetChance')"
       class="card-value"
-      :class="boldCssClass"
+      :class="{ 'headwear-item-card-bold': props.includeModsAndContent }"
     >
       <CustomIcon
         :icon="Images.ricochet"
