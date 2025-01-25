@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
@@ -42,6 +42,25 @@ onUnmounted(() => {
   }
 })
 
+watch(
+  () => shown.value,
+  () => {
+    if (shown.value
+      && (props.tooltip == null
+        || props.tooltip === '')) {
+      close()
+    }
+  })
+
+function close(useDelay: boolean = false): void {
+  if (useDelay) {
+    // Adding a small timeout before hidding the tooltip in case it was not yet visible
+    setTimeout(() => shown.value = false, 50)
+  } else {
+    nextTick(() => shown.value = false)
+  }
+}
+
 /**
  * Reacts to the click on the element the tooltip is attached to.
  */
@@ -56,8 +75,7 @@ function onClick(event: MouseEvent): void {
  */
 function onGlobalSidebarOpen(): void {
   if (props.tooltip != null) {
-    // Adding a small timeout before hidding the tooltip in case is was not yet visible when the sidebar is opened
-    setTimeout(() => shown.value = false, 50)
+    close(true)
   }
 }
 </script>
@@ -73,7 +91,6 @@ function onGlobalSidebarOpen(): void {
 
 <template>
   <VTooltip
-    v-if="tooltip != null"
     v-model:shown="shown"
     :auto-hide="true"
     :class="{ 'tooltip': applyHoverStyle }"
@@ -89,7 +106,6 @@ function onGlobalSidebarOpen(): void {
       </span>
     </template>
   </VTooltip>
-  <slot v-else />
 </template>
 
 

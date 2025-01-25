@@ -1,12 +1,12 @@
-import { App, defineAsyncComponent } from 'vue'
+import { App } from 'vue'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import ItemsComponent from '../components/ItemsComponent.vue'
 import Welcome from '../components/WelcomeComponent.vue'
 import LanguageUtils from '../utils/LanguageUtils'
 import applicationInsights from './applicationInsights'
 
-const Build = defineAsyncComponent(() => import('../components/BuildComponent.vue'))
-const Builds = defineAsyncComponent(() => import('../components/BuildsComponent.vue'))
+const Build = (): unknown => import('../components/BuildComponent.vue')
+const Builds = (): unknown => import('../components/BuildsComponent.vue')
 
 const routes: RouteRecordRaw[] = [
   {
