@@ -143,7 +143,7 @@ async function setWeightAsync(): Promise<void> {
     :class="{ 'selected-item-item-card-compact': isCompactMode }"
   >
     <!-- Weights and prices -->
-    <div class="card-line card-line4 selected-item-item-card-prices-and-weight">
+    <div class="card-line card-line3 selected-item-item-card-prices-and-weight">
       <!-- Price -->
       <div
         v-if="((selectedItemPrice.unitPriceIgnoreStatus !== IgnoredUnitPrice.inPreset
@@ -251,7 +251,6 @@ async function setWeightAsync(): Promise<void> {
             <font-awesome-icon
               icon="weight-hanging"
               class="icon-before-text"
-              style="margin-left: 0.1rem"
             />
             <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
           </Tooltip>
@@ -335,6 +334,7 @@ async function setWeightAsync(): Promise<void> {
   flex-direction: column;
   height: 100%;
   justify-content: flex-start;
+  width: 5.5rem;
 }
 
 .selected-item-item-card-weights span {
@@ -365,6 +365,10 @@ async function setWeightAsync(): Promise<void> {
 .selected-item-item-card .card-line {
   gap: 1.5rem;
   height: 2rem;
+}
+
+.selected-item-item-card .card-line:not(.selected-item-item-card-prices-and-weight .selected-item-item-card-per-unit) {
+  width: 19rem;
 }
 
 .selected-item-item-card.selected-item-item-card-compact .card-line {

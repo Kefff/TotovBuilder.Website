@@ -304,15 +304,15 @@ function switchSortOrder(): void {
     <div class="filter-chips">
       <!-- Sorting chip -->
       <Chip class="filter-chip filter-chip-content">
-        <div class="filter-chip-icon-button-left">
-          <Tooltip
-            :tooltip="switchSortOrderButtonTooltip"
-            class="filter-chip-icon"
-            @click="switchSortOrder"
-          >
+        <Tooltip
+          :tooltip="switchSortOrderButtonTooltip"
+          class="filter-chip-icon-button-left"
+          @click="switchSortOrder"
+        >
+          <div class="filter-chip-icon">
             <font-awesome-icon :icon="sortChipIcon" />
-          </Tooltip>
-        </div>
+          </div>
+        </Tooltip>
         <Tooltip
           v-if="isCompactMode"
           :tooltip="sortButtonTooltip"

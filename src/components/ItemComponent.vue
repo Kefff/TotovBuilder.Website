@@ -495,24 +495,14 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
               <!-- Display nothing when the dropdown is opened because we open the sidebar instead -->
               <div />
             </template>
-            <template #clearicon>
-              <Tooltip :tooltip="$t('caption.clear')">
-                <div
-                  class="item-header-clear-button"
-                  @click="removeItemAsync"
-                >
-                  <font-awesome-icon icon="times" />
-                </div>
-              </Tooltip>
-            </template>
             <template #value>
               <Tooltip
+                v-if="item != null"
                 :apply-hover-style="false"
                 :tooltip="item?.name"
               >
                 <div class="item-header-dropdown-value">
                   <ItemIcon
-                    v-if="item != null"
                     :item="item"
                     :quantity="quantity"
                   />
@@ -522,19 +512,20 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
                   >
                     {{ item?.name }}
                   </div>
-                  <font-awesome-icon
-                    v-if="item == null"
-                    icon="plus"
-                    class="item-header-dropdown-value-placeholder-icon"
-                  />
-                  <span
-                    v-if="item == null"
-                    class="item-header-dropdown-value-placeholder-text"
-                  >
-                    {{ $t('caption.selectItem') }}
-                  </span>
                 </div>
               </Tooltip>
+              <div
+                v-else
+                class="item-header-dropdown-value"
+              >
+                <font-awesome-icon
+                  icon="plus"
+                  class="item-header-dropdown-value-placeholder-icon"
+                />
+                <span class="item-header-dropdown-value-placeholder-text">
+                  {{ $t('caption.selectItem') }}
+                </span>
+              </div>
             </template>
           </Dropdown>
           <div
@@ -590,32 +581,30 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           @update:ignore-price="onIgnorePriceChanged($event)"
         />
       </div>
-      <div>
+      <div
+        v-if="item != null && maxSelectableQuantity > 1 && !forceQuantityToMaxSelectableAmount"
+        class="item-quantity"
+      >
+        <InputNumberField
+          v-show="isEditing"
+          v-model:value="quantity"
+          :caption="$t('caption.quantity')"
+          :max="maxSelectableQuantity"
+          :min="1"
+          :required="true"
+          caption-mode="placeholder"
+          required-message-position="right"
+          @update:value="onQuantityChanged($event)"
+        />
+        <!-- Fake button divs to have the same alignment as the selection input -->
         <div
-          v-if="item != null && maxSelectableQuantity > 1 && !forceQuantityToMaxSelectableAmount"
-          class="item-quantity"
-        >
-          <InputNumberField
-            v-show="isEditing"
-            v-model:value="quantity"
-            :caption="$t('caption.quantity')"
-            :max="maxSelectableQuantity"
-            :min="1"
-            :required="true"
-            caption-mode="placeholder"
-            required-message-position="right"
-            @update:value="onQuantityChanged($event)"
-          />
-          <!-- Fake button divs to have the same alignment as the selection input -->
-          <div
-            v-if="isEditing"
-            class="item-header-button"
-          />
-          <div
-            v-if="item != null || isEditing"
-            class="item-header-button"
-          />
-        </div>
+          v-if="isEditing"
+          class="item-header-button"
+        />
+        <div
+          v-if="item != null || isEditing"
+          class="item-header-button"
+        />
       </div>
     </div>
     <div v-if="modelInventoryItem != null">
@@ -720,6 +709,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 .item-header {
   align-items: center;
   display: grid;
+  flex-shrink: 0;
   gap: 0.25rem;
   grid-template-columns: v-bind(itemHeaderGridTemplateColumns);
   height: 3.9rem;

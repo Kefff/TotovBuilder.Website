@@ -123,7 +123,7 @@ const verticalRecoil = computed(() => props.rangedWeaponsModifiersOverride?.vert
 }
 
 .ranged-weapon-item-card-long {
-  grid-column: span 2;
+  grid-column: span 3;
 }
 
 .ranged-weapon-item-card-no-wrap {

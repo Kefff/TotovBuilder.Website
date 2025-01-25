@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useMediaQuery } from '@vueuse/core'
 import { computed, ref, useTemplateRef, watch } from 'vue'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
 import vueI18n from '../plugins/vueI18n'
 import { GlobalSidebarService } from '../services/GlobalSidebarService'
 import Services from '../services/repository/Services'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 import Sticky from './StickyComponent.vue'
 import ToolbarButton from './ToolbarButtonComponent.vue'
 
@@ -26,7 +26,6 @@ const _displayToolbarSidebarButton: IToolbarButton = {
   showCaption: () => 'never',
   style: () => 'discreet'
 }
-const _hideButtonsWidth = 991
 
 const leftDisplayedButtons = computed(() =>
   areButtonsHidden.value
@@ -39,7 +38,7 @@ const rightDisplayedButtons = computed(() =>
 const hiddenButtons = computed(() => areButtonsHidden.value ? props.buttons.filter(b => (b.canBeMovedToSidebar?.() ?? true)) : [])
 const toolbarContainer = computed(() => stickyElement.value?.container)
 
-const areButtonsHidden = useMediaQuery(`only screen and (max-width: ${_hideButtonsWidth}px)`)
+const { isTabletPortraitOrSmaller: areButtonsHidden } = WebBrowserUtils.getScreenSize()
 const isInGlobalSidebar = ref(false)
 const isStickied = ref(false)
 const stickyElement = useTemplateRef('stickyElement')

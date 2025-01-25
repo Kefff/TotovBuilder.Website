@@ -22,7 +22,7 @@ const tooltip = computed(() =>
     || (showCaptionInternal.value === 'auto'
       && isCaptionHidden.value)
     ? props.button.caption()
-    : '')
+    : undefined)
 
 const { isTabletLandscapeOrSmaller: isCaptionHidden } = WebBrowserUtils.getScreenSize()
 </script>
@@ -54,7 +54,9 @@ const { isTabletLandscapeOrSmaller: isCaptionHidden } = WebBrowserUtils.getScree
       <span
         v-show="showCaptionInternal === 'always' || showCaptionInternal === 'auto'"
         :class="captionClasses"
-      >{{ button.caption() }}</span>
+      >
+        {{ button.caption() }}
+      </span>
     </Button>
   </Tooltip>
 </template>
