@@ -127,6 +127,7 @@ function onInventorySlotChanged(updatedInventorySlot: IInventorySlot): void {
   border-style: solid;
   border-width: 1px;
   max-height: 90vh;
+  max-width: 28.5rem;
   min-height: 53rem;
   position: sticky;
   top: 5rem;
