@@ -3,6 +3,7 @@ import imageChop from '../assets/images/chop.webp'
 import imageFence from '../assets/images/fence.webp'
 import imageFirerate from '../assets/images/fire-rate.webp'
 import imageFleamarket from '../assets/images/flea-market.webp'
+import imageInventorySlotsSelection from '../assets/images/inventory-slots-selection.webp'
 import imageJaeger from '../assets/images/jaeger.webp'
 import imageLanguageEn from '../assets/images/language-en.webp'
 import imageLanguageFr from '../assets/images/language-fr.webp'
@@ -33,15 +34,16 @@ const Images: IImages = {
   fence: imageFence,
   fireRate: imageFirerate,
   fleaMarket: imageFleamarket,
+  inventorySlotsSelection: imageInventorySlotsSelection,
   jaeger: imageJaeger,
   languageEn: imageLanguageEn,
   languageFr: imageLanguageFr,
   mechanic: imageMechanic,
   peacekeeper: imagePeacekeeper,
   pistol: imagePistol,
+  prapor: imagePrapor,
   praporAngry: imagePraporAngry,
   praporSmiling: imagePraporSmiling,
-  prapor: imagePrapor,
   ragman: imageRagman,
   ref: imageRef,
   ricochet: imageRicochet,

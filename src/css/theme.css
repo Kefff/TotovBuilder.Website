@@ -6801,7 +6801,8 @@
 }
 
 .p-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight button {
-  background: var(--secondary-color);
+  /*background: var(--secondary-color);*/
+  background: var(--primary-color);
   color: var(--text-color2);
 }
 

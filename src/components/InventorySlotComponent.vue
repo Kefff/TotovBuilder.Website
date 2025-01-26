@@ -132,7 +132,6 @@ function onMerchantFilterChanged(): void {
 
 .inventory-slot-header {
   align-items: center;
-  cursor: pointer;
   display: flex;
   font-size: 1.35rem;
   font-weight: bolder;
