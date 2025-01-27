@@ -9,7 +9,6 @@ export function usePrimeVue(app: App<Element>): void {
 
   app.component('Button', defineAsyncComponent(() => import('primevue/button')))
   app.component('Card', defineAsyncComponent(() => import('primevue/card')))
-  app.component('Carousel', defineAsyncComponent(() => import('primevue/carousel')))
   app.component('Checkbox', defineAsyncComponent(() => import('primevue/checkbox')))
   app.component('Chip', defineAsyncComponent(() => import('primevue/chip')))
   app.component('Column', defineAsyncComponent(() => import('primevue/column')))

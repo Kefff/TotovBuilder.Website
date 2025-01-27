@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, inject, Ref } from 'vue'
+import { computed, inject, ref, Ref } from 'vue'
 import Images from '../images'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { PathUtils } from '../utils/PathUtils'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 import InventorySlot from './InventorySlotComponent.vue'
 
 const modelInventorySlots = defineModel<IInventorySlot[]>('inventorySlots', { required: true })
@@ -11,8 +12,6 @@ const modelInventorySlots = defineModel<IInventorySlot[]>('inventorySlots', { re
 defineProps<{
   path: string
 }>()
-
-const TODO_REMOVE_WHEN_INVENTORY_SLOT_SELECTION_US_IMPLEMENTED = true
 
 const inventorySlotGroups = computed(() => {
   const groups = []
@@ -38,7 +37,9 @@ const inventorySlotGroups = computed(() => {
   return groups
 })
 
+const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
 const isEditing = inject<Ref<boolean>>('isEditing')
+const currentPage = ref(0)
 
 /**
  * Reacts to an inventory item being changed.
@@ -64,29 +65,20 @@ function onInventorySlotChanged(updatedInventorySlot: IInventorySlot): void {
 
 <template>
   <div class="inventory-slots">
-    <div class="inventory-slots-selection">
+    <div
+      v-if="!isCompactMode"
+      class="inventory-slots-selector"
+    >
       <img :src="Images.inventorySlotsSelection">
     </div>
-    <div class="inventory-slots-carousel">
-      <Carousel
-        :num-scroll="1"
-        :num-visible="1"
-        :show-indicators="TODO_REMOVE_WHEN_INVENTORY_SLOT_SELECTION_US_IMPLEMENTED"
-        :show-navigators="false"
-        :value="inventorySlotGroups"
-      >
-        <template #item="slotProps">
-          <div class="inventory-slots-group">
-            <InventorySlot
-              v-for="(inventorySlot, index) of slotProps.data"
-              :key="inventorySlot.typeId"
-              v-model:inventory-slot="slotProps.data[index]"
-              :path="`${path}/${PathUtils.inventorySlotPrefix}${inventorySlot.typeId}`"
-              @update:inventory-slot="onInventorySlotChanged($event)"
-            />
-          </div>
-        </template>
-      </Carousel>
+    <div class="inventory-slots-group">
+      <InventorySlot
+        v-for="(inventorySlot, index) of inventorySlotGroups[currentPage]"
+        :key="inventorySlot.typeId"
+        v-model:inventory-slot="inventorySlotGroups[currentPage][index]"
+        :path="`${path}/${PathUtils.inventorySlotPrefix}${inventorySlot.typeId}`"
+        @update:inventory-slot="onInventorySlotChanged($event)"
+      />
     </div>
   </div>
 </template>
@@ -102,26 +94,27 @@ function onInventorySlotChanged(updatedInventorySlot: IInventorySlot): void {
 
 <style scoped>
 .inventory-slots {
-  display: grid;
+  display: flex;
   gap: 1rem;
-  grid-template-columns: auto 1fr 1fr;
-}
-
-.inventory-slots-carousel {
-  grid-column: span 2;
 }
 
 .inventory-slots-group {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  min-height: 100%;
+  width: 100%
 }
 
-.inventory-slots-selection {
+.inventory-slots-group > div {
+  height: 100%;
+}
+
+.inventory-slots-selector {
   position: relative;
 }
 
-.inventory-slots-selection > img {
+.inventory-slots-selector > img {
   border-color: var(--primary-color6);
   border-radius: 6px;
   border-style: solid;
