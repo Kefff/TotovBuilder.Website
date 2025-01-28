@@ -74,26 +74,12 @@ const itemHeaderGridTemplateColumns = computed(() => {
 
   return 'auto 1fr auto'
 })
-const imbricationLevel = computed(() => PathUtils.getPathLevel(props.path))
-const itemHeaderWidth = computed(() => {
-  if (isCompactMode.value) {
-    return '100%'
-  } else {
-    let width = 30 - imbricationLevel.value * 1.75
-
-    if (props.isMainInventorySlotItem) {
-      width -= 0.5
-    }
-
-    return `${width}rem`
-  }
-})
 const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.value?.maxStackableAmount ?? 1)
 const modsCount = computed(() => modelInventoryItem.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
 
 const baseItem = ref<IInventoryItem | undefined>()
 const isEditing = inject<Ref<boolean>>('isEditing')
-const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
+const { isTabletLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
 const item = ref<IItem | undefined>()
 const itemChanging = ref(false)
 const itemIsContainer = ref(false)
@@ -578,6 +564,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           :selected-item="item"
           :show-price="showPrice"
           :show-weight="showWeight"
+          class="item-header-stats"
           @update:ignore-price="onIgnorePriceChanged($event)"
         />
       </div>
@@ -709,11 +696,10 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 .item-header {
   align-items: center;
   display: grid;
-  flex-shrink: 0;
   gap: 0.25rem;
   grid-template-columns: v-bind(itemHeaderGridTemplateColumns);
   height: 3.9rem;
-  width: v-bind(itemHeaderWidth);
+  width: 100%;
 }
 
 .item-header-button {
@@ -732,14 +718,17 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 
 .item-header-container > div:first-child {
   align-items: center;
-  display: flex;
-  gap: 1rem
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1.5rem
 }
 
 .item-header-container.item-header-container-compact > div {
   align-items: flex-start;
+  display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  grid-template-columns: unset;
   justify-content: unset;
 }
 
@@ -779,6 +768,11 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   word-break: break-word;
 }
 
+.item-header-stats {
+  display: grid;
+  grid-template-columns: 16rem 20rem;
+}
+
 .item-header-title {
   font-size: 1rem;
   font-weight: normal;
@@ -803,7 +797,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   display: flex;
   gap: 0.25rem;
   height: unset;
-  width: v-bind(itemHeaderWidth);
+  width: 100%;
 }
 
 .item-quantity > .input-number-field {

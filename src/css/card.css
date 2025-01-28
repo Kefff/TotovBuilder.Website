@@ -46,17 +46,16 @@
 }
 
 .card-line3 {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .card-line4 {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .card-lines {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 0.25rem;
   height: 100%;
 }

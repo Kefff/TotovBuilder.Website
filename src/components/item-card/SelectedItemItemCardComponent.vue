@@ -258,7 +258,7 @@ async function setWeightAsync(): Promise<void> {
       </div>
     </div>
     <!-- Specialized stats -->
-    <div>
+    <div class="selected-item-item-card-specialized">
       <slot />
     </div>
   </div>
@@ -284,20 +284,22 @@ async function setWeightAsync(): Promise<void> {
   height: 100%;
 }
 
-.selected-item-item-card-compact {
+.selected-item-item-card.selected-item-item-card-compact {
   align-items: unset;
+  display: flex;
   flex-direction: column;
   gap: unset;
+  width: 100%;
 }
 
-.selected-item-item-card-compact > .selected-item-item-card-prices-and-weight {
-  order: -1;
-}
-
-.selected-item-item-card-compact .selected-item-item-card-per-unit {
+.selected-item-item-card.selected-item-item-card-compact .selected-item-item-card-per-unit {
   align-items: center;
   display: flex;
   flex-direction: row;
+}
+
+.selected-item-item-card.selected-item-item-card-compact > .selected-item-item-card-specialized {
+  width: 100%;
 }
 
 .selected-item-item-card-per-unit {
@@ -323,6 +325,10 @@ async function setWeightAsync(): Promise<void> {
   width: 12.5rem;
 }
 
+.selected-item-item-card-specialized {
+  width: 20rem;
+}
+
 .selected-item-item-card-weight {
   align-items: center;
   display: flex;
@@ -333,7 +339,7 @@ async function setWeightAsync(): Promise<void> {
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: flex-start;
+  justify-content: center;
   width: 5.5rem;
 }
 
@@ -365,10 +371,6 @@ async function setWeightAsync(): Promise<void> {
 .selected-item-item-card .card-line {
   gap: 1.5rem;
   height: 2rem;
-}
-
-.selected-item-item-card .card-line:not(.selected-item-item-card-prices-and-weight .selected-item-item-card-per-unit) {
-  width: 19rem;
 }
 
 .selected-item-item-card.selected-item-item-card-compact .card-line {

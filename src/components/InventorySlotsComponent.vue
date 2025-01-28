@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, ref, Ref } from 'vue'
+import { computed, inject, onMounted, ref, Ref, watch } from 'vue'
 import Images from '../images'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
@@ -13,6 +13,13 @@ defineProps<{
   path: string
 }>()
 
+let _isInitialized = false
+
+const currentPageIndex = computed(() => {
+  const index = inventorySlotGroups.value.findIndex(isg => isg.some(is => is.typeId === currentInventorySlot.value))
+
+  return index
+})
 const inventorySlotGroups = computed(() => {
   const groups = []
   const singleItemGroup = []
@@ -37,9 +44,29 @@ const inventorySlotGroups = computed(() => {
   return groups
 })
 
-const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
+const currentInventorySlot = ref<InventorySlotTypeId>()
+const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
 const isEditing = inject<Ref<boolean>>('isEditing')
-const currentPage = ref(0)
+
+onMounted(() => initialize())
+
+watch(() => modelInventorySlots.value, () => initialize())
+
+/**
+ * Initializes the current inventory slot.
+ */
+function initialize(): void {
+  if (_isInitialized) {
+    return
+  }
+
+  const firstInventorySlotWithItem = modelInventorySlots.value.find(is => is.items.some(i => i != null))
+
+  if (firstInventorySlotWithItem != null) {
+    currentInventorySlot.value = firstInventorySlotWithItem.typeId
+    _isInitialized = true
+  }
+}
 
 /**
  * Reacts to an inventory item being changed.
@@ -73,9 +100,9 @@ function onInventorySlotChanged(updatedInventorySlot: IInventorySlot): void {
     </div>
     <div class="inventory-slots-group">
       <InventorySlot
-        v-for="(inventorySlot, index) of inventorySlotGroups[currentPage]"
+        v-for="(inventorySlot, index) of inventorySlotGroups[currentPageIndex]"
         :key="inventorySlot.typeId"
-        v-model:inventory-slot="inventorySlotGroups[currentPage][index]"
+        v-model:inventory-slot="inventorySlotGroups[currentPageIndex][index]"
         :path="`${path}/${PathUtils.inventorySlotPrefix}${inventorySlot.typeId}`"
         @update:inventory-slot="onInventorySlotChanged($event)"
       />
@@ -119,10 +146,8 @@ function onInventorySlotChanged(updatedInventorySlot: IInventorySlot): void {
   border-radius: 6px;
   border-style: solid;
   border-width: 1px;
-  max-height: 90vh;
-  max-width: 28.5rem;
-  min-height: 53rem;
   position: sticky;
   top: 5rem;
+  width: 28.5rem;
 }
 </style>
