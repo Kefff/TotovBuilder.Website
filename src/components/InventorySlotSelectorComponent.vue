@@ -70,6 +70,7 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       </div>
       <div
         class="inventory-slots-selector-zone-item-earpiece"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.earpiece }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.earpiece"
       />
 
@@ -81,6 +82,7 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       </div>
       <div
         class="inventory-slots-selector-zone-item-headwear"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.headwear }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.headwear"
       />
 
@@ -92,6 +94,7 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       </div>
       <div
         class="inventory-slots-selector-zone-item-face-cover"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.faceCover }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.faceCover"
       />
 
@@ -103,6 +106,7 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       </div>
       <div
         class="inventory-slots-selector-zone-item-armband"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.armband }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.armband"
       />
 
@@ -114,6 +118,7 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       </div>
       <div
         class="inventory-slots-selector-zone-item-body-armor"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.bodyArmor }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.bodyArmor"
       />
 
@@ -125,6 +130,7 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       </div>
       <div
         class="inventory-slots-selector-zone-item-eyewear"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.eyewear }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.eyewear"
       />
 
@@ -136,6 +142,7 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       </div>
       <div
         class="inventory-slots-selector-zone-item-on-sling"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.onSling }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.onSling"
       />
 
@@ -147,6 +154,7 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       </div>
       <div
         class="inventory-slots-selector-zone-item-holster"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.holster }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.holster"
       />
 
@@ -158,6 +166,7 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       </div>
       <div
         class="inventory-slots-selector-zone-item-on-back"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.onBack }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.onBack"
       />
 
@@ -169,6 +178,7 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       </div>
       <div
         class="inventory-slots-selector-zone-item-scabbard"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.scabbard }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.scabbard"
       />
 
@@ -180,6 +190,7 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       </div>
       <div
         class="inventory-slots-selector-zone-item-tactical-rig"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.tacticalRig }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.tacticalRig"
       />
 
@@ -191,6 +202,7 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       </div>
       <div
         class="inventory-slots-selector-zone-item-backpack"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.backpack }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.backpack"
       />
 
@@ -202,6 +214,7 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       </div>
       <div
         class="inventory-slots-selector-zone-item-pouch"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pouch }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.pouch"
       />
 
@@ -213,18 +226,22 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       </div>
       <div
         class="inventory-slots-selector-zone-item-pockets1"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.pockets"
       />
       <div
         class="inventory-slots-selector-zone-item-pockets2"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.pockets"
       />
       <div
         class="inventory-slots-selector-zone-item-pockets3"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.pockets"
       />
       <div
         class="inventory-slots-selector-zone-item-pockets4"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.pockets"
       />
 
@@ -236,14 +253,17 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       </div>
       <div
         class="inventory-slots-selector-zone-item-special1"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.special }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.special"
       />
       <div
         class="inventory-slots-selector-zone-item-special2"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.special }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.special"
       />
       <div
         class="inventory-slots-selector-zone-item-special3"
+        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.special }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.special"
       />
     </div>
@@ -262,6 +282,11 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
 <style scoped>
 .inventory-slots-selector {
   position: relative;
+}
+
+.inventory-slots-selector-current {
+  border-color: var(--primary-color);
+  border-style: solid;
 }
 
 .inventory-slots-selector-image-container {
