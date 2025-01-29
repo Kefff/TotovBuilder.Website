@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, Ref, watch } from 'vue'
-import Images from '../images'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { PathUtils } from '../utils/PathUtils'
-import WebBrowserUtils from '../utils/WebBrowserUtils'
 import InventorySlot from './InventorySlotComponent.vue'
+import InventorySlotSelector from './InventorySlotSelectorComponent.vue'
 
 const modelInventorySlots = defineModel<IInventorySlot[]>('inventorySlots', { required: true })
 
@@ -45,7 +44,6 @@ const inventorySlotGroups = computed(() => {
 })
 
 const currentInventorySlot = ref<InventorySlotTypeId>()
-const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
 const isEditing = inject<Ref<boolean>>('isEditing')
 
 onMounted(() => initialize())
@@ -92,12 +90,7 @@ function onInventorySlotChanged(updatedInventorySlot: IInventorySlot): void {
 
 <template>
   <div class="inventory-slots">
-    <div
-      v-if="!isCompactMode"
-      class="inventory-slots-selector"
-    >
-      <img :src="Images.inventorySlotsSelection">
-    </div>
+    <InventorySlotSelector v-model:current-inventory-slot-type="currentInventorySlot" />
     <div class="inventory-slots-group">
       <InventorySlot
         v-for="(inventorySlot, index) of inventorySlotGroups[currentPageIndex]"
@@ -135,19 +128,5 @@ function onInventorySlotChanged(updatedInventorySlot: IInventorySlot): void {
 
 .inventory-slots-group > div {
   height: 100%;
-}
-
-.inventory-slots-selector {
-  position: relative;
-}
-
-.inventory-slots-selector > img {
-  border-color: var(--primary-color6);
-  border-radius: 6px;
-  border-style: solid;
-  border-width: 1px;
-  position: sticky;
-  top: 5rem;
-  width: 28.5rem;
 }
 </style>
