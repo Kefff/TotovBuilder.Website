@@ -4,7 +4,7 @@ import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import StringUtils from '../utils/StringUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 
-const modelCurrentInventorySlotType = defineModel<InventorySlotTypeId>()
+const modelCurrentInventorySlotType = defineModel<InventorySlotTypeId>('currentInventorySlotType')
 
 
 const _zoneBackgroundColor = 'transparent'

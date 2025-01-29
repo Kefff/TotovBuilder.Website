@@ -20,8 +20,8 @@ const currentPageIndex = computed(() => {
   return index
 })
 const inventorySlotGroups = computed(() => {
-  const groups = []
-  const singleItemGroup = []
+  const groups: IInventorySlot[][] = []
+  const singleItemGroup: IInventorySlot[] = []
   const visibleInventorySlots = isEditing?.value
     ? modelInventorySlots.value
     : modelInventorySlots.value.filter(is => is.items.some((i) => i != null))
