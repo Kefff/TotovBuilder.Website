@@ -8,9 +8,7 @@ import InventorySlotSelector from './InventorySlotSelectorComponent.vue'
 
 const modelInventorySlots = defineModel<IInventorySlot[]>('inventorySlots', { required: true })
 
-defineProps<{
-  path: string
-}>()
+defineProps<{ path: string }>()
 
 let _isInitialized = false
 
@@ -45,6 +43,7 @@ const inventorySlotGroups = computed(() => {
 
 const currentInventorySlot = ref<InventorySlotTypeId>()
 const isEditing = inject<Ref<boolean>>('isEditing')
+const isNewBuild = inject<Ref<boolean>>('isNewBuild')
 
 onMounted(() => initialize())
 
@@ -58,11 +57,16 @@ function initialize(): void {
     return
   }
 
-  const firstInventorySlotWithItem = modelInventorySlots.value.find(is => is.items.some(i => i != null))
-
-  if (firstInventorySlotWithItem != null) {
-    currentInventorySlot.value = firstInventorySlotWithItem.typeId
+  if (isNewBuild?.value) {
+    currentInventorySlot.value = InventorySlotTypeId.onSling
     _isInitialized = true
+  } else {
+    const firstInventorySlotWithItem = modelInventorySlots.value.find(is => is.items.some(i => i != null))
+
+    if (firstInventorySlotWithItem != null) {
+      currentInventorySlot.value = firstInventorySlotWithItem.typeId
+      _isInitialized = true
+    }
   }
 }
 
@@ -124,9 +128,5 @@ function onInventorySlotChanged(updatedInventorySlot: IInventorySlot): void {
   gap: 1rem;
   min-height: 100%;
   width: 100%
-}
-
-.inventory-slots-group > div {
-  height: 100%;
 }
 </style>

@@ -224,6 +224,7 @@ const summary = ref<IBuildSummary>({
 useEventListener(document, 'keydown', onKeyDownAsync)
 
 provide('isEditing', isEditing)
+provide('isNewBuild', isNewBuild)
 
 onMounted(() => {
   _compatibilityService.emitter.on(CompatibilityRequestType.armor, onArmorCompatibilityRequest)
