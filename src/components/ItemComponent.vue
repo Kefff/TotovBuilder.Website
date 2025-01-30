@@ -770,7 +770,9 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 
 .item-header-stats {
   display: grid;
-  grid-template-columns: 16rem 20rem;
+  grid-template-columns: auto auto;
+  gap: 1rem;
+  width: 100%;
 }
 
 .item-header-title {
