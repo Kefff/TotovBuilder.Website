@@ -40,41 +40,44 @@ const magazine = computed(() => props.item as IMagazine)
     <Tooltip
       v-if="ergonomicsModifier !== 0"
       :tooltip="$t('caption.ergonomicsModifier')"
-      class="card-value"
     >
-      <font-awesome-icon
-        icon="hand-paper"
-        class="icon-before-text"
-      />
-      <span :class="StatsUtils.getValueColorClass(ergonomicsModifier)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
-      </span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="hand-paper"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(ergonomicsModifier)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifier, ergonomicsModifier) }}
+        </span>
+      </div>
     </Tooltip>
     <Tooltip
       v-if="magazine.loadSpeedModifierPercentage !== 0"
       :tooltip="$t('caption.loadSpeedModifierPercentage')"
-      class="card-value"
     >
-      <font-awesome-icon
-        icon="sync-alt"
-        class="icon-before-text"
-      />
-      <span :class="StatsUtils.getValueColorClass(magazine.loadSpeedModifierPercentage, true)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.loadSpeedModifierPercentage, magazine.loadSpeedModifierPercentage) }}
-      </span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="sync-alt"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(magazine.loadSpeedModifierPercentage, true)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.loadSpeedModifierPercentage, magazine.loadSpeedModifierPercentage) }}
+        </span>
+      </div>
     </Tooltip>
     <Tooltip
       v-if="magazine.checkSpeedModifierPercentage !== 0"
       :tooltip="$t('caption.checkSpeedModifierPercentage')"
-      class="card-value"
     >
-      <font-awesome-icon
-        icon="eye"
-        class="icon-before-text"
-      />
-      <span :class="StatsUtils.getValueColorClass(magazine.checkSpeedModifierPercentage, true)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.checkSpeedModifierPercentage, magazine.checkSpeedModifierPercentage) }}
-      </span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="eye"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(magazine.checkSpeedModifierPercentage, true)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.checkSpeedModifierPercentage, magazine.checkSpeedModifierPercentage) }}
+        </span>
+      </div>
     </Tooltip>
   </div>
 </template>

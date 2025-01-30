@@ -44,45 +44,48 @@ const wearable = computed(() => props.item as IWearable)
   >
     <Tooltip
       v-if="ergonomicsModifierPercentage !== 0"
-      class="card-value"
       :class="{ 'wearable-summary-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.ergonomicsModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
-      <font-awesome-icon
-        icon="hand-paper"
-        class="icon-before-text"
-      />
-      <span :class="StatsUtils.getValueColorClass(ergonomicsModifierPercentage)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, ergonomicsModifierPercentage) }}
-      </span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="hand-paper"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(ergonomicsModifierPercentage)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, ergonomicsModifierPercentage) }}
+        </span>
+      </div>
     </Tooltip>
     <Tooltip
       v-if="movementSpeedModifierPercentage !== 0"
-      class="card-value"
       :class="{ 'wearable-summary-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.movementSpeedModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
-      <font-awesome-icon
-        icon="walking"
-        class="icon-before-text"
-      />
-      <span :class="StatsUtils.getValueColorClass(movementSpeedModifierPercentage)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, movementSpeedModifierPercentage) }}
-      </span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="walking"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(movementSpeedModifierPercentage)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, movementSpeedModifierPercentage) }}
+        </span>
+      </div>
     </Tooltip>
     <Tooltip
       v-if="turningSpeedModifierPercentage !== 0"
-      class="card-value"
       :class="{ 'wearable-summary-bold': props.includeModsAndContent }"
       :tooltip="$t('caption.turningSpeedModifierPercentage') + (includeModsAndContent ? $t('caption.withMods') : '')"
     >
-      <font-awesome-icon
-        icon="undo"
-        class="icon-before-text"
-      />
-      <span :class="StatsUtils.getValueColorClass(turningSpeedModifierPercentage)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, turningSpeedModifierPercentage) }}
-      </span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="undo"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(turningSpeedModifierPercentage)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, turningSpeedModifierPercentage) }}
+        </span>
+      </div>
     </Tooltip>
   </div>
 </template>

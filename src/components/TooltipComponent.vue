@@ -90,22 +90,24 @@ function onGlobalSidebarOpen(): void {
 
 
 <template>
-  <VTooltip
-    v-model:shown="shown"
-    :auto-hide="true"
-    :class="{ 'tooltip': applyHoverStyle }"
-    :triggers="[trigger]"
-    :delay="0"
-    @click="onClick"
-  >
-    <slot />
+  <div class="tooltip-container">
+    <VTooltip
+      v-model:shown="shown"
+      :auto-hide="true"
+      :class="{ 'tooltip': applyHoverStyle }"
+      :triggers="[trigger]"
+      :delay="0"
+      @click="onClick"
+    >
+      <slot />
 
-    <template #popper>
-      <span class="tooltip-popper">
-        {{ tooltip }}
-      </span>
-    </template>
-  </VTooltip>
+      <template #popper>
+        <span class="tooltip-popper">
+          {{ tooltip }}
+        </span>
+      </template>
+    </VTooltip>
+  </div>
 </template>
 
 
@@ -120,6 +122,10 @@ function onGlobalSidebarOpen(): void {
 <style scoped>
 .tooltip:hover {
   opacity: 50%;
+}
+
+.tooltip-container {
+  display: flex;
 }
 
 .tooltip-popper {

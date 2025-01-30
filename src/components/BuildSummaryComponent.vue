@@ -16,6 +16,7 @@ const props = withDefaults(
     isStickied: false
   })
 
+const gridTemplateColumn = computed(() => `repeat(${[hasSummaryStats.value, hasSummaryArmor.value || hasSummaryWearableModifiers.value, hasSummaryPrice.value, hasSummaryWeight.value].filter(Boolean).length}, auto`)
 const hasSummaryArmor = computed(() => props.summary.armorModifiers.armorClass !== 0)
 const hasSummaryErgonomics = computed(() => props.summary.ergonomics !== 0)
 const hasSummaryErgonomicsModifierPercentage = computed(() => props.summary.wearableModifiers.ergonomicsModifierPercentage !== 0)
@@ -154,22 +155,6 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
       </Tooltip>
     </div>
     <div
-      v-if="hasSummaryWeight"
-      class="build-summary-group"
-    >
-      <Tooltip
-        v-if="hasSummaryWeight"
-        :tooltip="$t('caption.weight')"
-        class="build-summary-value"
-      >
-        <font-awesome-icon
-          icon="weight-hanging"
-          class="icon-before-text"
-        />
-        <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
-      </Tooltip>
-    </div>
-    <div
       v-if="hasSummaryPrice"
       class="build-summary-group"
     >
@@ -184,6 +169,22 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
           :is-build="true"
         />
       </div>
+    </div>
+    <div
+      v-if="hasSummaryWeight"
+      class="build-summary-group"
+    >
+      <Tooltip
+        v-if="hasSummaryWeight"
+        :tooltip="$t('caption.weight')"
+        class="build-summary-value"
+      >
+        <font-awesome-icon
+          icon="weight-hanging"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
+      </Tooltip>
     </div>
   </div>
 </template>
@@ -208,7 +209,7 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
   display: grid;
   font-size: 1.5rem;
   gap: 3rem;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: v-bind(gridTemplateColumn);
   max-width: 100%;
   padding: 0.5rem;
 }
@@ -223,7 +224,7 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
   display: grid;
   font-weight: bolder;
   gap: 1rem;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: v-bind(gridTemplateColumn);
   max-width: 100%;
   padding: 0.5rem;
 }

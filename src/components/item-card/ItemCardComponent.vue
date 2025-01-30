@@ -134,15 +134,16 @@ function showDetails(): void {
           <Tooltip
             v-if="item.weight != 0"
             :tooltip="$t('caption.weight')"
-            class="card-value"
           >
-            <font-awesome-icon
-              icon="weight-hanging"
-              class="icon-before-text"
-            />
-            <span>
-              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, weight) }}
-            </span>
+            <div class="card-value">
+              <font-awesome-icon
+                icon="weight-hanging"
+                class="icon-before-text"
+              />
+              <span>
+                {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, weight) }}
+              </span>
+            </div>
           </Tooltip>
           <div
             v-if="(itemUnitPrice != null && itemUnitPrice.valueInMainCurrency > 0) || itemUnitPrice?.currencyName === 'barter'"

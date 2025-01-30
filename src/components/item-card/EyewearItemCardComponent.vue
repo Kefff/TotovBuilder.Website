@@ -34,15 +34,16 @@ const eyewear = computed(() => props.item as IEyewear)
     <Tooltip
       v-if="eyewear.blindnessProtectionPercentage !== 0"
       :tooltip="$t('caption.blindnessProtectionPercentage')"
-      class="card-value"
     >
-      <font-awesome-icon
-        icon="low-vision"
-        class="icon-before-text"
-      />
-      <span :class="StatsUtils.getValueColorClass(eyewear.blindnessProtectionPercentage)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.blindnessProtectionPercentage, eyewear.blindnessProtectionPercentage) }}
-      </span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="low-vision"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(eyewear.blindnessProtectionPercentage)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.blindnessProtectionPercentage, eyewear.blindnessProtectionPercentage) }}
+        </span>
+      </div>
     </Tooltip>
   </div>
 </template>

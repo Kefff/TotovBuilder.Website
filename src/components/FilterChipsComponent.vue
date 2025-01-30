@@ -342,28 +342,29 @@ function switchSortOrder(): void {
       <Chip class="filter-chip filter-chip-content">
         <Tooltip
           :tooltip="merchantsTooltip"
-          class="filter-chip-merchants"
           @click="showGlobalFilterSidebar"
         >
-          <div class="filter-chip-icon">
-            <font-awesome-icon icon="user-tag" />
-          </div>
-          <div
-            v-if="isCompactMode && enabledMerchants.length > 0"
-            class="filter-chip-merchants-count"
-          >
-            {{ enabledMerchants.length }}
-          </div>
-          <div
-            v-if="!isCompactMode"
-            class="filter-chip-merchants-list"
-          >
-            <MerchantIcon
-              v-for="merchant of enabledMerchants"
-              :key="merchant.merchant"
-              :merchant="merchant.merchant"
-              :merchant-level="merchant.merchantLevel"
-            />
+          <div class="filter-chip-merchants">
+            <div class="filter-chip-icon">
+              <font-awesome-icon icon="user-tag" />
+            </div>
+            <div
+              v-if="isCompactMode && enabledMerchants.length > 0"
+              class="filter-chip-merchants-count"
+            >
+              {{ enabledMerchants.length }}
+            </div>
+            <div
+              v-if="!isCompactMode"
+              class="filter-chip-merchants-list"
+            >
+              <MerchantIcon
+                v-for="merchant of enabledMerchants"
+                :key="merchant.merchant"
+                :merchant="merchant.merchant"
+                :merchant-level="merchant.merchantLevel"
+              />
+            </div>
           </div>
         </Tooltip>
       </Chip>

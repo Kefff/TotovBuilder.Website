@@ -50,35 +50,33 @@ const tooltip = computed(() =>
   >
     <div
       v-if="ammunition.fleshDamage > 0"
-      class="ammunition-item-card-flesh-damage-group card-value"
+      class="ammunition-item-card-flesh-damage-group"
     >
-      <Tooltip
-        :tooltip="tooltip"
-        class="card-value ammunition-item-card-flesh-damage"
-      >
-        <div class="flesh-damage">
-          <font-awesome-icon
-            icon="heart-broken"
-            class="icon-before-text flesh-damage-color"
-          />
+      <Tooltip :tooltip="tooltip">
+        <div class="card-value ammunition-item-card-flesh-damage">
+          <div class="flesh-damage">
+            <font-awesome-icon
+              icon="heart-broken"
+              class="icon-before-text flesh-damage-color"
+            />
+          </div>
+          <span v-if="ammunition.projectiles > 1">
+            {{ ammunition.projectiles }}
+          </span>
+          <span
+            v-if="ammunition.projectiles > 1"
+            class="ammunition-item-card-multiply"
+          >
+            x
+          </span>
+          <span>{{ ammunition.fleshDamage }}</span>
         </div>
-        <span v-if="ammunition.projectiles > 1">
-          {{ ammunition.projectiles }}
-        </span>
-        <span
-          v-if="ammunition.projectiles > 1"
-          class="ammunition-item-card-multiply"
-        >x</span>
-        <span>{{ ammunition.fleshDamage }}</span>
       </Tooltip>
       <div
         v-if="canOneshot"
         class="flesh-damage-oneshot"
       >
-        <Tooltip
-          :tooltip="$t('caption.canOneshot')"
-          class="card-value"
-        >
+        <Tooltip :tooltip="$t('caption.canOneshot')">
           <font-awesome-icon
             icon="skull"
             class="flesh-damage-oneshot-icon"
@@ -88,30 +86,31 @@ const tooltip = computed(() =>
     </div>
     <Tooltip
       v-if="ammunition.penetratedArmorLevel > 0"
-      class="card-value"
       :tooltip="$t('caption.armorClassPenetration', { class: ammunition.penetratedArmorLevel })"
     >
-      <font-awesome-icon
-        icon="award"
-        :class="`icon-before-text armor-penetration${ammunition.penetratedArmorLevel}`"
-      />
-      <span>{{ ammunition.penetratedArmorLevel }}</span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="award"
+          :class="`icon-before-text armor-penetration${ammunition.penetratedArmorLevel}`"
+        />
+        <span>{{ ammunition.penetratedArmorLevel }}</span>
+      </div>
     </Tooltip>
     <Tooltip
       v-if="ammunition.penetrationPower > 0"
-      class="card-value"
       :tooltip="$t('caption.penetrationPower')"
     >
-      <font-awesome-icon
-        icon="bolt"
-        class="icon-before-text"
-      />
-      <span>{{ ammunition.penetrationPower }}</span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="bolt"
+          class="icon-before-text"
+        />
+        <span>{{ ammunition.penetrationPower }}</span>
+      </div>
     </Tooltip>
     <div class="ammunition-item-card-attributes">
       <Tooltip
         v-if="ammunition.subsonic"
-        class="card-value"
         :tooltip="$t('caption.subsonic')"
       >
         <font-awesome-icon
@@ -121,7 +120,6 @@ const tooltip = computed(() =>
       </Tooltip>
       <Tooltip
         v-if="ammunition.tracer"
-        class="card-value"
         :tooltip="$t('caption.tracer')"
       >
         <font-awesome-icon
@@ -131,7 +129,6 @@ const tooltip = computed(() =>
       </Tooltip>
       <Tooltip
         v-if="ammunition.blinding"
-        class="card-value"
         :tooltip="$t('caption.blinding')"
       >
         <font-awesome-icon
@@ -151,53 +148,57 @@ const tooltip = computed(() =>
   >
     <Tooltip
       v-if="ammunition.fragmentationChance > 0"
-      class="card-value"
       :tooltip="$t('caption.fragmentationChance')"
     >
-      <font-awesome-icon
-        icon="viruses"
-        class="icon-before-text"
-      />
-      <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChance, ammunition.fragmentationChance) }}</span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="viruses"
+          class="icon-before-text"
+        />
+        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.fragmentationChance, ammunition.fragmentationChance) }}</span>
+      </div>
     </Tooltip>
     <Tooltip
       v-if="ammunition.recoilModifier !== 0"
-      class="card-value"
       :tooltip="$t('caption.recoilModifier')"
     >
-      <font-awesome-icon
-        icon="arrows-alt"
-        class="icon-before-text"
-      />
-      <span :class="StatsUtils.getValueColorClass(ammunition.recoilModifier, true)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifier, ammunition.recoilModifier) }}
-      </span>
+      <div>
+        <font-awesome-icon
+          icon="arrows-alt"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(ammunition.recoilModifier, true)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoilModifier, ammunition.recoilModifier) }}
+        </span>
+      </div>
     </Tooltip>
     <Tooltip
       v-if="ammunition.accuracyModifierPercentage !== 0"
-      class="card-value"
       :tooltip="$t('caption.accuracyModifierPercentage')"
     >
-      <font-awesome-icon
-        icon="bullseye"
-        class="icon-before-text"
-      />
-      <span :class="StatsUtils.getValueColorClass(ammunition.accuracyModifierPercentage)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, ammunition.accuracyModifierPercentage) }}
-      </span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="bullseye"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(ammunition.accuracyModifierPercentage)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.accuracyModifierPercentage, ammunition.accuracyModifierPercentage) }}
+        </span>
+      </div>
     </Tooltip>
     <Tooltip
       v-if="ammunition.durabilityBurnModifierPercentage !== 0"
-      class="card-value"
       :tooltip="$t('caption.durabilityBurn')"
     >
-      <font-awesome-icon
-        icon="fire"
-        class="icon-before-text"
-      />
-      <span :class="StatsUtils.getValueColorClass(ammunition.durabilityBurnModifierPercentage, true)">
-        {{ StatsUtils.getStandardDisplayValue(DisplayValueType.durabilityBurnModifierPercentage, ammunition.durabilityBurnModifierPercentage) }}
-      </span>
+      <div class="card-value">
+        <font-awesome-icon
+          icon="fire"
+          class="icon-before-text"
+        />
+        <span :class="StatsUtils.getValueColorClass(ammunition.durabilityBurnModifierPercentage, true)">
+          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.durabilityBurnModifierPercentage, ammunition.durabilityBurnModifierPercentage) }}
+        </span>
+      </div>
     </Tooltip>
   </div>
 </template>

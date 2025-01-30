@@ -163,20 +163,17 @@ async function setWeightAsync(): Promise<void> {
             :is-build="false"
           />
         </div>
-        <div
-          v-if="showPrice"
-          class="selected-item-item-card-price"
-        >
+        <div class="selected-item-item-card-price">
           <Price
+            v-if="showPrice"
             :ignore-price-status="selectedItemPrice.unitPriceIgnoreStatus"
             :missing="showSelectedItemMissingPrice"
             :price="selectedItemPrice.price"
           />
           <Tooltip
-            v-if="isEditing && canBeLooted && canIgnorePrice"
+            v-if="showPrice && isEditing && canBeLooted && canIgnorePrice"
             :tooltip="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
             :apply-hover-style="false"
-            class="card-value"
           >
             <Button
               class="p-button-sm"
@@ -215,44 +212,42 @@ async function setWeightAsync(): Promise<void> {
           <Tooltip
             v-if="selectedItemWeight.weightWithContent > 0"
             :tooltip="$t('caption.weight') + $t('caption.withModsAndContent')"
-            class="card-value selected-item-item-card-weight"
           >
-            <font-awesome-icon
-              icon="weight-hanging"
-              class="icon-before-text"
-            />
-            <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weightWithContent) }}</span>
+            <div class="card-value selected-item-item-card-weight">
+              <font-awesome-icon
+                icon="weight-hanging"
+                class="icon-before-text"
+              />
+              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weightWithContent) }}</span>
+            </div>
           </Tooltip>
         </div>
-        <div
-          v-if="(!includeModsAndContent || showWeight) && selectedItemWeight.weight > 0"
-          class="selected-item-item-card-weight"
-        >
+        <div class="selected-item-item-card-weight">
           <Tooltip
             v-if="(!includeModsAndContent || showWeight) && selectedItemWeight.weight > 0"
             :tooltip="$t('caption.weight')"
-            class="card-value selected-item-item-card-weight"
           >
-            <font-awesome-icon
-              icon="weight-hanging"
-              class="icon-before-text"
-            />
-            <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weight) }}</span>
+            <div class="card-value selected-item-item-card-weight">
+              <font-awesome-icon
+                icon="weight-hanging"
+                class="icon-before-text"
+              />
+              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.weight) }}</span>
+            </div>
           </Tooltip>
         </div>
         <div
           v-if="showUnitWeight"
           class="selected-item-item-card-per-unit card-line"
         >
-          <Tooltip
-            :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'"
-            class="card-value selected-item-item-card-weight"
-          >
-            <font-awesome-icon
-              icon="weight-hanging"
-              class="icon-before-text"
-            />
-            <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
+          <Tooltip :tooltip="$t('caption.weight') + ' (' + $t('caption.perUnit') + ')'">
+            <div class="card-value selected-item-item-card-weight">
+              <font-awesome-icon
+                icon="weight-hanging"
+                class="icon-before-text"
+              />
+              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, selectedItemWeight.unitWeight) }}</span>
+            </div>
           </Tooltip>
         </div>
       </div>
@@ -322,7 +317,6 @@ async function setWeightAsync(): Promise<void> {
   flex-direction: column;
   grid-column: span 2;
   justify-content: center;
-  width: 12.5rem;
 }
 
 .selected-item-item-card-specialized {
