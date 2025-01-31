@@ -9,13 +9,15 @@ const props = withDefaults(
     applyHoverStyle?: boolean,
     disabledOnMobile?: boolean,
     fullSize?: boolean,
-    tooltip?: string
+    tooltip?: string,
+    triggerOnClick?: boolean
   }>(),
   {
     applyHoverStyle: true,
     disabledOnMobile: false,
     fullSize: false,
-    tooltip: undefined
+    tooltip: undefined,
+    triggerOnClick: true
   })
 
 const emits = defineEmits<{
@@ -25,7 +27,7 @@ const emits = defineEmits<{
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
 const trigger = computed(() =>
-  isTouchScreen.value
+  isTouchScreen.value && props.triggerOnClick
     ? 'click'
     : 'hover')
 

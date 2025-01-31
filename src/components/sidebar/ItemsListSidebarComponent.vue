@@ -156,6 +156,7 @@ function reset(): void {
         <Tooltip
           v-if="categoryId != null && !modelParameters.isCategoryIdReadOnly"
           :tooltip="$t('caption.clear')"
+          :trigger-on-click="false"
         >
           <Button
             class="p-button-sm"
@@ -185,6 +186,7 @@ function reset(): void {
         <Tooltip
           v-if="filter != null"
           :tooltip="$t('caption.clear')"
+          :trigger-on-click="false"
         >
           <Button
             class="p-button-sm"
@@ -247,7 +249,10 @@ function reset(): void {
             <span>{{ getSortOrderCaption(slotProps.value) }}</span>
           </template>
         </Dropdown>
-        <Tooltip :tooltip="switchSortOrderButtonTooltip">
+        <Tooltip
+          :tooltip="switchSortOrderButtonTooltip"
+          :trigger-on-click="false"
+        >
           <Button
             class="p-button-sm"
             outlined
