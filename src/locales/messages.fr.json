@@ -42,7 +42,7 @@
     "baseItem": "Objet de base",
     "blinding": "Aveuglante",
     "blindnessProtectionPercentage": "Protection contre l'aveuglement",
-    "buildLastChangesNotExported": "Les changements du {lastUpdated} n'ont pas été sauvegardés dans un fichier. Ils peuvent être perdus si vous effacez les données du navigateur. Dernière sauvegarde dans un fichier le {lastExported}.",
+    "buildLastChangesNotExported": "Les changements du {lastUpdated} n'ont pas été sauvegardés dans un fichier.\nIls peuvent être perdus si vous effacez les données du navigateur.\nDernière sauvegarde dans un fichier le {lastExported}.",
     "buildNotExported": "Equipement non sauvegardé dans un fichier. Il pourra être perdu si vous effacez les données du navigateur.",
     "builds": "Equipements",
     "buildsList": "Liste des équipements",

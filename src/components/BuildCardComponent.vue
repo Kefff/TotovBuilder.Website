@@ -183,7 +183,10 @@ function displayStats(item: IItem): void {
           :style="hasItemListElementScroll && !itemListElementScroll.arrivedState.right ? 'display: initial' : 'display: none'"
         />
       </div>
-      <div class="card-lines">
+      <div
+        class="card-lines build-card-stats"
+        style="margin-top: 0.5rem;"
+      >
         <div
           v-if="buildSummary.price.priceInMainCurrency > 0
             || buildSummary.weight !== 0"
@@ -192,15 +195,16 @@ function displayStats(item: IItem): void {
           <Tooltip
             v-if="buildSummary.weight !== 0"
             :tooltip="$t('caption.weight')"
-            class="card-value"
           >
-            <font-awesome-icon
-              icon="weight-hanging"
-              class="icon-before-text"
-            />
-            <span :class="StatsUtils.getWeightColorClass(buildSummary.weight)">
-              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight) }}
-            </span>
+            <div class="card-value">
+              <font-awesome-icon
+                icon="weight-hanging"
+                class="icon-before-text"
+              />
+              <span :class="StatsUtils.getWeightColorClass(buildSummary.weight)">
+                {{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, buildSummary.weight) }}
+              </span>
+            </div>
           </Tooltip>
           <div
             v-if="buildSummary.price.priceInMainCurrency > 0"
@@ -222,53 +226,57 @@ function displayStats(item: IItem): void {
           <Tooltip
             v-if="buildSummary.recoil.verticalRecoil !== 0"
             :tooltip="$t('caption.verticalRecoil')"
-            class="card-value"
           >
-            <font-awesome-icon
-              icon="arrows-alt-v"
-              class="icon-before-text"
-            />
-            <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.verticalRecoil) }}</span>
+            <div class="card-value">
+              <font-awesome-icon
+                icon="arrows-alt-v"
+                class="icon-before-text"
+              />
+              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.verticalRecoil) }}</span>
+            </div>
           </Tooltip>
           <Tooltip
             v-if="buildSummary.recoil.horizontalRecoil !== 0"
             :tooltip="$t('caption.horizontalRecoil')"
-            class="card-value"
           >
-            <font-awesome-icon
-              icon="arrows-alt-h"
-              class="icon-before-text"
-            />
-            <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.horizontalRecoil) }}</span>
+            <div class="card-value">
+              <font-awesome-icon
+                icon="arrows-alt-h"
+                class="icon-before-text"
+              />
+              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, buildSummary.recoil.horizontalRecoil) }}</span>
+            </div>
           </Tooltip>
           <Tooltip
             v-if="buildSummary.ergonomics !== 0"
             :tooltip="$t('caption.ergonomicsModifierPercentage')"
-            class="card-value"
           >
-            <font-awesome-icon
-              icon="hand-paper"
-              class="icon-before-text"
-            />
-            <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, buildSummary.ergonomics) }}</span>
-            <span v-if="buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0">
-              (<span :class="StatsUtils.getValueColorClass(buildSummary.wearableModifiers.ergonomicsModifierPercentage)">
-                {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage) }}
-              </span>)
-            </span>
+            <div class="card-value">
+              <font-awesome-icon
+                icon="hand-paper"
+                class="icon-before-text"
+              />
+              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, buildSummary.ergonomics) }}</span>
+              <span v-if="buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0">
+                (<span :class="StatsUtils.getValueColorClass(buildSummary.wearableModifiers.ergonomicsModifierPercentage)">
+                  {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage) }}
+                </span>)
+              </span>
+            </div>
           </Tooltip>
           <Tooltip
             v-else-if="buildSummary.wearableModifiers.ergonomicsModifierPercentage !== 0"
             :tooltip="$t('caption.ergonomicsModifierPercentage')"
-            class="card-value"
           >
-            <font-awesome-icon
-              icon="hand-paper"
-              class="icon-before-text"
-            />
-            <span :class="StatsUtils.getValueColorClass(buildSummary.wearableModifiers.ergonomicsModifierPercentage)">
-              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage) }}
-            </span>
+            <div class="card-value">
+              <font-awesome-icon
+                icon="hand-paper"
+                class="icon-before-text"
+              />
+              <span :class="StatsUtils.getValueColorClass(buildSummary.wearableModifiers.ergonomicsModifierPercentage)">
+                {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, buildSummary.wearableModifiers.ergonomicsModifierPercentage) }}
+              </span>
+            </div>
           </Tooltip>
         </div>
         <div
@@ -280,39 +288,42 @@ function displayStats(item: IItem): void {
           <Tooltip
             v-if="buildSummary.armorModifiers.armorClass > 0"
             :tooltip="$t('caption.armorClass')"
-            class="card-value"
           >
-            <font-awesome-icon
-              icon="award"
-              class="icon-before-text"
-            />
-            <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, buildSummary.armorModifiers.armorClass) }}</span>
+            <div class="card-value">
+              <font-awesome-icon
+                icon="award"
+                class="icon-before-text"
+              />
+              <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, buildSummary.armorModifiers.armorClass) }}</span>
+            </div>
           </Tooltip>
           <Tooltip
             v-if="buildSummary.wearableModifiers.movementSpeedModifierPercentage !== 0"
             :tooltip="$t('caption.movementSpeedModifierPercentage')"
-            class="card-value"
           >
-            <font-awesome-icon
-              icon="walking"
-              class="icon-before-text"
-            />
-            <span :class="StatsUtils.getValueColorClass(buildSummary.wearableModifiers.movementSpeedModifierPercentage)">
-              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedModifierPercentage) }}
-            </span>
+            <div class="card-value">
+              <font-awesome-icon
+                icon="walking"
+                class="icon-before-text"
+              />
+              <span :class="StatsUtils.getValueColorClass(buildSummary.wearableModifiers.movementSpeedModifierPercentage)">
+                {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, buildSummary.wearableModifiers.movementSpeedModifierPercentage) }}
+              </span>
+            </div>
           </Tooltip>
           <Tooltip
             v-if="buildSummary.wearableModifiers.turningSpeedModifierPercentage !== 0"
             :tooltip="$t('caption.turningSpeedModifierPercentage')"
-            class="card-value"
           >
-            <font-awesome-icon
-              icon="undo"
-              class="icon-before-text"
-            />
-            <span :class="StatsUtils.getValueColorClass(buildSummary.wearableModifiers.turningSpeedModifierPercentage)">
-              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage) }}
-            </span>
+            <div class="card-value">
+              <font-awesome-icon
+                icon="undo"
+                class="icon-before-text"
+              />
+              <span :class="StatsUtils.getValueColorClass(buildSummary.wearableModifiers.turningSpeedModifierPercentage)">
+                {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, buildSummary.wearableModifiers.turningSpeedModifierPercentage) }}
+              </span>
+            </div>
           </Tooltip>
         </div>
       </div>
@@ -412,9 +423,18 @@ function displayStats(item: IItem): void {
   top: 0;
 }
 
+.build-card-not-exported {
+  color: var(--warning-color);
+  margin-left: 0.5rem;
+}
+
 .build-card-price {
   display: flex;
   grid-column: span 2;
+}
+
+.build-card-stats {
+  margin-top: 0.5rem;
 }
 
 .build-card-title {
@@ -423,10 +443,5 @@ function displayStats(item: IItem): void {
   overflow: hidden;
   width: 100%;
   max-height: 2.25rem;
-}
-
-.build-card-not-exported {
-  color: var(--warning-color);
-  margin-left: 0.5rem;
 }
 </style>

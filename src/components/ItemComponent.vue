@@ -469,7 +469,9 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
             v-if="item != null && (!isEditing || isBaseItem)"
             class="item-header-title"
           >
-            <span>{{ item.name }}</span>
+            <Tooltip :tooltip="item?.name">
+              <span>{{ item.name }}</span>
+            </Tooltip>
           </div>
           <Dropdown
             v-else-if="isEditing && !isBaseItem"

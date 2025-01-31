@@ -63,40 +63,43 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
       <Tooltip
         v-if="hasSummaryVerticalRecoil"
         :tooltip="$t('caption.verticalRecoil')"
-        class="build-summary-value"
       >
-        <font-awesome-icon
-          icon="arrows-alt-v"
-          class="icon-before-text"
-        />
-        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.verticalRecoil) }}</span>
+        <div class="build-summary-value">
+          <font-awesome-icon
+            icon="arrows-alt-v"
+            class="icon-before-text"
+          />
+          <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.verticalRecoil) }}</span>
+        </div>
       </Tooltip>
       <Tooltip
         v-if="hasSummaryVerticalRecoil"
         :tooltip="$t('caption.horizontalRecoil')"
-        class="build-summary-value"
       >
-        <font-awesome-icon
-          icon="arrows-alt-h"
-          class="icon-before-text"
-        />
-        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.horizontalRecoil) }}</span>
+        <div class="build-summary-value">
+          <font-awesome-icon
+            icon="arrows-alt-h"
+            class="icon-before-text"
+          />
+          <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.recoil, summary.recoil.horizontalRecoil) }}</span>
+        </div>
       </Tooltip>
       <Tooltip
         v-if="hasSummaryErgonomics"
         :tooltip="$t('caption.ergonomics')"
-        class="build-summary-value"
       >
-        <font-awesome-icon
-          icon="hand-paper"
-          class="icon-before-text"
-        />
-        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, summary.ergonomics) }}</span>
-        <span v-if="hasSummaryErgonomicsModifierPercentage">
-          &nbsp;(<span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsModifierPercentage)">
-            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsModifierPercentage) }}
-          </span>)
-        </span>
+        <div class="build-summary-value">
+          <font-awesome-icon
+            icon="hand-paper"
+            class="icon-before-text"
+          />
+          <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomics, summary.ergonomics) }}</span>
+          <span v-if="hasSummaryErgonomicsModifierPercentage">
+            &nbsp;(<span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsModifierPercentage)">
+              {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsModifierPercentage) }}
+            </span>)
+          </span>
+        </div>
       </Tooltip>
     </div>
     <div
@@ -106,52 +109,56 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
       <Tooltip
         v-if="hasSummaryArmor"
         :tooltip="$t('caption.armorClass')"
-        class="build-summary-value"
       >
-        <font-awesome-icon
-          icon="award"
-          class="icon-before-text"
-        />
-        <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, summary.armorModifiers.armorClass) }}</span>
+        <div class="build-summary-value">
+          <font-awesome-icon
+            icon="award"
+            class="icon-before-text"
+          />
+          <span>{{ StatsUtils.getStandardDisplayValue(DisplayValueType.armorClass, summary.armorModifiers.armorClass) }}</span>
+        </div>
       </Tooltip>
       <Tooltip
         v-if="!hasSummaryErgonomics && hasSummaryErgonomicsModifierPercentage"
         :tooltip="$t('caption.ergonomicsModifierPercentage')"
-        class="build-summary-value"
       >
-        <font-awesome-icon
-          icon="hand-paper"
-          class="icon-before-text"
-        />
-        <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsModifierPercentage)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsModifierPercentage) }}
-        </span>
+        <div class="build-summary-value">
+          <font-awesome-icon
+            icon="hand-paper"
+            class="icon-before-text"
+          />
+          <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.ergonomicsModifierPercentage)">
+            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.ergonomicsModifierPercentage, summary.wearableModifiers.ergonomicsModifierPercentage) }}
+          </span>
+        </div>
       </Tooltip>
       <Tooltip
         v-if="hasSummaryMovementSpeedModifierPercentage"
         :tooltip="$t('caption.movementSpeedModifierPercentage')"
-        class="build-summary-value"
       >
-        <font-awesome-icon
-          icon="walking"
-          class="icon-before-text"
-        />
-        <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedModifierPercentage)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, summary.wearableModifiers.movementSpeedModifierPercentage) }}
-        </span>
+        <div class="build-summary-value">
+          <font-awesome-icon
+            icon="walking"
+            class="icon-before-text"
+          />
+          <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.movementSpeedModifierPercentage)">
+            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.movementSpeedModifierPercentage, summary.wearableModifiers.movementSpeedModifierPercentage) }}
+          </span>
+        </div>
       </Tooltip>
       <Tooltip
         v-if="hasSummaryTurningSpeedModifierPercentage"
         :tooltip="$t('caption.turningSpeedModifierPercentage')"
-        class="build-summary-value"
       >
-        <font-awesome-icon
-          icon="undo"
-          class="icon-before-text"
-        />
-        <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedModifierPercentage)">
-          {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, summary.wearableModifiers.turningSpeedModifierPercentage) }}
-        </span>
+        <div class="build-summary-value">
+          <font-awesome-icon
+            icon="undo"
+            class="icon-before-text"
+          />
+          <span :class="StatsUtils.getValueColorClass(summary.wearableModifiers.turningSpeedModifierPercentage)">
+            {{ StatsUtils.getStandardDisplayValue(DisplayValueType.turningSpeedModifierPercentage, summary.wearableModifiers.turningSpeedModifierPercentage) }}
+          </span>
+        </div>
       </Tooltip>
     </div>
     <div
@@ -177,13 +184,14 @@ const hasSummaryWeight = computed(() => props.summary.weight !== 0)
       <Tooltip
         v-if="hasSummaryWeight"
         :tooltip="$t('caption.weight')"
-        class="build-summary-value"
       >
-        <font-awesome-icon
-          icon="weight-hanging"
-          class="icon-before-text"
-        />
-        <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
+        <div class="build-summary-value">
+          <font-awesome-icon
+            icon="weight-hanging"
+            class="icon-before-text"
+          />
+          <span :class="StatsUtils.getWeightColorClass(summary.weight)">{{ StatsUtils.getStandardDisplayValue(DisplayValueType.weight, summary.weight) }}</span>
+        </div>
       </Tooltip>
     </div>
   </div>

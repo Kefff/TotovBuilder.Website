@@ -305,6 +305,7 @@ function switchSortOrder(): void {
       <!-- Sorting chip -->
       <Chip class="filter-chip filter-chip-content">
         <Tooltip
+          :full-size="true"
           :tooltip="switchSortOrderButtonTooltip"
           class="filter-chip-icon-button-left"
           @click="switchSortOrder"
@@ -341,7 +342,9 @@ function switchSortOrder(): void {
       <!-- Merchants chip -->
       <Chip class="filter-chip filter-chip-content">
         <Tooltip
+          :full-size="true"
           :tooltip="merchantsTooltip"
+          style="height: 100%;"
           @click="showGlobalFilterSidebar"
         >
           <div class="filter-chip-merchants">
@@ -374,22 +377,21 @@ function switchSortOrder(): void {
         class="filter-chip"
         @click="showFilterAndSortSidebar"
       >
-        <Tooltip
-          :tooltip="$t('caption.addFilter')"
-          class="filter-chip-content"
-        >
-          <div
-            class="filter-chip-icon"
-            style="color: var(--success-color);"
-          >
-            <font-awesome-icon icon="plus" />
+        <Tooltip :tooltip="$t('caption.addFilter')">
+          <div class="filter-chip-content">
+            <div
+              class="filter-chip-icon"
+              style="color: var(--success-color);"
+            >
+              <font-awesome-icon icon="plus" />
+            </div>
+            <span
+              class="filter-chip-text"
+              style="padding-left: 0;"
+            >
+              {{ $t('caption.filter') }}
+            </span>
           </div>
-          <span
-            class="filter-chip-text"
-            style="padding-left: 0;"
-          >
-            {{ $t('caption.filter') }}
-          </span>
         </Tooltip>
       </Chip>
       <!-- Filter chip -->
@@ -401,18 +403,19 @@ function switchSortOrder(): void {
         <Tooltip
           v-if="isCompactMode"
           :tooltip="filterTooltip"
-          class="filter-chip-content"
           @click="showFilterAndSortSidebar"
         >
-          <div class="filter-chip-icon">
-            <font-awesome-icon icon="filter" />
-          </div>
-          <div
-            class="filter-chip-text"
-            style="padding-left: 0;"
-          >
-            <span>{{ categoryFilterCaption }}</span>
-            <span>{{ filterCaption }}</span>
+          <div class="filter-chip-content">
+            <div class="filter-chip-icon">
+              <font-awesome-icon icon="filter" />
+            </div>
+            <div
+              class="filter-chip-text"
+              style="padding-left: 0;"
+            >
+              <span>{{ categoryFilterCaption }}</span>
+              <span>{{ filterCaption }}</span>
+            </div>
           </div>
         </Tooltip>
         <!-- With quick filter -->
@@ -424,6 +427,7 @@ function switchSortOrder(): void {
           <Tooltip
             class="filter-chip-content filter-chip-icon-button-left"
             :tooltip="filterTooltip"
+            :full-size="true"
           >
             <div
               v-if="categoryFilterCaption == null && filterCaption == null"
@@ -445,9 +449,7 @@ function switchSortOrder(): void {
               class="filter-chip-text"
               :tooltip="filterTooltip"
             >
-              <div class="">
-                <span>{{ categoryFilterCaption }}</span>
-              </div>
+              <span>{{ categoryFilterCaption }}</span>
             </Tooltip>
             <div
               class="filter-chip-quick-filter-input"
@@ -472,6 +474,7 @@ function switchSortOrder(): void {
           class="filter-chip-icon-button-right"
         >
           <Tooltip
+            :full-size="true"
             :tooltip="$t('caption.removeFilter')"
             style="color: var(--error-color);"
             class="filter-chip-icon"
@@ -520,10 +523,8 @@ function switchSortOrder(): void {
   align-items: center;
   display: flex;
   height: 100%;
-  padding-bottom: 0.25rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  padding-top: 0.25rem;
 }
 
 .filter-chip-icon-button-left {

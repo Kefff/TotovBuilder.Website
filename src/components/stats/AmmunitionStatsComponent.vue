@@ -160,7 +160,10 @@ const fleshDamageText = computed(() =>
         </div>
         <span>{{ $t('caption.fleshDamage') }} :</span>
       </div>
-      <div class="stats-value">
+      <div
+        class="stats-value"
+        style="display: flex;"
+      >
         <Tooltip
           v-if="canOneshot"
           :tooltip="$t('caption.canOneshot')"

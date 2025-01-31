@@ -43,7 +43,7 @@
     "baseItem": "Base item",
     "blinding": "Blinding",
     "blindnessProtectionPercentage": "Blindness protection",
-    "buildLastChangesNotExported": "Changes from the {lastUpdated} have not been saved to a file. They can be lost if you clear your browser data. Last file save on {lastExported}.",
+    "buildLastChangesNotExported": "Changes from the {lastUpdated} have not been saved to a file.\nThey can be lost if you clear your browser data.\nLast file save on {lastExported}.",
     "buildNotExported": "Build not saved to a file. It can be lost if you clear your browser data.",
     "builds": "Builds",
     "buildsList": "Builds list",
