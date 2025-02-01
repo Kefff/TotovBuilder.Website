@@ -569,6 +569,12 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           class="item-header-stats"
           @update:ignore-price="onIgnorePriceChanged($event)"
         />
+        <div
+          v-else
+          :class="{ 'item-header-selected-item-placeholder': !isCompactMode }"
+        >
+          <!-- Empty zone that matches the size of SelectedItemItemCardSelector to make the dropdown respect alignment when no item is selected -->
+        </div>
       </div>
       <div
         v-if="item != null && maxSelectableQuantity > 1 && !forceQuantityToMaxSelectableAmount"
@@ -768,6 +774,11 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   overflow: auto;
   white-space: preserve;
   word-break: break-word;
+}
+
+.item-header-selected-item-placeholder {
+  /* Empty zone that matches the size of SelectedItemItemCardSelector to make the dropdown respect alignment when no item is selected*/
+  width: 40.5rem;
 }
 
 .item-header-stats {
