@@ -16,6 +16,7 @@ const isEditing = inject<Ref<boolean>>('isEditing')
 
 const bottomHeight = computed(() => `calc(100% - ${upperHeight.value} - ${_middleHeight} + ${_bottomTopOffset})`)
 const bottomTop = computed(() => `calc(${upperHeight.value} + ${_middleHeight} - ${_bottomTopOffset})`)
+const isCompactMode = computed(() => isSmartphonePortrait.value || isTabletPortrait.value)
 const displayBottomPart = computed(() => {
   const result = props.index !== lastHierarchyInventoryItemIndex.value
     || props.mode === 'baseItem'
@@ -55,7 +56,7 @@ const upperHeight = computed(() => {
   }
 })
 
-const { isSmartphonePortrait: isCompactMode } = WebBrowserUtils.getScreenSize()
+const { isSmartphonePortrait, isTabletPortrait } = WebBrowserUtils.getScreenSize()
 </script>
 
 

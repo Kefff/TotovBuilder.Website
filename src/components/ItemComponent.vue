@@ -567,6 +567,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           :show-price="showPrice"
           :show-weight="showWeight"
           class="item-header-stats"
+          :class="{ 'item-header-stats-compact': isCompactMode }"
           @update:ignore-price="onIgnorePriceChanged($event)"
         />
         <div
@@ -777,7 +778,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-header-selected-item-placeholder {
-  /* Empty zone that matches the size of SelectedItemItemCardSelector to make the dropdown respect alignment when no item is selected*/
+  /* Empty zone that matches the width of SelectedItemItemCardSelector to make the dropdown respect alignment when no item is selected*/
   width: 40.5rem;
 }
 
@@ -786,6 +787,10 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   grid-template-columns: auto auto;
   gap: 1rem;
   width: 100%;
+}
+
+.item-header-stats-compact {
+  justify-content: flex-end;
 }
 
 .item-header-title {
@@ -801,7 +806,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 .item-main {
   background-color: var(--primary-color8);
   border-radius: 6px;
-  padding: 0.5rem
+  padding: 0.5rem;
 }
 
 .item-padding {

@@ -162,7 +162,7 @@ const tooltip = computed(() =>
       v-if="ammunition.recoilModifier !== 0"
       :tooltip="$t('caption.recoilModifier')"
     >
-      <div>
+      <div class="card-value">
         <font-awesome-icon
           icon="arrows-alt"
           class="icon-before-text"

@@ -8,44 +8,23 @@ export default class WebBrowserUtils {
   /**
    * Gets the breakpoints used by CSS media queries.
    */
-  public static get breakpoints(): {
-    smartphonePortrait: number,
-    smartphoneLandscape: number,
-    tabletPortrait: number,
-    tabletLandscape: number,
-    pc: number,
-    pcLarge: number
-  } {
+  public static get breakpoints(): Breakpoints {
     return {
       smartphonePortrait: 0,
       smartphoneLandscape: 481,
       tabletPortrait: 768,
-      tabletLandscape: 992,
-      pc: 1300,
+      tabletLandscape: 1050,
+      pc: 1350,
       pcLarge: 1800
     }
   }
 
   /**
    * Gets reactive screen properties.
+   * @param customBreakpoints - Custom breakpoints used instead of standard ones.
    * @returns Reactive screen properties.
    */
-  public static getScreenSize(): {
-    isPc: ComputedRef<boolean>,
-    isPcLarge: ComputedRef<boolean>,
-    isPcOrLarger: ComputedRef<boolean>,
-    isPcOrSmaller: Ref<boolean>,
-    isSmartphoneLandscape: ComputedRef<boolean>,
-    isSmartphoneLandscapeOrLarger: ComputedRef<boolean>,
-    isSmartphoneLandscapeOrSmaller: Ref<boolean>,
-    isSmartphonePortrait: Ref<boolean>,
-    isTabletLandscapeOrLarger: ComputedRef<boolean>,
-    isTabletLandscape: ComputedRef<boolean>,
-    isTabletLandscapeOrSmaller: Ref<boolean>,
-    isTabletPortrait: ComputedRef<boolean>,
-    isTabletPortraitOrLarger: ComputedRef<boolean>,
-    isTabletPortraitOrSmaller: Ref<boolean>
-  } {
+  public static getScreenSize(): ScreenSizes {
     const breakpoints = useBreakpoints(WebBrowserUtils.breakpoints)
 
     const isPcOrSmaller = breakpoints.smaller('pcLarge')
@@ -123,4 +102,36 @@ export default class WebBrowserUtils {
 
     return result
   }
+}
+
+/**
+ * Represents breakpoints for responsiveness.
+ */
+export type Breakpoints = {
+  smartphonePortrait: number,
+  smartphoneLandscape: number,
+  tabletPortrait: number,
+  tabletLandscape: number,
+  pc: number,
+  pcLarge: number
+}
+
+/**
+ * Represents screen sizes for responsiveness.
+ */
+type ScreenSizes = {
+  isPc: ComputedRef<boolean>,
+  isPcLarge: ComputedRef<boolean>,
+  isPcOrLarger: ComputedRef<boolean>,
+  isPcOrSmaller: Ref<boolean>,
+  isSmartphoneLandscape: ComputedRef<boolean>,
+  isSmartphoneLandscapeOrLarger: ComputedRef<boolean>,
+  isSmartphoneLandscapeOrSmaller: Ref<boolean>,
+  isSmartphonePortrait: Ref<boolean>,
+  isTabletLandscapeOrLarger: ComputedRef<boolean>,
+  isTabletLandscape: ComputedRef<boolean>,
+  isTabletLandscapeOrSmaller: Ref<boolean>,
+  isTabletPortrait: ComputedRef<boolean>,
+  isTabletPortraitOrLarger: ComputedRef<boolean>,
+  isTabletPortraitOrSmaller: Ref<boolean>
 }

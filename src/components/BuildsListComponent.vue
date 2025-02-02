@@ -65,7 +65,7 @@ let _builds: IBuild[] = []
 const buildsPerLine = computed(() => {
   let elementsPerLine = 4
 
-  if (isTabletPortraitOrSmaller.value) {
+  if (isSmartphoneLandscapeOrSmaller.value) {
     elementsPerLine = 1
   } else if (isTabletLandscapeOrSmaller.value) {
     elementsPerLine = 2
@@ -76,7 +76,7 @@ const buildsPerLine = computed(() => {
   return props.maxElementsPerLine >= elementsPerLine ? elementsPerLine : props.maxElementsPerLine
 })
 const {
-  isTabletPortraitOrSmaller,
+  isSmartphoneLandscapeOrSmaller,
   isTabletLandscapeOrSmaller,
   isPcOrSmaller
 } = WebBrowserUtils.getScreenSize()

@@ -72,7 +72,7 @@ const _toolbarButtons: IToolbarButton[] = [
     canBeMovedToSidebar: () => false,
     caption: () => vueI18n.t('caption.save'),
     icon: () => 'save',
-    isDisabled: () => invalid.value,
+    isDisabled: () => isInvalid.value,
     isVisible: () => isEditing.value,
     name: 'save',
     variant: () => 'success',
@@ -159,8 +159,9 @@ const _toolbarButtons: IToolbarButton[] = [
   }
 ]
 
-const invalid = computed(() => build.value.name === '')
+const isBuildNameHiddenInSummary = computed(() => isSmartphoneLandscapeOrSmaller.value)
 const isEmpty = computed(() => !build.value.inventorySlots.some(is => is.items.some(i => i != null)))
+const isInvalid = computed(() => build.value.name === '')
 const isNewBuild = computed(() => build.value.id === '')
 const notExportedTooltip = computed(() => !summary.value.exported ? _buildPropertiesService.getNotExportedTooltip(summary.value.lastUpdated, summary.value.lastExported) : '')
 const path = computed(() => PathUtils.buildPrefix + (isNewBuild.value ? PathUtils.newBuild : build.value.id))
@@ -188,7 +189,7 @@ const confirmationDialogSecondaryButtonCaption = ref<string>()
 const confirmationDialogSecondaryButtonIcon = ref<string>()
 const confirmationDialogSecondaryButtonSeverity = ref<string>()
 const isBuildSummaryStickied = ref(false)
-const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
+const { isSmartphoneLandscapeOrSmaller, isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
 const isCompactBuildSummaryExpanded = ref(isCompactMode.value)
 const isEditing = ref(false)
 const isLoading = ref(true)
@@ -494,7 +495,7 @@ async function onKeyDownAsync(event: KeyboardEvent): Promise<void> {
   if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
     event.preventDefault() // Prevents the browser save action to be triggered
 
-    if (isEditing.value && !invalid.value) {
+    if (isEditing.value && !isInvalid.value) {
       await saveAsync()
       startEdit() // After saving with the shortcut, we stay in edit mode unlike when using the button
     }
@@ -674,7 +675,7 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
     >
       <template #center>
         <div
-          v-if="!isCompactMode"
+          v-if="!isBuildNameHiddenInSummary"
           class="build-title"
         >
           <div v-show="!isEditing">
@@ -712,7 +713,10 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
             v-show="isCompactBuildSummaryExpanded"
             ref="compactBuildSummary"
           >
-            <div class="build-title build-title-compact">
+            <div
+              v-if="isBuildNameHiddenInSummary"
+              class="build-title build-title-compact"
+            >
               <div v-show="!isEditing">
                 {{ build.name }}
               </div>
