@@ -40,6 +40,15 @@ const _zoneWidth = _zoneItemHeight
 const _zoneWidthColspan2 = '15rem'
 
 const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
+
+/**
+ * Reacts to the click in a zone.
+ *
+ * Updates the current inventory slot type.
+ */
+function onZoneClick(type: InventorySlotTypeId): void {
+  modelCurrentInventorySlotType.value = type
+}
 </script>
 
 
@@ -64,207 +73,207 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
 
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-earpiece"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.earpiece"
+        @click="onZoneClick(InventorySlotTypeId.earpiece)"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.earpiece)).toLocaleUpperCase() }}
       </div>
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-earpiece"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.earpiece }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.earpiece"
+        @click="onZoneClick(InventorySlotTypeId.earpiece)"
       />
 
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-headwear"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.headwear"
+        @click="onZoneClick(InventorySlotTypeId.headwear)"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.headwear)).toLocaleUpperCase() }}
       </div>
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-headwear"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.headwear }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.headwear"
+        @click="onZoneClick(InventorySlotTypeId.headwear)"
       />
 
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-face-cover"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.faceCover"
+        @click="onZoneClick(InventorySlotTypeId.faceCover)"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.faceCover)).toLocaleUpperCase() }}
       </div>
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-face-cover"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.faceCover }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.faceCover"
+        @click="onZoneClick(InventorySlotTypeId.faceCover)"
       />
 
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-armband"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.armband"
+        @click="onZoneClick(InventorySlotTypeId.armband)"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.armband)).toLocaleUpperCase() }}
       </div>
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-armband"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.armband }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.armband"
+        @click="onZoneClick(InventorySlotTypeId.armband)"
       />
 
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-body-armor"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.bodyArmor"
+        @click="onZoneClick(InventorySlotTypeId.bodyArmor)"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.bodyArmor)).toLocaleUpperCase() }}
       </div>
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-body-armor"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.bodyArmor }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.bodyArmor"
+        @click="onZoneClick(InventorySlotTypeId.bodyArmor)"
       />
 
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-eyewear"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.eyewear"
+        @click="onZoneClick(InventorySlotTypeId.eyewear)"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.eyewear)).toLocaleUpperCase() }}
       </div>
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-eyewear"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.eyewear }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.eyewear"
+        @click="onZoneClick(InventorySlotTypeId.eyewear)"
       />
 
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-on-sling"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.onSling"
+        @click="onZoneClick(InventorySlotTypeId.onSling)"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.onSling)).toLocaleUpperCase() }}
       </div>
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-on-sling"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.onSling }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.onSling"
+        @click="onZoneClick(InventorySlotTypeId.onSling)"
       />
 
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-holster"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.holster"
+        @click="onZoneClick(InventorySlotTypeId.holster)"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.holster)).toLocaleUpperCase() }}
       </div>
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-holster"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.holster }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.holster"
+        @click="onZoneClick(InventorySlotTypeId.holster)"
       />
 
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-on-back"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.onBack"
+        @click="onZoneClick(InventorySlotTypeId.onBack)"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.onBack)).toLocaleUpperCase() }}
       </div>
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-on-back"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.onBack }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.onBack"
+        @click="onZoneClick(InventorySlotTypeId.onBack)"
       />
 
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-scabbard"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.scabbard"
+        @click="onZoneClick(InventorySlotTypeId.scabbard)"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.scabbard)).toLocaleUpperCase() }}
       </div>
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-scabbard"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.scabbard }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.scabbard"
+        @click="onZoneClick(InventorySlotTypeId.scabbard)"
       />
 
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-tactical-rig"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.tacticalRig"
+        @click="onZoneClick(InventorySlotTypeId.tacticalRig)"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.tacticalRig)).toLocaleUpperCase() }}
       </div>
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-tactical-rig"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.tacticalRig }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.tacticalRig"
+        @click="onZoneClick(InventorySlotTypeId.tacticalRig)"
       />
 
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-backpack"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.backpack"
+        @click="onZoneClick(InventorySlotTypeId.backpack)"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.backpack)).toLocaleUpperCase() }}
       </div>
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-backpack"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.backpack }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.backpack"
+        @click="onZoneClick(InventorySlotTypeId.backpack)"
       />
 
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-pouch"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.pouch"
+        @click="onZoneClick(InventorySlotTypeId.pouch)"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.pouch)).toLocaleUpperCase() }}
       </div>
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-pouch"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pouch }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.pouch"
+        @click="onZoneClick(InventorySlotTypeId.pouch)"
       />
 
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-pockets"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.pockets"
+        @click="onZoneClick(InventorySlotTypeId.pockets)"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.pockets)).toLocaleUpperCase() }}
       </div>
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-pockets1"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.pockets"
+        @click="onZoneClick(InventorySlotTypeId.pockets)"
       />
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-pockets2"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.pockets"
+        @click="onZoneClick(InventorySlotTypeId.pockets)"
       />
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-pockets3"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.pockets"
+        @click="onZoneClick(InventorySlotTypeId.pockets)"
       />
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-pockets4"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.pockets"
+        @click="onZoneClick(InventorySlotTypeId.pockets)"
       />
 
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-special"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.special"
+        @click="onZoneClick(InventorySlotTypeId.special)"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.special)).toLocaleUpperCase() }}
       </div>
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-special1"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.special }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.special"
+        @click="onZoneClick(InventorySlotTypeId.special)"
       />
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-special2"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.special }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.special"
+        @click="onZoneClick(InventorySlotTypeId.special)"
       />
       <div
         class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-special3"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.special }"
-        @click="modelCurrentInventorySlotType = InventorySlotTypeId.special"
+        @click="onZoneClick(InventorySlotTypeId.special)"
       />
     </div>
   </div>

@@ -13,7 +13,7 @@ defineProps<{ path: string }>()
 let _isInitialized = false
 
 const currentPageIndex = computed(() => {
-  const index = inventorySlotGroups.value.findIndex(isg => isg.some(is => is.typeId === currentInventorySlot.value))
+  const index = inventorySlotGroups.value.findIndex(isg => isg.some(is => is.typeId === currentInventorySlotType.value))
 
   return index
 })
@@ -41,7 +41,7 @@ const inventorySlotGroups = computed(() => {
   return groups
 })
 
-const currentInventorySlot = ref<InventorySlotTypeId>()
+const currentInventorySlotType = ref<InventorySlotTypeId>()
 const isEditing = inject<Ref<boolean>>('isEditing')
 const isNewBuild = inject<Ref<boolean>>('isNewBuild')
 
@@ -58,13 +58,13 @@ function initialize(): void {
   }
 
   if (isNewBuild?.value) {
-    currentInventorySlot.value = InventorySlotTypeId.onSling
+    currentInventorySlotType.value = InventorySlotTypeId.onSling
     _isInitialized = true
   } else {
     const firstInventorySlotWithItem = modelInventorySlots.value.find(is => is.items.some(i => i != null))
 
     if (firstInventorySlotWithItem != null) {
-      currentInventorySlot.value = firstInventorySlotWithItem.typeId
+      currentInventorySlotType.value = firstInventorySlotWithItem.typeId
       _isInitialized = true
     }
   }
@@ -81,6 +81,16 @@ function onInventorySlotChanged(updatedInventorySlot: IInventorySlot): void {
   updatedInventorySlots[index] = updatedInventorySlot
   modelInventorySlots.value = updatedInventorySlots
 }
+
+function scrollToTop(): void {
+  // For some reason, the smooth scrolling does not always work without setTimeout (event with nextTick)
+  setTimeout(() => {
+    document.getElementById('app')!.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }, 1)
+}
 </script>
 
 
@@ -94,7 +104,10 @@ function onInventorySlotChanged(updatedInventorySlot: IInventorySlot): void {
 
 <template>
   <div class="inventory-slots">
-    <InventorySlotSelector v-model:current-inventory-slot-type="currentInventorySlot" />
+    <InventorySlotSelector
+      v-model:current-inventory-slot-type="currentInventorySlotType"
+      @update:current-inventory-slot-type="scrollToTop"
+    />
     <div class="inventory-slots-group">
       <InventorySlot
         v-for="(inventorySlot, index) of inventorySlotGroups[currentPageIndex]"
