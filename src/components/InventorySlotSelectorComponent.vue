@@ -63,206 +63,206 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
       >
 
       <div
-        class="inventory-slots-selector-zone-text-earpiece"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-earpiece"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.earpiece"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.earpiece)).toLocaleUpperCase() }}
       </div>
       <div
-        class="inventory-slots-selector-zone-item-earpiece"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-earpiece"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.earpiece }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.earpiece"
       />
 
       <div
-        class="inventory-slots-selector-zone-text-headwear"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-headwear"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.headwear"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.headwear)).toLocaleUpperCase() }}
       </div>
       <div
-        class="inventory-slots-selector-zone-item-headwear"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-headwear"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.headwear }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.headwear"
       />
 
       <div
-        class="inventory-slots-selector-zone-text-face-cover"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-face-cover"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.faceCover"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.faceCover)).toLocaleUpperCase() }}
       </div>
       <div
-        class="inventory-slots-selector-zone-item-face-cover"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-face-cover"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.faceCover }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.faceCover"
       />
 
       <div
-        class="inventory-slots-selector-zone-text-armband"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-armband"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.armband"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.armband)).toLocaleUpperCase() }}
       </div>
       <div
-        class="inventory-slots-selector-zone-item-armband"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-armband"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.armband }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.armband"
       />
 
       <div
-        class="inventory-slots-selector-zone-text-body-armor"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-body-armor"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.bodyArmor"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.bodyArmor)).toLocaleUpperCase() }}
       </div>
       <div
-        class="inventory-slots-selector-zone-item-body-armor"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-body-armor"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.bodyArmor }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.bodyArmor"
       />
 
       <div
-        class="inventory-slots-selector-zone-text-eyewear"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-eyewear"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.eyewear"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.eyewear)).toLocaleUpperCase() }}
       </div>
       <div
-        class="inventory-slots-selector-zone-item-eyewear"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-eyewear"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.eyewear }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.eyewear"
       />
 
       <div
-        class="inventory-slots-selector-zone-text-on-sling"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-on-sling"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.onSling"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.onSling)).toLocaleUpperCase() }}
       </div>
       <div
-        class="inventory-slots-selector-zone-item-on-sling"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-on-sling"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.onSling }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.onSling"
       />
 
       <div
-        class="inventory-slots-selector-zone-text-holster"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-holster"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.holster"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.holster)).toLocaleUpperCase() }}
       </div>
       <div
-        class="inventory-slots-selector-zone-item-holster"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-holster"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.holster }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.holster"
       />
 
       <div
-        class="inventory-slots-selector-zone-text-on-back"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-on-back"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.onBack"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.onBack)).toLocaleUpperCase() }}
       </div>
       <div
-        class="inventory-slots-selector-zone-item-on-back"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-on-back"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.onBack }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.onBack"
       />
 
       <div
-        class="inventory-slots-selector-zone-text-scabbard"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-scabbard"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.scabbard"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.scabbard)).toLocaleUpperCase() }}
       </div>
       <div
-        class="inventory-slots-selector-zone-item-scabbard"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-scabbard"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.scabbard }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.scabbard"
       />
 
       <div
-        class="inventory-slots-selector-zone-text-tactical-rig"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-tactical-rig"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.tacticalRig"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.tacticalRig)).toLocaleUpperCase() }}
       </div>
       <div
-        class="inventory-slots-selector-zone-item-tactical-rig"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-tactical-rig"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.tacticalRig }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.tacticalRig"
       />
 
       <div
-        class="inventory-slots-selector-zone-text-backpack"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-backpack"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.backpack"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.backpack)).toLocaleUpperCase() }}
       </div>
       <div
-        class="inventory-slots-selector-zone-item-backpack"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-backpack"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.backpack }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.backpack"
       />
 
       <div
-        class="inventory-slots-selector-zone-text-pouch"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-pouch"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.pouch"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.pouch)).toLocaleUpperCase() }}
       </div>
       <div
-        class="inventory-slots-selector-zone-item-pouch"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-pouch"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pouch }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.pouch"
       />
 
       <div
-        class="inventory-slots-selector-zone-text-pockets"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-pockets"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.pockets"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.pockets)).toLocaleUpperCase() }}
       </div>
       <div
-        class="inventory-slots-selector-zone-item-pockets1"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-pockets1"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.pockets"
       />
       <div
-        class="inventory-slots-selector-zone-item-pockets2"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-pockets2"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.pockets"
       />
       <div
-        class="inventory-slots-selector-zone-item-pockets3"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-pockets3"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.pockets"
       />
       <div
-        class="inventory-slots-selector-zone-item-pockets4"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-pockets4"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.pockets"
       />
 
       <div
-        class="inventory-slots-selector-zone-text-special"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-special"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.special"
       >
         {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.special)).toLocaleUpperCase() }}
       </div>
       <div
-        class="inventory-slots-selector-zone-item-special1"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-special1"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.special }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.special"
       />
       <div
-        class="inventory-slots-selector-zone-item-special2"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-special2"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.special }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.special"
       />
       <div
-        class="inventory-slots-selector-zone-item-special3"
+        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-special3"
         :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.special }"
         @click="modelCurrentInventorySlotType = InventorySlotTypeId.special"
       />
@@ -306,424 +306,219 @@ const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScr
   width: 100%;
 }
 
-.inventory-slots-selector-zone-item-armband {
+.inventory-slots-selector-zone {
   background-color: v-bind(_zoneBackgroundColor);
   cursor: pointer;
+  position: absolute;
+  width: v-bind(_zoneWidth);
+}
+
+.inventory-slots-selector-zone-item:hover {
+  background-color: var(--primary-color6);
+}
+
+.inventory-slots-selector-zone-item {
+  height: v-bind(_zoneItemHeight);
+}
+
+.inventory-slots-selector-zone-item-armband {
   height: 3.2rem;
   left: v-bind(_zoneColumn1Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneItemLine2Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-item-backpack {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  height: v-bind(_zoneItemHeight);
   left: v-bind(_zoneColumn2Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneItemLine5Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-item-body-armor {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  height: v-bind(_zoneItemHeight);
   left: v-bind(_zoneColumn2Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneItemLine2Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-item-earpiece {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  height: v-bind(_zoneItemHeight);
   left: v-bind(_zoneColumn1Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneItemLine1Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-item-eyewear {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  height: v-bind(_zoneItemHeight);
   left: v-bind(_zoneColumn3Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneItemLine2Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-item-face-cover {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  height: v-bind(_zoneItemHeight);
   left: v-bind(_zoneColumn3Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneItemLine1Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-item-headwear {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  height: v-bind(_zoneItemHeight);
   left: v-bind(_zoneColumn2Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneItemLine1Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-item-holster {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  height: v-bind(_zoneItemHeight);
   left: v-bind(_zoneColumn3Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneItemLine3Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-item-on-back {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  height: v-bind(_zoneItemHeight);
   left: v-bind(_zoneColumn1Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneItemLine4Top);
   width: v-bind(_zoneWidthColspan2);
 }
 
 .inventory-slots-selector-zone-item-on-sling {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  height: v-bind(_zoneItemHeight);
   left: v-bind(_zoneColumn1Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneItemLine3Top);
   width: v-bind(_zoneWidthColspan2);
 }
 
 .inventory-slots-selector-zone-item-pockets1 {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
   height: v-bind(_zoneItemSmallHeight);
   left: v-bind(_zoneItemSmallColumn1Left);
-  position: absolute;
   top: v-bind(_zoneItemLine6Top);
   width: v-bind(_zoneItemSmallWidth);
 }
 
 .inventory-slots-selector-zone-item-pockets2 {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
   height: v-bind(_zoneItemSmallHeight);
   left: v-bind(_zoneItemSmallColumn2Left);
-  position: absolute;
   top: v-bind(_zoneItemLine6Top);
   width: v-bind(_zoneItemSmallWidth);
 }
 
 .inventory-slots-selector-zone-item-pockets3 {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
   height: v-bind(_zoneItemSmallHeight);
   left: v-bind(_zoneItemSmallColumn3Left);
-  position: absolute;
   top: v-bind(_zoneItemLine6Top);
   width: v-bind(_zoneItemSmallWidth);
 }
 
 .inventory-slots-selector-zone-item-pockets4 {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
   height: v-bind(_zoneItemSmallHeight);
   left: v-bind(_zoneItemSmallColumn4Left);
-  position: absolute;
   top: v-bind(_zoneItemLine6Top);
   width: v-bind(_zoneItemSmallWidth);
 }
 
 .inventory-slots-selector-zone-item-pouch {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  height: v-bind(_zoneItemHeight);
   left: v-bind(_zoneColumn3Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneItemLine5Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-item-scabbard {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  height: v-bind(_zoneItemHeight);
   left: v-bind(_zoneColumn3Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneItemLine4Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-item-special1 {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
   height: v-bind(_zoneItemSmallHeight);
   left: v-bind(_zoneItemSmallColumn1Left);
-  position: absolute;
   top: v-bind(_zoneItemLine7Top);
   width: v-bind(_zoneItemSmallWidth);
 }
 
 .inventory-slots-selector-zone-item-special2 {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
   height: v-bind(_zoneItemSmallHeight);
   left: v-bind(_zoneItemSmallColumn2Left);
-  position: absolute;
   top: v-bind(_zoneItemLine7Top);
   width: v-bind(_zoneItemSmallWidth);
 }
 
 .inventory-slots-selector-zone-item-special3 {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
   height: v-bind(_zoneItemSmallHeight);
   left: v-bind(_zoneItemSmallColumn3Left);
-  position: absolute;
   top: v-bind(_zoneItemLine7Top);
   width: v-bind(_zoneItemSmallWidth);
 }
 
 .inventory-slots-selector-zone-item-tactical-rig {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  height: v-bind(_zoneItemHeight);
   left: v-bind(_zoneColumn1Left);
+  top: v-bind(_zoneItemLine5Top);
+}
+
+.inventory-slots-selector-zone-text {
+  font-size: v-bind(_zoneTextFontSize);
+  height: v-bind(_zoneTextHeight);
   padding-left: v-bind(_zoneTextPadding);
   padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
-  top: v-bind(_zoneItemLine5Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-text-armband {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
   left: v-bind(_zoneColumn1Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneTextLine2Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-text-backpack {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
   left: v-bind(_zoneColumn2Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneTextLine5Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-text-body-armor {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
   left: v-bind(_zoneColumn2Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneTextLine2Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-text-earpiece {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
   left: v-bind(_zoneColumn1Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneTextLine1Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-text-eyewear {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
   left: v-bind(_zoneColumn3Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneTextLine2Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-text-face-cover {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
   left: v-bind(_zoneColumn3Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneTextLine1Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-text-headwear {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
   left: v-bind(_zoneColumn2Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneTextLine1Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-text-holster {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
   left: v-bind(_zoneColumn3Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneTextLine3Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-text-on-back {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
   left: v-bind(_zoneColumn1Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneTextLine4Top);
   width: v-bind(_zoneWidthColspan2);
 }
 
 .inventory-slots-selector-zone-text-on-sling {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
   left: v-bind(_zoneColumn1Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneTextLine3Top);
   width: v-bind(_zoneWidthColspan2);
 }
 
 .inventory-slots-selector-zone-text-pockets {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
   left: v-bind(_zoneColumn1Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneTextLine6Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-text-pouch {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
   left: v-bind(_zoneColumn3Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneTextLine5Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-text-scabbard {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
   left: v-bind(_zoneColumn3Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneTextLine4Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-text-special {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
   left: v-bind(_zoneColumn1Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneTextLine7Top);
-  width: v-bind(_zoneWidth);
 }
 
 .inventory-slots-selector-zone-text-tactical-rig {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
   left: v-bind(_zoneColumn1Left);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-  position: absolute;
   top: v-bind(_zoneTextLine5Top);
-  width: v-bind(_zoneWidth);
 }
 </style>
