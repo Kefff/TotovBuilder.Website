@@ -462,6 +462,7 @@ function openNewBuild(): void {
 
 <style>
 .welcome-action .p-button-outlined {
+  background-color: var(--surface-transparent-0);
   border-width: 3px;
 }
 </style>

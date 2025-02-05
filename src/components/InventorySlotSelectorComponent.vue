@@ -2,13 +2,12 @@
 import Images from '../images'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import StringUtils from '../utils/StringUtils'
-import WebBrowserUtils from '../utils/WebBrowserUtils'
 
 const modelCurrentInventorySlotType = defineModel<InventorySlotTypeId>('currentInventorySlotType')
 
 
-const _zoneBackgroundColor = 'transparent'
-// const _zoneBackgroundColor = 'rgba(0, 255, 0, 0.15)' // For testing
+// const _zoneBackgroundColor = 'transparent'
+const _zoneBackgroundColor = 'rgba(0, 255, 0, 0.15)' // For testing
 const _zoneColumn1Left = '2.25rem'
 const _zoneColumn2Left = '11.1rem'
 const _zoneColumn3Left = '20rem'
@@ -39,8 +38,6 @@ const _zoneTextPadding = '0.1rem'
 const _zoneWidth = _zoneItemHeight
 const _zoneWidthColspan2 = '15rem'
 
-const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
-
 /**
  * Reacts to the click in a zone.
  *
@@ -61,10 +58,7 @@ function onZoneClick(type: InventorySlotTypeId): void {
 
 
 <template>
-  <div
-    v-if="!isCompactMode"
-    class="inventory-slots-selector"
-  >
+  <div class="inventory-slots-selector">
     <div class="inventory-slots-selector-image-container">
       <img
         class="inventory-slots-selector-image"

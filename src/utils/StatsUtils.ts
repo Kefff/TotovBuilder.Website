@@ -25,8 +25,7 @@ export default class StatsUtils {
     value = round(value, roundingDecimalCount)
 
     if (fixedDecimalCount !== 0) {
-      const roundingMultiplier = Math.pow(10, fixedDecimalCount)
-      displayValue = (Math.round(value * roundingMultiplier) / roundingMultiplier)
+      displayValue = round(value, roundingDecimalCount)
         .toLocaleString(
           language,
           {
@@ -63,8 +62,7 @@ export default class StatsUtils {
     value = round(value * 100, roundDecimalCount)
 
     if (fixedDecimalNumbers !== 0) {
-      const roundingMultiplier = Math.pow(10, fixedDecimalNumbers)
-      displayValue = (Math.round(value * roundingMultiplier) / roundingMultiplier)
+      displayValue = round(value, roundDecimalCount)
         .toLocaleString(
           language,
           {

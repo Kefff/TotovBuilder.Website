@@ -11,6 +11,7 @@ const BuildsListSidebar = defineAsyncComponent(() => import('./BuildsListSidebar
 const BuildsShareSideBar = defineAsyncComponent(() => import('./BuildsShareSideBarComponent.vue'))
 const ChangelogSidebar = defineAsyncComponent(() => import('./ChangelogSidebarComponent.vue'))
 const GeneralOptionsSidebar = defineAsyncComponent(() => import('./GeneralOptionsSidebarComponent.vue'))
+const InventorySlotSelectorSidebar = defineAsyncComponent(() => import('./InventorySlotSelectorSidebarComponent.vue'))
 const ItemSelectionSidebar = defineAsyncComponent(() => import('./ItemSelectionSidebarComponent.vue'))
 const ItemsListSidebar = defineAsyncComponent(() => import('./ItemsListSidebarComponent.vue'))
 const MerchantItemsOptionsSidebar = defineAsyncComponent(() => import('./MerchantItemsOptionsSidebarComponent.vue'))
@@ -26,6 +27,7 @@ type DisplayedComponent = typeof BuildsExportSidebar
   | typeof BuildsListSidebar
   | typeof ChangelogSidebar
   | typeof GeneralOptionsSidebar
+  | typeof InventorySlotSelectorSidebar
   | typeof ItemSelectionSidebar
   | typeof ItemsListSidebar
   | typeof MerchantItemsOptionsSidebar
@@ -153,6 +155,11 @@ function setDisplayedComponent(displayedComponentType: GlobalSidebarComponent): 
       icon.value = 'tv'
       title.value = 'caption.displayOptions'
       _displayedComponent = GeneralOptionsSidebar
+      break
+    case 'InventorySlotSelectorSidebar':
+      icon.value = 'vest'
+      title.value = 'caption.gear'
+      _displayedComponent = InventorySlotSelectorSidebar
       break
     case 'ItemSelectionSidebar':
       icon.value = 'filter'

@@ -65,7 +65,7 @@ const _toolbarButtons: IToolbarButton[] = [
     isDisabled: () => isLoading.value,
     isVisible: () => !isEditing.value,
     name: 'edit',
-    showCaption: () => 'always'
+    showCaption: () => 'auto'
   },
   {
     action: saveAsync,
@@ -76,7 +76,18 @@ const _toolbarButtons: IToolbarButton[] = [
     isVisible: () => isEditing.value,
     name: 'save',
     variant: () => 'success',
-    showCaption: () => 'always'
+    showCaption: () => 'auto'
+  },
+  {
+    action: displayInventorySlotSelector,
+    canBeMovedToSidebar: () => false,
+    caption: () => vueI18n.t('caption.gear'),
+    followedBySeparation: true,
+    icon: () => 'vest',
+    isVisible: () => isSmartphoneLandscapeOrSmaller.value,
+    name: 'inventorySlotSelector',
+    showCaption: () => 'never',
+    style: () => 'outlined'
   },
   {
     action: displayShoppingList,
@@ -388,6 +399,15 @@ function displayConfirmationDialog(options: {
 }
 
 /**
+ * Displays the inventory slot selector sidebar.
+ */
+function displayInventorySlotSelector(): void {
+  _globalSidebarService.display({
+    displayedComponentType: 'InventorySlotSelectorSidebar'
+  })
+}
+
+/**
  * Displays the merchant items options.
  */
 function displayMerchantItemsOptions(): void {
@@ -480,6 +500,7 @@ async function onItemServiceInitializedAsync(): Promise<void> {
     await getSharedBuildAsync(sharableString)
   } else {
     build.value = _buildComponentService.getBuild(route.params['id'] as string)
+    isEditing.value = isNewBuild.value
   }
 
   setSummaryAsync()
@@ -1000,7 +1021,7 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
 }
 
 .build-title-compact {
-  font-size: 1rem;
+  font-size: 1.5rem;
   margin-top: 0.5rem;
 }
 

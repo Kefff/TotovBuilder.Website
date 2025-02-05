@@ -136,6 +136,7 @@ function displayToolbarSideBar(): void {
   border-width: 1px;
   padding: 0.5rem;
   width: 100%;
+  ;
 }
 
 .toolbar-container {

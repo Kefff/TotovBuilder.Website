@@ -3,6 +3,7 @@ import { computed, inject, onMounted, ref, Ref, watch } from 'vue'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { PathUtils } from '../utils/PathUtils'
+import WebBrowserUtils from '../utils/WebBrowserUtils'
 import InventorySlot from './InventorySlotComponent.vue'
 import InventorySlotSelector from './InventorySlotSelectorComponent.vue'
 
@@ -44,6 +45,7 @@ const inventorySlotGroups = computed(() => {
 const currentInventorySlotType = ref<InventorySlotTypeId>()
 const isEditing = inject<Ref<boolean>>('isEditing')
 const isNewBuild = inject<Ref<boolean>>('isNewBuild')
+const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
 
 onMounted(() => initialize())
 
@@ -105,6 +107,7 @@ function scrollToTop(): void {
 <template>
   <div class="inventory-slots">
     <InventorySlotSelector
+      v-if="!isCompactMode"
       v-model:current-inventory-slot-type="currentInventorySlotType"
       @update:current-inventory-slot-type="scrollToTop"
     />
