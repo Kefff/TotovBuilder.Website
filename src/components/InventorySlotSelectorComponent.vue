@@ -5,9 +5,8 @@ import StringUtils from '../utils/StringUtils'
 
 const modelCurrentInventorySlotType = defineModel<InventorySlotTypeId>('currentInventorySlotType')
 
-
-// const _zoneBackgroundColor = 'transparent'
-const _zoneBackgroundColor = 'rgba(0, 255, 0, 0.15)' // For testing
+const _zoneBackgroundColor = 'transparent'
+// const _zoneBackgroundColor = 'rgba(0, 255, 0, 0.15)' // For testing
 const _zoneColumn1Left = '2.25rem'
 const _zoneColumn2Left = '11.1rem'
 const _zoneColumn3Left = '20rem'

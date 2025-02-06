@@ -37,7 +37,8 @@ const inventorySlotGroups = computed(() => {
     }
   }
 
-  groups.push(singleItemGroup)
+  const pouchIndex = groups.findIndex(g => g[0].typeId === InventorySlotTypeId.pouch)
+  groups.splice(pouchIndex, 0, singleItemGroup) // Inserting the single items group before the pouch group
 
   return groups
 })
@@ -70,6 +71,25 @@ function initialize(): void {
       _isInitialized = true
     }
   }
+}
+
+/**
+ * Reacts to the go to next inventory slot button being clicked.
+ *
+ * Sets the next inventory slot group as the current page.
+ */
+function onGoToNextInventorySlot(): void {
+  currentInventorySlotType.value = inventorySlotGroups.value[currentPageIndex.value + 1][0].typeId
+}
+
+
+/**
+ * Reacts to the go to previous inventory slot button being clicked.
+ *
+ * Sets the previous inventory slot group as the current page.
+ */
+function onGoToPreviousInventorySlot(): void {
+  currentInventorySlotType.value = inventorySlotGroups.value[currentPageIndex.value - 1][0].typeId
 }
 
 /**
@@ -116,8 +136,12 @@ function scrollToTop(): void {
         v-for="(inventorySlot, index) of inventorySlotGroups[currentPageIndex]"
         :key="inventorySlot.typeId"
         v-model:inventory-slot="inventorySlotGroups[currentPageIndex][index]"
+        :can-go-to-next="currentPageIndex < inventorySlotGroups.length - 1"
+        :can-go-to-previous="currentPageIndex > 0"
         :path="`${path}/${PathUtils.inventorySlotPrefix}${inventorySlot.typeId}`"
-        @update:inventory-slot="onInventorySlotChanged($event)"
+        @go-to-next="onGoToNextInventorySlot"
+        @go-to-previous="onGoToPreviousInventorySlot"
+        @update:inventory-slot="onInventorySlotChanged"
       />
     </div>
   </div>

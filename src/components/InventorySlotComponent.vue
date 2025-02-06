@@ -13,7 +13,16 @@ import Item from './ItemComponent.vue'
 
 const modelInventorySlot = defineModel<IInventorySlot>('inventorySlot', { required: true })
 
-defineProps<{ path: string }>()
+defineProps<{
+  canGoToNext: boolean,
+  canGoToPrevious: boolean,
+  path: string,
+}>()
+
+const emits = defineEmits<{
+  goToNext: [value: void]
+  goToPrevious: [value: void]
+}>()
 
 const _globalFilterService = Services.get(GlobalFilterService)
 const _inventorySlotPropertiesService = Services.get(InventorySlotPropertiesService)
@@ -75,6 +84,13 @@ function onMerchantFilterChanged(): void {
   <Panel class="inventory-slot">
     <template #header>
       <div class="inventory-slot-header">
+        <Button
+          class="p-button-sm p-button-text button-discreet"
+          :disabled="!canGoToPrevious"
+          @click="emits('goToPrevious')"
+        >
+          <font-awesome-icon icon="chevron-left" />
+        </Button>
         <div class="inventory-slot-title">
           <font-awesome-icon
             v-if="inventorySlotType.icon != null"
@@ -88,6 +104,13 @@ function onMerchantFilterChanged(): void {
           >
           <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelInventorySlot.typeId)) }}</span>
         </div>
+        <Button
+          class="p-button-sm p-button-text button-discreet"
+          :disabled="!canGoToNext"
+          @click="emits('goToNext')"
+        >
+          <font-awesome-icon icon="chevron-right" />
+        </Button>
       </div>
     </template>
     <div class="inventory-slot-items">
@@ -156,6 +179,8 @@ function onMerchantFilterChanged(): void {
   align-items: center;
   display: flex;
   white-space: nowrap;
+  justify-content: center;
+  width: 100%;
 }
 </style>
 
