@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, Ref, watch } from 'vue'
+import { computed, inject, onMounted, ref, Ref, watch } from 'vue'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { PathUtils } from '../utils/PathUtils'
@@ -43,14 +43,26 @@ const inventorySlotGroups = computed(() => {
 
   return groups
 })
+const lastPageIndex = computed(() => {
+  const index = inventorySlotGroups.value.findIndex(isg => isg.some(is => is.typeId === lastInventorySlot.value))
+
+  return index
+})
+const transitionEnterFromTranslate = computed(() => lastPageIndex.value < currentPageIndex.value ? 'translateX(-25vw)' : 'translateX(25vw)')
+const transitionLeaveToTranslate = computed(() => lastPageIndex.value < currentPageIndex.value ? 'translateX(25vw)' : 'translateX(-25vw)')
 
 const isEditing = inject<Ref<boolean>>('isEditing')
 const isNewBuild = inject<Ref<boolean>>('isNewBuild')
 const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
+const lastInventorySlot = ref<InventorySlotTypeId>()
 
 onMounted(() => initialize())
 
 watch(() => modelInventorySlots.value, () => initialize())
+
+watch(() => modelCurrentInventorySlot.value, (newValue, oldValue) => {
+  lastInventorySlot.value = oldValue
+})
 
 /**
  * Initializes the current inventory slot.
@@ -183,11 +195,11 @@ function scrollToTop(): void {
 
 .inventory-slots-group-transition-enter-from {
   opacity: 0;
-  transform: translateX(-25vw);
+  transform: v-bind(transitionEnterFromTranslate);
 }
 
 .inventory-slots-group-transition-leave-to {
   opacity: 0;
-  transform: translateX(25vw);
+  transform: v-bind(transitionLeaveToTranslate);
 }
 </style>
