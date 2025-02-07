@@ -734,7 +734,7 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
       <template #bottom>
         <Transition
           v-if="!isLoading && isCompactMode"
-          name="build-compact-summary-expand"
+          name="build-compact-summary-expand-transition"
         >
           <div
             v-show="isCompactBuildSummaryExpanded"
@@ -1036,19 +1036,19 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
   margin-bottom: 0.5rem;
 }
 
-.build-compact-summary-expand-enter-from,
-.build-compact-summary-expand-leave-to {
+.build-compact-summary-expand-transition-enter-from,
+.build-compact-summary-expand-transition-leave-to {
   height: 0;
 }
 
-.build-compact-summary-expand-enter-to,
-.build-compact-summary-expand-leave-from {
+.build-compact-summary-expand-transition-enter-to,
+.build-compact-summary-expand-transition-leave-from {
   height: v-bind(compactBuildSummaryHeight);
   /* https://stackoverflow.com/a/72698222 */
 }
 
-.build-compact-summary-expand-enter-active,
-.build-compact-summary-expand-leave-active {
+.build-compact-summary-expand-transition-enter-active,
+.build-compact-summary-expand-transition-leave-active {
   transition: all v-bind(_compactBuildSummaryExpansionAnimationLenghtCss) ease;
   overflow: hidden;
 }

@@ -132,17 +132,19 @@ function scrollToTop(): void {
       @update:current-inventory-slot-type="scrollToTop"
     />
     <div class="inventory-slots-group">
-      <InventorySlot
-        v-for="(inventorySlot, index) of inventorySlotGroups[currentPageIndex]"
-        :key="inventorySlot.typeId"
-        v-model:inventory-slot="inventorySlotGroups[currentPageIndex][index]"
-        :can-go-to-next="currentPageIndex < inventorySlotGroups.length - 1"
-        :can-go-to-previous="currentPageIndex > 0"
-        :path="`${path}/${PathUtils.inventorySlotPrefix}${inventorySlot.typeId}`"
-        @go-to-next="onGoToNextInventorySlot"
-        @go-to-previous="onGoToPreviousInventorySlot"
-        @update:inventory-slot="onInventorySlotChanged"
-      />
+      <TransitionGroup name="inventory-slots-group-transition">
+        <InventorySlot
+          v-for="(inventorySlot, index) of inventorySlotGroups[currentPageIndex]"
+          :key="inventorySlot.typeId"
+          v-model:inventory-slot="inventorySlotGroups[currentPageIndex][index]"
+          :can-go-to-next="currentPageIndex < inventorySlotGroups.length - 1"
+          :can-go-to-previous="currentPageIndex > 0"
+          :path="`${path}/${PathUtils.inventorySlotPrefix}${inventorySlot.typeId}`"
+          @go-to-next="onGoToNextInventorySlot"
+          @go-to-previous="onGoToPreviousInventorySlot"
+          @update:inventory-slot="onInventorySlotChanged"
+        />
+      </TransitionGroup>
     </div>
   </div>
 </template>
@@ -167,6 +169,25 @@ function scrollToTop(): void {
   flex-direction: column;
   gap: 1rem;
   min-height: 100%;
-  width: 100%
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.inventory-slots-group-transition-enter-active {
+  transition: all 0.25s 0.25s ease;
+}
+
+.inventory-slots-group-transition-leave-active {
+  transition: all 0.25s ease;
+}
+
+.inventory-slots-group-transition-enter-from {
+  opacity: 0;
+  transform: translateX(-25vw);
+}
+
+.inventory-slots-group-transition-leave-to {
+  opacity: 0;
+  transform: translateX(25vw);
 }
 </style>
