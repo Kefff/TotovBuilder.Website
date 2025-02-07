@@ -7,7 +7,7 @@ import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
 import InventorySlotSelector from '../InventorySlotSelectorComponent.vue'
 
-defineModel<InventorySlotSelectorSidebarParameters>('parameters', { required: true })
+const modelParameters = defineModel<InventorySlotSelectorSidebarParameters>('parameters', { required: true })
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
@@ -30,7 +30,7 @@ onMounted(() => {
  * Updates the selected inventory slot and closes the sidebar.
  */
 function onSelectedInventorySlotChanged(): void {
-  _globalSidebarService.close('ItemSelectionSidebar')
+  _globalSidebarService.close('InventorySlotSelectorSidebar')
 }
 
 </script>
@@ -49,7 +49,11 @@ function onSelectedInventorySlotChanged(): void {
     ref="inventorySlotSelectorSidebar"
     class="inventory-slot-selector-sidebar"
   >
-    <InventorySlotSelector class="inventory-slot-selector-sidebar-selector" />
+    <InventorySlotSelector
+      v-model:current-inventory-slot-type="modelParameters"
+      class="inventory-slot-selector-sidebar-selector"
+      @update:current-inventory-slot-type="onSelectedInventorySlotChanged"
+    />
   </div>
 </template>
 

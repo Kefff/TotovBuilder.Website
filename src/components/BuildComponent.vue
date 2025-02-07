@@ -3,6 +3,7 @@ import { useEventListener } from '@vueuse/core'
 import { computed, nextTick, onMounted, onUnmounted, provide, ref, useTemplateRef, watch } from 'vue'
 import { NavigationGuardNext, RouteLocationNormalizedGeneric, RouteLocationNormalizedLoadedGeneric, useRoute, useRouter } from 'vue-router'
 import { IBuild } from '../models/build/IBuild'
+import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
 import vueI18n from '../plugins/vueI18n'
@@ -199,6 +200,7 @@ const confirmationDialogSecondaryButtonAction = ref<() => void | Promise<void>>(
 const confirmationDialogSecondaryButtonCaption = ref<string>()
 const confirmationDialogSecondaryButtonIcon = ref<string>()
 const confirmationDialogSecondaryButtonSeverity = ref<string>()
+const currentInventorySlot = ref<InventorySlotTypeId>(InventorySlotTypeId.onSling)
 const isBuildSummaryStickied = ref(false)
 const { isSmartphoneLandscapeOrSmaller, isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
 const isCompactBuildSummaryExpanded = ref(isCompactMode.value)
@@ -403,7 +405,11 @@ function displayConfirmationDialog(options: {
  */
 function displayInventorySlotSelector(): void {
   _globalSidebarService.display({
-    displayedComponentType: 'InventorySlotSelectorSidebar'
+    displayedComponentType: 'InventorySlotSelectorSidebar',
+    displayedComponentParameters: currentInventorySlot.value,
+    onCloseAction: (updatedParameters) => {
+      currentInventorySlot.value = updatedParameters as InventorySlotTypeId
+    }
   })
 }
 
@@ -838,6 +844,7 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
       class="build-inventory-slots"
     >
       <InventorySlots
+        v-model:current-inventory-slot="currentInventorySlot"
         v-model:inventory-slots="build.inventorySlots"
         :path="path"
         @update:inventory-slots="onInventorySlotChanged"

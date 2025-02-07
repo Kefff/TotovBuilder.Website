@@ -85,7 +85,7 @@ function onMerchantFilterChanged(): void {
     <template #header>
       <div class="inventory-slot-header">
         <Button
-          class="p-button-sm p-button-text button-discreet"
+          class="p-button-text button-discreet"
           :disabled="!canGoToPrevious"
           @click="emits('goToPrevious')"
         >
@@ -105,7 +105,7 @@ function onMerchantFilterChanged(): void {
           <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelInventorySlot.typeId)) }}</span>
         </div>
         <Button
-          class="p-button-sm p-button-text button-discreet"
+          class="p-button-text button-discreet"
           :disabled="!canGoToNext"
           @click="emits('goToNext')"
         >

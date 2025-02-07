@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, Ref, watch } from 'vue'
+import { computed, inject, onMounted, Ref, watch } from 'vue'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { PathUtils } from '../utils/PathUtils'
@@ -8,13 +8,14 @@ import InventorySlot from './InventorySlotComponent.vue'
 import InventorySlotSelector from './InventorySlotSelectorComponent.vue'
 
 const modelInventorySlots = defineModel<IInventorySlot[]>('inventorySlots', { required: true })
+const modelCurrentInventorySlot = defineModel<InventorySlotTypeId>('currentInventorySlot', { required: true })
 
 defineProps<{ path: string }>()
 
 let _isInitialized = false
 
 const currentPageIndex = computed(() => {
-  const index = inventorySlotGroups.value.findIndex(isg => isg.some(is => is.typeId === currentInventorySlotType.value))
+  const index = inventorySlotGroups.value.findIndex(isg => isg.some(is => is.typeId === modelCurrentInventorySlot.value))
 
   return index
 })
@@ -43,7 +44,6 @@ const inventorySlotGroups = computed(() => {
   return groups
 })
 
-const currentInventorySlotType = ref<InventorySlotTypeId>()
 const isEditing = inject<Ref<boolean>>('isEditing')
 const isNewBuild = inject<Ref<boolean>>('isNewBuild')
 const { isSmartphoneLandscapeOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
@@ -61,13 +61,13 @@ function initialize(): void {
   }
 
   if (isNewBuild?.value) {
-    currentInventorySlotType.value = InventorySlotTypeId.onSling
+    modelCurrentInventorySlot.value = InventorySlotTypeId.onSling
     _isInitialized = true
   } else {
     const firstInventorySlotWithItem = modelInventorySlots.value.find(is => is.items.some(i => i != null))
 
     if (firstInventorySlotWithItem != null) {
-      currentInventorySlotType.value = firstInventorySlotWithItem.typeId
+      modelCurrentInventorySlot.value = firstInventorySlotWithItem.typeId
       _isInitialized = true
     }
   }
@@ -79,7 +79,7 @@ function initialize(): void {
  * Sets the next inventory slot group as the current page.
  */
 function onGoToNextInventorySlot(): void {
-  currentInventorySlotType.value = inventorySlotGroups.value[currentPageIndex.value + 1][0].typeId
+  modelCurrentInventorySlot.value = inventorySlotGroups.value[currentPageIndex.value + 1][0].typeId
 }
 
 
@@ -89,7 +89,7 @@ function onGoToNextInventorySlot(): void {
  * Sets the previous inventory slot group as the current page.
  */
 function onGoToPreviousInventorySlot(): void {
-  currentInventorySlotType.value = inventorySlotGroups.value[currentPageIndex.value - 1][0].typeId
+  modelCurrentInventorySlot.value = inventorySlotGroups.value[currentPageIndex.value - 1][0].typeId
 }
 
 /**
@@ -128,7 +128,7 @@ function scrollToTop(): void {
   <div class="inventory-slots">
     <InventorySlotSelector
       v-if="!isCompactMode"
-      v-model:current-inventory-slot-type="currentInventorySlotType"
+      v-model:current-inventory-slot-type="modelCurrentInventorySlot"
       @update:current-inventory-slot-type="scrollToTop"
     />
     <div class="inventory-slots-group">
