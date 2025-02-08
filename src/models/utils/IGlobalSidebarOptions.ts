@@ -111,7 +111,11 @@ export type BuildsShareSideBarParameters = {
 /**
  * Inventory slot selector sidebar parameters.
  */
-export type InventorySlotSelectorSidebarParameters = InventorySlotTypeId
+export type InventorySlotSelectorSidebarParameters = {
+  currentInventorySlot: InventorySlotTypeId
+  inventorySlotsShoppingListItems: IShoppingListItem[],
+  isEditing: boolean
+}
 
 /**
  * Item selection sidebar parameters.

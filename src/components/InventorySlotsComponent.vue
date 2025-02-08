@@ -2,6 +2,7 @@
 import { computed, inject, onMounted, ref, Ref, watch } from 'vue'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
+import { IShoppingListItem } from '../models/build/IShoppingListItem'
 import { PathUtils } from '../utils/PathUtils'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 import InventorySlot from './InventorySlotComponent.vue'
@@ -10,7 +11,10 @@ import InventorySlotSelector from './InventorySlotSelectorComponent.vue'
 const modelInventorySlots = defineModel<IInventorySlot[]>('inventorySlots', { required: true })
 const modelCurrentInventorySlot = defineModel<InventorySlotTypeId>('currentInventorySlot', { required: true })
 
-defineProps<{ path: string }>()
+defineProps<{
+  inventorySlotsShoppingListItems: IShoppingListItem[],
+  path: string
+}>()
 
 let _isInitialized = false
 
@@ -48,8 +52,8 @@ const lastPageIndex = computed(() => {
 
   return index
 })
-const transitionEnterFromTranslate = computed(() => lastPageIndex.value < currentPageIndex.value ? 'translateX(-25vw)' : 'translateX(25vw)')
-const transitionLeaveToTranslate = computed(() => lastPageIndex.value < currentPageIndex.value ? 'translateX(25vw)' : 'translateX(-25vw)')
+const transitionEnterFromTranslate = computed(() => lastPageIndex.value < currentPageIndex.value ? 'translateX(25vw)' : 'translateX(-5vw)')
+const transitionLeaveToTranslate = computed(() => lastPageIndex.value < currentPageIndex.value ? 'translateX(-25vw)' : 'translateX(+25vw)')
 
 const isEditing = inject<Ref<boolean>>('isEditing')
 const isNewBuild = inject<Ref<boolean>>('isNewBuild')
@@ -141,6 +145,8 @@ function scrollToTop(): void {
     <InventorySlotSelector
       v-if="!isCompactMode"
       v-model:current-inventory-slot-type="modelCurrentInventorySlot"
+      :inventory-slots-shopping-list-items="inventorySlotsShoppingListItems"
+      :is-editing="isEditing!"
       @update:current-inventory-slot-type="scrollToTop"
     />
     <div class="inventory-slots-group">

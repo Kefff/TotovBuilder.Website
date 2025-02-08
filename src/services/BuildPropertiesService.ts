@@ -674,7 +674,8 @@ ${sharableUrlResult}`
           const inventoryItemShoppingListItemIndex = shoppingList.findIndex(sli =>
             sli.item.id === inventoryItemShoppingListItemToAdd.item.id
             && sli.ignorePrice === inventoryItemShoppingListItemToAdd.ignorePrice
-            && sli.missingPrice === inventoryItemShoppingListItemToAdd.missingPrice)
+            && sli.inventorySlotId == null // Regrouping only items that are not immediatly in an inventory slot
+            && inventoryItemShoppingListItemToAdd.inventorySlotId == null) // Regrouping only items that are not immediatly in an inventory slot
 
           if (inventoryItemShoppingListItemIndex < 0) {
             shoppingList.push(inventoryItemShoppingListItemToAdd)

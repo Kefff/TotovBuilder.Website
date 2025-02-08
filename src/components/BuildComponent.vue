@@ -5,6 +5,7 @@ import { NavigationGuardNext, RouteLocationNormalizedGeneric, RouteLocationNorma
 import { IBuild } from '../models/build/IBuild'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IBuildSummary } from '../models/utils/IBuildSummary'
+import { InventorySlotSelectorSidebarParameters } from '../models/utils/IGlobalSidebarOptions'
 import { IToolbarButton } from '../models/utils/IToolbarButton'
 import vueI18n from '../plugins/vueI18n'
 import { BuildPropertiesService } from '../services/BuildPropertiesService'
@@ -201,11 +202,12 @@ const confirmationDialogSecondaryButtonCaption = ref<string>()
 const confirmationDialogSecondaryButtonIcon = ref<string>()
 const confirmationDialogSecondaryButtonSeverity = ref<string>()
 const currentInventorySlot = ref<InventorySlotTypeId>(InventorySlotTypeId.onSling)
+const inventorySlotsShoppingListItems = computed(() => summary.value.shoppingList.filter(sl => sl.inventorySlotId != null))
 const isBuildSummaryStickied = ref(false)
-const { isSmartphoneLandscapeOrSmaller, isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
-const isCompactBuildSummaryExpanded = ref(isCompactMode.value)
 const isEditing = ref(false)
 const isLoading = ref(true)
+const { isSmartphoneLandscapeOrSmaller, isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
+const isCompactBuildSummaryExpanded = ref(isCompactMode.value)
 const summary = ref<IBuildSummary>({
   armorModifiers: {
     armorClass: 0,
@@ -406,9 +408,13 @@ function displayConfirmationDialog(options: {
 function displayInventorySlotSelector(): void {
   _globalSidebarService.display({
     displayedComponentType: 'InventorySlotSelectorSidebar',
-    displayedComponentParameters: currentInventorySlot.value,
+    displayedComponentParameters: {
+      currentInventorySlot: currentInventorySlot.value,
+      inventorySlotsShoppingListItems: inventorySlotsShoppingListItems.value,
+      isEditing: isEditing.value
+    },
     onCloseAction: (updatedParameters) => {
-      currentInventorySlot.value = updatedParameters as InventorySlotTypeId
+      currentInventorySlot.value = (updatedParameters as InventorySlotSelectorSidebarParameters).currentInventorySlot
     }
   })
 }
@@ -846,6 +852,7 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
       <InventorySlots
         v-model:current-inventory-slot="currentInventorySlot"
         v-model:inventory-slots="build.inventorySlots"
+        :inventory-slots-shopping-list-items="inventorySlotsShoppingListItems"
         :path="path"
         @update:inventory-slots="onInventorySlotChanged"
       />

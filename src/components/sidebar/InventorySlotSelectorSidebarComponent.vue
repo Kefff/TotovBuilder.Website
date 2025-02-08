@@ -50,7 +50,9 @@ function onSelectedInventorySlotChanged(): void {
     class="inventory-slot-selector-sidebar"
   >
     <InventorySlotSelector
-      v-model:current-inventory-slot-type="modelParameters"
+      v-model:current-inventory-slot-type="modelParameters.currentInventorySlot"
+      :inventory-slots-shopping-list-items="modelParameters.inventorySlotsShoppingListItems"
+      :is-editing="modelParameters.isEditing"
       class="inventory-slot-selector-sidebar-selector"
       @update:current-inventory-slot-type="onSelectedInventorySlotChanged"
     />

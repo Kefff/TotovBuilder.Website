@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import Images from '../images'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
-import StringUtils from '../utils/StringUtils'
+import { IShoppingListItem } from '../models/build/IShoppingListItem'
+import { IItem } from '../models/item/IItem'
+import InventorySlotSelectorZone from './InventorySlotSelectorZoneComponent.vue'
 
 const modelCurrentInventorySlotType = defineModel<InventorySlotTypeId>('currentInventorySlotType')
 
-const _zoneBackgroundColor = 'transparent'
-// const _zoneBackgroundColor = 'rgba(0, 255, 0, 0.15)' // For testing
+const props = defineProps<{
+  inventorySlotsShoppingListItems: IShoppingListItem[],
+  isEditing: boolean
+}>()
+
 const _zoneColumn1Left = '2.25rem'
 const _zoneColumn2Left = '11.1rem'
 const _zoneColumn3Left = '20rem'
@@ -24,7 +30,8 @@ const _zoneItemSmallColumn3Left = '14.6rem'
 const _zoneItemSmallColumn4Left = '20.70rem'
 const _zoneItemSmallHeight = '5.35rem'
 const _zoneItemSmallWidth = _zoneItemSmallHeight
-const _zoneTextFontSize = '0.75rem'
+const _zoneItemWidth = _zoneItemHeight
+const _zoneItemWidthColspan2 = '15rem'
 const _zoneTextHeight = '0.85rem'
 const _zoneTextLine1Top = '1.35rem'
 const _zoneTextLine2Top = '9.3rem'
@@ -34,17 +41,34 @@ const _zoneTextLine5Top = '33.75rem'
 const _zoneTextLine6Top = '41.65rem'
 const _zoneTextLine7Top = '48.95rem'
 const _zoneTextPadding = '0.1rem'
-const _zoneWidth = _zoneItemHeight
-const _zoneWidthColspan2 = '15rem'
+const _zoneTextWidth = _zoneItemWidth
+const _zoneTextWidthColspan2 = _zoneItemWidthColspan2
 
-/**
- * Reacts to the click in a zone.
- *
- * Updates the current inventory slot type.
- */
-function onZoneClick(type: InventorySlotTypeId): void {
-  modelCurrentInventorySlotType.value = type
-}
+const inventorySlotItems = computed(() => {
+  const items = props.inventorySlotsShoppingListItems.map(issli => ({
+    slot: issli.inventorySlotId!,
+    item: issli.item,
+    quantity: issli.quantity
+  }))
+  const result: Record<string, { item: IItem, quantity: number }> = {}
+
+  for (let i = items.length - 1; i >= 0; i--) {
+    const item = items[i]
+    const count = items.filter(i => i.slot === item.slot).length
+
+    if (count > 1) {
+      item.slot = `${item.slot}${count}`
+    }
+
+    result[item.slot] = { item: item.item, quantity: item.quantity }
+
+    if (result[item.slot].quantity > result[item.slot].item.maxStackableAmount) {
+      result[item.slot].quantity = result[item.slot].item.maxStackableAmount
+    }
+  }
+
+  return result
+})
 </script>
 
 
@@ -64,209 +88,314 @@ function onZoneClick(type: InventorySlotTypeId): void {
         :src="Images.inventorySlotsSelection"
       >
 
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-earpiece"
-        @click="onZoneClick(InventorySlotTypeId.earpiece)"
-      >
-        {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.earpiece)).toLocaleUpperCase() }}
-      </div>
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-earpiece"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.earpiece }"
-        @click="onZoneClick(InventorySlotTypeId.earpiece)"
+      <!-- Earpiece -->
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemHeight"
+        :item-zone-left="_zoneColumn1Left"
+        :item-zone-top="_zoneItemLine1Top"
+        :item-zone-width="_zoneItemWidth"
+        :slot-content="inventorySlotItems[InventorySlotTypeId.earpiece]"
+        :slot-type="InventorySlotTypeId.earpiece"
+        :text-zone-height="_zoneTextHeight"
+        :text-zone-left="_zoneColumn1Left"
+        :text-zone-padding="_zoneTextPadding"
+        :text-zone-top="_zoneTextLine1Top"
+        :text-zone-width="_zoneTextWidth"
       />
 
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-headwear"
-        @click="onZoneClick(InventorySlotTypeId.headwear)"
-      >
-        {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.headwear)).toLocaleUpperCase() }}
-      </div>
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-headwear"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.headwear }"
-        @click="onZoneClick(InventorySlotTypeId.headwear)"
+      <!-- Headwear -->
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemHeight"
+        :item-zone-left="_zoneColumn2Left"
+        :item-zone-top="_zoneItemLine1Top"
+        :item-zone-width="_zoneItemWidth"
+        :slot-content="inventorySlotItems[InventorySlotTypeId.headwear]"
+        :slot-type="InventorySlotTypeId.headwear"
+        :text-zone-height="_zoneTextHeight"
+        :text-zone-left="_zoneColumn2Left"
+        :text-zone-padding="_zoneTextPadding"
+        :text-zone-top="_zoneTextLine1Top"
+        :text-zone-width="_zoneTextWidth"
       />
 
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-face-cover"
-        @click="onZoneClick(InventorySlotTypeId.faceCover)"
-      >
-        {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.faceCover)).toLocaleUpperCase() }}
-      </div>
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-face-cover"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.faceCover }"
-        @click="onZoneClick(InventorySlotTypeId.faceCover)"
+      <!-- Face cover -->
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemHeight"
+        :item-zone-left="_zoneColumn3Left"
+        :item-zone-top="_zoneItemLine1Top"
+        :item-zone-width="_zoneItemWidth"
+        :slot-content="inventorySlotItems[InventorySlotTypeId.faceCover]"
+        :slot-type="InventorySlotTypeId.faceCover"
+        :text-zone-height="_zoneTextHeight"
+        :text-zone-left="_zoneColumn3Left"
+        :text-zone-padding="_zoneTextPadding"
+        :text-zone-top="_zoneTextLine1Top"
+        :text-zone-width="_zoneTextWidth"
       />
 
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-armband"
-        @click="onZoneClick(InventorySlotTypeId.armband)"
-      >
-        {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.armband)).toLocaleUpperCase() }}
-      </div>
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-armband"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.armband }"
-        @click="onZoneClick(InventorySlotTypeId.armband)"
+      <!-- Armband -->
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemHeight"
+        :item-zone-left="_zoneColumn1Left"
+        :item-zone-top="_zoneItemLine2Top"
+        :item-zone-width="_zoneItemWidth"
+        :slot-content="inventorySlotItems[InventorySlotTypeId.armband]"
+        :slot-type="InventorySlotTypeId.armband"
+        :text-zone-height="_zoneTextHeight"
+        :text-zone-left="_zoneColumn1Left"
+        :text-zone-padding="_zoneTextPadding"
+        :text-zone-top="_zoneTextLine2Top"
+        :text-zone-width="_zoneTextWidth"
       />
 
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-body-armor"
-        @click="onZoneClick(InventorySlotTypeId.bodyArmor)"
-      >
-        {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.bodyArmor)).toLocaleUpperCase() }}
-      </div>
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-body-armor"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.bodyArmor }"
-        @click="onZoneClick(InventorySlotTypeId.bodyArmor)"
+      <!-- Body armor -->
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemHeight"
+        :item-zone-left="_zoneColumn2Left"
+        :item-zone-top="_zoneItemLine2Top"
+        :item-zone-width="_zoneItemWidth"
+        :slot-content="inventorySlotItems[InventorySlotTypeId.bodyArmor]"
+        :slot-type="InventorySlotTypeId.bodyArmor"
+        :text-zone-height="_zoneTextHeight"
+        :text-zone-left="_zoneColumn2Left"
+        :text-zone-padding="_zoneTextPadding"
+        :text-zone-top="_zoneTextLine2Top"
+        :text-zone-width="_zoneTextWidth"
       />
 
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-eyewear"
-        @click="onZoneClick(InventorySlotTypeId.eyewear)"
-      >
-        {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.eyewear)).toLocaleUpperCase() }}
-      </div>
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-eyewear"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.eyewear }"
-        @click="onZoneClick(InventorySlotTypeId.eyewear)"
+      <!-- Eyewear -->
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemHeight"
+        :item-zone-left="_zoneColumn3Left"
+        :item-zone-top="_zoneItemLine2Top"
+        :item-zone-width="_zoneItemWidth"
+        :slot-content="inventorySlotItems[InventorySlotTypeId.eyewear]"
+        :slot-type="InventorySlotTypeId.eyewear"
+        :text-zone-height="_zoneTextHeight"
+        :text-zone-left="_zoneColumn3Left"
+        :text-zone-padding="_zoneTextPadding"
+        :text-zone-top="_zoneTextLine2Top"
+        :text-zone-width="_zoneTextWidth"
       />
 
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-on-sling"
-        @click="onZoneClick(InventorySlotTypeId.onSling)"
-      >
-        {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.onSling)).toLocaleUpperCase() }}
-      </div>
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-on-sling"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.onSling }"
-        @click="onZoneClick(InventorySlotTypeId.onSling)"
+      <!-- On sling -->
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemHeight"
+        :item-zone-left="_zoneColumn1Left"
+        :item-zone-top="_zoneItemLine3Top"
+        :item-zone-width="_zoneItemWidthColspan2"
+        :slot-content="inventorySlotItems[InventorySlotTypeId.onSling]"
+        :slot-type="InventorySlotTypeId.onSling"
+        :text-zone-height="_zoneTextHeight"
+        :text-zone-left="_zoneColumn1Left"
+        :text-zone-padding="_zoneTextPadding"
+        :text-zone-top="_zoneTextLine3Top"
+        :text-zone-width="_zoneTextWidthColspan2"
       />
 
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-holster"
-        @click="onZoneClick(InventorySlotTypeId.holster)"
-      >
-        {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.holster)).toLocaleUpperCase() }}
-      </div>
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-holster"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.holster }"
-        @click="onZoneClick(InventorySlotTypeId.holster)"
+      <!-- Holster -->
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemHeight"
+        :item-zone-left="_zoneColumn3Left"
+        :item-zone-top="_zoneItemLine3Top"
+        :item-zone-width="_zoneItemWidth"
+        :slot-content="inventorySlotItems[InventorySlotTypeId.holster]"
+        :slot-type="InventorySlotTypeId.holster"
+        :text-zone-height="_zoneTextHeight"
+        :text-zone-left="_zoneColumn3Left"
+        :text-zone-padding="_zoneTextPadding"
+        :text-zone-top="_zoneTextLine3Top"
+        :text-zone-width="_zoneTextWidth"
       />
 
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-on-back"
-        @click="onZoneClick(InventorySlotTypeId.onBack)"
-      >
-        {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.onBack)).toLocaleUpperCase() }}
-      </div>
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-on-back"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.onBack }"
-        @click="onZoneClick(InventorySlotTypeId.onBack)"
+      <!-- On back -->
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemHeight"
+        :item-zone-left="_zoneColumn1Left"
+        :item-zone-top="_zoneItemLine4Top"
+        :item-zone-width="_zoneItemWidthColspan2"
+        :slot-content="inventorySlotItems[InventorySlotTypeId.onBack]"
+        :slot-type="InventorySlotTypeId.onBack"
+        :text-zone-height="_zoneTextHeight"
+        :text-zone-left="_zoneColumn1Left"
+        :text-zone-padding="_zoneTextPadding"
+        :text-zone-top="_zoneTextLine4Top"
+        :text-zone-width="_zoneTextWidthColspan2"
       />
 
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-scabbard"
-        @click="onZoneClick(InventorySlotTypeId.scabbard)"
-      >
-        {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.scabbard)).toLocaleUpperCase() }}
-      </div>
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-scabbard"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.scabbard }"
-        @click="onZoneClick(InventorySlotTypeId.scabbard)"
+      <!-- Scabbard -->
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemHeight"
+        :item-zone-left="_zoneColumn3Left"
+        :item-zone-top="_zoneItemLine4Top"
+        :item-zone-width="_zoneItemWidth"
+        :slot-content="inventorySlotItems[InventorySlotTypeId.scabbard]"
+        :slot-type="InventorySlotTypeId.scabbard"
+        :text-zone-height="_zoneTextHeight"
+        :text-zone-left="_zoneColumn3Left"
+        :text-zone-padding="_zoneTextPadding"
+        :text-zone-top="_zoneTextLine4Top"
+        :text-zone-width="_zoneTextWidth"
       />
 
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-tactical-rig"
-        @click="onZoneClick(InventorySlotTypeId.tacticalRig)"
-      >
-        {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.tacticalRig)).toLocaleUpperCase() }}
-      </div>
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-tactical-rig"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.tacticalRig }"
-        @click="onZoneClick(InventorySlotTypeId.tacticalRig)"
+      <!-- Tactical rig -->
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemHeight"
+        :item-zone-left="_zoneColumn1Left"
+        :item-zone-top="_zoneItemLine5Top"
+        :item-zone-width="_zoneItemWidth"
+        :slot-content="inventorySlotItems[InventorySlotTypeId.tacticalRig]"
+        :slot-type="InventorySlotTypeId.tacticalRig"
+        :text-zone-height="_zoneTextHeight"
+        :text-zone-left="_zoneColumn1Left"
+        :text-zone-padding="_zoneTextPadding"
+        :text-zone-top="_zoneTextLine5Top"
+        :text-zone-width="_zoneTextWidth"
       />
 
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-backpack"
-        @click="onZoneClick(InventorySlotTypeId.backpack)"
-      >
-        {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.backpack)).toLocaleUpperCase() }}
-      </div>
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-backpack"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.backpack }"
-        @click="onZoneClick(InventorySlotTypeId.backpack)"
+      <!-- Backpack -->
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemHeight"
+        :item-zone-left="_zoneColumn2Left"
+        :item-zone-top="_zoneItemLine5Top"
+        :item-zone-width="_zoneItemWidth"
+        :slot-content="inventorySlotItems[InventorySlotTypeId.backpack]"
+        :slot-type="InventorySlotTypeId.backpack"
+        :text-zone-height="_zoneTextHeight"
+        :text-zone-left="_zoneColumn2Left"
+        :text-zone-padding="_zoneTextPadding"
+        :text-zone-top="_zoneTextLine5Top"
+        :text-zone-width="_zoneTextWidth"
       />
 
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-pouch"
-        @click="onZoneClick(InventorySlotTypeId.pouch)"
-      >
-        {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.pouch)).toLocaleUpperCase() }}
-      </div>
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-pouch"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pouch }"
-        @click="onZoneClick(InventorySlotTypeId.pouch)"
+      <!-- Pouch -->
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemHeight"
+        :item-zone-left="_zoneColumn3Left"
+        :item-zone-top="_zoneItemLine5Top"
+        :item-zone-width="_zoneItemWidth"
+        :slot-content="inventorySlotItems[InventorySlotTypeId.pouch]"
+        :slot-type="InventorySlotTypeId.pouch"
+        :text-zone-height="_zoneTextHeight"
+        :text-zone-left="_zoneColumn3Left"
+        :text-zone-padding="_zoneTextPadding"
+        :text-zone-top="_zoneTextLine5Top"
+        :text-zone-width="_zoneTextWidth"
       />
 
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-pockets"
-        @click="onZoneClick(InventorySlotTypeId.pockets)"
-      >
-        {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.pockets)).toLocaleUpperCase() }}
-      </div>
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-pockets1"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
-        @click="onZoneClick(InventorySlotTypeId.pockets)"
+      <!-- Pockets -->
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemSmallHeight"
+        :item-zone-left="_zoneItemSmallColumn1Left"
+        :item-zone-top="_zoneItemLine6Top"
+        :item-zone-width="_zoneItemSmallWidth"
+        :slot-content="inventorySlotItems[`${InventorySlotTypeId.pockets}`]"
+        :slot-type="InventorySlotTypeId.pockets"
+        :text-zone-height="_zoneTextHeight"
+        :text-zone-left="_zoneColumn1Left"
+        :text-zone-padding="_zoneTextPadding"
+        :text-zone-top="_zoneTextLine6Top"
+        :text-zone-width="_zoneTextWidth"
       />
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-pockets2"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
-        @click="onZoneClick(InventorySlotTypeId.pockets)"
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemSmallHeight"
+        :item-zone-left="_zoneItemSmallColumn2Left"
+        :item-zone-top="_zoneItemLine6Top"
+        :item-zone-width="_zoneItemSmallWidth"
+        :slot-content="inventorySlotItems[`${InventorySlotTypeId.pockets}2`]"
+        :slot-type="InventorySlotTypeId.pockets"
+        :show-text="false"
       />
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-pockets3"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
-        @click="onZoneClick(InventorySlotTypeId.pockets)"
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemSmallHeight"
+        :item-zone-left="_zoneItemSmallColumn3Left"
+        :item-zone-top="_zoneItemLine6Top"
+        :item-zone-width="_zoneItemSmallWidth"
+        :slot-content="inventorySlotItems[`${InventorySlotTypeId.pockets}3`]"
+        :slot-type="InventorySlotTypeId.pockets"
+        :show-text="false"
       />
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-pockets4"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.pockets }"
-        @click="onZoneClick(InventorySlotTypeId.pockets)"
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemSmallHeight"
+        :item-zone-left="_zoneItemSmallColumn4Left"
+        :item-zone-top="_zoneItemLine6Top"
+        :item-zone-width="_zoneItemSmallWidth"
+        :slot-content="inventorySlotItems[`${InventorySlotTypeId.pockets}4`]"
+        :slot-type="InventorySlotTypeId.pockets"
+        :show-text="false"
       />
 
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-text inventory-slots-selector-zone-text-special"
-        @click="onZoneClick(InventorySlotTypeId.special)"
-      >
-        {{ $t('caption.slotType' + StringUtils.toUpperFirst(InventorySlotTypeId.special)).toLocaleUpperCase() }}
-      </div>
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-special1"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.special }"
-        @click="onZoneClick(InventorySlotTypeId.special)"
+      <!-- Special -->
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemSmallHeight"
+        :item-zone-left="_zoneItemSmallColumn1Left"
+        :item-zone-top="_zoneItemLine7Top"
+        :item-zone-width="_zoneItemSmallWidth"
+        :slot-content="inventorySlotItems[`${InventorySlotTypeId.special}`]"
+        :slot-type="InventorySlotTypeId.special"
+        :text-zone-height="_zoneTextHeight"
+        :text-zone-left="_zoneColumn1Left"
+        :text-zone-padding="_zoneTextPadding"
+        :text-zone-top="_zoneTextLine7Top"
+        :text-zone-width="_zoneTextWidth"
       />
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-special2"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.special }"
-        @click="onZoneClick(InventorySlotTypeId.special)"
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemSmallHeight"
+        :item-zone-left="_zoneItemSmallColumn2Left"
+        :item-zone-top="_zoneItemLine7Top"
+        :item-zone-width="_zoneItemSmallWidth"
+        :slot-content="inventorySlotItems[`${InventorySlotTypeId.special}2`]"
+        :slot-type="InventorySlotTypeId.special"
+        :show-text="false"
       />
-      <div
-        class="inventory-slots-selector-zone inventory-slots-selector-zone-item inventory-slots-selector-zone-item-special3"
-        :class="{ 'inventory-slots-selector-current': modelCurrentInventorySlotType === InventorySlotTypeId.special }"
-        @click="onZoneClick(InventorySlotTypeId.special)"
+      <InventorySlotSelectorZone
+        v-model:current-inventory-slot-type="modelCurrentInventorySlotType"
+        :is-editing="isEditing"
+        :item-zone-height="_zoneItemSmallHeight"
+        :item-zone-left="_zoneItemSmallColumn3Left"
+        :item-zone-top="_zoneItemLine7Top"
+        :item-zone-width="_zoneItemSmallWidth"
+        :slot-content="inventorySlotItems[`${InventorySlotTypeId.special}3`]"
+        :slot-type="InventorySlotTypeId.special"
+        :show-text="false"
       />
     </div>
   </div>
@@ -286,11 +415,6 @@ function onZoneClick(type: InventorySlotTypeId): void {
   position: relative;
 }
 
-.inventory-slots-selector-current {
-  border-color: var(--primary-color);
-  border-style: solid;
-}
-
 .inventory-slots-selector-image-container {
   border-color: var(--primary-color6);
   border-radius: 6px;
@@ -306,221 +430,5 @@ function onZoneClick(type: InventorySlotTypeId): void {
 .inventory-slots-selector-image {
   height: 100%;
   width: 100%;
-}
-
-.inventory-slots-selector-zone {
-  background-color: v-bind(_zoneBackgroundColor);
-  cursor: pointer;
-  position: absolute;
-  width: v-bind(_zoneWidth);
-}
-
-.inventory-slots-selector-zone-item:hover {
-  background-color: var(--primary-color6);
-}
-
-.inventory-slots-selector-zone-item {
-  height: v-bind(_zoneItemHeight);
-}
-
-.inventory-slots-selector-zone-item-armband {
-  height: 3.2rem;
-  left: v-bind(_zoneColumn1Left);
-  top: v-bind(_zoneItemLine2Top);
-}
-
-.inventory-slots-selector-zone-item-backpack {
-  left: v-bind(_zoneColumn2Left);
-  top: v-bind(_zoneItemLine5Top);
-}
-
-.inventory-slots-selector-zone-item-body-armor {
-  left: v-bind(_zoneColumn2Left);
-  top: v-bind(_zoneItemLine2Top);
-}
-
-.inventory-slots-selector-zone-item-earpiece {
-  left: v-bind(_zoneColumn1Left);
-  top: v-bind(_zoneItemLine1Top);
-}
-
-.inventory-slots-selector-zone-item-eyewear {
-  left: v-bind(_zoneColumn3Left);
-  top: v-bind(_zoneItemLine2Top);
-}
-
-.inventory-slots-selector-zone-item-face-cover {
-  left: v-bind(_zoneColumn3Left);
-  top: v-bind(_zoneItemLine1Top);
-}
-
-.inventory-slots-selector-zone-item-headwear {
-  left: v-bind(_zoneColumn2Left);
-  top: v-bind(_zoneItemLine1Top);
-}
-
-.inventory-slots-selector-zone-item-holster {
-  left: v-bind(_zoneColumn3Left);
-  top: v-bind(_zoneItemLine3Top);
-}
-
-.inventory-slots-selector-zone-item-on-back {
-  left: v-bind(_zoneColumn1Left);
-  top: v-bind(_zoneItemLine4Top);
-  width: v-bind(_zoneWidthColspan2);
-}
-
-.inventory-slots-selector-zone-item-on-sling {
-  left: v-bind(_zoneColumn1Left);
-  top: v-bind(_zoneItemLine3Top);
-  width: v-bind(_zoneWidthColspan2);
-}
-
-.inventory-slots-selector-zone-item-pockets1 {
-  height: v-bind(_zoneItemSmallHeight);
-  left: v-bind(_zoneItemSmallColumn1Left);
-  top: v-bind(_zoneItemLine6Top);
-  width: v-bind(_zoneItemSmallWidth);
-}
-
-.inventory-slots-selector-zone-item-pockets2 {
-  height: v-bind(_zoneItemSmallHeight);
-  left: v-bind(_zoneItemSmallColumn2Left);
-  top: v-bind(_zoneItemLine6Top);
-  width: v-bind(_zoneItemSmallWidth);
-}
-
-.inventory-slots-selector-zone-item-pockets3 {
-  height: v-bind(_zoneItemSmallHeight);
-  left: v-bind(_zoneItemSmallColumn3Left);
-  top: v-bind(_zoneItemLine6Top);
-  width: v-bind(_zoneItemSmallWidth);
-}
-
-.inventory-slots-selector-zone-item-pockets4 {
-  height: v-bind(_zoneItemSmallHeight);
-  left: v-bind(_zoneItemSmallColumn4Left);
-  top: v-bind(_zoneItemLine6Top);
-  width: v-bind(_zoneItemSmallWidth);
-}
-
-.inventory-slots-selector-zone-item-pouch {
-  left: v-bind(_zoneColumn3Left);
-  top: v-bind(_zoneItemLine5Top);
-}
-
-.inventory-slots-selector-zone-item-scabbard {
-  left: v-bind(_zoneColumn3Left);
-  top: v-bind(_zoneItemLine4Top);
-}
-
-.inventory-slots-selector-zone-item-special1 {
-  height: v-bind(_zoneItemSmallHeight);
-  left: v-bind(_zoneItemSmallColumn1Left);
-  top: v-bind(_zoneItemLine7Top);
-  width: v-bind(_zoneItemSmallWidth);
-}
-
-.inventory-slots-selector-zone-item-special2 {
-  height: v-bind(_zoneItemSmallHeight);
-  left: v-bind(_zoneItemSmallColumn2Left);
-  top: v-bind(_zoneItemLine7Top);
-  width: v-bind(_zoneItemSmallWidth);
-}
-
-.inventory-slots-selector-zone-item-special3 {
-  height: v-bind(_zoneItemSmallHeight);
-  left: v-bind(_zoneItemSmallColumn3Left);
-  top: v-bind(_zoneItemLine7Top);
-  width: v-bind(_zoneItemSmallWidth);
-}
-
-.inventory-slots-selector-zone-item-tactical-rig {
-  left: v-bind(_zoneColumn1Left);
-  top: v-bind(_zoneItemLine5Top);
-}
-
-.inventory-slots-selector-zone-text {
-  font-size: v-bind(_zoneTextFontSize);
-  height: v-bind(_zoneTextHeight);
-  padding-left: v-bind(_zoneTextPadding);
-  padding-right: v-bind(_zoneTextPadding);
-}
-
-.inventory-slots-selector-zone-text-armband {
-  left: v-bind(_zoneColumn1Left);
-  top: v-bind(_zoneTextLine2Top);
-}
-
-.inventory-slots-selector-zone-text-backpack {
-  left: v-bind(_zoneColumn2Left);
-  top: v-bind(_zoneTextLine5Top);
-}
-
-.inventory-slots-selector-zone-text-body-armor {
-  left: v-bind(_zoneColumn2Left);
-  top: v-bind(_zoneTextLine2Top);
-}
-
-.inventory-slots-selector-zone-text-earpiece {
-  left: v-bind(_zoneColumn1Left);
-  top: v-bind(_zoneTextLine1Top);
-}
-
-.inventory-slots-selector-zone-text-eyewear {
-  left: v-bind(_zoneColumn3Left);
-  top: v-bind(_zoneTextLine2Top);
-}
-
-.inventory-slots-selector-zone-text-face-cover {
-  left: v-bind(_zoneColumn3Left);
-  top: v-bind(_zoneTextLine1Top);
-}
-
-.inventory-slots-selector-zone-text-headwear {
-  left: v-bind(_zoneColumn2Left);
-  top: v-bind(_zoneTextLine1Top);
-}
-
-.inventory-slots-selector-zone-text-holster {
-  left: v-bind(_zoneColumn3Left);
-  top: v-bind(_zoneTextLine3Top);
-}
-
-.inventory-slots-selector-zone-text-on-back {
-  left: v-bind(_zoneColumn1Left);
-  top: v-bind(_zoneTextLine4Top);
-  width: v-bind(_zoneWidthColspan2);
-}
-
-.inventory-slots-selector-zone-text-on-sling {
-  left: v-bind(_zoneColumn1Left);
-  top: v-bind(_zoneTextLine3Top);
-  width: v-bind(_zoneWidthColspan2);
-}
-
-.inventory-slots-selector-zone-text-pockets {
-  left: v-bind(_zoneColumn1Left);
-  top: v-bind(_zoneTextLine6Top);
-}
-
-.inventory-slots-selector-zone-text-pouch {
-  left: v-bind(_zoneColumn3Left);
-  top: v-bind(_zoneTextLine5Top);
-}
-
-.inventory-slots-selector-zone-text-scabbard {
-  left: v-bind(_zoneColumn3Left);
-  top: v-bind(_zoneTextLine4Top);
-}
-
-.inventory-slots-selector-zone-text-special {
-  left: v-bind(_zoneColumn1Left);
-  top: v-bind(_zoneTextLine7Top);
-}
-
-.inventory-slots-selector-zone-text-tactical-rig {
-  left: v-bind(_zoneColumn1Left);
-  top: v-bind(_zoneTextLine5Top);
 }
 </style>
