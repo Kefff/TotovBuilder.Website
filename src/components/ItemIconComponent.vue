@@ -11,9 +11,11 @@ const props = withDefaults(
   defineProps<{
     item: IItem,
     quantity?: number,
+    showShortName?: boolean
   }>(),
   {
-    quantity: undefined
+    quantity: undefined,
+    showShortName: false
   })
 
 const iconUrl = computed(() => {
@@ -40,6 +42,12 @@ const iconUrl = computed(() => {
       v-if="iconUrl != null"
       :src="iconUrl"
     >
+    <div
+      v-if="showShortName"
+      class="item-icon-shortname"
+    >
+      {{ item.shortName }}
+    </div>
     <div
       v-if="quantity != null && quantity > 1"
       class="item-icon-quantity"
@@ -84,6 +92,19 @@ const iconUrl = computed(() => {
 .item-icon-quantity {
   bottom: 1px;
   font-size: 0.875rem;
+  height: 1rem;
+  position: absolute;
+  right: 3px;
+  text-align: end;
+  text-shadow: 1px 1px 0 black,
+    -1px 1px 0 black,
+    1px -1px 0 black,
+    -1px -1px 0 black;
+}
+
+.item-icon-shortname {
+  top: 1px;
+  font-size: 0.75rem;
   height: 1rem;
   position: absolute;
   right: 3px;

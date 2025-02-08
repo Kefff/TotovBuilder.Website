@@ -4,6 +4,7 @@ import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IItem } from '../models/item/IItem'
 import StringUtils from '../utils/StringUtils'
 import ItemIcon from './ItemIconComponent.vue'
+import Tooltip from './TooltipComponent.vue'
 
 const modelCurrentInventorySlotType = defineModel<InventorySlotTypeId>('currentInventorySlotType')
 
@@ -62,13 +63,25 @@ function onZoneClick(type: InventorySlotTypeId): void {
     class="inventory-slots-selector-zone inventory-slots-selector-zone-item"
     :class="{ 'inventory-slots-selector-zone-current': modelCurrentInventorySlotType === slotType }"
   >
-    <ItemIcon
+    <Tooltip
       v-if="slotContent != null"
-      :item="slotContent.item"
-      :quantity="slotContent.quantity"
-    />
+      :apply-hover-style="false"
+      :full-size="true"
+      :tooltip="slotContent.item.name"
+    >
+      <ItemIcon
+        :item="slotContent.item"
+        :quantity="slotContent.quantity"
+        :show-short-name="true"
+      />
+      <div
+        v-if="canBeClicked"
+        class="inventory-slots-selector-zone-item-overlay"
+        @click="onZoneClick(slotType)"
+      />
+    </Tooltip>
     <div
-      v-if="canBeClicked"
+      v-else-if="canBeClicked"
       class="inventory-slots-selector-zone-item-overlay"
       @click="onZoneClick(slotType)"
     />
@@ -161,7 +174,7 @@ function onZoneClick(type: InventorySlotTypeId): void {
 
 
 <style>
-.inventory-slots-selector-zone-item > .item-icon {
+.inventory-slots-selector-zone-item .item-icon {
   border-color: var(--primary-color6);
   border-radius: 0;
   border-style: solid;
@@ -170,7 +183,7 @@ function onZoneClick(type: InventorySlotTypeId): void {
   width: 100%;
 }
 
-.inventory-slots-selector-zone-item > .item-icon > img {
+.inventory-slots-selector-zone-item .item-icon > img {
   flex-grow: 1;
   max-height: unset;
   max-width: unset;
