@@ -61,10 +61,6 @@ const inventorySlotItems = computed(() => {
     }
 
     result[item.slot] = { item: item.item, quantity: item.quantity }
-
-    if (result[item.slot].quantity > result[item.slot].item.maxStackableAmount) {
-      result[item.slot].quantity = result[item.slot].item.maxStackableAmount
-    }
   }
 
   return result
