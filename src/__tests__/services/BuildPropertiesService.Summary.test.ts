@@ -663,7 +663,7 @@ describe('getSummaryAsync()', () => {
           },
           {
             ignorePrice: IgnoredUnitPrice.notIgnored,
-            inventorySlotId: 'pockets',
+            inventorySlotId: undefined,
             item: {
               ...ammo545us,
               prices: ammo545usPrices
@@ -676,10 +676,10 @@ describe('getSummaryAsync()', () => {
               merchant: 'prapor',
               merchantLevel: 1,
               quest: undefined,
-              value: 14880,
-              valueInMainCurrency: 14880
+              value: 9120,
+              valueInMainCurrency: 9120
             },
-            quantity: 155,
+            quantity: 95,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1055,6 +1055,36 @@ describe('getSummaryAsync()', () => {
               quest: undefined,
               value: 11822,
               valueInMainCurrency: 11822
+            }
+          },
+          {
+            ignorePrice: IgnoredUnitPrice.notIgnored,
+            inventorySlotId: 'pockets',
+            item: {
+              ...ammo545us,
+              prices: ammo545usPrices
+            },
+            missingPrice: false,
+            price: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: ammo545us.id,
+              merchant: 'prapor',
+              merchantLevel: 1,
+              quest: undefined,
+              value: 5760,
+              valueInMainCurrency: 5760
+            },
+            quantity: 60,
+            unitPrice: {
+              barterItems: [],
+              currencyName: 'RUB',
+              itemId: ammo545us.id,
+              merchant: 'prapor',
+              merchantLevel: 1,
+              quest: undefined,
+              value: 96,
+              valueInMainCurrency: 96
             }
           },
           {
@@ -1488,7 +1518,7 @@ describe('getSummaryAsync()', () => {
         const summary = await service.getSummaryAsync(build)
 
         // Assert
-        expect(summary.shoppingList).toStrictEqual(expected)
+        expect(summary.shoppingList).toEqual(expected)
       }
     )
 

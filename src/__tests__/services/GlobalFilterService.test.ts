@@ -89,37 +89,12 @@ describe('GlobalFilterService', () => {
         merchantFilters: [
           {
             enabled: true,
-            merchant: 'flea-market',
-            merchantLevel: 0
-          },
-          {
-            enabled: false,
-            merchant: 'jaeger',
-            merchantLevel: 3
-          },
-          {
-            enabled: true,
-            merchant: 'mechanic',
-            merchantLevel: 3
-          },
-          {
-            enabled: true,
-            merchant: 'peacekeeper',
-            merchantLevel: 3
-          },
-          {
-            enabled: true,
             merchant: 'prapor',
             merchantLevel: 3
           },
           {
             enabled: true,
-            merchant: 'ragman',
-            merchantLevel: 3
-          },
-          {
-            enabled: true,
-            merchant: 'ref',
+            merchant: 'therapist',
             merchantLevel: 3
           },
           {
@@ -129,8 +104,33 @@ describe('GlobalFilterService', () => {
           },
           {
             enabled: true,
-            merchant: 'therapist',
+            merchant: 'peacekeeper',
             merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'mechanic',
+            merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'ragman',
+            merchantLevel: 3
+          },
+          {
+            enabled: false,
+            merchant: 'jaeger',
+            merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'ref',
+            merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'flea-market',
+            merchantLevel: 0
           }
         ]
       } as IGlobalFilter)
@@ -154,37 +154,12 @@ describe('GlobalFilterService', () => {
         merchantFilters: [
           {
             enabled: true,
-            merchant: 'flea-market',
-            merchantLevel: 0
-          },
-          {
-            enabled: true,
-            merchant: 'jaeger',
-            merchantLevel: 4
-          },
-          {
-            enabled: true,
-            merchant: 'mechanic',
-            merchantLevel: 4
-          },
-          {
-            enabled: true,
-            merchant: 'peacekeeper',
-            merchantLevel: 4
-          },
-          {
-            enabled: true,
             merchant: 'prapor',
             merchantLevel: 4
           },
           {
             enabled: true,
-            merchant: 'ragman',
-            merchantLevel: 4
-          },
-          {
-            enabled: true,
-            merchant: 'ref',
+            merchant: 'therapist',
             merchantLevel: 4
           },
           {
@@ -194,8 +169,33 @@ describe('GlobalFilterService', () => {
           },
           {
             enabled: true,
-            merchant: 'therapist',
+            merchant: 'peacekeeper',
             merchantLevel: 4
+          },
+          {
+            enabled: true,
+            merchant: 'mechanic',
+            merchantLevel: 4
+          },
+          {
+            enabled: true,
+            merchant: 'ragman',
+            merchantLevel: 4
+          },
+          {
+            enabled: true,
+            merchant: 'jaeger',
+            merchantLevel: 4
+          },
+          {
+            enabled: true,
+            merchant: 'ref',
+            merchantLevel: 4
+          },
+          {
+            enabled: true,
+            merchant: 'flea-market',
+            merchantLevel: 0
           }
         ]
       } as IGlobalFilter)
@@ -579,38 +579,13 @@ describe('GlobalFilterService', () => {
         excludePresetBaseItems: false,
         merchantFilters: [
           {
-            enabled: false,
-            merchant: 'flea-market',
-            merchantLevel: 0
-          },
-          {
-            enabled: false,
-            merchant: 'jaeger',
-            merchantLevel: 3
-          },
-          {
-            enabled: true,
-            merchant: 'mechanic',
-            merchantLevel: 3
-          },
-          {
-            enabled: true,
-            merchant: 'peacekeeper',
-            merchantLevel: 3
-          },
-          {
             enabled: true,
             merchant: 'prapor',
             merchantLevel: 1
           },
           {
             enabled: true,
-            merchant: 'ragman',
-            merchantLevel: 3
-          },
-          {
-            enabled: true,
-            merchant: 'ref',
+            merchant: 'therapist',
             merchantLevel: 3
           },
           {
@@ -620,8 +595,33 @@ describe('GlobalFilterService', () => {
           },
           {
             enabled: true,
-            merchant: 'therapist',
+            merchant: 'peacekeeper',
             merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'mechanic',
+            merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'ragman',
+            merchantLevel: 3
+          },
+          {
+            enabled: false,
+            merchant: 'jaeger',
+            merchantLevel: 3
+          },
+          {
+            enabled: true,
+            merchant: 'ref',
+            merchantLevel: 3
+          },
+          {
+            enabled: false,
+            merchant: 'flea-market',
+            merchantLevel: 0
           }
         ]
       } as IGlobalFilter)
