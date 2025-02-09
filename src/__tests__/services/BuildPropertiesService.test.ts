@@ -1300,7 +1300,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
 
       // Assert
       expect(result).toBe(`[Build 1](http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9GIERw3HZt4SozAJ4ecag7fexwq5EsA3ZY3G9JALNl2jZAHroUrkr2uphzBhRzPCNtuO6Uc6K_tEMpKRwdhvxFpuse2mVINUQGFI8lUj-5pSeRRqWdF2EaM5qVY_yqoEBbG48VQ0KvuCZcXygCoBPez45CigdHq5kOCmX6JP6TdRwc3_eP85HoZKTFmKeqoueCPFEVVnRZBoEcWYM3fX8BHhr1YCeHQTJm50-vGIyQ1uLNyiIpuq1cFP_3JNTnY-hdAMnba6kb8PEY9aLk8cavZS4xq8lqn96NXF-H1_OWlOwFEWFr2VoBSI0RBwAxRMQgG0g3nX8MJ2BuAWQdz8xd6T39XBk6igferK_Ex-StaEA2Pi93OzxIlXgqPxc1HzpgWhbGiu_L9zMhr7NejxOgBy_rf8iUUmRlxGtuiUMv_6Nv35uG8rX9bl49_jHA2S5txChG3gjXBbVuReiUhsgZ9gT4xOQEQ_g33pDjRPMVC-bLbPHJcBuE2pbQOThseLH4rUjK6Sb9IbF99ZNiWHRQF4cieUYTOgqVu58gCOQB3_lygItavScD6KD6ETn76Ld4PKfNdDBTW60zKOTDUfLOKskPAvv8CJS6JIOZmG7z_bNwXWARPvkJgt24Ywgc1c_CuqrOoDN0iCO6QtaYMI3KcKgbqf16_1WH7L2-6ogCMKK0sAadxDUFJJ7BF3mvgQC_Ty9YilypMSb3oKwOpZIoK9kljWX_3NDn0DpMmjcn4bU3jMtOhFAs2j2g4z7JXCle7mzXDAUGG_6xUYU)
-[Build 2](http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv)`)
+[Build 2](http://localhost:3000/s/XQAAAAI_AwAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGsl4dNmidYYtG_dKZDAEXpv0OXo_ACd3rHXVSb7164luG7uqSFJX9gUKvM7w65AqVMEnHltm-pmNer4wgY-3Ie8EDEab8kMzo-hY7JD4zK2s55lopW4QgGNOXdi6ElV07V5v-3Ju9j_IjHjp3KX9WFqDdQAys8nXJho-iIuSwFnbGbawYaht_op0H-SCv9Bj38A)`)
     })
 
     it('should not include links', async () => {
@@ -1365,7 +1365,7 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
 
 ↕️ Recul vertical **362**   ↔️ Recul horizontal **249**   ✋ Ergonomie **52** (**-3%**)  
 🛡️ Classe d'armure **4**   🏃 Vitesse **-3%**   🔄 Vitesse de rotation **-1%**  
-💵 Prix **184 252₽** et **444$** (= **247 747₽**)   ⚓ Poids **8,936 kg**  
+💵 Prix **187 902₽** et **444$** (= **251 397₽**)   ⚓ Poids **9,236 kg**  
 
 [*Holster*] **Beretta M9A3 9x19 pistol Default**   💵 Peacekeeper 1 **107$** (= **15 337₽**)  
  [*Canon*]  
@@ -1378,10 +1378,12 @@ Ref ❌   Skier 1️⃣   La Toubib 3️⃣
  [*Plaque frontale*] **Monoclete level III PE ballistic plate**   💵 Peacekeeper 3 (*échange*) **31 503₽**  
  [*Plaque dorsale*] **Monoclete level III PE ballistic plate**   💵 Peacekeeper 3 (*échange*) **31 503₽**  
  **Salewa first aid kit**   💵 La Toubib 1 (*échange*) **21 923₽**  
+ 35 x **9x19mm Green Tracer**   💵 Le Mécano 1 **2 555₽**  
 
 [*Dispositif audio*] **Walker's Razor Digital headset**   💵 Marché **64 132₽**  
 
 [*Pochette*] **Secure container Alpha**  
+ 15 x **9x19mm Green Tracer**   💵 Le Mécano 1 **1 095₽**  
 
 [*Fourreau*] **6Kh5 Bayonet**  
 
@@ -1948,7 +1950,7 @@ http://localhost:3000/s/XQAAAAK6BAAAAAAAAABBKEnKciJ9Ha4afmksn3IsDhJ5O4QenVHR6M9G
 
 
 Build 2
-http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv`)
+http://localhost:3000/s/XQAAAAI_AwAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGsl4dNmidYYtG_dKZDAEXpv0OXo_ACd3rHXVSb7164luG7uqSFJX9gUKvM7w65AqVMEnHltm-pmNer4wgY-3Ie8EDEab8kMzo-hY7JD4zK2s55lopW4QgGNOXdi6ElV07V5v-3Ju9j_IjHjp3KX9WFqDdQAys8nXJho-iIuSwFnbGbawYaht_op0H-SCv9Bj38A`)
     })
 
     it('should not include links', async () => {
@@ -2013,7 +2015,7 @@ Build 2
 
 ↕️ Recul vertical 362   ↔️ Recul horizontal 249   ✋ Ergonomie 52 (-3%)
 🛡️ Classe d'armure 4   🏃 Vitesse -3%   🔄 Vitesse de rotation -1%
-💵 Prix 184 252₽ et 444$ (= 247 747₽)   ⚓ Poids 8,936 kg
+💵 Prix 187 902₽ et 444$ (= 251 397₽)   ⚓ Poids 9,236 kg
 
 [Holster] Beretta M9A3 9x19 pistol Default   💵 Peacekeeper 1 107$ (= 15 337₽)
  [Canon]
@@ -2026,10 +2028,12 @@ Build 2
  [Plaque frontale] Monoclete level III PE ballistic plate   💵 Peacekeeper 3 (échange) 31 503₽
  [Plaque dorsale] Monoclete level III PE ballistic plate   💵 Peacekeeper 3 (échange) 31 503₽
  Salewa first aid kit   💵 La Toubib 1 (échange) 21 923₽
+ 35 x 9x19mm Green Tracer   💵 Le Mécano 1 2 555₽
 
 [Dispositif audio] Walker's Razor Digital headset   💵 Marché 64 132₽
 
 [Pochette] Secure container Alpha
+ 15 x 9x19mm Green Tracer   💵 Le Mécano 1 1 095₽
 
 [Fourreau] 6Kh5 Bayonet
 
@@ -2127,11 +2131,11 @@ Ref 4️⃣   Skier 4️⃣   La Toubib 4️⃣
 
 const expectedMarkdownString2 = `# Build 2
 
-*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv)*
+*[Version interactive avec statistiques complètes](http://localhost:3000/s/XQAAAAI_AwAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGsl4dNmidYYtG_dKZDAEXpv0OXo_ACd3rHXVSb7164luG7uqSFJX9gUKvM7w65AqVMEnHltm-pmNer4wgY-3Ie8EDEab8kMzo-hY7JD4zK2s55lopW4QgGNOXdi6ElV07V5v-3Ju9j_IjHjp3KX9WFqDdQAys8nXJho-iIuSwFnbGbawYaht_op0H-SCv9Bj38A)*
 
 ↕️ Recul vertical **362**   ↔️ Recul horizontal **249**   ✋ Ergonomie **52** (**-3%**)  
 🛡️ Classe d'armure **4**   🏃 Vitesse **-3%**   🔄 Vitesse de rotation **-1%**  
-💵 Prix **184 252₽** et **444$** (= **247 747₽**)   ⚓ Poids **8,936 kg**  
+💵 Prix **187 902₽** et **444$** (= **251 397₽**)   ⚓ Poids **9,236 kg**  
 
 [*Holster*] **Beretta M9A3 9x19 pistol Default**   💵 Peacekeeper 1 **107$** (= **15 337₽**)  
  [*Canon*]  
@@ -2144,10 +2148,12 @@ const expectedMarkdownString2 = `# Build 2
  [*Plaque frontale*] **Monoclete level III PE ballistic plate**   💵 Peacekeeper 3 (*échange*) **31 503₽**  
  [*Plaque dorsale*] **Monoclete level III PE ballistic plate**   💵 Peacekeeper 3 (*échange*) **31 503₽**  
  **Salewa first aid kit**   💵 La Toubib 1 (*échange*) **21 923₽**  
+ 35 x **9x19mm Green Tracer**   💵 Le Mécano 1 **2 555₽**  
 
 [*Dispositif audio*] **Walker's Razor Digital headset**   💵 Marché **64 132₽**  
 
 [*Pochette*] **Secure container Alpha**  
+ 15 x **9x19mm Green Tracer**   💵 Le Mécano 1 **1 095₽**  
 
 [*Fourreau*] **6Kh5 Bayonet**  
 
@@ -2321,7 +2327,7 @@ const expectedString2 = `Build 2
 
 ↕️ Recul vertical 362   ↔️ Recul horizontal 249   ✋ Ergonomie 52 (-3%)
 🛡️ Classe d'armure 4   🏃 Vitesse -3%   🔄 Vitesse de rotation -1%
-💵 Prix 184 252₽ et 444$ (= 247 747₽)   ⚓ Poids 8,936 kg
+💵 Prix 187 902₽ et 444$ (= 251 397₽)   ⚓ Poids 9,236 kg
 
 [Holster] Beretta M9A3 9x19 pistol Default   💵 Peacekeeper 1 107$ (= 15 337₽)
  [Canon]
@@ -2334,15 +2340,17 @@ const expectedString2 = `Build 2
  [Plaque frontale] Monoclete level III PE ballistic plate   💵 Peacekeeper 3 (échange) 31 503₽
  [Plaque dorsale] Monoclete level III PE ballistic plate   💵 Peacekeeper 3 (échange) 31 503₽
  Salewa first aid kit   💵 La Toubib 1 (échange) 21 923₽
+ 35 x 9x19mm Green Tracer   💵 Le Mécano 1 2 555₽
 
 [Dispositif audio] Walker's Razor Digital headset   💵 Marché 64 132₽
 
 [Pochette] Secure container Alpha
+ 15 x 9x19mm Green Tracer   💵 Le Mécano 1 1 095₽
 
 [Fourreau] 6Kh5 Bayonet
 
 Version interactive avec statistiques complètes
-http://localhost:3000/s/XQAAAAL-AgAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGtZFQI4nHXyvXeCkGDnE2yJSmmd0bDcQmx-3C2F32vOjYAWw23ezEFu9AKFIKbj4FojTuE3p0k5O-4x8UQPdF8MZxt6uQN2iguqmpNUwuma3GHEITztjySMh4BZzRXIxDIuifBYqAV3UKCQgbyu7ExKnBNb_JsU6NpGDPtI5Sv5sP_rxAFv
+http://localhost:3000/s/XQAAAAI_AwAAAAAAAABBKEnKciJ9Ha4afmlhjXIcBHJ5OAjWBvHRqhzsw2sFohvtE2U5Ax-ZhpnJP5jm2hvuJmbR_88c5MLjq2AZyyIReyJ-7BxYduIOn4n0fu2tfBOvPNWlcixwLZO1VGePLUD5o2Ecs8J4dbz6zB1DvdfOl7I1zHA3gjt9_78XznrP3_PAQg3DejFaHp3dULJQyxzqwNiDs3OOUfIwRGFd5S-urvsBPs1_gEtIudOzGEfBBy20xD6GrV-QjaQKiRUfU4yV1ws9tuIeuyZzbg2QP1cON2MQ8vR5D6eHm2-MWlJjwHIwf4EnifB7mO4WnufIc_i8KD9ExoEPEtbTQpEa-2hVWnVCN_Oo7fL7HxVOvER-x5ExV57LX-gjvmbJ2Fnu_NruEzqyI8kktrxs0RfNo3ZRjArb-0TGqLRhTXsA4q3PuT5_zGsl4dNmidYYtG_dKZDAEXpv0OXo_ACd3rHXVSb7164luG7uqSFJX9gUKvM7w65AqVMEnHltm-pmNer4wgY-3Ie8EDEab8kMzo-hY7JD4zK2s55lopW4QgGNOXdi6ElV07V5v-3Ju9j_IjHjp3KX9WFqDdQAys8nXJho-iIuSwFnbGbawYaht_op0H-SCv9Bj38A
 
 
 

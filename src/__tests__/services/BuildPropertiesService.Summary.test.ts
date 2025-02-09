@@ -318,7 +318,7 @@ describe('getSummaryAsync()', () => {
         build2,
         {
           missingPrice: false,
-          priceInMainCurrency: 247747,
+          priceInMainCurrency: 251397,
           priceByCurrency: [
             {
               barterItems: [],
@@ -327,8 +327,8 @@ describe('getSummaryAsync()', () => {
               merchant: '',
               merchantLevel: 0,
               quest: undefined,
-              value: 184252,
-              valueInMainCurrency: 184252
+              value: 187902,
+              valueInMainCurrency: 187902
             },
             {
               barterItems: [],
@@ -1227,10 +1227,10 @@ describe('getSummaryAsync()', () => {
               merchant: 'mechanic',
               merchantLevel: 1,
               quest: undefined,
-              value: 1241,
-              valueInMainCurrency: 1241
+              value: 4891,
+              valueInMainCurrency: 4891
             },
-            quantity: 17,
+            quantity: 67,
             unitPrice: {
               barterItems: [],
               currencyName: 'RUB',
@@ -1575,7 +1575,7 @@ describe('getSummaryAsync()', () => {
       ],
       [
         build2,
-        8.936
+        9.235999999999999
       ],
       [
         {
