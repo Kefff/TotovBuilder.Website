@@ -687,11 +687,6 @@ ${sharableUrlResult}`
               shoppingList[inventoryItemShoppingListItemIndex].price.value += inventoryItemShoppingListItemToAdd.unitPrice.value * inventoryItemShoppingListItemToAdd.quantity
               shoppingList[inventoryItemShoppingListItemIndex].price.valueInMainCurrency += inventoryItemShoppingListItemToAdd.unitPrice.valueInMainCurrency * inventoryItemShoppingListItemToAdd.quantity
             }
-
-            if (shoppingList[inventoryItemShoppingListItemIndex].inventorySlotId == undefined
-              && inventoryItemShoppingListItemToAdd.inventorySlotId != null) {
-              shoppingList[inventoryItemShoppingListItemIndex].inventorySlotId = inventoryItemShoppingListItemToAdd.inventorySlotId
-            }
           }
         }
       }

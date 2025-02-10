@@ -5,7 +5,7 @@ import Services from '../../services/repository/Services'
 import LanguageUtils from '../../utils/LanguageUtils'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('getLanguage()', () => {
+describe('getLanguage', () => {
   it('should get the stored language', () => {
     // Arrange
     useWebsiteConfigurationServiceMock()
@@ -32,7 +32,7 @@ describe('getLanguage()', () => {
   })
 })
 
-describe('setLanguage()', () => {
+describe('setLanguage', () => {
   it.each([
     ['fr', 'fr', 'Configurateur d\'armes et d\'équipement pour Escape From Tarkov', 'Totov Builder aide à créer des configurations d\'armes et choisir vos mods et équipement entier en fonction des niveaux de marchands. Visualisez le prix et les stats d\'équipement.'],
     ['invalid', 'en', 'Gun modding and loadout builder for Escape From Tarkov', 'Totov Builder helps you create weapon builds and choose all of your gear based on merchant levels. View the price and stats of your loadouts.']

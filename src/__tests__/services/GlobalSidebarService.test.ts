@@ -15,7 +15,7 @@ describe('GlobalSideBarService', () => {
     })
   })
 
-  describe('close()', () => {
+  describe('close', () => {
     it('should emit the close global sidebar event', () => {
       // Arrange
       let globalSidebarToCloseType: GlobalSidebarComponent | undefined = undefined
@@ -31,7 +31,7 @@ describe('GlobalSideBarService', () => {
     })
   })
 
-  describe('display()', () => {
+  describe('display', () => {
     it('should emit the open global sidebar event', () => {
       // Arrange
       const options: IGlobalSidebarOptions = {
@@ -86,7 +86,7 @@ describe('GlobalSideBarService', () => {
     })
   })
 
-  describe('executeOnCloseActionsAsync()', () => {
+  describe('executeOnCloseActionsAsync', () => {
     it('should execute closing actions when closing the global sidebar and unregister actions', async () => {
       // Arrange
       let action1ExecutionCount = 0
@@ -118,7 +118,7 @@ describe('GlobalSideBarService', () => {
     })
   })
 
-  describe('isDisplayed()', () => {
+  describe('isDisplayed', () => {
     it('should indicate when a sidebar is displayed', async () => {
       // Arrange
       const service = new GlobalSidebarService()

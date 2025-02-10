@@ -6,7 +6,7 @@ import ItemFilterAndSortingData from '../../../../models/utils/ItemFilterAndSort
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { RangedWeaponSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
-describe('comparisonFunction()', () => {
+describe('comparisonFunction', () => {
   it.each([
     ['caliber', false],
     ['caliber', true],

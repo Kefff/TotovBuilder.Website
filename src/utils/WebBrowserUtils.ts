@@ -67,16 +67,6 @@ export default class WebBrowserUtils {
   }
 
   /**
-   * Indicates whether the screen is a touch screen.
-   * @returns `true` when the screen is a touch screen; otherwise `false`.
-   */
-  public static isTouchScreen(): Ref<boolean> {
-    const isTouchScreen = useMediaQuery('(hover: none)') // cf. https://stackoverflow.com/a/63666289
-
-    return isTouchScreen
-  }
-
-  /**
  * Gets the parent element that can be scrolled.
  * It can either be the `p-sidebar-content` div of a global sidebar or the `app` div.
  * @param parentElement - Parent element.
@@ -101,6 +91,16 @@ export default class WebBrowserUtils {
     const result = this.getScrollableParentElement(parentElement.parentElement)
 
     return result
+  }
+
+  /**
+   * Indicates whether the screen is a touch screen.
+   * @returns `true` when the screen is a touch screen; otherwise `false`.
+   */
+  public static isTouchScreen(): Ref<boolean> {
+    const isTouchScreen = useMediaQuery('(hover: none)') // cf. https://stackoverflow.com/a/63666289
+
+    return isTouchScreen
   }
 }
 

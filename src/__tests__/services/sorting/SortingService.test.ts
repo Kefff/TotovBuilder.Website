@@ -13,7 +13,7 @@ import { IBuildSortingFunctionList, IItemSortingFunctionList } from '../../../se
 import { AmmunitionSortingFunctions, ArmorModSortingFunctions, ArmorSortingFunctions, BackpackSortingFunctions, ContainerSortingFunctions, EyewearSortingFunctions, GrenadeSortingFunctions, HeadwearSortingFunctions, ItemSortingFunctions, MagazineSortingFunctions, MeleeWeaponSortingFunctions, ModSortingFunctions, RangedWeaponModSortingFunctions, RangedWeaponSortingFunctions, VestSortingFunctions } from '../../../services/sorting/functions/itemSortingFunctions'
 
 describe('SortingService', () => {
-  describe('copyFilterAndSortingData()', () => {
+  describe('copyFilterAndSortingData', () => {
     it('should create a copy of filter and sorting data', () => {
       // Arrange
       const filterAndSortingData1 = new BuildFilterAndSortingData()
@@ -33,7 +33,7 @@ describe('SortingService', () => {
     })
   })
 
-  describe('compareByElementName()', () => {
+  describe('compareByElementName', () => {
     it.each([
       [{ name: 'a', categoryId: 'cat1' }, { name: 'a', categoryId: 'cat2' }, 0],
       [{ name: 'a', categoryId: 'cat2' }, { name: 'a', categoryId: 'cat1' }, 0],
@@ -49,7 +49,7 @@ describe('SortingService', () => {
     })
   })
 
-  describe('getSortingFunctionsFromItemCategory()', () => {
+  describe('getSortingFunctionsFromItemCategory', () => {
     it.each([
       [undefined, ItemSortingFunctions],
       [ItemCategoryId.ammunition, AmmunitionSortingFunctions],
@@ -87,7 +87,7 @@ describe('SortingService', () => {
     })
   })
 
-  describe('setSortingProperty()', () => {
+  describe('setSortingProperty', () => {
     it.each([
       ['name', undefined, SortingOrder.desc, -1],
       ['name', SortingOrder.asc, SortingOrder.asc, 1],
@@ -148,7 +148,7 @@ describe('SortingService', () => {
     })
   })
 
-  describe('sortAsync()', () => {
+  describe('sortAsync', () => {
     it('should sort an array or build summaries', async () => {
       // Arrange
       const sortingFunctions: IBuildSortingFunctionList = {

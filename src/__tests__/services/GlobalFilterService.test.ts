@@ -71,7 +71,7 @@ describe('GlobalFilterService', () => {
       JSON.stringify(initialGlogalFilter))
   })
 
-  describe('get()', () => {
+  describe('get', () => {
     it('should get the merchant filters', () => {
       // Arrange
       useTarkovValuesServiceMock()
@@ -202,7 +202,7 @@ describe('GlobalFilterService', () => {
     })
   })
 
-  describe('getMatchingPrices()', () => {
+  describe('getMatchingPrices', () => {
     it.each([
       [
         [
@@ -329,7 +329,7 @@ describe('GlobalFilterService', () => {
     })
   })
 
-  describe('getMerchantLevels()', () => {
+  describe('getMerchantLevels', () => {
     it('should get the levels of a merchant', () => {
       // Arrange
       useTarkovValuesServiceMock()
@@ -349,7 +349,7 @@ describe('GlobalFilterService', () => {
     })
   })
 
-  describe('hasLevels()', () => {
+  describe('hasLevels', () => {
     it('should indicates whether a merchant has multiple levels or not', () => {
       // Arrange
       useTarkovValuesServiceMock()
@@ -369,7 +369,7 @@ describe('GlobalFilterService', () => {
     })
   })
 
-  describe('isMatchingFilter()', () => {
+  describe('isMatchingFilter', () => {
     it.each([
       [
         [

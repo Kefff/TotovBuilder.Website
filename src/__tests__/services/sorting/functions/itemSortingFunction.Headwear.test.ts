@@ -6,7 +6,7 @@ import ItemFilterAndSortingData from '../../../../models/utils/ItemFilterAndSort
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { HeadwearSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
-describe('comparisonFunction()', () => {
+describe('comparisonFunction', () => {
   it.each([
     [
       { categoryId: 'cat1' as unknown as ItemCategoryId, ricochetChance: 'Low', name: 'a' } as IHeadwear,

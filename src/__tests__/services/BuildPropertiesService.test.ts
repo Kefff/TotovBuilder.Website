@@ -28,7 +28,7 @@ import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('BuildPropertiesService', () => {
-  describe('canAddArmorAsync()', () => {
+  describe('canAddArmorAsync', () => {
     it.each([
       [
         {
@@ -124,7 +124,7 @@ describe('BuildPropertiesService', () => {
     })
   })
 
-  describe('canAddModAsync()', () => {
+  describe('canAddModAsync', () => {
     it.each([
       [
         {
@@ -385,7 +385,7 @@ describe('BuildPropertiesService', () => {
     })
   })
 
-  describe('canAddVestAsync()', () => {
+  describe('canAddVestAsync', () => {
     it.each([
       [
         {
@@ -508,7 +508,7 @@ describe('BuildPropertiesService', () => {
     })
   })
 
-  describe('checkMatchesFilter()', () => {
+  describe('checkMatchesFilter', () => {
     it.each([
       [null, true],
       [undefined, true],
@@ -554,7 +554,7 @@ describe('BuildPropertiesService', () => {
     })
   })
 
-  describe('getNotExportedTooltip()', () => {
+  describe('getNotExportedTooltip', () => {
     it.each([
       [undefined, undefined, 'Build not saved to a file. It can be lost if you clear your browser data.'],
       [new Date(1), undefined, 'Build not saved to a file. It can be lost if you clear your browser data.'],
@@ -571,7 +571,7 @@ describe('BuildPropertiesService', () => {
     })
   })
 
-  describe('getShoppingListMerchants()', () => {
+  describe('getShoppingListMerchants', () => {
     it('should get the merchants and their maximum level from a shopping list', () => {
       // Arrange
       const services = new BuildPropertiesService()

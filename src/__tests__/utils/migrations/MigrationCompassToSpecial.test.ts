@@ -4,7 +4,7 @@ import { InventorySlotTypeId } from '../../../models/build/InventorySlotTypes'
 import { MigrationCompassToSpecial } from '../../../utils/migrations/MigrationCompassToSpecial'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
+describe('migrateBuildUnrelatedData and migrateBuild', () => {
   it('should replaces the compass inventory slot by the special inventory slots in obsolete builds.', async () => {
     // Arrange
     useWebsiteConfigurationServiceMock()

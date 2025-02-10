@@ -7,7 +7,7 @@ import { berkut, m9a3, m9a3Default, rpk16, rpk16Default } from '../../__data__/i
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
+describe('migrateBuildUnrelatedData and migrateBuild', () => {
   it('should update obsolete builds to use the default preset item instead of the base item for their weapons', async () => {
     // Arrange
     useItemServiceMock()

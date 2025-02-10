@@ -16,7 +16,7 @@ import WebsiteConfigurationMock from '../__data__/websiteConfigurationMock'
 import { useFetchServiceMock } from '../__mocks__/FetchServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('fetchItemsAsync()', () => {
+describe('fetchItemsAsync', () => {
   it('should fetch all items', async () => {
     // Arrange
     useFetchServiceMock(ReducedItemMocks)
@@ -79,7 +79,7 @@ describe('fetchItemsAsync()', () => {
   })
 })
 
-describe('fetchPricesAsync()', () => {
+describe('fetchPricesAsync', () => {
   it('should fetch all prices', async () => {
     // Arrange
     useFetchServiceMock(ReducedPriceMocks)
@@ -147,7 +147,7 @@ describe('fetchPricesAsync()', () => {
   })
 })
 
-describe('fetchPresetsAsync()', () => {
+describe('fetchPresetsAsync', () => {
   it('should fetch all presets', async () => {
     // Arrange
     useFetchServiceMock(ReducedPresetMocks)

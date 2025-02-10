@@ -9,7 +9,7 @@ import { build1, build2 } from '../__data__/buildMocks'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('ExportService', () => {
-  describe('exportAsync()', () => {
+  describe('exportAsync', () => {
     it('should export builds and notify', async () => {
       // Arrange
       let exported = false

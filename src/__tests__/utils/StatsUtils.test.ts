@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import StatsUtils, { DisplayValueType } from '../../utils/StatsUtils'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 
-describe('StringUtils.getStandardDisplayValue()', () => {
+describe('StringUtils.getStandardDisplayValue', () => {
   it.each([
     [DisplayValueType.accuracyModifierPercentage, '+123,456.8%'],
     [DisplayValueType.armorClass, '1,235'],
@@ -36,7 +36,7 @@ describe('StringUtils.getStandardDisplayValue()', () => {
   })
 })
 
-describe('StringUtils.getDisplayValue()', () => {
+describe('StringUtils.getDisplayValue', () => {
   it.each([
     [1, false, 0, undefined, '1'],
     [-1, false, 0, undefined, '-1'],
@@ -103,7 +103,7 @@ describe('StringUtils.getDisplayValue()', () => {
   })
 })
 
-describe('StringUtils.getPercentageDisplayValue()', () => {
+describe('StringUtils.getPercentageDisplayValue', () => {
   it.each([
     [1, false, 0, undefined, '100%'],
     [-1, false, 0, undefined, '-100%'],
@@ -170,7 +170,7 @@ describe('StringUtils.getPercentageDisplayValue()', () => {
   })
 })
 
-describe('StringUtils.getValueColorClass()', () => {
+describe('StringUtils.getValueColorClass', () => {
   it.each([
     [1, false, 'stats-value-positive'],
     [-1, false, 'stats-value-negative'],
@@ -189,7 +189,7 @@ describe('StringUtils.getValueColorClass()', () => {
   })
 })
 
-describe('StringUtils.getWeightColorClass()', () => {
+describe('StringUtils.getWeightColorClass', () => {
   it.each([
     [26, ''],
     [26.1, 'stats-encumberment-light'],

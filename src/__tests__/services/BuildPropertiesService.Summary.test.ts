@@ -23,7 +23,7 @@ import { usePresetServiceMock } from '../__mocks__/PresetServiceMock'
 import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('getSummaryAsync()', () => {
+describe('getSummaryAsync', () => {
   describe('Armor modifiers', () => {
     it.each([
       [

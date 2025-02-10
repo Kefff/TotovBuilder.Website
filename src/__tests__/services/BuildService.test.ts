@@ -31,7 +31,7 @@ beforeEach(() => {
 })
 
 
-describe('addAsync()', () => {
+describe('addAsync', () => {
   it('should add a build', async () => {
     // Arrange
     useItemServiceMock()
@@ -57,7 +57,7 @@ describe('addAsync()', () => {
   })
 })
 
-describe('create()', () => {
+describe('create', () => {
   it.each([
     [true],
     [false]
@@ -157,7 +157,7 @@ describe('create()', () => {
   })
 })
 
-describe('delete()', () => {
+describe('delete', () => {
   it('should delete a build', () => {
     // Arrange
     useItemServiceMock()
@@ -180,7 +180,7 @@ describe('delete()', () => {
   })
 })
 
-describe('fromSharableStringAsync()', () => {
+describe('fromSharableStringAsync', () => {
   it.each(
     [
       [
@@ -309,7 +309,7 @@ describe('fromSharableStringAsync()', () => {
   })
 })
 
-describe('get()', () => {
+describe('get', () => {
   it('should get a build', () => {
     // Arrange
     useItemServiceMock()
@@ -364,7 +364,7 @@ describe('get()', () => {
   })
 })
 
-describe('getAll()', () => {
+describe('getAll', () => {
   it('should get all builds', () => {
     // Arrange
     useItemServiceMock()
@@ -380,7 +380,7 @@ describe('getAll()', () => {
   })
 })
 
-describe('toSharableUrlAsync()', () => {
+describe('toSharableUrlAsync', () => {
   it.each([
     [
       build1,
@@ -435,7 +435,7 @@ describe('toSharableUrlAsync()', () => {
   })
 })
 
-describe('updateAsync()', () => {
+describe('updateAsync', () => {
   it('should update a build', async () => {
     // Arrange
     useItemServiceMock()

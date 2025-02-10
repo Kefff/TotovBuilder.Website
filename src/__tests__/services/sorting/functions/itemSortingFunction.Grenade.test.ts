@@ -6,7 +6,7 @@ import ItemFilterAndSortingData from '../../../../models/utils/ItemFilterAndSort
 import { SortingService } from '../../../../services/sorting/SortingService'
 import { GrenadeSortingFunctions } from '../../../../services/sorting/functions/itemSortingFunctions'
 
-describe('comparisonFunction()', () => {
+describe('comparisonFunction', () => {
   it.each([
     ['explosionDelay'],
     ['fragmentsAmount'],

@@ -5,7 +5,7 @@ import { IBuildSummary } from '../../../../models/utils/IBuildSummary'
 import { SortingOrder } from '../../../../models/utils/SortingOrder'
 import { SortingService } from '../../../../services/sorting/SortingService'
 
-describe('comparisonFunction()', () => {
+describe('comparisonFunction', () => {
   it.each([
     ['armorClass'],
     ['ergonomics'],

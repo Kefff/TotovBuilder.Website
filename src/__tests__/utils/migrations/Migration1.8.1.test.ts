@@ -5,7 +5,7 @@ import { ammo545us, ammo9mmGT, berkut, m9a3Default, m9a3Magazine, ms2000, rpk16D
 import { useItemServiceMock } from '../../__mocks__/ItemServiceMock'
 import { useWebsiteConfigurationServiceMock } from '../../__mocks__/WebsiteConfigurationServiceMock'
 
-describe('migrateBuildUnrelatedData() and migrateBuild()', () => {
+describe('migrateBuildUnrelatedData and migrateBuild', () => {
   it('should update obsolete builds to remove chamber mod slots from weapons', async () => {
     // Arrange
     useItemServiceMock()

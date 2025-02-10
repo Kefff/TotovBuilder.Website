@@ -23,7 +23,7 @@ import { useTarkovValuesServiceMock } from '../__mocks__/TarkovValuesServiceMock
 import { useWebsiteConfigurationServiceMock } from '../__mocks__/WebsiteConfigurationServiceMock'
 
 describe('InventorySlotPropertiesService', () => {
-  describe('getSummaryAsync()', () => {
+  describe('getSummaryAsync', () => {
     describe('Armor modifiers', () => {
       it.each([
         [
@@ -700,7 +700,7 @@ describe('InventorySlotPropertiesService', () => {
     })
   })
 
-  describe('getType()', () => {
+  describe('getType', () => {
     it('should get an inventory slot type', () => {
       // Arrange
       useItemServiceMock()

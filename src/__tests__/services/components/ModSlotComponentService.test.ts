@@ -3,7 +3,7 @@ import { IItem, ItemCategoryId } from '../../../models/item/IItem'
 import { ModSlotComponentService } from '../../../services/components/ModSlotComponentService'
 import { razor } from '../../__data__/itemMocks'
 
-describe('getAcceptedItemsCategoryId()', () => {
+describe('getAcceptedItemsCategoryId', () => {
   it.each([
     [
       [
