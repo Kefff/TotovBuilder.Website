@@ -570,36 +570,42 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           :class="{ 'item-header-stats-compact': isCompactMode }"
           @update:ignore-price="onIgnorePriceChanged($event)"
         />
+        <!-- Empty zone that matches the size of SelectedItemItemCardSelector to make the dropdown respect alignment when no item is selected -->
         <div
-          v-else
-          :class="{ 'item-header-selected-item-placeholder': !isCompactMode }"
-        >
-          <!-- Empty zone that matches the size of SelectedItemItemCardSelector to make the dropdown respect alignment when no item is selected -->
-        </div>
+          v-else-if="!isCompactMode"
+          class="item-header-selected-item-placeholder"
+        />
       </div>
       <div
         v-if="item != null && maxSelectableQuantity > 1 && !forceQuantityToMaxSelectableAmount"
         class="item-quantity"
       >
-        <InputNumberField
-          v-show="isEditing"
-          v-model:value="quantity"
-          :caption="$t('caption.quantity')"
-          :max="maxSelectableQuantity"
-          :min="1"
-          :required="true"
-          caption-mode="placeholder"
-          required-message-position="right"
-          @update:value="onQuantityChanged($event)"
-        />
-        <!-- Fake button divs to have the same alignment as the selection input -->
+        <div class="item-quantity-input-container">
+          <InputNumberField
+            v-show="isEditing"
+            v-model:value="quantity"
+            :caption="$t('caption.quantity')"
+            :max="maxSelectableQuantity"
+            :min="1"
+            :required="true"
+            caption-mode="placeholder"
+            required-message-position="right"
+            @update:value="onQuantityChanged($event)"
+          />
+          <!-- Fake button divs to have the same alignment as the selection input -->
+          <div
+            v-if="isEditing"
+            class="item-header-button"
+          />
+          <div
+            v-if="item != null || isEditing"
+            class="item-header-button"
+          />
+        </div>
+        <!-- Empty zone that matches the size of SelectedItemItemCardSelector to make the dropdown respect alignment when no item is selected -->
         <div
-          v-if="isEditing"
-          class="item-header-button"
-        />
-        <div
-          v-if="item != null || isEditing"
-          class="item-header-button"
+          v-if="!isCompactMode"
+          class="item-header-selected-item-placeholder"
         />
       </div>
     </div>
@@ -814,13 +820,17 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-quantity {
-  display: flex;
-  gap: 0.25rem;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr auto;
   height: unset;
   width: 100%;
 }
 
-.item-quantity > .input-number-field {
+.item-quantity-input-container {
+  display: grid;
+  gap: 0.25rem;
+  grid-template-columns: 1fr auto auto;
   width: 100%;
 }
 </style>
