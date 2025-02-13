@@ -520,25 +520,21 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
                 </div>
               </template>
             </Dropdown>
-            <div
+            <InputNumberField
               v-if="item != null
                 && maxSelectableQuantity > 1
                 && !forceQuantityToMaxSelectableAmount"
-              class="item-header-quantity-container"
-            >
-              <InputNumberField
-                v-show="isEditing"
-                v-model:value="quantity"
-                :caption="$t('caption.quantity')"
-                :max="maxSelectableQuantity"
-                :min="1"
-                :required="true"
-                caption-mode="placeholder"
-                required-message-position="right"
-                class="item-header-quantity"
-                @update:value="onQuantityChanged($event)"
-              />
-            </div>
+              v-show="isEditing"
+              v-model:value="quantity"
+              :caption="$t('caption.quantity')"
+              :max="maxSelectableQuantity"
+              :min="1"
+              :required="true"
+              caption-mode="placeholder"
+              required-message-position="right"
+              class="item-header-quantity"
+              @update:value="onQuantityChanged($event)"
+            />
           </div>
           <div
             v-if="isEditing"
@@ -786,12 +782,6 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 .item-header-quantity {
   flex-shrink: 0;
   width: 10rem;
-}
-
-.item-header-quantity-container {
-  align-items: center;
-  display: flex;
-  height: 3.875rem;
 }
 
 .item-header-selected-item-placeholder {
