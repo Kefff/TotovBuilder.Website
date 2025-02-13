@@ -69,7 +69,7 @@ const itemHeaderGridTemplateColumns = computed(() => {
   if (isEditing?.value && props.isBaseItem) {
     return 'auto 1fr auto auto'
   } else if (isEditing?.value) {
-    return '1fr auto auto'
+    return '1fr auto auto auto'
   }
 
   return 'auto 1fr auto'
@@ -473,49 +473,73 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
               <span>{{ item.name }}</span>
             </Tooltip>
           </div>
-          <Dropdown
-            v-else-if="isEditing && !isBaseItem"
-            v-model="item"
-            class="item-header-dropdown"
-            @click="onSelectionInputClick"
+          <div
+            v-else-if="isEditing"
+            class="item-header-dropdown-container"
           >
-            <template #empty>
-              <!-- Display nothing when the dropdown is opened because we open the sidebar instead -->
-              <div />
-            </template>
-            <template #value>
-              <Tooltip
-                v-if="item != null"
-                :apply-hover-style="false"
-                :tooltip="item?.name"
-              >
-                <div class="item-header-dropdown-value">
-                  <ItemIcon
-                    :item="item"
-                    :quantity="quantity"
-                  />
-                  <div
-                    v-if="item != null"
-                    class="item-header-title"
-                  >
-                    {{ item?.name }}
+            <Dropdown
+              v-if="!isBaseItem"
+              v-model="item"
+              class="item-header-dropdown"
+              @click="onSelectionInputClick"
+            >
+              <template #empty>
+                <!-- Display nothing when the dropdown is opened because we open the sidebar instead -->
+                <div />
+              </template>
+              <template #value>
+                <Tooltip
+                  v-if="item != null"
+                  :apply-hover-style="false"
+                  :tooltip="item?.name"
+                >
+                  <div class="item-header-dropdown-value">
+                    <ItemIcon
+                      :item="item"
+                      :quantity="quantity"
+                    />
+                    <div
+                      v-if="item != null"
+                      class="item-header-title"
+                    >
+                      {{ item?.name }}
+                    </div>
                   </div>
+                </Tooltip>
+                <div
+                  v-else
+                  class="item-header-dropdown-value"
+                >
+                  <font-awesome-icon
+                    icon="plus"
+                    class="item-header-dropdown-value-placeholder-icon"
+                  />
+                  <span class="item-header-dropdown-value-placeholder-text">
+                    {{ $t('caption.selectItem') }}
+                  </span>
                 </div>
-              </Tooltip>
-              <div
-                v-else
-                class="item-header-dropdown-value"
-              >
-                <font-awesome-icon
-                  icon="plus"
-                  class="item-header-dropdown-value-placeholder-icon"
-                />
-                <span class="item-header-dropdown-value-placeholder-text">
-                  {{ $t('caption.selectItem') }}
-                </span>
-              </div>
-            </template>
-          </Dropdown>
+              </template>
+            </Dropdown>
+            <div
+              v-if="item != null
+                && maxSelectableQuantity > 1
+                && !forceQuantityToMaxSelectableAmount"
+              class="item-header-quantity-container"
+            >
+              <InputNumberField
+                v-show="isEditing"
+                v-model:value="quantity"
+                :caption="$t('caption.quantity')"
+                :max="maxSelectableQuantity"
+                :min="1"
+                :required="true"
+                caption-mode="placeholder"
+                required-message-position="right"
+                class="item-header-quantity"
+                @update:value="onQuantityChanged($event)"
+              />
+            </div>
+          </div>
           <div
             v-if="isEditing"
             class="item-header-button"
@@ -573,38 +597,6 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
         <!-- Empty zone that matches the size of SelectedItemItemCardSelector to make the dropdown respect alignment when no item is selected -->
         <div
           v-else-if="!isCompactMode"
-          class="item-header-selected-item-placeholder"
-        />
-      </div>
-      <div
-        v-if="item != null && maxSelectableQuantity > 1 && !forceQuantityToMaxSelectableAmount"
-        class="item-quantity"
-      >
-        <div class="item-quantity-input-container">
-          <InputNumberField
-            v-show="isEditing"
-            v-model:value="quantity"
-            :caption="$t('caption.quantity')"
-            :max="maxSelectableQuantity"
-            :min="1"
-            :required="true"
-            caption-mode="placeholder"
-            required-message-position="right"
-            @update:value="onQuantityChanged($event)"
-          />
-          <!-- Fake button divs to have the same alignment as the selection input -->
-          <div
-            v-if="isEditing"
-            class="item-header-button"
-          />
-          <div
-            v-if="item != null || isEditing"
-            class="item-header-button"
-          />
-        </div>
-        <!-- Empty zone that matches the size of SelectedItemItemCardSelector to make the dropdown respect alignment when no item is selected -->
-        <div
-          v-if="!isCompactMode"
           class="item-header-selected-item-placeholder"
         />
       </div>
@@ -709,11 +701,10 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-header {
-  align-items: center;
   display: grid;
   gap: 0.25rem;
   grid-template-columns: v-bind(itemHeaderGridTemplateColumns);
-  height: 3.9rem;
+  min-width: 3.875rem;
   width: 100%;
 }
 
@@ -721,6 +712,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   display: flex;
   flex-shrink: 0;
   width: 1.75rem;
+  height: 3.875rem;
 }
 
 .item-header-container {
@@ -753,8 +745,16 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-header-dropdown {
-  height: 100%;
-  width: 100%;
+  height: 3.875rem;
+  min-width: 14rem;
+  flex-grow: 1;
+}
+
+.item-header-dropdown-container {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
 }
 
 .item-header-dropdown-name {
@@ -783,6 +783,17 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
   word-break: break-word;
 }
 
+.item-header-quantity {
+  flex-shrink: 0;
+  width: 10rem;
+}
+
+.item-header-quantity-container {
+  align-items: center;
+  display: flex;
+  height: 3.875rem;
+}
+
 .item-header-selected-item-placeholder {
   /* Empty zone that matches the width of SelectedItemItemCardSelector to make the dropdown respect alignment when no item is selected*/
   width: 40.5rem;
@@ -800,6 +811,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-header-title {
+  align-items: center;
   font-size: 1rem;
   font-weight: normal;
   max-height: 3.25rem;
@@ -847,5 +859,25 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 .item-header > .item-header-dropdown.p-dropdown .p-dropdown-trigger {
   margin-right: 0.21rem;
   width: unset;
+}
+
+.item-header-stats.selected-item-item-card {
+  align-items: flex-start;
+}
+
+.item-header-stats.selected-item-item-card > .selected-item-item-card-prices-and-weight {
+  height: 3.875rem;
+}
+
+.item-header-stats.item-header-stats-compact.selected-item-item-card > .selected-item-item-card-prices-and-weight {
+  height: unset;
+}
+
+.item-header-stats.selected-item-item-card > .selected-item-item-card-specialized {
+  height: 3.875rem;
+}
+
+.item-header-stats.item-header-stats-compact.selected-item-item-card > .selected-item-item-card-specialized {
+  height: unset;
 }
 </style>

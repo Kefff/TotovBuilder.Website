@@ -320,6 +320,9 @@ async function setWeightAsync(): Promise<void> {
 }
 
 .selected-item-item-card-specialized {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 20rem;
 }
 
