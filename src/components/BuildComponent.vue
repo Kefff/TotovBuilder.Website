@@ -529,7 +529,7 @@ async function onKeyDownAsync(event: KeyboardEvent): Promise<void> {
     event.preventDefault() // Prevents the browser save action to be triggered
 
     if (isEditing.value && !isInvalid.value) {
-      await saveAsync()
+      await saveAsync(false)
       startEdit() // After saving with the shortcut, we stay in edit mode unlike when using the button
     }
   }
@@ -615,15 +615,27 @@ function removeNavigationGuards(): void {
 
 /**
  * Saves the build.
+ * @param changeCurrentInventorySlotIfEmpty - Indicates whether the current inventory slot should
+ * be changed to the first that contains an item when the current inventory slot is emmpty after saving.
  */
-async function saveAsync(): Promise<void> {
+async function saveAsync(changeCurrentInventorySlotIfEmpty: boolean = true): Promise<void> {
   isLoading.value = true
   await _buildComponentService.saveBuildAsync(router, build.value)
+
+  if (changeCurrentInventorySlotIfEmpty) {
+    let inventorySlot = build.value.inventorySlots.find(is => is.typeId === currentInventorySlot.value)
+
+    if (!inventorySlot?.items.some(i => i != undefined)) {
+      currentInventorySlot.value = build.value.inventorySlots.find(is => is.items.some(i => i != null))?.typeId ?? InventorySlotTypeId.onSling
+    }
+  }
 
   nextTick(() => {
     isLoading.value = false
     isEditing.value = false
   })
+
+
 }
 
 /**
