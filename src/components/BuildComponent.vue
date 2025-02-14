@@ -834,30 +834,6 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
       <Loading />
     </div>
     <div
-      v-if="!isLoading && !isEditing && isEmpty"
-      class="build-empty-message"
-    >
-      <div class="build-empty-message-text">
-        <p class="build-empty-message-line">
-          {{ $t('message.emptyBuild1') }}
-        </p>
-        <p class="build-empty-message-line">
-          {{ $t('message.emptyBuild2') }}
-          <Button
-            class="build-empty-message-button"
-            @click="startEdit()"
-          >
-            <font-awesome-icon
-              icon="edit"
-              class="icon-before-text"
-            />
-            <span>{{ $t('caption.edit') }}</span>
-          </Button>
-          {{ $t('message.emptyBuild3') }}
-        </p>
-      </div>
-    </div>
-    <div
       v-show="!isLoading"
       class="build-inventory-slots"
     >
@@ -867,7 +843,34 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
         :inventory-slots-shopping-list-items="inventorySlotsShoppingListItems"
         :path="path"
         @update:inventory-slots="onInventorySlotChanged"
-      />
+      >
+        <template
+          v-if="!isLoading && !isEditing && isEmpty"
+          #empty
+        >
+          <div class="build-empty-message">
+            <div class="build-empty-message-text">
+              <p class="build-empty-message-line">
+                {{ $t('message.emptyBuild1') }}
+              </p>
+              <p class="build-empty-message-line">
+                {{ $t('message.emptyBuild2') }}
+                <Button
+                  class="build-empty-message-button"
+                  @click="startEdit()"
+                >
+                  <font-awesome-icon
+                    icon="edit"
+                    class="icon-before-text"
+                  />
+                  <span>{{ $t('caption.edit') }}</span>
+                </Button>
+                {{ $t('message.emptyBuild3') }}
+              </p>
+            </div>
+          </div>
+        </template>
+      </InventorySlots>
     </div>
   </div>
 
@@ -950,12 +953,11 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
 }
 
 .build-empty-message {
+  align-items: center;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   font-size: 1.5rem;
-  margin-bottom: auto;
-  margin-top: auto;
-  padding-top: 3rem;
 }
 
 .build-empty-message-button {
@@ -966,7 +968,8 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
 .build-empty-message-line {
   align-items: center;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .build-empty-message-text {

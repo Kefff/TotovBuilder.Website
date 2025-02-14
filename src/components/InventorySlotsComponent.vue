@@ -149,7 +149,11 @@ function scrollToTop(): void {
       :is-editing="isEditing!"
       @update:current-inventory-slot-type="scrollToTop"
     />
-    <div class="inventory-slots-group">
+    <slot name="empty" />
+    <div
+      v-if="$slots.empty == null"
+      class="inventory-slots-group"
+    >
       <TransitionGroup name="inventory-slots-group-transition">
         <InventorySlot
           v-for="(inventorySlot, index) of inventorySlotGroups[currentPageIndex]"

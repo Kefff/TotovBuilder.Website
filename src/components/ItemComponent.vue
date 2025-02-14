@@ -742,7 +742,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 
 .item-header-dropdown {
   height: 3.875rem;
-  min-width: 14rem;
+  min-width: 10.375rem;
   flex-grow: 1;
 }
 
