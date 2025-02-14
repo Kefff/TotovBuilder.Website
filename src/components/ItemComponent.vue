@@ -801,7 +801,8 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
 }
 
 .item-header-title {
-  align-items: center;
+  align-self: center;
+  display: flex;
   font-size: 1rem;
   font-weight: normal;
   max-height: 3.25rem;
