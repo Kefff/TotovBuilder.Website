@@ -453,6 +453,27 @@ describe('updateAsync', () => {
     const updatedBuild = service.get(build1.id)
     expect(updatedBuild).not.toBeUndefined()
     expect(updatedBuild!.name).toBe('New name')
+    expect(updatedBuild!.lastWebsiteVersion).toBe('1.0.0')
+  })
+
+  it('should update a build to the specified version', async () => {
+    // Arrange
+    useItemServiceMock()
+    useVersionServiceMock()
+    useWebsiteConfigurationServiceMock()
+
+    const service = new BuildService()
+
+    const build = service.get(build1.id)!
+    build.name = 'New name'
+
+    // Act / Assert
+    await service.updateAsync(build, '2.0.3')
+
+    const updatedBuild = service.get(build1.id)
+    expect(updatedBuild).not.toBeUndefined()
+    expect(updatedBuild!.name).toBe('New name')
+    expect(updatedBuild!.lastWebsiteVersion).toBe('2.0.3')
   })
 
   it('should create an new build if the build does not exist', async () => {

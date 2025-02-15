@@ -161,7 +161,7 @@ const switchSortOrderButtonTooltip = computed(() => vueI18n.t(
 
 const filterInternal = ref(modelFilterAndSortingData.value.filter)
 const globalFilter = ref<IGlobalFilter>()
-const isInSidebar = inject<Ref<boolean>>('isInSidebar')
+const isInSidebar = inject<Ref<boolean>>('isInSidebar', ref(false))
 const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
 
 const isTouchScreen = WebBrowserUtils.isTouchScreen()
