@@ -133,7 +133,7 @@ async function filterAndSortItemsAsync(itemsListNeedsUpdate: boolean): Promise<v
     filterAndSortingData.availableItemCategories = getAvailableItemCategoryIdsFromItems(itemsToFilterAndSort)
 
     if (filterAndSortingData.availableItemCategories.length === 1) {
-      filterAndSortingData.categoryId = modelFilterAndSortingData.value.availableItemCategories[0]
+      filterAndSortingData.categoryId = filterAndSortingData.availableItemCategories[0]
     }
 
     filteredAnSortedItems.value = itemsToFilterAndSort
