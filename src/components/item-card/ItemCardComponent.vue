@@ -114,8 +114,9 @@ function showDetails(): void {
           <span>{{ item.name }}</span>
         </div>
         <Tooltip
-          :tooltip="$t('caption.showDetails')"
           :apply-hover-style="false"
+          :disabled-on-mobile="true"
+          :tooltip="$t('caption.showDetails')"
         >
           <Button
             class="p-button-sm"

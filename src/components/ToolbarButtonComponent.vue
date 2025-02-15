@@ -40,8 +40,8 @@ const { isTabletLandscapeOrSmaller: isCaptionHidden } = WebBrowserUtils.getScree
   <Tooltip
     v-show="button.isVisible?.() ?? true"
     :apply-hover-style="false"
+    :disabled-on-mobile="true"
     :tooltip="tooltip"
-    :trigger-on-click="false"
   >
     <Button
       :class="buttonClasses"

@@ -155,8 +155,8 @@ function reset(): void {
         />
         <Tooltip
           v-if="categoryId != null && !modelParameters.isCategoryIdReadOnly"
+          :disabled-on-mobile="true"
           :tooltip="$t('caption.clear')"
-          :trigger-on-click="false"
         >
           <Button
             class="p-button-sm"
@@ -185,8 +185,8 @@ function reset(): void {
         />
         <Tooltip
           v-if="filter != null"
+          :disabled-on-mobile="true"
           :tooltip="$t('caption.clear')"
-          :trigger-on-click="false"
         >
           <Button
             class="p-button-sm"
@@ -250,8 +250,8 @@ function reset(): void {
           </template>
         </Dropdown>
         <Tooltip
+          :disabled-on-mobile="true"
           :tooltip="switchSortOrderButtonTooltip"
-          :trigger-on-click="false"
         >
           <Button
             class="p-button-sm"

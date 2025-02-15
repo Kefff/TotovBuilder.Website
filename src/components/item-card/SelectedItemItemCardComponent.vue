@@ -172,8 +172,9 @@ async function setWeightAsync(): Promise<void> {
           />
           <Tooltip
             v-if="showPrice && isEditing && canBeLooted && canIgnorePrice"
-            :tooltip="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
             :apply-hover-style="false"
+            :disabled-on-mobile="true"
+            :tooltip="$t(!ignorePrice ? 'caption.ignorePrice' : 'caption.includePrice')"
           >
             <Button
               class="p-button-sm"

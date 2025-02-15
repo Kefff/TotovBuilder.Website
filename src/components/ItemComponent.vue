@@ -543,6 +543,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
             <Tooltip
               v-if="isEditing && item != null && !isBaseItem"
               :apply-hover-style="false"
+              :disabled-on-mobile="true"
               :tooltip="$t('caption.clear')"
             >
               <Button
@@ -562,6 +563,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
             <Tooltip
               v-if="item != null"
               :apply-hover-style="false"
+              :disabled-on-mobile="true"
               :tooltip="$t('caption.showDetails')"
             >
               <Button

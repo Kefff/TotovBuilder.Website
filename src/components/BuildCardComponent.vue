@@ -137,8 +137,9 @@ function displayStats(item: IItem): void {
         </Tooltip>
         <Tooltip
           v-if="showActionsButton"
-          :tooltip="$t('caption.actions')"
           :apply-hover-style="false"
+          :disabled-on-mobile="true"
+          :tooltip="$t('caption.actions')"
         >
           <Button
             class="p-button-sm"

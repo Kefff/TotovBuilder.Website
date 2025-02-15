@@ -2,6 +2,7 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventorySlot } from '../models/build/IInventorySlot'
+import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
 import { IItem } from '../models/item/IItem'
 import { GlobalFilterService } from '../services/GlobalFilterService'
 import { InventorySlotPropertiesService } from '../services/InventorySlotPropertiesService'
@@ -10,13 +11,16 @@ import Services from '../services/repository/Services'
 import { PathUtils } from '../utils/PathUtils'
 import StringUtils from '../utils/StringUtils'
 import Item from './ItemComponent.vue'
+import Tooltip from './TooltipComponent.vue'
 
 const modelInventorySlot = defineModel<IInventorySlot>('inventorySlot', { required: true })
 
 defineProps<{
   canGoToNext: boolean,
   canGoToPrevious: boolean,
+  nextInventorySlotType: InventorySlotTypeId | undefined,
   path: string,
+  previousInventorySlotType: InventorySlotTypeId | undefined,
 }>()
 
 const emits = defineEmits<{
@@ -84,13 +88,19 @@ function onMerchantFilterChanged(): void {
   <Panel class="inventory-slot">
     <template #header>
       <div class="inventory-slot-header">
-        <Button
-          class="p-button-text button-discreet"
-          :disabled="!canGoToPrevious"
-          @click="emits('goToPrevious')"
+        <Tooltip
+          :apply-hover-style="canGoToPrevious"
+          :disabled-on-mobile="true"
+          :tooltip="previousInventorySlotType != null ? $t(`caption.slotType${StringUtils.toUpperFirst(previousInventorySlotType)}`) : undefined"
         >
-          <font-awesome-icon icon="chevron-left" />
-        </Button>
+          <Button
+            class="p-button-text button-discreet"
+            :disabled="!canGoToPrevious"
+            @click="emits('goToPrevious')"
+          >
+            <font-awesome-icon icon="chevron-left" />
+          </Button>
+        </Tooltip>
         <div class="inventory-slot-title">
           <font-awesome-icon
             v-if="inventorySlotType.icon != null"
@@ -104,13 +114,19 @@ function onMerchantFilterChanged(): void {
           >
           <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelInventorySlot.typeId)) }}</span>
         </div>
-        <Button
-          class="p-button-text button-discreet"
-          :disabled="!canGoToNext"
-          @click="emits('goToNext')"
+        <Tooltip
+          :apply-hover-style="canGoToNext"
+          :disabled-on-mobile="true"
+          :tooltip="nextInventorySlotType != null ? $t(`caption.slotType${StringUtils.toUpperFirst(nextInventorySlotType)}`) : undefined"
         >
-          <font-awesome-icon icon="chevron-right" />
-        </Button>
+          <Button
+            class="p-button-text button-discreet"
+            :disabled="!canGoToNext"
+            @click="emits('goToNext')"
+          >
+            <font-awesome-icon icon="chevron-right" />
+          </Button>
+        </Tooltip>
       </div>
     </template>
     <div class="inventory-slot-items">
