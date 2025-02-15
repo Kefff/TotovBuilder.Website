@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useEventListener, watchDebounced } from '@vueuse/core'
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, inject, onMounted, onUnmounted, Ref, ref, watch } from 'vue'
 import BuildFilterAndSortingData from '../models/utils/BuildFilterAndSortingData'
 import { FilterAndSortingDataType } from '../models/utils/FilterAndSortingData'
 import { IGlobalFilter } from '../models/utils/IGlobalFilter'
@@ -161,7 +161,9 @@ const switchSortOrderButtonTooltip = computed(() => vueI18n.t(
 
 const filterInternal = ref(modelFilterAndSortingData.value.filter)
 const globalFilter = ref<IGlobalFilter>()
+const isInSidebar = inject<Ref<boolean>>('isInSidebar')
 const { isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
+
 const isTouchScreen = WebBrowserUtils.isTouchScreen()
 
 watch(
@@ -194,7 +196,7 @@ function applyQuickFilter(): void {
 }
 
 /**
- * Checks whether filter and sorting data are different from the current ones.
+ * Checks whether updated filter and sorting data are different from the current ones.
  * @param updatedFilterAndSortingData - Filter and sorting data to check.
  */
 function checkIsFilterAndSortingDataChanged(updatedFilterAndSortingData: GlobalSidebarDisplayedComponentParameters | undefined): boolean {
@@ -352,13 +354,13 @@ function switchSortOrder(): void {
               <font-awesome-icon icon="user-tag" />
             </div>
             <div
-              v-if="isCompactMode && enabledMerchants.length > 0"
+              v-if="(isInSidebar || isCompactMode) && enabledMerchants.length > 0"
               class="filter-chip-merchants-count"
             >
               {{ enabledMerchants.length }}
             </div>
             <div
-              v-if="!isCompactMode"
+              v-if="!isInSidebar && !isCompactMode"
               class="filter-chip-merchants-list"
             >
               <MerchantIcon

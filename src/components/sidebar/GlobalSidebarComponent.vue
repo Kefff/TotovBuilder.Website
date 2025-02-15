@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, onUnmounted, provide, ref } from 'vue'
 import { BuildSidebarParameters, BuildsShareSideBarParameters, GlobalSidebarComponent, GlobalSidebarDisplayedComponentParameters, IGlobalSidebarOptions, ShoppingListSidebarParameters } from '../../models/utils/IGlobalSidebarOptions'
 import { GlobalSidebarService } from '../../services/GlobalSidebarService'
 import Services from '../../services/repository/Services'
@@ -61,6 +61,8 @@ const options = ref<IGlobalSidebarOptions>({} as IGlobalSidebarOptions)
 const title = ref<string>()
 const subtitle = ref<string>()
 const visibleInternal = ref(false)
+
+provide('isInSidebar', true)
 
 onMounted(() => {
   _globalSidebarService.emitter.on(GlobalSidebarService.closeGlobalSidebarEvent, onGlobalSidebarClose)
