@@ -38,22 +38,10 @@ const _swipeDeadzone = 50
 
 const containerHeight = computed(() => `${inventorySlotHeight.value}px`)
 const inventorySlotType = computed(() => _inventorySlotPropertiesService.getType(modelInventorySlot.value.typeId))
-const swipeBlock = computed(() => inventorySlotWidth.value * 0.1)
+const swipeBlock = computed(() => inventorySlotWidth.value * 0.05)
 const swipeChangeTrigger = computed(() => inventorySlotWidth.value * 0.5)
-const swipeMaxLeft = computed(() => {
-  if (!props.canGoToPrevious) {
-    return swipeBlock.value
-  }
-
-  return undefined
-})
-const swipeMinLeft = computed(() => {
-  if (!props.canGoToNext) {
-    return -swipeBlock.value
-  }
-
-  return undefined
-})
+const swipeMaxLeft = computed(() => !props.canGoToPrevious ? swipeBlock.value : undefined)
+const swipeMinLeft = computed(() => !props.canGoToNext ? -swipeBlock.value : undefined)
 
 const acceptedItems = ref<IItem[]>([])
 const inventorySlot = useTemplateRef('inventorySlot')
@@ -158,10 +146,7 @@ function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
     class="inventory-slot-container"
     :class="{ 'inventory-slot-container-animated': !isSwiping }"
   >
-    <div
-      ref="inventorySlot"
-      :style="``"
-    >
+    <div ref="inventorySlot">
       <Panel class="inventory-slot">
         <template #header>
           <div class="inventory-slot-header">

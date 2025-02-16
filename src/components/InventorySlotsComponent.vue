@@ -47,13 +47,13 @@ const inventorySlotGroups = computed(() => {
 
   return groups
 })
-const lastPageIndex = computed(() => {
+const previousPageIndex = computed(() => {
   const index = inventorySlotGroups.value.findIndex(isg => isg.some(is => is.typeId === lastInventorySlot.value))
 
   return index
 })
-const transitionEnterFromTranslate = computed(() => lastPageIndex.value < currentPageIndex.value ? 'translateX(25vw)' : 'translateX(-5vw)')
-const transitionLeaveToTranslate = computed(() => lastPageIndex.value < currentPageIndex.value ? 'translateX(-25vw)' : 'translateX(+25vw)')
+const transitionEnterFromTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(25vw)' : 'translateX(-25vw)')
+const transitionLeaveToTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(-25vw)' : 'translateX(25vw)')
 
 const isEditing = inject<Ref<boolean>>('isEditing')
 const isNewBuild = inject<Ref<boolean>>('isNewBuild')

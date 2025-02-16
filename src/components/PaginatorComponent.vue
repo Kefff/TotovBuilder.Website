@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { PageState } from 'primevue/paginator'
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { useElementBounding, useSwipe, UseSwipeDirection } from '@vueuse/core'
+import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 
 const props = withDefaults(
@@ -19,13 +19,16 @@ const props = withDefaults(
     scrollToIndex: undefined
   })
 
+const _swipeDeadzone = 50
+
+const containerHeight = computed(() => `${paginatorHeight.value}px`)
 const displayedLines = computed<unknown[][]>(() => {
   let last = first.value + props.linesPerPage
   const lines = groupedElements.value.slice(first.value, last)
 
   return lines
 })
-const first = computed(() => currentPage.value * props.linesPerPage)
+const first = computed(() => currentPageIndex.value * props.linesPerPage)
 const gridTemplateColumns = computed(() => `repeat(${props.elementsPerLine}, 1fr)`)
 const groupedElements = computed<unknown[][]>(() => {
   const groups: unknown[][] = []
@@ -40,22 +43,87 @@ const groupedElements = computed<unknown[][]>(() => {
 const hasMultiplePages = computed(() => props.elements.length > (props.elementsPerLine * props.linesPerPage))
 const { isSmartphonePortrait: isCompactMode } = WebBrowserUtils.getScreenSize()
 const pageLinksCount = computed(() => isCompactMode.value ? 3 : 5)
+const lastPageIndex = computed(() => {
+  if (groupedElements.value.length < props.linesPerPage) {
+    return 0
+  }
 
-const currentPage = ref(0)
+  let lpi = Math.floor(groupedElements.value.length / props.linesPerPage) - (groupedElements.value.length % props.linesPerPage === 0 ? 1 : 0)
 
-watch(() => props.elements, () => {
-  currentPage.value = 0
-  scrollToElement(props.scrollToIndex)
+  return lpi
 })
+const swipeBlock = computed(() => paginatorWidth.value * 0.05)
+const swipeChangeTrigger = computed(() => paginatorWidth.value * 0.5)
+const swipeMaxLeft = computed(() => currentPageIndex.value === 0 ? swipeBlock.value : undefined)
+const swipeMinLeft = computed(() => currentPageIndex.value === lastPageIndex.value ? -swipeBlock.value : undefined)
+const transitionEnterFromTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(25vw)' : 'translateX(-25vw)')
+const transitionLeaveToTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(-25vw)' : 'translateX(25vw)')
+
+const currentPageIndex = ref(0)
+const leftPosition = ref('0')
+const paginator = useTemplateRef('paginator')
+const { height: paginatorHeight, width: paginatorWidth } = useElementBounding(paginator)
+const { direction: swipeDirection, isSwiping, lengthX: swipeLength } = useSwipe(
+  paginator,
+  {
+    onSwipe,
+    onSwipeEnd,
+    threshold: _swipeDeadzone
+  })
+const previousPageIndex = ref(-1)
+
+watch(() => props.elements, () => scrollToElement(props.scrollToIndex))
 
 onMounted(() => scrollToElement(props.scrollToIndex))
 
 /**
  * Reacts to the paginator current page being changed.
  */
-function onPageChange(state: PageState): void {
-  currentPage.value = state.page
-  scrollToElement()
+function onPageChange(newPage: number): void {
+  previousPageIndex.value = currentPageIndex.value
+  currentPageIndex.value = newPage
+
+  setTimeout(() => scrollToElement(), 500)
+}
+
+/**
+ * React to the inventory slot being swipped.
+ *
+ * Positions the inventory slot according to the swipe movement.
+ */
+function onSwipe(): void {
+  let left = Math.max(Math.abs(swipeLength.value) - _swipeDeadzone, 0)
+
+  if (swipeDirection.value === 'left') {
+    left = -left
+
+    if (swipeMinLeft.value != null && left < swipeMinLeft.value) {
+      left = swipeMinLeft.value
+    }
+  } else if (swipeMaxLeft.value != null && left > swipeMaxLeft.value) {
+    left = swipeMaxLeft.value
+  }
+
+  leftPosition.value = `${left}px`
+}
+
+/**
+ * React to the swip action on the inventory slot stopping.
+ *
+ * Repositions the inventory slot at its original place or trigger the inventory slot change.
+ */
+function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
+  if (direction === 'right'
+    && currentPageIndex.value > 0
+    && (swipeLength.value + _swipeDeadzone) < -swipeChangeTrigger.value) {
+    onPageChange(currentPageIndex.value - 1)
+  } else if (direction === 'left'
+    && currentPageIndex.value < lastPageIndex.value
+    && (swipeLength.value - _swipeDeadzone) > swipeChangeTrigger.value) {
+    onPageChange(currentPageIndex.value + 1)
+  }
+
+  setTimeout(() => leftPosition.value = '0', 250)
 }
 
 /**
@@ -77,8 +145,8 @@ function scrollToElement(elementIndex?: number): void {
     const indexInPage = elementIndex - (page * elementsPerPage)
     lineIndex = Math.floor(indexInPage / props.elementsPerLine)
 
-    if (page !== currentPage.value) {
-      currentPage.value = page
+    if (page !== currentPageIndex.value) {
+      onPageChange(page)
     }
   }
 
@@ -102,19 +170,28 @@ function scrollToElement(elementIndex?: number): void {
 
 
 <template>
-  <div class="paginator">
-    <div
-      v-for="(line, index) of displayedLines"
-      :key="index"
-      class="paginator-line"
-    >
-      <slot
-        v-for="element of line"
-        :key="getKeyFunction(element)"
-        name="element"
-        :element="element"
-      />
-    </div>
+  <div class="paginator-container">
+    <TransitionGroup name="paginator-page-transition">
+      <div
+        :key="currentPageIndex"
+        ref="paginator"
+        class="paginator"
+        :class="{ 'paginator-animated': !isSwiping }"
+      >
+        <div
+          v-for="(line, index) of displayedLines"
+          :key="index"
+          class="paginator-line"
+        >
+          <slot
+            v-for="element of line"
+            :key="getKeyFunction(element)"
+            name="element"
+            :element="element"
+          />
+        </div>
+      </div>
+    </TransitionGroup>
   </div>
   <div
     v-if="hasMultiplePages"
@@ -126,7 +203,7 @@ function scrollToElement(elementIndex?: number): void {
       :total-records="groupedElements.length"
       :page-link-size="pageLinksCount"
       template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink JumpToPageDropdown"
-      @page="onPageChange"
+      @page="onPageChange($event.page)"
     />
   </div>
 </template>
@@ -142,11 +219,23 @@ function scrollToElement(elementIndex?: number): void {
 
 <style>
 .paginator {
-  height: 100%;
-  width: 100%;
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  justify-content: center;
+  left: v-bind(leftPosition);
+  position: absolute;
+  width: 100%;
+}
+
+.paginator-animated {
+  transition: all 0.2s ease-in-out;
+}
+
+.paginator-container {
+  height: v-bind(containerHeight);
+  overflow: hidden;
+  position: relative;
+  width: 100%;
 }
 
 .paginator-line {
@@ -165,6 +254,24 @@ function scrollToElement(elementIndex?: number): void {
   cursor: pointer;
 }
 
+.paginator-page-transition-enter-active {
+  transition: all 0.25s 0.25s ease;
+}
+
+.paginator-page-transition-leave-active {
+  transition: all 0.25s ease;
+}
+
+.paginator-page-transition-enter-from {
+  opacity: 0;
+  transform: v-bind(transitionEnterFromTranslate);
+}
+
+.paginator-page-transition-leave-to {
+  opacity: 0;
+  transform: v-bind(transitionLeaveToTranslate);
+}
+
 .paginator-pages {
   display: flex;
   justify-content: center;
@@ -177,7 +284,7 @@ function scrollToElement(elementIndex?: number): void {
 }
 
 .paginator-pages nav .p-paginator {
-  padding: 0.25rem
+  padding: 0.25rem;
 }
 
 .paginator-pages nav .p-paginator .p-paginator-page-options {
