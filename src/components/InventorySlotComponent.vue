@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { useElementBounding, useSwipe, UseSwipeDirection } from '@vueuse/core'
+import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { IInventoryItem } from '../models/build/IInventoryItem'
 import { IInventorySlot } from '../models/build/IInventorySlot'
 import { InventorySlotTypeId } from '../models/build/InventorySlotTypes'
@@ -15,7 +16,7 @@ import Tooltip from './TooltipComponent.vue'
 
 const modelInventorySlot = defineModel<IInventorySlot>('inventorySlot', { required: true })
 
-defineProps<{
+const props = defineProps<{
   canGoToNext: boolean,
   canGoToPrevious: boolean,
   nextInventorySlotType: InventorySlotTypeId | undefined,
@@ -33,10 +34,38 @@ const _inventorySlotPropertiesService = Services.get(InventorySlotPropertiesServ
 const _itemService = Services.get(ItemService)
 
 let _acceptedItemsNeedsUpdated = true
+const _swipeDeadzone = 50
 
+const containerHeight = computed(() => `${inventorySlotHeight.value}px`)
 const inventorySlotType = computed(() => _inventorySlotPropertiesService.getType(modelInventorySlot.value.typeId))
+const swipeBlock = computed(() => inventorySlotWidth.value * 0.1)
+const swipeChangeTrigger = computed(() => inventorySlotWidth.value * 0.5)
+const swipeMaxLeft = computed(() => {
+  if (!props.canGoToPrevious) {
+    return swipeBlock.value
+  }
+
+  return undefined
+})
+const swipeMinLeft = computed(() => {
+  if (!props.canGoToNext) {
+    return -swipeBlock.value
+  }
+
+  return undefined
+})
 
 const acceptedItems = ref<IItem[]>([])
+const inventorySlot = useTemplateRef('inventorySlot')
+const leftPosition = ref('0')
+const { height: inventorySlotHeight, width: inventorySlotWidth } = useElementBounding(inventorySlot)
+const { direction: swipeDirection, lengthX: swipeLength } = useSwipe(
+  inventorySlot,
+  {
+    onSwipe,
+    onSwipeEnd,
+    threshold: _swipeDeadzone
+  })
 
 onMounted(() => _globalFilterService.emitter.on(GlobalFilterService.changeEvent, onMerchantFilterChanged))
 
@@ -73,6 +102,46 @@ function onItemChanged(index: number, newInventoryItem: IInventoryItem | undefin
 function onMerchantFilterChanged(): void {
   _acceptedItemsNeedsUpdated = true
 }
+
+/**
+ * React to the inventory slot being swipped.
+ *
+ * Positions the inventory slot according to the swipe movement.
+ */
+function onSwipe(): void {
+  let left = Math.max(Math.abs(swipeLength.value) - _swipeDeadzone, 0)
+
+  if (swipeDirection.value === 'left') {
+    left = -left
+
+    if (swipeMinLeft.value != null && left < swipeMinLeft.value) {
+      left = swipeMinLeft.value
+    }
+  } else if (swipeMaxLeft.value != null && left > swipeMaxLeft.value) {
+    left = swipeMaxLeft.value
+  }
+
+  leftPosition.value = `${left}px`
+}
+
+/**
+ * React to the swip action on the inventory slot stopping.
+ *
+ * Repositions the inventory slot at its original place or trigger the inventory slot change.
+ */
+function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
+  if (direction === 'right'
+    && props.canGoToPrevious
+    && swipeLength.value < -swipeChangeTrigger.value) {
+    emits('goToPrevious')
+  } else if (direction === 'left'
+    && props.canGoToNext
+    && swipeLength.value > swipeChangeTrigger.value) {
+    emits('goToNext')
+  } else {
+    leftPosition.value = '0'
+  }
+}
 </script>
 
 
@@ -85,63 +154,70 @@ function onMerchantFilterChanged(): void {
 
 
 <template>
-  <Panel class="inventory-slot">
-    <template #header>
-      <div class="inventory-slot-header">
-        <Tooltip
-          :apply-hover-style="canGoToPrevious"
-          :disabled-on-mobile="true"
-          :tooltip="previousInventorySlotType != null ? $t(`caption.slotType${StringUtils.toUpperFirst(previousInventorySlotType)}`) : undefined"
-        >
-          <Button
-            class="p-button-text button-discreet"
-            :disabled="!canGoToPrevious"
-            @click="emits('goToPrevious')"
-          >
-            <font-awesome-icon icon="chevron-left" />
-          </Button>
-        </Tooltip>
-        <div class="inventory-slot-title">
-          <font-awesome-icon
-            v-if="inventorySlotType.icon != null"
-            :icon="inventorySlotType.icon"
-            class="inventory-slot-icon"
+  <div class="inventory-slot-container">
+    <div
+      ref="inventorySlot"
+      :style="``"
+    >
+      <Panel class="inventory-slot">
+        <template #header>
+          <div class="inventory-slot-header">
+            <Tooltip
+              :apply-hover-style="canGoToPrevious"
+              :disabled-on-mobile="true"
+              :tooltip="previousInventorySlotType != null ? $t(`caption.slotType${StringUtils.toUpperFirst(previousInventorySlotType)}`) : undefined"
+            >
+              <Button
+                class="p-button-text button-discreet"
+                :disabled="!canGoToPrevious"
+                @click="emits('goToPrevious')"
+              >
+                <font-awesome-icon icon="chevron-left" />
+              </Button>
+            </Tooltip>
+            <div class="inventory-slot-title">
+              <font-awesome-icon
+                v-if="inventorySlotType.icon != null"
+                :icon="inventorySlotType.icon"
+                class="inventory-slot-icon"
+              />
+              <img
+                v-else-if="inventorySlotType.customIcon != null"
+                :src="inventorySlotType.customIcon"
+                class="inventory-slot-custom-icon"
+              >
+              <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelInventorySlot.typeId)) }}</span>
+            </div>
+            <Tooltip
+              :apply-hover-style="canGoToNext"
+              :disabled-on-mobile="true"
+              :tooltip="nextInventorySlotType != null ? $t(`caption.slotType${StringUtils.toUpperFirst(nextInventorySlotType)}`) : undefined"
+            >
+              <Button
+                class="p-button-text button-discreet"
+                :disabled="!canGoToNext"
+                @click="emits('goToNext')"
+              >
+                <font-awesome-icon icon="chevron-right" />
+              </Button>
+            </Tooltip>
+          </div>
+        </template>
+        <div class="inventory-slot-items">
+          <Item
+            v-for="(inventoryItem, index) of modelInventorySlot.items"
+            :key="`${path}_${index}`"
+            :can-be-looted="inventorySlotType.canBeLooted"
+            :get-accepted-items-function="getAcceptedItemsAsync"
+            :inventory-item="modelInventorySlot.items[index]"
+            :is-main-inventory-slot-item="true"
+            :path="`${path}_${index}/${PathUtils.itemPrefix}${inventoryItem?.itemId ?? 'empty'}`"
+            @update:inventory-item="onItemChanged(index, $event)"
           />
-          <img
-            v-else-if="inventorySlotType.customIcon != null"
-            :src="inventorySlotType.customIcon"
-            class="inventory-slot-custom-icon"
-          >
-          <span class="inventory-slot-caption">{{ $t('caption.slotType' + StringUtils.toUpperFirst(modelInventorySlot.typeId)) }}</span>
         </div>
-        <Tooltip
-          :apply-hover-style="canGoToNext"
-          :disabled-on-mobile="true"
-          :tooltip="nextInventorySlotType != null ? $t(`caption.slotType${StringUtils.toUpperFirst(nextInventorySlotType)}`) : undefined"
-        >
-          <Button
-            class="p-button-text button-discreet"
-            :disabled="!canGoToNext"
-            @click="emits('goToNext')"
-          >
-            <font-awesome-icon icon="chevron-right" />
-          </Button>
-        </Tooltip>
-      </div>
-    </template>
-    <div class="inventory-slot-items">
-      <Item
-        v-for="(inventoryItem, index) of modelInventorySlot.items"
-        :key="`${path}_${index}`"
-        :can-be-looted="inventorySlotType.canBeLooted"
-        :get-accepted-items-function="getAcceptedItemsAsync"
-        :inventory-item="modelInventorySlot.items[index]"
-        :is-main-inventory-slot-item="true"
-        :path="`${path}_${index}/${PathUtils.itemPrefix}${inventoryItem?.itemId ?? 'empty'}`"
-        @update:inventory-item="onItemChanged(index, $event)"
-      />
+      </Panel>
     </div>
-  </Panel>
+  </div>
 </template>
 
 
@@ -163,6 +239,19 @@ function onMerchantFilterChanged(): void {
 
 .inventory-slot-caption {
   margin-left: 0.5rem;
+}
+
+.inventory-slot-container {
+  height: v-bind(containerHeight);
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.inventory-slot-container > div {
+  left: v-bind(leftPosition);
+  position: absolute;
+  width: 100%;
 }
 
 .inventory-slot-custom-icon {
