@@ -59,7 +59,7 @@ const acceptedItems = ref<IItem[]>([])
 const inventorySlot = useTemplateRef('inventorySlot')
 const leftPosition = ref('0')
 const { height: inventorySlotHeight, width: inventorySlotWidth } = useElementBounding(inventorySlot)
-const { direction: swipeDirection, lengthX: swipeLength } = useSwipe(
+const { direction: swipeDirection, isSwiping, lengthX: swipeLength } = useSwipe(
   inventorySlot,
   {
     onSwipe,
@@ -132,11 +132,11 @@ function onSwipe(): void {
 function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
   if (direction === 'right'
     && props.canGoToPrevious
-    && swipeLength.value < -swipeChangeTrigger.value) {
+    && (swipeLength.value + _swipeDeadzone) < -swipeChangeTrigger.value) {
     emits('goToPrevious')
   } else if (direction === 'left'
     && props.canGoToNext
-    && swipeLength.value > swipeChangeTrigger.value) {
+    && (swipeLength.value - _swipeDeadzone) > swipeChangeTrigger.value) {
     emits('goToNext')
   } else {
     leftPosition.value = '0'
@@ -154,7 +154,10 @@ function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
 
 
 <template>
-  <div class="inventory-slot-container">
+  <div
+    class="inventory-slot-container"
+    :class="{ 'inventory-slot-container-animated': !isSwiping }"
+  >
     <div
       ref="inventorySlot"
       :style="``"
@@ -252,6 +255,10 @@ function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
   left: v-bind(leftPosition);
   position: absolute;
   width: 100%;
+}
+
+.inventory-slot-container-animated > div {
+  transition: all 0.2s ease-in-out;
 }
 
 .inventory-slot-custom-icon {
