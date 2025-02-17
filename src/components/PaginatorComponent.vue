@@ -56,8 +56,8 @@ const swipeBlock = computed(() => paginatorWidth.value * 0.05)
 const swipeChangeTrigger = computed(() => paginatorWidth.value * 0.5)
 const swipeMaxLeft = computed(() => currentPageIndex.value === 0 ? swipeBlock.value : undefined)
 const swipeMinLeft = computed(() => currentPageIndex.value === lastPageIndex.value ? -swipeBlock.value : undefined)
-const transitionEnterFromTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(25vw)' : 'translateX(-25vw)')
-const transitionLeaveToTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(-25vw)' : 'translateX(25vw)')
+const transitionEnterFromTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(100vw)' : 'translateX(-100vw)')
+const transitionLeaveToTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(-100vw)' : 'translateX(100vw)')
 
 const currentPageIndex = ref(0)
 const leftPosition = ref('0')
@@ -83,7 +83,7 @@ function onPageChange(newPage: number): void {
   previousPageIndex.value = currentPageIndex.value
   currentPageIndex.value = newPage
 
-  setTimeout(() => scrollToElement(), 500)
+  setTimeout(() => scrollToElement(), 500) // Wait a little before scrolling otherwise it creates a weird effect when swiping
 }
 
 /**
@@ -113,17 +113,19 @@ function onSwipe(): void {
  * Repositions the inventory slot at its original place or trigger the inventory slot change.
  */
 function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
-  if (direction === 'right'
-    && currentPageIndex.value > 0
-    && (swipeLength.value + _swipeDeadzone) < -swipeChangeTrigger.value) {
-    onPageChange(currentPageIndex.value - 1)
-  } else if (direction === 'left'
+  if (direction === 'left'
     && currentPageIndex.value < lastPageIndex.value
     && (swipeLength.value - _swipeDeadzone) > swipeChangeTrigger.value) {
     onPageChange(currentPageIndex.value + 1)
+    setTimeout(() => leftPosition.value = '0', 100)
+  } else if (direction === 'right'
+    && currentPageIndex.value > 0
+    && (swipeLength.value + _swipeDeadzone) < -swipeChangeTrigger.value) {
+    onPageChange(currentPageIndex.value - 1)
+    setTimeout(() => leftPosition.value = '0', 100)
   }
 
-  setTimeout(() => leftPosition.value = '0', 250)
+  leftPosition.value = '0'
 }
 
 /**
@@ -259,6 +261,7 @@ function scrollToElement(elementIndex?: number): void {
 }
 
 .paginator-page-transition-leave-active {
+  position: absolute;
   transition: all 0.25s ease;
 }
 

@@ -52,8 +52,8 @@ const previousPageIndex = computed(() => {
 
   return index
 })
-const transitionEnterFromTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(25vw)' : 'translateX(-25vw)')
-const transitionLeaveToTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(-25vw)' : 'translateX(25vw)')
+const transitionEnterFromTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(100vw)' : 'translateX(-100vw)')
+const transitionLeaveToTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(-100vw)' : 'translateX(100vw)')
 
 const isEditing = inject<Ref<boolean>>('isEditing')
 const isNewBuild = inject<Ref<boolean>>('isNewBuild')
@@ -66,6 +66,7 @@ watch(() => modelInventorySlots.value, () => initialize())
 
 watch(() => modelCurrentInventorySlot.value, (newValue, oldValue) => {
   lastInventorySlot.value = oldValue
+  scrollToTop()
 })
 
 /**
@@ -120,14 +121,16 @@ function onInventorySlotChanged(updatedInventorySlot: IInventorySlot): void {
   modelInventorySlots.value = updatedInventorySlots
 }
 
+/**
+ * Scrolls to the top of the screen.
+ */
 function scrollToTop(): void {
-  // For some reason, the smooth scrolling does not always work without setTimeout (event with nextTick)
   setTimeout(() => {
     document.getElementById('app')!.scrollTo({
       top: 0,
       behavior: 'smooth'
     })
-  }, 1)
+  }, 500) // Wait for the swipe animation to have ended before scrolling
 }
 </script>
 
@@ -147,7 +150,6 @@ function scrollToTop(): void {
       v-model:current-inventory-slot-type="modelCurrentInventorySlot"
       :inventory-slots-shopping-list-items="inventorySlotsShoppingListItems"
       :is-editing="isEditing!"
-      @update:current-inventory-slot-type="scrollToTop"
     />
     <slot name="empty" />
     <div

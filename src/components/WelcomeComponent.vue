@@ -125,8 +125,8 @@ function goToBuilds(): void {
  * Opens a the build the user has selected.
  * @param selectedBuilds - Selected builds.
  */
-function onBuildSelected(selectedBuilds: IBuild[]): void {
-  if (selectedBuilds.length > 0) {
+function onBuildSelected(selectedBuilds: IBuild[] | undefined): void {
+  if (selectedBuilds != undefined && selectedBuilds.length > 0) {
     openBuild(selectedBuilds[0].id)
   }
 }
