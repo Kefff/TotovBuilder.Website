@@ -116,16 +116,16 @@ function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
   if (direction === 'left'
     && currentPageIndex.value < lastPageIndex.value
     && (swipeLength.value - _swipeDeadzone) > swipeChangeTrigger.value) {
+    leftPosition.value = '0'
     onPageChange(currentPageIndex.value + 1)
-    setTimeout(() => leftPosition.value = '0', 100)
   } else if (direction === 'right'
     && currentPageIndex.value > 0
     && (swipeLength.value + _swipeDeadzone) < -swipeChangeTrigger.value) {
+    leftPosition.value = '0'
     onPageChange(currentPageIndex.value - 1)
-    setTimeout(() => leftPosition.value = '0', 100)
+  } else {
+    leftPosition.value = '0'
   }
-
-  leftPosition.value = '0'
 }
 
 /**
