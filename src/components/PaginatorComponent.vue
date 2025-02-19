@@ -52,8 +52,8 @@ const lastPageIndex = computed(() => {
 
   return lpi
 })
-const swipeBlock = computed(() => paginatorWidth.value * 0.05)
-const swipeChangeTrigger = computed(() => paginatorWidth.value * 0.5)
+const swipeBlock = computed(() => _swipeDeadzone * 0.5)
+const swipeChangeTrigger = computed(() => _swipeDeadzone * 2.5)
 const swipeMaxLeft = computed(() => currentPageIndex.value === 0 ? swipeBlock.value : undefined)
 const swipeMinLeft = computed(() => currentPageIndex.value === lastPageIndex.value ? -swipeBlock.value : undefined)
 const transitionEnterFromTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(100vw)' : 'translateX(-100vw)')
@@ -62,7 +62,7 @@ const transitionLeaveToTranslate = computed(() => previousPageIndex.value < curr
 const currentPageIndex = ref(0)
 const leftPosition = ref('0')
 const paginator = useTemplateRef('paginator')
-const { height: paginatorHeight, width: paginatorWidth } = useElementBounding(paginator)
+const { height: paginatorHeight } = useElementBounding(paginator)
 const { direction: swipeDirection, isSwiping, lengthX: swipeLength } = useSwipe(
   paginator,
   {
@@ -235,7 +235,7 @@ function scrollToElement(elementIndex?: number): void {
 
 .paginator-container {
   height: v-bind(containerHeight);
-  overflow: hidden;
+  overflow-x: hidden;
   position: relative;
   width: 100%;
 }

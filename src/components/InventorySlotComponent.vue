@@ -38,15 +38,15 @@ const _swipeDeadzone = 50
 
 const containerHeight = computed(() => `${inventorySlotHeight.value}px`)
 const inventorySlotType = computed(() => _inventorySlotPropertiesService.getType(modelInventorySlot.value.typeId))
-const swipeBlock = computed(() => inventorySlotWidth.value * 0.05)
-const swipeChangeTrigger = computed(() => inventorySlotWidth.value * 0.5)
+const swipeBlock = computed(() => _swipeDeadzone * 0.5)
+const swipeChangeTrigger = computed(() => _swipeDeadzone * 2.5)
 const swipeMaxLeft = computed(() => !props.canGoToPrevious ? swipeBlock.value : undefined)
 const swipeMinLeft = computed(() => !props.canGoToNext ? -swipeBlock.value : undefined)
 
 const acceptedItems = ref<IItem[]>([])
 const inventorySlot = useTemplateRef('inventorySlot')
 const leftPosition = ref('0')
-const { height: inventorySlotHeight, width: inventorySlotWidth } = useElementBounding(inventorySlot)
+const { height: inventorySlotHeight } = useElementBounding(inventorySlot)
 const { direction: swipeDirection, isSwiping, lengthX: swipeLength } = useSwipe(
   inventorySlot,
   {
@@ -120,11 +120,11 @@ function onSwipe(): void {
 function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
   if (direction === 'right'
     && props.canGoToPrevious
-    && (swipeLength.value + _swipeDeadzone) < -swipeChangeTrigger.value) {
+    && swipeLength.value < -swipeChangeTrigger.value) {
     emits('goToPrevious')
   } else if (direction === 'left'
     && props.canGoToNext
-    && (swipeLength.value - _swipeDeadzone) > swipeChangeTrigger.value) {
+    && swipeLength.value > swipeChangeTrigger.value) {
     emits('goToNext')
   } else {
     leftPosition.value = '0'
@@ -231,7 +231,7 @@ function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
 
 .inventory-slot-container {
   height: v-bind(containerHeight);
-  overflow: hidden;
+  overflow-x: hidden;
   position: relative;
   width: 100%;
 }
