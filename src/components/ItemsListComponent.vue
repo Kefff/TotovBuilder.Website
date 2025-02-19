@@ -65,7 +65,7 @@ const itemsPerLine = computed(() => {
   return props.maxElementsPerLine >= columns ? columns : props.maxElementsPerLine
 })
 const linesPerPage = computed(() => {
-  let lines = 5
+  let lines = 4
 
   if (isTabletLandscapeOrSmaller.value) {
     lines = 10

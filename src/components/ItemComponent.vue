@@ -66,13 +66,11 @@ const includeModsAndContentInSummary = computed(() =>
   || (itemIsContainer.value
     && props.isMainInventorySlotItem))
 const itemHeaderGridTemplateColumns = computed(() => {
-  if (isEditing?.value && props.isBaseItem) {
-    return 'auto 1fr auto auto'
-  } else if (isEditing?.value) {
-    return '1fr auto auto auto'
+  if (isEditing?.value) {
+    return '1fr auto auto'
   }
 
-  return 'auto 1fr auto'
+  return '1fr auto'
 })
 const maxSelectableQuantity = computed(() => props.maxStackableAmount ?? item.value?.maxStackableAmount ?? 1)
 const modsCount = computed(() => modelInventoryItem.value?.modSlots.filter(ms => ms.item != null).length ?? 0)
@@ -460,18 +458,19 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
     >
       <div>
         <div class="item-header">
-          <ItemIcon
-            v-if="item != null && (!isEditing || isBaseItem)"
-            :item="item"
-            :quantity="quantity"
-          />
           <div
             v-if="item != null && (!isEditing || isBaseItem)"
-            class="item-header-title"
+            style="display: flex;"
           >
-            <Tooltip :tooltip="item?.name">
-              <span>{{ item.name }}</span>
-            </Tooltip>
+            <ItemIcon
+              :item="item"
+              :quantity="quantity"
+            />
+            <div class="item-header-title">
+              <Tooltip :tooltip="item?.name">
+                <span>{{ item.name }}</span>
+              </Tooltip>
+            </div>
           </div>
           <div
             v-else-if="isEditing"
@@ -533,7 +532,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
               caption-mode="placeholder"
               required-message-position="right"
               class="item-header-quantity"
-              @update:value="onQuantityChanged($event)"
+              @update:value="onQuantityChanged($event!)"
             />
           </div>
           <div
@@ -590,7 +589,7 @@ function updateInventoryItem(newItem: IItem, compatibilityCheckResult: boolean):
           :show-weight="showWeight"
           class="item-header-stats"
           :class="{ 'item-header-stats-compact': isCompactMode }"
-          @update:ignore-price="onIgnorePriceChanged($event)"
+          @update:ignore-price="onIgnorePriceChanged($event!)"
         />
         <!-- Empty zone that matches the size of SelectedItemItemCardSelector to make the dropdown respect alignment when no item is selected -->
         <div
