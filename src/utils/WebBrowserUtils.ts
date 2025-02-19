@@ -1,5 +1,9 @@
 import { useBreakpoints, useMediaQuery } from '@vueuse/core'
 import { computed, ComputedRef, Ref } from 'vue'
+import vueI18n from '../plugins/vueI18n'
+import { LogService } from '../services/LogService'
+import { NotificationService, NotificationType } from '../services/NotificationService'
+import Services from '../services/repository/Services'
 
 /**
  * Represents an utility class for manipulating the web browser.
@@ -17,6 +21,21 @@ export default class WebBrowserUtils {
       pc: 1350,
       pcLarge: 1800
     }
+  }
+
+  /**
+   * Copies a text to clipboard.
+   * @param textToCopy - Text to copy.
+   */
+  public static async copyToClipboardAsync(textToCopy: string): Promise<void> {
+    await navigator.clipboard.writeText(textToCopy)
+      .then(() => {
+        Services.get(NotificationService).notify(NotificationType.information, vueI18n.t('message.copied'))
+      })
+      .catch(() => {
+        Services.get(LogService).logError('message.copyError')
+        Services.get(NotificationService).notify(NotificationType.error, vueI18n.t('message.copyError'))
+      })
   }
 
   /**

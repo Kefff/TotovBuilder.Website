@@ -9,9 +9,8 @@ import { IToolbarButton } from '../../models/utils/IToolbarButton'
 import vueI18n from '../../plugins/vueI18n'
 import { BuildPropertiesService } from '../../services/BuildPropertiesService'
 import { BuildService } from '../../services/BuildService'
-import { LogService } from '../../services/LogService'
-import { NotificationService, NotificationType } from '../../services/NotificationService'
 import Services from '../../services/repository/Services'
+import WebBrowserUtils from '../../utils/WebBrowserUtils'
 import BuildsList from '../BuildsListComponent.vue'
 import LanguageSelector from '../LanguageSelectorComponent.vue'
 import Loading from '../LoadingComponent.vue'
@@ -21,8 +20,6 @@ const props = defineProps<{ parameters: BuildsShareSideBarParameters }>()
 
 const _buildService = Services.get(BuildService)
 const _buildPropertiesService = Services.get(BuildPropertiesService)
-const _logService = Services.get(LogService)
-const _notificationService = Services.get(NotificationService)
 
 const _toolbarButtons: IToolbarButton[] = [
   {
@@ -117,14 +114,7 @@ function copyText(): void {
     return
   }
 
-  navigator.clipboard.writeText(text.value)
-    .then(() => {
-      _notificationService.notify(NotificationType.information, vueI18n.t('message.copied'))
-    })
-    .catch(() => {
-      _logService.logError('message.copyError')
-      _notificationService.notify(NotificationType.error, vueI18n.t('message.copyError'))
-    })
+  WebBrowserUtils.copyToClipboardAsync(text.value)
 }
 
 /**

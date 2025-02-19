@@ -1,10 +1,44 @@
 import { MaybeRefOrGetter } from '@vueuse/core'
-import { anything, instance, mock, when } from 'ts-mockito'
+import { anything, instance, mock, spy, verify, when } from 'ts-mockito'
 import { describe, expect, it, vi } from 'vitest'
 import { ComputedRef, Ref, ref } from 'vue'
+import { NotificationService, NotificationType } from '../../services/NotificationService'
+import Services from '../../services/repository/Services'
 import WebBrowserUtils from '../../utils/WebBrowserUtils'
 
 describe('WebBrowserUtils', () => {
+  describe('copyToClipboardAsync', () => {
+    it('should copy a text to clipboard and display a success notification', async () => {
+      // Arrange
+      const notificationServiceMock = mock<NotificationService>()
+      Services.configure(NotificationService, undefined, instance(notificationServiceMock))
+
+      // Act
+      await WebBrowserUtils.copyToClipboardAsync('Hello')
+      const copiedText = await navigator.clipboard.readText()
+
+      // Assert
+      expect(copiedText).toBe('Hello')
+      verify(notificationServiceMock.notify(NotificationType.information, 'Copied to clipboard.')).once()
+    })
+
+    it('should log and display an error notification when failing', async () => {
+      // Arrange
+      const notificationServiceMock = mock<NotificationService>()
+      Services.configure(NotificationService, undefined, instance(notificationServiceMock))
+
+      const clipboardSpy = spy(navigator.clipboard)
+      when(clipboardSpy.writeText(anything())).thenReject()
+
+      // Act
+      await WebBrowserUtils.copyToClipboardAsync('Hello')
+
+      // Assert
+      verify(notificationServiceMock.notify(NotificationType.error, 'Error while copying to clipboard.')).once()
+      verify(clipboardSpy.writeText('Hello')).once()
+    })
+  })
+
   describe('getScreenSize', () => {
     it.each([[true], [false]])('should get screen size variables (%s)', async (isSmaller) => {
       // Arrange
