@@ -19,7 +19,7 @@ const props = withDefaults(
     scrollToIndex: undefined
   })
 
-const _swipeDeadzone = 50
+const _swipeDeadzone = 25
 
 const containerHeight = computed(() => `${paginatorHeight.value}px`)
 const displayedLines = computed<unknown[][]>(() => {
@@ -52,8 +52,8 @@ const lastPageIndex = computed(() => {
 
   return lpi
 })
-const swipeBlock = computed(() => _swipeDeadzone * 0.5)
-const swipeChangeTrigger = computed(() => _swipeDeadzone * 2.5)
+const swipeBlock = computed(() => _swipeDeadzone)
+const swipeChangeTrigger = computed(() => _swipeDeadzone * 4)
 const swipeMaxLeft = computed(() => currentPageIndex.value === 0 ? swipeBlock.value : undefined)
 const swipeMinLeft = computed(() => currentPageIndex.value === lastPageIndex.value ? -swipeBlock.value : undefined)
 const transitionEnterFromTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(100vw)' : 'translateX(-100vw)')

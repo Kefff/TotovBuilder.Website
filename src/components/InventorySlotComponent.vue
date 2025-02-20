@@ -34,12 +34,12 @@ const _inventorySlotPropertiesService = Services.get(InventorySlotPropertiesServ
 const _itemService = Services.get(ItemService)
 
 let _acceptedItemsNeedsUpdated = true
-const _swipeDeadzone = 50
+const _swipeDeadzone = 25
 
 const containerHeight = computed(() => `${inventorySlotHeight.value}px`)
 const inventorySlotType = computed(() => _inventorySlotPropertiesService.getType(modelInventorySlot.value.typeId))
-const swipeBlock = computed(() => _swipeDeadzone * 0.5)
-const swipeChangeTrigger = computed(() => _swipeDeadzone * 2.5)
+const swipeBlock = computed(() => _swipeDeadzone)
+const swipeChangeTrigger = computed(() => _swipeDeadzone * 4)
 const swipeMaxLeft = computed(() => !props.canGoToPrevious ? swipeBlock.value : undefined)
 const swipeMinLeft = computed(() => !props.canGoToNext ? -swipeBlock.value : undefined)
 
