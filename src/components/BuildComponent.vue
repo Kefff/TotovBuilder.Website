@@ -204,6 +204,7 @@ const confirmationDialogSecondaryButtonSeverity = ref<string>()
 const currentInventorySlot = ref<InventorySlotTypeId>(InventorySlotTypeId.onSling)
 const inventorySlotsShoppingListItems = computed(() => summary.value.shoppingList.filter(sl => sl.inventorySlotId != null))
 const isBuildSummaryStickied = ref(false)
+const isCompactBuildSummaryPinned = ref(false)
 const isEditing = ref(false)
 const isLoading = ref(true)
 const { isSmartphoneLandscapeOrSmaller, isTabletPortraitOrSmaller: isCompactMode } = WebBrowserUtils.getScreenSize()
@@ -564,8 +565,9 @@ function onToolbarIsStickiedChanged(isStickied: boolean): void {
   }
 
   if (isCompactBuildSummaryExpanded.value
-    && isStickied) {
-    toggleCompactBuildSummaryAsync()
+    && isStickied
+    && !isCompactBuildSummaryPinned.value) {
+    toggleCompactBuildSummaryAsync(false)
   }
 }
 
@@ -681,10 +683,16 @@ function startEdit(): void {
 
 /**
  * Toggles the visibility of the compact build summary.
+ * @param unpin - Indicates whether the compact build summary must be unpinned if it is pinned.
+ * Used when the compact build summary is pinned and compact build summary is hidden by cliking on the button.
  */
-async function toggleCompactBuildSummaryAsync(): Promise<void> {
+async function toggleCompactBuildSummaryAsync(unpin: boolean): Promise<void> {
   if (_isCompactSummaryExpanding) {
     return
+  }
+
+  if (unpin) {
+    isCompactBuildSummaryPinned.value = false
   }
 
   _isCompactSummaryExpanding = true
@@ -795,10 +803,12 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
       <template #under>
         <div
           v-if="!isLoading && isCompactMode"
-          class="build-summary-popup-button-container"
-          @click="toggleCompactBuildSummaryAsync"
+          class="build-summary-popup-buttons-container"
         >
-          <div class="build-summary-popup-button">
+          <div
+            class="build-summary-popup-button build-summary-popup-toggle-button"
+            @click="() => toggleCompactBuildSummaryAsync(true)"
+          >
             <font-awesome-icon
               v-if="!isCompactBuildSummaryExpanded"
               icon="clipboard-list"
@@ -807,6 +817,14 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
               v-if="isCompactBuildSummaryExpanded"
               icon="chevron-up"
             />
+          </div>
+          <div
+            v-show="isCompactBuildSummaryExpanded"
+            class="build-summary-popup-button build-summary-popup-pin-button"
+            :class="{ 'build-summary-popup-unpin-button': isCompactBuildSummaryPinned }"
+            @click="isCompactBuildSummaryPinned = !isCompactBuildSummaryPinned"
+          >
+            <font-awesome-icon icon="thumbtack" />
           </div>
         </div>
       </template>
@@ -1001,42 +1019,57 @@ async function toggleCompactBuildSummaryAsync(): Promise<void> {
 
 .build-summary-container {
   display: flex;
-  justify-content: center;
   margin-bottom: 1rem;
   margin-top: 0.5rem;
 }
 
 .build-summary-popup-button {
   align-items: center;
-  background-color: var(--primary-color);
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
   border-bottom-width: 1px;
   border-color: var(--primary-color3);
   border-left-width: 1px;
   border-right-width: 1px;
-  border-top-width: 0;
   border-style: solid;
+  border-top-width: 0;
   display: flex;
+  font-size: 0.875rem;
   height: 1.25rem;
   justify-content: center;
   position: absolute;
   top: -1px;
   /* To merge its border with the toolbar border */
-  width: 5rem;
 }
+
 
 .build-summary-popup-button:hover {
   background-color: var(--primary-color2);
   cursor: pointer;
 }
 
-.build-summary-popup-button-container {
+.build-summary-popup-buttons-container {
   display: flex;
-  justify-content: center;
   margin-bottom: 1rem;
   position: relative;
   width: 100%;
+}
+
+.build-summary-popup-pin-button {
+  background-color: var(--surface-50);
+  right: 1rem;
+  width: 3rem;
+}
+
+.build-summary-popup-toggle-button {
+  background-color: var(--primary-color);
+  left: calc(50% - 2.5rem);
+  /* 5rem long element being centered */
+  width: 5rem;
+}
+
+.build-summary-popup-unpin-button {
+  background-color: var(--primary-color);
 }
 
 .build-title {

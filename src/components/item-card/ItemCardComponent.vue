@@ -24,7 +24,7 @@ const _inventoryItemService = Services.get(InventoryItemService)
 const _globalFilterService = Services.get(GlobalFilterService)
 const _globalSidebarService = Services.get(GlobalSidebarService)
 
-const height = computed(() => `${props.selectionOptions.isEnabled ? 14.75 : 11.25}rem`)
+const height = computed(() => `${props.selectionOptions.isEnabled ? 15 : 11.5}rem`)
 const selectionButtonCaptionInternal = computed(() => {
   if (props.selectionOptions.selectionButtonCaption != null) {
     return props.selectionOptions.selectionButtonCaption

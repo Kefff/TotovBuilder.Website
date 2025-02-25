@@ -272,7 +272,7 @@ async function sortItemsAsync(itemsToSort: IItem[]): Promise<IItem[]> {
     <InfiniteScroller
       v-if="filteredAnSortedItems.length > 0 && infiniteScrolling"
       :auto-scroll-to-first-element="autoScrollToFirstElement"
-      :element-height="selectionOptions.isEnabled ? 207 : 156"
+      :element-height="selectionOptions.isEnabled ? 211 : 162"
       :elements-per-line="itemsPerLine"
       :elements="filteredAnSortedItems"
       :get-key-function="i => (i as IItem).id"
