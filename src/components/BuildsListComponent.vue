@@ -19,8 +19,9 @@ import InfiniteScroller from './InfiniteScrollerComponent.vue'
 import Loading from './LoadingComponent.vue'
 import Paginator from './PaginatorComponent.vue'
 
-const modelSelectedBuilds = defineModel<IBuild[]>('selectedBuilds', { required: false, default: [] })
+const modelCurrentPage = defineModel<number>('currentPage', { default: 0 })
 const modelFilterAndSortingData = defineModel<BuildFilterAndSortingData>('filterAndSortingData', { required: false, default: new BuildFilterAndSortingData() })
+const modelSelectedBuilds = defineModel<IBuild[]>('selectedBuilds', { required: false, default: [] })
 
 const props = withDefaults(
   defineProps<{
@@ -300,6 +301,7 @@ function updateSelectedBuilds(buildSummary: IBuildSummary, isSelected: boolean):
     </InfiniteScroller>
     <Paginator
       v-else-if="filteredAndSortedBuildSummaries.length > 0 && !infiniteScrolling"
+      v-model:current-page="modelCurrentPage"
       :auto-scroll-to-first-element-of-page="autoScrollToFirstElement"
       :elements-per-line="buildsPerLine"
       :elements="filteredAndSortedBuildSummaries"

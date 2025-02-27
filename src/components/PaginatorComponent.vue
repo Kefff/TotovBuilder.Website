@@ -3,6 +3,8 @@ import { useElementBounding, useSwipe, UseSwipeDirection } from '@vueuse/core'
 import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
 import WebBrowserUtils from '../utils/WebBrowserUtils'
 
+const modelCurrentPage = defineModel<number>('currentPage', { default: 0 })
+
 const props = withDefaults(
   defineProps<{
     autoScrollToFirstElementOfPage?: boolean,
@@ -28,7 +30,7 @@ const displayedLines = computed<unknown[][]>(() => {
 
   return lines
 })
-const first = computed(() => currentPageIndex.value * props.linesPerPage)
+const first = computed(() => modelCurrentPage.value * props.linesPerPage)
 const gridTemplateColumns = computed(() => `repeat(${props.elementsPerLine}, 1fr)`)
 const groupedElements = computed<unknown[][]>(() => {
   const groups: unknown[][] = []
@@ -54,12 +56,11 @@ const lastPageIndex = computed(() => {
 })
 const swipeBlock = computed(() => _swipeDeadzone)
 const swipeChangeTrigger = computed(() => _swipeDeadzone * 4)
-const swipeMaxLeft = computed(() => currentPageIndex.value === 0 ? swipeBlock.value : undefined)
-const swipeMinLeft = computed(() => currentPageIndex.value === lastPageIndex.value ? -swipeBlock.value : undefined)
-const transitionEnterFromTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(100vw)' : 'translateX(-100vw)')
-const transitionLeaveToTranslate = computed(() => previousPageIndex.value < currentPageIndex.value ? 'translateX(-100vw)' : 'translateX(100vw)')
+const swipeMaxLeft = computed(() => modelCurrentPage.value === 0 ? swipeBlock.value : undefined)
+const swipeMinLeft = computed(() => modelCurrentPage.value === lastPageIndex.value ? -swipeBlock.value : undefined)
+const transitionEnterFromTranslate = computed(() => previousPageIndex.value < modelCurrentPage.value ? 'translateX(100vw)' : 'translateX(-100vw)')
+const transitionLeaveToTranslate = computed(() => previousPageIndex.value < modelCurrentPage.value ? 'translateX(-100vw)' : 'translateX(100vw)')
 
-const currentPageIndex = ref(0)
 const leftPosition = ref('0')
 const paginator = useTemplateRef('paginator')
 const { height: paginatorHeight } = useElementBounding(paginator)
@@ -80,8 +81,8 @@ onMounted(() => scrollToElement(props.scrollToIndex))
  * Reacts to the paginator current page being changed.
  */
 function onPageChange(newPage: number): void {
-  previousPageIndex.value = currentPageIndex.value
-  currentPageIndex.value = newPage
+  previousPageIndex.value = modelCurrentPage.value
+  modelCurrentPage.value = newPage
 
   setTimeout(() => scrollToElement(), 500) // Wait a little before scrolling otherwise it creates a weird effect when swiping
 }
@@ -114,15 +115,15 @@ function onSwipe(): void {
  */
 function onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection): void {
   if (direction === 'left'
-    && currentPageIndex.value < lastPageIndex.value
+    && modelCurrentPage.value < lastPageIndex.value
     && (swipeLength.value - _swipeDeadzone) > swipeChangeTrigger.value) {
     leftPosition.value = '0'
-    onPageChange(currentPageIndex.value + 1)
+    onPageChange(modelCurrentPage.value + 1)
   } else if (direction === 'right'
-    && currentPageIndex.value > 0
+    && modelCurrentPage.value > 0
     && (swipeLength.value + _swipeDeadzone) < -swipeChangeTrigger.value) {
     leftPosition.value = '0'
-    onPageChange(currentPageIndex.value - 1)
+    onPageChange(modelCurrentPage.value - 1)
   } else {
     leftPosition.value = '0'
   }
@@ -147,7 +148,7 @@ function scrollToElement(elementIndex?: number): void {
     const indexInPage = elementIndex - (page * elementsPerPage)
     lineIndex = Math.floor(indexInPage / props.elementsPerLine)
 
-    if (page !== currentPageIndex.value) {
+    if (page !== modelCurrentPage.value) {
       onPageChange(page)
     }
   }
@@ -175,7 +176,7 @@ function scrollToElement(elementIndex?: number): void {
   <div class="paginator-container">
     <TransitionGroup name="paginator-page-transition">
       <div
-        :key="currentPageIndex"
+        :key="modelCurrentPage"
         ref="paginator"
         class="paginator"
         :class="{ 'paginator-animated': !isSwiping }"

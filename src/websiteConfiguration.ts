@@ -14,6 +14,7 @@ const fixedConfiguration = {
   allowCookiesStorageKey: 'allow_cookies',
   buildsFilterStorageKey: 'builds_filter_field',
   buildSharingUrl: 's/',
+  buildsPageStorageKey: 'builds_page',
   buildsSortFieldStorageKey: 'builds_sort_field',
   buildsSortOrderStorageKey: 'builds_sort_order',
   buildStorageKeyPrefix: 'build_',

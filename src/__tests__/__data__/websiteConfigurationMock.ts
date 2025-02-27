@@ -5,6 +5,7 @@ const websiteConfiguration: IWebsiteConfiguration = {
   bugReportUrl: 'https://discord.gg/bugreport',
   buildsFilterStorageKey: 'builds_filter',
   buildSharingUrl: 's/',
+  buildsPageStorageKey: 'builds_page',
   buildsSortFieldStorageKey: 'builds_sort_field',
   buildsSortOrderStorageKey: 'builds_sort_order',
   buildStorageKeyPrefix: 'build_',

@@ -18,6 +18,11 @@ export interface IWebsiteConfiguration {
   buildSharingUrl: string
 
   /**
+   * Storage key for the current page in the builds list.
+   */
+  buildsPageStorageKey: string,
+
+  /**
    * Storage key for the current build filter.
    */
   buildsFilterStorageKey: string,
