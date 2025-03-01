@@ -96,6 +96,7 @@ async function readBuildsAsync(): Promise<void> {
 
   if (buildsToImport != null) {
     builds.value = buildsToImport
+    selectedBuilds.value = builds.value
     isFileSelected.value = true
   }
 }
