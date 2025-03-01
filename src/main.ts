@@ -13,20 +13,22 @@ import { initializeServicesAsync } from './servicesConfiguration'
 // Polyfill
 polyfill()
 
+// SEO
+useUnhead()
+
+// Services
+void initializeServicesAsync()
+
 // App
 const app = createApp(App)
 
 // Plugins
 useApplicationInsights()
+useFloatingVue(app)
 useFontAwesome(app)
 useI18n(app)
 usePrimeVue(app)
-useUnhead()
-useFloatingVue(app)
 useVueRouter(app)
 
 // Start
 app.mount('#app')
-
-// Services
-void initializeServicesAsync()
