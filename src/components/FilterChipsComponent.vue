@@ -407,7 +407,7 @@ function switchSortOrder(): void {
         <Tooltip
           v-if="isCompactMode || isTouchScreen"
           :tooltip="filterTooltip"
-          class="filter-chip-content"
+          class="filter-chip-content filter-chip-text-mobile"
           @click="showFilterAndSortSidebar"
         >
           <div class="filter-chip-icon">
@@ -661,5 +661,9 @@ function switchSortOrder(): void {
 
 .filter-chip-merchants-list > .merchant-icon > .merchant-icon-level {
   transform: translate(1.5rem, 0.5rem);
+}
+
+.filter-chip-text-mobile > div {
+  overflow: hidden;
 }
 </style>
