@@ -13,9 +13,10 @@ import { WebsiteConfigurationService } from '../services/WebsiteConfigurationSer
 import StringUtils from '../utils/StringUtils'
 import Loading from './LoadingComponent.vue'
 
-const BuildsList = defineAsyncComponent(() =>
-  import('./BuildsListComponent.vue')
-)
+const BuildsList = defineAsyncComponent({
+  loader: () => import('./BuildsListComponent.vue'),
+  loadingComponent: Loading
+})
 
 const _buildService = Services.get(BuildService)
 const _globalSidebarService = Services.get(GlobalSidebarService)

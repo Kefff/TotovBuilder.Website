@@ -11,13 +11,15 @@ import { WebsiteConfigurationService } from '../services/WebsiteConfigurationSer
 import { ServiceInitializationState } from '../services/repository/ServiceInitializationState'
 import Services from '../services/repository/Services'
 import LanguageUtils from '../utils/LanguageUtils'
+import Loading from './LoadingComponent.vue'
 import LoadingError from './LoadingErrorComponent.vue'
 import Notification from './NotificationComponent.vue'
 import Tooltip from './TooltipComponent.vue'
 
-const GlobalSidebar = defineAsyncComponent(() =>
-  import('./sidebar/GlobalSidebarComponent.vue')
-)
+const GlobalSidebar = defineAsyncComponent({
+  loader: () => import('./sidebar/GlobalSidebarComponent.vue'),
+  loadingComponent: Loading
+})
 
 const _globalSidebarService = Services.get(GlobalSidebarService)
 const _versionService = Services.get(VersionService)
